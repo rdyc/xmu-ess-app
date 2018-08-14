@@ -30,7 +30,7 @@ bower_components
 .lock-wscript
 
 # Compiled binary addons (https://nodejs.org/api/addons.html)
-build/Release
+build/
 
 # Dependency directories
 node_modules/
@@ -65,3 +65,7 @@ typings/
 
 # vscode
 .vs
+/bin
+/obj/Debug
+/.vscode
+/out

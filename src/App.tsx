@@ -1,7 +1,9 @@
 import * as React from 'react';
+// tslint:disable-next-line:no-import-side-effect
 import './App.css';
 
-import logo from './logo.svg';
+// tslint:disable-next-line:no-var-requires
+const logo = require('./logo.svg');
 
 class App extends React.Component {
   public render() {

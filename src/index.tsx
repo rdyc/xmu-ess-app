@@ -1,11 +1,23 @@
+// tslint:disable-next-line:no-import-side-effect
+import 'tslib';
 import * as React from 'react';
-import * as ReactDOM from 'react-dom';
-import App from './App';
-import './index.css';
-import registerServiceWorker from './registerServiceWorker';
+import { render } from 'react-dom';
+import { Provider } from 'react-redux';
 
-ReactDOM.render(
-  <App />,
-  document.getElementById('root') as HTMLElement
+import Home from './pages/home';
+import store from './store';
+
+const styles: React.CSSProperties = {
+  fontFamily: 'sans-serif',
+  textAlign: 'center',
+};
+
+const Root = () => (
+  <div style={styles}>
+    <Provider store={store}>
+      <Home />
+    </Provider>
+  </div>
 );
-registerServiceWorker();
+
+render(<Root />, document.getElementById('root'));
