@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Route, Switch } from 'react-router-dom'
+import { Route, BrowserRouter, Switch } from 'react-router-dom'
 
 import Root from './components/layout/Root'
 import Header from './components/layout/Header'
@@ -17,15 +17,17 @@ import TeamsPage from './pages/teams'
 // code-splittable.
 
 const Routes: React.SFC = () => (
-  <Root>
-    <Header title="Example App" />
-    <Switch>
-      <Route exact path="/" component={IndexPage} />
-      <Route path="/heroes" component={HeroesPage} />
-      <Route path="/teams" component={TeamsPage} />
-      <Route component={() => <div>Not Found</div>} />
-    </Switch>
-  </Root>
+  <BrowserRouter>
+    <Root>
+      <Header title="Example App" />
+      <Switch>
+        <Route exact path="/" component={IndexPage} />
+        <Route path="/heroes" component={HeroesPage} />
+        <Route path="/teams" component={TeamsPage} />
+        <Route component={() => <div>Not Found</div>} />
+      </Switch>
+    </Root>
+  </BrowserRouter>
 )
 
 export default Routes
