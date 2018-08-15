@@ -2,42 +2,22 @@
   "name": "xmu-ess-app",
   "version": "0.1.0",
   "private": true,
-  "main": "src/index.tsx",
   "scripts": {
-    "reinstall": "rm -rf ./node_modules && yarn install",
-    "lint": "tslint -p ./",
-    "tsc": "tsc -p ./ --noEmit",
-    "tsc:watch": "tsc -p ./ --noEmit -w",
     "start": "react-scripts-ts start",
     "build": "react-scripts-ts build",
     "test": "react-scripts-ts test --env=jsdom",
     "eject": "react-scripts-ts eject"
   },
   "dependencies": {
-    "@types/jest": "22.2.3",
-    "@types/react": "16.3.14",
-    "@types/react-dom": "16.0.5",
-    "@types/react-redux": "5",
-    "@types/react-router-dom": "4.2.6",
-    "@types/react-router-redux": "5.0.14",
-    "cuid": "2.1.1",
-    "jest": "22.4.3",
-    "react": "16.3.2",
-    "react-dom": "16.3.2",
-    "react-redux": "5.0.7",
-    "react-router-dom": "4.2.2",
-    "react-router-redux": "5.0.0-alpha.9",
-    "react-scripts-ts": "2.16.0",
-    "redux": "4.0.0",
-    "redux-observable": "1.0.0-alpha.2",
-    "reselect": "3.0.1",
-    "rxjs": "6.1.0",
-    "rxjs-compat": "6.1.0",
-    "tslib": "1.9.1",
-    "tslint": "5.10.0",
-    "tslint-react": "3.6.0",
-    "typesafe-actions": "2.0.2",
-    "typescript": "2.8.3"
+    "react": "^16.4.2",
+    "react-dom": "^16.4.2",
+    "react-scripts-ts": "2.17.0"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "@types/jest": "^23.3.1",
+    "@types/node": "^10.5.7",
+    "@types/react": "^16.4.9",
+    "@types/react-dom": "^16.0.7",
+    "typescript": "^3.0.1"
+  }
 }
