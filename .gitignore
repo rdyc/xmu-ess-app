@@ -69,3 +69,4 @@ typings/
 /obj/Debug
 /.vscode
 /out
+package-lock.json
