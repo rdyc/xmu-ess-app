@@ -12,6 +12,9 @@ import { History } from 'history'
 // Import the state interface and our combined reducers/sagas.
 import { ApplicationState, rootReducer, rootSaga } from './store'
 
+import userManager from './utils/userManager';
+import { loadUser } from 'redux-oidc';
+
 export default function configureStore(
   history: History,
   initialState: ApplicationState
@@ -21,6 +24,10 @@ export default function configureStore(
   // create the redux-saga middleware
   const sagaMiddleware = createSagaMiddleware()
 
+  userManager.events.addSilentRenewError((error) => {
+    console.error('error while renewing the access token', error);
+  })
+
   // We'll create our store with the combined reducers/sagas, and the initial Redux state that
   // we'll be passing from our entry point.
   const store = createStore(
@@ -28,6 +35,9 @@ export default function configureStore(
     initialState,
     composeEnhancers(applyMiddleware(routerMiddleware(history), sagaMiddleware))
   )
+
+  // oidc
+  loadUser(store, userManager)
 
   // Don't forget to run the root saga, and return the store object.
   sagaMiddleware.run(rootSaga)

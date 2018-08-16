@@ -9,9 +9,11 @@ import { HeroesState } from './heroes/types'
 import teamsSaga from './teams/sagas'
 import { TeamsState } from './teams/types'
 import { teamsReducer } from './teams/reducer'
+import { reducer as oidcReducer, UserState } from 'redux-oidc'
 
 // The top-level state object
 export interface ApplicationState {
+  oidc: UserState,
   layout: LayoutState
   heroes: HeroesState
   teams: TeamsState
@@ -26,6 +28,7 @@ export interface ConnectedReduxProps<A extends Action = AnyAction> {
 // using the reducer with the matching name. It's important that the names match exactly, and that
 // the reducer acts on the corresponding ApplicationState property type.
 export const rootReducer = combineReducers<ApplicationState>({
+  oidc: oidcReducer,
   layout: layoutReducer,
   heroes: heroesReducer,
   teams: teamsReducer

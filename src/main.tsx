@@ -9,6 +9,8 @@ import Routes from './routes'
 import { ApplicationState } from './store'
 import { ThemeColors } from './store/layout'
 import * as themes from './styles/theme'
+import { OidcProvider } from 'redux-oidc';
+import userManager from './utils/userManager';
 
 // Separate props from state and props from dispatch to their own interfaces.
 interface PropsFromState {
@@ -34,11 +36,13 @@ class Main extends React.Component<AllProps> {
 
     return (
       <Provider store={store}>
-        <ConnectedRouter history={history}>
-          <ThemeProvider theme={themes[theme]}>
-            <Routes />
-          </ThemeProvider>
-        </ConnectedRouter>
+        <OidcProvider store={store} userManager={userManager}>
+          <ConnectedRouter history={history}>
+            <ThemeProvider theme={themes[theme]}>
+              <Routes />
+            </ThemeProvider>
+          </ConnectedRouter>
+        </OidcProvider>
       </Provider>
     )
   }

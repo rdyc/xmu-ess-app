@@ -1,14 +1,14 @@
 import { all, call, fork, put, takeEvery, takeLatest } from 'redux-saga/effects'
 import { TeamsActionTypes } from './types'
 import { fetchError, fetchSuccess, selectTeam, teamSelected } from './actions'
-import callApi from '../../utils/callApi'
+import Api from '../../utils/api'
 
-const API_ENDPOINT = process.env.REACT_APP_API_ENDPOINT || ''
+const API_ENDPOINT = process.env.REACT_APP_API_URL || ''
 
 function* handleFetch() {
   try {
     // To call async functions, use redux-saga's `call()`.
-    const res = yield call(callApi, 'get', API_ENDPOINT, '/teams')
+    const res = yield call(Api, 'get', API_ENDPOINT, '/v1/version/63727970746969')
 
     if (res.error) {
       yield put(fetchError(res.error))
@@ -26,8 +26,8 @@ function* handleFetch() {
 
 function* handleSelect(action: ReturnType<typeof selectTeam>) {
   try {
-    const detail = yield call(callApi, 'get', API_ENDPOINT, `/teams/${action.payload}`)
-    const players = yield call(callApi, 'get', API_ENDPOINT, `/teams/${action.payload}/players`)
+    const detail = yield call(Api, 'get', API_ENDPOINT, `/teams/${action.payload}`)
+    const players = yield call(Api, 'get', API_ENDPOINT, `/teams/${action.payload}/players`)
 
     if (detail.error || players.error) {
       yield put(fetchError(detail.error || players.error))
