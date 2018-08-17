@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Route, BrowserRouter, Switch } from 'react-router-dom'
+import { Route, BrowserRouter, Switch, Redirect, RouteProps } from 'react-router-dom'
 
 import Root from './components/layout/Root'
 import Header from './components/layout/Header'
@@ -8,6 +8,28 @@ import IndexPage from './pages/index'
 import WelcomePage from './pages/welcome'
 import HeroesPage from './pages/heroes'
 import TeamsPage from './pages/teams'
+import userManager from './utils/userManager';
+
+const fakeAuth = {
+  isAuthenticated: false
+}
+
+const PrivateRoute: React.SFC<RouteProps> = ({ component, ...rest }) => (
+  <Route {...rest} render={props => {
+    userManager.getUser().then(user => {
+      fakeAuth.isAuthenticated = !user || user.expired ? false : true
+    })
+
+    return ( 
+      fakeAuth.isAuthenticated ? 
+        React.createElement(component! as React.SFC<any>, props) : 
+        (<Redirect to={{
+          pathname: '/',
+          state: { from: props.location }
+        }}/>)
+    )
+  }}/>
+)
 
 const Routes: React.SFC = () => (
   <BrowserRouter>
@@ -15,10 +37,10 @@ const Routes: React.SFC = () => (
       <Header title="Example App" />
       <Switch>
         <Route exact path="/" component={IndexPage} />
-        <Route path="/home" component={WelcomePage} />
-        <Route path="/heroes" component={HeroesPage} />
-        <Route path="/teams" component={TeamsPage} />
         <Route path="/callback" component={CallbackPage} />
+        <Route path="/home" component={WelcomePage} />
+        <PrivateRoute path="/heroes" component={HeroesPage} />
+        <PrivateRoute path="/teams" component={TeamsPage} />
         <Route component={() => <div>Not Found</div>} />
       </Switch>
     </Root>

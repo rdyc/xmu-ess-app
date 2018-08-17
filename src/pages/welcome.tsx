@@ -7,6 +7,7 @@ import { ApplicationState, ConnectedReduxProps } from '../store';
 import { User } from 'oidc-client';
 import { RouteComponentProps } from 'react-router';
 import { connect } from 'react-redux';
+import { push } from 'connected-react-router';
 
 const PageContent = styled('article')`
   max-width: ${props => props.theme.widths.md};
@@ -26,15 +27,6 @@ const PageContent = styled('article')`
     line-height: 1.25;
   }
 `
-const onLogin = (event: any) => {
-  event.preventDefault();
-  userManager.signinRedirect();
-}
-
-const onLogout = (event: any) => {
-  event.preventDefault();
-  userManager.removeUser();
-}
 
 interface PropsFromState {
   user?: User
@@ -43,6 +35,12 @@ interface PropsFromState {
 type AllProps = PropsFromState & RouteComponentProps<{}> & ConnectedReduxProps
 
 class WelcomePage extends React.Component<AllProps> {
+  public onLogout = (event: any) => {
+    event.preventDefault()
+    userManager.removeUser()
+    this.props.dispatch(push('/'))
+  }
+
   public render(){
     const { user } = this.props
 
@@ -74,7 +72,7 @@ class WelcomePage extends React.Component<AllProps> {
             <p>
               Enjoy your stay!
             </p>
-            {!user ? (<button onClick={onLogin}>Login with OAuth</button>) : (<button onClick={onLogout}>Logout</button>)}
+            <button onClick={this.onLogout}>Logout</button>
           </PageContent>
         </Container>
       </Page>
