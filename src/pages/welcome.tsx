@@ -42,7 +42,7 @@ interface PropsFromState {
 
 type AllProps = PropsFromState & RouteComponentProps<{}> & ConnectedReduxProps
 
-class IndexPage extends React.Component<AllProps> {
+class WelcomePage extends React.Component<AllProps> {
   public render(){
     const { user } = this.props
 
@@ -86,4 +86,4 @@ const mapStateToProps = ({ oidc }: ApplicationState) => ({
   user: oidc.user
 })
 
-export default connect(mapStateToProps)(IndexPage)
+export default connect(mapStateToProps)(WelcomePage)
