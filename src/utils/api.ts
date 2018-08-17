@@ -1,15 +1,12 @@
-import configureStore from "../configureStore";
-import { createHashHistory } from "history";
+import userManager from "./userManager";
 
-export default function Api(
+export default async function Api(
   method: string,
   url: string,
   path: string,
   data?: any
 ) {
-  const history = createHashHistory()
-  const initialState = window.initialReduxState
-  const user = configureStore(history, initialState).getState().oidc.user
+  const _user = await userManager.getUser()
 
   const headers = new Headers();
 
@@ -17,8 +14,8 @@ export default function Api(
   headers.append('Content-Type',  'application/json')
 
   // add acces token
-  if(user !== undefined)
-    headers.append('Authorization',  `Bearer ${user.access_token}`)
+  if(_user !== undefined)
+    headers.append('Authorization',  `Bearer ${_user.access_token}`)
 
   return fetch(url + path, {
     method,
