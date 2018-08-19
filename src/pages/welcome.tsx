@@ -1,13 +1,13 @@
-import * as React from 'react'
-import Page from '../components/layout/Page'
-import Container from '../components/layout/Container'
-import styled from '../utils/styled'
+import * as React from 'react';
+import Page from '../components/layout/Page';
+import Container from '../components/layout/Container';
+import styled from '../utils/styled';
 import userManager from '../utils/userManager';
 import { ApplicationState, ConnectedReduxProps } from '../store';
 import { User } from 'oidc-client';
 import { RouteComponentProps } from 'react-router';
 import { connect } from 'react-redux';
-import { push } from 'connected-react-router';
+// import { push } from 'connected-react-router';
 
 const PageContent = styled('article')`
   max-width: ${props => props.theme.widths.md};
@@ -26,23 +26,24 @@ const PageContent = styled('article')`
     font-family: ${props => props.theme.fonts.headings};
     line-height: 1.25;
   }
-`
+`;
 
 interface PropsFromState {
-  user?: User
+  user?: User;
 }
 
-type AllProps = PropsFromState & RouteComponentProps<{}> & ConnectedReduxProps
+type AllProps = PropsFromState & RouteComponentProps<{}> & ConnectedReduxProps;
 
 class WelcomePage extends React.Component<AllProps> {
   public onLogout = (event: any) => {
-    event.preventDefault()
-    userManager.removeUser()
-    this.props.dispatch(push('/'))
+    event.preventDefault();
+    userManager.signoutRedirect();
+    userManager.removeUser();
+    // this.props.dispatch(push('/'))
   }
 
-  public render(){
-    const { user } = this.props
+  public render() {
+    const { user } = this.props;
 
     return (
       <Page>
@@ -76,12 +77,12 @@ class WelcomePage extends React.Component<AllProps> {
           </PageContent>
         </Container>
       </Page>
-    )
+    );
   }
 }
 
 const mapStateToProps = ({ oidc }: ApplicationState) => ({
   user: oidc.user
-})
+});
 
-export default connect(mapStateToProps)(WelcomePage)
+export default connect(mapStateToProps)(WelcomePage);

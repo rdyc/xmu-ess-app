@@ -7,15 +7,10 @@ export type ApiResponse = Record<string, any>
 // Response object for GET /heroes
 // https://docs.opendota.com/#tag/heroes%2Fpaths%2F~1heroes%2Fget
 export interface Hero extends ApiResponse {
-  id: number
+  uid: string
   name: string
-  localized_name: string
-  primary_attr: string
-  attack_type: string
-  roles: string[]
-  img: string
-  icon: string
-  legs: number
+  description: string
+  customer: any
 }
 
 // Use `const enum`s for better autocompletion of action type names. These will

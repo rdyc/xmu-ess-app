@@ -1,62 +1,68 @@
-import * as React from 'react'
-import Page from '../components/layout/Page'
-import Container from '../components/layout/Container'
-import styled from '../utils/styled'
-import userManager from '../utils/userManager';
+import * as React from 'react';
+import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Typography from '@material-ui/core/Typography';
+import withStyles, { WithStyles, StyleRulesCallback } from '@material-ui/core/styles/withStyles';
+import withRoot from '../withRoot';
 
-const PageContent = styled('article')`
-  max-width: ${props => props.theme.widths.md};
-  margin: 0 auto;
-  line-height: 1.6;
+const styles: StyleRulesCallback<'root'> = theme => ({
+  root: {
+    textAlign: 'center',
+    paddingTop: theme.spacing.unit * 20,
+  },
+});
 
-  a {
-    color: ${props => props.theme.colors.brand};
-  }
-
-  h1,
-  h2,
-  h3,
-  h4 {
-    margin-bottom: 0.5rem;
-    font-family: ${props => props.theme.fonts.headings};
-    line-height: 1.25;
-  }
-`
-const onLogin = (event: any) => {
-  event.preventDefault();
-  userManager.signinRedirect();
+interface State {
+  open: boolean;
 }
 
-export default () => (
-  <Page>
-    <Container>
-      <PageContent>
-        <h1>Welcome!</h1>
-        <button onClick={onLogin}>Login with OAuth</button>
-        <p>
-          Welcome to the Redux 4 + TypeScript 2.9 example! This example site shows you the ideal
-          project structure, recommended libraries, as well as design pattern on writing type-safe
-          React + Redux app with TypeScript.
-        </p>
-        <p>
-          This project is intended as a supplement to{' '}
-          <a
-            href="https://resir014.xyz/posts/2018/07/06/redux-4-plus-typescript/"
-            target="blank"
-            rel="noopener noreferrer"
-          >
-            this post
-          </a>. To demonstrate it, I created a website which pulls data from the{' '}
-          <a href="https://docs.opendota.com" target="blank" rel="noopener noreferrer">
-            OpenDota API
-          </a>, and display information like professional teams, heroes, as well as top players by
-          hero. This will also demonstrate how to structure your stores for each feature/module in a
-          Redux-enabled app.
-        </p>
-        <p>
-          Enjoy your stay!
-        </p>
-      </PageContent>
-    </Container>
-  </Page>
-)
+class Index extends React.Component<WithStyles<'root'>, State> {
+  public state = {
+    open: false,
+  };
+
+  public handleClose = () => {
+    this.setState({
+      open: false,
+    });
+  };
+
+  public handleClick = () => {
+    this.setState({
+      open: true,
+    });
+  };
+
+  public render() {
+    return (
+      <div className={this.props.classes.root}>
+        <Dialog open={this.state.open} onClose={this.handleClose}>
+          <DialogTitle>Super Secret Password</DialogTitle>
+          <DialogContent>
+            <DialogContentText>1-2-3-4-5</DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button color="primary" onClick={this.handleClose}>
+              OK
+            </Button>
+          </DialogActions>
+        </Dialog>
+        <Typography variant="display1" gutterBottom>
+          Material-UI
+        </Typography>
+        <Typography variant="subheading" gutterBottom>
+          example project
+        </Typography>
+        <Button variant="raised" color="secondary" onClick={this.handleClick}>
+          Super Secret Password
+        </Button>
+      </div>
+    );
+  }
+}
+
+export default withRoot(withStyles(styles)(Index));

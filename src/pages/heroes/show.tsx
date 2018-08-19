@@ -171,7 +171,7 @@ type AllProps = PropsFromState &
   RouteComponentProps<RouteParams> &
   ConnectedReduxProps
 
-const API_ENDPOINT = process.env.REACT_APP_API_ENDPOINT || ''
+const API_ENDPOINT = process.env.REACT_APP_API_URL || ''
 
 class ShowHeroesPage extends React.Component<AllProps, State> {
   constructor(props: AllProps) {

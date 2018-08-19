@@ -1,26 +1,25 @@
-import * as React from 'react'
-import { connect } from 'react-redux'
-import { Dispatch } from 'redux'
-import { RouteComponentProps } from 'react-router'
-import styled, { Theme } from '../../utils/styled'
+import * as React from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { RouteComponentProps } from 'react-router';
+import styled, { Theme } from '../../utils/styled';
 
-import Page from '../../components/layout/Page'
-import Container from '../../components/layout/Container'
-import LoadingOverlay from '../../components/data/LoadingOverlay'
-import LoadingOverlayInner from '../../components/data/LoadingOverlayInner'
-import LoadingSpinner from '../../components/data/LoadingSpinner'
+import Page from '../../components/layout/Page';
+import Container from '../../components/layout/Container';
+import LoadingOverlay from '../../components/data/LoadingOverlay';
+import LoadingOverlayInner from '../../components/data/LoadingOverlayInner';
+import LoadingSpinner from '../../components/data/LoadingSpinner';
 
-import { ApplicationState, ConnectedReduxProps } from '../../store'
-import { TeamSelectedPayload } from '../../store/teams/types'
-import { selectTeam, clearSelected } from '../../store/teams/actions'
-import { darken, transparentize } from '../../../node_modules/polished'
-import { Themed } from '../../../node_modules/react-emotion'
-import DataTable from '../../components/layout/DataTable'
-
+import { ApplicationState, ConnectedReduxProps } from '../../store';
+import { TeamSelectedPayload } from '../../store/teams/types';
+import { selectTeam, clearSelected } from '../../store/teams/actions';
+import { darken, transparentize } from '../../../node_modules/polished';
+import { Themed } from '../../../node_modules/react-emotion';
+import DataTable from '../../components/layout/DataTable';
 
 const Wrapper = styled('div')`
   position: relative;
-`
+`;
 
 const TeamInfobox = styled('div')`
   position: relative;
@@ -28,7 +27,7 @@ const TeamInfobox = styled('div')`
   overflow: hidden;
   border-radius: 8px;
   color: ${props => darken(0.25, props.theme.colors.white)};
-`
+`;
 
 const TeamInfoboxInner = styled('div')`
   display: flex;
@@ -42,7 +41,7 @@ const TeamInfoboxInner = styled('div')`
   @media (min-width: ${props => props.theme.breakpoints.lg}) {
     flex-direction: row;
   }
-`
+`;
 
 const TeamLogo = styled('img')`
   display: block;
@@ -58,7 +57,7 @@ const TeamLogo = styled('img')`
   border-style: solid;
   border-color: rgba(0, 0, 0, 0.3);
   border-image: initial;
-`
+`;
 
 const TeamInfoboxHeading = styled('div')`
   flex: 1 1 100%;
@@ -69,13 +68,13 @@ const TeamInfoboxHeading = styled('div')`
     margin: 0 1.5rem;
     text-align: left;
   }
-`
+`;
 
 const TeamName = styled('h1')`
   margin: 0;
   color: ${props => props.theme.colors.white};
   font-weight: 500;
-`
+`;
 
 const TeamStats = styled('div')`
   display: block;
@@ -89,11 +88,11 @@ const TeamStats = styled('div')`
     margin: 0;
     flex: 1 0 340px;
   }
-`
+`;
 
 const TeamStatsInner = styled('div')`
   display: flex;
-`
+`;
 
 const StatItem = styled('div')`
   display: flex;
@@ -102,16 +101,16 @@ const StatItem = styled('div')`
   flex: 1 1 0;
   padding: 0 1rem;
   font-size: 0.8rem;
-`
+`;
 
 const StatHeading = styled('h4')`
   margin: 0;
   margin-bottom: 0.2rem;
   font-size: 1rem;
-`
+`;
 
 interface StatNumberProps {
-  attr?: 'win' | 'loss'
+  attr?: 'win' | 'loss';
 }
 
 const StatNumber = styled('p')`
@@ -123,7 +122,7 @@ const StatNumber = styled('p')`
         ? props.theme.colors.attrs.agi
         : props.theme.colors.attrs.str
       : undefined};
-`
+`;
 
 const TableWrapper = styled('div')`
   position: relative;
@@ -131,18 +130,18 @@ const TableWrapper = styled('div')`
   margin: 0 auto;
   margin-top: 3rem;
   min-height: 200px;
-`
+`;
 
 const PlayerDetail = styled('td')`
   display: flex;
   flex-direction: row;
   align-items: center;
-`
+`;
 
 const PlayerIcon = styled('img')`
   width: 32px;
   height: 32px;
-`
+`;
 
 const PlayerName = styled('div')`
   flex: 1 1 auto;
@@ -152,47 +151,47 @@ const PlayerName = styled('div')`
   a {
     color: ${props => props.theme.colors.brand};
   }
-`
+`;
 
 // Separate state props + dispatch props to their own interfaces.
 interface PropsFromState {
-  loading: boolean
-  selected?: TeamSelectedPayload
-  errors: string
+  loading: boolean;
+  selected?: TeamSelectedPayload;
+  errors: string;
 }
 
 interface PropsFromDispatch {
-  selectTeam: typeof selectTeam
-  clearSelected: typeof clearSelected
+  selectTeam: typeof selectTeam;
+  clearSelected: typeof clearSelected;
 }
 
 interface RouteParams {
-  id: number
+  id: number;
 }
 
 // Combine both state + dispatch props - as well as any props we want to pass - in a union type.
 type AllProps = PropsFromState &
   PropsFromDispatch &
   RouteComponentProps<RouteParams> &
-  ConnectedReduxProps
+  ConnectedReduxProps;
 
 const formatPlayerIcon = (account_id: number) =>
-  `https://www.opendota.com/assets/images/dota2/players/${account_id}.png`
+  `https://www.opendota.com/assets/images/dota2/players/${account_id}.png`;
 
 class ShowTeamsPage extends React.Component<AllProps> {
   public componentDidMount() {
-    const { match } = this.props
+    const { match } = this.props;
 
-    this.props.selectTeam(match.params.id)
+    this.props.selectTeam(match.params.id);
   }
 
   public componentWillUnmount() {
     // clear selected team state before leaving the page
-    this.props.clearSelected()
+    this.props.clearSelected();
   }
 
   public render() {
-    const { selected, loading } = this.props
+    const { selected, loading } = this.props;
 
     return (
       <Page>
@@ -262,7 +261,7 @@ class ShowTeamsPage extends React.Component<AllProps> {
           </Wrapper>
         </Container>
       </Page>
-    )
+    );
   }
 }
 
@@ -273,18 +272,18 @@ const mapStateToProps = ({ teams }: ApplicationState) => ({
   loading: teams.loading,
   errors: teams.errors,
   selected: teams.selected
-})
+});
 
 // mapDispatchToProps is especially useful for constraining our actions to the connected component.
 // You can access these via `this.props`.
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   selectTeam: (team_id: number) => dispatch(selectTeam(team_id)),
   clearSelected: () => dispatch(clearSelected())
-})
+});
 
 // Now let's connect our component!
 // With redux v4's improved typings, we can finally omit generics here.
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(ShowTeamsPage)
+)(ShowTeamsPage);
