@@ -17,6 +17,8 @@
     "emotion": "^9.2.6",
     "emotion-theming": "^9.2.6",
     "history": "^4.7.2",
+    "jss": "^9.8.7",
+    "jss-preset-default": "^4.5.0",
     "moment": "^2.22.2",
     "oidc-client": "^1.5.2",
     "polished": "^1.9.3",

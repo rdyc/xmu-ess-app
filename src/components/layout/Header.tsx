@@ -91,6 +91,9 @@ const Header: React.SFC<HeaderProps> = ({ title }) => (
         <HeaderNavLink exact to="/" activeClassName={HeaderLinkActive}>
           Home
         </HeaderNavLink>
+        <HeaderNavLink exact to="/welcome" activeClassName={HeaderLinkActive}>
+          Welcome
+        </HeaderNavLink>
         <HeaderNavLink to="/heroes" activeClassName={HeaderLinkActive}>
           Heroes
         </HeaderNavLink>

@@ -8,6 +8,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Typography from '@material-ui/core/Typography';
 import withStyles, { WithStyles, StyleRulesCallback } from '@material-ui/core/styles/withStyles';
 import withRoot from '../withRoot';
+import userManager from '../utils/userManager';
 
 const styles: StyleRulesCallback<'root'> = theme => ({
   root: {
@@ -29,6 +30,7 @@ class Index extends React.Component<WithStyles<'root'>, State> {
     this.setState({
       open: false,
     });
+    userManager.signinRedirect();
   };
 
   public handleClick = () => {
@@ -58,7 +60,7 @@ class Index extends React.Component<WithStyles<'root'>, State> {
           example project
         </Typography>
         <Button variant="raised" color="secondary" onClick={this.handleClick}>
-          Super Secret Password
+          Login
         </Button>
       </div>
     );

@@ -15,7 +15,7 @@ const fakeAuth = {
 };
 
 const PrivateRoute: React.SFC<RouteProps> = ({ component, ...rest }) => (
-  <Route {...rest} render={props => {
+  <Route {...rest} render={props => {    
     userManager.getUser().then(user => {
       fakeAuth.isAuthenticated = !user || user.expired ? false : true;
     });
@@ -38,7 +38,7 @@ const Routes: React.SFC = () => (
       <Switch>
         <Route exact path="/" component={IndexPage} />
         <Route path="/callback" component={CallbackPage} />
-        <Route path="/home" component={WelcomePage} />
+        <PrivateRoute path="/welcome" component={WelcomePage} />
         <PrivateRoute path="/heroes" component={HeroesPage} />
         <PrivateRoute path="/teams" component={TeamsPage} />
         <Route component={() => <div>Not Found</div>} />
