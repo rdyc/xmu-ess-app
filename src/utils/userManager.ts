@@ -1,12 +1,16 @@
 import { createUserManager } from 'redux-oidc';
 
+const location = window.location;
+
+const selfHost = `${location.protocol}//${location.hostname}${location.port ? `:${location.port}` : ''}`;
+
 const userManagerConfig = {
   client_id: process.env.REACT_APP_CLIENT_ID || '',
   authority: process.env.REACT_APP_OAUTH_URL || '',
-  response_type: 'token id_token',
-  redirect_uri: `${window.location.protocol}//${window.location.hostname}${window.location.port ? `:${window.location.port}` : ''}/callback`,
   scope: process.env.REACT_APP_OAUTH_SCOPES,
-  silent_redirect_uri: `${window.location.protocol}//${window.location.hostname}${window.location.port ? `:${window.location.port}` : ''}/silent_renew.html`,
+  response_type: 'token id_token',
+  redirect_uri: `${selfHost}/callback`,
+  silent_redirect_uri: `${selfHost}/silent_renew.html`,
   automaticSilentRenew: true,
   filterProtocolClaims: true,
   loadUserInfo: true,

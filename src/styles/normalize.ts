@@ -1,4 +1,4 @@
-import { css } from 'react-emotion'
+import { css } from 'react-emotion';
 
 export default css`
   /*! modern-normalize | MIT License | https://github.com/sindresorhus/modern-normalize */
@@ -53,8 +53,9 @@ export default css`
   */
 
   body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-      'Segoe UI Symbol';
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 
+      Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+    'Segoe UI Symbol';
   }
 
   /**
@@ -284,4 +285,4 @@ export default css`
   summary {
     display: list-item;
   }
-`
+`;

@@ -1,16 +1,16 @@
-import { Store, createStore, applyMiddleware } from 'redux'
-import createSagaMiddleware from 'redux-saga'
+import { Store, createStore, applyMiddleware } from 'redux';
+import createSagaMiddleware from 'redux-saga';
 // `react-router-redux` is deprecated, so we use `connected-react-router`.
 // This provides a Redux middleware which connects to our `react-router` instance.
-import { connectRouter, routerMiddleware } from 'connected-react-router'
+import { connectRouter, routerMiddleware } from 'connected-react-router';
 // We'll be using Redux Devtools. We can use the `composeWithDevTools()`
 // directive so we can pass our middleware along with it
-import { composeWithDevTools } from 'redux-devtools-extension'
+import { composeWithDevTools } from 'redux-devtools-extension';
 // If you use react-router, don't forget to pass in your history type.
-import { History } from 'history'
+import { History } from 'history';
 
 // Import the state interface and our combined reducers/sagas.
-import { ApplicationState, rootReducer, rootSaga } from './store'
+import { ApplicationState, rootReducer, rootSaga } from './store';
 
 import userManager from './utils/userManager';
 import { loadUser } from 'redux-oidc';
@@ -20,13 +20,13 @@ export default function configureStore(
   initialState: ApplicationState
 ): Store<ApplicationState> {
   // create the composing function for our middlewares
-  const composeEnhancers = composeWithDevTools({})
+  const composeEnhancers = composeWithDevTools({});
   // create the redux-saga middleware
-  const sagaMiddleware = createSagaMiddleware()
+  const sagaMiddleware = createSagaMiddleware();
 
   userManager.events.addSilentRenewError((error) => {
     console.error('error while renewing the access token', error);
-  })
+  });
 
   // We'll create our store with the combined reducers/sagas, and the initial Redux state that
   // we'll be passing from our entry point.
@@ -34,12 +34,12 @@ export default function configureStore(
     connectRouter(history)(rootReducer),
     initialState,
     composeEnhancers(applyMiddleware(routerMiddleware(history), sagaMiddleware))
-  )
+  );
 
   // oidc
-  loadUser(store, userManager)
+  loadUser(store, userManager);
 
   // Don't forget to run the root saga, and return the store object.
-  sagaMiddleware.run(rootSaga)
-  return store
+  sagaMiddleware.run(rootSaga);
+  return store;
 }

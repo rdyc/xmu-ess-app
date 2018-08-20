@@ -1,4 +1,4 @@
-import { css } from 'react-emotion'
+import { css } from 'react-emotion';
 
 export default css`
   body {
@@ -36,4 +36,4 @@ export default css`
     font-size: 85%;
     border-collapse: collapse;
   }
-`
+`;

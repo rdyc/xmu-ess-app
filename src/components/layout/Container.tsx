@@ -1,4 +1,4 @@
-import styled from '../../utils/styled'
+import styled from '../../utils/styled';
 
 const Container = styled('div')`
   margin: 0 auto;
@@ -12,6 +12,6 @@ const Container = styled('div')`
   @media (min-width: ${props => props.theme.breakpoints.xl}) {
     max-width: ${props => props.theme.widths.xl};
   }
-`
+`;
 
-export default Container
+export default Container;

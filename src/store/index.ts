@@ -1,27 +1,27 @@
-import { combineReducers, Dispatch, Action, AnyAction } from 'redux'
-import { all, fork } from 'redux-saga/effects'
+import { combineReducers, Dispatch, Action, AnyAction } from 'redux';
+import { all, fork } from 'redux-saga/effects';
 
-import { LayoutState, layoutReducer } from './layout'
+import { LayoutState, layoutReducer } from './layout';
 
-import heroesSaga from './heroes/sagas'
-import { heroesReducer } from './heroes/reducer'
-import { HeroesState } from './heroes/types'
-import teamsSaga from './teams/sagas'
-import { TeamsState } from './teams/types'
-import { teamsReducer } from './teams/reducer'
-import { reducer as oidcReducer, UserState } from 'redux-oidc'
+import heroesSaga from './heroes/sagas';
+import { heroesReducer } from './heroes/reducer';
+import { HeroesState } from './heroes/types';
+import teamsSaga from './teams/sagas';
+import { TeamsState } from './teams/types';
+import { teamsReducer } from './teams/reducer';
+import { reducer as oidcReducer, UserState } from 'redux-oidc';
 
 // The top-level state object
 export interface ApplicationState {
-  oidc: UserState,
-  layout: LayoutState
-  heroes: HeroesState
-  teams: TeamsState
+  oidc: UserState;
+  layout: LayoutState;
+  heroes: HeroesState;
+  teams: TeamsState;
 }
 
 // Additional props for connected React components. This prop is passed by default with `connect()`
 export interface ConnectedReduxProps<A extends Action = AnyAction> {
-  dispatch: Dispatch<A>
+  dispatch: Dispatch<A>;
 }
 
 // Whenever an action is dispatched, Redux will update each top-level application state property
@@ -32,11 +32,11 @@ export const rootReducer = combineReducers<ApplicationState>({
   layout: layoutReducer,
   heroes: heroesReducer,
   teams: teamsReducer
-})
+});
 
 // Here we use `redux-saga` to trigger actions asynchronously. `redux-saga` uses something called a
 // "generator function", which you can read about here:
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function*
 export function* rootSaga() {
-  yield all([fork(heroesSaga), fork(teamsSaga)])
+  yield all([fork(heroesSaga), fork(teamsSaga)]);
 }

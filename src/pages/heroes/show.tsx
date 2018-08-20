@@ -1,24 +1,24 @@
-import * as React from 'react'
-import { connect } from 'react-redux'
-import { Dispatch } from 'redux'
-import { RouteComponentProps } from 'react-router'
+import * as React from 'react';
+import { connect } from 'react-redux';
+import { Dispatch } from 'redux';
+import { RouteComponentProps } from 'react-router';
 
-import Page from '../../components/layout/Page'
-import Container from '../../components/layout/Container'
+import Page from '../../components/layout/Page';
+import Container from '../../components/layout/Container';
 
-import { ApplicationState, ConnectedReduxProps } from '../../store'
-import { Hero } from '../../store/heroes/types'
-import { fetchRequest } from '../../store/heroes/actions'
-import styled, { Theme } from '../../utils/styled'
-import LoadingOverlay from '../../components/data/LoadingOverlay'
-import LoadingOverlayInner from '../../components/data/LoadingOverlayInner'
-import LoadingSpinner from '../../components/data/LoadingSpinner'
-import { darken } from 'polished'
-import { Themed } from 'react-emotion'
+import { ApplicationState, ConnectedReduxProps } from '../../store';
+import { Hero } from '../../store/heroes/types';
+import { fetchRequest } from '../../store/heroes/actions';
+import styled, { Theme } from '../../utils/styled';
+import LoadingOverlay from '../../components/data/LoadingOverlay';
+import LoadingOverlayInner from '../../components/data/LoadingOverlayInner';
+import LoadingSpinner from '../../components/data/LoadingSpinner';
+import { darken } from 'polished';
+import { Themed } from 'react-emotion';
 
 const Wrapper = styled('div')`
   position: relative;
-`
+`;
 
 const HeroInfobox = styled('div')`
   position: relative;
@@ -26,7 +26,7 @@ const HeroInfobox = styled('div')`
   overflow: hidden;
   border-radius: 8px;
   color: ${props => darken(0.25, props.theme.colors.white)};
-`
+`;
 
 const HeroInfoboxBlurBackground = styled('img')`
   position: absolute;
@@ -39,7 +39,7 @@ const HeroInfoboxBlurBackground = styled('img')`
   opacity: 0.35;
   background-repeat: no-repeat;
   z-index: 1;
-`
+`;
 
 const HeroInfoboxInner = styled('div')`
   display: flex;
@@ -53,7 +53,7 @@ const HeroInfoboxInner = styled('div')`
   @media (min-width: ${props => props.theme.breakpoints.lg}) {
     flex-direction: row;
   }
-`
+`;
 
 const HeroInfoboxImage = styled('img')`
   display: block;
@@ -67,7 +67,7 @@ const HeroInfoboxImage = styled('img')`
   border-style: solid;
   border-color: rgba(0, 0, 0, 0.3);
   border-image: initial;
-`
+`;
 
 const HeroInfoboxHeading = styled('div')`
   flex: 1 1 100%;
@@ -78,13 +78,13 @@ const HeroInfoboxHeading = styled('div')`
     margin: 0 1.5rem;
     text-align: left;
   }
-`
+`;
 
 const HeroName = styled('h1')`
   margin: 0;
   color: ${props => props.theme.colors.white};
   font-weight: 500;
-`
+`;
 
 const HeroDetails = styled('p')`
   margin: 0.5rem 0 0;
@@ -96,7 +96,7 @@ const HeroDetails = styled('p')`
   & span {
     color: ${props => darken(0.25, props.theme.colors.white)};
   }
-`
+`;
 
 const HeroStats = styled('div')`
   display: block;
@@ -110,15 +110,15 @@ const HeroStats = styled('div')`
     margin: 0;
     flex: 1 0 340px;
   }
-`
+`;
 
 const HeroStatsInner = styled('div')`
   display: flex;
-`
+`;
 
 interface StatAttributeProps {
-  attr: 'str' | 'agi' | 'int'
-  isPrimaryAttr?: boolean
+  attr: 'str' | 'agi' | 'int';
+  isPrimaryAttr?: boolean;
 }
 
 const StatAttribute = styled('div')`
@@ -129,10 +129,10 @@ const StatAttribute = styled('div')`
   font-size: 0.8rem;
   color: ${(props: Themed<StatAttributeProps, Theme>) =>
     props.isPrimaryAttr && props.theme.colors.attrs[props.attr]};
-`
+`;
 
 interface BulletProps {
-  attr: 'str' | 'agi' | 'int'
+  attr: 'str' | 'agi' | 'int';
 }
 
 const Bullet = styled('div')`
@@ -142,57 +142,56 @@ const Bullet = styled('div')`
   margin-right: 8px;
   border-radius: 50%;
   background-color: ${(props: Themed<BulletProps, Theme>) => props.theme.colors.attrs[props.attr]};
-`
-
+`;
 
 // Separate state props + dispatch props to their own interfaces.
 interface PropsFromState {
-  loading: boolean
-  data: Hero[]
-  errors: string
+  loading: boolean;
+  data: Hero[];
+  errors: string;
 }
 
 // We can use `typeof` here to map our dispatch types to the props, like so.
 interface PropsFromDispatch {
-  fetchRequest: typeof fetchRequest
+  fetchRequest: typeof fetchRequest;
 }
 
 interface RouteParams {
-  name: string
+  name: string;
 }
 
 interface State {
-  selected?: Hero
+  selected?: Hero;
 }
 
 // Combine both state + dispatch props - as well as any props we want to pass - in a union type.
 type AllProps = PropsFromState &
   PropsFromDispatch &
   RouteComponentProps<RouteParams> &
-  ConnectedReduxProps
+  ConnectedReduxProps;
 
-const API_ENDPOINT = process.env.REACT_APP_API_URL || ''
+const API_ENDPOINT = process.env.REACT_APP_API_URL || '';
 
 class ShowHeroesPage extends React.Component<AllProps, State> {
   constructor(props: AllProps) {
-    super(props)
+    super(props);
 
     this.state = {
       selected: undefined
-    }
+    };
   }
 
   public componentDidMount() {
-    const { data } = this.props
+    const { data } = this.props;
 
     if (!data || data.length === 0) {
-      this.props.fetchRequest()
+      this.props.fetchRequest();
     }
   }
 
   public render() {
-    const { data, loading, match } = this.props
-    const selected = data.find(hero => hero.name === match.params.name)
+    const { data, loading, match } = this.props;
+    const selected = data.find(hero => hero.name === match.params.name);
 
     return (
       <Page>
@@ -235,7 +234,7 @@ class ShowHeroesPage extends React.Component<AllProps, State> {
           </Wrapper>
         </Container>
       </Page>
-    )
+    );
   }
 }
 
@@ -246,17 +245,17 @@ const mapStateToProps = ({ heroes }: ApplicationState) => ({
   loading: heroes.loading,
   errors: heroes.errors,
   data: heroes.data
-})
+});
 
 // mapDispatchToProps is especially useful for constraining our actions to the connected component.
 // You can access these via `this.props`.
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   fetchRequest: () => dispatch(fetchRequest())
-})
+});
 
 // Now let's connect our component!
 // With redux v4's improved typings, we can finally omit generics here.
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(ShowHeroesPage)
+)(ShowHeroesPage);

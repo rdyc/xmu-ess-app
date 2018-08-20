@@ -2,15 +2,15 @@
 
 // This type is basically shorthand for `{ [key: string]: any }`. Feel free to replace `any` with
 // the expected return type of your API response.
-export type ApiResponse = Record<string, any>
+export type ApiResponse = Record<string, any>;
 
 // Response object for GET /heroes
 // https://docs.opendota.com/#tag/heroes%2Fpaths%2F~1heroes%2Fget
 export interface Hero extends ApiResponse {
-  uid: string
-  name: string
-  description: string
-  customer: any
+  uid: string;
+  name: string;
+  description: string;
+  customer: any;
 }
 
 // Use `const enum`s for better autocompletion of action type names. These will
@@ -30,7 +30,7 @@ export const enum HeroesActionTypes {
 // Declare state types with `readonly` modifier to get compile time immutability.
 // https://github.com/piotrwitek/react-redux-typescript-guide#state-with-type-level-immutability
 export interface HeroesState {
-  readonly loading: boolean
-  readonly data: Hero[]
-  readonly errors?: string
+  readonly loading: boolean;
+  readonly data: Hero[];
+  readonly errors?: string;
 }

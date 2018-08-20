@@ -175,8 +175,8 @@ type AllProps = PropsFromState &
   RouteComponentProps<RouteParams> &
   ConnectedReduxProps;
 
-const formatPlayerIcon = (account_id: number) =>
-  `https://www.opendota.com/assets/images/dota2/players/${account_id}.png`;
+const formatPlayerIcon = (accountId: number) =>
+  `https://www.opendota.com/assets/images/dota2/players/${accountId}.png`;
 
 class ShowTeamsPage extends React.Component<AllProps> {
   public componentDidMount() {
@@ -277,7 +277,7 @@ const mapStateToProps = ({ teams }: ApplicationState) => ({
 // mapDispatchToProps is especially useful for constraining our actions to the connected component.
 // You can access these via `this.props`.
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  selectTeam: (team_id: number) => dispatch(selectTeam(team_id)),
+  selectTeam: (teamId: number) => dispatch(selectTeam(teamId)),
   clearSelected: () => dispatch(clearSelected())
 });
 

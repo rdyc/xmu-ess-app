@@ -3,27 +3,27 @@
 // Response object for GET /teams
 // https://docs.opendota.com/#tag/teams%2Fpaths%2F~1teams%2Fget
 export interface Team {
-  team_id: number
-  rating: number
-  wins: number
-  losses: number
-  last_match_time: number
-  name: string
-  tag?: string
-  logo_url?: string
+  team_id: number;
+  rating: number;
+  wins: number;
+  losses: number;
+  last_match_time: number;
+  name: string;
+  tag?: string;
+  logo_url?: string;
 }
 
 export interface Player {
-  account_id: number
-  name: string
-  games_played: number
-  wins: number
-  is_current_team_member: boolean
+  account_id: number;
+  name: string;
+  games_played: number;
+  wins: number;
+  is_current_team_member: boolean;
 }
 
 export interface TeamSelectedPayload {
-  detail: Team
-  players: Player[]
+  detail: Team;
+  players: Player[];
 }
 
 // Use `const enum`s for better autocompletion of action type names. These will
@@ -44,8 +44,8 @@ export const enum TeamsActionTypes {
 // Declare state types with `readonly` modifier to get compile time immutability.
 // https://github.com/piotrwitek/react-redux-typescript-guide#state-with-type-level-immutability
 export interface TeamsState {
-  readonly loading: boolean
-  readonly data: Team[]
-  readonly selected?: TeamSelectedPayload
-  readonly errors?: string
+  readonly loading: boolean;
+  readonly data: Team[];
+  readonly selected?: TeamSelectedPayload;
+  readonly errors?: string;
 }
