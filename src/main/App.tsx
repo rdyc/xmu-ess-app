@@ -6,18 +6,13 @@ import userManager from './utils/userManager';
 import { AppState } from './store';
 import { Store } from 'redux';
 import { History } from 'history';
-import { ThemeAnchors, MenuDrawerOpen } from './store/layout';
 import { Router } from 'react-router';
 import LayoutHeader from './components/layoutHeader';
 import LayoutMenu from './components/layoutMenu';
+import { User } from 'oidc-client';
 
 interface PropsFromState {
-  anchor: ThemeAnchors;
-  menuDrawerOpen: MenuDrawerOpen;
-}
-
-interface PropsFromDispatch {
-  [key: string]: any;
+  user?: User;
 }
 
 interface OwnProps {
@@ -25,7 +20,7 @@ interface OwnProps {
   history: History;
 }
 
-type AllProps = PropsFromState & PropsFromDispatch & OwnProps;
+type AllProps = PropsFromState & OwnProps;
 
 class App extends React.Component<AllProps> {
 
@@ -49,9 +44,8 @@ class App extends React.Component<AllProps> {
   }
 }
 
-const mapStateToProps = ({ layout }: AppState) => ({
-  anchor: layout.anchor,
-  menuDrawerOpen: layout.menuDrawer
+const mapStateToProps = ({ oidc }: AppState) => ({
+  user: oidc.user
 });
 
-export default connect<PropsFromState, PropsFromDispatch, OwnProps, AppState>(mapStateToProps)(App);
+export default connect(mapStateToProps)(App);

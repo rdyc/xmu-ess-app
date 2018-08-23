@@ -8,7 +8,7 @@ const API_ENDPOINT = process.env.REACT_APP_API_URL || '';
 function* handleFetch() {
   try {
     // To call async functions, use redux-saga's `call()`.
-    const res = yield call(callApi, 'get', API_ENDPOINT, '/account/employee/my');
+    const res = yield call(callApi, 'get', API_ENDPOINT, '/v1/account/employees/my');
 
     if (res.error) {
       yield put(fetchError(res.error));

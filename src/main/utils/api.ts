@@ -13,7 +13,7 @@ export default async function Api(
   headers.append('Content-Type', 'application/json');
 
   // add acces token
-  if (user !== undefined) {
+  if (user !== null) {
     headers.append('Authorization',  `Bearer ${user.access_token}`);
   }
 

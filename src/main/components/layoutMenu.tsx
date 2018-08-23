@@ -11,14 +11,20 @@ import { Dispatch } from 'redux';
 import withRoot from '../withRoot';
 import { connect } from 'react-redux';
 import { push } from 'react-router-redux';
+import { fetchRequest } from '../store/user/actions';
+import { AppUser } from '../store/user/types';
 
 interface PropsFromState extends RouteComponentProps<void>, WithStyles<typeof styles> {
   anchor: ThemeAnchors;
   menuDrawerOpen: MenuDrawerOpen;
+  loading: boolean;
+  data: AppUser;
+  errors: string;
 }
 
 interface PropsFromDispatch {
   setMenuDrawer: typeof setMenuDrawer;
+  fetchRequest: typeof fetchRequest;
 }
 
 type AllProps = PropsFromState &
@@ -31,7 +37,7 @@ class LayoutMenu extends React.Component<AllProps> {
   };
 
   public componentDidMount() {
-    // this.props.fetchRequest();
+    this.props.fetchRequest();
   }
 
   public render() {
@@ -56,7 +62,6 @@ class LayoutMenu extends React.Component<AllProps> {
               <ListItemText primary="Todo" />
             </ListItem>
           </List>
-        <div style={{ height: 10000 }} />
       </div>
   );
   
@@ -94,13 +99,17 @@ class LayoutMenu extends React.Component<AllProps> {
   }
 }
 
-const mapStateToProps = ({ layout }: AppState) => ({
+const mapStateToProps = ({ layout, user }: AppState) => ({
   anchor: layout.anchor,
-  menuDrawerOpen: layout.menuDrawer
+  menuDrawerOpen: layout.menuDrawer,
+  userData: user.data,
+  userLoading: user.loading,
+  userErrors: user.errors,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  setMenuDrawer: (open: MenuDrawerOpen) => dispatch(setMenuDrawer(open))
+  setMenuDrawer: (open: MenuDrawerOpen) => dispatch(setMenuDrawer(open)),
+  fetchRequest: () => dispatch(fetchRequest())
 });
 
 export default (withRoot(withStyles(styles)<{}>(connect(mapStateToProps, mapDispatchToProps)(LayoutMenu))));
