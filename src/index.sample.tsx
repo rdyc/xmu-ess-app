@@ -1,16 +1,19 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import registerServiceWorker from './registerServiceWorker';
-import App from './main/App';
 import { createBrowserHistory } from 'history';
-import configureStore from './main/configureStore';
+
+import Main from './sample/main';
+import configureStore from './sample/configureStore';
+
+import './index.css';
+import registerServiceWorker from './registerServiceWorker';
 
 const history = createBrowserHistory();
 const initialState = window.initialReduxState;
 const store = configureStore(history, initialState);
 
 ReactDOM.render(
-  <App store={store} history={history} />,
+  <Main store={store} history={history} />,
   document.getElementById('root') as HTMLElement
 );
 
