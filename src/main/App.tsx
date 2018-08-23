@@ -6,10 +6,14 @@ import userManager from './utils/userManager';
 import { AppState } from './store';
 import { Store } from 'redux';
 import { History } from 'history';
-import { ThemeAnchors } from './store/layout';
+import { ThemeAnchors, MenuDrawerOpen } from './store/layout';
+import { Router } from 'react-router';
+import LayoutHeader from './components/layoutHeader';
+import LayoutMenu from './components/layoutMenu';
 
 interface PropsFromState {
   anchor: ThemeAnchors;
+  menuDrawerOpen: MenuDrawerOpen;
 }
 
 interface PropsFromDispatch {
@@ -24,6 +28,7 @@ interface OwnProps {
 type AllProps = PropsFromState & PropsFromDispatch & OwnProps;
 
 class App extends React.Component<AllProps> {
+
   public render() {   
     const { store, history } = this.props;
 
@@ -31,14 +36,12 @@ class App extends React.Component<AllProps> {
       <Provider store={store}>
         <OidcProvider store={store} userManager={userManager}>
           <ConnectedRouter history={history}>
-            <div className="App">
-              <header className="App-header">
-                <h1 className="App-title">Welcome to React</h1>
-              </header>
-              <p className="App-intro">
-                To get started, edit <code>src/App.tsx</code> and save to reload.
-              </p>
-            </div>
+            <Router history={history}>
+              <div>      
+                <LayoutHeader />
+                <LayoutMenu />
+              </div>             
+            </Router>
           </ConnectedRouter>
         </OidcProvider>
       </Provider>
@@ -47,8 +50,8 @@ class App extends React.Component<AllProps> {
 }
 
 const mapStateToProps = ({ layout }: AppState) => ({
-  anchor: layout.anchor
+  anchor: layout.anchor,
+  menuDrawerOpen: layout.menuDrawer
 });
 
-// tslint:disable-next-line:max-line-length
 export default connect<PropsFromState, PropsFromDispatch, OwnProps, AppState>(mapStateToProps)(App);

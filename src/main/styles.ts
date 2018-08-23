@@ -17,6 +17,14 @@ const styles = (theme: Theme) => createStyles({
     appBar: {
         zIndex: theme.zIndex.drawer + 1,
         position: 'absolute',
+        [theme.breakpoints.up('sm')]: {
+            marginLeft: 0,
+            width: `calc(100% - ${0}px)`,
+        },
+        [theme.breakpoints.up('md')]: {
+            marginLeft: drawerWidth,
+            width: `calc(100% - ${drawerWidth}px)`,
+        }
     },
     navIconHide: {
         [theme.breakpoints.up('md')]: {
