@@ -1,18 +1,17 @@
 // tslint:disable-next-line:max-line-length
 import { Hidden, Drawer, WithStyles, withStyles, Divider, List, ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
-import { ConnectedReduxProps, AppState } from '../store';
+import { ConnectedReduxProps, AppState } from '../../store';
 import HomeIcon from '@material-ui/icons/Home';
 import TodoIcon from '@material-ui/icons/FormatListNumbered';
-import { MenuDrawerOpen, ThemeAnchors, setMenuDrawer } from '../store/layout';
+import { MenuDrawerOpen, ThemeAnchors, setMenuDrawer } from '../../store/layout';
 import { RouteComponentProps } from 'react-router';
-import styles from '../styles';
+import styles from '../../styles';
 import * as React from 'react';
 import { Dispatch } from 'redux';
-import withRoot from '../withRoot';
+import withRoot from '../../withRoot';
 import { connect } from 'react-redux';
-import { push } from 'react-router-redux';
-import { fetchRequest } from '../store/user/actions';
-import { AppUser } from '../store/user/types';
+import { fetchRequest } from '../../store/user/actions';
+import { AppUser } from '../../store/user/types';
 
 interface PropsFromState extends RouteComponentProps<void>, WithStyles<typeof styles> {
   anchor: ThemeAnchors;
@@ -37,7 +36,7 @@ class LayoutMenu extends React.Component<AllProps> {
   };
 
   public componentDidMount() {
-    this.props.fetchRequest();
+    // this.props.fetchRequest();
   }
 
   public render() {
@@ -46,7 +45,7 @@ class LayoutMenu extends React.Component<AllProps> {
         <div className={this.props.classes.drawerHeader} />
           <Divider />
           <List>
-            <ListItem button onClick={() => push('/')}>
+            <ListItem button onClick={() => this.props.history.push('/')}>
               <ListItemIcon>
                 <HomeIcon />
               </ListItemIcon>
@@ -55,7 +54,7 @@ class LayoutMenu extends React.Component<AllProps> {
           </List>
           <Divider />
           <List>
-            <ListItem button onClick={() => push('/todo')}>
+            <ListItem button onClick={() => this.props.history.push('/todo')}>
               <ListItemIcon>
                 <TodoIcon />
               </ListItemIcon>
@@ -102,7 +101,7 @@ class LayoutMenu extends React.Component<AllProps> {
 const mapStateToProps = ({ layout, user }: AppState) => ({
   anchor: layout.anchor,
   menuDrawerOpen: layout.menuDrawer,
-  userData: user.data,
+  userData: user.response,
   userLoading: user.loading,
   userErrors: user.errors,
 });

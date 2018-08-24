@@ -1,6 +1,7 @@
 // Example for using discriminated union types.
 export type ThemeAnchors = 'left' | 'right';
 export type MenuDrawerOpen = true | false;
+export type Title = string;
 
 // Use const enums for better autocompletion of action type names. These will
 // be compiled away leaving only the final value in your compiled code.
@@ -10,7 +11,8 @@ export type MenuDrawerOpen = true | false;
 // of Redux's `@@INIT` action.
 export const enum LayoutActionTypes {
   SET_ANCHOR = '@@layout/SET_ANCHOR',
-  SET_MENU_DRAWER = '@@layout/SET_MENU_DRAWER'
+  SET_MENU_DRAWER = '@@layout/SET_MENU_DRAWER',
+  SET_TITLE = '@@layout/SET_TITLE'
 }
 
 // Declare state types with `readonly` modifier to get compile time immutability.
@@ -18,4 +20,5 @@ export const enum LayoutActionTypes {
 export interface LayoutState {
   readonly anchor: ThemeAnchors;
   readonly menuDrawer: MenuDrawerOpen;
+  readonly title: Title;
 }

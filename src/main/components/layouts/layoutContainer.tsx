@@ -1,12 +1,12 @@
 import { withStyles, WithStyles } from '@material-ui/core';
 import * as React from 'react';
-import withRoot from '../withRoot';
-import styles from '../styles';
+import withRoot from '../../withRoot';
+import styles from '../../styles';
 import { connect } from 'react-redux';
-import { AppState } from '../store';
+import { AppState } from '../../store';
 import { RouteComponentProps } from 'react-router';
-import { ThemeAnchors, MenuDrawerOpen, setMenuDrawer } from '../store/layout';
-import { ConnectedReduxProps } from '../store';
+import { ThemeAnchors, MenuDrawerOpen, setMenuDrawer } from '../../store/layout';
+import { ConnectedReduxProps } from '../../store';
 import LayoutHeader from './layoutHeader';
 import LayoutMenu from './layoutMenu';
 
@@ -26,9 +26,11 @@ type AllProps = PropsFromState &
 class LayoutContainer extends React.Component<AllProps> {
   public render() {
     return (
-      <div>      
+      <div className={this.props.classes.root}>
+        <div className={this.props.classes.appFrame}>    
           <LayoutHeader />
           <LayoutMenu />
+        </div>
       </div>
     );
   }

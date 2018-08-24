@@ -4,7 +4,8 @@ import { LayoutState, LayoutActionTypes } from './types';
 // Type-safe initialState!
 const initialState: LayoutState = {
   anchor: 'left',
-  menuDrawer: false
+  menuDrawer: false,
+  title: 'Home'
 };
 
 // Thanks to Redux 4's much simpler typings, we can take away a lot of typings on the reducer side,
@@ -16,6 +17,9 @@ const reducer: Reducer<LayoutState> = (state = initialState, action) => {
     }
     case LayoutActionTypes.SET_MENU_DRAWER: {
       return { ...state, menuDrawer: action.payload };
+    }
+    case LayoutActionTypes.SET_TITLE: {
+      return { ...state, title: action.payload };
     }
     default: {
       return state;
