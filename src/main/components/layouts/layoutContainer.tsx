@@ -5,7 +5,7 @@ import styles from '../../styles';
 import { connect } from 'react-redux';
 import { AppState } from '../../store';
 import { RouteComponentProps, withRouter } from 'react-router';
-import { ThemeAnchors, MenuDrawerOpen, setMenuDrawer } from '../../store/layout';
+import { ThemeAnchors, MenuDrawerOpen, setMenuDrawer } from '../../store/@layout';
 import { ConnectedReduxProps } from '../../store';
 import LayoutHeader from './layoutHeader';
 import LayoutMenu from './layoutMenu';

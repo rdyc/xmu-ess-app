@@ -7,27 +7,29 @@ import { AppState } from '../../store';
 import { RouteComponentProps } from 'react-router';
 import { Dispatch } from 'redux';
 import { ConnectedReduxProps } from '../../store';
-import { AppUserResponse, AppUserAccess } from '../../store/user/types';
-import { fetchRequest } from '../../store/user/actions';
+import { accountEmployeeFetchRequest } from '../../store/account/accountEmployeeActions';
 import userManager from '../../utils/userManager';
 import removeDuplicates from '../../utils/arrayHelper';
 import styles from '../../styles';
+import { SingleResponseType } from '../../store/@base/SingleResponseType';
+import { AccountEmployeeMyType } from '../../store/account/types/AccountEmployeeMyType';
+import { AccountEmployeeAccessType } from '../../store/account/types/AccountEmployeeAccessType';
 
 interface PropsFromState extends RouteComponentProps<void>, WithStyles<typeof styles> {
-  response: AppUserResponse;
+  response: SingleResponseType<AccountEmployeeMyType>;
   errors?: string;
   loading: boolean;
 }
 
 interface PropsFromDispatch {
-  fetchRequest: typeof fetchRequest;
+  fetchRequest: typeof accountEmployeeFetchRequest;
 }
 
 type AllProps = PropsFromState &
   PropsFromDispatch &
   ConnectedReduxProps;
 
-class GreetingPage extends React.Component<AllProps> {
+class AccessWizardPage extends React.Component<AllProps> {
   public componentDidMount() {
     this.props.fetchRequest();
   }
@@ -70,7 +72,7 @@ class GreetingPage extends React.Component<AllProps> {
     const { activeStep } = this.state;
 
     const getCompanyAccess = () => {
-      return removeDuplicates(response.data.access, 'companyUid') as AppUserAccess[];
+      return removeDuplicates(response.data.access, 'companyUid') as AccountEmployeeAccessType[];
     };
     
     const getAccessByCompany = () => {
@@ -264,7 +266,7 @@ class GreetingPage extends React.Component<AllProps> {
       <div className={this.props.classes.root}>
         <div className={this.props.classes.marginFar}>
           <Grid container spacing={16} justify="center">
-            <Grid item lg={4} xs={12}>
+            <Grid item lg={8} xs={12}>
               <Card>
                 <CardHeader 
                   title="Access Wizard"
@@ -374,14 +376,14 @@ class GreetingPage extends React.Component<AllProps> {
   }
 }
 
-const mapStateToProps = ({ user }: AppState) => ({
-  response: user.user,
-  errors: user.errors,
-  loading: user.loading
+const mapStateToProps = ({ account }: AppState) => ({
+  response: account.employee,
+  errors: account.errors,
+  loading: account.loading
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  fetchRequest: () => dispatch(fetchRequest())
+  fetchRequest: () => dispatch(accountEmployeeFetchRequest())
 });
 
-export default (withRoot(withStyles(styles)<{}>(connect(mapStateToProps, mapDispatchToProps)(GreetingPage))));
+export default (withRoot(withStyles(styles)<{}>(connect(mapStateToProps, mapDispatchToProps)(AccessWizardPage))));

@@ -9,7 +9,7 @@ import { History } from 'history';
 import { Router, Route, Switch } from 'react-router';
 import { User } from 'oidc-client';
 import callbackPage from './pages/system/callbackPage';
-import greetingPage from './pages/system/greetingPage';
+import greetingPage from './pages/system/accessWizardPage';
 import homePage from './pages/main/homePage';
 import LayoutContainer from './components/layouts/layoutContainer';
 

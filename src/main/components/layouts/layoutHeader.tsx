@@ -6,10 +6,10 @@ import styles from '../../styles';
 import { connect } from 'react-redux';
 import { AppState } from '../../store';
 import { RouteComponentProps } from 'react-router';
-import { ThemeAnchors, MenuDrawerOpen, setMenuDrawer, Title } from '../../store/layout';
+import { ThemeAnchors, MenuDrawerOpen, setMenuDrawer, Title } from '../../store/@layout';
 import { Dispatch } from 'redux';
 import { ConnectedReduxProps } from '../../store';
-import { fetchRequest } from '../../store/user/actions';
+import { accountEmployeeFetchRequest } from '../../store/account/accountEmployeeActions';
 import * as classNames from 'classnames';
 
 interface PropsFromState extends RouteComponentProps<void>, WithStyles<typeof styles> {
@@ -20,7 +20,7 @@ interface PropsFromState extends RouteComponentProps<void>, WithStyles<typeof st
 
 interface PropsFromDispatch {
   setMenuDrawer: typeof setMenuDrawer;
-  fetchRequest: typeof fetchRequest;
+  fetchRequest: typeof accountEmployeeFetchRequest;
 }
 
 type AllProps = PropsFromState &
@@ -57,7 +57,7 @@ class LayoutHeader extends React.Component<AllProps> {
   }
 }
 
-const mapStateToProps = ({ layout, user }: AppState) => ({
+const mapStateToProps = ({ layout, account }: AppState) => ({
     anchor: layout.anchor,
     menuDrawerOpen: layout.menuDrawer,
     title: layout.title
@@ -65,7 +65,7 @@ const mapStateToProps = ({ layout, user }: AppState) => ({
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   setMenuDrawer: (open: MenuDrawerOpen) => dispatch(setMenuDrawer(open)),
-  fetchRequest: () => dispatch(fetchRequest())
+  fetchRequest: () => dispatch(accountEmployeeFetchRequest())
 });
 
 export default (withRoot(withStyles(styles)<{}>(connect(mapStateToProps, mapDispatchToProps)(LayoutHeader))));

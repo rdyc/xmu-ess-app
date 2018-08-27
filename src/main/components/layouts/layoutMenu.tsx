@@ -3,28 +3,28 @@ import { Hidden, Drawer, WithStyles, withStyles, Divider, List, ListItem, ListIt
 import { ConnectedReduxProps, AppState } from '../../store';
 import HomeIcon from '@material-ui/icons/Home';
 import TodoIcon from '@material-ui/icons/FormatListNumbered';
-import { MenuDrawerOpen, ThemeAnchors, setMenuDrawer } from '../../store/layout';
+import { MenuDrawerOpen, ThemeAnchors, setMenuDrawer } from '../../store/@layout';
 import { RouteComponentProps } from 'react-router';
 import styles from '../../styles';
 import * as React from 'react';
 import { Dispatch } from 'redux';
 import withRoot from '../../withRoot';
 import { connect } from 'react-redux';
-import { fetchRequest } from '../../store/user/actions';
-import { AppUser } from '../../store/user/types';
+import { accountEmployeeFetchRequest } from '../../store/account/accountEmployeeActions';
 import * as classNames from 'classnames';
+import { AccountEmployeeMyType } from '../../store/account/types/AccountEmployeeMyType';
 
 interface PropsFromState extends RouteComponentProps<void>, WithStyles<typeof styles> {
   anchor: ThemeAnchors;
   menuDrawerOpen: MenuDrawerOpen;
   loading: boolean;
-  data: AppUser;
+  data: AccountEmployeeMyType;
   errors: string;
 }
 
 interface PropsFromDispatch {
   setMenuDrawer: typeof setMenuDrawer;
-  fetchRequest: typeof fetchRequest;
+  fetchRequest: typeof accountEmployeeFetchRequest;
 }
 
 type AllProps = PropsFromState &
@@ -100,17 +100,17 @@ class LayoutMenu extends React.Component<AllProps> {
   }
 }
 
-const mapStateToProps = ({ layout, user }: AppState) => ({
+const mapStateToProps = ({ layout, account }: AppState) => ({
   anchor: layout.anchor,
   menuDrawerOpen: layout.menuDrawer,
-  userData: user.user,
-  userLoading: user.loading,
-  userErrors: user.errors,
+  userData: account.employee,
+  userLoading: account.loading,
+  userErrors: account.errors,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   setMenuDrawer: (open: MenuDrawerOpen) => dispatch(setMenuDrawer(open)),
-  fetchRequest: () => dispatch(fetchRequest())
+  fetchRequest: () => dispatch(accountEmployeeFetchRequest())
 });
 
 export default (withRoot(withStyles(styles)<{}>(connect(mapStateToProps, mapDispatchToProps)(LayoutMenu))));
