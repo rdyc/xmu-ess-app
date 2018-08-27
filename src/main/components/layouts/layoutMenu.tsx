@@ -12,6 +12,7 @@ import withRoot from '../../withRoot';
 import { connect } from 'react-redux';
 import { fetchRequest } from '../../store/user/actions';
 import { AppUser } from '../../store/user/types';
+import * as classNames from 'classnames';
 
 interface PropsFromState extends RouteComponentProps<void>, WithStyles<typeof styles> {
   anchor: ThemeAnchors;
@@ -82,12 +83,13 @@ class LayoutMenu extends React.Component<AllProps> {
             {drawer}
           </Drawer>
         </Hidden>
-        <Hidden smDown implementation="css">
+        <Hidden mdDown implementation="css">
           <Drawer
             variant="permanent"
-            open
+            open={this.props.menuDrawerOpen}
             classes={{
-                paper: this.props.classes.drawerPaper,
+              paper: classNames(this.props.classes.drawerPaper, 
+                                this.props.menuDrawerOpen && this.props.classes.drawerPaperClose),
             }}
           >
             {drawer}
@@ -101,7 +103,7 @@ class LayoutMenu extends React.Component<AllProps> {
 const mapStateToProps = ({ layout, user }: AppState) => ({
   anchor: layout.anchor,
   menuDrawerOpen: layout.menuDrawer,
-  userData: user.response,
+  userData: user.user,
   userLoading: user.loading,
   userErrors: user.errors,
 });

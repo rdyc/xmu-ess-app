@@ -6,11 +6,12 @@ import userManager from './utils/userManager';
 import { AppState } from './store';
 import { Store } from 'redux';
 import { History } from 'history';
-import { Router, Route } from 'react-router';
-// import LayoutContainer from './components/layouts/layoutContainer';
+import { Router, Route, Switch } from 'react-router';
 import { User } from 'oidc-client';
 import callbackPage from './pages/system/callbackPage';
 import greetingPage from './pages/system/greetingPage';
+import homePage from './pages/main/homePage';
+import LayoutContainer from './components/layouts/layoutContainer';
 
 interface PropsFromState {
   user?: User;
@@ -47,7 +48,12 @@ class App extends React.Component<AllProps> {
                 )}
 
                 {user && (
-                  <Route exact path="/" component={greetingPage} />
+                  <Switch>
+                    <Route exact path="/" component={greetingPage} />
+                    <LayoutContainer>
+                      <Route path="/home" component={homePage} />
+                    </LayoutContainer>
+                  </Switch>
                 )}
               </div>
             </Router>

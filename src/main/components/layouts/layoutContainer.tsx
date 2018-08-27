@@ -4,7 +4,7 @@ import withRoot from '../../withRoot';
 import styles from '../../styles';
 import { connect } from 'react-redux';
 import { AppState } from '../../store';
-import { RouteComponentProps } from 'react-router';
+import { RouteComponentProps, withRouter } from 'react-router';
 import { ThemeAnchors, MenuDrawerOpen, setMenuDrawer } from '../../store/layout';
 import { ConnectedReduxProps } from '../../store';
 import LayoutHeader from './layoutHeader';
@@ -27,10 +27,11 @@ class LayoutContainer extends React.Component<AllProps> {
   public render() {
     return (
       <div className={this.props.classes.root}>
-        <div className={this.props.classes.appFrame}>    
           <LayoutHeader />
           <LayoutMenu />
-        </div>
+          <main className={this.props.classes.content}>
+            {this.props.children}
+          </main>
       </div>
     );
   }
@@ -40,4 +41,4 @@ const mapStateToProps = ({ layout }: AppState) => ({
     anchor: layout.anchor,
 });
 
-export default (withRoot(withStyles(styles)<{}>(connect(mapStateToProps)(LayoutContainer))));
+export default withRouter(withRoot(withStyles(styles)<{}>(connect(mapStateToProps)(LayoutContainer))));

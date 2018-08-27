@@ -1,6 +1,6 @@
 // Example for using discriminated union types.
 export type ThemeAnchors = 'left' | 'right';
-export type MenuDrawerOpen = true | false;
+export type MenuDrawerOpen = boolean;
 export type Title = string;
 
 // Use const enums for better autocompletion of action type names. These will

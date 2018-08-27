@@ -9,18 +9,13 @@ import { RouteComponentProps } from 'react-router';
 import { ThemeAnchors, MenuDrawerOpen, setMenuDrawer, Title } from '../../store/layout';
 import { Dispatch } from 'redux';
 import { ConnectedReduxProps } from '../../store';
-import { AppUserResponse } from '../../store/user/types';
 import { fetchRequest } from '../../store/user/actions';
+import * as classNames from 'classnames';
 
 interface PropsFromState extends RouteComponentProps<void>, WithStyles<typeof styles> {
   anchor: ThemeAnchors;
   menuDrawerOpen: MenuDrawerOpen;
   title: Title;
-  user: { 
-    response?: AppUserResponse,
-    errors?: string,
-    loading: boolean
-  };
 }
 
 interface PropsFromDispatch {
@@ -33,34 +28,30 @@ type AllProps = PropsFromState &
   ConnectedReduxProps;
 
 class LayoutHeader extends React.Component<AllProps> {
-  public componentDidMount() {
-    this.props.fetchRequest();
-  }
-
   private handleDrawerToggle = () => {
     this.props.setMenuDrawer(!this.props.menuDrawerOpen);
   };
 
   public render() {
-    const { user } = this.props;
+    const { menuDrawerOpen } = this.props;
 
     return (
-      <AppBar className={this.props.classes.appBarShift}>
-        {user.response && (
-          <Toolbar>
-              <IconButton
-              color="inherit"
-              aria-label="open drawer"
-              onClick={this.handleDrawerToggle}
-              className={this.props.classes.navIconHide}
-          >
-              <MenuIcon />
+      <AppBar 
+        position="fixed"
+        color="primary"
+        className={classNames(this.props.classes.appBar, menuDrawerOpen && this.props.classes.appBarShift)}>
+        <Toolbar>
+          <IconButton
+            color="inherit"
+            aria-label="open drawer"
+            onClick={this.handleDrawerToggle}
+            className={classNames(this.props.classes.navIconHide, menuDrawerOpen && this.props.classes.hide)}>
+            <MenuIcon />
           </IconButton>
-          <Typography variant="title" color="inherit" noWrap>
-            {user.response.data.fullName}
+          <Typography variant="title" color="inherit" className={this.props.classes.flex} noWrap>
+            {this.props.title}
           </Typography>  
-          </Toolbar>
-        )}
+        </Toolbar>
       </AppBar>
     );
   }
@@ -69,13 +60,7 @@ class LayoutHeader extends React.Component<AllProps> {
 const mapStateToProps = ({ layout, user }: AppState) => ({
     anchor: layout.anchor,
     menuDrawerOpen: layout.menuDrawer,
-    title: layout.title,
-
-    user: { 
-      response: user.response,
-      errors: user.errors,
-      loading: user.loading
-    }
+    title: layout.title
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({

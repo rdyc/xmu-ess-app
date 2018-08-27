@@ -18,16 +18,41 @@ export interface AppUserResponse extends ApiResponse<AppUser> {
 }
 
 export interface AppUserAccess {
-  uid: number;
+  uid: string;
   companyUid: string;
   company: Company;
   positionUid: string;
+  position: Position;
+  roleUid: string | null;
+  role: Role | null;
+  levelType: string | null;
+  level: CommonSystem | null;
+  unitType: string | null;
+  unit: CommonSystem | null;
 }
 
 export interface Company {
-  uid: number;
+  uid: string;
   code: string;
   name: string;
+}
+
+export interface Position {
+  uid: string;
+  name: string;
+  description: string | null;
+}
+
+export interface Role {
+  uid: string;
+  name: string;
+  description: string | null;
+}
+
+export interface CommonSystem {
+  type: string;
+  value: string;
+  description: string;
 }
 
 export const enum AppUserActionTypes {
@@ -37,7 +62,7 @@ export const enum AppUserActionTypes {
 }
 
 export interface AppUserState {
+  readonly user: AppUserResponse | undefined;
   readonly loading: boolean;
-  readonly response: AppUserResponse | undefined;
   readonly errors?: string;
 }
