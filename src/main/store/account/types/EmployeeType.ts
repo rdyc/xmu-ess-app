@@ -1,10 +1,10 @@
-import { EmployeeAccessListType } from './EmployeeAccessListType';
-import { EmergencyContactType } from './EmergencyContactType';
-import { BankAccountType } from './BankAccountType';
-import { CommonSystemType } from '../../common/types/CommonSystemType';
 import { LookupCompanyType } from '../../lookup/types/LookupCompanyType';
+import { CommonSystemType } from '../../common/types/CommonSystemType';
+import { ChangesType } from '../../@base/ChangesType';
+import { BankAccountType } from './BankAccountType';
+import { EmergencyContactType } from './EmergencyContactType';
 
-export interface AccountEmployeeMyType {
+export interface EmployeeType {
     uid: string;
     companyUid: string | null;
     company: LookupCompanyType | null;
@@ -34,5 +34,5 @@ export interface AccountEmployeeMyType {
     bank: BankAccountType | null;
     contact: EmergencyContactType | null;
     image: string | null;
-    access: EmployeeAccessListType[];
+    changes: ChangesType | null;
 }

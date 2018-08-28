@@ -1,8 +1,12 @@
-interface PaginationType {
+interface PaginateType {
+    current: number;
+    total: number;
     next: boolean;
     previous: boolean;
 }
 
 export interface BaseMetadataType {
-    pagination: PaginationType;
+    size: number;
+    total: number;
+    paginate: PaginateType | null;
 }

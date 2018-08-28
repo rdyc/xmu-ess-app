@@ -13,7 +13,7 @@ import removeDuplicates from '../../utils/arrayHelper';
 import styles from '../../styles';
 import { SingleResponseType } from '../../store/@base/SingleResponseType';
 import { AccountEmployeeMyType } from '../../store/account/types/AccountEmployeeMyType';
-import { AccountEmployeeAccessType } from '../../store/account/types/AccountEmployeeAccessType';
+import { EmployeeAccessListType } from '../../store/account/types/EmployeeAccessListType';
 
 interface PropsFromState extends RouteComponentProps<void>, WithStyles<typeof styles> {
   response: SingleResponseType<AccountEmployeeMyType>;
@@ -72,7 +72,7 @@ class AccessWizardPage extends React.Component<AllProps> {
     const { activeStep } = this.state;
 
     const getCompanyAccess = () => {
-      return removeDuplicates(response.data.access, 'companyUid') as AccountEmployeeAccessType[];
+      return removeDuplicates(response.data.access, 'companyUid') as EmployeeAccessListType[];
     };
     
     const getAccessByCompany = () => {
@@ -83,12 +83,14 @@ class AccessWizardPage extends React.Component<AllProps> {
       if (!response) { return null; }
 
       return response.data.access.filter(item => 
+        item.company !== null && 
+        item.position !== null &&
         item.company.uid === this.state.companyUid && 
         item.position.uid === this.state.positionUid
       )[0];
     };
 
-    const selectedAccess = getSelectedAccess();
+    const selected = getSelectedAccess();
 
     const getSteps = () => {
       return ['Your profile', 'Select company', 'Select position', 'Access review'];
@@ -158,7 +160,7 @@ class AccessWizardPage extends React.Component<AllProps> {
                 id="address"
                 name="address"
                 label="Address"
-                value={response.data.address}
+                value={response.data.address || ''}
               />
             </Grid>
           </Grid>
@@ -179,10 +181,11 @@ class AccessWizardPage extends React.Component<AllProps> {
             >
               {getCompanyAccess().map(item => (
                 <FormControlLabel 
-                  value={item.company.uid} 
-                  control={<Radio color="primary" />} 
-                  key={item.company.uid}
-                  label={item.company.name} />
+                  key={item.company && item.company.uid || ''}
+                  value={item.company && item.company.uid || ''} 
+                  label={item.company && item.company.name || ''}
+                  control={<Radio color="primary" />}
+                />
               ))}
             </RadioGroup>
           </FormControl>
@@ -203,10 +206,11 @@ class AccessWizardPage extends React.Component<AllProps> {
             >
               {getAccessByCompany().map(item => (
                 <FormControlLabel 
-                  value={item.position.uid} 
-                  control={<Radio color="primary" />} 
-                  key={item.position.uid}
-                  label={item.position.name} />
+                  key={item.position && item.position.uid || ''}
+                  value={item.position && item.position.uid || ''} 
+                  label={item.position && item.position.name}
+                  control={<Radio color="primary" />}
+                />
               ))}
             </RadioGroup>
           </FormControl>
@@ -216,7 +220,7 @@ class AccessWizardPage extends React.Component<AllProps> {
 
     const reviewForm = () => (
       <div>
-        {response &&  selectedAccess && (
+        {response &&  selected && (
           <Grid container spacing={24}>
             <Grid item xs={12} sm={6}>
               <TextField
@@ -239,7 +243,7 @@ class AccessWizardPage extends React.Component<AllProps> {
                 disabled
                 fullWidth
                 label="Company"
-                value={selectedAccess.company.name}
+                value={selected.company && selected.company.name || ''}
               />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -247,7 +251,7 @@ class AccessWizardPage extends React.Component<AllProps> {
                 disabled
                 fullWidth
                 label="Position"
-                value={selectedAccess.position.name}
+                value={selected.position && selected.position.name || ''}
               />
             </Grid>
           </Grid>
@@ -386,4 +390,6 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   fetchRequest: () => dispatch(accountEmployeeFetchRequest())
 });
 
-export default (withRoot(withStyles(styles)<{}>(connect(mapStateToProps, mapDispatchToProps)(AccessWizardPage))));
+const redux = connect(mapStateToProps, mapDispatchToProps)(AccessWizardPage);
+
+export default withRoot(withStyles(styles)<{}>(redux));
