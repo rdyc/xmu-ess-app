@@ -12,7 +12,7 @@ export interface EmployeeAccessListType {
     role: LookupRoleType | null;
     positionUid: string;
     position: LookupPositionType | null;
-    menus: LookupRoleMenuListType | null;
+    menus: LookupRoleMenuListType[] | null;
     unitType: string | null;
     unit: CommonSystemType | null;
     departmentType: string | null;

@@ -14,6 +14,8 @@ import styles from '../../styles';
 import { SingleResponseType } from '../../store/@base/SingleResponseType';
 import { AccountEmployeeMyType } from '../../store/account/types/AccountEmployeeMyType';
 import { EmployeeAccessListType } from '../../store/account/types/EmployeeAccessListType';
+import { setMenuItems } from '../../store/@layout';
+import { LookupRoleMenuListType } from '../../store/lookup/types/LookupRoleMenuListType';
 
 interface PropsFromState extends RouteComponentProps<void>, WithStyles<typeof styles> {
   response: SingleResponseType<AccountEmployeeMyType>;
@@ -23,6 +25,7 @@ interface PropsFromState extends RouteComponentProps<void>, WithStyles<typeof st
 
 interface PropsFromDispatch {
   fetchRequest: typeof accountEmployeeFetchRequest;
+  setMenuItems: typeof setMenuItems;
 }
 
 type AllProps = PropsFromState &
@@ -260,7 +263,8 @@ class AccessWizardPage extends React.Component<AllProps> {
     );
 
     const handleStart = () => {
-      // set user
+      // set menu items
+      this.props.setMenuItems(selected && selected.menus || []);
 
       // redirect to home page
       this.props.history.push('/home');
@@ -387,7 +391,8 @@ const mapStateToProps = ({ account }: AppState) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  fetchRequest: () => dispatch(accountEmployeeFetchRequest())
+  fetchRequest: () => dispatch(accountEmployeeFetchRequest()),
+  setMenuItems: (items: LookupRoleMenuListType[]) => dispatch(setMenuItems(items))
 });
 
 const redux = connect(mapStateToProps, mapDispatchToProps)(AccessWizardPage);

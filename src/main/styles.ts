@@ -110,11 +110,9 @@ const styles = (theme: Theme) =>
   createStyles({
     root: {
       width: '100%',
-      height: '100vh',
       marginBottom: 0,
       zIndex: 1,
-      overflow: 'hidden',
-      background: '#edecec'
+      overflow: 'hidden'
     },
     appBar: {
       // position: 'absolute',
@@ -165,7 +163,7 @@ const styles = (theme: Theme) =>
     drawerHeader: {
       display: 'flex',
       alignItems: 'center',
-      justifyContent: 'flex-end',
+      // justifyContent: 'flex-end',
       padding: '0 8px',
       ...theme.mixins.toolbar
     },

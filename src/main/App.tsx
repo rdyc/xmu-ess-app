@@ -10,8 +10,8 @@ import { Router, Route, Switch } from 'react-router';
 import { User } from 'oidc-client';
 import callbackPage from './pages/system/callbackPage';
 import greetingPage from './pages/system/accessWizardPage';
+import BasePage from './pages/basePage';
 import homePage from './pages/main/homePage';
-import LayoutContainer from './components/layouts/layoutContainer';
 
 interface PropsFromState {
   user?: User;
@@ -50,9 +50,9 @@ class App extends React.Component<AllProps> {
                 {user && (
                   <Switch>
                     <Route exact path="/" component={greetingPage} />
-                    <LayoutContainer>
+                    <BasePage>
                       <Route path="/home" component={homePage} />
-                    </LayoutContainer>
+                    </BasePage>
                   </Switch>
                 )}
               </div>

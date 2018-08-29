@@ -5,6 +5,7 @@ import { LayoutState, LayoutActionTypes } from './types';
 const initialState: LayoutState = {
   anchor: 'left',
   menuDrawer: false,
+  menuItems: [],
   title: 'Home'
 };
 
@@ -13,13 +14,28 @@ const initialState: LayoutState = {
 const reducer: Reducer<LayoutState> = (state = initialState, action) => {
   switch (action.type) {
     case LayoutActionTypes.SET_ANCHOR: {
-      return { ...state, anchor: action.payload };
+      return { 
+        ...state, 
+        anchor: action.payload 
+      };
     }
     case LayoutActionTypes.SET_MENU_DRAWER: {
-      return { ...state, menuDrawer: action.payload };
+      return { 
+        ...state, 
+        menuDrawer: action.payload 
+      };
+    }
+    case LayoutActionTypes.SET_MENU_ITEMS: {
+      return { 
+        ...state, 
+        menuItems: action.payload 
+      };
     }
     case LayoutActionTypes.SET_TITLE: {
-      return { ...state, title: action.payload };
+      return { 
+        ...state, 
+        title: action.payload 
+      };
     }
     default: {
       return state;
