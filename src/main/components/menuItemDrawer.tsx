@@ -4,29 +4,43 @@ import { WithStyles, Divider, List, ListItem, ListItemText, ListSubheader } from
 import { ConnectedReduxProps } from '../store';
 import styles from '../styles';
 import { LookupRoleMenuListType } from '../store/lookup/types/LookupRoleMenuListType';
-import { setTitle, setMenuDrawer } from '../store/@layout';
+import { setActive, setMenuDrawer, Active, AppUser } from '../store/@layout';
 import menuLinkMapper from '../utils/menuLinkMapper';
 
 interface PropsFromState extends RouteComponentProps<void>, WithStyles<typeof styles> {
   menuDrawer: boolean;
   menuItems: LookupRoleMenuListType[];
+  user: AppUser;
+  active: Active;
 }
 
 interface PropsFromDispatch {
   setMenuDrawer: typeof setMenuDrawer;
-  setTitle: typeof setTitle;
+  setActive: typeof setActive;
 }
 
 type AllProps = PropsFromState & PropsFromDispatch & ConnectedReduxProps;
 
 export const menuItemDrawer: React.StatelessComponent<AllProps> = props => (
   <div>
-    <div className={props.classes.drawerHeader} />
+    {props.user && (
+      <div className={props.classes.drawerHeader}>
+        <List dense disablePadding>
+          <ListItem>
+            <ListItemText
+              primary={props.user.company.name} 
+              secondary={props.user.position.name} />
+          </ListItem>
+        </List>
+      </div>
+    )}
     <Divider />
     <List dense disablePadding
       component="nav" 
       subheader={
-        <ListSubheader component="div">
+        <ListSubheader 
+          component="div" 
+          color="inherit">
           Home
         </ListSubheader>
       }>
@@ -42,6 +56,7 @@ export const menuItemDrawer: React.StatelessComponent<AllProps> = props => (
           subheader={
             <ListSubheader 
               component="div"
+              color="inherit"
               key={header.uid}
             >
               {header.name}
@@ -52,10 +67,17 @@ export const menuItemDrawer: React.StatelessComponent<AllProps> = props => (
               key={item.uid} 
               button 
               onClick={() => 
-                props.setTitle(item.name) && 
+                props.setActive({
+                  menuUid: item.uid,
+                  title: item.name,
+                  subTitle: item.uid
+                }) && 
                 props.setMenuDrawer(!props.menuDrawer) &&
                 props.history.push(menuLinkMapper(item.uid))}>
-              <ListItemText key={item.uid} primary={item.name} />
+              <ListItemText 
+                key={item.uid} 
+                primary={item.name} 
+                color={props.active.menuUid === item.uid ? 'primary' : 'inherit'} />
             </ListItem>
           ))}
         </List>

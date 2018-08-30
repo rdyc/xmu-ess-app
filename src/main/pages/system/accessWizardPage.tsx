@@ -3,6 +3,7 @@ import { Typography, withStyles, WithStyles, Button, Stepper, Step, StepLabel, S
 import * as React from 'react';
 import withRoot from '../../withRoot';
 import { connect } from 'react-redux';
+import * as store from 'store';
 import { AppState } from '../../store';
 import { RouteComponentProps } from 'react-router';
 import { Dispatch } from 'redux';
@@ -14,8 +15,9 @@ import styles from '../../styles';
 import { SingleResponseType } from '../../store/@base/SingleResponseType';
 import { AccountEmployeeMyType } from '../../store/account/types/AccountEmployeeMyType';
 import { EmployeeAccessListType } from '../../store/account/types/EmployeeAccessListType';
-import { setMenuItems } from '../../store/@layout';
+import { setMenuItems, setUser, AppUser, UserCompany, UserPosition } from '../../store/@layout';
 import { LookupRoleMenuListType } from '../../store/lookup/types/LookupRoleMenuListType';
+import { AppConstant } from '../../constants';
 
 interface PropsFromState extends RouteComponentProps<void>, WithStyles<typeof styles> {
   response: SingleResponseType<AccountEmployeeMyType>;
@@ -26,6 +28,7 @@ interface PropsFromState extends RouteComponentProps<void>, WithStyles<typeof st
 interface PropsFromDispatch {
   fetchRequest: typeof accountEmployeeFetchRequest;
   setMenuItems: typeof setMenuItems;
+  setUser: typeof setUser;
 }
 
 type AllProps = PropsFromState &
@@ -263,11 +266,41 @@ class AccessWizardPage extends React.Component<AllProps> {
     );
 
     const handleStart = () => {
-      // set menu items
-      this.props.setMenuItems(selected && selected.menus || []);
+      if (response && selected && selected.company && selected.position) {
+        const _company: UserCompany = {
+            uid: selected.company.uid,
+            code: selected.company.code,
+            name: selected.company.name
+        };
 
-      // redirect to home page
-      this.props.history.push('/home');
+        const _position: UserPosition = {
+            uid: selected.position.uid,
+            name: selected.position.name,
+            description: selected.position.description || ''
+        };
+
+        const _user: AppUser = {
+          uid: response.data.uid,
+          email: response.data.email,
+          fullName: response.data.fullName,
+          company: _company,
+          position: _position
+        };
+        
+        // set app user
+        this.props.setUser(_user);
+
+        // set menu items
+        this.props.setMenuItems(selected.menus || []);
+
+        // save to local storage
+        store.set(AppConstant.STORAGE.USER, _user);
+        store.set(AppConstant.STORAGE.MENU, selected.menus);
+        store.set(AppConstant.STORAGE.ACCESS, response.data.access);
+
+        // redirect to home page
+        this.props.history.push('/home');
+      }
     };
 
     return (
@@ -392,7 +425,8 @@ const mapStateToProps = ({ account }: AppState) => ({
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   fetchRequest: () => dispatch(accountEmployeeFetchRequest()),
-  setMenuItems: (items: LookupRoleMenuListType[]) => dispatch(setMenuItems(items))
+  setMenuItems: (items: LookupRoleMenuListType[]) => dispatch(setMenuItems(items)),
+  setUser: (user: AppUser) => dispatch(setUser(user))
 });
 
 const redux = connect(mapStateToProps, mapDispatchToProps)(AccessWizardPage);

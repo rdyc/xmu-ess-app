@@ -34,6 +34,7 @@
     "redux-devtools-extension": "^2.13.5",
     "redux-oidc": "^3.0.2",
     "redux-saga": "^0.16.0",
+    "store": "^2.0.12",
     "typeface-roboto": "0.0.54",
     "typesafe-actions": "^2.0.4"
   },
@@ -47,6 +48,7 @@
     "@types/react-redux": "^6.0.6",
     "@types/react-router-dom": "^4.3.0",
     "@types/react-router-redux": "^5.0.15",
+    "@types/store": "^2.0.0",
     "tslint": "^5.11.0",
     "tslint-config-blvd": "^1.1.0",
     "typescript": "^3.0.1"

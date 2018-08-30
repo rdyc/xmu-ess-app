@@ -5,8 +5,17 @@ import { LayoutState, LayoutActionTypes } from './types';
 const initialState: LayoutState = {
   anchor: 'left',
   menuDrawer: false,
+  additionalDrawer: false,
+  accountShow: false,
+  topDrawer: false,
+  bottomDrawer: false,
   menuItems: [],
-  title: 'Home'
+  active: {
+    menuUid: '',
+    title: 'Home',
+    subTitle: 'The home page'
+  },
+  user: null
 };
 
 // Thanks to Redux 4's much simpler typings, we can take away a lot of typings on the reducer side,
@@ -25,16 +34,46 @@ const reducer: Reducer<LayoutState> = (state = initialState, action) => {
         menuDrawer: action.payload 
       };
     }
+    case LayoutActionTypes.SET_ADDITIONAL_DRAWER: {
+      return { 
+        ...state, 
+        additionalDrawer: action.payload 
+      };
+    }
+    case LayoutActionTypes.SET_ACCOUNT_SHOW: {
+      return { 
+        ...state, 
+        accountShow: action.payload 
+      };
+    }
+    case LayoutActionTypes.SET_TOP_DRAWER: {
+      return { 
+        ...state, 
+        topDrawer: action.payload 
+      };
+    }
+    case LayoutActionTypes.SET_BOTTOM_DRAWER: {
+      return { 
+        ...state, 
+        bottomDrawer: action.payload 
+      };
+    }
     case LayoutActionTypes.SET_MENU_ITEMS: {
       return { 
         ...state, 
         menuItems: action.payload 
       };
     }
-    case LayoutActionTypes.SET_TITLE: {
+    case LayoutActionTypes.SET_ACTIVE: {
       return { 
         ...state, 
-        title: action.payload 
+        active: action.payload 
+      };
+    }
+    case LayoutActionTypes.SET_USER: {
+      return { 
+        ...state, 
+        user: action.payload 
       };
     }
     default: {
