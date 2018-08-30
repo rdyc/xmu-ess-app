@@ -3,6 +3,7 @@ import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import teal from '@material-ui/core/colors/teal';
 import blue from '@material-ui/core/colors/blue';
 import CssBaseline from '@material-ui/core/CssBaseline';
+import 'typeface-roboto';
 
 // A theme with custom primary and secondary color.
 // It's optional.
@@ -10,7 +11,7 @@ const theme = createMuiTheme({
   palette: {
     primary: blue,
     secondary: teal,
-  },
+  }
 });
 
 function withRoot(Component: React.ComponentType) {
