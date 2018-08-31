@@ -19,6 +19,7 @@ import { LookupRoleMenuListType } from '../store/lookup/types/LookupRoleMenuList
 import * as classNames from 'classnames';
 import Notifications from './notifications';
 import userManager from '../utils/userManager';
+import { FormattedMessage } from 'react-intl';
 
 interface PropsFromState extends RouteComponentProps<void>, WithStyles<typeof styles> {
   anchor: Anchor;
@@ -116,26 +117,30 @@ export const additionalDrawer: React.SFC<AllProps> = props => {
                     <ListItemIcon>
                       <AccountCircle />
                     </ListItemIcon>
-                    <ListItemText inset primary="My Profile" />
+                    <ListItemText inset primary={<FormattedMessage id="global.profile.my.title"/>} />
                   </ListItem>
                   <ListItem button onClick={() => props.history.push('/')}>
                     <ListItemIcon>
                       <SwapHorizontalCircle />
                     </ListItemIcon>
-                    <ListItemText inset primary="Switch Access" />
+                    <ListItemText inset primary={<FormattedMessage id="global.access.switch.title"/>} />
                   </ListItem>
                   <ListItem button onClick={handleLogout}>
                     <ListItemIcon>
                       <PowerSettingsNew /> 
                     </ListItemIcon>
-                    <ListItemText inset primary="Logout" />
+                    <ListItemText inset primary={<FormattedMessage id="global.logout.title"/>}/>
                   </ListItem>
                 </List>
               </Collapse>
             </List>
             <Divider />
             <Notifications/>
-            <List subheader={<ListSubheader color="primary">Access</ListSubheader>}>
+            <List subheader={
+              <ListSubheader color="primary">
+                <FormattedMessage id="global.access.title"/>
+              </ListSubheader>
+            }>
               <ListItem>
                 <ListItemText 
                   primary={props.user.company.name} 
@@ -152,7 +157,7 @@ export const additionalDrawer: React.SFC<AllProps> = props => {
         <List 
             subheader={
             <ListSubheader color="primary">
-              Settings
+              <FormattedMessage id="global.setting.title"/>
             </ListSubheader>}>
           <ListItem>
             <ListItemIcon>

@@ -14,6 +14,7 @@ import { NotificationParameter } from '../store/notification/types/NotificationP
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import * as moment from 'moment';
+import { FormattedMessage } from 'react-intl';
 
 interface PropsFromState extends RouteComponentProps<void>, WithStyles<typeof styles> {
   user: AppUser;
@@ -71,7 +72,11 @@ class Notifications extends React.Component<AllProps> {
 
     return (
       <List
-        subheader={<ListSubheader color="primary">Notifications</ListSubheader>}>
+        subheader={
+          <ListSubheader color="primary">
+            <FormattedMessage id="global.notification.title"/>
+          </ListSubheader>
+        }>
         {loading && 
           <ListItem>
             <ListItemText primary="Loading..."/>
@@ -79,7 +84,7 @@ class Notifications extends React.Component<AllProps> {
         }
         {!result && 
           <ListItem>
-            <ListItemText primary="There is no notification at this time"/>
+            <ListItemText primary={<FormattedMessage id="global.notification.emptySubTitle"/>}/>
           </ListItem>
         }
         {result && result.data.map(category => 

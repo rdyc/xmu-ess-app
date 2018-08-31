@@ -12,6 +12,9 @@ import callbackPage from './pages/system/callbackPage';
 import greetingPage from './pages/system/accessWizardPage';
 import BasePage from './pages/basePage';
 import homePage from './pages/main/homePage';
+import { IntlProvider } from 'react-intl';
+import AppLocale from './language';
+import config, { getCurrentLanguage } from './language/config';
 
 interface PropsFromState {
   user?: User;
@@ -34,29 +37,36 @@ class App extends React.Component<AllProps> {
       userManager.signinRedirect();
     };
 
+    const currentAppLocale = AppLocale[getCurrentLanguage(config.defaultLanguage || 'english').locale];
+
     return (
       <Provider store={store}>
         <OidcProvider store={store} userManager={userManager}>
           <ConnectedRouter history={history}>
-            <Router history={history}>
-              <div>
-                {!user && (
-                  <div>
-                    <button onClick={onLogin}>Login</button>
-                    <Route path="/callback" component={callbackPage} />
-                  </div>
-                )}
+            <IntlProvider
+              locale={currentAppLocale.locale}
+              messages={currentAppLocale.messages}
+            >
+              <Router history={history}>
+                <div>
+                  {!user && (
+                    <div>
+                      <button onClick={onLogin}>Login</button>
+                      <Route path="/callback" component={callbackPage} />
+                    </div>
+                  )}
 
-                {user && (
-                  <Switch>
-                    <Route exact path="/" component={greetingPage} />
-                    <BasePage>
-                      <Route path="/home" component={homePage} />
-                    </BasePage>
-                  </Switch>
-                )}
-              </div>
-            </Router>
+                  {user && (
+                    <Switch>
+                      <Route exact path="/" component={greetingPage} />
+                      <BasePage>
+                        <Route path="/home" component={homePage} />
+                      </BasePage>
+                    </Switch>
+                  )}
+                </div>
+              </Router>
+            </IntlProvider>
           </ConnectedRouter>
         </OidcProvider>
       </Provider>
