@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import { AppState } from '../store';
 import { RouteComponentProps, withRouter } from 'react-router';
 // tslint:disable-next-line:max-line-length
-import { Anchor, setMenuDrawer, setActive, setAdditionalDrawer, setTopDrawer, setBottomDrawer, Active, AppUser, setUser, setMenuItems, setAccountShow, setAnchor } from '../store/@layout';
+import { Anchor, setMenuDrawer, setActive, setAdditionalDrawer, setTopDrawer, setBottomDrawer, Active, AppUser, setUser, setMenuItems, setAccountShow, setAnchor, setLogoutDialog } from '../store/@layout';
 import { ConnectedReduxProps } from '../store';
 import { TopAppBar, MenuDrawer, AdditionalDrawer } from '../components';
 import { Dispatch } from 'redux';
@@ -25,6 +25,7 @@ interface PropsFromState extends RouteComponentProps<void>, WithStyles<typeof st
   active: Active;
   user: AppUser;
   notification: number;
+  logoutDialog: boolean;
 }
 
 interface PropsFromDispatch {
@@ -37,7 +38,7 @@ interface PropsFromDispatch {
   setActive: typeof setActive;
   setMenuItems: typeof setMenuItems;
   setUser: typeof setUser;
-  // setNotification: typeof setNotification;
+  setLogoutDialog: typeof setLogoutDialog;
 }
 
 type AllProps = PropsFromState & PropsFromDispatch & ConnectedReduxProps;
@@ -81,7 +82,8 @@ const mapStateToProps = ({ layout }: AppState) => ({
   menuItems: layout.menuItems,
   active: layout.active,
   user: layout.user,
-  notification: layout.notification
+  notification: layout.notification,
+  logoutDialog: layout.logoutDialog
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
@@ -94,7 +96,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   setActive: (active: Active) => dispatch(setActive(active)),
   setMenuItems: (items: LookupRoleMenuListType[]) => dispatch(setMenuItems(items)),
   setUser: (user: AppUser) => dispatch(setUser(user)),
-  // setNotification: (count: number) => dispatch(setNotification(count)),
+  setLogoutDialog: (open: boolean) => dispatch(setLogoutDialog(open)),
 });
 
 const redux = connect(mapStateToProps, mapDispatchToProps)(BasePage);

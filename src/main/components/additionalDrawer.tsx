@@ -12,7 +12,8 @@ import SwapHorizontalCircle from '@material-ui/icons/SwapHorizontalCircle';
 import PowerSettingsNew from '@material-ui/icons/PowerSettingsNew';
 import * as store from 'store';
 import { ConnectedReduxProps } from '../store';
-import { Anchor, setAdditionalDrawer, setAccountShow, setActive, Active, AppUser, setAnchor } from '../store/@layout';
+// tslint:disable-next-line:max-line-length
+import { Anchor, setAdditionalDrawer, setAccountShow, setActive, Active, AppUser, setAnchor, setLogoutDialog } from '../store/@layout';
 import styles from '../styles';
 import { LookupRoleMenuListType } from '../store/lookup/types/LookupRoleMenuListType';
 import * as classNames from 'classnames';
@@ -27,6 +28,7 @@ interface PropsFromState extends RouteComponentProps<void>, WithStyles<typeof st
   menuItems: LookupRoleMenuListType[];
   active: Active;
   user: AppUser;
+  logoutDialog: boolean;
 }
 
 interface PropsFromDispatch {
@@ -34,33 +36,53 @@ interface PropsFromDispatch {
   setAdditionalDrawer: typeof setAdditionalDrawer;
   setActive: typeof setActive;
   setAccountShow: typeof setAccountShow;
+  setLogoutDialog: typeof setLogoutDialog;
 }
 
 type AllProps = PropsFromState & PropsFromDispatch & ConnectedReduxProps;
 
 export const additionalDrawer: React.SFC<AllProps> = props => {
-  const state = {
-    open: false,
-    confirm: false
-  };
-
   const handleLogout = () => {
     props.setAdditionalDrawer(!props.additionalDrawer);
-
-    state.open = true;
+    props.setLogoutDialog(!props.logoutDialog);
   };
 
-  const handleClose = () => {
-    state.open = false;
+  const handleClose = (confirm: boolean) => {
+    props.setLogoutDialog(!props.logoutDialog);
 
-    if (state.confirm) {
+    if (confirm) {
       store.clearAll();
       userManager.signoutRedirect();
     }
   };
 
+  const logoutDialog = (
+    <Dialog
+      open={props.logoutDialog}
+      onClose={() => handleClose(false)}
+      aria-labelledby="logout-dialog-title"
+    >
+      <DialogTitle id="logout-dialog-title">{'Are you sure want to logout?'}</DialogTitle>
+      <DialogContent>
+        <DialogContentText>
+          Let Google help apps determine location. This means sending anonymous location data to
+          Google, even when no apps are running.
+        </DialogContentText>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={() => handleClose(false)} color="primary">
+          Disagree
+        </Button>
+        <Button onClick={() => handleClose(true)} color="primary" autoFocus>
+          Agree
+        </Button>
+      </DialogActions>
+    </Dialog>
+  );
+
   return (
     <div>
+      {logoutDialog}
       <Drawer
         variant="temporary"
         anchor={props.anchor === 'left' ? 'right' : 'bottom'}
@@ -146,27 +168,6 @@ export const additionalDrawer: React.SFC<AllProps> = props => {
           </ListItem>
         </List>
       </Drawer>
-      <Dialog
-        open={state.open}
-        onClose={handleClose}
-        aria-labelledby="logout-dialog-title"
-      >
-        <DialogTitle id="logout-dialog-title">{'Are you sure want to logout?'}</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            Let Google help apps determine location. This means sending anonymous location data to
-            Google, even when no apps are running.
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose} color="primary">
-            Disagree
-          </Button>
-          <Button onClick={handleClose} color="primary" autoFocus>
-            Agree
-          </Button>
-        </DialogActions>
-      </Dialog>
     </div>
   );
 };

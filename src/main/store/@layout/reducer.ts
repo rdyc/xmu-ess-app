@@ -16,7 +16,8 @@ const initialState: LayoutState = {
     subTitle: 'The home page'
   },
   user: null,
-  notification: 0
+  notification: 0,
+  logoutDialog: false
 };
 
 // Thanks to Redux 4's much simpler typings, we can take away a lot of typings on the reducer side,
@@ -24,65 +25,39 @@ const initialState: LayoutState = {
 const reducer: Reducer<LayoutState> = (state = initialState, action) => {
   switch (action.type) {
     case LayoutActionTypes.SET_ANCHOR: {
-      return { 
-        ...state, 
-        anchor: action.payload 
-      };
+      return { ...state, anchor: action.payload };
     }
     case LayoutActionTypes.SET_MENU_DRAWER: {
-      return { 
-        ...state, 
-        menuDrawer: action.payload 
-      };
+      return { ...state, menuDrawer: action.payload };
     }
     case LayoutActionTypes.SET_ADDITIONAL_DRAWER: {
-      return { 
-        ...state, 
-        additionalDrawer: action.payload 
-      };
+      return { ...state, additionalDrawer: action.payload };
     }
     case LayoutActionTypes.SET_ACCOUNT_SHOW: {
-      return { 
-        ...state, 
-        accountShow: action.payload 
-      };
+      return { ...state, accountShow: action.payload };
     }
     case LayoutActionTypes.SET_TOP_DRAWER: {
-      return { 
-        ...state, 
-        topDrawer: action.payload 
-      };
+      return { ...state, opDrawer: action.payload };
     }
     case LayoutActionTypes.SET_BOTTOM_DRAWER: {
-      return { 
-        ...state, 
-        bottomDrawer: action.payload 
-      };
+      return { ...state, bottomDrawer: action.payload };
     }
     case LayoutActionTypes.SET_MENU_ITEMS: {
-      return { 
-        ...state, 
-        menuItems: action.payload 
-      };
+      return { ...state, menuItems: action.payload };
     }
     case LayoutActionTypes.SET_ACTIVE: {
-      return { 
-        ...state, 
-        active: action.payload 
-      };
+      return { ...state, active: action.payload };
     }
     case LayoutActionTypes.SET_USER: {
-      return { 
-        ...state, 
-        user: action.payload 
-      };
+      return { ...state, user: action.payload };
     }
     case LayoutActionTypes.SET_NOTIFICATION: {
-      return { 
-        ...state, 
-        notification: action.payload 
-      };
+      return { ...state, notification: action.payload };
     }
+    case LayoutActionTypes.SET_LOGOUT_DIALOG: {
+      return { ...state, logoutDialog: action.payload };
+    }
+
     default: {
       return state;
     }
