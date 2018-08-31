@@ -11,3 +11,4 @@ export const setBottomDrawer = (open: boolean) => action(LayoutActionTypes.SET_A
 export const setMenuItems = (items: LookupRoleMenuListType[]) => action(LayoutActionTypes.SET_MENU_ITEMS, items);
 export const setActive = (active: Active) => action(LayoutActionTypes.SET_ACTIVE, active);
 export const setUser = (user: AppUser) => action(LayoutActionTypes.SET_USER, user);
+export const setNotification = (count: number) => action(LayoutActionTypes.SET_NOTIFICATION, count);

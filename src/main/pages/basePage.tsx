@@ -24,6 +24,7 @@ interface PropsFromState extends RouteComponentProps<void>, WithStyles<typeof st
   menuItems: LookupRoleMenuListType[];
   active: Active;
   user: AppUser;
+  notification: number;
 }
 
 interface PropsFromDispatch {
@@ -36,11 +37,10 @@ interface PropsFromDispatch {
   setActive: typeof setActive;
   setMenuItems: typeof setMenuItems;
   setUser: typeof setUser;
+  // setNotification: typeof setNotification;
 }
 
-type AllProps = PropsFromState &
-  PropsFromDispatch &
-  ConnectedReduxProps;
+type AllProps = PropsFromState & PropsFromDispatch & ConnectedReduxProps;
 
 class BasePage extends React.Component<AllProps> {
   private loadStorage() {
@@ -80,7 +80,8 @@ const mapStateToProps = ({ layout }: AppState) => ({
   bottomDrawer: layout.bottomDrawer,
   menuItems: layout.menuItems,
   active: layout.active,
-  user: layout.user
+  user: layout.user,
+  notification: layout.notification
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
@@ -92,7 +93,8 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   setBottomDrawer: (open: boolean) => dispatch(setBottomDrawer(open)),
   setActive: (active: Active) => dispatch(setActive(active)),
   setMenuItems: (items: LookupRoleMenuListType[]) => dispatch(setMenuItems(items)),
-  setUser: (user: AppUser) => dispatch(setUser(user))
+  setUser: (user: AppUser) => dispatch(setUser(user)),
+  // setNotification: (count: number) => dispatch(setNotification(count)),
 });
 
 const redux = connect(mapStateToProps, mapDispatchToProps)(BasePage);

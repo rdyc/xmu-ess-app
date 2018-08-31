@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { AppUser } from '../store/@layout';
+import { AppUser, setNotification } from '../store/@layout';
 import { RouteComponentProps } from 'react-router';
 // tslint:disable-next-line:max-line-length
 import { WithStyles, withStyles, List, ListSubheader, ListItem, ListItemText, ListItemSecondaryAction, IconButton, Collapse } from '@material-ui/core';
@@ -17,6 +17,7 @@ import * as moment from 'moment';
 
 interface PropsFromState extends RouteComponentProps<void>, WithStyles<typeof styles> {
   user: AppUser;
+  notification: number;
   param: NotificationParameter;
   result?: ListResponseType<NotificationType>;
   errors?: string;
@@ -25,6 +26,7 @@ interface PropsFromState extends RouteComponentProps<void>, WithStyles<typeof st
 
 interface PropsFromDispatch {
   fetchRequest: typeof notificationFetchRequest;
+  setNotification: typeof setNotification;
 }
 
 type AllProps = PropsFromState & PropsFromDispatch & ConnectedReduxProps;
@@ -32,7 +34,8 @@ type AllProps = PropsFromState & PropsFromDispatch & ConnectedReduxProps;
 class Notifications extends React.Component<AllProps> {
   public state = {
     active: '',
-    isExpanded: false
+    isExpanded: false,
+    count: 0
   };
 
   public handleVisibility = (type: string) => {
@@ -47,6 +50,20 @@ class Notifications extends React.Component<AllProps> {
       companyUid: this.props.user.company.uid,
       positionUid: this.props.user.position.uid
     });
+  }
+
+  public componentDidUpdate() {
+    let count: number = 0;
+
+    if (this.props.result) {
+      this.props.result.data.forEach(element => 
+        element.details.forEach(detail => {
+          count = count + detail.total;
+        })
+      );
+    }
+
+    this.props.setNotification(count);
   }
 
   public render() {
@@ -73,7 +90,7 @@ class Notifications extends React.Component<AllProps> {
                 >
                 <ListItemText 
                   key={category.name} 
-                  primary={detail.total + ' ' + category.name}
+                  primary={category.name + ' (' + detail.total + ')'}
                 />
                 <ListItemSecondaryAction 
                   key={category.name}>
@@ -113,6 +130,7 @@ class Notifications extends React.Component<AllProps> {
 
 const mapStateToProps = ({ layout, notification }: AppState) => ({
   user: layout.user,
+  notification: layout.notification,
   param: notification.parameter,
   result: notification.result,
   errors: notification.errors,
@@ -120,7 +138,8 @@ const mapStateToProps = ({ layout, notification }: AppState) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  fetchRequest: (params: NotificationParameter) => dispatch(notificationFetchRequest(params))
+  fetchRequest: (params: NotificationParameter) => dispatch(notificationFetchRequest(params)),
+  setNotification: (count: number) => dispatch(setNotification(count))
 });
 
 const redux = connect(mapStateToProps, mapDispatchToProps)(Notifications);

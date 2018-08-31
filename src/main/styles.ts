@@ -81,7 +81,7 @@ const styles = (theme: Theme) =>
         duration: theme.transitions.duration.enteringScreen
       })
     },
-      drawerPaperAdditional: {
+    drawerPaperAdditional: {
       width: drawerWidth + 80
     },
     drawerPaperClose: {
@@ -188,8 +188,9 @@ const styles = (theme: Theme) =>
     paddingFarLeft: { paddingLeft: theme.spacing.unit * size.far },
     paddingFarTop: { paddingTop: theme.spacing.unit * size.far },
     paddingFarRight: { paddingRight: theme.spacing.unit * size.far },
-    paddingFarBottom: { paddingBottom: theme.spacing.unit * size.far }
-
+    paddingFarBottom: { paddingBottom: theme.spacing.unit * size.far },
+    /* colors */
+    colorRed: { color: red['500'] }
     /* -------- generic classes end ----------*/
   });
 

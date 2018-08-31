@@ -44,7 +44,8 @@ export const enum LayoutActionTypes {
   SET_BOTTOM_DRAWER = '@@layout/SET_BOTTOM_DRAWER',
   SET_MENU_ITEMS = '@@layout/SET_MENU_ITEMS',
   SET_ACTIVE = '@@layout/SET_ACTIVE',
-  SET_USER = '@@layout/SET_USER'
+  SET_USER = '@@layout/SET_USER',
+  SET_NOTIFICATION = '@@layout/SET_NOTIFICATION'
 }
 
 // Declare state types with `readonly` modifier to get compile time immutability.
@@ -59,4 +60,5 @@ export interface LayoutState {
   readonly menuItems: LookupRoleMenuListType[];
   readonly active: Active;
   readonly user: AppUser | null;
+  readonly notification: number;
 }

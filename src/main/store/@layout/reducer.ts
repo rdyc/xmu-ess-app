@@ -15,7 +15,8 @@ const initialState: LayoutState = {
     title: 'Home',
     subTitle: 'The home page'
   },
-  user: null
+  user: null,
+  notification: 0
 };
 
 // Thanks to Redux 4's much simpler typings, we can take away a lot of typings on the reducer side,
@@ -74,6 +75,12 @@ const reducer: Reducer<LayoutState> = (state = initialState, action) => {
       return { 
         ...state, 
         user: action.payload 
+      };
+    }
+    case LayoutActionTypes.SET_NOTIFICATION: {
+      return { 
+        ...state, 
+        notification: action.payload 
       };
     }
     default: {
