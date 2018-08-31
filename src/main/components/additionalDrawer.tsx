@@ -15,6 +15,8 @@ import { Anchor, setAdditionalDrawer, setAccountShow, setActive, Active, AppUser
 import styles from '../styles';
 import { LookupRoleMenuListType } from '../store/lookup/types/LookupRoleMenuListType';
 import * as classNames from 'classnames';
+import Notifications from './notifications';
+import userManager from '../utils/userManager';
 
 interface PropsFromState extends RouteComponentProps<void>, WithStyles<typeof styles> {
   anchor: Anchor;
@@ -37,84 +39,90 @@ type AllProps = PropsFromState & PropsFromDispatch & ConnectedReduxProps;
 
 export const additionalDrawer: React.SFC<AllProps> = props => (
   <div>
-      <Drawer
-        variant="temporary"
-        anchor={props.anchor === 'left' ? 'right' : 'bottom'}
-        open={props.additionalDrawer}
-        classes={{
-          paper: classNames(props.classes.drawerPaper, props.classes.drawerPaperAdditional)
-        }}
-        onClose={() => props.setAdditionalDrawer(!props.additionalDrawer)}
-        ModalProps={{
-          keepMounted: true, // Better open performance on mobile.
-        }}>
-        {props.user && (
-          <div>
-            <List>
-              <ListItem>
-                <Avatar className={props.classes.avatarRed}>
-                  {props.user.company.code}
-                </Avatar>
-                <ListItemText 
-                  primary={props.user.fullName} 
-                  secondary={props.user.email} />
-                <ListItemSecondaryAction>
-                  <IconButton onClick={() => props.setAccountShow(!props.accountShow)}>
-                    {props.accountShow ? <ExpandLess /> : <ExpandMore />}
-                  </IconButton>
-                </ListItemSecondaryAction>
-              </ListItem>
-              <Collapse in={props.accountShow} timeout="auto" unmountOnExit>
-                <List component="div" disablePadding>
-                  <ListItem button>
-                    <ListItemIcon>
-                      <AccountCircle />
-                    </ListItemIcon>
-                    <ListItemText inset primary="My Profile" />
-                  </ListItem>
-                  <ListItem button>
-                    <ListItemIcon>
-                      <SwapHorizontalCircle />
-                    </ListItemIcon>
-                    <ListItemText inset primary="Switch Access" />
-                  </ListItem>
-                  <ListItem button>
-                    <ListItemIcon>
-                      <PowerSettingsNew />
-                    </ListItemIcon>
-                    <ListItemText inset primary="Logout" />
-                  </ListItem>
-                </List>
-              </Collapse>
-            </List>
-            <Divider />
-            <List subheader={<ListSubheader color="primary">Access</ListSubheader>}>
-              <ListItem>
-                <ListItemText primary={props.user.company.name} secondary={props.user.position.name} />
-                <ListItemSecondaryAction>
-                  <IconButton>
-                    <MoreVertIcon />
-                  </IconButton>
-                </ListItemSecondaryAction>
-              </ListItem>
-            </List>
-          </div>
-        )}
-        <Divider />
-        <List subheader={<ListSubheader color="primary">Settings</ListSubheader>}>
-          <ListItem>
-            <ListItemIcon>
-              <WifiIcon />
-            </ListItemIcon>
-            <ListItemText primary="Right hand" />
-            <ListItemSecondaryAction>
-              <Switch color="primary"
-                onChange={() => props.setAnchor(props.anchor === 'right' ? 'left' : 'right')}
-                checked={props.anchor === 'right'}
-              />
-            </ListItemSecondaryAction>
-          </ListItem>
-        </List>
-      </Drawer>
+    <Drawer
+      variant="temporary"
+      anchor={props.anchor === 'left' ? 'right' : 'bottom'}
+      open={props.additionalDrawer}
+      classes={{
+        paper: classNames(props.classes.drawerPaper, props.classes.drawerPaperAdditional)
+      }}
+      onClose={() => props.setAdditionalDrawer(!props.additionalDrawer)}
+      ModalProps={{
+        keepMounted: true, // Better open performance on mobile.
+      }}>
+      {props.user && (
+        <div>
+          <List>
+            <ListItem>
+              <Avatar className={props.classes.avatarRed}>
+                {props.user.company.code}
+              </Avatar>
+              <ListItemText 
+                primary={props.user.fullName} 
+                secondary={props.user.email} />
+              <ListItemSecondaryAction>
+                <IconButton onClick={() => props.setAccountShow(!props.accountShow)}>
+                  {props.accountShow ? <ExpandLess /> : <ExpandMore />}
+                </IconButton>
+              </ListItemSecondaryAction>
+            </ListItem>
+            <Collapse in={props.accountShow} timeout="auto" unmountOnExit>
+              <List component="div" disablePadding>
+                <ListItem button onClick={() => props.history.push('/account/profile')}>
+                  <ListItemIcon>
+                    <AccountCircle />
+                  </ListItemIcon>
+                  <ListItemText inset primary="My Profile" />
+                </ListItem>
+                <ListItem button onClick={() => props.history.push('/')}>
+                  <ListItemIcon>
+                    <SwapHorizontalCircle />
+                  </ListItemIcon>
+                  <ListItemText inset primary="Switch Access" />
+                </ListItem>
+                <ListItem button onClick={() => userManager.signoutRedirect()}>
+                  <ListItemIcon>
+                    <PowerSettingsNew />
+                  </ListItemIcon>
+                  <ListItemText inset primary="Logout" />
+                </ListItem>
+              </List>
+            </Collapse>
+          </List>
+          <Divider />
+          <Notifications/>
+          <List subheader={<ListSubheader color="primary">Access</ListSubheader>}>
+            <ListItem>
+              <ListItemText 
+                primary={props.user.company.name} 
+                secondary={props.user.position.name} />
+              <ListItemSecondaryAction>
+                <IconButton>
+                  <MoreVertIcon />
+                </IconButton>
+              </ListItemSecondaryAction>
+            </ListItem>
+          </List>
+        </div>
+      )}
+      <List 
+          subheader={
+          <ListSubheader color="primary">
+            Settings
+          </ListSubheader>}>
+        <ListItem>
+          <ListItemIcon>
+            <WifiIcon />
+          </ListItemIcon>
+          <ListItemText primary="Right hand" />
+          <ListItemSecondaryAction>
+            <Switch color="primary"
+              onChange={() => props.setAnchor(props.anchor === 'right' ? 'left' : 'right')}
+              checked={props.anchor === 'right'}
+            />
+          </ListItemSecondaryAction>
+        </ListItem>
+      </List>
+    </Drawer>
   </div>
 );

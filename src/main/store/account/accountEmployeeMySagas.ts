@@ -28,8 +28,8 @@ function* watchFetchRequest() {
   yield takeEvery(AccountEmployeeAction.FETCH_REQUEST, handleFetch);
 }
 
-function* accountEmployeeMySaga() {
+function* accountEmployeeMySagas() {
   yield all([fork(watchFetchRequest)]);
 }
 
-export default accountEmployeeMySaga;
+export default accountEmployeeMySagas;

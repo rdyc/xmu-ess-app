@@ -56,7 +56,7 @@ class BasePage extends React.Component<AllProps> {
   public componentDidMount() {
     this.loadStorage();  
   }
-
+  
   public render() {
     return (
       <div className={this.props.classes.root}>
