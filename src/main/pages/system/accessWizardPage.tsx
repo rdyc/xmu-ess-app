@@ -185,7 +185,10 @@ class AccessWizardPage extends React.Component<AllProps> {
               value={this.state.companyUid}
               onChange={this.handleChange}
             >
-              {getCompanyAccess().map(item => (
+              {getCompanyAccess()
+                // order by company asc
+                .sort((a , b) => ((a.company ? a.company.name : '') > (b.company ? b.company.name : '')) ? 1 : 0)
+                .map(item => (
                 <FormControlLabel 
                   key={item.company && item.company.uid || ''}
                   value={item.company && item.company.uid || ''} 
@@ -210,7 +213,10 @@ class AccessWizardPage extends React.Component<AllProps> {
               value={this.state.positionUid}
               onChange={this.handleChange}
             >
-              {getAccessByCompany().map(item => (
+              {getAccessByCompany()
+                // order by position asc
+                .sort((a , b) => ((a.position ? a.position.name : '') > (b.position ? b.position.name : '')) ? 1 : 0)
+                .map(item => (
                 <FormControlLabel 
                   key={item.position && item.position.uid || ''}
                   value={item.position && item.position.uid || ''} 

@@ -70,25 +70,37 @@ class Notifications extends React.Component<AllProps> {
   public render() {
     const { loading, result } = this.props;
 
+    const elListSubHeader = (
+      <ListSubheader color="primary">
+        <FormattedMessage id="global.notification.title"/>
+      </ListSubheader>
+    );
+
+    const elNotifLoading = (
+      <ListItem>
+        <ListItemText primary={<FormattedMessage id="global.loading"/>} />
+      </ListItem>
+    );
+
+    const elNotifEmtpy = (
+      <ListItem>
+        <ListItemText primary={<FormattedMessage id="global.notification.emptySubTitle"/>}/>
+      </ListItem>
+    );
+
     return (
       <List
-        subheader={
-          <ListSubheader color="primary">
-            <FormattedMessage id="global.notification.title"/>
-          </ListSubheader>
-        }>
-        {loading && 
-          <ListItem>
-            <ListItemText primary="Loading..."/>
-          </ListItem>
-        }
-        {!result && 
-          <ListItem>
-            <ListItemText primary={<FormattedMessage id="global.notification.emptySubTitle"/>}/>
-          </ListItem>
-        }
-        {result && result.data.map(category => 
-          category.details.map(detail => 
+        subheader={elListSubHeader}>
+        {loading && elNotifLoading}
+        
+        {!result && elNotifEmtpy}
+        
+        {result && result.data
+          // order by name asc
+          .sort((a , b) => (a.name > b.name) ? 1 : 0)
+          .map(category => 
+          category.details
+            .map(detail => 
             <div>
               <ListItem 
                 key={category.name} 
@@ -112,18 +124,22 @@ class Notifications extends React.Component<AllProps> {
                 in={this.state.active === category.name + '_' + detail.type && this.state.isExpanded} 
                 timeout="auto" 
                 unmountOnExit>
-                <List 
-                  key={detail.type} dense>
-                  {detail.items.map(item => 
-                  <ListItem 
-                    key={item.uid} 
-                    button>
-                    <ListItemText 
+                <List key={detail.type} dense
+                >
+                  {detail.items
+                    // order by date desc
+                    .sort((a , b) => (a.date < b.date) ? 1 : 0)
+                    .map(item => 
+                    <ListItem 
                       key={item.uid} 
-                      primary={item.uid + ' - ' + item.name}
-                      secondary={detail.type + ' ' + moment(item.date).fromNow()}
-                    />
-                  </ListItem>)}
+                      button>
+                      <ListItemText 
+                        key={item.uid} 
+                        primary={item.uid + ' - ' + item.name}
+                        secondary={detail.type + ' ' + moment(item.date).fromNow()}
+                      />
+                    </ListItem>
+                  )}
                 </List>
               </Collapse>
             </div>
