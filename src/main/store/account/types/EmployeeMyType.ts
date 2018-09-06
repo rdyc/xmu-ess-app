@@ -4,7 +4,7 @@ import { BankAccountType } from './BankAccountType';
 import { CommonSystemType } from '../../common/types/CommonSystemType';
 import { LookupCompanyType } from '../../lookup/types/LookupCompanyType';
 
-export interface AccountEmployeeMyType {
+export interface EmployeeMyType {
     uid: string;
     companyUid: string | null;
     company: LookupCompanyType | null;

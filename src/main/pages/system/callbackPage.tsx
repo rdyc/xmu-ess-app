@@ -13,7 +13,6 @@ class CallbackPage extends React.Component<RouteComponentProps<{}> & { dispatch:
     const state = user.state;
     const redirectPath = (state !== undefined ? state.path : '/');
     this.props.dispatch(push(redirectPath, { from: this.props.location }));
-    
   }
 
   public errorCallback = (error: Error) => {

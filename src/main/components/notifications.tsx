@@ -1,8 +1,7 @@
 import * as React from 'react';
 import { AppUser, setNotification } from '../store/@layout';
 import { RouteComponentProps } from 'react-router';
-// tslint:disable-next-line:max-line-length
-import { WithStyles, withStyles, List, ListSubheader, ListItem, ListItemText, ListItemSecondaryAction, IconButton, Collapse } from '@material-ui/core';
+import { WithStyles, List, ListSubheader, ListItem, ListItemText, ListItemSecondaryAction, Collapse } from '@material-ui/core';
 import styles from '../styles';
 import { ConnectedReduxProps, AppState } from '../store';
 import { connect } from 'react-redux';
@@ -19,7 +18,6 @@ import { FormattedMessage } from 'react-intl';
 interface PropsFromState extends RouteComponentProps<void>, WithStyles<typeof styles> {
   user: AppUser;
   notification: number;
-  param: NotificationParameter;
   result?: ListResponseType<NotificationType>;
   errors?: string;
   loading: boolean;
@@ -57,7 +55,7 @@ class Notifications extends React.Component<AllProps> {
     let count: number = 0;
 
     if (this.props.result) {
-      this.props.result.data.forEach(element => 
+      this.props.result.data.forEach(element =>
         element.details.forEach(detail => {
           count = count + detail.total;
         })
@@ -89,61 +87,57 @@ class Notifications extends React.Component<AllProps> {
     );
 
     return (
-      <List
-        subheader={elListSubHeader}>
+      <List subheader={elListSubHeader}>
         {loading && elNotifLoading}
-        
-        {!result && elNotifEmtpy}
-        
-        {result && result.data
+        {!loading && !result && elNotifEmtpy}
+        {!loading && result && result.data
           // order by name asc
           .sort((a , b) => (a.name > b.name) ? 1 : 0)
-          .map(category => 
-          category.details
-            .map(detail => 
-            <div>
-              <ListItem 
-                key={category.name} 
+          .map(category => category.details
+            .map(detail =>
+              <div key={detail.type}>
+                <ListItem
+                  key={category.name}
+                  button
+                  onClick={() => this.handleVisibility(category.name + '_' + detail.type)}
                 >
-                <ListItemText 
-                  key={category.name} 
-                  primary={category.name + ' (' + detail.total + ')'}
-                />
-                <ListItemSecondaryAction 
-                  key={category.name}>
-                  <IconButton 
-                    key={category.name} 
-                    onClick={() => this.handleVisibility(category.name + '_' + detail.type)}>
-                    {this.state.active === category.name + '_' + detail.type && this.state.isExpanded ? 
+                  <ListItemText
+                    key={category.name}
+                    primary={category.name + ' (' + detail.total + ')'}
+                  />
+                  <ListItemSecondaryAction key={category.name}>
+                    {this.state.active === category.name + '_' + detail.type && this.state.isExpanded ?
                     <ExpandLess /> : <ExpandMore />}
-                  </IconButton>
-                </ListItemSecondaryAction>
-              </ListItem>
-              <Collapse 
-                key={detail.type}
-                in={this.state.active === category.name + '_' + detail.type && this.state.isExpanded} 
-                timeout="auto" 
-                unmountOnExit>
-                <List key={detail.type} dense
+                  </ListItemSecondaryAction>
+                </ListItem>
+                <Collapse
+                  key={detail.type}
+                  in={this.state.active === category.name + '_' + detail.type && this.state.isExpanded}
+                  timeout="auto"
+                  unmountOnExit
                 >
-                  {detail.items
-                    // order by date desc
-                    .sort((a , b) => (a.date < b.date) ? 1 : 0)
-                    .map(item => 
-                    <ListItem 
-                      key={item.uid} 
-                      button>
-                      <ListItemText 
-                        key={item.uid} 
-                        primary={item.uid + ' - ' + item.name}
-                        secondary={detail.type + ' ' + moment(item.date).fromNow()}
-                      />
-                    </ListItem>
-                  )}
-                </List>
-              </Collapse>
-            </div>
-        ))}
+                  <List key={detail.type} dense>
+                    {detail.items
+                      // order by date desc
+                      .sort((a , b) => (a.date < b.date) ? 1 : 0)
+                      .map(item =>
+                      <ListItem
+                        key={item.uid}
+                        button
+                      >
+                        <ListItemText
+                          key={item.uid}
+                          primary={item.uid + ' - ' + item.name}
+                          secondary={detail.type + ' ' + moment(item.date).fromNow()}
+                        />
+                      </ListItem>
+                    )}
+                  </List>
+                </Collapse>
+              </div>
+            )
+          )
+        }
       </List>
     );
   }
@@ -152,7 +146,6 @@ class Notifications extends React.Component<AllProps> {
 const mapStateToProps = ({ layout, notification }: AppState) => ({
   user: layout.user,
   notification: layout.notification,
-  param: notification.parameter,
   result: notification.result,
   errors: notification.errors,
   loading: notification.loading
@@ -163,6 +156,4 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   setNotification: (count: number) => dispatch(setNotification(count))
 });
 
-const redux = connect(mapStateToProps, mapDispatchToProps)(Notifications);
-
-export default withStyles(styles)<{}>(redux);
+export default connect(mapStateToProps, mapDispatchToProps)(Notifications);

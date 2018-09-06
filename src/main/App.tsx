@@ -15,6 +15,7 @@ import homePage from './pages/main/homePage';
 import { IntlProvider } from 'react-intl';
 import AppLocale from './language';
 import config, { getCurrentLanguage } from './language/config';
+import { accountRouter } from './pages/main/account/accountRouter';
 
 interface PropsFromState {
   user?: User;
@@ -61,6 +62,7 @@ class App extends React.Component<AllProps> {
                       <Route exact path="/" component={greetingPage} />
                       <BasePage>
                         <Route path="/home" component={homePage} />
+                        <Route path="/account" component={accountRouter} />
                       </BasePage>
                     </Switch>
                   )}

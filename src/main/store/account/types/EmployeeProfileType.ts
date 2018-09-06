@@ -4,7 +4,7 @@ import { ChangesType } from '../../@base/ChangesType';
 import { BankAccountType } from './BankAccountType';
 import { EmergencyContactType } from './EmergencyContactType';
 
-export interface EmployeeType {
+export interface EmployeeProfileType {
     uid: string;
     companyUid: string | null;
     company: LookupCompanyType | null;

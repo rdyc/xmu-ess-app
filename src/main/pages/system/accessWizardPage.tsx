@@ -8,25 +8,25 @@ import { AppState } from '../../store';
 import { RouteComponentProps } from 'react-router';
 import { Dispatch } from 'redux';
 import { ConnectedReduxProps } from '../../store';
-import { accountEmployeeFetchRequest } from '../../store/account/accountEmployeeActions';
+import { EmployeeFetchRequest } from '../../store/account/actions/employeeMyActions';
 import userManager from '../../utils/userManager';
 import removeDuplicates from '../../utils/arrayHelper';
 import styles from '../../styles';
 import { SingleResponseType } from '../../store/@base/SingleResponseType';
-import { AccountEmployeeMyType } from '../../store/account/types/AccountEmployeeMyType';
+import { EmployeeMyType } from '../../store/account/types/EmployeeMyType';
 import { EmployeeAccessListType } from '../../store/account/types/EmployeeAccessListType';
 import { setMenuItems, setUser, AppUser, UserCompany, UserPosition } from '../../store/@layout';
 import { LookupRoleMenuListType } from '../../store/lookup/types/LookupRoleMenuListType';
 import { AppConstant } from '../../constants';
 
 interface PropsFromState extends RouteComponentProps<void>, WithStyles<typeof styles> {
-  response: SingleResponseType<AccountEmployeeMyType>;
+  response: SingleResponseType<EmployeeMyType>;
   errors?: string;
   loading: boolean;
 }
 
 interface PropsFromDispatch {
-  fetchRequest: typeof accountEmployeeFetchRequest;
+  accountEmployeeFetchRequest: typeof EmployeeFetchRequest;
   setMenuItems: typeof setMenuItems;
   setUser: typeof setUser;
 }
@@ -37,7 +37,7 @@ type AllProps = PropsFromState &
 
 class AccessWizardPage extends React.Component<AllProps> {
   public componentDidMount() {
-    this.props.fetchRequest();
+    this.props.accountEmployeeFetchRequest();
   }
 
   public state = {
@@ -430,7 +430,7 @@ const mapStateToProps = ({ account }: AppState) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  fetchRequest: () => dispatch(accountEmployeeFetchRequest()),
+  accountEmployeeFetchRequest: () => dispatch(EmployeeFetchRequest()),
   setMenuItems: (items: LookupRoleMenuListType[]) => dispatch(setMenuItems(items)),
   setUser: (user: AppUser) => dispatch(setUser(user))
 });

@@ -102,13 +102,17 @@ const styles = (theme: Theme) =>
     },
     content: {
       flexGrow: 1,
-      padding: 24,
+      padding: theme.spacing.unit * 2,
       marginTop: 56,
       [theme.breakpoints.up('sm')]: {
-        marginTop: 64
+        marginTop: 64,
       },
       [theme.breakpoints.up('md')]: {
         marginLeft: drawerWidth
+      },
+      [theme.breakpoints.down('md')]: {
+        paddingLeft: 0,
+        paddingRight: 0
       }
     },
     menuActive: {

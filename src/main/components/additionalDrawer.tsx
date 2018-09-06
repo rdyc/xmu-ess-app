@@ -12,7 +12,6 @@ import SwapHorizontalCircle from '@material-ui/icons/SwapHorizontalCircle';
 import PowerSettingsNew from '@material-ui/icons/PowerSettingsNew';
 import * as store from 'store';
 import { ConnectedReduxProps } from '../store';
-// tslint:disable-next-line:max-line-length
 import { Anchor, setAdditionalDrawer, setAccountShow, setActive, Active, AppUser, setAnchor, setLogoutDialog } from '../store/@layout';
 import styles from '../styles';
 import { LookupRoleMenuListType } from '../store/lookup/types/LookupRoleMenuListType';
@@ -98,7 +97,9 @@ export const additionalDrawer: React.SFC<AllProps> = props => {
         {props.user && (
           <div>
             <List>
-              <ListItem>
+              <ListItem 
+                button
+                onClick={() => props.setAccountShow(!props.accountShow)}>
                 <Avatar className={props.classes.avatarRed}>
                   {props.user.company.code}
                 </Avatar>
@@ -106,9 +107,7 @@ export const additionalDrawer: React.SFC<AllProps> = props => {
                   primary={props.user.fullName} 
                   secondary={props.user.email} />
                 <ListItemSecondaryAction>
-                  <IconButton onClick={() => props.setAccountShow(!props.accountShow)}>
-                    {props.accountShow ? <ExpandLess /> : <ExpandMore />}
-                  </IconButton>
+                  {props.accountShow ? <ExpandLess /> : <ExpandMore />}
                 </ListItemSecondaryAction>
               </ListItem>
               <Collapse in={props.accountShow} timeout="auto" unmountOnExit>
@@ -135,7 +134,7 @@ export const additionalDrawer: React.SFC<AllProps> = props => {
               </Collapse>
             </List>
             <Divider />
-            <Notifications/>
+            <Notifications {...props} />
             <List subheader={
               <ListSubheader color="primary">
                 <FormattedMessage id="global.access.title"/>
