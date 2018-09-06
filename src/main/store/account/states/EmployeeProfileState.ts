@@ -1,10 +1,19 @@
 import { SingleResponseType } from '../../@base/SingleResponseType';
 import { EmployeeProfileType } from '../types/EmployeeProfileType';
-import { EmployeeParameterType } from '../types/EmployeeParameterType';
+import { EmployeeQueryType, EmployeeCommandType } from '../types/EmployeeParameterType';
+import { CommandType } from '../../../constants/commandType';
 
-export interface EmployeeProfileState {
-    readonly parameter: EmployeeParameterType | undefined;
+export interface EmployeeProfileQueryState {
+    readonly parameter: EmployeeQueryType | undefined;
     readonly response: SingleResponseType<EmployeeProfileType> | undefined;
     readonly loading: boolean;
-    readonly errors?: string;
+    readonly errors?: string | undefined;
+}
+
+export interface EmployeeProfileCommandState {
+    readonly parameter: EmployeeCommandType | undefined;
+    readonly method: CommandType | undefined;
+    readonly response: SingleResponseType<EmployeeProfileType> | undefined;
+    readonly loading: boolean;
+    readonly errors?: string | undefined;
 }

@@ -1,27 +1,28 @@
 import { Reducer } from 'redux';
-import { EmployeeProfileState } from '../states/EmployeeProfileState';
+import { EmployeeProfileCommandState } from '../states/EmployeeProfileState';
 import { EmployeeProfileAction } from '../actions/employeeProfileActions';
 
-const initialState: EmployeeProfileState = {
+const initialState: EmployeeProfileCommandState = {
+  method: undefined,
   parameter: undefined,
   response: undefined,
   errors: undefined,
   loading: false
 };
 
-const reducer: Reducer<EmployeeProfileState> = (state = initialState, action) => {
+const reducer: Reducer<EmployeeProfileCommandState> = (state = initialState, action) => {
   switch (action.type) {
-    case EmployeeProfileAction.FETCH_REQUEST: {
+    case EmployeeProfileAction.COMMAND_REQUEST: {
       return { ...state, loading: true, parameter: action.payload };
     }
-    case EmployeeProfileAction.FETCH_SUCCESS: {
+    case EmployeeProfileAction.COMMAND_SUCCESS: {
       return { ...state, loading: false, response: action.payload };
     }
-    case EmployeeProfileAction.FETCH_ERROR: {
+    case EmployeeProfileAction.COMMAND_ERROR: {
       return { ...state, loading: false, errors: action.payload };
     }
     default: { return state; }
   }
 };
 
-export { reducer as employeeProfileReducer };
+export { reducer as employeeProfileCommandReducer };

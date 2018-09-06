@@ -22,6 +22,15 @@ export default async function Api(
     headers,
     body: JSON.stringify(data)
   })
-    .then(res => res.json())
-    .catch(err => console.error(err));
+    .then(res => { 
+      if (res.ok) {
+        return res.json();
+      } else {
+        throw new Error(res.statusText);
+      }
+    })
+    .catch(err => { 
+      throw new Error(err.statusText);
+      // return Promise.reject();
+    });
 }

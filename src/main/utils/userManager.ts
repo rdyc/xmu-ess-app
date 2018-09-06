@@ -14,6 +14,7 @@ const userManagerConfig = {
   automaticSilentRenew: true,
   filterProtocolClaims: true,
   loadUserInfo: true,
+  monitorSession: true
 };
 
 const userManager = createUserManager(userManagerConfig);

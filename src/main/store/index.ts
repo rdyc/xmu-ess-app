@@ -10,8 +10,9 @@ import { notificationReducer } from './notification/NotificationReducer';
 import notificationSagas from './notification/NotificationSagas';
 import employeeProfileSagas from './account/sagas/employeeProfileSagas';
 import { reducer as reduxFormReducer, FormStateMap } from 'redux-form';
-import { employeeProfileReducer } from './account/reducers/employeeProfileReducer';
-import { EmployeeProfileState } from './account/states/EmployeeProfileState';
+import { employeeProfileQueryReducer } from './account/reducers/employeeProfileQueryReducer';
+import { EmployeeProfileQueryState, EmployeeProfileCommandState } from './account/states/EmployeeProfileState';
+import { employeeProfileCommandReducer } from './account/reducers/employeeProfileCommandReducer';
 
 export interface AppState {
   layout: LayoutState;
@@ -19,7 +20,10 @@ export interface AppState {
   account: EmployeeMyState;
   notification: NotificationState;
   form: FormStateMap;
-  profile: EmployeeProfileState;
+
+  /* profile */
+  profileQuery: EmployeeProfileQueryState;
+  profileCommand: EmployeeProfileCommandState;
 }
 
 export interface ConnectedReduxProps<A extends Action = AnyAction> {
@@ -32,7 +36,8 @@ export const rootReducer = combineReducers<AppState>({
   account: employeeMyReducer,
   notification: notificationReducer,
   form: reduxFormReducer,
-  profile: employeeProfileReducer
+  profileQuery: employeeProfileQueryReducer,
+  profileCommand: employeeProfileCommandReducer
 });
 
 export function* rootSaga() {

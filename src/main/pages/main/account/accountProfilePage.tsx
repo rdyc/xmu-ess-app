@@ -8,10 +8,11 @@ import { WithStyles, Card, CardContent } from '@material-ui/core';
 import styles from '../../../styles';
 import { EmployeeProfileType } from '../../../store/account/types/EmployeeProfileType';
 import { SingleResponseType } from '../../../store/@base/SingleResponseType';
-import { EmployeeProfileFetchRequest } from '../../../store/account/actions/employeeProfileActions';
+import { EmployeeProfileFetchRequest, EmployeeProfileCommandRequest } from '../../../store/account/actions/employeeProfileActions';
 import { EmployeeFormType } from '../../../store/account/types/EmployeeFormType';
-import { EmployeeParameterType } from '../../../store/account/types/EmployeeParameterType';
+import { EmployeeQueryType, EmployeeCommandType } from '../../../store/account/types/EmployeeParameterType';
 import { AppUser } from '../../../store/@layout';
+import { CommandType } from '../../../constants/commandType';
 
 interface PropsFromState extends RouteComponentProps<void>, WithStyles<typeof styles> {
   user: AppUser;
@@ -22,13 +23,15 @@ interface PropsFromState extends RouteComponentProps<void>, WithStyles<typeof st
 
 interface PropsFromDispatch {
   fetchRequest: typeof EmployeeProfileFetchRequest;
+  commandRequest: typeof EmployeeProfileCommandRequest;
 }
 
 type AllProps = PropsFromState & PropsFromDispatch & ConnectedReduxProps;
   
 class AccountProfilePage extends React.Component<AllProps> {
   componentWillReceiveProps(nextProps: AllProps) {
-    if (!this.props.loading && !nextProps.loading) {
+    // wait until user loaded and it's not loaded yet
+    if (!this.props.user && !this.props.loading && !nextProps.loading) {
       nextProps.fetchRequest({
         uid: nextProps.user.uid
       });
@@ -43,12 +46,18 @@ class AccountProfilePage extends React.Component<AllProps> {
     };
   };
 
-  sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+  // sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
-  handleSubmit = (values: Partial<EmployeeFormType>) => { 
-    return this.sleep(1000).then(() => { 
-      alert(JSON.stringify(values, null, 2)); 
+  handleSubmit = (values: EmployeeFormType) => { 
+    this.props.commandRequest({
+      uid: this.props.user.uid,
+      method: CommandType.PUT,
+      data: values
     });
+
+    // return this.sleep(1000).then(() => { 
+    //   alert(JSON.stringify(values, null, 2)); 
+    // });
   };
 
   validate = (values: EmployeeFormType) => {
@@ -90,15 +99,16 @@ class AccountProfilePage extends React.Component<AllProps> {
   }
 }
 
-const mapStateToProps = ({ layout, profile }: AppState) => ({
+const mapStateToProps = ({ layout, profileQuery }: AppState) => ({
   user: layout.user,
-  response: profile.response,
-  errors: profile.errors,
-  loading: profile.loading
+  response: profileQuery.response,
+  errors: profileQuery.errors,
+  loading: profileQuery.loading
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  fetchRequest: (params: EmployeeParameterType) => dispatch(EmployeeProfileFetchRequest(params))
+  fetchRequest: (params: EmployeeQueryType) => dispatch(EmployeeProfileFetchRequest(params)),
+  commandRequest: (params: EmployeeCommandType) => dispatch(EmployeeProfileCommandRequest(params))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AccountProfilePage);
