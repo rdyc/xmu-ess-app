@@ -7,12 +7,15 @@ const API_ENDPOINT = process.env.REACT_APP_API_URL || '';
 
 function* handleFetch() {
   try {
-    // To call async functions, use redux-saga's `call()`.
-    const res = yield call(callApi, 'get', API_ENDPOINT, '/v1/account/employees/my');
-
-    yield put(EmployeeFetchSuccess(res));
+    const response = yield call(callApi, 'get', API_ENDPOINT, '/v1/account/employees/my');
+    
+    if (response instanceof Response) {
+      yield put(EmployeeFetchError(`${response.status}: ${response.statusText}`));
+    } else {
+      yield put(EmployeeFetchSuccess(response));
+    }
   } catch (err) {
-    if (err instanceof TypeError) {
+    if (err instanceof Error) {
       yield put(EmployeeFetchError(err.stack!));
     } else {
       yield put(EmployeeFetchError('An unknown error occured.'));

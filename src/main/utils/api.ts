@@ -22,15 +22,12 @@ export default async function Api(
     headers,
     body: JSON.stringify(data)
   })
-    .then(res => { 
-      if (res.ok) {
-        return res.json();
-      } else {
-        throw new Error(res.statusText);
-      }
-    })
-    .catch(err => { 
-      throw new Error(err.statusText);
-      // return Promise.reject();
-    });
+  .then(response => {
+    if (response.ok) {
+      return response.json();
+    } else {
+      return response;
+    }
+  })
+  .catch(error => error);
 }

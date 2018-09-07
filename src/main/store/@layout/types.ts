@@ -1,4 +1,5 @@
 import { LookupRoleMenuListType } from '../lookup/types/LookupRoleMenuListType';
+import { SnackbarType } from '../../constants/snackbarType';
 
 // Example for using discriminated union types.
 export type Anchor = 'left' | 'right';
@@ -46,7 +47,8 @@ export const enum LayoutActionTypes {
   SET_ACTIVE = '@@layout/SET_ACTIVE',
   SET_USER = '@@layout/SET_USER',
   SET_NOTIFICATION = '@@layout/SET_NOTIFICATION',
-  SET_LOGOUT_DIALOG = '@@layout/SET_LOGOUT_DIALOG'
+  SET_LOGOUT_DIALOG = '@@layout/SET_LOGOUT_DIALOG',
+  SET_ALERT_SNACKBAR = '@@layout/SET_ALERT_SNACKBAR',
 }
 
 // Declare state types with `readonly` modifier to get compile time immutability.
@@ -63,4 +65,5 @@ export interface LayoutState {
   readonly user: AppUser | null;
   readonly notification: number;
   readonly logoutDialog: boolean;
+  readonly alertSnackbar: SnackbarType;
 }

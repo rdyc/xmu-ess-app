@@ -17,7 +17,11 @@ const initialState: LayoutState = {
   },
   user: null,
   notification: 0,
-  logoutDialog: false
+  logoutDialog: false,
+  alertSnackbar: {
+    open: false,
+    message: null
+  }
 };
 
 // Thanks to Redux 4's much simpler typings, we can take away a lot of typings on the reducer side,
@@ -56,6 +60,9 @@ const reducer: Reducer<LayoutState> = (state = initialState, action) => {
     }
     case LayoutActionTypes.SET_LOGOUT_DIALOG: {
       return { ...state, logoutDialog: action.payload };
+    }
+    case LayoutActionTypes.SET_ALERT_SNACKBAR: {
+      return { ...state, alertSnackbar: action.payload };
     }
 
     default: {

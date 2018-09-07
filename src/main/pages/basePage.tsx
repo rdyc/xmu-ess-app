@@ -7,12 +7,13 @@ import { connect } from 'react-redux';
 import { AppState } from '../store';
 import { RouteComponentProps, withRouter } from 'react-router';
 // tslint:disable-next-line:max-line-length
-import { Anchor, setMenuDrawer, setActive, setAdditionalDrawer, setTopDrawer, setBottomDrawer, Active, AppUser, setUser, setMenuItems, setAccountShow, setAnchor, setLogoutDialog } from '../store/@layout';
+import { Anchor, setMenuDrawer, setActive, setAdditionalDrawer, setTopDrawer, setBottomDrawer, Active, AppUser, setUser, setMenuItems, setAccountShow, setAnchor, setLogoutDialog, setAlertSnackbar } from '../store/@layout';
 import { ConnectedReduxProps } from '../store';
-import { TopAppBar, MenuDrawer, AdditionalDrawer } from '../components';
+import { TopAppBar, MenuDrawer, AdditionalDrawer, BottomSnackbar } from '../components';
 import { Dispatch } from 'redux';
 import { LookupRoleMenuListType } from '../store/lookup/types/LookupRoleMenuListType';
 import { AppConstant } from '../constants';
+import { SnackbarType } from '../constants/snackbarType';
 
 interface PropsFromState extends RouteComponentProps<void>, WithStyles<typeof styles> {
   anchor: Anchor;
@@ -26,6 +27,7 @@ interface PropsFromState extends RouteComponentProps<void>, WithStyles<typeof st
   user: AppUser;
   notification: number;
   logoutDialog: boolean;
+  alertSnackbar: SnackbarType;
 }
 
 interface PropsFromDispatch {
@@ -39,6 +41,7 @@ interface PropsFromDispatch {
   setMenuItems: typeof setMenuItems;
   setUser: typeof setUser;
   setLogoutDialog: typeof setLogoutDialog;
+  setAlertSnackbar: typeof setAlertSnackbar;
 }
 
 type AllProps = PropsFromState & PropsFromDispatch & ConnectedReduxProps;
@@ -67,6 +70,7 @@ class BasePage extends React.Component<AllProps> {
         <main className={this.props.classes.content}>
           {this.props.children}
         </main>
+        <BottomSnackbar {...this.props}/>
       </div>
     );
   }
@@ -83,7 +87,8 @@ const mapStateToProps = ({ layout }: AppState) => ({
   active: layout.active,
   user: layout.user,
   notification: layout.notification,
-  logoutDialog: layout.logoutDialog
+  logoutDialog: layout.logoutDialog,
+  alertSnackbar: layout.alertSnackbar
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
@@ -97,6 +102,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   setMenuItems: (items: LookupRoleMenuListType[]) => dispatch(setMenuItems(items)),
   setUser: (user: AppUser) => dispatch(setUser(user)),
   setLogoutDialog: (open: boolean) => dispatch(setLogoutDialog(open)),
+  setAlertSnackbar: (data: SnackbarType) => dispatch(setAlertSnackbar(data)),
 });
 
 const redux = connect(mapStateToProps, mapDispatchToProps)(BasePage);
