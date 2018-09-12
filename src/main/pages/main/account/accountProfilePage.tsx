@@ -40,19 +40,27 @@ class AccountProfilePage extends React.Component<AllProps> {
 
   transform = (data: EmployeeProfileType): EmployeeFormType => { 
     return {
-      fullName: data.fullName,
+      uid: data.uid,
+      employmentNumber: data.employmentNumber,
       email: data.email,
+      emailPersonal: data.emailPersonal,
+      fullName: data.fullName,
       address: data.address,
+      addressAdditional: data.addressAdditional,
+      birthPlace: data.birthPlace,
+      dateOfBirth: data.dateOfBirth,
+      phone: data.phone,
+      mobilePhone: data.mobilePhone
     };
   };
 
   // sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
-  handleSubmit = (values: EmployeeFormType) => { 
+  handleSubmit = (payload: EmployeeProfileType) => { 
     this.props.commandRequest({
       uid: this.props.user.uid,
       method: CommandType.PUT,
-      data: values
+      data: this.transform(payload)
     });
 
     // return this.sleep(1000).then(() => { 
@@ -88,7 +96,7 @@ class AccountProfilePage extends React.Component<AllProps> {
             <ProfileForm 
               form="profileForm"
               title="Profile"  
-              initialValues={this.transform(response.data)} 
+              initialValues={response.data} 
               validate={this.validate}
               onSubmit={this.handleSubmit} 
             />

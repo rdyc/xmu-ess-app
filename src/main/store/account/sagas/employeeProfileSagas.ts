@@ -35,7 +35,7 @@ function* handleFetch(action: ReturnType<typeof EmployeeProfileFetchRequest>) {
 
 function* handleCommand(action: ReturnType<typeof EmployeeProfileCommandRequest>) {
   try {
-    const response = yield call(callApi, action.payload.method, API_ENDPOINT, url(action.payload.uid), action.payload.data);
+    const response = yield call(callApi, action.payload.method, API_ENDPOINT, '/v1/account/employees', action.payload.data);
 
     if (response instanceof Response) {
       yield put(EmployeeProfileCommandError(`${response.status} ${response.statusText} | ${response.headers.get('Date')} | ${response.headers.get('X-Correlation-Id')}`));

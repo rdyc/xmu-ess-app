@@ -6,6 +6,7 @@ import { EmergencyContactType } from './EmergencyContactType';
 
 export interface EmployeeProfileType {
     uid: string;
+    joinDate: Date;
     companyUid: string | null;
     company: LookupCompanyType | null;
     employmentNumber: string;
@@ -16,6 +17,8 @@ export interface EmployeeProfileType {
     birthPlace: string | null;
     email: string;
     emailPersonal: string  | null;
+    phone: string | null;
+    mobilePhone: string | null;
     address: string  | null;
     addressAdditional: string | null;
     genderType: string | null;

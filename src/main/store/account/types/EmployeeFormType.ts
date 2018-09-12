@@ -1,19 +1,19 @@
 export interface EmployeeFormType {
-  // uid: string;
+  uid: string;
   // companyUid: string;
-  // employmentNumber: string;
+  employmentNumber: string;
   // employmentType: string;
   // joinDate: Date | null;
   // inactiveDate: Date | null;
   fullName: string;
-  // dateOfBirth: Date | null;
-  // birthPlace: string | null;
+  dateOfBirth: Date | null;
+  birthPlace: string | null;
   email: string;
-  // emailPersonal: string | null;
-  // phone: string | null;
-  // mobilePhone: string | null;
+  emailPersonal: string | null;
+  phone: string | null;
+  mobilePhone: string | null;
   address: string | null;
-  // addressAdditional: string | null;
+  addressAdditional: string | null;
   // genderType: string;
   // religionType: string | null;
   // taxType: string | null;
