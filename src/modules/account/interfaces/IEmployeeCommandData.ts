@@ -1,0 +1,34 @@
+export interface IEmployeeCommandData {
+  uid: string;
+  // companyUid: string;
+  employmentNumber: string;
+  // employmentType: string;
+  // joinDate: Date | null;
+  // inactiveDate: Date | null;
+  fullName: string;
+  dateOfBirth: Date | null;
+  birthPlace: string | null;
+  email: string;
+  emailPersonal: string | null;
+  phone: string | null;
+  mobilePhone: string | null;
+  address: string | null;
+  addressAdditional: string | null;
+  // genderType: string;
+  // religionType: string | null;
+  // taxType: string | null;
+  // bloodType: string | null;
+  // familyCardNumber: string | null;
+  // citizenNumber: string | null;
+  // taxNumber: string | null;
+  // bpjsEmploymentNumber: string | null;
+  // bpjsHealthCareNumber: string | null;
+  // bankAccount: string | null;
+  // bankAccountName: string | null;
+  // bankAccountBranch: string | null;
+  // emergencyContactName: string | null;
+  // emergencyContactRelation: string | null;
+  // emergencyContactPhone: string | null;
+  // emergencyContactPhoneAdditional: string | null;
+  // image: string | null;
+}
