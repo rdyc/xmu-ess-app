@@ -1,12 +1,11 @@
+import { ConnectedReduxProps } from '@generic/types';
+import { ISnackbarAlert } from '@layout/interfaces';
+import { setAlertSnackbar } from '@layout/store/actionCreators';
 import { Button, Snackbar, WithStyles } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
+import styles from '@styles';
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
-
-import { ConnectedReduxProps } from '../../../../generic/types';
-import styles from '../../../../styles';
-import { ISnackbarAlert } from '../../interfaces/ISnackbarAlert';
-import { setAlertSnackbar } from '../../store/actionCreators';
 
 interface PropsFromState extends RouteComponentProps<void>, WithStyles<typeof styles> {
   alertSnackbar: ISnackbarAlert;

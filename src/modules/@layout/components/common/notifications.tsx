@@ -1,3 +1,7 @@
+import { IAppState, IResponseList } from '@generic/interfaces';
+import { ConnectedReduxProps } from '@generic/types';
+import { IAppUser, INotification, INotificationQuery } from '@layout/interfaces';
+import { notificationFetchRequest, setNotification } from '@layout/store/actionCreators';
 import {
   Collapse,
   List,
@@ -9,21 +13,13 @@ import {
 } from '@material-ui/core';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
+import styles from '@styles';
 import * as moment from 'moment';
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 import { RouteComponentProps } from 'react-router';
 import { Dispatch } from 'redux';
-
-import { IAppState } from '../../../../generic/interfaces';
-import { IResponseList } from '../../../../generic/interfaces/IResponseList';
-import { ConnectedReduxProps } from '../../../../generic/types';
-import styles from '../../../../styles';
-import { IAppUser, INotification } from '../../interfaces';
-import { INotificationQuery } from '../../interfaces/INotificationQuery';
-import { setNotification } from '../../store/actionCreators';
-import { notificationFetchRequest } from '../../store/actionCreators/notificationActionCreators';
 
 interface PropsFromState extends RouteComponentProps<void>, WithStyles<typeof styles> {
   user: IAppUser;

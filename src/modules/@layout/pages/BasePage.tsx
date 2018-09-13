@@ -1,18 +1,8 @@
-import { WithStyles, withStyles } from '@material-ui/core';
-import * as React from 'react';
-import { connect } from 'react-redux';
-import { RouteComponentProps, withRouter } from 'react-router';
-import { Dispatch } from 'redux';
-import * as store from 'store';
-
-import { AppStorage } from '../../../constants';
-import { IAppState } from '../../../generic/interfaces';
-import { ConnectedReduxProps } from '../../../generic/types';
-import styles from '../../../styles';
-import withRoot from '../../../withRoot';
-import { ILookupRoleMenuList } from '../../lookup/interfaces/ILookupRoleMenuList';
-import { AdditionalDrawer, BottomSnackbar, MenuDrawer, TopAppBar } from '../components/common';
-import { IAppUser, ICurrentPage, ISnackbarAlert } from '../interfaces';
+import { AppStorage } from '@constants/index';
+import { IAppState } from '@generic/interfaces';
+import { ConnectedReduxProps } from '@generic/types';
+import { AdditionalDrawer, BottomSnackbar, MenuDrawer, TopAppBar } from '@layout/components/common';
+import { IAppUser, ICurrentPage, ISnackbarAlert } from '@layout/interfaces';
 import {
   setAccountShow,
   setActive,
@@ -25,8 +15,18 @@ import {
   setMenuItems,
   setTopDrawer,
   setUser,
-} from '../store/actionCreators';
-import { Anchor } from '../types';
+} from '@layout/store/actionCreators';
+import { Anchor } from '@layout/types';
+import { ILookupRoleMenuList } from '@lookup/interfaces';
+import { WithStyles, withStyles } from '@material-ui/core';
+import styles from '@styles';
+import * as React from 'react';
+import { connect } from 'react-redux';
+import { RouteComponentProps, withRouter } from 'react-router';
+import { Dispatch } from 'redux';
+import * as store from 'store';
+
+import withRoot from '../../../withRoot';
 
 interface PropsFromState extends RouteComponentProps<void>, WithStyles<typeof styles> {
   anchor: Anchor;

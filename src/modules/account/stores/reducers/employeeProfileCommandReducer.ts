@@ -1,7 +1,7 @@
 import { Reducer } from 'redux';
 
-import { IEmployeeProfileCommandState } from '../../interfaces/IEmployeeProfileCommandState';
-import { EmployeeProfileAction } from '../actionCreators/employeeProfileActions';
+import { IEmployeeProfileCommandState } from '../../interfaces';
+import { EmployeeProfileAction } from '../actionCreators';
 
 const initialState: IEmployeeProfileCommandState = {
   method: undefined,

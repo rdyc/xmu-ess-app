@@ -4,6 +4,7 @@ export * from './ILayoutState';
 export * from './INotification';
 export * from './INotificationDetail';
 export * from './INotificationDetailItem';
+export * from './INotificationQuery';
 export * from './INotificationState';
 export * from './ISnackbarAlert';
 export * from './IUserCompany';

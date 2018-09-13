@@ -1,15 +1,14 @@
+import { ConnectedReduxProps } from '@generic/types';
+import { IAppUser, ICurrentPage } from '@layout/interfaces';
+import { setAdditionalDrawer, setMenuDrawer } from '@layout/store/actionCreators';
 import { AppBar, Badge, IconButton, Toolbar, Typography, WithStyles } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import NotificationImportant from '@material-ui/icons/NotificationImportant';
+import styles from '@styles';
 import * as classNames from 'classnames';
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
-
-import { ConnectedReduxProps } from '../../../../generic/types';
-import styles from '../../../../styles';
-import { IAppUser, ICurrentPage } from '../../interfaces';
-import { setAdditionalDrawer, setMenuDrawer } from '../../store/actionCreators';
 
 interface PropsFromState extends RouteComponentProps<void>, WithStyles<typeof styles> {
   menuDrawer: boolean;

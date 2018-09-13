@@ -1,3 +1,8 @@
+import { accountRouter } from '@account/pages';
+import { HomePage } from '@layout/pages';
+import AccessWizardPage from '@layout/pages/AccessWizardPage';
+import BasePage from '@layout/pages/BasePage';
+import CallbackPage from '@layout/pages/CallbackPage';
 import { ConnectedRouter } from 'connected-react-router';
 import { History } from 'history';
 import { User } from 'oidc-client';
@@ -8,14 +13,9 @@ import { Route, Router, Switch } from 'react-router';
 import { Store } from 'redux';
 import { OidcProvider } from 'redux-oidc';
 
-import { IAppState } from './generic/interfaces/IAppState';
+import { IAppState } from './generic/interfaces';
 import AppLocale from './language';
 import config, { getCurrentLanguage } from './language/config';
-import AccessWizardPage from './modules/@layout/pages/AccessWizardPage';
-import BasePage from './modules/@layout/pages/BasePage';
-import CallbackPage from './modules/@layout/pages/CallbackPage';
-import homePage from './modules/@layout/pages/homePage';
-import { accountRouter } from './modules/account/pages/accountRouter';
 import { AppUserManager } from './utils';
 
 interface PropsFromState {
@@ -111,7 +111,7 @@ class App extends React.Component<AllProps> {
                     <Switch>
                       <Route exact path="/" component={AccessWizardPage} />
                       <BasePage>
-                        <Route path="/home" component={homePage} />
+                        <Route path="/home" component={HomePage} />
                         <Route path="/account" component={accountRouter} />
                       </BasePage>
                     </Switch>

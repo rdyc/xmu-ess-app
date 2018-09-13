@@ -1,3 +1,11 @@
+import { IEmployeeAccessList, IEmployeeMy } from '@account/interfaces';
+import { EmployeeFetchRequest } from '@account/stores/actionCreators';
+import { AppStorage } from '@constants/index';
+import { IAppState, IResponseSingle } from '@generic/interfaces';
+import { ConnectedReduxProps } from '@generic/types';
+import { IAppUser, IUserCompany, IUserPosition } from '@layout/interfaces';
+import { setMenuItems, setUser } from '@layout/store/actionCreators';
+import { ILookupRoleMenuList } from '@lookup/interfaces';
 import {
   Button,
   Card,
@@ -21,25 +29,15 @@ import {
   WithStyles,
   withStyles,
 } from '@material-ui/core';
+import styles from '@styles';
+import { AppUserManager, RemoveDuplicates } from '@utils/index';
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { RouteComponentProps } from 'react-router';
 import { Dispatch } from 'redux';
 import * as store from 'store';
 
-import { AppStorage } from '../../../constants';
-import { IAppState } from '../../../generic/interfaces/IAppState';
-import { IResponseSingle } from '../../../generic/interfaces/IResponseSingle';
-import { ConnectedReduxProps } from '../../../generic/types/ConnectedReduxProps';
-import styles from '../../../styles';
-import { AppUserManager, RemoveDuplicates } from '../../../utils';
 import withRoot from '../../../withRoot';
-import { IEmployeeAccessList } from '../../account/interfaces/IEmployeeAccessList';
-import { IEmployeeMy } from '../../account/interfaces/IEmployeeMy';
-import { EmployeeFetchRequest } from '../../account/stores/actionCreators/employeeMyActions';
-import { ILookupRoleMenuList } from '../../lookup/interfaces/ILookupRoleMenuList';
-import { IAppUser, IUserCompany, IUserPosition } from '../interfaces';
-import { setMenuItems, setUser } from '../store/actionCreators';
 
 interface PropsFromState extends RouteComponentProps<void>, WithStyles<typeof styles> {
   response: IResponseSingle<IEmployeeMy>;

@@ -1,10 +1,9 @@
+import { IEmployeeCommandData } from '@account/interfaces';
+import { TextField } from '@layout/components/formFields';
 import { Button, Grid } from '@material-ui/core';
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Field, InjectedFormProps, reduxForm } from 'redux-form';
-
-import { textField } from '../../@layout/components/formFields/textField';
-import { IEmployeeCommandData } from '../interfaces/IEmployeeCommandData';
 
 interface TestFormComponentProps {
   title: string;
@@ -24,7 +23,7 @@ const profileFormComponent: React.StatelessComponent<AllProps> = ({ handleSubmit
             type="text"
             name="uid"
             label={<FormattedMessage id="account.profile.uid" />}
-            component={textField}
+            component={TextField}
           />
         </Grid>
         <Grid item xs={12} sm={12}>
@@ -32,7 +31,7 @@ const profileFormComponent: React.StatelessComponent<AllProps> = ({ handleSubmit
             type="text"
             name="employmentNumber"
             label={<FormattedMessage id="account.profile.employmentNumber" />}
-            component={textField}
+            component={TextField}
           />
         </Grid>
         <Grid item xs={12} sm={12}>
@@ -42,7 +41,7 @@ const profileFormComponent: React.StatelessComponent<AllProps> = ({ handleSubmit
             label={<FormattedMessage id="account.profile.email" />}
             required={true}
             disabled={true}
-            component={textField}
+            component={TextField}
           />
         </Grid>
         <Grid item xs={12} sm={12}>
@@ -51,7 +50,7 @@ const profileFormComponent: React.StatelessComponent<AllProps> = ({ handleSubmit
             name="fullName"
             label={<FormattedMessage id="account.profile.fullName" />}
             required={true}
-            component={textField}
+            component={TextField}
           />
         </Grid>
         <Grid item xs={12} sm={12}>
@@ -60,7 +59,7 @@ const profileFormComponent: React.StatelessComponent<AllProps> = ({ handleSubmit
             name="birthPlace"
             label={<FormattedMessage id="account.profile.birthPlace" />}
             required={true}
-            component={textField}
+            component={TextField}
           />
         </Grid>
         <Grid item xs={12} sm={12}>
@@ -69,7 +68,7 @@ const profileFormComponent: React.StatelessComponent<AllProps> = ({ handleSubmit
             name="dateOfBirth"
             label={<FormattedMessage id="account.profile.dateOfBirth" />}
             required={true}
-            component={textField}
+            component={TextField}
           />
         </Grid>
         <Grid item xs={12} sm={12}>
@@ -77,7 +76,7 @@ const profileFormComponent: React.StatelessComponent<AllProps> = ({ handleSubmit
             type="text"
             name="address"
             label={<FormattedMessage id="account.profile.address" />}
-            component={textField}
+            component={TextField}
           />
         </Grid>
         <Grid item xs={12} sm={12}>
@@ -85,7 +84,7 @@ const profileFormComponent: React.StatelessComponent<AllProps> = ({ handleSubmit
             type="text"
             name="addressAdditional"
             label={<FormattedMessage id="account.profile.addressAdditional" />}
-            component={textField}
+            component={TextField}
           />
         </Grid>
         <Grid item xs={12} sm={12}>
@@ -93,7 +92,7 @@ const profileFormComponent: React.StatelessComponent<AllProps> = ({ handleSubmit
             type="text"
             name="phone"
             label={<FormattedMessage id="account.profile.phone" />}
-            component={textField}
+            component={TextField}
           />
         </Grid>
         <Grid item xs={12} sm={12}>
@@ -101,7 +100,7 @@ const profileFormComponent: React.StatelessComponent<AllProps> = ({ handleSubmit
             type="text"
             name="mobilePhone"
             label={<FormattedMessage id="account.profile.mobilePhone" />}
-            component={textField}
+            component={TextField}
           />
         </Grid>
         <Grid item xs={12} sm={12}>
@@ -109,7 +108,7 @@ const profileFormComponent: React.StatelessComponent<AllProps> = ({ handleSubmit
             type="text"
             name="address"
             label={<FormattedMessage id="account.profile.address" />}
-            component={textField}
+            component={TextField}
           />
         </Grid>
         <Grid item xs={12} sm={12}>
@@ -117,7 +116,7 @@ const profileFormComponent: React.StatelessComponent<AllProps> = ({ handleSubmit
             type="text"
             name="emailPersonal"
             label={<FormattedMessage id="account.profile.emailPersonal" />}
-            component={textField}
+            component={TextField}
           />
         </Grid>
       </Grid>

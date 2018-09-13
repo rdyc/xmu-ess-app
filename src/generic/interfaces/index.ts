@@ -6,5 +6,5 @@ export * from './IBaseMetadata';
 export * from './IBasePagination';
 export * from './IResponseCollection';
 export * from './IResponseList';
-export * from './IResponseCollection';
+export * from './IResponseSingle';
 export * from './IUserAccount';

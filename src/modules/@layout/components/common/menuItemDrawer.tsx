@@ -1,13 +1,12 @@
+import { ConnectedReduxProps } from '@generic/types';
+import { IAppUser, ICurrentPage } from '@layout/interfaces';
+import { setActive, setMenuDrawer } from '@layout/store/actionCreators';
+import { ILookupRoleMenuList } from '@lookup/interfaces/ILookupRoleMenuList';
 import { Divider, List, ListItem, ListItemText, ListSubheader, WithStyles } from '@material-ui/core';
+import styles from '@styles';
+import { menuLinkMapper } from '@utils/index';
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
-
-import { ConnectedReduxProps } from '../../../../generic/types';
-import styles from '../../../../styles';
-import { menuLinkMapper } from '../../../../utils';
-import { ILookupRoleMenuList } from '../../../lookup/interfaces/ILookupRoleMenuList';
-import { IAppUser, ICurrentPage } from '../../interfaces';
-import { setActive, setMenuDrawer } from '../../store/actionCreators';
 
 interface PropsFromState extends RouteComponentProps<void>, WithStyles<typeof styles> {
   menuDrawer: boolean;

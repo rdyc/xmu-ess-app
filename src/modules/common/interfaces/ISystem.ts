@@ -1,4 +1,4 @@
-import { IBaseChanges } from '../../../generic/interfaces/IBaseChanges';
+import { IBaseChanges } from '../../../generic/interfaces';
 
 export interface ISystem {
     id: number;

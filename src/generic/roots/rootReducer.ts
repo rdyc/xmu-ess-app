@@ -1,12 +1,10 @@
 import { combineReducers } from 'redux';
-import { reducer as oidcReducer } from 'redux-oidc';
-import { notificationReducer } from '../../modules/@layout/store/reducers/notificationReducer';
 import { reducer as reduxFormReducer } from 'redux-form';
-import { IAppState } from '../interfaces/IAppState';
-import { employeeMyReducer } from '../../modules/account/stores/reducers/employeeMyReducer';
-import { employeeProfileQueryReducer } from '../../modules/account/stores/reducers/employeeProfileQueryReducer';
-import { employeeProfileCommandReducer } from '../../modules/account/stores/reducers/employeeProfileCommandReducer';
-import { layoutReducer } from '../../modules/@layout/store/reducers/layoutReducer';
+import { reducer as oidcReducer } from 'redux-oidc';
+
+import { layoutReducer, notificationReducer } from '../../modules/@layout/store/reducers';
+import { employeeMyReducer, employeeProfileCommandReducer, employeeProfileQueryReducer } from '../../modules/account/stores/reducers';
+import { IAppState } from '../interfaces';
 
 export const rootReducer = combineReducers<IAppState>({
   layout: layoutReducer,

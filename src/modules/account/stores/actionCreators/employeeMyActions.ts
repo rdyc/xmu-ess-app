@@ -1,6 +1,6 @@
 import { action } from 'typesafe-actions';
 
-import { IEmployeeMy } from '../../interfaces/IEmployeeMy';
+import { IEmployeeMy } from '../../interfaces';
 
 export const enum EmployeeMyAction {
   FETCH_REQUEST = '@@employee-my/FETCH_REQUEST',

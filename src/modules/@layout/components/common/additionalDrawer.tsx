@@ -1,3 +1,8 @@
+import { ConnectedReduxProps } from '@generic/types';
+import { IAppUser, ICurrentPage } from '@layout/interfaces';
+import { setAccountShow, setActive, setAdditionalDrawer, setAnchor, setLogoutDialog } from '@layout/store/actionCreators';
+import { Anchor } from '@layout/types';
+import { ILookupRoleMenuList } from '@lookup/interfaces/ILookupRoleMenuList';
 import {
   Avatar,
   Button,
@@ -26,19 +31,14 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import PowerSettingsNew from '@material-ui/icons/PowerSettingsNew';
 import SwapHorizontalCircle from '@material-ui/icons/SwapHorizontalCircle';
 import WifiIcon from '@material-ui/icons/Wifi';
+import styles from '@styles';
+import { AppUserManager } from '@utils/userManager';
 import * as classNames from 'classnames';
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { RouteComponentProps } from 'react-router';
 import * as store from 'store';
 
-import { ConnectedReduxProps } from '../../../../generic/types';
-import styles from '../../../../styles';
-import { AppUserManager } from '../../../../utils/userManager';
-import { ILookupRoleMenuList } from '../../../lookup/interfaces/ILookupRoleMenuList';
-import { IAppUser, ICurrentPage } from '../../interfaces';
-import { setAccountShow, setActive, setAdditionalDrawer, setAnchor, setLogoutDialog } from '../../store/actionCreators';
-import { Anchor } from '../../types';
 import Notifications from './notifications';
 
 // tslint:disable-next-line:max-line-length
