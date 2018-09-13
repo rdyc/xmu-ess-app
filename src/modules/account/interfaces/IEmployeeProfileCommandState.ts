@@ -1,7 +1,7 @@
-import { IEmployeeCommand } from './IEmployeeCommand';
 import { IResponseSingle } from '../../../generic/interfaces/IResponseSingle';
-import { IEmployee } from './IEmployee';
 import { Command } from '../../../generic/types';
+import { IEmployee } from './IEmployee';
+import { IEmployeeCommand } from './IEmployeeCommand';
 
 export interface IEmployeeProfileCommandState {
   readonly parameter: IEmployeeCommand | undefined;

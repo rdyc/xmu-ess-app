@@ -1,21 +1,22 @@
-import * as React from 'react';
-import { connect, Provider } from 'react-redux';
-import { OidcProvider } from 'redux-oidc';
 import { ConnectedRouter } from 'connected-react-router';
-import { IAppState } from './generic/interfaces/IAppState';
-import { Store } from 'redux';
 import { History } from 'history';
-import { Route, Router, Switch } from 'react-router';
 import { User } from 'oidc-client';
+import * as React from 'react';
 import { IntlProvider } from 'react-intl';
+import { connect, Provider } from 'react-redux';
+import { Route, Router, Switch } from 'react-router';
+import { Store } from 'redux';
+import { OidcProvider } from 'redux-oidc';
+
+import { IAppState } from './generic/interfaces/IAppState';
 import AppLocale from './language';
 import config, { getCurrentLanguage } from './language/config';
-import { AppUserManager } from './utils';
+import AccessWizardPage from './modules/@layout/pages/AccessWizardPage';
 import BasePage from './modules/@layout/pages/BasePage';
 import CallbackPage from './modules/@layout/pages/CallbackPage';
 import homePage from './modules/@layout/pages/homePage';
 import { accountRouter } from './modules/account/pages/accountRouter';
-import AccessWizardPage from './modules/@layout/pages/AccessWizardPage';
+import { AppUserManager } from './utils';
 
 interface PropsFromState {
   user?: User;

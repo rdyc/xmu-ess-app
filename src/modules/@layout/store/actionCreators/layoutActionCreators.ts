@@ -1,8 +1,9 @@
 import { action } from 'typesafe-actions';
-import { LayoutAction as Action, Anchor } from '../../types';
+
 import { ILookupRoleMenuList } from '../../../lookup/interfaces/ILookupRoleMenuList';
+import { IAppUser, ICurrentPage } from '../../interfaces';
 import { ISnackbarAlert } from '../../interfaces/ISnackbarAlert';
-import { ICurrentPage, IAppUser } from '../../interfaces';
+import { Anchor, LayoutAction as Action } from '../../types';
 
 export const setAnchor = (anchor: Anchor) => action(Action.SET_ANCHOR, anchor);
 export const setMenuDrawer = (open: boolean) => action(Action.SET_MENU_DRAWER, open);

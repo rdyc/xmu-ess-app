@@ -1,10 +1,11 @@
-import * as React from 'react';
 import { WithStyles } from '@material-ui/core';
-import AccountProfilePage from './accountProfilePage';
-import { RouteComponentProps, Route, Switch } from 'react-router';
-import styles from '../../../styles';
+import * as React from 'react';
+import { Route, RouteComponentProps, Switch } from 'react-router';
+
 import { ConnectedReduxProps } from '../../../generic/types';
+import styles from '../../../styles';
 import { IAppUser } from '../../@layout/interfaces';
+import AccountProfilePage from './accountProfilePage';
 
 interface PropsFromState extends RouteComponentProps<void>, WithStyles<typeof styles> {
   user: IAppUser;

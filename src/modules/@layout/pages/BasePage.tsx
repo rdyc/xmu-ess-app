@@ -1,20 +1,32 @@
-import { withStyles, WithStyles } from '@material-ui/core';
+import { WithStyles, withStyles } from '@material-ui/core';
 import * as React from 'react';
-import withRoot from '../../../withRoot';
-import styles from '../../../styles';
-import * as store from 'store';
 import { connect } from 'react-redux';
-import { IAppState } from '../../../generic/interfaces';
 import { RouteComponentProps, withRouter } from 'react-router';
-// tslint:disable-next-line:max-line-length
-import { ConnectedReduxProps } from '../../../generic/types';
-import { TopAppBar, MenuDrawer, AdditionalDrawer, BottomSnackbar } from '../components/common';
 import { Dispatch } from 'redux';
-import { ILookupRoleMenuList } from '../../lookup/interfaces/ILookupRoleMenuList';
-import { ISnackbarAlert, ICurrentPage, IAppUser } from '../interfaces';
+import * as store from 'store';
+
 import { AppStorage } from '../../../constants';
+import { IAppState } from '../../../generic/interfaces';
+import { ConnectedReduxProps } from '../../../generic/types';
+import styles from '../../../styles';
+import withRoot from '../../../withRoot';
+import { ILookupRoleMenuList } from '../../lookup/interfaces/ILookupRoleMenuList';
+import { AdditionalDrawer, BottomSnackbar, MenuDrawer, TopAppBar } from '../components/common';
+import { IAppUser, ICurrentPage, ISnackbarAlert } from '../interfaces';
+import {
+  setAccountShow,
+  setActive,
+  setAdditionalDrawer,
+  setAlertSnackbar,
+  setAnchor,
+  setBottomDrawer,
+  setLogoutDialog,
+  setMenuDrawer,
+  setMenuItems,
+  setTopDrawer,
+  setUser,
+} from '../store/actionCreators';
 import { Anchor } from '../types';
-import { setAnchor, setMenuDrawer, setAdditionalDrawer, setAccountShow, setTopDrawer, setBottomDrawer, setActive, setMenuItems, setUser, setLogoutDialog, setAlertSnackbar } from '../store/actionCreators';
 
 interface PropsFromState extends RouteComponentProps<void>, WithStyles<typeof styles> {
   anchor: Anchor;

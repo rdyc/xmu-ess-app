@@ -1,4 +1,4 @@
-import { Theme, createStyles } from '@material-ui/core';
+import { createStyles, Theme } from '@material-ui/core';
 import red from '@material-ui/core/colors/red';
 
 const drawerWidth = 260;

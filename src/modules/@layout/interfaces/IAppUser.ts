@@ -1,5 +1,5 @@
-import { IUserPosition } from './IUserPosition';
 import { IUserCompany } from './IUserCompany';
+import { IUserPosition } from './IUserPosition';
 
 export interface IAppUser {
   uid: string;

@@ -1,9 +1,10 @@
+import { Button, Grid } from '@material-ui/core';
 import * as React from 'react';
-import { InjectedFormProps, reduxForm, Field } from 'redux-form';
-import { IEmployeeCommandData } from '../interfaces/IEmployeeCommandData';
-import { Grid, Button } from '@material-ui/core';
 import { FormattedMessage } from 'react-intl';
+import { Field, InjectedFormProps, reduxForm } from 'redux-form';
+
 import { textField } from '../../@layout/components/formFields/textField';
+import { IEmployeeCommandData } from '../interfaces/IEmployeeCommandData';
 
 interface TestFormComponentProps {
   title: string;

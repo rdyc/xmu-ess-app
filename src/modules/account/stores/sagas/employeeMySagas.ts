@@ -1,6 +1,8 @@
 import { all, call, fork, put, takeEvery } from 'redux-saga/effects';
+
 import { callApi } from '../../../../utils';
 import { EmployeeFetchError, EmployeeFetchSuccess, EmployeeMyAction } from '../actionCreators/employeeMyActions';
+
 const API_ENDPOINT = process.env.REACT_APP_API_URL || '';
 
 function* handleFetch() {

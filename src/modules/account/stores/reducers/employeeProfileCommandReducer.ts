@@ -1,4 +1,5 @@
 import { Reducer } from 'redux';
+
 import { IEmployeeProfileCommandState } from '../../interfaces/IEmployeeProfileCommandState';
 import { EmployeeProfileAction } from '../actionCreators/employeeProfileActions';
 

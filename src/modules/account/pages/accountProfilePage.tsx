@@ -1,19 +1,20 @@
+import { Card, CardContent, WithStyles } from '@material-ui/core';
 import * as React from 'react';
-import ProfileForm from './profileForm';
-import { ConnectedReduxProps, Command } from '../../../generic/types';
-import { IAppState } from '../../../generic/interfaces';
-import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
 import { RouteComponentProps } from 'react-router';
-import { WithStyles, Card, CardContent } from '@material-ui/core';
-import styles from '../../../styles';
-import { IEmployee } from '../interfaces/IEmployee';
+import { Dispatch } from 'redux';
+
+import { IAppState } from '../../../generic/interfaces';
 import { IResponseSingle } from '../../../generic/interfaces/IResponseSingle';
-import { IEmployeeCommandData } from '../interfaces/IEmployeeCommandData';
-import { EmployeeProfileFetchRequest, EmployeeProfileCommandRequest } from '../stores/actionCreators/employeeProfileActions';
-import { IEmployeeQuery } from '../interfaces/IEmployeeQuery';
-import { IEmployeeCommand } from '../interfaces/IEmployeeCommand';
+import { Command, ConnectedReduxProps } from '../../../generic/types';
+import styles from '../../../styles';
 import { IAppUser } from '../../@layout/interfaces';
+import { IEmployee } from '../interfaces/IEmployee';
+import { IEmployeeCommand } from '../interfaces/IEmployeeCommand';
+import { IEmployeeCommandData } from '../interfaces/IEmployeeCommandData';
+import { IEmployeeQuery } from '../interfaces/IEmployeeQuery';
+import { EmployeeProfileCommandRequest, EmployeeProfileFetchRequest } from '../stores/actionCreators/employeeProfileActions';
+import ProfileForm from './profileForm';
 
 interface PropsFromState extends RouteComponentProps<void>, WithStyles<typeof styles> {
   user: IAppUser;

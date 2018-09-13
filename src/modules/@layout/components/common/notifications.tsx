@@ -1,20 +1,29 @@
-import * as React from 'react';
-import { RouteComponentProps } from 'react-router';
-import { WithStyles, List, ListSubheader, ListItem, ListItemText, ListItemSecondaryAction, Collapse } from '@material-ui/core';
-import styles from '../../../../styles';
-import { IAppState } from '../../../../generic/interfaces';
-import { ConnectedReduxProps } from '../../../../generic/types';
-import { connect } from 'react-redux';
-import { Dispatch } from 'redux';
-import { notificationFetchRequest } from '../../store/actionCreators/notificationActionCreators';
-import { IResponseList } from '../../../../generic/interfaces/IResponseList';
+import {
+  Collapse,
+  List,
+  ListItem,
+  ListItemSecondaryAction,
+  ListItemText,
+  ListSubheader,
+  WithStyles,
+} from '@material-ui/core';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import * as moment from 'moment';
+import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
-import { INotification, IAppUser } from '../../interfaces';
+import { connect } from 'react-redux';
+import { RouteComponentProps } from 'react-router';
+import { Dispatch } from 'redux';
+
+import { IAppState } from '../../../../generic/interfaces';
+import { IResponseList } from '../../../../generic/interfaces/IResponseList';
+import { ConnectedReduxProps } from '../../../../generic/types';
+import styles from '../../../../styles';
+import { IAppUser, INotification } from '../../interfaces';
 import { INotificationQuery } from '../../interfaces/INotificationQuery';
 import { setNotification } from '../../store/actionCreators';
+import { notificationFetchRequest } from '../../store/actionCreators/notificationActionCreators';
 
 interface PropsFromState extends RouteComponentProps<void>, WithStyles<typeof styles> {
   user: IAppUser;

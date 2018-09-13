@@ -1,8 +1,8 @@
-import { IEmployeeAccessList } from './IEmployeeAccessList';
-import { IEmployeeContact } from './IEmployeeContact';
-import { IEmployeeBank } from './IEmployeeBank';
 import { ICommonSystem } from '../../common/interfaces/ICommonSystem';
 import { ILookupCompany } from '../../lookup/interfaces/ILookupCompany';
+import { IEmployeeAccessList } from './IEmployeeAccessList';
+import { IEmployeeBank } from './IEmployeeBank';
+import { IEmployeeContact } from './IEmployeeContact';
 
 export interface IEmployeeMy {
     uid: string;

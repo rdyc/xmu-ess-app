@@ -1,9 +1,10 @@
-import * as React from 'react';
 import { Button, Snackbar, WithStyles } from '@material-ui/core';
-import { RouteComponentProps } from 'react-router';
-import styles from '../../../../styles';
-import { ConnectedReduxProps } from '../../../../generic/types';
 import CloseIcon from '@material-ui/icons/Close';
+import * as React from 'react';
+import { RouteComponentProps } from 'react-router';
+
+import { ConnectedReduxProps } from '../../../../generic/types';
+import styles from '../../../../styles';
 import { ISnackbarAlert } from '../../interfaces/ISnackbarAlert';
 import { setAlertSnackbar } from '../../store/actionCreators';
 

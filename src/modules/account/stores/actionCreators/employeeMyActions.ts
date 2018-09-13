@@ -1,4 +1,5 @@
 import { action } from 'typesafe-actions';
+
 import { IEmployeeMy } from '../../interfaces/IEmployeeMy';
 
 export const enum EmployeeMyAction {

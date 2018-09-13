@@ -1,9 +1,10 @@
+import { User } from 'oidc-client';
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { RouteComponentProps } from 'react-router';
-import { CallbackComponent } from 'redux-oidc';
-import { User } from 'oidc-client';
 import { push } from 'react-router-redux';
+import { CallbackComponent } from 'redux-oidc';
+
 import { AppUserManager } from '../../../utils';
 
 class CallbackPage extends React.Component<RouteComponentProps<{}> & { dispatch: any }, {}> {

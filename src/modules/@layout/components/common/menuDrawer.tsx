@@ -1,14 +1,15 @@
+import { Drawer, Hidden, WithStyles } from '@material-ui/core';
+import * as classNames from 'classnames';
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
-import { WithStyles, Hidden, Drawer } from '@material-ui/core';
-import * as classNames from 'classnames';
+
 import { ConnectedReduxProps } from '../../../../generic/types';
 import styles from '../../../../styles';
-import { menuItemDrawer as MenuItemDrawer } from './menuItemDrawer';
 import { ILookupRoleMenuList } from '../../../lookup/interfaces/ILookupRoleMenuList';
-import { Anchor } from '../../types';
 import { IAppUser, ICurrentPage } from '../../interfaces';
-import { setMenuDrawer, setActive } from '../../store/actionCreators';
+import { setActive, setMenuDrawer } from '../../store/actionCreators';
+import { Anchor } from '../../types';
+import { menuItemDrawer as MenuItemDrawer } from './menuItemDrawer';
 
 interface PropsFromState extends RouteComponentProps<void>, WithStyles<typeof styles> {
   anchor: Anchor;

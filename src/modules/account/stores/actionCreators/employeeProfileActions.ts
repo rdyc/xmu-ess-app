@@ -1,7 +1,8 @@
 import { action } from 'typesafe-actions';
-import { IEmployeeQuery } from '../../interfaces/IEmployeeQuery';
+
 import { IEmployee } from '../../interfaces/IEmployee';
 import { IEmployeeCommand } from '../../interfaces/IEmployeeCommand';
+import { IEmployeeQuery } from '../../interfaces/IEmployeeQuery';
 
 export const enum EmployeeProfileAction {
   FETCH_REQUEST = '@@employee-profile/FETCH_REQUEST',

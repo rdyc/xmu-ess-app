@@ -1,14 +1,16 @@
 import { all, call, fork, put, takeEvery } from 'redux-saga/effects';
-import { 
-  EmployeeProfileFetchError, 
-  EmployeeProfileFetchSuccess, 
-  EmployeeProfileFetchRequest, 
-  EmployeeProfileCommandSuccess, 
-  EmployeeProfileCommandError,
-  EmployeeProfileCommandRequest } from '../actionCreators/employeeProfileActions';
+
 import { callApi } from '../../../../utils';
-import { EmployeeProfileAction } from '../actionCreators/employeeProfileActions';
 import { setAlertSnackbar } from '../../../@layout/store/actionCreators';
+import {
+  EmployeeProfileAction,
+  EmployeeProfileCommandError,
+  EmployeeProfileCommandRequest,
+  EmployeeProfileCommandSuccess,
+  EmployeeProfileFetchError,
+  EmployeeProfileFetchRequest,
+  EmployeeProfileFetchSuccess,
+} from '../actionCreators/employeeProfileActions';
 
 const API_ENDPOINT = process.env.REACT_APP_API_URL || '';
 

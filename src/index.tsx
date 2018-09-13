@@ -1,9 +1,10 @@
+import { createBrowserHistory } from 'history';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import registerServiceWorker from './registerServiceWorker';
+
 import App from './App';
-import { createBrowserHistory } from 'history';
 import configureStore from './configureStore';
+import registerServiceWorker from './registerServiceWorker';
 
 const history = createBrowserHistory();
 const initialState = window.initialReduxState;

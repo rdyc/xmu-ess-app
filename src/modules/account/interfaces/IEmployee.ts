@@ -1,6 +1,6 @@
-import { ILookupCompany } from '../../lookup/interfaces/ILookupCompany';
-import { ICommonSystem } from '../../common/interfaces/ICommonSystem';
 import { IBaseChanges } from '../../../generic/interfaces/IBaseChanges';
+import { ICommonSystem } from '../../common/interfaces/ICommonSystem';
+import { ILookupCompany } from '../../lookup/interfaces/ILookupCompany';
 import { IEmployeeBank } from './IEmployeeBank';
 import { IEmployeeContact } from './IEmployeeContact';
 

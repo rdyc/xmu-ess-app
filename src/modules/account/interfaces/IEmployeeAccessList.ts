@@ -1,7 +1,7 @@
-import { ILookupCompany } from '../../lookup/interfaces/ILookupCompany';
-import { ILookupRole } from '../../lookup/interfaces/ILookupRole';
 import { ICommonSystem } from '../../common/interfaces/ICommonSystem';
+import { ILookupCompany } from '../../lookup/interfaces/ILookupCompany';
 import { ILookupPosition } from '../../lookup/interfaces/ILookupPosition';
+import { ILookupRole } from '../../lookup/interfaces/ILookupRole';
 import { ILookupRoleMenuList } from '../../lookup/interfaces/ILookupRoleMenuList';
 
 export interface IEmployeeAccessList {

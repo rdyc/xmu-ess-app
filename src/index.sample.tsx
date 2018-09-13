@@ -1,11 +1,11 @@
+import './index.css';
+
+import { createBrowserHistory } from 'history';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import { createBrowserHistory } from 'history';
 
-import Main from './!!sample/main';
 import configureStore from './!!sample/configureStore';
-
-import './index.css';
+import Main from './!!sample/main';
 import registerServiceWorker from './registerServiceWorker';
 
 const history = createBrowserHistory();

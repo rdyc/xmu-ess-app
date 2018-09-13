@@ -1,10 +1,11 @@
+import { Card, CardContent, Typography, WithStyles } from '@material-ui/core';
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
-import { WithStyles, Typography, Card, CardContent } from '@material-ui/core';
-import styles from '../../../styles';
+
 import { IResponseSingle } from '../../../generic/interfaces/IResponseSingle';
-import { IEmployeeMy } from '../../account/interfaces/IEmployeeMy';
 import { ConnectedReduxProps } from '../../../generic/types';
+import styles from '../../../styles';
+import { IEmployeeMy } from '../../account/interfaces/IEmployeeMy';
 
 interface PropsFromState extends RouteComponentProps<void>, WithStyles<typeof styles> {
   employee: IResponseSingle<IEmployeeMy>;

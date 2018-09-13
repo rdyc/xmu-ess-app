@@ -1,4 +1,5 @@
 import { Reducer } from 'redux';
+
 import { INotificationState } from '../../interfaces/INotificationState';
 import { NotificationAction } from '../../types';
 

@@ -1,6 +1,7 @@
 import { Reducer } from 'redux';
-import { LayoutAction } from '../../types';
+
 import { ILayoutState } from '../../interfaces';
+import { LayoutAction } from '../../types';
 
 const initialState: ILayoutState = {
   anchor: 'left',

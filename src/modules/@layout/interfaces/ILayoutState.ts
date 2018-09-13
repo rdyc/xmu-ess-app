@@ -1,8 +1,8 @@
-import { ISnackbarAlert } from './ISnackbarAlert';
-import { IAppUser } from './IAppUser';
-import { ICurrentPage } from './ICurrentPage';
 import { ILookupRoleMenuList } from '../../lookup/interfaces/ILookupRoleMenuList';
 import { Anchor } from '../types/Anchor';
+import { IAppUser } from './IAppUser';
+import { ICurrentPage } from './ICurrentPage';
+import { ISnackbarAlert } from './ISnackbarAlert';
 
 export interface ILayoutState {
   readonly anchor: Anchor;

@@ -1,24 +1,45 @@
-// tslint:disable-next-line:max-line-length
-import { Typography, withStyles, WithStyles, Button, Stepper, Step, StepLabel, StepContent, Grid, TextField, FormControl, FormLabel, RadioGroup, FormControlLabel, Radio, Card, CardContent, CardActions, Divider, CardHeader, Checkbox } from '@material-ui/core';
+import {
+  Button,
+  Card,
+  CardActions,
+  CardContent,
+  CardHeader,
+  Checkbox,
+  Divider,
+  FormControl,
+  FormControlLabel,
+  FormLabel,
+  Grid,
+  Radio,
+  RadioGroup,
+  Step,
+  StepContent,
+  StepLabel,
+  Stepper,
+  TextField,
+  Typography,
+  WithStyles,
+  withStyles,
+} from '@material-ui/core';
 import * as React from 'react';
-import withRoot from '../../../withRoot';
 import { connect } from 'react-redux';
-import * as store from 'store';
 import { RouteComponentProps } from 'react-router';
 import { Dispatch } from 'redux';
-// import removeDuplicates from '../../../main/utils/arrayHelper';
-import styles from '../../../styles';
-import { IResponseSingle } from '../../../generic/interfaces/IResponseSingle';
-import { IEmployeeMy } from '../../account/interfaces/IEmployeeMy';
-import { IEmployeeAccessList } from '../../account/interfaces/IEmployeeAccessList';
-import { ILookupRoleMenuList } from '../../lookup/interfaces/ILookupRoleMenuList';
-import { ConnectedReduxProps } from '../../../generic/types/ConnectedReduxProps';
-import { IAppState } from '../../../generic/interfaces/IAppState';
-import { EmployeeFetchRequest } from '../../account/stores/actionCreators/employeeMyActions';
-import { RemoveDuplicates, AppUserManager } from '../../../utils';
+import * as store from 'store';
+
 import { AppStorage } from '../../../constants';
+import { IAppState } from '../../../generic/interfaces/IAppState';
+import { IResponseSingle } from '../../../generic/interfaces/IResponseSingle';
+import { ConnectedReduxProps } from '../../../generic/types/ConnectedReduxProps';
+import styles from '../../../styles';
+import { AppUserManager, RemoveDuplicates } from '../../../utils';
+import withRoot from '../../../withRoot';
+import { IEmployeeAccessList } from '../../account/interfaces/IEmployeeAccessList';
+import { IEmployeeMy } from '../../account/interfaces/IEmployeeMy';
+import { EmployeeFetchRequest } from '../../account/stores/actionCreators/employeeMyActions';
+import { ILookupRoleMenuList } from '../../lookup/interfaces/ILookupRoleMenuList';
+import { IAppUser, IUserCompany, IUserPosition } from '../interfaces';
 import { setMenuItems, setUser } from '../store/actionCreators';
-import { IUserCompany, IUserPosition, IAppUser } from '../interfaces';
 
 interface PropsFromState extends RouteComponentProps<void>, WithStyles<typeof styles> {
   response: IResponseSingle<IEmployeeMy>;
