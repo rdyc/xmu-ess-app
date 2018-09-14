@@ -1,3 +1,4 @@
+export * from './IAccountEmployee';
 export * from './IEmployee';
 export * from './IEmployeeAccessList';
 export * from './IEmployeeBank';
