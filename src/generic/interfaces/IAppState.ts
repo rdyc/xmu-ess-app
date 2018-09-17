@@ -5,6 +5,8 @@ import { IEmployeeMyState } from '../../modules/account/interfaces/IEmployeeMySt
 import { IEmployeeProfileCommandState } from '../../modules/account/interfaces/IEmployeeProfileCommandState';
 import { IEmployeeProfileQueryState } from '../../modules/account/interfaces/IEmployeeProfileQueryState';
 import { ILayoutState } from '../../modules/@layout/interfaces';
+import { IProjectRegistrationAllQueryState, IProjectRegistrationAllRequest } from '@project/interfaces/queries';
+import { IProject } from '@project/interfaces/response';
 
 export interface IAppState {
   layout: ILayoutState;
@@ -16,4 +18,7 @@ export interface IAppState {
   /* profile */
   profileQuery: IEmployeeProfileQueryState;
   profileCommand: IEmployeeProfileCommandState;
+
+  /* project */
+  projectQuery: IProjectRegistrationAllQueryState<IProjectRegistrationAllRequest, IProject>;
 }

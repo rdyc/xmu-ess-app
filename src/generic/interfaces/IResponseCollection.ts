@@ -1,6 +1,5 @@
-import { IBaseData } from './IBaseData';
-import { IBaseMetadata } from './IBaseMetadata';
+import { IBaseMetadata, IBaseDataList } from '@generic/interfaces';
 
-export interface IResponseCollection<T> extends IBaseData<T> {
+export interface IResponseCollection<T> extends IBaseDataList<T> {
     metadata: IBaseMetadata;
 }

@@ -12,7 +12,7 @@ const API_ENDPOINT = process.env.REACT_APP_API_URL || '';
 
 function* handleAllFetch(action: ReturnType<typeof ProjectRegistrationFetchAllRequest>) {
   try {
-    const response = yield call(callApi, 'get', API_ENDPOINT, '/v1/project/registrations' + objectToQuerystring(action.payload.filter));
+    const response = yield call(callApi, 'get', API_ENDPOINT, `/v1/project/registrations/${action.payload.companyUid}/${action.payload.positionUid}` + objectToQuerystring(action.payload.filter));
     
     if (response instanceof Response) {
       yield put(ProjectRegistrationFetchAllError(`${response.status}: ${response.statusText}`));

@@ -2,6 +2,7 @@ export * from './IAppState';
 export * from './IBaseChanges';
 export * from './IBaseCollectionQuery';
 export * from './IBaseCommand';
+export * from './ICompanyAccess';
 export * from './IBaseData';
 export * from './IBaseDataList';
 export * from './IBaseFilter';

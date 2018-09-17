@@ -5,6 +5,7 @@ import { reducer as oidcReducer } from 'redux-oidc';
 import { layoutReducer, notificationReducer } from '../../modules/@layout/store/reducers';
 import { employeeMyReducer, employeeProfileCommandReducer, employeeProfileQueryReducer } from '../../modules/account/stores/reducers';
 import { IAppState } from '../interfaces';
+import { projectRegistrationQueryReducer } from '@project/store/reducers';
 
 export const rootReducer = combineReducers<IAppState>({
   layout: layoutReducer,
@@ -12,6 +13,11 @@ export const rootReducer = combineReducers<IAppState>({
   account: employeeMyReducer,
   notification: notificationReducer,
   form: reduxFormReducer,
+
+  /* profile */
   profileQuery: employeeProfileQueryReducer,
-  profileCommand: employeeProfileCommandReducer
+  profileCommand: employeeProfileCommandReducer,
+
+  /* project */
+  projectQuery: projectRegistrationQueryReducer
 });

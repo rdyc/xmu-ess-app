@@ -70,7 +70,7 @@ class BasePage extends React.Component<AllProps> {
     }
   }
 
-  public componentDidMount() {
+  public componentWillMount() {
     this.loadStorage();  
   }
   

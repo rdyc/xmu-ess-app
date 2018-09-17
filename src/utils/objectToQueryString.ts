@@ -1,4 +1,8 @@
 export function objectToQuerystring (obj: any) {
+  if (obj === undefined) {
+    return '';
+  }
+  
   return Object.keys(obj)
     .filter((key) => obj[key] !== undefined && obj[key] !== '')
     .reduce((str, key, i) => {

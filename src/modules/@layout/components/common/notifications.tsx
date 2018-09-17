@@ -20,6 +20,7 @@ import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 import { RouteComponentProps } from 'react-router';
 import { Dispatch } from 'redux';
+import { isArray } from 'util';
 
 interface PropsFromState extends RouteComponentProps<void>, WithStyles<typeof styles> {
   user: IAppUser;
@@ -61,11 +62,13 @@ class Notifications extends React.Component<AllProps> {
     let count: number = 0;
 
     if (this.props.result) {
-      this.props.result.data.forEach(element =>
-        element.details.forEach(detail => {
-          count = count + detail.total;
-        })
-      );
+      if (isArray(this.props.result.data)) {
+        this.props.result.data.forEach(element =>
+          element.details.forEach(detail => {
+            count = count + detail.total;
+          })
+        );
+      }
     }
 
     this.props.setNotification(count);
@@ -96,7 +99,7 @@ class Notifications extends React.Component<AllProps> {
       <List subheader={elListSubHeader}>
         {loading && elNotifLoading}
         {!loading && !result && elNotifEmtpy}
-        {!loading && result && result.data
+        {!loading && result && isArray(result.data) && result.data
           // order by name asc
           .sort((a , b) => (a.name > b.name) ? 1 : 0)
           .map(category => category.details
