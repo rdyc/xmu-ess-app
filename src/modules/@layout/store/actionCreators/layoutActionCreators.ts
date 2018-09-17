@@ -12,7 +12,7 @@ export const setAccountShow = (open: boolean) => action(Action.SET_ACCOUNT_SHOW,
 export const setTopDrawer = (open: boolean) => action(Action.SET_TOP_DRAWER, open);
 export const setBottomDrawer = (open: boolean) => action(Action.SET_ANCHOR, open);
 export const setMenuItems = (items: ILookupRoleMenuList[]) => action(Action.SET_MENU_ITEMS, items);
-export const setActive = (active: ICurrentPage) => action(Action.SET_ACTIVE, active);
+export const setCurrentPage = (active: ICurrentPage | null) => action(Action.SET_ACTIVE, active);
 export const setUser = (user: IAppUser) => action(Action.SET_USER, user);
 export const setNotification = (count: number) => action(Action.SET_NOTIFICATION, count);
 export const setLogoutDialog = (open: boolean) => action(Action.SET_LOGOUT_DIALOG, open);

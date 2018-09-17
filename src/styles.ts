@@ -155,6 +155,20 @@ const styles = (theme: Theme) =>
     /* Color page end */
 
     /* -------- generic classes start----------*/
+    /* positioning */
+    absoluteTopRight: {
+      display: 'flex',
+      position: 'absolute',
+      
+      right: theme.spacing.unit * 2,
+    },
+
+    fixedBotomRight: {
+      position: 'fixed',
+      bottom: theme.spacing.unit * 2,
+      right: theme.spacing.unit * 2,
+    },
+
     /* force right */
     forceRight: { float: 'right' },
     /* margin thin */

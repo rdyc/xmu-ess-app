@@ -1,6 +1,6 @@
 import { ConnectedReduxProps } from '@generic/types';
 import { IAppUser, ICurrentPage } from '@layout/interfaces';
-import { setActive, setMenuDrawer } from '@layout/store/actionCreators';
+import { setCurrentPage, setMenuDrawer } from '@layout/store/actionCreators';
 import { Anchor } from '@layout/types';
 import { ILookupRoleMenuList } from '@lookup/interfaces/ILookupRoleMenuList';
 import { Drawer, Hidden, WithStyles } from '@material-ui/core';
@@ -21,7 +21,7 @@ interface PropsFromState extends RouteComponentProps<void>, WithStyles<typeof st
 
 interface PropsFromDispatch {
   setMenuDrawer: typeof setMenuDrawer;
-  setActive: typeof setActive;
+  setActive: typeof setCurrentPage;
 }
 
 type AllProps = PropsFromState & PropsFromDispatch & ConnectedReduxProps;

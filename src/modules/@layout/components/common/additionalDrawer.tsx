@@ -1,6 +1,6 @@
 import { ConnectedReduxProps } from '@generic/types';
 import { IAppUser, ICurrentPage } from '@layout/interfaces';
-import { setAccountShow, setActive, setAdditionalDrawer, setAnchor, setLogoutDialog } from '@layout/store/actionCreators';
+import { setAccountShow, setCurrentPage, setAdditionalDrawer, setAnchor, setLogoutDialog } from '@layout/store/actionCreators';
 import { Anchor } from '@layout/types';
 import { ILookupRoleMenuList } from '@lookup/interfaces/ILookupRoleMenuList';
 import {
@@ -56,7 +56,7 @@ interface PropsFromState extends RouteComponentProps<void>, WithStyles<typeof st
 interface PropsFromDispatch {
   setAnchor: typeof setAnchor;
   setAdditionalDrawer: typeof setAdditionalDrawer;
-  setActive: typeof setActive;
+  setActive: typeof setCurrentPage;
   setAccountShow: typeof setAccountShow;
   setLogoutDialog: typeof setLogoutDialog;
 }

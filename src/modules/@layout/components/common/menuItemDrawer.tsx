@@ -1,6 +1,6 @@
 import { ConnectedReduxProps } from '@generic/types';
 import { IAppUser, ICurrentPage } from '@layout/interfaces';
-import { setActive, setMenuDrawer } from '@layout/store/actionCreators';
+import { setCurrentPage, setMenuDrawer } from '@layout/store/actionCreators';
 import { ILookupRoleMenuList } from '@lookup/interfaces/ILookupRoleMenuList';
 import { Divider, List, ListItem, ListItemText, ListSubheader, WithStyles } from '@material-ui/core';
 import styles from '@styles';
@@ -17,7 +17,7 @@ interface PropsFromState extends RouteComponentProps<void>, WithStyles<typeof st
 
 interface PropsFromDispatch {
   setMenuDrawer: typeof setMenuDrawer;
-  setActive: typeof setActive;
+  setActive: typeof setCurrentPage;
 }
 
 type AllProps = PropsFromState & PropsFromDispatch & ConnectedReduxProps;
@@ -78,7 +78,7 @@ export const menuItemDrawer: React.StatelessComponent<AllProps> = props => (
               <ListItemText 
                 key={item.uid} 
                 primary={item.name} 
-                color={props.active.menuUid === item.uid ? 'primary' : 'inherit'} />
+                color={props.active && props.active.menuUid === item.uid ? 'primary' : 'inherit'} />
             </ListItem>
           ))}
         </List>

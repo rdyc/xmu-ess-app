@@ -3,6 +3,8 @@ import {
   ProjectRegistrationFetchAllError,
   ProjectRegistrationFetchAllRequest,
   ProjectRegistrationFetchAllSuccess,
+  ProjectRegistrationFetchRequest,
+  ProjectRegistrationAction,
 } from '@project/store/actions';
 import { callApi } from '@utils/api';
 import { all, call, fork, put, takeEvery } from 'redux-saga/effects';
@@ -28,13 +30,36 @@ function* handleAllFetch(action: ReturnType<typeof ProjectRegistrationFetchAllRe
   }
 }
 
+function* handleFetch(action: ReturnType<typeof ProjectRegistrationFetchRequest>) {
+  try {
+    const response = yield call(callApi, 'get', API_ENDPOINT, `/v1/project/registrations/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.projectUid}`);
+    
+    if (response instanceof Response) {
+      yield put(ProjectRegistrationFetchAllError(`${response.status}: ${response.statusText}`));
+    } else {
+      yield put(ProjectRegistrationFetchAllSuccess(response));
+    }
+  } catch (error) {
+    if (error instanceof Error) {
+      yield put(ProjectRegistrationFetchAllError(error.stack!));
+    } else {
+      yield put(ProjectRegistrationFetchAllError('An unknown error occured.'));
+    }
+  }
+}
+
 function* watchAllFetchRequest() {
   yield takeEvery(ProjectRegistrationAllAction.FETCH_REQUEST, handleAllFetch);
 }
 
+function* watchFetchRequest() {
+  yield takeEvery(ProjectRegistrationAction.FETCH_REQUEST, handleFetch);
+}
+
 function* projectRegistrationQuerySagas() {
   yield all([
-    fork(watchAllFetchRequest)
+    fork(watchAllFetchRequest),
+    fork(watchFetchRequest)
   ]);
 }
 

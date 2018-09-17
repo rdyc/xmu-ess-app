@@ -39,7 +39,7 @@ export const menuLinkMapper = (menuUid: string) => {
       path = '/project/assignment/request';    
       break;
     case 'MNU19':
-      path = '/project/registration';    
+      path = '/project/list';    
       break;
     case 'MNU20':
       path = '/approval/project';    

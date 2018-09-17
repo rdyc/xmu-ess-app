@@ -5,7 +5,7 @@ import { AdditionalDrawer, BottomSnackbar, MenuDrawer, TopAppBar } from '@layout
 import { IAppUser, ICurrentPage, ISnackbarAlert } from '@layout/interfaces';
 import {
   setAccountShow,
-  setActive,
+  setCurrentPage,
   setAdditionalDrawer,
   setAlertSnackbar,
   setAnchor,
@@ -50,7 +50,7 @@ interface PropsFromDispatch {
   setAccountShow: typeof setAccountShow;
   setTopDrawer: typeof setTopDrawer;
   setBottomDrawer: typeof setBottomDrawer;
-  setActive: typeof setActive;
+  setActive: typeof setCurrentPage;
   setMenuItems: typeof setMenuItems;
   setUser: typeof setUser;
   setLogoutDialog: typeof setLogoutDialog;
@@ -111,7 +111,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   setAccountShow: (open: boolean) => dispatch(setAccountShow(open)),
   setTopDrawer: (open: boolean) => dispatch(setTopDrawer(open)),
   setBottomDrawer: (open: boolean) => dispatch(setBottomDrawer(open)),
-  setActive: (active: ICurrentPage) => dispatch(setActive(active)),
+  setActive: (active: ICurrentPage) => dispatch(setCurrentPage(active)),
   setMenuItems: (items: ILookupRoleMenuList[]) => dispatch(setMenuItems(items)),
   setUser: (user: IAppUser) => dispatch(setUser(user)),
   setLogoutDialog: (open: boolean) => dispatch(setLogoutDialog(open)),

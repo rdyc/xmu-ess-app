@@ -12,7 +12,7 @@ export interface ILayoutState {
   readonly topDrawer: boolean;
   readonly bottomDrawer: boolean;
   readonly menuItems: ILookupRoleMenuList[];
-  readonly active: ICurrentPage;
+  readonly active: ICurrentPage | null;
   readonly user: IAppUser | null;
   readonly notification: number;
   readonly logoutDialog: boolean;

@@ -5,6 +5,7 @@ import { AppBar, Badge, IconButton, Toolbar, Typography, WithStyles } from '@mat
 import MenuIcon from '@material-ui/icons/Menu';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import NotificationImportant from '@material-ui/icons/NotificationImportant';
+import SearchIcon from '@material-ui/icons/Search';
 import styles from '@styles';
 import * as classNames from 'classnames';
 import * as React from 'react';
@@ -32,6 +33,7 @@ export const topAppBar: React.StatelessComponent<AllProps> = props => (
     color="primary"
     className={classNames(props.classes.appBar, props.menuDrawer && props.classes.appBarShift)}>
     <Toolbar>
+      {/* menu */}
       <IconButton
         color="inherit"
         aria-label="open drawer"
@@ -39,9 +41,27 @@ export const topAppBar: React.StatelessComponent<AllProps> = props => (
         className={classNames(props.classes.navIconHide, props.menuDrawer && props.classes.hide)}>
         <MenuIcon />
       </IconButton>
-      <Typography variant="title" color="inherit" className={props.classes.flex} noWrap>
-        {props.active.title}
+
+      {/* title */}
+      <Typography 
+        noWrap 
+        variant="title" 
+        color="inherit" 
+        className={props.classes.flex}
+      >
+        {props.active && props.active.title}
       </Typography>
+
+      {/* search */}
+      <IconButton
+        color="inherit"
+        aria-label="More"
+        onClick={() => props.setAdditionalDrawer(!props.additionalDrawer)}
+      >
+        <SearchIcon />
+      </IconButton>
+      
+      {/* notifications */}
       {props.notification > 0 &&
         <IconButton
           color="inherit"
@@ -53,6 +73,8 @@ export const topAppBar: React.StatelessComponent<AllProps> = props => (
           </Badge>
         </IconButton>
       }
+
+      {/* more */}
       <IconButton
         color="inherit"
         aria-label="More"
