@@ -108,7 +108,7 @@ const styles = (theme: Theme) =>
       },
       [theme.breakpoints.down('md')]: {
         padding: 0,
-        marginTop: theme.spacing.unit * 7
+        marginTop: theme.spacing.unit * 7,
       }
     },
     contentShiftLeft: {
@@ -119,6 +119,20 @@ const styles = (theme: Theme) =>
     contentShiftRight: {
       [theme.breakpoints.up('md')]: {
         marginRight: drawerWidth
+      },
+    },
+    contentWithBottomNav: {
+      marginBottom: theme.spacing.unit * 7
+    },
+
+    bottomNavigation: {
+      width: `calc(100% - ${0}px)`,
+      position: 'fixed',
+      display: 'flex',
+      bottom: 0,
+      right: 0,
+      [theme.breakpoints.up('md')]: {
+        width: `calc(100% - ${drawerWidth}px)`,
       },
     },
 

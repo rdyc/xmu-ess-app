@@ -4,6 +4,7 @@ export const enum LayoutAction {
   SET_ADDITIONAL_DRAWER = '@@layout/SET_ADDITIONAL_DRAWER',
   SET_ACCOUNT_SHOW = '@@layout/SET_ACCOUNT_SHOW',
   SET_SEARCH_MODE = '@@layout/SET_SEARCH_MODE',
+  SET_LIST_MODE = '@@layout/SET_LIST_MODE',
   SET_TOP_DRAWER = '@@layout/SET_TOP_DRAWER',
   SET_BOTTOM_DRAWER = '@@layout/SET_BOTTOM_DRAWER',
   SET_MENU_ITEMS = '@@layout/SET_MENU_ITEMS',

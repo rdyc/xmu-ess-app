@@ -1,7 +1,7 @@
 import { AppStorage } from '@constants/index';
 import { IAppState } from '@generic/interfaces';
 import { ConnectedReduxProps } from '@generic/types';
-import { AdditionalDrawer, BottomSnackbar, MenuDrawer, TopAppBar } from '@layout/components/common';
+import { AdditionalDrawer, BottomSnackbar, MenuDrawer, TopAppBar, BottomBar } from '@layout/components/common';
 import { IAppUser, ICurrentPage, ISnackbarAlert } from '@layout/interfaces';
 import {
   setAccountShow,
@@ -17,6 +17,7 @@ import {
   setTopDrawer,
   setUser,
   setNavBack,
+  setListMode,
 } from '@layout/store/actionCreators';
 import { Anchor } from '@layout/types';
 import { ILookupRoleMenuList } from '@lookup/interfaces';
@@ -38,6 +39,7 @@ interface PropsFromState extends RouteComponentProps<void>, WithStyles<typeof st
   additionalDrawer: boolean;
   accountShow: boolean;
   searchMode: boolean;
+  listMode: boolean;
   topDrawer: boolean;
   bottomDrawer: boolean;
   menuItems: ILookupRoleMenuList[];
@@ -55,6 +57,7 @@ interface PropsFromDispatch {
   setAdditionalDrawer: typeof setAdditionalDrawer;
   setAccountShow: typeof setAccountShow;
   setSearchMode: typeof setSearchMode;
+  setListMode: typeof setListMode;
   setTopDrawer: typeof setTopDrawer;
   setBottomDrawer: typeof setBottomDrawer;
   setActive: typeof setCurrentPage;
@@ -83,16 +86,21 @@ class BasePage extends React.Component<AllProps> {
   }
   
   public render() {
-    const { anchor, classes } = this.props;
+    const { anchor, listMode, classes } = this.props;
 
     return (
       <div className={classes.root}>
         <TopAppBar {...this.props}/>
         <MenuDrawer {...this.props}/>
         <AdditionalDrawer {...this.props}/>
-        <main className={classNames(classes.content, anchor === 'right' ? classes.contentShiftRight : classes.contentShiftLeft)}>
+        <main className={classNames(
+          classes.content,
+          listMode ? classes.contentWithBottomNav : '',
+          anchor === 'right' ? classes.contentShiftRight : classes.contentShiftLeft)}
+        >
           {this.props.children}
         </main>
+        <BottomBar {...this.props}/>
         <BottomSnackbar {...this.props}/>
       </div>
     );
@@ -105,6 +113,7 @@ const mapStateToProps = ({ layout }: IAppState) => ({
   additionalDrawer: layout.additionalDrawer,
   accountShow: layout.accountShow,
   searchMode: layout.searchMode,
+  listMode: layout.listMode,
   topDrawer: layout.topDrawer,
   bottomDrawer: layout.bottomDrawer,
   menuItems: layout.menuItems,
@@ -121,7 +130,8 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   setMenuDrawer: (open: boolean) => dispatch(setMenuDrawer(open)),
   setAdditionalDrawer: (open: boolean) => dispatch(setAdditionalDrawer(open)),
   setAccountShow: (open: boolean) => dispatch(setAccountShow(open)),
-  setSearchMode: (open: boolean) => dispatch(setSearchMode(open)),
+  setSearchMode: (activated: boolean) => dispatch(setSearchMode(activated)),
+  setListMode: (acivated: boolean) => dispatch(setListMode(acivated)),
   setTopDrawer: (open: boolean) => dispatch(setTopDrawer(open)),
   setBottomDrawer: (open: boolean) => dispatch(setBottomDrawer(open)),
   setActive: (active: ICurrentPage) => dispatch(setCurrentPage(active)),

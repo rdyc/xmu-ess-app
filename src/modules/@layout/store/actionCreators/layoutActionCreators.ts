@@ -10,6 +10,7 @@ export const setMenuDrawer = (open: boolean) => action(Action.SET_MENU_DRAWER, o
 export const setAdditionalDrawer = (open: boolean) => action(Action.SET_ADDITIONAL_DRAWER, open);
 export const setAccountShow = (open: boolean) => action(Action.SET_ACCOUNT_SHOW, open);
 export const setSearchMode = (open: boolean) => action(Action.SET_SEARCH_MODE, open);
+export const setListMode = (open: boolean) => action(Action.SET_LIST_MODE, open);
 export const setTopDrawer = (open: boolean) => action(Action.SET_TOP_DRAWER, open);
 export const setBottomDrawer = (open: boolean) => action(Action.SET_ANCHOR, open);
 export const setMenuItems = (items: ILookupRoleMenuList[]) => action(Action.SET_MENU_ITEMS, items);

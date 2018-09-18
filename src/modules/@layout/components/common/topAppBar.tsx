@@ -2,7 +2,7 @@ import { ConnectedReduxProps } from '@generic/types';
 import { IAppUser, ICurrentPage } from '@layout/interfaces';
 import { setAdditionalDrawer, setMenuDrawer, setSearchMode, setNavBack } from '@layout/store/actionCreators';
 import { Anchor } from '@layout/types';
-import { AppBar, Badge, IconButton, TextField, Toolbar, Typography, WithStyles, Slide } from '@material-ui/core';
+import { AppBar, Badge, IconButton, Input, Toolbar, Typography, WithStyles, Slide } from '@material-ui/core';
 import { isWidthUp, WithWidthProps } from '@material-ui/core/withWidth';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import MenuIcon from '@material-ui/icons/Menu';
@@ -116,10 +116,11 @@ const renderSearchMode = (props: AllProps) => (
       >
         <ArrowBackIcon />
       </IconButton>
-      <TextField 
+      <Input 
         fullWidth
         autoFocus
-        placeholder="type to search" 
+        disableUnderline
+        placeholder="Search" 
       />
     </Toolbar>
   </Slide>

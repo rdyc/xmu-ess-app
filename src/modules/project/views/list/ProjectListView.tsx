@@ -1,9 +1,8 @@
 import { IAppState, IResponseCollection } from '@generic/interfaces';
 import { ConnectedReduxProps } from '@generic/types';
 import { IAppUser, ICurrentPage } from '@layout/interfaces';
-import { setCurrentPage } from '@layout/store/actionCreators';
-import { Button, Paper, Typography, WithStyles, withStyles, Slide } from '@material-ui/core';
-import EditIcon from '@material-ui/icons/Edit';
+import { setCurrentPage, setSearchMode, setListMode } from '@layout/store/actionCreators';
+import { Paper, Typography, WithStyles, withStyles } from '@material-ui/core';
 import { ProjectListComponent } from '@project/components/projectListComponent';
 import { IProjectRegistrationAllFilter } from '@project/interfaces/filters';
 import { IProjectRegistrationAllRequest } from '@project/interfaces/queries';
@@ -17,6 +16,7 @@ import { Dispatch } from 'redux';
 
 interface PropsFromState extends RouteComponentProps<void>, WithStyles<typeof styles> {
   user: IAppUser;
+  listMode: boolean;
   searchMode: boolean;
   request: IProjectRegistrationAllRequest;
   response: IResponseCollection<IProject>;
@@ -27,6 +27,8 @@ interface PropsFromState extends RouteComponentProps<void>, WithStyles<typeof st
 
 interface PropsFromDispatch {
   setCurrentPage: typeof setCurrentPage;
+  setSearchMode: typeof setSearchMode;
+  setListMode: typeof setListMode;
   fetchRequest: typeof ProjectRegistrationFetchAllRequest;
 }
 
@@ -35,6 +37,8 @@ type AllProps = PropsFromState & PropsFromDispatch & ConnectedReduxProps;
 class ProjectListView extends React.Component<AllProps> {
   componentWillUnmount() {
     this.props.setCurrentPage(null);
+    this.props.setListMode(false);
+    this.props.setSearchMode(false);
   }
 
   componentDidMount() {
@@ -43,6 +47,8 @@ class ProjectListView extends React.Component<AllProps> {
       title: 'Projects',
       subTitle : 'All project registrations requested by you'
     });
+
+    this.props.setListMode(true);
 
     this.loadData(undefined);
   }
@@ -56,7 +62,7 @@ class ProjectListView extends React.Component<AllProps> {
   }
 
   render () {
-    const { classes, isLoading, response, searchMode } = this.props;
+    const { isLoading, response } = this.props;
 
     return (
       <Paper square elevation={1}>
@@ -66,7 +72,7 @@ class ProjectListView extends React.Component<AllProps> {
         {!isLoading && response && 
           <ProjectListComponent {...this.props} />
         }
-        {!searchMode &&
+        {/* {!searchMode &&
           <Slide 
             mountOnEnter 
             unmountOnExit
@@ -79,11 +85,11 @@ class ProjectListView extends React.Component<AllProps> {
               aria-label="New Project"
               className={classes.fixedBotomRight} 
               onClick={() => this.props.history.push('/project/register')}
-              >
+            >
               <EditIcon />
             </Button>
           </Slide>
-        }
+        } */}
       </Paper>
     );
   }
@@ -92,6 +98,7 @@ class ProjectListView extends React.Component<AllProps> {
 const mapStateToProps = ({ layout, projectQuery }: IAppState) => ({
   user: layout.user,
   searchMode: layout.searchMode,
+  ListMode: layout.listMode,
   request: projectQuery.request,
   response: projectQuery.response,
   isLoading: projectQuery.isLoading,
@@ -101,6 +108,8 @@ const mapStateToProps = ({ layout, projectQuery }: IAppState) => ({
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   setCurrentPage: (page: ICurrentPage | null) => dispatch(setCurrentPage(page)),
+  setSearchMode: (enabled: boolean) => dispatch(setSearchMode(enabled)),
+  setListMode: (enabled: boolean) => dispatch(setListMode(enabled)),
   fetchRequest: (request: IProjectRegistrationAllRequest) => dispatch(ProjectRegistrationFetchAllRequest(request)),
 });
 

@@ -10,6 +10,7 @@ export interface ILayoutState {
   readonly additionalDrawer: boolean;
   readonly accountShow: boolean;
   readonly searchMode: boolean;
+  readonly listMode: boolean;
   readonly topDrawer: boolean;
   readonly bottomDrawer: boolean;
   readonly menuItems: ILookupRoleMenuList[];

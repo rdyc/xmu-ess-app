@@ -9,6 +9,7 @@ const initialState: ILayoutState = {
   additionalDrawer: false,
   accountShow: false,
   searchMode: false,
+  listMode: false,
   topDrawer: false,
   bottomDrawer: false,
   menuItems: [],
@@ -39,6 +40,9 @@ const reducer: Reducer<ILayoutState> = (state = initialState, action) => {
     }
     case LayoutAction.SET_SEARCH_MODE: {
       return { ...state, searchMode: action.payload };
+    }
+    case LayoutAction.SET_LIST_MODE: {
+      return { ...state, listMode: action.payload };
     }
     case LayoutAction.SET_TOP_DRAWER: {
       return { ...state, topDrawer: action.payload };
