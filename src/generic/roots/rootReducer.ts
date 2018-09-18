@@ -1,11 +1,10 @@
+import { employeeMyReducer, employeeProfileCommandReducer, employeeProfileQueryReducer } from '@account/stores/reducers';
+import { IAppState } from '@generic/interfaces';
+import { layoutReducer, listBarReducer, notificationReducer } from '@layout/store/reducers';
+import { projectRegistrationQueryReducer } from '@project/store/reducers';
 import { combineReducers } from 'redux';
 import { reducer as reduxFormReducer } from 'redux-form';
 import { reducer as oidcReducer } from 'redux-oidc';
-
-import { layoutReducer, notificationReducer } from '../../modules/@layout/store/reducers';
-import { employeeMyReducer, employeeProfileCommandReducer, employeeProfileQueryReducer } from '../../modules/account/stores/reducers';
-import { IAppState } from '../interfaces';
-import { projectRegistrationQueryReducer } from '@project/store/reducers';
 
 export const rootReducer = combineReducers<IAppState>({
   layout: layoutReducer,
@@ -13,6 +12,9 @@ export const rootReducer = combineReducers<IAppState>({
   account: employeeMyReducer,
   notification: notificationReducer,
   form: reduxFormReducer,
+
+  /* list bar */
+  listBar: listBarReducer,
 
   /* profile */
   profileQuery: employeeProfileQueryReducer,

@@ -1,7 +1,7 @@
 import { IAppState, IResponseCollection } from '@generic/interfaces';
 import { ConnectedReduxProps } from '@generic/types';
 import { IAppUser, ICurrentPage } from '@layout/interfaces';
-import { setCurrentPage, setSearchMode, setListMode } from '@layout/store/actionCreators';
+import { setCurrentPage, setSearchMode, setListMode, setReload } from '@layout/store/actionCreators';
 import { Paper, Typography, WithStyles, withStyles } from '@material-ui/core';
 import { ProjectListComponent } from '@project/components/projectListComponent';
 import { IProjectRegistrationAllFilter } from '@project/interfaces/filters';
@@ -23,6 +23,7 @@ interface PropsFromState extends RouteComponentProps<void>, WithStyles<typeof st
   isLoading: boolean;
   isError: boolean;
   errors: string;
+  listBarReloading: boolean;
 }
 
 interface PropsFromDispatch {
@@ -30,6 +31,8 @@ interface PropsFromDispatch {
   setSearchMode: typeof setSearchMode;
   setListMode: typeof setListMode;
   fetchRequest: typeof ProjectRegistrationFetchAllRequest;
+
+  setReload: typeof setReload;
 }
 
 type AllProps = PropsFromState & PropsFromDispatch & ConnectedReduxProps;
@@ -39,6 +42,12 @@ class ProjectListView extends React.Component<AllProps> {
     this.props.setCurrentPage(null);
     this.props.setListMode(false);
     this.props.setSearchMode(false);
+  }
+
+  componentWillReceiveProps(nextProps: AllProps) {
+    if (nextProps.listBarReloading && nextProps.listBarReloading !== this.props.listBarReloading) {
+      this.loadData(undefined);
+    }
   }
 
   componentDidMount() {
@@ -95,7 +104,7 @@ class ProjectListView extends React.Component<AllProps> {
   }
 }
 
-const mapStateToProps = ({ layout, projectQuery }: IAppState) => ({
+const mapStateToProps = ({ layout, listBar, projectQuery }: IAppState) => ({
   user: layout.user,
   searchMode: layout.searchMode,
   ListMode: layout.listMode,
@@ -104,6 +113,7 @@ const mapStateToProps = ({ layout, projectQuery }: IAppState) => ({
   isLoading: projectQuery.isLoading,
   isError: projectQuery.isError,
   errors: projectQuery.errors,
+  listBarReloading: listBar.isReload
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
@@ -111,6 +121,8 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   setSearchMode: (enabled: boolean) => dispatch(setSearchMode(enabled)),
   setListMode: (enabled: boolean) => dispatch(setListMode(enabled)),
   fetchRequest: (request: IProjectRegistrationAllRequest) => dispatch(ProjectRegistrationFetchAllRequest(request)),
+
+  setReload: (value: boolean) => dispatch(setReload(value)),
 });
 
 const redux = connect(mapStateToProps, mapDispatchToProps)(ProjectListView);

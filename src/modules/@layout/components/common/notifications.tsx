@@ -58,9 +58,9 @@ class Notifications extends React.Component<AllProps> {
     });
   }
 
-  public componentDidUpdate() {
+  public componentWillReceiveProps(nextProps: AllProps) {
     let count: number = 0;
-
+    
     if (this.props.result) {
       if (isArray(this.props.result.data)) {
         this.props.result.data.forEach(element =>
@@ -70,8 +70,10 @@ class Notifications extends React.Component<AllProps> {
         );
       }
     }
-
-    this.props.setNotification(count);
+      
+    if (this.props.notification !== count) {
+      this.props.setNotification(count);
+    }
   }
 
   public render() {

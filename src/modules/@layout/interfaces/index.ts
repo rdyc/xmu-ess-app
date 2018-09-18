@@ -1,6 +1,7 @@
 export * from './IAppUser';
 export * from './ICurrentPage';
 export * from './ILayoutState';
+export * from './IListBarState';
 export * from './INotification';
 export * from './INotificationDetail';
 export * from './INotificationDetailItem';

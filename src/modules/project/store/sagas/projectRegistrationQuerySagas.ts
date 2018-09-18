@@ -9,6 +9,7 @@ import {
 import { callApi } from '@utils/api';
 import { all, call, fork, put, takeEvery } from 'redux-saga/effects';
 import { objectToQuerystring } from 'utils';
+import { setReload, setListBarMetadata } from '@layout/store/actionCreators';
 
 const API_ENDPOINT = process.env.REACT_APP_API_URL || '';
 
@@ -20,13 +21,17 @@ function* handleAllFetch(action: ReturnType<typeof ProjectRegistrationFetchAllRe
       yield put(ProjectRegistrationFetchAllError(`${response.status}: ${response.statusText}`));
     } else {
       yield put(ProjectRegistrationFetchAllSuccess(response));
+      yield put(setListBarMetadata(response.metadata));
     }
+
   } catch (error) {
     if (error instanceof Error) {
       yield put(ProjectRegistrationFetchAllError(error.stack!));
     } else {
       yield put(ProjectRegistrationFetchAllError('An unknown error occured.'));
     }
+  } finally {
+    yield put(setReload(false));
   }
 }
 

@@ -1,5 +1,5 @@
 import { AppStorage } from '@constants/index';
-import { IAppState } from '@generic/interfaces';
+import { IAppState, IBaseMetadata } from '@generic/interfaces';
 import { ConnectedReduxProps } from '@generic/types';
 import { AdditionalDrawer, BottomSnackbar, MenuDrawer, TopAppBar, BottomBar } from '@layout/components/common';
 import { IAppUser, ICurrentPage, ISnackbarAlert } from '@layout/interfaces';
@@ -18,6 +18,7 @@ import {
   setUser,
   setNavBack,
   setListMode,
+  setReload,
 } from '@layout/store/actionCreators';
 import { Anchor } from '@layout/types';
 import { ILookupRoleMenuList } from '@lookup/interfaces';
@@ -49,6 +50,9 @@ interface PropsFromState extends RouteComponentProps<void>, WithStyles<typeof st
   logoutDialog: boolean;
   alertSnackbar: ISnackbarAlert;
   navBack: boolean;
+
+  listBarReloading: boolean;
+  listBarMetadata: IBaseMetadata;
 }
 
 interface PropsFromDispatch {
@@ -66,6 +70,7 @@ interface PropsFromDispatch {
   setLogoutDialog: typeof setLogoutDialog;
   setAlertSnackbar: typeof setAlertSnackbar;
   setNavBack: typeof setNavBack;
+  setReload: typeof setReload;
 }
 
 type AllProps = PropsFromState & PropsFromDispatch & ConnectedReduxProps & WithWidthProps;
@@ -107,7 +112,7 @@ class BasePage extends React.Component<AllProps> {
   }
 }
 
-const mapStateToProps = ({ layout }: IAppState) => ({
+const mapStateToProps = ({ layout, listBar }: IAppState) => ({
   anchor: layout.anchor,
   menuDrawer: layout.menuDrawer,
   additionalDrawer: layout.additionalDrawer,
@@ -123,6 +128,9 @@ const mapStateToProps = ({ layout }: IAppState) => ({
   logoutDialog: layout.logoutDialog,
   alertSnackbar: layout.alertSnackbar,
   navBack: layout.navBack,
+
+  listBarMetadata: listBar.metadata,
+  listBarReloading: listBar.isReload,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
@@ -140,6 +148,8 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   setLogoutDialog: (open: boolean) => dispatch(setLogoutDialog(open)),
   setAlertSnackbar: (data: ISnackbarAlert) => dispatch(setAlertSnackbar(data)),
   setNavBack: (enabled: boolean) => dispatch(setNavBack(enabled)),
+
+  setReload: (value: boolean) => dispatch(setReload(value)),
 });
 
 const redux = connect(mapStateToProps, mapDispatchToProps)(withWidth()(BasePage));
