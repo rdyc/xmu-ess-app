@@ -3,6 +3,7 @@ export const enum LayoutAction {
   SET_MENU_DRAWER = '@@layout/SET_MENU_DRAWER',
   SET_ADDITIONAL_DRAWER = '@@layout/SET_ADDITIONAL_DRAWER',
   SET_ACCOUNT_SHOW = '@@layout/SET_ACCOUNT_SHOW',
+  SET_SEARCH_MODE = '@@layout/SET_SEARCH_MODE',
   SET_TOP_DRAWER = '@@layout/SET_TOP_DRAWER',
   SET_BOTTOM_DRAWER = '@@layout/SET_BOTTOM_DRAWER',
   SET_MENU_ITEMS = '@@layout/SET_MENU_ITEMS',
@@ -11,4 +12,5 @@ export const enum LayoutAction {
   SET_NOTIFICATION = '@@layout/SET_NOTIFICATION',
   SET_LOGOUT_DIALOG = '@@layout/SET_LOGOUT_DIALOG',
   SET_ALERT_SNACKBAR = '@@layout/SET_ALERT_SNACKBAR',
+  SET_NAV_BACK = '@@layout/SET_NAV_BACK',
 }

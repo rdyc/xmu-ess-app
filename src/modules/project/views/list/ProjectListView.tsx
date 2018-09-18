@@ -2,9 +2,8 @@ import { IAppState, IResponseCollection } from '@generic/interfaces';
 import { ConnectedReduxProps } from '@generic/types';
 import { IAppUser, ICurrentPage } from '@layout/interfaces';
 import { setCurrentPage } from '@layout/store/actionCreators';
-import { Button, Paper, Typography, WithStyles, withStyles, IconButton } from '@material-ui/core';
+import { Button, Paper, Typography, WithStyles, withStyles, Slide } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
-import RefreshIcon from '@material-ui/icons/Refresh';
 import { ProjectListComponent } from '@project/components/projectListComponent';
 import { IProjectRegistrationAllFilter } from '@project/interfaces/filters';
 import { IProjectRegistrationAllRequest } from '@project/interfaces/queries';
@@ -18,6 +17,7 @@ import { Dispatch } from 'redux';
 
 interface PropsFromState extends RouteComponentProps<void>, WithStyles<typeof styles> {
   user: IAppUser;
+  searchMode: boolean;
   request: IProjectRegistrationAllRequest;
   response: IResponseCollection<IProject>;
   isLoading: boolean;
@@ -56,42 +56,42 @@ class ProjectListView extends React.Component<AllProps> {
   }
 
   render () {
-    const { classes, isLoading, response } = this.props;
+    const { classes, isLoading, response, searchMode } = this.props;
 
     return (
-      <div>
-        <div>
-          <Typography noWrap variant="title">
-            List Of Projects
-          </Typography>
-          <IconButton aria-label="Refresh">
-            <RefreshIcon/>
-          </IconButton>
-        </div>
-        <Paper square elevation={1}>
-          {isLoading && 
-            <Typography variant="body2">loading</Typography>
-          }
-          {!isLoading && response && 
-            <ProjectListComponent {...this.props} />
-          }
-          <Button 
-            variant="fab" 
-            color="secondary"
-            aria-label="New Project"
-            className={classes.fixedBotomRight} 
-            onClick={() => this.props.history.push('/project/register')}
+      <Paper square elevation={1}>
+        {isLoading && 
+          <Typography variant="body2">loading</Typography>
+        }
+        {!isLoading && response && 
+          <ProjectListComponent {...this.props} />
+        }
+        {!searchMode &&
+          <Slide 
+            mountOnEnter 
+            unmountOnExit
+            direction="up" 
+            in={!searchMode} 
           >
-            <EditIcon />
-          </Button>
-        </Paper>
-      </div>
+            <Button 
+              variant="fab" 
+              color="secondary"
+              aria-label="New Project"
+              className={classes.fixedBotomRight} 
+              onClick={() => this.props.history.push('/project/register')}
+              >
+              <EditIcon />
+            </Button>
+          </Slide>
+        }
+      </Paper>
     );
   }
 }
 
 const mapStateToProps = ({ layout, projectQuery }: IAppState) => ({
   user: layout.user,
+  searchMode: layout.searchMode,
   request: projectQuery.request,
   response: projectQuery.response,
   isLoading: projectQuery.isLoading,

@@ -8,21 +8,19 @@ const initialState: ILayoutState = {
   menuDrawer: false,
   additionalDrawer: false,
   accountShow: false,
+  searchMode: false,
   topDrawer: false,
   bottomDrawer: false,
   menuItems: [],
-  active: {
-    menuUid: '',
-    title: 'Home',
-    subTitle: 'The home page'
-  },
+  active: undefined,
   user: null,
   notification: 0,
   logoutDialog: false,
   alertSnackbar: {
     open: false,
     message: null
-  }
+  },
+  navBack: false
 };
 
 const reducer: Reducer<ILayoutState> = (state = initialState, action) => {
@@ -39,8 +37,11 @@ const reducer: Reducer<ILayoutState> = (state = initialState, action) => {
     case LayoutAction.SET_ACCOUNT_SHOW: {
       return { ...state, accountShow: action.payload };
     }
+    case LayoutAction.SET_SEARCH_MODE: {
+      return { ...state, searchMode: action.payload };
+    }
     case LayoutAction.SET_TOP_DRAWER: {
-      return { ...state, opDrawer: action.payload };
+      return { ...state, topDrawer: action.payload };
     }
     case LayoutAction.SET_BOTTOM_DRAWER: {
       return { ...state, bottomDrawer: action.payload };
@@ -62,6 +63,9 @@ const reducer: Reducer<ILayoutState> = (state = initialState, action) => {
     }
     case LayoutAction.SET_ALERT_SNACKBAR: {
       return { ...state, alertSnackbar: action.payload };
+    }
+    case LayoutAction.SET_NAV_BACK: {
+      return { ...state, navBack: action.payload };
     }
 
     default: {

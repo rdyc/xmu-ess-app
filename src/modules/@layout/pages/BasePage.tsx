@@ -5,21 +5,25 @@ import { AdditionalDrawer, BottomSnackbar, MenuDrawer, TopAppBar } from '@layout
 import { IAppUser, ICurrentPage, ISnackbarAlert } from '@layout/interfaces';
 import {
   setAccountShow,
-  setCurrentPage,
   setAdditionalDrawer,
   setAlertSnackbar,
   setAnchor,
   setBottomDrawer,
+  setCurrentPage,
   setLogoutDialog,
   setMenuDrawer,
   setMenuItems,
+  setSearchMode,
   setTopDrawer,
   setUser,
+  setNavBack,
 } from '@layout/store/actionCreators';
 import { Anchor } from '@layout/types';
 import { ILookupRoleMenuList } from '@lookup/interfaces';
 import { WithStyles, withStyles } from '@material-ui/core';
+import withWidth, { WithWidthProps } from '@material-ui/core/withWidth';
 import styles from '@styles';
+import * as classNames from 'classnames';
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { RouteComponentProps, withRouter } from 'react-router';
@@ -33,6 +37,7 @@ interface PropsFromState extends RouteComponentProps<void>, WithStyles<typeof st
   menuDrawer: boolean;
   additionalDrawer: boolean;
   accountShow: boolean;
+  searchMode: boolean;
   topDrawer: boolean;
   bottomDrawer: boolean;
   menuItems: ILookupRoleMenuList[];
@@ -41,6 +46,7 @@ interface PropsFromState extends RouteComponentProps<void>, WithStyles<typeof st
   notification: number;
   logoutDialog: boolean;
   alertSnackbar: ISnackbarAlert;
+  navBack: boolean;
 }
 
 interface PropsFromDispatch {
@@ -48,6 +54,7 @@ interface PropsFromDispatch {
   setMenuDrawer: typeof setMenuDrawer;
   setAdditionalDrawer: typeof setAdditionalDrawer;
   setAccountShow: typeof setAccountShow;
+  setSearchMode: typeof setSearchMode;
   setTopDrawer: typeof setTopDrawer;
   setBottomDrawer: typeof setBottomDrawer;
   setActive: typeof setCurrentPage;
@@ -55,9 +62,10 @@ interface PropsFromDispatch {
   setUser: typeof setUser;
   setLogoutDialog: typeof setLogoutDialog;
   setAlertSnackbar: typeof setAlertSnackbar;
+  setNavBack: typeof setNavBack;
 }
 
-type AllProps = PropsFromState & PropsFromDispatch & ConnectedReduxProps;
+type AllProps = PropsFromState & PropsFromDispatch & ConnectedReduxProps & WithWidthProps;
 
 class BasePage extends React.Component<AllProps> {
   private loadStorage() {
@@ -75,12 +83,14 @@ class BasePage extends React.Component<AllProps> {
   }
   
   public render() {
+    const { anchor, classes } = this.props;
+
     return (
-      <div className={this.props.classes.root}>
+      <div className={classes.root}>
         <TopAppBar {...this.props}/>
         <MenuDrawer {...this.props}/>
         <AdditionalDrawer {...this.props}/>
-        <main className={this.props.classes.content}>
+        <main className={classNames(classes.content, anchor === 'right' ? classes.contentShiftRight : classes.contentShiftLeft)}>
           {this.props.children}
         </main>
         <BottomSnackbar {...this.props}/>
@@ -94,6 +104,7 @@ const mapStateToProps = ({ layout }: IAppState) => ({
   menuDrawer: layout.menuDrawer,
   additionalDrawer: layout.additionalDrawer,
   accountShow: layout.accountShow,
+  searchMode: layout.searchMode,
   topDrawer: layout.topDrawer,
   bottomDrawer: layout.bottomDrawer,
   menuItems: layout.menuItems,
@@ -101,7 +112,8 @@ const mapStateToProps = ({ layout }: IAppState) => ({
   user: layout.user,
   notification: layout.notification,
   logoutDialog: layout.logoutDialog,
-  alertSnackbar: layout.alertSnackbar
+  alertSnackbar: layout.alertSnackbar,
+  navBack: layout.navBack,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
@@ -109,6 +121,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   setMenuDrawer: (open: boolean) => dispatch(setMenuDrawer(open)),
   setAdditionalDrawer: (open: boolean) => dispatch(setAdditionalDrawer(open)),
   setAccountShow: (open: boolean) => dispatch(setAccountShow(open)),
+  setSearchMode: (open: boolean) => dispatch(setSearchMode(open)),
   setTopDrawer: (open: boolean) => dispatch(setTopDrawer(open)),
   setBottomDrawer: (open: boolean) => dispatch(setBottomDrawer(open)),
   setActive: (active: ICurrentPage) => dispatch(setCurrentPage(active)),
@@ -116,8 +129,9 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   setUser: (user: IAppUser) => dispatch(setUser(user)),
   setLogoutDialog: (open: boolean) => dispatch(setLogoutDialog(open)),
   setAlertSnackbar: (data: ISnackbarAlert) => dispatch(setAlertSnackbar(data)),
+  setNavBack: (enabled: boolean) => dispatch(setNavBack(enabled)),
 });
 
-const redux = connect(mapStateToProps, mapDispatchToProps)(BasePage);
+const redux = connect(mapStateToProps, mapDispatchToProps)(withWidth()(BasePage));
 
 export default withRouter(withRoot(withStyles(styles)<{}>(redux)));

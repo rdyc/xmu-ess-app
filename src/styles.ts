@@ -17,36 +17,34 @@ const styles = (theme: Theme) =>
       zIndex: 1,
       overflow: 'hidden'
     },
+
+    // Application Bar
     appBar: {
-      // position: 'absolute',
-      [theme.breakpoints.up('sm')]: {
-        marginLeft: 0,
-        width: `calc(100% - ${0}px)`
-      },
       [theme.breakpoints.up('md')]: {
-        marginLeft: drawerWidth,
-        width: `calc(100% - ${drawerWidth}px)`
+        width: `calc(100% - ${0}px)`,
+        marginLeft: 0,
+        marginRight: 0,
       },
-      // zIndex: theme.zIndex.navDrawer + 1,
       transition: theme.transitions.create(['width', 'margin'], {
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.leavingScreen
       })
     },
-    appBarShift: {
-      [theme.breakpoints.up('sm')]: {
-        marginLeft: 0,
-        width: `calc(100% - ${0}px)`
-      },
+    appBarShiftLeft: {
       [theme.breakpoints.up('md')]: {
-        marginLeft: drawerWidth - 60,
-        width: `calc(100% - ${65}px)`
-      },
-      transition: theme.transitions.create(['width', 'margin'], {
-        easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.enteringScreen
-      })
+        width: `calc(100% - ${drawerWidth}px)`,
+        marginLeft: drawerWidth,
+        marginRight: 0,
+      }
     },
+    appBarShiftRight: {
+      [theme.breakpoints.up('md')]: {
+        width: `calc(100% - ${drawerWidth}px)`,
+        marginLeft: 0,
+        marginRight: drawerWidth
+      }
+    },
+
     menuButton: {
       marginLeft: 12,
       marginRight: 36
@@ -100,21 +98,30 @@ const styles = (theme: Theme) =>
     flex: {
       flex: 1
     },
+
+    // content
     content: {
       flexGrow: 1,
       padding: theme.spacing.unit * 2,
-      marginTop: 56,
-      [theme.breakpoints.up('sm')]: {
-        marginTop: 64,
+      [theme.breakpoints.up('lg')]: {
+        marginTop: theme.spacing.unit * 9,
       },
+      [theme.breakpoints.down('md')]: {
+        padding: 0,
+        marginTop: theme.spacing.unit * 7
+      }
+    },
+    contentShiftLeft: {
       [theme.breakpoints.up('md')]: {
         marginLeft: drawerWidth
       },
-      [theme.breakpoints.down('md')]: {
-        paddingLeft: 0,
-        paddingRight: 0
-      }
     },
+    contentShiftRight: {
+      [theme.breakpoints.up('md')]: {
+        marginRight: drawerWidth
+      },
+    },
+
     menuActive: {
       // backgroundColor: theme.palette.background.appBar
     },

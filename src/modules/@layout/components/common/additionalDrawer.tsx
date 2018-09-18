@@ -107,7 +107,7 @@ export const additionalDrawer: React.SFC<AllProps> = props => {
       {logoutDialog}
       <Drawer
         variant="temporary"
-        anchor={props.anchor === 'left' ? 'right' : 'bottom'}
+        anchor={props.anchor === 'left' ? 'right' : 'left'}
         open={props.additionalDrawer}
         classes={{
           paper: classNames(props.classes.drawerPaper, props.classes.drawerPaperAdditional)

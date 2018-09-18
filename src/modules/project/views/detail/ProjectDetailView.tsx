@@ -10,10 +10,11 @@ import { connect } from 'react-redux';
 import { RouteComponentProps } from 'react-router';
 import { Dispatch } from 'redux';
 import { IProjectRegistrationRequest } from '@project/interfaces/queries';
-import { setCurrentPage } from '@layout/store/actionCreators';
+import { setCurrentPage, setNavBack } from '@layout/store/actionCreators';
 
 interface PropsFromState extends RouteComponentProps<void>, WithStyles<typeof styles> {
   user: IAppUser;
+  navBack: boolean;
   request: IProjectRegistrationRequest;
   response: IResponseSingle<IProject>;
   isLoading: boolean;
@@ -23,6 +24,7 @@ interface PropsFromState extends RouteComponentProps<void>, WithStyles<typeof st
 
 interface PropsFromDispatch {
   setCurrentPage: typeof setCurrentPage;
+  setNavBack: typeof setNavBack;
   fetchRequest: typeof ProjectRegistrationFetchRequest;
 }
 
@@ -35,6 +37,7 @@ type AllProps = PropsFromState & PropsFromDispatch & RouteComponentProps<RoutePa
 class ProjectDetailView extends React.Component<AllProps> {
   componentWillUnmount() {
     this.props.setCurrentPage(null);
+    this.props.setNavBack(false);
   }
 
   componentDidMount() {
@@ -47,6 +50,8 @@ class ProjectDetailView extends React.Component<AllProps> {
       title: 'Project Detail',
       subTitle : 'Detail project registration'
     });
+
+    this.props.setNavBack(true);
 
     this.loadData();
   }
@@ -75,6 +80,7 @@ class ProjectDetailView extends React.Component<AllProps> {
 
 const mapStateToProps = ({ layout, projectQuery }: IAppState) => ({
   user: layout.user,
+  navBack: layout.navBack,
   request: projectQuery.request,
   response: projectQuery.response,
   isLoading: projectQuery.isLoading,
@@ -84,6 +90,7 @@ const mapStateToProps = ({ layout, projectQuery }: IAppState) => ({
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   setCurrentPage: (page: ICurrentPage | null) => dispatch(setCurrentPage(page)),
+  setNavBack: (enabled: boolean) => dispatch(setNavBack(enabled)),
   fetchRequest: (request: IProjectRegistrationRequest) => dispatch(ProjectRegistrationFetchRequest(request)),
 });
 

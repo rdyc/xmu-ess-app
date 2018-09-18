@@ -4,6 +4,7 @@ import { setCurrentPage, setMenuDrawer } from '@layout/store/actionCreators';
 import { Anchor } from '@layout/types';
 import { ILookupRoleMenuList } from '@lookup/interfaces/ILookupRoleMenuList';
 import { Drawer, Hidden, WithStyles } from '@material-ui/core';
+import { WithWidthProps } from '@material-ui/core/withWidth';
 import styles from '@styles';
 import * as classNames from 'classnames';
 import * as React from 'react';
@@ -24,7 +25,7 @@ interface PropsFromDispatch {
   setActive: typeof setCurrentPage;
 }
 
-type AllProps = PropsFromState & PropsFromDispatch & ConnectedReduxProps;
+type AllProps = PropsFromState & PropsFromDispatch & WithWidthProps & ConnectedReduxProps;
 
 export const menuDrawer: React.StatelessComponent<AllProps> = props => (
   <div>

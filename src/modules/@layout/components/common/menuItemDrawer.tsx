@@ -7,6 +7,7 @@ import styles from '@styles';
 import { menuLinkMapper } from '@utils/index';
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
+import { WithWidthProps, isWidthUp } from '@material-ui/core/withWidth';
 
 interface PropsFromState extends RouteComponentProps<void>, WithStyles<typeof styles> {
   menuDrawer: boolean;
@@ -20,7 +21,7 @@ interface PropsFromDispatch {
   setActive: typeof setCurrentPage;
 }
 
-type AllProps = PropsFromState & PropsFromDispatch & ConnectedReduxProps;
+type AllProps = PropsFromState & PropsFromDispatch & WithWidthProps & ConnectedReduxProps;
 
 export const menuItemDrawer: React.StatelessComponent<AllProps> = props => (
   <div>
@@ -73,7 +74,7 @@ export const menuItemDrawer: React.StatelessComponent<AllProps> = props => (
                   title: item.name,
                   subTitle: item.uid
                 }) && 
-                props.setMenuDrawer(!props.menuDrawer) &&
+                props.setMenuDrawer(isWidthUp('md', props.width) ? props.menuDrawer : !props.menuDrawer) &&
                 props.history.push(menuLinkMapper(item.uid))}>
               <ListItemText 
                 key={item.uid} 

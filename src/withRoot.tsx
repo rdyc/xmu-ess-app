@@ -1,7 +1,7 @@
 import 'typeface-roboto';
 
-import blue from '@material-ui/core/colors/blue';
-import teal from '@material-ui/core/colors/teal';
+import indigo from '@material-ui/core/colors/indigo';
+import orange from '@material-ui/core/colors/orange';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import * as React from 'react';
@@ -10,8 +10,8 @@ import * as React from 'react';
 // It's optional.
 const theme = createMuiTheme({
   palette: {
-    primary: blue,
-    secondary: teal,
+    primary: indigo,
+    secondary: orange,
   }
 });
 
