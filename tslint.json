@@ -60,7 +60,7 @@
     "no-duplicate-variable": true,
     "no-empty": true,
     "no-eval": true,
-    "no-namespace": false,
+    "no-namespace": true,
     "no-shadowed-variable": true,
     "no-string-literal": true,
     "no-switch-case-fall-through": true,
