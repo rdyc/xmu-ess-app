@@ -1,16 +1,16 @@
 import { IBaseChanges, IResponseCollection } from '@generic/interfaces';
 import { ConnectedReduxProps } from '@generic/types';
-import { Divider, Grid, List, ListItem, Typography, WithStyles } from '@material-ui/core';
+import { Divider, Grid, List, ListItem, Typography, WithStyles, ListSubheader } from '@material-ui/core';
 import { IProject } from '@project/interfaces/response';
 import styles from '@styles';
 import * as moment from 'moment';
 import * as React from 'react';
-import { FormattedDate } from 'react-intl';
+import { FormattedDate, FormattedNumber, FormattedPlural } from 'react-intl';
 import { RouteComponentProps } from 'react-router';
 import { isArray } from 'util';
 
 interface PropsFromState extends RouteComponentProps<void>, WithStyles<typeof styles> {
-  response: IResponseCollection<IProject>;
+  response: IResponseCollection<IProject> | undefined;
 }
 
 type AllProps = PropsFromState & ConnectedReduxProps;
@@ -103,9 +103,40 @@ export const ProjectListComponent: React.StatelessComponent<AllProps> = props =>
     );
   };
 
+  const { response  } = props;
+
   return (
-    <List>
-      {isArray(props.response.data) && renderProjectList(props.response.data)}
+    <List
+      component="nav"
+      subheader={
+        <ListSubheader
+          component="div"
+        >
+          {
+            response &&
+            response.metadata && 
+            <Grid container spacing={24}>
+              <Grid item xs={6} sm={6}>
+                <Typography variant="caption" color="primary">
+                  <FormattedNumber value={response.metadata.total} /> &nbsp;
+                  <FormattedPlural one="project" other="projects" value={response.metadata.total} />
+                </Typography>
+              </Grid>
+              <Grid item xs={6} sm={6}>
+                <Typography variant="caption" align="right" color="primary">
+                  <FormattedNumber value={response.metadata.paginate.current} /> of <FormattedNumber value={response.metadata.paginate.total} />
+                </Typography>
+              </Grid>
+            </Grid>
+          }
+        </ListSubheader>
+      }
+    >
+      {
+        response &&
+        isArray(response.data) && 
+        renderProjectList(response.data)
+      }
     </List>
   );
 };

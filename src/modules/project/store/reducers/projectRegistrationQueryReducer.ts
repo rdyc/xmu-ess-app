@@ -1,10 +1,14 @@
 import { Reducer } from 'redux';
-import { ProjectRegistrationAllAction } from '@project/store/actions/projectRegistrationAllActions';
+import { ProjectRegistrationAction } from '@project/store/actions';
 import { IQueryState, IProjectRegistrationRequest } from '@project/interfaces/queries';
 import { IProjectDetail } from '@project/interfaces/response';
 
 const initialState: IQueryState<IProjectRegistrationRequest, IProjectDetail> = {
-  request: undefined,
+  request: {
+    companyUid: undefined,
+    positionUid: undefined,
+    projectUid: undefined,
+  },
   response: undefined,
   isError: false,
   isLoading: false,
@@ -13,13 +17,13 @@ const initialState: IQueryState<IProjectRegistrationRequest, IProjectDetail> = {
 
 const reducer: Reducer<IQueryState<IProjectRegistrationRequest, IProjectDetail>> = (state = initialState, action) => {
   switch (action.type) {
-    case ProjectRegistrationAllAction.FETCH_REQUEST: {
+    case ProjectRegistrationAction.FETCH_REQUEST: {
       return { ...state, isLoading: true, request: action.payload };
     }
-    case ProjectRegistrationAllAction.FETCH_SUCCESS: {
+    case ProjectRegistrationAction.FETCH_SUCCESS: {
       return { ...state, isLoading: false, response: action.payload };
     }
-    case ProjectRegistrationAllAction.FETCH_ERROR: {
+    case ProjectRegistrationAction.FETCH_ERROR: {
       return { ...state, isLoading: false, isError: true, errors: action.payload };
     }
     default: { return state; }

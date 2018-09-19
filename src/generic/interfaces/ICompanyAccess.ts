@@ -1,4 +1,4 @@
 export interface ICompanyAccess {
-  readonly companyUid: string;
-  readonly positionUid: string;
+  readonly companyUid: string | undefined;
+  readonly positionUid: string | undefined;
 }

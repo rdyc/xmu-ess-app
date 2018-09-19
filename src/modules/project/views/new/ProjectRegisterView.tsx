@@ -10,7 +10,7 @@ import { connect } from 'react-redux';
 import { RouteComponentProps } from 'react-router';
 import { Dispatch } from 'redux';
 import { IProjectRegistrationAllRequest } from '@project/interfaces/queries';
-import { IProjectRegistrationAllFilter } from '@project/interfaces/filters';
+// import { IProjectRegistrationAllFilter } from '@project/interfaces/filters';
 import { ProjectListComponent } from '@project/components/projectListComponent';
 import AddIcon from '@material-ui/icons/Add';
 import { setCurrentPage } from '@layout/store/actionCreators';
@@ -43,16 +43,16 @@ class ProjectRegisterView extends React.Component<AllProps> {
       subTitle : 'Creating a new project'
     });
 
-    this.loadData(undefined);
+    // this.loadData(undefined);
   }
 
-  loadData = (reqfilter: IProjectRegistrationAllFilter | undefined): void => {
-    this.props.fetchRequest({
-      companyUid: this.props.user.company.uid,
-      positionUid: this.props.user.position.uid,
-      filter: reqfilter
-    });
-  }
+  // loadData = (reqfilter: IProjectRegistrationAllFilter | undefined): void => {
+  //   this.props.fetchRequest({
+  //     companyUid: this.props.user.company.uid,
+  //     positionUid: this.props.user.position.uid,
+  //     filter: reqfilter
+  //   });
+  // }
 
   render () {
     const { classes, isLoading, response } = this.props;

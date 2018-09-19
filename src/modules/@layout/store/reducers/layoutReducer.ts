@@ -38,11 +38,17 @@ const reducer: Reducer<ILayoutState> = (state = initialState, action) => {
     case LayoutAction.SET_ACCOUNT_SHOW: {
       return { ...state, accountShow: action.payload };
     }
-    case LayoutAction.SET_SEARCH_MODE: {
-      return { ...state, searchMode: action.payload };
+    case LayoutAction.SEARCH_MODE_ON: {
+      return { ...state, searchMode: true };
     }
-    case LayoutAction.SET_LIST_MODE: {
-      return { ...state, listMode: action.payload };
+    case LayoutAction.SEARCH_MODE_OFF: {
+      return { ...state, searchMode: false };
+    }
+    case LayoutAction.LIST_MODE_ON: {
+      return { ...state, listMode: true };
+    }
+    case LayoutAction.LIST_MODE_OFF: {
+      return { ...state, listMode: false };
     }
     case LayoutAction.SET_TOP_DRAWER: {
       return { ...state, topDrawer: action.payload };

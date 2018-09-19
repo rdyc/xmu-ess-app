@@ -2,7 +2,7 @@ import { AppStorage } from '@constants/index';
 import { IAppState, IBaseMetadata } from '@generic/interfaces';
 import { ConnectedReduxProps } from '@generic/types';
 import { AdditionalDrawer, BottomSnackbar, MenuDrawer, TopAppBar, BottomBar } from '@layout/components/common';
-import { IAppUser, ICurrentPage, ISnackbarAlert } from '@layout/interfaces';
+import { IAppUser, ICurrentPage, ISnackbarAlert, IListBarCallback } from '@layout/interfaces';
 import {
   setAccountShow,
   setAdditionalDrawer,
@@ -13,12 +13,14 @@ import {
   setLogoutDialog,
   setMenuDrawer,
   setMenuItems,
-  setSearchMode,
+  searchModeOn,
   setTopDrawer,
   setUser,
   setNavBack,
-  setListMode,
-  setReload,
+  listModeOn,
+  setListBarCallbacks,
+  listModeOff,
+  searchModeOff,
 } from '@layout/store/actionCreators';
 import { Anchor } from '@layout/types';
 import { ILookupRoleMenuList } from '@lookup/interfaces';
@@ -51,8 +53,11 @@ interface PropsFromState extends RouteComponentProps<void>, WithStyles<typeof st
   alertSnackbar: ISnackbarAlert;
   navBack: boolean;
 
-  listBarReloading: boolean;
   listBarMetadata: IBaseMetadata;
+  listBarReloading: boolean;
+  listBarPage: number;
+  listBarSize: number;
+  listBarCallbacks: IListBarCallback;
 }
 
 interface PropsFromDispatch {
@@ -60,8 +65,13 @@ interface PropsFromDispatch {
   setMenuDrawer: typeof setMenuDrawer;
   setAdditionalDrawer: typeof setAdditionalDrawer;
   setAccountShow: typeof setAccountShow;
-  setSearchMode: typeof setSearchMode;
-  setListMode: typeof setListMode;
+  
+  searchModeOn: typeof searchModeOn;
+  searchModeOff: typeof searchModeOff;
+  
+  listModeOn: typeof listModeOn;
+  listModeOff: typeof listModeOff;
+
   setTopDrawer: typeof setTopDrawer;
   setBottomDrawer: typeof setBottomDrawer;
   setActive: typeof setCurrentPage;
@@ -70,7 +80,8 @@ interface PropsFromDispatch {
   setLogoutDialog: typeof setLogoutDialog;
   setAlertSnackbar: typeof setAlertSnackbar;
   setNavBack: typeof setNavBack;
-  setReload: typeof setReload;
+
+  setListBarCallbacks: typeof setListBarCallbacks;
 }
 
 type AllProps = PropsFromState & PropsFromDispatch & ConnectedReduxProps & WithWidthProps;
@@ -131,6 +142,9 @@ const mapStateToProps = ({ layout, listBar }: IAppState) => ({
 
   listBarMetadata: listBar.metadata,
   listBarReloading: listBar.isReload,
+  listBarPage: listBar.page,
+  listBarSize: listBar.size,
+  listBarCallbacks: listBar.callbacks,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
@@ -138,8 +152,13 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   setMenuDrawer: (open: boolean) => dispatch(setMenuDrawer(open)),
   setAdditionalDrawer: (open: boolean) => dispatch(setAdditionalDrawer(open)),
   setAccountShow: (open: boolean) => dispatch(setAccountShow(open)),
-  setSearchMode: (activated: boolean) => dispatch(setSearchMode(activated)),
-  setListMode: (acivated: boolean) => dispatch(setListMode(acivated)),
+  
+  searchModeOn: () => dispatch(searchModeOn()),
+  searchModeOff: () => dispatch(searchModeOff()),
+  
+  listModeOn: () => dispatch(listModeOn()),
+  listModeOff: () => dispatch(listModeOff()),
+  
   setTopDrawer: (open: boolean) => dispatch(setTopDrawer(open)),
   setBottomDrawer: (open: boolean) => dispatch(setBottomDrawer(open)),
   setActive: (active: ICurrentPage) => dispatch(setCurrentPage(active)),
@@ -149,7 +168,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   setAlertSnackbar: (data: ISnackbarAlert) => dispatch(setAlertSnackbar(data)),
   setNavBack: (enabled: boolean) => dispatch(setNavBack(enabled)),
 
-  setReload: (value: boolean) => dispatch(setReload(value)),
+  setListBarCallbacks: (callbacks: IListBarCallback) => dispatch(setListBarCallbacks(callbacks)),
 });
 
 const redux = connect(mapStateToProps, mapDispatchToProps)(withWidth()(BasePage));

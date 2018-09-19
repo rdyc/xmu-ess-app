@@ -4,9 +4,9 @@ import red from '@material-ui/core/colors/red';
 const drawerWidth = 260;
 
 const size = {
-  thin: 2,
-  wide: 3,
-  far: 4
+  thin: 1,
+  wide: 2,
+  far: 3
 };
 
 const styles = (theme: Theme) =>
@@ -43,6 +43,11 @@ const styles = (theme: Theme) =>
         marginLeft: 0,
         marginRight: drawerWidth
       }
+    },
+
+    // App Tabs
+    tabs: {
+      backgroundColor: theme.palette.primary.light
     },
 
     menuButton: {
@@ -104,11 +109,11 @@ const styles = (theme: Theme) =>
       flexGrow: 1,
       padding: theme.spacing.unit * 2,
       [theme.breakpoints.up('lg')]: {
-        marginTop: theme.spacing.unit * 9,
+        marginTop: theme.spacing.unit * 10,
       },
       [theme.breakpoints.down('md')]: {
         padding: 0,
-        marginTop: theme.spacing.unit * 7,
+        marginTop: theme.spacing.unit * 8,
       }
     },
     contentShiftLeft: {

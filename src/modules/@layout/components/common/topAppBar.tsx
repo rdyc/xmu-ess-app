@@ -1,6 +1,6 @@
 import { ConnectedReduxProps } from '@generic/types';
 import { IAppUser, ICurrentPage } from '@layout/interfaces';
-import { setAdditionalDrawer, setMenuDrawer, setSearchMode, setNavBack } from '@layout/store/actionCreators';
+import { setAdditionalDrawer, setMenuDrawer, searchModeOn, setNavBack, searchModeOff } from '@layout/store/actionCreators';
 import { Anchor } from '@layout/types';
 import { AppBar, Badge, IconButton, Input, Toolbar, Typography, WithStyles, Slide } from '@material-ui/core';
 import { isWidthUp, WithWidthProps } from '@material-ui/core/withWidth';
@@ -28,7 +28,10 @@ interface PropsFromState extends RouteComponentProps<void>, WithStyles<typeof st
 interface PropsFromDispatch {
   setMenuDrawer: typeof setMenuDrawer;
   setAdditionalDrawer: typeof setAdditionalDrawer;
-  setSearchMode: typeof setSearchMode;
+  
+  searchModeOn: typeof searchModeOn;
+  searchModeOff: typeof searchModeOff;
+  
   setNavBack: typeof setNavBack;
 }
 
@@ -71,7 +74,7 @@ const renderNormalMode = (props: AllProps) => (
     <IconButton
       color="inherit"
       aria-label="More"
-      onClick={() => props.setSearchMode(!props.searchMode)}
+      onClick={() => props.searchModeOn()}
     >
       <SearchIcon />
     </IconButton>
@@ -111,8 +114,8 @@ const renderSearchMode = (props: AllProps) => (
     <Toolbar>
       <IconButton
         color="inherit"
-        aria-label="open search"
-        onClick={() => props.setSearchMode(!props.searchMode)}
+        aria-label="close search"
+        onClick={() => props.searchModeOff()}
       >
         <ArrowBackIcon />
       </IconButton>

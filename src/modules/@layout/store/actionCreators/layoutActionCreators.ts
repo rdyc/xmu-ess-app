@@ -9,8 +9,13 @@ export const setAnchor = (anchor: Anchor) => action(Action.SET_ANCHOR, anchor);
 export const setMenuDrawer = (open: boolean) => action(Action.SET_MENU_DRAWER, open);
 export const setAdditionalDrawer = (open: boolean) => action(Action.SET_ADDITIONAL_DRAWER, open);
 export const setAccountShow = (open: boolean) => action(Action.SET_ACCOUNT_SHOW, open);
-export const setSearchMode = (open: boolean) => action(Action.SET_SEARCH_MODE, open);
-export const setListMode = (open: boolean) => action(Action.SET_LIST_MODE, open);
+
+export const searchModeOn = () => action(Action.SEARCH_MODE_ON);
+export const searchModeOff = () => action(Action.SEARCH_MODE_OFF);
+
+export const listModeOn = () => action(Action.LIST_MODE_ON);
+export const listModeOff = () => action(Action.LIST_MODE_OFF);
+
 export const setTopDrawer = (open: boolean) => action(Action.SET_TOP_DRAWER, open);
 export const setBottomDrawer = (open: boolean) => action(Action.SET_ANCHOR, open);
 export const setMenuItems = (items: ILookupRoleMenuList[]) => action(Action.SET_MENU_ITEMS, items);

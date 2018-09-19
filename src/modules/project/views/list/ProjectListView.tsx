@@ -1,10 +1,9 @@
 import { IAppState, IResponseCollection } from '@generic/interfaces';
 import { ConnectedReduxProps } from '@generic/types';
-import { IAppUser, ICurrentPage } from '@layout/interfaces';
-import { setCurrentPage, setSearchMode, setListMode, setReload } from '@layout/store/actionCreators';
+import { IAppUser, ICurrentPage, IListBarCallback } from '@layout/interfaces';
+import { setCurrentPage, listModeOn, setListBarReload, searchModeOn, setListBarCallbacks, listModeOff, searchModeOff } from '@layout/store/actionCreators';
 import { Paper, Typography, WithStyles, withStyles } from '@material-ui/core';
 import { ProjectListComponent } from '@project/components/projectListComponent';
-import { IProjectRegistrationAllFilter } from '@project/interfaces/filters';
 import { IProjectRegistrationAllRequest } from '@project/interfaces/queries';
 import { IProject } from '@project/interfaces/response';
 import { ProjectRegistrationFetchAllRequest } from '@project/store/actions';
@@ -18,36 +17,43 @@ interface PropsFromState extends RouteComponentProps<void>, WithStyles<typeof st
   user: IAppUser;
   listMode: boolean;
   searchMode: boolean;
-  request: IProjectRegistrationAllRequest;
-  response: IResponseCollection<IProject>;
+  request: IProjectRegistrationAllRequest | undefined;
+  response: IResponseCollection<IProject> | undefined;
   isLoading: boolean;
   isError: boolean;
   errors: string;
+
   listBarReloading: boolean;
+  listBarPage: number;
+  listBarSize: number;
 }
 
 interface PropsFromDispatch {
   setCurrentPage: typeof setCurrentPage;
-  setSearchMode: typeof setSearchMode;
-  setListMode: typeof setListMode;
+  
+  searchModeOn: typeof searchModeOn;
+  searchModeOff: typeof searchModeOff;
+
+  listModeOn: typeof listModeOn;
+  listModeOff: typeof listModeOff;
+  
   fetchRequest: typeof ProjectRegistrationFetchAllRequest;
 
-  setReload: typeof setReload;
+  setReload: typeof setListBarReload;
+  setListBarCallbacks: typeof setListBarCallbacks;
 }
 
 type AllProps = PropsFromState & PropsFromDispatch & ConnectedReduxProps;
-  
+
 class ProjectListView extends React.Component<AllProps> {
+  state = {
+    page: 1,
+    size: 10
+  };
+
   componentWillUnmount() {
     this.props.setCurrentPage(null);
-    this.props.setListMode(false);
-    this.props.setSearchMode(false);
-  }
-
-  componentWillReceiveProps(nextProps: AllProps) {
-    if (nextProps.listBarReloading && nextProps.listBarReloading !== this.props.listBarReloading) {
-      this.loadData(undefined);
-    }
+    this.props.listModeOff();
   }
 
   componentDidMount() {
@@ -57,16 +63,51 @@ class ProjectListView extends React.Component<AllProps> {
       subTitle : 'All project registrations requested by you'
     });
 
-    this.props.setListMode(true);
+    this.props.listModeOn();
 
-    this.loadData(undefined);
+    this.props.setListBarCallbacks({
+      onNextCallback: this.handleOnNextCallback,
+      onPrevCallback: this.handleOnPrevCallback
+    });
+
+    if (this.props.response === undefined) {
+      this.loadData();
+    }
   }
 
-  loadData = (reqfilter: IProjectRegistrationAllFilter | undefined): void => {
+  handleOnNextCallback = () => this.setPaging(true);
+
+  handleOnPrevCallback = () => this.setPaging(false);
+
+  setPaging = (isNext: boolean) => {
+    const { response } = this.props;
+
+    if (response && response.metadata) {
+      if (isNext) {
+        this.state.page = response.metadata.paginate.current + 1;          
+      } else {
+        this.state.page = response.metadata.paginate.current - 1;
+      }
+      
+      this.loadData();
+    }
+  }
+
+  loadData = () => {
     this.props.fetchRequest({
       companyUid: this.props.user.company.uid,
       positionUid: this.props.user.position.uid,
-      filter: reqfilter
+      filter: {
+        customerUids: undefined,
+        projectTypes: undefined,
+        statusTypes: undefined,
+        find: undefined,
+        findBy: undefined,
+        direction: undefined,
+        orderBy: undefined,
+        page: this.state.page,
+        size: this.state.size,
+      }
     });
   }
 
@@ -75,30 +116,15 @@ class ProjectListView extends React.Component<AllProps> {
 
     return (
       <Paper square elevation={1}>
-        {isLoading && 
+        {
+          isLoading && 
           <Typography variant="body2">loading</Typography>
         }
-        {!isLoading && response && 
-          <ProjectListComponent {...this.props} />
+        {
+          !isLoading && 
+          response && 
+          <ProjectListComponent {...this.props}  />
         }
-        {/* {!searchMode &&
-          <Slide 
-            mountOnEnter 
-            unmountOnExit
-            direction="up" 
-            in={!searchMode} 
-          >
-            <Button 
-              variant="fab" 
-              color="secondary"
-              aria-label="New Project"
-              className={classes.fixedBotomRight} 
-              onClick={() => this.props.history.push('/project/register')}
-            >
-              <EditIcon />
-            </Button>
-          </Slide>
-        } */}
       </Paper>
     );
   }
@@ -113,16 +139,24 @@ const mapStateToProps = ({ layout, listBar, projectQuery }: IAppState) => ({
   isLoading: projectQuery.isLoading,
   isError: projectQuery.isError,
   errors: projectQuery.errors,
-  listBarReloading: listBar.isReload
+
+  listBarReloading: listBar.isReload,
+  listBarPage: listBar.page,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   setCurrentPage: (page: ICurrentPage | null) => dispatch(setCurrentPage(page)),
-  setSearchMode: (enabled: boolean) => dispatch(setSearchMode(enabled)),
-  setListMode: (enabled: boolean) => dispatch(setListMode(enabled)),
+  
+  searchModeOn: () => dispatch(searchModeOn()),
+  searchModeOff: () => dispatch(searchModeOff()),
+  
+  listModeOn: () => dispatch(listModeOn()),
+  listModeOff: () => dispatch(listModeOff()),
+  
   fetchRequest: (request: IProjectRegistrationAllRequest) => dispatch(ProjectRegistrationFetchAllRequest(request)),
 
-  setReload: (value: boolean) => dispatch(setReload(value)),
+  setReload: (value: boolean) => dispatch(setListBarReload(value)),
+  setListBarCallbacks: (callbacks: IListBarCallback) => dispatch(setListBarCallbacks(callbacks)),
 });
 
 const redux = connect(mapStateToProps, mapDispatchToProps)(ProjectListView);

@@ -11,8 +11,9 @@ import SyncIcon from '@material-ui/icons/Sync';
 import styles from '@styles';
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
-import { setReload, setAlertSnackbar } from '@layout/store/actionCreators';
+import { setAlertSnackbar } from '@layout/store/actionCreators';
 import { IBaseMetadata } from '@generic/interfaces';
+import { IListBarCallback } from '@layout/interfaces';
 
 interface PropsFromState extends RouteComponentProps<void>, WithStyles<typeof styles> {
   searchMode: boolean;
@@ -20,9 +21,12 @@ interface PropsFromState extends RouteComponentProps<void>, WithStyles<typeof st
   
   listBarReloading: boolean;
   listBarMetadata: IBaseMetadata | undefined;
+  listBarCallbacks: IListBarCallback;
 }
 interface PropsFromDispatch {
-  setReload: typeof setReload;
+  // setListBarReload: typeof setListBarReload;
+  // setListBarPage: typeof setListBarPage;
+
   setAlertSnackbar: typeof setAlertSnackbar;
 }
 
@@ -30,18 +34,7 @@ type AllProps = PropsFromState & PropsFromDispatch & WithWidthProps & ConnectedR
 
 const handleReload = (props: AllProps) => {
   if (!props.listBarReloading) {
-    props.setReload(true);
-  } else {
-    props.setAlertSnackbar({
-      open: true,
-      message: 'loading in progress...'
-    });
-  }  
-};
-
-const handleNextPage = (props: AllProps) => {
-  if (!props.listBarReloading) {
-    props.setReload(true);
+    // props.setListBarReload(true);
   } else {
     props.setAlertSnackbar({
       open: true,
@@ -61,21 +54,37 @@ export const bottomBar: React.StatelessComponent<AllProps> = props => {
       className={props.classes.bottomNavigation}
       value={2}
     >
-      {props.listBarMetadata && props.listBarMetadata.paginate.previous && <BottomNavigationAction label="Prev" icon={<ChevronLeftIcon />} />} 
+      {
+        props.listBarMetadata && 
+        props.listBarMetadata.paginate.previous && 
+        <BottomNavigationAction 
+          label="Prev" 
+          icon={<ChevronLeftIcon />}
+          onClick={() => props.listBarCallbacks.onPrevCallback()}
+        />
+      } 
+      
       <BottomNavigationAction label="Order" icon={<FilterListIcon />} />
+      
       {isWidthUp('sm', props.width) && <BottomNavigationAction label="Sort" icon={<SortByAlphaIcon />} />}
+      
       {isWidthUp('sm', props.width) && <BottomNavigationAction label="Size" icon={<LibraryBooksSharpIcon />} />}
+      
       <BottomNavigationAction label="Add" icon={<AddCircleOutlineIcon />} />
+      
       <BottomNavigationAction 
         label="Sync" 
         icon={<SyncIcon />} 
         onClick={() => handleReload(props)}
       />
-      {props.listBarMetadata && props.listBarMetadata.paginate.next && 
+
+      {
+        props.listBarMetadata && 
+        props.listBarMetadata.paginate.next && 
         <BottomNavigationAction 
           icon={<ChevronRightIcon />} 
-          label={`Next ${props.listBarMetadata.paginate.current + 1} of ${props.listBarMetadata.paginate.total}`}
-          onClick={() => handleNextPage(props)}
+          label="Next"
+          onClick={() => props.listBarCallbacks.onNextCallback()}
         />
       }
     </BottomNavigation>

@@ -5,6 +5,7 @@ import { action } from 'typesafe-actions';
 
 export const enum ProjectRegistrationAllAction {
   FETCH_REQUEST = '@@project-registration-all/FETCH_REQUEST',
+  FETCH_REQUEST_NEXT = '@@project-registration-all/FETCH_REQUEST_NEXT',
   FETCH_SUCCESS = '@@project-registration-all/FETCH_SUCCESS',
   FETCH_ERROR = '@@project-registration-all/FETCH_ERROR'
 }

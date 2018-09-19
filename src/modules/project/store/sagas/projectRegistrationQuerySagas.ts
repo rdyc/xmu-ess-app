@@ -5,11 +5,13 @@ import {
   ProjectRegistrationFetchAllSuccess,
   ProjectRegistrationFetchRequest,
   ProjectRegistrationAction,
+  ProjectRegistrationFetchError,
+  ProjectRegistrationFetchSuccess,
 } from '@project/store/actions';
 import { callApi } from '@utils/api';
 import { all, call, fork, put, takeEvery } from 'redux-saga/effects';
 import { objectToQuerystring } from 'utils';
-import { setReload, setListBarMetadata } from '@layout/store/actionCreators';
+import { setListBarReload, setListBarMetadata } from '@layout/store/actionCreators';
 
 const API_ENDPOINT = process.env.REACT_APP_API_URL || '';
 
@@ -31,7 +33,7 @@ function* handleAllFetch(action: ReturnType<typeof ProjectRegistrationFetchAllRe
       yield put(ProjectRegistrationFetchAllError('An unknown error occured.'));
     }
   } finally {
-    yield put(setReload(false));
+    yield put(setListBarReload(false));
   }
 }
 
@@ -40,15 +42,15 @@ function* handleFetch(action: ReturnType<typeof ProjectRegistrationFetchRequest>
     const response = yield call(callApi, 'get', API_ENDPOINT, `/v1/project/registrations/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.projectUid}`);
     
     if (response instanceof Response) {
-      yield put(ProjectRegistrationFetchAllError(`${response.status}: ${response.statusText}`));
+      yield put(ProjectRegistrationFetchError(`${response.status}: ${response.statusText}`));
     } else {
-      yield put(ProjectRegistrationFetchAllSuccess(response));
+      yield put(ProjectRegistrationFetchSuccess(response));
     }
   } catch (error) {
     if (error instanceof Error) {
-      yield put(ProjectRegistrationFetchAllError(error.stack!));
+      yield put(ProjectRegistrationFetchError(error.stack!));
     } else {
-      yield put(ProjectRegistrationFetchAllError('An unknown error occured.'));
+      yield put(ProjectRegistrationFetchError('An unknown error occured.'));
     }
   }
 }
