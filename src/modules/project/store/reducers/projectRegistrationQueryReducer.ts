@@ -4,11 +4,7 @@ import { IQueryState, IProjectRegistrationRequest } from '@project/interfaces/qu
 import { IProjectDetail } from '@project/interfaces/response';
 
 const initialState: IQueryState<IProjectRegistrationRequest, IProjectDetail> = {
-  request: {
-    companyUid: undefined,
-    positionUid: undefined,
-    projectUid: undefined,
-  },
+  request: undefined,
   response: undefined,
   isError: false,
   isLoading: false,

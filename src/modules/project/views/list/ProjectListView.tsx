@@ -54,6 +54,7 @@ class ProjectListView extends React.Component<AllProps> {
   componentWillUnmount() {
     this.props.setCurrentPage(null);
     this.props.listModeOff();
+    this.props.searchModeOff();
   }
 
   componentDidMount() {
