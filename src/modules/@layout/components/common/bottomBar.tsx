@@ -32,21 +32,31 @@ interface PropsFromDispatch {
 
 type AllProps = PropsFromState & PropsFromDispatch & WithWidthProps & ConnectedReduxProps;
 
-const handleReload = (props: AllProps) => {
-  if (!props.listBarReloading) {
-    // props.setListBarReload(true);
-  } else {
-    props.setAlertSnackbar({
-      open: true,
-      message: 'loading in progress...'
-    });
-  }  
-};
+// const handleReload = (props: AllProps) => {
+//   if (!props.listBarReloading) {
+//     // props.setListBarReload(true);
+//   } else {
+//     props.setAlertSnackbar({
+//       open: true,
+//       message: 'loading in progress...'
+//     });
+//   }  
+// };
+// let anchorEl: any = null;
 
 export const bottomBar: React.StatelessComponent<AllProps> = props => {
   if (!props.listMode) {
     return <div></div>;
   }
+
+  // const handleClick = (e: React.MouseEvent<HTMLElement>) => {
+  //   anchorEl = e.currentTarget;
+  //   console.log(Boolean(anchorEl));
+  // };
+
+  // const handleClose = () => { 
+  //   anchorEl = null; 
+  // };
 
   return (
     <BottomNavigation
@@ -64,7 +74,13 @@ export const bottomBar: React.StatelessComponent<AllProps> = props => {
         />
       } 
       
-      <BottomNavigationAction label="Order" icon={<FilterListIcon />} />
+      <BottomNavigationAction aria-label="More"
+          aria-owns={open ? 'long-menu' : ''}
+          aria-haspopup="true"
+        label="Order" 
+        icon={<FilterListIcon />}
+        onClick={(e: React.MouseEvent<HTMLElement>) => props.listBarCallbacks.onOrderCallback(e.currentTarget.accessKey)} 
+      />
       
       {isWidthUp('sm', props.width) && <BottomNavigationAction label="Sort" icon={<SortByAlphaIcon />} />}
       
@@ -75,7 +91,7 @@ export const bottomBar: React.StatelessComponent<AllProps> = props => {
       <BottomNavigationAction 
         label="Sync" 
         icon={<SyncIcon />} 
-        onClick={() => handleReload(props)}
+        onClick={() => props.listBarCallbacks.onSyncCallback()}
       />
 
       {

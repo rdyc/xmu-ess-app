@@ -11,6 +11,7 @@ import { isArray } from 'util';
 
 interface PropsFromState extends RouteComponentProps<void>, WithStyles<typeof styles> {
   response: IResponseCollection<IProject> | undefined;
+  isLoading: boolean;
 }
 
 type AllProps = PropsFromState & ConnectedReduxProps;
@@ -35,8 +36,9 @@ export const ProjectListComponent: React.StatelessComponent<AllProps> = props =>
       projects.map((project, i) => 
         <div key={project.uid}>
           <ListItem 
+            button={!props.isLoading} 
             key={project.uid} 
-            button onClick={() => props.history.push(`/project/detail/${project.uid}`)}
+            onClick={() => !props.isLoading && props.history.push(`/project/detail/${project.uid}`)}
           >
             <Grid container spacing={24}>
               <Grid item xs={8} sm={8}>

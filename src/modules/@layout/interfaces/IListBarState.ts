@@ -4,6 +4,10 @@ import { SortDirection } from '@material-ui/core/TableCell';
 export interface IListBarCallback {
   readonly onNextCallback: () => void;
   readonly onPrevCallback: () => void;
+  readonly onSyncCallback: () => void;
+  readonly onAddCallback: () => void;
+  readonly onOrderCallback: (field: string) => void;
+  readonly onSortCallback: () => void;
 }
 
 export interface IListBarState {

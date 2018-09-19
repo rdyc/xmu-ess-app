@@ -16,7 +16,19 @@ const initialState: IListBarState = {
     },
     onPrevCallback: () => { 
       console.log(`list bar onPrev clicked`); 
-    }
+    },
+    onSyncCallback: () => { 
+      console.log(`list bar onSync clicked`); 
+    },
+    onAddCallback: () => { 
+      console.log(`list bar onAdd clicked`); 
+    },
+    onOrderCallback: () => { 
+      console.log(`list bar onOrder clicked`); 
+    },
+    onSortCallback: () => { 
+      console.log(`list bar onSort clicked`); 
+    },
   }
 };
 

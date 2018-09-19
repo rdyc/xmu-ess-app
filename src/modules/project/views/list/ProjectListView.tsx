@@ -68,7 +68,11 @@ class ProjectListView extends React.Component<AllProps> {
 
     this.props.setListBarCallbacks({
       onNextCallback: this.handleOnNextCallback,
-      onPrevCallback: this.handleOnPrevCallback
+      onPrevCallback: this.handleOnPrevCallback,
+      onSyncCallback: this.handleOnSyncCallback,
+      onOrderCallback: this.handleOnOrderCallback,
+      onSortCallback: this.handleOnPrevCallback,
+      onAddCallback: this.handleOnPrevCallback,
     });
 
     if (this.props.response === undefined) {
@@ -79,6 +83,16 @@ class ProjectListView extends React.Component<AllProps> {
   handleOnNextCallback = () => this.setPaging(true);
 
   handleOnPrevCallback = () => this.setPaging(false);
+
+  handleOnSyncCallback = () => {
+    this.state.page = 1;
+
+    this.loadData();
+  }
+
+  handleOnOrderCallback = (field: string) => {
+    alert(field);
+  }
 
   setPaging = (isNext: boolean) => {
     const { response } = this.props;
@@ -116,13 +130,16 @@ class ProjectListView extends React.Component<AllProps> {
     const { isLoading, response } = this.props;
 
     return (
-      <Paper square elevation={1}>
+      <Paper 
+        square 
+        elevation={1}
+      >
         {
           isLoading && 
+          !response &&
           <Typography variant="body2">loading</Typography>
         }
         {
-          !isLoading && 
           response && 
           <ProjectListComponent {...this.props}  />
         }
