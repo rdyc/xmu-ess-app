@@ -1,9 +1,29 @@
 import { AppStorage } from '@constants/index';
-import { IAppState, IBaseMetadata } from '@generic/interfaces';
+import { IAppState } from '@generic/interfaces';
 import { ConnectedReduxProps, SortDirection } from '@generic/types';
-import { AdditionalDrawer, BottomSnackbar, MenuDrawer, TopAppBar, BottomBar } from '@layout/components/common';
-import { IAppUser, ICurrentPage, ISnackbarAlert, IListBarCallback, IListBarMenuItem } from '@layout/interfaces';
+import { AdditionalDrawer, BottomSnackbar, ListBar, MenuDrawer, TopAppBar } from '@layout/components/common';
 import {
+  IAppUser,
+  ICurrentPage,
+  IListBarCallback,
+  IListBarMenuItem,
+  IListBarState,
+  ISnackbarAlert,
+} from '@layout/interfaces';
+import {
+  listBarAssignCallbacks,
+  listBarAssignMenuItems,
+  listBarClearCallbacks,
+  listBarClearMenuItems,
+  listBarDirectionSet,
+  listBarMenuHide,
+  listBarMenuShow,
+  listBarOrderSet,
+  listBarSizeSet,
+  listModeOff,
+  listModeOn,
+  searchModeOff,
+  searchModeOn,
   setAccountShow,
   setAdditionalDrawer,
   setAlertSnackbar,
@@ -13,22 +33,9 @@ import {
   setLogoutDialog,
   setMenuDrawer,
   setMenuItems,
-  searchModeOn,
+  setNavBack,
   setTopDrawer,
   setUser,
-  setNavBack,
-  listModeOn,
-  listBarAssignCallbacks,
-  listModeOff,
-  searchModeOff,
-  listBarMenuShow,
-  listBarMenuHide,
-  listBarClearCallbacks,
-  listBarAssignMenuItems,
-  listBarClearMenuItems,
-  listBarOrderSet,
-  listBarSizeSet,
-  listBarDirectionSet,
 } from '@layout/store/actionCreators';
 import { Anchor } from '@layout/types';
 import { ILookupRoleMenuList } from '@lookup/interfaces';
@@ -61,16 +68,7 @@ interface PropsFromState extends RouteComponentProps<void>, WithStyles<typeof st
   alertSnackbar: ISnackbarAlert;
   navBack: boolean;
 
-  listBarMetadata: IBaseMetadata;
-  listBarReloading: boolean;
-  listBarOrderBy: string | undefined;
-  listBarDirection: SortDirection | undefined;
-  listBarPage: number | undefined;
-  listBarSize: number | undefined;
-  listBarCallbacks: IListBarCallback;
-  listBarMenuIsOpen: boolean;
-  listBarMenuAnchorEl: string | undefined;
-  listBarMenuItems: IListBarMenuItem[] | undefined;
+  listBarState: IListBarState;
 }
 
 interface PropsFromDispatch {
@@ -94,15 +92,17 @@ interface PropsFromDispatch {
   setAlertSnackbar: typeof setAlertSnackbar;
   setNavBack: typeof setNavBack;
 
-  listBarAssignCallbacks: typeof listBarAssignCallbacks;
-  listBarClearCallbacks: typeof listBarClearCallbacks;
-  listBarAssignMenuItems: typeof listBarAssignMenuItems;
-  listBarClearMenuItems: typeof listBarClearMenuItems;
-  listBarMenuShow: typeof listBarMenuShow;
-  listBarMenuHide: typeof listBarMenuHide;
-  listBarOrderSet: typeof listBarOrderSet;
-  listBarDirectionSet: typeof listBarDirectionSet;
-  listBarSizeSet: typeof listBarSizeSet;
+  listBarDispatch: {
+    assignCallbacks: typeof listBarAssignCallbacks;
+    clearCallbacks: typeof listBarClearCallbacks;
+    assignMenuItems: typeof listBarAssignMenuItems;
+    clearMenuItems: typeof listBarClearMenuItems;
+    menuShow: typeof listBarMenuShow;
+    menuHide: typeof listBarMenuHide;
+    orderSet: typeof listBarOrderSet;
+    directionSet: typeof listBarDirectionSet;
+    sizeSet: typeof listBarSizeSet;
+  };
 }
 
 type AllProps = PropsFromState & PropsFromDispatch & ConnectedReduxProps & WithWidthProps;
@@ -137,7 +137,7 @@ class BasePage extends React.Component<AllProps> {
         >
           {this.props.children}
         </main>
-        <BottomBar {...this.props}/>
+        <ListBar {...this.props}/>
         <BottomSnackbar {...this.props}/>
       </div>
     );
@@ -160,17 +160,7 @@ const mapStateToProps = ({ layout, listBar }: IAppState) => ({
   logoutDialog: layout.logoutDialog,
   alertSnackbar: layout.alertSnackbar,
   navBack: layout.navBack,
-
-  listBarMetadata: listBar.metadata,
-  listBarReloading: listBar.isReload,
-  listBarPage: listBar.page,
-  listBarSize: listBar.size,
-  listBarOrderBy: listBar.orderBy,
-  listBarDirection: listBar.direction,
-  listBarCallbacks: listBar.callbacks,
-  listBarMenuIsOpen: listBar.menuIsOpen,
-  listBarMenuAnchorEl: listBar.menuAnchorEl,
-  listBarMenuItems: listBar.menuItems,
+  listBarState: listBar
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
@@ -195,15 +185,17 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   setNavBack: (enabled: boolean) => dispatch(setNavBack(enabled)),
 
   /* list bar */
-  listBarAssignCallbacks: (callbacks: IListBarCallback) => dispatch(listBarAssignCallbacks(callbacks)),
-  listBarClearCallbacks: () => dispatch(listBarClearCallbacks()),
-  listBarAssign: (menuItems: IListBarMenuItem[]) => dispatch(listBarAssignMenuItems(menuItems)),
-  listBarClearMenuItems: () => dispatch(listBarClearMenuItems()),
-  listBarMenuShow: (anchorEl: any) => dispatch(listBarMenuShow(anchorEl)),
-  listBarMenuHide: () => dispatch(listBarMenuHide()),
-  listBarOrderSet: (name: string) => dispatch(listBarOrderSet(name)),
-  listBarSizeSet: (size: number) => dispatch(listBarSizeSet(size)),
-  listBarDirectionSet: (direction: SortDirection) => dispatch(listBarDirectionSet(direction)),
+  listBarDispatch: {
+    assignCallbacks: (callbacks: IListBarCallback) => dispatch(listBarAssignCallbacks(callbacks)),
+    clearCallbacks: () => dispatch(listBarClearCallbacks()),
+    assignMenuItems: (menuItems: IListBarMenuItem[]) => dispatch(listBarAssignMenuItems(menuItems)),
+    clearMenuItems: () => dispatch(listBarClearMenuItems()),
+    menuShow: (anchorEl: any) => dispatch(listBarMenuShow(anchorEl)),
+    menuHide: () => dispatch(listBarMenuHide()),
+    orderSet: (name: string) => dispatch(listBarOrderSet(name)),
+    sizeSet: (size: number) => dispatch(listBarSizeSet(size)),
+    directionSet: (direction: SortDirection) => dispatch(listBarDirectionSet(direction))
+  }
 });
 
 const redux = connect(mapStateToProps, mapDispatchToProps)(withWidth()(BasePage));

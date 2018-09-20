@@ -1,5 +1,5 @@
 export { topAppBar as TopAppBar } from './topAppBar';
-export { listBar as BottomBar } from './listBar';
+export { listBar as ListBar } from './listBar';
 export { menuDrawer as MenuDrawer } from './menuDrawer';
 export { additionalDrawer as AdditionalDrawer } from './additionalDrawer';
 export { menuItemDrawer as MenuItemDrawer } from './menuItemDrawer';

@@ -1,9 +1,18 @@
 import { ConnectedReduxProps, SortDirection } from '@generic/types';
-import { WithStyles, BottomNavigation, BottomNavigationAction, Menu, MenuItem } from '@material-ui/core';
-import { WithWidthProps, isWidthUp } from '@material-ui/core/withWidth';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import { IListBarMenuItem, IListBarState } from '@layout/interfaces';
+import {
+  listBarDirectionSet,
+  listBarMenuHide,
+  listBarMenuShow,
+  listBarOrderSet,
+  listBarSizeSet,
+  setAlertSnackbar,
+} from '@layout/store/actionCreators';
+import { BottomNavigation, BottomNavigationAction, Menu, MenuItem, WithStyles } from '@material-ui/core';
+import { isWidthUp, WithWidthProps } from '@material-ui/core/withWidth';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import LibraryBooksSharpIcon from '@material-ui/icons/LibraryBooksSharp';
 import SortByAlphaIcon from '@material-ui/icons/SortByAlpha';
@@ -11,34 +20,23 @@ import SyncIcon from '@material-ui/icons/Sync';
 import styles from '@styles';
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
-import { setAlertSnackbar, listBarMenuShow, listBarMenuHide, listBarOrderSet, listBarDirectionSet, listBarSizeSet } from '@layout/store/actionCreators';
-import { IBaseMetadata } from '@generic/interfaces';
-import { IListBarCallback, IListBarMenuItem } from '@layout/interfaces';
 
 interface PropsFromState extends RouteComponentProps<void>, WithStyles<typeof styles> {
   searchMode: boolean;
   listMode: boolean;
-  
-  listBarReloading: boolean;
-  listBarMetadata: IBaseMetadata | undefined;
-  listBarCallbacks: IListBarCallback;
-  listBarMenuIsOpen: boolean;
-  listBarMenuAnchorEl: string | undefined;
-  listBarMenuItems: IListBarMenuItem[] | undefined;
-  listBarPage: number | undefined;
-  listBarSize: number | undefined;
-  listBarOrderBy: string | undefined;
-  listBarDirection: SortDirection | undefined;
+  listBarState: IListBarState;
 }
 
 interface PropsFromDispatch {
-  listBarMenuShow: typeof listBarMenuShow;
-  listBarMenuHide: typeof listBarMenuHide;
-  listBarOrderSet: typeof listBarOrderSet;
-  listBarDirectionSet: typeof listBarDirectionSet;
-  listBarSizeSet: typeof listBarSizeSet;
-
   setAlertSnackbar: typeof setAlertSnackbar;
+
+  listBarDispatch: {
+    menuShow: typeof listBarMenuShow;
+    menuHide: typeof listBarMenuHide;
+    orderSet: typeof listBarOrderSet;
+    directionSet: typeof listBarDirectionSet;
+    sizeSet: typeof listBarSizeSet;
+  };
 }
 
 type AllProps = PropsFromState & PropsFromDispatch & WithWidthProps & ConnectedReduxProps;
@@ -66,41 +64,41 @@ export const listBar: React.StatelessComponent<AllProps> = props => {
   };
 
   const handleClick = (e: React.MouseEvent<HTMLElement>) => {
-    props.listBarMenuShow(e.currentTarget.id);
+    props.listBarDispatch.menuShow(e.currentTarget.id);
   };
 
   const handleClose = (item: IListBarMenuItem | undefined) => { 
     if (item) {
-      if (props.listBarMenuAnchorEl) {
-        const control = props.listBarMenuAnchorEl;
+      if (props.listBarState.menuAnchorEl) {
+        const control = props.listBarState.menuAnchorEl;
 
         switch (control) {
           case 'bottom-navigation-button-sort':
-            props.listBarDirectionSet(SortDirection[item.id]);
-            props.listBarCallbacks.onDirectionCallback(SortDirection[item.id]);
+            props.listBarDispatch.directionSet(SortDirection[item.id]);
+            props.listBarState.callbacks.onDirectionCallback(SortDirection[item.id]);
             break;
 
           case 'bottom-navigation-button-size':
-            props.listBarSizeSet(Number(item.id));
-            props.listBarCallbacks.onSizeCallback(Number(item.id));
+            props.listBarDispatch.sizeSet(Number(item.id));
+            props.listBarState.callbacks.onSizeCallback(Number(item.id));
             break;
         
           default:
-            props.listBarOrderSet(item.name);
-            props.listBarCallbacks.onOrderCallback(item);
+            props.listBarDispatch.orderSet(item.name);
+            props.listBarState.callbacks.onOrderCallback(item);
             break;
         }
       }
     }
 
-    props.listBarMenuHide();
+    props.listBarDispatch.menuHide();
   };
 
   const populateItems = () => {
-    if (props.listBarMenuAnchorEl) {
+    if (props.listBarState.menuAnchorEl) {
       let items: any;
 
-      const control = props.listBarMenuAnchorEl;
+      const control = props.listBarState.menuAnchorEl;
 
       switch (control) {
         case 'bottom-navigation-button-sort':
@@ -112,8 +110,8 @@ export const listBar: React.StatelessComponent<AllProps> = props => {
           break;
         
         default:
-          if (props.listBarMenuItems) {
-            items = props.listBarMenuItems;
+          if (props.listBarState.menuItems) {
+            items = props.listBarState.menuItems;
           }
           break;
       }
@@ -127,20 +125,20 @@ export const listBar: React.StatelessComponent<AllProps> = props => {
   const isCurrent = (name: string) => {
     let match: boolean = false;
 
-    if (props.listBarMenuAnchorEl) {
-      const control = props.listBarMenuAnchorEl;
+    if (props.listBarState.menuAnchorEl) {
+      const control = props.listBarState.menuAnchorEl;
 
       switch (control) {
         case 'bottom-navigation-button-sort':
-          match = props.listBarDirection === name;
+          match = props.listBarState.direction === name;
           break;
 
         case 'bottom-navigation-button-size':
-          match = props.listBarSize === Number(name);
+          match = props.listBarState.size === Number(name);
           break;
       
         default:
-          match = props.listBarOrderBy === name;
+          match = props.listBarState.orderBy === name;
           break;
       }
     }
@@ -170,12 +168,12 @@ export const listBar: React.StatelessComponent<AllProps> = props => {
       //     width: 300
       //   },
       // }}
-      anchorEl={findElement(props.listBarMenuAnchorEl || '')} 
-      open={props.listBarMenuIsOpen} 
+      anchorEl={findElement(props.listBarState.menuAnchorEl || '')} 
+      open={props.listBarState.menuIsOpen} 
       onClose={() => handleClose(undefined)}
     >
       {
-        props.listBarMenuItems && 
+        props.listBarState.menuItems && 
         populateItems()
       }
     </Menu>
@@ -190,19 +188,19 @@ export const listBar: React.StatelessComponent<AllProps> = props => {
         value={-1}
       >
         {
-          props.listBarMetadata && 
-          props.listBarMetadata.paginate.previous && 
+          props.listBarState.metadata && 
+          props.listBarState.metadata.paginate.previous && 
           <BottomNavigationAction 
             label="Prev" 
             icon={<ChevronLeftIcon />}
-            onClick={() => props.listBarCallbacks.onPrevCallback()}
+            onClick={() => props.listBarState.callbacks.onPrevCallback()}
           />
         } 
         
         <BottomNavigationAction 
           id="bottom-navigation-button-order"
-          aria-owns={props.listBarMenuAnchorEl ? 'bottom-navigation-menu' : ''}
-          label={props.listBarOrderBy ? props.listBarOrderBy : 'Order'} 
+          aria-owns={props.listBarState.menuAnchorEl ? 'bottom-navigation-menu' : ''}
+          label={props.listBarState.orderBy ? props.listBarState.orderBy : 'Order'} 
           icon={<FilterListIcon />}
           onClick={(e: React.MouseEvent<HTMLElement>) => handleClick(e)} 
         />
@@ -211,8 +209,8 @@ export const listBar: React.StatelessComponent<AllProps> = props => {
           isWidthUp('sm', props.width) && 
           <BottomNavigationAction 
             id="bottom-navigation-button-sort"
-            aria-owns={props.listBarMenuAnchorEl ? 'bottom-navigation-menu' : ''}  
-            label={props.listBarDirection ? props.listBarDirection : 'Sort'}
+            aria-owns={props.listBarState.menuAnchorEl ? 'bottom-navigation-menu' : ''}  
+            label={props.listBarState.direction ? props.listBarState.direction : 'Sort'}
             icon={<SortByAlphaIcon />} 
             onClick={(e: React.MouseEvent<HTMLElement>) => handleClick(e)} 
           />
@@ -222,8 +220,8 @@ export const listBar: React.StatelessComponent<AllProps> = props => {
           isWidthUp('sm', props.width) && 
           <BottomNavigationAction 
             id="bottom-navigation-button-size"
-            aria-owns={props.listBarMenuAnchorEl ? 'bottom-navigation-menu' : ''}
-            label={props.listBarSize ? props.listBarSize : 'Size'}
+            aria-owns={props.listBarState.menuAnchorEl ? 'bottom-navigation-menu' : ''}
+            label={props.listBarState.size ? props.listBarState.size : 'Size'}
             icon={<LibraryBooksSharpIcon />} 
             onClick={(e: React.MouseEvent<HTMLElement>) => handleClick(e)}
           />
@@ -234,16 +232,16 @@ export const listBar: React.StatelessComponent<AllProps> = props => {
         <BottomNavigationAction 
           label="Sync" 
           icon={<SyncIcon />} 
-          onClick={() => props.listBarCallbacks.onSyncCallback()}
+          onClick={() => props.listBarState.callbacks.onSyncCallback()}
         />
 
         {
-          props.listBarMetadata && 
-          props.listBarMetadata.paginate.next && 
+          props.listBarState.metadata && 
+          props.listBarState.metadata.paginate.next && 
           <BottomNavigationAction 
             icon={<ChevronRightIcon />} 
             label="Next"
-            onClick={() => props.listBarCallbacks.onNextCallback()}
+            onClick={() => props.listBarState.callbacks.onNextCallback()}
           />
         }
       </BottomNavigation>

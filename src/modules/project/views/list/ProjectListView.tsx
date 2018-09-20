@@ -1,31 +1,31 @@
 import { IAppState, IResponseCollection } from '@generic/interfaces';
 import { ConnectedReduxProps, SortDirection } from '@generic/types';
-import { IAppUser, ICurrentPage, IListBarCallback, IListBarMenuItem } from '@layout/interfaces';
+import { IAppUser, ICurrentPage, IListBarCallback, IListBarMenuItem, IListBarState } from '@layout/interfaces';
 import {
   listBarAssignCallbacks,
   listBarAssignMenuItems,
   listBarClearCallbacks,
   listBarClearMenuItems,
+  listBarDirectionSet,
+  listBarOrderSet,
+  listBarSizeSet,
   listModeOff,
   listModeOn,
   searchModeOff,
   searchModeOn,
   setCurrentPage,
-  listBarOrderSet,
-  listBarSizeSet,
-  listBarDirectionSet,
 } from '@layout/store/actionCreators';
 import { Paper, Typography, WithStyles, withStyles } from '@material-ui/core';
 import { ProjectListComponent } from '@project/components/projectListComponent';
 import { IProjectRegistrationAllRequest } from '@project/interfaces/queries';
 import { IProject } from '@project/interfaces/response';
 import { ProjectRegistrationFetchAllRequest } from '@project/store/actions';
+import { ProjectField } from '@project/types';
 import styles from '@styles';
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { RouteComponentProps } from 'react-router';
 import { Dispatch } from 'redux';
-import { ProjectField } from '@project/types';
 
 interface PropsFromState extends RouteComponentProps<void>, WithStyles<typeof styles> {
   user: IAppUser;
@@ -37,11 +37,7 @@ interface PropsFromState extends RouteComponentProps<void>, WithStyles<typeof st
   isError: boolean;
   errors: string;
 
-  listBarReloading: boolean;
-  listBarPage: number | undefined;
-  listBarSize: number | undefined;
-  listBarOrderBy: string | undefined;
-  listBarDirection: SortDirection | undefined;
+  listBarState: IListBarState;
 }
 
 interface PropsFromDispatch {
@@ -56,31 +52,33 @@ interface PropsFromDispatch {
   fetchRequest: typeof ProjectRegistrationFetchAllRequest;
 
   /* list bar */
-  listBarAssignCallbacks: typeof listBarAssignCallbacks;
-  listBarClearCallbacks: typeof listBarClearCallbacks;
-  listBarAssignMenuItems: typeof listBarAssignMenuItems;
-  listBarClearMenuItems: typeof listBarClearMenuItems;
-  listBarOrderSet: typeof listBarOrderSet;
-  listBarDirectionSet: typeof listBarDirectionSet;
-  listBarSizeSet: typeof listBarSizeSet;
+  listBarDispatch: {
+    assignCallbacks: typeof listBarAssignCallbacks,
+    clearCallbacks: typeof listBarClearCallbacks;
+    assignMenuItems: typeof listBarAssignMenuItems;
+    clearMenuItems: typeof listBarClearMenuItems;
+    orderSet: typeof listBarOrderSet;
+    directionSet: typeof listBarDirectionSet;
+    sizeSet: typeof listBarSizeSet;
+  };  
 }
 
 type AllProps = PropsFromState & PropsFromDispatch & ConnectedReduxProps;
 
 class ProjectListView extends React.Component<AllProps> {
   state = {
-    orderBy: '',
-    direction: '',
-    page: 1,
-    size: 10
+    orderBy: this.props.listBarState.orderBy || '',
+    direction: this.props.listBarState.direction || '',
+    page: this.props.listBarState.page || 1,
+    size: this.props.listBarState.size || 10
   };
 
   componentWillUnmount() {
     this.props.setCurrentPage(null);
     this.props.listModeOff();
     this.props.searchModeOff();
-    this.props.listBarClearCallbacks();
-    this.props.listBarClearMenuItems();
+    this.props.listBarDispatch.clearCallbacks();
+    this.props.listBarDispatch.clearMenuItems();
   }
 
   componentDidMount() {
@@ -92,7 +90,7 @@ class ProjectListView extends React.Component<AllProps> {
 
     this.props.listModeOn();
 
-    this.props.listBarAssignCallbacks({
+    this.props.listBarDispatch.assignCallbacks({
       onNextCallback: this.handleOnNextCallback,
       onPrevCallback: this.handleOnPrevCallback,
       onSyncCallback: this.handleOnSyncCallback,
@@ -104,7 +102,7 @@ class ProjectListView extends React.Component<AllProps> {
 
     const items = Object.keys(ProjectField).map(key => ({ id: key, name: ProjectField[key] }));
 
-    this.props.listBarAssignMenuItems(items);
+    this.props.listBarDispatch.assignMenuItems(items);
 
     if (this.props.response === undefined) {
       this.loadData();
@@ -176,7 +174,6 @@ class ProjectListView extends React.Component<AllProps> {
         size: this.state.size,
       }
     }); 
-    console.log(this.state);
   }
 
   render () {
@@ -211,9 +208,7 @@ const mapStateToProps = ({ layout, listBar, projectQuery }: IAppState) => ({
   isError: projectQuery.isError,
   errors: projectQuery.errors,
 
-  listBarReloading: listBar.isReload,
-  listBarPage: listBar.page,
-  listBarOrderBy: listBar.orderBy,
+  listBarState: listBar
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
@@ -228,13 +223,15 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   fetchRequest: (request: IProjectRegistrationAllRequest) => dispatch(ProjectRegistrationFetchAllRequest(request)),
 
   /* list bar */
-  listBarAssignCallbacks: (callbacks: IListBarCallback) => dispatch(listBarAssignCallbacks(callbacks)),
-  listBarClearCallbacks: () => dispatch(listBarClearCallbacks()),
-  listBarAssignMenuItems: (menuItems: IListBarMenuItem[]) => dispatch(listBarAssignMenuItems(menuItems)),
-  listBarClearMenuItems: () => dispatch(listBarClearMenuItems()),
-  listBarOrderSet: (name: string) => dispatch(listBarOrderSet(name)),
-  listBarSizeSet: (size: number) => dispatch(listBarSizeSet(size)),
-  listBarDirectionSet: (direction: SortDirection) => dispatch(listBarDirectionSet(direction)),
+  listBarDispatch: {
+    assignCallbacks: (callbacks: IListBarCallback) => dispatch(listBarAssignCallbacks(callbacks)),
+    clearCallbacks: () => dispatch(listBarClearCallbacks()),
+    assignMenuItems: (menuItems: IListBarMenuItem[]) => dispatch(listBarAssignMenuItems(menuItems)),
+    clearMenuItems: () => dispatch(listBarClearMenuItems()),
+    orderSet: (name: string) => dispatch(listBarOrderSet(name)),
+    sizeSet: (size: number) => dispatch(listBarSizeSet(size)),
+    directionSet: (direction: SortDirection) => dispatch(listBarDirectionSet(direction))
+  }
 });
 
 const redux = connect(mapStateToProps, mapDispatchToProps)(ProjectListView);
