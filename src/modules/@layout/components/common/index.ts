@@ -1,5 +1,5 @@
 export { topAppBar as TopAppBar } from './topAppBar';
-export { bottomBar as BottomBar } from '@layout/components/common/bottomBar';
+export { listBar as BottomBar } from './listBar';
 export { menuDrawer as MenuDrawer } from './menuDrawer';
 export { additionalDrawer as AdditionalDrawer } from './additionalDrawer';
 export { menuItemDrawer as MenuItemDrawer } from './menuItemDrawer';

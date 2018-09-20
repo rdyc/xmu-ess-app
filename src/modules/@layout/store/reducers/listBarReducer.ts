@@ -1,7 +1,31 @@
 import { Reducer } from 'redux';
 
-import { IListBarState } from '@layout/interfaces';
-import { ListBarAction } from '@layout/types';
+import { IListBarState, IListBarCallback } from '@layout/interfaces';
+import { ListBarAction } from '@layout/store/actionCreators';
+
+const _callbacks: IListBarCallback = {
+  onNextCallback: () => { 
+    console.warn('onNext must be handled'); 
+  },
+  onPrevCallback: () => { 
+    console.warn('onPrev must be handled'); 
+  },
+  onSyncCallback: () => { 
+    console.warn('onSync must be handled'); 
+  },
+  onAddCallback: () => { 
+    console.warn('onAdd must be handled'); 
+  },
+  onOrderCallback: () => { 
+    console.warn('onOrder must be handled'); 
+  },
+  onDirectionCallback: () => { 
+    console.warn('onSort must be handled'); 
+  },
+  onSizeCallback: () => { 
+    console.warn('onSize must be handled'); 
+  },
+};
 
 const initialState: IListBarState = {
   metadata: undefined,
@@ -10,26 +34,10 @@ const initialState: IListBarState = {
   direction: undefined,
   page: undefined,
   size: undefined,
-  callbacks: {
-    onNextCallback: () => { 
-      console.log(`list bar onNext clicked`); 
-    },
-    onPrevCallback: () => { 
-      console.log(`list bar onPrev clicked`); 
-    },
-    onSyncCallback: () => { 
-      console.log(`list bar onSync clicked`); 
-    },
-    onAddCallback: () => { 
-      console.log(`list bar onAdd clicked`); 
-    },
-    onOrderCallback: () => { 
-      console.log(`list bar onOrder clicked`); 
-    },
-    onSortCallback: () => { 
-      console.log(`list bar onSort clicked`); 
-    },
-  }
+  callbacks: _callbacks,
+  menuIsOpen: false,
+  menuAnchorEl: undefined,
+  menuItems: undefined
 };
 
 const reducer: Reducer<IListBarState> = (state = initialState, action) => {
@@ -54,6 +62,21 @@ const reducer: Reducer<IListBarState> = (state = initialState, action) => {
 
     case ListBarAction.ASSIGN_CALLBACKS: 
       return { ...state, callbacks: action.payload };
+
+    case ListBarAction.CLEAR_CALLBACKS: 
+      return { ...state, callbacks: _callbacks };
+
+    case ListBarAction.ASSIGN_MENU_ITEMS: 
+      return { ...state, menuItems: action.payload };
+
+    case ListBarAction.CLEAR_MENU_ITEMS: 
+      return { ...state, menuItems: undefined };
+
+    case ListBarAction.MENU_SHOW: 
+      return { ...state, menuIsOpen: true, menuAnchorEl: action.payload };
+
+    case ListBarAction.MENU_HIDE: 
+      return { ...state, menuIsOpen: false, menuAnchorEl: undefined };
     
     default:
       return state;

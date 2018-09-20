@@ -1,10 +1,8 @@
-import { SortDirection } from '@generic/types';
-
-export interface IBaseFilter<T> {
+export interface IBaseFilter {
   readonly find: string | undefined;
-  readonly findBy: T | undefined;
-  readonly orderBy: T | undefined;
-  readonly direction: SortDirection | undefined;
+  readonly findBy: string | undefined;
+  readonly orderBy: string | undefined;
+  readonly direction: string | undefined;
   readonly page: number | undefined;
   readonly size: number | undefined;
 }

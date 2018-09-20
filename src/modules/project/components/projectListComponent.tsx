@@ -44,18 +44,20 @@ export const ProjectListComponent: React.StatelessComponent<AllProps> = props =>
               <Grid item xs={8} sm={8}>
                 <Typography 
                   noWrap 
+                  color="primary" 
                   variant="body2"
                 >
                   {project.name}
                 </Typography>
                 <Typography 
-                  noWrap 
+                  noWrap
                   variant="body1"
                 >
                   {project.customer && project.customer.name} {project.contractNumber && `(PO: ${project.contractNumber})`}
                 </Typography>
                 <Typography 
-                  noWrap 
+                  noWrap
+                  color="textSecondary" 
                   variant="caption"
                 >
                   {project.uid} | {project.project && project.project.value} | &nbsp;
@@ -84,6 +86,7 @@ export const ProjectListComponent: React.StatelessComponent<AllProps> = props =>
                 </Typography>
                 <Typography 
                   noWrap 
+                  color="secondary"
                   variant="caption" 
                   align="right"
                 >

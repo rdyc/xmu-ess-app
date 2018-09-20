@@ -1,13 +1,12 @@
 export enum ProjectField {
-  uid,
-  customerUid,
-  hierarchyUid,
-  projectType,
-  contractNumber,
-  name,
-  description,
-  statusType,
-  currencyUid,
-  rejectedReason,
-  ownerEmployeeUid
+  uid = 'Project ID',
+  // customerUid = 'Customer',
+  projectType = 'Type',
+  contractNumber = 'Contract',
+  name = 'Name',
+  description = 'Description',
+  statusType = 'Status',
+  // currencyUid = 'Currency',
+  rejectedReason = 'Reject Reason',
+  // ownerEmployeeUid = 'Owner'
 }

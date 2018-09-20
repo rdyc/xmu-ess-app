@@ -1,7 +1,6 @@
 import { IBaseFilter } from '@generic/interfaces';
-import { ProjectField } from '@project/types';
 
-export interface IProjectRegistrationAllFilter extends IBaseFilter<ProjectField> {
+export interface IProjectRegistrationAllFilter extends IBaseFilter {
   readonly customerUids: string[] | undefined;
   readonly projectTypes: string[] | undefined;
   readonly statusTypes: string[] | undefined;

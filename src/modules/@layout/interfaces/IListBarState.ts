@@ -1,13 +1,19 @@
 import { IBaseMetadata } from '@generic/interfaces';
-import { SortDirection } from '@material-ui/core/TableCell';
+import { SortDirection } from '@generic/types';
 
 export interface IListBarCallback {
   readonly onNextCallback: () => void;
   readonly onPrevCallback: () => void;
   readonly onSyncCallback: () => void;
   readonly onAddCallback: () => void;
-  readonly onOrderCallback: (field: string) => void;
-  readonly onSortCallback: () => void;
+  readonly onOrderCallback: (item: IListBarMenuItem) => void;
+  readonly onSizeCallback: (size: number) => void;
+  readonly onDirectionCallback: (direction: SortDirection) => void;
+}
+
+export interface IListBarMenuItem {
+  readonly id: string;
+  readonly name: string;
 }
 
 export interface IListBarState {
@@ -17,6 +23,9 @@ export interface IListBarState {
   readonly direction: SortDirection | undefined;
   readonly page: number | undefined;
   readonly size: number | undefined;
+
   readonly callbacks: IListBarCallback;
-  
+  readonly menuAnchorEl: string | undefined;
+  readonly menuIsOpen: boolean;
+  readonly menuItems: IListBarMenuItem[] | undefined;
 }

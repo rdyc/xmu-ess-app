@@ -11,6 +11,11 @@ export function objectToQuerystring (obj: any) {
 
       delimiter = (i === 0) ? '?' : '&';
       
+      key = encodeURIComponent(key);
+      val = encodeURIComponent(obj[key]);
+      return [str, delimiter, key, '=', val].join('');
+      
+      /*
       if (Array.isArray(obj[key])) {
         key = encodeURIComponent(key);
 
@@ -18,7 +23,7 @@ export function objectToQuerystring (obj: any) {
           val = encodeURIComponent(JSON.stringify(item));
           return [strItem, key, '=', val, '&'].join(''); 
         },                               '');
-        
+                
         return [str, delimiter, arrayVar.trimRightString('&')].join('');
       } else {
         key = encodeURIComponent(key);
@@ -26,6 +31,7 @@ export function objectToQuerystring (obj: any) {
         
         return [str, delimiter, key, '=', val].join('');      
       }
+      */
     }, 
             '');
 }
