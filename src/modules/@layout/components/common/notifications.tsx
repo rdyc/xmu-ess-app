@@ -1,7 +1,7 @@
 import { IAppState, IResponseList } from '@generic/interfaces';
 import { ConnectedReduxProps } from '@generic/types';
 import { IAppUser, INotification, INotificationQuery } from '@layout/interfaces';
-import { notificationFetchRequest, setNotification } from '@layout/store/actionCreators';
+import { notificationFetchRequest, layoutChangeNotif } from '@layout/store/actions';
 import {
   Collapse,
   List,
@@ -32,7 +32,7 @@ interface PropsFromState extends RouteComponentProps<void>, WithStyles<typeof st
 
 interface PropsFromDispatch {
   fetchRequest: typeof notificationFetchRequest;
-  setNotification: typeof setNotification;
+  setNotification: typeof layoutChangeNotif;
 }
 
 type AllProps = PropsFromState & PropsFromDispatch & ConnectedReduxProps;
@@ -156,7 +156,7 @@ class Notifications extends React.Component<AllProps> {
 
 const mapStateToProps = ({ layout, notification }: IAppState) => ({
   user: layout.user,
-  notification: layout.notification,
+  notification: layout.notifCount,
   result: notification.result,
   errors: notification.errors,
   loading: notification.loading
@@ -164,7 +164,7 @@ const mapStateToProps = ({ layout, notification }: IAppState) => ({
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   fetchRequest: (params: INotificationQuery) => dispatch(notificationFetchRequest(params)),
-  setNotification: (count: number) => dispatch(setNotification(count))
+  setNotification: (count: number) => dispatch(layoutChangeNotif(count))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Notifications);

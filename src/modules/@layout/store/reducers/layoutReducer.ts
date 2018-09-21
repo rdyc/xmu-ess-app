@@ -1,83 +1,57 @@
 import { Reducer } from 'redux';
-
-import { ILayoutState } from '../../interfaces';
-import { LayoutAction } from '../../types';
+import { ILayoutState } from '@layout/interfaces';
+import { LayoutAction } from '@layout/store/actions';
 
 const initialState: ILayoutState = {
+  user: undefined,
   anchor: 'left',
-  menuDrawer: false,
-  additionalDrawer: false,
-  accountShow: false,
-  searchMode: false,
-  listMode: false,
-  topDrawer: false,
-  bottomDrawer: false,
-  menuItems: [],
-  active: undefined,
-  user: null,
-  notification: 0,
-  logoutDialog: false,
-  alertSnackbar: {
-    open: false,
-    message: null
-  },
-  navBack: false
+  menus: [],
+  view: undefined,
+  notifCount: 0,
+  alert: undefined,
+  isDrawerMenuVisible: false,
+  isDrawerActionVisible: false,
+  isAccountExpanded: false,
+  isModeSearch: false,
+  isModeList: false,
+  isDrawerTopVisible: false,
+  isDrawerBottomVisible: false,
+  isLogoutDialogVisible: false,
+  isNavBackVisible: false,
 };
 
 const reducer: Reducer<ILayoutState> = (state = initialState, action) => {
   switch (action.type) {
-    case LayoutAction.SET_ANCHOR: {
-      return { ...state, anchor: action.payload };
-    }
-    case LayoutAction.SET_MENU_DRAWER: {
-      return { ...state, menuDrawer: action.payload };
-    }
-    case LayoutAction.SET_ADDITIONAL_DRAWER: {
-      return { ...state, additionalDrawer: action.payload };
-    }
-    case LayoutAction.SET_ACCOUNT_SHOW: {
-      return { ...state, accountShow: action.payload };
-    }
-    case LayoutAction.SEARCH_MODE_ON: {
-      return { ...state, searchMode: true };
-    }
-    case LayoutAction.SEARCH_MODE_OFF: {
-      return { ...state, searchMode: false };
-    }
-    case LayoutAction.LIST_MODE_ON: {
-      return { ...state, listMode: true };
-    }
-    case LayoutAction.LIST_MODE_OFF: {
-      return { ...state, listMode: false };
-    }
-    case LayoutAction.SET_TOP_DRAWER: {
-      return { ...state, topDrawer: action.payload };
-    }
-    case LayoutAction.SET_BOTTOM_DRAWER: {
-      return { ...state, bottomDrawer: action.payload };
-    }
-    case LayoutAction.SET_MENU_ITEMS: {
-      return { ...state, menuItems: action.payload };
-    }
-    case LayoutAction.SET_ACTIVE: {
-      return { ...state, active: action.payload };
-    }
-    case LayoutAction.SET_USER: {
-      return { ...state, user: action.payload };
-    }
-    case LayoutAction.SET_NOTIFICATION: {
-      return { ...state, notification: action.payload };
-    }
-    case LayoutAction.SET_LOGOUT_DIALOG: {
-      return { ...state, logoutDialog: action.payload };
-    }
-    case LayoutAction.SET_ALERT_SNACKBAR: {
-      return { ...state, alertSnackbar: action.payload };
-    }
-    case LayoutAction.SET_NAV_BACK: {
-      return { ...state, navBack: action.payload };
-    }
+    case LayoutAction.ASSIGN_USER: return { ...state, user: action.payload };
+    case LayoutAction.ASSIGN_MENUS: return { ...state, menus: action.payload };
+    
+    case LayoutAction.CHANGE_ANCHOR: return { ...state, anchor: action.payload };
+    case LayoutAction.CHANGE_ALERT: return { ...state, alert: action.payload };
+    case LayoutAction.CHANGE_NOTIF_COUNT: return { ...state, notifCount: action.payload };
+    case LayoutAction.CHANGE_VIEW: return { ...state, view: action.payload };
+    
+    case LayoutAction.DRAWER_MENU_SHOW: return { ...state, isDrawerMenuVisible: true };
+    case LayoutAction.DRAWER_MENU_HIDE: return { ...state, isDrawerMenuVisible: false };
+    case LayoutAction.DRAWER_ACTION_SHOW: return { ...state, isDrawerActionVisible: true };
+    case LayoutAction.DRAWER_ACTION_HIDE: return { ...state, isDrawerActionVisible: false };
+    case LayoutAction.DRAWER_TOP_SHOW: return { ...state, isDrawerTopVisible: true };
+    case LayoutAction.DRAWER_TOP_HIDE: return { ...state, isDrawerTopVisible: false };
+    case LayoutAction.DRAWER_BOTTOM_SHOW: return { ...state, isDrawerBottomVisible: true };
+    case LayoutAction.DRAWER_BOTTOM_HIDE: return { ...state, isDrawerBottomVisible: false };
+    
+    case LayoutAction.LOGOUT_DIALOG_SHOW: return { ...state, isLogoutDialogVisible: true };
+    case LayoutAction.LOGOUT_DIALOG_HIDE: return { ...state, isLogoutDialogVisible: false };
+    case LayoutAction.NAV_BACK_SHOW: return { ...state, isNavBackVisible: true };
+    case LayoutAction.NAV_BACK_HIDE: return { ...state, isNavBackVisible: false };
 
+    case LayoutAction.ACCOUNT_EXPAND: return { ...state, isAccountExpanded: true };
+    case LayoutAction.ACCOUNT_COLAPSE: return { ...state, isAccountExpanded: false };
+    
+    case LayoutAction.MODE_SEARCH_ON: return { ...state, isModeSearch: true };
+    case LayoutAction.MODE_SEARCH_OFF: return { ...state, isModeSearch: false };
+    case LayoutAction.MODE_LIST_ON: return { ...state, isModeList: true };
+    case LayoutAction.MODE_LIST_OFF: return { ...state, isModeList: false };
+    
     default: {
       return state;
     }

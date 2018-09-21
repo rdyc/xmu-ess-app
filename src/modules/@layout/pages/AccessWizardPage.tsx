@@ -4,7 +4,7 @@ import { AppStorage } from '@constants/index';
 import { IAppState, IResponseSingle } from '@generic/interfaces';
 import { ConnectedReduxProps } from '@generic/types';
 import { IAppUser, IUserCompany, IUserPosition } from '@layout/interfaces';
-import { setMenuItems, setUser } from '@layout/store/actionCreators';
+import { layoutAssignMenus, layoutAssignUser } from '@layout/store/actions';
 import { ILookupRoleMenuList } from '@lookup/interfaces';
 import {
   Button,
@@ -47,8 +47,8 @@ interface PropsFromState extends RouteComponentProps<void>, WithStyles<typeof st
 
 interface PropsFromDispatch {
   accountEmployeeFetchRequest: typeof EmployeeFetchRequest;
-  setMenuItems: typeof setMenuItems;
-  setUser: typeof setUser;
+  setMenuItems: typeof layoutAssignMenus;
+  setUser: typeof layoutAssignUser;
 }
 
 type AllProps = PropsFromState & PropsFromDispatch & ConnectedReduxProps;
@@ -449,8 +449,8 @@ const mapStateToProps = ({ account }: IAppState) => ({
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   accountEmployeeFetchRequest: () => dispatch(EmployeeFetchRequest()),
-  setMenuItems: (items: ILookupRoleMenuList[]) => dispatch(setMenuItems(items)),
-  setUser: (user: IAppUser) => dispatch(setUser(user))
+  setMenuItems: (items: ILookupRoleMenuList[]) => dispatch(layoutAssignMenus(items)),
+  setUser: (user: IAppUser) => dispatch(layoutAssignUser(user))
 });
 
 const redux = connect(mapStateToProps, mapDispatchToProps)(AccessWizardPage);

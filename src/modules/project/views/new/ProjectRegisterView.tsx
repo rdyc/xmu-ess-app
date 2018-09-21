@@ -1,7 +1,10 @@
 import { IAppState, IResponseCollection } from '@generic/interfaces';
 import { ConnectedReduxProps } from '@generic/types';
-import { IAppUser, ICurrentPage } from '@layout/interfaces';
-import { WithStyles, Paper, Button, withStyles } from '@material-ui/core';
+import { IAppUser, IView } from '@layout/interfaces';
+import { layoutChangeView } from '@layout/store/actions';
+import { Button, Paper, WithStyles, withStyles } from '@material-ui/core';
+import AddIcon from '@material-ui/icons/Add';
+import { IProjectRegistrationAllRequest } from '@project/interfaces/queries';
 import { IProject } from '@project/interfaces/response';
 import { ProjectRegistrationFetchAllRequest } from '@project/store/actions';
 import styles from '@styles';
@@ -9,11 +12,6 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { RouteComponentProps } from 'react-router';
 import { Dispatch } from 'redux';
-import { IProjectRegistrationAllRequest } from '@project/interfaces/queries';
-// import { IProjectRegistrationAllFilter } from '@project/interfaces/filters';
-import { ProjectListComponent } from '@project/components/projectListComponent';
-import AddIcon from '@material-ui/icons/Add';
-import { setCurrentPage } from '@layout/store/actionCreators';
 
 interface PropsFromState extends RouteComponentProps<void>, WithStyles<typeof styles> {
   user: IAppUser;
@@ -25,7 +23,7 @@ interface PropsFromState extends RouteComponentProps<void>, WithStyles<typeof st
 }
 
 interface PropsFromDispatch {
-  setCurrentPage: typeof setCurrentPage;
+  setCurrentPage: typeof layoutChangeView;
   fetchRequest: typeof ProjectRegistrationFetchAllRequest;
 }
 
@@ -55,12 +53,12 @@ class ProjectRegisterView extends React.Component<AllProps> {
   // }
 
   render () {
-    const { classes, isLoading, response } = this.props;
+    const { classes, isLoading } = this.props;
 
     return (
       <Paper square elevation={0}>
         {isLoading && <div>loading</div>}
-        {!isLoading && response && <ProjectListComponent {...this.props} />}
+        {/* {!isLoading && response && <ProjectListComponent {...this.props} />} */}
         <Button 
           variant="fab" 
           color="primary"
@@ -84,7 +82,7 @@ const mapStateToProps = ({ layout, projectQuery }: IAppState) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  setCurrentPage: (page: ICurrentPage | null) => dispatch(setCurrentPage(page)),
+  setCurrentPage: (page: IView | null) => dispatch(layoutChangeView(page)),
   fetchRequest: (request: IProjectRegistrationAllRequest) => dispatch(ProjectRegistrationFetchAllRequest(request)),
 });
 

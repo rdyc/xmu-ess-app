@@ -1,8 +1,6 @@
 import { ConnectedReduxProps } from '@generic/types';
-import { IAppUser, ICurrentPage } from '@layout/interfaces';
-import { setCurrentPage, setMenuDrawer } from '@layout/store/actionCreators';
-import { Anchor } from '@layout/types';
-import { ILookupRoleMenuList } from '@lookup/interfaces/ILookupRoleMenuList';
+import { ILayoutState } from '@layout/interfaces';
+import { layoutChangeView, layoutDrawerMenuHide, layoutDrawerMenuShow } from '@layout/store/actions';
 import { Drawer, Hidden, WithStyles } from '@material-ui/core';
 import { WithWidthProps } from '@material-ui/core/withWidth';
 import styles from '@styles';
@@ -13,50 +11,52 @@ import { RouteComponentProps } from 'react-router';
 import { menuItemDrawer as MenuItemDrawer } from './menuItemDrawer';
 
 interface PropsFromState extends RouteComponentProps<void>, WithStyles<typeof styles> {
-  anchor: Anchor;
-  menuDrawer: boolean;
-  menuItems: ILookupRoleMenuList[];
-  user: IAppUser;
-  active: ICurrentPage;
+  layoutState: ILayoutState;
 }
 
 interface PropsFromDispatch {
-  setMenuDrawer: typeof setMenuDrawer;
-  setActive: typeof setCurrentPage;
+  layoutDispatch: {
+    drawerMenuShow: typeof layoutDrawerMenuShow;
+    drawerMenuHide: typeof layoutDrawerMenuHide;
+    changeView: typeof layoutChangeView;
+  };
 }
 
 type AllProps = PropsFromState & PropsFromDispatch & WithWidthProps & ConnectedReduxProps;
 
-export const menuDrawer: React.StatelessComponent<AllProps> = props => (
-  <div>
-    <Hidden mdUp>
-      <Drawer
-        variant="temporary"
-        anchor={props.anchor}
-        open={props.menuDrawer}
-        classes={{
-          paper: props.classes.drawerPaper,
-        }}
-        onClose={() => props.setMenuDrawer(!props.menuDrawer)}
-        ModalProps={{
-          keepMounted: true, // Better open performance on mobile.
-        }}
-      >
-        <MenuItemDrawer {...props}/>
-      </Drawer>
-    </Hidden>
-    <Hidden mdDown implementation="css">
-      <Drawer
-        variant="permanent"
-        anchor={props.anchor}
-        open={props.menuDrawer}
-        classes={{
-          paper: classNames(props.classes.drawerPaper, 
-                            props.menuDrawer && props.classes.drawerPaperClose),
-        }}
-      >
-        <MenuItemDrawer {...props}/>
-      </Drawer>
-    </Hidden>
-  </div>
-);
+export const menuDrawer: React.StatelessComponent<AllProps> = props => {
+  const { layoutState, layoutDispatch, classes } = props;
+
+  return (
+    <div>
+      <Hidden mdUp>
+        <Drawer
+          variant="temporary"
+          anchor={layoutState.anchor}
+          open={layoutState.isDrawerMenuVisible}
+          classes={{
+            paper: classes.drawerPaper,
+          }}
+          onClose={() => layoutDispatch.drawerMenuHide()}
+          ModalProps={{
+            keepMounted: true, // Better open performance on mobile.
+          }}
+        >
+          <MenuItemDrawer {...props}/>
+        </Drawer>
+      </Hidden>
+      <Hidden mdDown implementation="css">
+        <Drawer
+          variant="permanent"
+          anchor={layoutState.anchor}
+          open={layoutState.isDrawerMenuVisible}
+          classes={{
+            paper: classNames(classes.drawerPaper, layoutState.isDrawerMenuVisible && classes.drawerPaperClose),
+          }}
+        >
+          <MenuItemDrawer {...props}/>
+        </Drawer>
+      </Hidden>
+    </div>
+  );
+};

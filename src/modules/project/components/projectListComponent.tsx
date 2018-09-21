@@ -1,4 +1,4 @@
-import { IBaseChanges, IResponseCollection } from '@generic/interfaces';
+import { IBaseChanges } from '@generic/interfaces';
 import { ConnectedReduxProps } from '@generic/types';
 import { Divider, Grid, List, ListItem, Typography, WithStyles, ListSubheader } from '@material-ui/core';
 import { IProject } from '@project/interfaces/response';
@@ -8,15 +8,24 @@ import * as React from 'react';
 import { FormattedDate, FormattedNumber, FormattedPlural } from 'react-intl';
 import { RouteComponentProps } from 'react-router';
 import { isArray } from 'util';
+import { IQueryState, IProjectRegistrationAllRequest } from '@project/interfaces/queries';
 
 interface PropsFromState extends RouteComponentProps<void>, WithStyles<typeof styles> {
-  response: IResponseCollection<IProject> | undefined;
-  isLoading: boolean;
+  projectState: IQueryState<IProjectRegistrationAllRequest, IProject>;
 }
 
 type AllProps = PropsFromState & ConnectedReduxProps;
 
 export const ProjectListComponent: React.StatelessComponent<AllProps> = props => {
+  const { history  } = props;
+  const { response, isLoading  } = props.projectState;
+
+  const handleClick = (projectUid: string) => {
+    if (!isLoading) {
+      history.push(`/project/detail/${projectUid}`);
+    } 
+  };
+
   const parseChanges = (changes: IBaseChanges | null) => {
     if (changes === null) {
       return 'Unknown';
@@ -36,9 +45,9 @@ export const ProjectListComponent: React.StatelessComponent<AllProps> = props =>
       projects.map((project, i) => 
         <div key={project.uid}>
           <ListItem 
-            button={!props.isLoading} 
+            button={!isLoading} 
             key={project.uid} 
-            onClick={() => !props.isLoading && props.history.push(`/project/detail/${project.uid}`)}
+            onClick={() => handleClick(project.uid)}
           >
             <Grid container spacing={24}>
               <Grid item xs={8} sm={8}>
@@ -107,8 +116,6 @@ export const ProjectListComponent: React.StatelessComponent<AllProps> = props =>
       )
     );
   };
-
-  const { response  } = props;
 
   return (
     <List

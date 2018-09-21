@@ -1,42 +1,42 @@
 import { AppStorage } from '@constants/index';
 import { IAppState } from '@generic/interfaces';
 import { ConnectedReduxProps, SortDirection } from '@generic/types';
-import { AdditionalDrawer, BottomSnackbar, ListBar, MenuDrawer, TopAppBar } from '@layout/components/common';
+import { ActionDrawer, BottomSnackbar, ListBar, MenuDrawer, TopAppBar } from '@layout/components/common';
+import { IAlert, IAppUser, ILayoutState, IListBarCallback, IListBarField, IListBarState, IView } from '@layout/interfaces';
 import {
-  IAppUser,
-  ICurrentPage,
-  IListBarCallback,
-  IListBarMenuItem,
-  IListBarState,
-  ISnackbarAlert,
-} from '@layout/interfaces';
-import {
+  layoutAccountColapse,
+  layoutAccountExpand,
+  layoutAssignMenus,
+  layoutAssignUser,
+  layoutChangeAlert,
+  layoutChangeAnchor,
+  layoutChangeNotif,
+  layoutChangeView,
+  layoutDrawerActionHide,
+  layoutDrawerActionShow,
+  layoutDrawerBottomHide,
+  layoutDrawerBottomShow,
+  layoutDrawerMenuHide,
+  layoutDrawerMenuShow,
+  layoutDrawerTopHide,
+  layoutDrawerTopShow,
+  layoutLogoutDialogHide,
+  layoutLogoutDialogShow,
+  layoutModeListOff,
+  layoutModeListOn,
+  layoutModeSearchOff,
+  layoutModeSearchOn,
+  layoutNavBackHide,
+  layoutNavBackShow,
   listBarAssignCallbacks,
-  listBarAssignMenuItems,
-  listBarClearCallbacks,
-  listBarClearMenuItems,
-  listBarDirectionSet,
+  listBarAssignFields,
+  listBarChangeDirection,
+  listBarChangeOrder,
+  listBarChangeSize,
+  listBarDispose,
   listBarMenuHide,
   listBarMenuShow,
-  listBarOrderSet,
-  listBarSizeSet,
-  listModeOff,
-  listModeOn,
-  searchModeOff,
-  searchModeOn,
-  setAccountShow,
-  setAdditionalDrawer,
-  setAlertSnackbar,
-  setAnchor,
-  setBottomDrawer,
-  setCurrentPage,
-  setLogoutDialog,
-  setMenuDrawer,
-  setMenuItems,
-  setNavBack,
-  setTopDrawer,
-  setUser,
-} from '@layout/store/actionCreators';
+} from '@layout/store/actions';
 import { Anchor } from '@layout/types';
 import { ILookupRoleMenuList } from '@lookup/interfaces';
 import { WithStyles, withStyles } from '@material-ui/core';
@@ -52,56 +52,53 @@ import * as store from 'store';
 import withRoot from '../../../withRoot';
 
 interface PropsFromState extends RouteComponentProps<void>, WithStyles<typeof styles> {
-  anchor: Anchor;
-  menuDrawer: boolean;
-  additionalDrawer: boolean;
-  accountShow: boolean;
-  searchMode: boolean;
-  listMode: boolean;
-  topDrawer: boolean;
-  bottomDrawer: boolean;
-  menuItems: ILookupRoleMenuList[];
-  active: ICurrentPage;
-  user: IAppUser;
-  notification: number;
-  logoutDialog: boolean;
-  alertSnackbar: ISnackbarAlert;
-  navBack: boolean;
-
+  layoutState: ILayoutState;
   listBarState: IListBarState;
 }
 
 interface PropsFromDispatch {
-  setAnchor: typeof setAnchor;
-  setMenuDrawer: typeof setMenuDrawer;
-  setAdditionalDrawer: typeof setAdditionalDrawer;
-  setAccountShow: typeof setAccountShow;
-  
-  searchModeOn: typeof searchModeOn;
-  searchModeOff: typeof searchModeOff;
-  
-  listModeOn: typeof listModeOn;
-  listModeOff: typeof listModeOff;
+  layoutDispatch: {
+    assignUser: typeof layoutAssignUser;
+    assignMenus: typeof layoutAssignMenus;
+    
+    changeAnchor: typeof layoutChangeAnchor;
+    changeAlert: typeof layoutChangeAlert;
+    changeNotif: typeof layoutChangeNotif;
+    changeView: typeof layoutChangeView;
 
-  setTopDrawer: typeof setTopDrawer;
-  setBottomDrawer: typeof setBottomDrawer;
-  setActive: typeof setCurrentPage;
-  setMenuItems: typeof setMenuItems;
-  setUser: typeof setUser;
-  setLogoutDialog: typeof setLogoutDialog;
-  setAlertSnackbar: typeof setAlertSnackbar;
-  setNavBack: typeof setNavBack;
+    drawerMenuShow: typeof layoutDrawerMenuShow;
+    drawerMenuHide: typeof layoutDrawerMenuHide;
+    drawerActionShow: typeof layoutDrawerActionShow;
+    drawerActionHide: typeof layoutDrawerActionHide;
+    drawerTopShow: typeof layoutDrawerTopShow;
+    drawerTopHide: typeof layoutDrawerTopHide;
+    drawerBottomShow: typeof layoutDrawerBottomShow;
+    drawerBottomHide: typeof layoutDrawerBottomHide;
+    
+    logoutDialogShow: typeof layoutLogoutDialogShow;
+    logoutDialogHide: typeof layoutLogoutDialogHide;
+    navBackShow: typeof layoutNavBackShow;
+    navBackHide: typeof layoutNavBackHide;
+    
+    accountExpand: typeof layoutAccountExpand;
+    accountColapse: typeof layoutAccountColapse;
+    
+    modeSearchOn: typeof layoutModeSearchOn;
+    modeSearchOff: typeof layoutModeSearchOff;
+    modeListOn: typeof layoutModeListOn;
+    modeListOff: typeof layoutModeListOff;
+  
+  };
 
   listBarDispatch: {
     assignCallbacks: typeof listBarAssignCallbacks;
-    clearCallbacks: typeof listBarClearCallbacks;
-    assignMenuItems: typeof listBarAssignMenuItems;
-    clearMenuItems: typeof listBarClearMenuItems;
+    assignFields: typeof listBarAssignFields;
+    changeOrder: typeof listBarChangeOrder;
+    changeDirection: typeof listBarChangeDirection;
+    changeSize: typeof listBarChangeSize;
+    dispose: typeof listBarDispose;
     menuShow: typeof listBarMenuShow;
     menuHide: typeof listBarMenuHide;
-    orderSet: typeof listBarOrderSet;
-    directionSet: typeof listBarDirectionSet;
-    sizeSet: typeof listBarSizeSet;
   };
 }
 
@@ -113,8 +110,8 @@ class BasePage extends React.Component<AllProps> {
     const menu: ILookupRoleMenuList[] = store.get(AppStorage.Menu);
 
     if (user && menu) {
-      this.props.setUser(user);
-      this.props.setMenuItems(menu);
+      this.props.layoutDispatch.assignUser(user);
+      this.props.layoutDispatch.assignMenus(menu);
     }
   }
 
@@ -123,21 +120,22 @@ class BasePage extends React.Component<AllProps> {
   }
   
   public render() {
-    const { anchor, listMode, classes } = this.props;
+    const { classes } = this.props;
+    const { anchor, isModeList } = this.props.layoutState;
 
     return (
       <div className={classes.root}>
         <TopAppBar {...this.props}/>
         <MenuDrawer {...this.props}/>
-        <AdditionalDrawer {...this.props}/>
+        <ActionDrawer {...this.props}/>
         <main className={classNames(
           classes.content,
-          listMode ? classes.contentWithBottomNav : '',
+          isModeList ? classes.contentWithBottomNav : '',
           anchor === 'right' ? classes.contentShiftRight : classes.contentShiftLeft)}
         >
           {this.props.children}
         </main>
-        <ListBar {...this.props}/>
+        <ListBar {...this.props} />
         <BottomSnackbar {...this.props}/>
       </div>
     );
@@ -145,56 +143,52 @@ class BasePage extends React.Component<AllProps> {
 }
 
 const mapStateToProps = ({ layout, listBar }: IAppState) => ({
-  anchor: layout.anchor,
-  menuDrawer: layout.menuDrawer,
-  additionalDrawer: layout.additionalDrawer,
-  accountShow: layout.accountShow,
-  searchMode: layout.searchMode,
-  listMode: layout.listMode,
-  topDrawer: layout.topDrawer,
-  bottomDrawer: layout.bottomDrawer,
-  menuItems: layout.menuItems,
-  active: layout.active,
-  user: layout.user,
-  notification: layout.notification,
-  logoutDialog: layout.logoutDialog,
-  alertSnackbar: layout.alertSnackbar,
-  navBack: layout.navBack,
+  layoutState: layout,
   listBarState: listBar
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  setAnchor: (anchor: Anchor) => dispatch(setAnchor(anchor)),
-  setMenuDrawer: (open: boolean) => dispatch(setMenuDrawer(open)),
-  setAdditionalDrawer: (open: boolean) => dispatch(setAdditionalDrawer(open)),
-  setAccountShow: (open: boolean) => dispatch(setAccountShow(open)),
-  
-  searchModeOn: () => dispatch(searchModeOn()),
-  searchModeOff: () => dispatch(searchModeOff()),
-  
-  listModeOn: () => dispatch(listModeOn()),
-  listModeOff: () => dispatch(listModeOff()),
-  
-  setTopDrawer: (open: boolean) => dispatch(setTopDrawer(open)),
-  setBottomDrawer: (open: boolean) => dispatch(setBottomDrawer(open)),
-  setActive: (active: ICurrentPage) => dispatch(setCurrentPage(active)),
-  setMenuItems: (items: ILookupRoleMenuList[]) => dispatch(setMenuItems(items)),
-  setUser: (user: IAppUser) => dispatch(setUser(user)),
-  setLogoutDialog: (open: boolean) => dispatch(setLogoutDialog(open)),
-  setAlertSnackbar: (data: ISnackbarAlert) => dispatch(setAlertSnackbar(data)),
-  setNavBack: (enabled: boolean) => dispatch(setNavBack(enabled)),
+  layoutDispatch: {
+    assignUser: (user: IAppUser) => dispatch(layoutAssignUser(user)),
+    assignMenus: (items: ILookupRoleMenuList[]) => dispatch(layoutAssignMenus(items)),
 
-  /* list bar */
+    changeAnchor: (anchor: Anchor) => dispatch(layoutChangeAnchor(anchor)),
+    changeAlert: (data: IAlert) => dispatch(layoutChangeAlert(data)),
+    changeNotif: (count: number) => dispatch(layoutChangeNotif(count)),
+    changeView: (active: IView) => dispatch(layoutChangeView(active)),
+    
+    drawerMenuShow: () => dispatch(layoutDrawerMenuShow()),
+    drawerMenuHide: () => dispatch(layoutDrawerMenuHide()),
+    drawerActionShow: () => dispatch(layoutDrawerActionShow()),
+    drawerActionHide: () => dispatch(layoutDrawerActionHide()),
+    drawerTopShow: () => dispatch(layoutDrawerTopShow()),
+    drawerTopHide: () => dispatch(layoutDrawerTopHide()),
+    drawerBottomShow: () => dispatch(layoutDrawerBottomShow()),
+    drawerBottomHide: () => dispatch(layoutDrawerBottomHide()),
+    
+    accountExpand: () => dispatch(layoutAccountExpand()),
+    accountColapse: () => dispatch(layoutAccountColapse()),
+    
+    logoutDialogShow: () => dispatch(layoutLogoutDialogShow()),
+    logoutDialogHide: () => dispatch(layoutLogoutDialogHide()),
+    navBackShow: () => dispatch(layoutNavBackShow()),
+    navBackHide: () => dispatch(layoutNavBackHide()),
+    
+    modeSearchOn: () => dispatch(layoutModeSearchOn()),
+    modeSearchOff: () => dispatch(layoutModeSearchOff()), 
+    modeListOn: () => dispatch(layoutModeListOn()),
+    modeListOff: () => dispatch(layoutModeListOff()),
+  },
+
   listBarDispatch: {
     assignCallbacks: (callbacks: IListBarCallback) => dispatch(listBarAssignCallbacks(callbacks)),
-    clearCallbacks: () => dispatch(listBarClearCallbacks()),
-    assignMenuItems: (menuItems: IListBarMenuItem[]) => dispatch(listBarAssignMenuItems(menuItems)),
-    clearMenuItems: () => dispatch(listBarClearMenuItems()),
-    menuShow: (anchorEl: any) => dispatch(listBarMenuShow(anchorEl)),
+    assignFields: (fields: IListBarField[]) => dispatch(listBarAssignFields(fields)),
+    changeOrder: (name: string) => dispatch(listBarChangeOrder(name)),
+    changeSize: (size: number) => dispatch(listBarChangeSize(size)),
+    changeDirection: (direction: SortDirection) => dispatch(listBarChangeDirection(direction)),
+    dispose: () => dispatch(listBarDispose()),
+    menuShow: (anchorId: any) => dispatch(listBarMenuShow(anchorId)),
     menuHide: () => dispatch(listBarMenuHide()),
-    orderSet: (name: string) => dispatch(listBarOrderSet(name)),
-    sizeSet: (size: number) => dispatch(listBarSizeSet(size)),
-    directionSet: (direction: SortDirection) => dispatch(listBarDirectionSet(direction))
   }
 });
 

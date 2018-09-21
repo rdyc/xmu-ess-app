@@ -1,8 +1,16 @@
 import { ConnectedReduxProps } from '@generic/types';
-import { IAppUser, ICurrentPage } from '@layout/interfaces';
-import { setAdditionalDrawer, setMenuDrawer, searchModeOn, setNavBack, searchModeOff } from '@layout/store/actionCreators';
-import { Anchor } from '@layout/types';
-import { AppBar, Badge, IconButton, Input, Toolbar, Typography, WithStyles, Slide } from '@material-ui/core';
+import { ILayoutState } from '@layout/interfaces';
+import {
+  layoutDrawerActionHide,
+  layoutDrawerActionShow,
+  layoutDrawerMenuHide,
+  layoutDrawerMenuShow,
+  layoutModeSearchOff,
+  layoutModeSearchOn,
+  layoutNavBackHide,
+  layoutNavBackShow,
+} from '@layout/store/actions';
+import { AppBar, Badge, IconButton, Input, Slide, Toolbar, Typography, WithStyles } from '@material-ui/core';
 import { isWidthUp, WithWidthProps } from '@material-ui/core/withWidth';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import MenuIcon from '@material-ui/icons/Menu';
@@ -15,133 +23,138 @@ import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
 
 interface PropsFromState extends RouteComponentProps<void>, WithStyles<typeof styles> {
-  anchor: Anchor;
-  menuDrawer: boolean;
-  additionalDrawer: boolean;
-  active: ICurrentPage;
-  user: IAppUser;
-  notification: number;
-  searchMode: boolean;
-  navBack: boolean;
+  layoutState: ILayoutState;
 }
 
 interface PropsFromDispatch {
-  setMenuDrawer: typeof setMenuDrawer;
-  setAdditionalDrawer: typeof setAdditionalDrawer;
-  
-  searchModeOn: typeof searchModeOn;
-  searchModeOff: typeof searchModeOff;
-  
-  setNavBack: typeof setNavBack;
+  layoutDispatch: {
+    drawerMenuShow: typeof layoutDrawerMenuShow;
+    drawerMenuHide: typeof layoutDrawerMenuHide;
+    drawerActionShow: typeof layoutDrawerActionShow;
+    drawerActionHide: typeof layoutDrawerActionHide;
+    modeSearchOn: typeof layoutModeSearchOn;
+    modeSearchOff: typeof layoutModeSearchOff;
+    navBackShow: typeof layoutNavBackShow;
+    navBackHide: typeof layoutNavBackHide;
+  };
 }
 
 type AllProps = PropsFromState & PropsFromDispatch & WithWidthProps & ConnectedReduxProps;
 
-const renderNormalMode = (props: AllProps) => (
-  <Toolbar>
-    {/* menu */}
-    {!props.navBack &&
-      <IconButton
-        color="inherit"
-        aria-label="open drawer"
-        onClick={() => props.setMenuDrawer(!props.menuDrawer)}
-        className={classNames(props.classes.navIconHide, props.menuDrawer && props.classes.hide)}>
-        <MenuIcon />
-      </IconButton>
-    }
+export const topAppBar: React.StatelessComponent<AllProps> = props => {
+  const { layoutState, layoutDispatch, classes, history, width }  = props;
 
-    {/* back */}
-    {props.navBack && 
-      <IconButton
-        color="inherit"
-        onClick={() => props.setNavBack(!props.navBack) && props.history.goBack()}
-        className={classNames(props.classes.navIconHide, props.menuDrawer && props.classes.hide)}>
-        <ArrowBackIcon />
-      </IconButton>
-    }
-
-    {/* title */}
-    <Typography 
-      noWrap 
-      variant="title" 
-      color="inherit" 
-      className={props.classes.flex}
+  const renderSearchMode = (
+    <Slide 
+      mountOnEnter 
+      unmountOnExit
+      direction="down" 
+      in={layoutState.isModeSearch} 
+      timeout={300}
     >
-      {props.active && props.active.title}
-    </Typography>
+      <Toolbar>
+        <IconButton
+          color="inherit"
+          aria-label="close search"
+          onClick={() => layoutDispatch.modeSearchOff()}
+        >
+          <ArrowBackIcon />
+        </IconButton>
+        <Input 
+          fullWidth
+          autoFocus
+          disableUnderline
+          placeholder="Search" 
+        />
+      </Toolbar>
+    </Slide>
+  );
 
-    {/* search */}
-    <IconButton
-      color="inherit"
-      aria-label="More"
-      onClick={() => props.searchModeOn()}
-    >
-      <SearchIcon />
-    </IconButton>
-    
-    {/* notifications */}
-    {props.notification > 0 &&
-      <IconButton
-        color="inherit"
-        aria-label="Notifications"
-        onClick={() => props.setAdditionalDrawer(!props.additionalDrawer)}
-      >
-        <Badge badgeContent={props.notification} color="error">
-          <NotificationImportant />
-        </Badge>
-      </IconButton>
-    }
-
-    {/* more */}
-    <IconButton
-      color="inherit"
-      aria-label="More"
-      onClick={() => props.setAdditionalDrawer(!props.additionalDrawer)}
-    >
-      <MoreVertIcon />
-    </IconButton>
-  </Toolbar>
-);
-
-const renderSearchMode = (props: AllProps) => (
-  <Slide 
-    mountOnEnter 
-    unmountOnExit
-    direction="down" 
-    in={props.searchMode} 
-    timeout={300}
-  >
+  const renderNormalMode = (
     <Toolbar>
+      {
+        /* menu */
+        !layoutState.isNavBackVisible &&
+        <IconButton
+          color="inherit"
+          aria-label="open drawer"
+          onClick={() => layoutDispatch.drawerMenuShow()}
+          className={classNames(classes.navIconHide, layoutState.isDrawerMenuVisible && classes.hide)}>
+          <MenuIcon />
+        </IconButton>
+      }
+  
+      {
+        /* back */
+        layoutState.isNavBackVisible && 
+        <IconButton
+          color="inherit"
+          onClick={() => layoutDispatch.navBackShow() && history.goBack()}
+          className={classNames(classes.navIconHide, layoutState.isDrawerMenuVisible && classes.hide)}>
+          <ArrowBackIcon />
+        </IconButton>
+      }
+  
+      {/* title */}
+      <Typography 
+        noWrap 
+        variant="title" 
+        color="inherit" 
+        className={classes.flex}
+      >
+        {layoutState.view && layoutState.view.title}
+      </Typography>
+  
+      {/* search */}
       <IconButton
         color="inherit"
-        aria-label="close search"
-        onClick={() => props.searchModeOff()}
+        aria-label="Search"
+        onClick={() => layoutDispatch.modeSearchOn()}
       >
-        <ArrowBackIcon />
+        <SearchIcon />
       </IconButton>
-      <Input 
-        fullWidth
-        autoFocus
-        disableUnderline
-        placeholder="Search" 
-      />
+      
+      {
+        /* notifications */
+        layoutState.notifCount > 0 &&
+        <IconButton
+          color="inherit"
+          aria-label="Notifications"
+          onClick={() => layoutDispatch.drawerActionShow()}
+        >
+          <Badge badgeContent={layoutState.notifCount} color="error">
+            <NotificationImportant />
+          </Badge>
+        </IconButton>
+      }
+  
+      {/* more */}
+      <IconButton
+        color="inherit"
+        aria-label="More"
+        onClick={() => layoutDispatch.drawerActionShow()}
+      >
+        <MoreVertIcon />
+      </IconButton>
     </Toolbar>
-  </Slide>
-);
+  );
 
-const findClasses = (props: AllProps) => {
-  const shift = props.anchor === 'right' ? props.classes.appBarShiftRight : props.classes.appBarShiftLeft;
-
-  return props.menuDrawer ? classNames(props.classes.appBar) : classNames(props.classes.appBar, shift);
+  const fnFindClasses = () => {
+    const shift = layoutState.anchor === 'right' ? classes.appBarShiftRight : classes.appBarShiftLeft;
+  
+    return layoutState.isDrawerMenuVisible ? classNames(classes.appBar) : classNames(classes.appBar, shift);
+  };
+  
+  return (
+    <AppBar 
+      elevation={isWidthUp('md', width) ? 3 : 1}
+      position="fixed"
+      color={layoutState.isModeSearch ? 'inherit' : 'primary'}
+      className={fnFindClasses()}
+    >
+      {
+        layoutState.isModeSearch ? renderSearchMode : renderNormalMode
+      }
+    </AppBar>
+  );
 };
-
-export const topAppBar: React.StatelessComponent<AllProps> = props => (
-  <AppBar 
-    elevation={isWidthUp('md', props.width) ? 3 : 1}
-    position="fixed"
-    color={props.searchMode ? 'inherit' : 'primary'}
-    className={findClasses(props)}
-  >
-    {props.searchMode ? renderSearchMode(props) : renderNormalMode(props)}
-  </AppBar>
-);

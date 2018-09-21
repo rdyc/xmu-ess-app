@@ -11,7 +11,7 @@ import {
 import { callApi } from '@utils/api';
 import { all, call, fork, put, takeEvery } from 'redux-saga/effects';
 import { objectToQuerystring } from 'utils';
-import { setListBarReload, setListBarMetadata } from '@layout/store/actionCreators';
+import { listBarLoading, listBarMetadata } from '@layout/store/actions';
 
 const API_ENDPOINT = process.env.REACT_APP_API_URL || '';
 
@@ -23,7 +23,7 @@ function* handleAllFetch(action: ReturnType<typeof ProjectRegistrationFetchAllRe
       yield put(ProjectRegistrationFetchAllError(`${response.status}: ${response.statusText}`));
     } else {
       yield put(ProjectRegistrationFetchAllSuccess(response));
-      yield put(setListBarMetadata(response.metadata));
+      yield put(listBarMetadata(response.metadata));
     }
 
   } catch (error) {
@@ -33,7 +33,7 @@ function* handleAllFetch(action: ReturnType<typeof ProjectRegistrationFetchAllRe
       yield put(ProjectRegistrationFetchAllError('An unknown error occured.'));
     }
   } finally {
-    yield put(setListBarReload(false));
+    yield put(listBarLoading(false));
   }
 }
 

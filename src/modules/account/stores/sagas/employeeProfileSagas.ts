@@ -1,7 +1,7 @@
 import { all, call, fork, put, takeEvery } from 'redux-saga/effects';
 
-import { callApi } from '../../../../utils';
-import { setAlertSnackbar } from '../../../@layout/store/actionCreators';
+import { callApi } from '@utils/index';
+import { layoutChangeAlert } from '@layout/store/actions';
 import {
   EmployeeProfileAction,
   EmployeeProfileCommandError,
@@ -41,7 +41,7 @@ function* handleCommand(action: ReturnType<typeof EmployeeProfileCommandRequest>
 
     if (response instanceof Response) {
       yield put(EmployeeProfileCommandError(`${response.status} ${response.statusText} | ${response.headers.get('Date')} | ${response.headers.get('X-Correlation-Id')}`));
-      yield put(setAlertSnackbar({ open: true, message: `${response.status} ${response.statusText}` }));
+      yield put(layoutChangeAlert({ visible: true, message: `${response.status} ${response.statusText}` }));
     } else {
       yield put(EmployeeProfileCommandSuccess(response));
     }
@@ -55,7 +55,7 @@ function* handleCommand(action: ReturnType<typeof EmployeeProfileCommandRequest>
     }
     
     yield put(EmployeeProfileCommandError(_error));
-    yield put(setAlertSnackbar({ open: true, message: _error }));
+    yield put(layoutChangeAlert({ visible: true, message: _error }));
   }
 }
 //#endregion

@@ -1,23 +1,23 @@
 import { ILookupRoleMenuList } from '../../lookup/interfaces/ILookupRoleMenuList';
 import { Anchor } from '../types/Anchor';
 import { IAppUser } from './IAppUser';
-import { ICurrentPage } from './ICurrentPage';
-import { ISnackbarAlert } from './ISnackbarAlert';
+import { IView } from '@layout/interfaces/IView';
+import { IAlert } from '@layout/interfaces/IAlert';
 
 export interface ILayoutState {
+  readonly user: IAppUser | undefined;
+  readonly view: IView | undefined;
   readonly anchor: Anchor;
-  readonly menuDrawer: boolean;
-  readonly additionalDrawer: boolean;
-  readonly accountShow: boolean;
-  readonly searchMode: boolean;
-  readonly listMode: boolean;
-  readonly topDrawer: boolean;
-  readonly bottomDrawer: boolean;
-  readonly menuItems: ILookupRoleMenuList[];
-  readonly active: ICurrentPage | undefined;
-  readonly user: IAppUser | null;
-  readonly notification: number;
-  readonly logoutDialog: boolean;
-  readonly alertSnackbar: ISnackbarAlert;
-  readonly navBack: boolean;
+  readonly isDrawerMenuVisible: boolean;
+  readonly isDrawerActionVisible: boolean;
+  readonly isDrawerTopVisible: boolean;
+  readonly isDrawerBottomVisible: boolean;
+  readonly isAccountExpanded: boolean;
+  readonly isModeSearch: boolean;
+  readonly isModeList: boolean;
+  readonly isNavBackVisible: boolean;
+  readonly isLogoutDialogVisible: boolean;
+  readonly menus: ILookupRoleMenuList[];
+  readonly notifCount: number;
+  readonly alert: IAlert | undefined;
 }

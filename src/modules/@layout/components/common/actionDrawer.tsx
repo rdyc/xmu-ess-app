@@ -1,8 +1,16 @@
 import { ConnectedReduxProps } from '@generic/types';
-import { IAppUser, ICurrentPage } from '@layout/interfaces';
-import { setAccountShow, setCurrentPage, setAdditionalDrawer, setAnchor, setLogoutDialog } from '@layout/store/actionCreators';
-import { Anchor } from '@layout/types';
-import { ILookupRoleMenuList } from '@lookup/interfaces/ILookupRoleMenuList';
+import Notifications from '@layout/components/common/notifications';
+import { ILayoutState } from '@layout/interfaces';
+import {
+  layoutAccountColapse,
+  layoutAccountExpand,
+  layoutChangeAnchor,
+  layoutChangeView,
+  layoutDrawerActionHide,
+  layoutDrawerActionShow,
+  layoutLogoutDialogHide,
+  layoutLogoutDialogShow,
+} from '@layout/store/actions';
 import {
   Avatar,
   Button,
@@ -39,38 +47,36 @@ import { FormattedMessage } from 'react-intl';
 import { RouteComponentProps } from 'react-router';
 import * as store from 'store';
 
-import Notifications from './notifications';
-
-// tslint:disable-next-line:max-line-length
 interface PropsFromState extends RouteComponentProps<void>, WithStyles<typeof styles> {
-  anchor: Anchor;
-  menuDrawer: boolean;
-  additionalDrawer: boolean;
-  accountShow: boolean;
-  menuItems: ILookupRoleMenuList[];
-  active: ICurrentPage;
-  user: IAppUser;
-  logoutDialog: boolean;
+  layoutState: ILayoutState;
 }
 
 interface PropsFromDispatch {
-  setAnchor: typeof setAnchor;
-  setAdditionalDrawer: typeof setAdditionalDrawer;
-  setActive: typeof setCurrentPage;
-  setAccountShow: typeof setAccountShow;
-  setLogoutDialog: typeof setLogoutDialog;
+  layoutDispatch: {
+    changeAnchor: typeof layoutChangeAnchor;
+    changeView: typeof layoutChangeView;
+    drawerActionShow: typeof layoutDrawerActionShow;
+    drawerActionHide: typeof layoutDrawerActionHide;
+    accountExpand: typeof layoutAccountExpand;
+    accountColapse: typeof layoutAccountColapse;
+    logoutDialogShow: typeof layoutLogoutDialogShow;
+    logoutDialogHide: typeof layoutLogoutDialogHide;
+  };
 }
 
 type AllProps = PropsFromState & PropsFromDispatch & ConnectedReduxProps;
 
-export const additionalDrawer: React.SFC<AllProps> = props => {
+export const actionDrawer: React.SFC<AllProps> = props => {
+  const { layoutState, layoutDispatch, history } = props;
+
   const handleLogout = () => {
-    props.setAdditionalDrawer(!props.additionalDrawer);
-    props.setLogoutDialog(!props.logoutDialog);
+    layoutDispatch.drawerActionHide();
+
+    layoutDispatch.logoutDialogShow();
   };
 
   const handleClose = (confirm: boolean) => {
-    props.setLogoutDialog(!props.logoutDialog);
+    layoutDispatch.logoutDialogHide();
 
     if (confirm) {
       store.clearAll();
@@ -80,7 +86,7 @@ export const additionalDrawer: React.SFC<AllProps> = props => {
 
   const logoutDialog = (
     <Dialog
-      open={props.logoutDialog}
+      open={layoutState.isLogoutDialogVisible}
       onClose={() => handleClose(false)}
       aria-labelledby="logout-dialog-title"
     >
@@ -107,40 +113,40 @@ export const additionalDrawer: React.SFC<AllProps> = props => {
       {logoutDialog}
       <Drawer
         variant="temporary"
-        anchor={props.anchor === 'left' ? 'right' : 'left'}
-        open={props.additionalDrawer}
+        anchor={layoutState.anchor === 'left' ? 'right' : 'left'}
+        open={layoutState.isDrawerActionVisible}
         classes={{
           paper: classNames(props.classes.drawerPaper, props.classes.drawerPaperAdditional)
         }}
-        onClose={() => props.setAdditionalDrawer(!props.additionalDrawer)}
+        onClose={() => layoutDispatch.drawerActionHide()}
         ModalProps={{
           keepMounted: true, // Better open performance on mobile.
         }}>
-        {props.user && (
+        {layoutState.user && (
           <div>
             <List>
               <ListItem 
                 button
-                onClick={() => props.setAccountShow(!props.accountShow)}>
+                onClick={() => layoutState.isAccountExpanded ? layoutDispatch.accountColapse() : layoutDispatch.accountExpand()}>
                 <Avatar className={props.classes.avatarRed}>
-                  {props.user.company.code}
+                  {layoutState.user.company.code}
                 </Avatar>
                 <ListItemText 
-                  primary={props.user.fullName} 
-                  secondary={props.user.email} />
+                  primary={layoutState.user.fullName} 
+                  secondary={layoutState.user.email} />
                 <ListItemSecondaryAction>
-                  {props.accountShow ? <ExpandLess /> : <ExpandMore />}
+                  {layoutState.isAccountExpanded ? <ExpandLess /> : <ExpandMore />}
                 </ListItemSecondaryAction>
               </ListItem>
-              <Collapse in={props.accountShow} timeout="auto" unmountOnExit>
+              <Collapse in={layoutState.isAccountExpanded} timeout="auto" unmountOnExit>
                 <List component="div" disablePadding>
-                  <ListItem button onClick={() => props.history.push('/account/profile')}>
+                  <ListItem button onClick={() => history.push('/account/profile')}>
                     <ListItemIcon>
                       <AccountCircle />
                     </ListItemIcon>
                     <ListItemText inset primary={<FormattedMessage id="global.profile.my.title"/>} />
                   </ListItem>
-                  <ListItem button onClick={() => props.history.push('/')}>
+                  <ListItem button onClick={() => history.push('/')}>
                     <ListItemIcon>
                       <SwapHorizontalCircle />
                     </ListItemIcon>
@@ -164,8 +170,8 @@ export const additionalDrawer: React.SFC<AllProps> = props => {
             }>
               <ListItem>
                 <ListItemText 
-                  primary={props.user.company.name} 
-                  secondary={props.user.position.name} />
+                  primary={layoutState.user.company.name} 
+                  secondary={layoutState.user.position.name} />
                 <ListItemSecondaryAction>
                   <IconButton>
                     <MoreVertIcon />
@@ -187,8 +193,8 @@ export const additionalDrawer: React.SFC<AllProps> = props => {
             <ListItemText primary="Right hand" />
             <ListItemSecondaryAction>
               <Switch color="primary"
-                onChange={() => props.setAnchor(props.anchor === 'right' ? 'left' : 'right')}
-                checked={props.anchor === 'right'}
+                onChange={() => layoutDispatch.changeAnchor(layoutState.anchor === 'right' ? 'left' : 'right')}
+                checked={layoutState.anchor === 'right'}
               />
             </ListItemSecondaryAction>
           </ListItem>

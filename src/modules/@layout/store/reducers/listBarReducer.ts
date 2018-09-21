@@ -1,7 +1,7 @@
 import { Reducer } from 'redux';
 
 import { IListBarState, IListBarCallback } from '@layout/interfaces';
-import { ListBarAction } from '@layout/store/actionCreators';
+import { ListBarAction } from '@layout/store/actions';
 
 const _callbacks: IListBarCallback = {
   onNextCallback: () => { 
@@ -29,54 +29,48 @@ const _callbacks: IListBarCallback = {
 
 const initialState: IListBarState = {
   metadata: undefined,
-  isReload: false,
+  isLoading: false,
   orderBy: undefined,
   direction: undefined,
   page: undefined,
   size: undefined,
   callbacks: _callbacks,
   menuIsOpen: false,
-  menuAnchorEl: undefined,
-  menuItems: undefined
+  menuAnchorId: undefined,
+  fields: undefined
 };
 
 const reducer: Reducer<IListBarState> = (state = initialState, action) => {
   switch (action.type) {
-    case ListBarAction.SET_METADATA:
+    case ListBarAction.ASSIGN_METADATA:
       return { ...state, metadata: action.payload };
-
-    case ListBarAction.SET_RELOAD:
-      return { ...state, isReload: action.payload };
-
-    case ListBarAction.SET_ORDER:
-      return { ...state, isReload: true, orderBy: action.payload };
-
-    case ListBarAction.SET_DIRECTION:
-      return { ...state, isReload: true, direction: action.payload };
-
-    case ListBarAction.SET_PAGE:
-      return { ...state, isReload: true, page: action.payload };
-    
-    case ListBarAction.SET_SIZE:
-      return { ...state, isReload: true, size: action.payload };
-
+      
     case ListBarAction.ASSIGN_CALLBACKS: 
       return { ...state, callbacks: action.payload };
+  
+    case ListBarAction.ASSIGN_FIELDS: 
+      return { ...state, fields: action.payload };
 
-    case ListBarAction.CLEAR_CALLBACKS: 
-      return { ...state, callbacks: _callbacks };
+    case ListBarAction.CHANGE_ORDER:
+      return { ...state, isLoading: true, orderBy: action.payload };
 
-    case ListBarAction.ASSIGN_MENU_ITEMS: 
-      return { ...state, menuItems: action.payload };
-
-    case ListBarAction.CLEAR_MENU_ITEMS: 
-      return { ...state, menuItems: undefined };
+    case ListBarAction.CHANGE_DIRECTION:
+      return { ...state, isLoading: true, direction: action.payload };
+    
+    case ListBarAction.CHANGE_SIZE:
+      return { ...state, isLoading: true, size: action.payload };
 
     case ListBarAction.MENU_SHOW: 
-      return { ...state, menuIsOpen: true, menuAnchorEl: action.payload };
+      return { ...state, menuIsOpen: true, menuAnchorId: action.payload };
 
     case ListBarAction.MENU_HIDE: 
-      return { ...state, menuIsOpen: false, menuAnchorEl: undefined };
+      return { ...state, menuIsOpen: false, menuAnchorId: undefined };
+
+    case ListBarAction.LOADING:
+      return { ...state, isLoading: action.payload };
+
+    // case ListBarAction.DISPOSE:
+    //   return state = initialState;
     
     default:
       return state;

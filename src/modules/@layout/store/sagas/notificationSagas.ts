@@ -2,7 +2,7 @@ import { all, call, fork, put, takeEvery } from 'redux-saga/effects';
 
 import { callApi } from '../../../../utils';
 import { NotificationAction } from '../../types';
-import { notificationFetchError, notificationFetchRequest, notificationFetchSuccess } from '../actionCreators';
+import { notificationFetchError, notificationFetchRequest, notificationFetchSuccess } from '../actions';
 
 const API_ENDPOINT = process.env.REACT_APP_API_URL || '';
 

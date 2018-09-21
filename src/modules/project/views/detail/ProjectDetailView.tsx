@@ -1,6 +1,6 @@
 import { IAppState, IResponseSingle } from '@generic/interfaces';
 import { ConnectedReduxProps } from '@generic/types';
-import { IAppUser, ICurrentPage } from '@layout/interfaces';
+import { IAppUser, IView } from '@layout/interfaces';
 import { WithStyles, Paper, withStyles } from '@material-ui/core';
 import { IProject } from '@project/interfaces/response';
 import { ProjectRegistrationFetchRequest } from '@project/store/actions';
@@ -10,7 +10,7 @@ import { connect } from 'react-redux';
 import { RouteComponentProps } from 'react-router';
 import { Dispatch } from 'redux';
 import { IProjectRegistrationRequest } from '@project/interfaces/queries';
-import { setCurrentPage, setNavBack } from '@layout/store/actionCreators';
+import { layoutChangeView, layoutNavBackShow } from '@layout/store/actions';
 
 interface PropsFromState extends RouteComponentProps<void>, WithStyles<typeof styles> {
   user: IAppUser;
@@ -23,8 +23,8 @@ interface PropsFromState extends RouteComponentProps<void>, WithStyles<typeof st
 }
 
 interface PropsFromDispatch {
-  setCurrentPage: typeof setCurrentPage;
-  setNavBack: typeof setNavBack;
+  setCurrentPage: typeof layoutChangeView;
+  setNavBack: typeof layoutNavBackShow;
   fetchRequest: typeof ProjectRegistrationFetchRequest;
 }
 
@@ -37,7 +37,7 @@ type AllProps = PropsFromState & PropsFromDispatch & RouteComponentProps<RoutePa
 class ProjectDetailView extends React.Component<AllProps> {
   componentWillUnmount() {
     this.props.setCurrentPage(null);
-    this.props.setNavBack(false);
+    this.props.setNavBack();
   }
 
   componentDidMount() {
@@ -51,7 +51,7 @@ class ProjectDetailView extends React.Component<AllProps> {
       subTitle : 'Detail project registration'
     });
 
-    this.props.setNavBack(true);
+    this.props.setNavBack();
 
     this.loadData();
   }
@@ -80,7 +80,7 @@ class ProjectDetailView extends React.Component<AllProps> {
 
 const mapStateToProps = ({ layout, projectQuery }: IAppState) => ({
   user: layout.user,
-  navBack: layout.navBack,
+  navBack: layout.isNavBackVisible,
   request: projectQuery.request,
   response: projectQuery.response,
   isLoading: projectQuery.isLoading,
@@ -89,8 +89,8 @@ const mapStateToProps = ({ layout, projectQuery }: IAppState) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  setCurrentPage: (page: ICurrentPage | null) => dispatch(setCurrentPage(page)),
-  setNavBack: (enabled: boolean) => dispatch(setNavBack(enabled)),
+  setCurrentPage: (page: IView | null) => dispatch(layoutChangeView(page)),
+  setNavBack: () => dispatch(layoutNavBackShow()),
   fetchRequest: (request: IProjectRegistrationRequest) => dispatch(ProjectRegistrationFetchRequest(request)),
 });
 
