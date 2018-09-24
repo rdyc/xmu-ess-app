@@ -28,6 +28,8 @@ export const enum LayoutAction {
 
   NAV_BACK_SHOW = '@@layout/NAV_BACK_SHOW',
   NAV_BACK_HIDE = '@@layout/NAV_BACK_HIDE',
+  SEARCH_SHOW = '@@layout/SEARCH_SHOW',
+  SEARCH_HIDE = '@@layout/SEARCH_HIDE',
   LOGOUT_DIALOG_SHOW = '@@layout/LOGOUT_DIALOG_SHOW',
   LOGOUT_DIALOG_HIDE = '@@layout/LOGOUT_DIALOG_HIDE',
 
@@ -59,6 +61,8 @@ export const layoutDrawerBottomHide = () => action(LayoutAction.DRAWER_BOTTOM_HI
 
 export const layoutNavBackShow = () => action(LayoutAction.NAV_BACK_SHOW);
 export const layoutNavBackHide = () => action(LayoutAction.NAV_BACK_HIDE);
+export const layoutSearchShow = () => action(LayoutAction.SEARCH_SHOW);
+export const layoutSearchHide = () => action(LayoutAction.SEARCH_HIDE);
 export const layoutLogoutDialogShow = () => action(LayoutAction.LOGOUT_DIALOG_SHOW);
 export const layoutLogoutDialogHide = () => action(LayoutAction.LOGOUT_DIALOG_HIDE);
 

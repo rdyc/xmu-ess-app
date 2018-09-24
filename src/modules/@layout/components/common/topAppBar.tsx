@@ -106,13 +106,16 @@ export const topAppBar: React.StatelessComponent<AllProps> = props => {
       </Typography>
   
       {/* search */}
-      <IconButton
-        color="inherit"
-        aria-label="Search"
-        onClick={() => layoutDispatch.modeSearchOn()}
-      >
-        <SearchIcon />
-      </IconButton>
+      {
+        layoutState.isSearchVisible &&
+        <IconButton
+          color="inherit"
+          aria-label="Search"
+          onClick={() => layoutDispatch.modeSearchOn()}
+        >
+          <SearchIcon />
+        </IconButton>
+      }
       
       {
         /* notifications */

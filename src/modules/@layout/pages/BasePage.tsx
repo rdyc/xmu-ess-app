@@ -36,6 +36,8 @@ import {
   listBarDispose,
   listBarMenuHide,
   listBarMenuShow,
+  layoutSearchShow,
+  layoutSearchHide,
 } from '@layout/store/actions';
 import { Anchor } from '@layout/types';
 import { ILookupRoleMenuList } from '@lookup/interfaces';
@@ -79,6 +81,8 @@ interface PropsFromDispatch {
     logoutDialogHide: typeof layoutLogoutDialogHide;
     navBackShow: typeof layoutNavBackShow;
     navBackHide: typeof layoutNavBackHide;
+    searchShow: typeof layoutSearchShow;
+    searchHide: typeof layoutSearchHide;
     
     accountExpand: typeof layoutAccountExpand;
     accountColapse: typeof layoutAccountColapse;
@@ -173,6 +177,8 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     logoutDialogHide: () => dispatch(layoutLogoutDialogHide()),
     navBackShow: () => dispatch(layoutNavBackShow()),
     navBackHide: () => dispatch(layoutNavBackHide()),
+    searchShow: () => dispatch(layoutSearchShow()),
+    searchHide: () => dispatch(layoutSearchHide()),
     
     modeSearchOn: () => dispatch(layoutModeSearchOn()),
     modeSearchOff: () => dispatch(layoutModeSearchOff()), 

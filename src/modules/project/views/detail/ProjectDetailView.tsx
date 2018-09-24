@@ -6,14 +6,15 @@ import { Typography, WithStyles, withStyles } from '@material-ui/core';
 import { ProjectDetail } from '@project/components/list/ProjectDetail';
 import { IProjectGetByIdRequest } from '@project/interfaces/queries';
 import { IProjectDetail } from '@project/interfaces/response';
-import { projectGetByIdRequest } from '@project/store/actions';
+import { projectGetByIdRequest, projectGetByIdDispose } from '@project/store/actions';
 import styles from '@styles';
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { RouteComponentProps } from 'react-router';
 import { Dispatch } from 'redux';
+import { InjectedIntlProps, injectIntl } from 'react-intl';
 
-interface PropsFromState extends RouteComponentProps<void>, WithStyles<typeof styles> {
+interface PropsFromState extends RouteComponentProps<void>, InjectedIntlProps, WithStyles<typeof styles> {
   layoutState: ILayoutState;
   projectState: IQuerySingleState<IProjectGetByIdRequest, IProjectDetail>;
 }
@@ -26,6 +27,7 @@ interface PropsFromDispatch {
   };
   projectDispatch: {
     getByIdRequest: typeof projectGetByIdRequest;
+    getByIdDispose: typeof projectGetByIdDispose;
   };
 }
 
@@ -37,10 +39,11 @@ type AllProps = PropsFromState & PropsFromDispatch & RouteComponentProps<RoutePa
   
 class ProjectDetailView extends React.Component<AllProps> {
   componentWillUnmount() {
-    const { layoutDispatch } = this.props;
+    const { layoutDispatch, projectDispatch } = this.props;
 
     layoutDispatch.changeView(null);
     layoutDispatch.navBackHide();
+    projectDispatch.getByIdDispose();
   }
 
   componentDidMount() {
@@ -101,9 +104,10 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   },
   projectDispatch: {
     getByIdRequest: (request: IProjectGetByIdRequest) => dispatch(projectGetByIdRequest(request)),
+    getByIdDispose: () => dispatch(projectGetByIdDispose()),
   },
 });
 
-const redux = connect(mapStateToProps, mapDispatchToProps)(ProjectDetailView);
+const redux = connect(mapStateToProps, mapDispatchToProps)(injectIntl(ProjectDetailView));
 
 export default withStyles(styles)<{}>(redux);

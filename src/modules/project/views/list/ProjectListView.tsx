@@ -13,6 +13,8 @@ import {
   listBarChangeOrder,
   listBarChangeSize,
   listBarDispose,
+  layoutSearchShow,
+  layoutSearchHide,
 } from '@layout/store/actions';
 import { Paper, Typography, WithStyles, withStyles } from '@material-ui/core';
 import { ProjectList } from '@project/components/list';
@@ -39,6 +41,8 @@ interface PropsFromDispatch {
     modeSearchOff: typeof layoutModeSearchOff;
     modeListOn: typeof layoutModeListOn;
     modeListOff: typeof layoutModeListOff;
+    searchShow: typeof layoutSearchShow;
+    searchHide: typeof layoutSearchHide;
   };
   
   listBarDispatch: {
@@ -60,7 +64,7 @@ type AllProps = PropsFromState & PropsFromDispatch & ConnectedReduxProps;
 class ProjectListView extends React.Component<AllProps> {
   state = {
     orderBy: this.props.listBarState.orderBy || '',
-    direction: this.props.listBarState.direction || '',
+    direction: this.props.listBarState.direction || 'descending',
     page: this.props.listBarState.page || 1,
     size: this.props.listBarState.size || 10
   };
@@ -70,6 +74,7 @@ class ProjectListView extends React.Component<AllProps> {
 
     layoutDispatch.changeView(null);
     layoutDispatch.modeListOff();
+    layoutDispatch.searchHide();
     layoutDispatch.modeSearchOff();
 
     listBarDispatch.dispose();
@@ -85,6 +90,7 @@ class ProjectListView extends React.Component<AllProps> {
     });
 
     layoutDispatch.modeListOn();
+    layoutDispatch.searchShow();
 
     listBarDispatch.assignCallbacks({
       onNextCallback: this.handleOnNextCallback,
@@ -211,6 +217,8 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     modeSearchOff: () => dispatch(layoutModeSearchOff()),
     modeListOn: () => dispatch(layoutModeListOn()),
     modeListOff: () => dispatch(layoutModeListOff()),
+    searchShow: () => dispatch(layoutSearchShow()),
+    searchHide: () => dispatch(layoutSearchHide()),
   },
 
   listBarDispatch: {

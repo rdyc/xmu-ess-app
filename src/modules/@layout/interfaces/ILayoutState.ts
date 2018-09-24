@@ -16,6 +16,7 @@ export interface ILayoutState {
   readonly isModeSearch: boolean;
   readonly isModeList: boolean;
   readonly isNavBackVisible: boolean;
+  readonly isSearchVisible: boolean;
   readonly isLogoutDialogVisible: boolean;
   readonly menus: ILookupRoleMenuList[];
   readonly notifCount: number;

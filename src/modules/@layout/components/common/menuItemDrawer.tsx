@@ -44,7 +44,7 @@ export const menuItemDrawer: React.StatelessComponent<AllProps> = props => {
     <div>
       {layoutState.user && (
         <div className={classes.drawerHeader}>
-          <List dense disablePadding>
+          <List disablePadding>
             <ListItem>
               <ListItemText
                 primary={layoutState.user.company.name} 
@@ -54,7 +54,7 @@ export const menuItemDrawer: React.StatelessComponent<AllProps> = props => {
         </div>
       )}
       <Divider />
-      <List dense disablePadding
+      <List disablePadding
         component="nav" 
         subheader={
           <ListSubheader 
@@ -69,7 +69,7 @@ export const menuItemDrawer: React.StatelessComponent<AllProps> = props => {
       </List>
       {layoutState.menus.map(header => (
         <div key={header.uid}>
-          <List dense disablePadding 
+          <List disablePadding 
             component="nav" 
             key={header.uid} 
             subheader={
@@ -83,20 +83,22 @@ export const menuItemDrawer: React.StatelessComponent<AllProps> = props => {
             }>
             {header.childs && header.childs.map(item => (
               <ListItem 
+                button
                 key={item.uid} 
-                button 
-                onClick={() => handleClick(item)}>
+                color="secondary"
+                onClick={() => handleClick(item)}
+              >
                 <ListItemText 
                   key={item.uid} 
                   primary={item.name} 
-                  color={layoutState.view && layoutState.view.menuUid === item.uid ? 'primary' : 'inherit'} />
+                  color={layoutState.view && layoutState.view.menuUid === item.uid ? 'primary' : 'secondary'} />
               </ListItem>
             ))}
           </List>
         </div>
       ))}
       <Divider />
-      <List dense disablePadding
+      <List disablePadding
         component="nav">
         <ListItem button onClick={() => history.push('/help')}>
           <ListItemText primary="Help" />
