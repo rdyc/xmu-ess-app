@@ -1,1 +1,1 @@
-export * from './projectRegistrationQuerySagas';
+export * from './projectSagas';

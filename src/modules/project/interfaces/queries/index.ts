@@ -1,4 +1,3 @@
-export * from '@project/interfaces/queries/IProjectRegistrationQueryState';
-export * from './IProjectRegistrationAllRequest';
-export * from './IProjectRegistrationRequest';
+export * from './IProjectGetAllRequest';
+export * from './IProjectGetByIdRequest';
 export * from './IProjectSiteQuery';

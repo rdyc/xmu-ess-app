@@ -1,6 +1,7 @@
-import { IBaseChanges } from '@generic/interfaces';
+import { IBaseChanges, IQueryCollectionState } from '@generic/interfaces';
 import { ConnectedReduxProps } from '@generic/types';
-import { Divider, Grid, List, ListItem, Typography, WithStyles, ListSubheader } from '@material-ui/core';
+import { Divider, Grid, List, ListItem, ListSubheader, Typography, WithStyles } from '@material-ui/core';
+import { IProjectGetAllRequest } from '@project/interfaces/queries';
 import { IProject } from '@project/interfaces/response';
 import styles from '@styles';
 import * as moment from 'moment';
@@ -8,15 +9,14 @@ import * as React from 'react';
 import { FormattedDate, FormattedNumber, FormattedPlural } from 'react-intl';
 import { RouteComponentProps } from 'react-router';
 import { isArray } from 'util';
-import { IQueryState, IProjectRegistrationAllRequest } from '@project/interfaces/queries';
 
 interface PropsFromState extends RouteComponentProps<void>, WithStyles<typeof styles> {
-  projectState: IQueryState<IProjectRegistrationAllRequest, IProject>;
+  projectState: IQueryCollectionState<IProjectGetAllRequest, IProject>;
 }
 
 type AllProps = PropsFromState & ConnectedReduxProps;
 
-export const ProjectListComponent: React.StatelessComponent<AllProps> = props => {
+export const ProjectList: React.StatelessComponent<AllProps> = props => {
   const { history  } = props;
   const { response, isLoading  } = props.projectState;
 

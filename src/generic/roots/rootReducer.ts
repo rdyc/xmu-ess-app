@@ -1,7 +1,8 @@
 import { employeeMyReducer, employeeProfileCommandReducer, employeeProfileQueryReducer } from '@account/stores/reducers';
 import { IAppState } from '@generic/interfaces';
 import { layoutReducer, listBarReducer, notificationReducer } from '@layout/store/reducers';
-import { projectRegistrationQueryReducer } from '@project/store/reducers';
+import { projectGetAllReducer } from '@project/store/reducers';
+import { projectGetByIdReducer } from '@project/store/reducers/projectGetByIdReducer';
 import { combineReducers } from 'redux';
 import { reducer as reduxFormReducer } from 'redux-form';
 import { reducer as oidcReducer } from 'redux-oidc';
@@ -16,10 +17,11 @@ export const rootReducer = combineReducers<IAppState>({
   /* list bar */
   listBar: listBarReducer,
 
-  /* profile */
+  /* profiles */
   profileQuery: employeeProfileQueryReducer,
   profileCommand: employeeProfileCommandReducer,
 
-  /* project */
-  projectQuery: projectRegistrationQueryReducer
+  /* projects */
+  projectGetAll: projectGetAllReducer,
+  projectGetById: projectGetByIdReducer,
 });

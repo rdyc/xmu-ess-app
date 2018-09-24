@@ -1,6 +1,6 @@
-import { IProjectRegistrationAllFilter } from '@project/interfaces/filters';
+import { IProjectGetAllFilter } from '@project/interfaces/filters';
 
-export interface IProjectRegistrationListFilter<T> extends IProjectRegistrationAllFilter {
+export interface IProjectRegistrationListFilter<T> extends IProjectGetAllFilter {
   activeOnly: boolean | null;
   assignmentStatus: 'assigned' | 'unassigned' | null;
   filter: T | null;

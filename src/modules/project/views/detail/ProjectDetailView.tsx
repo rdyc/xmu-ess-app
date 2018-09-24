@@ -1,31 +1,32 @@
-import { IAppState, IResponseSingle } from '@generic/interfaces';
+import { IAppState, IQuerySingleState } from '@generic/interfaces';
 import { ConnectedReduxProps } from '@generic/types';
-import { IAppUser, IView } from '@layout/interfaces';
-import { WithStyles, Paper, withStyles } from '@material-ui/core';
-import { IProject } from '@project/interfaces/response';
-import { ProjectRegistrationFetchRequest } from '@project/store/actions';
+import { ILayoutState, IView } from '@layout/interfaces';
+import { layoutChangeView, layoutNavBackHide, layoutNavBackShow } from '@layout/store/actions';
+import { Typography, WithStyles, withStyles } from '@material-ui/core';
+import { ProjectDetail } from '@project/components/list/ProjectDetail';
+import { IProjectGetByIdRequest } from '@project/interfaces/queries';
+import { IProjectDetail } from '@project/interfaces/response';
+import { projectGetByIdRequest } from '@project/store/actions';
 import styles from '@styles';
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { RouteComponentProps } from 'react-router';
 import { Dispatch } from 'redux';
-import { IProjectRegistrationRequest } from '@project/interfaces/queries';
-import { layoutChangeView, layoutNavBackShow } from '@layout/store/actions';
 
 interface PropsFromState extends RouteComponentProps<void>, WithStyles<typeof styles> {
-  user: IAppUser;
-  navBack: boolean;
-  request: IProjectRegistrationRequest;
-  response: IResponseSingle<IProject>;
-  isLoading: boolean;
-  isError: boolean;
-  errors: string;
+  layoutState: ILayoutState;
+  projectState: IQuerySingleState<IProjectGetByIdRequest, IProjectDetail>;
 }
 
 interface PropsFromDispatch {
-  setCurrentPage: typeof layoutChangeView;
-  setNavBack: typeof layoutNavBackShow;
-  fetchRequest: typeof ProjectRegistrationFetchRequest;
+  layoutDispatch: {
+    changeView: typeof layoutChangeView;
+    navBackShow: typeof layoutNavBackShow;
+    navBackHide: typeof layoutNavBackHide;
+  };
+  projectDispatch: {
+    getByIdRequest: typeof projectGetByIdRequest;
+  };
 }
 
 interface RouteParams {
@@ -36,62 +37,71 @@ type AllProps = PropsFromState & PropsFromDispatch & RouteComponentProps<RoutePa
   
 class ProjectDetailView extends React.Component<AllProps> {
   componentWillUnmount() {
-    this.props.setCurrentPage(null);
-    this.props.setNavBack();
+    const { layoutDispatch } = this.props;
+
+    layoutDispatch.changeView(null);
+    layoutDispatch.navBackHide();
   }
 
   componentDidMount() {
-    const { match } = this.props;
+    const { layoutDispatch } = this.props;
 
-    console.log(match);
-
-    this.props.setCurrentPage({
+    layoutDispatch.changeView({
       menuUid: 'MNU19',
-      title: 'Project Detail',
+      title: 'Project Details',
       subTitle : 'Detail project registration'
     });
 
-    this.props.setNavBack();
+    layoutDispatch.navBackShow();
 
     this.loadData();
   }
 
   loadData = (): void => {
-    const { user, match } = this.props;
+    const { layoutState, projectDispatch, match } = this.props;
     
-    this.props.fetchRequest({
-      companyUid: user.company.uid,
-      positionUid: user.position.uid,
-      projectUid: match.params.projectUid
-    });
+    if (layoutState.user) {
+      projectDispatch.getByIdRequest({
+        companyUid: layoutState.user.company.uid,
+        positionUid: layoutState.user.position.uid,
+        projectUid: match.params.projectUid
+      });
+    }
   }
 
   render () {
-    const { isLoading, response } = this.props;
+    const { isLoading, response } = this.props.projectState;
 
     return (
-      <Paper square elevation={0}>
-        {isLoading && <div>loading</div>}
-        {!isLoading && response && <div>{response.data.maxHours}</div>}
-      </Paper>
+      <div>
+        {
+          isLoading && 
+          !response &&
+          <Typography variant="body2">loading</Typography>
+        }
+        {
+          response && 
+          <ProjectDetail {...this.props}  />
+        }
+      </div>
     );
   }
 }
 
-const mapStateToProps = ({ layout, projectQuery }: IAppState) => ({
-  user: layout.user,
-  navBack: layout.isNavBackVisible,
-  request: projectQuery.request,
-  response: projectQuery.response,
-  isLoading: projectQuery.isLoading,
-  isError: projectQuery.isError,
-  errors: projectQuery.errors,
+const mapStateToProps = ({ layout, projectGetById }: IAppState) => ({
+  layoutState: layout,
+  projectState: projectGetById
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  setCurrentPage: (page: IView | null) => dispatch(layoutChangeView(page)),
-  setNavBack: () => dispatch(layoutNavBackShow()),
-  fetchRequest: (request: IProjectRegistrationRequest) => dispatch(ProjectRegistrationFetchRequest(request)),
+  layoutDispatch: {
+    changeView: (page: IView | null) => dispatch(layoutChangeView(page)),
+    navBackShow: () => dispatch(layoutNavBackShow()),
+    navBackHide: () => dispatch(layoutNavBackHide()),
+  },
+  projectDispatch: {
+    getByIdRequest: (request: IProjectGetByIdRequest) => dispatch(projectGetByIdRequest(request)),
+  },
 });
 
 const redux = connect(mapStateToProps, mapDispatchToProps)(ProjectDetailView);

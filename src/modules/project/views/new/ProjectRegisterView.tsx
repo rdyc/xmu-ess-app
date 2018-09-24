@@ -4,9 +4,9 @@ import { IAppUser, IView } from '@layout/interfaces';
 import { layoutChangeView } from '@layout/store/actions';
 import { Button, Paper, WithStyles, withStyles } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
-import { IProjectRegistrationAllRequest } from '@project/interfaces/queries';
+import { IProjectGetAllRequest } from '@project/interfaces/queries';
 import { IProject } from '@project/interfaces/response';
-import { ProjectRegistrationFetchAllRequest } from '@project/store/actions';
+import { projectGetAllRequest } from '@project/store/actions';
 import styles from '@styles';
 import * as React from 'react';
 import { connect } from 'react-redux';
@@ -15,7 +15,7 @@ import { Dispatch } from 'redux';
 
 interface PropsFromState extends RouteComponentProps<void>, WithStyles<typeof styles> {
   user: IAppUser;
-  request: IProjectRegistrationAllRequest;
+  request: IProjectGetAllRequest;
   response: IResponseCollection<IProject>;
   isLoading: boolean;
   isError: boolean;
@@ -24,7 +24,7 @@ interface PropsFromState extends RouteComponentProps<void>, WithStyles<typeof st
 
 interface PropsFromDispatch {
   setCurrentPage: typeof layoutChangeView;
-  fetchRequest: typeof ProjectRegistrationFetchAllRequest;
+  fetchRequest: typeof projectGetAllRequest;
 }
 
 type AllProps = PropsFromState & PropsFromDispatch & ConnectedReduxProps;
@@ -72,18 +72,18 @@ class ProjectRegisterView extends React.Component<AllProps> {
   }
 }
 
-const mapStateToProps = ({ layout, projectQuery }: IAppState) => ({
+const mapStateToProps = ({ layout, projectGetAll }: IAppState) => ({
   user: layout.user,
-  request: projectQuery.request,
-  response: projectQuery.response,
-  isLoading: projectQuery.isLoading,
-  isError: projectQuery.isError,
-  errors: projectQuery.errors,
+  request: projectGetAll.request,
+  response: projectGetAll.response,
+  isLoading: projectGetAll.isLoading,
+  isError: projectGetAll.isError,
+  errors: projectGetAll.errors,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   setCurrentPage: (page: IView | null) => dispatch(layoutChangeView(page)),
-  fetchRequest: (request: IProjectRegistrationAllRequest) => dispatch(ProjectRegistrationFetchAllRequest(request)),
+  fetchRequest: (request: IProjectGetAllRequest) => dispatch(projectGetAllRequest(request)),
 });
 
 const redux = connect(mapStateToProps, mapDispatchToProps)(ProjectRegisterView);

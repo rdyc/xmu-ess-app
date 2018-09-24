@@ -1,1 +1,1 @@
-export * from './projectRegistrationAllQueryReducer';
+export * from './projectGetAllReducer';

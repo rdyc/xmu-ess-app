@@ -1,4 +1,4 @@
-import { IAppState } from '@generic/interfaces';
+import { IAppState, IQueryCollectionState } from '@generic/interfaces';
 import { ConnectedReduxProps, SortDirection } from '@generic/types';
 import { ILayoutState, IListBarCallback, IListBarField, IListBarState, IView } from '@layout/interfaces';
 import {
@@ -15,10 +15,10 @@ import {
   listBarDispose,
 } from '@layout/store/actions';
 import { Paper, Typography, WithStyles, withStyles } from '@material-ui/core';
-import { ProjectListComponent } from '@project/components/projectListComponent';
-import { IProjectRegistrationAllRequest, IQueryState } from '@project/interfaces/queries';
+import { ProjectList } from '@project/components/list';
+import { IProjectGetAllRequest } from '@project/interfaces/queries';
 import { IProject } from '@project/interfaces/response';
-import { ProjectRegistrationFetchAllRequest } from '@project/store/actions';
+import { projectGetAllRequest } from '@project/store/actions';
 import { ProjectField } from '@project/types';
 import styles from '@styles';
 import * as React from 'react';
@@ -27,9 +27,9 @@ import { RouteComponentProps } from 'react-router';
 import { Dispatch } from 'redux';
 
 interface PropsFromState extends RouteComponentProps<void>, WithStyles<typeof styles> {
-  projectState: IQueryState<IProjectRegistrationAllRequest, IProject>;
   layoutState: ILayoutState;
   listBarState: IListBarState;
+  projectState: IQueryCollectionState<IProjectGetAllRequest, IProject>;
 }
 
 interface PropsFromDispatch {
@@ -51,7 +51,7 @@ interface PropsFromDispatch {
   };  
 
   projectDispatch: {
-    fetchRequest: typeof ProjectRegistrationFetchAllRequest;
+    getAllRequest: typeof projectGetAllRequest;
   };
 }
 
@@ -158,7 +158,7 @@ class ProjectListView extends React.Component<AllProps> {
     const { layoutState, projectDispatch } = this.props;
 
     if (layoutState.user) {
-      projectDispatch.fetchRequest({
+      projectDispatch.getAllRequest({
         companyUid: layoutState.user.company.uid,
         positionUid: layoutState.user.position.uid,
         filter: {
@@ -191,17 +191,17 @@ class ProjectListView extends React.Component<AllProps> {
         }
         {
           response && 
-          <ProjectListComponent {...this.props}  />
+          <ProjectList {...this.props}  />
         }
       </Paper>
     );
   }
 }
 
-const mapStateToProps = ({ layout, listBar, projectQuery }: IAppState) => ({
+const mapStateToProps = ({ layout, listBar, projectGetAll }: IAppState) => ({
   layoutState: layout,
   listBarState: listBar,
-  projectState: projectQuery
+  projectState: projectGetAll
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
@@ -213,10 +213,6 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     modeListOff: () => dispatch(layoutModeListOff()),
   },
 
-  projectDispatch: {
-    fetchRequest: (request: IProjectRegistrationAllRequest) => dispatch(ProjectRegistrationFetchAllRequest(request)),
-  },
-
   listBarDispatch: {
     assignCallbacks: (callbacks: IListBarCallback) => dispatch(listBarAssignCallbacks(callbacks)),
     assignFields: (fields: IListBarField[]) => dispatch(listBarAssignFields(fields)),
@@ -224,6 +220,10 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     changeSize: (size: number) => dispatch(listBarChangeSize(size)),
     changeDirection: (direction: SortDirection) => dispatch(listBarChangeDirection(direction)),
     dispose: () => dispatch(listBarDispose())
+  },
+
+  projectDispatch: {
+    getAllRequest: (request: IProjectGetAllRequest) => dispatch(projectGetAllRequest(request)),
   }
 });
 

@@ -21,8 +21,8 @@ export interface IProjectDetail {
   name:             string;
   description:      string | null;
   maxHours:         number;
-  start:            string | null;
-  end:              string | null;
+  start:            string;
+  end:              string;
   childProjectUid:  string | null;
   statusType:       string;
   status:           ICommonSystem | null;
@@ -34,8 +34,8 @@ export interface IProjectDetail {
   isNotified:       boolean;
   sites:            IProjectSite[] | null;
   sales:            IProjectSales[] | null;
-  documents:        IProjectDocument[] | null;
-  documentPreSales: IProjectDocument[] | null;
+  documents:        IProjectDocument[];
+  documentPreSales: IProjectDocument[];
   histories:        History[];
   workflow:         IOrganizationWorkflow | null;
   changes:          IBaseChanges | null;

@@ -1,12 +1,11 @@
-import { UserState } from 'redux-oidc';
-import { INotificationState } from '../../modules/@layout/interfaces/INotificationState';
+import { IEmployeeMyState, IEmployeeProfileCommandState, IEmployeeProfileQueryState } from '@account/interfaces';
+import { IQueryCollectionState } from '@generic/interfaces';
+import { ILayoutState, IListBarState, INotificationState } from '@layout/interfaces';
+import { IProjectGetAllRequest, IProjectGetByIdRequest } from '@project/interfaces/queries';
+import { IProject, IProjectDetail } from '@project/interfaces/response';
 import { FormStateMap } from 'redux-form';
-import { IEmployeeMyState } from '../../modules/account/interfaces/IEmployeeMyState';
-import { IEmployeeProfileCommandState } from '../../modules/account/interfaces/IEmployeeProfileCommandState';
-import { IEmployeeProfileQueryState } from '../../modules/account/interfaces/IEmployeeProfileQueryState';
-import { ILayoutState, IListBarState } from '../../modules/@layout/interfaces';
-import { IQueryState, IProjectRegistrationAllRequest } from '@project/interfaces/queries';
-import { IProject } from '@project/interfaces/response';
+import { UserState } from 'redux-oidc';
+import { IQuerySingleState } from '@generic/interfaces/IQuerySingleState';
 
 export interface IAppState {
   layout: ILayoutState;
@@ -21,5 +20,6 @@ export interface IAppState {
   profileCommand: IEmployeeProfileCommandState;
 
   /* project */
-  projectQuery: IQueryState<IProjectRegistrationAllRequest, IProject>;
+  projectGetAll: IQueryCollectionState<IProjectGetAllRequest, IProject>;
+  projectGetById: IQuerySingleState<IProjectGetByIdRequest, IProjectDetail>;
 }

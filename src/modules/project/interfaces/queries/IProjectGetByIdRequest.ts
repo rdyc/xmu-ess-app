@@ -1,5 +1,5 @@
 import { ICompanyAccess } from '@generic/interfaces';
 
-export interface IProjectRegistrationRequest extends ICompanyAccess {
+export interface IProjectGetByIdRequest extends ICompanyAccess {
   readonly projectUid: string | undefined;
 }
