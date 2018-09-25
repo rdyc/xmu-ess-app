@@ -18,6 +18,8 @@ export interface ILayoutState {
   readonly isNavBackVisible: boolean;
   readonly isSearchVisible: boolean;
   readonly isLogoutDialogVisible: boolean;
+  readonly isActionCentreVisible: boolean;
+  readonly isMoreVisible: boolean;
   readonly menus: ILookupRoleMenuList[];
   readonly notifCount: number;
   readonly alert: IAlert | undefined;

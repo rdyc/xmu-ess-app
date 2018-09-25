@@ -65,8 +65,8 @@ export const WorkflowStep: React.StatelessComponent<PropsFromState> = props => {
       <CardContent>
         <List>
         {
-          props.steps.map(item => 
-            <ListItem key={`${item.round}${item.level}`} disableGutters>              
+          props.steps.map((item, index) => 
+            <ListItem key={index} disableGutters>              
               <ListItemAvatar>
                 <Avatar>
                   {item.isComplete ? <PersonIcon/> : <PeopleIcon/>}

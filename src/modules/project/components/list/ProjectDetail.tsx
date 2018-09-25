@@ -27,11 +27,14 @@ import { FormattedMessage, FormattedNumber, InjectedIntlProps } from 'react-intl
 import { RouteComponentProps } from 'react-router';
 import { WorkflowStep } from '@organization/components';
 
-interface PropsFromState extends RouteComponentProps<void>, InjectedIntlProps, WithStyles<typeof styles> {
+interface PropsFromState extends RouteComponentProps<void> {
   projectState: IQuerySingleState<IProjectGetByIdRequest, IProjectDetail>;
 }
 
-type AllProps = PropsFromState & ConnectedReduxProps;
+type AllProps = PropsFromState & 
+                ConnectedReduxProps & 
+                InjectedIntlProps & 
+                WithStyles<typeof styles>;
 
 export const ProjectDetail: React.StatelessComponent<AllProps> = props => { 
   const { intl } = props;
@@ -166,7 +169,7 @@ export const ProjectDetail: React.StatelessComponent<AllProps> = props => {
     </Card>
   );
 
-  const renderDocuments = (title: JSX.Element, subHeader: JSX.Element, documents: IProjectDocument[]) => (
+  const renderDocuments = (title: string, subHeader: string, documents: IProjectDocument[]) => (
     <Card square>
       <CardHeader 
         title={title}
@@ -176,12 +179,12 @@ export const ProjectDetail: React.StatelessComponent<AllProps> = props => {
         {
           documents.map(item => 
             item.document &&
-            <div>
+            <div key={item.uid}>
               <FormControlLabel 
                 contentEditable={false}
                 key={item.uid}
                 label={item.document.value}
-                control={<Checkbox checked={item.isAvailable} />} 
+                control={<Checkbox checked={item.isAvailable}/>} 
               />
             </div>
           )
@@ -278,14 +281,14 @@ export const ProjectDetail: React.StatelessComponent<AllProps> = props => {
             {
               response &&
               response.data &&
-              renderDocuments(<FormattedMessage id="project.documentTitle"/>, <FormattedMessage id="project.documentSubTitle"/>, response.data.documents)
+              renderDocuments(intl.formatMessage({id: 'project.documentTitle'}), intl.formatMessage({id: 'project.documentSubTitle'}), response.data.documents)
             }
           </Grid>
           <Grid item xs={12}>
             {
               response &&
               response.data &&
-              renderDocuments(<FormattedMessage id="project.documentPreSalesTitle"/>,  <FormattedMessage id="project.documentPreSalesSubTitle"/>, response.data.documentPreSales)
+              renderDocuments(intl.formatMessage({id: 'project.documentPreSalesTitle'}),  intl.formatMessage({id: 'project.documentPreSalesSubTitle'}), response.data.documentPreSales)
             }
           </Grid>
         </Grid>

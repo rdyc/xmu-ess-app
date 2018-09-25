@@ -7,7 +7,7 @@ import styles from '@styles';
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
 
-interface PropsFromState extends RouteComponentProps<void>, WithStyles<typeof styles> {
+interface PropsFromState extends RouteComponentProps<void> {
   layoutState: ILayoutState;
 }
 
@@ -17,7 +17,10 @@ interface PropsFromDispatch {
   };
 }
 
-type AllProps = PropsFromState & PropsFromDispatch & ConnectedReduxProps;
+type AllProps = PropsFromState & 
+                PropsFromDispatch & 
+                ConnectedReduxProps & 
+                WithStyles<typeof styles>;
 
 export const bottomSnackbar: React.StatelessComponent<AllProps> = props => {
   const { layoutState, layoutDispatch } = props;

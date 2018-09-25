@@ -17,7 +17,9 @@ type AllProps = PropsFromState & ConnectedReduxProps;
 export const projectRoutes: React.StatelessComponent<AllProps> = props => (
   <Switch>
     <Route path={props.match.path + '/list/'} component={ProjectListView} />
-    <Route path={props.match.path + '/detail/:projectUid'} component={ProjectDetailView} />
-    <Route path={props.match.path + '/register'} component={ProjectRegisterView } />
+    <Route path={props.match.path + '/details/:projectUid'} component={ProjectDetailView} />
+    <Route path={props.match.path + '/sites/:projectUid'} component={ProjectDetailView} />
+    <Route path={props.match.path + '/form'} component={ProjectRegisterView } />
+    <Route path={props.match.path + '/form/:projectUid'} component={ProjectRegisterView} />
   </Switch>
 );

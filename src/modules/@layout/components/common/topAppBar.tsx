@@ -1,17 +1,25 @@
 import { ConnectedReduxProps } from '@generic/types';
-import { ILayoutState } from '@layout/interfaces';
+import { IAppBarMenu, IAppBarState, ILayoutState } from '@layout/interfaces';
 import {
+  appBarDispose,
+  appBarMenuHide,
+  appBarMenuShow,
+  layoutActionCentreHide,
+  layoutActionCentreShow,
   layoutDrawerActionHide,
   layoutDrawerActionShow,
   layoutDrawerMenuHide,
   layoutDrawerMenuShow,
   layoutModeSearchOff,
   layoutModeSearchOn,
+  layoutMoreHide,
+  layoutMoreShow,
   layoutNavBackHide,
   layoutNavBackShow,
 } from '@layout/store/actions';
-import { AppBar, Badge, IconButton, Input, Slide, Toolbar, Typography, WithStyles } from '@material-ui/core';
+import { AppBar, Badge, IconButton, Input, Menu, MenuItem, Slide, Toolbar, Typography, WithStyles } from '@material-ui/core';
 import { isWidthUp, WithWidthProps } from '@material-ui/core/withWidth';
+import AppsIcon from '@material-ui/icons/Apps';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import MenuIcon from '@material-ui/icons/Menu';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
@@ -22,8 +30,9 @@ import * as classNames from 'classnames';
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
 
-interface PropsFromState extends RouteComponentProps<void>, WithStyles<typeof styles> {
+interface PropsFromState extends RouteComponentProps<void> {
   layoutState: ILayoutState;
+  appBarState: IAppBarState;
 }
 
 interface PropsFromDispatch {
@@ -36,13 +45,42 @@ interface PropsFromDispatch {
     modeSearchOff: typeof layoutModeSearchOff;
     navBackShow: typeof layoutNavBackShow;
     navBackHide: typeof layoutNavBackHide;
+    actionCentreShow: typeof layoutActionCentreShow;
+    actionCentreHide: typeof layoutActionCentreHide;
+    moreShow: typeof layoutMoreShow;
+    moreHide: typeof layoutMoreHide;
+  };
+
+  appBarDispatch: {
+    menuShow: typeof appBarMenuShow;
+    menuHide: typeof appBarMenuHide;
+    dispose: typeof appBarDispose;
   };
 }
 
-type AllProps = PropsFromState & PropsFromDispatch & WithWidthProps & ConnectedReduxProps;
+type AllProps = PropsFromState & 
+                PropsFromDispatch & 
+                ConnectedReduxProps & 
+                WithWidthProps & 
+                WithStyles<typeof styles>;
 
 export const topAppBar: React.StatelessComponent<AllProps> = props => {
-  const { layoutState, layoutDispatch, classes, history, width }  = props;
+  const { layoutState, appBarState, layoutDispatch, appBarDispatch, classes, history, width }  = props;
+
+  const fnFindClasses = () => {
+    const shift = layoutState.anchor === 'right' ? classes.appBarShiftRight : classes.appBarShiftLeft;
+  
+    return layoutState.isDrawerMenuVisible ? classNames(classes.appBar) : classNames(classes.appBar, shift);
+  };
+
+  const handleClose = () => {
+    appBarDispatch.menuHide();
+  };
+
+  const handleClick = (item: IAppBarMenu) => {
+    appBarDispatch.menuHide();
+    appBarState.callback(item);
+  };
 
   const renderSearchMode = (
     <Slide 
@@ -90,7 +128,7 @@ export const topAppBar: React.StatelessComponent<AllProps> = props => {
         <IconButton
           color="inherit"
           onClick={() => layoutDispatch.navBackShow() && history.goBack()}
-          className={classNames(classes.navIconHide, layoutState.isDrawerMenuVisible && classes.hide)}>
+        >
           <ArrowBackIcon />
         </IconButton>
       }
@@ -130,23 +168,69 @@ export const topAppBar: React.StatelessComponent<AllProps> = props => {
           </Badge>
         </IconButton>
       }
+
+      {
+        /* action */
+        layoutState.isActionCentreVisible &&
+        <IconButton
+          color="inherit"
+          aria-label="Action"
+          onClick={() => layoutDispatch.drawerActionShow()}
+        >
+          <AppsIcon />
+        </IconButton>
+      }
   
-      {/* more */}
-      <IconButton
-        color="inherit"
-        aria-label="More"
-        onClick={() => layoutDispatch.drawerActionShow()}
-      >
-        <MoreVertIcon />
-      </IconButton>
+      {
+        /* more */
+        layoutState.isMoreVisible &&
+        <IconButton
+          id="appbar.btn.more"
+          color="inherit"
+          aria-label="More"
+          onClick={() => appBarDispatch.menuShow()}
+          >
+          <MoreVertIcon />
+        </IconButton>
+      }
     </Toolbar>
   );
 
-  const fnFindClasses = () => {
-    const shift = layoutState.anchor === 'right' ? classes.appBarShiftRight : classes.appBarShiftLeft;
-  
-    return layoutState.isDrawerMenuVisible ? classNames(classes.appBar) : classNames(classes.appBar, shift);
-  };
+  const renderMenuItems = (menus: IAppBarMenu[]) => (
+    menus
+      .filter(item => item.visible)
+      .map(item =>
+        <MenuItem 
+          button
+          key={item.id}
+          value={item.id}
+          disabled={!item.enabled}
+          onClick={() => handleClick(item)} 
+        >
+          {item.name}
+        </MenuItem>  
+      )
+  );
+
+  const renderMenu = (
+    <Menu
+      id="appbar-more-menu" 
+      anchorEl={document.getElementById('appbar.btn.more')} 
+      // PaperProps={{
+      //   style: {
+      //     maxHeight: ITEM_HEIGHT * 4.5,
+      //     width: 200,
+      //   },
+      // }}
+      open={appBarState.menuIsOpen} 
+      onClose={() => handleClose()}
+    >
+      {
+        appBarState.menus && 
+        renderMenuItems(appBarState.menus)
+      }
+    </Menu>
+  );
   
   return (
     <AppBar 
@@ -158,6 +242,7 @@ export const topAppBar: React.StatelessComponent<AllProps> = props => {
       {
         layoutState.isModeSearch ? renderSearchMode : renderNormalMode
       }
+      {renderMenu}
     </AppBar>
   );
 };

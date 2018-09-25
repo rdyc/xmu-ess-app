@@ -21,7 +21,7 @@ import {
   DialogContentText,
   DialogTitle,
   Divider,
-  Drawer,
+  SwipeableDrawer,
   IconButton,
   List,
   ListItem,
@@ -47,7 +47,7 @@ import { FormattedMessage } from 'react-intl';
 import { RouteComponentProps } from 'react-router';
 import * as store from 'store';
 
-interface PropsFromState extends RouteComponentProps<void>, WithStyles<typeof styles> {
+interface PropsFromState extends RouteComponentProps<void> {
   layoutState: ILayoutState;
 }
 
@@ -64,7 +64,10 @@ interface PropsFromDispatch {
   };
 }
 
-type AllProps = PropsFromState & PropsFromDispatch & ConnectedReduxProps;
+type AllProps = PropsFromState & 
+                PropsFromDispatch & 
+                ConnectedReduxProps & 
+                WithStyles<typeof styles>;
 
 export const actionDrawer: React.SFC<AllProps> = props => {
   const { layoutState, layoutDispatch, history } = props;
@@ -111,13 +114,14 @@ export const actionDrawer: React.SFC<AllProps> = props => {
   return (
     <div>
       {logoutDialog}
-      <Drawer
+      <SwipeableDrawer
         variant="temporary"
         anchor={layoutState.anchor === 'left' ? 'right' : 'left'}
-        open={layoutState.isDrawerActionVisible}
         classes={{
           paper: classNames(props.classes.drawerPaper, props.classes.drawerPaperAdditional)
         }}
+        open={layoutState.isDrawerActionVisible}
+        onOpen={() => layoutDispatch.drawerActionShow()}
         onClose={() => layoutDispatch.drawerActionHide()}
         ModalProps={{
           keepMounted: true, // Better open performance on mobile.
@@ -199,7 +203,7 @@ export const actionDrawer: React.SFC<AllProps> = props => {
             </ListItemSecondaryAction>
           </ListItem>
         </List>
-      </Drawer>
+      </SwipeableDrawer>
     </div>
   );
 };

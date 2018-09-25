@@ -1,5 +1,6 @@
 export * from './IAlert';
 export * from './IAppUser';
+export * from './IAppBarState';
 export * from './ILayoutState';
 export * from './IListBarState';
 export * from './INotification';

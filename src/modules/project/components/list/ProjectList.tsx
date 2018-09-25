@@ -10,11 +10,13 @@ import { FormattedDate, FormattedNumber, FormattedPlural } from 'react-intl';
 import { RouteComponentProps } from 'react-router';
 import { isArray } from 'util';
 
-interface PropsFromState extends RouteComponentProps<void>, WithStyles<typeof styles> {
+interface PropsFromState extends RouteComponentProps<void> {
   projectState: IQueryCollectionState<IProjectGetAllRequest, IProject>;
 }
 
-type AllProps = PropsFromState & ConnectedReduxProps;
+type AllProps = PropsFromState & 
+                ConnectedReduxProps & 
+                WithStyles<typeof styles>;
 
 export const ProjectList: React.StatelessComponent<AllProps> = props => {
   const { history  } = props;
@@ -22,7 +24,7 @@ export const ProjectList: React.StatelessComponent<AllProps> = props => {
 
   const handleClick = (projectUid: string) => {
     if (!isLoading) {
-      history.push(`/project/detail/${projectUid}`);
+      history.push(`/project/details/${projectUid}`);
     } 
   };
 

@@ -18,7 +18,9 @@ const initialState: ILayoutState = {
   isDrawerBottomVisible: false,
   isLogoutDialogVisible: false,
   isNavBackVisible: false,
-  isSearchVisible: false
+  isSearchVisible: false,
+  isActionCentreVisible: false,
+  isMoreVisible: false
 };
 
 const reducer: Reducer<ILayoutState> = (state = initialState, action) => {
@@ -46,6 +48,10 @@ const reducer: Reducer<ILayoutState> = (state = initialState, action) => {
     case Action.NAV_BACK_HIDE: return { ...state, isNavBackVisible: false };
     case Action.SEARCH_SHOW: return { ...state, isSearchVisible: true };
     case Action.SEARCH_HIDE: return { ...state, isSearchVisible: false };
+    case Action.ACTION_CENTRE_SHOW: return { ...state, isActionCentreVisible: true };
+    case Action.ACTION_CENTRE_HIDE: return { ...state, isActionCentreVisible: false };
+    case Action.MORE_SHOW: return { ...state, isMoreVisible: true };
+    case Action.MORE_HIDE: return { ...state, isMoreVisible: false };
 
     case Action.ACCOUNT_EXPAND: return { ...state, isAccountExpanded: true };
     case Action.ACCOUNT_COLAPSE: return { ...state, isAccountExpanded: false };

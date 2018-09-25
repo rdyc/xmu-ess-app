@@ -2,19 +2,23 @@ import { IAppState, IQueryCollectionState } from '@generic/interfaces';
 import { ConnectedReduxProps, SortDirection } from '@generic/types';
 import { ILayoutState, IListBarCallback, IListBarField, IListBarState, IView } from '@layout/interfaces';
 import {
+  layoutActionCentreHide,
+  layoutActionCentreShow,
   layoutChangeView,
   layoutModeListOff,
   layoutModeListOn,
   layoutModeSearchOff,
   layoutModeSearchOn,
+  layoutMoreHide,
+  layoutMoreShow,
+  layoutSearchHide,
+  layoutSearchShow,
   listBarAssignCallbacks,
   listBarAssignFields,
   listBarChangeDirection,
   listBarChangeOrder,
   listBarChangeSize,
   listBarDispose,
-  layoutSearchShow,
-  layoutSearchHide,
 } from '@layout/store/actions';
 import { Paper, Typography, WithStyles, withStyles } from '@material-ui/core';
 import { ProjectList } from '@project/components/list';
@@ -24,11 +28,12 @@ import { projectGetAllRequest } from '@project/store/actions';
 import { ProjectField } from '@project/types';
 import styles from '@styles';
 import * as React from 'react';
+import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
 import { RouteComponentProps } from 'react-router';
 import { Dispatch } from 'redux';
 
-interface PropsFromState extends RouteComponentProps<void>, WithStyles<typeof styles> {
+interface PropsFromState extends RouteComponentProps<void> {
   layoutState: ILayoutState;
   listBarState: IListBarState;
   projectState: IQueryCollectionState<IProjectGetAllRequest, IProject>;
@@ -43,6 +48,10 @@ interface PropsFromDispatch {
     modeListOff: typeof layoutModeListOff;
     searchShow: typeof layoutSearchShow;
     searchHide: typeof layoutSearchHide;
+    actionCentreShow: typeof layoutActionCentreShow;
+    actionCentreHide: typeof layoutActionCentreHide;
+    moreShow: typeof layoutMoreShow;
+    moreHide: typeof layoutMoreHide;
   };
   
   listBarDispatch: {
@@ -59,7 +68,11 @@ interface PropsFromDispatch {
   };
 }
 
-type AllProps = PropsFromState & PropsFromDispatch & ConnectedReduxProps;
+type AllProps = PropsFromState & 
+                PropsFromDispatch & 
+                ConnectedReduxProps & 
+                InjectedIntlProps & 
+                WithStyles<typeof styles>;
 
 class ProjectListView extends React.Component<AllProps> {
   state = {
@@ -76,21 +89,24 @@ class ProjectListView extends React.Component<AllProps> {
     layoutDispatch.modeListOff();
     layoutDispatch.searchHide();
     layoutDispatch.modeSearchOff();
+    layoutDispatch.actionCentreHide();
+    layoutDispatch.moreHide();
 
     listBarDispatch.dispose();
   }
 
   componentDidMount() {
-    const { layoutDispatch, projectState, listBarDispatch } = this.props;
+    const { layoutDispatch, projectState, listBarDispatch, intl } = this.props;
 
     layoutDispatch.changeView({
       menuUid: 'MNU19',
-      title: 'Projects',
-      subTitle : 'All project registrations requested by you'
+      title: intl.formatMessage({id: 'project.title'}),
+      subTitle : intl.formatMessage({id: 'project.subtTitle'})
     });
 
     layoutDispatch.modeListOn();
     layoutDispatch.searchShow();
+    layoutDispatch.actionCentreShow();
 
     listBarDispatch.assignCallbacks({
       onNextCallback: this.handleOnNextCallback,
@@ -219,6 +235,10 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     modeListOff: () => dispatch(layoutModeListOff()),
     searchShow: () => dispatch(layoutSearchShow()),
     searchHide: () => dispatch(layoutSearchHide()),
+    actionCentreShow: () => dispatch(layoutActionCentreShow()),
+    actionCentreHide: () => dispatch(layoutActionCentreHide()),
+    moreShow: () => dispatch(layoutMoreShow()),
+    moreHide: () => dispatch(layoutMoreHide()),
   },
 
   listBarDispatch: {
@@ -235,6 +255,6 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   }
 });
 
-const redux = connect(mapStateToProps, mapDispatchToProps)(ProjectListView);
+const redux = connect(mapStateToProps, mapDispatchToProps)(injectIntl(ProjectListView));
 
 export default withStyles(styles)<{}>(redux);

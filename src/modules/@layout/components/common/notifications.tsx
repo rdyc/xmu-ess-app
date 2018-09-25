@@ -22,7 +22,7 @@ import { RouteComponentProps } from 'react-router';
 import { Dispatch } from 'redux';
 import { isArray } from 'util';
 
-interface PropsFromState extends RouteComponentProps<void>, WithStyles<typeof styles> {
+interface PropsFromState extends RouteComponentProps<void> {
   user: IAppUser;
   notification: number;
   result?: IResponseList<INotification>;
@@ -35,7 +35,10 @@ interface PropsFromDispatch {
   setNotification: typeof layoutChangeNotif;
 }
 
-type AllProps = PropsFromState & PropsFromDispatch & ConnectedReduxProps;
+type AllProps = PropsFromState & 
+                PropsFromDispatch & 
+                ConnectedReduxProps & 
+                WithStyles<typeof styles>;
 
 class Notifications extends React.Component<AllProps> {
   public state = {

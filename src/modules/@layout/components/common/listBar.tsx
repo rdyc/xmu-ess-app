@@ -21,7 +21,7 @@ import styles from '@styles';
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
 
-interface PropsFromState extends RouteComponentProps<void>, WithStyles<typeof styles> {
+interface PropsFromState extends RouteComponentProps<void> {
   layoutState: ILayoutState;
   listBarState: IListBarState;
 }
@@ -40,7 +40,11 @@ interface PropsFromDispatch {
   };
 }
 
-type AllProps = PropsFromState & PropsFromDispatch & WithWidthProps & ConnectedReduxProps;
+type AllProps = PropsFromState & 
+                PropsFromDispatch & 
+                ConnectedReduxProps & 
+                WithWidthProps & 
+                WithStyles<typeof styles>;
 
 export const listBar: React.StatelessComponent<AllProps> = props => {
   const { layoutState, listBarState, listBarDispatch, classes, width } = props;

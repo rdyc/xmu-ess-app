@@ -2,10 +2,27 @@ import { AppStorage } from '@constants/index';
 import { IAppState } from '@generic/interfaces';
 import { ConnectedReduxProps, SortDirection } from '@generic/types';
 import { ActionDrawer, BottomSnackbar, ListBar, MenuDrawer, TopAppBar } from '@layout/components/common';
-import { IAlert, IAppUser, ILayoutState, IListBarCallback, IListBarField, IListBarState, IView } from '@layout/interfaces';
 import {
+  IAlert,
+  IAppBarMenu,
+  IAppBarState,
+  IAppUser,
+  ILayoutState,
+  IListBarCallback,
+  IListBarField,
+  IListBarState,
+  IView,
+} from '@layout/interfaces';
+import {
+  appBarAssignCallback,
+  appBarAssignMenus,
+  appBarDispose,
+  appBarMenuHide,
+  appBarMenuShow,
   layoutAccountColapse,
   layoutAccountExpand,
+  layoutActionCentreHide,
+  layoutActionCentreShow,
   layoutAssignMenus,
   layoutAssignUser,
   layoutChangeAlert,
@@ -26,8 +43,12 @@ import {
   layoutModeListOn,
   layoutModeSearchOff,
   layoutModeSearchOn,
+  layoutMoreHide,
+  layoutMoreShow,
   layoutNavBackHide,
   layoutNavBackShow,
+  layoutSearchHide,
+  layoutSearchShow,
   listBarAssignCallbacks,
   listBarAssignFields,
   listBarChangeDirection,
@@ -36,8 +57,6 @@ import {
   listBarDispose,
   listBarMenuHide,
   listBarMenuShow,
-  layoutSearchShow,
-  layoutSearchHide,
 } from '@layout/store/actions';
 import { Anchor } from '@layout/types';
 import { ILookupRoleMenuList } from '@lookup/interfaces';
@@ -46,6 +65,7 @@ import withWidth, { WithWidthProps } from '@material-ui/core/withWidth';
 import styles from '@styles';
 import * as classNames from 'classnames';
 import * as React from 'react';
+import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { Dispatch } from 'redux';
@@ -53,8 +73,9 @@ import * as store from 'store';
 
 import withRoot from '../../../withRoot';
 
-interface PropsFromState extends RouteComponentProps<void>, WithStyles<typeof styles> {
+interface PropsFromState extends RouteComponentProps<void> {
   layoutState: ILayoutState;
+  appBarState: IAppBarState;
   listBarState: IListBarState;
 }
 
@@ -83,6 +104,10 @@ interface PropsFromDispatch {
     navBackHide: typeof layoutNavBackHide;
     searchShow: typeof layoutSearchShow;
     searchHide: typeof layoutSearchHide;
+    actionCentreShow: typeof layoutActionCentreShow;
+    actionCentreHide: typeof layoutActionCentreHide;
+    moreShow: typeof layoutMoreShow;
+    moreHide: typeof layoutMoreHide;
     
     accountExpand: typeof layoutAccountExpand;
     accountColapse: typeof layoutAccountColapse;
@@ -92,6 +117,14 @@ interface PropsFromDispatch {
     modeListOn: typeof layoutModeListOn;
     modeListOff: typeof layoutModeListOff;
   
+  };
+
+  appBarDispatch: {
+    assignCallback: typeof appBarAssignCallback;
+    assignMenus: typeof appBarAssignMenus;
+    menuShow: typeof appBarMenuShow;
+    menuHide: typeof appBarMenuHide;
+    dispose: typeof appBarDispose;
   };
 
   listBarDispatch: {
@@ -106,7 +139,12 @@ interface PropsFromDispatch {
   };
 }
 
-type AllProps = PropsFromState & PropsFromDispatch & ConnectedReduxProps & WithWidthProps;
+type AllProps = PropsFromState & 
+                PropsFromDispatch & 
+                ConnectedReduxProps & 
+                InjectedIntlProps & 
+                WithStyles<typeof styles> & 
+                WithWidthProps;
 
 class BasePage extends React.Component<AllProps> {
   private loadStorage() {
@@ -146,8 +184,9 @@ class BasePage extends React.Component<AllProps> {
   }
 }
 
-const mapStateToProps = ({ layout, listBar }: IAppState) => ({
+const mapStateToProps = ({ layout, appBar, listBar }: IAppState) => ({
   layoutState: layout,
+  appBarState: appBar,
   listBarState: listBar
 });
 
@@ -179,11 +218,23 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     navBackHide: () => dispatch(layoutNavBackHide()),
     searchShow: () => dispatch(layoutSearchShow()),
     searchHide: () => dispatch(layoutSearchHide()),
+    actionCentreShow: () => dispatch(layoutActionCentreShow()),
+    actionCentreHide: () => dispatch(layoutActionCentreHide()),
+    moreShow: () => dispatch(layoutMoreShow()),
+    moreHide: () => dispatch(layoutMoreHide()),
     
     modeSearchOn: () => dispatch(layoutModeSearchOn()),
     modeSearchOff: () => dispatch(layoutModeSearchOff()), 
     modeListOn: () => dispatch(layoutModeListOn()),
     modeListOff: () => dispatch(layoutModeListOff()),
+  },
+
+  appBarDispatch: {
+    assignCallback: (callback: (menu: IAppBarMenu) => void) => dispatch(appBarAssignCallback(callback)),
+    assignMenus: (menus: IAppBarMenu[]) => dispatch(appBarAssignMenus(menus)),
+    menuShow: () => dispatch(appBarMenuShow()),
+    menuHide: () => dispatch(appBarMenuHide()),
+    dispose: () => dispatch(appBarDispose()),
   },
 
   listBarDispatch: {
@@ -198,6 +249,6 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   }
 });
 
-const redux = connect(mapStateToProps, mapDispatchToProps)(withWidth()(BasePage));
+const redux = connect(mapStateToProps, mapDispatchToProps)(injectIntl(withWidth()(BasePage)));
 
 export default withRouter(withRoot(withStyles(styles)<{}>(redux)));
