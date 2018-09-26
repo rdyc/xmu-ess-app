@@ -377,6 +377,6 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   },
 });
 
-const redux = connect(mapStateToProps, mapDispatchToProps)(injectIntl(ProjectDetailView));
+const redux = connect(mapStateToProps, mapDispatchToProps)(ProjectDetailView);
 
-export default withStyles(styles)<{}>(redux);
+export default injectIntl(withStyles(styles)(redux));

@@ -17,8 +17,8 @@ interface PropsFromState extends RouteComponentProps<void> {
 type AllProps = PropsFromState & 
                 ConnectedReduxProps & 
                 WithStyles<typeof styles>;
-
-export const ProjectList: React.StatelessComponent<AllProps> = props => {
+                
+export const ProjectList: React.ComponentType<AllProps> = props => {
   const { history  } = props;
   const { response, isLoading  } = props.projectState;
 
@@ -64,14 +64,14 @@ export const ProjectList: React.StatelessComponent<AllProps> = props => {
                   noWrap
                   variant="body1"
                 >
-                  {project.customer && project.customer.name} {project.contractNumber && `(PO: ${project.contractNumber})`}
+                  {project.customer && project.customer.name} &bull; {project.customer && project.customer.company && project.customer.company.name} {project.contractNumber && `(PO: ${project.contractNumber})`}
                 </Typography>
                 <Typography 
                   noWrap
                   color="textSecondary" 
                   variant="caption"
                 >
-                  {project.uid} | {project.project && project.project.value} | &nbsp;
+                  {project.uid} &bull; {project.project && project.project.value} &bull; &nbsp;
                   <FormattedDate 
                     year="numeric"
                     month="short"

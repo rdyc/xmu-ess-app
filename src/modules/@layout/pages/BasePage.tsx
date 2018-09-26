@@ -260,6 +260,6 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   }
 });
 
-const redux = connect(mapStateToProps, mapDispatchToProps)(injectIntl(withWidth()(BasePage)));
+const redux = connect(mapStateToProps, mapDispatchToProps)(BasePage);
 
-export default withRouter(withRoot(withStyles(styles)<{}>(redux)));
+export default withRouter(withRoot(injectIntl(withStyles(styles)(withWidth()(redux)))));
