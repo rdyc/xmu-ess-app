@@ -1,1 +1,1 @@
-export { textField as TextField } from './textField';
+export { inputText as InputText } from './inputText';

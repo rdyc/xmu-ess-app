@@ -287,7 +287,7 @@ class ProjectDetailView extends React.Component<AllProps, State> {
 
     this.handleDialogClose();
 
-    history.push(`/project/form/${projectUid}`, { mode: 'edit' });
+    history.push('/project/form/', { uid: projectUid });
   };
 
   loadData = (): void => {

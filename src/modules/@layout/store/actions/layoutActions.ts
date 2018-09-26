@@ -12,8 +12,10 @@ export const enum LayoutAction {
   ACCOUNT_EXPAND = '@@layout/ACCOUNT_EXPAND',
   ACCOUNT_COLAPSE = '@@layout/ACCOUNT_COLAPSE',
   
+  ALERT_ADD = '@@layout/ALERT_ADD',
+  ALERT_DISSMIS = '@@layout/ALERT_DISSMIS',
+  
   CHANGE_ANCHOR = '@@layout/CHANGE_ANCHOR',
-  CHANGE_ALERT = '@@layout/SNACKBAR_ALERT',
   CHANGE_NOTIF_COUNT = '@@layout/CHANGE_NOTIF_COUNT',
   CHANGE_VIEW = '@@layout/CHANGE_VIEW',
   
@@ -34,6 +36,8 @@ export const enum LayoutAction {
   MORE_HIDE = '@@layout/MORE_HIDE',
   SEARCH_SHOW = '@@layout/SEARCH_SHOW',
   SEARCH_HIDE = '@@layout/SEARCH_HIDE',
+  ALERT_DIALOG_SHOW = '@@layout/ALERT_DIALOG_SHOW',
+  ALERT_DIALOG_HIDE = '@@layout/ALERT_DIALOG_HIDE',
   LOGOUT_DIALOG_SHOW = '@@layout/LOGOUT_DIALOG_SHOW',
   LOGOUT_DIALOG_HIDE = '@@layout/LOGOUT_DIALOG_HIDE',
 
@@ -49,8 +53,10 @@ export const layoutAssignMenus = (menus: ILookupRoleMenuList[]) => action(Layout
 export const layoutAccountExpand = () => action(LayoutAction.ACCOUNT_EXPAND);
 export const layoutAccountColapse = () => action(LayoutAction.ACCOUNT_COLAPSE);
 
+export const layoutAlertAdd = (alert: IAlert) => action(LayoutAction.ALERT_ADD, alert);
+export const layoutAlertDismiss = () => action(LayoutAction.ALERT_DISSMIS);
+
 export const layoutChangeAnchor = (anchor: Anchor) => action(LayoutAction.CHANGE_ANCHOR, anchor);
-export const layoutChangeAlert = (alert: IAlert | null) => action(LayoutAction.CHANGE_ALERT, alert);
 export const layoutChangeNotif = (count: number) => action(LayoutAction.CHANGE_NOTIF_COUNT, count);
 export const layoutChangeView = (view: IView | null) => action(LayoutAction.CHANGE_VIEW, view);
 
@@ -71,6 +77,8 @@ export const layoutMoreShow = () => action(LayoutAction.MORE_SHOW);
 export const layoutMoreHide = () => action(LayoutAction.MORE_HIDE);
 export const layoutSearchShow = () => action(LayoutAction.SEARCH_SHOW);
 export const layoutSearchHide = () => action(LayoutAction.SEARCH_HIDE);
+export const layoutAlertDialogShow = () => action(LayoutAction.ALERT_DIALOG_SHOW);
+export const layoutAlertDialogHide = () => action(LayoutAction.ALERT_DIALOG_HIDE);
 export const layoutLogoutDialogShow = () => action(LayoutAction.LOGOUT_DIALOG_SHOW);
 export const layoutLogoutDialogHide = () => action(LayoutAction.LOGOUT_DIALOG_HIDE);
 

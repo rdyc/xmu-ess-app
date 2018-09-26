@@ -6,7 +6,7 @@ import {
   listBarMenuShow,
   listBarChangeOrder,
   listBarChangeSize,
-  layoutChangeAlert,
+  layoutAlertAdd,
 } from '@layout/store/actions';
 import { BottomNavigation, BottomNavigationAction, Menu, MenuItem, WithStyles } from '@material-ui/core';
 import { isWidthUp, WithWidthProps } from '@material-ui/core/withWidth';
@@ -28,7 +28,7 @@ interface PropsFromState extends RouteComponentProps<void> {
 
 interface PropsFromDispatch {
   layoutDispatch: {
-    changeAlert: typeof layoutChangeAlert;
+    alertAdd: typeof layoutAlertAdd;
   };
 
   listBarDispatch: {

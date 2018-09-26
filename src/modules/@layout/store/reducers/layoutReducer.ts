@@ -1,5 +1,5 @@
 import { Reducer } from 'redux';
-import { ILayoutState } from '@layout/interfaces';
+import { ILayoutState, IAlert } from '@layout/interfaces';
 import { LayoutAction as Action } from '@layout/store/actions';
 
 const initialState: ILayoutState = {
@@ -8,7 +8,7 @@ const initialState: ILayoutState = {
   menus: [],
   view: undefined,
   notifCount: 0,
-  alert: undefined,
+  alerts: [],
   isDrawerMenuVisible: false,
   isDrawerActionVisible: false,
   isAccountExpanded: false,
@@ -17,10 +17,27 @@ const initialState: ILayoutState = {
   isDrawerTopVisible: false,
   isDrawerBottomVisible: false,
   isLogoutDialogVisible: false,
+  isAlertDialogVisible: false,
   isNavBackVisible: false,
   isSearchVisible: false,
   isActionCentreVisible: false,
   isMoreVisible: false
+};
+
+const alertAdd = (alerts: IAlert[], alert: any) => {
+  if (alerts.length >= 0) {
+    alerts.push(alert);
+  } 
+
+  return alerts;
+};
+
+const alertRemove = (alerts: IAlert[]) => {
+  if (alerts.length >= 0) {
+    alerts.splice(0, 1);
+  } 
+
+  return alerts;
 };
 
 const reducer: Reducer<ILayoutState> = (state = initialState, action) => {
@@ -28,8 +45,10 @@ const reducer: Reducer<ILayoutState> = (state = initialState, action) => {
     case Action.ASSIGN_USER: return { ...state, user: action.payload };
     case Action.ASSIGN_MENUS: return { ...state, menus: action.payload };
     
+    case Action.ALERT_ADD: return { ...state, alerts: alertAdd(state.alerts, action.payload) };
+    case Action.ALERT_DISSMIS: return { ...state, alerts: alertRemove(state.alerts) };
+
     case Action.CHANGE_ANCHOR: return { ...state, anchor: action.payload };
-    case Action.CHANGE_ALERT: return { ...state, alert: action.payload };
     case Action.CHANGE_NOTIF_COUNT: return { ...state, notifCount: action.payload };
     case Action.CHANGE_VIEW: return { ...state, view: action.payload };
     
@@ -42,6 +61,8 @@ const reducer: Reducer<ILayoutState> = (state = initialState, action) => {
     case Action.DRAWER_BOTTOM_SHOW: return { ...state, isDrawerBottomVisible: true };
     case Action.DRAWER_BOTTOM_HIDE: return { ...state, isDrawerBottomVisible: false };
     
+    case Action.ALERT_DIALOG_SHOW: return { ...state, isAlertDialogVisible: true };
+    case Action.ALERT_DIALOG_HIDE: return { ...state, isAlertDialogVisible: false };
     case Action.LOGOUT_DIALOG_SHOW: return { ...state, isLogoutDialogVisible: true };
     case Action.LOGOUT_DIALOG_HIDE: return { ...state, isLogoutDialogVisible: false };
     case Action.NAV_BACK_SHOW: return { ...state, isNavBackVisible: true };

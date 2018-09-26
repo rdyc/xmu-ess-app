@@ -25,7 +25,7 @@ import {
   layoutActionCentreShow,
   layoutAssignMenus,
   layoutAssignUser,
-  layoutChangeAlert,
+  layoutAlertAdd,
   layoutChangeAnchor,
   layoutChangeNotif,
   layoutChangeView,
@@ -57,6 +57,9 @@ import {
   listBarDispose,
   listBarMenuHide,
   listBarMenuShow,
+  layoutAlertDismiss,
+  layoutAlertDialogHide,
+  layoutAlertDialogShow,
 } from '@layout/store/actions';
 import { Anchor } from '@layout/types';
 import { ILookupRoleMenuList } from '@lookup/interfaces';
@@ -84,8 +87,10 @@ interface PropsFromDispatch {
     assignUser: typeof layoutAssignUser;
     assignMenus: typeof layoutAssignMenus;
     
+    alertAdd: typeof layoutAlertAdd;
+    alertDismiss: typeof layoutAlertDismiss;
+
     changeAnchor: typeof layoutChangeAnchor;
-    changeAlert: typeof layoutChangeAlert;
     changeNotif: typeof layoutChangeNotif;
     changeView: typeof layoutChangeView;
 
@@ -98,6 +103,8 @@ interface PropsFromDispatch {
     drawerBottomShow: typeof layoutDrawerBottomShow;
     drawerBottomHide: typeof layoutDrawerBottomHide;
     
+    alertDialogShow: typeof layoutAlertDialogShow;
+    alertDialogHide: typeof layoutAlertDialogHide;
     logoutDialogShow: typeof layoutLogoutDialogShow;
     logoutDialogHide: typeof layoutLogoutDialogHide;
     navBackShow: typeof layoutNavBackShow;
@@ -194,9 +201,11 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   layoutDispatch: {
     assignUser: (user: IAppUser) => dispatch(layoutAssignUser(user)),
     assignMenus: (items: ILookupRoleMenuList[]) => dispatch(layoutAssignMenus(items)),
+    
+    alertAdd: (alert: IAlert) => dispatch(layoutAlertAdd(alert)),
+    alertDismiss: () => dispatch(layoutAlertDismiss()),
 
     changeAnchor: (anchor: Anchor) => dispatch(layoutChangeAnchor(anchor)),
-    changeAlert: (data: IAlert) => dispatch(layoutChangeAlert(data)),
     changeNotif: (count: number) => dispatch(layoutChangeNotif(count)),
     changeView: (active: IView) => dispatch(layoutChangeView(active)),
     
@@ -212,6 +221,8 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     accountExpand: () => dispatch(layoutAccountExpand()),
     accountColapse: () => dispatch(layoutAccountColapse()),
     
+    alertDialogShow: () => dispatch(layoutAlertDialogShow()),
+    alertDialogHide: () => dispatch(layoutAlertDialogHide()),
     logoutDialogShow: () => dispatch(layoutLogoutDialogShow()),
     logoutDialogHide: () => dispatch(layoutLogoutDialogHide()),
     navBackShow: () => dispatch(layoutNavBackShow()),

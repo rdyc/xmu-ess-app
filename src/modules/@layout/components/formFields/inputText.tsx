@@ -1,7 +1,7 @@
 import { TextField } from '@material-ui/core';
 import * as React from 'react';
 
-export const textField = ({ 
+export const inputText = ({ 
   input, 
   label, 
   disabled, 
@@ -15,6 +15,7 @@ export const textField = ({
 }: any) => (
   <TextField
     fullWidth
+    margin="normal"
     disabled={disabled || submitting}
     required={required}
     label={label}

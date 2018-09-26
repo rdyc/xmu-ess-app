@@ -1,4 +1,5 @@
 export interface IAlert {
-  visible: boolean;
-  message: string | null;
+  time: Date;
+  message: string | undefined;
+  details?: any | undefined;
 }
