@@ -42,9 +42,7 @@
     "typesafe-actions": "^2.0.4",
     "typescript": "^3.0.1",
     "tslint": "^5.11.0",
-    "tslint-config-blvd": "^1.1.0"
-  },
-  "devDependencies": {
+    "tslint-config-blvd": "^1.1.0",
     "@types/classnames": "^2.2.6",
     "@types/history": "^4.7.0",
     "@types/jest": "^23.3.1",
@@ -58,5 +56,8 @@
     "@types/react-select": "^2.0.3",
     "@types/redux-form": "^7.4.7",
     "@types/store": "^2.0.0"
+  },
+  "devDependencies": {
+    
   }
 }
