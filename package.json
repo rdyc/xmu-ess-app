@@ -40,7 +40,9 @@
     "store": "^2.0.12",
     "typeface-roboto": "0.0.54",
     "typesafe-actions": "^2.0.4",
-    "typescript": "^3.0.1"
+    "typescript": "^3.0.1",
+    "tslint": "^5.11.0",
+    "tslint-config-blvd": "^1.1.0"
   },
   "devDependencies": {
     "@types/classnames": "^2.2.6",
@@ -55,8 +57,6 @@
     "@types/react-router-redux": "^5.0.15",
     "@types/react-select": "^2.0.3",
     "@types/redux-form": "^7.4.7",
-    "@types/store": "^2.0.0",
-    "tslint": "^5.11.0",
-    "tslint-config-blvd": "^1.1.0"
+    "@types/store": "^2.0.0"
   }
 }
