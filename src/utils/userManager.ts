@@ -1,10 +1,11 @@
+import { UserManagerSettings, WebStorageStateStore } from 'oidc-client';
 import { createUserManager } from 'redux-oidc';
 
 const location = window.location;
 
 const selfHost = `${location.protocol}//${location.hostname}${location.port ? `:${location.port}` : ''}`;
 
-const config = {
+const settings: UserManagerSettings = {
   client_id: process.env.REACT_APP_CLIENT_ID || '',
   authority: process.env.REACT_APP_OAUTH_URL || '',
   scope: process.env.REACT_APP_OAUTH_SCOPES,
@@ -14,7 +15,10 @@ const config = {
   automaticSilentRenew: true,
   filterProtocolClaims: true,
   loadUserInfo: true,
-  monitorSession: true
+  monitorSession: true,
+  userStore: new WebStorageStateStore({
+    store: localStorage
+  })
 };
 
-export const AppUserManager = createUserManager(config);
+export const AppUserManager = createUserManager(settings);

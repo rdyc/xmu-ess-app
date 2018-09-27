@@ -1,10 +1,11 @@
-import { ICommonSystem } from '../../common/interfaces/ICommonSystem';
-import { ILookupCompany } from '../../lookup/interfaces/ILookupCompany';
-import { IEmployeeAccessList } from './IEmployeeAccessList';
-import { IEmployeeContact, IEmployeeBank } from '@account/interfaces/response';
+import { IEmployeeBank, IEmployeeContact } from '@account/interfaces/response';
+import { ICommonSystem } from '@common/interfaces/ICommonSystem';
+import { IBaseChanges } from '@generic/interfaces/IBaseChanges';
+import { ILookupCompany } from '@lookup/interfaces/ILookupCompany';
 
-export interface IEmployeeMy {
+export interface IEmployeeDetail {
     uid: string;
+    joinDate: Date;
     companyUid: string | null;
     company: ILookupCompany | null;
     employmentNumber: string;
@@ -15,6 +16,8 @@ export interface IEmployeeMy {
     birthPlace: string | null;
     email: string;
     emailPersonal: string  | null;
+    phone: string | null;
+    mobilePhone: string | null;
     address: string  | null;
     addressAdditional: string | null;
     genderType: string | null;
@@ -33,5 +36,5 @@ export interface IEmployeeMy {
     bank: IEmployeeBank | null;
     contact: IEmployeeContact | null;
     image: string | null;
-    access: IEmployeeAccessList[];
+    changes: IBaseChanges | null;
 }

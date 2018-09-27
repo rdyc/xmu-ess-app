@@ -1,21 +1,39 @@
+import ListItemEmployeeSelector from '@account/components/views/ListItemEmployeeSelector';
+import { IEmployee } from '@account/interfaces/response';
+import { ConnectedReduxProps } from '@generic/types';
 import { InputText } from '@layout/components/formFields';
-import { Button, Card, CardContent, CardHeader, Grid, TextField, WithStyles, List, ListItem, ListItemAvatar, Avatar, ListItemText, IconButton, ListItemSecondaryAction, Divider } from '@material-ui/core';
+import {
+  Avatar,
+  Button,
+  Card,
+  CardContent,
+  CardHeader,
+  Divider,
+  Grid,
+  IconButton,
+  List,
+  ListItem,
+  ListItemAvatar,
+  ListItemSecondaryAction,
+  ListItemText,
+  TextField,
+  WithStyles,
+} from '@material-ui/core';
+import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
+import PersonIcon from '@material-ui/icons/Person';
 import { IProjectDetail, IProjectSales } from '@project/interfaces/response';
 import styles from '@styles';
 import * as classNames from 'classnames';
 import * as React from 'react';
 import { FormattedMessage, InjectedIntlProps } from 'react-intl';
-import { Field, InjectedFormProps, reduxForm, FieldArray, WrappedFieldArrayProps } from 'redux-form';
-import AddIcon from '@material-ui/icons/Add';
-import PersonIcon from '@material-ui/icons/Person';
-import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
+import { Field, FieldArray, InjectedFormProps, reduxForm, WrappedFieldArrayProps } from 'redux-form';
 
 type AllProps = InjectedFormProps<IProjectDetail> & 
+                ConnectedReduxProps &
                 InjectedIntlProps &
                 WithStyles<typeof styles>;
 
 export const projectForm: React.StatelessComponent<AllProps> = props => { 
-
   // const handleSalesRemoved = (index: number) => {
   //   console.log(props.initialValues.sales);
     
@@ -161,10 +179,32 @@ export const projectForm: React.StatelessComponent<AllProps> = props => {
   const renderSales = (context: WrappedFieldArrayProps<IProjectSales>) => {
     // console.log(context.fields.getAll());
 
-    const allSales = context.fields.getAll();
+    const handleSelectedCallback = (employee: IEmployee): boolean => {
+      try {
+        context.fields.push({
+          uid: null,
+          employeeUid: employee.uid,
+          employee: {
+            uid: employee.uid,
+            joinDate: employee.joinDate,
+            inactiveDate: null,
+            employmentNumber: employee.employmentNumber,
+            employmentType: null,
+            employment: null,
+            fullName: employee.fullName,
+            email: employee.email,
+            mobilePhone: null,
+            address: null,
+            genderType: employee.genderType,
+            gender: null
+          },
+          changes: null
+        });
 
-    const handleSalesAdd = (sales: IProjectSales) => {
-      context.fields.push(sales);
+        return true;
+      } catch (error) {
+        return false;
+      }
     };
 
     return (
@@ -172,21 +212,12 @@ export const projectForm: React.StatelessComponent<AllProps> = props => {
         <CardHeader 
           title={<FormattedMessage id="project.salesTitle" />}
           // subheader={<FormattedMessage id="project.salesSubTitle" />}
-          action={
-            <IconButton
-              onClick={() => handleSalesAdd(allSales[0])}
-            >
-              <AddIcon/>
-            </IconButton>
-          }
         />
         <CardContent>
           <List>
             {
               context.fields.map((item, index) => {
                 const sales = context.fields.get(index);
-
-                console.log(sales);
 
                 return (
                   <ListItem 
@@ -213,19 +244,11 @@ export const projectForm: React.StatelessComponent<AllProps> = props => {
                 );
               })
             }
-            <Divider className={props.classes.marginFarTop} />
-            <ListItem disableGutters>
-              <TextField
-                fullWidth
-                margin="normal"
-                label={<FormattedMessage id="project.field.sales" />}
-              />
-              <ListItemSecondaryAction>
-                <IconButton onClick={() => handleSalesAdd(allSales[0])}>
-                  <AddIcon/>
-                </IconButton>
-              </ListItemSecondaryAction>
-            </ListItem>
+            <Divider className={classNames(props.classes.marginFarTop, props.classes.marginFarBottom)} />
+            <ListItemEmployeeSelector 
+              dispatch={props.dispatch} 
+              onSelected={(employee: IEmployee) => handleSelectedCallback(employee)}
+            />
           </List>
         </CardContent>
       </Card>
@@ -292,7 +315,7 @@ export const projectForm: React.StatelessComponent<AllProps> = props => {
           </Grid>
         </Grid>
           </Grid>*/}
-      <Grid item xs={12} sm={12} md={4} xl={3}>
+      <Grid item xs={12} sm={12} md={4} xl={4}>
         <Grid container spacing={24}>
           <Grid item xs={12}>
               <FieldArray name="sales" component={renderSales} />

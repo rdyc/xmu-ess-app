@@ -1,6 +1,7 @@
-import { IResponseSingle } from '../../../generic/interfaces/IResponseSingle';
-import { Command } from '../../../generic/types';
-import { IEmployee } from './IEmployee';
+import { IEmployee } from '@account/interfaces/response';
+import { IResponseSingle } from '@generic/interfaces';
+import { Command } from '@generic/types';
+
 import { IEmployeeCommand } from './IEmployeeCommand';
 
 export interface IEmployeeProfileCommandState {

@@ -58,14 +58,14 @@ function* watchAllFetchRequest() {
   yield takeEvery(ProjectAction.GET_ALL_REQUEST, handleAllFetch);
 }
 
-function* watchFetchRequest() {
+function* watchByIdFetchRequest() {
   yield takeEvery(ProjectAction.GET_BY_ID_REQUEST, handleFetch);
 }
 
 function* projectSagas() {
   yield all([
     fork(watchAllFetchRequest),
-    fork(watchFetchRequest)
+    fork(watchByIdFetchRequest)
   ]);
 }
 

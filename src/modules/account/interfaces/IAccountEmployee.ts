@@ -3,14 +3,14 @@ import { ICommonSystem } from '@common/interfaces';
 export interface IAccountEmployee {
   uid: string;
   joinDate: Date;
-  inactiveDate: Date | null;
+  inactiveDate?: Date | null;
   employmentNumber: string;
-  employmentType: string | null;
-  employment: ICommonSystem | null;
+  employmentType?: string | null;
+  employment?: ICommonSystem | null;
   fullName: string;
-  email: string | null;
-  mobilePhone: string | null;
-  address: string | null;
+  email: string;
+  mobilePhone?: string | null;
+  address?: string | null;
   genderType: string | null;
-  gender: ICommonSystem | null;
+  gender?: ICommonSystem | null;
 }

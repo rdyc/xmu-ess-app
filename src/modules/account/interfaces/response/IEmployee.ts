@@ -1,8 +1,7 @@
-import { IBaseChanges } from '../../../generic/interfaces/IBaseChanges';
-import { ICommonSystem } from '../../common/interfaces/ICommonSystem';
-import { ILookupCompany } from '../../lookup/interfaces/ILookupCompany';
-import { IEmployeeBank } from './IEmployeeBank';
-import { IEmployeeContact } from './IEmployeeContact';
+import { IEmployeeBank, IEmployeeContact } from '@account/interfaces/response';
+import { ICommonSystem } from '@common/interfaces/ICommonSystem';
+import { IBaseChanges } from '@generic/interfaces/IBaseChanges';
+import { ILookupCompany } from '@lookup/interfaces/ILookupCompany';
 
 export interface IEmployee {
     uid: string;

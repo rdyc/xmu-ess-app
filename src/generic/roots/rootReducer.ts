@@ -1,6 +1,13 @@
-import { employeeMyReducer, employeeProfileCommandReducer, employeeProfileQueryReducer } from '@account/stores/reducers';
+import {
+  employeeGetAllReducer,
+  employeeGetByIdReducer,
+  employeeMyReducer,
+  employeeProfileCommandReducer,
+  employeeProfileQueryReducer,
+} from '@account/store/reducers';
+import { employeeGetListReducer } from '@account/store/reducers/employeeGetListReducer';
 import { IAppState } from '@generic/interfaces';
-import { layoutReducer, listBarReducer, notificationReducer, appBarReducer } from '@layout/store/reducers';
+import { appBarReducer, layoutReducer, listBarReducer, notificationReducer } from '@layout/store/reducers';
 import { projectGetAllReducer } from '@project/store/reducers';
 import { projectGetByIdReducer } from '@project/store/reducers/projectGetByIdReducer';
 import { combineReducers } from 'redux';
@@ -19,6 +26,10 @@ export const rootReducer = combineReducers<IAppState>({
 
   /* list bar */
   listBar: listBarReducer,
+
+  employeeGetAll: employeeGetAllReducer,
+  employeeGetList: employeeGetListReducer,
+  employeeGetById: employeeGetByIdReducer,
 
   /* profiles */
   profileQuery: employeeProfileQueryReducer,

@@ -6,6 +6,8 @@ import { IProject, IProjectDetail } from '@project/interfaces/response';
 import { FormStateMap } from 'redux-form';
 import { UserState } from 'redux-oidc';
 import { IQuerySingleState } from '@generic/interfaces/IQuerySingleState';
+import { IEmployee, IEmployeeDetail } from '@account/interfaces/response';
+import { IEmployeeAllRequest, IEmployeeByIdRequest, IEmployeeListRequest } from '@account/interfaces/queries';
 
 export interface IAppState {
   layout: ILayoutState;
@@ -19,6 +21,11 @@ export interface IAppState {
   /* profile */
   profileQuery: IEmployeeProfileQueryState;
   profileCommand: IEmployeeProfileCommandState;
+
+  /* employee */
+  employeeGetAll: IQueryCollectionState<IEmployeeAllRequest, IEmployee>;
+  employeeGetList: IQueryCollectionState<IEmployeeListRequest, IEmployee>;
+  employeeGetById: IQuerySingleState<IEmployeeByIdRequest, IEmployeeDetail>;
 
   /* project */
   projectGetAll: IQueryCollectionState<IProjectGetAllRequest, IProject>;

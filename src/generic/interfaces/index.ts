@@ -7,6 +7,7 @@ export * from './ICompanyAccess';
 export * from './IBaseData';
 export * from './IBaseDataList';
 export * from './IBaseFilter';
+export * from './IBasePagingFilter';
 export * from './IBaseMetadata';
 export * from './IBasePagination';
 export * from './IBasePayload';

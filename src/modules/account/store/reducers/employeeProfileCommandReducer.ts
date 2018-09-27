@@ -1,7 +1,6 @@
+import { IEmployeeProfileCommandState } from '@account/interfaces';
+import { EmployeeProfileAction } from '@account/store/actions';
 import { Reducer } from 'redux';
-
-import { IEmployeeProfileCommandState } from '../../interfaces';
-import { EmployeeProfileAction } from '../actionCreators';
 
 const initialState: IEmployeeProfileCommandState = {
   method: undefined,

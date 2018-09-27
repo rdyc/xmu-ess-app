@@ -1,7 +1,6 @@
+import { EmployeeFetchError, EmployeeFetchSuccess, EmployeeMyAction } from '@account/store/actions';
 import { all, call, fork, put, takeEvery } from 'redux-saga/effects';
-
-import { callApi } from '../../../../utils';
-import { EmployeeFetchError, EmployeeFetchSuccess, EmployeeMyAction } from '../actionCreators';
+import { callApi } from 'utils';
 
 const API_ENDPOINT = process.env.REACT_APP_API_URL || '';
 

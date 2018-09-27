@@ -1,7 +1,6 @@
+import { IEmployeeMyState } from '@account/interfaces';
+import { EmployeeMyAction } from '@account/store/actions';
 import { Reducer } from 'redux';
-
-import { IEmployeeMyState } from '../../interfaces';
-import { EmployeeMyAction } from '../actionCreators';
 
 const initialState: IEmployeeMyState = {
   employee: undefined,

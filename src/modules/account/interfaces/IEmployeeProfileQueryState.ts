@@ -1,5 +1,6 @@
-import { IResponseSingle } from '../../../generic/interfaces/IResponseSingle';
-import { IEmployee } from './IEmployee';
+import { IEmployee } from '@account/interfaces/response';
+import { IResponseSingle } from '@generic/interfaces';
+
 import { IEmployeeQuery } from './IEmployeeQuery';
 
 export interface IEmployeeProfileQueryState {

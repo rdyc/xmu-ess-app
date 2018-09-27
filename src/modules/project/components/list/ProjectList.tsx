@@ -19,6 +19,8 @@ type AllProps = PropsFromState &
                 WithStyles<typeof styles>;
                 
 export const ProjectList: React.ComponentType<AllProps> = props => {
+  console.log('ProjectList');
+  
   const { history  } = props;
   const { response, isLoading  } = props.projectState;
 

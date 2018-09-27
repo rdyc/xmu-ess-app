@@ -1,6 +1,8 @@
 {
   "global.loading": "Loading...",
   "global.processing": "Processing",
+  "global.find": "Find",
+  "global.search": "Search",
   
   "global.dialog.alertTitle": "Alert Details",
   
@@ -36,6 +38,9 @@
 
   "global.setting.title": "Settings",
 
+  "account.employee.lookupTitle": "Employee Lookup", 
+  "account.employee.lookupDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.", 
+
   "account.profile.title": "Profile",
   "account.profile.subTitle": "Lorem ipsum dolor sit amet",
   "account.profile-picture.title": "Picture",
@@ -52,6 +57,8 @@
   "account.profile.citizenNumber": "Citizen number",
   "account.profile.phone": "Phone",
   "account.profile.mobilePhone": "Mobile phone",
+
+  "account.placeholder.lookupSearch": "Type any employee name or email",
 
   "project.title": "Projects",
   "project.subTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",

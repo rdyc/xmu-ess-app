@@ -1,7 +1,3 @@
-import { all, call, fork, put, takeEvery } from 'redux-saga/effects';
-
-import { callApi } from '@utils/index';
-import { layoutAlertAdd } from '@layout/store/actions';
 import {
   EmployeeProfileAction,
   EmployeeProfileCommandError,
@@ -10,7 +6,10 @@ import {
   EmployeeProfileFetchError,
   EmployeeProfileFetchRequest,
   EmployeeProfileFetchSuccess,
-} from '../actionCreators/employeeProfileActions';
+} from '@account/store/actions';
+import { layoutAlertAdd } from '@layout/store/actions';
+import { callApi } from '@utils/index';
+import { all, call, fork, put, takeEvery } from 'redux-saga/effects';
 
 const API_ENDPOINT = process.env.REACT_APP_API_URL || '';
 
