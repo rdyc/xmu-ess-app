@@ -16,11 +16,9 @@ export const inputText = ({
   <TextField
     fullWidth
     margin="normal"
+    {...input}
     disabled={disabled || submitting}
-    required={required}
-    label={label}
     error={touched && error}
     helperText={touched && error}
-    {...input}
   />
 );

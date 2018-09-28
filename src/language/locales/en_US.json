@@ -100,7 +100,7 @@
   "project.field.owner": "Project Owner",
   "project.field.currency": "Currency",
   "project.field.rate": "Rate",
-  "project.field.value": "Value",
+  "project.field.valueUsd": "Value (USD)",
   "project.field.valueIdr": "Value (IDR)",
   "project.field.hours": "Max. Hours",
   "project.action.modify": "Modify",

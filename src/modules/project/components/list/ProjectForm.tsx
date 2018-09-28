@@ -8,7 +8,9 @@ import {
   Card,
   CardContent,
   CardHeader,
+  Checkbox,
   Divider,
+  FormControlLabel,
   Grid,
   IconButton,
   List,
@@ -17,15 +19,16 @@ import {
   ListItemSecondaryAction,
   ListItemText,
   TextField,
+  Typography,
   WithStyles,
 } from '@material-ui/core';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import PersonIcon from '@material-ui/icons/Person';
-import { IProjectDetail, IProjectSales } from '@project/interfaces/response';
+import { IProjectDetail, IProjectDocument, IProjectSales, IProjectSite } from '@project/interfaces/response';
 import styles from '@styles';
 import * as classNames from 'classnames';
 import * as React from 'react';
-import { FormattedMessage, InjectedIntlProps } from 'react-intl';
+import { FormattedMessage, FormattedNumber, InjectedIntlProps } from 'react-intl';
 import { Field, FieldArray, InjectedFormProps, reduxForm, WrappedFieldArrayProps } from 'redux-form';
 
 type AllProps = InjectedFormProps<IProjectDetail> & 
@@ -34,34 +37,39 @@ type AllProps = InjectedFormProps<IProjectDetail> &
                 WithStyles<typeof styles>;
 
 export const projectForm: React.StatelessComponent<AllProps> = props => { 
-  // const handleSalesRemoved = (index: number) => {
-  //   console.log(props.initialValues.sales);
-    
-  //   if (props.initialValues.sales) {
-  //     props.initialValues.sales.splice(index, 1);
-  //   }
-    
-  //   console.log(props.initialValues.sales);
-  // };
-
   const renderDetail = () => (
     <Card square>
       <CardHeader 
         title={<FormattedMessage id="project.infoTitle"/>}
-        // subheader={<FormattedMessage id="project.infoSubTitle" />}
+        subheader={<FormattedMessage id="project.infoSubTitle" />}
       />
       <CardContent>
         <TextField
           fullWidth
+          disabled
           margin="normal"
           label={<FormattedMessage id="project.field.uid" />}
           value={props.initialValues.uid}
         />
         <TextField
           fullWidth
+          disabled
           margin="normal"
-          label={<FormattedMessage id="project.field.status" />}
-          value={props.initialValues.status ? props.initialValues.status.value : 'N/A'}
+          label={<FormattedMessage id="project.field.owner" />}
+          value={props.initialValues.owner ? props.initialValues.owner.fullName : 'N/A'}
+        />
+        <Field
+          type="text"
+          name="customerUid"
+          label={<FormattedMessage id="project.field.customer" />}
+          component={InputText}
+        />
+        <TextField
+          fullWidth
+          disabled
+          margin="normal"
+          label={<FormattedMessage id="project.field.owner" />}
+          value={props.initialValues.project ? props.initialValues.project.value : 'N/A'}
         />
         <Field
           type="text"
@@ -77,108 +85,96 @@ export const projectForm: React.StatelessComponent<AllProps> = props => {
         />
         <Field
           type="text"
-          name="ownerEmployeeUid"
-          label={<FormattedMessage id="project.field.owner" />}
+          name="contractNumber"
+          label={<FormattedMessage id="project.field.contract" />}
           component={InputText}
         />
-        {/* <TextField
-          fullWidth
-          margin="normal"
-          label={<FormattedMessage id="project.field.customer" />}
-          value={project.customer ? project.customer.name : 'N/A'}
-        />
-        <TextField
-          fullWidth
-          margin="normal"
-          label={<FormattedMessage id="project.field.type" />}
-          value={project.project ? project.project.value : 'N/A'}
-        />
-        <TextField
-          fullWidth
-          margin="normal"
-          label={<FormattedMessage id="project.field.contract" />}
-          value={project.contractNumber || 'N/A'}
-        />
-        <TextField
-          fullWidth
-          margin="normal"
+        <Field
+          type="text"
+          name="start"
           label={<FormattedMessage id="project.field.start" />}
-          value={intl.formatDate(project.start, {
-            year: 'numeric',
-            month: 'short',
-            day: 'numeric'
-          })}
+          component={InputText}
         />
-        <TextField
-          fullWidth
-          margin="normal"
+        <Field
+          type="text"
+          name="end"
           label={<FormattedMessage id="project.field.end" />}
-          value={intl.formatDate(project.end, {
-            year: 'numeric',
-            month: 'short',
-            day: 'numeric'
-          })}
+          component={InputText}
         />
-        <TextField
-          fullWidth
-          margin="normal"
+        <Field
+          type="text"
+          name="currencyType"
           label={<FormattedMessage id="project.field.currency" />}
-          value={project.currency ? project.currency.value : 'N/A'}
+          component={InputText}
         />
         <TextField
           fullWidth
+          disabled
           margin="normal"
           label={<FormattedMessage id="project.field.rate" />}
-          value={intl.formatNumber(project.rate || 0)}
+          value={props.intl.formatNumber(props.initialValues.rate || 0)}
+        />
+        <Field
+          type="numeric"
+          name="valueUsd"
+          label={<FormattedMessage id="project.field.valueUsd" />}
+          component={InputText}
         />
         <TextField
           fullWidth
-          margin="normal"
-          label={<FormattedMessage id="project.field.value" />}
-          value={intl.formatNumber(project.valueUsd)}
-        />
-        <TextField
-          fullWidth
+          disabled
           margin="normal"
           label={<FormattedMessage id="project.field.valueIdr" />}
-          value={intl.formatNumber(project.valueIdr || 0)}
+          value={props.intl.formatNumber(props.initialValues.valueIdr || 0)}
         />
         <TextField
           fullWidth
+          disabled
           margin="normal"
           label={<FormattedMessage id="project.field.hours" />}
-          value={intl.formatNumber(project.maxHours)}
-        /> */}
+          value={props.intl.formatNumber(props.initialValues.maxHours || 0)}
+        />
       </CardContent>
     </Card>
   );
 
-  // const renderDocuments = (title: string, subHeader: string, documents: IProjectDocument[]) => (
-  //   <Card square>
-  //     <CardHeader 
-  //       title={title}
-  //       subheader={subHeader}
-  //     />
-  //     <CardContent>
-  //       {
-  //         documents.map(item => 
-  //           item.document &&
-  //           <div key={item.uid}>
-  //             <FormControlLabel
-  //               key={item.uid}
-  //               label={item.document.value}
-  //               control={<Checkbox checked={item.isAvailable}/>} 
-  //             />
-  //           </div>
-  //         )
-  //       }
-  //     </CardContent>
-  //   </Card>
-  // );
+  const renderDocuments = (propNam: string, title: string, subHeader: string, documents: IProjectDocument[]) => (
+    <Card square>
+      <CardHeader 
+        title={title}
+        subheader={subHeader}
+      />
+      <CardContent>
+        {
+          documents.map((item, index) => 
+            item.document &&
+            <div key={index}>
+            <FormControlLabel
+              key={index}
+              label={item.document && item.document.value}
+              control={
+                <Field
+                  key={index}
+                  type="checkbox"
+                  name={`${propNam}[${index}].isAvailable`}
+                  component={({ input }: any) => 
+                    <Checkbox 
+                      {...input} 
+                      key={index} 
+                      value={item.uid}
+                    />
+                  }
+                />
+              } 
+            />
+          </div>
+          )
+        }
+      </CardContent>
+    </Card>
+  );
 
   const renderSales = (context: WrappedFieldArrayProps<IProjectSales>) => {
-    // console.log(context.fields.getAll());
-
     const handleSelectedCallback = (employee: IEmployee): boolean => {
       try {
         context.fields.push({
@@ -211,12 +207,12 @@ export const projectForm: React.StatelessComponent<AllProps> = props => {
       <Card square>
         <CardHeader 
           title={<FormattedMessage id="project.salesTitle" />}
-          // subheader={<FormattedMessage id="project.salesSubTitle" />}
+          subheader={<FormattedMessage id="project.salesSubTitle" />}
         />
         <CardContent>
           <List>
             {
-              context.fields.map((item, index) => {
+              context.fields.map((field, index) => {
                 const sales = context.fields.get(index);
 
                 return (
@@ -255,91 +251,89 @@ export const projectForm: React.StatelessComponent<AllProps> = props => {
     );
   };
 
-  // const renderSites = (sites: IProjectSite[]) => (
-  //   <Card square>
-  //     <CardHeader 
-  //       title={<FormattedMessage id="project.siteTitle" />}
-  //       subheader={<FormattedMessage id="project.siteSubTitle" />}
-  //     />
-  //     <CardContent>
-  //       <List>
-  //       {
-  //         sites.map(item => 
-  //           <ListItem disableGutters key={item.uid}>
-  //             <Grid container>
-  //               <Grid item xs={7}>
-  //                 <ListItemText
-  //                   primary={item.name} 
-  //                   secondary={item.type ? item.type.value : 'N/A'}
-  //                 />
-  //               </Grid>
-  //               <Grid item xs={5}>
-  //                 <Typography 
-  //                   noWrap 
-  //                   variant="display1" 
-  //                   align="right"
-  //                 >
-  //                   <FormattedNumber 
-  //                     value={item.value} 
-  //                   />
-  //                 </Typography>
-  //               </Grid>
-  //             </Grid>
+  const renderSites = (sites: IProjectSite[]) => (
+    <Card square>
+      <CardHeader 
+        title={<FormattedMessage id="project.siteTitle" />}
+        subheader={<FormattedMessage id="project.siteSubTitle" />}
+      />
+      <CardContent>
+        <List>
+        {
+          sites.map(item => 
+            <ListItem disableGutters key={item.uid}>
+              <Grid container>
+                <Grid item xs={7}>
+                  <ListItemText
+                    primary={item.name} 
+                    secondary={item.type ? item.type.value : 'N/A'}
+                  />
+                </Grid>
+                <Grid item xs={5}>
+                  <Typography 
+                    noWrap 
+                    variant="display1" 
+                    align="right"
+                  >
+                    <FormattedNumber value={item.value} />
+                  </Typography>
+                </Grid>
+              </Grid>
               
-  //           </ListItem>
-  //         )
-  //       }
-  //       </List>
-  //     </CardContent>
-  //   </Card>
-  // );
+            </ListItem>
+          )
+        }
+        </List>
+      </CardContent>
+    </Card>
+  );
 
   return (
     <form onSubmit={props.handleSubmit}>
-    <Grid container spacing={24}>
-      <Grid item xs={12} sm={12} md={4} xl={3}>
-        {renderDetail()}
-      </Grid>
-      {/* <Grid item xs={12} sm={12} md={4} xl={3}>
-        <Grid container spacing={24}>
-          <Grid item xs={12}>
-            {renderDocuments(intl.formatMessage({id: 'project.documentTitle'}), intl.formatMessage({id: 'project.documentSubTitle'}), response.data.documents)
-            }
-          </Grid>
-          <Grid item xs={12}>
-            {
-              response &&
-              response.data &&
-              renderDocuments(intl.formatMessage({id: 'project.documentPreSalesTitle'}),  intl.formatMessage({id: 'project.documentPreSalesSubTitle'}), response.data.documentPreSales)
-            }
+      <Grid container spacing={24}>
+        <Grid item xs={12} sm={12} md={4} xl={3}>
+          {renderDetail()}
+        </Grid>
+        <Grid item xs={12} sm={12} md={4} xl={3}>
+          <Grid container spacing={24}>
+            <Grid item xs={12}>
+              {
+                props.initialValues.documents &&
+                renderDocuments(
+                  'documents',
+                  props.intl.formatMessage({id: 'project.documentTitle'}), 
+                  props.intl.formatMessage({id: 'project.documentSubTitle'}),
+                  props.initialValues.documents
+                )
+              }
+            </Grid>
+            <Grid item xs={12}>
+              {
+                props.initialValues.documentPreSales &&
+                renderDocuments(
+                  'documentPreSales',
+                  props.intl.formatMessage({id: 'project.documentPreSalesTitle'}), 
+                  props.intl.formatMessage({id: 'project.documentPreSalesSubTitle'}),
+                  props.initialValues.documentPreSales
+                )
+              }
+            </Grid>
           </Grid>
         </Grid>
-          </Grid>*/}
-      <Grid item xs={12} sm={12} md={4} xl={4}>
-        <Grid container spacing={24}>
-          <Grid item xs={12}>
+        <Grid item xs={12} sm={12} md={4} xl={4}>
+          <Grid container spacing={24}>
+            <Grid item xs={12}>
               <FieldArray name="sales" component={renderSales} />
             </Grid>
-            {/* <Grid item xs={12}>
+            <Grid item xs={12}>
               {
-                response &&
-                response.data &&
-                response.data.sites &&
-                renderSites(response.data.sites)
+                props.initialValues.sites && 
+                renderSites(props.initialValues.sites)
               }
-            </Grid> */}
+            </Grid>
           </Grid>
         </Grid>
-      {/* <Grid item xs={12} sm={12} md={8} xl={3}>
-        {
-          response &&
-          response.data &&
-          response.data.workflow &&
-          response.data.workflow.steps &&
-          <WorkflowStep steps={response.data.workflow.steps} />
-        }
-      </Grid> */}
-    </Grid>
+      </Grid>
       <div className={classNames(props.classes.marginFarTop, props.classes.forceRight)}>
         <Button 
           type="button"

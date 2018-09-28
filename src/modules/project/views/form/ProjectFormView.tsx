@@ -53,12 +53,12 @@ const initialState = {
 
 type State = Readonly<typeof initialState>;
   
-class ProjectFormView extends React.PureComponent<AllProps, State> {
+class ProjectFormView extends React.Component<AllProps, State> {
   state: State = initialState;
 
-  shouldComponentUpdate (nextProps: AllProps, nextState: State) {
-    return this.props.projectState.isLoading !== nextProps.projectState.isLoading;
-  }
+  // shouldComponentUpdate (nextProps: AllProps, nextState: State) {
+  //   return this.props.projectState.isLoading !== nextProps.projectState.isLoading;
+  // }
 
   componentWillUnmount() {
     const { layoutDispatch, projectDispatch } = this.props;
@@ -126,7 +126,8 @@ class ProjectFormView extends React.PureComponent<AllProps, State> {
     const errors = {};
   
     const requiredFields = [
-      'name',
+      'customerUid', 'name', 'description', 
+      'start', 'end', 'currencyType', 'valueUsd'
     ];
   
     requiredFields.forEach(field => {

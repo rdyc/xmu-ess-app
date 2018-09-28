@@ -70,20 +70,6 @@ export const ProjectDetail: React.StatelessComponent<AllProps> = props => {
           fullWidth
           contentEditable={false}
           margin="normal"
-          label={<FormattedMessage id="project.field.name" />}
-          value={project.name}
-        />
-        <TextField
-          fullWidth
-          contentEditable={false}
-          margin="normal"
-          label={<FormattedMessage id="project.field.description" />}
-          value={project.description || 'N/A'}
-        />
-        <TextField
-          fullWidth
-          contentEditable={false}
-          margin="normal"
           label={<FormattedMessage id="project.field.owner" />}
           value={project.owner ? project.owner.fullName : 'N/A'}
         />
@@ -100,6 +86,20 @@ export const ProjectDetail: React.StatelessComponent<AllProps> = props => {
           margin="normal"
           label={<FormattedMessage id="project.field.type" />}
           value={project.project ? project.project.value : 'N/A'}
+        />
+        <TextField
+          fullWidth
+          contentEditable={false}
+          margin="normal"
+          label={<FormattedMessage id="project.field.name" />}
+          value={project.name}
+        />
+        <TextField
+          fullWidth
+          contentEditable={false}
+          margin="normal"
+          label={<FormattedMessage id="project.field.description" />}
+          value={project.description || 'N/A'}
         />
         <TextField
           fullWidth

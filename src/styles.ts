@@ -85,7 +85,7 @@ const styles = (theme: Theme) =>
       })
     },
     drawerPaperAdditional: {
-      width: drawerWidth + 80
+      width: drawerWidth
     },
     drawerPaperClose: {
       width: 60,
