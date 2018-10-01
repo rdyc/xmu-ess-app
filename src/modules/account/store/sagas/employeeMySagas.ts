@@ -1,33 +1,43 @@
 import { EmployeeFetchError, EmployeeFetchSuccess, EmployeeMyAction } from '@account/store/actions';
-import { all, call, fork, put, takeEvery } from 'redux-saga/effects';
-import { callApi } from 'utils';
-
-const API_ENDPOINT = process.env.REACT_APP_API_URL || '';
-
-function* handleFetch() {
-  try {
-    const response = yield call(callApi, 'get', API_ENDPOINT, '/v1/account/employees/my');
-    
-    if (response instanceof Response) {
-      yield put(EmployeeFetchError(`${response.status}: ${response.statusText}`));
-    } else {
-      yield put(EmployeeFetchSuccess(response));
-    }
-  } catch (err) {
-    if (err instanceof Error) {
-      yield put(EmployeeFetchError(err.stack!));
-    } else {
-      yield put(EmployeeFetchError('An unknown error occured.'));
-    }
-  }
-}
+import saiyanSaga from '@utils/saiyanSaga';
+import { all, fork, put, takeEvery } from 'redux-saga/effects';
+import { layoutAlertAdd } from '@layout/store/actions';
+import { IApiResponse } from 'utils';
 
 function* watchFetchRequest() {
-  yield takeEvery(EmployeeMyAction.FETCH_REQUEST, handleFetch);
+  const worker = () => {
+    return saiyanSaga.fetch({
+      method: 'get',
+      path: '/v1/account/employees/my',
+      success: (response: IApiResponse) => ([
+        put(EmployeeFetchSuccess(response.body)),
+      ]), 
+      failed: (response: IApiResponse) => ([
+        put(EmployeeFetchError(response.statusText)),
+        put(layoutAlertAdd({
+          time: new Date(),
+          message: response.statusText,
+          details: response
+        }))
+      ]), 
+      error: (error: TypeError) => ([
+        put(EmployeeFetchError(error.message)),
+        put(layoutAlertAdd({
+          time: new Date(),
+          message: error.message
+        }))
+      ]),
+      finally: () => ([])
+    });
+  };
+
+  yield takeEvery(EmployeeMyAction.FETCH_REQUEST, worker);
 }
 
 function* employeeMySagas() {
-  yield all([fork(watchFetchRequest)]);
+  yield all([
+    fork(watchFetchRequest)
+  ]);
 }
 
 export default employeeMySagas;

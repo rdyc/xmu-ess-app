@@ -8,66 +8,66 @@ import {
   EmployeeProfileFetchSuccess,
 } from '@account/store/actions';
 import { layoutAlertAdd } from '@layout/store/actions';
-import { callApi } from '@utils/index';
-import { all, call, fork, put, takeEvery } from 'redux-saga/effects';
+import saiyanSaga from '@utils/saiyanSaga';
+import { all, fork, put, takeEvery } from 'redux-saga/effects';
+import { IApiResponse } from 'utils';
 
-const API_ENDPOINT = process.env.REACT_APP_API_URL || '';
-
-const url = (uid: string) => `/v1/account/employees/${uid}`;
-
-//#region Handlers
-function* handleFetch(action: ReturnType<typeof EmployeeProfileFetchRequest>) {
-  try {
-    const response = yield call(callApi, 'get', API_ENDPOINT, url(action.payload.uid));
-    
-    if (response instanceof Response) {
-      yield put(EmployeeProfileFetchError(`${response.status}: ${response.statusText}`));
-    } else {
-      yield put(EmployeeProfileFetchSuccess(response));
-    }
-  } catch (error) {
-    if (error instanceof Error) {
-      yield put(EmployeeProfileFetchError(error.stack!));
-    } else {
-      yield put(EmployeeProfileFetchError('An unknown error occured.'));
-    }
-  }
-}
-
-function* handleCommand(action: ReturnType<typeof EmployeeProfileCommandRequest>) {
-  try {
-    const response = yield call(callApi, action.payload.method, API_ENDPOINT, '/v1/account/employees', action.payload.data);
-
-    if (response instanceof Response) {
-      yield put(EmployeeProfileCommandError(`${response.status} ${response.statusText} | ${response.headers.get('Date')} | ${response.headers.get('X-Correlation-Id')}`));
-      yield put(layoutAlertAdd({ time: new Date(), message: `${response.status} ${response.statusText}` }));
-    } else {
-      yield put(EmployeeProfileCommandSuccess(response));
-    }
-  } catch (error) {
-    let _error: string;
-
-    if (error instanceof Error) {
-      _error = error.stack!;
-    } else {
-      _error = 'An unknown error occured.';
-    }
-    
-    yield put(EmployeeProfileCommandError(_error));
-    yield put(layoutAlertAdd({ time: new Date(), message: _error }));
-  }
-}
-//#endregion
-
-//#region Wathcers
 function* watchFetchRequest() {
-  yield takeEvery(EmployeeProfileAction.FETCH_REQUEST, handleFetch);
+  const worker = (action: ReturnType<typeof EmployeeProfileFetchRequest>) => {
+    return saiyanSaga.fetch({
+      method: 'get',
+      path: `/v1/account/employees/${action.payload.uid}`,
+      success: (response: IApiResponse) => ([
+        put(EmployeeProfileFetchSuccess(response.body)),
+      ]), 
+      failed: (response: IApiResponse) => ([
+        put(EmployeeProfileFetchError(response.statusText)),
+        put(layoutAlertAdd({
+          time: new Date(),
+          message: response.statusText,
+          details: response
+        }))
+      ]), 
+      error: (error: TypeError) => ([
+        put(EmployeeProfileFetchError(error.message)),
+        put(layoutAlertAdd({
+          time: new Date(),
+          message: error.message
+        }))
+      ]),
+      finally: () => ([])
+    });
+  };
+
+  yield takeEvery(EmployeeProfileAction.FETCH_REQUEST, worker);
 }
 
 function* watchCommandRequest() {
-  yield takeEvery(EmployeeProfileAction.COMMAND_REQUEST, handleCommand);
+  const worker = (action: ReturnType<typeof EmployeeProfileCommandRequest>) => {
+    return saiyanSaga.fetch({
+      method: 'put',
+      path: `/v1/account/employees/${action.payload.uid}`,
+      payload: action.payload.data,
+      success: (response: IApiResponse) => ([
+        put(EmployeeProfileCommandSuccess(response.body)),
+      ]), 
+      failed: (response: IApiResponse) => ([
+        put(EmployeeProfileCommandError(response.statusText)),
+        put(layoutAlertAdd({ time: new Date(), message: response.body }))
+      ]), 
+      error: (error: TypeError) => ([
+        put(EmployeeProfileCommandError(error.message)),
+        put(layoutAlertAdd({
+          time: new Date(),
+          message: error.message
+        }))
+      ]),
+      finally: () => ([])
+    });
+  };
+
+  yield takeEvery(EmployeeProfileAction.COMMAND_REQUEST, worker);
 }
-//#endregion
 
 function* employeeProfileSagas() {
   yield all([

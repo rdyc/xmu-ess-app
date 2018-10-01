@@ -10,75 +10,99 @@ import {
   employeeGetListRequest,
   employeeGetListSuccess,
 } from '@account/store/actions';
-import { all, call, fork, put, takeEvery } from 'redux-saga/effects';
-import { callApi, objectToQuerystring } from 'utils';
-
-const API_ENDPOINT = process.env.REACT_APP_API_URL || '';
-
-function* handleAllFetch(action: ReturnType<typeof employeeGetAllRequest>) {
-  try {
-    const response = yield call(callApi, 'get', API_ENDPOINT, '/v1/account/employees' + objectToQuerystring(action.payload.filter));
-    
-    if (response instanceof Response) {
-      yield put(employeeGetAllError(`${response.status}: ${response.statusText}`));
-    } else {
-      yield put(employeeGetAllSuccess(response));
-    }
-  } catch (err) {
-    if (err instanceof Error) {
-      yield put(employeeGetAllError(err.stack!));
-    } else {
-      yield put(employeeGetAllError('An unknown error occured.'));
-    }
-  }
-}
-
-function* handleListFetch(action: ReturnType<typeof employeeGetListRequest>) {
-  try {
-    const response = yield call(callApi, 'get', API_ENDPOINT, '/v1/account/employees/list' + objectToQuerystring(action.payload.filter));
-    
-    if (response instanceof Response) {
-      yield put(employeeGetListError(`${response.status}: ${response.statusText}`));
-    } else {
-      yield put(employeeGetListSuccess(response));
-    }
-  } catch (err) {
-    if (err instanceof Error) {
-      yield put(employeeGetListError(err.stack!));
-    } else {
-      yield put(employeeGetListError('An unknown error occured.'));
-    }
-  }
-}
-
-function* handleByIdFetch(action: ReturnType<typeof employeeGetByIdRequest>) {
-  try {
-    const response = yield call(callApi, 'get', API_ENDPOINT, '/v1/account/employees/' + action.payload.employeeUid);
-    
-    if (response instanceof Response) {
-      yield put(employeeGetByIdError(`${response.status}: ${response.statusText}`));
-    } else {
-      yield put(employeeGetByIdSuccess(response));
-    }
-  } catch (err) {
-    if (err instanceof Error) {
-      yield put(employeeGetByIdError(err.stack!));
-    } else {
-      yield put(employeeGetByIdError('An unknown error occured.'));
-    }
-  }
-}
+import saiyanSaga from '@utils/saiyanSaga';
+import { all, fork, put, takeEvery } from 'redux-saga/effects';
+import { objectToQuerystring, IApiResponse } from 'utils';
+import { layoutAlertAdd } from '@layout/store/actions';
 
 function* watchFetchAllRequest() {
-  yield takeEvery(EmployeeAction.GET_ALL_REQUEST, handleAllFetch);
+  const worker = (action: ReturnType<typeof employeeGetAllRequest>) => {
+    return saiyanSaga.fetch({
+      method: 'get',
+      path: '/v1/account/employees' + objectToQuerystring(action.payload.filter), 
+      success: (response: IApiResponse) => ([
+        put(employeeGetAllSuccess(response.body)),
+      ]), 
+      failed: (response: IApiResponse) => ([
+        put(employeeGetAllError(response.statusText)),
+        put(layoutAlertAdd({
+          time: new Date(),
+          message: response.statusText,
+          details: response
+        }))
+      ]), 
+      error: (error: TypeError) => ([
+        put(employeeGetAllError(error.message)),
+        put(layoutAlertAdd({
+          time: new Date(),
+          message: error.message
+        }))
+      ]),
+      finally: () => ([])
+    });
+  };
+  
+  yield takeEvery(EmployeeAction.GET_ALL_REQUEST, worker);
 }
 
 function* watchFetchListRequest() {
-  yield takeEvery(EmployeeAction.GET_LIST_REQUEST, handleListFetch);
+  const worker = (action: ReturnType<typeof employeeGetListRequest>) => {
+    return saiyanSaga.fetch({
+      method: 'get',
+      path: '/v1/account/employees/list' + objectToQuerystring(action.payload.filter),
+      success: (response: IApiResponse) => ([
+        put(employeeGetListSuccess(response.body)),
+      ]), 
+      failed: (response: IApiResponse) => ([
+        put(employeeGetListError(response.statusText)),
+        put(layoutAlertAdd({
+          time: new Date(),
+          message: response.statusText,
+          details: response
+        }))
+      ]), 
+      error: (error: TypeError) => ([
+        put(employeeGetListError(error.message)),
+        put(layoutAlertAdd({
+          time: new Date(),
+          message: error.message
+        }))
+      ]),
+      finally: () => ([])
+    });
+  };
+
+  yield takeEvery(EmployeeAction.GET_LIST_REQUEST, worker);
 }
 
 function* watchFetchByIdRequest() {
-  yield takeEvery(EmployeeAction.GET_BY_ID_REQUEST, handleByIdFetch);
+  const worker = (action: ReturnType<typeof employeeGetByIdRequest>) => {
+    return saiyanSaga.fetch({
+      method: 'get',
+      path: `/v1/account/employees/${action.payload.employeeUid}`,
+      success: (response: IApiResponse) => ([
+        put(employeeGetByIdSuccess(response.body)),
+      ]), 
+      failed: (response: IApiResponse) => ([
+        put(employeeGetByIdError(response.statusText)),
+        put(layoutAlertAdd({
+          time: new Date(),
+          message: response.statusText,
+          details: response
+        }))
+      ]), 
+      error: (error: TypeError) => ([
+        put(employeeGetByIdError(error.message)),
+        put(layoutAlertAdd({
+          time: new Date(),
+          message: error.message,
+        }))
+      ]),
+      finally: () => ([])
+    });
+  };
+  
+  yield takeEvery(EmployeeAction.GET_BY_ID_REQUEST, worker);
 }
 
 function* employeeSagas() {

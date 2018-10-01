@@ -148,7 +148,7 @@ export const ProjectDetail: React.StatelessComponent<AllProps> = props => {
           fullWidth
           contentEditable={false}
           margin="normal"
-          label={<FormattedMessage id="project.field.value" />}
+          label={<FormattedMessage id="project.field.valueUsd" />}
           value={intl.formatNumber(project.valueUsd)}
         />
         <TextField

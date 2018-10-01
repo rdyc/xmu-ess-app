@@ -16,7 +16,7 @@ import styles from '@styles';
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { RouteComponentProps } from 'react-router';
-import { isNullOrUndefined } from 'util';
+import { isNullOrUndefined, isObject } from 'util';
 
 interface PropsFromState extends RouteComponentProps<void> {
   layoutState: ILayoutState;
@@ -86,14 +86,22 @@ export const bottomSnackbar: React.ComponentType<AllProps> = props => {
       <Dialog
         open={layoutState.isAlertDialogVisible}
         aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-details"
+        aria-describedby="alert-dialog-details" 
       >
         <DialogTitle id="alert-dialog-title">
           <FormattedMessage id="global.dialog.alertTitle" />
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-details">
-            {alert.details}
+            {
+              isObject(alert.details) &&
+              <pre>
+                {JSON.stringify(alert.details, null, 2) }
+              </pre>
+            }
+            {
+              !isObject(alert.details) && alert.details
+            }
           </DialogContentText>
         </DialogContent>
         <DialogActions>

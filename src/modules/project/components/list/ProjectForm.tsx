@@ -1,7 +1,7 @@
 import ListItemEmployeeSelector from '@account/components/views/ListItemEmployeeSelector';
 import { IEmployee } from '@account/interfaces/response';
 import { ConnectedReduxProps } from '@generic/types';
-import { InputText } from '@layout/components/formFields';
+import { InputText, InputNumber, InputDate } from '@layout/components/formFields';
 import {
   Avatar,
   Button,
@@ -93,13 +93,13 @@ export const projectForm: React.StatelessComponent<AllProps> = props => {
           type="text"
           name="start"
           label={<FormattedMessage id="project.field.start" />}
-          component={InputText}
+          component={InputDate}
         />
         <Field
           type="text"
           name="end"
           label={<FormattedMessage id="project.field.end" />}
-          component={InputText}
+          component={InputDate}
         />
         <Field
           type="text"
@@ -115,24 +115,29 @@ export const projectForm: React.StatelessComponent<AllProps> = props => {
           value={props.intl.formatNumber(props.initialValues.rate || 0)}
         />
         <Field
-          type="numeric"
+          type="number"
           name="valueUsd"
           label={<FormattedMessage id="project.field.valueUsd" />}
-          component={InputText}
+          component={InputNumber} 
+          onChange={(event: any, newValue: number, oldValue: number) => {
+            const rate = props.initialValues.rate || 0;
+
+            props.change('valueIdr', newValue * rate);
+          }}
         />
-        <TextField
-          fullWidth
+        <Field
+          type="number"
+          name="valueIdr"
           disabled
-          margin="normal"
           label={<FormattedMessage id="project.field.valueIdr" />}
-          value={props.intl.formatNumber(props.initialValues.valueIdr || 0)}
+          component={InputNumber}
         />
-        <TextField
-          fullWidth
+        <Field
+          type="number"
+          name="maxHours"
           disabled
-          margin="normal"
           label={<FormattedMessage id="project.field.hours" />}
-          value={props.intl.formatNumber(props.initialValues.maxHours || 0)}
+          component={InputNumber}
         />
       </CardContent>
     </Card>
