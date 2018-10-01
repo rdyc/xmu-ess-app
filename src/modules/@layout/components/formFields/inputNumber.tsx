@@ -1,6 +1,6 @@
 import { TextField } from '@material-ui/core';
 import * as React from 'react';
-import NumberFormat, { NumberFormatValues } from 'react-number-format';
+import { default as NumberFormat } from 'react-number-format';
 
 export const inputNumber = ({ 
   input, 
@@ -28,7 +28,7 @@ export const inputNumber = ({
         className={className} 
         getInputRef={inputRef}
         thousandSeparator={true} 
-        onValueChange={(values: NumberFormatValues) => {
+        onValueChange={(values: any) => {
           _value = values.floatValue;
         }}
         onBlur={(e: any) => {

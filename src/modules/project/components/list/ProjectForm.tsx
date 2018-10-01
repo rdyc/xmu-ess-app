@@ -30,6 +30,7 @@ import * as classNames from 'classnames';
 import * as React from 'react';
 import { FormattedMessage, FormattedNumber, InjectedIntlProps } from 'react-intl';
 import { Field, FieldArray, InjectedFormProps, reduxForm, WrappedFieldArrayProps } from 'redux-form';
+import { inputSelect } from '@layout/components/formFields/inputSelect';
 
 type AllProps = InjectedFormProps<IProjectDetail> & 
                 ConnectedReduxProps &
@@ -62,13 +63,13 @@ export const projectForm: React.StatelessComponent<AllProps> = props => {
           type="text"
           name="customerUid"
           label={<FormattedMessage id="project.field.customer" />}
-          component={InputText}
+          component={inputSelect}
         />
         <TextField
           fullWidth
           disabled
           margin="normal"
-          label={<FormattedMessage id="project.field.owner" />}
+          label={<FormattedMessage id="project.field.type" />}
           value={props.initialValues.project ? props.initialValues.project.value : 'N/A'}
         />
         <Field

@@ -3,6 +3,9 @@
   "global.processing": "Processing",
   "global.find": "Find",
   "global.search": "Search",
+
+  "global.date.today": "Today",
+  "global.date.empty": "Empty",
   
   "global.dialog.alertTitle": "Alert Details",
   

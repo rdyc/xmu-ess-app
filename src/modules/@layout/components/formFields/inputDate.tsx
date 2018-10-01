@@ -1,8 +1,8 @@
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import DatePicker from 'material-ui-pickers/DatePicker';
+import { Moment } from 'moment';
 import * as React from 'react';
-import { FormattedMessage } from 'react-intl';
 
 export const inputDate = ({ 
   input, 
@@ -21,15 +21,20 @@ export const inputDate = ({
     margin="normal"
     leftArrowIcon={<ChevronLeftIcon />}
     rightArrowIcon={<ChevronRightIcon />}
-    okLabel={<FormattedMessage id="global.action.ok" />}
-    cancelLabel={<FormattedMessage id="global.action.cancel" />}
-    clearLabel={<FormattedMessage id="global.action.clear" />}
-    todayLabel={<FormattedMessage id="global.date.today" />}
-    emptyLabel={<FormattedMessage id="global.date.empty" />}
+    // okLabel={intl.formatMessage({id: 'global.action.ok'})}
+    // cancelLabel={intl.formatMessage({id: 'global.action.cancel'})}
+    // clearLabel={intl.formatMessage({id: 'global.action.clear'})}
+    // todayLabel={intl.formatMessage({id: 'global.date.today'})}
+    // emptyLabel={intl.formatMessage({id: 'global.date.empty'})}
+    showTodayButton={true}
+    format={'MMM DD, YYYY'}
     {...input}
     label={label}
     disabled={disabled || submitting}
     error={touched && error}
     helperText={touched && error}
+    onChange={(moment: Moment) => input.onChange(moment.toISOString(true))}
   />
 );
+
+// export default injectIntl(inputDate);

@@ -67,7 +67,7 @@ class ListItemEmployeeSelector extends React.Component<AllProps, State> {
 
   componentDidMount() {
     // skipp fetch while current state is being loaded
-    if (this.props.employeeState.isLoading) {
+    if (this.props.employeeState.isLoading || this.props.employeeState.response) {
       return;
     }
 
