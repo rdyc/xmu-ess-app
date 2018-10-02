@@ -8,6 +8,7 @@ import {
 import { employeeGetListReducer } from '@account/store/reducers/employeeGetListReducer';
 import { IAppState } from '@generic/interfaces';
 import { appBarReducer, layoutReducer, listBarReducer, notificationReducer } from '@layout/store/reducers';
+import { customerGetAllReducer, customerGetByIdReducer, customerGetListReducer } from '@lookup/store/reducers';
 import { projectGetAllReducer } from '@project/store/reducers';
 import { projectGetByIdReducer } from '@project/store/reducers/projectGetByIdReducer';
 import { combineReducers } from 'redux';
@@ -27,6 +28,14 @@ export const rootReducer = combineReducers<IAppState>({
   /* list bar */
   listBar: listBarReducer,
 
+  /* common */
+
+  /* lookup */
+  customerGetAll: customerGetAllReducer,
+  customerGetList: customerGetListReducer,
+  customerGetById: customerGetByIdReducer,
+
+  /* account */
   employeeGetAll: employeeGetAllReducer,
   employeeGetList: employeeGetListReducer,
   employeeGetById: employeeGetByIdReducer,

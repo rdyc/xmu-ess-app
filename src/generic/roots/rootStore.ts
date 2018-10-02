@@ -1,17 +1,14 @@
-import { applyMiddleware, createStore, Store } from 'redux';
-import createSagaMiddleware from 'redux-saga';
+import { IAppState } from '@generic/interfaces';
+import { rootHistory, rootReducer, rootSaga } from '@generic/roots';
 import { connectRouter, routerMiddleware } from 'connected-react-router';
+import { applyMiddleware, createStore, Store } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
-import { History } from 'history';
-import { rootReducer, rootSaga } from './generic/roots';
 import { loadUser } from 'redux-oidc';
-import { IAppState } from './generic/interfaces/IAppState';
-import { AppUserManager } from './utils';
+import createSagaMiddleware from 'redux-saga';
+import { AppUserManager } from 'utils';
 
-export default function configureStore(
-  history: History,
-  initialState: IAppState
-): Store<IAppState> {
+const configureStore = (): Store<IAppState> => {  
+  const initialState = window.initialReduxState;
   const composeEnhancers = composeWithDevTools({});
   const sagaMiddleware = createSagaMiddleware();
 
@@ -20,9 +17,9 @@ export default function configureStore(
   });
 
   const store = createStore(
-    connectRouter(history)(rootReducer),
+    connectRouter(rootHistory)(rootReducer),
     initialState,
-    composeEnhancers(applyMiddleware(routerMiddleware(history), sagaMiddleware))
+    composeEnhancers(applyMiddleware(routerMiddleware(rootHistory), sagaMiddleware))
   );
 
   // oidc
@@ -32,4 +29,6 @@ export default function configureStore(
   sagaMiddleware.run(rootSaga);
 
   return store;
-}
+};
+
+export const rootStore = configureStore();

@@ -2,7 +2,7 @@ import { ILookupCompany } from '@lookup/interfaces';
 
 export interface ILookupCustomer {
   uid:        string;
-  companyUid: string | null;
+  companyUid: string;
   company:    ILookupCompany | null;
   name:       string;
   npwp:       string | null;

@@ -1,4 +1,6 @@
-import { TextField, MenuItem } from '@material-ui/core';
+import { rootStore } from '@generic/roots';
+import CustomerLookup from '@lookup/components/controls/CustomerLookup';
+import { ICustomerList } from '@lookup/interfaces/response';
 import * as React from 'react';
 
 export const inputSelect = ({ 
@@ -12,19 +14,18 @@ export const inputSelect = ({
     warning,
     submitting
   }
-}: any) => (
-  <TextField
-    select
-    fullWidth
-    margin="normal"
-    {...input}
-    label={label}
-    disabled={disabled || submitting}
-    error={touched && error}
-    helperText={touched && error}
-  >
-    <MenuItem value={input.value}>
-      {input.value}
-    </MenuItem>
-  </TextField>
-);
+}: any) => {
+  const handleOnChange = (customer: ICustomerList) => { 
+    input.onChange(customer);
+  };
+
+  return (    
+    <CustomerLookup 
+      {...rootStore}
+      input={input}
+      label={label}
+      {...disabled}
+      onSelected={handleOnChange}
+    />
+  );
+};

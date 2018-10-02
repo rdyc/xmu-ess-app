@@ -1,7 +1,7 @@
 import ListItemEmployeeSelector from '@account/components/views/ListItemEmployeeSelector';
 import { IEmployee } from '@account/interfaces/response';
 import { ConnectedReduxProps } from '@generic/types';
-import { InputText, InputNumber, InputDate } from '@layout/components/formFields';
+import { InputDate, InputNumber, InputText, InputSelect } from '@layout/components/formFields';
 import {
   Avatar,
   Button,
@@ -30,7 +30,7 @@ import * as classNames from 'classnames';
 import * as React from 'react';
 import { FormattedMessage, FormattedNumber, InjectedIntlProps } from 'react-intl';
 import { Field, FieldArray, InjectedFormProps, reduxForm, WrappedFieldArrayProps } from 'redux-form';
-import { inputSelect } from '@layout/components/formFields/inputSelect';
+import { ICustomerList } from '@lookup/interfaces/response';
 
 type AllProps = InjectedFormProps<IProjectDetail> & 
                 ConnectedReduxProps &
@@ -61,9 +61,12 @@ export const projectForm: React.StatelessComponent<AllProps> = props => {
         />
         <Field
           type="text"
-          name="customerUid"
+          name="customer"
           label={<FormattedMessage id="project.field.customer" />}
-          component={inputSelect}
+          component={InputSelect}
+          onChange={(event: any, newValue: ICustomerList) => {
+            props.change('customerUid', newValue.uid);
+          }}
         />
         <TextField
           fullWidth
