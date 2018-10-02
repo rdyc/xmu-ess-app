@@ -1,4 +1,4 @@
-import { IAppState, IQueryCollectionState } from '@generic/interfaces';
+import { IAppState, IQueryCollectionState, IResponseCollection } from '@generic/interfaces';
 import { ConnectedReduxProps } from '@generic/types';
 import { ILookupCustomer } from '@lookup/interfaces';
 import { ICustomerListRequest } from '@lookup/interfaces/queries';
@@ -27,6 +27,7 @@ import styles from '@styles';
 import * as React from 'react';
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
+import { List as VirtualizedList, ListRowProps } from 'react-virtualized';
 import { Dispatch } from 'redux';
 import { BaseFieldProps, WrappedFieldProps } from 'redux-form';
 
@@ -94,17 +95,6 @@ class CustomerLookup extends React.Component<AllProps, State> {
     });
   };
 
-  fnFilterCustomer = (customers: ICustomerList[]) => {
-    if (this.state.search !== '') {
-      return customers.filter(item => 
-        item.uid.toLowerCase().indexOf(this.state.search) !== -1 || 
-        item.name.toLowerCase().indexOf(this.state.search) !== -1
-      );
-    } 
-
-    return customers;
-  };
-
   handleDialogOpen = () => {
     if (!this.props.disabled) {
       this.setState({ open: true });
@@ -137,22 +127,69 @@ class CustomerLookup extends React.Component<AllProps, State> {
     this.props.onSelected(customer);
   };
 
+  fnFilteredCustomer = (response: IResponseCollection<ICustomerList> | undefined) => {
+    if (response && response.data) {
+      if (this.state.search !== '') {
+        return response.data.filter(item => 
+          item.name.toLowerCase().indexOf(this.state.search) !== -1
+        );
+      } else {
+        return response.data;
+      }
+    } else {
+      return [];
+    }
+  };
+  
   render() {
     const { intl, input, label, disabled, meta } = this.props;
-    const { isLoading, response } = this.props.customerState;
+    const { response } = this.props.customerState;
+    const customers = this.fnFilteredCustomer(response);
+
+    const rowRenderer = (row: ListRowProps) => {
+      if (customers.length > 0) {
+        const cust = customers[row.index];
+
+        if (!cust) {
+          return;
+        }
+
+        return (
+          <ListItem 
+            button 
+            key={row.key}
+            style={{...row.style}}
+            onClick={() => this.handleSelected(cust)}
+          >
+            <ListItemAvatar key={row.key}>
+              <Avatar key={row.key}>
+                <BusinessIcon />
+              </Avatar>
+            </ListItemAvatar>
+            <ListItemText 
+              color="primary"
+              key={row.key}
+              primary={cust.name}
+              secondary={cust.address}
+              primaryTypographyProps={{
+                noWrap: true
+              }}
+              secondaryTypographyProps={{
+                noWrap: true
+              }}
+            />
+          </ListItem>
+        );
+      }
+
+      return null;
+    };
 
     const renderDialog = (
       <Dialog 
         fullScreen={false}
         open={this.state.open}
         aria-labelledby="lookup-customer-dialog-title" 
-        scroll="paper" 
-        PaperProps={{
-          style: {
-            width: 500,
-            height: 600
-          }
-        }}
         onClose={this.handleDialogClose}
       >
         <DialogTitle 
@@ -185,35 +222,15 @@ class CustomerLookup extends React.Component<AllProps, State> {
             onKeyUp={(event: React.KeyboardEvent<HTMLDivElement>) => this.handleKeyUp(event)}
           />
         </DialogTitle>
-        <DialogContent>
+        <DialogContent style={{ padding: 0 }}>
           <List>
-            {
-              !isLoading &&
-              response &&
-              response.data &&
-              this.fnFilterCustomer(response.data)
-                .map(item => 
-                <ListItem 
-                  button 
-                  key={item.uid}
-                  onClick={() => this.handleSelected(item)}
-                >
-                  <ListItemAvatar key={item.uid}>
-                    <Avatar key={item.uid}>
-                      <BusinessIcon />
-                    </Avatar>
-                  </ListItemAvatar>
-                  <ListItemText color="primary"
-                    key={item.uid}
-                    primary={item.name}
-                    secondary={item.address}
-                    secondaryTypographyProps={{
-                      noWrap: true
-                    }}
-                  />
-                </ListItem>
-              )
-            }
+            <VirtualizedList
+              width={600}
+              height={550}
+              rowCount={customers.length}
+              rowHeight={60}
+              rowRenderer={rowRenderer}
+            />
           </List>
         </DialogContent>
         <DialogActions>
