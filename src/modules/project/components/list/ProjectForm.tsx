@@ -1,7 +1,8 @@
 import ListItemEmployeeSelector from '@account/components/views/ListItemEmployeeSelector';
 import { IEmployee } from '@account/interfaces/response';
 import { ConnectedReduxProps } from '@generic/types';
-import { InputDate, InputNumber, InputText, InputSelect } from '@layout/components/formFields';
+import { FieldInputCustomer, FieldInputDate, FieldInputNumber, FieldInputText } from '@layout/components/formFields';
+import { ICustomerList } from '@lookup/interfaces/response';
 import {
   Avatar,
   Button,
@@ -30,7 +31,6 @@ import * as classNames from 'classnames';
 import * as React from 'react';
 import { FormattedMessage, FormattedNumber, InjectedIntlProps } from 'react-intl';
 import { Field, FieldArray, InjectedFormProps, reduxForm, WrappedFieldArrayProps } from 'redux-form';
-import { ICustomerList } from '@lookup/interfaces/response';
 
 type AllProps = InjectedFormProps<IProjectDetail> & 
                 ConnectedReduxProps &
@@ -63,7 +63,7 @@ export const projectForm: React.StatelessComponent<AllProps> = props => {
           type="text"
           name="customer"
           label={<FormattedMessage id="project.field.customer" />}
-          component={InputSelect}
+          component={FieldInputCustomer}
           onChange={(event: any, newValue: ICustomerList) => {
             props.change('customerUid', newValue.uid);
           }}
@@ -79,37 +79,37 @@ export const projectForm: React.StatelessComponent<AllProps> = props => {
           type="text"
           name="name"
           label={<FormattedMessage id="project.field.name" />}
-          component={InputText}
+          component={FieldInputText}
         />
         <Field
           type="text"
           name="description"
           label={<FormattedMessage id="project.field.description" />}
-          component={InputText}
+          component={FieldInputText}
         />
         <Field
           type="text"
           name="contractNumber"
           label={<FormattedMessage id="project.field.contract" />}
-          component={InputText}
+          component={FieldInputText}
         />
         <Field
           type="text"
           name="start"
           label={<FormattedMessage id="project.field.start" />}
-          component={InputDate}
+          component={FieldInputDate}
         />
         <Field
           type="text"
           name="end"
           label={<FormattedMessage id="project.field.end" />}
-          component={InputDate}
+          component={FieldInputDate}
         />
         <Field
           type="text"
           name="currencyType"
           label={<FormattedMessage id="project.field.currency" />}
-          component={InputText}
+          component={FieldInputText}
         />
         <TextField
           fullWidth
@@ -122,7 +122,7 @@ export const projectForm: React.StatelessComponent<AllProps> = props => {
           type="number"
           name="valueUsd"
           label={<FormattedMessage id="project.field.valueUsd" />}
-          component={InputNumber} 
+          component={FieldInputNumber} 
           onChange={(event: any, newValue: number, oldValue: number) => {
             const rate = props.initialValues.rate || 0;
 
@@ -134,14 +134,14 @@ export const projectForm: React.StatelessComponent<AllProps> = props => {
           name="valueIdr"
           disabled
           label={<FormattedMessage id="project.field.valueIdr" />}
-          component={InputNumber}
+          component={FieldInputNumber}
         />
         <Field
           type="number"
           name="maxHours"
           disabled
           label={<FormattedMessage id="project.field.hours" />}
-          component={InputNumber}
+          component={FieldInputNumber}
         />
       </CardContent>
     </Card>

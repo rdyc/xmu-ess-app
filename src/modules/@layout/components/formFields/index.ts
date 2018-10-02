@@ -1,4 +1,4 @@
-export { inputText as InputText } from './inputText';
-export { inputDate as InputDate } from './inputDate';
-export { inputNumber as InputNumber } from './inputNumber';
-export { inputSelect as InputSelect } from './inputSelect';
+export * from './FieldInputText';
+export * from './FieldInputDate';
+export * from './FieldInputNumber';
+export * from './FieldInputCustomer';

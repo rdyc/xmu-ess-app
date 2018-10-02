@@ -1,5 +1,6 @@
 import { IAppState, IQueryCollectionState } from '@generic/interfaces';
 import { ConnectedReduxProps } from '@generic/types';
+import { ILookupCustomer } from '@lookup/interfaces';
 import { ICustomerListRequest } from '@lookup/interfaces/queries';
 import { ICustomerList } from '@lookup/interfaces/response';
 import { customerGetListRequest } from '@lookup/store/actions';
@@ -27,7 +28,7 @@ import * as React from 'react';
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
-import { ILookupCustomer } from '@lookup/interfaces';
+import { BaseFieldProps, WrappedFieldProps } from 'redux-form';
 
 interface PropsFromState {
   customerState: IQueryCollectionState<ICustomerListRequest, ICustomerList>;
@@ -39,9 +40,10 @@ interface PropsFromDispatch {
   };
 }
 
-interface OwnProps {
-  input: any; 
+interface OwnProps extends WrappedFieldProps, BaseFieldProps {
+  type?: string; 
   label: string; 
+  disabled: boolean;
   onSelected: (customer: ICustomerList) => void;
 }
 
@@ -71,7 +73,10 @@ class CustomerLookup extends React.Component<AllProps, State> {
 
     this.setState({ selected: this.props.input.value });
 
-    this.loadData();
+    // don't load while control has set as disabled
+    if (!this.props.disabled) {
+      this.loadData();
+    }
   }
 
   loadData = () => {
@@ -101,7 +106,9 @@ class CustomerLookup extends React.Component<AllProps, State> {
   };
 
   handleDialogOpen = () => {
-    this.setState({ open: true });
+    if (!this.props.disabled) {
+      this.setState({ open: true });
+    }
   };
 
   handleDialogClose = () => {
@@ -115,14 +122,9 @@ class CustomerLookup extends React.Component<AllProps, State> {
   };
 
   handleKeyUp = (event: React.KeyboardEvent<HTMLDivElement>) => {
-    // console.log(event.keyCode); // 13 = enter
-    // console.log(event.currentTarget);
-
     // delete pressed
     if (event.keyCode === 46) {
       this.setState({ search: '' });
-
-      // todo: clear input value
     }
   };
 
@@ -136,7 +138,7 @@ class CustomerLookup extends React.Component<AllProps, State> {
   };
 
   render() {
-    const { intl } = this.props;
+    const { intl, input, label, disabled, meta } = this.props;
     const { isLoading, response } = this.props.customerState;
 
     const renderDialog = (
@@ -229,11 +231,12 @@ class CustomerLookup extends React.Component<AllProps, State> {
         <TextField
           fullWidth
           margin="normal"
+          name={input.name}
+          label={label}
           value={customer.name}
-          label={this.props.label}
-          // disabled={this.props.disabled || submitting}
-          // error={this.props.touched && this.props.error}
-          // helperText={this.props.touched && this.props.error}
+          disabled={disabled || meta.submitting}
+          error={meta.touched && meta.error}
+          helperText={meta.touched && meta.error}
           onClick={this.handleDialogOpen}
           InputLabelProps={{ shrink: true }}
         />

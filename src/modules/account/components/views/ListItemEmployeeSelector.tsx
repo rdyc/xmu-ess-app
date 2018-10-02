@@ -115,14 +115,9 @@ class ListItemEmployeeSelector extends React.Component<AllProps, State> {
   };
 
   handleKeyUp = (event: React.KeyboardEvent<HTMLDivElement>) => {
-    // console.log(event.keyCode); // 13 = enter
-    // console.log(event.currentTarget);
-
     // delete pressed
     if (event.keyCode === 46) {
       this.setState({ search: '' });
-
-      // todo: clear input value
     }
   };
 
@@ -173,6 +168,7 @@ class ListItemEmployeeSelector extends React.Component<AllProps, State> {
             id="account-employee-selector-text"
             fullWidth
             margin="normal"
+            value={this.state.search}
             disabled={!response}
             label={<FormattedMessage id="global.search" />}
             placeholder={intl.formatMessage({ id: 'account.placeholder.lookupSearch' })}
