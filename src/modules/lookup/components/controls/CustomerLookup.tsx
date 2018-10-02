@@ -222,7 +222,11 @@ class CustomerLookup extends React.Component<AllProps, State> {
             onKeyUp={(event: React.KeyboardEvent<HTMLDivElement>) => this.handleKeyUp(event)}
           />
         </DialogTitle>
-        <DialogContent style={{ padding: 0 }}>
+        <DialogContent 
+          style={{ 
+            padding: 0 
+          }}
+        >
           <List>
             <VirtualizedList
               width={600}
@@ -241,8 +245,6 @@ class CustomerLookup extends React.Component<AllProps, State> {
       </Dialog>
     );
 
-    const customer = this.state.selected as ICustomerList;
-
     return (
       <div>
         <TextField
@@ -250,7 +252,7 @@ class CustomerLookup extends React.Component<AllProps, State> {
           margin="normal"
           name={input.name}
           label={label}
-          value={customer.name}
+          value={input.value.name}
           disabled={disabled || meta.submitting}
           error={meta.touched && meta.error}
           helperText={meta.touched && meta.error}

@@ -2,7 +2,7 @@ import { ListItemEmployee } from '@account/components/views/ListItemEmployee';
 import { IEmployeeListRequest } from '@account/interfaces/queries';
 import { IEmployee } from '@account/interfaces/response';
 import { employeeGetListRequest } from '@account/store/actions';
-import { IAppState, IQueryCollectionState } from '@generic/interfaces';
+import { IAppState, IQueryCollectionState, IResponseCollection } from '@generic/interfaces';
 import { ConnectedReduxProps } from '@generic/types';
 import {
   Avatar,
@@ -32,6 +32,7 @@ import * as React from 'react';
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
+import { List as VirtualizedList, ListRowProps } from 'react-virtualized';
 
 interface PropsFromState {
   employeeState: IQueryCollectionState<IEmployeeListRequest, IEmployee>;
@@ -89,17 +90,6 @@ class ListItemEmployeeSelector extends React.Component<AllProps, State> {
     });
   };
 
-  fnFilterEmployee = (employees: IEmployee[]) => {
-    if (this.state.search !== '') {
-      return employees.filter(item => 
-        item.fullName.toLowerCase().indexOf(this.state.search) !== -1 || 
-        item.email.toLowerCase().indexOf(this.state.search) !== -1
-      );
-    } 
-
-    return employees;
-  };
-
   handleDialogOpen = () => {
     this.setState({ open: true });
   };
@@ -135,22 +125,69 @@ class ListItemEmployeeSelector extends React.Component<AllProps, State> {
     this.setState({ open: false, selected: employee });
   };
 
+  fnFilteredEmployee = (response: IResponseCollection<IEmployee> | undefined) => {
+    if (response && response.data) {
+      if (this.state.search !== '') {
+        return response.data.filter(item => 
+          item.fullName.toLowerCase().indexOf(this.state.search) !== -1
+        );
+      } else {
+        return response.data;
+      }
+    } else {
+      return [];
+    }
+  };
+
   render() {
     const { intl } = this.props;
-    const { isLoading, response } = this.props.employeeState;
+    const { response } = this.props.employeeState;
+    const employees = this.fnFilteredEmployee(response);
+
+    const rowRenderer = (row: ListRowProps) => {
+      if (employees.length > 0) {
+        const emp = employees[row.index];
+
+        if (!emp) {
+          return;
+        }
+
+        return (
+          <ListItem 
+            button 
+            key={row.key}
+            style={{...row.style}}
+            onClick={() => this.handleListItemClick(emp)}
+          >
+            <ListItemAvatar key={row.key}>
+              <Avatar key={row.key}>
+                <PersonIcon />
+              </Avatar>
+            </ListItemAvatar>
+            <ListItemText 
+              color="primary"
+              key={row.key}
+              primary={emp.fullName}
+              secondary={emp.email}
+              primaryTypographyProps={{
+                noWrap: true
+              }}
+              secondaryTypographyProps={{
+                noWrap: true
+              }}
+            />
+          </ListItem>
+        );
+      }
+
+      return null;
+    };
 
     const renderDialog = (
       <Dialog 
         fullScreen={false}
         open={this.state.open}
-        aria-labelledby="account-employee-dialog-title" 
-        scroll="paper" 
-        PaperProps={{
-          style: {
-            width: 500,
-            height: 600
-          }
-        }}
+        aria-labelledby="account-employee-dialog-title"
         onClose={this.handleDialogClose}
       >
         <DialogTitle 
@@ -183,9 +220,20 @@ class ListItemEmployeeSelector extends React.Component<AllProps, State> {
             onKeyUp={(event: React.KeyboardEvent<HTMLDivElement>) => this.handleKeyUp(event)}
           />
         </DialogTitle>
-        <DialogContent>
+        <DialogContent
+          style={{ 
+            padding: 0 
+          }}
+        >
           <List>
-            {
+            <VirtualizedList
+              width={600}
+              height={550}
+              rowCount={employees.length}
+              rowHeight={60}
+              rowRenderer={rowRenderer}
+            />
+            {/* {
               !isLoading &&
               response &&
               response.data &&
@@ -208,7 +256,7 @@ class ListItemEmployeeSelector extends React.Component<AllProps, State> {
                   />
                 </ListItem>
               )
-            }
+            } */}
           </List>
         </DialogContent>
         <DialogActions>
