@@ -6,6 +6,7 @@ import {
   employeeProfileQueryReducer,
 } from '@account/store/reducers';
 import { employeeGetListReducer } from '@account/store/reducers/employeeGetListReducer';
+import { systemGetAllReducer, systemGetByIdReducer, systemGetListReducer } from '@common/store/reducers';
 import { IAppState } from '@generic/interfaces';
 import { appBarReducer, layoutReducer, listBarReducer, notificationReducer } from '@layout/store/reducers';
 import { customerGetAllReducer, customerGetByIdReducer, customerGetListReducer } from '@lookup/store/reducers';
@@ -29,6 +30,9 @@ export const rootReducer = combineReducers<IAppState>({
   listBar: listBarReducer,
 
   /* common */
+  systemGetAll: systemGetAllReducer,
+  systemGetList: systemGetListReducer,
+  systemGetById: systemGetByIdReducer,
 
   /* lookup */
   customerGetAll: customerGetAllReducer,

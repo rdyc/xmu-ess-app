@@ -1,7 +1,7 @@
 import { IAppState, IQuerySingleState } from '@generic/interfaces';
 import { ConnectedReduxProps, FormMode } from '@generic/types';
-import { ILayoutState, IView, IAlert } from '@layout/interfaces';
-import { layoutChangeView, layoutNavBackHide, layoutNavBackShow, layoutAlertAdd } from '@layout/store/actions';
+import { IAlert, ILayoutState, IView } from '@layout/interfaces';
+import { layoutAlertAdd, layoutChangeView, layoutNavBackHide, layoutNavBackShow } from '@layout/store/actions';
 import { Typography, WithStyles, withStyles } from '@material-ui/core';
 import ProjectForm from '@project/components/list/ProjectForm';
 import { IProjectGetByIdRequest } from '@project/interfaces/queries';
@@ -13,8 +13,8 @@ import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
 import { RouteComponentProps } from 'react-router';
 import { Dispatch } from 'redux';
-import { isNullOrUndefined } from 'util';
 import { FormErrors } from 'redux-form';
+import { isNullOrUndefined } from 'util';
 
 interface PropsFromState extends RouteComponentProps<void> {
   layoutState: ILayoutState;
@@ -127,11 +127,11 @@ class ProjectFormView extends React.Component<AllProps, State> {
   
     const requiredFields = [
       'customerUid', 'name', 'description', 
-      'start', 'end', 'currencyType', 'valueUsd'
+      'start', 'end', 'currency', 'valueUsd'
     ];
   
     requiredFields.forEach(field => {
-      if (!payload[field]) {
+      if (!payload[field] || isNullOrUndefined(payload[field])) {
         errors[field] = 'Required';
       }
     });

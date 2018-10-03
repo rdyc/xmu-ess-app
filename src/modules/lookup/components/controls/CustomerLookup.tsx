@@ -46,7 +46,7 @@ interface OwnProps extends WrappedFieldProps, BaseFieldProps {
   type?: string; 
   label: string; 
   disabled: boolean;
-  onSelected: (customer: ICustomerList) => void;
+  onChangeValue: (customer: ICustomerList) => void;
 }
 
 type AllProps = PropsFromState & 
@@ -97,6 +97,20 @@ class CustomerLookup extends React.Component<AllProps, State> {
     });
   };
 
+  filter = (response: IResponseCollection<ICustomerList> | undefined) => {
+    if (response && response.data) {
+      if (this.state.search !== '') {
+        return response.data.filter(item => 
+          item.name.toLowerCase().indexOf(this.state.search) !== -1
+        );
+      } else {
+        return response.data;
+      }
+    } else {
+      return [];
+    }
+  };
+
   handleDialogOpen = () => {
     if (!this.props.disabled) {
       this.setState({ open: true });
@@ -126,21 +140,8 @@ class CustomerLookup extends React.Component<AllProps, State> {
 
   handleSelected = (customer: ICustomerList) => {
     this.setState({ open: false, selected: customer });
-    this.props.onSelected(customer);
-  };
 
-  fnFilteredCustomer = (response: IResponseCollection<ICustomerList> | undefined) => {
-    if (response && response.data) {
-      if (this.state.search !== '') {
-        return response.data.filter(item => 
-          item.name.toLowerCase().indexOf(this.state.search) !== -1
-        );
-      } else {
-        return response.data;
-      }
-    } else {
-      return [];
-    }
+    this.props.onChangeValue(customer);
   };
   
   render() {
@@ -148,7 +149,7 @@ class CustomerLookup extends React.Component<AllProps, State> {
     const { response } = this.props.customerState;
     
     const isMobile = isWidthDown('sm', width);
-    const customers = this.fnFilteredCustomer(response);
+    const customers = this.filter(response);
 
     const rowRenderer = (row: ListRowProps) => {
       if (customers.length > 0) {
@@ -161,18 +162,17 @@ class CustomerLookup extends React.Component<AllProps, State> {
         return (
           <ListItem 
             button 
-            key={row.key}
+            key={row.index}
             style={{...row.style}}
             onClick={() => this.handleSelected(cust)}
           >
-            <ListItemAvatar key={row.key}>
-              <Avatar key={row.key}>
+            <ListItemAvatar>
+              <Avatar>
                 <BusinessIcon />
               </Avatar>
             </ListItemAvatar>
             <ListItemText 
               color="primary"
-              key={row.key}
               primary={cust.name}
               secondary={cust.address}
               primaryTypographyProps={{
@@ -198,6 +198,7 @@ class CustomerLookup extends React.Component<AllProps, State> {
       >
         <DialogTitle 
           id="lookup-customer-dialog-title"
+          disableTypography
         >
           <Typography variant="title" color="primary">
             <FormattedMessage id="lookup.customer.lookupTitle" />

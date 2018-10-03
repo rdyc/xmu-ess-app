@@ -1,6 +1,6 @@
-import { IBaseChanges } from '../../../generic/interfaces';
+import { IBaseChanges } from '@generic/interfaces';
 
-export interface ISystem {
+export interface ISystemDetail {
     id: number;
     type: string;
     companyUid: string;

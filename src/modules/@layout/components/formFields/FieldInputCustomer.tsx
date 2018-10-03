@@ -15,9 +15,7 @@ type AllProps = WrappedFieldProps & BaseFieldProps & FromFieldProps;
 export const FieldInputCustomer: React.StatelessComponent<AllProps> = props => {
   const { input } = props;
 
-  const handleSelected = (customer: ICustomerList) => {
-    console.log(customer);
-     
+  const handleOnChangeValue = (customer: ICustomerList) => {
     input.onChange(customer);
   };
 
@@ -25,7 +23,7 @@ export const FieldInputCustomer: React.StatelessComponent<AllProps> = props => {
     <CustomerLookup 
       {...rootStore}
       {...props}
-      onSelected={handleSelected}
+      onChangeValue={handleOnChangeValue}
     />
   );
 };

@@ -3,6 +3,7 @@ import * as React from 'react';
 import { default as NumberFormat } from 'react-number-format';
 import { WrappedFieldProps, BaseFieldProps } from 'redux-form';
 import { InputComponentProps } from '@material-ui/core/Input';
+import { isNullOrUndefined } from 'util';
 
 interface FromFieldProps { 
   type?: string; 
@@ -45,8 +46,8 @@ export const FieldInputNumber: React.StatelessComponent<AllProps> = props => {
       {...input}
       label={label}
       disabled={disabled || meta.submitting}
-      error={meta.touched && meta.error}
-      helperText={meta.touched && meta.error}
+      error={!isNullOrUndefined(meta.error)}
+      helperText={meta.error}
       InputProps={{
         inputComponent: NumberFormatComponent
       }}

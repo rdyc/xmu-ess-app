@@ -1,7 +1,9 @@
 import ListItemEmployeeSelector from '@account/components/views/ListItemEmployeeSelector';
 import { IEmployee } from '@account/interfaces/response';
+import { ISystemList } from '@common/interfaces/response';
 import { ConnectedReduxProps } from '@generic/types';
 import { FieldInputCustomer, FieldInputDate, FieldInputNumber, FieldInputText } from '@layout/components/formFields';
+import { FieldSelectSystem } from '@layout/components/formFields/FieldSelectSystem';
 import { ICustomerList } from '@lookup/interfaces/response';
 import {
   Avatar,
@@ -106,10 +108,13 @@ export const projectForm: React.StatelessComponent<AllProps> = props => {
           component={FieldInputDate}
         />
         <Field
-          type="text"
-          name="currencyType"
+          type="currency"
+          name="currency"
           label={<FormattedMessage id="project.field.currency" />}
-          component={FieldInputText}
+          component={FieldSelectSystem}
+          onChange={(event: any, newValue: ISystemList | undefined) => {
+            props.change('currencyType', newValue ? newValue.type : '');
+          }}
         />
         <TextField
           fullWidth

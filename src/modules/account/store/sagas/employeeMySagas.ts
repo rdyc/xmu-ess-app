@@ -1,7 +1,7 @@
-import { EmployeeFetchError, EmployeeFetchSuccess, EmployeeMyAction } from '@account/store/actions';
+import { EmployeeFetchError, EmployeeFetchSuccess, EmployeeMyAction as Action } from '@account/store/actions';
+import { layoutAlertAdd } from '@layout/store/actions';
 import saiyanSaga from '@utils/saiyanSaga';
 import { all, fork, put, takeEvery } from 'redux-saga/effects';
-import { layoutAlertAdd } from '@layout/store/actions';
 import { IApiResponse } from 'utils';
 
 function* watchFetchRequest() {
@@ -31,7 +31,7 @@ function* watchFetchRequest() {
     });
   };
 
-  yield takeEvery(EmployeeMyAction.FETCH_REQUEST, worker);
+  yield takeEvery(Action.FETCH_REQUEST, worker);
 }
 
 function* employeeMySagas() {

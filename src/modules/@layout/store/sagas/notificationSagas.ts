@@ -1,9 +1,9 @@
-import { NotificationAction } from '@layout/types';
+import { NotificationAction as Action } from '@layout/types';
 import saiyanSaga from '@utils/saiyanSaga';
 import { all, fork, put, takeEvery } from 'redux-saga/effects';
-
-import { notificationFetchError, notificationFetchRequest, notificationFetchSuccess, layoutAlertAdd } from '../actions';
 import { IApiResponse } from 'utils';
+
+import { layoutAlertAdd, notificationFetchError, notificationFetchRequest, notificationFetchSuccess } from '../actions';
 
 function* watchFetchRequest() {
   const worker = (action: ReturnType<typeof notificationFetchRequest>) => {
@@ -32,7 +32,7 @@ function* watchFetchRequest() {
     });
   };
 
-  yield takeEvery(NotificationAction.FETCH_REQUEST, worker);
+  yield takeEvery(Action.FETCH_REQUEST, worker);
 }
 
 function* notificationSagas() {

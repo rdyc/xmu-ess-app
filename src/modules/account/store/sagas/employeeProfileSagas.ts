@@ -1,5 +1,5 @@
 import {
-  EmployeeProfileAction,
+  EmployeeProfileAction as Action,
   EmployeeProfileCommandError,
   EmployeeProfileCommandRequest,
   EmployeeProfileCommandSuccess,
@@ -39,7 +39,7 @@ function* watchFetchRequest() {
     });
   };
 
-  yield takeEvery(EmployeeProfileAction.FETCH_REQUEST, worker);
+  yield takeEvery(Action.FETCH_REQUEST, worker);
 }
 
 function* watchCommandRequest() {
@@ -66,7 +66,7 @@ function* watchCommandRequest() {
     });
   };
 
-  yield takeEvery(EmployeeProfileAction.COMMAND_REQUEST, worker);
+  yield takeEvery(Action.COMMAND_REQUEST, worker);
 }
 
 function* employeeProfileSagas() {

@@ -4,18 +4,18 @@ import { ICustomer, ICustomerDetail, ICustomerList } from '@lookup/interfaces/re
 import { action } from 'typesafe-actions';
 
 export const enum CustomerAction {
-  GET_ALL_REQUEST = '@@Customer/GET_ALL_REQUEST',
-  GET_ALL_SUCCESS = '@@Customer/GET_ALL_SUCCESS',
-  GET_ALL_ERROR = '@@Customer/GET_ALL_ERROR',
-  GET_ALL_DISPOSE = '@@Customer/GET_ALL_DISPOSE',
-  GET_LIST_REQUEST = '@@Customer/GET_LIST_REQUEST',
-  GET_LIST_SUCCESS = '@@Customer/GET_LIST_SUCCESS',
-  GET_LIST_ERROR = '@@Customer/GET_LIST_ERROR',
-  GET_LIST_DISPOSE = '@@Customer/GET_LIST_DISPOSE',
-  GET_BY_ID_REQUEST = '@@Customer/GET_BY_ID_REQUEST',
-  GET_BY_ID_SUCCESS = '@@Customer/GET_BY_ID_SUCCESS',
-  GET_BY_ID_ERROR = '@@Customer/GET_BY_ID_ERROR',
-  GET_BY_ID_DISPOSE = '@@Customer/GET_BY_ID_DISPOSE',
+  GET_ALL_REQUEST = '@@customer/GET_ALL_REQUEST',
+  GET_ALL_SUCCESS = '@@customer/GET_ALL_SUCCESS',
+  GET_ALL_ERROR = '@@customer/GET_ALL_ERROR',
+  GET_ALL_DISPOSE = '@@customer/GET_ALL_DISPOSE',
+  GET_LIST_REQUEST = '@@customer/GET_LIST_REQUEST',
+  GET_LIST_SUCCESS = '@@customer/GET_LIST_SUCCESS',
+  GET_LIST_ERROR = '@@customer/GET_LIST_ERROR',
+  GET_LIST_DISPOSE = '@@customer/GET_LIST_DISPOSE',
+  GET_BY_ID_REQUEST = '@@customer/GET_BY_ID_REQUEST',
+  GET_BY_ID_SUCCESS = '@@customer/GET_BY_ID_SUCCESS',
+  GET_BY_ID_ERROR = '@@customer/GET_BY_ID_ERROR',
+  GET_BY_ID_DISPOSE = '@@customer/GET_BY_ID_DISPOSE',
 }
 
 // get all

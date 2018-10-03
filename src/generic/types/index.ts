@@ -1,4 +1,5 @@
+export * from './BaseDirectionField';
 export * from './Command';
 export * from './ConnectedReduxProps';
-export * from './SortDirection';
 export * from './FormMode';
+export * from './SortDirection';

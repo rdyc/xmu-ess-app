@@ -1,5 +1,5 @@
 import {
-  EmployeeAction,
+  EmployeeAction as Action,
   employeeGetAllError,
   employeeGetAllRequest,
   employeeGetAllSuccess,
@@ -10,10 +10,10 @@ import {
   employeeGetListRequest,
   employeeGetListSuccess,
 } from '@account/store/actions';
+import { layoutAlertAdd } from '@layout/store/actions';
 import saiyanSaga from '@utils/saiyanSaga';
 import { all, fork, put, takeEvery } from 'redux-saga/effects';
-import { objectToQuerystring, IApiResponse } from 'utils';
-import { layoutAlertAdd } from '@layout/store/actions';
+import { IApiResponse, objectToQuerystring } from 'utils';
 
 function* watchFetchAllRequest() {
   const worker = (action: ReturnType<typeof employeeGetAllRequest>) => {
@@ -42,7 +42,7 @@ function* watchFetchAllRequest() {
     });
   };
   
-  yield takeEvery(EmployeeAction.GET_ALL_REQUEST, worker);
+  yield takeEvery(Action.GET_ALL_REQUEST, worker);
 }
 
 function* watchFetchListRequest() {
@@ -72,7 +72,7 @@ function* watchFetchListRequest() {
     });
   };
 
-  yield takeEvery(EmployeeAction.GET_LIST_REQUEST, worker);
+  yield takeEvery(Action.GET_LIST_REQUEST, worker);
 }
 
 function* watchFetchByIdRequest() {
@@ -102,7 +102,7 @@ function* watchFetchByIdRequest() {
     });
   };
   
-  yield takeEvery(EmployeeAction.GET_BY_ID_REQUEST, worker);
+  yield takeEvery(Action.GET_BY_ID_REQUEST, worker);
 }
 
 function* employeeSagas() {

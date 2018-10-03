@@ -159,18 +159,17 @@ class ListItemEmployeeSelector extends React.Component<AllProps, State> {
         return (
           <ListItem 
             button 
-            key={row.key}
+            key={row.index}
             style={{...row.style}}
             onClick={() => this.handleListItemClick(emp)}
           >
-            <ListItemAvatar key={row.key}>
-              <Avatar key={row.key}>
+            <ListItemAvatar>
+              <Avatar>
                 <PersonIcon />
               </Avatar>
             </ListItemAvatar>
             <ListItemText 
               color="primary"
-              key={row.key}
               primary={emp.fullName}
               secondary={emp.email}
               primaryTypographyProps={{
@@ -196,6 +195,7 @@ class ListItemEmployeeSelector extends React.Component<AllProps, State> {
       >
         <DialogTitle 
           id="account-employee-dialog-title"
+          disableTypography
         >
           <Typography variant="title" color="primary">
             <FormattedMessage id="account.employee.lookupTitle" />

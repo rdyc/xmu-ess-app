@@ -1,6 +1,8 @@
 import { IEmployeeMyState, IEmployeeProfileCommandState, IEmployeeProfileQueryState } from '@account/interfaces';
 import { IEmployeeAllRequest, IEmployeeByIdRequest, IEmployeeListRequest } from '@account/interfaces/queries';
 import { IEmployee, IEmployeeDetail } from '@account/interfaces/response';
+import { ISystemAllRequest, ISystemByIdRequest, ISystemListRequest } from '@common/interfaces/queries';
+import { ISystem, ISystemDetail, ISystemList } from '@common/interfaces/response';
 import { IQueryCollectionState } from '@generic/interfaces';
 import { IQuerySingleState } from '@generic/interfaces/IQuerySingleState';
 import { IAppBarState, ILayoutState, IListBarState, INotificationState } from '@layout/interfaces';
@@ -21,6 +23,9 @@ export interface IAppState {
   form: FormStateMap;
 
   /* common */
+  systemGetAll: IQueryCollectionState<ISystemAllRequest, ISystem>;
+  systemGetList: IQueryCollectionState<ISystemListRequest, ISystemList>;
+  systemGetById: IQuerySingleState<ISystemByIdRequest, ISystemDetail>;
 
   /* lookup */
   customerGetAll: IQueryCollectionState<ICustomerAllRequest, ICustomer>;

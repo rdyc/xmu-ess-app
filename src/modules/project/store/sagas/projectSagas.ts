@@ -1,6 +1,6 @@
 import { layoutAlertAdd, listBarLoading, listBarMetadata } from '@layout/store/actions';
 import {
-  ProjectAction,
+  ProjectAction as Action,
   projectGetAllError,
   projectGetAllRequest,
   projectGetAllSuccess,
@@ -42,7 +42,7 @@ function* watchAllFetchRequest() {
     });
   };
   
-  yield takeEvery(ProjectAction.GET_ALL_REQUEST, worker);
+  yield takeEvery(Action.GET_ALL_REQUEST, worker);
 }
 
 function* watchByIdFetchRequest() {
@@ -74,7 +74,7 @@ function* watchByIdFetchRequest() {
     });
   };
 
-  yield takeEvery(ProjectAction.GET_BY_ID_REQUEST, worker);
+  yield takeEvery(Action.GET_BY_ID_REQUEST, worker);
 }
 
 function* projectSagas() {

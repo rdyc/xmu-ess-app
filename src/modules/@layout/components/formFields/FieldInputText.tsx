@@ -1,6 +1,7 @@
 import { TextField } from '@material-ui/core';
 import * as React from 'react';
-import { WrappedFieldProps, BaseFieldProps } from 'redux-form';
+import { BaseFieldProps, WrappedFieldProps } from 'redux-form';
+import { isNullOrUndefined } from 'util';
 
 interface FromFieldProps { 
   type?: string; 
@@ -20,7 +21,7 @@ export const FieldInputText: React.StatelessComponent<AllProps> = props => {
       {...input}
       label={label}
       disabled={disabled || meta.submitting}
-      error={meta.touched && meta.error}
+      error={meta.touched && !isNullOrUndefined(meta.error)}
       helperText={meta.touched && meta.error}
     />
   );
