@@ -18,10 +18,11 @@ import {
   ListItemAvatar,
   ListItemText,
   TextField,
+  Typography,
   WithStyles,
   withStyles,
-  Typography,
 } from '@material-ui/core';
+import withWidth, { isWidthDown, WithWidthProps } from '@material-ui/core/withWidth';
 import AddIcon from '@material-ui/icons/Add';
 import CloseIcon from '@material-ui/icons/Close';
 import DoneIcon from '@material-ui/icons/Done';
@@ -31,9 +32,8 @@ import styles from '@styles';
 import * as React from 'react';
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
-import { Dispatch } from 'redux';
 import { List as VirtualizedList, ListRowProps } from 'react-virtualized';
-import withWidth, { WithWidthProps, isWidthDown } from '@material-ui/core/withWidth';
+import { Dispatch } from 'redux';
 
 interface PropsFromState {
   employeeState: IQueryCollectionState<IEmployeeListRequest, IEmployee>;

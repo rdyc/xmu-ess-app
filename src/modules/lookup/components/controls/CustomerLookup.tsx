@@ -21,6 +21,7 @@ import {
   WithStyles,
   withStyles,
 } from '@material-ui/core';
+import withWidth, { isWidthDown, WithWidthProps } from '@material-ui/core/withWidth';
 import BusinessIcon from '@material-ui/icons/Business';
 import SearchIcon from '@material-ui/icons/Search';
 import styles from '@styles';
@@ -30,7 +31,6 @@ import { connect } from 'react-redux';
 import { List as VirtualizedList, ListRowProps } from 'react-virtualized';
 import { Dispatch } from 'redux';
 import { BaseFieldProps, WrappedFieldProps } from 'redux-form';
-import withWidth, { isWidthDown, WithWidthProps } from '@material-ui/core/withWidth';
 
 interface PropsFromState {
   customerState: IQueryCollectionState<ICustomerListRequest, ICustomerList>;
