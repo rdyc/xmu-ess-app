@@ -33,6 +33,7 @@ import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import { List as VirtualizedList, ListRowProps } from 'react-virtualized';
+import withWidth, { WithWidthProps, isWidthDown } from '@material-ui/core/withWidth';
 
 interface PropsFromState {
   employeeState: IQueryCollectionState<IEmployeeListRequest, IEmployee>;
@@ -53,6 +54,7 @@ type AllProps = PropsFromState &
                 OwnProps &
                 ConnectedReduxProps & 
                 InjectedIntlProps & 
+                WithWidthProps &
                 WithStyles<typeof styles>;
 
 const initialState = {
@@ -140,8 +142,10 @@ class ListItemEmployeeSelector extends React.Component<AllProps, State> {
   };
 
   render() {
-    const { intl } = this.props;
+    const { width, intl } = this.props;
     const { response } = this.props.employeeState;
+
+    const isMobile = isWidthDown('sm', width);
     const employees = this.fnFilteredEmployee(response);
 
     const rowRenderer = (row: ListRowProps) => {
@@ -185,7 +189,7 @@ class ListItemEmployeeSelector extends React.Component<AllProps, State> {
 
     const renderDialog = (
       <Dialog 
-        fullScreen={false}
+        fullScreen={isMobile}
         open={this.state.open}
         aria-labelledby="account-employee-dialog-title"
         onClose={this.handleDialogClose}
@@ -229,34 +233,12 @@ class ListItemEmployeeSelector extends React.Component<AllProps, State> {
             <VirtualizedList
               width={600}
               height={550}
+              // autoWidth
+              // autoHeight
               rowCount={employees.length}
               rowHeight={60}
               rowRenderer={rowRenderer}
             />
-            {/* {
-              !isLoading &&
-              response &&
-              response.data &&
-              this.fnFilterEmployee(response.data)
-                .map(item => 
-                <ListItem 
-                  button 
-                  key={item.uid} 
-                  onClick={() => this.handleListItemClick(item)}
-                >
-                  <ListItemAvatar key={item.uid}>
-                    <Avatar key={item.uid}>
-                      <PersonIcon />
-                    </Avatar>
-                  </ListItemAvatar>
-                  <ListItemText 
-                    key={item.uid}
-                    primary={item.fullName}
-                    secondary={item.email} 
-                  />
-                </ListItem>
-              )
-            } */}
           </List>
         </DialogContent>
         <DialogActions>
@@ -312,4 +294,4 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
 
 const redux = connect(mapStateToProps, mapDispatchToProps)(ListItemEmployeeSelector);
 
-export default injectIntl(withStyles(styles)(redux));
+export default injectIntl(withStyles(styles)(withWidth()(redux)));

@@ -30,6 +30,7 @@ import { connect } from 'react-redux';
 import { List as VirtualizedList, ListRowProps } from 'react-virtualized';
 import { Dispatch } from 'redux';
 import { BaseFieldProps, WrappedFieldProps } from 'redux-form';
+import withWidth, { isWidthDown, WithWidthProps } from '@material-ui/core/withWidth';
 
 interface PropsFromState {
   customerState: IQueryCollectionState<ICustomerListRequest, ICustomerList>;
@@ -53,6 +54,7 @@ type AllProps = PropsFromState &
                 OwnProps &
                 ConnectedReduxProps & 
                 InjectedIntlProps & 
+                WithWidthProps &
                 WithStyles<typeof styles>;
 
 const initialState = {
@@ -142,8 +144,10 @@ class CustomerLookup extends React.Component<AllProps, State> {
   };
   
   render() {
-    const { intl, input, label, disabled, meta } = this.props;
+    const { width, intl, input, label, disabled, meta } = this.props;
     const { response } = this.props.customerState;
+    
+    const isMobile = isWidthDown('sm', width);
     const customers = this.fnFilteredCustomer(response);
 
     const rowRenderer = (row: ListRowProps) => {
@@ -187,7 +191,7 @@ class CustomerLookup extends React.Component<AllProps, State> {
 
     const renderDialog = (
       <Dialog 
-        fullScreen={false}
+        fullScreen={isMobile}
         open={this.state.open}
         aria-labelledby="lookup-customer-dialog-title" 
         onClose={this.handleDialogClose}
@@ -231,6 +235,8 @@ class CustomerLookup extends React.Component<AllProps, State> {
             <VirtualizedList
               width={600}
               height={550}
+              // autoWidth
+              // autoHeight
               rowCount={customers.length}
               rowHeight={60}
               rowRenderer={rowRenderer}
@@ -277,4 +283,4 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
 
 const redux = connect(mapStateToProps, mapDispatchToProps)(CustomerLookup);
 
-export default injectIntl(withStyles(styles)(redux));
+export default injectIntl(withStyles(styles)(withWidth()(redux)));
