@@ -7,6 +7,13 @@ import {
   projectGetByIdError,
   projectGetByIdRequest,
   projectGetByIdSuccess,
+  projectGetListError,
+  projectGetListRequest,
+  projectGetListSuccess,
+  projectPostSuccess,
+  projectPostError,
+  projectPostRequest,
+  projectPutRequest,
 } from '@project/store/actions';
 import saiyanSaga from '@utils/saiyanSaga';
 import { all, fork, put, takeEvery } from 'redux-saga/effects';
@@ -45,6 +52,38 @@ function* watchAllFetchRequest() {
   yield takeEvery(Action.GET_ALL_REQUEST, worker);
 }
 
+function* watchListFetchRequest() {
+  const worker = (action: ReturnType<typeof projectGetListRequest>) => { 
+    return saiyanSaga.fetch({
+      method: 'get',
+      path: `/v1/project/registrations/list` + objectToQuerystring(action.payload.filter), 
+      success: (response: IApiResponse) => ([
+        put(projectGetListSuccess(response.body))
+      ]), 
+      failed: (response: IApiResponse) => ([
+        put(projectGetListError(response.body)),
+        put(layoutAlertAdd({
+          time: new Date(),
+          message: response.statusText,
+          details: response
+        })),
+      ]), 
+      error: (error: TypeError) => ([
+        put(projectGetListError(error.message)),
+        put(layoutAlertAdd({
+          time: new Date(),
+          message: error.message
+        }))
+      ]),
+      finally: () => ([
+        // nothing
+      ])
+    });
+  };
+  
+  yield takeEvery(Action.GET_LIST_REQUEST, worker);
+}
+
 function* watchByIdFetchRequest() {
   const worker = (action: ReturnType<typeof projectGetByIdRequest>) => {
     return saiyanSaga.fetch({
@@ -77,10 +116,79 @@ function* watchByIdFetchRequest() {
   yield takeEvery(Action.GET_BY_ID_REQUEST, worker);
 }
 
+function* watchPostFetchRequest() {
+  const worker = (action: ReturnType<typeof projectPostRequest>) => {
+    return saiyanSaga.fetch({
+      method: 'post',
+      path: `/v1/project/registrations/${action.payload.companyUid}/${action.payload.positionUid}`, 
+      payload: action.payload.data, 
+      success: (response: IApiResponse) => ([
+        put(projectPostSuccess(response.body)),
+      ]), 
+      failed: (response: IApiResponse) => ([
+        put(projectPostError(response.statusText)),
+        put(layoutAlertAdd({
+          time: new Date(),
+          message: response.statusText,
+          details: response
+        })),
+      ]), 
+      error: (error: TypeError) => ([
+        put(projectPostError(error.message)),
+        put(layoutAlertAdd({
+          time: new Date(),
+          message: error.message
+        }))
+      ]),
+      finally: () => ([
+        // nothing
+      ])
+    });
+  };
+
+  yield takeEvery(Action.POST_REQUEST, worker);
+}
+
+function* watchPutFetchRequest() {
+  const worker = (action: ReturnType<typeof projectPutRequest>) => {
+    return saiyanSaga.fetch({
+      method: 'put',
+      path: `/v1/project/registrations/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.projectUid}`,
+      payload: action.payload.data, 
+      success: (response: IApiResponse) => ([
+        put(projectPostSuccess(response.body)),
+      ]), 
+      failed: (response: IApiResponse) => ([
+        put(projectPostError(response.statusText)),
+        put(layoutAlertAdd({
+          time: new Date(),
+          message: response.statusText,
+          details: response
+        })),
+      ]), 
+      error: (error: TypeError) => ([
+        put(projectPostError(error.message)),
+        put(layoutAlertAdd({
+          time: new Date(),
+          message: error.message
+        }))
+      ]),
+      finally: () => ([
+        // nothing
+      ])
+    });
+  };
+
+  yield takeEvery(Action.PUT_REQUEST, worker);
+}
+
 function* projectSagas() {
   yield all([
     fork(watchAllFetchRequest),
-    fork(watchByIdFetchRequest)
+    fork(watchListFetchRequest),
+    fork(watchByIdFetchRequest),
+    fork(watchPostFetchRequest),
+    fork(watchPutFetchRequest)
   ]);
 }
 

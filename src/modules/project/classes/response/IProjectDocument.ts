@@ -3,7 +3,7 @@ import { ICommonSystem } from '@common/interfaces';
 
 export interface IProjectDocument {
   uid:          string;
-  documentType: string | null;
+  documentType: string;
   document:     ICommonSystem | null;
   isAvailable:  boolean;
   changes:      IBaseChanges | null;

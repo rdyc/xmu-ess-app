@@ -3,10 +3,11 @@ import { ConnectedReduxProps, FormMode } from '@generic/types';
 import { IAlert, ILayoutState, IView } from '@layout/interfaces';
 import { layoutAlertAdd, layoutChangeView, layoutNavBackHide, layoutNavBackShow } from '@layout/store/actions';
 import { Typography, WithStyles, withStyles } from '@material-ui/core';
-import { IProjectGetByIdRequest } from '@project/classes/queries';
-import { IProjectDetail } from '@project/classes/response';
+import { IProjectGetByIdRequest, IProjectPutRequest } from '@project/classes/queries';
+import { IProjectPutDocument, IProjectPutPayload, IProjectPutSales } from '@project/classes/request';
+import { IProject, IProjectDetail } from '@project/classes/response';
 import ProjectForm from '@project/components/list/ProjectForm';
-import { projectGetByIdDispose, projectGetByIdRequest } from '@project/store/actions';
+import { projectGetByIdDispose, projectGetByIdRequest, projectPutDispose, projectPutRequest } from '@project/store/actions';
 import styles from '@styles';
 import * as React from 'react';
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
@@ -15,10 +16,12 @@ import { RouteComponentProps } from 'react-router';
 import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
 import { isNullOrUndefined } from 'util';
+import { ProjectType } from '@common/types';
 
 interface PropsFromState extends RouteComponentProps<void> {
   layoutState: ILayoutState;
-  projectState: IQuerySingleState<IProjectGetByIdRequest, IProjectDetail>;
+  projectGetState: IQuerySingleState<IProjectGetByIdRequest, IProjectDetail>;
+  projectPutState: IQuerySingleState<IProjectPutRequest, IProject>;
 }
 
 interface PropsFromDispatch {
@@ -32,6 +35,8 @@ interface PropsFromDispatch {
   projectDispatch: {
     getByIdRequest: typeof projectGetByIdRequest;
     getByIdDispose: typeof projectGetByIdDispose;
+    putRequest: typeof projectPutRequest;
+    putDispose: typeof projectPutDispose;
   };
 }
 
@@ -48,6 +53,8 @@ type AllProps = PropsFromState &
 
 const initialState = {
   mode: FormMode.New,
+  companyUid: '',
+  positionUid: '',
   projectUid: ''
 };
 
@@ -55,19 +62,6 @@ type State = Readonly<typeof initialState>;
   
 class ProjectFormView extends React.Component<AllProps, State> {
   state: State = initialState;
-
-  // shouldComponentUpdate (nextProps: AllProps, nextState: State) {
-  //   return this.props.projectState.isLoading !== nextProps.projectState.isLoading;
-  // }
-
-  componentWillUnmount() {
-    const { layoutDispatch, projectDispatch } = this.props;
-
-    layoutDispatch.changeView(null);
-    layoutDispatch.navBackHide();
-    
-    projectDispatch.getByIdDispose();
-  }
 
   componentWillMount() {
     const { history } = this.props;
@@ -110,17 +104,96 @@ class ProjectFormView extends React.Component<AllProps, State> {
     }   
   }
 
-  loadData = (uid: string): void => {
-    const { layoutState, projectDispatch,  } = this.props;
+  componentWillUnmount() {
+    const { layoutDispatch, projectDispatch } = this.props;
+
+    layoutDispatch.changeView(null);
+    layoutDispatch.navBackHide();
     
-    if (layoutState.user) {
-      projectDispatch.getByIdRequest({
-        companyUid: layoutState.user.company.uid,
-        positionUid: layoutState.user.position.uid,
+    projectDispatch.getByIdDispose();
+    projectDispatch.putDispose();
+  }
+
+  loadData = (uid: string): void => {
+    const { user } = this.props.layoutState;
+    const { getByIdRequest } = this.props.projectDispatch;
+    
+    if (user) {
+      getByIdRequest({
+        companyUid: user.company.uid,
+        positionUid: user.position.uid,
         projectUid: uid
       });
     }
   }
+
+  transform = (payload: IProjectDetail): IProjectPutPayload => {
+    const parseDocuments = () => {
+      if (
+        payload.projectType === ProjectType.ExtraMiles || 
+        payload.projectType === ProjectType.NonProject
+      ) {
+        return null;
+      }
+
+      const _documents: IProjectPutDocument[] = [];
+  
+      if (payload.projectType === ProjectType.Project) {
+        payload.documents.forEach(item => 
+          _documents.push({
+            uid: item.uid,
+            documentType: item.documentType,
+            isChecked: item.isAvailable
+          })
+        );
+      }
+      
+      if (payload.projectType === ProjectType.PreSales) {
+        payload.documentPreSales.forEach(item => 
+          _documents.push({
+            uid: item.uid,
+            documentType: item.documentType,
+            isChecked: item.isAvailable
+          })
+        );
+      }
+      
+      return _documents;
+    };
+
+    const parseSales = () => {
+      if (!payload.sales) {
+        return undefined;
+      }
+  
+      const _sales: IProjectPutSales[] = [];
+  
+      payload.sales.forEach(item => 
+        _sales.push({
+          uid: item.uid,
+          employeeUid: item.employeeUid
+        })
+      );
+      
+      return _sales;
+    };
+
+    return {
+      customerUid: payload.customerUid,
+      projectType: payload.projectType,
+      currencyType: payload.currencyType,
+      contractNumber: payload.contractNumber,
+      name: payload.name,
+      description: payload.description,
+      start: payload.start,
+      end: payload.end,
+      rate: payload.rate,
+      valueUsd: payload.valueUsd,
+      valueIdr: payload.valueIdr,
+      documents: parseDocuments(),
+      sales: parseSales()
+    };
+  };
 
   handleValidate = (payload: IProjectDetail) => {
     const errors = {};
@@ -140,48 +213,56 @@ class ProjectFormView extends React.Component<AllProps, State> {
   }
 
   handleSubmit = (payload: IProjectDetail) => { 
-    // this.props.commandRequest({
-    //   uid: this.props.user.uid,
-    //   method: Command.PUT,
-    //   data: this.transform(payload)
-    // });
-    
-    return this.sleep(1000).then(() => { 
-      console.log(payload); 
+    const { projectUid } = this.state;
+    const { user } = this.props.layoutState;
+    const { putRequest } = this.props.projectDispatch;
 
-      return Promise.reject('test reject');
-      return Promise.resolve('ok');
-    });
+    if (user) {
+      return Promise.resolve(
+        putRequest({
+          projectUid,
+          companyUid: user.company.uid,
+          positionUid: user.position.uid,
+          data: this.transform(payload)
+        })
+      );
+    }
+
+    return Promise.reject('Empty user!');
   };
 
   handleSubmitSuccess = (result: any, dispatch: Dispatch<any>) => {
+    console.log(result);
+    console.log(dispatch);
     const { alertAdd } = this.props.layoutDispatch;
 
     alertAdd({
       time: new Date(),
-      message: result
+      message: 'Success bro!!!'
     });
   };
 
   handleSubmitFail = (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
-    const { alertAdd } = this.props.layoutDispatch;
+    console.log(errors);
+    console.log(dispatch);
+    console.log(submitError);
 
-    alertAdd({
-      time: new Date(),
-      message: 'Failed when trying to update data!',
-    });
+    // const { alertAdd } = this.props.layoutDispatch;
 
-    alertAdd({
-      time: new Date(),
-      message: 'Wakakak kaskdka',
-      details: submitError
-    });
+    // alertAdd({
+    //   time: new Date(),
+    //   message: 'Failed when trying to update data!',
+    // });
+
+    // alertAdd({
+    //   time: new Date(),
+    //   message: 'Wakakak kaskdka',
+    //   details: submitError
+    // });
   };
 
-  sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
-
   render () {
-    const { isLoading, response } = this.props.projectState;
+    const { isLoading, response } = this.props.projectGetState;
 
     if (isLoading && !response) {
       return (
@@ -209,9 +290,10 @@ class ProjectFormView extends React.Component<AllProps, State> {
   }
 }
 
-const mapStateToProps = ({ layout, projectGetById }: IAppState) => ({
+const mapStateToProps = ({ layout, projectGetById, projectPut }: IAppState) => ({
   layoutState: layout,
-  projectState: projectGetById
+  projectGetState: projectGetById,
+  projectPutState: projectPut,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
@@ -225,6 +307,8 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   projectDispatch: {
     getByIdRequest: (request: IProjectGetByIdRequest) => dispatch(projectGetByIdRequest(request)),
     getByIdDispose: () => dispatch(projectGetByIdDispose()),
+    putRequest: (request: IProjectPutRequest) => dispatch(projectPutRequest(request)),
+    putDispose: () => dispatch(projectPutDispose()),
   }
 });
 

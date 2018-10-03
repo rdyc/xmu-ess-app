@@ -1,2 +1,2 @@
-export * from './IProjectRegistrationAllFilter';
-export * from './IProjectRegistrationListFilter';
+export * from './IProjectGetAllFilter';
+export * from './IProjectGetListFilter';

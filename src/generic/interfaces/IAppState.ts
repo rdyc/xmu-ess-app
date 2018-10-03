@@ -8,8 +8,14 @@ import { IQuerySingleState } from '@generic/interfaces/IQuerySingleState';
 import { IAppBarState, ILayoutState, IListBarState, INotificationState } from '@layout/interfaces';
 import { ICustomerAllRequest, ICustomerByIdRequest, ICustomerListRequest } from '@lookup/interfaces/queries';
 import { ICustomer, ICustomerDetail, ICustomerList } from '@lookup/interfaces/response';
-import { IProjectGetAllRequest, IProjectGetByIdRequest } from '@project/classes/queries';
-import { IProject, IProjectDetail } from '@project/classes/response';
+import {
+  IProjectGetAllRequest,
+  IProjectGetByIdRequest,
+  IProjectPostRequest,
+  IProjectPutRequest,
+} from '@project/classes/queries';
+import { IProjectGetListRequest } from '@project/classes/queries/IProjectGetListRequest';
+import { IProject, IProjectDetail, IProjectList } from '@project/classes/response';
 import { FormStateMap } from 'redux-form';
 import { UserState } from 'redux-oidc';
 
@@ -43,5 +49,8 @@ export interface IAppState {
 
   /* project */
   projectGetAll: IQueryCollectionState<IProjectGetAllRequest, IProject>;
+  projectGetList: IQuerySingleState<IProjectGetListRequest, IProjectList>;
   projectGetById: IQuerySingleState<IProjectGetByIdRequest, IProjectDetail>;
+  projectPost: IQuerySingleState<IProjectPostRequest, IProject>;
+  projectPut: IQuerySingleState<IProjectPutRequest, IProject>;
 }

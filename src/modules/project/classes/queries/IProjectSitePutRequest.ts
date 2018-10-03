@@ -5,5 +5,5 @@ export interface IProjectSitePutRequest extends IBaseCommand<IProjectSitePayload
   companyUid: string;
   projectUid: string;
   siteUid: string;
-  payload: IProjectSitePayload;
+  data: IProjectSitePayload;
 }

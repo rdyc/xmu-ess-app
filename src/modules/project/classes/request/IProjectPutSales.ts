@@ -1,4 +1,4 @@
 export interface IProjectPutSales {
-  uid:         string;
+  uid: string | null;
   employeeUid: string;
 }

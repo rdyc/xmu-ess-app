@@ -167,7 +167,7 @@ export const ProjectDetail: React.StatelessComponent<AllProps> = props => {
     </Card>
   );
 
-  const renderDocuments = (title: string, subHeader: string, documents: IProjectDocument[]) => (
+  const renderDocuments = (title: string, subHeader: string, documents: IProjectDocument[] | undefined) => (
     <Card square>
       <CardHeader 
         title={title}
@@ -175,6 +175,7 @@ export const ProjectDetail: React.StatelessComponent<AllProps> = props => {
       />
       <CardContent>
         {
+          documents &&
           documents.map(item => 
             item.document &&
             <div key={item.uid}>

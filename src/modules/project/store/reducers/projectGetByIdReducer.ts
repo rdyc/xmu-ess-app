@@ -1,7 +1,7 @@
 import { IQuerySingleState } from '@generic/interfaces';
 import { IProjectGetByIdRequest } from '@project/classes/queries';
 import { IProjectDetail } from '@project/classes/response';
-import { ProjectAction } from '@project/store/actions';
+import { ProjectAction as Action } from '@project/store/actions';
 import { Reducer } from 'redux';
 
 const initialState: IQuerySingleState<IProjectGetByIdRequest, IProjectDetail> = {
@@ -14,10 +14,10 @@ const initialState: IQuerySingleState<IProjectGetByIdRequest, IProjectDetail> = 
 
 const reducer: Reducer<IQuerySingleState<IProjectGetByIdRequest, IProjectDetail>> = (state = initialState, action) => {
   switch (action.type) {
-    case ProjectAction.GET_BY_ID_REQUEST: return { ...state, isLoading: true, request: action.payload };
-    case ProjectAction.GET_BY_ID_SUCCESS: return { ...state, isLoading: false, response: action.payload };
-    case ProjectAction.GET_BY_ID_ERROR: return { ...state, isLoading: false, isError: true, errors: action.payload };
-    case ProjectAction.GET_BY_ID_DISPOSE: return state = initialState;
+    case Action.GET_BY_ID_REQUEST: return { ...state, isLoading: true, request: action.payload };
+    case Action.GET_BY_ID_SUCCESS: return { ...state, isLoading: false, response: action.payload };
+    case Action.GET_BY_ID_ERROR: return { ...state, isLoading: false, isError: true, errors: action.payload };
+    case Action.GET_BY_ID_DISPOSE: return state = initialState;
     
     default: return state;
   }

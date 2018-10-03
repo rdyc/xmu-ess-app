@@ -1,7 +1,6 @@
 import { IProjectGetAllFilter } from '@project/classes/filters';
 
-export interface IProjectRegistrationListFilter<T> extends IProjectGetAllFilter {
+export interface IProjectGetListFilter extends IProjectGetAllFilter {
   activeOnly: boolean | null;
   assignmentStatus: 'assigned' | 'unassigned' | null;
-  filter: T | null;
 }
