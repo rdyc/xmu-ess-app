@@ -1,4 +1,4 @@
-import { IProjectGetAllFilter } from '@project/interfaces/filters';
+import { IProjectGetAllFilter } from '@project/classes/filters';
 
 export interface IProjectRegistrationListFilter<T> extends IProjectGetAllFilter {
   activeOnly: boolean | null;

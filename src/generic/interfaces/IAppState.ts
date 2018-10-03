@@ -8,8 +8,8 @@ import { IQuerySingleState } from '@generic/interfaces/IQuerySingleState';
 import { IAppBarState, ILayoutState, IListBarState, INotificationState } from '@layout/interfaces';
 import { ICustomerAllRequest, ICustomerByIdRequest, ICustomerListRequest } from '@lookup/interfaces/queries';
 import { ICustomer, ICustomerDetail, ICustomerList } from '@lookup/interfaces/response';
-import { IProjectGetAllRequest, IProjectGetByIdRequest } from '@project/interfaces/queries';
-import { IProject, IProjectDetail } from '@project/interfaces/response';
+import { IProjectGetAllRequest, IProjectGetByIdRequest } from '@project/classes/queries';
+import { IProject, IProjectDetail } from '@project/classes/response';
 import { FormStateMap } from 'redux-form';
 import { UserState } from 'redux-oidc';
 

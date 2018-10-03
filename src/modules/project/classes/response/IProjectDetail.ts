@@ -3,7 +3,7 @@ import { ICommonSystem } from '@common/interfaces';
 import { IBaseChanges } from '@generic/interfaces';
 import { ILookupCustomer } from '@lookup/interfaces';
 import { IOrganizationHierarchy, IOrganizationWorkflow } from '@organization/interfaces';
-import { IProjectDocument, IProjectSales, IProjectSite } from '@project/interfaces/response';
+import { IProjectDocument, IProjectSales, IProjectSite } from '@project/classes/response';
 
 export interface IProjectDetail {
   uid:              string;

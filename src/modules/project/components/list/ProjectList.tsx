@@ -1,8 +1,8 @@
 import { IBaseChanges, IQueryCollectionState } from '@generic/interfaces';
 import { ConnectedReduxProps } from '@generic/types';
 import { Divider, Grid, List, ListItem, ListSubheader, Typography, WithStyles } from '@material-ui/core';
-import { IProjectGetAllRequest } from '@project/interfaces/queries';
-import { IProject } from '@project/interfaces/response';
+import { IProjectGetAllRequest } from '@project/classes/queries';
+import { IProject } from '@project/classes/response';
 import styles from '@styles';
 import * as moment from 'moment';
 import * as React from 'react';

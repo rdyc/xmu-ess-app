@@ -8,7 +8,6 @@ import {
   Checkbox,
   FormControlLabel,
   Grid,
-  // IconButton,
   List,
   ListItem,
   ListItemAvatar,
@@ -17,15 +16,14 @@ import {
   Typography,
   WithStyles,
 } from '@material-ui/core';
-// import MoreVertIcon from '@material-ui/icons/MoreVert';
 import PersonIcon from '@material-ui/icons/Person';
-import { IProjectGetByIdRequest } from '@project/interfaces/queries';
-import { IProjectDetail, IProjectDocument, IProjectSales, IProjectSite } from '@project/interfaces/response';
+import { WorkflowStep } from '@organization/components';
+import { IProjectGetByIdRequest } from '@project/classes/queries';
+import { IProjectDetail, IProjectDocument, IProjectSales, IProjectSite } from '@project/classes/response';
 import styles from '@styles';
 import * as React from 'react';
 import { FormattedMessage, FormattedNumber, InjectedIntlProps } from 'react-intl';
 import { RouteComponentProps } from 'react-router';
-import { WorkflowStep } from '@organization/components';
 
 interface PropsFromState extends RouteComponentProps<void> {
   projectState: IQuerySingleState<IProjectGetByIdRequest, IProjectDetail>;

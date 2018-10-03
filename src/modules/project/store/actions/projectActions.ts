@@ -1,6 +1,6 @@
 import { IResponseCollection, IResponseSingle } from '@generic/interfaces';
-import { IProjectGetAllRequest, IProjectGetByIdRequest } from '@project/interfaces/queries';
-import { IProject } from '@project/interfaces/response';
+import { IProjectGetAllRequest, IProjectGetByIdRequest } from '@project/classes/queries';
+import { IProject } from '@project/classes/response';
 import { action } from 'typesafe-actions';
 
 export const enum ProjectAction {
@@ -13,6 +13,7 @@ export const enum ProjectAction {
   GET_BY_ID_ERROR = '@@project/GET_BY_ID_ERROR',
   GET_BY_ID_DISPOSE = '@@project/GET_BY_ID_DISPOSE'
 }
+
 export const projectGetAllRequest = (request: IProjectGetAllRequest) => action(ProjectAction.GET_ALL_REQUEST, request);
 export const projectGetAllSuccess = (response: IResponseCollection<IProject>) => action(ProjectAction.GET_ALL_SUCCESS, response);
 export const projectGetAllError = (message: string) => action(ProjectAction.GET_ALL_ERROR, message);

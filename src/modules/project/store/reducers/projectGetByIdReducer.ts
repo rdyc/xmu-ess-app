@@ -1,6 +1,6 @@
 import { IQuerySingleState } from '@generic/interfaces';
-import { IProjectGetByIdRequest } from '@project/interfaces/queries';
-import { IProjectDetail } from '@project/interfaces/response';
+import { IProjectGetByIdRequest } from '@project/classes/queries';
+import { IProjectDetail } from '@project/classes/response';
 import { ProjectAction } from '@project/store/actions';
 import { Reducer } from 'redux';
 

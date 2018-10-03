@@ -1,4 +1,4 @@
-export interface IProjectUpdateSales {
+export interface IProjectPutSales {
   uid:         string;
   employeeUid: string;
 }

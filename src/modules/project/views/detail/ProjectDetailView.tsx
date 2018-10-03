@@ -14,15 +14,25 @@ import {
   layoutNavBackHide,
   layoutNavBackShow,
 } from '@layout/store/actions';
-import { Typography, WithStyles, withStyles, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button } from '@material-ui/core';
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Typography,
+  WithStyles,
+  withStyles,
+} from '@material-ui/core';
+import { IProjectGetByIdRequest } from '@project/classes/queries';
+import { IProjectDetail } from '@project/classes/response';
+import { ProjectUserAction } from '@project/classes/types';
 import { ProjectDetail } from '@project/components/list/ProjectDetail';
-import { IProjectGetByIdRequest } from '@project/interfaces/queries';
-import { IProjectDetail } from '@project/interfaces/response';
 import { projectGetByIdDispose, projectGetByIdRequest } from '@project/store/actions';
-import { ProjectUserAction } from '@project/types';
 import styles from '@styles';
 import * as React from 'react';
-import { InjectedIntlProps, injectIntl, FormattedMessage } from 'react-intl';
+import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
 import { RouteComponentProps } from 'react-router';
 import { Dispatch } from 'redux';

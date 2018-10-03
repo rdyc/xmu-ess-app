@@ -27,7 +27,7 @@ import {
 } from '@material-ui/core';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import PersonIcon from '@material-ui/icons/Person';
-import { IProjectDetail, IProjectDocument, IProjectSales, IProjectSite } from '@project/interfaces/response';
+import { IProjectDetail, IProjectDocument, IProjectSales, IProjectSite } from '@project/classes/response';
 import styles from '@styles';
 import * as classNames from 'classnames';
 import * as React from 'react';
@@ -152,7 +152,7 @@ export const projectForm: React.StatelessComponent<AllProps> = props => {
     </Card>
   );
 
-  const renderDocuments = (propNam: string, title: string, subHeader: string, documents: IProjectDocument[]) => (
+  const renderDocuments = (_name: string, title: string, subHeader: string, documents: IProjectDocument[]) => (
     <Card square>
       <CardHeader 
         title={title}
@@ -170,12 +170,13 @@ export const projectForm: React.StatelessComponent<AllProps> = props => {
                 <Field
                   key={index}
                   type="checkbox"
-                  name={`${propNam}[${index}].isAvailable`}
-                  component={({ input }: any) => 
+                  name={`${_name}[${index}].isAvailable`}
+                  component={({ input, meta }: any) => 
                     <Checkbox 
                       {...input} 
                       key={index} 
                       value={item.uid}
+                      disabled={meta.submitting}
                     />
                   }
                 />
@@ -293,7 +294,6 @@ export const projectForm: React.StatelessComponent<AllProps> = props => {
                   </Typography>
                 </Grid>
               </Grid>
-              
             </ListItem>
           )
         }
@@ -348,7 +348,7 @@ export const projectForm: React.StatelessComponent<AllProps> = props => {
           </Grid>
         </Grid>
       </Grid>
-      <div className={classNames(props.classes.marginFarTop, props.classes.forceRight)}>
+      <div className={classNames(props.classes.marginFarTop, props.classes.marginWideBottom, props.classes.forceRight)}>
         <Button 
           type="button"
           color="default"

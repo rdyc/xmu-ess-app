@@ -21,11 +21,11 @@ import {
   listBarDispose,
 } from '@layout/store/actions';
 import { Paper, Typography, WithStyles, withStyles } from '@material-ui/core';
+import { IProjectGetAllRequest } from '@project/classes/queries';
+import { IProject } from '@project/classes/response';
+import { ProjectField } from '@project/classes/types';
 import { ProjectList } from '@project/components/list';
-import { IProjectGetAllRequest } from '@project/interfaces/queries';
-import { IProject } from '@project/interfaces/response';
 import { projectGetAllRequest } from '@project/store/actions';
-import { ProjectField } from '@project/types';
 import styles from '@styles';
 import * as React from 'react';
 import { InjectedIntlProps, injectIntl } from 'react-intl';

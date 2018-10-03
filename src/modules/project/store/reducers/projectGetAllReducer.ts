@@ -1,6 +1,6 @@
 import { IQueryCollectionState } from '@generic/interfaces';
-import { IProjectGetAllRequest } from '@project/interfaces/queries';
-import { IProject } from '@project/interfaces/response';
+import { IProjectGetAllRequest } from '@project/classes/queries';
+import { IProject } from '@project/classes/response';
 import { ProjectAction as Action } from '@project/store/actions';
 import { Reducer } from 'redux';
 

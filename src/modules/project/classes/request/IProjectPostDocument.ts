@@ -1,4 +1,4 @@
-export interface IProjectCreateDocument {
+export interface IProjectPostDocument {
   documentType: string;
   isChecked:    boolean;
 }
