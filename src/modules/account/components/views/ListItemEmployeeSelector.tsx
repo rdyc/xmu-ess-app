@@ -41,11 +41,14 @@ interface PropsFromState {
 
 interface PropsFromDispatch {
   employeeDispatch: {
-    allRequest: typeof employeeGetListRequest;
+    listRequest: typeof employeeGetListRequest;
   };
 }
 
 interface OwnProps {
+  companyUids?: string[] | undefined;
+  roleUids?: string[] | undefined;
+  positionUids?: string[] | undefined;
   onSelected: (employee: IEmployee) => boolean;
 }
 
@@ -69,8 +72,10 @@ class ListItemEmployeeSelector extends React.Component<AllProps, State> {
   state: State = initialState;
 
   componentDidMount() {
+    const { isLoading, response } = this.props.employeeState;
+
     // skipp fetch while current state is being loaded
-    if (this.props.employeeState.isLoading || this.props.employeeState.response) {
+    if (isLoading || response) {
       return;
     }
 
@@ -78,15 +83,20 @@ class ListItemEmployeeSelector extends React.Component<AllProps, State> {
   }
 
   loadData = () => {
-    this.props.employeeDispatch.allRequest({
+    const { companyUids, roleUids, positionUids } = this.props;
+    const { listRequest } = this.props.employeeDispatch;
+
+    console.log(companyUids, roleUids, positionUids);
+
+    listRequest({
       filter: {
-        companyUids: undefined,
-        roleUids: undefined,
-        positionUids: undefined,
+        companyUids,
+        roleUids,
+        positionUids,
         find: this.state.search,
         findBy: undefined,
         direction: undefined,
-        orderBy: undefined,
+        orderBy: 'fullName',
         size: undefined
       }
     });
@@ -288,7 +298,7 @@ const mapStateToProps = ({ employeeGetList }: IAppState) => ({
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   employeeDispatch: {
-    allRequest: (request: IEmployeeListRequest) => dispatch(employeeGetListRequest(request)),
+    listRequest: (request: IEmployeeListRequest) => dispatch(employeeGetListRequest(request)),
   }
 });
 

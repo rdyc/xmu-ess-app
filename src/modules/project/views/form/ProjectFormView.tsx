@@ -65,6 +65,14 @@ class ProjectFormView extends React.Component<AllProps, State> {
 
   componentWillMount() {
     const { history } = this.props;
+    const { user } = this.props.layoutState;
+
+    if (user) {
+      this.setState({ 
+        companyUid: user.company.uid,
+        positionUid: user.position.uid
+      });
+    }
 
     if (!isNullOrUndefined(history.location.state)) {
       this.setState({ 
@@ -274,10 +282,10 @@ class ProjectFormView extends React.Component<AllProps, State> {
 
     if (!isLoading && response && response.data) {
       return (
-        <ProjectForm 
+        <ProjectForm
           {...this.props}
-          form="projectForm" 
-          initialValues={response.data}
+          {...this.state}
+          initialValues={response.data} 
           validate={this.handleValidate}
           onSubmit={this.handleSubmit} 
           onSubmitSuccess={this.handleSubmitSuccess}

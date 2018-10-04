@@ -1,7 +1,7 @@
-import ListItemEmployeeSelector from '@account/components/views/ListItemEmployeeSelector';
 import { IEmployee } from '@account/classes/response';
+import ListItemEmployeeSelector from '@account/components/views/ListItemEmployeeSelector';
 import { ISystemList } from '@common/classes/response';
-import { ConnectedReduxProps } from '@generic/types';
+import { ConnectedReduxProps, FormMode } from '@generic/types';
 import { FieldInputCustomer, FieldInputDate, FieldInputNumber, FieldInputText } from '@layout/components/formFields';
 import { FieldSelectSystem } from '@layout/components/formFields/FieldSelectSystem';
 import { ICustomerList } from '@lookup/classes/response';
@@ -34,12 +34,19 @@ import * as React from 'react';
 import { FormattedMessage, FormattedNumber, InjectedIntlProps } from 'react-intl';
 import { Field, FieldArray, InjectedFormProps, reduxForm, WrappedFieldArrayProps } from 'redux-form';
 
-type AllProps = InjectedFormProps<IProjectDetail> & 
+interface OwnProps {
+  mode: FormMode;
+  companyUid: string;
+  positionUid: string;
+  projectUid: string;
+}
+
+type AllProps = InjectedFormProps<IProjectDetail, OwnProps> & 
                 ConnectedReduxProps &
                 InjectedIntlProps &
                 WithStyles<typeof styles>;
 
-export const projectForm: React.StatelessComponent<AllProps> = props => { 
+const projectForm: React.SFC<AllProps & OwnProps> = props => { 
   const renderDetail = () => (
     <Card square>
       <CardHeader 
@@ -256,7 +263,8 @@ export const projectForm: React.StatelessComponent<AllProps> = props => {
               })
             }
             <Divider className={classNames(props.classes.marginFarTop, props.classes.marginFarBottom)} />
-            <ListItemEmployeeSelector 
+            <ListItemEmployeeSelector
+              companyUids={[props.companyUid]}
               dispatch={props.dispatch} 
               onSelected={(employee: IEmployee) => handleSelectedCallback(employee)}
             />
@@ -369,8 +377,8 @@ export const projectForm: React.StatelessComponent<AllProps> = props => {
   );
 };
 
-const ProjectForm = reduxForm<IProjectDetail>({
-  
+const ProjectForm = reduxForm<IProjectDetail, OwnProps>({
+  form: 'projectForm'
 })(projectForm);
 
 export default ProjectForm;
