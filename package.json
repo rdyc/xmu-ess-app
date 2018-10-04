@@ -1,7 +1,17 @@
 {
   "name": "xmu-ess-app",
+  "description": "ESS React App",
+  "author": {
+    "name": "Ruddy Cahyadi",
+    "email": "ruddycahyadi@gmail.com",
+    "url": "https://github.com/rdyc"
+  },
   "version": "0.1.0",
   "private": true,
+  "repository": {
+    "type": "github",
+    "url": "https://github.com/rdyc/xmu-ess-app"
+  },
   "scripts": {
     "start": "react-scripts-ts start",
     "build": "react-scripts-ts build",
