@@ -113,20 +113,20 @@ class Notifications extends React.Component<AllProps> {
                 <ListItem
                   key={category.name}
                   button
-                  onClick={() => this.handleVisibility(category.name + '_' + detail.type)}
+                  onClick={() => this.handleVisibility(`${category.name}_${detail.type}`)}
                 >
                   <ListItemText
                     key={category.name}
-                    primary={category.name + ' (' + detail.total + ')'}
+                    primary={`${category.name} (${detail.total})`}
                   />
                   <ListItemSecondaryAction key={category.name}>
-                    {this.state.active === category.name + '_' + detail.type && this.state.isExpanded ?
+                    {this.state.active === `${category.name}_${detail.type}` && this.state.isExpanded ?
                     <ExpandLess /> : <ExpandMore />}
                   </ListItemSecondaryAction>
                 </ListItem>
                 <Collapse
                   key={detail.type}
-                  in={this.state.active === category.name + '_' + detail.type && this.state.isExpanded}
+                  in={this.state.active === `${category.name}_${detail.type}` && this.state.isExpanded}
                   timeout="auto"
                   unmountOnExit
                 >
@@ -141,8 +141,8 @@ class Notifications extends React.Component<AllProps> {
                       >
                         <ListItemText
                           key={item.uid}
-                          primary={item.uid + ' - ' + item.name}
-                          secondary={detail.type + ' ' + moment(item.date).fromNow()}
+                          primary={`${item.uid} - ${item.name}`}
+                          secondary={`${detail.type} ${moment(item.date).fromNow()}`}
                         />
                       </ListItem>
                     )}

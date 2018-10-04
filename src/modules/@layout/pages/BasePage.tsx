@@ -23,9 +23,12 @@ import {
   layoutAccountExpand,
   layoutActionCentreHide,
   layoutActionCentreShow,
+  layoutAlertAdd,
+  layoutAlertDialogHide,
+  layoutAlertDialogShow,
+  layoutAlertDismiss,
   layoutAssignMenus,
   layoutAssignUser,
-  layoutAlertAdd,
   layoutChangeAnchor,
   layoutChangeNotif,
   layoutChangeView,
@@ -57,14 +60,11 @@ import {
   listBarDispose,
   listBarMenuHide,
   listBarMenuShow,
-  layoutAlertDismiss,
-  layoutAlertDialogHide,
-  layoutAlertDialogShow,
 } from '@layout/store/actions';
 import { Anchor } from '@layout/types';
 import { ILookupRoleMenuList } from '@lookup/classes';
 import { WithStyles, withStyles } from '@material-ui/core';
-import withWidth, { WithWidthProps } from '@material-ui/core/withWidth';
+import { WithWidth } from '@material-ui/core/withWidth';
 import styles from '@styles';
 import * as classNames from 'classnames';
 import * as React from 'react';
@@ -151,7 +151,7 @@ type AllProps = PropsFromState &
                 ConnectedReduxProps & 
                 InjectedIntlProps & 
                 WithStyles<typeof styles> & 
-                WithWidthProps;
+                WithWidth;
 
 class BasePage extends React.Component<AllProps> {
   private loadStorage() {
@@ -262,4 +262,4 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
 
 const redux = connect(mapStateToProps, mapDispatchToProps)(BasePage);
 
-export default withRouter(withRoot(injectIntl(withStyles(styles)(withWidth()(redux)))));
+export default withRouter(withRoot(injectIntl(withStyles(styles)(redux))));

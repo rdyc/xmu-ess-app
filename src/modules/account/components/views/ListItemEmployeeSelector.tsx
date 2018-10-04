@@ -22,7 +22,7 @@ import {
   WithStyles,
   withStyles,
 } from '@material-ui/core';
-import withWidth, { isWidthDown, WithWidthProps } from '@material-ui/core/withWidth';
+import { isWidthDown, WithWidth } from '@material-ui/core/withWidth';
 import AddIcon from '@material-ui/icons/Add';
 import CloseIcon from '@material-ui/icons/Close';
 import DoneIcon from '@material-ui/icons/Done';
@@ -57,7 +57,7 @@ type AllProps = PropsFromState &
                 OwnProps &
                 ConnectedReduxProps & 
                 InjectedIntlProps & 
-                WithWidthProps &
+                WithWidth &
                 WithStyles<typeof styles>;
 
 const initialState = {
@@ -138,17 +138,19 @@ class ListItemEmployeeSelector extends React.Component<AllProps, State> {
   };
 
   fnFilteredEmployee = (response: IResponseCollection<IEmployee> | undefined) => {
+    let result: any = [];
+
     if (response && response.data) {
       if (this.state.search !== '') {
-        return response.data.filter(item => 
+        result = response.data.filter(item => 
           item.fullName.toLowerCase().indexOf(this.state.search) !== -1
         );
       } else {
-        return response.data;
+        result = response.data;
       }
-    } else {
-      return [];
-    }
+    } 
+    
+    return result;
   };
 
   render() {
@@ -304,4 +306,4 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
 
 const redux = connect(mapStateToProps, mapDispatchToProps)(ListItemEmployeeSelector);
 
-export default injectIntl(withStyles(styles)(withWidth()(redux)));
+export default injectIntl(withStyles(styles)(redux));

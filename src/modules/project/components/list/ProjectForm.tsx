@@ -33,6 +33,7 @@ import * as classNames from 'classnames';
 import * as React from 'react';
 import { FormattedMessage, FormattedNumber, InjectedIntlProps } from 'react-intl';
 import { Field, FieldArray, InjectedFormProps, reduxForm, WrappedFieldArrayProps } from 'redux-form';
+import { WithWidth } from '@material-ui/core/withWidth';
 
 interface OwnProps {
   mode: FormMode;
@@ -44,6 +45,7 @@ interface OwnProps {
 type AllProps = InjectedFormProps<IProjectDetail, OwnProps> & 
                 ConnectedReduxProps &
                 InjectedIntlProps &
+                WithWidth &
                 WithStyles<typeof styles>;
 
 const projectForm: React.SFC<AllProps & OwnProps> = props => { 
@@ -264,6 +266,7 @@ const projectForm: React.SFC<AllProps & OwnProps> = props => {
             }
             <Divider className={classNames(props.classes.marginFarTop, props.classes.marginFarBottom)} />
             <ListItemEmployeeSelector
+              width={props.width}
               companyUids={[props.companyUid]}
               dispatch={props.dispatch} 
               onSelected={(employee: IEmployee) => handleSelectedCallback(employee)}

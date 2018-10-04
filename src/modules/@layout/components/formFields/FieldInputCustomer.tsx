@@ -1,6 +1,7 @@
 import { rootStore } from '@generic/roots';
 import { ICustomerList } from '@lookup/classes/response';
 import CustomerLookup from '@lookup/components/controls/CustomerLookup';
+import { WithWidth } from '@material-ui/core/withWidth';
 import * as React from 'react';
 import { BaseFieldProps, WrappedFieldProps } from 'redux-form';
 
@@ -10,7 +11,7 @@ interface FromFieldProps {
   disabled: boolean; 
 }
 
-type AllProps = WrappedFieldProps & BaseFieldProps & FromFieldProps;
+type AllProps = WrappedFieldProps & BaseFieldProps & FromFieldProps & WithWidth;
 
 export const FieldInputCustomer: React.StatelessComponent<AllProps> = props => {
   const { input } = props;

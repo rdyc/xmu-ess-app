@@ -18,7 +18,7 @@ import {
   layoutNavBackShow,
 } from '@layout/store/actions';
 import { AppBar, Badge, IconButton, Input, Menu, MenuItem, Slide, Toolbar, Typography, WithStyles } from '@material-ui/core';
-import { isWidthUp, WithWidthProps } from '@material-ui/core/withWidth';
+import { isWidthUp, WithWidth } from '@material-ui/core/withWidth';
 import AppsIcon from '@material-ui/icons/Apps';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import MenuIcon from '@material-ui/icons/Menu';
@@ -61,7 +61,7 @@ interface PropsFromDispatch {
 type AllProps = PropsFromState & 
                 PropsFromDispatch & 
                 ConnectedReduxProps & 
-                WithWidthProps & 
+                WithWidth & 
                 WithStyles<typeof styles>;
 
 export const topAppBar: React.StatelessComponent<AllProps> = props => {

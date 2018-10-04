@@ -9,7 +9,7 @@ import {
   layoutAlertAdd,
 } from '@layout/store/actions';
 import { BottomNavigation, BottomNavigationAction, Menu, MenuItem, WithStyles } from '@material-ui/core';
-import { isWidthUp, WithWidthProps } from '@material-ui/core/withWidth';
+import { isWidthUp, WithWidth } from '@material-ui/core/withWidth';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
@@ -43,7 +43,7 @@ interface PropsFromDispatch {
 type AllProps = PropsFromState & 
                 PropsFromDispatch & 
                 ConnectedReduxProps & 
-                WithWidthProps & 
+                WithWidth & 
                 WithStyles<typeof styles>;
 
 export const listBar: React.StatelessComponent<AllProps> = props => {
