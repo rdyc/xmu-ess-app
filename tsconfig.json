@@ -1,6 +1,25 @@
 {
   "compilerOptions": {
-    "baseUrl": ".",
+    "baseUrl": "src",
+    "paths": {
+      "@styles": [ "styles" ],
+      "@constants/*": [ "constants/*" ],
+      "@generic/*": [ "generic/*" ],
+      "@language/*": [ "language/*" ],
+      "@utils/*": [ "utils/*" ],
+      "@layout/*": [ "modules/@layout/*" ],
+      "@account/*": [ "modules/account/*" ],
+      "@common/*": [ "modules/common/*" ],
+      "@expense/*": [ "modules/expense/*" ],
+      "@leave/*": [ "modules/leave/*" ],
+      "@lookup/*": [ "modules/lookup/*" ],
+      "@mileage/*": [ "modules/mileage/*" ],
+      "@organization/*": [ "modules/organization/*" ],
+      "@project/*": [ "modules/project/*" ],
+      "@purchase/*": [ "modules/purchase/*" ],
+      "@timesheet/*": [ "modules/timesheet/*" ],
+      "@travel/*": [ "modules/travel/*" ],
+    },
     "outDir": "build/dist",
     "module": "esnext",
     "target": "es5",
@@ -9,7 +28,7 @@
     "allowJs": true,
     "jsx": "react",
     "moduleResolution": "node",
-    "rootDir": "src",
+    "rootDir": ".",
     "forceConsistentCasingInFileNames": true,
     "noImplicitReturns": true,
     "noImplicitThis": true,
@@ -25,6 +44,7 @@
     "acceptance-tests",
     "webpack",
     "jest",
-    "src/setupTests.ts"
+    "src/setupTests.ts",
+    "src/!!sample"
   ]
 }
