@@ -63,11 +63,10 @@ jspm_packages/
 # intellij
 .idea
 
-# vscode
+# others
 .vs
 /bin
 /obj/Debug
-/.vscode
 /out
 
 # lock
