@@ -1,4 +1,4 @@
-import { IEmployeeMy } from '@account/interfaces';
+import { IEmployeeMy } from '@account/classes';
 import { IResponseSingle } from '@generic/interfaces';
 import { ConnectedReduxProps } from '@generic/types';
 import { Card, CardContent, Typography, WithStyles } from '@material-ui/core';

@@ -1,5 +1,5 @@
 import { IBaseChanges } from '@generic/interfaces';
-import { IAccountEmployee } from '@account/interfaces';
+import { IAccountEmployee } from '@account/classes';
 
 export interface IProjectSales {
   uid:         string | null;

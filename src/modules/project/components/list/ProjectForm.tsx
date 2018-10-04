@@ -1,10 +1,10 @@
 import ListItemEmployeeSelector from '@account/components/views/ListItemEmployeeSelector';
-import { IEmployee } from '@account/interfaces/response';
-import { ISystemList } from '@common/interfaces/response';
+import { IEmployee } from '@account/classes/response';
+import { ISystemList } from '@common/classes/response';
 import { ConnectedReduxProps } from '@generic/types';
 import { FieldInputCustomer, FieldInputDate, FieldInputNumber, FieldInputText } from '@layout/components/formFields';
 import { FieldSelectSystem } from '@layout/components/formFields/FieldSelectSystem';
-import { ICustomerList } from '@lookup/interfaces/response';
+import { ICustomerList } from '@lookup/classes/response';
 import {
   Avatar,
   Button,

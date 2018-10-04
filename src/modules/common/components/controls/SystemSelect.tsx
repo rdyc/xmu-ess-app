@@ -1,7 +1,7 @@
-import { ISystemListRequest } from '@common/interfaces/queries';
-import { ISystemList } from '@common/interfaces/response';
+import { ISystemListRequest } from '@common/classes/queries';
+import { ISystemList } from '@common/classes/response';
 import { systemGetListRequest } from '@common/store/actions';
-import { CommonCategoryType } from '@common/types';
+import { CommonCategoryType } from '@common/classes/types';
 import { IAppState, IQueryCollectionState } from '@generic/interfaces';
 import { ConnectedReduxProps } from '@generic/types';
 import { MenuItem, TextField, WithStyles, withStyles } from '@material-ui/core';

@@ -1,6 +1,6 @@
 import { action } from 'typesafe-actions';
 
-import { ILookupRoleMenuList } from '@lookup/interfaces/ILookupRoleMenuList';
+import { ILookupRoleMenuList } from '@lookup/classes';
 import { IAppUser, IView } from '@layout/interfaces';
 import { IAlert } from '@layout/interfaces/IAlert';
 import { Anchor } from '@layout/types';

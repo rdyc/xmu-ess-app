@@ -1,7 +1,7 @@
-import { IAccountEmployee } from '@account/interfaces';
-import { ICommonSystem } from '@common/interfaces';
+import { IAccountEmployee } from '@account/classes';
+import { ICommonSystem } from '@common/classes';
 import { IBaseChanges } from '@generic/interfaces';
-import { ILookupCustomer } from '@lookup/interfaces';
+import { ILookupCustomer } from '@lookup/classes';
 import {
   IOrganizationHierarchy,
   IOrganizationWorkflow

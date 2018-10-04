@@ -1,5 +1,5 @@
-import { IEmployeeByIdRequest } from '@account/interfaces/queries';
-import { IEmployeeDetail } from '@account/interfaces/response';
+import { IEmployeeByIdRequest } from '@account/classes/queries';
+import { IEmployeeDetail } from '@account/classes/response';
 import { EmployeeAction as Action } from '@account/store/actions';
 import { IQuerySingleState } from '@generic/interfaces';
 import { Reducer } from 'redux';

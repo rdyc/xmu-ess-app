@@ -1,8 +1,8 @@
-import { IQueryCollectionState } from '@generic/interfaces';
+import { IEmployeeAllRequest } from '@account/classes/queries';
+import { IEmployee } from '@account/classes/response';
 import { EmployeeAction as Action } from '@account/store/actions';
+import { IQueryCollectionState } from '@generic/interfaces';
 import { Reducer } from 'redux';
-import { IEmployee } from '@account/interfaces/response';
-import { IEmployeeAllRequest } from '@account/interfaces/queries';
 
 const initialState: IQueryCollectionState<IEmployeeAllRequest, IEmployee> = {
   request: undefined,

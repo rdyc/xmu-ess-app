@@ -1,4 +1,4 @@
-import { IEmployeeCommandData } from '@account/interfaces';
+import { IEmployeeCommandData } from '@account/classes';
 import { FieldInputText } from '@layout/components/formFields';
 import { Button, Grid } from '@material-ui/core';
 import * as React from 'react';

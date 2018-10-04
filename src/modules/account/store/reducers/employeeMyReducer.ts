@@ -1,4 +1,4 @@
-import { IEmployeeMyState } from '@account/interfaces';
+import { IEmployeeMyState } from '@account/classes';
 import { EmployeeMyAction } from '@account/store/actions';
 import { Reducer } from 'redux';
 

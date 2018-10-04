@@ -1,3 +1,4 @@
+import { ProjectType } from '@common/classes/types';
 import { IAppState, IQuerySingleState } from '@generic/interfaces';
 import { ConnectedReduxProps, FormMode } from '@generic/types';
 import { IAlert, ILayoutState, IView } from '@layout/interfaces';
@@ -16,7 +17,6 @@ import { RouteComponentProps } from 'react-router';
 import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
 import { isNullOrUndefined } from 'util';
-import { ProjectType } from '@common/types';
 
 interface PropsFromState extends RouteComponentProps<void> {
   layoutState: ILayoutState;

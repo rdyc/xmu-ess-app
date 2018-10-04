@@ -1,5 +1,5 @@
-import { ISystemListRequest } from '@common/interfaces/queries';
-import { ISystemList } from '@common/interfaces/response';
+import { ISystemListRequest } from '@common/classes/queries';
+import { ISystemList } from '@common/classes/response';
 import { SystemAction as Action } from '@common/store/actions';
 import { IQueryCollectionState } from '@generic/interfaces';
 import { Reducer } from 'redux';

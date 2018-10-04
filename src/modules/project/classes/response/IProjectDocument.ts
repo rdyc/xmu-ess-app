@@ -1,5 +1,5 @@
 import { IBaseChanges } from '@generic/interfaces';
-import { ICommonSystem } from '@common/interfaces';
+import { ICommonSystem } from '@common/classes';
 
 export interface IProjectDocument {
   uid:          string;

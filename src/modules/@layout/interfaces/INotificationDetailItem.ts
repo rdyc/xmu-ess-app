@@ -1,4 +1,4 @@
-import { ICommonSystem } from '../../common/interfaces/ICommonSystem';
+import { ICommonSystem } from '@common/classes';
 
 export interface INotificationDetailItem {
   uid: string;

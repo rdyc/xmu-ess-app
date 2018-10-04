@@ -1,11 +1,11 @@
-import { IEmployeeAccessList, IEmployeeMy } from '@account/interfaces';
+import { IEmployeeAccessList, IEmployeeMy } from '@account/classes';
 import { EmployeeFetchRequest } from '@account/store/actions';
 import { AppStorage } from '@constants/index';
 import { IAppState, IResponseSingle } from '@generic/interfaces';
 import { ConnectedReduxProps } from '@generic/types';
 import { IAppUser, IUserCompany, IUserPosition } from '@layout/interfaces';
 import { layoutAssignMenus, layoutAssignUser } from '@layout/store/actions';
-import { ILookupRoleMenuList } from '@lookup/interfaces';
+import { ILookupRoleMenuList } from '@lookup/classes';
 import {
   Button,
   Card,

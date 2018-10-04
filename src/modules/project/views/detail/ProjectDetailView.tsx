@@ -1,4 +1,4 @@
-import { WorkflowStatusType } from '@common/types';
+import { WorkflowStatusType } from '@common/classes/types';
 import { IAppState, IQuerySingleState } from '@generic/interfaces';
 import { ConnectedReduxProps } from '@generic/types';
 import { IAppBarMenu, ILayoutState, IView } from '@layout/interfaces';

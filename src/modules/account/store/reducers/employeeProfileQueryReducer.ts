@@ -1,5 +1,5 @@
 import { Reducer } from 'redux';
-import { IEmployeeProfileQueryState } from '@account/interfaces';
+import { IEmployeeProfileQueryState } from '@account/classes';
 import { EmployeeProfileAction } from '@account/store/actions';
 
 const initialState: IEmployeeProfileQueryState = {

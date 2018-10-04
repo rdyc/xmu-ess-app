@@ -1,5 +1,5 @@
-import { ISystemAllRequest, ISystemByIdRequest, ISystemListRequest } from '@common/interfaces/queries';
-import { ISystem, ISystemDetail, ISystemList } from '@common/interfaces/response';
+import { ISystemAllRequest, ISystemByIdRequest, ISystemListRequest } from '@common/classes/queries';
+import { ISystem, ISystemDetail, ISystemList } from '@common/classes/response';
 import { IResponseCollection } from '@generic/interfaces';
 import { action } from 'typesafe-actions';
 

@@ -1,6 +1,6 @@
 import { IQueryCollectionState } from '@generic/interfaces';
-import { ICustomerListRequest } from '@lookup/interfaces/queries';
-import { ICustomerList } from '@lookup/interfaces/response';
+import { ICustomerListRequest } from '@lookup/classes/queries';
+import { ICustomerList } from '@lookup/classes/response';
 import { CustomerAction as Action } from '@lookup/store/actions';
 import { Reducer } from 'redux';
 

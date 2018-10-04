@@ -1,6 +1,6 @@
 import { rootStore } from '@generic/roots';
+import { ICustomerList } from '@lookup/classes/response';
 import CustomerLookup from '@lookup/components/controls/CustomerLookup';
-import { ICustomerList } from '@lookup/interfaces/response';
 import * as React from 'react';
 import { BaseFieldProps, WrappedFieldProps } from 'redux-form';
 

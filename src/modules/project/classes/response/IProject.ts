@@ -1,7 +1,7 @@
-import { ILookupCustomer } from '@lookup/interfaces';
-import { ICommonSystem } from '@common/interfaces';
+import { ILookupCustomer } from '@lookup/classes';
+import { ICommonSystem } from '@common/classes';
 import { IBaseChanges } from '@generic/interfaces';
-import { IAccountEmployee } from '@account/interfaces';
+import { IAccountEmployee } from '@account/classes';
 
 export interface IProject {
   uid:              string;

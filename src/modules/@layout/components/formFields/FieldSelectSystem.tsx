@@ -1,6 +1,6 @@
+import { ISystemList } from '@common/classes/response';
+import { CommonCategoryType } from '@common/classes/types';
 import SystemSelect from '@common/components/controls/SystemSelect';
-import { ISystemList } from '@common/interfaces/response';
-import { CommonCategoryType } from '@common/types';
 import { rootStore } from '@generic/roots';
 import * as React from 'react';
 import { BaseFieldProps, WrappedFieldProps } from 'redux-form';

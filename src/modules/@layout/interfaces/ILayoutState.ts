@@ -1,8 +1,9 @@
-import { ILookupRoleMenuList } from '../../lookup/interfaces/ILookupRoleMenuList';
+import { IAlert } from '@layout/interfaces/IAlert';
+import { IView } from '@layout/interfaces/IView';
+import { ILookupRoleMenuList } from '@lookup/classes';
+
 import { Anchor } from '../types/Anchor';
 import { IAppUser } from './IAppUser';
-import { IView } from '@layout/interfaces/IView';
-import { IAlert } from '@layout/interfaces/IAlert';
 
 export interface ILayoutState {
   readonly user: IAppUser | undefined;

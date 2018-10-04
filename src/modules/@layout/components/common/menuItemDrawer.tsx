@@ -1,7 +1,7 @@
 import { ConnectedReduxProps } from '@generic/types';
 import { ILayoutState } from '@layout/interfaces';
 import { layoutChangeView, layoutDrawerMenuHide, layoutDrawerMenuShow } from '@layout/store/actions';
-import { ILookupRoleMenuChildList } from '@lookup/interfaces';
+import { ILookupRoleMenuChildList } from '@lookup/classes';
 import { Divider, List, ListItem, ListItemText, ListSubheader, WithStyles } from '@material-ui/core';
 import { isWidthUp, WithWidthProps } from '@material-ui/core/withWidth';
 import styles from '@styles';

@@ -1,5 +1,5 @@
-import { IEmployeeCommand, IEmployeeCommandData, IEmployeeQuery } from '@account/interfaces';
-import { IEmployee } from '@account/interfaces/response';
+import { IEmployeeCommand, IEmployeeCommandData, IEmployeeQuery } from '@account/classes';
+import { IEmployee } from '@account/classes/response';
 import { EmployeeProfileCommandRequest, EmployeeProfileFetchRequest } from '@account/store/actions';
 import { IAppState, IResponseSingle } from '@generic/interfaces';
 import { Command, ConnectedReduxProps } from '@generic/types';

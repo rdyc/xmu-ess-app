@@ -1,4 +1,4 @@
-import { IEmployeeProfileCommandState } from '@account/interfaces';
+import { IEmployeeProfileCommandState } from '@account/classes';
 import { EmployeeProfileAction } from '@account/store/actions';
 import { Reducer } from 'redux';
 

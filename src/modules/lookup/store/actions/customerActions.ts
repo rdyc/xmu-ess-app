@@ -1,6 +1,6 @@
 import { IResponseCollection } from '@generic/interfaces';
-import { ICustomerAllRequest, ICustomerByIdRequest, ICustomerListRequest } from '@lookup/interfaces/queries';
-import { ICustomer, ICustomerDetail, ICustomerList } from '@lookup/interfaces/response';
+import { ICustomerAllRequest, ICustomerByIdRequest, ICustomerListRequest } from '@lookup/classes/queries';
+import { ICustomer, ICustomerDetail, ICustomerList } from '@lookup/classes/response';
 import { action } from 'typesafe-actions';
 
 export const enum CustomerAction {

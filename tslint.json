@@ -35,7 +35,7 @@
         true,
         {
           "order":[
-            "public-before-private",
+            // "public-before-private",
             "static-before-instance",
             "variables-before-functions"
           ]

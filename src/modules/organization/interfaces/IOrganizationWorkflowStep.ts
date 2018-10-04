@@ -1,6 +1,6 @@
-import { IAccountEmployee } from '@account/interfaces';
-import { ICommonSystem } from '@common/interfaces';
-import { ILookupPosition } from '@lookup/interfaces';
+import { IAccountEmployee } from '@account/classes';
+import { ICommonSystem } from '@common/classes';
+import { ILookupPosition } from '@lookup/classes';
 import { IOrganizationWorkflowStepResponse } from '@organization/interfaces';
 
 export interface IOrganizationWorkflowStep {

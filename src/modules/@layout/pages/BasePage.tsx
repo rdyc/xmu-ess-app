@@ -62,7 +62,7 @@ import {
   layoutAlertDialogShow,
 } from '@layout/store/actions';
 import { Anchor } from '@layout/types';
-import { ILookupRoleMenuList } from '@lookup/interfaces';
+import { ILookupRoleMenuList } from '@lookup/classes';
 import { WithStyles, withStyles } from '@material-ui/core';
 import withWidth, { WithWidthProps } from '@material-ui/core/withWidth';
 import styles from '@styles';

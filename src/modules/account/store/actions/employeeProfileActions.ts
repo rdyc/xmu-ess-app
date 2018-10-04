@@ -1,5 +1,5 @@
-import { IEmployeeCommand, IEmployeeQuery } from '@account/interfaces';
-import { IEmployee } from '@account/interfaces/response';
+import { IEmployeeCommand, IEmployeeQuery } from '@account/classes';
+import { IEmployee } from '@account/classes/response';
 import { action } from 'typesafe-actions';
 
 export const enum EmployeeProfileAction {

@@ -1,4 +1,4 @@
-import { ICommonSystem } from '@common/interfaces';
+import { ICommonSystem } from '@common/classes';
 import { IBaseChanges } from '@generic/interfaces';
 
 export interface IOrganizationWorkflowStepResponse {

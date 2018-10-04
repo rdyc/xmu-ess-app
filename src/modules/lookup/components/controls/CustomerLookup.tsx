@@ -1,8 +1,8 @@
 import { IAppState, IQueryCollectionState, IResponseCollection } from '@generic/interfaces';
 import { ConnectedReduxProps } from '@generic/types';
-import { ILookupCustomer } from '@lookup/interfaces';
-import { ICustomerListRequest } from '@lookup/interfaces/queries';
-import { ICustomerList } from '@lookup/interfaces/response';
+import { ILookupCustomer } from '@lookup/classes';
+import { ICustomerListRequest } from '@lookup/classes/queries';
+import { ICustomerList } from '@lookup/classes/response';
 import { customerGetListRequest } from '@lookup/store/actions';
 import {
   Avatar,
