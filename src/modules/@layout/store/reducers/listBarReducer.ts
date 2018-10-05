@@ -70,7 +70,7 @@ const reducer: Reducer<IListBarState> = (state = initialState, action) => {
       return { ...state, isLoading: action.payload };
 
     // case ListBarAction.DISPOSE:
-    //   return state = initialState;
+    //   return initialState;
     
     default:
       return state;

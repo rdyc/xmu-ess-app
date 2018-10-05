@@ -3,7 +3,7 @@ import { ILayoutState } from '@layout/interfaces';
 import { layoutChangeView, layoutDrawerMenuHide, layoutDrawerMenuShow } from '@layout/store/actions';
 import { ILookupRoleMenuChildList } from '@lookup/classes';
 import { Divider, List, ListItem, ListItemText, ListSubheader, WithStyles } from '@material-ui/core';
-import { isWidthUp, WithWidthProps } from '@material-ui/core/withWidth';
+import { isWidthUp, WithWidth } from '@material-ui/core/withWidth';
 import styles from '@styles';
 import { menuLinkMapper } from '@utils/index';
 import * as React from 'react';
@@ -24,7 +24,7 @@ interface PropsFromDispatch {
 type AllProps = PropsFromState & 
                 PropsFromDispatch & 
                 ConnectedReduxProps & 
-                WithWidthProps & 
+                WithWidth & 
                 WithStyles<typeof styles>;
 
 export const menuItemDrawer: React.StatelessComponent<AllProps> = props => {

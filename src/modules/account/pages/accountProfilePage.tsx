@@ -118,4 +118,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   commandRequest: (params: IEmployeeCommand) => dispatch(EmployeeProfileCommandRequest(params))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(AccountProfilePage);
+export default connect(
+  mapStateToProps, 
+  mapDispatchToProps
+)(AccountProfilePage);

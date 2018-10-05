@@ -2,7 +2,7 @@ import { ConnectedReduxProps } from '@generic/types';
 import { ILayoutState } from '@layout/interfaces';
 import { layoutChangeView, layoutDrawerMenuHide, layoutDrawerMenuShow } from '@layout/store/actions';
 import { Drawer, Hidden, WithStyles } from '@material-ui/core';
-import { WithWidthProps } from '@material-ui/core/withWidth';
+import { WithWidth } from '@material-ui/core/withWidth';
 import styles from '@styles';
 import * as classNames from 'classnames';
 import * as React from 'react';
@@ -25,7 +25,7 @@ interface PropsFromDispatch {
 type AllProps = PropsFromState & 
                 PropsFromDispatch & 
                 ConnectedReduxProps & 
-                WithWidthProps & 
+                WithWidth & 
                 WithStyles<typeof styles>;
 
 export const menuDrawer: React.StatelessComponent<AllProps> = props => {
