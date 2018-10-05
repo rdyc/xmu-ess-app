@@ -1,7 +1,7 @@
-import { action } from 'typesafe-actions';
 import { IBaseMetadata } from '@generic/interfaces';
-import { IListBarCallback, IListBarField } from '@layout/interfaces';
 import { SortDirection } from '@generic/types';
+import { IListBarCallback, IListBarField } from '@layout/interfaces';
+import { action } from 'typesafe-actions';
 
 export const enum ListBarAction {
   ASSIGN_METADATA = '@@list-bar/ASSIGN_METADATA',

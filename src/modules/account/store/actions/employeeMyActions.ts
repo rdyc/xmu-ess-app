@@ -1,5 +1,5 @@
-import { action } from 'typesafe-actions';
 import { IEmployeeMy } from '@account/classes';
+import { action } from 'typesafe-actions';
 
 export const enum EmployeeMyAction {
   FETCH_REQUEST = '@@employee-my/FETCH_REQUEST',

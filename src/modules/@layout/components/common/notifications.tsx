@@ -1,7 +1,7 @@
 import { IAppState, IResponseList } from '@generic/interfaces';
 import { ConnectedReduxProps } from '@generic/types';
 import { IAppUser, INotification, INotificationQuery } from '@layout/interfaces';
-import { notificationFetchRequest, layoutChangeNotif } from '@layout/store/actions';
+import { layoutChangeNotif, notificationFetchRequest } from '@layout/store/actions';
 import {
   Collapse,
   List,
