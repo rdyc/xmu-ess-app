@@ -1,6 +1,6 @@
-import { Reducer } from 'redux';
-import { ILayoutState, IAlert } from '@layout/interfaces';
+import { IAlert, ILayoutState } from '@layout/interfaces';
 import { LayoutAction as Action } from '@layout/store/actions';
+import { Reducer } from 'redux';
 
 const initialState: ILayoutState = {
   user: undefined,

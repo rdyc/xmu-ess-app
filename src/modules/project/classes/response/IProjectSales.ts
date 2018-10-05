@@ -1,9 +1,9 @@
-import { IBaseChanges } from '@generic/interfaces';
 import { IAccountEmployee } from '@account/classes';
+import { IBaseChanges } from '@generic/interfaces';
 
 export interface IProjectSales {
-  uid:         string | null;
+  uid: string | null;
   employeeUid: string;
-  employee:    IAccountEmployee | null;
-  changes:     IBaseChanges | null;
+  employee: IAccountEmployee | null;
+  changes: IBaseChanges | null;
 }

@@ -1,8 +1,8 @@
-import englishLang from '../image/flag/uk.svg';
 import chineseLang from '../image/flag/china.svg';
-import spanishLang from '../image/flag/spain.svg';
 import frenchLang from '../image/flag/france.svg';
 import italianLang from '../image/flag/italy.svg';
+import spanishLang from '../image/flag/spain.svg';
+import englishLang from '../image/flag/uk.svg';
 
 const config = {
   defaultLanguage: 'english',
