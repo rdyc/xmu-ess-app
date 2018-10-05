@@ -51,19 +51,21 @@ interface PropsFromDispatch {
   setUser: typeof layoutAssignUser;
 }
 
-type AllProps = PropsFromState & PropsFromDispatch & ConnectedReduxProps;
+type AllProps = PropsFromState & 
+                PropsFromDispatch & 
+                ConnectedReduxProps;
 
 class AccessWizardPage extends React.Component<AllProps> {
-  public componentDidMount() {
-    this.props.accountEmployeeFetchRequest();
-  }
-
   public state = {
     activeStep: 0,
     companyUid: '',
     positionUid: '',
     isAgreed: false
   };
+
+  public componentDidMount() {
+    this.props.accountEmployeeFetchRequest();
+  }
 
   public handleNext = () => {
     this.setState(() => ({
@@ -453,6 +455,11 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   setUser: (user: IAppUser) => dispatch(layoutAssignUser(user))
 });
 
-const redux = connect(mapStateToProps, mapDispatchToProps)(AccessWizardPage);
-
-export default withRoot(withStyles(styles)<{}>(redux));
+export default connect(
+  mapStateToProps, 
+  mapDispatchToProps
+)(
+  withRoot(
+    withStyles(styles)(AccessWizardPage)
+  )
+);

@@ -30,7 +30,7 @@ const theme = createMuiTheme({
 theme.overrides = Object.assign(muiPickers);*/
 
 function withRoot(Component: React.ComponentType) {
-  function WithRoot(props: object) {
+  function fnWithRoot(props: object) {
     // MuiThemeProvider makes the theme available down the React tree
     // thanks to React context.
     return (
@@ -44,7 +44,7 @@ function withRoot(Component: React.ComponentType) {
     );
   }
 
-  return WithRoot;
+  return fnWithRoot;
 }
 
 export default withRoot;

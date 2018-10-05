@@ -16,7 +16,7 @@ const reducer: Reducer<IAppBarState> = (state = initialState, action) => {
     case Action.ASSIGN_MENUS: return { ...state, menus: action.payload };
     case Action.MENU_SHOW: return { ...state, menuIsOpen: true };
     case Action.MENU_HIDE: return { ...state, menuIsOpen: false };
-    case Action.DISPOSE: return state = initialState;
+    case Action.DISPOSE: return initialState;
     
     default: return state;
   }

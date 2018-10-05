@@ -31,16 +31,16 @@
     "label-position": true,
     "max-line-length": [ true, 250 ],
     "member-access": false,
-    "member-ordering": [
-        true,
-        {
-          "order":[
-            // "public-before-private",
-            "static-before-instance",
-            "variables-before-functions"
-          ]
-        }
-    ],
+    // "member-ordering": [
+    //     true,
+    //     {
+    //       "order":[
+    //         // "public-before-private",
+    //         "static-before-instance",
+    //         "variables-before-functions"
+    //       ]
+    //     }
+    // ],
     "no-any": false,
     "no-arg": true,
     "no-bitwise": true,

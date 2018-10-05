@@ -5,7 +5,7 @@ import { CommonCategoryType } from '@common/classes/types';
 import { IAppState, IQueryCollectionState } from '@generic/interfaces';
 import { ConnectedReduxProps } from '@generic/types';
 import { MenuItem, TextField, WithStyles, withStyles } from '@material-ui/core';
-import withWidth, { isWidthDown, WithWidthProps } from '@material-ui/core/withWidth';
+import withWidth, { isWidthDown, WithWidth } from '@material-ui/core/withWidth';
 import styles from '@styles';
 import * as React from 'react';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
@@ -38,7 +38,7 @@ type AllProps = PropsFromState &
                 OwnProps &
                 ConnectedReduxProps & 
                 InjectedIntlProps & 
-                WithWidthProps &
+                WithWidth &
                 WithStyles<typeof styles>;
 
 const initialState = {
@@ -110,13 +110,17 @@ class SystemSelect extends React.Component<AllProps, State> {
             {item.name}
           </option>
         );
-      } else {
+      } 
+
+      if (!isMobile) {
         return (
           <MenuItem key={item.id} value={item.type}>
             {item.name}
           </MenuItem>
         );
       }
+
+      return null;
     };
 
     return (
@@ -156,6 +160,13 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   }
 });
 
-const redux = connect(mapStateToProps, mapDispatchToProps)(SystemSelect);
-
-export default injectIntl(withStyles(styles)(withWidth()(redux)));
+export default connect(
+  mapStateToProps, 
+  mapDispatchToProps
+)(
+  withStyles(styles)(
+    withWidth()(
+      injectIntl(SystemSelect)
+    )
+  )
+);

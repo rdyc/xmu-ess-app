@@ -1,6 +1,10 @@
 import { ConnectedReduxProps } from '@generic/types';
 import { ILayoutState } from '@layout/interfaces';
-import { layoutAlertDialogHide, layoutAlertDialogShow, layoutAlertDismiss } from '@layout/store/actions';
+import {
+  layoutAlertDialogHide,
+  layoutAlertDialogShow,
+  layoutAlertDismiss
+} from '@layout/store/actions';
 import {
   Button,
   Dialog,
@@ -9,7 +13,7 @@ import {
   DialogContentText,
   DialogTitle,
   Snackbar,
-  WithStyles,
+  WithStyles
 } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 import styles from '@styles';
@@ -30,16 +34,17 @@ interface PropsFromDispatch {
   };
 }
 
-type AllProps = PropsFromState & 
-                PropsFromDispatch & 
-                ConnectedReduxProps & 
-                WithStyles<typeof styles>;
+type AllProps = PropsFromState &
+  PropsFromDispatch &
+  ConnectedReduxProps &
+  WithStyles<typeof styles>;
 
 export const bottomSnackbar: React.ComponentType<AllProps> = props => {
   const { layoutState, layoutDispatch } = props;
+  const alert = layoutState.alerts[0];
 
   const handleClose = () => {
-    layoutDispatch.alertDialogHide(); 
+    layoutDispatch.alertDialogHide();
     layoutDispatch.alertDismiss();
   };
 
@@ -47,91 +52,73 @@ export const bottomSnackbar: React.ComponentType<AllProps> = props => {
     layoutDispatch.alertDialogShow();
   };
 
-  if (layoutState.alerts.length === 0) {
-    return null;
-  } else {
-    const alert = layoutState.alerts[0];
+  const renderActions = () => {
+    const actions = [];
 
-    const renderActions = () => {
-      const actions = [];
-
-      if (!isNullOrUndefined(alert.details)) {
-        actions.push(
-          <Button 
-            key="undo" 
-            color="secondary" 
-            size="small" 
-            onClick={handleDetailClick}
-          >
-            <FormattedMessage id="global.action.details"/>
-          </Button>
-        );
-      }
-
+    if (!isNullOrUndefined(alert.details)) {
       actions.push(
-        <Button 
-          key="close"
-          color="inherit" 
-          size="small" 
-          onClick={handleClose}
+        <Button
+          key="undo"
+          color="secondary"
+          size="small"
+          onClick={handleDetailClick}
         >
-          <CloseIcon />
+          <FormattedMessage id="global.action.details" />
         </Button>
       );
+    }
 
-      return actions;
-    };
-
-    const renderDialog = (
-      <Dialog
-        open={layoutState.isAlertDialogVisible}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-details" 
-      >
-        <DialogTitle id="alert-dialog-title">
-          <FormattedMessage id="global.dialog.alertTitle" />
-        </DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-details">
-            {
-              isObject(alert.details) &&
-              <pre>
-                {JSON.stringify(alert.details, null, 2) }
-              </pre>
-            }
-            {
-              !isObject(alert.details) && alert.details
-            }
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose} color="primary" autoFocus>
-            <FormattedMessage id="global.action.close" />
-          </Button>
-        </DialogActions>
-      </Dialog>
+    actions.push(
+      <Button key="close" color="inherit" size="small" onClick={handleClose}>
+        <CloseIcon />
+      </Button>
     );
 
-    return (
-      <div>
-        {renderDialog}
-      
+    return actions;
+  };
+
+  const renderDialog = (
+    <Dialog
+      open={layoutState.isAlertDialogVisible}
+      aria-labelledby="alert-dialog-title"
+      aria-describedby="alert-dialog-details"
+    >
+      <DialogTitle id="alert-dialog-title">
+        <FormattedMessage id="global.dialog.alertTitle" />
+      </DialogTitle>
+      <DialogContent>
+        <DialogContentText id="alert-dialog-details">
+          {alert && isObject(alert.details) && (
+            <pre>{JSON.stringify(alert.details, null, 2)}</pre>
+          )}
+          {alert && !isObject(alert.details) && alert.details}
+        </DialogContentText>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={handleClose} color="primary" autoFocus>
+          <FormattedMessage id="global.action.close" />
+        </Button>
+      </DialogActions>
+    </Dialog>
+  );
+
+  return (
+    <div>
+      {
+        alert &&
         <Snackbar
           open
           onClose={handleClose}
           ContentProps={{
-            'aria-describedby': 'snackbar',
+            'aria-describedby': 'snackbar'
           }}
-          message={
-            <span id="snackbar">
-              {alert.message}
-            </span>
-          }
+          message={<span id="snackbar">{alert.message}</span>}
           action={renderActions()}
         />
-      </div>
-    );
-  }
+      }
+      {renderDialog}
+    </div>
+  );
 };
 
 export default bottomSnackbar;

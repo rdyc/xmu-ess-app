@@ -333,7 +333,7 @@ reducer({}, {
 });
 
 reducer.plugin({
-    myForm: (state: any, action: FormAction) => {
+    myForm: (state = any, action: FormAction) => {
         if (action.type === actionTypes.CHANGE && action.meta.form === 'securitySettings') {
             return {
                 ...state,
