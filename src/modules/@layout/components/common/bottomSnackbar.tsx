@@ -114,10 +114,9 @@ export const bottomSnackbar: React.ComponentType<AllProps> = props => {
           }}
           message={<span id="snackbar">{alert.message}</span>}
           action={renderActions()}
-        >
-          {renderDialog}
-        </Snackbar>
+        />
       }
+      {renderDialog}
     </div>
   );
 };

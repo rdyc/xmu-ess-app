@@ -22,7 +22,7 @@ import {
   WithStyles,
   withStyles,
 } from '@material-ui/core';
-import { isWidthDown, WithWidth } from '@material-ui/core/withWidth';
+import withWidth, { isWidthDown, WithWidth } from '@material-ui/core/withWidth';
 import AddIcon from '@material-ui/icons/Add';
 import CloseIcon from '@material-ui/icons/Close';
 import DoneIcon from '@material-ui/icons/Done';
@@ -85,8 +85,6 @@ class ListItemEmployeeSelector extends React.Component<AllProps, State> {
   loadData = () => {
     const { companyUids, roleUids, positionUids } = this.props;
     const { listRequest } = this.props.employeeDispatch;
-
-    console.log(companyUids, roleUids, positionUids);
 
     listRequest({
       filter: {
@@ -304,6 +302,13 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   }
 });
 
-const redux = connect(mapStateToProps, mapDispatchToProps)(ListItemEmployeeSelector);
-
-export default injectIntl(withStyles(styles)(redux));
+export default connect(
+  mapStateToProps, 
+  mapDispatchToProps
+)(
+  withStyles(styles)(
+    withWidth()(
+      injectIntl(ListItemEmployeeSelector)
+    )
+  )
+);

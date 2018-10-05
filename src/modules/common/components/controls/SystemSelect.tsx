@@ -5,7 +5,7 @@ import { CommonCategoryType } from '@common/classes/types';
 import { IAppState, IQueryCollectionState } from '@generic/interfaces';
 import { ConnectedReduxProps } from '@generic/types';
 import { MenuItem, TextField, WithStyles, withStyles } from '@material-ui/core';
-import { isWidthDown, WithWidth } from '@material-ui/core/withWidth';
+import withWidth, { isWidthDown, WithWidth } from '@material-ui/core/withWidth';
 import styles from '@styles';
 import * as React from 'react';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
@@ -160,6 +160,13 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   }
 });
 
-const redux = connect(mapStateToProps, mapDispatchToProps)(SystemSelect);
-
-export default injectIntl(withStyles(styles)(redux));
+export default connect(
+  mapStateToProps, 
+  mapDispatchToProps
+)(
+  withStyles(styles)(
+    withWidth()(
+      injectIntl(SystemSelect)
+    )
+  )
+);

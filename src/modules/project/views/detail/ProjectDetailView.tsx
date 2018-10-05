@@ -115,7 +115,7 @@ class ProjectDetailView extends React.Component<AllProps, State> {
     layoutDispatch.changeView({
       menuUid: 'MNU19',
       title: intl.formatMessage({id: 'project.detail.title'}),
-      subTitle : intl.formatMessage({id: 'project.detail.subtTitle'})
+      subTitle : intl.formatMessage({id: 'project.detail.subTitle'})
     });
 
     layoutDispatch.navBackShow();
@@ -387,6 +387,11 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   },
 });
 
-const redux = connect(mapStateToProps, mapDispatchToProps)(ProjectDetailView);
-
-export default injectIntl(withStyles(styles)(redux));
+export default connect(
+  mapStateToProps, 
+  mapDispatchToProps
+)(
+  withStyles(styles)(
+    injectIntl(ProjectDetailView)
+  )
+);

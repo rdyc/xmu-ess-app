@@ -64,7 +64,7 @@ import {
 import { Anchor } from '@layout/types';
 import { ILookupRoleMenuList } from '@lookup/classes';
 import { WithStyles, withStyles } from '@material-ui/core';
-import { WithWidth } from '@material-ui/core/withWidth';
+import withWidth, { WithWidth } from '@material-ui/core/withWidth';
 import styles from '@styles';
 import * as classNames from 'classnames';
 import * as React from 'react';
@@ -150,20 +150,10 @@ type AllProps = PropsFromState &
                 PropsFromDispatch & 
                 ConnectedReduxProps & 
                 InjectedIntlProps & 
-                WithStyles<typeof styles> & 
-                WithWidth;
+                WithWidth &
+                WithStyles<typeof styles>;
 
 class BasePage extends React.Component<AllProps> {
-  private loadStorage() {
-    const user: IAppUser = store.get(AppStorage.User);
-    const menu: ILookupRoleMenuList[] = store.get(AppStorage.Menu);
-
-    if (user && menu) {
-      this.props.layoutDispatch.assignUser(user);
-      this.props.layoutDispatch.assignMenus(menu);
-    }
-  }
-
   public componentWillMount() {
     this.loadStorage();  
   }
@@ -188,6 +178,16 @@ class BasePage extends React.Component<AllProps> {
         <BottomSnackbar {...this.props}/>
       </div>
     );
+  }
+
+  private loadStorage() {
+    const user: IAppUser = store.get(AppStorage.User);
+    const menu: ILookupRoleMenuList[] = store.get(AppStorage.Menu);
+
+    if (user && menu) {
+      this.props.layoutDispatch.assignUser(user);
+      this.props.layoutDispatch.assignMenus(menu);
+    }
   }
 }
 
@@ -260,6 +260,17 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   }
 });
 
-const redux = connect(mapStateToProps, mapDispatchToProps)(BasePage);
-
-export default withRouter(withRoot(injectIntl(withStyles(styles)(redux))));
+export default connect(
+  mapStateToProps, 
+  mapDispatchToProps
+)(
+  withRouter(
+    withRoot(
+      withStyles(styles)(
+        withWidth()(
+          injectIntl(BasePage)
+        )
+      )
+    )
+  )
+);

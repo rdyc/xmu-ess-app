@@ -320,6 +320,11 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   }
 });
 
-const redux = connect(mapStateToProps, mapDispatchToProps)(ProjectFormView);
-
-export default injectIntl(withStyles(styles)(redux));
+export default connect(
+  mapStateToProps, 
+  mapDispatchToProps
+)(
+  withStyles(styles)(
+    injectIntl(ProjectFormView)
+  )
+);

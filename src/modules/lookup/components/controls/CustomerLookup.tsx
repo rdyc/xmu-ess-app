@@ -21,7 +21,7 @@ import {
   WithStyles,
   withStyles,
 } from '@material-ui/core';
-import { isWidthDown, WithWidth } from '@material-ui/core/withWidth';
+import withWidth, { isWidthDown, WithWidth } from '@material-ui/core/withWidth';
 import BusinessIcon from '@material-ui/icons/Business';
 import SearchIcon from '@material-ui/icons/Search';
 import styles from '@styles';
@@ -284,6 +284,13 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   }
 });
 
-const redux = connect(mapStateToProps, mapDispatchToProps)(CustomerLookup);
-
-export default injectIntl(withStyles(styles)(redux));
+export default connect(
+  mapStateToProps, 
+  mapDispatchToProps
+)(
+  withStyles(styles)(
+    withWidth()(
+      injectIntl(CustomerLookup)
+    )
+  )
+);
