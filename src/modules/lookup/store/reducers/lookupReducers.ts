@@ -1,4 +1,4 @@
-import { customerGetAllReducer, customerGetByIdReducer, customerGetListReducer, menuGetAllReducer, menuGetByIdReducer, menuGetListReducer } from '@lookup/store/reducers';
+import { customerGetAllReducer, customerGetByIdReducer, customerGetListReducer, menuGetAllReducer, menuGetByIdReducer, menuGetListReducer, positionGetAllReducer, positionGetByIdReducer, positionGetListReducer } from '@lookup/store/reducers';
 
 const lookupReducers = {
   customerGetAll: customerGetAllReducer,
@@ -7,7 +7,11 @@ const lookupReducers = {
   
   menuGetAll: menuGetAllReducer,
   menuGetById: menuGetByIdReducer,
-  menuGetList: menuGetListReducer
+  menuGetList: menuGetListReducer,
+
+  positionGetAll: positionGetAllReducer,
+  positionGetById: positionGetByIdReducer,
+  positionGetList: positionGetListReducer
 };
 
 export default lookupReducers;

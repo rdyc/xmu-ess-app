@@ -8,3 +8,6 @@ export * from './IMenuDetail';
 export * from './IMenuParentDetail';
 export * from './IMenuList';
 export * from './IMenuParentList';
+export * from './IPositionList';
+export * from './IPositionDetail';
+export * from './IPosition';

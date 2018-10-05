@@ -4,3 +4,6 @@ export * from './customerGetListReducer';
 export * from './menuGetListReducer';
 export * from './menuGetAllReducer';
 export * from './menuGetByIdReducer';
+export * from './positionGetListReducer';
+export * from './positionGetAllReducer';
+export * from './positionGetByIdReducer';

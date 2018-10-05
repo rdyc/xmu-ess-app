@@ -4,3 +4,6 @@ export * from './ICustomerListRequest';
 export * from './IMenuListRequest';
 export * from './IMenuAllRequest';
 export * from './IMenuByIdRequest';
+export * from './IPositionListRequest';
+export * from './IPositionAllRequest';
+export * from './IPositionByIdRequest';
