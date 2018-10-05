@@ -1,10 +1,10 @@
-import { IMenuParent } from '@lookup/classes';
+import { IMenuParentList } from '@lookup/classes';
 
-export interface IMenu {
+export interface IMenuDetailList {
   uid:                string;
   name?:               string | null;
   parentUid?:          string | null;
-  parent?:             IMenuParent | null;
+  parent?:             IMenuParentList | null;
   description?:        string | null;
   isAdminAccess?:      string | null;
 }
