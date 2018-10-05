@@ -1,8 +1,6 @@
 import { IQueryCollectionState, IQuerySingleState } from '@generic/interfaces';
-import { ICustomerAllRequest, ICustomerByIdRequest, ICustomerListRequest } from '@lookup/classes/queries';
-import { ICurrencyAllRequest, ICurrencyByIdRequest, ICurrencyListRequest } from '@lookup/classes/queries';
-import { ICustomer, ICustomerDetail, ICustomerList } from '@lookup/classes/response';
-import { ICurrency, ICurrencyList } from '@lookup/classes/response';
+import { ICustomerAllRequest, ICustomerByIdRequest, ICustomerListRequest, ICurrencyAllRequest, ICurrencyByIdRequest, ICurrencyListRequest } from '@lookup/classes/queries';
+import { ICustomer, ICustomerDetail, ICustomerList,  ICurrency, ICurrencyList } from '@lookup/classes/response';
 
 export interface ILookupState {
   customerGetAll: IQueryCollectionState<ICustomerAllRequest, ICustomer>;
