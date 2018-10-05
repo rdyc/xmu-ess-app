@@ -1,6 +1,6 @@
-import { IMenuParentList } from '@lookup/classes';
+import { IMenuParentList } from '@lookup/classes/response';
 
-export interface IMenuDetailList {
+export interface IMenuList {
   uid:                string;
   name?:               string | null;
   parentUid?:          string | null;

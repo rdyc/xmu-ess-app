@@ -1,4 +1,4 @@
-import { IMenuParentDetail } from '@lookup/classes';
+import { IMenuParentDetail } from '@lookup/classes/response';
 
 export interface IMenuDetail {
   uid:                string;
