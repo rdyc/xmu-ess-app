@@ -1,7 +1,7 @@
-import { action } from 'typesafe-actions';
-import { IResponseCollection } from '@generic/interfaces';
-import { IEmployeeAllRequest, IEmployeeListRequest, IEmployeeByIdRequest } from '@account/classes/queries';
+import { IEmployeeAllRequest, IEmployeeByIdRequest, IEmployeeListRequest } from '@account/classes/queries';
 import { IEmployee } from '@account/classes/response';
+import { IResponseCollection } from '@generic/interfaces';
+import { action } from 'typesafe-actions';
 
 export const enum EmployeeAction {
   GET_ALL_REQUEST = '@@employee/GET_ALL_REQUEST',

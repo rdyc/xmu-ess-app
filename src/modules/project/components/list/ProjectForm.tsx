@@ -25,6 +25,7 @@ import {
   Typography,
   WithStyles,
 } from '@material-ui/core';
+import { WithWidth } from '@material-ui/core/withWidth';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import PersonIcon from '@material-ui/icons/Person';
 import { IProjectDetail, IProjectDocument, IProjectSales, IProjectSite } from '@project/classes/response';
@@ -33,7 +34,6 @@ import * as classNames from 'classnames';
 import * as React from 'react';
 import { FormattedMessage, FormattedNumber, InjectedIntlProps } from 'react-intl';
 import { Field, FieldArray, InjectedFormProps, reduxForm, WrappedFieldArrayProps } from 'redux-form';
-import { WithWidth } from '@material-ui/core/withWidth';
 
 interface OwnProps {
   mode: FormMode;

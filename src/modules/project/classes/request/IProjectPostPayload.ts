@@ -1,8 +1,5 @@
-import {
-  IProjectPostDocument,
-  IProjectPostSales
-} from '@project/classes/request';
 import { IBasePayload } from '@generic/interfaces';
+import { IProjectPostDocument, IProjectPostSales } from '@project/classes/request';
 
 export interface IProjectPostPayload extends IBasePayload {
   customerUid: string;

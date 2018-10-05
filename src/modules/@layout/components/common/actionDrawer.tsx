@@ -21,7 +21,6 @@ import {
   DialogContentText,
   DialogTitle,
   Divider,
-  SwipeableDrawer,
   IconButton,
   List,
   ListItem,
@@ -29,6 +28,7 @@ import {
   ListItemSecondaryAction,
   ListItemText,
   ListSubheader,
+  SwipeableDrawer,
   WithStyles,
 } from '@material-ui/core';
 import Switch from '@material-ui/core/Switch';

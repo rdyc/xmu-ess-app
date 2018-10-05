@@ -1,7 +1,6 @@
-import { Reducer } from 'redux';
-
-import { IListBarState, IListBarCallback } from '@layout/interfaces';
+import { IListBarCallback, IListBarState } from '@layout/interfaces';
 import { ListBarAction } from '@layout/store/actions';
+import { Reducer } from 'redux';
 
 const _callbacks: IListBarCallback = {
   onNextCallback: () => { 
