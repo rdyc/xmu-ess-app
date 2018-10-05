@@ -226,14 +226,18 @@ class ProjectForm extends React.Component<AllProps, State> {
     const { putRequest } = this.props.projectDispatch;
 
     if (user) {
-      return Promise.resolve(
+      const promise = new Promise((resolve, reject) => {
         putRequest({
+          resolve,
+          reject,
           projectUid,
           companyUid: user.company.uid,
           positionUid: user.position.uid,
           data: this.transform(payload)
-        })
-      );
+        });
+      });
+
+      return promise;
     }
 
     return Promise.reject('Empty user!');
@@ -251,22 +255,18 @@ class ProjectForm extends React.Component<AllProps, State> {
   };
 
   handleSubmitFail = (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
-    console.log(errors);
-    console.log(dispatch);
-    console.log(submitError);
+    // console.log(errors);
+    // console.log(dispatch);
+    // console.log(submitError);
 
-    // const { alertAdd } = this.props.layoutDispatch;
-
-    // alertAdd({
-    //   time: new Date(),
-    //   message: 'Failed when trying to update data!',
-    // });
-
-    // alertAdd({
-    //   time: new Date(),
-    //   message: 'Wakakak kaskdka',
-    //   details: submitError
-    // });
+    const { alertAdd } = this.props.layoutDispatch;
+    
+    if (submitError) {
+      alertAdd({
+        time: new Date(),
+        message: submitError.message
+      });
+    }
   };
 
   render () {

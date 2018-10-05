@@ -122,7 +122,7 @@ const projectFormComponent: React.SFC<AllProps & OwnProps> = props => {
           label={<FormattedMessage id="project.field.currency" />}
           component={FieldSelectSystem}
           onChange={(event: any, newValue: ISystemList | undefined) => {
-            props.change('currencyType', newValue ? newValue.type : '');
+            // props.change('currencyType', newValue ? newValue.type : '');
           }}
         />
         <TextField
