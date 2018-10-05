@@ -15,7 +15,7 @@ interface FromFieldProps {
 
 type AllProps = WrappedFieldProps & BaseFieldProps & FromFieldProps; // & InjectedIntlProps;
 
-export const FieldInputDate: React.StatelessComponent<AllProps> = props => {
+export const FieldInputDate: React.SFC<AllProps> = props => {
   const { format, input, label, disabled, meta } = props;
 
   return (

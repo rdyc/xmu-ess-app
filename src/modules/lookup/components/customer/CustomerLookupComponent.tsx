@@ -284,7 +284,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   }
 });
 
-export default connect(
+export const CustomerLookupComponent = connect(
   mapStateToProps, 
   mapDispatchToProps
 )(

@@ -28,7 +28,7 @@ import {
 import { IProjectGetByIdRequest } from '@project/classes/queries';
 import { IProjectDetail } from '@project/classes/response';
 import { ProjectUserAction } from '@project/classes/types';
-import { ProjectDetail } from '@project/components/list/ProjectDetail';
+import { ProjectDetailComponent } from '@project/components/project';
 import { projectGetByIdDispose, projectGetByIdRequest } from '@project/store/actions';
 import styles from '@styles';
 import * as React from 'react';
@@ -87,7 +87,7 @@ const initialState = {
 
 type State = Readonly<typeof initialState>;
 
-class ProjectDetailView extends React.Component<AllProps, State> {
+class ProjectDetail extends React.Component<AllProps, State> {
   state: State = initialState;
 
   componentWillUnmount() {
@@ -351,7 +351,7 @@ class ProjectDetailView extends React.Component<AllProps, State> {
         }
         {
           response && 
-          <ProjectDetail {...this.props}  />
+          <ProjectDetailComponent {...this.props}  />
         }
         {this.renderDialog(this.state)}
       </div>
@@ -387,11 +387,11 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   },
 });
 
-export default connect(
+export const ProjectDetailContainer = connect(
   mapStateToProps, 
   mapDispatchToProps
 )(
   withStyles(styles)(
-    injectIntl(ProjectDetailView)
+    injectIntl(ProjectDetail)
   )
 );

@@ -46,7 +46,7 @@ type AllProps = PropsFromState &
                 WithWidth & 
                 WithStyles<typeof styles>;
 
-export const listBar: React.StatelessComponent<AllProps> = props => {
+export const listBar: React.SFC<AllProps> = props => {
   const { layoutState, listBarState, listBarDispatch, classes, width } = props;
 
   if (!layoutState.isModeList) {

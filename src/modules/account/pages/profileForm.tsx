@@ -13,7 +13,7 @@ type InjectedProps = InjectedFormProps<IEmployeeCommandData, TestFormComponentPr
 
 type AllProps = TestFormComponentProps & InjectedProps;
 
-const profileFormComponent: React.StatelessComponent<AllProps> = ({ handleSubmit, valid, submitting }) => {  
+const profileFormComponent: React.SFC<AllProps> = ({ handleSubmit, valid, submitting }) => {  
   return (
     <form onSubmit={handleSubmit}>
       <Grid container spacing={24}>

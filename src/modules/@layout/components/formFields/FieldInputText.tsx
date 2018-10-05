@@ -11,7 +11,7 @@ interface FromFieldProps {
 
 type AllProps = WrappedFieldProps & BaseFieldProps & FromFieldProps;
 
-export const FieldInputText: React.StatelessComponent<AllProps> = props => {
+export const FieldInputText: React.SFC<AllProps> = props => {
   const { input, label, disabled, meta } = props;
 
   return (

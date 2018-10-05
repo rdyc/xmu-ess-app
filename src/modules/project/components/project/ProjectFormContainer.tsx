@@ -7,7 +7,7 @@ import { Typography, WithStyles, withStyles } from '@material-ui/core';
 import { IProjectGetByIdRequest, IProjectPutRequest } from '@project/classes/queries';
 import { IProjectPutDocument, IProjectPutPayload, IProjectPutSales } from '@project/classes/request';
 import { IProject, IProjectDetail } from '@project/classes/response';
-import ProjectForm from '@project/components/list/ProjectForm';
+import { ProjectFormComponent } from '@project/components/project';
 import { projectGetByIdDispose, projectGetByIdRequest, projectPutDispose, projectPutRequest } from '@project/store/actions';
 import styles from '@styles';
 import * as React from 'react';
@@ -60,7 +60,7 @@ const initialState = {
 
 type State = Readonly<typeof initialState>;
   
-class ProjectFormView extends React.Component<AllProps, State> {
+class ProjectForm extends React.Component<AllProps, State> {
   state: State = initialState;
 
   componentWillMount() {
@@ -282,7 +282,7 @@ class ProjectFormView extends React.Component<AllProps, State> {
 
     if (!isLoading && response && response.data) {
       return (
-        <ProjectForm
+        <ProjectFormComponent
           {...this.props}
           {...this.state}
           initialValues={response.data} 
@@ -320,11 +320,11 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   }
 });
 
-export default connect(
+export const ProjectFormContainer = connect(
   mapStateToProps, 
   mapDispatchToProps
 )(
   withStyles(styles)(
-    injectIntl(ProjectFormView)
+    injectIntl(ProjectForm)
   )
 );

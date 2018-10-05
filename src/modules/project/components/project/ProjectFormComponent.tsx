@@ -48,7 +48,7 @@ type AllProps = InjectedFormProps<IProjectDetail, OwnProps> &
                 WithWidth &
                 WithStyles<typeof styles>;
 
-const projectForm: React.SFC<AllProps & OwnProps> = props => { 
+const projectFormComponent: React.SFC<AllProps & OwnProps> = props => { 
   const renderDetail = () => (
     <Card square>
       <CardHeader 
@@ -380,8 +380,6 @@ const projectForm: React.SFC<AllProps & OwnProps> = props => {
   );
 };
 
-const ProjectForm = reduxForm<IProjectDetail, OwnProps>({
+export const ProjectFormComponent = reduxForm<IProjectDetail, OwnProps>({
   form: 'projectForm'
-})(projectForm);
-
-export default ProjectForm;
+})(projectFormComponent);

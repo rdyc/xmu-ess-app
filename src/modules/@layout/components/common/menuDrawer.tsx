@@ -28,7 +28,7 @@ type AllProps = PropsFromState &
                 WithWidth & 
                 WithStyles<typeof styles>;
 
-export const menuDrawer: React.StatelessComponent<AllProps> = props => {
+export const menuDrawer: React.SFC<AllProps> = props => {
   const { layoutState, layoutDispatch, classes } = props;
 
   return (

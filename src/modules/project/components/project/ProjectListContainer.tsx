@@ -24,7 +24,7 @@ import { Paper, Typography, WithStyles, withStyles } from '@material-ui/core';
 import { IProjectGetAllRequest } from '@project/classes/queries';
 import { IProject } from '@project/classes/response';
 import { ProjectField } from '@project/classes/types';
-import { ProjectList } from '@project/components/list';
+import { ProjectListComponent } from '@project/components/project';
 import { projectGetAllRequest } from '@project/store/actions';
 import styles from '@styles';
 import * as React from 'react';
@@ -74,7 +74,7 @@ type AllProps = PropsFromState &
                 InjectedIntlProps & 
                 WithStyles<typeof styles>;
 
-class ProjectListView extends React.Component<AllProps> {
+class ProjectList extends React.Component<AllProps> {
   state = {
     orderBy: this.props.listBarState.orderBy || '',
     direction: this.props.listBarState.direction || 'descending',
@@ -213,14 +213,14 @@ class ProjectListView extends React.Component<AllProps> {
         }
         {
           response && 
-          <ProjectList {...this.props}  />
+          <ProjectListComponent {...this.props}  />
         }
       </Paper>
     );
   }
 }
 
-const mapStateToProps = ({ layout, listBar, projectGetAll }: IAppState) => ({
+export const mapStateToProps = ({ layout, listBar, projectGetAll }: IAppState) => ({
   layoutState: layout,
   listBarState: listBar,
   projectState: projectGetAll
@@ -255,6 +255,11 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   }
 });
 
-const redux = connect(mapStateToProps, mapDispatchToProps)(ProjectListView);
-
-export default injectIntl(withStyles(styles)(redux));
+export const ProjectListContainer = connect(
+  mapStateToProps, 
+  mapDispatchToProps
+)(
+  withStyles(styles)(
+    injectIntl(ProjectList)
+  )
+);
