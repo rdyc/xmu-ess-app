@@ -75,14 +75,14 @@ type AllProps = PropsFromState &
                 WithStyles<typeof styles>;
 
 class ProjectList extends React.Component<AllProps> {
-  state = {
+  public state = {
     orderBy: this.props.listBarState.orderBy || '',
     direction: this.props.listBarState.direction || 'descending',
     page: this.props.listBarState.page || 1,
     size: this.props.listBarState.size || 10
   };
 
-  componentWillUnmount() {
+  public componentWillUnmount() {
     const { layoutDispatch, listBarDispatch } = this.props;
 
     layoutDispatch.changeView(null);
@@ -95,7 +95,7 @@ class ProjectList extends React.Component<AllProps> {
     listBarDispatch.dispose();
   }
 
-  componentDidMount() {
+  public componentDidMount() {
     const { layoutDispatch, projectState, listBarDispatch, intl } = this.props;
 
     layoutDispatch.changeView({
@@ -127,56 +127,28 @@ class ProjectList extends React.Component<AllProps> {
     }
   }
 
-  enumToArray = (enumme: any) => {
-    return Object.keys(enumme).map(key => ({ id: enumme[key], name: key }));
+  public render () {
+    const { isLoading, response } = this.props.projectState;
+
+    return (
+      <Paper 
+        square 
+        elevation={1}
+      >
+        {
+          isLoading && 
+          !response &&
+          <Typography variant="body2">loading</Typography>
+        }
+        {
+          response && 
+          <ProjectListComponent {...this.props}  />
+        }
+      </Paper>
+    );
   }
 
-  handleOnNextCallback = () => this.setPaging(true);
-
-  handleOnPrevCallback = () => this.setPaging(false);
-
-  handleOnSyncCallback = () => {
-    this.state.page = 1;
-
-    this.loadData();
-  }
-
-  handleOnOrderCallback = (field: IListBarField) => {
-    this.state.page = 1;
-    this.state.orderBy = field.id;
-
-    this.loadData();
-  }
-
-  handleOnSortCallback = (direction: SortDirection) => {
-    this.state.page = 1;
-    this.state.direction = direction;
-
-    this.loadData();
-  }
-
-  handleOnSizeCallback = (size: number) => {
-    this.state.page = 1;
-    this.state.size = size;
-
-    this.loadData();
-  }
-
-  setPaging = (isNext: boolean) => {
-    const { response } = this.props.projectState;
-
-    if (response && response.metadata) {
-      if (isNext) {
-        this.state.page = response.metadata.paginate.current + 1;          
-      } else {
-        this.state.page = response.metadata.paginate.current - 1;
-      }
-      
-      this.loadData();
-    }
-  }
-
-  loadData = () => {
+  private loadData = () => {
     const { layoutState, projectDispatch } = this.props;
 
     if (layoutState.user) {
@@ -198,29 +170,57 @@ class ProjectList extends React.Component<AllProps> {
     }
   }
 
-  render () {
-    const { isLoading, response } = this.props.projectState;
+  private enumToArray = (enumme: any) => {
+    return Object.keys(enumme).map(key => ({ id: enumme[key], name: key }));
+  }
 
-    return (
-      <Paper 
-        square 
-        elevation={1}
-      >
-        {
-          isLoading && 
-          !response &&
-          <Typography variant="body2">loading</Typography>
-        }
-        {
-          response && 
-          <ProjectListComponent {...this.props}  />
-        }
-      </Paper>
-    );
+  private handleOnNextCallback = () => this.setPaging(true);
+
+  private handleOnPrevCallback = () => this.setPaging(false);
+
+  private handleOnSyncCallback = () => {
+    this.state.page = 1;
+
+    this.loadData();
+  }
+
+  private handleOnOrderCallback = (field: IListBarField) => {
+    this.state.page = 1;
+    this.state.orderBy = field.id;
+
+    this.loadData();
+  }
+
+  private handleOnSortCallback = (direction: SortDirection) => {
+    this.state.page = 1;
+    this.state.direction = direction;
+
+    this.loadData();
+  }
+
+  private handleOnSizeCallback = (size: number) => {
+    this.state.page = 1;
+    this.state.size = size;
+
+    this.loadData();
+  }
+
+  private setPaging = (isNext: boolean) => {
+    const { response } = this.props.projectState;
+
+    if (response && response.metadata) {
+      if (isNext) {
+        this.state.page = response.metadata.paginate.current + 1;          
+      } else {
+        this.state.page = response.metadata.paginate.current - 1;
+      }
+      
+      this.loadData();
+    }
   }
 }
 
-export const mapStateToProps = ({ layout, listBar, projectGetAll }: IAppState) => ({
+const mapStateToProps = ({ layout, listBar, projectGetAll }: IAppState) => ({
   layoutState: layout,
   listBarState: listBar,
   projectState: projectGetAll

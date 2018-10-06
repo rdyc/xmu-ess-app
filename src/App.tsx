@@ -31,7 +31,7 @@ interface OwnProps {
 type AllProps = PropsFromState & OwnProps;
 
 class App extends React.Component<AllProps> {
-  componentDidMount() {
+  public componentDidMount() {
     AppUserManager.events.addSilentRenewError((error) => {
       console.error('error while renewing the access token', error);
     });
@@ -39,7 +39,7 @@ class App extends React.Component<AllProps> {
     loadUser(rootStore, AppUserManager);
   }
 
-  render() {   
+  public render() {   
     const { oidcState, store, history } = this.props;
 
     const onLogin = (event: any) => {

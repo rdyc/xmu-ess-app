@@ -88,9 +88,9 @@ const initialState = {
 type State = Readonly<typeof initialState>;
 
 class ProjectDetail extends React.Component<AllProps, State> {
-  state: State = initialState;
+  public state: State = initialState;
 
-  componentWillUnmount() {
+  public componentWillUnmount() {
     const { layoutDispatch, appBarDispatch, projectDispatch } = this.props;
 
     layoutDispatch.changeView(null);
@@ -103,13 +103,13 @@ class ProjectDetail extends React.Component<AllProps, State> {
     projectDispatch.getByIdDispose();
   }
 
-  componentWillReceiveProps(nextProps: AllProps) {
+  public componentWillReceiveProps(nextProps: AllProps) {
     if (nextProps.projectState.response !== this.props.projectState.response) {
       this.generateMenus(nextProps);
     }
   }
 
-  componentDidMount() {
+  public componentDidMount() {
     const { layoutDispatch, appBarDispatch, intl } = this.props;
 
     layoutDispatch.changeView({
@@ -126,7 +126,65 @@ class ProjectDetail extends React.Component<AllProps, State> {
     this.loadData();
   }
 
-  generateMenus = (currentProps: AllProps) => {
+  public render () {
+    const { isLoading, response } = this.props.projectState;
+
+    return (
+      <div>
+        {
+          isLoading && 
+          <Typography variant="body2">
+            <FormattedMessage id="global.loading"/>
+          </Typography>
+        }
+        {
+          response && 
+          <ProjectDetailComponent {...this.props}  />
+        }
+        {this.renderDialog(this.state)}
+      </div>
+    );
+  }
+
+  private renderDialog = (state: State) => (
+    <Dialog
+      fullScreen={state.dialogFullScreen}
+      open={state.dialogOpen}
+      aria-labelledby="project-detail-dialog-title"
+      aria-describedby="project-detail-dialog-description"
+    >
+      <DialogTitle id="project-detail-dialog-title">
+        {state.dialogTitle}
+      </DialogTitle>
+      <DialogContent>
+        <DialogContentText id="project-detail-dialog-description">
+          {state.dialogDescription}
+        </DialogContentText>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={this.handleDialogClose} color="primary">
+          {state.dialogCancelText}
+        </Button>
+        <Button onClick={this.handleDialogConfirmed} color="primary" autoFocus>
+          {state.dialogConfirmedText}
+        </Button>
+      </DialogActions>
+    </Dialog>
+  );
+
+  private loadData = (): void => {
+    const { layoutState, projectDispatch, match } = this.props;
+    
+    if (layoutState.user) {
+      projectDispatch.getByIdRequest({
+        companyUid: layoutState.user.company.uid,
+        positionUid: layoutState.user.position.uid,
+        projectUid: match.params.projectUid
+      });
+    }
+  }
+
+  private generateMenus = (currentProps: AllProps) => {
     const { intl } = currentProps;
     const { response } = currentProps.projectState;
 
@@ -182,7 +240,7 @@ class ProjectDetail extends React.Component<AllProps, State> {
     this.props.appBarDispatch.assignMenus(currentMenus);
   }
   
-  handleMenuClick = (menu: IAppBarMenu): void => {
+  private handleMenuClick = (menu: IAppBarMenu): void => {
     switch (menu.id) {
       case ProjectUserAction.Refresh:
         this.handleProjectRefresh();
@@ -213,7 +271,7 @@ class ProjectDetail extends React.Component<AllProps, State> {
     }
   };
 
-  handleProjectRefresh = () => {
+  private handleProjectRefresh = () => {
     const { projectDispatch } = this.props;
 
     projectDispatch.getByIdDispose();
@@ -221,7 +279,7 @@ class ProjectDetail extends React.Component<AllProps, State> {
     this.loadData();
   };
 
-  handleProjectModify = () => {
+  private handleProjectModify = () => {
     const { intl } = this.props;
 
     this.handleDialogOpen(
@@ -232,7 +290,7 @@ class ProjectDetail extends React.Component<AllProps, State> {
     );
   };  
 
-  handleProjectClose = () => {
+  private handleProjectClose = () => {
     const { intl } = this.props;
 
     this.handleDialogOpen(
@@ -243,7 +301,7 @@ class ProjectDetail extends React.Component<AllProps, State> {
     );
   };
 
-  handleProjectReOpen = () => {
+  private handleProjectReOpen = () => {
     const { intl } = this.props;
 
     this.handleDialogOpen(
@@ -254,7 +312,7 @@ class ProjectDetail extends React.Component<AllProps, State> {
     );
   };
 
-  handleProjectChangeOwner = () => {
+  private handleProjectChangeOwner = () => {
     const { intl } = this.props;
 
     this.handleDialogOpen(
@@ -265,7 +323,7 @@ class ProjectDetail extends React.Component<AllProps, State> {
     );
   };
 
-  handleProjectManageSite = () => {
+  private handleProjectManageSite = () => {
     const { intl } = this.props;
 
     this.handleDialogOpen(
@@ -274,7 +332,7 @@ class ProjectDetail extends React.Component<AllProps, State> {
     );
   };
 
-  handleDialogOpen = (title: string, description: string, cancelText?: string, confirmText?: string, fullScreen?: boolean) => {
+  private handleDialogOpen = (title: string, description: string, cancelText?: string, confirmText?: string, fullScreen?: boolean) => {
     const { intl } = this.props;
 
     this.setState({ 
@@ -287,11 +345,11 @@ class ProjectDetail extends React.Component<AllProps, State> {
     });
   };
 
-  handleDialogClose = () => {
+  private handleDialogClose = () => {
     this.setState(initialState);
   };
 
-  handleDialogConfirmed = () => {
+  private handleDialogConfirmed = () => {
     const { match, history } = this.props;
     const projectUid = match.params.projectUid;
 
@@ -299,64 +357,6 @@ class ProjectDetail extends React.Component<AllProps, State> {
 
     history.push('/project/form/', { uid: projectUid });
   };
-
-  loadData = (): void => {
-    const { layoutState, projectDispatch, match } = this.props;
-    
-    if (layoutState.user) {
-      projectDispatch.getByIdRequest({
-        companyUid: layoutState.user.company.uid,
-        positionUid: layoutState.user.position.uid,
-        projectUid: match.params.projectUid
-      });
-    }
-  }
-
-  renderDialog = (state: State) => (
-    <Dialog
-      fullScreen={state.dialogFullScreen}
-      open={state.dialogOpen}
-      aria-labelledby="project-detail-dialog-title"
-      aria-describedby="project-detail-dialog-description"
-    >
-      <DialogTitle id="project-detail-dialog-title">
-        {state.dialogTitle}
-      </DialogTitle>
-      <DialogContent>
-        <DialogContentText id="project-detail-dialog-description">
-          {state.dialogDescription}
-        </DialogContentText>
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={this.handleDialogClose} color="primary">
-          {state.dialogCancelText}
-        </Button>
-        <Button onClick={this.handleDialogConfirmed} color="primary" autoFocus>
-          {state.dialogConfirmedText}
-        </Button>
-      </DialogActions>
-    </Dialog>
-  );
-
-  render () {
-    const { isLoading, response } = this.props.projectState;
-
-    return (
-      <div>
-        {
-          isLoading && 
-          <Typography variant="body2">
-            <FormattedMessage id="global.loading"/>
-          </Typography>
-        }
-        {
-          response && 
-          <ProjectDetailComponent {...this.props}  />
-        }
-        {this.renderDialog(this.state)}
-      </div>
-    );
-  }
 }
 
 const mapStateToProps = ({ layout, projectGetById }: IAppState) => ({

@@ -66,9 +66,9 @@ const initialState = {
 type State = Readonly<typeof initialState>;          
 
 class CustomerLookup extends React.Component<AllProps, State> {
-  state: State = initialState;
+  public state: State = initialState;
 
-  componentDidMount() {
+  public componentDidMount() {
     // skipp fetch while current state is being loaded
     if (this.props.customerState.isLoading || this.props.customerState.response) {
       return;
@@ -82,71 +82,7 @@ class CustomerLookup extends React.Component<AllProps, State> {
     }
   }
 
-  loadData = () => {
-    const customer = this.props.input.value as ILookupCustomer;
-
-    this.props.customerDispatch.listRequest({
-      filter: {
-        companyUid: customer.companyUid,
-        find: this.state.search,
-        findBy: undefined,
-        direction: 'ascending',
-        orderBy: 'name',
-        size: undefined
-      }
-    });
-  };
-
-  filter = (response: IResponseCollection<ICustomerList> | undefined) => {
-    let result: any = [];
-
-    if (response && response.data) {
-      if (this.state.search !== '') {
-        result = response.data.filter(item => 
-          item.name.toLowerCase().indexOf(this.state.search) !== -1
-        );
-      } else {
-        result = response.data;
-      }
-    }
-
-    return result;
-  };
-
-  handleDialogOpen = () => {
-    if (!this.props.disabled) {
-      this.setState({ open: true });
-    }
-  };
-
-  handleDialogClose = () => {
-    this.setState({ open: false });
-  };
-
-  handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.currentTarget.value;
-
-    this.setState({ search: value });
-  };
-
-  handleKeyUp = (event: React.KeyboardEvent<HTMLDivElement>) => {
-    // delete pressed
-    if (event.keyCode === 46) {
-      this.setState({ search: '' });
-    }
-  };
-
-  handleDiscard = () => {
-    this.setState({ selected: {} });
-  };
-
-  handleSelected = (customer: ICustomerList) => {
-    this.setState({ open: false, selected: customer });
-
-    this.props.onChangeValue(customer);
-  };
-  
-  render() {
+  public render() {
     const { width, intl, input, label, disabled, meta } = this.props;
     const { response } = this.props.customerState;
     
@@ -272,6 +208,70 @@ class CustomerLookup extends React.Component<AllProps, State> {
       </div>
     );
   }
+
+  private loadData = () => {
+    const customer = this.props.input.value as ILookupCustomer;
+
+    this.props.customerDispatch.listRequest({
+      filter: {
+        companyUid: customer.companyUid,
+        find: this.state.search,
+        findBy: undefined,
+        direction: 'ascending',
+        orderBy: 'name',
+        size: undefined
+      }
+    });
+  };
+
+  private filter = (response: IResponseCollection<ICustomerList> | undefined) => {
+    let result: any = [];
+
+    if (response && response.data) {
+      if (this.state.search !== '') {
+        result = response.data.filter(item => 
+          item.name.toLowerCase().indexOf(this.state.search) !== -1
+        );
+      } else {
+        result = response.data;
+      }
+    }
+
+    return result;
+  };
+
+  private handleDialogOpen = () => {
+    if (!this.props.disabled) {
+      this.setState({ open: true });
+    }
+  };
+
+  private handleDialogClose = () => {
+    this.setState({ open: false });
+  };
+
+  private handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.currentTarget.value;
+
+    this.setState({ search: value });
+  };
+
+  private handleKeyUp = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    // delete pressed
+    if (event.keyCode === 46) {
+      this.setState({ search: '' });
+    }
+  };
+
+  private handleDiscard = () => {
+    this.setState({ selected: {} });
+  };
+
+  private handleSelected = (customer: ICustomerList) => {
+    this.setState({ open: false, selected: customer });
+
+    this.props.onChangeValue(customer);
+  };
 }
 
 const mapStateToProps = ({ customerGetList }: IAppState) => ({
