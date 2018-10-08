@@ -4,3 +4,7 @@ export * from './ICustomerDetail';
 export * from './ICustomerList';
 export * from './currency/ICurrency';
 export * from './currency/ICurrencyList';
+export * from './currency/ICurrencyDetail';
+export * from './systemLimit/ISystemLimit';
+export * from './systemLimit/ISystemLimitList';
+export * from './systemLimit/ISystemLimitDetail';

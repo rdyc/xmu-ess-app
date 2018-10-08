@@ -4,3 +4,6 @@ export * from './ICustomerListRequest';
 export * from './currency/ICurrencyAllRequest';
 export * from './currency/ICurrencyByIdRequest';
 export * from './currency/ICurrencyListRequest';
+export * from './systemLimit/ISystemLimitAllRequest';
+export * from './systemLimit/ISystemLimitByIdRequest';
+export * from './systemLimit/ISystemLimitListRequest';
