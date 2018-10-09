@@ -1,23 +1,6 @@
-import { AppStorage } from '@constants/index';
 import { IAppState } from '@generic/interfaces';
-import { ConnectedReduxProps, SortDirection } from '@generic/types';
+import { IAlert, ILayoutState, IView } from '@layout/interfaces';
 import {
-  IAlert,
-  IAppBarMenu,
-  IAppBarState,
-  IAppUser,
-  ILayoutState,
-  IListBarCallback,
-  IListBarField,
-  IListBarState,
-  IView,
-} from '@layout/interfaces';
-import {
-  appBarAssignCallback,
-  appBarAssignMenus,
-  appBarDispose,
-  appBarMenuHide,
-  appBarMenuShow,
   layoutAccountColapse,
   layoutAccountExpand,
   layoutActionCentreHide,
@@ -26,8 +9,6 @@ import {
   layoutAlertDialogHide,
   layoutAlertDialogShow,
   layoutAlertDismiss,
-  layoutAssignMenus,
-  layoutAssignUser,
   layoutChangeAnchor,
   layoutChangeNotif,
   layoutChangeView,
@@ -51,39 +32,19 @@ import {
   layoutNavBackShow,
   layoutSearchHide,
   layoutSearchShow,
-  listBarAssignCallbacks,
-  listBarAssignFields,
-  listBarChangeDirection,
-  listBarChangeOrder,
-  listBarChangeSize,
-  listBarDispose,
-  listBarMenuHide,
-  listBarMenuShow,
 } from '@layout/store/actions';
 import { Anchor } from '@layout/types';
-import { ILookupRoleMenuList } from '@lookup/classes';
-import { WithStyles, withStyles } from '@material-ui/core';
-import withWidth, { WithWidth } from '@material-ui/core/withWidth';
-import styles from '@styles';
 import * as React from 'react';
-import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
-import { RouteComponentProps, withRouter } from 'react-router';
+import { compose, setDisplayName } from 'recompose';
 import { Dispatch } from 'redux';
-import * as store from 'store';
-import withRoot from 'withRoot';
 
-interface PropsFromState extends RouteComponentProps<void> {
+interface PropsFromState {
   layoutState: ILayoutState;
-  appBarState: IAppBarState;
-  listBarState: IListBarState;
 }
 
 interface PropsFromDispatch {
   layoutDispatch: {
-    assignUser: typeof layoutAssignUser;
-    assignMenus: typeof layoutAssignMenus;
-    
     alertAdd: typeof layoutAlertAdd;
     alertDismiss: typeof layoutAlertDismiss;
 
@@ -120,75 +81,26 @@ interface PropsFromDispatch {
     modeSearchOff: typeof layoutModeSearchOff;
     modeListOn: typeof layoutModeListOn;
     modeListOff: typeof layoutModeListOff;
-  
-  };
-
-  appBarDispatch: {
-    assignCallback: typeof appBarAssignCallback;
-    assignMenus: typeof appBarAssignMenus;
-    menuShow: typeof appBarMenuShow;
-    menuHide: typeof appBarMenuHide;
-    dispose: typeof appBarDispose;
-  };
-
-  listBarDispatch: {
-    assignCallbacks: typeof listBarAssignCallbacks;
-    assignFields: typeof listBarAssignFields;
-    changeOrder: typeof listBarChangeOrder;
-    changeDirection: typeof listBarChangeDirection;
-    changeSize: typeof listBarChangeSize;
-    dispose: typeof listBarDispose;
-    menuShow: typeof listBarMenuShow;
-    menuHide: typeof listBarMenuHide;
   };
 }
 
 export type WithLayout 
   = PropsFromState 
-  & PropsFromDispatch 
-  & ConnectedReduxProps 
-  & InjectedIntlProps 
-  & WithWidth 
-  & WithStyles<typeof styles>;
+  & PropsFromDispatch;
 
-const withLayout = (Component: React.ComponentType) => { 
-  class WithLayoutCompnent extends React.Component<WithLayout> {
-    public static displayName = `WithLayout(${Component.name})`;
-
-    public componentWillMount() {
-      this.loadStorage();  
-    }
-
-    public render() {
-      // console.log(Component.name, this.props);
-
-      return (
-        <Component {...this.props}/>
-      );
-    }
-
-    private loadStorage() {
-      const user: IAppUser = store.get(AppStorage.User);
-      const menu: ILookupRoleMenuList[] = store.get(AppStorage.Menu);
+const withLayout = (WrappedComponent: React.ComponentType) => { 
+  // const displayName = `WithLayout(${WrappedComponent.displayName || WrappedComponent.name || 'Component'})`;
   
-      if (user && menu) {
-        this.props.layoutDispatch.assignUser(user);
-        this.props.layoutDispatch.assignMenus(menu);
-      }
-    }
-  }
+  const withLayoutComponent: React.SFC<WithLayout> = props => (
+    <WrappedComponent {...props} />
+  );
 
-  const mapStateToProps = ({ layout, appBar, listBar }: IAppState) => ({
-    layoutState: layout,
-    appBarState: appBar,
-    listBarState: listBar
+  const mapStateToProps = ({ layout }: IAppState) => ({
+    layoutState: layout
   });
   
   const mapDispatchToProps = (dispatch: Dispatch) => ({
     layoutDispatch: {
-      assignUser: (user: IAppUser) => dispatch(layoutAssignUser(user)),
-      assignMenus: (items: ILookupRoleMenuList[]) => dispatch(layoutAssignMenus(items)),
-      
       alertAdd: (alert: IAlert) => dispatch(layoutAlertAdd(alert)),
       alertDismiss: () => dispatch(layoutAlertDismiss()),
   
@@ -225,42 +137,13 @@ const withLayout = (Component: React.ComponentType) => {
       modeSearchOff: () => dispatch(layoutModeSearchOff()), 
       modeListOn: () => dispatch(layoutModeListOn()),
       modeListOff: () => dispatch(layoutModeListOff()),
-    },
-  
-    appBarDispatch: {
-      assignCallback: (callback: (menu: IAppBarMenu) => void) => dispatch(appBarAssignCallback(callback)),
-      assignMenus: (menus: IAppBarMenu[]) => dispatch(appBarAssignMenus(menus)),
-      menuShow: () => dispatch(appBarMenuShow()),
-      menuHide: () => dispatch(appBarMenuHide()),
-      dispose: () => dispatch(appBarDispose()),
-    },
-  
-    listBarDispatch: {
-      assignCallbacks: (callbacks: IListBarCallback) => dispatch(listBarAssignCallbacks(callbacks)),
-      assignFields: (fields: IListBarField[]) => dispatch(listBarAssignFields(fields)),
-      changeOrder: (name: string) => dispatch(listBarChangeOrder(name)),
-      changeSize: (size: number) => dispatch(listBarChangeSize(size)),
-      changeDirection: (direction: SortDirection) => dispatch(listBarChangeDirection(direction)),
-      dispose: () => dispatch(listBarDispose()),
-      menuShow: (anchorId: any) => dispatch(listBarMenuShow(anchorId)),
-      menuHide: () => dispatch(listBarMenuHide()),
     }
   });
   
-  return connect(
-    mapStateToProps, 
-    mapDispatchToProps
-  )(
-    withRouter(
-      withRoot(
-        withStyles(styles)(
-          withWidth()(
-            injectIntl(WithLayoutCompnent)
-          )
-        )
-      )
-    )
-  );
+  return compose<WithLayout, {}>(
+    setDisplayName('displayName'),
+    connect(mapStateToProps, mapDispatchToProps)
+  )(withLayoutComponent);
 };
 
 export default withLayout;

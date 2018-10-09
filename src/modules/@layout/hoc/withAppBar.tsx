@@ -9,6 +9,7 @@ import {
 } from '@layout/store/actions';
 import * as React from 'react';
 import { connect } from 'react-redux';
+import { compose, setDisplayName } from 'recompose';
 import { Dispatch } from 'redux';
 
 interface PropsFromState {
@@ -29,17 +30,10 @@ export type WithAppBar
   = PropsFromState 
   & PropsFromDispatch;
 
-const withAppbar = (Component: React.ComponentType) => { 
+const withAppbar = (WrappedComponent: React.ComponentType) => {
+  const displayName = `WithNotification(${WrappedComponent.displayName || WrappedComponent.name || 'Component'})`;
 
-  class WithAppBarComponent extends React.Component<WithAppBar> {
-    public static displayName = `WithAppBar(${Component.name})`;
-
-    public render() {
-      return (
-        <Component {...this.props}/>
-      );
-    }
-  }
+  const appBarComponent: React.SFC<WithAppBar> = props => <WrappedComponent {...props} />;
 
   const mapStateToProps = ({ appBar }: IAppState) => ({
     appBarState: appBar,
@@ -54,11 +48,11 @@ const withAppbar = (Component: React.ComponentType) => {
       dispose: () => dispatch(appBarDispose()),
     }
   });
-  
-  return connect(
-    mapStateToProps, 
-    mapDispatchToProps
-  )(WithAppBarComponent);   
+
+  return compose<WithAppBar, {}>(
+    setDisplayName(displayName),
+    connect(mapStateToProps, mapDispatchToProps)
+  )(appBarComponent);
 };
 
 export default withAppbar;

@@ -3,17 +3,25 @@ import DrawerActionSFC from '@layout/components/drawer/DrawerActionSFC';
 import DrawerMenuSFC from '@layout/components/drawer/DrawerMenuSFC';
 import NavigationBottomSFC from '@layout/components/navigation/NavigationBottomSFC';
 import SnackbarAlertSFC from '@layout/components/snackbar/SnackbarAlertSFC';
+import loadUser from '@layout/hoc/loadUser';
 import withLayout, { WithLayout } from '@layout/hoc/withLayout';
+import { WithStyles, withStyles } from '@material-ui/core';
+import styles from '@styles';
 import * as classNames from 'classnames';
 import * as React from 'react';
+import { compose, setDisplayName } from 'recompose';
 
-const Layout: React.SFC<WithLayout> = props => {
+type AllProps 
+  = WithLayout
+  & WithStyles<typeof styles>;
+
+const layout: React.SFC<AllProps> = props => {
   const { classes } = props;
   const { anchor, isModeList } = props.layoutState;
 
   return (
-    <div className={props.classes.root}>
-      <AppBarSFC />
+    <div className={classes.root}>
+      <AppBarSFC/>
       <DrawerMenuSFC/>
       <DrawerActionSFC/>
       <main className={classNames(
@@ -29,4 +37,11 @@ const Layout: React.SFC<WithLayout> = props => {
   );
 };
 
-export default withLayout(Layout);
+const Layout = compose<AllProps, {}>(
+  setDisplayName('Layout'),
+  loadUser,
+  withStyles,
+  withLayout,
+)(layout);
+
+export default Layout;

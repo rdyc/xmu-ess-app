@@ -1,25 +1,16 @@
 import NavigationMenuSFC from '@layout/components/navigation/NavigationMenuSFC';
 import withLayout, { WithLayout } from '@layout/hoc/withLayout';
-import { Drawer, Hidden } from '@material-ui/core';
+import { Drawer, Hidden, WithStyles, withStyles } from '@material-ui/core';
+import styles from '@styles';
 import * as classNames from 'classnames';
 import * as React from 'react';
-import { compose, setDisplayName, StateHandlerMap, withStateHandlers } from 'recompose';
-
-interface ToggleProps {
-  active: string | undefined;
-  isExpanded: boolean;
-}
-
-interface ToggleHandlerProps extends StateHandlerMap<ToggleProps> {
-  handleToggle: (type: string) => ToggleProps;
-}
+import { compose, setDisplayName } from 'recompose';
 
 type AllProps 
   = WithLayout 
-  & ToggleProps 
-  & ToggleHandlerProps;
+  & WithStyles<typeof styles>;
 
-const DrawerMenuSFC: React.SFC<AllProps> = props => {
+const component: React.SFC<AllProps> = props => {
   const { layoutState, layoutDispatch, classes } = props;
 
   return (
@@ -56,22 +47,10 @@ const DrawerMenuSFC: React.SFC<AllProps> = props => {
   );
 };
 
-const enhance = compose(
+const DrawerMenuSFC = compose(
   setDisplayName('DrawerMenuSFC'),
-  withStateHandlers<ToggleProps, ToggleHandlerProps>(
-    { 
-      active: undefined,
-      isExpanded: false
-    },
-    {
-      handleToggle: (state: ToggleProps) => (type: string) => ({
-        active: type,
-        isExpanded: state.active === type ? !state.isExpanded : true
-      })
-    }
-  )
-)(
-  withLayout(DrawerMenuSFC)
-);
+  withLayout,
+  withStyles
+)(component);
 
-export default enhance;
+export default DrawerMenuSFC;

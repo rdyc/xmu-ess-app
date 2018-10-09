@@ -11,7 +11,7 @@ export interface IAppState extends ICommonState, ILookupState, IAccountState, IP
   user: IUserState;
   layout: ILayoutState;
   appBar: IAppBarState;
-  listBar: IListBarState;
+  navBottom: IListBarState;
   oidc: UserState;
   account: IEmployeeMyState;
   notification: INotificationState;

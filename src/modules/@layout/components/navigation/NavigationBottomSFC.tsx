@@ -1,8 +1,9 @@
 import { SortDirection } from '@generic/types';
 import withLayout, { WithLayout } from '@layout/hoc/withLayout';
+import { WithNavBottom } from '@layout/hoc/withNavBottom';
 import { IListBarField } from '@layout/interfaces';
-import { BottomNavigation, BottomNavigationAction, Menu, MenuItem } from '@material-ui/core';
-import { isWidthUp } from '@material-ui/core/withWidth';
+import { BottomNavigation, BottomNavigationAction, Menu, MenuItem, WithStyles, withStyles } from '@material-ui/core';
+import withWidth, { isWidthUp, WithWidth } from '@material-ui/core/withWidth';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
@@ -10,10 +11,18 @@ import FilterListIcon from '@material-ui/icons/FilterList';
 import LibraryBooksSharpIcon from '@material-ui/icons/LibraryBooksSharp';
 import SortByAlphaIcon from '@material-ui/icons/SortByAlpha';
 import SyncIcon from '@material-ui/icons/Sync';
+import styles from '@styles';
 import * as React from 'react';
+import { compose, setDisplayName } from 'recompose';
 
-const NavigationBottomSFC: React.SFC<WithLayout> = props => {
-  const { layoutState, listBarState, listBarDispatch, classes, width } = props;
+type AllProps
+  = WithNavBottom
+  & WithLayout
+  & WithWidth
+  & WithStyles<typeof styles>;
+
+const component: React.SFC<AllProps> = props => {
+  const { layoutState, navBottomState, navBottomDispatch, classes, width } = props;
 
   if (!layoutState.isModeList) {
     return null;
@@ -37,41 +46,41 @@ const NavigationBottomSFC: React.SFC<WithLayout> = props => {
   };
 
   const handleClick = (e: React.MouseEvent<HTMLElement>) => {
-    listBarDispatch.menuShow(e.currentTarget.id);
+    navBottomDispatch.menuShow(e.currentTarget.id);
   };
 
   const handleClose = (item: IListBarField | undefined) => { 
     if (item) {
-      if (listBarState.menuAnchorId) {
-        const control = listBarState.menuAnchorId;
+      if (navBottomState.menuAnchorId) {
+        const control = navBottomState.menuAnchorId;
 
         switch (control) {
           case 'bottom-navigation-button-sort':
-            listBarDispatch.changeDirection(SortDirection[item.id]);
-            listBarState.callbacks.onDirectionCallback(SortDirection[item.id]);
+            navBottomDispatch.changeDirection(SortDirection[item.id]);
+            navBottomState.callbacks.onDirectionCallback(SortDirection[item.id]);
             break;
 
           case 'bottom-navigation-button-size':
-            listBarDispatch.changeSize(Number(item.id));
-            listBarState.callbacks.onSizeCallback(Number(item.id));
+            navBottomDispatch.changeSize(Number(item.id));
+            navBottomState.callbacks.onSizeCallback(Number(item.id));
             break;
         
           default:
-            listBarDispatch.changeOrder(item.name);
-            listBarState.callbacks.onOrderCallback(item);
+            navBottomDispatch.changeOrder(item.name);
+            navBottomState.callbacks.onOrderCallback(item);
             break;
         }
       }
     }
 
-    listBarDispatch.menuHide();
+    navBottomDispatch.menuHide();
   };
 
   const populateItems = () => {
-    if (listBarState.menuAnchorId) {
+    if (navBottomState.menuAnchorId) {
       let items: any;
 
-      const control = listBarState.menuAnchorId;
+      const control = navBottomState.menuAnchorId;
 
       switch (control) {
         case 'bottom-navigation-button-sort':
@@ -83,8 +92,8 @@ const NavigationBottomSFC: React.SFC<WithLayout> = props => {
           break;
         
         default:
-          if (listBarState.fields) {
-            items = listBarState.fields;
+          if (navBottomState.fields) {
+            items = navBottomState.fields;
           }
           break;
       }
@@ -98,20 +107,20 @@ const NavigationBottomSFC: React.SFC<WithLayout> = props => {
   const isCurrent = (name: string) => {
     let match: boolean = false;
 
-    if (listBarState.menuAnchorId) {
-      const control = listBarState.menuAnchorId;
+    if (navBottomState.menuAnchorId) {
+      const control = navBottomState.menuAnchorId;
 
       switch (control) {
         case 'bottom-navigation-button-sort':
-          match = listBarState.direction === name;
+          match = navBottomState.direction === name;
           break;
 
         case 'bottom-navigation-button-size':
-          match = listBarState.size === Number(name);
+          match = navBottomState.size === Number(name);
           break;
       
         default:
-          match = listBarState.orderBy === name;
+          match = navBottomState.orderBy === name;
           break;
       }
     }
@@ -141,12 +150,12 @@ const NavigationBottomSFC: React.SFC<WithLayout> = props => {
       //     width: 300
       //   },
       // }}
-      anchorEl={findElement(listBarState.menuAnchorId || '')} 
-      open={listBarState.menuIsOpen} 
+      anchorEl={findElement(navBottomState.menuAnchorId || '')} 
+      open={navBottomState.menuIsOpen} 
       onClose={() => handleClose(undefined)}
     >
       {
-        listBarState.fields && 
+        navBottomState.fields && 
         populateItems()
       }
     </Menu>
@@ -161,19 +170,19 @@ const NavigationBottomSFC: React.SFC<WithLayout> = props => {
         value={-1}
       >
         {
-          listBarState.metadata && 
-          listBarState.metadata.paginate.previous && 
+          navBottomState.metadata && 
+          navBottomState.metadata.paginate.previous && 
           <BottomNavigationAction 
             label="Prev" 
             icon={<ChevronLeftIcon />}
-            onClick={() => listBarState.callbacks.onPrevCallback()}
+            onClick={() => navBottomState.callbacks.onPrevCallback()}
           />
         } 
         
         <BottomNavigationAction 
           id="bottom-navigation-button-order"
-          aria-owns={listBarState.menuAnchorId ? 'bottom-navigation-menu' : ''}
-          label={listBarState.orderBy ? listBarState.orderBy : 'Order'} 
+          aria-owns={navBottomState.menuAnchorId ? 'bottom-navigation-menu' : ''}
+          label={navBottomState.orderBy ? navBottomState.orderBy : 'Order'} 
           icon={<FilterListIcon />}
           onClick={(e: React.MouseEvent<HTMLElement>) => handleClick(e)} 
         />
@@ -182,8 +191,8 @@ const NavigationBottomSFC: React.SFC<WithLayout> = props => {
           isWidthUp('sm', width) && 
           <BottomNavigationAction 
             id="bottom-navigation-button-sort"
-            aria-owns={listBarState.menuAnchorId ? 'bottom-navigation-menu' : ''}  
-            label={listBarState.direction ? listBarState.direction : 'Sort'}
+            aria-owns={navBottomState.menuAnchorId ? 'bottom-navigation-menu' : ''}  
+            label={navBottomState.direction ? navBottomState.direction : 'Sort'}
             icon={<SortByAlphaIcon />} 
             onClick={(e: React.MouseEvent<HTMLElement>) => handleClick(e)} 
           />
@@ -193,8 +202,8 @@ const NavigationBottomSFC: React.SFC<WithLayout> = props => {
           isWidthUp('sm', width) && 
           <BottomNavigationAction 
             id="bottom-navigation-button-size"
-            aria-owns={listBarState.menuAnchorId ? 'bottom-navigation-menu' : ''}
-            label={listBarState.size ? listBarState.size : 'Size'}
+            aria-owns={navBottomState.menuAnchorId ? 'bottom-navigation-menu' : ''}
+            label={navBottomState.size ? navBottomState.size : 'Size'}
             icon={<LibraryBooksSharpIcon />} 
             onClick={(e: React.MouseEvent<HTMLElement>) => handleClick(e)}
           />
@@ -205,16 +214,16 @@ const NavigationBottomSFC: React.SFC<WithLayout> = props => {
         <BottomNavigationAction 
           label="Sync" 
           icon={<SyncIcon />} 
-          onClick={() => listBarState.callbacks.onSyncCallback()}
+          onClick={() => navBottomState.callbacks.onSyncCallback()}
         />
 
         {
-          listBarState.metadata && 
-          listBarState.metadata.paginate.next && 
+          navBottomState.metadata && 
+          navBottomState.metadata.paginate.next && 
           <BottomNavigationAction 
             icon={<ChevronRightIcon />} 
             label="Next"
-            onClick={() => listBarState.callbacks.onNextCallback()}
+            onClick={() => navBottomState.callbacks.onNextCallback()}
           />
         }
       </BottomNavigation>
@@ -222,4 +231,11 @@ const NavigationBottomSFC: React.SFC<WithLayout> = props => {
   );
 };
 
-export default withLayout(NavigationBottomSFC);
+const NavigationBottomSFC = compose<AllProps, {}>(
+  setDisplayName('NavigationBottomSFC'),
+  withLayout,
+  withStyles,
+  withWidth
+)(component);
+
+export default NavigationBottomSFC;

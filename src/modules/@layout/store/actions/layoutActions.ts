@@ -1,13 +1,9 @@
-import { IAppUser, IView } from '@layout/interfaces';
+import { IView } from '@layout/interfaces';
 import { IAlert } from '@layout/interfaces/IAlert';
 import { Anchor } from '@layout/types';
-import { ILookupRoleMenuList } from '@lookup/classes';
 import { action } from 'typesafe-actions';
 
 export const enum LayoutAction {
-  ASSIGN_USER = '@@layout/ASSIGN_USER',
-  ASSIGN_MENUS = '@@layout/ASSIGN_MENUS',
-
   ACCOUNT_EXPAND = '@@layout/ACCOUNT_EXPAND',
   ACCOUNT_COLAPSE = '@@layout/ACCOUNT_COLAPSE',
   
@@ -45,9 +41,6 @@ export const enum LayoutAction {
   MODE_LIST_ON = '@@layout/MODE_LIST_ON',
   MODE_LIST_OFF = '@@layout/MODE_LIST_OFF',
 }
-
-export const layoutAssignUser = (user: IAppUser) => action(LayoutAction.ASSIGN_USER, user);
-export const layoutAssignMenus = (menus: ILookupRoleMenuList[]) => action(LayoutAction.ASSIGN_MENUS, menus);
 
 export const layoutAccountExpand = () => action(LayoutAction.ACCOUNT_EXPAND);
 export const layoutAccountColapse = () => action(LayoutAction.ACCOUNT_COLAPSE);

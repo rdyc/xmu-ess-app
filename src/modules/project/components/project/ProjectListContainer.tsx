@@ -223,9 +223,9 @@ class ProjectList extends React.Component<AllProps> {
   }
 }
 
-const mapStateToProps = ({ layout, listBar, projectGetAll }: IAppState) => ({
+const mapStateToProps = ({ layout, navBottom, projectGetAll }: IAppState) => ({
   layoutState: layout,
-  listBarState: listBar,
+  listBarState: navBottom,
   projectState: projectGetAll
 });
 

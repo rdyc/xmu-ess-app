@@ -18,7 +18,7 @@ export const rootReducer = combineReducers<IAppState>({
   notification: notificationReducer,
   form: reduxFormReducer,
   appBar: appBarReducer,
-  listBar: listBarReducer,
+  navBottom: listBarReducer,
 
   /* modules */
   ...commonReducers,

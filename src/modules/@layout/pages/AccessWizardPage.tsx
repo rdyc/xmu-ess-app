@@ -4,8 +4,6 @@ import { AppStorage } from '@constants/index';
 import { IAppState, IResponseSingle } from '@generic/interfaces';
 import { ConnectedReduxProps } from '@generic/types';
 import { IAppUser, IUserCompany, IUserPosition } from '@layout/interfaces';
-import { layoutAssignMenus, layoutAssignUser } from '@layout/store/actions';
-import { ILookupRoleMenuList } from '@lookup/classes';
 import {
   Button,
   Card,
@@ -47,8 +45,8 @@ interface PropsFromState extends RouteComponentProps<void>, WithStyles<typeof st
 
 interface PropsFromDispatch {
   accountEmployeeFetchRequest: typeof EmployeeFetchRequest;
-  setMenuItems: typeof layoutAssignMenus;
-  setUser: typeof layoutAssignUser;
+  // setMenuItems: typeof layoutAssignMenus;
+  // setUser: typeof layoutAssignUser;
 }
 
 type AllProps = PropsFromState & 
@@ -315,10 +313,10 @@ class AccessWizardPage extends React.Component<AllProps> {
         };
         
         // set app user
-        this.props.setUser(_user);
+        // this.props.setUser(_user);
 
         // set menu items
-        this.props.setMenuItems(selected.menus || []);
+        // this.props.setMenuItems(selected.menus || []);
 
         // save to local storage
         store.set(AppStorage.User, _user);
@@ -452,8 +450,8 @@ const mapStateToProps = ({ account }: IAppState) => ({
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   accountEmployeeFetchRequest: () => dispatch(EmployeeFetchRequest()),
-  setMenuItems: (items: ILookupRoleMenuList[]) => dispatch(layoutAssignMenus(items)),
-  setUser: (user: IAppUser) => dispatch(layoutAssignUser(user))
+  // setMenuItems: (items: ILookupRoleMenuList[]) => dispatch(layoutAssignMenus(items)),
+  // setUser: (user: IAppUser) => dispatch(layoutAssignUser(user))
 });
 
 export default connect(

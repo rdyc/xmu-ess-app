@@ -13,7 +13,7 @@ import SearchIcon from '@material-ui/icons/Search';
 import styles from '@styles';
 import * as classNames from 'classnames';
 import * as React from 'react';
-import { withRouter } from 'react-router';
+import { RouteComponentProps, withRouter } from 'react-router';
 import { compose, setDisplayName } from 'recompose';
 import { isArray } from 'util';
 
@@ -22,7 +22,8 @@ type AllProps
   & WithLayout
   & WithNotification
   & WithWidth 
-  & WithStyles<typeof styles>;
+  & WithStyles<typeof styles>
+  & RouteComponentProps;
 
 const AppBarSFC: React.SFC<AllProps> = props => {
   const { layoutState, notificationState, appBarState, layoutDispatch, appBarDispatch, classes, history, width }  = props;
@@ -226,13 +227,9 @@ const AppBarSFC: React.SFC<AllProps> = props => {
 };
 
 export default compose(
-  setDisplayName('AppBarSFC')
-)(
-  withAppbar(
-    withLayout(
-      withNotification(
-        withRouter(AppBarSFC)
-      )
-    )
-  )
-);
+  setDisplayName('AppBarSFC'),
+  withLayout,
+  withNotification,
+  withAppbar,
+  withRouter
+)(AppBarSFC);

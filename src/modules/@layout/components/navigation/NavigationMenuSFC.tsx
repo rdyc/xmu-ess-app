@@ -1,39 +1,38 @@
 import withLayout, { WithLayout } from '@layout/hoc/withLayout';
 import withUser, { WithUser } from '@layout/hoc/withUser';
 import { ILookupRoleMenuChildList } from '@lookup/classes';
-import {
-  Collapse,
-  Divider,
-  List,
-  ListItem,
-  ListItemSecondaryAction,
-  ListItemText,
-  ListSubheader
-} from '@material-ui/core';
+import { Collapse, Divider, List, ListItem, ListItemSecondaryAction, ListItemText, ListSubheader } from '@material-ui/core';
 import withWidth, { isWidthUp, WithWidth } from '@material-ui/core/withWidth';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import * as React from 'react';
-import { setDisplayName, StateHandlerMap, withStateHandlers } from 'recompose';
-import { compose } from 'redux';
+import { RouteComponentProps, withRouter } from 'react-router';
+import { compose, mapper, setDisplayName, StateHandler, StateHandlerMap, StateUpdaters, withStateHandlers } from 'recompose';
 import { menuLinkMapper } from 'utils';
 
-interface StateProps {
+interface OutterProps {
+  
+}
+
+interface State {
   active: string | undefined;
   isExpanded: boolean;
 }
 
-interface StateHandlerProps extends StateHandlerMap<StateProps> {
-  handleToggle: (type: string) => StateProps;
+interface Updaters extends StateHandlerMap<State> {
+  handleToggle: StateHandler<State>;
 }
 
-type AllProps = WithUser &
-  WithLayout &
-  WithWidth &
-  StateProps &
-  StateHandlerProps;
+type InnerProps 
+  = OutterProps
+  & State 
+  & Updaters
+  & WithUser 
+  & WithLayout 
+  & WithWidth
+  & RouteComponentProps; 
 
-const NavigationMenuSFC: React.SFC<AllProps> = props => {
+const component: React.SFC<InnerProps> = props => {
   const { active, isExpanded, layoutState, layoutDispatch, history } = props;
   const { user } = props.userState;
 
@@ -149,28 +148,25 @@ const NavigationMenuSFC: React.SFC<AllProps> = props => {
   );
 };
 
-const enhance = compose(
-  setDisplayName('NavigationMenuSFC'),
-  withStateHandlers<StateProps, StateHandlerProps>(
-    {
-      active: undefined,
-      isExpanded: false
-    },
-    {
-      handleToggle: (state: StateProps) => (menuUid: string) => ({
-        active: menuUid,
-        isExpanded: state.active === menuUid ? !state.isExpanded : true
-      })
-    }
-  )
-)(
-  withUser(
-    withLayout(
-      withWidth()(
-        NavigationMenuSFC
-      )
-    )
-  )
-);
+const createProps: mapper<OutterProps, State> = (props: OutterProps) => ({ 
+  active: undefined,
+  isExpanded: false
+});
 
-export default enhance;
+const stateUpdaters: StateUpdaters<OutterProps, State, Updaters> = {
+  handleToggle: (state: State) => (menuUid: string) => ({
+    active: menuUid,
+    isExpanded: state.active === menuUid ? !state.isExpanded : true
+  })
+};
+
+const NavigationMenuSFC = compose<InnerProps, OutterProps>(
+  setDisplayName('NavigationMenuSFC'),
+  withStateHandlers<State, Updaters>(createProps, stateUpdaters),
+  withUser,
+  withLayout,
+  withWidth(),
+  withRouter
+)(component);
+
+export default NavigationMenuSFC;

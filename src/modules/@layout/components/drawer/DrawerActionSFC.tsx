@@ -19,6 +19,8 @@ import {
   ListItemText,
   ListSubheader,
   SwipeableDrawer,
+  WithStyles,
+  withStyles,
 } from '@material-ui/core';
 import Switch from '@material-ui/core/Switch';
 import AccountCircle from '@material-ui/icons/AccountCircle';
@@ -28,16 +30,23 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import PowerSettingsNew from '@material-ui/icons/PowerSettingsNew';
 import SwapHorizontalCircle from '@material-ui/icons/SwapHorizontalCircle';
 import WifiIcon from '@material-ui/icons/Wifi';
+import styles from '@styles';
 import { AppUserManager } from '@utils/userManager';
 import * as classNames from 'classnames';
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
+import { RouteComponentProps, withRouter } from 'react-router';
+import { compose, setDisplayName } from 'recompose';
 import * as store from 'store';
 
-type Props = WithLayout & WithUser;
+type AllProps 
+  = WithLayout 
+  & WithUser
+  & RouteComponentProps
+  & WithStyles<typeof styles>;
 
-const DrawerActionSFC: React.SFC<Props> = props => {
-  const { userState, layoutState, layoutDispatch, history } = props;
+const component: React.SFC<AllProps> = props => {
+  const { userState, layoutState, layoutDispatch, history, classes } = props;
 
   const handleLogout = () => {
     layoutDispatch.drawerActionHide();
@@ -85,7 +94,7 @@ const DrawerActionSFC: React.SFC<Props> = props => {
         variant="temporary"
         anchor={layoutState.anchor === 'left' ? 'right' : 'left'}
         classes={{
-          paper: classNames(props.classes.drawerPaper, props.classes.drawerPaperAdditional)
+          paper: classNames(classes.drawerPaper, classes.drawerPaperAdditional)
         }}
         open={layoutState.isDrawerActionVisible}
         onOpen={() => layoutDispatch.drawerActionShow()}
@@ -99,7 +108,7 @@ const DrawerActionSFC: React.SFC<Props> = props => {
               <ListItem 
                 button
                 onClick={() => layoutState.isAccountExpanded ? layoutDispatch.accountColapse() : layoutDispatch.accountExpand()}>
-                <Avatar className={props.classes.avatarRed}>
+                <Avatar className={classes.avatarRed}>
                   {userState.user.company.code}
                 </Avatar>
                 <ListItemText 
@@ -180,4 +189,12 @@ const DrawerActionSFC: React.SFC<Props> = props => {
   );
 };
 
-export default withUser(withLayout(DrawerActionSFC));
+const DrawerActionSFC = compose<AllProps, {}>(
+  setDisplayName('DrawerActionSFC'),
+  withUser,
+  withLayout,
+  withRouter,
+  withStyles
+)(component);
+
+export default DrawerActionSFC;
