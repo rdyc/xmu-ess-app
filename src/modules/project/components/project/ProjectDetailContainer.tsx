@@ -1,6 +1,7 @@
 import { WorkflowStatusType } from '@common/classes/types';
 import { IAppState, IQuerySingleState } from '@generic/interfaces';
 import { ConnectedReduxProps } from '@generic/types';
+import withUser, { WithUser } from '@layout/hoc/withUser';
 import { IAppBarMenu, ILayoutState, IView } from '@layout/interfaces';
 import {
   appBarAssignCallback,
@@ -69,12 +70,14 @@ interface RouteParams {
   projectUid: string;
 }
 
-type AllProps = PropsFromState & 
-                PropsFromDispatch & 
-                RouteComponentProps<RouteParams> & 
-                ConnectedReduxProps & 
-                InjectedIntlProps & 
-                WithStyles<typeof styles>;
+type AllProps 
+  = PropsFromState 
+  & PropsFromDispatch 
+  & RouteComponentProps<RouteParams> 
+  & ConnectedReduxProps 
+  & InjectedIntlProps 
+  & WithStyles<typeof styles> 
+  & WithUser;
 
 const initialState = {
   dialogFullScreen: false,
@@ -173,12 +176,12 @@ class ProjectDetail extends React.Component<AllProps, State> {
   );
 
   private loadData = (): void => {
-    const { layoutState, projectDispatch, match } = this.props;
+    const { userState, projectDispatch, match } = this.props;
     
-    if (layoutState.user) {
+    if (userState.user) {
       projectDispatch.getByIdRequest({
-        companyUid: layoutState.user.company.uid,
-        positionUid: layoutState.user.position.uid,
+        companyUid: userState.user.company.uid,
+        positionUid: userState.user.position.uid,
         projectUid: match.params.projectUid
       });
     }
@@ -392,6 +395,8 @@ export const ProjectDetailContainer = connect(
   mapDispatchToProps
 )(
   withStyles(styles)(
-    injectIntl(ProjectDetail)
+    withUser(
+      injectIntl(ProjectDetail)
+    )
   )
 );

@@ -29,10 +29,11 @@ interface PropsFromState extends RouteComponentProps<void> {
   projectState: IQuerySingleState<IProjectGetByIdRequest, IProjectDetail>;
 }
 
-type AllProps = PropsFromState & 
-                ConnectedReduxProps & 
-                InjectedIntlProps & 
-                WithStyles<typeof styles>;
+type AllProps 
+  = PropsFromState 
+  & ConnectedReduxProps 
+  & InjectedIntlProps 
+  & WithStyles<typeof styles>;
 
 export const ProjectDetailComponent: React.SFC<AllProps> = props => { 
   const { intl } = props;

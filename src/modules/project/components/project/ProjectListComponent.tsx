@@ -14,9 +14,10 @@ interface PropsFromState extends RouteComponentProps<void> {
   projectState: IQueryCollectionState<IProjectGetAllRequest, IProject>;
 }
 
-type AllProps = PropsFromState & 
-                ConnectedReduxProps & 
-                WithStyles<typeof styles>;
+type AllProps 
+  = PropsFromState 
+  & ConnectedReduxProps 
+  & WithStyles<typeof styles>;
                 
 export const ProjectListComponent: React.SFC<AllProps> = props => {
   const { history  } = props;

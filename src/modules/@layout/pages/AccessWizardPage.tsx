@@ -310,7 +310,8 @@ class AccessWizardPage extends React.Component<AllProps> {
           email: response.data.email,
           fullName: response.data.fullName,
           company: _company,
-          position: _position
+          position: _position,
+          menus: selected.menus
         };
         
         // set app user

@@ -12,7 +12,9 @@
 		"rbbit.typescript-hero",
 		"vector-of-bool.gitflow",
 		"xabikos.ReactSnippets",
-		"trabpukcip.vscode-npm-scripts"
+		"trabpukcip.vscode-npm-scripts",
+		"akamud.vscode-theme-onelight",
+		"akamud.vscode-theme-onedark"
 	],
 	// List of extensions recommended by VS Code that should not be recommended for users of this workspace.
 	"unwantedRecommendations": [

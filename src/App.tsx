@@ -1,8 +1,8 @@
 import { accountRouter } from '@account/pages';
 import { rootStore } from '@generic/roots';
+import Layout from '@layout/components/base/Layout';
 import { HomePage } from '@layout/pages';
 import AccessWizardPage from '@layout/pages/AccessWizardPage';
-import BasePage from '@layout/pages/BasePage';
 import CallbackPage from '@layout/pages/CallbackPage';
 import { ProjectRoot } from '@project/components/ProjectRoot';
 import { ConnectedRouter } from 'connected-react-router';
@@ -75,11 +75,11 @@ class App extends React.Component<AllProps> {
                   {oidcState.user && (
                     <Switch>
                       <Route exact path="/" component={AccessWizardPage} />
-                      <BasePage>
+                      <Layout>
                         <Route path="/home" component={HomePage} />
                         <Route path="/account" component={accountRouter} />
                         <Route path="/project" component={ProjectRoot} />
-                      </BasePage>
+                      </Layout>
                     </Switch>
                   )}
                 </div>

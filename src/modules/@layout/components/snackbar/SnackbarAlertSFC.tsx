@@ -1,45 +1,11 @@
-import { ConnectedReduxProps } from '@generic/types';
-import { ILayoutState } from '@layout/interfaces';
-import {
-  layoutAlertDialogHide,
-  layoutAlertDialogShow,
-  layoutAlertDismiss
-} from '@layout/store/actions';
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  Snackbar,
-  WithStyles
-} from '@material-ui/core';
+import withLayout, { WithLayout } from '@layout/hoc/withLayout';
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Snackbar } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
-import styles from '@styles';
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
-import { RouteComponentProps } from 'react-router';
 import { isNullOrUndefined, isObject } from 'util';
 
-interface PropsFromState extends RouteComponentProps<void> {
-  layoutState: ILayoutState;
-}
-
-interface PropsFromDispatch {
-  layoutDispatch: {
-    alertDismiss: typeof layoutAlertDismiss;
-    alertDialogShow: typeof layoutAlertDialogShow;
-    alertDialogHide: typeof layoutAlertDialogHide;
-  };
-}
-
-type AllProps = PropsFromState &
-  PropsFromDispatch &
-  ConnectedReduxProps &
-  WithStyles<typeof styles>;
-
-export const bottomSnackbar: React.ComponentType<AllProps> = props => {
+const SnackbarAlertSFC: React.ComponentType<WithLayout> = props => {
   const { layoutState, layoutDispatch } = props;
   const alert = layoutState.alerts[0];
 
@@ -121,4 +87,4 @@ export const bottomSnackbar: React.ComponentType<AllProps> = props => {
   );
 };
 
-export default bottomSnackbar;
+export default withLayout(SnackbarAlertSFC);

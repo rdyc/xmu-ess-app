@@ -1,16 +1,6 @@
-import { ConnectedReduxProps } from '@generic/types';
-import Notifications from '@layout/components/common/notifications';
-import { ILayoutState } from '@layout/interfaces';
-import {
-  layoutAccountColapse,
-  layoutAccountExpand,
-  layoutChangeAnchor,
-  layoutChangeView,
-  layoutDrawerActionHide,
-  layoutDrawerActionShow,
-  layoutLogoutDialogHide,
-  layoutLogoutDialogShow,
-} from '@layout/store/actions';
+import NotificationListSFC from '@layout/components/notification/NotificationListSFC';
+import withLayout, { WithLayout } from '@layout/hoc/withLayout';
+import withUser, { WithUser } from '@layout/hoc/withUser';
 import {
   Avatar,
   Button,
@@ -29,7 +19,6 @@ import {
   ListItemText,
   ListSubheader,
   SwipeableDrawer,
-  WithStyles,
 } from '@material-ui/core';
 import Switch from '@material-ui/core/Switch';
 import AccountCircle from '@material-ui/icons/AccountCircle';
@@ -39,38 +28,16 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import PowerSettingsNew from '@material-ui/icons/PowerSettingsNew';
 import SwapHorizontalCircle from '@material-ui/icons/SwapHorizontalCircle';
 import WifiIcon from '@material-ui/icons/Wifi';
-import styles from '@styles';
 import { AppUserManager } from '@utils/userManager';
 import * as classNames from 'classnames';
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
-import { RouteComponentProps } from 'react-router';
 import * as store from 'store';
 
-interface PropsFromState extends RouteComponentProps<void> {
-  layoutState: ILayoutState;
-}
+type Props = WithLayout & WithUser;
 
-interface PropsFromDispatch {
-  layoutDispatch: {
-    changeAnchor: typeof layoutChangeAnchor;
-    changeView: typeof layoutChangeView;
-    drawerActionShow: typeof layoutDrawerActionShow;
-    drawerActionHide: typeof layoutDrawerActionHide;
-    accountExpand: typeof layoutAccountExpand;
-    accountColapse: typeof layoutAccountColapse;
-    logoutDialogShow: typeof layoutLogoutDialogShow;
-    logoutDialogHide: typeof layoutLogoutDialogHide;
-  };
-}
-
-type AllProps = PropsFromState & 
-                PropsFromDispatch & 
-                ConnectedReduxProps & 
-                WithStyles<typeof styles>;
-
-export const actionDrawer: React.SFC<AllProps> = props => {
-  const { layoutState, layoutDispatch, history } = props;
+const DrawerActionSFC: React.SFC<Props> = props => {
+  const { userState, layoutState, layoutDispatch, history } = props;
 
   const handleLogout = () => {
     layoutDispatch.drawerActionHide();
@@ -126,18 +93,18 @@ export const actionDrawer: React.SFC<AllProps> = props => {
         ModalProps={{
           keepMounted: true, // Better open performance on mobile.
         }}>
-        {layoutState.user && (
+        {userState.user && (
           <div>
             <List>
               <ListItem 
                 button
                 onClick={() => layoutState.isAccountExpanded ? layoutDispatch.accountColapse() : layoutDispatch.accountExpand()}>
                 <Avatar className={props.classes.avatarRed}>
-                  {layoutState.user.company.code}
+                  {userState.user.company.code}
                 </Avatar>
                 <ListItemText 
-                  primary={layoutState.user.fullName} 
-                  secondary={layoutState.user.email} />
+                  primary={userState.user.fullName} 
+                  secondary={userState.user.email} />
                 <ListItemSecondaryAction>
                   {layoutState.isAccountExpanded ? <ExpandLess /> : <ExpandMore />}
                 </ListItemSecondaryAction>
@@ -166,7 +133,12 @@ export const actionDrawer: React.SFC<AllProps> = props => {
               </Collapse>
             </List>
             <Divider />
-            <Notifications {...props} />
+
+            <NotificationListSFC 
+              // companyUid={layoutState.user.company.uid}
+              // positionUid={layoutState.user.position.uid} 
+            />
+            
             <List subheader={
               <ListSubheader color="primary">
                 <FormattedMessage id="global.access.title"/>
@@ -174,8 +146,8 @@ export const actionDrawer: React.SFC<AllProps> = props => {
             }>
               <ListItem>
                 <ListItemText 
-                  primary={layoutState.user.company.name} 
-                  secondary={layoutState.user.position.name} />
+                  primary={userState.user.company.name} 
+                  secondary={userState.user.position.name} />
                 <ListItemSecondaryAction>
                   <IconButton>
                     <MoreVertIcon />
@@ -207,3 +179,5 @@ export const actionDrawer: React.SFC<AllProps> = props => {
     </div>
   );
 };
+
+export default withUser(withLayout(DrawerActionSFC));

@@ -1,6 +1,7 @@
 import { ProjectType } from '@common/classes/types';
 import { IAppState, IQuerySingleState } from '@generic/interfaces';
 import { ConnectedReduxProps, FormMode } from '@generic/types';
+import { WithUser } from '@layout/hoc/withUser';
 import { IAlert, ILayoutState, IView } from '@layout/interfaces';
 import { layoutAlertAdd, layoutChangeView, layoutNavBackHide, layoutNavBackShow } from '@layout/store/actions';
 import { Typography, WithStyles, withStyles } from '@material-ui/core';
@@ -44,12 +45,14 @@ interface RouteParams {
   projectUid: string;
 }
 
-type AllProps = PropsFromState & 
-                PropsFromDispatch & 
-                RouteComponentProps<RouteParams> & 
-                ConnectedReduxProps & 
-                InjectedIntlProps & 
-                WithStyles<typeof styles>;
+type AllProps 
+  = PropsFromState 
+  & PropsFromDispatch 
+  & RouteComponentProps<RouteParams> 
+  & ConnectedReduxProps 
+  & InjectedIntlProps 
+  & WithStyles<typeof styles>
+  & WithUser;
 
 const initialState = {
   mode: FormMode.New,
@@ -65,7 +68,7 @@ class ProjectForm extends React.Component<AllProps, State> {
 
   public componentWillMount() {
     const { history } = this.props;
-    const { user } = this.props.layoutState;
+    const { user } = this.props.userState;
 
     if (user) {
       this.setState({ 
@@ -151,7 +154,7 @@ class ProjectForm extends React.Component<AllProps, State> {
   }
 
   private loadData = (uid: string): void => {
-    const { user } = this.props.layoutState;
+    const { user } = this.props.userState;
     const { getByIdRequest } = this.props.projectDispatch;
     
     if (user) {
@@ -250,7 +253,7 @@ class ProjectForm extends React.Component<AllProps, State> {
 
   private handleSubmit = (payload: IProjectDetail) => { 
     const { projectUid } = this.state;
-    const { user } = this.props.layoutState;
+    const { user } = this.props.userState;
     const { putRequest } = this.props.projectDispatch;
 
     if (user) {

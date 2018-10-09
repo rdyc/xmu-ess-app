@@ -42,11 +42,12 @@ interface OwnProps {
   projectUid: string;
 }
 
-type AllProps = InjectedFormProps<IProjectDetail, OwnProps> & 
-                ConnectedReduxProps &
-                InjectedIntlProps &
-                WithWidth &
-                WithStyles<typeof styles>;
+type AllProps 
+  = InjectedFormProps<IProjectDetail, OwnProps> 
+  & ConnectedReduxProps 
+  & InjectedIntlProps 
+  & WithWidth 
+  & WithStyles<typeof styles>;
 
 const projectFormComponent: React.SFC<AllProps & OwnProps> = props => { 
   const renderDetail = () => (

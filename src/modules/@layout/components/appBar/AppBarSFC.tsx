@@ -1,22 +1,7 @@
-import { ConnectedReduxProps } from '@generic/types';
-import { IAppBarMenu, IAppBarState, ILayoutState } from '@layout/interfaces';
-import {
-  appBarDispose,
-  appBarMenuHide,
-  appBarMenuShow,
-  layoutActionCentreHide,
-  layoutActionCentreShow,
-  layoutDrawerActionHide,
-  layoutDrawerActionShow,
-  layoutDrawerMenuHide,
-  layoutDrawerMenuShow,
-  layoutModeSearchOff,
-  layoutModeSearchOn,
-  layoutMoreHide,
-  layoutMoreShow,
-  layoutNavBackHide,
-  layoutNavBackShow,
-} from '@layout/store/actions';
+import withAppbar, { WithAppBar } from '@layout/hoc/withAppBar';
+import withLayout, { WithLayout } from '@layout/hoc/withLayout';
+import withNotification, { WithNotification } from '@layout/hoc/withNotification';
+import { IAppBarMenu } from '@layout/interfaces';
 import { AppBar, Badge, IconButton, Input, Menu, MenuItem, Slide, Toolbar, Typography, WithStyles } from '@material-ui/core';
 import { isWidthUp, WithWidth } from '@material-ui/core/withWidth';
 import AppsIcon from '@material-ui/icons/Apps';
@@ -28,44 +13,37 @@ import SearchIcon from '@material-ui/icons/Search';
 import styles from '@styles';
 import * as classNames from 'classnames';
 import * as React from 'react';
-import { RouteComponentProps } from 'react-router';
+import { withRouter } from 'react-router';
+import { compose, setDisplayName } from 'recompose';
+import { isArray } from 'util';
 
-interface PropsFromState extends RouteComponentProps<void> {
-  layoutState: ILayoutState;
-  appBarState: IAppBarState;
-}
+type AllProps 
+  = WithAppBar
+  & WithLayout
+  & WithNotification
+  & WithWidth 
+  & WithStyles<typeof styles>;
 
-interface PropsFromDispatch {
-  layoutDispatch: {
-    drawerMenuShow: typeof layoutDrawerMenuShow;
-    drawerMenuHide: typeof layoutDrawerMenuHide;
-    drawerActionShow: typeof layoutDrawerActionShow;
-    drawerActionHide: typeof layoutDrawerActionHide;
-    modeSearchOn: typeof layoutModeSearchOn;
-    modeSearchOff: typeof layoutModeSearchOff;
-    navBackShow: typeof layoutNavBackShow;
-    navBackHide: typeof layoutNavBackHide;
-    actionCentreShow: typeof layoutActionCentreShow;
-    actionCentreHide: typeof layoutActionCentreHide;
-    moreShow: typeof layoutMoreShow;
-    moreHide: typeof layoutMoreHide;
+const AppBarSFC: React.SFC<AllProps> = props => {
+  const { layoutState, notificationState, appBarState, layoutDispatch, appBarDispatch, classes, history, width }  = props;
+
+  const fnCountNotif = () =>  {
+    let count: number = 0;
+    
+    if (notificationState.result && notificationState.result.data) {
+      if (isArray(notificationState.result.data)) {
+          notificationState.result.data.forEach(element =>
+            element.details.forEach(detail => {
+              count = count + detail.total;
+            })
+        );
+      }
+    }
+
+    return count;
   };
 
-  appBarDispatch: {
-    menuShow: typeof appBarMenuShow;
-    menuHide: typeof appBarMenuHide;
-    dispose: typeof appBarDispose;
-  };
-}
-
-type AllProps = PropsFromState & 
-                PropsFromDispatch & 
-                ConnectedReduxProps & 
-                WithWidth & 
-                WithStyles<typeof styles>;
-
-export const topAppBar: React.SFC<AllProps> = props => {
-  const { layoutState, appBarState, layoutDispatch, appBarDispatch, classes, history, width }  = props;
+  const notifCount = fnCountNotif();
 
   const fnFindClasses = () => {
     const shift = layoutState.anchor === 'right' ? classes.appBarShiftRight : classes.appBarShiftLeft;
@@ -157,13 +135,13 @@ export const topAppBar: React.SFC<AllProps> = props => {
       
       {
         /* notifications */
-        layoutState.notifCount > 0 &&
+        notifCount > 0 &&
         <IconButton
           color="inherit"
           aria-label="Notifications"
           onClick={() => layoutDispatch.drawerActionShow()}
         >
-          <Badge badgeContent={layoutState.notifCount} color="error">
+          <Badge badgeContent={notifCount} color="error">
             <NotificationImportant />
           </Badge>
         </IconButton>
@@ -246,3 +224,15 @@ export const topAppBar: React.SFC<AllProps> = props => {
     </AppBar>
   );
 };
+
+export default compose(
+  setDisplayName('AppBarSFC')
+)(
+  withAppbar(
+    withLayout(
+      withNotification(
+        withRouter(AppBarSFC)
+      )
+    )
+  )
+);

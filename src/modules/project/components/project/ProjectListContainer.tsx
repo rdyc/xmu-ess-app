@@ -1,5 +1,6 @@
 import { IAppState, IQueryCollectionState } from '@generic/interfaces';
 import { ConnectedReduxProps, SortDirection } from '@generic/types';
+import withUser, { WithUser } from '@layout/hoc/withUser';
 import { ILayoutState, IListBarCallback, IListBarField, IListBarState, IView } from '@layout/interfaces';
 import {
   layoutActionCentreHide,
@@ -68,11 +69,13 @@ interface PropsFromDispatch {
   };
 }
 
-type AllProps = PropsFromState & 
-                PropsFromDispatch & 
-                ConnectedReduxProps & 
-                InjectedIntlProps & 
-                WithStyles<typeof styles>;
+type AllProps 
+  = PropsFromState 
+  & PropsFromDispatch 
+  & ConnectedReduxProps 
+  & InjectedIntlProps 
+  & WithStyles<typeof styles>
+  & WithUser;
 
 class ProjectList extends React.Component<AllProps> {
   public state = {
@@ -149,12 +152,12 @@ class ProjectList extends React.Component<AllProps> {
   }
 
   private loadData = () => {
-    const { layoutState, projectDispatch } = this.props;
-
-    if (layoutState.user) {
+    const { userState, projectDispatch } = this.props;
+  
+    if (userState.user) {
       projectDispatch.getAllRequest({
-        companyUid: layoutState.user.company.uid,
-        positionUid: layoutState.user.position.uid,
+        companyUid: userState.user.company.uid,
+        positionUid: userState.user.position.uid,
         filter: {
           customerUids: undefined,
           projectTypes: undefined,
@@ -170,9 +173,9 @@ class ProjectList extends React.Component<AllProps> {
     }
   }
 
-  private enumToArray = (enumme: any) => {
-    return Object.keys(enumme).map(key => ({ id: enumme[key], name: key }));
-  }
+  // private enumToArray = (enumme: any) => {
+  //   return Object.keys(enumme).map(key => ({ id: enumme[key], name: key }));
+  // }
 
   private handleOnNextCallback = () => this.setPaging(true);
 
@@ -259,7 +262,9 @@ export const ProjectListContainer = connect(
   mapStateToProps, 
   mapDispatchToProps
 )(
-  withStyles(styles)(
-    injectIntl(ProjectList)
+  withUser(
+    withStyles(styles)(
+      injectIntl(ProjectList)
+    )
   )
 );

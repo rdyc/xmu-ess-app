@@ -3,10 +3,9 @@ import { IView } from '@layout/interfaces/IView';
 import { ILookupRoleMenuList } from '@lookup/classes';
 
 import { Anchor } from '../types/Anchor';
-import { IAppUser } from './IAppUser';
 
 export interface ILayoutState {
-  readonly user: IAppUser | undefined;
+  // readonly user: IAppUser | undefined;
   readonly view: IView | undefined;
   readonly anchor: Anchor;
   readonly isDrawerMenuVisible: boolean;

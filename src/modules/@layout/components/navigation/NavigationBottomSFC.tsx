@@ -1,15 +1,8 @@
-import { ConnectedReduxProps, SortDirection } from '@generic/types';
-import { ILayoutState, IListBarField, IListBarState } from '@layout/interfaces';
-import {
-  layoutAlertAdd,
-  listBarChangeDirection,
-  listBarChangeOrder,
-  listBarChangeSize,
-  listBarMenuHide,
-  listBarMenuShow,
-} from '@layout/store/actions';
-import { BottomNavigation, BottomNavigationAction, Menu, MenuItem, WithStyles } from '@material-ui/core';
-import { isWidthUp, WithWidth } from '@material-ui/core/withWidth';
+import { SortDirection } from '@generic/types';
+import withLayout, { WithLayout } from '@layout/hoc/withLayout';
+import { IListBarField } from '@layout/interfaces';
+import { BottomNavigation, BottomNavigationAction, Menu, MenuItem } from '@material-ui/core';
+import { isWidthUp } from '@material-ui/core/withWidth';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
@@ -17,36 +10,9 @@ import FilterListIcon from '@material-ui/icons/FilterList';
 import LibraryBooksSharpIcon from '@material-ui/icons/LibraryBooksSharp';
 import SortByAlphaIcon from '@material-ui/icons/SortByAlpha';
 import SyncIcon from '@material-ui/icons/Sync';
-import styles from '@styles';
 import * as React from 'react';
-import { RouteComponentProps } from 'react-router';
 
-interface PropsFromState extends RouteComponentProps<void> {
-  layoutState: ILayoutState;
-  listBarState: IListBarState;
-}
-
-interface PropsFromDispatch {
-  layoutDispatch: {
-    alertAdd: typeof layoutAlertAdd;
-  };
-
-  listBarDispatch: {
-    changeOrder: typeof listBarChangeOrder;
-    changeDirection: typeof listBarChangeDirection;
-    changeSize: typeof listBarChangeSize;
-    menuShow: typeof listBarMenuShow;
-    menuHide: typeof listBarMenuHide;
-  };
-}
-
-type AllProps = PropsFromState & 
-                PropsFromDispatch & 
-                ConnectedReduxProps & 
-                WithWidth & 
-                WithStyles<typeof styles>;
-
-export const listBar: React.SFC<AllProps> = props => {
+const NavigationBottomSFC: React.SFC<WithLayout> = props => {
   const { layoutState, listBarState, listBarDispatch, classes, width } = props;
 
   if (!layoutState.isModeList) {
@@ -255,3 +221,5 @@ export const listBar: React.SFC<AllProps> = props => {
     </div>
   );
 };
+
+export default withLayout(NavigationBottomSFC);

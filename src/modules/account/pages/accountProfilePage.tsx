@@ -106,8 +106,8 @@ class AccountProfilePage extends React.Component<AllProps> {
   }
 }
 
-const mapStateToProps = ({ layout, profileQuery }: IAppState) => ({
-  user: layout.user,
+const mapStateToProps = ({ user, profileQuery }: IAppState) => ({
+  user: user.user,
   response: profileQuery.response,
   errors: profileQuery.errors,
   loading: profileQuery.loading
