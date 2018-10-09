@@ -263,9 +263,9 @@ class CustomerLookup extends React.Component<AllProps, State> {
     }
   };
 
-  private handleDiscard = () => {
-    this.setState({ selected: {} });
-  };
+  // private handleDiscard = () => {
+  //   this.setState({ selected: {} });
+  // };
 
   private handleSelected = (customer: ICustomerList) => {
     this.setState({ open: false, selected: customer });

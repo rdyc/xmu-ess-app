@@ -4,6 +4,7 @@ import { HomePage } from '@layout/pages';
 import AccessWizardPage from '@layout/pages/AccessWizardPage';
 import BasePage from '@layout/pages/BasePage';
 import CallbackPage from '@layout/pages/CallbackPage';
+import { LookupRoute } from '@lookup/components/LookupRoute';
 import { ProjectRoot } from '@project/components/ProjectRoot';
 import { ConnectedRouter } from 'connected-react-router';
 import { History } from 'history';
@@ -79,6 +80,7 @@ class App extends React.Component<AllProps> {
                         <Route path="/home" component={HomePage} />
                         <Route path="/account" component={accountRouter} />
                         <Route path="/project" component={ProjectRoot} />
+                        <Route path="/lookup" component={LookupRoute} />
                       </BasePage>
                     </Switch>
                   )}

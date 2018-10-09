@@ -1,4 +1,4 @@
-import { layoutAlertAdd } from '@layout/store/actions';
+import { layoutAlertAdd, listBarLoading, listBarMetadata } from '@layout/store/actions';
 import {
   PositionAction as Action,
   positionGetAllError,
@@ -19,11 +19,12 @@ function* watchFetchAllRequest() {
   const worker = (action: ReturnType<typeof positionGetAllRequest>) => {
     return saiyanSaga.fetch({
       method: 'get',
-      path: `/v1/lookup/position${objectToQuerystring(action.payload.filter)}`, 
-      success: (response: IApiResponse) => ([
+      path: `/v1/lookup/positions${objectToQuerystring(action.payload.filter)}`, 
+      successEffects: (response: IApiResponse) => ([
         put(positionGetAllSuccess(response.body)),
+        put(listBarMetadata(response.body.metadata))
       ]), 
-      failed: (response: IApiResponse) => ([
+      failureEffects: (response: IApiResponse) => ([
         put(positionGetAllError(response.statusText)),
         put(layoutAlertAdd({
           time: new Date(),
@@ -31,14 +32,14 @@ function* watchFetchAllRequest() {
           details: response
         }))
       ]), 
-      error: (error: TypeError) => ([
+      errorEffects: (error: TypeError) => ([
         put(positionGetAllError(error.message)),
         put(layoutAlertAdd({
           time: new Date(),
           message: error.message
         }))
       ]),
-      finally: () => ([])
+      finallyEffects: [put(listBarLoading(false))]
     });
   };
   
@@ -49,11 +50,11 @@ function* watchFetchListRequest() {
   const worker = (action: ReturnType<typeof positionGetListRequest>) => {
     return saiyanSaga.fetch({
       method: 'get',
-      path: `/v1/lookup/position/list${objectToQuerystring(action.payload.filter)}`,
-      success: (response: IApiResponse) => ([
+      path: `/v1/lookup/positions/list${objectToQuerystring(action.payload.filter)}`,
+      successEffects: (response: IApiResponse) => ([
         put(positionGetListSuccess(response.body)),
       ]), 
-      failed: (response: IApiResponse) => ([
+      failureEffects: (response: IApiResponse) => ([
         put(positionGetListError(response.statusText)),
         put(layoutAlertAdd({
           time: new Date(),
@@ -61,14 +62,13 @@ function* watchFetchListRequest() {
           details: response
         }))
       ]), 
-      error: (error: TypeError) => ([
+      errorEffects: (error: TypeError) => ([
         put(positionGetListError(error.message)),
         put(layoutAlertAdd({
           time: new Date(),
           message: error.message
         }))
       ]),
-      finally: () => ([])
     });
   };
 
@@ -79,11 +79,11 @@ function* watchFetchByIdRequest() {
   const worker = (action: ReturnType<typeof positionGetByIdRequest>) => {
     return saiyanSaga.fetch({
       method: 'get',
-      path: `/v1/lookup/position/${action.payload.companyUid}/${action.payload.positionUid}`,
-      success: (response: IApiResponse) => ([
+      path: `/v1/lookup/positions/${action.payload.companyUid}/${action.payload.positionUid}`,
+      successEffects: (response: IApiResponse) => ([
         put(positionGetByIdSuccess(response.body)),
       ]), 
-      failed: (response: IApiResponse) => ([
+      failureEffects: (response: IApiResponse) => ([
         put(positionGetByIdError(response.statusText)),
         put(layoutAlertAdd({
           time: new Date(),
@@ -91,14 +91,13 @@ function* watchFetchByIdRequest() {
           details: response
         }))
       ]), 
-      error: (error: TypeError) => ([
+      errorEffects: (error: TypeError) => ([
         put(positionGetByIdError(error.message)),
         put(layoutAlertAdd({
           time: new Date(),
           message: error.message,
         }))
       ]),
-      finally: () => ([])
     });
   };
   

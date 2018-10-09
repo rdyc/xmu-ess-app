@@ -1,5 +1,5 @@
 import { IResponseCollection } from '@generic/interfaces';
-import { IMenuAllRequest, IMenuByIdRequest, IMenuListRequest } from '@lookup/classes/queries';
+import { IMenuByIdRequest, IMenuGetAllRequest, IMenuListRequest } from '@lookup/classes/queries';
 import { IMenu, IMenuDetail, IMenuList } from '@lookup/classes/response';
 import { action } from 'typesafe-actions';
 
@@ -19,7 +19,7 @@ export const enum MenuAction {
 }
 
 // get all
-export const menuGetAllRequest = (request: IMenuAllRequest) => action(MenuAction.GET_ALL_REQUEST, request);
+export const menuGetAllRequest = (request: IMenuGetAllRequest) => action(MenuAction.GET_ALL_REQUEST, request);
 export const menuGetAllSuccess = (response: IResponseCollection<IMenu>) => action(MenuAction.GET_ALL_SUCCESS, response);
 export const menuGetAllError = (message: string) => action(MenuAction.GET_ALL_ERROR, message);
 export const menuGetAllDispose = () => action(MenuAction.GET_ALL_DISPOSE);

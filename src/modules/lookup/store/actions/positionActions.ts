@@ -1,5 +1,5 @@
 import { IResponseCollection } from '@generic/interfaces';
-import { IPositionAllRequest, IPositionByIdRequest, IPositionListRequest } from '@lookup/classes/queries';
+import { IPositionByIdRequest, IPositionGetAllRequest, IPositionListRequest } from '@lookup/classes/queries';
 import { IPosition, IPositionDetail, IPositionList } from '@lookup/classes/response';
 import { action } from 'typesafe-actions';
 
@@ -19,7 +19,7 @@ export const enum PositionAction {
 }
 
 // get all
-export const positionGetAllRequest = (request: IPositionAllRequest) => action(PositionAction.GET_ALL_REQUEST, request);
+export const positionGetAllRequest = (request: IPositionGetAllRequest) => action(PositionAction.GET_ALL_REQUEST, request);
 export const positionGetAllSuccess = (response: IResponseCollection<IPosition>) => action(PositionAction.GET_ALL_SUCCESS, response);
 export const positionGetAllError = (message: string) => action(PositionAction.GET_ALL_ERROR, message);
 export const positionGetAllDispose = () => action(PositionAction.GET_ALL_DISPOSE);

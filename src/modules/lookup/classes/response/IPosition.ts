@@ -1,3 +1,4 @@
+import { IBaseChanges } from '@generic/interfaces';
 import { ILookupCompany } from '@lookup/classes';
 
 export interface IPosition {
@@ -9,4 +10,5 @@ export interface IPosition {
   isAllowMultiple:    boolean;
   inactiveDate:       string | null;
   isExpired:          boolean;
+  changes:            IBaseChanges | null;
 }

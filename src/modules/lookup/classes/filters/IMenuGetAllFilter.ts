@@ -1,5 +1,5 @@
 import { IBasePagingFilter } from '@generic/interfaces';
 
-export interface IMenuAllFilter extends IBasePagingFilter {
+export interface IMenuGetAllFilter extends IBasePagingFilter {
   readonly menuUid: string | undefined;
 }

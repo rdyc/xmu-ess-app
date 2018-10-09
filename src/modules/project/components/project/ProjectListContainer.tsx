@@ -170,9 +170,9 @@ class ProjectList extends React.Component<AllProps> {
     }
   }
 
-  private enumToArray = (enumme: any) => {
-    return Object.keys(enumme).map(key => ({ id: enumme[key], name: key }));
-  }
+  // private enumToArray = (enumme: any) => {
+  //   return Object.keys(enumme).map(key => ({ id: enumme[key], name: key }));
+  // }
 
   private handleOnNextCallback = () => this.setPaging(true);
 
