@@ -1,7 +1,7 @@
 import { ProjectType } from '@common/classes/types';
 import { IAppState, IQuerySingleState } from '@generic/interfaces';
 import { ConnectedReduxProps, FormMode } from '@generic/types';
-import { WithUser } from '@layout/hoc/withUser';
+import withUser, { WithUser } from '@layout/hoc/withUser';
 import { IAlert, ILayoutState, IView } from '@layout/interfaces';
 import { layoutAlertAdd, layoutChangeView, layoutNavBackHide, layoutNavBackShow } from '@layout/store/actions';
 import { Typography, WithStyles, withStyles } from '@material-ui/core';
@@ -327,7 +327,9 @@ export const ProjectFormContainer = connect(
   mapStateToProps, 
   mapDispatchToProps
 )(
-  withStyles(styles)(
-    injectIntl(ProjectForm)
+  withUser(
+    withStyles(styles)(
+      injectIntl(ProjectForm)
+    )
   )
 );

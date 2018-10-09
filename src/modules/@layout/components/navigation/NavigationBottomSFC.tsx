@@ -1,6 +1,6 @@
 import { SortDirection } from '@generic/types';
 import withLayout, { WithLayout } from '@layout/hoc/withLayout';
-import { WithNavBottom } from '@layout/hoc/withNavBottom';
+import withNavBottom, { WithNavBottom } from '@layout/hoc/withNavBottom';
 import { IListBarField } from '@layout/interfaces';
 import { BottomNavigation, BottomNavigationAction, Menu, MenuItem, WithStyles, withStyles } from '@material-ui/core';
 import withWidth, { isWidthUp, WithWidth } from '@material-ui/core/withWidth';
@@ -233,9 +233,10 @@ const component: React.SFC<AllProps> = props => {
 
 const NavigationBottomSFC = compose<AllProps, {}>(
   setDisplayName('NavigationBottomSFC'),
+  withNavBottom,
   withLayout,
-  withStyles,
-  withWidth
+  withWidth(),
+  withStyles(styles)
 )(component);
 
 export default NavigationBottomSFC;

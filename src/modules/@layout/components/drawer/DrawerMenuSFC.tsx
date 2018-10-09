@@ -50,7 +50,7 @@ const component: React.SFC<AllProps> = props => {
 const DrawerMenuSFC = compose(
   setDisplayName('DrawerMenuSFC'),
   withLayout,
-  withStyles
+  withStyles(styles)
 )(component);
 
 export default DrawerMenuSFC;

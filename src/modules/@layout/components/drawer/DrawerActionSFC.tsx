@@ -194,7 +194,7 @@ const DrawerActionSFC = compose<AllProps, {}>(
   withUser,
   withLayout,
   withRouter,
-  withStyles
+  withStyles(styles)
 )(component);
 
 export default DrawerActionSFC;

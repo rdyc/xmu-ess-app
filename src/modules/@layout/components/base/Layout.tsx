@@ -10,6 +10,7 @@ import styles from '@styles';
 import * as classNames from 'classnames';
 import * as React from 'react';
 import { compose, setDisplayName } from 'recompose';
+import withRoot from 'withRoot';
 
 type AllProps 
   = WithLayout
@@ -39,8 +40,9 @@ const layout: React.SFC<AllProps> = props => {
 
 const Layout = compose<AllProps, {}>(
   setDisplayName('Layout'),
+  withRoot,
+  withStyles(styles),
   loadUser,
-  withStyles,
   withLayout,
 )(layout);
 

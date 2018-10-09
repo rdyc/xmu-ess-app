@@ -23,9 +23,7 @@ type AllProps
 const loadUser = (WrappedComponent: React.ComponentType) => { 
   const displayName = `LoadUser(${WrappedComponent.displayName || WrappedComponent.name || 'Component'})`;
 
-  const loadUserComponent: React.SFC<AllProps> = props => {
-    return <WrappedComponent {...props} />;
-  };
+  const loadUserComponent: React.SFC<AllProps> = props => <WrappedComponent {...props} />;
 
   const mapStateToProps = ({ user }: IAppState) => ({
     userState: user
@@ -36,7 +34,7 @@ const loadUser = (WrappedComponent: React.ComponentType) => {
   });
 
   const lifeCycleFunctions: ReactLifeCycleFunctions<AllProps, {}> = {
-    componentDidMount() {
+    componentWillMount() {
       if (!this.props.userState.user) {
         const user: IAppUser = store.get(AppStorage.User);
 

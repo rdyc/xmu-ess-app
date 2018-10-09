@@ -2,7 +2,7 @@ import withAppbar, { WithAppBar } from '@layout/hoc/withAppBar';
 import withLayout, { WithLayout } from '@layout/hoc/withLayout';
 import withNotification, { WithNotification } from '@layout/hoc/withNotification';
 import { IAppBarMenu } from '@layout/interfaces';
-import { AppBar, Badge, IconButton, Input, Menu, MenuItem, Slide, Toolbar, Typography, WithStyles } from '@material-ui/core';
+import { AppBar, Badge, IconButton, Input, Menu, MenuItem, Slide, Toolbar, Typography, WithStyles, withStyles } from '@material-ui/core';
 import { isWidthUp, WithWidth } from '@material-ui/core/withWidth';
 import AppsIcon from '@material-ui/icons/Apps';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
@@ -231,5 +231,6 @@ export default compose(
   withLayout,
   withNotification,
   withAppbar,
-  withRouter
+  withRouter,
+  withStyles(styles)
 )(AppBarSFC);

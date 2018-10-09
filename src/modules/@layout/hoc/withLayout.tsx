@@ -89,11 +89,9 @@ export type WithLayout
   & PropsFromDispatch;
 
 const withLayout = (WrappedComponent: React.ComponentType) => { 
-  // const displayName = `WithLayout(${WrappedComponent.displayName || WrappedComponent.name || 'Component'})`;
+  const displayName = `WithLayout(${WrappedComponent.displayName || WrappedComponent.name || 'Component'})`;
   
-  const withLayoutComponent: React.SFC<WithLayout> = props => (
-    <WrappedComponent {...props} />
-  );
+  const withLayoutComponent: React.SFC<WithLayout> = props => <WrappedComponent {...props} />;
 
   const mapStateToProps = ({ layout }: IAppState) => ({
     layoutState: layout
@@ -141,7 +139,7 @@ const withLayout = (WrappedComponent: React.ComponentType) => {
   });
   
   return compose<WithLayout, {}>(
-    setDisplayName('displayName'),
+    setDisplayName(displayName),
     connect(mapStateToProps, mapDispatchToProps)
   )(withLayoutComponent);
 };
