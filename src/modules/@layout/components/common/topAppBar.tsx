@@ -64,7 +64,7 @@ type AllProps = PropsFromState &
                 WithWidth & 
                 WithStyles<typeof styles>;
 
-export const topAppBar: React.StatelessComponent<AllProps> = props => {
+export const topAppBar: React.SFC<AllProps> = props => {
   const { layoutState, appBarState, layoutDispatch, appBarDispatch, classes, history, width }  = props;
 
   const fnFindClasses = () => {

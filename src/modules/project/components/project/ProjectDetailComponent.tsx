@@ -34,7 +34,7 @@ type AllProps = PropsFromState &
                 InjectedIntlProps & 
                 WithStyles<typeof styles>;
 
-export const ProjectDetail: React.StatelessComponent<AllProps> = props => { 
+export const ProjectDetailComponent: React.SFC<AllProps> = props => { 
   const { intl } = props;
   const { response } = props.projectState;
 

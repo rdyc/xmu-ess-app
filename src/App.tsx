@@ -4,7 +4,7 @@ import { HomePage } from '@layout/pages';
 import AccessWizardPage from '@layout/pages/AccessWizardPage';
 import BasePage from '@layout/pages/BasePage';
 import CallbackPage from '@layout/pages/CallbackPage';
-import { projectRoutes } from '@project/views/ProjectRoutes';
+import { ProjectRoot } from '@project/components/ProjectRoot';
 import { ConnectedRouter } from 'connected-react-router';
 import { History } from 'history';
 import * as React from 'react';
@@ -31,7 +31,7 @@ interface OwnProps {
 type AllProps = PropsFromState & OwnProps;
 
 class App extends React.Component<AllProps> {
-  componentDidMount() {
+  public componentDidMount() {
     AppUserManager.events.addSilentRenewError((error) => {
       console.error('error while renewing the access token', error);
     });
@@ -39,7 +39,7 @@ class App extends React.Component<AllProps> {
     loadUser(rootStore, AppUserManager);
   }
 
-  render() {   
+  public render() {   
     const { oidcState, store, history } = this.props;
 
     const onLogin = (event: any) => {
@@ -78,7 +78,7 @@ class App extends React.Component<AllProps> {
                       <BasePage>
                         <Route path="/home" component={HomePage} />
                         <Route path="/account" component={accountRouter} />
-                        <Route path="/project" component={projectRoutes} />
+                        <Route path="/project" component={ProjectRoot} />
                       </BasePage>
                     </Switch>
                   )}

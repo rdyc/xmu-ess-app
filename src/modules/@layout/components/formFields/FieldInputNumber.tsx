@@ -13,7 +13,7 @@ interface FromFieldProps {
 
 type AllProps = WrappedFieldProps & BaseFieldProps & FromFieldProps;
 
-export const FieldInputNumber: React.StatelessComponent<AllProps> = props => {
+export const FieldInputNumber: React.SFC<AllProps> = props => {
   const { input, label, disabled, meta } = props;
 
   const NumberFormatComponent = (inputProps: InputComponentProps) => {

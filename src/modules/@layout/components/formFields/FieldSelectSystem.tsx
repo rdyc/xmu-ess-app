@@ -14,7 +14,7 @@ interface FromFieldProps {
 
 type AllProps = WrappedFieldProps & BaseFieldProps & FromFieldProps & WithWidth;
 
-export const FieldSelectSystem: React.StatelessComponent<AllProps> = props => {
+export const FieldSelectSystem: React.SFC<AllProps> = props => {
   const { input, type } = props;
 
   const handleOnChangeValue = (system: ISystemList | null) => {

@@ -70,4 +70,4 @@ jspm_packages/
 /out
 
 # lock
-*lock.json
+package-lock.json
