@@ -56,7 +56,7 @@ interface Updaters extends StateHandlerMap<State> {
 }
 
 interface Dispatcher {
-  projectDispatch: {
+  projectAllDispatch: {
     getAllRequest: typeof projectGetAllRequest;
     getAllDispose: typeof projectGetAllDispose;
   };
@@ -77,7 +77,7 @@ const loadAllRegistration = (options?: LoadAllRegistrationOptions) => (WrappedCo
   const loadAllRegistrationSFC: React.SFC<AllProps> = props => <WrappedComponent {...props} />;
 
   const createProps: mapper<AllProps, State> = (props: AllProps): State => {
-    const { request } = props.projectState;
+    const { request } = props.projectAllState;
 
     return { 
       orderBy: request && request.filter && request.filter.orderBy || options && options.orderBy,
@@ -136,7 +136,7 @@ const loadAllRegistration = (options?: LoadAllRegistrationOptions) => (WrappedCo
   };
 
   const mapDispatchToProps = (dispatch: Dispatch) => ({
-    projectDispatch: {
+    projectAllDispatch: {
       getAllRequest: (request: IProjectGetAllRequest) => dispatch(projectGetAllRequest(request)),
       getAllDispose: () => dispatch(projectGetAllDispose()),
     }
@@ -144,7 +144,7 @@ const loadAllRegistration = (options?: LoadAllRegistrationOptions) => (WrappedCo
 
   const lifeCycleFunctions: ReactLifeCycleFunctions<AllProps, {}> = {
     componentDidMount() {
-      const { response } = this.props.projectState;
+      const { response } = this.props.projectAllState;
       
       // only load data when response are empty
       if (!response) {
@@ -164,7 +164,7 @@ const loadAllRegistration = (options?: LoadAllRegistrationOptions) => (WrappedCo
     },
     componentWillUnmount() {
       const { view } = this.props.layoutState;
-      const { getAllDispose } = this.props.projectDispatch;
+      const { getAllDispose } = this.props.projectAllDispatch;
 
       // dispose 'get all' from 'redux store' when the page is 'out of project registration' context 
       if (view && view.parentUid !== AppMenu.ProjectRegistration) {
@@ -176,7 +176,7 @@ const loadAllRegistration = (options?: LoadAllRegistrationOptions) => (WrappedCo
   const loadData = (props: AllProps): void => {
     const { orderBy, direction, page, size } = props;
     const { user } = props.userState;
-    const { getAllRequest } = props.projectDispatch;
+    const { getAllRequest } = props.projectAllDispatch;
     const { alertAdd } = props.layoutDispatch;
 
     if (user) {

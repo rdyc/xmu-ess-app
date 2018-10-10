@@ -24,7 +24,7 @@ type AllProps
 
 const projectRegistrationList: React.SFC<AllProps> = props => {
   const { history } = props;
-  const { isLoading, response } = props.projectState;
+  const { isLoading, response } = props.projectAllState;
 
   const handleClick = (projectUid: string) => {
     if (!isLoading) {
