@@ -5,6 +5,7 @@ import systemSagas from '@common/store/sagas/systemSagas';
 import notificationSagas from '@layout/store/sagas/notificationSagas';
 import customerSagas from '@lookup/store/sagas/customerSagas';
 import currencySagas from '@lookup/store/sagas/currencySagas';
+import systemLimitSagas from '@lookup/store/sagas/systemLimitSagas';
 import projectSagas from '@project/store/sagas/projectSagas';
 import { all, fork } from 'redux-saga/effects';
 
@@ -17,6 +18,7 @@ export function* rootSaga() {
     // lookup
     fork(customerSagas),
     fork(currencySagas), 
+    fork(systemLimitSagas),
     
     // account
     fork(employeeSagas), 

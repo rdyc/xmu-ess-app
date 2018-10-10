@@ -19,7 +19,7 @@ function* watchFetchAllRequest() {
   const worker = (action: ReturnType<typeof currencyGetAllRequest>) => {
     return saiyanSaga.fetch({
       method: 'get',
-      path: `POST /v1/lookup/currencies${objectToQuerystring(action.payload.filter)}`, 
+      path: `/v1/lookup/currencies${objectToQuerystring(action.payload.filter)}`, 
       success: (response: IApiResponse) => ([
         put(currencyGetAllSuccess(response.body)),
       ]), 

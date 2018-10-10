@@ -44,6 +44,12 @@
   "lookup.customer.lookupTitle": "Customer Lookup", 
   "lookup.customer.lookupDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.", 
   "lookup.placeholder.customerSearch": "Type any company name",
+  "lookup.currency.lookupTitle": "Currency Lookup", 
+  "lookup.currency.lookupDescription": "Lorem ipsum dolor sit amet", 
+  "lookup.placeholder.currencySearch": "Type any currency name",
+  "lookup.systemLimit.lookupTitle": "System / Time Limit Lookup", 
+  "lookup.systemLimit.lookupDescription": "Lorem ipsum dolor sit amet",
+  "lookup.placeholder.systemLimitSearch": "Type any System / Time Limit name",
 
   "account.employee.lookupTitle": "Employee Lookup", 
   "account.employee.lookupDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.", 
