@@ -1,8 +1,11 @@
+import AppMenu from '@constants/AppMenu';
 import { SortDirection } from '@generic/types';
+import withLayout, { WithLayout } from '@layout/hoc/withLayout';
 import withUser, { WithUser } from '@layout/hoc/withUser';
 import { IListBarField } from '@layout/interfaces';
 import { IProjectGetAllRequest } from '@project/classes/queries';
-import { projectGetAllRequest } from '@project/store/actions';
+import withAllRegistration, { WithAllRegistration } from '@project/hoc/registration/withAllRegistration';
+import { projectGetAllDispose, projectGetAllRequest } from '@project/store/actions';
 import * as React from 'react';
 import { connect } from 'react-redux';
 import {
@@ -55,6 +58,7 @@ interface Updaters extends StateHandlerMap<State> {
 interface Dispatcher {
   projectDispatch: {
     getAllRequest: typeof projectGetAllRequest;
+    getAllDispose: typeof projectGetAllDispose;
   };
 }
 
@@ -63,25 +67,25 @@ type AllProps
   & Dispatcher
   & State
   & Updaters
-  & WithUser;
+  & WithUser
+  & WithLayout
+  & WithAllRegistration;
 
 const loadAllRegistration = (options?: LoadAllRegistrationOptions) => (WrappedComponent: React.ComponentType) => { 
   const displayName = `LoadAllRegistration(${WrappedComponent.displayName || WrappedComponent.name || 'Component'})`;
   
   const loadAllRegistrationSFC: React.SFC<AllProps> = props => <WrappedComponent {...props} />;
 
-  const mapDispatchToProps = (dispatch: Dispatch) => ({
-    projectDispatch: {
-      getAllRequest: (request: IProjectGetAllRequest) => dispatch(projectGetAllRequest(request)),
-    }
-  });
+  const createProps: mapper<AllProps, State> = (props: AllProps): State => {
+    const { request } = props.projectState;
 
-  const createProps: mapper<LoadAllRegistrationOptions, State> = (props: LoadAllRegistrationOptions): State => ({ 
-    orderBy: options && options.orderBy,
-    direction: options && options.direction,
-    page: options && options.page || 1, 
-    size: options && options.size || 10,
-  });
+    return { 
+      orderBy: request && request.filter && request.filter.orderBy || options && options.orderBy,
+      direction: request && request.filter && request.filter.direction || options && options.direction,
+      page: request && request.filter && request.filter.page || options && options.page || 1, 
+      size: request && request.filter && request.filter.size || options && options.size || 10,
+    };
+  };
 
   const stateUpdaters: StateUpdaters<LoadAllRegistrationOptions, State, Updaters> = {
     onNext: (prevState: State) => () => ({
@@ -111,45 +115,69 @@ const loadAllRegistration = (options?: LoadAllRegistrationOptions) => (WrappedCo
     handleSync: (props: AllProps) => () => { 
       props.onSync();
 
+      // force re-load from api
       loadData(props);
     },
     handleNext: (props: AllProps) => () => { 
       props.onNext();
-
-      loadData(props);
     },
     handlePrev: (props: AllProps) => () => { 
       props.onPrev();
-
-      loadData(props);
     },
     handleOrder: (props: AllProps) => (field: IListBarField) => { 
       props.onOrder(field);
-
-      loadData(props);
     },
     handleSize: (props: AllProps) => (value: number) => { 
       props.onSize(value);
-
-      loadData(props);
     },
     handleSort: (props: AllProps) => (direction: SortDirection) => { 
       props.onSort(direction);
-
-      loadData(props);
     }
   };
 
+  const mapDispatchToProps = (dispatch: Dispatch) => ({
+    projectDispatch: {
+      getAllRequest: (request: IProjectGetAllRequest) => dispatch(projectGetAllRequest(request)),
+      getAllDispose: () => dispatch(projectGetAllDispose()),
+    }
+  });
+
   const lifeCycleFunctions: ReactLifeCycleFunctions<AllProps, {}> = {
-    componentDidMount() { 
-      loadData(this.props);
+    componentDidMount() {
+      const { response } = this.props.projectState;
+      
+      // only load data when response are empty
+      if (!response) {
+        loadData(this.props);
+      }
     },
+    componentDidUpdate(props: AllProps, state: State) {
+      // only load when these props are different
+      if (
+        this.props.orderBy !== props.orderBy ||
+        this.props.direction !== props.direction ||
+        this.props.page !== props.page ||
+        this.props.size !== props.size
+      ) {
+        loadData(this.props);
+      }
+    },
+    componentWillUnmount() {
+      const { view } = this.props.layoutState;
+      const { getAllDispose } = this.props.projectDispatch;
+
+      // dispose 'get all' from 'redux store' when the page is 'out of project registration' context 
+      if (view && view.parentUid !== AppMenu.ProjectRegistration) {
+        getAllDispose();
+      }
+    }
   };
 
   const loadData = (props: AllProps): void => {
     const { orderBy, direction, page, size } = props;
     const { user } = props.userState;
     const { getAllRequest } = props.projectDispatch;
+    const { alertAdd } = props.layoutDispatch;
 
     if (user) {
       getAllRequest({
@@ -167,6 +195,11 @@ const loadAllRegistration = (options?: LoadAllRegistrationOptions) => (WrappedCo
           findBy: undefined,
         }
       }); 
+    } else {
+      alertAdd({
+        time: new Date(),
+        message: 'Unable to find current user state'
+      });
     }
   };
 
@@ -174,6 +207,8 @@ const loadAllRegistration = (options?: LoadAllRegistrationOptions) => (WrappedCo
     connect(undefined, mapDispatchToProps),
     
     withUser,
+    withLayout,
+    withAllRegistration,
     withStateHandlers<State, Updaters, LoadAllRegistrationOptions>(createProps, stateUpdaters), 
     withHandlers<AllProps, LoadAllRegistrationHandler>(handlerCreators),
     

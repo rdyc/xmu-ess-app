@@ -209,7 +209,11 @@ const component: React.SFC<AllProps> = props => {
           />
         }
         
-        <BottomNavigationAction label="Add" icon={<AddCircleOutlineIcon />} />
+        <BottomNavigationAction 
+          label="Add" 
+          icon={<AddCircleOutlineIcon />} 
+          onClick={(e: React.MouseEvent<HTMLElement>) => navBottomState.callbacks.onAddCallback()}
+        />
         
         <BottomNavigationAction 
           label="Sync" 
