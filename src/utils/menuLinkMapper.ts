@@ -93,10 +93,10 @@ export const menuLinkMapper = (menuUid: string) => {
       path = '/approval/travel/settlement';    
       break;
     case 'MNU55':
-      path = '/setup/currency/list';    
+      path = '/lookup/currency/list';    
       break;
     case 'MNU47':
-      path = '/setup/systemLimit/list';    
+      path = '/lookup/systemLimit/list';    
       break;
 
     default:

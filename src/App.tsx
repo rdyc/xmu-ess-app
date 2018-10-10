@@ -5,7 +5,7 @@ import AccessWizardPage from '@layout/pages/AccessWizardPage';
 import BasePage from '@layout/pages/BasePage';
 import CallbackPage from '@layout/pages/CallbackPage';
 import { projectRoutes } from '@project/views/ProjectRoutes';
-import { currencyRoutes, systemLimitRoutes } from '@lookup/views/LookupRoutes';
+import { currencyRoutes, systemLimitRoutes } from '@lookup/components/LookupRoutes';
 import { ConnectedRouter } from 'connected-react-router';
 import { History } from 'history';
 import * as React from 'react';
@@ -80,8 +80,8 @@ class App extends React.Component<AllProps> {
                         <Route path="/home" component={HomePage} />
                         <Route path="/account" component={accountRouter} />
                         <Route path="/project" component={projectRoutes} />
-                        <Route path="/setup/currency" component={currencyRoutes} />
-                        <Route path="/setup/systemLimit" component={systemLimitRoutes} />
+                        <Route path="/lookup/currency" component={currencyRoutes} />
+                        <Route path="/lookup/systemLimit" component={systemLimitRoutes} />
                       </BasePage>
                     </Switch>
                   )}

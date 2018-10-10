@@ -18,13 +18,13 @@ type AllProps = PropsFromState &
                 ConnectedReduxProps & 
                 WithStyles<typeof styles>;
                 
-export const SystemLimitList: React.ComponentType<AllProps> = props => {
+export const SystemLimitListComponent: React.ComponentType<AllProps> = props => {
   const { history  } = props;
   const { response, isLoading  } = props.systemLimitState;
 
   const handleClick = (systemLimitUid: string) => {
     if (!isLoading) {
-      history.push(`/systemLimit/details/${systemLimitUid}`);
+      history.push(`/details/${systemLimitUid}`);
     } 
   };
 

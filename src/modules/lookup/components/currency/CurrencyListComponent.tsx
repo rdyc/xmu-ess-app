@@ -18,13 +18,13 @@ type AllProps = PropsFromState &
                 ConnectedReduxProps & 
                 WithStyles<typeof styles>;
                 
-export const CurrencyList: React.ComponentType<AllProps> = props => {
+export const CurrencyListComponent: React.ComponentType<AllProps> = props => {
   const { history  } = props;
   const { response, isLoading  } = props.currencyState;
 
   const handleClick = (currencyUid: string) => {
     if (!isLoading) {
-      history.push(`/currency/details/${currencyUid}`);
+      history.push(`details/${currencyUid}`);
     } 
   };
 
@@ -62,21 +62,29 @@ export const CurrencyList: React.ComponentType<AllProps> = props => {
                   color="primary" 
                   variant="body2"
                 >
-                  {currency.name}
+                  {currency.symbol}
                 </Typography>
                 <Typography 
                   noWrap
                   variant="body1"
                 >
-                  {currency.symbol}
+                  {currency.name}
                 </Typography>
-                <Typography 
-                  noWrap
-                  color="textSecondary" 
-                  variant="caption"
-                >
-                  {currency.rate} &bull;
-                </Typography>
+                {currency.isActive ?
+                  <Typography
+                    noWrap
+                    color="textSecondary"
+                    variant="caption"
+                  >
+                    Currently Active
+                  </Typography> :
+                  <Typography
+                    noWrap
+                    color="textSecondary"
+                    variant="caption"
+                  >
+                    Currently Inactive
+                </Typography>}
               </Grid>
               <Grid item xs={4} sm={4}>
                 <Typography 
@@ -84,7 +92,7 @@ export const CurrencyList: React.ComponentType<AllProps> = props => {
                   variant="body1" 
                   align="right"
                 >
-                  {currency.symbol}
+                  {currency.rate}
                 </Typography>
                 <Typography 
                   noWrap 
@@ -124,7 +132,7 @@ export const CurrencyList: React.ComponentType<AllProps> = props => {
               <Grid item xs={6} sm={6}>
                 <Typography variant="caption" color="primary">
                   <FormattedNumber value={response.metadata.total} /> &nbsp;
-                  <FormattedPlural one="currency" other="currencys" value={response.metadata.total} />
+                  <FormattedPlural one="currency" other="currencies" value={response.metadata.total} />
                 </Typography>
               </Grid>
               <Grid item xs={6} sm={6}>

@@ -24,7 +24,7 @@ type AllProps = PropsFromState &
                 InjectedIntlProps & 
                 WithStyles<typeof styles>;
 
-export const CurrencyDetail: React.StatelessComponent<AllProps> = props => { 
+export const CurrencyDetailComponent: React.StatelessComponent<AllProps> = props => { 
   const { intl } = props;
   const { response } = props.currencyState;
 

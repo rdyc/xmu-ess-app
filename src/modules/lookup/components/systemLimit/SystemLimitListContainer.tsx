@@ -20,12 +20,12 @@ import {
   listBarChangeSize,
   listBarDispose,
 } from '@layout/store/actions';
-import { Paper, Typography, WithStyles, withStyles } from '@material-ui/core';
 import { ISystemLimitAllRequest } from '@lookup/classes/queries';
 import { ISystemLimit } from '@lookup/classes/response';
 import { SystemLimitField } from '@lookup/classes/types';
-import { SystemLimitList } from '@lookup/components/list';
+import { SystemLimitListComponent } from '@lookup/components/systemLimit';
 import { systemLimitGetAllRequest } from '@lookup/store/actions';
+import { Paper, Typography, WithStyles, withStyles } from '@material-ui/core';
 import styles from '@styles';
 import * as React from 'react';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
@@ -74,15 +74,15 @@ type AllProps = PropsFromState &
   InjectedIntlProps &
   WithStyles<typeof styles>;
 
-class SystemLimitListView extends React.Component<AllProps> {
-  state = {
+class SystemLimitList extends React.Component<AllProps> {
+  public state = {
     orderBy: this.props.listBarState.orderBy || '',
     direction: this.props.listBarState.direction || 'descending',
     page: this.props.listBarState.page || 1,
     size: this.props.listBarState.size || 10
   };
 
-  componentWillUnmount() {
+  public componentWillUnmount() {
     const { layoutDispatch, listBarDispatch } = this.props;
 
     layoutDispatch.changeView(null);
@@ -95,13 +95,13 @@ class SystemLimitListView extends React.Component<AllProps> {
     listBarDispatch.dispose();
   }
 
-  componentDidMount() {
+  public componentDidMount() {
     const { layoutDispatch, systemLimitState, listBarDispatch, intl } = this.props;
 
     layoutDispatch.changeView({
       menuUid: 'MNU47',
-      title: intl.formatMessage({ id: 'lookup.systemLimit.lookupTitle' }),
-      subTitle: intl.formatMessage({ id: 'lookup.systemLimit.lookupDescription' })
+      title: intl.formatMessage({ id: 'systemLimit.title' }),
+      subTitle: intl.formatMessage({ id: 'systemLimit.subTitle' })
     });
 
     layoutDispatch.modeListOn();
@@ -127,56 +127,28 @@ class SystemLimitListView extends React.Component<AllProps> {
     }
   }
 
-  enumToArray = (enumme: any) => {
-    return Object.keys(enumme).map(key => ({ id: enumme[key], name: key }));
+  public render() {
+    const { isLoading, response } = this.props.systemLimitState;
+
+    return (
+      <Paper
+        square
+        elevation={1}
+      >
+        {
+          isLoading &&
+          !response &&
+          <Typography variant="body2">loading</Typography>
+        }
+        {
+          response &&
+          <SystemLimitListComponent {...this.props} />
+        }
+      </Paper>
+    );
   }
 
-  handleOnNextCallback = () => this.setPaging(true);
-
-  handleOnPrevCallback = () => this.setPaging(false);
-
-  handleOnSyncCallback = () => {
-    this.state.page = 1;
-
-    this.loadData();
-  }
-
-  handleOnOrderCallback = (field: IListBarField) => {
-    this.state.page = 1;
-    this.state.orderBy = field.id;
-
-    this.loadData();
-  }
-
-  handleOnSortCallback = (direction: SortDirection) => {
-    this.state.page = 1;
-    this.state.direction = direction;
-
-    this.loadData();
-  }
-
-  handleOnSizeCallback = (size: number) => {
-    this.state.page = 1;
-    this.state.size = size;
-
-    this.loadData();
-  }
-
-  setPaging = (isNext: boolean) => {
-    const { response } = this.props.systemLimitState;
-
-    if (response && response.metadata) {
-      if (isNext) {
-        this.state.page = response.metadata.paginate.current + 1;
-      } else {
-        this.state.page = response.metadata.paginate.current - 1;
-      }
-
-      this.loadData();
-    }
-  }
-
-  loadData = () => {
+  private loadData = () => {
     const { layoutState, systemLimitDispatch } = this.props;
 
     if (layoutState.user) {
@@ -193,25 +165,53 @@ class SystemLimitListView extends React.Component<AllProps> {
     }
   }
 
-  render() {
-    const { isLoading, response } = this.props.systemLimitState;
+  // private enumToArray = (enumme: any) => {
+  //   return Object.keys(enumme).map(key => ({ id: enumme[key], name: key }));
+  // }
 
-    return (
-      <Paper
-        square
-        elevation={1}
-      >
-        {
-          isLoading &&
-          !response &&
-          <Typography variant="body2">loading</Typography>
-        }
-        {
-          response &&
-          <SystemLimitList {...this.props} />
-        }
-      </Paper>
-    );
+  private handleOnNextCallback = () => this.setPaging(true);
+
+  private handleOnPrevCallback = () => this.setPaging(false);
+
+  private handleOnSyncCallback = () => {
+    this.state.page = 1;
+
+    this.loadData();
+  }
+
+  private handleOnOrderCallback = (field: IListBarField) => {
+    this.state.page = 1;
+    this.state.orderBy = field.id;
+
+    this.loadData();
+  }
+
+  private handleOnSortCallback = (direction: SortDirection) => {
+    this.state.page = 1;
+    this.state.direction = direction;
+
+    this.loadData();
+  }
+
+  private handleOnSizeCallback = (size: number) => {
+    this.state.page = 1;
+    this.state.size = size;
+
+    this.loadData();
+  }
+
+  private setPaging = (isNext: boolean) => {
+    const { response } = this.props.systemLimitState;
+
+    if (response && response.metadata) {
+      if (isNext) {
+        this.state.page = response.metadata.paginate.current + 1;
+      } else {
+        this.state.page = response.metadata.paginate.current - 1;
+      }
+
+      this.loadData();
+    }
   }
 }
 
@@ -250,6 +250,11 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   }
 });
 
-const redux = connect(mapStateToProps, mapDispatchToProps)(SystemLimitListView);
-
-export default injectIntl(withStyles(styles)(redux));
+export const SystemLimitListContainer = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(
+  withStyles(styles)(
+    injectIntl(SystemLimitList)
+  )
+);
