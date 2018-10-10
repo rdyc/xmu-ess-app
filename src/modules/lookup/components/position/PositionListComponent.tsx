@@ -24,7 +24,7 @@ export const PositionListComponent: React.SFC<AllProps> = props => {
 
   const handleClick = (positionUid: string) => {
     if (!isLoading) {
-      history.push(`/position/details/${positionUid}`);
+      history.push(`/lookup/position/details/${positionUid}`);
     } 
   };
 

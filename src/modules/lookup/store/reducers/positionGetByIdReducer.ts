@@ -1,10 +1,10 @@
 import { IQuerySingleState } from '@generic/interfaces';
-import { IPositionByIdRequest } from '@lookup/classes/queries';
+import { IPositionGetByIdRequest } from '@lookup/classes/queries';
 import { IPositionDetail } from '@lookup/classes/response';
 import { PositionAction as Action } from '@lookup/store/actions';
 import { Reducer } from 'redux';
 
-const initialState: IQuerySingleState<IPositionByIdRequest, IPositionDetail> = {
+const initialState: IQuerySingleState<IPositionGetByIdRequest, IPositionDetail> = {
   request: undefined,
   response: undefined,
   isError: false,
@@ -12,7 +12,7 @@ const initialState: IQuerySingleState<IPositionByIdRequest, IPositionDetail> = {
   errors: undefined,
 };
 
-const reducer: Reducer<IQuerySingleState<IPositionByIdRequest, IPositionDetail>> = (state = initialState, action) => {
+const reducer: Reducer<IQuerySingleState<IPositionGetByIdRequest, IPositionDetail>> = (state = initialState, action) => {
   switch (action.type) {
     case Action.GET_BY_ID_REQUEST: return { ...state, isLoading: true, request: action.payload };
     case Action.GET_BY_ID_SUCCESS: return { ...state, isLoading: false, response: action.payload };

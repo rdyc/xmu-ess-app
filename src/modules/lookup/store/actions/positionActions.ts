@@ -1,5 +1,5 @@
 import { IResponseCollection } from '@generic/interfaces';
-import { IPositionByIdRequest, IPositionGetAllRequest, IPositionListRequest } from '@lookup/classes/queries';
+import { IPositionGetAllRequest, IPositionGetByIdRequest, IPositionListRequest } from '@lookup/classes/queries';
 import { IPosition, IPositionDetail, IPositionList } from '@lookup/classes/response';
 import { action } from 'typesafe-actions';
 
@@ -31,7 +31,7 @@ export const positionGetListError = (message: string) => action(PositionAction.G
 export const positionGetListDispose = () => action(PositionAction.GET_LIST_DISPOSE);
 
 // get by id
-export const positionGetByIdRequest = (request: IPositionByIdRequest) => action(PositionAction.GET_BY_ID_REQUEST, request);
+export const positionGetByIdRequest = (request: IPositionGetByIdRequest) => action(PositionAction.GET_BY_ID_REQUEST, request);
 export const positionGetByIdSuccess = (response: IResponseCollection<IPositionDetail>) => action(PositionAction.GET_BY_ID_SUCCESS, response);
 export const positionGetByIdError = (message: string) => action(PositionAction.GET_BY_ID_ERROR, message);
 export const positionGetByIdDispose = () => action(PositionAction.GET_BY_ID_DISPOSE);

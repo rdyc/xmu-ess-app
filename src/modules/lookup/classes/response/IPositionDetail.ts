@@ -8,7 +8,7 @@ export interface IPositionDetail {
   name:               string;
   description?:       string | null;
   isAllowMultiple:    boolean;
-  inactiveDate:       string | null;
+  inactiveDate?:      string | null;
   isExpired:          boolean;
   changes:            IBaseChanges | null;
 }

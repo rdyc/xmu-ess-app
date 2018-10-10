@@ -115,6 +115,22 @@
   "project.action.reOpen": "Re-Open",
   "project.action.changeOwner": "Change Owner",
   "project.action.manageSite": "Manage Site",
+
+  "position.title": "Position",
+  "position.subTitle": "The Brown Fox Jumps Over The Lazy Dog",
+  "position.detail.title": "Position Details",
+  "position.detail.subTitle": "The Brown Fox Jumps Over The Lazy Dog",
+  "position.infoTitle": "Position Details",
+  "position.infoSubTitle": "The Brown Fox Jumps Over The Lazy Dog",
+  "position.field.uid": "Position ID",
+  "position.field.company": "Company Name",
+  "position.field.name": "Position Name",
+  "position.field.inactiveDate": "Date Inactive",
+  "position.field.isAllowMultiple": "Is Allow More",
+  "position.field.description": "Description",
+  "position.dialog.modifyTitle": "Modify Confirmation",
+  "position.dialog.modifyDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+
   
   "workflow.stepsTitle": "Approval History",
   "workflow.stepsSubTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."

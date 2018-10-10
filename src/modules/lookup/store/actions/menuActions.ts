@@ -1,5 +1,5 @@
 import { IResponseCollection } from '@generic/interfaces';
-import { IMenuByIdRequest, IMenuGetAllRequest, IMenuListRequest } from '@lookup/classes/queries';
+import { IMenuGetAllRequest, IMenuGetByIdRequest, IMenuListRequest } from '@lookup/classes/queries';
 import { IMenu, IMenuDetail, IMenuList } from '@lookup/classes/response';
 import { action } from 'typesafe-actions';
 
@@ -31,7 +31,7 @@ export const menuGetListError = (message: string) => action(MenuAction.GET_LIST_
 export const menuGetListDispose = () => action(MenuAction.GET_LIST_DISPOSE);
 
 // get by id
-export const menuGetByIdRequest = (request: IMenuByIdRequest) => action(MenuAction.GET_BY_ID_REQUEST, request);
+export const menuGetByIdRequest = (request: IMenuGetByIdRequest) => action(MenuAction.GET_BY_ID_REQUEST, request);
 export const menuGetByIdSuccess = (response: IResponseCollection<IMenuDetail>) => action(MenuAction.GET_BY_ID_SUCCESS, response);
 export const menuGetByIdError = (message: string) => action(MenuAction.GET_BY_ID_ERROR, message);
 export const menuGetByIdDispose = () => action(MenuAction.GET_BY_ID_DISPOSE);

@@ -1,10 +1,10 @@
 import { IQuerySingleState } from '@generic/interfaces';
-import { IMenuByIdRequest } from '@lookup/classes/queries';
+import { IMenuGetByIdRequest } from '@lookup/classes/queries';
 import { IMenuDetail } from '@lookup/classes/response';
 import { MenuAction as Action } from '@lookup/store/actions';
 import { Reducer } from 'redux';
 
-const initialState: IQuerySingleState<IMenuByIdRequest, IMenuDetail> = {
+const initialState: IQuerySingleState<IMenuGetByIdRequest, IMenuDetail> = {
   request: undefined,
   response: undefined,
   isError: false,
@@ -12,7 +12,7 @@ const initialState: IQuerySingleState<IMenuByIdRequest, IMenuDetail> = {
   errors: undefined,
 };
 
-const reducer: Reducer<IQuerySingleState<IMenuByIdRequest, IMenuDetail>> = (state = initialState, action) => {
+const reducer: Reducer<IQuerySingleState<IMenuGetByIdRequest, IMenuDetail>> = (state = initialState, action) => {
   switch (action.type) {
     case Action.GET_BY_ID_REQUEST: return { ...state, isLoading: true, request: action.payload };
     case Action.GET_BY_ID_SUCCESS: return { ...state, isLoading: false, response: action.payload };

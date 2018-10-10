@@ -1,6 +1,6 @@
 import { ConnectedReduxProps } from '@generic/types';
 import { IAppUser } from '@layout/interfaces';
-import { PositionListContainer } from '@lookup/components/position';
+import { PositionDetailContainer, PositionListContainer } from '@lookup/components/position';
 import { WithStyles } from '@material-ui/core';
 import styles from '@styles';
 import * as React from 'react';
@@ -15,5 +15,6 @@ type AllProps = PropsFromState & ConnectedReduxProps;
 export const LookupRoute: React.SFC<AllProps> = props => (
   <Switch>
     <Route path={`${props.match.path}/position/list/`} component={PositionListContainer} />
+    <Route path={`${props.match.path}/position/details/:positionUid`} component={PositionDetailContainer} />
   </Switch>
 );
