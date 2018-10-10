@@ -1,4 +1,5 @@
 import { ProjectType } from '@common/classes/types';
+import AppMenu from '@constants/AppMenu';
 import { IAppState, IQuerySingleState } from '@generic/interfaces';
 import { ConnectedReduxProps, FormMode } from '@generic/types';
 import withUser, { WithUser } from '@layout/hoc/withUser';
@@ -101,7 +102,8 @@ class ProjectForm extends React.Component<AllProps, State> {
     }
 
     layoutDispatch.changeView({
-      menuUid: 'MNU19',
+      uid: AppMenu.ProjectRegistrationRequest,
+      parentUid: AppMenu.ProjectRegistration,
       title: intl.formatMessage({id: view.title}),
       subTitle : intl.formatMessage({id: view.subTitle})
     });

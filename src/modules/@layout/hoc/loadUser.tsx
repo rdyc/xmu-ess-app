@@ -1,4 +1,4 @@
-import { AppStorage } from '@constants/index';
+import AppStorage from '@constants/AppStorage';
 import { IAppState } from '@generic/interfaces';
 import { IAppUser, IUserState } from '@layout/interfaces';
 import { userAssign } from '@layout/store/actions';

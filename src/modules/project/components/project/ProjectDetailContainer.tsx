@@ -1,4 +1,5 @@
 import { WorkflowStatusType } from '@common/classes/types';
+import AppMenu from '@constants/AppMenu';
 import { IAppState, IQuerySingleState } from '@generic/interfaces';
 import { ConnectedReduxProps } from '@generic/types';
 import withUser, { WithUser } from '@layout/hoc/withUser';
@@ -116,7 +117,8 @@ class ProjectDetail extends React.Component<AllProps, State> {
     const { layoutDispatch, appBarDispatch, intl } = this.props;
 
     layoutDispatch.changeView({
-      menuUid: 'MNU19',
+      uid: AppMenu.ProjectRegistrationRequest,
+      parentUid: AppMenu.ProjectRegistration,
       title: intl.formatMessage({id: 'project.detail.title'}),
       subTitle : intl.formatMessage({id: 'project.detail.subTitle'})
     });

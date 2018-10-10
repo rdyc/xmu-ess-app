@@ -3,11 +3,8 @@ import { LayoutAction as Action } from '@layout/store/actions';
 import { Reducer } from 'redux';
 
 const initialState: ILayoutState = {
-  // user: undefined,
   anchor: 'left',
-  menus: [],
   view: undefined,
-  notifCount: 0,
   alerts: [],
   isDrawerMenuVisible: false,
   isDrawerActionVisible: false,
@@ -42,9 +39,6 @@ const alertRemove = (alerts: IAlert[]) => {
 
 const reducer: Reducer<ILayoutState> = (state = initialState, action) => {
   switch (action.type) {
-    // case Action.ASSIGN_USER: return { ...state, user: action.payload };
-    // case Action.ASSIGN_MENUS: return { ...state, menus: action.payload };
-    
     case Action.ALERT_ADD: return { ...state, alerts: alertAdd(state.alerts, action.payload) };
     case Action.ALERT_DISSMIS: return { ...state, alerts: alertRemove(state.alerts) };
 

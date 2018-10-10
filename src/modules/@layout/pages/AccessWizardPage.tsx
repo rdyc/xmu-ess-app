@@ -1,6 +1,6 @@
 import { IEmployeeAccessList, IEmployeeMy } from '@account/classes';
 import { EmployeeFetchRequest } from '@account/store/actions';
-import { AppStorage } from '@constants/index';
+import AppStorage from '@constants/AppStorage';
 import { IAppState, IResponseSingle } from '@generic/interfaces';
 import { ConnectedReduxProps } from '@generic/types';
 import { IAppUser, IUserCompany, IUserPosition } from '@layout/interfaces';

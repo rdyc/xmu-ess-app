@@ -1,10 +1,21 @@
 import withLayout, { WithLayout } from '@layout/hoc/withLayout';
 import withUser, { WithUser } from '@layout/hoc/withUser';
 import { ILookupRoleMenuChildList } from '@lookup/classes';
-import { Collapse, Divider, List, ListItem, ListItemSecondaryAction, ListItemText, ListSubheader } from '@material-ui/core';
+import {
+  Collapse,
+  Divider,
+  List,
+  ListItem,
+  ListItemSecondaryAction,
+  ListItemText,
+  ListSubheader,
+  WithStyles,
+  withStyles,
+} from '@material-ui/core';
 import withWidth, { isWidthUp, WithWidth } from '@material-ui/core/withWidth';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
+import styles from '@styles';
 import * as React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { compose, mapper, setDisplayName, StateHandler, StateHandlerMap, StateUpdaters, withStateHandlers } from 'recompose';
@@ -30,21 +41,32 @@ type InnerProps
   & WithUser 
   & WithLayout 
   & WithWidth
+  & WithStyles<typeof styles>
   & RouteComponentProps; 
 
 const component: React.SFC<InnerProps> = props => {
-  const { active, isExpanded, layoutState, layoutDispatch, history } = props;
+  const { active, isExpanded, layoutState, layoutDispatch, history, classes } = props;
   const { user } = props.userState;
+ 
+  const fnFindParent = () => {
+    let uid: string | undefined;
 
-  const fnCurrentView = (): string | undefined => {
     if (layoutState.view) {
-      return layoutState.view.menuUid;
+      uid = layoutState.view.parentUid;
+    }
+    
+    return uid;
+  };
+
+  const parentUid = fnFindParent();
+
+  const viewMenuUid = () => {
+    if (layoutState.view) {
+      return layoutState.view.uid;
     }
 
     return undefined;
   };
-
-  const view = fnCurrentView();
 
   const handleClick = (item: ILookupRoleMenuChildList) => {
     props.handleToggle(item.uid);
@@ -86,33 +108,33 @@ const component: React.SFC<InnerProps> = props => {
           <ListItemText primary="Dashboard" />
         </ListItem>
       </List>
+
       {
         user &&
         user.menus &&
         user.menus.map(header => (
           <div key={header.uid}>
-            <List disablePadding component="nav" key={header.uid}>
+            <List 
+              disablePadding 
+              component="nav"
+              key={header.uid}
+            >
               <ListItem
-                key={header.name}
                 button
-                onClick={() => props.handleToggle(`${header.name}`)}
+                onClick={() => props.handleToggle(header.uid)}
               >
-                <ListItemText key={header.name} primary={`${header.name}`} />
-                <ListItemSecondaryAction key={header.name}>
-                  {active === `${header.name}` && isExpanded ? (
-                    <ExpandLess />
-                  ) : (
-                    <ExpandMore />
-                  )}
+                <ListItemText primary={header.name}
+                  primaryTypographyProps={{
+                    noWrap: true,
+                    color: header.uid === parentUid ? 'secondary' : 'textPrimary'
+                  }}
+                />
+                <ListItemSecondaryAction>
+                  {isExpanded && parentUid === header.uid || active === header.uid ? <ExpandLess/> : <ExpandMore/>}
                 </ListItemSecondaryAction>
               </ListItem>
-              <Collapse
-                key={header.uid}
-                in={active === `${header.name}` && isExpanded}
-                timeout="auto"
-                // unmountOnExit
-              >
-                <List>
+              <Collapse in={isExpanded && parentUid === header.uid || active === header.uid }>
+                <List component="div" disablePadding>
                   {header.childs &&
                     header.childs.map(item => (
                       <ListItem
@@ -121,13 +143,11 @@ const component: React.SFC<InnerProps> = props => {
                         onClick={() => handleClick(item)}
                       >
                         <ListItemText
-                          key={item.uid}
+                          className={classes.marginFarLeft}
                           primary={item.name}
                           primaryTypographyProps={{
-                            color:
-                              item.uid === active || item.uid === view
-                                ? 'secondary'
-                                : 'textPrimary'
+                            noWrap: true,
+                            color: item.uid === viewMenuUid() ? 'primary' : 'textPrimary'
                           }}
                         />
                       </ListItem>
@@ -138,7 +158,9 @@ const component: React.SFC<InnerProps> = props => {
           </div>
         ))
       }
+      
       <Divider />
+
       <List disablePadding component="nav">
         <ListItem button>
           <ListItemText primary="Help" />
@@ -154,9 +176,9 @@ const createProps: mapper<OutterProps, State> = (props: OutterProps) => ({
 });
 
 const stateUpdaters: StateUpdaters<OutterProps, State, Updaters> = {
-  handleToggle: (state: State) => (menuUid: string) => ({
-    active: menuUid,
-    isExpanded: state.active === menuUid ? !state.isExpanded : true
+  handleToggle: (state: State) => (uid: string) => ({
+    active: uid,
+    isExpanded: state.active === uid ? !state.isExpanded : true
   })
 };
 
@@ -166,6 +188,7 @@ const NavigationMenuSFC = compose<InnerProps, OutterProps>(
   withUser,
   withLayout,
   withWidth(),
+  withStyles(styles),
   withRouter
 )(component);
 

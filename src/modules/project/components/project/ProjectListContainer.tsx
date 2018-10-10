@@ -1,3 +1,4 @@
+import AppMenu from '@constants/AppMenu';
 import { IAppState, IQueryCollectionState } from '@generic/interfaces';
 import { ConnectedReduxProps, SortDirection } from '@generic/types';
 import withUser, { WithUser } from '@layout/hoc/withUser';
@@ -102,7 +103,8 @@ class ProjectList extends React.Component<AllProps> {
     const { layoutDispatch, projectState, listBarDispatch, intl } = this.props;
 
     layoutDispatch.changeView({
-      menuUid: 'MNU19',
+      uid: AppMenu.ProjectRegistrationRequest,
+      parentUid: AppMenu.ProjectRegistration,
       title: intl.formatMessage({id: 'project.title'}),
       subTitle : intl.formatMessage({id: 'project.subTitle'})
     });
