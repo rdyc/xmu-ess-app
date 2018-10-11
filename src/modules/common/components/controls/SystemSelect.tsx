@@ -106,8 +106,8 @@ class SystemSelect extends React.Component<AllProps, State> {
         label={label}
         value={input.value ? input.value.type : ''}
         disabled={disabled || meta.submitting}
-        error={!isNullOrUndefined(meta.error)}
-        helperText={meta.error}
+        error={meta.touched && !isNullOrUndefined(meta.error)}
+        helperText={meta.touched && meta.error}
         SelectProps={{
           native: isMobile
         }}

@@ -32,7 +32,7 @@ import {
 } from 'recompose';
 import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
-import { isNullOrUndefined } from 'util';
+import { isNullOrUndefined, isObject, isUndefined } from 'util';
 
 interface RouteParams {
   projectUid: string;
@@ -85,7 +85,17 @@ const registrationEditor: React.SFC<AllProps> = props => {
 
   // New
   if (mode === FormMode.New) {
-    return <RenderForm {...{rate: 1} as IProjectDetail}/>;
+    const initialValues = {
+      rate: 1,
+      valueUsd: 0,
+      valueIdr: 0,
+      // start: new Date(),
+      // end: new Date(),
+      // documents: [],
+      // documentPreSales: [],
+    };
+
+    return <RenderForm {...initialValues as IProjectDetail}/>;
   }
 
   // Modify
@@ -111,8 +121,8 @@ const handlerCreators: HandleCreators<AllProps, Handler> = {
     const errors = {};
   
     const requiredFields = [
-      'customerUid', 'name', 'description', 
-      'start', 'end', 'currency', 'valueUsd'
+      'customer', 'customerUid', 'project', 'projectType', 'name',  
+      'start', 'end', 'currency', 'currencyType', 'valueUsd'
     ];
   
     requiredFields.forEach(field => {
@@ -124,82 +134,96 @@ const handlerCreators: HandleCreators<AllProps, Handler> = {
     return errors;
   },
   handleSubmit: (props: AllProps) => (payload: IProjectDetail) => { 
-    const { projectUid, apiRegistrationDetailPut } = props;
+    // tslint:disable-next-line:no-debugger
+    debugger;
+    
+    const { mode, projectUid, apiRegistrationDetailPut } = props;
     const { user } = props.userState;
 
-    if (user && projectUid) {
-      const parseDocuments = () => {
-        if (
-          payload.projectType === ProjectType.ExtraMiles || 
-          payload.projectType === ProjectType.NonProject
-        ) {
-          return null;
-        }
+    if (!user) {
+      return Promise.reject('Empty user!');
+    }
+
+    const parsedDocuments = () => {
+      if (
+        payload.projectType === ProjectType.ExtraMiles || 
+        payload.projectType === ProjectType.NonProject
+      ) {
+        return null;
+      }
+
+      const _documents: IProjectPutDocument[] = [];
   
-        const _documents: IProjectPutDocument[] = [];
-    
-        if (payload.projectType === ProjectType.Project) {
-          payload.documents.forEach(item => 
-            _documents.push({
-              uid: item.uid,
-              documentType: item.documentType,
-              isChecked: item.isAvailable
-            })
-          );
-        }
-        
-        if (payload.projectType === ProjectType.PreSales) {
-          payload.documentPreSales.forEach(item => 
-            _documents.push({
-              uid: item.uid,
-              documentType: item.documentType,
-              isChecked: item.isAvailable
-            })
-          );
-        }
-        
-        return _documents;
-      };
-  
-      const parseSales = () => {
-        if (!payload.sales) {
-          return undefined;
-        }
-    
-        const _sales: IProjectPutSales[] = [];
-    
-        payload.sales.forEach(item => 
-          _sales.push({
+      if (payload.projectType === ProjectType.Project) {
+        payload.documents.forEach(item => 
+          _documents.push({
             uid: item.uid,
-            employeeUid: item.employeeUid
+            documentType: item.documentType,
+            isChecked: item.isAvailable
           })
         );
-        
-        return _sales;
-      };
-  
-      const putPayload: IProjectPutPayload = ({
-        customerUid: payload.customerUid,
-        projectType: payload.projectType,
-        currencyType: payload.currencyType,
-        contractNumber: payload.contractNumber,
-        name: payload.name,
-        description: payload.description,
-        start: payload.start,
-        end: payload.end,
-        rate: payload.rate,
-        valueUsd: payload.valueUsd,
-        valueIdr: payload.valueIdr,
-        documents: parseDocuments(),
-        sales: parseSales()
-      });
+      }
+      
+      if (payload.projectType === ProjectType.PreSales) {
+        payload.documentPreSales.forEach(item => 
+          _documents.push({
+            uid: item.uid,
+            documentType: item.documentType,
+            isChecked: item.isAvailable
+          })
+        );
+      }
+      
+      return _documents;
+    };
 
+    const parsedSales = () => {
+      if (!payload.sales) {
+        return null;
+      }
+  
+      const _sales: IProjectPutSales[] = [];
+  
+      payload.sales.forEach(item => 
+        _sales.push({
+          uid: item.uid,
+          employeeUid: item.employeeUid
+        })
+      );
+      
+      return _sales;
+    };
+
+    const putPayload: IProjectPutPayload = ({
+      customerUid: payload.customerUid,
+      projectType: payload.projectType,
+      currencyType: payload.currencyType,
+      contractNumber: payload.contractNumber,
+      name: payload.name,
+      description: payload.description,
+      start: payload.start,
+      end: payload.end,
+      rate: payload.rate,
+      valueUsd: payload.valueUsd,
+      valueIdr: payload.valueIdr,
+      documents: parsedDocuments(),
+      sales: parsedSales()
+    });
+
+    if (mode === FormMode.New) {
+      // return new Promise((resolve, reject) => {
+      //   apiRegistrationDetailPut(projectUid, putPayload, resolve, reject);
+      // });
+      Promise.resolve();
+    }
+
+    if (mode === FormMode.Edit && !isUndefined(projectUid)) {
       return new Promise((resolve, reject) => {
         apiRegistrationDetailPut(projectUid, putPayload, resolve, reject);
       });
     }
 
-    return Promise.reject('Empty user!');
+    return null;
   },
   handleSubmitSuccess: (props: AllProps) => (result: any, dispatch: Dispatch<any>) => {
     // console.log(result);
@@ -217,7 +241,7 @@ const handlerCreators: HandleCreators<AllProps, Handler> = {
     if (submitError) {
       alertAdd({
         time: new Date(),
-        message: submitError.message
+        message: isObject(submitError) ? submitError.message : submitError
       });
     }
   }

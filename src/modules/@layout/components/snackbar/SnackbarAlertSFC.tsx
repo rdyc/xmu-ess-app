@@ -1,5 +1,14 @@
 import withLayout, { WithLayout } from '@layout/hoc/withLayout';
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Snackbar } from '@material-ui/core';
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  IconButton,
+  Snackbar,
+} from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
@@ -35,9 +44,13 @@ const SnackbarAlertSFC: React.ComponentType<WithLayout> = props => {
     }
 
     actions.push(
-      <Button key="close" color="inherit" size="small" onClick={handleClose}>
+      <IconButton 
+        key="close" 
+        color="secondary" 
+        onClick={handleClose}
+      >
         <CloseIcon />
-      </Button>
+      </IconButton>
     );
 
     return actions;

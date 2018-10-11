@@ -7,7 +7,7 @@ import { BaseFieldProps, WrappedFieldProps } from 'redux-form';
 import { isNullOrUndefined } from 'util';
 
 interface FromFieldProps { 
-  format?: string  | undefined;
+  format?: string | undefined;
   type?: string; 
   label: string; 
   disabled: boolean; 
@@ -30,13 +30,13 @@ export const FieldInputDate: React.SFC<AllProps> = props => {
       // todayLabel={intl.formatMessage({id: 'global.date.today'})}
       // emptyLabel={intl.formatMessage({id: 'global.date.empty'})}
       showTodayButton={true}
-      format={format || 'MMM DD, YYYY'}
+      format={input.value ? format || 'MMM DD, YYYY' : undefined}
       {...input}
       label={label}
       disabled={disabled || meta.submitting}
       error={meta.touched && !isNullOrUndefined(meta.error)}
       helperText={meta.touched && meta.error}
-      onChange={(moment: Moment) => input.onChange(moment.toISOString(true))}
+      onChange={(moment: Moment) => input.onChange(moment.toISOString(true))} 
     />
   );
 };

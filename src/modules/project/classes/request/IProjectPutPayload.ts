@@ -8,11 +8,11 @@ export interface IProjectPutPayload extends IBasePayload {
   contractNumber?: string | null;
   name: string;
   description?: string | null;
-  start: string;
-  end: string;
+  start: Date;
+  end: Date;
   rate: number;
   valueUsd: number;
   valueIdr?: number | null;
   documents?: IProjectPutDocument[] | null;
-  sales?: IProjectPutSales[] | undefined;
+  sales?: IProjectPutSales[] | null;
 }

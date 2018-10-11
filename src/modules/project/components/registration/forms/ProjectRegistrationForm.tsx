@@ -50,7 +50,7 @@ type AllProps
 
 const registrationForm: React.SFC<AllProps & InjectedFormProps<IProjectDetail, OwnProps> & OwnProps> = props => { 
   const { mode } = props;
-  
+
   const renderDetail = () => (
     <Card square>
       <CardHeader 
@@ -137,6 +137,10 @@ const registrationForm: React.SFC<AllProps & InjectedFormProps<IProjectDetail, O
           name="start"
           label={<FormattedMessage id="project.field.start" />}
           component={FieldInputDate}
+          // format={(value: any, name: string) => {
+          //   console.log(value);
+            
+          // }}
         />
         <Field
           type="text"
@@ -150,7 +154,7 @@ const registrationForm: React.SFC<AllProps & InjectedFormProps<IProjectDetail, O
           label={<FormattedMessage id="project.field.currency" />}
           component={FieldSelectSystem}
           onChange={(event: any, newValue: ISystemList | undefined) => {
-            // props.change('currencyType', newValue ? newValue.type : '');
+            props.change('currencyType', newValue ? newValue.type : '');
           }}
         />
         <Field
@@ -429,5 +433,6 @@ const enhance = compose<AllProps, InjectedFormProps<IProjectDetail, OwnProps> & 
 )(registrationForm);
 
 export default reduxForm<IProjectDetail, OwnProps>({
-  form: 'ProjectRegistrationForm'
+  form: 'ProjectRegistrationForm', 
+  touchOnChange: true
 })(enhance);

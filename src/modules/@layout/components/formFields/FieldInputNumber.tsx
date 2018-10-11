@@ -46,8 +46,8 @@ export const FieldInputNumber: React.SFC<AllProps> = props => {
       {...input}
       label={label}
       disabled={disabled || meta.submitting}
-      error={!isNullOrUndefined(meta.error)}
-      helperText={meta.error}
+      error={meta.touched && !isNullOrUndefined(meta.error)}
+      helperText={meta.touched && meta.error}
       InputProps={{
         inputComponent: NumberFormatComponent
       }}
