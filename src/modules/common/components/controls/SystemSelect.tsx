@@ -124,14 +124,17 @@ class SystemSelect extends React.Component<AllProps, State> {
   private loadData = () => {
     const { companyUid, category } = this.props;
 
-    this.props.systemDispatch.listRequest({
+    const request: ISystemListRequest = {
       category,
       filter: {
         companyUid,
         direction: 'ascending',
         orderBy: 'value'
       }
-    });
+    };
+
+    this.props.systemDispatch.listRequest(request);
+    
   };
 
   private handleChange = (event: React.ChangeEvent<any>) => {
@@ -151,7 +154,7 @@ class SystemSelect extends React.Component<AllProps, State> {
 }
 
 const mapStateToProps = ({ systemGetList }: IAppState) => ({
-  systemState: systemGetList
+  systemState: systemGetList,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({

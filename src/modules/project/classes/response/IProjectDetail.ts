@@ -21,7 +21,7 @@ export interface IProjectDetail {
   hierarchyUid: string;
   hierarchy?: IOrganizationHierarchy | null;
   currencyType: string;
-  currency: ICommonSystem;
+  currency?: ICommonSystem | null;
   contractNumber?: string | null;
   ownerEmployeeUid?: string | null;
   owner?: IAccountEmployee | null;

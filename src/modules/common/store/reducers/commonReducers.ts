@@ -3,7 +3,7 @@ import { systemGetAllReducer, systemGetByIdReducer, systemGetListReducer } from 
 const commonReducers = {
   systemGetAll: systemGetAllReducer,
   systemGetList: systemGetListReducer,
-  systemGetById: systemGetByIdReducer,
+  systemGetById: systemGetByIdReducer
 };
 
 export default commonReducers;

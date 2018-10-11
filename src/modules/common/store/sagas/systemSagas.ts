@@ -50,7 +50,7 @@ function* watchFetchListRequest() {
       method: 'get',
       path: `/v1/common/types/${action.payload.category}/list${objectToQuerystring(action.payload.filter)}`,
       successEffects: (response: IApiResponse) => ([
-        put(systemGetListSuccess(response.body)),
+        put(systemGetListSuccess(response.body))
       ]), 
       failureEffects: (response: IApiResponse) => ([
         put(systemGetListError(response.statusText)),

@@ -197,12 +197,12 @@ class CustomerLookup extends React.Component<AllProps, State> {
           margin="normal"
           name={input.name}
           label={label}
-          value={input.value.name}
+          value={input.value ? input.value.name : ''}
           disabled={disabled || meta.submitting}
           error={meta.touched && meta.error}
           helperText={meta.touched && meta.error}
           onClick={this.handleDialogOpen}
-          InputLabelProps={{ shrink: true }}
+          // InputLabelProps={{ shrink: true }}
         />
           {renderDialog}
       </div>

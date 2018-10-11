@@ -11,7 +11,9 @@ import ProjectRegistrationForm from '@project/components/registration/forms/Proj
 import withApiProjectRegistrationDetail, {
   WithApiProjectRegistrationDetailHandler,
 } from '@project/enhancers/registration/withApiProjectRegistrationDetail';
-import withProjectRegistrationDetail, { WithProjectRegistrationDetail } from '@project/enhancers/registration/withProjectRegistrationDetail';
+import withProjectRegistrationDetail, {
+  WithProjectRegistrationDetail,
+} from '@project/enhancers/registration/withProjectRegistrationDetail';
 import * as React from 'react';
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps } from 'react-router';
@@ -67,28 +69,38 @@ interface Handler {
 }
 
 const registrationEditor: React.SFC<AllProps> = props => {
-  const { handleValidate, handleSubmit, handleSubmitSuccess, handleSubmitFail } = props;
+  const { mode, handleValidate, handleSubmit, handleSubmitSuccess, handleSubmitFail } = props;
   const { isLoading, response } = props.projectDetailState;
 
-  if (isLoading && !response) {
-    return (
-      <Typography variant="body2">
-        <FormattedMessage id="global.loading"/>
-      </Typography>
-    );
+  const RenderForm = (initialValues: IProjectDetail) => (
+    <ProjectRegistrationForm
+      mode={mode}
+      initialValues={initialValues} 
+      validate={handleValidate}
+      onSubmit={handleSubmit} 
+      onSubmitSuccess={handleSubmitSuccess}
+      onSubmitFail={handleSubmitFail}
+    />
+  );
+
+  // New
+  if (mode === FormMode.New) {
+    return <RenderForm {...{rate: 1} as IProjectDetail}/>;
   }
-  
-  if (!isLoading && response && response.data) {
-    return (
-      <ProjectRegistrationForm
-        mode={props.mode}
-        initialValues={response.data} 
-        validate={handleValidate}
-        onSubmit={handleSubmit} 
-        onSubmitSuccess={handleSubmitSuccess}
-        onSubmitFail={handleSubmitFail}
-      />
-    );
+
+  // Modify
+  if (mode === FormMode.Edit) {
+    if (isLoading && !response) {
+      return (
+        <Typography variant="body2">
+          <FormattedMessage id="global.loading"/>
+        </Typography>
+      );
+    }
+    
+    if (!isLoading && response && response.data) {
+      return <RenderForm {...response.data}/>;
+    }
   }
 
   return null;
@@ -111,7 +123,7 @@ const handlerCreators: HandleCreators<AllProps, Handler> = {
     
     return errors;
   },
-  handleSubmit: (props: AllProps) => (payload: IProjectDetail) => {
+  handleSubmit: (props: AllProps) => (payload: IProjectDetail) => { 
     const { projectUid, apiRegistrationDetailPut } = props;
     const { user } = props.userState;
 

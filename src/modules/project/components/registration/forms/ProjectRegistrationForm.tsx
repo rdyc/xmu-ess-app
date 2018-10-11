@@ -49,6 +49,8 @@ type AllProps
   & WithStyles<typeof styles>;
 
 const registrationForm: React.SFC<AllProps & InjectedFormProps<IProjectDetail, OwnProps> & OwnProps> = props => { 
+  const { mode } = props;
+  
   const renderDetail = () => (
     <Card square>
       <CardHeader 
@@ -56,20 +58,28 @@ const registrationForm: React.SFC<AllProps & InjectedFormProps<IProjectDetail, O
         subheader={<FormattedMessage id="project.infoSubTitle" />}
       />
       <CardContent>
-        <TextField
-          fullWidth
-          disabled
-          margin="normal"
-          label={<FormattedMessage id="project.field.uid" />}
-          value={props.initialValues.uid}
-        />
-        <TextField
-          fullWidth
-          disabled
-          margin="normal"
-          label={<FormattedMessage id="project.field.owner" />}
-          value={props.initialValues.owner ? props.initialValues.owner.fullName : 'N/A'}
-        />
+        {/* projectUid & owner & ownerEmployeeUid */}
+        {
+          mode === FormMode.Edit && 
+          <React.Fragment>
+            <TextField
+              fullWidth
+              disabled
+              margin="normal"
+              label={<FormattedMessage id="project.field.uid" />}
+              value={props.initialValues.uid}
+            />
+            <TextField
+              fullWidth
+              disabled
+              margin="normal"
+              label={<FormattedMessage id="project.field.owner" />}
+              value={props.initialValues.owner ? props.initialValues.owner.fullName : ''}
+            />
+          </React.Fragment>
+        }
+
+        {/* customer & customerUid */}
         <Field
           type="text"
           name="customer"
@@ -79,13 +89,31 @@ const registrationForm: React.SFC<AllProps & InjectedFormProps<IProjectDetail, O
             props.change('customerUid', newValue.uid);
           }}
         />
-        <TextField
-          fullWidth
-          disabled
-          margin="normal"
-          label={<FormattedMessage id="project.field.type" />}
-          value={props.initialValues.project ? props.initialValues.project.value : 'N/A'}
-        />
+
+        {/* project & projectType */}
+        {
+          mode === FormMode.New &&
+          <Field
+            type="project"
+            name="project"
+            label={<FormattedMessage id="project.field.type" />}
+            component={FieldSelectSystem}
+            onChange={(event: any, newValue: ISystemList | undefined) => {
+              props.change('projectType', newValue ? newValue.type : '');
+            }}
+          />
+        }
+        {
+          mode === FormMode.Edit &&
+          <TextField
+            fullWidth
+            disabled={props.mode === FormMode.Edit}
+            margin="normal"
+            label={<FormattedMessage id="project.field.type" />}
+            value={props.initialValues.project ? props.initialValues.project.value : ''}
+          />
+        }
+
         <Field
           type="text"
           name="name"
@@ -125,13 +153,20 @@ const registrationForm: React.SFC<AllProps & InjectedFormProps<IProjectDetail, O
             // props.change('currencyType', newValue ? newValue.type : '');
           }}
         />
-        <TextField
+        <Field
+          type="number"
+          name="rate"
+          disabled={props.mode === FormMode.Edit}
+          label={<FormattedMessage id="project.field.rate" />}
+          component={FieldInputNumber} 
+        />
+        {/* <TextField
           fullWidth
-          disabled
+          disabled={props.mode === FormMode.Edit}
           margin="normal"
           label={<FormattedMessage id="project.field.rate" />}
           value={props.intl.formatNumber(props.initialValues.rate || 0)}
-        />
+        /> */}
         <Field
           type="number"
           name="valueUsd"
@@ -150,13 +185,16 @@ const registrationForm: React.SFC<AllProps & InjectedFormProps<IProjectDetail, O
           label={<FormattedMessage id="project.field.valueIdr" />}
           component={FieldInputNumber}
         />
-        <Field
-          type="number"
-          name="maxHours"
-          disabled
-          label={<FormattedMessage id="project.field.hours" />}
-          component={FieldInputNumber}
-        />
+        {
+          mode === FormMode.Edit &&
+          <Field
+            type="number"
+            name="maxHours"
+            disabled
+            label={<FormattedMessage id="project.field.hours" />}
+            component={FieldInputNumber}
+          />
+        }
       </CardContent>
     </Card>
   );
