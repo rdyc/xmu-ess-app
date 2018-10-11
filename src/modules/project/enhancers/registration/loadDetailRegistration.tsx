@@ -1,19 +1,14 @@
 import withUser, { WithUser } from '@layout/hoc/withUser';
 import { IProjectGetByIdRequest } from '@project/classes/queries';
-import withDetailRegistration from '@project/hoc/registration/withDetailRegistration';
+import withDetailRegistration from '@project/enhancers/registration/withDetailRegistration';
 import { projectGetByIdDispose, projectGetByIdRequest } from '@project/store/actions';
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { RouteComponentProps, withRouter } from 'react-router';
 import { compose, HandleCreators, lifecycle, ReactLifeCycleFunctions, setDisplayName, withHandlers } from 'recompose';
 import { Dispatch } from 'redux';
 
 export interface LoadDetailRegistrationHandler {
-  handleReload: () => void;
-}
-
-interface RouteParams {
-  projectUid: string;
+  handleReload: (projectUid: string) => void;
 }
 
 interface Dispatcher {
@@ -26,7 +21,6 @@ interface Dispatcher {
 type AllProps 
   = LoadDetailRegistrationHandler
   & Dispatcher
-  & RouteComponentProps<RouteParams>
   & WithUser;
 
 const loadDetailRegistration = (WrappedComponent: React.ComponentType) => { 
@@ -35,8 +29,8 @@ const loadDetailRegistration = (WrappedComponent: React.ComponentType) => {
   const loadDetailRegistrationSFC: React.SFC<AllProps> = props => <WrappedComponent {...props} />;
 
   const handlerCreators: HandleCreators<AllProps, LoadDetailRegistrationHandler> = {
-    handleReload: (props: AllProps) => () => { 
-      loadData(props);
+    handleReload: (props: AllProps) => (projectUid: string) => { 
+      loadData(props, projectUid);
     }
   };
 
@@ -48,9 +42,6 @@ const loadDetailRegistration = (WrappedComponent: React.ComponentType) => {
   });
 
   const lifeCycleFunctions: ReactLifeCycleFunctions<AllProps, {}> = {
-    componentDidMount() {
-      loadData(this.props);
-    },
     componentWillUnmount() {
       const { getByIdDispose } = this.props.projectDetailDispatch;
 
@@ -58,8 +49,7 @@ const loadDetailRegistration = (WrappedComponent: React.ComponentType) => {
     }
   };
 
-  const loadData = (props: AllProps): void => {
-    const { match } = props;
+  const loadData = (props: AllProps, uid: string): void => {
     const { user } = props.userState;
     const { getByIdRequest } = props.projectDetailDispatch;
 
@@ -67,7 +57,7 @@ const loadDetailRegistration = (WrappedComponent: React.ComponentType) => {
       getByIdRequest({
         companyUid: user.company.uid,
         positionUid: user.position.uid,
-        projectUid: match.params.projectUid
+        projectUid: uid
       }); 
     } 
   };
@@ -77,7 +67,7 @@ const loadDetailRegistration = (WrappedComponent: React.ComponentType) => {
     
     withUser,
     withDetailRegistration,
-    withRouter,
+
     withHandlers<AllProps, LoadDetailRegistrationHandler>(handlerCreators),
     
     lifecycle<AllProps, {}>(lifeCycleFunctions),

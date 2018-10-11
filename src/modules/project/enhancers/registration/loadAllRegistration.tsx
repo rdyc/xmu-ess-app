@@ -4,7 +4,7 @@ import withLayout, { WithLayout } from '@layout/hoc/withLayout';
 import withUser, { WithUser } from '@layout/hoc/withUser';
 import { IListBarField } from '@layout/interfaces';
 import { IProjectGetAllRequest } from '@project/classes/queries';
-import withAllRegistration, { WithAllRegistration } from '@project/hoc/registration/withAllRegistration';
+import withAllRegistration, { WithAllRegistration } from '@project/enhancers/registration/withAllRegistration';
 import { projectGetAllDispose, projectGetAllRequest } from '@project/store/actions';
 import * as React from 'react';
 import { connect } from 'react-redux';

@@ -5,8 +5,8 @@ import withNavBottom, { WithNavBottom } from '@layout/hoc/withNavBottom';
 import { Divider, Grid, List, ListItem, ListSubheader, Paper, Typography } from '@material-ui/core';
 import { IProject } from '@project/classes/response';
 import { ProjectField } from '@project/classes/types';
-import loadAllRegistration, { LoadAllRegistrationHandler } from '@project/hoc/registration/loadAllRegistration';
-import withAllRegistration, { WithAllRegistration } from '@project/hoc/registration/withAllRegistration';
+import loadAllRegistration, { LoadAllRegistrationHandler } from '@project/enhancers/registration/loadAllRegistration';
+import withAllRegistration, { WithAllRegistration } from '@project/enhancers/registration/withAllRegistration';
 import * as moment from 'moment';
 import * as React from 'react';
 import { FormattedDate, FormattedNumber, FormattedPlural, InjectedIntlProps, injectIntl } from 'react-intl';
@@ -22,7 +22,7 @@ type AllProps
   & RouteComponentProps
   & InjectedIntlProps;
 
-const projectRegistrationList: React.SFC<AllProps> = props => {
+const registrationList: React.SFC<AllProps> = props => {
   const { history } = props;
   const { isLoading, response } = props.projectAllState;
 
@@ -127,7 +127,7 @@ const projectRegistrationList: React.SFC<AllProps> = props => {
     );
   };
   
-  const renderList = (
+  const RenderList = () => (
     <List
       component="nav"
       subheader={
@@ -163,24 +163,20 @@ const projectRegistrationList: React.SFC<AllProps> = props => {
   );
 
   return (
-    <Paper 
-      square 
-      elevation={1}
-    >
-      {
-        isLoading && 
-        !response &&
-        <Typography variant="body2">loading</Typography>
-      }
-      {
-        response && 
-        renderList
-      }
-    </Paper>
+    <React.Fragment>
+      {isLoading && response && <Typography variant="body2">loading</Typography>}     
+      {response &&
+        <Paper 
+          square 
+          elevation={1}
+        >
+        <RenderList/>
+        </Paper>}
+    </React.Fragment>
   );
 };
 
-const lifeCycleFunctions: ReactLifeCycleFunctions<AllProps, {}> = {
+const lifecycles: ReactLifeCycleFunctions<AllProps, {}> = {
   componentDidMount() { 
     const { 
       handleNext, handlePrev, handleSync, 
@@ -230,7 +226,7 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<AllProps, {}> = {
   }
 };
 
-const ProjectRegistrationList = compose<AllProps, {}>(
+export default compose<AllProps, {}>(
   setDisplayName('ProjectRegistrationList'),
   loadAllRegistration({ 
     orderBy: 'uid',
@@ -241,7 +237,5 @@ const ProjectRegistrationList = compose<AllProps, {}>(
   withNavBottom,
   withRouter,
   injectIntl,
-  lifecycle<AllProps, {}>(lifeCycleFunctions),
-)(projectRegistrationList);
-
-export default ProjectRegistrationList;
+  lifecycle<AllProps, {}>(lifecycles),
+)(registrationList);

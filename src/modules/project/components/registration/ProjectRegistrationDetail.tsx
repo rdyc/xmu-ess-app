@@ -28,8 +28,8 @@ import PersonIcon from '@material-ui/icons/Person';
 import { WorkflowStep } from '@organization/components';
 import { IProjectDetail, IProjectDocument, IProjectSales, IProjectSite } from '@project/classes/response';
 import { ProjectUserAction } from '@project/classes/types';
-import loadDetailRegistration, { LoadDetailRegistrationHandler } from '@project/hoc/registration/loadDetailRegistration';
-import withDetailRegistration, { WithDetailRegistration } from '@project/hoc/registration/withDetailRegistration';
+import loadDetailRegistration, { LoadDetailRegistrationHandler } from '@project/enhancers/registration/loadDetailRegistration';
+import withDetailRegistration, { WithDetailRegistration } from '@project/enhancers/registration/withDetailRegistration';
 import * as React from 'react';
 import { FormattedMessage, FormattedNumber, InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
@@ -87,7 +87,7 @@ type AllProps
   & State
   & Updaters;
 
-const projectRegistrationDetail: React.SFC<AllProps> = props => {
+const registrationDetail: React.SFC<AllProps> = props => {
   const { 
     dialogFullScreen, dialogOpen, dialogTitle, dialogDescription, dialogCancelText, dialogConfirmedText,
     handleDialogClose, handleDialogConfirmed, intl
@@ -102,19 +102,19 @@ const projectRegistrationDetail: React.SFC<AllProps> = props => {
       aria-describedby="project-detail-dialog-description"
     >
       <DialogTitle id="project-detail-dialog-title">
-        {dialogTitle}
+        {dialogTitle || 'title'}
       </DialogTitle>
       <DialogContent>
         <DialogContentText id="project-detail-dialog-description">
-          {dialogDescription}
+          {dialogDescription || 'description'}
         </DialogContentText>
       </DialogContent>
       <DialogActions>
         <Button onClick={handleDialogClose} color="primary">
-          {dialogCancelText}
+          {dialogCancelText || 'cancel'}
         </Button>
         <Button onClick={handleDialogConfirmed} color="primary" autoFocus>
-          {dialogConfirmedText}
+          {dialogConfirmedText || 'confirm'}
         </Button>
       </DialogActions>
     </Dialog>
@@ -343,7 +343,7 @@ const projectRegistrationDetail: React.SFC<AllProps> = props => {
   );
 
   return (
-    <div>
+    <React.Fragment>
       {
         isLoading && 
         <Typography variant="body2">
@@ -410,7 +410,7 @@ const projectRegistrationDetail: React.SFC<AllProps> = props => {
         </Grid>
       }
       {renderDialog}
-    </div>
+    </React.Fragment>
   );
 };
 
@@ -439,7 +439,9 @@ const stateUpdaters: StateUpdaters<{}, State, Updaters> = {
 
 const handlerCreators: HandleCreators<AllProps, Handler> = {
   handleProjectRefresh: (props: AllProps) => () => { 
-    props.handleReload();
+    const { match } = props;
+
+    props.handleReload(match.params.projectUid);
   },
   handleProjectModify: (props: AllProps) => () => { 
     const { intl, stateUpdate } = props;
@@ -526,13 +528,14 @@ const handlerCreators: HandleCreators<AllProps, Handler> = {
   },
 };
 
-const lifeCycleFunctions: ReactLifeCycleFunctions<AllProps, {}> = {
+const lifecycles: ReactLifeCycleFunctions<AllProps, {}> = {
   componentDidMount() {
     const { 
       layoutDispatch, appBarDispatch, intl, 
       handleProjectRefresh, handleProjectModify, 
       handleProjectClose, handleProjectReOpen,
-      handleProjectChangeOwner, handleProjectManageSite
+      handleProjectChangeOwner, handleProjectManageSite,
+      match, handleReload
     } = this.props;
 
     layoutDispatch.changeView({
@@ -577,6 +580,8 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<AllProps, {}> = {
     };
 
     appBarDispatch.assignCallback(handleMenuClick);
+
+    handleReload(match.params.projectUid);
   },
   componentWillReceiveProps(nextProps: AllProps) {
     if (nextProps.projectDetailState.response !== this.props.projectDetailState.response) {
@@ -648,7 +653,7 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<AllProps, {}> = {
   }
 };
 
-const ProjectRegistrationDetail = compose<AllProps, State>(
+export default compose<AllProps, {}>(
   setDisplayName('ProjectRegistrationDetail'),
   
   loadDetailRegistration,
@@ -661,7 +666,5 @@ const ProjectRegistrationDetail = compose<AllProps, State>(
   withStateHandlers<State, Updaters, {}>(createProps, stateUpdaters), 
   withHandlers<AllProps, Handler>(handlerCreators),
 
-  lifecycle<AllProps, {}>(lifeCycleFunctions),
-)(projectRegistrationDetail);
-
-export default ProjectRegistrationDetail;
+  lifecycle<AllProps, {}>(lifecycles),
+)(registrationDetail);
