@@ -7,6 +7,7 @@ import {
   CardContent,
   CardHeader,
   Checkbox,
+  FormControlLabel,
   Grid,
   TextField,
   WithStyles,
@@ -72,11 +73,18 @@ const positionFormComponent: React.SFC<AllProps & OwnProps> = props => {
           label={<FormattedMessage id="position.field.inactiveDate" />}
           component={FieldInputDate}
         />
-        <Field
-          type="checkbox"
-          name="isAllowMultiple"
-          label={<FormattedMessage id="position.field.isAllowMultiple" />}
-          component={({}: any) => <Checkbox/>}
+        <FormControlLabel 
+          label={<FormattedMessage id="position.field.isAllowMultiple"/>}
+          control={<Field
+            type="checkbox"
+            name="isAllowMultiple"
+            component={ ({ input, meta }: any) =>
+              <Checkbox
+                {...input}
+                value={'isAllowMultiple'}
+                disabled={meta.submitting}
+              />}
+          />}
         />
         <Field
           type="text"

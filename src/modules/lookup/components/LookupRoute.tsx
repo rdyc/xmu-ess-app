@@ -16,6 +16,6 @@ export const LookupRoute: React.SFC<AllProps> = props => (
   <Switch>
     <Route path={`${props.match.path}/position/list/`} component={PositionListContainer} />
     <Route path={`${props.match.path}/position/details/:positionUid`} component={PositionDetailContainer} />
-    <Route path={`${props.match.path}/form`} component={PositionFormContainer} />
+    <Route path={`${props.match.path}/position/form`} component={PositionFormContainer} />
   </Switch>
 );

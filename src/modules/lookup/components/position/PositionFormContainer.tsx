@@ -187,7 +187,7 @@ class PositionForm extends React.Component<AllProps, State> {
           resolve,
           reject,
           positionUid,
-          companyUid: user.company.uid,
+          companyUid: payload.companyUid,
           data: this.transform(payload)
         });
       });
