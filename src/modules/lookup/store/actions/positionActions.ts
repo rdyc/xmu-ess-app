@@ -1,5 +1,5 @@
-import { IResponseCollection } from '@generic/interfaces';
-import { IPositionGetAllRequest, IPositionGetByIdRequest, IPositionListRequest } from '@lookup/classes/queries';
+import { IResponseCollection, IResponseSingle } from '@generic/interfaces';
+import { IPositionGetAllRequest, IPositionGetByIdRequest, IPositionListRequest, IPositionPostRequest, IPositionPutRequest } from '@lookup/classes/queries';
 import { IPosition, IPositionDetail, IPositionList } from '@lookup/classes/response';
 import { action } from 'typesafe-actions';
 
@@ -16,6 +16,14 @@ export const enum PositionAction {
   GET_BY_ID_SUCCESS = '@@position/GET_BY_ID_SUCCESS',
   GET_BY_ID_ERROR = '@@position/GET_BY_ID_ERROR',
   GET_BY_ID_DISPOSE = '@@position/GET_BY_ID_DISPOSE',
+  POST_REQUEST = '@@position/POST_REQUEST',
+  POST_SUCCESS = '@@position/POST_SUCCESS',
+  POST_ERROR = '@@position/POST_ERROR',
+  POST_DISPOSE = '@@position/POST_DISPOSE',
+  PUT_REQUEST = '@@position/PUT_REQUEST',
+  PUT_SUCCESS = '@@position/PUT_SUCCESS',
+  PUT_ERROR = '@@position/PUT_ERROR',
+  PUT_DISPOSE = '@@position/PUT_DISPOSE',
 }
 
 // get all
@@ -35,3 +43,15 @@ export const positionGetByIdRequest = (request: IPositionGetByIdRequest) => acti
 export const positionGetByIdSuccess = (response: IResponseCollection<IPositionDetail>) => action(PositionAction.GET_BY_ID_SUCCESS, response);
 export const positionGetByIdError = (message: string) => action(PositionAction.GET_BY_ID_ERROR, message);
 export const positionGetByIdDispose = () => action(PositionAction.GET_BY_ID_DISPOSE);
+
+// post
+export const positionPostRequest = (request: IPositionPostRequest) => action(PositionAction.POST_REQUEST, request);
+export const positionPostSuccess = (response: IResponseSingle<IPosition>) => action(PositionAction.POST_SUCCESS, response);
+export const positionPostError = (message: string) => action(PositionAction.POST_ERROR, message);
+export const positionPostDispose = () => action(PositionAction.POST_DISPOSE);
+
+// put
+export const positionPutRequest = (request: IPositionPutRequest) => action(PositionAction.PUT_REQUEST, request);
+export const positionPutSuccess = (response: IResponseSingle<IPosition>) => action(PositionAction.PUT_SUCCESS, response);
+export const positionPutError = (message: string) => action(PositionAction.PUT_ERROR, message);
+export const positionPutDispose = () => action(PositionAction.PUT_DISPOSE);

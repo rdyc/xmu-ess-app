@@ -7,3 +7,5 @@ export * from './menuGetByIdReducer';
 export * from './positionGetListReducer';
 export * from './positionGetAllReducer';
 export * from './positionGetByIdReducer';
+export * from './positionPostReducer';
+export * from './positionPutReducer';

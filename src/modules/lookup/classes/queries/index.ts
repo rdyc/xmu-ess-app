@@ -7,3 +7,5 @@ export * from './IMenuGetByIdRequest';
 export * from './IPositionListRequest';
 export * from './IPositionGetAllRequest';
 export * from './IPositionGetByIdRequest';
+export * from './IPositionPostRequest';
+export * from './IPositionPutRequest';
