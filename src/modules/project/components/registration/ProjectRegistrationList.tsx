@@ -5,8 +5,8 @@ import withNavBottom, { WithNavBottom } from '@layout/hoc/withNavBottom';
 import { Divider, Grid, List, ListItem, ListSubheader, Paper, Typography } from '@material-ui/core';
 import { IProject } from '@project/classes/response';
 import { ProjectField } from '@project/classes/types';
-import loadAllRegistration, { LoadAllRegistrationHandler } from '@project/enhancers/registration/loadAllRegistration';
-import withAllRegistration, { WithAllRegistration } from '@project/enhancers/registration/withAllRegistration';
+import withApiProjectRegistrationAll, { WithApiProjectRegistrationAllHandler } from '@project/enhancers/registration/withApiProjectRegistrationAll';
+import withProjectRegistrationAll, { WithProjectRegistrationAll } from '@project/enhancers/registration/withProjectRegistrationAll';
 import * as moment from 'moment';
 import * as React from 'react';
 import { FormattedDate, FormattedNumber, FormattedPlural, InjectedIntlProps, injectIntl } from 'react-intl';
@@ -15,10 +15,10 @@ import { compose, lifecycle, ReactLifeCycleFunctions, setDisplayName } from 'rec
 import { isArray } from 'util';
 
 type AllProps 
-  = WithAllRegistration
+  = WithProjectRegistrationAll
   & WithLayout
   & WithNavBottom
-  & LoadAllRegistrationHandler
+  & WithApiProjectRegistrationAllHandler
   & RouteComponentProps
   & InjectedIntlProps;
 
@@ -228,11 +228,11 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, {}> = {
 
 export default compose<AllProps, {}>(
   setDisplayName('ProjectRegistrationList'),
-  loadAllRegistration({ 
+  withApiProjectRegistrationAll({ 
     orderBy: 'uid',
     direction: 'descending',
   }),
-  withAllRegistration,
+  withProjectRegistrationAll,
   withLayout,
   withNavBottom,
   withRouter,

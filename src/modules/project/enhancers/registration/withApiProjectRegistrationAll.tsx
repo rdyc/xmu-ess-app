@@ -4,7 +4,7 @@ import withLayout, { WithLayout } from '@layout/hoc/withLayout';
 import withUser, { WithUser } from '@layout/hoc/withUser';
 import { IListBarField } from '@layout/interfaces';
 import { IProjectGetAllRequest } from '@project/classes/queries';
-import withAllRegistration, { WithAllRegistration } from '@project/enhancers/registration/withAllRegistration';
+import withProjectRegistrationAll, { WithProjectRegistrationAll } from '@project/enhancers/registration/withProjectRegistrationAll';
 import { projectGetAllDispose, projectGetAllRequest } from '@project/store/actions';
 import * as React from 'react';
 import { connect } from 'react-redux';
@@ -23,7 +23,7 @@ import {
 } from 'recompose';
 import { Dispatch } from 'redux';
 
-export interface LoadAllRegistrationHandler {
+export interface WithApiProjectRegistrationAllHandler {
   handleSync: () => void;
   handleNext: () => void;
   handlePrev: () => void;
@@ -32,7 +32,7 @@ export interface LoadAllRegistrationHandler {
   handleSort: (direction: SortDirection) => void;
 }
 
-interface LoadAllRegistrationOptions {
+interface WithApiProjectRegistrationAllOptions {
   orderBy?: string | undefined;
   direction?: string | undefined;
   page?: number | undefined;
@@ -63,18 +63,18 @@ interface Dispatcher {
 }
 
 type AllProps 
-  = LoadAllRegistrationHandler
+  = WithApiProjectRegistrationAllHandler
   & Dispatcher
   & State
   & Updaters
   & WithUser
   & WithLayout
-  & WithAllRegistration;
+  & WithProjectRegistrationAll;
 
-const loadAllRegistration = (options?: LoadAllRegistrationOptions) => (WrappedComponent: React.ComponentType) => { 
-  const displayName = `LoadAllRegistration(${WrappedComponent.displayName || WrappedComponent.name || 'Component'})`;
+const withApiProjectRegistrationAll = (options?: WithApiProjectRegistrationAllOptions) => (WrappedComponent: React.ComponentType) => { 
+  const displayName = `WithApiProjectRegistrationAll(${WrappedComponent.displayName || WrappedComponent.name || 'Component'})`;
   
-  const loadAllRegistrationSFC: React.SFC<AllProps> = props => <WrappedComponent {...props} />;
+  const withApiProjectRegistrationAllWrapper: React.SFC<AllProps> = props => <WrappedComponent {...props} />;
 
   const createProps: mapper<AllProps, State> = (props: AllProps): State => {
     const { request } = props.projectAllState;
@@ -87,7 +87,7 @@ const loadAllRegistration = (options?: LoadAllRegistrationOptions) => (WrappedCo
     };
   };
 
-  const stateUpdaters: StateUpdaters<LoadAllRegistrationOptions, State, Updaters> = {
+  const stateUpdaters: StateUpdaters<WithApiProjectRegistrationAllOptions, State, Updaters> = {
     onNext: (prevState: State) => () => ({
       page: prevState.page + 1,
     }),
@@ -111,7 +111,7 @@ const loadAllRegistration = (options?: LoadAllRegistrationOptions) => (WrappedCo
     }),
   };
 
-  const handlerCreators: HandleCreators<AllProps, LoadAllRegistrationHandler> = {
+  const handlerCreators: HandleCreators<AllProps, WithApiProjectRegistrationAllHandler> = {
     handleSync: (props: AllProps) => () => { 
       props.onSync();
 
@@ -203,19 +203,16 @@ const loadAllRegistration = (options?: LoadAllRegistrationOptions) => (WrappedCo
     }
   };
 
-  return compose<AllProps, LoadAllRegistrationOptions>(
+  return compose<AllProps, WithApiProjectRegistrationAllOptions>(
+    setDisplayName(displayName),
     connect(undefined, mapDispatchToProps),
-    
     withUser,
     withLayout,
-    withAllRegistration,
-    withStateHandlers<State, Updaters, LoadAllRegistrationOptions>(createProps, stateUpdaters), 
-    withHandlers<AllProps, LoadAllRegistrationHandler>(handlerCreators),
-    
+    withProjectRegistrationAll,
+    withStateHandlers<State, Updaters, WithApiProjectRegistrationAllOptions>(createProps, stateUpdaters), 
+    withHandlers<AllProps, WithApiProjectRegistrationAllHandler>(handlerCreators),
     lifecycle<AllProps, {}>(lifeCycleFunctions),
-    
-    setDisplayName(displayName),
-  )(loadAllRegistrationSFC);
+  )(withApiProjectRegistrationAllWrapper);
 };
 
-export default loadAllRegistration;
+export default withApiProjectRegistrationAll;

@@ -28,8 +28,8 @@ import PersonIcon from '@material-ui/icons/Person';
 import { WorkflowStep } from '@organization/components';
 import { IProjectDetail, IProjectDocument, IProjectSales, IProjectSite } from '@project/classes/response';
 import { ProjectUserAction } from '@project/classes/types';
-import loadDetailRegistration, { LoadDetailRegistrationHandler } from '@project/enhancers/registration/loadDetailRegistration';
-import withDetailRegistration, { WithDetailRegistration } from '@project/enhancers/registration/withDetailRegistration';
+import withApiProjectRegistrationDetail, { WithApiProjectRegistrationDetailHandler } from '@project/enhancers/registration/withApiProjectRegistrationDetail';
+import withProjectRegistrationDetail, { WithProjectRegistrationDetail } from '@project/enhancers/registration/withProjectRegistrationDetail';
 import * as React from 'react';
 import { FormattedMessage, FormattedNumber, InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
@@ -78,8 +78,8 @@ interface RouteParams {
 
 type AllProps
   = Handler 
-  & WithDetailRegistration
-  & LoadDetailRegistrationHandler
+  & WithProjectRegistrationDetail
+  & WithApiProjectRegistrationDetailHandler
   & WithLayout
   & WithAppBar
   & RouteComponentProps<RouteParams> 
@@ -441,7 +441,7 @@ const handlerCreators: HandleCreators<AllProps, Handler> = {
   handleProjectRefresh: (props: AllProps) => () => { 
     const { match } = props;
 
-    props.handleReload(match.params.projectUid);
+    props.apiRegistrationDetailGet(match.params.projectUid);
   },
   handleProjectModify: (props: AllProps) => () => { 
     const { intl, stateUpdate } = props;
@@ -535,7 +535,7 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, {}> = {
       handleProjectRefresh, handleProjectModify, 
       handleProjectClose, handleProjectReOpen,
       handleProjectChangeOwner, handleProjectManageSite,
-      match, handleReload
+      match, apiRegistrationDetailGet
     } = this.props;
 
     layoutDispatch.changeView({
@@ -581,7 +581,7 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, {}> = {
 
     appBarDispatch.assignCallback(handleMenuClick);
 
-    handleReload(match.params.projectUid);
+    apiRegistrationDetailGet(match.params.projectUid);
   },
   componentWillReceiveProps(nextProps: AllProps) {
     if (nextProps.projectDetailState.response !== this.props.projectDetailState.response) {
@@ -656,10 +656,10 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, {}> = {
 export default compose<AllProps, {}>(
   setDisplayName('ProjectRegistrationDetail'),
   
-  loadDetailRegistration,
+  withApiProjectRegistrationDetail,
   withLayout,
   withAppbar,
-  withDetailRegistration,
+  withProjectRegistrationDetail,
   withRouter,
   injectIntl,
   

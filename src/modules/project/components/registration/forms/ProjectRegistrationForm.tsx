@@ -1,9 +1,10 @@
 import { IEmployee } from '@account/classes/response';
 import ListItemEmployeeSelector from '@account/components/views/ListItemEmployeeSelector';
 import { ISystemList } from '@common/classes/response';
-import { ConnectedReduxProps, FormMode } from '@generic/types';
+import { FormMode } from '@generic/types';
 import { FieldInputCustomer, FieldInputDate, FieldInputNumber, FieldInputText } from '@layout/components/formFields';
 import { FieldSelectSystem } from '@layout/components/formFields/FieldSelectSystem';
+import withUser, { WithUser } from '@layout/hoc/withUser';
 import { ICustomerList } from '@lookup/classes/response';
 import {
   Avatar,
@@ -24,32 +25,30 @@ import {
   TextField,
   Typography,
   WithStyles,
+  withStyles,
 } from '@material-ui/core';
-import { WithWidth } from '@material-ui/core/withWidth';
+import withWidth, { WithWidth } from '@material-ui/core/withWidth';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import PersonIcon from '@material-ui/icons/Person';
 import { IProjectDetail, IProjectDocument, IProjectSales, IProjectSite } from '@project/classes/response';
 import styles from '@styles';
 import * as classNames from 'classnames';
 import * as React from 'react';
-import { FormattedMessage, FormattedNumber, InjectedIntlProps } from 'react-intl';
+import { FormattedMessage, FormattedNumber, InjectedIntlProps, injectIntl } from 'react-intl';
+import { compose, setDisplayName } from 'recompose';
 import { Field, FieldArray, InjectedFormProps, reduxForm, WrappedFieldArrayProps } from 'redux-form';
 
 interface OwnProps {
   mode: FormMode;
-  companyUid: string;
-  positionUid: string;
-  projectUid: string;
 }
 
 type AllProps 
-  = InjectedFormProps<IProjectDetail, OwnProps> 
-  & ConnectedReduxProps 
-  & InjectedIntlProps 
+  = InjectedIntlProps 
+  & WithUser
   & WithWidth 
   & WithStyles<typeof styles>;
 
-const projectFormComponent: React.SFC<AllProps & OwnProps> = props => { 
+const registrationForm: React.SFC<AllProps & InjectedFormProps<IProjectDetail, OwnProps> & OwnProps> = props => { 
   const renderDetail = () => (
     <Card square>
       <CardHeader 
@@ -200,6 +199,9 @@ const projectFormComponent: React.SFC<AllProps & OwnProps> = props => {
   );
 
   const renderSales = (context: WrappedFieldArrayProps<IProjectSales>) => {
+    const { classes, width } = props;
+    const { user } = props.userState;
+
     const handleSelectedCallback = (employee: IEmployee): boolean => {
       try {
         context.fields.push({
@@ -265,11 +267,10 @@ const projectFormComponent: React.SFC<AllProps & OwnProps> = props => {
                 );
               })
             }
-            <Divider className={classNames(props.classes.marginFarTop, props.classes.marginFarBottom)} />
+            <Divider className={classNames(classes.marginFarTop, classes.marginFarBottom)} />
             <ListItemEmployeeSelector
-              width={props.width}
-              companyUids={[props.companyUid]}
-              dispatch={props.dispatch} 
+              width={width}
+              companyUids={user && [user.company.uid]}
               onSelected={(employee: IEmployee) => handleSelectedCallback(employee)}
             />
           </List>
@@ -381,6 +382,14 @@ const projectFormComponent: React.SFC<AllProps & OwnProps> = props => {
   );
 };
 
-export const ProjectFormComponent = reduxForm<IProjectDetail, OwnProps>({
-  form: 'projectForm'
-})(projectFormComponent);
+const enhance = compose<AllProps, InjectedFormProps<IProjectDetail, OwnProps> & OwnProps>(
+  setDisplayName('ProjectRegistrationForm'),
+  withUser,
+  withWidth(),
+  withStyles(styles),
+  injectIntl
+)(registrationForm);
+
+export default reduxForm<IProjectDetail, OwnProps>({
+  form: 'ProjectRegistrationForm'
+})(enhance);

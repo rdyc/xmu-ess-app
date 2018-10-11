@@ -9,21 +9,21 @@ interface PropsFromState {
   projectDetailState: IQuerySingleState<IProjectGetByIdRequest, IProjectDetail>;
 }
 
-export type WithDetailRegistration = PropsFromState;
+export type WithProjectRegistrationDetail = PropsFromState;
 
-const withDetailRegistration = (WrappedComponent: React.ComponentType) => { 
-  const displayName = `WithDetailRegistration(${WrappedComponent.displayName || WrappedComponent.name || 'Component'})`;
+const withProjectRegistrationDetail = (WrappedComponent: React.ComponentType) => { 
+  const displayName = `WithProjectRegistrationDetail(${WrappedComponent.displayName || WrappedComponent.name || 'Component'})`;
   
-  const withDetailRegistrationSFC: React.SFC<WithDetailRegistration> = props => <WrappedComponent {...props} />;
+  const withProjectRegistrationDetailWrapper: React.SFC<WithProjectRegistrationDetail> = props => <WrappedComponent {...props} />;
 
   const mapStateToProps = ({ projectGetById }: IAppState) => ({
     projectDetailState: projectGetById
   });
 
-  return compose<WithDetailRegistration, {}>(
+  return compose<WithProjectRegistrationDetail, {}>(
     setDisplayName(displayName),
     connect(mapStateToProps)
-  )(withDetailRegistrationSFC);
+  )(withProjectRegistrationDetailWrapper);
 };
 
-export default withDetailRegistration;
+export default withProjectRegistrationDetail;
