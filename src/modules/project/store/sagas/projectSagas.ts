@@ -230,7 +230,7 @@ function* watchPutFetchRequest() {
   yield takeEvery(Action.PUT_REQUEST, worker);
 }
 
-function* projectSagas() {
+function* projectRegistrationSagas() {
   yield all([
     fork(watchAllFetchRequest),
     fork(watchListFetchRequest),
@@ -240,4 +240,4 @@ function* projectSagas() {
   ]);
 }
 
-export default projectSagas;
+export default projectRegistrationSagas;

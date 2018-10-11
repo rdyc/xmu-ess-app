@@ -1,7 +1,7 @@
 import { ISystemListRequest } from '@common/classes/queries';
 import { ISystemList } from '@common/classes/response';
 import { CommonCategoryType } from '@common/classes/types';
-import { systemGetListRequest } from '@common/store/actions';
+import { currencyGetListRequest, projectGetListRequest } from '@common/store/actions';
 import { IAppState, IQueryCollectionState } from '@generic/interfaces';
 import { ConnectedReduxProps } from '@generic/types';
 import { MenuItem, TextField, WithStyles, withStyles } from '@material-ui/core';
@@ -15,12 +15,14 @@ import { BaseFieldProps, WrappedFieldProps } from 'redux-form';
 import { isNullOrUndefined } from 'util';
 
 interface PropsFromState {
-  systemState: IQueryCollectionState<ISystemListRequest, ISystemList>;
+  commmonCurrencyState: IQueryCollectionState<ISystemListRequest, ISystemList>;
+  commmonProjectState: IQueryCollectionState<ISystemListRequest, ISystemList>;
 }
 
 interface PropsFromDispatch {
-  systemDispatch: {
-    listRequest: typeof systemGetListRequest;
+  commonDispatch: {
+    listCurrencyRequest: typeof currencyGetListRequest;
+    listProjectRequest: typeof projectGetListRequest;
   };
 }
 
@@ -52,7 +54,7 @@ class SystemSelect extends React.Component<AllProps, State> {
 
   public componentDidMount() {
     const { input, disabled } = this.props;
-    const { isLoading, response } = this.props.systemState;
+    const { isLoading, response } = this.getContext();
 
     // skipp fetch while current state is being loaded
     if (isLoading || response) {
@@ -69,7 +71,7 @@ class SystemSelect extends React.Component<AllProps, State> {
   
   public render() {
     const { width, input, label, disabled, meta } = this.props;
-    const { response } = this.props.systemState;
+    const { response } = this.getContext();
     
     const isMobile = isWidthDown('sm', width);
 
@@ -121,6 +123,17 @@ class SystemSelect extends React.Component<AllProps, State> {
     );
   }
 
+  private getContext = () => {
+    const { category } = this.props;
+
+    switch (category) {
+      case 'currency': return this.props.commmonCurrencyState;
+      case 'project': return this.props.commmonProjectState;
+    
+      default: return this.props.commmonCurrencyState;
+    }
+  }
+
   private loadData = () => {
     const { companyUid, category } = this.props;
 
@@ -133,13 +146,23 @@ class SystemSelect extends React.Component<AllProps, State> {
       }
     };
 
-    this.props.systemDispatch.listRequest(request);
+    switch (category) {
+      case 'currency':
+        this.props.commonDispatch.listCurrencyRequest(request);
+        break;
+
+      case 'project':
+        this.props.commonDispatch.listProjectRequest(request);
+        break;
     
+      default:
+        break;
+    }
   };
 
   private handleChange = (event: React.ChangeEvent<any>) => {
     const { onChangeValue } = this.props;
-    const { response } = this.props.systemState;
+    const { response } = this.getContext();
     const value = event.target.value;
 
     if (response && response.data) {
@@ -153,13 +176,15 @@ class SystemSelect extends React.Component<AllProps, State> {
   };
 }
 
-const mapStateToProps = ({ systemGetList }: IAppState) => ({
-  systemState: systemGetList,
+const mapStateToProps = ({ commonCurrencyGetList, commonProjectGetList }: IAppState) => ({
+  commmonCurrencyState: commonCurrencyGetList,
+  commmonProjectState: commonProjectGetList,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  systemDispatch: {
-    listRequest: (request: ISystemListRequest) => dispatch(systemGetListRequest(request)),
+  commonDispatch: {
+    listCurrencyRequest: (request: ISystemListRequest) => dispatch(currencyGetListRequest(request)),
+    listProjectRequest: (request: ISystemListRequest) => dispatch(projectGetListRequest(request)),
   }
 });
 
