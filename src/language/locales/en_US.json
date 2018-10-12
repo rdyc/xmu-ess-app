@@ -44,6 +44,7 @@
   "lookup.customer.lookupTitle": "Customer Lookup", 
   "lookup.customer.lookupDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.", 
   "lookup.placeholder.customerSearch": "Type any company name",
+
   "lookup.currency.lookupTitle": "Currency Lookup",
   "lookup.currency.lookupDescription": "Lorem ipsum dolor sit amet", 
   "lookup.placeholder.currencySearch": "Type any currency name",
@@ -64,7 +65,7 @@
   "systemLimit.field.type": "System Limit Category", 
   "systemLimit.field.name": "Company Name", 
   "systemLimit.field.limit": "Day / System Limit",
-
+  
   "account.employee.lookupTitle": "Employee Lookup", 
   "account.employee.lookupDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.", 
 
@@ -84,9 +85,26 @@
   "account.profile.citizenNumber": "Citizen number",
   "account.profile.phone": "Phone",
   "account.profile.mobilePhone": "Mobile phone",
-
   "account.placeholder.lookupSearch": "Type any employee name or email",
 
+  "leave.title": "Leaves",
+  "leave.subTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "leave.detail.title": "Leave Details",
+  "leave.detail.subTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "leave.form.editTitle": "Modify Leave",
+  "leave.form.editSubTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "leave.dialog.modifyTitle": "Modify Confirmation",
+  "leave.dialog.modifyDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "leave.infoTitle": "Leave",
+  "leave.infoSubTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "leave.action.modify": "Modify",
+  "leave.field.uid": "Leave ID",
+  "leave.field.name": "Leave Name",
+  "leave.field.company": "Company",
+  "leave.field.year": "Year",
+  "leave.field.category": "Category",
+  "leave.field.allocation": "Allocation",
+  
   "project.title": "Projects",
   "project.subTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
   "project.detail.title": "Project Details",

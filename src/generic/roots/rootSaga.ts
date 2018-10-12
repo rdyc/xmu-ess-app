@@ -7,6 +7,8 @@ import companySagas from '@lookup/store/sagas/companySagas';
 import currencySagas from '@lookup/store/sagas/currencySagas';
 import customerSagas from '@lookup/store/sagas/customerSagas';
 import diemSagas from '@lookup/store/sagas/diemSagas';
+import holidaySagas from '@lookup/store/sagas/holidaySagas';
+import leaveSagas from '@lookup/store/sagas/leaveSagas';
 import menuSagas from '@lookup/store/sagas/menuSagas';
 import mileageExceptionSagas from '@lookup/store/sagas/mileageExceptionSagas';
 import positionSagas from '@lookup/store/sagas/positionSagas';
@@ -31,6 +33,9 @@ export function* rootSaga() {
     fork(positionSagas), 
     fork(currencySagas), 
     fork(systemLimitSagas),
+    fork(customerSagas), 
+    fork(holidaySagas),
+    fork(leaveSagas),
     
     // account
     fork(employeeSagas),

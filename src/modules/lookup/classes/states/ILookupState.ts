@@ -12,6 +12,13 @@ import {
   IDiemAllRequest,
   IDiemByIdRequest,
   IDiemListRequest,
+  IHolidayAllRequest,
+  IHolidayByIdRequest,
+  IHolidayListRequest,
+  ILeaveAllRequest,
+  ILeaveByIdRequest,
+  ILeaveListRequest,
+  ILeavePutRequest,
   IMenuGetAllRequest,
   IMenuGetByIdRequest,
   IMenuListRequest,
@@ -26,7 +33,7 @@ import {
   IRoleListRequest,
   ISystemLimitAllRequest,
   ISystemLimitByIdRequest,
-  ISystemLimitListRequest
+  ISystemLimitListRequest,
 } from '@lookup/classes/queries';
 import {
   ICompany,
@@ -41,6 +48,12 @@ import {
   IDiem,
   IDiemDetail,
   IDiemList,
+  IHoliday,
+  IHolidayDetail,
+  IHolidayList,
+  ILeave,
+  ILeaveDetail,
+  ILeaveList,
   IMenu,
   IMenuDetail,
   IMenuList,
@@ -55,7 +68,7 @@ import {
   IRoleList,
   ISystemLimit,
   ISystemLimitDetail,
-  ISystemLimitList
+  ISystemLimitList,
 } from '@lookup/classes/response';
 
 export interface ILookupState {
@@ -112,4 +125,13 @@ export interface ILookupState {
     ISystemLimitByIdRequest,
     ISystemLimitDetail
   >;
+
+  holidayGetAll: IQueryCollectionState<IHolidayAllRequest, IHoliday>;
+  holidayGetList: IQueryCollectionState<IHolidayListRequest, IHolidayList>;
+  holidayGetById: IQuerySingleState<IHolidayByIdRequest, IHolidayDetail>;
+
+  leaveGetAll: IQueryCollectionState<ILeaveAllRequest, ILeave>;
+  leaveGetList: IQueryCollectionState<ILeaveListRequest, ILeaveList>;
+  leaveGetById: IQuerySingleState<ILeaveByIdRequest, ILeaveDetail>;
+  leavePut: IQuerySingleState<ILeavePutRequest, ILeave>;
 }

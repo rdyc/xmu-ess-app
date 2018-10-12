@@ -11,6 +11,13 @@ import {
   diemGetAllReducer,
   diemGetByIdReducer,
   diemGetListReducer,
+  holidayGetAllReducer,
+  holidayGetByIdReducer,
+  holidayGetListReducer,
+  leaveGetAllReducer,
+  leaveGetByIdReducer,
+  leaveGetListReducer,
+  leavePutReducer,
   menuGetAllReducer,
   menuGetByIdReducer,
   menuGetListReducer,
@@ -25,7 +32,7 @@ import {
   roleGetListReducer,
   systemLimitGetAllReducer,
   systemLimitGetByIdReducer,
-  systemLimitGetListReducer
+  systemLimitGetListReducer,
 } from '@lookup/store/reducers';
 
 const lookupReducers = {
@@ -63,7 +70,16 @@ const lookupReducers = {
 
   systemLimitGetAll: systemLimitGetAllReducer,
   systemLimitGetList: systemLimitGetListReducer,
-  systemLimitGetById: systemLimitGetByIdReducer
+  systemLimitGetById: systemLimitGetByIdReducer,
+
+  holidayGetAll: holidayGetAllReducer,
+  holidayGetList: holidayGetListReducer,
+  holidayGetById: holidayGetByIdReducer,
+
+  leaveGetAll: leaveGetAllReducer,
+  leaveGetList: leaveGetListReducer,
+  leaveGetById: leaveGetByIdReducer,
+  leavePut: leavePutReducer
 };
 
 export default lookupReducers;
