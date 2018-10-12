@@ -2,6 +2,7 @@ import employeeMySagas from '@account/store/sagas/employeeMySagas';
 import employeeProfileSagas from '@account/store/sagas/employeeProfileSagas';
 import employeeSagas from '@account/store/sagas/employeeSagas';
 import systemSagas from '@common/store/sagas/systemSagas';
+import expenseSagas from '@expense/store/sagas/expenseSagas';
 import notificationSagas from '@layout/store/sagas/notificationSagas';
 import customerSagas from '@lookup/store/sagas/customerSagas';
 import projectSagas from '@project/store/sagas/projectSagas';
@@ -23,5 +24,8 @@ export function* rootSaga() {
     
     // project
     fork(projectSagas),
+
+    // expense
+    fork(expenseSagas),
   ]);
 }
