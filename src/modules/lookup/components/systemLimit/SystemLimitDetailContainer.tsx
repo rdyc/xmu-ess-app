@@ -13,11 +13,11 @@ import {
   layoutNavBackHide,
   layoutNavBackShow,
 } from '@layout/store/actions';
-import { ICurrencyByIdRequest } from '@lookup/classes/queries';
-import { ICurrencyDetail } from '@lookup/classes/response/';
-import { CurrencyUserAction } from '@lookup/classes/types';
-import { CurrencyDetailComponent } from '@lookup/components/currency';
-import { currencyGetByIdDispose, currencyGetByIdRequest } from '@lookup/store/actions';
+import { ISystemLimitByIdRequest } from '@lookup/classes/queries';
+import { ISystemLimitDetail } from '@lookup/classes/response/';
+import { SystemLimitUserAction } from '@lookup/classes/types';
+import { SystemLimitDetailComponent } from '@lookup/components/systemLimit';
+import { systemLimitGetByIdDispose, systemLimitGetByIdRequest } from '@lookup/store/actions';
 import {
   Button,
   Dialog,
@@ -38,7 +38,7 @@ import { Dispatch } from 'redux';
 
 interface PropsFromState extends RouteComponentProps<void> {
   layoutState: ILayoutState;
-  currencyState: IQuerySingleState<ICurrencyByIdRequest, ICurrencyDetail>;
+  systemLimitState: IQuerySingleState<ISystemLimitByIdRequest, ISystemLimitDetail>;
 }
 
 interface PropsFromDispatch {
@@ -58,14 +58,14 @@ interface PropsFromDispatch {
     dispose: typeof appBarDispose;
   };
   
-  currencyDispatch: {
-    getByIdRequest: typeof currencyGetByIdRequest;
-    getByIdDispose: typeof currencyGetByIdDispose;
+  systemLimitDispatch: {
+    getByIdRequest: typeof systemLimitGetByIdRequest;
+    getByIdDispose: typeof systemLimitGetByIdDispose;
   };
 }
 
 interface RouteParams {
-  currencyUid: string;
+  systemLimitUid: string;
 }
 
 type AllProps = PropsFromState & 
@@ -86,11 +86,11 @@ const initialState = {
 
 type State = Readonly<typeof initialState>;
 
-class CurrencyDetail extends React.Component<AllProps, State> {
+class SystemLimitDetail extends React.Component<AllProps, State> {
   public state: State = initialState;
 
   public componentWillUnmount() {
-    const { layoutDispatch, appBarDispatch, currencyDispatch } = this.props;
+    const { layoutDispatch, appBarDispatch, systemLimitDispatch } = this.props;
 
     layoutDispatch.changeView(null);
     layoutDispatch.navBackHide();
@@ -99,11 +99,11 @@ class CurrencyDetail extends React.Component<AllProps, State> {
 
     appBarDispatch.dispose();
 
-    currencyDispatch.getByIdDispose();
+    systemLimitDispatch.getByIdDispose();
   }
 
   public componentWillReceiveProps(nextProps: AllProps) {
-    if (nextProps.currencyState.response !== this.props.currencyState.response) {
+    if (nextProps.systemLimitState.response !== this.props.systemLimitState.response) {
       this.generateMenus(nextProps);
     }
   }
@@ -113,8 +113,8 @@ class CurrencyDetail extends React.Component<AllProps, State> {
 
     layoutDispatch.changeView({
       menuUid: 'MNU55',
-      title: intl.formatMessage({id: 'lookup.currency.title'}),
-      subTitle : intl.formatMessage({id: 'lookup.currency..subTitle'})
+      title: intl.formatMessage({id: 'systemLimit.detail.title'}),
+      subTitle : intl.formatMessage({id: 'systemLimit.detail.subTitle'})
     });
 
     layoutDispatch.navBackShow();
@@ -126,7 +126,7 @@ class CurrencyDetail extends React.Component<AllProps, State> {
   }
 
   public render () {
-    const { isLoading, response } = this.props.currencyState;
+    const { isLoading, response } = this.props.systemLimitState;
 
     return (
       <div>
@@ -138,7 +138,7 @@ class CurrencyDetail extends React.Component<AllProps, State> {
         }
         {
           response && 
-          <CurrencyDetailComponent {...this.props}  />
+          <SystemLimitDetailComponent {...this.props}  />
         }
         {this.renderDialog(this.state)}
       </div>
@@ -149,14 +149,14 @@ class CurrencyDetail extends React.Component<AllProps, State> {
     <Dialog
       fullScreen={state.dialogFullScreen}
       open={state.dialogOpen}
-      aria-labelledby="currency-detail-dialog-title"
-      aria-describedby="currency-detail-dialog-description"
+      aria-labelledby="systemLimit-detail-dialog-title"
+      aria-describedby="systemLimit-detail-dialog-description"
     >
-      <DialogTitle id="currency-detail-dialog-title">
+      <DialogTitle id="systemLimit-detail-dialog-title">
         {state.dialogTitle}
       </DialogTitle>
       <DialogContent>
-        <DialogContentText id="currency-detail-dialog-description">
+        <DialogContentText id="systemLimit-detail-dialog-description">
           {state.dialogDescription}
         </DialogContentText>
       </DialogContent>
@@ -172,28 +172,29 @@ class CurrencyDetail extends React.Component<AllProps, State> {
   );
 
   private loadData = (): void => {
-    const { layoutState, currencyDispatch, match } = this.props;
+    const { layoutState, systemLimitDispatch, match } = this.props;
     
     if (layoutState.user) {
-      currencyDispatch.getByIdRequest({
-        currencyUid: match.params.currencyUid
+      systemLimitDispatch.getByIdRequest({
+        companyUid:  layoutState.user.company.uid,
+        systemLimitUid: match.params.systemLimitUid
       });
     }
   }
 
   private generateMenus = (currentProps: AllProps) => {
     const { intl } = currentProps;
-    const { response } = currentProps.currencyState;
+    const { response } = currentProps.systemLimitState;
     
     const currentMenus = [
       {
-        id: CurrencyUserAction.Refresh,
+        id: SystemLimitUserAction.Refresh,
         name: intl.formatMessage({id: 'global.action.refresh'}),
         enabled: true,
         visible: true
       },
       {
-        id: CurrencyUserAction.Modify,
+        id: SystemLimitUserAction.Modify,
         name: intl.formatMessage({id: 'global.action.modify'}),
         enabled: response !== undefined,
         visible: true
@@ -205,12 +206,12 @@ class CurrencyDetail extends React.Component<AllProps, State> {
   
   private handleMenuClick = (menu: IAppBarMenu): void => {
     switch (menu.id) {
-      case CurrencyUserAction.Refresh:
-        this.handleCurrencyRefresh();
+      case SystemLimitUserAction.Refresh:
+        this.handleSystemLimitRefresh();
         break;
       
-      case CurrencyUserAction.Modify:
-        this.handleCurrencyModify();
+      case SystemLimitUserAction.Modify:
+        this.handleSystemLimitModify();
         break;
     
       default:
@@ -218,20 +219,20 @@ class CurrencyDetail extends React.Component<AllProps, State> {
     }
   };
 
-  private handleCurrencyRefresh = () => {
-    const { currencyDispatch } = this.props;
+  private handleSystemLimitRefresh = () => {
+    const { systemLimitDispatch } = this.props;
 
-    currencyDispatch.getByIdDispose();
+    systemLimitDispatch.getByIdDispose();
     
     this.loadData();
   };
 
-  private handleCurrencyModify = () => {
+  private handleSystemLimitModify = () => {
     const { intl } = this.props;
 
     this.handleDialogOpen(
-      intl.formatMessage({id: 'currency.dialog.modifyTitle'}), 
-      intl.formatMessage({id: 'currency.dialog.modifyDescription'}),
+      intl.formatMessage({id: 'systemLimit.dialog.modifyTitle'}), 
+      intl.formatMessage({id: 'systemLimit.dialog.modifyDescription'}),
       intl.formatMessage({id: 'global.action.disaggree'}),
       intl.formatMessage({id: 'global.action.aggree'}),
     );
@@ -256,17 +257,17 @@ class CurrencyDetail extends React.Component<AllProps, State> {
 
   private handleDialogConfirmed = () => {
     const { match, history } = this.props;
-    const currencyUid = match.params.currencyUid;
+    const systemLimitUid = match.params.systemLimitUid;
 
     this.handleDialogClose();
 
-    history.push('/currency/form/', { uid: currencyUid });
+    history.push('/lookup/systemLimit/form/', { uid: systemLimitUid });
   };
 }
 
-const mapStateToProps = ({ layout, currencyGetById }: IAppState) => ({
+const mapStateToProps = ({ layout, systemLimitGetById }: IAppState) => ({
   layoutState: layout,
-  currencyState: currencyGetById
+  systemLimitState: systemLimitGetById
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
@@ -286,17 +287,17 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     dispose: () => dispatch(appBarDispose()),
   },
   
-  currencyDispatch: {
-    getByIdRequest: (request: ICurrencyByIdRequest) => dispatch(currencyGetByIdRequest(request)),
-    getByIdDispose: () => dispatch(currencyGetByIdDispose()),
+  systemLimitDispatch: {
+    getByIdRequest: (request: ISystemLimitByIdRequest) => dispatch(systemLimitGetByIdRequest(request)),
+    getByIdDispose: () => dispatch(systemLimitGetByIdDispose()),
   },
 });
 
-export const CurrencyDetailContainer = connect(
+export const SystemLimitDetailContainer = connect(
   mapStateToProps, 
   mapDispatchToProps
 )(
   withStyles(styles)(
-    injectIntl(CurrencyDetail)
+    injectIntl(SystemLimitDetail)
   )
 );

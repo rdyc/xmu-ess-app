@@ -4,21 +4,19 @@ import {
   Card,
   CardContent,
   CardHeader,
-  Checkbox,
-  FormControlLabel,
   Grid,
   TextField,
   WithStyles,
 } from '@material-ui/core';
-import { ICurrencyByIdRequest } from '@lookup/classes/queries';
-import { ICurrencyDetail } from '@lookup/classes/response';
+import { ISystemLimitByIdRequest } from '@lookup/classes/queries';
+import { ISystemLimitDetail } from '@lookup/classes/response';
 import styles from '@styles';
 import * as React from 'react';
 import { FormattedMessage, InjectedIntlProps } from 'react-intl';
 import { RouteComponentProps } from 'react-router';
 
 interface PropsFromState extends RouteComponentProps<void> {
-  currencyState: IQuerySingleState<ICurrencyByIdRequest, ICurrencyDetail>;
+  systemLimitState: IQuerySingleState<ISystemLimitByIdRequest, ISystemLimitDetail>;
 }
 
 type AllProps = PropsFromState & 
@@ -26,15 +24,15 @@ type AllProps = PropsFromState &
                 InjectedIntlProps & 
                 WithStyles<typeof styles>;
 
-export const CurrencyDetailComponent: React.StatelessComponent<AllProps> = props => { 
+export const SystemLimitDetailComponent: React.StatelessComponent<AllProps> = props => { 
   const { intl } = props;
-  const { response } = props.currencyState;
+  const { response } = props.systemLimitState;
 
-  const renderDetail = (currency: ICurrencyDetail) => (
+  const renderDetail = (systemLimit: ISystemLimitDetail) => (
     <Card square>
       <CardHeader 
-        title={<FormattedMessage id="lookup.currency.lookupTitle"/>}
-        subheader={<FormattedMessage id="lookup.currency.lookupDescription" />}
+        title={<FormattedMessage id="lookup.systemLimit.lookupTitle"/>}
+        subheader={<FormattedMessage id="lookup.systemLimit.lookupDescription" />}
         // action={
         //   <IconButton>
         //     <MoreVertIcon />
@@ -46,34 +44,29 @@ export const CurrencyDetailComponent: React.StatelessComponent<AllProps> = props
           fullWidth
           contentEditable={false}
           margin="normal"
-          label={<FormattedMessage id="currency.field.uid" />}
-          value={currency.uid}
+          label={<FormattedMessage id="systemLimit.field.uid" />}
+          value={systemLimit.uid}
         />
         <TextField
           fullWidth
           contentEditable={false}
           margin="normal"
-          label={<FormattedMessage id="currency.field.symbol" />}
-          value={currency.symbol ? currency.symbol : 'N/A'}
+          label={<FormattedMessage id="systemLimit.field.type" />}
+          value={systemLimit.categoryType}
         />
         <TextField
           fullWidth
           contentEditable={false}
           margin="normal"
-          label={<FormattedMessage id="currency.field.name" />}
-          value={currency.name}
+          label={<FormattedMessage id="systemLimit.field.name" />}
+          value={systemLimit.companyUid}
         />
         <TextField
           fullWidth
           contentEditable={false}
           margin="normal"
-          label={<FormattedMessage id="currency.field.rate" />}
-          value={intl.formatNumber(currency.rate || 0)}
-        />
-        <FormControlLabel
-          contentEditable={false}
-          label={<FormattedMessage id="currency.field.isActive" />}
-          control={<Checkbox checked={currency.isActive} />}
+          label={<FormattedMessage id="systemLimit.field.rate" />}
+          value={intl.formatNumber(systemLimit.days || 0)}
         />
       </CardContent>
     </Card>

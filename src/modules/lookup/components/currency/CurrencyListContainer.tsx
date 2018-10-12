@@ -100,8 +100,8 @@ class CurrencyList extends React.Component<AllProps> {
 
     layoutDispatch.changeView({
       menuUid: 'MNU55',
-      title: intl.formatMessage({ id: 'currency.title' }),
-      subTitle: intl.formatMessage({ id: 'currency.subTitle' })
+      title: intl.formatMessage({ id: 'lookup.currency.lookupTitle' }),
+      subTitle: intl.formatMessage({ id: 'lookup.currency.lookupDescription' })
     });
 
     layoutDispatch.modeListOn();

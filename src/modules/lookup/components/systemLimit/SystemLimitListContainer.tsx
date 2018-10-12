@@ -100,8 +100,8 @@ class SystemLimitList extends React.Component<AllProps> {
 
     layoutDispatch.changeView({
       menuUid: 'MNU47',
-      title: intl.formatMessage({ id: 'systemLimit.title' }),
-      subTitle: intl.formatMessage({ id: 'systemLimit.subTitle' })
+      title: intl.formatMessage({ id: 'lookup.systemLimit.lookupTitle' }),
+      subTitle: intl.formatMessage({ id: 'lookup.systemLimit.lookupDescription' })
     });
 
     layoutDispatch.modeListOn();

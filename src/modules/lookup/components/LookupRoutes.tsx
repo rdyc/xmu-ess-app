@@ -1,7 +1,7 @@
 import { ConnectedReduxProps } from '@generic/types';
 import { IAppUser } from '@layout/interfaces';
 import { CurrencyDetailContainer, CurrencyListContainer } from '@lookup/components/currency';
-import { SystemLimitListContainer } from '@lookup/components/systemLimit';
+import { SystemLimitDetailContainer, SystemLimitListContainer } from '@lookup/components/systemLimit';
 import { WithStyles } from '@material-ui/core';
 import styles from '@styles';
 import * as React from 'react';
@@ -13,14 +13,11 @@ interface PropsFromState extends RouteComponentProps<void>, WithStyles<typeof st
 
 type AllProps = PropsFromState & ConnectedReduxProps;
 
-export const currencyRoutes: React.SFC<AllProps> = props => (
+export const lookupRoutes: React.SFC<AllProps> = props => (
   <Switch>
-    <Route path={`${props.match.path}/list/`} component={CurrencyListContainer} />
-    <Route path={`${props.match.path}/details/:currencyUid`} component={CurrencyDetailContainer} />
-  </Switch>
-);
-export const systemLimitRoutes: React.SFC<AllProps> = props => (
-  <Switch>
-    <Route path={`${props.match.path}/list/`} component={SystemLimitListContainer} />
+    <Route path={`${props.match.path}/currency/list/`} component={CurrencyListContainer} />
+    <Route path={`${props.match.path}/currency/details/:currencyUid`} component={CurrencyDetailContainer} />
+    <Route path={`${props.match.path}/systemlimit/list/`} component={SystemLimitListContainer} />
+    <Route path={`${props.match.path}/systemlimit/details/:companyUid/:systemLimitUid`} component={SystemLimitDetailContainer} />
   </Switch>
 );

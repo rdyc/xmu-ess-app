@@ -62,13 +62,13 @@ export const SystemLimitListComponent: React.ComponentType<AllProps> = props => 
                   color="primary" 
                   variant="body2"
                 >
-                  {systemLimit.category}
+                  {systemLimit.category} {systemLimit.categoryType}
                 </Typography>
                 <Typography 
                   noWrap
                   variant="body1"
                 >
-                  {systemLimit.company}
+                  {systemLimit.company} {systemLimit.companyUid}
                 </Typography>
                 <Typography 
                   noWrap
@@ -119,12 +119,12 @@ export const SystemLimitListComponent: React.ComponentType<AllProps> = props => 
         >
           {
             response &&
-            response.metadata && 
+            response.metadata &&
             <Grid container spacing={24}>
               <Grid item xs={6} sm={6}>
                 <Typography variant="caption" color="primary">
                   <FormattedNumber value={response.metadata.total} /> &nbsp;
-                  <FormattedPlural one="systemLimit" other="systemLimits" value={response.metadata.total} />
+                  <FormattedPlural one="currency" other="currencies" value={response.metadata.total} />
                 </Typography>
               </Grid>
               <Grid item xs={6} sm={6}>
@@ -139,7 +139,7 @@ export const SystemLimitListComponent: React.ComponentType<AllProps> = props => 
     >
       {
         response &&
-        isArray(response.data) && 
+        isArray(response.data) &&
         renderSystemLimitList(response.data)
       }
     </List>
