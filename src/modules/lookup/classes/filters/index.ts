@@ -8,3 +8,7 @@ export * from './ICompanyAllFilter';
 export * from './ICompanyListFilter';
 export * from './IDiemAllFilter';
 export * from './IDiemListFilter';
+export * from './IMenuGetAllFilter';
+export * from './IMenuListFilter';
+export * from './IPositionGetAllFilter';
+export * from './IPositionListFilter';

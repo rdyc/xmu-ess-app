@@ -6,7 +6,9 @@ import notificationSagas from '@layout/store/sagas/notificationSagas';
 import companySagas from '@lookup/store/sagas/companySagas';
 import customerSagas from '@lookup/store/sagas/customerSagas';
 import diemSagas from '@lookup/store/sagas/diemSagas';
+import menuSagas from '@lookup/store/sagas/menuSagas';
 import mileageExceptionSagas from '@lookup/store/sagas/mileageExceptionSagas';
+import positionSagas from '@lookup/store/sagas/positionSagas';
 import roleSagas from '@lookup/store/sagas/roleSagas';
 import projectSagas from '@project/store/sagas/projectSagas';
 import { all, fork } from 'redux-saga/effects';
@@ -23,6 +25,8 @@ export function* rootSaga() {
     fork(companySagas),
     fork(roleSagas),
     fork(diemSagas), 
+    fork(menuSagas),
+    fork(positionSagas), 
     
     // account
     fork(employeeSagas),

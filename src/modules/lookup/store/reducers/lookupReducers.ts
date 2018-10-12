@@ -5,23 +5,28 @@ import {
   customerGetAllReducer,
   customerGetByIdReducer,
   customerGetListReducer,
-  diemGetAllReducer, 
-  diemGetByIdReducer, 
+  diemGetAllReducer,
+  diemGetByIdReducer,
   diemGetListReducer,
+  menuGetAllReducer,
+  menuGetByIdReducer,
+  menuGetListReducer,
   mileageExceptionGetAllReducer,
   mileageExceptionGetByIdReducer,
   mileageExceptionGetListReducer,
+  positionGetAllReducer,
+  positionGetByIdReducer,
+  positionGetListReducer,
   roleGetAllReducer,
   roleGetByIdReducer,
   roleGetListReducer,
- 
 } from '@lookup/store/reducers';
 
 const lookupReducers = {
   customerGetAll: customerGetAllReducer,
   customerGetList: customerGetListReducer,
   customerGetById: customerGetByIdReducer,
-  
+
   mileageExceptionGetAll: mileageExceptionGetAllReducer,
   mileageExceptionGetById: mileageExceptionGetByIdReducer,
   mileageExceptionGetList: mileageExceptionGetListReducer,
@@ -33,10 +38,18 @@ const lookupReducers = {
   companyGetAll: companyGetAllReducer,
   companyGetList: companyGetListReducer,
   companyGetById: companyGetByIdReducer,
-  
+
   diemGetAll: diemGetAllReducer,
   diemGetList: diemGetListReducer,
-  diemGetById: diemGetByIdReducer,  
+  diemGetById: diemGetByIdReducer,
+
+  menuGetAll: menuGetAllReducer,
+  menuGetById: menuGetByIdReducer,
+  menuGetList: menuGetListReducer,
+
+  positionGetAll: positionGetAllReducer,
+  positionGetById: positionGetByIdReducer,
+  positionGetList: positionGetListReducer
 };
 
 export default lookupReducers;

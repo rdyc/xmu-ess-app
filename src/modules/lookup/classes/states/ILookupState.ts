@@ -9,12 +9,18 @@ import {
   IDiemAllRequest,
   IDiemByIdRequest,
   IDiemListRequest,
+  IMenuGetAllRequest,
+  IMenuGetByIdRequest,
+  IMenuListRequest,
   IMileageExceptionAllRequest,
   IMileageExceptionByIdRequest,
   IMileageExceptionListRequest,
+  IPositionGetAllRequest,
+  IPositionGetByIdRequest,
+  IPositionListRequest,
   IRoleAllRequest,
   IRoleByIdRequest,
-  IRoleListRequest
+  IRoleListRequest,
 } from '@lookup/classes/queries';
 import {
   ICompany,
@@ -26,12 +32,18 @@ import {
   IDiem,
   IDiemDetail,
   IDiemList,
+  IMenu,
+  IMenuDetail,
+  IMenuList,
   IMileageException,
   IMileageExceptionDetail,
   IMileageExceptionList,
+  IPosition,
+  IPositionDetail,
+  IPositionList,
   IRole,
   IRoleDetail,
-  IRoleList
+  IRoleList,
 } from '@lookup/classes/response';
 
 export interface ILookupState {
@@ -59,8 +71,16 @@ export interface ILookupState {
   companyGetAll: IQueryCollectionState<ICompanyAllRequest, ICompany>;
   companyGetList: IQueryCollectionState<ICompanyListRequest, ICompanyList>;
   companyGetById: IQuerySingleState<ICompanyByIdRequest, ICompanyDetail>;
-  
+
   diemGetAll: IQueryCollectionState<IDiemAllRequest, IDiem>;
   diemGetList: IQueryCollectionState<IDiemListRequest, IDiemList>;
   diemGetById: IQuerySingleState<IDiemByIdRequest, IDiemDetail>;
+
+  menuGetAll: IQueryCollectionState<IMenuGetAllRequest, IMenu>;
+  menuGetList: IQueryCollectionState<IMenuListRequest, IMenuList>;
+  menuGetById: IQuerySingleState<IMenuGetByIdRequest, IMenuDetail>;
+
+  positionGetAll: IQueryCollectionState<IPositionGetAllRequest, IPosition>;
+  positionGetList: IQueryCollectionState<IPositionListRequest, IPositionList>;
+  positionGetById: IQuerySingleState<IPositionGetByIdRequest, IPositionDetail>;
 }
