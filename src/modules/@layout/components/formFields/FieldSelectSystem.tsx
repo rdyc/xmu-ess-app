@@ -1,7 +1,6 @@
 import { ISystemList } from '@common/classes/response';
 import { CommonCategoryType } from '@common/classes/types';
-import SystemSelect from '@common/components/controls/SystemSelect';
-import { rootStore } from '@generic/roots';
+import CommonSystemSelect from '@common/components/system/CommonSystemSelect';
 import { WithWidth } from '@material-ui/core/withWidth';
 import * as React from 'react';
 import { BaseFieldProps, WrappedFieldProps } from 'redux-form';
@@ -23,8 +22,7 @@ export const FieldSelectSystem: React.SFC<AllProps> = props => {
   };
 
   return (    
-    <SystemSelect 
-      {...rootStore}
+    <CommonSystemSelect
       {...props}
       onChangeValue={handleOnChangeValue}
       category={type}
