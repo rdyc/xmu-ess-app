@@ -92,6 +92,12 @@ export const menuLinkMapper = (menuUid: string) => {
     case 'MNU41':
       path = '/approval/travel/settlement';    
       break;
+    case 'MNU36':
+      path = '/holiday/list';    
+      break;
+    case 'MNU48':
+      path = '/leave/list';    
+      break;
 
     default:
       path = '/';
