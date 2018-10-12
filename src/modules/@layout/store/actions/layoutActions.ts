@@ -1,9 +1,8 @@
-import { action } from 'typesafe-actions';
-
-import { ILookupRoleMenuList } from '@lookup/classes';
 import { IAppUser, IView } from '@layout/interfaces';
 import { IAlert } from '@layout/interfaces/IAlert';
 import { Anchor } from '@layout/types';
+import { ILookupRoleMenuList } from '@lookup/classes';
+import { action } from 'typesafe-actions';
 
 export const enum LayoutAction {
   ASSIGN_USER = '@@layout/ASSIGN_USER',

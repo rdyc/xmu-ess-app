@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { InjectedFormProps, reduxForm, Field } from 'redux-form';
 import { Dispatch } from 'redux';
+import { Field, InjectedFormProps, reduxForm } from 'redux-form';
 
 interface TestFormData {
   foo: string;

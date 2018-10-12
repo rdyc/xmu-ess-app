@@ -1,5 +1,6 @@
-import Enlang from './entries/en-US';
 import { addLocaleData } from 'react-intl';
+
+import Enlang from './entries/en-US';
 
 const AppLocale = {
   en: Enlang

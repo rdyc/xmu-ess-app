@@ -10,9 +10,9 @@ import {
   projectGetListError,
   projectGetListRequest,
   projectGetListSuccess,
-  projectPostSuccess,
   projectPostError,
   projectPostRequest,
+  projectPostSuccess,
   projectPutRequest,
 } from '@project/store/actions';
 import saiyanSaga from '@utils/saiyanSaga';

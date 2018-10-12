@@ -1,5 +1,5 @@
-import { action } from 'typesafe-actions';
 import { IAppBarMenu } from '@layout/interfaces/IAppBarState';
+import { action } from 'typesafe-actions';
 
 export const enum AppBarAction {
   ASSIGN_CALLBACK = '@@app-bar/ASSIGN_CALLBACK',
