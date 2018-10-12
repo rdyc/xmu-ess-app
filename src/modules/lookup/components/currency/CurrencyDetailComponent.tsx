@@ -1,5 +1,7 @@
 import { IQuerySingleState } from '@generic/interfaces';
 import { ConnectedReduxProps } from '@generic/types';
+import { ICurrencyByIdRequest } from '@lookup/classes/queries';
+import { ICurrencyDetail } from '@lookup/classes/response';
 import {
   Card,
   CardContent,
@@ -10,8 +12,6 @@ import {
   TextField,
   WithStyles,
 } from '@material-ui/core';
-import { ICurrencyByIdRequest } from '@lookup/classes/queries';
-import { ICurrencyDetail } from '@lookup/classes/response';
 import styles from '@styles';
 import * as React from 'react';
 import { FormattedMessage, InjectedIntlProps } from 'react-intl';

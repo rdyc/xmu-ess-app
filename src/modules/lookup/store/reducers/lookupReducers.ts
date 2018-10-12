@@ -1,5 +1,5 @@
-import { customerGetAllReducer, customerGetByIdReducer, customerGetListReducer, 
-  currencyGetAllReducer, currencyGetByIdReducer, currencyGetListReducer, 
+import { currencyGetAllReducer, currencyGetByIdReducer, currencyGetListReducer, 
+  customerGetAllReducer, customerGetByIdReducer, customerGetListReducer, 
   systemLimitGetAllReducer, systemLimitGetByIdReducer, systemLimitGetListReducer 
 } from '@lookup/store/reducers';
 

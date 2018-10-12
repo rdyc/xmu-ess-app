@@ -1,5 +1,7 @@
 import { IQuerySingleState } from '@generic/interfaces';
 import { ConnectedReduxProps } from '@generic/types';
+import { ISystemLimitByIdRequest } from '@lookup/classes/queries';
+import { ISystemLimitDetail } from '@lookup/classes/response';
 import {
   Card,
   CardContent,
@@ -8,8 +10,6 @@ import {
   TextField,
   WithStyles,
 } from '@material-ui/core';
-import { ISystemLimitByIdRequest } from '@lookup/classes/queries';
-import { ISystemLimitDetail } from '@lookup/classes/response';
 import styles from '@styles';
 import * as React from 'react';
 import { FormattedMessage, InjectedIntlProps } from 'react-intl';
@@ -65,7 +65,7 @@ export const SystemLimitDetailComponent: React.StatelessComponent<AllProps> = pr
           fullWidth
           contentEditable={false}
           margin="normal"
-          label={<FormattedMessage id="systemLimit.field.rate" />}
+          label={<FormattedMessage id="systemLimit.field.limit" />}
           value={intl.formatNumber(systemLimit.days || 0)}
         />
       </CardContent>

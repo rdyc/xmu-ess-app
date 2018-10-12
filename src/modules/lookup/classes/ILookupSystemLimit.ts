@@ -1,5 +1,5 @@
-import { ILookupCompany } from '@lookup/classes/';
 import { ICommonSystem } from '@common/classes';
+import { ILookupCompany } from '@lookup/classes/';
 
 export interface ILookupSystemLimit {
   uid: string;

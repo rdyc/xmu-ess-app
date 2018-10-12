@@ -1,7 +1,7 @@
 import { IResponseCollection } from '@generic/interfaces';
-import { action } from 'typesafe-actions';
 import { ICurrencyAllRequest, ICurrencyByIdRequest, ICurrencyListRequest } from '@lookup/classes/queries';
 import { ICurrency, ICurrencyList } from '@lookup/classes/response';
+import { action } from 'typesafe-actions';
 
 export const enum CurrencyAction {
   GET_ALL_REQUEST = '@@currency/GET_ALL_REQUEST',
