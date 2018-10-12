@@ -2,6 +2,9 @@ import {
   companyGetAllReducer,
   companyGetByIdReducer,
   companyGetListReducer,
+  currencyGetAllReducer,
+  currencyGetByIdReducer,
+  currencyGetListReducer,
   customerGetAllReducer,
   customerGetByIdReducer,
   customerGetListReducer,
@@ -20,6 +23,9 @@ import {
   roleGetAllReducer,
   roleGetByIdReducer,
   roleGetListReducer,
+  systemLimitGetAllReducer,
+  systemLimitGetByIdReducer,
+  systemLimitGetListReducer
 } from '@lookup/store/reducers';
 
 const lookupReducers = {
@@ -49,7 +55,15 @@ const lookupReducers = {
 
   positionGetAll: positionGetAllReducer,
   positionGetById: positionGetByIdReducer,
-  positionGetList: positionGetListReducer
+  positionGetList: positionGetListReducer,
+
+  currencyGetAll: currencyGetAllReducer,
+  currencyGetList: currencyGetListReducer,
+  currencyGetById: currencyGetByIdReducer,
+
+  systemLimitGetAll: systemLimitGetAllReducer,
+  systemLimitGetList: systemLimitGetListReducer,
+  systemLimitGetById: systemLimitGetByIdReducer
 };
 
 export default lookupReducers;

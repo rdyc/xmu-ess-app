@@ -3,6 +3,9 @@ import {
   ICompanyAllRequest,
   ICompanyByIdRequest,
   ICompanyListRequest,
+  ICurrencyAllRequest,
+  ICurrencyByIdRequest,
+  ICurrencyListRequest,
   ICustomerAllRequest,
   ICustomerByIdRequest,
   ICustomerListRequest,
@@ -21,11 +24,17 @@ import {
   IRoleAllRequest,
   IRoleByIdRequest,
   IRoleListRequest,
+  ISystemLimitAllRequest,
+  ISystemLimitByIdRequest,
+  ISystemLimitListRequest
 } from '@lookup/classes/queries';
 import {
   ICompany,
   ICompanyDetail,
   ICompanyList,
+  ICurrency,
+  ICurrencyDetail,
+  ICurrencyList,
   ICustomer,
   ICustomerDetail,
   ICustomerList,
@@ -44,6 +53,9 @@ import {
   IRole,
   IRoleDetail,
   IRoleList,
+  ISystemLimit,
+  ISystemLimitDetail,
+  ISystemLimitList
 } from '@lookup/classes/response';
 
 export interface ILookupState {
@@ -83,4 +95,21 @@ export interface ILookupState {
   positionGetAll: IQueryCollectionState<IPositionGetAllRequest, IPosition>;
   positionGetList: IQueryCollectionState<IPositionListRequest, IPositionList>;
   positionGetById: IQuerySingleState<IPositionGetByIdRequest, IPositionDetail>;
+
+  currencyGetAll: IQueryCollectionState<ICurrencyAllRequest, ICurrency>;
+  currencyGetList: IQueryCollectionState<ICurrencyListRequest, ICurrencyList>;
+  currencyGetById: IQuerySingleState<ICurrencyByIdRequest, ICurrencyDetail>;
+
+  systemLimitGetAll: IQueryCollectionState<
+    ISystemLimitAllRequest,
+    ISystemLimit
+  >;
+  systemLimitGetList: IQueryCollectionState<
+    ISystemLimitListRequest,
+    ISystemLimitList
+  >;
+  systemLimitGetById: IQuerySingleState<
+    ISystemLimitByIdRequest,
+    ISystemLimitDetail
+  >;
 }
