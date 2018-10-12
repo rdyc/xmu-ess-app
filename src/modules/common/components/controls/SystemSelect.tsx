@@ -48,9 +48,9 @@ const initialState = {
 type State = Readonly<typeof initialState>;          
 
 class SystemSelect extends React.Component<AllProps, State> {
-  state: State = initialState;
+  public state: State = initialState;
 
-  componentDidMount() {
+  public componentDidMount() {
     const { input, disabled } = this.props;
     const { isLoading, response } = this.props.systemState;
 
@@ -66,36 +66,8 @@ class SystemSelect extends React.Component<AllProps, State> {
       this.loadData();
     }
   }
-
-  loadData = () => {
-    const { companyUid, category } = this.props;
-
-    this.props.systemDispatch.listRequest({
-      category,
-      filter: {
-        companyUid,
-        direction: 'ascending',
-        orderBy: 'value'
-      }
-    });
-  };
-
-  handleChange = (event: React.ChangeEvent<any>) => {
-    const { onChangeValue } = this.props;
-    const { response } = this.props.systemState;
-    const value = event.target.value;
-
-    if (response && response.data) {
-      const systems = response.data.filter(item => item.type === value);
-      const system = systems[0];
-      
-      onChangeValue(system ? system : null );
-      
-      this.setState({ selected: systems[0] });
-    }
-  };
   
-  render() {
+  public render() {
     const { width, input, label, disabled, meta } = this.props;
     const { response } = this.props.systemState;
     
@@ -148,6 +120,34 @@ class SystemSelect extends React.Component<AllProps, State> {
       </TextField>
     );
   }
+
+  private loadData = () => {
+    const { companyUid, category } = this.props;
+
+    this.props.systemDispatch.listRequest({
+      category,
+      filter: {
+        companyUid,
+        direction: 'ascending',
+        orderBy: 'value'
+      }
+    });
+  };
+
+  private handleChange = (event: React.ChangeEvent<any>) => {
+    const { onChangeValue } = this.props;
+    const { response } = this.props.systemState;
+    const value = event.target.value;
+
+    if (response && response.data) {
+      const systems = response.data.filter(item => item.type === value);
+      const system = systems[0];
+      
+      onChangeValue(system ? system : null );
+      
+      this.setState({ selected: systems[0] });
+    }
+  };
 }
 
 const mapStateToProps = ({ systemGetList }: IAppState) => ({

@@ -7,7 +7,7 @@ import { Typography, WithStyles, withStyles } from '@material-ui/core';
 import { IProjectGetByIdRequest, IProjectPutRequest } from '@project/classes/queries';
 import { IProjectPutDocument, IProjectPutPayload, IProjectPutSales } from '@project/classes/request';
 import { IProject, IProjectDetail } from '@project/classes/response';
-import ProjectForm from '@project/components/list/ProjectForm';
+import { ProjectFormComponent } from '@project/components/project';
 import { projectGetByIdDispose, projectGetByIdRequest, projectPutDispose, projectPutRequest } from '@project/store/actions';
 import styles from '@styles';
 import * as React from 'react';
@@ -60,10 +60,10 @@ const initialState = {
 
 type State = Readonly<typeof initialState>;
   
-class ProjectFormView extends React.Component<AllProps, State> {
-  state: State = initialState;
+class ProjectForm extends React.Component<AllProps, State> {
+  public state: State = initialState;
 
-  componentWillMount() {
+  public componentWillMount() {
     const { history } = this.props;
     const { user } = this.props.layoutState;
 
@@ -84,7 +84,7 @@ class ProjectFormView extends React.Component<AllProps, State> {
     }
   }
 
-  componentDidMount() {
+  public componentDidMount() {
     const { layoutDispatch, intl } = this.props;
 
     const view = {
@@ -112,7 +112,7 @@ class ProjectFormView extends React.Component<AllProps, State> {
     }   
   }
 
-  componentWillUnmount() {
+  public componentWillUnmount() {
     const { layoutDispatch, projectDispatch } = this.props;
 
     layoutDispatch.changeView(null);
@@ -122,7 +122,35 @@ class ProjectFormView extends React.Component<AllProps, State> {
     projectDispatch.putDispose();
   }
 
-  loadData = (uid: string): void => {
+  public render () {
+    const { isLoading, response } = this.props.projectGetState;
+
+    if (isLoading && !response) {
+      return (
+        <Typography variant="body2">
+          <FormattedMessage id="global.loading"/>
+        </Typography>
+      );
+    }
+
+    if (!isLoading && response && response.data) {
+      return (
+        <ProjectFormComponent
+          {...this.props}
+          {...this.state}
+          initialValues={response.data} 
+          validate={this.handleValidate}
+          onSubmit={this.handleSubmit} 
+          onSubmitSuccess={this.handleSubmitSuccess}
+          onSubmitFail={this.handleSubmitFail}
+        />
+      );
+    }
+    
+    return null;
+  }
+
+  private loadData = (uid: string): void => {
     const { user } = this.props.layoutState;
     const { getByIdRequest } = this.props.projectDispatch;
     
@@ -135,7 +163,7 @@ class ProjectFormView extends React.Component<AllProps, State> {
     }
   }
 
-  transform = (payload: IProjectDetail): IProjectPutPayload => {
+  private transform = (payload: IProjectDetail): IProjectPutPayload => {
     const parseDocuments = () => {
       if (
         payload.projectType === ProjectType.ExtraMiles || 
@@ -203,7 +231,7 @@ class ProjectFormView extends React.Component<AllProps, State> {
     };
   };
 
-  handleValidate = (payload: IProjectDetail) => {
+  private handleValidate = (payload: IProjectDetail) => {
     const errors = {};
   
     const requiredFields = [
@@ -220,26 +248,30 @@ class ProjectFormView extends React.Component<AllProps, State> {
     return errors;
   }
 
-  handleSubmit = (payload: IProjectDetail) => { 
+  private handleSubmit = (payload: IProjectDetail) => { 
     const { projectUid } = this.state;
     const { user } = this.props.layoutState;
     const { putRequest } = this.props.projectDispatch;
 
     if (user) {
-      return Promise.resolve(
+      const promise = new Promise((resolve, reject) => {
         putRequest({
+          resolve,
+          reject,
           projectUid,
           companyUid: user.company.uid,
           positionUid: user.position.uid,
           data: this.transform(payload)
-        })
-      );
+        });
+      });
+
+      return promise;
     }
 
     return Promise.reject('Empty user!');
   };
 
-  handleSubmitSuccess = (result: any, dispatch: Dispatch<any>) => {
+  private handleSubmitSuccess = (result: any, dispatch: Dispatch<any>) => {
     console.log(result);
     console.log(dispatch);
     const { alertAdd } = this.props.layoutDispatch;
@@ -250,52 +282,20 @@ class ProjectFormView extends React.Component<AllProps, State> {
     });
   };
 
-  handleSubmitFail = (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
-    console.log(errors);
-    console.log(dispatch);
-    console.log(submitError);
+  private handleSubmitFail = (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
+    // console.log(errors);
+    // console.log(dispatch);
+    // console.log(submitError);
 
-    // const { alertAdd } = this.props.layoutDispatch;
-
-    // alertAdd({
-    //   time: new Date(),
-    //   message: 'Failed when trying to update data!',
-    // });
-
-    // alertAdd({
-    //   time: new Date(),
-    //   message: 'Wakakak kaskdka',
-    //   details: submitError
-    // });
-  };
-
-  render () {
-    const { isLoading, response } = this.props.projectGetState;
-
-    if (isLoading && !response) {
-      return (
-        <Typography variant="body2">
-          <FormattedMessage id="global.loading"/>
-        </Typography>
-      );
-    }
-
-    if (!isLoading && response && response.data) {
-      return (
-        <ProjectForm
-          {...this.props}
-          {...this.state}
-          initialValues={response.data} 
-          validate={this.handleValidate}
-          onSubmit={this.handleSubmit} 
-          onSubmitSuccess={this.handleSubmitSuccess}
-          onSubmitFail={this.handleSubmitFail}
-        />
-      );
-    }
+    const { alertAdd } = this.props.layoutDispatch;
     
-    return null;
-  }
+    if (submitError) {
+      alertAdd({
+        time: new Date(),
+        message: submitError.message
+      });
+    }
+  };
 }
 
 const mapStateToProps = ({ layout, projectGetById, projectPut }: IAppState) => ({
@@ -320,11 +320,11 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   }
 });
 
-export default connect(
+export const ProjectFormContainer = connect(
   mapStateToProps, 
   mapDispatchToProps
 )(
   withStyles(styles)(
-    injectIntl(ProjectFormView)
+    injectIntl(ProjectForm)
   )
 );

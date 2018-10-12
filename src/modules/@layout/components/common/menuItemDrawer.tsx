@@ -27,7 +27,7 @@ type AllProps = PropsFromState &
                 WithWidth & 
                 WithStyles<typeof styles>;
 
-export const menuItemDrawer: React.StatelessComponent<AllProps> = props => {
+export const menuItemDrawer: React.SFC<AllProps> = props => {
   const { layoutState, layoutDispatch, classes, history } = props;
 
   const handleClick = (item: ILookupRoleMenuChildList) => {

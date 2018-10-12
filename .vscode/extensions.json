@@ -11,7 +11,8 @@
 		"mikestead.dotenv",
 		"rbbit.typescript-hero",
 		"vector-of-bool.gitflow",
-		"xabikos.ReactSnippets"
+		"xabikos.ReactSnippets",
+		"trabpukcip.vscode-npm-scripts"
 	],
 	// List of extensions recommended by VS Code that should not be recommended for users of this workspace.
 	"unwantedRecommendations": [

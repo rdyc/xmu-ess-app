@@ -18,7 +18,7 @@ type AllProps = PropsFromState &
                 ConnectedReduxProps & 
                 WithStyles<typeof styles>;
                 
-export const ProjectList: React.ComponentType<AllProps> = props => {
+export const ProjectListComponent: React.SFC<AllProps> = props => {
   const { history  } = props;
   const { response, isLoading  } = props.projectState;
 

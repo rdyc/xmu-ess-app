@@ -9,10 +9,10 @@ function* watchFetchRequest() {
     return saiyanSaga.fetch({
       method: 'get',
       path: '/v1/account/employees/my',
-      success: (response: IApiResponse) => ([
+      successEffects: (response: IApiResponse) => ([
         put(EmployeeFetchSuccess(response.body)),
       ]), 
-      failed: (response: IApiResponse) => ([
+      failureEffects: (response: IApiResponse) => ([
         put(EmployeeFetchError(response.statusText)),
         put(layoutAlertAdd({
           time: new Date(),
@@ -20,14 +20,13 @@ function* watchFetchRequest() {
           details: response
         }))
       ]), 
-      error: (error: TypeError) => ([
+      errorEffects: (error: TypeError) => ([
         put(EmployeeFetchError(error.message)),
         put(layoutAlertAdd({
           time: new Date(),
           message: error.message
         }))
-      ]),
-      finally: () => ([])
+      ])
     });
   };
 
