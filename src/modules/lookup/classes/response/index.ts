@@ -10,3 +10,6 @@ export * from './IMileageExceptionDetail';
 export * from './IRole';
 export * from './IRoleDetail';
 export * from './IRoleList';
+export * from './IDiem';
+export * from './IDiemDetail';
+export * from './IDiemList';

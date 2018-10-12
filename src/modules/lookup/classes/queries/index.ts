@@ -10,3 +10,6 @@ export * from './IRoleListRequest';
 export * from './ICompanyAllRequest';
 export * from './ICompanyByIdRequest';
 export * from './ICompanyListRequest';
+export * from './IDiemAllRequest';
+export * from './IDiemByIdRequest';
+export * from './IDiemListRequest';

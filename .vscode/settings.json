@@ -29,7 +29,12 @@
   "typescript.preferences.quoteStyle": "single",
   "breadcrumbs.enabled": false,
   "git.enableSmartCommit": true,
+<<<<<<< HEAD
   "workbench.iconTheme": "material-icon-theme",
   "window.zoomLevel": -1,
+=======
+  "workbench.iconTheme": "vs-seti",
+  "window.zoomLevel": 0,
+>>>>>>> origin/feature/lookup_hasann
   "prettier.singleQuote": true
 }

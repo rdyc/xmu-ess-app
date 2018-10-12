@@ -6,6 +6,9 @@ import {
   ICustomerAllRequest,
   ICustomerByIdRequest,
   ICustomerListRequest,
+  IDiemAllRequest,
+  IDiemByIdRequest,
+  IDiemListRequest,
   IMileageExceptionAllRequest,
   IMileageExceptionByIdRequest,
   IMileageExceptionListRequest,
@@ -20,6 +23,9 @@ import {
   ICustomer,
   ICustomerDetail,
   ICustomerList,
+  IDiem,
+  IDiemDetail,
+  IDiemList,
   IMileageException,
   IMileageExceptionDetail,
   IMileageExceptionList,
@@ -27,6 +33,7 @@ import {
   IRoleDetail,
   IRoleList
 } from '@lookup/classes/response';
+
 export interface ILookupState {
   customerGetAll: IQueryCollectionState<ICustomerAllRequest, ICustomer>;
   customerGetList: IQueryCollectionState<ICustomerListRequest, ICustomerList>;
@@ -44,10 +51,16 @@ export interface ILookupState {
     IMileageExceptionByIdRequest,
     IMileageExceptionDetail
   >;
+
   roleGetAll: IQueryCollectionState<IRoleAllRequest, IRole>;
   roleGetList: IQueryCollectionState<IRoleListRequest, IRoleList>;
   roleGetById: IQuerySingleState<IRoleByIdRequest, IRoleDetail>;
+
   companyGetAll: IQueryCollectionState<ICompanyAllRequest, ICompany>;
   companyGetList: IQueryCollectionState<ICompanyListRequest, ICompanyList>;
   companyGetById: IQuerySingleState<ICompanyByIdRequest, ICompanyDetail>;
+  
+  diemGetAll: IQueryCollectionState<IDiemAllRequest, IDiem>;
+  diemGetList: IQueryCollectionState<IDiemListRequest, IDiemList>;
+  diemGetById: IQuerySingleState<IDiemByIdRequest, IDiemDetail>;
 }

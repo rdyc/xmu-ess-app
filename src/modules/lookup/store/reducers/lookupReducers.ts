@@ -5,12 +5,16 @@ import {
   customerGetAllReducer,
   customerGetByIdReducer,
   customerGetListReducer,
+  diemGetAllReducer, 
+  diemGetByIdReducer, 
+  diemGetListReducer,
   mileageExceptionGetAllReducer,
   mileageExceptionGetByIdReducer,
   mileageExceptionGetListReducer,
   roleGetAllReducer,
   roleGetByIdReducer,
-  roleGetListReducer
+  roleGetListReducer,
+ 
 } from '@lookup/store/reducers';
 
 const lookupReducers = {
@@ -29,6 +33,10 @@ const lookupReducers = {
   companyGetAll: companyGetAllReducer,
   companyGetList: companyGetListReducer,
   companyGetById: companyGetByIdReducer,
+  
+  diemGetAll: diemGetAllReducer,
+  diemGetList: diemGetListReducer,
+  diemGetById: diemGetByIdReducer,  
 };
 
 export default lookupReducers;

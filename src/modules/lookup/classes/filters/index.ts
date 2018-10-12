@@ -6,3 +6,5 @@ export * from './IRoleAllFilter';
 export * from './IRoleListFilter';
 export * from './ICompanyAllFilter';
 export * from './ICompanyListFilter';
+export * from './IDiemAllFilter';
+export * from './IDiemListFilter';

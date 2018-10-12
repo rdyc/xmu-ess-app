@@ -10,3 +10,6 @@ export * from './roleGetListReducer';
 export * from './companyGetAllReducer';
 export * from './companyGetByIdReducer';
 export * from './companyGetListReducer';
+export * from './diemGetAllReducer';
+export * from './diemGetByIdReducer';
+export * from './diemGetListReducer';

@@ -5,6 +5,7 @@ import systemSagas from '@common/store/sagas/systemSagas';
 import notificationSagas from '@layout/store/sagas/notificationSagas';
 import companySagas from '@lookup/store/sagas/companySagas';
 import customerSagas from '@lookup/store/sagas/customerSagas';
+import diemSagas from '@lookup/store/sagas/diemSagas';
 import mileageExceptionSagas from '@lookup/store/sagas/mileageExceptionSagas';
 import roleSagas from '@lookup/store/sagas/roleSagas';
 import projectSagas from '@project/store/sagas/projectSagas';
@@ -21,7 +22,8 @@ export function* rootSaga() {
     fork(mileageExceptionSagas),
     fork(companySagas),
     fork(roleSagas),
-
+    fork(diemSagas), 
+    
     // account
     fork(employeeSagas),
     fork(employeeMySagas),

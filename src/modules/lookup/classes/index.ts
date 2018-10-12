@@ -6,3 +6,4 @@ export * from './ILookupRoleMenuChildList';
 export * from './ILookupRoleMenuList';
 export * from './ILookupProject';
 export * from './ILookupProjectSite';
+export * from './ILookupDiem';
