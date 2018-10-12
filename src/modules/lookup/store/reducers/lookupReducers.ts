@@ -1,9 +1,29 @@
-import { customerGetAllReducer, customerGetByIdReducer, customerGetListReducer } from '@lookup/store/reducers';
+import {
+  companyGetAllReducer,
+  companyGetByIdReducer,
+  companyGetListReducer,
+
+  customerGetAllReducer,
+  customerGetByIdReducer,
+  customerGetListReducer,
+
+  roleGetAllReducer,
+  roleGetByIdReducer,
+  roleGetListReducer
+} from '@lookup/store/reducers';
 
 const lookupReducers = {
   customerGetAll: customerGetAllReducer,
   customerGetList: customerGetListReducer,
-  customerGetById: customerGetByIdReducer
+  customerGetById: customerGetByIdReducer,
+
+  roleGetAll: roleGetAllReducer,
+  roleGetList: roleGetListReducer,
+  roleGetById: roleGetByIdReducer,
+
+  companyGetAll: companyGetAllReducer,
+  companyGetList: companyGetListReducer,
+  companyGetById: companyGetByIdReducer,
 };
 
 export default lookupReducers;
