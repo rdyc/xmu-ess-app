@@ -3,7 +3,10 @@ import employeeProfileSagas from '@account/store/sagas/employeeProfileSagas';
 import employeeSagas from '@account/store/sagas/employeeSagas';
 import activitySagas from '@common/store/sagas/activitySagas';
 import currencySagas from '@common/store/sagas/currencySagas';
+import documentPresalesSagas from '@common/store/sagas/documentPresalesSagas';
+import documentSagas from '@common/store/sagas/documentSagas';
 import projectSagas from '@common/store/sagas/projectSagas';
+import siteSagas from '@common/store/sagas/siteSagas';
 import systemSagas from '@common/store/sagas/systemSagas';
 import notificationSagas from '@layout/store/sagas/notificationSagas';
 import customerSagas from '@lookup/store/sagas/customerSagas';
@@ -16,7 +19,10 @@ export function* rootSaga() {
     fork(systemSagas),
     fork(activitySagas),
     fork(currencySagas),
+    fork(documentSagas),
+    fork(documentPresalesSagas),
     fork(projectSagas),
+    fork(siteSagas),
     fork(notificationSagas),
     
     // lookup

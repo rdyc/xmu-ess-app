@@ -11,9 +11,21 @@ export interface ICommonState {
   commonCurrencyGetList: IQueryCollectionState<ISystemListRequest, ISystemList>;
   commonCurrencyGetById: IQuerySingleState<ISystemByIdRequest, ISystemDetail>;
 
+  commonDocumentGetAll: IQueryCollectionState<ISystemAllRequest, ISystem>;
+  commonDocumentGetList: IQueryCollectionState<ISystemListRequest, ISystemList>;
+  commonDocumentGetById: IQuerySingleState<ISystemByIdRequest, ISystemDetail>;
+
+  commonDocumentPresalesGetAll: IQueryCollectionState<ISystemAllRequest, ISystem>;
+  commonDocumentPresalesGetList: IQueryCollectionState<ISystemListRequest, ISystemList>;
+  commonDocumentPresalesGetById: IQuerySingleState<ISystemByIdRequest, ISystemDetail>;
+
   commonProjectGetAll: IQueryCollectionState<ISystemAllRequest, ISystem>;
   commonProjectGetList: IQueryCollectionState<ISystemListRequest, ISystemList>;
   commonProjectGetById: IQuerySingleState<ISystemByIdRequest, ISystemDetail>;
+
+  commonSiteGetAll: IQueryCollectionState<ISystemAllRequest, ISystem>;
+  commonSiteGetList: IQueryCollectionState<ISystemListRequest, ISystemList>;
+  commonSiteGetById: IQuerySingleState<ISystemByIdRequest, ISystemDetail>;
 
   systemGetAll: IQueryCollectionState<ISystemAllRequest, ISystem>;
   systemGetList: IQueryCollectionState<ISystemListRequest, ISystemList>;

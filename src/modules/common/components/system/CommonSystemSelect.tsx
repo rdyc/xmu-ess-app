@@ -1,15 +1,14 @@
 import { ISystemListRequest } from '@common/classes/queries';
 import { ISystemList } from '@common/classes/response';
 import { CommonCategoryType } from '@common/classes/types';
+import commonSystemSelectView from '@common/components/system/commonSystemSelectView';
 import withApiCommonSystemList, { WithApiCommonSystemListHandlers } from '@common/enhancers/system/withApiCommonSystemList';
 import withCommonSystemList, { WithCommonSystemList } from '@common/enhancers/system/withCommonSystemList';
 import { IQueryCollectionState } from '@generic/interfaces';
-import { MenuItem, TextField } from '@material-ui/core';
-import withWidth, { isWidthDown, WithWidth } from '@material-ui/core/withWidth';
+import withWidth, { WithWidth } from '@material-ui/core/withWidth';
 import * as React from 'react';
 import { compose, HandleCreators, lifecycle, ReactLifeCycleFunctions, setDisplayName, withHandlers } from 'recompose';
 import { BaseFieldProps, WrappedFieldProps } from 'redux-form';
-import { isNullOrUndefined } from 'util';
 
 interface OwnProps extends WrappedFieldProps, BaseFieldProps {
   type?: string; 
@@ -21,79 +20,21 @@ interface OwnProps extends WrappedFieldProps, BaseFieldProps {
 }
 
 interface IOwnHandlers {
-  getContext: () => IQueryCollectionState<ISystemListRequest, ISystemList>;
+  categoryState: () => IQueryCollectionState<ISystemListRequest, ISystemList>;
   handleChange: (event: React.ChangeEvent<any>) => void;
 }
 
-type AllProps 
+export type CommonSystemSelectProps 
   = OwnProps
   & IOwnHandlers
   & WithCommonSystemList
   & WithApiCommonSystemListHandlers
   & WithWidth;
 
-const commonSystemList: React.SFC<AllProps> = props => {
-  const { } = props;
-
-  const { width, input, label, disabled, meta } = props;
-  const { response } = props.getContext();
-  
-  const isMobile = isWidthDown('sm', width);
-
-  const renderItemEmpty = isMobile ? 
-    <option value=""></option> : 
-    <MenuItem value=""></MenuItem>;
-
-  const renderItem = (item: ISystemList) => {
-    if (isMobile) {
-      return (
-        <option key={item.id} value={item.type}>
-          {item.name}
-        </option>
-      );
-    } 
-
-    if (!isMobile) {
-      return (
-        <MenuItem key={item.id} value={item.type}>
-          {item.name}
-        </MenuItem>
-      );
-    }
-
-    return null;
-  };
-
-  return (
-    <TextField
-      select
-      fullWidth
-      margin="normal"
-      name={input.name}
-      label={label}
-      value={input.value ? input.value.type : ''}
-      disabled={disabled || meta.submitting}
-      error={meta.touched && !isNullOrUndefined(meta.error)}
-      helperText={meta.touched && meta.error}
-      SelectProps={{
-        native: isMobile
-      }}
-      onChange={props.handleChange}
-    >
-      {renderItemEmpty}
-      {
-        response &&
-        response.data &&
-        response.data.map(item => renderItem(item))
-      }
-    </TextField>
-  );
-};
-
-const lifecycles: ReactLifeCycleFunctions<AllProps, OwnProps> = {
+const lifecycles: ReactLifeCycleFunctions<CommonSystemSelectProps, OwnProps> = {
   componentDidMount() {
-    const { category, companyUid, disabled, commonGetListRequest } = this.props;
-    const { isLoading, response } = this.props.getContext();
+    const { category, companyUid, disabled, apiCommonGetList } = this.props;
+    const { isLoading, response } = this.props.categoryState();
 
     // skipp fetch while current state is being loaded
     if (isLoading || response) {
@@ -111,16 +52,16 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, OwnProps> = {
         }
       };
 
-      commonGetListRequest(request);
+      apiCommonGetList(request);
     }
   }
 };
 
-const handlerCreators: HandleCreators<AllProps, IOwnHandlers> = {
-  getContext: (props: AllProps) => () => { 
+const handlerCreators: HandleCreators<CommonSystemSelectProps, IOwnHandlers> = {
+  categoryState: (props: CommonSystemSelectProps) => () => { 
     return fnGetContext(props);
   },
-  handleChange: (props: AllProps) => (event: React.ChangeEvent<any>) => {
+  handleChange: (props: CommonSystemSelectProps) => (event: React.ChangeEvent<any>) => {
     const { onChangeValue } = props;
     const { response } = fnGetContext(props);
     const value = event.target.value;
@@ -134,23 +75,26 @@ const handlerCreators: HandleCreators<AllProps, IOwnHandlers> = {
   }
 };
 
-const fnGetContext = (props: AllProps) => {
-  const { category, common } = props;
+const fnGetContext = (props: CommonSystemSelectProps) => {
+  const { category, commonList } = props;
 
   switch (category) {
-    case 'activity': return common.activityListState;
-    case 'currency': return common.currencyListState;
-    case 'project': return common.projectListState;
+    case 'activity': return commonList.activityState;
+    case 'currency': return commonList.currencyState;
+    case 'document': return commonList.documentState;
+    case 'documentPreSales': return commonList.documentPresalesState;
+    case 'project': return commonList.projectState;
+    case 'site': return commonList.siteState;
   
-    default: return common.activityListState;
+    default: return commonList.activityState;
   }
 };
 
-export default compose<AllProps, OwnProps>(
+export default compose<CommonSystemSelectProps, OwnProps>(
   setDisplayName('CommonSystemSelect'),
   withCommonSystemList,
   withApiCommonSystemList,
   withWidth(),
-  withHandlers<AllProps, IOwnHandlers>(handlerCreators),
-  lifecycle<AllProps, {}>(lifecycles),
-)(commonSystemList);
+  withHandlers<CommonSystemSelectProps, IOwnHandlers>(handlerCreators),
+  lifecycle<CommonSystemSelectProps, {}>(lifecycles),
+)(commonSystemSelectView);
