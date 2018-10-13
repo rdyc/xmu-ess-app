@@ -136,9 +136,6 @@ const handlerCreators: HandleCreators<AllProps, Handler> = {
     return errors;
   },
   handleSubmit: (props: AllProps) => (payload: IProjectDetail) => { 
-    // tslint:disable-next-line:no-debugger
-    debugger;
-    
     const { mode, projectUid, apiRegistrationDetailPut } = props;
     const { user } = props.userState;
 
@@ -211,6 +208,8 @@ const handlerCreators: HandleCreators<AllProps, Handler> = {
       documents: parsedDocuments(),
       sales: parsedSales()
     });
+
+    console.log(putPayload);
 
     if (mode === FormMode.New) {
       // return new Promise((resolve, reject) => {

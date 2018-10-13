@@ -4,7 +4,7 @@ import { ISystemList } from '@common/classes/response';
 import { FormMode } from '@generic/types';
 import { FieldInputCustomer, FieldInputDate, FieldInputNumber, FieldInputText } from '@layout/components/formFields';
 import { FieldSelectSystem } from '@layout/components/formFields/FieldSelectSystem';
-import { withUser, WithUser } from '@layout/hoc/withUser';
+import { WithUser, withUser } from '@layout/hoc/withUser';
 import { ICustomerList } from '@lookup/classes/response';
 import {
   Avatar,
@@ -31,6 +31,7 @@ import withWidth, { WithWidth } from '@material-ui/core/withWidth';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import PersonIcon from '@material-ui/icons/Person';
 import { IProjectDetail, IProjectDocument, IProjectSales, IProjectSite } from '@project/classes/response';
+import DocumentForm from '@project/components/registration/forms/DocumentForm';
 import styles from '@styles';
 import * as classNames from 'classnames';
 import * as React from 'react';
@@ -357,6 +358,13 @@ const registrationForm: React.SFC<AllProps & InjectedFormProps<IProjectDetail, O
     </Card>
   );
 
+  const renderDoc = (context: WrappedFieldArrayProps<any>) => 
+    <DocumentForm 
+      title="Yoi"
+      subHeader="Wow"
+      context={context} 
+    />;
+
   return (
     <form onSubmit={props.handleSubmit}>
       <Grid container spacing={24}>
@@ -366,7 +374,8 @@ const registrationForm: React.SFC<AllProps & InjectedFormProps<IProjectDetail, O
         <Grid item xs={12} sm={12} md={4} xl={3}>
           <Grid container spacing={24}>
             <Grid item xs={12}>
-              {
+              <FieldArray name="documents" component={renderDoc} />
+              {/* {
                 props.initialValues.documents &&
                 renderDocuments(
                   'documents',
@@ -374,7 +383,7 @@ const registrationForm: React.SFC<AllProps & InjectedFormProps<IProjectDetail, O
                   props.intl.formatMessage({id: 'project.documentSubTitle'}),
                   props.initialValues.documents
                 )
-              }
+              } */}
             </Grid>
             <Grid item xs={12}>
               {
