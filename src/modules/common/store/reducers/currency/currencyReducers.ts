@@ -1,9 +1,9 @@
 import { currencyGetAllReducer, currencyGetByIdReducer, currencyGetListReducer } from '@common/store/reducers/currency';
 
 const currencyReducers = {
-  commonCurrencyGetAll: currencyGetAllReducer,
-  commonCurrencyGetList: currencyGetListReducer,
-  commonCurrencyGetById: currencyGetByIdReducer
+  commonCurrencyAll: currencyGetAllReducer,
+  commonCurrencyList: currencyGetListReducer,
+  commonCurrencyDetail: currencyGetByIdReducer
 };
 
 export default currencyReducers;

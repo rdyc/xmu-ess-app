@@ -1,9 +1,9 @@
 import { projectGetAllReducer, projectGetByIdReducer, projectGetListReducer } from '@common/store/reducers/project';
 
 const projectReducers = {
-  commonProjectGetAll: projectGetAllReducer,
-  commonProjectGetList: projectGetListReducer,
-  commonProjectGetById: projectGetByIdReducer
+  commonProjectAll: projectGetAllReducer,
+  commonProjectList: projectGetListReducer,
+  commonProjectDetail: projectGetByIdReducer
 };
 
 export default projectReducers;

@@ -2,8 +2,7 @@ import { ISystemListRequest } from '@common/classes/queries';
 import { ISystemList } from '@common/classes/response';
 import { CommonCategoryType } from '@common/classes/types';
 import commonSystemSelectView from '@common/components/system/commonSystemSelectView';
-import withApiCommonSystemList, { WithApiCommonSystemListHandlers } from '@common/enhancers/system/withApiCommonSystemList';
-import withCommonSystemList, { WithCommonSystemList } from '@common/enhancers/system/withCommonSystemList';
+import { WithCommonSystem, withCommonSystem } from '@common/hoc/withCommonSystem';
 import { IQueryCollectionState } from '@generic/interfaces';
 import withWidth, { WithWidth } from '@material-ui/core/withWidth';
 import * as React from 'react';
@@ -27,13 +26,12 @@ interface IOwnHandlers {
 export type CommonSystemSelectProps 
   = OwnProps
   & IOwnHandlers
-  & WithCommonSystemList
-  & WithApiCommonSystemListHandlers
+  & WithCommonSystem
   & WithWidth;
 
 const lifecycles: ReactLifeCycleFunctions<CommonSystemSelectProps, OwnProps> = {
   componentDidMount() {
-    const { category, companyUid, disabled, commonGetListRequest } = this.props;
+    const { category, companyUid, disabled, commonDispatch } = this.props;
     const { isLoading, response } = this.props.categoryState();
 
     // skipp fetch while current state is being loaded
@@ -52,7 +50,34 @@ const lifecycles: ReactLifeCycleFunctions<CommonSystemSelectProps, OwnProps> = {
         }
       };
 
-      commonGetListRequest(request);
+      switch (request.category) {
+        case 'activity':
+          commonDispatch.activityListRequest(request);
+          break;
+  
+        case 'currency':
+          commonDispatch.currencyListRequest(request);
+          break;
+  
+        case 'document':
+          commonDispatch.documentListRequest(request);
+          break;
+  
+        case 'documentPreSales':
+          commonDispatch.documentPresalesListRequest(request);
+          break;
+  
+        case 'project':
+          commonDispatch.projectListRequest(request);
+          break;
+          
+        case 'site':
+          commonDispatch.siteListRequest(request);
+          break;
+  
+        default:
+          break;
+      }
     }
   }
 };
@@ -76,24 +101,23 @@ const handlerCreators: HandleCreators<CommonSystemSelectProps, IOwnHandlers> = {
 };
 
 const fnGetContext = (props: CommonSystemSelectProps) => {
-  const { category, common } = props;
+  const { category } = props;
 
   switch (category) {
-    case 'activity': return common.activityListState;
-    case 'currency': return common.currencyListState;
-    case 'document': return common.documentListState;
-    case 'documentPreSales': return common.documentPresalesListState;
-    case 'project': return common.projectListState;
-    case 'site': return common.siteListState;
+    case 'activity': return props.commonActivityListState;
+    case 'currency': return props.commonCurrencyListState;
+    case 'document': return props.commonDocumentListState;
+    case 'documentPreSales': return props.commonDocumentPresalesListState;
+    case 'project': return props.commonProjectListState;
+    case 'site': return props.commonSiteListState;
   
-    default: return common.activityListState;
+    default: return props.commonActivityListState;
   }
 };
 
 export default compose<CommonSystemSelectProps, OwnProps>(
   setDisplayName('CommonSystemSelect'),
-  withCommonSystemList,
-  withApiCommonSystemList,
+  withCommonSystem,
   withWidth(),
   withHandlers<CommonSystemSelectProps, IOwnHandlers>(handlerCreators),
   lifecycle<CommonSystemSelectProps, {}>(lifecycles),

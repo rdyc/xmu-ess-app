@@ -3,29 +3,29 @@ import { ISystem, ISystemDetail, ISystemList } from '@common/classes/response';
 import { IQueryCollectionState, IQuerySingleState } from '@generic/interfaces';
 
 export interface ICommonState {
-  commonActivityGetAll: IQueryCollectionState<ISystemAllRequest, ISystem>;
-  commonActivityGetList: IQueryCollectionState<ISystemListRequest, ISystemList>;
-  commonActivityGetById: IQuerySingleState<ISystemByIdRequest, ISystemDetail>;
+  commonActivityAll: IQueryCollectionState<ISystemAllRequest, ISystem>;
+  commonActivityList: IQueryCollectionState<ISystemListRequest, ISystemList>;
+  commonActivityDetail: IQuerySingleState<ISystemByIdRequest, ISystemDetail>;
 
-  commonCurrencyGetAll: IQueryCollectionState<ISystemAllRequest, ISystem>;
-  commonCurrencyGetList: IQueryCollectionState<ISystemListRequest, ISystemList>;
-  commonCurrencyGetById: IQuerySingleState<ISystemByIdRequest, ISystemDetail>;
+  commonCurrencyAll: IQueryCollectionState<ISystemAllRequest, ISystem>;
+  commonCurrencyList: IQueryCollectionState<ISystemListRequest, ISystemList>;
+  commonCurrencyDetail: IQuerySingleState<ISystemByIdRequest, ISystemDetail>;
 
-  commonDocumentGetAll: IQueryCollectionState<ISystemAllRequest, ISystem>;
-  commonDocumentGetList: IQueryCollectionState<ISystemListRequest, ISystemList>;
-  commonDocumentGetById: IQuerySingleState<ISystemByIdRequest, ISystemDetail>;
+  commonDocumentAll: IQueryCollectionState<ISystemAllRequest, ISystem>;
+  commonDocumentList: IQueryCollectionState<ISystemListRequest, ISystemList>;
+  commonDocumentDetail: IQuerySingleState<ISystemByIdRequest, ISystemDetail>;
 
-  commonDocumentPresalesGetAll: IQueryCollectionState<ISystemAllRequest, ISystem>;
-  commonDocumentPresalesGetList: IQueryCollectionState<ISystemListRequest, ISystemList>;
-  commonDocumentPresalesGetById: IQuerySingleState<ISystemByIdRequest, ISystemDetail>;
+  commonDocumentPresalesAll: IQueryCollectionState<ISystemAllRequest, ISystem>;
+  commonDocumentPresalesList: IQueryCollectionState<ISystemListRequest, ISystemList>;
+  commonDocumentPresalesDetail: IQuerySingleState<ISystemByIdRequest, ISystemDetail>;
 
-  commonProjectGetAll: IQueryCollectionState<ISystemAllRequest, ISystem>;
-  commonProjectGetList: IQueryCollectionState<ISystemListRequest, ISystemList>;
-  commonProjectGetById: IQuerySingleState<ISystemByIdRequest, ISystemDetail>;
+  commonProjectAll: IQueryCollectionState<ISystemAllRequest, ISystem>;
+  commonProjectList: IQueryCollectionState<ISystemListRequest, ISystemList>;
+  commonProjectDetail: IQuerySingleState<ISystemByIdRequest, ISystemDetail>;
 
-  commonSiteGetAll: IQueryCollectionState<ISystemAllRequest, ISystem>;
-  commonSiteGetList: IQueryCollectionState<ISystemListRequest, ISystemList>;
-  commonSiteGetById: IQuerySingleState<ISystemByIdRequest, ISystemDetail>;
+  commonSiteAll: IQueryCollectionState<ISystemAllRequest, ISystem>;
+  commonSiteList: IQueryCollectionState<ISystemListRequest, ISystemList>;
+  commonSiteDetail: IQuerySingleState<ISystemByIdRequest, ISystemDetail>;
 
   systemGetAll: IQueryCollectionState<ISystemAllRequest, ISystem>;
   systemGetList: IQueryCollectionState<ISystemListRequest, ISystemList>;

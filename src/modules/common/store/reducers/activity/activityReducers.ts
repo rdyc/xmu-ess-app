@@ -1,9 +1,9 @@
 import { activityGetAllReducer, activityGetByIdReducer, activityGetListReducer } from '@common/store/reducers/activity';
 
 const activityReducers = {
-  commonActivityGetAll: activityGetAllReducer,
-  commonActivityGetList: activityGetListReducer,
-  commonActivityGetById: activityGetByIdReducer
+  commonActivityAll: activityGetAllReducer,
+  commonActivityList: activityGetListReducer,
+  commonActivityDetail: activityGetByIdReducer
 };
 
 export default activityReducers;

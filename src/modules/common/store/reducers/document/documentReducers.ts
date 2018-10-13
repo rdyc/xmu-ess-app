@@ -1,9 +1,9 @@
 import { documentGetAllReducer, documentGetByIdReducer, documentGetListReducer } from '@common/store/reducers/document';
 
 const documentReducers = {
-  commonDocumentGetAll: documentGetAllReducer,
-  commonDocumentGetList: documentGetListReducer,
-  commonDocumentGetById: documentGetByIdReducer
+  commonDocumentAll: documentGetAllReducer,
+  commonDocumentList: documentGetListReducer,
+  commonDocumentDetail: documentGetByIdReducer
 };
 
 export default documentReducers;

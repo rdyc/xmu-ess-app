@@ -1,9 +1,9 @@
 import { siteGetAllReducer, siteGetByIdReducer, siteGetListReducer } from '@common/store/reducers/site';
 
 const siteReducers = {
-  commonSiteGetAll: siteGetAllReducer,
-  commonSiteGetList: siteGetListReducer,
-  commonSiteGetById: siteGetByIdReducer
+  commonSiteAll: siteGetAllReducer,
+  commonSiteList: siteGetListReducer,
+  commonSiteDetail: siteGetByIdReducer
 };
 
 export default siteReducers;
