@@ -1,7 +1,7 @@
 import { WorkflowStatusType } from '@common/classes/types';
 import AppMenu from '@constants/AppMenu';
-import withAppbar, { WithAppBar } from '@layout/hoc/withAppBar';
-import withLayout, { WithLayout } from '@layout/hoc/withLayout';
+import { withAppBar, WithAppBar } from '@layout/hoc/withAppBar';
+import { withLayout, WithLayout } from '@layout/hoc/withLayout';
 import { IAppBarMenu } from '@layout/interfaces';
 import {
   Avatar,
@@ -658,7 +658,7 @@ export default compose<AllProps, {}>(
   
   withApiProjectRegistrationDetail,
   withLayout,
-  withAppbar,
+  withAppBar,
   withProjectRegistrationDetail,
   withRouter,
   injectIntl,

@@ -1,4 +1,4 @@
-import withLayout, { WithLayout } from '@layout/hoc/withLayout';
+import { withLayout, WithLayout } from '@layout/hoc/withLayout';
 import {
   Button,
   Dialog,
@@ -12,9 +12,10 @@ import {
 import CloseIcon from '@material-ui/icons/Close';
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
+import { compose } from 'recompose';
 import { isNullOrUndefined, isObject } from 'util';
 
-const SnackbarAlertSFC: React.ComponentType<WithLayout> = props => {
+const SnackbarAlertSFC: React.SFC<WithLayout> = props => {
   const { layoutState, layoutDispatch } = props;
   const alert = layoutState.alerts[0];
 
@@ -100,4 +101,8 @@ const SnackbarAlertSFC: React.ComponentType<WithLayout> = props => {
   );
 };
 
-export default withLayout(SnackbarAlertSFC);
+const enhance = compose(
+  withLayout
+)(SnackbarAlertSFC);
+
+export default enhance;

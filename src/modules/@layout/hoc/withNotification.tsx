@@ -1,26 +1,30 @@
 import { IAppState } from '@generic/interfaces';
-import { INotificationState } from '@layout/interfaces';
+import { INotificationQuery, INotificationState } from '@layout/interfaces';
+import { notificationFetchRequest } from '@layout/store/actions';
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { compose, setDisplayName } from 'recompose';
+import { Dispatch } from 'redux';
 
-export interface WithNotification {
+interface PropsFromState {
   notificationState: INotificationState;
 }
+interface PropsFromDispatch {
+  notificationDispatch: {
+    fetchRequest: typeof notificationFetchRequest;
+  };
+}
 
-const withNotification = (WrappedComponent: React.ComponentType) => { 
-  const displayName = `WithNotification(${WrappedComponent.displayName || WrappedComponent.name || 'Component'})`;
+export interface WithNotification extends PropsFromState, PropsFromDispatch {}
 
-  const withNotificationComponent: React.SFC<WithNotification> = props => <WrappedComponent {...props}/>;
+const mapStateToProps = ({ notification }: IAppState) => ({
+  notificationState: notification
+});
 
-  const mapStateToProps = ({ notification }: IAppState) => ({
-    notificationState: notification
-  });
-  
-  return compose<WithNotification, {}>( 
-    setDisplayName(displayName),
-    connect(mapStateToProps)
-  )(withNotificationComponent);
-};
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+  notificationDispatch: {
+    fetchRequest: (params: INotificationQuery) => dispatch(notificationFetchRequest(params)),
+  }
+});
 
-export default withNotification;
+export const withNotification = (component: React.ComponentType) => 
+  connect(mapStateToProps, mapDispatchToProps)(component);

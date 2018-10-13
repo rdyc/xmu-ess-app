@@ -1,6 +1,6 @@
 import { SortDirection } from '@generic/types';
-import withLayout, { WithLayout } from '@layout/hoc/withLayout';
-import withNavBottom, { WithNavBottom } from '@layout/hoc/withNavBottom';
+import { withLayout, WithLayout } from '@layout/hoc/withLayout';
+import { withNavBottom, WithNavBottom } from '@layout/hoc/withNavBottom';
 import { IListBarField } from '@layout/interfaces';
 import { BottomNavigation, BottomNavigationAction, Menu, MenuItem, WithStyles, withStyles } from '@material-ui/core';
 import withWidth, { isWidthUp, WithWidth } from '@material-ui/core/withWidth';

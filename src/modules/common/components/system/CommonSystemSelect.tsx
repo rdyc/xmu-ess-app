@@ -33,7 +33,7 @@ export type CommonSystemSelectProps
 
 const lifecycles: ReactLifeCycleFunctions<CommonSystemSelectProps, OwnProps> = {
   componentDidMount() {
-    const { category, companyUid, disabled, apiCommonGetList } = this.props;
+    const { category, companyUid, disabled, commonGetListRequest } = this.props;
     const { isLoading, response } = this.props.categoryState();
 
     // skipp fetch while current state is being loaded
@@ -52,7 +52,7 @@ const lifecycles: ReactLifeCycleFunctions<CommonSystemSelectProps, OwnProps> = {
         }
       };
 
-      apiCommonGetList(request);
+      commonGetListRequest(request);
     }
   }
 };
@@ -76,17 +76,17 @@ const handlerCreators: HandleCreators<CommonSystemSelectProps, IOwnHandlers> = {
 };
 
 const fnGetContext = (props: CommonSystemSelectProps) => {
-  const { category, commonList } = props;
+  const { category, common } = props;
 
   switch (category) {
-    case 'activity': return commonList.activityState;
-    case 'currency': return commonList.currencyState;
-    case 'document': return commonList.documentState;
-    case 'documentPreSales': return commonList.documentPresalesState;
-    case 'project': return commonList.projectState;
-    case 'site': return commonList.siteState;
+    case 'activity': return common.activityListState;
+    case 'currency': return common.currencyListState;
+    case 'document': return common.documentListState;
+    case 'documentPreSales': return common.documentPresalesListState;
+    case 'project': return common.projectListState;
+    case 'site': return common.siteListState;
   
-    default: return commonList.activityState;
+    default: return common.activityListState;
   }
 };
 

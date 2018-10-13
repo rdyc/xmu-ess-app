@@ -1,7 +1,7 @@
 import AppMenu from '@constants/AppMenu';
 import { IBaseChanges } from '@generic/interfaces';
-import withLayout, { WithLayout } from '@layout/hoc/withLayout';
-import withNavBottom, { WithNavBottom } from '@layout/hoc/withNavBottom';
+import { withLayout, WithLayout } from '@layout/hoc/withLayout';
+import { withNavBottom, WithNavBottom } from '@layout/hoc/withNavBottom';
 import { Divider, Grid, List, ListItem, ListSubheader, Paper, Typography } from '@material-ui/core';
 import { IProject } from '@project/classes/response';
 import { ProjectField } from '@project/classes/types';

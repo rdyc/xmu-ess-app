@@ -1,26 +1,45 @@
+import AppStorage from '@constants/AppStorage';
 import { IAppState } from '@generic/interfaces';
-import { IUserState } from '@layout/interfaces';
+import { IAppUser, IUserState } from '@layout/interfaces';
+import { userAssign } from '@layout/store/actions';
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { compose, setDisplayName } from 'recompose';
+import { Dispatch } from 'redux';
 
 export interface WithUser {
   userState: IUserState;
 }
 
-const withUser = (WrappedComponent: React.ComponentType) => { 
-  const displayName = `WithUser(${WrappedComponent.displayName || WrappedComponent.name || 'Component'})`;
+interface PropsFromDispatch {
+  assignUser: typeof userAssign;
+}
 
-  const userComponent: React.SFC<WithUser> = props => <WrappedComponent {...props} />;
+const mapStateToProps = ({ user }: IAppState) => ({
+  userState: user
+});
 
-  const mapStateToProps = ({ user }: IAppState) => ({
-    userState: user
-  });
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+  assignUser: (user: IAppUser) => dispatch(userAssign(user))
+});
 
-  return compose<WithUser, {}>(
-    setDisplayName(displayName),
-    connect(mapStateToProps)
-  )(userComponent);
+export const withUser = (WrappedComponent: React.ComponentType) => { 
+  class WithUserContainer extends React.Component<WithUser & PropsFromDispatch, {}> {
+    public componentWillMount() {
+      if (!this.props.userState.user) {
+        const user: IAppUser = store.get(AppStorage.User);
+  
+        if (user) {
+          this.props.assignUser(user);
+        }
+      }
+    }
+  
+    public render () {
+      return (
+        <WrappedComponent {...this.props}/>
+      );
+    }
+  }
+
+  return connect(mapStateToProps, mapDispatchToProps)(WithUserContainer); 
 };
-
-export default withUser;

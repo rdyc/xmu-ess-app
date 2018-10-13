@@ -4,7 +4,7 @@ import DrawerMenuSFC from '@layout/components/drawer/DrawerMenuSFC';
 import NavigationBottomSFC from '@layout/components/navigation/NavigationBottomSFC';
 import SnackbarAlertSFC from '@layout/components/snackbar/SnackbarAlertSFC';
 import loadUser from '@layout/hoc/loadUser';
-import withLayout, { WithLayout } from '@layout/hoc/withLayout';
+import { withLayout, WithLayout } from '@layout/hoc/withLayout';
 import { WithStyles, withStyles } from '@material-ui/core';
 import styles from '@styles';
 import * as classNames from 'classnames';

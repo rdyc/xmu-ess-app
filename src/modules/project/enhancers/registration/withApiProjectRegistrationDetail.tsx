@@ -1,4 +1,4 @@
-import withUser, { WithUser } from '@layout/hoc/withUser';
+import { withUser, WithUser } from '@layout/hoc/withUser';
 import { IProjectGetByIdRequest, IProjectPutRequest } from '@project/classes/queries';
 import { IProjectPutPayload } from '@project/classes/request';
 import withProjectRegistrationDetail from '@project/enhancers/registration/withProjectRegistrationDetail';

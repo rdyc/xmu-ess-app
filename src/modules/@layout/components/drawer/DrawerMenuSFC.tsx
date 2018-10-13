@@ -1,5 +1,5 @@
 import NavigationMenuSFC from '@layout/components/navigation/NavigationMenuSFC';
-import withLayout, { WithLayout } from '@layout/hoc/withLayout';
+import { withLayout, WithLayout } from '@layout/hoc/withLayout';
 import { Drawer, Hidden, WithStyles, withStyles } from '@material-ui/core';
 import styles from '@styles';
 import * as classNames from 'classnames';

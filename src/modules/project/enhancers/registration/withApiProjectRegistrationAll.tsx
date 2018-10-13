@@ -1,7 +1,7 @@
 import AppMenu from '@constants/AppMenu';
 import { SortDirection } from '@generic/types';
-import withLayout, { WithLayout } from '@layout/hoc/withLayout';
-import withUser, { WithUser } from '@layout/hoc/withUser';
+import { withLayout, WithLayout } from '@layout/hoc/withLayout';
+import { withUser, WithUser } from '@layout/hoc/withUser';
 import { IListBarField } from '@layout/interfaces';
 import { IProjectGetAllRequest } from '@project/classes/queries';
 import withProjectRegistrationAll, { WithProjectRegistrationAll } from '@project/enhancers/registration/withProjectRegistrationAll';

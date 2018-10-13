@@ -1,4 +1,4 @@
-import withUser, { WithUser } from '@layout/hoc/withUser';
+import { withUser, WithUser } from '@layout/hoc/withUser';
 import { INotificationQuery } from '@layout/interfaces';
 import { notificationFetchRequest } from '@layout/store/actions';
 import * as React from 'react';

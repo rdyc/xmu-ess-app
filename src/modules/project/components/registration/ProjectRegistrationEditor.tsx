@@ -1,9 +1,9 @@
 import { ProjectType } from '@common/classes/types';
 import AppMenu from '@constants/AppMenu';
 import { FormMode } from '@generic/types';
-import withAppbar, { WithAppBar } from '@layout/hoc/withAppBar';
-import withLayout, { WithLayout } from '@layout/hoc/withLayout';
-import withUser, { WithUser } from '@layout/hoc/withUser';
+import { withAppBar, WithAppBar } from '@layout/hoc/withAppBar';
+import { withLayout, WithLayout } from '@layout/hoc/withLayout';
+import { withUser, WithUser } from '@layout/hoc/withUser';
 import { Typography } from '@material-ui/core';
 import { IProjectPutDocument, IProjectPutPayload, IProjectPutSales } from '@project/classes/request';
 import { IProjectDetail } from '@project/classes/response';
@@ -69,6 +69,8 @@ interface Handler {
 }
 
 const registrationEditor: React.SFC<AllProps> = props => {
+  console.log('kopet');
+  
   const { mode, handleValidate, handleSubmit, handleSubmitSuccess, handleSubmitFail } = props;
   const { isLoading, response } = props.projectDetailState;
 
@@ -313,7 +315,7 @@ export default compose<AllProps, {}>(
   
   withUser,
   withLayout,
-  withAppbar,
+  withAppBar,
   withProjectRegistrationDetail,
   withApiProjectRegistrationDetail,
   injectIntl,

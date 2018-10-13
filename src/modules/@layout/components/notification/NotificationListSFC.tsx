@@ -1,5 +1,5 @@
 import loadNotification from '@layout/hoc/loadNotification';
-import withNotification, { WithNotification } from '@layout/hoc/withNotification';
+import { withNotification, WithNotification } from '@layout/hoc/withNotification';
 import { Collapse, List, ListItem, ListItemSecondaryAction, ListItemText, ListSubheader } from '@material-ui/core';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';

@@ -1,5 +1,5 @@
-import withLayout, { WithLayout } from '@layout/hoc/withLayout';
-import withUser, { WithUser } from '@layout/hoc/withUser';
+import { withLayout, WithLayout } from '@layout/hoc/withLayout';
+import { withUser, WithUser } from '@layout/hoc/withUser';
 import { ILookupRoleMenuChildList } from '@lookup/classes';
 import {
   Collapse,

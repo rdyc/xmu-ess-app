@@ -4,7 +4,7 @@ import { ISystemList } from '@common/classes/response';
 import { FormMode } from '@generic/types';
 import { FieldInputCustomer, FieldInputDate, FieldInputNumber, FieldInputText } from '@layout/components/formFields';
 import { FieldSelectSystem } from '@layout/components/formFields/FieldSelectSystem';
-import withUser, { WithUser } from '@layout/hoc/withUser';
+import { withUser, WithUser } from '@layout/hoc/withUser';
 import { ICustomerList } from '@lookup/classes/response';
 import {
   Avatar,
