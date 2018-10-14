@@ -40,9 +40,9 @@ const commonSystemSelectView: React.SFC<CommonSystemSelectProps> = props => {
       select
       fullWidth
       margin="normal"
-      name={input.name}
+      name={`select${input.name}`}
       label={label}
-      value={input.value ? input.value.type : ''}
+      value={input.value}
       disabled={disabled || meta.submitting}
       error={meta.touched && !isNullOrUndefined(meta.error)}
       helperText={meta.touched && meta.error}

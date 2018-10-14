@@ -196,7 +196,7 @@ const registrationForm: React.SFC<AllProps & InjectedFormProps<IProjectDetail, O
   //     </CardContent>
   //   </Card>
   // );
-
+   
   const renderInformation = (context: BaseFieldsProps) => 
     <InformationForm context={context} />;
 
@@ -299,8 +299,8 @@ const registrationForm: React.SFC<AllProps & InjectedFormProps<IProjectDetail, O
 
   const informationFieldNames = [
     'customerUid', 'projectType', 'name', 'description', 
-    'contractNumber', 'start', 'end', 'currencyType', 
-    'rate', 'valueIdr', 'valueUsd'
+    'contract', 'start', 'end', 'currencyType', 
+    'rate', 'valueUsd', 'valueIdr'
   ];
 
   const renderForm = (
@@ -364,7 +364,7 @@ const registrationForm: React.SFC<AllProps & InjectedFormProps<IProjectDetail, O
         <Button 
           type="submit"
           color="secondary"
-          disabled={!props.valid || props.submitting}
+          disabled={props.submitting}
         >
           <FormattedMessage id={props.submitting ? 'global.processing' : 'global.action.submit' } />
         </Button>

@@ -69,8 +69,6 @@ interface Handler {
 }
 
 const registrationEditor: React.SFC<AllProps> = props => {
-  console.log('kopet');
-  
   const { mode, handleValidate, handleSubmit, handleSubmitSuccess, handleSubmitFail } = props;
   const { isLoading, response } = props.projectDetailState;
 
@@ -136,6 +134,8 @@ const handlerCreators: HandleCreators<AllProps, Handler> = {
     return errors;
   },
   handleSubmit: (props: AllProps) => (payload: IProjectDetail) => { 
+    // tslint:disable-next-line:no-debugger
+    debugger;
     const { mode, projectUid, apiRegistrationDetailPut } = props;
     const { user } = props.userState;
 

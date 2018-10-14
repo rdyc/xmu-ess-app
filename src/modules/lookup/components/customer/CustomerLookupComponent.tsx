@@ -46,7 +46,7 @@ interface OwnProps extends WrappedFieldProps, BaseFieldProps {
   type?: string; 
   label: string; 
   disabled: boolean;
-  onChangeValue: (customer: ICustomerList) => void;
+  onChangeValue: (customerUid: string) => void;
 }
 
 type AllProps = PropsFromState & 
@@ -57,16 +57,18 @@ type AllProps = PropsFromState &
                 WithWidth &
                 WithStyles<typeof styles>;
 
-const initialState = {
-  open: false,
-  search: '',
-  selected: {}
+type initialState = {
+  open: boolean,
+  search?: string | undefined,
+  selected?: ICustomerList | undefined
 };
 
-type State = Readonly<typeof initialState>;          
+type State = Readonly<initialState>;          
 
 class CustomerLookup extends React.Component<AllProps, State> {
-  public state: State = initialState;
+  public state: State = {
+     open: false,
+  };
 
   public componentDidMount() {
     // skipp fetch while current state is being loaded
@@ -195,9 +197,9 @@ class CustomerLookup extends React.Component<AllProps, State> {
         <TextField
           fullWidth
           margin="normal"
-          name={input.name}
+          name={`customer_${input.name}`}
           label={label}
-          value={input.value ? input.value.name : ''}
+          value={this.state.selected && this.state.selected.name || ''}
           disabled={disabled || meta.submitting}
           error={meta.touched && meta.error}
           helperText={meta.touched && meta.error}
@@ -230,7 +232,7 @@ class CustomerLookup extends React.Component<AllProps, State> {
     if (response && response.data) {
       if (this.state.search !== '') {
         result = response.data.filter(item => 
-          item.name.toLowerCase().indexOf(this.state.search) !== -1
+          item.name.toLowerCase().indexOf(this.state.search || '') !== -1
         );
       } else {
         result = response.data;
@@ -270,7 +272,7 @@ class CustomerLookup extends React.Component<AllProps, State> {
   private handleSelected = (customer: ICustomerList) => {
     this.setState({ open: false, selected: customer });
 
-    this.props.onChangeValue(customer);
+    this.props.onChangeValue(customer.uid);
   };
 }
 

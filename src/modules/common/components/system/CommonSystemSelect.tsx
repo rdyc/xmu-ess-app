@@ -15,7 +15,7 @@ interface OwnProps extends WrappedFieldProps, BaseFieldProps {
   disabled: boolean;
   companyUid?: string | undefined;
   category: CommonCategoryType;
-  onChangeValue: (system: ISystemList | null) => void;
+  onChangeValue: (type: string | null) => void;
 }
 
 interface IOwnHandlers {
@@ -94,8 +94,8 @@ const handlerCreators: HandleCreators<CommonSystemSelectProps, IOwnHandlers> = {
     if (response && response.data) {
       const systems = response.data.filter(item => item.type === value);
       const system = systems[0];
-      
-      onChangeValue(system ? system : null );
+
+      onChangeValue(system ? system.type : null );
     }
   }
 };

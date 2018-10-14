@@ -17,20 +17,22 @@ export const FieldInputNumber: React.SFC<AllProps> = props => {
   const { input, label, disabled, meta } = props;
 
   const NumberFormatComponent = (inputProps: InputComponentProps) => {
-    const { name, value, className, inputRef } = inputProps;
-
+    const { name, value, className } = inputProps;
     let _value = value;
 
     return (
       <NumberFormat 
-        name={name} 
+        name={`number${name}`} 
         value={value as number} 
         disabled={inputProps.disabled}
-        className={className} 
-        getInputRef={inputRef}
+        className={className}
         thousandSeparator={true} 
         onValueChange={(values: any) => {
           _value = values.floatValue;
+        }}
+        onFocus={(e: any) => {
+          input.onFocus(e);
+          input.onChange(_value || 0);
         }}
         onBlur={(e: any) => {
           input.onChange(_value);

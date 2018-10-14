@@ -1,6 +1,7 @@
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import DatePicker from 'material-ui-pickers/DatePicker';
+import { MaterialUiPickersDate } from 'material-ui-pickers/typings/date';
 import { Moment } from 'moment';
 import * as React from 'react';
 import { BaseFieldProps, WrappedFieldProps } from 'redux-form';
@@ -17,6 +18,16 @@ type AllProps = WrappedFieldProps & BaseFieldProps & FromFieldProps; // & Inject
 
 export const FieldInputDate: React.SFC<AllProps> = props => {
   const { format, input, label, disabled, meta } = props;
+
+  const labelFunction = (date: MaterialUiPickersDate, invalidLabel: string): string => {
+    let result: string = invalidLabel;
+
+    if (date.isValid()) {
+      result = date.format('MMM DD, YYYY');
+    } 
+
+    return result;
+  };
 
   return (
     <DatePicker
@@ -36,7 +47,9 @@ export const FieldInputDate: React.SFC<AllProps> = props => {
       disabled={disabled || meta.submitting}
       error={meta.touched && !isNullOrUndefined(meta.error)}
       helperText={meta.touched && meta.error}
-      onChange={(moment: Moment) => input.onChange(moment.toISOString(true))} 
+      onChange={(moment: Moment) => input.onChange(moment.toISOString(true))}
+      labelFunc={labelFunction}
+      invalidLabel={''}
     />
   );
 };
