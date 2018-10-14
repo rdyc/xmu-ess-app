@@ -5,6 +5,7 @@ import { compose, lifecycle, ReactLifeCycleFunctions } from 'recompose';
 import { Field, WrappedFieldArrayProps } from 'redux-form';
 
 interface OwnProps {
+  category: 'document' | 'documentPreSales';
   title: string;
   subHeader: string;
   context:  WrappedFieldArrayProps<any>;
@@ -15,10 +16,13 @@ type AllProps
   & WithCommonSystem;
   
 const documentForm: React.SFC<AllProps> = props => {
-  const { title, subHeader } = props;
-  const { response } = props.commonDocumentListState;
+  const { category, title, subHeader } = props;
+  const { isLoading, response } = category === 'document' ? 
+    props.commonDocumentListState : 
+    props.commonDocumentPresalesListState;
+  const fieldName = category === 'document' ? 'documents' : 'documentPreSales';
   
-  return (
+  const render = (
     <Card square>
       <CardHeader 
         title={title}
@@ -26,6 +30,7 @@ const documentForm: React.SFC<AllProps> = props => {
       />
       <CardContent>
         {
+          !isLoading &&
           response &&
           response.data &&
           response.data.map((item, index) => 
@@ -37,7 +42,7 @@ const documentForm: React.SFC<AllProps> = props => {
                   <Field
                     key={index}
                     type="checkbox"
-                    name={`documents[${index}].isChecked`}
+                    name={`${fieldName}[${index}].isChecked`}
                     component={({ input, meta }: any) => 
                       <Checkbox 
                         {...input} 
@@ -55,14 +60,24 @@ const documentForm: React.SFC<AllProps> = props => {
       </CardContent>
     </Card>
   );
+
+  return render;
 };
 
 const lifecycles: ReactLifeCycleFunctions<AllProps, {}> = {
   componentDidMount() {
-    const { commonDocumentListState, commonDispatch } = this.props;
+    const { category, commonDocumentListState, commonDocumentPresalesListState, commonDispatch } = this.props;
 
-    if (!commonDocumentListState.isLoading && !commonDocumentListState.response) {
-      commonDispatch.documentListRequest({category: 'document'});
+    if (category === 'document') {
+      if (!commonDocumentListState.isLoading && !commonDocumentListState.response) {
+        commonDispatch.documentListRequest({category});
+      }
+    }
+
+    if (category === 'documentPreSales') {
+      if (!commonDocumentPresalesListState.isLoading && !commonDocumentPresalesListState.response) {
+        commonDispatch.documentPresalesListRequest({category});
+      }
     }
   }
 };
