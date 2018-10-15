@@ -1,7 +1,7 @@
 import { IQuerySingleState } from '@generic/interfaces';
 import { ILeaveRequestGetByIdRequest } from '@leave/classes/queries';
 import { ILeaveRequestDetail } from '@leave/classes/response';
-import { ProjectAction as Action } from '@project/store/actions';
+import { LeaveRequestAction as Action } from '@leave/store/actions';
 import { Reducer } from 'redux';
 
 const initialState: IQuerySingleState<ILeaveRequestGetByIdRequest, ILeaveRequestDetail> = {

@@ -1,6 +1,6 @@
 export enum LeaveRequestField {
   uid = 'Leave Request ID',
-  leaveType = 'Project Type',
+  leaveType = 'Leave Type',
   start = 'Start Date',
   end = 'End Date',
   description = 'Description',
