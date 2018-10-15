@@ -2,11 +2,10 @@ import { IResponseCollection, IResponseList, IResponseSingle } from '@generic/in
 import {
   ILeaveRequestGetAllRequest,
   ILeaveRequestGetByIdRequest,
-  // ILeaveRequestPostRequest,
-  // ILeavePutRequest,
+  ILeaveRequestPostRequest,
+  ILeaveRequestPutRequest,
 } from '@leave/classes/queries';
-import { ILeaveGetListRequest } from '@leave/classes/queries/ILeaveGetListRequest';
-import { ILeaveRequest, ILeaveRequestDetail } from '@pleave/classes/response';
+import { ILeaveRequest, ILeaveRequestDetail } from '@leave/classes/response';
 import { action } from 'typesafe-actions';
 
 export const enum LeaveRequestAction {
@@ -14,22 +13,18 @@ export const enum LeaveRequestAction {
   GET_ALL_SUCCESS = '@@leaveRequest/GET_ALL_SUCCESS',
   GET_ALL_ERROR = '@@leaveRequest/GET_ALL_ERROR',
   GET_ALL_DISPOSE = '@@leaveRequest/GET_ALL_DISPOSE',
-  // GET_LIST_REQUEST = '@@leaveRequest/GET_LIST_REQUEST',
-  // GET_LIST_SUCCESS = '@@leaveRequest/GET_LIST_SUCCESS',
-  // GET_LIST_ERROR = '@@leaveRequest/GET_LIST_ERROR',
-  // GET_LIST_DISPOSE = '@@leaveRequest/GET_LIST_DISPOSE',
   GET_BY_ID_REQUEST = '@@leaveRequest/GET_BY_ID_REQUEST',
   GET_BY_ID_SUCCESS = '@@leaveRequest/GET_BY_ID_SUCCESS',
   GET_BY_ID_ERROR = '@@leaveRequest/GET_BY_ID_ERROR',
   GET_BY_ID_DISPOSE = '@@leaveRequest/GET_BY_ID_DISPOSE',
-  // POST_REQUEST = '@@leaveRequest/POST_REQUEST',
-  // POST_SUCCESS = '@@leaveRequest/POST_SUCCESS',
-  // POST_ERROR = '@@leaveRequest/POST_ERROR',
-  // POST_DISPOSE = '@@leaveRequest/POST_DISPOSE',
-  // PUT_REQUEST = '@@leaveRequest/PUT_REQUEST',
-  // PUT_SUCCESS = '@@leaveRequest/PUT_SUCCESS',
-  // PUT_ERROR = '@@leaveRequest/PUT_ERROR',
-  // PUT_DISPOSE = '@@leaveRequest/PUT_DISPOSE',
+  POST_REQUEST = '@@leaveRequest/POST_REQUEST',
+  POST_SUCCESS = '@@leaveRequest/POST_SUCCESS',
+  POST_ERROR = '@@leaveRequest/POST_ERROR',
+  POST_DISPOSE = '@@leaveRequest/POST_DISPOSE',
+  PUT_REQUEST = '@@leaveRequest/PUT_REQUEST',
+  PUT_SUCCESS = '@@leaveRequest/PUT_SUCCESS',
+  PUT_ERROR = '@@leaveRequest/PUT_ERROR',
+  PUT_DISPOSE = '@@leaveRequest/PUT_DISPOSE',
 }
 
 // get all
@@ -37,12 +32,6 @@ export const leaveRequestGetAllRequest = (request: ILeaveRequestGetAllRequest) =
 export const leaveRequestGetAllSuccess = (response: IResponseCollection<ILeaveRequest>) => action(LeaveRequestAction.GET_ALL_SUCCESS, response);
 export const leaveRequestGetAllError = (message: string) => action(LeaveRequestAction.GET_ALL_ERROR, message);
 export const leaveRequestGetAllDispose = () => action(LeaveRequestAction.GET_ALL_DISPOSE);
-
-// // get list
-// export const projectGetListRequest = (request: IProjectGetListRequest) => action(ProjectAction.GET_LIST_REQUEST, request);
-// export const projectGetListSuccess = (response: IResponseList<IProjectList>) => action(ProjectAction.GET_LIST_SUCCESS, response);
-// export const projectGetListError = (message: string) => action(ProjectAction.GET_LIST_ERROR, message);
-// export const projectGetListDispose = () => action(ProjectAction.GET_LIST_DISPOSE);
 
 // get by id
 export const leaveRequestGetByIdRequest = (request: ILeaveRequestGetByIdRequest) => action(LeaveRequestAction.GET_BY_ID_REQUEST, request);

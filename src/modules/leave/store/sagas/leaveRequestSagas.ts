@@ -7,9 +7,6 @@ import {
   leaveRequestGetByIdError,
   leaveRequestGetByIdRequest,
   leaveRequestGetByIdSuccess,
-  // leaveRequestGetListError,
-  // leaveRequestGetListRequest,
-  // leaveRequestGetListSuccess,
   leaveRequestPostSuccess,
   leaveRequestPostError,
   leaveRequestPostRequest,
@@ -153,7 +150,6 @@ function* watchPutFetchRequest() {
 function* leaveRequestSagas() {
   yield all([
     fork(watchAllFetchRequest),
-    // fork(watchListFetchRequest),
     fork(watchByIdFetchRequest),
     fork(watchPostFetchRequest),
     fork(watchPutFetchRequest)
