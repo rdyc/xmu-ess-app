@@ -4,15 +4,97 @@ import { Card, CardContent, CardHeader } from '@material-ui/core';
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { BaseFieldsProps, Field } from 'redux-form';
+import { isNullOrUndefined } from 'util';
 
 interface OwnProps {
   context: BaseFieldsProps;
+  formCurrencyType: string | undefined;
+  isCurrencyIdr: boolean;
+  onChangeRate: (event: any, newValue: number, oldValue: number) => void;
+  onChangeValueIdr: (event: any, newValue: number, oldValue: number) => void;
 }
 
 type AllProps = OwnProps;
 
 const informationForm: React.SFC<AllProps> = props => {
   const { names } = props.context;
+  const { formCurrencyType, isCurrencyIdr, onChangeValueIdr, onChangeRate } = props;
+
+  const renderField = (name: string) => {
+    let fieldProps = {};
+  
+    switch (name) {
+      case 'customerUid': 
+        fieldProps = {
+          type: 'text',
+          component: FieldInputCustomer
+        };
+        break;
+      
+      case 'projectType':
+        fieldProps = {
+          category: 'project',
+          component: FieldSelectSystem
+        };
+        break;
+  
+      case 'currencyType': 
+        fieldProps = {
+          category: 'currency',
+          component: FieldSelectSystem
+        };
+        break;
+      
+      case 'start': 
+      case 'end': 
+        fieldProps = {
+          type: 'text',
+          component: FieldInputDate
+        };
+        break;
+      
+      case 'rate':
+        fieldProps = {
+          type: 'number',
+          disabled: isCurrencyIdr || isNullOrUndefined(formCurrencyType),
+          component: FieldInputNumber,
+          onChange: onChangeRate
+        };
+        break;
+
+      case 'valueUsd':
+        fieldProps = {
+          type: 'number',
+          component: FieldInputNumber,
+          onChange: onChangeValueIdr
+        };
+        break;
+
+      case 'valueIdr':
+        fieldProps = {
+          type: 'number',
+          disabled: true,
+          component: FieldInputNumber
+        };
+        break;
+    
+      default:
+        fieldProps = {
+          type: 'text',
+          component: FieldInputText
+        };
+        break;
+    }
+  
+    return (
+      <Field
+        key={name}
+        name={name}
+        label={<FormattedMessage id={`project.field.${name}`} />}
+        {...fieldProps}
+      />
+    );
+  };
     
   const render = (
     <Card square>
@@ -27,67 +109,6 @@ const informationForm: React.SFC<AllProps> = props => {
   );
 
   return render;
-};
-
-const renderField = (name: string) => {
-  let fieldProps = {};
-
-  switch (name) {
-    case 'customerUid': 
-      fieldProps = {
-        type: 'text',
-        component: FieldInputCustomer
-      };
-      break;
-    
-    case 'projectType':
-      fieldProps = {
-        category: 'project',
-        component: FieldSelectSystem
-      };
-      break;
-
-    case 'currencyType': 
-      fieldProps = {
-        category: 'currency',
-        component: FieldSelectSystem
-      };
-      break;
-    
-    case 'start': 
-    case 'end': 
-      fieldProps = {
-        type: 'text',
-        component: FieldInputDate
-      };
-      break;
-    
-    case 'rate':
-    case 'valueIdr': 
-    case 'valueUsd':
-      fieldProps = {
-        type: 'number',
-        component: FieldInputNumber
-      };
-      break;
-  
-    default:
-      fieldProps = {
-        type: 'text',
-        component: FieldInputText
-      };
-      break;
-      
-  }
-
-  return (
-    <Field
-      key={name}
-      name={name}
-      label={<FormattedMessage id={`project.field.${name}`} />}
-      {...fieldProps}
-    />
-  );
 };
 
 export default informationForm;

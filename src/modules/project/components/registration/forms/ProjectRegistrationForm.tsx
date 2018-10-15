@@ -1,5 +1,6 @@
 import { IEmployee } from '@account/classes/response';
 import ListItemEmployeeSelector from '@account/components/views/ListItemEmployeeSelector';
+import { ProjectType } from '@common/classes/types';
 import { FormMode } from '@generic/types';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import {
@@ -29,176 +30,59 @@ import styles from '@styles';
 import * as classNames from 'classnames';
 import * as React from 'react';
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
+import { connect } from 'react-redux';
 import { compose, setDisplayName } from 'recompose';
-import { BaseFieldsProps, FieldArray, Fields, InjectedFormProps, reduxForm, WrappedFieldArrayProps } from 'redux-form';
+import {
+  BaseFieldsProps,
+  FieldArray,
+  Fields,
+  formValueSelector,
+  InjectedFormProps,
+  reduxForm,
+  WrappedFieldArrayProps,
+} from 'redux-form';
+
+const formName = 'ProjectRegistrationForm';
 
 interface OwnProps {
   mode: FormMode;
 }
 
+interface FormValueProps {
+  formIsProject: boolean | false;
+  formIsPresales: boolean | false;
+  formIsCurrencyIDR: boolean | false;
+  formCurrencyType: string | undefined;
+  formRate: number | 1;
+  formValueUsd: number | 1;
+}
+
 type AllProps 
-  = InjectedIntlProps 
+  = FormValueProps
+  & InjectedIntlProps 
   & WithUser
   & WithWidth 
   & WithStyles;
 
 const registrationForm: React.SFC<AllProps & InjectedFormProps<IProjectDetail, OwnProps> & OwnProps> = props => { 
-  // const { mode } = props;
+  const { formIsProject, formIsPresales, formIsCurrencyIDR, formRate, formCurrencyType, change } = props;
 
-  // const renderDetail = (
-  //   <Card square>
-  //     <CardHeader 
-  //       title={<FormattedMessage id="project.infoTitle"/>}
-  //       subheader={<FormattedMessage id="project.infoSubTitle" />}
-  //     />
-  //     <CardContent>
-  //       {/* projectUid & owner & ownerEmployeeUid */}
-  //       {
-  //         mode === FormMode.Edit && 
-  //         <React.Fragment>
-  //           <TextField
-  //             fullWidth
-  //             disabled
-  //             margin="normal"
-  //             label={<FormattedMessage id="project.field.uid" />}
-  //             value={props.initialValues.uid}
-  //           />
-  //           <TextField
-  //             fullWidth
-  //             disabled
-  //             margin="normal"
-  //             label={<FormattedMessage id="project.field.owner" />}
-  //             value={props.initialValues.owner ? props.initialValues.owner.fullName : ''}
-  //           />
-  //         </React.Fragment>
-  //       }
+  const handleChangeRate = (event: any, newValue: number, oldValue: number) => {
+    change('valueIdr', newValue * formRate);
+  };
 
-  //       {/* customer & customerUid */}
-  //       <Field
-  //         type="text"
-  //         name="customer"
-  //         label={<FormattedMessage id="project.field.customer" />}
-  //         component={FieldInputCustomer}
-  //         onChange={(event: any, newValue: ICustomerList) => {
-  //           props.change('customerUid', newValue.uid);
-  //         }}
-  //       />
-
-  //       {/* project & projectType */}
-  //       {
-  //         mode === FormMode.New &&
-  //         <Field
-  //           type="project"
-  //           name="project"
-  //           label={<FormattedMessage id="project.field.type" />}
-  //           component={FieldSelectSystem}
-  //           onChange={(event: any, newValue: ISystemList | undefined) => {
-  //             props.change('projectType', newValue ? newValue.type : '');
-  //           }}
-  //         />
-  //       }
-  //       {
-  //         mode === FormMode.Edit &&
-  //         <TextField
-  //           fullWidth
-  //           disabled={props.mode === FormMode.Edit}
-  //           margin="normal"
-  //           label={<FormattedMessage id="project.field.type" />}
-  //           value={props.initialValues.project ? props.initialValues.project.value : ''}
-  //         />
-  //       }
-
-  //       <Field
-  //         type="text"
-  //         name="name"
-  //         label={<FormattedMessage id="project.field.name" />}
-  //         component={FieldInputText}
-  //       />
-  //       <Field
-  //         type="text"
-  //         name="description"
-  //         label={<FormattedMessage id="project.field.description" />}
-  //         component={FieldInputText}
-  //       />
-  //       <Field
-  //         type="text"
-  //         name="contractNumber"
-  //         label={<FormattedMessage id="project.field.contract" />}
-  //         component={FieldInputText}
-  //       />
-  //       <Field
-  //         type="text"
-  //         name="start"
-  //         label={<FormattedMessage id="project.field.start" />}
-  //         component={FieldInputDate}
-  //         // format={(value: any, name: string) => {
-  //         //   console.log(value);
-            
-  //         // }}
-  //       />
-  //       <Field
-  //         type="text"
-  //         name="end"
-  //         label={<FormattedMessage id="project.field.end" />}
-  //         component={FieldInputDate}
-  //       />
-  //       <Field
-  //         type="currency"
-  //         name="currency"
-  //         label={<FormattedMessage id="project.field.currency" />}
-  //         component={FieldSelectSystem}
-  //         onChange={(event: any, newValue: ISystemList | undefined) => {
-  //           props.change('currencyType', newValue ? newValue.type : '');
-  //         }}
-  //       />
-  //       <Field
-  //         type="number"
-  //         name="rate"
-  //         disabled={props.mode === FormMode.Edit}
-  //         label={<FormattedMessage id="project.field.rate" />}
-  //         component={FieldInputNumber} 
-  //       />
-  //       {/* <TextField
-  //         fullWidth
-  //         disabled={props.mode === FormMode.Edit}
-  //         margin="normal"
-  //         label={<FormattedMessage id="project.field.rate" />}
-  //         value={props.intl.formatNumber(props.initialValues.rate || 0)}
-  //       /> */}
-  //       <Field
-  //         type="number"
-  //         name="valueUsd"
-  //         label={<FormattedMessage id="project.field.valueUsd" />}
-  //         component={FieldInputNumber} 
-  //         onChange={(event: any, newValue: number, oldValue: number) => {
-  //           const rate = props.initialValues.rate || 0;
-
-  //           props.change('valueIdr', newValue * rate);
-  //         }}
-  //       />
-  //       <Field
-  //         type="number"
-  //         name="valueIdr"
-  //         disabled
-  //         label={<FormattedMessage id="project.field.valueIdr" />}
-  //         component={FieldInputNumber}
-  //       />
-  //       {
-  //         mode === FormMode.Edit &&
-  //         <Field
-  //           type="number"
-  //           name="maxHours"
-  //           disabled
-  //           label={<FormattedMessage id="project.field.hours" />}
-  //           component={FieldInputNumber}
-  //         />
-  //       }
-  //     </CardContent>
-  //   </Card>
-  // );
-   
+  const handleChangeValueIdr = (event: any, newValue: number, oldValue: number) => {
+    change('valueIdr', newValue * formRate);
+  };
+  
   const renderInformation = (context: BaseFieldsProps) => 
-    <InformationForm context={context} />;
+    <InformationForm 
+      context={context} 
+      isCurrencyIdr={formIsCurrencyIDR}
+      formCurrencyType={formCurrencyType}
+      onChangeRate={handleChangeRate}
+      onChangeValueIdr={handleChangeValueIdr}
+    />;
 
   const renderSales = (context: WrappedFieldArrayProps<IProjectSales>) => {
     const { classes, width } = props;
@@ -322,22 +206,30 @@ const registrationForm: React.SFC<AllProps & InjectedFormProps<IProjectDetail, O
             component={renderInformation}
           />
         </Grid>
-        <Grid
-          item
-          key="documents"
-          xs={12}
-          md={4}
-        >
-          <FieldArray 
-            name="documents" 
-            component={renderProjectDocs}
-          />
+        
+        {(formIsProject || formIsPresales) &&   
+          <Grid
+            item
+            key="documents"
+            xs={12}
+            md={4}
+          >
+            {formIsProject && 
+              <FieldArray 
+              name="documents" 
+              component={renderProjectDocs}
+              />
+            }
 
-          <FieldArray
-            name="documentPreSales"
-            component={renderPresalesDocs}
-          />
-        </Grid>
+            {formIsPresales &&
+              <FieldArray
+              name="documentPreSales"
+              component={renderPresalesDocs}
+              />
+            }
+          </Grid>
+        }
+
         <Grid
           item
           key="sales"
@@ -375,15 +267,34 @@ const registrationForm: React.SFC<AllProps & InjectedFormProps<IProjectDetail, O
   return renderForm;
 };
 
+const selector = formValueSelector(formName);
+
+const mapStateToProps = (state: any): FormValueProps => {
+  const projectType = selector(state, 'projectType');
+  const currencyType = selector(state, 'currencyType');
+  const rate = selector(state, 'rate');
+  const valueUsd = selector(state, 'valueUsd');
+  
+  return {
+    formIsProject: projectType === ProjectType.Project,
+    formIsPresales: projectType === ProjectType.PreSales,
+    formIsCurrencyIDR: currencyType === 'SCR01',
+    formCurrencyType: currencyType,
+    formRate: rate,
+    formValueUsd: valueUsd 
+  };
+};
+
 const enhance = compose<AllProps, InjectedFormProps<IProjectDetail, OwnProps> & OwnProps>(
-  setDisplayName('ProjectRegistrationForm'),
+  setDisplayName(formName),
   withUser,
   withWidth(),
   withStyles(styles),
-  injectIntl
+  injectIntl,
+  connect(mapStateToProps),
 )(registrationForm);
 
 export default reduxForm<IProjectDetail, OwnProps>({
-  form: 'ProjectRegistrationForm', 
+  form: formName, 
   touchOnChange: true
 })(enhance);
