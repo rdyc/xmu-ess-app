@@ -15,14 +15,10 @@ export const enum SettlementApprovalAction {
   GET_BY_ID_SUCCESS = '@@purchase/GET_BY_ID_SUCCESS',
   GET_BY_ID_ERROR = '@@purchase/GET_BY_ID_ERROR',
   GET_BY_ID_DISPOSE = '@@purchase/GET_BY_ID_DISPOSE',
-  // POST_REQUEST = '@@purchase/POST_REQUEST',
-  // POST_SUCCESS = '@@purchase/POST_SUCCESS',
-  // POST_ERROR = '@@purchase/POST_ERROR',
-  // POST_DISPOSE = '@@purchase/POST_DISPOSE',
-  // PUT_REQUEST = '@@purchase/PUT_REQUEST',
-  // PUT_SUCCESS = '@@purchase/PUT_SUCCESS',
-  // PUT_ERROR = '@@purchase/PUT_ERROR',
-  // PUT_DISPOSE = '@@purchase/PUT_DISPOSE',
+  POST_REQUEST = '@@purchase/POST_REQUEST',
+  POST_SUCCESS = '@@purchase/POST_SUCCESS',
+  POST_ERROR = '@@purchase/POST_ERROR',
+  POST_DISPOSE = '@@purchase/POST_DISPOSE',
 }
 
 // get all
