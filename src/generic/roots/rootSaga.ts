@@ -4,6 +4,8 @@ import employeeSagas from '@account/store/sagas/employeeSagas';
 import systemSagas from '@common/store/sagas/systemSagas';
 import notificationSagas from '@layout/store/sagas/notificationSagas';
 import customerSagas from '@lookup/store/sagas/customerSagas';
+import mileageapprovalSagas from '@mileage/store/sagas/mileageapprovalSagas';
+import mileagerequestSagas from '@mileage/store/sagas/mileagerequestSagas';
 import projectSagas from '@project/store/sagas/projectSagas';
 import { all, fork } from 'redux-saga/effects';
 
@@ -12,16 +14,20 @@ export function* rootSaga() {
     // common
     fork(systemSagas),
     fork(notificationSagas),
-    
+
     // lookup
-    fork(customerSagas), 
-    
+    fork(customerSagas),
+
     // account
-    fork(employeeSagas), 
-    fork(employeeMySagas), 
-    fork(employeeProfileSagas), 
-    
+    fork(employeeSagas),
+    fork(employeeMySagas),
+    fork(employeeProfileSagas),
+
     // project
     fork(projectSagas),
+
+    // mileage
+    fork(mileageapprovalSagas),
+    fork(mileagerequestSagas)
   ]);
 }
