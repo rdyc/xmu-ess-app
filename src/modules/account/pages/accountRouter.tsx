@@ -14,7 +14,7 @@ type AllProps = PropsFromState & ConnectedReduxProps;
 
 export const accountRouter: React.StatelessComponent<AllProps> = props => (
   <Switch>
-    <Route path={props.match.path + '/profile'} component={AccountProfilePage} />
+    <Route path={`${props.match.path}'/profile`} component={AccountProfilePage} />
     {/* <Route path={props.match.path + '/switch'} component={AccountSwitchPage} /> */}
   </Switch>
 );

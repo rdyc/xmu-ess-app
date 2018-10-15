@@ -22,7 +22,7 @@ import {
   WithStyles,
   withStyles,
 } from '@material-ui/core';
-import withWidth, { isWidthDown, WithWidthProps } from '@material-ui/core/withWidth';
+import withWidth, { isWidthDown, WithWidth } from '@material-ui/core/withWidth';
 import AddIcon from '@material-ui/icons/Add';
 import CloseIcon from '@material-ui/icons/Close';
 import DoneIcon from '@material-ui/icons/Done';
@@ -41,11 +41,14 @@ interface PropsFromState {
 
 interface PropsFromDispatch {
   employeeDispatch: {
-    allRequest: typeof employeeGetListRequest;
+    listRequest: typeof employeeGetListRequest;
   };
 }
 
 interface OwnProps {
+  companyUids?: string[] | undefined;
+  roleUids?: string[] | undefined;
+  positionUids?: string[] | undefined;
   onSelected: (employee: IEmployee) => boolean;
 }
 
@@ -54,7 +57,7 @@ type AllProps = PropsFromState &
                 OwnProps &
                 ConnectedReduxProps & 
                 InjectedIntlProps & 
-                WithWidthProps &
+                WithWidth &
                 WithStyles<typeof styles>;
 
 const initialState = {
@@ -69,8 +72,10 @@ class ListItemEmployeeSelector extends React.Component<AllProps, State> {
   state: State = initialState;
 
   componentDidMount() {
+    const { isLoading, response } = this.props.employeeState;
+
     // skipp fetch while current state is being loaded
-    if (this.props.employeeState.isLoading || this.props.employeeState.response) {
+    if (isLoading || response) {
       return;
     }
 
@@ -78,15 +83,18 @@ class ListItemEmployeeSelector extends React.Component<AllProps, State> {
   }
 
   loadData = () => {
-    this.props.employeeDispatch.allRequest({
+    const { companyUids, roleUids, positionUids } = this.props;
+    const { listRequest } = this.props.employeeDispatch;
+
+    listRequest({
       filter: {
-        companyUids: undefined,
-        roleUids: undefined,
-        positionUids: undefined,
+        companyUids,
+        roleUids,
+        positionUids,
         find: this.state.search,
         findBy: undefined,
         direction: undefined,
-        orderBy: undefined,
+        orderBy: 'fullName',
         size: undefined
       }
     });
@@ -128,17 +136,19 @@ class ListItemEmployeeSelector extends React.Component<AllProps, State> {
   };
 
   fnFilteredEmployee = (response: IResponseCollection<IEmployee> | undefined) => {
+    let result: any = [];
+
     if (response && response.data) {
       if (this.state.search !== '') {
-        return response.data.filter(item => 
+        result = response.data.filter(item => 
           item.fullName.toLowerCase().indexOf(this.state.search) !== -1
         );
       } else {
-        return response.data;
+        result = response.data;
       }
-    } else {
-      return [];
-    }
+    } 
+    
+    return result;
   };
 
   render() {
@@ -288,10 +298,17 @@ const mapStateToProps = ({ employeeGetList }: IAppState) => ({
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   employeeDispatch: {
-    allRequest: (request: IEmployeeListRequest) => dispatch(employeeGetListRequest(request)),
+    listRequest: (request: IEmployeeListRequest) => dispatch(employeeGetListRequest(request)),
   }
 });
 
-const redux = connect(mapStateToProps, mapDispatchToProps)(ListItemEmployeeSelector);
-
-export default injectIntl(withStyles(styles)(withWidth()(redux)));
+export default connect(
+  mapStateToProps, 
+  mapDispatchToProps
+)(
+  withStyles(styles)(
+    withWidth()(
+      injectIntl(ListItemEmployeeSelector)
+    )
+  )
+);

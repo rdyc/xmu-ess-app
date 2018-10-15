@@ -19,8 +19,6 @@ type AllProps = PropsFromState &
                 WithStyles<typeof styles>;
                 
 export const ProjectList: React.ComponentType<AllProps> = props => {
-  console.log('ProjectList');
-  
   const { history  } = props;
   const { response, isLoading  } = props.projectState;
 
@@ -31,15 +29,19 @@ export const ProjectList: React.ComponentType<AllProps> = props => {
   };
 
   const parseChanges = (changes: IBaseChanges | null) => {
-    if (changes === null) {
-      return 'Unknown';
-    } else {
-      if (changes.updatedBy !== null) {
-        return changes.updated ? (changes.updated ? changes.updated.fullName : changes.updatedBy) : changes.updatedBy;
-      } else {
-        return changes.created ? changes.created.fullName : changes.createdBy;
-      }
+    let result = 'Unknown';
+    
+    if (!changes) {
+      return result;
     }
+
+    if (changes.updatedBy !== null) {
+      result = changes.updated ? (changes.updated ? changes.updated.fullName : changes.updatedBy) : changes.updatedBy;
+    } else {
+      result = changes.created ? changes.created.fullName : changes.createdBy;
+    }
+
+    return result;
   };
 
   const renderProjectList = (projects: IProject[]) => {

@@ -19,7 +19,7 @@ function* watchFetchAllRequest() {
   const worker = (action: ReturnType<typeof employeeGetAllRequest>) => {
     return saiyanSaga.fetch({
       method: 'get',
-      path: '/v1/account/employees' + objectToQuerystring(action.payload.filter), 
+      path: `/v1/account/employees${objectToQuerystring(action.payload.filter)}`, 
       success: (response: IApiResponse) => ([
         put(employeeGetAllSuccess(response.body)),
       ]), 
@@ -49,7 +49,7 @@ function* watchFetchListRequest() {
   const worker = (action: ReturnType<typeof employeeGetListRequest>) => {
     return saiyanSaga.fetch({
       method: 'get',
-      path: '/v1/account/employees/list' + objectToQuerystring(action.payload.filter),
+      path: `/v1/account/employees/list${objectToQuerystring(action.payload.filter)}`,
       success: (response: IApiResponse) => ([
         put(employeeGetListSuccess(response.body)),
       ]), 

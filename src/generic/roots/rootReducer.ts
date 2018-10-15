@@ -5,7 +5,7 @@ import { IAppState } from '@generic/interfaces';
 import { appBarReducer, layoutReducer, listBarReducer, notificationReducer } from '@layout/store/reducers';
 import leaveRequestReducers from '@leave/store/reducers/leaveRequestReducers';
 import lookupReducers from '@lookup/store/reducers/lookupReducers';
-import projectReducers from '@project/store/reducers/projecReducers';
+import projectReducers from '@project/store/reducers/projectReducers';
 import { combineReducers } from 'redux';
 import { reducer as reduxFormReducer } from 'redux-form';
 import { reducer as oidcReducer } from 'redux-oidc';

@@ -11,6 +11,7 @@ export function objectToQuerystring (obj: any) {
 
       delimiter = (i === 0) ? '?' : '&';
       
+      // tslint:disable-next-line:no-parameter-reassignment
       key = encodeURIComponent(key);
       val = encodeURIComponent(obj[key]);
       return [str, delimiter, key, '=', val].join('');

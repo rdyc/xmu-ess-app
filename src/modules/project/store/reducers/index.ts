@@ -1,4 +1,4 @@
-export * from './projecReducers';
+export * from './projectReducers';
 export * from './projectGetAllReducer';
 export * from './projectGetByIdReducer';
 export * from './projectGetListReducer';

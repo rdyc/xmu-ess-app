@@ -17,7 +17,7 @@ const reducer: Reducer<IQuerySingleState<IProjectGetListRequest, IProjectList>> 
     case Action.GET_LIST_REQUEST: return { ...state, isLoading: true, request: action.payload };
     case Action.GET_LIST_SUCCESS: return { ...state, isLoading: false, response: action.payload };
     case Action.GET_LIST_ERROR: return { ...state, isLoading: false, isError: true, errors: action.payload };
-    case Action.GET_LIST_DISPOSE: return state = initialState;
+    case Action.GET_LIST_DISPOSE: return initialState;
     
     default: return state;
   }

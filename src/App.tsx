@@ -60,6 +60,7 @@ class App extends React.Component<AllProps> {
           <ConnectedRouter history={history}>
             <IntlProvider
               locale={currentAppLocale.locale}
+              defaultLocale={currentAppLocale.locale}
               messages={currentAppLocale.messages}
             >
               <Router history={history}>

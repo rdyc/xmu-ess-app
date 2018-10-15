@@ -101,7 +101,7 @@ class ProjectListView extends React.Component<AllProps> {
     layoutDispatch.changeView({
       menuUid: 'MNU19',
       title: intl.formatMessage({id: 'project.title'}),
-      subTitle : intl.formatMessage({id: 'project.subtTitle'})
+      subTitle : intl.formatMessage({id: 'project.subTitle'})
     });
 
     layoutDispatch.modeListOn();

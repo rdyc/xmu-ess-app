@@ -21,7 +21,7 @@ import {
   WithStyles,
   withStyles,
 } from '@material-ui/core';
-import withWidth, { isWidthDown, WithWidthProps } from '@material-ui/core/withWidth';
+import withWidth, { isWidthDown, WithWidth } from '@material-ui/core/withWidth';
 import BusinessIcon from '@material-ui/icons/Business';
 import SearchIcon from '@material-ui/icons/Search';
 import styles from '@styles';
@@ -54,7 +54,7 @@ type AllProps = PropsFromState &
                 OwnProps &
                 ConnectedReduxProps & 
                 InjectedIntlProps & 
-                WithWidthProps &
+                WithWidth &
                 WithStyles<typeof styles>;
 
 const initialState = {
@@ -98,17 +98,19 @@ class CustomerLookup extends React.Component<AllProps, State> {
   };
 
   filter = (response: IResponseCollection<ICustomerList> | undefined) => {
+    let result: any = [];
+
     if (response && response.data) {
       if (this.state.search !== '') {
-        return response.data.filter(item => 
+        result = response.data.filter(item => 
           item.name.toLowerCase().indexOf(this.state.search) !== -1
         );
       } else {
-        return response.data;
+        result = response.data;
       }
-    } else {
-      return [];
     }
+
+    return result;
   };
 
   handleDialogOpen = () => {
@@ -282,6 +284,13 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   }
 });
 
-const redux = connect(mapStateToProps, mapDispatchToProps)(CustomerLookup);
-
-export default injectIntl(withStyles(styles)(withWidth()(redux)));
+export default connect(
+  mapStateToProps, 
+  mapDispatchToProps
+)(
+  withStyles(styles)(
+    withWidth()(
+      injectIntl(CustomerLookup)
+    )
+  )
+);
