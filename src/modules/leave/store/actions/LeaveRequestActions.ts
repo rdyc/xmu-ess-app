@@ -1,4 +1,4 @@
-import { IResponseCollection, IResponseList, IResponseSingle } from '@generic/interfaces';
+import { IResponseCollection, IResponseSingle } from '@generic/interfaces';
 import {
   ILeaveRequestGetAllRequest,
   ILeaveRequestGetByIdRequest,
