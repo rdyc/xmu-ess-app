@@ -1,1 +1,1 @@
-export * from './IPurchaseGetAllFilter';
+export * from './ISettlementApprovalGetAllFilter';

@@ -6,7 +6,7 @@ import {
 import { IPurchase, IPurchaseDetail } from '@purchase/classes/response/purchaseRequest';
 import { action } from 'typesafe-actions';
 
-export const enum PurcheAction {
+export const enum PurchaseAction {
   GET_ALL_REQUEST = '@@purchase/GET_ALL_REQUEST',
   GET_ALL_SUCCESS = '@@purchase/GET_ALL_SUCCESS',
   GET_ALL_ERROR = '@@purchase/GET_ALL_ERROR',
@@ -26,13 +26,13 @@ export const enum PurcheAction {
 }
 
 // get all
-export const purchaseGetAllRequest = (request: IPurchaseGetAllRequest) => action(ProjectAction.GET_ALL_REQUEST, request);
-export const purchaseGetAllSuccess = (response: IResponseCollection<IPurchase>) => action(ProjectAction.GET_ALL_SUCCESS, response);
-export const purchaseGetAllError = (message: string) => action(ProjectAction.GET_ALL_ERROR, message);
-export const purchaseGetAllDispose = () => action(ProjectAction.GET_ALL_DISPOSE);
+export const purchaseGetAllRequest = (request: IPurchaseGetAllRequest) => action(PurchaseAction.GET_ALL_REQUEST, request);
+export const purchaseGetAllSuccess = (response: IResponseCollection<IPurchase>) => action(PurchaseAction.GET_ALL_SUCCESS, response);
+export const purchaseGetAllError = (message: string) => action(PurchaseAction.GET_ALL_ERROR, message);
+export const purchaseGetAllDispose = () => action(PurchaseAction.GET_ALL_DISPOSE);
 
 // get by id
-export const purchaseGetByIdRequest = (request: IPurchaseGetByIdRequest) => action(ProjectAction.GET_BY_ID_REQUEST, request);
-export const purchaseGetByIdSuccess = (response: IResponseSingle<IPurchaseDetail>) => action(ProjectAction.GET_BY_ID_SUCCESS, response);
-export const purchaseGetByIdError = (message: string) => action(ProjectAction.GET_BY_ID_ERROR, message);
-export const purchaseGetByIdDispose = () => action(ProjectAction.GET_BY_ID_DISPOSE);
+export const purchaseGetByIdRequest = (request: IPurchaseGetByIdRequest) => action(PurchaseAction.GET_BY_ID_REQUEST, request);
+export const purchaseGetByIdSuccess = (response: IResponseSingle<IPurchaseDetail>) => action(PurchaseAction.GET_BY_ID_SUCCESS, response);
+export const purchaseGetByIdError = (message: string) => action(PurchaseAction.GET_BY_ID_ERROR, message);
+export const purchaseGetByIdDispose = () => action(PurchaseAction.GET_BY_ID_DISPOSE);

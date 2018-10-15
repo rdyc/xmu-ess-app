@@ -26,13 +26,13 @@ export const enum PurchaseApprovalAction {
 }
 
 // get all
-export const purchaseGetAllRequest = (request: IPurchaseApprovalGetAllRequest) => action(PurchaseApprovalAction.GET_ALL_REQUEST, request);
-export const purchaseGetAllSuccess = (response: IResponseCollection<IPurchaseApproval>) => action(PurchaseApprovalAction.GET_ALL_SUCCESS, response);
-export const purchaseGetAllError = (message: string) => action(PurchaseApprovalAction.GET_ALL_ERROR, message);
-export const purchaseGetAllDispose = () => action(PurchaseApprovalAction.GET_ALL_DISPOSE);
+export const purchaseApprovalGetAllRequest = (request: IPurchaseApprovalGetAllRequest) => action(PurchaseApprovalAction.GET_ALL_REQUEST, request);
+export const purchaseApprovalGetAllSuccess = (response: IResponseCollection<IPurchase>) => action(PurchaseApprovalAction.GET_ALL_SUCCESS, response);
+export const purchaseApprovalGetAllError = (message: string) => action(PurchaseApprovalAction.GET_ALL_ERROR, message);
+export const purchaseApprovalGetAllDispose = () => action(PurchaseApprovalAction.GET_ALL_DISPOSE);
 
 // get by id
-export const purchaseGetByIdRequest = (request: IPurchaseApprovalGetByIdRequest) => action(PurchaseApprovalAction.GET_BY_ID_REQUEST, request);
-export const purchaseGetByIdSuccess = (response: IResponseSingle<IPurchaseApprovalDetail>) => action(PurchaseApprovalAction.GET_BY_ID_SUCCESS, response);
-export const purchaseGetByIdError = (message: string) => action(PurchaseApprovalAction.GET_BY_ID_ERROR, message);
-export const purchaseGetByIdDispose = () => action(PurchaseApprovalAction.GET_BY_ID_DISPOSE);
+export const purchaseApprovalGetByIdRequest = (request: IPurchaseApprovalGetByIdRequest) => action(PurchaseApprovalAction.GET_BY_ID_REQUEST, request);
+export const purchaseApprovalGetByIdSuccess = (response: IResponseSingle<IPurchaseDetail>) => action(PurchaseApprovalAction.GET_BY_ID_SUCCESS, response);
+export const purchaseApprovalGetByIdError = (message: string) => action(PurchaseApprovalAction.GET_BY_ID_ERROR, message);
+export const purchaseApprovalGetByIdDispose = () => action(PurchaseApprovalAction.GET_BY_ID_DISPOSE);

@@ -5,6 +5,7 @@ import { IAppState } from '@generic/interfaces';
 import { appBarReducer, layoutReducer, listBarReducer, notificationReducer } from '@layout/store/reducers';
 import lookupReducers from '@lookup/store/reducers/lookupReducers';
 import projectReducers from '@project/store/reducers/projectReducers';
+import purchaseReducers from '@purchase/store/reducers/purchaseReducers';
 import { combineReducers } from 'redux';
 import { reducer as reduxFormReducer } from 'redux-form';
 import { reducer as oidcReducer } from 'redux-oidc';
@@ -22,5 +23,6 @@ export const rootReducer = combineReducers<IAppState>({
   ...commonReducers,
   ...lookupReducers,
   ...accountReducers,
-  ...projectReducers
+  ...projectReducers,
+  ...purchaseReducers,
 });

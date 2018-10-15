@@ -26,13 +26,13 @@ export const enum SettlementAction {
 }
 
 // get all
-export const purchaseGetAllRequest = (request: ISettlementGetAllRequest) => action(SettlementAction.GET_ALL_REQUEST, request);
-export const purchaseGetAllSuccess = (response: IResponseCollection<ISettlement>) => action(SettlementAction.GET_ALL_SUCCESS, response);
-export const purchaseGetAllError = (message: string) => action(SettlementAction.GET_ALL_ERROR, message);
-export const purchaseGetAllDispose = () => action(SettlementAction.GET_ALL_DISPOSE);
+export const settlementGetAllRequest = (request: ISettlementGetAllRequest) => action(SettlementAction.GET_ALL_REQUEST, request);
+export const settlementGetAllSuccess = (response: IResponseCollection<ISettlement>) => action(SettlementAction.GET_ALL_SUCCESS, response);
+export const settlementGetAllError = (message: string) => action(SettlementAction.GET_ALL_ERROR, message);
+export const settlementGetAllDispose = () => action(SettlementAction.GET_ALL_DISPOSE);
 
 // get by id
-export const purchaseGetByIdRequest = (request: ISettlementGetByIdRequest) => action(SettlementAction.GET_BY_ID_REQUEST, request);
-export const purchaseGetByIdSuccess = (response: IResponseSingle<ISettlementDetail>) => action(SettlementAction.GET_BY_ID_SUCCESS, response);
-export const purchaseGetByIdError = (message: string) => action(SettlementAction.GET_BY_ID_ERROR, message);
-export const purchaseGetByIdDispose = () => action(SettlementAction.GET_BY_ID_DISPOSE);
+export const settlementGetByIdRequest = (request: ISettlementGetByIdRequest) => action(SettlementAction.GET_BY_ID_REQUEST, request);
+export const settlementGetByIdSuccess = (response: IResponseSingle<ISettlementDetail>) => action(SettlementAction.GET_BY_ID_SUCCESS, response);
+export const settlementGetByIdError = (message: string) => action(SettlementAction.GET_BY_ID_ERROR, message);
+export const settlementGetByIdDispose = () => action(SettlementAction.GET_BY_ID_DISPOSE);

@@ -6,6 +6,6 @@ import {
 import { IPurchase, IPurchaseDetail } from '@purchase/classes/response/purchaseRequest';
 
 export interface IPurchaseApprovalState {
-  projectGetAll: IQueryCollectionState<IPurchaseApprovalGetAllRequest, IPurchase>;
-  projectGetById: IQuerySingleState<IPurchaseApprovalGetByIdRequest, IPurchaseDetail>;
+  purchaseApprovalGetAll: IQueryCollectionState<IPurchaseApprovalGetAllRequest, IPurchase>;
+  purchaseApprovalGetById: IQuerySingleState<IPurchaseApprovalGetByIdRequest, IPurchaseDetail>;
 }

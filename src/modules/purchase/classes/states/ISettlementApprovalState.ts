@@ -6,6 +6,6 @@ import {
 import { ISettlement, ISettlementDetail } from '@purchase/classes/response/purchaseSettlement';
 
 export interface ISettlementApprovalState {
-  projectGetAll: IQueryCollectionState<ISettlementApprovalGetAllRequest, ISettlement>;
-  projectGetById: IQuerySingleState<ISettlementApprovalGetByIdRequest, ISettlementDetail>;
+  settlementApprovalGetAll: IQueryCollectionState<ISettlementApprovalGetAllRequest, ISettlement>;
+  settlementApprovalGetById: IQuerySingleState<ISettlementApprovalGetByIdRequest, ISettlementDetail>;
 }

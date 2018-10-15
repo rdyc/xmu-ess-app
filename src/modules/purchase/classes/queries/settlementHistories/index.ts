@@ -1,2 +1,2 @@
 export * from './ISettlementApprovalGetAllRequest';
-export * from './ISettlementApprovalGetByIDRequest';
+export * from './ISettlementApprovalGetByIdRequest';
