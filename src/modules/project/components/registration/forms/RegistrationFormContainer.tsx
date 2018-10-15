@@ -17,18 +17,18 @@ import {
   WrappedFieldArrayProps,
 } from 'redux-form';
 
-type DocumentType = {
+export type ProjectDocumentFormData = {
   uid: string;
-  type: string;
-  isAvailable: boolean;
+  documentType: string;
+  isChecked: boolean;
 };
 
-type ProjectSales = {
+export type ProjectSalesFormData = {
   uid: string;
   employeeUid: string;
 };
 
-export type RegistrationFormData = {
+export type ProjectRegistrationFormData = {
   information: {
     customerUid: string | undefined;
     projectType: string | undefined;
@@ -42,10 +42,16 @@ export type RegistrationFormData = {
     valueUsd: number | 1;
     valueIdr: number | 1;
   },
-  documentProject: DocumentType[], 
-  documentPresales: DocumentType[], 
-  sales: ProjectSales[]
+  document: {
+    project: ProjectDocumentFormData[], 
+    preSales: ProjectDocumentFormData[],
+  }, 
+  sales: {
+    employees: ProjectSalesFormData[]
+  }
 };
+
+const formName = 'projectRegistration';
 
 interface FormValueProps {
   formIsProject: boolean | false;
@@ -56,7 +62,7 @@ interface FormValueProps {
   formValueUsd: number | 1;
 }
 
-type AllProps = InjectedFormProps<RegistrationFormData> & FormValueProps;
+type AllProps = InjectedFormProps<ProjectRegistrationFormData> & FormValueProps;
 
 const registrationFormContainer: React.SFC<AllProps> = props => {
   const { formIsProject, formIsPresales, formIsCurrencyIDR, formRate, formValueUsd, formCurrencyType, change } = props;
@@ -91,14 +97,14 @@ const registrationFormContainer: React.SFC<AllProps> = props => {
 
   const componentProjectDocument = (context: WrappedFieldArrayProps<any>) => (
     <DocumentForm 
-      category="document"
+      category="project"
       context={context} 
     />
   );
 
   const componentPresalesDocument = (context: WrappedFieldArrayProps<any>) => (
     <DocumentForm 
-      category="documentPreSales"
+      category="preSales"
       context={context} 
     />
   );
@@ -119,26 +125,24 @@ const registrationFormContainer: React.SFC<AllProps> = props => {
           </FormSection>
         </Grid>
         
-        {formIsProject &&
-          <Grid item xs={12} md={4}>
-            <FormSection name="documentProject">
+        {(formIsProject || formIsPresales) &&
+        <Grid item xs={12} md={4}>
+          <FormSection name="document">
+            {formIsProject &&
               <FieldArray
-                name="documents"
+                name="project"
                 component={componentProjectDocument}
               />
-            </FormSection>
-          </Grid>
-        }
-        
-        {formIsPresales &&
-          <Grid item xs={12} md={4}>
-            <FormSection name="documentPresales">
+            }
+            
+            {formIsPresales &&
               <FieldArray 
-                name="documentPreSales" 
+                name="preSales" 
                 component={componentPresalesDocument}
               />
-            </FormSection>
-          </Grid>
+            }
+          </FormSection>
+        </Grid>
         }
 
         <Grid item xs={12} md={4}>
@@ -149,7 +153,7 @@ const registrationFormContainer: React.SFC<AllProps> = props => {
             />
           </FormSection>
         </Grid>
-
+        
         <Grid item xs={12} md={4}>
           <SubmitForm {...props}/>
         </Grid>
@@ -160,7 +164,7 @@ const registrationFormContainer: React.SFC<AllProps> = props => {
   return render;
 };
 
-const selector = formValueSelector('test');
+const selector = formValueSelector(formName);
 
 const mapStateToProps = (state: any): FormValueProps => {
   const projectType = selector(state, 'information.projectType');
@@ -178,7 +182,9 @@ const mapStateToProps = (state: any): FormValueProps => {
   };
 };
 
-export const RegistrationFormContainer = reduxForm<RegistrationFormData>({
-  form: 'test',
+export const RegistrationFormContainer = reduxForm<ProjectRegistrationFormData>({
+  form: formName,
+  touchOnChange: true,
+  touchOnBlur: true,
   enableReinitialize: false
 })(connect(mapStateToProps)(registrationFormContainer));

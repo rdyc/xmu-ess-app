@@ -24,7 +24,7 @@ const submitForm: React.SFC<InjectedFormProps> = props => (
       <Button 
         type="submit"
         color="secondary"
-        disabled={props.submitting}
+        disabled={!props.valid || props.submitting}
       >
         <FormattedMessage id={props.submitting ? 'global.processing' : 'global.action.submit' } />
       </Button>

@@ -1,5 +1,6 @@
 import { IEmployee } from '@account/classes/response';
 import ListItemEmployeeSelector from '@account/components/views/ListItemEmployeeSelector';
+import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import {
   Avatar,
@@ -23,7 +24,7 @@ import { IProjectSales } from '@project/classes/response';
 import styles from '@styles';
 import * as classNames from 'classnames';
 import * as React from 'react';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose } from 'recompose';
 import { WrappedFieldArrayProps } from 'redux-form';
 
@@ -34,17 +35,35 @@ interface OwnProps {
 type AllProps
    = OwnProps
    & WithUser
+   & WithLayout
    & WithStyles
-   & WithWidth;
+   & WithWidth
+   & InjectedIntlProps;
 
 const salesForm: React.SFC<AllProps> = props => {
-  const { classes, width, context } = props;
+  const { intl, classes, width, context } = props;
   const { user } = props.userState;
-
+  const { alertAdd } = props.layoutDispatch;
+  
   const handleSelectedCallback = (employee: IEmployee): boolean => {
-    // tslint:disable-next-line:no-debugger
-    debugger;
     try {
+      // get all
+      const employees = context.fields.getAll();
+      
+      // check existing
+      const isExist = employees.filter(item => item.employeeUid === employee.uid).length > 0;
+
+      // don't insert if exist
+      if (isExist) {
+        alertAdd({
+          time: new Date,
+          message: intl.formatMessage({id: 'project.alert.message.salesDuplication'})
+        });
+
+        return false;
+      }
+
+      // go away
       context.fields.push({
         uid: null,
         employeeUid: employee.uid,
@@ -124,6 +143,8 @@ const salesForm: React.SFC<AllProps> = props => {
 
 export const SalesForm = compose<AllProps, OwnProps>(
   withUser,
+  withLayout,
   withStyles(styles),
-  withWidth()
+  withWidth(),
+  injectIntl
 )(salesForm);

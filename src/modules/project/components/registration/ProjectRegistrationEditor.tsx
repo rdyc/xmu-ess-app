@@ -6,10 +6,9 @@ import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { Typography } from '@material-ui/core';
 import { IProjectPutDocument, IProjectPutPayload, IProjectPutSales } from '@project/classes/request';
-import { IProjectDetail } from '@project/classes/response';
 import {
+  ProjectRegistrationFormData,
   RegistrationFormContainer,
-  RegistrationFormData,
 } from '@project/components/registration/forms/RegistrationFormContainer';
 import withApiProjectRegistrationDetail, {
   WithApiProjectRegistrationDetailHandler,
@@ -35,7 +34,7 @@ import {
 } from 'recompose';
 import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
-import { isNullOrUndefined, isObject, isUndefined } from 'util';
+import { isNullOrUndefined, isObject } from 'util';
 
 interface RouteParams {
   projectUid: string;
@@ -65,19 +64,20 @@ type AllProps
   & Updaters;
 
 interface Handler {
-  handleValidate: (payload: IProjectDetail) => FormErrors;
-  handleSubmit: (payload: any) => void;
+  handleValidate: (payload: ProjectRegistrationFormData) => FormErrors;
+  handleSubmit: (payload: ProjectRegistrationFormData) => void;
   handleSubmitSuccess: (result: any, dispatch: Dispatch<any>) => void;
   handleSubmitFail: (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => void;
 }
 
 const registrationEditor: React.SFC<AllProps> = props => {
-  const { mode, handleSubmit, handleSubmitSuccess, handleSubmitFail } = props;
+  const { mode, handleValidate, handleSubmit, handleSubmitSuccess, handleSubmitFail } = props;
   const { isLoading, response } = props.projectDetailState;
 
-  const renderForm = (formData: RegistrationFormData) => (
+  const renderForm = (formData: ProjectRegistrationFormData) => (
     <RegistrationFormContainer 
       initialValues={formData}
+      validate={handleValidate}
       onSubmit={handleSubmit} 
       onSubmitSuccess={handleSubmitSuccess}
       onSubmitFail={handleSubmitFail}
@@ -85,12 +85,12 @@ const registrationEditor: React.SFC<AllProps> = props => {
   );
 
   // init form values
-  const initialValues: RegistrationFormData = {
+  const initialValues: ProjectRegistrationFormData = {
     information: {
-      customerUid: 'customerUid',
+      customerUid: undefined,
       projectType: undefined,
       contractNumber: undefined,
-      name: '...name',
+      name: undefined,
       description: 'desc',
       start: undefined,
       end: undefined,
@@ -99,9 +99,13 @@ const registrationEditor: React.SFC<AllProps> = props => {
       valueUsd: 9,
       valueIdr: 0,
     },
-    documentPresales: [],
-    documentProject: [],
-    sales: []
+    document: {
+      project: [],
+      preSales: [],
+    },
+    sales: {
+      employees: []
+    }
   };
 
   // New
@@ -130,30 +134,30 @@ const registrationEditor: React.SFC<AllProps> = props => {
 };
 
 const handlerCreators: HandleCreators<AllProps, Handler> = {
-  handleValidate: (props: AllProps) => (payload: IProjectDetail) => { 
-    const errors = {};
+  handleValidate: (props: AllProps) => (payload: ProjectRegistrationFormData) => { 
+    const errors = {
+      information: {}
+    };
   
     const requiredFields = [
-      'customer', 'customerUid', 'project', 'projectType', 'name',  
-      'start', 'end', 'currency', 'currencyType', 'valueUsd'
+      'customerUid', 'projectType', 'name',  
+      'start', 'end', 'currencyType', 'valueUsd'
     ];
   
     requiredFields.forEach(field => {
-      if (!payload[field] || isNullOrUndefined(payload[field])) {
-        errors[field] = 'Required';
+      if (!payload.information[field] || isNullOrUndefined(payload.information[field])) {
+        errors.information[field] = props.intl.formatMessage({id: `project.field.information.${field}.required`});
       }
     });
     
     return errors;
   },
-  handleSubmit: (props: AllProps) => (payload: RegistrationFormData) => { 
-    // tslint:disable-next-line:no-debugger
-    debugger;
-    const { mode, projectUid, apiRegistrationDetailPut } = props;
+  handleSubmit: (props: AllProps) => (payload: ProjectRegistrationFormData) => { 
+    const { mode, projectUid, apiRegistrationDetailPost, apiRegistrationDetailPut } = props;
     const { user } = props.userState;
 
     if (!user) {
-      return Promise.reject('Empty user!');
+      return Promise.reject('user was not found');
     }
 
     const parsedDocuments = () => {
@@ -167,21 +171,21 @@ const handlerCreators: HandleCreators<AllProps, Handler> = {
       const _documents: IProjectPutDocument[] = [];
   
       if (payload.information.projectType === ProjectType.Project) {
-        payload.documentProject.forEach(item => 
+        payload.document.project.forEach(item => 
           _documents.push({
             uid: item.uid,
-            documentType: item.type,
-            isChecked: item.isAvailable
+            documentType: item.documentType,
+            isChecked: item.isChecked
           })
         );
       }
       
       if (payload.information.projectType === ProjectType.PreSales) {
-        payload.documentPresales.forEach(item => 
+        payload.document.preSales.forEach(item => 
           _documents.push({
             uid: item.uid,
-            documentType: item.type,
-            isChecked: item.isAvailable
+            documentType: item.documentType,
+            isChecked: item.isChecked
           })
         );
       }
@@ -196,7 +200,7 @@ const handlerCreators: HandleCreators<AllProps, Handler> = {
   
       const _sales: IProjectPutSales[] = [];
   
-      payload.sales.forEach(item => 
+      payload.sales.employees.forEach(item => 
         _sales.push({
           uid: item.uid,
           employeeUid: item.employeeUid
@@ -225,13 +229,16 @@ const handlerCreators: HandleCreators<AllProps, Handler> = {
     console.log(putPayload);
 
     if (mode === FormMode.New) {
-      // return new Promise((resolve, reject) => {
-      //   apiRegistrationDetailPut(projectUid, putPayload, resolve, reject);
-      // });
-      Promise.resolve();
+      return new Promise((resolve, reject) => {
+        apiRegistrationDetailPost(projectUid, putPayload, resolve, reject);
+      });
     }
 
-    if (mode === FormMode.Edit && !isUndefined(projectUid)) {
+    if (!projectUid) {
+      return Promise.reject('project uid was not found');
+    }
+
+    if (mode === FormMode.Edit) {
       return new Promise((resolve, reject) => {
         apiRegistrationDetailPut(projectUid, putPayload, resolve, reject);
       });

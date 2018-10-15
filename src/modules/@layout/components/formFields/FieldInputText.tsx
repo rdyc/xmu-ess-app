@@ -23,7 +23,7 @@ export const FieldInputText: React.SFC<AllProps> = props => {
       label={label}
       placeholder={placeholder}
       disabled={disabled || meta.submitting}
-      error={meta.touched && !isNullOrUndefined(meta.error)}
+      error={meta.touched && !isNullOrUndefined(meta.error) ? true : false}
       helperText={meta.touched && meta.error}
     />
   );

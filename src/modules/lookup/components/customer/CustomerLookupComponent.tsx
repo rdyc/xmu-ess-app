@@ -31,6 +31,7 @@ import { connect } from 'react-redux';
 import { List as VirtualizedList, ListRowProps } from 'react-virtualized';
 import { Dispatch } from 'redux';
 import { BaseFieldProps, WrappedFieldProps } from 'redux-form';
+import { isNullOrUndefined } from 'util';
 
 interface PropsFromState {
   customerState: IQueryCollectionState<ICustomerListRequest, ICustomerList>;
@@ -201,7 +202,7 @@ class CustomerLookup extends React.Component<AllProps, State> {
           label={label}
           value={this.state.selected && this.state.selected.name || ''}
           disabled={disabled || meta.submitting}
-          error={meta.touched && meta.error}
+          error={meta.touched && !isNullOrUndefined(meta.error) ? true : false}
           helperText={meta.touched && meta.error}
           onClick={this.handleDialogOpen}
           // InputLabelProps={{ shrink: true }}
