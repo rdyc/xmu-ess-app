@@ -188,7 +188,7 @@ function* watchApprovalAllFetchRequest() {
     });
   };
   
-  yield takeEvery(Action.GET_ALL_REQUEST, worker);
+  yield takeEvery(Action.APPROVAL_GET_ALL_REQUEST, worker);
 }
 
 function* watchApprovalByIdFetchRequest() {
@@ -220,7 +220,7 @@ function* watchApprovalByIdFetchRequest() {
     });
   };
 
-  yield takeEvery(Action.GET_BY_ID_REQUEST, worker);
+  yield takeEvery(Action.APPROVAL_GET_BY_ID_REQUEST, worker);
 }
 
 function* watchApprovalPostFetchRequest() {
@@ -253,7 +253,7 @@ function* watchApprovalPostFetchRequest() {
     });
   };
 
-  yield takeEvery(Action.POST_REQUEST, worker);
+  yield takeEvery(Action.APPROVAL_POST_REQUEST, worker);
 }
 
 function* expenseSagas() {
