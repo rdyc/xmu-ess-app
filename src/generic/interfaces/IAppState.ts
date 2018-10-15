@@ -4,10 +4,11 @@ import { ICommonState } from '@common/classes/states';
 import { IAppBarState, ILayoutState, IListBarState, INotificationState } from '@layout/interfaces';
 import { ILookupState } from '@lookup/classes/states';
 import { IProjectState } from '@project/classes/states';
+import { IPurchaseState } from '@purchase/classes/states';
 import { FormStateMap } from 'redux-form';
 import { UserState } from 'redux-oidc';
 
-export interface IAppState extends ICommonState, ILookupState, IAccountState, IProjectState {
+export interface IAppState extends ICommonState, ILookupState, IAccountState, IProjectState, IPurchaseState {
   layout: ILayoutState;
   appBar: IAppBarState;
   listBar: IListBarState;

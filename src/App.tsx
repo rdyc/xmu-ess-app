@@ -5,6 +5,7 @@ import AccessWizardPage from '@layout/pages/AccessWizardPage';
 import BasePage from '@layout/pages/BasePage';
 import CallbackPage from '@layout/pages/CallbackPage';
 import { projectRoutes } from '@project/views/ProjectRoutes';
+// import { purchaseRoutes } from '@purchase/components/PurchaseRoutes';
 import { ConnectedRouter } from 'connected-react-router';
 import { History } from 'history';
 import * as React from 'react';
@@ -79,6 +80,7 @@ class App extends React.Component<AllProps> {
                         <Route path="/home" component={HomePage} />
                         <Route path="/account" component={accountRouter} />
                         <Route path="/project" component={projectRoutes} />
+                        {/* <Route path="/purchase" component={purchaseRoutes} /> */}
                       </BasePage>
                     </Switch>
                   )}
