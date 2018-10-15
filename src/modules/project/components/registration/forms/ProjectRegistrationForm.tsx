@@ -175,16 +175,16 @@ const registrationForm: React.SFC<AllProps & InjectedFormProps<IProjectDetail, O
   const renderProjectDocs = (context: WrappedFieldArrayProps<any>) => 
     <DocumentForm 
       category="document"
-      title={props.intl.formatMessage({id: 'project.documentTitle'})}
-      subHeader={props.intl.formatMessage({id: 'project.documentSubTitle'})}
+      // title={props.intl.formatMessage({id: 'project.documentTitle'})}
+      // subHeader={props.intl.formatMessage({id: 'project.documentSubTitle'})}
       context={context} 
     />;
 
   const renderPresalesDocs = (context: WrappedFieldArrayProps<any>) => 
     <DocumentForm 
       category="documentPreSales"
-      title={props.intl.formatMessage({id: 'project.documentPreSalesTitle'})}
-      subHeader={props.intl.formatMessage({id: 'project.documentPreSalesSubTitle'})}
+      // title={props.intl.formatMessage({id: 'project.documentPreSalesTitle'})}
+      // subHeader={props.intl.formatMessage({id: 'project.documentPreSalesSubTitle'})}
       context={context} 
     />;
 

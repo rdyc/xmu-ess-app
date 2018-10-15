@@ -1,10 +1,21 @@
 import { ProjectType } from '@common/classes/types';
 import { Grid } from '@material-ui/core';
+import DocumentForm from '@project/components/registration/forms/DocumentForm';
 import { InformationForm } from '@project/components/registration/forms/InformationForm';
+import { SalesForm } from '@project/components/registration/forms/SalesForm';
 import { SubmitForm } from '@project/components/registration/forms/SubmitForm';
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { BaseFieldsProps, Fields, FormSection, formValueSelector, InjectedFormProps, reduxForm } from 'redux-form';
+import {
+  BaseFieldsProps,
+  FieldArray,
+  Fields,
+  FormSection,
+  formValueSelector,
+  InjectedFormProps,
+  reduxForm,
+  WrappedFieldArrayProps,
+} from 'redux-form';
 
 type DocumentType = {
   uid: string;
@@ -48,7 +59,7 @@ interface FormValueProps {
 type AllProps = InjectedFormProps<RegistrationFormData> & FormValueProps;
 
 const registrationFormContainer: React.SFC<AllProps> = props => {
-  const { formIsCurrencyIDR, formRate, formValueUsd, formCurrencyType, change } = props;
+  const { formIsProject, formIsPresales, formIsCurrencyIDR, formRate, formValueUsd, formCurrencyType, change } = props;
 
   const handleChangeCurrencyType = (event: any, newValue: string, oldValue: string) => {
     if (newValue === 'SCR01') {
@@ -78,10 +89,28 @@ const registrationFormContainer: React.SFC<AllProps> = props => {
     />
   );
 
+  const componentProjectDocument = (context: WrappedFieldArrayProps<any>) => (
+    <DocumentForm 
+      category="document"
+      context={context} 
+    />
+  );
+
+  const componentPresalesDocument = (context: WrappedFieldArrayProps<any>) => (
+    <DocumentForm 
+      category="documentPreSales"
+      context={context} 
+    />
+  );
+
+  const componentSales = (context: WrappedFieldArrayProps<any>) => (
+    <SalesForm context={context}/>
+  );
+
   const render = (
     <form onSubmit={props.handleSubmit}>
-      <Grid container spacing={24}>
-        <Grid item xs={12} md={4}>
+      <Grid container spacing={24} direction="row">
+        <Grid item xs={12} md={4} >
           <FormSection name="information">
             <Fields 
               names={fields}
@@ -89,6 +118,38 @@ const registrationFormContainer: React.SFC<AllProps> = props => {
             />
           </FormSection>
         </Grid>
+        
+        {formIsProject &&
+          <Grid item xs={12} md={4}>
+            <FormSection name="documentProject">
+              <FieldArray
+                name="documents"
+                component={componentProjectDocument}
+              />
+            </FormSection>
+          </Grid>
+        }
+        
+        {formIsPresales &&
+          <Grid item xs={12} md={4}>
+            <FormSection name="documentPresales">
+              <FieldArray 
+                name="documentPreSales" 
+                component={componentPresalesDocument}
+              />
+            </FormSection>
+          </Grid>
+        }
+
+        <Grid item xs={12} md={4}>
+          <FormSection name="sales">
+            <FieldArray 
+              name="employees" 
+              component={componentSales}
+            />
+          </FormSection>
+        </Grid>
+
         <Grid item xs={12} md={4}>
           <SubmitForm {...props}/>
         </Grid>

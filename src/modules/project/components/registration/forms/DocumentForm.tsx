@@ -1,13 +1,14 @@
 import { WithCommonSystem, withCommonSystem } from '@common/hoc/withCommonSystem';
 import { Card, CardContent, CardHeader, Checkbox, FormControlLabel } from '@material-ui/core';
 import * as React from 'react';
+import { FormattedMessage } from 'react-intl';
 import { compose, lifecycle, ReactLifeCycleFunctions } from 'recompose';
 import { Field, WrappedFieldArrayProps } from 'redux-form';
 
 interface OwnProps {
   category: 'document' | 'documentPreSales';
-  title: string;
-  subHeader: string;
+  // title: string;
+  // subHeader: string;
   context:  WrappedFieldArrayProps<any>;
 }
 
@@ -16,17 +17,17 @@ type AllProps
   & WithCommonSystem;
   
 const documentForm: React.SFC<AllProps> = props => {
-  const { category, title, subHeader } = props;
+  const { category } = props;
   const { isLoading, response } = category === 'document' ? 
     props.commonDocumentListState : 
     props.commonDocumentPresalesListState;
   const fieldName = category === 'document' ? 'documents' : 'documentPreSales';
-  
+
   const render = (
     <Card square>
       <CardHeader 
-        title={title}
-        subheader={subHeader}
+        title={<FormattedMessage id={`project.${category}Title`}/>}
+        subheader={<FormattedMessage id={`project.${category}SubTitle`}/>}
       />
       <CardContent>
         {
