@@ -6,7 +6,7 @@ import * as React from 'react';
 import { isNullOrUndefined } from 'util';
 
 const commonSystemSelectView: React.SFC<CommonSystemSelectProps> = props => {
-  const { width, input, label, disabled, meta } = props;
+  const { width, input, label, placeholder, disabled, meta } = props;
   const { response } = props.categoryState();
   
   const isMobile = isWidthDown('sm', width);
@@ -42,6 +42,7 @@ const commonSystemSelectView: React.SFC<CommonSystemSelectProps> = props => {
       margin="normal"
       name={`select${input.name}`}
       label={label}
+      placeholder={placeholder}
       value={input.value}
       disabled={disabled || meta.submitting}
       error={meta.touched && !isNullOrUndefined(meta.error)}

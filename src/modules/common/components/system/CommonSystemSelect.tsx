@@ -12,6 +12,7 @@ import { BaseFieldProps, WrappedFieldProps } from 'redux-form';
 interface OwnProps extends WrappedFieldProps, BaseFieldProps {
   type?: string; 
   label: string; 
+  placeholder?: string | undefined;
   disabled: boolean;
   companyUid?: string | undefined;
   category: CommonCategoryType;

@@ -25,7 +25,7 @@ import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import PersonIcon from '@material-ui/icons/Person';
 import { IProjectDetail, IProjectSales } from '@project/classes/response';
 import DocumentForm from '@project/components/registration/forms/DocumentForm';
-import InformationForm from '@project/components/registration/forms/InformationForm';
+import { InformationForm } from '@project/components/registration/forms/InformationForm';
 import styles from '@styles';
 import * as classNames from 'classnames';
 import * as React from 'react';
@@ -74,12 +74,19 @@ const registrationForm: React.SFC<AllProps & InjectedFormProps<IProjectDetail, O
   const handleChangeValueIdr = (event: any, newValue: number, oldValue: number) => {
     change('valueIdr', newValue * formRate);
   };
+
+  const handleChangeCurrencyType = (event: any, newValue: string, oldValue: string) => {
+    if (newValue === 'SCR01') {
+      change('information.rate', 1);
+    }
+  };
   
   const renderInformation = (context: BaseFieldsProps) => 
     <InformationForm 
       context={context} 
       isCurrencyIdr={formIsCurrencyIDR}
       formCurrencyType={formCurrencyType}
+      onChangeCurrencyType={handleChangeCurrencyType}
       onChangeRate={handleChangeRate}
       onChangeValueIdr={handleChangeValueIdr}
     />;

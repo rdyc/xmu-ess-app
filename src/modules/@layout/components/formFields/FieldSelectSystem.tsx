@@ -7,6 +7,7 @@ import { BaseFieldProps, WrappedFieldProps } from 'redux-form';
 interface FromFieldProps { 
   category: CommonCategoryType; 
   label: string; 
+  placeholder?: string;
   disabled: boolean; 
 }
 

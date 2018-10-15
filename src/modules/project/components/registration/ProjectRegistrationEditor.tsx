@@ -1,13 +1,16 @@
 import { ProjectType } from '@common/classes/types';
 import AppMenu from '@constants/AppMenu';
 import { FormMode } from '@generic/types';
-import { withAppBar, WithAppBar } from '@layout/hoc/withAppBar';
-import { withLayout, WithLayout } from '@layout/hoc/withLayout';
-import { withUser, WithUser } from '@layout/hoc/withUser';
+import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
+import { WithLayout, withLayout } from '@layout/hoc/withLayout';
+import { WithUser, withUser } from '@layout/hoc/withUser';
 import { Typography } from '@material-ui/core';
 import { IProjectPutDocument, IProjectPutPayload, IProjectPutSales } from '@project/classes/request';
 import { IProjectDetail } from '@project/classes/response';
-import ProjectRegistrationForm from '@project/components/registration/forms/ProjectRegistrationForm';
+import {
+  RegistrationFormContainer,
+  RegistrationFormData,
+} from '@project/components/registration/forms/RegistrationFormContainer';
 import withApiProjectRegistrationDetail, {
   WithApiProjectRegistrationDetailHandler,
 } from '@project/enhancers/registration/withApiProjectRegistrationDetail';
@@ -63,39 +66,47 @@ type AllProps
 
 interface Handler {
   handleValidate: (payload: IProjectDetail) => FormErrors;
-  handleSubmit: (payload: IProjectDetail) => void;
+  handleSubmit: (payload: any) => void;
   handleSubmitSuccess: (result: any, dispatch: Dispatch<any>) => void;
   handleSubmitFail: (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => void;
 }
 
 const registrationEditor: React.SFC<AllProps> = props => {
-  const { mode, handleValidate, handleSubmit, handleSubmitSuccess, handleSubmitFail } = props;
+  const { mode, handleSubmit, handleSubmitSuccess, handleSubmitFail } = props;
   const { isLoading, response } = props.projectDetailState;
 
-  const RenderForm = (initialValues: IProjectDetail) => (
-    <ProjectRegistrationForm
-      mode={mode}
-      initialValues={initialValues} 
-      validate={handleValidate}
+  const renderForm = (formData: RegistrationFormData) => (
+    <RegistrationFormContainer 
+      initialValues={formData}
       onSubmit={handleSubmit} 
       onSubmitSuccess={handleSubmitSuccess}
       onSubmitFail={handleSubmitFail}
     />
   );
 
+  // init form values
+  const initialValues: RegistrationFormData = {
+    information: {
+      customerUid: 'customerUid',
+      projectType: undefined,
+      contractNumber: undefined,
+      name: '...name',
+      description: 'desc',
+      start: undefined,
+      end: undefined,
+      currencyType: undefined,
+      rate: 1,
+      valueUsd: 9,
+      valueIdr: 0,
+    },
+    documentPresales: [],
+    documentProject: [],
+    sales: []
+  };
+
   // New
   if (mode === FormMode.New) {
-    const initialValues = {
-      rate: 1,
-      valueUsd: 0,
-      valueIdr: 0,
-      // start: new Date(),
-      // end: new Date(),
-      // documents: [],
-      // documentPreSales: [],
-    };
-
-    return <RenderForm {...initialValues as IProjectDetail}/>;
+    return renderForm(initialValues);
   }
 
   // Modify
@@ -109,7 +120,9 @@ const registrationEditor: React.SFC<AllProps> = props => {
     }
     
     if (!isLoading && response && response.data) {
-      return <RenderForm {...response.data}/>;
+      // todo: replace values with response data
+
+      return renderForm(initialValues);
     }
   }
 
@@ -133,7 +146,7 @@ const handlerCreators: HandleCreators<AllProps, Handler> = {
     
     return errors;
   },
-  handleSubmit: (props: AllProps) => (payload: IProjectDetail) => { 
+  handleSubmit: (props: AllProps) => (payload: RegistrationFormData) => { 
     // tslint:disable-next-line:no-debugger
     debugger;
     const { mode, projectUid, apiRegistrationDetailPut } = props;
@@ -145,29 +158,29 @@ const handlerCreators: HandleCreators<AllProps, Handler> = {
 
     const parsedDocuments = () => {
       if (
-        payload.projectType === ProjectType.ExtraMiles || 
-        payload.projectType === ProjectType.NonProject
+        payload.information.projectType === ProjectType.ExtraMiles || 
+        payload.information.projectType === ProjectType.NonProject
       ) {
         return null;
       }
 
       const _documents: IProjectPutDocument[] = [];
   
-      if (payload.projectType === ProjectType.Project) {
-        payload.documents.forEach(item => 
+      if (payload.information.projectType === ProjectType.Project) {
+        payload.documentProject.forEach(item => 
           _documents.push({
             uid: item.uid,
-            documentType: item.documentType,
+            documentType: item.type,
             isChecked: item.isAvailable
           })
         );
       }
       
-      if (payload.projectType === ProjectType.PreSales) {
-        payload.documentPreSales.forEach(item => 
+      if (payload.information.projectType === ProjectType.PreSales) {
+        payload.documentPresales.forEach(item => 
           _documents.push({
             uid: item.uid,
-            documentType: item.documentType,
+            documentType: item.type,
             isChecked: item.isAvailable
           })
         );
@@ -194,17 +207,17 @@ const handlerCreators: HandleCreators<AllProps, Handler> = {
     };
 
     const putPayload: IProjectPutPayload = ({
-      customerUid: payload.customerUid,
-      projectType: payload.projectType,
-      currencyType: payload.currencyType,
-      contractNumber: payload.contractNumber,
-      name: payload.name,
-      description: payload.description,
-      start: payload.start,
-      end: payload.end,
-      rate: payload.rate,
-      valueUsd: payload.valueUsd,
-      valueIdr: payload.valueIdr,
+      customerUid: payload.information.customerUid || 'n/a',
+      projectType: payload.information.projectType || 'n/a',
+      currencyType: payload.information.currencyType || 'n/a',
+      contractNumber: payload.information.contractNumber,
+      name: payload.information.name || 'n/a',
+      description: payload.information.description,
+      start: payload.information.start || '',
+      end: payload.information.end || '',
+      rate: payload.information.rate,
+      valueUsd: payload.information.valueUsd,
+      valueIdr: payload.information.valueIdr,
       documents: parsedDocuments(),
       sales: parsedSales()
     });
