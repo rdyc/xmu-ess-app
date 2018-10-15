@@ -8,8 +8,8 @@ import {
 import { ILeaveRequest, ILeaveRequestDetail } from '@leave/classes/response';
 
 export interface ILeaveRequestState {
-  projectGetAll: IQueryCollectionState<ILeaveRequestGetAllRequest, ILeaveRequest>;
-  projectGetById: IQuerySingleState<ILeaveRequestGetByIdRequest, ILeaveRequestDetail>;
-  projectPost: IQuerySingleState<ILeaveRequestPostRequest, ILeaveRequest>;
-  projectPut: IQuerySingleState<ILeaveRequestPutRequest, ILeaveRequest>;
+  leaveRequestGetAll: IQueryCollectionState<ILeaveRequestGetAllRequest, ILeaveRequest>;
+  leaveRequestGetById: IQuerySingleState<ILeaveRequestGetByIdRequest, ILeaveRequestDetail>;
+  leaveRequestPost: IQuerySingleState<ILeaveRequestPostRequest, ILeaveRequest>;
+  leaveRequestPut: IQuerySingleState<ILeaveRequestPutRequest, ILeaveRequest>;
 }
