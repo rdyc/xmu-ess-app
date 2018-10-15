@@ -38,3 +38,15 @@ export const settlementGetByIdRequest = (request: ISettlementGetByIdRequest) => 
 export const settlementGetByIdSuccess = (response: IResponseSingle<ISettlementDetail>) => action(SettlementAction.GET_BY_ID_SUCCESS, response);
 export const settlementGetByIdError = (message: string) => action(SettlementAction.GET_BY_ID_ERROR, message);
 export const settlementGetByIdDispose = () => action(SettlementAction.GET_BY_ID_DISPOSE);
+
+// post
+export const settlementPostRequest = (request: ISettlementPostRequest) => action(SettlementAction.POST_REQUEST, request);
+export const settlementPostSuccess = (response: IResponseSingle<ISettlement>) => action(SettlementAction.POST_SUCCESS, response);
+export const settlementPostError = (message: string) => action(SettlementAction.POST_ERROR, message);
+export const settlementPostDispose = () => action(SettlementAction.POST_DISPOSE);
+
+// put
+export const settlementPutRequest = (request: ISettlementPutRequest) => action(SettlementAction.PUT_REQUEST, request);
+export const settlementPutSuccess = (response: IResponseSingle<ISettlement>) => action(SettlementAction.PUT_SUCCESS, response);
+export const settlementPutError = (message: string) => action(SettlementAction.PUT_ERROR, message);
+export const settlementPutDispose = () => action(SettlementAction.PUT_DISPOSE);

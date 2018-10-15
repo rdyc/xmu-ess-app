@@ -1,7 +1,8 @@
 import { IResponseCollection, IResponseSingle } from '@generic/interfaces';
 import {
   ISettlementApprovalGetAllRequest,
-  ISettlementApprovalGetByIdRequest
+  ISettlementApprovalGetByIdRequest,
+  ISettlementApprovalPostRequest
 } from '@purchase/classes/queries/settlementHistories';
 import { ISettlement, ISettlementDetail } from '@purchase/classes/response/purchaseSettlement';
 import { action } from 'typesafe-actions';
@@ -32,3 +33,9 @@ export const settlementApprovalGetByIdRequest = (request: ISettlementApprovalGet
 export const settlementApprovalGetByIdSuccess = (response: IResponseSingle<ISettlementDetail>) => action(SettlementApprovalAction.GET_BY_ID_SUCCESS, response);
 export const settlementApprovalGetByIdError = (message: string) => action(SettlementApprovalAction.GET_BY_ID_ERROR, message);
 export const settlementApprovalGetByIdDispose = () => action(SettlementApprovalAction.GET_BY_ID_DISPOSE);
+
+// post
+export const settlementApprovalPostRequest = (request: ISettlementApprovalPostRequest) => action(SettlementApprovalAction.POST_REQUEST, request);
+export const settlementApprovalPostSuccess = (response: IResponseSingle<ISettlement>) => action(SettlementApprovalAction.POST_SUCCESS, response);
+export const settlementApprovalPostError = (message: string) => action(SettlementApprovalAction.POST_ERROR, message);
+export const settlementApprovalPostDispose = () => action(SettlementApprovalAction.POST_DISPOSE);

@@ -4,4 +4,5 @@ import { ISettlementApprovalPostPayload } from '@purchase/classes/request/settle
 export interface ISettlementApprovalPostRequest extends IBaseCommand<ISettlementApprovalPostPayload> {
   companyUid: string;
   positionUid: string;
+  purchaseUid: string;
 }

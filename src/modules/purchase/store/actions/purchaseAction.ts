@@ -38,3 +38,15 @@ export const purchaseGetByIdRequest = (request: IPurchaseGetByIdRequest) => acti
 export const purchaseGetByIdSuccess = (response: IResponseSingle<IPurchaseDetail>) => action(PurchaseAction.GET_BY_ID_SUCCESS, response);
 export const purchaseGetByIdError = (message: string) => action(PurchaseAction.GET_BY_ID_ERROR, message);
 export const purchaseGetByIdDispose = () => action(PurchaseAction.GET_BY_ID_DISPOSE);
+
+// post
+export const purchasePostRequest = (request: IPurchasePostRequest) => action(PurchaseAction.POST_REQUEST, request);
+export const purchasePostSuccess = (response: IResponseSingle<IPurchase>) => action(PurchaseAction.POST_SUCCESS, response);
+export const purchasePostError = (message: string) => action(PurchaseAction.POST_ERROR, message);
+export const purchasePostDispose = () => action(PurchaseAction.POST_DISPOSE);
+
+// put
+export const purchasePutRequest = (request: IPurchasePutRequest) => action(PurchaseAction.PUT_REQUEST, request);
+export const purchasePutSuccess = (response: IResponseSingle<IPurchase>) => action(PurchaseAction.PUT_SUCCESS, response);
+export const purchasePutError = (message: string) => action(PurchaseAction.PUT_ERROR, message);
+export const purchasePutDispose = () => action(PurchaseAction.PUT_DISPOSE);

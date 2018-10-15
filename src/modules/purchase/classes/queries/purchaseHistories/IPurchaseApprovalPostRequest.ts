@@ -4,4 +4,5 @@ import { IPurchaseApprovalPostPayload } from '@purchase/classes/request/purchase
 export interface IPurchaseApprovalPostRequest extends IBaseCommand<IPurchaseApprovalPostPayload> {
   companyUid: string;
   positionUid: string;
+  purchaseUid: string;
 }
