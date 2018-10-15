@@ -17,7 +17,7 @@ const reducer: Reducer<IQuerySingleState<ILeaveRequestGetByIdRequest, ILeaveRequ
     case Action.GET_BY_ID_REQUEST: return { ...state, isLoading: true, request: action.payload };
     case Action.GET_BY_ID_SUCCESS: return { ...state, isLoading: false, response: action.payload };
     case Action.GET_BY_ID_ERROR: return { ...state, isLoading: false, isError: true, errors: action.payload };
-    case Action.GET_BY_ID_DISPOSE: return state = initialState;
+    case Action.GET_BY_ID_DISPOSE: return initialState;
     
     default: return state;
   }

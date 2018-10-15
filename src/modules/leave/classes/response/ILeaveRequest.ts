@@ -1,7 +1,7 @@
 import { ICommonSystem } from '@common/classes';
 import { IBaseChanges } from '@generic/interfaces';
 import { IAccountEmployee } from '@account/classes';
-import { ILeaveId } from '@leave/classes/response';,
+import { ILeaveId } from '@leave/classes/response';
 
 export interface ILeaveRequest {
   uid:              string;
@@ -10,7 +10,7 @@ export interface ILeaveRequest {
   date:             string;
   leaveType:        string;
   leave?:           ICommonSystem | null;
-  regular?:          ILeaveId | null;
+  regular?:         ILeaveId | null;
   start:            string;
   end:              string;
   reEntry:          string;
