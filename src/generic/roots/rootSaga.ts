@@ -21,6 +21,8 @@ import roleSagas from '@lookup/store/sagas/roleSagas';
 import systemLimitSagas from '@lookup/store/sagas/systemLimitSagas';
 import projectSagas from '@project/store/sagas/projectSagas';
 import timesheetSagas from '@timesheet/store/sagas/timesheetSagas';
+import travelSagas from '@travel/store/sagas/travelSagas';
+import travelSettlementSagas from '@travel/store/sagas/travelSettlementSagas';
 import { all, fork } from 'redux-saga/effects';
 
 export function* rootSaga() {
@@ -60,6 +62,10 @@ export function* rootSaga() {
 
     // expense
     fork(expenseSagas),
+    
+    // travel
+    fork(travelSagas),
+    fork(travelSettlementSagas),
     
     // finance
     fork(financeSagas),
