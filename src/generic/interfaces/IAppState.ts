@@ -4,7 +4,7 @@ import { ICommonState } from '@common/classes/states';
 import { IExpenseState } from '@expense/classes/states';
 import { IFinanceState } from '@finance/classes/states';
 import { IAppBarState, ILayoutState, IListBarState, INotificationState } from '@layout/interfaces';
-import { ILeaveRequestState } from '@leave/classes/states';
+import { IUserState } from '@layout/interfaces/IUserState';
 import { ILookupState } from '@lookup/classes/states';
 import { IMileageState } from '@mileage/classes/states';
 import { IProjectState } from '@project/classes/states';
@@ -18,13 +18,13 @@ export interface IAppState extends
   IAccountState, 
   IProjectState, 
   ITimesheetState,
-  IExpenseState, 
   IFinanceState, 
-  IMileageState,
-  ILeaveRequestState {
+  IExpenseState,
+  IMileageState {
+  user: IUserState;
   layout: ILayoutState;
   appBar: IAppBarState;
-  listBar: IListBarState;
+  navBottom: IListBarState;
   oidc: UserState;
   account: IEmployeeMyState;
   notification: INotificationState;
