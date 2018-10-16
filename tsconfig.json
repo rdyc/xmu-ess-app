@@ -19,6 +19,7 @@
       "@purchase/*": [ "modules/purchase/*" ],
       "@timesheet/*": [ "modules/timesheet/*" ],
       "@travel/*": [ "modules/travel/*" ],
+      "@finance/*": [ "modules/finance/*" ],
     },
     "outDir": "build/dist",
     "module": "esnext",
