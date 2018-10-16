@@ -5,6 +5,7 @@ import expenseReducers from '@expense/store/reducers/expenseReducers';
 import financeReducers from '@finance/store/reducers/financeReducers';
 import { IAppState } from '@generic/interfaces';
 import { appBarReducer, layoutReducer, listBarReducer, notificationReducer } from '@layout/store/reducers';
+import leaveRequestReducers from '@leave/store/reducers/leaveRequestReducers';
 import lookupReducers from '@lookup/store/reducers/lookupReducers';
 import mileageReducers from '@mileage/store/reducers/mileageReducers';
 import projectReducers from '@project/store/reducers/projectReducers';
@@ -31,4 +32,5 @@ export const rootReducer = combineReducers<IAppState>({
   ...financeReducers,
   ...expenseReducers
   ...mileageReducers,
+  ...leaveRequestReducers
 });

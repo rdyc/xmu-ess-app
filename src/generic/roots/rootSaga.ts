@@ -11,6 +11,7 @@ import diemSagas from '@lookup/store/sagas/diemSagas';
 import financeSagas from '@finance/store/sagas/financeSagas';
 import holidaySagas from '@lookup/store/sagas/holidaySagas';
 import leaveSagas from '@lookup/store/sagas/leaveSagas';
+import leaveRequestSagas from '@leave/store/sagas/leaveRequestSagas';
 import menuSagas from '@lookup/store/sagas/menuSagas';
 import mileageapprovalSagas from '@mileage/store/sagas/mileageapprovalSagas';
 import mileagerequestSagas from '@mileage/store/sagas/mileagerequestSagas';
@@ -62,5 +63,8 @@ export function* rootSaga() {
     
     // finance
     fork(financeSagas),
+    
+    // leave
+    fork(leaveRequestSagas)
   ]);
 }
