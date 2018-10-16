@@ -29,7 +29,7 @@
   "typescript.preferences.quoteStyle": "single",
   "breadcrumbs.enabled": false,
   "git.enableSmartCommit": true,
-  "workbench.iconTheme": "material-icon-theme",
+  "workbench.iconTheme": "vscode-icons",
   "window.zoomLevel": 0,
   "prettier.singleQuote": true
 }

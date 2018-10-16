@@ -7,9 +7,9 @@ import {
   leaveRequestGetByIdError,
   leaveRequestGetByIdRequest,
   leaveRequestGetByIdSuccess,
-  leaveRequestPostSuccess,
   leaveRequestPostError,
   leaveRequestPostRequest,
+  leaveRequestPostSuccess,
   leaveRequestPutRequest,
 } from '@leave/store/actions';
 import saiyanSaga from '@utils/saiyanSaga';
