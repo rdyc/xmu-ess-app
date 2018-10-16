@@ -17,10 +17,10 @@ function* watchFetchRequest() {
     return saiyanSaga.fetch({
       method: 'get',
       path: `/v1/account/employees/${action.payload.uid}`,
-      success: (response: IApiResponse) => ([
+      successEffects: (response: IApiResponse) => ([
         put(EmployeeProfileFetchSuccess(response.body)),
       ]), 
-      failed: (response: IApiResponse) => ([
+      failureEffects: (response: IApiResponse) => ([
         put(EmployeeProfileFetchError(response.statusText)),
         put(layoutAlertAdd({
           time: new Date(),
@@ -28,14 +28,13 @@ function* watchFetchRequest() {
           details: response
         }))
       ]), 
-      error: (error: TypeError) => ([
+      errorEffects: (error: TypeError) => ([
         put(EmployeeProfileFetchError(error.message)),
         put(layoutAlertAdd({
           time: new Date(),
           message: error.message
         }))
-      ]),
-      finally: () => ([])
+      ])
     });
   };
 
@@ -48,21 +47,20 @@ function* watchCommandRequest() {
       method: 'put',
       path: `/v1/account/employees/${action.payload.uid}`,
       payload: action.payload.data,
-      success: (response: IApiResponse) => ([
+      successEffects: (response: IApiResponse) => ([
         put(EmployeeProfileCommandSuccess(response.body)),
       ]), 
-      failed: (response: IApiResponse) => ([
+      failureEffects: (response: IApiResponse) => ([
         put(EmployeeProfileCommandError(response.statusText)),
         put(layoutAlertAdd({ time: new Date(), message: response.body }))
       ]), 
-      error: (error: TypeError) => ([
+      errorEffects: (error: TypeError) => ([
         put(EmployeeProfileCommandError(error.message)),
         put(layoutAlertAdd({
           time: new Date(),
           message: error.message
         }))
-      ]),
-      finally: () => ([])
+      ])
     });
   };
 

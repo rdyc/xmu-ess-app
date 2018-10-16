@@ -10,33 +10,32 @@ function* watchFetchRequest() {
     return saiyanSaga.fetch({
       method: 'get',
       path: `/v1/notifications?companyUid=${action.payload.companyUid}&positionUid=${action.payload.positionUid}`, 
-      success: (response: IApiResponse) => ([
-        put(notificationFetchSuccess(response.body)),
+      successEffects: (response: IApiResponse) => ([
+        put(notificationFetchSuccess(response.body))
       ]), 
-      failed: (response: IApiResponse) => ([
+      failureEffects: (response: IApiResponse) => ([
         put(notificationFetchError(response.statusText)),
         put(layoutAlertAdd({
           time: new Date(),
           message: response.statusText,
           details: response
-        })),
+        }))
       ]), 
-      error: (error: TypeError) => ([
+      errorEffects: (error: TypeError) => ([
         put(notificationFetchError(error.message)),
         put(layoutAlertAdd({
           time: new Date(),
           message: error.message
-        })),
-      ]),
-      finally: () => ([])
+        }))
+      ])
     });
   };
 
   yield takeEvery(Action.FETCH_REQUEST, worker);
 }
 
-function* notificationSagas() {
+function* commonNotificationSagas() {
   yield all([fork(watchFetchRequest)]);
 }
 
-export default notificationSagas;
+export default commonNotificationSagas;

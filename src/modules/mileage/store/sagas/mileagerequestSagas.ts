@@ -20,11 +20,11 @@ function* watchAllFetchRequest() {
     return saiyanSaga.fetch({
       method: 'get',
       path: `/v1/mileage/requests${objectToQuerystring(action.payload.filter)}`, 
-      success: (response: IApiResponse) => ([
+      successEffects: (response: IApiResponse) => ([
         put(mileagerequestGetAllSuccess(response.body)),
         put(listBarMetadata(response.body.metadata))
       ]), 
-      failed: (response: IApiResponse) => ([
+      failureEffects: (response: IApiResponse) => ([
         put(mileagerequestGetAllError(response.body)),
         put(layoutAlertAdd({
           time: new Date(),
@@ -32,16 +32,16 @@ function* watchAllFetchRequest() {
           details: response
         })),
       ]), 
-      error: (error: TypeError) => ([
+      errorEffects: (error: TypeError) => ([
         put(mileagerequestGetAllError(error.message)),
         put(layoutAlertAdd({
           time: new Date(),
           message: error.message
         }))
       ]),
-      finally: () => ([
+      finallyEffects: [
         put(listBarLoading(false))
-      ])
+      ]
     });
   };
   
@@ -53,10 +53,10 @@ function* watchByIdFetchRequest() {
     return saiyanSaga.fetch({
       method: 'get',
       path: `/v1/mileage/requests/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.mileageUid}`, 
-      success: (response: IApiResponse) => ([
+      successEffects: (response: IApiResponse) => ([
         put(mileagerequestGetByIdSuccess(response.body)),
       ]), 
-      failed: (response: IApiResponse) => ([
+      failureEffects: (response: IApiResponse) => ([
         put(mileagerequestGetByIdError(response.statusText)),
         put(layoutAlertAdd({
           time: new Date(),
@@ -64,15 +64,12 @@ function* watchByIdFetchRequest() {
           details: response
         })),
       ]), 
-      error: (error: TypeError) => ([
+      errorEffects: (error: TypeError) => ([
         put(mileagerequestGetByIdError(error.message)),
         put(layoutAlertAdd({
           time: new Date(),
           message: error.message
         }))
-      ]),
-      finally: () => ([
-        // nothing
       ])
     });
   };
@@ -86,10 +83,10 @@ function* watchPostFetchRequest() {
       method: 'post',
       path: `/v1/mileage/requests/${action.payload.companyUid}/${action.payload.positionUid}`, 
       payload: action.payload.data, 
-      success: (response: IApiResponse) => ([
+      successEffects: (response: IApiResponse) => ([
         put(mileagerequestPostSuccess(response.body)),
       ]), 
-      failed: (response: IApiResponse) => ([
+      failureEffects: (response: IApiResponse) => ([
         put(mileagerequestPostError(response.statusText)),
         put(layoutAlertAdd({
           time: new Date(),
@@ -97,15 +94,12 @@ function* watchPostFetchRequest() {
           details: response
         })),
       ]), 
-      error: (error: TypeError) => ([
+      errorEffects: (error: TypeError) => ([
         put(mileagerequestPostError(error.message)),
         put(layoutAlertAdd({
           time: new Date(),
           message: error.message
         }))
-      ]),
-      finally: () => ([
-        // nothing
       ])
     });
   };
@@ -113,7 +107,7 @@ function* watchPostFetchRequest() {
   yield takeEvery(Action.POST_REQUEST, worker);
 }
 
-function* mileagerequestSagas() {
+function* mileageRequestSagas() {
   yield all([
     fork(watchAllFetchRequest),
     fork(watchByIdFetchRequest),
@@ -121,4 +115,4 @@ function* mileagerequestSagas() {
   ]);
 }
 
-export default mileagerequestSagas;
+export default mileageRequestSagas;

@@ -20,11 +20,11 @@ function* watchAllFetchRequest() {
     return saiyanSaga.fetch({
       method: 'get',
       path: `/v1/approvals/mileage${objectToQuerystring(action.payload.filter)}`, 
-      success: (response: IApiResponse) => ([
+      successEffects: (response: IApiResponse) => ([
         put(mileageapprovalGetAllSuccess(response.body)),
         put(listBarMetadata(response.body.metadata))
       ]), 
-      failed: (response: IApiResponse) => ([
+      failureEffects: (response: IApiResponse) => ([
         put(mileageapprovalGetAllError(response.body)),
         put(layoutAlertAdd({
           time: new Date(),
@@ -32,16 +32,16 @@ function* watchAllFetchRequest() {
           details: response
         })),
       ]), 
-      error: (error: TypeError) => ([
+      errorEffects: (error: TypeError) => ([
         put(mileageapprovalGetAllError(error.message)),
         put(layoutAlertAdd({
           time: new Date(),
           message: error.message
         }))
       ]),
-      finally: () => ([
+      finallyEffects: [
         put(listBarLoading(false))
-      ])
+      ]
     });
   };
   
@@ -53,10 +53,10 @@ function* watchByIdFetchRequest() {
     return saiyanSaga.fetch({
       method: 'get',
       path: `/v1/approvals/mileage/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.mileageUid}`, 
-      success: (response: IApiResponse) => ([
+      successEffects: (response: IApiResponse) => ([
         put(mileageapprovalGetByIdSuccess(response.body)),
       ]), 
-      failed: (response: IApiResponse) => ([
+      failureEffects: (response: IApiResponse) => ([
         put(mileageapprovalGetByIdError(response.statusText)),
         put(layoutAlertAdd({
           time: new Date(),
@@ -64,15 +64,12 @@ function* watchByIdFetchRequest() {
           details: response
         })),
       ]), 
-      error: (error: TypeError) => ([
+      errorEffects: (error: TypeError) => ([
         put(mileageapprovalGetByIdError(error.message)),
         put(layoutAlertAdd({
           time: new Date(),
           message: error.message
         }))
-      ]),
-      finally: () => ([
-        // nothing
       ])
     });
   };
@@ -86,10 +83,10 @@ function* watchPostFetchRequest() {
       method: 'post',
       path: `/v1/approvals/mileage/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.mileageUid}`, 
       payload: action.payload.data, 
-      success: (response: IApiResponse) => ([
+      successEffects: (response: IApiResponse) => ([
         put(mileageapprovalPostSuccess(response.body)),
       ]), 
-      failed: (response: IApiResponse) => ([
+      failureEffects: (response: IApiResponse) => ([
         put(mileageapprovalPostError(response.statusText)),
         put(layoutAlertAdd({
           time: new Date(),
@@ -97,15 +94,12 @@ function* watchPostFetchRequest() {
           details: response
         })),
       ]), 
-      error: (error: TypeError) => ([
+      errorEffects: (error: TypeError) => ([
         put(mileageapprovalPostError(error.message)),
         put(layoutAlertAdd({
           time: new Date(),
           message: error.message
         }))
-      ]),
-      finally: () => ([
-        // nothing
       ])
     });
   };
@@ -113,7 +107,7 @@ function* watchPostFetchRequest() {
   yield takeEvery(Action.POST_REQUEST, worker);
 }
 
-function* mileageapprovalSagas() {
+function* mileageApprovalSagas() {
   yield all([
     fork(watchAllFetchRequest),
     fork(watchByIdFetchRequest),
@@ -121,4 +115,4 @@ function* mileageapprovalSagas() {
   ]);
 }
 
-export default mileageapprovalSagas;
+export default mileageApprovalSagas;
