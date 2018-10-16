@@ -298,7 +298,7 @@ const lifecycles: ReactLifeCycleFunctions<RegistrationDetailProps, OwnState> = {
     }
   },
   componentWillUnmount() {
-    const { layoutDispatch, appBarDispatch } = this.props;
+    const { layoutDispatch, appBarDispatch, projectRegisterDispatch } = this.props;
 
     layoutDispatch.changeView(null);
     layoutDispatch.navBackHide();
@@ -306,6 +306,8 @@ const lifecycles: ReactLifeCycleFunctions<RegistrationDetailProps, OwnState> = {
     layoutDispatch.actionCentreHide();
 
     appBarDispatch.dispose();
+
+    projectRegisterDispatch.loadDetailDispose();
   }
 };
 

@@ -1,52 +1,52 @@
+import { Submission } from '@layout/components/submission/Submission';
 import { Grid } from '@material-ui/core';
-import DocumentForm from '@project/components/registration/editor/forms/DocumentForm';
-import { InformationForm } from '@project/components/registration/editor/forms/InformationForm';
+import { RegistrationDetailForm } from '@project/components/registration/editor/forms/RegistrationDetailForm';
+import { RegistrationDocumentForm } from '@project/components/registration/editor/forms/RegistrationDocumentForm';
 import { RegistrationFormProps } from '@project/components/registration/editor/forms/RegistrationForm';
 import { RegistrationSalesForm } from '@project/components/registration/editor/forms/RegistrationSalesForm';
-import { SubmissionFormView } from '@project/components/registration/editor/forms/SubmissionFormView';
 import * as React from 'react';
 import { BaseFieldsProps, FieldArray, Fields, FormSection, WrappedFieldArrayProps } from 'redux-form';
 
 export const RegistrationFormView: React.SFC<RegistrationFormProps> = props => {
   const { formIsProject, formIsPresales, formIsCurrencyIDR, formRate, formValueUsd, formCurrencyType, change } = props;
 
-  const handleChangeCurrencyType = (event: any, newValue: string, oldValue: string) => {
+  const onChangeCurrencyType = (event: any, newValue: string, oldValue: string) => {
     if (newValue === 'SCR01') {
       change('information.rate', 1);
       change('information.valueIdr', formValueUsd);
     }
   };
 
-  const handleChangeRate = (event: any, newValue: number, oldValue: number) => {
+  const onChangeRate = (event: any, newValue: number, oldValue: number) => {
     change('information.valueIdr', newValue * formValueUsd);
   };
 
-  const handleChangeValueIdr = (event: any, newValue: number, oldValue: number) => {
+  const onChangeValueIdr = (event: any, newValue: number, oldValue: number) => {
     change('information.valueIdr', newValue * formRate);
   };
   
   const fields = Object.getOwnPropertyNames(props.initialValues.information);
 
   const componentInformation = (context: BaseFieldsProps) => (
-    <InformationForm 
+    <RegistrationDetailForm 
       context={context} 
       isCurrencyIdr={formIsCurrencyIDR}
       formCurrencyType={formCurrencyType}
-      onChangeCurrencyType={handleChangeCurrencyType}
-      onChangeRate={handleChangeRate}
-      onChangeValueIdr={handleChangeValueIdr}
+      onChangeCurrencyType={onChangeCurrencyType}
+      onChangeRate={onChangeRate}
+      onChangeValueIdr={onChangeValueIdr}
     />
   );
 
   const componentProjectDocument = (context: WrappedFieldArrayProps<any>) => (
-    <DocumentForm 
+    <RegistrationDocumentForm 
       category="project"
       context={context} 
     />
   );
 
   const componentPresalesDocument = (context: WrappedFieldArrayProps<any>) => (
-    <DocumentForm 
+    <RegistrationDocumentForm 
       category="preSales"
       context={context} 
     />
@@ -98,7 +98,11 @@ export const RegistrationFormView: React.SFC<RegistrationFormProps> = props => {
         </Grid>
         
         <Grid item xs={12} md={4}>
-          <SubmissionFormView {...props}/>
+          <Submission 
+            valid={props.valid}
+            reset={props.reset}
+            submitting={props.submitting}
+          />
         </Grid>
       </Grid>
     </form>

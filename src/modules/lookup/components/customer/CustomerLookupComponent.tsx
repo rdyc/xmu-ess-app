@@ -1,6 +1,5 @@
 import { IAppState, IQueryCollectionState, IResponseCollection } from '@generic/interfaces';
 import { ConnectedReduxProps } from '@generic/types';
-import { ILookupCustomer } from '@lookup/classes';
 import { ICustomerListRequest } from '@lookup/classes/queries';
 import { ICustomerList } from '@lookup/classes/response';
 import { customerGetListRequest } from '@lookup/store/actions';
@@ -47,6 +46,7 @@ interface OwnProps extends WrappedFieldProps, BaseFieldProps {
   type?: string; 
   label: string; 
   disabled: boolean;
+  companyUid: string;
   onChangeValue: (customerUid: string) => void;
 }
 
@@ -198,7 +198,7 @@ class CustomerLookup extends React.Component<AllProps, State> {
         <TextField
           fullWidth
           margin="normal"
-          name={`customer_${input.name}`}
+          name={input.name}
           label={label}
           value={this.state.selected && this.state.selected.name || ''}
           disabled={disabled || meta.submitting}
@@ -213,11 +213,11 @@ class CustomerLookup extends React.Component<AllProps, State> {
   }
 
   private loadData = () => {
-    const customer = this.props.input.value as ILookupCustomer;
+    const companyUid = this.props.companyUid;
 
     this.props.customerDispatch.listRequest({
       filter: {
-        companyUid: customer.companyUid,
+        companyUid,
         find: this.state.search,
         findBy: undefined,
         direction: 'ascending',

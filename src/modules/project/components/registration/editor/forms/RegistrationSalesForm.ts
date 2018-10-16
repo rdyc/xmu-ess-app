@@ -43,7 +43,7 @@ const handlerCreators: HandleCreators<RegistrationSalesFormProps, OwnHandlers> =
       if (isExist) {
         alertAdd({
           time: new Date,
-          message: intl.formatMessage({id: 'project.alert.message.salesDuplication'})
+          message: intl.formatMessage({id: 'project.message.registration.sales.duplication'})
         });
 
         return false;

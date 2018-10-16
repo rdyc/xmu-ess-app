@@ -3,6 +3,8 @@ import { RegistrationFormView } from '@project/components/registration/editor/fo
 import { connect } from 'react-redux';
 import { formValueSelector, InjectedFormProps, reduxForm } from 'redux-form';
 
+const formName = 'projectRegistration';
+
 export type ProjectDocumentFormData = {
   uid: string;
   documentType: string;
@@ -37,8 +39,6 @@ export type ProjectRegistrationFormData = {
   }
 };
 
-const formName = 'projectRegistration';
-
 interface FormValueProps {
   formIsProject: boolean | false;
   formIsPresales: boolean | false;
@@ -48,7 +48,9 @@ interface FormValueProps {
   formValueUsd: number | 1;
 }
 
-export type RegistrationFormProps = InjectedFormProps<ProjectRegistrationFormData> & FormValueProps;
+export type RegistrationFormProps 
+  = InjectedFormProps<ProjectRegistrationFormData> 
+  & FormValueProps;
 
 const selector = formValueSelector(formName);
 
@@ -74,5 +76,5 @@ export const RegistrationForm = reduxForm<ProjectRegistrationFormData>({
   form: formName,
   touchOnChange: true,
   touchOnBlur: true,
-  enableReinitialize: false
+  enableReinitialize: true
 })(connectedView);

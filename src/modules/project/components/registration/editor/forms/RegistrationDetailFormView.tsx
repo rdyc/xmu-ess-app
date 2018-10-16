@@ -1,23 +1,13 @@
 import { FieldInputCustomer, FieldInputDate, FieldInputNumber, FieldInputText } from '@layout/components/formFields';
 import { FieldSelectSystem } from '@layout/components/formFields/FieldSelectSystem';
 import { Card, CardContent, CardHeader } from '@material-ui/core';
+import { RegistrationDetailFormProps } from '@project/components/registration/editor/forms/RegistrationDetailForm';
 import * as React from 'react';
-import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
-import { BaseFieldsProps, Field } from 'redux-form';
+import { FormattedMessage } from 'react-intl';
+import { Field } from 'redux-form';
 import { isNullOrUndefined } from 'util';
 
-interface OwnProps {
-  context: BaseFieldsProps;
-  formCurrencyType: string | undefined;
-  isCurrencyIdr: boolean;
-  onChangeCurrencyType: (event: any, newValue: string, oldValue: string) => void;
-  onChangeRate: (event: any, newValue: number, oldValue: number) => void;
-  onChangeValueIdr: (event: any, newValue: number, oldValue: number) => void;
-}
-
-type AllProps = OwnProps & InjectedIntlProps;
-
-const informationForm: React.SFC<AllProps> = props => {
+export const RegistrationDetailFormView: React.SFC<RegistrationDetailFormProps> = props => {
   const { names } = props.context;
   const { intl, formCurrencyType, isCurrencyIdr, onChangeCurrencyType, onChangeValueIdr, onChangeRate } = props;
 
@@ -128,5 +118,3 @@ const informationForm: React.SFC<AllProps> = props => {
 
   return render;
 };
-
-export const InformationForm = injectIntl(informationForm);

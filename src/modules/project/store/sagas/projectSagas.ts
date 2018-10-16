@@ -17,30 +17,11 @@ import {
   projectPutRequest,
   projectPutSuccess,
 } from '@project/store/actions';
+import { flattenObject } from '@utils/flattenObject';
 import saiyanSaga from '@utils/saiyanSaga';
 import { SubmissionError } from 'redux-form';
 import { all, fork, put, takeEvery } from 'redux-saga/effects';
 import { IApiResponse, objectToQuerystring } from 'utils';
-
-const flattenObject = (ob: any) => {
-  const toReturn = {};
-
-  for (const i in ob) {
-    if (!ob.hasOwnProperty(i)) { continue; }
-    
-    if ((typeof ob[i]) === 'object') {
-      const flatObject = flattenObject(ob[i]);
-      for (const x in flatObject) {
-        if (!flatObject.hasOwnProperty(x)) { continue; }
-        
-        toReturn[`${i}`] = flatObject[i] ? `${flatObject[i]}, ${flatObject[x]}` : flatObject[x];
-      }
-    } else {
-      toReturn[i] = ob[i];
-    }
-  }
-  return toReturn;
-};
 
 function* watchAllFetchRequest() {
   const worker = (action: ReturnType<typeof projectGetAllRequest>) => {
@@ -160,16 +141,24 @@ function* watchPostFetchRequest() {
       successEffects: (response: IApiResponse) => [
         put(projectPostSuccess(response.body))
       ],
+      successCallback: (response: IApiResponse) => {
+        action.payload.resolve(response.body.data);
+      },
       failureEffects: (response: IApiResponse) => [
-        put(projectPostError(response.statusText)),
-        put(
-          layoutAlertAdd({
-            time: new Date(),
-            message: response.statusText,
-            details: response
-          })
-        )
+        put(projectPostError(response.statusText))
       ],
+      failureCallback: (response: IApiResponse) => {
+        if (response.status === 400) {
+          const errors: any = { 
+            // information -> based form section name
+            information: flattenObject(response.body.errors) 
+          };
+
+          action.payload.reject(new SubmissionError(errors));
+        } else {
+          action.payload.reject(response.statusText);
+        }
+      },
       errorEffects: (error: TypeError) => [
         put(projectPostError(error.message)),
         put(
@@ -178,7 +167,10 @@ function* watchPostFetchRequest() {
             message: error.message
           })
         )
-      ]
+      ],
+      errorCallback: (error: any) => {
+        action.payload.reject(error);
+      }
     });
   };
 
@@ -197,14 +189,17 @@ function* watchPutFetchRequest() {
         put(projectPutSuccess(response.body))
       ],
       successCallback: (response: IApiResponse) => {
-        action.payload.resolve();
+        action.payload.resolve(response.body.data);
       },
       failureEffects: (response: IApiResponse) => [
         put(projectPutError(response.statusText))
       ],
       failureCallback: (response: IApiResponse) => {
         if (response.status === 400) {
-          const errors = flattenObject(response.body.errors);
+          const errors: any = { 
+            // information -> based on form section name
+            information: flattenObject(response.body.errors) 
+          };
           
           // action.payload.reject(new SubmissionError(response.body.errors));
           action.payload.reject(new SubmissionError(errors));

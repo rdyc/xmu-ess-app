@@ -5,9 +5,9 @@ export interface IProjectPostPayload extends IBasePayload {
   customerUid: string;
   projectType: string;
   currencyType: string;
-  contractNumber: string;
+  contractNumber?: string | null;
   name: string;
-  description: string;
+  description?: string | null;
   start: string;
   end: string;
   rate: number;
