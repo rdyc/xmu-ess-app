@@ -7,10 +7,20 @@ import { IAppBarState, ILayoutState, IListBarState, INotificationState } from '@
 import { ILookupState } from '@lookup/classes/states';
 import { IMileageState } from '@mileage/classes/states';
 import { IProjectState } from '@project/classes/states';
+import { ITimesheetState } from '@timesheet/classes/states';
 import { FormStateMap } from 'redux-form';
 import { UserState } from 'redux-oidc';
 
-export interface IAppState extends ICommonState, ILookupState, IAccountState, IProjectState, IExpenseState, IFinanceState, IMileageState {
+export interface IAppState extends 
+  ICommonState, 
+  ILookupState, 
+  IAccountState, 
+  IProjectState, 
+  ITimesheetState,
+  IExpenseState, 
+  IFinanceState, 
+  IMileageState 
+{
   layout: ILayoutState;
   appBar: IAppBarState;
   listBar: IListBarState;

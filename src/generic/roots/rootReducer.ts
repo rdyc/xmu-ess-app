@@ -8,6 +8,7 @@ import { appBarReducer, layoutReducer, listBarReducer, notificationReducer } fro
 import lookupReducers from '@lookup/store/reducers/lookupReducers';
 import mileageReducers from '@mileage/store/reducers/mileageReducers';
 import projectReducers from '@project/store/reducers/projectReducers';
+import timesheetReducers from '@timesheet/store/reducers/timesheetReducers';
 import { combineReducers } from 'redux';
 import { reducer as reduxFormReducer } from 'redux-form';
 import { reducer as oidcReducer } from 'redux-oidc';
@@ -26,6 +27,7 @@ export const rootReducer = combineReducers<IAppState>({
   ...lookupReducers,
   ...accountReducers,
   ...projectReducers,
+  ...timesheetReducers
   ...financeReducers,
   ...expenseReducers
   ...mileageReducers,

@@ -19,6 +19,7 @@ import positionSagas from '@lookup/store/sagas/positionSagas';
 import roleSagas from '@lookup/store/sagas/roleSagas';
 import systemLimitSagas from '@lookup/store/sagas/systemLimitSagas';
 import projectSagas from '@project/store/sagas/projectSagas';
+import timesheetSagas from '@timesheet/store/sagas/timesheetSagas';
 import { all, fork } from 'redux-saga/effects';
 
 export function* rootSaga() {
@@ -48,6 +49,9 @@ export function* rootSaga() {
 
     // project
     fork(projectSagas),
+    
+    // timesheet
+    fork(timesheetSagas),
     
     // mileage
     fork(mileageapprovalSagas),
