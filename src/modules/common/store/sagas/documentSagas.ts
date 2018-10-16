@@ -102,7 +102,7 @@ function* watchFetchByIdRequest() {
   yield takeEvery(Action.GET_BY_ID_REQUEST, worker);
 }
 
-function* documentSagas() {
+function* commonDocumentSagas() {
   yield all([
     fork(watchFetchAllRequest),
     fork(watchFetchListRequest),
@@ -110,4 +110,4 @@ function* documentSagas() {
   ]);
 }
 
-export default documentSagas;
+export default commonDocumentSagas;

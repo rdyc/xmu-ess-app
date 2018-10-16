@@ -60,11 +60,11 @@ function* watchPurchaseAllFetchRequest() {
     return saiyanSaga.fetch({
       method: 'get',
       path: `/v1/purchase/requests/${action.payload.companyUid}/${action.payload.positionUid}${objectToQuerystring(action.payload.filter)}`, 
-      success: (response: IApiResponse) => ([
+      successEffects: (response: IApiResponse) => ([
         put(purchaseGetAllSuccess(response.body)),
         put(listBarMetadata(response.body.metadata))
       ]), 
-      failed: (response: IApiResponse) => ([
+      failureEffects: (response: IApiResponse) => ([
         put(purchaseGetAllError(response.body)),
         put(layoutAlertAdd({
           time: new Date(),
@@ -72,16 +72,16 @@ function* watchPurchaseAllFetchRequest() {
           details: response
         })),
       ]), 
-      error: (error: TypeError) => ([
+      errorEffects: (error: TypeError) => ([
         put(purchaseGetAllError(error.message)),
         put(layoutAlertAdd({
           time: new Date(),
           message: error.message
         }))
       ]),
-      finally: () => ([
+      finallyEffects: [
         put(listBarLoading(false))
-      ])
+      ]
     });
   };
   
@@ -93,10 +93,10 @@ function* watchPurchaseByIdFetchRequest() {
     return saiyanSaga.fetch({
       method: 'get',
       path: `/v1/purchase/requests/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.purchaseUid}`, 
-      success: (response: IApiResponse) => ([
+      successEffects: (response: IApiResponse) => ([
         put(purchaseGetByIdSuccess(response.body)),
       ]), 
-      failed: (response: IApiResponse) => ([
+      failureEffects: (response: IApiResponse) => ([
         put(purchaseGetByIdError(response.statusText)),
         put(layoutAlertAdd({
           time: new Date(),
@@ -104,15 +104,12 @@ function* watchPurchaseByIdFetchRequest() {
           details: response
         })),
       ]), 
-      error: (error: TypeError) => ([
+      errorEffects: (error: TypeError) => ([
         put(purchaseGetByIdError(error.message)),
         put(layoutAlertAdd({
           time: new Date(),
           message: error.message
         }))
-      ]),
-      finally: () => ([
-        // nothing
       ])
     });
   };
@@ -126,10 +123,10 @@ function* watchPurchasePostFetchRequest() {
       method: 'post',
       path: `/v1/purchase/requests/${action.payload.companyUid}/${action.payload.positionUid}`,
       payload: action.payload.data,
-      success: (response: IApiResponse) => ([
+      successEffects: (response: IApiResponse) => ([
         put(purchasePostSuccess(response.body)),
       ]),
-      failed: (response: IApiResponse) => ([
+      failureEffects: (response: IApiResponse) => ([
         put(purchasePostError(response.statusText)),
         put(layoutAlertAdd({
           time: new Date(),
@@ -137,15 +134,12 @@ function* watchPurchasePostFetchRequest() {
           details: response
         })),
       ]),
-      error: (error: TypeError) => ([
+      errorEffects: (error: TypeError) => ([
         put(purchasePostError(error.message)),
         put(layoutAlertAdd({
           time: new Date(),
           message: error.message
         }))
-      ]),
-      finally: () => ([
-        // nothing
       ])
     });
   };
@@ -159,10 +153,10 @@ function* watchPurchasePutFetchRequest() {
       method: 'put',
       path: `/v1/purchase/requests/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.purchaseUid}`,
       payload: action.payload.data,
-      success: (response: IApiResponse) => ([
+      successEffects: (response: IApiResponse) => ([
         put(purchasePutSuccess(response.body)),
       ]),
-      failed: (response: IApiResponse) => ([
+      failureEffects: (response: IApiResponse) => ([
         put(purchasePutError(response.statusText)),
         put(layoutAlertAdd({
           time: new Date(),
@@ -170,15 +164,12 @@ function* watchPurchasePutFetchRequest() {
           details: response
         })),
       ]),
-      error: (error: TypeError) => ([
+      errorEffects: (error: TypeError) => ([
         put(purchasePutError(error.message)),
         put(layoutAlertAdd({
           time: new Date(),
           message: error.message
         }))
-      ]),
-      finally: () => ([
-        // nothing
       ])
     });
   };
@@ -191,11 +182,11 @@ function* watchPurchaseApprovalAllFetchRequest() {
     return saiyanSaga.fetch({
       method: 'get',
       path: `/v1/approvals/purchase/request/${action.payload.companyUid}/${action.payload.positionUid}${objectToQuerystring(action.payload.filter)}`,
-      success: (response: IApiResponse) => ([
+      successEffects: (response: IApiResponse) => ([
         put(purchaseApprovalGetAllSuccess(response.body)),
         put(listBarMetadata(response.body.metadata))
       ]),
-      failed: (response: IApiResponse) => ([
+      failureEffects: (response: IApiResponse) => ([
         put(purchaseApprovalGetAllError(response.body)),
         put(layoutAlertAdd({
           time: new Date(),
@@ -203,16 +194,16 @@ function* watchPurchaseApprovalAllFetchRequest() {
           details: response
         })),
       ]),
-      error: (error: TypeError) => ([
+      errorEffects: (error: TypeError) => ([
         put(purchaseApprovalGetAllError(error.message)),
         put(layoutAlertAdd({
           time: new Date(),
           message: error.message
         }))
       ]),
-      finally: () => ([
+      finallyEffects: [
         put(listBarLoading(false))
-      ])
+      ]
     });
   };
 
@@ -224,10 +215,10 @@ function* watchPurchaseApprovalByIdFetchRequest() {
     return saiyanSaga.fetch({
       method: 'get',
       path: `/v1/approvals/purchase/request/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.purchaseUid}`,
-      success: (response: IApiResponse) => ([
+      successEffects: (response: IApiResponse) => ([
         put(purchaseApprovalGetByIdSuccess(response.body)),
       ]),
-      failed: (response: IApiResponse) => ([
+      failureEffects: (response: IApiResponse) => ([
         put(purchaseApprovalGetByIdError(response.statusText)),
         put(layoutAlertAdd({
           time: new Date(),
@@ -235,15 +226,12 @@ function* watchPurchaseApprovalByIdFetchRequest() {
           details: response
         })),
       ]),
-      error: (error: TypeError) => ([
+      errorEffects: (error: TypeError) => ([
         put(purchaseApprovalGetByIdError(error.message)),
         put(layoutAlertAdd({
           time: new Date(),
           message: error.message
         }))
-      ]),
-      finally: () => ([
-        // nothing
       ])
     });
   };
@@ -257,10 +245,10 @@ function* watchPurchaseApprovalPostFetchRequest() {
       method: 'post',
       path: `/v1/approvals/purchase/request/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.purchaseUid}`,
       payload: action.payload.data,
-      success: (response: IApiResponse) => ([
+      successEffects: (response: IApiResponse) => ([
         put(purchaseApprovalPostSuccess(response.body)),
       ]),
-      failed: (response: IApiResponse) => ([
+      failureEffects: (response: IApiResponse) => ([
         put(purchaseApprovalPostError(response.statusText)),
         put(layoutAlertAdd({
           time: new Date(),
@@ -268,15 +256,12 @@ function* watchPurchaseApprovalPostFetchRequest() {
           details: response
         })),
       ]),
-      error: (error: TypeError) => ([
+      errorEffects: (error: TypeError) => ([
         put(purchaseApprovalPostError(error.message)),
         put(layoutAlertAdd({
           time: new Date(),
           message: error.message
         }))
-      ]),
-      finally: () => ([
-        // nothing
       ])
     });
   };
@@ -289,11 +274,11 @@ function* watchSettlementAllFetchRequest() {
     return saiyanSaga.fetch({
       method: 'get',
       path: `/v1/purchase/settlements/${action.payload.companyUid}/${action.payload.positionUid}${objectToQuerystring(action.payload.filter)}`,
-      success: (response: IApiResponse) => ([
+      successEffects: (response: IApiResponse) => ([
         put(settlementGetAllSuccess(response.body)),
         put(listBarMetadata(response.body.metadata))
       ]),
-      failed: (response: IApiResponse) => ([
+      failureEffects: (response: IApiResponse) => ([
         put(settlementGetAllError(response.body)),
         put(layoutAlertAdd({
           time: new Date(),
@@ -301,16 +286,16 @@ function* watchSettlementAllFetchRequest() {
           details: response
         })),
       ]),
-      error: (error: TypeError) => ([
+      errorEffects: (error: TypeError) => ([
         put(settlementGetAllError(error.message)),
         put(layoutAlertAdd({
           time: new Date(),
           message: error.message
         }))
       ]),
-      finally: () => ([
+      finallyEffects: [
         put(listBarLoading(false))
-      ])
+      ]
     });
   };
 
@@ -322,10 +307,10 @@ function* watchSettlementByIdFetchRequest() {
     return saiyanSaga.fetch({
       method: 'get',
       path: `/v1/purchase/settlements/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.purchaseUid}`,
-      success: (response: IApiResponse) => ([
+      successEffects: (response: IApiResponse) => ([
         put(settlementGetByIdSuccess(response.body)),
       ]),
-      failed: (response: IApiResponse) => ([
+      failureEffects: (response: IApiResponse) => ([
         put(settlementGetByIdError(response.statusText)),
         put(layoutAlertAdd({
           time: new Date(),
@@ -333,15 +318,12 @@ function* watchSettlementByIdFetchRequest() {
           details: response
         })),
       ]),
-      error: (error: TypeError) => ([
+      errorEffects: (error: TypeError) => ([
         put(settlementGetByIdError(error.message)),
         put(layoutAlertAdd({
           time: new Date(),
           message: error.message
         }))
-      ]),
-      finally: () => ([
-        // nothing
       ])
     });
   };
@@ -355,10 +337,10 @@ function* watchSettlementPostFetchRequest() {
       method: 'post',
       path: `/v1/purchase/settlements/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.purchaseUid}`,
       payload: action.payload.data,
-      success: (response: IApiResponse) => ([
+      successEffects: (response: IApiResponse) => ([
         put(settlementPostSuccess(response.body)),
       ]),
-      failed: (response: IApiResponse) => ([
+      failureEffects: (response: IApiResponse) => ([
         put(settlementPostError(response.statusText)),
         put(layoutAlertAdd({
           time: new Date(),
@@ -366,15 +348,12 @@ function* watchSettlementPostFetchRequest() {
           details: response
         })),
       ]),
-      error: (error: TypeError) => ([
+      errorEffects: (error: TypeError) => ([
         put(settlementPostError(error.message)),
         put(layoutAlertAdd({
           time: new Date(),
           message: error.message
         }))
-      ]),
-      finally: () => ([
-        // nothing
       ])
     });
   };
@@ -388,10 +367,10 @@ function* watchSettlementPutFetchRequest() {
       method: 'put',
       path: `/v1/purchase/settlements/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.purchaseUid}`,
       payload: action.payload.data,
-      success: (response: IApiResponse) => ([
+      successEffects: (response: IApiResponse) => ([
         put(settlementPutSuccess(response.body)),
       ]),
-      failed: (response: IApiResponse) => ([
+      failureEffects: (response: IApiResponse) => ([
         put(settlementPutError(response.statusText)),
         put(layoutAlertAdd({
           time: new Date(),
@@ -399,15 +378,12 @@ function* watchSettlementPutFetchRequest() {
           details: response
         })),
       ]),
-      error: (error: TypeError) => ([
+      errorEffects: (error: TypeError) => ([
         put(settlementPutError(error.message)),
         put(layoutAlertAdd({
           time: new Date(),
           message: error.message
         }))
-      ]),
-      finally: () => ([
-        // nothing
       ])
     });
   };
@@ -420,11 +396,11 @@ function* watchSettlementApprovalAllFetchRequest() {
     return saiyanSaga.fetch({
       method: 'get',
       path: `/v1/approvals/purchase/settlement/${action.payload.companyUid}/${action.payload.positionUid}${objectToQuerystring(action.payload.filter)}`,
-      success: (response: IApiResponse) => ([
+      successEffects: (response: IApiResponse) => ([
         put(settlementApprovalGetAllSuccess(response.body)),
         put(listBarMetadata(response.body.metadata))
       ]),
-      failed: (response: IApiResponse) => ([
+      failureEffects: (response: IApiResponse) => ([
         put(settlementApprovalGetAllError(response.body)),
         put(layoutAlertAdd({
           time: new Date(),
@@ -432,16 +408,16 @@ function* watchSettlementApprovalAllFetchRequest() {
           details: response
         })),
       ]),
-      error: (error: TypeError) => ([
+      errorEffects: (error: TypeError) => ([
         put(settlementApprovalGetAllError(error.message)),
         put(layoutAlertAdd({
           time: new Date(),
           message: error.message
         }))
       ]),
-      finally: () => ([
+      finallyEffects: [
         put(listBarLoading(false))
-      ])
+      ]
     });
   };
 
@@ -453,10 +429,10 @@ function* watchSettlementApprovalByIdFetchRequest() {
     return saiyanSaga.fetch({
       method: 'get',
       path: `/v1/approvals/purchase/settlement/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.purchaseUid}`,
-      success: (response: IApiResponse) => ([
+      successEffects: (response: IApiResponse) => ([
         put(settlementApprovalGetByIdSuccess(response.body)),
       ]),
-      failed: (response: IApiResponse) => ([
+      failureEffects: (response: IApiResponse) => ([
         put(settlementApprovalGetByIdError(response.statusText)),
         put(layoutAlertAdd({
           time: new Date(),
@@ -464,15 +440,12 @@ function* watchSettlementApprovalByIdFetchRequest() {
           details: response
         })),
       ]),
-      error: (error: TypeError) => ([
+      errorEffects: (error: TypeError) => ([
         put(settlementApprovalGetByIdError(error.message)),
         put(layoutAlertAdd({
           time: new Date(),
           message: error.message
         }))
-      ]),
-      finally: () => ([
-        // nothing
       ])
     });
   };
@@ -486,10 +459,10 @@ function* watchSettlementApprovalPostFetchRequest() {
       method: 'post',
       path: `/v1/approvals/purchase/request/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.purchaseUid}`,
       payload: action.payload.data,
-      success: (response: IApiResponse) => ([
+      successEffects: (response: IApiResponse) => ([
         put(settlementApprovalPostSuccess(response.body)),
       ]),
-      failed: (response: IApiResponse) => ([
+      failureEffects: (response: IApiResponse) => ([
         put(settlementApprovalPostError(response.statusText)),
         put(layoutAlertAdd({
           time: new Date(),
@@ -497,15 +470,12 @@ function* watchSettlementApprovalPostFetchRequest() {
           details: response
         })),
       ]),
-      error: (error: TypeError) => ([
+      errorEffects: (error: TypeError) => ([
         put(settlementApprovalPostError(error.message)),
         put(layoutAlertAdd({
           time: new Date(),
           message: error.message
         }))
-      ]),
-      finally: () => ([
-        // nothing
       ])
     });
   };

@@ -34,8 +34,8 @@ function* watchFetchRequest() {
   yield takeEvery(Action.FETCH_REQUEST, worker);
 }
 
-function* notificationSagas() {
+function* commonNotificationSagas() {
   yield all([fork(watchFetchRequest)]);
 }
 
-export default notificationSagas;
+export default commonNotificationSagas;
