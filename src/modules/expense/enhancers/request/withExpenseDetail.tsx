@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { compose, setDisplayName } from 'recompose';
 
 interface PropsFromState {
-  projectDetailState: IQuerySingleState<IExpenseGetByIdRequest, IExpenseDetail>;
+  expenseDetailState: IQuerySingleState<IExpenseGetByIdRequest, IExpenseDetail>;
 }
 
 export type WithExpenseDetail = PropsFromState;
@@ -16,8 +16,8 @@ const withExpenseDetail = (WrappedComponent: React.ComponentType) => {
   
   const withExpenseDetailWrapper: React.SFC<WithExpenseDetail> = props => <WrappedComponent {...props} />;
 
-  const mapStateToProps = ({ projectGetById }: IAppState) => ({
-    projectDetailState: projectGetById
+  const mapStateToProps = ({ expenseGetById }: IAppState) => ({
+    expenseDetailState: expenseGetById
   });
 
   return compose<WithExpenseDetail, {}>(

@@ -16,8 +16,8 @@ const withExpenseAll = (WrappedComponent: React.ComponentType) => {
   
   const withExpenseAllWrapper: React.SFC<WithExpenseAll> = props => <WrappedComponent {...props} />;
 
-  const mapStateToProps = ({ projectGetAll }: IAppState) => ({
-    projectAllState: projectGetAll
+  const mapStateToProps = ({ expenseGetAll }: IAppState) => ({
+    expenseAllState: expenseGetAll
   });
 
   return compose<WithExpenseAll, {}>(

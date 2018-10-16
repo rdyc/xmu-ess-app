@@ -1,4 +1,4 @@
-export enum ProjectUserAction {
+export enum ExpenseUserAction {
   Refresh = 'refresh',
   Modify = 'modify',
 }
