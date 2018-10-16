@@ -12,6 +12,8 @@ import financeSagas from '@finance/store/sagas/financeSagas';
 import holidaySagas from '@lookup/store/sagas/holidaySagas';
 import leaveSagas from '@lookup/store/sagas/leaveSagas';
 import menuSagas from '@lookup/store/sagas/menuSagas';
+import mileageapprovalSagas from '@mileage/store/sagas/mileageapprovalSagas';
+import mileagerequestSagas from '@mileage/store/sagas/mileagerequestSagas';
 import mileageExceptionSagas from '@lookup/store/sagas/mileageExceptionSagas';
 import positionSagas from '@lookup/store/sagas/positionSagas';
 import roleSagas from '@lookup/store/sagas/roleSagas';
@@ -46,6 +48,10 @@ export function* rootSaga() {
 
     // project
     fork(projectSagas),
+    
+    // mileage
+    fork(mileageapprovalSagas),
+    fork(mileagerequestSagas),
 
     // expense
     fork(expenseSagas),

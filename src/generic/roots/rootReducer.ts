@@ -6,6 +6,7 @@ import financeReducers from '@finance/store/reducers/financeReducers';
 import { IAppState } from '@generic/interfaces';
 import { appBarReducer, layoutReducer, listBarReducer, notificationReducer } from '@layout/store/reducers';
 import lookupReducers from '@lookup/store/reducers/lookupReducers';
+import mileageReducers from '@mileage/store/reducers/mileageReducers';
 import projectReducers from '@project/store/reducers/projectReducers';
 import { combineReducers } from 'redux';
 import { reducer as reduxFormReducer } from 'redux-form';
@@ -27,4 +28,5 @@ export const rootReducer = combineReducers<IAppState>({
   ...projectReducers,
   ...financeReducers,
   ...expenseReducers
+  ...mileageReducers,
 });
