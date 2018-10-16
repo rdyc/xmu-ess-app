@@ -1,5 +1,5 @@
-import { IProjectSitePayload } from '@project/classes/request';
 import { IBaseCommand } from '@generic/interfaces';
+import { IProjectSitePayload } from '@project/classes/request';
 
 export interface IProjectSitePutRequest extends IBaseCommand<IProjectSitePayload> {
   companyUid: string;

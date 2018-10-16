@@ -1,8 +1,8 @@
-import { Avatar, ListItem, ListItemAvatar, ListItemText, WithStyles } from '@material-ui/core';
-import * as React from 'react';
 import { IEmployee } from '@account/classes/response';
+import { Avatar, ListItem, ListItemAvatar, ListItemText, WithStyles } from '@material-ui/core';
 import PersonIcon from '@material-ui/icons/Person';
 import styles from '@styles';
+import * as React from 'react';
 
 interface OwnProps {
   data: IEmployee;

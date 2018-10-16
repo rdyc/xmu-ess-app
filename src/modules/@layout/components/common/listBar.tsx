@@ -1,12 +1,12 @@
 import { ConnectedReduxProps, SortDirection } from '@generic/types';
-import { IListBarField, IListBarState, ILayoutState } from '@layout/interfaces';
+import { ILayoutState, IListBarField, IListBarState } from '@layout/interfaces';
 import {
+  layoutAlertAdd,
   listBarChangeDirection,
-  listBarMenuHide,
-  listBarMenuShow,
   listBarChangeOrder,
   listBarChangeSize,
-  layoutAlertAdd,
+  listBarMenuHide,
+  listBarMenuShow,
 } from '@layout/store/actions';
 import { BottomNavigation, BottomNavigationAction, Menu, MenuItem, WithStyles } from '@material-ui/core';
 import { isWidthUp, WithWidth } from '@material-ui/core/withWidth';

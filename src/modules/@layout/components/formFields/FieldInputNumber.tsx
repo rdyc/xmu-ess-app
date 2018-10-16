@@ -1,8 +1,8 @@
 import { TextField } from '@material-ui/core';
-import * as React from 'react';
-import { default as NumberFormat } from 'react-number-format';
-import { WrappedFieldProps, BaseFieldProps } from 'redux-form';
 import { InputComponentProps } from '@material-ui/core/Input';
+import * as React from 'react';
+import NumberFormat from 'react-number-format';
+import { BaseFieldProps, WrappedFieldProps } from 'redux-form';
 import { isNullOrUndefined } from 'util';
 
 interface FromFieldProps { 

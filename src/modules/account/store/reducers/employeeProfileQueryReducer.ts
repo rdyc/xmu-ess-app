@@ -1,6 +1,6 @@
-import { Reducer } from 'redux';
 import { IEmployeeProfileQueryState } from '@account/classes';
 import { EmployeeProfileAction } from '@account/store/actions';
+import { Reducer } from 'redux';
 
 const initialState: IEmployeeProfileQueryState = {
   parameter: undefined,

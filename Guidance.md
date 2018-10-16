@@ -1,10 +1,14 @@
 # Development Guidance #
 
 ## Before Started ##
-* Installing Node
-* Installing NPM
+* Node
+* NPM
 
-* Create a new environment config by copying file `.env.example` to `.env`
+* Environment
+Create a new environment config by copying file `.env.example` to `.env`
+
+* Typescript
+`$ npm i -g typescript`
 
 * Install all packages:
 `$ npm i `

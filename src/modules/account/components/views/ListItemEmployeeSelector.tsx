@@ -1,6 +1,6 @@
-import { ListItemEmployee } from '@account/components/views/ListItemEmployee';
 import { IEmployeeListRequest } from '@account/classes/queries';
 import { IEmployee } from '@account/classes/response';
+import { ListItemEmployee } from '@account/components/views/ListItemEmployee';
 import { employeeGetListRequest } from '@account/store/actions';
 import { IAppState, IQueryCollectionState, IResponseCollection } from '@generic/interfaces';
 import { ConnectedReduxProps } from '@generic/types';
