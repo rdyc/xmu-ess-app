@@ -8,6 +8,7 @@ import companySagas from '@lookup/store/sagas/companySagas';
 import currencySagas from '@lookup/store/sagas/currencySagas';
 import customerSagas from '@lookup/store/sagas/customerSagas';
 import diemSagas from '@lookup/store/sagas/diemSagas';
+import financeSagas from '@finance/store/sagas/financeSagas';
 import holidaySagas from '@lookup/store/sagas/holidaySagas';
 import leaveSagas from '@lookup/store/sagas/leaveSagas';
 import menuSagas from '@lookup/store/sagas/menuSagas';
@@ -48,5 +49,8 @@ export function* rootSaga() {
 
     // expense
     fork(expenseSagas),
+    
+    // finance
+    fork(financeSagas),
   ]);
 }
