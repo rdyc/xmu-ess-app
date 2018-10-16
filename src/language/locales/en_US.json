@@ -108,6 +108,18 @@
   "leave.field.category": "Category",
   "leave.field.allocation": "Allocation",
   
+  "mileage.request.title": "Mileage Request",
+  "mileage.request.subTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras mollis eros sit amet rhoncus fermentum",
+  "mileage.request.infoTitle": "Details Submit Mileage",
+  "mileage.request.infoSubTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.e",
+  "mileage.request.field.uid": "Mileage ID",
+  "mileage.request.field.month": "Month",
+  "mileage.request.field.employeeName": "Employee Name",
+  "mileage.request.field.year": "Year",
+  "mileage.request.field.total": "Total Mileage",
+  "mileage.request.itemsTitle": "Details Item",
+  "mileage.request.itemsSubTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+
   "project.title": "Projects",
   "project.subTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
   "project.detail.title": "Project Details",
