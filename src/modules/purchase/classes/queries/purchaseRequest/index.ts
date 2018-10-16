@@ -1,4 +1,4 @@
 export * from './IPurchaseGetAllRequest';
 export * from './IPurchaseGetByIdRequest';
-export * from './IPurchasePostrequest';
+export * from './IPurchasePostRequest';
 export * from './IPurchasePutRequest';

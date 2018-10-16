@@ -36,6 +36,6 @@ export const purchaseApprovalGetByIdDispose = () => action(PurchaseApprovalActio
 
 // post
 export const purchaseApprovalPostRequest = (request: IPurchaseApprovalPostRequest) => action(PurchaseApprovalAction.POST_REQUEST, request);
-export const purchaseApprovalPostSuccess = (response: IResponseSingle<IPurchase>) => action(PurchaseApprovalAction.POST_SUCCESS, response);
+export const purchaseApprovalPostSuccess = (response: boolean) => action(PurchaseApprovalAction.POST_SUCCESS, response);
 export const purchaseApprovalPostError = (message: string) => action(PurchaseApprovalAction.POST_ERROR, message);
 export const purchaseApprovalPostDispose = () => action(PurchaseApprovalAction.POST_DISPOSE);

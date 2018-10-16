@@ -36,6 +36,6 @@ export const settlementApprovalGetByIdDispose = () => action(SettlementApprovalA
 
 // post
 export const settlementApprovalPostRequest = (request: ISettlementApprovalPostRequest) => action(SettlementApprovalAction.POST_REQUEST, request);
-export const settlementApprovalPostSuccess = (response: IResponseSingle<ISettlement>) => action(SettlementApprovalAction.POST_SUCCESS, response);
+export const settlementApprovalPostSuccess = (response: boolean) => action(SettlementApprovalAction.POST_SUCCESS, response);
 export const settlementApprovalPostError = (message: string) => action(SettlementApprovalAction.POST_ERROR, message);
 export const settlementApprovalPostDispose = () => action(SettlementApprovalAction.POST_DISPOSE);
