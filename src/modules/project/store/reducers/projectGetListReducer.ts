@@ -1,10 +1,10 @@
-import { IQuerySingleState } from '@generic/interfaces';
+import { IQueryCollectionState } from '@generic/interfaces';
 import { IProjectGetListRequest } from '@project/classes/queries/IProjectGetListRequest';
 import { IProjectList } from '@project/classes/response';
 import { ProjectAction as Action } from '@project/store/actions';
 import { Reducer } from 'redux';
 
-const initialState: IQuerySingleState<IProjectGetListRequest, IProjectList> = {
+const initialState: IQueryCollectionState<IProjectGetListRequest, IProjectList> = {
   request: undefined,
   response: undefined,
   isError: false,
@@ -12,7 +12,7 @@ const initialState: IQuerySingleState<IProjectGetListRequest, IProjectList> = {
   errors: undefined,
 };
 
-const reducer: Reducer<IQuerySingleState<IProjectGetListRequest, IProjectList>> = (state = initialState, action) => {
+const reducer: Reducer<IQueryCollectionState<IProjectGetListRequest, IProjectList>> = (state = initialState, action) => {
   switch (action.type) {
     case Action.GET_LIST_REQUEST: return { ...state, isLoading: true, request: action.payload };
     case Action.GET_LIST_SUCCESS: return { ...state, isLoading: false, response: action.payload };

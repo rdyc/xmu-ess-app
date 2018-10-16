@@ -1,7 +1,7 @@
 import { ISystemList } from '@common/classes/response';
 import { WithCommonSystem, withCommonSystem } from '@common/hoc/withCommonSystem';
 import { Card, CardContent, CardHeader, Checkbox, FormControlLabel } from '@material-ui/core';
-import { ProjectDocumentFormData } from '@project/components/registration/forms/RegistrationFormContainer';
+import { ProjectDocumentFormData } from '@project/components/registration/editor/forms/RegistrationForm';
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { compose, lifecycle, ReactLifeCycleFunctions } from 'recompose';

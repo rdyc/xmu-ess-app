@@ -10,7 +10,7 @@ import { IProject, IProjectDetail, IProjectList } from '@project/classes/respons
 
 export interface IProjectState {
   projectGetAll: IQueryCollectionState<IProjectGetAllRequest, IProject>;
-  projectGetList: IQuerySingleState<IProjectGetListRequest, IProjectList>;
+  projectGetList: IQueryCollectionState<IProjectGetListRequest, IProjectList>;
   projectGetById: IQuerySingleState<IProjectGetByIdRequest, IProjectDetail>;
   projectPost: IQuerySingleState<IProjectPostRequest, IProject>;
   projectPut: IQuerySingleState<IProjectPutRequest, IProject>;

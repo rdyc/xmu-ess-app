@@ -1,17 +1,14 @@
-import { Button, Card, CardActions, CardContent, CardHeader } from '@material-ui/core';
+import { Button, Card, CardActions, CardHeader } from '@material-ui/core';
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { InjectedFormProps } from 'redux-form';
 
-const submitForm: React.SFC<InjectedFormProps> = props => (
+export const SubmissionFormView: React.SFC<InjectedFormProps> = props => (
   <Card square>
     <CardHeader 
       title={<FormattedMessage id="global.form.submit.title"/>}
       subheader={<FormattedMessage id="global.form.submit.subHeader" />}
     />
-    <CardContent>
-
-    </CardContent>
     <CardActions>
       <Button 
         type="button"
@@ -31,5 +28,3 @@ const submitForm: React.SFC<InjectedFormProps> = props => (
     </CardActions>
   </Card>
 );
-
-export const SubmitForm = submitForm;

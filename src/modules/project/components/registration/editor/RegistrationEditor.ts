@@ -4,28 +4,18 @@ import { FormMode } from '@generic/types';
 import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
-import { Typography } from '@material-ui/core';
 import { IProjectPutDocument, IProjectPutPayload, IProjectPutSales } from '@project/classes/request';
-import {
-  ProjectRegistrationFormData,
-  RegistrationFormContainer,
-} from '@project/components/registration/forms/RegistrationFormContainer';
-import withApiProjectRegistrationDetail, {
-  WithApiProjectRegistrationDetailHandler,
-} from '@project/enhancers/registration/withApiProjectRegistrationDetail';
-import withProjectRegistrationDetail, {
-  WithProjectRegistrationDetail,
-} from '@project/enhancers/registration/withProjectRegistrationDetail';
-import * as React from 'react';
-import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
-import { RouteComponentProps } from 'react-router';
+import { ProjectRegistrationFormData } from '@project/components/registration/editor/forms/RegistrationForm';
+import { RegistrationEditorView } from '@project/components/registration/editor/RegistrationEditorView';
+import { WithProjectRegistration, withProjectRegistration } from '@project/hoc/withProjectRegistration';
+import { InjectedIntlProps, injectIntl } from 'react-intl';
+import { RouteComponentProps, withRouter } from 'react-router';
 import {
   compose,
   HandleCreators,
   lifecycle,
   mapper,
   ReactLifeCycleFunctions,
-  setDisplayName,
   StateHandler,
   StateHandlerMap,
   StateUpdaters,
@@ -36,105 +26,41 @@ import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
 import { isNullOrUndefined, isObject } from 'util';
 
-interface RouteParams {
-  projectUid: string;
-}
-
-interface State {
-  mode: FormMode;
-  companyUid?: string | undefined;
-  positionUid?: string | undefined;
-  projectUid?: string | undefined;
-}
-
-interface Updaters extends StateHandlerMap<State> {
-  stateUpdate: StateHandler<State>;
-}
-
-type AllProps
-  = WithProjectRegistrationDetail
-  & WithApiProjectRegistrationDetailHandler
-  & WithUser
-  & WithLayout
-  & WithAppBar
-  & RouteComponentProps<RouteParams>
-  & InjectedIntlProps
-  & Handler
-  & State
-  & Updaters;
-
-interface Handler {
+interface OwnHandlers {
   handleValidate: (payload: ProjectRegistrationFormData) => FormErrors;
   handleSubmit: (payload: ProjectRegistrationFormData) => void;
   handleSubmitSuccess: (result: any, dispatch: Dispatch<any>) => void;
   handleSubmitFail: (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => void;
 }
 
-const registrationEditor: React.SFC<AllProps> = props => {
-  const { mode, handleValidate, handleSubmit, handleSubmitSuccess, handleSubmitFail } = props;
-  const { isLoading, response } = props.projectDetailState;
+interface OwnRouteParams {
+  projectUid: string;
+}
 
-  const renderForm = (formData: ProjectRegistrationFormData) => (
-    <RegistrationFormContainer 
-      initialValues={formData}
-      validate={handleValidate}
-      onSubmit={handleSubmit} 
-      onSubmitSuccess={handleSubmitSuccess}
-      onSubmitFail={handleSubmitFail}
-    />
-  );
+interface OwnState {
+  mode: FormMode;
+  companyUid?: string | undefined;
+  positionUid?: string | undefined;
+  projectUid?: string | undefined;
+}
 
-  // init form values
-  const initialValues: ProjectRegistrationFormData = {
-    information: {
-      customerUid: undefined,
-      projectType: undefined,
-      contractNumber: undefined,
-      name: undefined,
-      description: 'desc',
-      start: undefined,
-      end: undefined,
-      currencyType: undefined,
-      rate: 1,
-      valueUsd: 9,
-      valueIdr: 0,
-    },
-    document: {
-      project: [],
-      preSales: [],
-    },
-    sales: {
-      employees: []
-    }
-  };
+interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
+  stateUpdate: StateHandler<OwnState>;
+}
 
-  // New
-  if (mode === FormMode.New) {
-    return renderForm(initialValues);
-  }
+export type RegistrationEditorProps
+  = WithProjectRegistration
+  & WithUser
+  & WithLayout
+  & WithAppBar
+  & RouteComponentProps<OwnRouteParams>
+  & InjectedIntlProps
+  & OwnHandlers
+  & OwnState
+  & OwnStateUpdaters;
 
-  // Modify
-  if (mode === FormMode.Edit) {
-    if (isLoading && !response) {
-      return (
-        <Typography variant="body2">
-          <FormattedMessage id="global.loading"/>
-        </Typography>
-      );
-    }
-    
-    if (!isLoading && response && response.data) {
-      // todo: replace values with response data
-
-      return renderForm(initialValues);
-    }
-  }
-
-  return null;
-};
-
-const handlerCreators: HandleCreators<AllProps, Handler> = {
-  handleValidate: (props: AllProps) => (payload: ProjectRegistrationFormData) => { 
+const handlerCreators: HandleCreators<RegistrationEditorProps, OwnHandlers> = {
+  handleValidate: (props: RegistrationEditorProps) => (payload: ProjectRegistrationFormData) => { 
     const errors = {
       information: {}
     };
@@ -152,7 +78,7 @@ const handlerCreators: HandleCreators<AllProps, Handler> = {
     
     return errors;
   },
-  handleSubmit: (props: AllProps) => (payload: ProjectRegistrationFormData) => { 
+  handleSubmit: (props: RegistrationEditorProps) => (payload: ProjectRegistrationFormData) => { 
     const { mode, projectUid, apiRegistrationDetailPost, apiRegistrationDetailPut } = props;
     const { user } = props.userState;
 
@@ -246,7 +172,7 @@ const handlerCreators: HandleCreators<AllProps, Handler> = {
 
     return null;
   },
-  handleSubmitSuccess: (props: AllProps) => (result: any, dispatch: Dispatch<any>) => {
+  handleSubmitSuccess: (props: RegistrationEditorProps) => (result: any, dispatch: Dispatch<any>) => {
     // console.log(result);
     // console.log(dispatch);
     const { alertAdd } = props.layoutDispatch;
@@ -256,7 +182,7 @@ const handlerCreators: HandleCreators<AllProps, Handler> = {
       message: 'Success bro!!!'
     });
   },
-  handleSubmitFail: (props: AllProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
+  handleSubmitFail: (props: RegistrationEditorProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
     const { alertAdd } = props.layoutDispatch;
     
     if (submitError) {
@@ -268,18 +194,18 @@ const handlerCreators: HandleCreators<AllProps, Handler> = {
   }
 };
 
-const createProps: mapper<AllProps, State> = (props: AllProps): State => ({ 
+const createProps: mapper<RegistrationEditorProps, OwnState> = (props: RegistrationEditorProps): OwnState => ({ 
   mode: FormMode.New
 });
 
-const stateUpdaters: StateUpdaters<{}, State, Updaters> = {
-  stateUpdate: (prevState: State) => (newState: any) => ({
+const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
+  stateUpdate: (prevState: OwnState) => (newState: any) => ({
     ...prevState,
     ...newState
   })
 };
 
-const lifecycles: ReactLifeCycleFunctions<AllProps, {}> = {
+const lifecycles: ReactLifeCycleFunctions<RegistrationEditorProps, {}> = {
   componentDidMount() {
     const { layoutDispatch, intl, history, stateUpdate, apiRegistrationDetailGet } = this.props;
     const { user } = this.props.userState;
@@ -329,18 +255,14 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, {}> = {
   }
 };
 
-export default compose<AllProps, {}>(
-  setDisplayName('ProjectRegistrationEditor'),
-  
+export default compose<RegistrationEditorProps, {}>(
   withUser,
   withLayout,
   withAppBar,
-  withProjectRegistrationDetail,
-  withApiProjectRegistrationDetail,
+  withRouter,
+  withProjectRegistration,
   injectIntl,
-
-  withStateHandlers<State, Updaters, {}>(createProps, stateUpdaters),
-  withHandlers<AllProps, Handler>(handlerCreators),
-
-  lifecycle<AllProps, {}>(lifecycles),
-)(registrationEditor);
+  withStateHandlers<OwnState, OwnStateUpdaters, {}>(createProps, stateUpdaters),
+  withHandlers<RegistrationEditorProps, OwnHandlers>(handlerCreators),
+  lifecycle<RegistrationEditorProps, {}>(lifecycles),
+)(RegistrationEditorView);
