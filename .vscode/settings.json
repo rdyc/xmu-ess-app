@@ -30,6 +30,6 @@
   "breadcrumbs.enabled": false,
   "git.enableSmartCommit": true,
   "workbench.iconTheme": "material-icon-theme",
-  "window.zoomLevel": -1,
+  "window.zoomLevel": 0,
   "prettier.singleQuote": true
 }
