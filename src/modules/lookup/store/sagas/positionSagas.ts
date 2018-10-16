@@ -20,10 +20,10 @@ function* watchFetchAllRequest() {
     return saiyanSaga.fetch({
       method: 'get',
       path: `/v1/lookup/positions${objectToQuerystring(action.payload.filter)}`, 
-      success: (response: IApiResponse) => ([
+      successEffects: (response: IApiResponse) => ([
         put(positionGetAllSuccess(response.body)),
       ]), 
-      failed: (response: IApiResponse) => ([
+      failureEffects: (response: IApiResponse) => ([
         put(positionGetAllError(response.statusText)),
         put(layoutAlertAdd({
           time: new Date(),
@@ -31,14 +31,13 @@ function* watchFetchAllRequest() {
           details: response
         }))
       ]), 
-      error: (error: TypeError) => ([
+      errorEffects: (error: TypeError) => ([
         put(positionGetAllError(error.message)),
         put(layoutAlertAdd({
           time: new Date(),
           message: error.message
         }))
-      ]),
-      finally: () => ([])
+      ])
     });
   };
   
@@ -50,10 +49,10 @@ function* watchFetchListRequest() {
     return saiyanSaga.fetch({
       method: 'get',
       path: `/v1/lookup/positions/list${objectToQuerystring(action.payload.filter)}`,
-      success: (response: IApiResponse) => ([
+      successEffects: (response: IApiResponse) => ([
         put(positionGetListSuccess(response.body)),
       ]), 
-      failed: (response: IApiResponse) => ([
+      failureEffects: (response: IApiResponse) => ([
         put(positionGetListError(response.statusText)),
         put(layoutAlertAdd({
           time: new Date(),
@@ -61,14 +60,13 @@ function* watchFetchListRequest() {
           details: response
         }))
       ]), 
-      error: (error: TypeError) => ([
+      errorEffects: (error: TypeError) => ([
         put(positionGetListError(error.message)),
         put(layoutAlertAdd({
           time: new Date(),
           message: error.message
         }))
-      ]),
-      finally: () => ([])
+      ])
     });
   };
 
@@ -80,10 +78,10 @@ function* watchFetchByIdRequest() {
     return saiyanSaga.fetch({
       method: 'get',
       path: `/v1/lookup/positions/${action.payload.companyUid}/${action.payload.positionUid}`,
-      success: (response: IApiResponse) => ([
+      successEffects: (response: IApiResponse) => ([
         put(positionGetByIdSuccess(response.body)),
       ]), 
-      failed: (response: IApiResponse) => ([
+      failureEffects: (response: IApiResponse) => ([
         put(positionGetByIdError(response.statusText)),
         put(layoutAlertAdd({
           time: new Date(),
@@ -91,21 +89,20 @@ function* watchFetchByIdRequest() {
           details: response
         }))
       ]), 
-      error: (error: TypeError) => ([
+      errorEffects: (error: TypeError) => ([
         put(positionGetByIdError(error.message)),
         put(layoutAlertAdd({
           time: new Date(),
           message: error.message,
         }))
       ]),
-      finally: () => ([])
     });
   };
   
   yield takeEvery(Action.GET_BY_ID_REQUEST, worker);
 }
 
-function* positionSagas() {
+function* lookupPositionSagas() {
   yield all([
     fork(watchFetchAllRequest),
     fork(watchFetchListRequest),
@@ -113,4 +110,4 @@ function* positionSagas() {
   ]);
 }
 
-export default positionSagas;
+export default lookupPositionSagas;

@@ -21,15 +21,15 @@ export interface IProjectDetail {
   hierarchyUid: string;
   hierarchy?: IOrganizationHierarchy | null;
   currencyType: string;
-  currency: ICommonSystem;
+  currency?: ICommonSystem | null;
   contractNumber?: string | null;
   ownerEmployeeUid?: string | null;
   owner?: IAccountEmployee | null;
   name: string;
   description?: string | null;
   maxHours: number;
-  start: string;
-  end: string;
+  start: Date;
+  end: Date;
   childProjectUid?: string | null;
   statusType: string;
   status?: ICommonSystem | null;

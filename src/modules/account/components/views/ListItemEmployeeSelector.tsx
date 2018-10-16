@@ -69,9 +69,9 @@ const initialState = {
 type State = Readonly<typeof initialState>;          
 
 class ListItemEmployeeSelector extends React.Component<AllProps, State> {
-  state: State = initialState;
+  public state: State = initialState;
 
-  componentDidMount() {
+  public componentDidMount() {
     const { isLoading, response } = this.props.employeeState;
 
     // skipp fetch while current state is being loaded
@@ -82,76 +82,7 @@ class ListItemEmployeeSelector extends React.Component<AllProps, State> {
     this.loadData();
   }
 
-  loadData = () => {
-    const { companyUids, roleUids, positionUids } = this.props;
-    const { listRequest } = this.props.employeeDispatch;
-
-    listRequest({
-      filter: {
-        companyUids,
-        roleUids,
-        positionUids,
-        find: this.state.search,
-        findBy: undefined,
-        direction: undefined,
-        orderBy: 'fullName',
-        size: undefined
-      }
-    });
-  };
-
-  handleDialogOpen = () => {
-    this.setState({ open: true });
-  };
-
-  handleDialogClose = () => {
-    this.setState({ open: false });
-  };
-
-  handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.currentTarget.value;
-
-    this.setState({ search: value });
-  };
-
-  handleKeyUp = (event: React.KeyboardEvent<HTMLDivElement>) => {
-    // delete pressed
-    if (event.keyCode === 46) {
-      this.setState({ search: '' });
-    }
-  };
-
-  handleSelected = (employee: IEmployee) => {
-    if (this.props.onSelected(employee)) {
-      this.setState({ selected: {} });
-    }
-  };
-
-  handleDiscard = () => {
-    this.setState({ selected: {} });
-  };
-
-  handleListItemClick = (employee: IEmployee) => {
-    this.setState({ open: false, selected: employee });
-  };
-
-  fnFilteredEmployee = (response: IResponseCollection<IEmployee> | undefined) => {
-    let result: any = [];
-
-    if (response && response.data) {
-      if (this.state.search !== '') {
-        result = response.data.filter(item => 
-          item.fullName.toLowerCase().indexOf(this.state.search) !== -1
-        );
-      } else {
-        result = response.data;
-      }
-    } 
-    
-    return result;
-  };
-
-  render() {
+  public render() {
     const { width, intl } = this.props;
     const { response } = this.props.employeeState;
 
@@ -290,6 +221,75 @@ class ListItemEmployeeSelector extends React.Component<AllProps, State> {
       </div>
     );
   }
+
+  private loadData = () => {
+    const { companyUids, roleUids, positionUids } = this.props;
+    const { listRequest } = this.props.employeeDispatch;
+
+    listRequest({
+      filter: {
+        companyUids,
+        roleUids,
+        positionUids,
+        find: this.state.search,
+        findBy: undefined,
+        direction: undefined,
+        orderBy: 'fullName',
+        size: undefined
+      }
+    });
+  };
+
+  private handleDialogOpen = () => {
+    this.setState({ open: true });
+  };
+
+  private handleDialogClose = () => {
+    this.setState({ open: false });
+  };
+
+  private handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.currentTarget.value;
+
+    this.setState({ search: value });
+  };
+
+  private handleKeyUp = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    // delete pressed
+    if (event.keyCode === 46) {
+      this.setState({ search: '' });
+    }
+  };
+
+  private handleSelected = (employee: IEmployee) => {
+    if (this.props.onSelected(employee)) {
+      this.setState({ selected: {} });
+    }
+  };
+
+  private handleDiscard = () => {
+    this.setState({ selected: {} });
+  };
+
+  private handleListItemClick = (employee: IEmployee) => {
+    this.setState({ open: false, selected: employee });
+  };
+
+  private fnFilteredEmployee = (response: IResponseCollection<IEmployee> | undefined) => {
+    let result: any = [];
+
+    if (response && response.data) {
+      if (this.state.search !== '') {
+        result = response.data.filter(item => 
+          item.fullName.toLowerCase().indexOf(this.state.search) !== -1
+        );
+      } else {
+        result = response.data;
+      }
+    } 
+    
+    return result;
+  };
 }
 
 const mapStateToProps = ({ employeeGetList }: IAppState) => ({

@@ -10,4 +10,5 @@ export * from './INotificationQuery';
 export * from './INotificationState';
 export * from './IUserCompany';
 export * from './IUserPosition';
+export * from './IUserState';
 export * from './IView';
