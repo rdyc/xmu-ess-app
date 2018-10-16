@@ -20,6 +20,7 @@ import positionSagas from '@lookup/store/sagas/positionSagas';
 import roleSagas from '@lookup/store/sagas/roleSagas';
 import systemLimitSagas from '@lookup/store/sagas/systemLimitSagas';
 import projectSagas from '@project/store/sagas/projectSagas';
+import purchaseSagas from '@purchase/store/sagas/purchaseSagas';
 import timesheetSagas from '@timesheet/store/sagas/timesheetSagas';
 import travelSagas from '@travel/store/sagas/travelSagas';
 import travelSettlementSagas from '@travel/store/sagas/travelSettlementSagas';
@@ -66,6 +67,9 @@ export function* rootSaga() {
     // travel
     fork(travelSagas),
     fork(travelSettlementSagas),
+    
+    // purchase
+    fork(purchaseSagas),
     
     // finance
     fork(financeSagas),
