@@ -28,7 +28,7 @@ const purchaseReducers = {
   settlementPost: settlementPostReducer,
   settlementPut: settlementPutReducer,
   settlementApprovalGetAll: settlementApprovalGetAllReducer,
-  settlementApprovalGetBy: settlementApprovalGetByIdReducer,
+  settlementApprovalGetById: settlementApprovalGetByIdReducer,
   settlementApprovalPost: settlementApprovalPostReducer
 };
 

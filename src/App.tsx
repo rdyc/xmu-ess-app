@@ -81,11 +81,7 @@ class App extends React.Component<AllProps> {
                         <Route path="/home" component={HomePage} />
                         <Route path="/account" component={accountRouter} />
                         <Route path="/project" component={projectRoutes} />
-<<<<<<< HEAD
-                        {/* <Route path="/purchase" component={purchaseRoutes} /> */}
-=======
                         <Route path="/lookup" component={lookupRoutes} />
->>>>>>> 7a2476ff84595305aaddea911c1c8187d6b860c0
                       </BasePage>
                     </Switch>
                   )}
