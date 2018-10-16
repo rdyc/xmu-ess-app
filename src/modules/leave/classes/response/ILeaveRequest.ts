@@ -1,6 +1,6 @@
+import { IAccountEmployee } from '@account/classes';
 import { ICommonSystem } from '@common/classes';
 import { IBaseChanges } from '@generic/interfaces';
-import { IAccountEmployee } from '@account/classes';
 import { ILeaveId } from '@leave/classes/response';
 
 export interface ILeaveRequest {

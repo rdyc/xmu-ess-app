@@ -7,9 +7,9 @@ import {
   leaveRequestGetByIdError,
   leaveRequestGetByIdRequest,
   leaveRequestGetByIdSuccess,
-  leaveRequestPostSuccess,
   leaveRequestPostError,
   leaveRequestPostRequest,
+  leaveRequestPostSuccess,
   leaveRequestPutRequest,
 } from '@leave/store/actions';
 import saiyanSaga from '@utils/saiyanSaga';
@@ -21,11 +21,11 @@ function* watchAllFetchRequest() {
     return saiyanSaga.fetch({
       method: 'get',
       path: `/v1/leave/requests/${objectToQuerystring(action.payload.filter)}`, 
-      success: (response: IApiResponse) => ([
+      successEffects: (response: IApiResponse) => ([
         put(leaveRequestGetAllSuccess(response.body)),
         put(listBarMetadata(response.body.metadata))
       ]), 
-      failed: (response: IApiResponse) => ([
+      failureEffects: (response: IApiResponse) => ([
         put(leaveRequestGetAllError(response.body)),
         put(layoutAlertAdd({
           time: new Date(),
@@ -33,16 +33,16 @@ function* watchAllFetchRequest() {
           details: response
         })),
       ]), 
-      error: (error: TypeError) => ([
+      errorEffects: (error: TypeError) => ([
         put(leaveRequestGetAllError(error.message)),
         put(layoutAlertAdd({
           time: new Date(),
           message: error.message
         }))
       ]),
-      finally: () => ([
+      finallyEffects: [
         put(listBarLoading(false))
-      ])
+      ]
     });
   };
   
@@ -54,10 +54,10 @@ function* watchByIdFetchRequest() {
     return saiyanSaga.fetch({
       method: 'get',
       path: `/v1/leave/requests/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.leaveRequestUid}`, 
-      success: (response: IApiResponse) => ([
+      successEffects: (response: IApiResponse) => ([
         put(leaveRequestGetByIdSuccess(response.body)),
       ]), 
-      failed: (response: IApiResponse) => ([
+      failureEffects: (response: IApiResponse) => ([
         put(leaveRequestGetByIdError(response.statusText)),
         put(layoutAlertAdd({
           time: new Date(),
@@ -65,15 +65,12 @@ function* watchByIdFetchRequest() {
           details: response
         })),
       ]), 
-      error: (error: TypeError) => ([
+      errorEffects: (error: TypeError) => ([
         put(leaveRequestGetByIdError(error.message)),
         put(layoutAlertAdd({
           time: new Date(),
           message: error.message
         }))
-      ]),
-      finally: () => ([
-        // nothing
       ])
     });
   };
@@ -87,10 +84,10 @@ function* watchPostFetchRequest() {
       method: 'post',
       path: `/v1/leave/requests/${action.payload.companyUid}/${action.payload.positionUid}`, 
       payload: action.payload.data, 
-      success: (response: IApiResponse) => ([
+      successEffects: (response: IApiResponse) => ([
         put(leaveRequestPostSuccess(response.body)),
       ]), 
-      failed: (response: IApiResponse) => ([
+      failureEffects: (response: IApiResponse) => ([
         put(leaveRequestPostError(response.statusText)),
         put(layoutAlertAdd({
           time: new Date(),
@@ -98,15 +95,12 @@ function* watchPostFetchRequest() {
           details: response
         })),
       ]), 
-      error: (error: TypeError) => ([
+      errorEffects: (error: TypeError) => ([
         put(leaveRequestPostError(error.message)),
         put(layoutAlertAdd({
           time: new Date(),
           message: error.message
         }))
-      ]),
-      finally: () => ([
-        // nothing
       ])
     });
   };
@@ -120,10 +114,10 @@ function* watchPutFetchRequest() {
       method: 'put',
       path: `/v1/leave/requests/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.leaveRequestUid}`,
       payload: action.payload.data, 
-      success: (response: IApiResponse) => ([
+      successEffects: (response: IApiResponse) => ([
         put(leaveRequestPostSuccess(response.body)),
       ]), 
-      failed: (response: IApiResponse) => ([
+      failureEffects: (response: IApiResponse) => ([
         put(leaveRequestPostError(response.statusText)),
         put(layoutAlertAdd({
           time: new Date(),
@@ -131,15 +125,12 @@ function* watchPutFetchRequest() {
           details: response
         })),
       ]), 
-      error: (error: TypeError) => ([
+      errorEffects: (error: TypeError) => ([
         put(leaveRequestPostError(error.message)),
         put(layoutAlertAdd({
           time: new Date(),
           message: error.message
         }))
-      ]),
-      finally: () => ([
-        // nothing
       ])
     });
   };

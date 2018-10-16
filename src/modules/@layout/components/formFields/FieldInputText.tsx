@@ -5,14 +5,15 @@ import { isNullOrUndefined } from 'util';
 
 interface FromFieldProps { 
   type?: string; 
+  placeholder?: string; 
   label: string; 
   disabled: boolean; 
 }
 
 type AllProps = WrappedFieldProps & BaseFieldProps & FromFieldProps;
 
-export const FieldInputText: React.StatelessComponent<AllProps> = props => {
-  const { input, label, disabled, meta } = props;
+export const FieldInputText: React.SFC<AllProps> = props => {
+  const { input, label, placeholder, disabled, meta } = props;
 
   return (
     <TextField
@@ -20,8 +21,9 @@ export const FieldInputText: React.StatelessComponent<AllProps> = props => {
       margin="normal"
       {...input}
       label={label}
+      placeholder={placeholder}
       disabled={disabled || meta.submitting}
-      error={meta.touched && !isNullOrUndefined(meta.error)}
+      error={meta.touched && !isNullOrUndefined(meta.error) ? true : false}
       helperText={meta.touched && meta.error}
     />
   );

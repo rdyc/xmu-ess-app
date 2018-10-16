@@ -1,6 +1,5 @@
 import { rootStore } from '@generic/roots';
-import { ICustomerList } from '@lookup/classes/response';
-import CustomerLookup from '@lookup/components/controls/CustomerLookup';
+import { CustomerLookupComponent } from '@lookup/components/customer';
 import { WithWidth } from '@material-ui/core/withWidth';
 import * as React from 'react';
 import { BaseFieldProps, WrappedFieldProps } from 'redux-form';
@@ -13,15 +12,15 @@ interface FromFieldProps {
 
 type AllProps = WrappedFieldProps & BaseFieldProps & FromFieldProps & WithWidth;
 
-export const FieldInputCustomer: React.StatelessComponent<AllProps> = props => {
+export const FieldInputCustomer: React.SFC<AllProps> = props => {
   const { input } = props;
 
-  const handleOnChangeValue = (customer: ICustomerList) => {
-    input.onChange(customer);
+  const handleOnChangeValue = (customerUid: string) => {
+    input.onChange(customerUid);
   };
 
   return (    
-    <CustomerLookup 
+    <CustomerLookupComponent 
       {...rootStore}
       {...props}
       onChangeValue={handleOnChangeValue}
