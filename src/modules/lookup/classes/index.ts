@@ -9,3 +9,4 @@ export * from './ILookupProjectSite';
 export * from './ILookupDiem';
 export * from './ILookupCurrency';
 export * from './ILookupSystemLimit';
+export * from './ILookupLeave';

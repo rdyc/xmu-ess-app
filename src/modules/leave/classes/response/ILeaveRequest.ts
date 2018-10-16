@@ -1,6 +1,6 @@
+import { IAccountEmployee } from '@account/classes';
 import { ICommonSystem } from '@common/classes';
 import { IBaseChanges } from '@generic/interfaces';
-import { IAccountEmployee } from '@account/classes';
 import { ILeaveId } from '@leave/classes/response';
 
 export interface ILeaveRequest {
@@ -21,5 +21,5 @@ export interface ILeaveRequest {
   status?:          ICommonSystem | null;
   rejectedReason?:  string | null;
   requestedLeave?:  number | null;
-  changes?:         IBaseChanges | null;       
+  changes:         IBaseChanges | null;       
 }
