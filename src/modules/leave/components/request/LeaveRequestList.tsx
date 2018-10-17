@@ -66,8 +66,14 @@ const requestList: React.SFC<AllProps> = props => {
                   color="primary" 
                   variant="body2"
                 >
-                  {leave.uid}
+                  {leave.reason}
                 </Typography>
+                {/* <Typography 
+                  noWrap
+                  variant="body1"
+                >
+                  {leave.employee && leave.employee.fullName}
+                </Typography> */}
                 <Typography 
                   noWrap
                   color="textSecondary" 
