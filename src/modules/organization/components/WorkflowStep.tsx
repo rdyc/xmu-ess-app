@@ -21,7 +21,7 @@ interface PropsFromState {
   steps: IOrganizationWorkflowStep[];
 }
 
-export const WorkflowStep: React.StatelessComponent<PropsFromState> = props => {
+export const WorkflowStep: React.SFC<PropsFromState> = props => {
   const renderItem = (item: IOrganizationWorkflowStep) => {
     const secondaryText = `#${item.level} ${item.position ? item.position.name : 'N/A'}`;
   

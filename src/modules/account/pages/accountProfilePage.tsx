@@ -28,7 +28,7 @@ interface PropsFromDispatch {
 type AllProps = PropsFromState & PropsFromDispatch & ConnectedReduxProps;
   
 class AccountProfilePage extends React.Component<AllProps> {
-  componentWillReceiveProps(nextProps: AllProps) {
+  public componentWillReceiveProps(nextProps: AllProps) {
     // wait until user loaded and it's not loaded yet
     if (!this.props.user && !this.props.loading && !nextProps.loading) {
       nextProps.fetchRequest({
@@ -37,55 +37,7 @@ class AccountProfilePage extends React.Component<AllProps> {
     }
   }
 
-  transform = (data: IEmployee): IEmployeeCommandData => { 
-    return {
-      uid: data.uid,
-      employmentNumber: data.employmentNumber,
-      email: data.email,
-      emailPersonal: data.emailPersonal,
-      fullName: data.fullName,
-      address: data.address,
-      addressAdditional: data.addressAdditional,
-      birthPlace: data.birthPlace,
-      dateOfBirth: data.dateOfBirth,
-      phone: data.phone,
-      mobilePhone: data.mobilePhone
-    };
-  };
-
-  // sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
-
-  handleSubmit = (payload: IEmployee) => { 
-    this.props.commandRequest({
-      uid: this.props.user.uid,
-      method: Command.PUT,
-      data: this.transform(payload)
-    });
-
-    // return this.sleep(1000).then(() => { 
-    //   alert(JSON.stringify(values, null, 2)); 
-    // });
-  };
-
-  validate = (values: IEmployeeCommandData) => {
-    const errors = {};
-  
-    const requiredFields = [
-      'fullName',
-      'email',
-      'address'
-    ];
-  
-    requiredFields.forEach(field => {
-      if (!values[field]) {
-        errors[field] = 'Required';
-      }
-    });
-    
-    return errors;
-  }
-
-  render() {
+  public render() {
     const { loading, response } = this.props;
     
     return (
@@ -104,10 +56,58 @@ class AccountProfilePage extends React.Component<AllProps> {
       </Card>
     );
   }
+
+  private transform = (data: IEmployee): IEmployeeCommandData => { 
+    return {
+      uid: data.uid,
+      employmentNumber: data.employmentNumber,
+      email: data.email,
+      emailPersonal: data.emailPersonal,
+      fullName: data.fullName,
+      address: data.address,
+      addressAdditional: data.addressAdditional,
+      birthPlace: data.birthPlace,
+      dateOfBirth: data.dateOfBirth,
+      phone: data.phone,
+      mobilePhone: data.mobilePhone
+    };
+  };
+
+  // private sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
+  private handleSubmit = (payload: IEmployee) => { 
+    this.props.commandRequest({
+      uid: this.props.user.uid,
+      method: Command.PUT,
+      data: this.transform(payload)
+    });
+
+    // return this.sleep(1000).then(() => { 
+    //   alert(JSON.stringify(values, null, 2)); 
+    // });
+  };
+
+  private validate = (values: IEmployeeCommandData) => {
+    const errors = {};
+  
+    const requiredFields = [
+      'fullName',
+      'email',
+      'address'
+    ];
+  
+    requiredFields.forEach(field => {
+      if (!values[field]) {
+        errors[field] = 'Required';
+      }
+    });
+    
+    return errors;
+  }
 }
 
-const mapStateToProps = ({ layout, profileQuery }: IAppState) => ({
-  user: layout.user,
+const mapStateToProps = ({ user, profileQuery }: IAppState) => ({
+  user: user.user,
   response: profileQuery.response,
   errors: profileQuery.errors,
   loading: profileQuery.loading

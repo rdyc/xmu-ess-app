@@ -1,9 +1,9 @@
 import { IEmployeeMyState } from '@account/classes';
 import { IAccountState } from '@account/classes/states';
 import { ICommonState } from '@common/classes/states';
-import { IExpenseState } from '@expense/classes/states';
 import { IFinanceState } from '@finance/classes/states';
 import { IAppBarState, ILayoutState, IListBarState, INotificationState } from '@layout/interfaces';
+import { IUserState } from '@layout/interfaces/IUserState';
 import { ILeaveRequestState } from '@leave/classes/states';
 import { ILookupState } from '@lookup/classes/states';
 import { IMileageState } from '@mileage/classes/states';
@@ -19,14 +19,15 @@ export interface IAppState extends
   IAccountState, 
   IProjectState, 
   ITimesheetState,
-  IExpenseState, 
   IFinanceState, 
   IMileageState,
   ILeaveRequestState,
-  IPurchaseState {
+  IPurchaseState,
+  IMileageState {
+  user: IUserState;
   layout: ILayoutState;
   appBar: IAppBarState;
-  listBar: IListBarState;
+  navBottom: IListBarState;
   oidc: UserState;
   account: IEmployeeMyState;
   notification: INotificationState;

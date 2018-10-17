@@ -20,11 +20,11 @@ function* watchFetchAllRequest() {
     return saiyanSaga.fetch({
       method: 'get',
       path: `/v1/lookup/roles${objectToQuerystring(action.payload.filter)}`, 
-      success: (response: IApiResponse) => ([
+      successEffects: (response: IApiResponse) => ([
         put(roleGetAllSuccess(response.body)),
         put(listBarMetadata(response.body.metadata))
       ]), 
-      failed: (response: IApiResponse) => ([
+      failureEffects: (response: IApiResponse) => ([
         put(roleGetAllError(response.statusText)),
         put(layoutAlertAdd({
           time: new Date(),
@@ -32,14 +32,13 @@ function* watchFetchAllRequest() {
           details: response
         }))
       ]), 
-      error: (error: TypeError) => ([
+      errorEffects: (error: TypeError) => ([
         put(roleGetAllError(error.message)),
         put(layoutAlertAdd({
           time: new Date(),
           message: error.message
         }))
-      ]),
-      finally: () => ([])
+      ])
     });
   };
 
@@ -51,10 +50,10 @@ function* watchFetchListRequest() {
     return saiyanSaga.fetch({
       method: 'get',
       path: `/v1/lookup/roles/list${objectToQuerystring(action.payload.filter)}`,
-      success: (response: IApiResponse) => ([
+      successEffects: (response: IApiResponse) => ([
         put(roleGetListSuccess(response.body)),
       ]), 
-      failed: (response: IApiResponse) => ([
+      failureEffects: (response: IApiResponse) => ([
         put(roleGetListError(response.statusText)),
         put(layoutAlertAdd({
           time: new Date(),
@@ -62,14 +61,13 @@ function* watchFetchListRequest() {
           details: response
         }))
       ]), 
-      error: (error: TypeError) => ([
+      errorEffects: (error: TypeError) => ([
         put(roleGetListError(error.message)),
         put(layoutAlertAdd({
           time: new Date(),
           message: error.message
         }))
-      ]),
-      finally: () => ([])
+      ])
     });
   };
 
@@ -81,10 +79,10 @@ function* watchFetchByIdRequest() {
     return saiyanSaga.fetch({
       method: 'get',
       path: `/v1/lookup/roles/${action.payload.companyUid}/${action.payload.roleUid}`,
-      success: (response: IApiResponse) => ([
+      successEffects: (response: IApiResponse) => ([
         put(roleGetByIdSuccess(response.body)),
       ]), 
-      failed: (response: IApiResponse) => ([
+      failureEffects: (response: IApiResponse) => ([
         put(roleGetByIdError(response.statusText)),
         put(layoutAlertAdd({
           time: new Date(),
@@ -92,21 +90,20 @@ function* watchFetchByIdRequest() {
           details: response
         }))
       ]), 
-      error: (error: TypeError) => ([
+      errorEffects: (error: TypeError) => ([
         put(roleGetByIdError(error.message)),
         put(layoutAlertAdd({
           time: new Date(),
           message: error.message,
         }))
-      ]),
-      finally: () => ([])
+      ])
     });
   };
   
   yield takeEvery(Action.GET_BY_ID_REQUEST, worker);
 }
 
-function* roleSagas() {
+function* lookupRoleSagas() {
   yield all([
     fork(watchFetchAllRequest),
     fork(watchFetchListRequest),
@@ -114,4 +111,4 @@ function* roleSagas() {
   ]);
 }
 
-export default roleSagas;
+export default lookupRoleSagas;

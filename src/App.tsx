@@ -1,12 +1,11 @@
 import { accountRouter } from '@account/pages';
 import { rootStore } from '@generic/roots';
+import Layout from '@layout/components/base/Layout';
 import { HomePage } from '@layout/pages';
 import AccessWizardPage from '@layout/pages/AccessWizardPage';
-import BasePage from '@layout/pages/BasePage';
 import CallbackPage from '@layout/pages/CallbackPage';
-import { lookupRoutes } from '@lookup/components/LookupRoutes';
-import { projectRoutes } from '@project/views/ProjectRoutes';
 // import { purchaseRoutes } from '@purchase/components/PurchaseRoutes';
+import { ProjectRoot } from '@project/components/ProjectRoot';
 import { ConnectedRouter } from 'connected-react-router';
 import { History } from 'history';
 import * as React from 'react';
@@ -33,7 +32,7 @@ interface OwnProps {
 type AllProps = PropsFromState & OwnProps;
 
 class App extends React.Component<AllProps> {
-  componentDidMount() {
+  public componentDidMount() {
     AppUserManager.events.addSilentRenewError((error) => {
       console.error('error while renewing the access token', error);
     });
@@ -41,7 +40,7 @@ class App extends React.Component<AllProps> {
     loadUser(rootStore, AppUserManager);
   }
 
-  render() {   
+  public render() {   
     const { oidcState, store, history } = this.props;
 
     const onLogin = (event: any) => {
@@ -77,12 +76,11 @@ class App extends React.Component<AllProps> {
                   {oidcState.user && (
                     <Switch>
                       <Route exact path="/" component={AccessWizardPage} />
-                      <BasePage>
+                      <Layout>
                         <Route path="/home" component={HomePage} />
                         <Route path="/account" component={accountRouter} />
-                        <Route path="/project" component={projectRoutes} />
-                        <Route path="/lookup" component={lookupRoutes} />
-                      </BasePage>
+                        <Route path="/project" component={ProjectRoot} />
+                      </Layout>
                     </Switch>
                   )}
                 </div>

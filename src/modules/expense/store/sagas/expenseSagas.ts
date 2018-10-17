@@ -32,11 +32,11 @@ function* watchAllFetchRequest() {
     return saiyanSaga.fetch({
       method: 'get',
       path: `/v1/expense${objectToQuerystring(action.payload.filter)}`, 
-      success: (response: IApiResponse) => ([
+      successEffects: (response: IApiResponse) => ([
         put(expenseGetAllSuccess(response.body)),
         put(listBarMetadata(response.body.metadata))
       ]), 
-      failed: (response: IApiResponse) => ([
+      failureEffects: (response: IApiResponse) => ([
         put(expenseGetAllError(response.body)),
         put(layoutAlertAdd({
           time: new Date(),
@@ -44,16 +44,16 @@ function* watchAllFetchRequest() {
           details: response
         })),
       ]), 
-      error: (error: TypeError) => ([
+      errorEffects: (error: TypeError) => ([
         put(expenseGetAllError(error.message)),
         put(layoutAlertAdd({
           time: new Date(),
           message: error.message
         }))
       ]),
-      finally: () => ([
+      finallyEffects: [
         put(listBarLoading(false))
-      ])
+      ]
     });
   };
   
@@ -65,10 +65,10 @@ function* watchByIdFetchRequest() {
     return saiyanSaga.fetch({
       method: 'get',
       path: `/v1/expense/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.expenseUid}`, 
-      success: (response: IApiResponse) => ([
+      successEffects: (response: IApiResponse) => ([
         put(expenseGetByIdSuccess(response.body)),
       ]), 
-      failed: (response: IApiResponse) => ([
+      failureEffects: (response: IApiResponse) => ([
         put(expenseGetByIdError(response.statusText)),
         put(layoutAlertAdd({
           time: new Date(),
@@ -76,15 +76,12 @@ function* watchByIdFetchRequest() {
           details: response
         })),
       ]), 
-      error: (error: TypeError) => ([
+      errorEffects: (error: TypeError) => ([
         put(expenseGetByIdError(error.message)),
         put(layoutAlertAdd({
           time: new Date(),
           message: error.message
         }))
-      ]),
-      finally: () => ([
-        // nothing
       ])
     });
   };
@@ -98,10 +95,10 @@ function* watchPostFetchRequest() {
       method: 'post',
       path: `/v1/expense/${action.payload.companyUid}/${action.payload.positionUid}`, 
       payload: action.payload.data, 
-      success: (response: IApiResponse) => ([
+      successEffects: (response: IApiResponse) => ([
         put(expensePostSuccess(response.body)),
       ]), 
-      failed: (response: IApiResponse) => ([
+      failureEffects: (response: IApiResponse) => ([
         put(expensePostError(response.statusText)),
         put(layoutAlertAdd({
           time: new Date(),
@@ -109,15 +106,12 @@ function* watchPostFetchRequest() {
           details: response
         })),
       ]), 
-      error: (error: TypeError) => ([
+      errorEffects: (error: TypeError) => ([
         put(expensePostError(error.message)),
         put(layoutAlertAdd({
           time: new Date(),
           message: error.message
         }))
-      ]),
-      finally: () => ([
-        // nothing
       ])
     });
   };
@@ -131,10 +125,10 @@ function* watchPutFetchRequest() {
       method: 'put',
       path: `/v1/expense/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.expenseUid}`,
       payload: action.payload.data, 
-      success: (response: IApiResponse) => ([
+      successEffects: (response: IApiResponse) => ([
         put(expensePutSuccess(response.body)),
       ]), 
-      failed: (response: IApiResponse) => ([
+      failureEffects: (response: IApiResponse) => ([
         put(expensePutError(response.statusText)),
         put(layoutAlertAdd({
           time: new Date(),
@@ -142,15 +136,12 @@ function* watchPutFetchRequest() {
           details: response
         })),
       ]), 
-      error: (error: TypeError) => ([
+      errorEffects: (error: TypeError) => ([
         put(expensePutError(error.message)),
         put(layoutAlertAdd({
           time: new Date(),
           message: error.message
         }))
-      ]),
-      finally: () => ([
-        // nothing
       ])
     });
   };
@@ -163,11 +154,11 @@ function* watchApprovalAllFetchRequest() {
     return saiyanSaga.fetch({
       method: 'get',
       path: `/v1/approvals/expense${objectToQuerystring(action.payload.filter)}`, 
-      success: (response: IApiResponse) => ([
+      successEffects: (response: IApiResponse) => ([
         put(expenseApprovalGetAllSuccess(response.body)),
         put(listBarMetadata(response.body.metadata))
       ]), 
-      failed: (response: IApiResponse) => ([
+      failureEffects: (response: IApiResponse) => ([
         put(expenseApprovalGetAllError(response.body)),
         put(layoutAlertAdd({
           time: new Date(),
@@ -175,16 +166,16 @@ function* watchApprovalAllFetchRequest() {
           details: response
         })),
       ]), 
-      error: (error: TypeError) => ([
+      errorEffects: (error: TypeError) => ([
         put(expenseApprovalGetAllError(error.message)),
         put(layoutAlertAdd({
           time: new Date(),
           message: error.message
         }))
       ]),
-      finally: () => ([
+      finallyEffects: [
         put(listBarLoading(false))
-      ])
+      ]
     });
   };
   
@@ -196,10 +187,10 @@ function* watchApprovalByIdFetchRequest() {
     return saiyanSaga.fetch({
       method: 'get',
       path: `/v1/approvals/expense/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.expenseUid}`, 
-      success: (response: IApiResponse) => ([
+      successEffects: (response: IApiResponse) => ([
         put(expenseApprovalGetByIdSuccess(response.body)),
       ]), 
-      failed: (response: IApiResponse) => ([
+      failureEffects: (response: IApiResponse) => ([
         put(expenseApprovalGetByIdError(response.statusText)),
         put(layoutAlertAdd({
           time: new Date(),
@@ -207,15 +198,12 @@ function* watchApprovalByIdFetchRequest() {
           details: response
         })),
       ]), 
-      error: (error: TypeError) => ([
+      errorEffects: (error: TypeError) => ([
         put(expenseApprovalGetByIdError(error.message)),
         put(layoutAlertAdd({
           time: new Date(),
           message: error.message
         }))
-      ]),
-      finally: () => ([
-        // nothing
       ])
     });
   };
@@ -229,10 +217,10 @@ function* watchApprovalPostFetchRequest() {
       method: 'post',
       path: `/v1/approvals/expense/${action.payload.companyUid}/${action.payload.positionUid}`, 
       payload: action.payload.data, 
-      success: (response: IApiResponse) => ([
+      successEffects: (response: IApiResponse) => ([
         put(expenseApprovalPostSuccess(response.body)),
       ]), 
-      failed: (response: IApiResponse) => ([
+      failureEffects: (response: IApiResponse) => ([
         put(expenseApprovalPostError(response.statusText)),
         put(layoutAlertAdd({
           time: new Date(),
@@ -240,15 +228,12 @@ function* watchApprovalPostFetchRequest() {
           details: response
         })),
       ]), 
-      error: (error: TypeError) => ([
+      errorEffects: (error: TypeError) => ([
         put(expenseApprovalPostError(error.message)),
         put(layoutAlertAdd({
           time: new Date(),
           message: error.message
         }))
-      ]),
-      finally: () => ([
-        // nothing
       ])
     });
   };

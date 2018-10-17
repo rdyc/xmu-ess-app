@@ -20,11 +20,11 @@ function* watchFetchAllRequest() {
     return saiyanSaga.fetch({
       method: 'get',
       path: `/v1/lookup/companies${objectToQuerystring(action.payload.filter)}`, 
-      success: (response: IApiResponse) => ([
+      successEffects: (response: IApiResponse) => ([
         put(companyGetAllSuccess(response.body)),
         put(listBarMetadata(response.body.metadata))
       ]), 
-      failed: (response: IApiResponse) => ([
+      failureEffects: (response: IApiResponse) => ([
         put(companyGetAllError(response.statusText)),
         put(layoutAlertAdd({
           time: new Date(),
@@ -32,14 +32,13 @@ function* watchFetchAllRequest() {
           details: response
         }))
       ]), 
-      error: (error: TypeError) => ([
+      errorEffects: (error: TypeError) => ([
         put(companyGetAllError(error.message)),
         put(layoutAlertAdd({
           time: new Date(),
           message: error.message
         }))
-      ]),
-      finally: () => ([])
+      ])
     });
   };
 
@@ -51,10 +50,10 @@ function* watchFetchListRequest() {
     return saiyanSaga.fetch({
       method: 'get',
       path: `/v1/lookup/companies/list${objectToQuerystring(action.payload.filter)}`,
-      success: (response: IApiResponse) => ([
+      successEffects: (response: IApiResponse) => ([
         put(companyGetListSuccess(response.body)),
       ]), 
-      failed: (response: IApiResponse) => ([
+      failureEffects: (response: IApiResponse) => ([
         put(companyGetListError(response.statusText)),
         put(layoutAlertAdd({
           time: new Date(),
@@ -62,14 +61,13 @@ function* watchFetchListRequest() {
           details: response
         }))
       ]), 
-      error: (error: TypeError) => ([
+      errorEffects: (error: TypeError) => ([
         put(companyGetListError(error.message)),
         put(layoutAlertAdd({
           time: new Date(),
           message: error.message
         }))
-      ]),
-      finally: () => ([])
+      ])
     });
   };
 
@@ -81,10 +79,10 @@ function* watchFetchByIdRequest() {
     return saiyanSaga.fetch({
       method: 'get',
       path: `/v1/lookup/companies/${action.payload.companyUid}`,
-      success: (response: IApiResponse) => ([
+      successEffects: (response: IApiResponse) => ([
         put(companyGetByIdSuccess(response.body)),
       ]), 
-      failed: (response: IApiResponse) => ([
+      failureEffects: (response: IApiResponse) => ([
         put(companyGetByIdError(response.statusText)),
         put(layoutAlertAdd({
           time: new Date(),
@@ -92,21 +90,20 @@ function* watchFetchByIdRequest() {
           details: response
         }))
       ]), 
-      error: (error: TypeError) => ([
+      errorEffects: (error: TypeError) => ([
         put(companyGetByIdError(error.message)),
         put(layoutAlertAdd({
           time: new Date(),
           message: error.message,
         }))
-      ]),
-      finally: () => ([])
+      ])
     });
   };
   
   yield takeEvery(Action.GET_BY_ID_REQUEST, worker);
 }
 
-function* companySagas() {
+function* lookupCompanySagas() {
   yield all([
     fork(watchFetchAllRequest),
     fork(watchFetchListRequest),
@@ -114,4 +111,4 @@ function* companySagas() {
   ]);
 }
 
-export default companySagas;
+export default lookupCompanySagas;

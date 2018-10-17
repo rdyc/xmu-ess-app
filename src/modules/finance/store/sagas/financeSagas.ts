@@ -23,11 +23,11 @@ function* watchAllFetchRequest() {
     return saiyanSaga.fetch({
       method: 'get',
       path: `/v1/approvals/finance/${action.payload.companyUid}/${action.payload.positionUid}${objectToQuerystring(action.payload.filter)}`, 
-      success: (response: IApiResponse) => ([
+      successEffects: (response: IApiResponse) => ([
         put(financeGetAllSuccess(response.body)),
         put(listBarMetadata(response.body.metadata))
       ]), 
-      failed: (response: IApiResponse) => ([
+      failureEffects: (response: IApiResponse) => ([
         put(financeGetAllError(response.body)),
         put(layoutAlertAdd({
           time: new Date(),
@@ -35,16 +35,16 @@ function* watchAllFetchRequest() {
           details: response
         })),
       ]), 
-      error: (error: TypeError) => ([
+      errorEffects: (error: TypeError) => ([
         put(financeGetAllError(error.message)),
         put(layoutAlertAdd({
           time: new Date(),
           message: error.message
         }))
       ]),
-      finally: () => ([
+      finallyEffects: [
         put(listBarLoading(false))
-      ])
+      ]
     });
   };
   
@@ -56,10 +56,10 @@ function* watchByIdFetchRequest() {
     return saiyanSaga.fetch({
       method: 'get',
       path: `/v1/approvals/finance/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.financeUid}`, 
-      success: (response: IApiResponse) => ([
+      successEffects: (response: IApiResponse) => ([
         put(financeGetByIdSuccess(response.body)),
       ]), 
-      failed: (response: IApiResponse) => ([
+      failureEffects: (response: IApiResponse) => ([
         put(financeGetByIdError(response.statusText)),
         put(layoutAlertAdd({
           time: new Date(),
@@ -67,15 +67,12 @@ function* watchByIdFetchRequest() {
           details: response
         })),
       ]), 
-      error: (error: TypeError) => ([
+      errorEffects: (error: TypeError) => ([
         put(financeGetByIdError(error.message)),
         put(layoutAlertAdd({
           time: new Date(),
           message: error.message
         }))
-      ]),
-      finally: () => ([
-        // nothing
       ])
     });
   };
@@ -89,10 +86,10 @@ function* watchPostFetchRequest() {
       method: 'post',
       path: `/v1/approvals/finance/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.financeUid}`, 
       payload: action.payload.data, 
-      success: (response: IApiResponse) => ([
+      successEffects: (response: IApiResponse) => ([
         put(financePostSuccess(response.body)),
       ]), 
-      failed: (response: IApiResponse) => ([
+      failureEffects: (response: IApiResponse) => ([
         put(financePostError(response.statusText)),
         put(layoutAlertAdd({
           time: new Date(),
@@ -100,15 +97,12 @@ function* watchPostFetchRequest() {
           details: response
         })),
       ]), 
-      error: (error: TypeError) => ([
+      errorEffects: (error: TypeError) => ([
         put(financePostError(error.message)),
         put(layoutAlertAdd({
           time: new Date(),
           message: error.message
         }))
-      ]),
-      finally: () => ([
-        // nothing
       ])
     });
   };
@@ -122,10 +116,10 @@ function* watchBulkPostFetchRequest() {
       method: 'put',
       path: `/v1/approvals/finance/${action.payload.companyUid}/${action.payload.positionUid}`,
       payload: action.payload.data, 
-      success: (response: IApiResponse) => ([
+      successEffects: (response: IApiResponse) => ([
         put(financeBulkPostSuccess(response.body)),
       ]), 
-      failed: (response: IApiResponse) => ([
+      failureEffects: (response: IApiResponse) => ([
         put(financeBulkPostError(response.statusText)),
         put(layoutAlertAdd({
           time: new Date(),
@@ -133,15 +127,12 @@ function* watchBulkPostFetchRequest() {
           details: response
         })),
       ]), 
-      error: (error: TypeError) => ([
+      errorEffects: (error: TypeError) => ([
         put(financeBulkPostError(error.message)),
         put(layoutAlertAdd({
           time: new Date(),
           message: error.message
         }))
-      ]),
-      finally: () => ([
-        // nothing
       ])
     });
   };

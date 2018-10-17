@@ -20,10 +20,10 @@ function* watchFetchAllRequest() {
     return saiyanSaga.fetch({
       method: 'get',
       path: `/v1/lookup/diems${objectToQuerystring(action.payload.filter)}`, 
-      success: (response: IApiResponse) => ([
+      successEffects: (response: IApiResponse) => ([
         put(diemGetAllSuccess(response.body)),
       ]), 
-      failed: (response: IApiResponse) => ([
+      failureEffects: (response: IApiResponse) => ([
         put(diemGetAllError(response.statusText)),
         put(layoutAlertAdd({
           time: new Date(),
@@ -31,14 +31,13 @@ function* watchFetchAllRequest() {
           details: response
         }))
       ]), 
-      error: (error: TypeError) => ([
+      errorEffects: (error: TypeError) => ([
         put(diemGetAllError(error.message)),
         put(layoutAlertAdd({
           time: new Date(),
           message: error.message
         }))
-      ]),
-      finally: () => ([])
+      ])
     });
   };
   
@@ -50,10 +49,10 @@ function* watchFetchListRequest() {
     return saiyanSaga.fetch({
       method: 'get',
       path: `/v1/lookup/diems/list${objectToQuerystring(action.payload.filter)}`,
-      success: (response: IApiResponse) => ([
+      successEffects: (response: IApiResponse) => ([
         put(diemGetListSuccess(response.body)),
       ]), 
-      failed: (response: IApiResponse) => ([
+      failureEffects: (response: IApiResponse) => ([
         put(diemGetListError(response.statusText)),
         put(layoutAlertAdd({
           time: new Date(),
@@ -61,14 +60,13 @@ function* watchFetchListRequest() {
           details: response
         }))
       ]), 
-      error: (error: TypeError) => ([
+      errorEffects: (error: TypeError) => ([
         put(diemGetListError(error.message)),
         put(layoutAlertAdd({
           time: new Date(),
           message: error.message
         }))
-      ]),
-      finally: () => ([])
+      ])
     });
   };
 
@@ -80,10 +78,10 @@ function* watchFetchByIdRequest() {
     return saiyanSaga.fetch({
       method: 'get',
       path: `/v1/lookup/diems/${action.payload.companyUid}/${action.payload.diemUid}`,
-      success: (response: IApiResponse) => ([
+      successEffects: (response: IApiResponse) => ([
         put(diemGetByIdSuccess(response.body)),
       ]), 
-      failed: (response: IApiResponse) => ([
+      failureEffects: (response: IApiResponse) => ([
         put(diemGetByIdError(response.statusText)),
         put(layoutAlertAdd({
           time: new Date(),
@@ -91,21 +89,20 @@ function* watchFetchByIdRequest() {
           details: response
         }))
       ]), 
-      error: (error: TypeError) => ([
+      errorEffects: (error: TypeError) => ([
         put(diemGetByIdError(error.message)),
         put(layoutAlertAdd({
           time: new Date(),
           message: error.message,
         }))
-      ]),
-      finally: () => ([])
+      ])
     });
   };
   
   yield takeEvery(Action.GET_BY_ID_REQUEST, worker);
 }
 
-function* diemSagas() {
+function* lookupDiemSagas() {
   yield all([
     fork(watchFetchAllRequest),
     fork(watchFetchListRequest),
@@ -113,4 +110,4 @@ function* diemSagas() {
   ]);
 }
 
-export default diemSagas;
+export default lookupDiemSagas;
