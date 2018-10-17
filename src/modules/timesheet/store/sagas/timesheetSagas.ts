@@ -20,7 +20,7 @@ function* watchAllFetchRequest() {
   const worker = (action: ReturnType<typeof timesheetGetAllRequest>) => { 
     return saiyanSaga.fetch({
       method: 'get',
-      path: `/v1/timesheet/report/${action.payload.companyUid}/${action.payload.positionUid}${objectToQuerystring(action.payload.filter)}`, 
+      path: `/v1/timesheet/reports${objectToQuerystring(action.payload.filter)}`, 
       successEffects: (response: IApiResponse) => ([
         put(timesheetGetAllSuccess(response.body)),
         put(listBarMetadata(response.body.metadata))
