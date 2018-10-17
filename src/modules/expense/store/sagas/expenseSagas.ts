@@ -31,7 +31,7 @@ function* watchAllFetchRequest() {
   const worker = (action: ReturnType<typeof expenseGetAllRequest>) => { 
     return saiyanSaga.fetch({
       method: 'get',
-      path: `/v1/expense${objectToQuerystring(action.payload.filter)}`, 
+      path: `/v1/expense/requests${objectToQuerystring(action.payload.filter)}`, 
       successEffects: (response: IApiResponse) => ([
         put(expenseGetAllSuccess(response.body)),
         put(listBarMetadata(response.body.metadata))
@@ -64,7 +64,7 @@ function* watchByIdFetchRequest() {
   const worker = (action: ReturnType<typeof expenseGetByIdRequest>) => {
     return saiyanSaga.fetch({
       method: 'get',
-      path: `/v1/expense/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.expenseUid}`, 
+      path: `/v1/expense/requests/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.expenseUid}`, 
       successEffects: (response: IApiResponse) => ([
         put(expenseGetByIdSuccess(response.body)),
       ]), 
@@ -93,7 +93,7 @@ function* watchPostFetchRequest() {
   const worker = (action: ReturnType<typeof expensePostRequest>) => {
     return saiyanSaga.fetch({
       method: 'post',
-      path: `/v1/expense/${action.payload.companyUid}/${action.payload.positionUid}`, 
+      path: `/v1/expense/requests/${action.payload.companyUid}/${action.payload.positionUid}`, 
       payload: action.payload.data, 
       successEffects: (response: IApiResponse) => ([
         put(expensePostSuccess(response.body)),
@@ -123,7 +123,7 @@ function* watchPutFetchRequest() {
   const worker = (action: ReturnType<typeof expensePutRequest>) => {
     return saiyanSaga.fetch({
       method: 'put',
-      path: `/v1/expense/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.expenseUid}`,
+      path: `/v1/expense/requests/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.expenseUid}`,
       payload: action.payload.data, 
       successEffects: (response: IApiResponse) => ([
         put(expensePutSuccess(response.body)),

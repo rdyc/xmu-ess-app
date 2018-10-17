@@ -190,8 +190,8 @@ const withApiExpenseAll = (options?: WithApiExpenseAllOptions) => (WrappedCompon
           positionUid: user.position.uid,
           start: undefined,
           end: undefined,
-          status: null,
-          isRejected: null,
+          status: undefined,
+          isRejected: undefined,
           find: undefined,
           findBy: undefined,
         }

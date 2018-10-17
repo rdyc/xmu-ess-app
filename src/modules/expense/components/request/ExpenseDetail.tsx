@@ -187,7 +187,7 @@ const requestDetail: React.SFC<AllProps> = props => {
           fullWidth
           contentEditable={false}
           margin="normal"
-          label={<FormattedMessage id="project.field.clientName" />}
+          label={<FormattedMessage id="expense.field.clientName" />}
           value={expense.client ? expense.client.name : 'N/A'}
         />
         <TextField
@@ -322,7 +322,7 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, {}> = {
     const { 
       layoutDispatch, appBarDispatch, intl, 
       handleExpenseRefresh, handleExpenseModify, 
-      match, apiRegistrationDetailGet
+      match, apiRequestDetailGet
     } = this.props;
 
     layoutDispatch.changeView({
@@ -352,7 +352,7 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, {}> = {
 
     appBarDispatch.assignCallback(handleMenuClick);
 
-    apiRegistrationDetailGet(match.params.expenseUid);
+    apiRequestDetailGet(match.params.expenseUid);
   },
   componentWillReceiveProps(nextProps: AllProps) {
     if (nextProps.expenseDetailState.response !== this.props.expenseDetailState.response) {
