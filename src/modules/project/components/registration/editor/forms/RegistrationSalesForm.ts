@@ -3,7 +3,7 @@ import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { WithStyles, withStyles } from '@material-ui/core';
 import withWidth, { WithWidth } from '@material-ui/core/withWidth';
-import { IProjectSales } from '@project/classes/response';
+import { ProjectSalesFormData } from '@project/components/registration/editor/forms/RegistrationForm';
 import { RegistrationSalesFormView } from '@project/components/registration/editor/forms/RegistrationSalesFormView';
 import styles from '@styles';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
@@ -11,7 +11,7 @@ import { compose, HandleCreators, withHandlers } from 'recompose';
 import { WrappedFieldArrayProps } from 'redux-form';
 
 interface OwnProps {
-  context: WrappedFieldArrayProps<IProjectSales>;
+  context: WrappedFieldArrayProps<ProjectSalesFormData>;
 }
 
 interface OwnHandlers {
@@ -53,21 +53,8 @@ const handlerCreators: HandleCreators<RegistrationSalesFormProps, OwnHandlers> =
       context.fields.push({
         uid: null,
         employeeUid: employee.uid,
-        employee: {
-          uid: employee.uid,
-          joinDate: employee.joinDate,
-          inactiveDate: null,
-          employmentNumber: employee.employmentNumber,
-          employmentType: null,
-          employment: null,
-          fullName: employee.fullName,
-          email: employee.email,
-          mobilePhone: null,
-          address: null,
-          genderType: employee.genderType,
-          gender: null
-        },
-        changes: null
+        fullName: employee.fullName,
+        email: employee.email
       });
 
       return true;

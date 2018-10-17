@@ -3,7 +3,6 @@ import { DocumentFormView } from '@project/components/registration/editor/forms/
 import { ProjectDocumentFormData } from '@project/components/registration/editor/forms/RegistrationForm';
 import { compose, HandleCreators, lifecycle, ReactLifeCycleFunctions, withHandlers } from 'recompose';
 import { WrappedFieldArrayProps } from 'redux-form';
-import { isNullOrUndefined } from 'util';
 
 interface OwnProps {
   category: 'project' | 'preSales';
@@ -22,40 +21,40 @@ export type DocumentFormProps
 
 const handlerCreators: HandleCreators<DocumentFormProps, OwnHandlers> = {
   handleChange: (props: DocumentFormProps) => (event: React.ChangeEvent<HTMLInputElement>, checked: boolean): void => { 
-    const { context } = props;
-    const el = event.currentTarget.value;
+    // const { context } = props;
+    // const el = event.currentTarget.value;
 
-    // all documents
-    const documents = context.fields.getAll();
+    // // all documents
+    // const documents = context.fields.getAll();
 
-    // check exist
-    const document = documents.find(item => item.documentType === el);
+    // // check exist
+    // const document = documents.find(item => item.documentType === el);
     
-    // insert or update
-    if (isNullOrUndefined(document)) {
-      context.fields.push({
-        uid: '',
-        documentType: el,
-        isChecked: checked
-      });
-    } else {
-      document.isChecked = checked;
-    }
+    // // insert or update
+    // if (isNullOrUndefined(document)) {
+    //   context.fields.push({
+    //     uid: '',
+    //     documentType: el,
+    //     isChecked: checked
+    //   });
+    // } else {
+    //   document.isChecked = checked;
+    // }
   },
   isChecked: (props: DocumentFormProps) => (type: string): boolean => { 
-    const { context } = props;
+    // const { context } = props;
 
-    let result: boolean = false;
+    const result: boolean = false;
 
-    // all documents
-    const documents = context.fields.getAll();
+    // // all documents
+    // const documents = context.fields.getAll();
 
-    // check exist
-    const document = documents.find(item => item.documentType === type);
+    // // check exist
+    // const document = documents.find(item => item.documentType === type);
 
-    if (!isNullOrUndefined(document)) {
-      result = document.isChecked;
-    }
+    // if (!isNullOrUndefined(document)) {
+    //   result = document.isChecked;
+    // }
 
     return result;
   }

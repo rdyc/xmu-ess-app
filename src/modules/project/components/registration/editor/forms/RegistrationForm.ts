@@ -6,29 +6,29 @@ import { formValueSelector, InjectedFormProps, reduxForm } from 'redux-form';
 const formName = 'projectRegistration';
 
 export type ProjectDocumentFormData = {
-  uid: string;
-  documentType: string;
-  isChecked: boolean;
+  [key: string]: boolean
 };
 
 export type ProjectSalesFormData = {
-  uid: string;
+  uid: string | null;
   employeeUid: string;
+  fullName: string;
+  email: string;
 };
 
 export type ProjectRegistrationFormData = {
   information: {
-    customerUid: string | undefined;
-    projectType: string | undefined;
-    contractNumber: string | undefined;
-    name: string | undefined;
-    description: string | undefined;
-    start: string | undefined;
-    end: string | undefined;
-    currencyType: string | undefined;
-    rate: number | 1;
-    valueUsd: number | 1;
-    valueIdr: number | 1;
+    customerUid: string | null | undefined;
+    projectType: string | null | undefined;
+    contractNumber: string | null | undefined;
+    name: string | null | undefined;
+    description: string | null | undefined;
+    start: string | null | undefined;
+    end: string | null | undefined;
+    currencyType: string | null | undefined;
+    rate: number;
+    valueUsd: number;
+    valueIdr: number;
   },
   document: {
     project: ProjectDocumentFormData[], 
@@ -43,9 +43,9 @@ interface FormValueProps {
   formIsProject: boolean | false;
   formIsPresales: boolean | false;
   formIsCurrencyIDR: boolean | false;
-  formCurrencyType: string | undefined;
+  formCurrencyType: string | null;
   formRate: number | 1;
-  formValueUsd: number | 1;
+  formValue: number | 1;
 }
 
 export type RegistrationFormProps 
@@ -66,7 +66,7 @@ const mapStateToProps = (state: any): FormValueProps => {
     formIsCurrencyIDR: currencyType === 'SCR01',
     formCurrencyType: currencyType,
     formRate: rate,
-    formValueUsd: valueUsd 
+    formValue: valueUsd 
   };
 };
 

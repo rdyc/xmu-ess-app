@@ -29,12 +29,12 @@ export const RegistrationEditorView: React.SFC<RegistrationEditorProps> = props 
       projectType: undefined,
       contractNumber: undefined,
       name: undefined,
-      description: 'desc',
+      description: undefined,
       start: undefined,
       end: undefined,
       currencyType: undefined,
       rate: 1,
-      valueUsd: 9,
+      valueUsd: 0,
       valueIdr: 0,
     },
     document: {
@@ -63,7 +63,47 @@ export const RegistrationEditorView: React.SFC<RegistrationEditorProps> = props 
     
     if (!isLoading && response && response.data) {
       // todo: replace values with response data
+      const data = response.data;
 
+      initialValues.information.customerUid = data.customerUid;
+      initialValues.information.projectType = data.projectType;
+      initialValues.information.contractNumber = data.contractNumber;
+      initialValues.information.name = data.name;
+      initialValues.information.description = data.description;
+      initialValues.information.start = data.start;
+      initialValues.information.end = data.end;
+      initialValues.information.currencyType = data.currencyType;
+      initialValues.information.rate = data.rate;
+      initialValues.information.valueUsd = data.valueUsd;
+      initialValues.information.valueIdr = data.valueIdr || 0;
+
+      if (data.documents) {
+        data.documents.forEach(item => 
+          initialValues.document.project.push({
+            [`${item.documentType}`]: item.isAvailable
+          })
+        );
+      }
+
+      if (data.documentPreSales) {
+        data.documentPreSales.forEach(item => 
+          initialValues.document.preSales.push({
+            [`${item.documentType}`]: item.isAvailable
+          })
+        );
+      }
+      
+      if (data.sales) {
+        data.sales.forEach(item => 
+          initialValues.sales.employees.push({ 
+            uid: item.uid,
+            employeeUid: item.employeeUid,
+            fullName: item.employee ? item.employee.fullName : 'N/A',
+            email: item.employee ? item.employee.email : 'N/A'
+          })
+        );
+      }
+      
       return renderForm(initialValues);
     }
   }

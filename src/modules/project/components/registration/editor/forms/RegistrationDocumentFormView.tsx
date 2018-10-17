@@ -2,9 +2,10 @@ import { Card, CardContent, CardHeader, Checkbox, FormControlLabel } from '@mate
 import { DocumentFormProps } from '@project/components/registration/editor/forms/RegistrationDocumentForm';
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
+import { Field } from 'redux-form';
 
 export const DocumentFormView: React.SFC<DocumentFormProps> = props => {
-  const { category, handleChange } = props;
+  const { category } = props;
   const { isLoading, response } = category === 'project' ? 
     props.commonDocumentListState : 
     props.commonDocumentPresalesListState;
@@ -26,10 +27,20 @@ export const DocumentFormView: React.SFC<DocumentFormProps> = props => {
                 <FormControlLabel
                   label={item.name}
                   control={
-                    <Checkbox 
-                      value={item.type}
-                      // checked={isChecked(item.type)}
-                      onChange={handleChange}
+                    <Field
+                      type="checkbox"
+                      name={`${category}[${index}].${item.type}`}
+                      component={
+                        ({ input, meta }: any) => (
+                          <Checkbox 
+                            {...input}
+                            value={item.type}
+                            disabled={meta.submitting}
+                            onFocus={undefined}
+                            onBlur={undefined}
+                          />
+                        )
+                      }
                     />
                   } 
                 />

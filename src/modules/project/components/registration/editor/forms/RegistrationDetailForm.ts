@@ -7,7 +7,7 @@ import { BaseFieldsProps } from 'redux-form';
 
 interface OwnProps {
   context: BaseFieldsProps;
-  formCurrencyType: string | undefined;
+  formCurrencyType: string | null | undefined;
   isCurrencyIdr: boolean;
   onChangeCurrencyType: (event: any, newValue: string, oldValue: string) => void;
   onChangeRate: (event: any, newValue: number, oldValue: number) => void;

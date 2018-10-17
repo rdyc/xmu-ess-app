@@ -1,3 +1,4 @@
+import { ProjectType } from '@common/classes/types';
 import {
   Avatar,
   Button,
@@ -291,53 +292,57 @@ export const RegistrationDetailView: React.SFC<RegistrationDetailProps> = props 
       }
       {
         response && 
-        <Grid container spacing={24}>
-          <Grid item xs={12} sm={12} md={4} xl={3}>
+        <Grid 
+          container 
+          spacing={16} 
+          direction="row"
+          justify="flex-start"
+          alignItems="flex-start"
+        >
+          <Grid item xs={12} md={4}>
             {
               response &&
               response.data &&
               renderDetail(response.data)
             }
           </Grid>
-          <Grid item xs={12} sm={12} md={4} xl={3}>
-            <Grid container spacing={24}>
-              <Grid item xs={12}>
-                {
-                  response &&
-                  response.data &&
-                  renderDocuments(intl.formatMessage({id: 'project.document.projectTitle'}), intl.formatMessage({id: 'project.document.projectSubTitle'}), response.data.documents)
-                }
-              </Grid>
-              <Grid item xs={12}>
-                {
-                  response &&
-                  response.data &&
-                  renderDocuments(intl.formatMessage({id: 'project.document.preSalesTitle'}),  intl.formatMessage({id: 'project.document.preSalesSubTitle'}), response.data.documentPreSales)
-                }
-              </Grid>
+          
+          {
+            response &&
+            response.data &&
+            response.data.projectType === ProjectType.Project &&
+            <Grid item xs={12} md={4}>
+              {renderDocuments(intl.formatMessage({id: 'project.document.projectTitle'}), intl.formatMessage({id: 'project.document.projectSubTitle'}), response.data.documents)}
             </Grid>
+          }
+          {
+            response &&
+            response.data &&
+            response.data.projectType === ProjectType.PreSales &&
+            <Grid item xs={12} md={4}>
+            {renderDocuments(intl.formatMessage({id: 'project.document.preSalesTitle'}),  intl.formatMessage({id: 'project.document.preSalesSubTitle'}), response.data.documentPreSales)}
+            </Grid>
+          }
+
+          <Grid item xs={12} md={4}>
+            {
+              response &&
+              response.data &&
+              response.data.sales &&
+              renderSales(response.data.sales)
+            }
           </Grid>
-          <Grid item xs={12} sm={12} md={4} xl={3}>
-            <Grid container spacing={24}>
-              <Grid item xs={12}>
-                  {
-                    response &&
-                    response.data &&
-                    response.data.sales &&
-                    renderSales(response.data.sales)
-                  }
-                </Grid>
-                <Grid item xs={12}>
-                  {
-                    response &&
-                    response.data &&
-                    response.data.sites &&
-                    renderSites(response.data.sites)
-                  }
-                </Grid>
-              </Grid>
-            </Grid>
-          <Grid item xs={12} sm={12} md={8} xl={3}>
+
+          <Grid item xs={12} md={4}>
+            {
+              response &&
+              response.data &&
+              response.data.sites &&
+              renderSites(response.data.sites)
+            }
+          </Grid>
+
+          <Grid item xs={12} md={4}>
             {
               response &&
               response.data &&
@@ -346,6 +351,7 @@ export const RegistrationDetailView: React.SFC<RegistrationDetailProps> = props 
               <WorkflowStep steps={response.data.workflow.steps} />
             }
           </Grid>
+
         </Grid>
       }
       {renderDialog}

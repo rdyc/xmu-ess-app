@@ -4,9 +4,16 @@ import { FormMode } from '@generic/types';
 import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
-import { IProjectRegistrationPostPayload, IProjectRegistrationPutDocument, IProjectRegistrationPutPayload, IProjectRegistrationPutSales } from '@project/classes/request/registration';
+import {
+  IProjectRegistrationPostPayload,
+  IProjectRegistrationPutPayload,
+  IProjectRegistrationPutSales,
+} from '@project/classes/request/registration';
 import { IProject } from '@project/classes/response';
-import { ProjectRegistrationFormData } from '@project/components/registration/editor/forms/RegistrationForm';
+import {
+  ProjectDocumentFormData,
+  ProjectRegistrationFormData,
+} from '@project/components/registration/editor/forms/RegistrationForm';
 import { RegistrationEditorView } from '@project/components/registration/editor/RegistrationEditorView';
 import { WithProjectRegistration, withProjectRegistration } from '@project/hoc/withProjectRegistration';
 import { projectRegistrationMessage } from '@project/locales/messages/projectRegistrationMessage';
@@ -81,8 +88,9 @@ const handlerCreators: HandleCreators<RegistrationEditorProps, OwnHandlers> = {
     return errors;
   },
   handleSubmit: (props: RegistrationEditorProps) => (formData: ProjectRegistrationFormData) => { 
-    const { mode, projectUid } = props;
+    const { mode, projectUid, intl } = props;
     const { user } = props.userState;
+    const { response } = props.projectRegisterState.detail;
     const { createRequest, updateRequest } = props.projectRegisterDispatch;
 
     if (!user) {
@@ -97,29 +105,47 @@ const handlerCreators: HandleCreators<RegistrationEditorProps, OwnHandlers> = {
         return null;
       }
 
-      const _documents: IProjectRegistrationPutDocument[] = [];
+      const documents: any[] = [];
+      const fillDocuments = (item: ProjectDocumentFormData) => {
+        // read documentType from 'Indexable Types'
+        const documentType = Object.keys(item)[0];
+        
+        let uid: string | null = null;
+
+        // find existing uid
+        if (response && response.data) {
+          // merge all documents
+          const source = [ 
+            ...response.data.documents,
+            ...response.data.documentPreSales
+          ];
+
+          // find same doc type
+          const document = source.find(doc => doc.documentType === documentType);
+
+          // replace doc uid
+          if (!isNullOrUndefined(document)) {
+            uid = document.uid;
+          }
+        }
+        
+        // fill document
+        documents.push({
+          uid,
+          documentType,
+          isChecked: item[documentType]
+        });
+      };
   
       if (formData.information.projectType === ProjectType.Project) {
-        formData.document.project.forEach(item => 
-          _documents.push({
-            uid: item.uid,
-            documentType: item.documentType,
-            isChecked: item.isChecked
-          })
-        );
+        formData.document.project.forEach(fillDocuments);
       }
       
       if (formData.information.projectType === ProjectType.PreSales) {
-        formData.document.preSales.forEach(item => 
-          _documents.push({
-            uid: item.uid,
-            documentType: item.documentType,
-            isChecked: item.isChecked
-          })
-        );
+        formData.document.preSales.forEach(fillDocuments);
       }
       
-      return _documents;
+      return documents;
     };
 
     const parsedSales = () => {
@@ -128,7 +154,7 @@ const handlerCreators: HandleCreators<RegistrationEditorProps, OwnHandlers> = {
       }
   
       const _sales: IProjectRegistrationPutSales[] = [];
-  
+    
       formData.sales.employees.forEach(item => 
         _sales.push({
           uid: item.uid,
@@ -145,6 +171,7 @@ const handlerCreators: HandleCreators<RegistrationEditorProps, OwnHandlers> = {
       sales: parsedSales()
     };
 
+    // creating
     if (mode === FormMode.New) {
       return new Promise((resolve, reject) => {
         createRequest({
@@ -157,8 +184,11 @@ const handlerCreators: HandleCreators<RegistrationEditorProps, OwnHandlers> = {
       });
     }
 
+    // update checking
     if (!projectUid) {
-      return Promise.reject('project uid was not found');
+      const message = intl.formatMessage(projectRegistrationMessage.emptyProjectUid);
+
+      return Promise.reject(message);
     }
 
     if (mode === FormMode.Edit) {
@@ -241,7 +271,8 @@ const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
 
 const lifecycles: ReactLifeCycleFunctions<RegistrationEditorProps, {}> = {
   componentDidMount() {
-    const { layoutDispatch, intl, history, stateUpdate, apiRegistrationDetailGet } = this.props;
+    const { layoutDispatch, intl, history, stateUpdate } = this.props;
+    const { loadDetailRequest } = this.props.projectRegisterDispatch;
     const { user } = this.props.userState;
     
     const view = {
@@ -249,12 +280,14 @@ const lifecycles: ReactLifeCycleFunctions<RegistrationEditorProps, {}> = {
       subTitle: 'project.form.newSubTitle',
     };
 
-    if (user) {
-      stateUpdate({ 
-        companyUid: user.company.uid,
-        positionUid: user.position.uid
-      });
+    if (!user) {
+      return;
     }
+
+    stateUpdate({ 
+      companyUid: user.company.uid,
+      positionUid: user.position.uid
+    });
 
     if (!isNullOrUndefined(history.location.state)) {
       view.title = 'project.form.editTitle';
@@ -265,7 +298,11 @@ const lifecycles: ReactLifeCycleFunctions<RegistrationEditorProps, {}> = {
         projectUid: history.location.state.uid
       });
 
-      apiRegistrationDetailGet(history.location.state.uid);
+      loadDetailRequest({
+        companyUid: user.company.uid,
+        positionUid: user.position.uid,
+        projectUid: history.location.state.uid
+      });
     }
 
     layoutDispatch.changeView({

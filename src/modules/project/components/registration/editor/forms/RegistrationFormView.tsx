@@ -8,17 +8,17 @@ import * as React from 'react';
 import { BaseFieldsProps, FieldArray, Fields, FormSection, WrappedFieldArrayProps } from 'redux-form';
 
 export const RegistrationFormView: React.SFC<RegistrationFormProps> = props => {
-  const { formIsProject, formIsPresales, formIsCurrencyIDR, formRate, formValueUsd, formCurrencyType, change } = props;
+  const { formIsProject, formIsPresales, formIsCurrencyIDR, formRate, formValue, formCurrencyType, change } = props;
 
   const onChangeCurrencyType = (event: any, newValue: string, oldValue: string) => {
     if (newValue === 'SCR01') {
       change('information.rate', 1);
-      change('information.valueIdr', formValueUsd);
+      change('information.valueIdr', formValue);
     }
   };
 
   const onChangeRate = (event: any, newValue: number, oldValue: number) => {
-    change('information.valueIdr', newValue * formValueUsd);
+    change('information.valueIdr', newValue * formValue);
   };
 
   const onChangeValueIdr = (event: any, newValue: number, oldValue: number) => {
@@ -58,7 +58,13 @@ export const RegistrationFormView: React.SFC<RegistrationFormProps> = props => {
 
   const render = (
     <form onSubmit={props.handleSubmit}>
-      <Grid container spacing={24} direction="row">
+      <Grid
+        container 
+        spacing={16} 
+        direction="row"
+        justify="flex-start"
+        alignItems="flex-start"
+      >
         <Grid item xs={12} md={4} >
           <FormSection name="information">
             <Fields 

@@ -88,8 +88,16 @@ const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
 const handlerCreators: HandleCreators<RegistrationDetailProps, Handler> = {
   handleProjectRefresh: (props: RegistrationDetailProps) => () => { 
     const { match } = props;
+    const { user } = props.userState;
+    const { loadDetailRequest } = props.projectRegisterDispatch;
 
-    props.apiRegistrationDetailGet(match.params.projectUid);
+    if (user) {
+      loadDetailRequest({
+        projectUid: match.params.projectUid,
+        companyUid: user.company.uid,
+        positionUid: user.position.uid,
+      });
+    }
   },
   handleProjectModify: (props: RegistrationDetailProps) => () => { 
     const { intl, stateUpdate } = props;

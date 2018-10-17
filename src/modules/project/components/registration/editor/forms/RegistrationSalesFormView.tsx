@@ -43,14 +43,14 @@ export const RegistrationSalesFormView: React.SFC<RegistrationSalesFormProps> = 
                   >
                     <ListItemAvatar>
                       <Avatar
-                        alt={sales.employee ? sales.employee.fullName : sales.employeeUid} 
+                        alt={sales.fullName} 
                       >
                         <PersonIcon/>
                       </Avatar>
                     </ListItemAvatar>
                     <ListItemText
-                      primary={sales.employee && sales.employee.fullName} 
-                      secondary={sales.employee && sales.employee.email}
+                      primary={sales.fullName} 
+                      secondary={sales.email}
                     />
                     <ListItemSecondaryAction>
                       <IconButton onClick={() => context.fields.remove(index)}>
