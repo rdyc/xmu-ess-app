@@ -1,7 +1,7 @@
 import { ISystemListRequest } from '@common/classes/queries';
 import { ISystemList } from '@common/classes/response';
 import { CommonCategoryType } from '@common/classes/types';
-import commonSystemSelectView from '@common/components/system/commonSystemSelectView';
+import { CommonSystemSelectView } from '@common/components/system/commonSystemSelectView';
 import { WithCommonSystem, withCommonSystem } from '@common/hoc/withCommonSystem';
 import { IQueryCollectionState } from '@generic/interfaces';
 import withWidth, { WithWidth } from '@material-ui/core/withWidth';
@@ -122,4 +122,4 @@ export default compose<CommonSystemSelectProps, OwnProps>(
   withWidth(),
   withHandlers<CommonSystemSelectProps, IOwnHandlers>(handlerCreators),
   lifecycle<CommonSystemSelectProps, {}>(lifecycles),
-)(commonSystemSelectView);
+)(CommonSystemSelectView);

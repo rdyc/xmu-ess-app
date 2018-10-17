@@ -5,7 +5,7 @@ import { isWidthDown } from '@material-ui/core/withWidth';
 import * as React from 'react';
 import { isNullOrUndefined } from 'util';
 
-const commonSystemSelectView: React.SFC<CommonSystemSelectProps> = props => {
+export const CommonSystemSelectView: React.SFC<CommonSystemSelectProps> = props => {
   const { width, input, label, placeholder, disabled, meta } = props;
   const { response } = props.categoryState();
   
@@ -61,5 +61,3 @@ const commonSystemSelectView: React.SFC<CommonSystemSelectProps> = props => {
     </TextField>
   );
 };
-
-export default commonSystemSelectView;

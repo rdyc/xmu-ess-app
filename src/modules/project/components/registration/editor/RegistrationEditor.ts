@@ -4,7 +4,7 @@ import { FormMode } from '@generic/types';
 import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
-import { IProjectPostPayload, IProjectPutDocument, IProjectPutPayload, IProjectPutSales } from '@project/classes/request';
+import { IProjectRegistrationPostPayload, IProjectRegistrationPutDocument, IProjectRegistrationPutPayload, IProjectRegistrationPutSales } from '@project/classes/request/registration';
 import { IProject } from '@project/classes/response';
 import { ProjectRegistrationFormData } from '@project/components/registration/editor/forms/RegistrationForm';
 import { RegistrationEditorView } from '@project/components/registration/editor/RegistrationEditorView';
@@ -97,7 +97,7 @@ const handlerCreators: HandleCreators<RegistrationEditorProps, OwnHandlers> = {
         return null;
       }
 
-      const _documents: IProjectPutDocument[] = [];
+      const _documents: IProjectRegistrationPutDocument[] = [];
   
       if (formData.information.projectType === ProjectType.Project) {
         formData.document.project.forEach(item => 
@@ -127,7 +127,7 @@ const handlerCreators: HandleCreators<RegistrationEditorProps, OwnHandlers> = {
         return null;
       }
   
-      const _sales: IProjectPutSales[] = [];
+      const _sales: IProjectRegistrationPutSales[] = [];
   
       formData.sales.employees.forEach(item => 
         _sales.push({
@@ -152,7 +152,7 @@ const handlerCreators: HandleCreators<RegistrationEditorProps, OwnHandlers> = {
           reject,
           companyUid: user.company.uid,
           positionUid: user.position.uid,
-          data: payload as IProjectPostPayload
+          data: payload as IProjectRegistrationPostPayload
         });
       });
     }
@@ -169,7 +169,7 @@ const handlerCreators: HandleCreators<RegistrationEditorProps, OwnHandlers> = {
           reject,
           companyUid: user.company.uid,
           positionUid: user.position.uid,
-          data: payload as IProjectPutPayload, 
+          data: payload as IProjectRegistrationPutPayload, 
         });
       });
     }
