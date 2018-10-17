@@ -10,21 +10,6 @@ import commonSiteSagas from '@common/store/sagas/siteSagas';
 import commonSystemSagas from '@common/store/sagas/systemSagas';
 import expenseSagas from '@expense/store/sagas/expenseSagas';
 import financeSagas from '@finance/store/sagas/financeSagas';
-<<<<<<< HEAD
-import notificationSagas from '@layout/store/sagas/notificationSagas';
-import companySagas from '@lookup/store/sagas/companySagas';
-import currencySagas from '@lookup/store/sagas/currencySagas';
-import customerSagas from '@lookup/store/sagas/customerSagas';
-import diemSagas from '@lookup/store/sagas/diemSagas';
-import holidaySagas from '@lookup/store/sagas/holidaySagas';
-import leaveSagas from '@lookup/store/sagas/leaveSagas';
-import menuSagas from '@lookup/store/sagas/menuSagas';
-import mileageExceptionSagas from '@lookup/store/sagas/mileageExceptionSagas';
-import positionSagas from '@lookup/store/sagas/positionSagas';
-import roleSagas from '@lookup/store/sagas/roleSagas';
-import systemLimitSagas from '@lookup/store/sagas/systemLimitSagas';
-import projectSagas from '@project/store/sagas/projectSagas';
-=======
 import commonNotificationSagas from '@layout/store/sagas/notificationSagas';
 import leaveRequestSagas from '@leave/store/sagas/leaveRequestSagas';
 import lookupCompanySagas from '@lookup/store/sagas/companySagas';
@@ -45,7 +30,6 @@ import purchaseSagas from '@purchase/store/sagas/purchaseSagas';
 import timesheetSagas from '@timesheet/store/sagas/timesheetSagas';
 import travelSagas from '@travel/store/sagas/travelSagas';
 import travelSettlementSagas from '@travel/store/sagas/travelSettlementSagas';
->>>>>>> develop
 import { all, fork } from 'redux-saga/effects';
 
 export function* rootSaga() {

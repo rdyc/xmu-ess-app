@@ -1,10 +1,6 @@
 import { IEmployeeMyState } from '@account/classes';
 import { IAccountState } from '@account/classes/states';
 import { ICommonState } from '@common/classes/states';
-<<<<<<< HEAD
-import { IExpenseState } from '@expense/classes/states';
-=======
->>>>>>> develop
 import { IFinanceState } from '@finance/classes/states';
 import { IAppBarState, ILayoutState, IListBarState, INotificationState } from '@layout/interfaces';
 import { IUserState } from '@layout/interfaces/IUserState';
