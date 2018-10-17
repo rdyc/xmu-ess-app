@@ -1,4 +1,3 @@
-// import { ExpenseType } from '@common/classes/types';
 import { InformationForm } from '@expense/components/request/forms/InformationForm';
 import { SubmitForm } from '@expense/components/request/forms/SubmitForm';
 import { Grid } from '@material-ui/core';

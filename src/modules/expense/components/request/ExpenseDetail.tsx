@@ -210,7 +210,6 @@ const requestDetail: React.SFC<AllProps> = props => {
           fullWidth
           contentEditable={false}
           margin="normal"
-          hidden= {true}// {!isNullOrUndefined(expense.rejectedReason)}
           label={<FormattedMessage id="expense.field.rejectedReason" />}
           value={expense.rejectedReason || 'N/A'}
         /> : ''
