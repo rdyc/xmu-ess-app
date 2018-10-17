@@ -1,18 +1,10 @@
 import { TextField } from '@material-ui/core';
 import * as React from 'react';
-import { BaseFieldProps, WrappedFieldProps } from 'redux-form';
 import { isNullOrUndefined } from 'util';
 
-interface FromFieldProps { 
-  type?: string; 
-  placeholder?: string; 
-  label: string; 
-  disabled: boolean; 
-}
+import { InputTextProps } from './InputText';
 
-type AllProps = WrappedFieldProps & BaseFieldProps & FromFieldProps;
-
-export const FieldInputText: React.SFC<AllProps> = props => {
+export const InputTextView: React.SFC<InputTextProps> = props => {
   const { input, label, placeholder, disabled, meta } = props;
 
   return (

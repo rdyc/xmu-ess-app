@@ -20,9 +20,9 @@ import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { List as VirtualizedList, ListRowProps } from 'react-virtualized';
 
-import { CustomerSelectProps } from './LookupCustomerSelect';
+import { LookupCustomerDialogProps } from './LookupCustomerDialog';
 
-export const LookupCustomerSelectView: React.SFC<CustomerSelectProps> = props => {
+export const LookupCustomerDialogView: React.SFC<LookupCustomerDialogProps> = props => {
   const { isOpen, _search } = props;
   const { width, intl } = props;
   const { onSelected, onClose, filterCustomers, searchOnChange, searchOnKeyUp } = props;

@@ -29,6 +29,7 @@
   "global.action.refresh": "Refresh",
   "global.action.submit": "Submit",
   "global.action.reset": "Reset",
+  "global.action.clear": "Clear",
   "global.action.details": "Details",
 
   "global.label.login": "Login",

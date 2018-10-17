@@ -18,7 +18,7 @@ import {
   withStateHandlers,
 } from 'recompose';
 
-import { LookupCustomerSelectView } from './LookupCustomerSelectView';
+import { LookupCustomerDialogView } from './LookupCustomerDialogView';
 
 interface OwnOptions {
   value?: string | undefined;
@@ -46,7 +46,7 @@ interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
   clearStateSearch: StateHandler<OwnState>;
 }
 
-export type CustomerSelectProps
+export type LookupCustomerDialogProps
   = WithLookupCustomer
   & WithWidth
   & InjectedIntlProps
@@ -84,8 +84,8 @@ const stateUpdaters: StateUpdaters<OwnOptions, OwnState, OwnStateUpdaters> = {
   }),
 };
 
-const handlerCreators: HandleCreators<CustomerSelectProps, OwnHandlers> = {
-  filterCustomers: (props: CustomerSelectProps) => (response: IResponseCollection<ICustomerList> | undefined): ICustomerList[] => {
+const handlerCreators: HandleCreators<LookupCustomerDialogProps, OwnHandlers> = {
+  filterCustomers: (props: LookupCustomerDialogProps) => (response: IResponseCollection<ICustomerList> | undefined): ICustomerList[] => {
     const { _search } = props;
 
     let result: ICustomerList[] = [];
@@ -102,12 +102,12 @@ const handlerCreators: HandleCreators<CustomerSelectProps, OwnHandlers> = {
 
     return result;
   },
-  searchOnChange: (props: CustomerSelectProps) => (event: React.ChangeEvent<HTMLInputElement>) => {
+  searchOnChange: (props: LookupCustomerDialogProps) => (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.currentTarget.value;
     
     props.setStateSearch(value);
   },
-  searchOnKeyUp: (props: CustomerSelectProps) => (event: React.KeyboardEvent<HTMLDivElement>) => {
+  searchOnKeyUp: (props: LookupCustomerDialogProps) => (event: React.KeyboardEvent<HTMLDivElement>) => {
     // delete pressed
     if (event.keyCode === 46) {
       props.clearStateSearch();
@@ -115,7 +115,7 @@ const handlerCreators: HandleCreators<CustomerSelectProps, OwnHandlers> = {
   },
 };
 
-const lifecycles: ReactLifeCycleFunctions<CustomerSelectProps, OwnState> = {
+const lifecycles: ReactLifeCycleFunctions<LookupCustomerDialogProps, OwnState> = {
   componentDidMount() { 
     const { _filter } = this.props;
     const { isLoading, response  } = this.props.lookupCustomerState.list;
@@ -129,12 +129,11 @@ const lifecycles: ReactLifeCycleFunctions<CustomerSelectProps, OwnState> = {
   }
 };
 
-export const LookupCustomerSelect = compose<CustomerSelectProps, OwnOptions>(
+export const LookupCustomerDialog = compose<LookupCustomerDialogProps, OwnOptions>(
   withLookupCustomer,
   withWidth(),
   injectIntl,
   withStateHandlers<OwnState, OwnStateUpdaters, OwnOptions>(createProps, stateUpdaters), 
-  withHandlers<CustomerSelectProps, OwnHandlers>(handlerCreators),
-  lifecycle<CustomerSelectProps, OwnState>(lifecycles),
-  // onlyUpdateForKeys(['_value', '_valueDisplay', '_dialogOpen', 'lookupCustomerState'])
-)(LookupCustomerSelectView);
+  withHandlers<LookupCustomerDialogProps, OwnHandlers>(handlerCreators),
+  lifecycle<LookupCustomerDialogProps, OwnState>(lifecycles),
+)(LookupCustomerDialogView);

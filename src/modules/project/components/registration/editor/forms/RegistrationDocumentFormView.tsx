@@ -29,7 +29,7 @@ export const DocumentFormView: React.SFC<DocumentFormProps> = props => {
                     <Checkbox 
                       value={item.type}
                       // checked={isChecked(item.type)}
-                      onChange={() => handleChange(item)}
+                      onChange={handleChange}
                     />
                   } 
                 />

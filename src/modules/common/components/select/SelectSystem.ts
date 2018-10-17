@@ -1,36 +1,33 @@
 import { ISystemListRequest } from '@common/classes/queries';
 import { ISystemList } from '@common/classes/response';
 import { CommonCategoryType } from '@common/classes/types';
-import { CommonSystemSelectView } from '@common/components/system/commonSystemSelectView';
 import { WithCommonSystem, withCommonSystem } from '@common/hoc/withCommonSystem';
 import { IQueryCollectionState } from '@generic/interfaces';
 import withWidth, { WithWidth } from '@material-ui/core/withWidth';
-import * as React from 'react';
-import { compose, HandleCreators, lifecycle, ReactLifeCycleFunctions, setDisplayName, withHandlers } from 'recompose';
+import { compose, HandleCreators, lifecycle, ReactLifeCycleFunctions, withHandlers } from 'recompose';
 import { BaseFieldProps, WrappedFieldProps } from 'redux-form';
 
-interface OwnProps extends WrappedFieldProps, BaseFieldProps {
-  type?: string; 
-  label: string; 
-  placeholder?: string | undefined;
-  disabled: boolean;
-  companyUid?: string | undefined;
+import { SelectSystemView } from './SelectSystemView';
+
+interface OwnProps extends WrappedFieldProps, BaseFieldProps { 
   category: CommonCategoryType;
-  onChangeValue: (type: string | null) => void;
+  companyUid?: string | undefined; 
+  placeholder?: string;
+  label: string; 
+  disabled: boolean;
 }
 
-interface IOwnHandlers {
+interface OwnHandlers {
   categoryState: () => IQueryCollectionState<ISystemListRequest, ISystemList>;
-  handleChange: (event: React.ChangeEvent<any>) => void;
 }
 
-export type CommonSystemSelectProps 
-  = OwnProps
-  & IOwnHandlers
+export type SelectSystemProps 
+  = OwnProps 
+  & OwnHandlers
   & WithCommonSystem
   & WithWidth;
 
-const lifecycles: ReactLifeCycleFunctions<CommonSystemSelectProps, OwnProps> = {
+const lifecycles: ReactLifeCycleFunctions<SelectSystemProps, OwnProps> = {
   componentDidMount() {
     const { category, companyUid, disabled, commonDispatch } = this.props;
     const { isLoading, response } = this.props.categoryState();
@@ -83,25 +80,13 @@ const lifecycles: ReactLifeCycleFunctions<CommonSystemSelectProps, OwnProps> = {
   }
 };
 
-const handlerCreators: HandleCreators<CommonSystemSelectProps, IOwnHandlers> = {
-  categoryState: (props: CommonSystemSelectProps) => () => { 
+const handlerCreators: HandleCreators<SelectSystemProps, OwnHandlers> = {
+  categoryState: (props: SelectSystemProps) => () => { 
     return fnGetContext(props);
-  },
-  handleChange: (props: CommonSystemSelectProps) => (event: React.ChangeEvent<any>) => {
-    const { onChangeValue } = props;
-    const { response } = fnGetContext(props);
-    const value = event.target.value;
-
-    if (response && response.data) {
-      const systems = response.data.filter(item => item.type === value);
-      const system = systems[0];
-
-      onChangeValue(system ? system.type : null );
-    }
   }
 };
 
-const fnGetContext = (props: CommonSystemSelectProps) => {
+const fnGetContext = (props: SelectSystemProps) => {
   const { category } = props;
 
   switch (category) {
@@ -116,10 +101,9 @@ const fnGetContext = (props: CommonSystemSelectProps) => {
   }
 };
 
-export default compose<CommonSystemSelectProps, OwnProps>(
-  setDisplayName('CommonSystemSelect'),
+export const SelectSystem = compose<SelectSystemProps, OwnProps>(
   withCommonSystem,
   withWidth(),
-  withHandlers<CommonSystemSelectProps, IOwnHandlers>(handlerCreators),
-  lifecycle<CommonSystemSelectProps, {}>(lifecycles),
-)(CommonSystemSelectView);
+  withHandlers<SelectSystemProps, OwnHandlers>(handlerCreators),
+  lifecycle<SelectSystemProps, {}>(lifecycles),
+)(SelectSystemView);

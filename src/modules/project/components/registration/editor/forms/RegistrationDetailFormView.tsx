@@ -1,5 +1,8 @@
-import { FieldInputCustomer, FieldInputDate, FieldInputNumber, FieldInputText } from '@layout/components/formFields';
-import { FieldSelectSystem } from '@layout/components/formFields/FieldSelectSystem';
+import { SelectSystem } from '@common/components/select';
+import { InputDate } from '@layout/components/input/date';
+import { InputNumber } from '@layout/components/input/number';
+import { InputText } from '@layout/components/input/text';
+import { InputCustomer } from '@lookup/components/customer/input';
 import { Card, CardContent, CardHeader } from '@material-ui/core';
 import { RegistrationDetailFormProps } from '@project/components/registration/editor/forms/RegistrationDetailForm';
 import * as React from 'react';
@@ -21,7 +24,7 @@ export const RegistrationDetailFormView: React.SFC<RegistrationDetailFormProps> 
         fieldProps = {
           type: 'text',
           placeholder: intl.formatMessage({id: `project.field.${name}.placeholder`}),
-          component: FieldInputCustomer
+          component: InputCustomer
         };
         break;
       
@@ -29,7 +32,7 @@ export const RegistrationDetailFormView: React.SFC<RegistrationDetailFormProps> 
         fieldProps = {
           category: 'project',
           placeholder: intl.formatMessage({id: `project.field.${name}.placeholder`}),
-          component: FieldSelectSystem
+          component: SelectSystem
         };
         break;
   
@@ -37,7 +40,7 @@ export const RegistrationDetailFormView: React.SFC<RegistrationDetailFormProps> 
         fieldProps = {
           category: 'currency',
           placeholder: intl.formatMessage({id: `project.field.${name}.placeholder`}),
-          component: FieldSelectSystem,
+          component: SelectSystem,
           onChange: onChangeCurrencyType
         };
         break;
@@ -46,7 +49,7 @@ export const RegistrationDetailFormView: React.SFC<RegistrationDetailFormProps> 
         fieldProps = {
           type: 'text',
           placeholder: intl.formatMessage({id: `project.field.${name}.placeholder`}),
-          component: FieldInputDate
+          component: InputDate
         };
         break;
         
@@ -54,7 +57,7 @@ export const RegistrationDetailFormView: React.SFC<RegistrationDetailFormProps> 
         fieldProps = {
           type: 'text',
           placeholder: intl.formatMessage({id: `project.field.${name}.placeholder`}),
-          component: FieldInputDate
+          component: InputDate
         };
         break;
       
@@ -63,7 +66,7 @@ export const RegistrationDetailFormView: React.SFC<RegistrationDetailFormProps> 
           type: 'number',
           placeholder: intl.formatMessage({id: `project.field.${name}.placeholder`}),
           disabled: isCurrencyIdr || isNullOrUndefined(formCurrencyType),
-          component: FieldInputNumber,
+          component: InputNumber,
           onChange: onChangeRate
         };
         break;
@@ -72,7 +75,7 @@ export const RegistrationDetailFormView: React.SFC<RegistrationDetailFormProps> 
         fieldProps = {
           type: 'number',
           placeholder: intl.formatMessage({id: `project.field.${name}.placeholder`}),
-          component: FieldInputNumber,
+          component: InputNumber,
           onChange: onChangeValueIdr
         };
         break;
@@ -81,7 +84,7 @@ export const RegistrationDetailFormView: React.SFC<RegistrationDetailFormProps> 
         fieldProps = {
           type: 'number',
           disabled: true,
-          component: FieldInputNumber
+          component: InputNumber
         };
         break;
     
@@ -89,7 +92,7 @@ export const RegistrationDetailFormView: React.SFC<RegistrationDetailFormProps> 
         fieldProps = {
           type: 'text',
           placeholder: intl.formatMessage({id: `project.field.${name}.placeholder`}),
-          component: FieldInputText
+          component: InputText
         };
         break;
     }

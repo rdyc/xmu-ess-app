@@ -1,11 +1,12 @@
 import { ISystemList } from '@common/classes/response';
-import { CommonSystemSelectProps } from '@common/components/system/CommonSystemSelect';
 import { MenuItem, TextField } from '@material-ui/core';
 import { isWidthDown } from '@material-ui/core/withWidth';
 import * as React from 'react';
 import { isNullOrUndefined } from 'util';
 
-export const CommonSystemSelectView: React.SFC<CommonSystemSelectProps> = props => {
+import { SelectSystemProps } from './SelectSystem';
+
+export const SelectSystemView: React.SFC<SelectSystemProps> = props => {
   const { width, input, label, placeholder, disabled, meta } = props;
   const { response } = props.categoryState();
   
@@ -35,22 +36,20 @@ export const CommonSystemSelectView: React.SFC<CommonSystemSelectProps> = props 
     return null;
   };
 
-  return (
+  const render = (
     <TextField
       select
       fullWidth
       margin="normal"
-      name={`select${input.name}`}
+      {...input}
       label={label}
       placeholder={placeholder}
-      value={input.value}
       disabled={disabled || meta.submitting}
       error={meta.touched && !isNullOrUndefined(meta.error)}
       helperText={meta.touched && meta.error}
       SelectProps={{
         native: isMobile
       }}
-      onChange={props.handleChange}
     >
       {renderItemEmpty}
       {
@@ -60,4 +59,6 @@ export const CommonSystemSelectView: React.SFC<CommonSystemSelectProps> = props 
       }
     </TextField>
   );
+
+  return render;
 };

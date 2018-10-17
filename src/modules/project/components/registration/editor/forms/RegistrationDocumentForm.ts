@@ -1,4 +1,3 @@
-import { ISystemList } from '@common/classes/response';
 import { WithCommonSystem, withCommonSystem } from '@common/hoc/withCommonSystem';
 import { DocumentFormView } from '@project/components/registration/editor/forms/RegistrationDocumentFormView';
 import { ProjectDocumentFormData } from '@project/components/registration/editor/forms/RegistrationForm';
@@ -12,7 +11,8 @@ interface OwnProps {
 }
 
 interface OwnHandlers {
-  handleChange: (system: ISystemList) => void;
+  handleChange: (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => void;
+  isChecked: (type: string) => boolean;
 }
 
 export type DocumentFormProps
@@ -21,25 +21,43 @@ export type DocumentFormProps
   & WithCommonSystem;
 
 const handlerCreators: HandleCreators<DocumentFormProps, OwnHandlers> = {
-  handleChange: (props: DocumentFormProps) => (system: ISystemList): void => { 
+  handleChange: (props: DocumentFormProps) => (event: React.ChangeEvent<HTMLInputElement>, checked: boolean): void => { 
     const { context } = props;
+    const el = event.currentTarget.value;
 
     // all documents
     const documents = context.fields.getAll();
 
     // check exist
-    const document = documents.find(item => item.documentType === system.type);
+    const document = documents.find(item => item.documentType === el);
     
     // insert or update
     if (isNullOrUndefined(document)) {
       context.fields.push({
         uid: '',
-        documentType: system.type,
-        isChecked: true
+        documentType: el,
+        isChecked: checked
       });
     } else {
-      document.isChecked = false;
+      document.isChecked = checked;
     }
+  },
+  isChecked: (props: DocumentFormProps) => (type: string): boolean => { 
+    const { context } = props;
+
+    let result: boolean = false;
+
+    // all documents
+    const documents = context.fields.getAll();
+
+    // check exist
+    const document = documents.find(item => item.documentType === type);
+
+    if (!isNullOrUndefined(document)) {
+      result = document.isChecked;
+    }
+
+    return result;
   }
 };
 
