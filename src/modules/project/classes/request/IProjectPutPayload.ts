@@ -14,5 +14,5 @@ export interface IProjectPutPayload extends IBasePayload {
   valueUsd: number;
   valueIdr?: number | null;
   documents?: IProjectPutDocument[] | null;
-  sales?: IProjectPutSales[] | undefined;
+  sales?: IProjectPutSales[] | null;
 }

@@ -12,7 +12,7 @@ interface PropsFromState extends RouteComponentProps<void>, WithStyles<typeof st
 
 type AllProps = PropsFromState & ConnectedReduxProps;
 
-export const HomePage: React.StatelessComponent<AllProps> = props => (
+export const HomePage: React.SFC<AllProps> = props => (
   <Card square elevation={0}>
     <CardContent>
       <Typography>

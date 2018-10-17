@@ -1,33 +1,30 @@
-import { ISystemList } from '@common/classes/response';
 import { CommonCategoryType } from '@common/classes/types';
-import SystemSelect from '@common/components/controls/SystemSelect';
-import { rootStore } from '@generic/roots';
+import CommonSystemSelect from '@common/components/system/CommonSystemSelect';
 import { WithWidth } from '@material-ui/core/withWidth';
 import * as React from 'react';
 import { BaseFieldProps, WrappedFieldProps } from 'redux-form';
 
 interface FromFieldProps { 
-  type: CommonCategoryType; 
+  category: CommonCategoryType; 
   label: string; 
+  placeholder?: string;
   disabled: boolean; 
 }
 
 type AllProps = WrappedFieldProps & BaseFieldProps & FromFieldProps & WithWidth;
 
-export const FieldSelectSystem: React.StatelessComponent<AllProps> = props => {
-  const { input, type } = props;
+export const FieldSelectSystem: React.SFC<AllProps> = props => {
+  const { input, category } = props;
 
-  const handleOnChangeValue = (system: ISystemList | null) => {
-     
-    input.onChange(system);
+  const handleOnChange = (type: string | null) => {
+    input.onChange(type);
   };
 
   return (    
-    <SystemSelect 
-      {...rootStore}
+    <CommonSystemSelect
       {...props}
-      onChangeValue={handleOnChangeValue}
-      category={type}
+      onChangeValue={handleOnChange}
+      category={category}
     />
   );
 };

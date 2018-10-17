@@ -45,11 +45,11 @@ function* watchFetchAllRequest() {
       method: 'get',
       path: `/v1/lookup/leaves${objectToQuerystring(
         action.payload.filter)}`, 
-      success: (response: IApiResponse) => [
+      successEffects: (response: IApiResponse) => [
         put(leaveGetAllSuccess(response.body)),
         put(listBarMetadata(response.body.metadata))
       ], 
-      failed: (response: IApiResponse) => [
+      failureEffects: (response: IApiResponse) => [
         put(leaveGetAllError(response.body)),
         put(
           layoutAlertAdd({
@@ -58,7 +58,7 @@ function* watchFetchAllRequest() {
             details: response
         }))
       ], 
-      error: (error: TypeError) => [
+      errorEffects: (error: TypeError) => [
         put(leaveGetAllError(error.message)),
         put(
           layoutAlertAdd({
@@ -66,8 +66,7 @@ function* watchFetchAllRequest() {
             message: error.message
           })
         )
-      ],
-      finally: () => ([])
+      ]
     });
   };
   yield takeEvery(Action.GET_ALL_REQUEST, worker);
@@ -79,10 +78,10 @@ function* watchFetchListRequest() {
       method: 'get',
       path: `/v1/lookup/leaves/list${objectToQuerystring(
         action.payload.filter)}`,
-      success: (response: IApiResponse) => [
+      successEffects: (response: IApiResponse) => [
         put(leaveGetListSuccess(response.body)),
       ], 
-      failed: (response: IApiResponse) => [
+      failureEffects: (response: IApiResponse) => [
         put(leaveGetListError(response.statusText)),
         put(
           layoutAlertAdd({
@@ -92,7 +91,7 @@ function* watchFetchListRequest() {
          })
         )
       ], 
-      error: (error: TypeError) => [
+      errorEffects: (error: TypeError) => [
         put(leaveGetListError(error.message)),
         put(
           layoutAlertAdd({
@@ -100,8 +99,7 @@ function* watchFetchListRequest() {
             message: error.message
           })
         )
-      ],
-      finally: () => ([])
+      ]
     });
   };
 
@@ -113,10 +111,10 @@ function* watchFetchByIdRequest() {
     return saiyanSaga.fetch({
       method: 'get',
       path: `/v1/lookup/leaves/${action.payload.companyUid}/${action.payload.leaveUid}`,
-      success: (response: IApiResponse) => [
+      successEffects: (response: IApiResponse) => [
         put(leaveGetByIdSuccess(response.body)),
       ], 
-      failed: (response: IApiResponse) => [
+      failureEffects: (response: IApiResponse) => [
         put(leaveGetByIdError(response.statusText)),
         put(
           layoutAlertAdd({
@@ -126,7 +124,7 @@ function* watchFetchByIdRequest() {
           })
         )
       ], 
-      error: (error: TypeError) => [
+      errorEffects: (error: TypeError) => [
         put(leaveGetByIdError(error.message)),
         put(
           layoutAlertAdd({
@@ -134,8 +132,7 @@ function* watchFetchByIdRequest() {
             message: error.message,
           })
         )
-      ],
-      finally: () => ([])
+      ]
     });
   };
   
@@ -186,7 +183,7 @@ function* watchFetchByIdRequest() {
 //   yield takeEvery(Action.PUT_REQUEST, worker);
 // }
 
-function* leaveSagas() {
+function* lookupLeaveSagas() {
   yield all([
     fork(watchFetchAllRequest),
     fork(watchFetchListRequest),
@@ -195,4 +192,4 @@ function* leaveSagas() {
   ]);
 }
 
-export default leaveSagas;
+export default lookupLeaveSagas;

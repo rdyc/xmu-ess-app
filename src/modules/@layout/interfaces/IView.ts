@@ -1,5 +1,8 @@
+import AppMenu from '@constants/AppMenu';
+
 export interface IView { 
-  menuUid: string;
+  uid: AppMenu;
+  parentUid: AppMenu | undefined;
   title: string;
   subTitle: string;
 }

@@ -12,7 +12,7 @@ interface PropsFromState extends RouteComponentProps<void>, WithStyles<typeof st
 
 type AllProps = PropsFromState & ConnectedReduxProps;
 
-export const accountRouter: React.StatelessComponent<AllProps> = props => (
+export const accountRouter: React.SFC<AllProps> = props => (
   <Switch>
     <Route path={`${props.match.path}'/profile`} component={AccountProfilePage} />
     {/* <Route path={props.match.path + '/switch'} component={AccountSwitchPage} /> */}

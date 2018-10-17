@@ -65,9 +65,10 @@ jspm_packages/
 
 # others
 .vs
+.vscode
 /bin
 /obj/Debug
 /out
 
 # lock
-*lock.json
+package-lock.json

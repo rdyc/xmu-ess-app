@@ -20,13 +20,11 @@ function* watchFetchAllRequest() {
   const worker = (action: ReturnType<typeof mileageExceptionGetAllRequest>) => {
     return saiyanSaga.fetch({
       method: 'get',
-      path: `/v1/lookup/mileageexceptions${objectToQuerystring(
-        action.payload.filter
-      )}`,
-      success: (response: IApiResponse) => ([
+      path: `/v1/lookup/mileageexceptions${objectToQuerystring(action.payload.filter)}`,
+      successEffects: (response: IApiResponse) => ([
         put(mileageExceptionGetAllSuccess(response.body))
       ]),
-      failed: (response: IApiResponse) => ([
+      failureEffects: (response: IApiResponse) => ([
         put(mileageExceptionGetAllError(response.statusText)),
         put(
           layoutAlertAdd({
@@ -36,7 +34,7 @@ function* watchFetchAllRequest() {
           })
         )
       ]),
-      error: (error: TypeError) => ([
+      errorEffects: (error: TypeError) => ([
         put(mileageExceptionGetAllError(error.message)),
         put(
           layoutAlertAdd({
@@ -44,8 +42,7 @@ function* watchFetchAllRequest() {
             message: error.message
           })
         )
-      ]),
-      finally: () => ([])
+      ])
     });
   };
 
@@ -59,13 +56,11 @@ function* watchFetchListRequest() {
   ) => {
     return saiyanSaga.fetch({
       method: 'get',
-      path: `/v1/lookup/mileageexceptions/list${objectToQuerystring(
-        action.payload.filter
-      )}`,
-      success: (response: IApiResponse) => ([
+      path: `/v1/lookup/mileageexceptions/list${objectToQuerystring(action.payload.filter)}`,
+      successEffects: (response: IApiResponse) => ([
         put(mileageExceptionGetListSuccess(response.body))
       ]),
-      failed: (response: IApiResponse) => ([
+      failureEffects: (response: IApiResponse) => ([
         put(mileageExceptionGetListError(response.statusText)),
         put(
           layoutAlertAdd({
@@ -75,7 +70,7 @@ function* watchFetchListRequest() {
           })
         )
       ]),
-      error: (error: TypeError) => ([
+      errorEffects: (error: TypeError) => ([
         put(mileageExceptionGetListError(error.message)),
         put(
           layoutAlertAdd({
@@ -83,8 +78,7 @@ function* watchFetchListRequest() {
             message: error.message
           })
         )
-      ]),
-      finally: () => ([])
+      ])
     });
   };
 
@@ -101,10 +95,10 @@ function* watchFetchByIdRequest() {
       path: `/v1/lookup/mileageexceptions/${
         action.payload.mileageExceptionUid
       }`,
-      success: (response: IApiResponse) => ([
+      successEffects: (response: IApiResponse) => ([
         put(mileageExceptionGetByIdSuccess(response.body))
       ]),
-      failed: (response: IApiResponse) => ([
+      failureEffects: (response: IApiResponse) => ([
         put(mileageExceptionGetByIdError(response.statusText)),
         put(
           layoutAlertAdd({
@@ -114,7 +108,7 @@ function* watchFetchByIdRequest() {
           })
         )
       ]),
-      error: (error: TypeError) => ([
+      errorEffects: (error: TypeError) => ([
         put(mileageExceptionGetByIdError(error.message)),
         put(
           layoutAlertAdd({
@@ -122,15 +116,14 @@ function* watchFetchByIdRequest() {
             message: error.message
           })
         )
-      ]),
-      finally: () => ([])
+      ])
     });
   };
 
   yield takeEvery(Action.GET_BY_ID_REQUEST, worker);
 }
 
-function* mileageExceptionSagas() {
+function* lookupMileageExceptionSagas() {
   yield all([
     fork(watchFetchAllRequest),
     fork(watchFetchListRequest),
@@ -138,4 +131,4 @@ function* mileageExceptionSagas() {
   ]);
 }
 
-export default mileageExceptionSagas;
+export default lookupMileageExceptionSagas;
