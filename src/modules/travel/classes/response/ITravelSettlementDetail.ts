@@ -4,6 +4,7 @@ import { IBaseChanges } from '@generic/interfaces';
 import { ILookupCustomer } from '@lookup/classes';
 import { IOrganizationWorkflow } from '@organization/interfaces';
 import { IProject, IProjectSite } from '@project/classes/response';
+import { ITravelSettlementItem, ITravelSummary } from '@travel/classes/response';
 
 export interface ITravelSettlementDetail {
   uid: string; 
@@ -34,6 +35,6 @@ export interface ITravelSettlementDetail {
   histories?: History[];
   workflow?: IOrganizationWorkflow | null;
   changes?: IBaseChanges | null;
-  // items: ITravelSettlementItem[] | null;
-  // summary: ITravelSummary | null;
+  items: ITravelSettlementItem[] | null;
+  summary: ITravelSummary | null;
 }

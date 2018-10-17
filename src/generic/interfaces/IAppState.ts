@@ -8,6 +8,7 @@ import { ILookupState } from '@lookup/classes/states';
 import { IMileageState } from '@mileage/classes/states';
 import { IProjectState } from '@project/classes/states';
 import { ITimesheetState } from '@timesheet/classes/states';
+import { ITravelState } from '@travel/classes/states';
 import { FormStateMap } from 'redux-form';
 import { UserState } from 'redux-oidc';
 
@@ -18,7 +19,8 @@ export interface IAppState extends
   IProjectState, 
   ITimesheetState,
   IFinanceState, 
-  IMileageState {
+  IMileageState,
+  ITravelState {
   user: IUserState;
   layout: ILayoutState;
   appBar: IAppBarState;

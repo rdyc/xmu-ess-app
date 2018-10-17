@@ -10,12 +10,12 @@ import {
 } from '@travel/store/reducers';
 
 const travelReducers = {
-  travelGetAll: travelGetAllReducer,
-  travelGetByID: travelGetByIdReducer,
+  travelRequestGetAll: travelGetAllReducer,
+  travelRequestGetById: travelGetByIdReducer,
   travelPost: travelPostReducer,
   travelPut: travelPutReducer,
   travelSettlementGetAll: travelSettlementGetAllReducer,
-  travelSettlementGetByID: travelSettlementGetByIdReducer,
+  travelSettlementGetById: travelSettlementGetByIdReducer,
   travelSettlementPost: travelSettlementPostReducer,
   travelSettlementPut: travelSettlementPutReducer,
 };
