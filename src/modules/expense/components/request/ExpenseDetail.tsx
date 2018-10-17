@@ -38,6 +38,7 @@ import {
   withHandlers,
   withStateHandlers,
 } from 'recompose';
+import { isNullOrUndefined } from 'util';
 
 interface Handler {
   handleExpenseRefresh: () => void;
@@ -204,13 +205,17 @@ const requestDetail: React.SFC<AllProps> = props => {
           label={<FormattedMessage id="expense.field.notes" />}
           value={expense.notes || 'N/A'}
         />
-        <TextField
+        {!isNullOrUndefined(expense.rejectedReason) ?
+          <TextField
           fullWidth
           contentEditable={false}
           margin="normal"
+          hidden= {true}// {!isNullOrUndefined(expense.rejectedReason)}
           label={<FormattedMessage id="expense.field.rejectedReason" />}
           value={expense.rejectedReason || 'N/A'}
-        />
+        /> : ''
+        }
+        
       </CardContent>
     </Card>
   );
