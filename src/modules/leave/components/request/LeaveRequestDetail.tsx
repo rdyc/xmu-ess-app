@@ -298,11 +298,11 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, {}> = {
     const { 
       layoutDispatch, appBarDispatch, intl, 
       handleLeaveRequestRefresh, handleLeaveRequestModify,
-      match, apiRegistrationDetailGet
+      match, apiRequestDetailGet
     } = this.props;
 
     layoutDispatch.changeView({
-      uid: AppMenu.LeaveRequest,
+      uid: AppMenu.Leave,
       parentUid: AppMenu.LeaveRequest,
       title: intl.formatMessage({id: 'leaveRequest.detail.title'}),
       subTitle : intl.formatMessage({id: 'leaveRequest.detail.subTitle'})
@@ -328,7 +328,7 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, {}> = {
 
     appBarDispatch.assignCallback(handleMenuClick);
 
-    apiRegistrationDetailGet(match.params.leaveRequestUid);
+    apiRequestDetailGet(match.params.leaveRequestUid);
   },
   componentWillReceiveProps(nextProps: AllProps) {
     if (nextProps.leaveRequestDetailState.response !== this.props.leaveRequestDetailState.response) {

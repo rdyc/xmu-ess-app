@@ -181,7 +181,7 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, {}> = {
 
     layoutDispatch.changeView({
       uid: AppMenu.LeaveRequest,
-      parentUid: AppMenu.LeaveRequest,
+      parentUid: AppMenu.Leave,
       title: intl.formatMessage({id: 'leaveRequest.title'}),
       subTitle : intl.formatMessage({id: 'leaveRequest.subTitle'})
     });

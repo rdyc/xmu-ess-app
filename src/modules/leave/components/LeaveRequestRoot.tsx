@@ -1,7 +1,7 @@
 import { ConnectedReduxProps } from '@generic/types';
 import { IAppUser } from '@layout/interfaces';
-// import LeaveRequestDetail from '@leave/components/request/LeaveRequestDetail';
-// import LeaveRequestEditor from '@leave/components/request/LeaveRequestEditor';
+import LeaveRequestDetail from '@leave/components/request/LeaveRequestDetail';
+import LeaveRequestEditor from '@leave/components/request/LeaveRequestEditor';
 import LeaveRequestList from '@leave/components/request/LeaveRequestList';
 import { WithStyles } from '@material-ui/core';
 import styles from '@styles';
@@ -14,10 +14,10 @@ interface PropsFromState extends RouteComponentProps<void>, WithStyles<typeof st
 
 type AllProps = PropsFromState & ConnectedReduxProps;
 
-export const leaveRequestRoots: React.StatelessComponent<AllProps> = props => (
+export const LeaveRequestRoot: React.StatelessComponent<AllProps> = props => (
   <Switch>
     <Route path={`${props.match.path}/list/`} component={LeaveRequestList} />
-    {/* <Route path={`${props.match.path}/details/:leaveUid`} component={LeaveRequestDetail} />
-    <Route path={`${props.match.path}/form`} component={LeaveRequestEditor } /> */}
+    <Route path={`${props.match.path}/details/:leaveRequestUid`} component={LeaveRequestDetail} />
+    <Route path={`${props.match.path}/form`} component={LeaveRequestEditor } />
   </Switch>
 );

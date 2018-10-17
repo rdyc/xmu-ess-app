@@ -4,6 +4,10 @@ import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { ILeaveRequestPutPayload } from '@leave/classes/request';
+import {
+  LeaveRequestFormData,
+  RequestFormContainer,
+} from '@leave/components/request/forms/RequestFormContainer';
 import withApiLeaveRequestDetail, {
   WithApiLeaveRequestDetailHandler,
 } from '@leave/enhancers/request/withApiLeaveRequestDetail';
@@ -65,7 +69,7 @@ interface Handler {
   handleSubmitFail: (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => void;
 }
 
-const registrationEditor: React.SFC<AllProps> = props => {
+const requestEditor: React.SFC<AllProps> = props => {
   const { mode, handleValidate, handleSubmit, handleSubmitSuccess, handleSubmitFail } = props;
   const { isLoading, response } = props.leaveRequestDetailState;
 
@@ -136,8 +140,8 @@ const handlerCreators: HandleCreators<AllProps, Handler> = {
     
     return errors;
   },
-  handleSubmit: (props: AllProps) => (payload: LeaveRequestRegistrationFormData) => { 
-    const { mode, leaveRequestUid, apiRegistrationDetailPost, apiRegistrationDetailPut } = props;
+  handleSubmit: (props: AllProps) => (payload: LeaveRequestFormData) => { 
+    const { mode, leaveRequestUid, apiRequestDetailPost, apiRequestDetailPut } = props;
     const { user } = props.userState;
 
     if (!user) {
@@ -149,16 +153,16 @@ const handlerCreators: HandleCreators<AllProps, Handler> = {
       regularType: payload.information.regularType || 'n/a',
       start: payload.information.start || '',
       end: payload.information.end || '',
-      address: payload.information.address,
-      contactNumber: payload.information.contactNumber,
-      reason: payload.information.reason,
+      address: payload.information.address || 'n/a',
+      contactNumber: payload.information.contactNumber || 'n/a',
+      reason: payload.information.reason || 'n/a',
     });
 
     console.log(putPayload);
 
     if (mode === FormMode.New) {
       return new Promise((resolve, reject) => {
-        apiRegistrationDetailPost(leaveRequestUid, putPayload, resolve, reject);
+        apiRequestDetailPost(leaveRequestUid, putPayload, resolve, reject);
       });
     }
 
@@ -168,7 +172,7 @@ const handlerCreators: HandleCreators<AllProps, Handler> = {
 
     if (mode === FormMode.Edit) {
       return new Promise((resolve, reject) => {
-        apiRegistrationDetailPut(leaveRequestUid, putPayload, resolve, reject);
+        apiRequestDetailPut(leaveRequestUid, putPayload, resolve, reject);
       });
     }
 
@@ -209,12 +213,12 @@ const stateUpdaters: StateUpdaters<{}, State, Updaters> = {
 
 const lifecycles: ReactLifeCycleFunctions<AllProps, {}> = {
   componentDidMount() {
-    const { layoutDispatch, intl, history, stateUpdate, apiRegistrationDetailGet } = this.props;
+    const { layoutDispatch, intl, history, stateUpdate, apiRequestDetailGet } = this.props;
     const { user } = this.props.userState;
     
     const view = {
-      title: 'project.form.newTitle',
-      subTitle: 'project.form.newSubTitle',
+      title: 'leaveRequest.form.newTitle',
+      subTitle: 'leaveRequest.form.newSubTitle',
     };
 
     if (user) {
@@ -225,20 +229,20 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, {}> = {
     }
 
     if (!isNullOrUndefined(history.location.state)) {
-      view.title = 'project.form.editTitle';
-      view.subTitle = 'project.form.editSubTitle';
+      view.title = 'leaveRequest.form.editTitle';
+      view.subTitle = 'leaveRequest.form.editSubTitle';
 
       stateUpdate({ 
         mode: FormMode.Edit,
-        projectUid: history.location.state.uid
+        leaveRequestUid: history.location.state.uid
       });
 
-      apiRegistrationDetailGet(history.location.state.uid);
+      apiRequestDetailGet(history.location.state.uid);
     }
 
     layoutDispatch.changeView({
-      uid: AppMenu.ProjectRegistrationRequest,
-      parentUid: AppMenu.ProjectRegistration,
+      uid: AppMenu.LeaveRequest,
+      parentUid: AppMenu.Leave,
       title: intl.formatMessage({id: view.title}),
       subTitle : intl.formatMessage({id: view.subTitle})
     });
@@ -271,4 +275,4 @@ export default compose<AllProps, {}>(
   withHandlers<AllProps, Handler>(handlerCreators),
 
   lifecycle<AllProps, {}>(lifecycles),
-)(registrationEditor);
+)(requestEditor);

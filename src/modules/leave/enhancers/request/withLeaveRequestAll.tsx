@@ -16,8 +16,8 @@ const withLeaveRequestAll = (WrappedComponent: React.ComponentType) => {
   
   const withLeaveRequestAllWrapper: React.SFC<WithLeaveRequestAll> = props => <WrappedComponent {...props} />;
 
-  const mapStateToProps = ({ projectGetAll }: IAppState) => ({
-    projectAllState: projectGetAll
+  const mapStateToProps = ({ leaveRequestGetAll }: IAppState) => ({
+    leaveRequestAllState: leaveRequestGetAll
   });
 
   return compose<WithLeaveRequestAll, {}>(

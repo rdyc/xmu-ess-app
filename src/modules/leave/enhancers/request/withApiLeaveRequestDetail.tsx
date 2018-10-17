@@ -9,8 +9,8 @@ import { compose, HandleCreators, lifecycle, ReactLifeCycleFunctions, setDisplay
 import { Dispatch } from 'redux';
 
 export interface WithApiLeaveRequestDetailHandler {
-  apiRegistrationDetailGet: (leaveRequestUid: string) => void;
-  apiRegistrationDetailPut: (leaveRequestUid: string, payload: ILeaveRequestPutPayload, resolve: any, reject: any) => void;
+  apiRequestDetailGet: (leaveRequestUid: string) => void;
+  apiRequestDetailPut: (leaveRequestUid: string, payload: ILeaveRequestPutPayload, resolve: any, reject: any) => void;
 }
 
 interface Dispatcher {
@@ -28,12 +28,12 @@ type AllProps
   & WithUser;
 
 const withApiLeaveRequestDetail = (WrappedComponent: React.ComponentType) => { 
-  const displayName = `LoadDetailRegistration(${WrappedComponent.displayName || WrappedComponent.name || 'Component'})`;
+  const displayName = `LoadDetailRequest(${WrappedComponent.displayName || WrappedComponent.name || 'Component'})`;
   
   const withApiLeaveRequestDetailWrapper: React.SFC<AllProps> = props => <WrappedComponent {...props} />;
 
   const handlerCreators: HandleCreators<AllProps, WithApiLeaveRequestDetailHandler> = {
-    apiRegistrationDetailGet: (props: AllProps) => (leaveRequestUid: string) => { 
+    apiRequestDetailGet: (props: AllProps) => (leaveRequestUid: string) => { 
       const { user } = props.userState;
       const { getByIdRequest } = props.leaveRequestDetailDispatch;
 
@@ -45,7 +45,7 @@ const withApiLeaveRequestDetail = (WrappedComponent: React.ComponentType) => {
         }); 
       }
     },
-    apiRegistrationDetailPut: (props: AllProps) => (leaveRequestUid: string, payload: ILeaveRequestPutPayload, resolve: any, reject: any) => { 
+    apiRequestDetailPut: (props: AllProps) => (leaveRequestUid: string, payload: ILeaveRequestPutPayload, resolve: any, reject: any) => { 
       const { user } = props.userState;
       const { putRequest } = props.leaveRequestDetailDispatch;
 
