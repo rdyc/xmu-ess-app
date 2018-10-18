@@ -1,4 +1,4 @@
-import { IExpenseApprovalGetByIdRequest } from '@expense/classes/queries';
+import { IExpenseApprovalGetByIdRequest } from '@expense/classes/queries/request';
 import withExpenseApprovalDetail from '@expense/enhancers/request/withExpenseDetail';
 import { expenseApprovalGetByIdDispose, expenseApprovalGetByIdRequest } from '@expense/store/actions';
 import { withUser, WithUser } from '@layout/hoc/withUser';

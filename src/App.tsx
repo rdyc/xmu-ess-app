@@ -14,7 +14,7 @@ import { Route, Router, Switch } from 'react-router';
 import { Store } from 'redux';
 import { loadUser, OidcProvider, UserState } from 'redux-oidc';
 
-import { ExpenseRoute } from '@expense/components/ExpenseRoute';
+import { ExpenseRouter } from '@expense/components/ExpenseRouter';
 import { IAppState } from './generic/interfaces';
 import AppLocale from './language';
 import config, { getCurrentLanguage } from './language/config';
@@ -80,7 +80,7 @@ class App extends React.Component<AllProps> {
                         <Route path="/home" component={HomePage} />
                         <Route path="/account" component={accountRouter} />
                         <Route path="/project" component={projectRouter} />
-                        <Route path="/expense" component={ExpenseRoute} />
+                        <Route path="/expense" component={ExpenseRouter} />
                       </Layout>
                     </Switch>
                   )}

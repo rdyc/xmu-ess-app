@@ -1,5 +1,5 @@
 import AppMenu from '@constants/AppMenu';
-import { IExpenseClientPutPayload, IExpensePutPayload } from '@expense/classes/request';
+import { IExpenseClientPutPayload, IExpensePutPayload } from '@expense/classes/request/request';
 import {
   ExpenseFormData,
   RequestFormContainer,

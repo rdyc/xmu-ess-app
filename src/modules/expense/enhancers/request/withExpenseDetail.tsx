@@ -1,4 +1,4 @@
-import { IExpenseGetByIdRequest } from '@expense/classes/queries';
+import { IExpenseGetByIdRequest } from '@expense/classes/queries/request';
 import { IExpenseDetail } from '@expense/classes/response';
 import { IAppState, IQuerySingleState } from '@generic/interfaces';
 import * as React from 'react';

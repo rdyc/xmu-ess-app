@@ -1,5 +1,5 @@
 import AppMenu from '@constants/AppMenu';
-import { IExpenseApprovalGetAllRequest } from '@expense/classes/queries';
+import { IExpenseApprovalGetAllRequest } from '@expense/classes/queries/request';
 import withExpenseApprovalAll, { WithExpenseApprovalAll } from '@expense/enhancers/approval/withExpenseApprovalAll';
 import { expenseApprovalGetAllDispose, expenseApprovalGetAllRequest } from '@expense/store/actions';
 import { SortDirection } from '@generic/types';

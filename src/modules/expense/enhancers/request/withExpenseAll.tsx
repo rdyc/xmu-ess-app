@@ -1,4 +1,4 @@
-import { IExpenseGetAllRequest } from '@expense/classes/queries';
+import { IExpenseGetAllRequest } from '@expense/classes/queries/request';
 import { IExpense } from '@expense/classes/response';
 import { IAppState, IQueryCollectionState } from '@generic/interfaces';
 import * as React from 'react';

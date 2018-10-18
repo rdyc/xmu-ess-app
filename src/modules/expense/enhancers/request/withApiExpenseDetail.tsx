@@ -1,5 +1,5 @@
-import { IExpenseGetByIdRequest, IExpensePutRequest } from '@expense/classes/queries';
-import { IExpensePutPayload } from '@expense/classes/request';
+import { IExpenseGetByIdRequest, IExpensePutRequest } from '@expense/classes/queries/request';
+import { IExpensePutPayload } from '@expense/classes/request/request';
 import withExpenseDetail from '@expense/enhancers/request/withExpenseDetail';
 import { expenseGetByIdDispose, expenseGetByIdRequest, expensePutDispose, expensePutRequest } from '@expense/store/actions';
 import { withUser, WithUser } from '@layout/hoc/withUser';

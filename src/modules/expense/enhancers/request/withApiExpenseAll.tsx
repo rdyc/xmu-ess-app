@@ -1,5 +1,5 @@
 import AppMenu from '@constants/AppMenu';
-import { IExpenseGetAllRequest } from '@expense/classes/queries';
+import { IExpenseGetAllRequest } from '@expense/classes/queries/request';
 import withExpenseAll, { WithExpenseAll } from '@expense/enhancers/request/withExpenseAll';
 import { expenseGetAllDispose, expenseGetAllRequest } from '@expense/store/actions';
 import { SortDirection } from '@generic/types';
