@@ -32,6 +32,7 @@ export const RegistrationDetailView: React.SFC<RegistrationDetailProps> = props 
     dialogFullScreen, dialogOpen, dialogTitle, dialogDescription, dialogCancelText, dialogConfirmedText,
     handleDialogClose, handleDialogConfirmed, intl
   } = props;
+  
   const { isLoading, response } = props.projectRegisterState.detail;
 
   const renderDialog = (
@@ -78,14 +79,7 @@ export const RegistrationDetailView: React.SFC<RegistrationDetailProps> = props 
           fullWidth
           contentEditable={false}
           margin="normal"
-          label={<FormattedMessage id="project.field.information.status" />}
-          value={project.status ? project.status.value : 'N/A'}
-        />
-        <TextField
-          fullWidth
-          contentEditable={false}
-          margin="normal"
-          label={<FormattedMessage id="project.field.information.owner" />}
+          label={<FormattedMessage id="project.field.information.ownerEmployeeUid" />}
           value={project.owner ? project.owner.fullName : 'N/A'}
         />
         <TextField

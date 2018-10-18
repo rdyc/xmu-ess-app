@@ -7,6 +7,7 @@ import { InputDateView } from './InputDateView';
 interface OwnProps extends WrappedFieldProps, BaseFieldProps { 
   dateFormat?: string | undefined;
   type?: string; 
+  required?: boolean;
   label: string; 
   disabled: boolean; 
 }

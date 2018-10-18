@@ -1,102 +1,24 @@
-import { SelectSystem } from '@common/components/select';
-import { InputDate } from '@layout/components/input/date';
-import { InputNumber } from '@layout/components/input/number';
-import { InputText } from '@layout/components/input/text';
-import { InputCustomer } from '@lookup/components/customer/input';
+import { FormMode } from '@generic/types';
 import { Card, CardContent, CardHeader } from '@material-ui/core';
 import { RegistrationDetailFormProps } from '@project/components/registration/editor/forms/RegistrationDetailForm';
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Field } from 'redux-form';
-import { isNullOrUndefined } from 'util';
 
 export const RegistrationDetailFormView: React.SFC<RegistrationDetailFormProps> = props => {
+  const { formMode } = props;
   const { names } = props.context;
-  const { intl, formCurrencyType, isCurrencyIdr, onChangeCurrencyType, onChangeValueIdr, onChangeRate } = props;
-
+  
   const renderField = (name: string) => {
     const fieldName = name.replace('information.', '');
-    
-    let fieldProps = {};
-  
-    switch (fieldName) {
-      case 'customerUid': 
-        fieldProps = {
-          type: 'text',
-          placeholder: intl.formatMessage({id: `project.field.${name}.placeholder`}),
-          component: InputCustomer
-        };
-        break;
-      
-      case 'projectType':
-        fieldProps = {
-          category: 'project',
-          placeholder: intl.formatMessage({id: `project.field.${name}.placeholder`}),
-          component: SelectSystem
-        };
-        break;
-  
-      case 'currencyType': 
-        fieldProps = {
-          category: 'currency',
-          placeholder: intl.formatMessage({id: `project.field.${name}.placeholder`}),
-          component: SelectSystem,
-          onChange: onChangeCurrencyType
-        };
-        break;
-      
-      case 'start': 
-        fieldProps = {
-          type: 'text',
-          placeholder: intl.formatMessage({id: `project.field.${name}.placeholder`}),
-          component: InputDate
-        };
-        break;
-        
-      case 'end': 
-        fieldProps = {
-          type: 'text',
-          placeholder: intl.formatMessage({id: `project.field.${name}.placeholder`}),
-          component: InputDate
-        };
-        break;
-      
-      case 'rate':
-        fieldProps = {
-          type: 'number',
-          placeholder: intl.formatMessage({id: `project.field.${name}.placeholder`}),
-          disabled: isCurrencyIdr || isNullOrUndefined(formCurrencyType),
-          component: InputNumber,
-          onChange: onChangeRate
-        };
-        break;
+    const fieldProps = props.generateFieldProps(name);
 
-      case 'valueUsd':
-        fieldProps = {
-          type: 'number',
-          placeholder: intl.formatMessage({id: `project.field.${name}.placeholder`}),
-          component: InputNumber,
-          onChange: onChangeValueIdr
-        };
-        break;
-
-      case 'valueIdr':
-        fieldProps = {
-          type: 'number',
-          disabled: true,
-          component: InputNumber
-        };
-        break;
-    
-      default:
-        fieldProps = {
-          type: 'text',
-          placeholder: intl.formatMessage({id: `project.field.${name}.placeholder`}),
-          component: InputText
-        };
-        break;
+    // don't show uid & ownerEmployeeUid for new form
+    const fields = ['uid', 'ownerEmployeeUid'];
+    if (formMode === FormMode.New && fields.indexOf(fieldName) !== -1) {
+      return null;
     }
-  
+
     return (
       <Field
         key={fieldName}
@@ -106,7 +28,7 @@ export const RegistrationDetailFormView: React.SFC<RegistrationDetailFormProps> 
       />
     );
   };
-    
+
   const render = (
     <Card square>
       <CardHeader 

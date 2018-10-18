@@ -4,7 +4,8 @@ import { BaseFieldProps, WrappedFieldProps } from 'redux-form';
 import { InputNumberView } from './InputNumberView';
 
 interface OwnProps extends WrappedFieldProps, BaseFieldProps { 
-  type?: string; 
+  type?: string;
+  required?: boolean;
   placeholder?: string;
   label: string; 
   disabled: boolean; 

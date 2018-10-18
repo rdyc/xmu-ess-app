@@ -9,11 +9,12 @@ import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 
 export const RegistrationEditorView: React.SFC<RegistrationEditorProps> = props => {
-  const { mode, handleValidate, handleSubmit, handleSubmitSuccess, handleSubmitFail } = props;
+  const { formMode, handleValidate, handleSubmit, handleSubmitSuccess, handleSubmitFail } = props;
   const { isLoading, response } = props.projectRegisterState.detail;
 
   const renderForm = (formData: ProjectRegistrationFormData) => (
     <RegistrationForm 
+      formMode={formMode}
       initialValues={formData}
       validate={handleValidate}
       onSubmit={handleSubmit} 
@@ -25,6 +26,8 @@ export const RegistrationEditorView: React.SFC<RegistrationEditorProps> = props 
   // init form values
   const initialValues: ProjectRegistrationFormData = {
     information: {
+      uid: undefined,
+      ownerEmployeeUid: undefined,
       customerUid: undefined,
       projectType: undefined,
       contractNumber: undefined,
@@ -47,12 +50,12 @@ export const RegistrationEditorView: React.SFC<RegistrationEditorProps> = props 
   };
 
   // New
-  if (mode === FormMode.New) {
+  if (formMode === FormMode.New) {
     return renderForm(initialValues);
   }
 
   // Modify
-  if (mode === FormMode.Edit) {
+  if (formMode === FormMode.Edit) {
     if (isLoading && !response) {
       return (
         <Typography variant="body2">
@@ -65,6 +68,8 @@ export const RegistrationEditorView: React.SFC<RegistrationEditorProps> = props 
       // todo: replace values with response data
       const data = response.data;
 
+      initialValues.information.uid = data.uid;
+      initialValues.information.ownerEmployeeUid = data.owner ? data.owner.fullName : data.ownerEmployeeUid;
       initialValues.information.customerUid = data.customerUid;
       initialValues.information.projectType = data.projectType;
       initialValues.information.contractNumber = data.contractNumber;

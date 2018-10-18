@@ -1,4 +1,5 @@
 import { ProjectType } from '@common/classes/types';
+import { FormMode } from '@generic/types';
 import { RegistrationFormView } from '@project/components/registration/editor/forms/RegistrationFormView';
 import { connect } from 'react-redux';
 import { formValueSelector, InjectedFormProps, reduxForm } from 'redux-form';
@@ -18,6 +19,8 @@ export type ProjectSalesFormData = {
 
 export type ProjectRegistrationFormData = {
   information: {
+    uid: string | null | undefined;
+    ownerEmployeeUid: string | null | undefined;
     customerUid: string | null | undefined;
     projectType: string | null | undefined;
     contractNumber: string | null | undefined;
@@ -39,6 +42,10 @@ export type ProjectRegistrationFormData = {
   }
 };
 
+interface OwnProps {
+  formMode: FormMode;
+}
+
 interface FormValueProps {
   formIsProject: boolean | false;
   formIsPresales: boolean | false;
@@ -49,8 +56,9 @@ interface FormValueProps {
 }
 
 export type RegistrationFormProps 
-  = InjectedFormProps<ProjectRegistrationFormData> 
-  & FormValueProps;
+  = InjectedFormProps<ProjectRegistrationFormData, OwnProps> 
+  & FormValueProps
+  & OwnProps;
 
 const selector = formValueSelector(formName);
 
@@ -72,7 +80,7 @@ const mapStateToProps = (state: any): FormValueProps => {
 
 const connectedView = connect(mapStateToProps)(RegistrationFormView);
 
-export const RegistrationForm = reduxForm<ProjectRegistrationFormData>({
+export const RegistrationForm = reduxForm<ProjectRegistrationFormData, OwnProps>({
   form: formName,
   touchOnChange: true,
   touchOnBlur: true,

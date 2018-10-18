@@ -9,7 +9,7 @@ import { isNullOrUndefined } from 'util';
 import { InputDateProps } from './InputDate';
 
 export const InputDateView: React.SFC<InputDateProps> = props => {
-  const { dateFormat, input, label, disabled, meta, intl } = props;
+  const { dateFormat, input, required, label, disabled, meta, intl } = props;
 
   const labelFunction = (date: MaterialUiPickersDate, invalidLabel: string): string => {
     let result: string = invalidLabel;
@@ -36,6 +36,7 @@ export const InputDateView: React.SFC<InputDateProps> = props => {
       format={input.value ? dateFormat || 'MMM DD, YYYY' : undefined}
       {...input}
       label={label}
+      required={required}
       disabled={disabled || meta.submitting}
       error={meta.touched && !isNullOrUndefined(meta.error)}
       helperText={meta.touched && meta.error}

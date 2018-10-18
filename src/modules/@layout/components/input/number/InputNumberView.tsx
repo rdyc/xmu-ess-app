@@ -7,7 +7,7 @@ import { isNullOrUndefined } from 'util';
 import { InputNumberProps } from './InputNumber';
 
 export const InputNumberView: React.SFC<InputNumberProps> = props => {
-  const { input, label, disabled, meta, placeholder, value } = props;
+  const { input, label, required, disabled, meta, placeholder, value } = props;
   
   let x = value;
 
@@ -31,6 +31,7 @@ export const InputNumberView: React.SFC<InputNumberProps> = props => {
       label={label}
       placeholder={placeholder}
       value={value}
+      required={required}
       disabled={disabled || meta.submitting}
       error={meta.touched && !isNullOrUndefined(meta.error)}
       helperText={meta.touched && meta.error}

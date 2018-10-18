@@ -66,13 +66,25 @@ const lifecycles: ReactLifeCycleFunctions<DocumentFormProps, {}> = {
 
     if (category === 'project') {
       if (!commonDocumentListState.isLoading && !commonDocumentListState.response) {
-        commonDispatch.documentListRequest({category: 'document'});
+        commonDispatch.documentListRequest({
+          category: 'document',
+          filter: {
+            orderBy: 'code',
+            direction: 'ascending'
+          }
+        });
       }
     }
 
     if (category === 'preSales') {
       if (!commonDocumentPresalesListState.isLoading && !commonDocumentPresalesListState.response) {
-        commonDispatch.documentPresalesListRequest({category: 'documentPreSales'});
+        commonDispatch.documentPresalesListRequest({
+          category: 'documentPreSales',
+          filter: {
+            orderBy: 'code',
+            direction: 'ascending'
+          }
+        });
       }
     }
   }

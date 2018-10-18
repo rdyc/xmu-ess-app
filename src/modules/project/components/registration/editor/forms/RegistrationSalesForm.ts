@@ -1,6 +1,7 @@
 import { IEmployee } from '@account/classes/response';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
+import { WithVariables, withVariables } from '@layout/hoc/withVariables';
 import { WithStyles, withStyles } from '@material-ui/core';
 import withWidth, { WithWidth } from '@material-ui/core/withWidth';
 import { ProjectSalesFormData } from '@project/components/registration/editor/forms/RegistrationForm';
@@ -25,6 +26,7 @@ export type RegistrationSalesFormProps
    & WithLayout
    & WithStyles
    & WithWidth
+   & WithVariables
    & InjectedIntlProps;
 
 const handlerCreators: HandleCreators<RegistrationSalesFormProps, OwnHandlers> = {
@@ -69,6 +71,7 @@ export const RegistrationSalesForm = compose<RegistrationSalesFormProps, OwnProp
   withLayout,
   withStyles(styles),
   withWidth(),
+  withVariables,
   injectIntl,
   withHandlers<RegistrationSalesFormProps, OwnHandlers>(handlerCreators),
 )(RegistrationSalesFormView);

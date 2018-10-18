@@ -7,7 +7,7 @@ import { isNullOrUndefined } from 'util';
 import { SelectSystemProps } from './SelectSystem';
 
 export const SelectSystemView: React.SFC<SelectSystemProps> = props => {
-  const { width, input, label, placeholder, disabled, meta } = props;
+  const { width, input, required, label, placeholder, disabled, meta, onlyForTypes } = props; 
   const { response } = props.categoryState();
   
   const isMobile = isWidthDown('sm', width);
@@ -17,6 +17,14 @@ export const SelectSystemView: React.SFC<SelectSystemProps> = props => {
     <MenuItem value=""></MenuItem>;
 
   const renderItem = (item: ISystemList) => {
+    // don't add option when the type has been set in specific types
+    if (onlyForTypes) {
+      if (onlyForTypes.indexOf(item.type) === -1) {
+        return null;
+      }
+    }
+
+    // render as native
     if (isMobile) {
       return (
         <option key={item.id} value={item.type}>
@@ -25,6 +33,7 @@ export const SelectSystemView: React.SFC<SelectSystemProps> = props => {
       );
     } 
 
+    // render as material-ui
     if (!isMobile) {
       return (
         <MenuItem key={item.id} value={item.type}>
@@ -42,6 +51,7 @@ export const SelectSystemView: React.SFC<SelectSystemProps> = props => {
       fullWidth
       margin="normal"
       {...input}
+      required={required}
       label={label}
       placeholder={placeholder}
       disabled={disabled || meta.submitting}

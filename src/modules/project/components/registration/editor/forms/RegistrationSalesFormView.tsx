@@ -21,7 +21,7 @@ import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 
 export const RegistrationSalesFormView: React.SFC<RegistrationSalesFormProps> = props => {
-  const { classes, width, context, handleSelected } = props;
+  const { classes, width, context, handleSelected, roleSalesUids } = props;
   const { user } = props.userState;
   
   const render = (
@@ -65,6 +65,7 @@ export const RegistrationSalesFormView: React.SFC<RegistrationSalesFormProps> = 
             <ListItemEmployeeSelector
               width={width}
               companyUids={user && [user.company.uid]}
+              roleUids={roleSalesUids}
               onSelected={(employee: IEmployee) => handleSelected(employee)}
             />
           </List>

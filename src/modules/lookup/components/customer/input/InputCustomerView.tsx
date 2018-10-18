@@ -7,7 +7,7 @@ import { InputCustomerProps } from './InputCustomer';
 
 export const InputCustomerView: React.SFC<InputCustomerProps> = props => {
   const { 
-    input, disabled, label, meta, isOpen, getValueName, 
+    input, required, disabled, label, meta, isOpen, getValueName, 
     handleDialogClose, handleDialogOpen, handleSelected
   } = props;
   const { user } = props.userState;
@@ -22,6 +22,7 @@ export const InputCustomerView: React.SFC<InputCustomerProps> = props => {
         name={input.name}
         label={label}
         value={value}
+        required={required}
         disabled={disabled || meta.submitting}
         error={meta.touched && !isNullOrUndefined(meta.error) ? true : false}
         helperText={meta.touched && meta.error}

@@ -5,7 +5,8 @@ import { InputTextView } from './InputTextView';
 
 interface OwnProps extends WrappedFieldProps, BaseFieldProps { 
   type?: string; 
-  placeholder?: string; 
+  placeholder?: string;
+  required?: boolean;
   label: string; 
   disabled: boolean; 
 }

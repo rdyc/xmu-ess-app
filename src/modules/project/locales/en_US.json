@@ -30,6 +30,7 @@
   "project.dialog.manageSiteDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
   
   "project.field.information.uid": "PID",
+  "project.field.information.uid.placeholder": "PID",
   "project.field.information.name": "Name",
   "project.field.information.name.required": "Project name is required",
   "project.field.information.name.placeholder": "Type a project name",
@@ -50,7 +51,9 @@
   "project.field.information.end.placeholder": "Select a project end date",
   "project.field.information.contractNumber": "PO/Contract No.",
   "project.field.information.contractNumber.placeholder": "Type a contract number",
-  "project.field.information.owner": "Project Owner",
+  "project.field.information.ownerEmployeeUid": "Project Owner",
+  "project.field.information.ownerEmployeeUid.required": "Project owner is required",
+  "project.field.information.ownerEmployeeUid.placeholder": "Choose a people",
   "project.field.information.currencyType": "Currency",
   "project.field.information.currencyType.required": "Curreny is required",
   "project.field.information.currencyType.placeholder": "Select a currency type",

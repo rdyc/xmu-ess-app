@@ -9,9 +9,14 @@ import { BaseFieldProps, WrappedFieldProps } from 'redux-form';
 
 import { SelectSystemView } from './SelectSystemView';
 
-interface OwnProps extends WrappedFieldProps, BaseFieldProps { 
+export interface SelectSystemOption {
+  onlyForTypes?: string[] | undefined;
+}
+
+interface OwnProps extends SelectSystemOption, WrappedFieldProps, BaseFieldProps { 
   category: CommonCategoryType;
   companyUid?: string | undefined; 
+  required?: boolean;
   placeholder?: string;
   label: string; 
   disabled: boolean;
@@ -29,22 +34,22 @@ export type SelectSystemProps
 
 const lifecycles: ReactLifeCycleFunctions<SelectSystemProps, OwnProps> = {
   componentDidMount() {
-    const { category, companyUid, disabled, commonDispatch } = this.props;
+    const { category, companyUid, commonDispatch } = this.props;
     const { isLoading, response } = this.props.categoryState();
 
     // skipp fetch while current state is being loaded
     if (isLoading || response) {
       return;
     }
-
+    
     // don't load while control has set as disabled
-    if (!disabled) {
+    if (true) {
       const request: ISystemListRequest = {
         category,
         filter: {
           companyUid,
-          direction: 'ascending',
-          orderBy: 'value'
+          orderBy: 'code',
+          direction: 'ascending'
         }
       };
 

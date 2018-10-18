@@ -24,6 +24,7 @@ interface Customer {
 interface OwnProps extends WrappedFieldProps, BaseFieldProps { 
   label: string; 
   disabled: boolean;
+  required?: boolean;
   initialValue?: Customer | undefined;
 }
 

@@ -47,7 +47,7 @@ interface OwnRouteParams {
 }
 
 interface OwnState {
-  mode: FormMode;
+  formMode: FormMode;
   companyUid?: string | undefined;
   positionUid?: string | undefined;
   projectUid?: string | undefined;
@@ -88,7 +88,7 @@ const handlerCreators: HandleCreators<RegistrationEditorProps, OwnHandlers> = {
     return errors;
   },
   handleSubmit: (props: RegistrationEditorProps) => (formData: ProjectRegistrationFormData) => { 
-    const { mode, projectUid, intl } = props;
+    const { formMode, projectUid, intl } = props;
     const { user } = props.userState;
     const { response } = props.projectRegisterState.detail;
     const { createRequest, updateRequest } = props.projectRegisterDispatch;
@@ -172,7 +172,7 @@ const handlerCreators: HandleCreators<RegistrationEditorProps, OwnHandlers> = {
     };
 
     // creating
-    if (mode === FormMode.New) {
+    if (formMode === FormMode.New) {
       return new Promise((resolve, reject) => {
         createRequest({
           resolve, 
@@ -191,7 +191,7 @@ const handlerCreators: HandleCreators<RegistrationEditorProps, OwnHandlers> = {
       return Promise.reject(message);
     }
 
-    if (mode === FormMode.Edit) {
+    if (formMode === FormMode.Edit) {
       return new Promise((resolve, reject) => {
         updateRequest({
           projectUid, 
@@ -207,16 +207,16 @@ const handlerCreators: HandleCreators<RegistrationEditorProps, OwnHandlers> = {
     return null;
   },
   handleSubmitSuccess: (props: RegistrationEditorProps) => (response: IProject) => {
-    const { mode, intl, history } = props;
+    const { formMode, intl, history } = props;
     const { alertAdd } = props.layoutDispatch;
     
     let message: string = '';
 
-    if (mode === FormMode.New) {
+    if (formMode === FormMode.New) {
       message = intl.formatMessage(projectRegistrationMessage.createSuccess, { uid: response.uid });
     }
 
-    if (mode === FormMode.Edit) {
+    if (formMode === FormMode.Edit) {
       message = intl.formatMessage(projectRegistrationMessage.updateSuccess, { uid: response.uid });
     }
 
@@ -228,7 +228,7 @@ const handlerCreators: HandleCreators<RegistrationEditorProps, OwnHandlers> = {
     history.push('/project/list');
   },
   handleSubmitFail: (props: RegistrationEditorProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
-    const { mode, intl } = props;
+    const { formMode, intl } = props;
     const { alertAdd } = props.layoutDispatch;
     
     if (errors) {
@@ -241,11 +241,11 @@ const handlerCreators: HandleCreators<RegistrationEditorProps, OwnHandlers> = {
       // another errors from server
       let message: string = '';
 
-      if (mode === FormMode.New) {
+      if (formMode === FormMode.New) {
         message = intl.formatMessage(projectRegistrationMessage.createFailure);
       }
 
-      if (mode === FormMode.Edit) {
+      if (formMode === FormMode.Edit) {
         message = intl.formatMessage(projectRegistrationMessage.updateFailure);
       }
 
@@ -259,7 +259,7 @@ const handlerCreators: HandleCreators<RegistrationEditorProps, OwnHandlers> = {
 };
 
 const createProps: mapper<RegistrationEditorProps, OwnState> = (props: RegistrationEditorProps): OwnState => ({ 
-  mode: FormMode.New
+  formMode: FormMode.New
 });
 
 const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
@@ -294,7 +294,7 @@ const lifecycles: ReactLifeCycleFunctions<RegistrationEditorProps, {}> = {
       view.subTitle = 'project.form.editSubTitle';
 
       stateUpdate({ 
-        mode: FormMode.Edit,
+        formMode: FormMode.Edit,
         projectUid: history.location.state.uid
       });
 
