@@ -6,12 +6,12 @@ export interface IMileageRequestItem {
   uid: string;
   date: string;
   customerUid: string;
-  customer?: ILookupCustomer | null;
+  customer: ILookupCustomer | null;
   projectUid: string;
-  project?: IProject | null;
+  project: IProject | null;
   siteUid: string;
-  site?: IProjectSite | null;
+  site: IProjectSite | null;
   amount: string;
   statusType: string;
-  status?: ICommonSystem | null;
+  status: ICommonSystem | null;
 }

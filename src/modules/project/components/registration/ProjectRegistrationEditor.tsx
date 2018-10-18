@@ -96,7 +96,7 @@ const registrationEditor: React.SFC<AllProps> = props => {
       end: undefined,
       currencyType: undefined,
       rate: 1,
-      valueUsd: 9,
+      valueUsd: 0,
       valueIdr: 0,
     },
     document: {

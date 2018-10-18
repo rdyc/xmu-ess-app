@@ -1,15 +1,12 @@
 import { ICommonSystem } from '@common/classes';
 import { IBaseChanges } from '@generic/interfaces';
-import {
-  ILookupProject,
-  ILookupProjectSite,
-  ILookupRole
-} from '@lookup/classes';
+import { ILookupProject, ILookupProjectSite } from '@lookup/classes';
+import { IRoleList } from '@lookup/classes/response';
 
 export interface IMileageExceptionDetail {
   uid: string;
   roleUid: string;
-  role: ILookupRole;
+  role: IRoleList;
   projectUid?: string | null;
   project?: ILookupProject | null;
   projectSiteUid?: string | null;

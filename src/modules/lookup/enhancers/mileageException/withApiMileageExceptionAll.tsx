@@ -3,14 +3,16 @@ import { SortDirection } from '@generic/types';
 import { withLayout, WithLayout } from '@layout/hoc/withLayout';
 import { withUser, WithUser } from '@layout/hoc/withUser';
 import { IListBarField } from '@layout/interfaces';
-import { IMileageRequestGetAllRequest } from '@mileage/classes/queries';
-import withMileageRequestAll, {
-  WithMileageRequestAll
-} from '@mileage/enhancers/request/withMileageRequestAll';
+
+import { IMileageExceptionAllRequest } from '@lookup/classes/queries';
+import withMileageExceptionAll, {
+  WithMileageExceptionAll
+} from '@lookup/enhancers/mileageException/withMileageExceptionAll';
 import {
-  mileagerequestGetAllDispose,
-  mileagerequestGetAllRequest
-} from '@mileage/store/actions';
+  mileageExceptionGetAllDispose,
+  mileageExceptionGetAllRequest
+} from '@lookup/store/actions';
+
 import * as React from 'react';
 import { connect } from 'react-redux';
 import {
@@ -28,7 +30,7 @@ import {
 } from 'recompose';
 import { Dispatch } from 'redux';
 
-export interface WithApiMileageRequestAllHandler {
+export interface WithApiMileageExceptionAllHandler {
   handleSync: () => void;
   handleNext: () => void;
   handlePrev: () => void;
@@ -37,7 +39,7 @@ export interface WithApiMileageRequestAllHandler {
   handleSort: (direction: SortDirection) => void;
 }
 
-interface WithApiMileageRequestAllOptions {
+interface WithApiMileageExceptionAllOptions {
   orderBy?: string | undefined;
   direction?: string | undefined;
   page?: number | undefined;
@@ -61,33 +63,33 @@ interface Updaters extends StateHandlerMap<State> {
 }
 
 interface Dispatcher {
-  mileagerequestAllDispatch: {
-    getAllRequest: typeof mileagerequestGetAllRequest;
-    getAllDispose: typeof mileagerequestGetAllDispose;
+  mileageExceptionAllDispatch: {
+    getAllRequest: typeof mileageExceptionGetAllRequest;
+    getAllDispose: typeof mileageExceptionGetAllDispose;
   };
 }
 
-type AllProps = WithApiMileageRequestAllOptions &
+type AllProps = WithApiMileageExceptionAllHandler &
   Dispatcher &
   State &
   Updaters &
   WithUser &
   WithLayout &
-  WithMileageRequestAll;
+  WithMileageExceptionAll;
 
-const withApiMileageRequestAll = (
-  options?: WithApiMileageRequestAllOptions
+const withApiMileageExceptionAll = (
+  options?: WithApiMileageExceptionAllOptions
 ) => (WrappedComponent: React.ComponentType) => {
-  const displayName = `WithApiMileageRequestAll(${WrappedComponent.displayName ||
+  const displayName = `WithApiMileageExceptionAll(${WrappedComponent.displayName ||
     WrappedComponent.name ||
     'Component'})`;
 
-  const withApiMileageRequestAllWrapper: React.SFC<AllProps> = props => (
+  const withApiMileageExceptionAllWrapper: React.SFC<AllProps> = props => (
     <WrappedComponent {...props} />
   );
 
   const createProps: mapper<AllProps, State> = (props: AllProps): State => {
-    const { request } = props.mileagerequestAllState;
+    const { request } = props.mileageExceptionAllState;
 
     return {
       orderBy:
@@ -108,7 +110,7 @@ const withApiMileageRequestAll = (
   };
 
   const stateUpdaters: StateUpdaters<
-    WithApiMileageRequestAllOptions,
+    WithApiMileageExceptionAllOptions,
     State,
     Updaters
   > = {
@@ -135,9 +137,9 @@ const withApiMileageRequestAll = (
     })
   };
 
-  const handleCreators: HandleCreators<
+  const handlerCreators: HandleCreators<
     AllProps,
-    WithApiMileageRequestAllHandler
+    WithApiMileageExceptionAllHandler
   > = {
     handleSync: (props: AllProps) => () => {
       props.onSync();
@@ -163,18 +165,17 @@ const withApiMileageRequestAll = (
   };
 
   const mapDispatchToProps = (dispatch: Dispatch) => ({
-    mileagerequestAllDispatch: {
-      getAllRequest: (request: IMileageRequestGetAllRequest) =>
-        dispatch(mileagerequestGetAllRequest(request)),
-      getAllDispose: () => dispatch(mileagerequestGetAllDispose())
+    mileageExceptionAllDispatch: {
+      getAllRequest: (request: IMileageExceptionAllRequest) =>
+        dispatch(mileageExceptionGetAllRequest(request)),
+      getAllDispose: () => dispatch(mileageExceptionGetAllDispose())
     }
   });
 
   const lifeCycleFunctions: ReactLifeCycleFunctions<AllProps, {}> = {
     componentDidMount() {
-      const { response } = this.props.mileagerequestAllState;
+      const { response } = this.props.mileageExceptionAllState;
 
-      // only load data when response are empty
       if (!response) {
         loadData(this.props);
       }
@@ -194,10 +195,10 @@ const withApiMileageRequestAll = (
 
     componentWillUnmount() {
       const { view } = this.props.layoutState;
-      const { getAllDispose } = this.props.mileagerequestAllDispatch;
+      const { getAllDispose } = this.props.mileageExceptionAllDispatch;
 
-      // dispose 'get all' from 'redux store' when the page is 'out of mileage request' context
-      if (view && view.parentUid !== AppMenu.MileageRequest) {
+      // dispose 'get all' from 'redux store' when the page is 'out of mileage exception' context
+      if (view && view.parentUid !== AppMenu.LookupMileageException) {
         getAllDispose();
       }
     }
@@ -206,23 +207,16 @@ const withApiMileageRequestAll = (
   const loadData = (props: AllProps): void => {
     const { orderBy, direction, page, size } = props;
     const { user } = props.userState;
-    const { getAllRequest } = props.mileagerequestAllDispatch;
+    const { getAllRequest } = props.mileageExceptionAllDispatch;
     const { alertAdd } = props.layoutDispatch;
 
     if (user) {
       getAllRequest({
-        companyUid: user.company.uid,
-        positionUid: user.position.uid,
         filter: {
           direction,
           orderBy,
           page,
           size,
-          year: undefined,
-          month: undefined,
-          isRejected: undefined,
-          companyUid: user.company.uid,
-          positionUid: user.position.uid,
           find: undefined,
           findBy: undefined
         }
@@ -235,7 +229,7 @@ const withApiMileageRequestAll = (
     }
   };
 
-  return compose<AllProps, WithApiMileageRequestAllOptions>(
+  return compose<AllProps, WithApiMileageExceptionAllOptions>(
     setDisplayName(displayName),
     connect(
       undefined,
@@ -243,14 +237,11 @@ const withApiMileageRequestAll = (
     ),
     withUser,
     withLayout,
-    withMileageRequestAll,
-    withStateHandlers<State, Updaters, WithApiMileageRequestAllOptions>(
-      createProps,
-      stateUpdaters
-    ),
-    withHandlers<AllProps, WithApiMileageRequestAllHandler>(handleCreators),
+    withMileageExceptionAll,
+    withStateHandlers<State, Updaters, WithApiMileageExceptionAllOptions>(createProps, stateUpdaters),
+    withHandlers<AllProps, WithApiMileageExceptionAllHandler>(handlerCreators),
     lifecycle<AllProps, {}>(lifeCycleFunctions)
-  )(withApiMileageRequestAllWrapper);
+  )(withApiMileageExceptionAllWrapper);
 };
 
-export default withApiMileageRequestAll;
+export default withApiMileageExceptionAll;

@@ -1,7 +1,8 @@
 import { ConnectedReduxProps } from '@generic/types';
 import { IAppUser } from '@layout/interfaces';
 import { WithStyles } from '@material-ui/core';
-// import MileageRequestDetail from '@mileage/components/request/MileageRequestDetail';
+import MileageRequestDetail from '@mileage/components/request/MileageRequestDetail';
+import MileageRequestEditor from '@mileage/components/request/MileageRequestEditor';
 import MileageRequestList from '@mileage/components/request/MileageRequestList';
 import styles from '@styles';
 import * as React from 'react';
@@ -17,8 +18,11 @@ type AllProps = PropsFromState & ConnectedReduxProps;
 
 export const MileageRoot: React.SFC<AllProps> = props => (
   <Switch>
-    <Route path={`${props.match.path}/list/`} component={MileageRequestList} />
-    {/* <Route path={`${props.match.path}/details/:mileageUid`} component={MileageRequestDetail} /> */}
-    {/* <Route path={`${props.match.path}/form`} component={} /> */}
+    <Route path={`${props.match.path}/request/`} component={MileageRequestList} />
+    <Route
+      path={`${props.match.path}/details/:mileageUid`}
+      component={MileageRequestDetail}
+    />
+    <Route path={`${props.match.path}/form`} component={MileageRequestEditor} />
   </Switch>
 );

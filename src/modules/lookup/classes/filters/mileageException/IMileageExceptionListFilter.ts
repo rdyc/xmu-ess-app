@@ -1,6 +1,5 @@
-import { IBaseFilter } from '@generic/interfaces';
-
-export interface IMileageExceptionListFilter extends IBaseFilter {
-  readonly companyUid?: string | undefined;
-  readonly size?: number | undefined;
+export interface IMileageExceptionListFilter {
+  readonly roleUid?: string | undefined;
+  readonly orderBy?: string | undefined;
+  readonly direction?: string | undefined;
 }

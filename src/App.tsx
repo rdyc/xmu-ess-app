@@ -4,6 +4,8 @@ import Layout from '@layout/components/base/Layout';
 import { HomePage } from '@layout/pages';
 import AccessWizardPage from '@layout/pages/AccessWizardPage';
 import CallbackPage from '@layout/pages/CallbackPage';
+import { LookupRoutes } from '@lookup/components/LookupRoutes';
+import { MileageRoot } from '@mileage/components/MileageRoot';
 import { ProjectRoot } from '@project/components/ProjectRoot';
 import { ConnectedRouter } from 'connected-react-router';
 import { History } from 'history';
@@ -32,14 +34,14 @@ type AllProps = PropsFromState & OwnProps;
 
 class App extends React.Component<AllProps> {
   public componentDidMount() {
-    AppUserManager.events.addSilentRenewError((error) => {
+    AppUserManager.events.addSilentRenewError(error => {
       console.error('error while renewing the access token', error);
     });
 
     loadUser(rootStore, AppUserManager);
   }
 
-  public render() {   
+  public render() {
     const { oidcState, store, history } = this.props;
 
     const onLogin = (event: any) => {
@@ -47,7 +49,8 @@ class App extends React.Component<AllProps> {
       AppUserManager.signinRedirect();
     };
 
-    const currentAppLocale = AppLocale[getCurrentLanguage(config.defaultLanguage || 'english').locale];
+    const currentAppLocale =
+      AppLocale[getCurrentLanguage(config.defaultLanguage || 'english').locale];
 
     // wait for user to be loaded, and location is known
     if (oidcState.isLoadingUser /*|| !history.location*/) {
@@ -79,6 +82,8 @@ class App extends React.Component<AllProps> {
                         <Route path="/home" component={HomePage} />
                         <Route path="/account" component={accountRouter} />
                         <Route path="/project" component={ProjectRoot} />
+                        <Route path="/mileage" component={MileageRoot} />
+                        <Route path="/lookup" component={LookupRoutes} />
                       </Layout>
                     </Switch>
                   )}

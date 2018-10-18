@@ -25,7 +25,7 @@ import withMileageRequestAll, {
 // import * as moment from 'moment';
 import * as React from 'react';
 import {
-  // FormattedDate,
+  FormattedDate,
   FormattedNumber,
   FormattedPlural,
   InjectedIntlProps,
@@ -69,19 +69,23 @@ const mileagerequestList: React.SFC<AllProps> = props => {
         >
           <Grid container spacing={24}>
             <Grid item xs={8} sm={8}>
-              <Typography noWrap color="primary" variant="body2">
-                {mileage.employee && mileage.employee.fullName}
-              </Typography>
               <Typography noWrap variant="body1">
                 {mileage.uid}
+              </Typography>
+              <Typography noWrap color="primary" variant="body1">
+                {mileage.employee && mileage.employee.fullName}
               </Typography>
             </Grid>
             <Grid item xs={4} sm={4}>
               <Typography noWrap align="right" variant="body1">
-                {mileage.statusType}
+                {mileage.status && mileage.status.value}
               </Typography>
               <Typography noWrap align="right" variant="caption">
-                {mileage.month} &bull; {mileage.year}
+                <FormattedDate
+                  month="short"
+                  year="numeric"
+                  value={new Date(mileage.year, mileage.month)}
+                />
               </Typography>
             </Grid>
           </Grid>
