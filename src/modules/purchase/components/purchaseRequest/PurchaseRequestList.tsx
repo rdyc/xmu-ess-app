@@ -3,10 +3,10 @@ import { IBaseChanges } from '@generic/interfaces';
 import { withLayout, WithLayout } from '@layout/hoc/withLayout';
 import { withNavBottom, WithNavBottom } from '@layout/hoc/withNavBottom';
 import { Divider, Grid, List, ListItem, ListSubheader, Paper, Typography } from '@material-ui/core';
-import { IProject } from '@project/classes/response';
-import { ProjectField } from '@project/classes/types';
-import withApiProjectRegistrationAll, { WithApiProjectRegistrationAllHandler } from '@project/enhancers/registration/withApiProjectRegistrationAll';
-import withProjectRegistrationAll, { WithProjectRegistrationAll } from '@project/enhancers/registration/withProjectRegistrationAll';
+import { IPurchase } from '@purchase/classes/response/purchaseRequest';
+import { PurchaseField } from '@purchase/classes/types';
+import withApiPurchaseRequestAll, { WithApiPurchaseRequestAllHandler } from '@purchase/enhancers/purchaseRequest/withApiPurchaseRequestAll';
+import withPurchaseRequestAll, { WithPurchaseRequestAll } from '@purchase/enhancers/purchaseRequest/withPurchaseRequestAll';
 import * as moment from 'moment';
 import * as React from 'react';
 import { FormattedDate, FormattedNumber, FormattedPlural, InjectedIntlProps, injectIntl } from 'react-intl';
@@ -15,20 +15,20 @@ import { compose, lifecycle, ReactLifeCycleFunctions, setDisplayName } from 'rec
 import { isArray } from 'util';
 
 type AllProps 
-  = WithProjectRegistrationAll
+  = WithPurchaseRequestAll
   & WithLayout
   & WithNavBottom
-  & WithApiProjectRegistrationAllHandler
+  & WithApiPurchaseRequestAllHandler
   & RouteComponentProps
   & InjectedIntlProps;
 
 const registrationList: React.SFC<AllProps> = props => {
   const { history } = props;
-  const { isLoading, response } = props.projectAllState;
+  const { isLoading, response } = props.purchaseAllState;
 
-  const handleClick = (projectUid: string) => {
+  const handleClick = (purchaseUid: string) => {
     if (!isLoading) {
-      history.push(`/project/details/${projectUid}`);
+      history.push(`/purchase/purchaserequest/details/${purchaseUid}`);
     } 
   };
 
@@ -48,16 +48,16 @@ const registrationList: React.SFC<AllProps> = props => {
     return result;
   };
 
-  const renderProjectList = (projects: IProject[]) => {
-    const len = projects.length - 1;
+  const renderPurchaseRequestList = (purchases: IPurchase[]) => {
+    const len = purchases.length - 1;
 
     return (
-      projects.map((project, i) => 
-        <div key={project.uid}>
+      purchases.map((purchase, i) => 
+        <div key={purchase.uid}>
           <ListItem 
             button={!isLoading} 
-            key={project.uid} 
-            onClick={() => handleClick(project.uid)}
+            key={purchase.uid} 
+            onClick={() => handleClick(purchase.uid)}
           >
             <Grid container spacing={24}>
               <Grid item xs={8} sm={8}>
@@ -66,32 +66,25 @@ const registrationList: React.SFC<AllProps> = props => {
                   color="primary" 
                   variant="body2"
                 >
-                  {project.name}
+                  {purchase.notes}
                 </Typography>
                 <Typography 
                   noWrap
                   variant="body1"
                 >
-                  {project.customer && project.customer.name} &bull; {project.customer && project.customer.company && project.customer.company.name} {project.contractNumber && `(PO: ${project.contractNumber})`}
+                  {purchase.customer && purchase.customer.name} &bull; {purchase.customer && purchase.customer.company && purchase.customer.company.name}}
                 </Typography>
                 <Typography 
                   noWrap
                   color="textSecondary" 
                   variant="caption"
                 >
-                  {project.uid} &bull; {project.project && project.project.value} &bull; &nbsp;
+                  {purchase.projectUid} &bull; {purchase.project && purchase.project.description} &bull; &nbsp;
                   <FormattedDate 
                     year="numeric"
                     month="short"
                     day="numeric"
-                    value={project.start || ''} 
-                  />
-                  &nbsp;to&nbsp; 
-                  <FormattedDate 
-                    year="numeric"
-                    month="short"
-                    day="numeric"
-                    value={project.end || ''} 
+                    value={purchase.date || ''} 
                   />
                 </Typography>
               </Grid>
@@ -101,7 +94,7 @@ const registrationList: React.SFC<AllProps> = props => {
                   variant="body1" 
                   align="right"
                 >
-                  {project.status && project.status.value}
+                  {purchase.status && purchase.status.value}
                 </Typography>
                 <Typography 
                   noWrap 
@@ -109,14 +102,14 @@ const registrationList: React.SFC<AllProps> = props => {
                   variant="caption" 
                   align="right"
                 >
-                  {parseChanges(project.changes)}
+                  {parseChanges(purchase.changes)}
                 </Typography>
                 <Typography 
                   noWrap
                   variant="caption" 
                   align="right"
                 >
-                  {project.changes && moment(project.changes.updatedAt ? project.changes.updatedAt : project.changes.createdAt).fromNow()}
+                  {purchase.changes && moment(purchase.changes.updatedAt ? purchase.changes.updatedAt : purchase.changes.createdAt).fromNow()}
                 </Typography>
               </Grid>
             </Grid>
@@ -141,7 +134,7 @@ const registrationList: React.SFC<AllProps> = props => {
               <Grid item xs={6} sm={6}>
                 <Typography variant="caption" color="primary">
                   <FormattedNumber value={response.metadata.total} /> &nbsp;
-                  <FormattedPlural one="project" other="projects" value={response.metadata.total} />
+                  <FormattedPlural one="purchase" other="purchases" value={response.metadata.total} />
                 </Typography>
               </Grid>
               <Grid item xs={6} sm={6}>
@@ -157,7 +150,7 @@ const registrationList: React.SFC<AllProps> = props => {
       {
         response &&
         isArray(response.data) && 
-        renderProjectList(response.data)
+        renderPurchaseRequestList(response.data)
       }
     </List>
   );
@@ -186,10 +179,10 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, {}> = {
     } = this.props;
 
     layoutDispatch.changeView({
-      uid: AppMenu.ProjectRegistrationRequest,
-      parentUid: AppMenu.ProjectRegistration,
-      title: intl.formatMessage({id: 'project.title'}),
-      subTitle : intl.formatMessage({id: 'project.subTitle'})
+      uid: AppMenu.PurchaseRequest,
+      parentUid: AppMenu.Purchase,
+      title: intl.formatMessage({id: 'purchase.title'}),
+      subTitle : intl.formatMessage({id: 'purchase.subTitle'})
     });
 
     layoutDispatch.modeListOn();
@@ -202,12 +195,12 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, {}> = {
       onSyncCallback: handleSync,
       onOrderCallback: handleOrder,
       onDirectionCallback: handleSort,
-      onAddCallback: () => history.push('/project/form'),
+      onAddCallback: () => history.push('/purchase/purchaseRequest/form'),
       onSizeCallback: handleSize,
     });
 
-    const items = Object.keys(ProjectField)
-      .map(key => ({ id: key, name: ProjectField[key] }));
+    const items = Object.keys(PurchaseField)
+      .map(key => ({ id: key, name: PurchaseField[key] }));
 
     navBottomDispatch.assignFields(items);
   },
@@ -227,12 +220,12 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, {}> = {
 };
 
 export default compose<AllProps, {}>(
-  setDisplayName('ProjectRegistrationList'),
-  withApiProjectRegistrationAll({ 
+  setDisplayName('PurchaseRequestList'),
+  withApiPurchaseRequestAll({ 
     orderBy: 'uid',
     direction: 'descending',
   }),
-  withProjectRegistrationAll,
+  withPurchaseRequestAll,
   withLayout,
   withNavBottom,
   withRouter,

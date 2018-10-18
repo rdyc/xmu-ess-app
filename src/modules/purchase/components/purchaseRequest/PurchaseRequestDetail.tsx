@@ -26,10 +26,10 @@ import {
 } from '@material-ui/core';
 import PersonIcon from '@material-ui/icons/Person';
 import { WorkflowStep } from '@organization/components';
-import { IProjectDetail, IProjectDocument, IProjectSales, IProjectSite } from '@project/classes/response';
-import { ProjectUserAction } from '@project/classes/types';
-import withApiProjectRegistrationDetail, { WithApiProjectRegistrationDetailHandler } from '@project/enhancers/registration/withApiProjectRegistrationDetail';
-import withProjectRegistrationDetail, { WithProjectRegistrationDetail } from '@project/enhancers/registration/withProjectRegistrationDetail';
+import { IPurchaseDetail, IPurchaseHistory, IPurchaseItemRequest } from '@purchase/classes/response/purchaseRequest';
+import { PurchaseUserAction } from '@purchase/classes/types';
+import withApiProjectRegistrationDetail, { WithApiPurchaseRequestDetailHandler } from '@purchase/enhancers/purchaseRequest/withApiPurchaseRequestDetail';
+import withProjectRegistrationDetail, { WithPurchaseRequestDetail } from '@purchase/enhancers/purchaseRequest/withPurchaseRequestDetail';
 import * as React from 'react';
 import { FormattedMessage, FormattedNumber, InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
@@ -78,8 +78,8 @@ interface RouteParams {
 
 type AllProps
   = Handler 
-  & WithProjectRegistrationDetail
-  & WithApiProjectRegistrationDetailHandler
+  & WithPurchaseRequestDetail
+  & WithApiPurchaseRequestDetailHandler
   & WithLayout
   & WithAppBar
   & RouteComponentProps<RouteParams> 
@@ -92,7 +92,7 @@ const registrationDetail: React.SFC<AllProps> = props => {
     dialogFullScreen, dialogOpen, dialogTitle, dialogDescription, dialogCancelText, dialogConfirmedText,
     handleDialogClose, handleDialogConfirmed, intl
   } = props;
-  const { isLoading, response } = props.projectDetailState;
+  const { isLoading, response } = props.purchaseRequestDetailState;
 
   const renderDialog = (
     <Dialog
@@ -120,7 +120,7 @@ const registrationDetail: React.SFC<AllProps> = props => {
     </Dialog>
   );
 
-  const renderDetail = (project: IProjectDetail) => (
+  const renderDetail = (project: IPurchaseDetail) => (
     <Card square>
       <CardHeader 
         title={<FormattedMessage id="project.infoTitle"/>}
@@ -244,32 +244,7 @@ const registrationDetail: React.SFC<AllProps> = props => {
     </Card>
   );
 
-  const renderDocuments = (title: string, subHeader: string, documents: IProjectDocument[] | undefined) => (
-    <Card square>
-      <CardHeader 
-        title={title}
-        subheader={subHeader}
-      />
-      <CardContent>
-        {
-          documents &&
-          documents.map(item => 
-            item.document &&
-            <div key={item.uid}>
-              <FormControlLabel 
-                contentEditable={false}
-                key={item.uid}
-                label={item.document.value}
-                control={<Checkbox checked={item.isAvailable}/>} 
-              />
-            </div>
-          )
-        }
-      </CardContent>
-    </Card>
-  );
-
-  const renderSales = (sales: IProjectSales[]) => (
+  const renderSales = (sales: IPurchaseSales[]) => (
     <Card square>
       <CardHeader 
         title={<FormattedMessage id="project.salesTitle" />}
@@ -303,7 +278,7 @@ const registrationDetail: React.SFC<AllProps> = props => {
     </Card>
   );
 
-  const renderSites = (sites: IProjectSite[]) => (
+  const renderSites = (sites: IPurchaseSite[]) => (
     <Card square>
       <CardHeader 
         title={<FormattedMessage id="project.siteTitle" />}
@@ -550,27 +525,27 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, {}> = {
     
     const handleMenuClick = (menu: IAppBarMenu): void => {
       switch (menu.id) {
-        case ProjectUserAction.Refresh:
+        case PurchaseUserAction.Refresh:
           handleProjectRefresh();
           break;
         
-        case ProjectUserAction.Modify:
+        case PurchaseUserAction.Modify:
           handleProjectModify();
           break;
   
-        case ProjectUserAction.Close:
+        case PurchaseUserAction.Close:
           handleProjectClose();
           break;
         
-        case ProjectUserAction.ReOpen:
+        case PurchaseUserAction.ReOpen:
           handleProjectReOpen();
           break;
   
-        case ProjectUserAction.ChangeOwner:
+        case PurchaseUserAction.ChangeOwner:
           handleProjectChangeOwner();
           break;
   
-        case ProjectUserAction.ManageSites:
+        case PurchaseUserAction.ManageSites:
           handleProjectManageSite();
           break;
       
@@ -584,9 +559,9 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, {}> = {
     apiRegistrationDetailGet(match.params.projectUid);
   },
   componentWillReceiveProps(nextProps: AllProps) {
-    if (nextProps.projectDetailState.response !== this.props.projectDetailState.response) {
+    if (nextProps.purchaseRequestDetailState.response !== this.props.purchaseRequestDetailState.response) {
       const { intl } = nextProps;
-      const { response } = nextProps.projectDetailState;
+      const { response } = nextProps.purchaseRequestDetailState;
       const { assignMenus } = nextProps.appBarDispatch;
       
       const isStatusTypeEquals = (statusTypes: string[]): boolean => {
@@ -601,37 +576,37 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, {}> = {
 
       const currentMenus = [
         {
-          id: ProjectUserAction.Refresh,
+          id: PurchaseUserAction.Refresh,
           name: intl.formatMessage({id: 'global.action.refresh'}),
           enabled: true,
           visible: true
         },
         {
-          id: ProjectUserAction.Modify,
+          id: PurchaseUserAction.Modify,
           name: intl.formatMessage({id: 'project.action.modify'}),
           enabled: response !== undefined,
           visible: isStatusTypeEquals([WorkflowStatusType.Submitted, WorkflowStatusType.InProgress, WorkflowStatusType.Approved])
         },
         {
-          id: ProjectUserAction.Close,
+          id: PurchaseUserAction.Close,
           name: intl.formatMessage({id: 'project.action.close'}),
           enabled: true,
           visible: isStatusTypeEquals([WorkflowStatusType.Approved, WorkflowStatusType.ReOpened])
         },
         {
-          id: ProjectUserAction.ReOpen,
+          id: PurchaseUserAction.ReOpen,
           name: intl.formatMessage({id: 'project.action.reOpen'}),
           enabled: true,
           visible: isStatusTypeEquals([WorkflowStatusType.Closed])
         },
         {
-          id: ProjectUserAction.ChangeOwner,
+          id: PurchaseUserAction.ChangeOwner,
           name: intl.formatMessage({id: 'project.action.changeOwner'}),
           enabled: true,
           visible: isStatusTypeEquals([WorkflowStatusType.Approved])
         },
         {
-          id: ProjectUserAction.ManageSites,
+          id: PurchaseUserAction.ManageSites,
           name: intl.formatMessage({id: 'project.action.manageSite'}),
           enabled: true,
           visible: false

@@ -3,9 +3,9 @@ import { SortDirection } from '@generic/types';
 import { withLayout, WithLayout } from '@layout/hoc/withLayout';
 import { withUser, WithUser } from '@layout/hoc/withUser';
 import { IListBarField } from '@layout/interfaces';
-import { IProjectGetAllRequest } from '@project/classes/queries';
-import withProjectRegistrationAll, { WithProjectRegistrationAll } from '@project/enhancers/registration/withProjectRegistrationAll';
-import { projectGetAllDispose, projectGetAllRequest } from '@project/store/actions';
+import { IPurchaseGetAllRequest } from '@purchase/classes/queries/purchaseRequest';
+import withPurchaseRequestAll, { WithPurchaseRequestAll } from '@purchase/enhancers/purchaseRequest/withPurchaseRequestAll';
+import { purchaseGetAllDispose, purchaseGetAllRequest } from '@purchase/store/actions';
 import * as React from 'react';
 import { connect } from 'react-redux';
 import {
@@ -23,7 +23,7 @@ import {
 } from 'recompose';
 import { Dispatch } from 'redux';
 
-export interface WithApiProjectRegistrationAllHandler {
+export interface WithApiPurchaseRequestAllHandler {
   handleSync: () => void;
   handleNext: () => void;
   handlePrev: () => void;
@@ -32,7 +32,7 @@ export interface WithApiProjectRegistrationAllHandler {
   handleSort: (direction: SortDirection) => void;
 }
 
-interface WithApiProjectRegistrationAllOptions {
+interface WithApiPurchaseRequestAllOptions {
   orderBy?: string | undefined;
   direction?: string | undefined;
   page?: number | undefined;
@@ -56,28 +56,28 @@ interface Updaters extends StateHandlerMap<State> {
 }
 
 interface Dispatcher {
-  projectAllDispatch: {
-    getAllRequest: typeof projectGetAllRequest;
-    getAllDispose: typeof projectGetAllDispose;
+  purchaseAllDispatch: {
+    getAllRequest: typeof purchaseGetAllRequest;
+    getAllDispose: typeof purchaseGetAllDispose;
   };
 }
 
 type AllProps 
-  = WithApiProjectRegistrationAllHandler
+  = WithApiPurchaseRequestAllHandler
   & Dispatcher
   & State
   & Updaters
   & WithUser
   & WithLayout
-  & WithProjectRegistrationAll;
+  & WithPurchaseRequestAll;
 
-const withApiProjectRegistrationAll = (options?: WithApiProjectRegistrationAllOptions) => (WrappedComponent: React.ComponentType) => { 
-  const displayName = `WithApiProjectRegistrationAll(${WrappedComponent.displayName || WrappedComponent.name || 'Component'})`;
+const withApiPurchaseRequestAll = (options?: WithApiPurchaseRequestAllOptions) => (WrappedComponent: React.ComponentType) => { 
+  const displayName = `WithApiPurchaseRequestAll(${WrappedComponent.displayName || WrappedComponent.name || 'Component'})`;
   
-  const withApiProjectRegistrationAllWrapper: React.SFC<AllProps> = props => <WrappedComponent {...props} />;
+  const withApiPurchaseRequestAllWrapper: React.SFC<AllProps> = props => <WrappedComponent {...props} />;
 
   const createProps: mapper<AllProps, State> = (props: AllProps): State => {
-    const { request } = props.projectAllState;
+    const { request } = props.purchaseAllState;
 
     return { 
       orderBy: request && request.filter && request.filter.orderBy || options && options.orderBy,
@@ -87,7 +87,7 @@ const withApiProjectRegistrationAll = (options?: WithApiProjectRegistrationAllOp
     };
   };
 
-  const stateUpdaters: StateUpdaters<WithApiProjectRegistrationAllOptions, State, Updaters> = {
+  const stateUpdaters: StateUpdaters<WithApiPurchaseRequestAllOptions, State, Updaters> = {
     onNext: (prevState: State) => () => ({
       page: prevState.page + 1,
     }),
@@ -111,7 +111,7 @@ const withApiProjectRegistrationAll = (options?: WithApiProjectRegistrationAllOp
     }),
   };
 
-  const handlerCreators: HandleCreators<AllProps, WithApiProjectRegistrationAllHandler> = {
+  const handlerCreators: HandleCreators<AllProps, WithApiPurchaseRequestAllHandler> = {
     handleSync: (props: AllProps) => () => { 
       props.onSync();
 
@@ -136,15 +136,15 @@ const withApiProjectRegistrationAll = (options?: WithApiProjectRegistrationAllOp
   };
 
   const mapDispatchToProps = (dispatch: Dispatch) => ({
-    projectAllDispatch: {
-      getAllRequest: (request: IProjectGetAllRequest) => dispatch(projectGetAllRequest(request)),
-      getAllDispose: () => dispatch(projectGetAllDispose()),
+    purchaseAllDispatch: {
+      getAllRequest: (request: IPurchaseGetAllRequest) => dispatch(purchaseGetAllRequest(request)),
+      getAllDispose: () => dispatch(purchaseGetAllDispose()),
     }
   });
 
   const lifeCycleFunctions: ReactLifeCycleFunctions<AllProps, {}> = {
     componentDidMount() {
-      const { response } = this.props.projectAllState;
+      const { response } = this.props.purchaseAllState;
       
       // only load data when response are empty
       if (!response) {
@@ -164,10 +164,10 @@ const withApiProjectRegistrationAll = (options?: WithApiProjectRegistrationAllOp
     },
     componentWillUnmount() {
       const { view } = this.props.layoutState;
-      const { getAllDispose } = this.props.projectAllDispatch;
+      const { getAllDispose } = this.props.purchaseAllDispatch;
 
-      // dispose 'get all' from 'redux store' when the page is 'out of project registration' context 
-      if (view && view.parentUid !== AppMenu.ProjectRegistration) {
+      // dispose 'get all' from 'redux store' when the page is 'out of purchaseRequest' context 
+      if (view && view.parentUid !== AppMenu.PurchaseRequest) {
         getAllDispose();
       }
     }
@@ -176,7 +176,7 @@ const withApiProjectRegistrationAll = (options?: WithApiProjectRegistrationAllOp
   const loadData = (props: AllProps): void => {
     const { orderBy, direction, page, size } = props;
     const { user } = props.userState;
-    const { getAllRequest } = props.projectAllDispatch;
+    const { getAllRequest } = props.purchaseAllDispatch;
     const { alertAdd } = props.layoutDispatch;
 
     if (user) {
@@ -188,9 +188,9 @@ const withApiProjectRegistrationAll = (options?: WithApiProjectRegistrationAllOp
           orderBy,
           page,
           size,
-          customerUids: undefined,
-          projectTypes: undefined,
-          statusTypes: undefined,
+          customerUid: undefined,
+          isRejected: undefined,
+          isSettlement: undefined,
           find: undefined,
           findBy: undefined,
         }
@@ -203,16 +203,16 @@ const withApiProjectRegistrationAll = (options?: WithApiProjectRegistrationAllOp
     }
   };
 
-  return compose<AllProps, WithApiProjectRegistrationAllOptions>(
+  return compose<AllProps, WithApiPurchaseRequestAllOptions>(
     setDisplayName(displayName),
     connect(undefined, mapDispatchToProps),
     withUser,
     withLayout,
-    withProjectRegistrationAll,
-    withStateHandlers<State, Updaters, WithApiProjectRegistrationAllOptions>(createProps, stateUpdaters), 
-    withHandlers<AllProps, WithApiProjectRegistrationAllHandler>(handlerCreators),
+    withPurchaseRequestAll,
+    withStateHandlers<State, Updaters, WithApiPurchaseRequestAllOptions>(createProps, stateUpdaters), 
+    withHandlers<AllProps, WithApiPurchaseRequestAllHandler>(handlerCreators),
     lifecycle<AllProps, {}>(lifeCycleFunctions),
-  )(withApiProjectRegistrationAllWrapper);
+  )(withApiPurchaseRequestAllWrapper);
 };
 
-export default withApiProjectRegistrationAll;
+export default withApiPurchaseRequestAll;

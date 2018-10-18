@@ -1,59 +1,59 @@
 import { withUser, WithUser } from '@layout/hoc/withUser';
-import { IProjectGetByIdRequest, IProjectPutRequest } from '@project/classes/queries';
-import { IProjectPutPayload } from '@project/classes/request';
-import withProjectRegistrationDetail from '@project/enhancers/registration/withProjectRegistrationDetail';
-import { projectGetByIdDispose, projectGetByIdRequest, projectPutDispose, projectPutRequest } from '@project/store/actions';
+import { IPurchaseGetByIdRequest, IPurchasePutRequest } from '@purchase/classes/queries/purchaseRequest';
+import { IPurchasePutPayload } from '@purchase/classes/request/purchaseRequest';
+import withPurchaseRequestDetail from '@purchase/enhancers/purchaseRequest/withPurchaseRequestDetail';
+import { purchaseGetByIdDispose, purchaseGetByIdRequest, purchasePutDispose, purchasePutRequest } from '@purchase/store/actions';
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { compose, HandleCreators, lifecycle, ReactLifeCycleFunctions, setDisplayName, withHandlers } from 'recompose';
 import { Dispatch } from 'redux';
 
-export interface WithApiProjectRegistrationDetailHandler {
-  apiRegistrationDetailGet: (projectUid: string) => void;
-  apiRegistrationDetailPut: (projectUid: string, payload: IProjectPutPayload, resolve: any, reject: any) => void;
+export interface WithApiPurchaseRequestDetailHandler {
+  apiRegistrationDetailGet: (purchaseUid: string) => void;
+  apiRegistrationDetailPut: (purchaseUid: string, payload: IPurchasePutPayload, resolve: any, reject: any) => void;
 }
 
 interface Dispatcher {
-  projectDetailDispatch: {
-    getByIdRequest: typeof projectGetByIdRequest;
-    getByIdDispose: typeof projectGetByIdDispose;
-    putRequest: typeof projectPutRequest;
-    putDispose: typeof projectPutDispose;
+  purchaseDetailDispatch: {
+    getByIdRequest: typeof purchaseGetByIdRequest;
+    getByIdDispose: typeof purchaseGetByIdDispose;
+    putRequest: typeof purchasePutRequest;
+    putDispose: typeof purchasePutDispose;
   };
 }
 
 type AllProps 
-  = WithApiProjectRegistrationDetailHandler
+  = WithApiPurchaseRequestDetailHandler
   & Dispatcher
   & WithUser;
 
-const withApiProjectRegistrationDetail = (WrappedComponent: React.ComponentType) => { 
+const withApiPurchaseRequestDetail = (WrappedComponent: React.ComponentType) => { 
   const displayName = `LoadDetailRegistration(${WrappedComponent.displayName || WrappedComponent.name || 'Component'})`;
   
-  const withApiProjectRegistrationDetailWrapper: React.SFC<AllProps> = props => <WrappedComponent {...props} />;
+  const withApiPurchaseRequestDetailWrapper: React.SFC<AllProps> = props => <WrappedComponent {...props} />;
 
-  const handlerCreators: HandleCreators<AllProps, WithApiProjectRegistrationDetailHandler> = {
-    apiRegistrationDetailGet: (props: AllProps) => (projectUid: string) => { 
+  const handlerCreators: HandleCreators<AllProps, WithApiPurchaseRequestDetailHandler> = {
+    apiRegistrationDetailGet: (props: AllProps) => (purchaseUid: string) => { 
       const { user } = props.userState;
-      const { getByIdRequest } = props.projectDetailDispatch;
+      const { getByIdRequest } = props.purchaseDetailDispatch;
 
       if (user) {
         getByIdRequest({
-          projectUid,
+          purchaseUid,
           companyUid: user.company.uid,
           positionUid: user.position.uid,
         }); 
       }
     },
-    apiRegistrationDetailPut: (props: AllProps) => (projectUid: string, payload: IProjectPutPayload, resolve: any, reject: any) => { 
+    apiRegistrationDetailPut: (props: AllProps) => (purchaseUid: string, payload: IPurchasePutPayload, resolve: any, reject: any) => { 
       const { user } = props.userState;
-      const { putRequest } = props.projectDetailDispatch;
+      const { putRequest } = props.purchaseDetailDispatch;
 
       if (user) {
         putRequest({
           resolve,
           reject,
-          projectUid,
+          purchaseUid,
           companyUid: user.company.uid,
           positionUid: user.position.uid,
           data: payload
@@ -63,17 +63,17 @@ const withApiProjectRegistrationDetail = (WrappedComponent: React.ComponentType)
   };
 
   const mapDispatchToProps = (dispatch: Dispatch) => ({
-    projectDetailDispatch: {
-      getByIdRequest: (request: IProjectGetByIdRequest) => dispatch(projectGetByIdRequest(request)),
-      getByIdDispose: () => dispatch(projectGetByIdDispose()),
-      putRequest: (request: IProjectPutRequest) => dispatch(projectPutRequest(request)),
-      putDispose: () => dispatch(projectPutDispose()),
+    purchaseDetailDispatch: {
+      getByIdRequest: (request: IPurchaseGetByIdRequest) => dispatch(purchaseGetByIdRequest(request)),
+      getByIdDispose: () => dispatch(purchaseGetByIdDispose()),
+      putRequest: (request: IPurchasePutRequest) => dispatch(purchasePutRequest(request)),
+      putDispose: () => dispatch(purchasePutDispose()),
     }
   });
 
   const lifeCycleFunctions: ReactLifeCycleFunctions<AllProps, {}> = {
     componentWillUnmount() {
-      const { getByIdDispose, putDispose } = this.props.projectDetailDispatch;
+      const { getByIdDispose, putDispose } = this.props.purchaseDetailDispatch;
 
       getByIdDispose();
       putDispose();
@@ -84,10 +84,10 @@ const withApiProjectRegistrationDetail = (WrappedComponent: React.ComponentType)
     setDisplayName(displayName),    
     connect(undefined, mapDispatchToProps),
     withUser,
-    withProjectRegistrationDetail,
-    withHandlers<AllProps, WithApiProjectRegistrationDetailHandler>(handlerCreators),
+    withPurchaseRequestDetail,
+    withHandlers<AllProps, WithApiPurchaseRequestDetailHandler>(handlerCreators),
     lifecycle<AllProps, {}>(lifeCycleFunctions),
-  )(withApiProjectRegistrationDetailWrapper);
+  )(withApiPurchaseRequestDetailWrapper);
 };
 
-export default withApiProjectRegistrationDetail;
+export default withApiPurchaseRequestDetail;
