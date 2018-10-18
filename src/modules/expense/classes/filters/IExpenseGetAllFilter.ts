@@ -1,9 +1,7 @@
-// import { IExpenseQueryFilter } from './IExpenseQueryFilter';
+import { IBaseQueryPagingFilter } from '@generic/interfaces';
+// import { IBasePagingFilter } from '@generic/interfaces';
 
-import { IBasePagingFilter } from '@generic/interfaces';
-
-export interface IExpenseGetAllFilter extends IBasePagingFilter {
-  // query: IExpenseQueryFilter | undefined;
+export interface IExpenseGetAllFilter extends IBaseQueryPagingFilter {
   companyUid: string | undefined;
   positionUid: string | undefined;
   start: string | undefined;

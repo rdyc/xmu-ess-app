@@ -80,10 +80,10 @@ const withApiExpenseAll = (options?: WithApiExpenseAllOptions) => (WrappedCompon
     const { request } = props.expenseAllState;
 
     return { 
-      orderBy: request && request.filter && request.filter.orderBy || options && options.orderBy,
-      direction: request && request.filter && request.filter.direction || options && options.direction,
-      page: request && request.filter && request.filter.page || options && options.page || 1, 
-      size: request && request.filter && request.filter.size || options && options.size || 10,
+      orderBy: request && request.filter && request.filter['query.orderBy'] || options && options.orderBy,
+      direction: request && request.filter && request.filter['query.direction'] || options && options.direction,
+      page: request && request.filter && request.filter['query.page'] || options && options.page || 1, 
+      size: request && request.filter && request.filter['query.size'] || options && options.size || 10,
     };
   };
 
@@ -182,18 +182,18 @@ const withApiExpenseAll = (options?: WithApiExpenseAllOptions) => (WrappedCompon
     if (user) {
       getAllRequest({
         filter: {
-          direction,
-          orderBy,
-          page,
-          size,
+          'query.direction': direction,
+          'query.orderBy': orderBy,
+          'query.page': page,
+          'query.size': size,
           companyUid: user.company.uid,
           positionUid: user.position.uid,
           start: undefined,
           end: undefined,
           status: undefined,
           isRejected: undefined,
-          find: undefined,
-          findBy: undefined,
+          'query.find': undefined,
+          'query.findBy': undefined,
         }
       }); 
     } else {
