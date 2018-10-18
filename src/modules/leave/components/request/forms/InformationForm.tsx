@@ -1,4 +1,4 @@
-import { FieldInputDate, FieldInputText } from '@layout/components/formFields';
+import { FieldInputDate, FieldInputLeave, FieldInputText } from '@layout/components/formFields';
 import { FieldSelectSystem } from '@layout/components/formFields/FieldSelectSystem';
 import { Card, CardContent, CardHeader } from '@material-ui/core';
 import * as React from 'react';
@@ -31,9 +31,9 @@ const informationForm: React.SFC<AllProps> = props => {
 
       case 'regularType':
         fieldProps = {
-          category: 'regular',
+          type: 'text',
           placeholder: intl.formatMessage({id: `leaveRequest.field.${name}.placeholder`}),
-          component: FieldSelectSystem
+          component: FieldInputLeave
         };
         break;
       
