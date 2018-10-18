@@ -79,12 +79,8 @@ class App extends React.Component<AllProps> {
                       <Layout>
                         <Route path="/home" component={HomePage} />
                         <Route path="/account" component={accountRouter} />
-<<<<<<< HEAD
-                        <Route path="/project" component={ProjectRoot} />
-                        <Route path="/expense" component={ExpenseRoute} />
-=======
                         <Route path="/project" component={projectRouter} />
->>>>>>> develop
+                        <Route path="/expense" component={ExpenseRoute} />
                       </Layout>
                     </Switch>
                   )}

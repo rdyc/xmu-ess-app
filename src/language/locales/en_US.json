@@ -109,7 +109,6 @@
   "leave.field.category": "Category",
   "leave.field.allocation": "Allocation",
   
-<<<<<<< HEAD
   "project.title": "Projects",
   "project.subTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
   "project.detail.title": "Project Details",
@@ -232,8 +231,6 @@
   "expense.field.information.address.required": "Address is Required",
   "expense.field.information.name.required": "Customer Name is Required",
   "expense.field.information.title.required": "Customer Job Title is Required",
-=======
->>>>>>> develop
   
   "workflow.stepsTitle": "Approval History",
   "workflow.stepsSubTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
