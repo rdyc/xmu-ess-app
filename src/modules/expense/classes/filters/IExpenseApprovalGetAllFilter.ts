@@ -1,10 +1,11 @@
-import { IBasePagingFilter } from '@generic/interfaces';
+import { IBaseQueryPagingFilter } from '@generic/interfaces';
+// import { IBasePagingFilter } from '@generic/interfaces';
 
-export interface IExpenseApprovalGetAllFilter extends IBasePagingFilter {
+export interface IExpenseApprovalGetAllFilter extends IBaseQueryPagingFilter {
   companyUid: string | undefined;
   positionUid: string | undefined;
   start: string | undefined;
   end: string | undefined;
-  status: 'pending' | 'complete' | null;
-  isNotify: boolean | null;
+  status: string | undefined;
+  isNotify: boolean | undefined;
 }
