@@ -195,6 +195,13 @@ const requestDetail: React.SFC<AllProps> = props => {
           label={<FormattedMessage id="timesheet.field.information.totalHours" />}
           value={timesheet.hours ? timesheet.hours : 'N/A'}
         />
+        <TextField
+          fullWidth
+          contentEditable={false}
+          margin="normal"
+          label={<FormattedMessage id="timesheet.field.information.notes" />}
+          value={timesheet.notes ? timesheet.notes : 'N/A'}
+        />
       </CardContent>
     </Card>
   );
@@ -310,7 +317,7 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, {}> = {
     } = this.props;
 
     layoutDispatch.changeView({
-      uid: AppMenu.TimesheetRequest,
+      uid: AppMenu.TimesheetHistory,
       parentUid: AppMenu.Timesheet,
       title: intl.formatMessage({id: 'timesheet.detail.title'}),
       subTitle : intl.formatMessage({id: 'timesheet.detail.subTitle'})

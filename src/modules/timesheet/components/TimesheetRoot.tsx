@@ -8,6 +8,7 @@ import TimesheetDetail from '@timesheet/components/request/TimesheetDetail';
 import TimesheetList from '@timesheet/components/request/TimesheetList';
 import * as React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router';
+import TimesheetEditor from './request/TimesheetEditor';
 
 interface PropsFromState extends RouteComponentProps<void>, WithStyles<typeof styles> {
   user: IAppUser;
@@ -20,6 +21,6 @@ export const TimesheetRoot: React.SFC<AllProps> = props => (
     <Route path={`${props.match.path}/entry/history`} component={TimesheetList} />
     <Route path={`${props.match.path}/details/:timesheetUid`} component={TimesheetDetail} />
     {/* <Route path={`${props.match.path}/sites/:projectUid`} component={ProjectSiteContainer} /> */}
-    {/* <Route path={`${props.match.path}/form`} component={ProjectRegistrationEditor} /> */}
+    <Route path={`${props.match.path}/form`} component={TimesheetEditor} />
   </Switch>
 );
