@@ -1,0 +1,20 @@
+export type travelItemFormData = {
+  uid: string;
+  employeeUid: string;
+  transportType: string;
+  isRoundTrip: boolean;
+  from: string;
+  destination: string;
+  departureDate: string;
+  returnDate: string | undefined;
+  costTransport: number | 0;
+  isTransportByCompany: boolean;
+  hotel: string | null;
+  costHotel: number | 0;
+  isHotelByCompany: boolean;
+  notes: string | null;
+  duration: number | 0;
+  amount: number | 0;
+  currencyUid: string | null;
+  diemValue: number | 0;
+};
