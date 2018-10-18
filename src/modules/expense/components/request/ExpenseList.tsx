@@ -9,7 +9,7 @@ import { withNavBottom, WithNavBottom } from '@layout/hoc/withNavBottom';
 import { Divider, Grid, List, ListItem, ListSubheader, Paper, Typography } from '@material-ui/core';
 import * as moment from 'moment';
 import * as React from 'react';
-import { FormattedNumber, FormattedPlural, InjectedIntlProps, injectIntl } from 'react-intl';
+import { FormattedDate, FormattedNumber, FormattedPlural, InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { compose, lifecycle, ReactLifeCycleFunctions, setDisplayName } from 'recompose';
 import { isArray } from 'util';
@@ -72,7 +72,8 @@ const registrationList: React.SFC<AllProps> = props => {
                   noWrap
                   variant="body1"
                 >
-                  {expense.customer && expense.customer.name} &bull; {expense.customer && expense.customer.company && expense.customer.company.name}
+                  {expense.customer && expense.customer.name} {expense.client && `(${expense.client.name})`} &bull; 
+                  {expense.projectUid} {` - ${expense.project.name}`}
                 </Typography>
                 <Typography 
                   noWrap
@@ -80,6 +81,12 @@ const registrationList: React.SFC<AllProps> = props => {
                   variant="caption"
                 >
                   {expense.uid} &bull; {expense.expense && expense.expense.value} &bull; &nbsp;
+                  <FormattedDate 
+                    year="numeric"
+                    month="short"
+                    day="numeric"
+                    value={expense.date || ''} 
+                  />
                 </Typography>
               </Grid>
               <Grid item xs={4} sm={4}>

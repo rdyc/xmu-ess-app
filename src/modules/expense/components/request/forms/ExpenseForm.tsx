@@ -47,7 +47,7 @@ const requestForm: React.SFC<AllProps & InjectedFormProps<IExpenseDetail, OwnPro
     />;
 
   const informationFieldNames = [
-    'customerUid', 'projectUid', 'date', 'expenseType', 
+    'date', 'expenseType', 'customerUid', 'projectUid',  
     'value', 'location', 'address', 'name', 
     'title', 'notes'
   ];

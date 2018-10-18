@@ -127,27 +127,6 @@ const requestDetail: React.SFC<AllProps> = props => {
           fullWidth
           contentEditable={false}
           margin="normal"
-          label={<FormattedMessage id="expense.field.status" />}
-          value={expense.status ? expense.status.value : 'N/A'}
-        />
-        <TextField
-          fullWidth
-          contentEditable={false}
-          margin="normal"
-          label={<FormattedMessage id="expense.field.customer" />}
-          value={expense.customer ? expense.customer.name : 'N/A'}
-        />
-        <TextField
-          fullWidth
-          contentEditable={false}
-          margin="normal"
-          label={<FormattedMessage id="expense.field.project" />}
-          value={expense.project ? expense.project.name : 'N/A'}
-        />
-        <TextField
-          fullWidth
-          contentEditable={false}
-          margin="normal"
           label={<FormattedMessage id="expense.field.date" />}
           value={expense.date ?
             intl.formatDate(expense.date, {
@@ -160,8 +139,29 @@ const requestDetail: React.SFC<AllProps> = props => {
           fullWidth
           contentEditable={false}
           margin="normal"
+          label={<FormattedMessage id="expense.field.createdBy" />}
+          value={expense.changes && expense.changes.created && expense.changes.created.fullName ? expense.changes.created.fullName : 'N/A'}
+        />
+        <TextField
+          fullWidth
+          contentEditable={false}
+          margin="normal"
           label={<FormattedMessage id="expense.field.type" />}
           value={expense.expense ? expense.expense.value : 'N/A'}
+        />
+        <TextField
+          fullWidth
+          contentEditable={false}
+          margin="normal"
+          label={<FormattedMessage id="expense.field.project" />}
+          value={expense.project ? `${expense.project.uid} - ${expense.project.name}` : 'N/A'}
+        />
+        <TextField
+          fullWidth
+          contentEditable={false}
+          margin="normal"
+          label={<FormattedMessage id="expense.field.customer" />}
+          value={expense.customer ? expense.customer.name : 'N/A'}
         />
         <TextField
           fullWidth
@@ -204,6 +204,13 @@ const requestDetail: React.SFC<AllProps> = props => {
           margin="normal"
           label={<FormattedMessage id="expense.field.notes" />}
           value={expense.notes || 'N/A'}
+        />
+        <TextField
+          fullWidth
+          contentEditable={false}
+          margin="normal"
+          label={<FormattedMessage id="expense.field.status" />}
+          value={expense.status ? expense.status.value : 'N/A'}
         />
         {!isNullOrUndefined(expense.rejectedReason) ?
           <TextField

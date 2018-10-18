@@ -13,10 +13,10 @@ import {
 
 export type ExpenseFormData = {
   information: {
-    customerUid: string | undefined;
-    projectUid: string | undefined;
     date: string | undefined;
     expenseType: string | undefined;
+    customerUid: string | undefined;
+    projectUid: string | undefined;
     value: number | undefined;
     location: string | undefined;
     address: string | undefined;

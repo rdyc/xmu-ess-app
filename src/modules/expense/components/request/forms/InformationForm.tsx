@@ -21,11 +21,11 @@ const informationForm: React.SFC<AllProps> = props => {
     let fieldProps = {};
   
     switch (fieldName) {
-      case 'customerUid': 
+      case 'date': 
         fieldProps = {
           type: 'text',
           placeholder: intl.formatMessage({id: `expense.field.${name}.placeholder`}),
-          component: FieldInputCustomer
+          component: FieldInputDate
         };
         break;
       
@@ -37,22 +37,14 @@ const informationForm: React.SFC<AllProps> = props => {
         };
         break;
       
-      case 'date': 
+      case 'customerUid': 
         fieldProps = {
           type: 'text',
           placeholder: intl.formatMessage({id: `expense.field.${name}.placeholder`}),
-          component: FieldInputDate
+          component: FieldInputCustomer
         };
         break;
-      
-      case 'value':
-        fieldProps = {
-          type: 'number',
-          placeholder: intl.formatMessage({id: `expense.field.${name}.placeholder`}),
-          component: FieldInputNumber
-        };
-        break;
-      
+        
       // case 'projectUid':
       //   fieldProps = {
       //     type: 'text',
@@ -60,6 +52,14 @@ const informationForm: React.SFC<AllProps> = props => {
       //     component: FieldSelectProject
       //   };
       //   break;
+        
+      case 'value':
+        fieldProps = {
+          type: 'number',
+          placeholder: intl.formatMessage({id: `expense.field.${name}.placeholder`}),
+          component: FieldInputNumber
+        };
+        break;      
     
       default:
         fieldProps = {
