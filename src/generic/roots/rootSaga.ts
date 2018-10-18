@@ -5,6 +5,7 @@ import commonActivitySagas from '@common/store/sagas/activitySagas';
 import commonCurrencySagas from '@common/store/sagas/currencySagas';
 import commonDocumentPresalesSagas from '@common/store/sagas/documentPresalesSagas';
 import commonDocumentSagas from '@common/store/sagas/documentSagas';
+import commonLeaveSagas from '@common/store/sagas/leaveSagas';
 import commonProjectSagas from '@common/store/sagas/projectSagas';
 import commonSiteSagas from '@common/store/sagas/siteSagas';
 import commonSystemSagas from '@common/store/sagas/systemSagas';
@@ -40,6 +41,7 @@ export function* rootSaga() {
     fork(commonCurrencySagas),
     fork(commonDocumentSagas),
     fork(commonDocumentPresalesSagas),
+    fork(commonLeaveSagas),
     fork(commonProjectSagas),
     fork(commonSiteSagas),
     fork(commonNotificationSagas),

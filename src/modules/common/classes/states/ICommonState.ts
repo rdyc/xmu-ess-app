@@ -27,6 +27,10 @@ export interface ICommonState {
   commonSiteList: IQueryCollectionState<ISystemListRequest, ISystemList>;
   commonSiteDetail: IQuerySingleState<ISystemByIdRequest, ISystemDetail>;
 
+  commonLeaveAll: IQueryCollectionState<ISystemAllRequest, ISystem>;
+  commonLeaveList: IQueryCollectionState<ISystemListRequest, ISystemList>;
+  commonLeaveDetail: IQuerySingleState<ISystemByIdRequest, ISystemDetail>;
+
   systemGetAll: IQueryCollectionState<ISystemAllRequest, ISystem>;
   systemGetList: IQueryCollectionState<ISystemListRequest, ISystemList>;
   systemGetById: IQuerySingleState<ISystemByIdRequest, ISystemDetail>;

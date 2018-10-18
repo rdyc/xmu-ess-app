@@ -1,11 +1,14 @@
+import { LeaveType } from '@common/classes/types';
 import { InformationForm } from '@leave/components/request/forms/InformationForm';
 import { SubmitForm } from '@leave/components/request/forms/SubmitForm';
 import { Grid } from '@material-ui/core';
 import * as React from 'react';
+import { connect } from 'react-redux';
 import {
   BaseFieldsProps,
   Fields,
   FormSection,
+  formValueSelector,
   InjectedFormProps,
   reduxForm,
 } from 'redux-form';
@@ -23,6 +26,10 @@ export type LeaveRequestFormData = {
 };
 
 const formName = 'leaveRequest';
+
+interface FormValueProps {
+  formIsLeave: boolean | false;
+}
 
 type AllProps = InjectedFormProps<LeaveRequestFormData>;
 
@@ -57,9 +64,19 @@ const requestFormContainer: React.SFC<AllProps> = props => {
   return render;
 };
 
+const selector = formValueSelector(formName);
+
+const mapStateToProps = (state: any): FormValueProps => {
+  const leaveType = selector(state, 'information.leaveType');
+
+  return{
+    formIsLeave: leaveType === LeaveType.CutiTahunan,
+  };
+};
+
 export const RequestFormContainer = reduxForm<LeaveRequestFormData>({
   form: formName,
   touchOnChange: true,
   touchOnBlur: true,
   enableReinitialize: false
-})(requestFormContainer);
+})(connect(mapStateToProps)(requestFormContainer));
