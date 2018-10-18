@@ -5,9 +5,6 @@ import {
   currencyGetAllReducer,
   currencyGetByIdReducer,
   currencyGetListReducer,
-  customerGetAllReducer,
-  customerGetByIdReducer,
-  customerGetListReducer,
   diemGetAllReducer,
   diemGetByIdReducer,
   diemGetListReducer,
@@ -35,10 +32,10 @@ import {
   systemLimitGetListReducer,
 } from '@lookup/store/reducers';
 
+import { lookupCustomerReducers } from './customer';
+
 const lookupReducers = {
-  customerGetAll: customerGetAllReducer,
-  customerGetList: customerGetListReducer,
-  customerGetById: customerGetByIdReducer,
+  ...lookupCustomerReducers,
 
   mileageExceptionGetAll: mileageExceptionGetAllReducer,
   mileageExceptionGetById: mileageExceptionGetByIdReducer,

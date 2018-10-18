@@ -1,4 +1,4 @@
-export * from './customerActions';
+export * from './lookupCustomerActions';
 export * from './mileageExceptionActions';
 export * from './roleActions';
 export * from './companyActions';

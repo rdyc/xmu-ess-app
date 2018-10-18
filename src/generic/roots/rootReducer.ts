@@ -8,7 +8,7 @@ import { userReducer } from '@layout/store/reducers/userReducer';
 import leaveRequestReducers from '@leave/store/reducers/leaveRequestReducers';
 import lookupReducers from '@lookup/store/reducers/lookupReducers';
 import mileageReducers from '@mileage/store/reducers/mileageReducers';
-import projectReducers from '@project/store/reducers/projectReducers';
+import { projectReducers } from '@project/store/reducers/projectReducers';
 import timesheetReducers from '@timesheet/store/reducers/timesheetReducers';
 import { combineReducers } from 'redux';
 import { reducer as reduxFormReducer } from 'redux-form';

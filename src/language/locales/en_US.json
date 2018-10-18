@@ -29,6 +29,7 @@
   "global.action.refresh": "Refresh",
   "global.action.submit": "Submit",
   "global.action.reset": "Reset",
+  "global.action.clear": "Clear",
   "global.action.details": "Details",
 
   "global.label.login": "Login",
@@ -108,6 +109,7 @@
   "leave.field.category": "Category",
   "leave.field.allocation": "Allocation",
   
+<<<<<<< HEAD
   "leaveRequest.title": "Leave Requests",
   "leaveRequest.subTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
   "leaveRequest.detail.title": "Leave Requests Details",
@@ -215,6 +217,8 @@
   "project.action.changeOwner": "Change Owner",
   "project.action.manageSite": "Manage Site",
   "project.alert.message.salesDuplication": "Sales person already added",
+=======
+>>>>>>> develop
   
   "workflow.stepsTitle": "Approval History",
   "workflow.stepsSubTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."

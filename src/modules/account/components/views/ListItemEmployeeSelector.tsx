@@ -281,7 +281,7 @@ class ListItemEmployeeSelector extends React.Component<AllProps, State> {
     if (response && response.data) {
       if (this.state.search !== '') {
         result = response.data.filter(item => 
-          item.fullName.toLowerCase().indexOf(this.state.search) !== -1
+          item.fullName.toLowerCase().indexOf(this.state.search.toLowerCase()) !== -1
         );
       } else {
         result = response.data;

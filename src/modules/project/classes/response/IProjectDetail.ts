@@ -28,8 +28,8 @@ export interface IProjectDetail {
   name: string;
   description?: string | null;
   maxHours: number;
-  start: Date;
-  end: Date;
+  start: string;
+  end: string;
   childProjectUid?: string | null;
   statusType: string;
   status?: ICommonSystem | null;
