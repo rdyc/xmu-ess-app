@@ -16,7 +16,7 @@ type AllProps = PropsFromState & ConnectedReduxProps;
 
 export const ExpenseRoute: React.SFC<AllProps> = props => (
   <Switch>
-    <Route path={`${props.match.path}/list/`} component={ExpenseList} />
+    <Route path={`${props.match.path}/request/list/`} component={ExpenseList} />
     <Route path={`${props.match.path}/details/:expenseUid`} component={ExpenseDetail} />
     <Route path={`${props.match.path}/form`} component={ExpenseEditor} />
   </Switch>
