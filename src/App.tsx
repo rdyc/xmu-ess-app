@@ -1,4 +1,5 @@
 import { accountRouter } from '@account/pages';
+import { FinanceRoute } from '@finance/components/FinanceRoute';
 import { rootStore } from '@generic/roots';
 import Layout from '@layout/components/base/Layout';
 import { HomePage } from '@layout/pages';
@@ -13,7 +14,6 @@ import { connect, Provider } from 'react-redux';
 import { Route, Router, Switch } from 'react-router';
 import { Store } from 'redux';
 import { loadUser, OidcProvider, UserState } from 'redux-oidc';
-
 import { IAppState } from './generic/interfaces';
 import AppLocale from './language';
 import config, { getCurrentLanguage } from './language/config';
@@ -79,6 +79,7 @@ class App extends React.Component<AllProps> {
                         <Route path="/home" component={HomePage} />
                         <Route path="/account" component={accountRouter} />
                         <Route path="/project" component={ProjectRoot} />
+                        <Route path="/finance" component={FinanceRoute} />
                       </Layout>
                     </Switch>
                   )}
