@@ -17,7 +17,7 @@ const reducer: Reducer<IQueryCollectionState<ISystemListRequest, ISystemList>> =
     case Action.GET_LIST_REQUEST: return { ...state, isLoading: true, isError: false, request: action.payload };
     case Action.GET_LIST_SUCCESS: return { ...state, isLoading: false, isError: false, response: action.payload };
     case Action.GET_LIST_ERROR: return { ...state, isLoading: false, isError: true, errors: action.payload };
-    case Action.GET_LIST_DISPOSE: return {...state, ...initialState};
+    case Action.GET_LIST_DISPOSE: return { ...state, ...initialState };
 
     default: { return state; }
   }
