@@ -4,7 +4,7 @@ import Layout from '@layout/components/base/Layout';
 import { HomePage } from '@layout/pages';
 import AccessWizardPage from '@layout/pages/AccessWizardPage';
 import CallbackPage from '@layout/pages/CallbackPage';
-import { ProjectRoot } from '@project/components/ProjectRoot';
+import { projectRouter } from '@project/components/projectRouter';
 import { ConnectedRouter } from 'connected-react-router';
 import { History } from 'history';
 import * as React from 'react';
@@ -14,7 +14,7 @@ import { Route, Router, Switch } from 'react-router';
 import { Store } from 'redux';
 import { loadUser, OidcProvider, UserState } from 'redux-oidc';
 
-import { TimesheetRoot } from '@timesheet/components/TimesheetRoot';
+// import { TimesheetRoot } from '@timesheet/components/TimesheetRoot';
 import { IAppState } from './generic/interfaces';
 import AppLocale from './language';
 import config, { getCurrentLanguage } from './language/config';
@@ -79,8 +79,9 @@ class App extends React.Component<AllProps> {
                       <Layout>
                         <Route path="/home" component={HomePage} />
                         <Route path="/account" component={accountRouter} />
-                        <Route path="/project" component={ProjectRoot} />
-                        <Route path="/timesheet" component={TimesheetRoot} />
+                        {/* <Route path="/project" component={ProjectRoot} /> */}
+                        {/* <Route path="/timesheet" component={TimesheetRoot} /> */}
+                        <Route path="/project" component={projectRouter} />
                       </Layout>
                     </Switch>
                   )}
