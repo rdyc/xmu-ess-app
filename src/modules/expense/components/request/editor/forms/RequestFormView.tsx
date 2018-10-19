@@ -3,7 +3,7 @@ import { RequestFormProps } from '@expense/components/request/editor/forms/Reque
 import { Submission } from '@layout/components/submission/Submission';
 import { Grid } from '@material-ui/core';
 import * as React from 'react';
-import { BaseFieldsProps, FieldArray, Fields, FormSection, WrappedFieldArrayProps } from 'redux-form';
+import { BaseFieldsProps, Fields, FormSection } from 'redux-form';
 
 export const RequestFormView: React.SFC<RequestFormProps> = props => {
   const {

@@ -30,8 +30,4 @@ export interface ICommonState {
   commonExpenseAll: IQueryCollectionState<ISystemAllRequest, ISystem>;
   commonExpenseList: IQueryCollectionState<ISystemListRequest, ISystemList>;
   commonExpenseDetail: IQuerySingleState<ISystemByIdRequest, ISystemDetail>;
-
-  systemGetAll: IQueryCollectionState<ISystemAllRequest, ISystem>;
-  systemGetList: IQueryCollectionState<ISystemListRequest, ISystemList>;
-  systemGetById: IQuerySingleState<ISystemByIdRequest, ISystemDetail>;
 }
