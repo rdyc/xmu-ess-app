@@ -1,52 +1,15 @@
-import AppMenu from '@constants/AppMenu';
 import { IExpense } from '@expense/classes/response';
-import { ExpenseField } from '@expense/classes/types';
-import withApiExpenseAll, { WithApiExpenseAllHandler } from '@expense/enhancers/request/withApiExpenseAll';
-import withExpenseAll, { WithExpenseAll } from '@expense/enhancers/request/withExpenseAll';
-import { IBaseChanges } from '@generic/interfaces';
-import { withLayout, WithLayout } from '@layout/hoc/withLayout';
-import { withNavBottom, WithNavBottom } from '@layout/hoc/withNavBottom';
+import { RequestListProps } from '@expense/components/request/list/RequestList';
 import { Divider, Grid, List, ListItem, ListSubheader, Paper, Typography } from '@material-ui/core';
+import { parseChanges } from '@utils/parseChanges';
 import * as moment from 'moment';
 import * as React from 'react';
-import { FormattedDate, FormattedNumber, FormattedPlural, InjectedIntlProps, injectIntl } from 'react-intl';
-import { RouteComponentProps, withRouter } from 'react-router';
-import { compose, lifecycle, ReactLifeCycleFunctions, setDisplayName } from 'recompose';
+import { FormattedDate, FormattedNumber, FormattedPlural } from 'react-intl';
 import { isArray } from 'util';
 
-type AllProps 
-  = WithExpenseAll
-  & WithLayout
-  & WithNavBottom
-  & WithApiExpenseAllHandler
-  & RouteComponentProps
-  & InjectedIntlProps;
-
-const registrationList: React.SFC<AllProps> = props => {
-  const { history } = props;
-  const { isLoading, response } = props.expenseAllState;
-
-  const handleClick = (expenseUid: string) => {
-    if (!isLoading) {
-      history.push(`/expense/details/${expenseUid}`);
-    } 
-  };
-
-  const parseChanges = (changes: IBaseChanges | null) => {
-    let result = 'Unknown';
-    
-    if (!changes) {
-      return result;
-    }
-
-    if (changes.updatedBy !== null) {
-      result = changes.updated ? (changes.updated ? changes.updated.fullName : changes.updatedBy) : changes.updatedBy;
-    } else {
-      result = changes.created ? changes.created.fullName : changes.createdBy;
-    }
-
-    return result;
-  };
+export const RequestListView: React.SFC<RequestListProps> = props => {
+  const { handleGoToDetail } = props;
+  const { isLoading, response } = props.expenseRequestState.all;
 
   const renderExpenseList = (expenses: IExpense[]) => {
     const len = expenses.length - 1;
@@ -57,7 +20,7 @@ const registrationList: React.SFC<AllProps> = props => {
           <ListItem 
             button={!isLoading} 
             key={expense.uid} 
-            onClick={() => handleClick(expense.uid)}
+            onClick={() => handleGoToDetail(expense.uid)}
           >
             <Grid container spacing={24}>
               <Grid item xs={8} sm={8}>
@@ -156,7 +119,7 @@ const registrationList: React.SFC<AllProps> = props => {
     </List>
   );
 
-  return (
+  const render = (
     <React.Fragment>
       {isLoading && response && <Typography variant="body2">loading</Typography>}     
       {response &&
@@ -168,68 +131,6 @@ const registrationList: React.SFC<AllProps> = props => {
         </Paper>}
     </React.Fragment>
   );
+
+  return render;
 };
-
-const lifecycles: ReactLifeCycleFunctions<AllProps, {}> = {
-  componentDidMount() { 
-    const { 
-      handleNext, handlePrev, handleSync, 
-      handleOrder, handleSize, handleSort, 
-      layoutDispatch, navBottomDispatch, 
-      history, intl 
-    } = this.props;
-
-    layoutDispatch.changeView({
-      uid: AppMenu.ExpenseRequest,
-      parentUid: AppMenu.Expense,
-      title: intl.formatMessage({id: 'expense.title'}),
-      subTitle : intl.formatMessage({id: 'expense.subTitle'})
-    });
-
-    layoutDispatch.modeListOn();
-    layoutDispatch.searchShow();
-    layoutDispatch.actionCentreShow();
-
-    navBottomDispatch.assignCallbacks({
-      onNextCallback: handleNext,
-      onPrevCallback: handlePrev,
-      onSyncCallback: handleSync,
-      onOrderCallback: handleOrder,
-      onDirectionCallback: handleSort,
-      onAddCallback: () => history.push('/expense/form'),
-      onSizeCallback: handleSize,
-    });
-
-    const items = Object.keys(ExpenseField)
-      .map(key => ({ id: key, name: ExpenseField[key] }));
-
-    navBottomDispatch.assignFields(items);
-  },
-
-  componentWillUnmount() {
-    const { layoutDispatch, navBottomDispatch } = this.props;
-
-    layoutDispatch.changeView(null);
-    layoutDispatch.modeListOff();
-    layoutDispatch.searchHide();
-    layoutDispatch.modeSearchOff();
-    layoutDispatch.actionCentreHide();
-    layoutDispatch.moreHide();
-
-    navBottomDispatch.dispose();
-  }
-};
-
-export default compose<AllProps, {}>(
-  setDisplayName('ExpenseList'),
-  withApiExpenseAll({ 
-    orderBy: 'uid',
-    direction: 'descending',
-  }),
-  withExpenseAll,
-  withLayout,
-  withNavBottom,
-  withRouter,
-  injectIntl,
-  lifecycle<AllProps, {}>(lifecycles),
-)(registrationList);

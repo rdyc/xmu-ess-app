@@ -1,8 +1,8 @@
 // import ExpenseApprovalDetail from '@expense/components/approval/ExpenseApprovalDetail';
 // import ExpenseApprovalList from '@expense/components/approval/ExpenseApprovalList';
 import ExpenseDetail from '@expense/components/request/ExpenseDetail';
-import ExpenseEditor from '@expense/components/request/ExpenseEditor';
-import ExpenseList from '@expense/components/request/ExpenseList';
+import ExpenseEditor from '@expense/components/request/editor/RequestEditor';
+import ExpenseList from '@expense/components/request/list/RequestListView';
 import { ConnectedReduxProps } from '@generic/types';
 import { IAppUser } from '@layout/interfaces';
 import { WithStyles } from '@material-ui/core';

@@ -20,14 +20,14 @@ import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 
 interface PropsFromState {
-  expenseRegisterState: {
+  expenseRequestState: {
     all: IQueryCollectionState<IExpenseRequestGetAllRequest, IExpense>;
     detail: IQuerySingleState<IExpenseRequestGetByIdRequest, IExpenseDetail>;
   };
 }
 
 interface PropsFromDispatch {
-  expenseRegisterDispatch: {
+  expenseRequestDispatch: {
     // command
     createRequest: typeof expenseRequestPostRequest;
     createDispose: typeof expenseRequestPostDispose;
@@ -67,5 +67,5 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   }
 });
 
-export const withexpenseRequest = (component: React.ComponentType) =>
+export const withExpenseRequest = (component: React.ComponentType) =>
   connect(mapStateToProps, mapDispatchToProps)(component);
