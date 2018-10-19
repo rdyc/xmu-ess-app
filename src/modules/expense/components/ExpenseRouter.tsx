@@ -1,26 +1,31 @@
 // import ExpenseApprovalDetail from '@expense/components/approval/ExpenseApprovalDetail';
 // import ExpenseApprovalList from '@expense/components/approval/ExpenseApprovalList';
-import ExpenseDetail from '@expense/components/request/ExpenseDetail';
-import ExpenseEditor from '@expense/components/request/editor/RequestEditor';
-import ExpenseList from '@expense/components/request/list/RequestListView';
-import { ConnectedReduxProps } from '@generic/types';
-import { IAppUser } from '@layout/interfaces';
-import { WithStyles } from '@material-ui/core';
-import styles from '@styles';
+import { RequestDetail } from '@expense/components/request/detail/RequestDetail';
+import RequestEditor from '@expense/components/request/editor/RequestEditor';
+import { RequestList } from '@expense/components/request/list/RequestList';
 import * as React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router';
 
-interface PropsFromState extends RouteComponentProps<void>, WithStyles<typeof styles> {
-  user: IAppUser;
-}
+type AllProps 
+  = RouteComponentProps;
 
-type AllProps = PropsFromState & ConnectedReduxProps;
+const listComponent = () => (
+  <RequestList orderBy="uid" direction="descending"/>
+);
+
+const detailComponent = () => (
+  <RequestDetail/>
+);
+
+const editorComponent = () => (
+  <RequestEditor/>
+);
 
 export const ExpenseRouter: React.SFC<AllProps> = props => (
   <Switch>
-    <Route path={`${props.match.path}/request/list/`} component={ExpenseList} />
-    <Route path={`${props.match.path}/details/:expenseUid`} component={ExpenseDetail} />
-    <Route path={`${props.match.path}/form`} component={ExpenseEditor} />
+    <Route path={`${props.match.path}/request/list/`} component={listComponent} />
+    <Route path={`${props.match.path}/details/:expenseUid`} component={detailComponent} />
+    <Route path={`${props.match.path}/form`} component={editorComponent} />
     {/* <Route path={`${props.match.path}/approval/list/`} component={ExpenseApprovalList} />
     <Route path={`${props.match.path}/details/:expenseUid`} component={ExpenseApprovalDetail} /> */}
   </Switch>

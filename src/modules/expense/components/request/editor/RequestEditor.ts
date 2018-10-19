@@ -95,7 +95,6 @@ const handlerCreators: HandleCreators<RequestEditorProps, OwnHandlers> = {
   handleSubmit: (props: RequestEditorProps) => (formData: ExpenseRequestFormData) => { 
     const { formMode, expenseUid, intl } = props;
     const { user } = props.userState;
-    const { response } = props.expenseRequestState.detail;
     const { createRequest, updateRequest } = props.expenseRequestDispatch;
 
     if (!user) {
