@@ -101,8 +101,19 @@ const handlerCreators: HandleCreators<RequestEditorProps, OwnHandlers> = {
       return Promise.reject('user was not found');
     }
 
+    const parsedClient = () => {
+      
+      const _client: any = ({
+      name: formData.information.name,
+      title: formData.information.title,
+      });
+
+      return _client;
+    };
+
     const payload = {
       ...formData.information,
+      client: parsedClient(),
     };
 
     // creating
@@ -205,7 +216,8 @@ const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
 
 const lifecycles: ReactLifeCycleFunctions<RequestEditorProps, {}> = {
   componentDidMount() {
-    const { layoutDispatch, intl, history, stateUpdate, apiRequestDetailGet } = this.props;
+    const { layoutDispatch, intl, history, stateUpdate } = this.props;
+    const { loadDetailRequest } = this.props.expenseRequestDispatch;
     const { user } = this.props.userState;
     
     const view = {
@@ -228,10 +240,14 @@ const lifecycles: ReactLifeCycleFunctions<RequestEditorProps, {}> = {
 
       stateUpdate({ 
         mode: FormMode.Edit,
-        projectUid: history.location.state.uid
+        expenseUid: history.location.state.uid
       });
 
-      apiRequestDetailGet(history.location.state.uid);
+      loadDetailRequest({
+        companyUid: user.company.uid,
+        positionUid: user.position.uid,
+        expenseUid: history.location.state.uid
+      });
     }
 
     layoutDispatch.changeView({

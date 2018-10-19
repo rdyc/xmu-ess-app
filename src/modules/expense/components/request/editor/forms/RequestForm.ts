@@ -15,10 +15,8 @@ export type ExpenseRequestFormData = {
     value: number | null | undefined;
     location: string | null | undefined;
     address: string | null | undefined;
-    client: {
-      name: string | null | undefined;
-      title: string | null | undefined;
-    },
+    name: string | null | undefined;
+    title: string | null | undefined;
     notes: string | null | undefined;
   },
 };

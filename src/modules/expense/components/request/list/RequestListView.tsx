@@ -35,7 +35,7 @@ export const RequestListView: React.SFC<RequestListProps> = props => {
                   noWrap
                   variant="body1"
                 >
-                  {expense.customer && expense.customer.name} {expense.client && `(${expense.client.name})`} &bull; 
+                  {expense.customer && expense.customer.name} {expense.client && `(${expense.client.name})`} &bull;&nbsp;
                   {expense.projectUid} {` - ${expense.project.name}`}
                 </Typography>
                 <Typography 

@@ -34,7 +34,13 @@ const handlerCreators: HandleCreators<RequestDetailFormProps, OwnHandlers> = {
       let fieldProps: SelectSystemOption & any = {};
   
       switch (fieldName) {
-        case 'uid':
+        case 'uid': 
+          fieldProps = {
+            type: 'text',
+            placeholder: intl.formatMessage({id: `expense.field.${name}.placeholder`}),
+            component: InputText
+          };
+          break;
 
         case 'date': 
           fieldProps = {

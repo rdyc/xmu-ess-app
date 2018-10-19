@@ -34,10 +34,8 @@ export const RequestEditorView: React.SFC<RequestEditorProps> = props => {
       value: 0,
       location: undefined,
       address: undefined,
-      client: {
-        name: undefined,
-        title: undefined,
-      },
+      name: undefined,
+      title: undefined,
       notes: undefined,
     },
   };
@@ -66,11 +64,11 @@ export const RequestEditorView: React.SFC<RequestEditorProps> = props => {
       initialValues.information.expenseType = data.expenseType;
       initialValues.information.customerUid = data.customerUid;
       initialValues.information.projectUid = data.projectUid;
-      initialValues.information.value = data.value;
+      initialValues.information.value = data.value || 0 ;
       initialValues.information.location = data.location;
       initialValues.information.address = data.address;
-      initialValues.information.client.name = data.client.name;
-      initialValues.information.client.title = data.client.title;
+      initialValues.information.name = data.client.name;
+      initialValues.information.title = data.client.title;
       initialValues.information.notes = data.notes;
       
       return renderForm(initialValues);
