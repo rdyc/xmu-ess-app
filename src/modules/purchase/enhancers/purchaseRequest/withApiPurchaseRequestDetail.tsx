@@ -9,8 +9,8 @@ import { compose, HandleCreators, lifecycle, ReactLifeCycleFunctions, setDisplay
 import { Dispatch } from 'redux';
 
 export interface WithApiPurchaseRequestDetailHandler {
-  apiRegistrationDetailGet: (purchaseUid: string) => void;
-  apiRegistrationDetailPut: (purchaseUid: string, payload: IPurchasePutPayload, resolve: any, reject: any) => void;
+  apiPurchaseRequestDetailGet: (purchaseUid: string) => void;
+  apiPurchaseRequestDetailPut: (purchaseUid: string, payload: IPurchasePutPayload, resolve: any, reject: any) => void;
 }
 
 interface Dispatcher {
@@ -28,12 +28,12 @@ type AllProps
   & WithUser;
 
 const withApiPurchaseRequestDetail = (WrappedComponent: React.ComponentType) => { 
-  const displayName = `LoadDetailRegistration(${WrappedComponent.displayName || WrappedComponent.name || 'Component'})`;
+  const displayName = `LoadDetailPurchaseRequest(${WrappedComponent.displayName || WrappedComponent.name || 'Component'})`;
   
   const withApiPurchaseRequestDetailWrapper: React.SFC<AllProps> = props => <WrappedComponent {...props} />;
 
   const handlerCreators: HandleCreators<AllProps, WithApiPurchaseRequestDetailHandler> = {
-    apiRegistrationDetailGet: (props: AllProps) => (purchaseUid: string) => { 
+    apiPurchaseRequestDetailGet: (props: AllProps) => (purchaseUid: string) => { 
       const { user } = props.userState;
       const { getByIdRequest } = props.purchaseDetailDispatch;
 
@@ -45,7 +45,7 @@ const withApiPurchaseRequestDetail = (WrappedComponent: React.ComponentType) => 
         }); 
       }
     },
-    apiRegistrationDetailPut: (props: AllProps) => (purchaseUid: string, payload: IPurchasePutPayload, resolve: any, reject: any) => { 
+    apiPurchaseRequestDetailPut: (props: AllProps) => (purchaseUid: string, payload: IPurchasePutPayload, resolve: any, reject: any) => { 
       const { user } = props.userState;
       const { putRequest } = props.purchaseDetailDispatch;
 

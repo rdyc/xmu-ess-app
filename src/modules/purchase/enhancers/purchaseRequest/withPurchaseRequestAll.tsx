@@ -1,29 +1,29 @@
 import { IAppState, IQueryCollectionState } from '@generic/interfaces';
-import { IProjectGetAllRequest } from '@project/classes/queries';
-import { IProject } from '@project/classes/response';
+import { IPurchaseGetAllRequest } from '@purchase/classes/queries/purchaseRequest';
+import { IPurchase } from '@purchase/classes/response/purchaseRequest';
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { compose, setDisplayName } from 'recompose';
 
 interface PropsFromState {
-  projectAllState: IQueryCollectionState<IProjectGetAllRequest, IProject>;
+  purchaseAllState: IQueryCollectionState<IPurchaseGetAllRequest, IPurchase>;
 }
 
-export type WithProjectRegistrationAll = PropsFromState;
+export type WithPurchaseRequestAll = PropsFromState;
 
-const withProjectRegistrationAll = (WrappedComponent: React.ComponentType) => { 
-  const displayName = `WithProjectRegistrationAll(${WrappedComponent.displayName || WrappedComponent.name || 'Component'})`;
+const withPurchaseRequestAll = (WrappedComponent: React.ComponentType) => { 
+  const displayName = `WithPurchaseRequestAll(${WrappedComponent.displayName || WrappedComponent.name || 'Component'})`;
   
-  const withProjectRegistrationAllWrapper: React.SFC<WithProjectRegistrationAll> = props => <WrappedComponent {...props} />;
+  const withPurchaseRequestAllWrapper: React.SFC<WithPurchaseRequestAll> = props => <WrappedComponent {...props} />;
 
-  const mapStateToProps = ({ projectGetAll }: IAppState) => ({
-    projectAllState: projectGetAll
+  const mapStateToProps = ({ purchaseGetAll }: IAppState) => ({
+    purchaseAllState: purchaseGetAll
   });
 
-  return compose<WithProjectRegistrationAll, {}>(
+  return compose<WithPurchaseRequestAll, {}>(
     setDisplayName(displayName),
     connect(mapStateToProps)
-  )(withProjectRegistrationAllWrapper);
+  )(withPurchaseRequestAllWrapper);
 };
 
-export default withProjectRegistrationAll;
+export default withPurchaseRequestAll;

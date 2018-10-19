@@ -1,9 +1,9 @@
 import { ConnectedReduxProps } from '@generic/types';
 import { IAppUser } from '@layout/interfaces';
 import { WithStyles } from '@material-ui/core';
-import ProjectRegistrationDetail from '@project/components/registration/ProjectRegistrationDetail';
-import ProjectRegistrationEditor from '@project/components/registration/ProjectRegistrationEditor';
-import ProjectRegistrationList from '@project/components/registration/ProjectRegistrationList';
+import PurchaseRequestDetail from '@purchase/components/purchaseRequest/detail/PurchaseRequestDetail';
+import PurchaseRequestEditor from '@purchase/components/purchaseRequest/editor/PurchaseRequestEditor';
+import PurchaseRequestList from '@purchase/components/purchaseRequest/list/PurchaseRequestList';
 import styles from '@styles';
 import * as React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router';
@@ -14,11 +14,10 @@ interface PropsFromState extends RouteComponentProps<void>, WithStyles<typeof st
 
 type AllProps = PropsFromState & ConnectedReduxProps;
 
-export const ProjectRoot: React.SFC<AllProps> = props => (
+export const PurchaseRoot: React.SFC<AllProps> = props => (
   <Switch>
-    <Route path={`${props.match.path}/list/`} component={ProjectRegistrationList} />
-    <Route path={`${props.match.path}/details/:projectUid`} component={ProjectRegistrationDetail} />
-    {/* <Route path={`${props.match.path}/sites/:projectUid`} component={ProjectSiteContainer} /> */}
-    <Route path={`${props.match.path}/form`} component={ProjectRegistrationEditor} />
+    <Route path={`${props.match.path}/list/`} component={PurchaseRequestList} />
+    <Route path={`${props.match.path}/details/:purchaseUid`} component={PurchaseRequestDetail} />
+    <Route path={`${props.match.path}/form`} component={PurchaseRequestEditor} />
   </Switch>
 );

@@ -13,11 +13,11 @@ export interface IPurchaseDetail {
   project: IProject | null;
   currencyType: string;
   currency: ICommonSystem | null;
-  rate: number | null;
+  rate: number;
   notes: string | null;
-  request: number | null;
-  requestIDR: number | null;
-  advance: number | null;
+  request: number;
+  requestIDR: number;
+  advance: number;
   reason: string | null;
   statusType: string | null;
   status: ICommonSystem | null;
