@@ -1,6 +1,6 @@
 import { IEmployeeByIdRequest } from '@account/classes/queries';
 import { IEmployeeDetail } from '@account/classes/response';
-import { EmployeeAction as Action } from '@account/store/actions';
+import { AccountEmployeeAction as Action } from '@account/store/actions';
 import { IQuerySingleState } from '@generic/interfaces';
 import { Reducer } from 'redux';
 
@@ -23,4 +23,4 @@ const reducer: Reducer<IQuerySingleState<IEmployeeByIdRequest, IEmployeeDetail>>
   }
 };
 
-export { reducer as employeeGetByIdReducer };
+export { reducer as accountEmployeeGetByIdReducer };

@@ -1,6 +1,6 @@
 import { IEmployeeAllRequest } from '@account/classes/queries';
 import { IEmployee } from '@account/classes/response';
-import { EmployeeAction as Action } from '@account/store/actions';
+import { AccountEmployeeAction as Action } from '@account/store/actions';
 import { IQueryCollectionState } from '@generic/interfaces';
 import { Reducer } from 'redux';
 
@@ -23,4 +23,4 @@ const reducer: Reducer<IQueryCollectionState<IEmployeeAllRequest, IEmployee>> = 
   }
 };
 
-export { reducer as employeeGetAllReducer };
+export { reducer as accountEmployeeGetAllReducer };

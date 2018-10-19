@@ -1,7 +1,7 @@
 import { IEmployeeListRequest } from '@account/classes/queries';
 import { IEmployee } from '@account/classes/response';
 import { ListItemEmployee } from '@account/components/views/ListItemEmployee';
-import { employeeGetListRequest } from '@account/store/actions';
+import { accountEmployeeGetListRequest } from '@account/store/actions';
 import { IAppState, IQueryCollectionState, IResponseCollection } from '@generic/interfaces';
 import { ConnectedReduxProps } from '@generic/types';
 import {
@@ -41,7 +41,7 @@ interface PropsFromState {
 
 interface PropsFromDispatch {
   employeeDispatch: {
-    listRequest: typeof employeeGetListRequest;
+    listRequest: typeof accountEmployeeGetListRequest;
   };
 }
 
@@ -292,13 +292,13 @@ class ListItemEmployeeSelector extends React.Component<AllProps, State> {
   };
 }
 
-const mapStateToProps = ({ employeeGetList }: IAppState) => ({
-  employeeState: employeeGetList
+const mapStateToProps = ({ accountEmployeeGetList }: IAppState) => ({
+  employeeState: accountEmployeeGetList
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   employeeDispatch: {
-    listRequest: (request: IEmployeeListRequest) => dispatch(employeeGetListRequest(request)),
+    listRequest: (request: IEmployeeListRequest) => dispatch(accountEmployeeGetListRequest(request)),
   }
 });
 

@@ -17,15 +17,16 @@ import {
   ListItem,
   ListItemAvatar,
   ListItemText,
-  TextField,
   Typography,
 } from '@material-ui/core';
 import PersonIcon from '@material-ui/icons/Person';
 import { WorkflowStep } from '@organization/components';
-import { IProjectDetail, IProjectDocument, IProjectSales, IProjectSite } from '@project/classes/response';
+import { IProjectDocument, IProjectSales, IProjectSite } from '@project/classes/response';
 import { RegistrationDetailProps } from '@project/components/registration/detail/RegistrationDetail';
 import * as React from 'react';
 import { FormattedMessage, FormattedNumber } from 'react-intl';
+
+import { ProjectInformation } from './shared/ProjectInformation';
 
 export const RegistrationDetailView: React.SFC<RegistrationDetailProps> = props => {
   const { 
@@ -59,123 +60,6 @@ export const RegistrationDetailView: React.SFC<RegistrationDetailProps> = props 
         </Button>
       </DialogActions>
     </Dialog>
-  );
-
-  const renderDetail = (project: IProjectDetail) => (
-    <Card square>
-      <CardHeader 
-        title={<FormattedMessage id="project.infoTitle"/>}
-        subheader={<FormattedMessage id="project.infoSubTitle" />}
-      />
-      <CardContent>
-        <TextField
-          fullWidth
-          contentEditable={false}
-          margin="normal"
-          label={<FormattedMessage id="project.field.information.uid" />}
-          value={project.uid}
-        />
-        <TextField
-          fullWidth
-          contentEditable={false}
-          margin="normal"
-          label={<FormattedMessage id="project.field.information.ownerEmployeeUid" />}
-          value={project.owner ? project.owner.fullName : 'N/A'}
-        />
-        <TextField
-          fullWidth
-          contentEditable={false}
-          margin="normal"
-          label={<FormattedMessage id="project.field.information.customerUid" />}
-          value={project.customer ? project.customer.name : 'N/A'}
-        />
-        <TextField
-          fullWidth
-          contentEditable={false}
-          margin="normal"
-          label={<FormattedMessage id="project.field.information.projectType" />}
-          value={project.project ? project.project.value : 'N/A'}
-        />
-        <TextField
-          fullWidth
-          contentEditable={false}
-          margin="normal"
-          label={<FormattedMessage id="project.field.information.name" />}
-          value={project.name}
-        />
-        <TextField
-          fullWidth
-          contentEditable={false}
-          margin="normal"
-          label={<FormattedMessage id="project.field.information.description" />}
-          value={project.description || 'N/A'}
-        />
-        <TextField
-          fullWidth
-          contentEditable={false}
-          margin="normal"
-          label={<FormattedMessage id="project.field.information.contractNumber" />}
-          value={project.contractNumber || 'N/A'}
-        />
-        <TextField
-          fullWidth
-          contentEditable={false}
-          margin="normal"
-          label={<FormattedMessage id="project.field.information.start" />}
-          value={intl.formatDate(project.start, {
-            year: 'numeric',
-            month: 'short',
-            day: 'numeric'
-          })}
-        />
-        <TextField
-          fullWidth
-          contentEditable={false}
-          margin="normal"
-          label={<FormattedMessage id="project.field.information.end" />}
-          value={intl.formatDate(project.end, {
-            year: 'numeric',
-            month: 'short',
-            day: 'numeric'
-          })}
-        />
-        <TextField
-          fullWidth
-          contentEditable={false}
-          margin="normal"
-          label={<FormattedMessage id="project.field.information.currencyType" />}
-          value={project.currency ? project.currency.value : 'N/A'}
-        />
-        <TextField
-          fullWidth
-          contentEditable={false}
-          margin="normal"
-          label={<FormattedMessage id="project.field.information.rate" />}
-          value={intl.formatNumber(project.rate || 0)}
-        />
-        <TextField
-          fullWidth
-          contentEditable={false}
-          margin="normal"
-          label={<FormattedMessage id="project.field.information.valueUsd" />}
-          value={intl.formatNumber(project.valueUsd)}
-        />
-        <TextField
-          fullWidth
-          contentEditable={false}
-          margin="normal"
-          label={<FormattedMessage id="project.field.information.valueIdr" />}
-          value={intl.formatNumber(project.valueIdr || 0)}
-        />
-        <TextField
-          fullWidth
-          contentEditable={false}
-          margin="normal"
-          label={<FormattedMessage id="project.field.information.hours" />}
-          value={intl.formatNumber(project.maxHours)}
-        />
-      </CardContent>
-    </Card>
   );
 
   const renderDocuments = (title: string, subHeader: string, documents: IProjectDocument[] | undefined) => (
@@ -297,7 +181,10 @@ export const RegistrationDetailView: React.SFC<RegistrationDetailProps> = props 
             {
               response &&
               response.data &&
-              renderDetail(response.data)
+              <ProjectInformation 
+                data={response.data}
+                intl={intl}
+              />
             }
           </Grid>
           
