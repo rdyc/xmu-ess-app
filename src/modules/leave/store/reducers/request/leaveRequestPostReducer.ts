@@ -1,5 +1,5 @@
 import { IQuerySingleState } from '@generic/interfaces';
-import { ILeaveRequestPostRequest } from '@leave/classes/queries';
+import { ILeaveRequestPostRequest } from '@leave/classes/queries/request';
 import { ILeaveRequest } from '@leave/classes/response';
 import { LeaveRequestAction as Action } from '@leave/store/actions';
 import { Reducer } from 'redux';

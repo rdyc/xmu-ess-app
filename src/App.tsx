@@ -4,7 +4,7 @@ import Layout from '@layout/components/base/Layout';
 import { HomePage } from '@layout/pages';
 import AccessWizardPage from '@layout/pages/AccessWizardPage';
 import CallbackPage from '@layout/pages/CallbackPage';
-import { LeaveRequestRoot } from '@leave/components/LeaveRequestRoot';
+import { leaveRouter } from '@leave/components/leaveRouter';
 import { projectRouter } from '@project/components/projectRouter';
 import { ConnectedRouter } from 'connected-react-router';
 import { History } from 'history';
@@ -79,7 +79,7 @@ class App extends React.Component<AllProps> {
                       <Layout>
                         <Route path="/home" component={HomePage} />
                         <Route path="/account" component={accountRouter} />
-                        <Route path="/leave" component={LeaveRequestRoot} />
+                        <Route path="/leave" component={leaveRouter} />
                         <Route path="/project" component={projectRouter} />
                       </Layout>
                     </Switch>

@@ -53,7 +53,7 @@ function* watchByIdFetchRequest() {
   const worker = (action: ReturnType<typeof leaveRequestGetByIdRequest>) => {
     return saiyanSaga.fetch({
       method: 'get',
-      path: `/v1/leave/requests/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.leaveRequestUid}`, 
+      path: `/v1/leave/requests/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.leaveUid}`, 
       successEffects: (response: IApiResponse) => ([
         put(leaveRequestGetByIdSuccess(response.body)),
       ]), 
@@ -112,7 +112,7 @@ function* watchPutFetchRequest() {
   const worker = (action: ReturnType<typeof leaveRequestPutRequest>) => {
     return saiyanSaga.fetch({
       method: 'put',
-      path: `/v1/leave/requests/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.leaveRequestUid}`,
+      path: `/v1/leave/requests/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.leaveUid}`,
       payload: action.payload.data, 
       successEffects: (response: IApiResponse) => ([
         put(leaveRequestPostSuccess(response.body)),

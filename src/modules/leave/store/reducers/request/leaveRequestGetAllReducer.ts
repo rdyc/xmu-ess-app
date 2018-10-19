@@ -1,5 +1,5 @@
 import { IQueryCollectionState } from '@generic/interfaces';
-import { ILeaveRequestGetAllRequest } from '@leave/classes/queries';
+import { ILeaveRequestGetAllRequest } from '@leave/classes/queries/request';
 import { ILeaveRequest } from '@leave/classes/response';
 import { LeaveRequestAction as Action } from '@leave/store/actions';
 import { Reducer } from 'redux';

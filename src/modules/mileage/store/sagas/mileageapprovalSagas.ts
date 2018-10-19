@@ -107,7 +107,7 @@ function* watchPostFetchRequest() {
   yield takeEvery(Action.POST_REQUEST, worker);
 }
 
-function* mileageApprovalSagas() {
+function* mileageapprovalSagas() {
   yield all([
     fork(watchAllFetchRequest),
     fork(watchByIdFetchRequest),
@@ -115,4 +115,4 @@ function* mileageApprovalSagas() {
   ]);
 }
 
-export default mileageApprovalSagas;
+export default mileageapprovalSagas;

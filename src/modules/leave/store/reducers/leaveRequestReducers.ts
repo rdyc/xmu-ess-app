@@ -3,7 +3,7 @@ import {
   leaveRequestGetByIdReducer,
   leaveRequestPostReducer,
   leaveRequestPutReducer,
-} from '@leave/store/reducers';
+} from '@leave/store/reducers/request';
 
 const leaveRequestReducers = {
   leaveRequestGetAll: leaveRequestGetAllReducer,
