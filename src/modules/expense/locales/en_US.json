@@ -28,6 +28,7 @@
   "expense.field.clientTitle": "Customer Job Title",
   "expense.field.notes": "Notes",
   "expense.field.rejectedReason": "Rejected Reason",
+  "expense.field.information.uid": "Expense ID",
   "expense.field.information.customerUid": "Customer",
   "expense.field.information.projectUid": "Project Name",
   "expense.field.information.date": "Expense Date",

@@ -65,13 +65,6 @@ export type RequestEditorProps
   & OwnState
   & OwnStateUpdaters;
 
-interface OwnHandlers {
-  handleValidate: (payload: ExpenseRequestFormData) => FormErrors;
-  handleSubmit: (payload: ExpenseRequestFormData) => void;
-  handleSubmitSuccess: (result: any, dispatch: Dispatch<any>) => void;
-  handleSubmitFail: (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => void;
-}
-
 const handlerCreators: HandleCreators<RequestEditorProps, OwnHandlers> = {
   handleValidate: (props: RequestEditorProps) => (formData: ExpenseRequestFormData) => { 
     const errors = {
@@ -239,7 +232,7 @@ const lifecycles: ReactLifeCycleFunctions<RequestEditorProps, {}> = {
       view.subTitle = 'expense.form.editSubTitle';
 
       stateUpdate({ 
-        mode: FormMode.Edit,
+        formMode: FormMode.Edit,
         expenseUid: history.location.state.uid
       });
 

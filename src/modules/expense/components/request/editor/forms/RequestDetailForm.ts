@@ -26,7 +26,7 @@ export type RequestDetailFormProps
 const handlerCreators: HandleCreators<RequestDetailFormProps, OwnHandlers> = {
     generateFieldProps: (props: RequestDetailFormProps) => (name: string) => { 
       const { 
-        intl 
+        intl, // formMode
       } = props;
       
       const fieldName = name.replace('information.', '');
@@ -36,7 +36,7 @@ const handlerCreators: HandleCreators<RequestDetailFormProps, OwnHandlers> = {
       switch (fieldName) {
         case 'uid': 
           fieldProps = {
-            type: 'text',
+            disabled: true,
             placeholder: intl.formatMessage({id: `expense.field.${name}.placeholder`}),
             component: InputText
           };
