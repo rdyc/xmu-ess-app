@@ -8,7 +8,7 @@ export interface IAccountState {
   profileQuery: IEmployeeProfileQueryState;
   profileCommand: IEmployeeProfileCommandState;
 
-  employeeGetAll: IQueryCollectionState<IEmployeeAllRequest, IEmployee>;
-  employeeGetList: IQueryCollectionState<IEmployeeListRequest, IEmployee>;
-  employeeGetById: IQuerySingleState<IEmployeeByIdRequest, IEmployeeDetail>;
+  accountEmployeeGetAll: IQueryCollectionState<IEmployeeAllRequest, IEmployee>;
+  accountEmployeeGetList: IQueryCollectionState<IEmployeeListRequest, IEmployee>;
+  accountEmployeeGetById: IQuerySingleState<IEmployeeByIdRequest, IEmployeeDetail>;
 }

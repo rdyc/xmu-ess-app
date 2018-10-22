@@ -15,23 +15,23 @@ import {
 } from '@mileage/classes/response';
 
 export interface IMileageState {
-  mileagerequestGetAll: IQueryCollectionState<
+  mileageRequestGetAll: IQueryCollectionState<
     IMileageRequestGetAllRequest,
     IMileageRequest
   >;
-  mileagerequestGetById: IQuerySingleState<
+  mileageRequestGetById: IQuerySingleState<
     IMileageRequestGetByIdRequest,
     IMileageRequestDetail
   >;
-  mileagerequestPost: IQuerySingleState<IMileageRequestPostRequest, IMileageRequest>;
+  mileageRequestPost: IQuerySingleState<IMileageRequestPostRequest, IMileageRequest>;
 
-  mileageapprovalGetAll: IQueryCollectionState<
+  mileageApprovalGetAll: IQueryCollectionState<
     IMileageApprovalGetAllRequest,
     IMileageApproval
   >;
-  mileageapprovalGetById: IQuerySingleState<
+  mileageApprovalGetById: IQuerySingleState<
     IMileageApprovalGetByIdRequest,
     IMileageApprovalDetail
   >;
-  mileageapprovalPost: IQuerySingleState<IMileageApprovalPostRequest, IMileageApproval>;
+  mileageApprovalPost: IQuerySingleState<IMileageApprovalPostRequest, IMileageApproval>;
 }

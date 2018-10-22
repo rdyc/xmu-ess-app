@@ -1,30 +1,30 @@
 import {
-  EmployeeAction as Action,
-  employeeGetAllError,
-  employeeGetAllRequest,
-  employeeGetAllSuccess,
-  employeeGetByIdError,
-  employeeGetByIdRequest,
-  employeeGetByIdSuccess,
-  employeeGetListError,
-  employeeGetListRequest,
-  employeeGetListSuccess,
+  AccountEmployeeAction as Action,
+  accountEmployeeGetAllError,
+  accountEmployeeGetAllRequest,
+  accountEmployeeGetAllSuccess,
+  accountEmployeeGetByIdError,
+  accountEmployeeGetByIdRequest,
+  accountEmployeeGetByIdSuccess,
+  accountEmployeeGetListError,
+  accountEmployeeGetListRequest,
+  accountEmployeeGetListSuccess,
 } from '@account/store/actions';
 import { layoutAlertAdd } from '@layout/store/actions';
 import saiyanSaga from '@utils/saiyanSaga';
 import { all, fork, put, takeEvery } from 'redux-saga/effects';
 import { IApiResponse, objectToQuerystring } from 'utils';
 
-function* watchFetchAllRequest() {
-  const worker = (action: ReturnType<typeof employeeGetAllRequest>) => {
+function* watchAllRequest() {
+  const worker = (action: ReturnType<typeof accountEmployeeGetAllRequest>) => {
     return saiyanSaga.fetch({
       method: 'get',
       path: `/v1/account/employees${objectToQuerystring(action.payload.filter)}`, 
       successEffects: (response: IApiResponse) => ([
-        put(employeeGetAllSuccess(response.body)),
+        put(accountEmployeeGetAllSuccess(response.body)),
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(employeeGetAllError(response.statusText)),
+        put(accountEmployeeGetAllError(response.statusText)),
         put(layoutAlertAdd({
           time: new Date(),
           message: response.statusText,
@@ -32,7 +32,7 @@ function* watchFetchAllRequest() {
         }))
       ]), 
       errorEffects: (error: TypeError) => ([
-        put(employeeGetAllError(error.message)),
+        put(accountEmployeeGetAllError(error.message)),
         put(layoutAlertAdd({
           time: new Date(),
           message: error.message
@@ -44,16 +44,16 @@ function* watchFetchAllRequest() {
   yield takeEvery(Action.GET_ALL_REQUEST, worker);
 }
 
-function* watchFetchListRequest() {
-  const worker = (action: ReturnType<typeof employeeGetListRequest>) => {
+function* watchListRequest() {
+  const worker = (action: ReturnType<typeof accountEmployeeGetListRequest>) => {
     return saiyanSaga.fetch({
       method: 'get',
       path: `/v1/account/employees/list${objectToQuerystring(action.payload.filter)}`,
       successEffects: (response: IApiResponse) => ([
-        put(employeeGetListSuccess(response.body))
+        put(accountEmployeeGetListSuccess(response.body))
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(employeeGetListError(response.statusText)),
+        put(accountEmployeeGetListError(response.statusText)),
         put(layoutAlertAdd({
           time: new Date(),
           message: response.statusText,
@@ -61,7 +61,7 @@ function* watchFetchListRequest() {
         }))
       ]), 
       errorEffects: (error: TypeError) => ([
-        put(employeeGetListError(error.message)),
+        put(accountEmployeeGetListError(error.message)),
         put(layoutAlertAdd({
           time: new Date(),
           message: error.message
@@ -73,16 +73,16 @@ function* watchFetchListRequest() {
   yield takeEvery(Action.GET_LIST_REQUEST, worker);
 }
 
-function* watchFetchByIdRequest() {
-  const worker = (action: ReturnType<typeof employeeGetByIdRequest>) => {
+function* watchByIdRequest() {
+  const worker = (action: ReturnType<typeof accountEmployeeGetByIdRequest>) => {
     return saiyanSaga.fetch({
       method: 'get',
       path: `/v1/account/employees/${action.payload.employeeUid}`,
       successEffects: (response: IApiResponse) => ([
-        put(employeeGetByIdSuccess(response.body)),
+        put(accountEmployeeGetByIdSuccess(response.body)),
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(employeeGetByIdError(response.statusText)),
+        put(accountEmployeeGetByIdError(response.statusText)),
         put(layoutAlertAdd({
           time: new Date(),
           message: response.statusText,
@@ -90,7 +90,7 @@ function* watchFetchByIdRequest() {
         }))
       ]), 
       errorEffects: (error: TypeError) => ([
-        put(employeeGetByIdError(error.message)),
+        put(accountEmployeeGetByIdError(error.message)),
         put(layoutAlertAdd({
           time: new Date(),
           message: error.message,
@@ -102,12 +102,12 @@ function* watchFetchByIdRequest() {
   yield takeEvery(Action.GET_BY_ID_REQUEST, worker);
 }
 
-function* employeeSagas() {
+function* accountEmployeeSagas() {
   yield all([
-    fork(watchFetchAllRequest),
-    fork(watchFetchListRequest),
-    fork(watchFetchByIdRequest),
+    fork(watchAllRequest),
+    fork(watchListRequest),
+    fork(watchByIdRequest),
   ]);
 }
 
-export default employeeSagas;
+export default accountEmployeeSagas;
