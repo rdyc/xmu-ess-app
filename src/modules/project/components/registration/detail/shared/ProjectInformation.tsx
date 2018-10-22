@@ -22,6 +22,13 @@ export const ProjectInformation: React.SFC<OwnProps> = props => {
           fullWidth
           contentEditable={false}
           margin="normal"
+          label={<FormattedMessage id="project.field.information.statusType" />}
+          value={data.status ? data.status.value : data.statusType}
+        />
+        <TextField
+          fullWidth
+          contentEditable={false}
+          margin="normal"
           label={<FormattedMessage id="project.field.information.uid" />}
           value={data.uid}
         />

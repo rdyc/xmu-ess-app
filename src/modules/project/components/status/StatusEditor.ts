@@ -1,12 +1,13 @@
+import { WorkflowStatusType } from '@common/classes/types';
 import AppMenu from '@constants/AppMenu';
 import { FormMode } from '@generic/types';
 import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
-import { IProjectOwnerPutPayload } from '@project/classes/request/owner';
-import { WithProjectOwner, withProjectOwner } from '@project/hoc/withProjectOwner';
+import { IProjectStatusPutPayload } from '@project/classes/request/status';
 import { WithProjectRegistration, withProjectRegistration } from '@project/hoc/withProjectRegistration';
-import { projectOwnerMessage } from '@project/locales/messages/projectOwnerMessage';
+import { WithProjectStatus, withProjectStatus } from '@project/hoc/withProjectStatus';
+import { projectStatusMessage } from '@project/locales/messages/projectStatusMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import {
@@ -25,12 +26,12 @@ import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
 import { isNullOrUndefined, isObject } from 'util';
 
-import { ProjectOwnerFormData } from './forms/OwnerForm';
-import { OwnerEditorView } from './OwnerEditorView';
+import { ProjectStatusFormData } from './forms/StatusForm';
+import { StatusEditorView } from './StatusEditorView';
 
 interface OwnHandlers {
-  handleValidate: (payload: ProjectOwnerFormData) => FormErrors;
-  handleSubmit: (payload: ProjectOwnerFormData) => void;
+  handleValidate: (payload: ProjectStatusFormData) => FormErrors;
+  handleSubmit: (payload: ProjectStatusFormData) => void;
   handleSubmitSuccess: (result: any, dispatch: Dispatch<any>) => void;
   handleSubmitFail: (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => void;
 }
@@ -44,14 +45,15 @@ interface OwnState {
   companyUid?: string | undefined;
   positionUid?: string | undefined;
   projectUid?: string | undefined;
+  actionStatusType?: string | undefined;
 }
 
 interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
   stateUpdate: StateHandler<OwnState>;
 }
 
-export type OwnerEditorProps
-  = WithProjectOwner
+export type StatusEditorProps
+  = WithProjectStatus
   & WithProjectRegistration
   & WithUser
   & WithLayout
@@ -62,13 +64,13 @@ export type OwnerEditorProps
   & OwnState
   & OwnStateUpdaters;
 
-const handlerCreators: HandleCreators<OwnerEditorProps, OwnHandlers> = {
-  handleValidate: (props: OwnerEditorProps) => (formData: ProjectOwnerFormData) => { 
+const handlerCreators: HandleCreators<StatusEditorProps, OwnHandlers> = {
+  handleValidate: (props: StatusEditorProps) => (formData: ProjectStatusFormData) => { 
     const errors = {
       information: {}
     };
   
-    const requiredFields = ['employeeUid', 'projectType'];
+    const requiredFields = ['statusType'];
   
     requiredFields.forEach(field => {
       if (!formData.information[field] || isNullOrUndefined(formData.information[field])) {
@@ -78,10 +80,10 @@ const handlerCreators: HandleCreators<OwnerEditorProps, OwnHandlers> = {
     
     return errors;
   },
-  handleSubmit: (props: OwnerEditorProps) => (formData: ProjectOwnerFormData) => { 
-    const { projectUid, intl } = props;
+  handleSubmit: (props: StatusEditorProps) => (formData: ProjectStatusFormData) => { 
+    const { projectUid, intl, stateUpdate } = props;
     const { user } = props.userState;
-    const { updateRequest } = props.projectOwnerDispatch;
+    const { updateRequest } = props.projectStatusDispatch;
     const { information } = formData;
 
     // user checking
@@ -90,16 +92,18 @@ const handlerCreators: HandleCreators<OwnerEditorProps, OwnHandlers> = {
     }
 
     // props checking
-    if (!projectUid || !information.employeeUid || !information.projectType) {
-      const message = intl.formatMessage(projectOwnerMessage.emptyProps);
+    if (!projectUid || !information.statusType) {
+      const message = intl.formatMessage(projectStatusMessage.emptyProps);
 
       return Promise.reject(message);
     }
 
+    // set actionStatusType in state
+    stateUpdate({actionStatusType: information.statusType});
+
     // generate payload
-    const payload: IProjectOwnerPutPayload = {
-      employeeUid: information.employeeUid,
-      projectType: information.projectType
+    const payload: IProjectStatusPutPayload = {
+      statusType: information.statusType
     };
 
     // dispatch update request
@@ -114,14 +118,16 @@ const handlerCreators: HandleCreators<OwnerEditorProps, OwnHandlers> = {
       });
     });
   },
-  handleSubmitSuccess: (props: OwnerEditorProps) => (response: boolean) => {
-    const { formMode, intl, history, projectUid } = props;
+  handleSubmitSuccess: (props: StatusEditorProps) => (response: boolean) => {
+    const { formMode, intl, history, projectUid, actionStatusType } = props;
     const { alertAdd } = props.layoutDispatch;
     
     let message: string = '';
 
     if (formMode === FormMode.Edit) {
-      message = intl.formatMessage(projectOwnerMessage.updateSuccess);
+      message = intl.formatMessage(projectStatusMessage.updateSuccess, {
+        status: actionStatusType === WorkflowStatusType.Closed ? 'closed' : 're-opened'
+      });
     }
 
     alertAdd({
@@ -133,7 +139,7 @@ const handlerCreators: HandleCreators<OwnerEditorProps, OwnHandlers> = {
       history.push(`/project/details/${projectUid}`);
     }
   },
-  handleSubmitFail: (props: OwnerEditorProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
+  handleSubmitFail: (props: StatusEditorProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
     const { intl } = props;
     const { alertAdd } = props.layoutDispatch;
     
@@ -146,16 +152,16 @@ const handlerCreators: HandleCreators<OwnerEditorProps, OwnHandlers> = {
     } else {
       alertAdd({
         time: new Date(),
-        message: intl.formatMessage(projectOwnerMessage.updateFailure),
+        message: intl.formatMessage(projectStatusMessage.updateFailure),
         details: isObject(submitError) ? submitError.message : submitError
       });
     }
   }
 };
 
-const createProps: mapper<OwnerEditorProps, OwnState> = (props: OwnerEditorProps): OwnState => {
+const createProps: mapper<StatusEditorProps, OwnState> = (props: StatusEditorProps): OwnState => {
   const { history } = props;
-  
+
   return { 
     formMode: FormMode.Edit,
     projectUid: history.location.state.uid
@@ -169,7 +175,7 @@ const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
   })
 };
 
-const lifecycles: ReactLifeCycleFunctions<OwnerEditorProps, {}> = {
+const lifecycles: ReactLifeCycleFunctions<StatusEditorProps, {}> = {
   componentDidMount() {
     const { layoutDispatch, intl, history } = this.props;
     const { user } = this.props.userState;
@@ -179,11 +185,11 @@ const lifecycles: ReactLifeCycleFunctions<OwnerEditorProps, {}> = {
     layoutDispatch.changeView({
       uid: AppMenu.ProjectRegistrationRequest,
       parentUid: AppMenu.ProjectRegistration,
-      title: intl.formatMessage({id: 'project.form.owner.editTitle'}),
-      subTitle : intl.formatMessage({id: 'project.form.owner.editSubTitle'})
+      title: intl.formatMessage({id: 'project.form.status.editTitle'}),
+      subTitle : intl.formatMessage({id: 'project.form.status.editSubTitle'})
     });
     
-    layoutDispatch.navBackShow(); 
+    layoutDispatch.navBackShow();
 
     if (!isNullOrUndefined(history.location.state) && !response && user) {
       loadDetailRequest({
@@ -194,7 +200,7 @@ const lifecycles: ReactLifeCycleFunctions<OwnerEditorProps, {}> = {
     }
   },
   componentWillUnmount() {
-    const { layoutDispatch, appBarDispatch, projectOwnerDispatch } = this.props;
+    const { layoutDispatch, appBarDispatch, projectStatusDispatch } = this.props;
 
     layoutDispatch.changeView(null);
     layoutDispatch.navBackHide();
@@ -203,19 +209,19 @@ const lifecycles: ReactLifeCycleFunctions<OwnerEditorProps, {}> = {
 
     appBarDispatch.dispose();
 
-    projectOwnerDispatch.updateDispose();
+    projectStatusDispatch.updateDispose();
   }
 };
 
-export const OwnerEditor = compose<OwnerEditorProps, {}>(
+export const StatusEditor = compose<StatusEditorProps, {}>(
   withUser,
   withLayout,
   withAppBar,
   withRouter,
   withProjectRegistration,
-  withProjectOwner,
+  withProjectStatus,
   injectIntl,
   withStateHandlers<OwnState, OwnStateUpdaters, {}>(createProps, stateUpdaters),
-  withHandlers<OwnerEditorProps, OwnHandlers>(handlerCreators),
-  lifecycle<OwnerEditorProps, {}>(lifecycles),
-)(OwnerEditorView);
+  withHandlers<StatusEditorProps, OwnHandlers>(handlerCreators),
+  lifecycle<StatusEditorProps, {}>(lifecycles),
+)(StatusEditorView);

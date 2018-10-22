@@ -11,6 +11,7 @@ import {
 import { IProject, IProjectDetail, IProjectList } from '@project/classes/response';
 
 import { IProjectOwnerPutRequest } from '../queries/owner';
+import { IProjectStatusPutRequest } from '../queries/status';
 
 export interface IProjectState {
   // registration
@@ -24,6 +25,9 @@ export interface IProjectState {
 
   // change owner
   projectOwnerPut: IQuerySingleState<IProjectOwnerPutRequest, boolean>;
+
+  // status
+  projectStatusPut: IQuerySingleState<IProjectStatusPutRequest, boolean>;
 
   // site management
 

@@ -182,30 +182,52 @@ const handlerCreators: HandleCreators<RegistrationDetailProps, Handler> = {
   },
   handleDialogConfirmed: (props: RegistrationDetailProps) => () => { 
     const { match, history, action, stateReset } = props;
+
     const projectUid = match.params.projectUid;
 
-    let next: string = '404';
-
-    switch (action) {
-      case ProjectUserAction.Modify:
-        next = '/project/form';
-        break;
-        
-      case ProjectUserAction.ChangeOwner:
-        next = '/project/owner';
-        break;
-
-      case ProjectUserAction.ManageSites:
-        next = '/project/sites';
-        break;
-
-      default:
-        break;
+    // skipp untracked action
+    if (!action) {
+      return;
     }
 
-    stateReset();
+    // actions with new page
+    const actions = [
+      ProjectUserAction.Modify, 
+      ProjectUserAction.ChangeOwner, 
+      ProjectUserAction.Close, 
+      ProjectUserAction.ReOpen, 
+      ProjectUserAction.ManageSites
+    ];
 
-    history.push(next, { uid: projectUid });
+    if (actions.indexOf(action) !== -1) {
+      let next: string = '404';
+
+      switch (action) {
+        case ProjectUserAction.Modify:
+          next = '/project/form';
+          break;
+          
+        case ProjectUserAction.ChangeOwner:
+          next = '/project/owner';
+          break;
+        
+        case ProjectUserAction.Close:
+        case ProjectUserAction.ReOpen:
+          next = '/project/status';
+          break;
+
+        case ProjectUserAction.ManageSites:
+          next = '/project/sites';
+          break;
+
+        default:
+          break;
+      }
+
+      stateReset();
+
+      history.push(next, { uid: projectUid });
+    }
   },
 };
 
