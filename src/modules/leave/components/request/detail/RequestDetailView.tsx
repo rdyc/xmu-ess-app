@@ -54,29 +54,29 @@ export const RequestDetailView: React.SFC<RequestDetailProps> = props => {
   const renderDetail = (leave: ILeaveRequestDetail) => (
     <Card square>
       <CardHeader 
-        title={<FormattedMessage id="leaveRequest.infoTitle"/>}
-        subheader={<FormattedMessage id="leaveRequest.infoSubTitle" />}
+        title={<FormattedMessage id="leave.infoTitle"/>}
+        subheader={<FormattedMessage id="leave.infoSubTitle" />}
       />
       <CardContent>
         <TextField
           fullWidth
           contentEditable={false}
           margin="normal"
-          label={<FormattedMessage id="leaveRequest.field.uid" />}
+          label={<FormattedMessage id="leave.field.uid" />}
           value={leave.uid}
         />
         <TextField
           fullWidth
           contentEditable={false}
           margin="normal"
-          label={<FormattedMessage id="leaveRequest.field.status" />}
+          label={<FormattedMessage id="leave.field.status" />}
           value={leave.status ? leave.status.value : 'N/A'}
         />
         <TextField
           fullWidth
           contentEditable={false}
           margin="normal"
-          label={<FormattedMessage id="leaveRequest.field.type" />}
+          label={<FormattedMessage id="leave.field.type" />}
           value={leave.leave ? leave.leave.value : 'N/A'}
         />
         <TextField
@@ -84,14 +84,14 @@ export const RequestDetailView: React.SFC<RequestDetailProps> = props => {
           contentEditable={false}
           hidden 
           margin="normal"
-          label={<FormattedMessage id="leaveRequest.field.regular" />}
+          label={<FormattedMessage id="leave.field.regular" />}
           value={leave.regular ? leave.regular.leave ? leave.regular.leave.name : 'N/A' : 'N/A'}
         />
         <TextField
           fullWidth
           contentEditable={false}
           margin="normal"
-          label={<FormattedMessage id="leaveRequest.field.start" />}
+          label={<FormattedMessage id="leave.field.start" />}
           value={intl.formatDate(leave.start, {
             year: 'numeric',
             month: 'short',
@@ -102,7 +102,7 @@ export const RequestDetailView: React.SFC<RequestDetailProps> = props => {
           fullWidth
           contentEditable={false}
           margin="normal"
-          label={<FormattedMessage id="leaveRequest.field.end" />}
+          label={<FormattedMessage id="leave.field.end" />}
           value={intl.formatDate(leave.end, {
             year: 'numeric',
             month: 'short',
@@ -113,21 +113,21 @@ export const RequestDetailView: React.SFC<RequestDetailProps> = props => {
           fullWidth
           contentEditable={false}
           margin="normal"
-          label={<FormattedMessage id="leaveRequest.field.name" />}
+          label={<FormattedMessage id="leave.field.name" />}
           value={leave.address}
         />
         <TextField
           fullWidth
           contentEditable={false}
           margin="normal"
-          label={<FormattedMessage id="leaveRequest.field.contactNumber" />}
+          label={<FormattedMessage id="leave.field.contactNumber" />}
           value={leave.contactNumber}
         />
         <TextField
           fullWidth
           contentEditable={false}
           margin="normal"
-          label={<FormattedMessage id="leaveRequest.field.reason" />}
+          label={<FormattedMessage id="leave.field.reason" />}
           value={leave.reason}
         />
       </CardContent>

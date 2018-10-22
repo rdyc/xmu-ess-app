@@ -78,7 +78,7 @@ const handlerCreators: HandleCreators<RequestEditorProps, OwnHandlers> = {
 
     requiredFields.forEach(field => {
       if (!formData.information[field] || isNullOrUndefined(formData.information[field])) {
-        errors.information[field] = props.intl.formatMessage({id: `leaveRequest.field.information.${field}.required`});
+        errors.information[field] = props.intl.formatMessage({id: `leave.field.information.${field}.required`});
       }
     });
     
@@ -202,7 +202,7 @@ const lifecycles: ReactLifeCycleFunctions<RequestEditorProps, {}> = {
     const { user } = this.props.userState;
     
     const view = {
-      title: 'leaveRequest.form.newTitle',
+      title: 'leave.form.newTitle',
       subTitle: 'leaveReqeust.form.newSubTitle',
     };
 
@@ -216,8 +216,8 @@ const lifecycles: ReactLifeCycleFunctions<RequestEditorProps, {}> = {
     });
 
     if (!isNullOrUndefined(history.location.state)) {
-      view.title = 'leaveRequest.form.editTitle';
-      view.subTitle = 'leaveRequest.form.editSubTitle';
+      view.title = 'leave.form.editTitle';
+      view.subTitle = 'leave.form.editSubTitle';
 
       stateUpdate({ 
         formMode: FormMode.Edit,

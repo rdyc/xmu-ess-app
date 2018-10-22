@@ -149,8 +149,8 @@ const lifecycles: ReactLifeCycleFunctions<RequestListProps, OwnState> = {
     layoutDispatch.changeView({
       uid: AppMenu.LeaveRequest,
       parentUid: AppMenu.Leave,
-      title: intl.formatMessage({id: 'leaveRequest.title'}),
-      subTitle : intl.formatMessage({id: 'leaveRequest.subTitle'})
+      title: intl.formatMessage({id: 'leave.title'}),
+      subTitle : intl.formatMessage({id: 'leave.subTitle'})
     });
 
     layoutDispatch.modeListOn();

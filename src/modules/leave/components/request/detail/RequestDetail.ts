@@ -101,8 +101,8 @@ const handlerCreators: HandleCreators<RequestDetailProps, Handler> = {
     stateUpdate({
       dialogFullScreen: false,
       dialogOpen: true,
-      dialogTitle: intl.formatMessage({id: 'leaveRequest.dialog.modifyTitle'}), 
-      dialogDescription: intl.formatMessage({id: 'leaveRequest.dialog.modifyDescription'}),
+      dialogTitle: intl.formatMessage({id: 'leave.dialog.modifyTitle'}), 
+      dialogDescription: intl.formatMessage({id: 'leave.dialog.modifyDescription'}),
       dialogCancelText: intl.formatMessage({id: 'global.action.disaggree'}),
       dialogConfirmedText: intl.formatMessage({id: 'global.action.aggree'})
     });
@@ -147,8 +147,8 @@ const lifecycles: ReactLifeCycleFunctions<RequestDetailProps, OwnState> = {
     layoutDispatch.changeView({
       uid: AppMenu.LeaveRequest,
       parentUid: AppMenu.Leave,
-      title: intl.formatMessage({id: 'leaveRequest.detail.title'}),
-      subTitle : intl.formatMessage({id: 'leaveRequest.detail.subTitle'})
+      title: intl.formatMessage({id: 'leave.detail.title'}),
+      subTitle : intl.formatMessage({id: 'leave.detail.subTitle'})
     });
 
     layoutDispatch.navBackShow();
@@ -203,7 +203,7 @@ const lifecycles: ReactLifeCycleFunctions<RequestDetailProps, OwnState> = {
         },
         {
           id: LeaveRequestUserAction.Modify,
-          name: intl.formatMessage({id: 'leaveRequest.action.modify'}),
+          name: intl.formatMessage({id: 'leave.action.modify'}),
           enabled: response !== undefined,
           visible: isStatusTypeEquals([WorkflowStatusType.Submitted, WorkflowStatusType.InProgress, WorkflowStatusType.Approved])
         },

@@ -14,7 +14,7 @@ export const RequestDetailFormView: React.SFC<RequestDetailFormProps> = props =>
     const fieldProps = props.generateFieldProps(name);
 
     // don't show uid & ownerEmployeeUid for new form
-    const fields = ['uid', 'ownerEmployeeUid'];
+    const fields = ['uid'];
     if (formMode === FormMode.New && fields.indexOf(fieldName) !== -1) {
       return null;
     }

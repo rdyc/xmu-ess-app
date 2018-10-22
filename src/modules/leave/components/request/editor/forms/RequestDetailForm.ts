@@ -33,12 +33,10 @@ const handlerCreators: HandleCreators<RequestDetailFormProps, OwnHandlers> = {
 
     switch (fieldName) {
       case 'uid':
-
-      case 'customerUid': 
         fieldProps = {
-          required: true,
+          disabled: true,
           placeholder: intl.formatMessage({id: `leave.field.${name}.placeholder`}),
-          component: SelectSystem
+          component: InputText
         };
         break;
       
