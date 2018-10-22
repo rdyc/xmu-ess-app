@@ -27,15 +27,15 @@ import { ISettlement, ISettlementDetail } from '@purchase/classes/response/purch
 export interface IPurchaseState {
   purchaseGetAll: IQueryCollectionState<IPurchaseGetAllRequest, IPurchase>;
   purchaseGetById: IQuerySingleState<IPurchaseGetByIdRequest, IPurchaseDetail>;
-  purchasePost: IQuerySingleState<IPurchasePostRequest, IPurchaseDetail>;
-  purchasePut: IQuerySingleState<IPurchasePutRequest, IPurchaseDetail>;
+  purchasePost: IQuerySingleState<IPurchasePostRequest, IPurchase>;
+  purchasePut: IQuerySingleState<IPurchasePutRequest, IPurchase>;
   purchaseApprovalGetAll: IQueryCollectionState<IPurchaseApprovalGetAllRequest, IPurchase>;
   purchaseApprovalGetById: IQuerySingleState<IPurchaseApprovalGetByIdRequest, IPurchaseDetail>;
   purchaseApprovalPost: IQuerySingleState<IPurchaseApprovalPostRequest, boolean>;
   settlementGetAll: IQueryCollectionState<ISettlementGetAllRequest, ISettlement>;
   settlementGetById: IQuerySingleState<ISettlementGetByIdRequest, ISettlementDetail>;
-  settlementPost: IQuerySingleState<ISettlementPostRequest, ISettlementDetail>;
-  settlementPut: IQuerySingleState<ISettlementPutRequest, ISettlementDetail>;
+  settlementPost: IQuerySingleState<ISettlementPostRequest, ISettlement>;
+  settlementPut: IQuerySingleState<ISettlementPutRequest, ISettlement>;
   settlementApprovalGetAll: IQueryCollectionState<ISettlementApprovalGetAllRequest, ISettlement>;
   settlementApprovalGetById: IQuerySingleState<ISettlementApprovalGetByIdRequest, ISettlementDetail>;
   settlementApprovalPost: IQuerySingleState<ISettlementApprovalPostRequest, boolean>;

@@ -1,7 +1,7 @@
 import { withUser, WithUser } from '@layout/hoc/withUser';
 import { IPurchaseGetByIdRequest, IPurchasePutRequest } from '@purchase/classes/queries/purchaseRequest';
 import { IPurchasePutPayload } from '@purchase/classes/request/purchaseRequest';
-import withPurchaseRequestDetail from '@purchase/enhancers/purchaseRequest/withPurchaseRequestDetail';
+import withPurchaseRequestDetail from '@purchase/hoc/purchaseRequest/withPurchaseRequestDetail';
 import { purchaseGetByIdDispose, purchaseGetByIdRequest, purchasePutDispose, purchasePutRequest } from '@purchase/store/actions';
 import * as React from 'react';
 import { connect } from 'react-redux';

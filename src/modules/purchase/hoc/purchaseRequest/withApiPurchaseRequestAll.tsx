@@ -4,7 +4,7 @@ import { withLayout, WithLayout } from '@layout/hoc/withLayout';
 import { withUser, WithUser } from '@layout/hoc/withUser';
 import { IListBarField } from '@layout/interfaces';
 import { IPurchaseGetAllRequest } from '@purchase/classes/queries/purchaseRequest';
-import withPurchaseRequestAll, { WithPurchaseRequestAll } from '@purchase/enhancers/purchaseRequest/withPurchaseRequestAll';
+import withPurchaseRequestAll, { WithPurchaseRequestAll } from '@purchase/hoc/purchaseRequest/withPurchaseRequestAll';
 import { purchaseGetAllDispose, purchaseGetAllRequest } from '@purchase/store/actions';
 import * as React from 'react';
 import { connect } from 'react-redux';

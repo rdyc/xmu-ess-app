@@ -9,7 +9,7 @@ import { IPurchaseItemRequest } from './IPurchaseItemRequest';
 export interface IPurchaseDetail {
   uid: string;
   date: string;
-  projectUid: string | null;
+  projectUid: string;
   project: IProject | null;
   currencyType: string;
   currency: ICommonSystem | null;
@@ -19,7 +19,7 @@ export interface IPurchaseDetail {
   requestIDR: number;
   advance: number;
   reason: string | null;
-  statusType: string | null;
+  statusType: string;
   status: ICommonSystem | null;
   hierarchyUid: string;
   hierarchy: IOrganizationHierarchy | null;

@@ -6,10 +6,11 @@ import financeReducers from '@finance/store/reducers/financeReducers';
 import { IAppState } from '@generic/interfaces';
 import { appBarReducer, layoutReducer, listBarReducer, notificationReducer } from '@layout/store/reducers';
 import { userReducer } from '@layout/store/reducers/userReducer';
+import leaveRequestReducers from '@leave/store/reducers/leaveRequestReducers';
 import lookupReducers from '@lookup/store/reducers/lookupReducers';
 import mileageReducers from '@mileage/store/reducers/mileageReducers';
 import { projectReducers } from '@project/store/reducers/projectReducers';
-// import { purchaseReducers } from '@purchase/store/reducers/purchaseReducers';
+import purchaseReducers from '@purchase/store/reducers/purchaseReducers';
 import timesheetReducers from '@timesheet/store/reducers/timesheetReducers';
 import { combineReducers } from 'redux';
 import { reducer as reduxFormReducer } from 'redux-form';
@@ -33,6 +34,7 @@ export const rootReducer = combineReducers<IAppState>({
   ...timesheetReducers,
   ...financeReducers,
   ...expenseReducers,
+  ...leaveRequestReducers,
+  ...purchaseReducers,
   ...mileageReducers,
-  // ...purchaseReducers,
 });
