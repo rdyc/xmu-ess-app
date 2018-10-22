@@ -1,6 +1,6 @@
+import accountEmployeeSagas from '@account/store/sagas/accountEmployeeSagas';
 import employeeMySagas from '@account/store/sagas/employeeMySagas';
 import employeeProfileSagas from '@account/store/sagas/employeeProfileSagas';
-import employeeSagas from '@account/store/sagas/employeeSagas';
 import commonActivitySagas from '@common/store/sagas/activitySagas';
 import commonCurrencySagas from '@common/store/sagas/currencySagas';
 import commonDocumentPresalesSagas from '@common/store/sagas/documentPresalesSagas';
@@ -14,18 +14,19 @@ import commonNotificationSagas from '@layout/store/sagas/notificationSagas';
 import leaveRequestSagas from '@leave/store/sagas/leaveRequestSagas';
 import lookupCompanySagas from '@lookup/store/sagas/companySagas';
 import lookupCurrencySagas from '@lookup/store/sagas/currencySagas';
-import lookupCustomerSagas from '@lookup/store/sagas/customerSagas';
 import lookupDiemSagas from '@lookup/store/sagas/diemSagas';
 import lookupHolidaySagas from '@lookup/store/sagas/holidaySagas';
 import lookupLeaveSagas from '@lookup/store/sagas/leaveSagas';
+import lookupCustomerSagas from '@lookup/store/sagas/lookupCustomerSagas';
 import lookupMenuSagas from '@lookup/store/sagas/menuSagas';
 import lookupMileageExceptionSagas from '@lookup/store/sagas/mileageExceptionSagas';
 import lookupPositionSagas from '@lookup/store/sagas/positionSagas';
 import lookupRoleSagas from '@lookup/store/sagas/roleSagas';
 import lookupSystemLimitSagas from '@lookup/store/sagas/systemLimitSagas';
-import mileageApprovalSagas from '@mileage/store/sagas/mileageapprovalSagas';
-import mileageRequestSagas from '@mileage/store/sagas/mileagerequestSagas';
-import projectRegistrationSagas from '@project/store/sagas/projectSagas';
+import mileageApprovalSagas from '@mileage/store/sagas/mileageApprovalSagas';
+import mileageRequestSagas from '@mileage/store/sagas/mileageRequestSagas';
+import projectOwnerSagas from '@project/store/sagas/projectOwnerSagas';
+import projectRegistrationSagas from '@project/store/sagas/projectRegistrationSagas';
 import purchaseSagas from '@purchase/store/sagas/purchaseSagas';
 import timesheetSagas from '@timesheet/store/sagas/timesheetSagas';
 import travelSagas from '@travel/store/sagas/travelSagas';
@@ -54,17 +55,17 @@ export function* rootSaga() {
     fork(lookupPositionSagas), 
     fork(lookupCurrencySagas), 
     fork(lookupSystemLimitSagas),
-    fork(lookupCustomerSagas), 
     fork(lookupHolidaySagas),
     fork(lookupLeaveSagas),
     
     // account
-    fork(employeeSagas),
+    fork(accountEmployeeSagas),
     fork(employeeMySagas),
     fork(employeeProfileSagas),
 
     // project
     fork(projectRegistrationSagas),
+    fork(projectOwnerSagas),
     
     // timesheet
     fork(timesheetSagas),

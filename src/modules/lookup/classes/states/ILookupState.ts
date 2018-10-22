@@ -6,9 +6,6 @@ import {
   ICurrencyAllRequest,
   ICurrencyByIdRequest,
   ICurrencyListRequest,
-  ICustomerAllRequest,
-  ICustomerByIdRequest,
-  ICustomerListRequest,
   IDiemAllRequest,
   IDiemByIdRequest,
   IDiemListRequest,
@@ -19,6 +16,9 @@ import {
   ILeaveByIdRequest,
   ILeaveListRequest,
   ILeavePutRequest,
+  ILookupCustomerGetAllRequest,
+  ILookupCustomerGetDetailRequest,
+  ILookupCustomerGetListRequest,
   IMenuGetAllRequest,
   IMenuGetByIdRequest,
   IMenuListRequest,
@@ -71,23 +71,19 @@ import {
   ISystemLimitList,
 } from '@lookup/classes/response';
 
-export interface ILookupState {
-  customerGetAll: IQueryCollectionState<ICustomerAllRequest, ICustomer>;
-  customerGetList: IQueryCollectionState<ICustomerListRequest, ICustomerList>;
-  customerGetById: IQuerySingleState<ICustomerByIdRequest, ICustomerDetail>;
+import { ILookupCustomerDeleteRequest, ILookupCustomerPostRequest, ILookupCustomerPutRequest } from '../queries/customer';
 
-  mileageExceptionGetAll: IQueryCollectionState<
-    IMileageExceptionAllRequest,
-    IMileageException
-  >;
-  mileageExceptionGetList: IQueryCollectionState<
-    IMileageExceptionListRequest,
-    IMileageExceptionList
-  >;
-  mileageExceptionGetById: IQuerySingleState<
-    IMileageExceptionByIdRequest,
-    IMileageExceptionDetail
-  >;
+export interface ILookupState {
+  lookupCustomerGetAll: IQueryCollectionState<ILookupCustomerGetAllRequest, ICustomer>;
+  lookupCustomerGetList: IQueryCollectionState<ILookupCustomerGetListRequest, ICustomerList>;
+  lookupCustomerGetById: IQuerySingleState<ILookupCustomerGetDetailRequest, ICustomerDetail>;
+  lookupCustomerPost: IQuerySingleState<ILookupCustomerPostRequest, ICustomer>;
+  lookupCustomerPut: IQuerySingleState<ILookupCustomerPutRequest, ICustomer>;
+  lookupCustomerDelete: IQuerySingleState<ILookupCustomerDeleteRequest, boolean>;
+
+  mileageExceptionGetAll: IQueryCollectionState<IMileageExceptionAllRequest, IMileageException>;
+  mileageExceptionGetList: IQueryCollectionState<IMileageExceptionListRequest, IMileageExceptionList>;
+  mileageExceptionGetById: IQuerySingleState<IMileageExceptionByIdRequest, IMileageExceptionDetail>;
 
   roleGetAll: IQueryCollectionState<IRoleAllRequest, IRole>;
   roleGetList: IQueryCollectionState<IRoleListRequest, IRoleList>;
@@ -113,19 +109,6 @@ export interface ILookupState {
   currencyGetList: IQueryCollectionState<ICurrencyListRequest, ICurrencyList>;
   currencyGetById: IQuerySingleState<ICurrencyByIdRequest, ICurrencyDetail>;
 
-  systemLimitGetAll: IQueryCollectionState<
-    ISystemLimitAllRequest,
-    ISystemLimit
-  >;
-  systemLimitGetList: IQueryCollectionState<
-    ISystemLimitListRequest,
-    ISystemLimitList
-  >;
-  systemLimitGetById: IQuerySingleState<
-    ISystemLimitByIdRequest,
-    ISystemLimitDetail
-  >;
-
   holidayGetAll: IQueryCollectionState<IHolidayAllRequest, IHoliday>;
   holidayGetList: IQueryCollectionState<IHolidayListRequest, IHolidayList>;
   holidayGetById: IQuerySingleState<IHolidayByIdRequest, IHolidayDetail>;
@@ -134,4 +117,8 @@ export interface ILookupState {
   leaveGetList: IQueryCollectionState<ILeaveListRequest, ILeaveList>;
   leaveGetById: IQuerySingleState<ILeaveByIdRequest, ILeaveDetail>;
   leavePut: IQuerySingleState<ILeavePutRequest, ILeave>;
+
+  systemLimitGetAll: IQueryCollectionState<ISystemLimitAllRequest, ISystemLimit>;
+  systemLimitGetList: IQueryCollectionState<ISystemLimitListRequest, ISystemLimitList>;
+  systemLimitGetById: IQuerySingleState<ISystemLimitByIdRequest, ISystemLimitDetail>;
 }

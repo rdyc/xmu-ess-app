@@ -1,1 +1,2 @@
-export * from './projectActions';
+export * from './projectRegistrationActions';
+export * from './projectOwnerActions';

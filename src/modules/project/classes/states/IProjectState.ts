@@ -1,17 +1,33 @@
 import { IQueryCollectionState, IQuerySingleState } from '@generic/interfaces';
 import {
-  IProjectGetAllRequest,
-  IProjectGetByIdRequest,
-  IProjectPostRequest,
-  IProjectPutRequest,
-} from '@project/classes/queries';
-import { IProjectGetListRequest } from '@project/classes/queries/IProjectGetListRequest';
+  IProjectRegistrationGetAllRequest,
+  IProjectRegistrationGetByIdRequest,
+  IProjectRegistrationPostRequest,
+  IProjectRegistrationPutRequest,
+} from '@project/classes/queries/registration';
+import {
+  IProjectRegistrationGetListRequest,
+} from '@project/classes/queries/registration/IProjectRegistrationGetListRequest';
 import { IProject, IProjectDetail, IProjectList } from '@project/classes/response';
 
+import { IProjectOwnerPutRequest } from '../queries/owner';
+
 export interface IProjectState {
-  projectGetAll: IQueryCollectionState<IProjectGetAllRequest, IProject>;
-  projectGetList: IQuerySingleState<IProjectGetListRequest, IProjectList>;
-  projectGetById: IQuerySingleState<IProjectGetByIdRequest, IProjectDetail>;
-  projectPost: IQuerySingleState<IProjectPostRequest, IProject>;
-  projectPut: IQuerySingleState<IProjectPutRequest, IProject>;
+  // registration
+  projectRegistrationGetAll: IQueryCollectionState<IProjectRegistrationGetAllRequest, IProject>;
+  projectRegistrationGetList: IQueryCollectionState<IProjectRegistrationGetListRequest, IProjectList>;
+  projectRegistrationGetById: IQuerySingleState<IProjectRegistrationGetByIdRequest, IProjectDetail>;
+  projectRegistrationPost: IQuerySingleState<IProjectRegistrationPostRequest, IProject>;
+  projectRegistrationPut: IQuerySingleState<IProjectRegistrationPutRequest, IProject>;
+
+  // approval
+
+  // change owner
+  projectOwnerPut: IQuerySingleState<IProjectOwnerPutRequest, boolean>;
+
+  // site management
+
+  // assignment
+
+  // acceptance
 }

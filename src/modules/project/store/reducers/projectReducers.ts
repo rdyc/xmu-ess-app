@@ -1,17 +1,7 @@
-import {
-  projectGetAllReducer,
-  projectGetByIdReducer,
-  projectGetListReducer,
-  projectPostReducer,
-  projectPutReducer,
-} from '@project/store/reducers';
+import projectOwnerReducers from './owner/projectOwnerReducers';
+import projectRegistrationReducers from './registration/projectRegistrationReducers';
 
-const projectReducers = {
-  projectGetAll: projectGetAllReducer,
-  projectGetList: projectGetListReducer,
-  projectGetById: projectGetByIdReducer,
-  projectPost: projectPostReducer,
-  projectPut: projectPutReducer,
+export const projectReducers = {
+  ...projectRegistrationReducers,
+  ...projectOwnerReducers
 };
-
-export default projectReducers;
