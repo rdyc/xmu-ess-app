@@ -27,12 +27,6 @@ interface Handler {
 
 interface OwnState {
   action?: FinanceApprovalUserAction | undefined;
-  dialogFullScreen: boolean;
-  dialogOpen: boolean;
-  dialogTitle?: string | undefined;
-  dialogDescription?: string | undefined;
-  dialogCancelText: string;
-  dialogConfirmedText: string;
 }
 
 interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
@@ -55,10 +49,6 @@ export type ApprovalDetailProps
   & Handler;
 
 const createProps: mapper<ApprovalDetailProps, OwnState> = (props: ApprovalDetailProps): OwnState => ({ 
-    dialogFullScreen: false,
-    dialogOpen: false,
-    dialogCancelText: 'global.action.cancel',
-    dialogConfirmedText: 'global.action.ok',
   });
   
 const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {

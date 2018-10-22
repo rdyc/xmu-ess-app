@@ -113,12 +113,6 @@ export const ApprovalDetailView: React.SFC<ApprovalDetailProps> = props => {
               renderDetail(response.data)
             }
           </Grid>
-          <Grid item xs={12} md={4}>
-            {
-              response &&
-              response.data
-            }
-          </Grid>
         </Grid>
       }
     </React.Fragment>
