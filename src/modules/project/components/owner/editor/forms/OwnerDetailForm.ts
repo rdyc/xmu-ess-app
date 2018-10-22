@@ -1,5 +1,7 @@
 import { SelectEmployee } from '@account/components/select';
+import { isMemberOfSales } from '@account/helper/isMemberOfSales';
 import { WithAccountPMORoles, withAccountPMORoles } from '@account/hoc/withAccountPMORoles';
+import { WithAccountPMRoles, withAccountPMRoles } from '@account/hoc/withAccountPMRoles';
 import { SelectSystem, SelectSystemOption } from '@common/components/select';
 import { FormMode } from '@generic/types';
 import { InputText } from '@layout/components/input/text';
@@ -25,12 +27,13 @@ export type OwnerDetailFormProps
   & OwnHandlers
   & WithUser
   & WithAccountPMORoles
+  & WithAccountPMRoles
   & WithAllowedProjectType
   & InjectedIntlProps;
 
 const handlerCreators: HandleCreators<OwnerDetailFormProps, OwnHandlers> = {
   generateFieldProps: (props: OwnerDetailFormProps) => (name: string) => { 
-    const { rolePmoUids, allowedProjectTypes, intl } = props;
+    const { rolePmoUids, rolePmUids, allowedProjectTypes, intl } = props;
     const { user } = props.userState;
     
     const fieldName = name.replace('information.', '');
@@ -44,7 +47,7 @@ const handlerCreators: HandleCreators<OwnerDetailFormProps, OwnHandlers> = {
           placeholder: intl.formatMessage({id: `project.field.${name}.placeholder`}),
           component: SelectEmployee,
           companyUids: user && [user.company.uid],
-          roleUids: rolePmoUids
+          roleUids: user && isMemberOfSales(user.role.uid) ? rolePmoUids : rolePmUids
         };
         break;
 
@@ -74,6 +77,7 @@ const handlerCreators: HandleCreators<OwnerDetailFormProps, OwnHandlers> = {
 export const OwnerDetailForm = compose<OwnerDetailFormProps, OwnProps>(
   withUser,
   withAccountPMORoles,
+  withAccountPMRoles,
   withAllowedProjectType,
   injectIntl,
   withHandlers<OwnerDetailFormProps, OwnHandlers>(handlerCreators),
