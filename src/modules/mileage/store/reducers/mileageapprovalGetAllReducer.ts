@@ -23,4 +23,4 @@ const reducer: Reducer<IQueryCollectionState<IMileageApprovalGetAllRequest, IMil
   }
 };
 
-export { reducer as mileageapprovalGetAllReducer };
+export { reducer as mileageApprovalGetAllReducer };

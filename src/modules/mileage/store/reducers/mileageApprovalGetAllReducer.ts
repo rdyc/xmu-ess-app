@@ -1,10 +1,10 @@
-import { IEmployeeAllRequest } from '@account/classes/queries';
-import { IEmployee } from '@account/classes/response';
-import { EmployeeAction as Action } from '@account/store/actions';
 import { IQueryCollectionState } from '@generic/interfaces';
+import { IMileageApprovalGetAllRequest } from '@mileage/classes/queries';
+import { IMileageApproval } from '@mileage/classes/response';
+import { MileageApprovalAction as Action } from '@mileage/store/actions';
 import { Reducer } from 'redux';
 
-const initialState: IQueryCollectionState<IEmployeeAllRequest, IEmployee> = {
+const initialState: IQueryCollectionState<IMileageApprovalGetAllRequest, IMileageApproval> = {
   request: undefined,
   response: undefined,
   isError: false,
@@ -12,7 +12,7 @@ const initialState: IQueryCollectionState<IEmployeeAllRequest, IEmployee> = {
   errors: undefined,
 };
 
-const reducer: Reducer<IQueryCollectionState<IEmployeeAllRequest, IEmployee>> = (state = initialState, action) => {
+const reducer: Reducer<IQueryCollectionState<IMileageApprovalGetAllRequest, IMileageApproval>> = (state = initialState, action) => {
   switch (action.type) {
     case Action.GET_ALL_REQUEST: return { ...state, isLoading: true, isError: false, request: action.payload };
     case Action.GET_ALL_SUCCESS: return { ...state, isLoading: false, isError: false, response: action.payload };
@@ -23,4 +23,4 @@ const reducer: Reducer<IQueryCollectionState<IEmployeeAllRequest, IEmployee>> = 
   }
 };
 
-export { reducer as employeeGetAllReducer };
+export { reducer as mileageApprovalGetAllReducer };

@@ -11,8 +11,10 @@ export const RegistrationFormView: React.SFC<RegistrationFormProps> = props => {
   const { 
     formMode, formIsProject, formIsPresales, 
     formIsCurrencyIDR, formRate, formValue, 
-    formCurrencyType, change
+    formCurrencyType, change, initialValues
   } = props;
+  
+  const fields = Object.getOwnPropertyNames(initialValues.information);
 
   const onChangeCurrencyType = (event: any, newValue: string, oldValue: string) => {
     if (newValue === 'SCR01') {
@@ -29,8 +31,6 @@ export const RegistrationFormView: React.SFC<RegistrationFormProps> = props => {
     change('information.valueIdr', newValue * formRate);
   };
   
-  const fields = Object.getOwnPropertyNames(props.initialValues.information);
-
   const componentInformation = (context: BaseFieldsProps) => (
     <RegistrationDetailForm 
       formMode={formMode}

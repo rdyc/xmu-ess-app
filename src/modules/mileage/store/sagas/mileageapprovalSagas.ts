@@ -1,31 +1,31 @@
 import { layoutAlertAdd, listBarLoading, listBarMetadata } from '@layout/store/actions';
 import {
   MileageApprovalAction as Action,
-  mileageapprovalGetAllError,
-  mileageapprovalGetAllRequest,
-  mileageapprovalGetAllSuccess,
-  mileageapprovalGetByIdError,
-  mileageapprovalGetByIdRequest,
-  mileageapprovalGetByIdSuccess,
-  mileageapprovalPostError,
-  mileageapprovalPostRequest,
-  mileageapprovalPostSuccess
+  mileageApprovalGetAllError,
+  mileageApprovalGetAllRequest,
+  mileageApprovalGetAllSuccess,
+  mileageApprovalGetByIdError,
+  mileageApprovalGetByIdRequest,
+  mileageApprovalGetByIdSuccess,
+  mileageApprovalPostError,
+  mileageApprovalPostRequest,
+  mileageApprovalPostSuccess
 } from '@mileage/store/actions';
 import saiyanSaga from '@utils/saiyanSaga';
 import { all, fork, put, takeEvery } from 'redux-saga/effects';
 import { IApiResponse, objectToQuerystring } from 'utils';
 
 function* watchAllFetchRequest() {
-  const worker = (action: ReturnType<typeof mileageapprovalGetAllRequest>) => { 
+  const worker = (action: ReturnType<typeof mileageApprovalGetAllRequest>) => { 
     return saiyanSaga.fetch({
       method: 'get',
       path: `/v1/approvals/mileage${objectToQuerystring(action.payload.filter)}`, 
       successEffects: (response: IApiResponse) => ([
-        put(mileageapprovalGetAllSuccess(response.body)),
+        put(mileageApprovalGetAllSuccess(response.body)),
         put(listBarMetadata(response.body.metadata))
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(mileageapprovalGetAllError(response.body)),
+        put(mileageApprovalGetAllError(response.body)),
         put(layoutAlertAdd({
           time: new Date(),
           message: response.statusText,
@@ -33,7 +33,7 @@ function* watchAllFetchRequest() {
         })),
       ]), 
       errorEffects: (error: TypeError) => ([
-        put(mileageapprovalGetAllError(error.message)),
+        put(mileageApprovalGetAllError(error.message)),
         put(layoutAlertAdd({
           time: new Date(),
           message: error.message
@@ -49,15 +49,15 @@ function* watchAllFetchRequest() {
 }
 
 function* watchByIdFetchRequest() {
-  const worker = (action: ReturnType<typeof mileageapprovalGetByIdRequest>) => {
+  const worker = (action: ReturnType<typeof mileageApprovalGetByIdRequest>) => {
     return saiyanSaga.fetch({
       method: 'get',
       path: `/v1/approvals/mileage/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.mileageUid}`, 
       successEffects: (response: IApiResponse) => ([
-        put(mileageapprovalGetByIdSuccess(response.body)),
+        put(mileageApprovalGetByIdSuccess(response.body)),
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(mileageapprovalGetByIdError(response.statusText)),
+        put(mileageApprovalGetByIdError(response.statusText)),
         put(layoutAlertAdd({
           time: new Date(),
           message: response.statusText,
@@ -65,7 +65,7 @@ function* watchByIdFetchRequest() {
         })),
       ]), 
       errorEffects: (error: TypeError) => ([
-        put(mileageapprovalGetByIdError(error.message)),
+        put(mileageApprovalGetByIdError(error.message)),
         put(layoutAlertAdd({
           time: new Date(),
           message: error.message
@@ -78,16 +78,16 @@ function* watchByIdFetchRequest() {
 }
 
 function* watchPostFetchRequest() {
-  const worker = (action: ReturnType<typeof mileageapprovalPostRequest>) => {
+  const worker = (action: ReturnType<typeof mileageApprovalPostRequest>) => {
     return saiyanSaga.fetch({
       method: 'post',
       path: `/v1/approvals/mileage/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.mileageUid}`, 
       payload: action.payload.data, 
       successEffects: (response: IApiResponse) => ([
-        put(mileageapprovalPostSuccess(response.body)),
+        put(mileageApprovalPostSuccess(response.body)),
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(mileageapprovalPostError(response.statusText)),
+        put(mileageApprovalPostError(response.statusText)),
         put(layoutAlertAdd({
           time: new Date(),
           message: response.statusText,
@@ -95,7 +95,7 @@ function* watchPostFetchRequest() {
         })),
       ]), 
       errorEffects: (error: TypeError) => ([
-        put(mileageapprovalPostError(error.message)),
+        put(mileageApprovalPostError(error.message)),
         put(layoutAlertAdd({
           time: new Date(),
           message: error.message

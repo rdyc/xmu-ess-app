@@ -5,8 +5,12 @@ import {
   IProjectRegistrationPostRequest,
   IProjectRegistrationPutRequest,
 } from '@project/classes/queries/registration';
-import { IProjectRegistrationGetListRequest } from '@project/classes/queries/registration/IProjectRegistrationGetListRequest';
+import {
+  IProjectRegistrationGetListRequest,
+} from '@project/classes/queries/registration/IProjectRegistrationGetListRequest';
 import { IProject, IProjectDetail, IProjectList } from '@project/classes/response';
+
+import { IProjectOwnerPutRequest } from '../queries/owner';
 
 export interface IProjectState {
   // registration
@@ -19,6 +23,7 @@ export interface IProjectState {
   // approval
 
   // change owner
+  projectOwnerPut: IQuerySingleState<IProjectOwnerPutRequest, boolean>;
 
   // site management
 

@@ -1,6 +1,6 @@
+import accountEmployeeSagas from '@account/store/sagas/accountEmployeeSagas';
 import employeeMySagas from '@account/store/sagas/employeeMySagas';
 import employeeProfileSagas from '@account/store/sagas/employeeProfileSagas';
-import employeeSagas from '@account/store/sagas/employeeSagas';
 import commonActivitySagas from '@common/store/sagas/activitySagas';
 import commonCurrencySagas from '@common/store/sagas/currencySagas';
 import commonDocumentPresalesSagas from '@common/store/sagas/documentPresalesSagas';
@@ -26,6 +26,7 @@ import lookupRoleSagas from '@lookup/store/sagas/roleSagas';
 import lookupSystemLimitSagas from '@lookup/store/sagas/systemLimitSagas';
 import mileageApprovalSagas from '@mileage/store/sagas/mileageApprovalSagas';
 import mileageRequestSagas from '@mileage/store/sagas/mileageRequestSagas';
+import projectOwnerSagas from '@project/store/sagas/projectOwnerSagas';
 import projectRegistrationSagas from '@project/store/sagas/projectRegistrationSagas';
 import purchaseSagas from '@purchase/store/sagas/purchaseSagas';
 import timesheetSagas from '@timesheet/store/sagas/timesheetSagas';
@@ -60,12 +61,13 @@ export function* rootSaga() {
     fork(lookupLeaveSagas),
     
     // account
-    fork(employeeSagas),
+    fork(accountEmployeeSagas),
     fork(employeeMySagas),
     fork(employeeProfileSagas),
 
     // project
     fork(projectRegistrationSagas),
+    fork(projectOwnerSagas),
     
     // timesheet
     fork(timesheetSagas),
