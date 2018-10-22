@@ -39,6 +39,7 @@
   "expense.field.information.name": "Customer Name",
   "expense.field.information.title": "Customer Job Title",
   "expense.field.information.notes": "Notes",
+  "expense.field.information.uid.placeholder": "Expense ID",
   "expense.field.information.customerUid.placeholder": "Select a Customer",
   "expense.field.information.projectUid.placeholder": "Select a Project",
   "expense.field.information.date.placeholder": "Select the Expense Date",

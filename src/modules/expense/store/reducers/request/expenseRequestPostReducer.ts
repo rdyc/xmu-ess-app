@@ -17,7 +17,7 @@ const reducer: Reducer<IQuerySingleState<IExpenseRequestPostRequest, IExpense>> 
     case Action.POST_REQUEST: return { ...state, isLoading: true, request: action.payload };
     case Action.POST_SUCCESS: return { ...state, isLoading: false, response: action.payload };
     case Action.POST_ERROR: return { ...state, isLoading: false, isError: true, errors: action.payload };
-    case Action.POST_DISPOSE: return initialState;
+    case Action.POST_DISPOSE: return { ...state, ...initialState };
     
     default: return state;
   }

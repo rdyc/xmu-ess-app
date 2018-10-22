@@ -17,7 +17,7 @@ const reducer: Reducer<IQuerySingleState<IExpenseRequestPutRequest, IExpense>> =
     case Action.PUT_REQUEST: return { ...state, isLoading: true, request: action.payload };
     case Action.PUT_SUCCESS: return { ...state, isLoading: false, response: action.payload };
     case Action.PUT_ERROR: return { ...state, isLoading: false, isError: true, errors: action.payload };
-    case Action.PUT_DISPOSE: return initialState;
+    case Action.PUT_DISPOSE: return { ...state, ...initialState };
     
     default: return state;
   }

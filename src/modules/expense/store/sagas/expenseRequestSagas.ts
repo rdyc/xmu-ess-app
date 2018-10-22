@@ -14,11 +14,13 @@ import {
   expenseRequestPutSuccess,
 } from '@expense/store/actions';
 import { layoutAlertAdd, listBarLoading, listBarMetadata } from '@layout/store/actions';
+import { flattenObject } from '@utils/flattenObject';
 import saiyanSaga from '@utils/saiyanSaga';
+import { SubmissionError } from 'redux-form';
 import { all, fork, put, takeEvery } from 'redux-saga/effects';
 import { IApiResponse, objectToQuerystring } from 'utils';
 
-function* watchAllFetchRequest() {
+function* watchAllRequest() {
   const worker = (action: ReturnType<typeof expenseRequestGetAllRequest>) => { 
     return saiyanSaga.fetch({
       method: 'get',
@@ -51,7 +53,7 @@ function* watchAllFetchRequest() {
   yield takeEvery(Action.GET_ALL_REQUEST, worker);
 }
 
-function* watchByIdFetchRequest() {
+function* watchByIdRequest() {
   const worker = (action: ReturnType<typeof expenseRequestGetByIdRequest>) => {
     return saiyanSaga.fetch({
       method: 'get',
@@ -80,60 +82,87 @@ function* watchByIdFetchRequest() {
   yield takeEvery(Action.GET_BY_ID_REQUEST, worker);
 }
 
-function* watchPostFetchRequest() {
+function* watchPostRequest() {
   const worker = (action: ReturnType<typeof expenseRequestPostRequest>) => {
     return saiyanSaga.fetch({
       method: 'post',
       path: `/v1/expense/requests/${action.payload.companyUid}/${action.payload.positionUid}`, 
       payload: action.payload.data, 
-      successEffects: (response: IApiResponse) => ([
+      successEffects: (response: IApiResponse) => [
         put(expenseRequestPostSuccess(response.body)),
-      ]), 
-      failureEffects: (response: IApiResponse) => ([
+      ], 
+      successCallback: (response: IApiResponse) => {
+        action.payload.resolve(response.body.data);
+      },
+      failureEffects: (response: IApiResponse) => [
         put(expenseRequestPostError(response.statusText)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        })),
-      ]), 
-      errorEffects: (error: TypeError) => ([
+      ], 
+      failureCallback: (response: IApiResponse) => {
+        if (response.status === 400) {
+          const errors: any = { 
+            // information -> based form section name
+            information: flattenObject(response.body.errors) 
+          };
+
+          action.payload.reject(new SubmissionError(errors));
+        } else {
+          action.payload.reject(response.statusText);
+        }
+      },
+      errorEffects: (error: TypeError) => [
         put(expenseRequestPostError(error.message)),
         put(layoutAlertAdd({
           time: new Date(),
           message: error.message
         }))
-      ])
+      ],
+      errorCallback: (error: any) => {
+        action.payload.reject(error);
+      }
     });
   };
 
   yield takeEvery(Action.POST_REQUEST, worker);
 }
 
-function* watchPutFetchRequest() {
+function* watchPutRequest() {
   const worker = (action: ReturnType<typeof expenseRequestPutRequest>) => {
     return saiyanSaga.fetch({
       method: 'put',
       path: `/v1/expense/requests/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.expenseUid}`,
       payload: action.payload.data, 
-      successEffects: (response: IApiResponse) => ([
+      successEffects: (response: IApiResponse) => [
         put(expenseRequestPutSuccess(response.body)),
-      ]), 
-      failureEffects: (response: IApiResponse) => ([
-        put(expenseRequestPutError(response.statusText)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        })),
-      ]), 
-      errorEffects: (error: TypeError) => ([
+      ], 
+      successCallback: (response: IApiResponse) => {
+        action.payload.resolve(response.body.data);
+      },
+      failureEffects: (response: IApiResponse) => [
+        put(expenseRequestPutError(response.statusText))
+      ], 
+      failureCallback: (response: IApiResponse) => {
+        if (response.status === 400) {
+          const errors: any = { 
+            // information -> based on form section name
+            information: flattenObject(response.body.errors) 
+          };
+          
+          // action.payload.reject(new SubmissionError(response.body.errors));
+          action.payload.reject(new SubmissionError(errors));
+        } else {
+          action.payload.reject(response.statusText);
+        }
+      },
+      errorEffects: (error: TypeError) => [
         put(expenseRequestPutError(error.message)),
         put(layoutAlertAdd({
           time: new Date(),
           message: error.message
         }))
-      ])
+      ],
+      errorCallback: (error: any) => {
+        action.payload.reject(error);
+      }
     });
   };
 
@@ -142,10 +171,10 @@ function* watchPutFetchRequest() {
 
 function* expenseRequestSagas() {
   yield all([
-    fork(watchAllFetchRequest),
-    fork(watchByIdFetchRequest),
-    fork(watchPostFetchRequest),
-    fork(watchPutFetchRequest),
+    fork(watchAllRequest),
+    fork(watchByIdRequest),
+    fork(watchPostRequest),
+    fork(watchPutRequest),
   ]);
 }
 
