@@ -85,6 +85,6 @@
   "project.message.registration.update.success": "Existing PID {uid} has been updated",
   "project.message.registration.update.failure": "Unable to process your submission",
   "project.message.owner.emptyProps": "Some props are empty",
-  "project.message.owner.update.success": "A new project owner has been set",
+  "project.message.owner.update.success": "A new project owner has been updated",
   "project.message.owner.update.failure": "Unable to process your submission"
 }

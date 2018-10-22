@@ -120,7 +120,7 @@ const handlerCreators: HandleCreators<OwnerEditorProps, OwnHandlers> = {
     
     let message: string = '';
 
-    if (formMode === FormMode.New) {
+    if (formMode === FormMode.Edit) {
       message = intl.formatMessage(projectOwnerMessage.updateSuccess);
     }
 
@@ -130,7 +130,7 @@ const handlerCreators: HandleCreators<OwnerEditorProps, OwnHandlers> = {
     });
 
     if (projectUid) {
-      history.push(`/project/detail/${projectUid}`);
+      history.push(`/project/details/${projectUid}`);
     }
   },
   handleSubmitFail: (props: OwnerEditorProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {

@@ -37,7 +37,7 @@ export const OwnerEditorView: React.SFC<OwnerEditorProps> = props => {
       const data = response.data;
 
       initialValues.information.uid = data.uid;
-      initialValues.information.employeeUid = data.owner ? data.owner.fullName : data.ownerEmployeeUid;
+      initialValues.information.employeeUid = data.ownerEmployeeUid;
       initialValues.information.customerUid = data.customer ? data.customer.name : data.customerUid;
       initialValues.information.projectType = data.projectType;
       initialValues.information.name = data.name;
