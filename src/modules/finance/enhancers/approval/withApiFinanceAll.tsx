@@ -1,5 +1,5 @@
 import AppMenu from '@constants/AppMenu';
-import { IFinanceGetAllRequest } from '@finance/classes/queries';
+import { IFinanceGetAllRequest } from '@finance/classes/queries/approval';
 import withFinanceAll, { WithFinanceAll } from '@finance/enhancers/approval/withFinanceAll';
 import { financeGetAllDispose, financeGetAllRequest } from '@finance/store/actions';
 import { SortDirection } from '@generic/types';

@@ -1,4 +1,4 @@
-import { IFinanceGetByIdRequest } from '@finance/classes/queries';
+import { IFinanceGetByIdRequest } from '@finance/classes/queries/approval';
 import withFinanceDetail from '@finance/enhancers/approval/withFinanceDetail';
 import { financeGetByIdDispose, financeGetByIdRequest } from '@finance/store/actions';
 import { withUser, WithUser } from '@layout/hoc/withUser';

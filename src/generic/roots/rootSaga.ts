@@ -9,7 +9,7 @@ import commonProjectSagas from '@common/store/sagas/projectSagas';
 import commonSiteSagas from '@common/store/sagas/siteSagas';
 import commonSystemSagas from '@common/store/sagas/systemSagas';
 import expenseSagas from '@expense/store/sagas/expenseSagas';
-import financeSagas from '@finance/store/sagas/financeSagas';
+import financeSagas from '@finance/store/sagas/financeApprovalSagas';
 import commonNotificationSagas from '@layout/store/sagas/notificationSagas';
 import leaveRequestSagas from '@leave/store/sagas/leaveRequestSagas';
 import lookupCompanySagas from '@lookup/store/sagas/companySagas';

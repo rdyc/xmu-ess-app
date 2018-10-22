@@ -1,2 +1,2 @@
 export * from './FinanceField';
-export * from './FinanceUserAction';
+export * from './FinanceApprovalUserAction';

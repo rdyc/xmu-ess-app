@@ -1,6 +1,6 @@
 import { IBasePagingFilter } from '@generic/interfaces';
 
-export interface IFinanceGetAllFilter extends IBasePagingFilter {
+export interface IFinanceApprovalGetAllFilter extends IBasePagingFilter {
   moduleType: string | undefined;
   employeeName: string | undefined;
   financeStatusTypes: string[] | undefined;

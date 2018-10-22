@@ -3,7 +3,7 @@ import {
   IFinanceGetAllRequest,
   IFinanceGetByIdRequest,
   IFinancePostRequest,
-} from '@finance/classes/queries';
+} from '@finance/classes/queries/approval';
 import { IFinance, IFinanceDetail } from '@finance/classes/response';
 import { IQueryCollectionState, IQuerySingleState } from '@generic/interfaces';
 

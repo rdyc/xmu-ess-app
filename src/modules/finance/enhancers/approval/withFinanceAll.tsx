@@ -1,4 +1,4 @@
-import { IFinanceGetAllRequest } from '@finance/classes/queries';
+import { IFinanceGetAllRequest } from '@finance/classes/queries/approval';
 import { IFinance } from '@finance/classes/response';
 import { IAppState, IQueryCollectionState } from '@generic/interfaces';
 import * as React from 'react';
