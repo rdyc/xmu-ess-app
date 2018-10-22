@@ -9,6 +9,7 @@ import commonExpenseSagas from '@common/store/sagas/expenseSagas';
 import commonProjectSagas from '@common/store/sagas/projectSagas';
 import commonSiteSagas from '@common/store/sagas/siteSagas';
 import commonSystemSagas from '@common/store/sagas/systemSagas';
+import expenseApprovalSagas from '@expense/store/sagas/expenseApprovalSagas';
 import expenseSagas from '@expense/store/sagas/expenseRequestSagas';
 import financeSagas from '@finance/store/sagas/financeSagas';
 import commonNotificationSagas from '@layout/store/sagas/notificationSagas';
@@ -78,6 +79,7 @@ export function* rootSaga() {
 
     // expense
     fork(expenseSagas),
+    fork(expenseApprovalSagas),
     
     // travel
     fork(travelSagas),

@@ -17,14 +17,14 @@ import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 
 interface PropsFromState {
-  expenseRegisterState: {
+  expenseApprovalState: {
     all: IQueryCollectionState<IExpenseApprovalGetAllRequest, IExpense>;
     detail: IQuerySingleState<IExpenseApprovalGetByIdRequest, IExpenseDetail>;
   };
 }
 
 interface PropsFromDispatch {
-  expenseRegisterDispatch: {
+  expenseApprovalDispatch: {
     // command
     createRequest: typeof expenseApprovalPostRequest;
     createDispose: typeof expenseApprovalPostDispose;
@@ -60,5 +60,5 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   }
 });
 
-export const withexpenseApproval = (component: React.ComponentType) =>
+export const withExpenseApproval = (component: React.ComponentType) =>
   connect(mapStateToProps, mapDispatchToProps)(component);

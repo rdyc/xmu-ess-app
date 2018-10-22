@@ -11,7 +11,9 @@ import {
   expenseApprovalPostSuccess,
 } from '@expense/store/actions';
 import { layoutAlertAdd, listBarLoading, listBarMetadata } from '@layout/store/actions';
+import { flattenObject } from '@utils/flattenObject';
 import saiyanSaga from '@utils/saiyanSaga';
+import { SubmissionError } from 'redux-form';
 import { all, fork, put, takeEvery } from 'redux-saga/effects';
 import { IApiResponse, objectToQuerystring } from 'utils';
 
@@ -83,24 +85,37 @@ function* watchApprovalPostFetchRequest() {
       method: 'post',
       path: `/v1/approvals/expense/${action.payload.companyUid}/${action.payload.positionUid}`, 
       payload: action.payload.data, 
-      successEffects: (response: IApiResponse) => ([
+      successEffects: (response: IApiResponse) => [
         put(expenseApprovalPostSuccess(response.body)),
-      ]), 
-      failureEffects: (response: IApiResponse) => ([
-        put(expenseApprovalPostError(response.statusText)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        })),
-      ]), 
-      errorEffects: (error: TypeError) => ([
+      ], 
+      successCallback: (response: IApiResponse) => {
+        action.payload.resolve(response.body.data);
+      },
+      failureEffects: (response: IApiResponse) => [
+        put(expenseApprovalPostError(response.statusText))
+      ], 
+      failureCallback: (response: IApiResponse) => {
+        if (response.status === 400) {
+          const errors: any = { 
+            // information -> based form section name
+            information: flattenObject(response.body.errors) 
+          };
+
+          action.payload.reject(new SubmissionError(errors));
+        } else {
+          action.payload.reject(response.statusText);
+        }
+      },
+      errorEffects: (error: TypeError) => [
         put(expenseApprovalPostError(error.message)),
         put(layoutAlertAdd({
           time: new Date(),
           message: error.message
         }))
-      ])
+      ],
+      errorCallback: (error: any) => {
+        action.payload.reject(error);
+      }
     });
   };
 

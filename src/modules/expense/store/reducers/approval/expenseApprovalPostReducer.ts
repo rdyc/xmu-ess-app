@@ -17,7 +17,7 @@ const reducer: Reducer<IQuerySingleState<IExpenseApprovalPostRequest, IExpense>>
     case Action.APPROVAL_POST_REQUEST: return { ...state, isLoading: true, request: action.payload };
     case Action.APPROVAL_POST_SUCCESS: return { ...state, isLoading: false, response: action.payload };
     case Action.APPROVAL_POST_ERROR: return { ...state, isLoading: false, isError: true, errors: action.payload };
-    case Action.APPROVAL_POST_DISPOSE: return initialState;
+    case Action.APPROVAL_POST_DISPOSE: return { ...state, ...initialState };
     
     default: return state;
   }
