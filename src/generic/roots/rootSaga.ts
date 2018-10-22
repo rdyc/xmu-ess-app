@@ -25,12 +25,8 @@ import lookupPositionSagas from '@lookup/store/sagas/positionSagas';
 import lookupRoleSagas from '@lookup/store/sagas/roleSagas';
 import lookupSystemLimitSagas from '@lookup/store/sagas/systemLimitSagas';
 import mileageApprovalSagas from '@mileage/store/sagas/mileageApprovalSagas';
-<<<<<<< HEAD
-import mileageRequestSagas from '@mileage/store/sagas/mileagerequestSagas';
-=======
 import mileageRequestSagas from '@mileage/store/sagas/mileageRequestSagas';
 import projectOwnerSagas from '@project/store/sagas/projectOwnerSagas';
->>>>>>> origin/develop
 import projectRegistrationSagas from '@project/store/sagas/projectRegistrationSagas';
 import purchaseSagas from '@purchase/store/sagas/purchaseSagas';
 import timesheetSagas from '@timesheet/store/sagas/timesheetSagas';
