@@ -1,3 +1,3 @@
-export enum FinanceUserAction {
+export enum FinanceApprovalUserAction {
   Refresh = 'refresh'
 }

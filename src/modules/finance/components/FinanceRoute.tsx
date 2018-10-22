@@ -1,21 +1,17 @@
-// import FinanceDetail from '@finance/components/approval/FinanceDetail';
-import FinanceList from '@finance/components/approval/FinanceList';
-import { ConnectedReduxProps } from '@generic/types';
-import { IAppUser } from '@layout/interfaces';
-import { WithStyles } from '@material-ui/core';
-import styles from '@styles';
+import { ApprovalDetail } from '@finance/components/approval/detail/ApprovalDetail';
+import { ApprovalList } from '@finance/components/approval/list/ApprovalList';
 import * as React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router';
 
-interface PropsFromState extends RouteComponentProps<void>, WithStyles<typeof styles> {
-  user: IAppUser;
-}
+type AllProps 
+  = RouteComponentProps;
 
-type AllProps = PropsFromState & ConnectedReduxProps;
+const approvalListComponent = () => <ApprovalList orderBy="uid" direction="descending"/>;
+const approvalDetailComponent = () => <ApprovalDetail/>;
 
 export const FinanceRoute: React.SFC<AllProps> = props => (
   <Switch>
-    <Route path={`${props.match.path}/list/`} component={FinanceList} />
-    {/* <Route path={`${props.match.path}/details/:financeUid`} component={FinanceDetail} /> */}
+    <Route path={`${props.match.path}/list/`} component={approvalListComponent} />
+    <Route path={`${props.match.path}/details/:financeUid`} component={approvalDetailComponent} />
   </Switch>
 );
