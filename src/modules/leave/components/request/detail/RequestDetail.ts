@@ -205,7 +205,7 @@ const lifecycles: ReactLifeCycleFunctions<RequestDetailProps, OwnState> = {
           id: LeaveRequestUserAction.Modify,
           name: intl.formatMessage({id: 'leave.action.modify'}),
           enabled: response !== undefined,
-          visible: isStatusTypeEquals([WorkflowStatusType.Submitted, WorkflowStatusType.InProgress, WorkflowStatusType.Approved])
+          visible: isStatusTypeEquals([WorkflowStatusType.Submitted])
         },
       ];
 

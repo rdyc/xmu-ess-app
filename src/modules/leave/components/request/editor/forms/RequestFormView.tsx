@@ -8,7 +8,7 @@ import { BaseFieldsProps, Fields, FormSection } from 'redux-form';
 export const RequestFormView: React.SFC<RequestFormProps> = props => {
   
   const { 
-    formMode
+    formMode, formIsRegularType, formRegularType
   } = props;
 
   const fields = Object.getOwnPropertyNames(props.initialValues.information);
@@ -17,6 +17,8 @@ export const RequestFormView: React.SFC<RequestFormProps> = props => {
     <RequestDetailForm 
       formMode={formMode}
       context={context}
+      isRegularType={formIsRegularType}
+      formRegularType={formRegularType}
     />
   );
 

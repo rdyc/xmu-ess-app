@@ -1,5 +1,5 @@
 import { ILeaveListFilter } from '@lookup/classes/filters';
 
-export interface ILeaveListRequest {
+export interface ILeaveGetListRequest {
   readonly filter: ILeaveListFilter | undefined;
 }

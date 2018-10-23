@@ -49,6 +49,10 @@
   "lookup.customer.lookupDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.", 
   "lookup.placeholder.customerSearch": "Type any company name",
 
+  "lookup.leave.lookupTitle": "Leave Lookup", 
+  "lookup.leave.lookupDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.", 
+  "lookup.placeholder.leaveSearch": "Type any leave name",
+
   "lookup.currency.lookupTitle": "Currency Lookup",
   "lookup.currency.lookupDescription": "Lorem ipsum dolor sit amet", 
   "lookup.placeholder.currencySearch": "Type any currency name",
@@ -91,9 +95,14 @@
   "account.profile.mobilePhone": "Mobile phone",
   "account.placeholder.lookupSearch": "Type any employee name or email",
   
+  "leave.approval.title": "Leave Approvals",
+  "leave.approval.subTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "leave.approval.detail.title": "Leave Approvals Details",
+  "leave.approval.detail.subTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+
   "leave.title": "Leave Requests",
   "leave.subTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-  "leave.detail.title": "Leave Requests Details",
+  "leave.detail.title": "Leave Request Details",
   "leave.detail.subTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
   "leave.form.newTitle": "New Leave Request",
   "leave.form.newSubTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
@@ -126,8 +135,10 @@
   "leave.field.uid": "PID",
   "leave.field.type": "Leave Type",
   "leave.field.regular": "Regular Type",
+  "leave.field.status": "Status",
   "leave.field.start": "Start",
   "leave.field.end": "End",
+  "leave.field.name": "Name",
   "leave.field.address": "Address",
   "leave.field.contactNumber": "Contact Number",
   "leave.field.reason": "Reason",

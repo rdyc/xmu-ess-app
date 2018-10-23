@@ -1,15 +1,20 @@
 import { SelectSystem, SelectSystemOption } from '@common/components/select';
 import { FormMode } from '@generic/types';
+import { FieldInputLeave } from '@layout/components/formFields/FieldInputLeave';
 import { InputDate } from '@layout/components/input/date';
 import { InputText } from '@layout/components/input/text';
 import { RequestDetailFormView } from '@leave/components/request/editor/forms/RequestDetailFormView';
+// import { InputLeave } from '@lookup/components/leave/input';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose, HandleCreators, withHandlers } from 'recompose';
 import { BaseFieldsProps } from 'redux-form';
+// import { isNullOrUndefined } from 'util';
 
 interface OwnProps {
   formMode: FormMode;
   context: BaseFieldsProps;
+  formRegularType: string | null | undefined;
+  isRegularType: boolean;
 }
 
 interface OwnHandlers {
@@ -24,7 +29,7 @@ export type RequestDetailFormProps
 const handlerCreators: HandleCreators<RequestDetailFormProps, OwnHandlers> = {
   generateFieldProps: (props: RequestDetailFormProps) => (name: string) => { 
     const { 
-      intl, formMode
+      intl, formMode, isRegularType
     } = props;
 
     const fieldName = name.replace('information.', '');
@@ -52,11 +57,10 @@ const handlerCreators: HandleCreators<RequestDetailFormProps, OwnHandlers> = {
 
       case 'regularType':
         fieldProps = {
-          required: formMode === FormMode.New,
-          category: 'regular',
-          disabled: formMode === FormMode.Edit,
+          required: false,
+          disabled: !isRegularType,
           placeholder: intl.formatMessage({id: `leave.field.${name}.placeholder`}),
-          component: SelectSystem
+          component: FieldInputLeave
         };
         break;
       
@@ -71,6 +75,7 @@ const handlerCreators: HandleCreators<RequestDetailFormProps, OwnHandlers> = {
       case 'end': 
         fieldProps = {
           required: true,
+          disabled: isRegularType,
           placeholder: intl.formatMessage({id: `leave.field.${name}.placeholder`}),
           component: InputDate
         };

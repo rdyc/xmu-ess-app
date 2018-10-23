@@ -24,7 +24,8 @@ interface OwnProps {
 }
 
 interface FormValueProps {
-  formIsRegular: boolean | false;
+  formIsRegularType: boolean | false;
+  formRegularType: string | null;
 }
 
 export type RequestFormProps 
@@ -38,7 +39,8 @@ const mapStateToProps = (state: any): FormValueProps => {
   const leaveType = selector(state, 'information.leaveType');
   
   return {
-    formIsRegular: leaveType === LeaveType.CutiKhusus,
+    formIsRegularType: leaveType === LeaveType.CutiKhusus,
+    formRegularType: leaveType
   };
 };
 

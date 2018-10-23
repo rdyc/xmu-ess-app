@@ -10,9 +10,13 @@ import {
   leaveRequestPostError,
   leaveRequestPostRequest,
   leaveRequestPostSuccess,
+  leaveRequestPutError,
   leaveRequestPutRequest,
+  leaveRequestPutSuccess,
 } from '@leave/store/actions';
+import { flattenObject } from '@utils/flattenObject';
 import saiyanSaga from '@utils/saiyanSaga';
+import { SubmissionError } from 'redux-form';
 import { all, fork, put, takeEvery } from 'redux-saga/effects';
 import { IApiResponse, objectToQuerystring } from 'utils';
 
@@ -21,25 +25,26 @@ function* watchAllFetchRequest() {
     return saiyanSaga.fetch({
       method: 'get',
       path: `/v1/leave/requests/${objectToQuerystring(action.payload.filter)}`, 
-      successEffects: (response: IApiResponse) => ([
+      successEffects: (response: IApiResponse) => [
         put(leaveRequestGetAllSuccess(response.body)),
         put(listBarMetadata(response.body.metadata))
-      ]), 
-      failureEffects: (response: IApiResponse) => ([
+      ], 
+      failureEffects: (response: IApiResponse) => [
         put(leaveRequestGetAllError(response.body)),
         put(layoutAlertAdd({
           time: new Date(),
           message: response.statusText,
           details: response
         })),
-      ]), 
-      errorEffects: (error: TypeError) => ([
+      ], 
+      errorEffects: (error: TypeError) => [
         put(leaveRequestGetAllError(error.message)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: error.message
+        put(
+          layoutAlertAdd({
+           time: new Date(),
+           message: error.message
         }))
-      ]),
+      ],
       finallyEffects: [
         put(listBarLoading(false))
       ]
@@ -54,24 +59,24 @@ function* watchByIdFetchRequest() {
     return saiyanSaga.fetch({
       method: 'get',
       path: `/v1/leave/requests/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.leaveUid}`, 
-      successEffects: (response: IApiResponse) => ([
+      successEffects: (response: IApiResponse) => [
         put(leaveRequestGetByIdSuccess(response.body)),
-      ]), 
-      failureEffects: (response: IApiResponse) => ([
+      ], 
+      failureEffects: (response: IApiResponse) => [
         put(leaveRequestGetByIdError(response.statusText)),
         put(layoutAlertAdd({
           time: new Date(),
           message: response.statusText,
           details: response
         })),
-      ]), 
-      errorEffects: (error: TypeError) => ([
+      ], 
+      errorEffects: (error: TypeError) => [
         put(leaveRequestGetByIdError(error.message)),
         put(layoutAlertAdd({
           time: new Date(),
           message: error.message
         }))
-      ])
+      ]
     });
   };
 
@@ -84,24 +89,37 @@ function* watchPostFetchRequest() {
       method: 'post',
       path: `/v1/leave/requests/${action.payload.companyUid}/${action.payload.positionUid}`, 
       payload: action.payload.data, 
-      successEffects: (response: IApiResponse) => ([
+      successEffects: (response: IApiResponse) => [
         put(leaveRequestPostSuccess(response.body)),
-      ]), 
-      failureEffects: (response: IApiResponse) => ([
+      ], 
+      successCallback: (response: IApiResponse) => {
+        action.payload.resolve(response.body.data);
+      },
+      failureEffects: (response: IApiResponse) => [
         put(leaveRequestPostError(response.statusText)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        })),
-      ]), 
-      errorEffects: (error: TypeError) => ([
+      ],
+      failureCallback: (response: IApiResponse) => {
+        if (response.status === 400) {
+          const errors: any = { 
+            // information -> based form section name
+            information: flattenObject(response.body.errors) 
+          };
+
+          action.payload.reject(new SubmissionError(errors));
+        } else {
+          action.payload.reject(response.statusText);
+        }
+      },
+      errorEffects: (error: TypeError) => [
         put(leaveRequestPostError(error.message)),
         put(layoutAlertAdd({
           time: new Date(),
           message: error.message
         }))
-      ])
+      ],
+      errorCallback: (error: any) => {
+        action.payload.reject(error);
+      }
     });
   };
 
@@ -112,26 +130,40 @@ function* watchPutFetchRequest() {
   const worker = (action: ReturnType<typeof leaveRequestPutRequest>) => {
     return saiyanSaga.fetch({
       method: 'put',
-      path: `/v1/leave/requests/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.leaveUid}`,
+      path: `/v1/leave/requests/${action.payload.companyUid}/${action.payload.positionUid}`,
       payload: action.payload.data, 
-      successEffects: (response: IApiResponse) => ([
-        put(leaveRequestPostSuccess(response.body)),
-      ]), 
-      failureEffects: (response: IApiResponse) => ([
-        put(leaveRequestPostError(response.statusText)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        })),
-      ]), 
-      errorEffects: (error: TypeError) => ([
+      successEffects: (response: IApiResponse) => [
+        put(leaveRequestPutSuccess(response.body)),
+      ],
+      successCallback: (response: IApiResponse) => {
+        action.payload.resolve(response.body.data);
+      },
+      failureEffects: (response: IApiResponse) => [
+        put(leaveRequestPutError(response.statusText)),
+      ],
+      failureCallback: (response: IApiResponse) => {
+        if (response.status === 400) {
+          const errors: any = { 
+            // information -> based on form section name
+            information: flattenObject(response.body.errors) 
+          };
+          
+          // action.payload.reject(new SubmissionError(response.body.errors));
+          action.payload.reject(new SubmissionError(errors));
+        } else {
+          action.payload.reject(response.statusText);
+        }
+      },
+      errorEffects: (error: TypeError) => [
         put(leaveRequestPostError(error.message)),
         put(layoutAlertAdd({
           time: new Date(),
           message: error.message
         }))
-      ])
+      ],
+      errorCallback: (error: any) => {
+        action.payload.reject(error);
+      }
     });
   };
 

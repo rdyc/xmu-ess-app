@@ -1,3 +1,4 @@
+import accountEmployeeLeaveSagas from '@account/store/sagas/accountEmployeeLeaveSagas';
 import accountEmployeeSagas from '@account/store/sagas/accountEmployeeSagas';
 import employeeMySagas from '@account/store/sagas/employeeMySagas';
 import employeeProfileSagas from '@account/store/sagas/employeeProfileSagas';
@@ -12,6 +13,7 @@ import commonSystemSagas from '@common/store/sagas/systemSagas';
 import expenseSagas from '@expense/store/sagas/expenseSagas';
 import financeSagas from '@finance/store/sagas/financeSagas';
 import commonNotificationSagas from '@layout/store/sagas/notificationSagas';
+import leaveApprovalSagas from '@leave/store/sagas/leaveApprovalSagas';
 import leaveRequestSagas from '@leave/store/sagas/leaveRequestSagas';
 import lookupCompanySagas from '@lookup/store/sagas/companySagas';
 import lookupCurrencySagas from '@lookup/store/sagas/currencySagas';
@@ -62,6 +64,7 @@ export function* rootSaga() {
     
     // account
     fork(accountEmployeeSagas),
+    fork(accountEmployeeLeaveSagas),
     fork(employeeMySagas),
     fork(employeeProfileSagas),
 
@@ -90,6 +93,7 @@ export function* rootSaga() {
     fork(financeSagas),
     
     // leave
-    fork(leaveRequestSagas)
+    fork(leaveRequestSagas),
+    fork(leaveApprovalSagas)
   ]);
 }

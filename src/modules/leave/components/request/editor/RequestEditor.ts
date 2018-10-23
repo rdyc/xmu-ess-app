@@ -72,7 +72,7 @@ const handlerCreators: HandleCreators<RequestEditorProps, OwnHandlers> = {
     };
   
     const requiredFields = [
-      'leaveYpe', 'start', 'end',
+      'leaveYpe', 'start',
       'address', 'contactNumber', 'reason'
     ];
 

@@ -10,6 +10,9 @@
   "leave.infoTitle": "Registration",
   "leave.infoSubTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
   
+  "leave.approval.title": "Leave Approvals",
+  "leave.approval.subTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+
   "leave.dialog.modifyTitle": "Modify Confirmation",
   "leave.dialog.modifyDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
   "leave.dialog.closeTitle": "Close Confirmation",
@@ -48,8 +51,8 @@
   
   "leave.action.modify": "Modify",
 
-  "leave.message.registration.create.success": "A new PID {uid} has been created",
-  "leave.message.registration.create.failure": "Unable to process your submission",
-  "leave.message.registration.update.success": "Existing PID {uid} has been updated",
-  "leave.message.registration.update.failure": "Unable to process your submission"
+  "leave.message.request.create.success": "A new PID {uid} has been created",
+  "leave.message.request.create.failure": "Unable to process your submission",
+  "leave.message.request.update.success": "Existing PID {uid} has been updated",
+  "leave.message.request.update.failure": "Unable to process your submission"
 }

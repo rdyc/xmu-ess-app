@@ -1,4 +1,4 @@
-import { layoutAlertAdd,  listBarMetadata } from '@layout/store/actions';
+import { layoutAlertAdd, listBarLoading,  listBarMetadata } from '@layout/store/actions';
 import {
   LeaveAction as Action,
   leaveGetAllError,
@@ -19,177 +19,101 @@ import saiyanSaga from '@utils/saiyanSaga';
 import { all, fork, put, takeEvery } from 'redux-saga/effects';
 import { IApiResponse, objectToQuerystring } from 'utils';
 
-const flattenObject = (ob: any) => {
-  const toReturn = {};
-
-  for (const i in ob) {
-    if (!ob.hasOwnProperty(i)) { continue; }
-    
-    if ((typeof ob[i]) === 'object') {
-      const flatObject = flattenObject(ob[i]);
-      for (const x in flatObject) {
-        if (!flatObject.hasOwnProperty(x)) { continue; }
-        
-        toReturn[`${i}`] = flatObject[i] ? `${flatObject[i]}, ${flatObject[x]}` : flatObject[x];
-      }
-    } else {
-      toReturn[i] = ob[i];
-    }
-  }
-  return toReturn;
-};
-
-function* watchFetchAllRequest() {
+function* watchGetAllRequest() {
   const worker = (action: ReturnType<typeof leaveGetAllRequest>) => {
     return saiyanSaga.fetch({
       method: 'get',
-      path: `/v1/lookup/leaves${objectToQuerystring(
-        action.payload.filter)}`, 
-      successEffects: (response: IApiResponse) => [
+      path: `/v1/lookup/leaves${objectToQuerystring(action.payload.filter)}`, 
+      successEffects: (response: IApiResponse) => ([
         put(leaveGetAllSuccess(response.body)),
         put(listBarMetadata(response.body.metadata))
-      ], 
-      failureEffects: (response: IApiResponse) => [
-        put(leaveGetAllError(response.body)),
-        put(
-          layoutAlertAdd({
-            time: new Date(),
-            message: response.statusText,
-            details: response
+      ]), 
+      failureEffects: (response: IApiResponse) => ([
+        put(leaveGetAllError(response.statusText)),
+        put(layoutAlertAdd({
+          time: new Date(),
+          message: response.statusText,
+          details: response
         }))
-      ], 
-      errorEffects: (error: TypeError) => [
+      ]), 
+      errorEffects: (error: TypeError) => ([
         put(leaveGetAllError(error.message)),
-        put(
-          layoutAlertAdd({
-            time: new Date(),
-            message: error.message
-          })
-        )
-      ]
+        put(layoutAlertAdd({
+          time: new Date(),
+          message: error.message
+        }))
+      ]),
+      finallyEffects: [put(listBarLoading(false))]
     });
   };
+  
   yield takeEvery(Action.GET_ALL_REQUEST, worker);
 }
 
-function* watchFetchListRequest() {
+function* watchGetListRequest() {
   const worker = (action: ReturnType<typeof leaveGetListRequest>) => {
     return saiyanSaga.fetch({
       method: 'get',
-      path: `/v1/lookup/leaves/list${objectToQuerystring(
-        action.payload.filter)}`,
-      successEffects: (response: IApiResponse) => [
+      path: `/v1/lookup/leaves/list${objectToQuerystring(action.payload.filter)}`,
+      successEffects: (response: IApiResponse) => ([
         put(leaveGetListSuccess(response.body)),
-      ], 
-      failureEffects: (response: IApiResponse) => [
+      ]), 
+      failureEffects: (response: IApiResponse) => ([
         put(leaveGetListError(response.statusText)),
-        put(
-          layoutAlertAdd({
-            time: new Date(),
-            message: response.statusText,
-            details: response
-         })
-        )
-      ], 
-      errorEffects: (error: TypeError) => [
+        put(layoutAlertAdd({
+          time: new Date(),
+          message: response.statusText,
+          details: response
+        }))
+      ]), 
+      errorEffects: (error: TypeError) => ([
         put(leaveGetListError(error.message)),
-        put(
-          layoutAlertAdd({
-            time: new Date(),
-            message: error.message
-          })
-        )
-      ]
+        put(layoutAlertAdd({
+          time: new Date(),
+          message: error.message
+        }))
+      ])
     });
   };
 
   yield takeEvery(Action.GET_LIST_REQUEST, worker);
 }
 
-function* watchFetchByIdRequest() {
+function* watchGetByIdRequest() {
   const worker = (action: ReturnType<typeof leaveGetByIdRequest>) => {
     return saiyanSaga.fetch({
       method: 'get',
       path: `/v1/lookup/leaves/${action.payload.companyUid}/${action.payload.leaveUid}`,
-      successEffects: (response: IApiResponse) => [
+      successEffects: (response: IApiResponse) => ([
         put(leaveGetByIdSuccess(response.body)),
-      ], 
-      failureEffects: (response: IApiResponse) => [
+      ]), 
+      failureEffects: (response: IApiResponse) => ([
         put(leaveGetByIdError(response.statusText)),
-        put(
-          layoutAlertAdd({
-            time: new Date(),
-            message: response.statusText,
-            details: response
-          })
-        )
-      ], 
-      errorEffects: (error: TypeError) => [
+        put(layoutAlertAdd({
+          time: new Date(),
+          message: response.statusText,
+          details: response
+        }))
+      ]), 
+      errorEffects: (error: TypeError) => ([
         put(leaveGetByIdError(error.message)),
-        put(
-          layoutAlertAdd({
-            time: new Date(),
-            message: error.message,
-          })
-        )
-      ]
+        put(layoutAlertAdd({
+          time: new Date(),
+          message: error.message,
+        }))
+      ])
     });
   };
   
   yield takeEvery(Action.GET_BY_ID_REQUEST, worker);
 }
 
-// function* watchPutFetchRequest() {
-//   const worker = (action: ReturnType<typeof leavePutRequest>) => {
-//     return saiyanSaga.fetch({
-//       method: 'put',
-//       path: `/v1/lookup/leaves/${action.payload.companyUid}
-//       }/${action.payload.leaveUid}`,
-//       payload: action.payload.data,
-//       successEffects: (response: IApiResponse) => [
-//         put(leavePutSuccess(response.body))
-//       ],
-//       successCallback: (response: IApiResponse) => {
-//         action.payload.resolve();
-//       },
-//       failureEffects: (response: IApiResponse) => [
-//         put(leavePutError(response.statusText))
-//       ],
-//       failureCallback: (response: IApiResponse) => {
-//         if (response.status === 400) {
-//           const errors = flattenObject(response.body.errors);
-          
-//           // action.payload.reject(new SubmissionError(response.body.errors));
-//           action.payload.reject(new SubmissionError(errors));
-//         } else {
-//           action.payload.reject(response.statusText);
-//         }
-//       },
-//       errorEffects: (error: TypeError) => [
-//         put(leavePutError(error.message)),
-//         put(
-//           layoutAlertAdd({
-//             time: new Date(),
-//             message: error.message
-//           })
-//         )
-//       ],
-//       errorCallback: (error: any) => {
-//         action.payload.reject(error);
-//       }
-//     });
-//   };
-
-//   yield takeEvery(Action.PUT_REQUEST, worker);
-// }
-
-function* lookupLeaveSagas() {
+function* leaveSagas() {
   yield all([
-    fork(watchFetchAllRequest),
-    fork(watchFetchListRequest),
-    fork(watchFetchByIdRequest),
-    // fork(watchPutFetchRequest)
+    fork(watchGetAllRequest),
+    fork(watchGetListRequest),
+    fork(watchGetByIdRequest),
   ]);
 }
 
-export default lookupLeaveSagas;
+export default leaveSagas;

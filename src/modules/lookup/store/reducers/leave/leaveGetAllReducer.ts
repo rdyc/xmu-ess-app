@@ -1,10 +1,10 @@
 import { IQueryCollectionState } from '@generic/interfaces';
-import { ILeaveAllRequest } from '@lookup/classes/queries';
+import { ILeaveGetAllRequest } from '@lookup/classes/queries';
 import { ILeave } from '@lookup/classes/response';
 import { LeaveAction as Action } from '@lookup/store/actions';
 import { Reducer } from 'redux';
 
-const initialState: IQueryCollectionState<ILeaveAllRequest, ILeave> = {
+const initialState: IQueryCollectionState<ILeaveGetAllRequest, ILeave> = {
   request: undefined,
   response: undefined,
   isError: false,
@@ -12,7 +12,7 @@ const initialState: IQueryCollectionState<ILeaveAllRequest, ILeave> = {
   errors: undefined,
 };
 
-const reducer: Reducer<IQueryCollectionState<ILeaveAllRequest, ILeave>> = (state = initialState, action) => {
+const reducer: Reducer<IQueryCollectionState<ILeaveGetAllRequest, ILeave>> = (state = initialState, action) => {
   switch (action.type) {
     case Action.GET_ALL_REQUEST: return { ...state, isLoading: true, isError: false, request: action.payload };
     case Action.GET_ALL_SUCCESS: return { ...state, isLoading: false, isError: false, response: action.payload };

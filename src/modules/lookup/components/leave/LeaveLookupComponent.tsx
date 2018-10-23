@@ -1,7 +1,7 @@
 import { IAppState, IQueryCollectionState, IResponseCollection } from '@generic/interfaces';
 import { ConnectedReduxProps } from '@generic/types';
 import { IUserState } from '@layout/interfaces';
-import { ILeaveListRequest } from '@lookup/classes/queries';
+import { ILeaveGetListRequest } from '@lookup/classes/queries/';
 import { ILeaveList } from '@lookup/classes/response';
 import { leaveGetListRequest } from '@lookup/store/actions';
 import {
@@ -38,7 +38,7 @@ export interface WithUser {
 }
 
 interface PropsFromState {
-  leaveState: IQueryCollectionState<ILeaveListRequest, ILeaveList>;
+  leaveState: IQueryCollectionState<ILeaveGetListRequest, ILeaveList>;
 }
 
 interface PropsFromDispatch {
@@ -274,8 +274,8 @@ class LeaveLookup extends React.Component<AllProps, State> {
     }
   };
 
-  // private handleDiscard = () => {
-  //   this.setState({ selected: {} });
+  // private handleDiscard = (leave: ILeaveList) => {
+  //   this.setState({ selected: leave });
   // };
 
   private handleSelected = (leave: ILeaveList) => {
@@ -292,7 +292,7 @@ const mapStateToProps = ({ leaveGetList, user }: IAppState) => ({
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   leaveDispatch: {
-    listRequest: (request: ILeaveListRequest) => dispatch(leaveGetListRequest(request)),
+    listRequest: (request: ILeaveGetListRequest) => dispatch(leaveGetListRequest(request)),
   }
 });
 

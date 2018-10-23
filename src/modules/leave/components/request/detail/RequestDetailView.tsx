@@ -1,22 +1,19 @@
-import { ILeaveRequestDetail } from '@leave/classes/response';
+// import { AccountLeaveInformation } from '@account/components/views/AccountLeaveInformation';
 import { RequestDetailProps } from '@leave/components/request/detail/RequestDetail';
 import {
   Button,
-  Card,
-  CardContent,
-  CardHeader,
   Dialog,
   DialogActions,
   DialogContent,
   DialogContentText,
   DialogTitle,
   Grid,
-  TextField,
   Typography,
 } from '@material-ui/core';
 import { WorkflowStep } from '@organization/components';
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
+import { LeaveInformation } from './shared/LeaveInformation';
 
 export const RequestDetailView: React.SFC<RequestDetailProps> = props => {
   const { 
@@ -51,88 +48,6 @@ export const RequestDetailView: React.SFC<RequestDetailProps> = props => {
     </Dialog>
   );
 
-  const renderDetail = (leave: ILeaveRequestDetail) => (
-    <Card square>
-      <CardHeader 
-        title={<FormattedMessage id="leave.infoTitle"/>}
-        subheader={<FormattedMessage id="leave.infoSubTitle" />}
-      />
-      <CardContent>
-        <TextField
-          fullWidth
-          contentEditable={false}
-          margin="normal"
-          label={<FormattedMessage id="leave.field.uid" />}
-          value={leave.uid}
-        />
-        <TextField
-          fullWidth
-          contentEditable={false}
-          margin="normal"
-          label={<FormattedMessage id="leave.field.status" />}
-          value={leave.status ? leave.status.value : 'N/A'}
-        />
-        <TextField
-          fullWidth
-          contentEditable={false}
-          margin="normal"
-          label={<FormattedMessage id="leave.field.type" />}
-          value={leave.leave ? leave.leave.value : 'N/A'}
-        />
-        <TextField
-          fullWidth
-          contentEditable={false}
-          hidden 
-          margin="normal"
-          label={<FormattedMessage id="leave.field.regular" />}
-          value={leave.regular ? leave.regular.leave ? leave.regular.leave.name : 'N/A' : 'N/A'}
-        />
-        <TextField
-          fullWidth
-          contentEditable={false}
-          margin="normal"
-          label={<FormattedMessage id="leave.field.start" />}
-          value={intl.formatDate(leave.start, {
-            year: 'numeric',
-            month: 'short',
-            day: 'numeric'
-          })}
-        />
-        <TextField
-          fullWidth
-          contentEditable={false}
-          margin="normal"
-          label={<FormattedMessage id="leave.field.end" />}
-          value={intl.formatDate(leave.end, {
-            year: 'numeric',
-            month: 'short',
-            day: 'numeric'
-          })}
-        />
-        <TextField
-          fullWidth
-          contentEditable={false}
-          margin="normal"
-          label={<FormattedMessage id="leave.field.name" />}
-          value={leave.address}
-        />
-        <TextField
-          fullWidth
-          contentEditable={false}
-          margin="normal"
-          label={<FormattedMessage id="leave.field.contactNumber" />}
-          value={leave.contactNumber}
-        />
-        <TextField
-          fullWidth
-          contentEditable={false}
-          margin="normal"
-          label={<FormattedMessage id="leave.field.reason" />}
-          value={leave.reason}
-        />
-      </CardContent>
-    </Card>
-  );
   const render = (
     <React.Fragment>
       {
@@ -154,9 +69,23 @@ export const RequestDetailView: React.SFC<RequestDetailProps> = props => {
             {
               response &&
               response.data &&
-              renderDetail(response.data)
+              <LeaveInformation
+                data={response.data}
+                intl={intl}
+              />
             }
           </Grid>
+
+          {/* <Grid item xs={12} md={4}>
+            {
+              response &&
+              response.data &&
+              <AccountLeaveInformation 
+                data={response.data.employee}
+                intl={intl}
+              />
+            }
+          </Grid> */}
 
           <Grid item xs={12} md={4}>
             {

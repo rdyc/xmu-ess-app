@@ -1,1 +1,1 @@
-export * from './ILeaveRequestState';
+export * from './ILeaveState';
