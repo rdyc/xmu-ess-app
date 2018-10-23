@@ -11,6 +11,9 @@
   
   "global.form.submit.title": "Submission",
   "global.form.submit.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+  
+  "global.form.approval.title": "Approval",
+  "global.form.approval.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
 
   "global.action.yes": "Yes",
   "global.action.no": "No",

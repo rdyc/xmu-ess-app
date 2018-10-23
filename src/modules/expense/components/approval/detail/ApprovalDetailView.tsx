@@ -13,6 +13,7 @@ import {
 import { WorkflowStep } from '@organization/components';
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
+import Approval from './approval/Approval';
 
 export const ApprovalDetailView: React.SFC<ApprovalDetailProps> = props => {
   const { 
@@ -84,6 +85,11 @@ export const ApprovalDetailView: React.SFC<ApprovalDetailProps> = props => {
               <WorkflowStep steps={response.data.workflow.steps} />
             }
           </Grid>
+
+          <Grid item xs={12} md={4}>
+          <Approval
+          />
+        </Grid>
         </Grid>
       }
       {renderDialog}
