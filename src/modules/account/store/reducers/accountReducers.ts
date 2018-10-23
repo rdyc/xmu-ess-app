@@ -1,18 +1,11 @@
-import {
-  employeeGetAllReducer,
-  employeeGetByIdReducer,
-  employeeGetListReducer,
-  employeeProfileCommandReducer,
-  employeeProfileQueryReducer,
-} from '@account/store/reducers';
+import { employeeProfileCommandReducer, employeeProfileQueryReducer } from '@account/store/reducers';
+
+import accountEmployeeReducers from './employee/accountEmployeeReducers';
 
 const accountReducers = {
   profileQuery: employeeProfileQueryReducer,
   profileCommand: employeeProfileCommandReducer,
-
-  employeeGetAll: employeeGetAllReducer,
-  employeeGetList: employeeGetListReducer,
-  employeeGetById: employeeGetByIdReducer,
+  ...accountEmployeeReducers
 };
 
 export default accountReducers;

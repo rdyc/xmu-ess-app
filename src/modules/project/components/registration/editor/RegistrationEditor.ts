@@ -276,8 +276,8 @@ const lifecycles: ReactLifeCycleFunctions<RegistrationEditorProps, {}> = {
     const { user } = this.props.userState;
     
     const view = {
-      title: 'project.form.newTitle',
-      subTitle: 'project.form.newSubTitle',
+      title: 'project.form.registration.newTitle',
+      subTitle: 'project.form.registration.newSubTitle',
     };
 
     if (!user) {
@@ -290,8 +290,8 @@ const lifecycles: ReactLifeCycleFunctions<RegistrationEditorProps, {}> = {
     });
 
     if (!isNullOrUndefined(history.location.state)) {
-      view.title = 'project.form.editTitle';
-      view.subTitle = 'project.form.editSubTitle';
+      view.title = 'project.form.registration.editTitle';
+      view.subTitle = 'project.form.registration.editSubTitle';
 
       stateUpdate({ 
         formMode: FormMode.Edit,
