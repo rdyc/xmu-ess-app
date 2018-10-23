@@ -1,52 +1,15 @@
-import AppMenu from '@constants/AppMenu';
-import { IBaseChanges } from '@generic/interfaces';
-import { WithLayout, withLayout } from '@layout/hoc/withLayout';
-import { WithNavBottom, withNavBottom } from '@layout/hoc/withNavBottom';
 import { Divider, Grid, List, ListItem, ListSubheader, Paper, Typography } from '@material-ui/core';
 import { ITravelRequest } from '@travel/classes/response';
-import { TravelRequestField } from '@travel/classes/types';
-import withApiTravelRequestAll, { WithApiTravelRequestAllHandler } from '@travel/enhancers/request/withApiTravelRequestAll';
-import withTravelRequestAll, { WithTravelRequestAll } from '@travel/enhancers/request/withTravelRequestAll';
+import { RequestListProps } from '@travel/components/request/list/RequestList';
+import { parseChanges } from '@utils/parseChanges';
 import * as moment from 'moment';
 import * as React from 'react';
-import { FormattedDate, FormattedNumber, FormattedPlural, InjectedIntlProps, injectIntl } from 'react-intl';
-import { RouteComponentProps, withRouter } from 'react-router';
-import { compose, lifecycle, ReactLifeCycleFunctions, setDisplayName } from 'recompose';
+import { FormattedDate, FormattedNumber, FormattedPlural } from 'react-intl';
 import { isArray } from 'util';
 
-type AllProps
-  = WithTravelRequestAll
-  & WithLayout
-  & WithNavBottom
-  & WithApiTravelRequestAllHandler
-  & RouteComponentProps
-  & InjectedIntlProps;
-
-const requestList: React.SFC<AllProps> = props => {
-  const { history } = props;
-  const { isLoading, response } = props.travelAllState;
-
-  const handleClick = (travelUid: string) => {
-    if (!isLoading) {
-      history.push(`/travel/details/${travelUid}`);
-    } 
-  };
-
-  const parseChanges = (changes: IBaseChanges | null) => {
-    let result = 'Unknown';
-    
-    if (!changes) {
-      return result;
-    }
-
-    if (changes.updatedBy !== null) {
-      result = changes.updated ? (changes.updated ? changes.updated.fullName : changes.updatedBy) : changes.updatedBy;
-    } else {
-      result = changes.created ? changes.created.fullName : changes.createdBy;
-    }
-
-    return result;
-  };
+export const RequestListView: React.SFC<RequestListProps> = props => {
+  const { handleGoToDetail } = props;
+  const { isLoading, response } = props.travelRequestState.all;
 
   const renderTravelList = (travels: ITravelRequest[]) => {
     const len = travels.length - 1;
@@ -57,7 +20,7 @@ const requestList: React.SFC<AllProps> = props => {
           <ListItem 
             button={!isLoading} 
             key={travel.uid} 
-            onClick={() => handleClick(travel.uid)}
+            onClick={() => handleGoToDetail(travel.uid)}
           >
             <Grid container spacing={24}>
               <Grid item xs={8} sm={8}>
@@ -66,7 +29,7 @@ const requestList: React.SFC<AllProps> = props => {
                   color="primary" 
                   variant="body2"
                 >
-                  {travel.destination && travel.destination.value}
+                  {travel.uid}
                 </Typography>
                 <Typography 
                   noWrap
@@ -79,7 +42,7 @@ const requestList: React.SFC<AllProps> = props => {
                   color="textSecondary" 
                   variant="caption"
                 >
-                  {travel.uid} &bull; {travel.total} &bull; &nbsp;
+                  {travel.destination && travel.destination.value} &bull; {travel.total} &bull; &nbsp;
                   <FormattedDate 
                     year="numeric"
                     month="short"
@@ -126,7 +89,7 @@ const requestList: React.SFC<AllProps> = props => {
       )
     );
   };
-
+  
   const RenderList = () => (
     <List
       component="nav"
@@ -161,7 +124,8 @@ const requestList: React.SFC<AllProps> = props => {
       }
     </List>
   );
-  return (
+
+  const render = (
     <React.Fragment>
       {isLoading && response && <Typography variant="body2">loading</Typography>}     
       {response &&
@@ -173,68 +137,6 @@ const requestList: React.SFC<AllProps> = props => {
         </Paper>}
     </React.Fragment>
   );
+
+  return render;
 };
-
-const lifecycles: ReactLifeCycleFunctions<AllProps, {}> = {
-  componentDidMount() { 
-    const { 
-      handleNext, handlePrev, handleSync, 
-      handleOrder, handleSize, handleSort, 
-      layoutDispatch, navBottomDispatch, 
-      history, intl 
-    } = this.props;
-
-    layoutDispatch.changeView({
-      uid: AppMenu.TravelRequest,
-      parentUid: AppMenu.TravelRequest,
-      title: intl.formatMessage({id: 'travel.title'}),
-      subTitle : intl.formatMessage({id: 'travel.subTitle'})
-    });
-
-    layoutDispatch.modeListOn();
-    layoutDispatch.searchShow();
-    layoutDispatch.actionCentreShow();
-
-    navBottomDispatch.assignCallbacks({
-      onNextCallback: handleNext,
-      onPrevCallback: handlePrev,
-      onSyncCallback: handleSync,
-      onOrderCallback: handleOrder,
-      onDirectionCallback: handleSort,
-      onAddCallback: () => history.push('/travel/form'),
-      onSizeCallback: handleSize,
-    });
-
-    const items = Object.keys(TravelRequestField)
-      .map(key => ({ id: key, name: TravelRequestField[key] }));
-
-    navBottomDispatch.assignFields(items);
-  },
-
-  componentWillUnmount() {
-    const { layoutDispatch, navBottomDispatch } = this.props;
-
-    layoutDispatch.changeView(null);
-    layoutDispatch.modeListOff();
-    layoutDispatch.searchHide();
-    layoutDispatch.modeSearchOff();
-    layoutDispatch.actionCentreHide();
-    layoutDispatch.moreHide();
-
-    navBottomDispatch.dispose();
-  }
-};
-
-export default compose<AllProps, {}>(
-  setDisplayName('TravelRequestList'),
-  withApiTravelRequestAll({ 
-    orderBy: 'uid',
-    direction: 'descending',
-  }),
-  withTravelRequestAll,
-  withLayout,
-  withNavBottom,
-  withRouter,
-  injectIntl,
-  lifecycle<AllProps, {}>(lifecycles),
-)(requestList);

@@ -1,0 +1,45 @@
+{
+  "travel.title": "Travels",
+  "travel.subTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "travel.detail.title": "Travel Request Details",
+  "travel.detail.subTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "travel.form.newTitle": "New Travel Request",
+  "travel.form.newSubTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "travel.form.editTitle": "Modify Travel",
+  "travel.form.editSubTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "travel.infoTitle": "Request",
+  "travel.infoSubTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "travel.document.travelTitle": "Travel Documents",
+  "travel.document.travelSubTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "travel.document.preSalesTitle": "Presales Documents",
+  "travel.document.preSalesSubTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "travel.summaryTitle": "Summary Travel",
+  "travel.summarySubTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "travel.itemTitle": "Item Travel",
+  "travel.itemSubTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  
+  "travel.dialog.modifyTitle": "Modify Confirmation",
+  "travel.dialog.modifyDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  
+
+  "travel.field.information.uid": "Travel ID",
+  "travel.field.information.uid.placeholder": "Travel ID",
+  "travel.field.information.status": "Status",
+  "travel.field.information.requestor": "Preparer Name",
+  "travel.field.information.destination": "Destination Type",
+  "travel.field.information.start": "Start Date",
+  "travel.field.information.end": "To Date",
+  "travel.field.information.customer": "Customer",
+  "travel.field.information.activity": "Activity Type",
+  "travel.field.information.objectives": "Objectives",
+  "travel.field.information.target": "Specific Target",
+  "travel.field.information.comments": "Comments",
+  "travel.field.information.siteValue": "Site Value",
+  "travel.field.information.totalDuration" : "Total Duration",
+  "travel.field.information.totalDiemValue": "Total Diem Value",
+  "travel.field.information.costHotel": "Total Cost Hotel",
+  "travel.field.information.costTransport": "Total Cost Transport",
+  "travel.field.information.total": "Total"
+
+
+}

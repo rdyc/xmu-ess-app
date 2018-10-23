@@ -5,6 +5,7 @@ import { HomePage } from '@layout/pages';
 import AccessWizardPage from '@layout/pages/AccessWizardPage';
 import CallbackPage from '@layout/pages/CallbackPage';
 import { projectRouter } from '@project/components/projectRouter';
+import { travelRouter } from '@travel/components/travelRouter';
 import { ConnectedRouter } from 'connected-react-router';
 import { History } from 'history';
 import * as React from 'react';
@@ -13,8 +14,6 @@ import { connect, Provider } from 'react-redux';
 import { Route, Router, Switch } from 'react-router';
 import { Store } from 'redux';
 import { loadUser, OidcProvider, UserState } from 'redux-oidc';
-
-import { TravelRoot } from '@travel/components/TravelRoot';
 import { IAppState } from './generic/interfaces';
 import AppLocale from './language';
 import config, { getCurrentLanguage } from './language/config';
@@ -80,7 +79,7 @@ class App extends React.Component<AllProps> {
                         <Route path="/home" component={HomePage} />
                         <Route path="/account" component={accountRouter} />
                         <Route path="/project" component={projectRouter} />
-                        <Route path="/travel" component={TravelRoot} />                        
+                        <Route path="/travel" component={travelRouter} />                        
                       </Layout>
                     </Switch>
                   )}

@@ -13,10 +13,10 @@ export interface ITravelRequestItem {
   from: string;
   destination: string;
   departureDate: string;
-  returnDate: string | null;
+  returnDate: string;
   costTransport: number | null;
   isTransportByCompany: boolean;
-  hotel?: string | null;
+  hotel: string | null;
   costHotel: number | null;
   isHotelByCompany: boolean;
   notes: string | null;
