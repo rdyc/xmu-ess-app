@@ -87,9 +87,15 @@ export const ApprovalDetailView: React.SFC<ApprovalDetailProps> = props => {
           </Grid>
 
           <Grid item xs={12} md={4}>
-          <Approval
-          />
-        </Grid>
+          {
+            response &&
+            response.data &&
+            response.data.workflow &&
+            response.data.workflow.isApproval &&
+            <Approval
+            />
+          }
+          </Grid>
         </Grid>
       }
       {renderDialog}

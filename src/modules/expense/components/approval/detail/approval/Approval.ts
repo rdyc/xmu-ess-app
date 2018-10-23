@@ -29,7 +29,7 @@ import { isNullOrUndefined, isObject } from 'util';
 export type ApprovalData = {
   information: {
     isApproved: boolean | null | undefined;
-    remark: boolean | null | undefined;
+    remark: string | null | undefined;
   },
 };
 
@@ -73,7 +73,7 @@ export type ApprovalProps
   & OwnStateUpdaters;
 
 const handlerCreators: HandleCreators<ApprovalProps, OwnHandlers> = {
-
+  
   handleSubmit: (props: ApprovalProps) => (formData: ApprovalData) => { 
     const { expenseUid, intl, match } = props;
     const { user } = props.userState;

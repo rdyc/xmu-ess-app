@@ -20,13 +20,13 @@ export const ApprovalView: React.SFC<ApprovalProps> = props => (
     </CardContent>
     <CardActions>
       <Button 
-        type="button"
+        type="submit"
         color="default"
       >
         <FormattedMessage id="global.action.reject" />
       </Button>
       <Button 
-        type="button"
+        type="submit"
         color="secondary"
       >
         <FormattedMessage id="global.action.approve" />
