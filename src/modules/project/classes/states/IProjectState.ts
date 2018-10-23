@@ -8,9 +8,15 @@ import {
 import {
   IProjectRegistrationGetListRequest,
 } from '@project/classes/queries/registration/IProjectRegistrationGetListRequest';
-import { IProject, IProjectDetail, IProjectList } from '@project/classes/response';
+import { IProject, IProjectDetail, IProjectList, IProjectSite } from '@project/classes/response';
 
 import { IProjectOwnerPutRequest } from '../queries/owner';
+import {
+  IProjectSiteDeleteRequest,
+  IProjectSiteGetRequest,
+  IProjectSitePostRequest,
+  IProjectSitePutRequest,
+} from '../queries/site';
 import { IProjectStatusPutRequest } from '../queries/status';
 
 export interface IProjectState {
@@ -21,16 +27,20 @@ export interface IProjectState {
   projectRegistrationPost: IQuerySingleState<IProjectRegistrationPostRequest, IProject>;
   projectRegistrationPut: IQuerySingleState<IProjectRegistrationPutRequest, IProject>;
 
-  // approval
-
-  // change owner
+  // owner
   projectOwnerPut: IQuerySingleState<IProjectOwnerPutRequest, boolean>;
 
   // status
   projectStatusPut: IQuerySingleState<IProjectStatusPutRequest, boolean>;
 
-  // site management
+  // site
+  projectSiteGet: IQueryCollectionState<IProjectSiteGetRequest, IProjectSite>;
+  projectSitePost: IQuerySingleState<IProjectSitePostRequest, boolean>;
+  projectSitePut: IQuerySingleState<IProjectSitePutRequest, boolean>;
+  projectSiteDelete: IQuerySingleState<IProjectSiteDeleteRequest, boolean>;
 
+  // approval
+  
   // assignment
 
   // acceptance
