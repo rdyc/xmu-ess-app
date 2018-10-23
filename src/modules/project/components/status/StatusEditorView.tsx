@@ -12,6 +12,7 @@ export const StatusEditorView: React.SFC<StatusEditorProps> = props => {
   const renderForm = (formData: ProjectStatusFormData, data: IProjectDetail) => (
     <StatusForm
       formMode={formMode}
+      projectData={data}
       statusType={data.statusType}
       initialValues={formData}
       validate={handleValidate}

@@ -1,7 +1,9 @@
 import { WorkflowStatusType } from '@common/classes/types';
 import AppMenu from '@constants/AppMenu';
+import { AppRole } from '@constants/AppRole';
 import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
+import { WithOidc, withOidc } from '@layout/hoc/withOidc';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IAppBarMenu } from '@layout/interfaces';
 import { ProjectUserAction } from '@project/classes/types';
@@ -54,6 +56,7 @@ interface OwnRouteParams {
 
 export type RegistrationDetailProps
   = WithProjectRegistration
+  & WithOidc
   & WithUser
   & WithLayout
   & WithAppBar
@@ -160,7 +163,9 @@ const handlerCreators: HandleCreators<RegistrationDetailProps, Handler> = {
       dialogFullScreen: false,
       dialogOpen: true,
       dialogTitle: intl.formatMessage({id: 'project.dialog.manageSiteTitle'}), 
-      dialogDescription: intl.formatMessage({id: 'project.dialog.manageSiteDescription'})
+      dialogDescription: intl.formatMessage({id: 'project.dialog.manageSiteDescription'}),
+      dialogCancelText: intl.formatMessage({id: 'global.action.discard'}),
+      dialogConfirmedText: intl.formatMessage({id: 'global.action.continue'}),
     });
   },
   handleDialogOpen: (props: RegistrationDetailProps) => (title: string, description: string, cancelText?: string, confirmText?: string, fullScreen?: boolean) => { 
@@ -181,13 +186,26 @@ const handlerCreators: HandleCreators<RegistrationDetailProps, Handler> = {
     stateReset();
   },
   handleDialogConfirmed: (props: RegistrationDetailProps) => () => { 
-    const { match, history, action, stateReset } = props;
+    const { history, action, stateReset } = props;
+    const { response } = props.projectRegisterState.detail;
 
-    const projectUid = match.params.projectUid;
-
-    // skipp untracked action
-    if (!action) {
+    // skipp untracked action or empty response
+    if (!action || !response) {
       return;
+    } 
+
+    // define vars
+    let companyUid: string | undefined;
+    let projectUid: string | undefined;
+
+    // get company uid
+    if (response.data && response.data.customer) {
+      companyUid = response.data.customer.companyUid;
+    }
+
+    // get project uid
+    if (response.data) {
+      projectUid = response.data.uid;
     }
 
     // actions with new page
@@ -217,7 +235,7 @@ const handlerCreators: HandleCreators<RegistrationDetailProps, Handler> = {
           break;
 
         case ProjectUserAction.ManageSites:
-          next = '/project/sites';
+          next = `/project/sites/${companyUid}/${projectUid}`;
           break;
 
         default:
@@ -226,7 +244,9 @@ const handlerCreators: HandleCreators<RegistrationDetailProps, Handler> = {
 
       stateReset();
 
-      history.push(next, { uid: projectUid });
+      history.push(next, { 
+        uid: projectUid 
+      });
     }
   },
 };
@@ -297,6 +317,7 @@ const lifecycles: ReactLifeCycleFunctions<RegistrationDetailProps, OwnState> = {
   componentWillReceiveProps(nextProps: RegistrationDetailProps) {
     if (nextProps.projectRegisterState.detail.response !== this.props.projectRegisterState.detail.response) {
       const { intl } = nextProps;
+      const { user } = nextProps.oidcState;
       const { response } = nextProps.projectRegisterState.detail;
       const { assignMenus } = nextProps.appBarDispatch;
       
@@ -310,6 +331,26 @@ const lifecycles: ReactLifeCycleFunctions<RegistrationDetailProps, OwnState> = {
         return result;
       };
 
+      const fnIsAdmin = (): boolean => {
+        let result: boolean = false;
+
+        if (user) {
+          const role: string | string[] | undefined = user.profile.role;
+
+          if (role) {
+            if (Array.isArray(role)) {
+              result = role.indexOf(AppRole.Admin) !== -1;
+            } else {
+              result = role === AppRole.Admin;
+            }
+          }
+        }
+
+        return result;
+      };
+
+      const isAdmin = fnIsAdmin();
+
       const currentMenus = [
         {
           id: ProjectUserAction.Refresh,
@@ -321,31 +362,46 @@ const lifecycles: ReactLifeCycleFunctions<RegistrationDetailProps, OwnState> = {
           id: ProjectUserAction.Modify,
           name: intl.formatMessage({id: 'project.action.modify'}),
           enabled: response !== undefined,
-          visible: isStatusTypeEquals([WorkflowStatusType.Submitted, WorkflowStatusType.InProgress, WorkflowStatusType.Approved])
+          visible: isStatusTypeEquals([
+            WorkflowStatusType.Submitted, 
+            WorkflowStatusType.InProgress, 
+            WorkflowStatusType.Approved
+          ])
         },
         {
           id: ProjectUserAction.Close,
           name: intl.formatMessage({id: 'project.action.close'}),
           enabled: true,
-          visible: isStatusTypeEquals([WorkflowStatusType.Approved, WorkflowStatusType.ReOpened])
+          visible: isStatusTypeEquals([
+            WorkflowStatusType.Approved, 
+            WorkflowStatusType.ReOpened
+          ])
         },
         {
           id: ProjectUserAction.ReOpen,
           name: intl.formatMessage({id: 'project.action.reOpen'}),
           enabled: true,
-          visible: isStatusTypeEquals([WorkflowStatusType.Closed])
+          visible: isStatusTypeEquals([
+            WorkflowStatusType.Closed
+          ])
         },
         {
           id: ProjectUserAction.ChangeOwner,
-          name: intl.formatMessage({id: 'project.action.changeOwner'}),
+          name: intl.formatMessage({id: 'project.action.owner'}),
           enabled: true,
-          visible: isStatusTypeEquals([WorkflowStatusType.Approved])
+          visible: isStatusTypeEquals([
+            WorkflowStatusType.Approved,
+            WorkflowStatusType.ReOpened
+          ])
         },
         {
           id: ProjectUserAction.ManageSites,
-          name: intl.formatMessage({id: 'project.action.manageSite'}),
+          name: intl.formatMessage({id: 'project.action.site'}),
           enabled: true,
-          visible: false
+          visible: isStatusTypeEquals([
+            WorkflowStatusType.Approved,
+            WorkflowStatusType.ReOpened
+          ]) && isAdmin
         }
       ];
 
@@ -367,6 +423,7 @@ const lifecycles: ReactLifeCycleFunctions<RegistrationDetailProps, OwnState> = {
 };
 
 export const RegistrationDetail = compose<RegistrationDetailProps, {}>(
+  withOidc,
   withUser,
   withLayout,
   withAppBar,

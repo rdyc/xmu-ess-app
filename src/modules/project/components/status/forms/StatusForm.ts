@@ -1,4 +1,5 @@
 import { FormMode } from '@generic/types';
+import { IProjectDetail } from '@project/classes/response';
 import { InjectedFormProps, reduxForm } from 'redux-form';
 
 import { StatusFormView } from './StatusFormView';
@@ -13,6 +14,7 @@ export type ProjectStatusFormData = {
 
 interface OwnProps {
   formMode: FormMode;
+  projectData: IProjectDetail;
   statusType?: string | undefined;
 }
 

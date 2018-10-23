@@ -1,14 +1,18 @@
 import { Card, CardContent, CardHeader, TextField } from '@material-ui/core';
 import { IProjectDetail } from '@project/classes/response';
 import * as React from 'react';
-import { FormattedMessage, InjectedIntl } from 'react-intl';
+import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
+import { compose } from 'recompose';
 
 interface OwnProps {
   data: IProjectDetail;
-  intl: InjectedIntl;
 }
 
-export const ProjectInformation: React.SFC<OwnProps> = props => {
+type AllProps
+  = OwnProps
+  & InjectedIntlProps;
+
+const projectInformation: React.SFC<AllProps> = props => {
   const { data, intl } = props;
 
   const render = (
@@ -137,3 +141,7 @@ export const ProjectInformation: React.SFC<OwnProps> = props => {
 
   return render;
 };
+
+export const ProjectInformation = compose<AllProps, OwnProps>(
+  injectIntl
+)(projectInformation);
