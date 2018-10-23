@@ -5,7 +5,7 @@ import { HomePage } from '@layout/pages';
 import AccessWizardPage from '@layout/pages/AccessWizardPage';
 import CallbackPage from '@layout/pages/CallbackPage';
 import { projectRouter } from '@project/components/projectRouter';
-import { purchaseRouter } from '@purchase/components/PurchaseRouter';
+import { purchaseApprovalRouter, purchaseRouter, purchaseSettlementApprovalRouter, purchaseSettlementRouter } from '@purchase/components/PurchaseRouter';
 import { ConnectedRouter } from 'connected-react-router';
 import { History } from 'history';
 import * as React from 'react';
@@ -80,7 +80,10 @@ class App extends React.Component<AllProps> {
                         <Route path="/home" component={HomePage} />
                         <Route path="/account" component={accountRouter} />
                         <Route path="/project" component={projectRouter} />
-                        <Route path="/purchase" component={purchaseRouter} />
+                        <Route path="/purchase/request" component={purchaseRouter} />
+                        <Route path="/approval/purchase/request" component={purchaseApprovalRouter} />
+                        <Route path="/purchase/settlement" component={purchaseSettlementRouter} />
+                        <Route path="/approval/purchase/settlement" component={purchaseSettlementApprovalRouter} />
                       </Layout>
                     </Switch>
                   )}

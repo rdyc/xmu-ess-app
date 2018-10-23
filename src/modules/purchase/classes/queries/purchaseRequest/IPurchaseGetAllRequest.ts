@@ -1,6 +1,5 @@
-import { ICompanyAccess } from '@generic/interfaces';
 import { IPurchaseGetAllFilter } from '@purchase/classes/filters/purchaseRequest';
 
-export interface IPurchaseGetAllRequest extends ICompanyAccess {
+export interface IPurchaseGetAllRequest {
   readonly filter: IPurchaseGetAllFilter | undefined;
 }

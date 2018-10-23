@@ -5,8 +5,8 @@ import { WithNavBottom, withNavBottom } from '@layout/hoc/withNavBottom';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IListBarField } from '@layout/interfaces';
 import { PurchaseField } from '@purchase/classes/types';
-import { PurchaseRequestListView } from '@purchase/components/purchaseRequest/list/PurchaseRequestListView';
-import { WithPurchaseRequest, withPurchaseRequest } from '@purchase/hoc/purchaseRequest/withPurchaseRequest';
+import { PurchaseSettlementListView } from '@purchase/components/purchaseSettlement/list/PurchaseSettlementListView';
+import { WithPurchaseSettlement, withPurchaseSettlement } from '@purchase/hoc/purchaseSettlement/withPurchaseSettlement';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import {
@@ -55,8 +55,8 @@ interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
   stateSizing: StateHandler<OwnState>;
 }
 
-export type PurchaseRequestListProps 
-  = WithPurchaseRequest
+export type PurchaseSettlementListProps 
+  = WithPurchaseSettlement
   & WithUser
   & WithLayout
   & WithNavBottom
@@ -67,9 +67,9 @@ export type PurchaseRequestListProps
   & OwnState
   & OwnStateUpdaters;
 
-const createProps: mapper<PurchaseRequestListProps, OwnState> = (props: PurchaseRequestListProps): OwnState => {
+const createProps: mapper<PurchaseSettlementListProps, OwnState> = (props: PurchaseSettlementListProps): OwnState => {
   const { orderBy, direction, page, size } = props;
-  const { request } = props.purchaseRequestState.all;
+  const { request } = props.purchaseSettlementState.all;
 
   return { 
     orderBy: request && request.filter && request.filter.orderBy || orderBy,
@@ -103,39 +103,39 @@ const stateUpdaters: StateUpdaters<OwnOptions, OwnState, OwnStateUpdaters> = {
   }),
 };
 
-const handlerCreators: HandleCreators<PurchaseRequestListProps, OwnHandlers> = {
-  handleGoToDetail: (props: PurchaseRequestListProps) => (purchaseUid) => {
+const handlerCreators: HandleCreators<PurchaseSettlementListProps, OwnHandlers> = {
+  handleGoToDetail: (props: PurchaseSettlementListProps) => (purchaseUid) => {
     const { history } = props;
-    const { isLoading } = props.purchaseRequestState.all;
+    const { isLoading } = props.purchaseSettlementState.all;
 
     if (!isLoading) {
-      history.push(`/purchase/request/details/${purchaseUid}`);
+      history.push(`/purchase/settlement/details/${purchaseUid}`);
     } 
   },
-  handleGoToNext: (props: PurchaseRequestListProps) => () => { 
+  handleGoToNext: (props: PurchaseSettlementListProps) => () => { 
     props.stateNext();
   },
-  handleGoToPrevious: (props: PurchaseRequestListProps) => () => { 
+  handleGoToPrevious: (props: PurchaseSettlementListProps) => () => { 
     props.statePrevious();
   },
-  handleReloading: (props: PurchaseRequestListProps) => () => { 
+  handleReloading: (props: PurchaseSettlementListProps) => () => { 
     props.stateReloading();
 
     // force re-load from api
     loadData(props);
   },
-  handleChangeOrder: (props: PurchaseRequestListProps) => (field: IListBarField) => { 
+  handleChangeOrder: (props: PurchaseSettlementListProps) => (field: IListBarField) => { 
     props.stateOrdering(field);
   },
-  handleChangeSize: (props: PurchaseRequestListProps) => (value: number) => { 
+  handleChangeSize: (props: PurchaseSettlementListProps) => (value: number) => { 
     props.stateSizing(value);
   },
-  handleChangeSort: (props: PurchaseRequestListProps) => (direction: SortDirection) => { 
+  handleChangeSort: (props: PurchaseSettlementListProps) => (direction: SortDirection) => { 
     props.stateSorting(direction);
   }
 };
 
-const lifecycles: ReactLifeCycleFunctions<PurchaseRequestListProps, OwnState> = {
+const lifecycles: ReactLifeCycleFunctions<PurchaseSettlementListProps, OwnState> = {
   componentDidMount() { 
     const { 
       handleGoToNext, handleGoToPrevious, handleReloading, 
@@ -144,10 +144,10 @@ const lifecycles: ReactLifeCycleFunctions<PurchaseRequestListProps, OwnState> = 
       history, intl 
     } = this.props;
     
-    const { isLoading, response } = this.props.purchaseRequestState.all;
+    const { isLoading, response } = this.props.purchaseSettlementState.all;
 
     layoutDispatch.changeView({
-      uid: AppMenu.PurchaseRequest,
+      uid: AppMenu.PurchaseSettlementRequest,
       parentUid: AppMenu.Purchase,
       title: intl.formatMessage({id: 'purchase.title'}),
       subTitle : intl.formatMessage({id: 'purchase.subTitle'})
@@ -163,7 +163,7 @@ const lifecycles: ReactLifeCycleFunctions<PurchaseRequestListProps, OwnState> = 
       onSyncCallback: handleReloading,
       onOrderCallback: handleChangeOrder,
       onDirectionCallback: handleChangeSort,
-      onAddCallback: () => history.push('/purchase/form'),
+      onAddCallback: () => history.push('/purchase/settlement/form'),
       onSizeCallback: handleChangeSize,
     });
 
@@ -177,7 +177,7 @@ const lifecycles: ReactLifeCycleFunctions<PurchaseRequestListProps, OwnState> = 
       loadData(this.props);
     }
   },
-  componentDidUpdate(props: PurchaseRequestListProps, state: OwnState) {
+  componentDidUpdate(props: PurchaseSettlementListProps, state: OwnState) {
     // only load when these props are different
     if (
       this.props.orderBy !== props.orderBy ||
@@ -191,7 +191,7 @@ const lifecycles: ReactLifeCycleFunctions<PurchaseRequestListProps, OwnState> = 
   componentWillUnmount() {
     const { layoutDispatch, navBottomDispatch } = this.props;
     const { view } = this.props.layoutState;
-    const { loadAllDispose } = this.props.purchaseRequestDispatch;
+    const { loadAllDispose } = this.props.purchaseSettlementDispatch;
 
     layoutDispatch.changeView(null);
     layoutDispatch.modeListOff();
@@ -209,10 +209,10 @@ const lifecycles: ReactLifeCycleFunctions<PurchaseRequestListProps, OwnState> = 
   }
 };
 
-const loadData = (props: PurchaseRequestListProps): void => {
+const loadData = (props: PurchaseSettlementListProps): void => {
   const { orderBy, direction, page, size } = props;
   const { user } = props.userState;
-  const { loadAllRequest } = props.purchaseRequestDispatch;
+  const { loadAllRequest } = props.purchaseSettlementDispatch;
   const { alertAdd } = props.layoutDispatch;
 
   if (user) {
@@ -226,7 +226,6 @@ const loadData = (props: PurchaseRequestListProps): void => {
         positionUid: user.position.uid,
         customerUid: undefined,
         isRejected: undefined,
-        isSettlement: undefined,
         find: undefined,
         findBy: undefined,
       }
@@ -239,14 +238,14 @@ const loadData = (props: PurchaseRequestListProps): void => {
   }
 };
 
-export const PurchaseRequestList = compose<PurchaseRequestListProps, OwnOptions>(
-  withPurchaseRequest,
+export const PurchaseSettlementList = compose<PurchaseSettlementListProps, OwnOptions>(
+  withPurchaseSettlement,
   withUser,
   withLayout,
   withNavBottom,
   withRouter,
   injectIntl,
   withStateHandlers<OwnState, OwnStateUpdaters, OwnOptions>(createProps, stateUpdaters), 
-  withHandlers<PurchaseRequestListProps, OwnHandlers>(handlerCreators),
-  lifecycle<PurchaseRequestListProps, OwnState>(lifecycles),
-)(PurchaseRequestListView);
+  withHandlers<PurchaseSettlementListProps, OwnHandlers>(handlerCreators),
+  lifecycle<PurchaseSettlementListProps, OwnState>(lifecycles),
+)(PurchaseSettlementListView);

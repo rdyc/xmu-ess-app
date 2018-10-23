@@ -1,76 +1,76 @@
 import { Divider, Grid, List, ListItem, ListSubheader, Paper, Typography } from '@material-ui/core';
-import { IPurchase } from '@purchase/classes/response/purchaseRequest';
-import { PurchaseRequestListProps } from '@purchase/components/purchaseRequest/list/PurchaseRequestList';
+import { ISettlement } from '@purchase/classes/response/purchaseSettlement';
+import { SettlementApprovalListProps } from '@purchase/components/settlementHistories/list/SettlementApprovalList';
 import { parseChanges } from '@utils/parseChanges';
 import * as moment from 'moment';
 import * as React from 'react';
 import { FormattedDate, FormattedNumber, FormattedPlural } from 'react-intl';
 import { isArray } from 'util';
 
-export const PurchaseRequestListView: React.SFC<PurchaseRequestListProps> = props => {
+export const SettlementApprovalListView: React.SFC<SettlementApprovalListProps> = props => {
   const { handleGoToDetail } = props;
-  const { isLoading, response } = props.purchaseRequestState.all;
+  const { isLoading, response } = props.settlementApprovalState.all;
 
-  const renderPurchaseRequestList = (purchases: IPurchase[]) => {
+  const renderPurchaseList = (purchases: ISettlement[]) => {
     const len = purchases.length - 1;
 
     return (
-      purchases.map((purchase, i) =>
+      purchases.map((purchase, i) => 
         <div key={purchase.uid}>
-          <ListItem
-            button={!isLoading}
-            key={purchase.uid}
+          <ListItem 
+            button={!isLoading} 
+            key={purchase.uid} 
             onClick={() => handleGoToDetail(purchase.uid)}
           >
             <Grid container spacing={24}>
               <Grid item xs={8} sm={8}>
-                <Typography
-                  noWrap
-                  color="primary"
+                <Typography 
+                  noWrap 
+                  color="primary" 
                   variant="body2"
                 >
-                  {purchase.uid}  &bull; {purchase.currency && purchase.currency.value} {purchase.request}
+                  {purchase.notes}
                 </Typography>
-                <Typography
+                <Typography 
                   noWrap
                   variant="body1"
                 >
                   {purchase.customer && purchase.customer.name} {purchase.customer && purchase.customer.company && `(${purchase.customer.company.name})`} &bull;&nbsp;
                   {purchase.projectUid} {` - ${purchase.project && purchase.project.name}`}
                 </Typography>
-                <Typography
+                <Typography 
                   noWrap
-                  color="textSecondary"
+                  color="textSecondary" 
                   variant="caption"
                 >
-                  {purchase.projectUid} &bull; {purchase.project && purchase.project.name} &bull; &nbsp;
-                  <FormattedDate
+                  {purchase.uid} &bull; {purchase.advance} &bull; &nbsp;
+                  <FormattedDate 
                     year="numeric"
                     month="short"
                     day="numeric"
-                    value={purchase.date || ''}
+                    value={purchase.date || ''} 
                   />
                 </Typography>
               </Grid>
               <Grid item xs={4} sm={4}>
-                <Typography
-                  noWrap
-                  variant="body1"
+                <Typography 
+                  noWrap 
+                  variant="body1" 
                   align="right"
                 >
                   {purchase.status && purchase.status.value}
                 </Typography>
-                <Typography
-                  noWrap
+                <Typography 
+                  noWrap 
                   color="secondary"
-                  variant="caption"
+                  variant="caption" 
                   align="right"
                 >
                   {parseChanges(purchase.changes)}
                 </Typography>
-                <Typography
+                <Typography 
                   noWrap
-                  variant="caption"
+                  variant="caption" 
                   align="right"
                 >
                   {purchase.changes && moment(purchase.changes.updatedAt ? purchase.changes.updatedAt : purchase.changes.createdAt).fromNow()}
@@ -83,7 +83,7 @@ export const PurchaseRequestListView: React.SFC<PurchaseRequestListProps> = prop
       )
     );
   };
-
+  
   const RenderList = () => (
     <List
       component="nav"
@@ -93,7 +93,7 @@ export const PurchaseRequestListView: React.SFC<PurchaseRequestListProps> = prop
         >
           {
             response &&
-            response.metadata &&
+            response.metadata && 
             <Grid container spacing={24}>
               <Grid item xs={6} sm={6}>
                 <Typography variant="caption" color="primary">
@@ -113,24 +113,22 @@ export const PurchaseRequestListView: React.SFC<PurchaseRequestListProps> = prop
     >
       {
         response &&
-        isArray(response.data) &&
-        renderPurchaseRequestList(response.data)
+        isArray(response.data) && 
+        renderPurchaseList(response.data)
       }
     </List>
   );
-
   const render = (
     <React.Fragment>
-      {isLoading && response && <Typography variant="body2">loading</Typography>}
+      {isLoading && response && <Typography variant="body2">loading</Typography>}     
       {response &&
-        <Paper
-          square
+        <Paper 
+          square 
           elevation={1}
         >
-          <RenderList />
+        <RenderList/>
         </Paper>}
     </React.Fragment>
   );
-
   return render;
 };

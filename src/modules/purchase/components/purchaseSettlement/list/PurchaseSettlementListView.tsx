@@ -1,17 +1,17 @@
 import { Divider, Grid, List, ListItem, ListSubheader, Paper, Typography } from '@material-ui/core';
-import { IPurchase } from '@purchase/classes/response/purchaseRequest';
-import { PurchaseRequestListProps } from '@purchase/components/purchaseRequest/list/PurchaseRequestList';
+import { ISettlement } from '@purchase/classes/response/purchaseSettlement';
+import { PurchaseSettlementListProps } from '@purchase/components/purchaseSettlement/list/PurchaseSettlementList';
 import { parseChanges } from '@utils/parseChanges';
 import * as moment from 'moment';
 import * as React from 'react';
 import { FormattedDate, FormattedNumber, FormattedPlural } from 'react-intl';
 import { isArray } from 'util';
 
-export const PurchaseRequestListView: React.SFC<PurchaseRequestListProps> = props => {
+export const PurchaseSettlementListView: React.SFC<PurchaseSettlementListProps> = props => {
   const { handleGoToDetail } = props;
-  const { isLoading, response } = props.purchaseRequestState.all;
+  const { isLoading, response } = props.purchaseSettlementState.all;
 
-  const renderPurchaseRequestList = (purchases: IPurchase[]) => {
+  const renderPurchaseSettlementList = (purchases: ISettlement[]) => {
     const len = purchases.length - 1;
 
     return (
@@ -114,7 +114,7 @@ export const PurchaseRequestListView: React.SFC<PurchaseRequestListProps> = prop
       {
         response &&
         isArray(response.data) &&
-        renderPurchaseRequestList(response.data)
+        renderPurchaseSettlementList(response.data)
       }
     </List>
   );
