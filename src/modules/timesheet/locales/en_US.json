@@ -1,5 +1,7 @@
 {
   "timesheet.title": "Time Report",
+  "timesheet.history.title": "Time Report History",
+  "timesheet.approval.history.title": "Time Approval History",
   "timesheet.subTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
   "timesheet.detail.title": "Detail Time Report",
   "timesheet.detail.subTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
@@ -36,7 +38,7 @@
   "timesheet.field.information.end": "End",
   "timesheet.field.information.end.required": "End is required",
   "timesheet.field.information.end.placeholder": "Select a time's up",
-  "timesheet.field.information.notes": "Notes",
+  "timesheet.field.information.approvalNote": "Approval Note",
   "timesheet.field.information.description": "Notes",
   "timesheet.field.information.notes.required": "Notes is required",
   "timesheet.field.information.notes.placeholder": "Please fill in the notes",

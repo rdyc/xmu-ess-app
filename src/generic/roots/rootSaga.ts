@@ -27,6 +27,7 @@ import mileageapprovalSagas from '@mileage/store/sagas/mileageapprovalSagas';
 import mileagerequestSagas from '@mileage/store/sagas/mileagerequestSagas';
 import projectRegistrationSagas from '@project/store/sagas/projectRegistrationSagas';
 import purchaseSagas from '@purchase/store/sagas/purchaseSagas';
+import timesheetApprovalSagas from '@timesheet/store/sagas/timesheetApprovalSagas';
 import timesheetSagas from '@timesheet/store/sagas/timesheetSagas';
 import travelSagas from '@travel/store/sagas/travelSagas';
 import travelSettlementSagas from '@travel/store/sagas/travelSettlementSagas';
@@ -67,6 +68,7 @@ export function* rootSaga() {
     
     // timesheet
     fork(timesheetSagas),
+    fork(timesheetApprovalSagas),
     
     // mileage
     fork(mileageapprovalSagas),

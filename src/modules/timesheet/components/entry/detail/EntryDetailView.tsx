@@ -1,10 +1,9 @@
-import { Button, Card, CardContent, CardHeader, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, TextField, Typography } from '@material-ui/core';
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, Typography } from '@material-ui/core';
 import { WorkflowStep } from '@organization/components';
-import { ITimesheetDetail } from '@timesheet/classes/response';
-// import * as moment from 'moment';
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { EntryDetailProps } from './EntryDetail';
+import { TimesheetInformation } from './shared/TimesheetInformation';
 
 export const EntryDetailView: React.SFC<EntryDetailProps> = props => {
   const {
@@ -39,106 +38,6 @@ export const EntryDetailView: React.SFC<EntryDetailProps> = props => {
     </Dialog>
   );
 
-  const renderDetail = (timesheet: ITimesheetDetail) => (
-    <Card square>
-      <CardHeader
-        title={<FormattedMessage id="timesheet.infoTitle" />}
-        subheader={<FormattedMessage id="timesheet.infoSubTitle" />}
-      />
-      <CardContent>
-        <TextField
-          fullWidth
-          contentEditable={false}
-          margin="normal"
-          label={<FormattedMessage id="timesheet.field.information.uid" />}
-          value={timesheet.uid}
-        />
-        <TextField
-          fullWidth
-          contentEditable={false}
-          margin="normal"
-          label={<FormattedMessage id="timesheet.field.information.date" />}
-          value={intl.formatDate(timesheet.date, {
-            year: 'numeric',
-            month: 'short',
-            day: 'numeric'
-          })}
-        />
-        <TextField
-          fullWidth
-          contentEditable={false}
-          margin="normal"
-          label={<FormattedMessage id="timesheet.field.information.activityType" />}
-          value={timesheet.activity ? timesheet.activity.value : 'N/A'}
-        />
-        <TextField
-          fullWidth
-          contentEditable={false}
-          margin="normal"
-          label={<FormattedMessage id="timesheet.field.information.customerName" />}
-          value={timesheet.customer ? timesheet.customer.name : 'N/A'}
-        />
-        <TextField
-          fullWidth
-          contentEditable={false}
-          margin="normal"
-          label={<FormattedMessage id="timesheet.field.information.projectName" />}
-          value={timesheet.project ? timesheet.project.name : 'N/A'}
-        />
-        <TextField
-          fullWidth
-          contentEditable={false}
-          margin="normal"
-          label={<FormattedMessage id="timesheet.field.information.projectSite" />}
-          value={timesheet.site ? timesheet.site.name : 'N/A'}
-        />
-        <TextField
-          fullWidth
-          contentEditable={false}
-          margin="normal"
-          label={<FormattedMessage id="timesheet.field.information.siteValue" />}
-          value={timesheet.site ? timesheet.site.value : 'N/A'}
-        />
-        <TextField
-          fullWidth
-          contentEditable={false}
-          margin="normal"
-          label={<FormattedMessage id="timesheet.field.information.start" />}
-          value={intl.formatTime(timesheet.start, {
-            hour: 'numeric',
-            minute: 'numeric',
-            timeZone: 'GMT'
-          })}
-        />
-        <TextField
-          fullWidth
-          contentEditable={false}
-          margin="normal"
-          label={<FormattedMessage id="timesheet.field.information.end" />}
-          value={intl.formatTime(timesheet.end, {
-            hour: 'numeric',
-            minute: 'numeric',
-            timeZone: 'GMT'
-          })}
-        />
-        <TextField
-          fullWidth
-          contentEditable={false}
-          margin="normal"
-          label={<FormattedMessage id="timesheet.field.information.totalHours" />}
-          value={timesheet.hours ? timesheet.hours : 'N/A'}
-        />
-        <TextField
-          fullWidth
-          contentEditable={false}
-          margin="normal"
-          label={<FormattedMessage id="timesheet.field.information.notes" />}
-          value={timesheet.description ? timesheet.description : 'N/A'}
-        />
-      </CardContent>
-    </Card>
-  );
-
   const render = (
     <React.Fragment>
       {
@@ -160,7 +59,10 @@ export const EntryDetailView: React.SFC<EntryDetailProps> = props => {
             {
               response &&
               response.data &&
-              renderDetail(response.data)
+              <TimesheetInformation
+                timesheet= {response.data}
+                intl={intl}
+              />
             }
           </Grid>
           <Grid item xs={12} md={8}>

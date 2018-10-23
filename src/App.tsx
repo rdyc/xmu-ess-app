@@ -14,7 +14,7 @@ import { Route, Router, Switch } from 'react-router';
 import { Store } from 'redux';
 import { loadUser, OidcProvider, UserState } from 'redux-oidc';
 
-import { timesheetRouter } from '@timesheet/components/timesheetRouter';
+import { timesheetApprovalRouter, timesheetRouter } from '@timesheet/components/timesheetRouter';
 import { IAppState } from './generic/interfaces';
 import AppLocale from './language';
 import config, { getCurrentLanguage } from './language/config';
@@ -81,6 +81,7 @@ class App extends React.Component<AllProps> {
                         <Route path="/account" component={accountRouter} />
                         {/* <Route path="/project" component={ProjectRoot} /> */}
                         <Route path="/timesheet" component={timesheetRouter} />
+                        <Route path="/approval/timesheet" component={timesheetApprovalRouter} />
                         <Route path="/project" component={projectRouter} />
                       </Layout>
                     </Switch>

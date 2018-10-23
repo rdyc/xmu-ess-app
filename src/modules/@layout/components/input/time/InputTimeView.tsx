@@ -23,6 +23,7 @@ export const InputTimeView: React.SFC<InputTimeProps> = props => {
     <TimePicker
       fullWidth
       margin="normal"
+      ampm={false}
       // okLabel={intl.formatMessage({id: 'global.action.ok'})}
       // cancelLabel={intl.formatMessage({id: 'global.action.cancel'})}
       // clearLabel={intl.formatMessage({id: 'global.action.clear'})}
