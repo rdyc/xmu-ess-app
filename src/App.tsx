@@ -1,4 +1,5 @@
 import { accountRouter } from '@account/pages';
+import { ExpenseApprovalRouter, ExpenseRouter } from '@expense/components/ExpenseRouter';
 import { rootStore } from '@generic/roots';
 import Layout from '@layout/components/base/Layout';
 import { HomePage } from '@layout/pages';
@@ -6,6 +7,8 @@ import AccessWizardPage from '@layout/pages/AccessWizardPage';
 import CallbackPage from '@layout/pages/CallbackPage';
 import { approvalRouter, leaveRouter } from '@leave/components/leaveRouter';
 import { projectRouter } from '@project/components/projectRouter';
+import { timesheetApprovalRouter, timesheetRouter } from '@timesheet/components/timesheetRouter';
+import { travelApprovalRouter, travelRouter } from '@travel/components/travelRouter';
 import { ConnectedRouter } from 'connected-react-router';
 import { History } from 'history';
 import * as React from 'react';
@@ -14,9 +17,6 @@ import { connect, Provider } from 'react-redux';
 import { Route, Router, Switch } from 'react-router';
 import { Store } from 'redux';
 import { loadUser, OidcProvider, UserState } from 'redux-oidc';
-
-import { ExpenseApprovalRouter, ExpenseRouter } from '@expense/components/ExpenseRouter';
-import { timesheetApprovalRouter, timesheetRouter } from '@timesheet/components/timesheetRouter';
 import { IAppState } from './generic/interfaces';
 import AppLocale from './language';
 import config, { getCurrentLanguage } from './language/config';
@@ -86,6 +86,8 @@ class App extends React.Component<AllProps> {
                         <Route path="/leave" component={leaveRouter} />
                         <Route path="/approval/leave" component={approvalRouter} />
                         <Route path="/project" component={projectRouter} />
+                        <Route path="/travel" component={travelRouter} />
+                        <Route path="/approval/travel" component={travelApprovalRouter} />                                                
                         <Route path="/timesheet" component={timesheetRouter} />
                         <Route path="/approval/timesheet" component={timesheetApprovalRouter} />
                         <Route path="/expense" component={ExpenseRouter} />

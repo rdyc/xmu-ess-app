@@ -1,10 +1,10 @@
 import { IQuerySingleState } from '@generic/interfaces';
-import { ITravelSettlementPostRequest } from '@travel/classes/queries';
-import { ITravelSettlement } from '@travel/classes/response';
-import { TravelAction as Action } from '@travel/store/actions';
+import { ITravelApprovalPostRequest } from '@travel/classes/queries/requestApproval';
+import { ITravelRequest } from '@travel/classes/response';
+import { TravelApprovalAction as Action } from '@travel/store/actions';
 import { Reducer } from 'redux';
 
-const initialState: IQuerySingleState<ITravelSettlementPostRequest, ITravelSettlement> = {
+const initialState: IQuerySingleState<ITravelApprovalPostRequest, ITravelRequest> = {
   request: undefined,
   response: undefined,
   isError: false,
@@ -12,7 +12,7 @@ const initialState: IQuerySingleState<ITravelSettlementPostRequest, ITravelSettl
   errors: undefined,
 };
 
-const reducer: Reducer<IQuerySingleState<ITravelSettlementPostRequest, ITravelSettlement>> = (state = initialState, action) => {
+const reducer: Reducer<IQuerySingleState<ITravelApprovalPostRequest, ITravelRequest>> = (state = initialState, action) => {
   switch (action.type) {
     case Action.POST_REQUEST: return { ...state, isLoading: true, request: action.payload };
     case Action.POST_SUCCESS: return { ...state, isLoading: false, response: action.payload };
@@ -23,4 +23,4 @@ const reducer: Reducer<IQuerySingleState<ITravelSettlementPostRequest, ITravelSe
   }
 };
 
-export { reducer as travelSettlementPostReducer };
+export { reducer as travelApprovalPostReducer };

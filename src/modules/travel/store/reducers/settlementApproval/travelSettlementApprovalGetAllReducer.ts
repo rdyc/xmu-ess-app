@@ -1,10 +1,10 @@
 import { IQueryCollectionState } from '@generic/interfaces';
-import { ITravelSettlementGetAllRequest } from '@travel/classes/queries';
+import { ITravelSettlementApprovalGetAllRequest } from '@travel/classes/queries/settlementApproval';
 import { ITravelSettlement } from '@travel/classes/response';
 import { TravelSettlementAction as Action } from '@travel/store/actions';
 import { Reducer } from 'redux';
 
-const initialState: IQueryCollectionState<ITravelSettlementGetAllRequest, ITravelSettlement> = {
+const initialState: IQueryCollectionState<ITravelSettlementApprovalGetAllRequest, ITravelSettlement> = {
   request: undefined,
   response: undefined,
   isError: false,
@@ -12,7 +12,7 @@ const initialState: IQueryCollectionState<ITravelSettlementGetAllRequest, ITrave
   errors: undefined,
 };
 
-const reducer: Reducer<IQueryCollectionState<ITravelSettlementGetAllRequest, ITravelSettlement>> = (state = initialState, action) => {
+const reducer: Reducer<IQueryCollectionState<ITravelSettlementApprovalGetAllRequest, ITravelSettlement>> = (state = initialState, action) => {
   switch (action.type) {
     case Action.GET_ALL_REQUEST: return { ...state, isLoading: true, isError: false, request: action.payload };
     case Action.GET_ALL_SUCCESS: return { ...state, isLoading: false, isError: false, response: action.payload };
@@ -23,4 +23,4 @@ const reducer: Reducer<IQueryCollectionState<ITravelSettlementGetAllRequest, ITr
   }
 };
 
-export { reducer as travelSettlementGetAllReducer };
+export { reducer as travelSettlementApprovalGetAllReducer };
