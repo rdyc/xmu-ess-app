@@ -1,2 +1,2 @@
-export * from './IMileageRequestGetAllFilter';
-export * from './IMileageApprovalGetAllFilter';
+export * from './request/IMileageRequestGetAllFilter';
+export * from './approval/IMileageApprovalGetAllFilter';

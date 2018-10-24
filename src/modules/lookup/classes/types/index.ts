@@ -10,3 +10,4 @@ export * from './holiday/HolidayField';
 export * from './leave/LeaveField';
 export * from './leave/LeaveUserAction';
 export * from './mileageException/MileageExceptionField';
+export * from './mileageException/MileageExceptionAction';

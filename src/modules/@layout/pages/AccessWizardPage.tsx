@@ -3,7 +3,7 @@ import { EmployeeFetchRequest } from '@account/store/actions';
 import AppStorage from '@constants/AppStorage';
 import { IAppState, IResponseSingle } from '@generic/interfaces';
 import { ConnectedReduxProps } from '@generic/types';
-import { IAppUser, IUserCompany, IUserPosition } from '@layout/interfaces';
+import { IAppUser, IUserCompany, IUserPosition, IUserRole } from '@layout/interfaces';
 import {
   Button,
   Card,
@@ -58,6 +58,7 @@ class AccessWizardPage extends React.Component<AllProps> {
     activeStep: 0,
     companyUid: '',
     positionUid: '',
+    roleUid: '',
     isAgreed: false
   };
 
@@ -290,7 +291,7 @@ class AccessWizardPage extends React.Component<AllProps> {
     );
 
     const handleStart = () => {
-      if (response && selected && selected.company && selected.position) {
+      if (response && selected && selected.company && selected.position && selected.role) {
         const _company: IUserCompany = {
             uid: selected.company.uid,
             code: selected.company.code,
@@ -303,12 +304,19 @@ class AccessWizardPage extends React.Component<AllProps> {
             description: selected.position.description || ''
         };
 
+        const _role: IUserRole = {
+          uid: selected.role.uid,
+          name: selected.role.name,
+          description: selected.role.description || ''
+        };
+
         const _user: IAppUser = {
           uid: response.data.uid,
           email: response.data.email,
           fullName: response.data.fullName,
           company: _company,
           position: _position,
+          role: _role,
           menus: selected.menus
         };
         
@@ -320,7 +328,7 @@ class AccessWizardPage extends React.Component<AllProps> {
 
         // save to local storage
         store.set(AppStorage.User, _user);
-        store.set(AppStorage.Menu, selected.menus);
+        // store.set(AppStorage.Menu, selected.menus);
         store.set(AppStorage.Access, response.data.access);
 
         // redirect to home page

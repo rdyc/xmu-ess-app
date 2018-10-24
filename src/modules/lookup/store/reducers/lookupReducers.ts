@@ -5,9 +5,6 @@ import {
   currencyGetAllReducer,
   currencyGetByIdReducer,
   currencyGetListReducer,
-  customerGetAllReducer,
-  customerGetByIdReducer,
-  customerGetListReducer,
   diemGetAllReducer,
   diemGetByIdReducer,
   diemGetListReducer,
@@ -21,9 +18,6 @@ import {
   menuGetAllReducer,
   menuGetByIdReducer,
   menuGetListReducer,
-  mileageExceptionGetAllReducer,
-  mileageExceptionGetByIdReducer,
-  mileageExceptionGetListReducer,
   positionGetAllReducer,
   positionGetByIdReducer,
   positionGetListReducer,
@@ -32,17 +26,15 @@ import {
   roleGetListReducer,
   systemLimitGetAllReducer,
   systemLimitGetByIdReducer,
-  systemLimitGetListReducer,
+  systemLimitGetListReducer
 } from '@lookup/store/reducers';
 
-const lookupReducers = {
-  customerGetAll: customerGetAllReducer,
-  customerGetList: customerGetListReducer,
-  customerGetById: customerGetByIdReducer,
+import { lookupCustomerReducers } from './customer';
+import { lookupMileageExceptionReducers } from './mileageException';
 
-  mileageExceptionGetAll: mileageExceptionGetAllReducer,
-  mileageExceptionGetById: mileageExceptionGetByIdReducer,
-  mileageExceptionGetList: mileageExceptionGetListReducer,
+const lookupReducers = {
+  ...lookupCustomerReducers,
+  ...lookupMileageExceptionReducers,
 
   roleGetAll: roleGetAllReducer,
   roleGetList: roleGetListReducer,

@@ -25,34 +25,49 @@ export const WorkflowStep: React.SFC<PropsFromState> = props => {
   const renderItem = (item: IOrganizationWorkflowStep) => {
     const secondaryText = `#${item.level} ${item.position ? item.position.name : 'N/A'}`;
   
-    if (item.isComplete) {
-      if (item.response && item.response.changes && item.response.changes.created) {
-        return (
-          <ListItemText
-            key={item.level}
-            primary={item.response.changes.created.fullName} 
-            secondary={secondaryText}
-          />
-        );
-      }
-    } else {
-      if (item.employees) {
-        const emps: string[] = [ ];
+    // if (item.isComplete) {
+    //   if (item.response && item.response.changes && item.response.changes.created) {
+    //     return (
+    //       <ListItemText
+    //         key={item.level}
+    //         primary={item.response.changes.created.fullName} 
+    //         secondary={secondaryText}
+    //       />
+    //     );
+    //   }
+    // } else {
+    //   if (item.employees) {
+    //     const emps: string[] = [ ];
   
-        item.employees.map(emp => 
-          emps.push(emp.fullName)
-        );
+    //     item.employees.map(emp => 
+    //       emps.push(emp.fullName)
+    //     );
   
-        return (
-          <ListItemText
-            key={item.level}
-            primary={emps.join(', ')} 
-            secondary={secondaryText}
-          />
-        );
-      }
+    //     return (
+    //       <ListItemText
+    //         key={item.level}
+    //         primary={emps.join(', ')} 
+    //         secondary={secondaryText}
+    //       />
+    //     );
+    //   }
+    // }
+  
+    if (item.employees) {
+      const emps: string[] = [ ];
+
+      item.employees.map(emp => 
+        emps.push(emp.fullName)
+      );
+
+      return (
+        <ListItemText
+          key={item.level}
+          primary={emps.join(', ')} 
+          secondary={secondaryText}
+        />
+      );
     }
-  
     return null;
   };
 

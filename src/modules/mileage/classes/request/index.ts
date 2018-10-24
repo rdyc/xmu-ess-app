@@ -1,3 +1,3 @@
-export * from './IMileageApprovaPostPayload';
-export * from './IMileageRequestPostPayload';
-export * from './IMileageApprovalPostItem';
+export * from './approval/IMileageApprovaPostPayload';
+export * from './request/IMileageRequestPostPayload';
+export * from './IMileagePostItem';

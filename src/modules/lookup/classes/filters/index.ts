@@ -1,7 +1,3 @@
-export * from './customer/ICustomerAllFilter';
-export * from './customer/ICustomerListFilter';
-export * from './mileageException/IMileageExceptionAllFilter';
-export * from './mileageException/IMileageExceptionListFilter';
 export * from './role/IRoleAllFilter';
 export * from './role/IRoleListFilter';
 export * from './company/ICompanyAllFilter';

@@ -1,5 +1,6 @@
 export enum MileageExceptionField {
   uid = 'Project ID',
   roleUid = 'Role',
-  projectUid = 'Project'
+  projectUid = 'Project',
+  // 'role.companyUid' = 'Company'
 }
