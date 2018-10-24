@@ -7,6 +7,7 @@ import AccessWizardPage from '@layout/pages/AccessWizardPage';
 import CallbackPage from '@layout/pages/CallbackPage';
 import { approvalRouter, leaveRouter } from '@leave/components/leaveRouter';
 import { projectRouter } from '@project/components/projectRouter';
+import { timesheetApprovalRouter, timesheetRouter } from '@timesheet/components/timesheetRouter';
 import { travelApprovalRouter, travelRouter } from '@travel/components/travelRouter';
 import { ConnectedRouter } from 'connected-react-router';
 import { History } from 'history';
@@ -87,6 +88,8 @@ class App extends React.Component<AllProps> {
                         <Route path="/project" component={projectRouter} />
                         <Route path="/travel" component={travelRouter} />
                         <Route path="/approval/travel" component={travelApprovalRouter} />                                                
+                        <Route path="/timesheet" component={timesheetRouter} />
+                        <Route path="/approval/timesheet" component={timesheetApprovalRouter} />
                         <Route path="/expense" component={ExpenseRouter} />
                         <Route path="/approval/expense" component={ExpenseApprovalRouter} />
                       </Layout>

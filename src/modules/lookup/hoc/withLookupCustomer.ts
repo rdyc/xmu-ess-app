@@ -1,11 +1,9 @@
 import { IAppState, IQueryCollectionState, IQuerySingleState } from '@generic/interfaces';
 import {
+  ILookupCustomerDeleteRequest,
   ILookupCustomerGetAllRequest,
   ILookupCustomerGetDetailRequest,
   ILookupCustomerGetListRequest,
-} from '@lookup/classes/queries';
-import {
-  ILookupCustomerDeleteRequest,
   ILookupCustomerPostRequest,
   ILookupCustomerPutRequest,
 } from '@lookup/classes/queries/customer';
