@@ -1,3 +1,4 @@
+import { WorkflowStatusType } from '@common/classes/types';
 import { Card, CardContent, CardHeader, TextField } from '@material-ui/core';
 import { ITimesheetDetail } from '@timesheet/classes/response';
 import * as React from 'react';
@@ -110,14 +111,14 @@ export const TimesheetInformation: React.SFC<OwnProps> = props => {
           label={<FormattedMessage id="timesheet.field.information.description" />}
           value={timesheet.description || 'N/A'}
         />
-        {!isNullOrUndefined(timesheet.notes) ||
+        {!isNullOrUndefined(timesheet.notes && WorkflowStatusType.Approved && WorkflowStatusType.Rejected) ?
           <TextField
           fullWidth
           contentEditable={false}
           margin="normal"
           label={<FormattedMessage id="timesheet.field.information.approvalNote" />}
           value={timesheet.notes || 'N/A'}
-        />
+        /> : ''
         }
       </CardContent>
     </Card>

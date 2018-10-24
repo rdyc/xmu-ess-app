@@ -1,6 +1,6 @@
+import accountEmployeeSagas from '@account/store/sagas/accountEmployeeSagas';
 import employeeMySagas from '@account/store/sagas/employeeMySagas';
 import employeeProfileSagas from '@account/store/sagas/employeeProfileSagas';
-import employeeSagas from '@account/store/sagas/employeeSagas';
 import commonActivitySagas from '@common/store/sagas/activitySagas';
 import commonCurrencySagas from '@common/store/sagas/currencySagas';
 import commonDocumentPresalesSagas from '@common/store/sagas/documentPresalesSagas';
@@ -23,8 +23,9 @@ import lookupMenuSagas from '@lookup/store/sagas/menuSagas';
 import lookupMileageExceptionSagas from '@lookup/store/sagas/mileageExceptionSagas';
 import lookupPositionSagas from '@lookup/store/sagas/positionSagas';
 import lookupSystemLimitSagas from '@lookup/store/sagas/systemLimitSagas';
-import mileageapprovalSagas from '@mileage/store/sagas/mileageapprovalSagas';
-import mileagerequestSagas from '@mileage/store/sagas/mileagerequestSagas';
+import mileageApprovalSagas from '@mileage/store/sagas/mileageApprovalSagas';
+import mileageRequestSagas from '@mileage/store/sagas/mileageRequestSagas';
+import projectOwnerSagas from '@project/store/sagas/projectOwnerSagas';
 import projectRegistrationSagas from '@project/store/sagas/projectRegistrationSagas';
 import purchaseSagas from '@purchase/store/sagas/purchaseSagas';
 import timesheetApprovalSagas from '@timesheet/store/sagas/timesheetApprovalSagas';
@@ -59,20 +60,21 @@ export function* rootSaga() {
     fork(lookupLeaveSagas),
     
     // account
-    fork(employeeSagas),
+    fork(accountEmployeeSagas),
     fork(employeeMySagas),
     fork(employeeProfileSagas),
 
     // project
     fork(projectRegistrationSagas),
+    fork(projectOwnerSagas),
     
     // timesheet
     fork(timesheetSagas),
     fork(timesheetApprovalSagas),
     
     // mileage
-    fork(mileageapprovalSagas),
-    fork(mileagerequestSagas),
+    fork(mileageApprovalSagas),
+    fork(mileageRequestSagas),
 
     // expense
     fork(expenseSagas),
