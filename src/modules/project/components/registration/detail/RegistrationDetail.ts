@@ -35,6 +35,7 @@ interface Handler {
 }
 
 interface OwnState {
+  action?: ProjectUserAction | undefined;
   dialogFullScreen: boolean;
   dialogOpen: boolean;
   dialogTitle?: string | undefined;
@@ -103,6 +104,7 @@ const handlerCreators: HandleCreators<RegistrationDetailProps, Handler> = {
     const { intl, stateUpdate } = props;
 
     stateUpdate({
+      action: ProjectUserAction.Modify,
       dialogFullScreen: false,
       dialogOpen: true,
       dialogTitle: intl.formatMessage({id: 'project.dialog.modifyTitle'}), 
@@ -115,6 +117,7 @@ const handlerCreators: HandleCreators<RegistrationDetailProps, Handler> = {
     const { intl, stateUpdate } = props;
 
     stateUpdate({
+      action: ProjectUserAction.Close,
       dialogFullScreen: false,
       dialogOpen: true,
       dialogTitle: intl.formatMessage({id: 'project.dialog.closeTitle'}), 
@@ -127,6 +130,7 @@ const handlerCreators: HandleCreators<RegistrationDetailProps, Handler> = {
     const { intl, stateUpdate } = props;
 
     stateUpdate({
+      action: ProjectUserAction.ReOpen,
       dialogFullScreen: false,
       dialogOpen: true,
       dialogTitle: intl.formatMessage({id: 'project.dialog.reOpenTitle'}), 
@@ -139,6 +143,7 @@ const handlerCreators: HandleCreators<RegistrationDetailProps, Handler> = {
     const { intl, stateUpdate } = props;
 
     stateUpdate({
+      action: ProjectUserAction.ChangeOwner,
       dialogFullScreen: false,
       dialogOpen: true,
       dialogTitle: intl.formatMessage({id: 'project.dialog.changeOwnerTitle'}), 
@@ -151,6 +156,7 @@ const handlerCreators: HandleCreators<RegistrationDetailProps, Handler> = {
     const { intl, stateUpdate } = props;
 
     stateUpdate({
+      action: ProjectUserAction.ManageSites,
       dialogFullScreen: false,
       dialogOpen: true,
       dialogTitle: intl.formatMessage({id: 'project.dialog.manageSiteTitle'}), 
@@ -175,12 +181,31 @@ const handlerCreators: HandleCreators<RegistrationDetailProps, Handler> = {
     stateReset();
   },
   handleDialogConfirmed: (props: RegistrationDetailProps) => () => { 
-    const { match, history, stateReset } = props;
+    const { match, history, action, stateReset } = props;
     const projectUid = match.params.projectUid;
+
+    let next: string = '404';
+
+    switch (action) {
+      case ProjectUserAction.Modify:
+        next = '/project/form';
+        break;
+        
+      case ProjectUserAction.ChangeOwner:
+        next = '/project/owner';
+        break;
+
+      case ProjectUserAction.ManageSites:
+        next = '/project/sites';
+        break;
+
+      default:
+        break;
+    }
 
     stateReset();
 
-    history.push('/project/form/', { uid: projectUid });
+    history.push(next, { uid: projectUid });
   },
 };
 
@@ -306,7 +331,7 @@ const lifecycles: ReactLifeCycleFunctions<RegistrationDetailProps, OwnState> = {
     }
   },
   componentWillUnmount() {
-    const { layoutDispatch, appBarDispatch, projectRegisterDispatch } = this.props;
+    const { layoutDispatch, appBarDispatch } = this.props;
 
     layoutDispatch.changeView(null);
     layoutDispatch.navBackHide();
@@ -315,7 +340,7 @@ const lifecycles: ReactLifeCycleFunctions<RegistrationDetailProps, OwnState> = {
 
     appBarDispatch.dispose();
 
-    projectRegisterDispatch.loadDetailDispose();
+    // projectRegisterDispatch.loadDetailDispose();
   }
 };
 
