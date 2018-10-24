@@ -47,11 +47,8 @@ export function* rootSaga() {
     fork(commonDocumentPresalesSagas),
     fork(commonProjectSagas),
     fork(commonSiteSagas),
-<<<<<<< HEAD
     fork(commonExpenseSagas),
-=======
     fork(commonStatusSagas),
->>>>>>> origin/develop
     fork(commonNotificationSagas),
 
     // lookup
