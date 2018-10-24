@@ -1,7 +1,7 @@
 import { IQuerySingleState } from '@generic/interfaces';
 import { ICompanyByIdRequest } from '@lookup/classes/queries';
 import { ICompanyDetail } from '@lookup/classes/response';
-import { CompanyAction as Action } from '@lookup/store/actions';
+import { LookupCompanyAction as Action } from '@lookup/store/actions';
 import { Reducer } from 'redux';
 
 const initialState: IQuerySingleState<ICompanyByIdRequest, ICompanyDetail> = {

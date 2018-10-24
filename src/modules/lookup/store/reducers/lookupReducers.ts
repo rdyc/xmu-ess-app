@@ -1,7 +1,4 @@
 import {
-  companyGetAllReducer,
-  companyGetByIdReducer,
-  companyGetListReducer,
   currencyGetAllReducer,
   currencyGetByIdReducer,
   currencyGetListReducer,
@@ -21,30 +18,23 @@ import {
   positionGetAllReducer,
   positionGetByIdReducer,
   positionGetListReducer,
-  roleGetAllReducer,
-  roleGetByIdReducer,
-  roleGetListReducer,
   systemLimitGetAllReducer,
   systemLimitGetByIdReducer,
   systemLimitGetListReducer
 } from '@lookup/store/reducers';
 
+import { lookupCompanyReducers } from './company';
 import { lookupCustomerReducers } from './customer';
 import { leaveReducers } from './leave';
 import { lookupMileageExceptionReducers } from './mileageException';
+import { lookupRoleReducers } from './role';
 
 const lookupReducers = {
   ...lookupCustomerReducers,
+  ...lookupCompanyReducers,
+  ...lookupRoleReducers,
   ...leaveReducers,
   ...lookupMileageExceptionReducers,
-
-  roleGetAll: roleGetAllReducer,
-  roleGetList: roleGetListReducer,
-  roleGetById: roleGetByIdReducer,
-
-  companyGetAll: companyGetAllReducer,
-  companyGetList: companyGetListReducer,
-  companyGetById: companyGetByIdReducer,
 
   diemGetAll: diemGetAllReducer,
   diemGetList: diemGetListReducer,

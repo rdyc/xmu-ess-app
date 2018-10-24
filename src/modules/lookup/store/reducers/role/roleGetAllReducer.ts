@@ -1,7 +1,7 @@
 import { IQueryCollectionState } from '@generic/interfaces';
 import { IRoleAllRequest } from '@lookup/classes/queries';
 import { IRole } from '@lookup/classes/response';
-import { RoleAction as Action } from '@lookup/store/actions';
+import { LookupRoleAction as Action } from '@lookup/store/actions';
 import { Reducer } from 'redux';
 
 const initialState: IQueryCollectionState<IRoleAllRequest, IRole> = {

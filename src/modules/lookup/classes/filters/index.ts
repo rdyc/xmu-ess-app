@@ -2,6 +2,8 @@ export * from './role/IRoleAllFilter';
 export * from './role/IRoleListFilter';
 export * from './company/ICompanyAllFilter';
 export * from './company/ICompanyListFilter';
+export * from './mileageException/IMileageExceptionAllFilter';
+export * from './mileageException/IMileageExceptionListFilter';
 export * from './diem/IDiemAllFilter';
 export * from './diem/IDiemListFilter';
 export * from './menu/IMenuGetAllFilter';

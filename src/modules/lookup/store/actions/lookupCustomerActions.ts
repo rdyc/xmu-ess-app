@@ -1,7 +1,9 @@
 import { IResponseCollection, IResponseSingle } from '@generic/interfaces';
-import { ILookupCustomerGetAllRequest, ILookupCustomerGetDetailRequest, ILookupCustomerGetListRequest } from '@lookup/classes/queries';
 import {
   ILookupCustomerDeleteRequest,
+  ILookupCustomerGetAllRequest,
+  ILookupCustomerGetDetailRequest,
+  ILookupCustomerGetListRequest,
   ILookupCustomerPostRequest,
   ILookupCustomerPutRequest,
 } from '@lookup/classes/queries/customer';

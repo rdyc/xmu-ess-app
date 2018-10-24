@@ -1,7 +1,7 @@
 import { IQueryCollectionState } from '@generic/interfaces';
 import { ICompanyAllRequest } from '@lookup/classes/queries';
 import { ICompany } from '@lookup/classes/response';
-import { CompanyAction as Action } from '@lookup/store/actions';
+import { LookupCompanyAction as Action } from '@lookup/store/actions';
 import { Reducer } from 'redux';
 
 const initialState: IQueryCollectionState<ICompanyAllRequest, ICompany> = {
