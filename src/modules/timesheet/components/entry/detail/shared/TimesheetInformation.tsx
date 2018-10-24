@@ -101,23 +101,23 @@ export const TimesheetInformation: React.SFC<OwnProps> = props => {
           contentEditable={false}
           margin="normal"
           label={<FormattedMessage id="timesheet.field.information.totalHours" />}
-          value={timesheet.hours ? timesheet.hours : 'N/A'}
+          value={timesheet.hours ? timesheet.hours : 0}
         />
         <TextField
           fullWidth
           contentEditable={false}
           margin="normal"
           label={<FormattedMessage id="timesheet.field.information.description" />}
-          value={timesheet.description ? timesheet.description : 'N/A'}
+          value={timesheet.description || 'N/A'}
         />
-        {!isNullOrUndefined(timesheet.notes) ?
+        {!isNullOrUndefined(timesheet.notes) ||
           <TextField
           fullWidth
           contentEditable={false}
           margin="normal"
           label={<FormattedMessage id="timesheet.field.information.approvalNote" />}
           value={timesheet.notes || 'N/A'}
-        /> : ''
+        />
         }
       </CardContent>
     </Card>

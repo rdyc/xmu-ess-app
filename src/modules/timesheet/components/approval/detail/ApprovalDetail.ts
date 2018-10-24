@@ -1,236 +1,177 @@
-// import { WorkflowStatusType } from '@common/classes/types';
-// import AppMenu from '@constants/AppMenu';
-// import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
-// import { WithLayout, withLayout } from '@layout/hoc/withLayout';
-// import { WithUser, withUser } from '@layout/hoc/withUser';
-// import { IAppBarMenu } from '@layout/interfaces';
-// import { TimesheetUserAction } from '@timesheet/classes/types';
-// import { EntryDetailView } from '@timesheet/components/entry/detail/EntryDetailView';
-// import { WithTimesheet, withTimesheet } from '@timesheet/hoc/withTimesheet';
-// import { InjectedIntlProps, injectIntl } from 'react-intl';
-// import { RouteComponentProps, withRouter } from 'react-router';
-// import {
-//   compose,
-//   HandleCreators,
-//   lifecycle,
-//   mapper,
-//   ReactLifeCycleFunctions,
-//   StateHandler,
-//   StateHandlerMap,
-//   StateUpdaters,
-//   withHandlers,
-//   withStateHandlers,
-// } from 'recompose';
+import AppMenu from '@constants/AppMenu';
+import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
+import { WithLayout, withLayout } from '@layout/hoc/withLayout';
+import { WithUser, withUser } from '@layout/hoc/withUser';
+import { IAppBarMenu } from '@layout/interfaces';
+import { TimesheetUserAction } from '@timesheet/classes/types';
+import { ApprovalDetailView } from '@timesheet/components/approval/detail/ApprovalDetailView';
+import { WithTimesheetApproval, withTimesheetApproval } from '@timesheet/hoc/withTimesheetApproval';
+import { InjectedIntlProps, injectIntl } from 'react-intl';
+import { RouteComponentProps, withRouter } from 'react-router';
+import {
+  compose,
+  HandleCreators,
+  lifecycle,
+  mapper,
+  ReactLifeCycleFunctions,
+  StateHandler,
+  StateHandlerMap,
+  StateUpdaters,
+  withHandlers,
+  withStateHandlers,
+} from 'recompose';
 
-// interface Handler {
-//   handleTimesheetRefresh: () => void;
-//   handleTimesheetModify: () => void;
-//   handleDialogOpen: (title: string, description: string, cancelText?: string, confirmText?: string, fullScreen?: boolean) => void;
-//   handleDialogClose: () => void;
-//   handleDialogConfirmed: () => void;
-// }
+interface Handler {
+  handleTimesheetRefresh: () => void;
+}
 
-// interface OwnState {
-//   dialogFullScreen: boolean;
-//   dialogOpen: boolean;
-//   dialogTitle?: string | undefined;
-//   dialogDescription?: string | undefined;
-//   dialogCancelText: string;
-//   dialogConfirmedText: string;
-// }
+interface OwnState {
+  dialogFullScreen: boolean;
+  dialogOpen: boolean;
+  dialogTitle?: string | undefined;
+  dialogDescription?: string | undefined;
+  dialogCancelText: string;
+  dialogConfirmedText: string;
+}
 
-// interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
-//   stateUpdate: StateHandler<OwnState>;
-// }
+interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
+  stateUpdate: StateHandler<OwnState>;
+}
 
-// interface OwnRouteParams {
-//   timesheetUid: string;
-// }
+interface OwnRouteParams {
+  timesheetUid: string;
+}
 
-// export type EntryDetailProps
-//   = WithTimesheet
-//   & WithUser
-//   & WithLayout
-//   & WithAppBar
-//   & RouteComponentProps<OwnRouteParams>
-//   & InjectedIntlProps
-//   & OwnState
-//   & OwnStateUpdaters
-//   & Handler;
+export type ApprovalDetailProps
+  = WithTimesheetApproval
+  & WithUser
+  & WithLayout
+  & WithAppBar
+  & RouteComponentProps<OwnRouteParams>
+  & InjectedIntlProps
+  & OwnState
+  & OwnStateUpdaters
+  & Handler;
 
-// const createProps: mapper<EntryDetailProps, OwnState> = (props: EntryDetailProps): OwnState => ({
-//   dialogFullScreen: false,
-//   dialogOpen: false,
-//   dialogCancelText: 'global.action.cancel',
-//   dialogConfirmedText: 'global.action.ok',
-// });
+const createProps: mapper<ApprovalDetailProps, OwnState> = (props: ApprovalDetailProps): OwnState => ({
+  dialogFullScreen: false,
+  dialogOpen: false,
+  dialogCancelText: 'global.action.cancel',
+  dialogConfirmedText: 'global.action.ok',
+});
 
-// const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
-//   stateUpdate: (prevState: OwnState) => (newState: any) => ({
-//     ...prevState,
-//     ...newState
-//   }),
-//   stateReset: (prevState: OwnState) => () => ({
-//     ...prevState,
-//     dialogFullScreen: false,
-//     dialogOpen: false,
-//     dialogTitle: undefined,
-//     dialogDescription: undefined,
-//     dialogCancelText: 'global.action.cancel',
-//     dialogConfirmedText: 'global.action.ok',
-//   })
-// };
+const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
+  stateUpdate: (prevState: OwnState) => (newState: any) => ({
+    ...prevState,
+    ...newState
+  }),
+  stateReset: (prevState: OwnState) => () => ({
+    ...prevState,
+    dialogFullScreen: false,
+    dialogOpen: false,
+    dialogTitle: undefined,
+    dialogDescription: undefined,
+    dialogCancelText: 'global.action.cancel',
+    dialogConfirmedText: 'global.action.ok',
+  })
+};
 
-// const handlerCreators: HandleCreators<EntryDetailProps, Handler> = {
-//   handleTimesheetRefresh: (props: EntryDetailProps) => () => { 
-//     const { match } = props;
-//     const { user } = props.userState;
-//     const { loadDetailRequest } = props.timesheetDispatch;
+const handlerCreators: HandleCreators<ApprovalDetailProps, Handler> = {
+  handleTimesheetRefresh: (props: ApprovalDetailProps) => () => { 
+    const { match } = props;
+    const { user } = props.userState;
+    const { loadDetailRequest } = props.timesheetApprovalDispatch;
 
-//     if (user) {
-//       loadDetailRequest({
-//         timesheetUid: match.params.timesheetUid,
-//       });
-//     }
-//   },
-//   handleTimesheetModify: (props: EntryDetailProps) => () => { 
-//     const { intl, stateUpdate } = props;
+    if (user) {
+      loadDetailRequest({
+        companyUid: user.company.uid,
+        positionUid: user.position.uid,
+        timesheetUid: match.params.timesheetUid,
+      });
+    }
+  }
+};
 
-//     stateUpdate({
-//       dialogFullScreen: false,
-//       dialogOpen: true,
-//       dialogTitle: intl.formatMessage({id: 'timesheet.dialog.modifyTitle'}), 
-//       dialogDescription: intl.formatMessage({id: 'timesheet.dialog.modifyDescription'}),
-//       dialogCancelText: intl.formatMessage({id: 'global.action.disaggree'}),
-//       dialogConfirmedText: intl.formatMessage({id: 'global.action.aggree'})
-//     });
-//   },
-//   handleDialogOpen: (props: EntryDetailProps) => (title: string, description: string, cancelText?: string, confirmText?: string, fullScreen?: boolean) => { 
-//     const { intl, stateUpdate, dialogCancelText, dialogConfirmedText } = props;
+const lifecycles: ReactLifeCycleFunctions<ApprovalDetailProps, OwnState> = {
+  componentDidMount() {
+    const { 
+      match, layoutDispatch, appBarDispatch, intl, 
+      handleTimesheetRefresh,
+    } = this.props;
 
-//     stateUpdate({ 
-//       dialogFullScreen: fullScreen || false,
-//       dialogOpen: true,
-//       dialogTitle: title,
-//       dialogDescription: description,
-//       dialogCancelText: cancelText || intl.formatMessage({id: dialogCancelText}),
-//       dialogConfirmedText: confirmText || intl.formatMessage({id: dialogConfirmedText})
-//     });
-//   },
-//   handleDialogClose: (props: EntryDetailProps) => () => { 
-//     const { stateReset } = props;
+    const { user } = this.props.userState;
+    const { loadDetailRequest } = this.props.timesheetApprovalDispatch;
 
-//     stateReset();
-//   },
-//   handleDialogConfirmed: (props: EntryDetailProps) => () => { 
-//     const { match, history, stateReset } = props;
-//     const timesheetUid = match.params.timesheetUid;
+    layoutDispatch.changeView({
+      uid: AppMenu.TimesheetApprovalHistory,
+      parentUid: AppMenu.Timesheet,
+      title: intl.formatMessage({id: 'timesheet.detail.title'}),
+      subTitle : intl.formatMessage({id: 'timesheet.detail.subTitle'})
+    });
 
-//     stateReset();
-
-//     history.push('/timesheet/form/', { uid: timesheetUid });
-//   },
-// };
-
-// const lifecycles: ReactLifeCycleFunctions<EntryDetailProps, OwnState> = {
-//   componentDidMount() {
-//     const { 
-//       match, layoutDispatch, appBarDispatch, intl, 
-//       handleTimesheetRefresh, handleTimesheetModify,
-//     } = this.props;
-
-//     const { user } = this.props.userState;
-//     const { loadDetailRequest } = this.props.timesheetDispatch;
-
-//     layoutDispatch.changeView({
-//       uid: AppMenu.TimesheetHistory,
-//       parentUid: AppMenu.Timesheet,
-//       title: intl.formatMessage({id: 'timesheet.detail.title'}),
-//       subTitle : intl.formatMessage({id: 'timesheet.detail.subTitle'})
-//     });
-
-//     layoutDispatch.navBackShow();
-//     layoutDispatch.moreShow();
+    layoutDispatch.navBackShow();
+    layoutDispatch.moreShow();
     
-//     const handleMenuClick = (menu: IAppBarMenu): void => {
-//       switch (menu.id) {
-//         case TimesheetUserAction.Refresh:
-//           handleTimesheetRefresh();
-//           break;
-        
-//         case TimesheetUserAction.Modify:
-//           handleTimesheetModify();
-//           break;
+    const handleMenuClick = (menu: IAppBarMenu): void => {
+      switch (menu.id) {
+        case TimesheetUserAction.Refresh:
+          handleTimesheetRefresh();
+          break;
+
+        default:
+          break;
+      }
+    };
+
+    appBarDispatch.assignCallback(handleMenuClick);
+
+    if (user) {
+      loadDetailRequest({
+        companyUid: user.company.uid,
+        positionUid: user.position.uid,
+        timesheetUid: match.params.timesheetUid,
+      });
+    }
+  },
+  componentWillReceiveProps(nextProps: ApprovalDetailProps) {
+    if (nextProps.timesheetApprovalState.detail.response !== this.props.timesheetApprovalState.detail.response) {
+      const { intl } = nextProps;
+      const { assignMenus } = nextProps.appBarDispatch;
       
-//         default:
-//           break;
-//       }
-//     };
+      const currentMenus = [
+        {
+          id: TimesheetUserAction.Refresh,
+          name: intl.formatMessage({id: 'global.action.refresh'}),
+          enabled: true,
+          visible: true
+        }
+      ];
 
-//     appBarDispatch.assignCallback(handleMenuClick);
+      assignMenus(currentMenus);
+    }
+  },
+  componentWillUnmount() {
+    const { layoutDispatch, appBarDispatch, timesheetApprovalDispatch } = this.props;
 
-//     if (user) {
-//       loadDetailRequest({
-//         timesheetUid: match.params.timesheetUid,
-//       });
-//     }
-//   },
-//   componentWillReceiveProps(nextProps: EntryDetailProps) {
-//     if (nextProps.timesheetState.detail.response !== this.props.timesheetState.detail.response) {
-//       const { intl } = nextProps;
-//       const { response } = nextProps.timesheetState.detail;
-//       const { assignMenus } = nextProps.appBarDispatch;
-      
-//       const isStatusTypeEquals = (statusTypes: string[]): boolean => {
-//         let result = false;
+    layoutDispatch.changeView(null);
+    layoutDispatch.navBackHide();
+    layoutDispatch.moreHide();
+    layoutDispatch.actionCentreHide();
 
-//         if (response && response.data) {
-//           result = statusTypes.indexOf(response.data.statusType) !== -1;
-//         }
+    appBarDispatch.dispose();
 
-//         return result;
-//       };
+    timesheetApprovalDispatch.loadDetailDispose();
+  }
+};
 
-//       const currentMenus = [
-//         {
-//           id: TimesheetUserAction.Refresh,
-//           name: intl.formatMessage({id: 'global.action.refresh'}),
-//           enabled: true,
-//           visible: true
-//         },
-//         {
-//           id: TimesheetUserAction.Modify,
-//           name: intl.formatMessage({id: 'timesheet.action.modify'}),
-//           enabled: response !== undefined,
-//           visible: isStatusTypeEquals([WorkflowStatusType.Submitted, WorkflowStatusType.InProgress])
-//         },
-//       ];
-
-//       assignMenus(currentMenus);
-//     }
-//   },
-//   componentWillUnmount() {
-//     const { layoutDispatch, appBarDispatch, timesheetDispatch } = this.props;
-
-//     layoutDispatch.changeView(null);
-//     layoutDispatch.navBackHide();
-//     layoutDispatch.moreHide();
-//     layoutDispatch.actionCentreHide();
-
-//     appBarDispatch.dispose();
-
-//     timesheetDispatch.loadDetailDispose();
-//   }
-// };
-
-// export const EntryDetail = compose<EntryDetailProps, {}>(
-//   withUser,
-//   withLayout,
-//   withAppBar,
-//   withRouter,
-//   withTimesheet,
-//   injectIntl,
-//   withStateHandlers<OwnState, OwnStateUpdaters, {}>(createProps, stateUpdaters), 
-//   withHandlers<EntryDetailProps, Handler>(handlerCreators),
-//   lifecycle<EntryDetailProps, OwnState>(lifecycles),
-// )(EntryDetailView);
+export const ApprovalDetail = compose<ApprovalDetailProps, {}>(
+  withUser,
+  withLayout,
+  withAppBar,
+  withRouter,
+  withTimesheetApproval,
+  injectIntl,
+  withStateHandlers<OwnState, OwnStateUpdaters, {}>(createProps, stateUpdaters), 
+  withHandlers<ApprovalDetailProps, Handler>(handlerCreators),
+  lifecycle<ApprovalDetailProps, OwnState>(lifecycles),
+)(ApprovalDetailView);
