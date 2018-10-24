@@ -171,6 +171,7 @@ const component: React.SFC<AllProps> = props => {
       >
         {
           navBottomState.metadata && 
+          navBottomState.metadata.paginate &&
           navBottomState.metadata.paginate.previous && 
           <BottomNavigationAction 
             label="Prev" 
@@ -222,7 +223,8 @@ const component: React.SFC<AllProps> = props => {
         />
 
         {
-          navBottomState.metadata && 
+          navBottomState.metadata &&
+          navBottomState.metadata.paginate &&
           navBottomState.metadata.paginate.next && 
           <BottomNavigationAction 
             icon={<ChevronRightIcon />} 

@@ -33,9 +33,11 @@ import {
 } from '@lookup/store/reducers';
 
 import { lookupCustomerReducers } from './customer';
+import { leaveReducers } from './leave';
 
 const lookupReducers = {
   ...lookupCustomerReducers,
+  ...leaveReducers,
 
   mileageExceptionGetAll: mileageExceptionGetAllReducer,
   mileageExceptionGetById: mileageExceptionGetByIdReducer,
