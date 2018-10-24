@@ -3,9 +3,9 @@ import { WorkflowStep } from '@organization/components';
 import { TimesheetInformation } from '@timesheet/components/entry/detail/shared/TimesheetInformation';
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
-import { ApprovalDetailProps } from './ApprovalDetail';
+import { ApprovalDetailProps } from './TimesheetApprovalDetail';
 
-export const ApprovalDetailView: React.SFC<ApprovalDetailProps> = props => {
+export const TimesheetApprovalDetailView: React.SFC<ApprovalDetailProps> = props => {
   const {
     dialogFullScreen, dialogOpen, dialogTitle, dialogDescription, dialogCancelText, dialogConfirmedText, handleDialogClose, handleDialogConfirmed, intl
   } = props;

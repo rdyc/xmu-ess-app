@@ -2,10 +2,10 @@ import { Submission } from '@layout/components/submission/Submission';
 import { Grid } from '@material-ui/core';
 import * as React from 'react';
 import { BaseFieldsProps, Fields, FormSection } from 'redux-form';
-import { EntryDetailForm } from './EntryDetailForm';
-import { EntryFormProps } from './EntryForm';
+import { TimesheetEntryDetailForm } from './TimesheetEntryDetailForm';
+import { EntryFormProps } from './TimesheetEntryForm';
 
-export const EntryFormView: React.SFC<EntryFormProps> = props => {
+export const TimesheetEntryFormView: React.SFC<EntryFormProps> = props => {
   const {
     formMode
   } = props;
@@ -13,7 +13,7 @@ export const EntryFormView: React.SFC<EntryFormProps> = props => {
   const fields = Object.getOwnPropertyNames(props.initialValues.information);
 
   const componentInformation = (context: BaseFieldsProps) => (
-    <EntryDetailForm
+    <TimesheetEntryDetailForm
       formMode={formMode}
       context={context}
     />

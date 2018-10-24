@@ -1,19 +1,19 @@
 import { FormMode } from '@generic/types';
 import { Typography } from '@material-ui/core';
-import { EntryEditorProps } from '@timesheet/components/entry/editor/EntryEditor';
 import {
-  EntryForm,
+  TimesheetEntryForm,
   TimesheetFormData,
-} from '@timesheet/components/entry/editor/forms/EntryForm';
+} from '@timesheet/components/entry/editor/forms/TimesheetEntryForm';
+import { EntryEditorProps } from '@timesheet/components/entry/editor/TimesheetEntryEditor';
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 
-export const EntryEditorView: React.SFC<EntryEditorProps> = props => {
+export const TimesheetEntryEditorView: React.SFC<EntryEditorProps> = props => {
   const { formMode, handleValidate, handleSubmit, handleSubmitSuccess, handleSubmitFail } = props;
   const { isLoading, response } = props.timesheetState.detail;
 
   const renderForm = (formData: TimesheetFormData) => (
-    <EntryForm 
+    <TimesheetEntryForm 
       formMode={formMode}
       initialValues={formData}
       validate={handleValidate}

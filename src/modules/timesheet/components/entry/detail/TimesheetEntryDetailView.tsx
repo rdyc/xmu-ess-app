@@ -2,10 +2,10 @@ import { Button, Dialog, DialogActions, DialogContent, DialogContentText, Dialog
 import { WorkflowStep } from '@organization/components';
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
-import { EntryDetailProps } from './EntryDetail';
 import { TimesheetInformation } from './shared/TimesheetInformation';
+import { EntryDetailProps } from './TimesheetEntryDetail';
 
-export const EntryDetailView: React.SFC<EntryDetailProps> = props => {
+export const TimesheetEntryDetailView: React.SFC<EntryDetailProps> = props => {
   const {
     dialogFullScreen, dialogOpen, dialogTitle, dialogDescription, dialogCancelText, dialogConfirmedText, handleDialogClose, handleDialogConfirmed, intl
   } = props;

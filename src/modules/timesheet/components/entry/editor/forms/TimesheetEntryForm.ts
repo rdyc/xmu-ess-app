@@ -1,5 +1,5 @@
 import { FormMode } from '@generic/types';
-import { EntryFormView } from '@timesheet/components/entry/editor/forms/EntryFormView';
+import { TimesheetEntryFormView } from '@timesheet/components/entry/editor/forms/TimesheetEntryFormView';
 import { connect } from 'react-redux';
 import { InjectedFormProps, reduxForm } from 'redux-form';
 
@@ -27,9 +27,9 @@ export type EntryFormProps
   = InjectedFormProps<TimesheetFormData, OwnProps>
   & OwnProps;
 
-const connectedView = connect()(EntryFormView);
+const connectedView = connect()(TimesheetEntryFormView);
 
-export const EntryForm = reduxForm<TimesheetFormData, OwnProps>({
+export const TimesheetEntryForm = reduxForm<TimesheetFormData, OwnProps>({
   form: formName,
   touchOnChange: true,
   touchOnBlur: true,

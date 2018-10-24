@@ -1,13 +1,13 @@
 import { Divider, Grid, List, ListItem, ListSubheader, Paper, Typography } from '@material-ui/core';
 import { ITimesheet } from '@timesheet/classes/response';
-import { EntryListProps } from '@timesheet/components/entry/list/EntryList';
+import { EntryListProps } from '@timesheet/components/entry/list/TimesheetEntryList';
 import { parseChanges } from '@utils/parseChanges';
 import * as moment from 'moment';
 import * as React from 'react';
 import { FormattedDate, FormattedNumber, FormattedPlural } from 'react-intl';
 import { isArray } from 'util';
 
-export const EntryListView: React.SFC<EntryListProps> = props => {
+export const TimesheetEntryListView: React.SFC<EntryListProps> = props => {
   const { handleGoToDetail } = props;
   const { isLoading, response } = props.timesheetState.all;
 

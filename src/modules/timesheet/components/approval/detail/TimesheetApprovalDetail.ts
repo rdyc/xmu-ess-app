@@ -4,7 +4,7 @@ import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IAppBarMenu } from '@layout/interfaces';
 import { TimesheetUserAction } from '@timesheet/classes/types';
-import { ApprovalDetailView } from '@timesheet/components/approval/detail/ApprovalDetailView';
+import { TimesheetApprovalDetailView } from '@timesheet/components/approval/detail/TimesheetApprovalDetailView';
 import { WithTimesheetApproval, withTimesheetApproval } from '@timesheet/hoc/withTimesheetApproval';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
@@ -164,7 +164,7 @@ const lifecycles: ReactLifeCycleFunctions<ApprovalDetailProps, OwnState> = {
   }
 };
 
-export const ApprovalDetail = compose<ApprovalDetailProps, {}>(
+export const TimesheetApprovalDetail = compose<ApprovalDetailProps, {}>(
   withUser,
   withLayout,
   withAppBar,
@@ -174,4 +174,4 @@ export const ApprovalDetail = compose<ApprovalDetailProps, {}>(
   withStateHandlers<OwnState, OwnStateUpdaters, {}>(createProps, stateUpdaters), 
   withHandlers<ApprovalDetailProps, Handler>(handlerCreators),
   lifecycle<ApprovalDetailProps, OwnState>(lifecycles),
-)(ApprovalDetailView);
+)(TimesheetApprovalDetailView);

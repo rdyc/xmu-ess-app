@@ -5,8 +5,8 @@ import { WithNavBottom, withNavBottom } from '@layout/hoc/withNavBottom';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IListBarField } from '@layout/interfaces';
 import { TimesheetField } from '@timesheet/classes/types';
-import { EntryListView } from '@timesheet/components/entry/list/EntryListView';
-import { WithTimesheet, withTimesheet } from '@timesheet/hoc/withTimesheet';
+import { ApprovalListView } from '@timesheet/components/approval/list/TimesheetApprovalListView';
+import { WithTimesheetApproval, withTimesheetApproval } from '@timesheet/hoc/withTimesheetApproval';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import {
@@ -55,8 +55,8 @@ interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
   stateSizing: StateHandler<OwnState>;
 }
 
-export type EntryListProps
-  = WithTimesheet
+export type ApprovalListProps
+  = WithTimesheetApproval
   & WithUser
   & WithLayout
   & WithNavBottom
@@ -67,15 +67,15 @@ export type EntryListProps
   & OwnState
   & OwnStateUpdaters;
 
-const createProps: mapper<EntryListProps, OwnState> = (props: EntryListProps): OwnState => {
+const createProps: mapper<ApprovalListProps, OwnState> = (props: ApprovalListProps): OwnState => {
   const { orderBy, direction, page, size } = props;
-  const { request } = props.timesheetState.all;
+  const { request } = props.timesheetApprovalState.all;
 
   return {
-    orderBy: request && request.filter && request.filter.orderBy || orderBy,
-    direction: request && request.filter && request.filter.direction || direction,
-    page: request && request.filter && request.filter.page || page || 1,
-    size: request && request.filter && request.filter.size || size || 10,
+    orderBy: request && request.filter && request.filter['query.orderBy'] || orderBy,
+    direction: request && request.filter && request.filter['query.direction'] || direction,
+    page: request && request.filter && request.filter['query.page'] || page || 1,
+    size: request && request.filter && request.filter['query.size'] || size || 10,
   };
 };
 
@@ -103,39 +103,39 @@ const stateUpdaters: StateUpdaters<OwnOptions, OwnState, OwnStateUpdaters> = {
   }),
 };
 
-const handlerCreators: HandleCreators<EntryListProps, OwnHandlers> = {
-  handleGoToDetail: (props: EntryListProps) => (timesheetUid) => {
+const handlerCreators: HandleCreators<ApprovalListProps, OwnHandlers> = {
+  handleGoToDetail: (props: ApprovalListProps) => (timesheetUid) => {
     const { history } = props;
-    const { isLoading } = props.timesheetState.all;
+    const { isLoading } = props.timesheetApprovalState.all;
 
     if (!isLoading) {
-      history.push(`/timesheet/details/${timesheetUid}`);
+      history.push(`/approval/timesheet/details/${timesheetUid}`);
     }
   },
-  handleGoToNext: (props: EntryListProps) => () => {
+  handleGoToNext: (props: ApprovalListProps) => () => {
     props.stateNext();
   },
-  handleGoToPrevious: (props: EntryListProps) => () => {
+  handleGoToPrevious: (props: ApprovalListProps) => () => {
     props.statePrevious();
   },
-  handleReloading: (props: EntryListProps) => () => {
+  handleReloading: (props: ApprovalListProps) => () => {
     props.stateReloading();
 
     // force re-load from api
     loadData(props);
   },
-  handleChangeOrder: (props: EntryListProps) => (field: IListBarField) => {
+  handleChangeOrder: (props: ApprovalListProps) => (field: IListBarField) => {
     props.stateOrdering(field);
   },
-  handleChangeSize: (props: EntryListProps) => (value: number) => {
+  handleChangeSize: (props: ApprovalListProps) => (value: number) => {
     props.stateSizing(value);
   },
-  handleChangeSort: (props: EntryListProps) => (direction: SortDirection) => {
+  handleChangeSort: (props: ApprovalListProps) => (direction: SortDirection) => {
     props.stateSorting(direction);
   }
 };
 
-const lifecycles: ReactLifeCycleFunctions<EntryListProps, OwnState> = {
+const lifecycles: ReactLifeCycleFunctions<ApprovalListProps, OwnState> = {
   componentDidMount() {
     const {
       handleGoToNext, handleGoToPrevious, handleReloading,
@@ -144,12 +144,12 @@ const lifecycles: ReactLifeCycleFunctions<EntryListProps, OwnState> = {
       history, intl
     } = this.props;
 
-    const { isLoading, response } = this.props.timesheetState.all;
+    const { isLoading, response } = this.props.timesheetApprovalState.all;
 
     layoutDispatch.changeView({
-      uid: AppMenu.TimesheetHistory,
+      uid: AppMenu.TimesheetApprovalHistory,
       parentUid: AppMenu.Timesheet,
-      title: intl.formatMessage({ id: 'timesheet.history.title' }),
+      title: intl.formatMessage({ id: 'timesheet.approval.history.title' }),
       subTitle: intl.formatMessage({ id: 'timesheet.subTitle' })
     });
 
@@ -177,7 +177,7 @@ const lifecycles: ReactLifeCycleFunctions<EntryListProps, OwnState> = {
       loadData(this.props);
     }
   },
-  componentDidUpdate(props: EntryListProps, state: OwnState) {
+  componentDidUpdate(props: ApprovalListProps, state: OwnState) {
     // only load when these props are different
     if (
       this.props.orderBy !== props.orderBy ||
@@ -191,7 +191,7 @@ const lifecycles: ReactLifeCycleFunctions<EntryListProps, OwnState> = {
   componentWillUnmount() {
     const { layoutDispatch, navBottomDispatch } = this.props;
     const { view } = this.props.layoutState;
-    const { loadAllDispose } = this.props.timesheetDispatch;
+    const { loadAllDispose } = this.props.timesheetApprovalDispatch;
 
     layoutDispatch.changeView(null);
     layoutDispatch.modeListOff();
@@ -209,25 +209,23 @@ const lifecycles: ReactLifeCycleFunctions<EntryListProps, OwnState> = {
   }
 };
 
-const loadData = (props: EntryListProps): void => {
+const loadData = (props: ApprovalListProps): void => {
   const { orderBy, direction, page, size } = props;
   const { user } = props.userState;
-  const { loadAllRequest } = props.timesheetDispatch;
+  const { loadAllRequest } = props.timesheetApprovalDispatch;
   const { alertAdd } = props.layoutDispatch;
 
   if (user) {
     loadAllRequest({
-      companyUid: user.company.uid,
-      positionUid: user.position.uid,
       filter: {
-        direction,
-        orderBy,
-        page,
-        size,
-        isRejected: undefined,
+        'query.direction': direction,
+        'query.orderBy': orderBy,
+        'query.page': page,
+        'query.size': size,
+        status: 'complete',
         companyUid: undefined,
-        find: undefined,
-        findBy: undefined,
+        'query.find': undefined,
+        'query.findBy': undefined,
       }
     });
   } else {
@@ -238,14 +236,14 @@ const loadData = (props: EntryListProps): void => {
   }
 };
 
-export const EntryList = compose<EntryListProps, OwnOptions>(
-  withTimesheet,
+export const TimesheetApprovalList = compose<ApprovalListProps, OwnOptions>(
+  withTimesheetApproval,
   withUser,
   withLayout,
   withNavBottom,
   withRouter,
   injectIntl,
   withStateHandlers<OwnState, OwnStateUpdaters, OwnOptions>(createProps, stateUpdaters),
-  withHandlers<EntryListProps, OwnHandlers>(handlerCreators),
-  lifecycle<EntryListProps, OwnState>(lifecycles),
-)(EntryListView);
+  withHandlers<ApprovalListProps, OwnHandlers>(handlerCreators),
+  lifecycle<ApprovalListProps, OwnState>(lifecycles),
+)(ApprovalListView);

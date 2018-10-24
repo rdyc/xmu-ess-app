@@ -1,6 +1,6 @@
 import { Divider, Grid, List, ListItem, ListSubheader, Paper, Typography } from '@material-ui/core';
 import { ITimesheet } from '@timesheet/classes/response';
-import { ApprovalListProps } from '@timesheet/components/approval/list/ApprovalList';
+import { ApprovalListProps } from '@timesheet/components/approval/list/TimesheetApprovalList';
 import { parseChanges } from '@utils/parseChanges';
 import * as moment from 'moment';
 import * as React from 'react';

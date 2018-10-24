@@ -8,10 +8,10 @@ import {
   ITimesheetPutPayload,
 } from '@timesheet/classes/request/entry';
 import { ITimesheet } from '@timesheet/classes/response';
-import { EntryEditorView } from '@timesheet/components/entry/editor/EntryEditorView';
 import {
   TimesheetFormData,
-} from '@timesheet/components/entry/editor/forms/EntryForm';
+} from '@timesheet/components/entry/editor/forms/TimesheetEntryForm';
+import { TimesheetEntryEditorView } from '@timesheet/components/entry/editor/TimesheetEntryEditorView';
 import { WithTimesheet, withTimesheet } from '@timesheet/hoc/withTimesheet';
 import { timesheetMessage } from '@timesheet/locales/messages/timesheetMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
@@ -266,4 +266,4 @@ export default compose<EntryEditorProps, {}>(
   withStateHandlers<OwnState, OwnStateUpdaters, {}>(createProps, stateUpdaters),
   withHandlers<EntryEditorProps, OwnHandlers>(handlerCreators),
   lifecycle<EntryEditorProps, {}>(lifecycles),
-)(EntryEditorView);
+)(TimesheetEntryEditorView);

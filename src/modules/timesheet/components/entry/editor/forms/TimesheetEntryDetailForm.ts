@@ -109,7 +109,7 @@ const handlerCreators: HandleCreators<EntryDetailFormProps, OwnHandlers> = {
   }
 };
 
-export const EntryDetailForm = compose<EntryDetailFormProps, OwnProps>(
+export const TimesheetEntryDetailForm = compose<EntryDetailFormProps, OwnProps>(
   injectIntl,
   withHandlers<EntryDetailFormProps, OwnHandlers>(handlerCreators),
 )(EntryDetailFormView);
