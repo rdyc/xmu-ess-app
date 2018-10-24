@@ -193,7 +193,7 @@ const lifecycles: ReactLifeCycleFunctions<RequestDetailProps, OwnState> = {
         },
         {
           id: TravelUserAction.Modify,
-          name: intl.formatMessage({id: 'travel.action.modify'}),
+          name: intl.formatMessage({id: 'global.action.modify'}),
           enabled: response !== undefined,
           visible: isStatusTypeEquals([WorkflowStatusType.Submitted, WorkflowStatusType.InProgress, WorkflowStatusType.Approved])
         }

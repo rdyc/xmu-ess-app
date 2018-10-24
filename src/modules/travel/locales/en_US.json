@@ -34,6 +34,8 @@
   "travel.field.information.objectives": "Objectives",
   "travel.field.information.target": "Specific Target",
   "travel.field.information.comments": "Comments",
+  "travel.field.information.project": "Project",
+  "travel.field.information.site": "Site Name",
   "travel.field.information.siteValue": "Site Value",
   "travel.field.information.totalDuration" : "Total Duration",
   "travel.field.information.totalDiemValue": "Total Diem Value",

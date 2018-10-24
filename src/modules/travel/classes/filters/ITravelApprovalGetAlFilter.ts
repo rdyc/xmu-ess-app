@@ -1,8 +1,16 @@
-import { IBasePagingFilter } from '@generic/interfaces';
+export interface ITravelApprovalgetAllFilter {
+  companyUid: string | undefined;
+  positionUid: string | undefined;
+  customerUid: string | undefined;
+  status?: 'pending' | 'complete';
+  isNotify?: boolean;
 
-export interface ITravelApprovalgetAllFilter extends IBasePagingFilter {
-  companyUid: string | null;
-  positionUid: string | null;
-  status: 'pending' | 'complete' | null;
-  isNotify: boolean | null;
+  // sementara
+  readonly 'query.find'?: string | undefined;
+  readonly 'query.findBy'?: string | undefined;
+  readonly 'query.orderBy'?: string | undefined;
+  readonly 'query.direction'?: string | undefined;
+
+  readonly 'query.page'?: number | undefined;
+  readonly 'query.size'?: number | undefined;
 }

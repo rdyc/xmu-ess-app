@@ -5,7 +5,7 @@ import { HomePage } from '@layout/pages';
 import AccessWizardPage from '@layout/pages/AccessWizardPage';
 import CallbackPage from '@layout/pages/CallbackPage';
 import { projectRouter } from '@project/components/projectRouter';
-import { travelRouter } from '@travel/components/travelRouter';
+import { travelApprovalRouter, travelRouter } from '@travel/components/travelRouter';
 import { ConnectedRouter } from 'connected-react-router';
 import { History } from 'history';
 import * as React from 'react';
@@ -79,7 +79,8 @@ class App extends React.Component<AllProps> {
                         <Route path="/home" component={HomePage} />
                         <Route path="/account" component={accountRouter} />
                         <Route path="/project" component={projectRouter} />
-                        <Route path="/travel" component={travelRouter} />                        
+                        <Route path="/travel" component={travelRouter} />
+                        <Route path="/approval/travel" component={travelApprovalRouter} />                                                
                       </Layout>
                     </Switch>
                   )}

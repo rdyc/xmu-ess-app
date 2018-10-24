@@ -8,6 +8,11 @@ import {
   travelSettlementPostReducer,
   travelSettlementPutReducer,
 } from '@travel/store/reducers';
+import { 
+  travelApprovalGetAllReducer, 
+  travelApprovalGetByIdReducer, 
+  travelApprovalPostReducer } from './requestApproval';
+import { travelSettlementApprovalGetAllReducer, travelSettlementApprovalGetByIdReducer, travelSettlementApprovalPostReducer } from './settlementApproval';
 
 const travelReducers = {
   travelRequestGetAll: travelGetAllReducer,
@@ -18,6 +23,12 @@ const travelReducers = {
   travelSettlementGetById: travelSettlementGetByIdReducer,
   travelSettlementPost: travelSettlementPostReducer,
   travelSettlementPut: travelSettlementPutReducer,
+  travelApprovalGetAll: travelApprovalGetAllReducer,
+  travelApprovalGetById: travelApprovalGetByIdReducer,
+  travelApprovalPost: travelApprovalPostReducer,
+  travelSettlementApprovalGetAll: travelSettlementApprovalGetAllReducer,
+  travelSettlementApprovalGetById: travelSettlementApprovalGetByIdReducer,
+  travelSettlementApprovalPost: travelSettlementApprovalPostReducer,
 };
 
 export default travelReducers;

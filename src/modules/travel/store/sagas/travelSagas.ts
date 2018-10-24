@@ -86,7 +86,7 @@ function* watchPostFetchRequest() {
   const worker = (action: ReturnType<typeof travelPostRequest>) => {
     return saiyanSaga.fetch({
       method: 'post',
-      path: `/v1/travel/registrations/${action.payload.companyUid}/${action.payload.positionUid}`, 
+      path: `/v1/travel/requests/${action.payload.companyUid}/${action.payload.positionUid}`, 
       payload: action.payload.data, 
       successEffects: (response: IApiResponse) => ([
         put(travelPostSuccess(response.body)),
@@ -116,7 +116,7 @@ function* watchPutFetchRequest() {
   const worker = (action: ReturnType<typeof travelPutRequest>) => {
     return saiyanSaga.fetch({
       method: 'put',
-      path: `/v1/travel/registrations/${action.payload.companyUid}/${
+      path: `/v1/travel/requests/${action.payload.companyUid}/${
         action.payload.positionUid
       }/${action.payload.travelUid}`,
       payload: action.payload.data,

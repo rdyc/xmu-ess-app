@@ -122,6 +122,20 @@ export const RequestDetailView: React.SFC<RequestDetailProps> = props => {
           fullWidth
           contentEditable={false}
           margin="normal"
+          label={<FormattedMessage id="travel.field.information.project" />}
+          value={travel.project ? travel.project.name : 'N/A'}
+        />
+        <TextField
+          fullWidth
+          contentEditable={false}
+          margin="normal"
+          label={<FormattedMessage id="travel.field.information.site" />}
+          value={travel.site ? travel.site.name : 'N/A'}
+        />
+        <TextField
+          fullWidth
+          contentEditable={false}
+          margin="normal"
           label={<FormattedMessage id="travel.field.information.activity" />}
           value={travel.activity ? travel.activity.value : 'N/A'}
         />

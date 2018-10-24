@@ -8,7 +8,7 @@ const formName = 'travelRequest';
 export type TravelItemFormData = {
   uid: string;
   employeeUid: string;
-  fullName: string | null | undefined;
+  fullName: string;
   transportType: string;
   isRoundTrip: boolean;
   from: string;
