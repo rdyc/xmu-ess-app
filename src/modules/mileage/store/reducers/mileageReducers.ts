@@ -1,20 +1,20 @@
 import {
-  mileageapprovalGetAllReducer,
-  mileageapprovalGetByIdReducer,
-  mileageapprovalPostReducer,
-  mileagerequestGetAllReducer,
-  mileagerequestGetByIdReducer,
-  mileagerequestPostReducer
+  mileageApprovalGetAllReducer,
+  mileageApprovalGetByIdReducer,
+  mileageApprovalPostReducer,
+  mileageRequestGetAllReducer,
+  mileageRequestGetByIdReducer,
+  mileageRequestPostReducer
 } from '@mileage/store/reducers';
 
 const mileageReducers = {
-  mileageapprovalGetAll: mileageapprovalGetAllReducer,
-  mileageapprovalGetById: mileageapprovalGetByIdReducer,
-  mileageapprovalPost: mileageapprovalPostReducer,
+  mileageApprovalGetAll: mileageApprovalGetAllReducer,
+  mileageApprovalGetById: mileageApprovalGetByIdReducer,
+  mileageApprovalPost: mileageApprovalPostReducer,
 
-  mileagerequestGetAll: mileagerequestGetAllReducer,
-  mileagerequestGetById: mileagerequestGetByIdReducer,
-  mileagerequestPost: mileagerequestPostReducer,
+  mileageRequestGetAll: mileageRequestGetAllReducer,
+  mileageRequestGetById: mileageRequestGetByIdReducer,
+  mileageRequestPost: mileageRequestPostReducer
 };
 
 export default mileageReducers;

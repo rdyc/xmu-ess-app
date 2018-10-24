@@ -10,7 +10,7 @@ import {
   IMileageApproval, IMileageApprovalDetail
 } from '@mileage/classes/response';
 import {
-  mileageapprovalGetAllDispose, mileageapprovalGetAllRequest, mileageapprovalGetByIdDispose, mileageapprovalGetByIdRequest, mileageapprovalPostDispose, mileageapprovalPostRequest
+  mileageApprovalGetAllDispose, mileageApprovalGetAllRequest, mileageApprovalGetByIdDispose, mileageApprovalGetByIdRequest, mileageApprovalPostDispose, mileageApprovalPostRequest
 } from '@mileage/store/actions';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
@@ -28,15 +28,15 @@ interface PropsFromState {
 interface PropsFromDispatch {
   mileageApprovalDispatch: {
     // command
-    createRequest: typeof mileageapprovalPostRequest;
-    createDispose: typeof mileageapprovalPostDispose;
+    createRequest: typeof mileageApprovalPostRequest;
+    createDispose: typeof mileageApprovalPostDispose;
 
     // query
-    loadAllRequest: typeof mileageapprovalGetAllRequest;
-    loadAllDispose: typeof mileageapprovalGetAllDispose;
+    loadAllRequest: typeof mileageApprovalGetAllRequest;
+    loadAllDispose: typeof mileageApprovalGetAllDispose;
 
-    loadDetailRequest: typeof mileageapprovalGetByIdRequest;
-    loadDetailDispose: typeof mileageapprovalGetByIdDispose;
+    loadDetailRequest: typeof mileageApprovalGetByIdRequest;
+    loadDetailDispose: typeof mileageApprovalGetByIdDispose;
   };
 }
 
@@ -45,11 +45,11 @@ export interface WithMileageApproval
     PropsFromDispatch {}
 
 const mapStateToProps = ({
-  mileageapprovalGetAll, mileageapprovalGetById
+  mileageApprovalGetAll, mileageApprovalGetById
 }: IAppState) => ({
   mileageApprovalState: {
-    all: mileageapprovalGetAll,
-    detail: mileageapprovalGetById
+    all: mileageApprovalGetAll,
+    detail: mileageApprovalGetById
   }
 });
 
@@ -57,17 +57,17 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   mileageApprovalDispatch: {
     // command
     createRequest: (request: IMileageApprovalPostRequest) =>
-      dispatch(mileageapprovalPostRequest(request)),
-    createDispose: () => dispatch(mileageapprovalPostDispose()),
+      dispatch(mileageApprovalPostRequest(request)),
+    createDispose: () => dispatch(mileageApprovalPostDispose()),
 
     // query
     loadAllRequest: (request: IMileageApprovalGetAllRequest) =>
-      dispatch(mileageapprovalGetAllRequest(request)),
-    loadAllDispose: () => dispatch(mileageapprovalGetAllDispose()),
+      dispatch(mileageApprovalGetAllRequest(request)),
+    loadAllDispose: () => dispatch(mileageApprovalGetAllDispose()),
 
     loadDetailRequest: (request: IMileageApprovalGetByIdRequest) =>
-      dispatch(mileageapprovalGetByIdRequest(request)),
-    loadDetailDispose: () => dispatch(mileageapprovalGetByIdDispose())
+      dispatch(mileageApprovalGetByIdRequest(request)),
+    loadDetailDispose: () => dispatch(mileageApprovalGetByIdDispose())
   }
 });
 

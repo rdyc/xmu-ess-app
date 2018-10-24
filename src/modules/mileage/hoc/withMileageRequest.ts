@@ -13,12 +13,12 @@ import {
   IMileageRequestDetail
 } from '@mileage/classes/response';
 import {
-  mileagerequestGetAllDispose,
-  mileagerequestGetAllRequest,
-  mileagerequestGetByIdDispose,
-  mileagerequestGetByIdRequest,
-  mileagerequestPostDispose,
-  mileagerequestPostRequest
+  mileageRequestGetAllDispose,
+  mileageRequestGetAllRequest,
+  mileageRequestGetByIdDispose,
+  mileageRequestGetByIdRequest,
+  mileageRequestPostDispose,
+  mileageRequestPostRequest
 } from '@mileage/store/actions';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
@@ -36,15 +36,15 @@ interface PropsFromState {
 interface PropsFromDispatch {
   mileageRequestDispatch: {
     // command
-    createRequest: typeof mileagerequestPostRequest;
-    createDispose: typeof mileagerequestPostDispose;
+    createRequest: typeof mileageRequestPostRequest;
+    createDispose: typeof mileageRequestPostDispose;
 
     // query
-    loadAllRequest: typeof mileagerequestGetAllRequest;
-    loadAllDispose: typeof mileagerequestGetAllDispose;
+    loadAllRequest: typeof mileageRequestGetAllRequest;
+    loadAllDispose: typeof mileageRequestGetAllDispose;
 
-    loadDetailRequest: typeof mileagerequestGetByIdRequest;
-    loadDetailDispose: typeof mileagerequestGetByIdDispose;
+    loadDetailRequest: typeof mileageRequestGetByIdRequest;
+    loadDetailDispose: typeof mileageRequestGetByIdDispose;
   };
 }
 
@@ -53,11 +53,11 @@ export interface WithMileageRequest
     PropsFromDispatch {}
 
 const mapStateToProps = ({
-  mileagerequestGetAll, mileagerequestGetById
+  mileageRequestGetAll, mileageRequestGetById
 }: IAppState) => ({
   mileageRequestState: {
-    all: mileagerequestGetAll,
-    detail: mileagerequestGetById
+    all: mileageRequestGetAll,
+    detail: mileageRequestGetById
   }
 });
 
@@ -65,17 +65,17 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   mileageRequestDispatch: {
     // command
     createRequest: (request: IMileageRequestPostRequest) =>
-      dispatch(mileagerequestPostRequest(request)),
-    createDispose: () => dispatch(mileagerequestPostDispose()),
+      dispatch(mileageRequestPostRequest(request)),
+    createDispose: () => dispatch(mileageRequestPostDispose()),
 
     // query
     loadAllRequest: (request: IMileageRequestGetAllRequest) =>
-      dispatch(mileagerequestGetAllRequest(request)),
-    loadAllDispose: () => dispatch(mileagerequestGetAllDispose()),
+      dispatch(mileageRequestGetAllRequest(request)),
+    loadAllDispose: () => dispatch(mileageRequestGetAllDispose()),
 
     loadDetailRequest: (request: IMileageRequestGetByIdRequest) =>
-      dispatch(mileagerequestGetByIdRequest(request)),
-    loadDetailDispose: () => dispatch(mileagerequestGetByIdDispose())
+      dispatch(mileageRequestGetByIdRequest(request)),
+    loadDetailDispose: () => dispatch(mileageRequestGetByIdDispose())
   }
 });
 

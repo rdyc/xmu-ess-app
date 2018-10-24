@@ -3,27 +3,21 @@ import RegistrationEditor from '@project/components/registration/editor/Registra
 import { RegistrationList } from '@project/components/registration/list/RegistrationList';
 import * as React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router';
+import { OwnerEditor } from './owner/editor/OwnerEditor';
 
 type AllProps 
   = RouteComponentProps;
 
-const listComponent = () => (
-  <RegistrationList orderBy="uid" direction="descending"/>
-);
-
-const detailComponent = () => (
-  <RegistrationDetail/>
-);
-
-const editorComponent = () => (
-  <RegistrationEditor/>
-);
+const registrationListComponent = () => <RegistrationList orderBy="uid" direction="descending"/>;
+const registrationDetailComponent = () => <RegistrationDetail/>;
+const registrationEditorComponent = () => <RegistrationEditor/>;
+const ownerEditorComponent = () => <OwnerEditor/>;
 
 export const projectRouter: React.SFC<AllProps> = props => (
   <Switch>
-    <Route path={`${props.match.path}/list/`} component={listComponent} />
-    <Route path={`${props.match.path}/details/:projectUid`} component={detailComponent} />
-    {/* <Route path={`${props.match.path}/sites/:projectUid`} component={ProjectSiteContainer} /> */}
-    <Route path={`${props.match.path}/form`} component={editorComponent} />
+    <Route path={`${props.match.path}/list/`} component={registrationListComponent} />
+    <Route path={`${props.match.path}/details/:projectUid`} component={registrationDetailComponent} />
+    <Route path={`${props.match.path}/form`} component={registrationEditorComponent} />
+    <Route path={`${props.match.path}/owner`} component={ownerEditorComponent} />
   </Switch>
 );
