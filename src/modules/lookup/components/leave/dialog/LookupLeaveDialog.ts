@@ -17,13 +17,7 @@ import {
   withHandlers,
   withStateHandlers,
 } from 'recompose';
-
-import { IUserState } from '@layout/interfaces';
 import { LookupLeaveDialogView } from './LookupLeaveDialogView';
-
-export interface WithUser {
-  userState: IUserState;
-}
 
 interface OwnOptions {
   value?: string | undefined;
@@ -56,7 +50,6 @@ export type LookupLeaveDialogProps
   & WithWidth
   & InjectedIntlProps
   & OwnOptions
-  // & WithUser
   & OwnHandlers
   & OwnState
   & OwnStateUpdaters;
@@ -69,11 +62,8 @@ const createProps: mapper<OwnOptions, OwnState> = (props: OwnOptions): OwnState 
     _filter: {
       companyUid: filter && filter.companyUid,
       categoryType: filter && filter.categoryType || 'LVC02',
-      find: filter && filter.find,
-      findBy: filter && filter.findBy,
       orderBy: filter && filter.orderBy || 'name',
       direction: filter && filter.direction || 'ascending',
-      size: filter && filter.size || undefined,
     },
     _search: '',
   };

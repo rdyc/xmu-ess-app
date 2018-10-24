@@ -72,7 +72,7 @@ const handlerCreators: HandleCreators<RequestEditorProps, OwnHandlers> = {
     };
   
     const requiredFields = [
-      'leaveYpe', 'start',
+      'leaveType', 'start',
       'address', 'contactNumber', 'reason'
     ];
 
@@ -203,7 +203,7 @@ const lifecycles: ReactLifeCycleFunctions<RequestEditorProps, {}> = {
     
     const view = {
       title: 'leave.form.newTitle',
-      subTitle: 'leaveReqeust.form.newSubTitle',
+      subTitle: 'leave.form.newSubTitle',
     };
 
     if (!user) {

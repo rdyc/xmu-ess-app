@@ -7,16 +7,12 @@ import {
 } from '@lookup/classes/queries';
 import { ILeave, ILeaveDetail, ILeaveList } from '@lookup/classes/response';
 import {
-  // lookupCustomerDeleteDispose,
-  // lookupCustomerDeleteRequest,
   leaveGetAllDispose,
   leaveGetAllRequest,
   leaveGetByIdDispose,
   leaveGetByIdRequest,
   leaveGetListDispose,
   leaveGetListRequest,
-  // lookupCustomerPostDispose,
-  // lookupCustomerPostRequest,
   leavePutDispose,
   leavePutRequest,
 } from '@lookup/store/actions';
@@ -34,12 +30,8 @@ interface PropsFromState {
 interface PropsFromDispatch {
   lookupLeaveDispatch: {
     // command
-    // createRequest: typeof lookupCustomerPostRequest;
-    // createDispose: typeof lookupCustomerPostDispose;
     updateRequest: typeof leavePutRequest;
     updateDispose: typeof leavePutDispose;
-    // deleteRequest: typeof lookupCustomerDeleteRequest;
-    // deleteDispose: typeof lookupCustomerDeleteDispose;
 
     // query
     loadAllRequest: typeof leaveGetAllRequest;
@@ -56,20 +48,15 @@ export interface WithLookupLeave extends PropsFromState, PropsFromDispatch {}
 const mapStateToProps = ({ leaveGetAll, leaveGetList, leaveGetById }: IAppState) => ({
   lookupLeaveState: {
     all: leaveGetAll,
-    list: leaveGetAll,
-    detail: leaveGetAll,
+    list: leaveGetList,
+    detail: leaveGetById,
   }
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   lookupLeaveDispatch: {
-    // command
-    // createRequest: (request: ILookupCustomerPostRequest) => dispatch(lookupCustomerPostRequest(request)),
-    // createDispose: () => dispatch(lookupCustomerPostDispose()),
     updateRequest: (request: ILeavePutRequest) => dispatch(leavePutRequest(request)),
     updateDispose: () => dispatch(leavePutDispose()),
-    // deleteRequest: (request: ILookupCustomerDeleteRequest) => dispatch(lookupCustomerDeleteRequest(request)),
-    // deleteDispose: () => dispatch(lookupCustomerDeleteDispose()),
     
     // query
     loadAllRequest: (request: ILeaveGetAllRequest) => dispatch(leaveGetAllRequest(request)),

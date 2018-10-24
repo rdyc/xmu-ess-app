@@ -58,7 +58,7 @@ export const RequestEditorView: React.SFC<RequestEditorProps> = props => {
 
       initialValues.information.uid = data.uid;
       initialValues.information.leaveType = data.leaveType;
-      initialValues.information.regularType = data.regularType || null;
+      initialValues.information.regularType = data.regular ? data.regular.leaveUid : 'N/A' ;
       initialValues.information.start = data.start;
       initialValues.information.end = data.end;
       initialValues.information.address = data.address;

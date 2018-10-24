@@ -203,7 +203,7 @@ class LeaveLookup extends React.Component<AllProps, State> {
         <TextField
           fullWidth
           margin="normal"
-          name={`leave_${input.name}`}
+          name={`${input.name}`}
           label={label}
           value={this.state.selected && this.state.selected.name || ''}
           disabled={disabled || meta.submitting}
@@ -226,11 +226,8 @@ class LeaveLookup extends React.Component<AllProps, State> {
       filter: {
         companyUid: user.company.uid,
         categoryType: 'LVC02',
-        find: this.state.search,
-        findBy: undefined,
         direction: 'ascending',
         orderBy: 'name',
-        size: undefined
       }
     });
   }};

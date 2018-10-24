@@ -1,14 +1,13 @@
 import { SelectSystem, SelectSystemOption } from '@common/components/select';
 import { FormMode } from '@generic/types';
-import { FieldInputLeave } from '@layout/components/formFields/FieldInputLeave';
+// import { FieldInputLeave } from '@layout/components/formFields/FieldInputLeave';
 import { InputDate } from '@layout/components/input/date';
 import { InputText } from '@layout/components/input/text';
 import { RequestDetailFormView } from '@leave/components/request/editor/forms/RequestDetailFormView';
-// import { InputLeave } from '@lookup/components/leave/input';
+import { InputLeave } from '@lookup/components/leave/input';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose, HandleCreators, withHandlers } from 'recompose';
 import { BaseFieldsProps } from 'redux-form';
-// import { isNullOrUndefined } from 'util';
 
 interface OwnProps {
   formMode: FormMode;
@@ -60,7 +59,7 @@ const handlerCreators: HandleCreators<RequestDetailFormProps, OwnHandlers> = {
           required: false,
           disabled: !isRegularType,
           placeholder: intl.formatMessage({id: `leave.field.${name}.placeholder`}),
-          component: FieldInputLeave
+          component: isRegularType ? InputLeave : InputText,
         };
         break;
       
