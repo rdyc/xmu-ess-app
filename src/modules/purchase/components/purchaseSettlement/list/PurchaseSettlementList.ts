@@ -149,8 +149,8 @@ const lifecycles: ReactLifeCycleFunctions<PurchaseSettlementListProps, OwnState>
     layoutDispatch.changeView({
       uid: AppMenu.PurchaseSettlementRequest,
       parentUid: AppMenu.Purchase,
-      title: intl.formatMessage({id: 'purchase.title'}),
-      subTitle : intl.formatMessage({id: 'purchase.subTitle'})
+      title: intl.formatMessage({id: 'purchasesettlement.title'}),
+      subTitle: intl.formatMessage({ id: 'purchasesettlement.subTitle'})
     });
 
     layoutDispatch.modeListOn();

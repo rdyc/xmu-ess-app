@@ -147,8 +147,8 @@ const lifecycles: ReactLifeCycleFunctions<PurchaseApprovalDetailProps, OwnState>
     layoutDispatch.changeView({
       uid: AppMenu.PurchaseApproval,
       parentUid: AppMenu.Purchase,
-      title: intl.formatMessage({ id: 'purchase.detail.title' }),
-      subTitle: intl.formatMessage({ id: 'purchase.detail.subTitle' })
+      title: intl.formatMessage({ id: 'purchaseapproval.detail.title' }),
+      subTitle: intl.formatMessage({ id: 'purchaseapproval.detail.subTitle' })
     });
 
     layoutDispatch.navBackShow();

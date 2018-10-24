@@ -63,14 +63,14 @@ export const SettlementApprovalDetailView: React.SFC<SettlementApprovalDetailPro
           fullWidth
           contentEditable={false}
           margin="normal"
-          label={<FormattedMessage id="purchase.field.uid" />}
+          label={<FormattedMessage id="purchase.field.information.uid" />}
           value={purchase.uid}
         />
         <TextField
           fullWidth
           contentEditable={false}
           margin="normal"
-          label={<FormattedMessage id="purchase.field.date" />}
+          label={<FormattedMessage id="purchase.field.information.date" />}
           value={purchase.date ?
             intl.formatDate(purchase.date, {
               year: 'numeric',
@@ -82,84 +82,84 @@ export const SettlementApprovalDetailView: React.SFC<SettlementApprovalDetailPro
           fullWidth
           contentEditable={false}
           margin="normal"
-          label={<FormattedMessage id="purchase.field.createdBy" />}
+          label={<FormattedMessage id="purchase.field.information.createdBy" />}
           value={purchase.changes && purchase.changes.created && purchase.changes.created.fullName ? purchase.changes.created.fullName : 'N/A'}
         />
         <TextField
           fullWidth
           contentEditable={false}
           margin="normal"
-          label={<FormattedMessage id="purchase.field.advance" />}
+          label={<FormattedMessage id="purchase.field.information.advance" />}
           value={(purchase.advance || purchase.advance !== 0 ) ? purchase.advance : 'N/A'}
         />
         <TextField
           fullWidth
           contentEditable={false}
           margin="normal"
-          label={<FormattedMessage id="purchase.field.project" />}
+          label={<FormattedMessage id="purchase.field.information.project" />}
           value={purchase.project ? `${purchase.project.uid} - ${purchase.project.name}` : 'N/A'}
         />
         <TextField
           fullWidth
           contentEditable={false}
           margin="normal"
-          label={<FormattedMessage id="purchase.field.customer" />}
+          label={<FormattedMessage id="purchase.field.information.customer" />}
           value={purchase.customer ? purchase.customer.name : 'N/A'}
         />
         <TextField
           fullWidth
           contentEditable={false}
           margin="normal"
-          label={<FormattedMessage id="purchase.field.request" />}
+          label={<FormattedMessage id="purchase.field.information.request" />}
           value={intl.formatNumber(purchase.request)}
         />
         <TextField
           fullWidth
           contentEditable={false}
           margin="normal"
-          label={<FormattedMessage id="purchase.field.requestIDR" />}
+          label={<FormattedMessage id="purchase.field.information.requestIDR" />}
           value={intl.formatNumber(purchase.requestInIDR)}
         />
         <TextField
           fullWidth
           contentEditable={false}
           margin="normal"
-          label={<FormattedMessage id="purchase.field.actual" />}
+          label={<FormattedMessage id="purchase.field.information.actual" />}
           value={intl.formatNumber(purchase.actual)}
         />
         <TextField
           fullWidth
           contentEditable={false}
           margin="normal"
-          label={<FormattedMessage id="purchase.field.actualIDR" />}
+          label={<FormattedMessage id="purchase.field.information.actualIDR" />}
           value={intl.formatNumber(purchase.actualInIDR)}
         />
         <TextField
           fullWidth
           contentEditable={false}
           margin="normal"
-          label={<FormattedMessage id="purchase.field.difference" />}
+          label={<FormattedMessage id="purchase.field.information.difference" />}
           value={intl.formatNumber(purchase.difference)}
         />
         <TextField
           fullWidth
           contentEditable={false}
           margin="normal"
-          label={<FormattedMessage id="purchase.field.differenceIDR" />}
+          label={<FormattedMessage id="purchase.field.information.differenceIDR" />}
           value={intl.formatNumber(purchase.differenceInIDR || 0)}
         />
         <TextField
           fullWidth
           contentEditable={false}
           margin="normal"
-          label={<FormattedMessage id="purchase.field.notes" />}
+          label={<FormattedMessage id="purchase.field.information.notes" />}
           value={purchase.notes || 'N/A'}
         />
         <TextField
           fullWidth
           contentEditable={false}
           margin="normal"
-          label={<FormattedMessage id="purchase.field.status" />}
+          label={<FormattedMessage id="purchase.field.information.status" />}
           value={purchase.status ? purchase.status.value : 'N/A'}
         />
         {!isNullOrUndefined(purchase.reject) ?
@@ -167,7 +167,7 @@ export const SettlementApprovalDetailView: React.SFC<SettlementApprovalDetailPro
             fullWidth
             contentEditable={false}
             margin="normal"
-            label={<FormattedMessage id="purchase.field.rejectedReason" />}
+            label={<FormattedMessage id="purchase.field.information.rejectedReason" />}
             value={purchase.reject || 'N/A'}
           /> : ''
         }

@@ -43,7 +43,7 @@ export const PurchaseRequestListView: React.SFC<PurchaseRequestListProps> = prop
                   color="textSecondary"
                   variant="caption"
                 >
-                  {purchase.projectUid} &bull; {purchase.project && purchase.project.name} &bull; &nbsp;
+                  {purchase.notes} &bull; {purchase.currency && purchase.currency.value} {purchase.advance ? purchase.advance : '0' } &bull; &nbsp;
                   <FormattedDate
                     year="numeric"
                     month="short"

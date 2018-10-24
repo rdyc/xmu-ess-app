@@ -59,8 +59,8 @@ export const PurchaseSettlementDetailView: React.SFC<PurchaseSettlementDetailPro
   const renderDetail = (purchase: ISettlementDetail) => (
     <Card square>
       <CardHeader 
-        title={<FormattedMessage id="purchase.infoTitle"/>}
-        subheader={<FormattedMessage id="purchase.infoSubTitle" />}
+        title={<FormattedMessage id="purchasesettlement.infoTitle"/>}
+        subheader={<FormattedMessage id="purchasesettlement.infoSubTitle" />}
       />
       <CardContent>
         <TextField
@@ -88,14 +88,14 @@ export const PurchaseSettlementDetailView: React.SFC<PurchaseSettlementDetailPro
           fullWidth
           contentEditable={false}
           margin="normal"
-          label={<FormattedMessage id="purhcase.field.information.createdBy" />}
+          label={<FormattedMessage id="purchase.field.information.createdBy" />}
           value={purchase.changes.created ? purchase.changes.created.fullName : 'N/A'}
         />
         <TextField
           fullWidth
           contentEditable={false}
           margin="normal"
-          label={<FormattedMessage id="purchase.field.information.date" />}
+          label={<FormattedMessage id="purchase.field.information.settlementdate" />}
           value={intl.formatDate(purchase.date, {
             year: 'numeric',
             month: 'short',
@@ -114,7 +114,7 @@ export const PurchaseSettlementDetailView: React.SFC<PurchaseSettlementDetailPro
           contentEditable={false}
           margin="normal"
           label={<FormattedMessage id="purchase.field.information.rate" />}
-          value={intl.formatNumber(purchase.rate || 0)}
+          value={intl.formatNumber(purchase.rate)}
         />
         <TextField
           fullWidth
@@ -128,20 +128,20 @@ export const PurchaseSettlementDetailView: React.SFC<PurchaseSettlementDetailPro
           contentEditable={false}
           margin="normal"
           label={<FormattedMessage id="purchase.field.information.requestIDR" />}
-          value={intl.formatNumber(purchase.requestInIDR || 0)}
+          value={intl.formatNumber(purchase.requestInIDR)}
         />
         <TextField
           fullWidth
           contentEditable={false}
           margin="normal"
-          label={<FormattedMessage id="purchase.field.actual" />}
+          label={<FormattedMessage id="purchase.field.information.actual" />}
           value={intl.formatNumber(purchase.actual)}
         />
         <TextField
           fullWidth
           contentEditable={false}
           margin="normal"
-          label={<FormattedMessage id="purchase.field.actualIDR" />}
+          label={<FormattedMessage id="purchase.field.information.actualIDR" />}
           value={intl.formatNumber(purchase.actualInIDR)}
         />
         <TextField
@@ -162,14 +162,14 @@ export const PurchaseSettlementDetailView: React.SFC<PurchaseSettlementDetailPro
           fullWidth
           contentEditable={false}
           margin="normal"
-          label={<FormattedMessage id="purchase.field.difference" />}
+          label={<FormattedMessage id="purchase.field.information.difference" />}
           value={intl.formatNumber(purchase.difference)}
         />
         <TextField
           fullWidth
           contentEditable={false}
           margin="normal"
-          label={<FormattedMessage id="purchase.field.differenceIDR" />}
+          label={<FormattedMessage id="purchase.field.information.differenceIDR" />}
           value={intl.formatNumber(purchase.differenceInIDR)}
         />
         {!isNullOrUndefined(purchase.notes) ?

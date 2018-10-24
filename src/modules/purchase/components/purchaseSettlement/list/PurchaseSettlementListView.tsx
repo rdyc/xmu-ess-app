@@ -29,7 +29,7 @@ export const PurchaseSettlementListView: React.SFC<PurchaseSettlementListProps> 
                   color="primary"
                   variant="body2"
                 >
-                  {purchase.uid}  &bull; {purchase.currency && purchase.currency.value} {purchase.request}
+                  {purchase.uid}  &bull; {purchase.currency && purchase.currency.value} {purchase.actual}
                 </Typography>
                 <Typography
                   noWrap
@@ -43,7 +43,7 @@ export const PurchaseSettlementListView: React.SFC<PurchaseSettlementListProps> 
                   color="textSecondary"
                   variant="caption"
                 >
-                  {purchase.projectUid} &bull; {purchase.project && purchase.project.name} &bull; &nbsp;
+                  {purchase.currency && purchase.currency.value} {purchase.advance} &bull; &nbsp;
                   <FormattedDate
                     year="numeric"
                     month="short"

@@ -147,8 +147,8 @@ const lifecycles: ReactLifeCycleFunctions<PurchaseSettlementDetailProps, OwnStat
     layoutDispatch.changeView({
       uid: AppMenu.PurchaseSettlementRequest,
       parentUid: AppMenu.Purchase,
-      title: intl.formatMessage({ id: 'purchase.detail.title' }),
-      subTitle: intl.formatMessage({ id: 'purchase.detail.subTitle' })
+      title: intl.formatMessage({ id: 'purchasesettlement.detail.title' }),
+      subTitle: intl.formatMessage({ id: 'purchasesettlement.detail.subTitle' })
     });
 
     layoutDispatch.navBackShow();

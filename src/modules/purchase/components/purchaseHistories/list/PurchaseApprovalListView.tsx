@@ -29,7 +29,7 @@ export const PurchaseApprovalListView: React.SFC<PurchaseApprovalListProps> = pr
                   color="primary" 
                   variant="body2"
                 >
-                  {purchase.notes}
+                  {purchase.uid} &bull; {purchase.notes}
                 </Typography>
                 <Typography 
                   noWrap
@@ -43,7 +43,7 @@ export const PurchaseApprovalListView: React.SFC<PurchaseApprovalListProps> = pr
                   color="textSecondary" 
                   variant="caption"
                 >
-                  {purchase.uid} &bull; {purchase.advance} &bull; &nbsp;
+                  {purchase.advance} &bull; &nbsp;
                   <FormattedDate 
                     year="numeric"
                     month="short"
