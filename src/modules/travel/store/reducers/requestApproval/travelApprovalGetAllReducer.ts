@@ -1,5 +1,5 @@
 import { IQueryCollectionState } from '@generic/interfaces';
-import { ITravelApprovalGetAllRequest } from '@travel/classes/queries/ITravelApprovalGetAllRequest';
+import { ITravelApprovalGetAllRequest } from '@travel/classes/queries/requestApproval/ITravelApprovalGetAllRequest';
 import { ITravelRequest } from '@travel/classes/response';
 import { TravelApprovalAction as Action } from '@travel/store/actions';
 import { Reducer } from 'redux';

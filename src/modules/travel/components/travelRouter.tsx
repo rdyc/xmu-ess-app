@@ -35,6 +35,5 @@ export const travelRouter: React.SFC<AllProps> = props => (
 export const travelApprovalRouter: React.SFC<AllProps> = props => (
   <Switch>
     <Route path={`${props.match.path}/request`} component={approvalListComponent} />
-    <Route path={`${props.match.path}/details/:travelUid`} component={approvalListComponent} />
   </Switch>
 );

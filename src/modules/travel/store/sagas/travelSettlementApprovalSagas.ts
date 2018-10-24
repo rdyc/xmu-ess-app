@@ -1,31 +1,31 @@
 import { layoutAlertAdd, listBarLoading, listBarMetadata } from '@layout/store/actions';
 import {
-  TravelApprovalAction as Action,
-  travelApprovalGetAllError,
-  travelApprovalGetAllRequest,
-  travelApprovalGetAllSuccess,
-  travelApprovalGetByIdError,
-  travelApprovalGetByIdRequest,
-  travelApprovalGetByIdSuccess,
-  travelApprovalPostError,
-  travelApprovalPostRequest,
-  travelApprovalPostSuccess,
+  TravelSettlementApprovalAction as Action,
+  travelSettlementApprovalGetAllError,
+  travelSettlementApprovalGetAllRequest,
+  travelSettlementApprovalGetAllSuccess,
+  travelSettlementApprovalGetByIdError,
+  travelSettlementApprovalGetByIdRequest,
+  travelSettlementApprovalGetByIdSuccess,
+  travelSettlementApprovalPostError,
+  travelSettlementApprovalPostRequest,
+  travelSettlementApprovalPostSuccess,
 } from '@travel/store/actions';
 import saiyanSaga from '@utils/saiyanSaga';
 import { all, fork, put, takeEvery } from 'redux-saga/effects';
 import { IApiResponse, objectToQuerystring } from 'utils';
 
 function* watchAllFetchRequest() {
-  const worker = (action: ReturnType<typeof travelApprovalGetAllRequest>) => { 
+  const worker = (action: ReturnType<typeof travelSettlementApprovalGetAllRequest>) => { 
     return saiyanSaga.fetch({
       method: 'get',
       path: `/v1/approvals/travel/settlement${objectToQuerystring(action.payload.filter)}`, 
       successEffects: (response: IApiResponse) => ([
-        put(travelApprovalGetAllSuccess(response.body)),
+        put(travelSettlementApprovalGetAllSuccess(response.body)),
         put(listBarMetadata(response.body.metadata))
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(travelApprovalGetAllError(response.body)),
+        put(travelSettlementApprovalGetAllError(response.body)),
         put(layoutAlertAdd({
           time: new Date(),
           message: response.statusText,
@@ -33,7 +33,7 @@ function* watchAllFetchRequest() {
         })),
       ]), 
       errorEffects: (error: TypeError) => ([
-        put(travelApprovalGetAllError(error.message)),
+        put(travelSettlementApprovalGetAllError(error.message)),
         put(layoutAlertAdd({
           time: new Date(),
           message: error.message
@@ -49,15 +49,15 @@ function* watchAllFetchRequest() {
 }
 
 function* watchByIdFetchRequest() {
-  const worker = (action: ReturnType<typeof travelApprovalGetByIdRequest>) => {
+  const worker = (action: ReturnType<typeof travelSettlementApprovalGetByIdRequest>) => {
     return saiyanSaga.fetch({
       method: 'get',
-      path: `/v1/approvals/travel/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.travelUid}`, 
+      path: `/v1/approvals/travel/settlement/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.travelUid}`, 
       successEffects: (response: IApiResponse) => ([
-        put(travelApprovalGetByIdSuccess(response.body)),
+        put(travelSettlementApprovalGetByIdSuccess(response.body)),
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(travelApprovalGetByIdError(response.statusText)),
+        put(travelSettlementApprovalGetByIdError(response.statusText)),
         put(layoutAlertAdd({
           time: new Date(),
           message: response.statusText,
@@ -65,7 +65,7 @@ function* watchByIdFetchRequest() {
         })),
       ]), 
       errorEffects: (error: TypeError) => ([
-        put(travelApprovalGetByIdError(error.message)),
+        put(travelSettlementApprovalGetByIdError(error.message)),
         put(layoutAlertAdd({
           time: new Date(),
           message: error.message
@@ -78,16 +78,16 @@ function* watchByIdFetchRequest() {
 }
 
 function* watchPostFetchRequest() {
-  const worker = (action: ReturnType<typeof travelApprovalPostRequest>) => {
+  const worker = (action: ReturnType<typeof travelSettlementApprovalPostRequest>) => {
     return saiyanSaga.fetch({
       method: 'post',
-      path: `/v1/approvals/travel/${action.payload.companyUid}/${action.payload.positionUid}`, 
+      path: `/v1/approvals/travel/settlement/${action.payload.companyUid}/${action.payload.positionUid}`, 
       payload: action.payload.data, 
       successEffects: (response: IApiResponse) => ([
-        put(travelApprovalPostSuccess(response.body)),
+        put(travelSettlementApprovalPostSuccess(response.body)),
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(travelApprovalPostError(response.statusText)),
+        put(travelSettlementApprovalPostError(response.statusText)),
         put(layoutAlertAdd({
           time: new Date(),
           message: response.statusText,
@@ -95,7 +95,7 @@ function* watchPostFetchRequest() {
         })),
       ]), 
       errorEffects: (error: TypeError) => ([
-        put(travelApprovalPostError(error.message)),
+        put(travelSettlementApprovalPostError(error.message)),
         put(layoutAlertAdd({
           time: new Date(),
           message: error.message
@@ -107,7 +107,7 @@ function* watchPostFetchRequest() {
   yield takeEvery(Action.POST_REQUEST, worker);
 }
 
-function* travelApprovalSagas() {
+function* travelSettlementApprovalSagas() {
   yield all([
     fork(watchAllFetchRequest),
     fork(watchByIdFetchRequest),
@@ -115,4 +115,4 @@ function* travelApprovalSagas() {
   ]);
 }
 
-export default travelApprovalSagas;
+export default travelSettlementApprovalSagas;

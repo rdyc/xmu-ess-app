@@ -1,5 +1,5 @@
 import { IQueryCollectionState } from '@generic/interfaces';
-import { ITravelSettlementGetAllRequest } from '@travel/classes/queries';
+import { ITravelSettlementGetAllRequest } from '@travel/classes/queries/settlement';
 import { ITravelSettlement } from '@travel/classes/response';
 import { TravelSettlementAction as Action } from '@travel/store/actions';
 import { Reducer } from 'redux';

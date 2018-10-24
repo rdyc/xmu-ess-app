@@ -3,11 +3,13 @@ import {
   travelGetByIdReducer,
   travelPostReducer,
   travelPutReducer,
+} from '@travel/store/reducers';
+import { 
   travelSettlementGetAllReducer,
   travelSettlementGetByIdReducer,
   travelSettlementPostReducer,
   travelSettlementPutReducer,
-} from '@travel/store/reducers';
+} from '@travel/store/reducers/settlement';
 import { 
   travelApprovalGetAllReducer, 
   travelApprovalGetByIdReducer, 

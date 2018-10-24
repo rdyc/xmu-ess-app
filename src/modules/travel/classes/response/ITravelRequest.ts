@@ -1,7 +1,7 @@
 import { IAccountEmployee } from '@account/classes';
 import { ICommonSystem } from '@common/classes';
 import { IBaseChanges } from '@generic/interfaces';
-import { ILookupCustomer } from '@lookup/classes';
+import { ILookupCustomer, ILookupPosition } from '@lookup/classes';
 import { IProject, IProjectSite } from '@project/classes/response';
 
 export interface ITravelRequest {
@@ -9,7 +9,7 @@ export interface ITravelRequest {
   employeeUid: string;
   employee: IAccountEmployee | null;
   positionUid: string;
-  // position: ILookupPosition | null;
+  position: ILookupPosition | null;
   destinationType: string;
   destination: ICommonSystem | null;
   start: string;

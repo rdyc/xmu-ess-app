@@ -1,5 +1,5 @@
 import { IQuerySingleState } from '@generic/interfaces';
-import { ITravelSettlementPostRequest } from '@travel/classes/queries';
+import { ITravelSettlementPostRequest } from '@travel/classes/queries/settlement';
 import { ITravelSettlement } from '@travel/classes/response';
 import { TravelAction as Action } from '@travel/store/actions';
 import { Reducer } from 'redux';
