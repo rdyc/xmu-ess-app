@@ -18,7 +18,8 @@ const settings: UserManagerSettings = {
   monitorSession: true,
   userStore: new WebStorageStateStore({
     store: localStorage
-  })
+  }),
+  clockSkew: 900 // 15 mins 
 };
 
 export const AppUserManager = createUserManager(settings);
