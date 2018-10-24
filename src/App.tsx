@@ -4,6 +4,7 @@ import Layout from '@layout/components/base/Layout';
 import { HomePage } from '@layout/pages';
 import AccessWizardPage from '@layout/pages/AccessWizardPage';
 import CallbackPage from '@layout/pages/CallbackPage';
+import { approvalRouter, leaveRouter } from '@leave/components/leaveRouter';
 import { projectRouter } from '@project/components/projectRouter';
 import { purchaseApprovalRouter, purchaseRouter, purchaseSettlementApprovalRouter, purchaseSettlementRouter } from '@purchase/components/PurchaseRouter';
 import { ConnectedRouter } from 'connected-react-router';
@@ -32,12 +33,14 @@ interface OwnProps {
 type AllProps = PropsFromState & OwnProps;
 
 class App extends React.Component<AllProps> {
-  public componentDidMount() {
+  public componentWillMount() {
+    // load odic user state
+    loadUser(rootStore, AppUserManager);
+
+    // add oidc events
     AppUserManager.events.addSilentRenewError((error) => {
       console.error('error while renewing the access token', error);
     });
-
-    loadUser(rootStore, AppUserManager);
   }
 
   public render() {   
@@ -79,6 +82,8 @@ class App extends React.Component<AllProps> {
                       <Layout>
                         <Route path="/home" component={HomePage} />
                         <Route path="/account" component={accountRouter} />
+                        <Route path="/leave" component={leaveRouter} />
+                        <Route path="/approval/leave" component={approvalRouter} />
                         <Route path="/project" component={projectRouter} />
                         <Route path="/purchase/request" component={purchaseRouter} />
                         <Route path="/approval/purchase/request" component={purchaseApprovalRouter} />

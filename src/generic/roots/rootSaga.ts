@@ -1,3 +1,4 @@
+import accountEmployeeLeaveSagas from '@account/store/sagas/accountEmployeeLeaveSagas';
 import accountEmployeeSagas from '@account/store/sagas/accountEmployeeSagas';
 import employeeMySagas from '@account/store/sagas/employeeMySagas';
 import employeeProfileSagas from '@account/store/sagas/employeeProfileSagas';
@@ -5,12 +6,14 @@ import commonActivitySagas from '@common/store/sagas/activitySagas';
 import commonCurrencySagas from '@common/store/sagas/currencySagas';
 import commonDocumentPresalesSagas from '@common/store/sagas/documentPresalesSagas';
 import commonDocumentSagas from '@common/store/sagas/documentSagas';
+import commonLeaveSagas from '@common/store/sagas/leaveSagas';
 import commonProjectSagas from '@common/store/sagas/projectSagas';
 import commonSiteSagas from '@common/store/sagas/siteSagas';
-import commonSystemSagas from '@common/store/sagas/systemSagas';
+import commonStatusSagas from '@common/store/sagas/statusSagas';
 import expenseSagas from '@expense/store/sagas/expenseSagas';
 import financeSagas from '@finance/store/sagas/financeSagas';
 import commonNotificationSagas from '@layout/store/sagas/notificationSagas';
+import leaveApprovalSagas from '@leave/store/sagas/leaveApprovalSagas';
 import leaveRequestSagas from '@leave/store/sagas/leaveRequestSagas';
 import lookupCompanySagas from '@lookup/store/sagas/companySagas';
 import lookupCurrencySagas from '@lookup/store/sagas/currencySagas';
@@ -27,6 +30,8 @@ import mileageApprovalSagas from '@mileage/store/sagas/mileageApprovalSagas';
 import mileageRequestSagas from '@mileage/store/sagas/mileageRequestSagas';
 import projectOwnerSagas from '@project/store/sagas/projectOwnerSagas';
 import projectRegistrationSagas from '@project/store/sagas/projectRegistrationSagas';
+import projectSiteSagas from '@project/store/sagas/projectSiteSagas';
+import projectStatusSagas from '@project/store/sagas/projectStatusSagas';
 import purchaseSagas from '@purchase/store/sagas/purchaseSagas';
 import timesheetSagas from '@timesheet/store/sagas/timesheetSagas';
 import travelSagas from '@travel/store/sagas/travelSagas';
@@ -36,13 +41,15 @@ import { all, fork } from 'redux-saga/effects';
 export function* rootSaga() {
   yield all([
     // common
-    fork(commonSystemSagas),
+    fork(commonStatusSagas),
     fork(commonActivitySagas),
     fork(commonCurrencySagas),
     fork(commonDocumentSagas),
     fork(commonDocumentPresalesSagas),
+    fork(commonLeaveSagas),
     fork(commonProjectSagas),
     fork(commonSiteSagas),
+    fork(commonStatusSagas),
     fork(commonNotificationSagas),
 
     // lookup
@@ -60,12 +67,15 @@ export function* rootSaga() {
     
     // account
     fork(accountEmployeeSagas),
+    fork(accountEmployeeLeaveSagas),
     fork(employeeMySagas),
     fork(employeeProfileSagas),
 
     // project
     fork(projectRegistrationSagas),
     fork(projectOwnerSagas),
+    fork(projectStatusSagas),
+    fork(projectSiteSagas),
     
     // timesheet
     fork(timesheetSagas),
@@ -88,6 +98,7 @@ export function* rootSaga() {
     fork(financeSagas),
     
     // leave
-    fork(leaveRequestSagas)
+    fork(leaveRequestSagas),
+    fork(leaveApprovalSagas)
   ]);
 }
