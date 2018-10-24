@@ -120,7 +120,7 @@ const handlerCreators: HandleCreators<OwnerEditorProps, OwnHandlers> = {
     
     let message: string = '';
 
-    if (formMode === FormMode.New) {
+    if (formMode === FormMode.Edit) {
       message = intl.formatMessage(projectOwnerMessage.updateSuccess);
     }
 
@@ -130,7 +130,7 @@ const handlerCreators: HandleCreators<OwnerEditorProps, OwnHandlers> = {
     });
 
     if (projectUid) {
-      history.push(`/project/detail/${projectUid}`);
+      history.push(`/project/details/${projectUid}`);
     }
   },
   handleSubmitFail: (props: OwnerEditorProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
@@ -153,9 +153,14 @@ const handlerCreators: HandleCreators<OwnerEditorProps, OwnHandlers> = {
   }
 };
 
-const createProps: mapper<OwnerEditorProps, OwnState> = (props: OwnerEditorProps): OwnState => ({ 
-  formMode: FormMode.Edit
-});
+const createProps: mapper<OwnerEditorProps, OwnState> = (props: OwnerEditorProps): OwnState => {
+  const { history } = props;
+  
+  return { 
+    formMode: FormMode.Edit,
+    projectUid: history.location.state.uid
+  };
+};
 
 const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
   stateUpdate: (prevState: OwnState) => (newState: any) => ({
@@ -166,7 +171,7 @@ const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
 
 const lifecycles: ReactLifeCycleFunctions<OwnerEditorProps, {}> = {
   componentDidMount() {
-    const { layoutDispatch, stateUpdate, intl, history } = this.props;
+    const { layoutDispatch, intl, history } = this.props;
     const { user } = this.props.userState;
     const { response } = this.props.projectRegisterState.detail;
     const { loadDetailRequest } = this.props.projectRegisterDispatch;
@@ -181,11 +186,6 @@ const lifecycles: ReactLifeCycleFunctions<OwnerEditorProps, {}> = {
     layoutDispatch.navBackShow(); 
 
     if (!isNullOrUndefined(history.location.state) && !response && user) {
-      stateUpdate({ 
-        formMode: FormMode.Edit,
-        projectUid: history.location.state.uid
-      });
-
       loadDetailRequest({
         companyUid: user.company.uid,
         positionUid: user.position.uid,

@@ -7,6 +7,7 @@ import {
   documentPresalesGetListRequest,
   projectGetListRequest,
   siteGetListRequest,
+  statusGetListRequest,
 } from '@common/store/actions';
 import { IAppState, IQueryCollectionState } from '@generic/interfaces';
 import { connect } from 'react-redux';
@@ -22,6 +23,7 @@ interface PropsFromState {
   commonDocumentPresalesListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
   commonProjectListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
   commonSiteListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
+  commonStatusListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
 
   // detail
 }
@@ -37,6 +39,7 @@ interface PropsFromDispatch {
     documentPresalesListRequest: typeof documentPresalesGetListRequest;
     projectListRequest: typeof projectGetListRequest;
     siteListRequest: typeof siteGetListRequest;
+    statusListRequest: typeof statusGetListRequest;
 
     // detail
   };
@@ -50,7 +53,8 @@ const mapStateToProps = ({
   commonDocumentList, 
   commonDocumentPresalesList, 
   commonProjectList,
-  commonSiteList 
+  commonSiteList,
+  commonStatusList,
 }: IAppState) => ({
   // all
   
@@ -61,6 +65,7 @@ const mapStateToProps = ({
   commonDocumentPresalesListState: commonDocumentPresalesList,
   commonProjectListState: commonProjectList,
   commonSiteListState: commonSiteList,
+  commonStatusListState: commonStatusList,
   
   // detail
  
@@ -77,6 +82,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     documentPresalesListRequest: (request: ISystemListRequest) => dispatch(documentPresalesGetListRequest(request)),
     projectListRequest: (request: ISystemListRequest) => dispatch(projectGetListRequest(request)),
     siteListRequest: (request: ISystemListRequest) => dispatch(siteGetListRequest(request)),
+    statusListRequest: (request: ISystemListRequest) => dispatch(statusGetListRequest(request)),
 
     // detail
   }

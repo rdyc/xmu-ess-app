@@ -1,6 +1,6 @@
 import { ISystemListRequest } from '@common/classes/queries';
 import { ISystemList } from '@common/classes/response';
-import { SystemAction as Action } from '@common/store/actions';
+import { StatusAction as Action } from '@common/store/actions';
 import { IQueryCollectionState } from '@generic/interfaces';
 import { Reducer } from 'redux';
 
@@ -23,4 +23,4 @@ const reducer: Reducer<IQueryCollectionState<ISystemListRequest, ISystemList>> =
   }
 };
 
-export { reducer as systemGetListReducer };
+export { reducer as statusGetListReducer };
