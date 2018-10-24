@@ -181,10 +181,7 @@ export const RegistrationDetailView: React.SFC<RegistrationDetailProps> = props 
             {
               response &&
               response.data &&
-              <ProjectInformation 
-                data={response.data}
-                intl={intl}
-              />
+              <ProjectInformation data={response.data}/>
             }
           </Grid>
           
