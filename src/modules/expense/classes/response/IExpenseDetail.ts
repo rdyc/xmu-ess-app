@@ -25,5 +25,5 @@ export interface IExpenseDetail {
   isNotified?: boolean | null;
   histories?: History[] | null;
   workflow?: IOrganizationWorkflow | null;
-  changes?: IBaseChanges | null;
+  changes: IBaseChanges | null;
 }

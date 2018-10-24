@@ -1,3 +1,4 @@
+import accountEmployeeLeaveSagas from '@account/store/sagas/accountEmployeeLeaveSagas';
 import accountEmployeeSagas from '@account/store/sagas/accountEmployeeSagas';
 import employeeMySagas from '@account/store/sagas/employeeMySagas';
 import employeeProfileSagas from '@account/store/sagas/employeeProfileSagas';
@@ -5,12 +6,16 @@ import commonActivitySagas from '@common/store/sagas/activitySagas';
 import commonCurrencySagas from '@common/store/sagas/currencySagas';
 import commonDocumentPresalesSagas from '@common/store/sagas/documentPresalesSagas';
 import commonDocumentSagas from '@common/store/sagas/documentSagas';
+import commonExpenseSagas from '@common/store/sagas/expenseSagas';
+import commonLeaveSagas from '@common/store/sagas/leaveSagas';
 import commonProjectSagas from '@common/store/sagas/projectSagas';
 import commonSiteSagas from '@common/store/sagas/siteSagas';
 import commonStatusSagas from '@common/store/sagas/statusSagas';
-import expenseSagas from '@expense/store/sagas/expenseSagas';
+import expenseApprovalSagas from '@expense/store/sagas/expenseApprovalSagas';
+import expenseSagas from '@expense/store/sagas/expenseRequestSagas';
 import financeSagas from '@finance/store/sagas/financeSagas';
 import commonNotificationSagas from '@layout/store/sagas/notificationSagas';
+import leaveApprovalSagas from '@leave/store/sagas/leaveApprovalSagas';
 import leaveRequestSagas from '@leave/store/sagas/leaveRequestSagas';
 import lookupCompanySagas from '@lookup/store/sagas/companySagas';
 import lookupCurrencySagas from '@lookup/store/sagas/currencySagas';
@@ -43,8 +48,10 @@ export function* rootSaga() {
     fork(commonCurrencySagas),
     fork(commonDocumentSagas),
     fork(commonDocumentPresalesSagas),
+    fork(commonLeaveSagas),
     fork(commonProjectSagas),
     fork(commonSiteSagas),
+    fork(commonExpenseSagas),
     fork(commonStatusSagas),
     fork(commonNotificationSagas),
 
@@ -63,6 +70,7 @@ export function* rootSaga() {
     
     // account
     fork(accountEmployeeSagas),
+    fork(accountEmployeeLeaveSagas),
     fork(employeeMySagas),
     fork(employeeProfileSagas),
 
@@ -81,6 +89,7 @@ export function* rootSaga() {
 
     // expense
     fork(expenseSagas),
+    fork(expenseApprovalSagas),
     
     // travel
     fork(travelSagas),
@@ -93,6 +102,7 @@ export function* rootSaga() {
     fork(financeSagas),
     
     // leave
-    fork(leaveRequestSagas)
+    fork(leaveRequestSagas),
+    fork(leaveApprovalSagas)
   ]);
 }

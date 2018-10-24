@@ -223,7 +223,7 @@ const component: React.SFC<AllProps> = props => {
         />
 
         {
-          navBottomState.metadata && 
+          navBottomState.metadata &&
           navBottomState.metadata.paginate &&
           navBottomState.metadata.paginate.next && 
           <BottomNavigationAction 

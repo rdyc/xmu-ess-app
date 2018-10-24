@@ -4,6 +4,7 @@ import Layout from '@layout/components/base/Layout';
 import { HomePage } from '@layout/pages';
 import AccessWizardPage from '@layout/pages/AccessWizardPage';
 import CallbackPage from '@layout/pages/CallbackPage';
+import { approvalRouter, leaveRouter } from '@leave/components/leaveRouter';
 import { LookupRouter } from '@lookup/components/LookupRouter';
 import { MileageApprovalRouter, MileageRequestRouter } from '@mileage/components/MileageRouter';
 import { projectRouter } from '@project/components/projectRouter';
@@ -16,6 +17,7 @@ import { Route, Router, Switch } from 'react-router';
 import { Store } from 'redux';
 import { loadUser, OidcProvider, UserState } from 'redux-oidc';
 
+import { ExpenseApprovalRouter, ExpenseRouter } from '@expense/components/ExpenseRouter';
 import { IAppState } from './generic/interfaces';
 import AppLocale from './language';
 import config, { getCurrentLanguage } from './language/config';
@@ -87,6 +89,11 @@ class App extends React.Component<AllProps> {
                         <Route path="/lookup" component={LookupRouter} />
                         <Route path="/project" component={projectRouter} />
                         <Route path="/approval/mileage" component={MileageApprovalRouter} />
+                        <Route path="/leave" component={leaveRouter} />
+                        <Route path="/approval/leave" component={approvalRouter} />
+                        <Route path="/project" component={projectRouter} />
+                        <Route path="/expense" component={ExpenseRouter} />
+                        <Route path="/approval/expense" component={ExpenseApprovalRouter} />
                       </Layout>
                     </Switch>
                   )}
