@@ -224,8 +224,8 @@ const loadData = (props: RequestApprovalListProps): void => {
         'query.size': size,
         companyUid: undefined,
         positionUid: undefined,
-        customerUid: undefined,
         status: undefined,
+        isNotify: undefined,
         'query.find': undefined,
         'query.findBy': undefined,
       }

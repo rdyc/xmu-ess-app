@@ -1,7 +1,7 @@
 import { IQuerySingleState } from '@generic/interfaces';
 import { ITravelApprovalPostRequest } from '@travel/classes/queries/requestApproval';
 import { ITravelRequest } from '@travel/classes/response';
-import { TravelAction as Action } from '@travel/store/actions';
+import { TravelApprovalAction as Action } from '@travel/store/actions';
 import { Reducer } from 'redux';
 
 const initialState: IQuerySingleState<ITravelApprovalPostRequest, ITravelRequest> = {

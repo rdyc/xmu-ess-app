@@ -23,9 +23,11 @@ const travelReducers = {
   travelSettlementGetById: travelSettlementGetByIdReducer,
   travelSettlementPost: travelSettlementPostReducer,
   travelSettlementPut: travelSettlementPutReducer,
+
   travelApprovalGetAll: travelApprovalGetAllReducer,
   travelApprovalGetById: travelApprovalGetByIdReducer,
   travelApprovalPost: travelApprovalPostReducer,
+  
   travelSettlementApprovalGetAll: travelSettlementApprovalGetAllReducer,
   travelSettlementApprovalGetById: travelSettlementApprovalGetByIdReducer,
   travelSettlementApprovalPost: travelSettlementApprovalPostReducer,

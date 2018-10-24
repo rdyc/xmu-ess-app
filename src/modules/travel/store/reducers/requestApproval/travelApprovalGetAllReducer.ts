@@ -1,7 +1,7 @@
 import { IQueryCollectionState } from '@generic/interfaces';
 import { ITravelApprovalGetAllRequest } from '@travel/classes/queries/ITravelApprovalGetAllRequest';
 import { ITravelRequest } from '@travel/classes/response';
-import { TravelAction as Action } from '@travel/store/actions';
+import { TravelApprovalAction as Action } from '@travel/store/actions';
 import { Reducer } from 'redux';
 
 const initialState: IQueryCollectionState<ITravelApprovalGetAllRequest, ITravelRequest> = {
