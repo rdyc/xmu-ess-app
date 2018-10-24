@@ -1,14 +1,14 @@
 import {
-  SystemAction as Action,
-  systemGetAllError,
-  systemGetAllRequest,
-  systemGetAllSuccess,
-  systemGetByIdError,
-  systemGetByIdRequest,
-  systemGetByIdSuccess,
-  systemGetListError,
-  systemGetListRequest,
-  systemGetListSuccess,
+  StatusAction as Action,
+  statusGetAllError,
+  statusGetAllRequest,
+  statusGetAllSuccess,
+  statusGetByIdError,
+  statusGetByIdRequest,
+  statusGetByIdSuccess,
+  statusGetListError,
+  statusGetListRequest,
+  statusGetListSuccess,
 } from '@common/store/actions';
 import { layoutAlertAdd } from '@layout/store/actions';
 import saiyanSaga from '@utils/saiyanSaga';
@@ -16,15 +16,15 @@ import { all, fork, put, takeEvery } from 'redux-saga/effects';
 import { IApiResponse, objectToQuerystring } from 'utils';
 
 function* watchFetchAllRequest() {
-  const worker = (action: ReturnType<typeof systemGetAllRequest>) => {
+  const worker = (action: ReturnType<typeof statusGetAllRequest>) => {
     return saiyanSaga.fetch({
       method: 'get',
       path: `/v1/common/types/${action.payload.category}${objectToQuerystring(action.payload.filter)}`, 
       successEffects: (response: IApiResponse) => ([
-        put(systemGetAllSuccess(response.body)),
+        put(statusGetAllSuccess(response.body)),
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(systemGetAllError(response.statusText)),
+        put(statusGetAllError(response.statusText)),
         put(layoutAlertAdd({
           time: new Date(),
           message: response.statusText,
@@ -32,7 +32,7 @@ function* watchFetchAllRequest() {
         }))
       ]), 
       errorEffects: (error: TypeError) => ([
-        put(systemGetAllError(error.message)),
+        put(statusGetAllError(error.message)),
         put(layoutAlertAdd({
           time: new Date(),
           message: error.message
@@ -45,15 +45,15 @@ function* watchFetchAllRequest() {
 }
 
 function* watchFetchListRequest() {
-  const worker = (action: ReturnType<typeof systemGetListRequest>) => {
+  const worker = (action: ReturnType<typeof statusGetListRequest>) => {
     return saiyanSaga.fetch({
       method: 'get',
       path: `/v1/common/types/${action.payload.category}/list${objectToQuerystring(action.payload.filter)}`,
       successEffects: (response: IApiResponse) => ([
-        put(systemGetListSuccess(response.body))
+        put(statusGetListSuccess(response.body))
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(systemGetListError(response.statusText)),
+        put(statusGetListError(response.statusText)),
         put(layoutAlertAdd({
           time: new Date(),
           message: response.statusText,
@@ -61,7 +61,7 @@ function* watchFetchListRequest() {
         }))
       ]), 
       errorEffects: (error: TypeError) => ([
-        put(systemGetListError(error.message)),
+        put(statusGetListError(error.message)),
         put(layoutAlertAdd({
           time: new Date(),
           message: error.message
@@ -74,15 +74,15 @@ function* watchFetchListRequest() {
 }
 
 function* watchFetchByIdRequest() {
-  const worker = (action: ReturnType<typeof systemGetByIdRequest>) => {
+  const worker = (action: ReturnType<typeof statusGetByIdRequest>) => {
     return saiyanSaga.fetch({
       method: 'get',
       path: `/v1/common/types/${action.payload.category}/${action.payload.id}`,
       successEffects: (response: IApiResponse) => ([
-        put(systemGetByIdSuccess(response.body)),
+        put(statusGetByIdSuccess(response.body)),
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(systemGetByIdError(response.statusText)),
+        put(statusGetByIdError(response.statusText)),
         put(layoutAlertAdd({
           time: new Date(),
           message: response.statusText,
@@ -90,7 +90,7 @@ function* watchFetchByIdRequest() {
         }))
       ]), 
       errorEffects: (error: TypeError) => ([
-        put(systemGetByIdError(error.message)),
+        put(statusGetByIdError(error.message)),
         put(layoutAlertAdd({
           time: new Date(),
           message: error.message,
@@ -102,7 +102,7 @@ function* watchFetchByIdRequest() {
   yield takeEvery(Action.GET_BY_ID_REQUEST, worker);
 }
 
-function* commonSystemSagas() {
+function* commonStatusSagas() {
   yield all([
     fork(watchFetchAllRequest),
     fork(watchFetchListRequest),
@@ -110,4 +110,4 @@ function* commonSystemSagas() {
   ]);
 }
 
-export default commonSystemSagas;
+export default commonStatusSagas;

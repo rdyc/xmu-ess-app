@@ -1,6 +1,6 @@
 import { ISystemByIdRequest } from '@common/classes/queries';
 import { ISystemDetail } from '@common/classes/response';
-import { SystemAction as Action } from '@common/store/actions';
+import { StatusAction as Action } from '@common/store/actions';
 import { IQuerySingleState } from '@generic/interfaces';
 import { Reducer } from 'redux';
 
@@ -23,4 +23,4 @@ const reducer: Reducer<IQuerySingleState<ISystemByIdRequest, ISystemDetail>> = (
   }
 };
 
-export { reducer as systemGetByIdReducer };
+export { reducer as statusGetByIdReducer };

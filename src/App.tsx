@@ -31,12 +31,14 @@ interface OwnProps {
 type AllProps = PropsFromState & OwnProps;
 
 class App extends React.Component<AllProps> {
-  public componentDidMount() {
+  public componentWillMount() {
+    // load odic user state
+    loadUser(rootStore, AppUserManager);
+
+    // add oidc events
     AppUserManager.events.addSilentRenewError((error) => {
       console.error('error while renewing the access token', error);
     });
-
-    loadUser(rootStore, AppUserManager);
   }
 
   public render() {   

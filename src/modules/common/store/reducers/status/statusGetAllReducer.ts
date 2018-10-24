@@ -1,6 +1,6 @@
 import { ISystemAllRequest } from '@common/classes/queries';
 import { ISystem } from '@common/classes/response';
-import { SystemAction as Action } from '@common/store/actions';
+import { StatusAction as Action } from '@common/store/actions';
 import { IQueryCollectionState } from '@generic/interfaces';
 import { Reducer } from 'redux';
 
@@ -23,4 +23,4 @@ const reducer: Reducer<IQueryCollectionState<ISystemAllRequest, ISystem>> = (sta
   }
 };
 
-export { reducer as systemGetAllReducer };
+export { reducer as statusGetAllReducer };
