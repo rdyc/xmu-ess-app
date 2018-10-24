@@ -6,6 +6,7 @@ import {
   documentGetListRequest,
   documentPresalesGetListRequest,
   expenseGetListRequest,
+  leaveGetListRequest,
   projectGetListRequest,
   siteGetListRequest,
   statusGetListRequest,
@@ -24,6 +25,7 @@ interface PropsFromState {
   commonDocumentPresalesListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
   commonProjectListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
   commonSiteListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
+  commonLeaveListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
   commonExpenseListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
   commonStatusListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
 
@@ -39,9 +41,10 @@ interface PropsFromDispatch {
     currencyListRequest: typeof currencyGetListRequest;
     documentListRequest: typeof documentGetListRequest;
     documentPresalesListRequest: typeof documentPresalesGetListRequest;
+    expenseListRequest: typeof expenseGetListRequest;
     projectListRequest: typeof projectGetListRequest;
     siteListRequest: typeof siteGetListRequest;
-    expenseListRequest: typeof expenseGetListRequest;
+    leaveListRequest: typeof leaveGetListRequest;
     statusListRequest: typeof statusGetListRequest;
 
     // detail
@@ -56,9 +59,10 @@ const mapStateToProps = ({
   commonDocumentList, 
   commonDocumentPresalesList, 
   commonProjectList,
-  commonSiteList,
   commonExpenseList,
-  commonStatusList
+  commonSiteList,
+  commonLeaveList,
+  commonStatusList,
 }: IAppState) => ({
   // all
   
@@ -68,8 +72,9 @@ const mapStateToProps = ({
   commonDocumentListState: commonDocumentList,
   commonDocumentPresalesListState: commonDocumentPresalesList,
   commonProjectListState: commonProjectList,
-  commonSiteListState: commonSiteList,
   commonExpenseListState: commonExpenseList,
+  commonSiteListState: commonSiteList,
+  commonLeaveListState: commonLeaveList,
   commonStatusListState: commonStatusList,
   
   // detail
@@ -86,8 +91,9 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     documentListRequest: (request: ISystemListRequest) => dispatch(documentGetListRequest(request)),
     documentPresalesListRequest: (request: ISystemListRequest) => dispatch(documentPresalesGetListRequest(request)),
     projectListRequest: (request: ISystemListRequest) => dispatch(projectGetListRequest(request)),
-    siteListRequest: (request: ISystemListRequest) => dispatch(siteGetListRequest(request)),
     expenseListRequest: (request: ISystemListRequest) => dispatch(expenseGetListRequest(request)),
+    siteListRequest: (request: ISystemListRequest) => dispatch(siteGetListRequest(request)),
+    leaveListRequest: (request: ISystemListRequest) => dispatch(leaveGetListRequest(request)),
     statusListRequest: (request: ISystemListRequest) => dispatch(statusGetListRequest(request)),
 
     // detail

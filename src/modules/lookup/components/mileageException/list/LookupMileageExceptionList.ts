@@ -152,7 +152,7 @@ const lifecycles: ReactLifeCycleFunctions<LookupMileageExceptionListProps, OwnSt
     const { isLoading, response } = this.props.lookupMileageExceptionState.all;
 
     layoutDispatch.changeView({
-      uid: AppMenu.LookupMileageException,
+      uid: AppMenu.Lookup,
       parentUid: AppMenu.Lookup,
       title: intl.formatMessage({id: 'lookup.mileageException.title'}),
       subTitle : intl.formatMessage({id: 'lookup.mileageException.subTitle'})
@@ -208,7 +208,7 @@ const lifecycles: ReactLifeCycleFunctions<LookupMileageExceptionListProps, OwnSt
     navBottomDispatch.dispose();
 
     // dispose 'get all' from 'redux store' when the page is 'out of lookup mileage exception' context 
-    if (view && view.parentUid !== AppMenu.LookupMileageException) {
+    if (view && view.parentUid !== AppMenu.Lookup) {
       loadAllDispose();
     }
   }

@@ -33,7 +33,6 @@ enum AppMenu {
   PurchaseSettlementApproval = 'MNU38',
   Lookup = 'MNU01',
   LookupApprovalHierarchy = 'MNU04',
-  LookupMileageException = 'MNU59',
   Timesheet = 'MNU09',
   TimesheetRequest = 'MNU10',
   TimesheetApproval = 'MNU11',

@@ -180,7 +180,7 @@ const lifecycles: ReactLifeCycleFunctions<
     const { loadDetailRequest } = this.props.lookupMileageExceptionDispatch;
 
     layoutDispatch.changeView({
-      uid: AppMenu.LookupMileageException,
+      uid: AppMenu.Lookup,
       parentUid: AppMenu.Lookup,
       title: intl.formatMessage({ id: 'lookup.mileageException.detail.title' }),
       subTitle: intl.formatMessage({
