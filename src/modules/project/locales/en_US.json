@@ -119,5 +119,11 @@
   "project.message.owner.update.failure": "Unable to process your submission",
   "project.message.status.emptyProps": "Some props are empty",
   "project.message.status.update.success": "Current project has been {status}",
-  "project.message.status.update.failure": "Unable to process your submission"
+  "project.message.status.update.failure": "Unable to process your submission",
+  "project.message.site.create.success": "New site has been created",
+  "project.message.site.create.failure": "Unable to process your submission",
+  "project.message.site.update.success": "Current site has been updated",
+  "project.message.site.update.failure": "Unable to process your submission",
+  "project.message.site.delete.success": "Current site has been deleted",
+  "project.message.site.delete.failure": "Unable to process your submission"
 }

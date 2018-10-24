@@ -64,7 +64,7 @@ export const SiteEditorView: React.SFC<SiteEditorProps> = props => {
       open={isOpenDialog} 
       fullScreen={isMobile}
     >
-      <DialogTitle>
+      <DialogTitle disableTypography>
         <Typography variant="title" color="primary">
           <FormattedMessage id={dialogTitle()} />
         </Typography>

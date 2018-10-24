@@ -9,6 +9,7 @@ import { IProjectSite } from '@project/classes/response';
 import { WithProjectRegistration, withProjectRegistration } from '@project/hoc/withProjectRegistration';
 import { WithProjectSite, withProjectSite } from '@project/hoc/withProjectSite';
 import { projectOwnerMessage } from '@project/locales/messages/projectOwnerMessage';
+import { projectSiteMessage } from '@project/locales/messages/projectSiteMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import {
@@ -245,14 +246,18 @@ const handlerCreators: HandleCreators<SiteEditorProps, OwnHandlers> = {
     return Promise.reject('nothing to do');
   },
   handleSubmitSuccess: (props: SiteEditorProps) => (response: boolean) => {
-    const { formMode, intl, stateUpdate, match } = props;
+    const { formMode, editAction, intl, stateUpdate, match } = props;
     const { alertAdd } = props.layoutDispatch;
     const { loadRequest } = props.projectSiteDispatch;
 
-    let message: string = intl.formatMessage(projectOwnerMessage.updateSuccess);
+    let message: string = intl.formatMessage(projectSiteMessage.createSuccess);
 
     if (formMode === FormMode.Edit) {
-      message = intl.formatMessage(projectOwnerMessage.updateSuccess);
+      if (editAction && editAction === 'update') {
+        message = intl.formatMessage(projectSiteMessage.updateSuccess);
+      } else {
+        message = intl.formatMessage(projectSiteMessage.deleteSuccess);
+      }
     }
 
     stateUpdate({

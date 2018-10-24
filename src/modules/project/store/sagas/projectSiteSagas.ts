@@ -154,6 +154,9 @@ function* watchDeleteRequest() {
       successEffects: (response: IApiResponse) => [
         put(projectSiteDeleteSuccess(response.body))
       ],
+      successCallback: (response: IApiResponse) => {
+        action.payload.resolve(response.body.data);
+      },
       failureEffects: (response: IApiResponse) => [
         put(projectSiteDeleteError(response.statusText)),
         put(
@@ -164,6 +167,19 @@ function* watchDeleteRequest() {
           })
         )
       ],
+      failureCallback: (response: IApiResponse) => {
+        if (response.status === 400) {
+          const errors: any = { 
+            // information -> based on form section name
+            information: flattenObject(response.body.errors) 
+          };
+          
+          // action.payload.reject(new SubmissionError(response.body.errors));
+          action.payload.reject(new SubmissionError(errors));
+        } else {
+          action.payload.reject(response.statusText);
+        }
+      },
       errorEffects: (error: TypeError) => [
         put(projectSiteDeleteError(error.message)),
         put(
@@ -172,7 +188,10 @@ function* watchDeleteRequest() {
             message: error.message
           })
         )
-      ]
+      ],
+      errorCallback: (error: any) => {
+        action.payload.reject(error);
+      }
     });
   };
 
