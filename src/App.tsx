@@ -2,6 +2,7 @@ import { accountRouter } from '@account/pages';
 import { ExpenseApprovalRouter, ExpenseRouter } from '@expense/components/ExpenseRouter';
 import { rootStore } from '@generic/roots';
 import Layout from '@layout/components/base/Layout';
+import Main from '@layout/components/main/Main';
 import { HomePage } from '@layout/pages';
 import AccessWizardPage from '@layout/pages/AccessWizardPage';
 import CallbackPage from '@layout/pages/CallbackPage';
@@ -48,11 +49,6 @@ class App extends React.Component<AllProps> {
   public render() {   
     const { oidcState, store, history } = this.props;
 
-    const onLogin = (event: any) => {
-      event.preventDefault();
-      AppUserManager.signinRedirect();
-    };
-
     const currentAppLocale = AppLocale[getCurrentLanguage(config.defaultLanguage || 'english').locale];
 
     // wait for user to be loaded, and location is known
@@ -73,7 +69,7 @@ class App extends React.Component<AllProps> {
                 <div>
                   {!oidcState.user && (
                     <div>
-                      <button onClick={onLogin}>Login</button>
+                      <Route exact path="/" component={Main} />
                       <Route path="/callback" component={CallbackPage} />
                     </div>
                   )}
