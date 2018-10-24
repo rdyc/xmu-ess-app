@@ -4,7 +4,7 @@ import {
   mileageApprovalPostReducer,
   mileageRequestGetAllReducer,
   mileageRequestGetByIdReducer,
-  mileageRequestPostReducer
+  mileageRequestPostReducer,
 } from '@mileage/store/reducers';
 
 const mileageReducers = {
