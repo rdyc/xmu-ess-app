@@ -1,6 +1,10 @@
 {
   "mileage.approval.title": "Mileage Approval",
   "mileage.approval.subTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras mollis eros sit amet rhoncus fermentum",
+  "mileage.approval.detail.title": "Detail Approval",
+  "mileage.approval.infoTitle": "Detaiil",
+  "mileage.approval.infoSubTitle": "Lorem Ipsum dolor sit amet,",
+  "mileage.approval.field.uid": "Mileage Approval ID",
 
   "mileage.request.title": "Mileage Request",
   "mileage.request.subTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras mollis eros sit amet rhoncus fermentum",
@@ -25,6 +29,7 @@
   "mileage.request.field.information.month": "Month",
   "mileage.request.field.information.month.required": "Month is required",
   "mileage.request.field.information.month.placeholder": "Select a month",
+  "mileage.request.form.newTitle": "New Mileage Request",
 
   "mileage.message.registration.create.success": "A new PID {uid} has been created",
   "mileage.message.registration.create.failure": "Unable to process your submission",

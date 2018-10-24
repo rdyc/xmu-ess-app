@@ -35,7 +35,6 @@ export const MileageRequestFormView: React.SFC<
             <Fields names={fields} component={componentInformation} />
           </FormSection>
         </Grid>
-        }
         <Grid item xs={12} md={4}>
           <Submission
             valid={props.valid}
