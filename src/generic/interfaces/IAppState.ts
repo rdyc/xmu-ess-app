@@ -11,6 +11,7 @@ import { IMileageState } from '@mileage/classes/states';
 import { IProjectState } from '@project/classes/states';
 import { IPurchaseState } from '@purchase/classes/states';
 import { ITimesheetState } from '@timesheet/classes/states';
+import { ITravelState } from '@travel/classes/states';
 import { FormStateMap } from 'redux-form';
 import { UserState } from 'redux-oidc';
 
@@ -19,10 +20,10 @@ export interface IAppState extends
   ILookupState, 
   IAccountState, 
   IProjectState, 
-  ILeaveState,
   ITimesheetState,
   IFinanceState, 
   IMileageState,
+  ITravelState,
   IExpenseState,
   ILeaveState,
   IPurchaseState,

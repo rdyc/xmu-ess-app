@@ -4,6 +4,7 @@ import enExpenseMessages from '../../modules/expense/locales/en_US.json';
 import enProjectMessages from '../../modules/project/locales/en_US.json';
 import enPurchaseMessages from '../../modules/purchase/locales/en_US.json';
 import enTimesheetMessages from '../../modules/timesheet/locales/en_US.json';
+import enTravelMessages from '../../modules/travel/locales/en_US.json';
 import enMessages from '../locales/en_US.json';
 
 const EnLang = {
@@ -11,6 +12,7 @@ const EnLang = {
     ...enMessages,
     ...enProjectMessages,
     ...enPurchaseMessages,
+    ...enTravelMessages,
     ...enTimesheetMessages,
     ...enExpenseMessages,
   },

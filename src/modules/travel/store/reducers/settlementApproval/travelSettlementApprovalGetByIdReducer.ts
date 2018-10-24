@@ -1,10 +1,10 @@
 import { IQuerySingleState } from '@generic/interfaces';
-import { ITravelSettlementGetByIdRequest } from '@travel/classes/queries';
+import { ITravelSettlementApprovalGetByIdRequest } from '@travel/classes/queries/settlementApproval';
 import { ITravelSettlementDetail } from '@travel/classes/response';
 import { TravelSettlementAction as Action } from '@travel/store/actions';
 import { Reducer } from 'redux';
 
-const initialState: IQuerySingleState<ITravelSettlementGetByIdRequest, ITravelSettlementDetail> = {
+const initialState: IQuerySingleState<ITravelSettlementApprovalGetByIdRequest, ITravelSettlementDetail> = {
   request: undefined,
   response: undefined,
   isError: false,
@@ -12,7 +12,7 @@ const initialState: IQuerySingleState<ITravelSettlementGetByIdRequest, ITravelSe
   errors: undefined,
 };
 
-const reducer: Reducer<IQuerySingleState<ITravelSettlementGetByIdRequest, ITravelSettlementDetail>> = (state = initialState, action) => {
+const reducer: Reducer<IQuerySingleState<ITravelSettlementApprovalGetByIdRequest, ITravelSettlementDetail>> = (state = initialState, action) => {
   switch (action.type) {
     case Action.GET_BY_ID_REQUEST: return { ...state, isLoading: true, request: action.payload };
     case Action.GET_BY_ID_SUCCESS: return { ...state, isLoading: false, response: action.payload };
@@ -23,4 +23,4 @@ const reducer: Reducer<IQuerySingleState<ITravelSettlementGetByIdRequest, ITrave
   }
 };
 
-export { reducer as travelSettlementGetByIdReducer };
+export { reducer as travelSettlementApprovalGetByIdReducer };
