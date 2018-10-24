@@ -7,6 +7,7 @@ import { HomePage } from '@layout/pages';
 import AccessWizardPage from '@layout/pages/AccessWizardPage';
 import CallbackPage from '@layout/pages/CallbackPage';
 import { approvalRouter, leaveRouter } from '@leave/components/leaveRouter';
+import { MileageApprovalRouter, MileageRequestRouter } from '@mileage/components/MileageRouter';
 import { projectRouter } from '@project/components/projectRouter';
 import { purchaseApprovalRouter, purchaseRouter, purchaseSettlementApprovalRouter, purchaseSettlementRouter } from '@purchase/components/PurchaseRouter';
 import { timesheetApprovalRouter, timesheetRouter } from '@timesheet/components/timesheetRouter';
@@ -93,6 +94,8 @@ class App extends React.Component<AllProps> {
                         <Route path="/approval/timesheet" component={timesheetApprovalRouter} />
                         <Route path="/expense" component={ExpenseRouter} />
                         <Route path="/approval/expense" component={ExpenseApprovalRouter} />
+                        <Route path="/mileage" component={MileageRequestRouter} />
+                        <Route path="/approval/mileage" component={MileageApprovalRouter} />
                       </Layout>
                     </Switch>
                   )}
