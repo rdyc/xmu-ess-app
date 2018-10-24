@@ -4,6 +4,6 @@ export interface IPurchaseItemRequest {
   uid: string;
   purchaseUid: string;
   description: string;
-  requestValue: number | null;
+  requestValue: number;
   changes: IBaseChanges | null;
 }

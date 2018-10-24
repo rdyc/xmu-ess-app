@@ -1,10 +1,10 @@
 import { IQuerySingleState } from '@generic/interfaces';
-import { IProject } from '@project/classes/response';
-import { ProjectRegistrationAction as Action } from '@project/store/actions';
 import { IPurchasePutRequest } from '@purchase/classes/queries/purchaseRequest';
+import { IPurchase } from '@purchase/classes/response/purchaseRequest';
+import { PurchaseAction as Action } from '@purchase/store/actions';
 import { Reducer } from 'redux';
 
-const initialState: IQuerySingleState<IPurchasePutRequest, IProject> = {
+const initialState: IQuerySingleState<IPurchasePutRequest, IPurchase> = {
   request: undefined,
   response: undefined,
   isError: false,
@@ -12,7 +12,7 @@ const initialState: IQuerySingleState<IPurchasePutRequest, IProject> = {
   errors: undefined,
 };
 
-const reducer: Reducer<IQuerySingleState<IPurchasePutRequest, IProject>> = (state = initialState, action) => {
+const reducer: Reducer<IQuerySingleState<IPurchasePutRequest, IPurchase>> = (state = initialState, action) => {
   switch (action.type) {
     case Action.PUT_REQUEST: return { ...state, isLoading: true, request: action.payload };
     case Action.PUT_SUCCESS: return { ...state, isLoading: false, response: action.payload };

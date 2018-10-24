@@ -1,6 +1,6 @@
-import { IBasePagingFilter } from '@generic/interfaces';
+import { IBaseQueryPagingFilter } from '@generic/interfaces';
 
-export interface ITimesheetApprovalGetAllFilter extends IBasePagingFilter {
-  readonly companyUid: string | null;
-  readonly status: 'pending' | 'complete' | null;
+export interface ITimesheetApprovalGetAllFilter extends IBaseQueryPagingFilter {
+  readonly companyUid?: string | null;
+  readonly status?: 'pending' | 'complete' | null;
 }

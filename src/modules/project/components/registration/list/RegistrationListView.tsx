@@ -19,7 +19,7 @@ export const RegistrationListView: React.SFC<RegisterListProps> = props => {
         <div key={project.uid}>
           <ListItem 
             button={!isLoading} 
-            key={project.uid} 
+            key={project.uid}
             onClick={() => handleGoToDetail(project.uid)}
           >
             <Grid container spacing={24}>
