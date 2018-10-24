@@ -1,6 +1,7 @@
 import { employeeMyReducer } from '@account/store/reducers';
 import accountReducers from '@account/store/reducers/accountReducers';
 import commonReducers from '@common/store/reducers/commonReducers';
+import expenseReducers from '@expense/store/reducers/expenseReducers';
 import financeReducers from '@finance/store/reducers/financeReducers';
 import { IAppState } from '@generic/interfaces';
 import { appBarReducer, layoutReducer, listBarReducer, notificationReducer } from '@layout/store/reducers';
@@ -32,5 +33,6 @@ export const rootReducer = combineReducers<IAppState>({
   ...leaveReducers,
   ...timesheetReducers,
   ...financeReducers,
+  ...expenseReducers,
   ...mileageReducers,
 });
