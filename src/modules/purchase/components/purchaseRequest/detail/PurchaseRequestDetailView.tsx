@@ -82,7 +82,7 @@ export const PurchaseRequestDetailView: React.SFC<PurchaseRequestDetailProps> = 
           contentEditable={false}
           margin="normal"
           label={<FormattedMessage id="project.field.information.name" />}
-          value={purchase.project ?  purchase.project.name : 'N/A'}
+          value={purchase.project ? `${purchase.project.uid} - ${purchase.project.name}` : 'N/A'}
         />
         <TextField
           fullWidth

@@ -19,7 +19,6 @@ export interface IAppState extends
   ILookupState, 
   IAccountState, 
   IProjectState, 
-  ILeaveState,
   ITimesheetState,
   IFinanceState, 
   IMileageState,
