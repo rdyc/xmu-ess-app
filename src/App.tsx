@@ -17,6 +17,7 @@ import { Store } from 'redux';
 import { loadUser, OidcProvider, UserState } from 'redux-oidc';
 
 import { ExpenseApprovalRouter, ExpenseRouter } from '@expense/components/ExpenseRouter';
+import { timesheetApprovalRouter, timesheetRouter } from '@timesheet/components/timesheetRouter';
 import { IAppState } from './generic/interfaces';
 import AppLocale from './language';
 import config, { getCurrentLanguage } from './language/config';
@@ -90,6 +91,8 @@ class App extends React.Component<AllProps> {
                         <Route path="/approval/purchase/request" component={purchaseApprovalRouter} />
                         <Route path="/purchase/settlement" component={purchaseSettlementRouter} />
                         <Route path="/approval/purchase/settlement" component={purchaseSettlementApprovalRouter} />
+                        <Route path="/timesheet" component={timesheetRouter} />
+                        <Route path="/approval/timesheet" component={timesheetApprovalRouter} />
                         <Route path="/expense" component={ExpenseRouter} />
                         <Route path="/approval/expense" component={ExpenseApprovalRouter} />
                       </Layout>

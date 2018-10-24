@@ -1,7 +1,7 @@
 import { IAccountEmployee } from '@account/classes';
 import { ICommonSystem } from '@common/classes';
 import { IBaseChanges } from '@generic/interfaces';
-import { ILookupCustomer } from '@lookup/classes';
+import { ILookupCustomer, ILookupMileageException } from '@lookup/classes';
 import { IProject, IProjectSite } from '@project/classes/response';
 
 export interface ITimesheet {
@@ -18,7 +18,7 @@ export interface ITimesheet {
   site: IProjectSite | null;
   mileageExceptionUid: string | null;
   value: number;
-  mileageException: string | null; // blm ada
+  mileageException: ILookupMileageException | null;
   date: string;
   start: string;
   end: string;
