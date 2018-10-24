@@ -4,7 +4,7 @@ import {
   ITimesheetGetByIdRequest,
   ITimesheetPostRequest,
   ITimesheetPutRequest,
-} from '@timesheet/classes/queries';
+} from '@timesheet/classes/queries/entry';
 import { ITimesheet, ITimesheetDetail } from '@timesheet/classes/response';
 import { action } from 'typesafe-actions';
 
@@ -13,10 +13,6 @@ export const enum TimesheetAction {
   GET_ALL_SUCCESS = '@@timesheet/GET_ALL_SUCCESS',
   GET_ALL_ERROR = '@@timesheet/GET_ALL_ERROR',
   GET_ALL_DISPOSE = '@@timesheet/GET_ALL_DISPOSE',
-  GET_LIST_REQUEST = '@@timesheet/GET_LIST_REQUEST',
-  GET_LIST_SUCCESS = '@@timesheet/GET_LIST_SUCCESS',
-  GET_LIST_ERROR = '@@timesheet/GET_LIST_ERROR',
-  GET_LIST_DISPOSE = '@@timesheet/GET_LIST_DISPOSE',
   GET_BY_ID_REQUEST = '@@timesheet/GET_BY_ID_REQUEST',
   GET_BY_ID_SUCCESS = '@@timesheet/GET_BY_ID_SUCCESS',
   GET_BY_ID_ERROR = '@@timesheet/GET_BY_ID_ERROR',

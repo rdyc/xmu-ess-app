@@ -10,9 +10,13 @@ import {
   timesheetPostError,
   timesheetPostRequest,
   timesheetPostSuccess,
+  timesheetPutError,
   timesheetPutRequest,
+  timesheetPutSuccess,
 } from '@timesheet/store/actions';
+import { flattenObject } from '@utils/flattenObject';
 import saiyanSaga from '@utils/saiyanSaga';
+import { SubmissionError } from 'redux-form';
 import { all, fork, put, takeEvery } from 'redux-saga/effects';
 import { IApiResponse, objectToQuerystring } from 'utils';
 
@@ -20,7 +24,7 @@ function* watchAllFetchRequest() {
   const worker = (action: ReturnType<typeof timesheetGetAllRequest>) => { 
     return saiyanSaga.fetch({
       method: 'get',
-      path: `/v1/timesheet/report/${action.payload.companyUid}/${action.payload.positionUid}${objectToQuerystring(action.payload.filter)}`, 
+      path: `/v1/timesheet/reports${objectToQuerystring(action.payload.filter)}`, 
       successEffects: (response: IApiResponse) => ([
         put(timesheetGetAllSuccess(response.body)),
         put(listBarMetadata(response.body.metadata))
@@ -82,26 +86,39 @@ function* watchPostFetchRequest() {
   const worker = (action: ReturnType<typeof timesheetPostRequest>) => {
     return saiyanSaga.fetch({
       method: 'post',
-      path: `/v1/timesheet/reports${action.payload.companyUid}/${action.payload.positionUid}`, 
+      path: `/v1/timesheet/reports/${action.payload.companyUid}/${action.payload.positionUid}`, 
       payload: action.payload.data, 
-      successEffects: (response: IApiResponse) => ([
+      successEffects: (response: IApiResponse) => [
         put(timesheetPostSuccess(response.body)),
-      ]), 
-      failureEffects: (response: IApiResponse) => ([
-        put(timesheetPostError(response.statusText)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        })),
-      ]), 
-      errorEffects: (error: TypeError) => ([
+      ],
+      successCallback: (response: IApiResponse) => {
+        action.payload.resolve(response.body.data);
+      }, 
+      failureEffects: (response: IApiResponse) => [
+        put(timesheetPostError(response.statusText))
+      ],
+      failureCallback: (response: IApiResponse) => {
+        if (response.status === 400) {
+          const errors: any = { 
+            // information -> based form section name
+            information: flattenObject(response.body.errors) 
+          };
+
+          action.payload.reject(new SubmissionError(errors));
+        } else {
+          action.payload.reject(response.statusText);
+        }
+      },
+      errorEffects: (error: TypeError) => [
         put(timesheetPostError(error.message)),
         put(layoutAlertAdd({
           time: new Date(),
           message: error.message
         }))
-      ])
+      ],
+      errorCallback: (error: any) => {
+        action.payload.reject(error);
+      }
     });
   };
 
@@ -112,26 +129,40 @@ function* watchPutFetchRequest() {
   const worker = (action: ReturnType<typeof timesheetPutRequest>) => {
     return saiyanSaga.fetch({
       method: 'put',
-      path: `/v1/timesheet/report/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.timesheetUid}`,
+      path: `/v1/timesheet/reports/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.timesheetUid}`,
       payload: action.payload.data, 
       successEffects: (response: IApiResponse) => ([
-        put(timesheetPostSuccess(response.body)),
-      ]), 
+        put(timesheetPutSuccess(response.body)),
+      ]),
+      successCallback: (response: IApiResponse) => {
+        action.payload.resolve(response.body.data);
+      },
       failureEffects: (response: IApiResponse) => ([
-        put(timesheetPostError(response.statusText)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        })),
-      ]), 
-      errorEffects: (error: TypeError) => ([
-        put(timesheetPostError(error.message)),
+        put(timesheetPutError(response.statusText)),
+      ]),
+      failureCallback: (response: IApiResponse) => {
+        if (response.status === 400) {
+          const errors: any = { 
+            // information -> based on form section name
+            information: flattenObject(response.body.errors) 
+          };
+          
+          // action.payload.reject(new SubmissionError(response.body.errors));
+          action.payload.reject(new SubmissionError(errors));
+        } else {
+          action.payload.reject(response.statusText);
+        }
+      }, 
+      errorEffects: (error: TypeError) => [
+        put(timesheetPutError(error.message)),
         put(layoutAlertAdd({
           time: new Date(),
           message: error.message
         }))
-      ])
+      ],
+      errorCallback: (error: any) => {
+        action.payload.reject(error);
+      }
     });
   };
 

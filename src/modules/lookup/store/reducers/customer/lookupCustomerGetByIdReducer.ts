@@ -1,5 +1,5 @@
 import { IQuerySingleState } from '@generic/interfaces';
-import { ILookupCustomerGetDetailRequest } from '@lookup/classes/queries';
+import { ILookupCustomerGetDetailRequest } from '@lookup/classes/queries/customer';
 import { ICustomerDetail } from '@lookup/classes/response';
 import { LookupCustomerAction as Action } from '@lookup/store/actions';
 import { Reducer } from 'redux';
