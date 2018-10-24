@@ -8,7 +8,7 @@ import commonDocumentSagas from '@common/store/sagas/documentSagas';
 import commonExpenseSagas from '@common/store/sagas/expenseSagas';
 import commonProjectSagas from '@common/store/sagas/projectSagas';
 import commonSiteSagas from '@common/store/sagas/siteSagas';
-import commonSystemSagas from '@common/store/sagas/systemSagas';
+import commonStatusSagas from '@common/store/sagas/statusSagas';
 import expenseApprovalSagas from '@expense/store/sagas/expenseApprovalSagas';
 import expenseSagas from '@expense/store/sagas/expenseRequestSagas';
 import financeSagas from '@finance/store/sagas/financeSagas';
@@ -29,6 +29,8 @@ import mileageApprovalSagas from '@mileage/store/sagas/mileageApprovalSagas';
 import mileageRequestSagas from '@mileage/store/sagas/mileageRequestSagas';
 import projectOwnerSagas from '@project/store/sagas/projectOwnerSagas';
 import projectRegistrationSagas from '@project/store/sagas/projectRegistrationSagas';
+import projectSiteSagas from '@project/store/sagas/projectSiteSagas';
+import projectStatusSagas from '@project/store/sagas/projectStatusSagas';
 import purchaseSagas from '@purchase/store/sagas/purchaseSagas';
 import timesheetSagas from '@timesheet/store/sagas/timesheetSagas';
 import travelSagas from '@travel/store/sagas/travelSagas';
@@ -38,14 +40,18 @@ import { all, fork } from 'redux-saga/effects';
 export function* rootSaga() {
   yield all([
     // common
-    fork(commonSystemSagas),
+    fork(commonStatusSagas),
     fork(commonActivitySagas),
     fork(commonCurrencySagas),
     fork(commonDocumentSagas),
     fork(commonDocumentPresalesSagas),
     fork(commonProjectSagas),
     fork(commonSiteSagas),
+<<<<<<< HEAD
     fork(commonExpenseSagas),
+=======
+    fork(commonStatusSagas),
+>>>>>>> origin/develop
     fork(commonNotificationSagas),
 
     // lookup
@@ -69,6 +75,8 @@ export function* rootSaga() {
     // project
     fork(projectRegistrationSagas),
     fork(projectOwnerSagas),
+    fork(projectStatusSagas),
+    fork(projectSiteSagas),
     
     // timesheet
     fork(timesheetSagas),
