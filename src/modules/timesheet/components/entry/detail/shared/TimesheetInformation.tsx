@@ -3,7 +3,6 @@ import { Card, CardContent, CardHeader, TextField } from '@material-ui/core';
 import { ITimesheetDetail } from '@timesheet/classes/response';
 import * as React from 'react';
 import { FormattedMessage, InjectedIntl } from 'react-intl';
-import { isNullOrUndefined } from 'util';
 
 interface OwnProps {
   timesheet: ITimesheetDetail;
@@ -111,7 +110,7 @@ export const TimesheetInformation: React.SFC<OwnProps> = props => {
           label={<FormattedMessage id="timesheet.field.information.description" />}
           value={timesheet.description || 'N/A'}
         />
-        {!isNullOrUndefined(timesheet.notes && WorkflowStatusType.Approved && WorkflowStatusType.Rejected) ?
+        {(timesheet.statusType === WorkflowStatusType.Approved || timesheet.statusType === WorkflowStatusType.Rejected) ?
           <TextField
           fullWidth
           contentEditable={false}
