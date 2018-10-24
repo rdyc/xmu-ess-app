@@ -28,7 +28,8 @@ const approvalDetailComponent = () => (
 
 export const timesheetRouter: React.SFC<AllProps> = props => (
   <Switch>
-    <Route exact path={`${props.match.path}/entry/history`} component={listComponent} />
+    <Route exact path={`${props.match.path}/entry`} component={editorComponent} />
+    <Route path={`${props.match.path}/entry/history`} component={listComponent} />
     <Route path={`${props.match.path}/details/:timesheetUid`} component={detailComponent} />
     <Route path={`${props.match.path}/form`} component={editorComponent} />
   </Switch>
