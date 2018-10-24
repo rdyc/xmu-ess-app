@@ -3,6 +3,7 @@ import { FormMode } from '@generic/types';
 import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
+import withWidth, { WithWidth } from '@material-ui/core/withWidth';
 import { IProjectSitePayload } from '@project/classes/request/site';
 import { IProjectSite } from '@project/classes/response';
 import { WithProjectRegistration, withProjectRegistration } from '@project/hoc/withProjectRegistration';
@@ -29,10 +30,14 @@ import { isNullOrUndefined, isObject } from 'util';
 import { ProjectSiteFormData } from './forms/SiteContainerForm';
 import { SiteEditorView } from './SiteEditorView';
 
+type EditAction = 'update' | 'delete';
+
 interface OwnHandlers {
+  handleMenuOpen: (site: IProjectSite, index: number) => void;
+  handleMenuClose: () => void;
+  handleDialogClose: () => void;
   handleNew: () => void;
-  handleEdit: (site: IProjectSite) => void;
-  handleCancel: () => void;
+  handleEdit: (editAction: EditAction) => void;
   handleValidate: (payload: ProjectSiteFormData) => FormErrors;
   handleSubmit: (payload: ProjectSiteFormData) => void;
   handleSubmitSuccess: (result: any, dispatch: Dispatch<any>) => void;
@@ -45,13 +50,15 @@ interface OwnRouteParams {
 }
 
 interface OwnState {
-  formMode: FormMode;
+  formMode?: FormMode | undefined;
   companyUid?: string | undefined;
   projectUid?: string | undefined;
   siteUid?: string | undefined;
-  isOpen: boolean;
-  editAction?: 'update' | 'delete' | undefined;
+  isOpenDialog: boolean;
+  isOpenMenu: boolean;
+  editAction?: EditAction | undefined;
   initialValues?: ProjectSiteFormData;
+  siteItemIndex?: string | undefined;
 }
 
 interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
@@ -64,6 +71,7 @@ export type SiteEditorProps
   & WithUser
   & WithLayout
   & WithAppBar
+  & WithWidth
   & RouteComponentProps<OwnRouteParams>
   & InjectedIntlProps
   & OwnHandlers
@@ -74,22 +82,59 @@ const createProps: mapper<SiteEditorProps, OwnState> = (props: SiteEditorProps):
   const { match, location } = props;
   
   return { 
-    formMode: location.state.siteUid ? FormMode.Edit : FormMode.New,
     companyUid: match.params.companyUid,
     projectUid: match.params.projectUid,
     siteUid: location.state.siteUid,
-    editAction: 'update',
-    isOpen: false
+    editAction: undefined,
+    isOpenDialog: false,
+    isOpenMenu: false
   };
 };
 
 const handlerCreators: HandleCreators<SiteEditorProps, OwnHandlers> = {
+  handleMenuOpen: (props: SiteEditorProps) => (site: IProjectSite, index: number) => { 
+    const { stateUpdate } = props;
+
+    stateUpdate({
+      siteUid: site.uid,
+      isOpenMenu: true,
+      siteItemIndex: index,
+      initialValues: {
+        information: {
+          name: site.name,
+          siteType: site.siteType,
+          value: site.value,
+        }
+      }
+    });
+  },
+  handleMenuClose: (props: SiteEditorProps) => () => { 
+    const { stateUpdate } = props;
+
+    stateUpdate({
+      siteUid: undefined,
+      isOpenMenu: false,
+      siteItemIndex: undefined,
+      initialValues: undefined
+    });
+  },
+  handleDialogClose: (props: SiteEditorProps) => () => { 
+    const { stateUpdate } = props;
+
+    stateUpdate({
+      isOpenDialog: false,
+      formMode: undefined,
+      editAction: undefined
+    });
+  },
   handleNew: (props: SiteEditorProps) => () => { 
     const { stateUpdate } = props;
 
     stateUpdate({
       formMode: FormMode.New,
-      isOpen: true,
+      isOpenDialog: true,
+      isOpenMenu: false,
+      editAction: undefined,
       siteUid: undefined,
       initialValues: {
         information: {
@@ -100,27 +145,14 @@ const handlerCreators: HandleCreators<SiteEditorProps, OwnHandlers> = {
       }
     });
   },
-  handleEdit: (props: SiteEditorProps) => (site: IProjectSite) => { 
+  handleEdit: (props: SiteEditorProps) => (action: EditAction) => { 
     const { stateUpdate } = props;
 
     stateUpdate({
       formMode: FormMode.Edit,
-      isOpen: true,
-      siteUid: site.uid,
-      initialValues: {
-        information: {
-          name: site.name,
-          siteType: site.siteType,
-          value: site.value,
-        }
-      }
-    });
-  },
-  handleCancel: (props: SiteEditorProps) => () => { 
-    const { stateUpdate } = props;
-
-    stateUpdate({
-      isOpen: false
+      isOpenDialog: true,
+      isOpenMenu: false,
+      editAction: action
     });
   },
   handleValidate: (props: SiteEditorProps) => (formData: ProjectSiteFormData) => { 
@@ -224,7 +256,9 @@ const handlerCreators: HandleCreators<SiteEditorProps, OwnHandlers> = {
     }
 
     stateUpdate({
-      isOpen: false
+      isOpenDialog: false,
+      formMode: undefined,
+      editAction: undefined
     });
 
     alertAdd({
@@ -275,8 +309,8 @@ const lifecycles: ReactLifeCycleFunctions<SiteEditorProps, {}> = {
     layoutDispatch.changeView({
       uid: AppMenu.ProjectRegistrationRequest,
       parentUid: AppMenu.ProjectRegistration,
-      title: intl.formatMessage({id: 'project.form.site.editTitle'}),
-      subTitle : intl.formatMessage({id: 'project.form.site.editSubTitle'})
+      title: intl.formatMessage({id: 'project.page.siteTitle'}),
+      subTitle : intl.formatMessage({id: 'project.page.siteSubTitle'})
     });
     
     layoutDispatch.navBackShow(); 
@@ -287,12 +321,13 @@ const lifecycles: ReactLifeCycleFunctions<SiteEditorProps, {}> = {
         positionUid: user.position.uid,
         projectUid: match.params.projectUid
       });
-
-      loadRequest({
-        companyUid: match.params.companyUid,
-        projectUid: match.params.projectUid
-      });
     }
+
+    // load site
+    loadRequest({
+      companyUid: match.params.companyUid,
+      projectUid: match.params.projectUid
+    });
   },
   componentWillUnmount() {
     const { layoutDispatch, appBarDispatch, projectSiteDispatch } = this.props;
@@ -317,6 +352,7 @@ export const SiteEditor = compose<SiteEditorProps, {}>(
   withRouter,
   withProjectRegistration,
   withProjectSite,
+  withWidth(),
   injectIntl,
   withStateHandlers<OwnState, OwnStateUpdaters, {}>(createProps, stateUpdaters),
   withHandlers<SiteEditorProps, OwnHandlers>(handlerCreators),

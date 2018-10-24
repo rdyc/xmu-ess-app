@@ -1,5 +1,4 @@
 import { SelectSystem, SelectSystemOption } from '@common/components/select';
-import { FormMode } from '@generic/types';
 import { InputNumber } from '@layout/components/input/number';
 import { InputText } from '@layout/components/input/text';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
@@ -9,7 +8,7 @@ import { BaseFieldsProps } from 'redux-form';
 import { SiteDetailFormView } from './SiteDetailFormView';
 
 interface OwnProps {
-  formMode: FormMode;
+  disabledControls: boolean;
   context: BaseFieldsProps;
 }
 
@@ -24,7 +23,7 @@ export type SiteDetailFormProps
 
 const handlerCreators: HandleCreators<SiteDetailFormProps, OwnHandlers> = {
   generateFieldProps: (props: SiteDetailFormProps) => (name: string) => { 
-    const { intl } = props;
+    const { intl, disabledControls } = props;
     
     const fieldName = name.replace('information.', '');
     
@@ -33,6 +32,7 @@ const handlerCreators: HandleCreators<SiteDetailFormProps, OwnHandlers> = {
     switch (fieldName) {
       case 'name': 
         fieldProps = {
+          disabled: disabledControls,
           required: true,
           placeholder: intl.formatMessage({id: `project.site.field.${name}.placeholder`}),
           component: InputText
@@ -41,6 +41,7 @@ const handlerCreators: HandleCreators<SiteDetailFormProps, OwnHandlers> = {
 
       case 'siteType':
         fieldProps = {
+          disabled: disabledControls,
           required: true,
           category: 'site',
           placeholder: intl.formatMessage({id: `project.site.field.${name}.placeholder`}),
@@ -50,6 +51,7 @@ const handlerCreators: HandleCreators<SiteDetailFormProps, OwnHandlers> = {
 
       case 'value':
         fieldProps = {
+          disabled: disabledControls,
           type: 'number',
           placeholder: intl.formatMessage({id: `project.site.field.${name}.placeholder`}),
           component: InputNumber

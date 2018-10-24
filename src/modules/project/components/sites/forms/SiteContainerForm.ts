@@ -1,4 +1,3 @@
-import { FormMode } from '@generic/types';
 import { InjectedFormProps, reduxForm } from 'redux-form';
 
 import { SiteContainerFormView } from './SiteContainerFormView';
@@ -12,7 +11,7 @@ export type ProjectSiteFormData = {
 };
 
 interface OwnProps {
-  formMode: FormMode;
+  formAction: 'update' | 'delete';
 }
 
 export type SiteContainerFormProps 

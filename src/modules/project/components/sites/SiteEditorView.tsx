@@ -1,18 +1,25 @@
 import {
   Button,
   Card,
+  CardActions,
   CardContent,
   CardHeader,
   Dialog,
   DialogActions,
   DialogContent,
-  Divider,
+  DialogTitle,
   Grid,
+  IconButton,
   List,
   ListItem,
+  ListItemSecondaryAction,
   ListItemText,
+  Menu,
+  MenuItem,
   Typography,
 } from '@material-ui/core';
+import { isWidthDown } from '@material-ui/core/withWidth';
+import MoreVertIcon from '@material-ui/icons/MoreVert';
 import * as React from 'react';
 import { FormattedMessage, FormattedNumber } from 'react-intl';
 import { FormInstance } from 'redux-form';
@@ -22,23 +29,55 @@ import { SiteContainerForm } from './forms/SiteContainerForm';
 import { SiteEditorProps } from './SiteEditor';
 
 export const SiteEditorView: React.SFC<SiteEditorProps> = props => {
-  const { initialValues, handleNew, handleEdit, isOpen } = props;
+  const { 
+    width,
+    isOpenDialog, isOpenMenu, siteItemIndex, initialValues, editAction,
+    handleNew, handleEdit, handleMenuOpen, handleMenuClose, 
+  } = props;
   const { response } = props.projectRegisterState.detail;
   const siteResponse = props.projectSiteState.response;
-  const { formMode, handleCancel, handleValidate, handleSubmit, handleSubmitSuccess, handleSubmitFail } = props;
+  const { handleDialogClose, handleValidate, handleSubmit, handleSubmitSuccess, handleSubmitFail } = props;
 
   const ref = React.createRef<FormInstance<any, any, any>>();
+  const isMobile = isWidthDown('sm', width);
+  
+  const dialogTitle = (): string => {
+    switch (editAction) {
+      case 'update': return 'project.form.site.editTitle';
+      case 'delete': return 'project.form.site.deleteTitle';
+    
+      default: return 'project.form.site.addTitle';
+    }
+  };
 
-  // render dialog
+  const dialogSubTitle = (): string => {
+    switch (editAction) {
+      case 'update': return 'project.form.site.editSubTitle';
+      case 'delete': return 'project.form.site.deleteSubTitle';
+    
+      default: return 'project.form.site.addSubTitle';
+    }
+  };
+
   const renderDialog = (
-    <Dialog
-      open={isOpen}
-      aria-labelledby="lookup-customer-dialog-title" 
+    <Dialog 
+      open={isOpenDialog} 
+      fullScreen={isMobile}
     >
+      <DialogTitle>
+        <Typography variant="title" color="primary">
+          <FormattedMessage id={dialogTitle()} />
+        </Typography>
+
+        <Typography variant="subheading">
+        <FormattedMessage id={dialogSubTitle()} />
+        </Typography>
+      </DialogTitle>
+      
       <DialogContent>
         <SiteContainerForm
           ref={ref}
-          formMode={formMode}
+          formAction={editAction ? editAction : 'update'}
           initialValues={initialValues}
           validate={handleValidate}
           onSubmit={handleSubmit} 
@@ -46,19 +85,23 @@ export const SiteEditorView: React.SFC<SiteEditorProps> = props => {
           onSubmitFail={handleSubmitFail}
         />
       </DialogContent>
+      
       <DialogActions>
-        <Button onClick={() => handleCancel()} color="secondary">
+        <Button onClick={() => handleDialogClose()} color="secondary">
           <FormattedMessage id="global.action.discard" />
         </Button>
 
-        <Button 
-          type="button"
-          color="default"
-          onClick={() => ref.current && ref.current.reset()}
-        >
-          <FormattedMessage id={'global.action.reset' }/>
-        </Button>
-        
+        {
+          editAction !== 'delete' &&
+          <Button 
+            type="button"
+            color="secondary"
+            onClick={() => ref.current && ref.current.reset()}
+          >
+            <FormattedMessage id={'global.action.reset' }/>
+          </Button>
+        }
+
         <Button 
           type="submit"
           color="secondary"
@@ -81,16 +124,14 @@ export const SiteEditorView: React.SFC<SiteEditorProps> = props => {
         {
           siteResponse &&
           siteResponse.data &&
-          siteResponse.data.map(item => 
+          siteResponse.data.map((item, index) => 
             <ListItem 
               key={item.uid}
               component="div"
               disableGutters={true}
-              button
-              onClick={() => handleEdit(item)} 
             >
               <Grid container>
-                <Grid item xs={7}>
+                <Grid item xs={6}>
                   <ListItemText
                     primary={item.name} 
                     secondary={item.type ? item.type.value : 'N/A'}
@@ -108,18 +149,43 @@ export const SiteEditorView: React.SFC<SiteEditorProps> = props => {
                   </Typography>
                 </Grid>
               </Grid>
+
+              <ListItemSecondaryAction>
+                <IconButton
+                  id={`site-item-button-${index}`}
+                  color="inherit"
+                  aria-label="More"
+                  onClick={() => handleMenuOpen(item, index)}
+                >
+                  <MoreVertIcon />
+                </IconButton>
+              </ListItemSecondaryAction>
             </ListItem>
           )
         }
-          <Divider/>
         </List>
+
+        <Menu
+          anchorEl={document.getElementById(`site-item-button-${siteItemIndex}`)} 
+          open={isOpenMenu}
+          onClose={handleMenuClose}
+        >
+          <MenuItem onClick={() => handleEdit('update')}>
+            <FormattedMessage id="project.site.action.edit"/>
+          </MenuItem>
+          <MenuItem onClick={() => handleEdit('delete')}>
+            <FormattedMessage id="project.site.action.delete"/>
+          </MenuItem>
+        </Menu>
+      </CardContent>
+      <CardActions>
         <Button 
-          size="small"
+          color="secondary"
           onClick={() => handleNew()}
         >
           <FormattedMessage id="project.site.action.new" />
         </Button>
-      </CardContent>
+      </CardActions>
     </Card>
   );
 

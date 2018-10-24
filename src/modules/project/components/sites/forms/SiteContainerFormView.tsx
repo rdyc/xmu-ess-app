@@ -5,12 +5,12 @@ import { SiteContainerFormProps } from './SiteContainerForm';
 import { SiteDetailForm } from './SiteDetailForm';
 
 export const SiteContainerFormView: React.SFC<SiteContainerFormProps> = props => {
-  const { formMode, initialValues } = props;
+  const { formAction, initialValues } = props;
   const fields = Object.getOwnPropertyNames(initialValues.information);
 
   const componentInformation = (context: BaseFieldsProps) => (
     <SiteDetailForm 
-      formMode={formMode}
+      disabledControls={formAction === 'delete'}
       context={context}
     />
   );
