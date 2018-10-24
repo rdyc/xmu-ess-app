@@ -83,10 +83,10 @@ const handlerCreators: HandleCreators<ApprovalDetailProps, Handler> = {
   handleLeaveRefresh: (props: ApprovalDetailProps) => () => { 
     const { match } = props;
     const { user } = props.userState;
-    const { loadDetailRequest } = props.leaveApprovalDispatch;
+    const { loadDetailApproval } = props.leaveApprovalDispatch;
 
     if (user) {
-      loadDetailRequest({
+      loadDetailApproval({
         leaveUid: match.params.leaveUid,
         companyUid: user.company.uid,
         positionUid: user.position.uid,
@@ -129,7 +129,7 @@ const lifecycles: ReactLifeCycleFunctions<ApprovalDetailProps, OwnState> = {
     } = this.props;
 
     const { user } = this.props.userState;
-    const { loadDetailRequest } = this.props.leaveApprovalDispatch;
+    const { loadDetailApproval } = this.props.leaveApprovalDispatch;
 
     layoutDispatch.changeView({
       uid: AppMenu.LeaveApproval,
@@ -154,7 +154,7 @@ const lifecycles: ReactLifeCycleFunctions<ApprovalDetailProps, OwnState> = {
     appBarDispatch.assignCallback(handleMenuClick);
 
     if (user) {
-      loadDetailRequest({
+      loadDetailApproval({
         leaveUid: match.params.leaveUid,
         companyUid: user.company.uid,
         positionUid: user.position.uid,

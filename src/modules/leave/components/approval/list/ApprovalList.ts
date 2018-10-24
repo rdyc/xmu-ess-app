@@ -72,10 +72,10 @@ const createProps: mapper<ApprovalListProps, OwnState> = (props: ApprovalListPro
   const { request } = props.leaveApprovalState.all;
 
   return { 
-    orderBy: request && request.filter && request.filter.orderBy || orderBy,
-    direction: request && request.filter && request.filter.direction || direction,
-    page: request && request.filter && request.filter.page || page || 1, 
-    size: request && request.filter && request.filter.size || size || 10,
+    orderBy: request && request.filter && request.filter['query.orderBy'] || orderBy,
+    direction: request && request.filter && request.filter['query.direction'] || direction,
+    page: request && request.filter && request.filter['query.page'] || page || 1, 
+    size: request && request.filter && request.filter['query.size'] || size || 10,
   };
 };
 
@@ -212,20 +212,20 @@ const lifecycles: ReactLifeCycleFunctions<ApprovalListProps, OwnState> = {
 const loadData = (props: ApprovalListProps): void => {
   const { orderBy, direction, page, size } = props;
   const { user } = props.userState;
-  const { loadAllRequest } = props.leaveApprovalDispatch;
+  const { loadAllApproval } = props.leaveApprovalDispatch;
   const { alertAdd } = props.layoutDispatch;
 
   if (user) {
-    loadAllRequest({
+    loadAllApproval({
       companyUid: user.company.uid,
       positionUid: user.position.uid,
       filter: {
-        direction,
-        orderBy,
-        page,
-        size,
-        find: undefined,
-        findBy: undefined,
+        'query.direction' : direction,
+        'query.orderBy' : orderBy,
+        'query.page' : page,
+        'query.size' : size,
+        'query.find': undefined,
+        'query.findBy': undefined,
         status: undefined,
         isNotify: undefined,
       }

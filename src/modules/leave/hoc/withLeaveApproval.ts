@@ -26,13 +26,13 @@ interface PropsFromState {
 interface PropsFromDispatch {
   leaveApprovalDispatch: {
     // command
-    createRequest: typeof leaveApprovalPostRequest;
+    createApproval: typeof leaveApprovalPostRequest;
     createDispose: typeof leaveApprovalPostDispose;
 
     // query
-    loadAllRequest: typeof leaveApprovalGetAllRequest;
+    loadAllApproval: typeof leaveApprovalGetAllRequest;
     loadAllDispose: typeof leaveApprovalGetAllDispose;
-    loadDetailRequest: typeof leaveApprovalGetByIdRequest;
+    loadDetailApproval: typeof leaveApprovalGetByIdRequest;
     loadDetailDispose: typeof leaveApprovalGetByIdDispose;
   };
 }
@@ -49,13 +49,13 @@ const mapStateToProps = ({ leaveApprovalGetAll, leaveApprovalGetById }: IAppStat
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   leaveApprovalDispatch: {
     // command
-    createRequest: (request: ILeaveApprovalPostRequest) => dispatch(leaveApprovalPostRequest(request)),
+    createApproval: (request: ILeaveApprovalPostRequest) => dispatch(leaveApprovalPostRequest(request)),
     createDispose: () => dispatch(leaveApprovalPostDispose()),
     
     // query
-    loadAllRequest: (request: ILeaveApprovalGetAllRequest) => dispatch(leaveApprovalGetAllRequest(request)),
+    loadAllApproval: (request: ILeaveApprovalGetAllRequest) => dispatch(leaveApprovalGetAllRequest(request)),
     loadAllDispose: () => dispatch(leaveApprovalGetAllDispose()),
-    loadDetailRequest: (request: ILeaveApprovalGetByIdRequest) => dispatch(leaveApprovalGetByIdRequest(request)),
+    loadDetailApproval: (request: ILeaveApprovalGetByIdRequest) => dispatch(leaveApprovalGetByIdRequest(request)),
     loadDetailDispose: () => dispatch(leaveApprovalGetByIdDispose()),
   }
 });
