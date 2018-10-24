@@ -1,4 +1,5 @@
 import { accountRouter } from '@account/pages';
+import { ExpenseApprovalRouter, ExpenseRouter } from '@expense/components/ExpenseRouter';
 import { rootStore } from '@generic/roots';
 import Layout from '@layout/components/base/Layout';
 import { HomePage } from '@layout/pages';
@@ -86,6 +87,8 @@ class App extends React.Component<AllProps> {
                         <Route path="/project" component={projectRouter} />
                         <Route path="/travel" component={travelRouter} />
                         <Route path="/approval/travel" component={travelApprovalRouter} />                                                
+                        <Route path="/expense" component={ExpenseRouter} />
+                        <Route path="/approval/expense" component={ExpenseApprovalRouter} />
                       </Layout>
                     </Switch>
                   )}
