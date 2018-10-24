@@ -1,7 +1,7 @@
 import { IResponseCollection, IResponseSingle } from '@generic/interfaces';
 import {
   ITimesheetApprovalGetAllRequest, ITimesheetApprovalGetByIdRequest,
-} from '@timesheet/classes/queries';
+} from '@timesheet/classes/queries/approval';
 import { ITimesheet, ITimesheetDetail } from '@timesheet/classes/response';
 import { action } from 'typesafe-actions';
 

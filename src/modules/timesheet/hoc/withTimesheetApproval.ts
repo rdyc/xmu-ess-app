@@ -1,5 +1,5 @@
 import { IAppState, IQueryCollectionState, IQuerySingleState } from '@generic/interfaces';
-import { ITimesheetApprovalGetAllRequest, ITimesheetApprovalGetByIdRequest } from '@timesheet/classes/queries';
+import { ITimesheetApprovalGetAllRequest, ITimesheetApprovalGetByIdRequest } from '@timesheet/classes/queries/approval';
 import { ITimesheet, ITimesheetDetail } from '@timesheet/classes/response';
 import { 
   timesheetApprovalGetAllDispose,

@@ -1,5 +1,5 @@
 import { IAppState, IQueryCollectionState, IQuerySingleState } from '@generic/interfaces';
-import { ITimesheetGetAllRequest, ITimesheetGetByIdRequest, ITimesheetPostRequest, ITimesheetPutRequest } from '@timesheet/classes/queries';
+import { ITimesheetGetAllRequest, ITimesheetGetByIdRequest, ITimesheetPostRequest, ITimesheetPutRequest } from '@timesheet/classes/queries/entry';
 import { ITimesheet, ITimesheetDetail } from '@timesheet/classes/response';
 import { 
   timesheetGetAllDispose,

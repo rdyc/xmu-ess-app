@@ -1,5 +1,5 @@
 import { IQueryCollectionState } from '@generic/interfaces';
-import { ITimesheetApprovalGetAllRequest } from '@timesheet/classes/queries';
+import { ITimesheetApprovalGetAllRequest } from '@timesheet/classes/queries/approval';
 import { ITimesheet } from '@timesheet/classes/response';
 import { TimesheetApprovalAction as Action } from '@timesheet/store/actions';
 import { Reducer } from 'redux';

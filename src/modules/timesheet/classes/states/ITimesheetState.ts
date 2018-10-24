@@ -2,11 +2,13 @@ import { IQueryCollectionState, IQuerySingleState } from '@generic/interfaces';
 import { 
   ITimesheetApprovalGetAllRequest,
   ITimesheetApprovalGetByIdRequest,
+} from '@timesheet/classes/queries/approval';
+import { 
   ITimesheetGetAllRequest,
   ITimesheetGetByIdRequest,
   ITimesheetPostRequest,
   ITimesheetPutRequest
-} from '@timesheet/classes/queries';
+} from '@timesheet/classes/queries/entry';
 import {
   ITimesheet,
   ITimesheetDetail

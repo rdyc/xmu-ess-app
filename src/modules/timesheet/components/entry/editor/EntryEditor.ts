@@ -6,7 +6,7 @@ import { WithUser, withUser } from '@layout/hoc/withUser';
 import {
   ITimesheetPostPayload,
   ITimesheetPutPayload,
-} from '@timesheet/classes/request';
+} from '@timesheet/classes/request/entry';
 import { ITimesheet } from '@timesheet/classes/response';
 import { EntryEditorView } from '@timesheet/components/entry/editor/EntryEditorView';
 import {

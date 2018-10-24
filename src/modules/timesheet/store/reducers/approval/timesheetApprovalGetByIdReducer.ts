@@ -1,5 +1,5 @@
 import { IQuerySingleState } from '@generic/interfaces';
-import { ITimesheetApprovalGetByIdRequest } from '@timesheet/classes/queries';
+import { ITimesheetApprovalGetByIdRequest } from '@timesheet/classes/queries/approval';
 import { ITimesheetDetail } from '@timesheet/classes/response';
 import { TimesheetApprovalAction as Action } from '@timesheet/store/actions';
 import { Reducer } from 'redux';

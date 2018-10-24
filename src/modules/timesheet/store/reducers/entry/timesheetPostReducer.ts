@@ -1,5 +1,5 @@
 import { IQuerySingleState } from '@generic/interfaces';
-import { ITimesheetPostRequest } from '@timesheet/classes/queries';
+import { ITimesheetPostRequest } from '@timesheet/classes/queries/entry';
 import { ITimesheet } from '@timesheet/classes/response';
 import { TimesheetAction as Action } from '@timesheet/store/actions';
 import { Reducer } from 'redux';
