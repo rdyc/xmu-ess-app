@@ -6,6 +6,7 @@ import leaveReducers from '@common/store/reducers/leave/leaveReducers';
 import siteReducers from '@common/store/reducers/site/siteReducers';
 
 import { commonProjectReducers } from './project';
+import statusReducers from './status/statusReducers';
 
 const commonReducers = {
   ...activityReducers,
@@ -15,6 +16,7 @@ const commonReducers = {
   ...leaveReducers,
   ...commonProjectReducers,
   ...siteReducers,
+  ...statusReducers,
 };
 
 export default commonReducers;

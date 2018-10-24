@@ -8,6 +8,7 @@ import {
   leaveGetListRequest,
   projectGetListRequest,
   siteGetListRequest,
+  statusGetListRequest,
 } from '@common/store/actions';
 import { IAppState, IQueryCollectionState } from '@generic/interfaces';
 import { connect } from 'react-redux';
@@ -23,7 +24,11 @@ interface PropsFromState {
   commonDocumentPresalesListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
   commonProjectListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
   commonSiteListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
+<<<<<<< HEAD
   commonLeaveListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
+=======
+  commonStatusListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
+>>>>>>> develop
 
   // detail
 }
@@ -39,7 +44,11 @@ interface PropsFromDispatch {
     documentPresalesListRequest: typeof documentPresalesGetListRequest;
     projectListRequest: typeof projectGetListRequest;
     siteListRequest: typeof siteGetListRequest;
+<<<<<<< HEAD
     leaveListRequest: typeof leaveGetListRequest;
+=======
+    statusListRequest: typeof statusGetListRequest;
+>>>>>>> develop
 
     // detail
   };
@@ -54,7 +63,11 @@ const mapStateToProps = ({
   commonDocumentPresalesList, 
   commonProjectList,
   commonSiteList,
+<<<<<<< HEAD
   commonLeaveList
+=======
+  commonStatusList,
+>>>>>>> develop
 }: IAppState) => ({
   // all
   
@@ -65,7 +78,11 @@ const mapStateToProps = ({
   commonDocumentPresalesListState: commonDocumentPresalesList,
   commonProjectListState: commonProjectList,
   commonSiteListState: commonSiteList,
+<<<<<<< HEAD
   commonLeaveListState: commonLeaveList
+=======
+  commonStatusListState: commonStatusList,
+>>>>>>> develop
   
   // detail
  
@@ -82,7 +99,11 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     documentPresalesListRequest: (request: ISystemListRequest) => dispatch(documentPresalesGetListRequest(request)),
     projectListRequest: (request: ISystemListRequest) => dispatch(projectGetListRequest(request)),
     siteListRequest: (request: ISystemListRequest) => dispatch(siteGetListRequest(request)),
+<<<<<<< HEAD
     leaveListRequest: (request: ISystemListRequest) => dispatch(leaveGetListRequest(request)),
+=======
+    statusListRequest: (request: ISystemListRequest) => dispatch(statusGetListRequest(request)),
+>>>>>>> develop
 
     // detail
   }
