@@ -4,7 +4,7 @@ import {
   ILeaveRequestGetByIdRequest,
   ILeaveRequestPostRequest,
   ILeaveRequestPutRequest,
-} from '@leave/classes/queries';
+} from '@leave/classes/queries/request';
 import { ILeaveRequest, ILeaveRequestDetail } from '@leave/classes/response';
 import { action } from 'typesafe-actions';
 
