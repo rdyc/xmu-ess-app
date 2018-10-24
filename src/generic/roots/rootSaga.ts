@@ -6,11 +6,13 @@ import commonActivitySagas from '@common/store/sagas/activitySagas';
 import commonCurrencySagas from '@common/store/sagas/currencySagas';
 import commonDocumentPresalesSagas from '@common/store/sagas/documentPresalesSagas';
 import commonDocumentSagas from '@common/store/sagas/documentSagas';
+import commonExpenseSagas from '@common/store/sagas/expenseSagas';
 import commonLeaveSagas from '@common/store/sagas/leaveSagas';
 import commonProjectSagas from '@common/store/sagas/projectSagas';
 import commonSiteSagas from '@common/store/sagas/siteSagas';
 import commonStatusSagas from '@common/store/sagas/statusSagas';
-import expenseSagas from '@expense/store/sagas/expenseSagas';
+import expenseApprovalSagas from '@expense/store/sagas/expenseApprovalSagas';
+import expenseSagas from '@expense/store/sagas/expenseRequestSagas';
 import financeSagas from '@finance/store/sagas/financeSagas';
 import commonNotificationSagas from '@layout/store/sagas/notificationSagas';
 import leaveApprovalSagas from '@leave/store/sagas/leaveApprovalSagas';
@@ -49,6 +51,7 @@ export function* rootSaga() {
     fork(commonLeaveSagas),
     fork(commonProjectSagas),
     fork(commonSiteSagas),
+    fork(commonExpenseSagas),
     fork(commonStatusSagas),
     fork(commonNotificationSagas),
 
@@ -86,6 +89,7 @@ export function* rootSaga() {
 
     // expense
     fork(expenseSagas),
+    fork(expenseApprovalSagas),
     
     // travel
     fork(travelSagas),

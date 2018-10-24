@@ -35,7 +35,7 @@ export const rootReducer = combineReducers<IAppState>({
   ...timesheetReducers,
   ...financeReducers,
   ...expenseReducers,
-  ...leaveRequestReducers,
+  ...leaveReducers,
   ...purchaseReducers,
   ...mileageReducers,
 });
