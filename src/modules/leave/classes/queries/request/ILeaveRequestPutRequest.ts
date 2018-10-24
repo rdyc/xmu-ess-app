@@ -4,5 +4,5 @@ import { ILeaveRequestPutPayload } from '@leave/classes/request';
 export interface ILeaveRequestPutRequest extends IBaseCommand<ILeaveRequestPutPayload> {
   companyUid: string;
   positionUid: string;
-  leaveRequestUid: string;
+  leaveUid: string;
 }

@@ -28,12 +28,14 @@ import {
 
 import { lookupCompanyReducers } from './company';
 import { lookupCustomerReducers } from './customer';
+import { leaveReducers } from './leave';
 import { lookupRoleReducers } from './role';
 
 const lookupReducers = {
   ...lookupCustomerReducers,
   ...lookupCompanyReducers,
   ...lookupRoleReducers,
+  ...leaveReducers,
 
   mileageExceptionGetAll: mileageExceptionGetAllReducer,
   mileageExceptionGetById: mileageExceptionGetByIdReducer,

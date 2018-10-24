@@ -16,6 +16,7 @@ export interface ILeaveRequestDetail {
   date:             string;
   leaveType:        string;
   leave?:           ICommonSystem | null;
+  regularType:      string | null;
   regular?:         ILeaveId | null;
   start:            string;
   end:              string;

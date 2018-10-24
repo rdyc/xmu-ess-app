@@ -93,6 +93,7 @@ export const ApprovalListView: React.SFC<ApprovalListProps> = props => {
           {
             response &&
             response.metadata &&
+            response.metadata.paginate &&
             <Grid container spacing={24}>
               <Grid item xs={6} sm={6}>
                 <Typography variant="caption" color="primary">

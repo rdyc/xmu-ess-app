@@ -9,9 +9,9 @@ import {
   IHolidayAllRequest,
   IHolidayByIdRequest,
   IHolidayListRequest,
-  ILeaveAllRequest,
-  ILeaveByIdRequest,
-  ILeaveListRequest,
+  ILeaveGetAllRequest,
+  ILeaveGetDetailRequest,
+  ILeaveGetListRequest,
   ILeavePutRequest,
   IMenuGetAllRequest,
   IMenuGetByIdRequest,
@@ -119,9 +119,9 @@ export interface ILookupState {
   holidayGetList: IQueryCollectionState<IHolidayListRequest, IHolidayList>;
   holidayGetById: IQuerySingleState<IHolidayByIdRequest, IHolidayDetail>;
 
-  leaveGetAll: IQueryCollectionState<ILeaveAllRequest, ILeave>;
-  leaveGetList: IQueryCollectionState<ILeaveListRequest, ILeaveList>;
-  leaveGetById: IQuerySingleState<ILeaveByIdRequest, ILeaveDetail>;
+  leaveGetAll: IQueryCollectionState<ILeaveGetAllRequest, ILeave>;
+  leaveGetList: IQueryCollectionState<ILeaveGetListRequest, ILeaveList>;
+  leaveGetById: IQuerySingleState<ILeaveGetDetailRequest, ILeaveDetail>;
   leavePut: IQuerySingleState<ILeavePutRequest, ILeave>;
 
   systemLimitGetAll: IQueryCollectionState<ISystemLimitAllRequest, ISystemLimit>;

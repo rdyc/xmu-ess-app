@@ -1,5 +1,5 @@
 import { IResponseCollection, IResponseSingle } from '@generic/interfaces';
-import { ILeaveAllRequest, ILeaveByIdRequest, ILeaveListRequest, ILeavePutRequest } from '@lookup/classes/queries';
+import { ILeaveGetAllRequest, ILeaveGetDetailRequest, ILeaveGetListRequest, ILeavePutRequest } from '@lookup/classes/queries';
 import { ILeave, ILeaveDetail, ILeaveList } from '@lookup/classes/response';
 import { action } from 'typesafe-actions';
 
@@ -23,19 +23,19 @@ export const enum LeaveAction {
 }
 
 // get all
-export const leaveGetAllRequest = (request: ILeaveAllRequest) => action(LeaveAction.GET_ALL_REQUEST, request);
+export const leaveGetAllRequest = (request: ILeaveGetAllRequest) => action(LeaveAction.GET_ALL_REQUEST, request);
 export const leaveGetAllSuccess = (response: IResponseCollection<ILeave>) => action(LeaveAction.GET_ALL_SUCCESS, response);
 export const leaveGetAllError = (message: string) => action(LeaveAction.GET_ALL_ERROR, message);
 export const leaveGetAllDispose = () => action(LeaveAction.GET_ALL_DISPOSE);
 
 // get list
-export const leaveGetListRequest = (request: ILeaveListRequest) => action(LeaveAction.GET_LIST_REQUEST, request);
+export const leaveGetListRequest = (request: ILeaveGetListRequest) => action(LeaveAction.GET_LIST_REQUEST, request);
 export const leaveGetListSuccess = (response: IResponseCollection<ILeaveList>) => action(LeaveAction.GET_LIST_SUCCESS, response);
 export const leaveGetListError = (message: string) => action(LeaveAction.GET_LIST_ERROR, message);
 export const leaveGetListDispose = () => action(LeaveAction.GET_LIST_DISPOSE);
 
 // get by id
-export const leaveGetByIdRequest = (request: ILeaveByIdRequest) => action(LeaveAction.GET_BY_ID_REQUEST, request);
+export const leaveGetByIdRequest = (request: ILeaveGetDetailRequest) => action(LeaveAction.GET_BY_ID_REQUEST, request);
 export const leaveGetByIdSuccess = (response: IResponseCollection<ILeaveDetail>) => action(LeaveAction.GET_BY_ID_SUCCESS, response);
 export const leaveGetByIdError = (message: string) => action(LeaveAction.GET_BY_ID_ERROR, message);
 export const leaveGetByIdDispose = () => action(LeaveAction.GET_BY_ID_DISPOSE);

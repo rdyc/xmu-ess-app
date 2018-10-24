@@ -12,6 +12,8 @@ export * from './IBaseMetadata';
 export * from './IBasePagination';
 export * from './IBasePayload';
 export * from './IBaseQuery';
+export * from './IBaseQueryFilter';
+export * from './IBaseQueryPagingFilter';
 export * from './IQueryCollectionState';
 export * from './IQuerySingleState';
 export * from './IResponseCollection';
