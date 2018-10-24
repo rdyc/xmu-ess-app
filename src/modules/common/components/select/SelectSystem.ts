@@ -77,9 +77,9 @@ const lifecycles: ReactLifeCycleFunctions<SelectSystemProps, OwnProps> = {
         case 'site':
           commonDispatch.siteListRequest(request);
           break;
-
-        case 'leave':
-          commonDispatch.leaveListRequest(request);
+          
+        case 'expense':
+          commonDispatch.expenseListRequest(request);
           break;
 
         case 'status':
@@ -109,7 +109,7 @@ const fnGetContext = (props: SelectSystemProps) => {
     case 'documentPreSales': return props.commonDocumentPresalesListState;
     case 'project': return props.commonProjectListState;
     case 'site': return props.commonSiteListState;
-    case 'leave': return props.commonLeaveListState;
+    case 'expense': return props.commonExpenseListState;
     case 'status': return props.commonStatusListState;
   
     default: return props.commonActivityListState;
