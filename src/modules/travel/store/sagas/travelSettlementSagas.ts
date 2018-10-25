@@ -53,7 +53,7 @@ function* watchByIdFetchRequest() {
   const worker = (action: ReturnType<typeof travelSettlementGetByIdRequest>) => {
     return saiyanSaga.fetch({
       method: 'get',
-      path: `/v1/travel/settlements/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.travelUid}`, 
+      path: `/v1/travel/settlements/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.traveSettlementlUid}`, 
       successEffects: (response: IApiResponse) => ([
         put(travelSettlementGetByIdSuccess(response.body)),
       ]), 
