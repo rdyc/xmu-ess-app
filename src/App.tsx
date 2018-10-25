@@ -4,7 +4,8 @@ import Layout from '@layout/components/base/Layout';
 import { HomePage } from '@layout/pages';
 import AccessWizardPage from '@layout/pages/AccessWizardPage';
 import CallbackPage from '@layout/pages/CallbackPage';
-import { projectRouter } from '@project/components/projectRouter';
+import { projectApprovalRouter } from '@project/components/routers/projectApprovalRouter';
+import { projectRegistrationRouter } from '@project/components/routers/projectRegistrationRouter';
 import { ConnectedRouter } from 'connected-react-router';
 import { History } from 'history';
 import * as React from 'react';
@@ -80,7 +81,8 @@ class App extends React.Component<AllProps> {
                       <Layout>
                         <Route path="/home" component={HomePage} />
                         <Route path="/account" component={accountRouter} />
-                        <Route path="/project" component={projectRouter} />
+                        <Route path="/project" component={projectRegistrationRouter} />
+                        <Route path="/approval/project" component={projectApprovalRouter} />
                       </Layout>
                     </Switch>
                   )}

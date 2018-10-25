@@ -1,1 +1,1 @@
-export * from './IOrganizationWorkflowApprovalPayload';
+export * from './IWorkflowApprovalPayload';

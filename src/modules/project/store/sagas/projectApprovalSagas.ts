@@ -13,15 +13,21 @@ import {
 } from '@project/store/actions';
 import { flattenObject } from '@utils/flattenObject';
 import saiyanSaga from '@utils/saiyanSaga';
+import * as qs from 'qs';
 import { SubmissionError } from 'redux-form';
 import { all, fork, put, takeEvery } from 'redux-saga/effects';
-import { IApiResponse, objectToQuerystring } from 'utils';
+import { IApiResponse } from 'utils';
 
 function* watchGetAllRequest() {
   const worker = (action: ReturnType<typeof projectApprovalGetAllRequest>) => {
+    const params = qs.stringify(action.payload.filter, { 
+      allowDots: true, 
+      skipNulls: true
+    });
+
     return saiyanSaga.fetch({
       method: 'get',
-      path: `/v1/approvals/project${objectToQuerystring(action.payload.filter)}`,
+      path: `/v1/approvals/project?${params}`,
       successEffects: (response: IApiResponse) => [
         put(projectApprovalGetAllSuccess(response.body)),
         put(listBarMetadata(response.body.metadata))
@@ -89,7 +95,7 @@ function* watchPostRequest() {
   const worker = (action: ReturnType<typeof projectApprovalPostRequest>) => {
     return saiyanSaga.fetch({
       method: 'post',
-      path: `/v1/approvals/project/${action.payload.companyUid}/${action.payload.positionUid}`,
+      path: `/v1/approvals/project/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.projectUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
         put(projectApprovalPostSuccess(response.body))

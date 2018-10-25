@@ -1,6 +1,6 @@
 import { IBaseCommand, ICompanyAccess } from '@generic/interfaces';
-import { IOrganizationWorkflowApprovalPayload } from '@organization/classes/request/workflow/approval';
+import { IWorkflowApprovalPayload } from '@organization/classes/request/workflow/approval';
 
-export interface IProjectApprovalPostRequest extends ICompanyAccess, IBaseCommand<IOrganizationWorkflowApprovalPayload> {
+export interface IProjectApprovalPostRequest extends ICompanyAccess, IBaseCommand<IWorkflowApprovalPayload> {
   projectUid: string;
 }

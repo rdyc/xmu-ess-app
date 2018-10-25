@@ -1,6 +1,6 @@
 import { IBasePayload } from '@generic/interfaces';
 
-export interface IOrganizationWorkflowApprovalPayload extends IBasePayload {
+export interface IWorkflowApprovalPayload extends IBasePayload {
   isApproved: boolean;
   remark: string | null;
 }
