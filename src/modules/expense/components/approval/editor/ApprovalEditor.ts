@@ -24,6 +24,7 @@ import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
 import { isNullOrUndefined, isObject } from 'util';
 
+import { ApprovalOptions } from '@generic/types/ApprovalOptions';
 import { ApprovalEditorView } from './ApprovalEditorView';
 import { ExpenseApprovalFormData } from './forms/ApprovalForm';
 
@@ -96,8 +97,8 @@ const handlerCreators: HandleCreators<ApprovalEditorProps, OwnHandlers> = {
 
     // generate payload
     const payload: IExpenseApprovalPostPayload = {
-      isApproved: information.isApproved,
-      remark: information.remark
+      isApproved: information.isApproved === ApprovalOptions.approve ? true : false,
+      remark: information.isApproved === ApprovalOptions.approve ? null : information.remark
     };
 
     // dispatch create request

@@ -5,11 +5,17 @@ import { Field } from 'redux-form';
 import { ApprovalProps } from './Approval';
 
 export const ApprovalView: React.SFC<ApprovalProps> = props => {
+  const { isApprove } = props;
   const { names } = props.context;
   
   const renderField = (name: string) => {
     const fieldName = name.replace('information.', '');
     const fieldProps = props.generateFieldProps(name);
+
+    const fields = ['remark'];
+    if (isApprove && fields.indexOf(fieldName) !== -1) {
+      return null;
+    }
 
     return (
       <Field

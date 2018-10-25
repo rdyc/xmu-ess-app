@@ -1,5 +1,6 @@
 import { SelectSystemOption } from '@common/components/select';
 import { FormMode } from '@generic/types';
+// import { ApprovalOptions } from '@generic/types/ApprovalOptions';
 import { InputRadio } from '@layout/components/input/radio';
 import { InputText } from '@layout/components/input/text';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
@@ -16,6 +17,8 @@ interface OwnProps {
   subHeader?: string | undefined;
   labelSubmit?: string | undefined;
   labelProcessing?: string | undefined;
+  isApprove: boolean | undefined;
+  onChangeApprovalOption: (event: any, newValue: string, oldValue: string) => void;
 }
 
 interface OwnHandlers {
@@ -30,7 +33,7 @@ export type ApprovalProps
 const handlerCreators: HandleCreators<ApprovalProps, OwnHandlers> = {
     generateFieldProps: (props: ApprovalProps) => (name: string) => { 
       const { 
-        intl,
+        intl, isApprove, onChangeApprovalOption
       } = props;
       
       const fieldName = name.replace('information.', '');
@@ -41,7 +44,18 @@ const handlerCreators: HandleCreators<ApprovalProps, OwnHandlers> = {
         case 'isApproved': 
           fieldProps = {
             names: ['approve', 'reject'],
-            component: InputRadio
+            component: InputRadio,
+            onChange: onChangeApprovalOption
+          };
+          break;
+
+        case 'remark':
+          fieldProps = {
+            type: 'text',
+            required: !isApprove,
+            disabled: isApprove,
+            placeholder: intl.formatMessage({id: `global.form.approval.field.${fieldName}.placeholder`}),
+            component: InputText
           };
           break;
       
