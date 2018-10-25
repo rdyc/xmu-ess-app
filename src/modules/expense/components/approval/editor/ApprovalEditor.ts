@@ -153,11 +153,10 @@ const handlerCreators: HandleCreators<ApprovalEditorProps, OwnHandlers> = {
 };
 
 const createProps: mapper<ApprovalEditorProps, OwnState> = (props: ApprovalEditorProps): OwnState => {
-  const { match } = props;
+  // const { match } = props;
   
   return { 
-    formMode: FormMode.New,
-    expenseUid: match.params.expenseUid
+    formMode: FormMode.New
   };
 };
 
@@ -203,6 +202,7 @@ const lifecycles: ReactLifeCycleFunctions<ApprovalEditorProps, {}> = {
     appBarDispatch.dispose();
 
     expenseApprovalDispatch.createDispose();
+    expenseApprovalDispatch.loadDetailDispose();
   }
 };
 

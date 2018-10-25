@@ -19,6 +19,7 @@ export const InputRadioView: React.SFC<InputRadioProps> = props => {
         value={name}
         control={<Radio color="secondary" />}
         label={<FormattedMessage id={`global.form.approval.option.${name}`}/>}
+        onClick={changeValue}
         checked={value === name}
       />
     );
@@ -27,8 +28,7 @@ export const InputRadioView: React.SFC<InputRadioProps> = props => {
   const render = (
     <RadioGroup
       {...input}
-      value={value}
-      onChange={changeValue}
+      value={selected}
     >
       {names.map(name => renderRadio(name))}
     </RadioGroup>
