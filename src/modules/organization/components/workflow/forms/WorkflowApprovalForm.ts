@@ -1,4 +1,8 @@
+import { WorkflowStatusType } from '@common/classes/types';
+import { RadioGroupChoice } from '@layout/components/input/radioGroup';
 import { WithForm, withForm } from '@layout/hoc/withForm';
+import { InjectedIntlProps, injectIntl } from 'react-intl';
+import { connect } from 'react-redux';
 import {
   compose,
   HandleCreators,
@@ -9,16 +13,31 @@ import {
   withHandlers,
   withStateHandlers,
 } from 'recompose';
-import { InjectedFormProps, reduxForm } from 'redux-form';
+import { formValueSelector, InjectedFormProps, reduxForm } from 'redux-form';
+import { isNullOrUndefined } from 'util';
 
 import { WorkflowApprovalFormView } from './WorkflowApprovalFormView';
 
 const formName = 'workflowApproval';
 
 export type WorkflowApprovalFormData = {
-  isApproved: boolean | null | undefined;
+  isApproved: string | null | undefined;
   remark: string | null;
 };
+
+interface FormValueProps {
+  formIsApproved: boolean | undefined;
+}
+
+interface OwnProps {
+  approvalTitle: string;
+  approvalSubHeader: string;
+  approvalDialogFullScreen?: boolean | false;
+  approvalDialogTitle?: string | undefined;
+  approvalDialogContentText?: string | undefined;
+  approvalDialogCancelText?: string | undefined;
+  approvalDialogConfirmedText?: string | undefined;
+}
 
 interface OwnHandler {
   handleDialogOpen: () => void;
@@ -27,12 +46,8 @@ interface OwnHandler {
 }
 
 interface OwnState {
-  dialogFullScreen: boolean;
-  dialogOpen: boolean;
-  dialogTitle?: string | undefined;
-  dialogDescription?: string | undefined;
-  dialogCancelText: string;
-  dialogConfirmedText: string;
+  isOpenDialog: boolean;
+  approvalChoices: RadioGroupChoice[] | undefined;
 }
 
 interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
@@ -42,16 +57,24 @@ interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
 export type WorkflowApprovalFormProps 
   = WithForm
   & InjectedFormProps<WorkflowApprovalFormData, {}>
+  & InjectedIntlProps
+  & OwnProps
   & OwnHandler
   & OwnState
-  & OwnStateUpdaters;
+  & OwnStateUpdaters
+  & FormValueProps;
   
-const createProps: mapper<WorkflowApprovalFormProps, OwnState> = (props: WorkflowApprovalFormProps): OwnState => ({ 
-  dialogFullScreen: false,
-  dialogOpen: false,
-  dialogCancelText: 'global.action.cancel',
-  dialogConfirmedText: 'global.action.ok',
-});
+const createProps: mapper<WorkflowApprovalFormProps, OwnState> = (props: WorkflowApprovalFormProps): OwnState => {
+  const { intl } = props;
+
+  return { 
+    isOpenDialog: false,
+    approvalChoices: [
+      { value: WorkflowStatusType.Approved, label: intl.formatMessage({id: 'workflow.approval.action.approve'}) },
+      { value: WorkflowStatusType.Rejected, label: intl.formatMessage({id: 'workflow.approval.action.reject'}) }
+    ]
+  };
+};
 
 const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
   stateUpdate: (prevState: OwnState) => (newState: any) => ({
@@ -60,12 +83,7 @@ const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
   }),
   stateReset: (prevState: OwnState) => () => ({
     ...prevState,
-    dialogFullScreen: false,
-    dialogOpen: false,
-    dialogTitle: undefined,
-    dialogDescription: undefined,
-    dialogCancelText: 'global.action.cancel',
-    dialogConfirmedText: 'global.action.ok',
+    isOpenDialog: false,
   })
 };
 
@@ -74,14 +92,14 @@ const handlerCreators: HandleCreators<WorkflowApprovalFormProps, OwnHandler> = {
     const { stateUpdate } = props;
 
     stateUpdate({
-      dialogOpen: true
+      isOpenDialog: true
     });
   },
   handleDialogClose: (props: WorkflowApprovalFormProps) => () => { 
     const { stateUpdate } = props;
 
     stateUpdate({
-      dialogOpen: false
+      isOpenDialog: false
     });
   },
   handleDialogConfirmed: (props: WorkflowApprovalFormProps) => () => { 
@@ -89,22 +107,31 @@ const handlerCreators: HandleCreators<WorkflowApprovalFormProps, OwnHandler> = {
     const { submitForm } = props.workflowApprovalDispatch;
 
     stateUpdate({
-      dialogOpen: false
+      isOpenDialog: false
     });
 
     submitForm(formName);
   },
 };
 
-const enhance = compose<WorkflowApprovalFormProps, InjectedFormProps<WorkflowApprovalFormData>>(
+const selector = formValueSelector(formName);
+
+const mapStateToProps = (state: any): FormValueProps => {
+  const isApproved = selector(state, 'isApproved');
+  
+  return {
+    formIsApproved: isNullOrUndefined(isApproved) ? undefined : isApproved === WorkflowStatusType.Approved,
+  };
+};
+
+const enhance = compose<WorkflowApprovalFormProps, OwnProps & InjectedFormProps<WorkflowApprovalFormData, OwnProps>>(
+  connect(mapStateToProps),
   withForm,
+  injectIntl,
   withStateHandlers<OwnState, OwnStateUpdaters, {}>(createProps, stateUpdaters), 
   withHandlers<WorkflowApprovalFormProps, OwnHandler>(handlerCreators)
 )(WorkflowApprovalFormView);
 
-export const WorkflowApprovalForm = reduxForm<WorkflowApprovalFormData, {}>({
-  form: formName,
-  touchOnChange: true,
-  touchOnBlur: true,
-  enableReinitialize: true
+export const WorkflowApprovalForm = reduxForm<WorkflowApprovalFormData, OwnProps>({
+  form: formName
 })(enhance);

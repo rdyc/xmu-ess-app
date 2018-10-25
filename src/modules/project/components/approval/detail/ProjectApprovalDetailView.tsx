@@ -24,6 +24,7 @@ import { FormattedMessage, FormattedNumber } from 'react-intl';
 import { ProjectApprovalDetailProps } from './ProjectApprovalDetail';
 
 export const ProjectApprovalDetailView: React.SFC<ProjectApprovalDetailProps> = props => {
+  const { approvalTitle, approvalSubHeader, approvalDialogTitle, approvalDialogContentText, approvalDialogCancelText, approvalDialogConfirmedText } = props;
   const { intl, handleValidate, handleSubmit, handleSubmitSuccess, handleSubmitFail } = props;
   const { isLoading, response } = props.projectApprovalState.detail;
 
@@ -196,7 +197,13 @@ export const ProjectApprovalDetailView: React.SFC<ProjectApprovalDetailProps> = 
           </Grid>
 
            <Grid item xs={12} md={4}>
-              <WorkflowApprovalForm 
+              <WorkflowApprovalForm
+                approvalTitle={approvalTitle}
+                approvalSubHeader={approvalSubHeader}
+                approvalDialogTitle={approvalDialogTitle}
+                approvalDialogContentText={approvalDialogContentText}
+                approvalDialogCancelText={approvalDialogCancelText}
+                approvalDialogConfirmedText={approvalDialogConfirmedText}
                 validate={handleValidate}
                 onSubmit={handleSubmit} 
                 onSubmitSuccess={handleSubmitSuccess}

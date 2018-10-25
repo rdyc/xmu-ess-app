@@ -1,3 +1,4 @@
+import { WorkflowStatusType } from '@common/classes/types';
 import AppMenu from '@constants/AppMenu';
 import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
@@ -10,14 +11,22 @@ import { WithProjectApproval, withProjectApproval } from '@project/hoc/withProje
 import { projectApprovalMessage } from '@project/locales/messages/projectApprovalMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
-import { compose, HandleCreators, lifecycle, ReactLifeCycleFunctions, withHandlers } from 'recompose';
+import {
+  compose,
+  HandleCreators,
+  lifecycle,
+  mapper,
+  ReactLifeCycleFunctions,
+  withHandlers,
+  withStateHandlers,
+} from 'recompose';
 import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
 import { isNullOrUndefined, isObject } from 'util';
 
 import { ProjectApprovalDetailView } from './ProjectApprovalDetailView';
 
-interface Handler {
+interface OwnHandler {
   handleRefresh: () => void;
   handleValidate: (payload: WorkflowApprovalFormData) => FormErrors;
   handleSubmit: (payload: WorkflowApprovalFormData) => void;
@@ -29,6 +38,15 @@ interface OwnRouteParams {
   projectUid: string;
 }
 
+interface OwnState {
+  approvalTitle: string;
+  approvalSubHeader: string;
+  approvalDialogTitle: string;
+  approvalDialogContentText: string;
+  approvalDialogCancelText: string;
+  approvalDialogConfirmedText: string;
+}
+
 export type ProjectApprovalDetailProps
   = WithProjectApproval
   & WithUser
@@ -36,9 +54,10 @@ export type ProjectApprovalDetailProps
   & WithAppBar
   & RouteComponentProps<OwnRouteParams> 
   & InjectedIntlProps
-  & Handler;
+  & OwnHandler
+  & OwnState;
 
-const handlerCreators: HandleCreators<ProjectApprovalDetailProps, Handler> = {
+const handlerCreators: HandleCreators<ProjectApprovalDetailProps, OwnHandler> = {
   handleValidate: (props: ProjectApprovalDetailProps) => (formData: WorkflowApprovalFormData) => { 
     const errors = {};
   
@@ -46,7 +65,7 @@ const handlerCreators: HandleCreators<ProjectApprovalDetailProps, Handler> = {
   
     requiredFields.forEach(field => {
       if (!formData[field] || isNullOrUndefined(formData[field])) {
-        errors[field] = props.intl.formatMessage({id: `project.field.information.${field}.required`});
+        errors[field] = props.intl.formatMessage({id: `worklfow.approval.field.${field}.required`});
       }
     });
     
@@ -63,16 +82,19 @@ const handlerCreators: HandleCreators<ProjectApprovalDetailProps, Handler> = {
     }
 
     // props checking
-    if (!match.params.projectUid || !formData.isApproved) {
+    if (!match.params.projectUid) {
       const message = intl.formatMessage(projectApprovalMessage.emptyProps);
 
       return Promise.reject(message);
     }
 
+    // compare approval status string
+    const isApproved = formData.isApproved === WorkflowStatusType.Approved;
+
     // generate payload
     const payload: IWorkflowApprovalPayload = {
-      isApproved: formData.isApproved,
-      remark: formData.remark
+      isApproved,
+      remark: !isApproved ? formData.remark : null
     };
 
     // dispatch update request
@@ -186,6 +208,19 @@ const lifecycles: ReactLifeCycleFunctions<ProjectApprovalDetailProps, {}> = {
   }
 };
 
+const createProps: mapper<ProjectApprovalDetailProps, OwnState> = (props: ProjectApprovalDetailProps): OwnState => {
+  const { intl } = props;
+
+  return {
+    approvalTitle: intl.formatMessage({id: 'project.approvalTitle'}),
+    approvalSubHeader: intl.formatMessage({id: 'project.approvalSubHeader'}),
+    approvalDialogTitle: intl.formatMessage({id: 'project.dialog.approvalTitle'}),
+    approvalDialogContentText: intl.formatMessage({id: 'project.dialog.approvalContent'}),
+    approvalDialogCancelText: intl.formatMessage({id: 'global.action.cancel'}),
+    approvalDialogConfirmedText: intl.formatMessage({id: 'global.action.continue'}),
+  };
+};
+
 export const ProjectApprovalDetail = compose<ProjectApprovalDetailProps, {}>(
   withUser,
   withLayout,
@@ -193,6 +228,7 @@ export const ProjectApprovalDetail = compose<ProjectApprovalDetailProps, {}>(
   withRouter,
   withProjectApproval,
   injectIntl,
-  withHandlers<ProjectApprovalDetailProps, Handler>(handlerCreators),
+  withStateHandlers<OwnState, {}, {}>(createProps, {}),
+  withHandlers<ProjectApprovalDetailProps, OwnHandler>(handlerCreators),
   lifecycle<ProjectApprovalDetailProps, {}>(lifecycles),
 )(ProjectApprovalDetailView);

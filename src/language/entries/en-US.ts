@@ -1,11 +1,13 @@
 import * as appLocaleData from 'react-intl/locale-data/en';
 
+import enWorkflowMessages from '../../modules/organization/locales/en_US.json';
 import enProjectMessages from '../../modules/project/locales/en_US.json';
 import enMessages from '../locales/en_US.json';
 
 const EnLang = {
   messages: {
     ...enMessages,
+    ...enWorkflowMessages,
     ...enProjectMessages,
   },
   locale: 'en-US',

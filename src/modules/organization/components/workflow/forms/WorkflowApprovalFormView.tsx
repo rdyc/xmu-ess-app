@@ -20,31 +20,34 @@ import { WorkflowApprovalFormProps } from './WorkflowApprovalForm';
 
 export const WorkflowApprovalFormView: React.SFC<WorkflowApprovalFormProps> = props => {
   const { 
-    dialogFullScreen, dialogOpen, dialogTitle, dialogDescription,
-    dialogCancelText, dialogConfirmedText, handleDialogOpen, handleDialogClose, handleDialogConfirmed  
+    approvalTitle, approvalSubHeader,
+    approvalDialogFullScreen, isOpenDialog, approvalDialogTitle, 
+    approvalDialogContentText, approvalDialogCancelText, approvalDialogConfirmedText, 
+    handleDialogOpen, handleDialogClose, handleDialogConfirmed,
+    approvalChoices, formIsApproved  
   } = props;
 
   const renderDialog = (
     <Dialog
-      fullScreen={dialogFullScreen}
-      open={dialogOpen}
-      aria-labelledby="project-detail-dialog-title"
-      aria-describedby="project-detail-dialog-description"
+      fullScreen={approvalDialogFullScreen}
+      open={isOpenDialog}
+      aria-labelledby="workflow-approval-dialog-title"
+      aria-describedby="workflow-approval-dialog-description"
     >
-      <DialogTitle id="project-detail-dialog-title">
-        {dialogTitle || 'title'}
+      <DialogTitle id="workflow-approval-dialog-title">
+        {approvalDialogTitle || 'title'}
       </DialogTitle>
       <DialogContent>
-        <DialogContentText id="project-detail-dialog-description">
-          {dialogDescription || 'description'}
+        <DialogContentText id="workflow-approval-dialog-description">
+          {approvalDialogContentText || 'content'}
         </DialogContentText>
       </DialogContent>
       <DialogActions>
         <Button onClick={handleDialogClose} color="primary">
-          {dialogCancelText || 'cancel'}
+          {approvalDialogCancelText || 'cancel'}
         </Button>
         <Button onClick={handleDialogConfirmed} color="primary" autoFocus>
-          {dialogConfirmedText || 'confirm'}
+          {approvalDialogConfirmedText || 'confirm'}
         </Button>
       </DialogActions>
     </Dialog>
@@ -55,8 +58,8 @@ export const WorkflowApprovalFormView: React.SFC<WorkflowApprovalFormProps> = pr
       <form onSubmit={props.handleSubmit}>
         <Card square>
           <CardHeader 
-            title={<FormattedMessage id="workflow.approvalTitle"/>}
-            subheader={<FormattedMessage id="workflow.approvalSubTitle" />}
+            title={approvalTitle}
+            subheader={approvalSubHeader}
           />
           <CardContent>
             <Field
@@ -64,13 +67,19 @@ export const WorkflowApprovalFormView: React.SFC<WorkflowApprovalFormProps> = pr
               required={true}
               label={<FormattedMessage id={'workflow.approval.field.isApproved'} />}
               component={RadioGroup}
+              choices={approvalChoices}
             />
-            <Field
-              name="remark"
-              required={true}
-              label={<FormattedMessage id={'workflow.approval.field.remark'} />}
-              component={InputTextArea}
-            />
+            { 
+              formIsApproved !== undefined &&
+              !formIsApproved &&
+              <Field
+                name="remark"
+                required={true}
+                label={<FormattedMessage id={'workflow.approval.field.remark'} />}
+                placeholder={<FormattedMessage id={'workflow.approval.field.remark.placeholder'} />}
+                component={InputTextArea}
+              />
+            }
           </CardContent>
           <CardActions>
             <Button 
