@@ -65,7 +65,7 @@ const handlerCreators: HandleCreators<ProjectApprovalDetailProps, OwnHandler> = 
   
     requiredFields.forEach(field => {
       if (!formData[field] || isNullOrUndefined(formData[field])) {
-        errors[field] = props.intl.formatMessage({id: `worklfow.approval.field.${field}.required`});
+        errors[field] = props.intl.formatMessage({id: `workflow.approval.field.${field}.required`});
       }
     });
     

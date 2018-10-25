@@ -24,7 +24,7 @@ export const WorkflowApprovalFormView: React.SFC<WorkflowApprovalFormProps> = pr
     approvalDialogFullScreen, isOpenDialog, approvalDialogTitle, 
     approvalDialogContentText, approvalDialogCancelText, approvalDialogConfirmedText, 
     handleDialogOpen, handleDialogClose, handleDialogConfirmed,
-    approvalChoices, formIsApproved  
+    approvalChoices, formIsApproved, intl
   } = props;
 
   const renderDialog = (
@@ -67,6 +67,7 @@ export const WorkflowApprovalFormView: React.SFC<WorkflowApprovalFormProps> = pr
               required={true}
               label={<FormattedMessage id={'workflow.approval.field.isApproved'} />}
               component={RadioGroup}
+              placeholder={intl.formatMessage({id: 'workflow.approval.field.isApproved.placeholder'})}
               choices={approvalChoices}
             />
             { 
@@ -76,7 +77,7 @@ export const WorkflowApprovalFormView: React.SFC<WorkflowApprovalFormProps> = pr
                 name="remark"
                 required={true}
                 label={<FormattedMessage id={'workflow.approval.field.remark'} />}
-                placeholder={<FormattedMessage id={'workflow.approval.field.remark.placeholder'} />}
+                placeholder={intl.formatMessage({id: 'workflow.approval.field.remark.placeholder'})}
                 component={InputTextArea}
               />
             }
