@@ -26,8 +26,7 @@ export interface IAppState extends
   ITravelState,
   IExpenseState,
   ILeaveState,
-  IPurchaseState,
-  IMileageState {
+  IPurchaseState {
   user: IUserState;
   layout: ILayoutState;
   appBar: IAppBarState;
