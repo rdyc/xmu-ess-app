@@ -5,5 +5,5 @@ export interface ITravelRequestGetAllFilter extends IBasePagingFilter {
   readonly positionUid: string | undefined;
   readonly customerUid: string | undefined;
   readonly isRejected: boolean | undefined;
-  readonly  isSettlement: boolean | undefined;
+  readonly isSettlement: boolean | undefined;
 }

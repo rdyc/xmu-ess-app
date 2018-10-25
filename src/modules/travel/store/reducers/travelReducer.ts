@@ -14,13 +14,18 @@ import {
   travelApprovalGetAllReducer, 
   travelApprovalGetByIdReducer, 
   travelApprovalPostReducer } from './requestApproval';
-import { travelSettlementApprovalGetAllReducer, travelSettlementApprovalGetByIdReducer, travelSettlementApprovalPostReducer } from './settlementApproval';
+import { 
+  travelSettlementApprovalGetAllReducer, 
+  travelSettlementApprovalGetByIdReducer, 
+  travelSettlementApprovalPostReducer 
+} from './settlementApproval';
 
 const travelReducers = {
   travelRequestGetAll: travelGetAllReducer,
   travelRequestGetById: travelGetByIdReducer,
   travelPost: travelPostReducer,
   travelPut: travelPutReducer,
+  
   travelSettlementGetAll: travelSettlementGetAllReducer,
   travelSettlementGetById: travelSettlementGetByIdReducer,
   travelSettlementPost: travelSettlementPostReducer,

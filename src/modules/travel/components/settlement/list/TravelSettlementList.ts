@@ -5,8 +5,7 @@ import { WithNavBottom, withNavBottom } from '@layout/hoc/withNavBottom';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IListBarField } from '@layout/interfaces';
 import { TravelRequestField } from '@travel/classes/types';
-import { RequestApprovalListView } from '@travel/components/requestApproval/list/RequestApprovalListView';
-import { WithTravelApproval, withTravelApproval } from '@travel/hoc/withTravelApproval';
+import { WithTravelSettlement, withTravelSettlement } from '@travel/hoc/withTravelSettlement';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import {
@@ -21,9 +20,10 @@ import {
   withHandlers,
   withStateHandlers,
 } from 'recompose';
+import { TravelSettlementListView } from './TravelSettlementListView';
 
 interface OwnHandlers {
-  handleGoToDetail: (travelUid: string) => void;
+  handleGoToDetail: (travelSettlementUid: string) => void;
   handleGoToNext: () => void;
   handleGoToPrevious: () => void;
   handleReloading: () => void;
@@ -55,8 +55,8 @@ interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
   stateSizing: StateHandler<OwnState>;
 }
 
-export type RequestApprovalListProps 
-  = WithTravelApproval
+export type SettlementListProps 
+  = WithTravelSettlement
   & WithUser
   & WithLayout
   & WithNavBottom
@@ -67,17 +67,17 @@ export type RequestApprovalListProps
   & OwnState
   & OwnStateUpdaters;
 
-const createProps: mapper<RequestApprovalListProps, OwnState> = (props: RequestApprovalListProps): OwnState => {
-    const { orderBy, direction, page, size } = props;
-    const { request } = props.travelApprovalState.all;
+const createProps: mapper<SettlementListProps, OwnState> = (props: SettlementListProps): OwnState => {
+  const { orderBy, direction, page, size } = props;
+  const { request } = props.travelSettlementState.all;
 
-    return { 
-      orderBy: request && request.filter && request.filter['query.orderBy'] || orderBy,
-      direction: request && request.filter && request.filter['query.direction'] || direction,
-      page: request && request.filter && request.filter['query.page'] || page || 1, 
-      size: request && request.filter && request.filter['query.size'] || size || 10,
-    };
+  return { 
+    orderBy: request && request.filter && request.filter.orderBy || orderBy,
+    direction: request && request.filter && request.filter.direction || direction,
+    page: request && request.filter && request.filter.page || page || 1, 
+    size: request && request.filter && request.filter.size || size || 10,
   };
+};
 
 const stateUpdaters: StateUpdaters<OwnOptions, OwnState, OwnStateUpdaters> = {
   stateNext: (prevState: OwnState) => () => ({
@@ -103,39 +103,39 @@ const stateUpdaters: StateUpdaters<OwnOptions, OwnState, OwnStateUpdaters> = {
   }),
 };
 
-const handlerCreators: HandleCreators<RequestApprovalListProps, OwnHandlers> = {
-  handleGoToDetail: (props: RequestApprovalListProps) => (travelUid) => {
+const handlerCreators: HandleCreators<SettlementListProps, OwnHandlers> = {
+  handleGoToDetail: (props: SettlementListProps) => (travelSettlementUid) => {
     const { history } = props;
-    const { isLoading } = props.travelApprovalState.all;
+    const { isLoading } = props.travelSettlementState.all;
 
     if (!isLoading) {
-      history.push(`/approval/travel/details/${travelUid}`);
+      history.push(`/travel/settlement/details/${travelSettlementUid}`);
     } 
   },
-  handleGoToNext: (props: RequestApprovalListProps) => () => { 
+  handleGoToNext: (props: SettlementListProps) => () => { 
     props.stateNext();
   },
-  handleGoToPrevious: (props: RequestApprovalListProps) => () => { 
+  handleGoToPrevious: (props: SettlementListProps) => () => { 
     props.statePrevious();
   },
-  handleReloading: (props: RequestApprovalListProps) => () => { 
+  handleReloading: (props: SettlementListProps) => () => { 
     props.stateReloading();
 
     // force re-load from api
     loadData(props);
   },
-  handleChangeOrder: (props: RequestApprovalListProps) => (field: IListBarField) => { 
+  handleChangeOrder: (props: SettlementListProps) => (field: IListBarField) => { 
     props.stateOrdering(field);
   },
-  handleChangeSize: (props: RequestApprovalListProps) => (value: number) => { 
+  handleChangeSize: (props: SettlementListProps) => (value: number) => { 
     props.stateSizing(value);
   },
-  handleChangeSort: (props: RequestApprovalListProps) => (direction: SortDirection) => { 
+  handleChangeSort: (props: SettlementListProps) => (direction: SortDirection) => { 
     props.stateSorting(direction);
   }
 };
 
-const lifecycles: ReactLifeCycleFunctions<RequestApprovalListProps, OwnState> = {
+const lifecycles: ReactLifeCycleFunctions<SettlementListProps, OwnState> = {
   componentDidMount() { 
     const { 
       handleGoToNext, handleGoToPrevious, handleReloading, 
@@ -144,13 +144,13 @@ const lifecycles: ReactLifeCycleFunctions<RequestApprovalListProps, OwnState> = 
       history, intl 
     } = this.props;
     
-    const { isLoading, response } = this.props.travelApprovalState.all;
+    const { isLoading, response } = this.props.travelSettlementState.all;
 
     layoutDispatch.changeView({
-      uid: AppMenu.TravelApproval,
+      uid: AppMenu.TravelSettlementRequest,
       parentUid: AppMenu.Travel,
-      title: intl.formatMessage({id: 'travelApproval.title'}),
-      subTitle : intl.formatMessage({id: 'travelApproval.subTitle'})
+      title: intl.formatMessage({id: 'travelSettlement.title'}),
+      subTitle : intl.formatMessage({id: 'travelSettlement.subTitle'})
     });
 
     layoutDispatch.modeListOn();
@@ -163,7 +163,7 @@ const lifecycles: ReactLifeCycleFunctions<RequestApprovalListProps, OwnState> = 
       onSyncCallback: handleReloading,
       onOrderCallback: handleChangeOrder,
       onDirectionCallback: handleChangeSort,
-      onAddCallback: () => history.push('approval/travel/form'),
+      onAddCallback: () => history.push('/travel/form'),
       onSizeCallback: handleChangeSize,
     });
 
@@ -177,7 +177,7 @@ const lifecycles: ReactLifeCycleFunctions<RequestApprovalListProps, OwnState> = 
       loadData(this.props);
     }
   },
-  componentDidUpdate(props: RequestApprovalListProps, state: OwnState) {
+  componentDidUpdate(props: SettlementListProps, state: OwnState) {
     // only load when these props are different
     if (
       this.props.orderBy !== props.orderBy ||
@@ -191,7 +191,7 @@ const lifecycles: ReactLifeCycleFunctions<RequestApprovalListProps, OwnState> = 
   componentWillUnmount() {
     const { layoutDispatch, navBottomDispatch } = this.props;
     const { view } = this.props.layoutState;
-    const { loadAllDispose } = this.props.travelApprovalDispatch;
+    const { loadAllDispose } = this.props.travelSettlementDispatch;
 
     layoutDispatch.changeView(null);
     layoutDispatch.modeListOff();
@@ -203,31 +203,31 @@ const lifecycles: ReactLifeCycleFunctions<RequestApprovalListProps, OwnState> = 
     navBottomDispatch.dispose();
 
     // dispose 'get all' from 'redux store' when the page is 'out of travel request' context 
-    if (view && view.parentUid !== AppMenu.TravelApproval) {
+    if (view && view.parentUid !== AppMenu.TravelSettlementRequest) {
       loadAllDispose();
     }
   }
 };
 
-const loadData = (props: RequestApprovalListProps): void => {
+const loadData = (props: SettlementListProps): void => {
   const { orderBy, direction, page, size } = props;
   const { user } = props.userState;
-  const { loadAllRequest } = props.travelApprovalDispatch;
+  const { loadAllRequest } = props.travelSettlementDispatch;
   const { alertAdd } = props.layoutDispatch;
 
   if (user) {
     loadAllRequest({
       filter: {
-        'query.direction': orderBy,
-        'query.orderBy': direction,
-        'query.page': page,
-        'query.size': size,
-        companyUid: user.company.uid,
-        positionUid: user.position.uid,
-        status: undefined,
-        isNotify: undefined,
-        'query.find': undefined,
-        'query.findBy': undefined,
+        direction,
+        orderBy,
+        page,
+        size,
+        companyUid: undefined,
+        positionUid: undefined,
+        customerUid: undefined,
+        isRejected: undefined,          
+        find: undefined,
+        findBy: undefined,
       }
     }); 
   } else {
@@ -238,14 +238,14 @@ const loadData = (props: RequestApprovalListProps): void => {
   }
 };
 
-export const RequestApprovalList = compose<RequestApprovalListProps, OwnOptions>(
-  withTravelApproval,
+export const TravelSettlementList = compose<SettlementListProps, OwnOptions>(
+  withTravelSettlement,
   withUser,
   withLayout,
   withNavBottom,
   withRouter,
   injectIntl,
   withStateHandlers<OwnState, OwnStateUpdaters, OwnOptions>(createProps, stateUpdaters), 
-  withHandlers<RequestApprovalListProps, OwnHandlers>(handlerCreators),
-  lifecycle<RequestApprovalListProps, OwnState>(lifecycles),
-)(RequestApprovalListView);
+  withHandlers<SettlementListProps, OwnHandlers>(handlerCreators),
+  lifecycle<SettlementListProps, OwnState>(lifecycles),
+)(TravelSettlementListView);

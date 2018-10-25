@@ -28,38 +28,38 @@ export const RequestItemFormView: React.SFC<RequestItemFormProps> = props => {
         subheader={<FormattedMessage id="travel.itemSubTitle" />}
       />
       <CardContent>
-        <List>
-          {
-            context.fields.map((field, index) => {
-              const sales = context.fields.get(index);
+          <List>
+            {
+              context.fields.map((field, index) => {
+                const items = context.fields.get(index);
 
-              return (
-                <ListItem
-                  disableGutters
-                  key={index}
-                >
-                  <ListItemAvatar>
-                    <Avatar
-                      alt={sales.fullName}
-                    >
-                      <PersonIcon />
-                    </Avatar>
-                  </ListItemAvatar>
-                  <ListItemText
-                    primary={sales.fullName}
-                  />
-                  <ListItemSecondaryAction>
-                    <IconButton onClick={() => context.fields.remove(index)}>
-                      <DeleteForeverIcon />
-                    </IconButton>
-                  </ListItemSecondaryAction>
-                </ListItem>
-              );
-            })
-          }
-          <Divider className={classNames(classes.marginFarTop, classes.marginFarBottom)} />
-        </List>
-      </CardContent>
+                return (
+                  <ListItem 
+                    disableGutters 
+                    key={index}
+                  >
+                    <ListItemAvatar>
+                      <Avatar
+                        alt={items.fullName} 
+                      >
+                        <PersonIcon/>
+                      </Avatar>
+                    </ListItemAvatar>
+                    <ListItemText
+                      primary={items.fullName}
+                    />
+                    <ListItemSecondaryAction>
+                      <IconButton onClick={() => context.fields.remove(index)}>
+                        <DeleteForeverIcon/>
+                      </IconButton>
+                    </ListItemSecondaryAction>
+                  </ListItem>
+                );
+              })
+            }
+            <Divider className={classNames(classes.marginFarTop, classes.marginFarBottom)} />
+          </List>
+        </CardContent>
     </Card>
   );
   return render;

@@ -8,7 +8,7 @@ import CallbackPage from '@layout/pages/CallbackPage';
 import { approvalRouter, leaveRouter } from '@leave/components/leaveRouter';
 import { projectRouter } from '@project/components/projectRouter';
 import { timesheetApprovalRouter, timesheetRouter } from '@timesheet/components/timesheetRouter';
-import { travelApprovalRouter, travelRouter } from '@travel/components/travelRouter';
+import { travelApprovalRouter, travelRouter, travelSettlementRouter } from '@travel/components/travelRouter';
 import { ConnectedRouter } from 'connected-react-router';
 import { History } from 'history';
 import * as React from 'react';
@@ -87,6 +87,7 @@ class App extends React.Component<AllProps> {
                         <Route path="/approval/leave" component={approvalRouter} />
                         <Route path="/project" component={projectRouter} />
                         <Route path="/travel" component={travelRouter} />
+                        <Route path="/travel/settlement" component={travelSettlementRouter} />
                         <Route path="/approval/travel" component={travelApprovalRouter} />                                                
                         <Route path="/timesheet" component={timesheetRouter} />
                         <Route path="/approval/timesheet" component={timesheetApprovalRouter} />

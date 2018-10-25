@@ -23,6 +23,7 @@
   
 
   "travel.field.information.uid": "Travel ID",
+  "travel.field.information.settlementuid": "Travel Settlement ID",
   "travel.field.information.uid.placeholder": "Travel ID",
   "travel.field.information.status": "Status",
   "travel.field.information.requestor": "Preparer Name",
