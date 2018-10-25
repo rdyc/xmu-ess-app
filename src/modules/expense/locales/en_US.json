@@ -5,6 +5,8 @@
   "expense.detail.subTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
   "expense.form.newTitle": "New Expense",
   "expense.form.newSubTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "expense.form.approval.newTitle": "Expense Approval",
+  "expense.form.approval.newSubTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
   "expense.form.editTitle": "Modify Expense",
   "expense.form.editSubTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
   "expense.infoTitle": "Expense",
@@ -60,9 +62,11 @@
   "expense.field.information.name.required": "Customer Name is Required",
   "expense.field.information.title.required": "Customer Job Title is Required",  
 
-  "expense.message.request.sales.duplication": "Sales person already added",
   "expense.message.request.create.success": "A new Expense {uid} has been created",
   "expense.message.request.create.failure": "Unable to process your submission",
   "expense.message.request.update.success": "Existing Expense {uid} has been updated",
-  "expense.message.request.update.failure": "Unable to process your submission"
+  "expense.message.request.update.failure": "Unable to process your submission",
+  "expense.message.owner.emptyProps": "Some props are empty",
+  "expense.message.approval.create.success": "An Expense {uid} has been approved/rejected",
+  "expense.message.approval.create.failure": "Unable to process your approval"
 }
