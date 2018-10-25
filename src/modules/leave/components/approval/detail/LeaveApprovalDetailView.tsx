@@ -1,5 +1,5 @@
-// import { AccountLeaveInformation } from '@account/components/views/AccountLeaveInformation';
-import { RequestDetailProps } from '@leave/components/request/detail/RequestDetail';
+import { ApprovalDetailProps } from '@leave/components/approval/detail/LeaveApprovalDetail';
+import { LeaveInformation } from '@leave/components/request/detail/shared/LeaveInformation';
 import {
   Button,
   Dialog,
@@ -13,27 +13,27 @@ import {
 import { WorkflowStep } from '@organization/components';
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
-import { LeaveInformation } from './shared/LeaveInformation';
+import { LeaveApprovalEditorView } from '../editor/LeaveApprovalEditorView';
 
-export const RequestDetailView: React.SFC<RequestDetailProps> = props => {
+export const LeaveApprovalDetailView: React.SFC<ApprovalDetailProps> = props => {
   const { 
     dialogFullScreen, dialogOpen, dialogTitle, dialogDescription, dialogCancelText, dialogConfirmedText,
     handleDialogClose, handleDialogConfirmed, intl
   } = props;
-  const { isLoading, response } = props.leaveRequestState.detail;
+  const { isLoading, response } = props.leaveApprovalState.detail;
 
   const renderDialog = (
     <Dialog
       fullScreen={dialogFullScreen}
       open={dialogOpen}
-      aria-labelledby="leaveRequest-detail-dialog-title"
-      aria-describedby="leaveRequest-detail-dialog-description"
+      aria-labelledby="leave-approval-detail-dialog-title"
+      aria-describedby="leave-approval-detail-dialog-description"
     >
-      <DialogTitle id="leaveRequest-detail-dialog-title">
+      <DialogTitle id="leave-approval-detail-dialog-title">
         {dialogTitle || 'title'}
       </DialogTitle>
       <DialogContent>
-        <DialogContentText id="leaveRequest-detail-dialog-description">
+        <DialogContentText id="leave-approval-detail-dialog-description">
           {dialogDescription || 'description'}
         </DialogContentText>
       </DialogContent>
@@ -76,17 +76,6 @@ export const RequestDetailView: React.SFC<RequestDetailProps> = props => {
             }
           </Grid>
 
-          {/* <Grid item xs={12} md={4}>
-            {
-              response &&
-              response.data &&
-              <AccountLeaveInformation 
-                data={response.data.employee}
-                intl={intl}
-              />
-            }
-          </Grid> */}
-
           <Grid item xs={12} md={4}>
             {
               response &&
@@ -95,6 +84,18 @@ export const RequestDetailView: React.SFC<RequestDetailProps> = props => {
               response.data.workflow.steps &&
               <WorkflowStep steps={response.data.workflow.steps} />
             }
+          </Grid>
+
+          <Grid item xs={12} md={4}>
+          {
+            response &&
+            response.data &&
+            response.data.workflow &&
+            response.data.workflow.isApproval &&
+            <LeaveApprovalEditorView
+              
+            />
+          }
           </Grid>
         </Grid>
       }

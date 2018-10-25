@@ -4,7 +4,7 @@ import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IAppBarMenu } from '@layout/interfaces';
 import { LeaveRequestUserAction } from '@leave/classes/types';
-import { ApprovalDetailView } from '@leave/components/approval/detail/ApprovalDetailView';
+import { LeaveApprovalDetailView } from '@leave/components/approval/detail/LeaveApprovalDetailView';
 import { WithLeaveApproval, withLeaveApproval } from '@leave/hoc/withLeaveApproval';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
@@ -192,7 +192,7 @@ const lifecycles: ReactLifeCycleFunctions<ApprovalDetailProps, OwnState> = {
   }
 };
 
-export const ApprovalDetail = compose<ApprovalDetailProps, {}>(
+export const LeaveApprovalDetail = compose<ApprovalDetailProps, {}>(
   withUser,
   withLayout,
   withAppBar,
@@ -202,4 +202,4 @@ export const ApprovalDetail = compose<ApprovalDetailProps, {}>(
   withStateHandlers<OwnState, OwnStateUpdaters, {}>(createProps, stateUpdaters), 
   withHandlers<ApprovalDetailProps, Handler>(handlerCreators),
   lifecycle<ApprovalDetailProps, OwnState>(lifecycles),
-)(ApprovalDetailView);
+)(LeaveApprovalDetailView);

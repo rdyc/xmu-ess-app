@@ -1,8 +1,8 @@
-import { ApprovalDetail } from '@leave/components/approval/detail/ApprovalDetail';
-import { ApprovalList } from '@leave/components/approval/list/ApprovalList';
-import { RequestDetail } from '@leave/components/request/detail/RequestDetail';
-import RequestEditor from '@leave/components/request/editor/RequestEditor';
-import { RequestList } from '@leave/components/request/list/RequestList';
+import { LeaveApprovalDetail } from '@leave/components/approval/detail/LeaveApprovalDetail';
+import { LeaveApprovalList } from '@leave/components/approval/list/LeaveApprovalList';
+import { LeaveRequestDetail } from '@leave/components/request/detail/LeaveRequestDetail';
+import RequestEditor from '@leave/components/request/editor/LeaveRequestEditor';
+import { LeaveRequestList } from '@leave/components/request/list/LeaveRequestList';
 import * as React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router';
 
@@ -10,11 +10,11 @@ type AllProps
   = RouteComponentProps;
 
 const requestListComponent = () => (
-  <RequestList orderBy="uid" direction="descending"/>
+  <LeaveRequestList orderBy="uid" direction="descending"/>
 );
 
 const requestDetailComponent = () => (
-  <RequestDetail/>
+  <LeaveRequestDetail/>
 );
 
 const requestEditorComponent = () => (
@@ -22,11 +22,11 @@ const requestEditorComponent = () => (
 );
 
 const approvalListComponent = () => (
-  <ApprovalList orderBy="uid" direction="descending"/>
+  <LeaveApprovalList orderBy="uid" direction="descending"/>
 );
 
 const approvalDetailComponent = () => (
-  <ApprovalDetail/>
+  <LeaveApprovalDetail/>
 );
 
 export const leaveRouter: React.SFC<AllProps> = props => (

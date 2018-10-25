@@ -6,6 +6,7 @@ import {
   documentGetListRequest,
   documentPresalesGetListRequest,
   expenseGetListRequest,
+  leaveGetListRequest,
   projectGetListRequest,
   siteGetListRequest,
   statusGetListRequest,
@@ -25,9 +26,10 @@ interface PropsFromState {
   commonProjectListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
   commonSiteListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
   commonExpenseListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
+  commonLeaveListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
   commonStatusListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
 
-  // detail
+  // detail 
 }
 
 interface PropsFromDispatch {
@@ -42,6 +44,7 @@ interface PropsFromDispatch {
     projectListRequest: typeof projectGetListRequest;
     siteListRequest: typeof siteGetListRequest;
     expenseListRequest: typeof expenseGetListRequest;
+    leaveListRequest: typeof leaveGetListRequest;
     statusListRequest: typeof statusGetListRequest;
 
     // detail
@@ -58,6 +61,7 @@ const mapStateToProps = ({
   commonProjectList,
   commonSiteList,
   commonExpenseList,
+  commonLeaveList,
   commonStatusList
 }: IAppState) => ({
   // all
@@ -70,6 +74,7 @@ const mapStateToProps = ({
   commonProjectListState: commonProjectList,
   commonSiteListState: commonSiteList,
   commonExpenseListState: commonExpenseList,
+  commonLeaveListState: commonLeaveList,
   commonStatusListState: commonStatusList,
   
   // detail
@@ -88,6 +93,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     projectListRequest: (request: ISystemListRequest) => dispatch(projectGetListRequest(request)),
     siteListRequest: (request: ISystemListRequest) => dispatch(siteGetListRequest(request)),
     expenseListRequest: (request: ISystemListRequest) => dispatch(expenseGetListRequest(request)),
+    leaveListRequest: (request: ISystemListRequest) => dispatch(leaveGetListRequest(request)),
     statusListRequest: (request: ISystemListRequest) => dispatch(statusGetListRequest(request)),
 
     // detail

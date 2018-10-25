@@ -10,8 +10,8 @@ import {
 import { ILeaveRequest } from '@leave/classes/response';
 import {
   LeaveRequestFormData,
-} from '@leave/components/request/editor/forms/RequestForm';
-import { RequestEditorView } from '@leave/components/request/editor/RequestEditorView';
+} from '@leave/components/request/editor/forms/LeaveRequestForm';
+import { LeaveRequestEditorView } from '@leave/components/request/editor/LeaveRequestEditorView';
 import { WithLeaveRequest, withLeaveRequest } from '@leave/hoc/withLeaveRequest';
 import { leaveRequestMessage } from '@leave/locales/messages/leaveRequestMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
@@ -265,4 +265,4 @@ export default compose<RequestEditorProps, {}>(
   withStateHandlers<OwnState, OwnStateUpdaters, {}>(createProps, stateUpdaters),
   withHandlers<RequestEditorProps, OwnHandlers>(handlerCreators),
   lifecycle<RequestEditorProps, {}>(lifecycles),
-)(RequestEditorView);
+)(LeaveRequestEditorView);

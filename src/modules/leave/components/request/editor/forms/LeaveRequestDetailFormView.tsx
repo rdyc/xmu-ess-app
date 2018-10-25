@@ -1,11 +1,11 @@
 import { FormMode } from '@generic/types';
-import { RequestDetailFormProps } from '@leave/components/request/editor/forms/RequestDetailForm';
+import { RequestDetailFormProps } from '@leave/components/request/editor/forms/LeaveRequestDetailForm';
 import { Card, CardContent, CardHeader } from '@material-ui/core';
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Field } from 'redux-form';
 
-export const RequestDetailFormView: React.SFC<RequestDetailFormProps> = props => {
+export const LeaveRequestDetailFormView: React.SFC<RequestDetailFormProps> = props => {
   const { formMode } = props;
   const { names } = props.context;
   

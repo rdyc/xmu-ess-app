@@ -5,7 +5,7 @@ import { WithNavBottom, withNavBottom } from '@layout/hoc/withNavBottom';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IListBarField } from '@layout/interfaces';
 import { LeaveRequestField } from '@leave/classes/types';
-import { ApprovalListView } from '@leave/components/approval/list/ApprovalListView';
+import { LeaveApprovalListView } from '@leave/components/approval/list/LeaveApprovalListView';
 import { WithLeaveApproval, withLeaveApproval } from '@leave/hoc/withLeaveApproval';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
@@ -140,8 +140,8 @@ const lifecycles: ReactLifeCycleFunctions<ApprovalListProps, OwnState> = {
     const { 
       handleGoToNext, handleGoToPrevious, handleReloading, 
       handleChangeOrder, handleChangeSize, handleChangeSort, 
-      layoutDispatch, navBottomDispatch, 
-      history, intl 
+      layoutDispatch, navBottomDispatch, isOptionDisabled,
+      intl 
     } = this.props;
     
     const { isLoading, response } = this.props.leaveApprovalState.all;
@@ -163,7 +163,7 @@ const lifecycles: ReactLifeCycleFunctions<ApprovalListProps, OwnState> = {
       onSyncCallback: handleReloading,
       onOrderCallback: handleChangeOrder,
       onDirectionCallback: handleChangeSort,
-      onAddCallback: () => history.push('/leave/form'),
+      onAddCallback: () => isOptionDisabled,
       onSizeCallback: handleChangeSize,
     });
 
@@ -238,7 +238,7 @@ const loadData = (props: ApprovalListProps): void => {
   }
 };
 
-export const ApprovalList = compose<ApprovalListProps, OwnOptions>(
+export const LeaveApprovalList = compose<ApprovalListProps, OwnOptions>(
   withLeaveApproval,
   withUser,
   withLayout,
@@ -248,4 +248,4 @@ export const ApprovalList = compose<ApprovalListProps, OwnOptions>(
   withStateHandlers<OwnState, OwnStateUpdaters, OwnOptions>(createProps, stateUpdaters), 
   withHandlers<ApprovalListProps, OwnHandlers>(handlerCreators),
   lifecycle<ApprovalListProps, OwnState>(lifecycles),
-)(ApprovalListView);
+)(LeaveApprovalListView);
