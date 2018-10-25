@@ -17,6 +17,8 @@
   "global.form.approval.field.isApproved": "Approval",
   "global.form.approval.field.remark": "Reject Reason",
   "global.form.approval.field.remark.placeholder": "Type the reject reason",
+  "global.form.approval.field.isApproved.required": "Approval is required",
+  "global.form.approval.field.remark.required": "Reject reason is required",
   "global.form.approval.option.reject": "Reject",
   "global.form.approval.option.approve": "Approve",
   "global.form.approval.option.paid": "Paid",

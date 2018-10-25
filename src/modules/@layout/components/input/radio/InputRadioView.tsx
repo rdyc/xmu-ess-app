@@ -17,6 +17,7 @@ export const InputRadioView: React.SFC<InputRadioProps> = props => {
     return (
       <FormControlLabel
         value={name}
+        key={name}
         control={<Radio color="secondary" />}
         label={<FormattedMessage id={`global.form.approval.option.${name}`}/>}
         onClick={changeValue}

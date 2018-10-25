@@ -67,11 +67,13 @@ const handlerCreators: HandleCreators<ApprovalEditorProps, OwnHandlers> = {
       information: {}
     };
   
-    const requiredFields = ['isApproved'];
+    const requiredFields = 
+      formData.information.isApproved === ApprovalOptions.reject ?
+        ['isApproved', 'remark'] : ['isApproved'];    
   
     requiredFields.forEach(field => {
       if (!formData.information[field] || isNullOrUndefined(formData.information[field])) {
-        errors.information[field] = props.intl.formatMessage({id: `expense.field.information.${field}.required`});
+        errors.information[field] = props.intl.formatMessage({id: `global.form.approval.field.${field}.required`});
       }
     });
     
@@ -120,7 +122,7 @@ const handlerCreators: HandleCreators<ApprovalEditorProps, OwnHandlers> = {
     let message: string = '';
 
     if (formMode === FormMode.Edit) {
-      message = intl.formatMessage(expenseApprovalMessage.createSuccess);
+      message = intl.formatMessage(expenseApprovalMessage.createSuccess, {uid: expenseUid});
     }
 
     alertAdd({
