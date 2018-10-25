@@ -1,5 +1,5 @@
 export interface IPurchaseItemPutPayload {
-  uid: string;
+  uid: string | null;
   description: string;
   request: number;
 }

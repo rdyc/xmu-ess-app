@@ -1,5 +1,5 @@
 import { SelectSystem, SelectSystemOption } from '@common/components/select';
-// import { FormMode } from '@generic/types';
+import { FormMode } from '@generic/types';
 import { InputDate } from '@layout/components/input/date';
 import { InputNumber } from '@layout/components/input/number';
 import { InputText } from '@layout/components/input/text';
@@ -12,6 +12,7 @@ import { BaseFieldsProps } from 'redux-form';
 import { isNullOrUndefined } from 'util';
 
 interface OwnProps {
+  formMode: FormMode;
   context: BaseFieldsProps;
   formCurrencyType: string | null | undefined;
   isCurrencyIdr: boolean;
@@ -33,7 +34,7 @@ export type PurchaseRequestDetailFormProps
 const handlerCreators: HandleCreators<PurchaseRequestDetailFormProps, OwnHandlers> = {
   generateFieldProps: (props: PurchaseRequestDetailFormProps) => (name: string) => { 
     const { 
-      intl, formCurrencyType, isCurrencyIdr, 
+      intl, formMode, formCurrencyType, isCurrencyIdr, 
       onChangeCurrencyType, onChangeValueIdr, 
       onChangeRate 
     } = props;
@@ -60,14 +61,16 @@ const handlerCreators: HandleCreators<PurchaseRequestDetailFormProps, OwnHandler
         };
         break;
 
-      case 'name': 
+      case 'name':
         fieldProps = {
-          required: true,
-          placeholder: intl.formatMessage({id: `purchase.field.${name}.placeholder`}),
-          component: InputText
+          required: formMode === FormMode.New,
+          category: 'project',
+          disabled: formMode === FormMode.Edit,
+          placeholder: intl.formatMessage({ id: `purchase.field.${name}.placeholder` }),
+          component: SelectSystem,
         };
         break;
-  
+
       case 'currencyType': 
         fieldProps = {
           required: true,
@@ -97,7 +100,7 @@ const handlerCreators: HandleCreators<PurchaseRequestDetailFormProps, OwnHandler
         };
         break;
 
-      case 'valueUsd':
+      case 'request':
         fieldProps = {
           type: 'number',
           placeholder: intl.formatMessage({id: `purchase.field.${name}.placeholder`}),
@@ -106,14 +109,22 @@ const handlerCreators: HandleCreators<PurchaseRequestDetailFormProps, OwnHandler
         };
         break;
 
-      case 'valueIdr':
+      case 'requestIDR':
         fieldProps = {
           type: 'number',
           disabled: true,
           component: InputNumber
         };
         break;
-    
+  
+      case 'advance':
+        fieldProps = {
+          type: 'number',
+          disabled: true,
+          component: InputNumber
+        };
+        break;
+  
       default:
         fieldProps = {
           type: 'text',

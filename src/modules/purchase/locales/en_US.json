@@ -37,7 +37,7 @@
   "purchase.field.information.uid": "Purchase ID",
   "purchase.field.information.uid.placeholder": "Purchase ID",
   "purchase.field.information.name": "Project Name",
-  "purchase.field.information.name.required": "Purchase Request name is required",
+  "purchase.field.information.name.required": "Project name is required",
   "purchase.field.information.name.placeholder": "Type a purchase name",
   "purchase.field.information.notes": "Notes",
   "purchase.field.information.notes.placeholder": "Type a note",

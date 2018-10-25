@@ -7,7 +7,7 @@ const formName = 'purchaseRequest';
 
 export type PurchaseRequestItemFormData = {
   uid: string | null;
-  descriptionn: string;
+  description: string;
   request: number;
 };
 
@@ -16,14 +16,12 @@ export type PurchaseRequestFormData = {
     uid: string | null | undefined;
     customerUid: string | null | undefined;
     projectUid: string | null | undefined;
-    dat: string | null | undefined;
-    name: string | null | undefined;
+    advance: number;
     notes: string | null | undefined;
     date: string | null | undefined;
     currencyType: string | null | undefined;
     rate: number;
-    Request: number;
-    valueIdr: number;
+    request: number;
   },
   items: {
     items: PurchaseRequestItemFormData[]

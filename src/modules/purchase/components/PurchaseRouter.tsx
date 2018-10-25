@@ -1,7 +1,7 @@
 import { PurchaseApprovalDetail } from '@purchase/components/purchaseHistories/detail/PurchaseApprovalDetail';
 import { PurchaseApprovalList } from '@purchase/components/purchaseHistories/list/PurchaseApprovalList';
 import { PurchaseRequestDetail } from '@purchase/components/purchaseRequest/detail/PurchaseRequestDetail';
-// import PurchaseRequestEditor from '@purchase/components/purchaseRequest/editor/PurchaseRequestEditor';
+import PurchaseRequestEditor from '@purchase/components/purchaseRequest/editor/PurchaseRequestEditor';
 import { PurchaseRequestList } from '@purchase/components/purchaseRequest/list/PurchaseRequestList';
 import { PurchaseSettlementDetail } from '@purchase/components/purchaseSettlement/detail/PurchaseSettlementDetail';
 // import PurchaseSettlementEditor from '@purchase/components/purchaseRequest/editor/PurchaseSettlementEditor';
@@ -28,6 +28,11 @@ const detailComponent = () => (
 const approvalDetailComponent = () => (
   <PurchaseApprovalDetail />
 );
+
+const editorComponent = () => (
+  <PurchaseRequestEditor />
+);
+
 const settlementListComponent = () => (
   <PurchaseSettlementList orderBy="uid" direction="descending" />
 );
@@ -47,6 +52,7 @@ export const purchaseRouter: React.SFC<AllProps> = props => (
   <Switch>
     <Route path={`${props.match.path}/list`} component={listComponent} />
     <Route path={`${props.match.path}/details/:purchaseUid`} component={detailComponent} />
+    <Route path={`${props.match.path}/form`} component={editorComponent} />
   </Switch>
 );
 

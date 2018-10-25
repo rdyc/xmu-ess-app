@@ -2,7 +2,7 @@ import { Submission } from '@layout/components/submission/Submission';
 import { Grid } from '@material-ui/core';
 import { PurchaseRequestDetailForm } from '@purchase/components/purchaseRequest/editor/forms/PurchaseRequestDetailForm';
 import { PurchaseRequestFormProps } from '@purchase/components/purchaseRequest/editor/forms/PurchaseRequestForm';
-// import { PurchaseRequestItemForm } from '@purchase/components/purchaseRequest/editor/forms/PurchaseRequestItemForm';
+import { PurchaseRequestItemForm } from '@purchase/components/purchaseRequest/editor/forms/PurchaseRequestItemForm';
 import * as React from 'react';
 import { BaseFieldsProps, FieldArray, Fields, FormSection, WrappedFieldArrayProps } from 'redux-form';
 
@@ -42,9 +42,9 @@ export const PurchaseRequestFormView: React.SFC<PurchaseRequestFormProps> = prop
     />
   );
 
-  // const componentSales = (context: WrappedFieldArrayProps<any>) => (
-  // <PurchaseRequestItemForm context={context} />
-  // );
+  const componentItems = (context: WrappedFieldArrayProps<any>) => (
+  <PurchaseRequestItemForm context={context} />
+  );
 
   const render = (
     <form onSubmit={props.handleSubmit}>
@@ -64,14 +64,14 @@ export const PurchaseRequestFormView: React.SFC<PurchaseRequestFormProps> = prop
           </FormSection>
         </Grid>
 
-        {/* <Grid item xs={12} md={4}>
-          <FormSection name="sales">
+        <Grid item xs={12} md={4}>
+          <FormSection name="items">
             <FieldArray
-              name="employees"
-              component={componentSales}
+              name="items"
+              component={componentItems}
             />
           </FormSection>
-        </Grid> */}
+        </Grid>
 
         <Grid item xs={12} md={4}>
           <Submission

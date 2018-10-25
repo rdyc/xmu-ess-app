@@ -13,8 +13,8 @@ export const PurchaseRequestDetailFormView: React.SFC<PurchaseRequestDetailFormP
     const fieldName = name.replace('information.', '');
     const fieldProps = props.generateFieldProps(name);
 
-    // don't show uid & ownerEmployeeUid for new form
-    const fields = ['uid', 'ownerEmployeeUid'];
+    // don't show uid for new form
+    const fields = ['uid'];
     if (formMode === FormMode.New && fields.indexOf(fieldName) !== -1) {
       return null;
     }
