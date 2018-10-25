@@ -153,10 +153,11 @@ const handlerCreators: HandleCreators<ApprovalEditorProps, OwnHandlers> = {
 };
 
 const createProps: mapper<ApprovalEditorProps, OwnState> = (props: ApprovalEditorProps): OwnState => {
-  // const { match } = props;
+  const { match } = props;
   
   return { 
-    formMode: FormMode.New
+    formMode: FormMode.New,
+    expenseUid: match.params.expenseUid
   };
 };
 
