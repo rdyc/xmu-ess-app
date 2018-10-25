@@ -2,11 +2,14 @@ import { accountRouter } from '@account/pages';
 import { ExpenseApprovalRouter, ExpenseRouter } from '@expense/components/ExpenseRouter';
 import { rootStore } from '@generic/roots';
 import Layout from '@layout/components/base/Layout';
+import Main from '@layout/components/main/Main';
 import { HomePage } from '@layout/pages';
 import AccessWizardPage from '@layout/pages/AccessWizardPage';
 import CallbackPage from '@layout/pages/CallbackPage';
 import { approvalRouter, leaveRouter } from '@leave/components/leaveRouter';
+import { MileageApprovalRouter, MileageRequestRouter } from '@mileage/components/MileageRouter';
 import { projectRouter } from '@project/components/projectRouter';
+import { purchaseApprovalRouter, purchaseRouter, purchaseSettlementApprovalRouter, purchaseSettlementRouter } from '@purchase/components/PurchaseRouter';
 import { timesheetApprovalRouter, timesheetRouter } from '@timesheet/components/timesheetRouter';
 import { travelApprovalRouter, travelRouter, travelSettlementRouter } from '@travel/components/travelRouter';
 import { ConnectedRouter } from 'connected-react-router';
@@ -47,11 +50,6 @@ class App extends React.Component<AllProps> {
   public render() {   
     const { oidcState, store, history } = this.props;
 
-    const onLogin = (event: any) => {
-      event.preventDefault();
-      AppUserManager.signinRedirect();
-    };
-
     const currentAppLocale = AppLocale[getCurrentLanguage(config.defaultLanguage || 'english').locale];
 
     // wait for user to be loaded, and location is known
@@ -72,7 +70,7 @@ class App extends React.Component<AllProps> {
                 <div>
                   {!oidcState.user && (
                     <div>
-                      <button onClick={onLogin}>Login</button>
+                      <Route exact path="/" component={Main} />
                       <Route path="/callback" component={CallbackPage} />
                     </div>
                   )}
@@ -86,6 +84,10 @@ class App extends React.Component<AllProps> {
                         <Route path="/leave" component={leaveRouter} />
                         <Route path="/approval/leave" component={approvalRouter} />
                         <Route path="/project" component={projectRouter} />
+                        <Route path="/purchase/request" component={purchaseRouter} />
+                        <Route path="/approval/purchase/request" component={purchaseApprovalRouter} />
+                        <Route path="/purchase/settlement" component={purchaseSettlementRouter} />
+                        <Route path="/approval/purchase/settlement" component={purchaseSettlementApprovalRouter} />
                         <Route path="/travel" component={travelRouter} />
                         <Route path="/travel/settlement" component={travelSettlementRouter} />
                         <Route path="/approval/travel" component={travelApprovalRouter} />                                                
@@ -93,6 +95,8 @@ class App extends React.Component<AllProps> {
                         <Route path="/approval/timesheet" component={timesheetApprovalRouter} />
                         <Route path="/expense" component={ExpenseRouter} />
                         <Route path="/approval/expense" component={ExpenseApprovalRouter} />
+                        <Route path="/mileage" component={MileageRequestRouter} />
+                        <Route path="/approval/mileage" component={MileageApprovalRouter} />
                       </Layout>
                     </Switch>
                   )}

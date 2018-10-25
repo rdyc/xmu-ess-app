@@ -10,6 +10,7 @@ import { leaveReducers } from '@leave/store/reducers/leaveReducers';
 import lookupReducers from '@lookup/store/reducers/lookupReducers';
 import mileageReducers from '@mileage/store/reducers/mileageReducers';
 import { projectReducers } from '@project/store/reducers/projectReducers';
+import purchaseReducers from '@purchase/store/reducers/purchaseReducers';
 import timesheetReducers from '@timesheet/store/reducers/timesheetReducers';
 import travelReducers from '@travel/store/reducers/travelReducer';
 import { combineReducers } from 'redux';
@@ -35,6 +36,8 @@ export const rootReducer = combineReducers<IAppState>({
   ...timesheetReducers,
   ...financeReducers,
   ...expenseReducers,
+  ...leaveReducers,
+  ...purchaseReducers,
   ...mileageReducers,
   ...travelReducers,
 });
