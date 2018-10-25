@@ -2,17 +2,19 @@ import {
   expenseApprovalGetAllReducer,
   expenseApprovalGetByIdReducer,
   expenseApprovalPostReducer,
-  expenseGetAllReducer,
-  expenseGetByIdReducer,
-  expensePostReducer,
-  expensePutReducer,
-} from '@expense/store/reducers';
+} from '@expense/store/reducers/approval';
+import {
+  expenseRequestGetAllReducer,
+  expenseRequestGetByIdReducer,
+  expenseRequestPostReducer,
+  expenseRequestPutReducer,
+} from '@expense/store/reducers/request';
 
 const expenseReducers = {
-  expenseGetAll: expenseGetAllReducer,
-  expenseGetById: expenseGetByIdReducer,
-  expensePost: expensePostReducer,
-  expensePut: expensePutReducer,
+  expenseRequestGetAll: expenseRequestGetAllReducer,
+  expenseRequestGetById: expenseRequestGetByIdReducer,
+  expenseRequestPost: expenseRequestPostReducer,
+  expenseRequestPut: expenseRequestPutReducer,
   expenseApprovalGetAll: expenseApprovalGetAllReducer,
   expenseApprovalGetById: expenseApprovalGetByIdReducer,
   expenseApprovalPost: expenseApprovalPostReducer,

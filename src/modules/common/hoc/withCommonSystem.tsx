@@ -5,8 +5,11 @@ import {
   currencyGetListRequest,
   documentGetListRequest,
   documentPresalesGetListRequest,
+  expenseGetListRequest,
+  leaveGetListRequest,
   projectGetListRequest,
   siteGetListRequest,
+  statusGetListRequest,
 } from '@common/store/actions';
 import { IAppState, IQueryCollectionState } from '@generic/interfaces';
 import { connect } from 'react-redux';
@@ -22,6 +25,9 @@ interface PropsFromState {
   commonDocumentPresalesListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
   commonProjectListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
   commonSiteListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
+  commonLeaveListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
+  commonExpenseListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
+  commonStatusListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
 
   // detail
 }
@@ -35,8 +41,11 @@ interface PropsFromDispatch {
     currencyListRequest: typeof currencyGetListRequest;
     documentListRequest: typeof documentGetListRequest;
     documentPresalesListRequest: typeof documentPresalesGetListRequest;
+    expenseListRequest: typeof expenseGetListRequest;
     projectListRequest: typeof projectGetListRequest;
     siteListRequest: typeof siteGetListRequest;
+    leaveListRequest: typeof leaveGetListRequest;
+    statusListRequest: typeof statusGetListRequest;
 
     // detail
   };
@@ -50,7 +59,10 @@ const mapStateToProps = ({
   commonDocumentList, 
   commonDocumentPresalesList, 
   commonProjectList,
-  commonSiteList 
+  commonExpenseList,
+  commonSiteList,
+  commonLeaveList,
+  commonStatusList,
 }: IAppState) => ({
   // all
   
@@ -60,7 +72,10 @@ const mapStateToProps = ({
   commonDocumentListState: commonDocumentList,
   commonDocumentPresalesListState: commonDocumentPresalesList,
   commonProjectListState: commonProjectList,
+  commonExpenseListState: commonExpenseList,
   commonSiteListState: commonSiteList,
+  commonLeaveListState: commonLeaveList,
+  commonStatusListState: commonStatusList,
   
   // detail
  
@@ -76,7 +91,10 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     documentListRequest: (request: ISystemListRequest) => dispatch(documentGetListRequest(request)),
     documentPresalesListRequest: (request: ISystemListRequest) => dispatch(documentPresalesGetListRequest(request)),
     projectListRequest: (request: ISystemListRequest) => dispatch(projectGetListRequest(request)),
+    expenseListRequest: (request: ISystemListRequest) => dispatch(expenseGetListRequest(request)),
     siteListRequest: (request: ISystemListRequest) => dispatch(siteGetListRequest(request)),
+    leaveListRequest: (request: ISystemListRequest) => dispatch(leaveGetListRequest(request)),
+    statusListRequest: (request: ISystemListRequest) => dispatch(statusGetListRequest(request)),
 
     // detail
   }

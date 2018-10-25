@@ -1,2 +1,2 @@
-export * from '@mileage/store/actions/mileagerequestActions';
-export * from '@mileage/store/actions/mileageapprovalActions';
+export * from '@mileage/store/actions/request/mileageRequestActions';
+export * from '@mileage/store/actions/approval/mileageApprovalActions';

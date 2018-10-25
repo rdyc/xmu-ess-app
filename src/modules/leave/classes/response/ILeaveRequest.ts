@@ -21,5 +21,5 @@ export interface ILeaveRequest {
   status?:          ICommonSystem | null;
   rejectedReason?:  string | null;
   requestedLeave?:  number | null;
-  changes?:         IBaseChanges | null;       
+  changes:         IBaseChanges | null;       
 }

@@ -1,8 +1,5 @@
 import { IQueryCollectionState, IQuerySingleState } from '@generic/interfaces';
 import {
-  ICompanyAllRequest,
-  ICompanyByIdRequest,
-  ICompanyListRequest,
   ICurrencyAllRequest,
   ICurrencyByIdRequest,
   ICurrencyListRequest,
@@ -12,13 +9,10 @@ import {
   IHolidayAllRequest,
   IHolidayByIdRequest,
   IHolidayListRequest,
-  ILeaveAllRequest,
-  ILeaveByIdRequest,
-  ILeaveListRequest,
+  ILeaveGetAllRequest,
+  ILeaveGetDetailRequest,
+  ILeaveGetListRequest,
   ILeavePutRequest,
-  ILookupCustomerGetAllRequest,
-  ILookupCustomerGetDetailRequest,
-  ILookupCustomerGetListRequest,
   IMenuGetAllRequest,
   IMenuGetByIdRequest,
   IMenuListRequest,
@@ -28,13 +22,25 @@ import {
   IPositionGetAllRequest,
   IPositionGetByIdRequest,
   IPositionListRequest,
-  IRoleAllRequest,
-  IRoleByIdRequest,
-  IRoleListRequest,
   ISystemLimitAllRequest,
   ISystemLimitByIdRequest,
   ISystemLimitListRequest,
 } from '@lookup/classes/queries';
+import { 
+  ILookupCompanyAllRequest,
+  ILookupCompanyByIdRequest,
+  ILookupCompanyListRequest,
+ } from '@lookup/classes/queries/company';
+import { 
+  ILookupCustomerGetAllRequest,
+  ILookupCustomerGetDetailRequest,
+  ILookupCustomerGetListRequest,
+ } from '@lookup/classes/queries/customer';
+import { 
+  ILookupRoleAllRequest,
+  ILookupRoleByIdRequest,
+  ILookupRoleListRequest,
+ } from '@lookup/classes/queries/role';
 import {
   ICompany,
   ICompanyDetail,
@@ -85,13 +91,13 @@ export interface ILookupState {
   mileageExceptionGetList: IQueryCollectionState<IMileageExceptionListRequest, IMileageExceptionList>;
   mileageExceptionGetById: IQuerySingleState<IMileageExceptionByIdRequest, IMileageExceptionDetail>;
 
-  roleGetAll: IQueryCollectionState<IRoleAllRequest, IRole>;
-  roleGetList: IQueryCollectionState<IRoleListRequest, IRoleList>;
-  roleGetById: IQuerySingleState<IRoleByIdRequest, IRoleDetail>;
+  lookupRoleGetAll: IQueryCollectionState<ILookupRoleAllRequest, IRole>;
+  lookupRoleGetList: IQueryCollectionState<ILookupRoleListRequest, IRoleList>;
+  lookupRoleGetById: IQuerySingleState<ILookupRoleByIdRequest, IRoleDetail>;
 
-  companyGetAll: IQueryCollectionState<ICompanyAllRequest, ICompany>;
-  companyGetList: IQueryCollectionState<ICompanyListRequest, ICompanyList>;
-  companyGetById: IQuerySingleState<ICompanyByIdRequest, ICompanyDetail>;
+  lookupCompanyGetAll: IQueryCollectionState<ILookupCompanyAllRequest, ICompany>;
+  lookupCompanyGetList: IQueryCollectionState<ILookupCompanyListRequest, ICompanyList>;
+  lookupCompanyGetById: IQuerySingleState<ILookupCompanyByIdRequest, ICompanyDetail>;
 
   diemGetAll: IQueryCollectionState<IDiemAllRequest, IDiem>;
   diemGetList: IQueryCollectionState<IDiemListRequest, IDiemList>;
@@ -113,9 +119,9 @@ export interface ILookupState {
   holidayGetList: IQueryCollectionState<IHolidayListRequest, IHolidayList>;
   holidayGetById: IQuerySingleState<IHolidayByIdRequest, IHolidayDetail>;
 
-  leaveGetAll: IQueryCollectionState<ILeaveAllRequest, ILeave>;
-  leaveGetList: IQueryCollectionState<ILeaveListRequest, ILeaveList>;
-  leaveGetById: IQuerySingleState<ILeaveByIdRequest, ILeaveDetail>;
+  leaveGetAll: IQueryCollectionState<ILeaveGetAllRequest, ILeave>;
+  leaveGetList: IQueryCollectionState<ILeaveGetListRequest, ILeaveList>;
+  leaveGetById: IQuerySingleState<ILeaveGetDetailRequest, ILeaveDetail>;
   leavePut: IQuerySingleState<ILeavePutRequest, ILeave>;
 
   systemLimitGetAll: IQueryCollectionState<ISystemLimitAllRequest, ISystemLimit>;

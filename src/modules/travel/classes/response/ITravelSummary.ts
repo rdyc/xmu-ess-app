@@ -1,6 +1,6 @@
 export interface ITravelSummary {
-  totalDuration: number | null;
-  totalCostTransport: number | null;
-  totalCostHotel: number | null;
-  totalDiemValue: number | null;
+  totalDuration: number | 0;
+  totalCostTransport: number | 0;
+  totalCostHotel: number | 0;
+  totalDiemValue: number | 0;
 }

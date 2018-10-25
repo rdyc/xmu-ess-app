@@ -11,6 +11,9 @@
   
   "global.form.submit.title": "Submission",
   "global.form.submit.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+  
+  "global.form.approval.title": "Approval",
+  "global.form.approval.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
 
   "global.action.yes": "Yes",
   "global.action.no": "No",
@@ -108,23 +111,6 @@
   "leave.field.year": "Year",
   "leave.field.category": "Category",
   "leave.field.allocation": "Allocation",
-  
-  
-  "finance.title": "Finances",
-  "finance.subTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-  "finance.detail.title": "Finance Details",
-  "finance.detail.subTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-  "finance.infoTitle": "Finance",
-  "finance.infoSubTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-  "finance.field.uid": "Finance ID",
-  "finance.field.moduleName": "Module Name",
-  "finance.field.documentUid": "Document ID",
-  "finance.field.requestor": "Requester Name",
-  "finance.field.approvalDate": "Approval Date",
-  "finance.field.total": "Total Amount",
-  "finance.field.status": "Payment Statur",
-  "finance.field.notes": "Notes",
-  
   "workflow.stepsTitle": "Approval History",
   "workflow.stepsSubTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
   
