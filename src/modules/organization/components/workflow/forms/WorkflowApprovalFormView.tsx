@@ -21,8 +21,7 @@ import { WorkflowApprovalFormProps } from './WorkflowApprovalForm';
 export const WorkflowApprovalFormView: React.SFC<WorkflowApprovalFormProps> = props => {
   const { 
     dialogFullScreen, dialogOpen, dialogTitle, dialogDescription,
-    dialogCancelText, dialogConfirmedText, handleDialogClose, 
-    handleDialogConfirmed  
+    dialogCancelText, dialogConfirmedText, handleDialogOpen, handleDialogClose, handleDialogConfirmed  
   } = props;
 
   const renderDialog = (
@@ -83,9 +82,10 @@ export const WorkflowApprovalFormView: React.SFC<WorkflowApprovalFormProps> = pr
               <FormattedMessage id={'global.action.reset'} />
             </Button>
             <Button 
-              type="submit"
+              type="button"
               color="secondary"
               disabled={!props.valid || props.submitting}
+              onClick={() => handleDialogOpen()}
             >
               <FormattedMessage id={props.submitting ? 'global.processing' : 'global.action.submit'}/>
             </Button>

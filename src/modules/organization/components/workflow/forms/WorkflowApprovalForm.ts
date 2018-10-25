@@ -1,3 +1,4 @@
+import { WithForm, withForm } from '@layout/hoc/withForm';
 import {
   compose,
   HandleCreators,
@@ -12,13 +13,15 @@ import { InjectedFormProps, reduxForm } from 'redux-form';
 
 import { WorkflowApprovalFormView } from './WorkflowApprovalFormView';
 
+const formName = 'workflowApproval';
+
 export type WorkflowApprovalFormData = {
   isApproved: boolean | null | undefined;
   remark: string | null;
 };
 
 interface OwnHandler {
-  handleDialogOpen: (title: string, description: string, cancelText?: string, confirmText?: string, fullScreen?: boolean) => void;
+  handleDialogOpen: () => void;
   handleDialogClose: () => void;
   handleDialogConfirmed: () => void;
 }
@@ -37,9 +40,11 @@ interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
 }
 
 export type WorkflowApprovalFormProps 
-  = InjectedFormProps<WorkflowApprovalFormData, {}>
+  = WithForm
+  & InjectedFormProps<WorkflowApprovalFormData, {}>
   & OwnHandler
-  & OwnState;
+  & OwnState
+  & OwnStateUpdaters;
   
 const createProps: mapper<WorkflowApprovalFormProps, OwnState> = (props: WorkflowApprovalFormProps): OwnState => ({ 
   dialogFullScreen: false,
@@ -65,24 +70,40 @@ const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
 };
 
 const handlerCreators: HandleCreators<WorkflowApprovalFormProps, OwnHandler> = {
-  handleDialogOpen: (props: WorkflowApprovalFormProps) => (title: string, description: string, cancelText?: string, confirmText?: string, fullScreen?: boolean) => { 
-    //
+  handleDialogOpen: (props: WorkflowApprovalFormProps) => () => { 
+    const { stateUpdate } = props;
+
+    stateUpdate({
+      dialogOpen: true
+    });
   },
   handleDialogClose: (props: WorkflowApprovalFormProps) => () => { 
-    //
+    const { stateUpdate } = props;
+
+    stateUpdate({
+      dialogOpen: false
+    });
   },
   handleDialogConfirmed: (props: WorkflowApprovalFormProps) => () => { 
-    //
+    const { stateUpdate } = props;
+    const { submitForm } = props.workflowApprovalDispatch;
+
+    stateUpdate({
+      dialogOpen: false
+    });
+
+    submitForm(formName);
   },
 };
 
 const enhance = compose<WorkflowApprovalFormProps, InjectedFormProps<WorkflowApprovalFormData>>(
+  withForm,
   withStateHandlers<OwnState, OwnStateUpdaters, {}>(createProps, stateUpdaters), 
   withHandlers<WorkflowApprovalFormProps, OwnHandler>(handlerCreators)
 )(WorkflowApprovalFormView);
 
 export const WorkflowApprovalForm = reduxForm<WorkflowApprovalFormData, {}>({
-  form: 'workflowApproval',
+  form: formName,
   touchOnChange: true,
   touchOnBlur: true,
   enableReinitialize: true
