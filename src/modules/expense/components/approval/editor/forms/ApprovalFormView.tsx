@@ -1,11 +1,10 @@
 import { ExpenseInformation } from '@expense/components/request/detail/shared/ExpenseInformation';
-import { Grid } from '@material-ui/core';
-import * as React from 'react';
-import { BaseFieldsProps, Fields, FormSection } from 'redux-form';
-
 import { ApprovalOptions } from '@generic/types/ApprovalOptions';
 import { Approval } from '@layout/components/approval/Approval';
+import { Grid } from '@material-ui/core';
 import { WorkflowStep } from '@organization/components';
+import * as React from 'react';
+import { BaseFieldsProps, Fields, FormSection } from 'redux-form';
 import { ApprovalFormProps } from './ApprovalForm';
 
 export const ApprovalFormView: React.SFC<ApprovalFormProps> = props => {

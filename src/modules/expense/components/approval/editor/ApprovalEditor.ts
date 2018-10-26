@@ -33,6 +33,9 @@ interface OwnHandlers {
   handleSubmit: (payload: ExpenseApprovalFormData) => void;
   handleSubmitSuccess: (result: any, dispatch: Dispatch<any>) => void;
   handleSubmitFail: (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => void;
+  handleDialogOpen: (title: string, description: string, cancelText?: string, confirmText?: string, fullScreen?: boolean) => void;
+  handleDialogClose: () => void;
+  handleDialogConfirmed: () => void;
 }
 
 interface OwnRouteParams {
@@ -44,6 +47,12 @@ interface OwnState {
   companyUid?: string | undefined;
   positionUid?: string | undefined;
   expenseUid?: string | undefined;
+  dialogFullScreen: boolean;
+  dialogOpen: boolean;
+  dialogTitle?: string | undefined;
+  dialogDescription?: string | undefined;
+  dialogCancelText: string;
+  dialogConfirmedText: string;
 }
 
 interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
@@ -151,7 +160,32 @@ const handlerCreators: HandleCreators<ApprovalEditorProps, OwnHandlers> = {
         details: isObject(submitError) ? submitError.message : submitError
       });
     }
-  }
+  },
+  handleDialogOpen: (props: ApprovalEditorProps) => (title: string, description: string, cancelText?: string, confirmText?: string, fullScreen?: boolean) => { 
+    const { intl, stateUpdate, dialogCancelText, dialogConfirmedText } = props;
+
+    stateUpdate({ 
+      dialogFullScreen: fullScreen || false,
+      dialogOpen: true,
+      dialogTitle: title,
+      dialogDescription: description,
+      dialogCancelText: cancelText || intl.formatMessage({id: dialogCancelText}),
+      dialogConfirmedText: confirmText || intl.formatMessage({id: dialogConfirmedText})
+    });
+  },
+  handleDialogClose: (props: ApprovalEditorProps) => () => { 
+    const { stateReset } = props;
+
+    stateReset();
+  },
+  handleDialogConfirmed: (props: ApprovalEditorProps) => () => { 
+    const { match, history, stateReset } = props;
+    const expenseUid = match.params.expenseUid;
+
+    stateReset();
+
+    history.push('/expense/form/', { uid: expenseUid });
+  },
 };
 
 const createProps: mapper<ApprovalEditorProps, OwnState> = (props: ApprovalEditorProps): OwnState => {
@@ -159,7 +193,11 @@ const createProps: mapper<ApprovalEditorProps, OwnState> = (props: ApprovalEdito
   
   return { 
     formMode: FormMode.New,
-    expenseUid: match.params.expenseUid
+    expenseUid: match.params.expenseUid,
+    dialogFullScreen: false,
+    dialogOpen: false,
+    dialogCancelText: 'global.action.cancel',
+    dialogConfirmedText: 'global.action.ok',
   };
 };
 
@@ -167,6 +205,15 @@ const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
   stateUpdate: (prevState: OwnState) => (newState: any) => ({
     ...prevState,
     ...newState
+  }),
+  stateReset: (prevState: OwnState) => () => ({
+    ...prevState,
+    dialogFullScreen: false,
+    dialogOpen: false,
+    dialogTitle: undefined,
+    dialogDescription: undefined,
+    dialogCancelText: 'global.action.cancel',
+    dialogConfirmedText: 'global.action.ok',
   })
 };
 
