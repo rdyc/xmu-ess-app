@@ -1,4 +1,4 @@
-import { Button, Card, CardContent, CardHeader } from '@material-ui/core';
+import { Button, Card, CardActions, CardContent, CardHeader } from '@material-ui/core';
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Field } from 'redux-form';
@@ -35,18 +35,21 @@ export const ApprovalView: React.SFC<ApprovalProps> = props => {
       <CardContent>
         {names.map(name => renderField(name))}
       </CardContent>
-      <Button 
-        type="submit"
-        color="secondary"
-        disabled={!props.valid || props.submitting}
-      >
-        <FormattedMessage id={props.submitting ? 
-          props.labelProcessing || 'global.processing' 
-          : 
-          props.labelSubmit || 'global.action.submit' } 
-        />
-      </Button>
+      <CardActions>
+        <Button 
+          type="submit"
+          color="secondary"
+          disabled={!props.valid || props.submitting}
+        >
+          <FormattedMessage id={props.submitting ? 
+            props.labelProcessing || 'global.processing' 
+            : 
+            props.labelSubmit || 'global.action.submit' } 
+          />
+        </Button>
+      </CardActions>
     </Card>
   );
+
   return render;
 };
