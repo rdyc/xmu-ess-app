@@ -5,8 +5,9 @@ import {
 import {
   timesheetGetAllReducer,
   timesheetGetByIdReducer,
+  timesheetMileagesGetAllReducer,
   timesheetPostReducer,
-  timesheetPutReducer,
+  timesheetPutReducer
 } from '@timesheet/store/reducers/entry';
 
 const timesheetReducers = {
@@ -15,7 +16,8 @@ const timesheetReducers = {
   timesheetPost: timesheetPostReducer,
   timesheetPut: timesheetPutReducer,
   timesheetApprovalGetAll: timesheetApprovalGetAllReducer,
-  timesheetApprovalGetById: timesheetApprovalGetByIdReducer
+  timesheetApprovalGetById: timesheetApprovalGetByIdReducer,
+  timesheetMileagesGetAll: timesheetMileagesGetAllReducer,
 };
 
 export default timesheetReducers;
