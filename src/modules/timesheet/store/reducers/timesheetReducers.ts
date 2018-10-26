@@ -1,6 +1,6 @@
 import {
   timesheetApprovalGetAllReducer,
-  timesheetApprovalGetByIdReducer,
+  timesheetApprovalGetByIdReducer
 } from '@timesheet/store/reducers/approval';
 import {
   timesheetGetAllReducer,

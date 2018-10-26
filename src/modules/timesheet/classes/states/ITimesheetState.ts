@@ -27,6 +27,6 @@ export interface ITimesheetState {
   timesheetApprovalGetAll: IQueryCollectionState<ITimesheetApprovalGetAllRequest, ITimesheet>;
   timesheetApprovalGetById: IQuerySingleState<ITimesheetApprovalGetByIdRequest, ITimesheetDetail>;
 
-  // timesheet mileage
+  // mileages
   timesheetMileagesGetAll: IQueryCollectionState<ITimesheetMileagesGetAllRequest, ITimesheetMileages>;
 }
