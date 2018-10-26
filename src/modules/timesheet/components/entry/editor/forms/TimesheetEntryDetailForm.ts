@@ -7,7 +7,7 @@ import { InputCustomer } from '@lookup/components/customer/input';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose, HandleCreators, withHandlers } from 'recompose';
 import { BaseFieldsProps } from 'redux-form';
-import { EntryDetailFormView } from './EntryDetailFormView';
+import { TimesheetEntryDetailFormView } from './TimesheetEntryDetailFormView';
 
 interface OwnProps {
   formMode: FormMode;
@@ -109,7 +109,7 @@ const handlerCreators: HandleCreators<EntryDetailFormProps, OwnHandlers> = {
   }
 };
 
-export const EntryDetailForm = compose<EntryDetailFormProps, OwnProps>(
+export const TimesheetEntryDetailForm = compose<EntryDetailFormProps, OwnProps>(
   injectIntl,
   withHandlers<EntryDetailFormProps, OwnHandlers>(handlerCreators),
-)(EntryDetailFormView);
+)(TimesheetEntryDetailFormView);

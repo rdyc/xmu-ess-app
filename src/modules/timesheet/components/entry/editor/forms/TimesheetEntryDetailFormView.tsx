@@ -1,11 +1,11 @@
 import { FormMode } from '@generic/types';
 import { Card, CardContent, CardHeader } from '@material-ui/core';
-import { EntryDetailFormProps } from '@timesheet/components/entry/editor/forms/EntryDetailForm';
+import { EntryDetailFormProps } from '@timesheet/components/entry/editor/forms/TimesheetEntryDetailForm';
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Field } from 'redux-form';
 
-export const EntryDetailFormView: React.SFC<EntryDetailFormProps> = props => {
+export const TimesheetEntryDetailFormView: React.SFC<EntryDetailFormProps> = props => {
   const { formMode } = props;
   const { names } = props.context;
   

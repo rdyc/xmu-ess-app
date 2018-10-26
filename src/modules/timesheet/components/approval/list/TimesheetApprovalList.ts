@@ -5,7 +5,7 @@ import { WithNavBottom, withNavBottom } from '@layout/hoc/withNavBottom';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IListBarField } from '@layout/interfaces';
 import { TimesheetField } from '@timesheet/classes/types';
-import { ApprovalListView } from '@timesheet/components/approval/list/ApprovalListView';
+import { TimesheetApprovalListView } from '@timesheet/components/approval/list/TimesheetApprovalListView';
 import { WithTimesheetApproval, withTimesheetApproval } from '@timesheet/hoc/withTimesheetApproval';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
@@ -144,7 +144,7 @@ const lifecycles: ReactLifeCycleFunctions<ApprovalListProps, OwnState> = {
       history, intl
     } = this.props;
 
-    const { isLoading, response } = this.props.timesheetApprovalState.all;
+    // const { isLoading, response } = this.props.timesheetApprovalState.all;
 
     layoutDispatch.changeView({
       uid: AppMenu.TimesheetApprovalHistory,
@@ -173,9 +173,9 @@ const lifecycles: ReactLifeCycleFunctions<ApprovalListProps, OwnState> = {
     navBottomDispatch.assignFields(items);
 
     // only load data when response are empty
-    if (!isLoading && !response) {
-      loadData(this.props);
-    }
+    loadData(this.props);
+    // if (!isLoading && !response) {
+    // }
   },
   componentDidUpdate(props: ApprovalListProps, state: OwnState) {
     // only load when these props are different
@@ -190,7 +190,7 @@ const lifecycles: ReactLifeCycleFunctions<ApprovalListProps, OwnState> = {
   },
   componentWillUnmount() {
     const { layoutDispatch, navBottomDispatch } = this.props;
-    const { view } = this.props.layoutState;
+    // const { view } = this.props.layoutState;
     const { loadAllDispose } = this.props.timesheetApprovalDispatch;
 
     layoutDispatch.changeView(null);
@@ -202,10 +202,10 @@ const lifecycles: ReactLifeCycleFunctions<ApprovalListProps, OwnState> = {
 
     navBottomDispatch.dispose();
 
+    loadAllDispose();
     // dispose 'get all' from 'redux store' when the page is 'out of project registration' context 
-    if (view && view.parentUid !== AppMenu.Timesheet) {
-      loadAllDispose();
-    }
+    // if (view && view.uid !== AppMenu.TimesheetApprovalHistory) {
+    // }
   }
 };
 
@@ -236,7 +236,7 @@ const loadData = (props: ApprovalListProps): void => {
   }
 };
 
-export const ApprovalList = compose<ApprovalListProps, OwnOptions>(
+export const TimesheetApprovalList = compose<ApprovalListProps, OwnOptions>(
   withTimesheetApproval,
   withUser,
   withLayout,
@@ -246,4 +246,4 @@ export const ApprovalList = compose<ApprovalListProps, OwnOptions>(
   withStateHandlers<OwnState, OwnStateUpdaters, OwnOptions>(createProps, stateUpdaters),
   withHandlers<ApprovalListProps, OwnHandlers>(handlerCreators),
   lifecycle<ApprovalListProps, OwnState>(lifecycles),
-)(ApprovalListView);
+)(TimesheetApprovalListView);

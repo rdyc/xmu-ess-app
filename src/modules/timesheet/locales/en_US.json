@@ -1,11 +1,12 @@
 {
   "timesheet.title": "Time Report",
   "timesheet.history.title": "Time Report History",
+  "timesheet.approval.title": "Time Report Approval",
   "timesheet.approval.history.title": "Time Approval History",
   "timesheet.subTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
   "timesheet.detail.title": "Detail Time Report",
   "timesheet.detail.subTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-  "timesheet.form.newTitle": "New Time Report",
+  "timesheet.form.newTitle": "Time Report Entry",
   "timesheet.form.newSubTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
   "timesheet.form.editTitle": "Modify Time Report",
   "timesheet.form.editSubTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
@@ -18,6 +19,7 @@
   "timesheet.field.information.uid": "Time Report ID",
   "timesheet.field.information.date": "Report Date",
   "timesheet.field.information.activityType": "Activity Type",
+  "timesheet.field.information.activityType.required": "Activity Type is required",
   "timesheet.field.information.customerName": "Customer Name",
   "timesheet.field.information.projectName": "Project Name",
   "timesheet.field.information.projectSite": "Project Site",
@@ -43,5 +45,10 @@
   "timesheet.field.information.notes.required": "Notes is required",
   "timesheet.field.information.notes.placeholder": "Please fill in the notes",
   "timesheet.action.modify": "Modify",
-  "timesheet.action.close": "Close"
+  "timesheet.action.close": "Close",
+
+  "timesheet.message.entry.create.success": "A new Timesheet ID {uid} has been created",
+  "timesheet.message.entry.create.failure": "Unable to process your submission",
+  "timesheet.message.entry.update.success": "Existing Timesheet ID {uid} has been updated",
+  "timesheet.message.entry.update.failure": "Unable to process your submission"
 }

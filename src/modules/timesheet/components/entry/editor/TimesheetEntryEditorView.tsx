@@ -1,19 +1,19 @@
 import { FormMode } from '@generic/types';
 import { Typography } from '@material-ui/core';
-import { EntryEditorProps } from '@timesheet/components/entry/editor/EntryEditor';
 import {
-  EntryForm,
+  TimesheetEntryForm,
   TimesheetFormData,
-} from '@timesheet/components/entry/editor/forms/EntryForm';
+} from '@timesheet/components/entry/editor/forms/TimesheetEntryForm';
+import { EntryEditorProps } from '@timesheet/components/entry/editor/TimesheetEntryEditor';
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 
-export const EntryEditorView: React.SFC<EntryEditorProps> = props => {
-  const { formMode, handleValidate, handleSubmit, handleSubmitSuccess, handleSubmitFail } = props;
+export const TimesheetEntryEditorView: React.SFC<EntryEditorProps> = props => {
+  const { formMode, handleValidate, handleSubmit, handleSubmitSuccess, handleSubmitFail, intl } = props;
   const { isLoading, response } = props.timesheetState.detail;
 
   const renderForm = (formData: TimesheetFormData) => (
-    <EntryForm 
+    <TimesheetEntryForm 
       formMode={formMode}
       initialValues={formData}
       validate={handleValidate}
@@ -57,14 +57,33 @@ export const EntryEditorView: React.SFC<EntryEditorProps> = props => {
       // todo: replace values with response data
       const data = response.data;
 
+      const start = intl.formatDate(data.start, {
+        second: 'numeric',
+        minute: 'numeric',
+        hour: 'numeric',
+        day: 'numeric',
+        month: 'numeric',
+        year: 'numeric',
+        timeZone: 'utc',
+      });
+      const end = intl.formatDate(data.end, {
+        second: 'numeric',
+        minute: 'numeric',
+        hour: 'numeric',
+        day: 'numeric',
+        month: 'numeric',
+        year: 'numeric',
+        timeZone: 'utc',
+      });
+      
       initialValues.information.uid = data.uid;
       initialValues.information.activityType = data.activityType;
       initialValues.information.customerUid = data.customerUid;
       initialValues.information.projectUid = data.projectUid;
       initialValues.information.siteUid = data.siteUid;
       initialValues.information.date = data.date;
-      initialValues.information.start = data.start;
-      initialValues.information.end = data.end;
+      initialValues.information.start = start;
+      initialValues.information.end = end;
       initialValues.information.description = data.description;
           
       return renderForm(initialValues);

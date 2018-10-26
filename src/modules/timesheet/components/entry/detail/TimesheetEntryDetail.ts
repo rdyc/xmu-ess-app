@@ -5,7 +5,7 @@ import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IAppBarMenu } from '@layout/interfaces';
 import { TimesheetUserAction } from '@timesheet/classes/types';
-import { EntryDetailView } from '@timesheet/components/entry/detail/EntryDetailView';
+import { TimesheetEntryDetailView } from '@timesheet/components/entry/detail/TimesheetEntryDetailView';
 import { WithTimesheet, withTimesheet } from '@timesheet/hoc/withTimesheet';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
@@ -223,7 +223,7 @@ const lifecycles: ReactLifeCycleFunctions<EntryDetailProps, OwnState> = {
   }
 };
 
-export const EntryDetail = compose<EntryDetailProps, {}>(
+export const TimesheetEntryDetail = compose<EntryDetailProps, {}>(
   withUser,
   withLayout,
   withAppBar,
@@ -233,4 +233,4 @@ export const EntryDetail = compose<EntryDetailProps, {}>(
   withStateHandlers<OwnState, OwnStateUpdaters, {}>(createProps, stateUpdaters), 
   withHandlers<EntryDetailProps, Handler>(handlerCreators),
   lifecycle<EntryDetailProps, OwnState>(lifecycles),
-)(EntryDetailView);
+)(TimesheetEntryDetailView);
