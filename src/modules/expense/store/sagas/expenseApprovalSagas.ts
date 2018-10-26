@@ -83,7 +83,7 @@ function* watchApprovalPostFetchRequest() {
   const worker = (action: ReturnType<typeof expenseApprovalPostRequest>) => {
     return saiyanSaga.fetch({
       method: 'post',
-      path: `/v1/approvals/expense/${action.payload.companyUid}/${action.payload.positionUid}`, 
+      path: `/v1/approvals/expense/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.expenseUid}`, 
       payload: action.payload.data, 
       successEffects: (response: IApiResponse) => [
         put(expenseApprovalPostSuccess(response.body)),
