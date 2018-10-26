@@ -102,6 +102,10 @@
   "project.site.field.information.value": "Value",
   "project.site.field.information.value.required": "Site value is required",
   "project.site.field.information.value.placeholder": "Type a site value",
+
+  "project.field.document.empty": "Empty document data",
+  "project.field.sales.empty": "Empty sales data",
+  "project.field.site.empty": "Empty site data",
   
   "project.action.modify": "Modify",
   "project.action.close": "Close Project",

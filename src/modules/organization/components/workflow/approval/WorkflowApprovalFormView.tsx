@@ -66,9 +66,9 @@ export const WorkflowApprovalFormView: React.SFC<WorkflowApprovalFormProps> = pr
               name="isApproved"
               required={true}
               label={<FormattedMessage id={'workflow.approval.field.isApproved'} />}
-              component={RadioGroup}
               placeholder={intl.formatMessage({id: 'workflow.approval.field.isApproved.placeholder'})}
               choices={approvalChoices}
+              component={RadioGroup}
             />
             { 
               formIsApproved !== undefined &&
@@ -85,7 +85,7 @@ export const WorkflowApprovalFormView: React.SFC<WorkflowApprovalFormProps> = pr
           <CardActions>
             <Button 
               type="button"
-              color="default"
+              color="secondary"
               disabled={props.submitting}
               onClick={props.reset}
             >

@@ -8,7 +8,12 @@ export const RadioGroupView: React.SFC<RadioGroupProps> = props => {
 
   return (
     <FormControl component="fieldset">
-      <FormLabel component="legend" required={required}>{label}</FormLabel>
+      <FormLabel 
+        component="legend"
+        required={required}
+      >
+        {label || 'choices'}
+      </FormLabel>
       <RadioGroup {...input}>
         {
           choices &&
@@ -26,6 +31,7 @@ export const RadioGroupView: React.SFC<RadioGroupProps> = props => {
           )
         }
       </RadioGroup>
+      {/* <FormHelperText>labelPlacement start</FormHelperText> */}
     </FormControl>
   );
 };

@@ -32,6 +32,8 @@ interface FormValueProps {
 interface OwnProps {
   approvalTitle: string;
   approvalSubHeader: string;
+  approvalChoices: RadioGroupChoice[];
+  approvalTrueValue: string;
   approvalDialogFullScreen?: boolean | false;
   approvalDialogTitle?: string | undefined;
   approvalDialogContentText?: string | undefined;
@@ -47,7 +49,6 @@ interface OwnHandler {
 
 interface OwnState {
   isOpenDialog: boolean;
-  approvalChoices: RadioGroupChoice[] | undefined;
 }
 
 interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
@@ -65,14 +66,8 @@ export type WorkflowApprovalFormProps
   & FormValueProps;
   
 const createProps: mapper<WorkflowApprovalFormProps, OwnState> = (props: WorkflowApprovalFormProps): OwnState => {
-  const { intl } = props;
-
   return { 
-    isOpenDialog: false,
-    approvalChoices: [
-      { value: WorkflowStatusType.Approved, label: intl.formatMessage({id: 'workflow.approval.action.approve'}) },
-      { value: WorkflowStatusType.Rejected, label: intl.formatMessage({id: 'workflow.approval.action.reject'}) }
-    ]
+    isOpenDialog: false
   };
 };
 

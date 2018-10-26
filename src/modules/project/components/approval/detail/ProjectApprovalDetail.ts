@@ -1,11 +1,12 @@
 import { WorkflowStatusType } from '@common/classes/types';
 import AppMenu from '@constants/AppMenu';
+import { RadioGroupChoice } from '@layout/components/input/radioGroup';
 import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IAppBarMenu } from '@layout/interfaces';
 import { IWorkflowApprovalPayload } from '@organization/classes/request/workflow/approval';
-import { WorkflowApprovalFormData } from '@organization/components/workflow/forms/WorkflowApprovalForm';
+import { WorkflowApprovalFormData } from '@organization/components/workflow/approval/WorkflowApprovalForm';
 import { ProjectUserAction } from '@project/classes/types';
 import { WithProjectApproval, withProjectApproval } from '@project/hoc/withProjectApproval';
 import { projectApprovalMessage } from '@project/locales/messages/projectApprovalMessage';
@@ -41,6 +42,8 @@ interface OwnRouteParams {
 interface OwnState {
   approvalTitle: string;
   approvalSubHeader: string;
+  approvalChoices: RadioGroupChoice[];
+  approvalTrueValue: string;
   approvalDialogTitle: string;
   approvalDialogContentText: string;
   approvalDialogCancelText: string;
@@ -214,6 +217,11 @@ const createProps: mapper<ProjectApprovalDetailProps, OwnState> = (props: Projec
   return {
     approvalTitle: intl.formatMessage({id: 'project.approvalTitle'}),
     approvalSubHeader: intl.formatMessage({id: 'project.approvalSubHeader'}),
+    approvalChoices: [
+      { value: WorkflowStatusType.Approved, label: intl.formatMessage({id: 'workflow.approval.action.approve'}) },
+      { value: WorkflowStatusType.Rejected, label: intl.formatMessage({id: 'workflow.approval.action.reject'}) }
+    ],
+    approvalTrueValue: WorkflowStatusType.Approved,
     approvalDialogTitle: intl.formatMessage({id: 'project.dialog.approvalTitle'}),
     approvalDialogContentText: intl.formatMessage({id: 'project.dialog.approvalContent'}),
     approvalDialogCancelText: intl.formatMessage({id: 'global.action.cancel'}),

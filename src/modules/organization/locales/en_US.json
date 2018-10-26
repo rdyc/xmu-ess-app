@@ -8,5 +8,7 @@
   "workflow.approval.field.isApproved.placeholder": "Select a decision",
   "workflow.approval.field.remark": "Rejected reason",
   "workflow.approval.field.remark.placeholder": "Type any reason",
-  "workflow.approval.field.remark.required": "Rejected reason is required"
+  "workflow.approval.field.remark.required": "Rejected reason is required",
+
+  "workflow.history.empty": "Workflow history not found"
 }
