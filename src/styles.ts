@@ -197,44 +197,55 @@ const styles = (theme: Theme) =>
 
     /* force right */
     forceRight: { float: 'right' },
+    
     /* margin thin */
     marginThin: { margin: theme.spacing.unit * size.thin },
     marginThinLeft: { marginLeft: theme.spacing.unit * size.thin },
     marginThinTop: { marginTop: theme.spacing.unit * size.thin },
     marginThinRight: { marginRight: theme.spacing.unit * size.thin },
     marginThinBottom: { marginBottom: theme.spacing.unit * size.thin },
+    
     /* margin wide */
     marginWide: { margin: theme.spacing.unit * size.wide },
     marginWideLeft: { marginLeft: theme.spacing.unit * size.wide },
     marginWideTop: { marginTop: theme.spacing.unit * size.wide },
     marginWideRight: { marginRight: theme.spacing.unit * size.wide },
     marginWideBottom: { marginBottom: theme.spacing.unit * size.wide },
+    
     /* margin far */
     marginFar: { margin: theme.spacing.unit * size.far },
     marginFarLeft: { marginLeft: theme.spacing.unit * size.far },
     marginFarTop: { marginTop: theme.spacing.unit * size.far },
     marginFarRight: { marginRight: theme.spacing.unit * size.far },
     marginFarBottom: { marginBottom: theme.spacing.unit * size.far },
+    
     /* padding thin */
     paddingThin: { padding: theme.spacing.unit * size.thin },
     paddingThinLeft: { paddingLeft: theme.spacing.unit * size.thin },
     paddingThinTop: { paddingTop: theme.spacing.unit * size.thin },
     paddingThinRight: { paddingRight: theme.spacing.unit * size.thin },
     paddingThinBottom: { paddingBottom: theme.spacing.unit * size.thin },
+    
     /* padding wide */
     paddingWide: { padding: theme.spacing.unit * size.wide },
     paddingWideLeft: { paddingLeft: theme.spacing.unit * size.wide },
     paddingWideTop: { paddingTop: theme.spacing.unit * size.wide },
     paddingWideRight: { paddingRight: theme.spacing.unit * size.wide },
     paddingWideBottom: { paddingBottom: theme.spacing.unit * size.wide },
+
     /* padding far */
     paddingFar: { padding: theme.spacing.unit * size.far },
     paddingFarLeft: { paddingLeft: theme.spacing.unit * size.far },
     paddingFarTop: { paddingTop: theme.spacing.unit * size.far },
     paddingFarRight: { paddingRight: theme.spacing.unit * size.far },
     paddingFarBottom: { paddingBottom: theme.spacing.unit * size.far },
+
     /* colors */
-    colorRed: { color: red['500'] }
+    colorRed: { color: red['500'] },
+
+    /* text */
+    textStrikethrough : { textDecoration: 'line-through' }
+
     /* -------- generic classes end ----------*/
   });
 
