@@ -1,0 +1,83 @@
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  Divider,
+  Grid,
+  List,
+  ListItem,
+  Typography
+} from '@material-ui/core';
+import { ItemFormProps } from '@mileage/components/request/editor/forms/MileageRequestItemForm';
+import { ITimesheetMileages } from '@timesheet/classes/response/ITimesheetMileages';
+import * as React from 'react';
+import { FormattedDate, FormattedMessage } from 'react-intl';
+
+export const MileageRequestItemFormView: React.SFC<ItemFormProps> = props => {
+
+  const { isLoading, response } = props.timesheetMileagesState;
+
+  const renderItem = (items: ITimesheetMileages[]) => {
+    const len = items.length - 1;
+
+    return (
+      <List>
+        {items.map((item, i) => (
+          <div key={i}>
+            <ListItem>
+              <Grid container spacing={24}>
+                <Grid item xs={8} sm={8}>
+                  <Typography noWrap color="primary" variant="body2">
+                    {item.customer && item.customer.name}
+                  </Typography>
+                  <Typography noWrap variant="body1">
+                    {item.projectUid} &bull; {item.project && item.project.name}
+                  </Typography>
+                  <Typography noWrap color="textSecondary" variant="caption">
+                    <FormattedDate
+                      year="numeric"
+                      month="short"
+                      day="numeric"
+                      value={item.date}
+                    />
+                  </Typography>
+                </Grid>
+                <Grid item xs={4} sm={4}>
+                  <Typography noWrap variant="body1" align="right">
+                    {item.site && item.site.name}
+                  </Typography>
+                  <Typography
+                    noWrap
+                    color="secondary"
+                    variant="caption"
+                    align="right"
+                  >
+                    {item.value}
+                  </Typography>
+                </Grid>
+              </Grid>
+            </ListItem>
+            {len !== i && <Divider />}
+          </div>
+        ))}
+      </List>
+    );
+  };
+
+  const render = (
+    <Card square>
+      <CardHeader
+        title={<FormattedMessage id="mileage.request.item.Title" />}
+        subheader={<FormattedMessage id="mileage.request.item.SubTitle" />}
+      />
+      <CardContent>
+        <Grid>
+          {!isLoading && (!response || (response.data && response.data.length < 1)) && <Typography variant="body2"><FormattedMessage id="mileage.request.item.noData"/></Typography>}
+          {!isLoading && response && response.data && renderItem(response.data)}
+        </Grid>
+      </CardContent>
+    </Card>
+  );
+
+  return render;
+};

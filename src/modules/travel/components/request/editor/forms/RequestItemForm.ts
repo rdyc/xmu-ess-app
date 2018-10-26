@@ -9,12 +9,11 @@ import { WrappedFieldArrayProps } from 'redux-form';
 import { RequestItemFormView } from './RequestItemFormView';
 
 interface OwnProps {
-  // formMode: FormMode;
   context: WrappedFieldArrayProps<TravelItemFormData>;
 }
 
 interface OwnHandlers {
-  // generateFieldProps: (name: string) => any;
+  // handleInput: (item: ITravelRequestItem) => void;  
 }
 
 export type RequestItemFormProps
@@ -25,7 +24,9 @@ export type RequestItemFormProps
   & InjectedIntlProps;
 
 const handlerCreators: HandleCreators<RequestItemFormProps, OwnHandlers> = {
-
+  // handleInput: (props: RequestItemFormProps) => (item: ITravelRequestItem): void => {
+  //   const { context, intl } = props;  
+  // }
 };
 
 export const RequestItemForm = compose<RequestItemFormProps, OwnProps>(

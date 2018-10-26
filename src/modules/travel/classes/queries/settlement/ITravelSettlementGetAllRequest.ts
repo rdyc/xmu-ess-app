@@ -1,6 +1,5 @@
-import { ICompanyAccess } from '@generic/interfaces';
 import { ITravelSettlementGetAllFilter } from '@travel/classes/filters';
 
-export interface ITravelSettlementGetAllRequest extends ICompanyAccess {
+export interface ITravelSettlementGetAllRequest {
   readonly filter: ITravelSettlementGetAllFilter | undefined;
 }

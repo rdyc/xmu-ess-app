@@ -1,5 +1,5 @@
 export interface ITravelPutItem {
-  uid: string;
+  uid: string | null;
   employeeUid: string;
   isRoundTrip: boolean;
   transportType: string;
