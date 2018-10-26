@@ -3,6 +3,7 @@ import { TimesheetEntryList } from '@timesheet/components/entry/list/TimesheetEn
 import * as React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router';
 import { TimesheetApprovalDetail } from './approval/detail/TimesheetApprovalDetail';
+import { TimesheetApprovalListEditor } from './approval/editor/TimesheetApprovalListEditor';
 import { TimesheetApprovalList } from './approval/list/TimesheetApprovalList';
 import TimesheetEntryEditor from './entry/editor/TimesheetEntryEditor';
 
@@ -25,6 +26,9 @@ const approvalListComponent = () => (
 const approvalDetailComponent = () => (
   <TimesheetApprovalDetail/>
 );
+const approvalListEditorComponent = () => (
+  <TimesheetApprovalListEditor orderBy="uid" direction="descending"/>
+);
 
 export const timesheetRouter: React.SFC<AllProps> = props => (
   <Switch>
@@ -37,6 +41,7 @@ export const timesheetRouter: React.SFC<AllProps> = props => (
 
 export const timesheetApprovalRouter: React.SFC<AllProps> = props => (
   <Switch>
+    <Route exact path={`${props.match.path}/`} component={approvalListEditorComponent}/>
     <Route path={`${props.match.path}/history`} component={approvalListComponent}/>
     <Route path={`${props.match.path}/details/:timesheetUid`} component={approvalDetailComponent} />
   </Switch>
