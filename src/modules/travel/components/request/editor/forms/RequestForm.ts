@@ -30,9 +30,7 @@ export type TravelItemFormData = {
 export type TravelRequestFormData = {
   information: {
     uid: string | null | undefined;
-    // employeeUid: string | null | undefined;
     fullName: string | null | undefined;
-    // positionUid: string | null | undefined;
     position: string | null | undefined;
     destinationType: string | null | undefined;
     start: string | null | undefined;

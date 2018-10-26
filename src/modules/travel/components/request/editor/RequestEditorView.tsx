@@ -23,9 +23,7 @@ export const RequestEditorView: React.SFC<RequestEditorProps> = props => {
   const initialValues: TravelRequestFormData = {
     information: {
       uid: undefined,
-      // employeeUid: undefined,
       fullName: undefined,
-      // positionUid: undefined,
       position: undefined,
       destinationType: undefined,
       start: undefined,
@@ -63,9 +61,7 @@ export const RequestEditorView: React.SFC<RequestEditorProps> = props => {
       const data = response.data;
 
       initialValues.information.uid = data.uid;
-      // initialValues.information.employeeUid = data.employeeUid;
       initialValues.information.fullName = data.employee ? data.employee.fullName : 'N/A';
-      // initialValues.information.positionUid = data.positionUid;
       initialValues.information.position = data.position ? data.position.name : 'N/A';
       initialValues.information.destinationType = data.destinationType;
       initialValues.information.start = data.start;

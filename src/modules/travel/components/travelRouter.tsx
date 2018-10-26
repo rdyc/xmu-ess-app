@@ -23,7 +23,7 @@ const editorComponent = () => (
 );
 
 const approvalListComponent = () => (
-  <RequestApprovalList orderBy="uid" direction="descending"/>
+  <RequestApprovalList />
 );
 
 const SettlementlistComponent = () => (

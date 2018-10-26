@@ -8,6 +8,7 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
+  Divider,
   Grid,
   List,
   ListItem,
@@ -224,59 +225,64 @@ export const TravelSettlementDetailView: React.SFC<SettlementDetailProps> = prop
     </Card>
   );
 
-  const renderItems = (items: ITravelSettlementItem[]) => (
-    <Card square>
-      <CardHeader 
-        title={<FormattedMessage id="travel.itemTitle" />}
-        subheader={<FormattedMessage id="travel.itemSubTitle" />}
-      />
-      <CardContent>
-        <List>
-        {
-          items.map(item => 
-            item.employee &&
-            <ListItem 
-              disableGutters 
-              key={item.employeeUid}
-            >
-              <Grid container spacing={24}>
-              <Grid item xs={12} sm={12}>
-                <Typography 
-                  noWrap 
-                  color="primary" 
-                  variant="body2"
-                >
-                  {item.employee && item.employee.fullName}
-                </Typography>
-                <Typography 
-                  noWrap
-                  variant="body1"
-                >
-                  {item.from} &nbsp;to&nbsp; {item.destination} 
-                </Typography>
-                <Typography 
-                  noWrap
-                  color="textSecondary" 
-                  variant="caption"
-                >
-                  {`Transport Cost: ${item.costTransport}`} &bull; {`Hotel Cost: ${item.costTransport}`} &nbsp;
-                </Typography>
-                <Typography 
-                  noWrap
-                  color="textSecondary" 
-                  variant="caption"
-                >
-                  {`Diem Value: ${item.amount} / ${item.duration} days`}; &nbsp;
-                </Typography>
-              </Grid>
-            </Grid>              
-            </ListItem>            
-          )
-        }        
-        </List>
-      </CardContent>
-    </Card>
-  );
+  const renderItems = (items: ITravelSettlementItem[]) => {
+    const len = items.length - 1;
+    return (
+      <Card square>
+        <CardHeader 
+          title={<FormattedMessage id="travel.itemTitle" />}
+          subheader={<FormattedMessage id="travel.itemSubTitle" />}
+        />
+        <CardContent>
+          <List>
+          {
+            items.map((item, i) => (
+              <div key={item.uid}>
+              <ListItem 
+                disableGutters 
+                key={item.uid}
+              >
+                <Grid container spacing={24}>
+                <Grid item xs={12} sm={12}>
+                  <Typography 
+                    noWrap 
+                    color="primary" 
+                    variant="body2"
+                  >
+                    {item.employee && item.employee.fullName}
+                  </Typography>
+                  <Typography 
+                    noWrap
+                    variant="body1"
+                  >
+                    {item.from} &nbsp;to&nbsp; {item.destination} 
+                  </Typography>
+                  <Typography 
+                    noWrap
+                    color="textSecondary" 
+                    variant="caption"
+                  >
+                    {`Transport Cost: ${item.costTransport}`} &bull; {`Hotel Cost: ${item.costTransport}`} &nbsp;
+                  </Typography>
+                  <Typography 
+                    noWrap
+                    color="textSecondary" 
+                    variant="caption"
+                  >
+                    {`Diem Value: ${item.amount} / ${item.duration} days`}; &nbsp;
+                  </Typography>
+                </Grid>
+              </Grid>              
+              </ListItem>
+              {len !== i && <Divider />}
+              </div>
+            ))
+          }        
+          </List>
+        </CardContent>
+      </Card>
+    );
+  };
 
   const render = (
     <React.Fragment>
