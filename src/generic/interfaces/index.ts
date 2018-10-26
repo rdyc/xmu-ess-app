@@ -22,3 +22,5 @@ export * from './IResponseCollection';
 export * from './IResponseList';
 export * from './IResponseSingle';
 export * from './IUserAccount';
+export * from './IBaseQueryFilter';
+export * from './IBaseQueryPagingFilter';
