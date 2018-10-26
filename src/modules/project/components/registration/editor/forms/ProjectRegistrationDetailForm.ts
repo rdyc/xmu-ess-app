@@ -4,7 +4,7 @@ import { InputDate } from '@layout/components/input/date';
 import { InputNumber } from '@layout/components/input/number';
 import { InputText } from '@layout/components/input/text';
 import { InputCustomer } from '@lookup/components/customer/input';
-import { RegistrationDetailFormView } from '@project/components/registration/editor/forms/RegistrationDetailFormView';
+import { ProjectRegistrationDetailFormView } from '@project/components/registration/editor/forms/ProjectRegistrationDetailFormView';
 import { WithAllowedProjectType, withAllowedProjectType } from '@project/hoc/withAllowedProjectType';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose, HandleCreators, withHandlers } from 'recompose';
@@ -25,14 +25,14 @@ interface OwnHandlers {
   generateFieldProps: (name: string) => any;
 }
 
-export type RegistrationDetailFormProps 
+export type ProjectRegistrationDetailFormProps 
   = OwnProps
   & OwnHandlers
   & WithAllowedProjectType
   & InjectedIntlProps;
 
-const handlerCreators: HandleCreators<RegistrationDetailFormProps, OwnHandlers> = {
-  generateFieldProps: (props: RegistrationDetailFormProps) => (name: string) => { 
+const handlerCreators: HandleCreators<ProjectRegistrationDetailFormProps, OwnHandlers> = {
+  generateFieldProps: (props: ProjectRegistrationDetailFormProps) => (name: string) => { 
     const { 
       intl, formMode, formCurrencyType, isCurrencyIdr, 
       onChangeCurrencyType, onChangeValueIdr, 
@@ -147,8 +147,8 @@ const handlerCreators: HandleCreators<RegistrationDetailFormProps, OwnHandlers> 
   }
 };
 
-export const RegistrationDetailForm = compose<RegistrationDetailFormProps, OwnProps>(
+export const ProjectRegistrationDetailForm = compose<ProjectRegistrationDetailFormProps, OwnProps>(
   injectIntl,
   withAllowedProjectType,
-  withHandlers<RegistrationDetailFormProps, OwnHandlers>(handlerCreators),
-)(RegistrationDetailFormView);
+  withHandlers<ProjectRegistrationDetailFormProps, OwnHandlers>(handlerCreators),
+)(ProjectRegistrationDetailFormView);

@@ -1,11 +1,11 @@
 import { FormMode } from '@generic/types';
 import { Card, CardContent, CardHeader } from '@material-ui/core';
-import { RegistrationDetailFormProps } from '@project/components/registration/editor/forms/RegistrationDetailForm';
+import { ProjectRegistrationDetailFormProps } from '@project/components/registration/editor/forms/ProjectRegistrationDetailForm';
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Field } from 'redux-form';
 
-export const RegistrationDetailFormView: React.SFC<RegistrationDetailFormProps> = props => {
+export const ProjectRegistrationDetailFormView: React.SFC<ProjectRegistrationDetailFormProps> = props => {
   const { formMode } = props;
   const { names } = props.context;
   

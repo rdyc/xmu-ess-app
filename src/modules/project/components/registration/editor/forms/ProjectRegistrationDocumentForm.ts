@@ -1,6 +1,8 @@
 import { WithCommonSystem, withCommonSystem } from '@common/hoc/withCommonSystem';
-import { DocumentFormView } from '@project/components/registration/editor/forms/RegistrationDocumentFormView';
-import { ProjectDocumentFormData } from '@project/components/registration/editor/forms/RegistrationForm';
+import { ProjectDocumentFormData } from '@project/components/registration/editor/forms/ProjectRegistrationContainerForm';
+import {
+  ProjectRegistrationDocumentFormView,
+} from '@project/components/registration/editor/forms/ProjectRegistrationDocumentFormView';
 import { compose, HandleCreators, lifecycle, ReactLifeCycleFunctions, withHandlers } from 'recompose';
 import { WrappedFieldArrayProps } from 'redux-form';
 
@@ -14,13 +16,13 @@ interface OwnHandlers {
   isChecked: (type: string) => boolean;
 }
 
-export type DocumentFormProps
+export type ProjectDocumentFormProps
   = OwnProps
   & OwnHandlers
   & WithCommonSystem;
 
-const handlerCreators: HandleCreators<DocumentFormProps, OwnHandlers> = {
-  handleChange: (props: DocumentFormProps) => (event: React.ChangeEvent<HTMLInputElement>, checked: boolean): void => { 
+const handlerCreators: HandleCreators<ProjectDocumentFormProps, OwnHandlers> = {
+  handleChange: (props: ProjectDocumentFormProps) => (event: React.ChangeEvent<HTMLInputElement>, checked: boolean): void => { 
     // const { context } = props;
     // const el = event.currentTarget.value;
 
@@ -41,7 +43,7 @@ const handlerCreators: HandleCreators<DocumentFormProps, OwnHandlers> = {
     //   document.isChecked = checked;
     // }
   },
-  isChecked: (props: DocumentFormProps) => (type: string): boolean => { 
+  isChecked: (props: ProjectDocumentFormProps) => (type: string): boolean => { 
     // const { context } = props;
 
     const result: boolean = false;
@@ -60,7 +62,7 @@ const handlerCreators: HandleCreators<DocumentFormProps, OwnHandlers> = {
   }
 };
 
-const lifecycles: ReactLifeCycleFunctions<DocumentFormProps, {}> = {
+const lifecycles: ReactLifeCycleFunctions<ProjectDocumentFormProps, {}> = {
   componentDidMount() {
     const { category, commonDocumentListState, commonDocumentPresalesListState, commonDispatch } = this.props;
 
@@ -90,8 +92,8 @@ const lifecycles: ReactLifeCycleFunctions<DocumentFormProps, {}> = {
   }
 };
 
-export const RegistrationDocumentForm = compose<DocumentFormProps, OwnProps>(
+export const ProjectRegistrationDocumentForm = compose<ProjectDocumentFormProps, OwnProps>(
   withCommonSystem,
-  withHandlers<DocumentFormProps, OwnHandlers>(handlerCreators),
-  lifecycle<DocumentFormProps, {}>(lifecycles),
-)(DocumentFormView);
+  withHandlers<ProjectDocumentFormProps, OwnHandlers>(handlerCreators),
+  lifecycle<ProjectDocumentFormProps, {}>(lifecycles),
+)(ProjectRegistrationDocumentFormView);

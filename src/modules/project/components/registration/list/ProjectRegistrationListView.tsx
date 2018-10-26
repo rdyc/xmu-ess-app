@@ -1,13 +1,13 @@
 import { Divider, Grid, List, ListItem, ListSubheader, Paper, Typography } from '@material-ui/core';
 import { IProject } from '@project/classes/response';
-import { RegisterListProps } from '@project/components/registration/list/RegistrationList';
+import { ProjectRegisterListProps } from '@project/components/registration/list/ProjectRegistrationList';
 import { parseChanges } from '@utils/parseChanges';
 import * as moment from 'moment';
 import * as React from 'react';
 import { FormattedDate, FormattedNumber, FormattedPlural } from 'react-intl';
 import { isArray } from 'util';
 
-export const RegistrationListView: React.SFC<RegisterListProps> = props => {
+export const ProjectRegistrationListView: React.SFC<ProjectRegisterListProps> = props => {
   const { handleGoToDetail } = props;
   const { isLoading, response } = props.projectRegisterState.all;
 

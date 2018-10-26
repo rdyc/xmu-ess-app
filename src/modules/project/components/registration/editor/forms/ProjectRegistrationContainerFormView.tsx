@@ -1,13 +1,17 @@
 import { Submission } from '@layout/components/submission/Submission';
 import { Grid } from '@material-ui/core';
-import { RegistrationDetailForm } from '@project/components/registration/editor/forms/RegistrationDetailForm';
-import { RegistrationDocumentForm } from '@project/components/registration/editor/forms/RegistrationDocumentForm';
-import { RegistrationFormProps } from '@project/components/registration/editor/forms/RegistrationForm';
-import { RegistrationSalesForm } from '@project/components/registration/editor/forms/RegistrationSalesForm';
+import {
+  ProjectRegistrationContainerFormProps,
+} from '@project/components/registration/editor/forms/ProjectRegistrationContainerForm';
+import { ProjectRegistrationDetailForm } from '@project/components/registration/editor/forms/ProjectRegistrationDetailForm';
+import {
+  ProjectRegistrationDocumentForm,
+} from '@project/components/registration/editor/forms/ProjectRegistrationDocumentForm';
+import { ProjectRegistrationSalesForm } from '@project/components/registration/editor/forms/ProjectRegistrationSalesForm';
 import * as React from 'react';
 import { BaseFieldsProps, FieldArray, Fields, FormSection, WrappedFieldArrayProps } from 'redux-form';
 
-export const RegistrationFormView: React.SFC<RegistrationFormProps> = props => {
+export const ProjectRegistrationContainerFormView: React.SFC<ProjectRegistrationContainerFormProps> = props => {
   const { 
     formMode, formIsProject, formIsPresales, 
     formIsCurrencyIDR, formRate, formValue, 
@@ -32,7 +36,7 @@ export const RegistrationFormView: React.SFC<RegistrationFormProps> = props => {
   };
   
   const componentInformation = (context: BaseFieldsProps) => (
-    <RegistrationDetailForm 
+    <ProjectRegistrationDetailForm 
       formMode={formMode}
       context={context} 
       isCurrencyIdr={formIsCurrencyIDR}
@@ -44,21 +48,21 @@ export const RegistrationFormView: React.SFC<RegistrationFormProps> = props => {
   );
 
   const componentProjectDocument = (context: WrappedFieldArrayProps<any>) => (
-    <RegistrationDocumentForm 
+    <ProjectRegistrationDocumentForm 
       category="project"
       context={context} 
     />
   );
 
   const componentPresalesDocument = (context: WrappedFieldArrayProps<any>) => (
-    <RegistrationDocumentForm 
+    <ProjectRegistrationDocumentForm 
       category="preSales"
       context={context} 
     />
   );
 
   const componentSales = (context: WrappedFieldArrayProps<any>) => (
-    <RegistrationSalesForm context={context}/>
+    <ProjectRegistrationSalesForm context={context}/>
   );
 
   const render = (

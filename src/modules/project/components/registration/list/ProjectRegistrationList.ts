@@ -5,7 +5,7 @@ import { WithNavBottom, withNavBottom } from '@layout/hoc/withNavBottom';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IListBarField } from '@layout/interfaces';
 import { ProjectField } from '@project/classes/types';
-import { RegistrationListView } from '@project/components/registration/list/RegistrationListView';
+import { ProjectRegistrationListView } from '@project/components/registration/list/ProjectRegistrationListView';
 import { WithProjectRegistration, withProjectRegistration } from '@project/hoc/withProjectRegistration';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
@@ -55,7 +55,7 @@ interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
   stateSizing: StateHandler<OwnState>;
 }
 
-export type RegisterListProps 
+export type ProjectRegisterListProps 
   = WithProjectRegistration
   & WithUser
   & WithLayout
@@ -67,7 +67,7 @@ export type RegisterListProps
   & OwnState
   & OwnStateUpdaters;
 
-const createProps: mapper<RegisterListProps, OwnState> = (props: RegisterListProps): OwnState => {
+const createProps: mapper<ProjectRegisterListProps, OwnState> = (props: ProjectRegisterListProps): OwnState => {
   const { orderBy, direction, page, size } = props;
   const { request } = props.projectRegisterState.all;
 
@@ -103,8 +103,8 @@ const stateUpdaters: StateUpdaters<OwnOptions, OwnState, OwnStateUpdaters> = {
   }),
 };
 
-const handlerCreators: HandleCreators<RegisterListProps, OwnHandlers> = {
-  handleGoToDetail: (props: RegisterListProps) => (projectUid) => {
+const handlerCreators: HandleCreators<ProjectRegisterListProps, OwnHandlers> = {
+  handleGoToDetail: (props: ProjectRegisterListProps) => (projectUid) => {
     const { history } = props;
     const { isLoading } = props.projectRegisterState.all;
 
@@ -112,30 +112,30 @@ const handlerCreators: HandleCreators<RegisterListProps, OwnHandlers> = {
       history.push(`/project/details/${projectUid}`);
     } 
   },
-  handleGoToNext: (props: RegisterListProps) => () => { 
+  handleGoToNext: (props: ProjectRegisterListProps) => () => { 
     props.stateNext();
   },
-  handleGoToPrevious: (props: RegisterListProps) => () => { 
+  handleGoToPrevious: (props: ProjectRegisterListProps) => () => { 
     props.statePrevious();
   },
-  handleReloading: (props: RegisterListProps) => () => { 
+  handleReloading: (props: ProjectRegisterListProps) => () => { 
     props.stateReloading();
 
     // force re-load from api
     loadData(props);
   },
-  handleChangeOrder: (props: RegisterListProps) => (field: IListBarField) => { 
+  handleChangeOrder: (props: ProjectRegisterListProps) => (field: IListBarField) => { 
     props.stateOrdering(field);
   },
-  handleChangeSize: (props: RegisterListProps) => (value: number) => { 
+  handleChangeSize: (props: ProjectRegisterListProps) => (value: number) => { 
     props.stateSizing(value);
   },
-  handleChangeSort: (props: RegisterListProps) => (direction: SortDirection) => { 
+  handleChangeSort: (props: ProjectRegisterListProps) => (direction: SortDirection) => { 
     props.stateSorting(direction);
   }
 };
 
-const lifecycles: ReactLifeCycleFunctions<RegisterListProps, OwnState> = {
+const lifecycles: ReactLifeCycleFunctions<ProjectRegisterListProps, OwnState> = {
   componentDidMount() { 
     const { 
       handleGoToNext, handleGoToPrevious, handleReloading, 
@@ -177,7 +177,7 @@ const lifecycles: ReactLifeCycleFunctions<RegisterListProps, OwnState> = {
       loadData(this.props);
     }
   },
-  componentDidUpdate(props: RegisterListProps, state: OwnState) {
+  componentDidUpdate(props: ProjectRegisterListProps, state: OwnState) {
     // only load when these props are different
     if (
       this.props.orderBy !== props.orderBy ||
@@ -209,7 +209,7 @@ const lifecycles: ReactLifeCycleFunctions<RegisterListProps, OwnState> = {
   }
 };
 
-const loadData = (props: RegisterListProps): void => {
+const loadData = (props: ProjectRegisterListProps): void => {
   const { orderBy, direction, page, size } = props;
   const { user } = props.userState;
   const { loadAllRequest } = props.projectRegisterDispatch;
@@ -239,7 +239,7 @@ const loadData = (props: RegisterListProps): void => {
   }
 };
 
-export const RegistrationList = compose<RegisterListProps, OwnOptions>(
+export const ProjectRegistrationList = compose<ProjectRegisterListProps, OwnOptions>(
   withProjectRegistration,
   withUser,
   withLayout,
@@ -247,6 +247,6 @@ export const RegistrationList = compose<RegisterListProps, OwnOptions>(
   withRouter,
   injectIntl,
   withStateHandlers<OwnState, OwnStateUpdaters, OwnOptions>(createProps, stateUpdaters), 
-  withHandlers<RegisterListProps, OwnHandlers>(handlerCreators),
-  lifecycle<RegisterListProps, OwnState>(lifecycles),
-)(RegistrationListView);
+  withHandlers<ProjectRegisterListProps, OwnHandlers>(handlerCreators),
+  lifecycle<ProjectRegisterListProps, OwnState>(lifecycles),
+)(ProjectRegistrationListView);
