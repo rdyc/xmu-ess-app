@@ -10,7 +10,12 @@ import {
 import { IMileageRequest } from '@mileage/classes/response';
 import { MileageRequestListProps } from '@mileage/components/request/list/MileageRequestList';
 import * as React from 'react';
-import { FormattedDate, FormattedNumber, FormattedPlural } from 'react-intl';
+import {
+  FormattedDate,
+  FormattedMessage,
+  FormattedNumber,
+  FormattedPlural
+} from 'react-intl';
 import { isArray } from 'util';
 
 export const MileageRequestListView: React.SFC<
@@ -44,10 +49,15 @@ export const MileageRequestListView: React.SFC<
                   month="short"
                   year="numeric"
                   value={new Date(mileage.year, mileage.month - 1)}
-                  />
+                />
               </Typography>
-              <Typography noWrap align="right" variant="body1" color="secondary">
-                  {mileage.status && mileage.status.value}
+              <Typography
+                noWrap
+                align="right"
+                variant="body1"
+                color="secondary"
+              >
+                {mileage.status && mileage.status.value}
               </Typography>
             </Grid>
           </Grid>
@@ -98,7 +108,22 @@ export const MileageRequestListView: React.SFC<
     <React.Fragment>
       {isLoading &&
         response && <Typography variant="body2">loading</Typography>}
-      {response && (
+      {(!response || (response.data && response.data.length < 1)) && (
+        <Paper>
+          <List>
+            <ListItem>
+              <Grid container spacing={24}>
+                <Grid item xs={12} sm={12}>
+                  <Typography variant="body2" color="error">
+                    <FormattedMessage id="mileage.request.noData" />
+                  </Typography>
+                </Grid>
+              </Grid>
+            </ListItem>
+          </List>
+        </Paper>
+      )}
+      {response && response.data && response.data.length >= 1 && (
         <Paper square elevation={1}>
           <RenderList />
         </Paper>
