@@ -42,10 +42,10 @@ export const RequestFormView: React.SFC<RequestFormProps> = props => {
           </FormSection>
         </Grid>
 
-        <Grid item xs={12} md={4}>
-          <FormSection name="items">
+        <Grid item xs={12} md={6}>
+          <FormSection name="item">
             <FieldArray 
-              name="employees" 
+              name="items" 
               component={componentTravelItem}
             />
           </FormSection>

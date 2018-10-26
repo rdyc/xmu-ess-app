@@ -38,7 +38,9 @@ import purchaseSagas from '@purchase/store/sagas/purchaseSagas';
 import timesheetApprovalSagas from '@timesheet/store/sagas/timesheetApprovalSagas';
 import timesheetMileagesSagas from '@timesheet/store/sagas/timesheetMileagesSagas';
 import timesheetSagas from '@timesheet/store/sagas/timesheetSagas';
+import travelApprovalSagas from '@travel/store/sagas/travelApprovalSagas';
 import travelSagas from '@travel/store/sagas/travelSagas';
+import travelSettlementApprovalSagas from '@travel/store/sagas/travelSettlementApprovalSagas';
 import travelSettlementSagas from '@travel/store/sagas/travelSettlementSagas';
 import { all, fork } from 'redux-saga/effects';
 
@@ -98,6 +100,8 @@ export function* rootSaga() {
     // travel
     fork(travelSagas),
     fork(travelSettlementSagas),
+    fork(travelApprovalSagas),
+    fork(travelSettlementApprovalSagas),
     
     // purchase
     fork(purchaseSagas),

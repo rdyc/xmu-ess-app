@@ -1,7 +1,7 @@
 import { IAccountEmployee } from '@account/classes';
 import { ICommonSystem } from '@common/classes';
 import { IBaseChanges } from '@generic/interfaces';
-import { ILookupCustomer } from '@lookup/classes';
+import { ILookupCustomer, ILookupPosition } from '@lookup/classes';
 import { IProject, IProjectSite } from '@project/classes/response';
 
 export interface ITravelSettlement {
@@ -10,7 +10,7 @@ export interface ITravelSettlement {
   employeeUid: string;
   employee?: IAccountEmployee | null;
   positionUid: string;
-  // position: ILookupPosition | null;
+  position: ILookupPosition | null;
   destinationType: string;
   destination?: ICommonSystem | null;
   start: string;
@@ -30,5 +30,5 @@ export interface ITravelSettlement {
   statusType: string;
   status?: ICommonSystem | null;
   rejectReason?: string | null;
-  changes?: IBaseChanges | null;
+  changes: IBaseChanges | null;
 }

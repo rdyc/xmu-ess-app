@@ -9,9 +9,6 @@ import {
   DialogContentText,
   DialogTitle,
   Divider,
-  // ExpansionPanel,
-  // ExpansionPanelDetails,
-  // ExpansionPanelSummary,
   Grid,
   List,
   ListItem,
@@ -19,18 +16,18 @@ import {
   Typography,
 } from '@material-ui/core';
 import { WorkflowStep } from '@organization/components';
-import { ITravelRequestDetail, ITravelRequestItem } from '@travel/classes/response';
+import { ITravelSettlementDetail, ITravelSettlementItem } from '@travel/classes/response';
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
-import { RequestDetailProps } from './RequestDetail';
+import { SettlementDetailProps } from './TravelSettlementDetail';
 
-export const RequestDetailView: React.SFC<RequestDetailProps> = props => {
+export const TravelSettlementDetailView: React.SFC<SettlementDetailProps> = props => {
   const { 
     dialogFullScreen, dialogOpen, dialogTitle, dialogDescription, dialogCancelText, dialogConfirmedText,
     handleDialogClose, handleDialogConfirmed, intl
   } = props;
   
-  const { isLoading, response } = props.travelRequestState.detail;
+  const { isLoading, response } = props.travelSettlementState.detail;
 
   const renderDialog = (
     <Dialog
@@ -58,19 +55,26 @@ export const RequestDetailView: React.SFC<RequestDetailProps> = props => {
     </Dialog>
   );
 
-  const renderDetail = (travel: ITravelRequestDetail) => (
+  const renderDetail = (travel: ITravelSettlementDetail) => (
     <Card square>
       <CardHeader 
         title={<FormattedMessage id="travel.infoTitle"/>}
-        subheader={<FormattedMessage id="travel.infoSubTitle" />}
+        subheader={<FormattedMessage id="travelSettlement.infoSubTitle" />}
       />
       <CardContent>
         <TextField
           fullWidth
           contentEditable={false}
           margin="normal"
-          label={<FormattedMessage id="travel.field.information.uid" />}
+          label={<FormattedMessage id="travel.field.information.settlementuid" />}
           value={travel.uid}
+        />
+        <TextField
+          fullWidth
+          contentEditable={false}
+          margin="normal"
+          label={<FormattedMessage id="travel.field.information.uid" />}
+          value={travel.travelUid}
         />
         <TextField
           fullWidth
@@ -147,7 +151,7 @@ export const RequestDetailView: React.SFC<RequestDetailProps> = props => {
           fullWidth
           contentEditable={false}
           margin="normal"
-          label={<FormattedMessage id="travel.field.information.objective" />}
+          label={<FormattedMessage id="travel.field.information.objectives" />}
           value={travel.objective || 'N/A'}
         />
         <TextField
@@ -161,14 +165,14 @@ export const RequestDetailView: React.SFC<RequestDetailProps> = props => {
           fullWidth
           contentEditable={false}
           margin="normal"
-          label={<FormattedMessage id="travel.field.information.comment" />}
+          label={<FormattedMessage id="travel.field.information.comments" />}
           value={travel.comment || 'N/A'}
         />        
       </CardContent>
     </Card>
   );
 
-  const renderSummary = (travel: ITravelRequestDetail) => (
+  const renderSummary = (travel: ITravelSettlementDetail) => (
     <Card square>
       <CardHeader 
         title={<FormattedMessage id="travel.summaryTitle" />}
@@ -176,52 +180,52 @@ export const RequestDetailView: React.SFC<RequestDetailProps> = props => {
       />
       <CardContent>
           <TextField
-            fullWidth
-            contentEditable={false}
-            margin="normal"
-            label={<FormattedMessage id="travel.field.information.siteValue" />}
-            value={intl.formatNumber(travel.site ? travel.site.value : 0)}
+          fullWidth
+          contentEditable={false}
+          margin="normal"
+          label={<FormattedMessage id="travel.field.information.siteValue" />}
+          value={intl.formatNumber(travel.site ? travel.site.value : 0)}
           />        
           <TextField
-            fullWidth
-            contentEditable={false}
-            margin="normal"
-            label={<FormattedMessage id="travel.field.information.totalDuration" />}
-            value={intl.formatNumber(travel.summary ? travel.summary.totalDuration : 0)}
+          fullWidth
+          contentEditable={false}
+          margin="normal"
+          label={<FormattedMessage id="travel.field.information.totalDuration" />}
+          value={intl.formatNumber(travel.summary ? travel.summary.totalDuration : 0)}
           />
           <TextField
-            fullWidth
-            contentEditable={false}
-            margin="normal"
-            label={<FormattedMessage id="travel.field.information.totalDiemValue" />}
-            value={intl.formatNumber(travel.summary ? travel.summary.totalDiemValue : 0)}
+          fullWidth
+          contentEditable={false}
+          margin="normal"
+          label={<FormattedMessage id="travel.field.information.totalDiemValue" />}
+          value={intl.formatNumber(travel.summary ? travel.summary.totalDiemValue : 0)}
           />
           <TextField
-            fullWidth
-            contentEditable={false}
-            margin="normal"
-            label={<FormattedMessage id="travel.field.information.costTransport" />}
-            value={intl.formatNumber(travel.summary ? travel.summary.totalCostTransport : 0)}
+          fullWidth
+          contentEditable={false}
+          margin="normal"
+          label={<FormattedMessage id="travel.field.information.costTransport" />}
+          value={intl.formatNumber(travel.summary ? travel.summary.totalCostTransport : 0)}
           />
           <TextField
-            fullWidth
-            contentEditable={false}
-            margin="normal"
-            label={<FormattedMessage id="travel.field.information.costHotel" />}
-            value={intl.formatNumber(travel.summary ? travel.summary.totalCostHotel : 0)}
+          fullWidth
+          contentEditable={false}
+          margin="normal"
+          label={<FormattedMessage id="travel.field.information.costHotel" />}
+          value={intl.formatNumber(travel.summary ? travel.summary.totalCostHotel : 0)}
           />
           <TextField
-            fullWidth
-            contentEditable={false}
-            margin="normal"
-            label={<FormattedMessage id="travel.field.information.total" />}
-            value={intl.formatNumber(travel.total || 0)}
+          fullWidth
+          contentEditable={false}
+          margin="normal"
+          label={<FormattedMessage id="travel.field.information.total" />}
+          value={intl.formatNumber(travel.total || 0)}
         />        
       </CardContent>
     </Card>
   );
 
-  const renderItems = (items: ITravelRequestItem[]) => {
+  const renderItems = (items: ITravelSettlementItem[]) => {
     const len = items.length - 1;
     return (
       <Card square>
@@ -237,8 +241,8 @@ export const RequestDetailView: React.SFC<RequestDetailProps> = props => {
               <ListItem 
                 disableGutters 
                 key={item.uid}
-              >                             
-              <Grid container spacing={24}>
+              >
+                <Grid container spacing={24}>
                 <Grid item xs={12} sm={12}>
                   <Typography 
                     noWrap 
@@ -278,7 +282,7 @@ export const RequestDetailView: React.SFC<RequestDetailProps> = props => {
         </CardContent>
       </Card>
     );
-  };  
+  };
 
   const render = (
     <React.Fragment>
