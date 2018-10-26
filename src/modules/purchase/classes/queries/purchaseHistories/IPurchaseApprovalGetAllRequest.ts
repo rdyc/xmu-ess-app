@@ -1,8 +1,5 @@
-import { ICompanyAccess } from '@generic/interfaces';
 import { IPurchaseApprovalGetAllFilter } from '@purchase/classes/filters/purchaseHistories';
 
-export interface IPurchaseApprovalGetAllRequest extends ICompanyAccess {
+export interface IPurchaseApprovalGetAllRequest {
   readonly filter: IPurchaseApprovalGetAllFilter | undefined;
-  isNotify: boolean | undefined;
-  status: 'pending' | 'complete' | undefined;
 }

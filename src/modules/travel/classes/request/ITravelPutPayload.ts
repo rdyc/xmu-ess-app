@@ -1,5 +1,5 @@
 import { IBasePayload } from '@generic/interfaces';
-import { ITravelPutItem } from './ITravelPutItem';
+// import { ITravelPutItem } from './ITravelPutItem';
 
 export interface ITravelPutPayload extends IBasePayload {
   destinationType: string;
@@ -12,5 +12,5 @@ export interface ITravelPutPayload extends IBasePayload {
   objective: string | null;
   target: string | null;
   comment: string | null;
-  items: ITravelPutItem[];
+  // items: ITravelPutItem[];
 }

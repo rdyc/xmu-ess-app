@@ -1,7 +1,7 @@
 import { IQuerySingleState } from '@generic/interfaces';
 import { ISettlementApprovalGetByIdRequest } from '@purchase/classes/queries/settlementHistories';
 import { ISettlementDetail } from '@purchase/classes/response/purchaseSettlement';
-import { SettlementAction as Action } from '@purchase/store/actions';
+import { SettlementApprovalAction as Action } from '@purchase/store/actions';
 import { Reducer } from 'redux';
 
 const initialState: IQuerySingleState<ISettlementApprovalGetByIdRequest, ISettlementDetail> = {
@@ -14,10 +14,10 @@ const initialState: IQuerySingleState<ISettlementApprovalGetByIdRequest, ISettle
 
 const reducer: Reducer<IQuerySingleState<ISettlementApprovalGetByIdRequest, ISettlementDetail>> = (state = initialState, action) => {
   switch (action.type) {
-    case Action.GET_BY_ID_REQUEST: return { ...state, isLoading: true, request: action.payload };
-    case Action.GET_BY_ID_SUCCESS: return { ...state, isLoading: false, response: action.payload };
-    case Action.GET_BY_ID_ERROR: return { ...state, isLoading: false, isError: true, errors: action.payload };
-    case Action.GET_BY_ID_DISPOSE: return initialState;
+    case Action.GET_BY_ID_S_APPROVAL_REQUEST: return { ...state, isLoading: true, request: action.payload };
+    case Action.GET_BY_ID_S_APPROVAL_SUCCESS: return { ...state, isLoading: false, response: action.payload };
+    case Action.GET_BY_ID_S_APPROVAL_ERROR: return { ...state, isLoading: false, isError: true, errors: action.payload };
+    case Action.GET_BY_ID_S_APPROVAL_DISPOSE: return initialState;
     
     default: return state;
   }
