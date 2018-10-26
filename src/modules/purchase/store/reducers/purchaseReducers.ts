@@ -16,19 +16,27 @@ import {
 } from '@purchase/store/reducers';
 
 const purchaseReducers = {
+  
+  /* Purchase Request */
   purchaseGetAll: purchaseGetAllReducer,
   purchaseGetById: purchaseGetByIdReducer,
   purchasePost: purchasePostReducer,
   purchasePut: purchasePutReducer,
+
+  /* Purchase Request Approval */
   purchaseApprovalGetAll: purchaseApprovalGetAllReducer,
   purchaseApprovalGetById: purchaseApprovalGetByIdReducer,
   purchaseApprovalPost: purchaseApprovalPostReducer,
+
+  /* Purchase Settlement */
   settlementGetAll: settlementGetAllReducer,
   settlementGetById: settlementGetByIdReducer,
   settlementPost: settlementPostReducer,
   settlementPut: settlementPutReducer,
+
+  /* Purchase Settlement Approval */
   settlementApprovalGetAll: settlementApprovalGetAllReducer,
-  settlementApprovalGetBy: settlementApprovalGetByIdReducer,
+  settlementApprovalGetById: settlementApprovalGetByIdReducer,
   settlementApprovalPost: settlementApprovalPostReducer
 };
 

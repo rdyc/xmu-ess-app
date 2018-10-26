@@ -59,7 +59,7 @@ function* watchPurchaseAllFetchRequest() {
   const worker = (action: ReturnType<typeof purchaseGetAllRequest>) => { 
     return saiyanSaga.fetch({
       method: 'get',
-      path: `/v1/purchase/requests/${action.payload.companyUid}/${action.payload.positionUid}${objectToQuerystring(action.payload.filter)}`, 
+      path: `/v1/purchase/requests${objectToQuerystring(action.payload.filter)}`, 
       successEffects: (response: IApiResponse) => ([
         put(purchaseGetAllSuccess(response.body)),
         put(listBarMetadata(response.body.metadata))
@@ -181,7 +181,7 @@ function* watchPurchaseApprovalAllFetchRequest() {
   const worker = (action: ReturnType<typeof purchaseApprovalGetAllRequest>) => {
     return saiyanSaga.fetch({
       method: 'get',
-      path: `/v1/approvals/purchase/request/${action.payload.companyUid}/${action.payload.positionUid}${objectToQuerystring(action.payload.filter)}`,
+      path: `/v1/approvals/purchase/request${objectToQuerystring(action.payload.filter)}`,
       successEffects: (response: IApiResponse) => ([
         put(purchaseApprovalGetAllSuccess(response.body)),
         put(listBarMetadata(response.body.metadata))
@@ -207,7 +207,7 @@ function* watchPurchaseApprovalAllFetchRequest() {
     });
   };
 
-  yield takeEvery(PurchaseAction.GET_ALL_REQUEST, worker);
+  yield takeEvery(PurchaseApprovalAction.GET_ALL_APPROVAL_REQUEST, worker);
 }
 
 function* watchPurchaseApprovalByIdFetchRequest() {
@@ -236,7 +236,7 @@ function* watchPurchaseApprovalByIdFetchRequest() {
     });
   };
 
-  yield takeEvery(PurchaseApprovalAction.GET_BY_ID_REQUEST, worker);
+  yield takeEvery(PurchaseApprovalAction.GET_BY_ID_APPROVAL_REQUEST, worker);
 }
 
 function* watchPurchaseApprovalPostFetchRequest() {
@@ -266,14 +266,14 @@ function* watchPurchaseApprovalPostFetchRequest() {
     });
   };
 
-  yield takeEvery(PurchaseApprovalAction.POST_REQUEST, worker);
+  yield takeEvery(PurchaseApprovalAction.POST_APPROVAL_REQUEST, worker);
 }
 
 function* watchSettlementAllFetchRequest() {
   const worker = (action: ReturnType<typeof settlementGetAllRequest>) => {
     return saiyanSaga.fetch({
       method: 'get',
-      path: `/v1/purchase/settlements/${action.payload.companyUid}/${action.payload.positionUid}${objectToQuerystring(action.payload.filter)}`,
+      path: `/v1/purchase/settlements${objectToQuerystring(action.payload.filter)}`,
       successEffects: (response: IApiResponse) => ([
         put(settlementGetAllSuccess(response.body)),
         put(listBarMetadata(response.body.metadata))
@@ -299,7 +299,7 @@ function* watchSettlementAllFetchRequest() {
     });
   };
 
-  yield takeEvery(SettlementAction.GET_ALL_REQUEST, worker);
+  yield takeEvery(SettlementAction.GET_ALL_SETTLEMENT_REQUEST, worker);
 }
 
 function* watchSettlementByIdFetchRequest() {
@@ -328,7 +328,7 @@ function* watchSettlementByIdFetchRequest() {
     });
   };
 
-  yield takeEvery(SettlementAction.GET_BY_ID_REQUEST, worker);
+  yield takeEvery(SettlementAction.GET_BY_ID_SETTLEMENT_REQUEST, worker);
 }
 
 function* watchSettlementPostFetchRequest() {
@@ -358,7 +358,7 @@ function* watchSettlementPostFetchRequest() {
     });
   };
 
-  yield takeEvery(SettlementAction.POST_REQUEST, worker);
+  yield takeEvery(SettlementAction.POST_SETTLEMENT_REQUEST, worker);
 }
 
 function* watchSettlementPutFetchRequest() {
@@ -388,14 +388,14 @@ function* watchSettlementPutFetchRequest() {
     });
   };
 
-  yield takeEvery(SettlementAction.PUT_REQUEST, worker);
+  yield takeEvery(SettlementAction.PUT_SETTLEMENT_REQUEST, worker);
 }
 
 function* watchSettlementApprovalAllFetchRequest() {
   const worker = (action: ReturnType<typeof settlementApprovalGetAllRequest>) => {
     return saiyanSaga.fetch({
       method: 'get',
-      path: `/v1/approvals/purchase/settlement/${action.payload.companyUid}/${action.payload.positionUid}${objectToQuerystring(action.payload.filter)}`,
+      path: `/v1/approvals/purchase/settlement${objectToQuerystring(action.payload.filter)}`,
       successEffects: (response: IApiResponse) => ([
         put(settlementApprovalGetAllSuccess(response.body)),
         put(listBarMetadata(response.body.metadata))
@@ -421,7 +421,7 @@ function* watchSettlementApprovalAllFetchRequest() {
     });
   };
 
-  yield takeEvery(SettlementApprovalAction.GET_ALL_REQUEST, worker);
+  yield takeEvery(SettlementApprovalAction.GET_ALL_S_APPROVAL_REQUEST, worker);
 }
 
 function* watchSettlementApprovalByIdFetchRequest() {
@@ -450,7 +450,7 @@ function* watchSettlementApprovalByIdFetchRequest() {
     });
   };
 
-  yield takeEvery(SettlementApprovalAction.GET_BY_ID_REQUEST, worker);
+  yield takeEvery(SettlementApprovalAction.GET_BY_ID_S_APPROVAL_REQUEST, worker);
 }
 
 function* watchSettlementApprovalPostFetchRequest() {
@@ -480,7 +480,7 @@ function* watchSettlementApprovalPostFetchRequest() {
     });
   };
 
-  yield takeEvery(SettlementApprovalAction.POST_REQUEST, worker);
+  yield takeEvery(SettlementApprovalAction.POST_S_APPROVAL_REQUEST, worker);
 }
 
 function* purchaseSagas() {

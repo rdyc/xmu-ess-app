@@ -1,3 +1,4 @@
+import accountEmployeeLeaveSagas from '@account/store/sagas/accountEmployeeLeaveSagas';
 import accountEmployeeSagas from '@account/store/sagas/accountEmployeeSagas';
 import employeeMySagas from '@account/store/sagas/employeeMySagas';
 import employeeProfileSagas from '@account/store/sagas/employeeProfileSagas';
@@ -5,26 +6,30 @@ import commonActivitySagas from '@common/store/sagas/activitySagas';
 import commonCurrencySagas from '@common/store/sagas/currencySagas';
 import commonDocumentPresalesSagas from '@common/store/sagas/documentPresalesSagas';
 import commonDocumentSagas from '@common/store/sagas/documentSagas';
+import commonExpenseSagas from '@common/store/sagas/expenseSagas';
+import commonLeaveSagas from '@common/store/sagas/leaveSagas';
 import commonProjectSagas from '@common/store/sagas/projectSagas';
 import commonSiteSagas from '@common/store/sagas/siteSagas';
 import commonStatusSagas from '@common/store/sagas/statusSagas';
-import expenseSagas from '@expense/store/sagas/expenseSagas';
+import expenseApprovalSagas from '@expense/store/sagas/expenseApprovalSagas';
+import expenseSagas from '@expense/store/sagas/expenseRequestSagas';
 import financeSagas from '@finance/store/sagas/financeSagas';
 import commonNotificationSagas from '@layout/store/sagas/notificationSagas';
+import leaveApprovalSagas from '@leave/store/sagas/leaveApprovalSagas';
 import leaveRequestSagas from '@leave/store/sagas/leaveRequestSagas';
-import lookupCompanySagas from '@lookup/store/sagas/companySagas';
 import lookupCurrencySagas from '@lookup/store/sagas/currencySagas';
 import lookupDiemSagas from '@lookup/store/sagas/diemSagas';
 import lookupHolidaySagas from '@lookup/store/sagas/holidaySagas';
 import lookupLeaveSagas from '@lookup/store/sagas/leaveSagas';
+import lookupCompanySagas from '@lookup/store/sagas/lookupCompanySagas';
 import lookupCustomerSagas from '@lookup/store/sagas/lookupCustomerSagas';
+import lookupRoleSagas from '@lookup/store/sagas/lookupRoleSagas';
 import lookupMenuSagas from '@lookup/store/sagas/menuSagas';
 import lookupMileageExceptionSagas from '@lookup/store/sagas/mileageExceptionSagas';
 import lookupPositionSagas from '@lookup/store/sagas/positionSagas';
-import lookupRoleSagas from '@lookup/store/sagas/roleSagas';
 import lookupSystemLimitSagas from '@lookup/store/sagas/systemLimitSagas';
-import mileageApprovalSagas from '@mileage/store/sagas/mileageApprovalSagas';
-import mileageRequestSagas from '@mileage/store/sagas/mileageRequestSagas';
+import mileageApprovalSagas from '@mileage/store/sagas/approval/mileageApprovalSagas';
+import mileageRequestSagas from '@mileage/store/sagas/request/mileageRequestSagas';
 import projectAcceptanceSagas from '@project/store/sagas/projectAcceptanceSagas';
 import projectApprovalSagas from '@project/store/sagas/projectApprovalSagas';
 import projectAssignmentSagas from '@project/store/sagas/projectAssignmentSagas';
@@ -33,8 +38,12 @@ import projectRegistrationSagas from '@project/store/sagas/projectRegistrationSa
 import projectSiteSagas from '@project/store/sagas/projectSiteSagas';
 import projectStatusSagas from '@project/store/sagas/projectStatusSagas';
 import purchaseSagas from '@purchase/store/sagas/purchaseSagas';
+import timesheetApprovalSagas from '@timesheet/store/sagas/timesheetApprovalSagas';
+import timesheetMileagesSagas from '@timesheet/store/sagas/timesheetMileagesSagas';
 import timesheetSagas from '@timesheet/store/sagas/timesheetSagas';
+import travelApprovalSagas from '@travel/store/sagas/travelApprovalSagas';
 import travelSagas from '@travel/store/sagas/travelSagas';
+import travelSettlementApprovalSagas from '@travel/store/sagas/travelSettlementApprovalSagas';
 import travelSettlementSagas from '@travel/store/sagas/travelSettlementSagas';
 import { all, fork } from 'redux-saga/effects';
 
@@ -46,8 +55,10 @@ export function* rootSaga() {
     fork(commonCurrencySagas),
     fork(commonDocumentSagas),
     fork(commonDocumentPresalesSagas),
+    fork(commonLeaveSagas),
     fork(commonProjectSagas),
     fork(commonSiteSagas),
+    fork(commonExpenseSagas),
     fork(commonStatusSagas),
     fork(commonNotificationSagas),
 
@@ -66,6 +77,7 @@ export function* rootSaga() {
     
     // account
     fork(accountEmployeeSagas),
+    fork(accountEmployeeLeaveSagas),
     fork(employeeMySagas),
     fork(employeeProfileSagas),
 
@@ -80,6 +92,8 @@ export function* rootSaga() {
     
     // timesheet
     fork(timesheetSagas),
+    fork(timesheetApprovalSagas),
+    fork(timesheetMileagesSagas),
     
     // mileage
     fork(mileageApprovalSagas),
@@ -87,10 +101,13 @@ export function* rootSaga() {
 
     // expense
     fork(expenseSagas),
+    fork(expenseApprovalSagas),
     
     // travel
     fork(travelSagas),
     fork(travelSettlementSagas),
+    fork(travelApprovalSagas),
+    fork(travelSettlementApprovalSagas),
     
     // purchase
     fork(purchaseSagas),
@@ -99,6 +116,7 @@ export function* rootSaga() {
     fork(financeSagas),
     
     // leave
-    fork(leaveRequestSagas)
+    fork(leaveRequestSagas),
+    fork(leaveApprovalSagas)
   ]);
 }

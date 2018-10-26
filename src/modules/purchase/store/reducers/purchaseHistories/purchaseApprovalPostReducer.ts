@@ -13,10 +13,10 @@ const initialState: IQuerySingleState<IPurchaseApprovalPostRequest, boolean> = {
 
 const reducer: Reducer<IQuerySingleState<IPurchaseApprovalPostRequest, boolean>> = (state = initialState, action) => {
   switch (action.type) {
-    case Action.POST_REQUEST: return { ...state, isLoading: true, request: action.payload };
-    case Action.POST_SUCCESS: return { ...state, isLoading: false, response: action.payload };
-    case Action.POST_ERROR: return { ...state, isLoading: false, isError: true, errors: action.payload };
-    case Action.POST_DISPOSE: return initialState;
+    case Action.POST_APPROVAL_REQUEST: return { ...state, isLoading: true, request: action.payload };
+    case Action.POST_APPROVAL_SUCCESS: return { ...state, isLoading: false, response: action.payload };
+    case Action.POST_APPROVAL_ERROR: return { ...state, isLoading: false, isError: true, errors: action.payload };
+    case Action.POST_APPROVAL_DISPOSE: return initialState;
     
     default: return state;
   }

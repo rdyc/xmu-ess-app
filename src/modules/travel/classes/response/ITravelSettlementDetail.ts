@@ -1,16 +1,18 @@
 import { IAccountEmployee } from '@account/classes';
 import { ICommonSystem } from '@common/classes';
 import { IBaseChanges } from '@generic/interfaces';
-import { ILookupCustomer } from '@lookup/classes';
+import { ILookupCustomer, ILookupPosition } from '@lookup/classes';
 import { IOrganizationWorkflow } from '@organization/interfaces';
 import { IProject, IProjectSite } from '@project/classes/response';
+import { ITravelSettlementItem, ITravelSummary } from '@travel/classes/response';
 
 export interface ITravelSettlementDetail {
-  uid: string; 
+  uid: string;
+  travelUid: string; 
   employeeUid: string;
   employee?: IAccountEmployee | null;
   positionUid: string;
-  position: string; // ILookupPosition | null;
+  position: ILookupPosition | null;
   destinationType: string;
   destination?: ICommonSystem | null;
   start: string;
@@ -34,6 +36,6 @@ export interface ITravelSettlementDetail {
   histories?: History[];
   workflow?: IOrganizationWorkflow | null;
   changes?: IBaseChanges | null;
-  // items: ITravelSettlementItem[] | null;
-  // summary: ITravelSummary | null;
+  items: ITravelSettlementItem[] | null;
+  summary: ITravelSummary | null;
 }

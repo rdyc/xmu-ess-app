@@ -21,5 +21,5 @@ export interface IExpense {
   statusType: string;
   status: ICommonSystem;
   rejectedReason?: string | null;
-  changes?: IBaseChanges | null;
+  changes: IBaseChanges | null;
 }
