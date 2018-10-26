@@ -23,7 +23,7 @@ interface OwnProps {
 }
 
 interface FormValueProps {
-  formIsApproved: boolean | undefined;
+  formIsApproved: boolean | true;
 }
 
 export type ApprovalFormProps 

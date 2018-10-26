@@ -17,7 +17,7 @@ interface OwnProps {
   subHeader?: string | undefined;
   labelSubmit?: string | undefined;
   labelProcessing?: string | undefined;
-  isApprove: boolean | undefined;
+  isApprove: boolean | true;
   onChangeApprovalOption: (event: any, newValue: string, oldValue: string) => void;
 }
 

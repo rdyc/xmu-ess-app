@@ -67,6 +67,7 @@
   "expense.message.request.update.success": "Existing Expense {uid} has been updated",
   "expense.message.request.update.failure": "Unable to process your submission",
   "expense.message.owner.emptyProps": "Some props are empty",
-  "expense.message.approval.create.success": "An Expense {uid} has been approved/rejected",
+  "expense.message.approval.approve.success": "An Expense {uid} has been approved",
+  "expense.message.approval.reject.success": "An Expense {uid} has been rejected",
   "expense.message.approval.create.failure": "Unable to process your approval"
 }

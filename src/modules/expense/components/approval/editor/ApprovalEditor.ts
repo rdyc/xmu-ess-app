@@ -44,6 +44,7 @@ interface OwnRouteParams {
 
 interface OwnState {
   formMode: FormMode;
+  isApprove?: boolean | undefined;
   companyUid?: string | undefined;
   positionUid?: string | undefined;
   expenseUid?: string | undefined;
@@ -89,7 +90,7 @@ const handlerCreators: HandleCreators<ApprovalEditorProps, OwnHandlers> = {
     return errors;
   },
   handleSubmit: (props: ApprovalEditorProps) => (formData: ExpenseApprovalFormData) => { 
-    const { expenseUid, intl } = props;
+    const { expenseUid, intl, stateUpdate } = props;
     const { user } = props.userState;
     const { createRequest } = props.expenseApprovalDispatch;
     const { information } = formData;
@@ -112,6 +113,10 @@ const handlerCreators: HandleCreators<ApprovalEditorProps, OwnHandlers> = {
       remark: information.isApproved === ApprovalOptions.approve ? null : information.remark
     };
 
+    stateUpdate({
+      isApprove : payload.isApproved,
+    });
+
     // dispatch create request
     return new Promise((resolve, reject) => {
       createRequest({
@@ -125,13 +130,15 @@ const handlerCreators: HandleCreators<ApprovalEditorProps, OwnHandlers> = {
     });
   },
   handleSubmitSuccess: (props: ApprovalEditorProps) => (response: boolean) => {
-    const { formMode, intl, history, expenseUid } = props;
+    const { isApprove, intl, history, expenseUid } = props;
     const { alertAdd } = props.layoutDispatch;
     
     let message: string = '';
 
-    if (formMode === FormMode.Edit) {
-      message = intl.formatMessage(expenseApprovalMessage.createSuccess, {uid: expenseUid});
+    if (isApprove) {
+      message = intl.formatMessage(expenseApprovalMessage.approveSuccess, {uid: expenseUid});
+    } else {
+      message = intl.formatMessage(expenseApprovalMessage.rejectSuccess, {uid: expenseUid});
     }
 
     alertAdd({
