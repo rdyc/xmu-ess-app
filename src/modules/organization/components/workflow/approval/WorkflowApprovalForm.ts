@@ -128,5 +128,6 @@ const enhance = compose<WorkflowApprovalFormProps, OwnProps & InjectedFormProps<
 )(WorkflowApprovalFormView);
 
 export const WorkflowApprovalForm = reduxForm<WorkflowApprovalFormData, OwnProps>({
-  form: formName
+  form: formName,
+  destroyOnUnmount: true
 })(enhance);

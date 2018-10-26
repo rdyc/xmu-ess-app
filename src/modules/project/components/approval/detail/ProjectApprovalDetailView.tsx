@@ -31,70 +31,72 @@ export const ProjectApprovalDetailView: React.SFC<ProjectApprovalDetailProps> = 
         !isLoading &&
         response && 
         response.data &&
-        <Grid 
-          container 
-          spacing={16} 
-          direction="row"
-          justify="flex-start"
-          alignItems="flex-start"
-        >
+        <Grid container spacing={16}>
           <Grid item xs={12} md={4}>
             <ProjectInformation data={response.data}/>
           </Grid>
           
-          {
-            response.data.projectType === ProjectType.Project &&
-            <Grid item xs={12} md={4}>
-              <ProjectDocument 
-                title={intl.formatMessage({id: 'project.document.projectTitle'})}
-                subHeader={intl.formatMessage({id: 'project.document.projectSubTitle'})}
-                data={response.data.documents}
-              />
-            </Grid>
-          }
-          {
-            response.data.projectType === ProjectType.PreSales &&
-            <Grid item xs={12} md={4}>
-              <ProjectDocument 
-                title={intl.formatMessage({id: 'project.document.preSalesTitle'})}
-                subHeader={intl.formatMessage({id: 'project.document.preSalesSubTitle'})}
-                data={response.data.documentPreSales}
-              />
-            </Grid>
-          }
-
           <Grid item xs={12} md={4}>
-            <ProjectSales data={response.data.sales} />
+            <Grid container spacing={16}>
+              {
+                response.data.projectType === ProjectType.Project &&
+                <Grid item>
+                  <ProjectDocument 
+                    title={intl.formatMessage({id: 'project.document.projectTitle'})}
+                    subHeader={intl.formatMessage({id: 'project.document.projectSubTitle'})}
+                    data={response.data.documents}
+                  />
+                </Grid>
+              }
+              {
+                response.data.projectType === ProjectType.PreSales &&
+                <Grid item>
+                  <ProjectDocument 
+                    title={intl.formatMessage({id: 'project.document.preSalesTitle'})}
+                    subHeader={intl.formatMessage({id: 'project.document.preSalesSubTitle'})}
+                    data={response.data.documentPreSales}
+                  />
+                </Grid>
+              }
+
+              <Grid item>
+                <ProjectSales data={response.data.sales} />
+              </Grid>
+
+              <Grid item>
+                <ProjectSite data={response.data.sites} />
+              </Grid>
+            </Grid>
           </Grid>
 
           <Grid item xs={12} md={4}>
-            <ProjectSite data={response.data.sites} />
-          </Grid>
+            <Grid container spacing={16}>
+              <Grid item>
+                <WorkflowHistory data={response.data.workflow} />
+              </Grid>
 
-          <Grid item xs={12} md={4}>
-            <WorkflowHistory data={response.data.workflow} />
-          </Grid>
-
-          {
-            response.data.workflow &&
-            response.data.workflow.isApproval &&
-            <Grid item xs={12} md={4}>
-                <WorkflowApprovalForm
-                  approvalTitle={approvalTitle}
-                  approvalSubHeader={approvalSubHeader}
-                  approvalChoices={approvalChoices}
-                  approvalTrueValue={approvalTrueValue}
-                  approvalDialogTitle={approvalDialogTitle}
-                  approvalDialogContentText={approvalDialogContentText}
-                  approvalDialogCancelText={approvalDialogCancelText}
-                  approvalDialogConfirmedText={approvalDialogConfirmedText}
-                  validate={handleValidate}
-                  onSubmit={handleSubmit} 
-                  onSubmitSuccess={handleSubmitSuccess}
-                  onSubmitFail={handleSubmitFail}
-                />
+              {
+                response.data.workflow &&
+                response.data.workflow.isApproval &&
+                <Grid item>
+                  <WorkflowApprovalForm
+                    approvalTitle={approvalTitle}
+                    approvalSubHeader={approvalSubHeader}
+                    approvalChoices={approvalChoices}
+                    approvalTrueValue={approvalTrueValue}
+                    approvalDialogTitle={approvalDialogTitle}
+                    approvalDialogContentText={approvalDialogContentText}
+                    approvalDialogCancelText={approvalDialogCancelText}
+                    approvalDialogConfirmedText={approvalDialogConfirmedText}
+                    validate={handleValidate}
+                    onSubmit={handleSubmit} 
+                    onSubmitSuccess={handleSubmitSuccess}
+                    onSubmitFail={handleSubmitFail}
+                  />
+                </Grid>
+              }
             </Grid>
-           }
+          </Grid>
         </Grid>
       }
     </React.Fragment>

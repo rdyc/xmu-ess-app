@@ -229,7 +229,7 @@ const loadData = (props: ProjectApprovalListProps): void => {
           findBy: undefined
         },
         isNotify: undefined,
-        status: undefined
+        status: 'pending'
       }
     }); 
   } else {

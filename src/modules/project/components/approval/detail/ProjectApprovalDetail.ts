@@ -197,6 +197,23 @@ const lifecycles: ReactLifeCycleFunctions<ProjectApprovalDetailProps, {}> = {
       });
     }
   },
+  componentWillReceiveProps(nextProps: ProjectApprovalDetailProps) {
+    if (nextProps.projectApprovalState.detail.response !== this.props.projectApprovalState.detail.response) {
+      const { intl } = nextProps;
+      const { assignMenus } = nextProps.appBarDispatch;
+
+      const currentMenus = [
+        {
+          id: ProjectUserAction.Refresh,
+          name: intl.formatMessage({id: 'global.action.refresh'}),
+          enabled: true,
+          visible: true
+        }
+      ];
+
+      assignMenus(currentMenus);
+    }
+  },
   componentWillUnmount() {
     const { layoutDispatch, appBarDispatch } = this.props;
 
@@ -206,8 +223,6 @@ const lifecycles: ReactLifeCycleFunctions<ProjectApprovalDetailProps, {}> = {
     layoutDispatch.actionCentreHide();
 
     appBarDispatch.dispose();
-
-    // projectRegisterDispatch.loadDetailDispose();
   }
 };
 
