@@ -1,8 +1,11 @@
 import * as appLocaleData from 'react-intl/locale-data/en';
 
 import enExpenseMessages from '../../modules/expense/locales/en_US.json';
+<<<<<<< HEAD
 import enLeaveMessages from '../../modules/leave/locales/en_US.json';
+=======
 import enMileageMessages from '../../modules/mileage/locales/en_US.json';
+>>>>>>> develop
 import enProjectMessages from '../../modules/project/locales/en_US.json';
 import enPurchaseMessages from '../../modules/purchase/locales/en_US.json';
 import enTimesheetMessages from '../../modules/timesheet/locales/en_US.json';
