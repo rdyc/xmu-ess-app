@@ -13,7 +13,7 @@ import {
 } from '@mileage/hoc/withMileageRequest';
 import { mileageMessage } from '@mileage/locales/messages/mileageMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
-import {  withRouter } from 'react-router';
+import {  RouteComponentProps, withRouter } from 'react-router';
 import {
   compose,
   HandleCreators,
@@ -55,6 +55,7 @@ export type MileageRequestEditorProps = WithMileageRequest &
   WithUser &
   WithLayout &
   WithAppBar &
+  RouteComponentProps &
   InjectedIntlProps &
   OwnHandlers &
   OwnState &
@@ -67,7 +68,6 @@ const handlerCreators: HandleCreators<MileageRequestEditorProps, OwnHandlers> = 
     const errors = {
       information: {}
     };
-
     const requiredFields = [
       'year',
       'month'
@@ -119,9 +119,9 @@ const handlerCreators: HandleCreators<MileageRequestEditorProps, OwnHandlers> = 
   handleSubmitSuccess: (props: MileageRequestEditorProps) => (
     response: IMileageRequest
   ) => {
-    const { formMode, intl/* , history */ } = props;
+    const { formMode, intl, history } = props;
     const { alertAdd } = props.layoutDispatch;
-
+    
     let message: string = '';
 
     if (formMode === FormMode.New) {
@@ -135,7 +135,7 @@ const handlerCreators: HandleCreators<MileageRequestEditorProps, OwnHandlers> = 
       time: new Date()
     });
 
-    // history.push('/mileage/request');
+    history.push('/mileage/request');
   },
   handleSubmitFail: (props: MileageRequestEditorProps) => (
     errors: FormErrors | undefined,
@@ -182,9 +182,8 @@ const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
 const lifecycles: ReactLifeCycleFunctions<MileageRequestEditorProps, {}> = {
   componentDidMount() {
     const { layoutDispatch, intl, stateUpdate } = this.props;
-    // const { loadDetailRequest } = this.props.mileageRequestDispatch;
     const { user } = this.props.userState;
-    
+
     const view = {
       title: 'mileage.request.form.newTitle',
       subTitle: 'mileage.request.form.newSubTitle',

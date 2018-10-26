@@ -6,12 +6,14 @@ import {
 import { 
   ITimesheetGetAllRequest,
   ITimesheetGetByIdRequest,
+  ITimesheetMileagesGetAllRequest,
   ITimesheetPostRequest,
   ITimesheetPutRequest
 } from '@timesheet/classes/queries/entry';
 import {
   ITimesheet,
-  ITimesheetDetail
+  ITimesheetDetail,
+  ITimesheetMileages
 } from '@timesheet/classes/response';
 
 export interface ITimesheetState {
@@ -24,4 +26,8 @@ export interface ITimesheetState {
   // approval
   timesheetApprovalGetAll: IQueryCollectionState<ITimesheetApprovalGetAllRequest, ITimesheet>;
   timesheetApprovalGetById: IQuerySingleState<ITimesheetApprovalGetByIdRequest, ITimesheetDetail>;
+
+  // mileages
+  timesheetMileagesGetAll: IQueryCollectionState<ITimesheetMileagesGetAllRequest, ITimesheetMileages>;
+  
 }
