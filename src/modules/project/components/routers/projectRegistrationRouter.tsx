@@ -4,9 +4,9 @@ import { RegistrationList } from '@project/components/registration/list/Registra
 import * as React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router';
 
-import { OwnerEditor } from './owner/editor/OwnerEditor';
-import { SiteEditor } from './sites/SiteEditor';
-import { StatusEditor } from './status/StatusEditor';
+import { OwnerEditor } from '../owner/editor/OwnerEditor';
+import { SiteEditor } from '../sites/SiteEditor';
+import { StatusEditor } from '../status/StatusEditor';
 
 type AllProps 
   = RouteComponentProps;
@@ -18,7 +18,7 @@ const ownerEditorComponent = () => <OwnerEditor/>;
 const statusEditorComponent = () => <StatusEditor/>;
 const siteEditorComponent = () => <SiteEditor/>;
 
-export const projectRouter: React.SFC<AllProps> = props => (
+export const projectRegistrationRouter: React.SFC<AllProps> = props => (
   <Switch>
     <Route path={`${props.match.path}/list/`} component={registrationListComponent} />
     <Route path={`${props.match.path}/details/:projectUid`} component={registrationDetailComponent} />

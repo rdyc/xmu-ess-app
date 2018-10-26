@@ -63,13 +63,7 @@ export const RegistrationFormView: React.SFC<RegistrationFormProps> = props => {
 
   const render = (
     <form onSubmit={props.handleSubmit}>
-      <Grid
-        container 
-        spacing={16} 
-        direction="row"
-        justify="flex-start"
-        alignItems="flex-start"
-      >
+      <Grid container spacing={16}>
         <Grid item xs={12} md={4} >
           <FormSection name="information">
             <Fields 
@@ -79,33 +73,37 @@ export const RegistrationFormView: React.SFC<RegistrationFormProps> = props => {
           </FormSection>
         </Grid>
         
-        {(formIsProject || formIsPresales) &&
         <Grid item xs={12} md={4}>
-          <FormSection name="document">
-            {formIsProject &&
-              <FieldArray
-                name="project"
-                component={componentProjectDocument}
-              />
+          <Grid container spacing={16}>
+            {(formIsProject || formIsPresales) &&
+            <Grid item>
+              <FormSection name="document">
+                {formIsProject &&
+                  <FieldArray
+                    name="project"
+                    component={componentProjectDocument}
+                  />
+                }
+                
+                {formIsPresales &&
+                  <FieldArray 
+                    name="preSales" 
+                    component={componentPresalesDocument}
+                  />
+                }
+              </FormSection>
+            </Grid>
             }
-            
-            {formIsPresales &&
-              <FieldArray 
-                name="preSales" 
-                component={componentPresalesDocument}
-              />
-            }
-          </FormSection>
-        </Grid>
-        }
 
-        <Grid item xs={12} md={4}>
-          <FormSection name="sales">
-            <FieldArray 
-              name="employees" 
-              component={componentSales}
-            />
-          </FormSection>
+            <Grid item>
+              <FormSection name="sales">
+                <FieldArray 
+                  name="employees" 
+                  component={componentSales}
+                />
+              </FormSection>
+            </Grid>
+          </Grid>
         </Grid>
         
         <Grid item xs={12} md={4}>

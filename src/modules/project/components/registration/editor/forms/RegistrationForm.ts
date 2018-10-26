@@ -84,5 +84,6 @@ export const RegistrationForm = reduxForm<ProjectRegistrationFormData, OwnProps>
   form: formName,
   touchOnChange: true,
   touchOnBlur: true,
-  enableReinitialize: true
+  enableReinitialize: true,
+  destroyOnUnmount: true
 })(connectedView);
