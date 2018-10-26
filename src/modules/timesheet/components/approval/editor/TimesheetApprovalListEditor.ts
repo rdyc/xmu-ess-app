@@ -144,7 +144,7 @@ const lifecycles: ReactLifeCycleFunctions<ApprovalListEditorProps, OwnState> = {
       history, intl
     } = this.props;
 
-    const { isLoading, response } = this.props.timesheetApprovalState.all;
+    // const { isLoading, response } = this.props.timesheetApprovalState.all;
 
     layoutDispatch.changeView({
       uid: AppMenu.TimesheetApproval,
@@ -173,9 +173,9 @@ const lifecycles: ReactLifeCycleFunctions<ApprovalListEditorProps, OwnState> = {
     navBottomDispatch.assignFields(items);
 
     // only load data when response are empty
-    if (!isLoading && !response) {
-      loadData(this.props);
-    }
+    loadData(this.props);
+    // if (!isLoading && !response) {
+    // }
   },
   componentDidUpdate(props: ApprovalListEditorProps, state: OwnState) {
     // only load when these props are different
@@ -190,7 +190,7 @@ const lifecycles: ReactLifeCycleFunctions<ApprovalListEditorProps, OwnState> = {
   },
   componentWillUnmount() {
     const { layoutDispatch, navBottomDispatch } = this.props;
-    const { view } = this.props.layoutState;
+    // const { view } = this.props.layoutState;
     const { loadAllDispose } = this.props.timesheetApprovalDispatch;
 
     layoutDispatch.changeView(null);
@@ -203,9 +203,9 @@ const lifecycles: ReactLifeCycleFunctions<ApprovalListEditorProps, OwnState> = {
     navBottomDispatch.dispose();
 
     // dispose 'get all' from 'redux store' when the page is 'out of project registration' context 
-    if (view && view.parentUid !== AppMenu.Timesheet) {
-      loadAllDispose();
-    }
+    loadAllDispose();
+    // if (view && view.uid !== AppMenu.TimesheetApproval) {
+    // }
   }
 };
 
