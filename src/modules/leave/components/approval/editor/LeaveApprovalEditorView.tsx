@@ -1,36 +1,40 @@
-import { LeaveApprovalProps } from '@leave/components/approval/editor/LeaveApprovalEditor';
-import { Button, Card, CardActions, CardContent, CardHeader, TextField } from '@material-ui/core';
+import { FormMode } from '@generic/types';
+import { ILeaveRequestDetail } from '@leave/classes/response';
 import * as React from 'react';
-import { FormattedMessage } from 'react-intl';
+import { LeaveApprovalForm, LeaveApprovalFormData } from './forms/LeaveApprovalForm';
+import { LeaveApprovalEditorProps } from './LeaveApprovalEditor';
 
-export const LeaveApprovalEditorView: React.SFC<LeaveApprovalProps> = props => (
-  <Card square>
-    <CardHeader 
-      title={<FormattedMessage id="global.form.approval.title"/>}
-      subheader={<FormattedMessage id="global.form.approval.subHeader" />}
+export const LeaveApprovalEditorView: React.SFC<LeaveApprovalEditorProps> = props => {
+  const { formMode, handleValidate, handleSubmit, handleSubmitSuccess, handleSubmitFail, intl } = props;
+  const { isLoading, response } = props.leaveApprovalState.detail;
+
+  const renderForm = (formData: LeaveApprovalFormData, data: ILeaveRequestDetail) => (
+    <LeaveApprovalForm
+      formMode={formMode}
+      detailData={data}
+      intl={intl}
+      initialValues={formData}
+      validate={handleValidate}
+      onSubmit={handleSubmit} 
+      onSubmitSuccess={handleSubmitSuccess}
+      onSubmitFail={handleSubmitFail}
     />
-    <CardContent>
-      <TextField
-        fullWidth
-        id="remark"
-        key="remark"
-        name="remark"
-        label="Remark"
-      />
-    </CardContent>
-    <CardActions>
-      <Button 
-        type="submit"
-        color="default"
-      >
-        <FormattedMessage id="global.action.reject" />
-      </Button>
-      <Button 
-        type="submit"
-        color="secondary"
-      >
-        <FormattedMessage id="global.action.approve" />
-      </Button>
-    </CardActions>
-  </Card>
-);
+  );
+
+  // init form values
+  const initialValues: LeaveApprovalFormData = {
+    information: {
+      isApproved: undefined,
+      remark: undefined
+    }
+  };
+
+  if (formMode === FormMode.New) {
+    if (!isLoading && response && response.data) {
+      
+      return renderForm(initialValues, response.data);
+    }
+  }
+  
+  return null;
+};

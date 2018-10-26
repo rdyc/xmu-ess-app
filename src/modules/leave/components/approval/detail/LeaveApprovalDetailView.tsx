@@ -13,7 +13,7 @@ import {
 import { WorkflowStep } from '@organization/components';
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
-import { LeaveApprovalEditorView } from '../editor/LeaveApprovalEditorView';
+// import { LeaveApprovalEditorView } from '../editor/LeaveApprovalEditorView';
 
 export const LeaveApprovalDetailView: React.SFC<ApprovalDetailProps> = props => {
   const { 
@@ -86,7 +86,7 @@ export const LeaveApprovalDetailView: React.SFC<ApprovalDetailProps> = props => 
             }
           </Grid>
 
-          <Grid item xs={12} md={4}>
+          {/* <Grid item xs={12} md={4}>
           {
             response &&
             response.data &&
@@ -96,7 +96,7 @@ export const LeaveApprovalDetailView: React.SFC<ApprovalDetailProps> = props => 
               
             />
           }
-          </Grid>
+          </Grid> */}
         </Grid>
       }
       {renderDialog}

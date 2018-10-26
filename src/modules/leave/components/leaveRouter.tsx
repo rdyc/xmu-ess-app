@@ -1,10 +1,11 @@
-import { LeaveApprovalDetail } from '@leave/components/approval/detail/LeaveApprovalDetail';
+// import { LeaveApprovalDetail } from '@leave/components/approval/detail/LeaveApprovalDetail';
 import { LeaveApprovalList } from '@leave/components/approval/list/LeaveApprovalList';
 import { LeaveRequestDetail } from '@leave/components/request/detail/LeaveRequestDetail';
 import RequestEditor from '@leave/components/request/editor/LeaveRequestEditor';
 import { LeaveRequestList } from '@leave/components/request/list/LeaveRequestList';
 import * as React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router';
+import { LeaveApprovalEditor } from './approval/editor/LeaveApprovalEditor';
 
 type AllProps 
   = RouteComponentProps;
@@ -25,8 +26,8 @@ const approvalListComponent = () => (
   <LeaveApprovalList orderBy="uid" direction="descending"/>
 );
 
-const approvalDetailComponent = () => (
-  <LeaveApprovalDetail/>
+const approvalEditorComponent = () => (
+  <LeaveApprovalEditor/>
 );
 
 export const leaveRouter: React.SFC<AllProps> = props => (
@@ -40,6 +41,6 @@ export const leaveRouter: React.SFC<AllProps> = props => (
 export const approvalRouter: React.SFC<AllProps> = props => (
   <Switch>
     <Route exact path={`${props.match.path}`} component={approvalListComponent} />
-    <Route path={`${props.match.path}/:leaveUid`} component={approvalDetailComponent} />
+    <Route path={`${props.match.path}/:leaveUid`} component={approvalEditorComponent} />
   </Switch>
 );
