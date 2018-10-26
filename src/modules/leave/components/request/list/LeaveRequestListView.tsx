@@ -1,5 +1,5 @@
 import { ILeaveRequest } from '@leave/classes/response';
-import { ApprovalListProps } from '@leave/components/approval/list/ApprovalList';
+import { RequestListProps } from '@leave/components/request/list/LeaveRequestList';
 import { Divider, Grid, List, ListItem, ListSubheader, Paper, Typography } from '@material-ui/core';
 import { parseChanges } from '@utils/parseChanges';
 import * as moment from 'moment';
@@ -7,11 +7,11 @@ import * as React from 'react';
 import { FormattedDate, FormattedNumber, FormattedPlural } from 'react-intl';
 import { isArray } from 'util';
 
-export const ApprovalListView: React.SFC<ApprovalListProps> = props => {
+export const LeaveRequestListView: React.SFC<RequestListProps> = props => {
   const { handleGoToDetail } = props;
-  const { isLoading, response } = props.leaveApprovalState.all;
+  const { isLoading, response } = props.leaveRequestState.all;
 
-  const renderLeaveApprovalList = (leaves: ILeaveRequest[]) => {
+  const renderLeaveRequestList = (leaves: ILeaveRequest[]) => {
     const len = leaves.length - 1;
 
     return (
@@ -100,7 +100,7 @@ export const ApprovalListView: React.SFC<ApprovalListProps> = props => {
           {
             response &&
             response.metadata && 
-            response.metadata.paginate && 
+            response.metadata.paginate &&
             <Grid container spacing={24}>
               <Grid item xs={6} sm={6}>
                 <Typography variant="caption" color="primary">
@@ -121,7 +121,7 @@ export const ApprovalListView: React.SFC<ApprovalListProps> = props => {
       {
         response &&
         isArray(response.data) && 
-        renderLeaveApprovalList(response.data)
+        renderLeaveRequestList(response.data)
       }
     </List>
   );

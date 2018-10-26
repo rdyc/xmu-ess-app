@@ -1,5 +1,5 @@
-import { ApprovalDetailProps } from '@leave/components/approval/detail/ApprovalDetail';
-import { LeaveInformation } from '@leave/components/request/detail/shared/LeaveInformation';
+// import { AccountLeaveInformation } from '@account/components/views/AccountLeaveInformationView';
+import { RequestDetailProps } from '@leave/components/request/detail/LeaveRequestDetail';
 import {
   Button,
   Dialog,
@@ -13,26 +13,27 @@ import {
 import { WorkflowStep } from '@organization/components';
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
+import { LeaveInformation } from './shared/LeaveInformation';
 
-export const ApprovalDetailView: React.SFC<ApprovalDetailProps> = props => {
+export const LeaveRequestDetailView: React.SFC<RequestDetailProps> = props => {
   const { 
     dialogFullScreen, dialogOpen, dialogTitle, dialogDescription, dialogCancelText, dialogConfirmedText,
     handleDialogClose, handleDialogConfirmed, intl
   } = props;
-  const { isLoading, response } = props.leaveApprovalState.detail;
+  const { isLoading, response } = props.leaveRequestState.detail;
 
   const renderDialog = (
     <Dialog
       fullScreen={dialogFullScreen}
       open={dialogOpen}
-      aria-labelledby="leave-approval-detail-dialog-title"
-      aria-describedby="leave-approval-detail-dialog-description"
+      aria-labelledby="leaveRequest-detail-dialog-title"
+      aria-describedby="leaveRequest-detail-dialog-description"
     >
-      <DialogTitle id="leave-approval-detail-dialog-title">
+      <DialogTitle id="leaveRequest-detail-dialog-title">
         {dialogTitle || 'title'}
       </DialogTitle>
       <DialogContent>
-        <DialogContentText id="leave-approval-detail-dialog-description">
+        <DialogContentText id="leaveRequest-detail-dialog-description">
           {dialogDescription || 'description'}
         </DialogContentText>
       </DialogContent>
@@ -75,16 +76,14 @@ export const ApprovalDetailView: React.SFC<ApprovalDetailProps> = props => {
             }
           </Grid>
 
-          {/* <Grid item xs={12} md={4}>
+          {/* {<Grid item xs={12} md={4}>
             {
               response &&
               response.data &&
               <AccountLeaveInformation 
-                data={response.data.employee}
-                intl={intl}
               />
             }
-          </Grid> */}
+          </Grid> } */}
 
           <Grid item xs={12} md={4}>
             {

@@ -26,7 +26,6 @@ export const ApprovalView: React.SFC<ApprovalProps> = props => {
       />
     );
   };
-
   const render = (
     <Card square>
       <CardHeader 

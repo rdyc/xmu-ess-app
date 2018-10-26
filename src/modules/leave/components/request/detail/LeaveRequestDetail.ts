@@ -5,7 +5,7 @@ import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IAppBarMenu } from '@layout/interfaces';
 import { LeaveRequestUserAction } from '@leave/classes/types';
-import { RequestDetailView } from '@leave/components/request/detail/RequestDetailView';
+import { LeaveRequestDetailView } from '@leave/components/request/detail/LeaveRequestDetailView';
 import { WithLeaveRequest, withLeaveRequest } from '@leave/hoc/withLeaveRequest';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
@@ -226,7 +226,7 @@ const lifecycles: ReactLifeCycleFunctions<RequestDetailProps, OwnState> = {
   }
 };
 
-export const RequestDetail = compose<RequestDetailProps, {}>(
+export const LeaveRequestDetail = compose<RequestDetailProps, {}>(
   withUser,
   withLayout,
   withAppBar,
@@ -236,4 +236,4 @@ export const RequestDetail = compose<RequestDetailProps, {}>(
   withStateHandlers<OwnState, OwnStateUpdaters, {}>(createProps, stateUpdaters), 
   withHandlers<RequestDetailProps, Handler>(handlerCreators),
   lifecycle<RequestDetailProps, OwnState>(lifecycles),
-)(RequestDetailView);
+)(LeaveRequestDetailView);

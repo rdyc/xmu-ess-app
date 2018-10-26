@@ -1,11 +1,11 @@
 import { Submission } from '@layout/components/submission/Submission';
-import { RequestDetailForm } from '@leave/components/request/editor/forms/RequestDetailForm';
-import { RequestFormProps } from '@leave/components/request/editor/forms/RequestForm';
+import { LeaveRequestDetailForm } from '@leave/components/request/editor/forms/LeaveRequestDetailForm';
+import { RequestFormProps } from '@leave/components/request/editor/forms/LeaveRequestForm';
 import { Grid } from '@material-ui/core';
 import * as React from 'react';
 import { BaseFieldsProps, Fields, FormSection } from 'redux-form';
 
-export const RequestFormView: React.SFC<RequestFormProps> = props => {
+export const LeaveRequestFormView: React.SFC<RequestFormProps> = props => {
   
   const { 
     formMode, formIsRegularType, formRegularType
@@ -14,7 +14,7 @@ export const RequestFormView: React.SFC<RequestFormProps> = props => {
   const fields = Object.getOwnPropertyNames(props.initialValues.information);
 
   const componentInformation = (context: BaseFieldsProps) => (
-    <RequestDetailForm 
+    <LeaveRequestDetailForm 
       formMode={formMode}
       context={context}
       isRegularType={formIsRegularType}

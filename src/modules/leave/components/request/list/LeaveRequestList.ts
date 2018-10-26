@@ -5,7 +5,7 @@ import { WithNavBottom, withNavBottom } from '@layout/hoc/withNavBottom';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IListBarField } from '@layout/interfaces';
 import { LeaveRequestField } from '@leave/classes/types';
-import { RequestListView } from '@leave/components/request/list/RequestListView';
+import { LeaveRequestListView } from '@leave/components/request/list/LeaveRequestListView';
 import { WithLeaveRequest, withLeaveRequest } from '@leave/hoc/withLeaveRequest';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
@@ -236,7 +236,7 @@ const loadData = (props: RequestListProps): void => {
   }
 };
 
-export const RequestList = compose<RequestListProps, OwnOptions>(
+export const LeaveRequestList = compose<RequestListProps, OwnOptions>(
   withLeaveRequest,
   withUser,
   withLayout,
@@ -246,4 +246,4 @@ export const RequestList = compose<RequestListProps, OwnOptions>(
   withStateHandlers<OwnState, OwnStateUpdaters, OwnOptions>(createProps, stateUpdaters), 
   withHandlers<RequestListProps, OwnHandlers>(handlerCreators),
   lifecycle<RequestListProps, OwnState>(lifecycles),
-)(RequestListView);
+)(LeaveRequestListView);

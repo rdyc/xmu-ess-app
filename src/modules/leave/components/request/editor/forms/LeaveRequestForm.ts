@@ -1,6 +1,6 @@
 import { LeaveType } from '@common/classes/types';
 import { FormMode } from '@generic/types';
-import { RequestFormView } from '@leave/components/request/editor/forms/RequestFormView';
+import { LeaveRequestFormView } from '@leave/components/request/editor/forms/LeaveRequestFormView';
 import { connect } from 'react-redux';
 import { formValueSelector, InjectedFormProps, reduxForm } from 'redux-form';
 
@@ -44,7 +44,7 @@ const mapStateToProps = (state: any): FormValueProps => {
   };
 };
 
-const connectedView = connect(mapStateToProps)(RequestFormView);
+const connectedView = connect(mapStateToProps)(LeaveRequestFormView);
 
 export const RequestForm = reduxForm<LeaveRequestFormData, OwnProps>({
   form: formName,

@@ -3,7 +3,7 @@ import { FormMode } from '@generic/types';
 // import { FieldInputLeave } from '@layout/components/formFields/FieldInputLeave';
 import { InputDate } from '@layout/components/input/date';
 import { InputText } from '@layout/components/input/text';
-import { RequestDetailFormView } from '@leave/components/request/editor/forms/RequestDetailFormView';
+import { LeaveRequestDetailFormView } from '@leave/components/request/editor/forms/LeaveRequestDetailFormView';
 import { InputLeave } from '@lookup/components/leave/input';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose, HandleCreators, withHandlers } from 'recompose';
@@ -91,7 +91,7 @@ const handlerCreators: HandleCreators<RequestDetailFormProps, OwnHandlers> = {
       case 'contactNumber': 
         fieldProps = {
           required: true,
-          placeholder: intl.formatMessage({id: `laeave.field.${name}.placeholder`}),
+          placeholder: intl.formatMessage({id: `leave.field.${name}.placeholder`}),
           component: InputText
         };
         break;
@@ -117,7 +117,7 @@ const handlerCreators: HandleCreators<RequestDetailFormProps, OwnHandlers> = {
   }
 };
 
-export const RequestDetailForm = compose<RequestDetailFormProps, OwnProps>(
+export const LeaveRequestDetailForm = compose<RequestDetailFormProps, OwnProps>(
   injectIntl,
   withHandlers<RequestDetailFormProps, OwnHandlers>(handlerCreators),
-)(RequestDetailFormView);
+)(LeaveRequestDetailFormView);

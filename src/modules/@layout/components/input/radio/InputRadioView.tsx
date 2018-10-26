@@ -34,6 +34,5 @@ export const InputRadioView: React.SFC<InputRadioProps> = props => {
       {names.map(name => renderRadio(name))}
     </RadioGroup>
   );
-
   return render;
 };
