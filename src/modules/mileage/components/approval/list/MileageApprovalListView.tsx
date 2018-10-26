@@ -99,24 +99,26 @@ export const MileageApprovalListView: React.SFC<
     <React.Fragment>
       {isLoading &&
         response && <Typography variant="body2">loading</Typography>}
-      {(!response || (response.data && response.data.length < 1)) && (
+
+      {response && response.data && response.data.length >= 1 && (
+        <Paper square elevation={1}>
+          <RenderList />
+        </Paper>
+      )}
+      
+      {(response && response.data && response.data.length < 1) && (
         <Paper>
           <List>
             <ListItem>
               <Grid container spacing={24}>
                 <Grid item xs={12} sm={12}>
                   <Typography variant="body2" color="error">
-                    <FormattedMessage id="mileage.request.noData" />
+                    <FormattedMessage id="mileage.approval.noData" />
                   </Typography>
                 </Grid>
               </Grid>
             </ListItem>
           </List>
-        </Paper>
-      )}
-      {response && response.data && response.data.length >= 1 && (
-        <Paper square elevation={1}>
-          <RenderList />
         </Paper>
       )}
     </React.Fragment>

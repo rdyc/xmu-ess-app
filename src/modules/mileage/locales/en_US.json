@@ -34,6 +34,7 @@
   "mileage.request.item.Title": "Mileage Item",
   "mileage.request.item.SubTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
   "mileage.request.item.noData": "N/A",
+  "mileage.approval.item.noData": "N/A",
 
   "mileage.message.registration.create.success": "A new PID {uid} has been created",
   "mileage.message.registration.create.failure": "Unable to process your submission",

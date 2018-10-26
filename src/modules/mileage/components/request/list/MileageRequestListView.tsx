@@ -108,7 +108,14 @@ export const MileageRequestListView: React.SFC<
     <React.Fragment>
       {isLoading &&
         response && <Typography variant="body2">loading</Typography>}
-      {(!response || (response.data && response.data.length < 1)) && (
+
+      {response && response.data && response.data.length >= 1 && (
+          <Paper square elevation={1}>
+            <RenderList />
+          </Paper>
+        )}
+        
+      {(response && response.data && response.data.length < 1) && (
         <Paper>
           <List>
             <ListItem>
@@ -121,11 +128,6 @@ export const MileageRequestListView: React.SFC<
               </Grid>
             </ListItem>
           </List>
-        </Paper>
-      )}
-      {response && response.data && response.data.length >= 1 && (
-        <Paper square elevation={1}>
-          <RenderList />
         </Paper>
       )}
     </React.Fragment>

@@ -37,6 +37,7 @@ export const MileageRequestDetailView: React.SFC<
     dialogConfirmedText,
     handleDialogClose,
     handleDialogConfirmed,
+    intl
   } = props;
 
   const { isLoading, response } = props.mileageRequestState.detail;
@@ -114,7 +115,7 @@ export const MileageRequestDetailView: React.SFC<
           fullWidth
           margin="normal"
           label={<FormattedMessage id="mileage.request.field.total" />}
-          value={mileage.amount}
+          value={intl.formatNumber(mileage.amount)}
           InputProps={{
             readOnly: true
           }}
@@ -171,8 +172,8 @@ export const MileageRequestDetailView: React.SFC<
                       >
                         {item.status && item.status.value}
                       </Typography>
-                      <Typography noWrap variant="caption" align="right">
-                        {item.amount}
+                      <Typography noWrap variant="body1" align="right">
+                        {intl.formatNumber(Number(item.amount))}
                       </Typography>
                     </Grid>
                   </Grid>
