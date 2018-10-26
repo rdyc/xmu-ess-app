@@ -29,5 +29,4 @@ export interface ITimesheetState {
 
   // mileages
   timesheetMileagesGetAll: IQueryCollectionState<ITimesheetMileagesGetAllRequest, ITimesheetMileages>;
-  
 }

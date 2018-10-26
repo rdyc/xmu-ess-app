@@ -68,16 +68,16 @@ export type RequestApprovalListProps
   & OwnStateUpdaters;
 
 const createProps: mapper<RequestApprovalListProps, OwnState> = (props: RequestApprovalListProps): OwnState => {
-  const { orderBy, direction, page, size } = props;
-  const { request } = props.travelApprovalState.all;
+    const { orderBy, direction, page, size } = props;
+    const { request } = props.travelApprovalState.all;
 
-  return { 
-    orderBy: request && request.filter && request.filter['query.orderBy'] || orderBy,
-    direction: request && request.filter && request.filter['query.direction'] || direction,
-    page: request && request.filter && request.filter['query.page'] || page || 1, 
-    size: request && request.filter && request.filter['query.size'] || size || 10,
+    return { 
+      orderBy: request && request.filter && request.filter['query.orderBy'] || orderBy,
+      direction: request && request.filter && request.filter['query.direction'] || direction,
+      page: request && request.filter && request.filter['query.page'] || page || 1, 
+      size: request && request.filter && request.filter['query.size'] || size || 10,
+    };
   };
-};
 
 const stateUpdaters: StateUpdaters<OwnOptions, OwnState, OwnStateUpdaters> = {
   stateNext: (prevState: OwnState) => () => ({
@@ -222,8 +222,8 @@ const loadData = (props: RequestApprovalListProps): void => {
         'query.orderBy': direction,
         'query.page': page,
         'query.size': size,
-        companyUid: undefined,
-        positionUid: undefined,
+        companyUid: user.company.uid,
+        positionUid: user.position.uid,
         status: undefined,
         isNotify: undefined,
         'query.find': undefined,

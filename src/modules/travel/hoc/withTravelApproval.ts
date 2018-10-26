@@ -36,7 +36,7 @@ interface PropsFromDispatch {
 export interface WithTravelApproval extends PropsFromState, PropsFromDispatch {}
 
 const mapStateToProps = ({ travelApprovalGetAll, travelApprovalGetById }: IAppState) => ({
-  travelRequestState: {
+  travelApprovalState: {
     all: travelApprovalGetAll,
     detail: travelApprovalGetById
   }
