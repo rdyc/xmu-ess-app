@@ -40,9 +40,16 @@ interface OwnRouteParams {
 
 interface OwnState {
   formMode: FormMode;
+  isApprove?: boolean | undefined;
   companyUid?: string | undefined;
   positionUid?: string | undefined;
   leaveUid?: string | undefined;
+  dialogFullScreen: boolean;
+  dialogOpen: boolean;
+  dialogTitle?: string | undefined;
+  dialogDescription?: string | undefined;
+  dialogCancelText: string;
+  dialogConfirmedText: string;
 }
 
 interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
@@ -113,13 +120,15 @@ const handlerCreators: HandleCreators<LeaveApprovalEditorProps, OwnHandlers> = {
     });
   },
   handleSubmitSuccess: (props: LeaveApprovalEditorProps) => (response: boolean) => {
-    const { formMode, intl, history, leaveUid } = props;
+    const { isApprove, intl, history, leaveUid } = props;
     const { alertAdd } = props.layoutDispatch;
     
     let message: string = '';
 
-    if (formMode === FormMode.Edit) {
-      message = intl.formatMessage(leaveApprovalMessage.createSuccess);
+    if (isApprove) {
+      message = intl.formatMessage(leaveApprovalMessage.approveSuccess, {uid: leaveUid});
+    } else {
+      message = intl.formatMessage(leaveApprovalMessage.rejectSuccess, {uid: leaveUid});
     }
 
     alertAdd({
@@ -156,7 +165,11 @@ const createProps: mapper<LeaveApprovalEditorProps, OwnState> = (props: LeaveApp
   
   return { 
     formMode: FormMode.New,
-    leaveUid: match.params.leaveUid
+    leaveUid: match.params.leaveUid,
+    dialogFullScreen: false,
+    dialogOpen: false,
+    dialogCancelText: 'global.action.cancel',
+    dialogConfirmedText: 'global.action.ok',
   };
 };
 

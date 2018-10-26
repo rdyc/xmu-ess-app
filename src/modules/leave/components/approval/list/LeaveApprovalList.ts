@@ -149,8 +149,8 @@ const lifecycles: ReactLifeCycleFunctions<ApprovalListProps, OwnState> = {
     layoutDispatch.changeView({
       uid: AppMenu.LeaveApproval,
       parentUid: AppMenu.Leave,
-      title: intl.formatMessage({id: 'leave.approval.title'}),
-      subTitle : intl.formatMessage({id: 'leave.approval.subTitle'})
+      title: intl.formatMessage({id: 'leave.form.approval.newTitle'}),
+      subTitle : intl.formatMessage({id: 'leave.form.approval.newSubTitle'})
     });
 
     layoutDispatch.modeListOn();
