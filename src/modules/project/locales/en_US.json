@@ -7,6 +7,8 @@
   "project.ownerSubTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
   "project.statusTitle": "New Status",
   "project.statusSubTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "project.approvalTitle": "Project Approval",
+  "project.approvalSubHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
   "project.page.siteTitle": "Manage Sites",
   "project.page.siteSubTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
   
@@ -46,6 +48,9 @@
   "project.dialog.changeOwnerDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
   "project.dialog.manageSiteTitle": "Project Site",
   "project.dialog.manageSiteDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+
+  "project.dialog.approvalTitle": "Project Approval Submission",
+  "project.dialog.approvalContent": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
   
   "project.field.information.uid": "PID",
   "project.field.information.uid.placeholder": "PID",
@@ -97,6 +102,10 @@
   "project.site.field.information.value": "Value",
   "project.site.field.information.value.required": "Site value is required",
   "project.site.field.information.value.placeholder": "Type a site value",
+
+  "project.field.document.empty": "Empty document data",
+  "project.field.sales.empty": "Empty sales data",
+  "project.field.site.empty": "Empty site data",
   
   "project.action.modify": "Modify",
   "project.action.close": "Close Project",

@@ -30,6 +30,9 @@ import lookupPositionSagas from '@lookup/store/sagas/positionSagas';
 import lookupSystemLimitSagas from '@lookup/store/sagas/systemLimitSagas';
 import mileageApprovalSagas from '@mileage/store/sagas/approval/mileageApprovalSagas';
 import mileageRequestSagas from '@mileage/store/sagas/request/mileageRequestSagas';
+import projectAcceptanceSagas from '@project/store/sagas/projectAcceptanceSagas';
+import projectApprovalSagas from '@project/store/sagas/projectApprovalSagas';
+import projectAssignmentSagas from '@project/store/sagas/projectAssignmentSagas';
 import projectOwnerSagas from '@project/store/sagas/projectOwnerSagas';
 import projectRegistrationSagas from '@project/store/sagas/projectRegistrationSagas';
 import projectSiteSagas from '@project/store/sagas/projectSiteSagas';
@@ -83,6 +86,9 @@ export function* rootSaga() {
     fork(projectOwnerSagas),
     fork(projectStatusSagas),
     fork(projectSiteSagas),
+    fork(projectApprovalSagas),
+    fork(projectAssignmentSagas),
+    fork(projectAcceptanceSagas),
     
     // timesheet
     fork(timesheetSagas),

@@ -8,8 +8,14 @@ import AccessWizardPage from '@layout/pages/AccessWizardPage';
 import CallbackPage from '@layout/pages/CallbackPage';
 import { approvalRouter, leaveRouter } from '@leave/components/leaveRouter';
 import { MileageApprovalRouter, MileageRequestRouter } from '@mileage/components/MileageRouter';
-import { projectRouter } from '@project/components/projectRouter';
-import { purchaseApprovalRouter, purchaseRouter, purchaseSettlementApprovalRouter, purchaseSettlementRouter } from '@purchase/components/PurchaseRouter';
+import { projectApprovalRouter } from '@project/components/routers/projectApprovalRouter';
+import { projectRegistrationRouter } from '@project/components/routers/projectRegistrationRouter';
+import {
+  purchaseApprovalRouter,
+  purchaseRouter,
+  purchaseSettlementApprovalRouter,
+  purchaseSettlementRouter,
+} from '@purchase/components/PurchaseRouter';
 import { timesheetApprovalRouter, timesheetRouter } from '@timesheet/components/timesheetRouter';
 import { travelApprovalRouter, travelRouter, travelSettlementRouter } from '@travel/components/travelRouter';
 import { ConnectedRouter } from 'connected-react-router';
@@ -20,6 +26,7 @@ import { connect, Provider } from 'react-redux';
 import { Route, Router, Switch } from 'react-router';
 import { Store } from 'redux';
 import { loadUser, OidcProvider, UserState } from 'redux-oidc';
+
 import { IAppState } from './generic/interfaces';
 import AppLocale from './language';
 import config, { getCurrentLanguage } from './language/config';
@@ -81,9 +88,10 @@ class App extends React.Component<AllProps> {
                       <Layout>
                         <Route path="/home" component={HomePage} />
                         <Route path="/account" component={accountRouter} />
+                        <Route path="/project" component={projectRegistrationRouter} />
+                        <Route path="/approval/project" component={projectApprovalRouter} />
                         <Route path="/leave" component={leaveRouter} />
                         <Route path="/approval/leave" component={approvalRouter} />
-                        <Route path="/project" component={projectRouter} />
                         <Route path="/purchase/request" component={purchaseRouter} />
                         <Route path="/approval/purchase/request" component={purchaseApprovalRouter} />
                         <Route path="/purchase/settlement" component={purchaseSettlementRouter} />

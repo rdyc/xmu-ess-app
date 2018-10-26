@@ -43,5 +43,6 @@ export const StatusForm = reduxForm<ProjectStatusFormData, OwnProps>({
   form: formName,
   touchOnChange: true,
   touchOnBlur: true,
-  enableReinitialize: true
+  enableReinitialize: true,
+  destroyOnUnmount: true
 })(StatusFormView);
