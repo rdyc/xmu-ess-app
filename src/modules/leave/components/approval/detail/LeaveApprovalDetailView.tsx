@@ -1,52 +1,20 @@
-import { ApprovalDetailProps } from '@leave/components/approval/detail/LeaveApprovalDetail';
+
 import { LeaveInformation } from '@leave/components/request/detail/shared/LeaveInformation';
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  Grid,
-  Typography,
-} from '@material-ui/core';
-import { WorkflowStep } from '@organization/components';
+import { Grid, Typography } from '@material-ui/core';
+import { WorkflowApprovalForm } from '@organization/components/workflow/approval/WorkflowApprovalForm';
+import { WorkflowHistory } from '@organization/components/workflow/history/WorkflowHistory';
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
-// import { LeaveApprovalEditorView } from '../editor/LeaveApprovalEditorView';
 
-export const LeaveApprovalDetailView: React.SFC<ApprovalDetailProps> = props => {
+import { LeaveApprovalDetailProps } from './LeaveApprovalDetail';
+
+export const LeaveApprovalDetailView: React.SFC<LeaveApprovalDetailProps> = props => {
   const { 
-    dialogFullScreen, dialogOpen, dialogTitle, dialogDescription, dialogCancelText, dialogConfirmedText,
-    handleDialogClose, handleDialogConfirmed, intl
+    approvalTitle, approvalSubHeader, approvalChoices, approvalTrueValue, 
+    approvalDialogTitle, approvalDialogContentText, approvalDialogCancelText, approvalDialogConfirmedText 
   } = props;
+  const { intl, handleValidate, handleSubmit, handleSubmitSuccess, handleSubmitFail } = props;
   const { isLoading, response } = props.leaveApprovalState.detail;
-
-  const renderDialog = (
-    <Dialog
-      fullScreen={dialogFullScreen}
-      open={dialogOpen}
-      aria-labelledby="leave-approval-detail-dialog-title"
-      aria-describedby="leave-approval-detail-dialog-description"
-    >
-      <DialogTitle id="leave-approval-detail-dialog-title">
-        {dialogTitle || 'title'}
-      </DialogTitle>
-      <DialogContent>
-        <DialogContentText id="leave-approval-detail-dialog-description">
-          {dialogDescription || 'description'}
-        </DialogContentText>
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={handleDialogClose} color="primary">
-          {dialogCancelText || 'cancel'}
-        </Button>
-        <Button onClick={handleDialogConfirmed} color="primary" autoFocus>
-          {dialogConfirmedText || 'confirm'}
-        </Button>
-      </DialogActions>
-    </Dialog>
-  );
 
   const render = (
     <React.Fragment>
@@ -57,49 +25,44 @@ export const LeaveApprovalDetailView: React.SFC<ApprovalDetailProps> = props => 
         </Typography>
       }
       {
+        !isLoading &&
         response && 
-        <Grid 
-          container 
-          spacing={16} 
-          direction="row"
-          justify="flex-start"
-          alignItems="flex-start"
-        >
+        response.data &&
+        <Grid container spacing={16}>
           <Grid item xs={12} md={4}>
-            {
-              response &&
-              response.data &&
-              <LeaveInformation
-                data={response.data}
-                intl={intl}
-              />
-            }
-          </Grid>
+            <LeaveInformation data={response.data}/>
+          </Grid>        
 
           <Grid item xs={12} md={4}>
-            {
-              response &&
-              response.data &&
-              response.data.workflow &&
-              response.data.workflow.steps &&
-              <WorkflowStep steps={response.data.workflow.steps} />
-            }
-          </Grid>
+            <Grid container spacing={16}>
+              <Grid item>
+                <WorkflowHistory data={response.data.workflow} />
+              </Grid>
 
-          {/* <Grid item xs={12} md={4}>
-          {
-            response &&
-            response.data &&
-            response.data.workflow &&
-            response.data.workflow.isApproval &&
-            <LeaveApprovalEditorView
-              
-            />
-          }
-          </Grid> */}
+              {
+                response.data.workflow &&
+                response.data.workflow.isApproval &&
+                <Grid item>
+                  <WorkflowApprovalForm
+                    approvalTitle={approvalTitle}
+                    approvalSubHeader={approvalSubHeader}
+                    approvalChoices={approvalChoices}
+                    approvalTrueValue={approvalTrueValue}
+                    approvalDialogTitle={approvalDialogTitle}
+                    approvalDialogContentText={approvalDialogContentText}
+                    approvalDialogCancelText={approvalDialogCancelText}
+                    approvalDialogConfirmedText={approvalDialogConfirmedText}
+                    validate={handleValidate}
+                    onSubmit={handleSubmit} 
+                    onSubmitSuccess={handleSubmitSuccess}
+                    onSubmitFail={handleSubmitFail}
+                  />
+                </Grid>
+              }
+            </Grid>
+          </Grid>
         </Grid>
       }
-      {renderDialog}
     </React.Fragment>
   );
 

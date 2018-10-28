@@ -1,11 +1,15 @@
+import { WorkflowStatusType } from '@common/classes/types';
 import AppMenu from '@constants/AppMenu';
+import { RadioGroupChoice } from '@layout/components/input/radioGroup';
 import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IAppBarMenu } from '@layout/interfaces';
 import { LeaveRequestUserAction } from '@leave/classes/types';
-import { LeaveApprovalDetailView } from '@leave/components/approval/detail/LeaveApprovalDetailView';
 import { WithLeaveApproval, withLeaveApproval } from '@leave/hoc/withLeaveApproval';
+import { leaveApprovalMessage } from '@leave/locales/messages/leaveApprovalMessage';
+import { IWorkflowApprovalPayload } from '@organization/classes/request/workflow/approval';
+import { WorkflowApprovalFormData } from '@organization/components/workflow/approval/WorkflowApprovalForm';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import {
@@ -14,128 +18,159 @@ import {
   lifecycle,
   mapper,
   ReactLifeCycleFunctions,
-  StateHandler,
-  StateHandlerMap,
-  StateUpdaters,
   withHandlers,
   withStateHandlers,
 } from 'recompose';
+import { Dispatch } from 'redux';
+import { FormErrors } from 'redux-form';
+import { isNullOrUndefined, isObject } from 'util';
 
-interface Handler {
-  handleLeaveRefresh: () => void;
-  handleDialogOpen: (title: string, description: string, cancelText?: string, confirmText?: string, fullScreen?: boolean) => void;
-  handleDialogClose: () => void;
-  handleDialogConfirmed: () => void;
-}
+import { LeaveApprovalDetailView } from './LeaveApprovalDetailView';
 
-interface OwnState {
-  dialogFullScreen: boolean;
-  dialogOpen: boolean;
-  dialogTitle?: string | undefined;
-  dialogDescription?: string | undefined;
-  dialogCancelText: string;
-  dialogConfirmedText: string;
-}
-
-interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
-  stateUpdate: StateHandler<OwnState>;
+interface OwnHandler {
+  handleRefresh: () => void;
+  handleValidate: (payload: WorkflowApprovalFormData) => FormErrors;
+  handleSubmit: (payload: WorkflowApprovalFormData) => void;
+  handleSubmitSuccess: (result: any, dispatch: Dispatch<any>) => void;
+  handleSubmitFail: (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => void;
 }
 
 interface OwnRouteParams {
   leaveUid: string;
 }
 
-export type ApprovalDetailProps
+interface OwnState {
+  approvalTitle: string;
+  approvalSubHeader: string;
+  approvalChoices: RadioGroupChoice[];
+  approvalTrueValue: string;
+  approvalDialogTitle: string;
+  approvalDialogContentText: string;
+  approvalDialogCancelText: string;
+  approvalDialogConfirmedText: string;
+}
+
+export type LeaveApprovalDetailProps
   = WithLeaveApproval
   & WithUser
   & WithLayout
   & WithAppBar
   & RouteComponentProps<OwnRouteParams> 
   & InjectedIntlProps
-  & OwnState
-  & OwnStateUpdaters
-  & Handler;
+  & OwnHandler
+  & OwnState;
 
-const createProps: mapper<ApprovalDetailProps, OwnState> = (props: ApprovalDetailProps): OwnState => ({ 
-  dialogFullScreen: false,
-  dialogOpen: false,
-  dialogCancelText: 'global.action.cancel',
-  dialogConfirmedText: 'global.action.ok',
-});
-
-const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
-  stateUpdate: (prevState: OwnState) => (newState: any) => ({
-    ...prevState,
-    ...newState
-  }),
-  stateReset: (prevState: OwnState) => () => ({
-    ...prevState,
-    dialogFullScreen: false,
-    dialogOpen: false,
-    dialogTitle: undefined,
-    dialogDescription: undefined,
-    dialogCancelText: 'global.action.cancel',
-    dialogConfirmedText: 'global.action.ok',
-  })
-};
-
-const handlerCreators: HandleCreators<ApprovalDetailProps, Handler> = {
-  handleLeaveRefresh: (props: ApprovalDetailProps) => () => { 
-    const { match } = props;
+const handlerCreators: HandleCreators<LeaveApprovalDetailProps, OwnHandler> = {
+  handleValidate: (props: LeaveApprovalDetailProps) => (formData: WorkflowApprovalFormData) => { 
+    const errors = {};
+  
+    const requiredFields = ['isApproved', 'remark'];
+  
+    requiredFields.forEach(field => {
+      if (!formData[field] || isNullOrUndefined(formData[field])) {
+        errors[field] = props.intl.formatMessage({id: `workflow.approval.field.${field}.required`});
+      }
+    });
+    
+    return errors;
+  },
+  handleSubmit: (props: LeaveApprovalDetailProps) => (formData: WorkflowApprovalFormData) => { 
+    const { match, intl } = props;
     const { user } = props.userState;
-    const { loadDetailApproval } = props.leaveApprovalDispatch;
+    const { createRequest } = props.leaveApprovalDispatch;
 
-    if (user) {
-      loadDetailApproval({
-        leaveUid: match.params.leaveUid,
+    // user checking
+    if (!user) {
+      return Promise.reject('user was not found');
+    }
+
+    // props checking
+    if (!match.params.leaveUid) {
+      const message = intl.formatMessage(leaveApprovalMessage.emptyProps);
+
+      return Promise.reject(message);
+    }
+
+    // compare approval status string
+    const isApproved = formData.isApproved === WorkflowStatusType.Approved;
+
+    // generate payload
+    const payload: IWorkflowApprovalPayload = {
+      isApproved,
+      remark: !isApproved ? formData.remark : null
+    };
+
+    // dispatch update request
+    return new Promise((resolve, reject) => {
+      createRequest({
+        resolve, 
+        reject,
         companyUid: user.company.uid,
         positionUid: user.position.uid,
+        leaveUid: match.params.leaveUid, 
+        data: payload, 
+      });
+    });
+  },
+  handleSubmitSuccess: (props: LeaveApprovalDetailProps) => (response: boolean) => {
+    const { intl, history } = props;
+    const { alertAdd } = props.layoutDispatch;
+    
+    alertAdd({
+      time: new Date(),
+      message: intl.formatMessage(leaveApprovalMessage.updateSuccess),
+    });
+
+    history.push('/approval/leave/list');
+  },
+  handleSubmitFail: (props: LeaveApprovalDetailProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
+    const { intl } = props;
+    const { alertAdd } = props.layoutDispatch;
+    
+    if (errors) {
+      // validation errors from server (400: Bad Request)
+      alertAdd({
+        time: new Date(),
+        message: isObject(submitError) ? submitError.message : submitError
+      });
+    } else {
+      alertAdd({
+        time: new Date(),
+        message: intl.formatMessage(leaveApprovalMessage.updateFailure),
+        details: isObject(submitError) ? submitError.message : submitError
       });
     }
   },
-  
-  handleDialogOpen: (props: ApprovalDetailProps) => (title: string, description: string, cancelText?: string, confirmText?: string, fullScreen?: boolean) => { 
-    const { intl, stateUpdate, dialogCancelText, dialogConfirmedText } = props;
+  handleRefresh: (props: LeaveApprovalDetailProps) => () => { 
+    const { match } = props;
+    const { user } = props.userState;
+    const { loadDetailRequest } = props.leaveApprovalDispatch;
 
-    stateUpdate({ 
-      dialogFullScreen: fullScreen || false,
-      dialogOpen: true,
-      dialogTitle: title,
-      dialogDescription: description,
-      dialogCancelText: cancelText || intl.formatMessage({id: dialogCancelText}),
-      dialogConfirmedText: confirmText || intl.formatMessage({id: dialogConfirmedText})
-    });
-  },
-  handleDialogClose: (props: ApprovalDetailProps) => () => { 
-    const { stateReset } = props;
-
-    stateReset();
-  },
-  handleDialogConfirmed: (props: ApprovalDetailProps) => () => { 
-    const { match, history, stateReset } = props;
-    const leaveUid = match.params.leaveUid;
-
-    stateReset();
-
-    history.push('approval/leave/form/', { uid: leaveUid });
-  },
+    if (user) {
+      loadDetailRequest({
+        companyUid: user.company.uid,
+        positionUid: user.position.uid,
+        leaveUid: match.params.leaveUid
+      });
+    }
+  }
 };
 
-const lifecycles: ReactLifeCycleFunctions<ApprovalDetailProps, OwnState> = {
+const lifecycles: ReactLifeCycleFunctions<LeaveApprovalDetailProps, {}> = {
   componentDidMount() {
     const { 
       match, layoutDispatch, appBarDispatch, intl, 
-      handleLeaveRefresh
+      handleRefresh
     } = this.props;
 
     const { user } = this.props.userState;
-    const { loadDetailApproval } = this.props.leaveApprovalDispatch;
+    const { loadDetailRequest } = this.props.leaveApprovalDispatch;
 
     layoutDispatch.changeView({
-      uid: AppMenu.LeaveApproval,
+      uid: AppMenu.LeaveRequest,
       parentUid: AppMenu.Leave,
-      title: intl.formatMessage({id: 'leave.approval.detail.title'}),
-      subTitle : intl.formatMessage({id: 'leave.approval.detail.subTitle'})
+      title: intl.formatMessage({id: 'leave.detail.title'}),
+      subTitle : intl.formatMessage({id: 'leave.detail.subTitle'})
     });
 
     layoutDispatch.navBackShow();
@@ -144,24 +179,25 @@ const lifecycles: ReactLifeCycleFunctions<ApprovalDetailProps, OwnState> = {
     const handleMenuClick = (menu: IAppBarMenu): void => {
       switch (menu.id) {
         case LeaveRequestUserAction.Refresh:
-          handleLeaveRefresh();
+          handleRefresh();
           break;
-      
+
         default:
           break;
       }
     };
+
     appBarDispatch.assignCallback(handleMenuClick);
 
     if (user) {
-      loadDetailApproval({
+      loadDetailRequest({
         leaveUid: match.params.leaveUid,
         companyUid: user.company.uid,
         positionUid: user.position.uid,
       });
     }
   },
-  componentWillReceiveProps(nextProps: ApprovalDetailProps) {
+  componentWillReceiveProps(nextProps: LeaveApprovalDetailProps) {
     if (nextProps.leaveApprovalState.detail.response !== this.props.leaveApprovalState.detail.response) {
       const { intl } = nextProps;
       const { assignMenus } = nextProps.appBarDispatch;
@@ -172,14 +208,14 @@ const lifecycles: ReactLifeCycleFunctions<ApprovalDetailProps, OwnState> = {
           name: intl.formatMessage({id: 'global.action.refresh'}),
           enabled: true,
           visible: true
-        },
+        }
       ];
 
       assignMenus(currentMenus);
     }
   },
   componentWillUnmount() {
-    const { layoutDispatch, appBarDispatch, leaveApprovalDispatch } = this.props;
+    const { layoutDispatch, appBarDispatch } = this.props;
 
     layoutDispatch.changeView(null);
     layoutDispatch.navBackHide();
@@ -187,19 +223,35 @@ const lifecycles: ReactLifeCycleFunctions<ApprovalDetailProps, OwnState> = {
     layoutDispatch.actionCentreHide();
 
     appBarDispatch.dispose();
-
-    leaveApprovalDispatch.loadDetailDispose();
   }
 };
 
-export const LeaveApprovalDetail = compose<ApprovalDetailProps, {}>(
+const createProps: mapper<LeaveApprovalDetailProps, OwnState> = (props: LeaveApprovalDetailProps): OwnState => {
+  const { intl } = props;
+
+  return {
+    approvalTitle: intl.formatMessage({id: 'leave.approvalTitle'}),
+    approvalSubHeader: intl.formatMessage({id: 'leave.approvalSubHeader'}),
+    approvalChoices: [
+      { value: WorkflowStatusType.Approved, label: intl.formatMessage({id: 'workflow.approval.action.approve'}) },
+      { value: WorkflowStatusType.Rejected, label: intl.formatMessage({id: 'workflow.approval.action.reject'}) }
+    ],
+    approvalTrueValue: WorkflowStatusType.Approved,
+    approvalDialogTitle: intl.formatMessage({id: 'leave.dialog.approvalTitle'}),
+    approvalDialogContentText: intl.formatMessage({id: 'leave.dialog.approvalContent'}),
+    approvalDialogCancelText: intl.formatMessage({id: 'global.action.cancel'}),
+    approvalDialogConfirmedText: intl.formatMessage({id: 'global.action.continue'}),
+  };
+};
+
+export const LeaveApprovalDetail = compose<LeaveApprovalDetailProps, {}>(
   withUser,
   withLayout,
   withAppBar,
   withRouter,
   withLeaveApproval,
   injectIntl,
-  withStateHandlers<OwnState, OwnStateUpdaters, {}>(createProps, stateUpdaters), 
-  withHandlers<ApprovalDetailProps, Handler>(handlerCreators),
-  lifecycle<ApprovalDetailProps, OwnState>(lifecycles),
+  withStateHandlers<OwnState, {}, {}>(createProps, {}),
+  withHandlers<LeaveApprovalDetailProps, OwnHandler>(handlerCreators),
+  lifecycle<LeaveApprovalDetailProps, {}>(lifecycles),
 )(LeaveApprovalDetailView);

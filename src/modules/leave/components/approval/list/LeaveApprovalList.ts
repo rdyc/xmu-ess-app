@@ -55,7 +55,7 @@ interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
   stateSizing: StateHandler<OwnState>;
 }
 
-export type ApprovalListProps 
+export type LeaveApprovalListProps 
   = WithLeaveApproval
   & WithUser
   & WithLayout
@@ -67,15 +67,15 @@ export type ApprovalListProps
   & OwnState
   & OwnStateUpdaters;
 
-const createProps: mapper<ApprovalListProps, OwnState> = (props: ApprovalListProps): OwnState => {
+const createProps: mapper<LeaveApprovalListProps, OwnState> = (props: LeaveApprovalListProps): OwnState => {
   const { orderBy, direction, page, size } = props;
   const { request } = props.leaveApprovalState.all;
 
   return { 
-    orderBy: request && request.filter && request.filter['query.orderBy'] || orderBy,
-    direction: request && request.filter && request.filter['query.direction'] || direction,
-    page: request && request.filter && request.filter['query.page'] || page || 1, 
-    size: request && request.filter && request.filter['query.size'] || size || 10,
+    orderBy: request && request.filter && request.filter.query && request.filter.query.orderBy || orderBy,
+    direction: request && request.filter && request.filter.query && request.filter.query.direction || direction,
+    page: request && request.filter && request.filter.query && request.filter.query.page || page || 1, 
+    size: request && request.filter && request.filter.query && request.filter.query.size || size || 10,
   };
 };
 
@@ -103,54 +103,54 @@ const stateUpdaters: StateUpdaters<OwnOptions, OwnState, OwnStateUpdaters> = {
   }),
 };
 
-const handlerCreators: HandleCreators<ApprovalListProps, OwnHandlers> = {
-  handleGoToDetail: (props: ApprovalListProps) => (leaveUid) => {
+const handlerCreators: HandleCreators<LeaveApprovalListProps, OwnHandlers> = {
+  handleGoToDetail: (props: LeaveApprovalListProps) => (leaveUid) => {
     const { history } = props;
     const { isLoading } = props.leaveApprovalState.all;
 
     if (!isLoading) {
-      history.push(`/approval/leave/${leaveUid}`);
+      history.push(`/approval/leave/details/${leaveUid}`);
     } 
   },
-  handleGoToNext: (props: ApprovalListProps) => () => { 
+  handleGoToNext: (props: LeaveApprovalListProps) => () => { 
     props.stateNext();
   },
-  handleGoToPrevious: (props: ApprovalListProps) => () => { 
+  handleGoToPrevious: (props: LeaveApprovalListProps) => () => { 
     props.statePrevious();
   },
-  handleReloading: (props: ApprovalListProps) => () => { 
+  handleReloading: (props: LeaveApprovalListProps) => () => { 
     props.stateReloading();
 
     // force re-load from api
     loadData(props);
   },
-  handleChangeOrder: (props: ApprovalListProps) => (field: IListBarField) => { 
+  handleChangeOrder: (props: LeaveApprovalListProps) => (field: IListBarField) => { 
     props.stateOrdering(field);
   },
-  handleChangeSize: (props: ApprovalListProps) => (value: number) => { 
+  handleChangeSize: (props: LeaveApprovalListProps) => (value: number) => { 
     props.stateSizing(value);
   },
-  handleChangeSort: (props: ApprovalListProps) => (direction: SortDirection) => { 
+  handleChangeSort: (props: LeaveApprovalListProps) => (direction: SortDirection) => { 
     props.stateSorting(direction);
   }
 };
 
-const lifecycles: ReactLifeCycleFunctions<ApprovalListProps, OwnState> = {
+const lifecycles: ReactLifeCycleFunctions<LeaveApprovalListProps, OwnState> = {
   componentDidMount() { 
     const { 
       handleGoToNext, handleGoToPrevious, handleReloading, 
       handleChangeOrder, handleChangeSize, handleChangeSort, 
-      layoutDispatch, navBottomDispatch, isOptionDisabled,
-      intl 
+      layoutDispatch, navBottomDispatch, 
+      history, intl 
     } = this.props;
     
     const { isLoading, response } = this.props.leaveApprovalState.all;
 
     layoutDispatch.changeView({
       uid: AppMenu.LeaveApproval,
-      parentUid: AppMenu.Leave,
-      title: intl.formatMessage({id: 'leave.form.approval.newTitle'}),
-      subTitle : intl.formatMessage({id: 'leave.form.approval.newSubTitle'})
+      parentUid: AppMenu.LeaveApproval,
+      title: intl.formatMessage({id: 'leave.title'}),
+      subTitle : intl.formatMessage({id: 'leave.subTitle'})
     });
 
     layoutDispatch.modeListOn();
@@ -163,7 +163,7 @@ const lifecycles: ReactLifeCycleFunctions<ApprovalListProps, OwnState> = {
       onSyncCallback: handleReloading,
       onOrderCallback: handleChangeOrder,
       onDirectionCallback: handleChangeSort,
-      onAddCallback: () => isOptionDisabled,
+      onAddCallback: () => history.push('/leave/form'),
       onSizeCallback: handleChangeSize,
     });
 
@@ -177,7 +177,7 @@ const lifecycles: ReactLifeCycleFunctions<ApprovalListProps, OwnState> = {
       loadData(this.props);
     }
   },
-  componentDidUpdate(props: ApprovalListProps, state: OwnState) {
+  componentDidUpdate(props: LeaveApprovalListProps, state: OwnState) {
     // only load when these props are different
     if (
       this.props.orderBy !== props.orderBy ||
@@ -202,32 +202,34 @@ const lifecycles: ReactLifeCycleFunctions<ApprovalListProps, OwnState> = {
 
     navBottomDispatch.dispose();
 
-    // dispose 'get all' from 'redux store' when the page is 'out of leave approval' context 
-    if (view && view.parentUid !== AppMenu.Leave) {
+    // dispose 'get all' from 'redux store' when the page is 'out of leave request' context 
+    if (view && view.parentUid !== AppMenu.LeaveApproval) {
       loadAllDispose();
     }
   }
 };
 
-const loadData = (props: ApprovalListProps): void => {
+const loadData = (props: LeaveApprovalListProps): void => {
   const { orderBy, direction, page, size } = props;
   const { user } = props.userState;
-  const { loadAllApproval } = props.leaveApprovalDispatch;
+  const { loadAllRequest } = props.leaveApprovalDispatch;
   const { alertAdd } = props.layoutDispatch;
 
   if (user) {
-    loadAllApproval({
-      companyUid: user.company.uid,
-      positionUid: user.position.uid,
+    loadAllRequest({
       filter: {
-        'query.direction' : direction,
-        'query.orderBy' : orderBy,
-        'query.page' : page,
-        'query.size' : size,
-        'query.find': undefined,
-        'query.findBy': undefined,
-        status: undefined,
+        companyUid: user.company.uid,
+        positionUid: user.position.uid,
+        query: {
+          direction,
+          orderBy,
+          page,
+          size,
+          find: undefined,
+          findBy: undefined
+        },
         isNotify: undefined,
+        status: 'pending'
       }
     }); 
   } else {
@@ -238,7 +240,7 @@ const loadData = (props: ApprovalListProps): void => {
   }
 };
 
-export const LeaveApprovalList = compose<ApprovalListProps, OwnOptions>(
+export const LeaveApprovalList = compose<LeaveApprovalListProps, OwnOptions>(
   withLeaveApproval,
   withUser,
   withLayout,
@@ -246,6 +248,6 @@ export const LeaveApprovalList = compose<ApprovalListProps, OwnOptions>(
   withRouter,
   injectIntl,
   withStateHandlers<OwnState, OwnStateUpdaters, OwnOptions>(createProps, stateUpdaters), 
-  withHandlers<ApprovalListProps, OwnHandlers>(handlerCreators),
-  lifecycle<ApprovalListProps, OwnState>(lifecycles),
+  withHandlers<LeaveApprovalListProps, OwnHandlers>(handlerCreators),
+  lifecycle<LeaveApprovalListProps, OwnState>(lifecycles),
 )(LeaveApprovalListView);

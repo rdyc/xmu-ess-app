@@ -6,7 +6,8 @@ import Main from '@layout/components/main/Main';
 import { HomePage } from '@layout/pages';
 import AccessWizardPage from '@layout/pages/AccessWizardPage';
 import CallbackPage from '@layout/pages/CallbackPage';
-import { approvalRouter, leaveRouter } from '@leave/components/leaveRouter';
+import { leaveApprovalRouter } from '@leave/components/routers/leaveApprovalRouter';
+import { leaveRequestRouter } from '@leave/components/routers/leaveRequestRouter';
 import { MileageApprovalRouter, MileageRequestRouter } from '@mileage/components/MileageRouter';
 import { projectApprovalRouter } from '@project/components/routers/projectApprovalRouter';
 import { projectRegistrationRouter } from '@project/components/routers/projectRegistrationRouter';
@@ -90,8 +91,8 @@ class App extends React.Component<AllProps> {
                         <Route path="/account" component={accountRouter} />
                         <Route path="/project" component={projectRegistrationRouter} />
                         <Route path="/approval/project" component={projectApprovalRouter} />
-                        <Route path="/leave" component={leaveRouter} />
-                        <Route path="/approval/leave" component={approvalRouter} />
+                        <Route path="/leave" component={leaveRequestRouter} />
+                        <Route path="/approval/leave" component={leaveApprovalRouter} />
                         <Route path="/purchase/request" component={purchaseRouter} />
                         <Route path="/approval/purchase/request" component={purchaseApprovalRouter} />
                         <Route path="/purchase/settlement" component={purchaseSettlementRouter} />
