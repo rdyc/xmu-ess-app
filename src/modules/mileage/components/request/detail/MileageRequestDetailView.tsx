@@ -1,29 +1,19 @@
 import {
   Button,
-  Card,
-  CardContent,
-  CardHeader,
   Dialog,
   DialogActions,
   DialogContent,
   DialogContentText,
   DialogTitle,
-  Divider,
   Grid,
-  List,
-  ListItem,
-  TextField,
   Typography
 } from '@material-ui/core';
-import {
-  IMileageRequestDetail,
-  IMileageRequestItem
-} from '@mileage/classes/response';
 import { MileageRequestDetailProps } from '@mileage/components/request/detail/MileageRequestDetail';
-import { WorkflowStep } from '@organization/components';
-import * as moment from 'moment';
+import { MileageInformation } from '@mileage/components/request/detail/shared/MileageInformation';
+import { MileageItem } from '@mileage/components/request/detail/shared/MileageItem';
+import { WorkflowHistory } from '@organization/components/workflow/history/WorkflowHistory';
 import * as React from 'react';
-import { FormattedDate, FormattedMessage } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 
 export const MileageRequestDetailView: React.SFC<
   MileageRequestDetailProps
@@ -36,8 +26,7 @@ export const MileageRequestDetailView: React.SFC<
     dialogCancelText,
     dialogConfirmedText,
     handleDialogClose,
-    handleDialogConfirmed,
-    intl
+    handleDialogConfirmed
   } = props;
 
   const { isLoading, response } = props.mileageRequestState.detail;
@@ -68,125 +57,6 @@ export const MileageRequestDetailView: React.SFC<
     </Dialog>
   );
 
-  const renderDetail = (mileage: IMileageRequestDetail) => (
-    <Card square>
-      <CardHeader
-        title={<FormattedMessage id="mileage.request.infoTitle" />}
-        subheader={<FormattedMessage id="mileage.request.infoSubTitle" />}
-      />
-      <CardContent>
-        <TextField
-          fullWidth
-          margin="normal"
-          label={<FormattedMessage id="mileage.request.field.uid" />}
-          value={mileage.uid}
-          InputProps={{
-            readOnly: true
-          }}
-        />
-        <TextField
-          fullWidth
-          margin="normal"
-          label={<FormattedMessage id="mileage.request.field.employeeName" />}
-          value={mileage.employee ? mileage.employee.fullName : ''}
-          InputProps={{
-            readOnly: true
-          }}
-        />
-        <TextField
-          fullWidth
-          margin="normal"
-          label={<FormattedMessage id="mileage.request.field.month" />}
-          value={moment.months(mileage.month - 1)}
-          InputProps={{
-            readOnly: true
-          }}
-        />
-        <TextField
-          fullWidth
-          margin="normal"
-          label={<FormattedMessage id="mileage.request.field.year" />}
-          value={mileage.year}
-          InputProps={{
-            readOnly: true
-          }}
-        />
-        <TextField
-          fullWidth
-          margin="normal"
-          label={<FormattedMessage id="mileage.request.field.total" />}
-          value={intl.formatNumber(mileage.amount)}
-          InputProps={{
-            readOnly: true
-          }}
-        />
-      </CardContent>
-    </Card>
-  );
-
-  const renderItems = (items: IMileageRequestItem[]) => {
-    const len = items.length - 1;
-
-    return (
-      <Card square>
-        <CardHeader
-          title={<FormattedMessage id="mileage.request.itemsTitle" />}
-          subheader={<FormattedMessage id="mileage.request.itemsSubTitle" />}
-        />
-        <CardContent>
-          <List>
-            {items.map((item, i) => (
-              <div key={item.uid}>
-                <ListItem disableGutters key={item.uid}>
-                  <Grid container spacing={24}>
-                    <Grid item xs={8} sm={8}>
-                      <Typography noWrap color="primary" variant="body2">
-                        {item.customer && item.customer.name}
-                      </Typography>
-                      <Typography noWrap variant="body1">
-                        {item.projectUid} &bull;{' '}
-                        {item.project && item.project.name}
-                      </Typography>
-                      <Typography
-                        noWrap
-                        color="textSecondary"
-                        variant="caption"
-                      >
-                        <FormattedDate
-                          year="numeric"
-                          month="short"
-                          day="numeric"
-                          value={item.date}
-                        />
-                      </Typography>
-                    </Grid>
-                    <Grid item xs={4} sm={4}>
-                      <Typography noWrap variant="body1" align="right">
-                        {item.site && item.site.name}
-                      </Typography>
-                      <Typography
-                        noWrap
-                        color="secondary"
-                        variant="caption"
-                        align="right"
-                      >
-                        {item.status && item.status.value}
-                      </Typography>
-                      <Typography noWrap variant="body1" align="right">
-                        {intl.formatNumber(Number(item.amount))}
-                      </Typography>
-                    </Grid>
-                  </Grid>
-                </ListItem>
-                {len !== i && <Divider />}
-              </div>
-            ))}
-          </List>
-        </CardContent>
-      </Card>
-    );
-  };
-
   const render = (
     <React.Fragment>
       {isLoading && (
@@ -194,22 +64,23 @@ export const MileageRequestDetailView: React.SFC<
           <FormattedMessage id="global.loading" />
         </Typography>
       )}
-      {response &&
-        <Grid container spacing={24}>
-          <Grid item xs={4}>
-            {response && response.data && renderDetail(response.data)}
+      {!isLoading &&
+        response &&
+        response.data && (
+          <Grid container spacing={24}>
+            <Grid item xs={12} md={4}>
+              <MileageInformation data={response.data} />
+            </Grid>
+            <Grid item xs={8}>
+              {response.data.items && response.data.workflow && (
+                <MileageItem items={response.data.items} approval={response.data.workflow.isApproval}/>
+              )}
+            </Grid>
+            <Grid item xs={12} sm={12} md={8} xl={3}>
+              <WorkflowHistory data={response.data.workflow} />
+            </Grid>
           </Grid>
-          <Grid item xs={8}>
-            {response &&
-              response.data &&
-              response.data.items &&
-              renderItems(response.data.items)}
-          </Grid>
-          <Grid item xs={12} sm={12} md={8} xl={3}>
-          { response && response.data && response.data.workflow && response.data.workflow.steps && <WorkflowStep steps={response.data.workflow.steps} />}
-          </Grid>
-        </Grid>
-      }
+        )}
       {renderDialog}
     </React.Fragment>
   );
