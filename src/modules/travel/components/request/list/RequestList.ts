@@ -203,7 +203,7 @@ const lifecycles: ReactLifeCycleFunctions<RequestListProps, OwnState> = {
     navBottomDispatch.dispose();
 
     // dispose 'get all' from 'redux store' when the page is 'out of travel request' context 
-    if (view && view.parentUid !== AppMenu.TravelRequest) {
+    if (view && view.parentUid !== AppMenu.Travel) {
       loadAllDispose();
     }
   }

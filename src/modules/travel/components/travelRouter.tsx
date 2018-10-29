@@ -6,6 +6,7 @@ import * as React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router';
 import { TravelSettlementDetail } from './settlement/detail/TravelSettlementDetail';
 import { TravelSettlementList } from './settlement/list/TravelSettlementList';
+import { TravelSettlementApprovalList } from './settlementApproval/list/TravelSettlementApprovalList';
 
 type AllProps 
   = RouteComponentProps;
@@ -24,6 +25,10 @@ const editorComponent = () => (
 
 const approvalListComponent = () => (
   <RequestApprovalList />
+);
+
+const settlementApprovalListComponent = () => (
+  <TravelSettlementApprovalList />
 );
 
 const SettlementlistComponent = () => (
@@ -51,6 +56,13 @@ export const travelSettlementRouter: React.SFC<AllProps> = props => (
 
 export const travelApprovalRouter: React.SFC<AllProps> = props => (
   <Switch>
-    <Route path={`${props.match.path}/request`} component={approvalListComponent} />    
+    <Route path={`${props.match.path}/request`} component={approvalListComponent} />
+    <Route path={`${props.match.path}/settlement`} component={settlementApprovalListComponent} />    
   </Switch>
 );
+
+// export const travelSettlementApprovalRouter: React.SFC<AllProps> = props => (
+//   <Switch>
+//     <Route path={`${props.match.path}/settlement`} component={settlementApprovalListComponent} />    
+//   </Switch>
+// );

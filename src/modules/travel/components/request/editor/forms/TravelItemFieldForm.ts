@@ -1,6 +1,7 @@
 import { SelectSystemOption } from '@common/components/select';
 import { FormMode } from '@generic/types';
 import { InputText } from '@layout/components/input/text';
+import { WithWidth } from '@material-ui/core/withWidth';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose, HandleCreators, withHandlers } from 'recompose';
 import { BaseFieldsProps } from 'redux-form';
@@ -11,6 +12,12 @@ interface OwnProps {
   context: BaseFieldsProps;
 }
 
+interface OwnOptions {
+  value?: string | undefined;
+  isOpen: boolean;
+  onClose: () => void;
+}
+
 interface OwnHandlers {
   generateFieldProps: (name: string) => any;
 }
@@ -18,6 +25,8 @@ interface OwnHandlers {
 export type TravelitemFieldFormProps
   = OwnProps
   & OwnHandlers
+  & OwnOptions
+  & WithWidth
   & InjectedIntlProps;
 
 const handlerCreators: HandleCreators<TravelitemFieldFormProps, OwnHandlers> = {
