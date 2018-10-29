@@ -1,26 +1,26 @@
 import { Divider, Grid, List, ListItem, ListSubheader, Paper, Typography } from '@material-ui/core';
-import { IProject } from '@project/classes/response';
-import { ProjectRegisterListProps } from '@project/components/registration/list/ProjectRegistrationList';
+import { IProjectAssignment } from '@project/classes/response';
+import { ProjectAssignmentListProps } from '@project/components/assignment/list/ProjectAssignmentList';
 import { parseChanges } from '@utils/parseChanges';
 import * as moment from 'moment';
 import * as React from 'react';
 import { FormattedDate, FormattedNumber, FormattedPlural } from 'react-intl';
 import { isArray } from 'util';
 
-export const RegistrationListView: React.SFC<ProjectRegisterListProps> = props => {
+export const ProjectAssignmentListView: React.SFC<ProjectAssignmentListProps> = props => {
   const { handleGoToDetail } = props;
-  const { isLoading, response } = props.projectRegisterState.all;
+  const { isLoading, response } = props.projectAssignmentState.all;
 
-  const renderProjectList = (projects: IProject[]) => {
-    const len = projects.length - 1;
+  const renderList = (assignments: IProjectAssignment[]) => {
+    const len = assignments.length - 1;
 
     return (
-      projects.map((project, i) => 
-        <div key={project.uid}>
+      assignments.map((item, i) => 
+        <div key={item.uid}>
           <ListItem 
             button={!isLoading} 
-            key={project.uid}
-            onClick={() => handleGoToDetail(project.uid)}
+            key={item.uid}
+            onClick={() => handleGoToDetail(item.uid)}
           >
             <Grid container spacing={24}>
               <Grid item xs={8} sm={8}>
@@ -29,32 +29,32 @@ export const RegistrationListView: React.SFC<ProjectRegisterListProps> = props =
                   color="primary" 
                   variant="body2"
                 >
-                  {project.name}
+                  {item.name}
                 </Typography>
                 <Typography 
                   noWrap
                   variant="body1"
                 >
-                  {project.customer && project.customer.name} &bull; {project.customer && project.customer.company && project.customer.company.name} {project.contractNumber && `(PO: ${project.contractNumber})`}
+                  {item.customer && item.customer.name} {item.contractNumber && ` (PO: ${item.contractNumber})`}
                 </Typography>
                 <Typography 
                   noWrap
                   color="textSecondary" 
                   variant="caption"
                 >
-                  {project.uid} &bull; {project.project && project.project.value} &bull; &nbsp;
+                  {item.uid} &bull; {item.projectUid} &bull; &nbsp;
                   <FormattedDate 
                     year="numeric"
                     month="short"
                     day="numeric"
-                    value={project.start || ''} 
+                    value={item.start || ''} 
                   />
                   &nbsp;to&nbsp; 
                   <FormattedDate 
                     year="numeric"
                     month="short"
                     day="numeric"
-                    value={project.end || ''} 
+                    value={item.end || ''} 
                   />
                 </Typography>
               </Grid>
@@ -64,7 +64,7 @@ export const RegistrationListView: React.SFC<ProjectRegisterListProps> = props =
                   variant="body1" 
                   align="right"
                 >
-                  {project.status && project.status.value}
+                  {item.project && item.project.value}
                 </Typography>
                 <Typography 
                   noWrap 
@@ -72,14 +72,14 @@ export const RegistrationListView: React.SFC<ProjectRegisterListProps> = props =
                   variant="caption" 
                   align="right"
                 >
-                  {parseChanges(project.changes)}
+                  {parseChanges(item.changes)}
                 </Typography>
                 <Typography 
                   noWrap
                   variant="caption" 
                   align="right"
                 >
-                  {project.changes && moment(project.changes.updatedAt ? project.changes.updatedAt : project.changes.createdAt).fromNow()}
+                  {item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow()}
                 </Typography>
               </Grid>
             </Grid>
@@ -121,7 +121,7 @@ export const RegistrationListView: React.SFC<ProjectRegisterListProps> = props =
       {
         response &&
         isArray(response.data) && 
-        renderProjectList(response.data)
+        renderList(response.data)
       }
     </List>
   );

@@ -4,9 +4,9 @@ import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithNavBottom, withNavBottom } from '@layout/hoc/withNavBottom';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IListBarField } from '@layout/interfaces';
-import { ProjectField } from '@project/classes/types';
-import { ProjectRegistrationListView } from '@project/components/registration/list/ProjectRegistrationListView';
-import { WithProjectRegistration, withProjectRegistration } from '@project/hoc/withProjectRegistration';
+import { ProjectRegistrationField } from '@project/classes/types';
+import { ProjectAssignmentListView } from '@project/components/assignment/list/ProjectAssignmentListView';
+import { WithProjectAssignment, withProjectAssignment } from '@project/hoc/withProjectAssignment';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import {
@@ -55,8 +55,8 @@ interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
   stateSizing: StateHandler<OwnState>;
 }
 
-export type RegisterListProps 
-  = WithProjectRegistration
+export type ProjectAssignmentListProps 
+  = WithProjectAssignment
   & WithUser
   & WithLayout
   & WithNavBottom
@@ -67,9 +67,9 @@ export type RegisterListProps
   & OwnState
   & OwnStateUpdaters;
 
-const createProps: mapper<RegisterListProps, OwnState> = (props: RegisterListProps): OwnState => {
+const createProps: mapper<ProjectAssignmentListProps, OwnState> = (props: ProjectAssignmentListProps): OwnState => {
   const { orderBy, direction, page, size } = props;
-  const { request } = props.projectRegisterState.all;
+  const { request } = props.projectAssignmentState.all;
 
   return { 
     orderBy: request && request.filter && request.filter.orderBy || orderBy,
@@ -103,39 +103,39 @@ const stateUpdaters: StateUpdaters<OwnOptions, OwnState, OwnStateUpdaters> = {
   }),
 };
 
-const handlerCreators: HandleCreators<RegisterListProps, OwnHandlers> = {
-  handleGoToDetail: (props: RegisterListProps) => (projectUid) => {
+const handlerCreators: HandleCreators<ProjectAssignmentListProps, OwnHandlers> = {
+  handleGoToDetail: (props: ProjectAssignmentListProps) => (assignmentUid) => {
     const { history } = props;
-    const { isLoading } = props.projectRegisterState.all;
+    const { isLoading } = props.projectAssignmentState.all;
 
     if (!isLoading) {
-      history.push(`/project/details/${projectUid}`);
+      history.push(`/project/assignment/details/${assignmentUid}`);
     } 
   },
-  handleGoToNext: (props: RegisterListProps) => () => { 
+  handleGoToNext: (props: ProjectAssignmentListProps) => () => { 
     props.stateNext();
   },
-  handleGoToPrevious: (props: RegisterListProps) => () => { 
+  handleGoToPrevious: (props: ProjectAssignmentListProps) => () => { 
     props.statePrevious();
   },
-  handleReloading: (props: RegisterListProps) => () => { 
+  handleReloading: (props: ProjectAssignmentListProps) => () => { 
     props.stateReloading();
 
     // force re-load from api
     loadData(props);
   },
-  handleChangeOrder: (props: RegisterListProps) => (field: IListBarField) => { 
+  handleChangeOrder: (props: ProjectAssignmentListProps) => (field: IListBarField) => { 
     props.stateOrdering(field);
   },
-  handleChangeSize: (props: RegisterListProps) => (value: number) => { 
+  handleChangeSize: (props: ProjectAssignmentListProps) => (value: number) => { 
     props.stateSizing(value);
   },
-  handleChangeSort: (props: RegisterListProps) => (direction: SortDirection) => { 
+  handleChangeSort: (props: ProjectAssignmentListProps) => (direction: SortDirection) => { 
     props.stateSorting(direction);
   }
 };
 
-const lifecycles: ReactLifeCycleFunctions<RegisterListProps, OwnState> = {
+const lifecycles: ReactLifeCycleFunctions<ProjectAssignmentListProps, OwnState> = {
   componentDidMount() { 
     const { 
       handleGoToNext, handleGoToPrevious, handleReloading, 
@@ -144,13 +144,13 @@ const lifecycles: ReactLifeCycleFunctions<RegisterListProps, OwnState> = {
       history, intl 
     } = this.props;
     
-    const { isLoading, response } = this.props.projectRegisterState.all;
+    const { isLoading, response } = this.props.projectAssignmentState.all;
 
     layoutDispatch.changeView({
-      uid: AppMenu.ProjectRegistrationRequest,
+      uid: AppMenu.ProjectAssignmentRequest,
       parentUid: AppMenu.ProjectRegistration,
-      title: intl.formatMessage({id: 'project.title'}),
-      subTitle : intl.formatMessage({id: 'project.subTitle'})
+      title: intl.formatMessage({id: 'project.view.assignment.title'}),
+      subTitle : intl.formatMessage({id: 'project.view.assignment.subTitle'})
     });
 
     layoutDispatch.modeListOn();
@@ -163,12 +163,12 @@ const lifecycles: ReactLifeCycleFunctions<RegisterListProps, OwnState> = {
       onSyncCallback: handleReloading,
       onOrderCallback: handleChangeOrder,
       onDirectionCallback: handleChangeSort,
-      onAddCallback: () => history.push('/project/form'),
+      onAddCallback: () => history.push('/project/assignment/form'),
       onSizeCallback: handleChangeSize,
     });
 
-    const items = Object.keys(ProjectField)
-      .map(key => ({ id: key, name: ProjectField[key] }));
+    const items = Object.keys(ProjectRegistrationField)
+      .map(key => ({ id: key, name: ProjectRegistrationField[key] }));
 
     navBottomDispatch.assignFields(items);
 
@@ -177,7 +177,7 @@ const lifecycles: ReactLifeCycleFunctions<RegisterListProps, OwnState> = {
       loadData(this.props);
     }
   },
-  componentDidUpdate(props: RegisterListProps, state: OwnState) {
+  componentDidUpdate(props: ProjectAssignmentListProps, state: OwnState) {
     // only load when these props are different
     if (
       this.props.orderBy !== props.orderBy ||
@@ -191,7 +191,7 @@ const lifecycles: ReactLifeCycleFunctions<RegisterListProps, OwnState> = {
   componentWillUnmount() {
     const { layoutDispatch, navBottomDispatch } = this.props;
     const { view } = this.props.layoutState;
-    const { loadAllDispose } = this.props.projectRegisterDispatch;
+    const { loadAllDispose } = this.props.projectAssignmentDispatch;
 
     layoutDispatch.changeView(null);
     layoutDispatch.modeListOff();
@@ -209,16 +209,14 @@ const lifecycles: ReactLifeCycleFunctions<RegisterListProps, OwnState> = {
   }
 };
 
-const loadData = (props: RegisterListProps): void => {
+const loadData = (props: ProjectAssignmentListProps): void => {
   const { orderBy, direction, page, size } = props;
   const { user } = props.userState;
-  const { loadAllRequest } = props.projectRegisterDispatch;
+  const { loadAllRequest } = props.projectAssignmentDispatch;
   const { alertAdd } = props.layoutDispatch;
 
   if (user) {
     loadAllRequest({
-      companyUid: user.company.uid,
-      positionUid: user.position.uid,
       filter: {
         direction,
         orderBy,
@@ -227,6 +225,7 @@ const loadData = (props: RegisterListProps): void => {
         customerUids: undefined,
         projectTypes: undefined,
         statusTypes: undefined,
+        projectUid: undefined,
         find: undefined,
         findBy: undefined,
       }
@@ -239,14 +238,14 @@ const loadData = (props: RegisterListProps): void => {
   }
 };
 
-export const RegistrationList = compose<RegisterListProps, OwnOptions>(
-  withProjectRegistration,
+export const ProjectAssignmentList = compose<ProjectAssignmentListProps, OwnOptions>(
+  withProjectAssignment,
   withUser,
   withLayout,
   withNavBottom,
   withRouter,
   injectIntl,
   withStateHandlers<OwnState, OwnStateUpdaters, OwnOptions>(createProps, stateUpdaters), 
-  withHandlers<RegisterListProps, OwnHandlers>(handlerCreators),
-  lifecycle<RegisterListProps, OwnState>(lifecycles),
-)(ProjectRegistrationListView);
+  withHandlers<ProjectAssignmentListProps, OwnHandlers>(handlerCreators),
+  lifecycle<ProjectAssignmentListProps, OwnState>(lifecycles),
+)(ProjectAssignmentListView);

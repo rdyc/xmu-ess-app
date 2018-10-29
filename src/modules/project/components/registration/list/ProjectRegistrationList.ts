@@ -4,7 +4,7 @@ import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithNavBottom, withNavBottom } from '@layout/hoc/withNavBottom';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IListBarField } from '@layout/interfaces';
-import { ProjectField } from '@project/classes/types';
+import { ProjectRegistrationField } from '@project/classes/types';
 import { ProjectRegistrationListView } from '@project/components/registration/list/ProjectRegistrationListView';
 import { WithProjectRegistration, withProjectRegistration } from '@project/hoc/withProjectRegistration';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
@@ -149,8 +149,8 @@ const lifecycles: ReactLifeCycleFunctions<ProjectRegisterListProps, OwnState> = 
     layoutDispatch.changeView({
       uid: AppMenu.ProjectRegistrationRequest,
       parentUid: AppMenu.ProjectRegistration,
-      title: intl.formatMessage({id: 'project.title'}),
-      subTitle : intl.formatMessage({id: 'project.subTitle'})
+      title: intl.formatMessage({id: 'project.view.registration.title'}),
+      subTitle : intl.formatMessage({id: 'project.view.registration.subHeader'})
     });
 
     layoutDispatch.modeListOn();
@@ -167,8 +167,8 @@ const lifecycles: ReactLifeCycleFunctions<ProjectRegisterListProps, OwnState> = 
       onSizeCallback: handleChangeSize,
     });
 
-    const items = Object.keys(ProjectField)
-      .map(key => ({ id: key, name: ProjectField[key] }));
+    const items = Object.keys(ProjectRegistrationField)
+      .map(key => ({ id: key, name: ProjectRegistrationField[key] }));
 
     navBottomDispatch.assignFields(items);
 
