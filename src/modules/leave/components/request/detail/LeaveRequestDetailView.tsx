@@ -18,7 +18,7 @@ import { LeaveInformation } from './shared/LeaveInformation';
 export const LeaveRequestDetailView: React.SFC<RequestDetailProps> = props => {
   const { 
     dialogFullScreen, dialogOpen, dialogTitle, dialogDescription, dialogCancelText, dialogConfirmedText,
-    handleDialogClose, handleDialogConfirmed, intl
+    handleDialogClose, handleDialogConfirmed
   } = props;
   const { isLoading, response } = props.leaveRequestState.detail;
 
@@ -71,7 +71,6 @@ export const LeaveRequestDetailView: React.SFC<RequestDetailProps> = props => {
               response.data &&
               <LeaveInformation
                 data={response.data}
-                intl={intl}
               />
             }
           </Grid>

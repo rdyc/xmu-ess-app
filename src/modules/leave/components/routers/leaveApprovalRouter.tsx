@@ -10,7 +10,7 @@ const approvalDetailComponent = () => <LeaveApprovalDetail/>;
 
 export const leaveApprovalRouter: React.SFC<AllProps> = props => (
   <Switch>
-    <Route path={`${props.match.path}/list`} component={approvalListComponent} />
-    <Route path={`${props.match.path}/details/:projectUid`} component={approvalDetailComponent} />
+    <Route exact path={`${props.match.path}/`} component={approvalListComponent} />
+    <Route path={`${props.match.path}/details/:leaveUid`} component={approvalDetailComponent} />
   </Switch>
 );

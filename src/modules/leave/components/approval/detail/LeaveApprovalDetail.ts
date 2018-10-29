@@ -121,7 +121,7 @@ const handlerCreators: HandleCreators<LeaveApprovalDetailProps, OwnHandler> = {
       message: intl.formatMessage(leaveApprovalMessage.updateSuccess),
     });
 
-    history.push('/approval/leave/list');
+    history.push('/approval/leave/');
   },
   handleSubmitFail: (props: LeaveApprovalDetailProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
     const { intl } = props;

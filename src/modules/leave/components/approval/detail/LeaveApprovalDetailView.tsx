@@ -13,7 +13,7 @@ export const LeaveApprovalDetailView: React.SFC<LeaveApprovalDetailProps> = prop
     approvalTitle, approvalSubHeader, approvalChoices, approvalTrueValue, 
     approvalDialogTitle, approvalDialogContentText, approvalDialogCancelText, approvalDialogConfirmedText 
   } = props;
-  const { intl, handleValidate, handleSubmit, handleSubmitSuccess, handleSubmitFail } = props;
+  const { handleValidate, handleSubmit, handleSubmitSuccess, handleSubmitFail } = props;
   const { isLoading, response } = props.leaveApprovalState.detail;
 
   const render = (
