@@ -1,6 +1,7 @@
-import { Divider, Grid, List, ListItem, ListSubheader, Paper, Typography } from '@material-ui/core';
+// import { WorkflowStatusType } from '@common/classes/types';
+import { Checkbox, Divider, Grid, List, ListItem, ListSubheader, Paper, Typography } from '@material-ui/core';
 import { ITimesheet } from '@timesheet/classes/response';
-import { ApprovalListProps } from '@timesheet/components/approval/list/TimesheetApprovalList';
+import { ApprovalListProps } from '@timesheet/components/approval/timesheetApproval/list/TimesheetApprovalList';
 import { parseChanges } from '@utils/parseChanges';
 import * as moment from 'moment';
 import * as React from 'react';
@@ -8,7 +9,7 @@ import { FormattedDate, FormattedNumber, FormattedPlural } from 'react-intl';
 import { isArray } from 'util';
 
 export const TimesheetApprovalListView: React.SFC<ApprovalListProps> = props => {
-  const { handleGoToDetail } = props;
+  // const { handleGoToDetail } = props;
   const { isLoading, response } = props.timesheetApprovalState.all;
 
   const renderTimesheetApprovalList = (timesheets: ITimesheet[]) => {
@@ -20,10 +21,13 @@ export const TimesheetApprovalListView: React.SFC<ApprovalListProps> = props => 
           <ListItem
             button={!isLoading}
             key={timesheet.uid}
-            onClick={() => handleGoToDetail(timesheet.uid)}
+          // onClick={() => handleGoToDetail(timesheet.uid)}
           >
             <Grid container spacing={24}>
-              <Grid item xs={8} sm={8}>
+              <Grid item xs={1} sm={1}>
+                <Checkbox />
+              </Grid>
+              <Grid item xs={7} sm={7}>
                 <Typography
                   noWrap
                   color="primary"
@@ -121,13 +125,13 @@ export const TimesheetApprovalListView: React.SFC<ApprovalListProps> = props => 
 
   const render = (
     <React.Fragment>
-      {isLoading && response && <Typography variant="body2">loading</Typography>}     
+      {isLoading && response && <Typography variant="body2">loading</Typography>}
       {response &&
-        <Paper 
-          square 
+        <Paper
+          square
           elevation={1}
         >
-        <RenderList/>
+          <RenderList />
         </Paper>}
     </React.Fragment>
   );

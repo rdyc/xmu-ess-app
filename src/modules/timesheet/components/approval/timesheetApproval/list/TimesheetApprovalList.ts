@@ -5,7 +5,7 @@ import { WithNavBottom, withNavBottom } from '@layout/hoc/withNavBottom';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IListBarField } from '@layout/interfaces';
 import { TimesheetField } from '@timesheet/classes/types';
-import { TimesheetApprovalListEditorView } from '@timesheet/components/approval/editor/TimesheetApprovalListEditorView';
+import { TimesheetApprovalListView } from '@timesheet/components/approval/timesheetApproval/list/TimesheetApprovalListView';
 import { WithTimesheetApproval, withTimesheetApproval } from '@timesheet/hoc/withTimesheetApproval';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
@@ -55,7 +55,7 @@ interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
   stateSizing: StateHandler<OwnState>;
 }
 
-export type ApprovalListEditorProps
+export type ApprovalListProps
   = WithTimesheetApproval
   & WithUser
   & WithLayout
@@ -67,7 +67,7 @@ export type ApprovalListEditorProps
   & OwnState
   & OwnStateUpdaters;
 
-const createProps: mapper<ApprovalListEditorProps, OwnState> = (props: ApprovalListEditorProps): OwnState => {
+const createProps: mapper<ApprovalListProps, OwnState> = (props: ApprovalListProps): OwnState => {
   const { orderBy, direction, page, size } = props;
   const { request } = props.timesheetApprovalState.all;
 
@@ -103,8 +103,8 @@ const stateUpdaters: StateUpdaters<OwnOptions, OwnState, OwnStateUpdaters> = {
   }),
 };
 
-const handlerCreators: HandleCreators<ApprovalListEditorProps, OwnHandlers> = {
-  handleGoToDetail: (props: ApprovalListEditorProps) => (timesheetUid) => {
+const handlerCreators: HandleCreators<ApprovalListProps, OwnHandlers> = {
+  handleGoToDetail: (props: ApprovalListProps) => (timesheetUid) => {
     const { history } = props;
     const { isLoading } = props.timesheetApprovalState.all;
 
@@ -112,30 +112,30 @@ const handlerCreators: HandleCreators<ApprovalListEditorProps, OwnHandlers> = {
       history.push(`/approval/timesheet/details/${timesheetUid}`);
     }
   },
-  handleGoToNext: (props: ApprovalListEditorProps) => () => {
+  handleGoToNext: (props: ApprovalListProps) => () => {
     props.stateNext();
   },
-  handleGoToPrevious: (props: ApprovalListEditorProps) => () => {
+  handleGoToPrevious: (props: ApprovalListProps) => () => {
     props.statePrevious();
   },
-  handleReloading: (props: ApprovalListEditorProps) => () => {
+  handleReloading: (props: ApprovalListProps) => () => {
     props.stateReloading();
 
     // force re-load from api
     loadData(props);
   },
-  handleChangeOrder: (props: ApprovalListEditorProps) => (field: IListBarField) => {
+  handleChangeOrder: (props: ApprovalListProps) => (field: IListBarField) => {
     props.stateOrdering(field);
   },
-  handleChangeSize: (props: ApprovalListEditorProps) => (value: number) => {
+  handleChangeSize: (props: ApprovalListProps) => (value: number) => {
     props.stateSizing(value);
   },
-  handleChangeSort: (props: ApprovalListEditorProps) => (direction: SortDirection) => {
+  handleChangeSort: (props: ApprovalListProps) => (direction: SortDirection) => {
     props.stateSorting(direction);
   }
 };
 
-const lifecycles: ReactLifeCycleFunctions<ApprovalListEditorProps, OwnState> = {
+const lifecycles: ReactLifeCycleFunctions<ApprovalListProps, OwnState> = {
   componentDidMount() {
     const {
       handleGoToNext, handleGoToPrevious, handleReloading,
@@ -177,7 +177,7 @@ const lifecycles: ReactLifeCycleFunctions<ApprovalListEditorProps, OwnState> = {
     // if (!isLoading && !response) {
     // }
   },
-  componentDidUpdate(props: ApprovalListEditorProps, state: OwnState) {
+  componentDidUpdate(props: ApprovalListProps, state: OwnState) {
     // only load when these props are different
     if (
       this.props.orderBy !== props.orderBy ||
@@ -209,7 +209,7 @@ const lifecycles: ReactLifeCycleFunctions<ApprovalListEditorProps, OwnState> = {
   }
 };
 
-const loadData = (props: ApprovalListEditorProps): void => {
+const loadData = (props: ApprovalListProps): void => {
   const { orderBy, direction, page, size } = props;
   const { user } = props.userState;
   const { loadAllRequest } = props.timesheetApprovalDispatch;
@@ -236,7 +236,7 @@ const loadData = (props: ApprovalListEditorProps): void => {
   }
 };
 
-export const TimesheetApprovalListEditor = compose<ApprovalListEditorProps, OwnOptions>(
+export const TimesheetApprovalList = compose<ApprovalListProps, OwnOptions>(
   withTimesheetApproval,
   withUser,
   withLayout,
@@ -244,6 +244,6 @@ export const TimesheetApprovalListEditor = compose<ApprovalListEditorProps, OwnO
   withRouter,
   injectIntl,
   withStateHandlers<OwnState, OwnStateUpdaters, OwnOptions>(createProps, stateUpdaters),
-  withHandlers<ApprovalListEditorProps, OwnHandlers>(handlerCreators),
-  lifecycle<ApprovalListEditorProps, OwnState>(lifecycles),
-)(TimesheetApprovalListEditorView);
+  withHandlers<ApprovalListProps, OwnHandlers>(handlerCreators),
+  lifecycle<ApprovalListProps, OwnState>(lifecycles),
+)(TimesheetApprovalListView);

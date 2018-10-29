@@ -4,7 +4,7 @@ import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IAppBarMenu } from '@layout/interfaces';
 import { TimesheetUserAction } from '@timesheet/classes/types';
-import { TimesheetApprovalDetailView } from '@timesheet/components/approval/detail/TimesheetApprovalDetailView';
+import { TimesheetApprovalHistoryDetailView } from '@timesheet/components/approval/timesheetApprovalHistory/detail/TimesheetApprovalHistoryDetailView';
 import { WithTimesheetApproval, withTimesheetApproval } from '@timesheet/hoc/withTimesheetApproval';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
@@ -42,7 +42,7 @@ interface OwnRouteParams {
   timesheetUid: string;
 }
 
-export type ApprovalDetailProps
+export type ApprovalHistoryDetailProps
   = WithTimesheetApproval
   & WithUser
   & WithLayout
@@ -53,7 +53,7 @@ export type ApprovalDetailProps
   & OwnStateUpdaters
   & Handler;
 
-const createProps: mapper<ApprovalDetailProps, OwnState> = (props: ApprovalDetailProps): OwnState => ({
+const createProps: mapper<ApprovalHistoryDetailProps, OwnState> = (props: ApprovalHistoryDetailProps): OwnState => ({
   dialogFullScreen: false,
   dialogOpen: false,
   dialogCancelText: 'global.action.cancel',
@@ -76,8 +76,8 @@ const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
   })
 };
 
-const handlerCreators: HandleCreators<ApprovalDetailProps, Handler> = {
-  handleTimesheetRefresh: (props: ApprovalDetailProps) => () => { 
+const handlerCreators: HandleCreators<ApprovalHistoryDetailProps, Handler> = {
+  handleTimesheetRefresh: (props: ApprovalHistoryDetailProps) => () => { 
     const { match } = props;
     const { user } = props.userState;
     const { loadDetailRequest } = props.timesheetApprovalDispatch;
@@ -92,7 +92,7 @@ const handlerCreators: HandleCreators<ApprovalDetailProps, Handler> = {
   }
 };
 
-const lifecycles: ReactLifeCycleFunctions<ApprovalDetailProps, OwnState> = {
+const lifecycles: ReactLifeCycleFunctions<ApprovalHistoryDetailProps, OwnState> = {
   componentDidMount() {
     const { 
       match, layoutDispatch, appBarDispatch, intl, 
@@ -133,7 +133,7 @@ const lifecycles: ReactLifeCycleFunctions<ApprovalDetailProps, OwnState> = {
       });
     }
   },
-  componentWillReceiveProps(nextProps: ApprovalDetailProps) {
+  componentWillReceiveProps(nextProps: ApprovalHistoryDetailProps) {
     if (nextProps.timesheetApprovalState.detail.response !== this.props.timesheetApprovalState.detail.response) {
       const { intl } = nextProps;
       const { assignMenus } = nextProps.appBarDispatch;
@@ -164,7 +164,7 @@ const lifecycles: ReactLifeCycleFunctions<ApprovalDetailProps, OwnState> = {
   }
 };
 
-export const TimesheetApprovalDetail = compose<ApprovalDetailProps, {}>(
+export const TimesheetApprovalHistoryDetail = compose<ApprovalHistoryDetailProps, {}>(
   withUser,
   withLayout,
   withAppBar,
@@ -172,6 +172,6 @@ export const TimesheetApprovalDetail = compose<ApprovalDetailProps, {}>(
   withTimesheetApproval,
   injectIntl,
   withStateHandlers<OwnState, OwnStateUpdaters, {}>(createProps, stateUpdaters), 
-  withHandlers<ApprovalDetailProps, Handler>(handlerCreators),
-  lifecycle<ApprovalDetailProps, OwnState>(lifecycles),
-)(TimesheetApprovalDetailView);
+  withHandlers<ApprovalHistoryDetailProps, Handler>(handlerCreators),
+  lifecycle<ApprovalHistoryDetailProps, OwnState>(lifecycles),
+)(TimesheetApprovalHistoryDetailView);

@@ -3,9 +3,9 @@ import { WorkflowHistory } from '@organization/components/workflow/history/Workf
 import { TimesheetInformation } from '@timesheet/components/entry/detail/shared/TimesheetInformation';
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
-import { ApprovalDetailProps } from './TimesheetApprovalDetail';
+import { ApprovalHistoryDetailProps } from './TimesheetApprovalHistoryDetail';
 
-export const TimesheetApprovalDetailView: React.SFC<ApprovalDetailProps> = props => {
+export const TimesheetApprovalHistoryDetailView: React.SFC<ApprovalHistoryDetailProps> = props => {
   const {
     dialogFullScreen, dialogOpen, dialogTitle, dialogDescription, dialogCancelText, dialogConfirmedText, handleDialogClose, handleDialogConfirmed
   } = props;

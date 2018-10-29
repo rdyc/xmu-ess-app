@@ -1,19 +1,21 @@
 import * as React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router';
-import { TimesheetApprovalDetail } from '../approval/detail/TimesheetApprovalDetail';
-import { TimesheetApprovalListEditor } from '../approval/editor/TimesheetApprovalListEditor';
-import { TimesheetApprovalList } from '../approval/list/TimesheetApprovalList';
+import { TimesheetApprovalList } from '../approval/timesheetApproval/list/TimesheetApprovalList';
+import { TimesheetApprovalHistoryDetail } from '../approval/timesheetApprovalHistory/detail/TimesheetApprovalHistoryDetail';
+import { TimesheetApprovalHistoryList } from '../approval/timesheetApprovalHistory/list/TimesheetApprovalHistoryList';
 
 type AllProps = RouteComponentProps;
 
+const approvalHistoryListComponent = () => <TimesheetApprovalHistoryList orderBy="uid" direction="descending"/>;
+const approvalHistoryDetailComponent = () => <TimesheetApprovalHistoryDetail/>;
+
 const approvalListComponent = () => <TimesheetApprovalList orderBy="uid" direction="descending"/>;
-const approvalDetailComponent = () => <TimesheetApprovalDetail/>;
-const approvalListEditorComponent = () => <TimesheetApprovalListEditor orderBy="uid" direction="descending"/>;
 
 export const timesheetApprovalRouter: React.SFC<AllProps> = props => (
   <Switch>
-    <Route exact path={`${props.match.path}/`} component={approvalListEditorComponent}/>
-    <Route path={`${props.match.path}/history`} component={approvalListComponent}/>
-    <Route path={`${props.match.path}/details/:timesheetUid`} component={approvalDetailComponent} />
+    <Route exact path={`${props.match.path}/`} component={approvalListComponent}/>
+  
+    <Route path={`${props.match.path}/history`} component={approvalHistoryListComponent}/>
+    <Route path={`${props.match.path}/details/:timesheetUid`} component={approvalHistoryDetailComponent} />
   </Switch>
 );
