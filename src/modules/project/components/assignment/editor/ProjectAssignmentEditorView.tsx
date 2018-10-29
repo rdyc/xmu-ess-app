@@ -1,7 +1,7 @@
 import { FormMode } from '@generic/types';
 import * as React from 'react';
 
-import { ProjectAssignmentContainerForm, ProjectAssignmentFormData } from './forms/ProjectAssignmentContainerForm';
+import { ProjectAssignmentForm, ProjectAssignmentFormData } from '@project/components/assignment/editor/ProjectAssignmentForm';
 import { ProjectAssignmentEditorProps } from './ProjectAssignmentEditor';
 
 export const ProjectAssignmentEditorView: React.SFC<ProjectAssignmentEditorProps> = props => {
@@ -9,7 +9,7 @@ export const ProjectAssignmentEditorView: React.SFC<ProjectAssignmentEditorProps
   const { isLoading, response } = props.projectAssignmentState.detail;
 
   const renderForm = (formData: ProjectAssignmentFormData) => (
-    <ProjectAssignmentContainerForm
+    <ProjectAssignmentForm
       formMode={formMode}
       initialValues={formData}
       validate={handleValidate}

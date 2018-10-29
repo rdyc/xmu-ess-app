@@ -3,6 +3,7 @@ import { FormMode } from '@generic/types';
 import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
+import { IProjectList } from '@project/classes/response';
 import { WithProjectAssignment, withProjectAssignment } from '@project/hoc/withProjectAssignment';
 import { WithProjectRegistration, withProjectRegistration } from '@project/hoc/withProjectRegistration';
 import { projectOwnerMessage } from '@project/locales/messages/projectOwnerMessage';
@@ -24,10 +25,11 @@ import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
 import { isNullOrUndefined, isObject } from 'util';
 
-import { ProjectAssignmentFormData } from './forms/ProjectAssignmentContainerForm';
+import { ProjectAssignmentFormData } from '@project/components/assignment/editor/ProjectAssignmentForm';
 import { ProjectAssignmentEditorView } from './ProjectAssignmentEditorView';
 
 interface OwnHandlers {
+  handleProjectChange: (project: IProjectList) => void;
   handleValidate: (payload: ProjectAssignmentFormData) => FormErrors;
   handleSubmit: (payload: ProjectAssignmentFormData) => void;
   handleSubmitSuccess: (result: any, dispatch: Dispatch<any>) => void;
@@ -60,6 +62,9 @@ export type ProjectAssignmentEditorProps
   & OwnStateUpdaters;
 
 const handlerCreators: HandleCreators<ProjectAssignmentEditorProps, OwnHandlers> = {
+  handleProjectChange: (props: ProjectAssignmentEditorProps) => (project: IProjectList) => { 
+    console.log(project);
+  },
   handleValidate: (props: ProjectAssignmentEditorProps) => (formData: ProjectAssignmentFormData) => { 
     const errors = {
       information: {}

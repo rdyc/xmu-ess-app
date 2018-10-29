@@ -1,3 +1,4 @@
+import { FormMode } from '@generic/types';
 import {
   Button,
   Dialog,
@@ -63,7 +64,7 @@ export const ProjectAssignmentDetailView: React.SFC<ProjectAssignmentDetailProps
         response.data &&
         <Grid container spacing={16}>
           <Grid item xs={12} md={4}>
-            <ProjectAssignment data={response.data} />
+            <ProjectAssignment formMode={FormMode.View} data={response.data} />
           </Grid>
           
           <Grid item xs={12} md={4}>

@@ -15,7 +15,7 @@ interface OwnProps extends WrappedFieldProps, BaseFieldProps {
   label?: string; 
   disabled?: boolean;
   filter?: IProjectRegistrationGetListFilter | undefined;
-  onChangeCallback?: (project: IProjectList) => void | undefined;
+  onSelected?: (project: IProjectList | undefined) => void | undefined;
 }
 
 interface OwnHandlers {
@@ -30,20 +30,18 @@ export type SelectProjectProps
   
 const handlerCreators: HandleCreators<SelectProjectProps, OwnHandlers> = {
   handleOnChange: (props: SelectProjectProps) => (e: React.ChangeEvent<HTMLSelectElement>) => { 
-    const { input, onChangeCallback } = props;
+    const { input, onSelected } = props;
     const { response } = props.projectRegisterState.list;
 
-    const value = e.currentTarget.value;
+    const value = e.target.value;
     
     input.onChange(value);
 
-    if (value !== '') {
-      if (response && response.data) {
-        const project = response.data.filter(item => item.uid === value)[0];
+    if (response && response.data) {
+      const project = response.data.filter(item => item.uid === value)[0];
 
-        if (project && onChangeCallback) {
-          onChangeCallback(project);
-        }
+      if (onSelected) {
+        onSelected(project);
       }
     }
   }

@@ -134,6 +134,8 @@ const projectAssignmentMember: React.SFC<AllProps> = props => {
             )
           }
         </List>
+
+        {props.children}
       </CardContent>
     </Card>
   );
