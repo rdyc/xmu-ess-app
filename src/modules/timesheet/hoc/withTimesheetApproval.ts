@@ -20,10 +20,8 @@ interface PropsFromState {
 interface PropsFromDispatch {
   timesheetApprovalDispatch: {
     // command
-    // createRequest: typeof timesheetPostRequest;
+    // createRequest: typeof timesheetApprovalPostRequest;
     // createDispose: typeof timesheetPostDispose;
-    // updateRequest: typeof timesheetPutRequest;
-    // updateDispose: typeof timesheetPutDispose;
 
     // query
     loadAllRequest: typeof timesheetApprovalGetAllRequest;

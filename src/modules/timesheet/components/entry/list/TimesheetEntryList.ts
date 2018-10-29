@@ -6,7 +6,7 @@ import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IListBarField } from '@layout/interfaces';
 import { TimesheetField } from '@timesheet/classes/types';
 import { TimesheetEntryListView } from '@timesheet/components/entry/list/TimesheetEntryListView';
-import { WithTimesheet, withTimesheet } from '@timesheet/hoc/withTimesheet';
+import { WithTimesheetEntry, withTimesheetEntry } from '@timesheet/hoc/withTimesheetEntry';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import {
@@ -56,7 +56,7 @@ interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
 }
 
 export type EntryListProps
-  = WithTimesheet
+  = WithTimesheetEntry
   & WithUser
   & WithLayout
   & WithNavBottom
@@ -239,7 +239,7 @@ const loadData = (props: EntryListProps): void => {
 };
 
 export const TimesheetEntryList = compose<EntryListProps, OwnOptions>(
-  withTimesheet,
+  withTimesheetEntry,
   withUser,
   withLayout,
   withNavBottom,

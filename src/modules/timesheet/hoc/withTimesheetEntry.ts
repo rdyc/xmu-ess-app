@@ -37,7 +37,7 @@ interface PropsFromDispatch {
   };
 }
 
-export interface WithTimesheet extends PropsFromState, PropsFromDispatch {}
+export interface WithTimesheetEntry extends PropsFromState, PropsFromDispatch {}
 
 const mapStateToProps = ({ timesheetGetAll, timesheetGetById }: IAppState) => ({
   timesheetState: {
@@ -62,5 +62,5 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   }
 });
 
-export const withTimesheet = (component: React.ComponentType) =>
+export const withTimesheetEntry = (component: React.ComponentType) =>
   connect(mapStateToProps, mapDispatchToProps)(component);

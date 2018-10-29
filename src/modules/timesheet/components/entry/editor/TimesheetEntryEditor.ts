@@ -12,7 +12,7 @@ import {
   TimesheetFormData,
 } from '@timesheet/components/entry/editor/forms/TimesheetEntryForm';
 import { TimesheetEntryEditorView } from '@timesheet/components/entry/editor/TimesheetEntryEditorView';
-import { WithTimesheet, withTimesheet } from '@timesheet/hoc/withTimesheet';
+import { WithTimesheetEntry, withTimesheetEntry } from '@timesheet/hoc/withTimesheetEntry';
 import { timesheetMessage } from '@timesheet/locales/messages/timesheetMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
@@ -55,7 +55,7 @@ interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
 }
 
 export type EntryEditorProps
-  = WithTimesheet
+  = WithTimesheetEntry
   & WithUser
   & WithLayout
   & WithAppBar
@@ -261,7 +261,7 @@ export default compose<EntryEditorProps, {}>(
   withLayout,
   withAppBar,
   withRouter,
-  withTimesheet,
+  withTimesheetEntry,
   injectIntl,
   withStateHandlers<OwnState, OwnStateUpdaters, {}>(createProps, stateUpdaters),
   withHandlers<EntryEditorProps, OwnHandlers>(handlerCreators),

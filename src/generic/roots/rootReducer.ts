@@ -11,7 +11,7 @@ import lookupReducers from '@lookup/store/reducers/lookupReducers';
 import mileageReducers from '@mileage/store/reducers/mileageReducers';
 import { projectReducers } from '@project/store/reducers/projectReducers';
 import purchaseReducers from '@purchase/store/reducers/purchaseReducers';
-import timesheetReducers from '@timesheet/store/reducers/timesheetReducers';
+import { timesheetReducers } from '@timesheet/store/reducers/timesheetReducers';
 import travelReducers from '@travel/store/reducers/travelReducer';
 import { combineReducers } from 'redux';
 import { reducer as reduxFormReducer } from 'redux-form';

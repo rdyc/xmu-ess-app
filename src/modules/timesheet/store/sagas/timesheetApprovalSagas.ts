@@ -7,9 +7,14 @@ import {
   timesheetApprovalGetByIdError,
   timesheetApprovalGetByIdRequest,
   timesheetApprovalGetByIdSuccess,
+  timesheetApprovalPostError,
+  timesheetApprovalPostRequest,
+  timesheetApprovalPostSuccess,
 } from '@timesheet/store/actions';
+import { flattenObject } from '@utils/flattenObject';
 // import { flattenObject } from '@utils/flattenObject';
 import saiyanSaga from '@utils/saiyanSaga';
+import { SubmissionError } from 'redux-form';
 // import { SubmissionError } from 'redux-form';
 import { all, fork, put, takeEvery } from 'redux-saga/effects';
 import { IApiResponse, objectToQuerystring } from 'utils';
@@ -44,7 +49,7 @@ function* watchAllFetchRequest() {
     });
   };
   
-  yield takeEvery(Action.APPROVAL_GET_ALL_REQUEST, worker);
+  yield takeEvery(Action.GET_ALL_REQUEST, worker);
 }
 
 function* watchByIdFetchRequest() {
@@ -73,13 +78,59 @@ function* watchByIdFetchRequest() {
     });
   };
 
-  yield takeEvery(Action.APPROVAL_GET_BY_ID_REQUEST, worker);
+  yield takeEvery(Action.GET_BY_ID_REQUEST, worker);
+}
+
+function* watchPostRequest() {
+  const worker = (action: ReturnType<typeof timesheetApprovalPostRequest>) => {
+    return saiyanSaga.fetch({
+      method: 'post',
+      path: `/v1/approvals/timesheet/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.timesheetUid}`,
+      payload: action.payload.data,
+      successEffects: (response: IApiResponse) => [
+        put(timesheetApprovalPostSuccess(response.body))
+      ],
+      successCallback: (response: IApiResponse) => {
+        action.payload.resolve(response.body.data);
+      },
+      failureEffects: (response: IApiResponse) => [
+        put(timesheetApprovalPostError(response.statusText))
+      ],
+      failureCallback: (response: IApiResponse) => {
+        if (response.status === 400) {
+          const errors: any = { 
+            // information -> based form section name
+            information: flattenObject(response.body.errors) 
+          };
+
+          action.payload.reject(new SubmissionError(errors));
+        } else {
+          action.payload.reject(response.statusText);
+        }
+      },
+      errorEffects: (error: TypeError) => [
+        put(timesheetApprovalPostError(error.message)),
+        put(
+          layoutAlertAdd({
+            time: new Date(),
+            message: error.message
+          })
+        )
+      ],
+      errorCallback: (error: any) => {
+        action.payload.reject(error);
+      }
+    });
+  };
+
+  yield takeEvery(Action.POST_REQUEST, worker);
 }
 
 function* timesheetApprovalSagas() {
   yield all([
     fork(watchAllFetchRequest),
     fork(watchByIdFetchRequest),
+    fork(watchPostRequest),
   ]);
 }
 

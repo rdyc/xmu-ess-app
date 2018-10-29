@@ -14,10 +14,10 @@ const initialState: IQuerySingleState<ITimesheetApprovalGetByIdRequest, ITimeshe
 
 const reducer: Reducer<IQuerySingleState<ITimesheetApprovalGetByIdRequest, ITimesheetDetail>> = (state = initialState, action) => {
   switch (action.type) {
-    case Action.APPROVAL_GET_BY_ID_REQUEST: return { ...state, isLoading: true, request: action.payload };
-    case Action.APPROVAL_GET_BY_ID_SUCCESS: return { ...state, isLoading: false, response: action.payload };
-    case Action.APPROVAL_GET_BY_ID_ERROR: return { ...state, isLoading: false, isError: true, errors: action.payload };
-    case Action.APPROVAL_GET_BY_ID_DISPOSE: return initialState;
+    case Action.GET_BY_ID_REQUEST: return { ...state, isLoading: true, request: action.payload };
+    case Action.GET_BY_ID_SUCCESS: return { ...state, isLoading: false, response: action.payload };
+    case Action.GET_BY_ID_ERROR: return { ...state, isLoading: false, isError: true, errors: action.payload };
+    case Action.GET_BY_ID_DISPOSE: return initialState;
     
     default: return state;
   }

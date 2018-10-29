@@ -1,7 +1,7 @@
 import { IQueryCollectionState } from '@generic/interfaces';
 import { ITimesheetGetAllRequest } from '@timesheet/classes/queries/entry';
 import { ITimesheet } from '@timesheet/classes/response';
-import { TimesheetAction as Action } from '@timesheet/store/actions';
+import { TimesheetEntryAction as Action } from '@timesheet/store/actions';
 import { Reducer } from 'redux';
 
 const initialState: IQueryCollectionState<ITimesheetGetAllRequest, ITimesheet> = {
@@ -23,4 +23,4 @@ const reducer: Reducer<IQueryCollectionState<ITimesheetGetAllRequest, ITimesheet
   }
 };
 
-export { reducer as timesheetGetAllReducer };
+export { reducer as timesheetEntryGetAllReducer };
