@@ -16,7 +16,8 @@ import {
   purchaseSettlementApprovalRouter,
   purchaseSettlementRouter,
 } from '@purchase/components/PurchaseRouter';
-import { timesheetApprovalRouter, timesheetRouter } from '@timesheet/components/timesheetRouter';
+import { timesheetApprovalRouter } from '@timesheet/components/routers/timesheetApprovalRouter';
+import { timesheetEntryRouter } from '@timesheet/components/routers/timesheetEntryRouter';
 import { travelApprovalRouter, travelRouter, travelSettlementRouter } from '@travel/components/travelRouter';
 import { ConnectedRouter } from 'connected-react-router';
 import { History } from 'history';
@@ -99,7 +100,7 @@ class App extends React.Component<AllProps> {
                         <Route path="/travel" component={travelRouter} />
                         <Route path="/travel/settlement" component={travelSettlementRouter} />
                         <Route path="/approval/travel" component={travelApprovalRouter} />                                                
-                        <Route path="/timesheet" component={timesheetRouter} />
+                        <Route path="/timesheet" component={timesheetEntryRouter} />
                         <Route path="/approval/timesheet" component={timesheetApprovalRouter} />
                         <Route path="/expense" component={ExpenseRouter} />
                         <Route path="/approval/expense" component={ExpenseApprovalRouter} />
