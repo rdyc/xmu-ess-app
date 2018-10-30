@@ -30,14 +30,20 @@ import lookupPositionSagas from '@lookup/store/sagas/positionSagas';
 import lookupSystemLimitSagas from '@lookup/store/sagas/systemLimitSagas';
 import mileageApprovalSagas from '@mileage/store/sagas/approval/mileageApprovalSagas';
 import mileageRequestSagas from '@mileage/store/sagas/request/mileageRequestSagas';
+import projectAcceptanceSagas from '@project/store/sagas/projectAcceptanceSagas';
+import projectApprovalSagas from '@project/store/sagas/projectApprovalSagas';
+import projectAssignmentSagas from '@project/store/sagas/projectAssignmentSagas';
 import projectOwnerSagas from '@project/store/sagas/projectOwnerSagas';
 import projectRegistrationSagas from '@project/store/sagas/projectRegistrationSagas';
 import projectSiteSagas from '@project/store/sagas/projectSiteSagas';
 import projectStatusSagas from '@project/store/sagas/projectStatusSagas';
 import purchaseSagas from '@purchase/store/sagas/purchaseSagas';
 import timesheetApprovalSagas from '@timesheet/store/sagas/timesheetApprovalSagas';
+import timesheetMileagesSagas from '@timesheet/store/sagas/timesheetMileagesSagas';
 import timesheetSagas from '@timesheet/store/sagas/timesheetSagas';
+import travelApprovalSagas from '@travel/store/sagas/travelApprovalSagas';
 import travelSagas from '@travel/store/sagas/travelSagas';
+import travelSettlementApprovalSagas from '@travel/store/sagas/travelSettlementApprovalSagas';
 import travelSettlementSagas from '@travel/store/sagas/travelSettlementSagas';
 import { all, fork } from 'redux-saga/effects';
 
@@ -80,10 +86,14 @@ export function* rootSaga() {
     fork(projectOwnerSagas),
     fork(projectStatusSagas),
     fork(projectSiteSagas),
+    fork(projectApprovalSagas),
+    fork(projectAssignmentSagas),
+    fork(projectAcceptanceSagas),
     
     // timesheet
     fork(timesheetSagas),
     fork(timesheetApprovalSagas),
+    fork(timesheetMileagesSagas),
     
     // mileage
     fork(mileageApprovalSagas),
@@ -96,6 +106,8 @@ export function* rootSaga() {
     // travel
     fork(travelSagas),
     fork(travelSettlementSagas),
+    fork(travelApprovalSagas),
+    fork(travelSettlementApprovalSagas),
     
     // purchase
     fork(purchaseSagas),

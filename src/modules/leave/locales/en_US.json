@@ -3,16 +3,19 @@
   "leave.subTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
   "leave.detail.title": "Leave Details",
   "leave.detail.subTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-  "leave.form.newTitle": "New Leave",
+  "leave.form.newTitle": "New Leave Request",
   "leave.form.newSubTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-  "leave.form.editTitle": "Modify Leave",
+  "leave.form.approval.newTitle": "Leave Approval",
+  "leave.form.approval.newSubTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "leave.form.editTitle": "Modify Leave Request",
   "leave.form.editSubTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-  "leave.infoTitle": "Registration",
+  "leave.infoTitle": "Request",
   "leave.infoSubTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-  
-  "leave.approval.title": "Leave Approvals",
-  "leave.approval.subTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
 
+  "leave.form.approval.detail.title": "Leave Approval Detail",
+  "leave.form.approval.subTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+
+  "leave.action.modify": "Modify",
   "leave.dialog.modifyTitle": "Modify Confirmation",
   "leave.dialog.modifyDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
   "leave.dialog.closeTitle": "Close Confirmation",
@@ -49,10 +52,13 @@
   "leave.field.information.reason.required": "Reason is required",
   "leave.field.information.reason.placeholder": "Type a reason name",
   
-  "leave.action.modify": "Modify",
-
   "leave.message.request.create.success": "A new PID {uid} has been created",
   "leave.message.request.create.failure": "Unable to process your submission",
   "leave.message.request.update.success": "Existing PID {uid} has been updated",
-  "leave.message.request.update.failure": "Unable to process your submission"
+  "leave.message.request.update.failure": "Unable to process your submission",
+  "leave.message.owner.emptyProps": "Some props are empty",
+  "leave.message.approval.approve.success": "An Leave {uid} has been approved",
+  "leave.message.approval.reject.success": "An Leave {uid} has been rejected",
+  "leave.message.approval.create.failure": "Unable to process your approval"
 }
+

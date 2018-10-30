@@ -417,8 +417,6 @@ const lifecycles: ReactLifeCycleFunctions<RegistrationDetailProps, OwnState> = {
     layoutDispatch.actionCentreHide();
 
     appBarDispatch.dispose();
-
-    // projectRegisterDispatch.loadDetailDispose();
   }
 };
 

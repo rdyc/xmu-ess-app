@@ -7,7 +7,8 @@ import { IProject, IProjectSite } from '@project/classes/response';
 import { ITravelSettlementItem, ITravelSummary } from '@travel/classes/response';
 
 export interface ITravelSettlementDetail {
-  uid: string; 
+  uid: string;
+  travelUid: string; 
   employeeUid: string;
   employee?: IAccountEmployee | null;
   positionUid: string;

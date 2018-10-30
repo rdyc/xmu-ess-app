@@ -25,5 +25,6 @@ export const OwnerForm = reduxForm<ProjectOwnerFormData, OwnProps>({
   form: 'projectOwner',
   touchOnChange: true,
   touchOnBlur: true,
-  enableReinitialize: true
+  enableReinitialize: true,
+  destroyOnUnmount: true
 })(OwnerFormView);

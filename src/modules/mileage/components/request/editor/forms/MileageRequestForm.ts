@@ -7,8 +7,8 @@ const formName = 'mileageRequest';
 
 export type MileageRequestFormData = {
   information: {
-    year: number;
-    month: number;
+    year: number | null;
+    month: number | null;
   };
 };
 
@@ -17,9 +17,8 @@ interface OwnProps {
 }
 
 interface FormValueProps {
-  // formIsItem: boolean | false;
-  formYear: number | null;
-  formMonth: number | null;
+  formYear?: number | undefined;
+  formMonth?: number | undefined;
 }
 
 export type MileageRequestFormProps = InjectedFormProps<
@@ -34,9 +33,7 @@ const selector = formValueSelector(formName);
 const mapStateToProps = (state: any): FormValueProps => {
   const year = selector(state, 'information.year');
   const month = selector(state, 'information.month');
-
   return {
-    // formIsItem:
     formYear: year,
     formMonth: month
   };

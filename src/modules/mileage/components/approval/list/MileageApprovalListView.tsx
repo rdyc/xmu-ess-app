@@ -14,7 +14,7 @@ import { FormattedDate, FormattedNumber, FormattedPlural } from 'react-intl';
 import { isArray } from 'util';
 
 export const MileageApprovalListView: React.SFC<
-MileageApprovalListProps
+  MileageApprovalListProps
 > = props => {
   const { handleGoToDetail } = props;
   const { isLoading, response } = props.mileageApprovalState.all;
@@ -24,7 +24,7 @@ MileageApprovalListProps
 
     return mileages.map((mileage, i) => (
       <div key={mileage.uid}>
-      {/* {mileage.statusType !== 'SST02' ?  : ''} */}
+        {/* {mileage.statusType !== 'SST02' ?  : ''} */}
         <ListItem
           button={!isLoading}
           key={mileage.uid}
@@ -38,18 +38,17 @@ MileageApprovalListProps
               <Typography noWrap color="primary" variant="body1">
                 {mileage.employee && mileage.employee.fullName}
               </Typography>
-              <Typography noWrap color="textSecondary" variant="caption">{mileage.notes || 'N/A'}</Typography>
             </Grid>
             <Grid item xs={4} sm={4}>
-              <Typography noWrap align="right" variant="body1">
-                {mileage.status && mileage.status.value}
-              </Typography>
               <Typography noWrap align="right" variant="caption">
                 <FormattedDate
                   month="short"
                   year="numeric"
                   value={new Date(mileage.year, mileage.month - 1)}
                 />
+              </Typography>
+              <Typography noWrap align="right" variant="body1" color="secondary">
+                {mileage.status && mileage.status.value}
               </Typography>
             </Grid>
           </Grid>
@@ -65,7 +64,7 @@ MileageApprovalListProps
       subheader={
         <ListSubheader component="div">
           {response &&
-            response.metadata && 
+            response.metadata &&
             response.metadata.paginate && (
               <Grid container spacing={24}>
                 <Grid item xs={6} sm={6}>

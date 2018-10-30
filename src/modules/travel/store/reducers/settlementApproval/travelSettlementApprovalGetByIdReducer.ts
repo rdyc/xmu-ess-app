@@ -1,7 +1,7 @@
 import { IQuerySingleState } from '@generic/interfaces';
 import { ITravelSettlementApprovalGetByIdRequest } from '@travel/classes/queries/settlementApproval';
 import { ITravelSettlementDetail } from '@travel/classes/response';
-import { TravelSettlementAction as Action } from '@travel/store/actions';
+import { TravelSettlementApprovalAction as Action } from '@travel/store/actions';
 import { Reducer } from 'redux';
 
 const initialState: IQuerySingleState<ITravelSettlementApprovalGetByIdRequest, ITravelSettlementDetail> = {

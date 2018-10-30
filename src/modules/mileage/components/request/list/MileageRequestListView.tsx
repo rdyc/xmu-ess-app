@@ -37,18 +37,17 @@ export const MileageRequestListView: React.SFC<
               <Typography noWrap color="primary" variant="body1">
                 {mileage.employee && mileage.employee.fullName}
               </Typography>
-              <Typography noWrap color="textSecondary" variant="caption">{mileage.notes || 'N/A'}</Typography>
             </Grid>
             <Grid item xs={4} sm={4}>
-              <Typography noWrap align="right" variant="body1">
-                {mileage.status && mileage.status.value}
-              </Typography>
               <Typography noWrap align="right" variant="caption">
                 <FormattedDate
                   month="short"
                   year="numeric"
                   value={new Date(mileage.year, mileage.month - 1)}
-                />
+                  />
+              </Typography>
+              <Typography noWrap align="right" variant="body1" color="secondary">
+                  {mileage.status && mileage.status.value}
               </Typography>
             </Grid>
           </Grid>

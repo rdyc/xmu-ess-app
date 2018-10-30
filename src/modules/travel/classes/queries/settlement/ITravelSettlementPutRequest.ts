@@ -1,5 +1,5 @@
 import { IBaseCommand } from '@generic/interfaces';
-import { ITravelSettlementPutPayload } from '@travel/classes/request';
+import { ITravelSettlementPutPayload } from '@travel/classes/request/settlement';
 
 export interface ITravelSettlementPutRequest extends IBaseCommand<ITravelSettlementPutPayload> {
   companyUid: string;

@@ -19,11 +19,7 @@ export const enum TravelApprovalAction {
   POST_REQUEST = '@@travel/approval/POST_REQUEST',
   POST_SUCCESS = '@@travel/approval/POST_SUCCESS',
   POST_ERROR = '@@travel/approval/POST_ERROR',
-  POST_DISPOSE = '@@travel/approval/POST_DISPOSE',
-  PUT_REQUEST = '@@travel/approval/PUT_REQUEST',
-  PUT_SUCCESS = '@@travel/approval/PUT_SUCCESS',
-  PUT_ERROR = '@@travel/approval/PUT_ERROR',
-  PUT_DISPOSE = '@@travel/approval/PUT_DISPOSE',
+  POST_DISPOSE = '@@travel/approval/POST_DISPOSE'
 }
 
 // get all travelApproval

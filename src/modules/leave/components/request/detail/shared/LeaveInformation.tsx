@@ -22,21 +22,21 @@ export const LeaveInformation: React.SFC<OwnProps> = props => {
           fullWidth
           contentEditable={false}
           margin="normal"
-          label={<FormattedMessage id="leave.field.uid" />}
+          label={<FormattedMessage id="leave.field.information.uid" />}
           value={data.uid}
         />
         <TextField
           fullWidth
           contentEditable={false}
           margin="normal"
-          label={<FormattedMessage id="leave.field.status" />}
+          label={<FormattedMessage id="leave.field.information.status" />}
           value={data.status ? data.status.value : 'N/A'}
         />
         <TextField
           fullWidth
           contentEditable={false}
           margin="normal"
-          label={<FormattedMessage id="leave.field.type" />}
+          label={<FormattedMessage id="leave.field.information.leaveType" />}
           value={data.leave ? data.leave.value : 'N/A'}
         />
         <TextField
@@ -44,14 +44,14 @@ export const LeaveInformation: React.SFC<OwnProps> = props => {
           contentEditable={false}
           hidden 
           margin="normal"
-          label={<FormattedMessage id="leave.field.regular" />}
+          label={<FormattedMessage id="leave.field.information.regularType" />}
           value={data.regular ? data.regular.leave ? data.regular.leave.name : 'N/A' : 'N/A'}
         />
         <TextField
           fullWidth
           contentEditable={false}
           margin="normal"
-          label={<FormattedMessage id="leave.field.start" />}
+          label={<FormattedMessage id="leave.field.information.start" />}
           value={intl.formatDate(data.start, {
             year: 'numeric',
             month: 'short',
@@ -62,7 +62,7 @@ export const LeaveInformation: React.SFC<OwnProps> = props => {
           fullWidth
           contentEditable={false}
           margin="normal"
-          label={<FormattedMessage id="leave.field.end" />}
+          label={<FormattedMessage id="leave.field.information.end" />}
           value={intl.formatDate(data.end, {
             year: 'numeric',
             month: 'short',
@@ -73,21 +73,21 @@ export const LeaveInformation: React.SFC<OwnProps> = props => {
           fullWidth
           contentEditable={false}
           margin="normal"
-          label={<FormattedMessage id="leave.field.name" />}
+          label={<FormattedMessage id="leave.field.information.address" />}
           value={data.address}
         />
         <TextField
           fullWidth
           contentEditable={false}
           margin="normal"
-          label={<FormattedMessage id="leave.field.contactNumber" />}
+          label={<FormattedMessage id="leave.field.information.contactNumber" />}
           value={data.contactNumber}
         />
         <TextField
           fullWidth
           contentEditable={false}
           margin="normal"
-          label={<FormattedMessage id="leave.field.reason" />}
+          label={<FormattedMessage id="leave.field.information.reason" />}
           value={data.reason}
         />
       </CardContent>
