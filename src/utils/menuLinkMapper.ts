@@ -90,7 +90,7 @@ export const menuLinkMapper = (menuUid: string) => {
       path = '/travel/settlement/request';
       break;
     case 'MNU41':
-      path = '/approval/travel/settlement';
+      path = '/approval/travel/settlement/request';
       break;
 
     case 'MNU02':

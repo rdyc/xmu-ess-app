@@ -17,7 +17,7 @@ import {
   purchaseSettlementRouter,
 } from '@purchase/components/PurchaseRouter';
 import { timesheetApprovalRouter, timesheetRouter } from '@timesheet/components/timesheetRouter';
-import { travelApprovalRouter, travelRouter, travelSettlementRouter } from '@travel/components/travelRouter';
+import { travelRouter } from '@travel/components/travelRouter';
 import { ConnectedRouter } from 'connected-react-router';
 import { History } from 'history';
 import * as React from 'react';
@@ -27,6 +27,9 @@ import { Route, Router, Switch } from 'react-router';
 import { Store } from 'redux';
 import { loadUser, OidcProvider, UserState } from 'redux-oidc';
 
+import { travelApprovalRouter } from '@travel/components/routers/travelApprovalRouters';
+import { travelSettlementApprovalRouter } from '@travel/components/routers/travelSettlementApprovalRouter';
+import { travelSettlementRouter } from '@travel/components/routers/travelSettlementRouter';
 import { IAppState } from './generic/interfaces';
 import AppLocale from './language';
 import config, { getCurrentLanguage } from './language/config';
@@ -98,7 +101,8 @@ class App extends React.Component<AllProps> {
                         <Route path="/approval/purchase/settlement" component={purchaseSettlementApprovalRouter} />
                         <Route path="/travel" component={travelRouter} />
                         <Route path="/travel/settlement" component={travelSettlementRouter} />
-                        <Route path="/approval/travel" component={travelApprovalRouter} />                                                
+                        <Route path="/approval/travel" component={travelApprovalRouter} />
+                        <Route path="/approval/travel/settlement" component={travelSettlementApprovalRouter} />                                                
                         <Route path="/timesheet" component={timesheetRouter} />
                         <Route path="/approval/timesheet" component={timesheetApprovalRouter} />
                         <Route path="/expense" component={ExpenseRouter} />

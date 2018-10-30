@@ -23,7 +23,7 @@ import {
 import { TravelSettlementApprovalListView } from './TravelSettlementApprovalListView';
 
 interface OwnHandlers {
-  handleGoToDetail: (travelUid: string) => void;
+  handleGoToDetail: (travelSettlementUid: string) => void;
   handleGoToNext: () => void;
   handleGoToPrevious: () => void;
   handleReloading: () => void;
@@ -104,12 +104,12 @@ const stateUpdaters: StateUpdaters<OwnOptions, OwnState, OwnStateUpdaters> = {
 };
 
 const handlerCreators: HandleCreators<TravelSettlementApprovalListProps, OwnHandlers> = {
-  handleGoToDetail: (props: TravelSettlementApprovalListProps) => (travelUid) => {
+  handleGoToDetail: (props: TravelSettlementApprovalListProps) => (travelSettlementUid) => {
     const { history } = props;
     const { isLoading } = props.travelSettlementApprovalState.all;
 
     if (!isLoading) {
-      history.push(`/approval/travel/details/${travelUid}`);
+      history.push(`/approval/travel/settlement/details/${travelSettlementUid}`);
     } 
   },
   handleGoToNext: (props: TravelSettlementApprovalListProps) => () => { 
@@ -149,8 +149,8 @@ const lifecycles: ReactLifeCycleFunctions<TravelSettlementApprovalListProps, Own
     layoutDispatch.changeView({
       uid: AppMenu.TravelSettlementApproval,
       parentUid: AppMenu.Travel,
-      title: intl.formatMessage({id: 'travelApproval.title'}),
-      subTitle : intl.formatMessage({id: 'travelApproval.subTitle'})
+      title: intl.formatMessage({id: 'travelSettlement.Approvaltitle'}),
+      subTitle : intl.formatMessage({id: 'travelSettlement.ApprovalsubTitle'})
     });
 
     layoutDispatch.modeListOn();
@@ -163,7 +163,7 @@ const lifecycles: ReactLifeCycleFunctions<TravelSettlementApprovalListProps, Own
       onSyncCallback: handleReloading,
       onOrderCallback: handleChangeOrder,
       onDirectionCallback: handleChangeSort,
-      onAddCallback: () => history.push('approval/travel/form'),
+      onAddCallback: () => history.push('approval/travel/settlement/form'),
       onSizeCallback: handleChangeSize,
     });
 

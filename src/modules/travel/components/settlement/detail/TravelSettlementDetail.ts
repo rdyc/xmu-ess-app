@@ -5,7 +5,7 @@ import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IAppBarMenu } from '@layout/interfaces';
 import { TravelUserAction } from '@travel/classes/types';
-import { WithTravelRequest } from '@travel/hoc/withTravelRequest';
+import { WithTravelRequest, withTravelRequest } from '@travel/hoc/withTravelRequest';
 import { WithTravelSettlement, withTravelSettlement } from '@travel/hoc/withTravelSettlement';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
@@ -34,6 +34,8 @@ interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
 }
 
 interface OwnRouteParams {
+  companyUid: string;
+  positionUid: string;
   travelSettlementUid: string;
 }
 
@@ -76,13 +78,24 @@ const handlerCreators: HandleCreators<SettlementDetailProps, Handler> = {
   handleTravelRefresh: (props: SettlementDetailProps) => () => { 
     const { match } = props;
     const { user } = props.userState;
-    const { loadDetailRequest } = props.travelSettlementDispatch;
+    const { response } = props.travelSettlementState.detail;
+    const { loadRequest } = props.travelSettlementDispatch;
+    const { loadDetailRequest } = props.travelRequestDispatch;
 
     if (user) {
-      loadDetailRequest({
+      loadRequest({
         traveSettlementlUid: match.params.travelSettlementUid,
         companyUid: user.company.uid,
         positionUid: user.position.uid,
+      });
+    }
+
+    if (response) {
+      // load travel request
+      loadDetailRequest ({
+        companyUid: match.params.companyUid,
+        positionUid: match.params.positionUid,
+        travelUid: response.data.travelUid 
       });
     }
   },
@@ -131,15 +144,17 @@ const lifecycles: ReactLifeCycleFunctions<SettlementDetailProps, OwnState> = {
       match, layoutDispatch, appBarDispatch, intl, 
       handleTravelRefresh, handleTravelModify, 
     } = this.props;
-
+    
     const { user } = this.props.userState;
-    const { loadDetailRequest } = this.props.travelSettlementDispatch;
+    const { response } = this.props.travelSettlementState.detail;
+    const { loadRequest } = this.props.travelSettlementDispatch;
+    const { loadDetailRequest } = this.props.travelRequestDispatch;
 
     layoutDispatch.changeView({
       uid: AppMenu.TravelSettlementRequest,
       parentUid: AppMenu.Travel,
-      title: intl.formatMessage({id: 'travel.detail.title'}),
-      subTitle : intl.formatMessage({id: 'travel.detail.subTitle'})
+      title: intl.formatMessage({id: 'travelSettlement.detail.title'}),
+      subTitle : intl.formatMessage({id: 'travelSettlement.detail.subTitle'})
     });
 
     layoutDispatch.navBackShow();
@@ -163,12 +178,20 @@ const lifecycles: ReactLifeCycleFunctions<SettlementDetailProps, OwnState> = {
     appBarDispatch.assignCallback(handleMenuClick);
 
     if (user) {
-      loadDetailRequest({
+      loadRequest({
         traveSettlementlUid: match.params.travelSettlementUid,
         companyUid: user.company.uid,
         positionUid: user.position.uid,
       });
-    }
+    }    
+    if (response) {
+    // load travel request
+    loadDetailRequest ({
+      companyUid: match.params.companyUid,
+      positionUid: match.params.positionUid,
+      travelUid: response.data.travelUid 
+    });
+  }
   },
   componentWillReceiveProps(nextProps: SettlementDetailProps) {
     if (nextProps.travelSettlementState.detail.response !== this.props.travelSettlementState.detail.response) {
@@ -224,6 +247,7 @@ export const TravelSettlementDetail = compose<SettlementDetailProps, {}>(
   withAppBar,
   withRouter,
   withTravelSettlement,
+  withTravelRequest,
   injectIntl,
   withStateHandlers<OwnState, OwnStateUpdaters, {}>(createProps, stateUpdaters), 
   withHandlers<SettlementDetailProps, Handler>(handlerCreators),
