@@ -3,7 +3,9 @@ import { FormMode } from '@generic/types';
 import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
+import { IProjectAssignmentPatchPayload } from '@project/classes/request/assignment';
 import { IProjectList } from '@project/classes/response';
+import { ProjectAssignmentFormData } from '@project/components/assignment/editor/ProjectAssignmentForm';
 import { WithProjectAssignment, withProjectAssignment } from '@project/hoc/withProjectAssignment';
 import { WithProjectRegistration, withProjectRegistration } from '@project/hoc/withProjectRegistration';
 import { projectOwnerMessage } from '@project/locales/messages/projectOwnerMessage';
@@ -25,7 +27,6 @@ import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
 import { isNullOrUndefined, isObject } from 'util';
 
-import { ProjectAssignmentFormData } from '@project/components/assignment/editor/ProjectAssignmentForm';
 import { ProjectAssignmentEditorView } from './ProjectAssignmentEditorView';
 
 interface OwnHandlers {
@@ -81,40 +82,38 @@ const handlerCreators: HandleCreators<ProjectAssignmentEditorProps, OwnHandlers>
     return errors;
   },
   handleSubmit: (props: ProjectAssignmentEditorProps) => (formData: ProjectAssignmentFormData) => { 
-    // const { assignmentUid, intl } = props;
-    // const { user } = props.userState;
-    // const { updateRequest } = props.projectOwnerDispatch;
-    // const { information } = formData;
+    const { intl } = props;
+    const { user } = props.userState;
+    const { patchRequest } = props.projectAssignmentDispatch;
+    const { information } = formData;
 
-    // // user checking
-    // if (!user) {
-    //   return Promise.reject('user was not found');
-    // }
+    // user checking
+    if (!user) {
+      return Promise.reject('user was not found');
+    }
 
-    // // props checking
-    // if (!assignmentUid || !information.employeeUid || !information.projectType) {
-    //   const message = intl.formatMessage(projectOwnerMessage.emptyProps);
+    // props checking
+    if (!information.projectUid) {
+      const message = intl.formatMessage(projectOwnerMessage.emptyProps);
 
-    //   return Promise.reject(message);
-    // }
+      return Promise.reject(message);
+    }
 
-    // // generate payload
-    // const payload: IProjectOwnerPutPayload = {
-    //   employeeUid: information.employeeUid,
-    //   projectType: information.projectType
-    // };
+    // generate payload
+    const payload: IProjectAssignmentPatchPayload = {
+      items: formData.items
+    };
 
-    // // dispatch update request
-    // return new Promise((resolve, reject) => {
-    //   updateRequest({
-    //     projectUid, 
-    //     resolve, 
-    //     reject,
-    //     companyUid: user.company.uid,
-    //     positionUid: user.position.uid,
-    //     data: payload, 
-    //   });
-    // });
+    // dispatch update request
+    return new Promise((resolve, reject) => {
+      patchRequest({
+        resolve, 
+        reject,
+        projectUid: information.projectUid || '', 
+        companyUid: user.company.uid,
+        data: payload, 
+      });
+    });
   },
   handleSubmitSuccess: (props: ProjectAssignmentEditorProps) => (response: boolean) => {
     const { formMode, intl, history, projectUid } = props;

@@ -1,6 +1,6 @@
 import { IBasePayload } from '@generic/interfaces';
 
-interface IProjectAssignmentItem {
+export interface IProjectAssignmentItem {
   uid: string | null;
   employeeUid: string;
   role: string;

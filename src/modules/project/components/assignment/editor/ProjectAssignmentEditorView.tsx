@@ -44,8 +44,8 @@ export const ProjectAssignmentEditorView: React.SFC<ProjectAssignmentEditorProps
           initialValues.items.push({
             uid: item.uid,
             employeeUid: item.employeeUid,
-            role: item.role,
-            jobDescription: item.jobDescription,
+            role: item.role || '',
+            jobDescription: item.jobDescription || '',
             mandays: item.mandays
           });
         });

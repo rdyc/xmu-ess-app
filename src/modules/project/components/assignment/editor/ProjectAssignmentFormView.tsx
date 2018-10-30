@@ -4,11 +4,9 @@ import { InputText } from '@layout/components/input/text';
 import { Submission } from '@layout/components/submission/Submission';
 import { Button, Card, CardContent, CardHeader, Grid, IconButton, Typography } from '@material-ui/core';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
+import { IProjectAssignmentItem } from '@project/classes/request/assignment';
 import { ProjectAssignment } from '@project/components/assignment/detail/shared/ProjectAssignment';
-import {
-  ProjectAssignmentFormProps,
-  ProjectAssignmentItem,
-} from '@project/components/assignment/editor/ProjectAssignmentForm';
+import { ProjectAssignmentFormProps } from '@project/components/assignment/editor/ProjectAssignmentForm';
 import { SelectProject } from '@project/components/select/project';
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
@@ -17,7 +15,7 @@ import { Field, FieldArray, FormSection, WrappedFieldArrayProps } from 'redux-fo
 export const ProjectAssignmentFormView: React.SFC<ProjectAssignmentFormProps> = props => {
   const { formMode, projectActive, projectFilter, handleProjectChange } = props;
 
-  const componentMember = (context: WrappedFieldArrayProps<ProjectAssignmentItem>) => (
+  const componentMember = (context: WrappedFieldArrayProps<IProjectAssignmentItem>) => (
     <Grid container spacing={16}>
       {
         context.fields.map((field, index) => 
