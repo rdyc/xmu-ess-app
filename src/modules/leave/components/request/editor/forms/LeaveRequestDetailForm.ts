@@ -1,7 +1,6 @@
 import { SelectSystem, SelectSystemOption } from '@common/components/select';
 import { FormMode } from '@generic/types';
-// import { FieldInputLeave } from '@layout/components/formFields/FieldInputLeave';
-import { InputDate } from '@layout/components/input/date';
+import { InputDateLeave } from '@layout/components/input/date';
 import { InputText } from '@layout/components/input/text';
 import { LeaveRequestDetailFormView } from '@leave/components/request/editor/forms/LeaveRequestDetailFormView';
 import { InputLeave } from '@lookup/components/leave/input';
@@ -67,7 +66,7 @@ const handlerCreators: HandleCreators<RequestDetailFormProps, OwnHandlers> = {
         fieldProps = {
           required: true,
           placeholder: intl.formatMessage({id: `leave.field.${name}.placeholder`}),
-          component: InputDate
+          component: InputDateLeave
         };
         break;
         
@@ -76,7 +75,7 @@ const handlerCreators: HandleCreators<RequestDetailFormProps, OwnHandlers> = {
           required: true,
           disabled: isRegularType,
           placeholder: intl.formatMessage({id: `leave.field.${name}.placeholder`}),
-          component: InputDate
+          component: InputDateLeave
         };
         break;
       
