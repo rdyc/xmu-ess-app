@@ -13,7 +13,7 @@ import {
 } from '@mileage/hoc/withMileageApproval';
 import { mileageMessage } from '@mileage/locales/messages/mileageMessage';
 import { IWorkflowApprovalItemPayload } from '@organization/classes/request/workflow/approval';
-import { WorkflowApprovalFormData } from '@organization/components/workflow/approval/WorkflowApprovalForm';
+import { WorkflowApprovalFormData } from '@organization/components/workflow/approval/WorkflowApprovalMileageItemForm';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import {

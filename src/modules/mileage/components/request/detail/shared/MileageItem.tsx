@@ -2,9 +2,7 @@ import {
   Card,
   CardContent,
   CardHeader,
-  Checkbox,
   Divider,
-  FormControlLabel,
   Grid,
   List,
   ListItem,
@@ -20,20 +18,17 @@ import {
   injectIntl
 } from 'react-intl';
 import { compose } from 'recompose';
-import { Field } from 'redux-form';
 
 interface OwnProps {
   items: IMileageRequestItem[] | null | undefined;
-  approval: boolean;
 }
 
 type AllProps = OwnProps & InjectedIntlProps;
 
 const mileageItem: React.SFC<AllProps> = props => {
-  const { items, intl, approval } = props;
+  const { items, intl } = props;
   const len = items && items.length - 1;
 
-  // debugger;
   const render = (
     <Card square>
       <CardHeader
@@ -51,7 +46,7 @@ const mileageItem: React.SFC<AllProps> = props => {
                 />
               </ListItem>
             )}
-          {items && !approval &&
+          {items &&
             items.map((item, index) => (
               <div key={item.uid}>
                 <ListItem disableGutters key={item.uid}>
@@ -60,7 +55,6 @@ const mileageItem: React.SFC<AllProps> = props => {
                       <Typography noWrap color="primary" variant="body2">
                         {item.customer && item.customer.name}
                       </Typography>
-                      <Typography>APPROVAL {approval}</Typography>
                       <Typography noWrap variant="body1">
                         {item.projectUid} &bull;{' '}
                         {item.project && item.project.name}
@@ -97,30 +91,6 @@ const mileageItem: React.SFC<AllProps> = props => {
                   </Grid>
                 </ListItem>
                 {len !== index && <Divider />}
-              </div>
-            ))}
-            {items && approval && items.map((item, index) => (
-              <div key={index}>
-                <FormControlLabel 
-                  label={item.uid}
-                  control={
-                    <Field 
-                      type="checkbox"
-                      name={`${item.uid}`}
-                      component={
-                        ({ input, meta }: any) => (
-                          <Checkbox 
-                            {...input}
-                            value={item.uid}
-                            disabled={meta.submitting}
-                            onFocus={undefined}
-                            onBlur={undefined}
-                          />
-                        )
-                      }
-                    />
-                  }
-                />
               </div>
             ))}
         </List>

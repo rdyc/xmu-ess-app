@@ -71,9 +71,9 @@ export const MileageRequestDetailView: React.SFC<
             <Grid item xs={12} md={4}>
               <MileageInformation data={response.data} />
             </Grid>
-            <Grid item xs={8}>
+            <Grid item xs={12} md={8}>
               {response.data.items && response.data.workflow && (
-                <MileageItem items={response.data.items} approval={response.data.workflow.isApproval}/>
+                <MileageItem items={response.data.items}/>
               )}
             </Grid>
             <Grid item xs={12} sm={12} md={8} xl={3}>

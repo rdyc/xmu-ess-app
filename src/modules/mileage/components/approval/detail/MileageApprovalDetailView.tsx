@@ -1,8 +1,9 @@
 import { Grid, Typography } from '@material-ui/core';
+import { MileageApprovalForm } from '@mileage/components/approval/detail/forms/MileageApprovalForm';
 import { MileageApprovalDetailProps } from '@mileage/components/approval/detail/MileageApprovalDetail';
 import { MileageInformation } from '@mileage/components/request/detail/shared/MileageInformation';
 import { MileageItem } from '@mileage/components/request/detail/shared/MileageItem';
-import { WorkflowApprovalForm } from '@organization/components/workflow/approval/WorkflowApprovalForm';
+import { WorkflowApprovalForm } from '@organization/components/workflow/approval/WorkflowApprovalMileageItemForm';
 import { WorkflowHistory } from '@organization/components/workflow/history/WorkflowHistory';
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
@@ -42,15 +43,20 @@ export const MileageApprovalDetailView: React.SFC<
             <Grid item xs={12} md={4}>
               <MileageInformation data={response.data} />
             </Grid>
-            <Grid item xs={8}>
-              {response.data.items && response.data.workflow && (
-                <MileageItem items={response.data.items} approval={response.data.workflow.isApproval}/>
-              )}
+            <Grid item xs={12} md={8}>
+              {response.data.items &&
+                response.data.workflow &&
+                ((!response.data.workflow.isApproval && (
+                  <MileageItem items={response.data.items} />
+                )) ||
+                  (response.data.workflow.isApproval && (
+                    <MileageApprovalForm />
+                  )))}
             </Grid>
-            <Grid item xs={12} sm={12} md={8} xl={3}>
+            <Grid item xs={12} md={8}>
               <WorkflowHistory data={response.data.workflow} />
             </Grid>
-            <Grid item xs={12} sm={12} md={8} xl={3}>
+            <Grid item xs={12} md={4}>
               {response.data.workflow &&
                 response.data.workflow.isApproval && (
                   <WorkflowApprovalForm
