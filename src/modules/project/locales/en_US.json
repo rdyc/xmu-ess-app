@@ -146,12 +146,17 @@
   "project.assignment.section.create.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
   "project.assignment.section.member.title": "Members",
   "project.assignment.section.member.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-
+  "project.assignment.section.member.empty": "No members defined",
+  "project.assignment.section.member.action.add": "Add",
+  "project.assignment.section.member.action.remove": "Remove",
+  "project.assignment.section.member.action.save": "Save",
+  
   "project.assignment.form.request.title": "Create Assignment",
   "project.assignment.form.request.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
 
   "project.assignment.field.information.uid": "Assignment ID",
   "project.assignment.field.information.projectUid": "Project ID",
+  "project.assignment.field.information.projectUid.required": "Project id is required",
   "project.assignment.field.information.projectUid.placeholder": "Select a project",
   "project.assignment.field.information.assignedHours": "Assigned",
   "project.assignment.field.information.unassignedHours": "Unassigned",

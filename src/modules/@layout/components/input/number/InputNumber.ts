@@ -28,7 +28,7 @@ const createProps: mapper<InputNumberProps, OwnState> = (props: InputNumberProps
   const { input } = props;
 
   return { 
-    value: input.value
+    value: input.value || ''
   };
 };
 
@@ -38,6 +38,6 @@ const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
   }),
 };
 
-export const InputNumber = compose<InputNumberProps, OwnState>(
+export const InputNumber = compose<InputNumberProps, OwnProps>(
   withStateHandlers<OwnState, OwnStateUpdaters>(createProps, stateUpdaters),
 )(InputNumberView);

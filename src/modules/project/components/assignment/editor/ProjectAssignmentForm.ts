@@ -4,6 +4,8 @@ import { withUser } from '@layout/hoc/withUser';
 import { WithUser } from '@lookup/components/leave';
 import { IProjectRegistrationGetListFilter } from '@project/classes/filters/registration';
 import { IProjectAssignmentDetail, IProjectList } from '@project/classes/response';
+import { ProjectAssignmentFormView } from '@project/components/assignment/editor/ProjectAssignmentFormView';
+import { connect } from 'react-redux';
 import {
   compose,
   HandleCreators,
@@ -14,9 +16,9 @@ import {
   withHandlers,
   withStateHandlers,
 } from 'recompose';
-import { InjectedFormProps, reduxForm } from 'redux-form';
+import { getFormValues, InjectedFormProps, reduxForm } from 'redux-form';
 
-import { ProjectAssignmentFormView } from '@project/components/assignment/editor/ProjectAssignmentFormView';
+const formName = 'projectAssignment';
 
 export interface ProjectAssignmentItem {
   uid: string | null;
@@ -38,16 +40,20 @@ interface OwnProps {
 }
 
 interface OwnHandlers {
-  onProjectChange: (project: IProjectList) => void;
+  handleProjectChange: (project: IProjectList) => void;
 }
 
 interface OwnState {
-  selectedProject?: IProjectAssignmentDetail | undefined;
+  projectActive?: IProjectAssignmentDetail | undefined;
   projectFilter?: IProjectRegistrationGetListFilter | undefined;
 }
 
 interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
   setProject: StateHandler<OwnState>;
+}
+
+interface FormValueProps {
+  formValues: ProjectAssignmentFormData;
 }
 
 export type ProjectAssignmentFormProps 
@@ -56,7 +62,8 @@ export type ProjectAssignmentFormProps
   & OwnProps
   & OwnHandlers
   & OwnState
-  & OwnStateUpdaters;
+  & OwnStateUpdaters
+  & FormValueProps;
 
 const createProps: mapper<ProjectAssignmentFormProps, OwnState> = (props: ProjectAssignmentFormProps): OwnState => {
   const { user } = props.userState;
@@ -78,12 +85,13 @@ const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
 
     if (!project) {
       return {
-        selectedProject: undefined
+        projectActive: undefined
       };
     }
 
     return {
-      selectedProject: { 
+      ...prevState,
+      projectActive: { 
         ...project,
         uid: '-',
         projectUid: project.uid, 
@@ -97,23 +105,28 @@ const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
 };
 
 const handlerCreators: HandleCreators<ProjectAssignmentFormProps, OwnHandlers> = {
-  onProjectChange: (props: ProjectAssignmentFormProps) => (project: IProjectList | undefined) => { 
+  handleProjectChange: (props: ProjectAssignmentFormProps) => (project: IProjectList | undefined) => { 
     const { setProject } = props;
 
     setProject(project);
   }
 };
 
+const mapStateToProps = (state: any): FormValueProps => ({
+  formValues: getFormValues(formName)(state) as ProjectAssignmentFormData
+});
+
 const enhance = compose<ProjectAssignmentFormProps, OwnProps & InjectedFormProps<ProjectAssignmentFormData, OwnProps>>(
+  connect(mapStateToProps),
   withUser,
   withStateHandlers(createProps, stateUpdaters), 
   withHandlers(handlerCreators)
 )(ProjectAssignmentFormView);
 
 export const ProjectAssignmentForm = reduxForm<ProjectAssignmentFormData, OwnProps>({
-  form: 'projectAssignment',
+  form: formName,
   touchOnChange: true,
   touchOnBlur: true,
-  enableReinitialize: true,
+  enableReinitialize: false, updateUnregisteredFields: false,
   destroyOnUnmount: true
 })(enhance);

@@ -1,5 +1,5 @@
 import { FormMode } from '@generic/types';
-import { Card, CardContent, CardHeader, TextField } from '@material-ui/core';
+import { Card, CardContent, TextField } from '@material-ui/core';
 import { IProjectAssignmentDetail } from '@project/classes/response';
 import * as React from 'react';
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
@@ -27,10 +27,6 @@ const projectAssignment: React.SFC<AllProps> = props => {
 
   const render = (
     <Card square>
-      <CardHeader 
-        title={<FormattedMessage id="project.infoTitle"/>}
-        subheader={<FormattedMessage id="project.infoSubTitle" />}
-      />
       <CardContent>
         {props.children}
 

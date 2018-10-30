@@ -70,11 +70,11 @@ const handlerCreators: HandleCreators<ProjectAssignmentEditorProps, OwnHandlers>
       information: {}
     };
   
-    const requiredFields = ['employeeUid', 'projectType'];
+    const requiredFields = ['projectUid'];
   
     requiredFields.forEach(field => {
       if (!formData.information[field] || isNullOrUndefined(formData.information[field])) {
-        errors.information[field] = props.intl.formatMessage({id: `project.field.information.${field}.required`});
+        errors.information[field] = props.intl.formatMessage({id: `project.assignment.field.information.${field}.required`});
       }
     });
     
