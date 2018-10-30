@@ -1,10 +1,10 @@
 import { IQueryCollectionState, IQuerySingleState } from '@generic/interfaces';
 import { 
- ISummaryBillableRequest,
- ISummaryEffectivenessRequest,
- ISummaryProfitabilityRequest,
- ISummaryProgressRequest,
- ISummaryWinningRequest
+ ISummaryGetBillableRequest,
+ ISummaryGetEffectivenessRequest,
+ ISummaryGetProfitabilityRequest,
+ ISummaryGetProgressRequest,
+ ISummaryGetWinningRequest
 } from '@summary/classes/queries';
 import { ISummaryBillable } from '@summary/classes/response/billable';
 import { ISummaryEffectiveness } from '@summary/classes/response/effectiveness';
@@ -13,9 +13,9 @@ import { ISummaryProgress } from '@summary/classes/response/progress';
 import { ISummaryWinning } from '@summary/classes/response/winning';
 
 export interface ISummaryState {
-  summaryBillable: IQueryCollectionState<ISummaryBillableRequest, ISummaryBillable>;
-  summaryEffectiveness: IQuerySingleState<ISummaryEffectivenessRequest, ISummaryEffectiveness>;
-  summaryProfitability: IQuerySingleState<ISummaryProfitabilityRequest, ISummaryProfitability>;
-  summaryProgress: IQueryCollectionState<ISummaryProgressRequest, ISummaryProgress>;
-  summaryWinning: IQueryCollectionState<ISummaryWinningRequest, ISummaryWinning>;
+  summaryGetBillable: IQueryCollectionState<ISummaryGetBillableRequest, ISummaryBillable>;
+  summaryGetEffectiveness: IQuerySingleState<ISummaryGetEffectivenessRequest, ISummaryEffectiveness>;
+  summaryGetProfitability: IQuerySingleState<ISummaryGetProfitabilityRequest, ISummaryProfitability>;
+  summaryGetProgress: IQueryCollectionState<ISummaryGetProgressRequest, ISummaryProgress>;
+  summaryGetWinning: IQueryCollectionState<ISummaryGetWinningRequest, ISummaryWinning>;
 }

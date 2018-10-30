@@ -1,6 +1,6 @@
 import { ISummaryBillableFilter } from '@summary/classes/filters';
 
-export interface ISummaryBillableRequest {
+export interface ISummaryGetBillableRequest {
   readonly filter: ISummaryBillableFilter | undefined;
   companyUid: string;
 }

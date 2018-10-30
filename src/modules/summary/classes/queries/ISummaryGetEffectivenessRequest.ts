@@ -1,5 +1,5 @@
 import { ISummaryEffectivenessFilter } from '@summary/classes/filters';
 
-export interface ISummaryEffectivenessRequest {
+export interface ISummaryGetEffectivenessRequest {
   readonly filter: ISummaryEffectivenessFilter | undefined;
 }
