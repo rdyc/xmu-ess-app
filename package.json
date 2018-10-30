@@ -28,7 +28,6 @@
     "@types/history": "^4.7.0",
     "@types/jest": "^23.3.3",
     "@types/node": "^10.11.4",
-    "@types/qs": "^6.5.1",
     "@types/react": "^16.4.14",
     "@types/react-dom": "^16.0.8",
     "@types/react-intl": "^2.3.11",
@@ -79,5 +78,7 @@
     "typescript": "^3.1.1",
     "utility-types": "^2.1.0"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "@types/qs": "^6.5.1"
+  }
 }

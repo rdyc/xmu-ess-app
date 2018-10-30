@@ -16,7 +16,7 @@ interface OwnProps {
 }
 
 interface OwnHandlers {
-  handleSelected: (items: IPurchaseItemRequest) => boolean;
+  handleSelected: (items: IPurchaseItemRequest) => any;
 }
 
 export type PurchaseRequestItemFormProps
@@ -31,25 +31,26 @@ export type PurchaseRequestItemFormProps
 
 const handlerCreators: HandleCreators<PurchaseRequestItemFormProps, OwnHandlers> = {
   handleSelected: (props: PurchaseRequestItemFormProps) => (items: IPurchaseItemRequest): boolean => {
-    const { context, intl } = props;
-    const { alertAdd } = props.layoutDispatch;
+    // const { context, intl } = props;
+    const { context } = props;
+    // const { alertAdd } = props.layoutDispatch;
 
     try {
-      // get all
-      const _items = context.fields.getAll();
+      // // get all
+      // const _items = context.fields.getAll();
 
-      // check existing
-      const isExist = _items.filter(item => item.uid === items.uid).length > 0;
+      // // check existing
+      // const isExist = _items.filter(item => item.uid === items.uid).length > 0;
 
-      // don't insert if exist
-      if (isExist) {
-        alertAdd({
-          time: new Date,
-          message: intl.formatMessage({ id: 'purchase.message.purchaseRequest.item.duplication' })
-        });
+      // // don't insert if exist
+      // if (isExist) {
+      //   alertAdd({
+      //     time: new Date,
+      //     message: intl.formatMessage({ id: 'purchase.message.purchaseRequest.item.duplication' })
+      //   });
 
-        return false;
-      }
+      //   return false;
+      // }
 
       // go away
       context.fields.push({

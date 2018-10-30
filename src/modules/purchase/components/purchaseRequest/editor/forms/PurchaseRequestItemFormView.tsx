@@ -11,6 +11,7 @@ import {
 } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
+import LockIcon from '@material-ui/icons/Lock';
 import { PurchaseRequestItemFormProps } from '@purchase/components/purchaseRequest/editor/forms/PurchaseRequestItemForm';
 import * as classNames from 'classnames';
 import * as React from 'react';
@@ -40,7 +41,14 @@ export const PurchaseRequestItemFormView: React.SFC<PurchaseRequestItemFormProps
                       alt={items.uid}
                   </ListItemAvatar> */}
                   <ListItemText
-                    primary={items.request}
+                    primary={items.uid}
+                  // secondary={items.description}
+                  />
+                  <ListItemText
+                    secondary={items.request}
+                  // secondary={items.description}
+                  />
+                  <ListItemText
                     secondary={items.description}
                   />
                   <ListItemSecondaryAction>
@@ -53,8 +61,11 @@ export const PurchaseRequestItemFormView: React.SFC<PurchaseRequestItemFormProps
             })
           }
           <Divider className={classNames(classes.marginFarTop, classes.marginFarBottom)} />
+          <IconButton onClick={() => context.fields.push({ uid: 'New', description: 'N/A', request: 0 })}>
+            <AddIcon />
+          </IconButton>
           <IconButton >
-                <AddIcon/>
+            <LockIcon />
           </IconButton>
         </List>
       </CardContent>

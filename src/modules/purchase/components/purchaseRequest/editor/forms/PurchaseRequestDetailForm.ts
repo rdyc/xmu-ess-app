@@ -5,7 +5,6 @@ import { InputNumber } from '@layout/components/input/number';
 import { InputText } from '@layout/components/input/text';
 import { InputCustomer } from '@lookup/components/customer/input';
 import { PurchaseRequestDetailFormView } from '@purchase/components/purchaseRequest/editor/forms/PurchaseRequestDetailFormView';
-// import { WithAllowedType, withAllowedType } from '@purchase/hoc/withAllowedType';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose, HandleCreators, withHandlers } from 'recompose';
 import { BaseFieldsProps } from 'redux-form';
@@ -28,7 +27,6 @@ interface OwnHandlers {
 export type PurchaseRequestDetailFormProps 
   = OwnProps
   & OwnHandlers
-  // & WithAllowedProjectType
   & InjectedIntlProps;
 
 const handlerCreators: HandleCreators<PurchaseRequestDetailFormProps, OwnHandlers> = {
@@ -45,14 +43,7 @@ const handlerCreators: HandleCreators<PurchaseRequestDetailFormProps, OwnHandler
   
     switch (fieldName) {
       case 'uid':
-      case 'notes':
-        fieldProps = {
-          disabled: true,
-          placeholder: intl.formatMessage({id: `purchase.field.${name}.placeholder`}),
-          component: InputText
-        };
-        break;
-
+      
       case 'customerUid': 
         fieldProps = {
           required: true,
@@ -61,7 +52,7 @@ const handlerCreators: HandleCreators<PurchaseRequestDetailFormProps, OwnHandler
         };
         break;
 
-      case 'name':
+      case 'project':
         fieldProps = {
           required: formMode === FormMode.New,
           category: 'project',
@@ -109,13 +100,13 @@ const handlerCreators: HandleCreators<PurchaseRequestDetailFormProps, OwnHandler
         };
         break;
 
-      case 'requestIDR':
-        fieldProps = {
-          type: 'number',
-          disabled: true,
-          component: InputNumber
-        };
-        break;
+      // case 'requestIDR':
+      //   fieldProps = {
+      //     type: 'number',
+      //     disabled: true,
+      //     component: InputNumber
+      //   };
+      //   break;
   
       case 'advance':
         fieldProps = {
@@ -125,6 +116,14 @@ const handlerCreators: HandleCreators<PurchaseRequestDetailFormProps, OwnHandler
         };
         break;
   
+      case 'notes':
+        fieldProps = {
+          disabled: true,
+          placeholder: intl.formatMessage({ id: `purchase.field.${name}.placeholder` }),
+          component: InputText
+        };
+        break;
+        
       default:
         fieldProps = {
           type: 'text',

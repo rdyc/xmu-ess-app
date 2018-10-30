@@ -30,6 +30,10 @@ export const PurchaseRequestFormView: React.SFC<PurchaseRequestFormProps> = prop
     change('information.valueIdr', newValue * formRate);
   };
 
+  // const onChangeValueRequest = (event: any, newValue: number, oldValue: number) => {
+  //   change('information.value', newValue * formRate);
+  // };
+
   const componentInformation = (context: BaseFieldsProps) => (
     <PurchaseRequestDetailForm
       formMode={formMode}

@@ -1,11 +1,16 @@
+import { WorkflowStatusType } from '@common/classes/types';
 import AppMenu from '@constants/AppMenu';
+import { RadioGroupChoice } from '@layout/components/input/radioGroup';
 import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IAppBarMenu } from '@layout/interfaces';
+import { WorkflowApprovalFormData } from '@organization/components/workflow/approval/WorkflowApprovalForm';
+import { IPurchaseApprovalPostPayload } from '@purchase/classes/request/purchaseHistories';
 import { PurchaseApprovalUserAction } from '@purchase/classes/types';
-import { PurchaseApprovalDetailView } from '@purchase/components/purchaseHistories/detail/PurchaseApprovalDetailView';
+// import { Handler } from '@purchase/components/purchaseRequest/detail/PurchaseRequestDetail';
 import { WithPurchaseApproval, withPurchaseApproval } from '@purchase/hoc/purchaseHistories/withPurchaseApproval';
+import { purchaseApprovalMessage } from '@purchase/locales/messages/purchaseApprovalMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import {
@@ -20,22 +25,21 @@ import {
   withHandlers,
   withStateHandlers,
 } from 'recompose';
+import { Dispatch } from 'redux';
+import { FormErrors } from 'redux-form';
+import { isNullOrUndefined, isObject } from 'util';
+import { PurchaseApprovalDetailView } from './PurchaseApprovalDetailView';
 
-export interface Handler {
-  handlePurchaseRefresh: () => void;
-  handlePurchaseModify: () => void;
-  handleDialogOpen: (title: string, description: string, cancelText?: string, confirmText?: string, fullScreen?: boolean) => void;
-  handleDialogClose: () => void;
-  handleDialogConfirmed: () => void;
+interface OwnHandler {
+  handleRefresh: () => void;
+  handleValidate: (payload: WorkflowApprovalFormData) => FormErrors;
+  handleSubmit: (payload: WorkflowApprovalFormData) => void;
+  handleSubmitSuccess: (result: any, dispatch: Dispatch<any>) => void;
+  handleSubmitFail: (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => void;
 }
 
-interface OwnState {
-  dialogFullScreen: boolean;
-  dialogOpen: boolean;
-  dialogTitle?: string | undefined;
-  dialogDescription?: string | undefined;
-  dialogCancelText: string;
-  dialogConfirmedText: string;
+interface OwnStateUpdaters extends StateHandlerMap < OwnState > {
+  stateUpdate: StateHandler<OwnState>;
 }
 
 interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
@@ -46,6 +50,18 @@ interface OwnRouteParams {
   purchaseUid: string;
 }
 
+interface OwnState {
+  isApprove?: boolean | undefined;
+  approvalTitle: string;
+  approvalSubHeader: string;
+  approvalChoices: RadioGroupChoice[];
+  approvalTrueValue: string;
+  approvalDialogTitle: string;
+  approvalDialogContentText: string;
+  approvalDialogCancelText: string;
+  approvalDialogConfirmedText: string;
+}
+
 export type PurchaseApprovalDetailProps
   = WithPurchaseApproval
   & WithUser
@@ -53,102 +69,140 @@ export type PurchaseApprovalDetailProps
   & WithAppBar
   & RouteComponentProps<OwnRouteParams>
   & InjectedIntlProps
+  & OwnHandler
   & OwnState
-  & OwnStateUpdaters
-  & Handler;
+  & OwnStateUpdaters;
 
-const createProps: mapper<PurchaseApprovalDetailProps, OwnState> = (props: PurchaseApprovalDetailProps): OwnState => ({
-  dialogFullScreen: false,
-  dialogOpen: false,
-  dialogCancelText: 'global.action.cancel',
-  dialogConfirmedText: 'global.action.ok',
-});
+const handlerCreators: HandleCreators<PurchaseApprovalDetailProps, OwnHandler> = {
+  handleValidate: (props: PurchaseApprovalDetailProps) => (formData: WorkflowApprovalFormData) => {
+    const errors = {
+      information: {}
+    };
 
-const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
-  stateUpdate: (prevState: OwnState) => (newState: any) => ({
-    ...prevState,
-    ...newState
-  }),
-  stateReset: (prevState: OwnState) => () => ({
-    ...prevState,
-    dialogFullScreen: false,
-    dialogOpen: false,
-    dialogTitle: undefined,
-    dialogDescription: undefined,
-    dialogCancelText: 'global.action.cancel',
-    dialogConfirmedText: 'global.action.ok',
-  })
-};
+    const requiredFields = ['isApproved', 'remark'];
 
-const handlerCreators: HandleCreators<PurchaseApprovalDetailProps, Handler> = {
-  handlePurchaseRefresh: (props: PurchaseApprovalDetailProps) => () => {
+    requiredFields.forEach(field => {
+      if (!formData[field] || isNullOrUndefined(formData[field])) {
+        errors.information[field] = props.intl.formatMessage({ id: `global.form.approval.field.${field}.required` });
+      }
+    });
+
+    return errors;
+  },
+  handleSubmit: (props: PurchaseApprovalDetailProps) => (formData: WorkflowApprovalFormData) => {
+    const { match, intl, stateUpdate } = props;
+    const { user } = props.userState;
+    const { createRequest } = props.purchaseApprovalDispatch;
+
+    // user checking
+    if (!user) {
+      return Promise.reject('user was not found');
+    }
+
+    // props checking
+    if (!match.params.purchaseUid) {
+      const message = intl.formatMessage(purchaseApprovalMessage.emptyProps);
+
+      return Promise.reject(message);
+    }
+
+    // compare approval status string
+    const isApproved = formData.isApproved === WorkflowStatusType.Approved;
+
+    stateUpdate({
+      isApprove: isApproved,
+    });
+
+    // generate payload
+    const payload: IPurchaseApprovalPostPayload = {
+      isApproved,
+      remark: !isApproved ? formData.remark : null
+    };
+
+    // dispatch create request
+    return new Promise((resolve, reject) => {
+      createRequest({
+        resolve,
+        reject,
+        purchaseUid: match.params.purchaseUid,
+        companyUid: user.company.uid,
+        positionUid: user.position.uid,
+        data: payload,
+      });
+    });
+  },
+  handleSubmitSuccess: (props: PurchaseApprovalDetailProps) => (response: boolean) => {
+    const { intl, history, match, isApprove } = props;
+    const { alertAdd } = props.layoutDispatch;
+
+    let message: string = '';
+
+    if (isApprove) {
+      message = intl.formatMessage(purchaseApprovalMessage.approveSuccess, { uid: match.params.purchaseUid });
+    } else {
+      message = intl.formatMessage(purchaseApprovalMessage.rejectSuccess, { uid: match.params.purchaseUid });
+    }
+
+    alertAdd({
+      message,
+      time: new Date()
+    });
+
+    if (match.params.purchaseUid) {
+      history.push(`/approval/purchase/list`);
+    }
+  },
+  handleSubmitFail: (props: PurchaseApprovalDetailProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
+    const { intl } = props;
+    const { alertAdd } = props.layoutDispatch;
+
+    if (errors) {
+      // validation errors from server (400: Bad Request)
+      alertAdd({
+        time: new Date(),
+        message: isObject(submitError) ? submitError.message : submitError
+      });
+    } else {
+      alertAdd({
+        time: new Date(),
+        message: intl.formatMessage(purchaseApprovalMessage.createFailure),
+        details: isObject(submitError) ? submitError.message : submitError
+      });
+    }
+  },
+  handleRefresh: (props: PurchaseApprovalDetailProps) => () => {
     const { match } = props;
     const { user } = props.userState;
     const { loadDetailRequest } = props.purchaseApprovalDispatch;
 
     if (user) {
       loadDetailRequest({
-        purchaseUid: match.params.purchaseUid,
         companyUid: user.company.uid,
         positionUid: user.position.uid,
+        purchaseUid: match.params.purchaseUid
       });
     }
-  },
-
-  handlePurchaseModify: (props: PurchaseApprovalDetailProps) => () => {
-    const { intl, stateUpdate } = props;
-
-    stateUpdate({
-      dialogFullScreen: false,
-      dialogOpen: true,
-      dialogTitle: intl.formatMessage({ id: 'purchase.dialog.modifyTitle' }),
-      dialogDescription: intl.formatMessage({ id: 'purchase.dialog.modifyDescription' }),
-      dialogCancelText: intl.formatMessage({ id: 'global.action.disaggree' }),
-      dialogConfirmedText: intl.formatMessage({ id: 'global.action.aggree' })
-    });
-  },
-  handleDialogOpen: (props: PurchaseApprovalDetailProps) => (title: string, description: string, cancelText?: string, confirmText?: string, fullScreen?: boolean) => {
-    const { intl, stateUpdate, dialogCancelText, dialogConfirmedText } = props;
-
-    stateUpdate({
-      dialogFullScreen: fullScreen || false,
-      dialogOpen: true,
-      dialogTitle: title,
-      dialogDescription: description,
-      dialogCancelText: cancelText || intl.formatMessage({ id: dialogCancelText }),
-      dialogConfirmedText: confirmText || intl.formatMessage({ id: dialogConfirmedText })
-    });
-  },
-  handleDialogClose: (props: PurchaseApprovalDetailProps) => () => {
-    const { stateReset } = props;
-
-    stateReset();
-  },
-  handleDialogConfirmed: (props: PurchaseApprovalDetailProps) => () => {
-    const { match, history, stateReset } = props;
-    const purchaseUid = match.params.purchaseUid;
-
-    stateReset();
-
-    history.push('/purchase/request/form/', { uid: purchaseUid });
-  },
+  }
 };
 
-const lifecycles: ReactLifeCycleFunctions<PurchaseApprovalDetailProps, OwnState> = {
-  componentDidMount() {
-    const {
-      match, layoutDispatch, appBarDispatch, intl,
-      handlePurchaseRefresh,
-    } = this.props;
+const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
+  stateUpdate: (prevState: OwnState) => (newState: any) => ({
+    ...prevState,
+    ...newState
+  })
+};
 
+const lifecycles: ReactLifeCycleFunctions<PurchaseApprovalDetailProps, {}> = {
+  componentDidMount() {
+    const { layoutDispatch, intl, appBarDispatch, handleRefresh, match } = this.props;
     const { user } = this.props.userState;
     const { loadDetailRequest } = this.props.purchaseApprovalDispatch;
 
     layoutDispatch.changeView({
-      uid: AppMenu.PurchaseApproval,
-      parentUid: AppMenu.Purchase,
-      title: intl.formatMessage({ id: 'purchaseapproval.detail.title' }),
-      subTitle: intl.formatMessage({ id: 'purchaseapproval.detail.subTitle' })
+      uid: AppMenu.ExpenseApproval,
+      parentUid: AppMenu.Expense,
+      title: intl.formatMessage({ id: 'purchase.form.approval.newTitle' }),
+      subTitle: intl.formatMessage({ id: 'purchase.form.approval.newSubTitle' })
     });
 
     layoutDispatch.navBackShow();
@@ -157,7 +211,7 @@ const lifecycles: ReactLifeCycleFunctions<PurchaseApprovalDetailProps, OwnState>
     const handleMenuClick = (menu: IAppBarMenu): void => {
       switch (menu.id) {
         case PurchaseApprovalUserAction.Refresh:
-          handlePurchaseRefresh();
+          handleRefresh();
           break;
 
         default:
@@ -169,9 +223,9 @@ const lifecycles: ReactLifeCycleFunctions<PurchaseApprovalDetailProps, OwnState>
 
     if (user) {
       loadDetailRequest({
-        purchaseUid: match.params.purchaseUid,
         companyUid: user.company.uid,
         positionUid: user.position.uid,
+        purchaseUid: match.params.purchaseUid
       });
     }
   },
@@ -193,7 +247,7 @@ const lifecycles: ReactLifeCycleFunctions<PurchaseApprovalDetailProps, OwnState>
     }
   },
   componentWillUnmount() {
-    const { layoutDispatch, appBarDispatch, purchaseApprovalDispatch } = this.props;
+    const { layoutDispatch, appBarDispatch } = this.props;
 
     layoutDispatch.changeView(null);
     layoutDispatch.navBackHide();
@@ -201,9 +255,25 @@ const lifecycles: ReactLifeCycleFunctions<PurchaseApprovalDetailProps, OwnState>
     layoutDispatch.actionCentreHide();
 
     appBarDispatch.dispose();
-
-    purchaseApprovalDispatch.loadDetailDispose();
   }
+};
+
+const createProps: mapper<PurchaseApprovalDetailProps, OwnState> = (props: PurchaseApprovalDetailProps): OwnState => {
+  const { intl } = props;
+
+  return {
+    approvalTitle: intl.formatMessage({ id: 'purchase.approvalTitle' }),
+    approvalSubHeader: intl.formatMessage({ id: 'purchase.approvalSubHeader' }),
+    approvalChoices: [
+      { value: WorkflowStatusType.Approved, label: intl.formatMessage({ id: 'workflow.approval.action.approve' }) },
+      { value: WorkflowStatusType.Rejected, label: intl.formatMessage({ id: 'workflow.approval.action.reject' }) }
+    ],
+    approvalTrueValue: WorkflowStatusType.Approved,
+    approvalDialogTitle: intl.formatMessage({ id: 'purchase.dialog.approvalTitle' }),
+    approvalDialogContentText: intl.formatMessage({ id: 'purchase.dialog.approvalContent' }),
+    approvalDialogCancelText: intl.formatMessage({ id: 'global.action.cancel' }),
+    approvalDialogConfirmedText: intl.formatMessage({ id: 'global.action.continue' }),
+  };
 };
 
 export const PurchaseApprovalDetail = compose<PurchaseApprovalDetailProps, {}>(
@@ -214,6 +284,6 @@ export const PurchaseApprovalDetail = compose<PurchaseApprovalDetailProps, {}>(
   withPurchaseApproval,
   injectIntl,
   withStateHandlers<OwnState, OwnStateUpdaters, {}>(createProps, stateUpdaters),
-  withHandlers<PurchaseApprovalDetailProps, Handler>(handlerCreators),
+  withHandlers<PurchaseApprovalDetailProps, OwnHandler>(handlerCreators),
   lifecycle<PurchaseApprovalDetailProps, OwnState>(lifecycles),
 )(PurchaseApprovalDetailView);

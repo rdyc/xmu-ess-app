@@ -4,6 +4,7 @@ import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import {
+  // IPurchaseItemPostPayload,
   IPurchaseItemPutPayload,
   IPurchasePostPayload,
   IPurchasePutPayload
@@ -74,7 +75,7 @@ const handlerCreators: HandleCreators<PurchaseRequestEditorProps, OwnHandlers> =
     };
 
     const requiredFields = [
-      'customerUid', 'name', 'advance',
+      'customerUid', 'project', 'advance',
       'date', 'uid', 'currencyType'
     ];
 
@@ -102,14 +103,27 @@ const handlerCreators: HandleCreators<PurchaseRequestEditorProps, OwnHandlers> =
       }
 
       const _items: IPurchaseItemPutPayload[] = [];
-      formData.items.items.forEach(item =>
-        _items.push({
-          uid: item.uid,
-          description: item.description,
-          request: item.request
-        })
-      );
 
+      if (formMode === FormMode.Edit) {
+        formData.items.items.forEach(item =>
+          _items.push({
+            uid: item.uid,
+            description: item.description,
+            request: item.request
+          })
+          );
+        } 
+      // if (formMode === FormMode.New) {
+      //     const _items: IPurchaseItemPostPayload[] = [];
+        
+      //      formData.items.items.forEach(item =>
+      //     _items.push({
+      //       description: item.description,
+      //       request: item.request
+      //     })
+      //     );
+      //     return _items;
+      //   }
       return _items;
     };
 
