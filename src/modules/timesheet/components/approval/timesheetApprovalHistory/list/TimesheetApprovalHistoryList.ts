@@ -109,7 +109,7 @@ const handlerCreators: HandleCreators<ApprovalHistoryListProps, OwnHandlers> = {
     const { isLoading } = props.timesheetApprovalState.all;
 
     if (!isLoading) {
-      history.push(`/approval/timesheet/details/${timesheetUid}`);
+      history.push(`/approval/timesheet/history/details/${timesheetUid}`);
     }
   },
   handleGoToNext: (props: ApprovalHistoryListProps) => () => {

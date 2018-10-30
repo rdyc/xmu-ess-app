@@ -9,7 +9,7 @@ import { FormattedDate, FormattedNumber, FormattedPlural } from 'react-intl';
 import { isArray } from 'util';
 
 export const TimesheetApprovalListView: React.SFC<ApprovalListProps> = props => {
-  // const { handleGoToDetail } = props;
+  const { handleGoToDetail } = props;
   const { isLoading, response } = props.timesheetApprovalState.all;
 
   const renderTimesheetApprovalList = (timesheets: ITimesheet[]) => {
@@ -25,9 +25,9 @@ export const TimesheetApprovalListView: React.SFC<ApprovalListProps> = props => 
           >
             <Grid container spacing={24}>
               <Grid item xs={1} sm={1}>
-                <Checkbox />
+                <Checkbox key={timesheet.uid} />
               </Grid>
-              <Grid item xs={7} sm={7}>
+              <Grid item xs={7} sm={7} onClick={() => handleGoToDetail(timesheet.uid)}>
                 <Typography
                   noWrap
                   color="primary"
@@ -55,7 +55,7 @@ export const TimesheetApprovalListView: React.SFC<ApprovalListProps> = props => 
                   {timesheet.customer && timesheet.customer.name} &bull; {timesheet.project && timesheet.project.name}
                 </Typography>
               </Grid>
-              <Grid item xs={4} sm={4}>
+              <Grid item xs={4} sm={4} onClick={() => handleGoToDetail(timesheet.uid)}>
                 <Typography
                   noWrap
                   variant="body1"

@@ -1,11 +1,13 @@
 import { IAppState, IQueryCollectionState, IQuerySingleState } from '@generic/interfaces';
-import { ITimesheetApprovalGetAllRequest, ITimesheetApprovalGetByIdRequest } from '@timesheet/classes/queries/approval';
+import { ITimesheetApprovalGetAllRequest, ITimesheetApprovalGetByIdRequest, ITimesheetApprovalPostRequest } from '@timesheet/classes/queries/approval';
 import { ITimesheet, ITimesheetDetail } from '@timesheet/classes/response';
 import { 
   timesheetApprovalGetAllDispose,
   timesheetApprovalGetAllRequest,
   timesheetApprovalGetByIdDispose,
   timesheetApprovalGetByIdRequest,
+  timesheetApprovalPostDispose,
+  timesheetApprovalPostRequest,
 } from '@timesheet/store/actions';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
@@ -20,8 +22,8 @@ interface PropsFromState {
 interface PropsFromDispatch {
   timesheetApprovalDispatch: {
     // command
-    // createRequest: typeof timesheetApprovalPostRequest;
-    // createDispose: typeof timesheetPostDispose;
+    createRequest: typeof timesheetApprovalPostRequest;
+    createDispose: typeof timesheetApprovalPostDispose;
 
     // query
     loadAllRequest: typeof timesheetApprovalGetAllRequest;
@@ -43,10 +45,8 @@ const mapStateToProps = ({ timesheetApprovalGetAll, timesheetApprovalGetById }: 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   timesheetApprovalDispatch: {
     // command
-    // createRequest: (request: ITimesheetPostRequest) => dispatch(timesheetPostRequest(request)),
-    // createDispose: () => dispatch(timesheetPostDispose()),
-    // updateRequest: (request: ITimesheetPutRequest) => dispatch(timesheetPutRequest(request)),
-    // updateDispose: () => dispatch(timesheetPutDispose()),
+    createRequest: (request: ITimesheetApprovalPostRequest) => dispatch(timesheetApprovalPostRequest(request)),
+    createDispose: () => dispatch(timesheetApprovalPostDispose()),
     
     // query
     loadAllRequest: (request: ITimesheetApprovalGetAllRequest) => dispatch(timesheetApprovalGetAllRequest(request)),
