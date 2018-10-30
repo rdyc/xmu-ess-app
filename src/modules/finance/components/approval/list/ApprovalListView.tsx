@@ -1,6 +1,6 @@
 import { IFinance } from '@finance/classes/response';
 import { ApprovalListProps } from '@finance/components/approval/list/ApprovalList';
-import { Divider, Grid, List, ListItem, ListSubheader, Paper, Typography } from '@material-ui/core';
+import { Checkbox, Divider, Grid, List, ListItem, ListSubheader, Paper, Typography } from '@material-ui/core';
 import { parseChanges } from '@utils/parseChanges';
 import * as moment from 'moment';
 import * as React from 'react';
@@ -8,8 +8,13 @@ import { FormattedDate, FormattedNumber, FormattedPlural } from 'react-intl';
 import { isArray } from 'util';
 
 export const ApprovalListView: React.SFC<ApprovalListProps> = props => {
-  const { handleGoToDetail } = props;
+  const { handleGoToDetail, handleCheckbox, uids } = props;
   const { isLoading, response } = props.financeApprovalState.all;
+
+  const isChecked = (uid: string) => {
+    const _uids = new Set(uids);
+    return _uids.has(uid);
+  };
 
   const renderFinanceList = (finances: IFinance[]) => {
     const len = finances.length - 1;
@@ -20,10 +25,16 @@ export const ApprovalListView: React.SFC<ApprovalListProps> = props => {
           <ListItem 
             button={!isLoading} 
             key={finance.uid} 
-            onClick={() => handleGoToDetail(finance.uid)}
           >
             <Grid container spacing={24}>
-              <Grid item xs={8} sm={8}>
+              <Grid item xs={1} sm={1}>
+                <Checkbox
+                  key={finance.uid} 
+                  onChange={() => handleCheckbox(finance.uid)}
+                  checked={isChecked(finance.uid)}
+                />
+              </Grid>
+              <Grid item xs={7} sm={7} onClick={() => handleGoToDetail(finance.uid)}>
                 <Typography 
                   noWrap 
                   color="primary" 
@@ -58,7 +69,7 @@ export const ApprovalListView: React.SFC<ApprovalListProps> = props => {
                   {finance.notes}
                 </Typography>
               </Grid>
-              <Grid item xs={4} sm={4}>
+              <Grid item xs={4} sm={4} onClick={() => handleGoToDetail(finance.uid)}>
                 <Typography 
                   noWrap 
                   variant="body1" 
