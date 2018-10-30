@@ -14,8 +14,8 @@ import { ISummaryWinning } from '@summary/classes/response/winning';
 
 export interface ISummaryState {
   summaryGetBillable: IQueryCollectionState<ISummaryGetBillableRequest, ISummaryBillable>;
-  summaryGetEffectiveness: IQuerySingleState<ISummaryGetEffectivenessRequest, ISummaryEffectiveness>;
+  summaryGetEffectiveness: IQueryCollectionState<ISummaryGetEffectivenessRequest, ISummaryEffectiveness>;
   summaryGetProfitability: IQuerySingleState<ISummaryGetProfitabilityRequest, ISummaryProfitability>;
-  summaryGetProgress: IQueryCollectionState<ISummaryGetProgressRequest, ISummaryProgress>;
+  summaryGetProgress: IQuerySingleState<ISummaryGetProgressRequest, ISummaryProgress>;
   summaryGetWinning: IQueryCollectionState<ISummaryGetWinningRequest, ISummaryWinning>;
 }
