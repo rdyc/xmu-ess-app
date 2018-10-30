@@ -6,18 +6,20 @@ import { IProjectRegistrationGetListFilter } from '@project/classes/filters/regi
 import { IProjectAssignmentItem } from '@project/classes/request/assignment';
 import { IProjectAssignmentDetail, IProjectList } from '@project/classes/response';
 import { ProjectAssignmentFormView } from '@project/components/assignment/editor/ProjectAssignmentFormView';
-import { connect } from 'react-redux';
 import {
   compose,
   HandleCreators,
+  lifecycle,
   mapper,
+  onlyUpdateForKeys,
+  ReactLifeCycleFunctions,
   StateHandler,
   StateHandlerMap,
   StateUpdaters,
   withHandlers,
   withStateHandlers,
 } from 'recompose';
-import { getFormValues, InjectedFormProps, reduxForm } from 'redux-form';
+import { InjectedFormProps, reduxForm } from 'redux-form';
 
 const formName = 'projectAssignment';
 
@@ -33,6 +35,7 @@ interface OwnProps {
 }
 
 interface OwnHandlers {
+  handleEventListener: (event: CustomEvent) => void;
   handleProjectChange: (project: IProjectList) => void;
 }
 
@@ -43,11 +46,12 @@ interface OwnState {
 
 interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
   setProject: StateHandler<OwnState>;
+  setProjectHours: StateHandler<OwnState>;
 }
 
-interface FormValueProps {
-  formValues: ProjectAssignmentFormData;
-}
+// interface FormValueProps {
+//   formValues: ProjectAssignmentFormData;
+// }
 
 export type ProjectAssignmentFormProps 
   = InjectedFormProps<ProjectAssignmentFormData, OwnProps>
@@ -55,8 +59,8 @@ export type ProjectAssignmentFormProps
   & OwnProps
   & OwnHandlers
   & OwnState
-  & OwnStateUpdaters
-  & FormValueProps;
+  & OwnStateUpdaters;
+  // & FormValueProps;
 
 const createProps: mapper<ProjectAssignmentFormProps, OwnState> = (props: ProjectAssignmentFormProps): OwnState => {
   const { user } = props.userState;
@@ -94,10 +98,36 @@ const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
         changes: null
       }
     };
+  },
+  setProjectHours: (prevState: OwnState) => (hours: number) => {
+    if (prevState.projectActive) { 
+      return {
+        ...prevState,
+        projectActive: { 
+          ...prevState.projectActive,
+          assignedHours: hours, 
+          unassignedHours: prevState.projectActive.maxHours - hours
+        }
+      };
+    }
+
+    return {
+      ...prevState
+    };
   }
 };
 
 const handlerCreators: HandleCreators<ProjectAssignmentFormProps, OwnHandlers> = {
+  handleEventListener: (props: ProjectAssignmentFormProps) => (event: CustomEvent) => { 
+    const formValues = event.detail as ProjectAssignmentFormData; 
+    const { setProjectHours } = props;
+
+    let hours: number = 0;
+
+    formValues.items.forEach(item => hours += item.mandays * 8);
+
+    setProjectHours(hours);
+  },
   handleProjectChange: (props: ProjectAssignmentFormProps) => (project: IProjectList | undefined) => { 
     const { setProject } = props;
 
@@ -105,18 +135,36 @@ const handlerCreators: HandleCreators<ProjectAssignmentFormProps, OwnHandlers> =
   }
 };
 
-const mapStateToProps = (state: any): FormValueProps => ({
-  formValues: getFormValues(formName)(state) as ProjectAssignmentFormData
-});
+const lifecycles: ReactLifeCycleFunctions<ProjectAssignmentFormProps, OwnState> = {
+  componentDidMount() {
+    addEventListener('ASG_FORM', this.props.handleEventListener);
+  },
+  componentWillUnmount() {
+    removeEventListener('ASG_FORM', this.props.handleEventListener);
+  }
+};
+
+// const mapStateToProps = (state: any): FormValueProps => ({
+//   formValues: getFormValues(formName)(state) as ProjectAssignmentFormData
+// });
 
 const enhance = compose<ProjectAssignmentFormProps, OwnProps & InjectedFormProps<ProjectAssignmentFormData, OwnProps>>(
-  connect(mapStateToProps),
+  // connect(mapStateToProps),
   withUser,
   withStateHandlers(createProps, stateUpdaters), 
-  withHandlers(handlerCreators)
+  withHandlers(handlerCreators),
+  onlyUpdateForKeys(['projectActive']),
+  lifecycle(lifecycles)
 )(ProjectAssignmentFormView);
 
 export const ProjectAssignmentForm = reduxForm<ProjectAssignmentFormData, OwnProps>({
-  form: formName,
-  destroyOnUnmount: true
+  form: formName, 
+  destroyOnUnmount: true,
+  touchOnChange: true,
+  touchOnBlur: true,
+  onChange: (values: ProjectAssignmentFormData) => {
+    const event = new CustomEvent('ASG_FORM', { detail: values });
+    
+    dispatchEvent(event);
+  }
 })(enhance);

@@ -13,7 +13,7 @@ import { FormattedMessage } from 'react-intl';
 import { Field, FieldArray, FormSection, WrappedFieldArrayProps } from 'redux-form';
 
 export const ProjectAssignmentFormView: React.SFC<ProjectAssignmentFormProps> = props => {
-  const { formMode, projectActive, projectFilter, handleProjectChange } = props;
+  const { formMode, projectActive, projectFilter, handleProjectChange, change } = props;
 
   const componentMember = (context: WrappedFieldArrayProps<IProjectAssignmentItem>) => (
     <Grid container spacing={16}>
@@ -58,6 +58,20 @@ export const ProjectAssignmentFormView: React.SFC<ProjectAssignmentFormProps> = 
                     label="mandays"
                     required={true}
                     component={InputNumber}
+                    onChange={(event: any, newValue: any) => {
+                      if (!isNaN(newValue)) {
+                        const hours = newValue * 8;
+
+                        change(`${field}.hours`, hours);
+                      }
+                    }}
+                  />
+                  <Field 
+                    type="number"
+                    name={`${field}.hours`}
+                    label="hours"
+                    disabled={true}
+                    component={InputNumber}
                   />
                 </div>
               </CardContent>
@@ -68,12 +82,12 @@ export const ProjectAssignmentFormView: React.SFC<ProjectAssignmentFormProps> = 
 
       <Grid item xs={12} md={6}>
         <Button onClick={() => context.fields.push({
-      uid: null,
-      employeeUid: '',
-      jobDescription: '',
-      role: '',
-      mandays: 0,
-    })}>
+            uid: null,
+            employeeUid: '',
+            jobDescription: '',
+            role: '',
+            mandays: 0,
+          })}>
           <FormattedMessage id="project.assignment.section.member.action.add" />
         </Button>
       </Grid>
