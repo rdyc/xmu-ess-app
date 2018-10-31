@@ -30,6 +30,12 @@ const accountLeaveInformation: React.SFC<AllProps> = props => {
         subheader={<FormattedMessage id="account.leave.infoSubTitle" />}
       />
       <CardContent>
+      <TextField
+          {...styled}
+          margin="normal"
+          label={<FormattedMessage id="leave.field.information.uid" />}
+          value={data.employeeUid}
+        />
         <TextField
           {...styled}
           margin="normal"

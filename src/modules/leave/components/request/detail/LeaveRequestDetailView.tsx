@@ -1,4 +1,4 @@
-// import { AccountLeaveInformation } from '@account/components/views/AccountLeaveInformationView';
+import { AccountLeave } from '@account/components/views/AccountLeave';
 import { RequestDetailProps } from '@leave/components/request/detail/LeaveRequestDetail';
 import {
   Button,
@@ -75,14 +75,14 @@ export const LeaveRequestDetailView: React.SFC<RequestDetailProps> = props => {
             }
           </Grid>
 
-          {/* {<Grid item xs={12} md={4}>
+          <Grid item xs={12} md={4}>
             {
               response &&
               response.data &&
-              <AccountLeaveInformation 
+              <AccountLeave
               />
             }
-          </Grid> } */}
+          </Grid> 
 
           <Grid item xs={12} md={4}>
             {
