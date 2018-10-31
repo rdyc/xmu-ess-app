@@ -10,7 +10,7 @@ import {
 export interface IMileageApprovalDetail {
   hierarchyUid: string;
   hierarchy?: IOrganizationHierarchy | null;
-  items?: IMileageRequestItem[] | null;
+  items: IMileageRequestItem[];
   histories?: History[] | null;
   workflow?: IOrganizationWorkflow | null;
   changes?: IBaseChanges | null;

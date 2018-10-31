@@ -16,7 +16,7 @@ import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Field } from 'redux-form';
 
-import { WorkflowApprovalFormProps } from './WorkflowApprovalForm';
+import { WorkflowApprovalFormProps } from './WorkflowApprovalMileageItemForm';
 
 export const WorkflowApprovalFormView: React.SFC<WorkflowApprovalFormProps> = props => {
   const { 

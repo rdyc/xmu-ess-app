@@ -1,6 +1,7 @@
 import { WorkflowStatusType } from '@common/classes/types';
 import { RadioGroupChoice } from '@layout/components/input/radioGroup';
 import { WithForm, withForm } from '@layout/hoc/withForm';
+import { IMileageApprovalPostItem } from '@mileage/classes/request';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
 import {
@@ -15,12 +16,12 @@ import {
 } from 'recompose';
 import { formValueSelector, InjectedFormProps, reduxForm } from 'redux-form';
 import { isNullOrUndefined } from 'util';
+import { WorkflowApprovalFormView } from './WorkflowApprovalMileageItemFormView';
 
-import { WorkflowApprovalFormView } from './WorkflowApprovalFormView';
-
-const formName = 'workflowApproval';
+const formName = 'workflowItemApproval';
 
 export type WorkflowApprovalFormData = {
+  items: IMileageApprovalPostItem[]
   isApproved: string | null | undefined;
   remark: string | null;
 };
