@@ -1,3 +1,4 @@
+import { WorkflowStatusType } from '@common/classes/types';
 import {
   Card,
   CardContent,
@@ -7,7 +8,7 @@ import {
   List,
   ListItem,
   ListItemText,
-  Typography,
+  Typography
 } from '@material-ui/core';
 import { IMileageRequestItem } from '@mileage/classes/response';
 import * as React from 'react';
@@ -78,8 +79,8 @@ const mileageItem: React.SFC<AllProps> = props => {
                       </Typography>
                       <Typography
                         noWrap
-                        color="secondary"
-                        variant="caption"
+                        color={item.status && item.status.type === WorkflowStatusType.Rejected ? 'error' : 'secondary'}
+                        variant="body1"
                         align="right"
                       >
                         {item.status && item.status.value}
