@@ -1,6 +1,7 @@
 import { SelectEmployee } from '@account/components/select';
 import { InputNumber } from '@layout/components/input/number';
 import { InputText } from '@layout/components/input/text';
+import { InputTextArea } from '@layout/components/input/textArea';
 import { Submission } from '@layout/components/submission/Submission';
 import { Button, Card, CardContent, CardHeader, Grid, IconButton, Typography } from '@material-ui/core';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
@@ -50,7 +51,7 @@ export const ProjectAssignmentFormView: React.SFC<ProjectAssignmentFormProps> = 
                     type="text"
                     name={`${field}.jobDescription`}
                     label="job Desc"
-                    component={InputText}
+                    component={InputTextArea}
                   />
                   <Field 
                     type="number"
@@ -60,9 +61,7 @@ export const ProjectAssignmentFormView: React.SFC<ProjectAssignmentFormProps> = 
                     component={InputNumber}
                     onChange={(event: any, newValue: any) => {
                       if (!isNaN(newValue)) {
-                        const hours = newValue * 8;
-
-                        change(`${field}.hours`, hours);
+                        change(`${field}.hours`, newValue * 8);
                       }
                     }}
                   />
@@ -129,6 +128,7 @@ export const ProjectAssignmentFormView: React.SFC<ProjectAssignmentFormProps> = 
                   />
                 </FormSection>
               </ProjectAssignment>
+              <pre>{JSON.stringify(props.formValues, null, 2)}</pre>
             </Grid>
           </Grid>
         </Grid>

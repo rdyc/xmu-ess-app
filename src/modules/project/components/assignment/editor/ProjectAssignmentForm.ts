@@ -6,12 +6,12 @@ import { IProjectRegistrationGetListFilter } from '@project/classes/filters/regi
 import { IProjectAssignmentItem } from '@project/classes/request/assignment';
 import { IProjectAssignmentDetail, IProjectList } from '@project/classes/response';
 import { ProjectAssignmentFormView } from '@project/components/assignment/editor/ProjectAssignmentFormView';
+import { connect } from 'react-redux';
 import {
   compose,
   HandleCreators,
   lifecycle,
   mapper,
-  onlyUpdateForKeys,
   ReactLifeCycleFunctions,
   StateHandler,
   StateHandlerMap,
@@ -19,7 +19,7 @@ import {
   withHandlers,
   withStateHandlers,
 } from 'recompose';
-import { InjectedFormProps, reduxForm } from 'redux-form';
+import { getFormValues, InjectedFormProps, reduxForm } from 'redux-form';
 
 const formName = 'projectAssignment';
 
@@ -49,9 +49,9 @@ interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
   setProjectHours: StateHandler<OwnState>;
 }
 
-// interface FormValueProps {
-//   formValues: ProjectAssignmentFormData;
-// }
+interface FormValueProps {
+  formValues: ProjectAssignmentFormData;
+}
 
 export type ProjectAssignmentFormProps 
   = InjectedFormProps<ProjectAssignmentFormData, OwnProps>
@@ -59,8 +59,8 @@ export type ProjectAssignmentFormProps
   & OwnProps
   & OwnHandlers
   & OwnState
-  & OwnStateUpdaters;
-  // & FormValueProps;
+  & OwnStateUpdaters
+  & FormValueProps;
 
 const createProps: mapper<ProjectAssignmentFormProps, OwnState> = (props: ProjectAssignmentFormProps): OwnState => {
   const { user } = props.userState;
@@ -144,16 +144,15 @@ const lifecycles: ReactLifeCycleFunctions<ProjectAssignmentFormProps, OwnState> 
   }
 };
 
-// const mapStateToProps = (state: any): FormValueProps => ({
-//   formValues: getFormValues(formName)(state) as ProjectAssignmentFormData
-// });
+const mapStateToProps = (state: any): FormValueProps => ({
+  formValues: getFormValues(formName)(state) as ProjectAssignmentFormData
+});
 
 const enhance = compose<ProjectAssignmentFormProps, OwnProps & InjectedFormProps<ProjectAssignmentFormData, OwnProps>>(
-  // connect(mapStateToProps),
+  connect(mapStateToProps),
   withUser,
   withStateHandlers(createProps, stateUpdaters), 
   withHandlers(handlerCreators),
-  onlyUpdateForKeys(['projectActive']),
   lifecycle(lifecycles)
 )(ProjectAssignmentFormView);
 
@@ -162,9 +161,7 @@ export const ProjectAssignmentForm = reduxForm<ProjectAssignmentFormData, OwnPro
   destroyOnUnmount: true,
   touchOnChange: true,
   touchOnBlur: true,
-  onChange: (values: ProjectAssignmentFormData) => {
-    const event = new CustomEvent('ASG_FORM', { detail: values });
-    
-    dispatchEvent(event);
+  onChange: (values: ProjectAssignmentFormData, dispatch: any, props: any) => {
+    dispatchEvent(new CustomEvent('ASG_FORM', { detail: values }));
   }
 })(enhance);
