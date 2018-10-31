@@ -19,7 +19,7 @@ export const ApprovalPaymentView: React.SFC<ApprovalPaymentProps> = props => {
   const { 
     approvalTitle, approvalSubHeader, approvalChoices, approvalTrueValue, 
     approvalDialogTitle, approvalDialogContentText, approvalDialogCancelText, approvalDialogConfirmedText, finances,
-    handleValidate, handleSubmit, handleSubmitSuccess, handleSubmitFail
+    handleValidate, handleSubmit, handleSubmitSuccess, handleSubmitFail, financeUids
   } = props;
 
   const renderDetails = (_finances: (IFinanceDetail | undefined)[]) => {
@@ -111,6 +111,9 @@ export const ApprovalPaymentView: React.SFC<ApprovalPaymentProps> = props => {
                 subheader={<FormattedMessage id="finance.infoSubTitle" />}
               />
               <CardContent>
+                <Typography>
+                  {financeUids}
+                </Typography>
                 <List>
                 {
                   finances &&
