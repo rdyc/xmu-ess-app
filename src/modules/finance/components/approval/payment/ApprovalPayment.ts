@@ -110,7 +110,7 @@ const handlerCreators: HandleCreators<ApprovalPaymentProps, OwnHandler> = {
   handleValidate: (props: ApprovalPaymentProps) => (formData: WorkflowApprovalFormData) => { 
     const errors = {};
   
-    const requiredFields = ['statusTypes', 'notes'];
+    const requiredFields = ['isApproved', 'remark'];
   
     requiredFields.forEach(field => {
       if (!formData[field] || isNullOrUndefined(formData[field])) {
@@ -210,7 +210,7 @@ const lifecycles: ReactLifeCycleFunctions<ApprovalPaymentProps, OwnState> = {
     componentDidMount() {
       const { 
         layoutDispatch, appBarDispatch, intl, 
-        handleFinanceRefresh, stateUpdate, financeUids
+        handleRefresh, stateUpdate, financeUids
       } = this.props;
   
       const { user } = this.props.userState;
@@ -230,7 +230,7 @@ const lifecycles: ReactLifeCycleFunctions<ApprovalPaymentProps, OwnState> = {
       const handleMenuClick = (menu: IAppBarMenu): void => {
         switch (menu.id) {
           case FinanceApprovalUserAction.Refresh:
-            handleFinanceRefresh();
+            handleRefresh();
             break;
         
           default:
