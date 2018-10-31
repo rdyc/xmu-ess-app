@@ -25,6 +25,7 @@ import {
 interface OwnHandlers {
   handleCheckbox: (uid: string) => void;
   handleGoToDetail: (projectUid: string) => void;
+  handleGoToApproval: () => void;
   handleGoToNext: () => void;
   handleGoToPrevious: () => void;
   handleReloading: () => void;
@@ -41,7 +42,7 @@ interface OwnOptions {
 }
 
 interface OwnState {
-  uids: string[] | undefined;
+  financeUids: string[] | undefined;
   orderBy: string | undefined;
   direction: string | undefined;
   page: number;
@@ -75,7 +76,7 @@ const createProps: mapper<ApprovalListProps, OwnState> = (props: ApprovalListPro
     const { request } = props.financeApprovalState.all;
   
     return { 
-      uids: [],
+      financeUids: [],
       orderBy: request && request.filter && request.filter.orderBy || orderBy,
       direction: request && request.filter && request.filter.direction || direction,
       page: request && request.filter && request.filter.page || page || 1, 
@@ -84,8 +85,8 @@ const createProps: mapper<ApprovalListProps, OwnState> = (props: ApprovalListPro
   };
 
 const stateUpdaters: StateUpdaters<OwnOptions, OwnState, OwnStateUpdaters> = {
-    stateCheckbox: (prevState: OwnState) => (uids: string[]) => ({
-      uids
+    stateCheckbox: (prevState: OwnState) => (financeUids: string[]) => ({
+      financeUids
     }),
     stateNext: (prevState: OwnState) => () => ({
       page: prevState.page + 1,
@@ -112,8 +113,8 @@ const stateUpdaters: StateUpdaters<OwnOptions, OwnState, OwnStateUpdaters> = {
 
 const handlerCreators: HandleCreators<ApprovalListProps, OwnHandlers> = {
     handleCheckbox: (props: ApprovalListProps) => (uid: string) => {
-      const { uids, stateCheckbox } = props;
-      const _uids = new Set(uids);
+      const { financeUids, stateCheckbox } = props;
+      const _uids = new Set(financeUids);
 
       _uids.has(uid) ? _uids.delete(uid) : _uids.add(uid);
 
@@ -126,6 +127,14 @@ const handlerCreators: HandleCreators<ApprovalListProps, OwnHandlers> = {
       if (!isLoading) {
         history.push(`/approval/finance/details/${financeUid}`);
       } 
+    },
+    handleGoToApproval: (props: ApprovalListProps) => () => {
+      const { history, financeUids } = props;
+      const { isLoading } = props.financeApprovalState.all;
+  
+      if (!isLoading) {
+        history.push(`/approval/finance/payment/${financeUids}`);      } 
+
     },
     handleGoToNext: (props: ApprovalListProps) => () => { 
       props.stateNext();

@@ -128,7 +128,7 @@ function* watchPostFetchRequest() {
 function* watchBulkPostFetchRequest() {
   const worker = (action: ReturnType<typeof financeApprovalBulkPostRequest>) => {
     return saiyanSaga.fetch({
-      method: 'put',
+      method: 'post',
       path: `/v1/approvals/finance/${action.payload.companyUid}/${action.payload.positionUid}`,
       payload: action.payload.data, 
       successEffects: (response: IApiResponse) => [

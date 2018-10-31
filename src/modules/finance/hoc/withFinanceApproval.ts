@@ -31,8 +31,8 @@ interface PropsFromDispatch {
     // command
     createRequest: typeof financeApprovalPostRequest;
     createDispose: typeof financeApprovalPostDispose;
-    updateRequest: typeof financeApprovalBulkPostRequest;
-    updateDispose: typeof financeApprovalBulkPostDispose;
+    bulkCreateRequest: typeof financeApprovalBulkPostRequest;
+    bulkCreateDispose: typeof financeApprovalBulkPostDispose;
 
     // query
     loadAllRequest: typeof financeApprovalGetAllRequest;
@@ -56,8 +56,8 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     // command
     createRequest: (request: IFinanceApprovalPostRequest) => dispatch(financeApprovalPostRequest(request)),
     createDispose: () => dispatch(financeApprovalPostDispose()),
-    updateRequest: (request: IFinanceApprovalBulkPostRequest) => dispatch(financeApprovalBulkPostRequest(request)),
-    updateDispose: () => dispatch(financeApprovalBulkPostDispose()),
+    bulkCreateRequest: (request: IFinanceApprovalBulkPostRequest) => dispatch(financeApprovalBulkPostRequest(request)),
+    bulkCreateDispose: () => dispatch(financeApprovalBulkPostDispose()),
     
     // query
     loadAllRequest: (request: IFinanceApprovalGetAllRequest) => dispatch(financeApprovalGetAllRequest(request)),

@@ -1,6 +1,7 @@
+import { FinanceStatusType } from '@common/classes/types';
 import { IFinance } from '@finance/classes/response';
 import { ApprovalListProps } from '@finance/components/approval/list/ApprovalList';
-import { Checkbox, Divider, Grid, List, ListItem, ListSubheader, Paper, Typography } from '@material-ui/core';
+import { Button, Checkbox, Divider, Grid, List, ListItem, ListSubheader, Paper, Typography } from '@material-ui/core';
 import { parseChanges } from '@utils/parseChanges';
 import * as moment from 'moment';
 import * as React from 'react';
@@ -8,11 +9,11 @@ import { FormattedDate, FormattedNumber, FormattedPlural } from 'react-intl';
 import { isArray } from 'util';
 
 export const ApprovalListView: React.SFC<ApprovalListProps> = props => {
-  const { handleGoToDetail, handleCheckbox, uids } = props;
+  const { handleGoToDetail, handleGoToApproval, handleCheckbox, financeUids } = props;
   const { isLoading, response } = props.financeApprovalState.all;
 
   const isChecked = (uid: string) => {
-    const _uids = new Set(uids);
+    const _uids = new Set(financeUids);
     return _uids.has(uid);
   };
 
@@ -28,11 +29,16 @@ export const ApprovalListView: React.SFC<ApprovalListProps> = props => {
           >
             <Grid container spacing={24}>
               <Grid item xs={1} sm={1}>
-                <Checkbox
-                  key={finance.uid} 
-                  onChange={() => handleCheckbox(finance.uid)}
-                  checked={isChecked(finance.uid)}
-                />
+                {
+                  finance.statusType === FinanceStatusType.Approved ||
+                  finance.statusType === FinanceStatusType.Hold ? 
+                    <Checkbox
+                      key={finance.uid} 
+                      onChange={() => handleCheckbox(finance.uid)}
+                      checked={isChecked(finance.uid)}
+                    />
+                  : ''
+                }
               </Grid>
               <Grid item xs={7} sm={7} onClick={() => handleGoToDetail(finance.uid)}>
                 <Typography 
@@ -46,13 +52,14 @@ export const ApprovalListView: React.SFC<ApprovalListProps> = props => {
                   noWrap
                   variant="body1"
                 >
-                {finance.document.changes.created && finance.document.changes.created.fullName} &nbsp;&bull;&nbsp;
+                  {finance.document.changes.created && finance.document.changes.created.fullName} &bull;&nbsp;
                   <FormattedDate 
                     year="numeric"
                     month="short"
                     day="numeric"
                     value={finance.document.changes.updatedAt || ''} 
-                  />
+                  /> &bull;&nbsp;
+                  {finance.uid}
                 </Typography>
                 <Typography 
                   noWrap
@@ -146,6 +153,12 @@ export const ApprovalListView: React.SFC<ApprovalListProps> = props => {
           elevation={1}
         >
         <RenderList/>
+        <Button
+          type="button"
+          color="primary"
+          onClick={() => handleGoToApproval()}
+        > Approval
+        </Button>
         </Paper>}
     </React.Fragment>
   );
