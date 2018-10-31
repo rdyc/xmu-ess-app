@@ -1,5 +1,5 @@
 // import { WorkflowStatusType } from '@common/classes/types';
-import { Checkbox, Divider, Grid, List, ListItem, ListSubheader, Paper, Typography } from '@material-ui/core';
+import { Button, Checkbox, Divider, Grid, List, ListItem, ListSubheader, Paper, Typography } from '@material-ui/core';
 import { ITimesheet } from '@timesheet/classes/response';
 import { ApprovalListProps } from '@timesheet/components/approval/timesheetApproval/list/TimesheetApprovalList';
 import { parseChanges } from '@utils/parseChanges';
@@ -9,8 +9,13 @@ import { FormattedDate, FormattedNumber, FormattedPlural } from 'react-intl';
 import { isArray } from 'util';
 
 export const TimesheetApprovalListView: React.SFC<ApprovalListProps> = props => {
-  const { handleGoToDetail } = props;
+  const { handleGoToDetail, handleCheckbox, uids } = props;
   const { isLoading, response } = props.timesheetApprovalState.all;
+
+  const isChecked = (uid: string) => {
+    const _uids = new Set(uids);
+    return _uids.has(uid);
+  };
 
   const renderTimesheetApprovalList = (timesheets: ITimesheet[]) => {
     const len = timesheets.length - 1;
@@ -25,7 +30,11 @@ export const TimesheetApprovalListView: React.SFC<ApprovalListProps> = props => 
           >
             <Grid container spacing={24}>
               <Grid item xs={1} sm={1}>
-                <Checkbox key={timesheet.uid} />
+                <Checkbox
+                  key={timesheet.uid}
+                  onChange={() => handleCheckbox(timesheet.uid)}
+                  checked={isChecked(timesheet.uid)}
+                />
               </Grid>
               <Grid item xs={7} sm={7} onClick={() => handleGoToDetail(timesheet.uid)}>
                 <Typography
@@ -133,6 +142,13 @@ export const TimesheetApprovalListView: React.SFC<ApprovalListProps> = props => 
         >
           <RenderList />
         </Paper>}
+      <br/>
+      <Button
+        variant="contained"
+        color="primary"
+      >
+        APPROVAL
+      </Button>
     </React.Fragment>
   );
 

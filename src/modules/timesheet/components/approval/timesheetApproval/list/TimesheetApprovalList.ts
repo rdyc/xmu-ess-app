@@ -23,6 +23,7 @@ import {
 } from 'recompose';
 
 interface OwnHandlers {
+  handleCheckbox: (uid: string) => void;
   handleGoToDetail: (timesheetUid: string) => void;
   handleGoToNext: () => void;
   handleGoToPrevious: () => void;
@@ -40,6 +41,7 @@ interface OwnOptions {
 }
 
 interface OwnState {
+  uids: string[] | undefined;
   orderBy: string | undefined;
   direction: string | undefined;
   page: number;
@@ -47,6 +49,7 @@ interface OwnState {
 }
 
 interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
+  stateCheckbox: StateHandler<OwnState>;
   stateNext: StateHandler<OwnState>;
   statePrevious: StateHandler<OwnState>;
   stateReloading: StateHandler<OwnState>;
@@ -72,6 +75,7 @@ const createProps: mapper<ApprovalListProps, OwnState> = (props: ApprovalListPro
   const { request } = props.timesheetApprovalState.all;
 
   return {
+    uids: [],
     orderBy: request && request.filter && request.filter['query.orderBy'] || orderBy,
     direction: request && request.filter && request.filter['query.direction'] || direction,
     page: request && request.filter && request.filter['query.page'] || page || 1,
@@ -80,6 +84,9 @@ const createProps: mapper<ApprovalListProps, OwnState> = (props: ApprovalListPro
 };
 
 const stateUpdaters: StateUpdaters<OwnOptions, OwnState, OwnStateUpdaters> = {
+  stateCheckbox: (prevState: OwnState) => (uids: string[]) => ({ 
+    uids
+  }),
   stateNext: (prevState: OwnState) => () => ({
     page: prevState.page + 1,
   }),
@@ -104,6 +111,14 @@ const stateUpdaters: StateUpdaters<OwnOptions, OwnState, OwnStateUpdaters> = {
 };
 
 const handlerCreators: HandleCreators<ApprovalListProps, OwnHandlers> = {
+  handleCheckbox: (props: ApprovalListProps) => (uid: string) => {
+    const { uids, stateCheckbox } = props;
+    const _uids = new Set(uids);
+
+    _uids.has(uid) ? _uids.delete(uid) : _uids.add(uid);
+
+    stateCheckbox(Array.from(_uids));
+  },
   handleGoToDetail: (props: ApprovalListProps) => (timesheetUid) => {
     const { history } = props;
     const { isLoading } = props.timesheetApprovalState.all;

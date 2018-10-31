@@ -2,7 +2,7 @@ import { IQueryCollectionState, IQuerySingleState } from '@generic/interfaces';
 import { 
   ITimesheetApprovalGetAllRequest,
   ITimesheetApprovalGetByIdRequest,
-  // ITimesheetApprovalPostBulkRequest,
+  ITimesheetApprovalPostBulkRequest,
   ITimesheetApprovalPostRequest,
 } from '@timesheet/classes/queries/approval';
 import { 
@@ -29,7 +29,7 @@ export interface ITimesheetState {
   timesheetApprovalGetAll: IQueryCollectionState<ITimesheetApprovalGetAllRequest, ITimesheet>;
   timesheetApprovalGetById: IQuerySingleState<ITimesheetApprovalGetByIdRequest, ITimesheetDetail>;
   timesheetApprovalPost: IQuerySingleState<ITimesheetApprovalPostRequest, boolean>;
-  // timesheetApprovalPostBulk: IQuerySingleState<ITimesheetApprovalPostBulkRequest, boolean>;
+  timesheetApprovalPostBulk: IQuerySingleState<ITimesheetApprovalPostBulkRequest, boolean>;
 
   // mileages
   timesheetMileagesGetAll: IQueryCollectionState<ITimesheetMileagesGetAllRequest, ITimesheetMileages>;

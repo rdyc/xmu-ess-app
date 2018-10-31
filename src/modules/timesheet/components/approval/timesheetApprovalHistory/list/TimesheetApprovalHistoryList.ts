@@ -202,8 +202,8 @@ const lifecycles: ReactLifeCycleFunctions<ApprovalHistoryListProps, OwnState> = 
 
     navBottomDispatch.dispose();
 
-    loadAllDispose();
     // dispose 'get all' from 'redux store' when the page is 'out of project registration' context 
+    loadAllDispose();
     // if (view && view.uid !== AppMenu.TimesheetApprovalHistory) {
     // }
   }

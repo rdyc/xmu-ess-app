@@ -7,6 +7,9 @@ import {
   timesheetApprovalGetByIdError,
   timesheetApprovalGetByIdRequest,
   timesheetApprovalGetByIdSuccess,
+  timesheetApprovalPostBulkError,
+  timesheetApprovalPostBulkRequest,
+  timesheetApprovalPostBulkSuccess,
   timesheetApprovalPostError,
   timesheetApprovalPostRequest,
   timesheetApprovalPostSuccess,
@@ -126,11 +129,57 @@ function* watchPostRequest() {
   yield takeEvery(Action.POST_REQUEST, worker);
 }
 
+function* watchPostBulkRequest() {
+  const worker = (action: ReturnType<typeof timesheetApprovalPostBulkRequest>) => {
+    return saiyanSaga.fetch({
+      method: 'post',
+      path: `/v1/approvals/timesheet/${action.payload.companyUid}/${action.payload.positionUid}`,
+      payload: action.payload.data,
+      successEffects: (response: IApiResponse) => [
+        put(timesheetApprovalPostBulkSuccess(response.body))
+      ],
+      successCallback: (response: IApiResponse) => {
+        action.payload.resolve(response.body.data);
+      },
+      failureEffects: (response: IApiResponse) => [
+        put(timesheetApprovalPostBulkError(response.statusText))
+      ],
+      failureCallback: (response: IApiResponse) => {
+        if (response.status === 400) {
+          const errors: any = { 
+            // information -> based form section name
+            information: flattenObject(response.body.errors) 
+          };
+
+          action.payload.reject(new SubmissionError(errors));
+        } else {
+          action.payload.reject(response.statusText);
+        }
+      },
+      errorEffects: (error: TypeError) => [
+        put(timesheetApprovalPostBulkError(error.message)),
+        put(
+          layoutAlertAdd({
+            time: new Date(),
+            message: error.message
+          })
+        )
+      ],
+      errorCallback: (error: any) => {
+        action.payload.reject(error);
+      }
+    });
+  };
+
+  yield takeEvery(Action.POST_REQUEST, worker);
+}
+
 function* timesheetApprovalSagas() {
   yield all([
     fork(watchAllFetchRequest),
     fork(watchByIdFetchRequest),
     fork(watchPostRequest),
+    fork(watchPostBulkRequest)
   ]);
 }
 

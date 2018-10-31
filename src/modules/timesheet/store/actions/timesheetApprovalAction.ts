@@ -1,6 +1,6 @@
 import { IResponseCollection, IResponseSingle } from '@generic/interfaces';
 import {
-  ITimesheetApprovalGetAllRequest, ITimesheetApprovalGetByIdRequest, ITimesheetApprovalPostRequest,
+  ITimesheetApprovalGetAllRequest, ITimesheetApprovalGetByIdRequest, ITimesheetApprovalPostBulkRequest, ITimesheetApprovalPostRequest,
 } from '@timesheet/classes/queries/approval';
 import { ITimesheet, ITimesheetDetail } from '@timesheet/classes/response';
 import { action } from 'typesafe-actions';
@@ -37,3 +37,9 @@ export const timesheetApprovalPostRequest =  (request: ITimesheetApprovalPostReq
 export const timesheetApprovalPostSuccess = (response: boolean) => action(TimesheetApprovalAction.POST_SUCCESS, response);
 export const timesheetApprovalPostError = (message: string) => action(TimesheetApprovalAction.POST_ERROR, message);
 export const timesheetApprovalPostDispose = () => action(TimesheetApprovalAction.POST_DISPOSE);
+
+// post bulk
+export const timesheetApprovalPostBulkRequest = (request: ITimesheetApprovalPostBulkRequest) => action (TimesheetApprovalAction.POST_REQUEST, request);
+export const timesheetApprovalPostBulkSuccess = (response: boolean) => action (TimesheetApprovalAction.POST_SUCCESS, response);
+export const timesheetApprovalPostBulkError = (message: string) => action(TimesheetApprovalAction.POST_ERROR, message);
+export const timesheetApprovalPostBulkDispose = () => action(TimesheetApprovalAction.POST_DISPOSE);
