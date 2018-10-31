@@ -5,7 +5,6 @@ import { MaterialUiPickersDate } from 'material-ui-pickers/typings/date';
 import { Moment } from 'moment';
 import * as React from 'react';
 import { isNullOrUndefined } from 'util';
-
 import { InputDateProps } from './InputDate';
 
 export const InputDateLeaveView: React.SFC<InputDateProps> = props => {
@@ -21,8 +20,9 @@ export const InputDateLeaveView: React.SFC<InputDateProps> = props => {
     return result;
   };
 
-  function disableWeekends(weekend: Date = new Date()) {
-    return weekend.getDay() === 0 || weekend.getDay() === 6;
+  function disableWeekends(date: Date) {
+    const dateObject = new Date(date);
+    return dateObject.getDay() === 0 || dateObject.getDay() === 6;
   }
 
   const render = (
@@ -49,7 +49,6 @@ export const InputDateLeaveView: React.SFC<InputDateProps> = props => {
       invalidLabel={''}
       disablePast
       shouldDisableDate={disableWeekends}
-      // disableYearSelection={false}
     />
   );
 
