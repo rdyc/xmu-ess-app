@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router';
 
 import { ProjectAssignmentDetail } from '../assignment/detail/ProjectAssignmentDetail';
-import { ProjectAssignmentEditor } from '../assignment/editor/ProjectAssignmentEditor';
+import { ProjectAssignmentEditorForm } from '../assignment/editor/ProjectAssignmentEditorForm';
 import { ProjectAssignmentList } from '../assignment/list/ProjectAssignmentList';
 
 type AllProps 
@@ -10,7 +10,7 @@ type AllProps
 
 const assignmentListComponent = () => <ProjectAssignmentList orderBy="uid" direction="descending"/>;
 const assignmentDetailComponent = () => <ProjectAssignmentDetail/>;
-const assignmentEditorComponent = () => <ProjectAssignmentEditor/>;
+const assignmentEditorComponent = () => <ProjectAssignmentEditorForm/>;
 
 export const projectAssignmentRouter: React.SFC<AllProps> = props => (
   <Switch>
