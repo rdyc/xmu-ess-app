@@ -154,12 +154,12 @@
   "project.assignment.form.request.title": "Create Assignment",
   "project.assignment.form.request.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
 
-  "project.assignment.field.information.uid": "Assignment ID",
-  "project.assignment.field.information.projectUid": "Project ID",
-  "project.assignment.field.information.projectUid.required": "Project id is required",
-  "project.assignment.field.information.projectUid.placeholder": "Select a project",
-  "project.assignment.field.information.assignedHours": "Assigned Hours",
-  "project.assignment.field.information.unassignedHours": "Unassigned Hours",
+  "project.assignment.field.uid": "Assignment ID",
+  "project.assignment.field.projectUid": "Project ID",
+  "project.assignment.field.projectUid.required": "Project id is required",
+  "project.assignment.field.projectUid.placeholder": "Select a project",
+  "project.assignment.field.assignedHours": "Assigned Hours",
+  "project.assignment.field.unassignedHours": "Unassigned Hours",
   "project.assignment.field.item.status": "Status",
   "project.assignment.field.item.employeeUid": "Employee",
   "project.assignment.field.item.employeeUid.required": "Employee is required",
@@ -172,5 +172,11 @@
   "project.assignment.field.item.mandays": "Mandays",
   "project.assignment.field.item.mandays.required": "Mandays is required",
   "project.assignment.field.item.mandays.placeholder": "Type mandays",
-  "project.assignment.field.item.hours": "Hours"
+  "project.assignment.field.item.hours": "Hours",
+
+  "project.assignment.message.invalidProps": "Some props are not valid",
+  "project.assignment.message.create.success": "A new assignment has been created",
+  "project.assignment.message.create.failure": "Unable to process your submission",
+  "project.assignment.message.update.success": "Existing assignment has been updated",
+  "project.assignment.message.update.failure": "Unable to process your submission"
 }

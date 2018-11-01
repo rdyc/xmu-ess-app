@@ -1,7 +1,13 @@
-import { projectAssignmentFieldMessage } from './projectAssignmentMessage';
+import {
+  projectAssignmentField,
+  projectAssignmentFieldHelperFor,
+  projectAssignmentSubmission,
+} from './projectAssignmentMessage';
 
 export const projectMessage = {
   assignment: {
-    field: projectAssignmentFieldMessage
+    field: projectAssignmentField,
+    for: projectAssignmentFieldHelperFor,
+    submission: projectAssignmentSubmission
  }
 };

@@ -110,13 +110,13 @@ const projectAssignment: React.SFC<AllProps> = props => {
             <TextField
               {...styled}
               margin="dense"
-              label={<FormattedMessage id="project.assignment.field.information.assignedHours" />}
+              label={<FormattedMessage id="project.assignment.field.assignedHours" />}
               value={intl.formatNumber(data.assignedHours)}
             />
             <TextField
               {...styled}
               margin="dense"
-              label={<FormattedMessage id="project.assignment.field.information.unassignedHours" />}
+              label={<FormattedMessage id="project.assignment.field.unassignedHours" />}
               value={intl.formatNumber(data.unassignedHours)}
             />
           </div>

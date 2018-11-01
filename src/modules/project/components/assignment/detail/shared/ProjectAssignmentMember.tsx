@@ -101,31 +101,31 @@ const projectAssignmentMember: React.SFC<AllProps> = props => {
                   <TextField
                     {...styled}
                     margin="dense"
-                    label={<FormattedMessage id="project.assignment.field.information.status" />}
+                    label={<FormattedMessage id="project.assignment.field.item.status" />}
                     value={item.status ? item.status.value : item.statusType}
                   />
                   <TextField
                     {...styled}
                     margin="dense"
-                    label={<FormattedMessage id="project.assignment.field.information.role" />}
+                    label={<FormattedMessage id="project.assignment.field.item.role" />}
                     value={item.role || '-'}
                   />
                   <TextField
                     {...styled}
                     margin="dense"
-                    label={<FormattedMessage id="project.assignment.field.information.jobDesc" />}
+                    label={<FormattedMessage id="project.assignment.field.item.jobDesc" />}
                     value={item.jobDescription || '-'}
                   />
                   <TextField
                     {...styled}
                     margin="dense"
-                    label={<FormattedMessage id="project.assignment.field.information.mandays" />}
+                    label={<FormattedMessage id="project.assignment.field.item.mandays" />}
                     value={intl.formatNumber(item.mandays)}
                   />
                   <TextField
                     {...styled}
                     margin="dense"
-                    label={<FormattedMessage id="project.assignment.field.information.hours" />}
+                    label={<FormattedMessage id="project.assignment.field.item.hours" />}
                     value={intl.formatNumber(item.hours)}
                   />
                   <Divider />
