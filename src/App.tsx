@@ -21,6 +21,7 @@ import { timesheetApprovalRouter, timesheetRouter } from '@timesheet/components/
 import { travelApprovalRouter, travelRouter, travelSettlementRouter } from '@travel/components/travelRouter';
 import { ConnectedRouter } from 'connected-react-router';
 import { History } from 'history';
+import { playgroundRouter } from 'playground/playgroundRouter';
 import * as React from 'react';
 import { IntlProvider } from 'react-intl';
 import { connect, Provider } from 'react-redux';
@@ -82,11 +83,13 @@ class App extends React.Component<AllProps> {
                       <Route path="/callback" component={CallbackPage} />
                     </div>
                   )}
-
+                  
                   {oidcState.user && (
                     <Switch>
                       <Route exact path="/" component={AccessWizardPage} />
                       <Layout>
+                        <Route path="/playground" component={playgroundRouter} />
+                        
                         <Route path="/home" component={HomePage} />
                         <Route path="/account" component={accountRouter} />
                         <Route path="/project" component={projectRegistrationRouter} />

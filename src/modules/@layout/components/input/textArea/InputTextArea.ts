@@ -1,8 +1,10 @@
 import {
   compose,
   HandleCreators,
+  lifecycle,
   mapper,
   pure,
+  ReactLifeCycleFunctions,
   StateHandler,
   StateHandlerMap,
   StateUpdaters,
@@ -62,8 +64,19 @@ const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
   })
 };
 
+const lifecycles: ReactLifeCycleFunctions<InputTextAreaProps, {}> = {
+  componentDidUpdate(prevProps: InputTextAreaProps) {
+    if (prevProps.input.value !== this.props.input.value) {
+      this.props.stateUpdate({
+        value: this.props.input.value
+      });
+    }
+  }
+};
+
 export const InputTextArea = compose<InputTextAreaProps, OwnProps>(
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
-  pure
+  pure,
+  lifecycle(lifecycles)
 )(InputTextAreaView);

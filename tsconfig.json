@@ -46,6 +46,6 @@
     "webpack",
     "jest",
     "src/setupTests.ts",
-    "src/playground",
+    "src/test",
   ]
 }
