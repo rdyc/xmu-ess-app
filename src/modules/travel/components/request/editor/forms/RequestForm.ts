@@ -6,7 +6,7 @@ import { InjectedFormProps, reduxForm } from 'redux-form';
 const formName = 'travelRequest';
 
 export type TravelItemFormData = {
-  uid: string | null;
+  uid: string;
   employeeUid: string;
   fullName: string;
   transportType: string;

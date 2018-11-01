@@ -27,7 +27,7 @@ export const TravelSettlementDetailView: React.SFC<SettlementDetailProps> = prop
   
   const { isLoading, response } = props.travelSettlementState.detail;
   const travelResponse = props.travelRequestState.detail.response;
-
+  // console.log(response);
   const renderDialog = (
     <Dialog
       fullScreen={dialogFullScreen}
@@ -84,11 +84,6 @@ export const TravelSettlementDetailView: React.SFC<SettlementDetailProps> = prop
           <Grid item xs={12} md={5}>
             <TravelSettlementItem data = {response.data.items}/>
           </Grid>
-        
-          <Grid item xs={12} md={6}>
-            <WorkflowHistory data={response.data.workflow} />
-          </Grid>
-
         </Grid>
       }
       {
@@ -111,6 +106,14 @@ export const TravelSettlementDetailView: React.SFC<SettlementDetailProps> = prop
           <Grid item xs={12} md={5}>
             <TravelRequestItem data = {travelResponse.data.items}/>
           </Grid>
+        </Grid>
+      }
+      {
+        !isLoading &&
+        response &&
+        response.data && 
+        <Grid item xs={12} md={6}>
+          <WorkflowHistory data={response.data.workflow} />
         </Grid>
       }
       {renderDialog}

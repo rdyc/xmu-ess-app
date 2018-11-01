@@ -97,14 +97,21 @@ const travelRequestItem: React.SFC<AllProps> = props => {
                   timeout="auto"
                   unmountOnExit
                 >
+                  {/* <FormControlLabel
+                    control={
+                      <Checkbox checked={item.isRoundTrip} />
+                    }
+                    label={<FormattedMessage id="travel.item.field.information.isRoundTrip" />}
+                    labelPlacement="start"
+                  /> */}
                   <TextField
-                    {...styled}
+                    {...styled} 
                     margin="dense"
                     label={<FormattedMessage id="travel.item.field.information.isRoundTrip" />}
                     value={item.isRoundTrip}
                   />
                   <TextField
-                    {...styled}
+                    {...styled} 
                     margin="dense"
                     label={<FormattedMessage id="travel.item.field.information.transport" />}
                     value={item.transport ? item.transport.value : '-'}
@@ -129,17 +136,17 @@ const travelRequestItem: React.SFC<AllProps> = props => {
                     {...styled}
                     margin="dense"
                     label={<FormattedMessage id="travel.item.field.information.destination" />}
-                    value={intl.formatDate(item.returnDate, {
-                      year: 'numeric',
-                      month: 'short',
-                      day: 'numeric'
-                    })}
+                    value={item.destination || '-'}
                   />
                   <TextField
                     {...styled}
                     margin="dense"
                     label={<FormattedMessage id="travel.item.field.information.returnDate" />}
-                    value={item.returnDate}
+                    value={intl.formatDate(item.returnDate, {
+                      year: 'numeric',
+                      month: 'short',
+                      day: 'numeric'
+                    })}
                   />
                   <TextField
                     {...styled}

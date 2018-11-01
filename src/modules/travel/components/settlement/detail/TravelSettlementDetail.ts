@@ -34,8 +34,6 @@ interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
 }
 
 interface OwnRouteParams {
-  companyUid: string;
-  positionUid: string;
   travelSettlementUid: string;
 }
 
@@ -78,26 +76,28 @@ const handlerCreators: HandleCreators<SettlementDetailProps, Handler> = {
   handleTravelRefresh: (props: SettlementDetailProps) => () => { 
     const { match } = props;
     const { user } = props.userState;
-    const { response } = props.travelSettlementState.detail;
     const { loadRequest } = props.travelSettlementDispatch;
     const { loadDetailRequest } = props.travelRequestDispatch;
+    const { response } = props.travelSettlementState.detail;
 
+    console.log(response);
     if (user) {
       loadRequest({
         traveSettlementlUid: match.params.travelSettlementUid,
         companyUid: user.company.uid,
         positionUid: user.position.uid,
       });
+
+      if (response) {
+        // load travel request
+        loadDetailRequest ({
+          companyUid: user.company.uid,
+          positionUid: user.position.uid,
+          travelUid: response.data.travelUid 
+        });
+      }
     }
 
-    if (response) {
-      // load travel request
-      loadDetailRequest ({
-        companyUid: match.params.companyUid,
-        positionUid: match.params.positionUid,
-        travelUid: response.data.travelUid 
-      });
-    }
   },
   handleTravelModify: (props: SettlementDetailProps) => () => { 
     const { intl, stateUpdate } = props;
@@ -146,9 +146,7 @@ const lifecycles: ReactLifeCycleFunctions<SettlementDetailProps, OwnState> = {
     } = this.props;
     
     const { user } = this.props.userState;
-    const { response } = this.props.travelSettlementState.detail;
     const { loadRequest } = this.props.travelSettlementDispatch;
-    const { loadDetailRequest } = this.props.travelRequestDispatch;
 
     layoutDispatch.changeView({
       uid: AppMenu.TravelSettlementRequest,
@@ -183,22 +181,27 @@ const lifecycles: ReactLifeCycleFunctions<SettlementDetailProps, OwnState> = {
         companyUid: user.company.uid,
         positionUid: user.position.uid,
       });
+
     }    
-    if (response) {
-    // load travel request
-    loadDetailRequest ({
-      companyUid: match.params.companyUid,
-      positionUid: match.params.positionUid,
-      travelUid: response.data.travelUid 
-    });
-  }
+    
   },
+
   componentWillReceiveProps(nextProps: SettlementDetailProps) {
     if (nextProps.travelSettlementState.detail.response !== this.props.travelSettlementState.detail.response) {
       const { intl } = nextProps;
       const { response } = nextProps.travelSettlementState.detail;
       const { assignMenus } = nextProps.appBarDispatch;
-      
+      const { user } = this.props.userState;
+      const { loadDetailRequest } = this.props.travelRequestDispatch;
+
+      if (user && response) {
+            loadDetailRequest ({
+              companyUid: user.company.uid,
+              positionUid: user.position.uid,
+              travelUid: response.data.travelUid
+            });
+          }
+
       const isStatusTypeEquals = (statusTypes: string[]): boolean => {
         let result = false;
 
@@ -220,7 +223,7 @@ const lifecycles: ReactLifeCycleFunctions<SettlementDetailProps, OwnState> = {
           id: TravelUserAction.Modify,
           name: intl.formatMessage({id: 'global.action.modify'}),
           enabled: response !== undefined,
-          visible: isStatusTypeEquals([WorkflowStatusType.Submitted, WorkflowStatusType.InProgress, WorkflowStatusType.Approved])
+          visible: isStatusTypeEquals([WorkflowStatusType.Submitted, WorkflowStatusType.InProgress])
         }
       ];
 
@@ -228,7 +231,7 @@ const lifecycles: ReactLifeCycleFunctions<SettlementDetailProps, OwnState> = {
     }
   },
   componentWillUnmount() {
-    const { layoutDispatch, appBarDispatch, travelSettlementDispatch } = this.props;
+    const { layoutDispatch, appBarDispatch, travelSettlementDispatch, travelRequestDispatch } = this.props;
 
     layoutDispatch.changeView(null);
     layoutDispatch.navBackHide();
@@ -238,6 +241,8 @@ const lifecycles: ReactLifeCycleFunctions<SettlementDetailProps, OwnState> = {
     appBarDispatch.dispose();
 
     travelSettlementDispatch.loadDetailDispose();
+    travelRequestDispatch.loadDetailDispose();
+    
   }
 };
 
