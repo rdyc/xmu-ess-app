@@ -51,7 +51,7 @@ import { isNullOrUndefined, isObject } from 'util';
 import { ProjectAssignment } from '../detail/shared/ProjectAssignment';
 
 // ----------------------------------------------------------------------------
-// Form.tsx
+// ProjectAssignmentForm.tsx
 // ----------------------------------------------------------------------------
 const isComplete = (statusType?: string | null | undefined): boolean => {
   let result = false;
@@ -68,7 +68,7 @@ const isComplete = (statusType?: string | null | undefined): boolean => {
   return result;
 };
 
-const complexItemsView: React.SFC<WrappedFieldArrayProps<ComplexFormItemData> & ComplexFormProps> = props => (
+const ProjectAssignmentItemFormView: React.SFC<WrappedFieldArrayProps<ProjectAssignmentItemFormData> & ProjectAssignmentFormProps> = props => (
   <Grid container spacing={16}>
     {
       props.fields.map((field, index) => {
@@ -170,19 +170,22 @@ const complexItemsView: React.SFC<WrappedFieldArrayProps<ComplexFormItemData> & 
           </Card>
         </Grid>
 
-        <Grid item xs={12} md={6}>
-          <Submission 
-            valid={props.valid}
-            reset={props.reset}
-            submitting={props.submitting}
-          />
-        </Grid>
+        {
+          props.fields.length > 0 &&
+          <Grid item xs={12} md={6}>
+            <Submission 
+              valid={props.valid}
+              reset={props.reset}
+              submitting={props.submitting}
+              />
+          </Grid>
+        }
       </Grid>
     </Grid>
   </Grid>
 );
 
-const complexView: React.SFC<ComplexFormProps> = props => (
+const ProjectAssignmentFormView: React.SFC<ProjectAssignmentFormProps> = props => (
   <form onSubmit={props.handleSubmit}>
     <Grid container spacing={16}>
       <Grid item xs={12} md={4}>
@@ -215,7 +218,7 @@ const complexView: React.SFC<ComplexFormProps> = props => (
           <FieldArray 
             name="items" 
             props={props} 
-            component={complexItemsView}
+            component={ProjectAssignmentItemFormView}
             />
         </Grid> 
       }
@@ -236,10 +239,10 @@ const complexView: React.SFC<ComplexFormProps> = props => (
 );
 
 // ----------------------------------------------------------------------------
-// Form.ts
+// ProjectAssignmentForm.ts
 // ----------------------------------------------------------------------------
 
-interface ComplexFormItemData {
+interface ProjectAssignmentItemFormData {
   uid: string | null;
   employeeUid: string;
   role: string | null;
@@ -250,9 +253,9 @@ interface ComplexFormItemData {
   status?: ICommonSystem | null;
   rejectedReason?: string | null;
 }
-interface ComplexFormData {
+interface ProjectAssignmentFormData {
   projectUid: string;
-  items: ComplexFormItemData[] | undefined;
+  items: ProjectAssignmentItemFormData[] | undefined;
 }
 
 interface OwnFormProps {
@@ -276,11 +279,11 @@ interface OwnFormStateUpdaters extends StateHandlerMap<OwnFormState> {
 }
 
 interface FormValueProps {
-  formValues: ComplexFormData;
+  formValues: ProjectAssignmentFormData;
 }
 
-type ComplexFormProps 
-  = InjectedFormProps<ComplexFormData, OwnFormProps>
+type ProjectAssignmentFormProps 
+  = InjectedFormProps<ProjectAssignmentFormData, OwnFormProps>
   & InjectedIntlProps
   & WithUser
   & OwnFormProps
@@ -289,7 +292,7 @@ type ComplexFormProps
   & OwnFormStateUpdaters
   & FormValueProps;
 
-const formCreateProps: mapper<ComplexFormProps, OwnFormState> = (props: ComplexFormProps): OwnFormState => {
+const formCreateProps: mapper<ProjectAssignmentFormProps, OwnFormState> = (props: ProjectAssignmentFormProps): OwnFormState => {
   const { user } = props.userState;
 
   return {
@@ -318,15 +321,6 @@ const formStateUpdaters: StateUpdaters<{}, OwnFormState, OwnFormStateUpdaters> =
     return {
       ...prevState,
       currentProject: project
-      // currentProject: { 
-      //   ...project,
-      //   uid: '-',
-      //   projectUid: project.uid, 
-      //   assignedHours: 0, 
-      //   unassignedHours: 0, 
-      //   items: null,
-      //   changes: null
-      // }
     };
   },
   setProjectHours: (prevState: OwnFormState) => (hours: number) => {
@@ -347,9 +341,9 @@ const formStateUpdaters: StateUpdaters<{}, OwnFormState, OwnFormStateUpdaters> =
   }
 };
 
-const formHandlers: HandleCreators<ComplexFormProps, OwnFormHandlers> = {
-  handleEventListener: (props: ComplexFormProps) => (event: CustomEvent) => { 
-    const formValues = event.detail as ComplexFormData; 
+const formHandlers: HandleCreators<ProjectAssignmentFormProps, OwnFormHandlers> = {
+  handleEventListener: (props: ProjectAssignmentFormProps) => (event: CustomEvent) => { 
+    const formValues = event.detail as ProjectAssignmentFormData; 
     const { setProjectHours } = props;
 
     let hours: number = 0;
@@ -360,18 +354,18 @@ const formHandlers: HandleCreators<ComplexFormProps, OwnFormHandlers> = {
 
     setProjectHours(hours);
   },
-  handleProjectChange: (props: ComplexFormProps) => (project: IProjectList | undefined) => { 
+  handleProjectChange: (props: ProjectAssignmentFormProps) => (project: IProjectList | undefined) => { 
     const { setProject } = props;
 
     setProject(project);
   }
 };
 
-const lifecycles: ReactLifeCycleFunctions<ComplexFormProps, OwnFormState> = {
+const lifecycles: ReactLifeCycleFunctions<ProjectAssignmentFormProps, OwnFormState> = {
   componentDidMount() {
     addEventListener('ASG_FORM', this.props.handleEventListener);
   },
-  componentDidUpdate(prevProps: ComplexFormProps) {
+  componentDidUpdate(prevProps: ProjectAssignmentFormProps) {
     // when assignment detail are not equals between previous and current
     if (prevProps.initialData !== this.props.initialData) {
       
@@ -396,34 +390,34 @@ const lifecycles: ReactLifeCycleFunctions<ComplexFormProps, OwnFormState> = {
 };
 
 const mapStateToProps = (state: any): FormValueProps => ({
-  formValues: getFormValues('projectAssignment')(state) as ComplexFormData
+  formValues: getFormValues('projectAssignment')(state) as ProjectAssignmentFormData
 });
 
-const enhance = compose<ComplexFormProps, OwnFormProps & InjectedFormProps<ComplexFormData, OwnFormProps>>(
+const enhance = compose<ProjectAssignmentFormProps, OwnFormProps & InjectedFormProps<ProjectAssignmentFormData, OwnFormProps>>(
   connect(mapStateToProps),
   withUser,
   injectIntl,
   withStateHandlers(formCreateProps, formStateUpdaters), 
   withHandlers(formHandlers),
   lifecycle(lifecycles),
-)(complexView);
+)(ProjectAssignmentFormView);
 
-const ReduxFormArray = reduxForm<ComplexFormData, OwnFormProps>({
+const ProjectAssignmentForm = reduxForm<ProjectAssignmentFormData, OwnFormProps>({
   form: 'projectAssignment',
   touchOnChange: true,
   touchOnBlur: true,
   destroyOnUnmount: true,
-  onChange: (values: ComplexFormData, dispatch: any, props: any) => {
+  onChange: (values: ProjectAssignmentFormData, dispatch: any, props: any) => {
     dispatchEvent(new CustomEvent('ASG_FORM', { detail: values }));
   },
 })(enhance);
 
 // ----------------------------------------------------------------------------
-// Editor.tsx
+// ProjectAssignmentEditorView.tsx
 // ----------------------------------------------------------------------------
 
-const complexEditorView: React.SFC<ComplexEditorProps> = props => (
-  <ReduxFormArray 
+const ProjectAssignmentEditorView: React.SFC<ProjectAssignmentEditorProps> = props => (
+  <ProjectAssignmentForm 
     formMode={props.formMode}
     initialData={props.generateInitialData()}
     initialValues={props.generateInitialValues()}
@@ -435,14 +429,14 @@ const complexEditorView: React.SFC<ComplexEditorProps> = props => (
 );
 
 // ----------------------------------------------------------------------------
-// Editor.ts
+// ProjectAssignmentEditor.ts
 // ----------------------------------------------------------------------------
 
 interface OwnEditorHandlers {
   generateInitialData: () => IProjectAssignmentDetail | undefined;
-  generateInitialValues: () => ComplexFormData | undefined;
-  handleValidate: (values: ComplexFormData) => any;
-  handleSubmit: (values: ComplexFormData) => void;
+  generateInitialValues: () => ProjectAssignmentFormData | undefined;
+  handleValidate: (values: ProjectAssignmentFormData) => any;
+  handleSubmit: (values: ProjectAssignmentFormData) => void;
   handleSubmitSuccess: (result: any, dispatch: Dispatch<any>) => void;
   handleSubmitFail: (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => void;
 }
@@ -458,7 +452,7 @@ interface OwnEditorStateUpdaters extends StateHandlerMap<OwnEditorState> {
   stateUpdate: StateHandler<OwnEditorState>;
 }
 
-type ComplexEditorProps 
+type ProjectAssignmentEditorProps 
   = WithProjectAssignment
   & WithProjectRegistration
   & WithUser
@@ -470,7 +464,7 @@ type ComplexEditorProps
   & OwnEditorState
   & OwnEditorStateUpdaters;
 
-const editorCreateProps: mapper<ComplexEditorProps, OwnEditorState> = (props: ComplexEditorProps): OwnEditorState => {
+const editorCreateProps: mapper<ProjectAssignmentEditorProps, OwnEditorState> = (props: ProjectAssignmentEditorProps): OwnEditorState => {
   const { history } = props;
   
   const state = history.location.state;
@@ -490,8 +484,8 @@ const editorStateUpdaters: StateUpdaters<{}, OwnEditorState, OwnEditorStateUpdat
   })
 };
 
-const editorHandlers: HandleCreators<ComplexEditorProps, OwnEditorHandlers> = {
-  generateInitialData: (props: ComplexEditorProps) => (): IProjectAssignmentDetail | undefined => {
+const editorHandlers: HandleCreators<ProjectAssignmentEditorProps, OwnEditorHandlers> = {
+  generateInitialData: (props: ProjectAssignmentEditorProps) => (): IProjectAssignmentDetail | undefined => {
     const { response } = props.projectAssignmentState.detail; 
 
     if (response && response.data) {
@@ -500,11 +494,11 @@ const editorHandlers: HandleCreators<ComplexEditorProps, OwnEditorHandlers> = {
       
     return undefined;
     },
-  generateInitialValues: (props: ComplexEditorProps) => (): ComplexFormData | undefined => {
+  generateInitialValues: (props: ProjectAssignmentEditorProps) => (): ProjectAssignmentFormData | undefined => {
     const { response } = props.projectAssignmentState.detail; 
 
     if (response && response.data) {
-      const items: ComplexFormItemData[] = [];
+      const items: ProjectAssignmentItemFormData[] = [];
 
       if (response.data.items) {
         response.data.items.forEach(item => 
@@ -530,7 +524,7 @@ const editorHandlers: HandleCreators<ComplexEditorProps, OwnEditorHandlers> = {
       
     return undefined;
   },
-  handleValidate: (props: ComplexEditorProps) => (values: ComplexFormData) => { 
+  handleValidate: (props: ProjectAssignmentEditorProps) => (values: ProjectAssignmentFormData) => { 
     const errors = {};
   
     const requiredFields = ['projectUid'];
@@ -569,7 +563,7 @@ const editorHandlers: HandleCreators<ComplexEditorProps, OwnEditorHandlers> = {
     
     return errors;
   },
-  handleSubmit: (props: ComplexEditorProps) => (values: ComplexFormData) => { 
+  handleSubmit: (props: ProjectAssignmentEditorProps) => (values: ProjectAssignmentFormData) => { 
     const { intl } = props;
     const { user } = props.userState;
     const { patchRequest } = props.projectAssignmentDispatch;
@@ -602,7 +596,7 @@ const editorHandlers: HandleCreators<ComplexEditorProps, OwnEditorHandlers> = {
       });
     }); 
   },
-  handleSubmitSuccess: (props: ComplexEditorProps) => (response: boolean) => {
+  handleSubmitSuccess: (props: ProjectAssignmentEditorProps) => (response: boolean) => {
     const { formMode, intl, history, assignmentUid } = props;
     const { alertAdd } = props.layoutDispatch;
     
@@ -623,7 +617,7 @@ const editorHandlers: HandleCreators<ComplexEditorProps, OwnEditorHandlers> = {
       history.push(`/project/assignment/details/${assignmentUid}`);
     }
   },
-  handleSubmitFail: (props: ComplexEditorProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
+  handleSubmitFail: (props: ProjectAssignmentEditorProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
     const { intl } = props;
     const { alertAdd } = props.layoutDispatch;
     
@@ -643,7 +637,7 @@ const editorHandlers: HandleCreators<ComplexEditorProps, OwnEditorHandlers> = {
   }
 };
 
-const editorLifecycles: ReactLifeCycleFunctions<ComplexEditorProps, {}> = {
+const editorLifecycles: ReactLifeCycleFunctions<ProjectAssignmentEditorProps, {}> = {
   componentDidMount() {
     const { layoutDispatch, intl, formMode, companyUid, assignmentUid } = this.props;
     const { response } = this.props.projectAssignmentState.detail;
@@ -698,7 +692,7 @@ const editorLifecycles: ReactLifeCycleFunctions<ComplexEditorProps, {}> = {
   }
 };
 
-export const ProjectAssignmentEditorForm = compose<ComplexEditorProps, {}>(
+export const ProjectAssignmentEditorForm = compose<ProjectAssignmentEditorProps, {}>(
   withUser,
   withLayout,
   withAppBar,
@@ -709,4 +703,4 @@ export const ProjectAssignmentEditorForm = compose<ComplexEditorProps, {}>(
   withStateHandlers(editorCreateProps, editorStateUpdaters),
   withHandlers(editorHandlers),
   lifecycle(editorLifecycles)
-)(complexEditorView);
+)(ProjectAssignmentEditorView);
