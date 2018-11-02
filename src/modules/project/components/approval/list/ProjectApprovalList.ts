@@ -72,8 +72,8 @@ const createProps: mapper<ProjectApprovalListProps, OwnState> = (props: ProjectA
   const { request } = props.projectApprovalState.all;
 
   return { 
-    orderBy: request && request.filter && request.filter.query && request.filter.query.orderBy || orderBy,
-    direction: request && request.filter && request.filter.query && request.filter.query.direction || direction,
+    orderBy: request && request.filter && request.filter.query && request.filter.query.orderBy || orderBy || 'uid',
+    direction: request && request.filter && request.filter.query && request.filter.query.direction || direction || 'descending',
     page: request && request.filter && request.filter.query && request.filter.query.page || page || 1, 
     size: request && request.filter && request.filter.query && request.filter.query.size || size || 10,
   };
@@ -109,7 +109,7 @@ const handlerCreators: HandleCreators<ProjectApprovalListProps, OwnHandlers> = {
     const { isLoading } = props.projectApprovalState.all;
 
     if (!isLoading) {
-      history.push(`/approval/project/details/${projectUid}`);
+      history.push(`/project/approvals/${projectUid}`);
     } 
   },
   handleGoToNext: (props: ProjectApprovalListProps) => () => { 

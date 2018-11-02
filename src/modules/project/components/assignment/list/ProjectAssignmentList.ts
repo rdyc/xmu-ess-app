@@ -73,8 +73,8 @@ const createProps: mapper<ProjectAssignmentListProps, OwnState> = (props: Projec
   const { request } = props.projectAssignmentState.all;
 
   return { 
-    orderBy: request && request.filter && request.filter.orderBy || orderBy,
-    direction: request && request.filter && request.filter.direction || direction,
+    orderBy: request && request.filter && request.filter.orderBy || orderBy || 'uid',
+    direction: request && request.filter && request.filter.direction || direction || 'descending',
     page: request && request.filter && request.filter.page || page || 1, 
     size: request && request.filter && request.filter.size || size || 10,
   };
@@ -110,7 +110,7 @@ const handlerCreators: HandleCreators<ProjectAssignmentListProps, OwnHandlers> =
     const { isLoading } = props.projectAssignmentState.all;
 
     if (!isLoading) {
-      history.push(`/project/assignment/details/${assignmentUid}`);
+      history.push(`/project/assignments/${assignmentUid}`);
     } 
   },
   handleGoToNext: (props: ProjectAssignmentListProps) => () => { 
