@@ -1,16 +1,17 @@
-import { IQueryCollectionState, IQuerySingleState } from '@generic/interfaces';
+import { IQueryCollectionState, IQuerySingleState, IResponseSingle } from '@generic/interfaces';
 import {
   ILeaveApprovalGetAllRequest,
   ILeaveApprovalGetByIdRequest,
   ILeaveApprovalPostRequest,
 } from '@leave/classes/queries/approval';
 import {
+  ILeaveGetEndQuery,
   ILeaveRequestGetAllRequest,
   ILeaveRequestGetByIdRequest,
   ILeaveRequestPostRequest,
   ILeaveRequestPutRequest,
 } from '@leave/classes/queries/request';
-import { ILeaveRequest, ILeaveRequestDetail } from '@leave/classes/response';
+import { ILeaveGetEnd, ILeaveRequest, ILeaveRequestDetail } from '@leave/classes/response';
 
 export interface ILeaveState {
   // request
@@ -23,4 +24,12 @@ export interface ILeaveState {
   leaveApprovalGetAll: IQueryCollectionState<ILeaveApprovalGetAllRequest, ILeaveRequest>;
   leaveApprovalGetById: IQuerySingleState<ILeaveApprovalGetByIdRequest, ILeaveRequestDetail>;
   leaveApprovalPost: IQuerySingleState<ILeaveApprovalPostRequest, ILeaveRequest>;
+}
+
+export interface ILeaveGetEnd {
+    // get end
+    readonly result: IResponseSingle<ILeaveGetEnd> | undefined;
+    readonly parameter: ILeaveGetEndQuery | undefined;
+    readonly loading: boolean;
+    readonly errors?: string | null;
 }

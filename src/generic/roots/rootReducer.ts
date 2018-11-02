@@ -26,6 +26,7 @@ export const rootReducer = combineReducers<IAppState>({
   form: reduxFormReducer,
   appBar: appBarReducer,
   navBottom: listBarReducer,
+  getEnd: leaveReducers.leaveRequestGetEnd,
 
   /* modules */
   ...commonReducers,
