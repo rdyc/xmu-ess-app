@@ -10,21 +10,32 @@ import {
   DialogActions,
   DialogContent,
   DialogContentText,
-  DialogTitle,
+  DialogTitle
 } from '@material-ui/core';
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Field } from 'redux-form';
+import { WorkflowApprovalMileageFormProps } from './WorkflowMileageApproval';
 
-import { WorkflowApprovalFormProps } from './WorkflowApprovalMileageItemForm';
-
-export const WorkflowApprovalFormView: React.SFC<WorkflowApprovalFormProps> = props => {
-  const { 
-    approvalTitle, approvalSubHeader,
-    approvalDialogFullScreen, isOpenDialog, approvalDialogTitle, 
-    approvalDialogContentText, approvalDialogCancelText, approvalDialogConfirmedText, 
-    handleDialogOpen, handleDialogClose, handleDialogConfirmed,
-    approvalChoices, formIsApproved, intl
+export const WorkflowMileageApprovalView: React.SFC<
+  WorkflowApprovalMileageFormProps
+> = props => {
+  const {
+    itemTrue,
+    approvalTitle,
+    approvalSubHeader,
+    approvalDialogFullScreen,
+    isOpenDialog,
+    approvalDialogTitle,
+    approvalDialogContentText,
+    approvalDialogCancelText,
+    approvalDialogConfirmedText,
+    handleDialogOpen,
+    handleDialogClose,
+    handleDialogConfirmed,
+    approvalChoices,
+    formIsApproved,
+    intl
   } = props;
 
   const renderDialog = (
@@ -57,33 +68,37 @@ export const WorkflowApprovalFormView: React.SFC<WorkflowApprovalFormProps> = pr
     <div>
       <form onSubmit={props.handleSubmit}>
         <Card square>
-          <CardHeader 
-            title={approvalTitle}
-            subheader={approvalSubHeader}
-          />
+          <CardHeader title={approvalTitle} subheader={approvalSubHeader} />
           <CardContent>
             <Field
               name="isApproved"
               required={true}
-              label={<FormattedMessage id={'workflow.approval.field.isApproved'} />}
-              placeholder={intl.formatMessage({id: 'workflow.approval.field.isApproved.placeholder'})}
+              label={
+                <FormattedMessage id={'workflow.approval.field.isApproved'} />
+              }
+              placeholder={intl.formatMessage({
+                id: 'workflow.approval.field.isApproved.placeholder'
+              })}
               choices={approvalChoices}
               component={RadioGroup}
             />
-            { 
-              formIsApproved !== undefined &&
-              !formIsApproved &&
-              <Field
-                name="remark"
-                required={true}
-                label={<FormattedMessage id={'workflow.approval.field.remark'} />}
-                placeholder={intl.formatMessage({id: 'workflow.approval.field.remark.placeholder'})}
-                component={InputTextArea}
-              />
-            }
+            {formIsApproved !== undefined &&
+              !formIsApproved && (
+                <Field
+                  name="remark"
+                  required={true}
+                  label={
+                    <FormattedMessage id={'workflow.approval.field.remark'} />
+                  }
+                  placeholder={intl.formatMessage({
+                    id: 'workflow.approval.field.remark.placeholder'
+                  })}
+                  component={InputTextArea}
+                />
+              )}
           </CardContent>
           <CardActions>
-            <Button 
+            <Button
               type="button"
               color="secondary"
               disabled={props.submitting}
@@ -91,13 +106,19 @@ export const WorkflowApprovalFormView: React.SFC<WorkflowApprovalFormProps> = pr
             >
               <FormattedMessage id={'global.action.reset'} />
             </Button>
-            <Button 
+            <Button
               type="button"
               color="secondary"
-              disabled={!props.valid || props.submitting}
+              disabled={(!props.valid || props.submitting) || itemTrue}
               onClick={() => handleDialogOpen()}
             >
-              <FormattedMessage id={props.submitting ? 'global.processing' : 'global.action.submit'}/>
+              <FormattedMessage
+                id={
+                  props.submitting
+                    ? 'global.processing'
+                    : 'global.action.submit'
+                }
+              />
             </Button>
           </CardActions>
         </Card>

@@ -5,7 +5,6 @@ import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IAppBarMenu } from '@layout/interfaces';
-// import { MileageItemData } from '@mileage/components/approval/detail/forms/MileageApprovalForm';
 import { IMileageApprovalPostItem } from '@mileage/classes/request';
 import { MileageApprovalUserAction } from '@mileage/classes/types';
 import { MileageApprovalDetailView } from '@mileage/components/approval/detail/MileageApprovalDetailView';
@@ -15,7 +14,6 @@ import {
 } from '@mileage/hoc/withMileageApproval';
 import { mileageMessage } from '@mileage/locales/messages/mileageMessage';
 import { IWorkflowApprovalItemPayload } from '@organization/classes/request/workflow/approval';
-import { WorkflowApprovalFormData } from '@organization/components/workflow/approval/WorkflowApprovalForm';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import {
@@ -33,13 +31,13 @@ import {
 import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
 import { isNullOrUndefined, isObject } from 'util';
+import { WorkflowApprovalMileageFormData } from './WorkflowMileageApproval';
 
 interface OwnHandler {
-  // Tambah ITEM Pada workflowapproval, bikin baru mungkin
   handleMileageRefresh: () => void;
   handleCheckbox: (mileageItemUid: string) => void;
-  handleValidate: (payload: WorkflowApprovalFormData) => FormErrors;
-  handleSubmit: (payload: WorkflowApprovalFormData) => void;
+  handleValidate: (payload: WorkflowApprovalMileageFormData) => FormErrors;
+  handleSubmit: (payload: WorkflowApprovalMileageFormData) => void;
   handleSubmitSuccess: (result: any, dispatch: Dispatch<any>) => void;
   handleSubmitFail: (
     errors: FormErrors | undefined,
@@ -48,10 +46,12 @@ interface OwnHandler {
   ) => void;
 }
 
-interface OwnState {
-  // Tambah ITEM
-  mileageItemUids: string[];
+interface OwnRouteParams {
+  mileageUid: string;
+}
 
+interface OwnState {
+  mileageItemUids: string[];
   approvalTitle: string;
   approvalSubHeader: string;
   approvalChoices: RadioGroupChoice[];
@@ -60,10 +60,6 @@ interface OwnState {
   approvalDialogContentText: string;
   approvalDialogCancelText: string;
   approvalDialogConfirmedText: string;
-}
-
-interface OwnRouteParams {
-  mileageUid: string;
 }
 
 interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
@@ -86,8 +82,8 @@ const createProps: mapper<MileageApprovalDetailProps, OwnState> = (
   const { intl } = props;
 
   return {
-    // Tambah ITEM
     mileageItemUids: [],
+
     approvalTitle: intl.formatMessage({ id: 'mileage.approvalTitle' }),
     approvalSubHeader: intl.formatMessage({ id: 'mileage.approvalSubHeader' }),
     approvalChoices: [
@@ -149,11 +145,15 @@ const handlerCreators: HandleCreators<
   },
 
   handleValidate: (props: MileageApprovalDetailProps) => (
-    formData: WorkflowApprovalFormData
+    formData: WorkflowApprovalMileageFormData
   ) => {
+    const { mileageItemUids } = props;
     const errors = {};
-    // tambahkan Item juga yg required nya ?
-    const requiredFields = ['item', 'isApproved', 'remark'];
+    const requiredFields = ['isApproved', 'remark'];
+
+    if (mileageItemUids.length < 1) {
+      errors[1] = props.intl.formatMessage({id: `workflow.approval.field.item.required`});
+    }
 
     requiredFields.forEach(field => {
       if (!formData[field] || isNullOrUndefined(formData[field])) {
@@ -162,19 +162,16 @@ const handlerCreators: HandleCreators<
         });
       }
     });
-
+    
     return errors;
   },
 
   handleSubmit: (props: MileageApprovalDetailProps) => (
-    formData: WorkflowApprovalFormData
+    formData: WorkflowApprovalMileageFormData
   ) => {
     const { match, intl, mileageItemUids } = props;
     const { user } = props.userState;
     const { createRequest } = props.mileageApprovalDispatch;
-    // const { response } = props.mileageApprovalState.detail;
-    // tambahkan ITEM juga!
-
     // user checking
     if (!user) {
       return Promise.reject('user was not found');
@@ -229,7 +226,7 @@ const handlerCreators: HandleCreators<
       message: intl.formatMessage(mileageMessage.updateSuccess)
     });
 
-    history.push('/approval/mileage/list');
+    history.push('/approval/mileage');
   },
 
   handleSubmitFail: (props: MileageApprovalDetailProps) => (
@@ -324,7 +321,7 @@ const lifecycles: ReactLifeCycleFunctions<MileageApprovalDetailProps, {}> = {
     const {
       layoutDispatch,
       appBarDispatch,
-      mileageApprovalDispatch
+      // mileageApprovalDispatch
     } = this.props;
 
     layoutDispatch.changeView(null);
@@ -334,7 +331,7 @@ const lifecycles: ReactLifeCycleFunctions<MileageApprovalDetailProps, {}> = {
 
     appBarDispatch.dispose();
 
-    mileageApprovalDispatch.loadDetailDispose();
+    // mileageApprovalDispatch.loadDetailDispose();
   }
 };
 

@@ -1,4 +1,5 @@
 import { WorkflowStatusType } from '@common/classes/types';
+// import { InputItem } from '@layout/components/input/item';
 import {
   Card,
   CardContent,
@@ -13,10 +14,11 @@ import { IMileageRequestItem } from '@mileage/classes/response';
 import { MileageApprovalDetailProps } from '@mileage/components/approval/detail/MileageApprovalDetail';
 import { MileageInformation } from '@mileage/components/request/detail/shared/MileageInformation';
 import { MileageItem } from '@mileage/components/request/detail/shared/MileageItem';
-import { WorkflowApprovalForm } from '@organization/components/workflow/approval/WorkflowApprovalForm';
 import { WorkflowHistory } from '@organization/components/workflow/history/WorkflowHistory';
 import * as React from 'react';
 import { FormattedDate, FormattedMessage } from 'react-intl';
+// import { Field } from 'redux-form';
+import { WorkflowMileageApproval } from './WorkflowMileageApproval';
 
 export const MileageApprovalDetailView: React.SFC<
   MileageApprovalDetailProps
@@ -31,9 +33,15 @@ export const MileageApprovalDetailView: React.SFC<
     approvalDialogTitle,
     approvalDialogContentText,
     approvalDialogCancelText,
-    approvalDialogConfirmedText,
+    approvalDialogConfirmedText
   } = props;
-  const { intl, handleValidate, handleSubmit, handleSubmitSuccess, handleSubmitFail } = props;
+  const {
+    intl,
+    handleValidate,
+    handleSubmit,
+    handleSubmitFail,
+    handleSubmitSuccess
+  } = props;
   const { isLoading, response } = props.mileageApprovalState.detail;
 
   const isChecked = (mileageItemUid: string) => {
@@ -58,8 +66,17 @@ export const MileageApprovalDetailView: React.SFC<
                   <Grid item xs={1} sm={1}>
                     {item.status &&
                       item.status.type === WorkflowStatusType.Submitted && (
+                        // <Field
+                        //   name="items"
+                        //   required={mileageItemUids.length < 1 ? true : false}
+                        //   onChange={() => handleCheckbox(item.uid)}
+                        //   checked={isChecked(item.uid)}
+                        //   component={InputItem}
+                        //   />
                         <Checkbox
                           key={item.uid}
+                          // required={mileageItemUids.length < 1 ? true : false}
+                          // required={true}
                           onChange={() => handleCheckbox(item.uid)}
                           checked={isChecked(item.uid)}
                         />
@@ -90,7 +107,11 @@ export const MileageApprovalDetailView: React.SFC<
                       item.status.type !== WorkflowStatusType.Submitted && (
                         <Typography
                           noWrap
-                          color={item.status.type === WorkflowStatusType.Rejected ? 'error' : 'secondary'}
+                          color={
+                            item.status.type === WorkflowStatusType.Rejected
+                              ? 'error'
+                              : 'secondary'
+                          }
                           variant="body1"
                           align="right"
                         >
@@ -140,7 +161,8 @@ export const MileageApprovalDetailView: React.SFC<
             <Grid item xs={12} md={4}>
               {response.data.workflow &&
                 response.data.workflow.isApproval && (
-                  <WorkflowApprovalForm
+                  <WorkflowMileageApproval
+                    itemTrue={mileageItemUids.length < 1 ? true : false}
                     approvalTitle={approvalTitle}
                     approvalSubHeader={approvalSubHeader}
                     approvalChoices={approvalChoices}
@@ -150,7 +172,7 @@ export const MileageApprovalDetailView: React.SFC<
                     approvalDialogCancelText={approvalDialogCancelText}
                     approvalDialogConfirmedText={approvalDialogConfirmedText}
                     validate={handleValidate}
-                    onSubmit={handleSubmit} 
+                    onSubmit={handleSubmit}
                     onSubmitSuccess={handleSubmitSuccess}
                     onSubmitFail={handleSubmitFail}
                   />

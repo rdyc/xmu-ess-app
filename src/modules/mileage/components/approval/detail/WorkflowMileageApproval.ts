@@ -1,27 +1,19 @@
 import { WorkflowStatusType } from '@common/classes/types';
 import { RadioGroupChoice } from '@layout/components/input/radioGroup';
-import { WithForm, withForm } from '@layout/hoc/withForm';
 import { IMileageApprovalPostItem } from '@mileage/classes/request';
+import { WithMileageApproval, withMileageApproval } from '@mileage/hoc/withMileageApproval';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
-import {
-  compose,
-  HandleCreators,
-  mapper,
-  StateHandler,
-  StateHandlerMap,
-  StateUpdaters,
-  withHandlers,
-  withStateHandlers,
-} from 'recompose';
+import { compose, HandleCreators, mapper, StateHandler, StateHandlerMap, StateUpdaters, withHandlers, withStateHandlers } from 'recompose';
 import { formValueSelector, InjectedFormProps, reduxForm } from 'redux-form';
 import { isNullOrUndefined } from 'util';
-import { WorkflowApprovalFormView } from './WorkflowApprovalMileageItemFormView';
 
-const formName = 'workflowItemApproval';
+import { WorkflowMileageApprovalView } from './WorkflowMileageApprovalView';
 
-export type WorkflowApprovalFormData = {
-  items: IMileageApprovalPostItem[]
+const formName = 'workflowMileageApproval';
+
+export type WorkflowApprovalMileageFormData = {
+  items: IMileageApprovalPostItem[] | null;
   isApproved: string | null | undefined;
   remark: string | null;
 };
@@ -31,6 +23,7 @@ interface FormValueProps {
 }
 
 interface OwnProps {
+  itemTrue: boolean;
   approvalTitle: string;
   approvalSubHeader: string;
   approvalChoices: RadioGroupChoice[];
@@ -56,17 +49,17 @@ interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
   stateUpdate: StateHandler<OwnState>;
 }
 
-export type WorkflowApprovalFormProps 
-  = WithForm
-  & InjectedFormProps<WorkflowApprovalFormData, {}>
+export type WorkflowApprovalMileageFormProps
+  = WithMileageApproval
+  & InjectedFormProps<WorkflowApprovalMileageFormData, {}>
   & InjectedIntlProps
   & OwnProps
   & OwnHandler
   & OwnState
   & OwnStateUpdaters
   & FormValueProps;
-  
-const createProps: mapper<WorkflowApprovalFormProps, OwnState> = (props: WorkflowApprovalFormProps): OwnState => {
+
+const createProps: mapper<WorkflowApprovalMileageFormProps, OwnState> = (props: WorkflowApprovalMileageFormProps): OwnState => {
   return { 
     isOpenDialog: false
   };
@@ -79,26 +72,26 @@ const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
   }),
   stateReset: (prevState: OwnState) => () => ({
     ...prevState,
-    isOpenDialog: false,
+    isOpenDialog: false
   })
 };
 
-const handlerCreators: HandleCreators<WorkflowApprovalFormProps, OwnHandler> = {
-  handleDialogOpen: (props: WorkflowApprovalFormProps) => () => { 
+const handlerCreator: HandleCreators<WorkflowApprovalMileageFormProps, OwnHandler> = {
+  handleDialogOpen: (props: WorkflowApprovalMileageFormProps) => () => {
     const { stateUpdate } = props;
 
     stateUpdate({
       isOpenDialog: true
     });
   },
-  handleDialogClose: (props: WorkflowApprovalFormProps) => () => { 
+  handleDialogClose: (props: WorkflowApprovalMileageFormProps) => () => {
     const { stateUpdate } = props;
 
     stateUpdate({
       isOpenDialog: false
     });
   },
-  handleDialogConfirmed: (props: WorkflowApprovalFormProps) => () => { 
+  handleDialogConfirmed: (props: WorkflowApprovalMileageFormProps) => () => {
     const { stateUpdate } = props;
     const { submitForm } = props.workflowApprovalDispatch;
 
@@ -114,21 +107,21 @@ const selector = formValueSelector(formName);
 
 const mapStateToProps = (state: any): FormValueProps => {
   const isApproved = selector(state, 'isApproved');
-  
+
   return {
-    formIsApproved: isNullOrUndefined(isApproved) ? undefined : isApproved === WorkflowStatusType.Approved,
+    formIsApproved: isNullOrUndefined(isApproved) ? undefined : isApproved === WorkflowStatusType.Approved
   };
 };
 
-const enhance = compose<WorkflowApprovalFormProps, OwnProps & InjectedFormProps<WorkflowApprovalFormData, OwnProps>>(
+const enhance = compose<WorkflowApprovalMileageFormProps, OwnProps & InjectedFormProps<WorkflowApprovalMileageFormData, OwnProps>>(
   connect(mapStateToProps),
-  withForm,
+  withMileageApproval,
   injectIntl,
-  withStateHandlers<OwnState, OwnStateUpdaters, {}>(createProps, stateUpdaters), 
-  withHandlers<WorkflowApprovalFormProps, OwnHandler>(handlerCreators)
-)(WorkflowApprovalFormView);
+  withStateHandlers<OwnState, OwnStateUpdaters, {}>(createProps, stateUpdaters),
+  withHandlers<WorkflowApprovalMileageFormProps, OwnHandler>(handlerCreator)
+)(WorkflowMileageApprovalView);
 
-export const WorkflowApprovalForm = reduxForm<WorkflowApprovalFormData, OwnProps>({
+export const WorkflowMileageApproval = reduxForm<WorkflowApprovalMileageFormData, OwnProps>({
   form: formName,
   destroyOnUnmount: true
 })(enhance);
