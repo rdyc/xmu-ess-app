@@ -7,6 +7,7 @@ import { IListBarField } from '@layout/interfaces';
 import { ProjectRegistrationField } from '@project/classes/types';
 import { ProjectAssignmentListView } from '@project/components/assignment/list/ProjectAssignmentListView';
 import { WithProjectAssignment, withProjectAssignment } from '@project/hoc/withProjectAssignment';
+import { projectMessage } from '@project/locales/messages/projectMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import {
@@ -149,8 +150,8 @@ const lifecycles: ReactLifeCycleFunctions<ProjectAssignmentListProps, OwnState> 
     layoutDispatch.changeView({
       uid: AppMenu.ProjectAssignmentRequest,
       parentUid: AppMenu.ProjectRegistration,
-      title: intl.formatMessage({id: 'project.view.assignment.title'}),
-      subTitle : intl.formatMessage({id: 'project.view.assignment.subTitle'})
+      title: intl.formatMessage(projectMessage.assignment.page.listTitle),
+      subTitle : intl.formatMessage(projectMessage.assignment.page.listSubHeader)
     });
 
     layoutDispatch.modeListOn();

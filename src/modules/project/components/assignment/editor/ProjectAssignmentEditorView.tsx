@@ -46,7 +46,7 @@ export const ProjectAssignmentEditorView: React.SFC<ProjectAssignmentEditorProps
             employeeUid: item.employeeUid,
             role: item.role || '',
             jobDescription: item.jobDescription || '',
-            mandays: item.mandays
+            mandays: item.mandays,
           });
         });
       }

@@ -1,4 +1,5 @@
 import { SelectEmployee } from '@account/components/select';
+import { ICommonSystem } from '@common/classes';
 import { WorkflowStatusType } from '@common/classes/types';
 import AppMenu from '@constants/AppMenu';
 import { FormMode } from '@generic/types';
@@ -13,7 +14,7 @@ import { WithUser } from '@lookup/components/leave';
 import { Button, Card, CardContent, CardHeader, Grid, IconButton } from '@material-ui/core';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import { IProjectRegistrationGetListFilter } from '@project/classes/filters/registration';
-import { IProjectAssignmentItem, IProjectAssignmentPatchPayload } from '@project/classes/request/assignment';
+import { IProjectAssignmentPatchPayload } from '@project/classes/request/assignment';
 import { IProjectAssignmentDetail, IProjectList } from '@project/classes/response';
 import { SelectProject } from '@project/components/select/project';
 import { WithProjectAssignment, withProjectAssignment } from '@project/hoc/withProjectAssignment';
@@ -52,71 +53,98 @@ import { ProjectAssignment } from '../detail/shared/ProjectAssignment';
 // ----------------------------------------------------------------------------
 // Form.tsx
 // ----------------------------------------------------------------------------
+const isComplete = (statusType?: string | null | undefined): boolean => {
+  let result = false;
 
-const complexItemsView: React.SFC<WrappedFieldArrayProps<IProjectAssignmentItem> & ComplexFormProps> = props => (
+  if (statusType) {
+    const completes = [
+      WorkflowStatusType.Accepted,
+      WorkflowStatusType.Rejected,
+    ];
+
+    result = completes.indexOf(statusType as WorkflowStatusType) !== -1;
+  }
+  
+  return result;
+};
+
+const complexItemsView: React.SFC<WrappedFieldArrayProps<ComplexFormItemData> & ComplexFormProps> = props => (
   <Grid container spacing={16}>
     {
-      props.fields.map((field, index) => 
-        <Grid key={index} item>
-          <Card>
-            <CardHeader title={`#${index + 1}`}
-              action={
-                <IconButton onClick={() => props.fields.remove(index)}>
-                  <DeleteForeverIcon />
-                </IconButton>
-              }
-            />
-            <CardContent>
-              <div>
-                <Field 
-                  type="text"
-                  name={`${field}.employeeUid`}
-                  label={props.intl.formatMessage(projectMessage.assignment.field.employeeUid)}
-                  placeholder={props.intl.formatMessage(projectMessage.assignment.field.employeeUidPlaceholder)}
-                  required={true}
-                  companyUids={props.userState.user && [props.userState.user.company.uid]}
-                  component={SelectEmployee}
-                />
-                <Field 
-                  type="text"
-                  name={`${field}.role`}
-                  label={props.intl.formatMessage(projectMessage.assignment.field.role)}
-                  placeholder={props.intl.formatMessage(projectMessage.assignment.field.rolePlaceholder)}
-                  required={true}
-                  component={InputText}
-                />
-                <Field 
-                  type="text"
-                  name={`${field}.jobDescription`}
-                  label={props.intl.formatMessage(projectMessage.assignment.field.jobDesc)}
-                  placeholder={props.intl.formatMessage(projectMessage.assignment.field.jobDescPlaceholder)}
-                  component={InputTextArea}
-                />
-                <Field 
-                  type="number"
-                  name={`${field}.mandays`}
-                  label={props.intl.formatMessage(projectMessage.assignment.field.mandays)}
-                  placeholder={props.intl.formatMessage(projectMessage.assignment.field.mandaysPlaceholder)}
-                  required={true}
-                  component={InputNumber}
-                  onChange={(event: any, newValue: any) => {
-                    if (!isNaN(newValue)) {
-                      props.change(`${field}.hours`, newValue * 8);
-                    }
-                  }}
-                />
-                <Field 
-                  type="number"
-                  name={`${field}.hours`}
-                  label={props.intl.formatMessage(projectMessage.assignment.field.hours)}
-                  disabled={true}
-                  component={InputNumber}
-                />
-              </div>
-            </CardContent>
-          </Card>
-        </Grid>
-      )
+      props.fields.map((field, index) => {
+        const item = props.fields.get(index);
+        const isItemComplete = isComplete(item.statusType);
+
+        return (
+          <Grid key={index} item>
+            <Card>
+              <CardHeader 
+                title={`#${index + 1} - ${item.uid || 'Draft'}`}
+                subheader={`${item.status && item.status.value || 'Draft'} ${item.rejectedReason || ''}`}
+                titleTypographyProps={{variant: 'body2'}}
+                action={
+                  !isItemComplete &&
+                  <IconButton onClick={() => props.fields.remove(index)}>
+                    <DeleteForeverIcon />
+                  </IconButton>
+                }
+              />
+              <CardContent>
+                <div>
+                  <Field 
+                    type="text"
+                    name={`${field}.employeeUid`}
+                    label={props.intl.formatMessage(projectMessage.assignment.field.employeeUid)}
+                    placeholder={props.intl.formatMessage(projectMessage.assignment.field.employeeUidPlaceholder)}
+                    required={true}
+                    companyUids={props.userState.user && [props.userState.user.company.uid]}
+                    disabled={isItemComplete}
+                    component={SelectEmployee}
+                  />
+                  <Field 
+                    type="text"
+                    name={`${field}.role`}
+                    label={props.intl.formatMessage(projectMessage.assignment.field.role)}
+                    placeholder={props.intl.formatMessage(projectMessage.assignment.field.rolePlaceholder)}
+                    required={true}
+                    disabled={isItemComplete}
+                    component={InputText}
+                  />
+                  <Field 
+                    type="text"
+                    name={`${field}.jobDescription`}
+                    label={props.intl.formatMessage(projectMessage.assignment.field.jobDesc)}
+                    placeholder={props.intl.formatMessage(projectMessage.assignment.field.jobDescPlaceholder)}
+                    disabled={isItemComplete}
+                    component={InputTextArea}
+                  />
+                  <Field 
+                    type="number"
+                    name={`${field}.mandays`}
+                    label={props.intl.formatMessage(projectMessage.assignment.field.mandays)}
+                    placeholder={props.intl.formatMessage(projectMessage.assignment.field.mandaysPlaceholder)}
+                    required={true}
+                    disabled={isItemComplete}
+                    component={InputNumber}
+                    onChange={(event: any, newValue: any) => {
+                      if (!isNaN(newValue)) {
+                        props.change(`${field}.hours`, newValue * 8);
+                      }
+                    }}
+                  />
+                  <Field 
+                    type="number"
+                    name={`${field}.hours`}
+                    label={props.intl.formatMessage(projectMessage.assignment.field.hours)}
+                    disabled={true}
+                    component={InputNumber}
+                  />
+                </div>
+              </CardContent>
+            </Card>
+          </Grid>
+        );
+      })
     }
 
     <Button onClick={() => props.fields.push({
@@ -124,7 +152,8 @@ const complexItemsView: React.SFC<WrappedFieldArrayProps<IProjectAssignmentItem>
       employeeUid: '',
       role: '',
       jobDescription: '',
-      mandays: 0
+      mandays: 0,
+      hours: 0
     })}>
       Add
     </Button>
@@ -137,19 +166,23 @@ const complexView: React.SFC<ComplexFormProps> = props => (
       <Grid item xs={12} md={8}>
         <Grid container spacing={16}>
           <Grid item xs={12} md={6}>
-            <ProjectAssignment formMode={props.formMode} data={props.projectActive}>
-              <Field
-                name="projectUid"
-                component={(context: any) => 
-                  <SelectProject
-                    {...context}
-                    label={props.intl.formatMessage(projectMessage.assignment.field.projectUid)}
-                    placeholder={props.intl.formatMessage(projectMessage.assignment.field.projectUidPlaceholder)}
-                    filter={props.projectFilter}
-                    onSelected={props.handleProjectChange}
-                  />
-                }
-              />
+            <ProjectAssignment formMode={props.formMode} data={props.currentProject}>
+              {
+                // just display project select when the form is being in new mode
+                props.formMode === FormMode.New &&
+                <Field
+                  name="projectUid"
+                  component={(context: any) => 
+                    <SelectProject 
+                      {...context}
+                      label={props.intl.formatMessage(projectMessage.assignment.field.projectUid)}
+                      placeholder={props.intl.formatMessage(projectMessage.assignment.field.projectUidPlaceholder)}
+                      filter={props.projectFilter}
+                      onSelected={props.handleProjectChange}
+                    />
+                  }
+                />
+              }
             </ProjectAssignment>
           </Grid>
           <Grid item xs={12} md={6}>
@@ -187,22 +220,34 @@ const complexView: React.SFC<ComplexFormProps> = props => (
 // Form.ts
 // ----------------------------------------------------------------------------
 
+interface ComplexFormItemData {
+  uid: string | null;
+  employeeUid: string;
+  role: string | null;
+  jobDescription: string | null;
+  mandays: number;
+  hours: number;
+  statusType?: string | null;
+  status?: ICommonSystem | null;
+  rejectedReason?: string | null;
+}
 interface ComplexFormData {
   projectUid: string;
-  items: IProjectAssignmentItem[] | undefined;
+  items: ComplexFormItemData[] | undefined;
 }
 
-interface OwnProps {
+interface OwnFormProps {
   formMode: FormMode;
+  initialData?: IProjectAssignmentDetail | undefined;
 }
 
 interface OwnFormHandlers {
   handleEventListener: (event: CustomEvent) => void;
-  handleProjectChange: (project: IProjectList) => void;
+  handleProjectChange: (project: IProjectList | undefined) => void;
 }
 
 interface OwnFormState {
-  projectActive?: IProjectAssignmentDetail | undefined;
+  currentProject?: IProjectAssignmentDetail | undefined;
   projectFilter?: IProjectRegistrationGetListFilter | undefined;
 }
 
@@ -216,11 +261,11 @@ interface FormValueProps {
 }
 
 type ComplexFormProps 
-  = InjectedFormProps<ComplexFormData>
+  = InjectedFormProps<ComplexFormData, OwnFormProps>
   & InjectedIntlProps
   & WithUser
-  & OwnProps
-  & OwnEditorHandlers
+  & OwnFormProps
+  & OwnFormHandlers
   & OwnFormState
   & OwnFormStateUpdaters
   & FormValueProps;
@@ -229,6 +274,7 @@ const formCreateProps: mapper<ComplexFormProps, OwnFormState> = (props: ComplexF
   const { user } = props.userState;
 
   return {
+    currentProject: props.initialData,
     projectFilter: {
       find: user ? user.uid : '',
       findBy: 'ownerEmployeeUid',
@@ -241,36 +287,37 @@ const formCreateProps: mapper<ComplexFormProps, OwnFormState> = (props: ComplexF
 };
 
 const formStateUpdaters: StateUpdaters<{}, OwnFormState, OwnFormStateUpdaters> = {
-  setProject: (prevState: OwnFormState) => (project?: IProjectList | undefined) => {
+  setProject: (prevState: OwnFormState) => (project?: any | undefined) => {
 
     if (!project) {
       return {
         ...prevState,
-        projectActive: undefined
+        currentProject: undefined
       };
     }
 
     return {
       ...prevState,
-      projectActive: { 
-        ...project,
-        uid: '-',
-        projectUid: project.uid, 
-        assignedHours: 0, 
-        unassignedHours: 0, 
-        items: null,
-        changes: null
-      }
+      currentProject: project
+      // currentProject: { 
+      //   ...project,
+      //   uid: '-',
+      //   projectUid: project.uid, 
+      //   assignedHours: 0, 
+      //   unassignedHours: 0, 
+      //   items: null,
+      //   changes: null
+      // }
     };
   },
   setProjectHours: (prevState: OwnFormState) => (hours: number) => {
-    if (prevState.projectActive) { 
+    if (prevState.currentProject) { 
       return {
         ...prevState,
-        projectActive: { 
-          ...prevState.projectActive,
+        currentProject: { 
+          ...prevState.currentProject,
           assignedHours: hours, 
-          unassignedHours: prevState.projectActive.maxHours - hours
+          unassignedHours: prevState.currentProject.maxHours - hours
         }
       };
     }
@@ -306,8 +353,22 @@ const lifecycles: ReactLifeCycleFunctions<ComplexFormProps, OwnFormState> = {
     addEventListener('ASG_FORM', this.props.handleEventListener);
   },
   componentDidUpdate(prevProps: ComplexFormProps) {
-    if (prevProps.formValues !== this.props.formValues && this.props.formValues === undefined) {
-      this.props.setProject();
+    // when assignment detail are not equals between previous and current
+    if (prevProps.initialData !== this.props.initialData) {
+      
+      // when assignment response are filled from saga
+      if (this.props.initialData) {
+        this.props.setProject(this.props.initialData);
+      }
+    }
+
+    // when formValues props are not equals between previous and current
+    if (prevProps.formValues !== this.props.formValues) {
+
+      // when form is 'reset' formValues will be cleared as undefined then clear project state
+      if (this.props.formValues === undefined) {
+        this.props.setProject();
+      }
     }
   },
   componentWillUnmount() {
@@ -319,7 +380,7 @@ const mapStateToProps = (state: any): FormValueProps => ({
   formValues: getFormValues('projectAssignment')(state) as ComplexFormData
 });
 
-const enhance = compose<ComplexFormProps, InjectedFormProps<ComplexFormData>>(
+const enhance = compose<ComplexFormProps, OwnFormProps & InjectedFormProps<ComplexFormData, OwnFormProps>>(
   connect(mapStateToProps),
   withUser,
   injectIntl,
@@ -328,7 +389,7 @@ const enhance = compose<ComplexFormProps, InjectedFormProps<ComplexFormData>>(
   lifecycle(lifecycles),
 )(complexView);
 
-const ReduxFormArray = reduxForm<ComplexFormData>({
+const ReduxFormArray = reduxForm<ComplexFormData, OwnFormProps>({
   form: 'projectAssignment',
   touchOnChange: true,
   touchOnBlur: true,
@@ -344,6 +405,9 @@ const ReduxFormArray = reduxForm<ComplexFormData>({
 
 const complexEditorView: React.SFC<ComplexEditorProps> = props => (
   <ReduxFormArray 
+    formMode={props.formMode}
+    initialData={props.generateInitialData()}
+    initialValues={props.generateInitialValues()}
     validate={props.handleValidate}
     onSubmit={props.handleSubmit}
     onSubmitSuccess={props.handleSubmitSuccess}
@@ -356,19 +420,19 @@ const complexEditorView: React.SFC<ComplexEditorProps> = props => (
 // ----------------------------------------------------------------------------
 
 interface OwnEditorHandlers {
+  generateInitialData: () => IProjectAssignmentDetail | undefined;
+  generateInitialValues: () => ComplexFormData | undefined;
   handleValidate: (values: ComplexFormData) => any;
   handleSubmit: (values: ComplexFormData) => void;
   handleSubmitSuccess: (result: any, dispatch: Dispatch<any>) => void;
   handleSubmitFail: (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => void;
 }
 
-interface OwnEditorRouteParams {
-  projectUid: string;
-}
-
 interface OwnEditorState {
   formMode: FormMode;
+  companyUid?: string | undefined;
   projectUid?: string | undefined;
+  assignmentUid?: string | undefined;
 }
 
 interface OwnEditorStateUpdaters extends StateHandlerMap<OwnEditorState> {
@@ -381,18 +445,22 @@ type ComplexEditorProps
   & WithUser
   & WithLayout
   & WithAppBar
-  & RouteComponentProps<OwnEditorRouteParams>
+  & RouteComponentProps
   & InjectedIntlProps
   & OwnEditorHandlers
   & OwnEditorState
   & OwnEditorStateUpdaters;
 
 const editorCreateProps: mapper<ComplexEditorProps, OwnEditorState> = (props: ComplexEditorProps): OwnEditorState => {
-  const { match } = props;
+  const { history } = props;
   
+  const state = history.location.state;
+
   return { 
-    formMode:  match.params.projectUid ? FormMode.Edit : FormMode.New,
-    projectUid: match.params.projectUid
+    formMode:  state ? FormMode.Edit : FormMode.New,
+    companyUid: state ? state.companyUid : undefined,
+    projectUid: state ? state.projectUid : undefined,
+    assignmentUid: state ? state.assignmentUid : undefined
   };
 };
 
@@ -404,6 +472,45 @@ const editorStateUpdaters: StateUpdaters<{}, OwnEditorState, OwnEditorStateUpdat
 };
 
 const editorHandlers: HandleCreators<ComplexEditorProps, OwnEditorHandlers> = {
+  generateInitialData: (props: ComplexEditorProps) => (): IProjectAssignmentDetail | undefined => {
+    const { response } = props.projectAssignmentState.detail; 
+
+    if (response && response.data) {
+      return response.data;
+    }
+      
+    return undefined;
+    },
+  generateInitialValues: (props: ComplexEditorProps) => (): ComplexFormData | undefined => {
+    const { response } = props.projectAssignmentState.detail; 
+
+    if (response && response.data) {
+      const items: ComplexFormItemData[] = [];
+
+      if (response.data.items) {
+        response.data.items.forEach(item => 
+          items.push({
+            uid: item.uid,
+            employeeUid: item.employeeUid,
+            role: item.role,
+            jobDescription: item.jobDescription,
+            mandays: item.mandays,
+            hours: item.hours,
+            statusType: item.statusType,
+            status: item.status,
+            rejectedReason: item.rejectedReason
+          })
+        );
+      }
+
+      return {
+        items,
+        projectUid: response.data.projectUid
+      };
+    }
+      
+    return undefined;
+  },
   handleValidate: (props: ComplexEditorProps) => (values: ComplexFormData) => { 
     const errors = {};
   
@@ -477,7 +584,7 @@ const editorHandlers: HandleCreators<ComplexEditorProps, OwnEditorHandlers> = {
     }); 
   },
   handleSubmitSuccess: (props: ComplexEditorProps) => (response: boolean) => {
-    const { formMode, intl, history, projectUid } = props;
+    const { formMode, intl, history, assignmentUid } = props;
     const { alertAdd } = props.layoutDispatch;
     
     let message: string = '';
@@ -493,8 +600,8 @@ const editorHandlers: HandleCreators<ComplexEditorProps, OwnEditorHandlers> = {
       time: new Date()
     });
 
-    if (projectUid) {
-      history.push(`/project/assignment/details/${projectUid}`);
+    if (assignmentUid) {
+      history.push(`/project/assignment/details/${assignmentUid}`);
     }
   },
   handleSubmitFail: (props: ComplexEditorProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
@@ -519,19 +626,46 @@ const editorHandlers: HandleCreators<ComplexEditorProps, OwnEditorHandlers> = {
 
 const editorLifecycles: ReactLifeCycleFunctions<ComplexEditorProps, {}> = {
   componentDidMount() {
-    const { intl, layoutDispatch } = this.props;
+    const { layoutDispatch, intl, formMode, companyUid, assignmentUid } = this.props;
+    const { response } = this.props.projectAssignmentState.detail;
+    const { loadDetailRequest } = this.props.projectAssignmentDispatch;
+
+    const view: any = {};
+
+    switch (formMode) {
+      case FormMode.Edit:
+        Object.assign(view, {
+          title: intl.formatMessage(projectMessage.assignment.page.modifyTitle),
+          subTitle: intl.formatMessage(projectMessage.assignment.page.modifySubHeader)
+        });
+        break;
+    
+      default:
+        Object.assign(view, {
+          title: intl.formatMessage(projectMessage.assignment.page.newTitle),
+          subTitle: intl.formatMessage(projectMessage.assignment.page.newSubHeader)
+        });
+        break;
+    }
 
     layoutDispatch.changeView({
       uid: AppMenu.ProjectAssignmentRequest,
       parentUid: AppMenu.ProjectAssignment,
-      title: intl.formatMessage({id: 'project.assignment.form.request.title'}),
-      subTitle : intl.formatMessage({id: 'project.assignment.form.request.subHeader'})
+      ...view
     });
 
     layoutDispatch.navBackShow();
+
+    // editing mode: load detail if not exist
+    if (companyUid && assignmentUid && !response) {
+      loadDetailRequest({
+        companyUid,
+        assignmentUid
+      });
+    }
   },
   componentWillUnmount() {
-    const { layoutDispatch, appBarDispatch } = this.props;
+    const { layoutDispatch, appBarDispatch, projectAssignmentDispatch } = this.props;
 
     layoutDispatch.changeView(null);
     layoutDispatch.navBackHide();
@@ -539,6 +673,9 @@ const editorLifecycles: ReactLifeCycleFunctions<ComplexEditorProps, {}> = {
     layoutDispatch.actionCentreHide();
 
     appBarDispatch.dispose();
+
+    projectAssignmentDispatch.loadDetailDispose();
+    projectAssignmentDispatch.patchDispose();
   }
 };
 

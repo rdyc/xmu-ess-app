@@ -1,6 +1,7 @@
 import { FormMode } from '@generic/types';
-import { Card, CardContent, TextField } from '@material-ui/core';
+import { Card, CardContent, CardHeader, TextField } from '@material-ui/core';
 import { IProjectAssignmentDetail } from '@project/classes/response';
+import { projectMessage } from '@project/locales/messages/projectMessage';
 import * as React from 'react';
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose } from 'recompose';
@@ -27,6 +28,10 @@ const projectAssignment: React.SFC<AllProps> = props => {
 
   const render = (
     <Card square>
+      <CardHeader 
+        title={intl.formatMessage(projectMessage.assignment.section.projectTitle)}
+        subheader={intl.formatMessage(projectMessage.assignment.section.projectSubHeader)}
+      />
       <CardContent>
         {props.children}
 
@@ -39,7 +44,7 @@ const projectAssignment: React.SFC<AllProps> = props => {
                 <TextField
                   {...styled}
                   margin="dense"
-                  label={<FormattedMessage id="project.assignment.field.information.uid" />}
+                  label={<FormattedMessage id="project.assignment.field.uid" />}
                   value={data.uid}
                 />
                 <TextField

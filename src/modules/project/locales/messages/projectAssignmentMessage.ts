@@ -2,6 +2,24 @@ import { defineMessages } from 'react-intl';
 
 const prefix = 'project.assignment';
 
+// page
+export const projectAssignmentPage = defineMessages({
+  listTitle: { id: `${prefix}.page.list.title` },
+  listSubHeader: { id: `${prefix}.page.list.subHeader` },
+  detailTitle: { id: `${prefix}.page.detail.title` },
+  detailSubHeader: { id: `${prefix}.page.detail.subHeader` },
+  newTitle: { id: `${prefix}.page.new.title` },
+  newSubHeader: { id: `${prefix}.page.new.subHeader` },
+  modifyTitle: { id: `${prefix}.page.modify.title` },
+  modifySubHeader: { id: `${prefix}.page.modify.subHeader` },
+});
+
+// section
+export const projectAssignmentSection = defineMessages({
+  projectTitle: { id: `${prefix}.section.project.title` },
+  projectSubHeader: { id: `${prefix}.section.project.subHeader` },
+});
+
 // fields
 export const projectAssignmentField = defineMessages({
   uid: { id: `${prefix}.field.uid` },

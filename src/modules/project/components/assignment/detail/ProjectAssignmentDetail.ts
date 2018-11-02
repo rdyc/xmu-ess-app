@@ -1,6 +1,4 @@
-import { WorkflowStatusType } from '@common/classes/types';
 import AppMenu from '@constants/AppMenu';
-import { AppRole } from '@constants/AppRole';
 import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithOidc, withOidc } from '@layout/hoc/withOidc';
@@ -8,6 +6,7 @@ import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IAppBarMenu } from '@layout/interfaces';
 import { ProjectUserAction } from '@project/classes/types';
 import { WithProjectAssignment, withProjectAssignment } from '@project/hoc/withProjectAssignment';
+import { projectMessage } from '@project/locales/messages/projectMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import {
@@ -26,12 +25,8 @@ import {
 import { ProjectAssignmentDetailView } from './ProjectAssignmentDetailView';
 
 interface Handler {
-  handleProjectRefresh: () => void;
-  handleProjectModify: () => void;
-  handleProjectClose: () => void;
-  handleProjectReOpen: () => void;
-  handleProjectChangeOwner: () => void;
-  handleProjectManageSite: () => void;
+  handleAssignmentRefresh: () => void;
+  handleAssignmentModify: () => void;
   handleDialogOpen: (title: string, description: string, cancelText?: string, confirmText?: string, fullScreen?: boolean) => void;
   handleDialogClose: () => void;
   handleDialogConfirmed: () => void;
@@ -91,7 +86,7 @@ const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
 };
 
 const handlerCreators: HandleCreators<ProjectAssignmentDetailProps, Handler> = {
-  handleProjectRefresh: (props: ProjectAssignmentDetailProps) => () => { 
+  handleAssignmentRefresh: (props: ProjectAssignmentDetailProps) => () => { 
     const { match } = props;
     const { user } = props.userState;
     const { loadDetailRequest } = props.projectAssignmentDispatch;
@@ -99,11 +94,11 @@ const handlerCreators: HandleCreators<ProjectAssignmentDetailProps, Handler> = {
     if (user) {
       loadDetailRequest({
         companyUid: user.company.uid,
-        assingmentUid: match.params.assignmentUid,
+        assignmentUid: match.params.assignmentUid,
       });
     }
   },
-  handleProjectModify: (props: ProjectAssignmentDetailProps) => () => { 
+  handleAssignmentModify: (props: ProjectAssignmentDetailProps) => () => { 
     const { intl, stateUpdate } = props;
 
     stateUpdate({
@@ -114,58 +109,6 @@ const handlerCreators: HandleCreators<ProjectAssignmentDetailProps, Handler> = {
       dialogDescription: intl.formatMessage({id: 'project.dialog.modifyDescription'}),
       dialogCancelText: intl.formatMessage({id: 'global.action.disaggree'}),
       dialogConfirmedText: intl.formatMessage({id: 'global.action.aggree'})
-    });
-  },
-  handleProjectClose: (props: ProjectAssignmentDetailProps) => () => { 
-    const { intl, stateUpdate } = props;
-
-    stateUpdate({
-      action: ProjectUserAction.Close,
-      dialogFullScreen: false,
-      dialogOpen: true,
-      dialogTitle: intl.formatMessage({id: 'project.dialog.closeTitle'}), 
-      dialogDescription: intl.formatMessage({id: 'project.dialog.closeDescription'}),
-      dialogCancelText: intl.formatMessage({id: 'global.action.discard'}),
-      dialogConfirmedText: intl.formatMessage({id: 'global.action.continue'}),
-    });
-  },
-  handleProjectReOpen: (props: ProjectAssignmentDetailProps) => () => { 
-    const { intl, stateUpdate } = props;
-
-    stateUpdate({
-      action: ProjectUserAction.ReOpen,
-      dialogFullScreen: false,
-      dialogOpen: true,
-      dialogTitle: intl.formatMessage({id: 'project.dialog.reOpenTitle'}), 
-      dialogDescription: intl.formatMessage({id: 'project.dialog.reOpenDescription'}),
-      dialogCancelText: intl.formatMessage({id: 'global.action.discard'}),
-      dialogConfirmedText: intl.formatMessage({id: 'global.action.continue'})
-    });
-  },
-  handleProjectChangeOwner: (props: ProjectAssignmentDetailProps) => () => { 
-    const { intl, stateUpdate } = props;
-
-    stateUpdate({
-      action: ProjectUserAction.ChangeOwner,
-      dialogFullScreen: false,
-      dialogOpen: true,
-      dialogTitle: intl.formatMessage({id: 'project.dialog.changeOwnerTitle'}), 
-      dialogDescription: intl.formatMessage({id: 'project.dialog.changeOwnerDescription'}),
-      dialogCancelText: intl.formatMessage({id: 'global.action.discard'}),
-      dialogConfirmedText: intl.formatMessage({id: 'global.action.continue'}),
-    });
-  },
-  handleProjectManageSite: (props: ProjectAssignmentDetailProps) => () => { 
-    const { intl, stateUpdate } = props;
-
-    stateUpdate({
-      action: ProjectUserAction.ManageSites,
-      dialogFullScreen: false,
-      dialogOpen: true,
-      dialogTitle: intl.formatMessage({id: 'project.dialog.manageSiteTitle'}), 
-      dialogDescription: intl.formatMessage({id: 'project.dialog.manageSiteDescription'}),
-      dialogCancelText: intl.formatMessage({id: 'global.action.discard'}),
-      dialogConfirmedText: intl.formatMessage({id: 'global.action.continue'}),
     });
   },
   handleDialogOpen: (props: ProjectAssignmentDetailProps) => (title: string, description: string, cancelText?: string, confirmText?: string, fullScreen?: boolean) => { 
@@ -197,24 +140,22 @@ const handlerCreators: HandleCreators<ProjectAssignmentDetailProps, Handler> = {
     // define vars
     let companyUid: string | undefined;
     let projectUid: string | undefined;
+    let assignmentUid: string | undefined;
 
     // get company uid
     if (response.data && response.data.customer) {
       companyUid = response.data.customer.companyUid;
     }
 
-    // get project uid
+    // get project & assignment uid
     if (response.data) {
-      projectUid = response.data.uid;
+      assignmentUid = response.data.uid;
+      projectUid = response.data.projectUid;
     }
 
     // actions with new page
     const actions = [
-      ProjectUserAction.Modify, 
-      ProjectUserAction.ChangeOwner, 
-      ProjectUserAction.Close, 
-      ProjectUserAction.ReOpen, 
-      ProjectUserAction.ManageSites
+      ProjectUserAction.Modify
     ];
 
     if (actions.indexOf(action) !== -1) {
@@ -222,20 +163,7 @@ const handlerCreators: HandleCreators<ProjectAssignmentDetailProps, Handler> = {
 
       switch (action) {
         case ProjectUserAction.Modify:
-          next = '/project/form';
-          break;
-          
-        case ProjectUserAction.ChangeOwner:
-          next = '/project/owner';
-          break;
-        
-        case ProjectUserAction.Close:
-        case ProjectUserAction.ReOpen:
-          next = '/project/status';
-          break;
-
-        case ProjectUserAction.ManageSites:
-          next = `/project/sites/${companyUid}/${projectUid}`;
+          next = '/project/assignment/form';
           break;
 
         default:
@@ -244,8 +172,10 @@ const handlerCreators: HandleCreators<ProjectAssignmentDetailProps, Handler> = {
 
       stateReset();
 
-      history.push(next, { 
-        uid: projectUid 
+      history.push(next, {
+        companyUid,
+        assignmentUid, 
+        projectUid 
       });
     }
   },
@@ -255,9 +185,7 @@ const lifecycles: ReactLifeCycleFunctions<ProjectAssignmentDetailProps, OwnState
   componentDidMount() {
     const { 
       match, layoutDispatch, appBarDispatch, intl, 
-      handleProjectRefresh, handleProjectModify, 
-      handleProjectClose, handleProjectReOpen,
-      handleProjectChangeOwner, handleProjectManageSite,
+      handleAssignmentRefresh, handleAssignmentModify
     } = this.props;
 
     const { user } = this.props.userState;
@@ -266,8 +194,8 @@ const lifecycles: ReactLifeCycleFunctions<ProjectAssignmentDetailProps, OwnState
     layoutDispatch.changeView({
       uid: AppMenu.ProjectAssignmentRequest,
       parentUid: AppMenu.ProjectAssignment,
-      title: intl.formatMessage({id: 'project.view.assignment.detail.title'}),
-      subTitle : intl.formatMessage({id: 'project.view.assignment.detail.subHeader'})
+      title: intl.formatMessage(projectMessage.assignment.page.detailTitle),
+      subTitle : intl.formatMessage(projectMessage.assignment.page.detailSubHeader)
     });
 
     layoutDispatch.navBackShow();
@@ -276,27 +204,11 @@ const lifecycles: ReactLifeCycleFunctions<ProjectAssignmentDetailProps, OwnState
     const handleMenuClick = (menu: IAppBarMenu): void => {
       switch (menu.id) {
         case ProjectUserAction.Refresh:
-          handleProjectRefresh();
+          handleAssignmentRefresh();
           break;
         
         case ProjectUserAction.Modify:
-          handleProjectModify();
-          break;
-  
-        case ProjectUserAction.Close:
-          handleProjectClose();
-          break;
-        
-        case ProjectUserAction.ReOpen:
-          handleProjectReOpen();
-          break;
-  
-        case ProjectUserAction.ChangeOwner:
-          handleProjectChangeOwner();
-          break;
-  
-        case ProjectUserAction.ManageSites:
-          handleProjectManageSite();
+          handleAssignmentModify();
           break;
       
         default:
@@ -309,47 +221,15 @@ const lifecycles: ReactLifeCycleFunctions<ProjectAssignmentDetailProps, OwnState
     if (user) {
       loadDetailRequest({
         companyUid: user.company.uid,
-        assingmentUid: match.params.assignmentUid,
+        assignmentUid: match.params.assignmentUid,
       });
     }
   },
   componentWillReceiveProps(nextProps: ProjectAssignmentDetailProps) {
     if (nextProps.projectAssignmentState.detail.response !== this.props.projectAssignmentState.detail.response) {
       const { intl } = nextProps;
-      const { user } = nextProps.oidcState;
-      const { response } = nextProps.projectAssignmentState.detail;
       const { assignMenus } = nextProps.appBarDispatch;
       
-      const isStatusTypeEquals = (statusTypes: string[]): boolean => {
-        let result = false;
-
-        if (response && response.data) {
-          result = statusTypes.indexOf(response.data.statusType) !== -1;
-        }
-
-        return result;
-      };
-
-      const fnIsAdmin = (): boolean => {
-        let result: boolean = false;
-
-        if (user) {
-          const role: string | string[] | undefined = user.profile.role;
-
-          if (role) {
-            if (Array.isArray(role)) {
-              result = role.indexOf(AppRole.Admin) !== -1;
-            } else {
-              result = role === AppRole.Admin;
-            }
-          }
-        }
-
-        return result;
-      };
-
-      const isAdmin = fnIsAdmin();
-
       const currentMenus = [
         {
           id: ProjectUserAction.Refresh,
@@ -360,47 +240,8 @@ const lifecycles: ReactLifeCycleFunctions<ProjectAssignmentDetailProps, OwnState
         {
           id: ProjectUserAction.Modify,
           name: intl.formatMessage({id: 'project.action.modify'}),
-          enabled: response !== undefined,
-          visible: isStatusTypeEquals([
-            WorkflowStatusType.Submitted, 
-            WorkflowStatusType.InProgress, 
-            WorkflowStatusType.Approved
-          ])
-        },
-        {
-          id: ProjectUserAction.Close,
-          name: intl.formatMessage({id: 'project.action.close'}),
           enabled: true,
-          visible: isStatusTypeEquals([
-            WorkflowStatusType.Approved, 
-            WorkflowStatusType.ReOpened
-          ])
-        },
-        {
-          id: ProjectUserAction.ReOpen,
-          name: intl.formatMessage({id: 'project.action.reOpen'}),
-          enabled: true,
-          visible: isStatusTypeEquals([
-            WorkflowStatusType.Closed
-          ])
-        },
-        {
-          id: ProjectUserAction.ChangeOwner,
-          name: intl.formatMessage({id: 'project.action.owner'}),
-          enabled: true,
-          visible: isStatusTypeEquals([
-            WorkflowStatusType.Approved,
-            WorkflowStatusType.ReOpened
-          ])
-        },
-        {
-          id: ProjectUserAction.ManageSites,
-          name: intl.formatMessage({id: 'project.action.site'}),
-          enabled: true,
-          visible: isStatusTypeEquals([
-            WorkflowStatusType.Approved,
-            WorkflowStatusType.ReOpened
-          ]) && isAdmin
+          visible: true
         }
       ];
 
@@ -408,7 +249,7 @@ const lifecycles: ReactLifeCycleFunctions<ProjectAssignmentDetailProps, OwnState
     }
   },
   componentWillUnmount() {
-    const { layoutDispatch, appBarDispatch } = this.props;
+    const { layoutDispatch, appBarDispatch, projectAssignmentDispatch } = this.props;
 
     layoutDispatch.changeView(null);
     layoutDispatch.navBackHide();
@@ -416,6 +257,8 @@ const lifecycles: ReactLifeCycleFunctions<ProjectAssignmentDetailProps, OwnState
     layoutDispatch.actionCentreHide();
 
     appBarDispatch.dispose();
+
+    projectAssignmentDispatch.loadDetailDispose();
   }
 };
 
