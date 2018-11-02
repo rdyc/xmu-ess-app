@@ -1,6 +1,7 @@
 import { SelectEmployee } from '@account/components/select';
+import { SelectSystem } from '@common/components/select';
+import { InputDate } from '@layout/components/input/date';
 import { InputText } from '@layout/components/input/text';
-import { InputTime } from '@layout/components/input/time';
 import {
   Button,
   Card,
@@ -46,7 +47,8 @@ export const RequestItemFormView: React.SFC<RequestItemFormProps> = props => {
                     type="text"
                     name={`${field}.transportType`}
                     label="Transport Type"
-                    component={InputText}
+                    component={SelectSystem}
+                    category = "transportation"
                   />
                   <Field 
                     type="text"
@@ -63,12 +65,12 @@ export const RequestItemFormView: React.SFC<RequestItemFormProps> = props => {
                   <Field 
                     name={`${field}.departureDate`}
                     label="Departure Date"
-                    component={InputTime}
+                    component={InputDate}
                   />
                   <Field 
                     name={`${field}.returnDate`}
                     label="return Date"
-                    component={InputTime}
+                    component={InputDate}
                   />
                   <Field 
                     type="text"

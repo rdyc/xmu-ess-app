@@ -9,8 +9,10 @@ import {
   expenseGetListRequest,
   leaveGetListRequest,
   projectGetListRequest,
+  purposeGetListRequest,
   siteGetListRequest,
   statusGetListRequest,
+  transportationGetListRequest,
 } from '@common/store/actions';
 import { IAppState, IQueryCollectionState } from '@generic/interfaces';
 import { connect } from 'react-redux';
@@ -30,6 +32,8 @@ interface PropsFromState {
   commonExpenseListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
   commonStatusListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
   commonDestinationListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
+  commonPurposeListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
+  commonTransportationListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
 
   // detail
 }
@@ -49,6 +53,8 @@ interface PropsFromDispatch {
     leaveListRequest: typeof leaveGetListRequest;
     statusListRequest: typeof statusGetListRequest;
     destinationListRequest: typeof destinationGetListRequest;
+    purposeListRequest: typeof purposeGetListRequest;
+    transportationListRequest: typeof transportationGetListRequest;
 
     // detail
   };
@@ -67,6 +73,9 @@ const mapStateToProps = ({
   commonLeaveList,
   commonStatusList,
   commonDestinationList,
+  commonPurposeList,
+  commonTransportationList,
+
 }: IAppState) => ({
   // all
   
@@ -81,6 +90,8 @@ const mapStateToProps = ({
   commonLeaveListState: commonLeaveList,
   commonStatusListState: commonStatusList,
   commonDestinationListState: commonDestinationList,
+  commonPurposeListState: commonPurposeList,
+  commonTransportationListState: commonTransportationList,
   
   // detail
  
@@ -101,6 +112,8 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     leaveListRequest: (request: ISystemListRequest) => dispatch(leaveGetListRequest(request)),
     statusListRequest: (request: ISystemListRequest) => dispatch(statusGetListRequest(request)),
     destinationListRequest: (request: ISystemListRequest) => dispatch(destinationGetListRequest(request)),
+    purposeListRequest: (request: ISystemListRequest) => dispatch(purposeGetListRequest(request)),
+    transportationListRequest: (request: ISystemListRequest) => dispatch(transportationGetListRequest(request)),
 
     // detail
   }

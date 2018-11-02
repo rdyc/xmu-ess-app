@@ -27,7 +27,7 @@ export const TravelSettlementDetailView: React.SFC<SettlementDetailProps> = prop
   
   const { isLoading, response } = props.travelSettlementState.detail;
   const travelResponse = props.travelRequestState.detail.response;
-  // console.log(response);
+  
   const renderDialog = (
     <Dialog
       fullScreen={dialogFullScreen}

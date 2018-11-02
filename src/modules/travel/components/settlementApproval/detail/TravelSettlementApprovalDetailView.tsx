@@ -1,6 +1,9 @@
 import { Grid, Typography } from '@material-ui/core';
 import { WorkflowApprovalForm } from '@organization/components/workflow/approval/WorkflowApprovalForm';
 import { WorkflowHistory } from '@organization/components/workflow/history/WorkflowHistory';
+import { TravelInformation } from '@travel/components/request/detail/shared/TravelInformation';
+import { TravelRequestItem } from '@travel/components/request/detail/shared/TravelRequestItem';
+import { TravelRequestSummary } from '@travel/components/request/detail/shared/TravelRequestSummary';
 import { TravelSettlementInformation } from '@travel/components/settlement/detail/shared/TravelSettlementInformation';
 import { TravelSettlementItem } from '@travel/components/settlement/detail/shared/TravelSettlementItem';
 import { TravelSettlementSummary } from '@travel/components/settlement/detail/shared/TravelSettlementSummary';
@@ -15,6 +18,7 @@ export const TravelSettlementApprovalDetailView: React.SFC<TravelSettlementAppro
   } = props;
   const { handleValidate, handleSubmit, handleSubmitSuccess, handleSubmitFail } = props;
   const { isLoading, response } = props.travelSettlementApprovalState.detail;
+  const requestApprovalResponse = props.travelApprovalState.detail.response;
 
   const render = (
     <React.Fragment>
@@ -28,17 +32,30 @@ export const TravelSettlementApprovalDetailView: React.SFC<TravelSettlementAppro
         !isLoading &&
         response && 
         response.data &&
+        requestApprovalResponse &&
         <Grid container spacing={16}>
           <Grid item xs={12} md={4}>
             <TravelSettlementInformation data = {response.data}/>
           </Grid>
 
-          <Grid item xs={12} md={3}>
+          <Grid item xs={12} md={4}>
+            <TravelInformation data = {requestApprovalResponse.data}/>
+          </Grid>
+
+          <Grid item xs={12} md={4}>
             <TravelSettlementSummary data = {response.data}/>
           </Grid>
 
-          <Grid item xs={12} md={5}>
+          <Grid item xs={12} md={4}>
+            <TravelRequestSummary data = {requestApprovalResponse.data}/>
+          </Grid>
+
+          <Grid item xs={12} md={4}>
             <TravelSettlementItem data = {response.data.items}/>
+          </Grid>
+
+          <Grid item xs={12} md={4}>
+            <TravelRequestItem data = {requestApprovalResponse.data.items}/>
           </Grid>
 
           <Grid item xs={12} md={6}>

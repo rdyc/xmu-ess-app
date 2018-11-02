@@ -71,6 +71,15 @@ const handlerCreators: HandleCreators<RequestDetailFormProps, OwnHandlers> = {
           component: SelectSystem,
         };
         break;
+        
+        case 'activityType': 
+        fieldProps = {
+          required: true,
+          category: 'purpose',
+          placeholder: intl.formatMessage({id: `travel.field.${name}.placeholder`}),
+          component: SelectSystem,
+        };
+        break;
 
         case 'start': 
         fieldProps = {

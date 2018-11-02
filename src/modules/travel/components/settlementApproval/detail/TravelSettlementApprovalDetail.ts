@@ -23,6 +23,7 @@ import { FormErrors } from 'redux-form';
 import { isNullOrUndefined, isObject } from 'util';
 
 import { TravelUserAction } from '@travel/classes/types';
+import { WithTravelApproval, withTravelApproval } from '@travel/hoc/withTravelApproval';
 import { WithTravelSettlementApproval, withTravelSettlementApproval } from '@travel/hoc/withTravelSettlementApproval';
 import { travelApprovalMessage } from '@travel/locales/messages/travelApprovalMessages';
 import { TravelSettlementApprovalDetailView } from './TravelSettlementApprovalDetailView';
@@ -52,6 +53,7 @@ interface OwnState {
 
 export type TravelSettlementApprovalDetailProps
   = WithTravelSettlementApproval
+  & WithTravelApproval
   & WithUser
   & WithLayout
   & WithAppBar
@@ -145,6 +147,8 @@ const handlerCreators: HandleCreators<TravelSettlementApprovalDetailProps, OwnHa
     const { match } = props;
     const { user } = props.userState;
     const { loadDetailRequest } = props.travelSettlementApprovalDispatch;
+    const { response } = props.travelSettlementApprovalState.detail;
+    const loadRequest = props.travelApprovalDispatch.loadDetailRequest;
 
     if (user) {
       loadDetailRequest({
@@ -152,6 +156,15 @@ const handlerCreators: HandleCreators<TravelSettlementApprovalDetailProps, OwnHa
         positionUid: user.position.uid,
         travelSettlementUid: match.params.travelSettlementUid
       });
+
+      // load travel request
+      if (response) {
+        loadRequest ({
+          companyUid: user.company.uid,
+          positionUid: user.position.uid,
+          travelUid: response.data.travelUid
+        });
+      }
     }
   }
 };
@@ -200,7 +213,18 @@ const lifecycles: ReactLifeCycleFunctions<TravelSettlementApprovalDetailProps, {
   componentWillReceiveProps(nextProps: TravelSettlementApprovalDetailProps) {
     if (nextProps.travelSettlementApprovalState.detail.response !== this.props.travelSettlementApprovalState.detail.response) {
       const { intl } = nextProps;
+      const { response } = nextProps.travelSettlementApprovalState.detail;
       const { assignMenus } = nextProps.appBarDispatch;
+      const { user } = this.props.userState;
+      const loadRequest = this.props.travelApprovalDispatch.loadDetailRequest;
+
+      if (user && response) {
+        loadRequest ({
+          companyUid: user.company.uid,
+          positionUid: user.position.uid,
+          travelUid: response.data.travelUid
+        });
+      }
 
       const currentMenus = [
         {
@@ -250,6 +274,7 @@ export const TravelSettlementApprovalDetail = compose<TravelSettlementApprovalDe
   withAppBar,
   withRouter,
   withTravelSettlementApproval,
+  withTravelApproval,
   injectIntl,
   withStateHandlers<OwnState, {}, {}>(createProps, {}),
   withHandlers<TravelSettlementApprovalDetailProps, OwnHandler>(handlerCreators),

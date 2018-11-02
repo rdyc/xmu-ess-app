@@ -80,7 +80,6 @@ const handlerCreators: HandleCreators<SettlementDetailProps, Handler> = {
     const { loadDetailRequest } = props.travelRequestDispatch;
     const { response } = props.travelSettlementState.detail;
 
-    console.log(response);
     if (user) {
       loadRequest({
         traveSettlementlUid: match.params.travelSettlementUid,

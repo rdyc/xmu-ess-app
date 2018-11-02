@@ -42,4 +42,12 @@ export interface ICommonState {
   commonDestinationAll: IQueryCollectionState<ISystemAllRequest, ISystem>;
   commonDestinationList: IQueryCollectionState<ISystemListRequest, ISystemList>;
   commonDestinationDetail: IQuerySingleState<ISystemByIdRequest, ISystemDetail>;
+
+  commonPurposeAll: IQueryCollectionState<ISystemAllRequest, ISystem>;
+  commonPurposeList: IQueryCollectionState<ISystemListRequest, ISystemList>;
+  commonPurposeDetail: IQuerySingleState<ISystemByIdRequest, ISystemDetail>;
+  
+  commonTransportationAll: IQueryCollectionState<ISystemAllRequest, ISystem>;
+  commonTransportationList: IQueryCollectionState<ISystemListRequest, ISystemList>;
+  commonTransportationDetail: IQuerySingleState<ISystemByIdRequest, ISystemDetail>;
 }
