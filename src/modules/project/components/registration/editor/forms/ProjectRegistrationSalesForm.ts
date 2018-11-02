@@ -4,8 +4,8 @@ import { WithUser, withUser } from '@layout/hoc/withUser';
 import { WithVariables, withVariables } from '@layout/hoc/withVariables';
 import { WithStyles, withStyles } from '@material-ui/core';
 import withWidth, { WithWidth } from '@material-ui/core/withWidth';
-import { ProjectSalesFormData } from '@project/components/registration/editor/forms/RegistrationForm';
-import { RegistrationSalesFormView } from '@project/components/registration/editor/forms/RegistrationSalesFormView';
+import { ProjectSalesFormData } from '@project/components/registration/editor/forms/ProjectRegistrationContainerForm';
+import { ProjectRegistrationSalesFormView } from '@project/components/registration/editor/forms/ProjectRegistrationSalesFormView';
 import styles from '@styles';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose, HandleCreators, withHandlers } from 'recompose';
@@ -19,7 +19,7 @@ interface OwnHandlers {
   handleSelected: (employee: IEmployee) => boolean;
 }
 
-export type RegistrationSalesFormProps
+export type ProjectRegistrationSalesFormProps
    = OwnProps
    & OwnHandlers
    & WithUser
@@ -29,8 +29,8 @@ export type RegistrationSalesFormProps
    & WithVariables
    & InjectedIntlProps;
 
-const handlerCreators: HandleCreators<RegistrationSalesFormProps, OwnHandlers> = {
-  handleSelected: (props: RegistrationSalesFormProps) => (employee: IEmployee): boolean => { 
+const handlerCreators: HandleCreators<ProjectRegistrationSalesFormProps, OwnHandlers> = {
+  handleSelected: (props: ProjectRegistrationSalesFormProps) => (employee: IEmployee): boolean => { 
     const { context, intl } = props;
     const { alertAdd } = props.layoutDispatch;
 
@@ -66,12 +66,12 @@ const handlerCreators: HandleCreators<RegistrationSalesFormProps, OwnHandlers> =
   }
 };
 
-export const RegistrationSalesForm = compose<RegistrationSalesFormProps, OwnProps>(
+export const ProjectRegistrationSalesForm = compose<ProjectRegistrationSalesFormProps, OwnProps>(
   withUser,
   withLayout,
   withStyles(styles),
   withWidth(),
   withVariables,
   injectIntl,
-  withHandlers<RegistrationSalesFormProps, OwnHandlers>(handlerCreators),
-)(RegistrationSalesFormView);
+  withHandlers<ProjectRegistrationSalesFormProps, OwnHandlers>(handlerCreators),
+)(ProjectRegistrationSalesFormView);

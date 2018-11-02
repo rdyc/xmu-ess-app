@@ -15,12 +15,12 @@ import {
 } from '@material-ui/core';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import PersonIcon from '@material-ui/icons/Person';
-import { RegistrationSalesFormProps } from '@project/components/registration/editor/forms/RegistrationSalesForm';
+import { ProjectRegistrationSalesFormProps } from '@project/components/registration/editor/forms/ProjectRegistrationSalesForm';
 import * as classNames from 'classnames';
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 
-export const RegistrationSalesFormView: React.SFC<RegistrationSalesFormProps> = props => {
+export const ProjectRegistrationSalesFormView: React.SFC<ProjectRegistrationSalesFormProps> = props => {
   const { classes, width, context, handleSelected, roleSalesUids } = props;
   const { user } = props.userState;
   

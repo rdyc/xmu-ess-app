@@ -7,7 +7,7 @@ import { WithOidc, withOidc } from '@layout/hoc/withOidc';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IAppBarMenu } from '@layout/interfaces';
 import { ProjectUserAction } from '@project/classes/types';
-import { RegistrationDetailView } from '@project/components/registration/detail/RegistrationDetailView';
+import { ProjectRegistrationDetailView } from '@project/components/registration/detail/ProjectRegistrationDetailView';
 import { WithProjectRegistration, withProjectRegistration } from '@project/hoc/withProjectRegistration';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
@@ -54,7 +54,7 @@ interface OwnRouteParams {
   projectUid: string;
 }
 
-export type RegistrationDetailProps
+export type ProjectRegistrationDetailProps
   = WithProjectRegistration
   & WithOidc
   & WithUser
@@ -66,7 +66,7 @@ export type RegistrationDetailProps
   & OwnStateUpdaters
   & Handler;
 
-const createProps: mapper<RegistrationDetailProps, OwnState> = (props: RegistrationDetailProps): OwnState => ({ 
+const createProps: mapper<ProjectRegistrationDetailProps, OwnState> = (props: ProjectRegistrationDetailProps): OwnState => ({ 
   dialogFullScreen: false,
   dialogOpen: false,
   dialogCancelText: 'global.action.cancel',
@@ -89,8 +89,8 @@ const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
   })
 };
 
-const handlerCreators: HandleCreators<RegistrationDetailProps, Handler> = {
-  handleProjectRefresh: (props: RegistrationDetailProps) => () => { 
+const handlerCreators: HandleCreators<ProjectRegistrationDetailProps, Handler> = {
+  handleProjectRefresh: (props: ProjectRegistrationDetailProps) => () => { 
     const { match } = props;
     const { user } = props.userState;
     const { loadDetailRequest } = props.projectRegisterDispatch;
@@ -103,7 +103,7 @@ const handlerCreators: HandleCreators<RegistrationDetailProps, Handler> = {
       });
     }
   },
-  handleProjectModify: (props: RegistrationDetailProps) => () => { 
+  handleProjectModify: (props: ProjectRegistrationDetailProps) => () => { 
     const { intl, stateUpdate } = props;
 
     stateUpdate({
@@ -116,7 +116,7 @@ const handlerCreators: HandleCreators<RegistrationDetailProps, Handler> = {
       dialogConfirmedText: intl.formatMessage({id: 'global.action.aggree'})
     });
   },
-  handleProjectClose: (props: RegistrationDetailProps) => () => { 
+  handleProjectClose: (props: ProjectRegistrationDetailProps) => () => { 
     const { intl, stateUpdate } = props;
 
     stateUpdate({
@@ -129,7 +129,7 @@ const handlerCreators: HandleCreators<RegistrationDetailProps, Handler> = {
       dialogConfirmedText: intl.formatMessage({id: 'global.action.continue'}),
     });
   },
-  handleProjectReOpen: (props: RegistrationDetailProps) => () => { 
+  handleProjectReOpen: (props: ProjectRegistrationDetailProps) => () => { 
     const { intl, stateUpdate } = props;
 
     stateUpdate({
@@ -142,7 +142,7 @@ const handlerCreators: HandleCreators<RegistrationDetailProps, Handler> = {
       dialogConfirmedText: intl.formatMessage({id: 'global.action.continue'})
     });
   },
-  handleProjectChangeOwner: (props: RegistrationDetailProps) => () => { 
+  handleProjectChangeOwner: (props: ProjectRegistrationDetailProps) => () => { 
     const { intl, stateUpdate } = props;
 
     stateUpdate({
@@ -155,7 +155,7 @@ const handlerCreators: HandleCreators<RegistrationDetailProps, Handler> = {
       dialogConfirmedText: intl.formatMessage({id: 'global.action.continue'}),
     });
   },
-  handleProjectManageSite: (props: RegistrationDetailProps) => () => { 
+  handleProjectManageSite: (props: ProjectRegistrationDetailProps) => () => { 
     const { intl, stateUpdate } = props;
 
     stateUpdate({
@@ -168,7 +168,7 @@ const handlerCreators: HandleCreators<RegistrationDetailProps, Handler> = {
       dialogConfirmedText: intl.formatMessage({id: 'global.action.continue'}),
     });
   },
-  handleDialogOpen: (props: RegistrationDetailProps) => (title: string, description: string, cancelText?: string, confirmText?: string, fullScreen?: boolean) => { 
+  handleDialogOpen: (props: ProjectRegistrationDetailProps) => (title: string, description: string, cancelText?: string, confirmText?: string, fullScreen?: boolean) => { 
     const { intl, stateUpdate, dialogCancelText, dialogConfirmedText } = props;
 
     stateUpdate({ 
@@ -180,12 +180,12 @@ const handlerCreators: HandleCreators<RegistrationDetailProps, Handler> = {
       dialogConfirmedText: confirmText || intl.formatMessage({id: dialogConfirmedText})
     });
   },
-  handleDialogClose: (props: RegistrationDetailProps) => () => { 
+  handleDialogClose: (props: ProjectRegistrationDetailProps) => () => { 
     const { stateReset } = props;
 
     stateReset();
   },
-  handleDialogConfirmed: (props: RegistrationDetailProps) => () => { 
+  handleDialogConfirmed: (props: ProjectRegistrationDetailProps) => () => { 
     const { history, action, stateReset } = props;
     const { response } = props.projectRegisterState.detail;
 
@@ -251,7 +251,7 @@ const handlerCreators: HandleCreators<RegistrationDetailProps, Handler> = {
   },
 };
 
-const lifecycles: ReactLifeCycleFunctions<RegistrationDetailProps, OwnState> = {
+const lifecycles: ReactLifeCycleFunctions<ProjectRegistrationDetailProps, OwnState> = {
   componentDidMount() {
     const { 
       match, layoutDispatch, appBarDispatch, intl, 
@@ -314,7 +314,7 @@ const lifecycles: ReactLifeCycleFunctions<RegistrationDetailProps, OwnState> = {
       });
     }
   },
-  componentWillReceiveProps(nextProps: RegistrationDetailProps) {
+  componentWillReceiveProps(nextProps: ProjectRegistrationDetailProps) {
     if (nextProps.projectRegisterState.detail.response !== this.props.projectRegisterState.detail.response) {
       const { intl } = nextProps;
       const { user } = nextProps.oidcState;
@@ -420,7 +420,7 @@ const lifecycles: ReactLifeCycleFunctions<RegistrationDetailProps, OwnState> = {
   }
 };
 
-export const RegistrationDetail = compose<RegistrationDetailProps, {}>(
+export const ProjectRegistrationDetail = compose<ProjectRegistrationDetailProps, {}>(
   withOidc,
   withUser,
   withLayout,
@@ -429,6 +429,6 @@ export const RegistrationDetail = compose<RegistrationDetailProps, {}>(
   withProjectRegistration,
   injectIntl,
   withStateHandlers<OwnState, OwnStateUpdaters, {}>(createProps, stateUpdaters), 
-  withHandlers<RegistrationDetailProps, Handler>(handlerCreators),
-  lifecycle<RegistrationDetailProps, OwnState>(lifecycles),
-)(RegistrationDetailView);
+  withHandlers<ProjectRegistrationDetailProps, Handler>(handlerCreators),
+  lifecycle<ProjectRegistrationDetailProps, OwnState>(lifecycles),
+)(ProjectRegistrationDetailView);

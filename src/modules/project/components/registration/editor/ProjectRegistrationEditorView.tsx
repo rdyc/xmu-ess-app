@@ -1,19 +1,19 @@
 import { FormMode } from '@generic/types';
 import { Typography } from '@material-ui/core';
 import {
+  ProjectRegistrationContainerForm,
   ProjectRegistrationFormData,
-  RegistrationForm,
-} from '@project/components/registration/editor/forms/RegistrationForm';
-import { RegistrationEditorProps } from '@project/components/registration/editor/RegistrationEditor';
+} from '@project/components/registration/editor/forms/ProjectRegistrationContainerForm';
+import { ProjectRegistrationEditorProps } from '@project/components/registration/editor/ProjectRegistrationEditor';
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 
-export const RegistrationEditorView: React.SFC<RegistrationEditorProps> = props => {
+export const ProjectRegistrationEditorView: React.SFC<ProjectRegistrationEditorProps> = props => {
   const { formMode, handleValidate, handleSubmit, handleSubmitSuccess, handleSubmitFail } = props;
   const { isLoading, response } = props.projectRegisterState.detail;
 
   const renderForm = (formData: ProjectRegistrationFormData) => (
-    <RegistrationForm 
+    <ProjectRegistrationContainerForm 
       formMode={formMode}
       initialValues={formData}
       validate={handleValidate}

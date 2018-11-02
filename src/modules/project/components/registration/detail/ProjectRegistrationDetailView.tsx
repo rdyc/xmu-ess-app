@@ -10,7 +10,7 @@ import {
   Typography,
 } from '@material-ui/core';
 import { WorkflowHistory } from '@organization/components/workflow/history/WorkflowHistory';
-import { RegistrationDetailProps } from '@project/components/registration/detail/RegistrationDetail';
+import { ProjectRegistrationDetailProps } from '@project/components/registration/detail/ProjectRegistrationDetail';
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 
@@ -19,7 +19,7 @@ import { ProjectInformation } from './shared/ProjectInformation';
 import { ProjectSales } from './shared/ProjectSales';
 import { ProjectSite } from './shared/ProjectSite';
 
-export const RegistrationDetailView: React.SFC<RegistrationDetailProps> = props => {
+export const ProjectRegistrationDetailView: React.SFC<ProjectRegistrationDetailProps> = props => {
   const { 
     dialogFullScreen, dialogOpen, dialogTitle, dialogDescription, dialogCancelText, dialogConfirmedText,
     handleDialogClose, handleDialogConfirmed, intl

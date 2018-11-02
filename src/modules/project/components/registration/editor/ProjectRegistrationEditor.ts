@@ -13,8 +13,8 @@ import { IProject } from '@project/classes/response';
 import {
   ProjectDocumentFormData,
   ProjectRegistrationFormData,
-} from '@project/components/registration/editor/forms/RegistrationForm';
-import { RegistrationEditorView } from '@project/components/registration/editor/RegistrationEditorView';
+} from '@project/components/registration/editor/forms/ProjectRegistrationContainerForm';
+import { ProjectRegistrationEditorView } from '@project/components/registration/editor/ProjectRegistrationEditorView';
 import { WithProjectRegistration, withProjectRegistration } from '@project/hoc/withProjectRegistration';
 import { projectRegistrationMessage } from '@project/locales/messages/projectRegistrationMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
@@ -57,7 +57,7 @@ interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
   stateUpdate: StateHandler<OwnState>;
 }
 
-export type RegistrationEditorProps
+export type ProjectRegistrationEditorProps
   = WithProjectRegistration
   & WithUser
   & WithLayout
@@ -68,8 +68,8 @@ export type RegistrationEditorProps
   & OwnState
   & OwnStateUpdaters;
 
-const handlerCreators: HandleCreators<RegistrationEditorProps, OwnHandlers> = {
-  handleValidate: (props: RegistrationEditorProps) => (formData: ProjectRegistrationFormData) => { 
+const handlerCreators: HandleCreators<ProjectRegistrationEditorProps, OwnHandlers> = {
+  handleValidate: (props: ProjectRegistrationEditorProps) => (formData: ProjectRegistrationFormData) => { 
     const errors = {
       information: {}
     };
@@ -87,7 +87,7 @@ const handlerCreators: HandleCreators<RegistrationEditorProps, OwnHandlers> = {
     
     return errors;
   },
-  handleSubmit: (props: RegistrationEditorProps) => (formData: ProjectRegistrationFormData) => { 
+  handleSubmit: (props: ProjectRegistrationEditorProps) => (formData: ProjectRegistrationFormData) => { 
     const { formMode, projectUid, intl } = props;
     const { user } = props.userState;
     const { response } = props.projectRegisterState.detail;
@@ -206,7 +206,7 @@ const handlerCreators: HandleCreators<RegistrationEditorProps, OwnHandlers> = {
 
     return null;
   },
-  handleSubmitSuccess: (props: RegistrationEditorProps) => (response: IProject) => {
+  handleSubmitSuccess: (props: ProjectRegistrationEditorProps) => (response: IProject) => {
     const { formMode, intl, history } = props;
     const { alertAdd } = props.layoutDispatch;
     
@@ -227,7 +227,7 @@ const handlerCreators: HandleCreators<RegistrationEditorProps, OwnHandlers> = {
 
     history.push('/project/list');
   },
-  handleSubmitFail: (props: RegistrationEditorProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
+  handleSubmitFail: (props: ProjectRegistrationEditorProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
     const { formMode, intl } = props;
     const { alertAdd } = props.layoutDispatch;
     
@@ -258,7 +258,7 @@ const handlerCreators: HandleCreators<RegistrationEditorProps, OwnHandlers> = {
   }
 };
 
-const createProps: mapper<RegistrationEditorProps, OwnState> = (props: RegistrationEditorProps): OwnState => ({ 
+const createProps: mapper<ProjectRegistrationEditorProps, OwnState> = (props: ProjectRegistrationEditorProps): OwnState => ({ 
   formMode: FormMode.New
 });
 
@@ -269,7 +269,7 @@ const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
   })
 };
 
-const lifecycles: ReactLifeCycleFunctions<RegistrationEditorProps, {}> = {
+const lifecycles: ReactLifeCycleFunctions<ProjectRegistrationEditorProps, {}> = {
   componentDidMount() {
     const { layoutDispatch, intl, history, stateUpdate } = this.props;
     const { loadDetailRequest } = this.props.projectRegisterDispatch;
@@ -329,7 +329,7 @@ const lifecycles: ReactLifeCycleFunctions<RegistrationEditorProps, {}> = {
   }
 };
 
-export default compose<RegistrationEditorProps, {}>(
+export default compose<ProjectRegistrationEditorProps, {}>(
   withUser,
   withLayout,
   withAppBar,
@@ -337,6 +337,6 @@ export default compose<RegistrationEditorProps, {}>(
   withProjectRegistration,
   injectIntl,
   withStateHandlers<OwnState, OwnStateUpdaters, {}>(createProps, stateUpdaters),
-  withHandlers<RegistrationEditorProps, OwnHandlers>(handlerCreators),
-  lifecycle<RegistrationEditorProps, {}>(lifecycles),
-)(RegistrationEditorView);
+  withHandlers<ProjectRegistrationEditorProps, OwnHandlers>(handlerCreators),
+  lifecycle<ProjectRegistrationEditorProps, {}>(lifecycles),
+)(ProjectRegistrationEditorView);

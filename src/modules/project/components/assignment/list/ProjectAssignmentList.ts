@@ -5,8 +5,9 @@ import { WithNavBottom, withNavBottom } from '@layout/hoc/withNavBottom';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IListBarField } from '@layout/interfaces';
 import { ProjectRegistrationField } from '@project/classes/types';
-import { ProjectApprovalListView } from '@project/components/approval/list/ProjectApprovalListView';
-import { WithProjectApproval, withProjectApproval } from '@project/hoc/withProjectApproval';
+import { ProjectAssignmentListView } from '@project/components/assignment/list/ProjectAssignmentListView';
+import { WithProjectAssignment, withProjectAssignment } from '@project/hoc/withProjectAssignment';
+import { projectMessage } from '@project/locales/messages/projectMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import {
@@ -55,8 +56,8 @@ interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
   stateSizing: StateHandler<OwnState>;
 }
 
-export type ProjectApprovalListProps 
-  = WithProjectApproval
+export type ProjectAssignmentListProps 
+  = WithProjectAssignment
   & WithUser
   & WithLayout
   & WithNavBottom
@@ -67,15 +68,15 @@ export type ProjectApprovalListProps
   & OwnState
   & OwnStateUpdaters;
 
-const createProps: mapper<ProjectApprovalListProps, OwnState> = (props: ProjectApprovalListProps): OwnState => {
+const createProps: mapper<ProjectAssignmentListProps, OwnState> = (props: ProjectAssignmentListProps): OwnState => {
   const { orderBy, direction, page, size } = props;
-  const { request } = props.projectApprovalState.all;
+  const { request } = props.projectAssignmentState.all;
 
   return { 
-    orderBy: request && request.filter && request.filter.query && request.filter.query.orderBy || orderBy,
-    direction: request && request.filter && request.filter.query && request.filter.query.direction || direction,
-    page: request && request.filter && request.filter.query && request.filter.query.page || page || 1, 
-    size: request && request.filter && request.filter.query && request.filter.query.size || size || 10,
+    orderBy: request && request.filter && request.filter.orderBy || orderBy,
+    direction: request && request.filter && request.filter.direction || direction,
+    page: request && request.filter && request.filter.page || page || 1, 
+    size: request && request.filter && request.filter.size || size || 10,
   };
 };
 
@@ -103,39 +104,39 @@ const stateUpdaters: StateUpdaters<OwnOptions, OwnState, OwnStateUpdaters> = {
   }),
 };
 
-const handlerCreators: HandleCreators<ProjectApprovalListProps, OwnHandlers> = {
-  handleGoToDetail: (props: ProjectApprovalListProps) => (projectUid) => {
+const handlerCreators: HandleCreators<ProjectAssignmentListProps, OwnHandlers> = {
+  handleGoToDetail: (props: ProjectAssignmentListProps) => (assignmentUid) => {
     const { history } = props;
-    const { isLoading } = props.projectApprovalState.all;
+    const { isLoading } = props.projectAssignmentState.all;
 
     if (!isLoading) {
-      history.push(`/approval/project/details/${projectUid}`);
+      history.push(`/project/assignment/details/${assignmentUid}`);
     } 
   },
-  handleGoToNext: (props: ProjectApprovalListProps) => () => { 
+  handleGoToNext: (props: ProjectAssignmentListProps) => () => { 
     props.stateNext();
   },
-  handleGoToPrevious: (props: ProjectApprovalListProps) => () => { 
+  handleGoToPrevious: (props: ProjectAssignmentListProps) => () => { 
     props.statePrevious();
   },
-  handleReloading: (props: ProjectApprovalListProps) => () => { 
+  handleReloading: (props: ProjectAssignmentListProps) => () => { 
     props.stateReloading();
 
     // force re-load from api
     loadData(props);
   },
-  handleChangeOrder: (props: ProjectApprovalListProps) => (field: IListBarField) => { 
+  handleChangeOrder: (props: ProjectAssignmentListProps) => (field: IListBarField) => { 
     props.stateOrdering(field);
   },
-  handleChangeSize: (props: ProjectApprovalListProps) => (value: number) => { 
+  handleChangeSize: (props: ProjectAssignmentListProps) => (value: number) => { 
     props.stateSizing(value);
   },
-  handleChangeSort: (props: ProjectApprovalListProps) => (direction: SortDirection) => { 
+  handleChangeSort: (props: ProjectAssignmentListProps) => (direction: SortDirection) => { 
     props.stateSorting(direction);
   }
 };
 
-const lifecycles: ReactLifeCycleFunctions<ProjectApprovalListProps, OwnState> = {
+const lifecycles: ReactLifeCycleFunctions<ProjectAssignmentListProps, OwnState> = {
   componentDidMount() { 
     const { 
       handleGoToNext, handleGoToPrevious, handleReloading, 
@@ -144,13 +145,13 @@ const lifecycles: ReactLifeCycleFunctions<ProjectApprovalListProps, OwnState> = 
       history, intl 
     } = this.props;
     
-    const { isLoading, response } = this.props.projectApprovalState.all;
+    const { isLoading, response } = this.props.projectAssignmentState.all;
 
     layoutDispatch.changeView({
-      uid: AppMenu.ProjectRegistrationApproval,
-      parentUid: AppMenu.ProjectRegistrationApproval,
-      title: intl.formatMessage({id: 'project.view.approval.title'}),
-      subTitle : intl.formatMessage({id: 'project.view.approval.subHeader'})
+      uid: AppMenu.ProjectAssignmentRequest,
+      parentUid: AppMenu.ProjectRegistration,
+      title: intl.formatMessage(projectMessage.assignment.page.listTitle),
+      subTitle : intl.formatMessage(projectMessage.assignment.page.listSubHeader)
     });
 
     layoutDispatch.modeListOn();
@@ -163,7 +164,7 @@ const lifecycles: ReactLifeCycleFunctions<ProjectApprovalListProps, OwnState> = 
       onSyncCallback: handleReloading,
       onOrderCallback: handleChangeOrder,
       onDirectionCallback: handleChangeSort,
-      onAddCallback: () => history.push('/project/form'),
+      onAddCallback: () => history.push('/project/assignment/form'),
       onSizeCallback: handleChangeSize,
     });
 
@@ -177,7 +178,7 @@ const lifecycles: ReactLifeCycleFunctions<ProjectApprovalListProps, OwnState> = 
       loadData(this.props);
     }
   },
-  componentDidUpdate(props: ProjectApprovalListProps, state: OwnState) {
+  componentDidUpdate(props: ProjectAssignmentListProps, state: OwnState) {
     // only load when these props are different
     if (
       this.props.orderBy !== props.orderBy ||
@@ -191,7 +192,7 @@ const lifecycles: ReactLifeCycleFunctions<ProjectApprovalListProps, OwnState> = 
   componentWillUnmount() {
     const { layoutDispatch, navBottomDispatch } = this.props;
     const { view } = this.props.layoutState;
-    const { loadAllDispose } = this.props.projectApprovalDispatch;
+    const { loadAllDispose } = this.props.projectAssignmentDispatch;
 
     layoutDispatch.changeView(null);
     layoutDispatch.modeListOff();
@@ -203,33 +204,31 @@ const lifecycles: ReactLifeCycleFunctions<ProjectApprovalListProps, OwnState> = 
     navBottomDispatch.dispose();
 
     // dispose 'get all' from 'redux store' when the page is 'out of project registration' context 
-    if (view && view.parentUid !== AppMenu.ProjectRegistrationApproval) {
+    if (view && view.parentUid !== AppMenu.ProjectRegistration) {
       loadAllDispose();
     }
   }
 };
 
-const loadData = (props: ProjectApprovalListProps): void => {
+const loadData = (props: ProjectAssignmentListProps): void => {
   const { orderBy, direction, page, size } = props;
   const { user } = props.userState;
-  const { loadAllRequest } = props.projectApprovalDispatch;
+  const { loadAllRequest } = props.projectAssignmentDispatch;
   const { alertAdd } = props.layoutDispatch;
 
   if (user) {
     loadAllRequest({
       filter: {
-        companyUid: user.company.uid,
-        positionUid: user.position.uid,
-        query: {
-          direction,
-          orderBy,
-          page,
-          size,
-          find: undefined,
-          findBy: undefined
-        },
-        isNotify: undefined,
-        status: 'pending'
+        direction,
+        orderBy,
+        page,
+        size,
+        customerUids: undefined,
+        projectTypes: undefined,
+        statusTypes: undefined,
+        projectUid: undefined,
+        find: undefined,
+        findBy: undefined,
       }
     }); 
   } else {
@@ -240,14 +239,14 @@ const loadData = (props: ProjectApprovalListProps): void => {
   }
 };
 
-export const ProjectApprovalList = compose<ProjectApprovalListProps, OwnOptions>(
-  withProjectApproval,
+export const ProjectAssignmentList = compose<ProjectAssignmentListProps, OwnOptions>(
+  withProjectAssignment,
   withUser,
   withLayout,
   withNavBottom,
   withRouter,
   injectIntl,
   withStateHandlers<OwnState, OwnStateUpdaters, OwnOptions>(createProps, stateUpdaters), 
-  withHandlers<ProjectApprovalListProps, OwnHandlers>(handlerCreators),
-  lifecycle<ProjectApprovalListProps, OwnState>(lifecycles),
-)(ProjectApprovalListView);
+  withHandlers<ProjectAssignmentListProps, OwnHandlers>(handlerCreators),
+  lifecycle<ProjectAssignmentListProps, OwnState>(lifecycles),
+)(ProjectAssignmentListView);

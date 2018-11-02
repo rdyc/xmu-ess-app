@@ -1,6 +1,6 @@
 import { ProjectType } from '@common/classes/types';
 import { FormMode } from '@generic/types';
-import { RegistrationFormView } from '@project/components/registration/editor/forms/RegistrationFormView';
+import { ProjectRegistrationContainerFormView } from '@project/components/registration/editor/forms/ProjectRegistrationContainerFormView';
 import { connect } from 'react-redux';
 import { formValueSelector, InjectedFormProps, reduxForm } from 'redux-form';
 
@@ -55,7 +55,7 @@ interface FormValueProps {
   formValue: number | 1;
 }
 
-export type RegistrationFormProps 
+export type ProjectRegistrationContainerFormProps 
   = InjectedFormProps<ProjectRegistrationFormData, OwnProps> 
   & FormValueProps
   & OwnProps;
@@ -78,9 +78,9 @@ const mapStateToProps = (state: any): FormValueProps => {
   };
 };
 
-const connectedView = connect(mapStateToProps)(RegistrationFormView);
+const connectedView = connect(mapStateToProps)(ProjectRegistrationContainerFormView);
 
-export const RegistrationForm = reduxForm<ProjectRegistrationFormData, OwnProps>({
+export const ProjectRegistrationContainerForm = reduxForm<ProjectRegistrationFormData, OwnProps>({
   form: formName,
   touchOnChange: true,
   touchOnBlur: true,

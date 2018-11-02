@@ -1,10 +1,10 @@
 import { Card, CardContent, CardHeader, Checkbox, FormControlLabel } from '@material-ui/core';
-import { DocumentFormProps } from '@project/components/registration/editor/forms/RegistrationDocumentForm';
+import { ProjectDocumentFormProps } from '@project/components/registration/editor/forms/ProjectRegistrationDocumentForm';
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Field } from 'redux-form';
 
-export const DocumentFormView: React.SFC<DocumentFormProps> = props => {
+export const ProjectRegistrationDocumentFormView: React.SFC<ProjectDocumentFormProps> = props => {
   const { category } = props;
   const { isLoading, response } = category === 'project' ? 
     props.commonDocumentListState : 
