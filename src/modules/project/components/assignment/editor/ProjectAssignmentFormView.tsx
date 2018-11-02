@@ -1,74 +1,103 @@
 import { SelectEmployee } from '@account/components/select';
+import { WorkflowStatusType } from '@common/classes/types';
+import { FormMode } from '@generic/types';
 import { InputNumber } from '@layout/components/input/number';
 import { InputText } from '@layout/components/input/text';
 import { InputTextArea } from '@layout/components/input/textArea';
 import { Submission } from '@layout/components/submission/Submission';
-import { Button, Card, CardContent, CardHeader, Grid, IconButton, Typography } from '@material-ui/core';
+import { Button, Card, CardActions, CardContent, CardHeader, Grid, IconButton } from '@material-ui/core';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
-import { IProjectAssignmentItem } from '@project/classes/request/assignment';
-import { ProjectAssignment } from '@project/components/assignment/detail/shared/ProjectAssignment';
-import { ProjectAssignmentFormProps } from '@project/components/assignment/editor/ProjectAssignmentForm';
 import { SelectProject } from '@project/components/select/project';
+import { projectMessage } from '@project/locales/messages/projectMessage';
 import * as React from 'react';
-import { FormattedMessage } from 'react-intl';
-import { Field, FieldArray, FormSection, WrappedFieldArrayProps } from 'redux-form';
+import { Field, FieldArray, WrappedFieldArrayProps } from 'redux-form';
 
-export const ProjectAssignmentFormView: React.SFC<ProjectAssignmentFormProps> = props => {
-  const { formMode, projectActive, projectFilter, handleProjectChange, change } = props;
+import { ProjectAssignment } from '../detail/shared/ProjectAssignment';
+import { ProjectAssignmentFormProps, ProjectAssignmentItemFormData } from './ProjectAssignmentForm';
 
-  const componentMember = (context: WrappedFieldArrayProps<IProjectAssignmentItem>) => (
-    <Grid container spacing={16}>
-      {
-        context.fields.map((field, index) => 
+const isComplete = (statusType?: string | null | undefined): boolean => {
+  let result = false;
+
+  if (statusType) {
+    const completes = [
+      WorkflowStatusType.Accepted,
+      WorkflowStatusType.Rejected,
+    ];
+
+    result = completes.indexOf(statusType as WorkflowStatusType) !== -1;
+  }
+  
+  return result;
+};
+
+const ProjectAssignmentItemFormView: React.SFC<WrappedFieldArrayProps<ProjectAssignmentItemFormData> & ProjectAssignmentFormProps> = props => (
+  <Grid container spacing={16}>
+    {
+      props.fields.map((field, index) => {
+        const item = props.fields.get(index);
+        const isItemComplete = isComplete(item.statusType);
+
+        return (
           <Grid key={index} item xs={12} md={6}>
-            <Card square>
+            <Card>
               <CardHeader 
+                title={`#${index + 1} - ${item.uid || 'Draft'}`}
+                subheader={`${item.status && item.status.value || 'Draft'} ${item.rejectedReason || ''}`}
+                titleTypographyProps={{variant: 'body2'}}
                 action={
-                  <IconButton onClick={() => context.fields.remove(index)}>
+                  !isItemComplete &&
+                  <IconButton onClick={() => props.fields.remove(index)}>
                     <DeleteForeverIcon />
                   </IconButton>
                 }
-                title={`#${index + 1}`}
               />
               <CardContent>
                 <div>
                   <Field 
                     type="text"
                     name={`${field}.employeeUid`}
-                    label="employee"
+                    label={props.intl.formatMessage(projectMessage.assignment.field.employeeUid)}
+                    placeholder={props.intl.formatMessage(projectMessage.assignment.field.employeeUidPlaceholder)}
                     required={true}
-                    companyUids={['CP002']}
+                    companyUids={props.userState.user && [props.userState.user.company.uid]}
+                    disabled={isItemComplete}
                     component={SelectEmployee}
                   />
                   <Field 
                     type="text"
                     name={`${field}.role`}
-                    label="role"
+                    label={props.intl.formatMessage(projectMessage.assignment.field.role)}
+                    placeholder={props.intl.formatMessage(projectMessage.assignment.field.rolePlaceholder)}
                     required={true}
+                    disabled={isItemComplete}
                     component={InputText}
                   />
                   <Field 
                     type="text"
                     name={`${field}.jobDescription`}
-                    label="job Desc"
+                    label={props.intl.formatMessage(projectMessage.assignment.field.jobDesc)}
+                    placeholder={props.intl.formatMessage(projectMessage.assignment.field.jobDescPlaceholder)}
+                    disabled={isItemComplete}
                     component={InputTextArea}
                   />
                   <Field 
                     type="number"
                     name={`${field}.mandays`}
-                    label="mandays"
+                    label={props.intl.formatMessage(projectMessage.assignment.field.mandays)}
+                    placeholder={props.intl.formatMessage(projectMessage.assignment.field.mandaysPlaceholder)}
                     required={true}
+                    disabled={isItemComplete}
                     component={InputNumber}
                     onChange={(event: any, newValue: any) => {
                       if (!isNaN(newValue)) {
-                        change(`${field}.hours`, newValue * 8);
+                        props.change(`${field}.hours`, newValue * 8);
                       }
                     }}
                   />
                   <Field 
                     type="number"
                     name={`${field}.hours`}
-                    label="hours"
+                    label={props.intl.formatMessage(projectMessage.assignment.field.hours)}
                     disabled={true}
                     component={InputNumber}
                   />
@@ -76,82 +105,97 @@ export const ProjectAssignmentFormView: React.SFC<ProjectAssignmentFormProps> = 
               </CardContent>
             </Card>
           </Grid>
-        )
-      }
+        );
+      })
+    }
 
-      <Grid item xs={12} md={6}>
-        <Button onClick={() => context.fields.push({
-            uid: null,
-            employeeUid: '',
-            jobDescription: '',
-            role: '',
-            mandays: 0,
-          })}>
-          <FormattedMessage id="project.assignment.section.member.action.add" />
-        </Button>
-      </Grid>
-
-      <Grid item xs={12} md={6}>
-        <Submission 
-          valid={props.valid}
-          reset={props.reset}
-          submitting={props.submitting}
-        />
-      </Grid>
-    </Grid>
-  );
-  
-  const render = (
-    <form onSubmit={props.handleSubmit}>
-      <Grid container spacing={16}>  
-        <Grid item xs={12} md={4}>
-          <Grid container spacing={16}>
-            <Grid item xs={12}>
-              <Typography variant="title">
-                <FormattedMessage id="project.infoTitle"/>
-              </Typography>
-            </Grid>
-            
-            <Grid item xs={12}>
-              <ProjectAssignment formMode={formMode} data={projectActive}>
-                <FormSection name="information">
-                  <Field
-                    name="projectUid"
-                    component={(context: any) => 
-                      <SelectProject
-                        {...context}
-                        label={<FormattedMessage id={'project.assignment.field.information.projectUid'} />}
-                        filter={projectFilter}
-                        onSelected={handleProjectChange}
-                      />
-                    }
-                  />
-                </FormSection>
-              </ProjectAssignment>
-              <pre>{JSON.stringify(props.formValues, null, 2)}</pre>
-            </Grid>
-          </Grid>
+    <Grid item xs={12}>
+      <Grid container spacing={16}>
+        <Grid item xs={12} md={6}>
+          <Card>
+            <CardHeader 
+              title={props.intl.formatMessage(projectMessage.assignment.section.memberAddTitle)}
+              subheader={props.intl.formatMessage(projectMessage.assignment.section.memberAddSubHeader)}
+            />
+            <CardActions>
+              <Button onClick={() => props.fields.push({
+                uid: null,
+                employeeUid: '',
+                role: '',
+                jobDescription: '',
+                mandays: 0,
+                hours: 0
+              })}>
+                {props.intl.formatMessage(projectMessage.assignment.action.addMember)}
+              </Button>
+            </CardActions>
+          </Card>
         </Grid>
 
         {
-          projectActive &&
-          <Grid item xs={12} md={8}>
-            <Grid container spacing={16}>
-              <Grid item xs={12}>
-                <Typography variant="title">
-                  <FormattedMessage id="project.assignment.section.member.title" />
-                </Typography>
-              </Grid>
-
-              <Grid item xs={12}>
-                <FieldArray name="items" component={componentMember} />
-              </Grid>
-            </Grid>
+          props.fields.length > 0 &&
+          <Grid item xs={12} md={6}>
+            <Submission 
+              valid={props.valid}
+              reset={props.reset}
+              submitting={props.submitting}
+              />
           </Grid>
         }
       </Grid>
-    </form>
-  );
+    </Grid>
+  </Grid>
+);
 
-  return render;
-};
+export const ProjectAssignmentFormView: React.SFC<ProjectAssignmentFormProps> = props => (
+  <form onSubmit={props.handleSubmit}>
+    <Grid container spacing={16}>
+      <Grid item xs={12} md={4}>
+        <ProjectAssignment 
+          formMode={props.formMode} 
+          data={props.currentProject}
+        >
+          {
+            // just display project select when the form is being in new mode
+            props.formMode === FormMode.New &&
+            <Field
+              name="projectUid"
+              component={(context: any) => 
+                <SelectProject 
+                  {...context}
+                  label={props.intl.formatMessage(projectMessage.assignment.field.projectUid)}
+                  placeholder={props.intl.formatMessage(projectMessage.assignment.field.projectUidPlaceholder)}
+                  filter={props.projectFilter}
+                  onSelected={props.handleProjectChange}
+                />
+              }
+            />
+          }
+        </ProjectAssignment>
+      </Grid>
+
+      {
+        props.currentProject &&
+        <Grid item xs={12} md={8}>
+          <FieldArray 
+            name="items" 
+            props={props} 
+            component={ProjectAssignmentItemFormView}
+            />
+        </Grid> 
+      }
+
+      {/* <Grid item xs={12} md={4}>
+        <Card>
+          <CardHeader 
+            title="Values"
+            subheader="form values as object"
+          />
+          <CardContent>
+            <pre>{JSON.stringify(props.formValues, null, 2)}</pre>
+          </CardContent>
+        </Card>
+      </Grid> */}
+    </Grid>
+  </form>
+);

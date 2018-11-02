@@ -4,11 +4,10 @@ import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IProjectAssignmentPatchPayload } from '@project/classes/request/assignment';
-import { IProjectList } from '@project/classes/response';
-import { ProjectAssignmentFormData } from '@project/components/assignment/editor/ProjectAssignmentForm';
+import { IProjectAssignmentDetail } from '@project/classes/response';
 import { WithProjectAssignment, withProjectAssignment } from '@project/hoc/withProjectAssignment';
 import { WithProjectRegistration, withProjectRegistration } from '@project/hoc/withProjectRegistration';
-import { projectOwnerMessage } from '@project/locales/messages/projectOwnerMessage';
+import { projectMessage } from '@project/locales/messages/projectMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import {
@@ -28,64 +27,143 @@ import { FormErrors } from 'redux-form';
 import { isNullOrUndefined, isObject } from 'util';
 
 import { ProjectAssignmentEditorView } from './ProjectAssignmentEditorView';
+import { ProjectAssignmentFormData, ProjectAssignmentItemFormData } from './ProjectAssignmentForm';
 
 interface OwnHandlers {
-  handleProjectChange: (project: IProjectList) => void;
-  handleValidate: (payload: ProjectAssignmentFormData) => FormErrors;
-  handleSubmit: (payload: ProjectAssignmentFormData) => void;
+  generateInitialData: () => IProjectAssignmentDetail | undefined;
+  generateInitialValues: () => ProjectAssignmentFormData | undefined;
+  handleValidate: (values: ProjectAssignmentFormData) => any;
+  handleSubmit: (values: ProjectAssignmentFormData) => void;
   handleSubmitSuccess: (result: any, dispatch: Dispatch<any>) => void;
   handleSubmitFail: (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => void;
 }
 
-interface OwnRouteParams {
-  projectUid: string;
-}
-
 interface OwnState {
   formMode: FormMode;
+  companyUid?: string | undefined;
   projectUid?: string | undefined;
+  assignmentUid?: string | undefined;
 }
 
 interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
   stateUpdate: StateHandler<OwnState>;
 }
 
-export type ProjectAssignmentEditorProps
+export type ProjectAssignmentEditorProps 
   = WithProjectAssignment
   & WithProjectRegistration
   & WithUser
   & WithLayout
   & WithAppBar
-  & RouteComponentProps<OwnRouteParams>
+  & RouteComponentProps
   & InjectedIntlProps
   & OwnHandlers
   & OwnState
   & OwnStateUpdaters;
 
-const handlerCreators: HandleCreators<ProjectAssignmentEditorProps, OwnHandlers> = {
-  handleProjectChange: (props: ProjectAssignmentEditorProps) => (project: IProjectList) => { 
-    console.log(project);
+const createProps: mapper<ProjectAssignmentEditorProps, OwnState> = (props: ProjectAssignmentEditorProps): OwnState => {
+  const { history } = props;
+  
+  const state = history.location.state;
+
+  return { 
+    formMode:  state ? FormMode.Edit : FormMode.New,
+    companyUid: state ? state.companyUid : undefined,
+    projectUid: state ? state.projectUid : undefined,
+    assignmentUid: state ? state.assignmentUid : undefined
+  };
+};
+
+const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
+  stateUpdate: (prevState: OwnState) => (newState: any) => ({
+    ...prevState,
+    ...newState
+  })
+};
+
+const handlers: HandleCreators<ProjectAssignmentEditorProps, OwnHandlers> = {
+  generateInitialData: (props: ProjectAssignmentEditorProps) => (): IProjectAssignmentDetail | undefined => {
+    const { response } = props.projectAssignmentState.detail; 
+
+    if (response && response.data) {
+      return response.data;
+    }
+      
+    return undefined;
+    },
+  generateInitialValues: (props: ProjectAssignmentEditorProps) => (): ProjectAssignmentFormData | undefined => {
+    const { response } = props.projectAssignmentState.detail; 
+
+    if (response && response.data) {
+      const items: ProjectAssignmentItemFormData[] = [];
+
+      if (response.data.items) {
+        response.data.items.forEach(item => 
+          items.push({
+            uid: item.uid,
+            employeeUid: item.employeeUid,
+            role: item.role,
+            jobDescription: item.jobDescription,
+            mandays: item.mandays,
+            hours: item.hours,
+            statusType: item.statusType,
+            status: item.status,
+            rejectedReason: item.rejectedReason
+          })
+        );
+      }
+
+      return {
+        items,
+        projectUid: response.data.projectUid
+      };
+    }
+      
+    return undefined;
   },
-  handleValidate: (props: ProjectAssignmentEditorProps) => (formData: ProjectAssignmentFormData) => { 
-    const errors = {
-      information: {}
-    };
+  handleValidate: (props: ProjectAssignmentEditorProps) => (values: ProjectAssignmentFormData) => { 
+    const errors = {};
   
     const requiredFields = ['projectUid'];
   
     requiredFields.forEach(field => {
-      if (!formData.information[field] || isNullOrUndefined(formData.information[field])) {
-        errors.information[field] = props.intl.formatMessage({id: `project.assignment.field.information.${field}.required`});
+      if (!values[field] || isNullOrUndefined(values[field])) {
+        Object.assign(errors, {[field]: props.intl.formatMessage(projectMessage.assignment.for(field, 'fieldRequired'))});
       }
     });
+
+    if (values.items) {
+      const requiredItemFields = ['employeeUid', 'role', 'mandays'];
+      
+      const itemErrors: any[] = [];
+      
+      values.items.forEach((item, index) => {
+        const itemError: any = {};
+        
+        if (!item) { return ; }
+
+        requiredItemFields.forEach(field => {
+          if (!item[field] || isNullOrUndefined(item[field])) {
+            Object.assign(itemError, {[`${field}`]: props.intl.formatMessage(projectMessage.assignment.for(field, 'fieldRequired'))});
+          }
+        });
+
+        itemErrors.push(itemError);
+      });
+
+      if (itemErrors.length) {
+        Object.assign(errors, {
+          items: itemErrors
+        });
+      }
+    }
     
     return errors;
   },
-  handleSubmit: (props: ProjectAssignmentEditorProps) => (formData: ProjectAssignmentFormData) => { 
+  handleSubmit: (props: ProjectAssignmentEditorProps) => (values: ProjectAssignmentFormData) => { 
     const { intl } = props;
     const { user } = props.userState;
     const { patchRequest } = props.projectAssignmentDispatch;
-    const { information } = formData;
 
     // user checking
     if (!user) {
@@ -93,15 +171,15 @@ const handlerCreators: HandleCreators<ProjectAssignmentEditorProps, OwnHandlers>
     }
 
     // props checking
-    if (!information.projectUid) {
-      const message = intl.formatMessage(projectOwnerMessage.emptyProps);
+    if (!values.projectUid) {
+      const message = intl.formatMessage(projectMessage.assignment.submission.invalidProps);
 
       return Promise.reject(message);
     }
 
     // generate payload
     const payload: IProjectAssignmentPatchPayload = {
-      items: formData.items
+      items: values.items || []
     };
 
     // dispatch update request
@@ -109,20 +187,22 @@ const handlerCreators: HandleCreators<ProjectAssignmentEditorProps, OwnHandlers>
       patchRequest({
         resolve, 
         reject,
-        projectUid: information.projectUid || '', 
+        projectUid: values.projectUid || '', 
         companyUid: user.company.uid,
-        data: payload, 
+        data: payload
       });
-    });
+    }); 
   },
   handleSubmitSuccess: (props: ProjectAssignmentEditorProps) => (response: boolean) => {
-    const { formMode, intl, history, projectUid } = props;
+    const { formMode, intl, history, assignmentUid } = props;
     const { alertAdd } = props.layoutDispatch;
     
     let message: string = '';
 
     if (formMode === FormMode.Edit) {
-      message = intl.formatMessage(projectOwnerMessage.updateSuccess);
+      message = intl.formatMessage(projectMessage.assignment.submission.updateSuccess);
+    } else {
+      message = intl.formatMessage(projectMessage.assignment.submission.createSuccess);
     }
 
     alertAdd({
@@ -130,8 +210,8 @@ const handlerCreators: HandleCreators<ProjectAssignmentEditorProps, OwnHandlers>
       time: new Date()
     });
 
-    if (projectUid) {
-      history.push(`/project/details/${projectUid}`);
+    if (assignmentUid) {
+      history.push(`/project/assignment/details/${assignmentUid}`);
     }
   },
   handleSubmitFail: (props: ProjectAssignmentEditorProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
@@ -147,50 +227,50 @@ const handlerCreators: HandleCreators<ProjectAssignmentEditorProps, OwnHandlers>
     } else {
       alertAdd({
         time: new Date(),
-        message: intl.formatMessage(projectOwnerMessage.updateFailure),
+        message: intl.formatMessage(projectMessage.assignment.submission.createFailure),
         details: isObject(submitError) ? submitError.message : submitError
       });
     }
   }
 };
 
-const createProps: mapper<ProjectAssignmentEditorProps, OwnState> = (props: ProjectAssignmentEditorProps): OwnState => {
-  const { match } = props;
-  
-  return { 
-    formMode:  match.params.projectUid ? FormMode.Edit : FormMode.New,
-    projectUid: match.params.projectUid
-  };
-};
-
-const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
-  stateUpdate: (prevState: OwnState) => (newState: any) => ({
-    ...prevState,
-    ...newState
-  })
-};
-
 const lifecycles: ReactLifeCycleFunctions<ProjectAssignmentEditorProps, {}> = {
   componentDidMount() {
-    const { layoutDispatch, intl, history } = this.props;
-    const { user } = this.props.userState;
-    const { response } = this.props.projectRegisterState.detail;
-    const { loadDetailRequest } = this.props.projectRegisterDispatch;
+    const { layoutDispatch, intl, formMode, companyUid, assignmentUid } = this.props;
+    const { response } = this.props.projectAssignmentState.detail;
+    const { loadDetailRequest } = this.props.projectAssignmentDispatch;
+
+    const view: any = {};
+
+    switch (formMode) {
+      case FormMode.Edit:
+        Object.assign(view, {
+          title: intl.formatMessage(projectMessage.assignment.page.modifyTitle),
+          subTitle: intl.formatMessage(projectMessage.assignment.page.modifySubHeader)
+        });
+        break;
+    
+      default:
+        Object.assign(view, {
+          title: intl.formatMessage(projectMessage.assignment.page.newTitle),
+          subTitle: intl.formatMessage(projectMessage.assignment.page.newSubHeader)
+        });
+        break;
+    }
 
     layoutDispatch.changeView({
       uid: AppMenu.ProjectAssignmentRequest,
       parentUid: AppMenu.ProjectAssignment,
-      title: intl.formatMessage({id: 'project.assignment.form.request.title'}),
-      subTitle : intl.formatMessage({id: 'project.assignment.form.request.subHeader'})
+      ...view
     });
-    
-    layoutDispatch.navBackShow(); 
 
-    if (!isNullOrUndefined(history.location.state) && !response && user) {
+    layoutDispatch.navBackShow();
+
+    // editing mode: load detail if not exist
+    if (companyUid && assignmentUid && !response) {
       loadDetailRequest({
-        companyUid: user.company.uid,
-        positionUid: user.position.uid,
-        projectUid: history.location.state.uid
+        companyUid,
+        assignmentUid
       });
     }
   },
@@ -204,11 +284,12 @@ const lifecycles: ReactLifeCycleFunctions<ProjectAssignmentEditorProps, {}> = {
 
     appBarDispatch.dispose();
 
+    projectAssignmentDispatch.loadDetailDispose();
     projectAssignmentDispatch.patchDispose();
   }
 };
 
-export const ProjectAssignmentEditor = compose<ProjectAssignmentEditorProps, {}>(
+export const ProjectAssignmentEditorForm = compose<ProjectAssignmentEditorProps, {}>(
   withUser,
   withLayout,
   withAppBar,
@@ -216,7 +297,7 @@ export const ProjectAssignmentEditor = compose<ProjectAssignmentEditorProps, {}>
   withProjectRegistration,
   withProjectAssignment,
   injectIntl,
-  withStateHandlers<OwnState, OwnStateUpdaters, {}>(createProps, stateUpdaters),
-  withHandlers<ProjectAssignmentEditorProps, OwnHandlers>(handlerCreators),
-  lifecycle<ProjectAssignmentEditorProps, {}>(lifecycles),
+  withStateHandlers(createProps, stateUpdaters),
+  withHandlers(handlers),
+  lifecycle(lifecycles)
 )(ProjectAssignmentEditorView);

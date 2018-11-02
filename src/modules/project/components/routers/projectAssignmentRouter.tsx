@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router';
 
 import { ProjectAssignmentDetail } from '../assignment/detail/ProjectAssignmentDetail';
-import { ProjectAssignmentEditorForm } from '../assignment/editor/ProjectAssignmentEditorForm';
+import { ProjectAssignmentEditorForm } from '../assignment/editor/ProjectAssignmentEditor';
 import { ProjectAssignmentList } from '../assignment/list/ProjectAssignmentList';
 
 type AllProps 
