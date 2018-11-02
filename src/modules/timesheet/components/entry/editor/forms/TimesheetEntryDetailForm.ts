@@ -47,12 +47,20 @@ const handlerCreators: HandleCreators<EntryDetailFormProps, OwnHandlers> = {
           component: SelectSystem
         };
         break;
-      
+
       case 'customerUid':
         fieldProps = {
           type: 'text',
           placeholder: intl.formatMessage({ id: `timesheet.field.${name}.placeholder` }),
           component: InputCustomer
+        };
+        break;
+
+      case 'projectUid':
+        fieldProps = {
+          type: 'text',
+          placeholder: intl.formatMessage({ id: `timesheet.field.${name}.placeholder` }),
+          component: InputText
         };
         break;
 
@@ -87,14 +95,6 @@ const handlerCreators: HandleCreators<EntryDetailFormProps, OwnHandlers> = {
           component: InputTime
         };
         break;
-
-      // case 'projectUid':
-      //   fieldProps = {
-      //     type: 'text',
-      //     placeholder: intl.formatMessage({id: `expense.field.${name}.placeholder`}),
-      //     component: FieldSelectProject
-      //   };
-      //   break;
 
       default:
         fieldProps = {

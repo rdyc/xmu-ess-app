@@ -24,6 +24,7 @@ import {
 
 interface OwnHandlers {
   handleCheckbox: (uid: string) => void;
+  handleGoToApproval: () => void;
   handleGoToDetail: (timesheetUid: string) => void;
   handleGoToNext: () => void;
   handleGoToPrevious: () => void;
@@ -41,7 +42,7 @@ interface OwnOptions {
 }
 
 interface OwnState {
-  uids: string[] | undefined;
+  timesheetUids: string[] | undefined;
   orderBy: string | undefined;
   direction: string | undefined;
   page: number;
@@ -75,7 +76,7 @@ const createProps: mapper<ApprovalListProps, OwnState> = (props: ApprovalListPro
   const { request } = props.timesheetApprovalState.all;
 
   return {
-    uids: [],
+    timesheetUids: [],
     orderBy: request && request.filter && request.filter['query.orderBy'] || orderBy,
     direction: request && request.filter && request.filter['query.direction'] || direction,
     page: request && request.filter && request.filter['query.page'] || page || 1,
@@ -84,8 +85,8 @@ const createProps: mapper<ApprovalListProps, OwnState> = (props: ApprovalListPro
 };
 
 const stateUpdaters: StateUpdaters<OwnOptions, OwnState, OwnStateUpdaters> = {
-  stateCheckbox: (prevState: OwnState) => (uids: string[]) => ({ 
-    uids
+  stateCheckbox: (prevState: OwnState) => (timesheetUids: string[]) => ({
+    timesheetUids
   }),
   stateNext: (prevState: OwnState) => () => ({
     page: prevState.page + 1,
@@ -112,12 +113,20 @@ const stateUpdaters: StateUpdaters<OwnOptions, OwnState, OwnStateUpdaters> = {
 
 const handlerCreators: HandleCreators<ApprovalListProps, OwnHandlers> = {
   handleCheckbox: (props: ApprovalListProps) => (uid: string) => {
-    const { uids, stateCheckbox } = props;
-    const _uids = new Set(uids);
+    const { timesheetUids, stateCheckbox } = props;
+    const _uids = new Set(timesheetUids);
 
     _uids.has(uid) ? _uids.delete(uid) : _uids.add(uid);
 
     stateCheckbox(Array.from(_uids));
+  },
+  handleGoToApproval: (props: ApprovalListProps) => () => {
+    const { history, timesheetUids } = props;
+    const { isLoading } = props.timesheetApprovalState.all;
+
+    if (!isLoading) {
+      history.push(`/approval/timesheet/action/${timesheetUids}`);
+    }
   },
   handleGoToDetail: (props: ApprovalListProps) => (timesheetUid) => {
     const { history } = props;

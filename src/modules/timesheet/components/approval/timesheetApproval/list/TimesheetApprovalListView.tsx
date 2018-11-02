@@ -9,11 +9,11 @@ import { FormattedDate, FormattedNumber, FormattedPlural } from 'react-intl';
 import { isArray } from 'util';
 
 export const TimesheetApprovalListView: React.SFC<ApprovalListProps> = props => {
-  const { handleGoToDetail, handleCheckbox, uids } = props;
+  const { handleGoToDetail, handleCheckbox, handleGoToApproval, timesheetUids } = props;
   const { isLoading, response } = props.timesheetApprovalState.all;
 
   const isChecked = (uid: string) => {
-    const _uids = new Set(uids);
+    const _uids = new Set(timesheetUids);
     return _uids.has(uid);
   };
 
@@ -141,14 +141,14 @@ export const TimesheetApprovalListView: React.SFC<ApprovalListProps> = props => 
           elevation={1}
         >
           <RenderList />
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => handleGoToApproval()}
+          >
+            APPROVAL
+          </Button>
         </Paper>}
-      <br/>
-      <Button
-        variant="contained"
-        color="primary"
-      >
-        APPROVAL
-      </Button>
     </React.Fragment>
   );
 
