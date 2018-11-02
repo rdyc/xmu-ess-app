@@ -7,3 +7,4 @@ export * from './projectActions';
 export * from './siteActions';
 export * from './expenseActions';
 export * from './statusActions';
+export * from './destinationActions';

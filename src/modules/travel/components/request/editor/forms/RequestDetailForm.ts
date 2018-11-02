@@ -1,4 +1,4 @@
-import { SelectSystemOption } from '@common/components/select';
+import { SelectSystem, SelectSystemOption } from '@common/components/select';
 import { FormMode } from '@generic/types';
 import { InputDate } from '@layout/components/input/date';
 import { InputText } from '@layout/components/input/text';
@@ -60,6 +60,15 @@ const handlerCreators: HandleCreators<RequestDetailFormProps, OwnHandlers> = {
           required: true,
           placeholder: intl.formatMessage({id: `travel.field.${name}.placeholder`}),
           component: InputCustomer
+        };
+        break;
+
+        case 'destinationType': 
+        fieldProps = {
+          required: true,
+          category: 'destination',
+          placeholder: intl.formatMessage({id: `travel.field.${name}.placeholder`}),
+          component: SelectSystem,
         };
         break;
 

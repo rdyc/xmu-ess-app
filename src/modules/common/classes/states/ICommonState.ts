@@ -38,4 +38,8 @@ export interface ICommonState {
   commonStatusAll: IQueryCollectionState<ISystemAllRequest, ISystem>;
   commonStatusList: IQueryCollectionState<ISystemListRequest, ISystemList>;
   commonStatusDetail: IQuerySingleState<ISystemByIdRequest, ISystemDetail>;
+
+  commonDestinationAll: IQueryCollectionState<ISystemAllRequest, ISystem>;
+  commonDestinationList: IQueryCollectionState<ISystemListRequest, ISystemList>;
+  commonDestinationDetail: IQuerySingleState<ISystemByIdRequest, ISystemDetail>;
 }

@@ -1,5 +1,6 @@
 import activityReducers from '@common/store/reducers/activity/activityReducers';
 import currencyReducers from '@common/store/reducers/currency/currencyReducers';
+import destinationReducers from '@common/store/reducers/destination/destinationReducers';
 import documentReducers from '@common/store/reducers/document/documentReducers';
 import documentPresalesReducers from '@common/store/reducers/documentPresales/documentPresalesReducers';
 import expenseReducers from '@common/store/reducers/expense/expenseReducers';
@@ -18,6 +19,7 @@ const commonReducers = {
   ...expenseReducers,
   ...leaveReducers,
   ...statusReducers,
+  ...destinationReducers,
 };
 
 export default commonReducers;

@@ -4,6 +4,7 @@ import employeeMySagas from '@account/store/sagas/employeeMySagas';
 import employeeProfileSagas from '@account/store/sagas/employeeProfileSagas';
 import commonActivitySagas from '@common/store/sagas/activitySagas';
 import commonCurrencySagas from '@common/store/sagas/currencySagas';
+import commonDestinationSagas from '@common/store/sagas/destinationSagas';
 import commonDocumentPresalesSagas from '@common/store/sagas/documentPresalesSagas';
 import commonDocumentSagas from '@common/store/sagas/documentSagas';
 import commonExpenseSagas from '@common/store/sagas/expenseSagas';
@@ -61,6 +62,7 @@ export function* rootSaga() {
     fork(commonExpenseSagas),
     fork(commonStatusSagas),
     fork(commonNotificationSagas),
+    fork(commonDestinationSagas),
 
     // lookup
     fork(lookupCustomerSagas),

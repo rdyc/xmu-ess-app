@@ -3,6 +3,7 @@ import { ISystemList } from '@common/classes/response';
 import {
   activityGetListRequest,
   currencyGetListRequest,
+  destinationGetListRequest,
   documentGetListRequest,
   documentPresalesGetListRequest,
   expenseGetListRequest,
@@ -28,6 +29,7 @@ interface PropsFromState {
   commonLeaveListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
   commonExpenseListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
   commonStatusListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
+  commonDestinationListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
 
   // detail
 }
@@ -46,6 +48,7 @@ interface PropsFromDispatch {
     siteListRequest: typeof siteGetListRequest;
     leaveListRequest: typeof leaveGetListRequest;
     statusListRequest: typeof statusGetListRequest;
+    destinationListRequest: typeof destinationGetListRequest;
 
     // detail
   };
@@ -63,6 +66,7 @@ const mapStateToProps = ({
   commonSiteList,
   commonLeaveList,
   commonStatusList,
+  commonDestinationList,
 }: IAppState) => ({
   // all
   
@@ -76,6 +80,7 @@ const mapStateToProps = ({
   commonSiteListState: commonSiteList,
   commonLeaveListState: commonLeaveList,
   commonStatusListState: commonStatusList,
+  commonDestinationListState: commonDestinationList,
   
   // detail
  
@@ -95,6 +100,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     siteListRequest: (request: ISystemListRequest) => dispatch(siteGetListRequest(request)),
     leaveListRequest: (request: ISystemListRequest) => dispatch(leaveGetListRequest(request)),
     statusListRequest: (request: ISystemListRequest) => dispatch(statusGetListRequest(request)),
+    destinationListRequest: (request: ISystemListRequest) => dispatch(destinationGetListRequest(request)),
 
     // detail
   }
