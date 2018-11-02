@@ -1,4 +1,5 @@
 import {
+  projectAssignmentAction,
   projectAssignmentField,
   projectAssignmentFieldHelperFor,
   projectAssignmentPage,
@@ -10,6 +11,7 @@ export const projectMessage = {
   assignment: {
     page: projectAssignmentPage,
     section: projectAssignmentSection,
+    action: projectAssignmentAction,
     field: projectAssignmentField,
     for: projectAssignmentFieldHelperFor,
     submission: projectAssignmentSubmission

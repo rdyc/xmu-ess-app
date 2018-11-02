@@ -18,6 +18,13 @@ export const projectAssignmentPage = defineMessages({
 export const projectAssignmentSection = defineMessages({
   projectTitle: { id: `${prefix}.section.project.title` },
   projectSubHeader: { id: `${prefix}.section.project.subHeader` },
+  memberAddTitle: { id: `${prefix}.section.member.add.title` },
+  memberAddSubHeader: { id: `${prefix}.section.member.add.subHeader` },
+});
+
+// action
+export const projectAssignmentAction = defineMessages({
+  addMember: { id: `${prefix}.action.addMember` },
 });
 
 // fields

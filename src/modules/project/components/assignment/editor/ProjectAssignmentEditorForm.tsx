@@ -11,7 +11,7 @@ import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { withUser } from '@layout/hoc/withUser';
 import { WithUser } from '@lookup/components/leave';
-import { Button, Card, CardContent, CardHeader, Grid, IconButton } from '@material-ui/core';
+import { Button, Card, CardActions, CardContent, CardHeader, Grid, IconButton } from '@material-ui/core';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import { IProjectRegistrationGetListFilter } from '@project/classes/filters/registration';
 import { IProjectAssignmentPatchPayload } from '@project/classes/request/assignment';
@@ -76,7 +76,7 @@ const complexItemsView: React.SFC<WrappedFieldArrayProps<ComplexFormItemData> & 
         const isItemComplete = isComplete(item.statusType);
 
         return (
-          <Grid key={index} item>
+          <Grid key={index} item xs={12} md={6}>
             <Card>
               <CardHeader 
                 title={`#${index + 1} - ${item.uid || 'Draft'}`}
@@ -147,61 +147,80 @@ const complexItemsView: React.SFC<WrappedFieldArrayProps<ComplexFormItemData> & 
       })
     }
 
-    <Button onClick={() => props.fields.push({
-      uid: null,
-      employeeUid: '',
-      role: '',
-      jobDescription: '',
-      mandays: 0,
-      hours: 0
-    })}>
-      Add
-    </Button>
+    <Grid item xs={12}>
+      <Grid container spacing={16}>
+        <Grid item xs={12} md={6}>
+          <Card>
+            <CardHeader 
+              title={props.intl.formatMessage(projectMessage.assignment.section.memberAddTitle)}
+              subheader={props.intl.formatMessage(projectMessage.assignment.section.memberAddSubHeader)}
+            />
+            <CardActions>
+              <Button onClick={() => props.fields.push({
+                uid: null,
+                employeeUid: '',
+                role: '',
+                jobDescription: '',
+                mandays: 0,
+                hours: 0
+              })}>
+                {props.intl.formatMessage(projectMessage.assignment.action.addMember)}
+              </Button>
+            </CardActions>
+          </Card>
+        </Grid>
+
+        <Grid item xs={12} md={6}>
+          <Submission 
+            valid={props.valid}
+            reset={props.reset}
+            submitting={props.submitting}
+          />
+        </Grid>
+      </Grid>
+    </Grid>
   </Grid>
 );
 
 const complexView: React.SFC<ComplexFormProps> = props => (
   <form onSubmit={props.handleSubmit}>
     <Grid container spacing={16}>
-      <Grid item xs={12} md={8}>
-        <Grid container spacing={16}>
-          <Grid item xs={12} md={6}>
-            <ProjectAssignment formMode={props.formMode} data={props.currentProject}>
-              {
-                // just display project select when the form is being in new mode
-                props.formMode === FormMode.New &&
-                <Field
-                  name="projectUid"
-                  component={(context: any) => 
-                    <SelectProject 
-                      {...context}
-                      label={props.intl.formatMessage(projectMessage.assignment.field.projectUid)}
-                      placeholder={props.intl.formatMessage(projectMessage.assignment.field.projectUidPlaceholder)}
-                      filter={props.projectFilter}
-                      onSelected={props.handleProjectChange}
-                    />
-                  }
+      <Grid item xs={12} md={4}>
+        <ProjectAssignment 
+          formMode={props.formMode} 
+          data={props.currentProject}
+        >
+          {
+            // just display project select when the form is being in new mode
+            props.formMode === FormMode.New &&
+            <Field
+              name="projectUid"
+              component={(context: any) => 
+                <SelectProject 
+                  {...context}
+                  label={props.intl.formatMessage(projectMessage.assignment.field.projectUid)}
+                  placeholder={props.intl.formatMessage(projectMessage.assignment.field.projectUidPlaceholder)}
+                  filter={props.projectFilter}
+                  onSelected={props.handleProjectChange}
                 />
               }
-            </ProjectAssignment>
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <Grid container spacing={16}>
-              <Grid item>
-                <FieldArray name="items" props={props} component={complexItemsView} />
-              </Grid>
-              <Grid item>
-                <Submission 
-                  valid={props.valid}
-                  reset={props.reset}
-                  submitting={props.submitting}
-                />
-              </Grid>
-            </Grid>
-          </Grid>     
-        </Grid>
-      </Grid>   
-      <Grid item xs={12} md={4}>
+            />
+          }
+        </ProjectAssignment>
+      </Grid>
+
+      {
+        props.currentProject &&
+        <Grid item xs={12} md={8}>
+          <FieldArray 
+            name="items" 
+            props={props} 
+            component={complexItemsView}
+            />
+        </Grid> 
+      }
+
+      {/* <Grid item xs={12} md={4}>
         <Card>
           <CardHeader 
             title="Values"
@@ -211,7 +230,7 @@ const complexView: React.SFC<ComplexFormProps> = props => (
             <pre>{JSON.stringify(props.formValues, null, 2)}</pre>
           </CardContent>
         </Card>
-      </Grid>
+      </Grid> */}
     </Grid>
   </form>
 );

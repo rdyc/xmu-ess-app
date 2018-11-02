@@ -146,11 +146,13 @@
   "project.assignment.page.new.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
   "project.assignment.page.modify.title": "Modify Assignment",
   "project.assignment.page.modify.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-
+  
   "project.assignment.section.create.title": "Assignment",
   "project.assignment.section.create.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
   "project.assignment.section.project.title": "Project",
   "project.assignment.section.project.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "project.assignment.section.member.add.title": "Add Member",
+  "project.assignment.section.member.add.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
   "project.assignment.section.member.title": "Members",
   "project.assignment.section.member.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
   "project.assignment.section.member.empty": "No members defined",
@@ -158,6 +160,8 @@
   "project.assignment.section.member.action.remove": "Remove",
   "project.assignment.section.member.action.save": "Save",
   
+  "project.assignment.action.addMember": "Add More",
+
   "project.assignment.field.uid": "Assignment ID",
   "project.assignment.field.projectUid": "Project ID",
   "project.assignment.field.projectUid.required": "Project id is required",
@@ -165,9 +169,9 @@
   "project.assignment.field.assignedHours": "Assigned Hours",
   "project.assignment.field.unassignedHours": "Unassigned Hours",
   "project.assignment.field.item.status": "Status",
-  "project.assignment.field.item.employeeUid": "Employee",
-  "project.assignment.field.item.employeeUid.required": "Employee is required",
-  "project.assignment.field.item.employeeUid.placeholder": "Select an employee",
+  "project.assignment.field.item.employeeUid": "People",
+  "project.assignment.field.item.employeeUid.required": "people is required",
+  "project.assignment.field.item.employeeUid.placeholder": "Select a people",
   "project.assignment.field.item.role": "Role",
   "project.assignment.field.item.role.required": "Role is required",
   "project.assignment.field.item.role.placeholder": "Type a role",
