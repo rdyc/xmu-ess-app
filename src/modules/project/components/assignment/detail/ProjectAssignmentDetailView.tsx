@@ -67,7 +67,7 @@ export const ProjectAssignmentDetailView: React.SFC<ProjectAssignmentDetailProps
             <ProjectAssignment formMode={FormMode.View} data={response.data} />
           </Grid>
           
-          <Grid item xs={12} md={4}>
+          <Grid item xs={12} md={8}>
             <ProjectAssignmentMember data={response.data.items} />
           </Grid>
         </Grid>
