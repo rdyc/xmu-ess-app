@@ -39,5 +39,11 @@
   "mileage.message.registration.create.success": "A new PID {uid} has been created",
   "mileage.message.registration.create.failure": "Unable to process your submission",
   "mileage.message.registration.update.success": "Existing PID {uid} has been updated",
-  "mileage.message.registration.update.failure": "Unable to process your submission"
+  "mileage.message.registration.update.failure": "Unable to process your submission",
+  
+  "mileage.approvalTitle": "mileage.approvalTitle",
+  "mileage.approvalSubHeader": "mileage.approvalSubHeader",
+  "mileage.dialog.approvalTitle": "mileage.dialog.approvalTitle",
+  "mileage.dialog.approvalContent": "mileage.dialog.approvalContent",
+  "mileage.approval.detail.subTitle": "mileage.approval.detail.subTitle"
 }

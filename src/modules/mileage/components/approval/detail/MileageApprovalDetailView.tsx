@@ -1,5 +1,4 @@
 import { WorkflowStatusType } from '@common/classes/types';
-// import { InputItem } from '@layout/components/input/item';
 import {
   Card,
   CardContent,
@@ -17,7 +16,6 @@ import { MileageItem } from '@mileage/components/request/detail/shared/MileageIt
 import { WorkflowHistory } from '@organization/components/workflow/history/WorkflowHistory';
 import * as React from 'react';
 import { FormattedDate, FormattedMessage } from 'react-intl';
-// import { Field } from 'redux-form';
 import { WorkflowMileageApproval } from './WorkflowMileageApproval';
 
 export const MileageApprovalDetailView: React.SFC<
@@ -51,7 +49,7 @@ export const MileageApprovalDetailView: React.SFC<
 
   const renderItem = (items: IMileageRequestItem[]) => {
     const len = items.length - 1;
-
+    
     return (
       <Card square>
         <CardHeader
@@ -66,17 +64,8 @@ export const MileageApprovalDetailView: React.SFC<
                   <Grid item xs={1} sm={1}>
                     {item.status &&
                       item.status.type === WorkflowStatusType.Submitted && (
-                        // <Field
-                        //   name="items"
-                        //   required={mileageItemUids.length < 1 ? true : false}
-                        //   onChange={() => handleCheckbox(item.uid)}
-                        //   checked={isChecked(item.uid)}
-                        //   component={InputItem}
-                        //   />
                         <Checkbox
                           key={item.uid}
-                          // required={mileageItemUids.length < 1 ? true : false}
-                          // required={true}
                           onChange={() => handleCheckbox(item.uid)}
                           checked={isChecked(item.uid)}
                         />

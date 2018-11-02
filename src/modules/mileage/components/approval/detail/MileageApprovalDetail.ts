@@ -6,6 +6,7 @@ import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IAppBarMenu } from '@layout/interfaces';
 import { IMileageApprovalPostItem } from '@mileage/classes/request';
+import { IMileageApprovalDetail } from '@mileage/classes/response';
 import { MileageApprovalUserAction } from '@mileage/classes/types';
 import { MileageApprovalDetailView } from '@mileage/components/approval/detail/MileageApprovalDetailView';
 import {
@@ -216,14 +217,16 @@ const handlerCreators: HandleCreators<
   },
 
   handleSubmitSuccess: (props: MileageApprovalDetailProps) => (
-    response: boolean
+    response: IMileageApprovalDetail
   ) => {
     const { intl, history } = props;
     const { alertAdd } = props.layoutDispatch;
-
+    const { detail } = props.mileageApprovalState;
     alertAdd({
       time: new Date(),
-      message: intl.formatMessage(mileageMessage.updateSuccess)
+      message: intl.formatMessage(mileageMessage.updateSuccess, {
+        uid: detail.response && detail.response.data.uid
+      })
     });
 
     history.push('/approval/mileage');
