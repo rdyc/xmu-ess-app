@@ -38,6 +38,7 @@ import projectRegistrationSagas from '@project/store/sagas/projectRegistrationSa
 import projectSiteSagas from '@project/store/sagas/projectSiteSagas';
 import projectStatusSagas from '@project/store/sagas/projectStatusSagas';
 import purchaseSagas from '@purchase/store/sagas/purchaseSagas';
+import summarySagas from '@summary/store/sagas/summarySagas';
 import timesheetApprovalSagas from '@timesheet/store/sagas/timesheetApprovalSagas';
 import timesheetEntrySagas from '@timesheet/store/sagas/timesheetEntrySagas';
 import timesheetMileagesSagas from '@timesheet/store/sagas/timesheetMileagesSagas';
@@ -117,6 +118,9 @@ export function* rootSaga() {
     
     // leave
     fork(leaveRequestSagas),
-    fork(leaveApprovalSagas)
+    fork(leaveApprovalSagas),
+
+    // summary
+    fork(summarySagas)
   ]);
 }

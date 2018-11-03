@@ -9,6 +9,7 @@ import CallbackPage from '@layout/pages/CallbackPage';
 import { approvalRouter, leaveRouter } from '@leave/components/leaveRouter';
 import { MileageApprovalRouter, MileageRequestRouter } from '@mileage/components/MileageRouter';
 import { projectApprovalRouter } from '@project/components/routers/projectApprovalRouter';
+import { projectAssignmentRouter } from '@project/components/routers/projectAssignmentRouter';
 import { projectRegistrationRouter } from '@project/components/routers/projectRegistrationRouter';
 import {
   purchaseApprovalRouter,
@@ -21,6 +22,7 @@ import { timesheetEntryRouter } from '@timesheet/components/routers/timesheetEnt
 import { travelApprovalRouter, travelRouter, travelSettlementRouter } from '@travel/components/travelRouter';
 import { ConnectedRouter } from 'connected-react-router';
 import { History } from 'history';
+import { playgroundRouter } from 'playground/playgroundRouter';
 import * as React from 'react';
 import { IntlProvider } from 'react-intl';
 import { connect, Provider } from 'react-redux';
@@ -82,15 +84,18 @@ class App extends React.Component<AllProps> {
                       <Route path="/callback" component={CallbackPage} />
                     </div>
                   )}
-
+                  
                   {oidcState.user && (
                     <Switch>
                       <Route exact path="/" component={AccessWizardPage} />
                       <Layout>
+                        <Route path="/playground" component={playgroundRouter} />
+                        
                         <Route path="/home" component={HomePage} />
                         <Route path="/account" component={accountRouter} />
                         <Route path="/project" component={projectRegistrationRouter} />
                         <Route path="/approval/project" component={projectApprovalRouter} />
+                        <Route path="/project/assignment" component={projectAssignmentRouter} />
                         <Route path="/leave" component={leaveRouter} />
                         <Route path="/approval/leave" component={approvalRouter} />
                         <Route path="/purchase/request" component={purchaseRouter} />

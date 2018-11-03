@@ -20,6 +20,7 @@
       "@timesheet/*": [ "modules/timesheet/*" ],
       "@travel/*": [ "modules/travel/*" ],
       "@finance/*": [ "modules/finance/*" ],
+      "@summary/*": [ "modules/summary/*" ],
     },
     "outDir": "build/dist",
     "module": "esnext",
@@ -46,6 +47,6 @@
     "webpack",
     "jest",
     "src/setupTests.ts",
-    "src/playground",
+    "src/test",
   ]
 }
