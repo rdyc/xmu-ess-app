@@ -1,4 +1,3 @@
-import { WorkflowStatusType } from '@common/classes/types';
 import { RadioGroupChoice } from '@layout/components/input/radioGroup';
 import { WithForm, withForm } from '@layout/hoc/withForm';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
@@ -14,7 +13,6 @@ import {
   withStateHandlers,
 } from 'recompose';
 import { formValueSelector, InjectedFormProps, reduxForm } from 'redux-form';
-import { isNullOrUndefined } from 'util';
 
 import { WorkflowApprovalFormView } from './WorkflowApprovalFormView';
 
@@ -26,7 +24,7 @@ export type WorkflowApprovalFormData = {
 };
 
 interface FormValueProps {
-  formIsApproved: boolean | undefined;
+  formIsApproved: string | undefined;
 }
 
 interface OwnProps {
@@ -115,7 +113,7 @@ const mapStateToProps = (state: any): FormValueProps => {
   const isApproved = selector(state, 'isApproved');
   
   return {
-    formIsApproved: isNullOrUndefined(isApproved) ? undefined : isApproved === WorkflowStatusType.Approved,
+    formIsApproved: isApproved,
   };
 };
 

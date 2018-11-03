@@ -20,7 +20,7 @@ import { WorkflowApprovalFormProps } from './WorkflowApprovalForm';
 
 export const WorkflowApprovalFormView: React.SFC<WorkflowApprovalFormProps> = props => {
   const { 
-    approvalTitle, approvalSubHeader,
+    approvalTitle, approvalSubHeader, approvalTrueValue,
     approvalDialogFullScreen, isOpenDialog, approvalDialogTitle, 
     approvalDialogContentText, approvalDialogCancelText, approvalDialogConfirmedText, 
     handleDialogOpen, handleDialogClose, handleDialogConfirmed,
@@ -71,8 +71,8 @@ export const WorkflowApprovalFormView: React.SFC<WorkflowApprovalFormProps> = pr
               component={RadioGroup}
             />
             { 
-              formIsApproved !== undefined &&
-              !formIsApproved &&
+              formIsApproved &&
+              formIsApproved !== approvalTrueValue &&
               <Field
                 name="remark"
                 required={true}
