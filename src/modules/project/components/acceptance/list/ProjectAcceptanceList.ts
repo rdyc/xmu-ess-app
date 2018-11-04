@@ -205,7 +205,7 @@ const lifecycles: ReactLifeCycleFunctions<ProjectAcceptanceListProps, OwnState> 
     navBottomDispatch.dispose();
 
     // dispose 'get all' from 'redux store' when the page is 'out of project acceptance' context 
-    if (view && view.parentUid !== AppMenu.ProjectAssignmentAcceptance) {
+    if (view && view.parentUid !== AppMenu.ProjectAssignment) {
       loadAllDispose();
     }
   }
@@ -220,8 +220,6 @@ const loadData = (props: ProjectAcceptanceListProps): void => {
   if (user) {
     loadAllRequest({
       filter: {
-        // companyUid: user.company.uid,
-        // positionUid: user.position.uid,
         query: {
           direction,
           orderBy,
@@ -230,7 +228,6 @@ const loadData = (props: ProjectAcceptanceListProps): void => {
           find: undefined,
           findBy: undefined
         },
-        // isNotify: undefined,
         status: 'pending'
       }
     }); 

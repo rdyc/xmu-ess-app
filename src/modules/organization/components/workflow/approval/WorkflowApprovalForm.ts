@@ -33,10 +33,10 @@ interface OwnProps {
   approvalChoices: RadioGroupChoice[];
   approvalTrueValue: string;
   approvalDialogFullScreen?: boolean | false;
-  approvalDialogTitle?: string | undefined;
-  approvalDialogContentText?: string | undefined;
-  approvalDialogCancelText?: string | undefined;
-  approvalDialogConfirmedText?: string | undefined;
+  approvalDialogTitle: string;
+  approvalDialogContentText: string;
+  approvalDialogCancelText: string;
+  approvalDialogConfirmedText: string;
 }
 
 interface OwnHandler {
