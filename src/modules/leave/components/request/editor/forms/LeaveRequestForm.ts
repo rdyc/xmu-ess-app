@@ -26,6 +26,7 @@ interface OwnProps {
 interface FormValueProps {
   formIsRegularType: boolean | false;
   formRegularType: string | null;
+  formValue: string | null;
 }
 
 export type RequestFormProps 
@@ -37,10 +38,12 @@ const selector = formValueSelector(formName);
 
 const mapStateToProps = (state: any): FormValueProps => {
   const leaveType = selector(state, 'information.leaveType');
+  const start = selector(state, 'information.start');
   
   return {
     formIsRegularType: leaveType === LeaveType.CutiKhusus,
-    formRegularType: leaveType
+    formRegularType: leaveType,
+    formValue: start,
   };
 };
 
@@ -50,5 +53,6 @@ export const RequestForm = reduxForm<LeaveRequestFormData, OwnProps>({
   form: formName,
   touchOnChange: true,
   touchOnBlur: true,
-  enableReinitialize: true
+  enableReinitialize: true,
+  destroyOnUnmount: true
 })(connectedView);

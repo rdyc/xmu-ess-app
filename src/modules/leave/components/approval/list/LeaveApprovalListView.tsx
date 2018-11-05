@@ -1,5 +1,4 @@
 import { ILeaveRequest } from '@leave/classes/response';
-import { ApprovalListProps } from '@leave/components/approval/list/LeaveApprovalList';
 import { Divider, Grid, List, ListItem, ListSubheader, Paper, Typography } from '@material-ui/core';
 import { parseChanges } from '@utils/parseChanges';
 import * as moment from 'moment';
@@ -7,11 +6,13 @@ import * as React from 'react';
 import { FormattedDate, FormattedNumber, FormattedPlural } from 'react-intl';
 import { isArray } from 'util';
 
-export const LeaveApprovalListView: React.SFC<ApprovalListProps> = props => {
+import { LeaveApprovalListProps } from './LeaveApprovalList';
+
+export const LeaveApprovalListView: React.SFC<LeaveApprovalListProps> = props => {
   const { handleGoToDetail } = props;
   const { isLoading, response } = props.leaveApprovalState.all;
 
-  const renderLeaveApprovalList = (leaves: ILeaveRequest[]) => {
+  const renderLeaveList = (leaves: ILeaveRequest[]) => {
     const len = leaves.length - 1;
 
     return (
@@ -35,7 +36,7 @@ export const LeaveApprovalListView: React.SFC<ApprovalListProps> = props => {
                   noWrap
                   variant="body1"
                 >
-                  {leave.employee && leave.employee.fullName}
+                  {leave.customer && leave.customer.name} &bull; {leave.customer && leave.customer.company && leave.customer.company.name} {leave.contractNumber && `(PO: ${leave.contractNumber})`}
                 </Typography> */}
                 <Typography 
                   noWrap
@@ -89,7 +90,7 @@ export const LeaveApprovalListView: React.SFC<ApprovalListProps> = props => {
       )
     );
   };
-
+  
   const RenderList = () => (
     <List
       component="nav"
@@ -121,7 +122,7 @@ export const LeaveApprovalListView: React.SFC<ApprovalListProps> = props => {
       {
         response &&
         isArray(response.data) && 
-        renderLeaveApprovalList(response.data)
+        renderLeaveList(response.data)
       }
     </List>
   );

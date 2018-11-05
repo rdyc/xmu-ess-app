@@ -9,29 +9,29 @@ import saiyanSaga from '@utils/saiyanSaga';
 import { all, fork, put, takeEvery } from 'redux-saga/effects';
 import { IApiResponse } from 'utils';
 
-function* watchByIdRequest() {
+function* watchByIdFetchRequest() {
   const worker = (action: ReturnType<typeof accountEmployeeLeaveGetByIdRequest>) => {
     return saiyanSaga.fetch({
       method: 'get',
-      path: `/v1/account/employees/leaves/${action.payload.employeeUid}/${action.payload.year}/${action.payload.companyUid}`,
-      successEffects: (response: IApiResponse) => ([
+      path: `/v1/leave/employees/leaves/${action.payload.year}?employeeUid=${action.payload.employeeUid}&companyUid=${action.payload.companyUid}`,
+      successEffects: (response: IApiResponse) => [
         put(accountEmployeeLeaveGetByIdSuccess(response.body)),
-      ]), 
-      failureEffects: (response: IApiResponse) => ([
+      ], 
+      failureEffects: (response: IApiResponse) => [
         put(accountEmployeeLeaveGetByIdError(response.statusText)),
         put(layoutAlertAdd({
           time: new Date(),
           message: response.statusText,
           details: response
         }))
-      ]), 
-      errorEffects: (error: TypeError) => ([
+      ], 
+      errorEffects: (error: TypeError) => [
         put(accountEmployeeLeaveGetByIdError(error.message)),
         put(layoutAlertAdd({
           time: new Date(),
           message: error.message,
         }))
-      ])
+      ]
     });
   };
   
@@ -40,7 +40,7 @@ function* watchByIdRequest() {
 
 function* accountEmployeeLeaveSagas() {
   yield all([
-    fork(watchByIdRequest),
+    fork(watchByIdFetchRequest),
   ]);
 }
 
