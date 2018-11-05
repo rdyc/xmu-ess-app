@@ -4,6 +4,7 @@ import { ProjectRegistrationList } from '@project/components/registration/list/P
 import * as React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router';
 
+import { ProjectAcceptanceApproval } from './acceptance/approval/ProjectAcceptanceApproval';
 import { ProjectAcceptanceDetail } from './acceptance/detail/ProjectAcceptanceDetail';
 import { ProjectAcceptanceList } from './acceptance/list/ProjectAcceptanceList';
 import { ProjectApprovalDetail } from './approval/detail/ProjectApprovalDetail';
@@ -43,7 +44,8 @@ const assignment = (props: RouteComponentProps) => (
 
 const acceptance = (props: RouteComponentProps) => (
   <Switch>
-    <Route path={`${props.match.path}/:assignmentUid/:assignmentItemUid`} component={ProjectAcceptanceDetail} />
+    <Route path={`${props.match.path}/:assignmentUid/:assignmentItemUid`} component={ProjectAcceptanceApproval} />
+    <Route path={`${props.match.path}/:assignmentUid`} component={ProjectAcceptanceDetail} />
     <Route path={`${props.match.path}`} component={ProjectAcceptanceList} />
   </Switch>
 );

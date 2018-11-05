@@ -1,9 +1,19 @@
-import { Divider, Grid, List, ListItem, ListSubheader, Paper, Typography } from '@material-ui/core';
-import { IProjectAssignmentDetail } from '@project/classes/response';
-import { parseChanges } from '@utils/parseChanges';
-import * as moment from 'moment';
+import { WorkflowStatusType } from '@common/classes/types';
+import {
+  Divider,
+  Grid,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  ListSubheader,
+  Paper,
+  Typography,
+} from '@material-ui/core';
+import NotificationImportant from '@material-ui/icons/NotificationImportant';
+import { IProjectAssignmentDetail, IProjectAssignmentDetailItem } from '@project/classes/response';
 import * as React from 'react';
-import { FormattedDate, FormattedNumber, FormattedPlural } from 'react-intl';
+import { FormattedNumber, FormattedPlural } from 'react-intl';
 import { isArray } from 'util';
 
 import { ProjectAcceptanceListProps } from './ProjectAcceptanceList';
@@ -12,84 +22,52 @@ export const ProjectAcceptanceListView: React.SFC<ProjectAcceptanceListProps> = 
   const { handleGoToDetail } = props;
   const { isLoading, response } = props.projectAcceptanceState.all;
 
-  const renderProjectList = (projects: IProjectAssignmentDetail[]) => {
-    const len = projects.length - 1;
+  const hasPending = (items: IProjectAssignmentDetailItem[] | null): boolean => {
+    let result: boolean = false;
 
-    return (
-      projects.map((project, i) => 
-        <div key={project.uid}>
-          <ListItem 
-            button={!isLoading} 
-            key={project.uid} 
-            onClick={() => handleGoToDetail(project.uid, project.items ? project.items[0].uid : '')}
-          >
-            <Grid container spacing={24}>
-              <Grid item xs={8} sm={8}>
-                <Typography 
-                  noWrap 
-                  color="primary" 
-                  variant="body2"
-                >
-                  {project.name}
-                </Typography>
-                <Typography 
-                  noWrap
-                  variant="body1"
-                >
-                  {project.customer && project.customer.name} &bull; {project.customer && project.customer.company && project.customer.company.name} {project.contractNumber && `(PO: ${project.contractNumber})`}
-                </Typography>
-                <Typography 
-                  noWrap
-                  color="textSecondary" 
-                  variant="caption"
-                >
-                  {project.uid} &bull; {project.project && project.project.value} &bull; &nbsp;
-                  <FormattedDate 
-                    year="numeric"
-                    month="short"
-                    day="numeric"
-                    value={project.start || ''} 
-                  />
-                  &nbsp;to&nbsp; 
-                  <FormattedDate 
-                    year="numeric"
-                    month="short"
-                    day="numeric"
-                    value={project.end || ''} 
-                  />
-                </Typography>
-              </Grid>
-              <Grid item xs={4} sm={4}>
-                <Typography 
-                  noWrap 
-                  variant="body1" 
-                  align="right"
-                >
-                  {project.status && project.status.value}
-                </Typography>
-                <Typography 
-                  noWrap 
-                  color="secondary"
-                  variant="caption" 
-                  align="right"
-                >
-                  {parseChanges(project.changes)}
-                </Typography>
-                <Typography 
-                  noWrap
-                  variant="caption" 
-                  align="right"
-                >
-                  {project.changes && moment(project.changes.updatedAt ? project.changes.updatedAt : project.changes.createdAt).fromNow()}
-                </Typography>
-              </Grid>
-            </Grid>
-          </ListItem>
-          {len !== i && <Divider />}
-        </div>
-      )
-    );
+    if (items) {
+      const pendigItems = items.filter(item => item.statusType === WorkflowStatusType.Submitted);
+
+      result = pendigItems.length > 0;
+    }
+
+    return result;
   };
+
+  const renderProjectList = (assignments: IProjectAssignmentDetail[]) => (
+    <React.Fragment>
+      {
+        assignments.map((assignment, i) => 
+          <React.Fragment key={assignment.uid}>
+            <ListItem
+              button={!isLoading}
+              onClick={() => handleGoToDetail(assignment.uid)}
+            >
+              <ListItemText 
+                primary={`${assignment.customer && assignment.customer.name}`}
+                secondary={`${assignment.projectUid} - ${assignment.name} | ${assignment.project && assignment.project.value}`}
+                primaryTypographyProps={{
+                  noWrap: true,
+                  variant: 'body1'
+                }}
+                secondaryTypographyProps={{
+                  noWrap: true,
+                  variant: 'caption'
+                }}
+              />
+              {
+                hasPending(assignment.items) &&
+                <ListItemIcon>
+                  <NotificationImportant />
+                </ListItemIcon>
+              }
+            </ListItem>
+          <Divider />
+        </React.Fragment>
+        )
+      }
+    </React.Fragment>
+  );
   
   const RenderList = () => (
     <List

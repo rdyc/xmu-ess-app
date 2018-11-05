@@ -149,7 +149,7 @@ const lifecycles: ReactLifeCycleFunctions<ProjectAssignmentListProps, OwnState> 
 
     layoutDispatch.changeView({
       uid: AppMenu.ProjectAssignmentRequest,
-      parentUid: AppMenu.ProjectRegistration,
+      parentUid: AppMenu.ProjectAssignment,
       title: intl.formatMessage(projectMessage.assignment.page.listTitle),
       subTitle : intl.formatMessage(projectMessage.assignment.page.listSubHeader)
     });

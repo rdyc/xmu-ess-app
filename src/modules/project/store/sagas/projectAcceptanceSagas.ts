@@ -95,7 +95,7 @@ function* watchPostRequest() {
   const worker = (action: ReturnType<typeof projectAcceptancePostRequest>) => {
     return saiyanSaga.fetch({
       method: 'post',
-      path: `/v1/project/assignments/acceptances/${action.payload.assignmentItemUid}/${action.payload.assignmentItemUid}`,
+      path: `/v1/project/assignments/acceptances/${action.payload.assignmentUid}/${action.payload.assignmentItemUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
         put(projectAcceptancePostSuccess(response.body))

@@ -20,11 +20,14 @@ export const projectAssignmentSection = defineMessages({
   projectSubHeader: { id: `${prefix}.section.project.subHeader` },
   memberAddTitle: { id: `${prefix}.section.member.add.title` },
   memberAddSubHeader: { id: `${prefix}.section.member.add.subHeader` },
+  acceptanceTitle: { id: `${prefix}.section.acceptance.title` },
+  acceptanceSubHeader: { id: `${prefix}.section.acceptance.subHeader` },
 });
 
 // action
 export const projectAssignmentAction = defineMessages({
   addMember: { id: `${prefix}.action.addMember` },
+  acceptance: { id: `${prefix}.action.acceptance` },
 });
 
 // fields
@@ -37,7 +40,9 @@ export const projectAssignmentField = defineMessages({
   
   assignedHours: { id: `${prefix}.field.assignedHours` },
   unassignedHours: { id: `${prefix}.field.unassignedHours` },
-
+  
+  itemUid: { id: `${prefix}.field.item.uid` },
+  
   employeeUid: { id: `${prefix}.field.item.employeeUid` },
   employeeUidRequired: { id: `${prefix}.field.item.employeeUid.required` },
   employeeUidPlaceholder: { id: `${prefix}.field.item.employeeUid.placeholder` },
@@ -55,6 +60,10 @@ export const projectAssignmentField = defineMessages({
   mandaysPlaceholder: { id: `${prefix}.field.item.mandays.placeholder` },
 
   hours: { id: `${prefix}.field.item.hours` },
+  newMandays: { id: `${prefix}.field.item.newMandays` },
+  newHours: { id: `${prefix}.field.item.newHours` },
+  status: { id: `${prefix}.field.item.statusType` },
+  reason: { id: `${prefix}.field.item.rejectedReason` },
 });
 
 export const projectAssignmentFieldHelperFor = (field: string, type: 'fieldName' | 'fieldRequired' | 'fieldPlaceholder') => {

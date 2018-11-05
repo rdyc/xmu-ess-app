@@ -9,6 +9,7 @@ import { compose } from 'recompose';
 interface OwnProps {
   formMode: FormMode;
   data: IProjectAssignmentDetail | undefined;
+  showProjectHours?: boolean | true;
 }
 
 type AllProps
@@ -33,7 +34,10 @@ const projectAssignment: React.SFC<AllProps> = props => {
         subheader={intl.formatMessage(projectMessage.assignment.section.projectSubHeader)}
       />
       <CardContent>
-        {props.children}
+        {
+          props.formMode === FormMode.New &&
+          props.children
+        }
 
         {
           data &&
@@ -106,27 +110,36 @@ const projectAssignment: React.SFC<AllProps> = props => {
                 day: 'numeric'
               })}
             />
-            <TextField
-              {...styled}
-              margin="dense"
-              label={<FormattedMessage id="project.field.information.hours" />}
-              value={intl.formatNumber(data.maxHours)}
-            />
-            <TextField
-              {...styled}
-              margin="dense"
-              label={<FormattedMessage id="project.assignment.field.assignedHours" />}
-              value={intl.formatNumber(data.assignedHours)}
-            />
-            <TextField
-              {...styled}
-              margin="dense"
-              label={<FormattedMessage id="project.assignment.field.unassignedHours" />}
-              value={intl.formatNumber(data.unassignedHours)}
-            />
+            {
+              props.showProjectHours &&
+              <div>
+                <TextField
+                  {...styled}
+                  margin="dense"
+                  label={<FormattedMessage id="project.field.information.hours" />}
+                  value={intl.formatNumber(data.maxHours)}
+                />
+                <TextField
+                  {...styled}
+                  margin="dense"
+                  label={<FormattedMessage id="project.assignment.field.assignedHours" />}
+                  value={intl.formatNumber(data.assignedHours)}
+                />
+                <TextField
+                  {...styled}
+                  margin="dense"
+                  label={<FormattedMessage id="project.assignment.field.unassignedHours" />}
+                  value={intl.formatNumber(data.unassignedHours)}
+                />
+              </div>
+            }
           </div>
         }
         
+        {
+          props.formMode !== FormMode.New &&
+          props.children
+        }
       </CardContent>
     </Card>
   );

@@ -1,4 +1,9 @@
-import { projectAcceptancePage } from './projectAcceptanceMessage';
+import {
+  projectAcceptanceDialog,
+  projectAcceptanceMessage,
+  projectAcceptancePage,
+  projectAcceptanceSection,
+} from './projectAcceptanceMessage';
 import {
   projectAssignmentAction,
   projectAssignmentField,
@@ -18,6 +23,9 @@ export const projectMessage = {
     submission: projectAssignmentSubmission
   },
   acceptance: {
-    page: projectAcceptancePage
+    page: projectAcceptancePage,
+    section: projectAcceptanceSection,
+    dialog: projectAcceptanceDialog,
+    message: projectAcceptanceMessage,
   }
 };
