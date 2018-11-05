@@ -72,10 +72,10 @@ const createProps: mapper<ApprovalHistoryListProps, OwnState> = (props: Approval
   const { request } = props.timesheetApprovalState.all;
 
   return {
-    orderBy: request && request.filter && request.filter['query.orderBy'] || orderBy,
-    direction: request && request.filter && request.filter['query.direction'] || direction,
-    page: request && request.filter && request.filter['query.page'] || page || 1,
-    size: request && request.filter && request.filter['query.size'] || size || 10,
+    orderBy: request && request.filter && request.filter.query && request.filter.query.orderBy || orderBy,
+    direction: request && request.filter && request.filter.query && request.filter.query.direction || direction,
+    page: request && request.filter && request.filter.query && request.filter.query.page || page || 1,
+    size: request && request.filter && request.filter.query && request.filter.query.size || size || 10,
   };
 };
 
@@ -218,14 +218,16 @@ const loadData = (props: ApprovalHistoryListProps): void => {
   if (user) {
     loadAllRequest({
       filter: {
-        'query.direction': direction,
-        'query.orderBy': orderBy,
-        'query.page': page,
-        'query.size': size,
-        status: 'complete',
         companyUid: undefined,
-        'query.find': undefined,
-        'query.findBy': undefined,
+        status: 'complete',
+        query: {
+          direction,
+          orderBy,
+          page,
+          size,
+          find: undefined,
+          findBy: undefined,
+        }
       }
     });
   } else {
