@@ -60,7 +60,6 @@ const lifecycles: ReactLifeCycleFunctions<SelectProjectProps, {}> = {
   componentWillReceiveProps(nextProps: SelectProjectProps) {
     if (nextProps.filter !== this.props.filter) {
       const { loadListDispose, loadListRequest } = this.props.projectRegisterDispatch;
-      // const { isLoading, response } = this.props.projectRegisterState.list;
       const { filter } = nextProps;
       
       loadListDispose();
