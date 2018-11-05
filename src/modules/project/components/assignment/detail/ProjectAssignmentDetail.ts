@@ -163,7 +163,7 @@ const handlerCreators: HandleCreators<ProjectAssignmentDetailProps, Handler> = {
 
       switch (action) {
         case ProjectUserAction.Modify:
-          next = '/project/assignment/form';
+          next = '/project/assignments/form';
           break;
 
         default:

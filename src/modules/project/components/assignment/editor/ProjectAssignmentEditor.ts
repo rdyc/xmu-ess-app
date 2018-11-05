@@ -211,7 +211,7 @@ const handlers: HandleCreators<ProjectAssignmentEditorProps, OwnHandlers> = {
     });
 
     if (assignmentUid) {
-      history.push(`/project/assignment/details/${assignmentUid}`);
+      history.push(`/project/assignments/${assignmentUid}`);
     }
   },
   handleSubmitFail: (props: ProjectAssignmentEditorProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {

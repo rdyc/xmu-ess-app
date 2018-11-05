@@ -4,7 +4,7 @@ import {
   IProjectAcceptanceGetByIdRequest,
   IProjectAcceptancePostRequest,
 } from '@project/classes/queries/acceptance';
-import { IProjectAssignment, IProjectAssignmentDetailItem } from '@project/classes/response';
+import { IProjectAssignmentDetail, IProjectAssignmentDetailItem } from '@project/classes/response';
 import { action } from 'typesafe-actions';
 
 export const enum ProjectAcceptanceAction {
@@ -24,7 +24,7 @@ export const enum ProjectAcceptanceAction {
 
 // get all
 export const projectAcceptanceGetAllRequest = (request: IProjectAcceptanceGetAllRequest) => action(ProjectAcceptanceAction.GET_ALL_REQUEST, request);
-export const projectAcceptanceGetAllSuccess = (response: IResponseCollection<IProjectAssignment>) => action(ProjectAcceptanceAction.GET_ALL_SUCCESS, response);
+export const projectAcceptanceGetAllSuccess = (response: IResponseCollection<IProjectAssignmentDetail>) => action(ProjectAcceptanceAction.GET_ALL_SUCCESS, response);
 export const projectAcceptanceGetAllError = (message: string) => action(ProjectAcceptanceAction.GET_ALL_ERROR, message);
 export const projectAcceptanceGetAllDispose = () => action(ProjectAcceptanceAction.GET_ALL_DISPOSE);
 

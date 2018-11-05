@@ -2,8 +2,11 @@ import { IAccountEmployee, IAccountEmployeeRate } from '@account/classes';
 import { ICommonSystem } from '@common/classes';
 import { IBaseChanges } from '@generic/interfaces';
 
+import { IProjectList } from './IProjectList';
+
 export interface IProjectAssignmentDetailItem {
   readonly uid: string;
+  readonly project: IProjectList;
   readonly sequence: number;
   readonly employeeUid: string;
   readonly employee: IAccountEmployee | null;

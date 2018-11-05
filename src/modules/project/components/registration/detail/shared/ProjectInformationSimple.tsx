@@ -1,18 +1,18 @@
 import { Card, CardContent, CardHeader, TextField } from '@material-ui/core';
-import { IProjectDetail } from '@project/classes/response';
+import { IProjectList } from '@project/classes/response';
 import * as React from 'react';
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose } from 'recompose';
 
 interface OwnProps {
-  data: IProjectDetail;
+  data: IProjectList;
 }
 
 type AllProps
   = OwnProps
   & InjectedIntlProps;
 
-const projectInformation: React.SFC<AllProps> = props => {
+const projectInformationSimple: React.SFC<AllProps> = props => {
   const { data, intl } = props;
 
   const styled = {
@@ -102,30 +102,6 @@ const projectInformation: React.SFC<AllProps> = props => {
         <TextField
           {...styled}
           margin="dense"
-          label={<FormattedMessage id="project.field.information.currencyType" />}
-          value={data.currency ? data.currency.value : 'N/A'}
-        />
-        <TextField
-          {...styled}
-          margin="dense"
-          label={<FormattedMessage id="project.field.information.rate" />}
-          value={intl.formatNumber(data.rate || 0)}
-        />
-        <TextField
-          {...styled}
-          margin="dense"
-          label={<FormattedMessage id="project.field.information.valueUsd" />}
-          value={intl.formatNumber(data.valueUsd)}
-        />
-        <TextField
-          {...styled}
-          margin="dense"
-          label={<FormattedMessage id="project.field.information.valueIdr" />}
-          value={intl.formatNumber(data.valueIdr || 0)}
-        />
-        <TextField
-          {...styled}
-          margin="dense"
           label={<FormattedMessage id="project.field.information.hours" />}
           value={intl.formatNumber(data.maxHours)}
         />
@@ -136,6 +112,6 @@ const projectInformation: React.SFC<AllProps> = props => {
   return render;
 };
 
-export const ProjectInformation = compose<AllProps, OwnProps>(
+export const ProjectInformationSimple = compose<AllProps, OwnProps>(
   injectIntl
-)(projectInformation);
+)(projectInformationSimple);

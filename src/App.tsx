@@ -9,9 +9,7 @@ import CallbackPage from '@layout/pages/CallbackPage';
 import { leaveApprovalRouter } from '@leave/components/routers/leaveApprovalRouter';
 import { leaveRequestRouter } from '@leave/components/routers/leaveRequestRouter';
 import { MileageApprovalRouter, MileageRequestRouter } from '@mileage/components/MileageRouter';
-import { projectApprovalRouter } from '@project/components/routers/projectApprovalRouter';
-import { projectAssignmentRouter } from '@project/components/routers/projectAssignmentRouter';
-import { projectRegistrationRouter } from '@project/components/routers/projectRegistrationRouter';
+import { ProjectRoutingComponents } from '@project/components';
 import {
   purchaseApprovalRouter,
   purchaseRouter,
@@ -93,11 +91,9 @@ class App extends React.Component<AllProps> {
                         
                         <Route path="/home" component={HomePage} />
                         <Route path="/account" component={accountRouter} />
-                        <Route path="/project" component={projectRegistrationRouter} />
-                        <Route path="/approval/project" component={projectApprovalRouter} />
                         <Route path="/leave" component={leaveRequestRouter} />
                         <Route path="/approval/leave" component={leaveApprovalRouter} />
-                        <Route path="/project/assignment" component={projectAssignmentRouter} />
+                        <Route path="/project" component={ProjectRoutingComponents} />
                         <Route path="/purchase/request" component={purchaseRouter} />
                         <Route path="/approval/purchase/request" component={purchaseApprovalRouter} />
                         <Route path="/purchase/settlement" component={purchaseSettlementRouter} />

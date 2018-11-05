@@ -13,6 +13,7 @@ export interface IProjectAssignmentDetail {
   readonly projectType: string;
   readonly project: ICommonSystem | null;
   readonly statusType: string;
+  readonly contractNumber: string | null;
   readonly status: ICommonSystem | null;
   readonly name: string;
   readonly description: string | null;
