@@ -86,6 +86,7 @@ const projectAssignment: React.SFC<AllProps> = props => {
             />
             <TextField
               {...styled}
+              multiline={true}
               margin="dense"
               label={<FormattedMessage id="project.field.information.description" />}
               value={data.description || 'N/A'}

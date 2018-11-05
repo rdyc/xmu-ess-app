@@ -164,7 +164,7 @@ const lifecycles: ReactLifeCycleFunctions<ProjectAssignmentListProps, OwnState> 
       onSyncCallback: handleReloading,
       onOrderCallback: handleChangeOrder,
       onDirectionCallback: handleChangeSort,
-      onAddCallback: () => history.push('/project/assignment/form'),
+      onAddCallback: () => history.push('/project/assignments/form'),
       onSizeCallback: handleChangeSize,
     });
 
