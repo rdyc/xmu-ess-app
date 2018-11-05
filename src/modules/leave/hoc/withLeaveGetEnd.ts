@@ -1,31 +1,31 @@
 import { IAppState } from '@generic/interfaces';
 import { ILeaveGetEndQuery } from '@leave/classes/queries/request';
-import { ILeaveState } from '@leave/classes/states';
+import { ILeaveGetEndState } from '@leave/classes/states/ILeaveState';
 import { leaveRequestFetchRequest } from '@leave/store/actions';
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 
 interface PropsFromState {
-  leaveEndState: ILeaveState;
+  leaveGetEndState: ILeaveGetEndState;
 }
 interface PropsFromDispatch {
-  leaveEndDispatch: {
+  leaveGetEndDispatch: {
     fetchRequest: typeof leaveRequestFetchRequest;
   };
 }
 
-export interface WithLeaveEnd extends PropsFromState, PropsFromDispatch {}
+export interface WithLeaveGetEnd extends PropsFromState, PropsFromDispatch {}
 
 const mapStateToProps = ({ getEnd }: IAppState) => ({
-  leaveEndState: getEnd
+  leaveGetEndState: getEnd
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  leaveEndDispatch: {
+  leaveGetEndDispatch: {
     fetchRequest: (params: ILeaveGetEndQuery) => dispatch(leaveRequestFetchRequest(params)),
   }
 });
 
-export const WithLeaveEnd = (component: React.ComponentType) => 
+export const WithLeaveGetEnd = (component: React.ComponentType) => 
   connect(mapStateToProps, mapDispatchToProps)(component);

@@ -26,7 +26,7 @@ export interface ILeaveState {
   leaveApprovalPost: IQuerySingleState<ILeaveApprovalPostRequest, ILeaveRequest>;
 }
 
-export interface ILeaveGetEnd {
+export interface ILeaveGetEndState {
     // get end
     readonly result: IResponseSingle<ILeaveGetEnd> | undefined;
     readonly parameter: ILeaveGetEndQuery | undefined;
