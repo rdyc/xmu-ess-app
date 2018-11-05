@@ -219,7 +219,7 @@ const handlerCreators: HandleCreators<
   handleSubmitSuccess: (props: MileageApprovalDetailProps) => (
     response: IMileageApprovalDetail
   ) => {
-    const { intl, history } = props;
+    const { intl, history, /* match, location*/ } = props;
     const { alertAdd } = props.layoutDispatch;
     const { detail } = props.mileageApprovalState;
     alertAdd({
@@ -230,6 +230,8 @@ const handlerCreators: HandleCreators<
     });
 
     history.push('/approval/mileage');
+    // history.replace(`/approval/mileage/details/${match.params.mileageUid}`);
+    // history.replace(location);
   },
 
   handleSubmitFail: (props: MileageApprovalDetailProps) => (
@@ -259,15 +261,15 @@ const handlerCreators: HandleCreators<
 const lifecycles: ReactLifeCycleFunctions<MileageApprovalDetailProps, {}> = {
   componentDidMount() {
     const {
-      match,
+      // match,
       layoutDispatch,
       appBarDispatch,
       intl,
       handleMileageRefresh
     } = this.props;
 
-    const { user } = this.props.userState;
-    const { loadDetailRequest } = this.props.mileageApprovalDispatch;
+    // const { user } = this.props.userState;
+    const { isLoading } = this.props.mileageApprovalState.detail;
 
     layoutDispatch.changeView({
       uid: AppMenu.MileageApproval,
@@ -292,13 +294,16 @@ const lifecycles: ReactLifeCycleFunctions<MileageApprovalDetailProps, {}> = {
 
     appBarDispatch.assignCallback(handleMenuClick);
 
-    if (user) {
-      loadDetailRequest({
-        mileageUid: match.params.mileageUid,
-        companyUid: user.company.uid,
-        positionUid: user.position.uid
-      });
+    if (!isLoading) {
+      loadData(this.props);
     }
+    // if (user) {
+    //   loadDetailRequest({
+    //     mileageUid: match.params.mileageUid,
+    //     companyUid: user.company.uid,
+    //     positionUid: user.position.uid
+    //   });
+    // }
   },
   componentWillReceiveProps(nextProps: MileageApprovalDetailProps) {
     if (
@@ -335,6 +340,20 @@ const lifecycles: ReactLifeCycleFunctions<MileageApprovalDetailProps, {}> = {
     appBarDispatch.dispose();
 
     // mileageApprovalDispatch.loadDetailDispose();
+  }
+};
+
+const loadData = (props: MileageApprovalDetailProps): void => {
+  const { match } = props;
+  const { user } = props.userState;
+  const { loadDetailRequest } = props.mileageApprovalDispatch;
+
+  if (user) {
+    loadDetailRequest({
+      mileageUid: match.params.mileageUid,
+      companyUid: user.company.uid,
+      positionUid: user.position.uid
+    });
   }
 };
 

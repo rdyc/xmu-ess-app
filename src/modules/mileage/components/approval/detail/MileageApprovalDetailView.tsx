@@ -6,6 +6,7 @@ import {
   Checkbox,
   Divider,
   Grid,
+  List,
   ListItem,
   Typography
 } from '@material-ui/core';
@@ -57,6 +58,7 @@ export const MileageApprovalDetailView: React.SFC<
           subheader={<FormattedMessage id="mileage.request.itemsSubTitle" />}
         />
         <CardContent>
+          <List>
           {items.map((item, index) => (
             <div key={item.uid}>
               <ListItem disableGutters key={item.uid}>
@@ -116,6 +118,7 @@ export const MileageApprovalDetailView: React.SFC<
               {len !== index && <Divider />}
             </div>
           ))}
+          </List>
         </CardContent>
       </Card>
     );
