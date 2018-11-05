@@ -53,6 +53,7 @@ interface OwnRouteParams {
 
 interface OwnState {
   mileageItemUids: string[];
+  back: boolean;
   approvalTitle: string;
   approvalSubHeader: string;
   approvalChoices: RadioGroupChoice[];
@@ -84,6 +85,7 @@ const createProps: mapper<MileageApprovalDetailProps, OwnState> = (
 
   return {
     mileageItemUids: [],
+    back: true,
 
     approvalTitle: intl.formatMessage({ id: 'mileage.approvalTitle' }),
     approvalSubHeader: intl.formatMessage({ id: 'mileage.approvalSubHeader' }),
@@ -123,11 +125,15 @@ const handlerCreators: HandleCreators<
   MileageApprovalDetailProps,
   OwnHandler
 > = {
-  handleCheckbox: (props: MileageApprovalDetailProps) => (mileageItemUid: string) => {
+  handleCheckbox: (props: MileageApprovalDetailProps) => (
+    mileageItemUid: string
+  ) => {
     const { mileageItemUids, stateCheckbox } = props;
     const _mileageItemUid = new Set(mileageItemUids);
 
-    _mileageItemUid.has(mileageItemUid) ? _mileageItemUid.delete(mileageItemUid) : _mileageItemUid.add(mileageItemUid);
+    _mileageItemUid.has(mileageItemUid)
+      ? _mileageItemUid.delete(mileageItemUid)
+      : _mileageItemUid.add(mileageItemUid);
 
     stateCheckbox(Array.from(_mileageItemUid));
   },
@@ -148,13 +154,8 @@ const handlerCreators: HandleCreators<
   handleValidate: (props: MileageApprovalDetailProps) => (
     formData: WorkflowApprovalMileageFormData
   ) => {
-    const { mileageItemUids } = props;
     const errors = {};
     const requiredFields = ['isApproved', 'remark'];
-
-    if (mileageItemUids.length < 1) {
-      errors[1] = props.intl.formatMessage({id: `workflow.approval.field.item.required`});
-    }
 
     requiredFields.forEach(field => {
       if (!formData[field] || isNullOrUndefined(formData[field])) {
@@ -163,7 +164,7 @@ const handlerCreators: HandleCreators<
         });
       }
     });
-    
+
     return errors;
   },
 
@@ -188,14 +189,16 @@ const handlerCreators: HandleCreators<
     // compare approval status string
     const isApproved = formData.isApproved === WorkflowStatusType.Approved;
 
+    // handleGoto(props);
+
     const mileageItemUid: IMileageApprovalPostItem[] = [];
 
-    mileageItemUids.map(item => (
+    mileageItemUids.map(item =>
       mileageItemUid.push({
         mileageItemUid: item
       })
-    ));
-    
+    );
+
     // generate payload
     const payload: IWorkflowApprovalItemPayload = {
       isApproved,
@@ -219,9 +222,10 @@ const handlerCreators: HandleCreators<
   handleSubmitSuccess: (props: MileageApprovalDetailProps) => (
     response: IMileageApprovalDetail
   ) => {
-    const { intl, history, /* match, location*/ } = props;
+    const { intl, history, /* mileageItemUids  back */ } = props;
     const { alertAdd } = props.layoutDispatch;
     const { detail } = props.mileageApprovalState;
+
     alertAdd({
       time: new Date(),
       message: intl.formatMessage(mileageMessage.updateSuccess, {
@@ -229,9 +233,16 @@ const handlerCreators: HandleCreators<
       })
     });
 
+// jangan dihapus, untuk improve nanti disaat confirm terpisah antara ada item yg belum diapprove dan semua sudah di approve
+    // loadData(props);
+
+    // handleGoto(props);
+
+    // mileageItemUids.splice(0, mileageItemUids.length);
+
+    // if (!back) {
     history.push('/approval/mileage');
-    // history.replace(`/approval/mileage/details/${match.params.mileageUid}`);
-    // history.replace(location);
+    // }
   },
 
   handleSubmitFail: (props: MileageApprovalDetailProps) => (
@@ -261,14 +272,12 @@ const handlerCreators: HandleCreators<
 const lifecycles: ReactLifeCycleFunctions<MileageApprovalDetailProps, {}> = {
   componentDidMount() {
     const {
-      // match,
       layoutDispatch,
       appBarDispatch,
       intl,
       handleMileageRefresh
     } = this.props;
 
-    // const { user } = this.props.userState;
     const { isLoading } = this.props.mileageApprovalState.detail;
 
     layoutDispatch.changeView({
@@ -297,13 +306,6 @@ const lifecycles: ReactLifeCycleFunctions<MileageApprovalDetailProps, {}> = {
     if (!isLoading) {
       loadData(this.props);
     }
-    // if (user) {
-    //   loadDetailRequest({
-    //     mileageUid: match.params.mileageUid,
-    //     companyUid: user.company.uid,
-    //     positionUid: user.position.uid
-    //   });
-    // }
   },
   componentWillReceiveProps(nextProps: MileageApprovalDetailProps) {
     if (
@@ -329,7 +331,7 @@ const lifecycles: ReactLifeCycleFunctions<MileageApprovalDetailProps, {}> = {
     const {
       layoutDispatch,
       appBarDispatch,
-      // mileageApprovalDispatch
+      mileageApprovalDispatch
     } = this.props;
 
     layoutDispatch.changeView(null);
@@ -339,14 +341,16 @@ const lifecycles: ReactLifeCycleFunctions<MileageApprovalDetailProps, {}> = {
 
     appBarDispatch.dispose();
 
-    // mileageApprovalDispatch.loadDetailDispose();
+    mileageApprovalDispatch.loadDetailDispose();
   }
 };
 
 const loadData = (props: MileageApprovalDetailProps): void => {
   const { match } = props;
   const { user } = props.userState;
-  const { loadDetailRequest } = props.mileageApprovalDispatch;
+  const {
+    loadDetailRequest 
+  } = props.mileageApprovalDispatch;
 
   if (user) {
     loadDetailRequest({
@@ -356,6 +360,24 @@ const loadData = (props: MileageApprovalDetailProps): void => {
     });
   }
 };
+
+// Improvement disaat ada data yg belum di approve dan setelah semua di approve, *belum selesai
+// const handleGoto = (props: MileageApprovalDetailProps): void => {
+//   const { response } = props.mileageApprovalState.detail;
+//   let { back } = props;
+
+//   if (
+//     back &&
+//     response &&
+//     response.data &&
+//     response.data.workflow &&
+//     response.data.workflow.isApproval
+//   ) {
+//     back = false;
+//   } else {
+//     back = true;
+//   }
+// };
 
 export const MileageApprovalDetail = compose<MileageApprovalDetailProps, {}>(
   withUser,
