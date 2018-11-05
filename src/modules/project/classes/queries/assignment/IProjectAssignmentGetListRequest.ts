@@ -1,5 +1,5 @@
-import { IProjectAssignmentGetAllFilter } from '@project/classes/filters/assignment';
+import { IProjectAssignmentGetListFilter } from '@project/classes/filters/assignment';
 
 export interface IProjectAssignmentGetListRequest {
-  filter?: IProjectAssignmentGetAllFilter | undefined;
+  filter?: IProjectAssignmentGetListFilter | undefined;
 }

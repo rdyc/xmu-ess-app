@@ -90,7 +90,7 @@ function* watchGetByIdRequest() {
   const worker = (action: ReturnType<typeof projectAssignmentGetByIdRequest>) => {
     return saiyanSaga.fetch({
       method: 'get',
-      path: `/v1/project/assignments/${action.payload.companyUid}/${action.payload.assingmentUid}`,
+      path: `/v1/project/assignments/${action.payload.companyUid}/${action.payload.assignmentUid}`,
       successEffects: (response: IApiResponse) => [
         put(projectAssignmentGetByIdSuccess(response.body))
       ],

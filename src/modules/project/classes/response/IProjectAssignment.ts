@@ -6,6 +6,7 @@ import { ILookupCustomer } from '@lookup/classes';
 export interface IProjectAssignment {
   readonly uid: string;
   readonly projectUid: string;
+  readonly contractNumber: string | null;
   readonly customerUid: string;
   readonly customer: ILookupCustomer | null;
   readonly projectType: string;
