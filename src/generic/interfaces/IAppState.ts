@@ -10,6 +10,7 @@ import { ILookupState } from '@lookup/classes/states';
 import { IMileageState } from '@mileage/classes/states';
 import { IProjectState } from '@project/classes/states';
 import { IPurchaseState } from '@purchase/classes/states';
+import { ISummaryState } from '@summary/classes/states';
 import { ITimesheetState } from '@timesheet/classes/states';
 import { ITravelState } from '@travel/classes/states';
 import { FormStateMap } from 'redux-form';
@@ -26,8 +27,8 @@ export interface IAppState extends
   ITravelState,
   IExpenseState,
   ILeaveState,
-  IPurchaseState {
-  getEnd: ILeaveGetEndState;
+  IPurchaseState,
+  ISummaryState {
   user: IUserState;
   layout: ILayoutState;
   appBar: IAppBarState;
@@ -36,4 +37,5 @@ export interface IAppState extends
   account: IEmployeeMyState;
   notification: INotificationState;
   form: FormStateMap;
+  getEnd: ILeaveGetEndState;
 }
