@@ -12,12 +12,12 @@ import {
   IconButton,
 } from '@material-ui/core';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
-import { RequestItemFormProps } from '@travel/components/request/editor/forms/RequestItemForm';
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Field } from 'redux-form';
+import { TravelSettlementItemFormProps } from './TravelSettlementItemForm';
 
-export const RequestItemFormView: React.SFC<RequestItemFormProps> = props => {
+export const TravelSettlementItemFormView: React.SFC<TravelSettlementItemFormProps> = props => {
   const { context } = props;
   
   const render = (
@@ -38,6 +38,7 @@ export const RequestItemFormView: React.SFC<RequestItemFormProps> = props => {
                 <div>
                   <Field 
                     type="text"
+                    disabled = "true"
                     name={`${field}.employeeUid`}
                     label="employee"
                     placeholder="Employee"

@@ -2,16 +2,16 @@ import { FormMode } from '@generic/types';
 import { Typography } from '@material-ui/core';
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
-import { RequestForm, TravelRequestFormData } from './forms/RequestForm';
-import { RequestEditorProps } from './RequestEditor';
+import { TravelSettlementForm, TravelSettlementFormData } from './forms/TravelSettlementForm';
+import { TravelSettlementEditorProps } from './TravelSettlementEditor';
 
-export const RequestEditorView: React.SFC<RequestEditorProps> = props => {
+export const travelSettlementEditorView: React.SFC<TravelSettlementEditorProps> = props => {
   const { formMode, handleValidate, handleSubmit, handleSubmitSuccess, handleSubmitFail } = props;
-  const { isLoading, response } = props.travelRequestState.detail;
+  const { isLoading, response } = props.travelSettlementState.detail;
   const { user } = props.userState;
 
-  const renderForm = (formData: TravelRequestFormData) => (
-    <RequestForm
+  const renderForm = (formData: TravelSettlementFormData) => (
+    <TravelSettlementForm
       formMode={formMode}
       initialValues={formData}
       validate={handleValidate}
@@ -21,9 +21,10 @@ export const RequestEditorView: React.SFC<RequestEditorProps> = props => {
     />
   );
 
-  const initialValues: TravelRequestFormData = {
+  const initialValues: TravelSettlementFormData = {
     information: {
       uid: undefined,
+      travelUid: undefined,
       fullName: user && user.fullName,
       position: user && user.position.name,
       destinationType: undefined,
@@ -62,6 +63,7 @@ export const RequestEditorView: React.SFC<RequestEditorProps> = props => {
       const data = response.data;
 
       initialValues.information.uid = data.uid;
+      initialValues.information.travelUid = data.travelUid;
       initialValues.information.fullName = data.employee ? data.employee.fullName : 'N/A';
       initialValues.information.position = data.position ? data.position.name : 'N/A';
       initialValues.information.destinationType = data.destinationType;

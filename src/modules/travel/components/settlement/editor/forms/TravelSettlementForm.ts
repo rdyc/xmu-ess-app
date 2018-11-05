@@ -1,11 +1,11 @@
 import { FormMode } from '@generic/types';
-import { RequestFormView } from '@travel/components/request/editor/forms/RequestFormView';
 import { connect } from 'react-redux';
 import { InjectedFormProps, reduxForm } from 'redux-form';
+import { TravelSettlementFormView } from './TravelSettlementFormView';
 
-const formName = 'travelRequest';
+const formName = 'travelSettlement';
 
-export type TravelItemFormData = {
+export type TravelSettlementItemFormData = {
   uid: string | null ;
   employeeUid: string;
   fullName: string;
@@ -28,9 +28,10 @@ export type TravelItemFormData = {
   diemValue: number | 0;
 };
 
-export type TravelRequestFormData = {
+export type TravelSettlementFormData = {
   information: {
     uid: string | null | undefined;
+    travelUid: string | null | undefined;
     fullName: string | null | undefined;
     position: string | null | undefined;
     destinationType: string | null | undefined;
@@ -45,7 +46,7 @@ export type TravelRequestFormData = {
     comment: string | null | undefined;
   },
   item: {
-    items: TravelItemFormData[]  
+    items: TravelSettlementItemFormData[]  
   }
 };
 
@@ -53,13 +54,13 @@ interface OwnProps {
   formMode: FormMode;
 }
 
-export type RequestFormProps 
-  = InjectedFormProps<TravelRequestFormData, OwnProps> 
+export type TravelSettlementFormProps 
+  = InjectedFormProps<TravelSettlementFormData, OwnProps> 
   & OwnProps;
 
-const connectedView = connect()(RequestFormView);
+const connectedView = connect()(TravelSettlementFormView);
 
-export const RequestForm = reduxForm<TravelRequestFormData, OwnProps>({
+export const TravelSettlementForm = reduxForm<TravelSettlementFormData, OwnProps>({
   form: formName,
   touchOnChange: true,
   touchOnBlur: true,

@@ -3,12 +3,9 @@ import { FormMode } from '@generic/types';
 import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
-import { ITravelPostPayload, ITravelPutPayload } from '@travel/classes/request';
-import { ITravelPutItem } from '@travel/classes/request/ITravelPutItem';
+import { ITravelSettlementPostPayload, ITravelSettlementPutItem, ITravelSettlementPutPayload } from '@travel/classes/request/settlement';
 import { ITravelRequest } from '@travel/classes/response';
-import { RequestEditorView } from '@travel/components/request/editor//RequestEditorView';
-import { TravelRequestFormData } from '@travel/components/request/editor/forms/RequestForm';
-import { WithTravelRequest, withTravelRequest } from '@travel/hoc/withTravelRequest';
+import { WithTravelSettlement, withTravelSettlement } from '@travel/hoc/withTravelSettlement';
 import { travelRequestMessage } from '@travel/locales/messages/travelRequestMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
@@ -16,10 +13,12 @@ import { compose, HandleCreators, lifecycle, mapper, ReactLifeCycleFunctions, St
 import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
 import { isNullOrUndefined, isObject } from 'util';
+import { TravelSettlementFormData } from './forms/TravelSettlementForm';
+import { travelSettlementEditorView } from './TravelSettlementEditorView';
 
 interface OwnHandlers {
-  handleValidate: (payload: TravelRequestFormData) => any;
-  handleSubmit: (payload: TravelRequestFormData) => void;
+  handleValidate: (payload: TravelSettlementFormData) => any;
+  handleSubmit: (payload: TravelSettlementFormData) => void;
   handleSubmitSuccess: (result: any, dispatch: Dispatch<any>) => void;
   handleSubmitFail: (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => void;
 }
@@ -32,15 +31,15 @@ interface OwnState {
   formMode: FormMode;
   companyUid?: string | undefined;
   positionUid?: string | undefined;
-  travelUid?: string | undefined;
+  travelSettlementUid?: string | undefined;
 }
 
 interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
   stateUpdate: StateHandler<OwnState>;
 }
 
-export type RequestEditorProps
-  = WithTravelRequest
+export type TravelSettlementEditorProps
+  = WithTravelSettlement
   & WithUser
   & WithLayout
   & WithAppBar
@@ -50,8 +49,8 @@ export type RequestEditorProps
   & OwnState
   & OwnStateUpdaters;
 
-const handlerCreators: HandleCreators<RequestEditorProps, OwnHandlers> = {
-  handleValidate: (props: RequestEditorProps) => (formData: TravelRequestFormData) => {
+const handlerCreators: HandleCreators<TravelSettlementEditorProps, OwnHandlers> = {
+  handleValidate: (props: TravelSettlementEditorProps) => (formData: TravelSettlementFormData) => {
     const errors = {
       information: {}
     };
@@ -96,10 +95,10 @@ const handlerCreators: HandleCreators<RequestEditorProps, OwnHandlers> = {
 
     return errors;
   },
-  handleSubmit: (props: RequestEditorProps) => (formData: TravelRequestFormData) => {
-    const { formMode, travelUid, intl } = props;
+  handleSubmit: (props: TravelSettlementEditorProps) => (formData: TravelSettlementFormData) => {
+    const { formMode, travelSettlementUid, intl } = props;
     const { user } = props.userState;
-    const { createRequest, updateRequest } = props.travelRequestDispatch;
+    const { createRequest, updateRequest } = props.travelSettlementDispatch;
 
     if (!user) {
       return Promise.reject('user was not found');
@@ -110,7 +109,7 @@ const handlerCreators: HandleCreators<RequestEditorProps, OwnHandlers> = {
         return null;
       }
 
-      const _items: ITravelPutItem[] = [];
+      const _items: ITravelSettlementPutItem[] = [];
 
       formData.item.items.forEach(item => 
         _items.push({
@@ -147,13 +146,13 @@ const handlerCreators: HandleCreators<RequestEditorProps, OwnHandlers> = {
           reject,
           companyUid: user.company.uid,
           positionUid: user.position.uid,
-          data: payload as ITravelPostPayload
+          data: payload as ITravelSettlementPostPayload
         });
       });
     }
 
     // update checking
-    if (!travelUid) {
+    if (!travelSettlementUid) {
       const message = intl.formatMessage(travelRequestMessage.emptyTravelUid);
 
       return Promise.reject(message);
@@ -162,19 +161,19 @@ const handlerCreators: HandleCreators<RequestEditorProps, OwnHandlers> = {
     if (formMode === FormMode.Edit) {
       return new Promise((resolve, reject) => {
         updateRequest({
-          travelUid,
+          travelSettlementUid,
           resolve,
           reject,
           companyUid: user.company.uid,
           positionUid: user.position.uid,
-          data: payload as ITravelPutPayload,
+          data: payload as ITravelSettlementPutPayload,
         });
       });
     }
 
     return null;
   },
-  handleSubmitSuccess: (props: RequestEditorProps) => (response: ITravelRequest) => {
+  handleSubmitSuccess: (props: TravelSettlementEditorProps) => (response: ITravelRequest) => {
     const { formMode, intl, history } = props;
     const { alertAdd } = props.layoutDispatch;
 
@@ -195,7 +194,7 @@ const handlerCreators: HandleCreators<RequestEditorProps, OwnHandlers> = {
 
     history.push('/travel/request');
   },
-  handleSubmitFail: (props: RequestEditorProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
+  handleSubmitFail: (props: TravelSettlementEditorProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
     const { formMode, intl } = props;
     const { alertAdd } = props.layoutDispatch;
 
@@ -226,7 +225,7 @@ const handlerCreators: HandleCreators<RequestEditorProps, OwnHandlers> = {
   }
 };
 
-const createProps: mapper<RequestEditorProps, OwnState> = (props: RequestEditorProps): OwnState => ({ 
+const createProps: mapper<TravelSettlementEditorProps, OwnState> = (props: TravelSettlementEditorProps): OwnState => ({ 
   formMode: FormMode.New
 });
 
@@ -237,10 +236,10 @@ const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
   })
 };
 
-const lifecycles: ReactLifeCycleFunctions<RequestEditorProps, {}> = {
+const lifecycles: ReactLifeCycleFunctions<TravelSettlementEditorProps, {}> = {
   componentDidMount() {
     const { layoutDispatch, intl, history, stateUpdate } = this.props;
-    const { loadDetailRequest } = this.props.travelRequestDispatch;
+    const { loadRequest } = this.props.travelSettlementDispatch;
     const { user } = this.props.userState;
     
     const view = {
@@ -263,18 +262,18 @@ const lifecycles: ReactLifeCycleFunctions<RequestEditorProps, {}> = {
 
       stateUpdate({ 
         formMode: FormMode.Edit,
-        travelUid: history.location.state.uid
+        travelSettlementUid: history.location.state.uid
       });
 
-      loadDetailRequest({
+      loadRequest({
         companyUid: user.company.uid,
         positionUid: user.position.uid,
-        travelUid: history.location.state.uid
+        traveSettlementlUid: history.location.state.uid
       });
     }
 
     layoutDispatch.changeView({
-      uid: AppMenu.TravelRequest,
+      uid: AppMenu.TravelSettlementRequest,
       parentUid: AppMenu.Travel,
       title: intl.formatMessage({id: view.title}),
       subTitle : intl.formatMessage({id: view.subTitle})
@@ -283,7 +282,7 @@ const lifecycles: ReactLifeCycleFunctions<RequestEditorProps, {}> = {
     layoutDispatch.navBackShow(); 
   },
   componentWillUnmount() {
-    const { layoutDispatch, appBarDispatch, travelRequestDispatch } = this.props;
+    const { layoutDispatch, appBarDispatch, travelSettlementDispatch } = this.props;
 
     layoutDispatch.changeView(null);
     layoutDispatch.navBackHide();
@@ -292,19 +291,19 @@ const lifecycles: ReactLifeCycleFunctions<RequestEditorProps, {}> = {
 
     appBarDispatch.dispose();
 
-    travelRequestDispatch.createDispose();
-    travelRequestDispatch.updateDispose();
+    travelSettlementDispatch.createDispose();
+    travelSettlementDispatch.updateDispose();
   }
 };
 
-export default compose<RequestEditorProps, {}>(
+export default compose<TravelSettlementEditorProps, {}>(
   withUser,
   withLayout,
   withAppBar,
   withRouter,
-  withTravelRequest,
+  withTravelSettlement,
   injectIntl,
   withStateHandlers<OwnState, OwnStateUpdaters, {}>(createProps, stateUpdaters),
-  withHandlers<RequestEditorProps, OwnHandlers>(handlerCreators),
-  lifecycle<RequestEditorProps, {}>(lifecycles),
-)(RequestEditorView);
+  withHandlers<TravelSettlementEditorProps, OwnHandlers>(handlerCreators),
+  lifecycle<TravelSettlementEditorProps, {}>(lifecycles),
+)(travelSettlementEditorView);
