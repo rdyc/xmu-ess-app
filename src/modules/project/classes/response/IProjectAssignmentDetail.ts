@@ -18,11 +18,11 @@ export interface IProjectAssignmentDetail {
   readonly description: string | null;
   readonly ownerEmployeeUid: string;
   readonly owner: IAccountEmployee | null;
-  readonly start: string | null;
-  readonly end: string | null;
+  readonly start: string;
+  readonly end: string;
   readonly maxHours: number;
   readonly assignedHours: number;
   readonly unassignedHours: number;
-  readonly items: IProjectAssignmentDetailItem | null;
+  readonly items: IProjectAssignmentDetailItem[] | null;
   readonly changes: IBaseChanges | null;
 }

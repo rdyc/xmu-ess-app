@@ -1,6 +1,6 @@
-import { RegistrationDetail } from '@project/components/registration/detail/RegistrationDetail';
-import RegistrationEditor from '@project/components/registration/editor/RegistrationEditor';
-import { RegistrationList } from '@project/components/registration/list/RegistrationList';
+import { ProjectRegistrationDetail } from '@project/components/registration/detail/ProjectRegistrationDetail';
+import RegistrationEditor from '@project/components/registration/editor/ProjectRegistrationEditor';
+import { ProjectRegistrationList } from '@project/components/registration/list/ProjectRegistrationList';
 import * as React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router';
 
@@ -11,8 +11,8 @@ import { StatusEditor } from '../status/StatusEditor';
 type AllProps 
   = RouteComponentProps;
 
-const registrationListComponent = () => <RegistrationList orderBy="uid" direction="descending"/>;
-const registrationDetailComponent = () => <RegistrationDetail/>;
+const registrationListComponent = () => <ProjectRegistrationList orderBy="uid" direction="descending"/>;
+const registrationDetailComponent = () => <ProjectRegistrationDetail/>;
 const registrationEditorComponent = () => <RegistrationEditor/>;
 const ownerEditorComponent = () => <OwnerEditor/>;
 const statusEditorComponent = () => <StatusEditor/>;
