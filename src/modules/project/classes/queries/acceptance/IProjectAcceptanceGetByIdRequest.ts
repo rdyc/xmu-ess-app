@@ -1,4 +1,4 @@
 export interface IProjectAcceptanceGetByIdRequest {
-  assingmentUid: string;
+  assignmentUid: string;
   assignmentItemUid: string;
 }

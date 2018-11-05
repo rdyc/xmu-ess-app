@@ -4,7 +4,7 @@ import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithNavBottom, withNavBottom } from '@layout/hoc/withNavBottom';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IListBarField } from '@layout/interfaces';
-import { ProjectField } from '@project/classes/types';
+import { ProjectRegistrationField } from '@project/classes/types';
 import { ProjectApprovalListView } from '@project/components/approval/list/ProjectApprovalListView';
 import { WithProjectApproval, withProjectApproval } from '@project/hoc/withProjectApproval';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
@@ -72,8 +72,8 @@ const createProps: mapper<ProjectApprovalListProps, OwnState> = (props: ProjectA
   const { request } = props.projectApprovalState.all;
 
   return { 
-    orderBy: request && request.filter && request.filter.query && request.filter.query.orderBy || orderBy,
-    direction: request && request.filter && request.filter.query && request.filter.query.direction || direction,
+    orderBy: request && request.filter && request.filter.query && request.filter.query.orderBy || orderBy || 'uid',
+    direction: request && request.filter && request.filter.query && request.filter.query.direction || direction || 'descending',
     page: request && request.filter && request.filter.query && request.filter.query.page || page || 1, 
     size: request && request.filter && request.filter.query && request.filter.query.size || size || 10,
   };
@@ -109,7 +109,7 @@ const handlerCreators: HandleCreators<ProjectApprovalListProps, OwnHandlers> = {
     const { isLoading } = props.projectApprovalState.all;
 
     if (!isLoading) {
-      history.push(`/approval/project/details/${projectUid}`);
+      history.push(`/project/approvals/${projectUid}`);
     } 
   },
   handleGoToNext: (props: ProjectApprovalListProps) => () => { 
@@ -149,8 +149,8 @@ const lifecycles: ReactLifeCycleFunctions<ProjectApprovalListProps, OwnState> = 
     layoutDispatch.changeView({
       uid: AppMenu.ProjectRegistrationApproval,
       parentUid: AppMenu.ProjectRegistrationApproval,
-      title: intl.formatMessage({id: 'project.title'}),
-      subTitle : intl.formatMessage({id: 'project.subTitle'})
+      title: intl.formatMessage({id: 'project.view.approval.title'}),
+      subTitle : intl.formatMessage({id: 'project.view.approval.subHeader'})
     });
 
     layoutDispatch.modeListOn();
@@ -167,8 +167,8 @@ const lifecycles: ReactLifeCycleFunctions<ProjectApprovalListProps, OwnState> = 
       onSizeCallback: handleChangeSize,
     });
 
-    const items = Object.keys(ProjectField)
-      .map(key => ({ id: key, name: ProjectField[key] }));
+    const items = Object.keys(ProjectRegistrationField)
+      .map(key => ({ id: key, name: ProjectRegistrationField[key] }));
 
     navBottomDispatch.assignFields(items);
 

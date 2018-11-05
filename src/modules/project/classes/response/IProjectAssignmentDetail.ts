@@ -13,16 +13,17 @@ export interface IProjectAssignmentDetail {
   readonly projectType: string;
   readonly project: ICommonSystem | null;
   readonly statusType: string;
+  readonly contractNumber: string | null;
   readonly status: ICommonSystem | null;
   readonly name: string;
   readonly description: string | null;
   readonly ownerEmployeeUid: string;
   readonly owner: IAccountEmployee | null;
-  readonly start: string | null;
-  readonly end: string | null;
+  readonly start: string;
+  readonly end: string;
   readonly maxHours: number;
   readonly assignedHours: number;
   readonly unassignedHours: number;
-  readonly items: IProjectAssignmentDetailItem | null;
+  readonly items: IProjectAssignmentDetailItem[] | null;
   readonly changes: IBaseChanges | null;
 }

@@ -33,16 +33,16 @@ export const menuLinkMapper = (menuUid: string) => {
       path = '/account/delegate';
       break;
     case 'MNU22':
-      path = '/project/assignment/acceptance';
+      path = '/project/acceptances';
       break;
     case 'MNU21':
-      path = '/project/assignment/request';
+      path = '/project/assignments';
       break;
     case 'MNU19':
-      path = '/project/list';
+      path = '/project/requests';
       break;
     case 'MNU20':
-      path = '/approval/project/list';
+      path = '/project/approvals';
       break;
     case 'MNU58':
       path = '/reports/billable';

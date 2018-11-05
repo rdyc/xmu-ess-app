@@ -121,7 +121,7 @@ const handlerCreators: HandleCreators<ProjectApprovalDetailProps, OwnHandler> = 
       message: intl.formatMessage(projectApprovalMessage.updateSuccess),
     });
 
-    history.push('/approval/project/list');
+    history.push('/project/approvals');
   },
   handleSubmitFail: (props: ProjectApprovalDetailProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
     const { intl } = props;
