@@ -16,6 +16,7 @@ import { PurchaseRequestItemFormProps } from '@purchase/components/purchaseReque
 import * as classNames from 'classnames';
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
+// import { Field, FieldArray } from 'redux-form';
 
 export const PurchaseRequestItemFormView: React.SFC<PurchaseRequestItemFormProps> = props => {
   const { classes, context } = props;
@@ -37,20 +38,21 @@ export const PurchaseRequestItemFormView: React.SFC<PurchaseRequestItemFormProps
                   disableGutters
                   key={index}
                 >
-                  {/* <ListItemAvatar>
-                      alt={items.uid}
-                  </ListItemAvatar> */}
-                  <ListItemText
+                   <ListItemText
                     primary={items.uid}
-                  // secondary={items.description}
                   />
                   <ListItemText
                     secondary={items.request}
-                  // secondary={items.description}
                   />
                   <ListItemText
                     secondary={items.description}
-                  />
+                  /> 
+                  {/* <Field
+                  name={'${items}.uid'}
+                  type="text"
+                  component={Fields}
+                  /> */}
+
                   <ListItemSecondaryAction>
                     <IconButton onClick={() => context.fields.remove(index)}>
                       <DeleteForeverIcon />

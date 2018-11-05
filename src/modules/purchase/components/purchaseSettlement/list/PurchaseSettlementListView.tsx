@@ -1,4 +1,4 @@
-import { Divider, Grid, List, ListItem, ListSubheader, Paper, Typography } from '@material-ui/core';
+import { Divider, Grid, LinearProgress, List, ListItem, ListSubheader, Paper, Typography } from '@material-ui/core';
 import { ISettlement } from '@purchase/classes/response/purchaseSettlement';
 import { PurchaseSettlementListProps } from '@purchase/components/purchaseSettlement/list/PurchaseSettlementList';
 import { parseChanges } from '@utils/parseChanges';
@@ -120,15 +120,21 @@ export const PurchaseSettlementListView: React.SFC<PurchaseSettlementListProps> 
     </List>
   );
 
+  const RenderNull = () => (
+    <Typography variant="body2" align="center">Loading</Typography>
+  );
+
   const render = (
     <React.Fragment>
-      {isLoading && response && <Typography variant="body2">loading</Typography>}
+      {isLoading && response 
+        && <LinearProgress />}
       {response &&
         <Paper
           square
           elevation={1}
         >
-          <RenderList />
+          {/* <RenderList /> */}
+        {response.data === null ? <RenderNull /> : <RenderList />} 
         </Paper>}
     </React.Fragment>
   );

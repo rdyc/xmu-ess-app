@@ -148,9 +148,9 @@ const handlerCreators: HandleCreators<PurchaseApprovalDetailProps, OwnHandler> =
       time: new Date()
     });
 
-    if (match.params.purchaseUid) {
-      history.push(`/approval/purchase/list`);
-    }
+    // if (match.params.purchaseUid) {
+    history.push(`/approval/purchase/request/list`);
+    // }
   },
   handleSubmitFail: (props: PurchaseApprovalDetailProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
     const { intl } = props;
@@ -199,8 +199,8 @@ const lifecycles: ReactLifeCycleFunctions<PurchaseApprovalDetailProps, {}> = {
     const { loadDetailRequest } = this.props.purchaseApprovalDispatch;
 
     layoutDispatch.changeView({
-      uid: AppMenu.ExpenseApproval,
-      parentUid: AppMenu.Expense,
+      uid: AppMenu.PurchaseApproval,
+      parentUid: AppMenu.Purchase,
       title: intl.formatMessage({ id: 'purchase.form.approval.newTitle' }),
       subTitle: intl.formatMessage({ id: 'purchase.form.approval.newSubTitle' })
     });

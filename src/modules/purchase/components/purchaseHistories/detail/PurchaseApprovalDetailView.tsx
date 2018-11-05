@@ -1,5 +1,6 @@
 import {
   Grid,
+  LinearProgress,
   Typography,
 } from '@material-ui/core';
 import { WorkflowApprovalForm } from '@organization/components/workflow/approval/WorkflowApprovalForm';
@@ -25,6 +26,7 @@ export const PurchaseApprovalDetailView: React.SFC<PurchaseApprovalDetailProps> 
         <Typography variant="body2">
           <FormattedMessage id="global.loading" />
         </Typography>
+        && <LinearProgress/>
       }
       {
         !isLoading &&

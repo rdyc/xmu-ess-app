@@ -1,4 +1,4 @@
-import { Divider, Grid, List, ListItem, ListSubheader, Paper, Typography } from '@material-ui/core';
+import { Divider, Grid, LinearProgress, List, ListItem, ListSubheader, Paper, Typography } from '@material-ui/core';
 import { IPurchase } from '@purchase/classes/response/purchaseRequest';
 import { PurchaseRequestListProps } from '@purchase/components/purchaseRequest/list/PurchaseRequestList';
 import { parseChanges } from '@utils/parseChanges';
@@ -120,15 +120,19 @@ export const PurchaseRequestListView: React.SFC<PurchaseRequestListProps> = prop
     </List>
   );
 
+  const RenderNull = () => (
+    <Typography variant="body2" align="center">Lost in The Force, Padawan, you are.</Typography>
+  );
+
   const render = (
     <React.Fragment>
-      {isLoading && response && <Typography variant="body2">loading</Typography>}
+      { isLoading && response && <LinearProgress /> }
       {response &&
         <Paper
           square
           elevation={1}
         >
-          <RenderList />
+        {response.metadata.paginate === null ? <RenderNull /> : <RenderList />}
         </Paper>}
     </React.Fragment>
   );

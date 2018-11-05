@@ -1,4 +1,4 @@
-import { Divider, Grid, List, ListItem, ListSubheader, Paper, Typography } from '@material-ui/core';
+import { Divider, Grid, LinearProgress, List, ListItem, ListSubheader, Paper, Typography } from '@material-ui/core';
 import { IPurchase } from '@purchase/classes/response/purchaseRequest';
 import { PurchaseApprovalListProps } from '@purchase/components/purchaseHistories/list/PurchaseApprovalList';
 import { parseChanges } from '@utils/parseChanges';
@@ -29,7 +29,7 @@ export const PurchaseApprovalListView: React.SFC<PurchaseApprovalListProps> = pr
                   color="primary" 
                   variant="body2"
                 >
-                  {purchase.uid} &bull; {purchase.notes}
+                  {purchase.uid} &bull; {purchase.notes} &bull; {purchase.request}
                 </Typography>
                 <Typography 
                   noWrap
@@ -42,8 +42,7 @@ export const PurchaseApprovalListView: React.SFC<PurchaseApprovalListProps> = pr
                   noWrap
                   color="textSecondary" 
                   variant="caption"
-                >
-                  {purchase.advance} &bull; &nbsp;
+                >{` Advance Payment: ${purchase.advance}`} &bull; &nbsp;
                   <FormattedDate 
                     year="numeric"
                     month="short"
@@ -113,22 +112,27 @@ export const PurchaseApprovalListView: React.SFC<PurchaseApprovalListProps> = pr
       }
     >
       {
-        response &&
+        (response &&
         isArray(response.data) && 
-        renderPurchaseList(response.data)
+        renderPurchaseList(response.data))
       }
     </List>
   );
+
+  const RenderNull = () => (
+    <Typography variant="body2" align="center">Lost in The Force, Padawan, you are.</Typography>  
+  );
+
   const render = (
     <React.Fragment>
-      {isLoading && response && <Typography variant="body2">loading</Typography>}     
-      {response &&
-        <Paper 
-          square 
-          elevation={1}
-        >
-        <RenderList/>
-        </Paper>}
+      { isLoading && response && <LinearProgress />}
+      { response &&
+          <Paper
+            square
+            elevation={1}
+          >
+          {response.metadata.paginate === null ? <RenderNull/> : <RenderList />} 
+          </Paper> }
     </React.Fragment>
   );
   return render;

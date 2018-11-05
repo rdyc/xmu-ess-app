@@ -52,11 +52,12 @@ const handlerCreators: HandleCreators<PurchaseRequestDetailFormProps, OwnHandler
         };
         break;
 
-      case 'project':
+      case 'projectUid':
         fieldProps = {
           required: formMode === FormMode.New,
+          // required: true,
           category: 'project',
-          disabled: formMode === FormMode.Edit,
+          // disabled: formMode === FormMode.Edit,
           placeholder: intl.formatMessage({ id: `purchase.field.${name}.placeholder` }),
           component: SelectSystem,
         };
@@ -96,29 +97,29 @@ const handlerCreators: HandleCreators<PurchaseRequestDetailFormProps, OwnHandler
           type: 'number',
           placeholder: intl.formatMessage({id: `purchase.field.${name}.placeholder`}),
           component: InputNumber,
-          onChange: onChangeValueIdr
+          onChange: onChangeValueIdr,
+          disabled: true
         };
         break;
 
-      // case 'requestIDR':
-      //   fieldProps = {
-      //     type: 'number',
-      //     disabled: true,
-      //     component: InputNumber
-      //   };
-      //   break;
+       case 'requestIDR':
+         fieldProps = {
+           type: 'number',
+           disabled: true,
+           component: InputNumber
+         };
+         break;
   
       case 'advance':
         fieldProps = {
           type: 'number',
-          disabled: true,
+          placeholder: intl.formatMessage({ id: `purchase.field.${name}.placeholder` }),
           component: InputNumber
         };
         break;
   
       case 'notes':
         fieldProps = {
-          disabled: true,
           placeholder: intl.formatMessage({ id: `purchase.field.${name}.placeholder` }),
           component: InputText
         };

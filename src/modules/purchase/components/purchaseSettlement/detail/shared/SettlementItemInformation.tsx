@@ -1,29 +1,14 @@
 import { Card, CardContent, CardHeader, Grid, List, ListItem, ListItemText, Typography } from '@material-ui/core';
-import { IPurchaseItemRequest } from '@purchase/classes/response/purchaseRequest';
+import { IPurchaseItem } from '@purchase/classes/response/purchaseSettlement';
 import * as React from 'react';
 import { FormattedMessage, FormattedNumber } from 'react-intl';
 
 interface OwnProps {
-  data: IPurchaseItemRequest[] | null | undefined;
+  data: IPurchaseItem[] | null | undefined;
 }
 
-export const PurchaseItemInformation: React.SFC<OwnProps> = props => {
+export const SettlementItemInformation: React.SFC<OwnProps> = props => {
   const { data } = props;
-
-  // let RenderItem = () => (
-  //   { data &&
-  //     data.map(item => 
-  //       < Grid container key={item.uid}>
-  //         <Grid item xs={6}>
-  //           <ListItemText
-  //             secondary={item.description}
-  //             primary={<FormattedMessage id="purchase.itemTitle.description" />}
-  //           />
-  //         </Grid>
-  //       </Grid >
-  //       )
-  //   }
-  // );
 
   const render = (
     <Card square>
@@ -48,21 +33,13 @@ export const PurchaseItemInformation: React.SFC<OwnProps> = props => {
             data.map(item =>
               <ListItem disableGutters key={item.uid}>
                 <Grid container xs={12}>
-                  <Grid item xs={5}>
+                  <Grid container item xs={12}>
                     <ListItemText
-                      primary={<FormattedMessage id="purchase.itemTitle.request" />}
-                      secondary={
-                      <Typography
-                        align="left"
-                        noWrap
-                      >
-                      {item.description}
-                      </Typography>
-                      }
+                      primary={item.uid}
+                      secondary={item.description ? <Typography noWrap variant="body2">{item.description}</Typography> : 'N/A'}
                     />
-                  </Grid>
-                  <Grid item xs={7}>
-                    <Typography
+                    <Grid xs={4}>
+                      <Typography
                       variant="display1"
                       align="right"
                     >
@@ -70,8 +47,30 @@ export const PurchaseItemInformation: React.SFC<OwnProps> = props => {
                         value={item.requestValue}
                       />
                     </Typography>
+                    </Grid>
+                    <Grid xs={4}>
+                    <Typography
+                      variant="display1"
+                      align="justify"
+                    >
+                      <FormattedNumber
+                        value={item.actualValue}
+                      />
+                    </Typography>
+                    </Grid>
+                    <Grid xs={4}>
+                    <Typography
+                      variant="display1"
+                      align="justify"
+                    >
+                      <FormattedNumber
+                        value={item.varianceValue}
+                      />
+                    </Typography>
+                    </Grid>
                   </Grid>
                 </Grid>
+
               </ListItem>
             )
           }
