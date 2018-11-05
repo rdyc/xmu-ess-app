@@ -73,7 +73,7 @@ const createProps: mapper<ApprovalListProps, OwnState> = (props: ApprovalListPro
 
     return { 
       orderBy: request && request.filter && request.filter.query && request.filter.query.orderBy || orderBy,
-      direction: request && request.filter && request.filter.query && request.filter.query.orderBy || direction,
+      direction: request && request.filter && request.filter.query && request.filter.query.direction || direction,
       page: request && request.filter && request.filter.query && request.filter.query.page || page || 1, 
       size: request && request.filter && request.filter.query && request.filter.query.size || size || 10,
     };
