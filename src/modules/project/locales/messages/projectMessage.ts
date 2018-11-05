@@ -1,4 +1,10 @@
 import {
+  projectAcceptanceDialog,
+  projectAcceptanceMessage,
+  projectAcceptancePage,
+  projectAcceptanceSection,
+} from './projectAcceptanceMessage';
+import {
   projectAssignmentAction,
   projectAssignmentField,
   projectAssignmentFieldHelperFor,
@@ -15,5 +21,11 @@ export const projectMessage = {
     field: projectAssignmentField,
     for: projectAssignmentFieldHelperFor,
     submission: projectAssignmentSubmission
- }
+  },
+  acceptance: {
+    page: projectAcceptancePage,
+    section: projectAcceptanceSection,
+    dialog: projectAcceptanceDialog,
+    message: projectAcceptanceMessage,
+  }
 };
