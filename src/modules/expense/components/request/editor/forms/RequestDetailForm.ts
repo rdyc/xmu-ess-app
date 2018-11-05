@@ -81,7 +81,7 @@ const handlerCreators: HandleCreators<RequestDetailFormProps, OwnHandlers> = {
             type: 'text',
             disabled: isNullOrUndefined(customerUidValue),
             placeholder: intl.formatMessage({id: `expense.field.${name}.placeholder`}),
-            component: !isNullOrUndefined(customerUidValue) ? SelectProject : InputText,
+            component: SelectProject,
             filter: projectFilter
           };
           break;
