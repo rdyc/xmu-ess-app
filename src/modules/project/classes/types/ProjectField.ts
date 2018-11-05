@@ -1,4 +1,4 @@
-export enum ProjectField {
+export enum ProjectRegistrationField {
   uid = 'Project ID',
   // customerUid = 'Customer',
   projectType = 'Project Type',
