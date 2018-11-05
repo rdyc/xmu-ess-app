@@ -1,6 +1,5 @@
-import { ICompanyAccess } from '@generic/interfaces';
-import { ILeaveApprovalGetAllFilter } from '@leave/classes/filters';
+import { ILeaveApprovalGetAllFilter } from '@leave/classes/filters/approval';
 
-export interface ILeaveApprovalGetAllRequest extends ICompanyAccess {
-  readonly filter: ILeaveApprovalGetAllFilter | undefined;
+export interface ILeaveApprovalGetAllRequest {
+  filter?: ILeaveApprovalGetAllFilter | undefined;
 }
