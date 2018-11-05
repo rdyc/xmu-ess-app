@@ -7,7 +7,7 @@ import { RequestApprovalList } from '../requestApproval/list/RequestApprovalList
 type AllProps = RouteComponentProps;
 
 const approvalListComponent = () => (
-  <RequestApprovalList />
+  <RequestApprovalList orderBy="uid" direction="descending" />
 );
 
 const approvalDetailComponent = () => <TravelApprovalDetail/>;

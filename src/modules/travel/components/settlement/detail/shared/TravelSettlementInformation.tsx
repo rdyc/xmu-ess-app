@@ -30,22 +30,17 @@ const travelSettlementInformation: React.SFC<AllProps> = props => {
         subheader={<FormattedMessage id="travelSettlement.infoSubTitle" />}
       />
       <CardContent>
-        <TextField
-          {...styled}
-          margin="dense"
-          label={<FormattedMessage id="travel.field.information.settlementUid" />}
-          value={data.uid}
-        />
-        <TextField
+      <TextField
           {...styled}
           margin="dense"
           label={<FormattedMessage id="travel.field.information.uid" />}
-          value={data.travelUid}
+          value={data.uid}
         />
+    
         <TextField
           {...styled}
           margin="dense"
-          label={<FormattedMessage id="travel.field.information.status" />}
+          label={<FormattedMessage id="travel.field.information.statusType" />}
           value={data.status ? data.status.value : 'N/A'}
         />
         <TextField
@@ -57,7 +52,13 @@ const travelSettlementInformation: React.SFC<AllProps> = props => {
         <TextField
           {...styled}
           margin="dense"
-          label={<FormattedMessage id="travel.field.information.destination" />}
+          label={<FormattedMessage id="travel.field.information.positionType" />}
+          value={data.position ? data.position.name : 'N/A'}
+        />
+        <TextField
+          {...styled}
+          margin="dense"
+          label={<FormattedMessage id="travel.field.information.destinationType" />}
           value={data.destination ? data.destination.value : 'N/A'}
         />
         <TextField
@@ -83,25 +84,25 @@ const travelSettlementInformation: React.SFC<AllProps> = props => {
         <TextField
           {...styled}
           margin="dense"
-          label={<FormattedMessage id="travel.field.information.customer" />}
+          label={<FormattedMessage id="travel.field.information.customerUid" />}
           value={data.customer ? data.customer.name : 'N/A'}
         />
         <TextField
           {...styled}
           margin="dense"
-          label={<FormattedMessage id="travel.field.information.project" />}
+          label={<FormattedMessage id="travel.field.information.projectUid" />}
           value={data.project ? data.project.name : 'N/A'}
         />
         <TextField
           {...styled}
           margin="dense"
-          label={<FormattedMessage id="travel.field.information.site" />}
+          label={<FormattedMessage id="travel.field.information.siteUid" />}
           value={data.site ? data.site.name : 'N/A'}
         />
         <TextField
           {...styled}
           margin="dense"
-          label={<FormattedMessage id="travel.field.information.activity" />}
+          label={<FormattedMessage id="travel.field.information.activityType" />}
           value={data.activity ? data.activity.value : 'N/A'}
         />
         <TextField
@@ -121,7 +122,7 @@ const travelSettlementInformation: React.SFC<AllProps> = props => {
           margin="dense"
           label={<FormattedMessage id="travel.field.information.comment" />}
           value={data.comment || 'N/A'}
-        />        
+        />      
       </CardContent>
     </Card>
   );

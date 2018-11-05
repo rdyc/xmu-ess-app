@@ -8,6 +8,8 @@ import {
   Card,
   CardContent,
   CardHeader,
+  Checkbox,
+  FormControlLabel,
   Grid,
   IconButton,
 } from '@material-ui/core';
@@ -52,6 +54,26 @@ export const RequestItemFormView: React.SFC<RequestItemFormProps> = props => {
                     component={SelectSystem}
                     category = "transportation"
                   />
+                  <FormControlLabel
+                    label="Is RoundTrip?"                    
+                    control={
+                    <Field
+                      type="checkbox"
+                      name={`${field}.isRoundTrip`}
+                      component={
+                        ({ input, meta }: any) => (
+                          <Checkbox 
+                            {...input}
+                            value={`${field}.isRoundTrip`}
+                            disabled={meta.submitting}
+                            onFocus={undefined}
+                            onBlur={undefined}
+                          />
+                        )
+                      }
+                    />
+                  } 
+                  />
                   <Field 
                     type="text"
                     name={`${field}.from`}
@@ -81,6 +103,26 @@ export const RequestItemFormView: React.SFC<RequestItemFormProps> = props => {
                     required={true}
                     component={InputNumber}
                   />
+                  <FormControlLabel
+                    label="comp Purchase?"                    
+                    control={
+                    <Field
+                      type="checkbox"
+                      name={`${field}.isTransportByCompany`}
+                      component={
+                        ({ input, meta }: any) => (
+                          <Checkbox 
+                            {...input}
+                            value={`${field}.isTransportByCompany`}
+                            disabled={meta.submitting}
+                            onFocus={undefined}
+                            onBlur={undefined}
+                          />
+                        )
+                      }
+                    />
+                  } 
+                  />                  
                   <Field 
                     type="text"
                     name={`${field}.hotel`}
@@ -94,6 +136,26 @@ export const RequestItemFormView: React.SFC<RequestItemFormProps> = props => {
                     required={true}
                     component={InputNumber}
                   />
+                  <FormControlLabel
+                    label="comp Purchase?"                    
+                    control={
+                    <Field
+                      type="checkbox"
+                      name={`${field}.isHotelByCompany`}
+                      component={
+                        ({ input, meta }: any) => (
+                          <Checkbox 
+                            {...input}
+                            value={`${field}.isHotelByCompany`}
+                            disabled={meta.submitting}
+                            onFocus={undefined}
+                            onBlur={undefined}
+                          />
+                        )
+                      }
+                    />
+                  } 
+                  />                   
                   <Field 
                     type="text"
                     name={`${field}.notes`}

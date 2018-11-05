@@ -1,16 +1,20 @@
+import { WorkflowStatusType } from '@common/classes/types';
 import { SelectSystem, SelectSystemOption } from '@common/components/select';
 import { FormMode } from '@generic/types';
 import { InputDate } from '@layout/components/input/date';
 import { InputText } from '@layout/components/input/text';
 import { InputCustomer } from '@lookup/components/customer/input';
+import { SelectProject } from '@project/components/select/project';
 import { RequestDetailFormView } from '@travel/components/request/editor/forms/RequestDetailFormView';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose, HandleCreators, withHandlers } from 'recompose';
 import { BaseFieldsProps } from 'redux-form';
+import { isNullOrUndefined } from 'util';
 
 interface OwnProps {
   formMode: FormMode;
   context: BaseFieldsProps;
+  customerUidValue: string | null | undefined;
 }
 
 interface OwnHandlers {
@@ -25,8 +29,13 @@ export type RequestDetailFormProps
 const handlerCreators: HandleCreators<RequestDetailFormProps, OwnHandlers> = {
   generateFieldProps: (props: RequestDetailFormProps) => (name: string) => {
     const {
-      intl, // formMode
+      intl, customerUidValue,
     } = props;
+
+    const projectFilter: any = {
+      customerUids: customerUidValue,
+      statusTypes: WorkflowStatusType.Approved,
+    };
 
     const fieldName = name.replace('information.', '');
 
@@ -60,6 +69,16 @@ const handlerCreators: HandleCreators<RequestDetailFormProps, OwnHandlers> = {
           required: true,
           placeholder: intl.formatMessage({id: `travel.field.${name}.placeholder`}),
           component: InputCustomer
+        };
+        break;
+
+        case 'projectUid': 
+        fieldProps = {
+          required: true,
+          disabled: isNullOrUndefined(customerUidValue),
+          placeholder: intl.formatMessage({id: `travel.field.${name}.placeholder`}),
+          component: !isNullOrUndefined(customerUidValue) ? SelectProject : InputText,
+          filter: projectFilter
         };
         break;
 

@@ -22,7 +22,7 @@ import {
   withStateHandlers,
 } from 'recompose';
 
-interface OwnHandlers {
+export interface OwnHandlers {
   handleGoToDetail: (travelUid: string) => void;
   handleGoToNext: () => void;
   handleGoToPrevious: () => void;
@@ -218,8 +218,8 @@ const loadData = (props: RequestApprovalListProps): void => {
   if (user) {
     loadAllRequest({
       filter: {
-        'query.direction': orderBy,
-        'query.orderBy': direction,
+        'query.direction': direction,
+        'query.orderBy': orderBy,
         'query.page': page,
         'query.size': size,
         companyUid: user.company.uid,

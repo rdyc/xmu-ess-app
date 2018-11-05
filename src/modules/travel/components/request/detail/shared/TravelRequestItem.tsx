@@ -129,7 +129,9 @@ const travelRequestItem: React.SFC<AllProps> = props => {
                     value={intl.formatDate(item.departureDate, {
                       year: 'numeric',
                       month: 'short',
-                      day: 'numeric'
+                      day: 'numeric',
+                      hour: 'numeric',
+                      minute: 'numeric'
                     })}
                   />
                   <TextField
@@ -145,7 +147,9 @@ const travelRequestItem: React.SFC<AllProps> = props => {
                     value={intl.formatDate(item.returnDate, {
                       year: 'numeric',
                       month: 'short',
-                      day: 'numeric'
+                      day: 'numeric',
+                      hour: 'numeric',
+                      minute: 'numeric'
                     })}
                   />
                   <TextField
@@ -183,7 +187,8 @@ const travelRequestItem: React.SFC<AllProps> = props => {
                     margin="dense"
                     label={<FormattedMessage id="travel.item.field.information.notes" />}
                     value={item.notes || '-'}
-                  />
+                  />  
+                  
                   <TextField
                     {...styled}
                     margin="dense"
@@ -193,7 +198,7 @@ const travelRequestItem: React.SFC<AllProps> = props => {
                   <TextField
                     {...styled}
                     margin="dense"
-                    label={<FormattedMessage id="travel.item.field.information.currency" />}
+                    label={<FormattedMessage id="travel.item.field.information.currencyUid" />}
                     value={item.currency ? item.currency.name : '-'}
                   />
                   <TextField
@@ -201,6 +206,19 @@ const travelRequestItem: React.SFC<AllProps> = props => {
                     margin="dense"
                     label={<FormattedMessage id="travel.item.field.information.diemValue" />}
                     value={intl.formatNumber(item.diemValue || 0)}
+                  />
+                  <TextField
+                    {...styled}
+                    margin="dense"
+                    label={<FormattedMessage id="travel.item.field.information.currencyRate" />}
+                    value={item.currency ? item.currency.rate : 0}
+                  />
+                                  
+                  <TextField
+                    {...styled}
+                    margin="dense"
+                    label={<FormattedMessage id="travel.item.field.information.amount" />}
+                    value={intl.formatNumber(item.amount || 0)}
                   />
                   <Divider />
                 </Collapse>

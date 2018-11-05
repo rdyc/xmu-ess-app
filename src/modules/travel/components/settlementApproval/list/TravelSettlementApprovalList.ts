@@ -218,8 +218,8 @@ const loadData = (props: TravelSettlementApprovalListProps): void => {
   if (user) {
     loadAllRequest({
       filter: {
-        'query.direction': orderBy,
-        'query.orderBy': direction,
+        'query.direction': direction,
+        'query.orderBy': orderBy,
         'query.page': page,
         'query.size': size,
         companyUid: user.company.uid,

@@ -7,7 +7,7 @@ import { TravelSettlementApprovalList } from '../settlementApproval/list/TravelS
 type AllProps = RouteComponentProps;
 
 const settlementApprovalListComponent = () => (
-  <TravelSettlementApprovalList />
+  <TravelSettlementApprovalList orderBy="uid" direction="descending" />
 );
 
 const settlementApprovalDetailComponent = () => (

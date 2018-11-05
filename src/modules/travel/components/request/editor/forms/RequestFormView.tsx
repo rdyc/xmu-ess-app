@@ -8,7 +8,7 @@ import { RequestItemForm } from './RequestItemForm';
 
 export const RequestFormView: React.SFC<RequestFormProps> = props => {
   const {
-    formMode
+    formMode, customerUidValue
   } = props;
 
   const fields = Object.getOwnPropertyNames(props.initialValues.information);
@@ -17,6 +17,7 @@ export const RequestFormView: React.SFC<RequestFormProps> = props => {
     <RequestDetailForm 
       formMode={formMode}
       context={context}
+      customerUidValue={customerUidValue}
     />    
   );
 

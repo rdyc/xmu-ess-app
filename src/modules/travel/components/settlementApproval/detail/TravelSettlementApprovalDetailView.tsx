@@ -43,22 +43,6 @@ export const TravelSettlementApprovalDetailView: React.SFC<TravelSettlementAppro
           </Grid>
 
           <Grid item xs={12} md={4}>
-            <TravelSettlementSummary data = {response.data}/>
-          </Grid>
-
-          <Grid item xs={12} md={4}>
-            <TravelRequestSummary data = {requestApprovalResponse.data}/>
-          </Grid>
-
-          <Grid item xs={12} md={4}>
-            <TravelSettlementItem data = {response.data.items}/>
-          </Grid>
-
-          <Grid item xs={12} md={4}>
-            <TravelRequestItem data = {requestApprovalResponse.data.items}/>
-          </Grid>
-
-          <Grid item xs={12} md={6}>
             <Grid container spacing={16}>
               <Grid item>
                 <WorkflowHistory data={response.data.workflow} />
@@ -85,6 +69,37 @@ export const TravelSettlementApprovalDetailView: React.SFC<TravelSettlementAppro
                 </Grid>
               }
             </Grid>
+          </Grid>
+        </Grid>
+      }
+      {
+        !isLoading &&
+        response && 
+        response.data &&
+        requestApprovalResponse &&
+        <Grid container spacing={16}>
+          
+          <Grid item xs={12} md={4}>
+            <TravelSettlementSummary data = {response.data}/>
+          </Grid>
+
+          <Grid item xs={12} md={4}>
+            <TravelRequestSummary data = {requestApprovalResponse.data}/>
+          </Grid>
+        </Grid>        
+      }
+      {
+        !isLoading &&
+        response && 
+        response.data &&
+        requestApprovalResponse &&
+        <Grid container spacing={16}>
+          <Grid item xs={12} md={4}>
+            <TravelSettlementItem data = {response.data.items}/>
+          </Grid>
+
+          <Grid item xs={12} md={4}>
+            <TravelRequestItem data = {requestApprovalResponse.data.items}/>
           </Grid>
         </Grid>
       }

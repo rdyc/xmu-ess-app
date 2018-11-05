@@ -1,7 +1,7 @@
 import { FormMode } from '@generic/types';
 import { RequestFormView } from '@travel/components/request/editor/forms/RequestFormView';
 import { connect } from 'react-redux';
-import { InjectedFormProps, reduxForm } from 'redux-form';
+import { formValueSelector, InjectedFormProps, reduxForm } from 'redux-form';
 
 const formName = 'travelRequest';
 
@@ -52,12 +52,26 @@ export type TravelRequestFormData = {
 interface OwnProps {
   formMode: FormMode;
 }
+interface FormValueProps {
+  customerUidValue: string | undefined;
+}
 
 export type RequestFormProps 
-  = InjectedFormProps<TravelRequestFormData, OwnProps> 
+  = InjectedFormProps<TravelRequestFormData, OwnProps>
+  & FormValueProps 
   & OwnProps;
 
-const connectedView = connect()(RequestFormView);
+const selector = formValueSelector(formName);
+
+const mapStateToProps = (state: any): FormValueProps => {
+   const customerUid = selector(state, 'information.customerUid');
+   
+   return {
+     customerUidValue: customerUid,
+   };
+ };
+
+const connectedView = connect(mapStateToProps)(RequestFormView);
 
 export const RequestForm = reduxForm<TravelRequestFormData, OwnProps>({
   form: formName,

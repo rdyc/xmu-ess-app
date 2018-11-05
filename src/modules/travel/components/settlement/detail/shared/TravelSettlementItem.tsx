@@ -98,13 +98,13 @@ const travelSettlementItem: React.SFC<AllProps> = props => {
                   unmountOnExit
                 >
                   <TextField
-                    {...styled}
+                    {...styled} 
                     margin="dense"
                     label={<FormattedMessage id="travel.item.field.information.isRoundTrip" />}
                     value={item.isRoundTrip}
                   />
                   <TextField
-                    {...styled}
+                    {...styled} 
                     margin="dense"
                     label={<FormattedMessage id="travel.item.field.information.transport" />}
                     value={item.transport ? item.transport.value : '-'}
@@ -122,7 +122,9 @@ const travelSettlementItem: React.SFC<AllProps> = props => {
                     value={intl.formatDate(item.departureDate, {
                       year: 'numeric',
                       month: 'short',
-                      day: 'numeric'
+                      day: 'numeric',
+                      hour: 'numeric',
+                      minute: 'numeric'
                     })}
                   />
                   <TextField
@@ -138,14 +140,16 @@ const travelSettlementItem: React.SFC<AllProps> = props => {
                     value={intl.formatDate(item.returnDate, {
                       year: 'numeric',
                       month: 'short',
-                      day: 'numeric'
+                      day: 'numeric',
+                      hour: 'numeric',
+                      minute: 'numeric'
                     })}
                   />
                   <TextField
                     {...styled}
                     margin="dense"
                     label={<FormattedMessage id="travel.item.field.information.costTransport" />}
-                    value={intl.formatNumber(item.costTransport || 0 )}
+                    value={intl.formatNumber(item.costTransport || 0)}
                   />
                   <TextField
                     {...styled}
@@ -176,7 +180,7 @@ const travelSettlementItem: React.SFC<AllProps> = props => {
                     margin="dense"
                     label={<FormattedMessage id="travel.item.field.information.notes" />}
                     value={item.notes || '-'}
-                  />
+                  />                  
                   <TextField
                     {...styled}
                     margin="dense"
@@ -186,7 +190,7 @@ const travelSettlementItem: React.SFC<AllProps> = props => {
                   <TextField
                     {...styled}
                     margin="dense"
-                    label={<FormattedMessage id="travel.item.field.information.currency" />}
+                    label={<FormattedMessage id="travel.item.field.information.currencyUid" />}
                     value={item.currency ? item.currency.name : '-'}
                   />
                   <TextField
@@ -194,6 +198,19 @@ const travelSettlementItem: React.SFC<AllProps> = props => {
                     margin="dense"
                     label={<FormattedMessage id="travel.item.field.information.diemValue" />}
                     value={intl.formatNumber(item.diemValue || 0)}
+                  />
+                  <TextField
+                    {...styled}
+                    margin="dense"
+                    label={<FormattedMessage id="travel.item.field.information.currencyRate" />}
+                    value={item.currency ? item.currency.rate : 0}
+                  />
+                                    
+                  <TextField
+                    {...styled}
+                    margin="dense"
+                    label={<FormattedMessage id="travel.item.field.information.amount" />}
+                    value={intl.formatNumber(item.amount || 0)}
                   />
                   <Divider />
                 </Collapse>
