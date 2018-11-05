@@ -14,6 +14,7 @@ import {
 } from '@mileage/store/actions';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
+import { submit } from 'redux-form';
 
 interface PropsFromState {
   mileageApprovalState: {
@@ -37,6 +38,9 @@ interface PropsFromDispatch {
 
     loadDetailRequest: typeof mileageApprovalGetByIdRequest;
     loadDetailDispose: typeof mileageApprovalGetByIdDispose;
+  };
+  workflowApprovalDispatch: {
+    submitForm: (formName: string) => void;
   };
 }
 
@@ -68,6 +72,9 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     loadDetailRequest: (request: IMileageApprovalGetByIdRequest) =>
       dispatch(mileageApprovalGetByIdRequest(request)),
     loadDetailDispose: () => dispatch(mileageApprovalGetByIdDispose())
+  },
+  workflowApprovalDispatch: {
+    submitForm: (formName: string) => dispatch(submit(formName))
   }
 });
 

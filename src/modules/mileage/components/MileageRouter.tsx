@@ -24,7 +24,11 @@ const detailApproval = () => <MileageApprovalDetail />;
 
 export const MileageRequestRouter: React.SFC<AllProps> = props => (
   <Switch>
-    <Route exact path={`${props.match.path}/request/`} component={listComponent} />
+    <Route
+      exact
+      path={`${props.match.path}/request/`}
+      component={listComponent}
+    />
     <Route
       path={`${props.match.path}/request/details/:mileageUid`}
       component={detailComponent}
@@ -36,6 +40,9 @@ export const MileageRequestRouter: React.SFC<AllProps> = props => (
 export const MileageApprovalRouter: React.SFC<AllProps> = props => (
   <Switch>
     <Route exact path={`${props.match.path}/`} component={listApproval} />
-    <Route path={`${props.match.path}/details/:mileageUid`} component={detailApproval} />
+    <Route
+      path={`${props.match.path}/details/:mileageUid`}
+      component={detailApproval}
+    />
   </Switch>
 );

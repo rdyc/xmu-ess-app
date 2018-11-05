@@ -11,7 +11,9 @@ import {
   mileageApprovalPostRequest,
   mileageApprovalPostSuccess
 } from '@mileage/store/actions';
+import { flattenObject } from '@utils/flattenObject';
 import saiyanSaga from '@utils/saiyanSaga';
+import { SubmissionError } from 'redux-form';
 import { all, fork, put, takeEvery } from 'redux-saga/effects';
 import { IApiResponse, objectToQuerystring } from 'utils';
 
@@ -86,21 +88,34 @@ function* watchPostFetchRequest() {
       successEffects: (response: IApiResponse) => ([
         put(mileageApprovalPostSuccess(response.body)),
       ]), 
+      successCallback: (response: IApiResponse) => {
+        action.payload.resolve(response.body.data);
+      },
       failureEffects: (response: IApiResponse) => ([
         put(mileageApprovalPostError(response.statusText)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        })),
-      ]), 
+      ]),
+      failureCallback: (response: IApiResponse) => {
+        if (response.status === 400) {
+          const errors: any = { 
+            // information -> based form section name
+            information: flattenObject(response.body.errors) 
+          };
+
+          action.payload.reject(new SubmissionError(errors));
+        } else {
+          action.payload.reject(response.statusText);
+        }
+      },
       errorEffects: (error: TypeError) => ([
         put(mileageApprovalPostError(error.message)),
         put(layoutAlertAdd({
           time: new Date(),
           message: error.message
         }))
-      ])
+      ]),
+      errorCallback: (error: any) => {
+        action.payload.reject(error);
+      }
     });
   };
 
