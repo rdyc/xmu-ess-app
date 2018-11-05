@@ -194,7 +194,7 @@ const handlers: HandleCreators<ProjectAssignmentEditorProps, OwnHandlers> = {
     }); 
   },
   handleSubmitSuccess: (props: ProjectAssignmentEditorProps) => (response: boolean) => {
-    const { formMode, intl, history, assignmentUid } = props;
+    const { formMode, intl, history } = props;
     const { alertAdd } = props.layoutDispatch;
     
     let message: string = '';
@@ -210,9 +210,7 @@ const handlers: HandleCreators<ProjectAssignmentEditorProps, OwnHandlers> = {
       time: new Date()
     });
 
-    if (assignmentUid) {
-      history.push(`/project/assignments/${assignmentUid}`);
-    }
+    history.push(`/project/assignments`);
   },
   handleSubmitFail: (props: ProjectAssignmentEditorProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
     const { intl } = props;
