@@ -228,7 +228,7 @@ const handlerCreators: HandleCreators<ApprovalListProps, OwnHandlers> = {
       navBottomDispatch.dispose();
   
       // dispose 'get all' from 'redux store' when the page is 'out of project registration' context 
-      if (view && view.parentUid !== AppMenu.ProjectRegistration) {
+      if (view && view.parentUid !== AppMenu.Finance) {
         loadAllDispose();
       }
     }

@@ -1,7 +1,7 @@
 import { FinanceStatusType } from '@common/classes/types';
 import AppMenu from '@constants/AppMenu';
 import { IFinanceApprovalBulkPostPayload, IFinanceApprovalItem } from '@finance/classes/request/approval';
-import { IFinanceDetail } from '@finance/classes/response';
+import { IFinance } from '@finance/classes/response';
 import { FinanceApprovalUserAction } from '@finance/classes/types';
 import { ApprovalPaymentView } from '@finance/components/approval/payment/ApprovalPaymentView';
 import { WithFinanceApproval, withFinanceApproval } from '@finance/hoc/withFinanceApproval';
@@ -40,7 +40,7 @@ interface OwnHandler {
 
 interface OwnState {
   financeUids: string[];
-  finances?: (IFinanceDetail | undefined)[];
+  finances: IFinance[] | null | undefined;
   action?: FinanceApprovalUserAction | undefined;
   approvalTitle: string;
   approvalSubHeader: string;
@@ -74,6 +74,7 @@ export type ApprovalPaymentProps
 const createProps: mapper<ApprovalPaymentProps, OwnState> = (props: ApprovalPaymentProps): OwnState => { 
   const { intl } = props;
   return {
+    finances: [],
     financeUids: props.match.params.financeUids.split(','),
     approvalTitle: intl.formatMessage({id: 'finance.approvalTitle'}),
     approvalSubHeader: intl.formatMessage({id: 'finance.approvalSubHeader'}),
@@ -210,12 +211,9 @@ const lifecycles: ReactLifeCycleFunctions<ApprovalPaymentProps, OwnState> = {
     componentDidMount() {
       const { 
         layoutDispatch, appBarDispatch, intl, 
-        handleRefresh, stateUpdate, financeUids
+        handleRefresh, // finances
       } = this.props;
-  
-      const { user } = this.props.userState;
-      const { loadDetailRequest, loadDetailDispose } = this.props.financeApprovalDispatch;
-      const { isLoading, response } = this.props.financeApprovalState.detail;
+      const { response } = this.props.financeApprovalState.all;
   
       layoutDispatch.changeView({
         uid: AppMenu.FinanceApproval,
@@ -239,40 +237,13 @@ const lifecycles: ReactLifeCycleFunctions<ApprovalPaymentProps, OwnState> = {
       };
   
       appBarDispatch.assignCallback(handleMenuClick);
-
-      const finances: (IFinanceDetail | undefined)[] = [];
-
-      financeUids.forEach(Uid => {
-        if (user) {
-          loadDetailRequest({
-            financeUid: Uid,
-            companyUid: user.company.uid,
-            positionUid: user.position.uid,
-          });
-          if (!isLoading && response && response.data) {
-            finances.push(response && response.data);
-            loadDetailDispose();
-          }
-        }
-      });
-
-      // const finances: (IFinanceDetail | undefined)[] = financeUids.map(financeUid => {
-      //   if (user) {
-      //     loadDetailRequest({
-      //       financeUid,
-      //       companyUid: user.company.uid,
-      //       positionUid: user.position.uid,
-      //     });
-      //   }
-      //   return response && response.data;
-      // });
-
-      stateUpdate({
-        finances
-      });
+      
+      if ( response && response.data ) {
+        loadDetail(this.props);
+      }
     },
     componentWillReceiveProps(nextProps: ApprovalPaymentProps) {
-      if (nextProps.financeApprovalState.detail.response !== this.props.financeApprovalState.detail.response) {
+      if (nextProps.financeApprovalState.all.response !== this.props.financeApprovalState.all.response) {
         const { intl } = nextProps;
         const { assignMenus } = nextProps.appBarDispatch;
           
@@ -290,7 +261,6 @@ const lifecycles: ReactLifeCycleFunctions<ApprovalPaymentProps, OwnState> = {
     },
     componentWillUnmount() {
       const { layoutDispatch, appBarDispatch } = this.props;
-      const { loadDetailDispose } = this.props.financeApprovalDispatch;
   
       layoutDispatch.changeView(null);
       layoutDispatch.navBackHide();
@@ -298,9 +268,22 @@ const lifecycles: ReactLifeCycleFunctions<ApprovalPaymentProps, OwnState> = {
       layoutDispatch.actionCentreHide();
   
       appBarDispatch.dispose();
-      loadDetailDispose();
     }
   };
+
+const loadDetail = (props: ApprovalPaymentProps): void => {
+  const { financeUids, stateUpdate } = props;
+  const { response } = props.financeApprovalState.all;
+
+  const _finances = response && response.data && response.data.filter(finance => 
+    financeUids.some(financeUid => 
+      financeUid === finance.uid
+  ));
+
+  stateUpdate({
+    finances: _finances
+  });
+};
   
 export const ApprovalPayment = compose<ApprovalPaymentProps, {}>(
     withUser,

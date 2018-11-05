@@ -1,4 +1,4 @@
-import { IFinanceDetail } from '@finance/classes/response';
+import { IFinance } from '@finance/classes/response';
 import { ApprovalPaymentProps } from '@finance/components/approval/payment/ApprovalPayment';
 import {
   Card,
@@ -19,10 +19,10 @@ export const ApprovalPaymentView: React.SFC<ApprovalPaymentProps> = props => {
   const { 
     approvalTitle, approvalSubHeader, approvalChoices, approvalTrueValue, 
     approvalDialogTitle, approvalDialogContentText, approvalDialogCancelText, approvalDialogConfirmedText, finances,
-    handleValidate, handleSubmit, handleSubmitSuccess, handleSubmitFail, financeUids
+    handleValidate, handleSubmit, handleSubmitSuccess, handleSubmitFail,
   } = props;
 
-  const renderDetails = (_finances: (IFinanceDetail | undefined)[]) => {
+  const renderDetails = (_finances: IFinance[] | null | undefined) => {
     return (
       finances && finances.map(finance => finance &&
           <ListItem 
@@ -111,9 +111,9 @@ export const ApprovalPaymentView: React.SFC<ApprovalPaymentProps> = props => {
                 subheader={<FormattedMessage id="finance.infoSubTitle" />}
               />
               <CardContent>
-                <Typography>
+                {/* <Typography>
                   {financeUids}
-                </Typography>
+                </Typography> */}
                 <List>
                 {
                   finances &&
