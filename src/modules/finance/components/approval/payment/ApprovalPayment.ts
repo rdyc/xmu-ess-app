@@ -31,7 +31,6 @@ import { FormErrors } from 'redux-form';
 import { isNullOrUndefined, isObject } from 'util';
 
 interface OwnHandler {
-  handleRefresh: () => void;
   handleValidate: (payload: WorkflowApprovalFormData) => FormErrors;
   handleSubmit: (payload: WorkflowApprovalFormData) => void;
   handleSubmitSuccess: (result: any, dispatch: Dispatch<any>) => void;
@@ -191,27 +190,14 @@ const handlerCreators: HandleCreators<ApprovalPaymentProps, OwnHandler> = {
         details: isObject(submitError) ? submitError.message : submitError
       });
     }
-  },
-  handleRefresh: (props: ApprovalPaymentProps) => () => { 
-    // const { match } = props;
-    // const { user } = props.userState;
-    // const { loadDetailRequest } = props.financeApprovalDispatch;
-
-    // if (user) {
-    //   loadDetailRequest({
-    //     companyUid: user.company.uid,
-    //     positionUid: user.position.uid,
-    //     projectUid: match.params.projectUid
-    //   });
-    // }
-  }    
+  },  
 };
   
 const lifecycles: ReactLifeCycleFunctions<ApprovalPaymentProps, OwnState> = {
     componentDidMount() {
       const { 
         layoutDispatch, appBarDispatch, intl, 
-        handleRefresh, // finances
+        handleRefresh, history
       } = this.props;
       const { response } = this.props.financeApprovalState.all;
   
@@ -223,7 +209,6 @@ const lifecycles: ReactLifeCycleFunctions<ApprovalPaymentProps, OwnState> = {
       });
   
       layoutDispatch.navBackShow();
-      layoutDispatch.moreShow();
       
       const handleMenuClick = (menu: IAppBarMenu): void => {
         switch (menu.id) {
@@ -240,6 +225,8 @@ const lifecycles: ReactLifeCycleFunctions<ApprovalPaymentProps, OwnState> = {
       
       if ( response && response.data ) {
         loadDetail(this.props);
+      } else {
+        history.goBack();
       }
     },
     componentWillReceiveProps(nextProps: ApprovalPaymentProps) {
