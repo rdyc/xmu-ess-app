@@ -17,7 +17,7 @@ import { ExpenseInformation } from './shared/ExpenseInformation';
 export const RequestDetailView: React.SFC<RequestDetailProps> = props => {
   const { 
     dialogFullScreen, dialogOpen, dialogTitle, dialogDescription, dialogCancelText, dialogConfirmedText,
-    handleDialogClose, handleDialogConfirmed, intl
+    handleDialogClose, handleDialogConfirmed
   } = props;
   const { isLoading, response } = props.expenseRequestState.detail;
 
@@ -68,10 +68,7 @@ export const RequestDetailView: React.SFC<RequestDetailProps> = props => {
             {
               response &&
               response.data &&
-              <ExpenseInformation
-                data={response.data}
-                intl={intl}
-              />
+              <ExpenseInformation data={response.data} />
             }
           </Grid>
 

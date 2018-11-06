@@ -163,7 +163,7 @@ const lifecycles: ReactLifeCycleFunctions<ProjectRegisterListProps, OwnState> = 
       onSyncCallback: handleReloading,
       onOrderCallback: handleChangeOrder,
       onDirectionCallback: handleChangeSort,
-      onAddCallback: () => history.push('/project/form'),
+      onAddCallback: () => history.push('/project/requests/form'),
       onSizeCallback: handleChangeSize,
     });
 

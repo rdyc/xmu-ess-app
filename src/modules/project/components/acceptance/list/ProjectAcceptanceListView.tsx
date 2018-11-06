@@ -23,10 +23,15 @@ export const ProjectAcceptanceListView: React.SFC<ProjectAcceptanceListProps> = 
   const { isLoading, response } = props.projectAcceptanceState.all;
 
   const hasPending = (items: IProjectAssignmentDetailItem[] | null): boolean => {
+    const { user } = props.userState;
+
     let result: boolean = false;
 
-    if (items) {
-      const pendigItems = items.filter(item => item.statusType === WorkflowStatusType.Submitted);
+    if (user && items) {
+      const pendigItems = items.filter(item =>
+        item.employeeUid === user.uid &&
+        item.statusType === WorkflowStatusType.Submitted
+      );
 
       result = pendigItems.length > 0;
     }

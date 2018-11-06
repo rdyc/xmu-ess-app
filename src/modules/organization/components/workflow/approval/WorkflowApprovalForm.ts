@@ -37,6 +37,8 @@ interface OwnProps {
   approvalDialogContentText: string;
   approvalDialogCancelText: string;
   approvalDialogConfirmedText: string;
+  approvalRemarkLabel?: string;
+  approvalRemarkPlaceholder?: string;
 }
 
 interface OwnHandler {
