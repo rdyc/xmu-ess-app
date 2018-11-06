@@ -95,12 +95,14 @@ const purchaseInformation: React.SFC<AllProps> = props => {
           label = { < FormattedMessage id = "purchase.field.information.request" /> }
           value = { intl.formatNumber(data.request) }
           />
+          { data.currencyType === 'SCR01' ?
           <TextField
           { ...styled }
           margin = "dense"
           label = { < FormattedMessage id = "purchase.field.information.requestIDR" /> }
           value = { intl.formatNumber(data.requestIDR || 0) }
           />
+          : '' }
           <TextField
           { ...styled }
           margin = "dense"

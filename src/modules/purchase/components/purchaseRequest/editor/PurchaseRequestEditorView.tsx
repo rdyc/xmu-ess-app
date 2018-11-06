@@ -1,12 +1,15 @@
 import { FormMode } from '@generic/types';
-import { Typography } from '@material-ui/core';
+import { 
+  // Typography, 
+  LinearProgress } from '@material-ui/core';
 import {
   PurchaseRequestForm,
   PurchaseRequestFormData,
+  // PurchaseRequestItemFormData
 } from '@purchase/components/purchaseRequest/editor/forms/PurchaseRequestForm';
 import { PurchaseRequestEditorProps } from '@purchase/components/purchaseRequest/editor/PurchaseRequestEditor';
 import * as React from 'react';
-import { FormattedMessage } from 'react-intl';
+// import { FormattedMessage } from 'react-intl';
 
 export const PurchaseRequestEditorView: React.SFC<PurchaseRequestEditorProps> = props => {
   const { formMode, handleValidate, handleSubmit, handleSubmitSuccess, handleSubmitFail } = props;
@@ -36,9 +39,11 @@ export const PurchaseRequestEditorView: React.SFC<PurchaseRequestEditorProps> = 
       request: 0,
       notes: undefined,
     },
-    items: {
-      items: []
-    }
+    items: [{
+        uid: undefined,
+        description: '',
+        request: 0
+      }]
   };
 
   // New
@@ -50,9 +55,7 @@ export const PurchaseRequestEditorView: React.SFC<PurchaseRequestEditorProps> = 
   if (formMode === FormMode.Edit) {
     if (isLoading && !response) {
       return (
-        <Typography variant="body2">
-          <FormattedMessage id="global.loading" />
-        </Typography>
+        <LinearProgress variant="query" />
       );
     }
 
@@ -71,9 +74,9 @@ export const PurchaseRequestEditorView: React.SFC<PurchaseRequestEditorProps> = 
 
       if (data.items) {
         data.items.forEach(item =>
-          initialValues.items.items.push({
+          initialValues.items.push({
             uid: item.uid,
-            description: item.description ? item.description : 'N/A',
+            description: item.description ? item.description : '',
             request: item.requestValue
           })
         );

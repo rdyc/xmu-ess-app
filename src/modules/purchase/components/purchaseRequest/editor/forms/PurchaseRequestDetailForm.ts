@@ -1,9 +1,11 @@
+import { WorkflowStatusType } from '@common/classes/types';
 import { SelectSystem, SelectSystemOption } from '@common/components/select';
 import { FormMode } from '@generic/types';
 import { InputDate } from '@layout/components/input/date';
 import { InputNumber } from '@layout/components/input/number';
 import { InputText } from '@layout/components/input/text';
 import { InputCustomer } from '@lookup/components/customer/input';
+import { SelectProject } from '@project/components/select/project';
 import { PurchaseRequestDetailFormView } from '@purchase/components/purchaseRequest/editor/forms/PurchaseRequestDetailFormView';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose, HandleCreators, withHandlers } from 'recompose';
@@ -14,10 +16,12 @@ interface OwnProps {
   formMode: FormMode;
   context: BaseFieldsProps;
   formCurrencyType: string | null | undefined;
+  formCustomer: string | null | undefined;
   isCurrencyIdr: boolean;
   onChangeCurrencyType: (event: any, newValue: string, oldValue: string) => void;
   onChangeRate: (event: any, newValue: number, oldValue: number) => void;
   onChangeValueIdr: (event: any, newValue: number, oldValue: number) => void;
+  // onChangeRequestItem: (event: any, newValue: number, oldValue: number) => void;
 }
 
 interface OwnHandlers {
@@ -32,17 +36,31 @@ export type PurchaseRequestDetailFormProps
 const handlerCreators: HandleCreators<PurchaseRequestDetailFormProps, OwnHandlers> = {
   generateFieldProps: (props: PurchaseRequestDetailFormProps) => (name: string) => { 
     const { 
-      intl, formMode, formCurrencyType, isCurrencyIdr, 
+      intl, 
+      formCustomer,
+      formCurrencyType, isCurrencyIdr, 
       onChangeCurrencyType, onChangeValueIdr, 
-      onChangeRate 
+      onChangeRate,
+      // onChangeRequestItem
     } = props;
     
+    const projectFilter: any = {
+      customerUids: formCustomer,
+      statusTypes: WorkflowStatusType.Approved,
+    };
+
     const fieldName = name.replace('information.', '');
     
     let fieldProps: SelectSystemOption & any = {};
   
     switch (fieldName) {
-      case 'uid':
+      case 'uid': 
+      fieldProps = {
+          disabled: true,
+          placeholder: intl.formatMessage({ id: `purchase.field.${name}.placeholder` }),
+          component: InputText
+        };
+      break;
       
       case 'customerUid': 
         fieldProps = {
@@ -54,12 +72,11 @@ const handlerCreators: HandleCreators<PurchaseRequestDetailFormProps, OwnHandler
 
       case 'projectUid':
         fieldProps = {
-          required: formMode === FormMode.New,
-          // required: true,
+          required: true,
           category: 'project',
-          // disabled: formMode === FormMode.Edit,
           placeholder: intl.formatMessage({ id: `purchase.field.${name}.placeholder` }),
-          component: SelectSystem,
+          component: !isNullOrUndefined(formCustomer) ? SelectProject : InputText,
+          customerUid: projectFilter,
         };
         break;
 

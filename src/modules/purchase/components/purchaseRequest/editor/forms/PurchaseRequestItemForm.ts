@@ -1,12 +1,8 @@
-import { WithLayout, withLayout } from '@layout/hoc/withLayout';
-import { WithUser, withUser } from '@layout/hoc/withUser';
-import { WithVariables, withVariables } from '@layout/hoc/withVariables';
-import { WithStyles, withStyles } from '@material-ui/core';
-import withWidth, { WithWidth } from '@material-ui/core/withWidth';
-import { IPurchaseItemRequest } from '@purchase/classes/response/purchaseRequest';
+import { InputNumber } from '@layout/components/input/number';
+import { InputText } from '@layout/components/input/text';
+// import { IPurchaseItemRequest } from '@purchase/classes/response/purchaseRequest';
 import { PurchaseRequestItemFormData } from '@purchase/components/purchaseRequest/editor/forms/PurchaseRequestForm';
 import { PurchaseRequestItemFormView } from '@purchase/components/purchaseRequest/editor/forms/PurchaseRequestItemFormView';
-import styles from '@styles';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose, HandleCreators, withHandlers } from 'recompose';
 import { WrappedFieldArrayProps } from 'redux-form';
@@ -16,46 +12,56 @@ interface OwnProps {
 }
 
 interface OwnHandlers {
-  handleItems: (items: IPurchaseItemRequest) => any;
+  generateFieldProps: (items: string) => any;
 }
 
 export type PurchaseRequestItemFormProps
   = OwnProps
   & OwnHandlers
-  & WithUser
-  & WithLayout
-  & WithStyles
-  & WithWidth
-  & WithVariables
   & InjectedIntlProps;
 
 const handlerCreators: HandleCreators<PurchaseRequestItemFormProps, OwnHandlers> = {
-  handleItems: (props: PurchaseRequestItemFormProps) => (items: IPurchaseItemRequest): any => {
-    // const { context, intl } = props;
-    const { context } = props;
-    // const { alertAdd } = props.layoutDispatch;
+  generateFieldProps: (props: PurchaseRequestItemFormProps) => (items: string) => { 
+    const { intl } = props;
+    
+    const fieldName = items.replace('information.', '');
+    
+    let fieldProps: any = {};
+  
+    switch (fieldName) {
+      case 'uid':
 
-    try {
+      case 'description': 
+        fieldProps = {
+          required: true,
+          placeholder: intl.formatMessage({id: `purchase.itemTitle.${name}`}),
+          component: InputText
+        };
+        break;
 
-      context.fields.push({
-        uid: items.uid,
-        description: items.description,
-        request: items.requestValue
-      });
-
-      return true;
-    } catch (error) {
-      return false;
+      case 'request':
+        fieldProps = {
+          required: true,
+          type: 'number',
+          placeholder: intl.formatMessage({id: `purchase.itemTitle.${name}`}),
+          component: InputNumber
+        };
+        break;
+    
+      default:
+        fieldProps = {
+          disabled: true,
+          placeholder: intl.formatMessage({id: `purchase.itemTitle.${name}`}),
+          component: InputText
+        };
+        break;
     }
+
+    return fieldProps;
   }
 };
 
 export const PurchaseRequestItemForm = compose<PurchaseRequestItemFormProps, OwnProps>(
-  withUser,
-  withLayout,
-  withStyles(styles),
-  withWidth(),
-  withVariables,
   injectIntl,
   withHandlers<PurchaseRequestItemFormProps, OwnHandlers>(handlerCreators),
 )(PurchaseRequestItemFormView);

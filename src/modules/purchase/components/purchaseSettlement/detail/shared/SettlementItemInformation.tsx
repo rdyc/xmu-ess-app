@@ -33,35 +33,44 @@ export const SettlementItemInformation: React.SFC<OwnProps> = props => {
             data.map(item =>
               <ListItem disableGutters key={item.uid}>
                 <Grid container xs={12}>
-                  <Grid container item xs={12}>
+                  <Grid container item xs={12} spacing={8}>
                     <ListItemText
                       primary={item.uid}
                       secondary={item.description ? <Typography noWrap variant="body2">{item.description}</Typography> : 'N/A'}
                     />
-                    <Grid xs={4}>
+                    <Grid xs={3}>
+                      <ListItemText
+                        primary={<FormattedMessage id="purchase.itemTitle.request" />}
+                        />
                       <Typography
                       variant="display1"
-                      align="right"
+                      align="left"
                     >
                       <FormattedNumber
                         value={item.requestValue}
                       />
                     </Typography>
                     </Grid>
-                    <Grid xs={4}>
+                    <Grid xs={3}>
+                      <ListItemText
+                        primary={<FormattedMessage id="purchase.itemTitle.actual" />}
+                      />
                     <Typography
                       variant="display1"
-                      align="justify"
+                      align="left"
                     >
                       <FormattedNumber
                         value={item.actualValue}
                       />
                     </Typography>
                     </Grid>
-                    <Grid xs={4}>
+                    <Grid xs={3}>
+                      <ListItemText
+                        primary={<FormattedMessage id="purchase.itemTitle.variance" />}
+                      />
                     <Typography
                       variant="display1"
-                      align="justify"
+                      align="left"
                     >
                       <FormattedNumber
                         value={item.varianceValue}

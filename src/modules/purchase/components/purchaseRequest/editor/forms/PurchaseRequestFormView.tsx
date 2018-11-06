@@ -9,6 +9,7 @@ import { BaseFieldsProps, FieldArray, Fields, FormSection, WrappedFieldArrayProp
 export const PurchaseRequestFormView: React.SFC<PurchaseRequestFormProps> = props => {
   const {
     formMode,
+    formCustomer,
     formIsCurrencyIDR, formRate, formValue,
     formCurrencyType, change, initialValues
   } = props;
@@ -39,6 +40,7 @@ export const PurchaseRequestFormView: React.SFC<PurchaseRequestFormProps> = prop
       formMode={formMode}
       context={context}
       isCurrencyIdr={formIsCurrencyIDR}
+      formCustomer={formCustomer}
       formCurrencyType={formCurrencyType}
       onChangeCurrencyType={onChangeCurrencyType}
       onChangeRate={onChangeRate}
@@ -68,7 +70,7 @@ export const PurchaseRequestFormView: React.SFC<PurchaseRequestFormProps> = prop
           </FormSection>
         </Grid>
 
-        <Grid item xs={12} md={4}>
+        <Grid item xs={12} md={8}>
           <FormSection name="items">
             <FieldArray
               name="items"

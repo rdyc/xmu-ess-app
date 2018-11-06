@@ -4,14 +4,16 @@ import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import {
-  // IPurchaseItemPostPayload,
+  IPurchaseItemPostPayload,
   IPurchaseItemPutPayload,
   IPurchasePostPayload,
   IPurchasePutPayload
 } from '@purchase/classes/request/purchaseRequest';
-import { IPurchase } from '@purchase/classes/response/purchaseRequest';
+import { IPurchase, 
+  // IPurchaseDetail 
+} from '@purchase/classes/response/purchaseRequest';
 import {
-  PurchaseRequestFormData,
+  PurchaseRequestFormData, 
   // PurchaseRequestItemFormData,
 } from '@purchase/components/purchaseRequest/editor/forms/PurchaseRequestForm';
 import { PurchaseRequestEditorView } from '@purchase/components/purchaseRequest/editor/PurchaseRequestEditorView';
@@ -68,15 +70,47 @@ export type PurchaseRequestEditorProps
   & OwnState
   & OwnStateUpdaters;
 
-const handlerCreators: HandleCreators<PurchaseRequestEditorProps, OwnHandlers> = {
+const createProps: mapper<PurchaseRequestEditorProps, OwnState> = (props: PurchaseRequestEditorProps): OwnState => {
+  const { history } = props;
+
+  const state = history.location.state;
+
+  return {
+    formMode: state ? FormMode.Edit : FormMode.New,
+    companyUid: state ? state.companyUid : undefined,
+    positionUid: state ? state.positionUid : undefined,
+    purchaseUid: state ? state.purchaseUid : undefined
+  };
+};
+
+const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
+  stateUpdate: (prevState: OwnState) => (newState: any) => ({
+    ...prevState,
+    ...newState
+  })
+};
+
+const handlers: HandleCreators<PurchaseRequestEditorProps, OwnHandlers> = {
+  handleEventListener: (props: PurchaseRequestEditorProps) => (event: CustomEvent) => {
+    const formValues = event.detail as PurchaseRequestFormData;
+
+    let requestValue: number = 0;
+
+    if (formValues.items) {
+      formValues.items.forEach(items => requestValue += items.request);
+    }
+  },
+
   handleValidate: (props: PurchaseRequestEditorProps) => (formData: PurchaseRequestFormData) => {
     const errors = {
-      information: {}
+      information: {},
+      purchaseItems: [{}]
     };
 
     const requiredFields = [
-      'customerUid', 'project', 'advance',
-      'date', 'uid', 'currencyType'
+      'customerUid', 'projectUid',
+      // 'advance',
+      'date', 'rate', 'currencyType'
     ];
 
     requiredFields.forEach(field => {
@@ -102,35 +136,50 @@ const handlerCreators: HandleCreators<PurchaseRequestEditorProps, OwnHandlers> =
         return null;
       }
 
-      const _items: IPurchaseItemPutPayload[] = [];
+      // let _item: [] = [];
+      const _items: IPurchaseItemPostPayload[] = [];
+      
+      if (formMode === FormMode.New)  {
+           formData.items.forEach(item =>
+          _items.push({
+            description: item.description,
+            request: item.request
+              })
+            );
+      }
+
+      return _items;
+    };
+
+    const parsedItemsPut = () => {
+      if (!formData.items) {
+        return null;
+      }
+      
+      const _itemsPut: IPurchaseItemPutPayload[] = [];
 
       if (formMode === FormMode.Edit) {
-        formData.items.items.forEach(item =>
-          _items.push({
+        formData.items.forEach(item =>
+          _itemsPut.push({
             uid: item.uid,
             description: item.description,
             request: item.request
           })
           );
         } 
-      // if (formMode === FormMode.New) {
-      //     const _items: IPurchaseItemPostPayload[] = [];
         
-      //      formData.items.items.forEach(item =>
-      //     _items.push({
-      //       description: item.description,
-      //       request: item.request
-      //     })
-      //     );
-      //     return _items;
-      //   }
-      return _items;
+      return _itemsPut;
     };
 
     const payload = {
       ...formData.information,
       items: parsedItems()
     };
+    
+    const payloadPut = {
+      ...formData.information,
+      items: parsedItemsPut()
+      };
 
     // creating
     if (formMode === FormMode.New) {
@@ -160,7 +209,7 @@ const handlerCreators: HandleCreators<PurchaseRequestEditorProps, OwnHandlers> =
           reject,
           companyUid: user.company.uid,
           positionUid: user.position.uid,
-          data: payload as IPurchasePutPayload,
+          data: payloadPut as IPurchasePutPayload,
         });
       });
     }
@@ -219,17 +268,6 @@ const handlerCreators: HandleCreators<PurchaseRequestEditorProps, OwnHandlers> =
   }
 };
 
-const createProps: mapper<PurchaseRequestEditorProps, OwnState> = (props: PurchaseRequestEditorProps): OwnState => ({
-  formMode: FormMode.New
-});
-
-const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
-  stateUpdate: (prevState: OwnState) => (newState: any) => ({
-    ...prevState,
-    ...newState
-  })
-};
-
 const lifecycles: ReactLifeCycleFunctions<PurchaseRequestEditorProps, {}> = {
   componentDidMount() {
     const { layoutDispatch, intl, history, stateUpdate } = this.props;
@@ -264,6 +302,7 @@ const lifecycles: ReactLifeCycleFunctions<PurchaseRequestEditorProps, {}> = {
         positionUid: user.position.uid,
         purchaseUid: history.location.state.uid
       });
+      
     }
 
     layoutDispatch.changeView({
@@ -290,7 +329,7 @@ const lifecycles: ReactLifeCycleFunctions<PurchaseRequestEditorProps, {}> = {
   }
 };
 
-export default compose<PurchaseRequestEditorProps, {}>(
+export const PurchaseRequestEditor = compose<PurchaseRequestEditorProps, {}>(
   withUser,
   withLayout,
   withAppBar,
@@ -298,6 +337,6 @@ export default compose<PurchaseRequestEditorProps, {}>(
   withPurchaseRequest,
   injectIntl,
   withStateHandlers<OwnState, OwnStateUpdaters, {}>(createProps, stateUpdaters),
-  withHandlers<PurchaseRequestEditorProps, OwnHandlers>(handlerCreators),
+  withHandlers<PurchaseRequestEditorProps, OwnHandlers>(handlers),
   lifecycle<PurchaseRequestEditorProps, {}>(lifecycles),
 )(PurchaseRequestEditorView);

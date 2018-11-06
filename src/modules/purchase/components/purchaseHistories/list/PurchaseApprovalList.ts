@@ -87,7 +87,7 @@ const stateUpdaters: StateUpdaters<OwnOptions, OwnState, OwnStateUpdaters> = {
       page: prevState.page - 1,
     }),
     stateReloading: (prevState: OwnState) => () => ({
-      page: 1,
+      page: prevState.page,
     }),
     stateOrdering: (prevState: OwnState) => (field: IListBarField) => ({
       orderBy: field.id,
@@ -99,7 +99,7 @@ const stateUpdaters: StateUpdaters<OwnOptions, OwnState, OwnStateUpdaters> = {
     }),
     stateSizing: (prevState: OwnState) => (size: number) => ({
       size,
-      page: 1,
+      page: prevState.page,
     }),
   };
 

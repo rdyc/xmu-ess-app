@@ -6,12 +6,13 @@ import {
   DialogContentText,
   DialogTitle,
   Grid,
-  Typography,
+  LinearProgress,
+  // Typography,
 } from '@material-ui/core';
 import { WorkflowHistory } from '@organization/components/workflow/history/WorkflowHistory';
 import { PurchaseRequestDetailProps } from '@purchase/components/purchaseRequest/detail/PurchaseRequestDetail';
 import * as React from 'react';
-import { FormattedMessage } from 'react-intl';
+// import { FormattedMessage } from 'react-intl';
 import { PurchaseInformation } from './shared/PurchaseInformation';
 import { PurchaseItemInformation } from './shared/PurchaseItemInformation';
 
@@ -53,9 +54,7 @@ export const PurchaseRequestDetailView: React.SFC<PurchaseRequestDetailProps> = 
     <React.Fragment>
       {
         isLoading && 
-        <Typography variant="body2">
-          <FormattedMessage id="global.loading"/>
-        </Typography>
+        <LinearProgress variant="query"/>
       }
       {
         !isLoading &&
@@ -76,7 +75,7 @@ export const PurchaseRequestDetailView: React.SFC<PurchaseRequestDetailProps> = 
             <PurchaseItemInformation data={response.data.items} />
           </Grid>
 
-          <Grid item md={4}>
+          <Grid item>
             <WorkflowHistory data={response.data.workflow} />
           </Grid>
 

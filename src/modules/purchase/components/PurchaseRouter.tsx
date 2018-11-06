@@ -1,7 +1,7 @@
 import { PurchaseApprovalDetail } from '@purchase/components/purchaseHistories/detail/PurchaseApprovalDetail';
 import { PurchaseApprovalList } from '@purchase/components/purchaseHistories/list/PurchaseApprovalList';
 import { PurchaseRequestDetail } from '@purchase/components/purchaseRequest/detail/PurchaseRequestDetail';
-import PurchaseRequestEditor from '@purchase/components/purchaseRequest/editor/PurchaseRequestEditor';
+import { PurchaseRequestEditor } from '@purchase/components/purchaseRequest/editor/PurchaseRequestEditor';
 import { PurchaseRequestList } from '@purchase/components/purchaseRequest/list/PurchaseRequestList';
 import { PurchaseSettlementDetail } from '@purchase/components/purchaseSettlement/detail/PurchaseSettlementDetail';
 // import PurchaseSettlementEditor from '@purchase/components/purchaseRequest/editor/PurchaseSettlementEditor';

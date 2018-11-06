@@ -95,5 +95,8 @@
   "purchase.message.registration.create.success": "A new Purchase ID {uid} has been created",
   "purchase.message.registration.create.failure": "Unable to process your submission",
   "purchase.message.registration.update.success": "Existing Purchase ID {uid} has been updated",
-  "purchase.message.registration.update.failure": "Unable to process your submission"
+  "purchase.message.registration.update.failure": "Unable to process your submission",
+
+  "purchase.form.purchaseRequest.editTitle": "Edit Request",
+  "purchase.form.purchaseRequest.newTitle": "Create New Request"
 }
