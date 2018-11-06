@@ -4,19 +4,27 @@ import { Submission } from '@layout/components/submission/Submission';
 import { Grid } from '@material-ui/core';
 import * as React from 'react';
 import { BaseFieldsProps, Fields, FormSection } from 'redux-form';
+import { isNullOrUndefined } from 'util';
 
 export const RequestFormView: React.SFC<RequestFormProps> = props => {
   const {
-    formMode, customerUidValue, 
+    formMode, customerUidValue, change
   } = props;
 
   const fields = Object.getOwnPropertyNames(props.initialValues.information);
+
+  const onChangeCustomer = (event: any, newValue: string, oldValue: string) => {
+    if (!isNullOrUndefined(oldValue)) {
+      change('information.projectUid', '');
+    }
+  };
   
   const componentInformation = (context: BaseFieldsProps) => (
     <RequestDetailForm 
       formMode={formMode}
       context={context}
       customerUidValue={customerUidValue}
+      onChangeCustomer={onChangeCustomer}
     />
   );
 
