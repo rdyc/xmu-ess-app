@@ -64,7 +64,7 @@ export const RequestEditorView: React.SFC<RequestEditorProps> = props => {
       initialValues.information.expenseType = data.expenseType;
       initialValues.information.customerUid = data.customerUid;
       initialValues.information.projectUid = data.projectUid;
-      initialValues.information.value = data.value || 0 ;
+      initialValues.information.value = data.value;
       initialValues.information.location = data.location;
       initialValues.information.address = data.address;
       initialValues.information.name = data.client.name;

@@ -8,7 +8,7 @@ import { SelectProjectProps } from './SelectProject';
 
 export const SelectProjectView: React.SFC<SelectProjectProps> = props => {
   const { width, input, required, label, placeholder, disabled, meta, handleOnChange } = props; 
-  const { response } = props.projectRegisterState.list;
+  const { isLoading, response } = props.projectRegisterState.list;
   
   const isMobile = isWidthDown('sm', width);
 
@@ -57,6 +57,7 @@ export const SelectProjectView: React.SFC<SelectProjectProps> = props => {
     >
       {renderItemEmpty}
       {
+        !isLoading &&
         response &&
         response.data &&
         response.data.map(item => renderItem(item))

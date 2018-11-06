@@ -8,7 +8,7 @@ import { FormattedDate, FormattedNumber, FormattedPlural } from 'react-intl';
 import { isArray } from 'util';
 
 export const ApprovalListView: React.SFC<ApprovalListProps> = props => {
-  const { handleGoToDetail } = props;
+  const { handleGoToDetail, intl } = props;
   const { isLoading, response } = props.expenseApprovalState.all;
 
   const renderExpenseList = (expenses: IExpense[]) => {
@@ -29,7 +29,7 @@ export const ApprovalListView: React.SFC<ApprovalListProps> = props => {
                   color="primary" 
                   variant="body2"
                 >
-                  {expense.notes}
+                  {expense.notes} &bull;&nbsp; {intl.formatNumber(expense.value || 0)}
                 </Typography>
                 <Typography 
                   noWrap
