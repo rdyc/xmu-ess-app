@@ -12,10 +12,14 @@
   "timesheet.form.editSubTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
   "timesheet.infoTitle": "Time Report",
   "timesheet.infoSubTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  
   "timesheet.dialog.modifyTitle": "Modify Confirmation",
   "timesheet.dialog.modifyDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
   "timesheet.dialog.closeTitle": "Close Confirmation",
   "timesheet.dialog.closeDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "timesheet.dialog.approvalTitle": "Time Report Approval Submission",
+  "timesheet.dialog.approvalContent": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+
   "timesheet.field.information.uid": "Time Report ID",
   "timesheet.field.information.date": "Report Date",
   "timesheet.field.information.activityType": "Activity Type",
@@ -44,8 +48,12 @@
   "timesheet.field.information.description": "Notes",
   "timesheet.field.information.notes.required": "Notes is required",
   "timesheet.field.information.notes.placeholder": "Please fill in the notes",
+
   "timesheet.action.modify": "Modify",
   "timesheet.action.close": "Close",
+  
+  "timesheet.view.approval.title": "Time Report Approvals",
+  "timesheet.view.approval.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
 
   "timesheet.message.entry.create.success": "A new Timesheet ID {uid} has been created",
   "timesheet.message.entry.create.failure": "Unable to process your submission",

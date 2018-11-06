@@ -10,7 +10,7 @@ import { WorkflowApprovalFormData } from '@organization/components/workflow/appr
 import {
   ITimesheetApprovalItem, ITimesheetApprovalPostBulkPayload
 } from '@timesheet/classes/request/approval';
-import { ITimesheetDetail } from '@timesheet/classes/response';
+import { ITimesheet } from '@timesheet/classes/response';
 import { TimesheetUserAction } from '@timesheet/classes/types';
 import { WithTimesheetApproval, withTimesheetApproval } from '@timesheet/hoc/withTimesheetApproval';
 import { timesheetApprovalMessage } from '@timesheet/locales/messages/timesheetApprovalMessage';
@@ -32,7 +32,7 @@ interface OwnHandler {
 
 interface OwnState {
   timesheetUids: string[];
-  timesheets?: (ITimesheetDetail | undefined) [];
+  timesheets?: ITimesheet[] | null | undefined;
   action?: TimesheetUserAction | undefined;
   approvalTitle: string;
   approvalSubHeader: string;
@@ -68,8 +68,9 @@ const createProps: mapper<ApprovalTimesheetsProps, OwnState> = (props: ApprovalT
 
   return {
     timesheetUids: props.match.params.timesheetUids.split(','),
-    approvalTitle: intl.formatMessage({ id: 'timesheet.approvalTitle' }),
-    approvalSubHeader: intl.formatMessage({ id: 'timesheet.approvalSubHeader' }),
+    timesheets: [],
+    approvalTitle: intl.formatMessage({ id: 'timesheet.view.approval.title' }),
+    approvalSubHeader: intl.formatMessage({ id: 'timesheet.view.approval.subHeader' }),
     approvalChoices: [
       { value: WorkflowStatusType.Approved, label: intl.formatMessage({ id: 'workflow.approval.action.approve' }) },
       { value: WorkflowStatusType.Rejected, label: intl.formatMessage({ id: 'workflow.approval.action.reject' }) }
@@ -96,6 +97,20 @@ const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
     dialogCancelText: 'global.action.cancel',
     dialogConfirmedText: 'global.action.ok',
   })
+};
+
+const loadDetail = (props: ApprovalTimesheetsProps): void => {
+  const { timesheetUids, stateUpdate } = props;
+  const { response } = props.timesheetApprovalState.all;
+
+  const _timesheets = response && response.data && response.data.filter(timesheet => 
+    timesheetUids.some(timesheetUid => 
+      timesheetUid === timesheet.uid
+  ));
+
+  stateUpdate({
+    timesheets: _timesheets
+  });
 };
 
 const handlerCreators: HandleCreators<ApprovalTimesheetsProps, OwnHandler> = {
@@ -204,14 +219,11 @@ const handlerCreators: HandleCreators<ApprovalTimesheetsProps, OwnHandler> = {
 const lifecycles: ReactLifeCycleFunctions<ApprovalTimesheetsProps, {}> = {
   componentDidMount() {
     const {
-      // match,
       layoutDispatch, appBarDispatch, intl,
-      handleRefresh, timesheetUids, stateUpdate
+      handleRefresh, history
     } = this.props;
 
-    const { user } = this.props.userState;
-    const { loadDetailRequest, loadDetailDispose } = this.props.timesheetApprovalDispatch;
-    const { isLoading, response } = this.props.timesheetApprovalState.detail;
+    const { response } = this.props.timesheetApprovalState.all;
 
     layoutDispatch.changeView({
       uid: AppMenu.TimesheetApproval,
@@ -236,36 +248,14 @@ const lifecycles: ReactLifeCycleFunctions<ApprovalTimesheetsProps, {}> = {
 
     appBarDispatch.assignCallback(handleMenuClick);
 
-    const timesheets: (ITimesheetDetail | undefined)[] = [];
-    
-    timesheetUids.forEach(Uid => {
-      if (user) {
-        loadDetailRequest({
-          timesheetUid: Uid,
-          companyUid: user.company.uid,
-          positionUid: user.position.uid,
-        });
-        if (!isLoading && response && response.data) {
-          timesheets.push(response && response.data);
-          loadDetailDispose();
-        }
-      }
-    });
-
-    stateUpdate({
-      timesheets
-    });
-
-    // if (user) {
-    //   loadDetailRequest({
-    //     timesheetUid: match.params.timesheetUid,
-    //     companyUid: user.company.uid,
-    //     positionUid: user.position.uid,
-    //   });
-    // }
+    if ( response && response.data ) {
+      loadDetail(this.props);
+    } else {
+      history.goBack();
+    }
   },
   componentWillReceiveProps(nextProps: ApprovalTimesheetsProps) {
-    if (nextProps.timesheetApprovalState.detail.response !== this.props.timesheetApprovalState.detail.response) {
+    if (nextProps.timesheetApprovalState.all.response !== this.props.timesheetApprovalState.all.response) {
       const { intl } = nextProps;
       const { assignMenus } = nextProps.appBarDispatch;
 
