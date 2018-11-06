@@ -24,7 +24,6 @@ export const MileageApprovalListView: React.SFC<
 
     return mileages.map((mileage, i) => (
       <div key={mileage.uid}>
-        {/* {mileage.statusType !== 'SST02' ?  : ''} */}
         <ListItem
           button={!isLoading}
           key={mileage.uid}
