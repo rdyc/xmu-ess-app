@@ -71,36 +71,16 @@ const app: React.ComponentType<AllProps> = props => {
                   <Route path="/leave" component={leaveRouter} />
                   <Route path="/approval/leave" component={approvalRouter} />
                   <Route path="/purchase/request" component={purchaseRouter} />
-                  <Route path="/approval/purchase/request"
-                    component={purchaseApprovalRouter}
-                  />
-                  <Route
-                    path="/purchase/settlement"
-                    component={purchaseSettlementRouter}
-                  />
-                  <Route
-                    path="/approval/purchase/settlement"
-                    component={purchaseSettlementApprovalRouter}
-                  />
+                  <Route path="/approval/purchase/request" component={purchaseApprovalRouter} />
+                  <Route path="/purchase/settlement" component={purchaseSettlementRouter} />
+                  <Route path="/approval/purchase/settlement" component={purchaseSettlementApprovalRouter} />
                   <Route path="/travel" component={travelRouter} />
-                  <Route
-                    path="/travel/settlement"
-                    component={travelSettlementRouter}
-                  />
-                  <Route
-                    path="/approval/travel"
-                    component={travelApprovalRouter}
-                  />
+                  <Route path="/travel/settlement" component={travelSettlementRouter} />
+                  <Route path="/approval/travel" component={travelApprovalRouter} />
                   <Route path="/timesheet" component={timesheetRouter} />
-                  <Route
-                    path="/approval/timesheet"
-                    component={timesheetApprovalRouter}
-                  />
+                  <Route path="/approval/timesheet" component={timesheetApprovalRouter} />
                   <Route path="/expense" component={ExpenseRouter} />
-                  <Route
-                    path="/approval/expense"
-                    component={ExpenseApprovalRouter}
-                  />
+                  <Route path="/approval/expense" component={ExpenseApprovalRouter} />
                   <Route path="/mileage" component={MileageRequestRouter} />
                   <Route path="/approval/mileage" component={MileageApprovalRouter} />
 

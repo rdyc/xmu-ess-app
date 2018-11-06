@@ -5,7 +5,7 @@ export const HomePage: React.SFC = props => (
   <Card square elevation={0}>
     <CardContent>
       <Typography>
-        Test bro
+        Welcome
       </Typography>
     </CardContent>
   </Card>
