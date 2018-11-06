@@ -153,12 +153,16 @@ export const ApprovalListView: React.SFC<ApprovalListProps> = props => {
           elevation={1}
         >
         <RenderList/>
-        <Button
-          type="button"
-          color="primary"
-          onClick={() => handleGoToApproval()}
-        > Approval
-        </Button>
+          <Button
+            fullWidth
+            variant="contained"
+            type="button"
+            color="primary"
+            size="large"
+            disabled={!financeUids || financeUids.length <= 0}
+            onClick={() => handleGoToApproval()}
+          > APPROVAL
+          </Button>
         </Paper>}
     </React.Fragment>
   );

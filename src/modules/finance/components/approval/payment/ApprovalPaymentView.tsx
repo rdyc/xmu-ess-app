@@ -17,7 +17,7 @@ import { FormattedDate, FormattedMessage } from 'react-intl';
 
 export const ApprovalPaymentView: React.SFC<ApprovalPaymentProps> = props => {
   const { 
-    approvalTitle, approvalSubHeader, approvalChoices, approvalTrueValue, 
+    approvalTitle, approvalSubHeader, approvalChoices, approvalTrueValue, approvalRemarkLabel, approvalRemarkPlaceholder,
     approvalDialogTitle, approvalDialogContentText, approvalDialogCancelText, approvalDialogConfirmedText, finances,
     handleValidate, handleSubmit, handleSubmitSuccess, handleSubmitFail,
   } = props;
@@ -107,13 +107,10 @@ export const ApprovalPaymentView: React.SFC<ApprovalPaymentProps> = props => {
           <Grid item xs={12} md={4}>
             <Card square>
               <CardHeader 
-                title={<FormattedMessage id="finance.infoTitle"/>}
+                title={finances && finances.length > 1 ? <FormattedMessage id="finance.title"/> : <FormattedMessage id="finance.infoTitle"/>}
                 subheader={<FormattedMessage id="finance.infoSubTitle" />}
               />
               <CardContent>
-                {/* <Typography>
-                  {financeUids}
-                </Typography> */}
                 <List>
                 {
                   finances &&
@@ -136,6 +133,8 @@ export const ApprovalPaymentView: React.SFC<ApprovalPaymentProps> = props => {
                     approvalDialogContentText={approvalDialogContentText}
                     approvalDialogCancelText={approvalDialogCancelText}
                     approvalDialogConfirmedText={approvalDialogConfirmedText}
+                    approvalRemarkLabel={approvalRemarkLabel}
+                    approvalRemarkPlaceholder={approvalRemarkPlaceholder}
                     validate={handleValidate}
                     onSubmit={handleSubmit} 
                     onSubmitSuccess={handleSubmitSuccess}

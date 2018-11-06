@@ -81,6 +81,7 @@ export const ApprovalDetailView: React.SFC<ApprovalDetailProps> = props => {
         />
         <TextField
           fullWidth
+          multiline
           contentEditable={false}
           margin="normal"
           label={<FormattedMessage id="finance.field.notes" />}

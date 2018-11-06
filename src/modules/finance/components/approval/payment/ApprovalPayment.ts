@@ -1,4 +1,4 @@
-import { FinanceStatusType } from '@common/classes/types';
+import { FinanceStatusType, WorkflowStatusType } from '@common/classes/types';
 import AppMenu from '@constants/AppMenu';
 import { IFinanceApprovalBulkPostPayload, IFinanceApprovalItem } from '@finance/classes/request/approval';
 import { IFinance } from '@finance/classes/response';
@@ -49,6 +49,8 @@ interface OwnState {
   approvalDialogContentText: string;
   approvalDialogCancelText: string;
   approvalDialogConfirmedText: string;
+  approvalRemarkLabel: string;
+  approvalRemarkPlaceholder: string;
 }
 
 interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
@@ -82,11 +84,13 @@ const createProps: mapper<ApprovalPaymentProps, OwnState> = (props: ApprovalPaym
       { value: FinanceStatusType.Hold, label: intl.formatMessage({id: 'finance.approval.action.hold'}) },
       { value: FinanceStatusType.NotPaid, label: intl.formatMessage({id: 'finance.approval.action.notPaid'}) }
     ],
-    approvalTrueValue: FinanceStatusType.Paid,
+    approvalTrueValue: WorkflowStatusType.Approved,
     approvalDialogTitle: intl.formatMessage({id: 'finance.dialog.approvalTitle'}),
     approvalDialogContentText: intl.formatMessage({id: 'finance.dialog.approvalContent'}),
     approvalDialogCancelText: intl.formatMessage({id: 'global.action.cancel'}),
     approvalDialogConfirmedText: intl.formatMessage({id: 'global.action.continue'}),
+    approvalRemarkLabel: intl.formatMessage({id: 'finance.field.notes'}),
+    approvalRemarkPlaceholder: intl.formatMessage({id: 'finance.field.notes.placeholder'})
   };
 };
   
@@ -204,8 +208,8 @@ const lifecycles: ReactLifeCycleFunctions<ApprovalPaymentProps, OwnState> = {
       layoutDispatch.changeView({
         uid: AppMenu.FinanceApproval,
         parentUid: AppMenu.Finance,
-        title: intl.formatMessage({id: 'finance.detail.title'}),
-        subTitle : intl.formatMessage({id: 'finance.detail.subTitle'})
+        title: intl.formatMessage({id: 'finance.approval.title'}),
+        subTitle : intl.formatMessage({id: 'finance.approval.subTitle'})
       });
   
       layoutDispatch.navBackShow();
