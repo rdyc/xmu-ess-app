@@ -14,8 +14,18 @@ import * as React from 'react';
 import { FormattedDate, FormattedMessage } from 'react-intl';
 
 export const MileageRequestItemFormView: React.SFC<ItemFormProps> = props => {
-
   const { isLoading, response } = props.timesheetMileagesState;
+  let { nolValue } = props;
+
+  const renderFilter = (items: ITimesheetMileages[]) => {
+    items.map(item => {
+      if (item.value !== 0) {
+        nolValue = true;
+      }
+    });
+
+    return nolValue;
+  };
 
   const renderItem = (items: ITimesheetMileages[]) => {
     const len = items.length - 1;
@@ -72,8 +82,28 @@ export const MileageRequestItemFormView: React.SFC<ItemFormProps> = props => {
       />
       <CardContent>
         <Grid>
-          {!isLoading && (!response || (response.data && response.data.length < 1)) && <Typography variant="body2"><FormattedMessage id="mileage.request.item.noData"/></Typography>}
-          {!isLoading && response && response.data && renderItem(response.data)}
+          {!isLoading &&
+            response &&
+            response.data &&
+            renderFilter(response.data) &&
+            !nolValue && (
+              <Typography variant="body2">
+                <FormattedMessage id="mileage.request.item.noData" />
+              </Typography>
+            )}
+          {!isLoading &&
+            (!response ||
+              (response.data && response.data.length < 1) ||
+              !nolValue) && (
+              <Typography variant="body2">
+                <FormattedMessage id="mileage.request.item.noData" />
+              </Typography>
+            )}
+          {!isLoading &&
+            response &&
+            response.data &&
+            nolValue &&
+            renderItem(response.data)}
         </Grid>
       </CardContent>
     </Card>

@@ -1,11 +1,13 @@
-import { IBaseQueryPagingFilter } from '@generic/interfaces';
-// import { IBasePagingFilter } from '@generic/interfaces';
+import { IBaseFilter, IBasePagingFilter } from '@generic/interfaces';
 
-export interface IExpenseRequestGetAllFilter extends IBaseQueryPagingFilter {
+interface IExtendedQuery extends IBaseFilter, IBasePagingFilter {}
+
+export interface IExpenseRequestGetAllFilter extends IBasePagingFilter {
   companyUid: string | undefined;
   positionUid: string | undefined;
   start: string | undefined;
   end: string | undefined;
   status: string | undefined;
   isRejected: boolean | undefined;
+  query?: IExtendedQuery | undefined;
 }

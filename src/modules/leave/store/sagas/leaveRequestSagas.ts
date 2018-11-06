@@ -1,6 +1,9 @@
 import { layoutAlertAdd, listBarLoading, listBarMetadata } from '@layout/store/actions';
 import {
   LeaveRequestAction as Action,
+  leaveRequestFetchError,
+  leaveRequestFetchRequest,
+  leaveRequestFetchSuccess,
   leaveRequestGetAllError,
   leaveRequestGetAllRequest,
   leaveRequestGetAllSuccess,
@@ -81,6 +84,35 @@ function* watchByIdFetchRequest() {
   };
 
   yield takeEvery(Action.GET_BY_ID_REQUEST, worker);
+}
+
+function* watchFetchRequest() {
+  const worker = (action: ReturnType<typeof leaveRequestFetchRequest>) => {
+    return saiyanSaga.fetch({
+      method: 'get',
+      path: `/v1/leave/requests/${action.payload.start}/${action.payload.regularType}/${action.payload.companyUid}/end`, 
+      successEffects: (response: IApiResponse) => [
+        put(leaveRequestFetchSuccess(response.body))
+      ], 
+      failureEffects: (response: IApiResponse) => [
+        put(leaveRequestFetchError(response.statusText)),
+        put(layoutAlertAdd({
+          time: new Date(),
+          message: response.statusText,
+          details: response
+        }))
+      ], 
+      errorEffects: (error: TypeError) => [
+        put(leaveRequestFetchError(error.message)),
+        put(layoutAlertAdd({
+          time: new Date(),
+          message: error.message
+        }))
+      ]
+    });
+  };
+
+  yield takeEvery(Action.FETCH_REQUEST, worker);
 }
 
 function* watchPostFetchRequest() {
@@ -174,6 +206,7 @@ function* leaveRequestSagas() {
   yield all([
     fork(watchAllFetchRequest),
     fork(watchByIdFetchRequest),
+    fork(watchFetchRequest),
     fork(watchPostFetchRequest),
     fork(watchPutFetchRequest)
   ]);

@@ -1,8 +1,6 @@
-import { IBaseCommand } from '@generic/interfaces';
-import { ILeaveApprovalPostPayload } from '@leave/classes/request';
+import { IBaseCommand, ICompanyAccess } from '@generic/interfaces';
+import { IWorkflowApprovalPayload } from '@organization/classes/request/workflow/approval';
 
-export interface ILeaveApprovalPostRequest extends IBaseCommand<ILeaveApprovalPostPayload> {
-  companyUid: string;
-  positionUid: string;
+export interface ILeaveApprovalPostRequest extends ICompanyAccess, IBaseCommand<IWorkflowApprovalPayload> {
   leaveUid: string;
 }

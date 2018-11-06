@@ -8,7 +8,7 @@ import { FormattedDate, FormattedNumber, FormattedPlural } from 'react-intl';
 import { isArray } from 'util';
 
 export const RequestListView: React.SFC<RequestListProps> = props => {
-  const { handleGoToDetail } = props;
+  const { handleGoToDetail, intl } = props;
   const { isLoading, response } = props.expenseRequestState.all;
 
   const renderExpenseList = (expenses: IExpense[]) => {
@@ -29,7 +29,7 @@ export const RequestListView: React.SFC<RequestListProps> = props => {
                   color="primary" 
                   variant="body2"
                 >
-                  {expense.notes}
+                  {expense.notes} &bull;&nbsp; {intl.formatNumber(expense.value || 0)}
                 </Typography>
                 <Typography 
                   noWrap

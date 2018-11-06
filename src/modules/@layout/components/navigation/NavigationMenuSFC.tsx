@@ -1,5 +1,5 @@
-import { withLayout, WithLayout } from '@layout/hoc/withLayout';
-import { withUser, WithUser } from '@layout/hoc/withUser';
+import { WithLayout, withLayout } from '@layout/hoc/withLayout';
+import { WithUser, withUser } from '@layout/hoc/withUser';
 import { ILookupRoleMenuChildList } from '@lookup/classes';
 import {
   Collapse,
@@ -18,6 +18,7 @@ import ExpandMore from '@material-ui/icons/ExpandMore';
 import styles from '@styles';
 import * as React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
+import { Link } from 'react-router-dom';
 import { compose, mapper, setDisplayName, StateHandler, StateHandlerMap, StateUpdaters, withStateHandlers } from 'recompose';
 import { menuLinkMapper } from 'utils';
 
@@ -45,7 +46,7 @@ type InnerProps
   & RouteComponentProps; 
 
 const component: React.SFC<InnerProps> = props => {
-  const { active, isExpanded, layoutState, layoutDispatch, history, classes } = props;
+  const { active, isExpanded, layoutState, layoutDispatch, classes } = props;
   const { user } = props.userState;
  
   const fnFindParent = () => {
@@ -75,7 +76,7 @@ const component: React.SFC<InnerProps> = props => {
       layoutDispatch.drawerMenuHide();
     }
 
-    history.push(menuLinkMapper(item.uid));
+    // history.push(menuLinkMapper(item.uid));
   };
 
   return (
@@ -135,23 +136,27 @@ const component: React.SFC<InnerProps> = props => {
               </ListItem>
               <Collapse in={isExpanded && parentUid === header.uid || active === header.uid }>
                 <List component="div" disablePadding>
-                  {header.childs &&
-                    header.childs.map(item => (
-                      <ListItem
-                        button
-                        key={item.uid}
+                  {
+                    header.childs &&
+                    header.childs.map(item =>
+                      <Link 
+                        key={item.uid} 
+                        to={menuLinkMapper(item.uid)} 
                         onClick={() => handleClick(item)}
                       >
-                        <ListItemText
-                          className={classes.marginFarLeft}
-                          primary={item.name}
-                          primaryTypographyProps={{
-                            noWrap: true,
-                            color: item.uid === viewMenuUid() ? 'primary' : 'textPrimary'
-                          }}
-                        />
-                      </ListItem>
-                    ))}
+                        <ListItem button>
+                          <ListItemText
+                            className={classes.marginFarLeft}
+                            primary={item.name}
+                            primaryTypographyProps={{
+                              noWrap: true,
+                              color: item.uid === viewMenuUid() ? 'primary' : 'textPrimary'
+                            }}
+                          />
+                        </ListItem>
+                      </Link>
+                    )
+                  }
                 </List>
               </Collapse>
             </List>
