@@ -1,11 +1,12 @@
 import { IResponseCollection, IResponseSingle } from '@generic/interfaces';
 import {
+  ILeaveGetEndQuery,
   ILeaveRequestGetAllRequest,
   ILeaveRequestGetByIdRequest,
   ILeaveRequestPostRequest,
   ILeaveRequestPutRequest,
 } from '@leave/classes/queries/request';
-import { ILeaveRequest, ILeaveRequestDetail } from '@leave/classes/response';
+import { ILeaveGetEnd, ILeaveRequest, ILeaveRequestDetail } from '@leave/classes/response';
 import { action } from 'typesafe-actions';
 
 export const enum LeaveRequestAction {
@@ -17,6 +18,9 @@ export const enum LeaveRequestAction {
   GET_BY_ID_SUCCESS = '@@leaveRequest/GET_BY_ID_SUCCESS',
   GET_BY_ID_ERROR = '@@leaveRequest/GET_BY_ID_ERROR',
   GET_BY_ID_DISPOSE = '@@leaveRequest/GET_BY_ID_DISPOSE',
+  FETCH_REQUEST = '@@leaveRequest/FETCH_REQUEST',
+  FETCH_SUCCESS = '@@leaveRequest/FETCH_SUCCESS',
+  FETCH_ERROR = '@@leaveRequest/FETCH_ERROR',
   POST_REQUEST = '@@leaveRequest/POST_REQUEST',
   POST_SUCCESS = '@@leaveRequest/POST_SUCCESS',
   POST_ERROR = '@@leaveRequest/POST_ERROR',
@@ -38,6 +42,11 @@ export const leaveRequestGetByIdRequest = (request: ILeaveRequestGetByIdRequest)
 export const leaveRequestGetByIdSuccess = (response: IResponseSingle<ILeaveRequestDetail>) => action(LeaveRequestAction.GET_BY_ID_SUCCESS, response);
 export const leaveRequestGetByIdError = (message: string) => action(LeaveRequestAction.GET_BY_ID_ERROR, message);
 export const leaveRequestGetByIdDispose = () => action(LeaveRequestAction.GET_BY_ID_DISPOSE);
+
+// get end
+export const leaveRequestFetchRequest = (params: ILeaveGetEndQuery) => action(LeaveRequestAction.FETCH_REQUEST, params);
+export const leaveRequestFetchSuccess = (data: ILeaveGetEnd) => action(LeaveRequestAction.FETCH_SUCCESS, data);
+export const leaveRequestFetchError = (message: string) => action(LeaveRequestAction.FETCH_ERROR, message);
 
 // post
 export const leaveRequestPostRequest = (request: ILeaveRequestPostRequest) => action(LeaveRequestAction.POST_REQUEST, request);
