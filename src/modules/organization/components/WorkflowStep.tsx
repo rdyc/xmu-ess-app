@@ -1,4 +1,3 @@
-import { WorkflowRelationType } from '@common/classes/types';
 import {
   Avatar,
   Card,
@@ -26,7 +25,7 @@ export const WorkflowStep: React.SFC<PropsFromState> = props => {
   const renderItem = (item: IOrganizationWorkflowStep) => {
     const secondaryText = `#${item.level} ${item.position ? item.position.name : 'N/A'}`;
   
-    if (item.isComplete && item.relationType !== WorkflowRelationType.NotifyOnly) {
+    if (item.isComplete) {
       if (item.response && item.response.changes && item.response.changes.created) {
         return (
           <ListItemText
