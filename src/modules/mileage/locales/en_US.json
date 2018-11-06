@@ -41,9 +41,11 @@
   "mileage.message.registration.update.success": "Existing PID {uid} has been updated",
   "mileage.message.registration.update.failure": "Unable to process your submission",
   
-  "mileage.approvalTitle": "mileage.approvalTitle",
-  "mileage.approvalSubHeader": "mileage.approvalSubHeader",
-  "mileage.dialog.approvalTitle": "mileage.dialog.approvalTitle",
-  "mileage.dialog.approvalContent": "mileage.dialog.approvalContent",
-  "mileage.approval.detail.subTitle": "mileage.approval.detail.subTitle"
+  "mileage.approvalTitle": "Mileage Approval Submission",
+  "mileage.approvalSubHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
+
+  "mileage.dialog.approvalTitle": "Mileage Approval Submission",
+  "mileage.dialog.approvalContent": "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
+
+  "mileage.approval.detail.subTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit"
 }
