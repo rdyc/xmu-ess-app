@@ -24,7 +24,6 @@ const EnLang = {
     ...enExpenseMessages,
     ...enFinanceMessages,
     ...enLeaveMessages,
-    ...enLeaveMessages,
     ...enSummaryMessages
   },
   locale: 'en-US',
