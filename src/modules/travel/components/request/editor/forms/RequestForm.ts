@@ -1,3 +1,4 @@
+import { ProjectType } from '@common/classes/types';
 import { FormMode } from '@generic/types';
 import { RequestFormView } from '@travel/components/request/editor/forms/RequestFormView';
 import { connect } from 'react-redux';
@@ -38,6 +39,7 @@ export type TravelRequestFormData = {
     end: string | null | undefined;
     customerUid: string | null | undefined;
     projectUid: string | null | undefined;
+    // projectType: string | null | undefined; // coba
     siteUid: string | null | undefined;
     activityType: string | null | undefined;
     objective: string | null | undefined;
@@ -54,6 +56,9 @@ interface OwnProps {
 }
 interface FormValueProps {
   customerUidValue: string | undefined;
+  destinationtypeValue: string | undefined;
+  diemtype: string | undefined;
+  projectTypeValue: string | undefined;
 }
 
 export type RequestFormProps 
@@ -65,9 +70,14 @@ const selector = formValueSelector(formName);
 
 const mapStateToProps = (state: any): FormValueProps => {
    const customerUid = selector(state, 'information.customerUid');
-   
+   const destinationtype = selector(state, 'information.destinationType');
+   const projectType = selector(state, 'information.projectType');
+
    return {
      customerUidValue: customerUid,
+     destinationtypeValue: destinationtype,
+     projectTypeValue: projectType,
+     diemtype: projectType === ProjectType.PreSales ? ProjectType.PreSales : ProjectType.NonProject, 
    };
  };
 

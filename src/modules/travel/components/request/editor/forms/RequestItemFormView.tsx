@@ -99,8 +99,7 @@ export const RequestItemFormView: React.SFC<RequestItemFormProps> = props => {
                   <Field 
                     type="number"
                     name={`${field}.costTransport`}
-                    label="Cost Transport"
-                    required={true}
+                    label="Transport Cost"
                     component={InputNumber}
                   />
                   <FormControlLabel
@@ -132,8 +131,7 @@ export const RequestItemFormView: React.SFC<RequestItemFormProps> = props => {
                   <Field 
                     type="number"
                     name={`${field}.costHotel`}
-                    label="Cost Hotel"
-                    required={true}
+                    label="Hotel Cost"
                     component={InputNumber}
                   />
                   <FormControlLabel
@@ -166,7 +164,7 @@ export const RequestItemFormView: React.SFC<RequestItemFormProps> = props => {
                     type="number"
                     name={`${field}.duration`}
                     label="Diem"
-                    required={true}
+                    disabled={true}
                     component={InputNumber}
                   />
                   <Field 

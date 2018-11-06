@@ -15,6 +15,8 @@ interface OwnProps {
   formMode: FormMode;
   context: BaseFieldsProps;
   customerUidValue: string | null | undefined;
+  destinationTypeValue: string | null | undefined;
+  projectTypeValue: string | null | undefined;
 }
 
 interface OwnHandlers {
@@ -29,7 +31,7 @@ export type RequestDetailFormProps
 const handlerCreators: HandleCreators<RequestDetailFormProps, OwnHandlers> = {
   generateFieldProps: (props: RequestDetailFormProps) => (name: string) => {
     const {
-      intl, customerUidValue,
+      intl, customerUidValue, destinationTypeValue
     } = props;
 
     const projectFilter: any = {
@@ -67,8 +69,9 @@ const handlerCreators: HandleCreators<RequestDetailFormProps, OwnHandlers> = {
         case 'customerUid': 
         fieldProps = {
           required: true,
+          disabled: isNullOrUndefined(destinationTypeValue),
           placeholder: intl.formatMessage({id: `travel.field.${name}.placeholder`}),
-          component: InputCustomer
+          component: !isNullOrUndefined(destinationTypeValue) ? InputCustomer : InputText
         };
         break;
 
@@ -78,7 +81,7 @@ const handlerCreators: HandleCreators<RequestDetailFormProps, OwnHandlers> = {
           disabled: isNullOrUndefined(customerUidValue),
           placeholder: intl.formatMessage({id: `travel.field.${name}.placeholder`}),
           component: !isNullOrUndefined(customerUidValue) ? SelectProject : InputText,
-          filter: projectFilter
+          filter: projectFilter,
         };
         break;
 
