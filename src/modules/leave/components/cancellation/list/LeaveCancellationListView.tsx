@@ -6,11 +6,11 @@ import * as React from 'react';
 import { FormattedDate, FormattedNumber, FormattedPlural } from 'react-intl';
 import { isArray } from 'util';
 
-import { LeaveApprovalListProps } from './LeaveApprovalList';
+import { LeaveCancellationListProps } from './LeaveCancellationList';
 
-export const LeaveApprovalListView: React.SFC<LeaveApprovalListProps> = props => {
+export const LeaveCancellationListView: React.SFC<LeaveCancellationListProps> = props => {
   const { handleGoToDetail } = props;
-  const { isLoading, response } = props.leaveApprovalState.all;
+  const { isLoading, response } = props.leaveCancellationState.all;
 
   const renderLeaveList = (leaves: ILeaveRequest[]) => {
     const len = leaves.length - 1;

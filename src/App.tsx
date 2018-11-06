@@ -7,6 +7,7 @@ import { HomePage } from '@layout/pages';
 import AccessWizardPage from '@layout/pages/AccessWizardPage';
 import CallbackPage from '@layout/pages/CallbackPage';
 import { leaveApprovalRouter } from '@leave/components/routers/leaveApprovalRouter';
+import { leaveCancellationRouter } from '@leave/components/routers/leaveCancellationRouter';
 import { leaveRequestRouter } from '@leave/components/routers/leaveRequestRouter';
 import { MileageApprovalRouter, MileageRequestRouter } from '@mileage/components/MileageRouter';
 import { ProjectRoutingComponents } from '@project/components';
@@ -27,7 +28,6 @@ import { connect, Provider } from 'react-redux';
 import { Route, Router, Switch } from 'react-router';
 import { Store } from 'redux';
 import { loadUser, OidcProvider, UserState } from 'redux-oidc';
-
 import { IAppState } from './generic/interfaces';
 import AppLocale from './language';
 import config, { getCurrentLanguage } from './language/config';
@@ -92,6 +92,7 @@ class App extends React.Component<AllProps> {
                         <Route path="/home" component={HomePage} />
                         <Route path="/account" component={accountRouter} />
                         <Route path="/leave" component={leaveRequestRouter} />
+                        <Route path="/leave/cancellation" component={leaveCancellationRouter} />
                         <Route path="/approval/leave" component={leaveApprovalRouter} />
                         <Route path="/project" component={ProjectRoutingComponents} />
                         <Route path="/purchase/request" component={purchaseRouter} />
