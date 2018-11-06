@@ -1,4 +1,4 @@
-import { ApprovalEditor } from '@expense/components/approval/editor/ApprovalEditor';
+import { ApprovalDetail } from '@expense/components/approval/detail/ApprovalDetail';
 import { ApprovalList } from '@expense/components/approval/list/ApprovalList';
 import { RequestDetail } from '@expense/components/request/detail/RequestDetail';
 import RequestEditor from '@expense/components/request/editor/RequestEditor';
@@ -25,8 +25,8 @@ const approvalListComponent = () => (
   <ApprovalList orderBy="uid" direction="descending"/>
 );
 
-const approvalEditorComponent = () => (
-  <ApprovalEditor/>
+const approvalDetailComponent = () => (
+  <ApprovalDetail/>
 );
 
 export const ExpenseRouter: React.SFC<AllProps> = props => (
@@ -40,6 +40,6 @@ export const ExpenseRouter: React.SFC<AllProps> = props => (
 export const ExpenseApprovalRouter: React.SFC<AllProps> = props => (
   <Switch>
     <Route path={`${props.match.path}/list/`} component={approvalListComponent} />
-    <Route path={`${props.match.path}/details/:expenseUid`} component={approvalEditorComponent} />
+    <Route path={`${props.match.path}/details/:expenseUid`} component={approvalDetailComponent} />
   </Switch>
 );

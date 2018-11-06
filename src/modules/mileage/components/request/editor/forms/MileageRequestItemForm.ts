@@ -11,7 +11,11 @@ interface OwnProps {
   month?: number | undefined;
 }
 
-export type ItemFormProps = WithTimesheetMileages & WithUser & OwnProps;
+interface OwnState {
+  nolValue: boolean;
+}
+
+export type ItemFormProps = WithTimesheetMileages & WithUser & OwnProps & OwnState;
 
 const lifecycles: ReactLifeCycleFunctions<ItemFormProps, {}> = {
   componentDidMount() {

@@ -9,19 +9,25 @@ import {
   projectAcceptanceGetByIdSuccess,
   projectAcceptancePostError,
   projectAcceptancePostRequest,
-  projectAcceptancePostSuccess
+  projectAcceptancePostSuccess,
 } from '@project/store/actions';
 import { flattenObject } from '@utils/flattenObject';
 import saiyanSaga from '@utils/saiyanSaga';
+import * as qs from 'qs';
 import { SubmissionError } from 'redux-form';
 import { all, fork, put, takeEvery } from 'redux-saga/effects';
-import { IApiResponse, objectToQuerystring } from 'utils';
+import { IApiResponse } from 'utils';
 
 function* watchGetAllRequest() {
   const worker = (action: ReturnType<typeof projectAcceptanceGetAllRequest>) => {
+    const params = qs.stringify(action.payload.filter, { 
+      allowDots: true, 
+      skipNulls: true
+    });
+
     return saiyanSaga.fetch({
       method: 'get',
-      path: `/v1/project/assignments/acceptances${objectToQuerystring(action.payload.filter)}`,
+      path: `/v1/project/assignments/acceptances?${params}`,
       successEffects: (response: IApiResponse) => [
         put(projectAcceptanceGetAllSuccess(response.body)),
         put(listBarMetadata(response.body.metadata))
@@ -56,7 +62,7 @@ function* watchGetByIdRequest() {
   const worker = (action: ReturnType<typeof projectAcceptanceGetByIdRequest>) => {
     return saiyanSaga.fetch({
       method: 'get',
-      path: `/v1/project/assignments/acceptances/${action.payload.assingmentUid}/${action.payload.assignmentItemUid}`,
+      path: `/v1/project/assignments/acceptances/${action.payload.assignmentUid}/${action.payload.assignmentItemUid}`,
       successEffects: (response: IApiResponse) => [
         put(projectAcceptanceGetByIdSuccess(response.body))
       ],
@@ -89,7 +95,7 @@ function* watchPostRequest() {
   const worker = (action: ReturnType<typeof projectAcceptancePostRequest>) => {
     return saiyanSaga.fetch({
       method: 'post',
-      path: `/v1/project/assignments/acceptances/${action.payload.assignmentItemUid}/${action.payload.assignmentItemUid}`,
+      path: `/v1/project/assignments/acceptances/${action.payload.assignmentUid}/${action.payload.assignmentItemUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
         put(projectAcceptancePostSuccess(response.body))

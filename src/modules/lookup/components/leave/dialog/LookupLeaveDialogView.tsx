@@ -81,11 +81,11 @@ export const LookupLeaveDialogView: React.SFC<LookupLeaveDialogProps> = props =>
         disableTypography
       >
         <Typography variant="title" color="primary">
-          <FormattedMessage id="lookup.leave.lookupTitle" />
+          <FormattedMessage id="lookup.leave.title" />
         </Typography>
 
         <Typography variant="subheading">
-          <FormattedMessage id="lookup.leave.lookupDescription" />
+          <FormattedMessage id="lookup.leave.subTitle" />
         </Typography>
         
         <TextField

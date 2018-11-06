@@ -222,20 +222,20 @@ const handlerCreators: HandleCreators<ProjectRegistrationDetailProps, Handler> =
 
       switch (action) {
         case ProjectUserAction.Modify:
-          next = '/project/form';
+          next = '/project/requests/form';
           break;
           
         case ProjectUserAction.ChangeOwner:
-          next = '/project/owner';
+          next = '/project/requests/owner';
           break;
         
         case ProjectUserAction.Close:
         case ProjectUserAction.ReOpen:
-          next = '/project/status';
+          next = '/project/requests/status';
           break;
 
         case ProjectUserAction.ManageSites:
-          next = `/project/sites/${companyUid}/${projectUid}`;
+          next = `/project/requests/sites/${companyUid}/${projectUid}`;
           break;
 
         default:

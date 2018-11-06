@@ -1,14 +1,20 @@
+import { WorkflowStatusType } from '@common/classes/types';
 import AppMenu from '@constants/AppMenu';
+import { RadioGroupChoice } from '@layout/components/input/radioGroup';
 import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IAppBarMenu } from '@layout/interfaces';
+import { IMileageApprovalPostItem } from '@mileage/classes/request';
+import { IMileageApprovalDetail } from '@mileage/classes/response';
 import { MileageApprovalUserAction } from '@mileage/classes/types';
 import { MileageApprovalDetailView } from '@mileage/components/approval/detail/MileageApprovalDetailView';
 import {
   WithMileageApproval,
   withMileageApproval
 } from '@mileage/hoc/withMileageApproval';
+import { mileageMessage } from '@mileage/locales/messages/mileageMessage';
+import { IWorkflowApprovalItemPayload } from '@organization/classes/request/workflow/approval';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import {
@@ -23,34 +29,43 @@ import {
   withHandlers,
   withStateHandlers
 } from 'recompose';
+import { Dispatch } from 'redux';
+import { FormErrors } from 'redux-form';
+import { isNullOrUndefined, isObject } from 'util';
+import { WorkflowApprovalMileageFormData } from './WorkflowMileageApproval';
 
-interface Handler {
+interface OwnHandler {
   handleMileageRefresh: () => void;
-  handleDialogOpen: (
-    title: string,
-    description: string,
-    cancelText?: string,
-    confirmText?: string,
-    fullScreen?: boolean
+  handleCheckbox: (mileageItemUid: string) => void;
+  handleValidate: (payload: WorkflowApprovalMileageFormData) => FormErrors;
+  handleSubmit: (payload: WorkflowApprovalMileageFormData) => void;
+  handleSubmitSuccess: (result: any, dispatch: Dispatch<any>) => void;
+  handleSubmitFail: (
+    errors: FormErrors | undefined,
+    dispatch: Dispatch<any>,
+    submitError: any
   ) => void;
-  handleDialogConfirmed: () => void;
-}
-
-interface OwnState {
-  dialogFullScreen: boolean;
-  dialogOpen: boolean;
-  dialogTitle?: string | undefined;
-  dialogDescription?: string | undefined;
-  dialogCancelText: string;
-  dialogConfirmedText: string;
-}
-
-interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
-  stateUpdate: StateHandler<OwnState>;
 }
 
 interface OwnRouteParams {
   mileageUid: string;
+}
+
+interface OwnState {
+  mileageItemUids: string[];
+  back: boolean;
+  approvalTitle: string;
+  approvalSubHeader: string;
+  approvalChoices: RadioGroupChoice[];
+  approvalTrueValue: string;
+  approvalDialogTitle: string;
+  approvalDialogContentText: string;
+  approvalDialogCancelText: string;
+  approvalDialogConfirmedText: string;
+}
+
+interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
+  stateCheckbox: StateHandler<OwnState>;
 }
 
 export type MileageApprovalDetailProps = WithMileageApproval &
@@ -60,98 +75,227 @@ export type MileageApprovalDetailProps = WithMileageApproval &
   RouteComponentProps<OwnRouteParams> &
   InjectedIntlProps &
   OwnState &
-  OwnStateUpdaters &
-  Handler;
+  OwnHandler &
+  OwnStateUpdaters;
 
 const createProps: mapper<MileageApprovalDetailProps, OwnState> = (
   props: MileageApprovalDetailProps
-): OwnState => ({
-  dialogFullScreen: false,
-  dialogOpen: false,
-  dialogCancelText: 'global.action.cancel',
-  dialogConfirmedText: 'global.action.ok'
-});
+): OwnState => {
+  const { intl } = props;
+
+  return {
+    mileageItemUids: [],
+    back: true,
+
+    approvalTitle: intl.formatMessage({ id: 'mileage.approvalTitle' }),
+    approvalSubHeader: intl.formatMessage({ id: 'mileage.approvalSubHeader' }),
+    approvalChoices: [
+      {
+        value: WorkflowStatusType.Approved,
+        label: intl.formatMessage({ id: 'workflow.approval.action.approve' })
+      },
+      {
+        value: WorkflowStatusType.Rejected,
+        label: intl.formatMessage({ id: 'workflow.approval.action.reject' })
+      }
+    ],
+    approvalTrueValue: WorkflowStatusType.Approved,
+    approvalDialogTitle: intl.formatMessage({
+      id: 'mileage.dialog.approvalTitle'
+    }),
+    approvalDialogContentText: intl.formatMessage({
+      id: 'mileage.dialog.approvalContent'
+    }),
+    approvalDialogCancelText: intl.formatMessage({
+      id: 'global.action.cancel'
+    }),
+    approvalDialogConfirmedText: intl.formatMessage({
+      id: 'global.action.continue'
+    })
+  };
+};
 
 const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
-  stateUpdate: (prevState: OwnState) => (newState: any) => ({
-    ...prevState,
-    ...newState
-  }),
-  stateReset: (prevState: OwnState) => () => ({
-    ...prevState,
-    dialogFullScreen: false,
-    dialogOpen: false,
-    dialogTitle: undefined,
-    dialogDescription: undefined,
-    dialogCancelText: 'global.action.cancel',
-    dialogConfirmedText: 'global.action.ok',
+  stateCheckbox: (prevState: OwnState) => (mileageItemUids: string[]) => ({
+    mileageItemUids
   })
 };
 
-const handlerCreators: HandleCreators<MileageApprovalDetailProps, Handler> = {
-  handleMileageRefresh: (props: MileageApprovalDetailProps) => () => { 
+const handlerCreators: HandleCreators<
+  MileageApprovalDetailProps,
+  OwnHandler
+> = {
+  handleCheckbox: (props: MileageApprovalDetailProps) => (
+    mileageItemUid: string
+  ) => {
+    const { mileageItemUids, stateCheckbox } = props;
+    const _mileageItemUid = new Set(mileageItemUids);
+
+    _mileageItemUid.has(mileageItemUid)
+      ? _mileageItemUid.delete(mileageItemUid)
+      : _mileageItemUid.add(mileageItemUid);
+
+    stateCheckbox(Array.from(_mileageItemUid));
+  },
+  handleMileageRefresh: (props: MileageApprovalDetailProps) => () => {
     const { match } = props;
     const { user } = props.userState;
     const { loadDetailRequest } = props.mileageApprovalDispatch;
 
     if (user) {
       loadDetailRequest({
-        mileageUid: match.params.mileageUid,
         companyUid: user.company.uid,
         positionUid: user.position.uid,
+        mileageUid: match.params.mileageUid
       });
     }
   },
 
-  handleDialogOpen: (props: MileageApprovalDetailProps) => (title: string, description: string, cancelText?: string, confirmText?: string, fullScreen?: boolean) => { 
-    const { intl, stateUpdate, dialogCancelText, dialogConfirmedText } = props;
+  handleValidate: (props: MileageApprovalDetailProps) => (
+    formData: WorkflowApprovalMileageFormData
+  ) => {
+    const errors = {};
+    const requiredFields = ['isApproved', 'remark'];
 
-    stateUpdate({ 
-      dialogFullScreen: fullScreen || false,
-      dialogOpen: true,
-      dialogTitle: title,
-      dialogDescription: description,
-      dialogCancelText: cancelText || intl.formatMessage({id: dialogCancelText}),
-      dialogConfirmedText: confirmText || intl.formatMessage({id: dialogConfirmedText})
+    requiredFields.forEach(field => {
+      if (!formData[field] || isNullOrUndefined(formData[field])) {
+        errors[field] = props.intl.formatMessage({
+          id: `workflow.approval.field.${field}.required`
+        });
+      }
+    });
+
+    return errors;
+  },
+
+  handleSubmit: (props: MileageApprovalDetailProps) => (
+    formData: WorkflowApprovalMileageFormData
+  ) => {
+    const { match, intl, mileageItemUids } = props;
+    const { user } = props.userState;
+    const { createRequest } = props.mileageApprovalDispatch;
+    // user checking
+    if (!user) {
+      return Promise.reject('user was not found');
+    }
+
+    // props checking
+    if (!match.params.mileageUid) {
+      const message = intl.formatMessage(mileageMessage.emptyProps);
+
+      return Promise.reject(message);
+    }
+
+    // compare approval status string
+    const isApproved = formData.isApproved === WorkflowStatusType.Approved;
+
+    // handleGoto(props);
+
+    const mileageItemUid: IMileageApprovalPostItem[] = [];
+
+    mileageItemUids.map(item =>
+      mileageItemUid.push({
+        mileageItemUid: item
+      })
+    );
+
+    // generate payload
+    const payload: IWorkflowApprovalItemPayload = {
+      isApproved,
+      items: mileageItemUid,
+      remark: !isApproved ? formData.remark : null
+    };
+
+    // dispatch update request
+    return new Promise((resolve, reject) => {
+      createRequest({
+        resolve,
+        reject,
+        companyUid: user.company.uid,
+        positionUid: user.position.uid,
+        mileageUid: match.params.mileageUid,
+        data: payload
+      });
     });
   },
 
-  handleDialogConfirmed: (props: MileageApprovalDetailProps) => () => { 
-    const { match, history, stateReset } = props;
-    const mileageUid = match.params.mileageUid;
+  handleSubmitSuccess: (props: MileageApprovalDetailProps) => (
+    response: IMileageApprovalDetail
+  ) => {
+    const { intl, history, /* mileageItemUids  back */ } = props;
+    const { alertAdd } = props.layoutDispatch;
+    const { detail } = props.mileageApprovalState;
 
-    stateReset();
+    alertAdd({
+      time: new Date(),
+      message: intl.formatMessage(mileageMessage.updateSuccess, {
+        uid: detail.response && detail.response.data.uid
+      })
+    });
 
-    history.push('/mileage/approval/form/', { uid: mileageUid });
+// jangan dihapus, untuk improve nanti disaat confirm terpisah antara ada item yg belum diapprove dan semua sudah di approve
+    // loadData(props);
+
+    // handleGoto(props);
+
+    // mileageItemUids.splice(0, mileageItemUids.length);
+
+    // if (!back) {
+    history.push('/approval/mileage');
+    // }
   },
+
+  handleSubmitFail: (props: MileageApprovalDetailProps) => (
+    errors: FormErrors | undefined,
+    dispatch: Dispatch<any>,
+    submitError: any
+  ) => {
+    const { intl } = props;
+    const { alertAdd } = props.layoutDispatch;
+
+    if (errors) {
+      // validation errors from server (400: Bad Request)
+      alertAdd({
+        time: new Date(),
+        message: isObject(submitError) ? submitError.message : submitError
+      });
+    } else {
+      alertAdd({
+        time: new Date(),
+        message: intl.formatMessage(mileageMessage.updateFailure),
+        details: isObject(submitError) ? submitError.message : submitError
+      });
+    }
+  }
 };
 
-const lifecycles: ReactLifeCycleFunctions<MileageApprovalDetailProps, OwnState> = {
+const lifecycles: ReactLifeCycleFunctions<MileageApprovalDetailProps, {}> = {
   componentDidMount() {
-    const { 
-      match, layoutDispatch, appBarDispatch, intl, 
+    const {
+      layoutDispatch,
+      appBarDispatch,
+      intl,
       handleMileageRefresh
     } = this.props;
 
-    const { user } = this.props.userState;
-    const { loadDetailRequest } = this.props.mileageApprovalDispatch;
+    const { isLoading } = this.props.mileageApprovalState.detail;
 
     layoutDispatch.changeView({
       uid: AppMenu.MileageApproval,
       parentUid: AppMenu.Mileage,
-      title: intl.formatMessage({id: 'mileage.approval.detail.title'}),
-      subTitle : intl.formatMessage({id: 'mileage.approval.detail.subTitle'})
+      title: intl.formatMessage({ id: 'mileage.approval.detail.title' }),
+      subTitle: intl.formatMessage({ id: 'mileage.approval.detail.subTitle' })
     });
 
     layoutDispatch.navBackShow();
     layoutDispatch.moreShow();
-    
+
     const handleMenuClick = (menu: IAppBarMenu): void => {
       switch (menu.id) {
         case MileageApprovalUserAction.Refresh:
           handleMileageRefresh();
           break;
-              
+
         default:
           break;
       }
@@ -159,23 +303,22 @@ const lifecycles: ReactLifeCycleFunctions<MileageApprovalDetailProps, OwnState> 
 
     appBarDispatch.assignCallback(handleMenuClick);
 
-    if (user) {
-      loadDetailRequest({
-        mileageUid: match.params.mileageUid,
-        companyUid: user.company.uid,
-        positionUid: user.position.uid,
-      });
+    if (!isLoading) {
+      loadData(this.props);
     }
   },
   componentWillReceiveProps(nextProps: MileageApprovalDetailProps) {
-    if (nextProps.mileageApprovalState.detail.response !== this.props.mileageApprovalState.detail.response) {
+    if (
+      nextProps.mileageApprovalState.detail.response !==
+      this.props.mileageApprovalState.detail.response
+    ) {
       const { intl } = nextProps;
       const { assignMenus } = nextProps.appBarDispatch;
 
       const currentMenus = [
         {
           id: MileageApprovalUserAction.Refresh,
-          name: intl.formatMessage({id: 'global.action.refresh'}),
+          name: intl.formatMessage({ id: 'global.action.refresh' }),
           enabled: true,
           visible: true
         }
@@ -185,7 +328,11 @@ const lifecycles: ReactLifeCycleFunctions<MileageApprovalDetailProps, OwnState> 
     }
   },
   componentWillUnmount() {
-    const { layoutDispatch, appBarDispatch, mileageApprovalDispatch } = this.props;
+    const {
+      layoutDispatch,
+      appBarDispatch,
+      mileageApprovalDispatch
+    } = this.props;
 
     layoutDispatch.changeView(null);
     layoutDispatch.navBackHide();
@@ -198,6 +345,40 @@ const lifecycles: ReactLifeCycleFunctions<MileageApprovalDetailProps, OwnState> 
   }
 };
 
+const loadData = (props: MileageApprovalDetailProps): void => {
+  const { match } = props;
+  const { user } = props.userState;
+  const {
+    loadDetailRequest 
+  } = props.mileageApprovalDispatch;
+
+  if (user) {
+    loadDetailRequest({
+      mileageUid: match.params.mileageUid,
+      companyUid: user.company.uid,
+      positionUid: user.position.uid
+    });
+  }
+};
+
+// Improvement disaat ada data yg belum di approve dan setelah semua di approve, *belum selesai
+// const handleGoto = (props: MileageApprovalDetailProps): void => {
+//   const { response } = props.mileageApprovalState.detail;
+//   let { back } = props;
+
+//   if (
+//     back &&
+//     response &&
+//     response.data &&
+//     response.data.workflow &&
+//     response.data.workflow.isApproval
+//   ) {
+//     back = false;
+//   } else {
+//     back = true;
+//   }
+// };
+
 export const MileageApprovalDetail = compose<MileageApprovalDetailProps, {}>(
   withUser,
   withLayout,
@@ -205,7 +386,7 @@ export const MileageApprovalDetail = compose<MileageApprovalDetailProps, {}>(
   withRouter,
   withMileageApproval,
   injectIntl,
-  withStateHandlers<OwnState, OwnStateUpdaters, {}>(createProps, stateUpdaters), 
-  withHandlers<MileageApprovalDetailProps, Handler>(handlerCreators),
-  lifecycle<MileageApprovalDetailProps, OwnState>(lifecycles),
+  withStateHandlers<OwnState, OwnStateUpdaters, {}>(createProps, stateUpdaters),
+  withHandlers<MileageApprovalDetailProps, OwnHandler>(handlerCreators),
+  lifecycle<MileageApprovalDetailProps, {}>(lifecycles)
 )(MileageApprovalDetailView);

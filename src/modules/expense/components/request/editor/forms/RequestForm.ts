@@ -1,7 +1,7 @@
 import { RequestFormView } from '@expense/components/request/editor/forms/RequestFormView';
 import { FormMode } from '@generic/types';
 import { connect } from 'react-redux';
-import {  InjectedFormProps, reduxForm } from 'redux-form';
+import {  formValueSelector, InjectedFormProps, reduxForm } from 'redux-form';
 
 const formName = 'expenseRequest';
 
@@ -25,11 +25,26 @@ interface OwnProps {
   formMode: FormMode;
 }
 
+interface FormValueProps {
+  customerUidValue: string | undefined;
+}
+
 export type RequestFormProps 
   = InjectedFormProps<ExpenseRequestFormData, OwnProps> 
+  & FormValueProps
   & OwnProps;
+  
+const selector = formValueSelector(formName);
+  
+const mapStateToProps = (state: any): FormValueProps => {
+    const customerUid = selector(state, 'information.customerUid');
+    
+    return {
+      customerUidValue: customerUid,
+    };
+  };
 
-const connectedView = connect()(RequestFormView);
+const connectedView = connect(mapStateToProps)(RequestFormView);
 
 export const RequestForm = reduxForm<ExpenseRequestFormData, OwnProps>({
   form: formName,

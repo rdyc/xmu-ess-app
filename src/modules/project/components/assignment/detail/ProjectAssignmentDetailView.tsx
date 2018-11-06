@@ -14,7 +14,7 @@ import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { ProjectAssignment } from './shared/ProjectAssignment';
-import { ProjectAssignmentMember } from './shared/ProjectAssignmentMember';
+import { ProjectAssignmentItem } from './shared/ProjectAssignmentItem';
 
 export const ProjectAssignmentDetailView: React.SFC<ProjectAssignmentDetailProps> = props => {
   const { 
@@ -68,7 +68,20 @@ export const ProjectAssignmentDetailView: React.SFC<ProjectAssignmentDetailProps
           </Grid>
           
           <Grid item xs={12} md={8}>
-            <ProjectAssignmentMember data={response.data.items} />
+            <Grid container spacing={16}>
+              {
+                response.data.items &&
+                response.data.items.map((item, index) => 
+                  <Grid key={index} item xs={12} md={4}>
+                    <ProjectAssignmentItem 
+                      data={item} 
+                      title={`Assignment #${index + 1}`} 
+                      subHeader={item.status && item.status.value || 'N/A'} 
+                    />
+                  </Grid>
+                )
+              }
+            </Grid>
           </Grid>
         </Grid>
       }
