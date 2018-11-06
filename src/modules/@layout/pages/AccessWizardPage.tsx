@@ -3,6 +3,7 @@ import { EmployeeFetchRequest } from '@account/store/actions';
 import AppStorage from '@constants/AppStorage';
 import { IAppState, IResponseSingle } from '@generic/interfaces';
 import { ConnectedReduxProps } from '@generic/types';
+import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IAppUser, IUserCompany, IUserPosition, IUserRole } from '@layout/interfaces';
 import {
   Button,
@@ -51,7 +52,8 @@ interface PropsFromDispatch {
 
 type AllProps = PropsFromState & 
                 PropsFromDispatch & 
-                ConnectedReduxProps;
+                ConnectedReduxProps &
+                WithUser;
 
 class AccessWizardPage extends React.Component<AllProps> {
   public state = {
@@ -331,6 +333,9 @@ class AccessWizardPage extends React.Component<AllProps> {
         // store.set(AppStorage.Menu, selected.menus);
         store.set(AppStorage.Access, response.data.access);
 
+        // set redux state
+        this.props.assignUser(_user);
+
         // redirect to home page
         this.props.history.push('/home');
       }
@@ -467,6 +472,10 @@ export default connect(
   mapDispatchToProps
 )(
   withRoot(
-    withStyles(styles)(AccessWizardPage)
+    withStyles(styles)(
+      withUser(
+        AccessWizardPage
+      )
+    )
   )
 );
