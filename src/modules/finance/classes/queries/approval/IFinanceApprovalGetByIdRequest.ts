@@ -1,5 +1,5 @@
 import { ICompanyAccess } from '@generic/interfaces';
 
-export interface IFinanceGetByIdRequest extends ICompanyAccess {
+export interface IFinanceApprovalGetByIdRequest extends ICompanyAccess {
   readonly financeUid: string | undefined;
 }

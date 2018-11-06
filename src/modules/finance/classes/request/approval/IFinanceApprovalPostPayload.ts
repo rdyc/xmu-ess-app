@@ -1,6 +1,6 @@
 import { IBasePayload } from '@generic/interfaces';
 
-export interface IFinancePostPayload extends IBasePayload {
+export interface IFinanceApprovalPostPayload extends IBasePayload {
   statusType: string;
   notes: string;
 }
