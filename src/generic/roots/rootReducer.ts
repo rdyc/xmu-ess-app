@@ -27,6 +27,7 @@ export const rootReducer = combineReducers<IAppState>({
   form: reduxFormReducer,
   appBar: appBarReducer,
   navBottom: listBarReducer,
+  getEnd: leaveReducers.leaveRequestGetEnd,
 
   /* modules */
   ...commonReducers,
@@ -37,7 +38,6 @@ export const rootReducer = combineReducers<IAppState>({
   ...timesheetReducers,
   ...financeReducers,
   ...expenseReducers,
-  ...leaveReducers,
   ...purchaseReducers,
   ...mileageReducers,
   ...travelReducers,

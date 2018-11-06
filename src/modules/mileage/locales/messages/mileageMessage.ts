@@ -6,4 +6,6 @@ export const mileageMessage = defineMessages({
   createFailure: { id: 'mileage.message.registration.create.failure' },
   updateSuccess: { id: 'mileage.message.registration.update.success' },
   updateFailure: { id: 'mileage.message.registration.update.failure' },
+
+  emptyProps: { id: 'mileage.message.approval.emptyProps' },
 });

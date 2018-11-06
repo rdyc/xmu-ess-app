@@ -1,43 +1,41 @@
 import { IEmployeeLeaveByIdRequest } from '@account/classes/queries';
 import { IEmployeeLeave } from '@account/classes/response';
 import {
-  accountEmployeeLeaveGetByIdRequest,
+  accountEmployeeLeaveGetByIdDispose, accountEmployeeLeaveGetByIdRequest,
 } from '@account/store/actions';
-import { IAppState, IQueryCollectionState } from '@generic/interfaces';
+import { IAppState, IQuerySingleState } from '@generic/interfaces';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 
 interface PropsFromState {
   accountEmployeeLeaveState: {
-    detail: IQueryCollectionState<IEmployeeLeaveByIdRequest, IEmployeeLeave>;
+    detail: IQuerySingleState<IEmployeeLeaveByIdRequest, IEmployeeLeave>;
   };
 }
 
 interface PropsFromDispatch {
   accountEmployeeLeaveDispatch: {
-    // list
-    
     // query
     loadDetailRequest: typeof accountEmployeeLeaveGetByIdRequest;
+    loadDetailDispose: typeof accountEmployeeLeaveGetByIdDispose;
   };
 }
 
 export interface WithAccountEmployeeLeave extends PropsFromState, PropsFromDispatch {}
 
 const mapStateToProps = ({ accountEmployeeLeaveGetById }: IAppState) => ({
-  accountEmployeeState: {
+  accountEmployeeLeaveState: {
     detail: accountEmployeeLeaveGetById
   }
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  accountEmployeeDispatch: {
-    // command
-
-    // query
+  accountEmployeeLeaveDispatch: {
+  // query
     loadDetailRequest: (request: IEmployeeLeaveByIdRequest) => dispatch(accountEmployeeLeaveGetByIdRequest(request)),
+    loadDetailDispose: () => dispatch(accountEmployeeLeaveGetByIdDispose()),
   }
 });
 
-export const withAccountEmployee = (component: React.ComponentType) =>
+export const withAccountEmployeeLeave = (component: React.ComponentType) =>
   connect(mapStateToProps, mapDispatchToProps)(component);

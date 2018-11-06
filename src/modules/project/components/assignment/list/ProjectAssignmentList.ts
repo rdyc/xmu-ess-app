@@ -73,8 +73,8 @@ const createProps: mapper<ProjectAssignmentListProps, OwnState> = (props: Projec
   const { request } = props.projectAssignmentState.all;
 
   return { 
-    orderBy: request && request.filter && request.filter.orderBy || orderBy,
-    direction: request && request.filter && request.filter.direction || direction,
+    orderBy: request && request.filter && request.filter.orderBy || orderBy || 'uid',
+    direction: request && request.filter && request.filter.direction || direction || 'descending',
     page: request && request.filter && request.filter.page || page || 1, 
     size: request && request.filter && request.filter.size || size || 10,
   };
@@ -110,7 +110,7 @@ const handlerCreators: HandleCreators<ProjectAssignmentListProps, OwnHandlers> =
     const { isLoading } = props.projectAssignmentState.all;
 
     if (!isLoading) {
-      history.push(`/project/assignment/details/${assignmentUid}`);
+      history.push(`/project/assignments/${assignmentUid}`);
     } 
   },
   handleGoToNext: (props: ProjectAssignmentListProps) => () => { 
@@ -149,7 +149,7 @@ const lifecycles: ReactLifeCycleFunctions<ProjectAssignmentListProps, OwnState> 
 
     layoutDispatch.changeView({
       uid: AppMenu.ProjectAssignmentRequest,
-      parentUid: AppMenu.ProjectRegistration,
+      parentUid: AppMenu.ProjectAssignment,
       title: intl.formatMessage(projectMessage.assignment.page.listTitle),
       subTitle : intl.formatMessage(projectMessage.assignment.page.listSubHeader)
     });
@@ -164,7 +164,7 @@ const lifecycles: ReactLifeCycleFunctions<ProjectAssignmentListProps, OwnState> 
       onSyncCallback: handleReloading,
       onOrderCallback: handleChangeOrder,
       onDirectionCallback: handleChangeSort,
-      onAddCallback: () => history.push('/project/assignment/form'),
+      onAddCallback: () => history.push('/project/assignments/form'),
       onSizeCallback: handleChangeSize,
     });
 

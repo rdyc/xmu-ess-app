@@ -1,9 +1,7 @@
 import { defineMessages } from 'react-intl';
 
-export const leaveApprovalMessage = defineMessages({  
+export const leaveApprovalMessage = defineMessages({
   emptyProps: { id: 'leave.message.approval.emptyProps' },
-  emptyLeaveUid: { id: 'leave.message.request.empty.leaveUid' },
-  approveSuccess: { id: 'leave.message.approval.approve.success' },
-  rejectSuccess: { id: 'leave.message.approval.reject.success' },
-  createFailure: { id: 'leave.message.approval.create.failure' }
+  updateSuccess: { id: 'leave.message.approval.create.success' },
+  updateFailure: { id: 'leave.message.approval.create.failure' },
 });

@@ -8,10 +8,23 @@ import { BaseFieldsProps, Fields, FormSection } from 'redux-form';
 export const LeaveRequestFormView: React.SFC<RequestFormProps> = props => {
   
   const { 
-    formMode, formIsRegularType, formRegularType
+    formMode, formIsRegularType, formRegularType, formValue, initialValues,
+    change
   } = props;
 
-  const fields = Object.getOwnPropertyNames(props.initialValues.information);
+  const fields = Object.getOwnPropertyNames(initialValues.information);
+
+  const onChangeRegular = (event: any, newValue: string, oldValue: string) => {
+    if (newValue === 'LVC02') {
+      change('information.end', formValue);
+    }
+  };
+
+  const onChangeEnd = (event: any, newValue: string, oldValue: string) => {
+    if (formIsRegularType) {
+    change('information.end', newValue);
+    }
+  };
 
   const componentInformation = (context: BaseFieldsProps) => (
     <LeaveRequestDetailForm 
@@ -19,6 +32,8 @@ export const LeaveRequestFormView: React.SFC<RequestFormProps> = props => {
       context={context}
       isRegularType={formIsRegularType}
       formRegularType={formRegularType}
+      onChangeRegular={onChangeRegular}
+      onChangeEnd={onChangeEnd}
     />
   );
 

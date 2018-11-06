@@ -203,7 +203,7 @@ const lifecycles: ReactLifeCycleFunctions<MileageRequestListProps, OwnState> = {
     navBottomDispatch.dispose();
 
     // dispose 'get all' from 'redux store' when the page is 'out of mileage request' context 
-    if (view && view.parentUid !== AppMenu.MileageApproval) {
+    if (view && view.parentUid !== AppMenu.Mileage) {
       loadAllDispose();
     }
   }
