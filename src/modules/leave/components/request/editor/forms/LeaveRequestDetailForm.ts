@@ -1,7 +1,6 @@
 import { SelectSystem, SelectSystemOption } from '@common/components/select';
 import { FormMode } from '@generic/types';
-// import { FieldInputLeave } from '@layout/components/formFields/FieldInputLeave';
-import { InputDate } from '@layout/components/input/date';
+import { InputDateLeave } from '@layout/components/input/date';
 import { InputText } from '@layout/components/input/text';
 import { LeaveRequestDetailFormView } from '@leave/components/request/editor/forms/LeaveRequestDetailFormView';
 import { InputLeave } from '@lookup/components/leave/input';
@@ -14,6 +13,8 @@ interface OwnProps {
   context: BaseFieldsProps;
   formRegularType: string | null | undefined;
   isRegularType: boolean;
+  onChangeEnd: (event: any, newValue: string, oldValue: string) => void;
+  onChangeRegular: (event: any, newValue: string, oldValue: string) => void;
 }
 
 interface OwnHandlers {
@@ -28,7 +29,7 @@ export type RequestDetailFormProps
 const handlerCreators: HandleCreators<RequestDetailFormProps, OwnHandlers> = {
   generateFieldProps: (props: RequestDetailFormProps) => (name: string) => { 
     const { 
-      intl, formMode, isRegularType
+      intl, formMode, isRegularType, onChangeEnd, onChangeRegular
     } = props;
 
     const fieldName = name.replace('information.', '');
@@ -50,7 +51,8 @@ const handlerCreators: HandleCreators<RequestDetailFormProps, OwnHandlers> = {
           category: 'leave',
           disabled: formMode === FormMode.Edit,
           placeholder: intl.formatMessage({id: `leave.field.${name}.placeholder`}),
-          component: SelectSystem
+          component: SelectSystem,
+          onChange: onChangeRegular
         };
         break;
 
@@ -67,7 +69,8 @@ const handlerCreators: HandleCreators<RequestDetailFormProps, OwnHandlers> = {
         fieldProps = {
           required: true,
           placeholder: intl.formatMessage({id: `leave.field.${name}.placeholder`}),
-          component: InputDate
+          component: InputDateLeave,
+          onChange: onChangeEnd
         };
         break;
         
@@ -76,7 +79,7 @@ const handlerCreators: HandleCreators<RequestDetailFormProps, OwnHandlers> = {
           required: true,
           disabled: isRegularType,
           placeholder: intl.formatMessage({id: `leave.field.${name}.placeholder`}),
-          component: InputDate
+          component: InputDateLeave
         };
         break;
       

@@ -72,8 +72,8 @@ const createProps: mapper<ProjectRegisterListProps, OwnState> = (props: ProjectR
   const { request } = props.projectRegisterState.all;
 
   return { 
-    orderBy: request && request.filter && request.filter.orderBy || orderBy,
-    direction: request && request.filter && request.filter.direction || direction,
+    orderBy: request && request.filter && request.filter.orderBy || orderBy || 'uid',
+    direction: request && request.filter && request.filter.direction || direction || 'descending',
     page: request && request.filter && request.filter.page || page || 1, 
     size: request && request.filter && request.filter.size || size || 10,
   };
@@ -109,7 +109,7 @@ const handlerCreators: HandleCreators<ProjectRegisterListProps, OwnHandlers> = {
     const { isLoading } = props.projectRegisterState.all;
 
     if (!isLoading) {
-      history.push(`/project/details/${projectUid}`);
+      history.push(`/project/requests/${projectUid}`);
     } 
   },
   handleGoToNext: (props: ProjectRegisterListProps) => () => { 
@@ -163,7 +163,7 @@ const lifecycles: ReactLifeCycleFunctions<ProjectRegisterListProps, OwnState> = 
       onSyncCallback: handleReloading,
       onOrderCallback: handleChangeOrder,
       onDirectionCallback: handleChangeSort,
-      onAddCallback: () => history.push('/project/form'),
+      onAddCallback: () => history.push('/project/requests/form'),
       onSizeCallback: handleChangeSize,
     });
 

@@ -159,8 +159,16 @@
   "project.assignment.section.member.action.add": "Add",
   "project.assignment.section.member.action.remove": "Remove",
   "project.assignment.section.member.action.save": "Save",
+  "project.assignment.section.acceptance.title": "Assignment",
+  "project.assignment.section.acceptance.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "project.assignment.section.approval.title": "Assignment",
+  "project.assignment.section.approval.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
   
+  "project.assignment.dialog.approval.title": "Assignment",
+  "project.assignment.dialog.approval.content": "Assignment",
+
   "project.assignment.action.addMember": "Add More",
+  "project.assignment.action.acceptance": "Respond",
 
   "project.assignment.field.uid": "Assignment ID",
   "project.assignment.field.projectUid": "Project ID",
@@ -168,7 +176,7 @@
   "project.assignment.field.projectUid.placeholder": "Select a project",
   "project.assignment.field.assignedHours": "Assigned Hours",
   "project.assignment.field.unassignedHours": "Unassigned Hours",
-  "project.assignment.field.item.status": "Status",
+  "project.assignment.field.item.uid": "ID",
   "project.assignment.field.item.employeeUid": "People",
   "project.assignment.field.item.employeeUid.required": "people is required",
   "project.assignment.field.item.employeeUid.placeholder": "Select a people",
@@ -181,10 +189,31 @@
   "project.assignment.field.item.mandays.required": "Mandays is required",
   "project.assignment.field.item.mandays.placeholder": "Type mandays",
   "project.assignment.field.item.hours": "Hours",
+  "project.assignment.field.item.newMandays": "New Mandays",
+  "project.assignment.field.item.newHours": "New Hours",
+  "project.assignment.field.item.statusType": "Status",
+  "project.assignment.field.item.rejectedReason": "Rejected Reason",
 
   "project.assignment.message.invalidProps": "Some props are not valid",
   "project.assignment.message.create.success": "A new assignment has been created",
   "project.assignment.message.create.failure": "Unable to process your submission",
   "project.assignment.message.update.success": "Existing assignment has been updated",
-  "project.assignment.message.update.failure": "Unable to process your submission"
+  "project.assignment.message.update.failure": "Unable to process your submission",
+
+  "project.acceptance.page.list.title": "Assignment Acceptances",
+  "project.acceptance.page.list.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "project.acceptance.page.detail.title": "Assignment Details",
+  "project.acceptance.page.detail.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "project.acceptance.page.approval.title": "Assignment Acceptance",
+  "project.acceptance.page.approval.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+
+  "project.acceptance.section.approval.title": "Acceptance",
+  "project.acceptance.section.approval.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+
+  "project.acceptance.dialog.approval.title": "Assignment Acceptance Submission",
+  "project.acceptance.dialog.approval.content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+
+  "project.acceptance.message.approval.success": "Your assignment acceptance has been submitted.",
+  "project.acceptance.message.approval.failure": "Unable to process your submission"
+  
 }

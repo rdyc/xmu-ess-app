@@ -1,15 +1,27 @@
 import { ILeaveRequestDetail } from '@leave/classes/response';
 import { Card, CardContent, CardHeader, TextField } from '@material-ui/core';
 import * as React from 'react';
-import { FormattedMessage, InjectedIntl } from 'react-intl';
+import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
+import { compose } from 'recompose';
 
 interface OwnProps {
   data: ILeaveRequestDetail;
-  intl: InjectedIntl;
 }
 
-export const LeaveInformation: React.SFC<OwnProps> = props => {
+type AllProps
+  = OwnProps
+  & InjectedIntlProps;
+
+const leaveInformation: React.SFC<AllProps> = props => {
   const { data, intl } = props;
+
+  const styled = {
+    fullWidth: true,
+    InputProps: {
+      disableUnderline: true,
+      readOnly: true
+    }
+  };
 
   const render = (
     <Card square>
@@ -19,37 +31,32 @@ export const LeaveInformation: React.SFC<OwnProps> = props => {
       />
       <CardContent>
         <TextField
-          fullWidth
-          contentEditable={false}
+          {...styled}
           margin="normal"
           label={<FormattedMessage id="leave.field.information.uid" />}
           value={data.uid}
         />
         <TextField
-          fullWidth
-          contentEditable={false}
+          {...styled}
           margin="normal"
           label={<FormattedMessage id="leave.field.information.status" />}
           value={data.status ? data.status.value : 'N/A'}
         />
         <TextField
-          fullWidth
-          contentEditable={false}
+          {...styled}
           margin="normal"
           label={<FormattedMessage id="leave.field.information.leaveType" />}
           value={data.leave ? data.leave.value : 'N/A'}
         />
         <TextField
-          fullWidth
-          contentEditable={false}
+          {...styled}
           hidden 
           margin="normal"
           label={<FormattedMessage id="leave.field.information.regularType" />}
           value={data.regular ? data.regular.leave ? data.regular.leave.name : 'N/A' : 'N/A'}
         />
         <TextField
-          fullWidth
-          contentEditable={false}
+          {...styled}
           margin="normal"
           label={<FormattedMessage id="leave.field.information.start" />}
           value={intl.formatDate(data.start, {
@@ -59,8 +66,7 @@ export const LeaveInformation: React.SFC<OwnProps> = props => {
           })}
         />
         <TextField
-          fullWidth
-          contentEditable={false}
+          {...styled}
           margin="normal"
           label={<FormattedMessage id="leave.field.information.end" />}
           value={intl.formatDate(data.end, {
@@ -70,22 +76,19 @@ export const LeaveInformation: React.SFC<OwnProps> = props => {
           })}
         />
         <TextField
-          fullWidth
-          contentEditable={false}
+          {...styled}
           margin="normal"
           label={<FormattedMessage id="leave.field.information.address" />}
           value={data.address}
         />
         <TextField
-          fullWidth
-          contentEditable={false}
+          {...styled}
           margin="normal"
           label={<FormattedMessage id="leave.field.information.contactNumber" />}
           value={data.contactNumber}
         />
         <TextField
-          fullWidth
-          contentEditable={false}
+          {...styled}
           margin="normal"
           label={<FormattedMessage id="leave.field.information.reason" />}
           value={data.reason}
@@ -96,3 +99,7 @@ export const LeaveInformation: React.SFC<OwnProps> = props => {
 
   return render;
 };
+
+export const LeaveInformation = compose<AllProps, OwnProps>(
+  injectIntl
+)(leaveInformation);

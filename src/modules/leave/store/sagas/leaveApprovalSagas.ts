@@ -13,66 +13,77 @@ import {
 } from '@leave/store/actions';
 import { flattenObject } from '@utils/flattenObject';
 import saiyanSaga from '@utils/saiyanSaga';
+import * as qs from 'qs';
 import { SubmissionError } from 'redux-form';
 import { all, fork, put, takeEvery } from 'redux-saga/effects';
-import { IApiResponse, objectToQuerystring } from 'utils';
+import { IApiResponse } from 'utils';
 
-function* watchAllFetchRequest() {
-  const worker = (action: ReturnType<typeof leaveApprovalGetAllRequest>) => { 
+function* watchGetAllRequest() {
+  const worker = (action: ReturnType<typeof leaveApprovalGetAllRequest>) => {
+    const params = qs.stringify(action.payload.filter, { 
+      allowDots: true, 
+      skipNulls: true
+    });
+
     return saiyanSaga.fetch({
       method: 'get',
-      path: `/v1/approvals/leave/${objectToQuerystring(action.payload.filter)}`, 
+      path: `/v1/approvals/leave?${params}`,
       successEffects: (response: IApiResponse) => [
         put(leaveApprovalGetAllSuccess(response.body)),
         put(listBarMetadata(response.body.metadata))
-      ], 
+      ],
       failureEffects: (response: IApiResponse) => [
         put(leaveApprovalGetAllError(response.body)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        })),
-      ], 
+        put(
+          layoutAlertAdd({
+            time: new Date(),
+            message: response.statusText,
+            details: response
+          })
+        )
+      ],
       errorEffects: (error: TypeError) => [
         put(leaveApprovalGetAllError(error.message)),
         put(
           layoutAlertAdd({
-           time: new Date(),
-           message: error.message
-        }))
+            time: new Date(),
+            message: error.message
+          })
+        )
       ],
-      finallyEffects: [
-        put(listBarLoading(false))
-      ]
+      finallyEffects: [put(listBarLoading(false))]
     });
   };
-  
+
   yield takeEvery(Action.GET_ALL_REQUEST, worker);
 }
 
-function* watchByIdFetchRequest() {
+function* watchGetByIdRequest() {
   const worker = (action: ReturnType<typeof leaveApprovalGetByIdRequest>) => {
     return saiyanSaga.fetch({
       method: 'get',
-      path: `/v1/approvals/leave/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.leaveUid}`, 
+      path: `/v1/approvals/leave/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.leaveUid}`,
       successEffects: (response: IApiResponse) => [
-        put(leaveApprovalGetByIdSuccess(response.body)),
-      ], 
+        put(leaveApprovalGetByIdSuccess(response.body))
+      ],
       failureEffects: (response: IApiResponse) => [
         put(leaveApprovalGetByIdError(response.statusText)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        })),
-      ], 
+        put(
+          layoutAlertAdd({
+            time: new Date(),
+            message: response.statusText,
+            details: response
+          })
+        )
+      ],
       errorEffects: (error: TypeError) => [
         put(leaveApprovalGetByIdError(error.message)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: error.message
-        }))
+        put(
+          layoutAlertAdd({
+            time: new Date(),
+            message: error.message
+          })
+        )
       ]
     });
   };
@@ -80,20 +91,20 @@ function* watchByIdFetchRequest() {
   yield takeEvery(Action.GET_BY_ID_REQUEST, worker);
 }
 
-function* watchPostFetchRequest() {
+function* watchPostRequest() {
   const worker = (action: ReturnType<typeof leaveApprovalPostRequest>) => {
     return saiyanSaga.fetch({
       method: 'post',
-      path: `/v1/approvals/leave/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.leaveUid}`, 
-      payload: action.payload.data, 
+      path: `/v1/approvals/leave/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.leaveUid}`,
+      payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
-        put(leaveApprovalPostSuccess(response.body)),
-      ], 
+        put(leaveApprovalPostSuccess(response.body))
+      ],
       successCallback: (response: IApiResponse) => {
         action.payload.resolve(response.body.data);
       },
       failureEffects: (response: IApiResponse) => [
-        put(leaveApprovalPostError(response.statusText)),
+        put(leaveApprovalPostError(response.statusText))
       ],
       failureCallback: (response: IApiResponse) => {
         if (response.status === 400) {
@@ -109,10 +120,12 @@ function* watchPostFetchRequest() {
       },
       errorEffects: (error: TypeError) => [
         put(leaveApprovalPostError(error.message)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: error.message
-        }))
+        put(
+          layoutAlertAdd({
+            time: new Date(),
+            message: error.message
+          })
+        )
       ],
       errorCallback: (error: any) => {
         action.payload.reject(error);
@@ -125,9 +138,9 @@ function* watchPostFetchRequest() {
 
 function* leaveApprovalSagas() {
   yield all([
-    fork(watchAllFetchRequest),
-    fork(watchByIdFetchRequest),
-    fork(watchPostFetchRequest),
+    fork(watchGetAllRequest),
+    fork(watchGetByIdRequest),
+    fork(watchPostRequest),
   ]);
 }
 

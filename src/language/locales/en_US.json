@@ -11,19 +11,6 @@
   
   "global.form.submit.title": "Submission",
   "global.form.submit.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-  
-  "global.form.approval.title": "Approval",
-  "global.form.approval.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-  "global.form.approval.field.isApproved": "Approval",
-  "global.form.approval.field.remark": "Reject Reason",
-  "global.form.approval.field.remark.placeholder": "Type the reject reason",
-  "global.form.approval.field.isApproved.required": "Approval is required",
-  "global.form.approval.field.remark.required": "Reject reason is required",
-  "global.form.approval.option.reject": "Reject",
-  "global.form.approval.option.approve": "Approve",
-  "global.form.approval.option.paid": "Paid",
-  "global.form.approval.option.notPaid": "Not Paid",
-  "global.form.approval.option.hold": "Hold",
 
   "global.action.yes": "Yes",
   "global.action.no": "No",
@@ -73,6 +60,9 @@
   "lookup.placeholder.systemLimitSearch": "Type any System Limit name",
   "lookup.systemLimit.title": "System Limit Lookup", 
   "lookup.systemLimit.subTitle": "Lorem ipsum dolor sit amet",
+  "lookup.leave.title": "Leave Detail", 
+  "lookup.leave.subTitle": "Lorem ipsum dolor sit amet",
+  "lookup.placeholder.leaveSearch": "Type any Leave name",
   
   "currency.field.uid": "Currency ID",
   "currency.field.symbol": "Currency Symbol", 
@@ -104,6 +94,14 @@
   "account.profile.phone": "Phone",
   "account.profile.mobilePhone": "Mobile phone",
   "account.placeholder.lookupSearch": "Type any employee name or email",
+
+  "account.leave.infoTitle": "Account Leave",
+  "account.leave.infoSubTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "account.leave.field.information.previousRemain": "Previous Year Leave Quota",
+  "account.leave.field.information.quota": "Regular Leave Quota",
+  "account.leave.field.information.annualLeave": "Annual Collective Leave",
+  "account.leave.field.information.leaveTaken": "Leave Already Taken",
+  "account.leave.field.information.remain": "Total Leave Remaining",
 
   "leave.title": "Leaves",
   "leave.subTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",

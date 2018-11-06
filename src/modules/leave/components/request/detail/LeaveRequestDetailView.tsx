@@ -1,4 +1,4 @@
-// import { AccountLeaveInformation } from '@account/components/views/AccountLeaveInformationView';
+import { AccountLeave } from '@account/components/views/AccountLeave';
 import { RequestDetailProps } from '@leave/components/request/detail/LeaveRequestDetail';
 import {
   Button,
@@ -18,7 +18,7 @@ import { LeaveInformation } from './shared/LeaveInformation';
 export const LeaveRequestDetailView: React.SFC<RequestDetailProps> = props => {
   const { 
     dialogFullScreen, dialogOpen, dialogTitle, dialogDescription, dialogCancelText, dialogConfirmedText,
-    handleDialogClose, handleDialogConfirmed, intl
+    handleDialogClose, handleDialogConfirmed
   } = props;
   const { isLoading, response } = props.leaveRequestState.detail;
 
@@ -71,19 +71,18 @@ export const LeaveRequestDetailView: React.SFC<RequestDetailProps> = props => {
               response.data &&
               <LeaveInformation
                 data={response.data}
-                intl={intl}
               />
             }
           </Grid>
 
-          {/* {<Grid item xs={12} md={4}>
+          <Grid item xs={12} md={4}>
             {
               response &&
               response.data &&
-              <AccountLeaveInformation 
+              <AccountLeave
               />
             }
-          </Grid> } */}
+          </Grid> 
 
           <Grid item xs={12} md={4}>
             {
