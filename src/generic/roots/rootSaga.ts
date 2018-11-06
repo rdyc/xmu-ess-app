@@ -16,6 +16,7 @@ import expenseSagas from '@expense/store/sagas/expenseRequestSagas';
 import financeSagas from '@finance/store/sagas/financeSagas';
 import commonNotificationSagas from '@layout/store/sagas/notificationSagas';
 import leaveApprovalSagas from '@leave/store/sagas/leaveApprovalSagas';
+import leaveCancellationSagas from '@leave/store/sagas/leaveCancellationSagas';
 import leaveRequestSagas from '@leave/store/sagas/leaveRequestSagas';
 import lookupCurrencySagas from '@lookup/store/sagas/currencySagas';
 import lookupDiemSagas from '@lookup/store/sagas/diemSagas';
@@ -119,6 +120,7 @@ export function* rootSaga() {
     // leave
     fork(leaveRequestSagas),
     fork(leaveApprovalSagas),
+    fork(leaveCancellationSagas),
 
     // summary
     fork(summarySagas)
