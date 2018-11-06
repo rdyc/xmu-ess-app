@@ -1,0 +1,33 @@
+{  
+  "finance.title": "Finances",
+  "finance.subTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "finance.detail.title": "Finance Details",
+  "finance.detail.subTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "finance.infoTitle": "Finance",
+  "finance.infoSubTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "finance.field.uid": "Finance ID",
+  "finance.field.moduleName": "Module Name",
+  "finance.field.documentUid": "Document ID",
+  "finance.field.requestor": "Requester Name",
+  "finance.field.approvalDate": "Approval Date",
+  "finance.field.total": "Total Amount",
+  "finance.field.status": "Payment Status",
+  "finance.field.notes": "Notes",
+  "finance.field.notes.placeholder": "Type a Notes",
+
+  "finance.approvalTitle": "Finance Approval",
+  "finance.approvalSubHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "finance.approval.title": "Finance Approval",
+  "finance.approval.subTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "finance.approval.action.paid": "Paid",
+  "finance.approval.action.hold": "Hold",
+  "finance.approval.action.notPaid": "Not Paid",
+  "finance.dialog.approvalTitle": "Finance Approval Submission",
+  "finance.dialog.approvalContent": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+
+
+  "finance.message.approval.emptyProps": "Some props are empty",
+  "finance.message.request.empty.financeUids": "Finance Uid are empty",
+  "finance.message.approval.create.success": "Finance Approval has been processed",
+  "finance.message.approval.create.failure": "Unable to process your approval"
+}
