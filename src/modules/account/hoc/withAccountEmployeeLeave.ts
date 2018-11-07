@@ -1,8 +1,6 @@
 import { IEmployeeLeaveByIdRequest } from '@account/classes/queries';
 import { IEmployeeLeave } from '@account/classes/response';
-import {
-  accountEmployeeLeaveGetByIdDispose, accountEmployeeLeaveGetByIdRequest,
-} from '@account/store/actions';
+import { accountEmployeeLeaveGetByIdDispose, accountEmployeeLeaveGetByIdRequest } from '@account/store/actions';
 import { IAppState, IQuerySingleState } from '@generic/interfaces';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
@@ -23,9 +21,9 @@ interface PropsFromDispatch {
 
 export interface WithAccountEmployeeLeave extends PropsFromState, PropsFromDispatch {}
 
-const mapStateToProps = ({ accountEmployeeLeaveGetById }: IAppState) => ({
+const mapStateToProps = ({ accountEmployeeLeaveGet }: IAppState) => ({
   accountEmployeeLeaveState: {
-    detail: accountEmployeeLeaveGetById
+    detail: accountEmployeeLeaveGet
   }
 });
 

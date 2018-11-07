@@ -121,7 +121,7 @@ const handlerCreators: HandleCreators<TravelApprovalDetailProps, OwnHandler> = {
       message: intl.formatMessage(travelApprovalMessage.updateSuccess),
     });
 
-    history.push('/approval/travel/request');
+    history.push('/travel/approvals/request');
   },
   handleSubmitFail: (props: TravelApprovalDetailProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
     const { intl } = props;

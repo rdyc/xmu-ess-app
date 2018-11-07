@@ -72,8 +72,8 @@ const createProps: mapper<RequestApprovalListProps, OwnState> = (props: RequestA
     const { request } = props.travelApprovalState.all;
 
     return { 
-      orderBy: request && request.filter && request.filter['query.orderBy'] || orderBy,
-      direction: request && request.filter && request.filter['query.direction'] || direction,
+      orderBy: request && request.filter && request.filter['query.orderBy'] || orderBy || 'uid',
+      direction: request && request.filter && request.filter['query.direction'] || direction || 'descending',
       page: request && request.filter && request.filter['query.page'] || page || 1, 
       size: request && request.filter && request.filter['query.size'] || size || 10,
     };
@@ -109,7 +109,7 @@ const handlerCreators: HandleCreators<RequestApprovalListProps, OwnHandlers> = {
     const { isLoading } = props.travelApprovalState.all;
 
     if (!isLoading) {
-      history.push(`/approval/travel/details/${travelUid}`);
+      history.push(`/travel/approvals/request/${travelUid}`);
     } 
   },
   handleGoToNext: (props: RequestApprovalListProps) => () => { 

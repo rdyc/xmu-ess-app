@@ -11,5 +11,5 @@ export interface IFinance {
   statusType: string;
   status: ICommonSystem;
   notes?: string | null;
-  changes?: IBaseChanges | null;
+  changes: IBaseChanges | null;
 }

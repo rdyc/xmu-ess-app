@@ -9,7 +9,7 @@ export const menuLinkMapper = (menuUid: string) => {
       path = '/approval/expense/list';
       break;
     case 'MNU46':
-      path = '/approval/finance';
+      path = '/approval/finance/list';
       break;
     case 'MNU25':
       path = '/leave/list';
@@ -81,16 +81,16 @@ export const menuLinkMapper = (menuUid: string) => {
       path = '/timesheet/entry/history';
       break;
     case 'MNU28':
-      path = '/travel/request';
+      path = '/travel/requests';
       break;
     case 'MNU40':
-      path = '/approval/travel/request';
+      path = '/travel/approvals/request';
       break;
     case 'MNU29':
-      path = '/travel/settlement/request';
+      path = '/travel/settlements';
       break;
     case 'MNU41':
-      path = '/approval/travel/settlement/request';
+      path = '/travel/approvals/settlement';
       break;
 
     case 'MNU02':

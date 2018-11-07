@@ -72,8 +72,8 @@ const createProps: mapper<TravelSettlementApprovalListProps, OwnState> = (props:
     const { request } = props.travelSettlementApprovalState.all;
 
     return { 
-      orderBy: request && request.filter && request.filter['query.orderBy'] || orderBy,
-      direction: request && request.filter && request.filter['query.direction'] || direction,
+      orderBy: request && request.filter && request.filter['query.orderBy'] || orderBy || 'uid',
+      direction: request && request.filter && request.filter['query.direction'] || direction || 'descending',
       page: request && request.filter && request.filter['query.page'] || page || 1, 
       size: request && request.filter && request.filter['query.size'] || size || 10,
     };
@@ -109,7 +109,7 @@ const handlerCreators: HandleCreators<TravelSettlementApprovalListProps, OwnHand
     const { isLoading } = props.travelSettlementApprovalState.all;
 
     if (!isLoading) {
-      history.push(`/approval/travel/settlement/details/${travelSettlementUid}`);
+      history.push(`/travel/approvals/settlement/${travelSettlementUid}`);
     } 
   },
   handleGoToNext: (props: TravelSettlementApprovalListProps) => () => { 

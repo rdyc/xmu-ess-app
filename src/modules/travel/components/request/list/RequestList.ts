@@ -72,8 +72,8 @@ const createProps: mapper<RequestListProps, OwnState> = (props: RequestListProps
   const { request } = props.travelRequestState.all;
 
   return { 
-    orderBy: request && request.filter && request.filter.orderBy || orderBy,
-    direction: request && request.filter && request.filter.direction || direction,
+    orderBy: request && request.filter && request.filter.orderBy || orderBy || 'uid',
+    direction: request && request.filter && request.filter.direction || direction || 'descending',
     page: request && request.filter && request.filter.page || page || 1, 
     size: request && request.filter && request.filter.size || size || 10,
   };
@@ -109,7 +109,7 @@ const handlerCreators: HandleCreators<RequestListProps, OwnHandlers> = {
     const { isLoading } = props.travelRequestState.all;
 
     if (!isLoading) {
-      history.push(`/travel/details/${travelUid}`);
+      history.push(`/travel/requests/${travelUid}`);
     } 
   },
   handleGoToNext: (props: RequestListProps) => () => { 
@@ -163,7 +163,7 @@ const lifecycles: ReactLifeCycleFunctions<RequestListProps, OwnState> = {
       onSyncCallback: handleReloading,
       onOrderCallback: handleChangeOrder,
       onDirectionCallback: handleChangeSort,
-      onAddCallback: () => history.push('/travel/form'),
+      onAddCallback: () => history.push('/travel/requests/form'),
       onSizeCallback: handleChangeSize,
     });
 

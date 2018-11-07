@@ -150,11 +150,11 @@ const handlerCreators: HandleCreators<RequestDetailProps, Handler> = {
 
       switch (action) {
         case TravelUserAction.Modify:
-          next = '/travel/form/';
+          next = '/travel/requests/form/';
           break;
 
         case TravelUserAction.AddSettlement:
-          next = '/travel/settlement/form/';
+          next = '/travel/settlements/form/';
           break;
 
         default:

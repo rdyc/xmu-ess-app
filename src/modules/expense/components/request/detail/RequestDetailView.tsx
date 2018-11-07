@@ -9,7 +9,7 @@ import {
   Grid,
   Typography,
 } from '@material-ui/core';
-import { WorkflowStep } from '@organization/components';
+import { WorkflowHistory } from '@organization/components/workflow/history/WorkflowHistory';
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { ExpenseInformation } from './shared/ExpenseInformation';
@@ -56,7 +56,9 @@ export const RequestDetailView: React.SFC<RequestDetailProps> = props => {
         </Typography>
       }
       {
+        !isLoading &&
         response && 
+        response.data &&
         <Grid 
           container 
           spacing={16} 
@@ -66,19 +68,14 @@ export const RequestDetailView: React.SFC<RequestDetailProps> = props => {
         >
           <Grid item xs={12} md={4}>
             {
-              response &&
-              response.data &&
               <ExpenseInformation data={response.data} />
             }
           </Grid>
 
           <Grid item xs={12} md={4}>
             {
-              response &&
-              response.data &&
               response.data.workflow &&
-              response.data.workflow.steps &&
-              <WorkflowStep steps={response.data.workflow.steps} />
+              <WorkflowHistory data={response.data.workflow} />
             }
           </Grid>
         </Grid>

@@ -133,7 +133,7 @@ const handlerCreators: HandleCreators<SettlementDetailProps, Handler> = {
 
     stateReset();
 
-    history.push('/travel/settlement/form/', { uid: travelSettlementUid });
+    history.push('/travel/settlements/form/', { uid: travelSettlementUid });
   },
 };
 

@@ -72,8 +72,8 @@ const createProps: mapper<SettlementListProps, OwnState> = (props: SettlementLis
   const { request } = props.travelSettlementState.all;
 
   return { 
-    orderBy: request && request.filter && request.filter.orderBy || orderBy,
-    direction: request && request.filter && request.filter.direction || direction,
+    orderBy: request && request.filter && request.filter.orderBy || orderBy || 'uid',
+    direction: request && request.filter && request.filter.direction || direction || 'descending',
     page: request && request.filter && request.filter.page || page || 1, 
     size: request && request.filter && request.filter.size || size || 10,
   };
@@ -109,7 +109,7 @@ const handlerCreators: HandleCreators<SettlementListProps, OwnHandlers> = {
     const { isLoading } = props.travelSettlementState.all;
 
     if (!isLoading) {
-      history.push(`/travel/settlement/details/${travelSettlementUid}`);
+      history.push(`/travel/settlements/${travelSettlementUid}`);
     } 
   },
   handleGoToNext: (props: SettlementListProps) => () => { 
@@ -163,7 +163,7 @@ const lifecycles: ReactLifeCycleFunctions<SettlementListProps, OwnState> = {
       onSyncCallback: handleReloading,
       onOrderCallback: handleChangeOrder,
       onDirectionCallback: handleChangeSort,
-      onAddCallback: () => history.push('/travel/form'),
+      onAddCallback: () => history.push('/travel/settlements/form'),
       onSizeCallback: handleChangeSize,
     });
 

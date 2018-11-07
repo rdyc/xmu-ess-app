@@ -192,7 +192,7 @@ const handlerCreators: HandleCreators<TravelSettlementEditorProps, OwnHandlers> 
       time: new Date()
     });
 
-    history.push('/travel/settlement/request');
+    history.push('/travel/settlements');
   },
   handleSubmitFail: (props: TravelSettlementEditorProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
     const { formMode, intl } = props;
