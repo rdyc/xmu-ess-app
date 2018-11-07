@@ -42,7 +42,7 @@ export const ApprovalDetailView: React.SFC<ApprovalDetailProps> = props => {
             size="large"
             onClick={() => handleToDocument(response.data.moduleUid, response.data.documentUid)}
           >
-            Go To Document
+            {<FormattedMessage id="finance.field.button.goToDocument" />}
           </Button>
         </InputAdornment>
       
