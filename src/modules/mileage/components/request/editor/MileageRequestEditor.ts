@@ -135,7 +135,7 @@ const handlerCreators: HandleCreators<MileageRequestEditorProps, OwnHandlers> = 
       time: new Date()
     });
 
-    history.push('/mileage/request');
+    history.push('/mileage/requests');
   },
   handleSubmitFail: (props: MileageRequestEditorProps) => (
     errors: FormErrors | undefined,

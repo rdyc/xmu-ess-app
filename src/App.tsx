@@ -8,7 +8,7 @@ import { WithOidc, withOidc } from '@layout/hoc/withOidc';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IAppUser } from '@layout/interfaces';
 import { LeaveRoutingComponents } from '@leave/components/LeaveRoutingComponents';
-import { MileageApprovalRouter, MileageRequestRouter } from '@mileage/components/MileageRouter';
+import { MileageRoutingComponents } from '@mileage/components/MileageRouter';
 import { ProjectRoutingComponents } from '@project/components';
 import {
   purchaseApprovalRouter,
@@ -29,6 +29,8 @@ import { compose, lifecycle, ReactLifeCycleFunctions } from 'recompose';
 import { Store } from 'redux';
 import { loadUser, OidcProvider } from 'redux-oidc';
 import * as store from 'store';
+
+import { SummaryRoutingComponent } from '@summary/components/SummaryRouter';
 import { IAppState } from './generic/interfaces';
 import AppLocale from './language';
 import config, { getCurrentLanguage } from './language/config';
@@ -62,6 +64,7 @@ const app: React.ComponentType<AllProps> = props => (
               <Route path="/home" component={DashboardRoutingComponents} />
               <Route path="/account" component={AccountRoutingComponents} />
               <Route path="/project" component={ProjectRoutingComponents} />
+              <Route path="/mileage" component={MileageRoutingComponents} />
               <Route path="/leave" component={LeaveRoutingComponents} />
               <Route path="/purchase/request" component={purchaseRouter} />
               <Route path="/approval/purchase/request" component={purchaseApprovalRouter} />
@@ -74,8 +77,7 @@ const app: React.ComponentType<AllProps> = props => (
               <Route path="/approval/timesheet" component={timesheetApprovalRouter} />
               <Route path="/expense" component={ExpenseRouter} />
               <Route path="/approval/expense" component={ExpenseApprovalRouter} />
-              <Route path="/mileage" component={MileageRequestRouter} />
-              <Route path="/approval/mileage" component={MileageApprovalRouter} />
+              <Route path="/reports" component={SummaryRoutingComponent} />
               <Route path="/finance" component={FinanceRoutingComponents} />
 
               <Route path="/playground" component={playgroundRouter} />

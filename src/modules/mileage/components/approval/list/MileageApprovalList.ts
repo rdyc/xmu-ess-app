@@ -72,10 +72,10 @@ const createProps: mapper<MileageApprovalListProps, OwnState> = (props: MileageA
   const { request } = props.mileageApprovalState.all;
 
   return { 
-    orderBy: request && request.filter && request.filter['query.orderBy'] || orderBy,
-    direction: request && request.filter && request.filter['query.direction'] || direction,
-    page: request && request.filter && request.filter['query.page'] || page || 1, 
-    size: request && request.filter && request.filter['query.size'] || size || 10,
+    orderBy: request && request.filter && request.filter.query && request.filter.query.orderBy || orderBy || 'uid',
+    direction: request && request.filter && request.filter.query && request.filter.query.direction || direction || 'descending',
+    page: request && request.filter && request.filter.query && request.filter.query.page || page || 1, 
+    size: request && request.filter && request.filter.query && request.filter.query.size || size || 10,
   };
 
 };
@@ -110,7 +110,7 @@ const handlerCreators: HandleCreators<MileageApprovalListProps, OwnHandlers> = {
     const { isLoading } = props.mileageApprovalState.all;
 
     if (!isLoading) {
-      history.push(`/approval/mileage/details/${mileageUid}`);
+      history.push(`/mileage/approvals/${mileageUid}`);
     } 
   },
   handleGoToNext: (props: MileageApprovalListProps) => () => { 
@@ -164,7 +164,7 @@ const lifecycles: ReactLifeCycleFunctions<MileageApprovalListProps, OwnState> = 
       onSyncCallback: handleReloading,
       onOrderCallback: handleChangeOrder,
       onDirectionCallback: handleChangeSort,
-      onAddCallback: () => history.push('/mileage/approval/form'),
+      onAddCallback: () => history.push('/mileage/approvals/form'),
       onSizeCallback: handleChangeSize,
     });
 
@@ -218,19 +218,19 @@ const loadData = (props: MileageApprovalListProps): void => {
 
   if (user) {
     loadAllRequest({
-      companyUid: user.company.uid,
-      positionUid: user.position.uid,
       filter: {
-        'query.direction': direction,
-        'query.orderBy': orderBy,
-        'query.page': page ,
-        'query.size': size ,
         status: undefined,
         isNotify: undefined,
+        query: {
+          direction,
+          orderBy,
+          page,
+          size,
+          find: undefined,
+          findBy: undefined
+        },
         companyUid: user.company.uid,
         positionUid: user.position.uid,
-        'query.find': undefined,
-        'query.findBy': undefined,
       }
     }); 
   } else {

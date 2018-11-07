@@ -4,9 +4,8 @@ import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithNavBottom, withNavBottom } from '@layout/hoc/withNavBottom';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IListBarField } from '@layout/interfaces';
-import { MileageRequestField } from '@mileage/classes/types';
-import { MileageRequestListView } from '@mileage/components/request/list/MileageRequestListView';
-import { WithMileageRequest, withMileageRequest } from '@mileage/hoc/withMileageRequest';
+import { BillableListView } from '@summary/components/billable/BillableListView';
+import { WithSummaryRequest, withSummaryRequest } from '@summary/hoc/withSummary';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import {
@@ -23,7 +22,6 @@ import {
 } from 'recompose';
 
 interface OwnHandlers {
-  handleGoToDetail: (mileageUid: string) => void;
   handleGoToNext: () => void;
   handleGoToPrevious: () => void;
   handleReloading: () => void;
@@ -55,8 +53,8 @@ interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
   stateSizing: StateHandler<OwnState>;
 }
 
-export type MileageRequestListProps 
-  = WithMileageRequest
+export type BillableListProps 
+  = WithSummaryRequest
   & WithUser
   & WithLayout
   & WithNavBottom
@@ -67,9 +65,9 @@ export type MileageRequestListProps
   & OwnState
   & OwnStateUpdaters;
 
-const createProps: mapper<MileageRequestListProps, OwnState> = (props: MileageRequestListProps): OwnState => {
+const createProps: mapper<BillableListProps, OwnState> = (props: BillableListProps): OwnState => {
   const { orderBy, direction, page, size } = props;
-  const { request } = props.mileageRequestState.all;
+  const { request } = props.summaryState.billable;
 
   return { 
     orderBy: request && request.filter && request.filter.orderBy || orderBy || 'uid',
@@ -103,39 +101,31 @@ const stateUpdaters: StateUpdaters<OwnOptions, OwnState, OwnStateUpdaters> = {
   }),
 };
 
-const handlerCreators: HandleCreators<MileageRequestListProps, OwnHandlers> = {
-  handleGoToDetail: (props: MileageRequestListProps) => (mileageUid) => {
-    const { history } = props;
-    const { isLoading } = props.mileageRequestState.all;
-
-    if (!isLoading) {
-      history.push(`/mileage/requests/${mileageUid}`);
-    } 
-  },
-  handleGoToNext: (props: MileageRequestListProps) => () => { 
+const handlerCreators: HandleCreators<BillableListProps, OwnHandlers> = {
+  handleGoToNext: (props: BillableListProps) => () => { 
     props.stateNext();
   },
-  handleGoToPrevious: (props: MileageRequestListProps) => () => { 
+  handleGoToPrevious: (props: BillableListProps) => () => { 
     props.statePrevious();
   },
-  handleReloading: (props: MileageRequestListProps) => () => { 
+  handleReloading: (props: BillableListProps) => () => { 
     props.stateReloading();
 
     // force re-load from api
     loadData(props);
   },
-  handleChangeOrder: (props: MileageRequestListProps) => (field: IListBarField) => { 
+  handleChangeOrder: (props: BillableListProps) => (field: IListBarField) => { 
     props.stateOrdering(field);
   },
-  handleChangeSize: (props: MileageRequestListProps) => (value: number) => { 
+  handleChangeSize: (props: BillableListProps) => (value: number) => { 
     props.stateSizing(value);
   },
-  handleChangeSort: (props: MileageRequestListProps) => (direction: SortDirection) => { 
+  handleChangeSort: (props: BillableListProps) => (direction: SortDirection) => { 
     props.stateSorting(direction);
   }
 };
 
-const lifecycles: ReactLifeCycleFunctions<MileageRequestListProps, OwnState> = {
+const lifecycles: ReactLifeCycleFunctions<BillableListProps, OwnState> = {
   componentDidMount() { 
     const { 
       handleGoToNext, handleGoToPrevious, handleReloading, 
@@ -144,13 +134,13 @@ const lifecycles: ReactLifeCycleFunctions<MileageRequestListProps, OwnState> = {
       history, intl 
     } = this.props;
     
-    const { isLoading, response } = this.props.mileageRequestState.all;
+    const { isLoading, response } = this.props.summaryState.billable;
 
     layoutDispatch.changeView({
-      uid: AppMenu.MileageRequest,
-      parentUid: AppMenu.Mileage,
-      title: intl.formatMessage({id: 'mileage.request.title'}),
-      subTitle : intl.formatMessage({id: 'mileage.request.subTitle'})
+      uid: AppMenu.ReportBillable,
+      parentUid: AppMenu.Report,
+      title: intl.formatMessage({id: 'report.billable.title'}),
+      subTitle : intl.formatMessage({id: 'report.billable.subTitle'})
     });
 
     layoutDispatch.modeListOn();
@@ -163,21 +153,16 @@ const lifecycles: ReactLifeCycleFunctions<MileageRequestListProps, OwnState> = {
       onSyncCallback: handleReloading,
       onOrderCallback: handleChangeOrder,
       onDirectionCallback: handleChangeSort,
-      onAddCallback: () => history.push('/mileage/requests/form'),
+      onAddCallback: () => history.push('/'),
       onSizeCallback: handleChangeSize,
     });
-
-    const items = Object.keys(MileageRequestField)
-      .map(key => ({ id: key, name: MileageRequestField[key] }));
-
-    navBottomDispatch.assignFields(items);
 
     // only load data when response are empty
     if (!isLoading && !response) {
       loadData(this.props);
     }
   },
-  componentDidUpdate(props: MileageRequestListProps, state: OwnState) {
+  componentDidUpdate(props: BillableListProps, state: OwnState) {
     // only load when these props are different
     if (
       this.props.orderBy !== props.orderBy ||
@@ -191,7 +176,7 @@ const lifecycles: ReactLifeCycleFunctions<MileageRequestListProps, OwnState> = {
   componentWillUnmount() {
     const { layoutDispatch, navBottomDispatch } = this.props;
     const { view } = this.props.layoutState;
-    const { loadAllDispose } = this.props.mileageRequestDispatch;
+    const { loadBillableDispose } = this.props.summaryDispatch;
 
     layoutDispatch.changeView(null);
     layoutDispatch.modeListOff();
@@ -202,31 +187,29 @@ const lifecycles: ReactLifeCycleFunctions<MileageRequestListProps, OwnState> = {
 
     navBottomDispatch.dispose();
 
-    // dispose 'get all' from 'redux store' when the page is 'out of mileage request' context 
-    if (view && view.parentUid !== AppMenu.Mileage) {
-      loadAllDispose();
+    // dispose 'get all' from 'redux store' when the page is 'out of report billable' context 
+    if (view && view.parentUid !== AppMenu.Report) {
+      loadBillableDispose();
     }
   }
 };
 
-const loadData = (props: MileageRequestListProps): void => {
+const loadData = (props: BillableListProps): void => {
   const { orderBy, direction, page, size } = props;
   const { user } = props.userState;
-  const { loadAllRequest } = props.mileageRequestDispatch;
+  const { loadBillableRequest } = props.summaryDispatch;
   const { alertAdd } = props.layoutDispatch;
 
   if (user) {
-    loadAllRequest({
+    loadBillableRequest({
+      companyUid: user.company.uid,
       filter: {
         direction,
         orderBy,
         page,
         size,
-        isRejected : undefined,
-        month: undefined,
-        year: undefined,
-        companyUid: user.company.uid,
-        positionUid: user.position.uid,
+        start: undefined,
+        end: undefined,
         find: undefined,
         findBy: undefined,
       }
@@ -239,14 +222,14 @@ const loadData = (props: MileageRequestListProps): void => {
   }
 };
 
-export const MileageRequestList = compose<MileageRequestListProps, OwnOptions>(
-  withMileageRequest,
+export const BillableList = compose<BillableListProps, OwnOptions>(
+  withSummaryRequest,
   withUser,
   withLayout,
   withNavBottom,
   withRouter,
   injectIntl,
   withStateHandlers<OwnState, OwnStateUpdaters, OwnOptions>(createProps, stateUpdaters), 
-  withHandlers<MileageRequestListProps, OwnHandlers>(handlerCreators),
-  lifecycle<MileageRequestListProps, OwnState>(lifecycles),
-)(MileageRequestListView);
+  withHandlers<BillableListProps, OwnHandlers>(handlerCreators),
+  lifecycle<BillableListProps, OwnState>(lifecycles),
+)(BillableListView);
