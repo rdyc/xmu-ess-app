@@ -1,6 +1,7 @@
 import { SelectSystem, SelectSystemOption } from '@common/components/select';
 import { FormMode } from '@generic/types';
 import { InputDateLeave } from '@layout/components/input/date';
+import { InputContactNumber } from '@layout/components/input/number';
 import { InputText } from '@layout/components/input/text';
 import { LeaveRequestDetailFormView } from '@leave/components/request/editor/forms/LeaveRequestDetailFormView';
 import { InputLeave } from '@lookup/components/leave/input';
@@ -93,9 +94,10 @@ const handlerCreators: HandleCreators<RequestDetailFormProps, OwnHandlers> = {
 
       case 'contactNumber': 
         fieldProps = {
+          type: 'number',
           required: true,
           placeholder: intl.formatMessage({id: `leave.field.${name}.placeholder`}),
-          component: InputText
+          component: InputContactNumber
         };
         break;
 

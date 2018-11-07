@@ -72,13 +72,13 @@ export type ApprovalListProps
   & OwnStateUpdaters;
 
 const createProps: mapper<ApprovalListProps, OwnState> = (props: ApprovalListProps): OwnState => {
-    const { orderBy, direction, page, size } = props;
+    const { orderBy, page, size } = props;
     const { request } = props.financeApprovalState.all;
   
     return { 
       financeUids: [],
       orderBy: request && request.filter && request.filter.orderBy || orderBy,
-      direction: request && request.filter && request.filter.direction || direction,
+      direction: request && request.filter && request.filter.direction || SortDirection.desc,
       page: request && request.filter && request.filter.page || page || 1, 
       size: request && request.filter && request.filter.size || size || 10,
     };
@@ -125,7 +125,7 @@ const handlerCreators: HandleCreators<ApprovalListProps, OwnHandlers> = {
       const { isLoading } = props.financeApprovalState.all;
   
       if (!isLoading) {
-        history.push(`/approval/finance/details/${financeUid}`);
+        history.push(`/finance/approvals/${financeUid}`);
       } 
     },
     handleGoToApproval: (props: ApprovalListProps) => () => {
@@ -133,7 +133,7 @@ const handlerCreators: HandleCreators<ApprovalListProps, OwnHandlers> = {
       const { isLoading } = props.financeApprovalState.all;
   
       if (!isLoading) {
-        history.push(`/approval/finance/payment/${financeUids}`);      } 
+        history.push(`/finance/approvals/payment/${financeUids}`);      } 
 
     },
     handleGoToNext: (props: ApprovalListProps) => () => { 
@@ -181,7 +181,8 @@ const handlerCreators: HandleCreators<ApprovalListProps, OwnHandlers> = {
       layoutDispatch.modeListOn();
       layoutDispatch.searchShow();
       layoutDispatch.actionCentreShow();
-  
+      
+      navBottomDispatch.addHide();
       navBottomDispatch.assignCallbacks({
         onNextCallback: handleGoToNext,
         onPrevCallback: handleGoToPrevious,

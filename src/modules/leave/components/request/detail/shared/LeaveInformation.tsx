@@ -48,13 +48,15 @@ const leaveInformation: React.SFC<AllProps> = props => {
           label={<FormattedMessage id="leave.field.information.leaveType" />}
           value={data.leave ? data.leave.value : 'N/A'}
         />
+        {data.regular && data.regular.leave && data.regular.leave.name ?
         <TextField
           {...styled}
           hidden 
           margin="normal"
           label={<FormattedMessage id="leave.field.information.regularType" />}
           value={data.regular ? data.regular.leave ? data.regular.leave.name : 'N/A' : 'N/A'}
-        />
+        /> : null}
+
         <TextField
           {...styled}
           margin="normal"

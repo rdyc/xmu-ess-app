@@ -130,7 +130,7 @@ const handlerCreators: HandleCreators<RequestDetailProps, Handler> = {
 
     stateReset();
 
-    history.push('/leave/form/', { uid: leaveUid });
+    history.push('/leave/requests/form/', { uid: leaveUid });
   },
 };
 

@@ -2,12 +2,12 @@ import { AccountRoutingComponents } from '@account/components';
 import AppStorage from '@constants/AppStorage';
 import { DashboardRoutingComponents } from '@dashboard/components';
 import { ExpenseApprovalRouter, ExpenseRouter } from '@expense/components/ExpenseRouter';
+import { FinanceRoutingComponents } from '@finance/components/FinanceRoutingComponents';
 import { Callback, Root } from '@layout/components/base';
 import { WithOidc, withOidc } from '@layout/hoc/withOidc';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IAppUser } from '@layout/interfaces';
-import { leaveApprovalRouter } from '@leave/components/routers/leaveApprovalRouter';
-import { leaveRequestRouter } from '@leave/components/routers/leaveRequestRouter';
+import { LeaveRoutingComponents } from '@leave/components/LeaveRoutingComponents';
 import { MileageRoutingComponents } from '@mileage/components/MileageRouter';
 import { ProjectRoutingComponents } from '@project/components';
 import {
@@ -65,8 +65,7 @@ const app: React.ComponentType<AllProps> = props => (
               <Route path="/account" component={AccountRoutingComponents} />
               <Route path="/project" component={ProjectRoutingComponents} />
               <Route path="/mileage" component={MileageRoutingComponents} />
-              <Route path="/leave" component={leaveRequestRouter} />
-              <Route path="/approval/leave" component={leaveApprovalRouter} />
+              <Route path="/leave" component={LeaveRoutingComponents} />
               <Route path="/purchase/request" component={purchaseRouter} />
               <Route path="/approval/purchase/request" component={purchaseApprovalRouter} />
               <Route path="/purchase/settlement" component={purchaseSettlementRouter} />
@@ -79,6 +78,8 @@ const app: React.ComponentType<AllProps> = props => (
               <Route path="/expense" component={ExpenseRouter} />
               <Route path="/approval/expense" component={ExpenseApprovalRouter} />
               <Route path="/reports" component={SummaryRoutingComponent} />
+              <Route path="/finance" component={FinanceRoutingComponents} />
+
               <Route path="/playground" component={playgroundRouter} />
             </Switch>
           </Router>
