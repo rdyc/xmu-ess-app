@@ -4,6 +4,8 @@ import { Anchor } from '@layout/types';
 import { action } from 'typesafe-actions';
 
 export const enum LayoutAction {
+  THEME_CHANGE = '@@layout/THEME_CHANGE',
+
   ACCOUNT_EXPAND = '@@layout/ACCOUNT_EXPAND',
   ACCOUNT_COLAPSE = '@@layout/ACCOUNT_COLAPSE',
   
@@ -41,6 +43,8 @@ export const enum LayoutAction {
   MODE_LIST_ON = '@@layout/MODE_LIST_ON',
   MODE_LIST_OFF = '@@layout/MODE_LIST_OFF',
 }
+
+export const layoutThemeChange = () => action(LayoutAction.THEME_CHANGE);
 
 export const layoutAccountExpand = () => action(LayoutAction.ACCOUNT_EXPAND);
 export const layoutAccountColapse = () => action(LayoutAction.ACCOUNT_COLAPSE);

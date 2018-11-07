@@ -2,6 +2,7 @@ import { IAppState } from '@generic/interfaces';
 import { SortDirection } from '@generic/types';
 import { IListBarCallback, IListBarField, IListBarState } from '@layout/interfaces';
 import {
+  listBarAddHide,
   listBarAssignCallbacks,
   listBarAssignFields,
   listBarChangeDirection,
@@ -30,6 +31,7 @@ interface PropsFromDispatch {
     dispose: typeof listBarDispose;
     menuShow: typeof listBarMenuShow;
     menuHide: typeof listBarMenuHide;
+    addHide: typeof listBarAddHide;
   };
 }
 
@@ -49,6 +51,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     dispose: () => dispatch(listBarDispose()),
     menuShow: (anchorId: any) => dispatch(listBarMenuShow(anchorId)),
     menuHide: () => dispatch(listBarMenuHide()),
+    addHide: () => dispatch(listBarAddHide()),
   }
 });
 

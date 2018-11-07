@@ -73,10 +73,12 @@ export const accountAccessView: React.SFC<AccessSwitcherProps> = props => (
                               primary={item.department && item.department.value}
                               secondary={item.unit && item.unit.value}
                               primaryTypographyProps={{
-                                variant: 'body1'
+                                variant: 'body1',
+                                noWrap: true
                               }}
                               secondaryTypographyProps={{
-                                variant: 'caption'
+                                variant: 'caption',
+                                noWrap: true
                               }}
                             />
                           </ListItemSecondaryAction>

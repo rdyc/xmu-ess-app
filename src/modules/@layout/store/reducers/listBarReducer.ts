@@ -36,7 +36,8 @@ const initialState: IListBarState = {
   callbacks: _callbacks,
   menuIsOpen: false,
   menuAnchorId: undefined,
-  fields: undefined
+  fields: undefined,
+  addDisabled: false
 };
 
 const reducer: Reducer<IListBarState> = (state = initialState, action) => {
@@ -67,6 +68,9 @@ const reducer: Reducer<IListBarState> = (state = initialState, action) => {
 
     case ListBarAction.LOADING:
       return { ...state, isLoading: action.payload };
+
+    case ListBarAction.ADD_HIDE:
+      return { ...state, addDisabled: true };
 
     // case ListBarAction.DISPOSE:
     //   return initialState;

@@ -3,9 +3,8 @@ import AppMenu from '@constants/AppMenu';
 import { RadioGroupChoice } from '@layout/components/input/radioGroup';
 import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
-import { withUser } from '@layout/hoc/withUser';
+import { withUser, WithUser } from '@layout/hoc/withUser';
 import { IAppBarMenu } from '@layout/interfaces';
-import { WithUser } from '@lookup/components/leave';
 import { WorkflowApprovalFormData } from '@organization/components/workflow/approval/WorkflowApprovalForm';
 import {
   ITimesheetApprovalItem, ITimesheetApprovalPostBulkPayload

@@ -32,12 +32,6 @@ export const LeaveApprovalListView: React.SFC<LeaveApprovalListProps> = props =>
                 >
                   {leave.reason}
                 </Typography>
-                {/* <Typography 
-                  noWrap
-                  variant="body1"
-                >
-                  {leave.customer && leave.customer.name} &bull; {leave.customer && leave.customer.company && leave.customer.company.name} {leave.contractNumber && `(PO: ${leave.contractNumber})`}
-                </Typography> */}
                 <Typography 
                   noWrap
                   color="textSecondary" 
