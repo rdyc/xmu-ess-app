@@ -33,7 +33,7 @@ import { Dispatch } from 'redux';
 import { BaseFieldProps, WrappedFieldProps } from 'redux-form';
 import { isNullOrUndefined } from 'util';
 
-export interface WithUser {
+export interface WithLeaveUser {
   userState: IUserState;
 }
 
@@ -59,7 +59,7 @@ type AllProps = PropsFromState &
                 OwnProps &
                 ConnectedReduxProps & 
                 InjectedIntlProps & 
-                WithUser &
+                WithLeaveUser &
                 WithWidth &
                 WithStyles<typeof styles>;
 
