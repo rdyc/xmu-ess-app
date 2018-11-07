@@ -109,7 +109,7 @@ const handlerCreators: HandleCreators<PurchaseApprovalListProps, OwnHandlers> = 
       const { isLoading } = props.purchaseApprovalState.all;
   
       if (!isLoading) {
-        history.push(`/approval/purchase/request/details/${purchaseUid}`);
+        history.push(`/purchase/approvals/details/${purchaseUid}`);
       } 
     },
     handleGoToNext: (props: PurchaseApprovalListProps) => () => { 

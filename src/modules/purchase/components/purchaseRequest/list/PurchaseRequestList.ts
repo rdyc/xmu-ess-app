@@ -109,7 +109,7 @@ const handlerCreators: HandleCreators<PurchaseRequestListProps, OwnHandlers> = {
     const { isLoading } = props.purchaseRequestState.all;
 
     if (!isLoading) {
-      history.push(`/purchase/request/details/${purchaseUid}`);
+      history.push(`/purchase/requests/details/${purchaseUid}`);
     } 
   },
   handleGoToNext: (props: PurchaseRequestListProps) => () => { 

@@ -149,7 +149,7 @@ const handlerCreators: HandleCreators<PurchaseApprovalDetailProps, OwnHandler> =
     });
 
     // if (match.params.purchaseUid) {
-    history.push(`/approval/purchase/request/list`);
+    history.push(`/purchase/approvals/list`);
     // }
   },
   handleSubmitFail: (props: PurchaseApprovalDetailProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
