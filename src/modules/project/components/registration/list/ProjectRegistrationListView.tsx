@@ -26,8 +26,7 @@ export const ProjectRegistrationListView: React.SFC<ProjectRegisterListProps> = 
               <Grid item xs={8} sm={8}>
                 <Typography 
                   noWrap 
-                  color="primary" 
-                  variant="body2"
+                  variant="body1"
                 >
                   {project.name}
                 </Typography>
@@ -39,7 +38,6 @@ export const ProjectRegistrationListView: React.SFC<ProjectRegisterListProps> = 
                 </Typography>
                 <Typography 
                   noWrap
-                  color="textSecondary" 
                   variant="caption"
                 >
                   {project.uid} &bull; {project.project && project.project.value} &bull; &nbsp;

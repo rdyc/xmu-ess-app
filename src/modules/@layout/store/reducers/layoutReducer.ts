@@ -1,8 +1,17 @@
 import { IAlert, ILayoutState } from '@layout/interfaces';
 import { LayoutAction as Action } from '@layout/store/actions';
+import indigo from '@material-ui/core/colors/indigo';
+import orange from '@material-ui/core/colors/orange';
 import { Reducer } from 'redux';
 
 const initialState: ILayoutState = {
+  theme: {
+    palette: {
+      primary: indigo,
+      secondary: orange,
+      type: 'light'
+    }
+  },
   anchor: 'left',
   view: undefined,
   alerts: [],
@@ -39,6 +48,13 @@ const alertRemove = (alerts: IAlert[]) => {
 
 const reducer: Reducer<ILayoutState> = (state = initialState, action) => {
   switch (action.type) {
+    case Action.THEME_CHANGE: return { ...state, theme: {
+      palette: {
+        ...state.theme.palette,
+        type: state.theme.palette.type === 'light' ? 'dark' : 'light'}
+      }
+    };
+
     case Action.ALERT_ADD: return { ...state, alerts: alertAdd(state.alerts, action.payload) };
     case Action.ALERT_DISSMIS: return { ...state, alerts: alertRemove(state.alerts) };
 

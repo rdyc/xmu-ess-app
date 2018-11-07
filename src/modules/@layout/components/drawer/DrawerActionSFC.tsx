@@ -1,6 +1,6 @@
 import NotificationListSFC from '@layout/components/notification/NotificationListSFC';
-import { withLayout, WithLayout } from '@layout/hoc/withLayout';
-import { withUser, WithUser } from '@layout/hoc/withUser';
+import { WithLayout, withLayout } from '@layout/hoc/withLayout';
+import { WithUser, withUser } from '@layout/hoc/withUser';
 import {
   Avatar,
   Button,
@@ -26,10 +26,11 @@ import Switch from '@material-ui/core/Switch';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
+import InvertColors from '@material-ui/icons/InvertColors';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import PowerSettingsNew from '@material-ui/icons/PowerSettingsNew';
+import SwapHoriz from '@material-ui/icons/SwapHoriz';
 import SwapHorizontalCircle from '@material-ui/icons/SwapHorizontalCircle';
-import WifiIcon from '@material-ui/icons/Wifi';
 import styles from '@styles';
 import { AppUserManager } from '@utils/userManager';
 import * as classNames from 'classnames';
@@ -113,9 +114,16 @@ const component: React.SFC<AllProps> = props => {
                 </Avatar>
                 <ListItemText 
                   primary={userState.user.fullName} 
-                  secondary={userState.user.email} />
+                  secondary={userState.user.email}
+                  primaryTypographyProps={{
+                    variant: 'body1'
+                  }}
+                  secondaryTypographyProps={{
+                    variant: 'body1'
+                  }}
+                />
                 <ListItemSecondaryAction>
-                  {layoutState.isAccountExpanded ? <ExpandLess /> : <ExpandMore />}
+                  {layoutState.isAccountExpanded ? <ExpandLess color="action" /> : <ExpandMore color="action" />}
                 </ListItemSecondaryAction>
               </ListItem>
               <Collapse in={layoutState.isAccountExpanded} timeout="auto" unmountOnExit>
@@ -149,14 +157,21 @@ const component: React.SFC<AllProps> = props => {
             />
             
             <List subheader={
-              <ListSubheader color="primary">
+              <ListSubheader>
                 <FormattedMessage id="global.access.title"/>
               </ListSubheader>
             }>
               <ListItem>
                 <ListItemText 
                   primary={userState.user.company.name} 
-                  secondary={userState.user.position.name} />
+                  secondary={userState.user.position.name}
+                  primaryTypographyProps={{
+                    variant: 'body1'
+                  }}
+                  secondaryTypographyProps={{
+                    variant: 'body1'
+                  }}
+                />
                 <ListItemSecondaryAction>
                   <IconButton>
                     <MoreVertIcon />
@@ -167,17 +182,40 @@ const component: React.SFC<AllProps> = props => {
           </div>
         )}
         <List 
-            subheader={
-            <ListSubheader color="primary">
-              <FormattedMessage id="global.setting.title"/>
-            </ListSubheader>}>
+          subheader={
+          <ListSubheader>
+            <FormattedMessage id="global.setting.title"/>
+          </ListSubheader>}
+          >
           <ListItem>
             <ListItemIcon>
-              <WifiIcon />
+              <InvertColors />
             </ListItemIcon>
-            <ListItemText primary="Right hand" />
+            <ListItemText 
+              primary="Dark Theme"
+              primaryTypographyProps={{
+                variant: 'body1'
+              }}
+            />
             <ListItemSecondaryAction>
-              <Switch color="primary"
+              <Switch color="secondary"
+                onChange={() => layoutDispatch.themeChange()}
+                checked={layoutState.theme.palette.type === 'dark'}
+              />
+            </ListItemSecondaryAction>
+          </ListItem>
+          <ListItem>
+            <ListItemIcon>
+              <SwapHoriz />
+            </ListItemIcon>
+            <ListItemText 
+              primary="Right hand"
+              primaryTypographyProps={{
+                variant: 'body1'
+              }}
+            />
+            <ListItemSecondaryAction>
+              <Switch color="secondary"
                 onChange={() => layoutDispatch.changeAnchor(layoutState.anchor === 'right' ? 'left' : 'right')}
                 checked={layoutState.anchor === 'right'}
               />
