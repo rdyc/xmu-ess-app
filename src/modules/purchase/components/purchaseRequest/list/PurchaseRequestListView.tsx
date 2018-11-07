@@ -1,4 +1,4 @@
-import { Divider, Grid, List, ListItem, ListSubheader, Paper, Typography } from '@material-ui/core';
+import { Divider, Grid, LinearProgress, List, ListItem, ListSubheader, Paper, Typography } from '@material-ui/core';
 import { IPurchase } from '@purchase/classes/response/purchaseRequest';
 import { PurchaseRequestListProps } from '@purchase/components/purchaseRequest/list/PurchaseRequestList';
 import { parseChanges } from '@utils/parseChanges';
@@ -8,7 +8,7 @@ import { FormattedDate, FormattedNumber, FormattedPlural } from 'react-intl';
 import { isArray } from 'util';
 
 export const PurchaseRequestListView: React.SFC<PurchaseRequestListProps> = props => {
-  const { handleGoToDetail } = props;
+  const { handleGoToDetail, intl } = props;
   const { isLoading, response } = props.purchaseRequestState.all;
 
   const renderPurchaseRequestList = (purchases: IPurchase[]) => {
@@ -29,7 +29,7 @@ export const PurchaseRequestListView: React.SFC<PurchaseRequestListProps> = prop
                   color="primary"
                   variant="body2"
                 >
-                  {purchase.uid}  &bull; {purchase.currency && purchase.currency.value} {purchase.request}
+                  {purchase.uid}  &bull; {purchase.currency && purchase.currency.value} { intl.formatNumber(purchase.request || 0) }
                 </Typography>
                 <Typography
                   noWrap
@@ -43,7 +43,7 @@ export const PurchaseRequestListView: React.SFC<PurchaseRequestListProps> = prop
                   color="textSecondary"
                   variant="caption"
                 >
-                  {purchase.notes} &bull; {purchase.currency && purchase.currency.value} {purchase.advance ? purchase.advance : '0' } &bull; &nbsp;
+                  {purchase.notes} &bull; {purchase.currency && purchase.currency.value} {intl.formatNumber(purchase.advance || 0)} &bull; &nbsp;
                   <FormattedDate
                     year="numeric"
                     month="short"
@@ -120,15 +120,19 @@ export const PurchaseRequestListView: React.SFC<PurchaseRequestListProps> = prop
     </List>
   );
 
+  const RenderNull = () => (
+    <Typography variant="body2" align="center">Lost in The Force, Padawan, you are.</Typography>
+  );
+
   const render = (
     <React.Fragment>
-      {isLoading && response && <Typography variant="body2">loading</Typography>}
+      { isLoading && response && <LinearProgress /> }
       {response &&
         <Paper
           square
           elevation={1}
         >
-          <RenderList />
+        {response.metadata.paginate === null ? <RenderNull /> : <RenderList />}
         </Paper>}
     </React.Fragment>
   );

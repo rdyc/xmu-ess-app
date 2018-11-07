@@ -7,7 +7,7 @@ import {
   IMileageApprovalGetAllRequest, IMileageApprovalGetByIdRequest, IMileageApprovalPostRequest
 } from '@mileage/classes/queries';
 import {
-  IMileageApproval, IMileageApprovalDetail
+  IMileageRequest, IMileageRequestDetail
 } from '@mileage/classes/response';
 import {
   mileageApprovalGetAllDispose, mileageApprovalGetAllRequest, mileageApprovalGetByIdDispose, mileageApprovalGetByIdRequest, mileageApprovalPostDispose, mileageApprovalPostRequest
@@ -18,10 +18,10 @@ import { submit } from 'redux-form';
 
 interface PropsFromState {
   mileageApprovalState: {
-    all: IQueryCollectionState<IMileageApprovalGetAllRequest, IMileageApproval>;
+    all: IQueryCollectionState<IMileageApprovalGetAllRequest, IMileageRequest>;
     detail: IQuerySingleState<
     IMileageApprovalGetByIdRequest,
-    IMileageApprovalDetail
+    IMileageRequestDetail
     >;
   };
 }

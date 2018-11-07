@@ -1,6 +1,5 @@
-import { ICompanyAccess } from '@generic/interfaces';
 import { IMileageApprovalGetAllFilter } from '@mileage/classes/filters';
 
-export interface IMileageApprovalGetAllRequest extends ICompanyAccess {
+export interface IMileageApprovalGetAllRequest {
   readonly filter: IMileageApprovalGetAllFilter | undefined;
 }

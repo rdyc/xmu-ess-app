@@ -8,8 +8,6 @@ import {
   IMileageRequestPostRequest,
 } from '@mileage/classes/queries';
 import {
-  IMileageApproval,
-  IMileageApprovalDetail,
   IMileageRequest,
   IMileageRequestDetail
 } from '@mileage/classes/response';
@@ -27,11 +25,11 @@ export interface IMileageState {
 
   mileageApprovalGetAll: IQueryCollectionState<
     IMileageApprovalGetAllRequest,
-    IMileageApproval
+    IMileageRequest
   >;
   mileageApprovalGetById: IQuerySingleState<
     IMileageApprovalGetByIdRequest,
-    IMileageApprovalDetail
+    IMileageRequestDetail
   >;
-  mileageApprovalPost: IQuerySingleState<IMileageApprovalPostRequest, IMileageApproval>;
+  mileageApprovalPost: IQuerySingleState<IMileageApprovalPostRequest, IMileageRequest>;
 }

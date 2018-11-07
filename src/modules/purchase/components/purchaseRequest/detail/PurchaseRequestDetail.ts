@@ -22,7 +22,7 @@ import {
   withStateHandlers,
 } from 'recompose';
 
-interface Handler {
+export interface Handler {
   handlePurchaseRefresh: () => void;
   handlePurchaseModify: () => void;
   handleDialogOpen: (title: string, description: string, cancelText?: string, confirmText?: string, fullScreen?: boolean) => void;

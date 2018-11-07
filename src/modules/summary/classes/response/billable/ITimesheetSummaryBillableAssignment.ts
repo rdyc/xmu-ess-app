@@ -1,11 +1,11 @@
-import { IPosition } from '@lookup/classes/response';
-import { IProject } from '@project/classes/response';
+import { ILookupPosition } from '@lookup/classes';
+import { IProject } from '@summary/classes/response/billable';
 
 export interface ITimesheetSummaryBillableAssignment {
   projectUid: string;
   project?: IProject | null;
   positionUid: string;
-  position?: IPosition | null;
+  position?: ILookupPosition | null;
   role: string[];
   allocatedHours: number;
   actualHours: number;
