@@ -83,7 +83,7 @@ const timesheetInformation: React.SFC<AllProps> = props => {
           value={intl.formatTime(data.start, {
             hour: 'numeric',
             minute: 'numeric',
-            timeZone: 'GMT',
+            timeZone: 'utc',
             hour12: false
           })}
         />
@@ -94,7 +94,7 @@ const timesheetInformation: React.SFC<AllProps> = props => {
           value={intl.formatTime(data.end, {
             hour: 'numeric',
             minute: 'numeric',
-            timeZone: 'GMT',
+            timeZone: 'utc',
             hour12: false
           })}
         />

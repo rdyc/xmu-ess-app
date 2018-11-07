@@ -1,7 +1,7 @@
 import { FormMode } from '@generic/types';
 import { TimesheetEntryFormView } from '@timesheet/components/entry/editor/forms/TimesheetEntryFormView';
 import { connect } from 'react-redux';
-import { InjectedFormProps, reduxForm } from 'redux-form';
+import { formValueSelector, InjectedFormProps, reduxForm } from 'redux-form';
 
 const formName = 'timeEntry';
 
@@ -23,11 +23,32 @@ interface OwnProps {
   formMode: FormMode;
 }
 
+interface FormValueProps {
+  customerUidValue: string | undefined;
+  isPresalesActivity: boolean | false;
+  projectUidValue: string | undefined;
+}
+
 export type EntryFormProps
   = InjectedFormProps<TimesheetFormData, OwnProps>
-  & OwnProps;
+  & OwnProps
+  & FormValueProps;
 
-const connectedView = connect()(TimesheetEntryFormView);
+const selector = formValueSelector(formName);
+
+const mapStateToProps = (state: any): FormValueProps => {
+  const customerUid = selector(state, 'information.customerUid');
+  const activityType = selector(state, 'information.activityType');
+  const projectUid = selector(state, 'information.projectUid');
+
+  return {
+    customerUidValue: customerUid,
+    isPresalesActivity: activityType === 'SAT02',
+    projectUidValue: projectUid,
+  };
+};
+
+const connectedView = connect(mapStateToProps)(TimesheetEntryFormView);
 
 export const TimesheetEntryForm = reduxForm<TimesheetFormData, OwnProps>({
   form: formName,
