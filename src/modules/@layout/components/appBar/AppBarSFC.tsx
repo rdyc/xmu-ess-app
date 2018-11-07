@@ -215,7 +215,7 @@ const AppBarSFC: React.SFC<AllProps> = props => {
     <AppBar 
       elevation={isWidthUp('md', width) ? 3 : 1}
       position="fixed"
-      color={layoutState.isModeSearch ? 'inherit' : 'primary'}
+      color={layoutState.isModeSearch ? 'inherit' : layoutState.theme.palette.type === 'dark' ? 'inherit' : 'primary'}
       className={fnFindClasses()}
     >
       {
