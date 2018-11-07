@@ -30,7 +30,7 @@ import { Field,
 
 // export const PurchaseRequestItemFormView: React.SFC<WrappedFieldArrayProps<PurchaseRequestItemFormData> & PurchaseRequestItemFormProps> = props => {
 export const PurchaseRequestItemFormView: React.SFC<PurchaseRequestItemFormProps> = props => {
-  const { context } = props;
+  const { context,  } = props;
 
   const render = (
     <Card square>
@@ -50,21 +50,21 @@ export const PurchaseRequestItemFormView: React.SFC<PurchaseRequestItemFormProps
                   key={index}
                 >
                    <ListItemText
-                    primary={`#${index + 1} - ${items.uid || 'New'}`}
+                    primary={`#${index + 1} - ${items.uid || ''}`}
                   />
-                  <Grid xs={4}>
+                  <Grid xs={4} spacing={8}>
                     <Field
                       type="text"
-                      name={`${items}.description`}
+                      name={`${field}.description`}
                       label={<FormattedMessage id="purchase.itemTitle.description" />}
                       // placeholder={}
                       component={InputTextArea}
                     />
                   </Grid>
-                  <Grid xs={4}>
+                  <Grid xs={4} spacing={8}>
                   <Field
                     type="number"
-                      name={`${items}.requestValue`}
+                      name={`${field}.request`}
                     label={<FormattedMessage id="purchase.itemTitle.request" />}
                     // placeholder={}
                     required={true}
@@ -84,9 +84,6 @@ export const PurchaseRequestItemFormView: React.SFC<PurchaseRequestItemFormProps
           <IconButton onClick={() => context.fields.push({ uid: null, description: '', request: 0 })}>
             <AddIcon />
           </IconButton>
-          {/* <IconButton >
-            <LockIcon />
-          </IconButton> */}
         </List>
       </CardContent>
     </Card>

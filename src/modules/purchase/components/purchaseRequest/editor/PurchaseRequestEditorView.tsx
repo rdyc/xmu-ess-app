@@ -39,11 +39,15 @@ export const PurchaseRequestEditorView: React.SFC<PurchaseRequestEditorProps> = 
       request: 0,
       notes: undefined,
     },
-    items: [{
-        uid: undefined,
-        description: '',
-        request: 0
-      }]
+    items: {
+      items: [
+      //   {
+      //   uid: undefined,
+      //   description: '',
+      //   request: 0
+      // }
+    ]
+    }
   };
 
   // New
@@ -74,7 +78,7 @@ export const PurchaseRequestEditorView: React.SFC<PurchaseRequestEditorProps> = 
 
       if (data.items) {
         data.items.forEach(item =>
-          initialValues.items.push({
+          initialValues.items.items.push({
             uid: item.uid,
             description: item.description ? item.description : '',
             request: item.requestValue

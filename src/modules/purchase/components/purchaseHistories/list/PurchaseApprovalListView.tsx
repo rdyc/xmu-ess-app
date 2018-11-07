@@ -29,7 +29,7 @@ export const PurchaseApprovalListView: React.SFC<PurchaseApprovalListProps> = pr
                   color="primary" 
                   variant="body2"
                 >
-                  {purchase.uid} &bull; {purchase.notes} &bull; { intl.formatNumber(purchase.request || 0) }
+                  {purchase.uid} &bull; {purchase.notes} &bull; {purchase.currency && purchase.currency.value} { intl.formatNumber(purchase.request || 0) }
                 </Typography>
                 <Typography 
                   noWrap
@@ -42,7 +42,7 @@ export const PurchaseApprovalListView: React.SFC<PurchaseApprovalListProps> = pr
                   noWrap
                   color="textSecondary" 
                   variant="caption"
-                >{` Advance Payment: ${intl.formatNumber(purchase.advance || 0)}`} &bull; &nbsp;
+                >{` Advance Payment: ${purchase.currency && purchase.currency.value} ${intl.formatNumber(purchase.advance || 0)}`} &bull; &nbsp;
                   <FormattedDate 
                     year="numeric"
                     month="short"

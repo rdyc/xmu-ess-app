@@ -8,7 +8,7 @@ import { FormattedDate, FormattedNumber, FormattedPlural } from 'react-intl';
 import { isArray } from 'util';
 
 export const PurchaseSettlementListView: React.SFC<PurchaseSettlementListProps> = props => {
-  const { handleGoToDetail } = props;
+  const { handleGoToDetail, intl } = props;
   const { isLoading, response } = props.purchaseSettlementState.all;
 
   const renderPurchaseSettlementList = (purchases: ISettlement[]) => {
@@ -29,7 +29,7 @@ export const PurchaseSettlementListView: React.SFC<PurchaseSettlementListProps> 
                   color="primary"
                   variant="body2"
                 >
-                  {purchase.uid}  &bull; {purchase.currency && purchase.currency.value} {purchase.actual}
+                  {purchase.uid}  &bull; {purchase.currency && purchase.currency.value} {intl.formatNumber(purchase.actual || 0)}
                 </Typography>
                 <Typography
                   noWrap
@@ -43,7 +43,7 @@ export const PurchaseSettlementListView: React.SFC<PurchaseSettlementListProps> 
                   color="textSecondary"
                   variant="caption"
                 >
-                  {purchase.currency && purchase.currency.value} {purchase.advance} &bull; &nbsp;
+                  {purchase.notes} &bull; {purchase.currency && purchase.currency.value} {intl.formatNumber(purchase.advance || 0)} &bull; &nbsp;
                   <FormattedDate
                     year="numeric"
                     month="short"

@@ -29,7 +29,13 @@ const handlerCreators: HandleCreators<PurchaseRequestItemFormProps, OwnHandlers>
     let fieldProps: any = {};
   
     switch (fieldName) {
-      case 'uid':
+      // case 'uid':
+      //   fieldProps = {
+      //     disabled: true,
+      //     placeholder: intl.formatMessage({id: `purchase.itemTitle.${name}`}),
+      //     component: InputText
+      //   };
+      //   break;
 
       case 'description': 
         fieldProps = {
@@ -39,7 +45,7 @@ const handlerCreators: HandleCreators<PurchaseRequestItemFormProps, OwnHandlers>
         };
         break;
 
-      case 'request':
+      case 'requestValue':
         fieldProps = {
           required: true,
           type: 'number',

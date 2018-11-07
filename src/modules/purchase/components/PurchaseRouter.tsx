@@ -48,6 +48,10 @@ const settlementapprovalDetailComponent = () => (
   <SettlementApprovalDetail />
 );
 
+// const settlementeditorComponent = () => (
+//   <PurchaseSettlementEditor />
+// );
+
 export const purchaseRouter: React.SFC<AllProps> = props => (
   <Switch>
     <Route path={`${props.match.path}/list`} component={listComponent} />
@@ -65,7 +69,8 @@ export const purchaseApprovalRouter: React.SFC<AllProps> = props => (
 export const purchaseSettlementRouter: React.SFC<AllProps> = props => (
   <Switch>
     <Route path={`${props.match.path}/list`} component={settlementListComponent} />
-    <Route path={`${props.match.path}/details/:purchaseUid`} component={settlementdetailComponent} />
+    <Route path={`${props.match.path}/details/:purchaseUid`} component={settlementdetailComponent} />    
+    {/* <Route path={`${props.match.path}/form`} component={settlementeditorComponent} /> */}
   </Switch>
 );
 

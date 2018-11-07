@@ -23,8 +23,9 @@ export type PurchaseRequestFormData = {
     rate: number;
     request: number;
   },
-  items:  PurchaseRequestItemFormData[]
-  
+  items:  {
+   items: PurchaseRequestItemFormData[];
+  }
 };
 
 interface OwnProps {

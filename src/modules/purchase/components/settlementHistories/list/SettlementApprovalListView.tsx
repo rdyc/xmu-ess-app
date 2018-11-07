@@ -11,7 +11,7 @@ import { FormattedDate, FormattedNumber, FormattedPlural } from 'react-intl';
 import { isArray } from 'util';
 
 export const SettlementApprovalListView: React.SFC<SettlementApprovalListProps> = props => {
-  const { handleGoToDetail } = props;
+  const { handleGoToDetail, intl } = props;
   const { isLoading, response } = props.settlementApprovalState.all;
 
   const renderPurchaseList = (purchases: ISettlement[]) => {
@@ -32,7 +32,7 @@ export const SettlementApprovalListView: React.SFC<SettlementApprovalListProps> 
                   color="primary" 
                   variant="body2"
                 >
-                  {purchase.notes}
+                  {purchase.uid} &bull; {purchase.notes} &bull; {purchase.currency && purchase.currency.value} { intl.formatNumber(purchase.request || 0) }
                 </Typography>
                 <Typography 
                   noWrap
@@ -46,7 +46,7 @@ export const SettlementApprovalListView: React.SFC<SettlementApprovalListProps> 
                   color="textSecondary" 
                   variant="caption"
                 >
-                  {purchase.uid} &bull; {purchase.advance} &bull; &nbsp;
+                  {` Advance Payment: ${purchase.currency && purchase.currency.value} ${intl.formatNumber(purchase.advance || 0)}`} &bull; &nbsp;
                   <FormattedDate 
                     year="numeric"
                     month="short"

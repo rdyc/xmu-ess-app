@@ -97,14 +97,16 @@ const handlers: HandleCreators<PurchaseRequestEditorProps, OwnHandlers> = {
     let requestValue: number = 0;
 
     if (formValues.items) {
-      formValues.items.forEach(items => requestValue += items.request);
+      formValues.items.items.forEach(items => requestValue += items.request);
     }
   },
 
   handleValidate: (props: PurchaseRequestEditorProps) => (formData: PurchaseRequestFormData) => {
     const errors = {
       information: {},
-      purchaseItems: [{}]
+      items: {
+        items: []
+      }
     };
 
     const requiredFields = [
@@ -140,7 +142,7 @@ const handlers: HandleCreators<PurchaseRequestEditorProps, OwnHandlers> = {
       const _items: IPurchaseItemPostPayload[] = [];
       
       if (formMode === FormMode.New)  {
-           formData.items.forEach(item =>
+        formData.items.items.forEach(item =>
           _items.push({
             description: item.description,
             request: item.request
@@ -159,7 +161,7 @@ const handlers: HandleCreators<PurchaseRequestEditorProps, OwnHandlers> = {
       const _itemsPut: IPurchaseItemPutPayload[] = [];
 
       if (formMode === FormMode.Edit) {
-        formData.items.forEach(item =>
+        formData.items.items.forEach(item =>
           _itemsPut.push({
             uid: item.uid,
             description: item.description,
