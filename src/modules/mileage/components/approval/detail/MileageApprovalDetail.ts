@@ -239,7 +239,7 @@ const handlerCreators: HandleCreators<
     }
 
     if (mileageItemUids.length === counter) {
-      history.push('/approval/mileage');
+      history.push('/mileage/approvals');
     } else {
       loadData(props);
       mileageItemUids.splice(0, mileageItemUids.length);
