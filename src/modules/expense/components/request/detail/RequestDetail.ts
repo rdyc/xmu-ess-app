@@ -207,7 +207,7 @@ const lifecycles: ReactLifeCycleFunctions<RequestDetailProps, OwnState> = {
             id: ExpenseRequestUserAction.Modify,
             name: intl.formatMessage({id: 'expense.action.modify'}),
             enabled: response !== undefined,
-            visible: isStatusTypeEquals([WorkflowStatusType.Submitted, WorkflowStatusType.InProgress, WorkflowStatusType.Approved])
+            visible: isStatusTypeEquals([WorkflowStatusType.Submitted, WorkflowStatusType.InProgress])
           },
         ];
   

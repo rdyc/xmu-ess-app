@@ -1,4 +1,4 @@
-import { AccountLeave } from '@account/components/views/AccountLeave';
+import { AccountLeave } from '@account/components/leave/AccountLeave';
 import { RequestDetailProps } from '@leave/components/request/detail/LeaveRequestDetail';
 import {
   Button,

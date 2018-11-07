@@ -1,19 +1,23 @@
-import { EmployeeFetchError, EmployeeFetchSuccess, EmployeeMyAction as Action } from '@account/store/actions';
+import {
+  AccountEmployeeMyAction as Action,
+  accountEmployeeMyGetError,
+  accountEmployeeMyGetSuccess,
+} from '@account/store/actions';
 import { layoutAlertAdd } from '@layout/store/actions';
 import saiyanSaga from '@utils/saiyanSaga';
 import { all, fork, put, takeEvery } from 'redux-saga/effects';
 import { IApiResponse } from 'utils';
 
-function* watchFetchRequest() {
+function* watchGetRequest() {
   const worker = () => {
     return saiyanSaga.fetch({
       method: 'get',
       path: '/v1/account/employees/my',
       successEffects: (response: IApiResponse) => ([
-        put(EmployeeFetchSuccess(response.body)),
+        put(accountEmployeeMyGetSuccess(response.body)),
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(EmployeeFetchError(response.statusText)),
+        put(accountEmployeeMyGetError(response.statusText)),
         put(layoutAlertAdd({
           time: new Date(),
           message: response.statusText,
@@ -21,7 +25,7 @@ function* watchFetchRequest() {
         }))
       ]), 
       errorEffects: (error: TypeError) => ([
-        put(EmployeeFetchError(error.message)),
+        put(accountEmployeeMyGetError(error.message)),
         put(layoutAlertAdd({
           time: new Date(),
           message: error.message
@@ -30,13 +34,13 @@ function* watchFetchRequest() {
     });
   };
 
-  yield takeEvery(Action.FETCH_REQUEST, worker);
+  yield takeEvery(Action.GET_REQUEST, worker);
 }
 
-function* employeeMySagas() {
+function* accountEmployeeMySagas() {
   yield all([
-    fork(watchFetchRequest)
+    fork(watchGetRequest)
   ]);
 }
 
-export default employeeMySagas;
+export default accountEmployeeMySagas;
