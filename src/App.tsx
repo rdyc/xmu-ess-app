@@ -1,7 +1,7 @@
 import { AccountRoutingComponents } from '@account/components';
 import AppStorage from '@constants/AppStorage';
 import { DashboardRoutingComponents } from '@dashboard/components';
-import { ExpenseApprovalRouter, ExpenseRouter } from '@expense/components/ExpenseRouter';
+import { ExpenseRoutingComponents } from '@expense/components/ExpenseRoutingComponents';
 import { FinanceRoutingComponents } from '@finance/components/FinanceRoutingComponents';
 import { Callback, Root } from '@layout/components/base';
 import { WithOidc, withOidc } from '@layout/hoc/withOidc';
@@ -75,8 +75,7 @@ const app: React.ComponentType<AllProps> = props => (
               <Route path="/approval/travel" component={travelApprovalRouter} />
               <Route path="/timesheet" component={timesheetRouter} />
               <Route path="/approval/timesheet" component={timesheetApprovalRouter} />
-              <Route path="/expense" component={ExpenseRouter} />
-              <Route path="/approval/expense" component={ExpenseApprovalRouter} />
+              <Route path="/expense" component={ExpenseRoutingComponents} />
               <Route path="/reports" component={SummaryRoutingComponent} />
               <Route path="/finance" component={FinanceRoutingComponents} />
 

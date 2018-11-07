@@ -3,10 +3,10 @@ export const menuLinkMapper = (menuUid: string) => {
 
   switch (menuUid) {
     case 'MNU31':
-      path = '/expense/request/list';
+      path = '/expense/requests';
       break;
     case 'MNU32':
-      path = '/approval/expense/list';
+      path = '/expense/approvals';
       break;
     case 'MNU46':
       path = '/finance/approvals';
