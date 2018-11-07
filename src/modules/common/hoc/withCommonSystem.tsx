@@ -3,13 +3,16 @@ import { ISystemList } from '@common/classes/response';
 import {
   activityGetListRequest,
   currencyGetListRequest,
+  destinationGetListRequest,
   documentGetListRequest,
   documentPresalesGetListRequest,
   expenseGetListRequest,
   leaveGetListRequest,
   projectGetListRequest,
+  purposeGetListRequest,
   siteGetListRequest,
   statusGetListRequest,
+  transportationGetListRequest,
 } from '@common/store/actions';
 import { IAppState, IQueryCollectionState } from '@generic/interfaces';
 import { connect } from 'react-redux';
@@ -28,6 +31,9 @@ interface PropsFromState {
   commonLeaveListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
   commonExpenseListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
   commonStatusListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
+  commonDestinationListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
+  commonPurposeListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
+  commonTransportationListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
 
   // detail
 }
@@ -46,6 +52,9 @@ interface PropsFromDispatch {
     siteListRequest: typeof siteGetListRequest;
     leaveListRequest: typeof leaveGetListRequest;
     statusListRequest: typeof statusGetListRequest;
+    destinationListRequest: typeof destinationGetListRequest;
+    purposeListRequest: typeof purposeGetListRequest;
+    transportationListRequest: typeof transportationGetListRequest;
 
     // detail
   };
@@ -63,6 +72,10 @@ const mapStateToProps = ({
   commonSiteList,
   commonLeaveList,
   commonStatusList,
+  commonDestinationList,
+  commonPurposeList,
+  commonTransportationList,
+
 }: IAppState) => ({
   // all
   
@@ -76,6 +89,9 @@ const mapStateToProps = ({
   commonSiteListState: commonSiteList,
   commonLeaveListState: commonLeaveList,
   commonStatusListState: commonStatusList,
+  commonDestinationListState: commonDestinationList,
+  commonPurposeListState: commonPurposeList,
+  commonTransportationListState: commonTransportationList,
   
   // detail
  
@@ -95,6 +111,9 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     siteListRequest: (request: ISystemListRequest) => dispatch(siteGetListRequest(request)),
     leaveListRequest: (request: ISystemListRequest) => dispatch(leaveGetListRequest(request)),
     statusListRequest: (request: ISystemListRequest) => dispatch(statusGetListRequest(request)),
+    destinationListRequest: (request: ISystemListRequest) => dispatch(destinationGetListRequest(request)),
+    purposeListRequest: (request: ISystemListRequest) => dispatch(purposeGetListRequest(request)),
+    transportationListRequest: (request: ISystemListRequest) => dispatch(transportationGetListRequest(request)),
 
     // detail
   }

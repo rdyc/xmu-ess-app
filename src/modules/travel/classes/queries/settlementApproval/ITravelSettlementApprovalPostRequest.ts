@@ -4,4 +4,5 @@ import { ITravelSettlementApprovalPostPayload } from '@travel/classes/request/se
 export interface ITravelSettlementApprovalPostRequest extends IBaseCommand<ITravelSettlementApprovalPostPayload> {
   companyUid: string;
   positionUid: string;
+  travelSettlementUid: string;
 }

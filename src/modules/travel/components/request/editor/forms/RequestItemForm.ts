@@ -1,38 +1,85 @@
+// import { SelectSystemOption } from '@common/components/select';
+// import { InputDate } from '@layout/components/input/date';
+// import { InputText } from '@layout/components/input/text';
 import { withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
+import { WithLookupDiem, withLookupDiem } from '@lookup/hoc/withLookupDiem';
 import { WithStyles, withStyles } from '@material-ui/core';
 import styles from '@styles';
-import { TravelItemFormData } from '@travel/components/request/editor/forms/RequestForm';
+import { TravelItemFormData, TravelRequestFormData } from '@travel/components/request/editor/forms/RequestForm';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
-import { compose, HandleCreators, withHandlers } from 'recompose';
-import { WrappedFieldArrayProps } from 'redux-form';
+import { compose, lifecycle, mapper, ReactLifeCycleFunctions, StateHandlerMap, StateUpdaters, withStateHandlers } from 'recompose';
+import { InjectedFormProps, WrappedFieldArrayProps } from 'redux-form';
 import { RequestItemFormView } from './RequestItemFormView';
 
 interface OwnProps {
   context: WrappedFieldArrayProps<TravelItemFormData>;
+  destinationTypeValue: string | null | undefined;
+  diemType: string | null | undefined;
 }
 
-interface OwnHandlers {
-  // handleInput: (item: ITravelRequestItem) => void;  
+interface OwnState {
+  active: string | undefined;
+  isExpanded: boolean;
+}
+// interface OwnHandlers {
+//   generateFieldProps: (name: string) => any;
+// }
+
+interface OwnStateHandler extends StateHandlerMap<OwnState> {
+  handleToggle: (type: string) => OwnState;
 }
 
 export type RequestItemFormProps
   = OwnProps
-  & OwnHandlers
+  & InjectedFormProps<TravelRequestFormData, OwnProps>
+  & OwnState
+  & OwnStateHandler
   & WithUser
+  & WithLookupDiem
   & WithStyles
   & InjectedIntlProps;
 
-const handlerCreators: HandleCreators<RequestItemFormProps, OwnHandlers> = {
-  // handleInput: (props: RequestItemFormProps) => (item: ITravelRequestItem): void => {
-  //   const { context, intl } = props;  
-  // }
+const lifecycles: ReactLifeCycleFunctions<RequestItemFormProps, {}> = {
+  componentDidMount() {
+    const { destinationTypeValue, diemType } = this.props;
+    const { loadAllRequest } = this.props.lookupDiemDispatch;
+    
+    if (destinationTypeValue && diemType) {
+      loadAllRequest ({
+        filter: {
+          destinationType: destinationTypeValue,
+          projectType: 'SPT01',
+          page: 1,
+          size: 1,
+          find: 'CP002',
+          findBy: 'companyUid',
+          orderBy: undefined,
+          direction: undefined,        
+        }
+      });
+    }
+  }
+};
+
+const createProps: mapper<RequestItemFormProps, OwnState> = (props: RequestItemFormProps): OwnState => ({
+  active: undefined,
+  isExpanded: false
+});
+
+const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateHandler> = {
+  handleToggle: (state: OwnState) => (type: string) => ({
+    active: type,
+    isExpanded: state.active === type ? !state.isExpanded : true
+  })
 };
 
 export const RequestItemForm = compose<RequestItemFormProps, OwnProps>(
   withUser,
   withLayout,
+  withLookupDiem,
   withStyles(styles),
   injectIntl,
-  withHandlers<RequestItemFormProps, OwnHandlers>(handlerCreators),
+  withStateHandlers<OwnState, OwnStateHandler>(createProps, stateUpdaters),
+  lifecycle<RequestItemFormProps, {}>(lifecycles)
 )(RequestItemFormView);

@@ -88,24 +88,37 @@ function* watchPostFetchRequest() {
       method: 'post',
       path: `/v1/travel/requests/${action.payload.companyUid}/${action.payload.positionUid}`, 
       payload: action.payload.data, 
-      successEffects: (response: IApiResponse) => ([
+      successEffects: (response: IApiResponse) => [
         put(travelPostSuccess(response.body)),
-      ]), 
-      failureEffects: (response: IApiResponse) => ([
+      ], 
+      successCallback: (response: IApiResponse) => {
+        action.payload.resolve(response.body.data);
+      },
+      failureEffects: (response: IApiResponse) => [
         put(travelPostError(response.statusText)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        })),
-      ]), 
-      errorEffects: (error: TypeError) => ([
+      ], 
+      failureCallback: (response: IApiResponse) => {
+        if (response.status === 400) {
+          const errors: any = { 
+            // information -> based form section name
+            information: flattenObject(response.body.errors) 
+          };
+
+          action.payload.reject(new SubmissionError(errors));
+        } else {
+          action.payload.reject(response.statusText);
+        }
+      },
+      errorEffects: (error: TypeError) => [
         put(travelPostError(error.message)),
         put(layoutAlertAdd({
           time: new Date(),
           message: error.message
         }))
-      ])
+      ],
+      errorCallback: (error: any) => {
+        action.payload.reject(error);
+      }
     });
   };
 

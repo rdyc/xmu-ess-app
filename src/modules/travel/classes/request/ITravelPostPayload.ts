@@ -7,10 +7,10 @@ export interface ITravelPostPayload extends IBasePayload {
   end: string;
   customerUid: string;
   projectUid: string;
-  siteUid: string;
+  siteUid: string | null;
   activityType: string;
   objective: string;
   target: string;
   comment: string;
-  items?: ITravelPostItem[] | null;
+  items?: ITravelPostItem[];
 }
