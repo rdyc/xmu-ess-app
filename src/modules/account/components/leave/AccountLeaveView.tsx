@@ -7,7 +7,7 @@ import {
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { AccountLeaveDetailProps } from './AccountLeave';
-import { AccountLeaveInformation } from './shared/AccountLeaveInformation';
+import { AccountLeaveInformation } from './AccountLeaveInformation';
 
 export const AccountLeaveView: React.SFC<AccountLeaveDetailProps> = props => {
   const { 

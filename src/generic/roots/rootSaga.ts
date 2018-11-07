@@ -1,7 +1,6 @@
 import accountEmployeeLeaveSagas from '@account/store/sagas/accountEmployeeLeaveSagas';
+import accountEmployeeMySagas from '@account/store/sagas/accountEmployeeMySagas';
 import accountEmployeeSagas from '@account/store/sagas/accountEmployeeSagas';
-import employeeMySagas from '@account/store/sagas/employeeMySagas';
-import employeeProfileSagas from '@account/store/sagas/employeeProfileSagas';
 import commonActivitySagas from '@common/store/sagas/activitySagas';
 import commonCurrencySagas from '@common/store/sagas/currencySagas';
 import commonDocumentPresalesSagas from '@common/store/sagas/documentPresalesSagas';
@@ -78,9 +77,8 @@ export function* rootSaga() {
     
     // account
     fork(accountEmployeeSagas),
+    fork(accountEmployeeMySagas),
     fork(accountEmployeeLeaveSagas),
-    fork(employeeMySagas),
-    fork(employeeProfileSagas),
 
     // project
     fork(projectRegistrationSagas),
