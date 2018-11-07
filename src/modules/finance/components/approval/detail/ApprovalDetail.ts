@@ -1,5 +1,7 @@
+import { ModuleType } from '@common/classes/types/ModuleType';
 import AppMenu from '@constants/AppMenu';
 import { FinanceApprovalUserAction } from '@finance/classes/types';
+import { DocumentPath } from '@finance/classes/types/DocumentPath';
 import { ApprovalDetailView } from '@finance/components/approval/detail/ApprovalDetailView';
 import { WithFinanceApproval, withFinanceApproval } from '@finance/hoc/withFinanceApproval';
 import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
@@ -23,6 +25,7 @@ import {
 
 interface Handler {
   handleFinanceRefresh: () => void;
+  handleToDocument: (moduleUid: string, documentUid: string) => void;
 }
 
 interface OwnState {
@@ -81,6 +84,41 @@ const handlerCreators: HandleCreators<ApprovalDetailProps, Handler> = {
         });
       }
     },
+    handleToDocument: (props: ApprovalDetailProps) => (moduleUid: string, documentUid: string) => {
+      const { history } = props;
+      let path: string = '';
+      
+      switch (moduleUid) {
+        case ModuleType.Expense:
+        path = DocumentPath.Expense;
+        break;
+
+        case ModuleType.Purchase:
+        path = DocumentPath.Purchase;
+        break;
+
+        case ModuleType.PurchaseSettlement:
+        path = DocumentPath.PurchaseSettlement;
+        break;
+
+        case ModuleType.Mileage:
+        path = DocumentPath.Mileage;
+        break;
+
+        case ModuleType.Travel:
+        path = DocumentPath.Travel;
+        break;
+
+        case ModuleType.TravelSettlement:
+        path = DocumentPath.TravelSettlement;
+        break;
+
+        default:
+
+      }
+
+      history.push(`/${path}/${documentUid}`);
+    }
   };
   
 const lifecycles: ReactLifeCycleFunctions<ApprovalDetailProps, OwnState> = {

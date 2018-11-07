@@ -14,6 +14,7 @@
   "finance.field.status": "Payment Status",
   "finance.field.notes": "Notes",
   "finance.field.notes.placeholder": "Type a Notes",
+  "finance.field.button.goToDocument": "Go To Document",
 
   "finance.approvalTitle": "Finance Approval",
   "finance.approvalSubHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",

@@ -1,8 +1,11 @@
-import { IBaseQueryPagingFilter } from '@generic/interfaces';
+import { IBasePagingFilter } from '@generic/interfaces';
 
-export interface IMileageApprovalGetAllFilter extends IBaseQueryPagingFilter {
+interface IExtendedQuery extends IBasePagingFilter {}
+
+export interface IMileageApprovalGetAllFilter {
   status?: string | undefined;
   isNotify?: boolean | undefined;
   companyUid?: string | undefined;
   positionUid: string | undefined;
+  query?: IExtendedQuery | undefined;
 }

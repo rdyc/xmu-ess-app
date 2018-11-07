@@ -5,6 +5,11 @@ import {
   ILeaveApprovalPostRequest,
 } from '@leave/classes/queries/approval';
 import {
+  ILeaveCancellationGetAllRequest,
+  ILeaveCancellationGetByIdRequest,
+  ILeaveCancellationPostRequest,
+} from '@leave/classes/queries/cancellation';
+import {
   ILeaveGetEndQuery,
   ILeaveRequestGetAllRequest,
   ILeaveRequestGetByIdRequest,
@@ -24,6 +29,11 @@ export interface ILeaveState {
   leaveApprovalGetAll: IQueryCollectionState<ILeaveApprovalGetAllRequest, ILeaveRequest>;
   leaveApprovalGetById: IQuerySingleState<ILeaveApprovalGetByIdRequest, ILeaveRequestDetail>;
   leaveApprovalPost: IQuerySingleState<ILeaveApprovalPostRequest, ILeaveRequest>;
+
+  // approval
+  leaveCancellationGetAll: IQueryCollectionState<ILeaveCancellationGetAllRequest, ILeaveRequest>;
+  leaveCancellationGetById: IQuerySingleState<ILeaveCancellationGetByIdRequest, ILeaveRequestDetail>;
+  leaveCancellationPost: IQuerySingleState<ILeaveCancellationPostRequest, ILeaveRequest>;
 }
 
 export interface ILeaveGetEndState {

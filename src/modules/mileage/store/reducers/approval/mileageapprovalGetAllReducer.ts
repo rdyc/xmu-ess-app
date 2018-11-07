@@ -1,10 +1,10 @@
 import { IQueryCollectionState } from '@generic/interfaces';
 import { IMileageApprovalGetAllRequest } from '@mileage/classes/queries';
-import { IMileageApproval } from '@mileage/classes/response';
+import { IMileageRequest } from '@mileage/classes/response';
 import { MileageApprovalAction as Action } from '@mileage/store/actions';
 import { Reducer } from 'redux';
 
-const initialState: IQueryCollectionState<IMileageApprovalGetAllRequest, IMileageApproval> = {
+const initialState: IQueryCollectionState<IMileageApprovalGetAllRequest, IMileageRequest> = {
   request: undefined,
   response: undefined,
   isError: false,
@@ -12,7 +12,7 @@ const initialState: IQueryCollectionState<IMileageApprovalGetAllRequest, IMileag
   errors: undefined,
 };
 
-const reducer: Reducer<IQueryCollectionState<IMileageApprovalGetAllRequest, IMileageApproval>> = (state = initialState, action) => {
+const reducer: Reducer<IQueryCollectionState<IMileageApprovalGetAllRequest, IMileageRequest>> = (state = initialState, action) => {
   switch (action.type) {
     case Action.GET_ALL_REQUEST: return { ...state, isLoading: true, isError: false, request: action.payload };
     case Action.GET_ALL_SUCCESS: return { ...state, isLoading: false, isError: false, response: action.payload };

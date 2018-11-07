@@ -109,7 +109,7 @@ const handlerCreators: HandleCreators<LeaveApprovalListProps, OwnHandlers> = {
     const { isLoading } = props.leaveApprovalState.all;
 
     if (!isLoading) {
-      history.push(`/approval/leave/details/${leaveUid}`);
+      history.push(`/leave/approvals/${leaveUid}`);
     } 
   },
   handleGoToNext: (props: LeaveApprovalListProps) => () => { 
@@ -163,7 +163,7 @@ const lifecycles: ReactLifeCycleFunctions<LeaveApprovalListProps, OwnState> = {
       onSyncCallback: handleReloading,
       onOrderCallback: handleChangeOrder,
       onDirectionCallback: handleChangeSort,
-      onAddCallback: () => history.push('/leave/form'),
+      onAddCallback: () => history.push('/leave/approvals/form'),
       onSizeCallback: handleChangeSize,
     });
 

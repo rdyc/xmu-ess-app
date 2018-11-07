@@ -14,6 +14,7 @@ export const enum ListBarAction {
   LOADING = '@@list-bar/LOADING',
   MENU_HIDE = '@@list-bar/MENU_HIDE',
   MENU_SHOW = '@@list-bar/MENU_SHOW',
+  ADD_HIDE = '@@list-bar/ADD_HIDE',
 }
 
 export const listBarMetadata = (metadata: IBaseMetadata) => action(ListBarAction.ASSIGN_METADATA, metadata);
@@ -26,3 +27,4 @@ export const listBarDispose = () => action(ListBarAction.DISPOSE);
 export const listBarLoading = (isLoading: boolean) => action(ListBarAction.LOADING, isLoading);
 export const listBarMenuShow = (anchorEl: string) => action(ListBarAction.MENU_SHOW, anchorEl);
 export const listBarMenuHide = () => action(ListBarAction.MENU_HIDE);
+export const listBarAddHide = () => action(ListBarAction.ADD_HIDE);

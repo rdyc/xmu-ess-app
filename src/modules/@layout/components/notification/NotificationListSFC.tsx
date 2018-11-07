@@ -28,9 +28,7 @@ const NotificationListSFC: React.SFC<AllProps> = props => {
   const { loading, result } = props.notificationState;
 
   const renderSubHeader = (
-    <ListSubheader 
-      color="primary"
-    >
+    <ListSubheader>
       <FormattedMessage id="global.notification.title"/>
     </ListSubheader>
   );
@@ -38,9 +36,10 @@ const NotificationListSFC: React.SFC<AllProps> = props => {
   const renderLoading = (
     <ListItem>
       <ListItemText 
-        primary={
-          <FormattedMessage id="global.loading"/>
-        } 
+        primary={<FormattedMessage id="global.loading"/>}
+        primaryTypographyProps={{
+          variant: 'body1'
+        }}
       />
     </ListItem>
   );
@@ -51,6 +50,9 @@ const NotificationListSFC: React.SFC<AllProps> = props => {
         primary={
           <FormattedMessage id="global.notification.emptySubTitle"/>
         }
+        primaryTypographyProps={{
+          variant: 'body1'
+        }}
       />
     </ListItem>
   );
@@ -73,10 +75,13 @@ const NotificationListSFC: React.SFC<AllProps> = props => {
                 <ListItemText
                   key={category.name}
                   primary={`${category.name} (${detail.total})`}
+                  primaryTypographyProps={{
+                    variant: 'body1'
+                  }}
                 />
                 <ListItemSecondaryAction key={category.name}>
                   {active === `${category.name}_${detail.type}` && isExpanded ?
-                  <ExpandLess /> : <ExpandMore />}
+                  <ExpandLess color="action" /> : <ExpandMore color="action" />}
                 </ListItemSecondaryAction>
               </ListItem>
               <Collapse
@@ -98,6 +103,9 @@ const NotificationListSFC: React.SFC<AllProps> = props => {
                         key={item.uid}
                         primary={`${item.uid} - ${item.name}`}
                         secondary={`${detail.type} ${moment(item.date).fromNow()}`}
+                        primaryTypographyProps={{
+                          variant: 'body1'
+                        }}
                       />
                     </ListItem>
                   )}

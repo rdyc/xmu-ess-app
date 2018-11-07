@@ -151,7 +151,7 @@ const handlerCreators: HandleCreators<RequestEditorProps, OwnHandlers> = {
       time: new Date()
     });
 
-    history.push('/leave/list');
+    history.push('/leave/requests/');
   },
   handleSubmitFail: (props: RequestEditorProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
     const { formMode, intl } = props;

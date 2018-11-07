@@ -7,7 +7,7 @@ import {
   Paper,
   Typography
 } from '@material-ui/core';
-import { IMileageApproval } from '@mileage/classes/response';
+import { IMileageRequest } from '@mileage/classes/response';
 import { MileageApprovalListProps } from '@mileage/components/approval/list/MileageApprovalList';
 import * as React from 'react';
 import { FormattedDate, FormattedMessage, FormattedNumber, FormattedPlural } from 'react-intl';
@@ -19,12 +19,11 @@ export const MileageApprovalListView: React.SFC<
   const { handleGoToDetail } = props;
   const { isLoading, response } = props.mileageApprovalState.all;
 
-  const renderMileageList = (mileages: IMileageApproval[]) => {
+  const renderMileageList = (mileages: IMileageRequest[]) => {
     const len = mileages.length - 1;
 
     return mileages.map((mileage, i) => (
       <div key={mileage.uid}>
-        {/* {mileage.statusType !== 'SST02' ?  : ''} */}
         <ListItem
           button={!isLoading}
           key={mileage.uid}

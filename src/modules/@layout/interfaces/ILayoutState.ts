@@ -4,6 +4,7 @@ import { IView } from '@layout/interfaces/IView';
 import { Anchor } from '../types/Anchor';
 
 export interface ILayoutState {
+  readonly theme: any;
   readonly view: IView | undefined;
   readonly anchor: Anchor;
   readonly isDrawerMenuVisible: boolean;

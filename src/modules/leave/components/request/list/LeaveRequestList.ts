@@ -109,7 +109,7 @@ const handlerCreators: HandleCreators<RequestListProps, OwnHandlers> = {
     const { isLoading } = props.leaveRequestState.all;
 
     if (!isLoading) {
-      history.push(`/leave/details/${leaveUid}`);
+      history.push(`/leave/requests/${leaveUid}`);
     } 
   },
   handleGoToNext: (props: RequestListProps) => () => { 
@@ -163,7 +163,7 @@ const lifecycles: ReactLifeCycleFunctions<RequestListProps, OwnState> = {
       onSyncCallback: handleReloading,
       onOrderCallback: handleChangeOrder,
       onDirectionCallback: handleChangeSort,
-      onAddCallback: () => history.push('/leave/form'),
+      onAddCallback: () => history.push('/leave/requests/form'),
       onSizeCallback: handleChangeSize,
     });
 

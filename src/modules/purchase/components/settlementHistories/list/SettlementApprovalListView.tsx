@@ -1,4 +1,7 @@
-import { Divider, Grid, List, ListItem, ListSubheader, Paper, Typography } from '@material-ui/core';
+import { Divider, Grid, 
+  LinearProgress, 
+  List, ListItem, ListSubheader, Paper, 
+  Typography } from '@material-ui/core';
 import { ISettlement } from '@purchase/classes/response/purchaseSettlement';
 import { SettlementApprovalListProps } from '@purchase/components/settlementHistories/list/SettlementApprovalList';
 import { parseChanges } from '@utils/parseChanges';
@@ -8,7 +11,7 @@ import { FormattedDate, FormattedNumber, FormattedPlural } from 'react-intl';
 import { isArray } from 'util';
 
 export const SettlementApprovalListView: React.SFC<SettlementApprovalListProps> = props => {
-  const { handleGoToDetail } = props;
+  const { handleGoToDetail, intl } = props;
   const { isLoading, response } = props.settlementApprovalState.all;
 
   const renderPurchaseList = (purchases: ISettlement[]) => {
@@ -29,7 +32,7 @@ export const SettlementApprovalListView: React.SFC<SettlementApprovalListProps> 
                   color="primary" 
                   variant="body2"
                 >
-                  {purchase.notes}
+                  {purchase.uid} &bull; {purchase.notes} &bull; {purchase.currency && purchase.currency.value} { intl.formatNumber(purchase.request || 0) }
                 </Typography>
                 <Typography 
                   noWrap
@@ -43,7 +46,7 @@ export const SettlementApprovalListView: React.SFC<SettlementApprovalListProps> 
                   color="textSecondary" 
                   variant="caption"
                 >
-                  {purchase.uid} &bull; {purchase.advance} &bull; &nbsp;
+                  {` Advance Payment: ${purchase.currency && purchase.currency.value} ${intl.formatNumber(purchase.advance || 0)}`} &bull; &nbsp;
                   <FormattedDate 
                     year="numeric"
                     month="short"
@@ -119,16 +122,21 @@ export const SettlementApprovalListView: React.SFC<SettlementApprovalListProps> 
       }
     </List>
   );
+
+  const RenderNull = () => (
+    <Typography variant="body2" align="center">Lost in The Force, Padawan, you are.</Typography>
+  );
+
   const render = (
     <React.Fragment>
-      {isLoading && response && <Typography variant="body2">loading</Typography>}     
-      {response &&
+      { isLoading && response && <LinearProgress /> }     
+      { response &&
         <Paper 
           square 
           elevation={1}
         >
-        <RenderList/>
-        </Paper>}
+        { response.metadata.paginate  === null ? <RenderNull /> : <RenderList /> }
+        </Paper> }
     </React.Fragment>
   );
   return render;
