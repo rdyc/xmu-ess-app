@@ -109,7 +109,7 @@ const handlerCreators: HandleCreators<ApprovalListProps, OwnHandlers> = {
       const { isLoading } = props.expenseApprovalState.all;
   
       if (!isLoading) {
-        history.push(`/approval/expense/details/${expenseUid}`);
+        history.push(`/expense/approvals/${expenseUid}`);
       } 
     },
     handleGoToNext: (props: ApprovalListProps) => () => { 
@@ -163,7 +163,7 @@ const lifecycles: ReactLifeCycleFunctions<ApprovalListProps, OwnState> = {
         onSyncCallback: handleReloading,
         onOrderCallback: handleChangeOrder,
         onDirectionCallback: handleChangeSort,
-        onAddCallback: () => history.push('/approval/expense/form'),
+        onAddCallback: () => history.push(''),
         onSizeCallback: handleChangeSize,
       });
   

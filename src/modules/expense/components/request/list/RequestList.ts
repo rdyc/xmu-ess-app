@@ -109,7 +109,7 @@ const handlerCreators: HandleCreators<RequestListProps, OwnHandlers> = {
       const { isLoading } = props.expenseRequestState.all;
   
       if (!isLoading) {
-        history.push(`/expense/details/${expenseUid}`);
+        history.push(`/expense/requests/${expenseUid}`);
       } 
     },
     handleGoToNext: (props: RequestListProps) => () => { 
