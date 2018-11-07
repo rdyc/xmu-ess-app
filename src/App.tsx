@@ -1,15 +1,11 @@
-import { accountRouter } from '@account/pages';
+import { AccountRoutingComponents } from '@account/components';
 import AppStorage from '@constants/AppStorage';
+import { DashboardRoutingComponents } from '@dashboard/components';
 import { ExpenseApprovalRouter, ExpenseRouter } from '@expense/components/ExpenseRouter';
-import { FinanceApprovalRouter } from '@finance/components/FinanceRouter';
-import Layout from '@layout/components/base/Layout';
-import Main from '@layout/components/main/Main';
+import { Callback, Root } from '@layout/components/base';
 import { WithOidc, withOidc } from '@layout/hoc/withOidc';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IAppUser } from '@layout/interfaces';
-import { HomePage } from '@layout/pages';
-import AccessWizardPage from '@layout/pages/AccessWizardPage';
-import CallbackPage from '@layout/pages/CallbackPage';
 import { leaveApprovalRouter } from '@leave/components/routers/leaveApprovalRouter';
 import { leaveRequestRouter } from '@leave/components/routers/leaveRequestRouter';
 import { MileageApprovalRouter, MileageRequestRouter } from '@mileage/components/MileageRouter';
@@ -50,53 +46,47 @@ const languages = AppLocale[
   getCurrentLanguage(config.defaultLanguage || 'english').locale
 ];
 
-const app: React.ComponentType<AllProps> = props => {
-  
-  return (
-    <Provider store={props.store}>
-      <IntlProvider
-        locale={languages.locale}
-        defaultLocale={languages.locale}
-        messages={languages.messages}
-      >
-        <OidcProvider store={props.store} userManager={AppUserManager}>
-          <ConnectedRouter history={props.history}>
-            <Router history={props.history}>
-              <Switch>
-                <Route exact path="/" component={Main} />
-                <Route path="/access" component={AccessWizardPage} />
-                <Route path="/callback" component={CallbackPage} />
-                <Layout>
-                  <Route path="/home" component={HomePage} />
-                  <Route path="/account" component={accountRouter} />
-                  <Route path="/project" component={ProjectRoutingComponents} />
-                  <Route path="/leave" component={leaveRequestRouter} />
-                  <Route path="/approval/leave" component={leaveApprovalRouter} />
-                  <Route path="/purchase/request" component={purchaseRouter} />
-                  <Route path="/approval/purchase/request" component={purchaseApprovalRouter} />
-                  <Route path="/purchase/settlement" component={purchaseSettlementRouter} />
-                  <Route path="/approval/purchase/settlement" component={purchaseSettlementApprovalRouter} />
-                  <Route path="/travel" component={travelRouter} />
-                  <Route path="/travel/settlement" component={travelSettlementRouter} />
-                  <Route path="/approval/travel" component={travelApprovalRouter} />
-                  <Route path="/timesheet" component={timesheetRouter} />
-                  <Route path="/approval/timesheet" component={timesheetApprovalRouter} />
-                  <Route path="/expense" component={ExpenseRouter} />
-                  <Route path="/approval/expense" component={ExpenseApprovalRouter} />
-                  <Route path="/mileage" component={MileageRequestRouter} />
-                  <Route path="/approval/mileage" component={MileageApprovalRouter} />
-                  <Route path="/approval/finance" component={FinanceApprovalRouter} />
+const app: React.ComponentType<AllProps> = props => (
+  <Provider store={props.store}>
+    <IntlProvider
+      locale={languages.locale}
+      defaultLocale={languages.locale}
+      messages={languages.messages}
+    >
+      <OidcProvider store={props.store} userManager={AppUserManager}>
+        <ConnectedRouter history={props.history}>
+          <Router history={props.history}>
+            <Switch>
+              <Route exact path="/" component={Root} />
+              <Route path="/callback" component={Callback} />
+              
+              <Route path="/home" component={DashboardRoutingComponents} />
+              <Route path="/account" component={AccountRoutingComponents} />
+              <Route path="/project" component={ProjectRoutingComponents} />
+              <Route path="/leave" component={leaveRequestRouter} />
+              <Route path="/approval/leave" component={leaveApprovalRouter} />
+              <Route path="/purchase/request" component={purchaseRouter} />
+              <Route path="/approval/purchase/request" component={purchaseApprovalRouter} />
+              <Route path="/purchase/settlement" component={purchaseSettlementRouter} />
+              <Route path="/approval/purchase/settlement" component={purchaseSettlementApprovalRouter} />
+              <Route path="/travel" component={travelRouter} />
+              <Route path="/travel/settlement" component={travelSettlementRouter} />
+              <Route path="/approval/travel" component={travelApprovalRouter} />
+              <Route path="/timesheet" component={timesheetRouter} />
+              <Route path="/approval/timesheet" component={timesheetApprovalRouter} />
+              <Route path="/expense" component={ExpenseRouter} />
+              <Route path="/approval/expense" component={ExpenseApprovalRouter} />
+              <Route path="/mileage" component={MileageRequestRouter} />
+              <Route path="/approval/mileage" component={MileageApprovalRouter} />
 
-                  <Route path="/playground" component={playgroundRouter} />
-                </Layout>
-              </Switch>
-            </Router>
-          </ConnectedRouter>
-        </OidcProvider>
-      </IntlProvider>
-    </Provider>
-  );
-};
+              <Route path="/playground" component={playgroundRouter} />
+            </Switch>
+          </Router>
+        </ConnectedRouter>
+      </OidcProvider>
+    </IntlProvider>
+  </Provider>
+);
 
 const lifecycles: ReactLifeCycleFunctions<AllProps, {}> = {
   componentWillMount() {
@@ -114,10 +104,6 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, {}> = {
     AppUserManager.events.addSilentRenewError(error => {
       console.error('error while renewing the access token', error);
     });
-  },
-  componentWillReceiveProps(nextProps: AllProps) {
-    console.log(nextProps);
-    
   }
 };
 

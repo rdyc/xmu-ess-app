@@ -2,7 +2,7 @@ import { IEmployeeBank, IEmployeeContact } from '@account/classes/response';
 import { ICommonSystem } from '@common/classes';
 import { ILookupCompany } from '@lookup/classes';
 
-import { IEmployeeAccessList } from './IEmployeeAccessList';
+import { IEmployeeAccessList } from '../IEmployeeAccessList';
 
 export interface IEmployeeMy {
     uid: string;
