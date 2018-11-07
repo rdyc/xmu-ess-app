@@ -51,7 +51,9 @@ import {
   settlementPutRequest,
   settlementPutSuccess,
 } from '@purchase/store/actions';
+import { flattenObject } from '@utils/flattenObject';
 import saiyanSaga from '@utils/saiyanSaga';
+import { SubmissionError } from 'redux-form';
 import { all, fork, put, takeEvery } from 'redux-saga/effects';
 import { IApiResponse, objectToQuerystring } from 'utils';
 
@@ -126,6 +128,9 @@ function* watchPurchasePostFetchRequest() {
       successEffects: (response: IApiResponse) => ([
         put(purchasePostSuccess(response.body)),
       ]),
+      successCallback: (response: IApiResponse) => {
+        action.payload.resolve(response.body.data);
+      },
       failureEffects: (response: IApiResponse) => ([
         put(purchasePostError(response.statusText)),
         put(layoutAlertAdd({
@@ -134,13 +139,28 @@ function* watchPurchasePostFetchRequest() {
           details: response
         })),
       ]),
-      errorEffects: (error: TypeError) => ([
+      failureCallback: (response: IApiResponse) => {
+        if (response.status === 400) {
+          const errors: any = { 
+            // information -> based form section name
+            information: flattenObject(response.body.errors) 
+          };
+
+          action.payload.reject(new SubmissionError(errors));
+        } else {
+          action.payload.reject(response.statusText);
+        }
+      },
+      errorEffects: (error: TypeError) => [
         put(purchasePostError(error.message)),
         put(layoutAlertAdd({
           time: new Date(),
           message: error.message
         }))
-      ])
+      ],
+      errorCallback: (error: any) => {
+        action.payload.reject(error);
+      }
     });
   };
 
@@ -156,6 +176,9 @@ function* watchPurchasePutFetchRequest() {
       successEffects: (response: IApiResponse) => ([
         put(purchasePutSuccess(response.body)),
       ]),
+      successCallback: (response: IApiResponse) => {
+        action.payload.resolve(response.body.data);
+      },
       failureEffects: (response: IApiResponse) => ([
         put(purchasePutError(response.statusText)),
         put(layoutAlertAdd({
@@ -164,13 +187,29 @@ function* watchPurchasePutFetchRequest() {
           details: response
         })),
       ]),
+      failureCallback: (response: IApiResponse) => {
+        if (response.status === 400) {
+          const errors: any = {
+            // information -> based on form section name
+            information: flattenObject(response.body.errors)
+          };
+
+          // action.payload.reject(new SubmissionError(response.body.errors));
+          action.payload.reject(new SubmissionError(errors));
+        } else {
+          action.payload.reject(response.statusText);
+        }
+      },
       errorEffects: (error: TypeError) => ([
         put(purchasePutError(error.message)),
         put(layoutAlertAdd({
           time: new Date(),
           message: error.message
         }))
-      ])
+      ]),
+      errorCallback: (error: any) => {
+        action.payload.reject(error);
+      }
     });
   };
 
@@ -248,6 +287,9 @@ function* watchPurchaseApprovalPostFetchRequest() {
       successEffects: (response: IApiResponse) => ([
         put(purchaseApprovalPostSuccess(response.body)),
       ]),
+      successCallback: (response: IApiResponse) => {
+        action.payload.resolve(response.body.data);
+      },
       failureEffects: (response: IApiResponse) => ([
         put(purchaseApprovalPostError(response.statusText)),
         put(layoutAlertAdd({
@@ -256,13 +298,28 @@ function* watchPurchaseApprovalPostFetchRequest() {
           details: response
         })),
       ]),
+      failureCallback: (response: IApiResponse) => {
+        if (response.status === 400) {
+          const errors: any = {
+            // information -> based form section name
+            information: flattenObject(response.body.errors)
+          };
+
+          action.payload.reject(new SubmissionError(errors));
+        } else {
+          action.payload.reject(response.statusText);
+        }
+      },
       errorEffects: (error: TypeError) => ([
         put(purchaseApprovalPostError(error.message)),
         put(layoutAlertAdd({
           time: new Date(),
           message: error.message
         }))
-      ])
+      ]),
+      errorCallback: (error: any) => {
+        action.payload.reject(error);
+      }
     });
   };
 
@@ -462,6 +519,9 @@ function* watchSettlementApprovalPostFetchRequest() {
       successEffects: (response: IApiResponse) => ([
         put(settlementApprovalPostSuccess(response.body)),
       ]),
+      successCallback: (response: IApiResponse) => {
+        action.payload.resolve(response.body.data);
+      },
       failureEffects: (response: IApiResponse) => ([
         put(settlementApprovalPostError(response.statusText)),
         put(layoutAlertAdd({
@@ -470,13 +530,28 @@ function* watchSettlementApprovalPostFetchRequest() {
           details: response
         })),
       ]),
+      failureCallback: (response: IApiResponse) => {
+        if (response.status === 400) {
+          const errors: any = { 
+            // information -> based form section name
+            information: flattenObject(response.body.errors) 
+          };
+
+          action.payload.reject(new SubmissionError(errors));
+        } else {
+          action.payload.reject(response.statusText);
+        }
+      },
       errorEffects: (error: TypeError) => ([
         put(settlementApprovalPostError(error.message)),
         put(layoutAlertAdd({
           time: new Date(),
           message: error.message
         }))
-      ])
+      ]),
+      errorCallback: (error: any) => {
+        action.payload.reject(error);
+      }
     });
   };
 

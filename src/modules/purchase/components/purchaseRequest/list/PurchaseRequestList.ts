@@ -163,7 +163,7 @@ const lifecycles: ReactLifeCycleFunctions<PurchaseRequestListProps, OwnState> = 
       onSyncCallback: handleReloading,
       onOrderCallback: handleChangeOrder,
       onDirectionCallback: handleChangeSort,
-      onAddCallback: () => history.push('/purchase/form'),
+      onAddCallback: () => history.push('/purchase/request/form'),
       onSizeCallback: handleChangeSize,
     });
 
