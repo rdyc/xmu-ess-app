@@ -1,8 +1,8 @@
 export enum DocumentPath {
-  Expense = 'expense/details',
-  Purchase = 'purchase/request/details',
-  PurchaseSettlement = 'purchase/settlement/details',
-  Mileage = 'mileage/request/details',
-  Travel = 'travel/details',
-  TravelSettlement = 'travel/settlement/details',
+  Expense = 'expense/requests',
+  Purchase = 'purchase/requests',
+  PurchaseSettlement = 'purchase/settlement/requests',
+  Mileage = 'mileage/requests',
+  Travel = 'travel/requests',
+  TravelSettlement = 'travel/settlement/requests',
 }

@@ -175,7 +175,7 @@ const handlerCreators: HandleCreators<ApprovalPaymentProps, OwnHandler> = {
       message: intl.formatMessage(financeApprovalMessage.createSuccess),
     });
 
-    history.push('/approval/finance/list');
+    history.push('/finance/approvals');
   },
   handleSubmitFail: (props: ApprovalPaymentProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
     const { intl } = props;
