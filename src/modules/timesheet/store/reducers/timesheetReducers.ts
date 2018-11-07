@@ -1,23 +1,7 @@
-import {
-  timesheetApprovalGetAllReducer,
-  timesheetApprovalGetByIdReducer
-} from '@timesheet/store/reducers/approval';
-import {
-  timesheetGetAllReducer,
-  timesheetGetByIdReducer,
-  timesheetMileagesGetAllReducer,
-  timesheetPostReducer,
-  timesheetPutReducer
-} from '@timesheet/store/reducers/entry';
+import timesheetApprovalReducers from './approval/timesheetApprovalReducers';
+import timesheetEntryRedusers from './entry/timesheetEntryReducers';
 
-const timesheetReducers = {
-  timesheetGetAll: timesheetGetAllReducer,
-  timesheetGetById: timesheetGetByIdReducer,
-  timesheetPost: timesheetPostReducer,
-  timesheetPut: timesheetPutReducer,
-  timesheetApprovalGetAll: timesheetApprovalGetAllReducer,
-  timesheetApprovalGetById: timesheetApprovalGetByIdReducer,
-  timesheetMileagesGetAll: timesheetMileagesGetAllReducer,
+export const timesheetReducers = {
+  ...timesheetEntryRedusers,
+  ...timesheetApprovalReducers,
 };
-
-export default timesheetReducers;

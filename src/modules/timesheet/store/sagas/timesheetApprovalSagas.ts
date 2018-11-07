@@ -7,18 +7,30 @@ import {
   timesheetApprovalGetByIdError,
   timesheetApprovalGetByIdRequest,
   timesheetApprovalGetByIdSuccess,
+  timesheetApprovalPostBulkError,
+  timesheetApprovalPostBulkRequest,
+  timesheetApprovalPostBulkSuccess,
+  // timesheetApprovalPostError,
+  // timesheetApprovalPostRequest,
+  // timesheetApprovalPostSuccess,
 } from '@timesheet/store/actions';
-// import { flattenObject } from '@utils/flattenObject';
+import { flattenObject } from '@utils/flattenObject';
 import saiyanSaga from '@utils/saiyanSaga';
-// import { SubmissionError } from 'redux-form';
+import * as qs from 'qs';
+import { SubmissionError } from 'redux-form';
 import { all, fork, put, takeEvery } from 'redux-saga/effects';
-import { IApiResponse, objectToQuerystring } from 'utils';
+import { IApiResponse } from 'utils';
 
 function* watchAllFetchRequest() {
-  const worker = (action: ReturnType<typeof timesheetApprovalGetAllRequest>) => { 
+  const worker = (action: ReturnType<typeof timesheetApprovalGetAllRequest>) => {
+    const params = qs.stringify(action.payload.filter, {
+      allowDots: true,
+      skipNulls: true
+    });
+    
     return saiyanSaga.fetch({
       method: 'get',
-      path: `/v1/approvals/timesheet${objectToQuerystring(action.payload.filter)}`, 
+      path: `/v1/approvals/timesheet?${params}`, 
       successEffects: (response: IApiResponse) => ([
         put(timesheetApprovalGetAllSuccess(response.body)),
         put(listBarMetadata(response.body.metadata))
@@ -44,7 +56,7 @@ function* watchAllFetchRequest() {
     });
   };
   
-  yield takeEvery(Action.APPROVAL_GET_ALL_REQUEST, worker);
+  yield takeEvery(Action.GET_ALL_REQUEST, worker);
 }
 
 function* watchByIdFetchRequest() {
@@ -73,13 +85,105 @@ function* watchByIdFetchRequest() {
     });
   };
 
-  yield takeEvery(Action.APPROVAL_GET_BY_ID_REQUEST, worker);
+  yield takeEvery(Action.GET_BY_ID_REQUEST, worker);
+}
+
+// function* watchPostRequest() {
+//   const worker = (action: ReturnType<typeof timesheetApprovalPostRequest>) => {
+//     return saiyanSaga.fetch({
+//       method: 'post',
+//       path: `/v1/approvals/timesheet/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.timesheetUid}`,
+//       payload: action.payload.data,
+//       successEffects: (response: IApiResponse) => [
+//         put(timesheetApprovalPostSuccess(response.body))
+//       ],
+//       successCallback: (response: IApiResponse) => {
+//         action.payload.resolve(response.body.data);
+//       },
+//       failureEffects: (response: IApiResponse) => [
+//         put(timesheetApprovalPostError(response.statusText))
+//       ],
+//       failureCallback: (response: IApiResponse) => {
+//         if (response.status === 400) {
+//           const errors: any = { 
+//             // information -> based form section name
+//             information: flattenObject(response.body.errors) 
+//           };
+
+//           action.payload.reject(new SubmissionError(errors));
+//         } else {
+//           action.payload.reject(response.statusText);
+//         }
+//       },
+//       errorEffects: (error: TypeError) => [
+//         put(timesheetApprovalPostError(error.message)),
+//         put(
+//           layoutAlertAdd({
+//             time: new Date(),
+//             message: error.message
+//           })
+//         )
+//       ],
+//       errorCallback: (error: any) => {
+//         action.payload.reject(error);
+//       }
+//     });
+//   };
+
+//   yield takeEvery(Action.POST_REQUEST, worker);
+// }
+
+function* watchPostBulkRequest() {
+  const worker = (action: ReturnType<typeof timesheetApprovalPostBulkRequest>) => {
+    return saiyanSaga.fetch({
+      method: 'post',
+      path: `/v1/approvals/timesheet/${action.payload.companyUid}/${action.payload.positionUid}`,
+      payload: action.payload.data,
+      successEffects: (response: IApiResponse) => [
+        put(timesheetApprovalPostBulkSuccess(response.body))
+      ],
+      successCallback: (response: IApiResponse) => {
+        action.payload.resolve(response.body.data);
+      },
+      failureEffects: (response: IApiResponse) => [
+        put(timesheetApprovalPostBulkError(response.statusText))
+      ],
+      failureCallback: (response: IApiResponse) => {
+        if (response.status === 400) {
+          const errors: any = { 
+            // information -> based form section name
+            information: flattenObject(response.body.errors) 
+          };
+
+          action.payload.reject(new SubmissionError(errors));
+        } else {
+          action.payload.reject(response.statusText);
+        }
+      },
+      errorEffects: (error: TypeError) => [
+        put(timesheetApprovalPostBulkError(error.message)),
+        put(
+          layoutAlertAdd({
+            time: new Date(),
+            message: error.message
+          })
+        )
+      ],
+      errorCallback: (error: any) => {
+        action.payload.reject(error);
+      }
+    });
+  };
+
+  yield takeEvery(Action.POST_REQUEST, worker);
 }
 
 function* timesheetApprovalSagas() {
   yield all([
     fork(watchAllFetchRequest),
     fork(watchByIdFetchRequest),
+    // fork(watchPostRequest),
+    fork(watchPostBulkRequest)
   ]);
 }
 

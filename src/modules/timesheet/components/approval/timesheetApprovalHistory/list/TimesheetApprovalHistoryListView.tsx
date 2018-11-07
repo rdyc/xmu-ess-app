@@ -1,17 +1,17 @@
 import { Divider, Grid, List, ListItem, ListSubheader, Paper, Typography } from '@material-ui/core';
 import { ITimesheet } from '@timesheet/classes/response';
-import { ApprovalListProps } from '@timesheet/components/approval/list/TimesheetApprovalList';
+import { ApprovalHistoryListProps } from '@timesheet/components/approval/timesheetApprovalHistory/list/TimesheetApprovalHistoryList';
 import { parseChanges } from '@utils/parseChanges';
 import * as moment from 'moment';
 import * as React from 'react';
 import { FormattedDate, FormattedNumber, FormattedPlural } from 'react-intl';
 import { isArray } from 'util';
 
-export const TimesheetApprovalListView: React.SFC<ApprovalListProps> = props => {
+export const TimesheetApprovalHistoryListView: React.SFC<ApprovalHistoryListProps> = props => {
   const { handleGoToDetail } = props;
   const { isLoading, response } = props.timesheetApprovalState.all;
 
-  const renderTimesheetApprovalList = (timesheets: ITimesheet[]) => {
+  const renderTimesheetApprovalHistoryList = (timesheets: ITimesheet[]) => {
     const len = timesheets.length - 1;
 
     return (
@@ -114,7 +114,7 @@ export const TimesheetApprovalListView: React.SFC<ApprovalListProps> = props => 
       {
         response &&
         isArray(response.data) &&
-        renderTimesheetApprovalList(response.data)
+        renderTimesheetApprovalHistoryList(response.data)
       }
     </List>
   );

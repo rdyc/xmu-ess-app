@@ -7,7 +7,7 @@ import { EntryFormProps } from './TimesheetEntryForm';
 
 export const TimesheetEntryFormView: React.SFC<EntryFormProps> = props => {
   const {
-    formMode
+    formMode, customerUidValue, isPresalesActivity, projectUidValue,
   } = props;
 
   const fields = Object.getOwnPropertyNames(props.initialValues.information);
@@ -16,7 +16,10 @@ export const TimesheetEntryFormView: React.SFC<EntryFormProps> = props => {
     <TimesheetEntryDetailForm
       formMode={formMode}
       context={context}
-    />
+      customerUidValue={customerUidValue}
+      isPresalesActivity={isPresalesActivity}
+      projectUidValue={projectUidValue}
+      />
   );
 
   const render = (

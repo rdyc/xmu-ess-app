@@ -5,7 +5,7 @@ import { BaseFieldProps, WrappedFieldProps } from 'redux-form';
 import { InputTimeView } from './InputTimeView';
 
 interface OwnProps extends WrappedFieldProps, BaseFieldProps { 
-  // dateFormat?: string | undefined;
+  timeFormat?: string | undefined;
   type?: string; 
   required?: boolean;
   label: string; 

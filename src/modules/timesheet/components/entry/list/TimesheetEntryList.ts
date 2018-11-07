@@ -6,7 +6,7 @@ import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IListBarField } from '@layout/interfaces';
 import { TimesheetField } from '@timesheet/classes/types';
 import { TimesheetEntryListView } from '@timesheet/components/entry/list/TimesheetEntryListView';
-import { WithTimesheet, withTimesheet } from '@timesheet/hoc/withTimesheet';
+import { WithTimesheetEntry, withTimesheetEntry } from '@timesheet/hoc/withTimesheetEntry';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import {
@@ -56,7 +56,7 @@ interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
 }
 
 export type EntryListProps
-  = WithTimesheet
+  = WithTimesheetEntry
   & WithUser
   & WithLayout
   & WithNavBottom
@@ -72,8 +72,8 @@ const createProps: mapper<EntryListProps, OwnState> = (props: EntryListProps): O
   const { request } = props.timesheetState.all;
 
   return {
-    orderBy: request && request.filter && request.filter.orderBy || orderBy,
-    direction: request && request.filter && request.filter.direction || direction,
+    orderBy: request && request.filter && request.filter.orderBy || orderBy || 'uid',
+    direction: request && request.filter && request.filter.direction || direction || 'descending',
     page: request && request.filter && request.filter.page || page || 1,
     size: request && request.filter && request.filter.size || size || 10,
   };
@@ -109,7 +109,7 @@ const handlerCreators: HandleCreators<EntryListProps, OwnHandlers> = {
     const { isLoading } = props.timesheetState.all;
 
     if (!isLoading) {
-      history.push(`/timesheet/details/${timesheetUid}`);
+      history.push(`/timesheet/entry/${timesheetUid}`);
     }
   },
   handleGoToNext: (props: EntryListProps) => () => {
@@ -163,7 +163,7 @@ const lifecycles: ReactLifeCycleFunctions<EntryListProps, OwnState> = {
       onSyncCallback: handleReloading,
       onOrderCallback: handleChangeOrder,
       onDirectionCallback: handleChangeSort,
-      onAddCallback: () => history.push('/timesheet/form'),
+      onAddCallback: () => history.push('/timesheet/entry'),
       onSizeCallback: handleChangeSize,
     });
 
@@ -239,7 +239,7 @@ const loadData = (props: EntryListProps): void => {
 };
 
 export const TimesheetEntryList = compose<EntryListProps, OwnOptions>(
-  withTimesheet,
+  withTimesheetEntry,
   withUser,
   withLayout,
   withNavBottom,

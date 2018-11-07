@@ -1,7 +1,7 @@
 import { IQuerySingleState } from '@generic/interfaces';
 import { ITimesheetGetByIdRequest } from '@timesheet/classes/queries/entry';
 import { ITimesheetDetail } from '@timesheet/classes/response';
-import { TimesheetAction as Action } from '@timesheet/store/actions';
+import { TimesheetEntryAction as Action } from '@timesheet/store/actions';
 import { Reducer } from 'redux';
 
 const initialState: IQuerySingleState<ITimesheetGetByIdRequest, ITimesheetDetail> = {
@@ -23,4 +23,4 @@ const reducer: Reducer<IQuerySingleState<ITimesheetGetByIdRequest, ITimesheetDet
   }
 };
 
-export { reducer as timesheetGetByIdReducer };
+export { reducer as timesheetEntryGetByIdReducer };

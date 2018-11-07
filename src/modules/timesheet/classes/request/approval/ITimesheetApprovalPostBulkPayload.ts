@@ -1,7 +1,8 @@
 import { IBasePayload } from '@generic/interfaces';
+import { ITimesheetApprovalItem } from './ITimesheetApprovalItem';
 
 export interface ITimesheetApprovalPostBulkPayload extends IBasePayload {
-  timesheetUids: string[];
+  timesheetUids: ITimesheetApprovalItem[];
   isApproved: boolean;
   remark?: string | null;
 }

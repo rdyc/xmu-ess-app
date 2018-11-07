@@ -64,7 +64,7 @@ export const TimesheetEntryEditorView: React.SFC<EntryEditorProps> = props => {
         day: 'numeric',
         month: 'numeric',
         year: 'numeric',
-        timeZone: 'utc',
+        timeZone: 'GMT',
       });
       const end = intl.formatDate(data.end, {
         second: 'numeric',
@@ -73,7 +73,7 @@ export const TimesheetEntryEditorView: React.SFC<EntryEditorProps> = props => {
         day: 'numeric',
         month: 'numeric',
         year: 'numeric',
-        timeZone: 'utc',
+        timeZone: 'GMT',
       });
       
       initialValues.information.uid = data.uid;
