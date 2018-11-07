@@ -124,6 +124,7 @@ const handlerCreators: HandleCreators<TravelSettlementApprovalDetailProps, OwnHa
     });
 
     history.push('/travel/approvals/settlement');
+    
   },
   handleSubmitFail: (props: TravelSettlementApprovalDetailProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
     const { intl } = props;
