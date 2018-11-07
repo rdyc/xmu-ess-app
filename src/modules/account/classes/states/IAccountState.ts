@@ -1,16 +1,19 @@
-import { IEmployeeProfileCommandState } from '@account/classes/IEmployeeProfileCommandState';
-import { IEmployeeProfileQueryState } from '@account/classes/IEmployeeProfileQueryState';
-import { IEmployeeAllRequest, IEmployeeByIdRequest, IEmployeeLeaveByIdRequest, IEmployeeListRequest } from '@account/classes/queries';
+import {
+  IEmployeeAllRequest,
+  IEmployeeByIdRequest,
+  IEmployeeLeaveByIdRequest,
+  IEmployeeListRequest,
+} from '@account/classes/queries';
 import { IEmployee, IEmployeeDetail, IEmployeeLeave } from '@account/classes/response';
 import { IQueryCollectionState, IQuerySingleState } from '@generic/interfaces';
+import { IEmployeeMy } from '../response/IEmployeeMy';
 
 export interface IAccountState {
-  profileQuery: IEmployeeProfileQueryState;
-  profileCommand: IEmployeeProfileCommandState;
-
   accountEmployeeGetAll: IQueryCollectionState<IEmployeeAllRequest, IEmployee>;
   accountEmployeeGetList: IQueryCollectionState<IEmployeeListRequest, IEmployee>;
   accountEmployeeGetById: IQuerySingleState<IEmployeeByIdRequest, IEmployeeDetail>;
+  
+  accountEmployeeMyGet: IQuerySingleState<{}, IEmployeeMy>;
 
-  accountEmployeeLeaveGetById: IQuerySingleState<IEmployeeLeaveByIdRequest, IEmployeeLeave>;
+  accountEmployeeLeaveGet: IQuerySingleState<IEmployeeLeaveByIdRequest, IEmployeeLeave>;
 }

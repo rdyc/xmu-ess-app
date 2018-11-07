@@ -1,3 +1,4 @@
+import { Layout } from '@layout/components/base';
 import { ProjectRegistrationDetail } from '@project/components/registration/detail/ProjectRegistrationDetail';
 import RegistrationEditor from '@project/components/registration/editor/ProjectRegistrationEditor';
 import { ProjectRegistrationList } from '@project/components/registration/list/ProjectRegistrationList';
@@ -52,9 +53,11 @@ const acceptance = (props: RouteComponentProps) => (
 
 export const ProjectRoutingComponents: React.SFC<RouteComponentProps> = props => (
   <Switch>
-    <Route path={`${props.match.path}/requests`} component={request} />
-    <Route path={`${props.match.path}/approvals`} component={approval} />
-    <Route path={`${props.match.path}/assignments`} component={assignment} />
-    <Route path={`${props.match.path}/acceptances`} component={acceptance} />
+    <Layout>
+      <Route path={`${props.match.path}/requests`} component={request} />
+      <Route path={`${props.match.path}/approvals`} component={approval} />
+      <Route path={`${props.match.path}/assignments`} component={assignment} />
+      <Route path={`${props.match.path}/acceptances`} component={acceptance} />
+    </Layout>
   </Switch>
 );
