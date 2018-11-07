@@ -1,4 +1,3 @@
-import { employeeMyReducer } from '@account/store/reducers';
 import accountReducers from '@account/store/reducers/accountReducers';
 import commonReducers from '@common/store/reducers/commonReducers';
 import expenseReducers from '@expense/store/reducers/expenseReducers';
@@ -22,7 +21,6 @@ export const rootReducer = combineReducers<IAppState>({
   user: userReducer,
   layout: layoutReducer,
   oidc: oidcReducer,
-  account: employeeMyReducer,
   notification: notificationReducer,
   form: reduxFormReducer,
   appBar: appBarReducer,

@@ -1,15 +1,15 @@
 import {
-  financeBulkPostReducer,
-  financeGetAllReducer,
-  financeGetByIdReducer,
-  financePostReducer,
-} from '@finance/store/reducers';
+  financeApprovalBulkPostReducer,
+  financeApprovalGetAllReducer,
+  financeApprovalGetByIdReducer,
+  financeApprovalPostReducer,
+} from '@finance/store/reducers/approval';
 
 const financeReducers = {
-  financeGetAll: financeGetAllReducer,
-  financeGetById: financeGetByIdReducer,
-  financePost: financePostReducer,
-  financeBulkPost: financeBulkPostReducer,
+  financeApprovalGetAll: financeApprovalGetAllReducer,
+  financeApprovalGetById: financeApprovalGetByIdReducer,
+  financeApprovalPost: financeApprovalPostReducer,
+  financeApprovalBulkPost: financeApprovalBulkPostReducer,
 };
 
 export default financeReducers;

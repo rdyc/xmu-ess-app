@@ -31,8 +31,8 @@ export const WorkflowApprovalFormView: React.SFC<WorkflowApprovalFormProps> = pr
             <Field
               name="remark"
               required={true}
-              label={<FormattedMessage id={'workflow.approval.field.remark'} />}
-              placeholder={props.intl.formatMessage({id: 'workflow.approval.field.remark.placeholder'})}
+              label={props.approvalRemarkLabel || <FormattedMessage id={'workflow.approval.field.remark'} />}
+              placeholder={props.approvalRemarkPlaceholder || props.intl.formatMessage({id: 'workflow.approval.field.remark.placeholder'})}
               component={InputTextArea}
             />
           }

@@ -126,7 +126,7 @@ const component: React.SFC<AllProps> = props => {
                     </ListItemIcon>
                     <ListItemText inset primary={<FormattedMessage id="global.profile.my.title"/>} />
                   </ListItem>
-                  <ListItem button onClick={() => history.push('/')}>
+                  <ListItem button onClick={() => history.push('/account/access')}>
                     <ListItemIcon>
                       <SwapHorizontalCircle />
                     </ListItemIcon>
