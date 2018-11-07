@@ -1,3 +1,5 @@
+import { withWidth } from '@material-ui/core';
+import { WithWidth } from '@material-ui/core/withWidth';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 
 import { compose } from 'recompose';
@@ -13,8 +15,8 @@ interface OwnProps extends WrappedFieldProps, BaseFieldProps {
   disabled: boolean;
 }
 
-export type InputYearProps = OwnProps & InjectedIntlProps;
+export type InputYearProps = OwnProps & InjectedIntlProps & WithWidth;
 
-export const InputYear = compose<InputYearProps, OwnProps>(injectIntl)(
+export const InputYear = compose<InputYearProps, OwnProps>(injectIntl, withWidth())(
   InputYearView
 );

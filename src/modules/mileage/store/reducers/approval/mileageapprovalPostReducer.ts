@@ -1,10 +1,10 @@
 import { IQuerySingleState } from '@generic/interfaces';
 import { IMileageApprovalPostRequest } from '@mileage/classes/queries';
-import { IMileageApproval } from '@mileage/classes/response';
+import { IMileageRequest } from '@mileage/classes/response';
 import { MileageApprovalAction as Action } from '@mileage/store/actions';
 import { Reducer } from 'redux';
 
-const initialState: IQuerySingleState<IMileageApprovalPostRequest, IMileageApproval> = {
+const initialState: IQuerySingleState<IMileageApprovalPostRequest, IMileageRequest> = {
   request: undefined,
   response: undefined,
   isError: false,
@@ -12,7 +12,7 @@ const initialState: IQuerySingleState<IMileageApprovalPostRequest, IMileageAppro
   errors: undefined,
 };
 
-const reducer: Reducer<IQuerySingleState<IMileageApprovalPostRequest, IMileageApproval>> = (state = initialState, action) => {
+const reducer: Reducer<IQuerySingleState<IMileageApprovalPostRequest, IMileageRequest>> = (state = initialState, action) => {
   switch (action.type) {
     case Action.POST_REQUEST: return { ...state, isLoading: true, isError: false, request: action.payload };
     case Action.POST_SUCCESS: return { ...state, isLoading: false, isError: false, response: action.payload };

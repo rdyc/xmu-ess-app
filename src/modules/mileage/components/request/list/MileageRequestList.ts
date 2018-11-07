@@ -217,8 +217,6 @@ const loadData = (props: MileageRequestListProps): void => {
 
   if (user) {
     loadAllRequest({
-      companyUid: user.company.uid,
-      positionUid: user.position.uid,
       filter: {
         direction,
         orderBy,

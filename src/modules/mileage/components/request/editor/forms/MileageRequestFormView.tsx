@@ -19,7 +19,7 @@ export const MileageRequestFormView: React.SFC<
   );
 
   const componentItem = () => (
-    <MileageRequestItemForm year={formYear} month={formMonth} />
+    <MileageRequestItemForm year={Number(formYear)} month={Number(formMonth)} />
   );
 
   const render = (
