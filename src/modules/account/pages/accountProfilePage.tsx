@@ -1,3 +1,4 @@
+/*
 import { IEmployeeCommand, IEmployeeCommandData, IEmployeeQuery } from '@account/classes';
 import { IEmployee } from '@account/classes/response';
 import { EmployeeProfileCommandRequest, EmployeeProfileFetchRequest } from '@account/store/actions';
@@ -122,3 +123,5 @@ export default connect(
   mapStateToProps, 
   mapDispatchToProps
 )(AccountProfilePage);
+
+*/

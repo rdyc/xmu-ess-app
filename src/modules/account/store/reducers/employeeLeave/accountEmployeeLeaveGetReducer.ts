@@ -23,4 +23,4 @@ const reducer: Reducer<IQuerySingleState<IEmployeeLeaveByIdRequest, IEmployeeLea
   }
 };
 
-export { reducer as accountEmployeeLeaveGetByIdReducer };
+export { reducer as accountEmployeeLeaveGetReducer };

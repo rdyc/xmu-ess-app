@@ -1,4 +1,3 @@
-import { IEmployeeMyState } from '@account/classes';
 import { IAccountState } from '@account/classes/states';
 import { ICommonState } from '@common/classes/states';
 import { IExpenseState } from '@expense/classes/states';
@@ -34,7 +33,6 @@ export interface IAppState extends
   appBar: IAppBarState;
   navBottom: IListBarState;
   oidc: UserState;
-  account: IEmployeeMyState;
   notification: INotificationState;
   form: FormStateMap;
   getEnd: ILeaveGetEndState;

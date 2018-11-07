@@ -1,4 +1,4 @@
-import { AccountLeaveView } from '@account/components/views/AccountLeaveView';
+import { AccountLeaveView } from '@account/components/leave/AccountLeaveView';
 import { WithAccountEmployeeLeave, withAccountEmployeeLeave } from '@account/hoc/withAccountEmployeeLeave';
 import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';

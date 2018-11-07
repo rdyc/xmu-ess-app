@@ -65,7 +65,7 @@ const cards = [1, 2, ];
 
 type AllProps = WithStyles<typeof styles>;
 
-const Album: React.SFC<AllProps> = props => {
+const root: React.SFC<AllProps> = props => {
   const { classes } = props;
   
   const handleLogin = (event: any) => {
@@ -145,4 +145,4 @@ const Album: React.SFC<AllProps> = props => {
   );
 };
 
-export default withStyles(styles)(Album);
+export const Root = withStyles(styles)(root);

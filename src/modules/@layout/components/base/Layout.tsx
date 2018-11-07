@@ -37,10 +37,8 @@ const layout: React.SFC<LayoutProps> = props => {
   );
 };
 
-const Layout = compose<LayoutProps, {}>(
+export const Layout = compose<LayoutProps, {}>(
   withRoot,
   withStyles(styles),
   withLayout,
 )(layout);
-
-export default Layout;
