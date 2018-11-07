@@ -181,7 +181,8 @@ const handlerCreators: HandleCreators<ApprovalListProps, OwnHandlers> = {
       layoutDispatch.modeListOn();
       layoutDispatch.searchShow();
       layoutDispatch.actionCentreShow();
-  
+      
+      navBottomDispatch.addHide();
       navBottomDispatch.assignCallbacks({
         onNextCallback: handleGoToNext,
         onPrevCallback: handleGoToPrevious,

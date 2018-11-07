@@ -23,6 +23,7 @@ export interface IListBarState {
   readonly menuAnchorId: string | undefined;
   readonly menuIsOpen: boolean;
   readonly isLoading: boolean;
+  readonly addDisabled: boolean;
   readonly orderBy: string | undefined;
   readonly direction: SortDirection | undefined;
   readonly page: number | undefined;
