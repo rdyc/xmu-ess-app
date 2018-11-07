@@ -65,6 +65,10 @@ const lifecycles: ReactLifeCycleFunctions<SelectProjectProps, {}> = {
       loadListDispose();
       loadListRequest({filter});
     }
+  },
+  componentWillUnmount() {
+    const { loadListDispose } = this.props.projectRegisterDispatch;
+    loadListDispose();
   }
 };
 

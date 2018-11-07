@@ -1,3 +1,4 @@
+import { WorkflowStatusType } from '@common/classes/types';
 import {
   Avatar,
   Card,
@@ -27,15 +28,27 @@ export const WorkflowHistory: React.SFC<OwnProps> = props => {
   const renderItem = (item: IOrganizationWorkflowStep) => {
     const secondaryText = `#${item.level} ${item.position ? item.position.name : 'N/A'}`;
   
-    if (item.isComplete) {
-      if (item.response && item.response.changes && item.response.changes.created) {
-        return (
-          <ListItemText
-            key={item.level}
-            primary={item.response.changes.created.fullName} 
-            secondary={secondaryText}
-          />
-        );
+    if (item.isComplete && item.response && item.response.statusType !== WorkflowStatusType.Notify) {
+      if (item.response.statusType !== WorkflowStatusType.Opened) {
+        if (item.response.changes && item.response.changes.created) {
+          return (
+            <ListItemText
+              key={item.level}
+              primary={item.response.changes.created.fullName} 
+              secondary={secondaryText}
+            />
+          );
+        }
+      } else {
+        if (item.response.changes && item.response.changes.updated) {
+          return (
+            <ListItemText
+              key={item.level}
+              primary={item.response.changes.updated.fullName} 
+              secondary={secondaryText}
+            />
+          );
+        }
       }
     } else {
       if (item.employees) {

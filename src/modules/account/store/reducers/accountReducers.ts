@@ -1,11 +1,11 @@
-import { employeeProfileCommandReducer, employeeProfileQueryReducer } from '@account/store/reducers';
-
 import accountEmployeeReducers from './employee/accountEmployeeReducers';
+import accountEmployeeLeaveReducers from './employeeLeave/accountEmployeeLeaveReducers';
+import accountEmployeeMyReducers from './employeeMy/accountEmployeeMyReducers';
 
 const accountReducers = {
-  profileQuery: employeeProfileQueryReducer,
-  profileCommand: employeeProfileCommandReducer,
-  ...accountEmployeeReducers
+  ...accountEmployeeReducers,
+  ...accountEmployeeMyReducers,
+  ...accountEmployeeLeaveReducers,
 };
 
 export default accountReducers;
