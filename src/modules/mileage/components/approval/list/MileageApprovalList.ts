@@ -110,7 +110,7 @@ const handlerCreators: HandleCreators<MileageApprovalListProps, OwnHandlers> = {
     const { isLoading } = props.mileageApprovalState.all;
 
     if (!isLoading) {
-      history.push(`/mileage/approval/${mileageUid}`);
+      history.push(`/mileage/approvals/${mileageUid}`);
     } 
   },
   handleGoToNext: (props: MileageApprovalListProps) => () => { 
@@ -164,7 +164,7 @@ const lifecycles: ReactLifeCycleFunctions<MileageApprovalListProps, OwnState> = 
       onSyncCallback: handleReloading,
       onOrderCallback: handleChangeOrder,
       onDirectionCallback: handleChangeSort,
-      onAddCallback: () => history.push('/mileage/approval/form'),
+      onAddCallback: () => history.push('/mileage/approvals/form'),
       onSizeCallback: handleChangeSize,
     });
 

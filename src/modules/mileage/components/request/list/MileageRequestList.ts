@@ -109,7 +109,7 @@ const handlerCreators: HandleCreators<MileageRequestListProps, OwnHandlers> = {
     const { isLoading } = props.mileageRequestState.all;
 
     if (!isLoading) {
-      history.push(`/mileage/request/${mileageUid}`);
+      history.push(`/mileage/requests/${mileageUid}`);
     } 
   },
   handleGoToNext: (props: MileageRequestListProps) => () => { 
@@ -163,7 +163,7 @@ const lifecycles: ReactLifeCycleFunctions<MileageRequestListProps, OwnState> = {
       onSyncCallback: handleReloading,
       onOrderCallback: handleChangeOrder,
       onDirectionCallback: handleChangeSort,
-      onAddCallback: () => history.push('/mileage/request/form'),
+      onAddCallback: () => history.push('/mileage/requests/form'),
       onSizeCallback: handleChangeSize,
     });
 

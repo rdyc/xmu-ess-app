@@ -21,10 +21,10 @@ export const menuLinkMapper = (menuUid: string) => {
       path = '/leave/cancellation';
       break;
     case 'MNU44':
-      path = '/mileage/approval';
+      path = '/mileage/approvals';
       break;
     case 'MNU43':
-      path = '/mileage/request';
+      path = '/mileage/requests';
       break;
     case 'MNU18':
       path = '/account/password';

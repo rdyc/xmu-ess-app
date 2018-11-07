@@ -1,3 +1,4 @@
+import { Layout } from '@layout/components/base';
 import { MileageApprovalDetail } from '@mileage/components/approval/detail/MileageApprovalDetail';
 import { MileageApprovalList } from '@mileage/components/approval/list/MileageApprovalList';
 import { MileageRequestDetail } from '@mileage/components/request/detail/MileageRequestDetail';
@@ -23,7 +24,9 @@ const approval = (props: RouteComponentProps) => (
 
 export const MileageRoutingComponents: React.SFC<RouteComponentProps> = props => (
   <Switch>
-    <Route path={`${props.match.path}/request`} component={request} />
-    <Route path={`${props.match.path}/approval`} component={approval} />
+    <Layout>
+      <Route path={`${props.match.path}/requests`} component={request} />
+      <Route path={`${props.match.path}/approvals`} component={approval} />
+    </Layout>
   </Switch>
 );
