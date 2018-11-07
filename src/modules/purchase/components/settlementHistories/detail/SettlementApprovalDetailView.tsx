@@ -33,17 +33,24 @@ export const SettlementApprovalDetailView: React.SFC<SettlementApprovalDetailPro
         response &&
         response.data &&
         <Grid container spacing={16}>
-          <Grid item xs={12} md={4}>
+          <Grid item 
+          // xs={12} 
+          md={4}>
             <SettlementInformation
               data={response.data} />
           </Grid>
 
-          <Grid item xs={12} md={4}>
+          <Grid item 
+          // xs={12} 
+          md={8}>
             <SettlementItemInformation
               data={response.data.items} />
           </Grid>
 
-          <Grid item xs={12} md={4}>
+          <Grid item 
+          // xs={12} 
+          md={4}
+          >
             <Grid container spacing={16}>
               <Grid item>
                 <WorkflowHistory data={response.data.workflow} />

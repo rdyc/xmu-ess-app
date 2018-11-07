@@ -68,15 +68,22 @@ export const PurchaseSettlementDetailView: React.SFC<PurchaseSettlementDetailPro
           justify="flex-start"
           alignItems="flex-start"
         >
-          <Grid item xs={12} md={4}>
+          <Grid item 
+          // xs={12} 
+          md={4}>
             <SettlementInformation data={response.data} />
           </Grid>
 
-          <Grid item xs={12} md={8}>
+          <Grid item 
+          // xs={12} 
+          md={8}>
             <SettlementItemInformation data={response.data.items} />
           </Grid>
 
-          <Grid item xs={12} md={8} alignContent="flex-end">
+          <Grid item 
+          // xs={12} 
+          md={4} 
+          >
             <WorkflowHistory data={response.data.workflow} />
           </Grid>
         </Grid>

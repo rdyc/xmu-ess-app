@@ -1,7 +1,9 @@
 import { FormMode } from '@generic/types';
 import { PurchaseRequestFormView } from '@purchase/components/purchaseRequest/editor/forms/PurchaseRequestFormView';
 import { connect } from 'react-redux';
-import { formValueSelector, getFormValues, InjectedFormProps, reduxForm } from 'redux-form';
+import { formValueSelector, 
+  // getFormValues, 
+  InjectedFormProps, reduxForm } from 'redux-form';
 
 const formName = 'purchaseRequest';
 
@@ -38,7 +40,7 @@ interface FormValueProps {
   formCurrencyType: string | null;
   formRate: number | 1;
   formValue: number | 1;
-  formValues: PurchaseRequestFormData;
+  formItem: number | undefined;
 }
 
 export type PurchaseRequestFormProps
@@ -52,15 +54,15 @@ const mapStateToProps = (state: any): FormValueProps => {
   const customer = selector(state, 'information.customerUid');
   const currencyType = selector(state, 'information.currencyType');
   const rate = selector(state, 'information.rate');
-  const valueUsd = selector(state, 'information.valueUsd');
-
+  const value = selector(state, 'information.request'); 
+  const itemValue = selector(state, 'items.requestValue');
   return {
     formCustomer: customer,
     formIsCurrencyIDR: currencyType === 'SCR01',
     formCurrencyType: currencyType,
     formRate: rate,
-    formValue: valueUsd,
-    formValues: getFormValues(formName)(state) as PurchaseRequestFormData
+    formValue: value,
+    formItem: itemValue
   };
 };
 
@@ -72,7 +74,4 @@ export const PurchaseRequestForm = reduxForm<PurchaseRequestFormData, OwnProps>(
   touchOnBlur: true,
   enableReinitialize: true,
   destroyOnUnmount: true,
-  onChange: (values: PurchaseRequestFormData, dispatch: any, props: any) => {
-    dispatchEvent(new CustomEvent('ASG_FORM', { detail: values }));
-  },
 })(connectedView);

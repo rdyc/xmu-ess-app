@@ -31,9 +31,9 @@ export const PurchaseRequestFormView: React.SFC<PurchaseRequestFormProps> = prop
     change('information.requestIDR', newValue * formRate);
   };
 
-  // const onChangeValueRequest = (event: any, newValue: number, oldValue: number) => {
-  //   change('information.request', newValue * formRate);
-  // };
+  const onChangeValueRequest = (event: any, newValue: number, oldValue: number) => {
+    change('information.request', newValue );
+  };
 
   const componentInformation = (context: BaseFieldsProps) => (
     <PurchaseRequestDetailForm
@@ -45,6 +45,7 @@ export const PurchaseRequestFormView: React.SFC<PurchaseRequestFormProps> = prop
       onChangeCurrencyType={onChangeCurrencyType}
       onChangeRate={onChangeRate}
       onChangeValueIdr={onChangeValueIdr}
+      onChangeRequestItem={onChangeValueRequest}
     />
   );
 
@@ -79,7 +80,9 @@ export const PurchaseRequestFormView: React.SFC<PurchaseRequestFormProps> = prop
           </FormSection>
         </Grid>
 
-        <Grid item xs={12} md={4}>
+        <Grid item 
+        // xs={12} 
+        md={4}>
           <Submission
             // valid={props.valid}
             valid={true}

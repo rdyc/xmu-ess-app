@@ -33,12 +33,17 @@ export const PurchaseApprovalDetailView: React.SFC<PurchaseApprovalDetailProps> 
         response &&
         response.data &&
         <Grid container spacing={16}>
-          <Grid item xs={12} md={4}>
+          <Grid item 
+          // xs={12} 
+          md={4}>
           <PurchaseInformation 
           data={response.data} />
           </Grid>
 
-          <Grid item xs={12} md={8}>
+          <Grid item 
+          // xs={12} 
+          md={8}
+          >
           <PurchaseItemInformation
           data={response.data.items} />
           </Grid>

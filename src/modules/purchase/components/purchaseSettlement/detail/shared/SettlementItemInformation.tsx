@@ -43,7 +43,7 @@ export const SettlementItemInformation: React.SFC<OwnProps> = props => {
                         primary={<FormattedMessage id="purchase.itemTitle.request" />}
                         />
                       <Typography
-                      variant="display1"
+                      variant="headline"
                       align="left"
                     >
                       <FormattedNumber
@@ -56,7 +56,7 @@ export const SettlementItemInformation: React.SFC<OwnProps> = props => {
                         primary={<FormattedMessage id="purchase.itemTitle.actual" />}
                       />
                     <Typography
-                      variant="display1"
+                      variant="headline"
                       align="left"
                     >
                       <FormattedNumber
@@ -69,7 +69,7 @@ export const SettlementItemInformation: React.SFC<OwnProps> = props => {
                         primary={<FormattedMessage id="purchase.itemTitle.variance" />}
                       />
                     <Typography
-                      variant="display1"
+                      variant="headline"
                       align="left"
                     >
                       <FormattedNumber

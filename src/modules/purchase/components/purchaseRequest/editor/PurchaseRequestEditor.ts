@@ -91,16 +91,15 @@ const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
 };
 
 const handlers: HandleCreators<PurchaseRequestEditorProps, OwnHandlers> = {
-  handleEventListener: (props: PurchaseRequestEditorProps) => (event: CustomEvent) => {
-    const formValues = event.detail as PurchaseRequestFormData;
+  // handleEventListener: (props: PurchaseRequestEditorProps) => (event: CustomEvent) => {
+  //   const formValues = event.detail as PurchaseRequestEditorProps;
 
-    let requestValue: number = 0;
+  //   let requestValue: number = 0;
 
-    if (formValues.items) {
-      formValues.items.items.forEach(items => requestValue += items.request);
-    }
-  },
-
+  //   if (formValues.items) {
+  //     formValues.items.items.forEach(items => requestValue += items.request);
+  //   }
+  // },
   handleValidate: (props: PurchaseRequestEditorProps) => (formData: PurchaseRequestFormData) => {
     const errors = {
       information: {},

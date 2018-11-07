@@ -46,12 +46,15 @@ export const PurchaseRequestItemFormView: React.SFC<PurchaseRequestItemFormProps
 
               return (
                 <ListItem
-                  disableGutters
+                  // disableGutters
+                  dense
                   key={index}
                 >
+                  <Grid xs={4} spacing={8}>
                    <ListItemText
                     primary={`#${index + 1} - ${items.uid || ''}`}
                   />
+                  </Grid>
                   <Grid xs={4} spacing={8}>
                     <Field
                       type="text"

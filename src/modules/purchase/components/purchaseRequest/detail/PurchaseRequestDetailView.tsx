@@ -64,18 +64,24 @@ export const PurchaseRequestDetailView: React.SFC<PurchaseRequestDetailProps> = 
           container 
           spacing={16} 
           // direction="row"
-          justify="space-evenly"
-          alignItems="baseline"
+          // justify="flex-start"
+          // alignItems="baseline"
         >
-          <Grid item xs={12} md={4}>
+          <Grid item 
+          // xs={12} 
+          md={4}>
             <PurchaseInformation data={response.data}/>
           </Grid>
           
-          <Grid item xs={12} md={8}>
+          <Grid item 
+          // xs={12} 
+          md={8}>
             <PurchaseItemInformation data={response.data.items} />
           </Grid>
 
-          <Grid item>
+          <Grid item
+          md={4}
+          >
             <WorkflowHistory data={response.data.workflow} />
           </Grid>
 

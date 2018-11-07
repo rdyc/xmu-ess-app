@@ -102,32 +102,30 @@ const settlementInformation: React.SFC<AllProps> = props => {
           label={< FormattedMessage id= "purchase.field.information.actual" /> }
           value = { intl.formatNumber(data.actual) }
           />
-          {/* { data.currencyType === 'SCR01' ?  */}
+        {data.currencyType !== 'SCR01' ?
+          <TextField
+          {...styled}
+          margin="dense"
+          label={< FormattedMessage id="purchase.field.information.differenceIDR" />}
+          value={intl.formatNumber(data.differenceInIDR || 0)}
+          /> 
+          : ''}
+          { data.currencyType !== 'SCR01' ?
           <TextField
           { ...styled }
           margin = "dense"
           label = { < FormattedMessage id = "purchase.field.information.requestIDR" /> }
           value = { intl.formatNumber(data.requestInIDR || 0) }
           />
+          : ''}
+          { data.currencyType !== 'SCR01' ?
           <TextField
             {...styled}
             margin="dense"
             label={< FormattedMessage id="purchase.field.information.actualIDR" />}
             value={intl.formatNumber(data.actualInIDR || 0)}
           />
-          <TextField
-          { ...styled }
-          margin = "dense"
-          label={< FormattedMessage id= "purchase.field.information.differenceIDR" /> }
-          value = { intl.formatNumber(data.differenceInIDR || 0) }
-          /> 
-          {/* : '' } */}
-          <TextField
-          { ...styled }
-          margin = "dense"
-          label={< FormattedMessage id= "purchase.field.information.difference" /> }
-          value = { intl.formatNumber(data.difference) }
-          />
+          : ''}
           <TextField
           { ...styled }
           margin = "dense"
