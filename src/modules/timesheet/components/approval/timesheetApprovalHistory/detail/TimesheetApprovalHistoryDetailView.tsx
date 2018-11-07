@@ -1,13 +1,13 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, Typography } from '@material-ui/core';
-import { WorkflowStep } from '@organization/components';
+import { WorkflowHistory } from '@organization/components/workflow/history/WorkflowHistory';
 import { TimesheetInformation } from '@timesheet/components/entry/detail/shared/TimesheetInformation';
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
-import { ApprovalDetailProps } from './TimesheetApprovalDetail';
+import { ApprovalHistoryDetailProps } from './TimesheetApprovalHistoryDetail';
 
-export const TimesheetApprovalDetailView: React.SFC<ApprovalDetailProps> = props => {
+export const TimesheetApprovalHistoryDetailView: React.SFC<ApprovalHistoryDetailProps> = props => {
   const {
-    dialogFullScreen, dialogOpen, dialogTitle, dialogDescription, dialogCancelText, dialogConfirmedText, handleDialogClose, handleDialogConfirmed, intl
+    dialogFullScreen, dialogOpen, dialogTitle, dialogDescription, dialogCancelText, dialogConfirmedText, handleDialogClose, handleDialogConfirmed
   } = props;
 
   const { isLoading, response } = props.timesheetApprovalState.detail;
@@ -47,32 +47,15 @@ export const TimesheetApprovalDetailView: React.SFC<ApprovalDetailProps> = props
         </Typography>
       }
       {
+        !isLoading &&
         response &&
-        <Grid
-          container
-          spacing={24}
-          direction="row"
-          justify="flex-start"
-          alignItems="flex-start"
-        >
+        response.data &&
+        <Grid container spacing={16}>
           <Grid item xs={12} md={4}>
-            {
-              response &&
-              response.data &&
-              <TimesheetInformation
-                timesheet= {response.data}
-                intl={intl}
-              />
-            }
+            <TimesheetInformation data={response.data} />
           </Grid>
           <Grid item xs={12} md={8}>
-            {
-              response &&
-              response.data &&
-              response.data.workflow &&
-              response.data.workflow.steps &&
-              <WorkflowStep steps={response.data.workflow.steps} />
-            }
+            <WorkflowHistory data={response.data.workflow} />
           </Grid>
         </Grid>
       }

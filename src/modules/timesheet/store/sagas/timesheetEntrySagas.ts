@@ -1,6 +1,6 @@
 import { layoutAlertAdd, listBarLoading, listBarMetadata } from '@layout/store/actions';
 import {
-  TimesheetAction as Action,
+  TimesheetEntryAction as Action,
   timesheetGetAllError,
   timesheetGetAllRequest,
   timesheetGetAllSuccess,
@@ -169,7 +169,7 @@ function* watchPutFetchRequest() {
   yield takeEvery(Action.PUT_REQUEST, worker);
 }
 
-function* timesheetSagas() {
+function* timesheetEntrySagas() {
   yield all([
     fork(watchAllFetchRequest),
     fork(watchByIdFetchRequest),
@@ -178,4 +178,4 @@ function* timesheetSagas() {
   ]);
 }
 
-export default timesheetSagas;
+export default timesheetEntrySagas;

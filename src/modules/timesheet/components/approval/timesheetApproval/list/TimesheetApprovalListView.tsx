@@ -1,18 +1,22 @@
-// import { WorkflowStatusType } from '@common/classes/types';
-import { Checkbox, Divider, Grid, List, ListItem, ListSubheader, Paper, Typography } from '@material-ui/core';
+import { Button, Checkbox, Divider, Grid, List, ListItem, ListSubheader, Paper, Typography } from '@material-ui/core';
 import { ITimesheet } from '@timesheet/classes/response';
-import { ApprovalListEditorProps } from '@timesheet/components/approval/editor/TimesheetApprovalListEditor';
+import { ApprovalListProps } from '@timesheet/components/approval/timesheetApproval/list/TimesheetApprovalList';
 import { parseChanges } from '@utils/parseChanges';
 import * as moment from 'moment';
 import * as React from 'react';
 import { FormattedDate, FormattedNumber, FormattedPlural } from 'react-intl';
 import { isArray } from 'util';
 
-export const TimesheetApprovalListEditorView: React.SFC<ApprovalListEditorProps> = props => {
-  // const { handleGoToDetail } = props;
+export const TimesheetApprovalListView: React.SFC<ApprovalListProps> = props => {
+  const { handleGoToDetail, handleCheckbox, handleGoToApproval, timesheetUids } = props;
   const { isLoading, response } = props.timesheetApprovalState.all;
 
-  const renderTimesheetApprovalListEditor = (timesheets: ITimesheet[]) => {
+  const isChecked = (uid: string) => {
+    const _uids = new Set(timesheetUids);
+    return _uids.has(uid);
+  };
+
+  const renderTimesheetApprovalList = (timesheets: ITimesheet[]) => {
     const len = timesheets.length - 1;
 
     return (
@@ -21,13 +25,16 @@ export const TimesheetApprovalListEditorView: React.SFC<ApprovalListEditorProps>
           <ListItem
             button={!isLoading}
             key={timesheet.uid}
-          // onClick={() => handleGoToDetail(timesheet.uid)}
           >
             <Grid container spacing={24}>
               <Grid item xs={1} sm={1}>
-                <Checkbox />
+                <Checkbox
+                  key={timesheet.uid}
+                  onChange={() => handleCheckbox(timesheet.uid)}
+                  checked={isChecked(timesheet.uid)}
+                />
               </Grid>
-              <Grid item xs={7} sm={7}>
+              <Grid item xs={7} sm={7} onClick={() => handleGoToDetail(timesheet.uid)}>
                 <Typography
                   noWrap
                   color="primary"
@@ -55,7 +62,7 @@ export const TimesheetApprovalListEditorView: React.SFC<ApprovalListEditorProps>
                   {timesheet.customer && timesheet.customer.name} &bull; {timesheet.project && timesheet.project.name}
                 </Typography>
               </Grid>
-              <Grid item xs={4} sm={4}>
+              <Grid item xs={4} sm={4} onClick={() => handleGoToDetail(timesheet.uid)}>
                 <Typography
                   noWrap
                   variant="body1"
@@ -118,7 +125,7 @@ export const TimesheetApprovalListEditorView: React.SFC<ApprovalListEditorProps>
       {
         response &&
         isArray(response.data) &&
-        renderTimesheetApprovalListEditor(response.data)
+        renderTimesheetApprovalList(response.data)
       }
     </List>
   );
@@ -132,6 +139,13 @@ export const TimesheetApprovalListEditorView: React.SFC<ApprovalListEditorProps>
           elevation={1}
         >
           <RenderList />
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => handleGoToApproval()}
+          >
+            APPROVAL
+          </Button>
         </Paper>}
     </React.Fragment>
   );

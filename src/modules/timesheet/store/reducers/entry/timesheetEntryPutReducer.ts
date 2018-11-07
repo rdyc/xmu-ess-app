@@ -1,7 +1,7 @@
 import { IQuerySingleState } from '@generic/interfaces';
 import { ITimesheetPutRequest } from '@timesheet/classes/queries/entry';
 import { ITimesheet } from '@timesheet/classes/response';
-import { TimesheetAction as Action } from '@timesheet/store/actions';
+import { TimesheetEntryAction as Action } from '@timesheet/store/actions';
 import { Reducer } from 'redux';
 
 const initialState: IQuerySingleState<ITimesheetPutRequest, ITimesheet> = {
@@ -23,4 +23,4 @@ const reducer: Reducer<IQuerySingleState<ITimesheetPutRequest, ITimesheet>> = (s
   }
 };
 
-export { reducer as timesheetPutReducer };
+export { reducer as timesheetEntryPutReducer };

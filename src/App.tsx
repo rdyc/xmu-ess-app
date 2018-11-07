@@ -16,7 +16,6 @@ import {
   purchaseSettlementApprovalRouter,
   purchaseSettlementRouter,
 } from '@purchase/components/PurchaseRouter';
-import { timesheetApprovalRouter, timesheetRouter } from '@timesheet/components/timesheetRouter';
 import { TravelRoutingComponents } from '@travel/components/TravelRoutingComponents';
 import { ConnectedRouter } from 'connected-react-router';
 import { History } from 'history';
@@ -70,8 +69,6 @@ const app: React.ComponentType<AllProps> = props => (
               <Route path="/approval/purchase/request" component={purchaseApprovalRouter} />
               <Route path="/purchase/settlement" component={purchaseSettlementRouter} />
               <Route path="/approval/purchase/settlement" component={purchaseSettlementApprovalRouter} />
-              <Route path="/timesheet" component={timesheetRouter} />
-              <Route path="/approval/timesheet" component={timesheetApprovalRouter} />
               <Route path="/expense" component={ExpenseRoutingComponents} />
               <Route path="/reports" component={SummaryRoutingComponent} />
               <Route path="/finance" component={FinanceRoutingComponents} />

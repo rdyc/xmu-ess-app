@@ -1,10 +1,9 @@
 import { IQuerySingleState } from '@generic/interfaces';
-import { ITimesheetPostRequest } from '@timesheet/classes/queries/entry';
-import { ITimesheet } from '@timesheet/classes/response';
-import { TimesheetAction as Action } from '@timesheet/store/actions';
+import { ITimesheetApprovalPostRequest } from '@timesheet/classes/queries/approval';
+import { TimesheetApprovalAction as Action } from '@timesheet/store/actions';
 import { Reducer } from 'redux';
 
-const initialState: IQuerySingleState<ITimesheetPostRequest, ITimesheet> = {
+const initialState: IQuerySingleState<ITimesheetApprovalPostRequest, boolean> = {
   request: undefined,
   response: undefined,
   isError: false,
@@ -12,7 +11,7 @@ const initialState: IQuerySingleState<ITimesheetPostRequest, ITimesheet> = {
   errors: undefined,
 };
 
-const reducer: Reducer<IQuerySingleState<ITimesheetPostRequest, ITimesheet>> = (state = initialState, action) => {
+const reducer: Reducer<IQuerySingleState<ITimesheetApprovalPostRequest, boolean>> = (state = initialState, action) => {
   switch (action.type) {
     case Action.POST_REQUEST: return { ...state, isLoading: true, request: action.payload };
     case Action.POST_SUCCESS: return { ...state, isLoading: false, response: action.payload };
@@ -23,4 +22,4 @@ const reducer: Reducer<IQuerySingleState<ITimesheetPostRequest, ITimesheet>> = (
   }
 };
 
-export { reducer as timesheetPostReducer };
+export { reducer as timesheetApprovalPostReducer };
