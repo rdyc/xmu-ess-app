@@ -88,6 +88,9 @@ const component: React.SFC<InnerProps> = props => {
               <ListItemText
                 primary={user.company.name}
                 secondary={user.position.name}
+                primaryTypographyProps={{
+                  variant: 'body1'
+                }}
               />
             </ListItem>
           </List>
@@ -106,7 +109,12 @@ const component: React.SFC<InnerProps> = props => {
         }
       >
         <ListItem button>
-          <ListItemText primary="Dashboard" />
+          <ListItemText 
+            primary="Dashboard" 
+            primaryTypographyProps={{
+              variant: 'body1'
+            }}
+          />
         </ListItem>
       </List>
 
@@ -127,11 +135,12 @@ const component: React.SFC<InnerProps> = props => {
                 <ListItemText primary={header.name}
                   primaryTypographyProps={{
                     noWrap: true,
+                    variant: 'body1',
                     color: header.uid === parentUid ? 'secondary' : 'textPrimary'
                   }}
                 />
                 <ListItemSecondaryAction>
-                  {isExpanded && parentUid === header.uid || active === header.uid ? <ExpandLess/> : <ExpandMore/>}
+                  {isExpanded && parentUid === header.uid || active === header.uid ? <ExpandLess color="action" /> : <ExpandMore color="action" />}
                 </ListItemSecondaryAction>
               </ListItem>
               <Collapse in={isExpanded && parentUid === header.uid || active === header.uid }>
@@ -150,6 +159,7 @@ const component: React.SFC<InnerProps> = props => {
                             primary={item.name}
                             primaryTypographyProps={{
                               noWrap: true,
+                              variant: 'body1',
                               color: item.uid === viewMenuUid() ? 'primary' : 'textPrimary'
                             }}
                           />
