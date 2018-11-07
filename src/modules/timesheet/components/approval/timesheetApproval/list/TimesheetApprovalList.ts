@@ -77,8 +77,8 @@ const createProps: mapper<ApprovalListProps, OwnState> = (props: ApprovalListPro
 
   return {
     timesheetUids: [],
-    orderBy: request && request.filter && request.filter.query && request.filter.query.orderBy || orderBy,
-    direction: request && request.filter && request.filter.query && request.filter.query.direction || direction,
+    orderBy: request && request.filter && request.filter.query && request.filter.query.orderBy || orderBy || 'uid',
+    direction: request && request.filter && request.filter.query && request.filter.query.direction || direction || 'descending',
     page: request && request.filter && request.filter.query && request.filter.query.page || page || 1,
     size: request && request.filter && request.filter.query && request.filter.query.size || size || 10,
   };
@@ -125,7 +125,7 @@ const handlerCreators: HandleCreators<ApprovalListProps, OwnHandlers> = {
     const { isLoading } = props.timesheetApprovalState.all;
 
     if (!isLoading) {
-      history.push(`/approval/timesheet/action/${timesheetUids}`);
+      history.push(`/timesheet/approval/action/${timesheetUids}`);
     }
   },
   handleGoToDetail: (props: ApprovalListProps) => (timesheetUid) => {
@@ -133,7 +133,7 @@ const handlerCreators: HandleCreators<ApprovalListProps, OwnHandlers> = {
     const { isLoading } = props.timesheetApprovalState.all;
 
     if (!isLoading) {
-      history.push(`/approval/timesheet/details/${timesheetUid}`);
+      history.push(`/timesheet/approval/${timesheetUid}`);
     }
   },
   handleGoToNext: (props: ApprovalListProps) => () => {
@@ -187,7 +187,7 @@ const lifecycles: ReactLifeCycleFunctions<ApprovalListProps, OwnState> = {
       onSyncCallback: handleReloading,
       onOrderCallback: handleChangeOrder,
       onDirectionCallback: handleChangeSort,
-      onAddCallback: () => history.push('/timesheet/form'),
+      onAddCallback: () => history.push('/timesheet/entry'),
       onSizeCallback: handleChangeSize,
     });
 

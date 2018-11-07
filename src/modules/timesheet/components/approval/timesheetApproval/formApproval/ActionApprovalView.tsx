@@ -17,7 +17,7 @@ import {
   FormattedDate, FormattedMessage
 } from 'react-intl';
 
-export const actionApprovalView: React.SFC<ApprovalTimesheetsProps> = props => {
+export const ActionApprovalView: React.SFC<ApprovalTimesheetsProps> = props => {
   const {
     approvalTitle, approvalSubHeader, approvalChoices, approvalTrueValue,
     approvalDialogTitle, approvalDialogContentText, approvalDialogCancelText, approvalDialogConfirmedText,

@@ -128,7 +128,7 @@ const handlerCreators: HandleCreators<EntryDetailProps, Handler> = {
 
     stateReset();
 
-    history.push('/timesheet/form/', { uid: timesheetUid });
+    history.push('/timesheet/entry/form/', { uid: timesheetUid });
   },
 };
 

@@ -1,4 +1,3 @@
-// import { WorkflowStatusType } from '@common/classes/types';
 import { Button, Checkbox, Divider, Grid, List, ListItem, ListSubheader, Paper, Typography } from '@material-ui/core';
 import { ITimesheet } from '@timesheet/classes/response';
 import { ApprovalListProps } from '@timesheet/components/approval/timesheetApproval/list/TimesheetApprovalList';
@@ -26,7 +25,6 @@ export const TimesheetApprovalListView: React.SFC<ApprovalListProps> = props => 
           <ListItem
             button={!isLoading}
             key={timesheet.uid}
-          // onClick={() => handleGoToDetail(timesheet.uid)}
           >
             <Grid container spacing={24}>
               <Grid item xs={1} sm={1}>

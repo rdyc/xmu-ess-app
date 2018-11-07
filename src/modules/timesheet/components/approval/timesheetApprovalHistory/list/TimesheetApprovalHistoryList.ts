@@ -72,8 +72,8 @@ const createProps: mapper<ApprovalHistoryListProps, OwnState> = (props: Approval
   const { request } = props.timesheetApprovalState.all;
 
   return {
-    orderBy: request && request.filter && request.filter.query && request.filter.query.orderBy || orderBy,
-    direction: request && request.filter && request.filter.query && request.filter.query.direction || direction,
+    orderBy: request && request.filter && request.filter.query && request.filter.query.orderBy || orderBy || 'uid',
+    direction: request && request.filter && request.filter.query && request.filter.query.direction || direction || 'descending',
     page: request && request.filter && request.filter.query && request.filter.query.page || page || 1,
     size: request && request.filter && request.filter.query && request.filter.query.size || size || 10,
   };
@@ -109,7 +109,7 @@ const handlerCreators: HandleCreators<ApprovalHistoryListProps, OwnHandlers> = {
     const { isLoading } = props.timesheetApprovalState.all;
 
     if (!isLoading) {
-      history.push(`/approval/timesheet/history/details/${timesheetUid}`);
+      history.push(`/timesheet/approval/${timesheetUid}`);
     }
   },
   handleGoToNext: (props: ApprovalHistoryListProps) => () => {
@@ -163,7 +163,7 @@ const lifecycles: ReactLifeCycleFunctions<ApprovalHistoryListProps, OwnState> = 
       onSyncCallback: handleReloading,
       onOrderCallback: handleChangeOrder,
       onDirectionCallback: handleChangeSort,
-      onAddCallback: () => history.push('/timesheet/form'),
+      onAddCallback: () => history.push('/timesheet/entry'),
       onSizeCallback: handleChangeSize,
     });
 

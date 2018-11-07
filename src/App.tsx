@@ -16,8 +16,6 @@ import {
   purchaseSettlementApprovalRouter,
   purchaseSettlementRouter,
 } from '@purchase/components/PurchaseRouter';
-import { timesheetApprovalRouter } from '@timesheet/components/routers/timesheetApprovalRouter';
-import { timesheetEntryRouter } from '@timesheet/components/routers/timesheetEntryRouter';
 import { travelApprovalRouter, travelRouter, travelSettlementRouter } from '@travel/components/travelRouter';
 import { ConnectedRouter } from 'connected-react-router';
 import { History } from 'history';
@@ -29,6 +27,7 @@ import { Route, Router, Switch } from 'react-router';
 import { Store } from 'redux';
 import { loadUser, OidcProvider, UserState } from 'redux-oidc';
 
+import { TimesheetRoutingComponents } from '@timesheet/components';
 import { IAppState } from './generic/interfaces';
 import AppLocale from './language';
 import config, { getCurrentLanguage } from './language/config';
@@ -102,8 +101,7 @@ class App extends React.Component<AllProps> {
                         <Route path="/travel" component={travelRouter} />
                         <Route path="/travel/settlement" component={travelSettlementRouter} />
                         <Route path="/approval/travel" component={travelApprovalRouter} />                                                
-                        <Route path="/timesheet" component={timesheetEntryRouter} />
-                        <Route path="/approval/timesheet" component={timesheetApprovalRouter} />
+                        <Route path="/timesheet" component={TimesheetRoutingComponents} />
                         <Route path="/expense" component={ExpenseRouter} />
                         <Route path="/approval/expense" component={ExpenseApprovalRouter} />
                         <Route path="/mileage" component={MileageRequestRouter} />

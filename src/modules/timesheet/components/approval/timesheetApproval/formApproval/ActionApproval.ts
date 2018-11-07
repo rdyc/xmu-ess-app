@@ -20,7 +20,7 @@ import { compose, HandleCreators, lifecycle, mapper, ReactLifeCycleFunctions, St
 import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
 import { isNullOrUndefined, isObject } from 'util';
-import { actionApprovalView } from './ActionApprovalView';
+import { ActionApprovalView } from './ActionApprovalView';
 
 interface OwnHandler {
   handleRefresh: () => void;
@@ -181,7 +181,7 @@ const handlerCreators: HandleCreators<ApprovalTimesheetsProps, OwnHandler> = {
       message: intl.formatMessage(timesheetApprovalMessage.updateSuccess),
     });
 
-    history.push('/approval/timesheet/');
+    history.push('/timesheet/approval/');
   },
   handleSubmitFail: (props: ApprovalTimesheetsProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
     const { intl } = props;
@@ -295,4 +295,4 @@ export const ActionApproval = compose<ApprovalTimesheetsProps, {}>(
   withStateHandlers<OwnState, OwnStateUpdaters, {}>(createProps, stateUpdaters),
   withHandlers<ApprovalTimesheetsProps, OwnHandler>(handlerCreators),
   lifecycle<ApprovalTimesheetsProps, OwnState>(lifecycles),
-)(actionApprovalView);
+)(ActionApprovalView);
