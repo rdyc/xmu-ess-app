@@ -30,7 +30,7 @@ import { Store } from 'redux';
 import { loadUser, OidcProvider } from 'redux-oidc';
 import * as store from 'store';
 
-// import { SummaryRouter } from '@summary/components/SummaryRouter';
+import { SummaryRoutingComponent } from '@summary/components/SummaryRouter';
 import { IAppState } from './generic/interfaces';
 import AppLocale from './language';
 import config, { getCurrentLanguage } from './language/config';
@@ -78,7 +78,7 @@ const app: React.ComponentType<AllProps> = props => (
               <Route path="/approval/timesheet" component={timesheetApprovalRouter} />
               <Route path="/expense" component={ExpenseRouter} />
               <Route path="/approval/expense" component={ExpenseApprovalRouter} />
-
+              <Route path="/reports" component={SummaryRoutingComponent} />
               <Route path="/playground" component={playgroundRouter} />
             </Switch>
           </Router>
