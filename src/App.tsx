@@ -16,7 +16,7 @@ import {
   purchaseSettlementApprovalRouter,
   purchaseSettlementRouter,
 } from '@purchase/components/PurchaseRouter';
-import { TravelRoutingComponents } from '@travel/components/TravelRoutingComponents';
+import { TravelRoutingComponents } from '@travel/components';
 import { ConnectedRouter } from 'connected-react-router';
 import { History } from 'history';
 import { playgroundRouter } from 'playground/playgroundRouter';
