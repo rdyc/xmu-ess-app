@@ -10,12 +10,7 @@ import { IAppUser } from '@layout/interfaces';
 import { LeaveRoutingComponents } from '@leave/components/LeaveRoutingComponents';
 import { MileageRoutingComponents } from '@mileage/components/MileageRouter';
 import { ProjectRoutingComponents } from '@project/components';
-import {
-  purchaseApprovalRouter,
-  purchaseRouter,
-  purchaseSettlementApprovalRouter,
-  purchaseSettlementRouter,
-} from '@purchase/components/PurchaseRouter';
+import { PurchaseRoutingComponents } from '@purchase/components/PurchaseRoutingComponents';
 import { TimesheetRoutingComponents } from '@timesheet/components';
 import { travelApprovalRouter, travelRouter, travelSettlementRouter } from '@travel/components/travelRouter';
 import { ConnectedRouter } from 'connected-react-router';
@@ -66,10 +61,7 @@ const app: React.ComponentType<AllProps> = props => (
               <Route path="/project" component={ProjectRoutingComponents} />
               <Route path="/mileage" component={MileageRoutingComponents} />
               <Route path="/leave" component={LeaveRoutingComponents} />
-              <Route path="/purchase/request" component={purchaseRouter} />
-              <Route path="/approval/purchase/request" component={purchaseApprovalRouter} />
-              <Route path="/purchase/settlement" component={purchaseSettlementRouter} />
-              <Route path="/approval/purchase/settlement" component={purchaseSettlementApprovalRouter} />
+              <Route path="/purchase/" component={PurchaseRoutingComponents} />>
               <Route path="/travel" component={travelRouter} />
               <Route path="/travel/settlement" component={travelSettlementRouter} />
               <Route path="/approval/travel" component={travelApprovalRouter} />

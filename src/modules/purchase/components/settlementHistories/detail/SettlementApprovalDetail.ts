@@ -149,7 +149,7 @@ const handlerCreators: HandleCreators<SettlementApprovalDetailProps, OwnHandler>
     });
 
     // if (match.params.purchaseUid) {
-    history.push(`/approval/purchase/settlement/list`);
+    history.push(`/purchase/settlementapprovals/list`);
     // }
   },
   handleSubmitFail: (props: SettlementApprovalDetailProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {

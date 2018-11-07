@@ -130,7 +130,7 @@ const handlerCreators: HandleCreators<PurchaseRequestDetailProps, Handler> = {
 
     stateReset();
 
-    history.push('/purchase/request/form/', { uid: purchaseUid });
+    history.push('/purchase/requests/form/', { uid: purchaseUid });
   },
 };
 

@@ -109,7 +109,7 @@ const handlerCreators: HandleCreators<PurchaseSettlementListProps, OwnHandlers> 
     const { isLoading } = props.purchaseSettlementState.all;
 
     if (!isLoading) {
-      history.push(`/purchase/settlement/details/${purchaseUid}`);
+      history.push(`/purchase/settlements/details/${purchaseUid}`);
     } 
   },
   handleGoToNext: (props: PurchaseSettlementListProps) => () => { 
