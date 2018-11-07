@@ -2,7 +2,6 @@ import NotificationListSFC from '@layout/components/notification/NotificationLis
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import {
-  Avatar,
   Button,
   Collapse,
   Dialog,
@@ -10,8 +9,6 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
-  Divider,
-  IconButton,
   List,
   ListItem,
   ListItemIcon,
@@ -27,7 +24,6 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import InvertColors from '@material-ui/icons/InvertColors';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
 import PowerSettingsNew from '@material-ui/icons/PowerSettingsNew';
 import SwapHoriz from '@material-ui/icons/SwapHoriz';
 import SwapHorizontalCircle from '@material-ui/icons/SwapHorizontalCircle';
@@ -102,24 +98,25 @@ const component: React.SFC<AllProps> = props => {
         onClose={() => layoutDispatch.drawerActionHide()}
         ModalProps={{
           keepMounted: true, // Better open performance on mobile.
-        }}>
+        }}
+      >
         {userState.user && (
           <div>
-            <List>
+            <List disablePadding>
               <ListItem 
                 button
-                onClick={() => layoutState.isAccountExpanded ? layoutDispatch.accountColapse() : layoutDispatch.accountExpand()}>
-                <Avatar className={classes.avatarRed}>
-                  {userState.user.company.code}
-                </Avatar>
+                onClick={() => layoutState.isAccountExpanded ? layoutDispatch.accountColapse() : layoutDispatch.accountExpand()}
+              >
                 <ListItemText 
                   primary={userState.user.fullName} 
                   secondary={userState.user.email}
                   primaryTypographyProps={{
+                    noWrap: true,
                     variant: 'body1'
                   }}
                   secondaryTypographyProps={{
-                    variant: 'body1'
+                    noWrap: true,
+                    variant: 'caption'
                   }}
                 />
                 <ListItemSecondaryAction>
@@ -132,67 +129,56 @@ const component: React.SFC<AllProps> = props => {
                     <ListItemIcon>
                       <AccountCircle />
                     </ListItemIcon>
-                    <ListItemText inset primary={<FormattedMessage id="global.profile.my.title"/>} />
+                    <ListItemText inset 
+                      primary={<FormattedMessage id="global.profile.my.title"/>}
+                      primaryTypographyProps={{
+                        variant: 'body1'
+                      }}
+                    />
                   </ListItem>
                   <ListItem button onClick={() => history.push('/account/access')}>
                     <ListItemIcon>
                       <SwapHorizontalCircle />
                     </ListItemIcon>
-                    <ListItemText inset primary={<FormattedMessage id="global.access.switch.title"/>} />
+                    <ListItemText inset 
+                      primary={<FormattedMessage id="global.access.switch.title"/>}
+                      primaryTypographyProps={{
+                        variant: 'body1'
+                      }}
+                    />
                   </ListItem>
                   <ListItem button onClick={handleLogout}>
                     <ListItemIcon>
                       <PowerSettingsNew /> 
                     </ListItemIcon>
-                    <ListItemText inset primary={<FormattedMessage id="global.logout.title"/>}/>
+                    <ListItemText inset 
+                      primary={<FormattedMessage id="global.logout.title"/>}
+                      primaryTypographyProps={{
+                        variant: 'body1'
+                      }}
+                    />
                   </ListItem>
                 </List>
               </Collapse>
             </List>
-            <Divider />
 
-            <NotificationListSFC 
-              // companyUid={layoutState.user.company.uid}
-              // positionUid={layoutState.user.position.uid} 
-            />
-            
-            <List subheader={
-              <ListSubheader>
-                <FormattedMessage id="global.access.title"/>
-              </ListSubheader>
-            }>
-              <ListItem>
-                <ListItemText 
-                  primary={userState.user.company.name} 
-                  secondary={userState.user.position.name}
-                  primaryTypographyProps={{
-                    variant: 'body1'
-                  }}
-                  secondaryTypographyProps={{
-                    variant: 'body1'
-                  }}
-                />
-                <ListItemSecondaryAction>
-                  <IconButton>
-                    <MoreVertIcon />
-                  </IconButton>
-                </ListItemSecondaryAction>
-              </ListItem>
-            </List>
+            <NotificationListSFC />
           </div>
         )}
+        
         <List 
+          disablePadding
           subheader={
           <ListSubheader>
             <FormattedMessage id="global.setting.title"/>
           </ListSubheader>}
-          >
+        >
           <ListItem>
             <ListItemIcon>
               <InvertColors />
             </ListItemIcon>
             <ListItemText 
-              primary="Dark Theme"
+              primary="Dark mode"
               primaryTypographyProps={{
                 variant: 'body1'
               }}

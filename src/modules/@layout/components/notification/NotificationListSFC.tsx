@@ -58,7 +58,7 @@ const NotificationListSFC: React.SFC<AllProps> = props => {
   );
 
   return (
-    <List subheader={renderSubHeader}>
+    <List disablePadding subheader={renderSubHeader}>
       {loading && renderLoading}
       {!loading && !result && renderEmtpy}
       {!loading && result && isArray(result.data) && result.data
