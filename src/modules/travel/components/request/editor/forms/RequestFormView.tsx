@@ -8,7 +8,7 @@ import { RequestItemForm } from './RequestItemForm';
 
 export const RequestFormView: React.SFC<RequestFormProps> = props => {
   const {
-    formMode
+    formMode, customerUidValue, projectUidValue, destinationtypeValue // isGeneralPurpose 
   } = props;
 
   const fields = Object.getOwnPropertyNames(props.initialValues.information);
@@ -17,11 +17,20 @@ export const RequestFormView: React.SFC<RequestFormProps> = props => {
     <RequestDetailForm 
       formMode={formMode}
       context={context}
+      customerUidValue={customerUidValue}
+      projectUidValue={projectUidValue}
+      destinationTypeValue= {destinationtypeValue}
+      // isGeneralPurpose= {isGeneralPurpose}
+      // projectTypeValue= {projectTypeValue}
     />    
   );
 
   const componentTravelItem = (context: WrappedFieldArrayProps<any>) => (
-    <RequestItemForm context={context} />    
+    <RequestItemForm 
+      context={context}
+      destinationTypeValue={destinationtypeValue}
+      diemType={projectUidValue} 
+    />    
   );
 
   const render = (
@@ -42,7 +51,7 @@ export const RequestFormView: React.SFC<RequestFormProps> = props => {
           </FormSection>
         </Grid>
 
-        <Grid item xs={12} md={6}>
+        <Grid item xs={12} md={8}>
           <FormSection name="item">
             <FieldArray 
               name="items" 

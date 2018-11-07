@@ -8,6 +8,7 @@ import { RequestEditorProps } from './RequestEditor';
 export const RequestEditorView: React.SFC<RequestEditorProps> = props => {
   const { formMode, handleValidate, handleSubmit, handleSubmitSuccess, handleSubmitFail } = props;
   const { isLoading, response } = props.travelRequestState.detail;
+  const { user } = props.userState;
 
   const renderForm = (formData: TravelRequestFormData) => (
     <RequestForm
@@ -23,13 +24,14 @@ export const RequestEditorView: React.SFC<RequestEditorProps> = props => {
   const initialValues: TravelRequestFormData = {
     information: {
       uid: undefined,
-      fullName: undefined,
-      position: undefined,
+      fullName: user && user.fullName,
+      position: user && user.position.name,
       destinationType: undefined,
       start: undefined,
       end: undefined,
       customerUid: undefined,
       projectUid: undefined,
+      // projectType: undefined, // coba
       siteUid: undefined,
       activityType: undefined,
       objective: undefined,
@@ -68,6 +70,7 @@ export const RequestEditorView: React.SFC<RequestEditorProps> = props => {
       initialValues.information.end = data.end;
       initialValues.information.customerUid = data.customerUid;
       initialValues.information.projectUid = data.projectUid;
+      // initialValues.information.projectType = data.project ? data.project.projectType : '';
       initialValues.information.siteUid = data.siteUid;
       initialValues.information.activityType = data.activityType;
       initialValues.information.objective = data.objective;
@@ -94,7 +97,8 @@ export const RequestEditorView: React.SFC<RequestEditorProps> = props => {
             notes: item.notes,
             duration: item.duration || 0,
             amount: item.amount || 0,
-            currencyUid: item.currencyUid,
+            currencyUid: item.currency ? item.currency.name : '',
+            currencyRate: item.currency ? item.currency.rate : 0,
             diemValue: item.diemValue || 0
           })
         );

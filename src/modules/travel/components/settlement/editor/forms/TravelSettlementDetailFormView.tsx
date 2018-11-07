@@ -1,16 +1,16 @@
 import { FormMode } from '@generic/types';
 import { Card, CardContent, CardHeader } from '@material-ui/core';
-import { TravelitemFieldFormProps } from '@travel/components/request/editor/forms/TravelItemFieldForm';
+import { TravelSettlementDetailFormProps } from '@travel/components/settlement/editor/forms/TravelSettlementDetailForm';
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Field } from 'redux-form';
 
-export const TravelItemFieldFormView: React.SFC<TravelitemFieldFormProps> = props => {
+export const TravelSettlementDetailFormView: React.SFC<TravelSettlementDetailFormProps> = props => {
   const { formMode } = props;
   const { names } = props.context;
 
   const renderField = (name: string) => {
-    const fieldName = name.replace('information.item', '');
+    const fieldName = name.replace('information.', '');
     const fieldProps = props.generateFieldProps(name);
 
     const fields = ['uid'];
