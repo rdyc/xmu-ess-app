@@ -3,16 +3,19 @@
 // import { InputText } from '@layout/components/input/text';
 import { withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
+import { WithLookupDiem, withLookupDiem } from '@lookup/hoc/withLookupDiem';
 import { WithStyles, withStyles } from '@material-ui/core';
 import styles from '@styles';
 import { TravelItemFormData, TravelRequestFormData } from '@travel/components/request/editor/forms/RequestForm';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
-import { compose, mapper, StateHandlerMap, StateUpdaters, withStateHandlers } from 'recompose';
+import { compose, lifecycle, mapper, ReactLifeCycleFunctions, StateHandlerMap, StateUpdaters, withStateHandlers } from 'recompose';
 import { InjectedFormProps, WrappedFieldArrayProps } from 'redux-form';
 import { RequestItemFormView } from './RequestItemFormView';
 
 interface OwnProps {
   context: WrappedFieldArrayProps<TravelItemFormData>;
+  destinationTypeValue: string | null | undefined;
+  diemType: string | null | undefined;
 }
 
 interface OwnState {
@@ -31,50 +34,33 @@ export type RequestItemFormProps
   = OwnProps
   & InjectedFormProps<TravelRequestFormData, OwnProps>
   & OwnState
-  // & OwnHandlers
   & OwnStateHandler
   & WithUser
+  & WithLookupDiem
   & WithStyles
   & InjectedIntlProps;
 
-// const handlerCreators: HandleCreators<RequestItemFormProps, OwnHandlers> = {
-//   generateFieldProps: (props: RequestItemFormProps) => (name: string) => {
-//     const {
-//       intl, // formMode
-//     } = props;
-
-//     const fieldName = name.replace('information.item', '');
-
-//     let fieldProps: SelectSystemOption & any = {};
-
-//     switch (fieldName) {
-//         case 'departureDate': 
-//         fieldProps = {
-//           required: true,
-//           placeholder: intl.formatMessage({id: `travel.field.${name}.placeholder`}),
-//           component: InputDate
-//         };
-//         break;
-        
-//       case 'returnDate': 
-//         fieldProps = {
-//           required: true,
-//           placeholder: intl.formatMessage({id: `travel.field.${name}.placeholder`}),
-//           component: InputDate
-//         };
-//         break;
-
-//         default:
-//         fieldProps = {
-//           type: 'text',
-//           placeholder: intl.formatMessage({id: `travel.field.${name}.placeholder`}),
-//           component: InputText
-//         };
-//         break;
-//     }
-//     return fieldProps;
-//   }
-// };
+const lifecycles: ReactLifeCycleFunctions<RequestItemFormProps, {}> = {
+  componentDidMount() {
+    const { destinationTypeValue, diemType } = this.props;
+    const { loadAllRequest } = this.props.lookupDiemDispatch;
+    
+    if (destinationTypeValue && diemType) {
+      loadAllRequest ({
+        filter: {
+          destinationType: destinationTypeValue,
+          projectType: 'SPT01',
+          page: 1,
+          size: 1,
+          find: 'CP002',
+          findBy: 'companyUid',
+          orderBy: undefined,
+          direction: undefined,        
+        }
+      });
+    }
+  }
+};
 
 const createProps: mapper<RequestItemFormProps, OwnState> = (props: RequestItemFormProps): OwnState => ({
   active: undefined,
@@ -91,8 +77,9 @@ const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateHandler> = {
 export const RequestItemForm = compose<RequestItemFormProps, OwnProps>(
   withUser,
   withLayout,
+  withLookupDiem,
   withStyles(styles),
   injectIntl,
-  // withHandlers<RequestItemFormProps, OwnHandlers>(handlerCreators),
-  withStateHandlers<OwnState, OwnStateHandler>(createProps, stateUpdaters)
+  withStateHandlers<OwnState, OwnStateHandler>(createProps, stateUpdaters),
+  lifecycle<RequestItemFormProps, {}>(lifecycles)
 )(RequestItemFormView);

@@ -1,6 +1,6 @@
 import { SelectEmployee } from '@account/components/select';
 import { SelectSystem } from '@common/components/select';
-import { InputDate } from '@layout/components/input/date';
+import { InputDateTime } from '@layout/components/input/dateTime';
 import { InputNumber } from '@layout/components/input/number';
 import { InputText } from '@layout/components/input/text';
 import {
@@ -89,12 +89,12 @@ export const RequestItemFormView: React.SFC<RequestItemFormProps> = props => {
                   <Field 
                     name={`${field}.departureDate`}
                     label="Departure Date"
-                    component={InputDate}
+                    component={InputDateTime}
                   />
                   <Field 
                     name={`${field}.returnDate`}
                     label="return Date"
-                    component={InputDate}
+                    component={InputDateTime}
                   />
                   <Field 
                     type="number"

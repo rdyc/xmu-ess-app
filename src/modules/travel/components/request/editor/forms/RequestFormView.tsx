@@ -8,7 +8,7 @@ import { RequestItemForm } from './RequestItemForm';
 
 export const RequestFormView: React.SFC<RequestFormProps> = props => {
   const {
-    formMode, customerUidValue, destinationtypeValue, projectTypeValue
+    formMode, customerUidValue, projectUidValue, destinationtypeValue // isGeneralPurpose 
   } = props;
 
   const fields = Object.getOwnPropertyNames(props.initialValues.information);
@@ -18,13 +18,19 @@ export const RequestFormView: React.SFC<RequestFormProps> = props => {
       formMode={formMode}
       context={context}
       customerUidValue={customerUidValue}
+      projectUidValue={projectUidValue}
       destinationTypeValue= {destinationtypeValue}
-      projectTypeValue= {projectTypeValue}
+      // isGeneralPurpose= {isGeneralPurpose}
+      // projectTypeValue= {projectTypeValue}
     />    
   );
 
   const componentTravelItem = (context: WrappedFieldArrayProps<any>) => (
-    <RequestItemForm context={context} />    
+    <RequestItemForm 
+      context={context}
+      destinationTypeValue={destinationtypeValue}
+      diemType={projectUidValue} 
+    />    
   );
 
   const render = (

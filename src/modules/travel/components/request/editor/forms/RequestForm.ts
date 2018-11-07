@@ -1,4 +1,4 @@
-import { ProjectType } from '@common/classes/types';
+// import { ProjectType } from '@common/classes/types';
 import { FormMode } from '@generic/types';
 import { RequestFormView } from '@travel/components/request/editor/forms/RequestFormView';
 import { connect } from 'react-redux';
@@ -57,8 +57,10 @@ interface OwnProps {
 interface FormValueProps {
   customerUidValue: string | undefined;
   destinationtypeValue: string | undefined;
-  diemtype: string | undefined;
-  projectTypeValue: string | undefined;
+  projectUidValue: string | undefined;
+  // isGeneralPurpose: boolean | false;
+  // diemtype: string | undefined;
+  // projectTypeValue: string | undefined;
 }
 
 export type RequestFormProps 
@@ -71,14 +73,17 @@ const selector = formValueSelector(formName);
 const mapStateToProps = (state: any): FormValueProps => {
    const customerUid = selector(state, 'information.customerUid');
    const destinationtype = selector(state, 'information.destinationType');
-   const projectType = selector(state, 'information.projectType');
-
+   const projectUid = selector(state, 'information.projectUid');
+   // const projectType = selector(state, 'information.projectType'); // gatau
    return {
      customerUidValue: customerUid,
      destinationtypeValue: destinationtype,
-     projectTypeValue: projectType,
-     diemtype: projectType === ProjectType.PreSales ? ProjectType.PreSales : ProjectType.NonProject, 
+     projectUidValue: projectUid,
+     // isGeneralPurpose: projectType === ProjectType.GeneralPurpose 
+     // projectTypeValue: projectType,
+     // diemtype: projectType === ProjectType.PreSales ? ProjectType.PreSales : ProjectType.NonProject, 
    };
+   
  };
 
 const connectedView = connect(mapStateToProps)(RequestFormView);

@@ -66,13 +66,13 @@ export const travelSettlementEditorView: React.SFC<TravelSettlementEditorProps> 
       initialValues.information.travelUid = data.travelUid;
       initialValues.information.fullName = data.employee ? data.employee.fullName : 'N/A';
       initialValues.information.position = data.position ? data.position.name : 'N/A';
-      initialValues.information.destinationType = data.destinationType;
+      initialValues.information.destinationType = data.destination && data.destination.value;
       initialValues.information.start = data.start;
       initialValues.information.end = data.end;
-      initialValues.information.customerUid = data.customerUid;
-      initialValues.information.projectUid = data.projectUid;
-      initialValues.information.siteUid = data.siteUid;
-      initialValues.information.activityType = data.activityType;
+      initialValues.information.customerUid = data.customer && data.customer.name;
+      initialValues.information.projectUid = data.project && data.project.name;
+      initialValues.information.siteUid = data.site && data.site.name;
+      initialValues.information.activityType = data.activity && data.activity.value;
       initialValues.information.objective = data.objective;
       initialValues.information.target = data.target;
       initialValues.information.comment = data.comment;
@@ -97,7 +97,7 @@ export const travelSettlementEditorView: React.SFC<TravelSettlementEditorProps> 
             notes: item.notes,
             duration: item.duration || 0,
             amount: item.amount || 0,
-            currencyUid: item.currencyUid,
+            currencyUid: item.currency ? item.currency.name : '',
             currencyRate: item.currency ? item.currency.rate : 0,
             diemValue: item.diemValue || 0
           })

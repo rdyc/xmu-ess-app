@@ -52,7 +52,7 @@ const travelSettlementInformation: React.SFC<AllProps> = props => {
         <TextField
           {...styled}
           margin="dense"
-          label={<FormattedMessage id="travel.field.information.positionType" />}
+          label={<FormattedMessage id="travel.field.information.positionUid" />}
           value={data.position ? data.position.name : 'N/A'}
         />
         <TextField

@@ -10,16 +10,19 @@ import { WithTravelRequest, withTravelRequest } from '@travel/hoc/withTravelRequ
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { compose, HandleCreators, lifecycle, mapper, ReactLifeCycleFunctions, StateHandler, StateHandlerMap, StateUpdaters, withHandlers, withStateHandlers } from 'recompose';
+import { isNullOrUndefined } from 'util';
 
 interface Handler {
   handleTravelRefresh: () => void;
   handleTravelModify: () => void;
+  handleAddSettlement: () => void;
   handleDialogOpen: (title: string, description: string, cancelText?: string, confirmText?: string, fullScreen?: boolean) => void;
   handleDialogClose: () => void;
   handleDialogConfirmed: () => void;
 }
 
 interface OwnState {
+  action?: TravelUserAction | undefined;
   dialogFullScreen: boolean;
   dialogOpen: boolean;
   dialogTitle?: string | undefined;
@@ -88,6 +91,20 @@ const handlerCreators: HandleCreators<RequestDetailProps, Handler> = {
     const { intl, stateUpdate } = props;
 
     stateUpdate({
+      action: TravelUserAction.Modify,
+      dialogFullScreen: false,
+      dialogOpen: true,
+      dialogTitle: intl.formatMessage({id: 'travel.dialog.modifyTitle'}), 
+      dialogDescription: intl.formatMessage({id: 'travel.dialog.modifyDescription'}),
+      dialogCancelText: intl.formatMessage({id: 'global.action.disaggree'}),
+      dialogConfirmedText: intl.formatMessage({id: 'global.action.aggree'})
+    });
+  },
+  handleAddSettlement: (props: RequestDetailProps) => () => { 
+    const { intl, stateUpdate } = props;
+
+    stateUpdate({
+      action: TravelUserAction.AddSettlement,
       dialogFullScreen: false,
       dialogOpen: true,
       dialogTitle: intl.formatMessage({id: 'travel.dialog.modifyTitle'}), 
@@ -114,12 +131,38 @@ const handlerCreators: HandleCreators<RequestDetailProps, Handler> = {
     stateReset();
   },
   handleDialogConfirmed: (props: RequestDetailProps) => () => { 
-    const { match, history, stateReset } = props;
+    const { match, history, stateReset, action } = props;
+    const { response } = props.travelRequestState.detail;
     const travelUid = match.params.travelUid;
 
-    stateReset();
+    // skipp untracked action or empty response
+    if (!action || !response) {
+      return;
+    } 
 
-    history.push('/travel/form/', { uid: travelUid });
+    const actions = [
+      TravelUserAction.Modify,
+      TravelUserAction.AddSettlement
+    ];
+
+    if (actions.indexOf(action) !== -1) {
+      let next: string = '404';
+
+      switch (action) {
+        case TravelUserAction.Modify:
+          next = '/travel/form/';
+          break;
+
+        case TravelUserAction.AddSettlement:
+          next = '/travel/settlement/form/';
+          break;
+
+        default:
+          break;
+      }
+      stateReset();
+      history.push(next, { uid: travelUid });
+    }      
   },
 };
 
@@ -127,7 +170,7 @@ const lifecycles: ReactLifeCycleFunctions<RequestDetailProps, OwnState> = {
   componentDidMount() {
     const { 
       match, layoutDispatch, appBarDispatch, intl, 
-      handleTravelRefresh, handleTravelModify, 
+      handleTravelRefresh, handleTravelModify, handleAddSettlement, 
     } = this.props;
 
     const { user } = this.props.userState;
@@ -151,6 +194,10 @@ const lifecycles: ReactLifeCycleFunctions<RequestDetailProps, OwnState> = {
         
         case TravelUserAction.Modify:
           handleTravelModify();
+          break;
+
+        case TravelUserAction.AddSettlement:
+          handleAddSettlement();
           break;
 
         default:
@@ -195,7 +242,14 @@ const lifecycles: ReactLifeCycleFunctions<RequestDetailProps, OwnState> = {
           id: TravelUserAction.Modify,
           name: intl.formatMessage({id: 'global.action.modify'}),
           enabled: response !== undefined,
-          visible: isStatusTypeEquals([WorkflowStatusType.Submitted, WorkflowStatusType.InProgress, WorkflowStatusType.Approved])
+          visible: isStatusTypeEquals([WorkflowStatusType.Submitted, WorkflowStatusType.InProgress])
+        },
+        {
+          id: TravelUserAction.AddSettlement,
+          name: intl.formatMessage({id: 'travel.action.addsettlement'}),
+          enabled: response !== undefined,
+          visible: isNullOrUndefined(response && response.data.settlement) 
+                      && isStatusTypeEquals([WorkflowStatusType.Approved])
         }
       ];
 

@@ -3,8 +3,10 @@ import { SelectSystem, SelectSystemOption } from '@common/components/select';
 import { FormMode } from '@generic/types';
 import { InputDate } from '@layout/components/input/date';
 import { InputText } from '@layout/components/input/text';
+import { WithUser, withUser } from '@layout/hoc/withUser';
 import { InputCustomer } from '@lookup/components/customer/input';
 import { SelectProject } from '@project/components/select/project';
+import { SelectProjectSite } from '@project/components/select/projectSite';
 import { RequestDetailFormView } from '@travel/components/request/editor/forms/RequestDetailFormView';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose, HandleCreators, withHandlers } from 'recompose';
@@ -15,8 +17,10 @@ interface OwnProps {
   formMode: FormMode;
   context: BaseFieldsProps;
   customerUidValue: string | null | undefined;
+  projectUidValue: string | null | undefined;
   destinationTypeValue: string | null | undefined;
-  projectTypeValue: string | null | undefined;
+  // isGeneralPurpose: boolean;
+  // projectTypeValue: string | null | undefined;
 }
 
 interface OwnHandlers {
@@ -25,14 +29,16 @@ interface OwnHandlers {
 
 export type RequestDetailFormProps
   = OwnProps
+  & WithUser
   & OwnHandlers
   & InjectedIntlProps;
 
 const handlerCreators: HandleCreators<RequestDetailFormProps, OwnHandlers> = {
   generateFieldProps: (props: RequestDetailFormProps) => (name: string) => {
     const {
-      intl, customerUidValue, destinationTypeValue
+      intl, customerUidValue, projectUidValue, destinationTypeValue
     } = props;
+    const { user } = props.userState;
 
     const projectFilter: any = {
       customerUids: customerUidValue,
@@ -82,6 +88,18 @@ const handlerCreators: HandleCreators<RequestDetailFormProps, OwnHandlers> = {
           placeholder: intl.formatMessage({id: `travel.field.${name}.placeholder`}),
           component: !isNullOrUndefined(customerUidValue) ? SelectProject : InputText,
           filter: projectFilter,
+          
+        };
+        break;
+
+        case 'siteUid': 
+        fieldProps = {
+          required: true,
+          disabled: isNullOrUndefined(projectUidValue), 
+          placeholder: intl.formatMessage({id: `travel.field.${name}.placeholder`}),
+          component: !isNullOrUndefined(projectUidValue) ? SelectProjectSite : InputText,
+          companyUid: user && user.company.uid,
+          projectUid: projectUidValue,
         };
         break;
 
@@ -133,5 +151,6 @@ const handlerCreators: HandleCreators<RequestDetailFormProps, OwnHandlers> = {
 
 export const RequestDetailForm = compose<RequestDetailFormProps, OwnProps>(
   injectIntl,
+  withUser,
   withHandlers<RequestDetailFormProps, OwnHandlers>(handlerCreators),
 )(RequestDetailFormView);

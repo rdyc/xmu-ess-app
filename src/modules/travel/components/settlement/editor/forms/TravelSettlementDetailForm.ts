@@ -1,8 +1,7 @@
-import { SelectSystem, SelectSystemOption } from '@common/components/select';
+import { SelectSystemOption } from '@common/components/select';
 import { FormMode } from '@generic/types';
 import { InputDate } from '@layout/components/input/date';
 import { InputText } from '@layout/components/input/text';
-import { InputCustomer } from '@lookup/components/customer/input';
 import { RequestDetailFormView } from '@travel/components/request/editor/forms/RequestDetailFormView';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose, HandleCreators, withHandlers } from 'recompose';
@@ -40,37 +39,8 @@ const handlerCreators: HandleCreators<TravelSettlementDetailFormProps, OwnHandle
           component: InputText
       };
       break;
-
-        case 'customerUid': 
-        fieldProps = {
-          disabled: true,
-          required: true,
-          placeholder: intl.formatMessage({id: `travel.field.${name}.placeholder`}),
-          component: InputCustomer
-        };
-        break;
-
-        case 'destinationType': 
-        fieldProps = {
-          disabled: true,
-          required: true,
-          category: 'destination',
-          placeholder: intl.formatMessage({id: `travel.field.${name}.placeholder`}),
-          component: SelectSystem,
-        };
-        break;
         
-        case 'activityType': 
-        fieldProps = {
-          disabled: true,
-          required: true,
-          category: 'purpose',
-          placeholder: intl.formatMessage({id: `travel.field.${name}.placeholder`}),
-          component: SelectSystem,
-        };
-        break;
-
-        case 'start': 
+      case 'start': 
         fieldProps = {
           required: true,
           placeholder: intl.formatMessage({id: `travel.field.${name}.placeholder`}),
@@ -83,6 +53,14 @@ const handlerCreators: HandleCreators<TravelSettlementDetailFormProps, OwnHandle
           required: true,
           placeholder: intl.formatMessage({id: `travel.field.${name}.placeholder`}),
           component: InputDate
+        };
+        break;
+      
+        case 'comment': 
+        fieldProps = {
+          required: true,
+          placeholder: intl.formatMessage({id: `travel.field.${name}.placeholder`}),
+          component: InputText
         };
         break;
 

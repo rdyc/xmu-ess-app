@@ -131,7 +131,9 @@ const travelRequestItem: React.SFC<AllProps> = props => {
                       month: 'short',
                       day: 'numeric',
                       hour: 'numeric',
-                      minute: 'numeric'
+                      minute: 'numeric',
+                      hour12: false,
+                      timeZone: 'GMT',
                     })}
                   />
                   <TextField
@@ -149,7 +151,9 @@ const travelRequestItem: React.SFC<AllProps> = props => {
                       month: 'short',
                       day: 'numeric',
                       hour: 'numeric',
-                      minute: 'numeric'
+                      minute: 'numeric',
+                      hour12: false,
+                      timeZone: 'GMT',
                     })}
                   />
                   <TextField

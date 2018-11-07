@@ -124,7 +124,9 @@ const travelSettlementItem: React.SFC<AllProps> = props => {
                       month: 'short',
                       day: 'numeric',
                       hour: 'numeric',
-                      minute: 'numeric'
+                      minute: 'numeric',                      
+                      timeZone: 'GMT',
+                      
                     })}
                   />
                   <TextField
@@ -142,7 +144,8 @@ const travelSettlementItem: React.SFC<AllProps> = props => {
                       month: 'short',
                       day: 'numeric',
                       hour: 'numeric',
-                      minute: 'numeric'
+                      minute: 'numeric',
+                      timeZone: 'GMT',
                     })}
                   />
                   <TextField

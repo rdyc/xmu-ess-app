@@ -1,19 +1,14 @@
 import { SelectEmployee } from '@account/components/select';
 import { SelectSystem } from '@common/components/select';
-import { InputDate } from '@layout/components/input/date';
+import { InputDateTime } from '@layout/components/input/dateTime';
 import { InputNumber } from '@layout/components/input/number';
 import { InputText } from '@layout/components/input/text';
 import {
-  Button,
   Card,
   CardContent,
-  CardHeader,
   Grid,
-  IconButton,
 } from '@material-ui/core';
-import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import * as React from 'react';
-import { FormattedMessage } from 'react-intl';
 import { Field } from 'redux-form';
 import { TravelSettlementItemFormProps } from './TravelSettlementItemForm';
 
@@ -26,14 +21,6 @@ export const TravelSettlementItemFormView: React.SFC<TravelSettlementItemFormPro
         context.fields.map((field, index) => 
           <Grid key={index} item xs={12} md={4}>
             <Card square>
-              <CardHeader 
-                action={
-                  <IconButton onClick={() => context.fields.remove(index)}>
-                    <DeleteForeverIcon />
-                  </IconButton>
-                }
-                title={`#${index + 1}`}
-              />
               <CardContent>
                 <div>
                   <Field 
@@ -68,12 +55,12 @@ export const TravelSettlementItemFormView: React.SFC<TravelSettlementItemFormPro
                   <Field 
                     name={`${field}.departureDate`}
                     label="Departure Date"
-                    component={InputDate}
+                    component={InputDateTime}
                   />
                   <Field 
                     name={`${field}.returnDate`}
                     label="return Date"
-                    component={InputDate}
+                    component={InputDateTime}
                   />
                   <Field 
                     type="number"
@@ -103,6 +90,7 @@ export const TravelSettlementItemFormView: React.SFC<TravelSettlementItemFormPro
                   />
                   <Field 
                     type="number"
+                    disabled= {true}
                     name={`${field}.duration`}
                     label="Diem"
                     required={true}
@@ -142,7 +130,7 @@ export const TravelSettlementItemFormView: React.SFC<TravelSettlementItemFormPro
           </Grid>
         )
       }
-      <Grid item xs={12} md={4}>
+      {/* <Grid item xs={12} md={4}>
         <Grid container spacing={16}>
           <Grid item xs={12} md={4}>
             <Button onClick={() => context.fields.push({
@@ -171,7 +159,7 @@ export const TravelSettlementItemFormView: React.SFC<TravelSettlementItemFormPro
             </Button>
           </Grid>
         </Grid>
-      </Grid>
+      </Grid> */}
     </Grid>
   );
   return render;

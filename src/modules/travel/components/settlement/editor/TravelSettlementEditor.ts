@@ -24,7 +24,7 @@ interface OwnHandlers {
 }
 
 interface OwnRouteParams {
-  travelUid: string;
+  travelSettlementUid: string;
 }
 
 interface OwnState {
@@ -192,7 +192,7 @@ const handlerCreators: HandleCreators<TravelSettlementEditorProps, OwnHandlers> 
       time: new Date()
     });
 
-    history.push('/travel/request');
+    history.push('/travel/settlement/request');
   },
   handleSubmitFail: (props: TravelSettlementEditorProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
     const { formMode, intl } = props;
@@ -243,8 +243,8 @@ const lifecycles: ReactLifeCycleFunctions<TravelSettlementEditorProps, {}> = {
     const { user } = this.props.userState;
     
     const view = {
-      title: 'travel.form.newTitle',
-      subTitle: 'travel.form.newSubTitle',
+      title: 'travelSettlement.form.newTitle',
+      subTitle: 'travelSettlement.form.newSubTitle',
     };
 
     if (!user) {
@@ -257,8 +257,8 @@ const lifecycles: ReactLifeCycleFunctions<TravelSettlementEditorProps, {}> = {
     });
 
     if (!isNullOrUndefined(history.location.state)) {
-      view.title = 'travel.form.editTitle';
-      view.subTitle = 'travel.form.editSubTitle';
+      view.title = 'travelSettlement.form.editTitle';
+      view.subTitle = 'travelSettlement.form.editSubTitle';
 
       stateUpdate({ 
         formMode: FormMode.Edit,
