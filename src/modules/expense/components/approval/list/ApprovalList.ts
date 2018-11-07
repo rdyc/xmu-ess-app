@@ -68,12 +68,12 @@ export type ApprovalListProps
   & OwnStateUpdaters;
 
 const createProps: mapper<ApprovalListProps, OwnState> = (props: ApprovalListProps): OwnState => {
-    const { orderBy, direction, page, size } = props;
+    const { orderBy, page, size } = props;
     const { request } = props.expenseApprovalState.all;
 
     return { 
       orderBy: request && request.filter && request.filter.query && request.filter.query.orderBy || orderBy,
-      direction: request && request.filter && request.filter.query && request.filter.query.direction || direction,
+      direction: request && request.filter && request.filter.query && request.filter.query.direction || SortDirection.desc,
       page: request && request.filter && request.filter.query && request.filter.query.page || page || 1, 
       size: request && request.filter && request.filter.query && request.filter.query.size || size || 10,
     };
@@ -157,6 +157,7 @@ const lifecycles: ReactLifeCycleFunctions<ApprovalListProps, OwnState> = {
       layoutDispatch.searchShow();
       layoutDispatch.actionCentreShow();
   
+      navBottomDispatch.addHide();
       navBottomDispatch.assignCallbacks({
         onNextCallback: handleGoToNext,
         onPrevCallback: handleGoToPrevious,
