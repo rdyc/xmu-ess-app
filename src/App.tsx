@@ -6,8 +6,7 @@ import { Callback, Root } from '@layout/components/base';
 import { WithOidc, withOidc } from '@layout/hoc/withOidc';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IAppUser } from '@layout/interfaces';
-import { leaveApprovalRouter } from '@leave/components/routers/leaveApprovalRouter';
-import { leaveRequestRouter } from '@leave/components/routers/leaveRequestRouter';
+import { LeaveRoutingComponents } from '@leave/components/LeaveRoutingComponents';
 import { MileageApprovalRouter, MileageRequestRouter } from '@mileage/components/MileageRouter';
 import { ProjectRoutingComponents } from '@project/components';
 import {
@@ -29,7 +28,6 @@ import { compose, lifecycle, ReactLifeCycleFunctions } from 'recompose';
 import { Store } from 'redux';
 import { loadUser, OidcProvider } from 'redux-oidc';
 import * as store from 'store';
-
 import { IAppState } from './generic/interfaces';
 import AppLocale from './language';
 import config, { getCurrentLanguage } from './language/config';
@@ -63,8 +61,7 @@ const app: React.ComponentType<AllProps> = props => (
               <Route path="/home" component={DashboardRoutingComponents} />
               <Route path="/account" component={AccountRoutingComponents} />
               <Route path="/project" component={ProjectRoutingComponents} />
-              <Route path="/leave" component={leaveRequestRouter} />
-              <Route path="/approval/leave" component={leaveApprovalRouter} />
+              <Route path="/leave" component={LeaveRoutingComponents} />
               <Route path="/purchase/request" component={purchaseRouter} />
               <Route path="/approval/purchase/request" component={purchaseApprovalRouter} />
               <Route path="/purchase/settlement" component={purchaseSettlementRouter} />

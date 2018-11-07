@@ -109,7 +109,7 @@ const handlerCreators: HandleCreators<LeaveCancellationListProps, OwnHandlers> =
     const { isLoading } = props.leaveCancellationState.all;
 
     if (!isLoading) {
-      history.push(`/cancellation/leave/details/${leaveUid}`);
+      history.push(`/leave/cancellations/${leaveUid}`);
     } 
   },
   handleGoToNext: (props: LeaveCancellationListProps) => () => { 
@@ -163,7 +163,7 @@ const lifecycles: ReactLifeCycleFunctions<LeaveCancellationListProps, OwnState> 
       onSyncCallback: handleReloading,
       onOrderCallback: handleChangeOrder,
       onDirectionCallback: handleChangeSort,
-      onAddCallback: () => history.push('/leave/form'),
+      onAddCallback: () => history.push('/leave/cancellations/form'),
       onSizeCallback: handleChangeSize,
     });
 
