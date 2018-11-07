@@ -1,6 +1,7 @@
 import { accountRouter } from '@account/pages';
 import AppStorage from '@constants/AppStorage';
 import { ExpenseApprovalRouter, ExpenseRouter } from '@expense/components/ExpenseRouter';
+import { FinanceApprovalRouter } from '@finance/components/FinanceRouter';
 import Layout from '@layout/components/base/Layout';
 import Main from '@layout/components/main/Main';
 import { WithOidc, withOidc } from '@layout/hoc/withOidc';
@@ -84,6 +85,7 @@ const app: React.ComponentType<AllProps> = props => {
                   <Route path="/approval/expense" component={ExpenseApprovalRouter} />
                   <Route path="/mileage" component={MileageRequestRouter} />
                   <Route path="/approval/mileage" component={MileageApprovalRouter} />
+                  <Route path="/approval/finance" component={FinanceApprovalRouter} />
 
                   <Route path="/playground" component={playgroundRouter} />
                 </Layout>

@@ -1,10 +1,12 @@
 import { IFinanceDetail } from '@finance/classes/response';
 import { ApprovalDetailProps } from '@finance/components/approval/detail/ApprovalDetail';
 import {
+  Button,
   Card,
   CardContent,
   CardHeader,
   Grid,
+  InputAdornment,
   TextField,
   Typography,
 } from '@material-ui/core';
@@ -13,9 +15,39 @@ import { FormattedMessage } from 'react-intl';
 
 export const ApprovalDetailView: React.SFC<ApprovalDetailProps> = props => {
   const { 
-    intl
+    intl, handleToDocument
   } = props;
   const { isLoading, response } = props.financeApprovalState.detail;
+  
+  const styled = {
+    fullWidth: true,
+    InputProps: {
+      disableUnderline: true,
+      readOnly: true
+    }
+  };
+
+  const documentStyle = {
+    fullWidth: true,
+    InputProps: {
+      disableUnderline: true,
+      readOnly: true,
+      endAdornment: 
+        response &&
+        response.data &&
+        <InputAdornment position="end">
+          <Button
+            variant="outlined"
+            color="primary"
+            size="large"
+            onClick={() => handleToDocument(response.data.moduleUid, response.data.documentUid)}
+          >
+            Go To Document
+          </Button>
+        </InputAdornment>
+      
+    }
+  };
 
   const renderDetail = (finance: IFinanceDetail) => (
     <Card square>
@@ -25,6 +57,7 @@ export const ApprovalDetailView: React.SFC<ApprovalDetailProps> = props => {
       />
       <CardContent>
         <TextField
+          {...styled}
           fullWidth
           contentEditable={false}
           margin="normal"
@@ -32,6 +65,7 @@ export const ApprovalDetailView: React.SFC<ApprovalDetailProps> = props => {
           value={finance.uid}
         />
         <TextField
+          {...styled}
           fullWidth
           contentEditable={false}
           margin="normal"
@@ -39,13 +73,16 @@ export const ApprovalDetailView: React.SFC<ApprovalDetailProps> = props => {
           value={finance.module ? finance.module.value : 'N/A'}
         />
         <TextField
+          {...documentStyle}
           fullWidth
           contentEditable={false}
+          color="primary"
           margin="normal"
           label={<FormattedMessage id="finance.field.documentUid" />}
           value={finance.documentUid ? finance.documentUid : 'N/A'}
         />
         <TextField
+          {...styled}
           fullWidth
           contentEditable={false}
           margin="normal"
@@ -53,6 +90,7 @@ export const ApprovalDetailView: React.SFC<ApprovalDetailProps> = props => {
           value={finance.document.changes.created ? finance.document.changes.created.fullName : 'N/A'}
         />
         <TextField
+          {...styled}
           fullWidth
           contentEditable={false}
           margin="normal"
@@ -65,6 +103,7 @@ export const ApprovalDetailView: React.SFC<ApprovalDetailProps> = props => {
           }) : ''}
         />
         <TextField
+          {...styled}
           fullWidth
           contentEditable={false}
           margin="normal"
@@ -73,6 +112,7 @@ export const ApprovalDetailView: React.SFC<ApprovalDetailProps> = props => {
             intl.formatNumber(finance.document.amount.total || 0) : 0}
         />
         <TextField
+          {...styled}
           fullWidth
           contentEditable={false}
           margin="normal"
@@ -80,6 +120,7 @@ export const ApprovalDetailView: React.SFC<ApprovalDetailProps> = props => {
           value={finance.status ? finance.status.value : 'N/A'}
         />
         <TextField
+          {...styled}
           fullWidth
           multiline
           contentEditable={false}

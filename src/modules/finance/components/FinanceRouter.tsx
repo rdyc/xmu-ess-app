@@ -11,7 +11,7 @@ const approvalListComponent = () => <ApprovalList orderBy="uid" direction="desce
 const approvalDetailComponent = () => <ApprovalDetail/>;
 const approvalPaymentComponent = () => <ApprovalPayment/>;
 
-export const FinanceRoute: React.SFC<AllProps> = props => (
+export const FinanceApprovalRouter: React.SFC<AllProps> = props => (
   <Switch>
     <Route path={`${props.match.path}/list/`} component={approvalListComponent} />
     <Route path={`${props.match.path}/details/:financeUid`} component={approvalDetailComponent} />
