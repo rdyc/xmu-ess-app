@@ -5,8 +5,8 @@ import { WithNavBottom, withNavBottom } from '@layout/hoc/withNavBottom';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IListBarField } from '@layout/interfaces';
 import { LeaveRequestField } from '@leave/classes/types';
-import { LeaveRequestListView } from '@leave/components/request/list/LeaveRequestListView';
-import { WithLeaveRequest, withLeaveRequest } from '@leave/hoc/withLeaveRequest';
+import { LeaveCancellationListView } from '@leave/components/cancellation/list/LeaveCancellationListView';
+import { WithLeaveCancellation, withLeaveCancellation } from '@leave/hoc/withLeaveCancellation';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import {
@@ -55,8 +55,8 @@ interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
   stateSizing: StateHandler<OwnState>;
 }
 
-export type RequestListProps 
-  = WithLeaveRequest
+export type LeaveCancellationListProps 
+  = WithLeaveCancellation
   & WithUser
   & WithLayout
   & WithNavBottom
@@ -67,15 +67,15 @@ export type RequestListProps
   & OwnState
   & OwnStateUpdaters;
 
-const createProps: mapper<RequestListProps, OwnState> = (props: RequestListProps): OwnState => {
+const createProps: mapper<LeaveCancellationListProps, OwnState> = (props: LeaveCancellationListProps): OwnState => {
   const { orderBy, direction, page, size } = props;
-  const { request } = props.leaveRequestState.all;
+  const { request } = props.leaveCancellationState.all;
 
   return { 
-    orderBy: request && request.filter && request.filter.orderBy || orderBy,
-    direction: request && request.filter && request.filter.direction || direction,
-    page: request && request.filter && request.filter.page || page || 1, 
-    size: request && request.filter && request.filter.size || size || 10,
+    orderBy: request && request.filter && request.filter.query && request.filter.query.orderBy || orderBy,
+    direction: request && request.filter && request.filter.query && request.filter.query.direction || direction,
+    page: request && request.filter && request.filter.query && request.filter.query.page || page || 1, 
+    size: request && request.filter && request.filter.query && request.filter.query.size || size || 10,
   };
 };
 
@@ -103,39 +103,39 @@ const stateUpdaters: StateUpdaters<OwnOptions, OwnState, OwnStateUpdaters> = {
   }),
 };
 
-const handlerCreators: HandleCreators<RequestListProps, OwnHandlers> = {
-  handleGoToDetail: (props: RequestListProps) => (leaveUid) => {
+const handlerCreators: HandleCreators<LeaveCancellationListProps, OwnHandlers> = {
+  handleGoToDetail: (props: LeaveCancellationListProps) => (leaveUid) => {
     const { history } = props;
-    const { isLoading } = props.leaveRequestState.all;
+    const { isLoading } = props.leaveCancellationState.all;
 
     if (!isLoading) {
-      history.push(`/leave/requests/${leaveUid}`);
+      history.push(`/leave/cancellations/${leaveUid}`);
     } 
   },
-  handleGoToNext: (props: RequestListProps) => () => { 
+  handleGoToNext: (props: LeaveCancellationListProps) => () => { 
     props.stateNext();
   },
-  handleGoToPrevious: (props: RequestListProps) => () => { 
+  handleGoToPrevious: (props: LeaveCancellationListProps) => () => { 
     props.statePrevious();
   },
-  handleReloading: (props: RequestListProps) => () => { 
+  handleReloading: (props: LeaveCancellationListProps) => () => { 
     props.stateReloading();
 
     // force re-load from api
     loadData(props);
   },
-  handleChangeOrder: (props: RequestListProps) => (field: IListBarField) => { 
+  handleChangeOrder: (props: LeaveCancellationListProps) => (field: IListBarField) => { 
     props.stateOrdering(field);
   },
-  handleChangeSize: (props: RequestListProps) => (value: number) => { 
+  handleChangeSize: (props: LeaveCancellationListProps) => (value: number) => { 
     props.stateSizing(value);
   },
-  handleChangeSort: (props: RequestListProps) => (direction: SortDirection) => { 
+  handleChangeSort: (props: LeaveCancellationListProps) => (direction: SortDirection) => { 
     props.stateSorting(direction);
   }
 };
 
-const lifecycles: ReactLifeCycleFunctions<RequestListProps, OwnState> = {
+const lifecycles: ReactLifeCycleFunctions<LeaveCancellationListProps, OwnState> = {
   componentDidMount() { 
     const { 
       handleGoToNext, handleGoToPrevious, handleReloading, 
@@ -144,10 +144,10 @@ const lifecycles: ReactLifeCycleFunctions<RequestListProps, OwnState> = {
       history, intl 
     } = this.props;
     
-    const { isLoading, response } = this.props.leaveRequestState.all;
+    const { isLoading, response } = this.props.leaveCancellationState.all;
 
     layoutDispatch.changeView({
-      uid: AppMenu.LeaveRequest,
+      uid: AppMenu.LeaveCancelation,
       parentUid: AppMenu.Leave,
       title: intl.formatMessage({id: 'leave.title'}),
       subTitle : intl.formatMessage({id: 'leave.subTitle'})
@@ -163,7 +163,7 @@ const lifecycles: ReactLifeCycleFunctions<RequestListProps, OwnState> = {
       onSyncCallback: handleReloading,
       onOrderCallback: handleChangeOrder,
       onDirectionCallback: handleChangeSort,
-      onAddCallback: () => history.push('/leave/requests/form'),
+      onAddCallback: () => history.push('/leave/cancellations/form'),
       onSizeCallback: handleChangeSize,
     });
 
@@ -177,7 +177,7 @@ const lifecycles: ReactLifeCycleFunctions<RequestListProps, OwnState> = {
       loadData(this.props);
     }
   },
-  componentDidUpdate(props: RequestListProps, state: OwnState) {
+  componentDidUpdate(props: LeaveCancellationListProps, state: OwnState) {
     // only load when these props are different
     if (
       this.props.orderBy !== props.orderBy ||
@@ -191,7 +191,7 @@ const lifecycles: ReactLifeCycleFunctions<RequestListProps, OwnState> = {
   componentWillUnmount() {
     const { layoutDispatch, navBottomDispatch } = this.props;
     const { view } = this.props.layoutState;
-    const { loadAllDispose } = this.props.leaveRequestDispatch;
+    const { loadAllDispose } = this.props.leaveCancellationDispatch;
 
     layoutDispatch.changeView(null);
     layoutDispatch.modeListOff();
@@ -209,23 +209,23 @@ const lifecycles: ReactLifeCycleFunctions<RequestListProps, OwnState> = {
   }
 };
 
-const loadData = (props: RequestListProps): void => {
+const loadData = (props: LeaveCancellationListProps): void => {
   const { orderBy, direction, page, size } = props;
   const { user } = props.userState;
-  const { loadAllRequest } = props.leaveRequestDispatch;
+  const { loadAllRequest } = props.leaveCancellationDispatch;
   const { alertAdd } = props.layoutDispatch;
 
   if (user) {
     loadAllRequest({
-      companyUid: user.company.uid,
-      positionUid: user.position.uid,
       filter: {
-        direction,
-        orderBy,
-        page,
-        size,
-        find: undefined,
-        findBy: undefined,
+        query: {
+          direction,
+          orderBy,
+          page,
+          size,
+          find: undefined,
+          findBy: undefined
+        },
       }
     }); 
   } else {
@@ -236,14 +236,14 @@ const loadData = (props: RequestListProps): void => {
   }
 };
 
-export const LeaveRequestList = compose<RequestListProps, OwnOptions>(
-  withLeaveRequest,
+export const LeaveCancellationList = compose<LeaveCancellationListProps, OwnOptions>(
+  withLeaveCancellation,
   withUser,
   withLayout,
   withNavBottom,
   withRouter,
   injectIntl,
   withStateHandlers<OwnState, OwnStateUpdaters, OwnOptions>(createProps, stateUpdaters), 
-  withHandlers<RequestListProps, OwnHandlers>(handlerCreators),
-  lifecycle<RequestListProps, OwnState>(lifecycles),
-)(LeaveRequestListView);
+  withHandlers<LeaveCancellationListProps, OwnHandlers>(handlerCreators),
+  lifecycle<LeaveCancellationListProps, OwnState>(lifecycles),
+)(LeaveCancellationListView);
