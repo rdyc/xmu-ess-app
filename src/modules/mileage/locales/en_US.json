@@ -30,6 +30,7 @@
   "mileage.request.field.information.month.required": "Month is required",
   "mileage.request.field.information.month.placeholder": "Select a month",
   "mileage.request.form.newTitle": "New Mileage Request",
+  "mileage.request.form.newSubTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
   "mileage.request.noData": "No data Mileage request",
   "mileage.request.item.Title": "Mileage Item",
   "mileage.request.item.SubTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit",

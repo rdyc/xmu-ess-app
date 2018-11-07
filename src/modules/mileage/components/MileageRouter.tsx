@@ -6,43 +6,24 @@ import { MileageRequestList } from '@mileage/components/request/list/MileageRequ
 import * as React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router';
 
-type AllProps = RouteComponentProps;
-
-const listComponent = () => (
-  <MileageRequestList orderBy="uid" direction="descending" />
-);
-
-const detailComponent = () => <MileageRequestDetail />;
-
-const editorComponent = () => <MileageRequestEditor />;
-
-const listApproval = () => (
-  <MileageApprovalList orderBy="uid" direction="descending" />
-);
-
-const detailApproval = () => <MileageApprovalDetail />;
-
-export const MileageRequestRouter: React.SFC<AllProps> = props => (
+const request = (props: RouteComponentProps) => (
   <Switch>
-    <Route
-      exact
-      path={`${props.match.path}/request/`}
-      component={listComponent}
-    />
-    <Route
-      path={`${props.match.path}/request/details/:mileageUid`}
-      component={detailComponent}
-    />
-    <Route path={`${props.match.path}/form`} component={editorComponent} />
+    <Route path={`${props.match.path}/form`} component={MileageRequestEditor} />
+    <Route path={`${props.match.path}/:mileageUid`} component={MileageRequestDetail} />
+    <Route path={`${props.match.path}`} component={MileageRequestList} />
   </Switch>
 );
 
-export const MileageApprovalRouter: React.SFC<AllProps> = props => (
+const approval = (props: RouteComponentProps) => (
   <Switch>
-    <Route exact path={`${props.match.path}/`} component={listApproval} />
-    <Route
-      path={`${props.match.path}/details/:mileageUid`}
-      component={detailApproval}
-    />
+    <Route path={`${props.match.path}/:mileageUid`} component={MileageApprovalDetail} />
+    <Route path={`${props.match.path}`} component={MileageApprovalList} />
+  </Switch>
+);
+
+export const MileageRoutingComponents: React.SFC<RouteComponentProps> = props => (
+  <Switch>
+    <Route path={`${props.match.path}/request`} component={request} />
+    <Route path={`${props.match.path}/approval`} component={approval} />
   </Switch>
 );

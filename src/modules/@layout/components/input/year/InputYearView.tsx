@@ -56,7 +56,7 @@ export const InputYearView: React.SFC<InputYearProps> = props => {
         native: isMobile
       }}
     >
-      {isMobile ? renderItemEmpty : false}
+      {isMobile ? renderItemEmpty : null}
       {year.map(item => renderItem(item))}
     </TextField>
   );

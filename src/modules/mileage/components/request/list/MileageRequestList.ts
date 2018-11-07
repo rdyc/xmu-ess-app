@@ -72,8 +72,8 @@ const createProps: mapper<MileageRequestListProps, OwnState> = (props: MileageRe
   const { request } = props.mileageRequestState.all;
 
   return { 
-    orderBy: request && request.filter && request.filter.orderBy || orderBy,
-    direction: request && request.filter && request.filter.direction || direction,
+    orderBy: request && request.filter && request.filter.orderBy || orderBy || 'uid',
+    direction: request && request.filter && request.filter.direction || direction || 'descending',
     page: request && request.filter && request.filter.page || page || 1, 
     size: request && request.filter && request.filter.size || size || 10,
   };
@@ -109,7 +109,7 @@ const handlerCreators: HandleCreators<MileageRequestListProps, OwnHandlers> = {
     const { isLoading } = props.mileageRequestState.all;
 
     if (!isLoading) {
-      history.push(`/mileage/request/details/${mileageUid}`);
+      history.push(`/mileage/request/${mileageUid}`);
     } 
   },
   handleGoToNext: (props: MileageRequestListProps) => () => { 
@@ -163,7 +163,7 @@ const lifecycles: ReactLifeCycleFunctions<MileageRequestListProps, OwnState> = {
       onSyncCallback: handleReloading,
       onOrderCallback: handleChangeOrder,
       onDirectionCallback: handleChangeSort,
-      onAddCallback: () => history.push('/mileage/form'),
+      onAddCallback: () => history.push('/mileage/request/form'),
       onSizeCallback: handleChangeSize,
     });
 

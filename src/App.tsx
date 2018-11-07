@@ -9,7 +9,7 @@ import AccessWizardPage from '@layout/pages/AccessWizardPage';
 import CallbackPage from '@layout/pages/CallbackPage';
 import { leaveApprovalRouter } from '@leave/components/routers/leaveApprovalRouter';
 import { leaveRequestRouter } from '@leave/components/routers/leaveRequestRouter';
-import { MileageApprovalRouter, MileageRequestRouter } from '@mileage/components/MileageRouter';
+import { MileageRoutingComponents } from '@mileage/components/MileageRouter';
 import { ProjectRoutingComponents } from '@project/components';
 import {
   purchaseApprovalRouter,
@@ -29,6 +29,7 @@ import { Route, Router, Switch } from 'react-router';
 import { Store } from 'redux';
 import { loadUser, OidcProvider, UserState } from 'redux-oidc';
 
+// import { SummaryRouter } from '@summary/components/SummaryRouter';
 import { IAppState } from './generic/interfaces';
 import AppLocale from './language';
 import config, { getCurrentLanguage } from './language/config';
@@ -107,8 +108,8 @@ class App extends React.Component<AllProps> {
                         <Route path="/approval/timesheet" component={timesheetApprovalRouter} />
                         <Route path="/expense" component={ExpenseRouter} />
                         <Route path="/approval/expense" component={ExpenseApprovalRouter} />
-                        <Route path="/mileage" component={MileageRequestRouter} />
-                        <Route path="/approval/mileage" component={MileageApprovalRouter} />
+                        <Route path="/mileage" component={MileageRoutingComponents} />
+                        {/* <Route path="/reports" component={SummaryRouter} /> */}
                       </Layout>
                     </Switch>
                   )}

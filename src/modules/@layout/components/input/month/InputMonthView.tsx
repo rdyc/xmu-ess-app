@@ -50,7 +50,7 @@ export const InputMonthView: React.SFC<InputMonthProps> = props => {
         native: isMobile
       }}
     >
-      {isMobile ? renderItemEmpty : false }
+      {isMobile ? renderItemEmpty : null }
       {moment.months().map((item, i) => renderItem(item, i))}
     </TextField>
   );
