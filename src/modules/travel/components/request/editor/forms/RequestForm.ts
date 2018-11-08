@@ -1,12 +1,13 @@
+// import { ProjectType } from '@common/classes/types';
 import { FormMode } from '@generic/types';
 import { RequestFormView } from '@travel/components/request/editor/forms/RequestFormView';
 import { connect } from 'react-redux';
-import { InjectedFormProps, reduxForm } from 'redux-form';
+import { formValueSelector, InjectedFormProps, reduxForm } from 'redux-form';
 
 const formName = 'travelRequest';
 
 export type TravelItemFormData = {
-  uid: string | null;
+  uid: string | null ;
   employeeUid: string;
   fullName: string;
   transportType: string;
@@ -24,6 +25,7 @@ export type TravelItemFormData = {
   duration: number | 0;
   amount: number | 0;
   currencyUid: string | null;
+  currencyRate: number | 0;
   diemValue: number | 0;
 };
 
@@ -37,6 +39,7 @@ export type TravelRequestFormData = {
     end: string | null | undefined;
     customerUid: string | null | undefined;
     projectUid: string | null | undefined;
+    // projectType: string | null | undefined; // coba
     siteUid: string | null | undefined;
     activityType: string | null | undefined;
     objective: string | null | undefined;
@@ -51,12 +54,39 @@ export type TravelRequestFormData = {
 interface OwnProps {
   formMode: FormMode;
 }
+interface FormValueProps {
+  customerUidValue: string | undefined;
+  destinationtypeValue: string | undefined;
+  projectUidValue: string | undefined;
+  // isGeneralPurpose: boolean | false;
+  // diemtype: string | undefined;
+  // projectTypeValue: string | undefined;
+}
 
 export type RequestFormProps 
-  = InjectedFormProps<TravelRequestFormData, OwnProps> 
+  = InjectedFormProps<TravelRequestFormData, OwnProps>
+  & FormValueProps 
   & OwnProps;
 
-const connectedView = connect()(RequestFormView);
+const selector = formValueSelector(formName);
+
+const mapStateToProps = (state: any): FormValueProps => {
+   const customerUid = selector(state, 'information.customerUid');
+   const destinationtype = selector(state, 'information.destinationType');
+   const projectUid = selector(state, 'information.projectUid');
+   // const projectType = selector(state, 'information.projectType'); // gatau
+   return {
+     customerUidValue: customerUid,
+     destinationtypeValue: destinationtype,
+     projectUidValue: projectUid,
+     // isGeneralPurpose: projectType === ProjectType.GeneralPurpose 
+     // projectTypeValue: projectType,
+     // diemtype: projectType === ProjectType.PreSales ? ProjectType.PreSales : ProjectType.NonProject, 
+   };
+   
+ };
+
+const connectedView = connect(mapStateToProps)(RequestFormView);
 
 export const RequestForm = reduxForm<TravelRequestFormData, OwnProps>({
   form: formName,

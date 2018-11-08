@@ -131,7 +131,7 @@ const handlerCreators: HandleCreators<RequestDetailProps, Handler> = {
   
       stateReset();
   
-      history.push('/expense/form/', { uid: expenseUid });
+      history.push('/expense/requests/form', { uid: expenseUid });
     },
   };
 

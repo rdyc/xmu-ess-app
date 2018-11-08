@@ -32,6 +32,7 @@ import {
   layoutNavBackShow,
   layoutSearchHide,
   layoutSearchShow,
+  layoutThemeChange,
 } from '@layout/store/actions';
 import { Anchor } from '@layout/types';
 import * as React from 'react';
@@ -44,6 +45,8 @@ interface PropsFromState {
 
 interface PropsFromDispatch {
   layoutDispatch: {
+    themeChange: typeof layoutThemeChange;
+
     alertAdd: typeof layoutAlertAdd;
     alertDismiss: typeof layoutAlertDismiss;
 
@@ -91,6 +94,8 @@ const mapStateToProps = ({ layout }: IAppState) => ({
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   layoutDispatch: {
+    themeChange: () => dispatch(layoutThemeChange()),
+
     alertAdd: (alert: IAlert) => dispatch(layoutAlertAdd(alert)),
     alertDismiss: () => dispatch(layoutAlertDismiss()),
 

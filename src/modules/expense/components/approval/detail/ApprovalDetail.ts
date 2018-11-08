@@ -145,7 +145,7 @@ const handlerCreators: HandleCreators<ExpenseApprovalDetailProps, OwnHandlers> =
     });
 
     if (match.params.expenseUid) {
-      history.push(`/approval/expense/list`);
+      history.push(`/expense/approvals`);
     }
   },
   handleSubmitFail: (props: ExpenseApprovalDetailProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {

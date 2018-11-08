@@ -3,13 +3,16 @@ import accountEmployeeMySagas from '@account/store/sagas/accountEmployeeMySagas'
 import accountEmployeeSagas from '@account/store/sagas/accountEmployeeSagas';
 import commonActivitySagas from '@common/store/sagas/activitySagas';
 import commonCurrencySagas from '@common/store/sagas/currencySagas';
+import commonDestinationSagas from '@common/store/sagas/destinationSagas';
 import commonDocumentPresalesSagas from '@common/store/sagas/documentPresalesSagas';
 import commonDocumentSagas from '@common/store/sagas/documentSagas';
 import commonExpenseSagas from '@common/store/sagas/expenseSagas';
 import commonLeaveSagas from '@common/store/sagas/leaveSagas';
 import commonProjectSagas from '@common/store/sagas/projectSagas';
+import commonPurposeSagas from '@common/store/sagas/purposeSagas';
 import commonSiteSagas from '@common/store/sagas/siteSagas';
 import commonStatusSagas from '@common/store/sagas/statusSagas';
+import commonTransportationSagas from '@common/store/sagas/transportationSagas';
 import expenseApprovalSagas from '@expense/store/sagas/expenseApprovalSagas';
 import expenseSagas from '@expense/store/sagas/expenseRequestSagas';
 import financeSagas from '@finance/store/sagas/financeApprovalSagas';
@@ -40,8 +43,8 @@ import projectStatusSagas from '@project/store/sagas/projectStatusSagas';
 import purchaseSagas from '@purchase/store/sagas/purchaseSagas';
 import summarySagas from '@summary/store/sagas/summarySagas';
 import timesheetApprovalSagas from '@timesheet/store/sagas/timesheetApprovalSagas';
+import timesheetEntrySagas from '@timesheet/store/sagas/timesheetEntrySagas';
 import timesheetMileagesSagas from '@timesheet/store/sagas/timesheetMileagesSagas';
-import timesheetSagas from '@timesheet/store/sagas/timesheetSagas';
 import travelApprovalSagas from '@travel/store/sagas/travelApprovalSagas';
 import travelSagas from '@travel/store/sagas/travelSagas';
 import travelSettlementApprovalSagas from '@travel/store/sagas/travelSettlementApprovalSagas';
@@ -62,6 +65,9 @@ export function* rootSaga() {
     fork(commonExpenseSagas),
     fork(commonStatusSagas),
     fork(commonNotificationSagas),
+    fork(commonDestinationSagas),
+    fork(commonPurposeSagas),
+    fork(commonTransportationSagas),
 
     // lookup
     fork(lookupCustomerSagas),
@@ -91,7 +97,7 @@ export function* rootSaga() {
     fork(projectAcceptanceSagas),
     
     // timesheet
-    fork(timesheetSagas),
+    fork(timesheetEntrySagas),
     fork(timesheetApprovalSagas),
     fork(timesheetMileagesSagas),
     

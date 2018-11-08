@@ -1,8 +1,8 @@
 import { AccountRoutingComponents } from '@account/components';
 import AppStorage from '@constants/AppStorage';
-import { DashboardRoutingComponents } from '@dashboard/components';
-import { ExpenseApprovalRouter, ExpenseRouter } from '@expense/components/ExpenseRouter';
+import { ExpenseRoutingComponents } from '@expense/components/ExpenseRoutingComponents';
 import { FinanceRoutingComponents } from '@finance/components/FinanceRoutingComponents';
+import { HomeRoutingComponents } from '@home/components';
 import { Callback, Root } from '@layout/components/base';
 import { WithOidc, withOidc } from '@layout/hoc/withOidc';
 import { WithUser, withUser } from '@layout/hoc/withUser';
@@ -10,14 +10,10 @@ import { IAppUser } from '@layout/interfaces';
 import { LeaveRoutingComponents } from '@leave/components/LeaveRoutingComponents';
 import { MileageRoutingComponents } from '@mileage/components/MileageRouter';
 import { ProjectRoutingComponents } from '@project/components';
-import {
-  purchaseApprovalRouter,
-  purchaseRouter,
-  purchaseSettlementApprovalRouter,
-  purchaseSettlementRouter,
-} from '@purchase/components/PurchaseRouter';
-import { timesheetApprovalRouter, timesheetRouter } from '@timesheet/components/timesheetRouter';
-import { travelApprovalRouter, travelRouter, travelSettlementRouter } from '@travel/components/travelRouter';
+import { PurchaseRoutingComponents } from '@purchase/components/PurchaseRoutingComponents';
+import { SummaryRoutingComponent } from '@summary/components/SummaryRouter';
+import { TimesheetRoutingComponents } from '@timesheet/components';
+import { TravelRoutingComponents } from '@travel/components';
 import { ConnectedRouter } from 'connected-react-router';
 import { History } from 'history';
 import { playgroundRouter } from 'playground/playgroundRouter';
@@ -30,7 +26,6 @@ import { Store } from 'redux';
 import { loadUser, OidcProvider } from 'redux-oidc';
 import * as store from 'store';
 
-import { SummaryRoutingComponent } from '@summary/components/SummaryRouter';
 import { IAppState } from './generic/interfaces';
 import AppLocale from './language';
 import config, { getCurrentLanguage } from './language/config';
@@ -61,24 +56,17 @@ const app: React.ComponentType<AllProps> = props => (
               <Route exact path="/" component={Root} />
               <Route path="/callback" component={Callback} />
               
-              <Route path="/home" component={DashboardRoutingComponents} />
+              <Route path="/home" component={HomeRoutingComponents} />
               <Route path="/account" component={AccountRoutingComponents} />
               <Route path="/project" component={ProjectRoutingComponents} />
               <Route path="/mileage" component={MileageRoutingComponents} />
               <Route path="/leave" component={LeaveRoutingComponents} />
-              <Route path="/purchase/request" component={purchaseRouter} />
-              <Route path="/approval/purchase/request" component={purchaseApprovalRouter} />
-              <Route path="/purchase/settlement" component={purchaseSettlementRouter} />
-              <Route path="/approval/purchase/settlement" component={purchaseSettlementApprovalRouter} />
-              <Route path="/travel" component={travelRouter} />
-              <Route path="/travel/settlement" component={travelSettlementRouter} />
-              <Route path="/approval/travel" component={travelApprovalRouter} />
-              <Route path="/timesheet" component={timesheetRouter} />
-              <Route path="/approval/timesheet" component={timesheetApprovalRouter} />
-              <Route path="/expense" component={ExpenseRouter} />
-              <Route path="/approval/expense" component={ExpenseApprovalRouter} />
+              <Route path="/purchase" component={PurchaseRoutingComponents} />>
+              <Route path="/timesheet" component={TimesheetRoutingComponents} />
+              <Route path="/expense" component={ExpenseRoutingComponents} />
               <Route path="/reports" component={SummaryRoutingComponent} />
               <Route path="/finance" component={FinanceRoutingComponents} />
+              <Route path="/travel" component={TravelRoutingComponents} />
 
               <Route path="/playground" component={playgroundRouter} />
             </Switch>

@@ -17,7 +17,7 @@ export const RequestDetailFormView: React.SFC<RequestDetailFormProps> = props =>
     if (formMode === FormMode.New && fields.indexOf(fieldName) !== -1) {
       return null;
     }
-
+    
     return (
       <Field
         key={fieldName}

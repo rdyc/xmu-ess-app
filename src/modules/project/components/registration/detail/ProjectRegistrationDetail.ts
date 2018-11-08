@@ -391,7 +391,6 @@ const lifecycles: ReactLifeCycleFunctions<ProjectRegistrationDetailProps, OwnSta
           enabled: true,
           visible: isStatusTypeEquals([
             WorkflowStatusType.Approved,
-            WorkflowStatusType.ReOpened
           ])
         },
         {
@@ -400,7 +399,6 @@ const lifecycles: ReactLifeCycleFunctions<ProjectRegistrationDetailProps, OwnSta
           enabled: true,
           visible: isStatusTypeEquals([
             WorkflowStatusType.Approved,
-            WorkflowStatusType.ReOpened
           ]) && isAdmin
         }
       ];

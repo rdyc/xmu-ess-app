@@ -6,7 +6,7 @@ import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IAppBarMenu } from '@layout/interfaces';
 import { TimesheetUserAction } from '@timesheet/classes/types';
 import { TimesheetEntryDetailView } from '@timesheet/components/entry/detail/TimesheetEntryDetailView';
-import { WithTimesheet, withTimesheet } from '@timesheet/hoc/withTimesheet';
+import { WithTimesheetEntry, withTimesheetEntry } from '@timesheet/hoc/withTimesheetEntry';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import {
@@ -48,7 +48,7 @@ interface OwnRouteParams {
 }
 
 export type EntryDetailProps
-  = WithTimesheet
+  = WithTimesheetEntry
   & WithUser
   & WithLayout
   & WithAppBar
@@ -128,7 +128,7 @@ const handlerCreators: HandleCreators<EntryDetailProps, Handler> = {
 
     stateReset();
 
-    history.push('/timesheet/form/', { uid: timesheetUid });
+    history.push('/timesheet/entry/form/', { uid: timesheetUid });
   },
 };
 
@@ -228,7 +228,7 @@ export const TimesheetEntryDetail = compose<EntryDetailProps, {}>(
   withLayout,
   withAppBar,
   withRouter,
-  withTimesheet,
+  withTimesheetEntry,
   injectIntl,
   withStateHandlers<OwnState, OwnStateUpdaters, {}>(createProps, stateUpdaters), 
   withHandlers<EntryDetailProps, Handler>(handlerCreators),

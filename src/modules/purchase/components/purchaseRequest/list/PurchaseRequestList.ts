@@ -109,7 +109,7 @@ const handlerCreators: HandleCreators<PurchaseRequestListProps, OwnHandlers> = {
     const { isLoading } = props.purchaseRequestState.all;
 
     if (!isLoading) {
-      history.push(`/purchase/request/details/${purchaseUid}`);
+      history.push(`/purchase/requests/details/${purchaseUid}`);
     } 
   },
   handleGoToNext: (props: PurchaseRequestListProps) => () => { 
@@ -163,7 +163,7 @@ const lifecycles: ReactLifeCycleFunctions<PurchaseRequestListProps, OwnState> = 
       onSyncCallback: handleReloading,
       onOrderCallback: handleChangeOrder,
       onDirectionCallback: handleChangeSort,
-      onAddCallback: () => history.push('/purchase/form'),
+      onAddCallback: () => history.push('/purchase/request/form'),
       onSizeCallback: handleChangeSize,
     });
 

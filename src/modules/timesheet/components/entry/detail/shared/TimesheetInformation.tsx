@@ -2,15 +2,26 @@ import { WorkflowStatusType } from '@common/classes/types';
 import { Card, CardContent, CardHeader, TextField } from '@material-ui/core';
 import { ITimesheetDetail } from '@timesheet/classes/response';
 import * as React from 'react';
-import { FormattedMessage, InjectedIntl } from 'react-intl';
+import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
+import { compose } from 'recompose';
 
 interface OwnProps {
-  timesheet: ITimesheetDetail;
-  intl: InjectedIntl;
+  data: ITimesheetDetail;
 }
+type AllProps
+  = OwnProps
+  & InjectedIntlProps;
 
-export const TimesheetInformation: React.SFC<OwnProps> = props => {
-  const { timesheet, intl } = props;
+const timesheetInformation: React.SFC<AllProps> = props => {
+  const { data, intl } = props;
+
+  const styled = {
+    fullWidth: true,
+    InputProps: {
+      disableUnderline: true,
+      readOnly: true
+    }
+  };
 
   const render = (
     <Card square>
@@ -20,103 +31,91 @@ export const TimesheetInformation: React.SFC<OwnProps> = props => {
       />
       <CardContent>
         <TextField
-          fullWidth
-          contentEditable={false}
-          margin="normal"
+          {...styled}
+          margin="dense"
           label={<FormattedMessage id="timesheet.field.information.uid" />}
-          value={timesheet.uid}
+          value={data.uid}
         />
         <TextField
-          fullWidth
-          contentEditable={false}
-          margin="normal"
+          {...styled}
+          margin="dense"
           label={<FormattedMessage id="timesheet.field.information.date" />}
-          value={intl.formatDate(timesheet.date, {
+          value={intl.formatDate(data.date, {
             year: 'numeric',
             month: 'short',
             day: 'numeric'
           })}
         />
         <TextField
-          fullWidth
-          contentEditable={false}
-          margin="normal"
+          {...styled}
+          margin="dense"
           label={<FormattedMessage id="timesheet.field.information.activityType" />}
-          value={timesheet.activity ? timesheet.activity.value : 'N/A'}
+          value={data.activity ? data.activity.value : 'N/A'}
         />
         <TextField
-          fullWidth
-          contentEditable={false}
-          margin="normal"
+          {...styled}
+          margin="dense"
           label={<FormattedMessage id="timesheet.field.information.customerName" />}
-          value={timesheet.customer ? timesheet.customer.name : 'N/A'}
+          value={data.customer ? data.customer.name : 'N/A'}
         />
         <TextField
-          fullWidth
-          contentEditable={false}
-          margin="normal"
+          {...styled}
+          margin="dense"
           label={<FormattedMessage id="timesheet.field.information.projectName" />}
-          value={timesheet.project ? timesheet.project.name : 'N/A'}
+          value={data.project ? data.project.name : 'N/A'}
         />
         <TextField
-          fullWidth
-          contentEditable={false}
-          margin="normal"
+          {...styled}
+          margin="dense"
           label={<FormattedMessage id="timesheet.field.information.projectSite" />}
-          value={timesheet.site ? timesheet.site.name : 'N/A'}
+          value={data.site ? data.site.name : 'N/A'}
         />
         <TextField
-          fullWidth
-          contentEditable={false}
-          margin="normal"
+          {...styled}
+          margin="dense"
           label={<FormattedMessage id="timesheet.field.information.siteValue" />}
-          value={intl.formatNumber(timesheet.site ? timesheet.site.value : 0)}
+          value={intl.formatNumber(data.site ? data.site.value : 0)}
         />
         <TextField
-          fullWidth
-          contentEditable={false}
-          margin="normal"
+          {...styled}
+          margin="dense"
           label={<FormattedMessage id="timesheet.field.information.start" />}
-          value={intl.formatTime(timesheet.start, {
+          value={intl.formatTime(data.start, {
             hour: 'numeric',
             minute: 'numeric',
-            timeZone: 'GMT',
+            timeZone: 'utc',
             hour12: false
           })}
         />
         <TextField
-          fullWidth
-          contentEditable={false}
-          margin="normal"
+          {...styled}
+          margin="dense"
           label={<FormattedMessage id="timesheet.field.information.end" />}
-          value={intl.formatTime(timesheet.end, {
+          value={intl.formatTime(data.end, {
             hour: 'numeric',
             minute: 'numeric',
-            timeZone: 'GMT',
+            timeZone: 'utc',
             hour12: false
           })}
         />
         <TextField
-          fullWidth
-          contentEditable={false}
-          margin="normal"
+          {...styled}
+          margin="dense"
           label={<FormattedMessage id="timesheet.field.information.totalHours" />}
-          value={timesheet.hours ? timesheet.hours : 0}
+          value={data.hours ? data.hours : 0}
         />
         <TextField
-          fullWidth
-          contentEditable={false}
-          margin="normal"
+          {...styled}
+          margin="dense"
           label={<FormattedMessage id="timesheet.field.information.description" />}
-          value={timesheet.description || 'N/A'}
+          value={data.description || 'N/A'}
         />
-        {(timesheet.statusType === WorkflowStatusType.Approved || timesheet.statusType === WorkflowStatusType.Rejected) ?
+        {(data.statusType === WorkflowStatusType.Approved || data.statusType === WorkflowStatusType.Rejected) ?
           <TextField
-          fullWidth
-          contentEditable={false}
-          margin="normal"
+          {...styled}
+          margin="dense"
           label={<FormattedMessage id="timesheet.field.information.approvalNote" />}
-          value={timesheet.notes || 'N/A'}
+          value={data.notes || 'N/A'}
         /> : ''
         }
       </CardContent>
@@ -125,3 +124,5 @@ export const TimesheetInformation: React.SFC<OwnProps> = props => {
 
   return render;
 };
+
+export const TimesheetInformation = compose<AllProps, OwnProps>(injectIntl)(timesheetInformation);

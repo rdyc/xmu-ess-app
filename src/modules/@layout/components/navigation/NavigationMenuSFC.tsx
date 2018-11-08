@@ -1,6 +1,6 @@
+import AppMenu from '@constants/AppMenu';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
-import { ILookupRoleMenuChildList } from '@lookup/classes';
 import {
   Collapse,
   Divider,
@@ -8,7 +8,6 @@ import {
   ListItem,
   ListItemSecondaryAction,
   ListItemText,
-  ListSubheader,
   WithStyles,
   withStyles,
 } from '@material-ui/core';
@@ -69,8 +68,8 @@ const component: React.SFC<InnerProps> = props => {
     return undefined;
   };
 
-  const handleClick = (item: ILookupRoleMenuChildList) => {
-    props.handleToggle(item.uid);
+  const handleClick = (uid: string) => {
+    props.handleToggle(uid);
 
     if (layoutState.isDrawerMenuVisible && !isWidthUp('md', props.width)) {
       layoutDispatch.drawerMenuHide();
@@ -80,98 +79,116 @@ const component: React.SFC<InnerProps> = props => {
   };
 
   return (
-    <div>
-      {user && (
-        <div>
-          <List disablePadding>
-            <ListItem>
-              <ListItemText
-                primary={user.company.name}
-                secondary={user.position.name}
-              />
-            </ListItem>
-          </List>
-        </div>
-      )}
+    <List 
+      disablePadding 
+      component="div"
+    >
+      {
+        user &&
+        <ListItem>
+          <ListItemText
+            primary={user.company.name}
+            secondary={user.position.name}
+            primaryTypographyProps={{
+              variant: 'body1'
+            }}
+          />
+        </ListItem>
+      }
 
       <Divider />
 
-      <List
-        disablePadding
-        component="nav"
-        subheader={
-          <ListSubheader component="div" color="inherit">
-            Home
-          </ListSubheader>
-        }
+      <ListItem 
+        button
+        onClick={() => props.handleToggle(AppMenu.Home)}
       >
-        <ListItem button>
-          <ListItemText primary="Dashboard" />
-        </ListItem>
-      </List>
+        <ListItemText 
+          primary="Home" 
+          primaryTypographyProps={{
+            variant: 'body1'
+          }}
+        />
+        <ListItemSecondaryAction>
+          {isExpanded && parentUid === AppMenu.Home || active === AppMenu.Home ? <ExpandLess color="action" /> : <ExpandMore color="action" />}
+        </ListItemSecondaryAction>
+      </ListItem>
+      <Collapse in={isExpanded && parentUid === AppMenu.Home || active === AppMenu.Home }>
+        <List component="div" disablePadding>
+          <Link 
+            to={menuLinkMapper(AppMenu.Dashboard)} 
+            onClick={() => handleClick(AppMenu.Dashboard)}
+          >
+            <ListItem button>
+              <ListItemText
+                className={classes.marginFarLeft}
+                primary="Dashboard"
+                primaryTypographyProps={{
+                  noWrap: true,
+                  variant: 'body1',
+                  color: AppMenu.Dashboard === viewMenuUid() ? 'primary' : 'textPrimary'
+                }}
+              />
+            </ListItem>
+          </Link>
+        </List>
+      </Collapse>
 
       {
         user &&
         user.menus &&
         user.menus.map(header => (
           <div key={header.uid}>
-            <List 
-              disablePadding 
-              component="nav"
-              key={header.uid}
+            <ListItem
+              button
+              onClick={() => props.handleToggle(header.uid)}
             >
-              <ListItem
-                button
-                onClick={() => props.handleToggle(header.uid)}
-              >
-                <ListItemText primary={header.name}
-                  primaryTypographyProps={{
-                    noWrap: true,
-                    color: header.uid === parentUid ? 'secondary' : 'textPrimary'
-                  }}
-                />
-                <ListItemSecondaryAction>
-                  {isExpanded && parentUid === header.uid || active === header.uid ? <ExpandLess/> : <ExpandMore/>}
-                </ListItemSecondaryAction>
-              </ListItem>
-              <Collapse in={isExpanded && parentUid === header.uid || active === header.uid }>
-                <List component="div" disablePadding>
-                  {
-                    header.childs &&
-                    header.childs.map(item =>
-                      <Link 
-                        key={item.uid} 
-                        to={menuLinkMapper(item.uid)} 
-                        onClick={() => handleClick(item)}
-                      >
-                        <ListItem button>
-                          <ListItemText
-                            className={classes.marginFarLeft}
-                            primary={item.name}
-                            primaryTypographyProps={{
-                              noWrap: true,
-                              color: item.uid === viewMenuUid() ? 'primary' : 'textPrimary'
-                            }}
-                          />
-                        </ListItem>
-                      </Link>
-                    )
-                  }
-                </List>
-              </Collapse>
-            </List>
+              <ListItemText primary={header.name}
+                primaryTypographyProps={{
+                  noWrap: true,
+                  variant: 'body1',
+                  color: header.uid === parentUid ? 'secondary' : 'textPrimary'
+                }}
+              />
+              <ListItemSecondaryAction>
+                {isExpanded && parentUid === header.uid || active === header.uid ? <ExpandLess color="action" /> : <ExpandMore color="action" />}
+              </ListItemSecondaryAction>
+            </ListItem>
+            <Collapse in={isExpanded && parentUid === header.uid || active === header.uid }>
+              <List component="div" disablePadding>
+                {
+                  header.childs &&
+                  header.childs.map(item =>
+                    <Link 
+                      key={item.uid} 
+                      to={menuLinkMapper(item.uid)} 
+                      onClick={() => handleClick(item.uid)}
+                    >
+                      <ListItem button>
+                        <ListItemText
+                          className={classes.marginFarLeft}
+                          primary={item.name}
+                          primaryTypographyProps={{
+                            noWrap: true,
+                            variant: 'body1',
+                            color: item.uid === viewMenuUid() ? 'primary' : 'textPrimary'
+                          }}
+                        />
+                      </ListItem>
+                    </Link>
+                  )
+                }
+              </List>
+            </Collapse>
           </div>
         ))
       }
-      
+
       <Divider />
 
-      <List disablePadding component="nav">
-        <ListItem button>
-          <ListItemText primary="Help" />
-        </ListItem>
-      </List>
-    </div>
+      <ListItem button>
+        <ListItemText primary="Help" />
+      </ListItem>
+    </List>
   );
 };
 

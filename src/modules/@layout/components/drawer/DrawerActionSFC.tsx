@@ -1,8 +1,7 @@
 import NotificationListSFC from '@layout/components/notification/NotificationListSFC';
-import { withLayout, WithLayout } from '@layout/hoc/withLayout';
-import { withUser, WithUser } from '@layout/hoc/withUser';
+import { WithLayout, withLayout } from '@layout/hoc/withLayout';
+import { WithUser, withUser } from '@layout/hoc/withUser';
 import {
-  Avatar,
   Button,
   Collapse,
   Dialog,
@@ -10,8 +9,6 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
-  Divider,
-  IconButton,
   List,
   ListItem,
   ListItemIcon,
@@ -26,10 +23,10 @@ import Switch from '@material-ui/core/Switch';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
+import InvertColors from '@material-ui/icons/InvertColors';
 import PowerSettingsNew from '@material-ui/icons/PowerSettingsNew';
+import SwapHoriz from '@material-ui/icons/SwapHoriz';
 import SwapHorizontalCircle from '@material-ui/icons/SwapHorizontalCircle';
-import WifiIcon from '@material-ui/icons/Wifi';
 import styles from '@styles';
 import { AppUserManager } from '@utils/userManager';
 import * as classNames from 'classnames';
@@ -101,21 +98,29 @@ const component: React.SFC<AllProps> = props => {
         onClose={() => layoutDispatch.drawerActionHide()}
         ModalProps={{
           keepMounted: true, // Better open performance on mobile.
-        }}>
+        }}
+      >
         {userState.user && (
           <div>
-            <List>
+            <List disablePadding>
               <ListItem 
                 button
-                onClick={() => layoutState.isAccountExpanded ? layoutDispatch.accountColapse() : layoutDispatch.accountExpand()}>
-                <Avatar className={classes.avatarRed}>
-                  {userState.user.company.code}
-                </Avatar>
+                onClick={() => layoutState.isAccountExpanded ? layoutDispatch.accountColapse() : layoutDispatch.accountExpand()}
+              >
                 <ListItemText 
                   primary={userState.user.fullName} 
-                  secondary={userState.user.email} />
+                  secondary={userState.user.email}
+                  primaryTypographyProps={{
+                    noWrap: true,
+                    variant: 'body1'
+                  }}
+                  secondaryTypographyProps={{
+                    noWrap: true,
+                    variant: 'caption'
+                  }}
+                />
                 <ListItemSecondaryAction>
-                  {layoutState.isAccountExpanded ? <ExpandLess /> : <ExpandMore />}
+                  {layoutState.isAccountExpanded ? <ExpandLess color="action" /> : <ExpandMore color="action" />}
                 </ListItemSecondaryAction>
               </ListItem>
               <Collapse in={layoutState.isAccountExpanded} timeout="auto" unmountOnExit>
@@ -124,60 +129,79 @@ const component: React.SFC<AllProps> = props => {
                     <ListItemIcon>
                       <AccountCircle />
                     </ListItemIcon>
-                    <ListItemText inset primary={<FormattedMessage id="global.profile.my.title"/>} />
+                    <ListItemText inset 
+                      primary={<FormattedMessage id="global.profile.my.title"/>}
+                      primaryTypographyProps={{
+                        variant: 'body1'
+                      }}
+                    />
                   </ListItem>
                   <ListItem button onClick={() => history.push('/account/access')}>
                     <ListItemIcon>
                       <SwapHorizontalCircle />
                     </ListItemIcon>
-                    <ListItemText inset primary={<FormattedMessage id="global.access.switch.title"/>} />
+                    <ListItemText inset 
+                      primary={<FormattedMessage id="global.access.switch.title"/>}
+                      primaryTypographyProps={{
+                        variant: 'body1'
+                      }}
+                    />
                   </ListItem>
                   <ListItem button onClick={handleLogout}>
                     <ListItemIcon>
                       <PowerSettingsNew /> 
                     </ListItemIcon>
-                    <ListItemText inset primary={<FormattedMessage id="global.logout.title"/>}/>
+                    <ListItemText inset 
+                      primary={<FormattedMessage id="global.logout.title"/>}
+                      primaryTypographyProps={{
+                        variant: 'body1'
+                      }}
+                    />
                   </ListItem>
                 </List>
               </Collapse>
             </List>
-            <Divider />
 
-            <NotificationListSFC 
-              // companyUid={layoutState.user.company.uid}
-              // positionUid={layoutState.user.position.uid} 
-            />
-            
-            <List subheader={
-              <ListSubheader color="primary">
-                <FormattedMessage id="global.access.title"/>
-              </ListSubheader>
-            }>
-              <ListItem>
-                <ListItemText 
-                  primary={userState.user.company.name} 
-                  secondary={userState.user.position.name} />
-                <ListItemSecondaryAction>
-                  <IconButton>
-                    <MoreVertIcon />
-                  </IconButton>
-                </ListItemSecondaryAction>
-              </ListItem>
-            </List>
+            <NotificationListSFC />
           </div>
         )}
+        
         <List 
-            subheader={
-            <ListSubheader color="primary">
-              <FormattedMessage id="global.setting.title"/>
-            </ListSubheader>}>
+          disablePadding
+          subheader={
+          <ListSubheader>
+            <FormattedMessage id="global.setting.title"/>
+          </ListSubheader>}
+        >
           <ListItem>
             <ListItemIcon>
-              <WifiIcon />
+              <InvertColors />
             </ListItemIcon>
-            <ListItemText primary="Right hand" />
+            <ListItemText 
+              primary="Dark mode"
+              primaryTypographyProps={{
+                variant: 'body1'
+              }}
+            />
             <ListItemSecondaryAction>
-              <Switch color="primary"
+              <Switch color="secondary"
+                onChange={() => layoutDispatch.themeChange()}
+                checked={layoutState.theme.palette.type === 'dark'}
+              />
+            </ListItemSecondaryAction>
+          </ListItem>
+          <ListItem>
+            <ListItemIcon>
+              <SwapHoriz />
+            </ListItemIcon>
+            <ListItemText 
+              primary="Right hand"
+              primaryTypographyProps={{
+                variant: 'body1'
+              }}
+            />
+            <ListItemSecondaryAction>
+              <Switch color="secondary"
                 onChange={() => layoutDispatch.changeAnchor(layoutState.anchor === 'right' ? 'left' : 'right')}
                 checked={layoutState.anchor === 'right'}
               />

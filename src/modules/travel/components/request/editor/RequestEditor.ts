@@ -18,7 +18,7 @@ import { FormErrors } from 'redux-form';
 import { isNullOrUndefined, isObject } from 'util';
 
 interface OwnHandlers {
-  handleValidate: (payload: TravelRequestFormData) => FormErrors;
+  handleValidate: (payload: TravelRequestFormData) => any;
   handleSubmit: (payload: TravelRequestFormData) => void;
   handleSubmitSuccess: (result: any, dispatch: Dispatch<any>) => void;
   handleSubmitFail: (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => void;
@@ -57,9 +57,8 @@ const handlerCreators: HandleCreators<RequestEditorProps, OwnHandlers> = {
     };
 
     const requiredFields = [
-      'projectUid', 'Destinationtype',
+      'projectUid', 'destinationType', 'activityType',
       'start', 'end',
-      'siteUid'
     ];
 
     requiredFields.forEach(field => {
@@ -68,12 +67,37 @@ const handlerCreators: HandleCreators<RequestEditorProps, OwnHandlers> = {
       }
     });
 
+    if (formData.item) {
+      const requiredItemFields = ['employeeUid', 'transportType'];
+
+      const itemErrors: any[] = [];
+      
+      formData.item.items.forEach((item, index) => {
+        const itemError: any = {};
+
+        if (!item) { return ; }
+
+        requiredItemFields.forEach(field => {
+          if (!item[field] || isNullOrUndefined(item[field])) {
+            Object.assign(itemError, {[`${field}`]: props.intl.formatMessage({id: `travel.field.information.item.${field}.required`})});
+          }
+        });
+
+        itemErrors.push(itemError);
+      });
+
+      if (itemErrors.length) {
+        Object.assign(errors, {
+          items: itemErrors
+        });
+      }
+    }
+
     return errors;
   },
   handleSubmit: (props: RequestEditorProps) => (formData: TravelRequestFormData) => {
     const { formMode, travelUid, intl } = props;
     const { user } = props.userState;
-    // const { response } = props.travelRequestState.detail;
     const { createRequest, updateRequest } = props.travelRequestDispatch;
 
     if (!user) {
@@ -168,7 +192,7 @@ const handlerCreators: HandleCreators<RequestEditorProps, OwnHandlers> = {
       time: new Date()
     });
 
-    history.push('/travel/request');
+    history.push('/travel/requests');
   },
   handleSubmitFail: (props: RequestEditorProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
     const { formMode, intl } = props;

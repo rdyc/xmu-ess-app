@@ -37,7 +37,7 @@ interface PropsFromDispatch {
     // query
     loadAllRequest: typeof travelSettlementGetAllRequest;
     loadAllDispose: typeof travelSettlementGetAllDispose;
-    loadDetailRequest: typeof travelSettlementGetByIdRequest;
+    loadRequest: typeof travelSettlementGetByIdRequest;
     loadDetailDispose: typeof travelSettlementGetByIdDispose;
   };
 }
@@ -62,7 +62,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     // query
     loadAllRequest: (request: ITravelSettlementGetAllRequest) => dispatch(travelSettlementGetAllRequest(request)),
     loadAllDispose: () => dispatch(travelSettlementGetAllDispose()),
-    loadDetailRequest: (request: ITravelSettlementGetByIdRequest) => dispatch(travelSettlementGetByIdRequest(request)),
+    loadRequest: (request: ITravelSettlementGetByIdRequest) => dispatch(travelSettlementGetByIdRequest(request)),
     loadDetailDispose: () => dispatch(travelSettlementGetByIdDispose()),
   }
 });
