@@ -74,10 +74,10 @@ const handlerCreators: HandleCreators<PurchaseSettlementDetailFormProps, OwnHand
         };
         break;
 
-      case 'settlementDate': 
+      case 'date': 
         fieldProps = {
           required: true,
-          placeholder: intl.formatMessage({id: `purchase.field.${name}.placeholder`}),
+          placeholder: intl.formatMessage({id: `purchase.field.settlement${name}.placeholder`}),
           component: InputDate
         };
         break;

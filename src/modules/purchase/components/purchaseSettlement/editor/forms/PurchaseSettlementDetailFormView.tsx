@@ -13,12 +13,6 @@ export const PurchaseSettlementDetailFormView: React.SFC<PurchaseSettlementDetai
     const fieldName = name.replace('information.', '');
     const fieldProps = props.generateFieldProps(name);
 
-    // // don't show uid for new form
-    // const fields = ['uid'];
-    // if (formMode === FormMode.New && fields.indexOf(fieldName) !== -1) {
-    //   return null;
-    // }
-
     return (
       <Field
         key={fieldName}
