@@ -143,6 +143,14 @@ const handlerCreators: HandleCreators<DashboardProps, OwnHandlers> = {
           history.push(`/leave/requests/${uid}`);
         }
         break;
+
+      case 'Expense':
+        if (type === 'Approval' || type === 'Notify') {
+          history.push(`/expense/approvals/${uid}`);
+        } else {
+          history.push(`/expense/requests/${uid}`);
+        }
+        break;
     
       default:
         break;
