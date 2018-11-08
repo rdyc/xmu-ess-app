@@ -62,6 +62,10 @@
   "leave.message.approval.create.success": "A leave request has been approved",
   "leave.message.approval.create.failure": "Unable to process your approval",
   "leave.message.approval.reject.success": "A leave request has been rejected",
-  "leave.message.owner.emptyProps": "Some props are empty"
+  "leave.message.owner.emptyProps": "Some props are empty",
+
+  "leave.request.noData": "No data Leave Request",
+  "leave.approval.noData": "No data Leave Approval",
+  "leave.cancellation.noData": "No data Leave Cancellation"
 }
 
