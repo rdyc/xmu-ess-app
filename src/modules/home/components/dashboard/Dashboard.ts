@@ -121,7 +121,7 @@ const handlerCreators: HandleCreators<DashboardProps, OwnHandlers> = {
     switch (category) {
       // todo: complete all categories in each modules
       case 'Project Registration':
-        if (type === 'Approval') {
+        if (type === 'Approval' || type === 'Notify') {
           history.push(`/project/approvals/${uid}`);
         } else {
           history.push(`/project/requests/${uid}`);
@@ -152,6 +152,32 @@ const handlerCreators: HandleCreators<DashboardProps, OwnHandlers> = {
         }
         break;
     
+      case 'Purchase':
+        if (type === 'Approval' || type === 'Notify' || type === 'Rejected') {
+          history.push(`/purchase/approvals/details/${uid}`);
+        } else if (type === 'Settlement') {
+          history.push(`/purchase/settlements/details/${uid}`);
+        } else {
+          history.push(`/purchase/requests/details/${uid}`);
+        }
+        break;
+    
+      case 'Purchase Settlement':
+        if (type === 'Approval' || type === 'Notify' || type === 'Rejected') {
+          history.push(`/purchase/settlementapprovals/details/${uid}`);
+        } else {
+          history.push(`/purchase/settlements/details/${uid}`);
+        }
+        break;
+    
+      case 'Mileage':
+        if (type === 'Approval' || type === 'Notify') {
+          history.push(`/mileage/approvals/${uid}`);
+        } else {
+          history.push(`/mileage/requests/${uid}`);          
+        }
+        break;
+
       default:
         break;
     }
