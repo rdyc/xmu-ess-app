@@ -135,6 +135,14 @@ const handlerCreators: HandleCreators<DashboardProps, OwnHandlers> = {
           history.push(`/project/assignments/${uid}`);
         }
         break;
+
+      case 'Expense':
+        if (type === 'Approval' || type === 'Notify') {
+          history.push(`/expense/approvals/${uid}`);
+        } else {
+          history.push(`/expense/requests/${uid}`);
+        }
+        break;
     
       case 'Mileage':
         if (type === 'Approval' || type === 'Notify') {
