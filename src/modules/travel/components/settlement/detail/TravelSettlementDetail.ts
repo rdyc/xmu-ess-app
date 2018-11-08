@@ -82,7 +82,7 @@ const handlerCreators: HandleCreators<SettlementDetailProps, Handler> = {
 
     if (user) {
       loadRequest({
-        traveSettlementlUid: match.params.travelSettlementUid,
+        travelSettlementUid: match.params.travelSettlementUid,
         companyUid: user.company.uid,
         positionUid: user.position.uid,
       });
@@ -176,7 +176,7 @@ const lifecycles: ReactLifeCycleFunctions<SettlementDetailProps, OwnState> = {
 
     if (user) {
       loadRequest({
-        traveSettlementlUid: match.params.travelSettlementUid,
+        travelSettlementUid: match.params.travelSettlementUid,
         companyUid: user.company.uid,
         positionUid: user.position.uid,
       });
