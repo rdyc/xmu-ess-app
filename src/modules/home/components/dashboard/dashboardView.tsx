@@ -45,6 +45,13 @@ export const dashboardView: React.SFC<DashboardProps> = props => (
     }
 
     {
+      !props.notificationState.result &&
+      <Typography variant="body1">
+        There are no notifications at this time
+      </Typography>
+    }
+
+    {
       !props.notificationState.loading &&
       props.notificationState.result && 
       props.notificationState.result.data && 
@@ -52,9 +59,9 @@ export const dashboardView: React.SFC<DashboardProps> = props => (
         {
           props.notificationState.result.data
           .sort((a , b) => (a.name > b.name) ? 1 : 0)
-          .map((category, index) => category.details
-            .map((detail) =>
-              <Grid key={index} item xs={12} sm={6} md={3}>
+          .map((category, c) => category.details
+            .map((detail, d) =>
+              <Grid key={`${c}${d}`} item xs={12} sm={6} md={3}>
                 <Card square>
                   <CardHeader
                     avatar={
@@ -65,9 +72,9 @@ export const dashboardView: React.SFC<DashboardProps> = props => (
                     action={
                       <IconButton
                         className={classnames(props.classes.expand, {
-                          [props.classes.expandOpen]: props.isExpanded(index),
+                          [props.classes.expandOpen]: props.isExpanded(c, d),
                         })}
-                        onClick={() => props.handleExpandClick(index)}
+                        onClick={() => props.handleExpandClick(c, d)}
                       >
                         <ExpandMoreIcon />
                       </IconButton>
@@ -81,7 +88,7 @@ export const dashboardView: React.SFC<DashboardProps> = props => (
                       noWrap: true
                     }}
                   />
-                  <Collapse in={props.isExpanded(index)} timeout="auto" unmountOnExit>
+                  <Collapse in={props.isExpanded(c, d)} timeout="auto" unmountOnExit>
                     <List component="div" disablePadding>
                       {
                         detail.items.map(item =>

@@ -24,7 +24,8 @@ import {
 import { dashboardView } from './dashboardView';
 
 interface OwnItem {
-  index: number;
+  cIndex: number;
+  dIndex: number;
   expanded: boolean;
 }
 
@@ -38,7 +39,7 @@ interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
 }
 
 interface OwnHandlers {
-  isExpanded: (index: number) => boolean;
+  isExpanded: (cIndex: number, dIndex: number) => boolean;
   handleSyncClick: () => void;
   handleNotifClick: (category: string, type: string, uid: string) => void;
 }
@@ -60,15 +61,19 @@ const createProps: mapper<DashboardProps, OwnState> = (props: DashboardProps): O
 });
 
 const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
-  handleExpandClick: (prevState: OwnState) => (index: number): OwnState => {
+  handleExpandClick: (prevState: OwnState) => (cIndex: number, dIndex: number): OwnState => {
     const prevItems = prevState.items;
-    const prevItemIndex =  prevState.items.findIndex(item => item.index === index); 
+    const prevItemIndex =  prevState.items.findIndex(item => 
+      item.cIndex === cIndex &&
+      item.dIndex === dIndex
+    ); 
 
     if (prevItemIndex !== -1) {
       prevItems[prevItemIndex].expanded = !prevItems[prevItemIndex].expanded; 
     } else {
       prevItems.push({
-        index,
+        cIndex,
+        dIndex,
         expanded: true
       });
     }
@@ -83,10 +88,13 @@ const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
 };
 
 const handlerCreators: HandleCreators<DashboardProps, OwnHandlers> = {
-  isExpanded: (props: DashboardProps) => (index: number): boolean => { 
+  isExpanded: (props: DashboardProps) => (cIndex: number, dIndex: number): boolean => { 
     let isExpanded = false;
 
-    const existItem = props.items.find(item => item.index === index);
+    const existItem = props.items.find(item => 
+      item.cIndex === cIndex && 
+      item.dIndex === dIndex
+    );
 
     if (existItem) {
       isExpanded = existItem.expanded;
@@ -111,6 +119,7 @@ const handlerCreators: HandleCreators<DashboardProps, OwnHandlers> = {
     const { history } = props;
 
     switch (category) {
+      // todo: complete all categories in each modules
       case 'Project Registration':
         if (type === 'Approval') {
           history.push(`/project/approvals/${uid}`);
