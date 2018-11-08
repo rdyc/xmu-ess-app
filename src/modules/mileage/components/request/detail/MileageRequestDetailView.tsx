@@ -11,7 +11,7 @@ import {
 import { MileageRequestDetailProps } from '@mileage/components/request/detail/MileageRequestDetail';
 import { MileageInformation } from '@mileage/components/request/detail/shared/MileageInformation';
 import { MileageItem } from '@mileage/components/request/detail/shared/MileageItem';
-import { WorkflowHistoryMileage } from '@organization/components/workflow/history/WorkflowHistoryMileage';
+import { WorkflowHistory } from '@organization/components/workflow/history/WorkflowHistory';
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 
@@ -77,7 +77,7 @@ export const MileageRequestDetailView: React.SFC<
               )}
             </Grid>
             <Grid item xs={12} sm={12} md={8} xl={3}>
-              <WorkflowHistoryMileage data={response.data.workflow} />
+              <WorkflowHistory data={response.data.workflow} />
             </Grid>
           </Grid>
         )}

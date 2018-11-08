@@ -22,6 +22,8 @@ import {
 } from 'recompose';
 
 interface OwnHandlers {
+  handleChangeStart: (start: string) => void;
+  handleChangeEnd: (end: string) => void;
   handleGoToNext: () => void;
   handleGoToPrevious: () => void;
   handleReloading: () => void;
@@ -38,6 +40,8 @@ interface OwnOptions {
 }
 
 interface OwnState {
+  _start: string;
+  _end: string;
   orderBy: string | undefined;
   direction: string | undefined;
   page: number;
@@ -45,6 +49,8 @@ interface OwnState {
 }
 
 interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
+  stateStart: StateHandler<OwnState>;
+  stateEnd: StateHandler<OwnState>;
   stateNext: StateHandler<OwnState>;
   statePrevious: StateHandler<OwnState>;
   stateReloading: StateHandler<OwnState>;
@@ -70,6 +76,8 @@ const createProps: mapper<BillableListProps, OwnState> = (props: BillableListPro
   const { request } = props.summaryState.billable;
 
   return { 
+    _start: new Date().toString(),
+    _end: new Date().toString(),
     orderBy: request && request.filter && request.filter.orderBy || orderBy || 'uid',
     direction: request && request.filter && request.filter.direction || direction || 'descending',
     page: request && request.filter && request.filter.page || page || 1, 
@@ -78,6 +86,12 @@ const createProps: mapper<BillableListProps, OwnState> = (props: BillableListPro
 };
 
 const stateUpdaters: StateUpdaters<OwnOptions, OwnState, OwnStateUpdaters> = {
+  stateStart: (prevState: OwnState) => (_start: string) => ({
+    _start
+  }),
+  stateEnd: (prevState: OwnState) => (_end: string) => ({
+    _end
+  }),
   stateNext: (prevState: OwnState) => () => ({
     page: prevState.page + 1,
   }),
@@ -102,6 +116,20 @@ const stateUpdaters: StateUpdaters<OwnOptions, OwnState, OwnStateUpdaters> = {
 };
 
 const handlerCreators: HandleCreators<BillableListProps, OwnHandlers> = {
+  handleChangeStart: (props: BillableListProps) => (start: string) => {
+    const { stateStart } = props;
+    let { _start } = props;
+
+    _start = start;
+    stateStart(_start);
+  },
+  handleChangeEnd: (props: BillableListProps) => (end: string) => {
+    const { stateEnd } = props;
+    let { _end } = props;
+
+    _end = end;
+    stateEnd(_end);
+  },
   handleGoToNext: (props: BillableListProps) => () => { 
     props.stateNext();
   },
@@ -195,7 +223,7 @@ const lifecycles: ReactLifeCycleFunctions<BillableListProps, OwnState> = {
 };
 
 const loadData = (props: BillableListProps): void => {
-  const { orderBy, direction, page, size } = props;
+  const { orderBy, direction, page, size, _start, _end } = props;
   const { user } = props.userState;
   const { loadBillableRequest } = props.summaryDispatch;
   const { alertAdd } = props.layoutDispatch;
@@ -208,8 +236,8 @@ const loadData = (props: BillableListProps): void => {
         orderBy,
         page,
         size,
-        start: undefined,
-        end: undefined,
+        start: _start,
+        end: _end,
         find: undefined,
         findBy: undefined,
       }
