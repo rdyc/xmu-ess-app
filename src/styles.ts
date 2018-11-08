@@ -180,6 +180,21 @@ const styles = (theme: Theme) =>
     //   },
     /* Color page end */
 
+    /* Expander */
+    expand: {
+      transform: 'rotate(0deg)',
+      transition: theme.transitions.create('transform', {
+        duration: theme.transitions.duration.shortest,
+      }),
+      marginLeft: 'auto',
+      [theme.breakpoints.up('sm')]: {
+        marginRight: -8,
+      },
+    },
+    expandOpen: {
+      transform: 'rotate(180deg)',
+    },
+
     /* -------- generic classes start----------*/
     /* positioning */
     absoluteTopRight: {
