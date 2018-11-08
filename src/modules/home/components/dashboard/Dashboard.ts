@@ -136,6 +136,22 @@ const handlerCreators: HandleCreators<DashboardProps, OwnHandlers> = {
         }
         break;
 
+      case 'Leave':
+        if (type === 'Approval') {
+          history.push(`/leave/approvals/${uid}`);
+        } else {
+          history.push(`/leave/requests/${uid}`);
+        }
+        break;
+
+      case 'Expense':
+        if (type === 'Approval' || type === 'Notify') {
+          history.push(`/expense/approvals/${uid}`);
+        } else {
+          history.push(`/expense/requests/${uid}`);
+        }
+        break;
+
       case 'Travel':
         if (type === 'Approval' || type === 'Notify') {
           history.push(`/travel/approvals/request/${uid}`);
@@ -151,7 +167,7 @@ const handlerCreators: HandleCreators<DashboardProps, OwnHandlers> = {
           history.push(`/travel/settlements/${uid}`);
         }
         break;
-    
+        
       default:
         break;
     }
