@@ -68,12 +68,12 @@ export type LeaveApprovalListProps
   & OwnStateUpdaters;
 
 const createProps: mapper<LeaveApprovalListProps, OwnState> = (props: LeaveApprovalListProps): OwnState => {
-  const { orderBy, direction, page, size } = props;
+  const { page, size } = props;
   const { request } = props.leaveApprovalState.all;
 
   return { 
-    orderBy: request && request.filter && request.filter.query && request.filter.query.orderBy || orderBy,
-    direction: request && request.filter && request.filter.query && request.filter.query.direction || direction,
+    orderBy: request && request.filter && request.filter.query && request.filter.query.orderBy || 'uid',
+    direction: request && request.filter && request.filter.query && request.filter.query.direction || 'descending',
     page: request && request.filter && request.filter.query && request.filter.query.page || page || 1, 
     size: request && request.filter && request.filter.query && request.filter.query.size || size || 10,
   };

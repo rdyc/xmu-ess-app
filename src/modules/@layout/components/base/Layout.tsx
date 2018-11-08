@@ -11,6 +11,8 @@ import * as classNames from 'classnames';
 import * as React from 'react';
 import { compose } from 'recompose';
 
+import { ErrorBoundary } from './ErrorBoundary';
+
 type LayoutProps 
   = WithLayout
   & WithStyles<typeof styles>;
@@ -33,7 +35,9 @@ const layout: React.SFC<LayoutProps> = props => {
           isModeList ? classes.contentWithBottomNav : '',
           anchor === 'right' ? classes.contentShiftRight : classes.contentShiftLeft)}
           >
-          {props.children}
+          <ErrorBoundary>
+            {props.children}
+          </ErrorBoundary>
         </main>
         
         <NavigationBottomSFC />

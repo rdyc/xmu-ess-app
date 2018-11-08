@@ -88,7 +88,7 @@ const AppBarSFC: React.SFC<AllProps> = props => {
   );
 
   const renderNormalMode = (
-    <Toolbar>
+    <Toolbar >
       {
         /* menu */
         !layoutState.isNavBackVisible &&
@@ -215,7 +215,7 @@ const AppBarSFC: React.SFC<AllProps> = props => {
     <AppBar 
       elevation={isWidthUp('md', width) ? 3 : 1}
       position="fixed"
-      color={layoutState.isModeSearch ? 'inherit' : layoutState.theme.palette.type === 'dark' ? 'inherit' : 'primary'}
+      color={layoutState.isModeSearch ? 'inherit' : layoutState.theme.palette.type === 'dark' ? 'default' : 'primary'}
       className={fnFindClasses()}
     >
       {
