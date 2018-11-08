@@ -2,6 +2,7 @@ import * as appLocaleData from 'react-intl/locale-data/en';
 
 import enExpenseMessages from '../../modules/expense/locales/en_US.json';
 import enFinanceMessages from '../../modules/finance/locales/en_US.json';
+import enHomeMessages from '../../modules/home/locales/en_US.json';
 import enLeaveMessages from '../../modules/leave/locales/en_US.json';
 import enMileageMessages from '../../modules/mileage/locales/en_US.json';
 import enWorkflowMessages from '../../modules/organization/locales/en_US.json';
@@ -15,6 +16,7 @@ import enMessages from '../locales/en_US.json';
 const EnLang = {
   messages: {
     ...enMessages,
+    ...enHomeMessages,
     ...enWorkflowMessages,
     ...enMileageMessages,
     ...enProjectMessages,
