@@ -140,8 +140,12 @@ export const TimesheetApprovalListView: React.SFC<ApprovalListProps> = props => 
         >
           <RenderList />
           <Button
+            fullWidth
             variant="contained"
+            type="button"
             color="primary"
+            size="large"
+            disabled={!timesheetUids || timesheetUids.length <= 0}
             onClick={() => handleGoToApproval()}
           >
             APPROVAL
