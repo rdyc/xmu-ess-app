@@ -4,7 +4,7 @@ import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithNotification, withNotification } from '@layout/hoc/withNotification';
 import { WithUser, withUser } from '@layout/hoc/withUser';
-import { WithStyles, withStyles } from '@material-ui/core';
+import { WithStyles, withStyles, WithTheme, withTheme } from '@material-ui/core';
 import styles from '@styles';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps } from 'react-router';
@@ -49,6 +49,7 @@ export type DashboardProps
   & WithNotification
   & WithLayout
   & WithAppBar
+  & WithTheme
   & WithStyles<typeof styles>
   & InjectedIntlProps
   & RouteComponentProps
@@ -175,6 +176,7 @@ export const Dashboard = compose<DashboardProps, {}>(
   withLayout,
   withAppBar,
   withNotification,
+  withTheme(),
   withStyles(styles),
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),
