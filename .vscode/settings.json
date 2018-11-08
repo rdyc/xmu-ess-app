@@ -32,4 +32,5 @@
   "workbench.iconTheme": "vscode-icons",
   "window.zoomLevel": 0,
   "prettier.singleQuote": true,
+  "npm-scripts.showStartNotification": false,
 }

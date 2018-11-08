@@ -71,14 +71,14 @@ export const ProjectApprovalDetailView: React.SFC<ProjectApprovalDetailProps> = 
 
           <Grid item xs={12} md={4}>
             <Grid container spacing={16}>
-              <Grid item>
+              <Grid item xs={12}>
                 <WorkflowHistory data={response.data.workflow} />
               </Grid>
 
               {
                 response.data.workflow &&
                 response.data.workflow.isApproval &&
-                <Grid item>
+                <Grid item xs={12}>
                   <WorkflowApprovalForm
                     approvalTitle={approvalTitle}
                     approvalSubHeader={approvalSubHeader}

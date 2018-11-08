@@ -8,7 +8,7 @@
       "@language/*": [ "language/*" ],
       "@utils/*": [ "utils/*" ],
       "@layout/*": [ "modules/@layout/*" ],
-      "@dashboard/*": [ "modules/dashboard/*" ],
+      "@home/*": [ "modules/home/*" ],
       "@account/*": [ "modules/account/*" ],
       "@common/*": [ "modules/common/*" ],
       "@expense/*": [ "modules/expense/*" ],

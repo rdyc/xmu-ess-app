@@ -22,9 +22,12 @@ const layout: React.SFC<LayoutProps> = props => {
   return (
     <LayoutTheme>
       <div className={classes.root}>
-        <AppBarSFC/>
-        <DrawerMenuSFC/>
-        <DrawerActionSFC/>
+        <AppBarSFC />
+
+        <DrawerMenuSFC />
+        
+        <DrawerActionSFC />
+        
         <main className={classNames(
           classes.content,
           isModeList ? classes.contentWithBottomNav : '',
@@ -32,8 +35,10 @@ const layout: React.SFC<LayoutProps> = props => {
           >
           {props.children}
         </main>
-        <NavigationBottomSFC/>
-        <SnackbarAlertSFC/>
+        
+        <NavigationBottomSFC />
+        
+        <SnackbarAlertSFC />
       </div>
     </LayoutTheme>
   );

@@ -1,4 +1,7 @@
 enum AppMenu {
+  Home = 'X0001',
+  Dashboard = 'X0002',
+
   Expense = 'MNU30',
   ExpenseRequest = 'MNU31',
   ExpenseApproval = 'MNU32',
