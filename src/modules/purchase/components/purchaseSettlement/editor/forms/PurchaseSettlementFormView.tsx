@@ -1,5 +1,6 @@
 import { Submission } from '@layout/components/submission/Submission';
 import { Grid } from '@material-ui/core';
+// import { PurchaseRequestDetail, PurchaseRequestDetailProps } from '@purchase/components/purchaseRequest/detail/PurchaseRequestDetail';
 import { PurchaseSettlementDetailForm } from '@purchase/components/purchaseSettlement/editor/forms/PurchaseSettlementDetailForm';
 import { PurchaseSettlementFormProps } from '@purchase/components/purchaseSettlement/editor/forms/PurchaseSettlementForm';
 import { PurchaseSettlementItemForm } from '@purchase/components/purchaseSettlement/editor/forms/PurchaseSettlementItemForm';
@@ -24,6 +25,11 @@ export const PurchaseSettlementFormView: React.SFC<PurchaseSettlementFormProps> 
     change('information.actual', newValue );
   };
 
+//   const componentPurchase = (context: PurchaseRequestDetailProps) => (
+// <PurchaseRequestDetail
+//       data={response.data}
+// />
+  // );
   const componentInformation = (context: BaseFieldsProps) => (
     <PurchaseSettlementDetailForm
       formMode={formMode}
@@ -47,6 +53,14 @@ export const PurchaseSettlementFormView: React.SFC<PurchaseSettlementFormProps> 
         justify="flex-start"
         alignItems="flex-start"
       >
+        {/* <Grid item xs={12} md={4} >
+          <FormSection name="request">
+            <Fields
+              names={fields}
+              component={componentPurchase}
+            />
+          </FormSection>
+        </Grid> */}
         <Grid item xs={12} md={4} >
           <FormSection name="information">
             <Fields

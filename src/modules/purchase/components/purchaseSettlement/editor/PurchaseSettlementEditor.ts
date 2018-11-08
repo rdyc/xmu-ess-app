@@ -141,7 +141,7 @@ const handlers: HandleCreators<PurchaseSettlementEditorProps, OwnHandlers> = {
         formData.items.items.forEach(item =>
           _items.push({
             uid: item.uid,
-            amount: item.amount
+            amount: item.actual
               })
             );
       }
@@ -160,7 +160,7 @@ const handlers: HandleCreators<PurchaseSettlementEditorProps, OwnHandlers> = {
         formData.items.items.forEach(item =>
           _itemsPut.push({
             uid: item.uid,
-            amount: item.amount
+            amount: item.actual
           })
           );
         } 
@@ -233,7 +233,7 @@ const handlers: HandleCreators<PurchaseSettlementEditorProps, OwnHandlers> = {
       time: new Date()
     });
 
-    history.push('/purchase/request/list');
+    history.push('/purchase/requests/list');
   },
   handleSubmitFail: (props: PurchaseSettlementEditorProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
     const { formMode, intl } = props;
@@ -283,17 +283,20 @@ const lifecycles: ReactLifeCycleFunctions<PurchaseSettlementEditorProps, {}> = {
 
     stateUpdate({
       companyUid: user.company.uid,
-      positionUid: user.position.uid
+      positionUid: user.position.uid,
+      formMode: FormMode.New
     });
 
     if (!isNullOrUndefined(history.location.state)) {
+
+      if (!isNullOrUndefined(history.location.state.statusType)) {
       purchase.title = 'purchase.form.purchaseSettlement.editTitle';
       purchase.subTitle = 'purchase.form.purchaseSettlement.editSubTitle';
 
       stateUpdate({
-        formMode: FormMode.Edit,
-        purchaseUid: history.location.state.uid
-      });
+          formMode: FormMode.Edit,
+        });  
+    }
 
       loadDetailRequest({
         companyUid: user.company.uid,

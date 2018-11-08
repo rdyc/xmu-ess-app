@@ -68,18 +68,19 @@ export const PurchaseRequestDetailView: React.SFC<PurchaseRequestDetailProps> = 
           // alignItems="baseline"
         >
           <Grid item 
-          // xs={12} 
+          // xs={4} 
           md={4}>
             <PurchaseInformation data={response.data}/>
           </Grid>
           
           <Grid item 
-          // xs={12} 
+          // xs={4} 
           md={8}>
             <PurchaseItemInformation data={response.data.items} />
           </Grid>
 
           <Grid item
+          // xs={4}
           md={4}
           >
             <WorkflowHistory data={response.data.workflow} />

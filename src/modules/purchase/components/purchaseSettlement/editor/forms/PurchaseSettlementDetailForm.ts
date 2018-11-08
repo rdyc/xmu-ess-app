@@ -1,15 +1,13 @@
-// import { WorkflowStatusType } from '@common/classes/types';
+import { SelectSystemOption } from '@common/components/select';
 import { FormMode } from '@generic/types';
 import { InputDate } from '@layout/components/input/date';
 import { InputNumber } from '@layout/components/input/number';
 import { InputText } from '@layout/components/input/text';
 import { InputCustomer } from '@lookup/components/customer/input';
-// import { SelectProject } from '@project/components/select/project';
 import { PurchaseSettlementDetailFormView } from '@purchase/components/purchaseSettlement/editor/forms/PurchaseSettlementDetailFormView';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose, HandleCreators, withHandlers } from 'recompose';
 import { BaseFieldsProps } from 'redux-form';
-// import { isNullOrUndefined } from 'util';
 
 interface OwnProps {
   formMode: FormMode;
@@ -39,7 +37,7 @@ const handlerCreators: HandleCreators<PurchaseSettlementDetailFormProps, OwnHand
     
     const fieldName = name.replace('information.', '');
     
-    let fieldProps: any = {};
+    let fieldProps: SelectSystemOption & any = {};
   
     switch (fieldName) {
       case 'uid': 
@@ -146,6 +144,14 @@ const handlerCreators: HandleCreators<PurchaseSettlementDetailFormProps, OwnHand
          break;
   
       case 'advance':
+        fieldProps = {
+          type: 'number',
+          disabled: true,
+          component: InputNumber
+        };
+        break;
+  
+      case 'balanceDue':
         fieldProps = {
           type: 'number',
           disabled: true,

@@ -32,7 +32,7 @@ export const SettlementItemInformation: React.SFC<OwnProps> = props => {
             data &&
             data.map(item =>
               <ListItem disableGutters key={item.uid}>
-                <Grid container xs={12}>
+                {/* <Grid container xs={12}> */}
                   <Grid container item xs={12} spacing={8}>
                     <ListItemText
                       primary={item.uid}
@@ -43,32 +43,35 @@ export const SettlementItemInformation: React.SFC<OwnProps> = props => {
                         primary={<FormattedMessage id="purchase.itemTitle.request" />}
                         />
                       <Typography
-                      variant="headline"
-                      align="left"
-                    >
+                        color="primary"
+                        variant="headline"
+                        align="left"
+                      >
                       <FormattedNumber
                         value={item.requestValue}
                       />
-                    </Typography>
+                      </Typography>
                     </Grid>
                     <Grid xs={3}>
                       <ListItemText
                         primary={<FormattedMessage id="purchase.itemTitle.actual" />}
                       />
-                    <Typography
-                      variant="headline"
-                      align="left"
-                    >
+                      <Typography
+                        color="secondary"
+                        variant="headline"
+                        align="left"
+                      >
                       <FormattedNumber
                         value={item.actualValue}
                       />
-                    </Typography>
+                      </Typography>
                     </Grid>
                     <Grid xs={3}>
                       <ListItemText
                         primary={<FormattedMessage id="purchase.itemTitle.variance" />}
                       />
-                    <Typography
+                    <Typography 
+                      color="error"
                       variant="headline"
                       align="left"
                     >
@@ -78,7 +81,7 @@ export const SettlementItemInformation: React.SFC<OwnProps> = props => {
                     </Typography>
                     </Grid>
                   </Grid>
-                </Grid>
+                {/* </Grid> */}
 
               </ListItem>
             )

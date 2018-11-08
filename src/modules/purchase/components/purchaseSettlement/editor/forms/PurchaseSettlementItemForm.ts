@@ -37,17 +37,35 @@ const handlerCreators: HandleCreators<PurchaseSettlementItemFormProps, OwnHandle
       //   };
       //   break;
 
-      case 'description': 
+      // case 'description': 
+      //   fieldProps = {
+      //     disabled: true,
+      //     placeholder: intl.formatMessage({id: `purchase.itemTitle.${name}`}),
+      //     component: InputText
+      //   };
+      //   break;
+
+      // case 'requestValue':
+      //   fieldProps = {
+      //     disabled: true,
+      //     type: 'number',
+      //     placeholder: intl.formatMessage({id: `purchase.itemTitle.${name}`}),
+      //     component: InputNumber
+      //   };
+      //   break;
+
+      case 'actualValue':
         fieldProps = {
           required: true,
+          type: 'number',
           placeholder: intl.formatMessage({id: `purchase.itemTitle.${name}`}),
-          component: InputText
+          component: InputNumber
         };
         break;
 
-      case 'requestValue':
+      case 'varianceValue':
         fieldProps = {
-          required: true,
+          requeired: true,
           type: 'number',
           placeholder: intl.formatMessage({id: `purchase.itemTitle.${name}`}),
           component: InputNumber

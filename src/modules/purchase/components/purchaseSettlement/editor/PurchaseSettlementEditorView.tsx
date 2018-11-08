@@ -29,7 +29,7 @@ export const PurchaseSettlementEditorView: React.SFC<PurchaseSettlementEditorPro
   // init form values
   const initialValues: PurchaseSettlementFormData = {
     information: {
-      // uid: string,
+      uid: undefined,
       date: undefined,
       notes: undefined,
     },
@@ -39,39 +39,36 @@ export const PurchaseSettlementEditorView: React.SFC<PurchaseSettlementEditorPro
     }
   };
 
-  // New
-  if (formMode === FormMode.New) {
-    return renderForm(initialValues);
-  }
-
-  // Modify
-  if (formMode === FormMode.Edit) {
-    if (isLoading && !response) {
+  if (isLoading && !response) {
       return (
         <LinearProgress variant="query" />
       );
     }
 
-    if (!isLoading && response && response.data) {
+  if (!isLoading && response && response.data) {
       // todo: replace values with response data
       const data = response.data;
 
-      // initialValues.information.uid = data.uid;
+      initialValues.information.uid = data.uid;
       initialValues.information.notes = data.notes;
+
+      if (formMode === FormMode.Edit) {
       initialValues.information.date = data.date;
+        }
 
       if (data.items) {
-        data.items.forEach(item =>
-          initialValues.items.items.push({
-            uid: item.uid,
-            amount: item.requestValue
+            data.items.forEach(item =>
+              initialValues.items.items.push({
+                uid: item.uid,
+                description: item.description,
+                request: item.requestValue,
+                actual: (formMode === FormMode.New ? 0 : item.actualValue),
+                variance: (formMode === FormMode.New ? 0 : item.varianceValue),
           })
         );
       }
 
       return renderForm(initialValues);
     }
-  }
-
   return null;
 };

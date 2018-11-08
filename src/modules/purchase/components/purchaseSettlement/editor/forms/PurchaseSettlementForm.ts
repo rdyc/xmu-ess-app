@@ -8,15 +8,16 @@ import { formValueSelector,
 const formName = 'purchaseSettlement';
 
 export type PurchaseSettlementItemFormData = {
-  uid: string 
-  // | null
-  ;
-  amount: number;
+  uid: string;
+  description: string | null;
+  request: number;
+  actual: number;
+  variance: number;
 };
 
 export type PurchaseSettlementFormData = {
   information: {
-    // uid: string;
+    uid: string | null | undefined;
     notes: string | null | undefined;
     date: string | null | undefined;
   },
@@ -46,7 +47,7 @@ const selector = formValueSelector(formName);
 const mapStateToProps = (state: any): FormValueProps => {
   const currencyType = selector(state, 'information.currencyType');
   const rate = selector(state, 'information.rate');
-  const value = selector(state, 'information.request'); 
+  const value = selector(state, 'information.actual'); 
   const itemValue = selector(state, 'items.requestValue');
   return {
     formIsCurrencyIDR: currencyType === 'SCR01',
