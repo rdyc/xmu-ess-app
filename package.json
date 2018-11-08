@@ -51,7 +51,6 @@
     "material-ui-datetimepicker": "^1.0.7",
     "material-ui-pickers": "^1.0.0-rc.17",
     "moment": "^2.22.2",
-    "mui-virtualized-table": "^2.0.0",
     "oidc-client": "^1.5.2",
     "polished": "^1.9.3",
     "qs": "^6.5.2",
