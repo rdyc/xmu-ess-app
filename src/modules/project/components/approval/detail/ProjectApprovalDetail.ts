@@ -230,8 +230,8 @@ const createProps: mapper<ProjectApprovalDetailProps, OwnState> = (props: Projec
   const { intl } = props;
 
   return {
-    approvalTitle: intl.formatMessage({id: 'project.approvalTitle'}),
-    approvalSubHeader: intl.formatMessage({id: 'project.approvalSubHeader'}),
+    approvalTitle: intl.formatMessage({id: 'project.registration.section.approval.title'}),
+    approvalSubHeader: intl.formatMessage({id: 'project.registration.section.approval.subHeader'}),
     approvalChoices: [
       { value: WorkflowStatusType.Approved, label: intl.formatMessage({id: 'workflow.approval.action.approve'}) },
       { value: WorkflowStatusType.Rejected, label: intl.formatMessage({id: 'workflow.approval.action.reject'}) }
