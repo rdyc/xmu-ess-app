@@ -1,7 +1,6 @@
 import {
   Card,
   CardContent,
-  CardHeader,
   Grid,
   TextField,
   Typography
@@ -12,7 +11,7 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import { BillableListProps } from '@summary/components/billable/BillableList';
 import DatePicker from 'material-ui-pickers/DatePicker';
 // import { Column, Table } from 'react-virtualized';
-// import { Moment } from 'moment';
+import { Moment } from 'moment';
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 
@@ -41,23 +40,6 @@ export const BillableListView: React.SFC<BillableListProps> = props => {
   //   );
   // };
 
-  const inputDateEnd = () => (
-    <DatePicker
-      okLabel={intl.formatMessage({ id: 'global.action.ok' })}
-      cancelLabel={intl.formatMessage({ id: 'global.action.cancel' })}
-      clearLabel={intl.formatMessage({ id: 'global.action.clear' })}
-      todayLabel={intl.formatMessage({ id: 'global.date.today' })}
-      emptyLabel={intl.formatMessage({ id: 'global.date.empty' })}
-      leftArrowIcon={<ChevronLeftIcon />}
-      rightArrowIcon={<ChevronRightIcon />}
-      format={'MMM DD, YYYY'}
-      label={intl.formatMessage({ id: 'billable.field.start' })}
-      showTodayButton
-      value={_end}
-      onChange={handleChangeEnd}
-    />
-  );
-
   const inputDateStart = () => (
     <DatePicker
       okLabel={intl.formatMessage({ id: 'global.action.ok' })}
@@ -71,7 +53,24 @@ export const BillableListView: React.SFC<BillableListProps> = props => {
       label={intl.formatMessage({ id: 'billable.field.start' })}
       showTodayButton
       value={_start}
-      onChange={handleChangeStart}
+      onChange={(moment: Moment) => handleChangeStart(moment.toISOString(true))}
+    />
+  );
+
+  const inputDateEnd = () => (
+    <DatePicker
+      okLabel={intl.formatMessage({ id: 'global.action.ok' })}
+      cancelLabel={intl.formatMessage({ id: 'global.action.cancel' })}
+      clearLabel={intl.formatMessage({ id: 'global.action.clear' })}
+      todayLabel={intl.formatMessage({ id: 'global.date.today' })}
+      emptyLabel={intl.formatMessage({ id: 'global.date.empty' })}
+      leftArrowIcon={<ChevronLeftIcon />}
+      rightArrowIcon={<ChevronRightIcon />}
+      format={'MMM DD, YYYY'}
+      label={intl.formatMessage({ id: 'billable.field.start' })}
+      showTodayButton
+      value={_end}
+      onChange={(moment: Moment) => handleChangeEnd(moment.toISOString(true))}
     />
   );
 
@@ -82,7 +81,7 @@ export const BillableListView: React.SFC<BillableListProps> = props => {
           <TextField
             disabled
             margin="normal"
-            label={<FormattedMessage id="billable.field.employee" />}
+            label={<FormattedMessage id="billable.field.company" />}
             value={user && user.company.uid}
           />
         </Grid>
@@ -118,10 +117,6 @@ export const BillableListView: React.SFC<BillableListProps> = props => {
         <Typography variant="body2">loading</Typography>
       )}
       <Card square>
-        <CardHeader
-          title={<FormattedMessage id="billable.infoTitle" />}
-          subheader={<FormattedMessage id="billable.infoSubTitle" />}
-        />
         <CardContent>
           {renderFilter()}
           {/* {!isLoading && response && renderFilter()} */}
