@@ -22,7 +22,7 @@ import {
   withStateHandlers,
 } from 'recompose';
 
-export interface OwnHandlers {
+interface OwnHandlers {
   handleGoToDetail: (expenseUid: string) => void;
   handleGoToNext: () => void;
   handleGoToPrevious: () => void;
@@ -163,7 +163,7 @@ const lifecycles: ReactLifeCycleFunctions<RequestListProps, OwnState> = {
         onSyncCallback: handleReloading,
         onOrderCallback: handleChangeOrder,
         onDirectionCallback: handleChangeSort,
-        onAddCallback: () => history.push('/expense/form'),
+        onAddCallback: () => history.push('/expense/requests/form'),
         onSizeCallback: handleChangeSize,
       });
   

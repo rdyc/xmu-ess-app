@@ -158,7 +158,7 @@ export const menuLinkMapper = (menuUid: string) => {
       break;
 
     default:
-      path = '/';
+      path = '/home/dashboard';
       break;
   }
 
