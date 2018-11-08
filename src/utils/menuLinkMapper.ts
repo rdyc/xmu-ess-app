@@ -53,6 +53,9 @@ export const menuLinkMapper = (menuUid: string) => {
     case 'MNU56':
       path = '/reports/profitability';
       break;
+    case 'MNU51':
+      path = '/reports/effectiveness';
+      break;
     case 'MNU52':
       path = '/reports/progress';
       break;

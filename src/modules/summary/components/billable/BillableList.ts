@@ -5,7 +5,7 @@ import { WithNavBottom, withNavBottom } from '@layout/hoc/withNavBottom';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IListBarField } from '@layout/interfaces';
 import { BillableListView } from '@summary/components/billable/BillableListView';
-import { WithSummaryRequest, withSummaryRequest } from '@summary/hoc/withSummary';
+import { WithSummary, withSummary } from '@summary/hoc/withSummary';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import {
@@ -54,7 +54,7 @@ interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
 }
 
 export type BillableListProps 
-  = WithSummaryRequest
+  = WithSummary
   & WithUser
   & WithLayout
   & WithNavBottom
@@ -223,7 +223,7 @@ const loadData = (props: BillableListProps): void => {
 };
 
 export const BillableList = compose<BillableListProps, OwnOptions>(
-  withSummaryRequest,
+  withSummary,
   withUser,
   withLayout,
   withNavBottom,
