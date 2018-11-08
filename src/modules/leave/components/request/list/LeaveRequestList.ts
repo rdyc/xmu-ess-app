@@ -68,12 +68,12 @@ export type RequestListProps
   & OwnStateUpdaters;
 
 const createProps: mapper<RequestListProps, OwnState> = (props: RequestListProps): OwnState => {
-  const { orderBy, direction, page, size } = props;
+  const { page, size } = props;
   const { request } = props.leaveRequestState.all;
 
   return { 
-    orderBy: request && request.filter && request.filter.orderBy || orderBy,
-    direction: request && request.filter && request.filter.direction || direction,
+    orderBy: request && request.filter && request.filter.orderBy || 'uid',
+    direction: request && request.filter && request.filter.direction || 'descending',
     page: request && request.filter && request.filter.page || page || 1, 
     size: request && request.filter && request.filter.size || size || 10,
   };
