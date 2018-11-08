@@ -5,7 +5,7 @@ import { PurchaseRequestDetail } from '@purchase/components/purchaseRequest/deta
 import { PurchaseRequestEditor } from '@purchase/components/purchaseRequest/editor/PurchaseRequestEditor';
 import { PurchaseRequestList } from '@purchase/components/purchaseRequest/list/PurchaseRequestList';
 import { PurchaseSettlementDetail } from '@purchase/components/purchaseSettlement/detail/PurchaseSettlementDetail';
-// import PurchaseSettlementEditor from '@purchase/components/purchaseRequest/editor/PurchaseSettlementEditor';
+import { PurchaseSettlementEditor } from '@purchase/components/purchaseSettlement/editor/PurchaseSettlementEditor';
 import { PurchaseSettlementList } from '@purchase/components/purchaseSettlement/list/PurchaseSettlementList';
 import { SettlementApprovalDetail } from '@purchase/components/settlementHistories/detail/SettlementApprovalDetail';
 import { SettlementApprovalList } from '@purchase/components/settlementHistories/list/SettlementApprovalList';
@@ -30,7 +30,7 @@ const settlement = (props: RouteComponentProps) => (
   <Switch>
     <Route path={`${props.match.path}/list`} component={PurchaseSettlementList} />
     <Route path={`${props.match.path}/details/:purchaseUid`} component={PurchaseSettlementDetail} />    
-    {/* <Route path={`${props.match.path}/form`} component={settlementeditorComponent} /> */}
+    <Route path={`${props.match.path}/form`} component={PurchaseSettlementEditor} />
   </Switch>
 );
 
