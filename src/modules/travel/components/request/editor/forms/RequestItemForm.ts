@@ -1,6 +1,3 @@
-// import { SelectSystemOption } from '@common/components/select';
-// import { InputDate } from '@layout/components/input/date';
-// import { InputText } from '@layout/components/input/text';
 import { withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { WithLookupDiem, withLookupDiem } from '@lookup/hoc/withLookupDiem';
@@ -22,9 +19,6 @@ interface OwnState {
   active: string | undefined;
   isExpanded: boolean;
 }
-// interface OwnHandlers {
-//   generateFieldProps: (name: string) => any;
-// }
 
 interface OwnStateHandler extends StateHandlerMap<OwnState> {
   handleToggle: (type: string) => OwnState;

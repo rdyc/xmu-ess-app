@@ -161,7 +161,11 @@ const handlerCreators: HandleCreators<RequestDetailProps, Handler> = {
           break;
       }
       stateReset();
-      history.push(next, { uid: travelUid });
+      if (action === TravelUserAction.AddSettlement) {
+        history.push(next, { traveluid: travelUid });      
+      } else { 
+        history.push(next, { uid: travelUid });
+      }
     }      
   },
 };
