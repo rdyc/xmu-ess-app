@@ -79,5 +79,17 @@
   "travel.item.field.information.currencyUid": "Currency",
   "travel.item.field.information.currencyRate": "Currency Rate",
   "travel.item.field.information.diemValue": "Per Diem",
-  "travel.item.field.information.amount": "Diem Value"
+  "travel.item.field.information.amount": "Diem Value",
+
+  "travel.message.request.emptyProps": "Some props are empty",
+  "travel.message.request.create.success": "A new Travel {uid} has been created",
+  "travel.message.request.create.failure": "Unable to process your submission",
+  "travel.message.request.update.success": "Existing TravelID {uid} has been updated",
+  "travel.message.request.update.failure": "Unable to process your submission",
+
+  "travel.message.settlement.emptyProps": "Some props are empty",
+  "travel.message.settlement.create.success": "A TravelID {uid} has been Settle",
+  "travel.message.settlement.create.failure": "Unable to process your submission",
+  "travel.message.settlement.update.success": "Existing Travel_SettlementID {uid} has been updated",
+  "travel.message.settlement.update.failure": "Unable to process your submission"
 }

@@ -135,6 +135,22 @@ const handlerCreators: HandleCreators<DashboardProps, OwnHandlers> = {
           history.push(`/project/assignments/${uid}`);
         }
         break;
+
+      case 'Travel':
+        if (type === 'Approval' || type === 'Notify') {
+          history.push(`/travel/approvals/request/${uid}`);
+        } else {
+          history.push(`/travel/requests/${uid}`);
+        }
+        break;
+
+      case 'Travel Settlement':
+        if (type === 'Approval' || type === 'Notify') {
+          history.push(`/travel/approvals/settlement/${uid}`);
+        } else {
+          history.push(`/travel/settlements/${uid}`);
+        }
+        break;
     
       default:
         break;

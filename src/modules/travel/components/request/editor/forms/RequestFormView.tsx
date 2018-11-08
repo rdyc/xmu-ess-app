@@ -28,8 +28,8 @@ export const RequestFormView: React.SFC<RequestFormProps> = props => {
   const componentTravelItem = (context: WrappedFieldArrayProps<any>) => (
     <RequestItemForm 
       context={context}
-      destinationTypeValue={destinationtypeValue}
-      diemType={projectUidValue} 
+      // destinationTypeValue={destinationtypeValue}
+      // diemType={projectUidValue} 
     />    
   );
 

@@ -75,7 +75,6 @@ const handlerCreators: HandleCreators<TravelSettlementEditorProps, OwnHandlers> 
 
       formData.item.items.forEach((item, index) => {
         const itemError: any = {};
-        console.log(item);
 
         if (!item) { return; }
 
