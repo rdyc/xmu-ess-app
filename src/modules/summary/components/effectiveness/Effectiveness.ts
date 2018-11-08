@@ -17,7 +17,7 @@ import {
   withStateHandlers,
 } from 'recompose';
 
-export interface OwnHandlers {
+interface OwnHandlers {
 }
 
 interface OwnOptions {
