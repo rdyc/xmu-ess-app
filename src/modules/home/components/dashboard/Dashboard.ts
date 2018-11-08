@@ -56,20 +56,20 @@ export type DashboardProps
   & OwnStateUpdaters
   & OwnHandlers;
 
-const createProps: mapper<DashboardProps, OwnState> = (props: DashboardProps): OwnState => ({ 
+const createProps: mapper<DashboardProps, OwnState> = (props: DashboardProps): OwnState => ({
   items: []
 });
 
 const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
   handleExpandClick: (prevState: OwnState) => (cIndex: number, dIndex: number): OwnState => {
     const prevItems = prevState.items;
-    const prevItemIndex =  prevState.items.findIndex(item => 
+    const prevItemIndex = prevState.items.findIndex(item =>
       item.cIndex === cIndex &&
       item.dIndex === dIndex
-    ); 
+    );
 
     if (prevItemIndex !== -1) {
-      prevItems[prevItemIndex].expanded = !prevItems[prevItemIndex].expanded; 
+      prevItems[prevItemIndex].expanded = !prevItems[prevItemIndex].expanded;
     } else {
       prevItems.push({
         cIndex,
@@ -88,18 +88,18 @@ const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
 };
 
 const handlerCreators: HandleCreators<DashboardProps, OwnHandlers> = {
-  isExpanded: (props: DashboardProps) => (cIndex: number, dIndex: number): boolean => { 
+  isExpanded: (props: DashboardProps) => (cIndex: number, dIndex: number): boolean => {
     let isExpanded = false;
 
-    const existItem = props.items.find(item => 
-      item.cIndex === cIndex && 
+    const existItem = props.items.find(item =>
+      item.cIndex === cIndex &&
       item.dIndex === dIndex
     );
 
     if (existItem) {
       isExpanded = existItem.expanded;
     }
-    
+
     return isExpanded;
   },
   handleSyncClick: (props: DashboardProps) => () => {
@@ -152,6 +152,14 @@ const handlerCreators: HandleCreators<DashboardProps, OwnHandlers> = {
         }
         break;
 
+      case 'Timesheet':
+        if (type === 'Approval' || type === 'Notify') {
+          history.push(`/timesheet/approval/${uid}`);
+        } else {
+          history.push(`/timesheet/entry/${uid}`);
+        }
+        break;
+        
       case 'Travel':
         if (type === 'Approval' || type === 'Notify') {
           history.push(`/travel/approvals/request/${uid}`);
@@ -209,7 +217,7 @@ const lifecycles: ReactLifeCycleFunctions<DashboardProps, {}> = {
       uid: AppMenu.Dashboard,
       parentUid: AppMenu.Home,
       title: intl.formatMessage(homeMessage.dashboard.page.title),
-      subTitle : intl.formatMessage(homeMessage.dashboard.page.subHeader)
+      subTitle: intl.formatMessage(homeMessage.dashboard.page.subHeader)
     });
 
     if (!loading && !result) {
