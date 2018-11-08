@@ -111,7 +111,7 @@ const handlerCreators: HandleCreators<AccessSwitcherProps, OwnHandlers> = {
         props.assignUser(user);
     
         // redirect to home page
-        props.history.push('/home');
+        props.history.push('/home/dashboard');
       }
     }
   },
