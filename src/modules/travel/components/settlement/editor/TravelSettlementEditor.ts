@@ -5,6 +5,7 @@ import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { ITravelSettlementPostPayload, ITravelSettlementPutItem, ITravelSettlementPutPayload } from '@travel/classes/request/settlement';
 import { ITravelRequest } from '@travel/classes/response';
+import { WithTravelRequest, withTravelRequest } from '@travel/hoc/withTravelRequest';
 import { WithTravelSettlement, withTravelSettlement } from '@travel/hoc/withTravelSettlement';
 import { travelRequestMessage } from '@travel/locales/messages/travelRequestMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
@@ -40,6 +41,7 @@ interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
 
 export type TravelSettlementEditorProps
   = WithTravelSettlement
+  & WithTravelRequest
   & WithUser
   & WithLayout
   & WithAppBar
@@ -70,16 +72,15 @@ const handlerCreators: HandleCreators<TravelSettlementEditorProps, OwnHandlers> 
       const requiredItemFields = ['employeeUid', 'transportType'];
 
       const itemErrors: any[] = [];
-      
+
       formData.item.items.forEach((item, index) => {
         const itemError: any = {};
-        console.log(item);
 
-        if (!item) { return ; }
+        if (!item) { return; }
 
         requiredItemFields.forEach(field => {
           if (!item[field] || isNullOrUndefined(item[field])) {
-            Object.assign(itemError, {[`${field}`]: props.intl.formatMessage({id: `travel.field.information.item.${field}.required`})});
+            Object.assign(itemError, { [`${field}`]: props.intl.formatMessage({ id: `travel.field.information.item.${field}.required` }) });
           }
         });
 
@@ -111,7 +112,7 @@ const handlerCreators: HandleCreators<TravelSettlementEditorProps, OwnHandlers> 
 
       const _items: ITravelSettlementPutItem[] = [];
 
-      formData.item.items.forEach(item => 
+      formData.item.items.forEach(item =>
         _items.push({
           uid: item.uid,
           employeeUid: item.employeeUid,
@@ -126,10 +127,10 @@ const handlerCreators: HandleCreators<TravelSettlementEditorProps, OwnHandlers> 
           hotel: item.hotel,
           costHotel: item.costHotel,
           isHotelByCompany: item.isHotelByCompany,
-          notes : item.notes
+          notes: item.notes
         })
       );
-      
+
       return _items;
     };
 
@@ -225,7 +226,7 @@ const handlerCreators: HandleCreators<TravelSettlementEditorProps, OwnHandlers> 
   }
 };
 
-const createProps: mapper<TravelSettlementEditorProps, OwnState> = (props: TravelSettlementEditorProps): OwnState => ({ 
+const createProps: mapper<TravelSettlementEditorProps, OwnState> = (props: TravelSettlementEditorProps): OwnState => ({
   formMode: FormMode.New
 });
 
@@ -240,8 +241,9 @@ const lifecycles: ReactLifeCycleFunctions<TravelSettlementEditorProps, {}> = {
   componentDidMount() {
     const { layoutDispatch, intl, history, stateUpdate } = this.props;
     const { loadRequest } = this.props.travelSettlementDispatch;
+    const { loadDetailRequest } = this.props.travelRequestDispatch;
     const { user } = this.props.userState;
-    
+
     const view = {
       title: 'travelSettlement.form.newTitle',
       subTitle: 'travelSettlement.form.newSubTitle',
@@ -251,38 +253,57 @@ const lifecycles: ReactLifeCycleFunctions<TravelSettlementEditorProps, {}> = {
       return;
     }
 
-    stateUpdate({ 
+    stateUpdate({
       companyUid: user.company.uid,
       positionUid: user.position.uid
     });
 
     if (!isNullOrUndefined(history.location.state)) {
-      view.title = 'travelSettlement.form.editTitle';
-      view.subTitle = 'travelSettlement.form.editSubTitle';
 
-      stateUpdate({ 
-        formMode: FormMode.Edit,
-        travelSettlementUid: history.location.state.uid
-      });
+      if (!isNullOrUndefined(history.location.state.uid)) {
+        view.title = 'travelSettlement.form.editTitle';
+        view.subTitle = 'travelSettlement.form.editSubTitle';
 
-      loadRequest({
-        companyUid: user.company.uid,
-        positionUid: user.position.uid,
-        traveSettlementlUid: history.location.state.uid
-      });
+        stateUpdate({
+          formMode: FormMode.Edit,
+          travelSettlementUid: history.location.state.uid
+        });
+
+        loadRequest({
+          companyUid: user.company.uid,
+          positionUid: user.position.uid,
+          travelSettlementUid: history.location.state.uid
+        });
+      }
+
+      if (!isNullOrUndefined(history.location.state.traveluid)) {
+        view.title = 'travelSettlement.form.newTitle';
+        view.subTitle = 'travelSettlement.form.newSubTitle';
+
+        // stateUpdate({ 
+        //   formMode: FormMode.New,
+        //   travelSettlementUid: history.location.state.uid
+        // });
+
+        loadDetailRequest({
+          companyUid: user.company.uid,
+          positionUid: user.position.uid,
+          travelUid: history.location.state.traveluid
+        });
+      }
     }
 
     layoutDispatch.changeView({
       uid: AppMenu.TravelSettlementRequest,
       parentUid: AppMenu.Travel,
-      title: intl.formatMessage({id: view.title}),
-      subTitle : intl.formatMessage({id: view.subTitle})
+      title: intl.formatMessage({ id: view.title }),
+      subTitle: intl.formatMessage({ id: view.subTitle })
     });
 
-    layoutDispatch.navBackShow(); 
+    layoutDispatch.navBackShow();
   },
   componentWillUnmount() {
-    const { layoutDispatch, appBarDispatch, travelSettlementDispatch } = this.props;
+    const { layoutDispatch, appBarDispatch, travelSettlementDispatch, travelRequestDispatch } = this.props;
 
     layoutDispatch.changeView(null);
     layoutDispatch.navBackHide();
@@ -293,6 +314,9 @@ const lifecycles: ReactLifeCycleFunctions<TravelSettlementEditorProps, {}> = {
 
     travelSettlementDispatch.createDispose();
     travelSettlementDispatch.updateDispose();
+
+    travelRequestDispatch.createDispose();
+    travelRequestDispatch.updateDispose();
   }
 };
 
@@ -302,6 +326,7 @@ export default compose<TravelSettlementEditorProps, {}>(
   withAppBar,
   withRouter,
   withTravelSettlement,
+  withTravelRequest,
   injectIntl,
   withStateHandlers<OwnState, OwnStateUpdaters, {}>(createProps, stateUpdaters),
   withHandlers<TravelSettlementEditorProps, OwnHandlers>(handlerCreators),
