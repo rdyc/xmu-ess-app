@@ -22,7 +22,7 @@ import {
   withStateHandlers,
 } from 'recompose';
 
-export interface OwnHandlers {
+interface OwnHandlers {
   handleGoToDetail: (expenseUid: string) => void;
   handleGoToNext: () => void;
   handleGoToPrevious: () => void;
