@@ -152,6 +152,14 @@ const handlerCreators: HandleCreators<DashboardProps, OwnHandlers> = {
         }
         break;
     
+      case 'Mileage':
+        if (type === 'Approval' || type === 'Notify') {
+          history.push(`/mileage/approvals/${uid}`);
+        } else {
+          history.push(`/mileage/requests/${uid}`);          
+        }
+        break;
+
       default:
         break;
     }
