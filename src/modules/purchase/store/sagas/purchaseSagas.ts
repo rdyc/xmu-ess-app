@@ -514,7 +514,7 @@ function* watchSettlementApprovalPostFetchRequest() {
   const worker = (action: ReturnType<typeof settlementApprovalPostRequest>) => {
     return saiyanSaga.fetch({
       method: 'post',
-      path: `/v1/approvals/purchase/request/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.purchaseUid}`,
+      path: `/v1/approvals/purchase/settlement/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.purchaseUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => ([
         put(settlementApprovalPostSuccess(response.body)),

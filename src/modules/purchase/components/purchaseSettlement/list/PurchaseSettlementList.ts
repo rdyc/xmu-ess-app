@@ -110,7 +110,7 @@ const handlerCreators: HandleCreators<PurchaseSettlementListProps, OwnHandlers> 
 
     if (!isLoading) {
       history.push(`/purchase/settlements/details/${purchaseUid}`);
-    } 
+    }
   },
   handleGoToNext: (props: PurchaseSettlementListProps) => () => { 
     props.stateNext();
@@ -163,7 +163,7 @@ const lifecycles: ReactLifeCycleFunctions<PurchaseSettlementListProps, OwnState>
       onSyncCallback: handleReloading,
       onOrderCallback: handleChangeOrder,
       onDirectionCallback: handleChangeSort,
-      onAddCallback: () => history.push('/purchase/settlement/form'),
+      onAddCallback: () => history.push('/purchase/settlements/list'),
       onSizeCallback: handleChangeSize,
     });
 

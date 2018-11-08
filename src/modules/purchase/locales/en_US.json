@@ -46,6 +46,9 @@
   "purchase.dialog.modifyTitle": "Modify Confirmation",
   "purchase.dialog.modifyDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
  
+  "purchase.dialog.settleTitle": "Modify Confirmation",
+  "purchase.dialog.settleDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+ 
   "purchase.field.information.uid": "Purchase ID",
   "purchase.field.information.uid.placeholder": "Purchase ID",
   "purchase.field.information.projectUid": "Project Name",
@@ -90,6 +93,7 @@
   "purchase.field.information.hours": "Max. Hours",
   
   "purchase.action.modify": "Modify",
+  "purchase.action.settle": "Settle",
 
   "purchase.message.registration.item.duplication": "Item(s) already added",
   "purchase.message.registration.create.success": "A new Purchase ID {uid} has been created",
@@ -98,5 +102,7 @@
   "purchase.message.registration.update.failure": "Unable to process your submission",
 
   "purchase.form.purchaseRequest.editTitle": "Edit Request",
-  "purchase.form.purchaseRequest.newTitle": "Create New Request"
+  "purchase.form.purchaseRequest.newTitle": "Create New Request",
+
+  "purchase.list.readySettle": "Ready to Settle!"
 }

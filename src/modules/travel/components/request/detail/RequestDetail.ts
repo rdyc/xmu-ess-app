@@ -107,8 +107,8 @@ const handlerCreators: HandleCreators<RequestDetailProps, Handler> = {
       action: TravelUserAction.AddSettlement,
       dialogFullScreen: false,
       dialogOpen: true,
-      dialogTitle: intl.formatMessage({id: 'travel.dialog.modifyTitle'}), 
-      dialogDescription: intl.formatMessage({id: 'travel.dialog.modifyDescription'}),
+      dialogTitle: intl.formatMessage({id: 'travel.dialog.addSettlementTitle'}), 
+      dialogDescription: intl.formatMessage({id: 'travel.dialog.addSettlementDescription'}),
       dialogCancelText: intl.formatMessage({id: 'global.action.disaggree'}),
       dialogConfirmedText: intl.formatMessage({id: 'global.action.aggree'})
     });
