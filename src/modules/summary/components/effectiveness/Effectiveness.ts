@@ -43,20 +43,14 @@ export type EffectivenessProps
 const createProps: mapper<EffectivenessProps, OwnState> = (props: EffectivenessProps): OwnState => {
 
     return { 
-      effectivenesses: [],
-      hasFinishLoad: false
     };
   };
 
 const stateUpdaters: StateUpdaters<OwnOptions, OwnState, OwnStateUpdaters> = {
-    stateUpdate: (prevState: OwnState) => (newState: any) => ({
-      ...prevState,
-      ...newState
-    }),
   };
 
 const handlerCreators: HandleCreators<EffectivenessProps, OwnHandlers> = {
-};
+  };
 
 const lifecycles: ReactLifeCycleFunctions<EffectivenessProps, OwnState> = {
     componentDidMount() { 

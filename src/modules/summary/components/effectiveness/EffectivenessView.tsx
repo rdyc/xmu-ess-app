@@ -1,96 +1,91 @@
-import {  Paper, Typography } from '@material-ui/core';
-// import { ISummaryEffectiveness } from '@summary/classes/response/effectiveness';
+import {  Paper, Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@material-ui/core';
+import { ISummaryEffectiveness } from '@summary/classes/response/effectiveness';
 import { EffectivenessProps } from '@summary/components/effectiveness/Effectiveness';
 import * as React from 'react';
-// import { FormattedMessage, } from 'react-intl';
-import { Column, Table } from 'react-virtualized';
-// import { isArray } from 'util';
+import { FormattedMessage, } from 'react-intl';
+import { isArray } from 'util';
 
 export const EffectivenessView: React.SFC<EffectivenessProps> = props => {
   const { isLoading, response } = props.summaryState.effectiveness;
-  // const { hasFinishLoad, handleFinishLoad } = props;
 
-  const effectivenesses: any[] = [];
+  const renderEffectiveness = (effectivenesses: ISummaryEffectiveness[]) => {
 
-  const loadData = () => {
-    if (response && response.data) {
-        response.data.map(effectiveness => {
-        if (effectiveness.assignments) {
-          effectiveness.assignments.map(assignment => {
-            const _effectiveness: any = ({
-              name: effectiveness.employee.fullName,
-              positionRole: `${assignment.position && assignment.position.name} - ${assignment.role}`,
-              project: `${assignment.project && assignment.project.uid} - ${assignment.project && assignment.project.uid}`,
-              customer: assignment.project && assignment.project.customer && assignment.project.customer.name,
-              allocated: assignment.allocateHours,
-              actual: assignment.actualHours,
-              remaining: assignment.remainHours,
-              progress: assignment.percentage
-            });
-            effectivenesses.push(_effectiveness);
-          });
-        }
-      });
-    }
-  };
-  
-  const RenderList = () => {
     return (
-      // <AutoSizer>
-      // {({ width, height }) => 
-        <Table
-          height={800}
-          width={1000}
-          rowHeight={20}
-          rowCount={effectivenesses.length}
-          headerHeight={30}
-          rowGetter={({index}) => effectivenesses[index]}
-        >
-          <Column
-            label="name"
-            dataKey="name"
-            width={60}
-          />
-          <Column
-            label="positionRole"
-            dataKey="positionRole"
-            width={60}
-          />
-          <Column
-            label="project"
-            dataKey="project"
-            width={60}
-          />
-          <Column
-            label="customer"
-            dataKey="customer"
-            width={60}
-          />
-          <Column
-            label="allocated"
-            dataKey="allocated"
-            width={60}
-          />
-          <Column
-            label="actual"
-            dataKey="actual"
-            width={60}
-          />
-          <Column
-            label="remaining"
-            dataKey="remaining"
-            width={60}
-          />
-          <Column
-            label="progress"
-            dataKey="progress"
-            width={60}
-          />
-        </Table>
-      // }
-      // </AutoSizer>
+      effectivenesses.map(effectiveness => 
+        effectiveness.assignments &&
+        effectiveness.assignments.map((assignment, i) => 
+          <TableRow key={i}>
+            <TableCell>
+              {effectiveness.employee.fullName}
+            </TableCell>
+            <TableCell>
+              { assignment.position && assignment.position.name } &ndash;&nbsp;
+              { assignment.role }
+            </TableCell>
+            <TableCell>
+              { assignment.project && assignment.project.uid } &ndash;&nbsp;
+              { assignment.project && assignment.project.uid }
+            </TableCell>
+            <TableCell>
+              { assignment.project && assignment.project.customer && assignment.project.customer.name }
+            </TableCell>
+            <TableCell>
+              { assignment.allocateHours }
+            </TableCell>
+            <TableCell>
+              { assignment.actualHours }
+            </TableCell>
+            <TableCell>
+              { assignment.remainHours }
+            </TableCell>
+            <TableCell>
+              { assignment.percentage }
+            </TableCell>
+          </TableRow>
+        )
+      )
     );
   };
+  
+  const RenderList = () => (
+    <Table>
+      <TableHead>
+        <TableRow>
+          <TableCell>
+            <FormattedMessage id="summary.effectiveness.tableHead.name" />
+          </TableCell>
+          <TableCell>
+            <FormattedMessage id="summary.effectiveness.tableHead.positionRole" />
+          </TableCell>
+          <TableCell>
+            <FormattedMessage id="summary.effectiveness.tableHead.project" />
+          </TableCell>
+          <TableCell>
+            <FormattedMessage id="summary.effectiveness.tableHead.customer" />
+          </TableCell>
+          <TableCell numeric>
+            <FormattedMessage id="summary.effectiveness.tableHead.allocated" />
+          </TableCell>
+          <TableCell numeric>
+            <FormattedMessage id="summary.effectiveness.tableHead.actual" />
+          </TableCell>
+          <TableCell numeric>
+            <FormattedMessage id="summary.effectiveness.tableHead.remaining" />
+          </TableCell>
+          <TableCell numeric>
+            <FormattedMessage id="summary.effectiveness.tableHead.progress" />
+          </TableCell>
+        </TableRow>
+      </TableHead>
+      <TableBody>
+        {
+          response &&
+          isArray(response.data) && 
+          renderEffectiveness(response.data)
+        }
+      </TableBody>
+    </Table>
+  );
 
   const render = (
     <React.Fragment>
@@ -100,15 +95,7 @@ export const EffectivenessView: React.SFC<EffectivenessProps> = props => {
           square 
           elevation={1}
         >
-        {
-          !isLoading &&
-          loadData()
-        }
-        {
-          !isLoading &&
-          effectivenesses.length > 0 &&
-          RenderList()
-        }
+        <RenderList/>
         </Paper>}
     </React.Fragment>
   );
