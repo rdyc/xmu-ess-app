@@ -13,7 +13,7 @@ export const InputTimeView: React.SFC<InputTimeProps> = props => {
     let result: string = invalidLabel;
 
     if (date.isValid()) {
-      result = date.format('hh:mm');
+      result = date.format('HH:mm');
     } 
 
     return result;
@@ -30,7 +30,7 @@ export const InputTimeView: React.SFC<InputTimeProps> = props => {
       // todayLabel={intl.formatMessage({id: 'global.date.today'})}
       // emptyLabel={intl.formatMessage({id: 'global.date.empty'})}
       showTodayButton={false}
-      format={input.value ? timeFormat || 'hh:mm' : undefined}
+      format={input.value ? timeFormat || 'HH:mm' : undefined}
       {...input}
       label={label}
       required={required}

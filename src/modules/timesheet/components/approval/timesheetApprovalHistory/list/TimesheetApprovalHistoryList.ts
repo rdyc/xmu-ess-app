@@ -157,6 +157,7 @@ const lifecycles: ReactLifeCycleFunctions<ApprovalHistoryListProps, OwnState> = 
     layoutDispatch.searchShow();
     layoutDispatch.actionCentreShow();
 
+    navBottomDispatch.addHide();
     navBottomDispatch.assignCallbacks({
       onNextCallback: handleGoToNext,
       onPrevCallback: handleGoToPrevious,

@@ -137,6 +137,17 @@ export const TimesheetApprovalListView: React.SFC<ApprovalListProps> = props => 
       {response && response.data && response.data.length >= 1 && (
         <Paper square elevation={1}>
           <RenderList />
+          <Button
+            fullWidth
+            variant="contained"
+            type="button"
+            color="primary"
+            size="large"
+            disabled={!timesheetUids || timesheetUids.length <= 0}
+            onClick={() => handleGoToApproval()}
+          >
+            APPROVAL
+          </Button>
         </Paper>
       )}
 
@@ -153,17 +164,6 @@ export const TimesheetApprovalListView: React.SFC<ApprovalListProps> = props => 
               </Grid>
             </ListItem>
           </List>
-          <Button
-            fullWidth
-            variant="contained"
-            type="button"
-            color="primary"
-            size="large"
-            disabled={!timesheetUids || timesheetUids.length <= 0}
-            onClick={() => handleGoToApproval()}
-          >
-            APPROVAL
-          </Button>
         </Paper>
       )}
     </React.Fragment>

@@ -181,6 +181,7 @@ const lifecycles: ReactLifeCycleFunctions<ApprovalListProps, OwnState> = {
     layoutDispatch.searchShow();
     layoutDispatch.actionCentreShow();
 
+    navBottomDispatch.addHide();
     navBottomDispatch.assignCallbacks({
       onNextCallback: handleGoToNext,
       onPrevCallback: handleGoToPrevious,
