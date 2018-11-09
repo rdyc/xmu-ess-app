@@ -114,7 +114,7 @@ export const PurchaseSettlementListView: React.SFC<PurchaseSettlementListProps> 
               <Grid item xs={6} sm={6}>
                 <Typography variant="caption" color="primary">
                   <FormattedNumber value={response.metadata.total} /> &nbsp;
-                  <FormattedPlural one="purchase" other="purchases" value={response.metadata.total} />
+                  <FormattedPlural one="settlement" other="settlements" value={response.metadata.total} />
                 </Typography>
               </Grid>
               <Grid item xs={6} sm={6}>

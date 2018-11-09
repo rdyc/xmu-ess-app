@@ -29,30 +29,30 @@ const handlerCreators: HandleCreators<PurchaseSettlementItemFormProps, OwnHandle
     let fieldProps: any = {};
   
     switch (fieldName) {
-      // case 'uid':
-      //   fieldProps = {
-      //     disabled: true,
-      //     placeholder: intl.formatMessage({id: `purchase.itemTitle.${name}`}),
-      //     component: InputText
-      //   };
-      //   break;
+      case 'uid':
+        fieldProps = {
+          disabled: true,
+          placeholder: intl.formatMessage({id: `purchase.itemTitle.${name}`}),
+          component: InputText
+        };
+        break;
 
-      // case 'description': 
-      //   fieldProps = {
-      //     disabled: true,
-      //     placeholder: intl.formatMessage({id: `purchase.itemTitle.${name}`}),
-      //     component: InputText
-      //   };
-      //   break;
+      case 'description': 
+        fieldProps = {
+          disabled: true,
+          placeholder: intl.formatMessage({id: `purchase.itemTitle.${name}`}),
+          component: InputText
+        };
+        break;
 
-      // case 'requestValue':
-      //   fieldProps = {
-      //     disabled: true,
-      //     type: 'number',
-      //     placeholder: intl.formatMessage({id: `purchase.itemTitle.${name}`}),
-      //     component: InputNumber
-      //   };
-      //   break;
+      case 'requestValue':
+        fieldProps = {
+          disabled: true,
+          type: 'number',
+          placeholder: intl.formatMessage({id: `purchase.itemTitle.${name}`}),
+          component: InputNumber
+        };
+        break;
 
       case 'actualValue':
         fieldProps = {

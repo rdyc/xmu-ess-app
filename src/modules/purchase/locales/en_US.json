@@ -36,10 +36,12 @@
   "purchase.item.purchaseTitle": "Purchase Request Documents",
   "purchase.item.purchaseSubTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
   "purchase.itemTitle": "Purchase Request Items",
+  "purchase.itemTitle.uid": "Item ID: ",
   "purchase.itemTitle.description": "Description: ",
   "purchase.itemTitle.request": "Request Value:",
-  "purchase.itemTitle.request.placeholder": "Request Value: ",
+  "purchase.itemTitle.request.placeholder": "Fill Request Value: ",
   "purchase.itemTitle.actual": "Actual Value: ",
+  "purchase.itemTitle.actual.placeholder": "Fill Actual Value: ",
   "purchase.itemTitle.variance": "Difference: ",
   "purchase.itemSubTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
   

@@ -75,6 +75,7 @@ export const PurchaseRequestEditorView: React.SFC<PurchaseRequestEditorProps> = 
       initialValues.information.currencyType = data.currencyType;
       initialValues.information.rate = data.rate;
       initialValues.information.request = data.request;
+      initialValues.information.advance = data.advance;
 
       if (data.items) {
         data.items.forEach(item =>

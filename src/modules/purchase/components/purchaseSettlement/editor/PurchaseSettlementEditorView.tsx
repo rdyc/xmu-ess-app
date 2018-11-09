@@ -32,10 +32,20 @@ export const PurchaseSettlementEditorView: React.SFC<PurchaseSettlementEditorPro
       uid: undefined,
       date: undefined,
       notes: undefined,
+      rate: 0,
+      request: 0,
+      actual: 0,
+      difference: 0,
+      customerUid: undefined,
+      projectUid: undefined,
+      advance: 0,
+      balanceDue: 0,
+      currencyType: undefined,
+
     },
     items: {
       items: [
-    ]
+      ]
     }
   };
 

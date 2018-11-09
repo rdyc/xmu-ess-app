@@ -30,17 +30,23 @@ const purchaseInformation: React.SFC<AllProps> = props => {
         subheader = {< FormattedMessage id = "purchase.infoSubTitle" />}
         />
         <CardContent >
+        <TextField
+          {...styled}
+          margin="dense"
+          label={< FormattedMessage id="purchase.field.information.uid" />}
+          value={data.uid}
+        />
+        <TextField
+          {...styled}
+          margin="dense"
+          label={< FormattedMessage id="purchase.field.information.notes" />}
+          value={data.notes || 'N/A'}
+        />
           <TextField
           { ...styled }
           margin = "dense"
           label = {< FormattedMessage id = "purchase.field.information.status" />}
           value = { data.status ? data.status.value : data.statusType }
-          />
-          <TextField
-          { ...styled }
-          margin = "dense"
-          label = {< FormattedMessage id = "purchase.field.information.uid" />}
-          value = { data.uid }
           />
           <TextField
           { ...styled }
@@ -59,12 +65,6 @@ const purchaseInformation: React.SFC<AllProps> = props => {
           margin = "dense"
           label = {< FormattedMessage id = "purchase.field.information.projectUid" /> }
           value={data.project ? `${data.project.uid} - ${data.project.name}` : 'N/A' }
-          />
-          <TextField
-          { ...styled }
-          margin = "dense"
-          label = { < FormattedMessage id = "purchase.field.information.notes" />  }
-          value = { data.notes || 'N/A' }
           />
           <TextField
           { ...styled }
