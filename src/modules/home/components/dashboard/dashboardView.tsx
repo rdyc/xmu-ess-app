@@ -88,7 +88,16 @@ export const dashboardView: React.SFC<DashboardProps> = props => (
                       noWrap: true
                     }}
                   />
-                  <Collapse in={props.isExpanded(c, d)} timeout="auto" unmountOnExit>
+                  <Collapse 
+                    style={{
+                      backgroundColor: props.theme.palette.background.default,
+                      maxHeight: 300, 
+                      overflowY: 'scroll'
+                    }} 
+                    in={props.isExpanded(c, d)} 
+                    timeout="auto" 
+                    unmountOnExit
+                  >
                     <List component="div" disablePadding>
                       {
                         detail.items.map(item =>

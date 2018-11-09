@@ -4,7 +4,7 @@ import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithNotification, withNotification } from '@layout/hoc/withNotification';
 import { WithUser, withUser } from '@layout/hoc/withUser';
-import { WithStyles, withStyles } from '@material-ui/core';
+import { WithStyles, withStyles, WithTheme, withTheme } from '@material-ui/core';
 import styles from '@styles';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps } from 'react-router';
@@ -49,6 +49,7 @@ export type DashboardProps
   & WithNotification
   & WithLayout
   & WithAppBar
+  & WithTheme
   & WithStyles<typeof styles>
   & InjectedIntlProps
   & RouteComponentProps
@@ -56,20 +57,20 @@ export type DashboardProps
   & OwnStateUpdaters
   & OwnHandlers;
 
-const createProps: mapper<DashboardProps, OwnState> = (props: DashboardProps): OwnState => ({ 
+const createProps: mapper<DashboardProps, OwnState> = (props: DashboardProps): OwnState => ({
   items: []
 });
 
 const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
   handleExpandClick: (prevState: OwnState) => (cIndex: number, dIndex: number): OwnState => {
     const prevItems = prevState.items;
-    const prevItemIndex =  prevState.items.findIndex(item => 
+    const prevItemIndex = prevState.items.findIndex(item =>
       item.cIndex === cIndex &&
       item.dIndex === dIndex
-    ); 
+    );
 
     if (prevItemIndex !== -1) {
-      prevItems[prevItemIndex].expanded = !prevItems[prevItemIndex].expanded; 
+      prevItems[prevItemIndex].expanded = !prevItems[prevItemIndex].expanded;
     } else {
       prevItems.push({
         cIndex,
@@ -88,18 +89,18 @@ const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
 };
 
 const handlerCreators: HandleCreators<DashboardProps, OwnHandlers> = {
-  isExpanded: (props: DashboardProps) => (cIndex: number, dIndex: number): boolean => { 
+  isExpanded: (props: DashboardProps) => (cIndex: number, dIndex: number): boolean => {
     let isExpanded = false;
 
-    const existItem = props.items.find(item => 
-      item.cIndex === cIndex && 
+    const existItem = props.items.find(item =>
+      item.cIndex === cIndex &&
       item.dIndex === dIndex
     );
 
     if (existItem) {
       isExpanded = existItem.expanded;
     }
-    
+
     return isExpanded;
   },
   handleSyncClick: (props: DashboardProps) => () => {
@@ -151,6 +152,30 @@ const handlerCreators: HandleCreators<DashboardProps, OwnHandlers> = {
           history.push(`/expense/requests/${uid}`);
         }
         break;
+
+      case 'Timesheet':
+        if (type === 'Approval' || type === 'Notify') {
+          history.push(`/timesheet/approval/${uid}`);
+        } else {
+          history.push(`/timesheet/entry/${uid}`);
+        }
+        break;
+        
+      case 'Travel':
+        if (type === 'Approval' || type === 'Notify') {
+          history.push(`/travel/approvals/request/${uid}`);
+        } else {
+          history.push(`/travel/requests/${uid}`);
+        }
+        break;
+
+      case 'Travel Settlement':
+        if (type === 'Approval' || type === 'Notify') {
+          history.push(`/travel/approvals/settlement/${uid}`);
+        } else {
+          history.push(`/travel/settlements/${uid}`);
+        }
+        break;        
     
       case 'Purchase':
         if (type === 'Approval' || type === 'Notify' || type === 'Rejected') {
@@ -193,7 +218,7 @@ const lifecycles: ReactLifeCycleFunctions<DashboardProps, {}> = {
       uid: AppMenu.Dashboard,
       parentUid: AppMenu.Home,
       title: intl.formatMessage(homeMessage.dashboard.page.title),
-      subTitle : intl.formatMessage(homeMessage.dashboard.page.subHeader)
+      subTitle: intl.formatMessage(homeMessage.dashboard.page.subHeader)
     });
 
     if (!loading && !result) {
@@ -217,6 +242,7 @@ export const Dashboard = compose<DashboardProps, {}>(
   withLayout,
   withAppBar,
   withNotification,
+  withTheme(),
   withStyles(styles),
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),

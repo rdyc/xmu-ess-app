@@ -51,6 +51,9 @@
 
   "timesheet.action.modify": "Modify",
   "timesheet.action.close": "Close",
+
+  "timesheet.entry.history.noData": "No data time report entry",
+  "timesheet.approval.history.noData": "No data time report approval",
   
   "timesheet.view.approval.title": "Time Report Approvals",
   "timesheet.view.approval.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",

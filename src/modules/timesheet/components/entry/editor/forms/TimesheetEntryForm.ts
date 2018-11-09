@@ -24,9 +24,11 @@ interface OwnProps {
 }
 
 interface FormValueProps {
+  activityTypeValue: string | undefined;
   customerUidValue: string | undefined;
-  isPresalesActivity: boolean | false;
+  isPresalesActivity: boolean | true;
   projectUidValue: string | undefined;
+  formIsSiteProject: boolean | false;
 }
 
 export type EntryFormProps
@@ -42,9 +44,11 @@ const mapStateToProps = (state: any): FormValueProps => {
   const projectUid = selector(state, 'information.projectUid');
 
   return {
+    activityTypeValue: activityType,
     customerUidValue: customerUid,
     isPresalesActivity: activityType === 'SAT02',
     projectUidValue: projectUid,
+    formIsSiteProject: projectUid
   };
 };
 

@@ -4,7 +4,7 @@ import { EntryListProps } from '@timesheet/components/entry/list/TimesheetEntryL
 import { parseChanges } from '@utils/parseChanges';
 import * as moment from 'moment';
 import * as React from 'react';
-import { FormattedDate, FormattedNumber, FormattedPlural } from 'react-intl';
+import { FormattedDate, FormattedMessage, FormattedNumber, FormattedPlural } from 'react-intl';
 import { isArray } from 'util';
 
 export const TimesheetEntryListView: React.SFC<EntryListProps> = props => {
@@ -121,14 +121,29 @@ export const TimesheetEntryListView: React.SFC<EntryListProps> = props => {
 
   const render = (
     <React.Fragment>
-      {isLoading && response && <Typography variant="body2">loading</Typography>}     
-      {response &&
-        <Paper 
-          square 
-          elevation={1}
-        >
-        <RenderList/>
-        </Paper>}
+      {isLoading && response && <Typography variant="body2">loading</Typography>}
+
+      {response && response.data && response.data.length >= 1 && (
+        <Paper square elevation={1}>
+          <RenderList />
+        </Paper>
+      )}
+
+      {(response && response.data && response.data.length < 1) && (
+        <Paper>
+          <List>
+            <ListItem>
+              <Grid container spacing={24}>
+                <Grid item xs={12} sm={12}>
+                  <Typography variant="body2" color="error">
+                    <FormattedMessage id="timesheet.entry.history.noData" />
+                  </Typography>
+                </Grid>
+              </Grid>
+            </ListItem>
+          </List>
+        </Paper>
+      )}
     </React.Fragment>
   );
 

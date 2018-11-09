@@ -94,7 +94,6 @@ const handlerCreators: HandleCreators<RequestDetailFormProps, OwnHandlers> = {
 
         case 'siteUid': 
         fieldProps = {
-          required: true,
           disabled: isNullOrUndefined(projectUidValue), 
           placeholder: intl.formatMessage({id: `travel.field.${name}.placeholder`}),
           component: !isNullOrUndefined(projectUidValue) ? SelectProjectSite : InputText,
