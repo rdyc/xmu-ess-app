@@ -18,19 +18,35 @@ import {
 } from 'recompose';
 
 interface OwnHandlers {
+  handleLoadData: () => void;
+  handleFinishLoad: () => void;
 }
 
 interface OwnOptions {
 }
 
 interface OwnState {
+  effectivenesses: EffectivenessData[];
+  hasFinishLoad: boolean;
 }
 
 interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
 }
 
+export type EffectivenessData = {
+  index: number,
+  name: string,
+  positionRole: string,
+  project: string,
+  allocated: number,
+  actual: number,
+  remaining: number,
+  progress: number
+};
+
 export type EffectivenessProps 
   = WithSummary
+  & EffectivenessData
   & WithUser
   & WithLayout
   & RouteComponentProps
@@ -43,14 +59,62 @@ export type EffectivenessProps
 const createProps: mapper<EffectivenessProps, OwnState> = (props: EffectivenessProps): OwnState => {
 
     return { 
+      effectivenesses: [],
+      hasFinishLoad: false
     };
   };
 
 const stateUpdaters: StateUpdaters<OwnOptions, OwnState, OwnStateUpdaters> = {
+    stateUpdate: (prevState: OwnState) => (newState: any) => ({
+      ...prevState,
+      ...newState
+    }),
   };
 
 const handlerCreators: HandleCreators<EffectivenessProps, OwnHandlers> = {
-  };
+  handleFinishLoad: (props: EffectivenessProps) => () => {
+    const { stateUpdate } = props;
+
+    stateUpdate({
+      hasFinishLoad: true
+    });
+  },
+  handleLoadData: (props: EffectivenessProps) => () => {
+    const { response } = props.summaryState.effectiveness;
+    const { stateUpdate } = props;
+
+    let index = 0;
+    const _effectivenesses: EffectivenessData[] = [];
+
+    if (response && response.data ) {
+      response.data.map(effectiveness => {
+
+        if (effectiveness.assignments) {
+          effectiveness.assignments.map(assignment => {
+
+            const _effectiveness: EffectivenessData = ({
+              index,
+              name: effectiveness.employee.fullName,
+              positionRole: `${assignment.position && assignment.position.name} - ${assignment.role}`,
+              project: `${assignment.project && assignment.project.uid} - ${assignment.project && assignment.project.uid}`,
+              allocated: assignment.allocateHours,
+              actual: assignment.actualHours,
+              remaining: assignment.remainHours,
+              progress: assignment.percentage
+            });
+
+            index = index + 1;
+            _effectivenesses.push(_effectiveness);
+          });
+        }
+      });
+    }
+
+    stateUpdate({
+      effectivenesses: _effectivenesses
+    });
+  }
+};
 
 const lifecycles: ReactLifeCycleFunctions<EffectivenessProps, OwnState> = {
     componentDidMount() { 
@@ -76,6 +140,43 @@ const lifecycles: ReactLifeCycleFunctions<EffectivenessProps, OwnState> = {
         loadData(this.props);
       }
     },
+    // componentWillReceiveProps(nextProps: EffectivenessProps) {
+    //   if (!nextProps.summaryState.effectiveness.isLoading) {
+    //     const { response } = nextProps.summaryState.effectiveness;
+    //     const { stateUpdate } = nextProps;
+
+    //     let index = 0;
+    //     const _effectivenesses: EffectivenessData[] = [];
+
+    //     if (response && response.data ) {
+    //       response.data.map(effectiveness => {
+
+    //         if (effectiveness.assignments) {
+    //           effectiveness.assignments.map(assignment => {
+
+    //             const _effectiveness: EffectivenessData = ({
+    //               index,
+    //               name: effectiveness.employee.fullName,
+    //               positionRole: `${assignment.position && assignment.position.name} - ${assignment.role}`,
+    //               project: `${assignment.project && assignment.project.uid} - ${assignment.project && assignment.project.uid}`,
+    //               allocated: assignment.allocateHours,
+    //               actual: assignment.actualHours,
+    //               remaining: assignment.remainHours,
+    //               progress: assignment.percentage
+    //             });
+
+    //             index = index + 1;
+    //             _effectivenesses.push(_effectiveness);
+    //           });
+    //         }
+    //       });
+    //     }
+
+    //     stateUpdate({
+    //       effectivenesses: _effectivenesses
+    //     });
+    //   }
+    // },
     componentWillUnmount() {
       const { layoutDispatch } = this.props;
       const { view } = this.props.layoutState;
