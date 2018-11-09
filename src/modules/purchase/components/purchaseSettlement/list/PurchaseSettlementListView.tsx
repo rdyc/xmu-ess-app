@@ -4,7 +4,7 @@ import { PurchaseSettlementListProps } from '@purchase/components/purchaseSettle
 import { parseChanges } from '@utils/parseChanges';
 import * as moment from 'moment';
 import * as React from 'react';
-import { FormattedDate, FormattedNumber, FormattedPlural } from 'react-intl';
+import { FormattedDate, FormattedMessage, FormattedNumber, FormattedPlural } from 'react-intl';
 import { isArray } from 'util';
 
 export const PurchaseSettlementListView: React.SFC<PurchaseSettlementListProps> = props => {
@@ -44,37 +44,52 @@ export const PurchaseSettlementListView: React.SFC<PurchaseSettlementListProps> 
                   variant="caption"
                 >
                   {purchase.notes} &bull; {purchase.currency && purchase.currency.value} {intl.formatNumber(purchase.advance || 0)} &bull; &nbsp;
+                  {purchase.date ? 
                   <FormattedDate
                     year="numeric"
                     month="short"
                     day="numeric"
                     value={purchase.date || ''}
-                  />
+                  /> : ''}
                 </Typography>
               </Grid>
               <Grid item xs={4} sm={4}>
-                <Typography
-                  noWrap
-                  variant="body1"
-                  align="right"
-                >
-                  {purchase.status && purchase.status.value}
-                </Typography>
-                <Typography
+                {purchase.status && purchase.status.value !== null ?
+                  <Typography
+                    noWrap
+                    variant="body1"
+                    align="right"
+                  >
+                    {purchase.status && purchase.status.value}
+                  </Typography>
+                  : '' }
+                {purchase.status && purchase.status.value !== null ?
+                  <Typography
+                    noWrap
+                    color="secondary"
+                    variant="caption"
+                    align="right"
+                  >
+                  { parseChanges(purchase.changes) }
+                  </Typography>
+                : <Typography
                   noWrap
                   color="secondary"
                   variant="caption"
                   align="right"
                 >
-                  {parseChanges(purchase.changes)}
+                  {< FormattedMessage id="purchase.list.readySettle" />}
                 </Typography>
-                <Typography
-                  noWrap
-                  variant="caption"
-                  align="right"
-                >
-                  {purchase.changes && moment(purchase.changes.updatedAt ? purchase.changes.updatedAt : purchase.changes.createdAt).fromNow()}
-                </Typography>
+                }
+                  <Typography
+                    noWrap
+                    variant="caption"
+                    align="right"
+                  >
+                  {purchase.status && purchase.status.value !== null ? 
+                      purchase.changes && moment(purchase.changes.updatedAt ? purchase.changes.updatedAt : purchase.changes.createdAt).fromNow()
+                    : ''}
+                  </Typography>
               </Grid>
             </Grid>
           </ListItem>
