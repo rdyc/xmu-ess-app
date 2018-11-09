@@ -12,44 +12,6 @@ export const EffectivenessView: React.SFC<EffectivenessProps> = props => {
 
   const effectivenesses: any[] = [];
 
-  // const renderEffectiveness = (effectivenesses: ISummaryEffectiveness[]) => {
-  //   return (
-  //     effectivenesses.map(effectiveness => 
-  //       effectiveness.assignments &&
-  //       effectiveness.assignments.map((assignment, i) => 
-  //         <TableRow key={i}>
-  //           <TableCell>
-  //             {effectiveness.employee.fullName}
-  //           </TableCell>
-  //           <TableCell>
-  //             { assignment.position && assignment.position.name } &ndash;&nbsp;
-  //             { assignment.role }
-  //           </TableCell>
-  //           <TableCell>
-  //             { assignment.project && assignment.project.uid } &ndash;&nbsp;
-  //             { assignment.project && assignment.project.uid }
-  //           </TableCell>
-  //           <TableCell>
-  //             { assignment.project && assignment.project.customer && assignment.project.customer.name }
-  //           </TableCell>
-  //           <TableCell>
-  //             { assignment.allocateHours }
-  //           </TableCell>
-  //           <TableCell>
-  //             { assignment.actualHours }
-  //           </TableCell>
-  //           <TableCell>
-  //             { assignment.remainHours }
-  //           </TableCell>
-  //           <TableCell>
-  //             { assignment.percentage }
-  //           </TableCell>
-  //         </TableRow>
-  //       )
-  //     )
-  //   );
-  // };
-
   const loadData = () => {
     if (response && response.data) {
         response.data.map(effectiveness => {
@@ -73,24 +35,6 @@ export const EffectivenessView: React.SFC<EffectivenessProps> = props => {
   };
   
   const RenderList = () => {
-    // const data: any = 
-    //   response && response.data && response.data.map(effectiveness => {
-    //     if (effectiveness.assignments) {
-    //       effectiveness.assignments.map(assignment => {
-    //         const _effectiveness: any = ({
-    //           name: effectiveness.employee.fullName,
-    //           positionRole: `${assignment.position && assignment.position.name} - ${assignment.role}`,
-    //           project: `${assignment.project && assignment.project.uid} - ${assignment.project && assignment.project.uid}`,
-    //           allocated: assignment.allocateHours,
-    //           actual: assignment.actualHours,
-    //           remaining: assignment.remainHours,
-    //           progress: assignment.percentage
-    //         });
-    //         effectivenesses.push(_effectiveness);
-    //       });
-    //     }
-    //   });
-
     return (
       // <AutoSizer>
       // {({ width, height }) => 
