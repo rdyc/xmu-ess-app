@@ -6,7 +6,7 @@ import { FormattedMessage } from 'react-intl';
 import { Field } from 'redux-form';
 
 export const TimesheetEntryDetailFormView: React.SFC<EntryDetailFormProps> = props => {
-  const { formMode } = props;
+  const { formMode, showSiteProject  } = props;
   const { names } = props.context;
   
   const renderField = (name: string) => {
@@ -16,6 +16,11 @@ export const TimesheetEntryDetailFormView: React.SFC<EntryDetailFormProps> = pro
     // don't show uid for new form
     const fields = ['uid'];
     if (formMode === FormMode.New && fields.indexOf(fieldName) !== -1) {
+      return null;
+    }
+
+    const fieldsSiteProject = ['siteUid'];
+    if (!showSiteProject && fieldsSiteProject.indexOf(fieldName) !== -1) {
       return null;
     }
 
