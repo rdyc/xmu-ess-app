@@ -158,13 +158,14 @@ const lifecycles: ReactLifeCycleFunctions<MileageApprovalListProps, OwnState> = 
     layoutDispatch.searchShow();
     layoutDispatch.actionCentreShow();
 
+    navBottomDispatch.addHide();
     navBottomDispatch.assignCallbacks({
       onNextCallback: handleGoToNext,
       onPrevCallback: handleGoToPrevious,
       onSyncCallback: handleReloading,
       onOrderCallback: handleChangeOrder,
       onDirectionCallback: handleChangeSort,
-      onAddCallback: () => history.push('/mileage/approvals/form'),
+      onAddCallback: () => history.push(''),
       onSizeCallback: handleChangeSize,
     });
 
