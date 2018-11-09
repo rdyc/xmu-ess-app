@@ -157,13 +157,14 @@ const lifecycles: ReactLifeCycleFunctions<LeaveCancellationListProps, OwnState> 
     layoutDispatch.searchShow();
     layoutDispatch.actionCentreShow();
 
+    navBottomDispatch.addHide();
     navBottomDispatch.assignCallbacks({
       onNextCallback: handleGoToNext,
       onPrevCallback: handleGoToPrevious,
       onSyncCallback: handleReloading,
       onOrderCallback: handleChangeOrder,
       onDirectionCallback: handleChangeSort,
-      onAddCallback: () => history.push('/leave/cancellations/form'),
+      onAddCallback: () => history.push(''),
       onSizeCallback: handleChangeSize,
     });
 
