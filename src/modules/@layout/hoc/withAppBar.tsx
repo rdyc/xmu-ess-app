@@ -1,8 +1,10 @@
 import { IAppState } from '@generic/interfaces';
-import { IAppBarMenu, IAppBarState } from '@layout/interfaces';
+import { IAppBarMenu, IAppBarState, IListBarField } from '@layout/interfaces';
 import {
-  appBarAssignCallback,
+  appBarAssignFields,
+  appBarAssignMenuCallback,
   appBarAssignMenus,
+  appBarAssignSearchCallback,
   appBarDispose,
   appBarMenuHide,
   appBarMenuShow,
@@ -17,8 +19,10 @@ interface PropsFromState {
 
 interface PropsFromDispatch {
   appBarDispatch: {
-    assignCallback: typeof appBarAssignCallback;
+    assignCallback: typeof appBarAssignMenuCallback;
+    assignSearchCallback: typeof appBarAssignSearchCallback;
     assignMenus: typeof appBarAssignMenus;
+    assignFields: typeof appBarAssignFields;
     menuShow: typeof appBarMenuShow;
     menuHide: typeof appBarMenuHide;
     dispose: typeof appBarDispose;
@@ -33,8 +37,10 @@ const mapStateToProps = ({ appBar }: IAppState) => ({
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   appBarDispatch: {
-    assignCallback: (callback: (menu: IAppBarMenu) => void) => dispatch(appBarAssignCallback(callback)),
+    assignCallback: (callback: (menu: IAppBarMenu) => void) => dispatch(appBarAssignMenuCallback(callback)),
+    assignSearchCallback: (callback: (find: string, findBy?: IListBarField | undefined) => void) => dispatch(appBarAssignSearchCallback(callback)),
     assignMenus: (menus: IAppBarMenu[]) => dispatch(appBarAssignMenus(menus)),
+    assignFields: (fields: IListBarField[]) => dispatch(appBarAssignFields(fields)),
     menuShow: () => dispatch(appBarMenuShow()),
     menuHide: () => dispatch(appBarMenuHide()),
     dispose: () => dispatch(appBarDispose()),

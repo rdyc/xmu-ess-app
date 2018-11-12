@@ -1,5 +1,6 @@
 import AppMenu from '@constants/AppMenu';
 import { SortDirection } from '@generic/types';
+import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithNavBottom, withNavBottom } from '@layout/hoc/withNavBottom';
 import { WithUser, withUser } from '@layout/hoc/withUser';
@@ -23,6 +24,8 @@ import {
 } from 'recompose';
 
 interface OwnHandlers {
+  handleLoadData: () => void;
+  handleOnSearch: (find: string | undefined, field: IListBarField | undefined) => void;
   handleGoToDetail: (projectUid: string) => void;
   handleGoToNext: () => void;
   handleGoToPrevious: () => void;
@@ -40,6 +43,8 @@ interface OwnOptions {
 }
 
 interface OwnState {
+  find?: string | undefined;
+  findBy?: string | undefined;
   orderBy: string | undefined;
   direction: string | undefined;
   page: number;
@@ -47,6 +52,7 @@ interface OwnState {
 }
 
 interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
+  setSearch: StateHandler<OwnState>;
   stateNext: StateHandler<OwnState>;
   statePrevious: StateHandler<OwnState>;
   stateReloading: StateHandler<OwnState>;
@@ -59,6 +65,7 @@ export type ProjectRegisterListProps
   = WithProjectRegistration
   & WithUser
   & WithLayout
+  & WithAppBar
   & WithNavBottom
   & RouteComponentProps
   & InjectedIntlProps
@@ -80,6 +87,11 @@ const createProps: mapper<ProjectRegisterListProps, OwnState> = (props: ProjectR
 };
 
 const stateUpdaters: StateUpdaters<OwnOptions, OwnState, OwnStateUpdaters> = {
+  setSearch: (prevState: OwnState) => (find: string, field: IListBarField | undefined) => ({
+    find,
+    findBy: field ? field.id : undefined,
+    page: 1
+  }),
   stateNext: (prevState: OwnState) => () => ({
     page: prevState.page + 1,
   }),
@@ -104,6 +116,39 @@ const stateUpdaters: StateUpdaters<OwnOptions, OwnState, OwnStateUpdaters> = {
 };
 
 const handlerCreators: HandleCreators<ProjectRegisterListProps, OwnHandlers> = {
+  handleLoadData: (props: ProjectRegisterListProps) => () => {
+    const { orderBy, direction, page, size } = props;
+    const { user } = props.userState;
+    const { loadAllRequest } = props.projectRegisterDispatch;
+    const { alertAdd } = props.layoutDispatch;
+
+    if (user) {
+      loadAllRequest({
+        companyUid: user.company.uid,
+        positionUid: user.position.uid,
+        filter: {
+          direction,
+          orderBy,
+          page,
+          size,
+          customerUids: undefined,
+          projectTypes: undefined,
+          statusTypes: undefined,
+          find: props.find,
+          findBy: props.findBy,
+        }
+      }); 
+    } else {
+      alertAdd({
+        time: new Date(),
+        message: 'Unable to find current user state'
+      });
+    }
+  },
+  handleOnSearch: (props: ProjectRegisterListProps) => (find: string, field: IListBarField | undefined) => {
+    props.setSearch(find, field);
+    // props.handleLoadData;
+  },
   handleGoToDetail: (props: ProjectRegisterListProps) => (projectUid) => {
     const { history } = props;
     const { isLoading } = props.projectRegisterState.all;
@@ -122,7 +167,7 @@ const handlerCreators: HandleCreators<ProjectRegisterListProps, OwnHandlers> = {
     props.stateReloading();
 
     // force re-load from api
-    loadData(props);
+    // props.handleLoadData();
   },
   handleChangeOrder: (props: ProjectRegisterListProps) => (field: IListBarField) => { 
     props.stateOrdering(field);
@@ -138,9 +183,9 @@ const handlerCreators: HandleCreators<ProjectRegisterListProps, OwnHandlers> = {
 const lifecycles: ReactLifeCycleFunctions<ProjectRegisterListProps, OwnState> = {
   componentDidMount() { 
     const { 
-      handleGoToNext, handleGoToPrevious, handleReloading, 
+      handleOnSearch, handleGoToNext, handleGoToPrevious, handleReloading, 
       handleChangeOrder, handleChangeSize, handleChangeSort, 
-      layoutDispatch, navBottomDispatch, 
+      layoutDispatch, navBottomDispatch, appBarDispatch,
       history, intl 
     } = this.props;
     
@@ -157,6 +202,8 @@ const lifecycles: ReactLifeCycleFunctions<ProjectRegisterListProps, OwnState> = 
     layoutDispatch.searchShow();
     layoutDispatch.actionCentreShow();
 
+    appBarDispatch.assignSearchCallback(handleOnSearch);
+
     navBottomDispatch.assignCallbacks({
       onNextCallback: handleGoToNext,
       onPrevCallback: handleGoToPrevious,
@@ -170,22 +217,25 @@ const lifecycles: ReactLifeCycleFunctions<ProjectRegisterListProps, OwnState> = 
     const items = Object.keys(ProjectRegistrationField)
       .map(key => ({ id: key, name: ProjectRegistrationField[key] }));
 
+    appBarDispatch.assignFields(items);
     navBottomDispatch.assignFields(items);
-
+    
     // only load data when response are empty
     if (!isLoading && !response) {
-      loadData(this.props);
+      this.props.handleLoadData();
     }
   },
   componentDidUpdate(props: ProjectRegisterListProps, state: OwnState) {
     // only load when these props are different
     if (
+      this.props.find !== props.find ||
+      this.props.findBy !== props.findBy ||
       this.props.orderBy !== props.orderBy ||
       this.props.direction !== props.direction ||
       this.props.page !== props.page ||
       this.props.size !== props.size
     ) {
-      loadData(this.props);
+      this.props.handleLoadData();
     }
   },
   componentWillUnmount() {
@@ -209,40 +259,11 @@ const lifecycles: ReactLifeCycleFunctions<ProjectRegisterListProps, OwnState> = 
   }
 };
 
-const loadData = (props: ProjectRegisterListProps): void => {
-  const { orderBy, direction, page, size } = props;
-  const { user } = props.userState;
-  const { loadAllRequest } = props.projectRegisterDispatch;
-  const { alertAdd } = props.layoutDispatch;
-
-  if (user) {
-    loadAllRequest({
-      companyUid: user.company.uid,
-      positionUid: user.position.uid,
-      filter: {
-        direction,
-        orderBy,
-        page,
-        size,
-        customerUids: undefined,
-        projectTypes: undefined,
-        statusTypes: undefined,
-        find: undefined,
-        findBy: undefined,
-      }
-    }); 
-  } else {
-    alertAdd({
-      time: new Date(),
-      message: 'Unable to find current user state'
-    });
-  }
-};
-
 export const ProjectRegistrationList = compose<ProjectRegisterListProps, OwnOptions>(
   withProjectRegistration,
   withUser,
   withLayout,
+  withAppBar,
   withNavBottom,
   withRouter,
   injectIntl,
