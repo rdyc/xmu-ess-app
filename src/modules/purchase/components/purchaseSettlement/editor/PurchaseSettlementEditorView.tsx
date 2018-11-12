@@ -61,6 +61,12 @@ export const PurchaseSettlementEditorView: React.SFC<PurchaseSettlementEditorPro
 
       initialValues.information.uid = data.uid;
       initialValues.information.notes = data.notes;
+      initialValues.information.projectUid = data.projectUid;
+      initialValues.information.customerUid = data.customerUid;
+      initialValues.information.rate = data.rate;
+      initialValues.information.currencyType = data.currencyType;
+      initialValues.information.request = data.request;
+      initialValues.information.advance = data.advance;
 
       if (formMode === FormMode.Edit) {
       initialValues.information.date = data.date;

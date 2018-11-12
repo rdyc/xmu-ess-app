@@ -58,7 +58,7 @@ const settlementItemInformation: React.SFC<AllProps> = props => (
       <TextField
         {...styled}
         margin="dense"
-        label={<FormattedMessage id="purchase.itemTitle.difference" />}
+        label={<FormattedMessage id="purchase.itemTitle.variance" />}
         value={props.intl.formatNumber(props.data.varianceValue)}
       />
 

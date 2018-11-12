@@ -41,11 +41,6 @@ export const PurchaseRequestEditorView: React.SFC<PurchaseRequestEditorProps> = 
     },
     items: {
       items: [
-      //   {
-      //   uid: undefined,
-      //   description: '',
-      //   request: 0
-      // }
     ]
     }
   };

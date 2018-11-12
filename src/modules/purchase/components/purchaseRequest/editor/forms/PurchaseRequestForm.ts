@@ -40,7 +40,7 @@ interface FormValueProps {
   formCurrencyType: string | null;
   formRate: number | 1;
   formValue: number | 1;
-  formItem: number | undefined;
+  // formItem: number | undefined;
 }
 
 export type PurchaseRequestFormProps
@@ -55,14 +55,14 @@ const mapStateToProps = (state: any): FormValueProps => {
   const currencyType = selector(state, 'information.currencyType');
   const rate = selector(state, 'information.rate');
   const value = selector(state, 'information.request'); 
-  const itemValue = selector(state, 'items.requestValue');
+  // const itemValue = selector(state, 'items.items[].requestValue');
   return {
     formCustomer: customer,
     formIsCurrencyIDR: currencyType === 'SCR01',
     formCurrencyType: currencyType,
     formRate: rate,
     formValue: value,
-    formItem: itemValue
+    // formItem: itemValue
   };
 };
 
@@ -74,4 +74,7 @@ export const PurchaseRequestForm = reduxForm<PurchaseRequestFormData, OwnProps>(
   touchOnBlur: true,
   enableReinitialize: true,
   destroyOnUnmount: true,
+  onChange: (values: PurchaseRequestFormData, dispatch: any, props: any) => {
+    dispatchEvent(new CustomEvent('PURCHASE_FORM', { detail: values }));
+  },
 })(connectedView);

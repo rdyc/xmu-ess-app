@@ -17,18 +17,6 @@
   "purchasesettlementapproval.subTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
   "purchasesettlementapproval.detail.title": "Purchase Settlement Approvals Details",
   "purchasesettlementapproval.detail.subTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-  "purchase.form.approval.newTitle": "Purchase Approval Form",
-  "purchase.form.approval.newSubTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-  "purchase.form.newTitle": "New Purchase Request",
-  "purchase.form.newSubTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-  "purchase.form.editTitle": "Modify Purchase Request",
-  "purchase.form.editSubTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-  "purchase.form.settlement.newTitle": "New Purchase Settlement",
-  "purchase.form.settlement.newSubTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-  "purchase.form.settlement.editTitle": "Modify Purchase Settlement",
-  "purchase.form.settlement.editSubTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-  "purchase.form.s_approval.newTitle": "Settlement Approval Form",
-  "purchase.form.s_approval.newSubTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
   "purchase.infoTitle": "Request Detail",
   "purchase.infoSubTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
   "purchasesettlement.infoTitle": "Settlement Detail",
@@ -48,7 +36,7 @@
   "purchase.dialog.modifyTitle": "Modify Confirmation",
   "purchase.dialog.modifyDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
  
-  "purchase.dialog.settleTitle": "Modify Confirmation",
+  "purchase.dialog.settleTitle": "Settle Confirmation",
   "purchase.dialog.settleDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
  
   "purchase.field.information.uid": "Purchase ID",
@@ -82,7 +70,7 @@
   "purchase.field.information.currencyType.placeholder": "Select a currency type",
   "purchase.field.information.rate": "Rate",
   "purchase.field.information.rate.placeholder": "Type a purchase rate",
-  "purchase.field.information.request": " Request Value",
+  "purchase.field.information.request": "Request Value",
   "purchase.field.information.request.required": "Purchase Request value is required",
   "purchase.field.information.request.placeholder": "Type a purchase value",
   "purchase.field.information.requestIDR": "Request Value (IDR)",
@@ -92,10 +80,10 @@
   "purchase.field.information.actualIDR": "Actual Value (IDR)",
   "purchase.field.information.difference": " Difference",
   "purchase.field.information.differenceIDR": "Difference Value (IDR)",
-  "purchase.field.information.hours": "Max. Hours",
   
   "purchase.action.modify": "Modify",
   "purchase.action.settle": "Settle",
+  "purchase.action.add": "Add",
 
   "purchase.message.registration.item.duplication": "Item(s) already added",
   "purchase.message.registration.create.success": "A new Purchase ID {uid} has been created",
@@ -105,6 +93,17 @@
 
   "purchase.form.purchaseRequest.editTitle": "Edit Request",
   "purchase.form.purchaseRequest.newTitle": "Create New Request",
-
+  "purchase.form.purchaseSettlement.editTitle": "Edit Settlemet",
+  "purchase.form.purchaseSettlement.newTitle": "Make Settlement",
+ "purchase.form.approval.newTitle": "Purchase Approval Form",
+ "purchase.form.approval.newSubTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+ "purchase.form.newTitle": "New Purchase Request",
+ "purchase.form.newSubTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+ "purchase.form.editTitle": "Modify Purchase Request",
+ "purchase.form.editSubTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+ "purchase.form.purchaseSettlement.newSubTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+ "purchase.form.purchaseSettlement.editSubTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+ "purchase.form.s_approval.newTitle": "Settlement Approval Form",
+ "purchase.form.s_approval.newSubTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
   "purchase.list.readySettle": "Ready to Settle!"
 }

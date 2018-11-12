@@ -21,7 +21,7 @@ interface OwnProps {
   onChangeCurrencyType: (event: any, newValue: string, oldValue: string) => void;
   onChangeRate: (event: any, newValue: number, oldValue: number) => void;
   onChangeValueIdr: (event: any, newValue: number, oldValue: number) => void;
-  onChangeRequestItem: (event: any, newValue: number, oldValue: number) => void;
+  // onChangeRequestItem: (event: any, newValue: number, oldValue: number) => void;
 }
 
 interface OwnHandlers {
@@ -66,7 +66,8 @@ const handlerCreators: HandleCreators<PurchaseRequestDetailFormProps, OwnHandler
         fieldProps = {
           required: true,
           placeholder: intl.formatMessage({ id: `purchase.field.${name}.placeholder`}),
-          component: InputCustomer
+          component: InputCustomer,
+          customerUid: projectFilter
         };
         break;
 
@@ -76,7 +77,7 @@ const handlerCreators: HandleCreators<PurchaseRequestDetailFormProps, OwnHandler
           category: 'project',
           placeholder: intl.formatMessage({ id: `purchase.field.${name}.placeholder` }),
           component: !isNullOrUndefined(formCustomer) ? SelectProject : InputText,
-          customerUid: projectFilter,
+          
         };
         break;
 

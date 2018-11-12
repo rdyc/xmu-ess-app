@@ -3,22 +3,16 @@ import { InputText } from '@layout/components/input/text';
 import {
   Card,
   CardContent,
-  // CardHeader,
-  // Divider,
   Grid,
 } from '@material-ui/core';
 import { PurchaseSettlementItemFormProps } from '@purchase/components/purchaseSettlement/editor/forms/PurchaseSettlementItemForm';
-// import { purchaseSettlementMessage } from '@purchase/locales/messages/purchaseSettlementMessage';
-// import * as classNames from 'classnames';
 import * as React from 'react';
-// import { FormattedMessage } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 import { Field, 
 } from 'redux-form';
-// import { PurchaseSettlementItemFormData } from './PurchaseSettlementForm';
 
-// export const PurchaseSettlementItemFormView: React.SFC<WrappedFieldArrayProps<PurchaseSettlementItemFormData> & PurchaseSettlementItemFormProps> = props => {
 export const PurchaseSettlementItemFormView: React.SFC<PurchaseSettlementItemFormProps> = props => {
-  const { context,  } = props;
+  const { context, onActualChange } = props;
 
   const render = (
       <Grid container spacing={16}>
@@ -31,35 +25,36 @@ export const PurchaseSettlementItemFormView: React.SFC<PurchaseSettlementItemFor
                     <Field
                       type="text"
                       name={`${field}.uid`}
-                      label="Item ID"
+                      label={<FormattedMessage id="purchase.itemTitle.uid" />}
                       disabled
                       component={InputText}
                     />
                     <Field
                       type="text"
                       name={`${field}.description`}
-                      label="Description"
+                      label={<FormattedMessage id="purchase.itemTitle.description" />}
                       disabled
                       component={InputText}
                     />
                     <Field
                       type="number"
-                      name={`${field}.requestValue`}
-                      label="Difference"
+                      name={`${field}.request`}
+                      label={<FormattedMessage id="purchase.itemTitle.request" />}
                       disabled={true}
                       component={InputNumber}
                     />
                     <Field
                       type="number"
-                      name={`${field}.actualValue`}
-                      label="Actual Value "
+                      name={`${field}.actual`}
+                      label={<FormattedMessage id="purchase.itemTitle.actual" />}
                       required={true}
+                      onChange={onActualChange}
                       component={InputNumber}
                     />
                     <Field
                       type="number"
-                      name={`${field}.varianceValue`}
-                      label="Difference"
+                      name={`${field}.variance`}
+                      label={<FormattedMessage id="purchase.itemTitle.variance" />}
                       disabled={true}
                       component={InputNumber}
                     />

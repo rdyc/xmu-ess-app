@@ -87,19 +87,10 @@ const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
   stateUpdate: (prevState: OwnState) => (newState: any) => ({
     ...prevState,
     ...newState
-  })
+  }),
 };
 
 const handlers: HandleCreators<PurchaseRequestEditorProps, OwnHandlers> = {
-  // handleEventListener: (props: PurchaseRequestEditorProps) => (event: CustomEvent) => {
-  //   const formValues = event.detail as PurchaseRequestEditorProps;
-
-  //   let requestValue: number = 0;
-
-  //   if (formValues.items) {
-  //     formValues.items.items.forEach(items => requestValue += items.request);
-  //   }
-  // },
   handleValidate: (props: PurchaseRequestEditorProps) => (formData: PurchaseRequestFormData) => {
     const errors = {
       information: {},
@@ -110,7 +101,6 @@ const handlers: HandleCreators<PurchaseRequestEditorProps, OwnHandlers> = {
 
     const requiredFields = [
       'customerUid', 'projectUid',
-      // 'advance',
       'date', 'rate', 'currencyType'
     ];
 

@@ -62,7 +62,7 @@ export const PurchaseSettlementListView: React.SFC<PurchaseSettlementListProps> 
                   >
                     {purchase.status && purchase.status.value}
                   </Typography>
-                  : '' }
+                  : ' ' }
                 {purchase.status && purchase.status.value !== null ?
                   <Typography
                     noWrap
@@ -88,7 +88,7 @@ export const PurchaseSettlementListView: React.SFC<PurchaseSettlementListProps> 
                   >
                   {purchase.status && purchase.status.value !== null ? 
                       purchase.changes && moment(purchase.changes.updatedAt ? purchase.changes.updatedAt : purchase.changes.createdAt).fromNow()
-                    : ''}
+                    : ' '}
                   </Typography>
               </Grid>
             </Grid>
