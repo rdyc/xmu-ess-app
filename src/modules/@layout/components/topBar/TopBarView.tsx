@@ -78,7 +78,7 @@ export const TopBarView: React.SFC<TopBarProps> = props => (
           <IconButton
             color="inherit"
             aria-label="Search"
-            onClick={() => props.setMode('search')}
+            onClick={props.handleOnClickSearch}
           >
             <SearchIcon />
           </IconButton>

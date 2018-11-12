@@ -270,6 +270,7 @@ const lifecycles: ReactLifeCycleFunctions<ProjectRegistrationDetailProps, OwnSta
       subTitle : intl.formatMessage({id: 'project.detail.subTitle'})
     });
 
+    layoutDispatch.modeSearchOff();
     layoutDispatch.navBackShow();
     layoutDispatch.moreShow();
     
@@ -407,14 +408,14 @@ const lifecycles: ReactLifeCycleFunctions<ProjectRegistrationDetailProps, OwnSta
     }
   },
   componentWillUnmount() {
-    const { layoutDispatch, appBarDispatch } = this.props;
+    const { layoutDispatch } = this.props;
 
     layoutDispatch.changeView(null);
     layoutDispatch.navBackHide();
     layoutDispatch.moreHide();
     layoutDispatch.actionCentreHide();
 
-    appBarDispatch.dispose();
+    // appBarDispatch.dispose();
   }
 };
 

@@ -44,6 +44,7 @@ interface OwnStateUpdater extends StateHandlerMap<OwnState> {
 }
 
 interface OwnHandler {
+  handleOnClickSearch: (event: React.MouseEvent) => void;
   handleOnClickMenu: (menu: IAppBarMenu) => void;
   handleOnChangeSearch: (event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => void;
   handleOnDiscardSearch: () => void;
@@ -68,8 +69,8 @@ export type TopBarProps
   & OwnStateUpdater
   & OwnHandler;
 
-const createProps: mapper<OwnOption, OwnState> = (props: OwnOption): OwnState => ({
-  mode: 'normal',
+const createProps: mapper<TopBarProps, OwnState> = (props: TopBarProps): OwnState => ({
+  mode: props.layoutState.isModeSearch ? 'search' : 'normal',
   search: '',
   field: undefined,
   isShowFields: false,
@@ -96,6 +97,12 @@ const stateUpdaters: StateUpdaters<OwnOption, OwnState, OwnStateUpdater> = {
 };
 
 const handlerCreators: HandleCreators<TopBarProps, OwnHandler> = {
+  handleOnClickSearch: (props: TopBarProps) => (event: React.MouseEvent) => {
+    event.preventDefault();
+
+    props.setMode('search');
+    props.layoutDispatch.modeSearchOn();
+  },
   handleOnChangeSearch: (props: TopBarProps) => (event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
     props.setSearch(event.target.value);
   },
@@ -156,12 +163,12 @@ const handlerCreators: HandleCreators<TopBarProps, OwnHandler> = {
   }
 };
 
-const lifeCycleFunctions: ReactLifeCycleFunctions<TopBarProps, OwnState> = {
+const lifeCycles: ReactLifeCycleFunctions<TopBarProps, OwnState> = {
   // componentWillMount() {
   //   console.log('component will mount');
   // },
-  // componentWillReceiveProps() {
-  //   console.log('component will receive props');
+  // componentWillReceiveProps(nextProps: TopBarProps) {
+  //   console.log(nextProps.layoutState);
   // },
   // componentDidMount() {
   //   console.log('component did mount');
@@ -169,9 +176,24 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<TopBarProps, OwnState> = {
   // componentWillUpdate() {
   //   console.log('component will update');
   // },
-  // componentDidUpdate() {
-  //   console.log('component did update');
-  // },
+  componentDidUpdate(prevProps: TopBarProps) {
+    if (this.props.layoutState !== prevProps.layoutState) {
+
+      if (this.props.layoutState.view) {
+        // search mode checking
+        if (this.props.layoutState.isModeSearch) {
+          this.props.setMode('search');
+        } else {
+          // when search has value, then turn back it into search mode
+          if (this.props.layoutState.view.isSearchable && this.props.search !== '') {
+            this.props.setMode('search');
+          } else {
+            this.props.setMode('normal');
+          }
+        }
+      }
+    }
+  },
   // componentWillUnmount() {
   //   console.log('component will unmount');
   // }
@@ -186,5 +208,5 @@ export const TopBar = compose<TopBarProps, OwnOption>(
   withStyles(styles),
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
-  lifecycle(lifeCycleFunctions)
+  lifecycle(lifeCycles)
 )(TopBarView);

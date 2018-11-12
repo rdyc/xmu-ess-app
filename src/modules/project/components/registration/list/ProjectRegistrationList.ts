@@ -192,7 +192,8 @@ const lifecycles: ReactLifeCycleFunctions<ProjectRegisterListProps, OwnState> = 
       uid: AppMenu.ProjectRegistrationRequest,
       parentUid: AppMenu.ProjectRegistration,
       title: intl.formatMessage({id: 'project.view.registration.title'}),
-      subTitle : intl.formatMessage({id: 'project.view.registration.subHeader'})
+      subTitle: intl.formatMessage({id: 'project.view.registration.subHeader'}),
+      isSearchable: true
     });
 
     layoutDispatch.modeListOn();
