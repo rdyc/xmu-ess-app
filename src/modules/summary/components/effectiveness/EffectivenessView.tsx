@@ -1,12 +1,17 @@
 import {  Paper, Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@material-ui/core';
+import { isWidthDown } from '@material-ui/core/withWidth';
 import { ISummaryEffectiveness } from '@summary/classes/response/effectiveness';
 import { EffectivenessProps } from '@summary/components/effectiveness/Effectiveness';
+import * as classNames from 'classnames';
 import * as React from 'react';
 import { FormattedMessage, } from 'react-intl';
 import { isArray } from 'util';
 
 export const EffectivenessView: React.SFC<EffectivenessProps> = props => {
   const { isLoading, response } = props.summaryState.effectiveness;
+  const { width, classes } = props;
+
+  const isMobile = isWidthDown('sm', width);
 
   const renderEffectiveness = (effectivenesses: ISummaryEffectiveness[]) => {
 
@@ -24,22 +29,22 @@ export const EffectivenessView: React.SFC<EffectivenessProps> = props => {
             </TableCell>
             <TableCell>
               { assignment.project && assignment.project.uid } &ndash;&nbsp;
-              { assignment.project && assignment.project.uid }
+              { assignment.project && assignment.project.name }
             </TableCell>
             <TableCell>
               { assignment.project && assignment.project.customer && assignment.project.customer.name }
             </TableCell>
-            <TableCell>
+            <TableCell numeric>
               { assignment.allocateHours }
             </TableCell>
-            <TableCell>
+            <TableCell numeric>
               { assignment.actualHours }
             </TableCell>
-            <TableCell>
+            <TableCell numeric>
               { assignment.remainHours }
             </TableCell>
-            <TableCell>
-              { assignment.percentage }
+            <TableCell numeric>
+              { `${assignment.percentage}%` }
             </TableCell>
           </TableRow>
         )
@@ -48,31 +53,53 @@ export const EffectivenessView: React.SFC<EffectivenessProps> = props => {
   };
   
   const RenderList = () => (
-    <Table>
+    <Table
+      className={classNames(classes.reportTable)}
+    >
       <TableHead>
         <TableRow>
-          <TableCell>
+          <TableCell 
+            className={classNames(classes.cellWidthSm, classes.stickyHeader)}
+          >
             <FormattedMessage id="summary.effectiveness.tableHead.name" />
           </TableCell>
-          <TableCell>
+          <TableCell
+            className={classNames(classes.cellWidthMd, classes.stickyHeader)}
+          >
             <FormattedMessage id="summary.effectiveness.tableHead.positionRole" />
           </TableCell>
-          <TableCell>
+          <TableCell
+            className={classNames(classes.cellWidthMd, classes.stickyHeader)}
+          >
             <FormattedMessage id="summary.effectiveness.tableHead.project" />
           </TableCell>
-          <TableCell>
+          <TableCell
+            className={classNames(classes.cellWidthSm, classes.stickyHeader)}
+          >
             <FormattedMessage id="summary.effectiveness.tableHead.customer" />
           </TableCell>
-          <TableCell numeric>
+          <TableCell 
+            numeric
+            className={classNames(classes.cellWidthXS, classes.stickyHeader)}
+          >
             <FormattedMessage id="summary.effectiveness.tableHead.allocated" />
           </TableCell>
-          <TableCell numeric>
+          <TableCell 
+            numeric
+            className={classNames(classes.cellWidthXS, classes.stickyHeader)}
+          >
             <FormattedMessage id="summary.effectiveness.tableHead.actual" />
           </TableCell>
-          <TableCell numeric>
+          <TableCell 
+            numeric
+            className={classNames(classes.cellWidthXS, classes.stickyHeader)}
+          >
             <FormattedMessage id="summary.effectiveness.tableHead.remaining" />
           </TableCell>
-          <TableCell numeric>
+          <TableCell 
+            numeric
+            className={classNames(classes.cellWidthXS, classes.stickyHeader)}
+          >
             <FormattedMessage id="summary.effectiveness.tableHead.progress" />
           </TableCell>
         </TableRow>
@@ -94,6 +121,7 @@ export const EffectivenessView: React.SFC<EffectivenessProps> = props => {
         <Paper 
           square 
           elevation={1}
+          className={!isMobile ? classNames(classes.reportPaper) : classNames(classes.reportPaperMobile)}
         >
         <RenderList/>
         </Paper>}

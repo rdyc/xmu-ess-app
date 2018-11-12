@@ -1,6 +1,9 @@
 import AppMenu from '@constants/AppMenu';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
+import { WithStyles, withStyles, withWidth } from '@material-ui/core';
+import { WithWidth } from '@material-ui/core/withWidth';
+import styles from '@styles';
 import { EffectivenessView } from '@summary/components/effectiveness/EffectivenessView';
 import { WithSummary, withSummary } from '@summary/hoc/withSummary';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
@@ -31,6 +34,7 @@ interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
 
 export type EffectivenessProps 
   = WithSummary
+  & WithWidth
   & WithUser
   & WithLayout
   & RouteComponentProps
@@ -38,6 +42,7 @@ export type EffectivenessProps
   & OwnOptions
   & OwnHandlers
   & OwnState
+  & WithStyles<typeof styles>
   & OwnStateUpdaters;
 
 const createProps: mapper<EffectivenessProps, OwnState> = (props: EffectivenessProps): OwnState => {
@@ -121,6 +126,8 @@ export const Effectiveness = compose<EffectivenessProps, OwnOptions>(
     withLayout,
     withRouter,
     injectIntl,
+    withWidth(),
+    withStyles(styles),
     withStateHandlers<OwnState, OwnStateUpdaters, OwnOptions>(createProps, stateUpdaters), 
     withHandlers<EffectivenessProps, OwnHandlers>(handlerCreators),
     lifecycle<EffectivenessProps, OwnState>(lifecycles),

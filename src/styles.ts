@@ -244,7 +244,42 @@ const styles = (theme: Theme) =>
     colorRed: { color: red['500'] },
 
     /* text */
-    textStrikethrough : { textDecoration: 'line-through' }
+    textStrikethrough : { textDecoration: 'line-through' },
+
+    /* report */
+    reportPaper: {
+      overflowX: 'auto',
+      height: `calc(100vh - 128px)`,
+    },
+    reportPaperMobile: {
+      overflowX: 'auto',
+      height: `calc(100vh - 64px)`,
+    },
+
+    /* report table */
+    reportTable: {
+      tableLayout: 'initial'
+    },
+    stickyHeader: {
+      backgroundColor: theme.palette.background.paper,
+      position: 'sticky',
+      top: 0
+    },
+    cellWidthXS: {
+      width: '5vw'
+    },
+    cellWidthSm: {
+      width: '10vw'
+    },
+    cellWidthMd: {
+      width: '15vw'
+    },
+    cellWidthLg: {
+      width: '20vw'
+    },
+    cellWidthXL: {
+      width: '25vw'
+    },
 
     /* -------- generic classes end ----------*/
   });
