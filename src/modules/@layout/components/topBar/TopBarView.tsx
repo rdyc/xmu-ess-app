@@ -4,8 +4,10 @@ import {
   Divider,
   IconButton,
   Input,
+  InputAdornment,
   List,
   ListItem,
+  ListItemSecondaryAction,
   ListItemText,
   Menu,
   MenuItem,
@@ -16,6 +18,8 @@ import {
 import { isWidthUp } from '@material-ui/core/withWidth';
 import AppsIcon from '@material-ui/icons/Apps';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+import CallMadeIcon from '@material-ui/icons/CallMade';
+import ClearIcon from '@material-ui/icons/Clear';
 import MenuIcon from '@material-ui/icons/Menu';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import NotificationImportant from '@material-ui/icons/NotificationImportant';
@@ -27,7 +31,7 @@ import { TopBarProps } from './TopBar';
 
 export const TopBarView: React.SFC<TopBarProps> = props => (
   <AppBar 
-    elevation={isWidthUp('md', props.width) ? 3 : 1}
+    elevation={isWidthUp('md', props.width) ? 2 : 1}
     position="fixed"
     color={props.mode === 'search' ? 'inherit' : props.layoutState.theme.palette.type === 'dark' ? 'default' : 'primary'}
     className={classNames(props.getClassNames())}
@@ -114,7 +118,7 @@ export const TopBarView: React.SFC<TopBarProps> = props => (
             color="inherit"
             aria-label="More"
             onClick={props.setMenuVisibility}
-            >
+          >
             <MoreVertIcon />
           </IconButton>
         }
@@ -128,52 +132,71 @@ export const TopBarView: React.SFC<TopBarProps> = props => (
         timeout={300}
       >
         <div>
-          <Toolbar>
+          <Toolbar >
             <IconButton
               aria-label="close search"
               onClick={() => props.handleOnDiscardSearch()}
             >
               <ArrowBackIcon />
             </IconButton>
-
-            {
-              props.isSearching &&
-              <div onClick={props.handleOnClickDivSearch}>
-                <span>  
-                  <Typography variant="body1" >
-                    {props.search}
+            
+            <Input 
+              fullWidth
+              autoFocus
+              disableUnderline
+              placeholder="Type something"
+              value={props.search}
+              onChange={props.handleOnChangeSearch}
+              onKeyUp={props.handleOnKeyUpSearch}
+              startAdornment={
+                <InputAdornment 
+                  position="start" 
+                  onClick={() => props.setFieldVisibility()}>
+                  <Typography 
+                    variant="body1" 
+                    color="inherit"
+                    noWrap
+                  >
+                    {props.field ? props.field.name : ''}
                   </Typography>
-
-                  {
-                    props.field &&
-                    <Typography variant="body2">
-                      {props.field.name}
-                    </Typography>
-                  }
-                </span>
-              </div>
-            }
-
-            {
-              !props.isSearching &&
-              <Input 
-                fullWidth
-                autoFocus
-                disableUnderline
-                placeholder="Search"
-                value={props.search}
-                onChange={props.handleOnChangeSearch}
-                onKeyUp={props.handleOnKeyUpSearch}
-              />
-            }
+                </InputAdornment>
+              }
+              endAdornment={
+                props.search.length > 0 &&
+                <InputAdornment position="end">
+                  <IconButton onClick={() => props.handleOnClearSearch()}>
+                    <ClearIcon/>
+                  </IconButton>
+                </InputAdornment>
+              }
+            />
           </Toolbar>
           
           {
-            !props.isSearching &&
+            props.isShowFields &&
             props.appBarState.fields &&
             <div className={props.search.length < 3 ? props.classes.hide : ''}>
               <Divider />
-              <List component="div" disablePadding>
+              <List 
+                component="div" 
+                disablePadding
+                className={props.theme.palette.background.default}
+              >
+                <ListItem
+                  button 
+                  component="div"
+                  onClick={() => props.handleOnClickField()}
+                >
+                  <ListItemText 
+                    primary={`${props.search} in Any`}
+                    primaryTypographyProps={{
+                      variant: 'body1'
+                    }}
+                  />
+                  <ListItemSecondaryAction>
+                    <CallMadeIcon color="action" />
+                  </ListItemSecondaryAction>
+                </ListItem>
                 {
                   props.appBarState.fields.map((field, index) =>
                     <ListItem 
@@ -188,6 +211,9 @@ export const TopBarView: React.SFC<TopBarProps> = props => (
                           variant: 'body1'
                         }}
                       />
+                      <ListItemSecondaryAction>
+                        <CallMadeIcon color="action" />
+                      </ListItemSecondaryAction>
                     </ListItem>   
                   )
                 }

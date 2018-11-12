@@ -2,7 +2,7 @@ import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithNotification, withNotification } from '@layout/hoc/withNotification';
 import { IAppBarMenu, IListBarField } from '@layout/interfaces';
-import { WithStyles, withStyles } from '@material-ui/core';
+import { WithStyles, withStyles, WithTheme, withTheme } from '@material-ui/core';
 import { WithWidth } from '@material-ui/core/withWidth';
 import styles from '@styles';
 import { RouteComponentProps, withRouter } from 'react-router';
@@ -31,7 +31,7 @@ interface OwnState {
   mode: TopBarMode;
   search: string;
   field: IListBarField | undefined;
-  isSearching: boolean;
+  isShowFields: boolean;
   isOpenMenu: boolean;
 }
 
@@ -39,17 +39,17 @@ interface OwnStateUpdater extends StateHandlerMap<OwnState> {
   setMode: StateHandler<OwnState>;
   setSearch: StateHandler<OwnState>;
   setField: StateHandler<OwnState>;
-  setSearching: StateHandler<OwnState>;
+  setFieldVisibility: StateHandler<OwnState>;
   setMenuVisibility: StateHandler<OwnState>;
 }
 
 interface OwnHandler {
   handleOnClickMenu: (menu: IAppBarMenu) => void;
   handleOnChangeSearch: (event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => void;
-  handleOnClickDivSearch: (event: React.MouseEvent<HTMLDivElement>) => void;
   handleOnDiscardSearch: () => void;
+  handleOnClearSearch: () => void;
   handleOnKeyUpSearch: (event: React.KeyboardEvent<HTMLTextAreaElement | HTMLInputElement>) => void;
-  handleOnClickField: (field: IListBarField) => void;
+  handleOnClickField: (field?: IListBarField | undefined) => void;
   getClassNames: () => string[];
   getCountNotif: () => number;
 }
@@ -59,7 +59,8 @@ export type TopBarProps
   & WithLayout
   & WithAppBar
   & WithNotification
-  & WithWidth 
+  & WithWidth
+  & WithTheme
   & WithStyles<typeof styles>
   & RouteComponentProps
   & OwnOption
@@ -71,7 +72,7 @@ const createProps: mapper<OwnOption, OwnState> = (props: OwnOption): OwnState =>
   mode: 'normal',
   search: '',
   field: undefined,
-  isSearching: false,
+  isShowFields: false,
   isOpenMenu: false
 });
 
@@ -80,13 +81,14 @@ const stateUpdaters: StateUpdaters<OwnOption, OwnState, OwnStateUpdater> = {
     mode
   }),
   setSearch: (prev: OwnState) => (value: string): Partial<OwnState> => ({
-    search: value
+    search: value,
+    isShowFields: value.length >= 3
   }),
   setField: (prev: OwnState) => (field: IListBarField | undefined): Partial<OwnState> => ({
     field
   }),
-  setSearching: (prev: OwnState) => (): Partial<OwnState> => ({
-    isSearching: !prev.isSearching
+  setFieldVisibility: (prev: OwnState) => (): Partial<OwnState> => ({
+    isShowFields: !prev.isShowFields
   }),
   setMenuVisibility: (prev: OwnState) => (): Partial<OwnState> => ({
     isOpenMenu: !prev.isOpenMenu
@@ -101,28 +103,30 @@ const handlerCreators: HandleCreators<TopBarProps, OwnHandler> = {
     props.appBarDispatch.menuHide();
     props.appBarState.onClickMenu(menu);
   },
-  handleOnClickDivSearch: (props: TopBarProps) => (event: React.MouseEvent<HTMLDivElement>) => {
-    event.preventDefault();
-
-    props.setSearching();
-  },
   handleOnDiscardSearch: (props: TopBarProps) => () => {
-    props.setSearching();
+    props.setFieldVisibility();
     props.setField(undefined);
     props.setSearch('');
     props.setMode('normal');
     props.appBarState.onSearch();
   },
+  handleOnClearSearch: (props: TopBarProps) => () => {
+    props.setFieldVisibility();
+    props.setField(undefined);
+    props.setSearch('');
+  },
   handleOnKeyUpSearch: (props: TopBarProps) => (event: React.KeyboardEvent<HTMLTextAreaElement | HTMLInputElement>) => {
     if (event.keyCode === 13) {
-      props.setField(undefined);
-      props.setSearching();
-      props.appBarState.onSearch(props.search);
+      if (props.isShowFields) {
+        props.setFieldVisibility();
+      }
+
+      props.appBarState.onSearch(props.search, props.field);
     }
   },
   handleOnClickField: (props: TopBarProps) => (field: IListBarField) => {
     props.setField(field);
-    props.setSearching();
+    props.setFieldVisibility();
     props.appBarState.onSearch(props.search, field);
   },
   getClassNames: (props: TopBarProps) => (): string[] => {
@@ -178,6 +182,7 @@ export const TopBar = compose<TopBarProps, OwnOption>(
   withNotification,
   withAppBar,
   withRouter,
+  withTheme(),
   withStyles(styles),
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),

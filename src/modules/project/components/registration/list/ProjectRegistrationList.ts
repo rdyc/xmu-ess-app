@@ -7,6 +7,7 @@ import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IListBarField } from '@layout/interfaces';
 import { ProjectRegistrationField } from '@project/classes/types';
 import { ProjectRegistrationListView } from '@project/components/registration/list/ProjectRegistrationListView';
+import { findFieldTranslator } from '@project/helper';
 import { WithProjectRegistration, withProjectRegistration } from '@project/hoc/withProjectRegistration';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
@@ -88,7 +89,7 @@ const createProps: mapper<ProjectRegisterListProps, OwnState> = (props: ProjectR
 
 const stateUpdaters: StateUpdaters<OwnOptions, OwnState, OwnStateUpdaters> = {
   setSearch: (prevState: OwnState) => (find: string, field: IListBarField | undefined) => ({
-    find,
+    find: field ? findFieldTranslator(find, field) : find,
     findBy: field ? field.id : undefined,
     page: 1
   }),
@@ -147,7 +148,6 @@ const handlerCreators: HandleCreators<ProjectRegisterListProps, OwnHandlers> = {
   },
   handleOnSearch: (props: ProjectRegisterListProps) => (find: string, field: IListBarField | undefined) => {
     props.setSearch(find, field);
-    // props.handleLoadData;
   },
   handleGoToDetail: (props: ProjectRegisterListProps) => (projectUid) => {
     const { history } = props;
@@ -165,9 +165,6 @@ const handlerCreators: HandleCreators<ProjectRegisterListProps, OwnHandlers> = {
   },
   handleReloading: (props: ProjectRegisterListProps) => () => { 
     props.stateReloading();
-
-    // force re-load from api
-    // props.handleLoadData();
   },
   handleChangeOrder: (props: ProjectRegisterListProps) => (field: IListBarField) => { 
     props.stateOrdering(field);
