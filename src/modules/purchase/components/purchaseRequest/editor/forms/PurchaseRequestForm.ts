@@ -3,7 +3,7 @@ import { PurchaseRequestFormView } from '@purchase/components/purchaseRequest/ed
 import { connect } from 'react-redux';
 import { formValueSelector, 
   // getFormValues, 
-  InjectedFormProps, reduxForm } from 'redux-form';
+  getFormValues, InjectedFormProps, reduxForm } from 'redux-form';
 
 const formName = 'purchaseRequest';
 
@@ -40,7 +40,7 @@ interface FormValueProps {
   formCurrencyType: string | null;
   formRate: number | 1;
   formValue: number | 1;
-  // formItem: number | undefined;
+  formValues: PurchaseRequestFormData;
 }
 
 export type PurchaseRequestFormProps
@@ -51,6 +51,7 @@ export type PurchaseRequestFormProps
 const selector = formValueSelector(formName);
 
 const mapStateToProps = (state: any): FormValueProps => {
+  
   const customer = selector(state, 'information.customerUid');
   const currencyType = selector(state, 'information.currencyType');
   const rate = selector(state, 'information.rate');
@@ -62,6 +63,7 @@ const mapStateToProps = (state: any): FormValueProps => {
     formCurrencyType: currencyType,
     formRate: rate,
     formValue: value,
+    formValues: getFormValues(formName)(state) as PurchaseRequestFormData
     // formItem: itemValue
   };
 };

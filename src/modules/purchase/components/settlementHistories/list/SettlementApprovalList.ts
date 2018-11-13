@@ -4,7 +4,7 @@ import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithNavBottom, withNavBottom } from '@layout/hoc/withNavBottom';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IListBarField } from '@layout/interfaces';
-import { PurchaseField } from '@purchase/classes/types';
+import { SettlementField } from '@purchase/classes/types';
 import { SettlementApprovalListView } from '@purchase/components/settlementHistories/list/SettlementApprovalListView';
 import { WithSettlementApproval, withSettlementApproval } from '@purchase/hoc/settlementHistories/withSettlementApproval';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
@@ -167,8 +167,8 @@ const lifecycles: ReactLifeCycleFunctions<SettlementApprovalListProps, OwnState>
         onSizeCallback: handleChangeSize,
       });
   
-      const items = Object.keys(PurchaseField)
-        .map(key => ({ id: key, name: PurchaseField[key] }));
+      const items = Object.keys(SettlementField)
+        .map(key => ({ id: key, name: SettlementField[key] }));
   
       navBottomDispatch.assignFields(items);
   

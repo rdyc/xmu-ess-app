@@ -80,7 +80,9 @@ export const PurchaseSettlementDetailView: React.SFC<PurchaseSettlementDetailPro
             </Grid>
           </Grid>
           <Grid item>
+          { response.data.statusType ? 
             <WorkflowHistory data={response.data.workflow} />
+          : '' }
           </Grid>
         </Grid>
       }
