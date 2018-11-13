@@ -46,14 +46,13 @@
   "timesheet.field.information.end.placeholder": "Select a time's up",
   "timesheet.field.information.approvalNote": "Approval Note",
   "timesheet.field.information.description": "Notes",
-  "timesheet.field.information.notes.required": "Notes is required",
-  "timesheet.field.information.notes.placeholder": "Please fill in the notes",
+  "timesheet.field.information.description.placeholder": "Please fill in the notes",
 
   "timesheet.action.modify": "Modify",
   "timesheet.action.close": "Close",
 
-  "timesheet.entry.history.noData": "No data time report entry",
-  "timesheet.approval.history.noData": "No data time report approval",
+  "timesheet.entry.history.noData": "Empty data",
+  "timesheet.approval.history.noData": "Empty data",
   
   "timesheet.view.approval.title": "Time Report Approvals",
   "timesheet.view.approval.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",

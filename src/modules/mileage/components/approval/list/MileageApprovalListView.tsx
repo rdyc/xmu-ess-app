@@ -10,13 +10,17 @@ import {
 import { IMileageRequest } from '@mileage/classes/response';
 import { MileageApprovalListProps } from '@mileage/components/approval/list/MileageApprovalList';
 import * as React from 'react';
-import { FormattedDate, FormattedMessage, FormattedNumber, FormattedPlural } from 'react-intl';
+import {
+  FormattedMessage,
+  FormattedNumber,
+  FormattedPlural
+} from 'react-intl';
 import { isArray } from 'util';
 
 export const MileageApprovalListView: React.SFC<
   MileageApprovalListProps
 > = props => {
-  const { handleGoToDetail } = props;
+  const { handleGoToDetail, intl } = props;
   const { isLoading, response } = props.mileageApprovalState.all;
 
   const renderMileageList = (mileages: IMileageRequest[]) => {
@@ -32,21 +36,25 @@ export const MileageApprovalListView: React.SFC<
           <Grid container spacing={24}>
             <Grid item xs={8} sm={8}>
               <Typography noWrap variant="body1">
-                {mileage.uid}
+                {intl.formatDate(new Date(mileage.year, mileage.month - 1), {
+                  year: 'numeric',
+                  month: 'long'
+                })}
               </Typography>
               <Typography noWrap color="primary" variant="body1">
-                {mileage.employee && mileage.employee.fullName}
+                {mileage.uid}
               </Typography>
             </Grid>
             <Grid item xs={4} sm={4}>
               <Typography noWrap align="right" variant="caption">
-                <FormattedDate
-                  month="short"
-                  year="numeric"
-                  value={new Date(mileage.year, mileage.month - 1)}
-                />
+                {mileage.employee && mileage.employee.fullName}
               </Typography>
-              <Typography noWrap align="right" variant="body1" color="secondary">
+              <Typography
+                noWrap
+                align="right"
+                variant="body1"
+                color="secondary"
+              >
                 {mileage.status && mileage.status.value}
               </Typography>
             </Grid>
@@ -62,31 +70,27 @@ export const MileageApprovalListView: React.SFC<
       component="nav"
       subheader={
         <ListSubheader component="div">
-          {response &&
-            response.metadata &&
-            response.metadata.paginate && (
-              <Grid container spacing={24}>
-                <Grid item xs={6} sm={6}>
-                  <Typography variant="caption" color="primary">
-                    <FormattedNumber value={response.metadata.total} /> &nbsp;
-                    <FormattedPlural
-                      one="mileage"
-                      other="mileages"
-                      value={response.metadata.total}
-                    />
-                  </Typography>
-                </Grid>
-                <Grid item xs={6} sm={6}>
-                  <Typography variant="caption" align="right" color="primary">
-                    <FormattedNumber
-                      value={response.metadata.paginate.current}
-                    />{' '}
-                    of{' '}
-                    <FormattedNumber value={response.metadata.paginate.total} />
-                  </Typography>
-                </Grid>
+          {response && response.metadata && response.metadata.paginate && (
+            <Grid container spacing={24}>
+              <Grid item xs={6} sm={6}>
+                <Typography variant="caption" color="primary">
+                  <FormattedNumber value={response.metadata.total} /> &nbsp;
+                  <FormattedPlural
+                    one="mileage"
+                    other="mileages"
+                    value={response.metadata.total}
+                  />
+                </Typography>
               </Grid>
-            )}
+              <Grid item xs={6} sm={6}>
+                <Typography variant="caption" align="right" color="primary">
+                  <FormattedNumber value={response.metadata.paginate.current} />{' '}
+                  of{' '}
+                  <FormattedNumber value={response.metadata.paginate.total} />
+                </Typography>
+              </Grid>
+            </Grid>
+          )}
         </ListSubheader>
       }
     >
@@ -96,30 +100,31 @@ export const MileageApprovalListView: React.SFC<
 
   const render = (
     <React.Fragment>
-      {isLoading &&
-        response && <Typography variant="body2">loading</Typography>}
+      {isLoading && response && (
+        <Typography variant="body2">loading</Typography>
+      )}
 
-      {response && response.data && response.data.length >= 1 && (
-        <Paper square elevation={1}>
-          <RenderList />
-        </Paper>
-      )}
-      
-      {(response && response.data && response.data.length < 1) && (
-        <Paper>
-          <List>
-            <ListItem>
-              <Grid container spacing={24}>
-                <Grid item xs={12} sm={12}>
-                  <Typography variant="body2" color="error">
-                    <FormattedMessage id="mileage.approval.noData" />
-                  </Typography>
+      {response &&
+        response.data &&
+        (response.data.length >= 1 ? (
+          <Paper square elevation={1}>
+            <RenderList />
+          </Paper>
+        ) : (
+          <Paper>
+            <List>
+              <ListItem>
+                <Grid container spacing={24}>
+                  <Grid item xs={12} sm={12}>
+                    <Typography variant="body2" color="error">
+                      <FormattedMessage id="mileage.approval.noData" />
+                    </Typography>
+                  </Grid>
                 </Grid>
-              </Grid>
-            </ListItem>
-          </List>
-        </Paper>
-      )}
+              </ListItem>
+            </List>
+          </Paper>
+        ))}
     </React.Fragment>
   );
 

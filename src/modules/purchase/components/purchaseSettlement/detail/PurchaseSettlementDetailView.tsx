@@ -6,12 +6,13 @@ import {
   DialogContentText,
   DialogTitle,
   Grid,
-  Typography,
+  LinearProgress,
+  // Typography,
 } from '@material-ui/core';
 import { WorkflowHistory } from '@organization/components/workflow/history/WorkflowHistory';
 import { PurchaseSettlementDetailProps } from '@purchase/components/purchaseSettlement/detail/PurchaseSettlementDetail';
 import * as React from 'react';
-import { FormattedMessage } from 'react-intl';
+// import { FormattedMessage } from 'react-intl';
 import { SettlementInformation } from './shared/SettlementInformation';
 import { SettlementItemInformation } from './shared/SettlementItemInformation';
 
@@ -53,41 +54,37 @@ export const PurchaseSettlementDetailView: React.SFC<PurchaseSettlementDetailPro
     <React.Fragment>
       {
         isLoading &&
-        <Typography variant="body2">
-          <FormattedMessage id="global.loading" />
-        </Typography>
+        <LinearProgress variant="query" />
       }
       {
         !isLoading &&
         response &&
         response.data &&
-        <Grid
-          container
-          spacing={16}
-          direction="row"
-          justify="flex-start"
-          alignItems="flex-start"
-        >
-          <Grid item 
-          // xs={12} 
-          md={4}>
+        <Grid container spacing={16} >
+          <Grid item xs={12} md={4}>
             <SettlementInformation data={response.data} />
           </Grid>
 
-          <Grid item 
-          // xs={12} 
-          md={8}>
-            <SettlementItemInformation data={response.data.items} />
+          <Grid container item xs={12} md={8}>
+            <Grid container spacing={16}>
+              {
+                response.data.items &&
+                response.data.items.map((item, index) =>
+                  <Grid key={index} item xs={12} md={4}>
+                    <SettlementItemInformation
+                      data={item}
+                      title={`Settlement Item #${index + 1} `} />
+                  </Grid>
+                )
+              }
+            </Grid>
           </Grid>
-
-          <Grid item 
-          // xs={12} 
-          md={4} 
-          >
+          <Grid item>
+          { response.data.statusType ? 
             <WorkflowHistory data={response.data.workflow} />
+          : '' }
           </Grid>
         </Grid>
-        
       }
       {renderDialog}
     </React.Fragment>

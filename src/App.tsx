@@ -11,7 +11,7 @@ import { LeaveRoutingComponents } from '@leave/components/LeaveRoutingComponents
 import { MileageRoutingComponents } from '@mileage/components/MileageRouter';
 import { ProjectRoutingComponents } from '@project/components';
 import { PurchaseRoutingComponents } from '@purchase/components/PurchaseRoutingComponents';
-import { SummaryRoutingComponent } from '@summary/components/SummaryRouter';
+import { SummaryRoutingComponents } from '@summary/components/SummaryRoutingComponents';
 import { TimesheetRoutingComponents } from '@timesheet/components';
 import { TravelRoutingComponents } from '@travel/components';
 import { ConnectedRouter } from 'connected-react-router';
@@ -64,7 +64,7 @@ const app: React.ComponentType<AllProps> = props => (
               <Route path="/purchase" component={PurchaseRoutingComponents} />>
               <Route path="/timesheet" component={TimesheetRoutingComponents} />
               <Route path="/expense" component={ExpenseRoutingComponents} />
-              <Route path="/reports" component={SummaryRoutingComponent} />
+              <Route path="/reports" component={SummaryRoutingComponents} />
               <Route path="/finance" component={FinanceRoutingComponents} />
               <Route path="/travel" component={TravelRoutingComponents} />
 
