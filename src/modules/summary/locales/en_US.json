@@ -1,5 +1,10 @@
 {
   "billable.title": "Employee and Presales Billable",
+  "billable.subTitle": "Lorem ipsum dolor sit amet.",
+  "billable.field.start": "Start",
+  "billable.field.end": "End",
+  "billable.field.company": "Company",
+  "billable.field.name": "Employee Name",
 
   "effectiveness.title": "Resource Effectiveness",
 

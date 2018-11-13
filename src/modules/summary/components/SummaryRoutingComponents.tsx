@@ -4,7 +4,7 @@ import { Route, RouteComponentProps, Switch } from 'react-router';
 
 import { BillableList } from '@summary/components/billable/BillableList';
 
-export const SummaryRoutingComponent: React.SFC<RouteComponentProps> = props => (
+export const SummaryRoutingComponents: React.SFC<RouteComponentProps> = props => (
   <Switch>
     <Layout>
       <Route path={`${props.match.path}/billable/`} component={BillableList}/>

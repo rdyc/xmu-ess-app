@@ -259,9 +259,30 @@ const styles = (theme: Theme) =>
     colorRed: { color: red['500'] },
 
     /* text */
-    textStrikethrough : { textDecoration: 'line-through' }
+    textStrikethrough : { textDecoration: 'line-through' },
 
     /* -------- generic classes end ----------*/
+
+    /* ---------  Table  ----------*/
+
+    /* Table */
+
+    table: {
+      width: '100%',
+      marginTop: theme.spacing.unit * 3,
+      overflowX: 'auto',
+    },
+
+    minTable: {
+      minWidth: 700,
+    },
+    
+    /* Table Action */
+    tableReportAction: {
+      flexShrink: 0,
+      color: theme.palette.text.secondary,
+      // paddingLeft: theme.spacing.unit
+    }
   });
 
 export default styles;

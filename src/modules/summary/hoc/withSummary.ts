@@ -52,7 +52,7 @@ interface PropsFromDispatch {
   };
 }
 
-export interface WithSummaryRequest extends PropsFromState, PropsFromDispatch {}
+export interface WithSummary extends PropsFromState, PropsFromDispatch {}
 
 const mapStateToProps = ({ summaryGetBillable, summaryGetEffectiveness, summaryGetProfitability, summaryGetProgress, summaryGetWinning }: IAppState) => ({
   summaryState: {
@@ -80,5 +80,5 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   }
 });
 
-export const withSummaryRequest = (component: React.ComponentType) =>
+export const withSummary = (component: React.ComponentType) =>
   connect(mapStateToProps, mapDispatchToProps)(component);

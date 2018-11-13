@@ -1,13 +1,14 @@
 import AppMenu from '@constants/AppMenu';
 import { SortDirection } from '@generic/types';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
-import { WithNavBottom, withNavBottom } from '@layout/hoc/withNavBottom';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IListBarField } from '@layout/interfaces';
+import { WithStyles, withStyles } from '@material-ui/core';
+import styles from '@styles';
 import { BillableListView } from '@summary/components/billable/BillableListView';
 import {
-  WithSummaryRequest,
-  withSummaryRequest
+  WithSummary,
+  withSummary
 } from '@summary/hoc/withSummary';
 import * as moment from 'moment';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
@@ -34,6 +35,7 @@ interface OwnHandlers {
   handleChangeSize: (value: number) => void;
   handleChangeOrder: (field: IListBarField) => void;
   handleChangeSort: (direction: SortDirection) => void;
+  handleChangePage: (_page: number) => void;
 }
 
 interface OwnOptions {
@@ -61,18 +63,19 @@ interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
   stateOrdering: StateHandler<OwnState>;
   stateSorting: StateHandler<OwnState>;
   stateSizing: StateHandler<OwnState>;
+  statePage: StateHandler<OwnState>;
 }
 
-export type BillableListProps = WithSummaryRequest &
+export type BillableListProps = WithSummary &
   WithUser &
   WithLayout &
-  WithNavBottom &
   RouteComponentProps &
   InjectedIntlProps &
   OwnOptions &
   OwnHandlers &
   OwnState &
-  OwnStateUpdaters;
+  OwnStateUpdaters &
+  WithStyles<typeof styles>;
 
 const createProps: mapper<BillableListProps, OwnState> = (
   props: BillableListProps
@@ -86,13 +89,13 @@ const createProps: mapper<BillableListProps, OwnState> = (
       .toISOString(true),
     _end: moment().toISOString(true),
     orderBy:
-      (request && request.filter && request.filter.orderBy) || orderBy || 'uid',
+      (request && request.filter && request.filter.orderBy) || orderBy || 'fullName',
     direction:
       (request && request.filter && request.filter.direction) ||
       direction ||
-      'descending',
-    page: (request && request.filter && request.filter.page) || page || 1,
-    size: (request && request.filter && request.filter.size) || size || 10
+      'ascending',
+    page: (request && request.filter && request.filter.page) || page || 0,
+    size: (request && request.filter && request.filter.size) || size || 5
   };
 };
 
@@ -123,7 +126,11 @@ const stateUpdaters: StateUpdaters<OwnOptions, OwnState, OwnStateUpdaters> = {
   stateSizing: (prevState: OwnState) => (size: number) => ({
     size,
     page: 1
-  })
+  }),
+
+  statePage: (prevState: OwnState) => (page: number) => ({
+    page
+  }),
 };
 
 const handlerCreators: HandleCreators<BillableListProps, OwnHandlers> = {
@@ -163,21 +170,16 @@ const handlerCreators: HandleCreators<BillableListProps, OwnHandlers> = {
     direction: SortDirection
   ) => {
     props.stateSorting(direction);
-  }
+  },
+  handleChangePage: (props: BillableListProps) => (_page: number) => {
+    props.statePage(_page);
+  },
 };
 
 const lifecycles: ReactLifeCycleFunctions<BillableListProps, OwnState> = {
   componentDidMount() {
     const {
-      handleGoToNext,
-      handleGoToPrevious,
-      handleReloading,
-      handleChangeOrder,
-      handleChangeSize,
-      handleChangeSort,
       layoutDispatch,
-      navBottomDispatch,
-      history,
       intl
     } = this.props;
 
@@ -188,20 +190,6 @@ const lifecycles: ReactLifeCycleFunctions<BillableListProps, OwnState> = {
       parentUid: AppMenu.Report,
       title: intl.formatMessage({ id: 'billable.title' }),
       subTitle: intl.formatMessage({ id: 'billable.subTitle' })
-    });
-
-    layoutDispatch.modeListOn();
-    layoutDispatch.searchShow();
-    layoutDispatch.actionCentreShow();
-
-    navBottomDispatch.assignCallbacks({
-      onNextCallback: handleGoToNext,
-      onPrevCallback: handleGoToPrevious,
-      onSyncCallback: handleReloading,
-      onOrderCallback: handleChangeOrder,
-      onDirectionCallback: handleChangeSort,
-      onAddCallback: () => history.push('/'),
-      onSizeCallback: handleChangeSize
     });
 
     // only load data when response are empty
@@ -232,18 +220,11 @@ const lifecycles: ReactLifeCycleFunctions<BillableListProps, OwnState> = {
     }
   },
   componentWillUnmount() {
-    const { layoutDispatch, navBottomDispatch } = this.props;
+    const { layoutDispatch } = this.props;
     const { view } = this.props.layoutState;
     const { loadBillableDispose } = this.props.summaryDispatch;
 
     layoutDispatch.changeView(null);
-    layoutDispatch.modeListOff();
-    layoutDispatch.searchHide();
-    layoutDispatch.modeSearchOff();
-    layoutDispatch.actionCentreHide();
-    layoutDispatch.moreHide();
-
-    navBottomDispatch.dispose();
 
     // dispose 'get all' from 'redux store' when the page is 'out of report billable' context
     if (view && view.parentUid !== AppMenu.Report) {
@@ -253,11 +234,14 @@ const lifecycles: ReactLifeCycleFunctions<BillableListProps, OwnState> = {
 };
 
 const loadData = (props: BillableListProps): void => {
-  const { orderBy, direction, page, size, _start, _end } = props;
+  const { orderBy, direction, size, _start, _end } = props;
+  let { page } = props;
   const { user } = props.userState;
   const { loadBillableRequest } = props.summaryDispatch;
   const { alertAdd } = props.layoutDispatch;
-
+  
+  page += 1;
+  
   if (user) {
     loadBillableRequest({
       companyUid: user.company.uid,
@@ -281,12 +265,12 @@ const loadData = (props: BillableListProps): void => {
 };
 
 export const BillableList = compose<BillableListProps, OwnOptions>(
-  withSummaryRequest,
+  withSummary,
   withUser,
   withLayout,
-  withNavBottom,
   withRouter,
   injectIntl,
+  withStyles(styles),
   withStateHandlers<OwnState, OwnStateUpdaters, OwnOptions>(
     createProps,
     stateUpdaters
