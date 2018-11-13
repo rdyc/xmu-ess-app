@@ -5,10 +5,7 @@ import { WithNavBottom, withNavBottom } from '@layout/hoc/withNavBottom';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IListBarField } from '@layout/interfaces';
 import { BillableListView } from '@summary/components/billable/BillableListView';
-import {
-  WithSummaryRequest,
-  withSummaryRequest
-} from '@summary/hoc/withSummary';
+import { WithSummary, withSummary } from '@summary/hoc/withSummary';
 import * as moment from 'moment';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
@@ -63,20 +60,19 @@ interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
   stateSizing: StateHandler<OwnState>;
 }
 
-export type BillableListProps = WithSummaryRequest &
-  WithUser &
-  WithLayout &
-  WithNavBottom &
-  RouteComponentProps &
-  InjectedIntlProps &
-  OwnOptions &
-  OwnHandlers &
-  OwnState &
-  OwnStateUpdaters;
+export type BillableListProps 
+  = WithSummary
+  & WithUser
+  & WithLayout
+  & WithNavBottom
+  & RouteComponentProps
+  & InjectedIntlProps
+  & OwnOptions
+  & OwnHandlers
+  & OwnState
+  & OwnStateUpdaters;
 
-const createProps: mapper<BillableListProps, OwnState> = (
-  props: BillableListProps
-): OwnState => {
+const createProps: mapper<BillableListProps, OwnState> = (props: BillableListProps): OwnState => {
   const { orderBy, direction, page, size } = props;
   const { request } = props.summaryState.billable;
 
@@ -281,7 +277,7 @@ const loadData = (props: BillableListProps): void => {
 };
 
 export const BillableList = compose<BillableListProps, OwnOptions>(
-  withSummaryRequest,
+  withSummary,
   withUser,
   withLayout,
   withNavBottom,

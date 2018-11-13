@@ -13,8 +13,7 @@ import { IPurchase,
   // IPurchaseDetail 
 } from '@purchase/classes/response/purchaseRequest';
 import {
-  PurchaseRequestFormData, 
-  // PurchaseRequestItemFormData,
+  PurchaseRequestFormData
 } from '@purchase/components/purchaseRequest/editor/forms/PurchaseRequestForm';
 import { PurchaseRequestEditorView } from '@purchase/components/purchaseRequest/editor/PurchaseRequestEditorView';
 import { WithPurchaseRequest, withPurchaseRequest } from '@purchase/hoc/purchaseRequest/withPurchaseRequest';
@@ -38,6 +37,7 @@ import { FormErrors } from 'redux-form';
 import { isNullOrUndefined, isObject } from 'util';
 
 interface OwnHandlers {
+  // handleEventListener: (event: CustomEvent) => void;
   handleValidate: (payload: PurchaseRequestFormData) => FormErrors;
   handleSubmit: (payload: PurchaseRequestFormData) => void;
   handleSubmitSuccess: (result: any, dispatch: Dispatch<any>) => void;
@@ -49,6 +49,7 @@ interface OwnRouteParams {
 }
 
 interface OwnState {
+  // setState: PurchaseRequestFormData | undefined;
   formMode: FormMode;
   companyUid?: string | undefined;
   positionUid?: string | undefined;
@@ -57,6 +58,7 @@ interface OwnState {
 
 interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
   stateUpdate: StateHandler<OwnState>;
+  // setTotalRequest: StateHandler<OwnState>;
 }
 
 export type PurchaseRequestEditorProps
@@ -76,6 +78,7 @@ const createProps: mapper<PurchaseRequestEditorProps, OwnState> = (props: Purcha
   const state = history.location.state;
 
   return {
+    // setState: state ? '' : undefined;
     formMode: state ? FormMode.Edit : FormMode.New,
     companyUid: state ? state.companyUid : undefined,
     positionUid: state ? state.positionUid : undefined,
@@ -87,30 +90,38 @@ const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
   stateUpdate: (prevState: OwnState) => (newState: any) => ({
     ...prevState,
     ...newState
-  })
+  }),
+  // setTotalRequest: (prevState: OwnState) => (request: any) => ({
+  //   ...prevState,
+  //   information: {
+  //     ...prevState,
+  //   }
+  // }),
 };
 
 const handlers: HandleCreators<PurchaseRequestEditorProps, OwnHandlers> = {
   // handleEventListener: (props: PurchaseRequestEditorProps) => (event: CustomEvent) => {
-  //   const formValues = event.detail as PurchaseRequestEditorProps;
+  //   const formValues = event.detail as PurchaseRequestFormData;
+  //   const { setTotalRequest } = props;
 
   //   let requestValue: number = 0;
 
   //   if (formValues.items) {
-  //     formValues.items.items.forEach(items => requestValue += items.request);
+  //     formValues.items.items.forEach(item => requestValue += item.request);
   //   }
+
+  //   setTotalRequest(requestValue);
   // },
   handleValidate: (props: PurchaseRequestEditorProps) => (formData: PurchaseRequestFormData) => {
     const errors = {
       information: {},
       items: {
-        items: []
+        items: [{}]
       }
     };
 
     const requiredFields = [
       'customerUid', 'projectUid',
-      // 'advance',
       'date', 'rate', 'currencyType'
     ];
 
@@ -119,6 +130,14 @@ const handlers: HandleCreators<PurchaseRequestEditorProps, OwnHandlers> = {
         errors.information[field] = props.intl.formatMessage({ id: `purchase.field.information.${field}.required` });
       }
     });
+
+    // const itemsField = ['description', 'request'];
+
+    // itemsField.forEach(field => {
+    //   if(!formData.items.items[]){
+
+    //   }
+    // });
 
     return errors;
   },
@@ -315,6 +334,9 @@ const lifecycles: ReactLifeCycleFunctions<PurchaseRequestEditorProps, {}> = {
 
     layoutDispatch.navBackShow();
   },
+  // componentDidUpdate() {
+  //   this.props.setState(this.props.);
+  // },
   componentWillUnmount() {
     const { layoutDispatch, appBarDispatch, purchaseRequestDispatch } = this.props;
 
