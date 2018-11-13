@@ -6,14 +6,7 @@ import { IListBarField } from '@layout/interfaces';
 import { WithStyles, withStyles } from '@material-ui/core';
 import styles from '@styles';
 import { BillableListView } from '@summary/components/billable/BillableListView';
-<<<<<<< HEAD
-import {
-  WithSummary,
-  withSummary
-} from '@summary/hoc/withSummary';
-=======
 import { WithSummary, withSummary } from '@summary/hoc/withSummary';
->>>>>>> develop
 import * as moment from 'moment';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
@@ -70,7 +63,6 @@ interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
   statePage: StateHandler<OwnState>;
 }
 
-<<<<<<< HEAD
 export type BillableListProps = WithSummary &
   WithUser &
   WithLayout &
@@ -81,19 +73,6 @@ export type BillableListProps = WithSummary &
   OwnState &
   OwnStateUpdaters &
   WithStyles<typeof styles>;
-=======
-export type BillableListProps 
-  = WithSummary
-  & WithUser
-  & WithLayout
-  & WithNavBottom
-  & RouteComponentProps
-  & InjectedIntlProps
-  & OwnOptions
-  & OwnHandlers
-  & OwnState
-  & OwnStateUpdaters;
->>>>>>> develop
 
 const createProps: mapper<BillableListProps, OwnState> = (props: BillableListProps): OwnState => {
   const { orderBy, direction, page, size } = props;

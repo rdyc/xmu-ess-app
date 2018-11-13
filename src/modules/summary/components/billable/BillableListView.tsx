@@ -286,12 +286,12 @@ export const BillableListView: React.SFC<BillableListProps> = props => {
 
   const render = (
     <React.Fragment>
-      {isLoading && !response && (
-        <Typography variant="body2">loading</Typography>
-      )}
       <Card square>
         <CardContent>
           {renderFilter()}
+          {isLoading && !response && (
+            <Typography variant="body2">loading</Typography>
+          )}
           {!isLoading &&
             response &&
             response.data &&
