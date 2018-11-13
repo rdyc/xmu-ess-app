@@ -1,3 +1,4 @@
+import { IViewConfig } from '@layout/classes/config/IViewConfig';
 import { IView } from '@layout/interfaces';
 import { IAlert } from '@layout/interfaces/IAlert';
 import { Anchor } from '@layout/types';
@@ -15,6 +16,8 @@ export const enum LayoutAction {
   CHANGE_ANCHOR = '@@layout/CHANGE_ANCHOR',
   CHANGE_NOTIF_COUNT = '@@layout/CHANGE_NOTIF_COUNT',
   CHANGE_VIEW = '@@layout/CHANGE_VIEW',
+
+  SETUP_VIEW = '@@layout/SETUP_VIEW',
   
   DRAWER_MENU_SHOW = '@@layout/DRAWER_MENU_SHOW',
   DRAWER_MENU_HIDE = '@@layout/DRAWER_MENU_HIDE',
@@ -55,6 +58,8 @@ export const layoutAlertDismiss = () => action(LayoutAction.ALERT_DISSMIS);
 export const layoutChangeAnchor = (anchor: Anchor) => action(LayoutAction.CHANGE_ANCHOR, anchor);
 export const layoutChangeNotif = (count: number) => action(LayoutAction.CHANGE_NOTIF_COUNT, count);
 export const layoutChangeView = (view: IView | null) => action(LayoutAction.CHANGE_VIEW, view);
+
+export const layoutSetupView = (config: IViewConfig) => action(LayoutAction.SETUP_VIEW, config);
 
 export const layoutDrawerMenuShow = () => action(LayoutAction.DRAWER_MENU_SHOW);
 export const layoutDrawerMenuHide = () => action(LayoutAction.DRAWER_MENU_HIDE);
