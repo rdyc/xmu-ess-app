@@ -22,7 +22,7 @@ const mileageInformation: React.SFC<AllProps> = props => {
   const styled = {
     fullWidth: true,
     InputProps: {
-      // disableUnderline: true,
+      disableUnderline: true,
       readOnly: true
     }
   };
