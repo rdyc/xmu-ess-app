@@ -125,7 +125,7 @@ const handlerCreators: HandleCreators<ApprovalListProps, OwnHandlers> = {
     const { isLoading } = props.timesheetApprovalState.all;
 
     if (!isLoading) {
-      history.push(`/timesheet/approval/action/${timesheetUids}`);
+      history.push(`/timesheet/approvals/action/${timesheetUids}`);
     }
   },
   handleGoToDetail: (props: ApprovalListProps) => (timesheetUid) => {
@@ -133,7 +133,7 @@ const handlerCreators: HandleCreators<ApprovalListProps, OwnHandlers> = {
     const { isLoading } = props.timesheetApprovalState.all;
 
     if (!isLoading) {
-      history.push(`/timesheet/approval/${timesheetUid}`);
+      history.push(`/timesheet/approvals/${timesheetUid}`);
     }
   },
   handleGoToNext: (props: ApprovalListProps) => () => {
@@ -181,6 +181,7 @@ const lifecycles: ReactLifeCycleFunctions<ApprovalListProps, OwnState> = {
     layoutDispatch.searchShow();
     layoutDispatch.actionCentreShow();
 
+    navBottomDispatch.addHide();
     navBottomDispatch.assignCallbacks({
       onNextCallback: handleGoToNext,
       onPrevCallback: handleGoToPrevious,

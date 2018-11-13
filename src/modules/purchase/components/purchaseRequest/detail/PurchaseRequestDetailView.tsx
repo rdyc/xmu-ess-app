@@ -60,32 +60,28 @@ export const PurchaseRequestDetailView: React.SFC<PurchaseRequestDetailProps> = 
         !isLoading &&
         response &&
         response.data &&
-        <Grid 
-          container 
-          spacing={16} 
-          // direction="row"
-          // justify="flex-start"
-          // alignItems="baseline"
-        >
-          <Grid item 
-          // xs={4} 
-          md={4}>
+        <Grid container spacing={16} >
+          <Grid item xs={12} md={4}>
             <PurchaseInformation data={response.data}/>
           </Grid>
-          
-          <Grid item 
-          // xs={4} 
-          md={8}>
-            <PurchaseItemInformation data={response.data.items} />
-          </Grid>
 
-          <Grid item
-          // xs={4}
-          md={4}
-          >
+          <Grid container  item xs={12} md={8}>
+            <Grid container spacing={16}>
+            {
+              response.data.items &&
+              response.data.items.map((item, index) =>
+              <Grid key={index} item xs={12} md={4}>
+                <PurchaseItemInformation 
+                data={item}
+                title={`Request Item #${index + 1} `} />
+              </Grid>
+              )
+            }
+            </Grid>
+          </Grid>
+          <Grid item>
             <WorkflowHistory data={response.data.workflow} />
           </Grid>
-
         </Grid>
       }
       {renderDialog}

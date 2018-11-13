@@ -53,6 +53,9 @@ export const menuLinkMapper = (menuUid: string) => {
     case 'MNU56':
       path = '/reports/profitability';
       break;
+    case 'MNU51':
+      path = '/reports/effectiveness';
+      break;
     case 'MNU52':
       path = '/reports/progress';
       break;
@@ -69,10 +72,10 @@ export const menuLinkMapper = (menuUid: string) => {
       path = '/purchase/approvals/list';
       break;
     case 'MNU39':
-      path = '/timesheet/approval/history';
+      path = '/timesheet/approvals/history';
       break;
     case 'MNU11':
-      path = '/timesheet/approval';
+      path = '/timesheet/approvals';
       break;
     case 'MNU10':
       path = '/timesheet/entry';

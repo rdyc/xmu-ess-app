@@ -18,8 +18,17 @@ export type PurchaseSettlementItemFormData = {
 export type PurchaseSettlementFormData = {
   information: {
     uid: string | null | undefined;
+    customerUid: string | null | undefined;
+    projectUid: string | null | undefined;
+    advance: number;
     notes: string | null | undefined;
     date: string | null | undefined;
+    currencyType: string | null | undefined;
+    rate: number;
+    request: number;
+    actual: number;
+    difference: number; 
+    balanceDue: number;
   },
   items:  {
    items: PurchaseSettlementItemFormData[];

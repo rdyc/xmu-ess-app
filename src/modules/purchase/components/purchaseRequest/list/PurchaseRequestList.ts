@@ -88,6 +88,7 @@ const stateUpdaters: StateUpdaters<OwnOptions, OwnState, OwnStateUpdaters> = {
   }),
   stateReloading: (prevState: OwnState) => () => ({
     page: 1,
+    // page: prevState.page,
   }),
   stateOrdering: (prevState: OwnState) => (field: IListBarField) => ({
     orderBy: field.id,
@@ -163,7 +164,7 @@ const lifecycles: ReactLifeCycleFunctions<PurchaseRequestListProps, OwnState> = 
       onSyncCallback: handleReloading,
       onOrderCallback: handleChangeOrder,
       onDirectionCallback: handleChangeSort,
-      onAddCallback: () => history.push('/purchase/request/form'),
+      onAddCallback: () => history.push('/purchase/requests/form'),
       onSizeCallback: handleChangeSize,
     });
 

@@ -33,7 +33,7 @@ export const TimesheetRoutingComponents: React.SFC<RouteComponentProps> = props 
   <Switch>
     <Layout>
       <Route path={`${props.match.path}/entry`} component={entry} />
-      <Route path={`${props.match.path}/approval`} component={approval} />
+      <Route path={`${props.match.path}/approvals`} component={approval} />
     </Layout>
   </Switch>
 );

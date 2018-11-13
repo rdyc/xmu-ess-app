@@ -62,7 +62,7 @@ export const MileageApprovalDetailView: React.SFC<
             {items.map((item, index) => (
               <div key={item.uid}>
                 <ListItem disableGutters key={item.uid}>
-                  <Grid container spacing={24}>
+                  <Grid container spacing={16}>
                     <Grid item xs={1} sm={1}>
                       {item.status &&
                         item.status.type === WorkflowStatusType.Submitted && (
@@ -135,47 +135,48 @@ export const MileageApprovalDetailView: React.SFC<
           <FormattedMessage id="global.loading" />
         </Typography>
       )}
-      {!isLoading &&
-        response &&
-        response.data && (
-          <Grid container spacing={24}>
-            <Grid item xs={12} md={4}>
-              <MileageInformation data={response.data} />
-            </Grid>
-            <Grid item xs={12} md={8}>
-              {response.data.items &&
-              response.data.workflow &&
-              !response.data.workflow.isApproval ? (
-                <MileageItem items={response.data.items} />
-              ) : (
-                response.data.items && renderItem(response.data.items)
-              )}
-            </Grid>
-            <Grid item xs={12} md={8}>
-              <WorkflowHistory data={response.data.workflow} />
-            </Grid>
-            <Grid item xs={12} md={4}>
-              {response.data.workflow &&
-                response.data.workflow.isApproval && (
-                  <WorkflowMileageApproval
-                    itemTrue={mileageItemUids.length < 1 ? true : false}
-                    approvalTitle={approvalTitle}
-                    approvalSubHeader={approvalSubHeader}
-                    approvalChoices={approvalChoices}
-                    approvalTrueValue={approvalTrueValue}
-                    approvalDialogTitle={approvalDialogTitle}
-                    approvalDialogContentText={approvalDialogContentText}
-                    approvalDialogCancelText={approvalDialogCancelText}
-                    approvalDialogConfirmedText={approvalDialogConfirmedText}
-                    validate={handleValidate}
-                    onSubmit={handleSubmit}
-                    onSubmitSuccess={handleSubmitSuccess}
-                    onSubmitFail={handleSubmitFail}
-                  />
-                )}
-            </Grid>
+      {!isLoading && response && response.data && (
+        <Grid container spacing={16}>
+          <Grid item xs={12} md={4}>
+            <MileageInformation data={response.data} />
           </Grid>
-        )}
+          {response.data.items &&
+          response.data.workflow &&
+          !response.data.workflow.isApproval ? (
+            <Grid item xs={12} md={4}>
+              <MileageItem items={response.data.items} />
+            </Grid>
+          ) : (
+            response.data.items && (
+              <Grid item xs={12} md={5}>
+                {renderItem(response.data.items)}
+              </Grid>
+            )
+          )}
+          {response.data.workflow && response.data.workflow.isApproval && (
+            <Grid item xs={12} md={3}>
+              <WorkflowMileageApproval
+                itemTrue={mileageItemUids.length < 1 ? true : false}
+                approvalTitle={approvalTitle}
+                approvalSubHeader={approvalSubHeader}
+                approvalChoices={approvalChoices}
+                approvalTrueValue={approvalTrueValue}
+                approvalDialogTitle={approvalDialogTitle}
+                approvalDialogContentText={approvalDialogContentText}
+                approvalDialogCancelText={approvalDialogCancelText}
+                approvalDialogConfirmedText={approvalDialogConfirmedText}
+                validate={handleValidate}
+                onSubmit={handleSubmit}
+                onSubmitSuccess={handleSubmitSuccess}
+                onSubmitFail={handleSubmitFail}
+              />
+            </Grid>
+          )}
+          <Grid item xs={12} md={4}>
+            <WorkflowHistory data={response.data.workflow} />
+          </Grid>
+        </Grid>
+      )}
     </React.Fragment>
   );
 

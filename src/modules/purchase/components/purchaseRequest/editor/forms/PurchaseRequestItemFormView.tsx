@@ -1,95 +1,82 @@
 import { InputNumber } from '@layout/components/input/number';
-// import { InputText } from '@layout/components/input/text';
-import { InputTextArea } from '@layout/components/input/textArea';
+import { InputText } from '@layout/components/input/text';
 import {
+  Button,
   Card,
   CardContent,
   CardHeader,
-  Divider,
   Grid,
   IconButton,
-  List,
-  ListItem,
-  ListItemSecondaryAction,
-  ListItemText,
 } from '@material-ui/core';
-import AddIcon from '@material-ui/icons/Add';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
-// import LockIcon from '@material-ui/icons/Lock';
 import { PurchaseRequestItemFormProps } from '@purchase/components/purchaseRequest/editor/forms/PurchaseRequestItemForm';
-// import { purchaseRequestMessage } from '@purchase/locales/messages/purchaseRequestMessage';
-// import * as classNames from 'classnames';
+import { purchaseItemField } from '@purchase/locales/messages/purchaseItemMessage';
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
-// import { Field, FieldArray } from 'redux-form';
-import { Field, 
-  // FieldArray, 
-  // WrappedFieldArrayProps 
-} from 'redux-form';
-// import { PurchaseRequestItemFormData } from './PurchaseRequestForm';
+import { Field } from 'redux-form';
 
 // export const PurchaseRequestItemFormView: React.SFC<WrappedFieldArrayProps<PurchaseRequestItemFormData> & PurchaseRequestItemFormProps> = props => {
 export const PurchaseRequestItemFormView: React.SFC<PurchaseRequestItemFormProps> = props => {
-  const { context,  } = props;
+  const { context, onRequestChange } = props;
 
   const render = (
-    <Card square>
-      <CardHeader
-        title={<FormattedMessage id="purchase.itemTitle" />}
-        subheader={<FormattedMessage id="purchase.itemSubTitle" />}
-      />
-      <CardContent>
-        <List>
-          {
-            context.fields.map((field, index) => {
-              const items = context.fields.get(index);
-
-              return (
-                <ListItem
-                  // disableGutters
-                  dense
-                  key={index}
-                >
-                  <Grid xs={4} spacing={8}>
-                   <ListItemText
-                    primary={`#${index + 1} - ${items.uid || ''}`}
+    <Grid container spacing={16}>
+      {
+        context.fields.map((field, index) =>
+          <Grid key={index} item xs={12} md={4}>
+            <Card square>
+              <CardHeader
+                action={
+                  <IconButton onClick={() => context.fields.remove(index)}>
+                    <DeleteForeverIcon />
+                  </IconButton>
+                }
+                title={`#${index + 1}`}
+              />
+              <CardContent>
+                <div>
+                  <Field
+                    type="text"
+                    name={`${field}.uid`}
+                    label={props.intl.formatMessage(purchaseItemField.uid)}
+                    disabled
+                    component={InputText}
                   />
-                  </Grid>
-                  <Grid xs={4} spacing={8}>
-                    <Field
-                      type="text"
-                      name={`${field}.description`}
-                      label={<FormattedMessage id="purchase.itemTitle.description" />}
-                      // placeholder={}
-                      component={InputTextArea}
-                    />
-                  </Grid>
-                  <Grid xs={4} spacing={8}>
+                  <Field
+                    type="text"
+                    name={`${field}.description`}
+                    label={props.intl.formatMessage(purchaseItemField.description)}
+                    required
+                    component={InputText}
+                  />
                   <Field
                     type="number"
-                      name={`${field}.request`}
-                    label={<FormattedMessage id="purchase.itemTitle.request" />}
-                    // placeholder={}
-                    required={true}
+                    name={`${field}.request`}
+                    label={props.intl.formatMessage(purchaseItemField.request)}
+                    required
+                    onChange={onRequestChange}
                     component={InputNumber}
                   />
-                  </Grid>
-                  <ListItemSecondaryAction>
-                    <IconButton onClick={() => context.fields.remove(index)}>
-                      <DeleteForeverIcon />
-                    </IconButton>
-                  </ListItemSecondaryAction>
-                </ListItem>
-              );
-            })
-          }
-          <Divider />
-          <IconButton onClick={() => context.fields.push({ uid: null, description: '', request: 0 })}>
-            <AddIcon />
-          </IconButton>
-        </List>
-      </CardContent>
-    </Card>
+                </div>
+              </CardContent>
+            </Card>
+          </Grid>
+        )
+      }
+      <Grid item xs={12} md={4}>
+        <Grid container spacing={16}>
+          <Grid item xs={12} md={4}>
+            <Button onClick={() => context.fields.push({
+              uid: '',
+              description: '',
+              request: 0,
+            })}>
+              <FormattedMessage id="purchase.action.add" />
+            </Button>
+          </Grid>
+        </Grid>
+      </Grid>
+    </Grid>
   );
 
   return render;
