@@ -17,9 +17,12 @@ import { TimesheetEntryDetailFormView } from './TimesheetEntryDetailFormView';
 interface OwnProps {
   formMode: FormMode;
   context: BaseFieldsProps;
+  activityTypeValue: string | undefined;
   customerUidValue: string | undefined;
   isPresalesActivity: boolean;
   projectUidValue: string | undefined;
+  onChangeTime: (event: any, newValue: string, oldValue: string) => void;
+  showSiteProject: boolean;
 }
 
 interface OwnHandlers {
@@ -36,13 +39,18 @@ const handlerCreators: HandleCreators<EntryDetailFormProps, OwnHandlers> = {
   generateFieldProps: (props: EntryDetailFormProps) => (name: string) => {
     const {
       intl,
-      customerUidValue, isPresalesActivity, projectUidValue,
+      activityTypeValue,
+      customerUidValue,
+      isPresalesActivity,
+      projectUidValue,
+      onChangeTime,
+      showSiteProject
     } = props;
-    
+
     const { user } = props.userState;
 
     const _projectTypes = isPresalesActivity ? ProjectType.PreSales : [ProjectType.Project, ProjectType.ExtraMiles, ProjectType.NonProject];
-    
+
     const projectFilter: any = {
       customerUid: customerUidValue,
       projectTypes: _projectTypes
@@ -72,6 +80,7 @@ const handlerCreators: HandleCreators<EntryDetailFormProps, OwnHandlers> = {
       case 'customerUid':
         fieldProps = {
           type: 'text',
+          disabled: isNullOrUndefined(activityTypeValue),
           placeholder: intl.formatMessage({ id: `timesheet.field.${name}.placeholder` }),
           component: InputCustomer
         };
@@ -82,7 +91,7 @@ const handlerCreators: HandleCreators<EntryDetailFormProps, OwnHandlers> = {
           type: 'text',
           disabled: isNullOrUndefined(customerUidValue),
           placeholder: intl.formatMessage({ id: `timesheet.field.${name}.placeholder` }),
-          component: SelectProjectAssigment,
+          component: !isNullOrUndefined(customerUidValue) ? SelectProjectAssigment : InputText,
           filter: projectFilter
         };
         break;
@@ -90,7 +99,8 @@ const handlerCreators: HandleCreators<EntryDetailFormProps, OwnHandlers> = {
       case 'siteUid':
         fieldProps = {
           type: 'text',
-          disabled: isNullOrUndefined(projectUidValue),
+          // disabled: isNullOrUndefined(projectUidValue),
+          disabled: !showSiteProject,
           placeholder: intl.formatMessage({ id: `timesheet.field.${name}.placeholder` }),
           component: !isNullOrUndefined(projectUidValue) ? SelectProjectSite : InputText,
           companyUid: user && user.company.uid,
@@ -102,7 +112,8 @@ const handlerCreators: HandleCreators<EntryDetailFormProps, OwnHandlers> = {
         fieldProps = {
           type: 'text',
           placeholder: intl.formatMessage({ id: `timesheet.field.${name}.placeholder` }),
-          component: InputDate
+          component: InputDate,
+          onChange: onChangeTime
         };
         break;
 

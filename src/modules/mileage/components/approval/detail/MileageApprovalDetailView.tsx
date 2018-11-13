@@ -14,7 +14,7 @@ import { IMileageRequestItem } from '@mileage/classes/response';
 import { MileageApprovalDetailProps } from '@mileage/components/approval/detail/MileageApprovalDetail';
 import { MileageInformation } from '@mileage/components/request/detail/shared/MileageInformation';
 import { MileageItem } from '@mileage/components/request/detail/shared/MileageItem';
-import { WorkflowHistoryMileage } from '@organization/components/workflow/history/WorkflowHistoryMileage';
+import { WorkflowHistory } from '@organization/components/workflow/history/WorkflowHistory';
 import * as React from 'react';
 import { FormattedDate, FormattedMessage } from 'react-intl';
 import { WorkflowMileageApproval } from './WorkflowMileageApproval';
@@ -152,7 +152,7 @@ export const MileageApprovalDetailView: React.SFC<
               )}
             </Grid>
             <Grid item xs={12} md={8}>
-              <WorkflowHistoryMileage data={response.data.workflow} />
+              <WorkflowHistory data={response.data.workflow} />
             </Grid>
             <Grid item xs={12} md={4}>
               {response.data.workflow &&

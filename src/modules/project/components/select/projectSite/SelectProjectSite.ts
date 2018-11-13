@@ -57,6 +57,19 @@ const lifecycles: ReactLifeCycleFunctions<SelectProjectSiteProps, {}> = {
         projectUid
       });
     }
+  },
+  componentWillReceiveProps(nextProps: SelectProjectSiteProps) {
+    if (nextProps.projectUid !== this.props.projectUid) {
+      const { loadDispose, loadRequest } = this.props.projectSiteDispatch;
+      const { companyUid, projectUid } = nextProps;
+      
+      loadDispose();
+      loadRequest({companyUid, projectUid});
+    }
+  },
+  componentWillUnmount() {
+    const { loadDispose } = this.props.projectSiteDispatch;
+    loadDispose();
   }
 };
 

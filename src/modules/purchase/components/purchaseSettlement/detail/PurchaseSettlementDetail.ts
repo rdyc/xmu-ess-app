@@ -25,6 +25,7 @@ import {
 interface Handler {
   handlePurchaseRefresh: () => void;
   handlePurchaseModify: () => void;
+  handlePurchaseSettle: () => void;
   handleDialogOpen: (title: string, description: string, cancelText?: string, confirmText?: string, fullScreen?: boolean) => void;
   handleDialogClose: () => void;
   handleDialogConfirmed: () => void;
@@ -107,6 +108,18 @@ const handlerCreators: HandleCreators<PurchaseSettlementDetailProps, Handler> = 
       dialogConfirmedText: intl.formatMessage({ id: 'global.action.aggree' })
     });
   },
+  handlePurchaseSettle: (props: PurchaseSettlementDetailProps) => () => {
+    const { intl, stateUpdate } = props;
+
+    stateUpdate({
+      dialogFullScreen: false,
+      dialogOpen: true,
+      dialogTitle: intl.formatMessage({ id: 'purchase.dialog.settleTitle' }),
+      dialogDescription: intl.formatMessage({ id: 'purchase.dialog.settleDescription' }),
+      dialogCancelText: intl.formatMessage({ id: 'global.action.disaggree' }),
+      dialogConfirmedText: intl.formatMessage({ id: 'global.action.aggree' })
+    });
+  },
   handleDialogOpen: (props: PurchaseSettlementDetailProps) => (title: string, description: string, cancelText?: string, confirmText?: string, fullScreen?: boolean) => {
     const { intl, stateUpdate, dialogCancelText, dialogConfirmedText } = props;
 
@@ -138,7 +151,7 @@ const lifecycles: ReactLifeCycleFunctions<PurchaseSettlementDetailProps, OwnStat
   componentDidMount() {
     const {
       match, layoutDispatch, appBarDispatch, intl,
-      handlePurchaseRefresh, handlePurchaseModify,
+      handlePurchaseRefresh, handlePurchaseModify, handlePurchaseSettle
     } = this.props;
 
     const { user } = this.props.userState;
@@ -162,6 +175,10 @@ const lifecycles: ReactLifeCycleFunctions<PurchaseSettlementDetailProps, OwnStat
 
         case PurchaseUserAction.Modify:
           handlePurchaseModify();
+          break;
+
+          case PurchaseUserAction.Settle:
+          handlePurchaseSettle();
           break;
 
         default:
@@ -194,6 +211,15 @@ const lifecycles: ReactLifeCycleFunctions<PurchaseSettlementDetailProps, OwnStat
 
         return result;
       };
+      const isStatusTypeNull = (): boolean => {
+        let result = false;
+
+        if (response && response.data) {
+          result = response.data.statusType === null;
+        }
+
+        return result;
+      };
 
       const currentMenus = [
         {
@@ -207,6 +233,12 @@ const lifecycles: ReactLifeCycleFunctions<PurchaseSettlementDetailProps, OwnStat
           name: intl.formatMessage({ id: 'purchase.action.modify' }),
           enabled: response !== undefined,
           visible: isStatusTypeEquals([WorkflowStatusType.Submitted, WorkflowStatusType.InProgress, WorkflowStatusType.Approved])
+        },
+        {
+          id: PurchaseUserAction.Settle,
+          name: intl.formatMessage({ id: 'purchase.action.settle' }),
+          enabled: response !== undefined,
+          visible: (isStatusTypeNull())
         }
       ];
 

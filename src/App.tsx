@@ -1,8 +1,8 @@
 import { AccountRoutingComponents } from '@account/components';
 import AppStorage from '@constants/AppStorage';
-import { DashboardRoutingComponents } from '@dashboard/components';
 import { ExpenseRoutingComponents } from '@expense/components/ExpenseRoutingComponents';
 import { FinanceRoutingComponents } from '@finance/components/FinanceRoutingComponents';
+import { HomeRoutingComponents } from '@home/components';
 import { Callback, Root } from '@layout/components/base';
 import { WithOidc, withOidc } from '@layout/hoc/withOidc';
 import { WithUser, withUser } from '@layout/hoc/withUser';
@@ -11,6 +11,7 @@ import { LeaveRoutingComponents } from '@leave/components/LeaveRoutingComponents
 import { MileageRoutingComponents } from '@mileage/components/MileageRouter';
 import { ProjectRoutingComponents } from '@project/components';
 import { PurchaseRoutingComponents } from '@purchase/components/PurchaseRoutingComponents';
+import { SummaryRoutingComponents } from '@summary/components/SummaryRoutingComponents';
 import { TimesheetRoutingComponents } from '@timesheet/components';
 import { TravelRoutingComponents } from '@travel/components';
 import { ConnectedRouter } from 'connected-react-router';
@@ -25,7 +26,6 @@ import { Store } from 'redux';
 import { loadUser, OidcProvider } from 'redux-oidc';
 import * as store from 'store';
 
-import { SummaryRoutingComponents } from '@summary/components/SummaryRoutingComponents';
 import { IAppState } from './generic/interfaces';
 import AppLocale from './language';
 import config, { getCurrentLanguage } from './language/config';
@@ -56,7 +56,7 @@ const app: React.ComponentType<AllProps> = props => (
               <Route exact path="/" component={Root} />
               <Route path="/callback" component={Callback} />
               
-              <Route path="/home" component={DashboardRoutingComponents} />
+              <Route path="/home" component={HomeRoutingComponents} />
               <Route path="/account" component={AccountRoutingComponents} />
               <Route path="/project" component={ProjectRoutingComponents} />
               <Route path="/mileage" component={MileageRoutingComponents} />

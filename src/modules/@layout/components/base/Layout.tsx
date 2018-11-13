@@ -11,6 +11,8 @@ import * as classNames from 'classnames';
 import * as React from 'react';
 import { compose } from 'recompose';
 
+import { ErrorBoundary } from './ErrorBoundary';
+
 type LayoutProps 
   = WithLayout
   & WithStyles<typeof styles>;
@@ -22,18 +24,25 @@ const layout: React.SFC<LayoutProps> = props => {
   return (
     <LayoutTheme>
       <div className={classes.root}>
-        <AppBarSFC/>
-        <DrawerMenuSFC/>
-        <DrawerActionSFC/>
+        <AppBarSFC />
+
+        <DrawerMenuSFC />
+        
+        <DrawerActionSFC />
+        
         <main className={classNames(
           classes.content,
           isModeList ? classes.contentWithBottomNav : '',
           anchor === 'right' ? classes.contentShiftRight : classes.contentShiftLeft)}
           >
-          {props.children}
+          <ErrorBoundary>
+            {props.children}
+          </ErrorBoundary>
         </main>
-        <NavigationBottomSFC/>
-        <SnackbarAlertSFC/>
+        
+        <NavigationBottomSFC />
+        
+        <SnackbarAlertSFC />
       </div>
     </LayoutTheme>
   );

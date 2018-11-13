@@ -3,8 +3,10 @@ import {
   Card,
   CardContent,
   CardHeader,
+  Checkbox,
   Collapse,
   Divider,
+  FormControlLabel,
   List,
   ListItem,
   ListItemAvatar,
@@ -97,18 +99,12 @@ const travelRequestItem: React.SFC<AllProps> = props => {
                   timeout="auto"
                   unmountOnExit
                 >
-                  {/* <FormControlLabel
+                  <FormControlLabel
                     control={
                       <Checkbox checked={item.isRoundTrip} />
                     }
                     label={<FormattedMessage id="travel.item.field.information.isRoundTrip" />}
-                    labelPlacement="start"
-                  /> */}
-                  <TextField
-                    {...styled} 
-                    margin="dense"
-                    label={<FormattedMessage id="travel.item.field.information.isRoundTrip" />}
-                    value={item.isRoundTrip}
+                    // labelPlacement="start"
                   />
                   <TextField
                     {...styled} 
@@ -162,11 +158,11 @@ const travelRequestItem: React.SFC<AllProps> = props => {
                     label={<FormattedMessage id="travel.item.field.information.costTransport" />}
                     value={intl.formatNumber(item.costTransport || 0)}
                   />
-                  <TextField
-                    {...styled}
-                    margin="dense"
+                  <FormControlLabel
+                    control={
+                      <Checkbox checked={item.isTransportByCompany} />
+                    }
                     label={<FormattedMessage id="travel.item.field.information.isTransportByCompany" />}
-                    value={item.isTransportByCompany}
                   />
                   <TextField
                     {...styled}
@@ -180,19 +176,18 @@ const travelRequestItem: React.SFC<AllProps> = props => {
                     label={<FormattedMessage id="travel.item.field.information.costHotel" />}
                     value={intl.formatNumber(item.costHotel || 0)}
                   />
-                  <TextField
-                    {...styled}
-                    margin="dense"
+                  <FormControlLabel
+                    control={
+                      <Checkbox checked={item.isHotelByCompany} />
+                    }
                     label={<FormattedMessage id="travel.item.field.information.isHotelByCompany" />}
-                    value={item.isHotelByCompany}
                   />
                   <TextField
                     {...styled}
                     margin="dense"
                     label={<FormattedMessage id="travel.item.field.information.notes" />}
                     value={item.notes || '-'}
-                  />  
-                  
+                  />                    
                   <TextField
                     {...styled}
                     margin="dense"

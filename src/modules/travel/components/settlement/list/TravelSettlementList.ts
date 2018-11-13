@@ -163,7 +163,7 @@ const lifecycles: ReactLifeCycleFunctions<SettlementListProps, OwnState> = {
       onSyncCallback: handleReloading,
       onOrderCallback: handleChangeOrder,
       onDirectionCallback: handleChangeSort,
-      onAddCallback: () => history.push('/travel/settlements/form'),
+      onAddCallback: () => history.push('/travel/settlements/forms'),
       onSizeCallback: handleChangeSize,
     });
 
