@@ -1,84 +1,65 @@
-import { Card, CardContent, CardHeader, Grid, List, ListItem, ListItemText, Typography } from '@material-ui/core';
+import { Card, CardContent, CardHeader, 
+  // Grid, List, ListItem, ListItemText, 
+  TextField, 
+  // Typography 
+} from '@material-ui/core';
 import { IPurchaseItemRequest } from '@purchase/classes/response/purchaseRequest';
 import * as React from 'react';
-import { FormattedMessage, FormattedNumber } from 'react-intl';
+import { FormattedMessage, 
+  // FormattedNumber, 
+  InjectedIntlProps, injectIntl } from 'react-intl';
+import { compose } from 'recompose';
 
 interface OwnProps {
-  data: IPurchaseItemRequest[] | null | undefined;
+  data: IPurchaseItemRequest;
+  title: string;
+  // subheader: string;
 }
 
-export const PurchaseItemInformation: React.SFC<OwnProps> = props => {
-  const { data } = props;
+type AllProps
+  = OwnProps
+  & InjectedIntlProps;
 
-  // let RenderItem = () => (
-  //   { data &&
-  //     data.map(item => 
-  //       < Grid container key={item.uid}>
-  //         <Grid item xs={6}>
-  //           <ListItemText
-  //             secondary={item.description}
-  //             primary={<FormattedMessage id="purchase.itemTitle.description" />}
-  //           />
-  //         </Grid>
-  //       </Grid >
-  //       )
-  //   }
-  // );
+const styled = {
+  fullWidth: true,
+  InputProps: {
+    disableUnderline: true,
+    readOnly: true
+  }
+};
 
-  const render = (
+const purchaseItemInformation: React.SFC<AllProps> = props => (
     <Card square>
       <CardHeader
-        title={<FormattedMessage id="purchase.itemTitle" />}
-        subheader={<FormattedMessage id="purchase.itemSubTitle" />}
+        title={props.title}
+        // subheader={<FormattedMessage id="purchase.itemSubTitle" />}
       />
       <CardContent>
-        <List>
-          {
-            data &&
-            data.length === 0 &&
-            <ListItem>
-              <ListItemText
-                primary={<FormattedMessage id="purchase.field.item.empty" />}
-                primaryTypographyProps={{ align: 'center' }}
-              />
-            </ListItem>
-          }
-          {
-            data &&
-            data.map(item =>
-              <ListItem disableGutters key={item.uid}>
-                <Grid container xs={12}>
-                  <Grid item xs={5}>
-                    <ListItemText
-                      primary={<FormattedMessage id="purchase.itemTitle.request" />}
-                      secondary={
-                      <Typography
-                        align="left"
-                        noWrap
-                      >
-                      {item.description}
-                      </Typography>
-                      }
-                    />
-                  </Grid>
-                  <Grid item xs={7}>
-                    <Typography
-                      variant="display1"
-                      align="right"
-                    >
-                      <FormattedNumber
-                        value={item.requestValue}
-                      />
-                    </Typography>
-                  </Grid>
-                </Grid>
-              </ListItem>
-            )
-          }
-        </List>
+        <TextField
+          {...styled}
+          margin="dense"
+          // label={props.intl.formatMessage(purchaseMessage.field.itemUid)}
+          label={<FormattedMessage id="purchase.itemTitle.uid"/>} 
+          value={props.data.uid}
+        />
+        <TextField
+          {...styled}
+          margin="dense"
+          label={<FormattedMessage id="purchase.itemTitle.description"/>} 
+          value={props.data.description}
+        />
+        <TextField
+          {...styled}
+          margin="dense"
+          label={<FormattedMessage id="purchase.itemTitle.request"/>} 
+          value={props.intl.formatNumber(props.data.requestValue)}
+        />
+        
+        {props.children}
       </CardContent>
     </Card>
   );
 
-  return render;
-};
+export const PurchaseItemInformation = compose<AllProps, OwnProps>(
+  injectIntl
+)(purchaseItemInformation);

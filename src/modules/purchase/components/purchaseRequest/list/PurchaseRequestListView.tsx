@@ -29,21 +29,21 @@ export const PurchaseRequestListView: React.SFC<PurchaseRequestListProps> = prop
                   color="primary"
                   variant="body2"
                 >
-                  {purchase.uid}  &bull; {purchase.currency && purchase.currency.value} { intl.formatNumber(purchase.request || 0) }
+                  {purchase.notes} &bull; {purchase.currency && purchase.currency.value} { intl.formatNumber(purchase.request || 0) }
                 </Typography>
                 <Typography
                   noWrap
                   variant="body1"
                 >
-                  {purchase.customer && purchase.customer.name} {purchase.customer && purchase.customer.company && `(${purchase.customer.company.name})`} &bull;&nbsp;
-                  {purchase.projectUid} {` - ${purchase.project && purchase.project.name}`}
+                  {purchase.projectUid} {` - ${purchase.project && purchase.project.name}`} &bull;&nbsp;
+                  {purchase.customer && purchase.customer.name} {purchase.customer && purchase.customer.company && `(${purchase.customer.company.name})`}
                 </Typography>
                 <Typography
                   noWrap
                   color="textSecondary"
                   variant="caption"
                 >
-                  {purchase.notes} &bull; {purchase.currency && purchase.currency.value} {intl.formatNumber(purchase.advance || 0)} &bull; &nbsp;
+                  {purchase.uid} &bull; {purchase.currency && purchase.currency.value} {intl.formatNumber(purchase.advance || 0)} &bull; &nbsp;
                   <FormattedDate
                     year="numeric"
                     month="short"

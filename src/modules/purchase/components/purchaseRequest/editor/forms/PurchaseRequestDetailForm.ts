@@ -4,6 +4,7 @@ import { FormMode } from '@generic/types';
 import { InputDate } from '@layout/components/input/date';
 import { InputNumber } from '@layout/components/input/number';
 import { InputText } from '@layout/components/input/text';
+// import { WithUser, withUser } from '@layout/hoc/withUser';
 import { InputCustomer } from '@lookup/components/customer/input';
 import { SelectProject } from '@project/components/select/project';
 import { PurchaseRequestDetailFormView } from '@purchase/components/purchaseRequest/editor/forms/PurchaseRequestDetailFormView';
@@ -21,7 +22,7 @@ interface OwnProps {
   onChangeCurrencyType: (event: any, newValue: string, oldValue: string) => void;
   onChangeRate: (event: any, newValue: number, oldValue: number) => void;
   onChangeValueIdr: (event: any, newValue: number, oldValue: number) => void;
-  onChangeRequestItem: (event: any, newValue: number, oldValue: number) => void;
+  // onChangeRequestItem: (event: any, newValue: number, oldValue: number) => void;
 }
 
 interface OwnHandlers {
@@ -30,6 +31,7 @@ interface OwnHandlers {
 
 export type PurchaseRequestDetailFormProps 
   = OwnProps
+  // & WithUser
   & OwnHandlers
   & InjectedIntlProps;
 
@@ -43,6 +45,7 @@ const handlerCreators: HandleCreators<PurchaseRequestDetailFormProps, OwnHandler
       onChangeRate,
       // onChangeRequestItem
     } = props;
+    // const { user } = props.userState;
     
     const projectFilter: any = {
       customerUids: formCustomer,
@@ -66,17 +69,19 @@ const handlerCreators: HandleCreators<PurchaseRequestDetailFormProps, OwnHandler
         fieldProps = {
           required: true,
           placeholder: intl.formatMessage({ id: `purchase.field.${name}.placeholder`}),
-          component: InputCustomer
+          component: InputCustomer,
+          customerUid: projectFilter
         };
         break;
 
       case 'projectUid':
         fieldProps = {
           required: true,
+          disabled: isNullOrUndefined(formCustomer),
           category: 'project',
           placeholder: intl.formatMessage({ id: `purchase.field.${name}.placeholder` }),
           component: !isNullOrUndefined(formCustomer) ? SelectProject : InputText,
-          customerUid: projectFilter,
+          filter: projectFilter,
         };
         break;
 
@@ -157,5 +162,6 @@ const handlerCreators: HandleCreators<PurchaseRequestDetailFormProps, OwnHandler
 
 export const PurchaseRequestDetailForm = compose<PurchaseRequestDetailFormProps, OwnProps>(
   injectIntl,
+  // withUser,
   withHandlers<PurchaseRequestDetailFormProps, OwnHandlers>(handlerCreators),
 )(PurchaseRequestDetailFormView);

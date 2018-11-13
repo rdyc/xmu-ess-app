@@ -26,8 +26,8 @@ const settlementInformation: React.SFC<AllProps> = props => {
   const render = (
     <Card square >
     <CardHeader 
-        title= {< FormattedMessage id = "purchase.infoTitle" />}
-        subheader = {< FormattedMessage id = "purchase.infoSubTitle" />}
+        title= {< FormattedMessage id = "purchasesettlement.infoTitle" />}
+        subheader={< FormattedMessage id= "purchasesettlement.infoSubTitle" />}
         />
         <CardContent >
           <TextField

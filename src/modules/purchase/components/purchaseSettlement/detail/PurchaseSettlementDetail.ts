@@ -232,7 +232,7 @@ const lifecycles: ReactLifeCycleFunctions<PurchaseSettlementDetailProps, OwnStat
           id: PurchaseUserAction.Modify,
           name: intl.formatMessage({ id: 'purchase.action.modify' }),
           enabled: response !== undefined,
-          visible: isStatusTypeEquals([WorkflowStatusType.Submitted, WorkflowStatusType.InProgress, WorkflowStatusType.Approved])
+          visible: isStatusTypeEquals([WorkflowStatusType.Submitted, WorkflowStatusType.InProgress])
         },
         {
           id: PurchaseUserAction.Settle,
