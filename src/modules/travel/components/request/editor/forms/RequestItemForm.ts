@@ -1,5 +1,6 @@
 import { withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
+import { IDiem } from '@lookup/classes/response';
 import { WithLookupDiem, withLookupDiem } from '@lookup/hoc/withLookupDiem';
 import { WithStyles, withStyles } from '@material-ui/core';
 import styles from '@styles';
@@ -11,8 +12,9 @@ import { RequestItemFormView } from './RequestItemFormView';
 
 interface OwnProps {
   context: WrappedFieldArrayProps<TravelItemFormData>;
-  // destinationTypeValue: string | null | undefined;
+  destinationTypeValue: string | null | undefined;
   // diemType: string | null | undefined;
+  diemRequest: IDiem[] | undefined;
 }
 
 interface OwnState {
@@ -36,23 +38,27 @@ export type RequestItemFormProps
 
 // const lifecycles: ReactLifeCycleFunctions<RequestItemFormProps, {}> = {
 //   componentDidMount() {
-//     const { destinationTypeValue, diemType } = this.props;
+//     const { user } = this.props.userState;
 //     const { loadAllRequest } = this.props.lookupDiemDispatch;
-    
-//     if (destinationTypeValue && diemType) {
+//     const { destinationTypeValue } = this.props;
+
+//     const filter: any = {
+//       projectType: undefined,
+//       destinationType: destinationTypeValue,
+//       find: user && user.company.uid,
+//       findBy: 'companyUid'      
+//     };
+//     if (user) {
 //       loadAllRequest ({
-//         filter: {
-//           destinationType: destinationTypeValue,
-//           projectType: 'SPT01',
-//           page: 1,
-//           size: 1,
-//           find: 'CP002',
-//           findBy: 'companyUid',
-//           orderBy: undefined,
-//           direction: undefined,        
-//         }
+//         filter
 //       });
 //     }
+//   },
+//   componentWillUnmount() {
+
+//     const { lookupDiemDispatch } = this.props;
+
+//     lookupDiemDispatch.loadAllDispose();
 //   }
 // };
 
@@ -75,5 +81,4 @@ export const RequestItemForm = compose<RequestItemFormProps, OwnProps>(
   withStyles(styles),
   injectIntl,
   withStateHandlers<OwnState, OwnStateHandler>(createProps, stateUpdaters),
-  // lifecycle<RequestItemFormProps, {}>(lifecycles)
 )(RequestItemFormView);

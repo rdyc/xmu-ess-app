@@ -6,7 +6,7 @@ import { FormattedMessage } from 'react-intl';
 import { Field } from 'redux-form';
 
 export const RequestDetailFormView: React.SFC<RequestDetailFormProps> = props => {
-  const { formMode } = props;
+  const { formMode, isProjectSelected } = props;
   const { names } = props.context;
 
   const renderField = (name: string) => {
@@ -17,6 +17,11 @@ export const RequestDetailFormView: React.SFC<RequestDetailFormProps> = props =>
     if (formMode === FormMode.New && fields.indexOf(fieldName) !== -1) {
       return null;
     }
+
+    const fieldsSite = ['siteUid'];
+    if (!isProjectSelected && fieldsSite.indexOf(fieldName) !== -1) {
+        return null;
+    }  
     
     return (
       <Field
