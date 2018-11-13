@@ -1,6 +1,5 @@
-import { WithForm, withForm } from '@layout/hoc/withForm';
+import { WithCancellationForm, withCancellationForm } from '@layout/hoc/withCancellationForm';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
-import { connect } from 'react-redux';
 import {
   compose,
   HandleCreators,
@@ -11,18 +10,14 @@ import {
   withHandlers,
   withStateHandlers,
 } from 'recompose';
-import { formValueSelector, InjectedFormProps, reduxForm } from 'redux-form';
+import { InjectedFormProps, reduxForm } from 'redux-form';
 import { LeaveCancellationFormView } from './LeaveCancellationFormView';
 
 const formName = 'leaveCancellation';
 
 export type LeaveCancellationFormData = {
-  cancelDate: string | null | undefined;
+  cancelDate: string | null;
 };
-
-interface FormValueProps {
-  formIsApproved: string | undefined;
-}
 
 interface OwnProps {
   cancellationTitle: string;
@@ -32,8 +27,8 @@ interface OwnProps {
   cancellationDialogContentText: string;
   cancellationDialogCancelText: string;
   cancellationDialogConfirmedText: string;
-  cancellationRemarkLabel?: string;
-  cancellationRemarkPlaceholder?: string;
+  cancellationCancelDateLabel?: string;
+  cancellationCancelDatePlaceholder?: string;
 }
 
 interface OwnHandler {
@@ -51,14 +46,13 @@ interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
 }
 
 export type LeaveCancellationFormProps 
-  = WithForm
+  = WithCancellationForm
   & InjectedFormProps<LeaveCancellationFormData, {}>
   & InjectedIntlProps
   & OwnProps
   & OwnHandler
   & OwnState
-  & OwnStateUpdaters
-  & FormValueProps;
+  & OwnStateUpdaters;
   
 const createProps: mapper<LeaveCancellationFormProps, OwnState> = (props: LeaveCancellationFormProps): OwnState => {
   return { 
@@ -94,7 +88,7 @@ const handlerCreators: HandleCreators<LeaveCancellationFormProps, OwnHandler> = 
   },
   handleDialogConfirmed: (props: LeaveCancellationFormProps) => () => { 
     const { stateUpdate } = props;
-    const { submitForm } = props.workflowApprovalDispatch;
+    const { submitForm } = props.leaveCancellationDispatch;
 
     stateUpdate({
       isOpenDialog: false
@@ -104,19 +98,8 @@ const handlerCreators: HandleCreators<LeaveCancellationFormProps, OwnHandler> = 
   },
 };
 
-const selector = formValueSelector(formName);
-
-const mapStateToProps = (state: any): FormValueProps => {
-  const isApproved = selector(state, 'isApproved');
-  
-  return {
-    formIsApproved: isApproved,
-  };
-};
-
 const enhance = compose<LeaveCancellationFormProps, OwnProps & InjectedFormProps<LeaveCancellationFormData, OwnProps>>(
-  connect(mapStateToProps),
-  withForm,
+  withCancellationForm,
   injectIntl,
   withStateHandlers<OwnState, OwnStateUpdaters, {}>(createProps, stateUpdaters), 
   withHandlers<LeaveCancellationFormProps, OwnHandler>(handlerCreators)

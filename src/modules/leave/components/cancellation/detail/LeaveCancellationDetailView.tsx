@@ -5,7 +5,6 @@ import { Grid, Typography } from '@material-ui/core';
 import { WorkflowHistory } from '@organization/components/workflow/history/WorkflowHistory';
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
-
 import { LeaveCancellationDetailProps } from './LeaveCancellationDetail';
 
 export const LeaveCancellationDetailView: React.SFC<LeaveCancellationDetailProps> = props => {
@@ -14,7 +13,7 @@ export const LeaveCancellationDetailView: React.SFC<LeaveCancellationDetailProps
     cancellationDialogTitle, cancellationDialogContentText, cancellationDialogCancelText, cancellationDialogConfirmedText 
   } = props;
   const { handleValidate, handleSubmit, handleSubmitSuccess, handleSubmitFail } = props;
-  const { isLoading, response } = props.leaveCancellationState.detail;
+  const { isLoading, response } = props.leaveRequestState.detail;
 
   const render = (
     <React.Fragment>
@@ -40,8 +39,8 @@ export const LeaveCancellationDetailView: React.SFC<LeaveCancellationDetailProps
               </Grid>
 
               {
-                response.data.workflow &&
-                <Grid item>
+                response.data &&
+                <Grid item xs={12} md={12}>
                   <LeaveCancellationForm
                     cancellationTitle={cancellationTitle}
                     cancellationSubHeader={cancellationSubHeader}

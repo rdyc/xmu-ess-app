@@ -1,10 +1,9 @@
 import { DialogConfirmation } from '@layout/components/dialogs';
-import { InputTextArea } from '@layout/components/input/textArea';
+import { InputDate } from '@layout/components/input/date';
 import { Button, Card, CardActions, CardContent, CardHeader } from '@material-ui/core';
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Field } from 'redux-form';
-
 import { LeaveCancellationFormProps } from './LeaveCancellationForm';
 
 export const LeaveCancellationFormView: React.SFC<LeaveCancellationFormProps> = props => (
@@ -12,16 +11,17 @@ export const LeaveCancellationFormView: React.SFC<LeaveCancellationFormProps> = 
     <form onSubmit={props.handleSubmit}>
       <Card square>
         <CardHeader 
-          title={props.approvalTitle}
-          subheader={props.approvalSubHeader}
+          title={props.cancellationTitle}
+          subheader={props.cancellationSubHeader}
         />
         <CardContent>
+          {
             <Field
               name="cancelDate"
               required={true}
-              label={props.approvalRemarkLabel || <FormattedMessage id={'workflow.approval.field.remark'} />}
-              placeholder={props.approvalRemarkPlaceholder || props.intl.formatMessage({id: 'workflow.approval.field.remark.placeholder'})}
-              component={InputTextArea}
+              label={props.cancellationCancelDateLabel || <FormattedMessage id={'leave.cancellation.field.cancelDate'} />}
+              placeholder={props.cancellationCancelDatePlaceholder || props.intl.formatMessage({id: 'leave.cancellation.field.cancelDate.placeholder'})}
+              component={InputDate}
             />
           }
         </CardContent>

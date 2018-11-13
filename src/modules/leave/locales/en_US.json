@@ -66,6 +66,14 @@
 
   "leave.request.noData": "No data Leave Request",
   "leave.approval.noData": "No data Leave Approval",
-  "leave.cancellation.noData": "No data Leave Cancellation"
+
+  "leave.CancellationTitle": "Cancellation",
+  "leave.cancellation.noData": "No data Leave Cancellation",
+  "leave.CancellationSubHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "leave.cancellation.field.cancelDate": "Cancel Date",
+  "leave.cancellation.field.cancelDate.placeholder": "Input Date",
+  "leave.cancellation.field.cancelDate.required": "Cancel date is required",
+  "leave.dialog.CancellationTitle": "Cancellation Confirmation",
+  "leave.dialog.CancellationContent": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
 }
 

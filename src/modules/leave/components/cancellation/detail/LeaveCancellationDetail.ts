@@ -7,6 +7,7 @@ import { IAppBarMenu } from '@layout/interfaces';
 import { ILeaveCancellationPostPayload } from '@leave/classes/request';
 import { LeaveRequestUserAction } from '@leave/classes/types';
 import { WithLeaveCancellation, withLeaveCancellation } from '@leave/hoc/withLeaveCancellation';
+import { WithLeaveRequest, withLeaveRequest } from '@leave/hoc/withLeaveRequest';
 import { leaveCancellationMessage } from '@leave/locales/messages/leaveCancellationMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
@@ -48,6 +49,7 @@ interface OwnState {
 
 export type LeaveCancellationDetailProps
   = WithLeaveCancellation
+  & WithLeaveRequest
   & WithUser
   & WithLayout
   & WithAppBar
@@ -60,7 +62,7 @@ const handlerCreators: HandleCreators<LeaveCancellationDetailProps, OwnHandler> 
   handleValidate: (props: LeaveCancellationDetailProps) => (formData: LeaveCancellationFormData) => { 
     const errors = {};
   
-    const requiredFields = ['isApproved', 'remark'];
+    const requiredFields = ['cancelDate'];
   
     requiredFields.forEach(field => {
       if (!formData[field] || isNullOrUndefined(formData[field])) {
@@ -89,7 +91,7 @@ const handlerCreators: HandleCreators<LeaveCancellationDetailProps, OwnHandler> 
 
     // generate payload
     const payload: ILeaveCancellationPostPayload = {
-      cancelDate: null,
+      cancelDate: formData.cancelDate,
     };
 
     // dispatch update request
@@ -136,7 +138,7 @@ const handlerCreators: HandleCreators<LeaveCancellationDetailProps, OwnHandler> 
   handleRefresh: (props: LeaveCancellationDetailProps) => () => { 
     const { match } = props;
     const { user } = props.userState;
-    const { loadDetailRequest } = props.leaveCancellationDispatch;
+    const { loadDetailRequest } = props.leaveRequestDispatch;
 
     if (user) {
       loadDetailRequest({
@@ -156,10 +158,10 @@ const lifecycles: ReactLifeCycleFunctions<LeaveCancellationDetailProps, {}> = {
     } = this.props;
 
     const { user } = this.props.userState;
-    const { loadDetailRequest } = this.props.leaveCancellationDispatch;
+    const { loadDetailRequest } = this.props.leaveRequestDispatch;
 
     layoutDispatch.changeView({
-      uid: AppMenu.LeaveRequest,
+      uid: AppMenu.LeaveCancelation,
       parentUid: AppMenu.Leave,
       title: intl.formatMessage({id: 'leave.detail.title'}),
       subTitle : intl.formatMessage({id: 'leave.detail.subTitle'})
@@ -190,7 +192,7 @@ const lifecycles: ReactLifeCycleFunctions<LeaveCancellationDetailProps, {}> = {
     }
   },
   componentWillReceiveProps(nextProps: LeaveCancellationDetailProps) {
-    if (nextProps.leaveCancellationState.detail.response !== this.props.leaveCancellationState.detail.response) {
+    if (nextProps.leaveRequestState.detail.response !== this.props.leaveRequestState.detail.response) {
       const { intl } = nextProps;
       const { assignMenus } = nextProps.appBarDispatch;
 
@@ -237,6 +239,7 @@ export const LeaveCancellationDetail = compose<LeaveCancellationDetailProps, {}>
   withAppBar,
   withRouter,
   withLeaveCancellation,
+  withLeaveRequest,
   injectIntl,
   withStateHandlers<OwnState, {}, {}>(createProps, {}),
   withHandlers<LeaveCancellationDetailProps, OwnHandler>(handlerCreators),
