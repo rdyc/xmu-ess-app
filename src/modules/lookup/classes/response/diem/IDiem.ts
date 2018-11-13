@@ -1,13 +1,14 @@
 import { ICommonSystem } from '@common/classes';
 import { IBaseChanges } from '@generic/interfaces';
 import { ICompanyList } from '@lookup/classes/response';
+import { ICurrencyList } from '../currency/ICurrencyList';
 
 export interface IDiem {
 uid: string; 
 companyUid: string | null;
 company: ICompanyList | null;
 currencyUid: string;
-currency: string;  // ICurrencyList | null;   
+currency: ICurrencyList | null;   
 projectType: string | null;
 project?: ICommonSystem | null;
 destinationType: string;

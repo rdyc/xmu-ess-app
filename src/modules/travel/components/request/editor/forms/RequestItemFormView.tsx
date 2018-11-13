@@ -20,8 +20,14 @@ import { FormattedMessage } from 'react-intl';
 import { Field } from 'redux-form';
 
 export const RequestItemFormView: React.SFC<RequestItemFormProps> = props => {
-  const { context } = props;
-  
+  const { context, destinationTypeValue } = props;
+  const diemResponse = props.lookupDiemState.all.response;
+
+  const diem = (diemResponse && diemResponse.data) ? 
+                    diemResponse.data.filter(item => item.destinationType === destinationTypeValue &&
+                       item.projectType === 'SPT01')[0] 
+                    : undefined;
+                    
   const render = (
     <Grid container spacing={16}>
       {
@@ -222,9 +228,9 @@ export const RequestItemFormView: React.SFC<RequestItemFormProps> = props => {
               notes: '',
               duration: 0,
               amount: 0,            
-              currencyUid: '',
-              currencyRate: 0,
-              diemValue: 0,
+              currencyUid: diem && diem.currency ? diem.currency.name : '',
+              currencyRate: diem && diem.currency ? diem.currency.rate : 0,
+              diemValue: diem ? diem.value : 0 ,
               })}>
               <FormattedMessage id="travel.section.item.action.add" />
             </Button>

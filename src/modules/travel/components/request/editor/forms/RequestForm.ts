@@ -1,5 +1,6 @@
-// import { ProjectType } from '@common/classes/types';
 import { FormMode } from '@generic/types';
+import { IDiem } from '@lookup/classes/response';
+import { WithLookupDiem } from '@lookup/hoc/withLookupDiem';
 import { RequestFormView } from '@travel/components/request/editor/forms/RequestFormView';
 import { connect } from 'react-redux';
 import { formValueSelector, InjectedFormProps, reduxForm } from 'redux-form';
@@ -39,7 +40,6 @@ export type TravelRequestFormData = {
     end: string | null | undefined;
     customerUid: string | null | undefined;
     projectUid: string | null | undefined;
-    // projectType: string | null | undefined; // coba
     siteUid: string | null | undefined;
     activityType: string | null | undefined;
     objective: string | null | undefined;
@@ -53,18 +53,18 @@ export type TravelRequestFormData = {
 
 interface OwnProps {
   formMode: FormMode;
+  diemRequest: IDiem[] | undefined;
 }
 interface FormValueProps {
   customerUidValue: string | undefined;
   destinationtypeValue: string | undefined;
   projectUidValue: string | undefined;
-  // isGeneralPurpose: boolean | false;
-  // diemtype: string | undefined;
-  // projectTypeValue: string | undefined;
+  isProjectSelected: boolean | false;
 }
 
 export type RequestFormProps 
   = InjectedFormProps<TravelRequestFormData, OwnProps>
+  & WithLookupDiem
   & FormValueProps 
   & OwnProps;
 
@@ -74,16 +74,12 @@ const mapStateToProps = (state: any): FormValueProps => {
    const customerUid = selector(state, 'information.customerUid');
    const destinationtype = selector(state, 'information.destinationType');
    const projectUid = selector(state, 'information.projectUid');
-   // const projectType = selector(state, 'information.projectType'); // gatau
    return {
      customerUidValue: customerUid,
      destinationtypeValue: destinationtype,
      projectUidValue: projectUid,
-     // isGeneralPurpose: projectType === ProjectType.GeneralPurpose 
-     // projectTypeValue: projectType,
-     // diemtype: projectType === ProjectType.PreSales ? ProjectType.PreSales : ProjectType.NonProject, 
-   };
-   
+     isProjectSelected: projectUid
+   };   
  };
 
 const connectedView = connect(mapStateToProps)(RequestFormView);
