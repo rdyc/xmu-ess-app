@@ -32,10 +32,20 @@ export const PurchaseSettlementEditorView: React.SFC<PurchaseSettlementEditorPro
       uid: undefined,
       date: undefined,
       notes: undefined,
+      rate: 0,
+      request: 0,
+      actual: 0,
+      difference: 0,
+      customerUid: undefined,
+      projectUid: undefined,
+      advance: 0,
+      balanceDue: 0,
+      currencyType: undefined,
+
     },
     items: {
       items: [
-    ]
+      ]
     }
   };
 
@@ -51,6 +61,12 @@ export const PurchaseSettlementEditorView: React.SFC<PurchaseSettlementEditorPro
 
       initialValues.information.uid = data.uid;
       initialValues.information.notes = data.notes;
+      initialValues.information.projectUid = data.projectUid;
+      initialValues.information.customerUid = data.customerUid;
+      initialValues.information.rate = data.rate;
+      initialValues.information.currencyType = data.currencyType;
+      initialValues.information.request = data.request;
+      initialValues.information.advance = data.advance;
 
       if (formMode === FormMode.Edit) {
       initialValues.information.date = data.date;

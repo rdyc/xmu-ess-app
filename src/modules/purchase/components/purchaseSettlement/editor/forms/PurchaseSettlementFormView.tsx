@@ -21,27 +21,28 @@ export const PurchaseSettlementFormView: React.SFC<PurchaseSettlementFormProps> 
     change('information.actualIDR', newValue * formRate);
   };
 
+  const onChangeValueRequest = (event: any, newValue: number, oldValue: number) => {
+    change('information.request', newValue );
+  };
+
   const onChangeValueActual = (event: any, newValue: number, oldValue: number) => {
     change('information.actual', newValue );
   };
 
-//   const componentPurchase = (context: PurchaseRequestDetailProps) => (
-// <PurchaseRequestDetail
-//       data={response.data}
-// />
-  // );
   const componentInformation = (context: BaseFieldsProps) => (
     <PurchaseSettlementDetailForm
       formMode={formMode}
       context={context}
       isCurrencyIdr={formIsCurrencyIDR}
       onChangeValueIdr={onChangeValueIdr}
-      onChangeRequestItem={onChangeValueActual}
+      onChangeRequestItem={onChangeValueRequest}
     />
   );
 
   const componentItems = (context: WrappedFieldArrayProps<any>) => (
-  <PurchaseSettlementItemForm context={context} />
+  <PurchaseSettlementItemForm
+   context={context}
+   onActualChange={onChangeValueActual} />
   );
 
   const render = (
@@ -53,14 +54,6 @@ export const PurchaseSettlementFormView: React.SFC<PurchaseSettlementFormProps> 
         justify="flex-start"
         alignItems="flex-start"
       >
-        {/* <Grid item xs={12} md={4} >
-          <FormSection name="request">
-            <Fields
-              names={fields}
-              component={componentPurchase}
-            />
-          </FormSection>
-        </Grid> */}
         <Grid item xs={12} md={4} >
           <FormSection name="information">
             <Fields
@@ -79,11 +72,8 @@ export const PurchaseSettlementFormView: React.SFC<PurchaseSettlementFormProps> 
           </FormSection>
         </Grid>
 
-        <Grid item 
-        // xs={12} 
-        md={4}>
+        <Grid item md={4}>
           <Submission
-            // valid={props.valid}
             valid={true}
             reset={props.reset}
             submitting={props.submitting}

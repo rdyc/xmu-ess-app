@@ -4,7 +4,7 @@ import { PurchaseApprovalListProps } from '@purchase/components/purchaseHistorie
 import { parseChanges } from '@utils/parseChanges';
 import * as moment from 'moment';
 import * as React from 'react';
-import { FormattedDate, FormattedNumber, FormattedPlural } from 'react-intl';
+import { FormattedDate, FormattedMessage, FormattedNumber, FormattedPlural } from 'react-intl';
 import { isArray } from 'util';
 
 export const PurchaseApprovalListView: React.SFC<PurchaseApprovalListProps> = props => {
@@ -29,20 +29,20 @@ export const PurchaseApprovalListView: React.SFC<PurchaseApprovalListProps> = pr
                   color="primary" 
                   variant="body2"
                 >
-                  {purchase.uid} &bull; {purchase.notes} &bull; {purchase.currency && purchase.currency.value} { intl.formatNumber(purchase.request || 0) }
+                  {purchase.notes} &bull; {purchase.currency && purchase.currency.value} { intl.formatNumber(purchase.request || 0) }
                 </Typography>
                 <Typography 
                   noWrap
                   variant="body1"
                 >
-                  {purchase.customer && purchase.customer.name} {purchase.customer && purchase.customer.company && `(${purchase.customer.company.name})`} &bull;&nbsp;
-                  {purchase.projectUid} {` - ${purchase.project && purchase.project.name}`}
+                  {purchase.projectUid} {` - ${purchase.project && purchase.project.name}`} &bull;&nbsp;
+                  {purchase.customer && purchase.customer.name} {purchase.customer && purchase.customer.company && `(${purchase.customer.company.name})`}
                 </Typography>
                 <Typography 
                   noWrap
                   color="textSecondary" 
                   variant="caption"
-                >{` Advance Payment: ${purchase.currency && purchase.currency.value} ${intl.formatNumber(purchase.advance || 0)}`} &bull; &nbsp;
+                >  {purchase.uid} &bull; {< FormattedMessage id="purchase.field.information.advance" />} {`: ${purchase.currency && purchase.currency.value} ${intl.formatNumber(purchase.advance || 0)}`} &bull; &nbsp;
                   <FormattedDate 
                     year="numeric"
                     month="short"
@@ -98,7 +98,7 @@ export const PurchaseApprovalListView: React.SFC<PurchaseApprovalListProps> = pr
               <Grid item xs={6} sm={6}>
                 <Typography variant="caption" color="primary">
                   <FormattedNumber value={response.metadata.total} /> &nbsp;
-                  <FormattedPlural one="purchase" other="purchases" value={response.metadata.total} />
+                  <FormattedPlural one="approval" other="approvals" value={response.metadata.total} />
                 </Typography>
               </Grid>
               <Grid item xs={6} sm={6}>

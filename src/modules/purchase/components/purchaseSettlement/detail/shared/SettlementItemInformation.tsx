@@ -1,95 +1,72 @@
-import { Card, CardContent, CardHeader, Grid, List, ListItem, ListItemText, Typography } from '@material-ui/core';
+import { Card, CardContent, CardHeader, TextField, 
+  // Grid, List, ListItem, ListItemText, Typography 
+} from '@material-ui/core';
 import { IPurchaseItem } from '@purchase/classes/response/purchaseSettlement';
 import * as React from 'react';
-import { FormattedMessage, FormattedNumber } from 'react-intl';
+import { FormattedMessage, 
+  // FormattedNumber, 
+  InjectedIntlProps, injectIntl } from 'react-intl';
+import { compose } from 'recompose';
 
 interface OwnProps {
-  data: IPurchaseItem[] | null | undefined;
+  data: IPurchaseItem;
+  title: string;
 }
 
-export const SettlementItemInformation: React.SFC<OwnProps> = props => {
-  const { data } = props;
+type AllProps
+  = OwnProps
+  & InjectedIntlProps;
 
-  const render = (
-    <Card square>
-      <CardHeader
-        title={<FormattedMessage id="purchase.itemTitle" />}
-        subheader={<FormattedMessage id="purchase.itemSubTitle" />}
+const styled = {
+  fullWidth: true,
+  InputProps: {
+    disableUnderline: true,
+    readOnly: true
+  }
+};
+
+const settlementItemInformation: React.SFC<AllProps> = props => (
+  <Card square>
+    <CardHeader
+      title={props.title}
+    />
+    <CardContent>
+      <TextField
+        {...styled}
+        margin="dense"
+        label={<FormattedMessage id="purchase.itemTitle.uid" />}
+        value={props.data.uid}
       />
-      <CardContent>
-        <List>
-          {
-            data &&
-            data.length === 0 &&
-            <ListItem>
-              <ListItemText
-                primary={<FormattedMessage id="purchase.field.item.empty" />}
-                primaryTypographyProps={{ align: 'center' }}
-              />
-            </ListItem>
-          }
-          {
-            data &&
-            data.map(item =>
-              <ListItem disableGutters key={item.uid}>
-                {/* <Grid container xs={12}> */}
-                  <Grid container item xs={12} spacing={8}>
-                    <ListItemText
-                      primary={item.uid}
-                      secondary={item.description ? <Typography noWrap variant="body2">{item.description}</Typography> : 'N/A'}
-                    />
-                    <Grid xs={3}>
-                      <ListItemText
-                        primary={<FormattedMessage id="purchase.itemTitle.request" />}
-                        />
-                      <Typography
-                        color="primary"
-                        variant="headline"
-                        align="left"
-                      >
-                      <FormattedNumber
-                        value={item.requestValue}
-                      />
-                      </Typography>
-                    </Grid>
-                    <Grid xs={3}>
-                      <ListItemText
-                        primary={<FormattedMessage id="purchase.itemTitle.actual" />}
-                      />
-                      <Typography
-                        color="secondary"
-                        variant="headline"
-                        align="left"
-                      >
-                      <FormattedNumber
-                        value={item.actualValue}
-                      />
-                      </Typography>
-                    </Grid>
-                    <Grid xs={3}>
-                      <ListItemText
-                        primary={<FormattedMessage id="purchase.itemTitle.variance" />}
-                      />
-                    <Typography 
-                      color="error"
-                      variant="headline"
-                      align="left"
-                    >
-                      <FormattedNumber
-                        value={item.varianceValue}
-                      />
-                    </Typography>
-                    </Grid>
-                  </Grid>
-                {/* </Grid> */}
+      <TextField
+        {...styled}
+        margin="dense"
+        label={<FormattedMessage id="purchase.itemTitle.description" />}
+        value={props.data.description}
+      />
+      <TextField
+        {...styled}
+        margin="dense"
+        label={<FormattedMessage id="purchase.itemTitle.request" />}
+        value={props.intl.formatNumber(props.data.requestValue)}
+      />
+      <TextField
+        {...styled}
+        margin="dense"
+        label={<FormattedMessage id="purchase.itemTitle.actual" />}
+        value={props.intl.formatNumber(props.data.actualValue)}
+      />
+      <TextField
+        {...styled}
+        margin="dense"
+        label={<FormattedMessage id="purchase.itemTitle.variance" />}
+        value={props.intl.formatNumber(props.data.varianceValue)}
+      />
 
-              </ListItem>
-            )
-          }
-        </List>
-      </CardContent>
-    </Card>
+      {props.children}
+    </CardContent>
+  </Card>
   );
 
-  return render;
-};
+export const SettlementItemInformation = compose<AllProps, OwnProps>(
+  injectIntl
+)(settlementItemInformation);

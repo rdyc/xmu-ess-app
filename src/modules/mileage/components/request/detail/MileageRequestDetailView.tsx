@@ -67,16 +67,16 @@ export const MileageRequestDetailView: React.SFC<
       {!isLoading &&
         response &&
         response.data && (
-          <Grid container spacing={24}>
+          <Grid container spacing={16}>
             <Grid item xs={12} md={4}>
               <MileageInformation data={response.data} />
             </Grid>
-            <Grid item xs={12} md={8}>
+            <Grid item xs={12} md={4}>
               {response.data.items && response.data.workflow && (
                 <MileageItem items={response.data.items}/>
               )}
             </Grid>
-            <Grid item xs={12} sm={12} md={8} xl={3}>
+            <Grid item xs={12} md={4}>
               <WorkflowHistory data={response.data.workflow} />
             </Grid>
           </Grid>
