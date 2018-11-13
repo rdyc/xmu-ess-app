@@ -75,7 +75,10 @@ export const TravelSettlementDetailView: React.SFC<SettlementDetailProps> = prop
           alignItems="flex-start"
         >
           <Grid item xs={12} md={4}>
-            <TravelSettlementInformation data = {response.data}/>
+            <TravelSettlementInformation 
+                data = {response.data}
+                travelData = {travelResponse.data}
+            />
           </Grid>
 
           <Grid item xs={12} md={4}>
