@@ -36,30 +36,36 @@ export const BillableListView: React.SFC<BillableListProps> = props => {
   const { user } = props.userState;
   const {
     intl,
-    _start,
-    _end,
+    classes,
+    start,
+    end,
     size,
-    // orderBy,
-    // direction,
+    orderBy,
     page,
+    direction,
     handleChangeStart,
     handleChangeEnd,
     handleChangePage,
     handleChangeSize,
     handleGoToNext,
     handleGoToPrevious,
-    classes
+    handleChangeSort,
+    handleChangeFind
   } = props;
 
   const _handlePage = (_page: any) => {
     return handleChangePage(_page);
   };
 
+  // const _handleSort = () => {
+  //   return handleChangeSort(direction === 'ascending' ? true : false);
+  // };
+
   const renderBillableList = (billable: ISummaryBillable[]) => {
     const header: any[] = [
       // { id: 'no', numeric: true, disablePadding: false, label: 'No' },
       {
-        id: 'name',
+        id: 'fullName',
         numeric: false,
         disablePadding: false,
         label: 'Employee Name'
@@ -101,21 +107,27 @@ export const BillableListView: React.SFC<BillableListProps> = props => {
                   key={item.id}
                   numeric={item.numeric}
                   padding={item.disablePadding ? 'none' : 'default'}
-                  // sortDirection={}
+                  sortDirection={orderBy === item.id ? (direction === 'ascending' ? 'asc' : 'desc') : false}
                 >
-                  <Tooltip
-                    title="sort"
+                  {item.id === 'fullName' ? (
+                    <Tooltip
+                    title="Sort"
                     placement={item.numeric ? 'bottom-end' : 'bottom-start'}
                     enterDelay={300}
                   >
                     <TableSortLabel
-                    // active={}
-                    // direction={}
-                    // onClick={}
+                      active={orderBy === item.id}
+                      direction={direction === 'ascending' ? 'asc' : 'desc'}
+                      onClick={() => handleChangeSort(direction === 'ascending' ? true : false)}
                     >
                       {item.label}
                     </TableSortLabel>
                   </Tooltip>
+
+                  ) : 
+                    item.label
+                  }
+                  
                 </TableCell>
               ))}
             </TableRow>
@@ -162,6 +174,7 @@ export const BillableListView: React.SFC<BillableListProps> = props => {
                 <TablePagination
                   count={response.metadata.total}
                   rowsPerPage={size}
+                  // rowsPerPageOptions={[5, 10, 15, 25]}
                   page={page}
                   onChangePage={_handlePage}
                   onChangeRowsPerPage={e =>
@@ -224,7 +237,7 @@ export const BillableListView: React.SFC<BillableListProps> = props => {
       format={'MMM DD, YYYY'}
       label={intl.formatMessage({ id: 'billable.field.start' })}
       showTodayButton
-      value={_start}
+      value={start}
       onChange={(moment: Moment) => handleChangeStart(moment.toISOString(true))}
     />
   );
@@ -239,10 +252,10 @@ export const BillableListView: React.SFC<BillableListProps> = props => {
       leftArrowIcon={<ChevronLeft />}
       rightArrowIcon={<ChevronRight />}
       format={'MMM DD, YYYY'}
-      label={intl.formatMessage({ id: 'billable.field.start' })}
+      label={intl.formatMessage({ id: 'billable.field.end' })}
       showTodayButton
       disableFuture
-      value={_end}
+      value={end}
       onChange={(moment: Moment) => handleChangeEnd(moment.toISOString(true))}
     />
   );
@@ -262,6 +275,7 @@ export const BillableListView: React.SFC<BillableListProps> = props => {
           <TextField
             margin="normal"
             label={<FormattedMessage id="billable.field.name" />}
+            onChange={e => handleChangeFind(e.target.value)}
           />
         </Grid>
         <Grid item xs>
