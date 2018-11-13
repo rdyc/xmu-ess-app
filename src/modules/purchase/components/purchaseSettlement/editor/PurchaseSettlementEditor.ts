@@ -10,11 +10,9 @@ import {
   ISettlementPutPayload
 } from '@purchase/classes/request/purchaseSettlement';
 import { ISettlement, 
-  // ISettlementDetail 
 } from '@purchase/classes/response/purchaseSettlement';
 import {
-  PurchaseSettlementFormData, 
-  // PurchaseSettlementItemFormData,
+  PurchaseSettlementFormData,
 } from '@purchase/components/purchaseSettlement/editor/forms/PurchaseSettlementForm';
 import { PurchaseSettlementEditorView } from '@purchase/components/purchaseSettlement/editor/PurchaseSettlementEditorView';
 import { WithPurchaseSettlement, withPurchaseSettlement } from '@purchase/hoc/purchaseSettlement/withPurchaseSettlement';
@@ -76,7 +74,7 @@ const createProps: mapper<PurchaseSettlementEditorProps, OwnState> = (props: Pur
   const state = history.location.state;
 
   return {
-    formMode: state ? FormMode.Edit : FormMode.New,
+    formMode: state.information.statusType ? FormMode.Edit : FormMode.New,
     companyUid: state ? state.companyUid : undefined,
     positionUid: state ? state.positionUid : undefined,
     purchaseUid: state ? state.purchaseUid : undefined
@@ -169,12 +167,14 @@ const handlers: HandleCreators<PurchaseSettlementEditorProps, OwnHandlers> = {
     };
 
     const payload = {
-      ...formData.information,
+      date: formData.information.date,
+      notes: formData.information.notes,
       items: parsedItems()
     };
     
     const payloadPut = {
-      ...formData.information,
+      date: formData.information.date,
+      notes: formData.information.notes,
       items: parsedItemsPut()
       };
       
@@ -289,7 +289,7 @@ const lifecycles: ReactLifeCycleFunctions<PurchaseSettlementEditorProps, {}> = {
 
     if (!isNullOrUndefined(history.location.state)) {
 
-      if (!isNullOrUndefined(history.location.state.statusType)) {
+      if (!isNullOrUndefined(history.location.state.information.statusType)) {
       purchase.title = 'purchase.form.purchaseSettlement.editTitle';
       purchase.subTitle = 'purchase.form.purchaseSettlement.editSubTitle';
 

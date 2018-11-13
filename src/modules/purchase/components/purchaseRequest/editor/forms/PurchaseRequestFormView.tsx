@@ -48,7 +48,7 @@ export const PurchaseRequestFormView: React.SFC<PurchaseRequestFormProps> = prop
       onChangeCurrencyType={onChangeCurrencyType}
       onChangeRate={onChangeRate}
       onChangeValueIdr={onChangeValueIdr}
-      // onChangeRequestItem={onChangeValueRequest}
+      // onRequestChange={onChangeItemRequest}
     />
   );
 

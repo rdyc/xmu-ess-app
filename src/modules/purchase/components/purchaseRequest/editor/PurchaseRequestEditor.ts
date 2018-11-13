@@ -10,10 +10,9 @@ import {
   IPurchasePutPayload
 } from '@purchase/classes/request/purchaseRequest';
 import { IPurchase, 
-  // IPurchaseDetail 
 } from '@purchase/classes/response/purchaseRequest';
 import {
-  PurchaseRequestFormData
+  PurchaseRequestFormData,
 } from '@purchase/components/purchaseRequest/editor/forms/PurchaseRequestForm';
 import { PurchaseRequestEditorView } from '@purchase/components/purchaseRequest/editor/PurchaseRequestEditorView';
 import { WithPurchaseRequest, withPurchaseRequest } from '@purchase/hoc/purchaseRequest/withPurchaseRequest';
@@ -131,13 +130,30 @@ const handlers: HandleCreators<PurchaseRequestEditorProps, OwnHandlers> = {
       }
     });
 
-    // const itemsField = ['description', 'request'];
+    if (formData.items) {
+      const requiredItemFields = ['description', 'request'];
+      const itemErrors: any[] = [];
 
-    // itemsField.forEach(field => {
-    //   if(!formData.items.items[]){
+      formData.items.items.forEach((item, index) => {
+        const itemError: any = {};
 
-    //   }
-    // });
+        if (!item) { return; }
+
+        requiredItemFields.forEach(field => {
+          if (!item[field] || isNullOrUndefined(item[field])) {
+            Object.assign(itemError, { [`${field}`]: props.intl.formatMessage({ id: `travel.field.information.item.${field}.required` }) });
+          }
+        });
+
+        itemErrors.push(itemError);
+      });
+
+      if (itemErrors.length) {
+        Object.assign(errors, {
+          items: itemErrors
+        });
+      }
+    }
 
     return errors;
   },

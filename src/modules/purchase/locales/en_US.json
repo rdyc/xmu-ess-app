@@ -85,12 +85,15 @@
   "purchase.action.settle": "Settle",
   "purchase.action.add": "Add",
 
+  "purchase.message.purchaseRequest.empty.purchaseUid": "Purchase ID isn't available",
   "purchase.message.purchaseRequest.item.duplication": "Item(s) already added",
   "purchase.message.purchaseRequest.create.success": "A new Purchase ID {uid} has been created",
   "purchase.message.purchaseRequest.create.failure": "Unable to process your submission",
   "purchase.message.purchaseRequest.update.success": "Existing Purchase ID {uid} has been updated",
   "purchase.message.purchaseRequest.update.failure": "Unable to process your submission",
-
+  "purchase.message.approval.emptyProps": "Some important data's are empty, please check again",
+  "purchase.message.approval.approve.success": "Purchase ID {uid} has been approved",
+  "purchase.message.approval.reject.success": "Purchase ID {uid} has been rejected",
   "purchase.form.purchaseRequest.editTitle": "Edit Request",
   "purchase.form.purchaseRequest.newTitle": "Create New Request",
   "purchase.form.purchaseSettlement.editTitle": "Edit Settlemet",

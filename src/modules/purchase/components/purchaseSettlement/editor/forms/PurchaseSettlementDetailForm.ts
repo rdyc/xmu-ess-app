@@ -77,7 +77,8 @@ const handlerCreators: HandleCreators<PurchaseSettlementDetailFormProps, OwnHand
       case 'date': 
         fieldProps = {
           required: true,
-          placeholder: intl.formatMessage({id: `purchase.field.settlement${name}.placeholder`}),
+          category: 'date',
+          placeholder: intl.formatMessage({id: `purchase.field.settlementDate.placeholder`}),
           component: InputDate
         };
         break;
@@ -118,7 +119,7 @@ const handlerCreators: HandleCreators<PurchaseSettlementDetailFormProps, OwnHand
         };
         break;
 
-       case 'actualIDR':
+       case 'actualInIDR':
          fieldProps = {
            type: 'number',
            disabled: true,

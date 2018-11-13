@@ -26,7 +26,7 @@ export const PurchaseSettlementFormView: React.SFC<PurchaseSettlementFormProps> 
   };
 
   const onChangeValueActual = (event: any, newValue: number, oldValue: number) => {
-    change('information.actual', newValue );
+    change('information.actual', newValue + oldValue );
   };
 
   const componentInformation = (context: BaseFieldsProps) => (
