@@ -14,7 +14,32 @@
 
   "profitability.title": "Project Profitability",
 
-  "progress.title": "Project Progress",
+  "summary.progress.title": "Project Progress",
+  "summary.progress.subTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "summary.progress.dialog.title": "Detail Expense ",
+  "summary.progress.dialog.close": "Dismiss",
+  "summary.progress.tableHead.totalMax": "Total Max Hours",
+  "summary.progress.tableHead.totalAllocated": "Total Allocated Hours",
+  "summary.progress.tableHead.totalActual": "Total Actual Hours",
+  "summary.progress.tableHead.totalRemaining": "Total Remaining Hours",
+  "summary.progress.tableHead.totalProgress": "Total Progress",
+  "summary.progress.tableHead.totalRates": "Total People Cost(IDR)",
+  "summary.progress.tableHead.totalExpense": "Total Expense(IDR)",
+  "summary.progress.tableHead.totalCogs": "Total COGS(IDR)",
+  "summary.progress.tableHead.consultant": "Consultant",
+  "summary.progress.tableHead.allocated": "Allocated Hours",
+  "summary.progress.tableHead.actual": "Actual Hours",
+  "summary.progress.tableHead.remaining": "Remaining Hours",
+  "summary.progress.tableHead.progress": "Progress",
+  "summary.progress.tableHead.value": "PROJECT VALUE (IDR)",
+  "summary.progress.tableHead.allCogs": "Grand Total COGS (IDR)",
+  "summary.progress.tableHead.profitValue": "GROSS PROFIT (IDR)",
+  "summary.progress.tableHead.profitPercent": "GROSS PROFIT",
+  "summary.progress.tableHead.type": "Type",
+  "summary.progress.tableHead.date": "Date",
+  "summary.progress.tableHead.documentUid": "Document ID",
+  "summary.progress.tableHead.requester": "Requester",
+  "summary.progress.tableHead.amount": "Amount",
 
   "winning.title": "Winning Ratio"
 }
