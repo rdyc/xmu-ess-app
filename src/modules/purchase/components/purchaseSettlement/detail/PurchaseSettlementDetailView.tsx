@@ -73,7 +73,7 @@ export const PurchaseSettlementDetailView: React.SFC<PurchaseSettlementDetailPro
                   <Grid key={index} item xs={12} md={4}>
                     <SettlementItemInformation
                       data={item}
-                      title={`Settlement Item #${index + 1} `} />
+                      title={`#${index + 1} `} />
                   </Grid>
                 )
               }

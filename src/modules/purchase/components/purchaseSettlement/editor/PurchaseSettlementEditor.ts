@@ -47,6 +47,7 @@ interface OwnRouteParams {
 }
 
 interface OwnState {
+  statusType: string | undefined;
   formMode: FormMode;
   companyUid?: string | undefined;
   positionUid?: string | undefined;
@@ -74,10 +75,11 @@ const createProps: mapper<PurchaseSettlementEditorProps, OwnState> = (props: Pur
   const state = history.location.state;
 
   return {
-    formMode: state.information.statusType ? FormMode.Edit : FormMode.New,
+    statusType: state ? state.statusType : undefined,
+    formMode: state.statusType ? FormMode.Edit : FormMode.New,
     companyUid: state ? state.companyUid : undefined,
     positionUid: state ? state.positionUid : undefined,
-    purchaseUid: state ? state.purchaseUid : undefined
+    purchaseUid: state ? state.uid : undefined
   };
 };
 
@@ -233,7 +235,7 @@ const handlers: HandleCreators<PurchaseSettlementEditorProps, OwnHandlers> = {
       time: new Date()
     });
 
-    history.push('/purchase/requests/list');
+    history.push('/purchase/settlements/list');
   },
   handleSubmitFail: (props: PurchaseSettlementEditorProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
     const { formMode, intl } = props;
@@ -289,7 +291,7 @@ const lifecycles: ReactLifeCycleFunctions<PurchaseSettlementEditorProps, {}> = {
 
     if (!isNullOrUndefined(history.location.state)) {
 
-      if (!isNullOrUndefined(history.location.state.information.statusType)) {
+      if (!isNullOrUndefined(history.location.state.statusType)) {
       purchase.title = 'purchase.form.purchaseSettlement.editTitle';
       purchase.subTitle = 'purchase.form.purchaseSettlement.editSubTitle';
 

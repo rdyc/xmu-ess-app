@@ -1,9 +1,9 @@
-import { SelectSystemOption } from '@common/components/select';
+// import { SelectSystemOption } from '@common/components/select';
 import { FormMode } from '@generic/types';
 import { InputDate } from '@layout/components/input/date';
 import { InputNumber } from '@layout/components/input/number';
 import { InputText } from '@layout/components/input/text';
-import { InputCustomer } from '@lookup/components/customer/input';
+// import { InputCustomer } from '@lookup/components/customer/input';
 import { PurchaseSettlementDetailFormView } from '@purchase/components/purchaseSettlement/editor/forms/PurchaseSettlementDetailFormView';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose, HandleCreators, withHandlers } from 'recompose';
@@ -37,7 +37,9 @@ const handlerCreators: HandleCreators<PurchaseSettlementDetailFormProps, OwnHand
     
     const fieldName = name.replace('information.', '');
     
-    let fieldProps: SelectSystemOption & any = {};
+    let fieldProps: 
+    // SelectSystemOption & 
+    any = {};
   
     switch (fieldName) {
       case 'uid': 
@@ -50,9 +52,9 @@ const handlerCreators: HandleCreators<PurchaseSettlementDetailFormProps, OwnHand
       
       case 'customerUid': 
         fieldProps = {
-          required: true,
-          placeholder: intl.formatMessage({ id: `purchase.field.${name}.placeholder`}),
-          component: InputCustomer
+          disabled: true,
+          placeholder: intl.formatMessage({ id: `purchase.field.${name}.placeholder` }),
+          component: InputText
         };
         break;
 
@@ -69,7 +71,7 @@ const handlerCreators: HandleCreators<PurchaseSettlementDetailFormProps, OwnHand
         fieldProps = {
           disabled: true,
           category: 'currency',
-          placeholder: intl.formatMessage({id: `purchase.field.${name}.placeholder`}),
+          placeholder: intl.formatMessage({ id: `purchase.field.${name}.placeholder` }),
           component: InputText,
         };
         break;
@@ -86,7 +88,7 @@ const handlerCreators: HandleCreators<PurchaseSettlementDetailFormProps, OwnHand
       case 'rate':
         fieldProps = {
           type: 'number',
-          placeholder: intl.formatMessage({id: `purchase.field.${name}.placeholder`}),
+          placeholder: intl.formatMessage({ id: `purchase.field.${name}.placeholder` }),
           disabled: true,
           component: InputNumber,
         };
@@ -95,15 +97,15 @@ const handlerCreators: HandleCreators<PurchaseSettlementDetailFormProps, OwnHand
       case 'request':
         fieldProps = {
           type: 'number',
-          placeholder: intl.formatMessage({id: `purchase.field.${name}.placeholder`}),
           component: InputNumber,
           disabled: true
         };
         break;
 
-       case 'requestIDR':
+       case 'requestInIDR':
          fieldProps = {
            type: 'number',
+           placeholder: intl.formatMessage({ id: `purchase.field.${name}.placeholder` }),
            disabled: true,
            component: InputNumber
          };
@@ -115,13 +117,14 @@ const handlerCreators: HandleCreators<PurchaseSettlementDetailFormProps, OwnHand
           onChange: onChangeValueIdr,
           placeholder: intl.formatMessage({ id: `purchase.field.${name}.placeholder` }),
           component: InputNumber,
-          required: true
+          disabled: true
         };
         break;
 
        case 'actualInIDR':
          fieldProps = {
            type: 'number',
+           placeholder: intl.formatMessage({ id: `purchase.field.${name}.placeholder` }),
            disabled: true,
            component: InputNumber
          };
@@ -130,15 +133,17 @@ const handlerCreators: HandleCreators<PurchaseSettlementDetailFormProps, OwnHand
       case 'difference':
         fieldProps = {
           type: 'number',
+          placeholder: intl.formatMessage({ id: `purchase.field.${name}.placeholder` }),
           onChange: onChangeValueIdr,
           component: InputNumber,
           disabled: true
         };
         break;
 
-       case 'differenceIDR':
+       case 'differenceInIDR':
          fieldProps = {
            type: 'number',
+           placeholder: intl.formatMessage({ id: `purchase.field.${name}.placeholder` }),
            disabled: true,
            component: InputNumber
          };
@@ -147,6 +152,7 @@ const handlerCreators: HandleCreators<PurchaseSettlementDetailFormProps, OwnHand
       case 'advance':
         fieldProps = {
           type: 'number',
+          placeholder: intl.formatMessage({ id: `purchase.field.${name}.placeholder` }),
           disabled: true,
           component: InputNumber
         };
@@ -155,6 +161,7 @@ const handlerCreators: HandleCreators<PurchaseSettlementDetailFormProps, OwnHand
       case 'balanceDue':
         fieldProps = {
           type: 'number',
+          placeholder: intl.formatMessage({ id: `purchase.field.${name}.placeholder` }),
           disabled: true,
           component: InputNumber
         };

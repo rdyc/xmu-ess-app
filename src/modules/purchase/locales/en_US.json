@@ -39,6 +39,12 @@
   "purchase.dialog.settleTitle": "Settle Confirmation",
   "purchase.dialog.settleDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
  
+  "purchase.dialog.approvalTitle": "Approve {uid}?",
+  "purchase.dialog.approvalContent": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+ 
+  "purchase.dialog.rejectTitle": "Reject {uid}?",
+  "purchase.dialog.rejectContent": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+ 
   "purchase.field.information.uid": "Purchase ID",
   "purchase.field.information.uid.placeholder": "Purchase ID",
   "purchase.field.information.projectUid": "Project Name",
@@ -73,13 +79,13 @@
   "purchase.field.information.request": "Request Value",
   "purchase.field.information.request.required": "Purchase Request value is required",
   "purchase.field.information.request.placeholder": "Type a purchase value",
-  "purchase.field.information.requestIDR": "Request Value (IDR)",
+  "purchase.field.information.requestInIDR": "Request Value (IDR)",
   "purchase.field.information.actual": " Actual Value",
   "purchase.field.information.actual.required": "Purchase Request value is required",
   "purchase.field.information.actual.placeholder": "Type a purchase value",
-  "purchase.field.information.actualIDR": "Actual Value (IDR)",
+  "purchase.field.information.actualInIDR": "Actual Value (IDR)",
   "purchase.field.information.difference": " Difference",
-  "purchase.field.information.differenceIDR": "Difference Value (IDR)",
+  "purchase.field.information.differenceInIDR": "Difference Value (IDR)",
   
   "purchase.action.modify": "Modify",
   "purchase.action.settle": "Settle",
@@ -96,7 +102,7 @@
   "purchase.message.approval.reject.success": "Purchase ID {uid} has been rejected",
   "purchase.form.purchaseRequest.editTitle": "Edit Request",
   "purchase.form.purchaseRequest.newTitle": "Create New Request",
-  "purchase.form.purchaseSettlement.editTitle": "Edit Settlemet",
+  "purchase.form.purchaseSettlement.editTitle": "Edit Settlement",
   "purchase.form.purchaseSettlement.newTitle": "Make Settlement",
   
   "purchase.form.approval.newTitle": "Purchase Approval Form",
@@ -109,5 +115,5 @@
   "purchase.form.purchaseSettlement.editSubTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
   "purchase.form.s_approval.newTitle": "Settlement Approval Form",
   "purchase.form.s_approval.newSubTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-  "purchase.list.readySettle": "Ready to Settle!"
+  "purchase.list.readySettle": "READY TO SETTLE"
 }

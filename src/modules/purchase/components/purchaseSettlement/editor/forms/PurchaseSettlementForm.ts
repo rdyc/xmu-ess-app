@@ -28,6 +28,9 @@ export type PurchaseSettlementFormData = {
     request: number;
     actual: number;
     difference: number; 
+    requestInIDR: number;
+    actualInIDR: number;
+    differenceInIDR: number; 
     balanceDue: number;
   },
   items:  {

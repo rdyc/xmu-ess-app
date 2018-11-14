@@ -30,12 +30,14 @@ const settlementInformation: React.SFC<AllProps> = props => {
         subheader={< FormattedMessage id= "purchasesettlement.infoSubTitle" />}
         />
         <CardContent >
+          { data.statusType ?
           <TextField
-          { ...styled }
-          margin = "dense"
-          label = {< FormattedMessage id = "purchase.field.information.status" />}
-          value = { data.status ? data.status.value : data.statusType }
+            {...styled}
+            margin="dense"
+            label={< FormattedMessage id="purchase.field.information.status" />}
+            value={data.status ? data.status.value : ''}
           />
+            : < FormattedMessage id="purchase.list.readySettle" /> }
           <TextField
           { ...styled }
           margin = "dense"
@@ -66,6 +68,7 @@ const settlementInformation: React.SFC<AllProps> = props => {
           label = { < FormattedMessage id = "purchase.field.information.notes" />  }
           value = { data.notes || 'N/A' }
           />
+          { data.date ?
           <TextField
           { ...styled }
           margin = "dense"
@@ -78,6 +81,7 @@ const settlementInformation: React.SFC<AllProps> = props => {
             })
           }
           />
+          : ''}
           <TextField
           { ...styled }
           margin = "dense"

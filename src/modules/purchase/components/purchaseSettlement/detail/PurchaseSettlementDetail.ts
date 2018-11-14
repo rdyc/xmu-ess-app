@@ -138,12 +138,18 @@ const handlerCreators: HandleCreators<PurchaseSettlementDetailProps, Handler> = 
     stateReset();
   },
   handleDialogConfirmed: (props: PurchaseSettlementDetailProps) => () => {
-    const { match, history, stateReset } = props;
+    const { 
+      match, 
+      history, stateReset } = props;
+    const { response } = props.purchaseSettlementState.detail;
+
     const purchaseUid = match.params.purchaseUid;
+    // const purchaseUid = response && response.data.uid;
+    const status = response && response.data.statusType;
 
     stateReset();
 
-    history.push('/purchase/settlements/form/', { purchaseUid });
+    history.push('/purchase/settlements/form/', { uid: purchaseUid, statusType: status });
     
   },
 };
