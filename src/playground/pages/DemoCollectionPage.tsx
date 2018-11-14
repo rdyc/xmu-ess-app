@@ -6,7 +6,7 @@ import {
   CollectionPageProps,
 } from '@layout/components/pages';
 import { WithUser, withUser } from '@layout/hoc/withUser';
-import { IAppBarMenu } from '@layout/interfaces';
+import { IAppBarMenu, IListBarField } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
 import { IProject } from '@project/classes/response';
 import { ProjectRegistrationField, ProjectUserAction } from '@project/classes/types';
@@ -15,7 +15,7 @@ import { WithProjectRegistration, withProjectRegistration } from '@project/hoc/w
 import * as React from 'react';
 import { compose } from 'recompose';
 
-const projectFields = Object.keys(ProjectRegistrationField).map(key => ({ 
+const projectFields: IListBarField[] = Object.keys(ProjectRegistrationField).map(key => ({ 
   id: key, 
   name: ProjectRegistrationField[key] 
 }));
@@ -26,7 +26,7 @@ const menuOptions = (props: CollectionPageProps): IAppBarMenu[] => ([
     name: props.intl.formatMessage(layoutMessage.action.refresh),
     enabled: true,
     visible: true,
-    onClick: () => props.setForceReload()
+    onClick: () => props.setForceReload(true)
   },
   {
     id: ProjectUserAction.Create,
@@ -38,7 +38,7 @@ const menuOptions = (props: CollectionPageProps): IAppBarMenu[] => ([
 ]);
 
 const config: CollectionConfig<IProject, AllProps> = {
-  // page
+  // page info
   uid: '123',
   parentUid: '012',
   title: 'Collection Page',
@@ -120,8 +120,8 @@ const config: CollectionConfig<IProject, AllProps> = {
   },
   onBind: (item: IProject, index: number) => ({
     key: index,
-    primary: item.uid,
-    secondary: item.name
+    primary: item.name,
+    secondary: `${item.uid} ${item.project && item.project.value} ${item.customer && item.customer.name}`
   })
 };
 

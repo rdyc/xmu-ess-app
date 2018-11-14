@@ -1,5 +1,12 @@
+import {
+  ExpansionPanel,
+  ExpansionPanelDetails,
+  ExpansionPanelSummary,
+  ListItemSecondaryAction,
+  ListItemText,
+} from '@material-ui/core';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import * as React from 'react';
-import { Link } from 'react-router-dom';
 
 import { CollectionPageProps } from './CollectionPage';
 
@@ -29,26 +36,56 @@ export const CollectionPageView: React.SFC<CollectionPageProps> = props => (
         const bind = props.config.onBind(item, index);
 
         return (
-          <div key={bind.key}>
-            { 
-              props.config.hasSelection &&
-              <input 
-                type="checkbox" 
-                value={item.uid}
-                checked={props.selected.indexOf(item.uid) !== -1}
-                onChange={props.handleOnChangeSelection}
-              /> 
-            }
-            
-            <span>{bind.primary} {bind.secondary}</span>
+          <ExpansionPanel key={bind.key}>
+            <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+              <ListItemText 
+                primary={bind.primary}
+                secondary={bind.secondary}
+                primaryTypographyProps={{
+                  noWrap: true,
+                  variant: 'body1'
+                }}
+                secondaryTypographyProps={{
+                  noWrap: true,
+                  variant: 'caption'
+                }}
+              />
+              <ListItemSecondaryAction>
+                <ListItemText 
+                  primary="status"
+                  secondary="date"
+                />
+              </ListItemSecondaryAction>
+            </ExpansionPanelSummary>
+            <ExpansionPanelDetails
+              style={{
+                backgroundColor: props.theme.palette.background.default
+              }}
+            >
+              <pre>{JSON.stringify(item, null, 2)}</pre>
+            </ExpansionPanelDetails>
+          </ExpansionPanel>
 
-            {
-              props.config.hasRedirection &&
-              <Link to={props.config.onRedirect(item)}>
-                View
-              </Link>
-            }
-          </div>
+          // <div key={bind.key}>
+          //   { 
+          //     props.config.hasSelection &&
+          //     <input 
+          //       type="checkbox" 
+          //       value={item.uid}
+          //       checked={props.selected.indexOf(item.uid) !== -1}
+          //       onChange={props.handleOnChangeSelection}
+          //     /> 
+          //   }
+            
+          //   <span>{bind.primary} {bind.secondary}</span>
+
+          //   {
+          //     props.config.hasRedirection &&
+          //     <Link to={props.config.onRedirect(item)}>
+          //       View
+          //     </Link>
+          //   }
+          // </div>
         );
       })
     } 

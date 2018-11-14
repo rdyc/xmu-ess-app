@@ -41,7 +41,7 @@ export const TopBarView: React.SFC<TopBarProps> = props => (
     {
       props.mode === 'normal' &&
       props.appBarState.selection.length === 0 &&
-      <Toolbar disableGutters>
+      <Toolbar>
         {
           /* menu */
           !props.layoutState.isNavBackVisible &&
@@ -139,7 +139,7 @@ export const TopBarView: React.SFC<TopBarProps> = props => (
         timeout={300}
       >
         <div>
-          <Toolbar  disableGutters>
+          <Toolbar >
             <IconButton
               aria-label="close search"
               onClick={() => props.handleOnDiscardSearch()}
@@ -241,7 +241,7 @@ export const TopBarView: React.SFC<TopBarProps> = props => (
         in={true} 
         timeout={300}
       >
-        <Toolbar disableGutters>
+        <Toolbar>
           <IconButton
             aria-label="close selection"
             onClick={() => props.handleOnDiscardSelection()}

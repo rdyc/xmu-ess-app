@@ -3,6 +3,7 @@ import { IBaseFilter, IBasePagingFilter, IResponseCollection } from '@generic/in
 import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { IAppBarMenu, IListBarField } from '@layout/interfaces';
+import { WithTheme, withTheme } from '@material-ui/core';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import {
   compose,
@@ -93,6 +94,7 @@ export type CollectionPageProps
   & OwnState
   & OwnStateUpdater
   & OwnHandler
+  & WithTheme
   & WithLayout
   & WithAppBar
   & InjectedIntlProps;
@@ -107,7 +109,8 @@ const createProps: mapper<OwnOption, OwnState> = (props: OwnOption): OwnState =>
 });
 
 const stateUpdaters: StateUpdaters<OwnOption, OwnState, OwnStateUpdater> = {
-  setForceReload: (prev: OwnState) => (): Partial<OwnState> => ({
+  setForceReload: (prev: OwnState) => (toFirst?: boolean): Partial<OwnState> => ({
+    page: toFirst ? 1 : prev.page,
     forceReload: true
   }),
   setLoading: (prev: OwnState) => (isLoading: boolean): Partial<OwnState> => ({
@@ -143,6 +146,7 @@ const stateUpdaters: StateUpdaters<OwnOption, OwnState, OwnStateUpdater> = {
   setSearchResult: (prevState: OwnState) => (find: string, field: IListBarField | undefined) => ({
     find,
     findBy: field ? field.id : undefined,
+    page: 1,
     forceReload: true
   }),
   setPageNext: (prevState: OwnState) => () => ({
@@ -274,6 +278,7 @@ const lifecycles: ReactLifeCycleFunctions<CollectionPageProps, OwnState> = {
 
 export const CollectionPage = compose<CollectionPageProps, OwnOption>(
   setDisplayName('CollectionPage'),
+  withTheme(),
   withLayout,
   withAppBar,
   injectIntl,
