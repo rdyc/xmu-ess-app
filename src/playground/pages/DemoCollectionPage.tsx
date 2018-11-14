@@ -47,7 +47,12 @@ const config: CollectionConfig<IProject, AllProps> = {
   // top bar
   fields: projectFields,
   fieldTranslator: projectRegistrationFieldTranslator,
+
+  // selection
   hasSelection: true,
+  selectionProcessing: (values: string[]) => {
+    alert(values.toString());
+  },
 
   // searching
   hasSearching: true,

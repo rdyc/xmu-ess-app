@@ -2,7 +2,7 @@ import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithNotification, withNotification } from '@layout/hoc/withNotification';
 import { IAppBarMenu, IListBarField } from '@layout/interfaces';
-import { WithStyles, withStyles, WithTheme, withTheme } from '@material-ui/core';
+import { PropTypes, WithStyles, withStyles, WithTheme, withTheme } from '@material-ui/core';
 import { WithWidth } from '@material-ui/core/withWidth';
 import styles from '@styles';
 import { RouteComponentProps, withRouter } from 'react-router';
@@ -50,7 +50,10 @@ interface OwnHandler {
   handleOnDiscardSearch: () => void;
   handleOnClearSearch: () => void;
   handleOnKeyUpSearch: (event: React.KeyboardEvent<HTMLTextAreaElement | HTMLInputElement>) => void;
+  handleOnDiscardSelection: () => void;
   handleOnClickField: (field?: IListBarField | undefined) => void;
+  handleOnClickProcess: () => void;
+  getClassColor: () => PropTypes.Color;
   getClassNames: () => string[];
   getCountNotif: () => number;
 }
@@ -120,7 +123,7 @@ const handlerCreators: HandleCreators<TopBarProps, OwnHandler> = {
     props.setField(undefined);
     props.setSearch('');
     props.setMode('normal');
-    props.appBarState.onSearch();
+    props.appBarState.onSearching();
   },
   handleOnClearSearch: (props: TopBarProps) => () => {
     props.setFieldVisibility();
@@ -133,13 +136,40 @@ const handlerCreators: HandleCreators<TopBarProps, OwnHandler> = {
         props.setFieldVisibility();
       }
 
-      props.appBarState.onSearch(props.search, props.field);
+      props.appBarState.onSearching(props.search, props.field);
     }
+  },
+  handleOnDiscardSelection: (props: TopBarProps) => () => {
+    props.appBarDispatch.selectionClear();
+
+    props.appBarState.onSelectionClear();
   },
   handleOnClickField: (props: TopBarProps) => (field: IListBarField) => {
     props.setField(field);
     props.setFieldVisibility();
-    props.appBarState.onSearch(props.search, field);
+    props.appBarState.onSearching(props.search, field);
+  },
+  handleOnClickProcess: (props: TopBarProps) => () => {
+    props.appBarState.onSelectionProcess(props.appBarState.selection);
+
+    // clear selection on redux states
+    props.appBarDispatch.selectionClear();
+
+    // call selection clear callback
+    props.appBarState.onSelectionClear();
+  },
+  getClassColor: (props: TopBarProps) => (): PropTypes.Color => {
+    let result: PropTypes.Color = 'default';
+
+    if (props.layoutState.theme.palette.type !== 'dark') {
+     if (props.mode === 'search' || props.appBarState.selection.length > 0) {
+        result = 'inherit';
+      } else {
+        result = 'primary';
+      }
+    }
+
+    return result;
   },
   getClassNames: (props: TopBarProps) => (): string[] => {
     const { classes } = props;
@@ -176,7 +206,7 @@ const lifeCycles: ReactLifeCycleFunctions<TopBarProps, OwnState> = {
         // search mode checking
         if (this.props.layoutState.isModeSearch) {
           this.props.setMode('search');
-        } else {
+        } else { 
           // when search has value, then turn back it into search mode
           if (this.props.layoutState.view.isSearchable && this.props.search !== '') {
             this.props.setMode('search');

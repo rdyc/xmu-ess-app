@@ -13,6 +13,17 @@ export const CollectionPageView: React.SFC<CollectionPageProps> = props => (
     {
       !props.isLoading &&
       props.response &&
+      props.response.metadata &&
+      props.response.metadata.paginate &&
+      props.response.metadata.paginate.previous &&
+      <button onClick={() => props.setPagePrevious()}>
+        ({props.response.metadata.paginate.current - 1}) Pervious
+      </button>
+    }
+
+    {
+      !props.isLoading &&
+      props.response &&
       props.response.data &&
       props.response.data.map((item, index) => {
         const bind = props.config.onBind(item, index);
@@ -43,25 +54,14 @@ export const CollectionPageView: React.SFC<CollectionPageProps> = props => (
     } 
 
     {
-      props.selected.length > 0 &&
-      <div>
-        <hr/>
-        <span>With {props.selected.length} selection(s) </span>
-        <Link
-          to={{
-            search: '',
-            hash: '',
-            pathname: '/some/url',
-            state: { items: props.selected }
-          }}
-        >
-          Process
-        </Link>
-      </div>
+      !props.isLoading &&
+      props.response &&
+      props.response.metadata &&
+      props.response.metadata.paginate &&
+      props.response.metadata.paginate.next &&
+      <button onClick={() => props.setPageNext()}>
+        ({props.response.metadata.paginate.total - props.response.metadata.paginate.current}) More
+      </button>
     }
-
-    <hr/>
-    <h4>Selected</h4>
-    <pre>{JSON.stringify(props.selected, null, 2)}</pre>
   </div>
 );

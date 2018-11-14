@@ -10,7 +10,10 @@ export interface IAppBarMenu {
 
 export interface IAppBarState {
   onClickMenu: (menu: IAppBarMenu) => void;
-  onSearch: (find?: string | undefined, field?: IListBarField | undefined) => void;
+  onSearching: (find?: string | undefined, field?: IListBarField | undefined) => void;
+  onSelectionClear: () => void;
+  onSelectionProcess: (values: string[]) => void;
   menus: IAppBarMenu[] | undefined;
   fields: IListBarField[] | undefined;
+  selection: string[];
 }

@@ -1,6 +1,7 @@
 import {
   AppBar,
   Badge,
+  Button,
   Divider,
   IconButton,
   Input,
@@ -26,6 +27,7 @@ import NotificationImportant from '@material-ui/icons/NotificationImportant';
 import SearchIcon from '@material-ui/icons/Search';
 import * as classNames from 'classnames';
 import * as React from 'react';
+import { FormattedMessage } from 'react-intl';
 
 import { TopBarProps } from './TopBar';
 
@@ -33,12 +35,13 @@ export const TopBarView: React.SFC<TopBarProps> = props => (
   <AppBar 
     elevation={isWidthUp('md', props.width) ? 2 : 1}
     position="fixed"
-    color={props.mode === 'search' ? 'inherit' : props.layoutState.theme.palette.type === 'dark' ? 'default' : 'primary'}
+    color={props.getClassColor()}
     className={classNames(props.getClassNames())}
   >
     {
-      props.mode !== 'search' ?
-      <Toolbar>
+      props.mode === 'normal' &&
+      props.appBarState.selection.length === 0 &&
+      <Toolbar disableGutters>
         {
           /* menu */
           !props.layoutState.isNavBackVisible &&
@@ -123,7 +126,11 @@ export const TopBarView: React.SFC<TopBarProps> = props => (
           </IconButton>
         }
       </Toolbar>
-      :
+    }
+
+    {
+      props.mode === 'search' &&
+      props.appBarState.selection.length === 0 &&
       <Slide 
         mountOnEnter 
         unmountOnExit
@@ -132,7 +139,7 @@ export const TopBarView: React.SFC<TopBarProps> = props => (
         timeout={300}
       >
         <div>
-          <Toolbar >
+          <Toolbar  disableGutters>
             <IconButton
               aria-label="close search"
               onClick={() => props.handleOnDiscardSearch()}
@@ -222,6 +229,43 @@ export const TopBarView: React.SFC<TopBarProps> = props => (
           }
           
         </div>
+      </Slide>
+    }
+
+    {
+      props.appBarState.selection.length > 0 &&
+      <Slide 
+        mountOnEnter 
+        unmountOnExit
+        direction="down" 
+        in={true} 
+        timeout={300}
+      >
+        <Toolbar disableGutters>
+          <IconButton
+            aria-label="close selection"
+            onClick={() => props.handleOnDiscardSelection()}
+          >
+            <ArrowBackIcon />
+          </IconButton>
+
+          <Typography 
+            noWrap 
+            variant="body1" 
+            color="inherit" 
+            className={props.classes.flex}
+          >
+            <FormattedMessage id="layout.label.selection" values={{count: props.appBarState.selection.length}} />
+          </Typography>
+
+          <Button 
+            size="small" 
+            color="secondary"
+            onClick={() => props.handleOnClickProcess()}
+          >
+            <FormattedMessage id="layout.action.process" />
+          </Button>
+        </Toolbar>
       </Slide>
     }
 

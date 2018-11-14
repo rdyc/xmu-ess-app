@@ -18,6 +18,7 @@
   "layout.action.aggree": "Aggree",
   "layout.action.disaggree": "Disaggree",
   "layout.action.continue": "Continue",
+  "layout.action.process": "Process",
   "layout.action.create": "Create",
   "layout.action.save": "Save",
   "layout.action.cancel": "Cancel",
@@ -36,6 +37,7 @@
 
   "layout.label.login": "Login",
   "layout.label.logout": "Logout",
+  "layout.label.selection": "With {count} selection",
   
   "layout.profile.my.title": "Profile",
   "layout.access.title": "Access",

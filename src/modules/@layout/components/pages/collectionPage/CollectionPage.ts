@@ -32,6 +32,7 @@ export interface CollectionConfig<Tres, Tconn> {
   hasSearching?: boolean | false;
   searchStatus?: (states: Tconn) => boolean;
   hasSelection?: boolean | false;
+  selectionProcessing?: (values: string[]) => void;
   hasRedirection?: boolean | false;
   filter?: IBasePagingFilter | IBaseFilter;
   onDataLoad: (states: Tconn, callback: CollectionHandler, params: CollectionDataProps, forceReload?: boolean | false) => void;
@@ -58,8 +59,8 @@ interface OwnState {
   findBy?: string;
   orderBy?: string;
   direction?: 'ascending' | 'descending' | string | undefined;
-  page?: number | 1;
-  size?: number | 10;
+  page: number;
+  size: number;
 }
 
 interface OwnStateUpdater extends StateHandlerMap<OwnState> {
@@ -67,8 +68,15 @@ interface OwnStateUpdater extends StateHandlerMap<OwnState> {
   setLoading: StateHandler<OwnState>;
   setSource: StateHandler<OwnState>;
   setSelection: StateHandler<OwnState>;
+  setSelectionClear: StateHandler<OwnState>;
   setSearchDefault: StateHandler<OwnState>;
   setSearchResult: StateHandler<OwnState>;
+  setPageNext: StateHandler<OwnState>;
+  setPagePrevious: StateHandler<OwnState>;
+  setPageOne: StateHandler<OwnState>;
+  setOrdering: StateHandler<OwnState>;
+  setSorting: StateHandler<OwnState>;
+  setSizing: StateHandler<OwnState>;
 }
 
 interface OwnHandler {
@@ -78,7 +86,7 @@ interface OwnHandler {
 }
 
 export type CollectionHandler = Pick<CollectionPageProps, 'setLoading' | 'handleResponse'>;
-export type CollectionDataProps = Pick<CollectionPageProps, 'find' | 'findBy' | 'orderBy' | 'direction' | 'page' | 'size' >;
+export type CollectionDataProps = Pick<CollectionPageProps, 'find' | 'findBy' | 'orderBy' | 'direction' | 'page' | 'size'>;
 
 export type CollectionPageProps
   = OwnOption
@@ -93,6 +101,8 @@ const createProps: mapper<OwnOption, OwnState> = (props: OwnOption): OwnState =>
   forceReload: false,
   isLoading: false,
   selected: [],
+  page: 1,
+  size: 10,
   ...props.config.filter
 });
 
@@ -121,6 +131,9 @@ const stateUpdaters: StateUpdaters<OwnOption, OwnState, OwnStateUpdater> = {
       selected: result
     };
   },
+  setSelectionClear: (prev: OwnState) => (): Partial<OwnState> => ({
+    selected: []
+  }),
   setSearchDefault: (prevState: OwnState) => (find: string, field: IListBarField | undefined) => ({
     find: undefined,
     findBy: undefined,
@@ -132,6 +145,33 @@ const stateUpdaters: StateUpdaters<OwnOption, OwnState, OwnStateUpdater> = {
     findBy: field ? field.id : undefined,
     forceReload: true
   }),
+  setPageNext: (prevState: OwnState) => () => ({
+    page: prevState.page + 1,
+    forceReload: true
+  }),
+  setPagePrevious: (prevState: OwnState) => () => ({
+    page: prevState.page - 1,
+    forceReload: true
+  }),
+  setPageOne: (prevState: OwnState) => () => ({
+    page: 1,
+    forceReload: true
+  }),
+  setOrdering: (prevState: OwnState) => (field: IListBarField) => ({
+    orderBy: field.id,
+    page: 1,
+    forceReload: true
+  }),
+  setSorting: (prevState: OwnState) => (direction: string) => ({
+    direction,
+    page: 1,
+    forceReload: true
+  }),
+  setSizing: (prevState: OwnState) => (size: number) => ({
+    size,
+    page: 1,
+    forceReload: true
+  }),
 };
 
 const handlerCreators: HandleCreators<CollectionPageProps, OwnHandler> = {
@@ -140,6 +180,8 @@ const handlerCreators: HandleCreators<CollectionPageProps, OwnHandler> = {
   },
   handleOnChangeSelection: (props: CollectionPageProps) => (event: React.ChangeEvent<HTMLInputElement>) => {
     props.setSelection(event.currentTarget.value);
+
+    props.appBarDispatch.selectionAddRemove(event.currentTarget.value);
   },
   handleOnSearch: (props: CollectionPageProps) => (find: string | undefined, field: IListBarField | undefined) => {
     // when find is undefided, that means user has close or exit from search mode
@@ -180,9 +222,20 @@ const lifecycles: ReactLifeCycleFunctions<CollectionPageProps, OwnState> = {
       }
     });
 
-    // assign search
+    // assign search callback
     if (this.props.config.hasSearching) {
       this.props.appBarDispatch.assignSearchCallback(this.props.handleOnSearch);
+    }
+
+    // assign selection callback
+    if (this.props.config.hasSelection) {
+      this.props.appBarDispatch.assignSelectionClearCallback(this.props.setSelectionClear);
+
+      // when processing was set
+      if (this.props.config.selectionProcessing) {
+        // call config processing callback
+        this.props.appBarDispatch.assignSelectionProcessCallback(this.props.config.selectionProcessing);
+      }
     }
     
     // assign fields
