@@ -7,7 +7,7 @@ import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IListBarField } from '@layout/interfaces';
 import { ProjectRegistrationField } from '@project/classes/types';
 import { ProjectRegistrationListView } from '@project/components/registration/list/ProjectRegistrationListView';
-import { findFieldTranslator } from '@project/helper';
+import { projectRegistrationFieldTranslator } from '@project/helper';
 import { WithProjectRegistration, withProjectRegistration } from '@project/hoc/withProjectRegistration';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
@@ -89,7 +89,7 @@ const createProps: mapper<ProjectRegisterListProps, OwnState> = (props: ProjectR
 
 const stateUpdaters: StateUpdaters<OwnOptions, OwnState, OwnStateUpdaters> = {
   setSearch: (prevState: OwnState) => (find: string, field: IListBarField | undefined) => ({
-    find: field ? findFieldTranslator(find, field) : find,
+    find: field ? projectRegistrationFieldTranslator(find, field) : find,
     findBy: field ? field.id : undefined,
     page: 1
   }),

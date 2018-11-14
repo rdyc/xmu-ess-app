@@ -5,10 +5,6 @@ import { CollectionPageProps } from './CollectionPage';
 
 export const CollectionPageView: React.SFC<CollectionPageProps> = props => (
   <div>
-    <h3>{props.config.title}</h3>
-    <h4>{props.config.description}</h4>
-
-    <hr/>
     {
       props.isLoading &&
       <div>Loading...</div>
@@ -24,12 +20,12 @@ export const CollectionPageView: React.SFC<CollectionPageProps> = props => (
         return (
           <div key={bind.key}>
             { 
-              props.config.allowSelect &&
+              props.config.hasSelection &&
               <input 
                 type="checkbox" 
                 value={item.uid}
                 checked={props.selected.indexOf(item.uid) !== -1}
-                onChange={props.handleOnChangeItem}
+                onChange={props.handleOnChangeSelection}
               /> 
             }
             

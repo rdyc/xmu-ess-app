@@ -1,5 +1,6 @@
+import { Layout } from '@layout/components/base';
 import * as React from 'react';
-import { Route, RouteComponentProps, Switch } from 'react-router';
+import { Route, RouteComponentProps } from 'react-router';
 
 import { DemoCollectionPage } from './pages/DemoCollectionPage';
 import { Enhancer } from './recompose/Enhancer';
@@ -12,9 +13,10 @@ const enhancer = () => <Enhancer initialCount={0} />;
 const demoCollection = () => <DemoCollectionPage/>;
 
 export const playgroundRouter: React.SFC<AllProps> = props => (
-  <Switch>
+  <Layout>
+    <Route path={`${props.match.path}/pages/demo/collection/:id`} component={complex} />
     <Route path={`${props.match.path}/pages/demo/collection`} component={demoCollection} />
     <Route path={`${props.match.path}/redux/form/complex`} component={complex} />
     <Route path={`${props.match.path}/recompose/enhancer`} component={enhancer} />
-  </Switch>
+  </Layout>
 );

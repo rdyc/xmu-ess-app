@@ -1,8 +1,9 @@
 import AppMenu from '@constants/AppMenu';
-import { IResponseCollection } from '@generic/interfaces';
+import { IBaseFilter, IBasePagingFilter, IResponseCollection } from '@generic/interfaces';
+import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
-import { WithPage, withPage } from '@layout/hoc/withPage';
-import { IListBarField } from '@layout/interfaces';
+import { IAppBarMenu, IListBarField } from '@layout/interfaces';
+import { InjectedIntlProps, injectIntl } from 'react-intl';
 import {
   compose,
   HandleCreators,
@@ -25,11 +26,16 @@ export interface CollectionConfig<Tres, Tconn> {
   title: string;
   description: string;
   fields?: IListBarField[] | undefined;
-  allowSearch?: boolean | false;
-  allowSelect?: boolean | false;
+  fieldTranslator?: (find: string, field: IListBarField) => string;
+  hasMore?: boolean | false;
+  moreOptions?: (props: CollectionPageProps) => IAppBarMenu[];
+  hasSearching?: boolean | false;
+  searchStatus?: (states: Tconn) => boolean;
+  hasSelection?: boolean | false;
   hasRedirection?: boolean | false;
-  onLoad: (states: Tconn, callback: CollectionCallback) => void;
-  onUpdated: (states: Tconn, callback: CollectionCallback) => void;
+  filter?: IBasePagingFilter | IBaseFilter;
+  onDataLoad: (states: Tconn, callback: CollectionHandler, params: CollectionDataProps, forceReload?: boolean | false) => void;
+  onUpdated: (states: Tconn, callback: CollectionHandler) => void;
   onBind: (item: Tres, index: number) => {
     key: any;
     primary: string;
@@ -40,27 +46,39 @@ export interface CollectionConfig<Tres, Tconn> {
 
 interface OwnOption {
   config: CollectionConfig<any, any>;
-  innerProps: any;
+  connectedProps: any;
 }
 
 interface OwnState {
+  forceReload: boolean;
   isLoading: boolean;
-  response: IResponseCollection<any> | undefined;
+  response?: IResponseCollection<any> | undefined;
   selected: string[];
+  find?: string;
+  findBy?: string;
+  orderBy?: string;
+  direction?: 'ascending' | 'descending' | string | undefined;
+  page?: number | 1;
+  size?: number | 10;
 }
 
 interface OwnStateUpdater extends StateHandlerMap<OwnState> {
+  setForceReload: StateHandler<OwnState>;
   setLoading: StateHandler<OwnState>;
   setSource: StateHandler<OwnState>;
-  setSelected: StateHandler<OwnState>;
+  setSelection: StateHandler<OwnState>;
+  setSearchDefault: StateHandler<OwnState>;
+  setSearchResult: StateHandler<OwnState>;
 }
 
 interface OwnHandler {
   handleResponse: (response: IResponseCollection<any> | undefined) => void;
-  handleOnChangeItem: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  handleOnChangeSelection: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  handleOnSearch: (find: string | undefined, field: IListBarField | undefined) => void;
 }
 
-export type CollectionCallback = Pick<CollectionPageProps, 'setLoading' | 'handleResponse'>;
+export type CollectionHandler = Pick<CollectionPageProps, 'setLoading' | 'handleResponse'>;
+export type CollectionDataProps = Pick<CollectionPageProps, 'find' | 'findBy' | 'orderBy' | 'direction' | 'page' | 'size' >;
 
 export type CollectionPageProps
   = OwnOption
@@ -68,22 +86,28 @@ export type CollectionPageProps
   & OwnStateUpdater
   & OwnHandler
   & WithLayout
-  & WithPage;
+  & WithAppBar
+  & InjectedIntlProps;
 
 const createProps: mapper<OwnOption, OwnState> = (props: OwnOption): OwnState => ({
+  forceReload: false,
   isLoading: false,
-  response: undefined,
-  selected: []
+  selected: [],
+  ...props.config.filter
 });
 
 const stateUpdaters: StateUpdaters<OwnOption, OwnState, OwnStateUpdater> = {
+  setForceReload: (prev: OwnState) => (): Partial<OwnState> => ({
+    forceReload: true
+  }),
   setLoading: (prev: OwnState) => (isLoading: boolean): Partial<OwnState> => ({
     isLoading
   }),
   setSource: (prev: OwnState) => (response: IResponseCollection<any> | undefined): Partial<OwnState> => ({
-    response
+    response,
+    forceReload: false
   }),
-  setSelected: (prev: OwnState) => (uid: string): Partial<OwnState> => {
+  setSelection: (prev: OwnState) => (uid: string): Partial<OwnState> => {
     const index = prev.selected.indexOf(uid);
     const result: string[] = prev.selected;
 
@@ -96,23 +120,51 @@ const stateUpdaters: StateUpdaters<OwnOption, OwnState, OwnStateUpdater> = {
     return {
       selected: result
     };
-  }
+  },
+  setSearchDefault: (prevState: OwnState) => (find: string, field: IListBarField | undefined) => ({
+    find: undefined,
+    findBy: undefined,
+    page: 1,
+    forceReload: true
+  }),
+  setSearchResult: (prevState: OwnState) => (find: string, field: IListBarField | undefined) => ({
+    find,
+    findBy: field ? field.id : undefined,
+    forceReload: true
+  }),
 };
 
 const handlerCreators: HandleCreators<CollectionPageProps, OwnHandler> = {
   handleResponse: (props: CollectionPageProps) => (response: IResponseCollection<any> | undefined) => {
     props.setSource(response);
   },
-  handleOnChangeItem: (props: CollectionPageProps) => (event: React.ChangeEvent<HTMLInputElement>) => {
-    props.setSelected(event.currentTarget.value);
-  }
+  handleOnChangeSelection: (props: CollectionPageProps) => (event: React.ChangeEvent<HTMLInputElement>) => {
+    props.setSelection(event.currentTarget.value);
+  },
+  handleOnSearch: (props: CollectionPageProps) => (find: string | undefined, field: IListBarField | undefined) => {
+    // when find is undefided, that means user has close or exit from search mode
+    if (find) {
+      let _find: string = find.trim();
+
+      // execute translator when field has value and fieldTranslator was set in config
+      if (field && props.config.fieldTranslator) {
+        _find = props.config.fieldTranslator(find, field);
+      }
+
+      // set search state props for searching
+      props.setSearchResult(_find, field);
+    } else {
+      // set search state props to default
+      props.setSearchDefault();
+    }
+  },
 };
 
 const lifecycles: ReactLifeCycleFunctions<CollectionPageProps, OwnState> = {
-  componentWillMount() {
-    // console.log('component will mount');
-  },
   componentDidMount() {
+    // track last searching status
+    const isSearching: boolean = this.props.config.searchStatus ? this.props.config.searchStatus(this.props.connectedProps) : false;
+
     // configure view
     this.props.layoutDispatch.setupView({
       view: {
@@ -122,39 +174,56 @@ const lifecycles: ReactLifeCycleFunctions<CollectionPageProps, OwnState> = {
         subTitle: this.props.config.description,
       },
       status: {
-        isSearchVisible: true,
-        isModeList: true
+        isSearchVisible: this.props.config.hasSearching,
+        isMoreVisible: this.props.config.hasMore,
+        isModeSearch: this.props.config.hasSearching && isSearching
       }
     });
 
-    // store current page
-    this.props.pageChange({
-      uid: this.props.config.uid,
-      isSearching: false
-    });
+    // assign search
+    if (this.props.config.hasSearching) {
+      this.props.appBarDispatch.assignSearchCallback(this.props.handleOnSearch);
+    }
+    
+    // assign fields
+    if (this.props.config.fields) {
+      this.props.appBarDispatch.assignFields(this.props.config.fields);
+    }
 
-    this.props.config.onLoad(this.props.innerProps, this.props);
-  },
-  componentWillReceiveProps(nextProps: CollectionPageProps) {
-    // console.log('component will receive props');
-  },
-  componentWillUpdate(nextProps: CollectionPageProps, nextState: OwnState) {
-    // console.log('component will update');
+    // assign more menu items
+    if (this.props.config.hasMore && this.props.config.moreOptions) {
+      const menuOptions = this.props.config.moreOptions(this.props);
+
+      this.props.appBarDispatch.assignMenus(menuOptions);
+    }
+
+    // loading data event from config
+    this.props.config.onDataLoad(this.props.connectedProps, this.props, this.props);
   },
   componentDidUpdate(prevProps: CollectionPageProps, prevState: OwnState) {
-    if (this.props.innerProps !== prevProps.innerProps) {
-      this.props.config.onUpdated(this.props.innerProps, this.props);
+    // track force reload changes
+    if (this.props.forceReload !== prevProps.forceReload) {
+      if (this.props.forceReload) {
+        this.props.config.onDataLoad(this.props.connectedProps, this.props, this.props, true);
+      }
+    }
+
+    // track inner props changes
+    if (this.props.connectedProps !== prevProps.connectedProps) {  
+      this.props.config.onUpdated(this.props.connectedProps, this.props);
     }
   },
   componentWillUnmount() {
-    // console.log('component will unmount');
+    // reset top bar back to default 
+    this.props.appBarDispatch.dispose();
   }
 };
 
 export const CollectionPage = compose<CollectionPageProps, OwnOption>(
   setDisplayName('CollectionPage'),
   withLayout,
-  withPage,
+  withAppBar,
+  injectIntl,
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
   lifecycle(lifecycles)

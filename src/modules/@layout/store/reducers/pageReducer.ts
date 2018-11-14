@@ -6,9 +6,13 @@ const initialState: IPageState = {
   pages: []
 };
 
-const pageAdd = (pages: IPage[], page: any) => {
-  if (pages.length >= 0) {
+const pageAdd = (pages: IPage[], page: IPage) => {
+  const index = pages.findIndex(item => item.uid === page.uid);
+  
+  if (index === -1) {
     pages.push(page);
+  } else {
+    pages[index] = page;
   } 
 
   return pages;

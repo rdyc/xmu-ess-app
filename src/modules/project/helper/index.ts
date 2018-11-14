@@ -1,1 +1,1 @@
-export * from './findFieldTranslator';
+export * from './projectRegistrationFieldTranslator';

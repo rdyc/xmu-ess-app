@@ -1,10 +1,11 @@
 import { IListBarField } from './IListBarState';
 
 export interface IAppBarMenu {
-  readonly id: string;
-  readonly name: string;
-  readonly enabled: boolean;
-  readonly visible: boolean;
+  id: string;
+  name: string;
+  enabled: boolean;
+  visible: boolean;
+  onClick?: () => void;
 }
 
 export interface IAppBarState {
@@ -12,5 +13,4 @@ export interface IAppBarState {
   onSearch: (find?: string | undefined, field?: IListBarField | undefined) => void;
   menus: IAppBarMenu[] | undefined;
   fields: IListBarField[] | undefined;
-  menuIsOpen: boolean;
 }

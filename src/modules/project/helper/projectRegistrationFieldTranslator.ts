@@ -4,7 +4,7 @@ import { ProjectRegistrationField } from '@project/classes/types';
 
 import { ProjectType, WorkflowStatusType } from '@common/classes/types';
 
-export const findFieldTranslator = (find: string, field: IListBarField): string => {
+export const projectRegistrationFieldTranslator = (find: string, field: IListBarField): string => {
   let result: string = find;
 
   // replace project type

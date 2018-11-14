@@ -4,6 +4,7 @@ import {
   projectAcceptancePage,
   projectAcceptanceSection,
 } from './projectAcceptanceMessage';
+import { projectAction } from './projectActionMessage';
 import {
   projectAssignmentAction,
   projectAssignmentField,
@@ -14,6 +15,7 @@ import {
 } from './projectAssignmentMessage';
 
 export const projectMessage = {
+  action: projectAction,
   assignment: {
     page: projectAssignmentPage,
     section: projectAssignmentSection,

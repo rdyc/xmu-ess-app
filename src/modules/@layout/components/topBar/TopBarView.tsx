@@ -241,7 +241,7 @@ export const TopBarView: React.SFC<TopBarProps> = props => (
               key={item.id}
               value={item.id}
               disabled={!item.enabled}
-              onClick={() => props.handleOnClickMenu(item)} 
+              onClick={() => props.handleOnClickMenuItem(item)} 
             >
               {item.name}
             </MenuItem>  

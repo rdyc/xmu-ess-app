@@ -5,9 +5,7 @@ import {
   appBarAssignMenuCallback,
   appBarAssignMenus,
   appBarAssignSearchCallback,
-  appBarDispose,
-  appBarMenuHide,
-  appBarMenuShow,
+  appBarDispose
 } from '@layout/store/actions';
 import * as React from 'react';
 import { connect } from 'react-redux';
@@ -23,8 +21,6 @@ interface PropsFromDispatch {
     assignSearchCallback: typeof appBarAssignSearchCallback;
     assignMenus: typeof appBarAssignMenus;
     assignFields: typeof appBarAssignFields;
-    menuShow: typeof appBarMenuShow;
-    menuHide: typeof appBarMenuHide;
     dispose: typeof appBarDispose;
   };
 }
@@ -41,8 +37,6 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     assignSearchCallback: (callback: (find: string, findBy?: IListBarField | undefined) => void) => dispatch(appBarAssignSearchCallback(callback)),
     assignMenus: (menus: IAppBarMenu[]) => dispatch(appBarAssignMenus(menus)),
     assignFields: (fields: IListBarField[]) => dispatch(appBarAssignFields(fields)),
-    menuShow: () => dispatch(appBarMenuShow()),
-    menuHide: () => dispatch(appBarMenuHide()),
     dispose: () => dispatch(appBarDispose()),
   }
 });

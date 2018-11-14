@@ -45,7 +45,7 @@ interface OwnStateUpdater extends StateHandlerMap<OwnState> {
 
 interface OwnHandler {
   handleOnClickSearch: (event: React.MouseEvent) => void;
-  handleOnClickMenu: (menu: IAppBarMenu) => void;
+  handleOnClickMenuItem: (menu: IAppBarMenu) => void;
   handleOnChangeSearch: (event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => void;
   handleOnDiscardSearch: () => void;
   handleOnClearSearch: () => void;
@@ -106,9 +106,14 @@ const handlerCreators: HandleCreators<TopBarProps, OwnHandler> = {
   handleOnChangeSearch: (props: TopBarProps) => (event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
     props.setSearch(event.target.value);
   },
-  handleOnClickMenu: (props: TopBarProps) => (menu: IAppBarMenu) => {
-    props.appBarDispatch.menuHide();
-    props.appBarState.onClickMenu(menu);
+  handleOnClickMenuItem: (props: TopBarProps) => (menu: IAppBarMenu) => {
+    // hide menu popup
+    props.setMenuVisibility();
+    
+    // call menu item callback (if any)
+    if (menu.onClick) {
+      menu.onClick();
+    }
   },
   handleOnDiscardSearch: (props: TopBarProps) => () => {
     props.setFieldVisibility();
@@ -164,18 +169,6 @@ const handlerCreators: HandleCreators<TopBarProps, OwnHandler> = {
 };
 
 const lifeCycles: ReactLifeCycleFunctions<TopBarProps, OwnState> = {
-  // componentWillMount() {
-  //   console.log('component will mount');
-  // },
-  // componentWillReceiveProps(nextProps: TopBarProps) {
-  //   console.log(nextProps.layoutState);
-  // },
-  // componentDidMount() {
-  //   console.log('component did mount');
-  // },
-  // componentWillUpdate() {
-  //   console.log('component will update');
-  // },
   componentDidUpdate(prevProps: TopBarProps) {
     if (this.props.layoutState !== prevProps.layoutState) {
 
@@ -193,10 +186,7 @@ const lifeCycles: ReactLifeCycleFunctions<TopBarProps, OwnState> = {
         }
       }
     }
-  },
-  // componentWillUnmount() {
-  //   console.log('component will unmount');
-  // }
+  }
 };
 
 export const TopBar = compose<TopBarProps, OwnOption>(

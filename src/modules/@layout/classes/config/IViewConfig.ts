@@ -9,7 +9,6 @@ export interface IViewConfig {
   };
   status: {
     isModeSearch?: boolean | false;
-    isModeList?: boolean | false;
     isNavBackVisible?: boolean | false;
     isSearchVisible?: boolean | false;
     isLogoutDialogVisible?: boolean | false;
