@@ -118,6 +118,32 @@ const handlers: HandleCreators<PurchaseSettlementEditorProps, OwnHandlers> = {
       }
     });
 
+    if (formData.items) {
+      const requiredItemFields = ['actual'];
+
+      const itemErrors: any[] = [];
+
+      formData.items.items.forEach((item, index) => {
+        const itemError: any = {};
+
+        if (!item) { return; }
+
+        requiredItemFields.forEach(field => {
+          if (!item[field] || isNullOrUndefined(item[field])) {
+            Object.assign(itemError, { [`${field}`]: 'Required' });
+          }
+        });
+
+        itemErrors.push(itemError);
+      });
+
+      if (itemErrors.length) {
+        Object.assign(errors, {
+          items: itemErrors
+        });
+      }
+    }
+
     return errors;
   },
   handleSubmit: (props: PurchaseSettlementEditorProps) => (formData: PurchaseSettlementFormData) => {

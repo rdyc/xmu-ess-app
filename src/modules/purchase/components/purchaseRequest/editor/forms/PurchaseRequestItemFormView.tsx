@@ -18,7 +18,9 @@ import { Field } from 'redux-form';
 // export const PurchaseRequestItemFormView: React.SFC<WrappedFieldArrayProps<PurchaseRequestItemFormData> & PurchaseRequestItemFormProps> = props => {
 export const PurchaseRequestItemFormView: React.SFC<PurchaseRequestItemFormProps> = props => {
   const { context, onRequestChange } = props;
-
+  // const onChangeRequestValue = (event: any, newValue: number, oldValue: number) => {
+  //   change('information.requestIDR', newValue - oldValue);
+  // };
   const render = (
     <Grid container spacing={16}>
       {

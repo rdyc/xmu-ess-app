@@ -80,7 +80,8 @@ const handlerCreators: HandleCreators<PurchaseSettlementDetailFormProps, OwnHand
         fieldProps = {
           required: true,
           category: 'date',
-          placeholder: intl.formatMessage({id: `purchase.field.settlementDate.placeholder`}),
+          label: intl.formatMessage({id: `purchase.field.information.settlementdate`}),
+          placeholder: intl.formatMessage({id: `purchase.field.settlementdate.placeholder`}),
           component: InputDate
         };
         break;

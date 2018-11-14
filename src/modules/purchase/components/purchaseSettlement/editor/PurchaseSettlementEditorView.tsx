@@ -66,10 +66,10 @@ export const PurchaseSettlementEditorView: React.SFC<PurchaseSettlementEditorPro
 
       initialValues.information.uid = data.uid;
       initialValues.information.notes = data.notes;
-      initialValues.information.projectUid = data.projectUid;
-      initialValues.information.customerUid = data.customerUid;
+      initialValues.information.projectUid = data.project && data.project.name;
+      initialValues.information.customerUid = data.customer && data.customer.name;
       initialValues.information.rate = data.rate;
-      initialValues.information.currencyType = data.currencyType;
+      initialValues.information.currencyType = data.currency && data.currency.value;
       initialValues.information.advance = data.advance;
       initialValues.information.request = data.request;
       initialValues.information.requestInIDR = data.requestInIDR;

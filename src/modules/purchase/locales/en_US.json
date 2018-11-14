@@ -39,12 +39,9 @@
   "purchase.dialog.settleTitle": "Settle Confirmation",
   "purchase.dialog.settleDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
  
-  "purchase.dialog.approvalTitle": "Approve {uid}?",
+  "purchase.dialog.approvalTitle": "Proceed with selected decision?",
   "purchase.dialog.approvalContent": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
- 
-  "purchase.dialog.rejectTitle": "Reject {uid}?",
-  "purchase.dialog.rejectContent": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
- 
+  
   "purchase.field.information.uid": "Purchase ID",
   "purchase.field.information.uid.placeholder": "Purchase ID",
   "purchase.field.information.projectUid": "Project Name",

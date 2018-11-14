@@ -106,19 +106,18 @@ const settlementInformation: React.SFC<AllProps> = props => {
           label={< FormattedMessage id= "purchase.field.information.actual" /> }
           value = { intl.formatNumber(data.actual) }
           />
-        {data.currencyType !== 'SCR01' ?
           <TextField
-          {...styled}
-          margin="dense"
-          label={< FormattedMessage id="purchase.field.information.differenceIDR" />}
-          value={intl.formatNumber(data.differenceInIDR || 0)}
-          /> 
-          : ''}
+          { ...styled }
+          margin = "dense"
+          label={< FormattedMessage id= "purchase.field.information.actual" /> }
+          value = { intl.formatNumber(data.difference) }
+          />
+          
           { data.currencyType !== 'SCR01' ?
           <TextField
           { ...styled }
           margin = "dense"
-          label = { < FormattedMessage id = "purchase.field.information.requestIDR" /> }
+          label = { < FormattedMessage id = "purchase.field.information.requestInIDR" /> }
           value = { intl.formatNumber(data.requestInIDR || 0) }
           />
           : ''}
@@ -126,8 +125,16 @@ const settlementInformation: React.SFC<AllProps> = props => {
           <TextField
             {...styled}
             margin="dense"
-            label={< FormattedMessage id="purchase.field.information.actualIDR" />}
+            label={< FormattedMessage id="purchase.field.information.actualInIDR" />}
             value={intl.formatNumber(data.actualInIDR || 0)}
+          />
+          : ''}
+          {data.currencyType !== 'SCR01' ?
+          <TextField
+            {...styled}
+            margin="dense"
+            label={< FormattedMessage id="purchase.field.information.differenceInIDR" />}
+            value={intl.formatNumber(data.differenceInIDR || 0)}
           />
           : ''}
           <TextField

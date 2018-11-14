@@ -11,22 +11,28 @@ export const PurchaseSettlementFormView: React.SFC<PurchaseSettlementFormProps> 
   const {
     formMode,
     formIsCurrencyIDR, formRate, 
+    formItem,
     // formValue,
     change, initialValues
   } = props;
 
   const fields = Object.getOwnPropertyNames(initialValues.information);
 
-  const onChangeValueIdr = (event: any, newValue: number, oldValue: number) => {
+  const onChangeValueIdr = (event: any, newValue: number) => {
     change('information.actualIDR', newValue * formRate);
   };
 
-  const onChangeValueRequest = (event: any, newValue: number, oldValue: number) => {
+  const onChangeValueRequest = (event: any, newValue: number) => {
     change('information.request', newValue );
   };
 
   const onChangeValueActual = (event: any, newValue: number, oldValue: number) => {
+
     change('information.actual', newValue + oldValue );
+  };
+
+  const onChangeValueDifference = (event: any, newValue: number, oldValue: number) => {
+    change('information.difference', (newValue - oldValue) + formItem );
   };
 
   const componentInformation = (context: BaseFieldsProps) => (
@@ -42,7 +48,8 @@ export const PurchaseSettlementFormView: React.SFC<PurchaseSettlementFormProps> 
   const componentItems = (context: WrappedFieldArrayProps<any>) => (
   <PurchaseSettlementItemForm
    context={context}
-   onActualChange={onChangeValueActual} />
+   onActualChange={onChangeValueActual}
+   onDifferenceChange={onChangeValueDifference} />
   );
 
   const render = (

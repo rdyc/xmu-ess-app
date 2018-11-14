@@ -10,11 +10,15 @@ import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { 
   // change, 
-  Field, 
+  Field,
+  //  InjectedFormProps, 
 } from 'redux-form';
+// import { PurchaseSettlementItemFormData } from './PurchaseSettlementForm';
 
-export const PurchaseSettlementItemFormView: React.SFC<PurchaseSettlementItemFormProps> = props => {
-  const { context, onActualChange } = props;
+export const PurchaseSettlementItemFormView: React.SFC<PurchaseSettlementItemFormProps 
+// & InjectedFormProps<PurchaseSettlementItemFormData, PurchaseSettlementItemFormProps> 
+> = props => {
+  const { context, onActualChange, onDifferenceChange } = props;
 
   // const onActualChange = (event: any, newValue: string, oldValue: string) => {
   //   change('items.value', oldValue - newValue);
@@ -54,11 +58,11 @@ export const PurchaseSettlementItemFormView: React.SFC<PurchaseSettlementItemFor
                       label={<FormattedMessage id="purchase.itemTitle.actual" />}
                       required={true}
                       onChange={onActualChange}
-                    //   onChange={(event: any, newValue: any) => {
-                    //   if (!isNaN(newValue)) {
-                    //     props.change(`${field}.variance`, newValue - {field}.variance);
-                    //   }
-                    // }}
+                      //   onChange={(event: any, newValue: any) => {
+                      //   if (!isNaN(newValue)) {
+                      //     props.change(`${field}.variance`, newValue);
+                      //   }
+                      // }}
                       component={InputNumber}
                     />
                     <Field
@@ -66,6 +70,7 @@ export const PurchaseSettlementItemFormView: React.SFC<PurchaseSettlementItemFor
                       name={`${field}.variance`}
                       label={<FormattedMessage id="purchase.itemTitle.variance" />}
                       disabled={true}
+                      onChange={onDifferenceChange}
                       component={InputNumber}
                     />
                   </div>

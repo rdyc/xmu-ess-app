@@ -46,7 +46,7 @@ interface FormValueProps {
   formIsCurrencyIDR: boolean | false;
   formRate: number | 1;
   formValue: number | 1;
-  formItem: number | undefined;
+  formItem: number | 0;
 }
 
 export type PurchaseSettlementFormProps

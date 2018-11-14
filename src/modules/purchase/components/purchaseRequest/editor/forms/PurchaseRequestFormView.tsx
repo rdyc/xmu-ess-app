@@ -30,12 +30,12 @@ export const PurchaseRequestFormView: React.SFC<PurchaseRequestFormProps> = prop
   const onChangeValueIdr = (event: any, newValue: number, oldValue: number) => {
     change('information.requestIDR', newValue * formRate);
   };
-
+  
   const onChangeValueRequest = (event: any, newValue: number, oldValue: number) => {
-    change('information.request', oldValue + newValue );
+    change('information.request', (formValue - oldValue) + newValue );
   };
   // const onChangeItemRequest = (event: any, newValue: number, oldValue: number) => {
-  //   change('information.request', oldValue + newValue);
+  //    change('information.request', oldValue);
   // };
 
   const componentInformation = (context: BaseFieldsProps) => (
