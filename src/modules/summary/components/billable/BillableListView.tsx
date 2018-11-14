@@ -1,7 +1,13 @@
 import {
+  Button,
   Card,
   CardContent,
-  // Chip,
+  Chip,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
   Grid,
   IconButton,
   Table,
@@ -43,6 +49,7 @@ export const BillableListView: React.SFC<BillableListProps> = props => {
     orderBy,
     page,
     direction,
+    open,
     handleChangeStart,
     handleChangeEnd,
     handleChangePage,
@@ -50,11 +57,17 @@ export const BillableListView: React.SFC<BillableListProps> = props => {
     handleGoToNext,
     handleGoToPrevious,
     handleChangeSort,
-    handleChangeFind
+    handleChangeFind,
+    handleDialog,
+    handleDetail
   } = props;
 
   const _handlePage = (_page: any) => {
     return handleChangePage(_page);
+  };
+
+  const _handledialog = (uid: string, type: string) => {
+    return handleDialog(), handleDetail(uid, type);
   };
 
   const renderBillableList = (billable: ISummaryBillable[]) => {
@@ -141,7 +154,7 @@ export const BillableListView: React.SFC<BillableListProps> = props => {
                 <TableCell numeric>{index + 1 + page * size}</TableCell>
                 <TableCell>{item.employee.fullName}</TableCell>
                 <TableCell numeric>
-                  {/* <Chip
+                  <Chip
                     label={
                       item.categories &&
                       item.categories.map(cat =>
@@ -150,15 +163,8 @@ export const BillableListView: React.SFC<BillableListProps> = props => {
                           : Math.round(cat.billable.hours)
                       )
                     }
-                  /> */}
-                  {
-                      item.categories &&
-                      item.categories.map(cat =>
-                        cat.name === 'Presales'
-                          ? null
-                          : Math.round(cat.billable.hours)
-                      )
-                    }
+                    onClick={() => _handledialog(item.employee.uid, 'Non Presales')}
+                  />
                 </TableCell>
                 <TableCell numeric>
                   {item.categories &&
@@ -167,12 +173,17 @@ export const BillableListView: React.SFC<BillableListProps> = props => {
                     )}
                 </TableCell>
                 <TableCell numeric>
-                  {item.categories &&
-                    item.categories.map(cat =>
-                      cat.name === 'Presales'
-                        ? Math.round(cat.billable.hours)
-                        : null
-                    )}
+                <Chip
+                    label={
+                      item.categories &&
+                      item.categories.map(cat =>
+                        cat.name === 'Presales'
+                          ? Math.round(cat.billable.hours)
+                          : null
+                      )
+                    }
+                    onClick={() => _handledialog(item.employee.uid, 'Presales')}
+                  />
                 </TableCell>
                 <TableCell numeric>
                   {item.categories &&
@@ -204,6 +215,63 @@ export const BillableListView: React.SFC<BillableListProps> = props => {
           )}
         </Table>
       </div>
+    );
+  };
+
+  const renderBillableDetail = (uid?: string, type?: string) => {
+    return (
+      <Dialog open={open} onClose={handleDialog} scroll="paper" fullWidth maxWidth="md">
+        <div>
+          {response &&
+            response.data &&
+            response.data.map(item =>
+              item.employee.uid === uid ? (
+                <div>
+                  <DialogTitle>
+                    {item.employee.fullName} &bull; {user && user.company.name}
+                  </DialogTitle>
+                  <DialogContent>
+                    <DialogContentText>
+                      <Table className={classes.minTableDialog}>
+                        <TableHead>
+                          <TableRow>
+                            <TableCell>Customer Name</TableCell>
+                            <TableCell>Project</TableCell>
+                            <TableCell>Position</TableCell>
+                            <TableCell>Allocation Hours</TableCell>
+                            <TableCell>Billable Hours</TableCell>
+                            <TableCell>Billable (%)</TableCell>                            
+                          </TableRow>
+                        </TableHead>
+                          {item.categories && item.categories.map(cat => (
+                            cat.name === type ? (
+                              cat.assignments && cat.assignments.map((asign, index) => (
+                        <TableBody>
+                                <TableCell>{asign.project && asign.project.customer && asign.project.customer.name} - {index}</TableCell>
+                                <TableCell>{asign.projectUid} - {asign.project && asign.project.name}</TableCell>
+                                <TableCell>{asign.position && asign.position.name}</TableCell>
+                                <TableCell>{asign.allocatedHours}</TableCell>
+                                <TableCell>{asign.actualHours}</TableCell>
+                                <TableCell>{asign.actualPercentage} %</TableCell>
+                                </TableBody>
+                              ))
+                            ) : null
+                          ))}
+                        
+                      </Table>
+                    </DialogContentText>
+                  </DialogContent>
+                </div>
+              ) : null
+            )}
+        </div>
+
+        <DialogActions>
+          <Button onClick={handleDialog} color="primary">
+            Cancel
+          </Button>
+        </DialogActions>
+      </Dialog>
     );
   };
 
@@ -278,7 +346,7 @@ export const BillableListView: React.SFC<BillableListProps> = props => {
   const renderFilter = () => {
     return (
       <Grid container spacing={16}>
-        <Grid item xs>
+        <Grid item xs md>
           <TextField
             disabled
             margin="normal"
@@ -286,14 +354,14 @@ export const BillableListView: React.SFC<BillableListProps> = props => {
             value={user && user.company.name}
           />
         </Grid>
-        <Grid item xs>
+        <Grid item xs md>
           <TextField
             margin="normal"
             label={<FormattedMessage id="billable.field.name" />}
             onChange={e => handleChangeFind(e.target.value)}
           />
         </Grid>
-        <Grid item xs>
+        <Grid item xs md>
           <TextField
             margin="normal"
             InputProps={{
@@ -301,7 +369,7 @@ export const BillableListView: React.SFC<BillableListProps> = props => {
             }}
           />
         </Grid>
-        <Grid item xs>
+        <Grid item xs md>
           <TextField
             margin="normal"
             InputProps={{
@@ -318,6 +386,12 @@ export const BillableListView: React.SFC<BillableListProps> = props => {
       <Card square>
         <CardContent>
           {renderFilter()}
+          {renderBillableDetail(props.uid, props.type)}
+          <Typography noWrap align="left" variant="caption">
+            Note: <br />
+            *Total available Hours = 2080 Hour : <br />
+            *Billable (%) = (Billable Hours / 2080) * 100%
+          </Typography>
           {isLoading && !response && (
             <Typography variant="body2">loading</Typography>
           )}

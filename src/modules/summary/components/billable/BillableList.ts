@@ -29,8 +29,9 @@ interface OwnHandlers {
   handleChangeSize: (value: number) => void;
   handleChangeSort: (direction: boolean) => void;
   handleChangePage: (page: number) => void;
-  
   handleChangeFind: (find: string) => void;
+  handleDetail: (uid: string, type: string) => void;
+  handleDialog: () => void;
 }
 
 interface OwnOptions {
@@ -39,6 +40,10 @@ interface OwnOptions {
   page?: number | undefined;
   size?: number | undefined;
   find?: string | undefined;
+  findBy?: string | undefined;
+  uid?: string | undefined;
+  open?: boolean;
+  type?: string | undefined;
 }
 
 interface OwnState {
@@ -49,6 +54,10 @@ interface OwnState {
   page: number;
   size: number;
   find: string | undefined;
+  findBy: string | undefined;
+  uid: string | undefined;
+  open: boolean;
+  type: string | undefined;
 }
 
 interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
@@ -60,6 +69,8 @@ interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
   stateSizing: StateHandler<OwnState>;
   statePage: StateHandler<OwnState>;
   stateFind: StateHandler<OwnState>;
+  stateDetail: StateHandler<OwnState>;
+  stateDialog: StateHandler<OwnState>;
 }
 
 export type BillableListProps = WithSummary &
@@ -83,6 +94,10 @@ const createProps: mapper<BillableListProps, OwnState> = (props: BillableListPro
       .toISOString(true),
     end: moment().toISOString(true),
     find: undefined,
+    findBy: undefined,
+    uid: undefined,
+    open: false,
+    type: undefined,
     orderBy:
       (request && request.filter && request.filter.orderBy) || orderBy || 'fullName',
     direction:
@@ -119,7 +134,15 @@ const stateUpdaters: StateUpdaters<OwnOptions, OwnState, OwnStateUpdaters> = {
     page
   }),
   stateFind: (prevState: OwnState) => (find: string) => ({
-    find
+    find,
+    findBy: 'fullName'
+  }),
+  stateDetail: (prevState: OwnState) => (uid: string, type: string) => ({
+    uid,
+    type
+  }),
+  stateDialog: (prevState: OwnState) => (open: boolean) => ({
+    open
   })
 };
 
@@ -149,6 +172,15 @@ const handlerCreators: HandleCreators<BillableListProps, OwnHandlers> = {
   },
   handleChangeFind: (props: BillableListProps) => (find: string) => {
     props.stateFind(find.toUpperCase());
+  },
+  handleDetail: (props: BillableListProps) => (uid: string, type: string) => {
+    props.stateDetail(uid, type);
+  },
+  handleDialog: (props: BillableListProps) => () => {
+    let { open } = props;
+
+    open = !open;
+    props.stateDialog(open);
   }
 };
 
@@ -173,17 +205,6 @@ const lifecycles: ReactLifeCycleFunctions<BillableListProps, OwnState> = {
       loadData(this.props);
     }
   },
-/*   componentWillReceiveProps(nextProps: BillableListProps) {
-    if (
-      nextProps.start !== this.props.start ||
-      nextProps.end !== this.props.end
-    ) {
-      const { loadBillableDispose } = this.props.summaryDispatch;
-
-      loadBillableDispose();
-      loadData(nextProps);
-    }
-  }, */
   componentDidUpdate(props: BillableListProps, state: OwnState) {
     // only load when these props are different
     if (
@@ -216,7 +237,7 @@ const lifecycles: ReactLifeCycleFunctions<BillableListProps, OwnState> = {
 };
 
 const loadData = (props: BillableListProps): void => {
-  const { orderBy, direction, size, start, end, find } = props;
+  const { orderBy, direction, size, start, end, find, findBy } = props;
   let { page } = props;
   const { user } = props.userState;
   const { loadBillableRequest } = props.summaryDispatch;
@@ -235,7 +256,7 @@ const loadData = (props: BillableListProps): void => {
         start,
         end,
         find,
-        findBy: undefined
+        findBy
       }
     });
   } else {

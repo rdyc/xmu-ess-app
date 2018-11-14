@@ -312,6 +312,14 @@ const styles = (theme: Theme) =>
       minWidth: 700,
     },
     
+    dialog: {
+      width: '100%',
+    },
+    
+    minTableDialog: {
+      minWidth: 100
+    },
+    
     /* Table Action */
     tableReportAction: {
       flexShrink: 0,
