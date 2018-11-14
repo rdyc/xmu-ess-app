@@ -3,7 +3,8 @@ import { IBaseFilter, IBasePagingFilter, IResponseCollection } from '@generic/in
 import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { IAppBarMenu, IListBarField } from '@layout/interfaces';
-import { WithTheme, withTheme } from '@material-ui/core';
+import { WithStyles, withStyles, WithTheme, withTheme } from '@material-ui/core';
+import styles from '@styles';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import {
   compose,
@@ -35,6 +36,7 @@ export interface CollectionConfig<Tres, Tconn> {
   hasSelection?: boolean | false;
   selectionProcessing?: (values: string[]) => void;
   hasRedirection?: boolean | false;
+  showActionCentre?: boolean | false;
   filter?: IBasePagingFilter | IBaseFilter;
   onDataLoad: (states: Tconn, callback: CollectionHandler, params: CollectionDataProps, forceReload?: boolean | false) => void;
   onUpdated: (states: Tconn, callback: CollectionHandler) => void;
@@ -42,6 +44,9 @@ export interface CollectionConfig<Tres, Tconn> {
     key: any;
     primary: string;
     secondary: string;
+    tertiary: string;
+    quaternary: string;
+    quinary: string;
   };
   onRedirect: (item: Tres) => string;
 }
@@ -95,6 +100,7 @@ export type CollectionPageProps
   & OwnStateUpdater
   & OwnHandler
   & WithTheme
+  & WithStyles<typeof styles>
   & WithLayout
   & WithAppBar
   & InjectedIntlProps;
@@ -221,6 +227,7 @@ const lifecycles: ReactLifeCycleFunctions<CollectionPageProps, OwnState> = {
       },
       status: {
         isSearchVisible: this.props.config.hasSearching,
+        isActionCentreVisible: this.props.config.showActionCentre,
         isMoreVisible: this.props.config.hasMore,
         isModeSearch: this.props.config.hasSearching && isSearching
       }
@@ -279,6 +286,7 @@ const lifecycles: ReactLifeCycleFunctions<CollectionPageProps, OwnState> = {
 export const CollectionPage = compose<CollectionPageProps, OwnOption>(
   setDisplayName('CollectionPage'),
   withTheme(),
+  withStyles(styles),
   withLayout,
   withAppBar,
   injectIntl,

@@ -1,9 +1,14 @@
+import { layoutMessage } from '@layout/locales/messages';
 import {
+  Button,
+  Divider,
   ExpansionPanel,
+  ExpansionPanelActions,
   ExpansionPanelDetails,
   ExpansionPanelSummary,
-  ListItemSecondaryAction,
-  ListItemText,
+  Grid,
+  Hidden,
+  Typography,
 } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import * as React from 'react';
@@ -14,7 +19,9 @@ export const CollectionPageView: React.SFC<CollectionPageProps> = props => (
   <div>
     {
       props.isLoading &&
-      <div>Loading...</div>
+      <Typography align="center">
+        {props.intl.formatMessage(layoutMessage.action.yes)}
+      </Typography>
     }
 
     {
@@ -23,9 +30,9 @@ export const CollectionPageView: React.SFC<CollectionPageProps> = props => (
       props.response.metadata &&
       props.response.metadata.paginate &&
       props.response.metadata.paginate.previous &&
-      <button onClick={() => props.setPagePrevious()}>
+      <Button fullWidth size="small" onClick={() => props.setPagePrevious()}>
         ({props.response.metadata.paginate.current - 1}) Pervious
-      </button>
+      </Button>
     }
 
     {
@@ -36,26 +43,36 @@ export const CollectionPageView: React.SFC<CollectionPageProps> = props => (
         const bind = props.config.onBind(item, index);
 
         return (
-          <ExpansionPanel key={bind.key}>
+          <ExpansionPanel key={bind.key} tabIndex={index}>
             <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-              <ListItemText 
-                primary={bind.primary}
-                secondary={bind.secondary}
-                primaryTypographyProps={{
-                  noWrap: true,
-                  variant: 'body1'
-                }}
-                secondaryTypographyProps={{
-                  noWrap: true,
-                  variant: 'caption'
-                }}
-              />
-              <ListItemSecondaryAction>
-                <ListItemText 
-                  primary="status"
-                  secondary="date"
-                />
-              </ListItemSecondaryAction>
+              <Grid container>
+                <Grid item xs={9} md={9}>
+                  <Grid container>
+                    <Grid item xs={12} md={4}>
+                      <Typography variant="body2" noWrap={true} paragraph={false}>{bind.primary}</Typography>
+                    </Grid>
+                    <Hidden xsDown>
+                      <Grid item xs={6} md={4}>
+                        <Typography variant="body1" noWrap={true} paragraph={false}>{bind.secondary}</Typography>
+                      </Grid>
+                    </Hidden>
+                    <Grid item xs={12} md={4}>
+                      <Typography variant="caption" noWrap={true} paragraph={false}>{bind.tertiary}</Typography>
+                    </Grid>
+                  </Grid>
+                </Grid>
+
+                <Grid item xs={3} md={3}>
+                  <Grid container>
+                    <Grid item xs={12} md={6}>
+                      <Typography variant="body1" noWrap={true} paragraph={false} align="right">{bind.quaternary}</Typography>
+                    </Grid>
+                    <Grid item xs={12} md={6}>
+                      <Typography variant="caption" noWrap={true} paragraph={false} align="right">{bind.quinary}</Typography>
+                    </Grid>
+                  </Grid>
+                </Grid>
+              </Grid>
             </ExpansionPanelSummary>
             <ExpansionPanelDetails
               style={{
@@ -64,28 +81,14 @@ export const CollectionPageView: React.SFC<CollectionPageProps> = props => (
             >
               <pre>{JSON.stringify(item, null, 2)}</pre>
             </ExpansionPanelDetails>
+            <Divider />
+            <ExpansionPanelActions>
+              <Button size="small">Cancel</Button>
+              <Button size="small" color="primary">
+                Save
+              </Button>
+            </ExpansionPanelActions>
           </ExpansionPanel>
-
-          // <div key={bind.key}>
-          //   { 
-          //     props.config.hasSelection &&
-          //     <input 
-          //       type="checkbox" 
-          //       value={item.uid}
-          //       checked={props.selected.indexOf(item.uid) !== -1}
-          //       onChange={props.handleOnChangeSelection}
-          //     /> 
-          //   }
-            
-          //   <span>{bind.primary} {bind.secondary}</span>
-
-          //   {
-          //     props.config.hasRedirection &&
-          //     <Link to={props.config.onRedirect(item)}>
-          //       View
-          //     </Link>
-          //   }
-          // </div>
         );
       })
     } 
@@ -96,9 +99,9 @@ export const CollectionPageView: React.SFC<CollectionPageProps> = props => (
       props.response.metadata &&
       props.response.metadata.paginate &&
       props.response.metadata.paginate.next &&
-      <button onClick={() => props.setPageNext()}>
+      <Button fullWidth size="small" onClick={() => props.setPageNext()}>
         ({props.response.metadata.paginate.total - props.response.metadata.paginate.current}) More
-      </button>
+      </Button>
     }
   </div>
 );

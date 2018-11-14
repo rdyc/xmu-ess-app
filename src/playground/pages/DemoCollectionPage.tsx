@@ -12,6 +12,7 @@ import { IProject } from '@project/classes/response';
 import { ProjectRegistrationField, ProjectUserAction } from '@project/classes/types';
 import { projectRegistrationFieldTranslator } from '@project/helper';
 import { WithProjectRegistration, withProjectRegistration } from '@project/hoc/withProjectRegistration';
+import * as moment from 'moment';
 import * as React from 'react';
 import { compose } from 'recompose';
 
@@ -68,6 +69,9 @@ const config: CollectionConfig<IProject, AllProps> = {
     return result;
   },
 
+  // action centre
+  showActionCentre: true,
+
   // more
   hasMore: true,
   moreOptions: menuOptions,
@@ -121,7 +125,10 @@ const config: CollectionConfig<IProject, AllProps> = {
   onBind: (item: IProject, index: number) => ({
     key: index,
     primary: item.name,
-    secondary: `${item.uid} ${item.project && item.project.value} ${item.customer && item.customer.name}`
+    secondary: item.customer && item.customer.name || item.customerUid,
+    tertiary: item.uid,
+    quaternary: item.status && item.status.value || item.statusType,
+    quinary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
   })
 };
 
