@@ -1,6 +1,7 @@
 import {
   Card,
   CardContent,
+  // Chip,
   Grid,
   IconButton,
   Table,
@@ -23,7 +24,6 @@ import {
   KeyboardArrowRight,
   LastPage
 } from '@material-ui/icons';
-// import { BillableField } from '@summary/classes/types';
 import { ISummaryBillable } from '@summary/classes/response/billable';
 import { BillableListProps } from '@summary/components/billable/BillableList';
 import DatePicker from 'material-ui-pickers/DatePicker';
@@ -57,13 +57,8 @@ export const BillableListView: React.SFC<BillableListProps> = props => {
     return handleChangePage(_page);
   };
 
-  // const _handleSort = () => {
-  //   return handleChangeSort(direction === 'ascending' ? true : false);
-  // };
-
   const renderBillableList = (billable: ISummaryBillable[]) => {
     const header: any[] = [
-      // { id: 'no', numeric: true, disablePadding: false, label: 'No' },
       {
         id: 'fullName',
         numeric: false,
@@ -107,27 +102,35 @@ export const BillableListView: React.SFC<BillableListProps> = props => {
                   key={item.id}
                   numeric={item.numeric}
                   padding={item.disablePadding ? 'none' : 'default'}
-                  sortDirection={orderBy === item.id ? (direction === 'ascending' ? 'asc' : 'desc') : false}
+                  sortDirection={
+                    orderBy === item.id
+                      ? direction === 'ascending'
+                        ? 'asc'
+                        : 'desc'
+                      : false
+                  }
                 >
                   {item.id === 'fullName' ? (
                     <Tooltip
-                    title="Sort"
-                    placement={item.numeric ? 'bottom-end' : 'bottom-start'}
-                    enterDelay={300}
-                  >
-                    <TableSortLabel
-                      active={orderBy === item.id}
-                      direction={direction === 'ascending' ? 'asc' : 'desc'}
-                      onClick={() => handleChangeSort(direction === 'ascending' ? true : false)}
+                      title="Sort"
+                      placement={item.numeric ? 'bottom-end' : 'bottom-start'}
+                      enterDelay={300}
                     >
-                      {item.label}
-                    </TableSortLabel>
-                  </Tooltip>
-
-                  ) : 
+                      <TableSortLabel
+                        active={orderBy === item.id}
+                        direction={direction === 'ascending' ? 'asc' : 'desc'}
+                        onClick={() =>
+                          handleChangeSort(
+                            direction === 'ascending' ? true : false
+                          )
+                        }
+                      >
+                        {item.label}
+                      </TableSortLabel>
+                    </Tooltip>
+                  ) : (
                     item.label
-                  }
-                  
+                  )}
                 </TableCell>
               ))}
             </TableRow>
@@ -138,12 +141,24 @@ export const BillableListView: React.SFC<BillableListProps> = props => {
                 <TableCell numeric>{index + 1 + page * size}</TableCell>
                 <TableCell>{item.employee.fullName}</TableCell>
                 <TableCell numeric>
-                  {item.categories &&
-                    item.categories.map(cat =>
-                      cat.name === 'Presales'
-                        ? null
-                        : Math.round(cat.billable.hours)
-                    )}
+                  {/* <Chip
+                    label={
+                      item.categories &&
+                      item.categories.map(cat =>
+                        cat.name === 'Presales'
+                          ? null
+                          : Math.round(cat.billable.hours)
+                      )
+                    }
+                  /> */}
+                  {
+                      item.categories &&
+                      item.categories.map(cat =>
+                        cat.name === 'Presales'
+                          ? null
+                          : Math.round(cat.billable.hours)
+                      )
+                    }
                 </TableCell>
                 <TableCell numeric>
                   {item.categories &&
