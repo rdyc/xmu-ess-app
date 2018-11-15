@@ -1,6 +1,5 @@
 import { layoutMessage } from '@layout/locales/messages';
 import {
-  Button,
   Checkbox,
   ExpansionPanel,
   ExpansionPanelActions,
@@ -13,6 +12,8 @@ import {
   Typography,
 } from '@material-ui/core';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import LibraryBooksSharpIcon from '@material-ui/icons/LibraryBooksSharp';
@@ -24,10 +25,11 @@ import { FormattedMessage } from 'react-intl';
 import { CollectionPageProps } from './CollectionPage';
 
 export const CollectionPageView: React.SFC<CollectionPageProps> = props => (
-  <div>
+  <React.Fragment>
     <Toolbar>
       <Typography
         noWrap
+        variant="body1"
         className={props.classes.flex}
       >
         {
@@ -39,30 +41,28 @@ export const CollectionPageView: React.SFC<CollectionPageProps> = props => (
           !props.isLoading &&
           props.response &&
           props.response.metadata &&
-          props.response.metadata.paginate &&
-          <FormattedMessage {...layoutMessage.text.pagingInfo} values={{
-            current: props.response.metadata.paginate.current,
-            total: props.response.metadata.paginate.total
+          <FormattedMessage {...layoutMessage.text.dataInfo} values={{
+            total: props.response.metadata.total
           }} />
         }
       </Typography>
       
       {
-        !props.isLoading &&
+        props.response &&
         <React.Fragment>
-          <IconButton>
+          <IconButton disabled={props.isLoading}>
             <FilterListIcon />
           </IconButton>
-          <IconButton>
+          <IconButton disabled={props.isLoading}>
             <SortByAlphaIcon />
           </IconButton>
-          <IconButton>
+          <IconButton disabled={props.isLoading}>
             <LibraryBooksSharpIcon />
           </IconButton>
-          <IconButton>
+          <IconButton disabled={props.isLoading}>
             <AddCircleOutlineIcon />
           </IconButton>
-          <IconButton>
+          <IconButton disabled={props.isLoading}>
             <SyncIcon />
           </IconButton>
         </React.Fragment>
@@ -70,25 +70,6 @@ export const CollectionPageView: React.SFC<CollectionPageProps> = props => (
     </Toolbar>
 
     {
-      !props.isLoading &&
-      props.response &&
-      props.response.metadata &&
-      props.response.metadata.paginate &&
-      props.response.metadata.paginate.previous &&
-      <Button 
-        fullWidth 
-        size="small" 
-        onClick={() => props.setPagePrevious()}
-      >
-        <FormattedMessage 
-          {...layoutMessage.action.previousCount} 
-          values={{count: props.response.metadata.paginate.current - 1}}
-        />
-      </Button>
-    }
-
-    {
-      !props.isLoading &&
       props.response &&
       props.response.data &&
       props.response.data.map((item, index) => {
@@ -162,21 +143,47 @@ export const CollectionPageView: React.SFC<CollectionPageProps> = props => (
     } 
 
     {
-      !props.isLoading &&
       props.response &&
       props.response.metadata &&
       props.response.metadata.paginate &&
-      props.response.metadata.paginate.next &&
-      <Button 
-        fullWidth 
-        size="small" 
-        onClick={() => props.setPageNext()}
-      >
-        <FormattedMessage 
-          {...layoutMessage.action.nextCount} 
-          values={{count: props.response.metadata.paginate.total - props.response.metadata.paginate.current}}
-        />
-      </Button>
+      <Toolbar>
+        <IconButton
+          disabled={props.isLoading || !props.response.metadata.paginate.previous}
+          onClick={() => props.setPagePrevious()}
+        >
+          <ChevronLeftIcon />
+        </IconButton>
+
+        <Typography
+          noWrap
+          variant="body1"
+          align="center"
+          className={props.classes.flex}
+        >
+          {
+            props.isLoading &&
+            <FormattedMessage {...layoutMessage.text.loading} />
+          }
+
+          {
+            !props.isLoading &&
+            <FormattedMessage 
+              {...layoutMessage.text.pagingInfo} 
+              values={{
+                current: props.response.metadata.paginate.current,
+                total: props.response.metadata.paginate.total
+              }}
+            />
+          }
+        </Typography>
+
+        <IconButton 
+          disabled={props.isLoading || !props.response.metadata.paginate.next}
+          onClick={() => props.setPageNext()}
+        >
+          <ChevronRightIcon />
+        </IconButton>
+      </Toolbar>
     }
-  </div>
+  </React.Fragment>
 );

@@ -1,6 +1,7 @@
 {
   "layout.text.loading": "Loading...",
   "layout.text.processing": "Processing",
+  "layout.text.dataInfo": "{total} record(s)",
   "layout.text.pagingInfo": "Page {current} of {total}",
 
   "layout.find": "Find",
