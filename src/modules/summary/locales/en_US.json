@@ -20,6 +20,14 @@
   "summary.effectiveness.tableHead.remaining": "Remaining Hours",
   "summary.effectiveness.tableHead.progress": "Total Progress",
 
+  "summary.winningRatio.title": "Report Winning Ratio",
+  "summary.winningRatio.field.company": "Company",
+  "summary.winningRatio.field.name": "Employee Name",
+  "summary.winningRatio.field.start": "Start",
+  "summary.winningRatio.field.end": "End",
+  "summary.winningRatio.subTitle": "Lorem IPSUM",
+  "summary.winningRatio.detail.projectNull": "No Data",
+  
   "profitability.title": "Project Profitability",
 
   "progress.title": "Project Progress",
