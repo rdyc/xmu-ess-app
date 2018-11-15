@@ -5,7 +5,8 @@ const prefix = 'layout';
 // text
 export const layoutText = defineMessages({
   loading: { id: `${prefix}.text.loading`},
-  processing: { id: `${prefix}.text.processing`}
+  processing: { id: `${prefix}.text.processing`},
+  pagingInfo: { id: `${prefix}.text.pagingInfo` }
 });
 
 // action

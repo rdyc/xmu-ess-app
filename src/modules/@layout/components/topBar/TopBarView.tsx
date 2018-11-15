@@ -3,6 +3,7 @@ import {
   Badge,
   Button,
   Divider,
+  Hidden,
   IconButton,
   Input,
   InputAdornment,
@@ -16,7 +17,6 @@ import {
   Toolbar,
   Typography,
 } from '@material-ui/core';
-import { isWidthUp } from '@material-ui/core/withWidth';
 import AppsIcon from '@material-ui/icons/Apps';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import CallMadeIcon from '@material-ui/icons/CallMade';
@@ -33,7 +33,7 @@ import { TopBarProps } from './TopBar';
 
 export const TopBarView: React.SFC<TopBarProps> = props => (
   <AppBar 
-    elevation={isWidthUp('md', props.width) ? 2 : 1}
+    elevation={0}
     position="fixed"
     color={props.getClassColor()}
     className={classNames(props.getClassNames())}
@@ -49,7 +49,8 @@ export const TopBarView: React.SFC<TopBarProps> = props => (
             color="inherit"
             aria-label="open drawer"
             onClick={() => props.layoutDispatch.drawerMenuShow()}
-            className={classNames(props.classes.navIconHide, props.layoutState.isDrawerMenuVisible && props.classes.hide)}>
+            className={classNames(props.classes.navIconHide, props.layoutState.isDrawerMenuVisible && props.classes.hide)}
+          >
             <MenuIcon />
           </IconButton>
         }
@@ -87,32 +88,34 @@ export const TopBarView: React.SFC<TopBarProps> = props => (
           </IconButton>
         }
         
-        {
-          /* notifications */
-          props.getCountNotif() > 0 &&
-          <IconButton
-            color="inherit"
-            aria-label="Notifications"
-            onClick={() => props.layoutDispatch.drawerActionShow()}
-          >
-            <Badge badgeContent={props.getCountNotif()} color="error">
-              <NotificationImportant />
-            </Badge>
-          </IconButton>
-        }
+        <Hidden xsDown>
+          {
+            /* notifications */
+            props.getCountNotif() > 0 &&
+            <IconButton
+              color="inherit"
+              aria-label="Notifications"
+              onClick={() => props.layoutDispatch.drawerActionShow()}
+            >
+              <Badge badgeContent={props.getCountNotif()} color="error">
+                <NotificationImportant />
+              </Badge>
+            </IconButton>
+          }
 
-        {
-          /* action */
-          props.layoutState.isActionCentreVisible &&
-          <IconButton
-            color="inherit"
-            aria-label="Action"
-            onClick={() => props.layoutDispatch.drawerActionShow()}
-          >
-            <AppsIcon />
-          </IconButton>
-        }
-    
+          {
+            /* action */
+            props.layoutState.isActionCentreVisible &&
+            <IconButton
+              color="inherit"
+              aria-label="Action"
+              onClick={() => props.layoutDispatch.drawerActionShow()}
+            >
+              <AppsIcon />
+            </IconButton>
+          }
+        </Hidden>
+
         {
           /* more */
           props.layoutState.isMoreVisible &&

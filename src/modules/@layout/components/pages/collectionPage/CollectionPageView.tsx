@@ -8,22 +8,66 @@ import {
   ExpansionPanelSummary,
   Grid,
   Hidden,
+  IconButton,
+  Toolbar,
   Typography,
 } from '@material-ui/core';
+import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import FilterListIcon from '@material-ui/icons/FilterList';
+import LibraryBooksSharpIcon from '@material-ui/icons/LibraryBooksSharp';
+import SortByAlphaIcon from '@material-ui/icons/SortByAlpha';
+import SyncIcon from '@material-ui/icons/Sync';
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 
 import { CollectionPageProps } from './CollectionPage';
 
 export const CollectionPageView: React.SFC<CollectionPageProps> = props => (
-  <React.Fragment>
-    {
-      props.isLoading &&
-      <Typography align="center">
-        <FormattedMessage {...layoutMessage.text.loading} />
+  <div>
+    <Toolbar>
+      <Typography
+        noWrap
+        className={props.classes.flex}
+      >
+        {
+          props.isLoading &&
+          <FormattedMessage {...layoutMessage.text.loading} />
+        }
+
+        {
+          !props.isLoading &&
+          props.response &&
+          props.response.metadata &&
+          props.response.metadata.paginate &&
+          <FormattedMessage {...layoutMessage.text.pagingInfo} values={{
+            current: props.response.metadata.paginate.current,
+            total: props.response.metadata.paginate.total
+          }} />
+        }
       </Typography>
-    }
+      
+      {
+        !props.isLoading &&
+        <React.Fragment>
+          <IconButton>
+            <FilterListIcon />
+          </IconButton>
+          <IconButton>
+            <SortByAlphaIcon />
+          </IconButton>
+          <IconButton>
+            <LibraryBooksSharpIcon />
+          </IconButton>
+          <IconButton>
+            <AddCircleOutlineIcon />
+          </IconButton>
+          <IconButton>
+            <SyncIcon />
+          </IconButton>
+        </React.Fragment>
+      }
+    </Toolbar>
 
     {
       !props.isLoading &&
@@ -51,7 +95,7 @@ export const CollectionPageView: React.SFC<CollectionPageProps> = props => (
         const bind = props.config.onBind(item, index);
 
         return (
-          <ExpansionPanel key={bind.key} tabIndex={index} onChange={() => undefined}>
+          <ExpansionPanel key={bind.key} tabIndex={index}>
             <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
               {
                 props.config.hasSelection &&
@@ -134,5 +178,5 @@ export const CollectionPageView: React.SFC<CollectionPageProps> = props => (
         />
       </Button>
     }
-  </React.Fragment>
+  </div>
 );

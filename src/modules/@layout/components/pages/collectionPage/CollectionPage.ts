@@ -235,7 +235,7 @@ const lifecycles: ReactLifeCycleFunctions<CollectionPageProps, OwnState> = {
         isSearchVisible: this.props.config.hasSearching,
         isActionCentreVisible: this.props.config.showActionCentre,
         isMoreVisible: this.props.config.hasMore,
-        isModeSearch: this.props.config.hasSearching && isSearching
+        isModeSearch: this.props.config.hasSearching && isSearching,
       }
     });
 
