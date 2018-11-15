@@ -309,6 +309,26 @@ const styles = (theme: Theme) =>
     },
 
     /* -------- generic classes end ----------*/
+
+    /* ---------  Table  ----------*/
+
+    /* Table */
+
+    table: {
+      width: '100%',
+      marginTop: theme.spacing.unit * 3,
+      overflowX: 'auto',
+    },
+
+    minTable: {
+      minWidth: 700,
+    },
+    
+    /* Table Action */
+    tableReportAction: {
+      flexShrink: 0,
+      color: theme.palette.text.secondary,
+    }
   });
 
 export default styles;
