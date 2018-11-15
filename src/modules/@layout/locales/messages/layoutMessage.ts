@@ -1,5 +1,7 @@
-import { layoutAction } from './layoutActionMessage';
+import { layoutAction, layoutField, layoutText } from './layoutAllMessage';
 
 export const layoutMessage = {
-  action: layoutAction
+  text: layoutText,
+  action: layoutAction,
+  field: layoutField,
 };

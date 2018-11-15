@@ -1,6 +1,7 @@
 {
-  "layout.loading": "Loading...",
-  "layout.processing": "Processing",
+  "layout.text.loading": "Loading...",
+  "layout.text.processing": "Processing",
+
   "layout.find": "Find",
   "layout.search": "Search",
 
@@ -34,10 +35,14 @@
   "layout.action.reset": "Reset",
   "layout.action.clear": "Clear",
   "layout.action.details": "Details",
+  "layout.action.next": "More",
+  "layout.action.nextCount": "More ({count}) ",
+  "layout.action.previous": "Last",
+  "layout.action.previousCount": "Last ({count})",
 
   "layout.label.login": "Login",
   "layout.label.logout": "Logout",
-  "layout.label.selection": "With {count} selection",
+  "layout.label.selection": "{count} selected",
   
   "layout.profile.my.title": "Profile",
   "layout.access.title": "Access",
@@ -47,5 +52,10 @@
   "layout.notification.title": "Notification",
   "layout.notification.emptySubTitle": "There is no notification at this time",
 
-  "layout.setting.title": "Settings"
+  "layout.setting.title": "Settings",
+
+  "layout.field.created.by": "Created By",
+  "layout.field.created.at": "Created At",
+  "layout.field.updated.by": "Updated By",
+  "layout.field.updated.at": "Updated At"
 }

@@ -13,9 +13,13 @@ import {
   projectAssignmentSection,
   projectAssignmentSubmission,
 } from './projectAssignmentMessage';
+import { projectRegistrationField } from './projectRegistrationMessage';
 
 export const projectMessage = {
   action: projectAction,
+  registration: {
+    field: projectRegistrationField
+  },
   assignment: {
     page: projectAssignmentPage,
     section: projectAssignmentSection,

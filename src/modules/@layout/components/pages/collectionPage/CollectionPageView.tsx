@@ -1,7 +1,7 @@
 import { layoutMessage } from '@layout/locales/messages';
 import {
   Button,
-  Divider,
+  Checkbox,
   ExpansionPanel,
   ExpansionPanelActions,
   ExpansionPanelDetails,
@@ -12,15 +12,16 @@ import {
 } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import * as React from 'react';
+import { FormattedMessage } from 'react-intl';
 
 import { CollectionPageProps } from './CollectionPage';
 
 export const CollectionPageView: React.SFC<CollectionPageProps> = props => (
-  <div>
+  <React.Fragment>
     {
       props.isLoading &&
       <Typography align="center">
-        {props.intl.formatMessage(layoutMessage.action.yes)}
+        <FormattedMessage {...layoutMessage.text.loading} />
       </Typography>
     }
 
@@ -30,8 +31,15 @@ export const CollectionPageView: React.SFC<CollectionPageProps> = props => (
       props.response.metadata &&
       props.response.metadata.paginate &&
       props.response.metadata.paginate.previous &&
-      <Button fullWidth size="small" onClick={() => props.setPagePrevious()}>
-        ({props.response.metadata.paginate.current - 1}) Pervious
+      <Button 
+        fullWidth 
+        size="small" 
+        onClick={() => props.setPagePrevious()}
+      >
+        <FormattedMessage 
+          {...layoutMessage.action.previousCount} 
+          values={{count: props.response.metadata.paginate.current - 1}}
+        />
       </Button>
     }
 
@@ -43,13 +51,28 @@ export const CollectionPageView: React.SFC<CollectionPageProps> = props => (
         const bind = props.config.onBind(item, index);
 
         return (
-          <ExpansionPanel key={bind.key} tabIndex={index}>
+          <ExpansionPanel key={bind.key} tabIndex={index} onChange={() => undefined}>
             <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+              {
+                props.config.hasSelection &&
+                <Checkbox
+                  checked={props.selected.indexOf(item.uid) !== -1}
+                  onChange={props.handleOnChangeSelection}
+                  value={item.uid}
+                  style={{
+                    height: 25, 
+                    width: 25,
+                    marginLeft: -10,
+                    marginRight: 10
+                  }}
+                />
+              }
+
               <Grid container>
                 <Grid item xs={9} md={9}>
                   <Grid container>
                     <Grid item xs={12} md={4}>
-                      <Typography variant="body2" noWrap={true} paragraph={false}>{bind.primary}</Typography>
+                      <Typography variant="body1" noWrap={true} paragraph={false}>{bind.primary}</Typography>
                     </Grid>
                     <Hidden xsDown>
                       <Grid item xs={6} md={4}>
@@ -74,20 +97,21 @@ export const CollectionPageView: React.SFC<CollectionPageProps> = props => (
                 </Grid>
               </Grid>
             </ExpansionPanelSummary>
-            <ExpansionPanelDetails
-              style={{
-                backgroundColor: props.theme.palette.background.default
-              }}
-            >
-              <pre>{JSON.stringify(item, null, 2)}</pre>
+            
+            <ExpansionPanelDetails>
+              {
+                props.config.summaryComponent(item)
+              }
             </ExpansionPanelDetails>
-            <Divider />
-            <ExpansionPanelActions>
-              <Button size="small">Cancel</Button>
-              <Button size="small" color="primary">
-                Save
-              </Button>
-            </ExpansionPanelActions>
+            
+            {
+              props.config.actionComponent &&
+              <ExpansionPanelActions>
+                {
+                  props.config.actionComponent(item)
+                }
+              </ExpansionPanelActions>
+            }
           </ExpansionPanel>
         );
       })
@@ -99,9 +123,16 @@ export const CollectionPageView: React.SFC<CollectionPageProps> = props => (
       props.response.metadata &&
       props.response.metadata.paginate &&
       props.response.metadata.paginate.next &&
-      <Button fullWidth size="small" onClick={() => props.setPageNext()}>
-        ({props.response.metadata.paginate.total - props.response.metadata.paginate.current}) More
+      <Button 
+        fullWidth 
+        size="small" 
+        onClick={() => props.setPageNext()}
+      >
+        <FormattedMessage 
+          {...layoutMessage.action.nextCount} 
+          values={{count: props.response.metadata.paginate.total - props.response.metadata.paginate.current}}
+        />
       </Button>
     }
-  </div>
+  </React.Fragment>
 );

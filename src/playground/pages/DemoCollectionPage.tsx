@@ -8,12 +8,15 @@ import {
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IAppBarMenu, IListBarField } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
+import { Button } from '@material-ui/core';
 import { IProject } from '@project/classes/response';
 import { ProjectRegistrationField, ProjectUserAction } from '@project/classes/types';
+import { ProjectSumarry } from '@project/components/registration/detail/shared/ProjectSummary';
 import { projectRegistrationFieldTranslator } from '@project/helper';
 import { WithProjectRegistration, withProjectRegistration } from '@project/hoc/withProjectRegistration';
 import * as moment from 'moment';
 import * as React from 'react';
+import { FormattedMessage } from 'react-intl';
 import { compose } from 'recompose';
 
 const projectFields: IListBarField[] = Object.keys(ProjectRegistrationField).map(key => ({ 
@@ -129,7 +132,22 @@ const config: CollectionConfig<IProject, AllProps> = {
     tertiary: item.uid,
     quaternary: item.status && item.status.value || item.statusType,
     quinary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
-  })
+  }),
+
+  // summary component
+  summaryComponent: (item: IProject) => (
+    <ProjectSumarry data={item} />
+  ),
+
+  // action component
+  actionComponent: (item: IProject) => (
+    <Button 
+      size="small"
+      onClick={() => alert(`go to ${item.uid}`)}
+    >
+      <FormattedMessage {...layoutMessage.action.details}/>
+    </Button>
+  )
 };
 
 type AllProps 

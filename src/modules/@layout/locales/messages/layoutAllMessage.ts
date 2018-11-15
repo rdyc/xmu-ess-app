@@ -2,6 +2,12 @@ import { defineMessages } from 'react-intl';
 
 const prefix = 'layout';
 
+// text
+export const layoutText = defineMessages({
+  loading: { id: `${prefix}.text.loading`},
+  processing: { id: `${prefix}.text.processing`}
+});
+
 // action
 export const layoutAction = defineMessages({
   yes: { id: `${prefix}.action.yes`},
@@ -24,5 +30,17 @@ export const layoutAction = defineMessages({
   submit: { id: `${prefix}.action.submit`},
   reset: { id: `${prefix}.action.reset`},
   clear: { id: `${prefix}.action.yes`},
-  details: { id: `${prefix}.action.details`}
+  details: { id: `${prefix}.action.details`},
+  next: { id: `${prefix}.action.next`},
+  nextCount: { id: `${prefix}.action.nextCount`},
+  previous: { id: `${prefix}.action.previous`},
+  previousCount: { id: `${prefix}.action.previousCount`}
+});
+
+// field
+export const layoutField = defineMessages({
+  createdBy: { id: `${prefix}.field.created.by`},
+  createdAt: { id: `${prefix}.field.created.at`},
+  updatedBy: { id: `${prefix}.field.updated.by`},
+  updatedAt: { id: `${prefix}.field.updated.at`}
 });

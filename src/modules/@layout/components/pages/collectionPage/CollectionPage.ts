@@ -48,6 +48,8 @@ export interface CollectionConfig<Tres, Tconn> {
     quaternary: string;
     quinary: string;
   };
+  summaryComponent: (item: Tres) => JSX.Element;
+  actionComponent?: (item: Tres) => JSX.Element;
   onRedirect: (item: Tres) => string;
 }
 
@@ -189,6 +191,10 @@ const handlerCreators: HandleCreators<CollectionPageProps, OwnHandler> = {
     props.setSource(response);
   },
   handleOnChangeSelection: (props: CollectionPageProps) => (event: React.ChangeEvent<HTMLInputElement>) => {
+    event.preventDefault();
+    event.stopPropagation();
+    event.nativeEvent.stopImmediatePropagation();
+
     props.setSelection(event.currentTarget.value);
 
     props.appBarDispatch.selectionAddRemove(event.currentTarget.value);
