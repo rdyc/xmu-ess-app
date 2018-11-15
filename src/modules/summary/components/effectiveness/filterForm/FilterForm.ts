@@ -88,7 +88,7 @@ const handlerCreators: HandleCreators<FilterFormProps, OwnHandler> = {
 const selector = formValueSelector(formName);
 
 const mapStateToProps = (state: any): FormValueProps => {
-  const employeeUid = selector(state, 'customerUid');
+  const employeeUid = selector(state, 'employeeUid');
   const projectUid = selector(state, 'projectUid');
   
   return {

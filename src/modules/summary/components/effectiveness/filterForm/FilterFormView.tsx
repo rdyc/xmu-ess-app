@@ -11,7 +11,7 @@ export const FilterFormView: React.SFC<FilterFormProps> = props => {
   const { user } = props.userState;
 
   const projectFilter: any = {
-    employeeUids: employeeUidValue
+    employeeUid: employeeUidValue
   };
 
   return (

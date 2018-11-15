@@ -99,10 +99,10 @@ const lifecycles: ReactLifeCycleFunctions<EffectivenessProps, OwnState> = {
       }
     },
     componentWillUpdate(props: EffectivenessProps, state: OwnState) {
-        if (this.props.customerUid !== props.customerUid ||
-            this.props.projectUid !== props.projectUid) {
-                loadData(props);
-            }
+      if (this.props.employeeUid !== props.employeeUid ||
+          this.props.projectUid !== props.projectUid) {
+            loadData(props);
+          }
     },
     componentWillUnmount() {
       const { layoutDispatch } = this.props;
