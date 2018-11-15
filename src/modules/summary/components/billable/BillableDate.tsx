@@ -13,12 +13,13 @@ interface OwnProps {
   val: string;
   handleChange: (start: string) => void;
   disableFuture: boolean;
+  label: string;
 }
 
 type AllProps = OwnProps & InjectedIntlProps;
 
 const billableDate: React.SFC<AllProps> = props => {
-  const { val, handleChange, intl, disableFuture } = props;
+  const { val, handleChange, intl, disableFuture, label } = props;
 
   const renderDate = () => (
     <DatePicker
@@ -30,7 +31,7 @@ const billableDate: React.SFC<AllProps> = props => {
       leftArrowIcon={<ChevronLeft />}
       rightArrowIcon={<ChevronRight />}
       format={'MMM DD, YYYY'}
-      label={intl.formatMessage({ id: 'billable.field.end' })}
+      label={intl.formatMessage({ id: label })}
       showTodayButton
       disableFuture={disableFuture}
       value={val}

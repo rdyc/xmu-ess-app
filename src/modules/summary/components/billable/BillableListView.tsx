@@ -6,7 +6,7 @@ import {
   Typography
 } from '@material-ui/core';
 import { BillableDate } from '@summary/components/billable/BillableDate';
-import { BillableDetail } from '@summary/components/billable/BillableDetail';
+import { BillableDetail } from '@summary/components/billable/BillableDetailView';
 import { BillableListProps } from '@summary/components/billable/BillableList';
 import { BillableTableView } from '@summary/components/billable/BillableTableView';
 import * as React from 'react';
@@ -55,6 +55,7 @@ export const BillableListView: React.SFC<BillableListProps> = props => {
         <Grid item xs md>
           <BillableDate
             val={start}
+            label={'billable.field.start'}
             handleChange={handleChangeStart}
             disableFuture={false}
           />
@@ -62,6 +63,7 @@ export const BillableListView: React.SFC<BillableListProps> = props => {
         <Grid item xs md>
           <BillableDate
             val={end}
+            label={'billable.field.end'}
             handleChange={handleChangeEnd}
             disableFuture={true}
           />
@@ -74,12 +76,18 @@ export const BillableListView: React.SFC<BillableListProps> = props => {
     <React.Fragment>
       <Card square>
         <CardContent>
-          {renderFilter()}
-          <Typography noWrap align="left" variant="caption">
-            <FormattedMessage id="billable.note" /> <br/>
-            <FormattedMessage id="billable.totalhours" /> <br />
-            <FormattedMessage id="billable.percentage" />
-          </Typography>
+          <Grid container spacing={16}>
+            <Grid item xs={12} md={12}>
+              {renderFilter()}
+            </Grid>
+            <Grid item xs={12} md={12}>
+              <Typography noWrap align="left" variant="caption">
+                <FormattedMessage id="billable.note" /> <br />
+                <FormattedMessage id="billable.totalhours" /> <br />
+                <FormattedMessage id="billable.percentage" />
+              </Typography>
+            </Grid>
+          </Grid>
           {isLoading && !response && (
             <Typography variant="body2">loading</Typography>
           )}

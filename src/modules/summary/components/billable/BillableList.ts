@@ -1,8 +1,6 @@
 import AppMenu from '@constants/AppMenu';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
-import { WithStyles, withStyles } from '@material-ui/core';
-import styles from '@styles';
 import { BillableListView } from '@summary/components/billable/BillableListView';
 import { WithSummary, withSummary } from '@summary/hoc/withSummary';
 import * as moment from 'moment';
@@ -81,8 +79,7 @@ export type BillableListProps = WithSummary &
   OwnOptions &
   OwnHandlers &
   OwnState &
-  OwnStateUpdaters &
-  WithStyles<typeof styles>;
+  OwnStateUpdaters;
 
 const createProps: mapper<BillableListProps, OwnState> = (props: BillableListProps): OwnState => {
   const { orderBy, direction, page, size } = props;
@@ -273,7 +270,6 @@ export const BillableList = compose<BillableListProps, OwnOptions>(
   withLayout,
   withRouter,
   injectIntl,
-  withStyles(styles),
   withStateHandlers<OwnState, OwnStateUpdaters, OwnOptions>(
     createProps,
     stateUpdaters

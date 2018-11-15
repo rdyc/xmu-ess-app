@@ -13,6 +13,11 @@ import {
   TableRow
 } from '@material-ui/core';
 import { ISummaryBillable } from '@summary/classes/response/billable';
+import {
+  BillableHeaderDetailNonPresales,
+  BillableHeaderDetailPresales
+} from '@summary/classes/types/billable/BillableHeaderDetail';
+import { BillableType } from '@summary/classes/types/billable/BillableType';
 import * as React from 'react';
 import { compose } from 'recompose';
 
@@ -30,14 +35,14 @@ const billableDetail: React.SFC<AllProps> = props => {
   const { uid, type, open, data, handleDialog } = props;
   const { user } = props.userState;
 
-  const header: string[] = [
-    'Customer Name',
-    'Project',
-    'Position',
-    'Allocation Hours',
-    'Billable Hours',
-    'Billable (%)'
-  ];
+  const headerNonPresales = Object.keys(BillableHeaderDetailNonPresales).map(
+    key => ({ id: key, name: BillableHeaderDetailNonPresales[key] })
+  );
+
+  const headerPresales = Object.keys(BillableHeaderDetailPresales).map(key => ({
+    id: key,
+    name: BillableHeaderDetailPresales[key]
+  }));
 
   const render = (
     <div>
@@ -47,7 +52,10 @@ const billableDetail: React.SFC<AllProps> = props => {
             <Dialog
               open={open}
               onClose={handleDialog}
-              scroll="paper" fullWidth maxWidth="md" >
+              scroll="paper"
+              fullWidth
+              maxWidth="md"
+            >
               <DialogTitle>
                 {item.employee.fullName} &bull; {user && user.company.name}
               </DialogTitle>
@@ -56,9 +64,17 @@ const billableDetail: React.SFC<AllProps> = props => {
                   <Table>
                     <TableHead>
                       <TableRow>
-                        {header.map(headerItem => (
-                          <TableCell padding="default">{headerItem}</TableCell>
-                        ))}
+                        {type === BillableType.Presales
+                          ? headerPresales.map(headerItem => (
+                              <TableCell padding="default">
+                                {headerItem.name}
+                              </TableCell>
+                            ))
+                          : headerNonPresales.map(headerItem => (
+                              <TableCell padding="default">
+                                {headerItem.name}
+                              </TableCell>
+                            ))}
                       </TableRow>
                     </TableHead>
                     {item.categories &&
@@ -73,7 +89,7 @@ const billableDetail: React.SFC<AllProps> = props => {
                                     asign.project.customer.name}
                                 </TableCell>
                                 <TableCell>
-                                  {asign.projectUid} - {asign.project && asign.project.name}
+                                  {asign.projectUid} &bull; {asign.project && asign.project.name}
                                 </TableCell>
                                 <TableCell>
                                   {asign.position && asign.position.name}

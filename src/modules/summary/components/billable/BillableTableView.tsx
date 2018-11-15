@@ -22,6 +22,8 @@ import {
 } from '@material-ui/icons';
 import styles from '@styles';
 import { ISummaryBillable } from '@summary/classes/response/billable';
+import { BillableHeaderList } from '@summary/classes/types/billable/BillableHeaderList';
+import { BillableType } from '@summary/classes/types/billable/BillableType';
 import * as React from 'react';
 import { compose } from 'recompose';
 
@@ -69,43 +71,12 @@ const billableTableView: React.SFC<AllProps> = props => {
     return handleDialog(), handleDetail(uid, type);
   };
 
-  const header: any[] = [
-    {
-      id: 'fullName',
-      numeric: false,
-      disablePadding: false,
-      label: 'Employee Name'
-    },
-    {
-      id: 'hours',
-      numeric: true,
-      disablePadding: false,
-      label: 'Billable Hours'
-    },
-    {
-      id: 'percentage',
-      numeric: true,
-      disablePadding: false,
-      label: 'Billable (%)'
-    },
-    {
-      id: 'presalesHours',
-      numeric: true,
-      disablePadding: false,
-      label: 'Presales Billable Hours'
-    },
-    {
-      id: 'presalesPercentage',
-      numeric: true,
-      disablePadding: false,
-      label: 'Presales Billable (%)'
-    }
-  ];
+  const header = Object.keys(BillableHeaderList).map(key => ({id : key, name: BillableHeaderList[key]}));
 
   const tablePaginationAction = (total: any) => (
     <div className={classes.tableReportAction}>
       <IconButton
-        onClick={() => _handlePage(0)}
+        onClick={() => handleChangePage(0)}
         disabled={page === 0}
         aria-label="First Page"
       >
@@ -140,12 +111,11 @@ const billableTableView: React.SFC<AllProps> = props => {
       <Table className={classes.minTable}>
         <TableHead>
           <TableRow>
-            <TableCell numeric>No</TableCell>
             {header.map(item => (
               <TableCell
                 key={item.id}
-                numeric={item.numeric}
-                padding={item.disablePadding ? 'none' : 'default'}
+                numeric={item.id === 'fullName' ? false : true}
+                padding="default"
                 sortDirection={
                   orderBy === item.id
                     ? direction === 'ascending'
@@ -157,7 +127,7 @@ const billableTableView: React.SFC<AllProps> = props => {
                 {item.id === 'fullName' ? (
                   <Tooltip
                     title="Sort"
-                    placement={item.numeric ? 'bottom-end' : 'bottom-start'}
+                    placement="bottom-start"
                     enterDelay={300}
                   >
                     <TableSortLabel
@@ -169,11 +139,11 @@ const billableTableView: React.SFC<AllProps> = props => {
                         )
                       }
                     >
-                      {item.label}
+                      {item.name}
                     </TableSortLabel>
                   </Tooltip>
                 ) : (
-                  item.label
+                  item.name
                 )}
               </TableCell>
             ))}
@@ -186,43 +156,55 @@ const billableTableView: React.SFC<AllProps> = props => {
                 <TableCell numeric>{index + 1 + page * size}</TableCell>
                 <TableCell>{item.employee.fullName}</TableCell>
                 <TableCell numeric>
+                <Tooltip
+                  title="Detail Non Presales"
+                  placement="bottom"
+                  enterDelay={300}
+                >
                   <Chip
                     label={
                       item.categories &&
                       item.categories.map(cat =>
-                        cat.name === 'Presales'
-                          ? null
-                          : Math.round(cat.billable.hours)
-                      )
-                    }
-                    onClick={() =>
-                      _handledialog(item.employee.uid, 'Non Presales')
-                    }
-                  />
-                </TableCell>
-                <TableCell numeric>
-                  {item.categories &&
-                    item.categories.map(cat =>
-                      cat.name === 'Presales' ? null : cat.billable.percentage
-                    )}
-                </TableCell>
-                <TableCell numeric>
-                  <Chip
-                    label={
-                      item.categories &&
-                      item.categories.map(cat =>
-                        cat.name === 'Presales'
+                        cat.name === BillableType.NonPresales
                           ? Math.round(cat.billable.hours)
                           : null
                       )
                     }
-                    onClick={() => _handledialog(item.employee.uid, 'Presales')}
+                    onClick={() =>
+                      _handledialog(item.employee.uid, BillableType.NonPresales)
+                    }
                   />
+                  </Tooltip>
                 </TableCell>
                 <TableCell numeric>
                   {item.categories &&
                     item.categories.map(cat =>
-                      cat.name === 'Presales' ? cat.billable.percentage : null
+                      cat.name === BillableType.NonPresales ? cat.billable.percentage : null
+                    )}
+                </TableCell>
+                <TableCell numeric>
+                  <Tooltip
+                    title="Detail Presales"
+                    placement="bottom"
+                    enterDelay={300}
+                  >
+                  <Chip
+                    label={
+                      item.categories &&
+                      item.categories.map(cat =>
+                        cat.name === BillableType.Presales
+                          ? Math.round(cat.billable.hours)
+                          : null
+                      )
+                    }
+                    onClick={() => _handledialog(item.employee.uid, BillableType.Presales)}
+                  />
+                  </Tooltip>
+                </TableCell>
+                <TableCell numeric>
+                  {item.categories &&
+                    item.categories.map(cat =>
+                      cat.name === BillableType.Presales ? cat.billable.percentage : null
                     )}
                 </TableCell>
               </TableRow>
@@ -234,7 +216,6 @@ const billableTableView: React.SFC<AllProps> = props => {
               <TablePagination
                 count={metadata.total}
                 rowsPerPage={size}
-                // rowsPerPageOptions={[5, 10, 15, 25]}
                 page={page}
                 onChangePage={_handlePage}
                 onChangeRowsPerPage={e =>
