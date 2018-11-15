@@ -22,7 +22,6 @@ import {
   withHandlers,
   withStateHandlers,
 } from 'recompose';
-import { InjectedFormProps, reduxForm } from 'redux-form';
 
 export interface Handlers {
     handleChangeCustomer: (event: any) => void;
@@ -46,8 +45,6 @@ interface OwnState {
 interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
     stateUpdate: StateHandler<OwnState>;
 }
-
-const formName = 'filterProgress';
 
 export type FilterProgressData = {
   customerUid: string | null;
@@ -201,7 +198,7 @@ const loadData = (props: ProgressProps): void => {
     }
   };
 
-const connectedView = compose<ProgressProps, OwnOptions & InjectedFormProps<FilterProgressData, OwnOptions>>(
+export const Progress = compose<ProgressProps, OwnOptions>(
     connect(),
     withSummary,
     withUser,
@@ -214,7 +211,3 @@ const connectedView = compose<ProgressProps, OwnOptions & InjectedFormProps<Filt
     withHandlers<ProgressProps, Handlers>(handlerCreators),
     lifecycle<ProgressProps, OwnState>(lifecycles),
   )(ProgressView);
-
-export const Progress = reduxForm({
-  form: formName
-})(connectedView);

@@ -1,13 +1,10 @@
-// import { InputCustomer } from '@lookup/components/customer/input';
 import {  Button, Card, CardContent, CardHeader, Dialog, DialogActions, DialogContent, DialogTitle, Grid, Paper, Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@material-ui/core';
 import { isWidthDown } from '@material-ui/core/withWidth';
 import { ISummaryAssignment, ISummaryProgress, ISummaryProgressProject } from '@summary/classes/response/progress';
-// import { SelectProject } from '@project/components/select/project';
 import { ProgressProps } from '@summary/components/progress/Progress';
 import * as classNames from 'classnames';
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
-// import { Field } from 'redux-form';
 export const ProgressView: React.SFC<ProgressProps> = props => {
   const { classes, width, dialogFullScreen, dialogOpen, handleDialogClose, handleDialogOpen, expenses, expenseProjectUid, intl } = props;
   const { isLoading, response } = props.summaryState.progress;  
@@ -328,31 +325,6 @@ export const ProgressView: React.SFC<ProgressProps> = props => {
     );
   };
 
-  const RenderFilter = () => (
-    <Grid container spacing={16}>
-      <div>
-        <form>
-          <Grid item xs>
-            {/* <Field
-              key= "customerUid"
-              name="customerUid"
-              type= "text"
-              component= {InputCustomer}
-            /> */}
-          </Grid>
-          <Grid item xs>
-            {/* <Field
-              key= "projectUid"
-              name="projectUid"
-              type= "text"
-              component= {SelectProject}
-            /> */}
-          </Grid>
-        </form>
-      </div>
-    </Grid>
-  );
-
   const render = (
     <React.Fragment>
       <Grid container spacing={16}>
@@ -361,7 +333,7 @@ export const ProgressView: React.SFC<ProgressProps> = props => {
             square 
             elevation={1}
           >
-            <RenderFilter />
+            {/* <RenderFilter /> */}
           </Paper>
         </Grid>
         <Grid item xs={12}>
