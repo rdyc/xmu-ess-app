@@ -9,7 +9,7 @@ import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 // import { Field } from 'redux-form';
 export const ProgressView: React.SFC<ProgressProps> = props => {
-  const { classes, width, dialogFullScreen, dialogOpen, handleDialogClose, handleDialogOpen, expenses, expenseProjectUid } = props;
+  const { classes, width, dialogFullScreen, dialogOpen, handleDialogClose, handleDialogOpen, expenses, expenseProjectUid, intl } = props;
   const { isLoading, response } = props.summaryState.progress;  
 
   const isMobile = isWidthDown('sm', width);
@@ -67,7 +67,11 @@ export const ProgressView: React.SFC<ProgressProps> = props => {
                     {expense.module}
                   </TableCell>
                   <TableCell>
-                    {expense.date}
+                    {intl.formatDate(expense.date, {
+                      year: 'numeric',
+                      month: 'short',
+                      day: 'numeric'
+                    })}
                   </TableCell>
                   <TableCell>
                     {expense.documentUid}
@@ -76,7 +80,7 @@ export const ProgressView: React.SFC<ProgressProps> = props => {
                     {expense.employee && expense.employee.fullName}
                   </TableCell>
                   <TableCell numeric>
-                    {expense.amount}
+                    {intl.formatNumber(expense.amount)}
                   </TableCell>
                 </TableRow>
               )
@@ -234,18 +238,18 @@ export const ProgressView: React.SFC<ProgressProps> = props => {
                         {`${project.progress} %`}
                       </TableCell>
                       <TableCell numeric>
-                        {project.actualRates}
+                        {intl.formatNumber(project.actualRates)}
                       </TableCell>
                       <TableCell numeric>
                         <Button 
                           color= "primary"
                           onClick= {() => handleDialogOpen(isMobile, project.moduleCosts ? project.moduleCosts : [], project.projectUid)}
                         >
-                          {project.actualCosts}
+                          {intl.formatNumber(project.actualCosts)}
                         </Button>
                       </TableCell>
                       <TableCell numeric>
-                        {project.cogs}
+                        {intl.formatNumber(project.cogs)}
                       </TableCell>
                     </TableRow>
                   </TableBody>
