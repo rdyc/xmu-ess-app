@@ -94,7 +94,7 @@ const lifecycles: ReactLifeCycleFunctions<EffectivenessProps, OwnState> = {
       layoutDispatch.moreHide();
   
       // dispose 'get all' from 'redux store' when the page is 'out of project registration' context 
-      if (view && view.parentUid !== AppMenu.Report) {
+      if (view && view.uid !== AppMenu.ReportEffectiveness) {
         loadEffectivenessDispose();
       }
     }

@@ -44,7 +44,7 @@ export const EffectivenessView: React.SFC<EffectivenessProps> = props => {
               { assignment.remainHours }
             </TableCell>
             <TableCell numeric>
-              { `${assignment.percentage}%` }
+              { `${assignment.percentage} %` }
             </TableCell>
           </TableRow>
         )
@@ -55,6 +55,7 @@ export const EffectivenessView: React.SFC<EffectivenessProps> = props => {
   const RenderList = () => (
     <Table
       className={classNames(classes.reportTable)}
+      padding= "dense"
     >
       <TableHead>
         <TableRow>
