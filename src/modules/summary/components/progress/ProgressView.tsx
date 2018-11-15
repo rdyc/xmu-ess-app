@@ -6,13 +6,17 @@ import { FilterForm } from '@summary/components/progress/sharedFilterForm/Filter
 import * as classNames from 'classnames';
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
+
 export const ProgressView: React.SFC<ProgressProps> = props => {
   const { classes, width, dialogFullScreen, dialogOpen, handleDialogClose, handleDialogOpen, expenses, expenseProjectUid, intl, handleChangeFilter } = props;
   const { isLoading, response } = props.summaryState.progress;  
 
   const isMobile = isWidthDown('sm', width);
+  const expenseFields = ['type', 'date', 'documentUid', 'requester'];
+  const assignmentFields = ['allocated', 'actual', 'remaining', 'progressAssignment'];
+  const projectFields = ['maxHours', 'allocatedHours', 'actualHours', 'remainHours', 'progress', 'actualRates', 'actualCosts', 'cogs'];
   
-  const renderDialog = (
+  const renderExpense = (
     <Dialog
       fullScreen={dialogFullScreen}
       open={dialogOpen}
@@ -29,26 +33,15 @@ export const ProgressView: React.SFC<ProgressProps> = props => {
         >
           <TableHead>
             <TableRow>
-              <TableCell
-                className= {classNames(classes.stickyHeader)}
-              >
-                <FormattedMessage id="summary.progress.tableHead.type" />
-              </TableCell>
-              <TableCell
-                className= {classNames(classes.stickyHeader)}
-              >
-                <FormattedMessage id="summary.progress.tableHead.date" />
-              </TableCell>
-              <TableCell
-                className= {classNames(classes.stickyHeader)}
-              >
-                <FormattedMessage id="summary.progress.tableHead.documentUid" />
-              </TableCell>
-              <TableCell
-                className= {classNames(classes.stickyHeader)}
-              >
-                <FormattedMessage id="summary.progress.tableHead.requester" />
-              </TableCell>
+              {
+                expenseFields.map(expenseField =>
+                  <TableCell
+                    className= {classNames(classes.stickyHeader)}
+                  >
+                    <FormattedMessage id={`summary.progress.tableHead.${expenseField}`} />
+                  </TableCell>
+                )
+              }
               <TableCell 
                 numeric
                 className= {classNames(classes.stickyHeader)}
@@ -105,18 +98,13 @@ export const ProgressView: React.SFC<ProgressProps> = props => {
               <TableCell numeric>
                 <FormattedMessage id="summary.progress.tableHead.consultant" />
               </TableCell>
-              <TableCell numeric>
-                <FormattedMessage id="summary.progress.tableHead.allocated" />
-              </TableCell>
-              <TableCell numeric>
-                <FormattedMessage id="summary.progress.tableHead.actual" />
-              </TableCell>
-              <TableCell numeric>
-                <FormattedMessage id="summary.progress.tableHead.remaining" />
-              </TableCell>
-              <TableCell numeric>
-                <FormattedMessage id="summary.progress.tableHead.progressAssignment" />
-              </TableCell>
+              {
+                assignmentFields.map(assignmentField =>
+                  <TableCell numeric>
+                    <FormattedMessage id={`summary.progress.tableHead.${assignmentField}`} />
+                  </TableCell>
+                )
+              }
             </TableRow>
           </TableHead>
           <TableBody>
@@ -168,54 +156,16 @@ export const ProgressView: React.SFC<ProgressProps> = props => {
                 >
                   <TableHead>
                     <TableRow>
-                      <TableCell 
-                        numeric
-                        className= {classNames(classes.cellWidthXXS)}
-                      >
-                        <FormattedMessage id="summary.progress.tableHead.maxHours" />
-                      </TableCell>
-                      <TableCell 
-                        numeric
-                        className= {classNames(classes.cellWidthXXS)}
-                      >
-                        <FormattedMessage id="summary.progress.tableHead.allocatedHours" />
-                      </TableCell>
-                      <TableCell 
-                        numeric
-                        className= {classNames(classes.cellWidthXXS)}
-                      >
-                        <FormattedMessage id="summary.progress.tableHead.actualHours" />
-                      </TableCell>
-                      <TableCell 
-                        numeric
-                        className= {classNames(classes.cellWidthXXS)}
-                      >
-                        <FormattedMessage id="summary.progress.tableHead.remainHours" />
-                      </TableCell>
-                      <TableCell 
-                        numeric
-                        className= {classNames(classes.cellWidthXXS)}
-                      >
-                        <FormattedMessage id="summary.progress.tableHead.progress" />
-                      </TableCell>
-                      <TableCell 
-                        numeric
-                        className= {classNames(classes.cellWidthXXS)}
-                      >
-                        <FormattedMessage id="summary.progress.tableHead.actualRates" />
-                      </TableCell>
-                      <TableCell 
-                        numeric
-                        className= {classNames(classes.cellWidthXXS)}
-                      >
-                        <FormattedMessage id="summary.progress.tableHead.actualCosts" />
-                      </TableCell>
-                      <TableCell 
-                        numeric
-                        className= {classNames(classes.cellWidthXXS)}
-                      >
-                        <FormattedMessage id="summary.progress.tableHead.cogs" />
-                      </TableCell>
+                      {
+                        projectFields.map(projectField => 
+                          <TableCell 
+                            numeric
+                            className= {classNames(classes.cellWidthXXS)}
+                          >
+                            <FormattedMessage id={`summary.progress.tableHead.${projectField}`} />
+                          </TableCell>
+                        )
+                      }
                     </TableRow>
                   </TableHead>
                   <TableBody>
@@ -353,7 +303,7 @@ export const ProgressView: React.SFC<ProgressProps> = props => {
         }
         </Grid>
       </Grid>
-      {renderDialog}
+      {renderExpense}
     </React.Fragment>
   );
 
