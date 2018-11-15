@@ -24,8 +24,7 @@ import {
 } from 'recompose';
 
 export interface Handlers {
-    handleChangeCustomer: (event: any) => void;
-    handleChangeProject: (event: any) => void;
+    handleChangeFilter: (customerUid: string, projectUid: string) => void;
     handleDialogOpen: (fullScreen: boolean, expenses: ISummaryModuleCost[], projectUid: string) => void;
     handleDialogClose: () => void;
 }
@@ -89,18 +88,12 @@ const stateUpdaters: StateUpdaters<OwnOptions, OwnState, OwnStateUpdaters> = {
 };
 
 const handlerCreators: HandleCreators<ProgressProps, Handlers> = {
-    handleChangeCustomer: (props: ProgressProps) => (event: any) => {
+    handleChangeFilter: (props: ProgressProps) => (customerUid: string, projectUid: string) => {
         const { stateUpdate } = props;
 
         stateUpdate({
-            customerUid: event.target.value
-        });
-    },
-    handleChangeProject: (props: ProgressProps) => (event: any) => {
-        const { stateUpdate } = props;
-
-        stateUpdate({
-            projectUid: event.target.value
+          customerUid,
+          projectUid
         });
     },
     handleDialogOpen: (props: ProgressProps) => (fullScreen: boolean, expenses: ISummaryModuleCost[], projectUid: string) => { 
@@ -123,7 +116,7 @@ const handlerCreators: HandleCreators<ProgressProps, Handlers> = {
 const lifecycles: ReactLifeCycleFunctions<ProgressProps, OwnState> = {
     componentDidMount() { 
       const { 
-        layoutDispatch, intl, customerUid, projectUid, stateUpdate
+        layoutDispatch, intl, customerUid, projectUid
       } = this.props;
       
       const { isLoading, response } = this.props.summaryState.effectiveness;
@@ -137,15 +130,6 @@ const lifecycles: ReactLifeCycleFunctions<ProgressProps, OwnState> = {
   
       layoutDispatch.searchShow();
       layoutDispatch.actionCentreShow();
-
-      // delet dis !
-      const a: string = 'CS00001061';
-      const b: string = 'XMU-P1807-0098';
-      stateUpdate({
-        customerUid: a, 
-        projectUid: b
-      });
-      // delet dat !
     
       // only load data when response are empty
       if (!isLoading && !response) {

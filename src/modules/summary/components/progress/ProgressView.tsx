@@ -1,12 +1,13 @@
-import {  Button, Card, CardContent, CardHeader, Dialog, DialogActions, DialogContent, DialogTitle, Grid, Paper, Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@material-ui/core';
+import {  Button, Card, CardContent, CardHeader, Dialog, DialogActions, DialogContent, DialogTitle, Grid, Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@material-ui/core';
 import { isWidthDown } from '@material-ui/core/withWidth';
 import { ISummaryAssignment, ISummaryProgress, ISummaryProgressProject } from '@summary/classes/response/progress';
 import { ProgressProps } from '@summary/components/progress/Progress';
+import { FilterForm } from '@summary/components/progress/sharedFilterForm/FilterForm';
 import * as classNames from 'classnames';
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 export const ProgressView: React.SFC<ProgressProps> = props => {
-  const { classes, width, dialogFullScreen, dialogOpen, handleDialogClose, handleDialogOpen, expenses, expenseProjectUid, intl } = props;
+  const { classes, width, dialogFullScreen, dialogOpen, handleDialogClose, handleDialogOpen, expenses, expenseProjectUid, intl, handleChangeFilter } = props;
   const { isLoading, response } = props.summaryState.progress;  
 
   const isMobile = isWidthDown('sm', width);
@@ -114,7 +115,7 @@ export const ProgressView: React.SFC<ProgressProps> = props => {
                 <FormattedMessage id="summary.progress.tableHead.remaining" />
               </TableCell>
               <TableCell numeric>
-                <FormattedMessage id="summary.progress.tableHead.progress" />
+                <FormattedMessage id="summary.progress.tableHead.progressAssignment" />
               </TableCell>
             </TableRow>
           </TableHead>
@@ -171,49 +172,49 @@ export const ProgressView: React.SFC<ProgressProps> = props => {
                         numeric
                         className= {classNames(classes.cellWidthXXS)}
                       >
-                        <FormattedMessage id="summary.progress.tableHead.totalMax" />
+                        <FormattedMessage id="summary.progress.tableHead.maxHours" />
                       </TableCell>
                       <TableCell 
                         numeric
                         className= {classNames(classes.cellWidthXXS)}
                       >
-                        <FormattedMessage id="summary.progress.tableHead.totalAllocated" />
+                        <FormattedMessage id="summary.progress.tableHead.allocatedHours" />
                       </TableCell>
                       <TableCell 
                         numeric
                         className= {classNames(classes.cellWidthXXS)}
                       >
-                        <FormattedMessage id="summary.progress.tableHead.totalActual" />
+                        <FormattedMessage id="summary.progress.tableHead.actualHours" />
                       </TableCell>
                       <TableCell 
                         numeric
                         className= {classNames(classes.cellWidthXXS)}
                       >
-                        <FormattedMessage id="summary.progress.tableHead.totalRemaining" />
+                        <FormattedMessage id="summary.progress.tableHead.remainHours" />
                       </TableCell>
                       <TableCell 
                         numeric
                         className= {classNames(classes.cellWidthXXS)}
                       >
-                        <FormattedMessage id="summary.progress.tableHead.totalProgress" />
+                        <FormattedMessage id="summary.progress.tableHead.progress" />
                       </TableCell>
                       <TableCell 
                         numeric
                         className= {classNames(classes.cellWidthXXS)}
                       >
-                        <FormattedMessage id="summary.progress.tableHead.totalRates" />
+                        <FormattedMessage id="summary.progress.tableHead.actualRates" />
                       </TableCell>
                       <TableCell 
                         numeric
                         className= {classNames(classes.cellWidthXXS)}
                       >
-                        <FormattedMessage id="summary.progress.tableHead.totalExpense" />
+                        <FormattedMessage id="summary.progress.tableHead.actualCosts" />
                       </TableCell>
                       <TableCell 
                         numeric
                         className= {classNames(classes.cellWidthXXS)}
                       >
-                        <FormattedMessage id="summary.progress.tableHead.totalCogs" />
+                        <FormattedMessage id="summary.progress.tableHead.cogs" />
                       </TableCell>
                     </TableRow>
                   </TableHead>
@@ -239,7 +240,7 @@ export const ProgressView: React.SFC<ProgressProps> = props => {
                       </TableCell>
                       <TableCell numeric>
                         <Button 
-                          color= "primary"
+                          variant= "contained"
                           onClick= {() => handleDialogOpen(isMobile, project.moduleCosts ? project.moduleCosts : [], project.projectUid)}
                         >
                           {intl.formatNumber(project.actualCosts)}
@@ -286,7 +287,7 @@ export const ProgressView: React.SFC<ProgressProps> = props => {
                   <TableBody>
                     <TableRow>
                       <TableCell variant="head">
-                        <FormattedMessage id="summary.progress.tableHead.value" />
+                        <FormattedMessage id="summary.progress.tableHead.totalValue" />
                       </TableCell>
                       <TableCell numeric>
                         {progress.totalValue}
@@ -294,7 +295,7 @@ export const ProgressView: React.SFC<ProgressProps> = props => {
                     </TableRow>
                     <TableRow>
                       <TableCell variant="head">
-                        <FormattedMessage id="summary.progress.tableHead.allCogs" />
+                        <FormattedMessage id="summary.progress.tableHead.totalCogs" />
                       </TableCell>
                       <TableCell numeric>
                         {progress.totalCogs}
@@ -302,7 +303,7 @@ export const ProgressView: React.SFC<ProgressProps> = props => {
                     </TableRow>
                     <TableRow>
                       <TableCell variant="head">
-                        <FormattedMessage id="summary.progress.tableHead.profitValue" />
+                        <FormattedMessage id="summary.progress.tableHead.profit" />
                       </TableCell>
                       <TableCell numeric>
                         {progress.profit}
@@ -310,7 +311,7 @@ export const ProgressView: React.SFC<ProgressProps> = props => {
                     </TableRow>
                     <TableRow>
                       <TableCell variant="head">
-                        <FormattedMessage id="summary.progress.tableHead.profitPercent" />
+                        <FormattedMessage id="summary.progress.tableHead.percentage" />
                       </TableCell>
                       <TableCell numeric>
                         {`${progress.percentage} %`}
@@ -329,12 +330,15 @@ export const ProgressView: React.SFC<ProgressProps> = props => {
     <React.Fragment>
       <Grid container spacing={16}>
         <Grid item xs={12}>
-          <Paper 
+          <Card 
             square 
-            elevation={1}
           >
-            {/* <RenderFilter /> */}
-          </Paper>
+            <CardContent>
+              <FilterForm 
+                onProjectSelected= {handleChangeFilter}
+              />
+            </CardContent>
+          </Card>
         </Grid>
         <Grid item xs={12}>
         {
