@@ -98,8 +98,8 @@ const handlerCreators: HandleCreators<EntryEditorProps, OwnHandlers> = {
       companyUid: user.company.uid,
       positionUid: user.position.uid,
       notes: formData.information.description,
-      start: `${formData.information.date && formData.information.date.substring(0, 10)}${formData.information.start && formData.information.start.substring(10, 20)}`,
-      end: `${formData.information.date && formData.information.date.substring(0, 10)}${formData.information.end && formData.information.end.substring(10, 20)}`,
+      start: `${formData.information.date && formData.information.date.substring(0, 10)}${formData.information.start && formData.information.start.substring(10, 16)}`,
+      end: `${formData.information.date && formData.information.date.substring(0, 10)}${formData.information.end && formData.information.end.substring(10, 16)}`,
     };
 
     // creating
