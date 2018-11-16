@@ -130,8 +130,7 @@ const winningRatioTable: React.SFC<AllProps> = props => {
                 {item.id === 'fullName' ? (
                   <Tooltip
                     title="Sort"
-                    placement="bottom-start"
-                    enterDelay={300}
+                    disableFocusListener
                   >
                     <TableSortLabel
                       active={orderBy === item.id}
@@ -160,7 +159,7 @@ const winningRatioTable: React.SFC<AllProps> = props => {
                 <TableCell>{item.employee && item.employee.fullName}</TableCell>
                 <TableCell numeric>{item.ratio}</TableCell>
                 <TableCell numeric>
-                  <Tooltip title="Closed" placement="bottom" enterDelay={300}>
+                  <Tooltip title="Closed" disableFocusListener>
                     <Chip
                       label={item.categories.map(cat =>
                         cat.name === WinningRatioType.Closed ? cat.total : null
@@ -172,7 +171,7 @@ const winningRatioTable: React.SFC<AllProps> = props => {
                   </Tooltip>
                 </TableCell>
                 <TableCell numeric>
-                  <Tooltip title="On Progress" placement="bottom" enterDelay={300}>
+                  <Tooltip title="On Progress" disableFocusListener>
                     <Chip
                       label={item.categories.map(cat =>
                         cat.name === WinningRatioType.OnProgress ? cat.total : null
@@ -184,13 +183,13 @@ const winningRatioTable: React.SFC<AllProps> = props => {
                   </Tooltip>
                 </TableCell>
                 <TableCell numeric>
-                  <Tooltip title="Closed" placement="bottom" enterDelay={300}>
+                  <Tooltip title="Win" disableFocusListener>
                     <Chip
                       label={item.categories.map(cat =>
                         cat.name === WinningRatioType.Winning ? cat.total : null
                       )}
                       onClick={() =>
-                        _handledialog(item.employeeUid, WinningRatioType.Closed)
+                        _handledialog(item.employeeUid, WinningRatioType.Winning)
                       }
                     />
                   </Tooltip>

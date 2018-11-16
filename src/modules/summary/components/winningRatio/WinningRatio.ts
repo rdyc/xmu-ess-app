@@ -29,7 +29,6 @@ interface OwnHandlers {
   handleChangePage: (page: number) => void;
   handleDialog: () => void;
   handleDetail: (uid: string, type: string) => void;
-  
   handleChangeFind: (find: string) => void;
 }
 
@@ -69,7 +68,6 @@ interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
   statePage: StateHandler<OwnState>;
   stateDetail: StateHandler<OwnState>;
   stateDialog: StateHandler<OwnState>;
-
   stateFind: StateHandler<OwnState>;
 }
 
@@ -239,13 +237,10 @@ const lifecycles: ReactLifeCycleFunctions<WinningRatioProps, OwnState> = {
 
 const loadData = (props: WinningRatioProps): void => {
   const { orderBy, direction, size, start, end, find, findBy, page } = props;
-  // let { page } = props;
   const { user } = props.userState;
   const { loadWinningRequest } = props.summaryDispatch;
   const { alertAdd } = props.layoutDispatch;
-  
-  // page += 1;
-  
+    
   if (user) {
     loadWinningRequest({
       companyUid: user.company.uid,

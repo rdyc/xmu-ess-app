@@ -3,14 +3,15 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogContentText,
   DialogTitle,
   Table,
   TableBody,
   TableCell,
   TableHead,
-  TableRow
+  TableRow,
+  withWidth
 } from '@material-ui/core';
+import { isWidthDown, WithWidth } from '@material-ui/core/withWidth';
 import { ISummaryWinning } from '@summary/classes/response/winning';
 import {
   WinningRatioHeaderDetailClosed,
@@ -30,13 +31,15 @@ interface OwnProps {
   handleDialog: () => void;
 }
 
-type AllProps = OwnProps;
+type AllProps = OwnProps & WithWidth;
 
 const winningRatioDetail: React.SFC<AllProps> = props => {
-  const { uid, type, open, data, handleDialog } = props;
+  const { uid, type, open, data, handleDialog, width } = props;
+
+  const isMobile = isWidthDown('sm', width);
 
   let header: any[] = [];
-  
+
   if (type === WinningRatioType.Closed) {
     header = Object.keys(WinningRatioHeaderDetailClosed).map(key => ({
       id: key,
@@ -57,52 +60,61 @@ const winningRatioDetail: React.SFC<AllProps> = props => {
   const render = (
     <div>
       {data &&
-        data.map(item =>
+        data.map((item, index) =>
           item.employeeUid === uid ? (
             <Dialog
+              key={index}
               open={open}
               onClose={handleDialog}
               scroll="paper"
               fullWidth
               maxWidth="md"
+              fullScreen={isMobile}
             >
               <DialogTitle>
-                <FormattedMessage id="summary.winningRatio.detail.title" /> &bull; {type}
+                <FormattedMessage id="summary.winningRatio.detail.title" />{' '}
+                &bull; {type}
               </DialogTitle>
               <DialogContent>
-                <DialogContentText>
-                  <Table>
-                    <TableHead>
-                      <TableRow>
-                        {header.map(headerItem => (
-                          <TableCell padding="default">
-                            {headerItem.name}
-                          </TableCell>
-                        ))}
-                      </TableRow>
-                    </TableHead>
+                <Table>
+                  <TableHead>
+                    <TableRow>
+                      {header.map(headerItem => (
+                        <TableCell padding="default" key={headerItem.id}>
+                          {headerItem.name}
+                        </TableCell>
+                      ))}
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
                     {item.categories &&
                       item.categories.map(cat =>
                         cat.name === type
                           ? cat.projects &&
-                            cat.projects.map((project, index) => (
-                              <TableBody>
+                            cat.projects.map(project => (
+                              <TableRow key={project.projectUid}>
                                 <TableCell>
                                   {project.projectUid} &bull; {project.name}
                                 </TableCell>
                                 <TableCell>
-                                  {project.childProjectUid !== null ? project.childProjectUid : <FormattedMessage id ="summary.winningRatio.detail.projectNull"/> }
+                                  {project.childProjectUid !== null ? (
+                                    project.childProjectUid
+                                  ) : (
+                                    <FormattedMessage id="summary.winningRatio.detail.projectNull" />
+                                  )}
                                 </TableCell>
                                 <TableCell>
                                   {project.customer && project.customer.name}
                                 </TableCell>
-                                {type !== WinningRatioType.OnProgress ? <TableCell>{project.date}</TableCell> : null}
-                              </TableBody>
+                                {type !== WinningRatioType.OnProgress ? (
+                                  <TableCell>{project.date}</TableCell>
+                                ) : null}
+                              </TableRow>
                             ))
                           : null
                       )}
-                  </Table>
-                </DialogContentText>
+                  </TableBody>
+                </Table>
               </DialogContent>
               <DialogActions>
                 <Button onClick={handleDialog} color="primary">
@@ -118,6 +130,6 @@ const winningRatioDetail: React.SFC<AllProps> = props => {
   return render;
 };
 
-export const WinningRatioDetail = compose<AllProps, OwnProps>()(
+export const WinningRatioDetail = compose<AllProps, OwnProps>(withWidth())(
   winningRatioDetail
 );

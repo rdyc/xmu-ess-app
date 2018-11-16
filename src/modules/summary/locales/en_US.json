@@ -19,7 +19,7 @@
   "summary.effectiveness.tableHead.actual": "Total Actual Hours",
   "summary.effectiveness.tableHead.remaining": "Remaining Hours",
   "summary.effectiveness.tableHead.progress": "Total Progress",
-
+  "summary.winningRatio.detail.title" : "Details Winning Ratio",
   "summary.winningRatio.title": "Report Winning Ratio",
   "summary.winningRatio.field.company": "Company",
   "summary.winningRatio.field.name": "Employee Name",
