@@ -13,6 +13,9 @@
   "billable.field.start": "Start",
   "billable.field.end": "End",
   "billable.subTitle": "Lorem IPSUM",
+  "billable.note": "Note:",
+  "billable.totalhours": "*Total available Hours = 2080 Hour",
+  "billable.percentage": "*Billable (%) = (Billable Hours / 2080) * 100%",
 
   "summary.effectiveness.title": "Resource Effectiveness",
   "summary.effectiveness.subTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
