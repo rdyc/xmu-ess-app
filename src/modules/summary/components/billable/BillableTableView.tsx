@@ -128,8 +128,7 @@ const billableTableView: React.SFC<AllProps> = props => {
                 {item.id === 'fullName' ? (
                   <Tooltip
                     title="Sort"
-                    placement="bottom-start"
-                    enterDelay={300}
+                    disableFocusListener
                   >
                     <TableSortLabel
                       active={orderBy === item.id}
@@ -159,15 +158,14 @@ const billableTableView: React.SFC<AllProps> = props => {
                 <TableCell numeric>
                 <Tooltip
                   title="Detail Non Presales"
-                  placement="bottom"
-                  enterDelay={300}
+                  disableFocusListener
                 >
                   <Chip
                     label={
                       item.categories &&
                       item.categories.map(cat =>
                         cat.name === BillableType.NonPresales
-                          ? <FormattedNumber value={Math.ceil(cat.billable.hours)} />
+                          ? <FormattedNumber key={cat.name} value={Math.ceil(cat.billable.hours)} />
                           : null
                       )
                     }
@@ -180,21 +178,20 @@ const billableTableView: React.SFC<AllProps> = props => {
                 <TableCell numeric>
                   {item.categories &&
                     item.categories.map(cat =>
-                      cat.name === BillableType.NonPresales ? <FormattedNumber value={cat.billable.percentage} /> : null
+                      cat.name === BillableType.NonPresales ? <FormattedNumber key={cat.name} value={cat.billable.percentage} /> : null
                     )}
                 </TableCell>
                 <TableCell numeric>
                   <Tooltip
                     title="Detail Presales"
-                    placement="bottom"
-                    enterDelay={300}
+                    disableFocusListener
                   >
                   <Chip
                     label={
                       item.categories &&
                       item.categories.map(cat =>
                         cat.name === BillableType.Presales
-                          ? <FormattedNumber value={Math.ceil(cat.billable.hours)} />
+                          ? <FormattedNumber key={cat.name} value={Math.ceil(cat.billable.hours)} />
                           : null
                       )
                     }
@@ -205,7 +202,7 @@ const billableTableView: React.SFC<AllProps> = props => {
                 <TableCell numeric>
                   {item.categories &&
                     item.categories.map(cat =>
-                      cat.name === BillableType.Presales ? <FormattedNumber value={cat.billable.percentage} /> : null
+                      cat.name === BillableType.Presales ? <FormattedNumber key={cat.name} value={cat.billable.percentage} /> : null
                     )}
                 </TableCell>
               </TableRow>

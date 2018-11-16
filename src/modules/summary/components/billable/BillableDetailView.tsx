@@ -4,14 +4,15 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogContentText,
   DialogTitle,
   Table,
   TableBody,
   TableCell,
   TableHead,
-  TableRow
+  TableRow,
+  withWidth
 } from '@material-ui/core';
+import { isWidthDown, WithWidth } from '@material-ui/core/withWidth';
 import { ISummaryBillable } from '@summary/classes/response/billable';
 import {
   BillableHeaderDetailNonPresales,
@@ -30,11 +31,13 @@ interface OwnProps {
   handleDialog: () => void;
 }
 
-type AllProps = OwnProps & WithUser;
+type AllProps = OwnProps & WithUser & WithWidth;
 
 const billableDetail: React.SFC<AllProps> = props => {
-  const { uid, type, open, data, handleDialog } = props;
+  const { uid, type, open, data, handleDialog, width } = props;
   const { user } = props.userState;
+
+  const isMobile = isWidthDown('sm', width);
 
   const headerNonPresales = Object.keys(BillableHeaderDetailNonPresales).map(
     key => ({ id: key, name: BillableHeaderDetailNonPresales[key] })
@@ -48,42 +51,44 @@ const billableDetail: React.SFC<AllProps> = props => {
   const render = (
     <div>
       {data &&
-        data.map(item =>
+        data.map((item, index) =>
           item.employee.uid === uid ? (
             <Dialog
+              key={index}
               open={open}
               onClose={handleDialog}
               scroll="paper"
               fullWidth
               maxWidth="md"
+              fullScreen={isMobile}
             >
               <DialogTitle>
                 {item.employee.fullName} &bull; {user && user.company.name}
               </DialogTitle>
               <DialogContent>
-                <DialogContentText>
                   <Table>
                     <TableHead>
                       <TableRow>
                         {type === BillableType.Presales
                           ? headerPresales.map(headerItem => (
-                              <TableCell padding="default">
+                              <TableCell key={headerItem.id} padding="default">
                                 {headerItem.name}
                               </TableCell>
                             ))
                           : headerNonPresales.map(headerItem => (
-                              <TableCell padding="default">
+                              <TableCell key={headerItem.id} padding="default">
                                 {headerItem.name}
                               </TableCell>
                             ))}
                       </TableRow>
                     </TableHead>
+                    <TableBody>
                     {item.categories &&
                       item.categories.map(cat =>
                         cat.name === type
                           ? cat.assignments &&
-                            cat.assignments.map((asign, index) => (
-                              <TableBody>
+                            cat.assignments.map((asign) => (
+                              <TableRow key={asign.projectUid}>
                                 <TableCell>
                                   {asign.project &&
                                     asign.project.customer &&
@@ -100,12 +105,12 @@ const billableDetail: React.SFC<AllProps> = props => {
                                 <TableCell>
                                   <FormattedNumber value={asign.actualPercentage} /> %
                                 </TableCell>
-                              </TableBody>
+                              </TableRow>
                             ))
                           : null
                       )}
+                    </TableBody>
                   </Table>
-                </DialogContentText>
               </DialogContent>
               <DialogActions>
                 <Button onClick={handleDialog} color="primary">
@@ -121,6 +126,6 @@ const billableDetail: React.SFC<AllProps> = props => {
   return render;
 };
 
-export const BillableDetail = compose<AllProps, OwnProps>(withUser)(
+export const BillableDetail = compose<AllProps, OwnProps>(withUser, withWidth())(
   billableDetail
 );
