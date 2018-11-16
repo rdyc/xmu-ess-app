@@ -1,4 +1,4 @@
-import { IQueryCollectionState, IQuerySingleState, IResponseSingle } from '@generic/interfaces';
+import { IQueryCollectionState, IQuerySingleState } from '@generic/interfaces';
 import {
   ILeaveApprovalGetAllRequest,
   ILeaveApprovalGetByIdRequest,
@@ -25,6 +25,9 @@ export interface ILeaveState {
   leaveRequestPost: IQuerySingleState<ILeaveRequestPostRequest, ILeaveRequest>;
   leaveRequestPut: IQuerySingleState<ILeaveRequestPutRequest, ILeaveRequest>;
 
+  // get end
+  leaveGetEnd: IQuerySingleState<ILeaveGetEndQuery, ILeaveGetEnd>;
+
   // approval
   leaveApprovalGetAll: IQueryCollectionState<ILeaveApprovalGetAllRequest, ILeaveRequest>;
   leaveApprovalGetById: IQuerySingleState<ILeaveApprovalGetByIdRequest, ILeaveRequestDetail>;
@@ -34,12 +37,4 @@ export interface ILeaveState {
   leaveCancellationGetAll: IQueryCollectionState<ILeaveCancellationGetAllRequest, ILeaveRequest>;
   leaveCancellationGetById: IQuerySingleState<ILeaveCancellationGetByIdRequest, ILeaveRequestDetail>;
   leaveCancellationPost: IQuerySingleState<ILeaveCancellationPostRequest, ILeaveRequest>;
-}
-
-export interface ILeaveGetEndState {
-    // get end
-    readonly result: IResponseSingle<ILeaveGetEnd> | undefined;
-    readonly parameter: ILeaveGetEndQuery | undefined;
-    readonly loading: boolean;
-    readonly errors?: string | null;
 }

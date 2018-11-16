@@ -1,7 +1,7 @@
 import {
+  leaveGetEndReducer,
   leaveRequestGetAllReducer,
   leaveRequestGetByIdReducer,
-  leaveRequestGetEndReducer,
   leaveRequestPostReducer,
   leaveRequestPutReducer,
 } from '@leave/store/reducers/request';
@@ -9,7 +9,7 @@ import {
 const leaveRequestReducers = {
   leaveRequestGetAll: leaveRequestGetAllReducer,
   leaveRequestGetById: leaveRequestGetByIdReducer,
-  leaveRequestGetEnd: leaveRequestGetEndReducer,
+  leaveGetEnd: leaveGetEndReducer,
   leaveRequestPost: leaveRequestPostReducer,
   leaveRequestPut: leaveRequestPutReducer,
 };

@@ -21,6 +21,7 @@ export const enum LeaveRequestAction {
   FETCH_REQUEST = '@@leaveRequest/FETCH_REQUEST',
   FETCH_SUCCESS = '@@leaveRequest/FETCH_SUCCESS',
   FETCH_ERROR = '@@leaveRequest/FETCH_ERROR',
+  FETCH_DISPOSE = '@@leaveRequest/FETCH_DISPOSE',
   POST_REQUEST = '@@leaveRequest/POST_REQUEST',
   POST_SUCCESS = '@@leaveRequest/POST_SUCCESS',
   POST_ERROR = '@@leaveRequest/POST_ERROR',
@@ -44,9 +45,10 @@ export const leaveRequestGetByIdError = (message: string) => action(LeaveRequest
 export const leaveRequestGetByIdDispose = () => action(LeaveRequestAction.GET_BY_ID_DISPOSE);
 
 // get end
-export const leaveRequestFetchRequest = (params: ILeaveGetEndQuery) => action(LeaveRequestAction.FETCH_REQUEST, params);
-export const leaveRequestFetchSuccess = (data: ILeaveGetEnd) => action(LeaveRequestAction.FETCH_SUCCESS, data);
+export const leaveRequestFetchRequest = (request: ILeaveGetEndQuery) => action(LeaveRequestAction.FETCH_REQUEST, request);
+export const leaveRequestFetchSuccess = (response: IResponseSingle<ILeaveGetEnd>) => action(LeaveRequestAction.FETCH_SUCCESS, response);
 export const leaveRequestFetchError = (message: string) => action(LeaveRequestAction.FETCH_ERROR, message);
+export const leaveRequestFetchDispose = () => action(LeaveRequestAction.FETCH_DISPOSE);
 
 // post
 export const leaveRequestPostRequest = (request: ILeaveRequestPostRequest) => action(LeaveRequestAction.POST_REQUEST, request);
