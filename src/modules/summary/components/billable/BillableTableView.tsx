@@ -25,6 +25,7 @@ import { ISummaryBillable } from '@summary/classes/response/billable';
 import { BillableHeaderList } from '@summary/classes/types/billable/BillableHeaderList';
 import { BillableType } from '@summary/classes/types/billable/BillableType';
 import * as React from 'react';
+import { FormattedNumber } from 'react-intl';
 import { compose } from 'recompose';
 
 interface OwnProps {
@@ -76,29 +77,29 @@ const billableTableView: React.SFC<AllProps> = props => {
   const tablePaginationAction = (total: any) => (
     <div className={classes.tableReportAction}>
       <IconButton
-        onClick={() => handleChangePage(0)}
-        disabled={page === 0}
+        onClick={() => handleChangePage(1)}
+        disabled={page === 1}
         aria-label="First Page"
       >
         <FirstPage />
       </IconButton>
       <IconButton
         onClick={handleGoToPrevious}
-        disabled={page === 0}
+        disabled={page === 1}
         aria-label="Previous Page"
       >
         <KeyboardArrowLeft />
       </IconButton>
       <IconButton
         onClick={handleGoToNext}
-        disabled={page >= Math.ceil(total / size) - 1}
+        disabled={page >= Math.ceil(total / size)}
         aria-label="Next Page"
       >
         <KeyboardArrowRight />
       </IconButton>
       <IconButton
-        onClick={() => _handlePage(Math.max(0, Math.ceil(total / size) - 1))}
-        disabled={page >= Math.ceil(total / size) - 1}
+        onClick={() => _handlePage(Math.max(0, Math.ceil(total / size)))}
+        disabled={page >= Math.ceil(total / size)}
         aria-label="Last Page"
       >
         <LastPage />
@@ -153,7 +154,7 @@ const billableTableView: React.SFC<AllProps> = props => {
           {data &&
             data.map((item, index) => (
               <TableRow key={index}>
-                <TableCell numeric>{index + 1 + page * size}</TableCell>
+                <TableCell numeric>{index + 1 + (page - 1) * size}</TableCell>
                 <TableCell>{item.employee.fullName}</TableCell>
                 <TableCell numeric>
                 <Tooltip
@@ -166,7 +167,7 @@ const billableTableView: React.SFC<AllProps> = props => {
                       item.categories &&
                       item.categories.map(cat =>
                         cat.name === BillableType.NonPresales
-                          ? Math.round(cat.billable.hours)
+                          ? <FormattedNumber value={Math.ceil(cat.billable.hours)} />
                           : null
                       )
                     }
@@ -179,7 +180,7 @@ const billableTableView: React.SFC<AllProps> = props => {
                 <TableCell numeric>
                   {item.categories &&
                     item.categories.map(cat =>
-                      cat.name === BillableType.NonPresales ? cat.billable.percentage : null
+                      cat.name === BillableType.NonPresales ? <FormattedNumber value={cat.billable.percentage} /> : null
                     )}
                 </TableCell>
                 <TableCell numeric>
@@ -193,7 +194,7 @@ const billableTableView: React.SFC<AllProps> = props => {
                       item.categories &&
                       item.categories.map(cat =>
                         cat.name === BillableType.Presales
-                          ? Math.round(cat.billable.hours)
+                          ? <FormattedNumber value={Math.ceil(cat.billable.hours)} />
                           : null
                       )
                     }
@@ -204,7 +205,7 @@ const billableTableView: React.SFC<AllProps> = props => {
                 <TableCell numeric>
                   {item.categories &&
                     item.categories.map(cat =>
-                      cat.name === BillableType.Presales ? cat.billable.percentage : null
+                      cat.name === BillableType.Presales ? <FormattedNumber value={cat.billable.percentage} /> : null
                     )}
                 </TableCell>
               </TableRow>
@@ -216,7 +217,7 @@ const billableTableView: React.SFC<AllProps> = props => {
               <TablePagination
                 count={metadata.total}
                 rowsPerPage={size}
-                page={page}
+                page={page - 1}
                 onChangePage={_handlePage}
                 onChangeRowsPerPage={e =>
                   handleChangeSize(Number(e.target.value))

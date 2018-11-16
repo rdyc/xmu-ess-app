@@ -19,6 +19,7 @@ import {
 } from '@summary/classes/types/billable/BillableHeaderDetail';
 import { BillableType } from '@summary/classes/types/billable/BillableType';
 import * as React from 'react';
+import { FormattedNumber } from 'react-intl';
 import { compose } from 'recompose';
 
 interface OwnProps {
@@ -94,10 +95,10 @@ const billableDetail: React.SFC<AllProps> = props => {
                                 <TableCell>
                                   {asign.position && asign.position.name}
                                 </TableCell>
-                                <TableCell>{asign.allocatedHours}</TableCell>
-                                <TableCell>{asign.actualHours}</TableCell>
+                                <TableCell><FormattedNumber value={asign.allocatedHours} /></TableCell>
+                                <TableCell><FormattedNumber value={asign.actualHours} /></TableCell>
                                 <TableCell>
-                                  {asign.actualPercentage} %
+                                  <FormattedNumber value={asign.actualPercentage} /> %
                                 </TableCell>
                               </TableBody>
                             ))
