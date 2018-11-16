@@ -69,7 +69,7 @@ export const PurchaseRequestItemFormView: React.SFC<PurchaseRequestItemFormProps
         <Grid container spacing={16}>
           <Grid item xs={12} md={4}>
             <Button onClick={() => context.fields.push({
-              uid: '',
+              uid: 'Draft',
               description: '',
               request: 0,
             })}>

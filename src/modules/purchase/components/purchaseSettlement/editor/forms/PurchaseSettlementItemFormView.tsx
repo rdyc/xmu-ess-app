@@ -8,9 +8,7 @@ import {
 import { PurchaseSettlementItemFormProps } from '@purchase/components/purchaseSettlement/editor/forms/PurchaseSettlementItemForm';
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
-import { 
-  Field,
-} from 'redux-form';
+import { Field } from 'redux-form';
 
 export const PurchaseSettlementItemFormView: React.SFC<PurchaseSettlementItemFormProps 
 > = props => {
@@ -53,8 +51,7 @@ export const PurchaseSettlementItemFormView: React.SFC<PurchaseSettlementItemFor
                       // onChange={onActualChange}
                         onChange={(event: any, newValue: any) => {
                         if (!isNaN(newValue)) {
-                          props.change(`${field}.variance`, newValue - 
-                            (props.initialValues.request ? props.initialValues.request : 0));
+                          props.change(`${field}.variance`, newValue);
                         }
                       }}
                       component={InputNumber}
