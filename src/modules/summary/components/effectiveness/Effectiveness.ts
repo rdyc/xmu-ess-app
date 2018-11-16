@@ -14,6 +14,7 @@ import {
   lifecycle,
   mapper,
   ReactLifeCycleFunctions,
+  StateHandler,
   StateHandlerMap,
   StateUpdaters,
   withHandlers,
@@ -21,15 +22,19 @@ import {
 } from 'recompose';
 
 interface OwnHandlers {
+  handleChangeFilter: (customerUid: string, projectUid: string | undefined) => void;
 }
 
 interface OwnOptions {
 }
 
 interface OwnState {
+  employeeUid?: string;
+  projectUid?: string;
 }
 
 interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
+  stateUpdate: StateHandler<OwnState>;
 }
 
 export type EffectivenessProps 
@@ -52,10 +57,22 @@ const createProps: mapper<EffectivenessProps, OwnState> = (props: EffectivenessP
   };
 
 const stateUpdaters: StateUpdaters<OwnOptions, OwnState, OwnStateUpdaters> = {
+  stateUpdate: (prevState: OwnState) => (newState: any) => ({
+    ...prevState,
+    ...newState
+  }),
   };
 
 const handlerCreators: HandleCreators<EffectivenessProps, OwnHandlers> = {
-  };
+  handleChangeFilter: (props: EffectivenessProps) => (employeeUid: string, projectUid: string | undefined) => {
+    const { stateUpdate } = props;
+
+    stateUpdate({
+      employeeUid,
+      projectUid
+    });
+},
+};
 
 const lifecycles: ReactLifeCycleFunctions<EffectivenessProps, OwnState> = {
     componentDidMount() { 
@@ -81,6 +98,12 @@ const lifecycles: ReactLifeCycleFunctions<EffectivenessProps, OwnState> = {
         loadData(this.props);
       }
     },
+    componentWillUpdate(props: EffectivenessProps, state: OwnState) {
+      if (this.props.employeeUid !== props.employeeUid ||
+          this.props.projectUid !== props.projectUid) {
+            loadData(props);
+          }
+    },
     componentWillUnmount() {
       const { layoutDispatch } = this.props;
       const { view } = this.props.layoutState;
@@ -94,7 +117,7 @@ const lifecycles: ReactLifeCycleFunctions<EffectivenessProps, OwnState> = {
       layoutDispatch.moreHide();
   
       // dispose 'get all' from 'redux store' when the page is 'out of project registration' context 
-      if (view && view.parentUid !== AppMenu.Report) {
+      if (view && view.uid !== AppMenu.ReportEffectiveness) {
         loadEffectivenessDispose();
       }
     }
@@ -104,12 +127,13 @@ const loadData = (props: EffectivenessProps): void => {
     const { user } = props.userState;
     const { loadEffectivenessRequest } = props.summaryDispatch;
     const { alertAdd } = props.layoutDispatch;
+    const { employeeUid, projectUid } = props;
 
     if (user) {
       loadEffectivenessRequest({
         filter: {
-          employeeUid: undefined,
-          projectUid: undefined
+          employeeUid,
+          projectUid
         }
       }); 
     } else {
