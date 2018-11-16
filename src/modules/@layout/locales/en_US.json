@@ -10,8 +10,8 @@
   "layout.tooltip.rowsPerPage": "Rows per page",
   "layout.tooltip.createNew": "Create a new",
   "layout.tooltip.refresh": "Refresh data",
-  "layout.tooltip.nextPage": "Go to previous page",
-  "layout.tooltip.prevPage": "Go to next page",
+  "layout.tooltip.nextPage": "Next page",
+  "layout.tooltip.prevPage": "Previous page",
 
   "layout.find": "Find",
   "layout.search": "Search",

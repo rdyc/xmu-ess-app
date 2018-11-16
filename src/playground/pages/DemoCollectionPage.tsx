@@ -148,7 +148,12 @@ const config: CollectionConfig<IProject, AllProps> = {
     >
       <FormattedMessage {...layoutMessage.action.details}/>
     </Button>
-  )
+  ),
+
+  // custom row render: uncomment to see different
+  // onRowRender: (item: IProject, index: number) => (
+  //   <div key={index}>{item.name}</div>
+  // )
 };
 
 type AllProps 

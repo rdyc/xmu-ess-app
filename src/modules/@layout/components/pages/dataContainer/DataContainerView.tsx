@@ -110,12 +110,14 @@ export const DataContainerView: React.SFC<DataContainerProps> = props => (
           placement="right"
           title={props.intl.formatMessage(layoutMessage.tooltip.prevPage)}
         >
-          <IconButton
-            disabled={props.isLoading || !props.metadata.paginate.previous}
-            onClick={props.onClickPrevious}
-          >
-            <ChevronLeftIcon />
-          </IconButton>
+          <div>
+            <IconButton
+              disabled={props.isLoading || !props.metadata.paginate.previous}
+              onClick={props.onClickPrevious}
+            >
+              <ChevronLeftIcon />
+            </IconButton>
+          </div>
         </Tooltip>
 
         <Typography
@@ -145,12 +147,14 @@ export const DataContainerView: React.SFC<DataContainerProps> = props => (
           placement="left"
           title={props.intl.formatMessage(layoutMessage.tooltip.nextPage)}
         >
-          <IconButton 
-            disabled={props.isLoading || !props.metadata.paginate.next}
-            onClick={props.onClickNext}
-          >
-            <ChevronRightIcon />
-          </IconButton>
+          <div>
+            <IconButton 
+              disabled={props.isLoading || !props.metadata.paginate.next}
+              onClick={props.onClickNext}
+            >
+              <ChevronRightIcon />
+            </IconButton>
+          </div>
         </Tooltip>
       </Toolbar>
     }

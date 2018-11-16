@@ -4,7 +4,7 @@ import { ICollectionValue } from '@layout/classes/core';
 import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { IAppBarMenu } from '@layout/interfaces';
-import { WithStyles, withStyles, WithTheme, withTheme } from '@material-ui/core';
+import { WithStyles, withStyles } from '@material-ui/core';
 import styles from '@styles';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import {
@@ -49,23 +49,11 @@ export interface CollectionConfig<Tres, Tconn> {
     quaternary: string;
     quinary: string;
   };
+  onRowRender?: (item: Tres, index: number) => JSX.Element;
   summaryComponent: (item: Tres) => JSX.Element;
   actionComponent?: (item: Tres) => JSX.Element;
   onRedirect: (item: Tres) => string;
 }
-
-const sizes: ICollectionValue[] = [
-  { value: 5, name: '5' },
-  { value: 10, name: '10' },
-  { value: 15, name: '15' },
-  { value: 20, name: '20' },
-  { value: 25, name: '25' }
-];
-
-const order: ICollectionValue[] = [
-  { value: 'ascending', name: 'Ascending' },
-  { value: 'descending', name: 'Descending' }
-];
 
 interface OwnOption {
   config: CollectionConfig<any, any>;
@@ -94,10 +82,6 @@ interface OwnState {
   // paging
   page: number;
   size: number;
-
-  // menu
-  menuAnchor?: string;
-  menuItems?: ICollectionValue[];
 }
 
 interface OwnStateUpdater extends StateHandlerMap<OwnState> {
@@ -114,14 +98,12 @@ interface OwnStateUpdater extends StateHandlerMap<OwnState> {
   setField: StateHandler<OwnState>;
   setOrder: StateHandler<OwnState>;
   setSize: StateHandler<OwnState>;
-  setOptionMenu: StateHandler<OwnState>;
 }
 
 interface OwnHandler {
   handleResponse: (response: IResponseCollection<any> | undefined) => void;
   handleOnChangeSelection: (event: React.ChangeEvent<HTMLInputElement>) => void;
   handleOnSearch: (find: string | undefined, field: ICollectionValue | undefined) => void;
-  handleOnClickOption: (event: React.MouseEvent<HTMLElement>) => void;
 }
 
 export type CollectionHandler = Pick<CollectionPageProps, 'setLoading' | 'handleResponse'>;
@@ -132,7 +114,6 @@ export type CollectionPageProps
   & OwnState
   & OwnStateUpdater
   & OwnHandler
-  & WithTheme
   & WithStyles<typeof styles>
   & WithLayout
   & WithAppBar
@@ -214,11 +195,7 @@ const stateUpdaters: StateUpdaters<OwnOption, OwnState, OwnStateUpdater> = {
     size,
     page: 1,
     forceReload: true
-  }),
-  setOptionMenu: (prevState: OwnState) => (anchorId?: string, items?: ICollectionValue[]) => ({
-    menuAnchor: anchorId,
-    menuItems: items
-  }),
+  })
 };
 
 const handlerCreators: HandleCreators<CollectionPageProps, OwnHandler> = {
@@ -250,34 +227,7 @@ const handlerCreators: HandleCreators<CollectionPageProps, OwnHandler> = {
       // set search state props to default
       props.setSearchDefault();
     }
-  },
-  handleOnClickOption: (props: CollectionPageProps) => (event: React.MouseEvent<HTMLElement>) => {
-    // get current element id
-    const anchor = event.currentTarget.id;
-
-    // populate menu items
-    let items: ICollectionValue[] | undefined;
-    
-    switch (anchor) {
-      case 'option-field':
-        items = props.config.fields;
-        break;
-
-      case 'option-order':
-        items = order;
-        break;
-
-      case 'option-size':
-        items = sizes;
-        break;
-      
-      default:
-        break;
-    }
-
-    // set state anchor id and items
-    props.setOptionMenu(anchor, items);
-  },
+  }
 };
 
 const lifecycles: ReactLifeCycleFunctions<CollectionPageProps, OwnState> = {
@@ -353,13 +303,11 @@ const lifecycles: ReactLifeCycleFunctions<CollectionPageProps, OwnState> = {
 
 export const CollectionPage = compose<CollectionPageProps, OwnOption>(
   setDisplayName('CollectionPage'),
-  withTheme(),
   withStyles(styles),
   withLayout,
   withAppBar,
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
-  lifecycle(lifecycles),
-  // onlyUpdateForKeys(['response', 'find', 'findBy', 'orderBy', 'direction', 'page', 'size'])
+  lifecycle(lifecycles)
 )(CollectionPageView);
