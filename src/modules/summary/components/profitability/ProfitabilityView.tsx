@@ -1,7 +1,7 @@
 import {  Card, CardContent, Grid, Table, TableBody, TableCell, TableRow, Typography } from '@material-ui/core';
 import { ISummaryProfitability } from '@summary/classes/response/profitability';
 import { ProfitabilityProps } from '@summary/components/profitability/Profitability';
-import { FilterForm } from '@summary/components/profitability/sharedFilterForm/FilterForm';
+import { FilterForm } from '@summary/components/progress/sharedFilterForm/FilterForm';
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { ProfitabilityExpenseView } from './ProfitabilityExpenseView';
