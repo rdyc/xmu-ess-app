@@ -11,7 +11,7 @@ export const SummaryRoutingComponents: React.SFC<RouteComponentProps> = props =>
     <Layout>
       <Route path={`${props.match.path}/billable/`} component={BillableList}/>
       <Route path={`${props.match.path}/effectiveness/`} component={Effectiveness}/>
-      <Route path={`${props.match.path}/progress/`} component={WinningRatio}/>
+      <Route path={`${props.match.path}/winningratio/`} component={WinningRatio}/>
     </Layout>
   </Switch>
 );
