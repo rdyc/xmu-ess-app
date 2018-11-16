@@ -5,4 +5,5 @@ export interface IView {
   parentUid: AppMenu | string | undefined;
   title: string;
   subTitle: string;
+  isSearchable?: boolean | false;
 }

@@ -1,9 +1,9 @@
 import AppMenu from '@constants/AppMenu';
 import { SortDirection } from '@generic/types';
+import { ICollectionValue } from '@layout/classes/core';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithNavBottom, withNavBottom } from '@layout/hoc/withNavBottom';
 import { WithUser, withUser } from '@layout/hoc/withUser';
-import { IListBarField } from '@layout/interfaces';
 import { SettlementField } from '@purchase/classes/types';
 import { PurchaseSettlementListView } from '@purchase/components/purchaseSettlement/list/PurchaseSettlementListView';
 import { WithPurchaseSettlement, withPurchaseSettlement } from '@purchase/hoc/purchaseSettlement/withPurchaseSettlement';
@@ -28,7 +28,7 @@ interface OwnHandlers {
   handleGoToPrevious: () => void;
   handleReloading: () => void;
   handleChangeSize: (value: number) => void;
-  handleChangeOrder: (field: IListBarField) => void;
+  handleChangeOrder: (field: ICollectionValue) => void;
   handleChangeSort: (direction: SortDirection) => void;
 }
 
@@ -89,8 +89,8 @@ const stateUpdaters: StateUpdaters<OwnOptions, OwnState, OwnStateUpdaters> = {
   stateReloading: (prevState: OwnState) => () => ({
     page: 1,
   }),
-  stateOrdering: (prevState: OwnState) => (field: IListBarField) => ({
-    orderBy: field.id,
+  stateOrdering: (prevState: OwnState) => (field: ICollectionValue) => ({
+    orderBy: field.value,
     page: 1,
   }),
   stateSorting: (prevState: OwnState) => (direction: SortDirection) => ({
@@ -124,7 +124,7 @@ const handlerCreators: HandleCreators<PurchaseSettlementListProps, OwnHandlers> 
     // force re-load from api
     loadData(props);
   },
-  handleChangeOrder: (props: PurchaseSettlementListProps) => (field: IListBarField) => { 
+  handleChangeOrder: (props: PurchaseSettlementListProps) => (field: ICollectionValue) => { 
     props.stateOrdering(field);
   },
   handleChangeSize: (props: PurchaseSettlementListProps) => (value: number) => { 
@@ -168,7 +168,7 @@ const lifecycles: ReactLifeCycleFunctions<PurchaseSettlementListProps, OwnState>
     });
 
     const items = Object.keys(SettlementField)
-      .map(key => ({ id: key, name: SettlementField[key] }));
+      .map(key => ({ value: key, name: SettlementField[key] }));
 
     navBottomDispatch.assignFields(items);
 

@@ -39,22 +39,19 @@ export type EnhancerProps
   & OwnStateUpdater
   & OwnHandler;
 
-const createProps: mapper<OwnOption, OwnState> = (props: OwnOption): OwnState => ({ 
+const createProps: mapper<EnhancerProps, OwnState> = (props: EnhancerProps): OwnState => ({ 
   counter: props.initialCount,
   value: 'Kamvret'
 });
 
-const stateUpdaters: StateUpdaters<OwnOption, OwnState, OwnStateUpdater> = {
-  setIncrement: (prev: OwnState) => (value: number): OwnState => ({
-    ...prev,
+const stateUpdaters: StateUpdaters<EnhancerProps, OwnState, OwnStateUpdater> = {
+  setIncrement: (prev: OwnState) => (value: number): Partial<OwnState> => ({
     counter: prev.counter + value,
   }),
-  setDecrement: (prev: OwnState) => (value: number): OwnState => ({
-    ...prev,
+  setDecrement: (prev: OwnState) => (value: number): Partial<OwnState> => ({
     counter: prev.counter - value,
   }),
-  setValue: (prev: OwnState) => (value: string): OwnState => ({
-    ...prev,
+  setValue: (prev: OwnState) => (value: string): Partial<OwnState> => ({
     value,
   })
 };
