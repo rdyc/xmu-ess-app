@@ -27,6 +27,7 @@ export const ProfitabilityExpenseView: React.SFC<AllProps> = props => {
       open={dialogOpen}
       aria-labelledby="profitability-expense-dialog-title"
       fullWidth
+      maxWidth="md"
     >
       <DialogTitle id="progress-expense-dialog-title">
         <FormattedMessage id="summary.profitability.dialog.title" />
@@ -34,22 +35,22 @@ export const ProfitabilityExpenseView: React.SFC<AllProps> = props => {
       </DialogTitle>
       <DialogContent>
         <Table
-          padding= "dense"
+          padding="dense"
         >
           <TableHead>
             <TableRow>
               {
                 expenseFields.map(expenseField =>
                   <TableCell
-                    className= {classNames(classes.stickyHeader)}
+                    className={classNames(classes.stickyHeader)}
                   >
                     <FormattedMessage id={`summary.profitability.tableHead.${expenseField}`} />
                   </TableCell>
                 )
               }
-              <TableCell 
+              <TableCell
                 numeric
-                className= {classNames(classes.stickyHeader)}
+                className={classNames(classes.stickyHeader)}
               >
                 <FormattedMessage id="summary.profitability.tableHead.amount" />
               </TableCell>

@@ -18,25 +18,25 @@ type AllProps
 
 export const ProfitabilityProjectView: React.SFC<AllProps> = props => {
   const { projects, width, classes, intl, handleDialogOpen } = props;
-  
+
   const isMobile = isWidthDown('sm', width);
   const assignmentFields = ['allocated', 'actual', 'remaining', 'progressAssignment', 'actualRate'];
   const projectFields = ['maxHours', 'allocatedHours', 'actualHours', 'remainHours', 'progress', 'actualRates', 'actualCosts', 'cogs'];
-  
+
   const RenderProgressAssignment = (assignments: ISummaryAssignmentTimesheet[]) => {
     return (
       <CardContent>
         <Table
-          padding= "dense"
+          padding="dense"
         >
           <TableHead>
             <TableRow>
-              <TableCell numeric>
+              <TableCell>
                 <FormattedMessage id="summary.profitability.tableHead.consultant" />
               </TableCell>
               {
                 assignmentFields.map(assignmentField =>
-                  <TableCell numeric>
+                  <TableCell>
                     <FormattedMessage id={`summary.profitability.tableHead.${assignmentField}`} />
                   </TableCell>
                 )
@@ -75,84 +75,83 @@ export const ProfitabilityProjectView: React.SFC<AllProps> = props => {
   };
   const RenderProfitabilityProject = (
     <Grid container spacing={16}>
-    {
-      projects.map(project =>
-        <Grid item xs={12}>
-          <Card
-            square
-            className= {!isMobile ? classNames(classes.reportPaperPartial) : classNames(classes.reportPaperPartialMobile)}
-          >
-            <CardHeader
-              title={`${project.projectUid} - ${project.name}`}
-            />
-            <div
-              className= {classNames(classes.reportContentScrollable)}
+      {
+        projects.map(project =>
+          <Grid item xs={12}>
+            <Card
+              square
+              className={!isMobile ? classNames(classes.reportPaperPartial) : classNames(classes.reportPaperPartialMobile)}
             >
-              <CardContent>
-                <Table
-                  className= {classNames(classes.reportTable)}
-                  padding= "dense"
-                >
-                  <TableHead>
-                    <TableRow>
-                      {
-                        projectFields.map(projectField => 
-                          <TableCell 
-                            numeric
-                            className= {classNames(classes.cellWidthXXS)}
+              <CardHeader
+                title={`${project.projectUid} - ${project.name}`}
+              />
+              <div
+                className={classNames(classes.reportContentScrollable)}
+              >
+                <CardContent>
+                  <Table
+                    className={classNames(classes.reportTable)}
+                    padding="dense"
+                  >
+                    <TableHead>
+                      <TableRow>
+                        {
+                          projectFields.map(projectField =>
+                            <TableCell
+                              className={classNames(classes.cellWidthXXS)}
+                            >
+                              <FormattedMessage id={`summary.profitability.tableHead.${projectField}`} />
+                            </TableCell>
+                          )
+                        }
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      <TableRow>
+                        <TableCell numeric>
+                          {project.maxHours}
+                        </TableCell>
+                        <TableCell numeric>
+                          {project.allocatedHours}
+                        </TableCell>
+                        <TableCell numeric>
+                          {project.actualHours}
+                        </TableCell>
+                        <TableCell numeric>
+                          {project.remainHours}
+                        </TableCell>
+                        <TableCell numeric>
+                          {`${project.progress} %`}
+                        </TableCell>
+                        <TableCell numeric>
+                          {intl.formatNumber(project.actualRates)}
+                        </TableCell>
+                        <TableCell numeric>
+                          <Button
+                            variant="contained"
+                            onClick={() => handleDialogOpen(isMobile, project.moduleCosts ? project.moduleCosts : [], project.projectUid)}
                           >
-                            <FormattedMessage id={`summary.profitability.tableHead.${projectField}`} />
-                          </TableCell>
-                        )
-                      }
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    <TableRow>
-                    <TableCell numeric>
-                        {project.maxHours}
-                      </TableCell>
-                      <TableCell numeric>
-                        {project.allocatedHours}
-                      </TableCell>
-                      <TableCell numeric>
-                        {project.actualHours}
-                      </TableCell>
-                      <TableCell numeric>
-                        {project.remainHours}
-                      </TableCell>
-                      <TableCell numeric>
-                        {`${project.progress} %`}
-                      </TableCell>
-                      <TableCell numeric>
-                        {intl.formatNumber(project.actualRates)}
-                      </TableCell>
-                      <TableCell numeric>
-                        <Button 
-                          variant= "contained"
-                          onClick= {() => handleDialogOpen(isMobile, project.moduleCosts ? project.moduleCosts : [], project.projectUid)}
-                        >
-                          {intl.formatNumber(project.actualCosts)}
-                        </Button>
-                      </TableCell>
-                      <TableCell numeric>
-                        {intl.formatNumber(project.cogs)}
-                      </TableCell>
-                    </TableRow>
-                  </TableBody>
-                </Table>
-              </CardContent>
-              {
-                project.assignments &&
-                project.assignments.length > 0 &&
-                RenderProgressAssignment(project.assignments)
-                  
-              }
-            </div>
-          </Card>
-        </Grid>
-      )
-    }
+                            {intl.formatNumber(project.actualCosts)}
+                          </Button>
+                        </TableCell>
+                        <TableCell numeric>
+                          {intl.formatNumber(project.cogs)}
+                        </TableCell>
+                      </TableRow>
+                    </TableBody>
+                  </Table>
+                </CardContent>
+                {
+                  project.assignments &&
+                  project.assignments.length > 0 &&
+                  RenderProgressAssignment(project.assignments)
+
+                }
+              </div>
+            </Card>
+          </Grid>
+        )
+      }
     </Grid>
   );
   return RenderProfitabilityProject;
