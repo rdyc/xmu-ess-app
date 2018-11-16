@@ -29,8 +29,8 @@
   "typescript.preferences.quoteStyle": "single",
   "breadcrumbs.enabled": true,
   "git.enableSmartCommit": true,
-  "workbench.iconTheme": "vscode-icons",
-  "window.zoomLevel": 0,
+  "workbench.iconTheme": "material-icon-theme",
+  "window.zoomLevel": -1,
   "prettier.singleQuote": true,
   "npm-scripts.showStartNotification": false,
 }

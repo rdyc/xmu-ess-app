@@ -1,5 +1,5 @@
 import { ILookupCustomer } from '@lookup/classes';
-import { ISummaryProfitabilityProject } from './ISummaryProfitabilityProject';
+import { ISummaryProfitabilityProject } from '@summary/classes/response/profitability';
 
 export interface ISummaryProfitability {
   customerUid: string;

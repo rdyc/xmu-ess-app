@@ -1,19 +1,12 @@
-import { ICommonSystem } from '@common/classes';
-import { ISummaryAssignment, ISummaryModuleCost } from '@summary/classes/response/progress';
+import { ILookupCustomer } from '@lookup/classes';
+import { ISummaryProgressProject } from '@summary/classes/response/progress';
 
 export interface ISummaryProgress {
-  projectUid: string;
-  projectType?: string | null;
-  project: ICommonSystem;
-  name: string;
-  valueIdr: number;
-  maxHours: number;
-  actualHours: number;
-  remainHours: number;
-  progress: number;
-  actualRates: number;
-  actualCosts: number;
-  cogs: number;
-  assignments?: ISummaryAssignment[] | null;
-  moduleCosts?: ISummaryModuleCost[] | null;
+  customerUid: string;
+  customer?: ILookupCustomer | null;
+  totalValue: number;
+  totalCogs: number;
+  percentage: number;
+  profit: number;
+  projects?: ISummaryProgressProject[] | null;
 }

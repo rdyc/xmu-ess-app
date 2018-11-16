@@ -3,6 +3,9 @@
   "summary.filter.field.projectUid": "Project",
   
   "summary.filter.field.customerUid.placeholder": "Choose a Customer",
+  "summary.filter.field.employeeUid": "Employee",
+  
+  "summary.filter.field.employeeUid.placeholder": "Select an Employee",
   "summary.filter.field.projectUid.placeholder": "Select a Project",
 
   "billable.title": "Employee and Presales Billable",
@@ -11,6 +14,9 @@
   "billable.field.start": "Start",
   "billable.field.end": "End",
   "billable.subTitle": "Lorem IPSUM",
+  "billable.note": "Note:",
+  "billable.totalhours": "*Total available Hours = 2080 Hour",
+  "billable.percentage": "*Billable (%) = (Billable Hours / 2080) * 100%",
 
   "summary.effectiveness.title": "Resource Effectiveness",
   "summary.effectiveness.subTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
@@ -51,7 +57,32 @@
   "summary.profitability.tableHead.requester": "Requester",
   "summary.profitability.tableHead.amount": "Amount",
 
-  "progress.title": "Project Progress",
+  "summary.progress.title": "Project Progress",
+  "summary.progress.subTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "summary.progress.dialog.title": "Detail Expense ",
+  "summary.progress.dialog.close": "Dismiss",
+  "summary.progress.tableHead.maxHours": "Total Max Hours",
+  "summary.progress.tableHead.allocatedHours": "Total Allocated Hours",
+  "summary.progress.tableHead.actualHours": "Total Actual Hours",
+  "summary.progress.tableHead.remainHours": "Total Remaining Hours",
+  "summary.progress.tableHead.progress": "Total Progress",
+  "summary.progress.tableHead.actualRates": "Total People Cost(IDR)",
+  "summary.progress.tableHead.actualCosts": "Total Expense(IDR)",
+  "summary.progress.tableHead.cogs": "Total COGS(IDR)",
+  "summary.progress.tableHead.consultant": "Consultant",
+  "summary.progress.tableHead.allocated": "Allocated Hours",
+  "summary.progress.tableHead.actual": "Actual Hours",
+  "summary.progress.tableHead.remaining": "Remaining Hours",
+  "summary.progress.tableHead.progressAssignment": "Progress",
+  "summary.progress.tableHead.totalValue": "PROJECT VALUE (IDR)",
+  "summary.progress.tableHead.totalCogs": "Grand Total COGS (IDR)",
+  "summary.progress.tableHead.profit": "GROSS PROFIT (IDR)",
+  "summary.progress.tableHead.percentage": "GROSS PROFIT",
+  "summary.progress.tableHead.type": "Type",
+  "summary.progress.tableHead.date": "Date",
+  "summary.progress.tableHead.documentUid": "Document ID",
+  "summary.progress.tableHead.requester": "Requester",
+  "summary.progress.tableHead.amount": "Amount",
 
   "winning.title": "Winning Ratio"
 }
