@@ -4,7 +4,7 @@ import { IDiem } from '@lookup/classes/response';
 import { WithLookupDiem, withLookupDiem } from '@lookup/hoc/withLookupDiem';
 import { WithStyles, withStyles } from '@material-ui/core';
 import styles from '@styles';
-import { TravelItemFormData, TravelRequestFormData } from '@travel/components/request/editor/forms/RequestForm';
+import { TravelItemFormData } from '@travel/components/request/editor/forms/RequestForm';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose, mapper, StateHandlerMap, StateUpdaters, withStateHandlers } from 'recompose';
 import { InjectedFormProps, WrappedFieldArrayProps } from 'redux-form';
@@ -13,8 +13,8 @@ import { RequestItemFormView } from './RequestItemFormView';
 interface OwnProps {
   context: WrappedFieldArrayProps<TravelItemFormData>;
   destinationTypeValue: string | null | undefined;
-  // diemType: string | null | undefined;
   diemRequest: IDiem[] | undefined;
+  onCostChange: (event: any, newValue: number, oldValue: number) => void;
 }
 
 interface OwnState {
@@ -28,7 +28,7 @@ interface OwnStateHandler extends StateHandlerMap<OwnState> {
 
 export type RequestItemFormProps
   = OwnProps
-  & InjectedFormProps<TravelRequestFormData, OwnProps>
+  & InjectedFormProps<TravelItemFormData, OwnProps>
   & OwnState
   & OwnStateHandler
   & WithUser

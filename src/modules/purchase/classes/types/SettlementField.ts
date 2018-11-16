@@ -6,8 +6,8 @@ export enum SettlementField {
   currencyType = 'Currency Type',
   rate = 'Currency Rate',
   requestNote = 'Notes',
-  totalActual = 'Request Amount',
-  totalActualIDR = 'Request Amount in Rupiah',
+  totalActual = 'Actual Amount',
+  totalActualIDR = 'Actual Amount in Rupiah',
   advanceAmount = 'Advance Payment',
   settlementStatusType = 'Settlement Status',
 }

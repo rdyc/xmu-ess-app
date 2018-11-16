@@ -124,7 +124,7 @@ export const SettlementApprovalListView: React.SFC<SettlementApprovalListProps> 
   );
 
   const RenderNull = () => (
-    <Typography variant="body2" align="center">Lost in The Force, Padawan, you are.</Typography>
+    <Typography variant="body2" align="center">Lost in The Force, Padawan, you have.</Typography>
   );
 
   const render = (

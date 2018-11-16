@@ -5,5 +5,4 @@ export interface ISettlementPutPayload extends IBasePayload {
   date: string;
   notes?: string | null;
   items?: ISettlementItemPutPayload[] | null;
-  
 }

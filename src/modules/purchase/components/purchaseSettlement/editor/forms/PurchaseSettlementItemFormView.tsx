@@ -8,17 +8,12 @@ import {
 import { PurchaseSettlementItemFormProps } from '@purchase/components/purchaseSettlement/editor/forms/PurchaseSettlementItemForm';
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
-import { 
-  // change, 
-  Field, 
-} from 'redux-form';
+import { Field } from 'redux-form';
 
-export const PurchaseSettlementItemFormView: React.SFC<PurchaseSettlementItemFormProps> = props => {
-  const { context, onActualChange } = props;
+export const PurchaseSettlementItemFormView: React.SFC<PurchaseSettlementItemFormProps 
+> = props => {
+  const { context } = props;
 
-  // const onActualChange = (event: any, newValue: string, oldValue: string) => {
-  //   change('items.value', oldValue - newValue);
-  // };
   const render = (
       <Grid container spacing={16}>
         {
@@ -53,12 +48,12 @@ export const PurchaseSettlementItemFormView: React.SFC<PurchaseSettlementItemFor
                       name={`${field}.actual`}
                       label={<FormattedMessage id="purchase.itemTitle.actual" />}
                       required={true}
-                      onChange={onActualChange}
-                    //   onChange={(event: any, newValue: any) => {
-                    //   if (!isNaN(newValue)) {
-                    //     props.change(`${field}.variance`, newValue - {field}.variance);
-                    //   }
-                    // }}
+                      // onChange={onActualChange}
+                        onChange={(event: any, newValue: any) => {
+                        if (!isNaN(newValue)) {
+                          props.change(`${field}.variance`, newValue);
+                        }
+                      }}
                       component={InputNumber}
                     />
                     <Field
