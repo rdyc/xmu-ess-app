@@ -9,7 +9,7 @@ import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 
 export const TimesheetEntryEditorView: React.SFC<EntryEditorProps> = props => {
-  const { formMode, handleValidate, handleSubmit, handleSubmitSuccess, handleSubmitFail, intl } = props;
+  const { formMode, handleValidate, handleSubmit, handleSubmitSuccess, handleSubmitFail } = props;
   const { isLoading, response } = props.timesheetState.detail;
 
   const renderForm = (formData: TimesheetFormData) => (
@@ -56,25 +56,6 @@ export const TimesheetEntryEditorView: React.SFC<EntryEditorProps> = props => {
     if (!isLoading && response && response.data) {
       // todo: replace values with response data
       const data = response.data;
-
-      const start = intl.formatDate(data.start, {
-        second: 'numeric',
-        minute: 'numeric',
-        hour: 'numeric',
-        day: 'numeric',
-        month: 'numeric',
-        year: 'numeric',
-        timeZone: 'GMT',
-      });
-      const end = intl.formatDate(data.end, {
-        second: 'numeric',
-        minute: 'numeric',
-        hour: 'numeric',
-        day: 'numeric',
-        month: 'numeric',
-        year: 'numeric',
-        timeZone: 'GMT',
-      });
       
       initialValues.information.uid = data.uid;
       initialValues.information.activityType = data.activityType;
@@ -82,8 +63,8 @@ export const TimesheetEntryEditorView: React.SFC<EntryEditorProps> = props => {
       initialValues.information.projectUid = data.projectUid;
       initialValues.information.siteUid = data.siteUid;
       initialValues.information.date = data.date;
-      initialValues.information.start = start;
-      initialValues.information.end = end;
+      initialValues.information.start = data.start;
+      initialValues.information.end = data.end;
       initialValues.information.description = data.description;
           
       return renderForm(initialValues);
