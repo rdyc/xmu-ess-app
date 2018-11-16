@@ -10,10 +10,9 @@ import {
   IPurchasePutPayload
 } from '@purchase/classes/request/purchaseRequest';
 import { IPurchase, 
-  // IPurchaseDetail 
 } from '@purchase/classes/response/purchaseRequest';
 import {
-  PurchaseRequestFormData
+  PurchaseRequestFormData,
 } from '@purchase/components/purchaseRequest/editor/forms/PurchaseRequestForm';
 import { PurchaseRequestEditorView } from '@purchase/components/purchaseRequest/editor/PurchaseRequestEditorView';
 import { WithPurchaseRequest, withPurchaseRequest } from '@purchase/hoc/purchaseRequest/withPurchaseRequest';
@@ -73,10 +72,10 @@ export type PurchaseRequestEditorProps
   & OwnStateUpdaters;
 
 const createProps: mapper<PurchaseRequestEditorProps, OwnState> = (props: PurchaseRequestEditorProps): OwnState => {
-  const { history } = props;
+  const { history, } = props;
 
   const state = history.location.state;
-
+  
   return {
     // setState: state ? '' : undefined;
     formMode: state ? FormMode.Edit : FormMode.New,
@@ -90,28 +89,10 @@ const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
   stateUpdate: (prevState: OwnState) => (newState: any) => ({
     ...prevState,
     ...newState
-  }),
-  // setTotalRequest: (prevState: OwnState) => (request: any) => ({
-  //   ...prevState,
-  //   information: {
-  //     ...prevState,
-  //   }
-  // }),
+  })
 };
 
 const handlers: HandleCreators<PurchaseRequestEditorProps, OwnHandlers> = {
-  // handleEventListener: (props: PurchaseRequestEditorProps) => (event: CustomEvent) => {
-  //   const formValues = event.detail as PurchaseRequestFormData;
-  //   const { setTotalRequest } = props;
-
-  //   let requestValue: number = 0;
-
-  //   if (formValues.items) {
-  //     formValues.items.items.forEach(item => requestValue += item.request);
-  //   }
-
-  //   setTotalRequest(requestValue);
-  // },
   handleValidate: (props: PurchaseRequestEditorProps) => (formData: PurchaseRequestFormData) => {
     const errors = {
       information: {},
@@ -131,20 +112,36 @@ const handlers: HandleCreators<PurchaseRequestEditorProps, OwnHandlers> = {
       }
     });
 
-    // const itemsField = ['description', 'request'];
+    if (formData.items) {
+      const requiredItemFields = ['description', 'request'];
+      const itemErrors: any[] = [];
 
-    // itemsField.forEach(field => {
-    //   if(!formData.items.items[]){
+      formData.items.items.forEach((item, index) => {
+        const itemError: any = {};
 
-    //   }
-    // });
+        if (!item) { return; }
+
+        requiredItemFields.forEach(field => {
+          if (!item[field] || isNullOrUndefined(item[field])) {
+            Object.assign(itemError, { [`${field}`]: props.intl.formatMessage({ id: `travel.field.information.item.${field}.required` }) });
+          }
+        });
+
+        itemErrors.push(itemError);
+      });
+
+      if (itemErrors.length) {
+        Object.assign(errors, {
+          items: itemErrors
+        });
+      }
+    }
 
     return errors;
   },
   handleSubmit: (props: PurchaseRequestEditorProps) => (formData: PurchaseRequestFormData) => {
     const { formMode, purchaseUid, intl } = props;
     const { user } = props.userState;
-    // const { response } = props.purchaseRequestState.detail;
     const { createRequest, updateRequest } = props.purchaseRequestDispatch;
 
     if (!user) {
@@ -334,9 +331,6 @@ const lifecycles: ReactLifeCycleFunctions<PurchaseRequestEditorProps, {}> = {
 
     layoutDispatch.navBackShow();
   },
-  // componentDidUpdate() {
-  //   this.props.setState(this.props.);
-  // },
   componentWillUnmount() {
     const { layoutDispatch, appBarDispatch, purchaseRequestDispatch } = this.props;
 
