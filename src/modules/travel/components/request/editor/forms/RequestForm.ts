@@ -3,6 +3,18 @@ import { IDiem } from '@lookup/classes/response';
 import { WithLookupDiem } from '@lookup/hoc/withLookupDiem';
 import { RequestFormView } from '@travel/components/request/editor/forms/RequestFormView';
 import { connect } from 'react-redux';
+import { 
+  compose, 
+  HandleCreators, 
+  lifecycle, 
+  mapper, 
+  ReactLifeCycleFunctions, 
+  StateHandler, 
+  StateHandlerMap, 
+  StateUpdaters, 
+  withHandlers,
+  withStateHandlers } 
+from 'recompose';
 import { formValueSelector, InjectedFormProps, reduxForm } from 'redux-form';
 
 const formName = 'travelRequest';
@@ -45,6 +57,7 @@ export type TravelRequestFormData = {
     objective: string | null | undefined;
     target: string | null | undefined;
     comment: string | null | undefined;
+    total: number | undefined;
   },
   item: {
     items: TravelItemFormData[]  
@@ -55,18 +68,54 @@ interface OwnProps {
   formMode: FormMode;
   diemRequest: IDiem[] | undefined;
 }
+
+interface OwnHandlers {
+  handleEventListener: (event: CustomEvent) => void;
+}
+
+interface OwnState {
+  TotalCost: number | undefined;
+}
+
+interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
+  setTotal: StateHandler<OwnState>;
+}
+
 interface FormValueProps {
   customerUidValue: string | undefined;
   destinationtypeValue: string | undefined;
   projectUidValue: string | undefined;
   isProjectSelected: boolean | false;
+  totalTravel: number | 0;
 }
 
 export type RequestFormProps 
   = InjectedFormProps<TravelRequestFormData, OwnProps>
   & WithLookupDiem
   & FormValueProps 
-  & OwnProps;
+  & OwnHandlers
+  & OwnProps
+  & OwnState
+  & OwnStateUpdaters;
+
+const createProps: mapper<RequestFormProps, OwnState> = (props: RequestFormProps): OwnState => {
+  return {
+    TotalCost : props.initialValues.information && props.initialValues.information.total 
+  };
+};
+
+const handlers: HandleCreators<RequestFormProps, OwnHandlers> = {
+  handleEventListener: (props: RequestFormProps) => (event: CustomEvent) => {
+    const { setTotal } = props;
+    const formValues = event.detail as TravelRequestFormData;
+
+    let total: number = 0;
+    if (formValues.item.items) {
+      formValues.item.items.forEach((item) => total += item.costTransport + item.costHotel + item.amount);
+    }
+    setTotal(total);
+  }
+};
 
 const selector = formValueSelector(formName);
 
@@ -74,19 +123,52 @@ const mapStateToProps = (state: any): FormValueProps => {
    const customerUid = selector(state, 'information.customerUid');
    const destinationtype = selector(state, 'information.destinationType');
    const projectUid = selector(state, 'information.projectUid');
+   const total = selector(state, 'information.total');
    return {
      customerUidValue: customerUid,
      destinationtypeValue: destinationtype,
      projectUidValue: projectUid,
-     isProjectSelected: projectUid
+     isProjectSelected: projectUid,
+     totalTravel: total     
    };   
  };
 
-const connectedView = connect(mapStateToProps)(RequestFormView);
+const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
+  setTotal: (prevState: OwnState) => (total: number) => {
+    if (prevState.TotalCost) {
+      return {
+        TotalCost: total
+      };
+    }
+    return {
+      ...prevState
+    };
+  }
+};
+
+const lifecycles: ReactLifeCycleFunctions<RequestFormProps, OwnState> = {
+  componentDidMount() {
+    addEventListener('TRV_FORM', this.props.handleEventListener);
+  },
+  componentWillUnmount() {
+    removeEventListener('TRV_FORM', this.props.handleEventListener);
+  }
+};
+
+// const connectedView = connect(mapStateToProps)(RequestFormView);
+const enhance = compose<RequestFormProps, OwnProps & InjectedFormProps<TravelRequestFormData, OwnProps>> (
+  connect(mapStateToProps),
+  withStateHandlers(createProps, stateUpdaters),
+  withHandlers(handlers),
+  lifecycle(lifecycles),
+)(RequestFormView);
 
 export const RequestForm = reduxForm<TravelRequestFormData, OwnProps>({
   form: formName,
   touchOnChange: true,
   touchOnBlur: true,
-  enableReinitialize: true
-})(connectedView);
+  enableReinitialize: true,
+  onChange: (values: TravelRequestFormData, dispatch: any, props: any) => {
+    dispatchEvent(new CustomEvent('TRV_FORM', {detail: values}));
+  },
+})(enhance);
