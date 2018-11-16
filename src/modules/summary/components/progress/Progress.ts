@@ -139,7 +139,7 @@ const lifecycles: ReactLifeCycleFunctions<ProgressProps, OwnState> = {
       }
     },
     componentWillUpdate(props: ProgressProps, state: OwnState) {
-        if (this.props.customerUid !== props.customerUid &&
+        if (this.props.customerUid !== props.customerUid ||
             this.props.projectUid !== props.projectUid) {
                 loadData(props);
             }
