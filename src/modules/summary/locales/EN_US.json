@@ -1,4 +1,9 @@
 {
+  "summary.filter.field.employeeUid": "Employee",
+  "summary.filter.field.projectUid": "Project",
+  "summary.filter.field.employeeUid.placeholder": "Select an Employee",
+  "summary.filter.field.projectUid.placeholder": "Select a Project",
+
   "billable.title": "Employee and Presales Billable",
   "billable.field.company": "Company",
   "billable.field.name": "Employee Name",
