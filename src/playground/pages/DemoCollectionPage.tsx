@@ -1,3 +1,4 @@
+import { ICollectionValue } from '@layout/classes/core';
 import {
   CollectionConfig,
   CollectionDataProps,
@@ -6,7 +7,7 @@ import {
   CollectionPageProps,
 } from '@layout/components/pages';
 import { WithUser, withUser } from '@layout/hoc/withUser';
-import { IAppBarMenu, IListBarField } from '@layout/interfaces';
+import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
 import { Button } from '@material-ui/core';
 import { IProject } from '@project/classes/response';
@@ -19,8 +20,8 @@ import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { compose } from 'recompose';
 
-const projectFields: IListBarField[] = Object.keys(ProjectRegistrationField).map(key => ({ 
-  id: key, 
+const projectFields: ICollectionValue[] = Object.keys(ProjectRegistrationField).map(key => ({ 
+  value: key, 
   name: ProjectRegistrationField[key] 
 }));
 
@@ -135,7 +136,7 @@ const config: CollectionConfig<IProject, AllProps> = {
   }),
 
   // summary component
-  summaryComponent: (item: IProject) => (
+  summaryComponent: (item: IProject) => ( 
     <ProjectSumarry data={item} />
   ),
 

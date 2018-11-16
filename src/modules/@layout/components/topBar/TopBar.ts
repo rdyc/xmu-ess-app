@@ -1,7 +1,8 @@
+import { ICollectionValue } from '@layout/classes/core';
 import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithNotification, withNotification } from '@layout/hoc/withNotification';
-import { IAppBarMenu, IListBarField } from '@layout/interfaces';
+import { IAppBarMenu } from '@layout/interfaces';
 import { PropTypes, WithStyles, withStyles, WithTheme, withTheme } from '@material-ui/core';
 import { WithWidth } from '@material-ui/core/withWidth';
 import styles from '@styles';
@@ -30,7 +31,7 @@ interface OwnOption {
 interface OwnState {
   mode: TopBarMode;
   search: string;
-  field: IListBarField | undefined;
+  field: ICollectionValue | undefined;
   isShowFields: boolean;
   isOpenMenu: boolean;
 }
@@ -51,7 +52,7 @@ interface OwnHandler {
   handleOnClearSearch: () => void;
   handleOnKeyUpSearch: (event: React.KeyboardEvent<HTMLTextAreaElement | HTMLInputElement>) => void;
   handleOnDiscardSelection: () => void;
-  handleOnClickField: (field?: IListBarField | undefined) => void;
+  handleOnClickField: (field?: ICollectionValue | undefined) => void;
   handleOnClickProcess: () => void;
   getClassColor: () => PropTypes.Color;
   getClassNames: () => string[];
@@ -88,7 +89,7 @@ const stateUpdaters: StateUpdaters<OwnOption, OwnState, OwnStateUpdater> = {
     search: value,
     isShowFields: value.length >= 3
   }),
-  setField: (prev: OwnState) => (field: IListBarField | undefined): Partial<OwnState> => ({
+  setField: (prev: OwnState) => (field: ICollectionValue | undefined): Partial<OwnState> => ({
     field
   }),
   setFieldVisibility: (prev: OwnState) => (): Partial<OwnState> => ({
@@ -144,7 +145,7 @@ const handlerCreators: HandleCreators<TopBarProps, OwnHandler> = {
 
     props.appBarState.onSelectionClear();
   },
-  handleOnClickField: (props: TopBarProps) => (field: IListBarField) => {
+  handleOnClickField: (props: TopBarProps) => (field: ICollectionValue) => {
     props.setField(field);
     props.setFieldVisibility();
     props.appBarState.onSearching(props.search, field);

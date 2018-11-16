@@ -1,8 +1,9 @@
 import AppMenu from '@constants/AppMenu';
 import { IBaseFilter, IBasePagingFilter, IResponseCollection } from '@generic/interfaces';
+import { ICollectionValue } from '@layout/classes/core';
 import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
-import { IAppBarMenu, IListBarField } from '@layout/interfaces';
+import { IAppBarMenu } from '@layout/interfaces';
 import { WithStyles, withStyles, WithTheme, withTheme } from '@material-ui/core';
 import styles from '@styles';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
@@ -24,11 +25,11 @@ import { CollectionPageView } from './CollectionPageView';
 
 export interface CollectionConfig<Tres, Tconn> {
   uid: AppMenu | string;
-  parentUid: AppMenu | string | undefined;
+  parentUid?: AppMenu | string;
   title: string;
   description: string;
-  fields?: IListBarField[] | undefined;
-  fieldTranslator?: (find: string, field: IListBarField) => string;
+  fields: ICollectionValue[];
+  fieldTranslator?: (find: string, field: ICollectionValue) => string;
   hasMore?: boolean | false;
   moreOptions?: (props: CollectionPageProps) => IAppBarMenu[];
   hasSearching?: boolean | false;
@@ -53,22 +54,50 @@ export interface CollectionConfig<Tres, Tconn> {
   onRedirect: (item: Tres) => string;
 }
 
+const sizes: ICollectionValue[] = [
+  { value: 5, name: '5' },
+  { value: 10, name: '10' },
+  { value: 15, name: '15' },
+  { value: 20, name: '20' },
+  { value: 25, name: '25' }
+];
+
+const order: ICollectionValue[] = [
+  { value: 'ascending', name: 'Ascending' },
+  { value: 'descending', name: 'Descending' }
+];
+
 interface OwnOption {
   config: CollectionConfig<any, any>;
   connectedProps: any;
 }
 
 interface OwnState {
+  // statuses
   forceReload: boolean;
   isLoading: boolean;
+  
+  // data response
   response?: IResponseCollection<any> | undefined;
+  
+  // selection
   selected: string[];
+
+  // filter
   find?: string;
   findBy?: string;
+  
+  // order
   orderBy?: string;
   direction?: 'ascending' | 'descending' | string | undefined;
+  
+  // paging
   page: number;
   size: number;
+
+  // menu
+  menuAnchor?: string;
+  menuItems?: ICollectionValue[];
 }
 
 interface OwnStateUpdater extends StateHandlerMap<OwnState> {
@@ -82,15 +111,17 @@ interface OwnStateUpdater extends StateHandlerMap<OwnState> {
   setPageNext: StateHandler<OwnState>;
   setPagePrevious: StateHandler<OwnState>;
   setPageOne: StateHandler<OwnState>;
-  setOrdering: StateHandler<OwnState>;
-  setSorting: StateHandler<OwnState>;
-  setSizing: StateHandler<OwnState>;
+  setField: StateHandler<OwnState>;
+  setOrder: StateHandler<OwnState>;
+  setSize: StateHandler<OwnState>;
+  setOptionMenu: StateHandler<OwnState>;
 }
 
 interface OwnHandler {
   handleResponse: (response: IResponseCollection<any> | undefined) => void;
   handleOnChangeSelection: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  handleOnSearch: (find: string | undefined, field: IListBarField | undefined) => void;
+  handleOnSearch: (find: string | undefined, field: ICollectionValue | undefined) => void;
+  handleOnClickOption: (event: React.MouseEvent<HTMLElement>) => void;
 }
 
 export type CollectionHandler = Pick<CollectionPageProps, 'setLoading' | 'handleResponse'>;
@@ -145,15 +176,15 @@ const stateUpdaters: StateUpdaters<OwnOption, OwnState, OwnStateUpdater> = {
   setSelectionClear: (prev: OwnState) => (): Partial<OwnState> => ({
     selected: []
   }),
-  setSearchDefault: (prevState: OwnState) => (find: string, field: IListBarField | undefined) => ({
+  setSearchDefault: (prevState: OwnState) => (find: string, field: ICollectionValue | undefined) => ({
     find: undefined,
     findBy: undefined,
     page: 1,
     forceReload: true
   }),
-  setSearchResult: (prevState: OwnState) => (find: string, field: IListBarField | undefined) => ({
+  setSearchResult: (prevState: OwnState) => (find: string, field: ICollectionValue | undefined) => ({
     find,
-    findBy: field ? field.id : undefined,
+    findBy: field ? field.value : undefined,
     page: 1,
     forceReload: true
   }),
@@ -169,20 +200,24 @@ const stateUpdaters: StateUpdaters<OwnOption, OwnState, OwnStateUpdater> = {
     page: 1,
     forceReload: true
   }),
-  setOrdering: (prevState: OwnState) => (field: IListBarField) => ({
-    orderBy: field.id,
+  setField: (prevState: OwnState) => (field: string) => ({
+    orderBy: field,
     page: 1,
     forceReload: true
   }),
-  setSorting: (prevState: OwnState) => (direction: string) => ({
+  setOrder: (prevState: OwnState) => (direction: string) => ({
     direction,
     page: 1,
     forceReload: true
   }),
-  setSizing: (prevState: OwnState) => (size: number) => ({
+  setSize: (prevState: OwnState) => (size: number) => ({
     size,
     page: 1,
     forceReload: true
+  }),
+  setOptionMenu: (prevState: OwnState) => (anchorId?: string, items?: ICollectionValue[]) => ({
+    menuAnchor: anchorId,
+    menuItems: items
   }),
 };
 
@@ -199,7 +234,7 @@ const handlerCreators: HandleCreators<CollectionPageProps, OwnHandler> = {
 
     props.appBarDispatch.selectionAddRemove(event.currentTarget.value);
   },
-  handleOnSearch: (props: CollectionPageProps) => (find: string | undefined, field: IListBarField | undefined) => {
+  handleOnSearch: (props: CollectionPageProps) => (find: string | undefined, field: ICollectionValue | undefined) => {
     // when find is undefided, that means user has close or exit from search mode
     if (find) {
       let _find: string = find.trim();
@@ -215,6 +250,33 @@ const handlerCreators: HandleCreators<CollectionPageProps, OwnHandler> = {
       // set search state props to default
       props.setSearchDefault();
     }
+  },
+  handleOnClickOption: (props: CollectionPageProps) => (event: React.MouseEvent<HTMLElement>) => {
+    // get current element id
+    const anchor = event.currentTarget.id;
+
+    // populate menu items
+    let items: ICollectionValue[] | undefined;
+    
+    switch (anchor) {
+      case 'option-field':
+        items = props.config.fields;
+        break;
+
+      case 'option-order':
+        items = order;
+        break;
+
+      case 'option-size':
+        items = sizes;
+        break;
+      
+      default:
+        break;
+    }
+
+    // set state anchor id and items
+    props.setOptionMenu(anchor, items);
   },
 };
 
@@ -298,5 +360,6 @@ export const CollectionPage = compose<CollectionPageProps, OwnOption>(
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
-  lifecycle(lifecycles)
+  lifecycle(lifecycles),
+  // onlyUpdateForKeys(['response', 'find', 'findBy', 'orderBy', 'direction', 'page', 'size'])
 )(CollectionPageView);

@@ -10,6 +10,18 @@ export const layoutText = defineMessages({
   pagingInfo: { id: `${prefix}.text.pagingInfo` }
 });
 
+// tooltip
+export const layoutTooltip = defineMessages({
+  more: { id: `${prefix}.tooltip.more`},
+  orderBy: { id: `${prefix}.tooltip.orderBy`},
+  sortDirection: { id: `${prefix}.tooltip.sortDirection`},
+  rowsPerPage: { id: `${prefix}.tooltip.rowsPerPage` },
+  createNew: { id: `${prefix}.tooltip.createNew` },
+  refresh: { id: `${prefix}.tooltip.refresh` },
+  nextPage: { id: `${prefix}.tooltip.nextPage` },
+  prevPage: { id: `${prefix}.tooltip.prevPage` },
+});
+
 // action
 export const layoutAction = defineMessages({
   yes: { id: `${prefix}.action.yes`},

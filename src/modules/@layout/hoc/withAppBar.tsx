@@ -1,5 +1,6 @@
 import { IAppState } from '@generic/interfaces';
-import { IAppBarMenu, IAppBarState, IListBarField } from '@layout/interfaces';
+import { ICollectionValue } from '@layout/classes/core';
+import { IAppBarMenu, IAppBarState } from '@layout/interfaces';
 import {
   appBarAssignFields,
   appBarAssignMenuCallback,
@@ -42,11 +43,11 @@ const mapStateToProps = ({ appBar }: IAppState) => ({
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   appBarDispatch: {
     assignCallback: (callback: (menu: IAppBarMenu) => void) => dispatch(appBarAssignMenuCallback(callback)),
-    assignSearchCallback: (callback: (find: string, findBy?: IListBarField | undefined) => void) => dispatch(appBarAssignSearchCallback(callback)),
+    assignSearchCallback: (callback: (find: string, findBy?: ICollectionValue) => void) => dispatch(appBarAssignSearchCallback(callback)),
     assignSelectionClearCallback: (callback: () => void) => dispatch(appBarAssignSelectionClearCallback(callback)),
     assignSelectionProcessCallback: (callback: (values: string[]) => void) => dispatch(appBarAssignSelectionProcessCallback(callback)),
     assignMenus: (menus: IAppBarMenu[]) => dispatch(appBarAssignMenus(menus)),
-    assignFields: (fields: IListBarField[]) => dispatch(appBarAssignFields(fields)),
+    assignFields: (fields: ICollectionValue[]) => dispatch(appBarAssignFields(fields)),
     selectionAddRemove: (value: string) => dispatch(appBarSelectionAddRemove(value)),
     selectionClear: () => dispatch(appBarSelectionClear()),
     dispose: () => dispatch(appBarDispose()),

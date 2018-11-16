@@ -1,6 +1,6 @@
 // import { IAppState, IQueryCollectionState } from '@generic/interfaces';
 // import { ConnectedReduxProps, SortDirection } from '@generic/types';
-// import { ILayoutState, IListBarCallback, IListBarField, IListBarState, IView } from '@layout/interfaces';
+// import { ILayoutState, IListBarCallback, ICollectionValue, IListBarState, IView } from '@layout/interfaces';
 // import {
 //   layoutActionCentreHide,
 //   layoutActionCentreShow,
@@ -175,7 +175,7 @@
 //     this.loadData();
 //   }
 
-//   private handleOnOrderCallback = (field: IListBarField) => {
+//   private handleOnOrderCallback = (field: ICollectionValue) => {
 //     this.state.page = 1;
 //     this.state.orderBy = field.id;
 
@@ -234,7 +234,7 @@
 
 //   listBarDispatch: {
 //     assignCallbacks: (callbacks: IListBarCallback) => dispatch(listBarAssignCallbacks(callbacks)),
-//     assignFields: (fields: IListBarField[]) => dispatch(listBarAssignFields(fields)),
+//     assignFields: (fields: ICollectionValue[]) => dispatch(listBarAssignFields(fields)),
 //     changeOrder: (name: string) => dispatch(listBarChangeOrder(name)),
 //     changeSize: (size: number) => dispatch(listBarChangeSize(size)),
 //     changeDirection: (direction: SortDirection) => dispatch(listBarChangeDirection(direction)),

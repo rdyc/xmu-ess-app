@@ -3,10 +3,10 @@ import { ExpenseField } from '@expense/classes/types';
 import { RequestListView } from '@expense/components/request/list/RequestListView';
 import { WithExpenseRequest, withExpenseRequest } from '@expense/hoc/withExpenseRequest';
 import { SortDirection } from '@generic/types';
+import { ICollectionValue } from '@layout/classes/core';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithNavBottom, withNavBottom } from '@layout/hoc/withNavBottom';
 import { WithUser, withUser } from '@layout/hoc/withUser';
-import { IListBarField } from '@layout/interfaces';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import {
@@ -28,7 +28,7 @@ export interface OwnHandlers {
   handleGoToPrevious: () => void;
   handleReloading: () => void;
   handleChangeSize: (value: number) => void;
-  handleChangeOrder: (field: IListBarField) => void;
+  handleChangeOrder: (field: ICollectionValue) => void;
   handleChangeSort: (direction: SortDirection) => void;
 }
 
@@ -89,8 +89,8 @@ const stateUpdaters: StateUpdaters<OwnOptions, OwnState, OwnStateUpdaters> = {
     stateReloading: (prevState: OwnState) => () => ({
       page: 1,
     }),
-    stateOrdering: (prevState: OwnState) => (field: IListBarField) => ({
-      orderBy: field.id,
+    stateOrdering: (prevState: OwnState) => (field: ICollectionValue) => ({
+      orderBy: field.value,
       page: 1,
     }),
     stateSorting: (prevState: OwnState) => (direction: SortDirection) => ({
@@ -124,7 +124,7 @@ const handlerCreators: HandleCreators<RequestListProps, OwnHandlers> = {
       // force re-load from api
       loadData(props);
     },
-    handleChangeOrder: (props: RequestListProps) => (field: IListBarField) => { 
+    handleChangeOrder: (props: RequestListProps) => (field: ICollectionValue) => { 
       props.stateOrdering(field);
     },
     handleChangeSize: (props: RequestListProps) => (value: number) => { 
@@ -168,7 +168,7 @@ const lifecycles: ReactLifeCycleFunctions<RequestListProps, OwnState> = {
       });
   
       const items = Object.keys(ExpenseField)
-        .map(key => ({ id: key, name: ExpenseField[key] }));
+        .map(key => ({ value: key, name: ExpenseField[key] }));
   
       navBottomDispatch.assignFields(items);
   

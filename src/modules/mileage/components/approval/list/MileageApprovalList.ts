@@ -1,9 +1,9 @@
 import AppMenu from '@constants/AppMenu';
 import { SortDirection } from '@generic/types';
+import { ICollectionValue } from '@layout/classes/core';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithNavBottom, withNavBottom } from '@layout/hoc/withNavBottom';
 import { WithUser, withUser } from '@layout/hoc/withUser';
-import { IListBarField } from '@layout/interfaces';
 import { MileageApprovalField } from '@mileage/classes/types';
 import { MileageApprovalListView } from '@mileage/components/approval/list/MileageApprovalListView';
 import { WithMileageApproval, withMileageApproval } from '@mileage/hoc/withMileageApproval';
@@ -28,7 +28,7 @@ interface OwnHandlers {
   handleGoToPrevious: () => void;
   handleReloading: () => void;
   handleChangeSize: (value: number) => void;
-  handleChangeOrder: (field: IListBarField) => void;
+  handleChangeOrder: (field: ICollectionValue) => void;
   handleChangeSort: (direction: SortDirection) => void;
 }
 
@@ -90,8 +90,8 @@ const stateUpdaters: StateUpdaters<OwnOptions, OwnState, OwnStateUpdaters> = {
   stateReloading: (prevState: OwnState) => () => ({
     page: 1,
   }),
-  stateOrdering: (prevState: OwnState) => (field: IListBarField) => ({
-    orderBy: field.id,
+  stateOrdering: (prevState: OwnState) => (field: ICollectionValue) => ({
+    orderBy: field.value,
     page: 1,
   }),
   stateSorting: (prevState: OwnState) => (direction: SortDirection) => ({
@@ -125,7 +125,7 @@ const handlerCreators: HandleCreators<MileageApprovalListProps, OwnHandlers> = {
     // force re-load from api
     loadData(props);
   },
-  handleChangeOrder: (props: MileageApprovalListProps) => (field: IListBarField) => { 
+  handleChangeOrder: (props: MileageApprovalListProps) => (field: ICollectionValue) => { 
     props.stateOrdering(field);
   },
   handleChangeSize: (props: MileageApprovalListProps) => (value: number) => { 
@@ -169,7 +169,7 @@ const lifecycles: ReactLifeCycleFunctions<MileageApprovalListProps, OwnState> = 
     });
 
     const items = Object.keys(MileageApprovalField)
-      .map(key => ({ id: key, name: MileageApprovalField[key] }));
+      .map(key => ({ value: key, name: MileageApprovalField[key] }));
 
     navBottomDispatch.assignFields(items);
 

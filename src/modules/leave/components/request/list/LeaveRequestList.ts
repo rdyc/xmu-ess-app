@@ -1,9 +1,9 @@
 import AppMenu from '@constants/AppMenu';
 import { SortDirection } from '@generic/types';
+import { ICollectionValue } from '@layout/classes/core';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithNavBottom, withNavBottom } from '@layout/hoc/withNavBottom';
 import { WithUser, withUser } from '@layout/hoc/withUser';
-import { IListBarField } from '@layout/interfaces';
 import { LeaveRequestField } from '@leave/classes/types';
 import { LeaveRequestListView } from '@leave/components/request/list/LeaveRequestListView';
 import { WithLeaveRequest, withLeaveRequest } from '@leave/hoc/withLeaveRequest';
@@ -28,7 +28,7 @@ interface OwnHandlers {
   handleGoToPrevious: () => void;
   handleReloading: () => void;
   handleChangeSize: (value: number) => void;
-  handleChangeOrder: (field: IListBarField) => void;
+  handleChangeOrder: (field: ICollectionValue) => void;
   handleChangeSort: (direction: SortDirection) => void;
 }
 
@@ -89,8 +89,8 @@ const stateUpdaters: StateUpdaters<OwnOptions, OwnState, OwnStateUpdaters> = {
   stateReloading: (prevState: OwnState) => () => ({
     page: 1,
   }),
-  stateOrdering: (prevState: OwnState) => (field: IListBarField) => ({
-    orderBy: field.id,
+  stateOrdering: (prevState: OwnState) => (field: ICollectionValue) => ({
+    orderBy: field.value,
     page: 1,
   }),
   stateSorting: (prevState: OwnState) => (direction: SortDirection) => ({
@@ -124,7 +124,7 @@ const handlerCreators: HandleCreators<RequestListProps, OwnHandlers> = {
     // force re-load from api
     loadData(props);
   },
-  handleChangeOrder: (props: RequestListProps) => (field: IListBarField) => { 
+  handleChangeOrder: (props: RequestListProps) => (field: ICollectionValue) => { 
     props.stateOrdering(field);
   },
   handleChangeSize: (props: RequestListProps) => (value: number) => { 
@@ -168,7 +168,7 @@ const lifecycles: ReactLifeCycleFunctions<RequestListProps, OwnState> = {
     });
 
     const items = Object.keys(LeaveRequestField)
-      .map(key => ({ id: key, name: LeaveRequestField[key] }));
+      .map(key => ({ value: key, name: LeaveRequestField[key] }));
 
     navBottomDispatch.assignFields(items);
 

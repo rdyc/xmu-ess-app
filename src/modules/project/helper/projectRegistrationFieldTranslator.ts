@@ -1,10 +1,8 @@
-import { IListBarField } from '@layout/interfaces';
-
+import { ProjectType, WorkflowStatusType } from '@common/classes/types';
+import { ICollectionValue } from '@layout/classes/core';
 import { ProjectRegistrationField } from '@project/classes/types';
 
-import { ProjectType, WorkflowStatusType } from '@common/classes/types';
-
-export const projectRegistrationFieldTranslator = (find: string, field: IListBarField): string => {
+export const projectRegistrationFieldTranslator = (find: string, field: ICollectionValue): string => {
   let result: string = find;
 
   // replace project type

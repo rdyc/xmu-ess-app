@@ -1,4 +1,4 @@
-import { IListBarField } from './IListBarState';
+import { ICollectionValue } from '@layout/classes/core';
 
 export interface IAppBarMenu {
   id: string;
@@ -10,10 +10,10 @@ export interface IAppBarMenu {
 
 export interface IAppBarState {
   onClickMenu: (menu: IAppBarMenu) => void;
-  onSearching: (find?: string | undefined, field?: IListBarField | undefined) => void;
+  onSearching: (find?: string | undefined, field?: ICollectionValue | undefined) => void;
   onSelectionClear: () => void;
   onSelectionProcess: (values: string[]) => void;
   menus: IAppBarMenu[] | undefined;
-  fields: IListBarField[] | undefined;
+  fields: ICollectionValue[] | undefined;
   selection: string[];
 }

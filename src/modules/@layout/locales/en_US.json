@@ -2,7 +2,16 @@
   "layout.text.loading": "Loading...",
   "layout.text.processing": "Processing",
   "layout.text.dataInfo": "{total} record(s)",
-  "layout.text.pagingInfo": "Page {current} of {total}",
+  "layout.text.pagingInfo": "{current} of {total}",
+
+  "layout.tooltip.more": "More options",
+  "layout.tooltip.orderBy": "Order by",
+  "layout.tooltip.sortDirection": "Sort direction",
+  "layout.tooltip.rowsPerPage": "Rows per page",
+  "layout.tooltip.createNew": "Create a new",
+  "layout.tooltip.refresh": "Refresh data",
+  "layout.tooltip.nextPage": "Go to previous page",
+  "layout.tooltip.prevPage": "Go to next page",
 
   "layout.find": "Find",
   "layout.search": "Search",

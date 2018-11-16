@@ -1,9 +1,9 @@
 import AppMenu from '@constants/AppMenu';
 import { SortDirection } from '@generic/types';
+import { ICollectionValue } from '@layout/classes/core';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithNavBottom, withNavBottom } from '@layout/hoc/withNavBottom';
 import { WithUser, withUser } from '@layout/hoc/withUser';
-import { IListBarField } from '@layout/interfaces';
 import { BillableListView } from '@summary/components/billable/BillableListView';
 import { WithSummaryRequest, withSummaryRequest } from '@summary/hoc/withSummary';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
@@ -26,7 +26,7 @@ interface OwnHandlers {
   handleGoToPrevious: () => void;
   handleReloading: () => void;
   handleChangeSize: (value: number) => void;
-  handleChangeOrder: (field: IListBarField) => void;
+  handleChangeOrder: (field: ICollectionValue) => void;
   handleChangeSort: (direction: SortDirection) => void;
 }
 
@@ -87,8 +87,8 @@ const stateUpdaters: StateUpdaters<OwnOptions, OwnState, OwnStateUpdaters> = {
   stateReloading: (prevState: OwnState) => () => ({
     page: 1,
   }),
-  stateOrdering: (prevState: OwnState) => (field: IListBarField) => ({
-    orderBy: field.id,
+  stateOrdering: (prevState: OwnState) => (field: ICollectionValue) => ({
+    orderBy: field.value,
     page: 1,
   }),
   stateSorting: (prevState: OwnState) => (direction: SortDirection) => ({
@@ -114,7 +114,7 @@ const handlerCreators: HandleCreators<BillableListProps, OwnHandlers> = {
     // force re-load from api
     loadData(props);
   },
-  handleChangeOrder: (props: BillableListProps) => (field: IListBarField) => { 
+  handleChangeOrder: (props: BillableListProps) => (field: ICollectionValue) => { 
     props.stateOrdering(field);
   },
   handleChangeSize: (props: BillableListProps) => (value: number) => { 

@@ -1,10 +1,10 @@
 import AppMenu from '@constants/AppMenu';
 import { SortDirection } from '@generic/types';
+import { ICollectionValue } from '@layout/classes/core';
 import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithNavBottom, withNavBottom } from '@layout/hoc/withNavBottom';
 import { WithUser, withUser } from '@layout/hoc/withUser';
-import { IListBarField } from '@layout/interfaces';
 import { ProjectRegistrationField } from '@project/classes/types';
 import { ProjectRegistrationListView } from '@project/components/registration/list/ProjectRegistrationListView';
 import { projectRegistrationFieldTranslator } from '@project/helper';
@@ -26,13 +26,13 @@ import {
 
 interface OwnHandlers {
   handleLoadData: () => void;
-  handleOnSearch: (find: string | undefined, field: IListBarField | undefined) => void;
+  handleOnSearch: (find: string | undefined, field: ICollectionValue | undefined) => void;
   handleGoToDetail: (projectUid: string) => void;
   handleGoToNext: () => void;
   handleGoToPrevious: () => void;
   handleReloading: () => void;
   handleChangeSize: (value: number) => void;
-  handleChangeOrder: (field: IListBarField) => void;
+  handleChangeOrder: (field: ICollectionValue) => void;
   handleChangeSort: (direction: SortDirection) => void;
 }
 
@@ -88,9 +88,9 @@ const createProps: mapper<ProjectRegisterListProps, OwnState> = (props: ProjectR
 };
 
 const stateUpdaters: StateUpdaters<OwnOptions, OwnState, OwnStateUpdaters> = {
-  setSearch: (prevState: OwnState) => (find: string, field: IListBarField | undefined) => ({
+  setSearch: (prevState: OwnState) => (find: string, field?: ICollectionValue) => ({
     find: field ? projectRegistrationFieldTranslator(find, field) : find,
-    findBy: field ? field.id : undefined,
+    findBy: field ? field.value : undefined,
     page: 1
   }),
   stateNext: (prevState: OwnState) => () => ({
@@ -102,8 +102,8 @@ const stateUpdaters: StateUpdaters<OwnOptions, OwnState, OwnStateUpdaters> = {
   stateReloading: (prevState: OwnState) => () => ({
     page: 1,
   }),
-  stateOrdering: (prevState: OwnState) => (field: IListBarField) => ({
-    orderBy: field.id,
+  stateOrdering: (prevState: OwnState) => (field: ICollectionValue) => ({
+    orderBy: field.value,
     page: 1,
   }),
   stateSorting: (prevState: OwnState) => (direction: SortDirection) => ({
@@ -146,7 +146,7 @@ const handlerCreators: HandleCreators<ProjectRegisterListProps, OwnHandlers> = {
       });
     }
   },
-  handleOnSearch: (props: ProjectRegisterListProps) => (find: string, field: IListBarField | undefined) => {
+  handleOnSearch: (props: ProjectRegisterListProps) => (find: string, field?: ICollectionValue) => {
     props.setSearch(find, field);
   },
   handleGoToDetail: (props: ProjectRegisterListProps) => (projectUid) => {
@@ -166,7 +166,7 @@ const handlerCreators: HandleCreators<ProjectRegisterListProps, OwnHandlers> = {
   handleReloading: (props: ProjectRegisterListProps) => () => { 
     props.stateReloading();
   },
-  handleChangeOrder: (props: ProjectRegisterListProps) => (field: IListBarField) => { 
+  handleChangeOrder: (props: ProjectRegisterListProps) => (field: ICollectionValue) => { 
     props.stateOrdering(field);
   },
   handleChangeSize: (props: ProjectRegisterListProps) => (value: number) => { 
@@ -213,7 +213,7 @@ const lifecycles: ReactLifeCycleFunctions<ProjectRegisterListProps, OwnState> = 
     });
 
     const items = Object.keys(ProjectRegistrationField)
-      .map(key => ({ id: key, name: ProjectRegistrationField[key] }));
+      .map(key => ({ value: key, name: ProjectRegistrationField[key] }));
 
     appBarDispatch.assignFields(items);
     navBottomDispatch.assignFields(items);

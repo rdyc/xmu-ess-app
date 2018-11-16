@@ -1,4 +1,3 @@
-import { layoutMessage } from '@layout/locales/messages';
 import {
   Checkbox,
   ExpansionPanel,
@@ -7,68 +6,34 @@ import {
   ExpansionPanelSummary,
   Grid,
   Hidden,
-  IconButton,
-  Toolbar,
   Typography,
 } from '@material-ui/core';
-import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import FilterListIcon from '@material-ui/icons/FilterList';
-import LibraryBooksSharpIcon from '@material-ui/icons/LibraryBooksSharp';
-import SortByAlphaIcon from '@material-ui/icons/SortByAlpha';
-import SyncIcon from '@material-ui/icons/Sync';
 import * as React from 'react';
-import { FormattedMessage } from 'react-intl';
 
+import { DataContainer } from '../dataContainer/DataContainer';
 import { CollectionPageProps } from './CollectionPage';
 
 export const CollectionPageView: React.SFC<CollectionPageProps> = props => (
-  <React.Fragment>
-    <Toolbar>
-      <Typography
-        noWrap
-        variant="body1"
-        className={props.classes.flex}
-      >
-        {
-          props.isLoading &&
-          <FormattedMessage {...layoutMessage.text.loading} />
-        }
-
-        {
-          !props.isLoading &&
-          props.response &&
-          props.response.metadata &&
-          <FormattedMessage {...layoutMessage.text.dataInfo} values={{
-            total: props.response.metadata.total
-          }} />
-        }
-      </Typography>
-      
-      {
-        props.response &&
-        <React.Fragment>
-          <IconButton disabled={props.isLoading}>
-            <FilterListIcon />
-          </IconButton>
-          <IconButton disabled={props.isLoading}>
-            <SortByAlphaIcon />
-          </IconButton>
-          <IconButton disabled={props.isLoading}>
-            <LibraryBooksSharpIcon />
-          </IconButton>
-          <IconButton disabled={props.isLoading}>
-            <AddCircleOutlineIcon />
-          </IconButton>
-          <IconButton disabled={props.isLoading}>
-            <SyncIcon />
-          </IconButton>
-        </React.Fragment>
-      }
-    </Toolbar>
-
+  <DataContainer
+    isLoading={props.isLoading}
+    state={{
+      field: props.orderBy,
+      direction: props.direction,
+      page: props.page,
+      size: props.size,
+    }}
+    className={props.classes.flex}
+    metadata={props.response && props.response.metadata}
+    fields={props.config.fields}
+    onClickSync={() => props.setPageOne()}
+    onClickNew={() => alert('new')}
+    onClickNext={() => props.setPageNext()}
+    onClickPrevious={() => props.setPagePrevious()}
+    onChangeField={props.setField}
+    onChangeOrder={props.setOrder}
+    onChangeSize={props.setSize}
+  >
     {
       props.response &&
       props.response.data &&
@@ -124,66 +89,18 @@ export const CollectionPageView: React.SFC<CollectionPageProps> = props => (
             </ExpansionPanelSummary>
             
             <ExpansionPanelDetails>
-              {
-                props.config.summaryComponent(item)
-              }
+              {props.config.summaryComponent(item)}
             </ExpansionPanelDetails>
             
             {
               props.config.actionComponent &&
               <ExpansionPanelActions>
-                {
-                  props.config.actionComponent(item)
-                }
+                {props.config.actionComponent(item)}
               </ExpansionPanelActions>
             }
           </ExpansionPanel>
         );
       })
-    } 
-
-    {
-      props.response &&
-      props.response.metadata &&
-      props.response.metadata.paginate &&
-      <Toolbar>
-        <IconButton
-          disabled={props.isLoading || !props.response.metadata.paginate.previous}
-          onClick={() => props.setPagePrevious()}
-        >
-          <ChevronLeftIcon />
-        </IconButton>
-
-        <Typography
-          noWrap
-          variant="body1"
-          align="center"
-          className={props.classes.flex}
-        >
-          {
-            props.isLoading &&
-            <FormattedMessage {...layoutMessage.text.loading} />
-          }
-
-          {
-            !props.isLoading &&
-            <FormattedMessage 
-              {...layoutMessage.text.pagingInfo} 
-              values={{
-                current: props.response.metadata.paginate.current,
-                total: props.response.metadata.paginate.total
-              }}
-            />
-          }
-        </Typography>
-
-        <IconButton 
-          disabled={props.isLoading || !props.response.metadata.paginate.next}
-          onClick={() => props.setPageNext()}
-        >
-          <ChevronRightIcon />
-        </IconButton>
-      </Toolbar>
     }
-  </React.Fragment>
+  </DataContainer>
 );

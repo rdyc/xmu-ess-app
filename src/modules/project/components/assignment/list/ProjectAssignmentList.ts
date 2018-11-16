@@ -1,9 +1,9 @@
 import AppMenu from '@constants/AppMenu';
 import { SortDirection } from '@generic/types';
+import { ICollectionValue } from '@layout/classes/core';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithNavBottom, withNavBottom } from '@layout/hoc/withNavBottom';
 import { WithUser, withUser } from '@layout/hoc/withUser';
-import { IListBarField } from '@layout/interfaces';
 import { ProjectRegistrationField } from '@project/classes/types';
 import { ProjectAssignmentListView } from '@project/components/assignment/list/ProjectAssignmentListView';
 import { WithProjectAssignment, withProjectAssignment } from '@project/hoc/withProjectAssignment';
@@ -29,7 +29,7 @@ interface OwnHandlers {
   handleGoToPrevious: () => void;
   handleReloading: () => void;
   handleChangeSize: (value: number) => void;
-  handleChangeOrder: (field: IListBarField) => void;
+  handleChangeOrder: (field: ICollectionValue) => void;
   handleChangeSort: (direction: SortDirection) => void;
 }
 
@@ -90,8 +90,8 @@ const stateUpdaters: StateUpdaters<OwnOptions, OwnState, OwnStateUpdaters> = {
   stateReloading: (prevState: OwnState) => () => ({
     page: 1,
   }),
-  stateOrdering: (prevState: OwnState) => (field: IListBarField) => ({
-    orderBy: field.id,
+  stateOrdering: (prevState: OwnState) => (field: ICollectionValue) => ({
+    orderBy: field.value,
     page: 1,
   }),
   stateSorting: (prevState: OwnState) => (direction: SortDirection) => ({
@@ -125,7 +125,7 @@ const handlerCreators: HandleCreators<ProjectAssignmentListProps, OwnHandlers> =
     // force re-load from api
     loadData(props);
   },
-  handleChangeOrder: (props: ProjectAssignmentListProps) => (field: IListBarField) => { 
+  handleChangeOrder: (props: ProjectAssignmentListProps) => (field: ICollectionValue) => { 
     props.stateOrdering(field);
   },
   handleChangeSize: (props: ProjectAssignmentListProps) => (value: number) => { 
@@ -169,7 +169,7 @@ const lifecycles: ReactLifeCycleFunctions<ProjectAssignmentListProps, OwnState> 
     });
 
     const items = Object.keys(ProjectRegistrationField)
-      .map(key => ({ id: key, name: ProjectRegistrationField[key] }));
+      .map(key => ({ value: key, name: ProjectRegistrationField[key] }));
 
     navBottomDispatch.assignFields(items);
 
