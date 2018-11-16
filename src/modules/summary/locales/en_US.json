@@ -1,8 +1,10 @@
 {
   "summary.filter.field.customerUid": "Customer",
   "summary.filter.field.projectUid": "Project",
+  "summary.filter.field.employeeUid": "Employee",
   
   "summary.filter.field.customerUid.placeholder": "Choose a Customer",
+  "summary.filter.field.employeeUid.placeholder": "Select an Employee",
   "summary.filter.field.projectUid.placeholder": "Select a Project",
 
   "billable.title": "Employee and Presales Billable",

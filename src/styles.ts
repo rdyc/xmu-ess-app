@@ -264,14 +264,14 @@ const styles = (theme: Theme) =>
     /* report */
     reportPaper: {
       overflowX: 'auto',
-      height: `calc(100vh - 128px)`,
+      height: `calc(100vh - 128px - 120px)`,
     },
     reportPaperPartial: {
       width: `calc(100vw - 32px - ${drawerWidth}px)`
     },
     reportPaperMobile: {
       overflowX: 'auto',
-      height: `calc(100vh - 64px)`,
+      height: `calc(100vh - 64px - 208px)`,
     },
     reportPaperPartialMobile: {
       width: `calc(100vw)`,
