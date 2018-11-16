@@ -27,6 +27,7 @@ export const ProgressExpenseView: React.SFC<AllProps> = props => {
       open={dialogOpen}
       aria-labelledby="progress-expense-dialog-title"
       fullWidth
+      maxWidth="md"
     >
       <DialogTitle id="progress-expense-dialog-title">
         <FormattedMessage id="summary.progress.dialog.title" />
