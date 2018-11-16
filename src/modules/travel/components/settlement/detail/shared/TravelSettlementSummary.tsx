@@ -29,13 +29,7 @@ const travelSettlementSummary: React.SFC<AllProps> = props => {
         title={<FormattedMessage id="travelSettlement.summaryTitle" />}
         subheader={<FormattedMessage id="travelSettlement.summarySubTitle" />}
       />
-      <CardContent>
-          <TextField
-            {...styled}
-            margin="dense"
-            label={<FormattedMessage id="travel.field.information.siteValue" />}
-            value={intl.formatNumber(data.site ? data.site.value : 0)}
-          />        
+      <CardContent>        
           <TextField
             {...styled}
             margin="dense"

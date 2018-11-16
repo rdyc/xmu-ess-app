@@ -69,14 +69,12 @@ export const RequestDetailView: React.SFC<RequestDetailProps> = props => {
           justify="flex-start"
           alignItems="flex-start"
         >
-          <Grid item xs={12} md={4}>
-            <TravelInformation data = {response.data}/>
-          </Grid>
-
           <Grid item xs={12} md={3}>
             <TravelRequestSummary data = {response.data}/>
           </Grid>
-
+          <Grid item xs={12} md={4}>
+            <TravelInformation data = {response.data}/>
+          </Grid>
           <Grid item xs={12} md={5}>
             <TravelRequestItem data = {response.data.items}/>
           </Grid>

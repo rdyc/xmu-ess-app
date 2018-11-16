@@ -10,16 +10,16 @@ export const RequestFormView: React.SFC<RequestFormProps> = props => {
   const {
     formMode, customerUidValue, projectUidValue, 
     destinationtypeValue, isProjectSelected, diemRequest,
-    change
+    change, TotalCost, totalTravel
   } = props;
   
   const diem = (diemRequest) ? 
                   diemRequest.filter(item => item.destinationType === destinationtypeValue &&
-                    item.projectType === 'SPT01')[0] 
-                  : undefined;  
+                    item.projectType === 'SPT04')[0] 
+                  : undefined;
 
   const fields = Object.getOwnPropertyNames(props.initialValues.information);
-
+                
   const onChangeProject = (event: any, newValue: string, oldValue: string) => {
     if (newValue) {
       change('item.items[0].currencyUid', (diem && diem.currency ? diem.currency.name : ''));
@@ -36,6 +36,12 @@ export const RequestFormView: React.SFC<RequestFormProps> = props => {
     }
   };
 
+  const onCostChange = (event: any, newValue: number, oldValue: number) => {
+    if (newValue) {
+      change('information.total', (totalTravel - oldValue) + newValue);
+    }
+  };
+
   const componentInformation = (context: BaseFieldsProps) => (
     <RequestDetailForm 
       formMode={formMode}
@@ -46,6 +52,7 @@ export const RequestFormView: React.SFC<RequestFormProps> = props => {
       projectUidValue={projectUidValue}
       destinationTypeValue= {destinationtypeValue}
       isProjectSelected= {isProjectSelected}
+      totalCostValue= {TotalCost}
     />    
   );
 
@@ -54,6 +61,7 @@ export const RequestFormView: React.SFC<RequestFormProps> = props => {
       context={context}
       diemRequest={diemRequest}
       destinationTypeValue={destinationtypeValue}
+      onCostChange={onCostChange}
     />    
   );
 
