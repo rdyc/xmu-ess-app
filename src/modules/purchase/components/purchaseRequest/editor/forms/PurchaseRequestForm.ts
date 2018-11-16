@@ -1,9 +1,7 @@
 import { FormMode } from '@generic/types';
 import { PurchaseRequestFormView } from '@purchase/components/purchaseRequest/editor/forms/PurchaseRequestFormView';
 import { connect } from 'react-redux';
-import { formValueSelector, 
-  // getFormValues, 
-  getFormValues, InjectedFormProps, reduxForm } from 'redux-form';
+import { formValueSelector, getFormValues, InjectedFormProps, reduxForm } from 'redux-form';
 
 const formName = 'purchaseRequest';
 
@@ -40,7 +38,9 @@ interface FormValueProps {
   formCurrencyType: string | null;
   formRate: number | 1;
   formValue: number | 1;
+  formItems: any;
   formValues: PurchaseRequestFormData;
+  formRequest: number | 0;
 }
 
 export type PurchaseRequestFormProps
@@ -51,22 +51,33 @@ export type PurchaseRequestFormProps
 const selector = formValueSelector(formName);
 
 const mapStateToProps = (state: any): FormValueProps => {
-  
   const customer = selector(state, 'information.customerUid');
   const currencyType = selector(state, 'information.currencyType');
   const rate = selector(state, 'information.rate');
   const value = selector(state, 'information.request'); 
-  // const itemValue = selector(state, 'items.items[].requestValue');
+  const itemsValue = selector(state, 'items.items');
+  const forms = getFormValues(formName)(state) as PurchaseRequestFormData;
+
+  let request: number = 0;
+  if (forms.items) {
+    forms.items.items.forEach(item => request += item.request);
+  }
+
   return {
     formCustomer: customer,
     formIsCurrencyIDR: currencyType === 'SCR01',
     formCurrencyType: currencyType,
     formRate: rate,
     formValue: value,
-    formValues: getFormValues(formName)(state) as PurchaseRequestFormData
-    // formItem: itemValue
+    formItems: itemsValue,
+    formValues: forms,
+    formRequest: request,
   };
 };
+
+// const enhancedView = compose<PurchaseRequestFormProps, OwnProps & InjectedFormProps<PurchaseRequestFormData, OwnProps>>(
+//   connect(mapStateToProps),
+// )(PurchaseRequestFormView);
 
 const connectedView = connect(mapStateToProps)(PurchaseRequestFormView);
 
@@ -80,3 +91,4 @@ export const PurchaseRequestForm = reduxForm<PurchaseRequestFormData, OwnProps>(
     dispatchEvent(new CustomEvent('PURCHASE_FORM', { detail: values }));
   },
 })(connectedView);
+// })(enhancedView);

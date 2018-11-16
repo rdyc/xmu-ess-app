@@ -1,5 +1,5 @@
 export interface ILeaveGetEndQuery {
-  start: Date;
+  start: string;
   regularType: string;
   companyUid: string;
 }

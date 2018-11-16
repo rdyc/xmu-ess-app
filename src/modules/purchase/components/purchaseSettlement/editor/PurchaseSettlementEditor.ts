@@ -10,11 +10,9 @@ import {
   ISettlementPutPayload
 } from '@purchase/classes/request/purchaseSettlement';
 import { ISettlement, 
-  // ISettlementDetail 
 } from '@purchase/classes/response/purchaseSettlement';
 import {
-  PurchaseSettlementFormData, 
-  // PurchaseSettlementItemFormData,
+  PurchaseSettlementFormData,
 } from '@purchase/components/purchaseSettlement/editor/forms/PurchaseSettlementForm';
 import { PurchaseSettlementEditorView } from '@purchase/components/purchaseSettlement/editor/PurchaseSettlementEditorView';
 import { WithPurchaseSettlement, withPurchaseSettlement } from '@purchase/hoc/purchaseSettlement/withPurchaseSettlement';
@@ -49,6 +47,7 @@ interface OwnRouteParams {
 }
 
 interface OwnState {
+  statusType: string | undefined;
   formMode: FormMode;
   companyUid?: string | undefined;
   positionUid?: string | undefined;
@@ -76,10 +75,11 @@ const createProps: mapper<PurchaseSettlementEditorProps, OwnState> = (props: Pur
   const state = history.location.state;
 
   return {
-    formMode: state ? FormMode.Edit : FormMode.New,
+    statusType: state ? state.statusType : undefined,
+    formMode: state.statusType ? FormMode.Edit : FormMode.New,
     companyUid: state ? state.companyUid : undefined,
     positionUid: state ? state.positionUid : undefined,
-    purchaseUid: state ? state.purchaseUid : undefined
+    purchaseUid: state ? state.uid : undefined
   };
 };
 
@@ -91,15 +91,6 @@ const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
 };
 
 const handlers: HandleCreators<PurchaseSettlementEditorProps, OwnHandlers> = {
-  // handleEventListener: (props: PurchaseSettlementEditorProps) => (event: CustomEvent) => {
-  //   const formValues = event.detail as PurchaseSettlementEditorProps;
-
-  //   let requestValue: number = 0;
-
-  //   if (formValues.items) {
-  //     formValues.items.items.forEach(items => requestValue += items.request);
-  //   }
-  // },
   handleValidate: (props: PurchaseSettlementEditorProps) => (formData: PurchaseSettlementFormData) => {
     const errors = {
       information: {},
@@ -117,6 +108,32 @@ const handlers: HandleCreators<PurchaseSettlementEditorProps, OwnHandlers> = {
         errors.information[field] = props.intl.formatMessage({ id: `purchase.field.information.${field}.required` });
       }
     });
+
+    if (formData.items) {
+      const requiredItemFields = ['actual'];
+
+      const itemErrors: any[] = [];
+
+      formData.items.items.forEach((item, index) => {
+        const itemError: any = {};
+
+        if (!item) { return; }
+
+        requiredItemFields.forEach(field => {
+          if (!item[field] || isNullOrUndefined(item[field])) {
+            Object.assign(itemError, { [`${field}`]: 'Required' });
+          }
+        });
+
+        itemErrors.push(itemError);
+      });
+
+      if (itemErrors.length) {
+        Object.assign(errors, {
+          items: itemErrors
+        });
+      }
+    }
 
     return errors;
   },
@@ -169,12 +186,14 @@ const handlers: HandleCreators<PurchaseSettlementEditorProps, OwnHandlers> = {
     };
 
     const payload = {
-      ...formData.information,
+      date: formData.information.date,
+      notes: formData.information.notes,
       items: parsedItems()
     };
     
     const payloadPut = {
-      ...formData.information,
+      date: formData.information.date,
+      notes: formData.information.notes,
       items: parsedItemsPut()
       };
       
@@ -233,7 +252,7 @@ const handlers: HandleCreators<PurchaseSettlementEditorProps, OwnHandlers> = {
       time: new Date()
     });
 
-    history.push('/purchase/requests/list');
+    history.push('/purchase/settlements/list');
   },
   handleSubmitFail: (props: PurchaseSettlementEditorProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
     const { formMode, intl } = props;
