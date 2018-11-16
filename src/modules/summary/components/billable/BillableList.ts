@@ -101,7 +101,7 @@ const createProps: mapper<BillableListProps, OwnState> = (props: BillableListPro
       (request && request.filter && request.filter.direction) ||
       direction ||
       'ascending',
-    page: (request && request.filter && request.filter.page) || page || 0,
+    page: (request && request.filter && request.filter.page) || page || 1,
     size: (request && request.filter && request.filter.size) || size || 5
   };
 };
@@ -121,11 +121,11 @@ const stateUpdaters: StateUpdaters<OwnOptions, OwnState, OwnStateUpdaters> = {
   }),
   stateSorting: (prevState: OwnState) => (direction: string) => ({
     direction,
-    page: 0
+    page: 1
   }),
   stateSizing: (prevState: OwnState) => (size: number) => ({
     size,
-    page: 0
+    page: 1
   }),
   statePage: (prevState: OwnState) => (page: number) => ({
     page
@@ -147,8 +147,8 @@ const handlerCreators: HandleCreators<BillableListProps, OwnHandlers> = {
   handleChangeStart: (props: BillableListProps) => (start: string) => {
     props.stateStart(start);
   },
-  handleChangeEnd: (props: BillableListProps) => (_end: string) => {
-    props.stateEnd(_end);
+  handleChangeEnd: (props: BillableListProps) => (end: string) => {
+    props.stateEnd(end);
   },
   handleGoToNext: (props: BillableListProps) => () => {
     props.stateNext();
@@ -234,14 +234,11 @@ const lifecycles: ReactLifeCycleFunctions<BillableListProps, OwnState> = {
 };
 
 const loadData = (props: BillableListProps): void => {
-  const { orderBy, direction, size, start, end, find, findBy } = props;
-  let { page } = props;
+  const { orderBy, direction, size, start, end, find, findBy, page } = props;
   const { user } = props.userState;
   const { loadBillableRequest } = props.summaryDispatch;
   const { alertAdd } = props.layoutDispatch;
-  
-  page += 1;
-  
+    
   if (user) {
     loadBillableRequest({
       companyUid: user.company.uid,
