@@ -1,0 +1,30 @@
+{
+  "summary.filter.field.employeeUid": "Employee",
+  "summary.filter.field.projectUid": "Project",
+  "summary.filter.field.employeeUid.placeholder": "Select an Employee",
+  "summary.filter.field.projectUid.placeholder": "Select a Project",
+
+  "billable.title": "Employee and Presales Billable",
+  "billable.field.company": "Company",
+  "billable.field.name": "Employee Name",
+  "billable.field.start": "Start",
+  "billable.field.end": "End",
+  "billable.subTitle": "Lorem IPSUM",
+
+  "summary.effectiveness.title": "Resource Effectiveness",
+  "summary.effectiveness.subTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "summary.effectiveness.tableHead.name": "Employee Name",
+  "summary.effectiveness.tableHead.positionRole": "Position - Role in Project",
+  "summary.effectiveness.tableHead.project": "Project",
+  "summary.effectiveness.tableHead.customer": "Customer",
+  "summary.effectiveness.tableHead.allocated": "Total Allocated Hours",
+  "summary.effectiveness.tableHead.actual": "Total Actual Hours",
+  "summary.effectiveness.tableHead.remaining": "Remaining Hours",
+  "summary.effectiveness.tableHead.progress": "Total Progress",
+
+  "profitability.title": "Project Profitability",
+
+  "progress.title": "Project Progress",
+
+  "winning.title": "Winning Ratio"
+}
