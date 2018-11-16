@@ -85,15 +85,15 @@ const settlementInformation: React.SFC<AllProps> = props => {
           <TextField
           { ...styled }
           margin = "dense"
-          label = { < FormattedMessage id = "purchase.field.information.currencyType" /> }
-          value = { data.currency ? data.currency.value : 'N/A' }
+          label={ < FormattedMessage id="purchase.field.information.currencyType" /> }
+          value={data.currency ? `${data.currency.value} - ${ intl.formatNumber(data.rate || 0) }` : 'N/A' }
           />
-          <TextField
+          {/* <TextField
           { ...styled }
           margin = "dense"
           label = { < FormattedMessage id = "purchase.field.information.rate" /> }
           value = { intl.formatNumber(data.rate || 0) }
-          />
+          /> */}
           <TextField
           { ...styled }
           margin = "dense"
@@ -109,7 +109,7 @@ const settlementInformation: React.SFC<AllProps> = props => {
           <TextField
           { ...styled }
           margin = "dense"
-          label={< FormattedMessage id= "purchase.field.information.actual" /> }
+          label={< FormattedMessage id= "purchase.field.information.difference" /> }
           value = { intl.formatNumber(data.difference) }
           />
           

@@ -11,8 +11,10 @@ export const PurchaseSettlementFormView: React.SFC<PurchaseSettlementFormProps> 
   const {
     formMode,
     formIsCurrencyIDR, formRate, 
-    formItem,
-    // formValue,
+    formActual,
+    formDifference,
+    formActualValue,
+    formDifferenceValue,
     change, initialValues
   } = props;
 
@@ -20,19 +22,22 @@ export const PurchaseSettlementFormView: React.SFC<PurchaseSettlementFormProps> 
 
   const onChangeValueIdr = (event: any, newValue: number) => {
     change('information.actualIDR', newValue * formRate);
+    change('information.differenceInIDR', newValue * formRate );
   };
 
-  const onChangeValueRequest = (event: any, newValue: number) => {
-    change('information.request', newValue );
+  const onChangeActual = (event: any, newValue: number, oldValue: number) => {
+    change('information.actual', formActual);
   };
 
+  const onChangeDifference = (event: any, newValue: number, oldValue: number) => {
+    change('information.difference', formDifference );
+  };
   const onChangeValueActual = (event: any, newValue: number, oldValue: number) => {
-
-    change('information.actual', newValue + oldValue );
+    change('information.actualInIDR', formActualValue * formRate );
   };
 
   const onChangeValueDifference = (event: any, newValue: number, oldValue: number) => {
-    change('information.difference', (newValue - oldValue) + formItem );
+    change('information.differenceInIDR', formDifferenceValue * formRate );
   };
 
   const componentInformation = (context: BaseFieldsProps) => (
@@ -41,15 +46,16 @@ export const PurchaseSettlementFormView: React.SFC<PurchaseSettlementFormProps> 
       context={context}
       isCurrencyIdr={formIsCurrencyIDR}
       onChangeValueIdr={onChangeValueIdr}
-      onChangeRequestItem={onChangeValueRequest}
+      onChangeActual={onChangeActual}
+      onChangeDifference={onChangeDifference}
+      onChangeActualValue={onChangeValueActual}
+      onChangeDifferenceValue={onChangeValueDifference}
     />
   );
 
   const componentItems = (context: WrappedFieldArrayProps<any>) => (
   <PurchaseSettlementItemForm
-   context={context}
-   onActualChange={onChangeValueActual}
-   onDifferenceChange={onChangeValueDifference} />
+   context= {context} />
   );
 
   const render = (

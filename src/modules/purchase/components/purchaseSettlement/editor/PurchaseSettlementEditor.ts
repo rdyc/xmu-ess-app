@@ -91,15 +91,6 @@ const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
 };
 
 const handlers: HandleCreators<PurchaseSettlementEditorProps, OwnHandlers> = {
-  // handleEventListener: (props: PurchaseSettlementEditorProps) => (event: CustomEvent) => {
-  //   const formValues = event.detail as PurchaseSettlementEditorProps;
-
-  //   let requestValue: number = 0;
-
-  //   if (formValues.items) {
-  //     formValues.items.items.forEach(items => requestValue += items.request);
-  //   }
-  // },
   handleValidate: (props: PurchaseSettlementEditorProps) => (formData: PurchaseSettlementFormData) => {
     const errors = {
       information: {},

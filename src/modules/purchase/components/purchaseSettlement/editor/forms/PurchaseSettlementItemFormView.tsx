@@ -9,20 +9,13 @@ import { PurchaseSettlementItemFormProps } from '@purchase/components/purchaseSe
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { 
-  // change, 
   Field,
-  //  InjectedFormProps, 
 } from 'redux-form';
-// import { PurchaseSettlementItemFormData } from './PurchaseSettlementForm';
 
 export const PurchaseSettlementItemFormView: React.SFC<PurchaseSettlementItemFormProps 
-// & InjectedFormProps<PurchaseSettlementItemFormData, PurchaseSettlementItemFormProps> 
 > = props => {
-  const { context, onActualChange, onDifferenceChange } = props;
+  const { context } = props;
 
-  // const onActualChange = (event: any, newValue: string, oldValue: string) => {
-  //   change('items.value', oldValue - newValue);
-  // };
   const render = (
       <Grid container spacing={16}>
         {
@@ -57,12 +50,13 @@ export const PurchaseSettlementItemFormView: React.SFC<PurchaseSettlementItemFor
                       name={`${field}.actual`}
                       label={<FormattedMessage id="purchase.itemTitle.actual" />}
                       required={true}
-                      onChange={onActualChange}
-                      //   onChange={(event: any, newValue: any) => {
-                      //   if (!isNaN(newValue)) {
-                      //     props.change(`${field}.variance`, newValue);
-                      //   }
-                      // }}
+                      // onChange={onActualChange}
+                        onChange={(event: any, newValue: any) => {
+                        if (!isNaN(newValue)) {
+                          props.change(`${field}.variance`, newValue - 
+                            (props.initialValues.request ? props.initialValues.request : 0));
+                        }
+                      }}
                       component={InputNumber}
                     />
                     <Field
@@ -70,7 +64,6 @@ export const PurchaseSettlementItemFormView: React.SFC<PurchaseSettlementItemFor
                       name={`${field}.variance`}
                       label={<FormattedMessage id="purchase.itemTitle.variance" />}
                       disabled={true}
-                      onChange={onDifferenceChange}
                       component={InputNumber}
                     />
                   </div>

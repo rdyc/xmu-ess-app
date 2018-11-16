@@ -14,7 +14,10 @@ interface OwnProps {
   context: BaseFieldsProps;
   isCurrencyIdr: boolean;
   onChangeValueIdr: (event: any, newValue: number, oldValue: number) => void;
-  onChangeRequestItem: (event: any, newValue: number, oldValue: number) => void;
+  onChangeActual: (event: any, newValue: number, oldValue: number) => void;
+  onChangeDifference: (event: any, newValue: number, oldValue: number) => void;
+  onChangeActualValue: (event: any, newValue: number, oldValue: number) => void;
+  onChangeDifferenceValue: (event: any, newValue: number, oldValue: number) => void;
 }
 
 interface OwnHandlers {
@@ -30,9 +33,7 @@ const handlerCreators: HandleCreators<PurchaseSettlementDetailFormProps, OwnHand
   generateFieldProps: (props: PurchaseSettlementDetailFormProps) => (name: string) => { 
     const { 
       intl,
-      // isCurrencyIdr, 
       onChangeValueIdr,
-      // onChangeRequestItem
     } = props;
     
     const fieldName = name.replace('information.', '');

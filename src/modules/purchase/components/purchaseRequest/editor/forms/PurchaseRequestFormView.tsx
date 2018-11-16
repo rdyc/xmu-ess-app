@@ -11,6 +11,7 @@ export const PurchaseRequestFormView: React.SFC<PurchaseRequestFormProps> = prop
     formMode,
     formCustomer,
     formIsCurrencyIDR, formRate, formValue,
+    formRequest,
     formCurrencyType, change, initialValues
   } = props;
 
@@ -32,7 +33,7 @@ export const PurchaseRequestFormView: React.SFC<PurchaseRequestFormProps> = prop
   };
   
   const onChangeValueRequest = (event: any, newValue: number, oldValue: number) => {
-    change('information.request', (formValue - oldValue) + newValue );
+    change('information.request', formRequest );
   };
   // const onChangeItemRequest = (event: any, newValue: number, oldValue: number) => {
   //    change('information.request', oldValue);
@@ -48,7 +49,7 @@ export const PurchaseRequestFormView: React.SFC<PurchaseRequestFormProps> = prop
       onChangeCurrencyType={onChangeCurrencyType}
       onChangeRate={onChangeRate}
       onChangeValueIdr={onChangeValueIdr}
-      // onRequestChange={onChangeItemRequest}
+      onChangeRequest={onChangeValueRequest}
     />
   );
 
@@ -86,6 +87,18 @@ export const PurchaseRequestFormView: React.SFC<PurchaseRequestFormProps> = prop
           </FormSection>
         </Grid>
 
+        {/* <Grid item xs={12} md={4}>
+        <Card>
+          <CardHeader 
+            title="Values"
+            subheader="form values as object"
+          />
+          <CardContent>
+            <pre>{JSON.stringify(props.formValues, null, 2)}</pre>
+          </CardContent>
+        </Card>
+      </Grid> */}
+      
         <Grid item 
         // xs={12} 
         md={4}>
