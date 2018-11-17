@@ -43,19 +43,23 @@ export const CollectionPageView: React.SFC<CollectionPageProps> = props => (
       props.response &&
       props.response.data &&
       props.response.data.map((item, index) => {
+        // run overrider if any
         if (props.config.onRowRender) {
           return props.config.onRowRender(item, index);
         }   
 
+        // collecting fields
         const bind = props.config.onBind(item, index);
-
+        
         return (
           <Fade 
             key={item.uid} 
-            in={!props.isLoading} 
-            timeout={index * 100}
+            in={!props.isLoading}
+            timeout={props.inTransition ? index * 150 : (props.size / index) * 100}
+            mountOnEnter
+            unmountOnExit 
           >
-            <ExpansionPanel tabIndex={index}>
+            <ExpansionPanel className="collection-item" tabIndex={index}>
               <ExpansionPanelSummary 
                 key={`EPS${index}`}
                 expandIcon={<ExpandMoreIcon />}
@@ -137,7 +141,7 @@ export const CollectionPageView: React.SFC<CollectionPageProps> = props => (
 
                         <Grid item xs={12} md={6}>
                           <Typography
-                            variant="caption"
+                            variant={isWidthDown('sm', props.width) ? 'caption' : 'body1'}                            
                             noWrap={true}
                             paragraph={false}
                             align="right"

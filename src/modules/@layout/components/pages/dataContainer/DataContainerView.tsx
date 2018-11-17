@@ -103,6 +103,7 @@ export const DataContainerView: React.SFC<DataContainerProps> = props => (
     {props.children}
 
     {
+      !props.isLoading &&
       props.metadata &&
       props.metadata.paginate &&
       <Toolbar>

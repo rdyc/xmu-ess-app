@@ -63,8 +63,6 @@ interface OwnOption {
 }
 
 interface OwnState {
-  isMobile: boolean;
-  
   // statuses
   forceReload: boolean;
   isLoading: boolean;
@@ -86,10 +84,12 @@ interface OwnState {
   // paging
   page: number;
   size: number;
+
+  // transition
+  inTransition: boolean;
 }
 
 interface OwnStateUpdater extends StateHandlerMap<OwnState> {
-  setMobile: StateHandler<OwnState>;
   setForceReload: StateHandler<OwnState>;
   setLoading: StateHandler<OwnState>;
   setSource: StateHandler<OwnState>;
@@ -126,26 +126,23 @@ export type CollectionPageProps
   & InjectedIntlProps;
 
 const createProps: mapper<OwnOption, OwnState> = (props: OwnOption): OwnState => ({
-  isMobile: false,
   forceReload: false,
   isLoading: false,
   selected: [],
   page: 1,
   size: 10,
+  inTransition: true,
   ...props.config.filter
 });
 
 const stateUpdaters: StateUpdaters<OwnOption, OwnState, OwnStateUpdater> = {
-  setMobile: (prev: OwnState) => (toFirst?: boolean): Partial<OwnState> => ({
-    page: toFirst ? 1 : prev.page,
-    forceReload: true
-  }),
   setForceReload: (prev: OwnState) => (toFirst?: boolean): Partial<OwnState> => ({
     page: toFirst ? 1 : prev.page,
     forceReload: true
   }),
   setLoading: (prev: OwnState) => (isLoading: boolean): Partial<OwnState> => ({
-    isLoading
+    isLoading,
+    inTransition: !isLoading,
   }),
   setSource: (prev: OwnState) => (response: IResponseCollection<any> | undefined): Partial<OwnState> => ({
     response,
