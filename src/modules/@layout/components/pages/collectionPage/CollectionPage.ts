@@ -4,7 +4,8 @@ import { ICollectionValue } from '@layout/classes/core';
 import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { IAppBarMenu } from '@layout/interfaces';
-import { WithStyles, withStyles } from '@material-ui/core';
+import { WithStyles, withStyles, withWidth } from '@material-ui/core';
+import { WithWidth } from '@material-ui/core/withWidth';
 import styles from '@styles';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import {
@@ -48,6 +49,7 @@ export interface CollectionConfig<Tres, Tconn> {
     tertiary: string;
     quaternary: string;
     quinary: string;
+    senary: string;
   };
   onRowRender?: (item: Tres, index: number) => JSX.Element;
   summaryComponent: (item: Tres) => JSX.Element;
@@ -61,6 +63,8 @@ interface OwnOption {
 }
 
 interface OwnState {
+  isMobile: boolean;
+  
   // statuses
   forceReload: boolean;
   isLoading: boolean;
@@ -85,6 +89,7 @@ interface OwnState {
 }
 
 interface OwnStateUpdater extends StateHandlerMap<OwnState> {
+  setMobile: StateHandler<OwnState>;
   setForceReload: StateHandler<OwnState>;
   setLoading: StateHandler<OwnState>;
   setSource: StateHandler<OwnState>;
@@ -115,11 +120,13 @@ export type CollectionPageProps
   & OwnStateUpdater
   & OwnHandler
   & WithStyles<typeof styles>
+  & WithWidth
   & WithLayout
   & WithAppBar
   & InjectedIntlProps;
 
 const createProps: mapper<OwnOption, OwnState> = (props: OwnOption): OwnState => ({
+  isMobile: false,
   forceReload: false,
   isLoading: false,
   selected: [],
@@ -129,6 +136,10 @@ const createProps: mapper<OwnOption, OwnState> = (props: OwnOption): OwnState =>
 });
 
 const stateUpdaters: StateUpdaters<OwnOption, OwnState, OwnStateUpdater> = {
+  setMobile: (prev: OwnState) => (toFirst?: boolean): Partial<OwnState> => ({
+    page: toFirst ? 1 : prev.page,
+    forceReload: true
+  }),
   setForceReload: (prev: OwnState) => (toFirst?: boolean): Partial<OwnState> => ({
     page: toFirst ? 1 : prev.page,
     forceReload: true
@@ -304,6 +315,7 @@ const lifecycles: ReactLifeCycleFunctions<CollectionPageProps, OwnState> = {
 export const CollectionPage = compose<CollectionPageProps, OwnOption>(
   setDisplayName('CollectionPage'),
   withStyles(styles),
+  withWidth(),
   withLayout,
   withAppBar,
   injectIntl,
