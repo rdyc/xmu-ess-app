@@ -129,10 +129,11 @@ const config: CollectionConfig<IProject, AllProps> = {
   onBind: (item: IProject, index: number) => ({
     key: index,
     primary: item.name,
-    secondary: item.customer && item.customer.name || item.customerUid,
-    tertiary: item.uid,
-    quaternary: item.status && item.status.value || item.statusType,
-    quinary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
+    secondary: item.project && item.project.value || item.projectType,
+    tertiary: item.customer && item.customer.name || item.customerUid,
+    quaternary: item.uid,
+    quinary: item.status && item.status.value || item.statusType,
+    senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
   }),
 
   // summary component

@@ -1,5 +1,6 @@
 import {
   Checkbox,
+  Divider,
   ExpansionPanel,
   ExpansionPanelActions,
   ExpansionPanelDetails,
@@ -9,6 +10,7 @@ import {
   Hidden,
   Typography,
 } from '@material-ui/core';
+import { isWidthDown } from '@material-ui/core/withWidth';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import * as React from 'react';
 
@@ -41,15 +43,23 @@ export const CollectionPageView: React.SFC<CollectionPageProps> = props => (
       props.response &&
       props.response.data &&
       props.response.data.map((item, index) => {
+        // run overrider if any
         if (props.config.onRowRender) {
           return props.config.onRowRender(item, index);
         }   
 
+        // collecting fields
         const bind = props.config.onBind(item, index);
-
+        
         return (
-          <Fade key={item.uid} in={!props.isLoading} timeout={index * 100}>
-            <ExpansionPanel tabIndex={index}>
+          <Fade 
+            key={item.uid} 
+            in={!props.isLoading}
+            timeout={props.inTransition ? index * 150 : (props.size / index) * 100}
+            mountOnEnter
+            unmountOnExit 
+          >
+            <ExpansionPanel className="collection-item" tabIndex={index}>
               <ExpansionPanelSummary 
                 key={`EPS${index}`}
                 expandIcon={<ExpandMoreIcon />}
@@ -72,16 +82,46 @@ export const CollectionPageView: React.SFC<CollectionPageProps> = props => (
                   <Grid container>
                     <Grid item xs={9} md={9}>
                       <Grid container>
-                        <Grid item xs={12} md={4}>
-                          <Typography variant="body1" noWrap={true} paragraph={false}>{bind.primary}</Typography>
+                        <Grid item xs={12} sm={8} md={3}>
+                          <Typography
+                            variant="body1"
+                            noWrap={true}
+                            paragraph={false}
+                          >
+                            {bind.primary}
+                          </Typography>
                         </Grid>
+
                         <Hidden xsDown>
-                          <Grid item xs={6} md={4}>
-                            <Typography variant="body1" noWrap={true} paragraph={false}>{bind.secondary}</Typography>
+                          <Grid item sm={4} md={3}>
+                            <Typography 
+                              variant="body1"
+                              noWrap={true}
+                              paragraph={false}
+                            >
+                              {bind.secondary}
+                            </Typography>
+                          </Grid>
+
+                          <Grid item sm={8} md={3}>
+                            <Typography 
+                              variant={isWidthDown('sm', props.width) ? 'caption' : 'body1'}
+                              noWrap={true}
+                              paragraph={false}
+                            >
+                              {bind.tertiary}
+                            </Typography>
                           </Grid>
                         </Hidden>
-                        <Grid item xs={12} md={4}>
-                          <Typography variant="caption" noWrap={true} paragraph={false}>{bind.tertiary}</Typography>
+
+                        <Grid item xs={12} sm={4} md={3}>
+                          <Typography 
+                            variant={isWidthDown('sm', props.width) ? 'caption' : 'body1'}
+                            noWrap={true}
+                            paragraph={false}
+                          >
+                            {bind.quaternary}
+                          </Typography>
                         </Grid>
                       </Grid>
                     </Grid>
@@ -89,22 +129,41 @@ export const CollectionPageView: React.SFC<CollectionPageProps> = props => (
                     <Grid item xs={3} md={3}>
                       <Grid container>
                         <Grid item xs={12} md={6}>
-                          <Typography variant="body1" noWrap={true} paragraph={false} align="right">{bind.quaternary}</Typography>
+                          <Typography 
+                            variant="body1"
+                            noWrap={true}
+                            paragraph={false} 
+                            align={isWidthDown('sm', props.width) ? 'right' : 'inherit'}
+                          >
+                            {bind.quinary}
+                          </Typography>
                         </Grid>
+
                         <Grid item xs={12} md={6}>
-                          <Typography variant="caption" noWrap={true} paragraph={false} align="right">{bind.quinary}</Typography>
+                          <Typography
+                            variant={isWidthDown('sm', props.width) ? 'caption' : 'body1'}                            
+                            noWrap={true}
+                            paragraph={false}
+                            align="right"
+                          >
+                            {bind.senary}
+                          </Typography>
                         </Grid>
                       </Grid>
                     </Grid>
                   </Grid>
                 </ExpansionPanelSummary>
                 
+              <Divider/>
+              
               <ExpansionPanelDetails>
                 <Delayed time={2500}>
                   {props.config.summaryComponent(item)}
                 </Delayed>
               </ExpansionPanelDetails>
               
+              <Divider/>
+
               {
                 props.config.actionComponent &&
                 <Delayed time={2500}>

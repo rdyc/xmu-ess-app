@@ -4,7 +4,8 @@ import { ICollectionValue } from '@layout/classes/core';
 import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { IAppBarMenu } from '@layout/interfaces';
-import { WithStyles, withStyles } from '@material-ui/core';
+import { WithStyles, withStyles, withWidth } from '@material-ui/core';
+import { WithWidth } from '@material-ui/core/withWidth';
 import styles from '@styles';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import {
@@ -48,6 +49,7 @@ export interface CollectionConfig<Tres, Tconn> {
     tertiary: string;
     quaternary: string;
     quinary: string;
+    senary: string;
   };
   onRowRender?: (item: Tres, index: number) => JSX.Element;
   summaryComponent: (item: Tres) => JSX.Element;
@@ -82,6 +84,9 @@ interface OwnState {
   // paging
   page: number;
   size: number;
+
+  // transition
+  inTransition: boolean;
 }
 
 interface OwnStateUpdater extends StateHandlerMap<OwnState> {
@@ -115,6 +120,7 @@ export type CollectionPageProps
   & OwnStateUpdater
   & OwnHandler
   & WithStyles<typeof styles>
+  & WithWidth
   & WithLayout
   & WithAppBar
   & InjectedIntlProps;
@@ -125,6 +131,7 @@ const createProps: mapper<OwnOption, OwnState> = (props: OwnOption): OwnState =>
   selected: [],
   page: 1,
   size: 10,
+  inTransition: true,
   ...props.config.filter
 });
 
@@ -134,7 +141,8 @@ const stateUpdaters: StateUpdaters<OwnOption, OwnState, OwnStateUpdater> = {
     forceReload: true
   }),
   setLoading: (prev: OwnState) => (isLoading: boolean): Partial<OwnState> => ({
-    isLoading
+    isLoading,
+    inTransition: !isLoading,
   }),
   setSource: (prev: OwnState) => (response: IResponseCollection<any> | undefined): Partial<OwnState> => ({
     response,
@@ -304,6 +312,7 @@ const lifecycles: ReactLifeCycleFunctions<CollectionPageProps, OwnState> = {
 export const CollectionPage = compose<CollectionPageProps, OwnOption>(
   setDisplayName('CollectionPage'),
   withStyles(styles),
+  withWidth(),
   withLayout,
   withAppBar,
   injectIntl,
