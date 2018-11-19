@@ -1,6 +1,5 @@
 import { layoutMessage } from '@layout/locales/messages';
 import { IconButton, Menu, MenuItem, Toolbar, Tooltip, Typography } from '@material-ui/core';
-// import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import FilterListIcon from '@material-ui/icons/FilterList';
@@ -72,19 +71,6 @@ export const DataContainerView: React.SFC<DataContainerProps> = props => (
           <LibraryBooksSharpIcon />
         </IconButton>
       </Tooltip>
-      
-      {/* <Tooltip
-        placement="bottom"
-        title={props.intl.formatMessage(layoutMessage.tooltip.createNew)}
-      >
-        <IconButton
-          id="option-new"
-          disabled={props.isLoading}
-          onClick={props.onClickNew}
-        >
-          <AddCircleOutlineIcon />
-        </IconButton>
-      </Tooltip> */}
 
       <Tooltip
         placement="bottom"
