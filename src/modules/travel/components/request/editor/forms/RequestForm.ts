@@ -113,7 +113,6 @@ const handlers: HandleCreators<RequestFormProps, OwnHandlers> = {
     if (formValues.item.items) {
       formValues.item.items.forEach((item) => total += item.costTransport + item.costHotel + item.amount);
     }
-    console.log(total);
     setTotal(total);
   }
 };
@@ -130,7 +129,7 @@ const mapStateToProps = (state: any): FormValueProps => {
      destinationtypeValue: destinationtype,
      projectUidValue: projectUid,
      isProjectSelected: projectUid,
-     totalTravel: total     
+     totalTravel: total 
    };   
  };
 

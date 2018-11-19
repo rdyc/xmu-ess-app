@@ -15,9 +15,28 @@ import {
 } from '@material-ui/core';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import { RequestItemFormProps } from '@travel/components/request/editor/forms/RequestItemForm';
+import * as moment from 'moment';
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Field } from 'redux-form';
+
+const calculateDiem = (start: string , end: string): number => {
+  let result: number = 0;
+  
+  const startDate = moment(start);
+  const endDate = moment(end);
+  const diffHours = endDate.diff(startDate, 'hours');
+  const diffDays = endDate.diff(startDate, 'days');
+
+  if (startDate.isSame(endDate)) {
+    result = diffHours >= 8 ? 1 : 0;
+  } else if ( !startDate.isSame(endDate) && endDate.isSameOrAfter(17, 'hours')) {
+    result = diffDays + 1;
+  } else {
+    result = diffDays;
+  }  
+  return result;
+};
 
 export const RequestItemFormView: React.SFC<RequestItemFormProps> = props => {
   const { context, destinationTypeValue, onCostChange } = props;
@@ -31,7 +50,9 @@ export const RequestItemFormView: React.SFC<RequestItemFormProps> = props => {
   const render = (
     <Grid container spacing={16}>
       {
-        context.fields.map((field, index) => 
+        context.fields.map((field, index) => {
+          const item = context.fields.get(index);
+          return (
           <Grid key={index} item xs={12} md={4}>
             <Card square>
               <CardHeader 
@@ -40,7 +61,7 @@ export const RequestItemFormView: React.SFC<RequestItemFormProps> = props => {
                     <DeleteForeverIcon />
                   </IconButton>
                 }
-                title={`#${index + 1}`}
+                title={`#${index + 1} - ${item.uid || 'Draft'}`}
               />
               <CardContent>
                 <div>
@@ -96,11 +117,21 @@ export const RequestItemFormView: React.SFC<RequestItemFormProps> = props => {
                     name={`${field}.departureDate`}
                     label="Departure Date"
                     component={InputDateTime}
+                    onChange= {(event: any, newValue: any) => {
+                      if (newValue && item.returnDate) {
+                        props.change(`${field}.duration`, calculateDiem(newValue, item.returnDate ));
+                      }
+                    }}
                   />
                   <Field 
                     name={`${field}.returnDate`}
                     label="return Date"
                     component={InputDateTime}
+                    onChange= {(event: any, newValue: any) => {
+                      if (newValue) {
+                        props.change(`${field}.duration`, calculateDiem(item.departureDate, newValue));
+                      }
+                    }}
                   />
                   <Field 
                     type="number"
@@ -174,6 +205,11 @@ export const RequestItemFormView: React.SFC<RequestItemFormProps> = props => {
                     label="Diem"
                     disabled={true}
                     component={InputNumber}
+                    onChange={ (event: any, newValue: any) => {
+                      if (!isNaN(newValue)) {
+                        props.change(`${field}.amount`, newValue * item.diemValue);
+                      }
+                    }}
                   />
                   <Field 
                     type="number"
@@ -208,7 +244,8 @@ export const RequestItemFormView: React.SFC<RequestItemFormProps> = props => {
               </CardContent>
             </Card>
           </Grid>
-        )
+          );
+        })
       }
       <Grid item xs={12} md={4}>
         <Grid container spacing={16}>
