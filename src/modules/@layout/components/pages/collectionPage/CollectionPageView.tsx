@@ -48,7 +48,7 @@ export const CollectionPageView: React.SFC<CollectionPageProps> = props => (
         }   
 
         // collecting fields
-        const bind = props.config.onBind(item, index);
+        const bind = props.config.onBind(item, index, props.connectedProps);
         
         return (
           <Fade 

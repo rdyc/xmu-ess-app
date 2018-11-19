@@ -225,7 +225,7 @@ const lifecycles: ReactLifeCycleFunctions<ProjectAcceptanceListProps, OwnState> 
   }
 };
 
-export const ProjectAcceptanceList = compose<ProjectAcceptanceListProps, OwnOptions>(
+export const ProjectAcceptanceListOld = compose<ProjectAcceptanceListProps, OwnOptions>(
   withProjectAcceptance,
   withUser,
   withLayout,

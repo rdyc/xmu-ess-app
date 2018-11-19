@@ -43,7 +43,7 @@ export interface CollectionConfig<Tresponse, Tinner> {
   filter?: IBasePagingFilter | IBaseFilter;
   onDataLoad: (props: Tinner, callback: CollectionHandler, params: CollectionDataProps, forceReload?: boolean | false) => void;
   onUpdated: (props: Tinner, callback: CollectionHandler) => void;
-  onBind: (item: Tresponse, index: number) => {
+  onBind: (item: Tresponse, index: number, props: Tinner) => {
     key: any;
     primary: string;
     secondary: string;

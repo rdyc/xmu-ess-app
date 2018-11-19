@@ -72,7 +72,7 @@ const projectAssignmentItem: React.SFC<AllProps> = props => (
       <TextField
         {...styled}
         margin="dense"
-        label={props.intl.formatMessage(projectMessage.assignment.field.status)}
+        label={props.intl.formatMessage(projectMessage.assignment.field.statusType)}
         value={props.data.status && props.data.status.value || 'N/A'}
       />
       {

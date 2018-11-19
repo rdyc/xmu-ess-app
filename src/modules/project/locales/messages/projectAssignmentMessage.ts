@@ -62,7 +62,7 @@ export const projectAssignmentField = defineMessages({
   hours: { id: `${prefix}.field.item.hours` },
   newMandays: { id: `${prefix}.field.item.newMandays` },
   newHours: { id: `${prefix}.field.item.newHours` },
-  status: { id: `${prefix}.field.item.statusType` },
+  statusType: { id: `${prefix}.field.item.statusType` },
   reason: { id: `${prefix}.field.item.rejectedReason` },
 });
 
