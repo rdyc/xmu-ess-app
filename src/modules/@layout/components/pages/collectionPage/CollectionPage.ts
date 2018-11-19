@@ -37,7 +37,6 @@ export interface CollectionConfig<Tres, Tconn> {
   searchStatus?: (states: Tconn) => boolean;
   hasSelection?: boolean | false;
   selectionProcessing?: (values: string[]) => void;
-  hasRedirection?: boolean | false;
   showActionCentre?: boolean | false;
   filter?: IBasePagingFilter | IBaseFilter;
   onDataLoad: (states: Tconn, callback: CollectionHandler, params: CollectionDataProps, forceReload?: boolean | false) => void;
@@ -54,7 +53,6 @@ export interface CollectionConfig<Tres, Tconn> {
   onRowRender?: (item: Tres, index: number) => JSX.Element;
   summaryComponent: (item: Tres) => JSX.Element;
   actionComponent?: (item: Tres) => JSX.Element;
-  onRedirect: (item: Tres) => string;
 }
 
 interface OwnOption {

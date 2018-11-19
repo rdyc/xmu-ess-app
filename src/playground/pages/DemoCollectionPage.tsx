@@ -38,7 +38,7 @@ const menuOptions = (props: CollectionPageProps): IAppBarMenu[] => ([
     name: props.intl.formatMessage(layoutMessage.action.create),
     enabled: true,
     visible: true,
-    onClick: () => console.log('asdas')
+    onClick: () => alert('go to new page here')
   }
 ]);
 
@@ -79,12 +79,6 @@ const config: CollectionConfig<IProject, AllProps> = {
   // more
   hasMore: true,
   moreOptions: menuOptions,
-  
-  // redirection
-  hasRedirection: true,
-  onRedirect: (item: IProject): string => {
-    return `/playground/pages/demo/collection/${item.uid}`;
-  },
 
   // data filter
   filter: {
@@ -141,6 +135,11 @@ const config: CollectionConfig<IProject, AllProps> = {
     <ProjectSumarry data={item} />
   ),
 
+  // custom row render: uncomment to see different
+  // onRowRender: (item: IProject, index: number) => (
+  //   <div key={index}>{item.name}</div>
+  // )
+
   // action component
   actionComponent: (item: IProject) => (
     <Button 
@@ -149,12 +148,7 @@ const config: CollectionConfig<IProject, AllProps> = {
     >
       <FormattedMessage {...layoutMessage.action.details}/>
     </Button>
-  ),
-
-  // custom row render: uncomment to see different
-  // onRowRender: (item: IProject, index: number) => (
-  //   <div key={index}>{item.name}</div>
-  // )
+  )
 };
 
 type AllProps 
