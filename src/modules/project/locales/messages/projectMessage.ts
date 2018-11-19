@@ -5,6 +5,7 @@ import {
   projectAcceptanceSection,
 } from './projectAcceptanceMessage';
 import { projectAction } from './projectActionMessage';
+import { projectApprovalPage } from './projectApprovalMessage';
 import {
   projectAssignmentAction,
   projectAssignmentField,
@@ -20,6 +21,9 @@ export const projectMessage = {
   registration: {
     page: projectRegistrationPage,
     field: projectRegistrationField
+  },
+  approval: {
+    page: projectApprovalPage,
   },
   assignment: {
     page: projectAssignmentPage,

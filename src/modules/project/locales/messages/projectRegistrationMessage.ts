@@ -12,14 +12,14 @@ export const projectRegistrationMessage = defineMessages({
 
 // page
 export const projectRegistrationPage = defineMessages({
-  listTitle: { id: `${prefix}.page.request.title` },
-  listSubHeader: { id: `${prefix}.page.request.subHeader` },
-  detailTitle: { id: `${prefix}.page.request.detail.title` },
-  detailSubHeader: { id: `${prefix}.page.request.detail.subHeader` },
-  newTitle: { id: `${prefix}.page.request.new.title` },
-  newSubHeader: { id: `${prefix}.page.request.new.subHeader` },
-  modifyTitle: { id: `${prefix}.page.request.modify.title` },
-  modifySubHeader: { id: `${prefix}.page.request.modify.subHeader` },
+  listTitle: { id: `${prefix}.page.list.title` },
+  listSubHeader: { id: `${prefix}.page.list.subHeader` },
+  detailTitle: { id: `${prefix}.page.detail.title` },
+  detailSubHeader: { id: `${prefix}.page.detail.subHeader` },
+  newTitle: { id: `${prefix}.page.new.title` },
+  newSubHeader: { id: `${prefix}.page.new.subHeader` },
+  modifyTitle: { id: `${prefix}.page.modify.title` },
+  modifySubHeader: { id: `${prefix}.page.modify.subHeader` },
 });
 
 // fields
