@@ -1,66 +1,44 @@
-import { ICollectionValue } from '@layout/classes/core';
+import AppMenu from '@constants/AppMenu';
 import { CollectionConfig, CollectionDataProps, CollectionHandler, CollectionPage } from '@layout/components/pages';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
 import { Button } from '@material-ui/core';
+import { isRequestEditable } from '@organization/helper/isRequestEditable';
 import { IProject } from '@project/classes/response';
 import { ProjectRegistrationField, ProjectUserAction } from '@project/classes/types';
 import { ProjectSumarry } from '@project/components/registration/detail/shared/ProjectSummary';
 import { projectRegistrationFieldTranslator } from '@project/helper';
 import { WithProjectRegistration, withProjectRegistration } from '@project/hoc/withProjectRegistration';
+import { projectMessage } from '@project/locales/messages/projectMessage';
 import * as moment from 'moment';
 import * as React from 'react';
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose } from 'recompose';
 
-const projectFields: ICollectionValue[] = Object.keys(ProjectRegistrationField).map(key => ({ 
-  value: key, 
-  name: ProjectRegistrationField[key] 
-}));
-
-const menuOptions = (props: AllProps, callback: CollectionHandler): IAppBarMenu[] => ([
-  {
-    id: ProjectUserAction.Refresh,
-    name: props.intl.formatMessage(layoutMessage.action.refresh),
-    enabled: true,
-    visible: true,
-    onClick: () => callback.handleForceReload()
-  },
-  {
-    id: ProjectUserAction.Create,
-    name: props.intl.formatMessage(layoutMessage.action.create),
-    enabled: true,
-    visible: true,
-    onClick: () => alert('go to new page here')
-  }
-]);
-
-const config: CollectionConfig<IProject, AllProps> = {
-  // page info
-  page: (props: AllProps) => ({
-    uid: '123',
-    parentUid: '012',
-    title: 'Collection Page',
-    description: 'Demo of collection page',
+const config: CollectionConfig<IProject, ProjectRegisterListProps> = {
+  // page
+  page: (props: ProjectRegisterListProps) => ({
+    uid: AppMenu.ProjectRegistrationRequest,
+    parentUid: AppMenu.ProjectRegistration,
+    title: props.intl.formatMessage(projectMessage.registration.page.listTitle),
+    description: props.intl.formatMessage(projectMessage.registration.page.listSubHeader),
   }),
   
   // top bar
-  fields: projectFields,
+  fields: Object.keys(ProjectRegistrationField)
+    .map(key => ({ 
+      value: key, 
+      name: ProjectRegistrationField[key] 
+    })),
   fieldTranslator: projectRegistrationFieldTranslator,
-
-  // selection
-  hasSelection: true,
-  selectionProcessing: (values: string[]) => {
-    alert(values.toString());
-  },
 
   // searching
   hasSearching: true,
-  searchStatus: (states: AllProps): boolean => {
+  searchStatus: (props: ProjectRegisterListProps): boolean => {
     let result: boolean = false;
 
-    const { request } = states.projectRegisterState.all;
+    const { request } = props.projectRegisterState.all;
 
     if (request && request.filter && request.filter.find) {
       result = request.filter.find ? true : false;
@@ -74,7 +52,22 @@ const config: CollectionConfig<IProject, AllProps> = {
 
   // more
   hasMore: true,
-  moreOptions: menuOptions,
+  moreOptions: (props: ProjectRegisterListProps, callback: CollectionHandler): IAppBarMenu[] => ([
+    {
+      id: ProjectUserAction.Refresh,
+      name: props.intl.formatMessage(layoutMessage.action.refresh),
+      enabled: true,
+      visible: true,
+      onClick: () => callback.handleForceReload()
+    },
+    {
+      id: ProjectUserAction.Create,
+      name: props.intl.formatMessage(layoutMessage.action.create),
+      enabled: true,
+      visible: true,
+      onClick: () => callback.handleRedirectTo(`/project/requests/form`)
+    }
+  ]),
 
   // data filter
   filter: {
@@ -83,10 +76,10 @@ const config: CollectionConfig<IProject, AllProps> = {
   },
 
   // events
-  onDataLoad: (states: AllProps, callback: CollectionHandler, params: CollectionDataProps, forceReload?: boolean | false) => {
-    const { user } = states.userState;
-    const { isLoading, response } = states.projectRegisterState.all;
-    const { loadAllRequest } = states.projectRegisterDispatch;
+  onDataLoad: (props: ProjectRegisterListProps, callback: CollectionHandler, params: CollectionDataProps, forceReload?: boolean | false) => {
+    const { user } = props.userState;
+    const { isLoading, response } = props.projectRegisterState.all;
+    const { loadAllRequest } = props.projectRegisterDispatch;
 
     // when user is set and not loading
     if (user && !isLoading) {
@@ -110,8 +103,8 @@ const config: CollectionConfig<IProject, AllProps> = {
       }
     }
   },
-  onUpdated: (states: AllProps, callback: CollectionHandler) => {
-    const { isLoading, response } = states.projectRegisterState.all;
+  onUpdated: (props: ProjectRegisterListProps, callback: CollectionHandler) => {
+    const { isLoading, response } = props.projectRegisterState.all;
     
     callback.handleLoading(isLoading);
     callback.handleResponse(response);
@@ -131,36 +124,43 @@ const config: CollectionConfig<IProject, AllProps> = {
     <ProjectSumarry data={item} />
   ),
 
-  // custom row render: uncomment to see different
-  // onRowRender: (item: IProject, index: number) => (
-  //   <div key={index}>{item.name}</div>
-  // )
-
   // action component
-  actionComponent: (item: IProject) => (
-    <Button 
-      size="small"
-      onClick={() => alert(`go to ${item.uid}`)}
-    >
-      <FormattedMessage {...layoutMessage.action.details}/>
-    </Button>
+  actionComponent: (item: IProject, callback: CollectionHandler, ) => (
+    <React.Fragment>
+      {
+        isRequestEditable(item.statusType) &&
+        <Button 
+          size="small"
+          onClick={() => callback.handleRedirectTo(`/project/requests/form`, { uid: item.uid })}
+        >
+          <FormattedMessage {...layoutMessage.action.modify}/>
+        </Button>
+      }
+
+      <Button 
+        size="small"
+        onClick={() => callback.handleRedirectTo(`/project/requests/${item.uid}`)}
+      >
+        <FormattedMessage {...layoutMessage.action.details}/>
+      </Button>
+    </React.Fragment>
   )
 };
 
-type AllProps 
+type ProjectRegisterListProps 
   = WithUser
   & WithProjectRegistration
   & InjectedIntlProps;
 
-const demoCollectionPage: React.SFC<AllProps> = props => (
+const ProjectRegistrationListView: React.SFC<ProjectRegisterListProps> = props => (
   <CollectionPage
     config={config}
     connectedProps={props}
   />
 );
 
-export const DemoCollectionPage = compose(
+export const ProjectCollectionRequest = compose(
   withUser,
   withProjectRegistration,
-  injectIntl,
-)(demoCollectionPage);
+  injectIntl
+)(ProjectRegistrationListView);

@@ -1,7 +1,6 @@
 import { Layout } from '@layout/components/base';
 import { ProjectRegistrationDetail } from '@project/components/registration/detail/ProjectRegistrationDetail';
 import RegistrationEditor from '@project/components/registration/editor/ProjectRegistrationEditor';
-import { ProjectRegistrationList } from '@project/components/registration/list/ProjectRegistrationList';
 import * as React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router';
 
@@ -14,6 +13,7 @@ import { ProjectAssignmentDetail } from './assignment/detail/ProjectAssignmentDe
 import { ProjectAssignmentEditorForm } from './assignment/editor/ProjectAssignmentEditor';
 import { ProjectAssignmentList } from './assignment/list/ProjectAssignmentList';
 import { OwnerEditor } from './owner/editor/OwnerEditor';
+import { ProjectCollectionRequest } from './registration/list/ProjectCollectionRequest';
 import { SiteEditor } from './sites/SiteEditor';
 import { StatusEditor } from './status/StatusEditor';
 
@@ -24,7 +24,7 @@ const request = (props: RouteComponentProps) => (
     <Route path={`${props.match.path}/sites/:companyUid/:projectUid`} component={SiteEditor} />
     <Route path={`${props.match.path}/form`} component={RegistrationEditor} />
     <Route path={`${props.match.path}/:projectUid`} component={ProjectRegistrationDetail} />
-    <Route path={`${props.match.path}`} component={ProjectRegistrationList} />
+    <Route path={`${props.match.path}`} component={ProjectCollectionRequest} />
   </Switch>
 );
 

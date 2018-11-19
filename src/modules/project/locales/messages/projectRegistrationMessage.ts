@@ -10,6 +10,18 @@ export const projectRegistrationMessage = defineMessages({
   updateFailure: { id: 'project.message.registration.update.failure' },
 });
 
+// page
+export const projectRegistrationPage = defineMessages({
+  listTitle: { id: `${prefix}.page.request.title` },
+  listSubHeader: { id: `${prefix}.page.request.subHeader` },
+  detailTitle: { id: `${prefix}.page.request.detail.title` },
+  detailSubHeader: { id: `${prefix}.page.request.detail.subHeader` },
+  newTitle: { id: `${prefix}.page.request.new.title` },
+  newSubHeader: { id: `${prefix}.page.request.new.subHeader` },
+  modifyTitle: { id: `${prefix}.page.request.modify.title` },
+  modifySubHeader: { id: `${prefix}.page.request.modify.subHeader` },
+});
+
 // fields
 export const projectRegistrationField = defineMessages({
   uid: { id: `${prefix}.field.information.uid` },
