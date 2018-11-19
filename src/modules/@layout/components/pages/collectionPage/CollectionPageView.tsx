@@ -31,7 +31,6 @@ export const CollectionPageView: React.SFC<CollectionPageProps> = props => (
     metadata={props.response && props.response.metadata}
     fields={props.config.fields}
     onClickSync={() => props.setPageOne()}
-    onClickNew={() => alert('new')}
     onClickNext={() => props.setPageNext()}
     onClickPrevious={() => props.setPagePrevious()}
     onChangeField={props.setField}

@@ -13,7 +13,7 @@ import { ProjectAssignmentDetail } from './assignment/detail/ProjectAssignmentDe
 import { ProjectAssignmentEditorForm } from './assignment/editor/ProjectAssignmentEditor';
 import { ProjectAssignmentList } from './assignment/list/ProjectAssignmentList';
 import { OwnerEditor } from './owner/editor/OwnerEditor';
-import { ProjectCollectionRequest } from './registration/list/ProjectCollectionRequest';
+import { ProjectRegistrationList } from './registration/list/ProjectRegistrationList';
 import { SiteEditor } from './sites/SiteEditor';
 import { StatusEditor } from './status/StatusEditor';
 
@@ -24,7 +24,7 @@ const request = (props: RouteComponentProps) => (
     <Route path={`${props.match.path}/sites/:companyUid/:projectUid`} component={SiteEditor} />
     <Route path={`${props.match.path}/form`} component={RegistrationEditor} />
     <Route path={`${props.match.path}/:projectUid`} component={ProjectRegistrationDetail} />
-    <Route path={`${props.match.path}`} component={ProjectCollectionRequest} />
+    <Route path={`${props.match.path}`} component={ProjectRegistrationList} />
   </Switch>
 );
 

@@ -16,9 +16,9 @@ import * as React from 'react';
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose } from 'recompose';
 
-const config: CollectionConfig<IProject, ProjectRegisterListProps> = {
+const config: CollectionConfig<IProject, AllProps> = {
   // page
-  page: (props: ProjectRegisterListProps) => ({
+  page: (props: AllProps) => ({
     uid: AppMenu.ProjectRegistrationRequest,
     parentUid: AppMenu.ProjectRegistration,
     title: props.intl.formatMessage(projectMessage.registration.page.listTitle),
@@ -35,7 +35,7 @@ const config: CollectionConfig<IProject, ProjectRegisterListProps> = {
 
   // searching
   hasSearching: true,
-  searchStatus: (props: ProjectRegisterListProps): boolean => {
+  searchStatus: (props: AllProps): boolean => {
     let result: boolean = false;
 
     const { request } = props.projectRegisterState.all;
@@ -52,7 +52,7 @@ const config: CollectionConfig<IProject, ProjectRegisterListProps> = {
 
   // more
   hasMore: true,
-  moreOptions: (props: ProjectRegisterListProps, callback: CollectionHandler): IAppBarMenu[] => ([
+  moreOptions: (props: AllProps, callback: CollectionHandler): IAppBarMenu[] => ([
     {
       id: ProjectUserAction.Refresh,
       name: props.intl.formatMessage(layoutMessage.action.refresh),
@@ -76,7 +76,7 @@ const config: CollectionConfig<IProject, ProjectRegisterListProps> = {
   },
 
   // events
-  onDataLoad: (props: ProjectRegisterListProps, callback: CollectionHandler, params: CollectionDataProps, forceReload?: boolean | false) => {
+  onDataLoad: (props: AllProps, callback: CollectionHandler, params: CollectionDataProps, forceReload?: boolean | false) => {
     const { user } = props.userState;
     const { isLoading, response } = props.projectRegisterState.all;
     const { loadAllRequest } = props.projectRegisterDispatch;
@@ -103,7 +103,7 @@ const config: CollectionConfig<IProject, ProjectRegisterListProps> = {
       }
     }
   },
-  onUpdated: (props: ProjectRegisterListProps, callback: CollectionHandler) => {
+  onUpdated: (props: AllProps, callback: CollectionHandler) => {
     const { isLoading, response } = props.projectRegisterState.all;
     
     callback.handleLoading(isLoading);
@@ -147,20 +147,20 @@ const config: CollectionConfig<IProject, ProjectRegisterListProps> = {
   )
 };
 
-type ProjectRegisterListProps 
+type AllProps 
   = WithUser
   & WithProjectRegistration
   & InjectedIntlProps;
 
-const ProjectRegistrationListView: React.SFC<ProjectRegisterListProps> = props => (
+const listView: React.SFC<AllProps> = props => (
   <CollectionPage
     config={config}
     connectedProps={props}
   />
 );
 
-export const ProjectCollectionRequest = compose(
+export const ProjectRegistrationList = compose(
   withUser,
   withProjectRegistration,
   injectIntl
-)(ProjectRegistrationListView);
+)(listView);
