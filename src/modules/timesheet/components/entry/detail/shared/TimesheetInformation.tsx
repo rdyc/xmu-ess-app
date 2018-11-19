@@ -55,19 +55,19 @@ const timesheetInformation: React.SFC<AllProps> = props => {
         <TextField
           {...styled}
           margin="dense"
-          label={<FormattedMessage id="timesheet.field.information.customerName" />}
+          label={<FormattedMessage id="timesheet.field.information.customerUid" />}
           value={data.customer ? data.customer.name : 'N/A'}
         />
         <TextField
           {...styled}
           margin="dense"
-          label={<FormattedMessage id="timesheet.field.information.projectName" />}
-          value={data.project ? data.project.name : 'N/A'}
+          label={<FormattedMessage id="timesheet.field.information.projectUid" />}
+          value={data.project ? `${data.project.uid} - ${data.project.name}` : 'N/A'}
         />
         <TextField
           {...styled}
           margin="dense"
-          label={<FormattedMessage id="timesheet.field.information.projectSite" />}
+          label={<FormattedMessage id="timesheet.field.information.siteUid" />}
           value={data.site ? data.site.name : 'N/A'}
         />
         <TextField
@@ -83,7 +83,7 @@ const timesheetInformation: React.SFC<AllProps> = props => {
           value={intl.formatTime(data.start, {
             hour: 'numeric',
             minute: 'numeric',
-            timeZone: 'utc',
+            timeZone: 'GMT',
             hour12: false
           })}
         />
@@ -94,7 +94,7 @@ const timesheetInformation: React.SFC<AllProps> = props => {
           value={intl.formatTime(data.end, {
             hour: 'numeric',
             minute: 'numeric',
-            timeZone: 'utc',
+            timeZone: 'GMT',
             hour12: false
           })}
         />

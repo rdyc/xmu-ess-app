@@ -1,9 +1,9 @@
 import AppMenu from '@constants/AppMenu';
 import { SortDirection } from '@generic/types';
+import { ICollectionValue } from '@layout/classes/core';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithNavBottom, withNavBottom } from '@layout/hoc/withNavBottom';
 import { WithUser, withUser } from '@layout/hoc/withUser';
-import { IListBarField } from '@layout/interfaces';
 import { TimesheetField } from '@timesheet/classes/types';
 import { TimesheetEntryListView } from '@timesheet/components/entry/list/TimesheetEntryListView';
 import { WithTimesheetEntry, withTimesheetEntry } from '@timesheet/hoc/withTimesheetEntry';
@@ -28,7 +28,7 @@ interface OwnHandlers {
   handleGoToPrevious: () => void;
   handleReloading: () => void;
   handleChangeSize: (value: number) => void;
-  handleChangeOrder: (field: IListBarField) => void;
+  handleChangeOrder: (field: ICollectionValue) => void;
   handleChangeSort: (direction: SortDirection) => void;
 }
 
@@ -89,8 +89,8 @@ const stateUpdaters: StateUpdaters<OwnOptions, OwnState, OwnStateUpdaters> = {
   stateReloading: (prevState: OwnState) => () => ({
     page: 1,
   }),
-  stateOrdering: (prevState: OwnState) => (field: IListBarField) => ({
-    orderBy: field.id,
+  stateOrdering: (prevState: OwnState) => (field: ICollectionValue) => ({
+    orderBy: field.value,
     page: 1,
   }),
   stateSorting: (prevState: OwnState) => (direction: SortDirection) => ({
@@ -124,7 +124,7 @@ const handlerCreators: HandleCreators<EntryListProps, OwnHandlers> = {
     // force re-load from api
     loadData(props);
   },
-  handleChangeOrder: (props: EntryListProps) => (field: IListBarField) => {
+  handleChangeOrder: (props: EntryListProps) => (field: ICollectionValue) => {
     props.stateOrdering(field);
   },
   handleChangeSize: (props: EntryListProps) => (value: number) => {
@@ -168,7 +168,7 @@ const lifecycles: ReactLifeCycleFunctions<EntryListProps, OwnState> = {
     });
 
     const items = Object.keys(TimesheetField)
-      .map(key => ({ id: key, name: TimesheetField[key] }));
+      .map(key => ({ value: key, name: TimesheetField[key] }));
 
     navBottomDispatch.assignFields(items);
 

@@ -1,9 +1,6 @@
 import AppMenu from '@constants/AppMenu';
-import { SortDirection } from '@generic/types';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
-import { WithNavBottom, withNavBottom } from '@layout/hoc/withNavBottom';
 import { WithUser, withUser } from '@layout/hoc/withUser';
-import { IListBarField } from '@layout/interfaces';
 import { BillableListView } from '@summary/components/billable/BillableListView';
 import { WithSummary, withSummary } from '@summary/hoc/withSummary';
 import * as moment from 'moment';
@@ -27,10 +24,12 @@ interface OwnHandlers {
   handleChangeEnd: (end: string) => void;
   handleGoToNext: () => void;
   handleGoToPrevious: () => void;
-  handleReloading: () => void;
   handleChangeSize: (value: number) => void;
-  handleChangeOrder: (field: IListBarField) => void;
-  handleChangeSort: (direction: SortDirection) => void;
+  handleChangeSort: (direction: boolean) => void;
+  handleChangePage: (page: number) => void;
+  handleChangeFind: (find: string) => void;
+  handleDetail: (uid: string, type: string) => void;
+  handleDialog: () => void;
 }
 
 interface OwnOptions {
@@ -38,15 +37,25 @@ interface OwnOptions {
   direction?: string | undefined;
   page?: number | undefined;
   size?: number | undefined;
+  find?: string | undefined;
+  findBy?: string | undefined;
+  uid?: string | undefined;
+  open?: boolean;
+  type?: string | undefined;
 }
 
 interface OwnState {
-  _start: string;
-  _end: string;
+  start: string;
+  end: string;
   orderBy: string | undefined;
   direction: string | undefined;
   page: number;
   size: number;
+  find: string | undefined;
+  findBy: string | undefined;
+  uid: string | undefined;
+  open: boolean;
+  type: string | undefined;
 }
 
 interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
@@ -54,50 +63,55 @@ interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
   stateEnd: StateHandler<OwnState>;
   stateNext: StateHandler<OwnState>;
   statePrevious: StateHandler<OwnState>;
-  stateReloading: StateHandler<OwnState>;
-  stateOrdering: StateHandler<OwnState>;
   stateSorting: StateHandler<OwnState>;
   stateSizing: StateHandler<OwnState>;
+  statePage: StateHandler<OwnState>;
+  stateFind: StateHandler<OwnState>;
+  stateDetail: StateHandler<OwnState>;
+  stateDialog: StateHandler<OwnState>;
 }
 
-export type BillableListProps 
-  = WithSummary
-  & WithUser
-  & WithLayout
-  & WithNavBottom
-  & RouteComponentProps
-  & InjectedIntlProps
-  & OwnOptions
-  & OwnHandlers
-  & OwnState
-  & OwnStateUpdaters;
+export type BillableListProps = WithSummary &
+  WithUser &
+  WithLayout &
+  RouteComponentProps &
+  InjectedIntlProps &
+  OwnOptions &
+  OwnHandlers &
+  OwnState &
+  OwnStateUpdaters;
 
 const createProps: mapper<BillableListProps, OwnState> = (props: BillableListProps): OwnState => {
   const { orderBy, direction, page, size } = props;
   const { request } = props.summaryState.billable;
 
   return {
-    _start: moment()
+    start: moment()
       .startOf('year')
       .toISOString(true),
-    _end: moment().toISOString(true),
+    end: moment().toISOString(true),
+    find: undefined,
+    findBy: undefined,
+    uid: undefined,
+    open: false,
+    type: undefined,
     orderBy:
-      (request && request.filter && request.filter.orderBy) || orderBy || 'uid',
+      (request && request.filter && request.filter.orderBy) || orderBy || 'fullName',
     direction:
       (request && request.filter && request.filter.direction) ||
       direction ||
-      'descending',
+      'ascending',
     page: (request && request.filter && request.filter.page) || page || 1,
-    size: (request && request.filter && request.filter.size) || size || 10
+    size: (request && request.filter && request.filter.size) || size || 5
   };
 };
 
 const stateUpdaters: StateUpdaters<OwnOptions, OwnState, OwnStateUpdaters> = {
-  stateStart: (prevState: OwnState) => (_start: string) => ({
-    _start
+  stateStart: (prevState: OwnState) => (start: string) => ({
+    start
   }),
-  stateEnd: (prevState: OwnState) => (_end: string) => ({
-    _end
+  stateEnd: (prevState: OwnState) => (end: string) => ({
+    end
   }),
   stateNext: (prevState: OwnState) => () => ({
     page: prevState.page + 1
@@ -105,37 +119,36 @@ const stateUpdaters: StateUpdaters<OwnOptions, OwnState, OwnStateUpdaters> = {
   statePrevious: (prevState: OwnState) => () => ({
     page: prevState.page - 1
   }),
-  stateReloading: (prevState: OwnState) => () => ({
-    page: 1
-  }),
-  stateOrdering: (prevState: OwnState) => (field: IListBarField) => ({
-    orderBy: field.id,
-    page: 1
-  }),
-  stateSorting: (prevState: OwnState) => (direction: SortDirection) => ({
+  stateSorting: (prevState: OwnState) => (direction: string) => ({
     direction,
     page: 1
   }),
   stateSizing: (prevState: OwnState) => (size: number) => ({
     size,
     page: 1
+  }),
+  statePage: (prevState: OwnState) => (page: number) => ({
+    page
+  }),
+  stateFind: (prevState: OwnState) => (find: string) => ({
+    find,
+    findBy: 'fullName'
+  }),
+  stateDetail: (prevState: OwnState) => (uid: string, type: string) => ({
+    uid,
+    type
+  }),
+  stateDialog: (prevState: OwnState) => (open: boolean) => ({
+    open
   })
 };
 
 const handlerCreators: HandleCreators<BillableListProps, OwnHandlers> = {
   handleChangeStart: (props: BillableListProps) => (start: string) => {
-    const { stateStart } = props;
-    let { _start } = props;
-
-    _start = start;
-    stateStart(_start);
+    props.stateStart(start);
   },
   handleChangeEnd: (props: BillableListProps) => (end: string) => {
-    const { stateEnd } = props;
-    let { _end } = props;
-
-    _end = end;
-    stateEnd(_end);
+    props.stateEnd(end);
   },
   handleGoToNext: (props: BillableListProps) => () => {
     props.stateNext();
@@ -143,37 +156,35 @@ const handlerCreators: HandleCreators<BillableListProps, OwnHandlers> = {
   handleGoToPrevious: (props: BillableListProps) => () => {
     props.statePrevious();
   },
-  handleReloading: (props: BillableListProps) => () => {
-    props.stateReloading();
-
-    // force re-load from api
-    loadData(props);
-  },
-  handleChangeOrder: (props: BillableListProps) => (field: IListBarField) => {
-    props.stateOrdering(field);
-  },
   handleChangeSize: (props: BillableListProps) => (value: number) => {
     props.stateSizing(value);
   },
   handleChangeSort: (props: BillableListProps) => (
-    direction: SortDirection
+    direction: boolean
   ) => {
-    props.stateSorting(direction);
+    props.stateSorting(direction ? 'descending' : 'ascending');
+  },
+  handleChangePage: (props: BillableListProps) => (page: number) => {
+    props.statePage(page);
+  },
+  handleChangeFind: (props: BillableListProps) => (find: string) => {
+    props.stateFind(find.toUpperCase());
+  },
+  handleDetail: (props: BillableListProps) => (uid: string, type: string) => {
+    props.stateDetail(uid, type);
+  },
+  handleDialog: (props: BillableListProps) => () => {
+    let { open } = props;
+
+    open = !open;
+    props.stateDialog(open);
   }
 };
 
 const lifecycles: ReactLifeCycleFunctions<BillableListProps, OwnState> = {
   componentDidMount() {
     const {
-      handleGoToNext,
-      handleGoToPrevious,
-      handleReloading,
-      handleChangeOrder,
-      handleChangeSize,
-      handleChangeSort,
       layoutDispatch,
-      navBottomDispatch,
-      history,
       intl
     } = this.props;
 
@@ -186,34 +197,9 @@ const lifecycles: ReactLifeCycleFunctions<BillableListProps, OwnState> = {
       subTitle: intl.formatMessage({ id: 'billable.subTitle' })
     });
 
-    layoutDispatch.modeListOn();
-    layoutDispatch.searchShow();
-    layoutDispatch.actionCentreShow();
-
-    navBottomDispatch.assignCallbacks({
-      onNextCallback: handleGoToNext,
-      onPrevCallback: handleGoToPrevious,
-      onSyncCallback: handleReloading,
-      onOrderCallback: handleChangeOrder,
-      onDirectionCallback: handleChangeSort,
-      onAddCallback: () => history.push('/'),
-      onSizeCallback: handleChangeSize
-    });
-
     // only load data when response are empty
     if (!isLoading && !response) {
       loadData(this.props);
-    }
-  },
-  componentWillReceiveProps(nextProps: BillableListProps) {
-    if (
-      nextProps._start !== this.props._start ||
-      nextProps._end !== this.props._end
-    ) {
-      const { loadBillableDispose } = this.props.summaryDispatch;
-
-      loadBillableDispose();
-      loadData(nextProps);
     }
   },
   componentDidUpdate(props: BillableListProps, state: OwnState) {
@@ -222,24 +208,23 @@ const lifecycles: ReactLifeCycleFunctions<BillableListProps, OwnState> = {
       this.props.orderBy !== props.orderBy ||
       this.props.direction !== props.direction ||
       this.props.page !== props.page ||
-      this.props.size !== props.size
+      this.props.size !== props.size ||
+      this.props.start !== props.start ||
+      this.props.end !== props.end ||
+      this.props.find !== props.find
     ) {
+      const { loadBillableDispose } = this.props.summaryDispatch;
+
+      loadBillableDispose();
       loadData(this.props);
     }
   },
   componentWillUnmount() {
-    const { layoutDispatch, navBottomDispatch } = this.props;
+    const { layoutDispatch } = this.props;
     const { view } = this.props.layoutState;
     const { loadBillableDispose } = this.props.summaryDispatch;
 
     layoutDispatch.changeView(null);
-    layoutDispatch.modeListOff();
-    layoutDispatch.searchHide();
-    layoutDispatch.modeSearchOff();
-    layoutDispatch.actionCentreHide();
-    layoutDispatch.moreHide();
-
-    navBottomDispatch.dispose();
 
     // dispose 'get all' from 'redux store' when the page is 'out of report billable' context
     if (view && view.parentUid !== AppMenu.Report) {
@@ -249,11 +234,11 @@ const lifecycles: ReactLifeCycleFunctions<BillableListProps, OwnState> = {
 };
 
 const loadData = (props: BillableListProps): void => {
-  const { orderBy, direction, page, size, _start, _end } = props;
+  const { orderBy, direction, size, start, end, find, findBy, page } = props;
   const { user } = props.userState;
   const { loadBillableRequest } = props.summaryDispatch;
   const { alertAdd } = props.layoutDispatch;
-
+    
   if (user) {
     loadBillableRequest({
       companyUid: user.company.uid,
@@ -262,10 +247,10 @@ const loadData = (props: BillableListProps): void => {
         orderBy,
         page,
         size,
-        start: _start,
-        end: _end,
-        find: undefined,
-        findBy: undefined
+        start,
+        end,
+        find,
+        findBy
       }
     });
   } else {
@@ -280,7 +265,6 @@ export const BillableList = compose<BillableListProps, OwnOptions>(
   withSummary,
   withUser,
   withLayout,
-  withNavBottom,
   withRouter,
   injectIntl,
   withStateHandlers<OwnState, OwnStateUpdaters, OwnOptions>(

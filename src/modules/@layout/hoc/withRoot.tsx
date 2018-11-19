@@ -1,7 +1,7 @@
 import 'typeface-roboto';
 
 import CssBaseline from '@material-ui/core/CssBaseline';
-import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
+import { createMuiTheme, MuiThemeProvider, Theme } from '@material-ui/core/styles';
 import MomentUtils from 'material-ui-pickers/utils/moment-utils';
 import MuiPickersUtilsProvider from 'material-ui-pickers/utils/MuiPickersUtilsProvider';
 import * as React from 'react';
@@ -39,8 +39,18 @@ theme.overrides = Object.assign(muiPickers);*/
 //   </MuiThemeProvider>
 // );
 
+const themeOverides: Partial<Theme> = {
+  overrides: { 
+    MuiExpansionPanelSummary: {
+      expanded: {
+        margin: 0
+      }
+    }
+  }
+};
+
 const layoutThemeView: React.SFC<WithLayout> = props => (
-  <MuiThemeProvider theme={createMuiTheme(props.layoutState.theme)}>
+  <MuiThemeProvider theme={createMuiTheme({...props.layoutState.theme, ...themeOverides})}>
     <MuiPickersUtilsProvider utils={MomentUtils}>
       <CssBaseline />
       {props.children}

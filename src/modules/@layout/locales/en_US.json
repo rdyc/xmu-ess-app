@@ -1,0 +1,72 @@
+{
+  "layout.text.loading": "Loading...",
+  "layout.text.processing": "Processing",
+  "layout.text.dataInfo": "{total} record(s)",
+  "layout.text.pagingInfo": "{current} of {total}",
+
+  "layout.tooltip.more": "More options",
+  "layout.tooltip.orderBy": "Order by",
+  "layout.tooltip.sortDirection": "Sort direction",
+  "layout.tooltip.rowsPerPage": "Rows per page",
+  "layout.tooltip.createNew": "Create a new",
+  "layout.tooltip.refresh": "Refresh data",
+  "layout.tooltip.nextPage": "Next page",
+  "layout.tooltip.prevPage": "Previous page",
+
+  "layout.find": "Find",
+  "layout.search": "Search",
+
+  "layout.date.today": "Today",
+  "layout.date.empty": "Empty",
+  
+  "layout.dialog.alertTitle": "Alert Details",
+  
+  "layout.form.submit.title": "Submission",
+  "layout.form.submit.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+
+  "layout.action.yes": "Yes",
+  "layout.action.no": "No",
+  "layout.action.ok": "Ok",
+  "layout.action.aggree": "Aggree",
+  "layout.action.disaggree": "Disaggree",
+  "layout.action.continue": "Continue",
+  "layout.action.process": "Process",
+  "layout.action.create": "Create",
+  "layout.action.save": "Save",
+  "layout.action.cancel": "Cancel",
+  "layout.action.discard": "Discard",
+  "layout.action.edit": "Edit",
+  "layout.action.modify": "Modify",
+  "layout.action.close": "Close",
+  "layout.action.dismiss": "Dismiss",
+  "layout.action.approve": "Approve",
+  "layout.action.reject": "Reject",
+  "layout.action.refresh": "Refresh",
+  "layout.action.submit": "Submit",
+  "layout.action.reset": "Reset",
+  "layout.action.clear": "Clear",
+  "layout.action.details": "Details",
+  "layout.action.next": "More",
+  "layout.action.nextCount": "More ({count}) ",
+  "layout.action.previous": "Last",
+  "layout.action.previousCount": "Last ({count})",
+
+  "layout.label.login": "Login",
+  "layout.label.logout": "Logout",
+  "layout.label.selection": "{count} selected",
+  
+  "layout.profile.my.title": "Profile",
+  "layout.access.title": "Access",
+  "layout.access.switch.title": "Switch",
+  "layout.logout.title": "Logout",
+
+  "layout.notification.title": "Notification",
+  "layout.notification.emptySubTitle": "There is no notification at this time",
+
+  "layout.setting.title": "Settings",
+
+  "layout.field.created.by": "Created By",
+  "layout.field.created.at": "Created At",
+  "layout.field.updated.by": "Updated By",
+  "layout.field.updated.at": "Updated At"
+}

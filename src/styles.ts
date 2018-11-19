@@ -108,12 +108,12 @@ const styles = (theme: Theme) =>
     content: {
       flexGrow: 1,
       padding: theme.spacing.unit * 2,
-      [theme.breakpoints.up('lg')]: {
-        marginTop: theme.spacing.unit * 10,
-      },
-      [theme.breakpoints.down('md')]: {
-        padding: 0,
+      [theme.breakpoints.up('md')]: {
         marginTop: theme.spacing.unit * 8,
+      },
+      [theme.breakpoints.down('sm')]: {
+        padding: 0,
+        marginTop: theme.spacing.unit * 7,
       }
     },
     contentShiftLeft: {
@@ -264,11 +264,20 @@ const styles = (theme: Theme) =>
     /* report */
     reportPaper: {
       overflowX: 'auto',
-      height: `calc(100vh - 128px)`,
+      height: `calc(100vh - 128px - 120px)`,
+    },
+    reportPaperPartial: {
+      width: `calc(100vw - 32px - ${drawerWidth}px)`
     },
     reportPaperMobile: {
       overflowX: 'auto',
-      height: `calc(100vh - 64px)`,
+      height: `calc(100vh - 64px - 208px)`,
+    },
+    reportPaperPartialMobile: {
+      width: `calc(100vw)`,
+    },
+    reportContentScrollable: {
+      overflowX: 'auto'
     },
 
     /* report table */
@@ -279,6 +288,9 @@ const styles = (theme: Theme) =>
       backgroundColor: theme.palette.background.paper,
       position: 'sticky',
       top: 0
+    },
+    cellWidthXXS: {
+      width: '3vw'
     },
     cellWidthXS: {
       width: '5vw'
@@ -297,6 +309,34 @@ const styles = (theme: Theme) =>
     },
 
     /* -------- generic classes end ----------*/
+
+    /* ---------  Table  ----------*/
+
+    /* Table */
+
+    table: {
+      width: '100%',
+      marginTop: theme.spacing.unit * 3,
+      overflowX: 'auto',
+    },
+
+    minTable: {
+      minWidth: 700,
+    },
+    
+    dialog: {
+      width: '100%',
+    },
+    
+    minTableDialog: {
+      minWidth: 100
+    },
+    
+    /* Table Action */
+    tableReportAction: {
+      flexShrink: 0,
+      color: theme.palette.text.secondary,
+    }
   });
 
 export default styles;

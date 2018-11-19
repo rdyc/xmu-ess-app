@@ -1,7 +1,7 @@
 import { SortDirection } from '@generic/types';
-import { withLayout, WithLayout } from '@layout/hoc/withLayout';
-import { withNavBottom, WithNavBottom } from '@layout/hoc/withNavBottom';
-import { IListBarField } from '@layout/interfaces';
+import { ICollectionValue } from '@layout/classes/core';
+import { WithLayout, withLayout } from '@layout/hoc/withLayout';
+import { WithNavBottom, withNavBottom } from '@layout/hoc/withNavBottom';
 import { BottomNavigation, BottomNavigationAction, Menu, MenuItem, WithStyles, withStyles } from '@material-ui/core';
 import withWidth, { isWidthUp, WithWidth } from '@material-ui/core/withWidth';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
@@ -49,20 +49,20 @@ const component: React.SFC<AllProps> = props => {
     navBottomDispatch.menuShow(e.currentTarget.id);
   };
 
-  const handleClose = (item: IListBarField | undefined) => { 
+  const handleClose = (item: ICollectionValue | undefined) => { 
     if (item) {
       if (navBottomState.menuAnchorId) {
         const control = navBottomState.menuAnchorId;
 
         switch (control) {
           case 'bottom-navigation-button-sort':
-            navBottomDispatch.changeDirection(SortDirection[item.id]);
-            navBottomState.callbacks.onDirectionCallback(SortDirection[item.id]);
+            navBottomDispatch.changeDirection(SortDirection[item.value as string]);
+            navBottomState.callbacks.onDirectionCallback(SortDirection[item.value as string]);
             break;
 
           case 'bottom-navigation-button-size':
-            navBottomDispatch.changeSize(Number(item.id));
-            navBottomState.callbacks.onSizeCallback(Number(item.id));
+            navBottomDispatch.changeSize(Number(item.value));
+            navBottomState.callbacks.onSizeCallback(Number(item.value));
             break;
         
           default:
@@ -128,11 +128,11 @@ const component: React.SFC<AllProps> = props => {
     return match;
   };
 
-  const renderMenuItems = (items: IListBarField[]) => (
+  const renderMenuItems = (items: ICollectionValue[]) => (
     items.map(item =>
       <MenuItem 
-        key={item.id}
-        value={item.id}
+        key={item.value}
+        value={item.value}
         selected={isCurrent(item.name)}
         onClick={() => handleClose(item)} 
       >

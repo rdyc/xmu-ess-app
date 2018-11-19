@@ -1,31 +1,42 @@
-import { IAppState } from '@generic/interfaces';
-import { ILeaveGetEndQuery } from '@leave/classes/queries/request';
-import { ILeaveGetEndState } from '@leave/classes/states/ILeaveState';
-import { leaveRequestFetchRequest } from '@leave/store/actions';
-import * as React from 'react';
+import { IAppState, IQuerySingleState } from '@generic/interfaces';
+import {
+  ILeaveGetEndQuery,
+} from '@leave/classes/queries/request/';
+import { ILeaveGetEnd } from '@leave/classes/response';
+import {
+  leaveRequestFetchDispose,
+  leaveRequestFetchRequest,
+} from '@leave/store/actions';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 
 interface PropsFromState {
-  leaveGetEndState: ILeaveGetEndState;
+  leaveGetEndState: {
+    detail: IQuerySingleState<ILeaveGetEndQuery, ILeaveGetEnd>;
+  };
 }
+
 interface PropsFromDispatch {
   leaveGetEndDispatch: {
-    fetchRequest: typeof leaveRequestFetchRequest;
+    loadDetailRequest: typeof leaveRequestFetchRequest;
+    loadDetailDispose: typeof leaveRequestFetchDispose;
   };
 }
 
 export interface WithLeaveGetEnd extends PropsFromState, PropsFromDispatch {}
 
-const mapStateToProps = ({ getEnd }: IAppState) => ({
-  leaveGetEndState: getEnd
+const mapStateToProps = ({ leaveGetEnd}: IAppState) => ({
+  leaveGetEndState: {
+    detail: leaveGetEnd
+  }
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   leaveGetEndDispatch: {
-    fetchRequest: (params: ILeaveGetEndQuery) => dispatch(leaveRequestFetchRequest(params)),
+    loadDetailRequest: (request: ILeaveGetEndQuery) => dispatch(leaveRequestFetchRequest(request)),
+    loadDetailDispose: () => dispatch(leaveRequestFetchDispose()),
   }
 });
 
-export const WithLeaveGetEnd = (component: React.ComponentType) => 
+export const withLeaveGetEnd = (component: React.ComponentType) =>
   connect(mapStateToProps, mapDispatchToProps)(component);

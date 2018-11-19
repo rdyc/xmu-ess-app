@@ -24,11 +24,6 @@ export const InputTimeView: React.SFC<InputTimeProps> = props => {
       fullWidth
       margin="normal"
       ampm={false}
-      // okLabel={intl.formatMessage({id: 'global.action.ok'})}
-      // cancelLabel={intl.formatMessage({id: 'global.action.cancel'})}
-      // clearLabel={intl.formatMessage({id: 'global.action.clear'})}
-      // todayLabel={intl.formatMessage({id: 'global.date.today'})}
-      // emptyLabel={intl.formatMessage({id: 'global.date.empty'})}
       showTodayButton={false}
       format={input.value ? timeFormat || 'HH:mm' : undefined}
       {...input}
