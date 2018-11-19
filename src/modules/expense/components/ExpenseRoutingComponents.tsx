@@ -1,11 +1,14 @@
 import { ApprovalDetail } from '@expense/components/approval/detail/ApprovalDetail';
-import { ApprovalList } from '@expense/components/approval/list/ApprovalList';
+import { ApprovalListView } from '@expense/components/approval/list/ApprovalListView';
 import { RequestDetail } from '@expense/components/request/detail/RequestDetail';
 import RequestEditor from '@expense/components/request/editor/RequestEditor';
-import { RequestList } from '@expense/components/request/list/RequestList';
+import { RequestListView } from '@expense/components/request/list/RequestListView';
 import { Layout } from '@layout/components/base';
 import * as React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router';
+
+const RequestList = () => <RequestListView />;
+const ApprovalList = () => <ApprovalListView />;
 
 const request = (props: RouteComponentProps) => (
   <Switch>
