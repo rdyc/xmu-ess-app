@@ -7,13 +7,13 @@ import { LeaveCancellationDetail } from './cancellation/detail/LeaveCancellation
 import { LeaveCancellationList } from './cancellation/list/LeaveCancellationList';
 import { LeaveRequestDetail } from './request/detail/LeaveRequestDetail';
 import LeaveRequestEditor from './request/editor/LeaveRequestEditor';
-import { LeaveRequestList } from './request/list/LeaveRequestList';
+import { DemoCollectionPage } from './request/list/LeaveRequestListView';
 
 const request = (props: RouteComponentProps) => (
   <Switch>
     <Route path={`${props.match.path}/form`} component={LeaveRequestEditor} />
     <Route path={`${props.match.path}/:leaveUid`} component={LeaveRequestDetail} />
-    <Route path={`${props.match.path}`} component={LeaveRequestList} />
+    <Route path={`${props.match.path}`} component={DemoCollectionPage} />
   </Switch>
 );
 
