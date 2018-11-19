@@ -188,6 +188,11 @@ const component: React.SFC<InnerProps> = props => {
       <ListItem button>
         <ListItemText primary="Help" />
       </ListItem>
+      <Link to={'/reports/winningratio'}>
+        <ListItem button>
+          <ListItemText primary="Winning Ratio" />
+        </ListItem>
+      </Link>
     </List>
   );
 };

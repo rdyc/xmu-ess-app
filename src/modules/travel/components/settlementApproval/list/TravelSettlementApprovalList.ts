@@ -1,9 +1,9 @@
 import AppMenu from '@constants/AppMenu';
 import { SortDirection } from '@generic/types';
+import { ICollectionValue } from '@layout/classes/core';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithNavBottom, withNavBottom } from '@layout/hoc/withNavBottom';
 import { WithUser, withUser } from '@layout/hoc/withUser';
-import { IListBarField } from '@layout/interfaces';
 import { TravelRequestField } from '@travel/classes/types';
 import { WithTravelSettlementApproval, withTravelSettlementApproval } from '@travel/hoc/withTravelSettlementApproval';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
@@ -20,6 +20,7 @@ import {
   withHandlers,
   withStateHandlers,
 } from 'recompose';
+
 import { TravelSettlementApprovalListView } from './TravelSettlementApprovalListView';
 
 interface OwnHandlers {
@@ -28,7 +29,7 @@ interface OwnHandlers {
   handleGoToPrevious: () => void;
   handleReloading: () => void;
   handleChangeSize: (value: number) => void;
-  handleChangeOrder: (field: IListBarField) => void;
+  handleChangeOrder: (field: ICollectionValue) => void;
   handleChangeSort: (direction: SortDirection) => void;
 }
 
@@ -89,8 +90,8 @@ const stateUpdaters: StateUpdaters<OwnOptions, OwnState, OwnStateUpdaters> = {
   stateReloading: (prevState: OwnState) => () => ({
     page: 1,
   }),
-  stateOrdering: (prevState: OwnState) => (field: IListBarField) => ({
-    orderBy: field.id,
+  stateOrdering: (prevState: OwnState) => (field: ICollectionValue) => ({
+    orderBy: field.value,
     page: 1,
   }),
   stateSorting: (prevState: OwnState) => (direction: SortDirection) => ({
@@ -124,7 +125,7 @@ const handlerCreators: HandleCreators<TravelSettlementApprovalListProps, OwnHand
     // force re-load from api
     loadData(props);
   },
-  handleChangeOrder: (props: TravelSettlementApprovalListProps) => (field: IListBarField) => { 
+  handleChangeOrder: (props: TravelSettlementApprovalListProps) => (field: ICollectionValue) => { 
     props.stateOrdering(field);
   },
   handleChangeSize: (props: TravelSettlementApprovalListProps) => (value: number) => { 
@@ -168,7 +169,7 @@ const lifecycles: ReactLifeCycleFunctions<TravelSettlementApprovalListProps, Own
     });
 
     const items = Object.keys(TravelRequestField)
-      .map(key => ({ id: key, name: TravelRequestField[key] }));
+      .map(key => ({ value: key, name: TravelRequestField[key] }));
 
     navBottomDispatch.assignFields(items);
 

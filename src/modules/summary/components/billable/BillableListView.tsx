@@ -5,106 +5,67 @@ import {
   TextField,
   Typography
 } from '@material-ui/core';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-// import { ISummaryBillable } from '@summary/classes/response/billable';
+import { BillableDate } from '@summary/components/billable/BillableDate';
+import { BillableDetail } from '@summary/components/billable/BillableDetailView';
 import { BillableListProps } from '@summary/components/billable/BillableList';
-import DatePicker from 'material-ui-pickers/DatePicker';
-// import { Column, Table } from 'react-virtualized';
-import { Moment } from 'moment';
+import { BillableTableView } from '@summary/components/billable/BillableTableView';
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 
 export const BillableListView: React.SFC<BillableListProps> = props => {
   const { isLoading, response } = props.summaryState.billable;
   const { user } = props.userState;
-  const { intl, handleChangeStart, _start, handleChangeEnd, _end } = props;
-
-  // const renderBillableList = (billable: ISummaryBillable[]) => {
-  //   return (
-  //     <Table
-  //       headerHeight={30}
-  //       height={30}
-  //       rowCount={50}
-  //       rowHeight={30}
-  //       width={30}
-  //     >
-  //       {billable.map(item => (
-  //         <Column
-  //           width={50}
-  //           disableSort
-  //           dataKey={item.employee && item.employee.fullName}
-  //         />
-  //       ))}
-  //     </Table>
-  //   );
-  // };
-
-  const inputDateStart = () => (
-    <DatePicker
-      okLabel={intl.formatMessage({ id: 'global.action.ok' })}
-      cancelLabel={intl.formatMessage({ id: 'global.action.cancel' })}
-      clearLabel={intl.formatMessage({ id: 'global.action.clear' })}
-      todayLabel={intl.formatMessage({ id: 'global.date.today' })}
-      emptyLabel={intl.formatMessage({ id: 'global.date.empty' })}
-      leftArrowIcon={<ChevronLeftIcon />}
-      rightArrowIcon={<ChevronRightIcon />}
-      format={'MMM DD, YYYY'}
-      label={intl.formatMessage({ id: 'billable.field.start' })}
-      showTodayButton
-      value={_start}
-      onChange={(moment: Moment) => handleChangeStart(moment.toISOString(true))}
-    />
-  );
-
-  const inputDateEnd = () => (
-    <DatePicker
-      okLabel={intl.formatMessage({ id: 'global.action.ok' })}
-      cancelLabel={intl.formatMessage({ id: 'global.action.cancel' })}
-      clearLabel={intl.formatMessage({ id: 'global.action.clear' })}
-      todayLabel={intl.formatMessage({ id: 'global.date.today' })}
-      emptyLabel={intl.formatMessage({ id: 'global.date.empty' })}
-      leftArrowIcon={<ChevronLeftIcon />}
-      rightArrowIcon={<ChevronRightIcon />}
-      format={'MMM DD, YYYY'}
-      label={intl.formatMessage({ id: 'billable.field.start' })}
-      showTodayButton
-      value={_end}
-      onChange={(moment: Moment) => handleChangeEnd(moment.toISOString(true))}
-    />
-  );
+  const {
+    start,
+    end,
+    size,
+    orderBy,
+    page,
+    direction,
+    handleChangeStart,
+    handleChangeEnd,
+    handleChangePage,
+    handleChangeSize,
+    handleGoToNext,
+    handleGoToPrevious,
+    handleChangeSort,
+    handleChangeFind,
+    handleDialog,
+    handleDetail
+  } = props;
 
   const renderFilter = () => {
     return (
       <Grid container spacing={16}>
-        <Grid item xs>
+        <Grid item xs md>
           <TextField
             disabled
             margin="normal"
             label={<FormattedMessage id="billable.field.company" />}
-            value={user && user.company.uid}
+            value={user && user.company.name}
           />
         </Grid>
-        <Grid item xs>
+        <Grid item xs md>
           <TextField
             margin="normal"
             label={<FormattedMessage id="billable.field.name" />}
+            onChange={e => handleChangeFind(e.target.value)}
           />
         </Grid>
-        <Grid item xs>
-          <TextField
-            margin="normal"
-            InputProps={{
-              inputComponent: inputDateStart
-            }}
+        <Grid item xs md>
+          <BillableDate
+            val={start}
+            label={'billable.field.start'}
+            handleChange={handleChangeStart}
+            disableFuture={false}
           />
         </Grid>
-        <Grid item xs>
-          <TextField
-            margin="normal"
-            InputProps={{
-              inputComponent: inputDateEnd
-            }}
+        <Grid item xs md>
+          <BillableDate
+            val={end}
+            label={'billable.field.end'}
+            handleChange={handleChangeEnd}
+            disableFuture={true}
           />
         </Grid>
       </Grid>
@@ -113,17 +74,47 @@ export const BillableListView: React.SFC<BillableListProps> = props => {
 
   const render = (
     <React.Fragment>
-      {isLoading && response && (
-        <Typography variant="body2">loading</Typography>
-      )}
       <Card square>
         <CardContent>
-          {renderFilter()}
-          {/* {!isLoading && response && renderFilter()} */}
-          {/* {!isLoading &&
-            response &&
-            response.data &&
-            renderBillableList(response.data)} */}
+          <Grid container spacing={16}>
+            <Grid item xs={12} md={12}>
+              {renderFilter()}
+            </Grid>
+            <Grid item xs={12} md={12}>
+              <Typography noWrap align="left" variant="caption">
+                <FormattedMessage id="billable.note" /> <br />
+                <FormattedMessage id="billable.totalhours" /> <br />
+                <FormattedMessage id="billable.percentage" />
+              </Typography>
+            </Grid>
+          </Grid>
+          {isLoading && !response && (
+            <Typography variant="body2">loading</Typography>
+          )}
+          <BillableDetail
+            uid={props.uid}
+            type={props.type}
+            open={props.open}
+            handleDialog={handleDialog}
+            data={response && response.data}
+          />
+          {!isLoading && response && (
+            <BillableTableView
+              page={page}
+              size={size}
+              orderBy={orderBy}
+              direction={direction}
+              metadata={response.metadata}
+              data={response.data}
+              handleChangePage={handleChangePage}
+              handleChangeSize={handleChangeSize}
+              handleChangeSort={handleChangeSort}
+              handleDetail={handleDetail}
+              handleDialog={handleDialog}
+              handleGoToNext={handleGoToNext}
+              handleGoToPrevious={handleGoToPrevious}
+            />
+          )}
         </CardContent>
       </Card>
     </React.Fragment>

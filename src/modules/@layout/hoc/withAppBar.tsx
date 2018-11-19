@@ -1,11 +1,16 @@
 import { IAppState } from '@generic/interfaces';
+import { ICollectionValue } from '@layout/classes/core';
 import { IAppBarMenu, IAppBarState } from '@layout/interfaces';
 import {
-  appBarAssignCallback,
+  appBarAssignFields,
+  appBarAssignMenuCallback,
   appBarAssignMenus,
+  appBarAssignSearchCallback,
+  appBarAssignSelectionClearCallback,
+  appBarAssignSelectionProcessCallback,
   appBarDispose,
-  appBarMenuHide,
-  appBarMenuShow,
+  appBarSelectionAddRemove,
+  appBarSelectionClear,
 } from '@layout/store/actions';
 import * as React from 'react';
 import { connect } from 'react-redux';
@@ -17,10 +22,14 @@ interface PropsFromState {
 
 interface PropsFromDispatch {
   appBarDispatch: {
-    assignCallback: typeof appBarAssignCallback;
+    assignCallback: typeof appBarAssignMenuCallback;
+    assignSearchCallback: typeof appBarAssignSearchCallback;
+    assignSelectionClearCallback: typeof appBarAssignSelectionClearCallback;
+    assignSelectionProcessCallback: typeof appBarAssignSelectionProcessCallback;
     assignMenus: typeof appBarAssignMenus;
-    menuShow: typeof appBarMenuShow;
-    menuHide: typeof appBarMenuHide;
+    assignFields: typeof appBarAssignFields;
+    selectionAddRemove: typeof appBarSelectionAddRemove;
+    selectionClear: typeof appBarSelectionClear;
     dispose: typeof appBarDispose;
   };
 }
@@ -33,10 +42,14 @@ const mapStateToProps = ({ appBar }: IAppState) => ({
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   appBarDispatch: {
-    assignCallback: (callback: (menu: IAppBarMenu) => void) => dispatch(appBarAssignCallback(callback)),
+    assignCallback: (callback: (menu: IAppBarMenu) => void) => dispatch(appBarAssignMenuCallback(callback)),
+    assignSearchCallback: (callback: (find: string, findBy?: ICollectionValue) => void) => dispatch(appBarAssignSearchCallback(callback)),
+    assignSelectionClearCallback: (callback: () => void) => dispatch(appBarAssignSelectionClearCallback(callback)),
+    assignSelectionProcessCallback: (callback: (values: string[]) => void) => dispatch(appBarAssignSelectionProcessCallback(callback)),
     assignMenus: (menus: IAppBarMenu[]) => dispatch(appBarAssignMenus(menus)),
-    menuShow: () => dispatch(appBarMenuShow()),
-    menuHide: () => dispatch(appBarMenuHide()),
+    assignFields: (fields: ICollectionValue[]) => dispatch(appBarAssignFields(fields)),
+    selectionAddRemove: (value: string) => dispatch(appBarSelectionAddRemove(value)),
+    selectionClear: () => dispatch(appBarSelectionClear()),
     dispose: () => dispatch(appBarDispose()),
   }
 });

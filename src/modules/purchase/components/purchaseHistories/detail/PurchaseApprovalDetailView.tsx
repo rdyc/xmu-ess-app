@@ -1,7 +1,7 @@
 import {
   Grid,
   LinearProgress,
-  Typography,
+  // Typography,
 } from '@material-ui/core';
 import { WorkflowApprovalForm } from '@organization/components/workflow/approval/WorkflowApprovalForm';
 import { WorkflowHistory } from '@organization/components/workflow/history/WorkflowHistory';
@@ -9,7 +9,7 @@ import { PurchaseApprovalDetailProps } from '@purchase/components/purchaseHistor
 import { PurchaseInformation } from '@purchase/components/purchaseRequest/detail/shared/PurchaseInformation';
 import { PurchaseItemInformation } from '@purchase/components/purchaseRequest/detail/shared/PurchaseItemInformation';
 import * as React from 'react';
-import { FormattedMessage } from 'react-intl';
+// import { FormattedMessage } from 'react-intl';
 
 export const PurchaseApprovalDetailView: React.SFC<PurchaseApprovalDetailProps> = props => {
   const {
@@ -23,29 +23,34 @@ export const PurchaseApprovalDetailView: React.SFC<PurchaseApprovalDetailProps> 
     <React.Fragment>
       {
         isLoading &&
-        <Typography variant="body2">
-          <FormattedMessage id="global.loading" />
-        </Typography>
-        && <LinearProgress/>
+        // <Typography variant="body2">
+        //   <FormattedMessage id="global.loading" />
+        // </Typography>
+        // && 
+        <LinearProgress/>
       }
       {
         !isLoading &&
         response &&
         response.data &&
         <Grid container spacing={16}>
-          <Grid item 
-          // xs={12} 
-          md={4}>
-          <PurchaseInformation 
-          data={response.data} />
+          <Grid item xs={12} md={4}>
+            <PurchaseInformation data={response.data} />
           </Grid>
 
-          <Grid item 
-          // xs={12} 
-          md={8}
-          >
-          <PurchaseItemInformation
-          data={response.data.items} />
+          <Grid container item xs={12} md={8}>
+            <Grid container spacing={16}>
+            {
+              response.data.items &&
+              response.data.items.map((item, index) =>
+              <Grid key={index} item xs={12} md={4}>
+                <PurchaseItemInformation 
+                data={item}
+                title={`Request Item #${index + 1} `} />
+              </Grid>
+              )
+            }
+            </Grid>
           </Grid>
 
           <Grid item>

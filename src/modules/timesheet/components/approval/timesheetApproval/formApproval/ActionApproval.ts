@@ -180,7 +180,7 @@ const handlerCreators: HandleCreators<ApprovalTimesheetsProps, OwnHandler> = {
       message: intl.formatMessage(timesheetApprovalMessage.updateSuccess),
     });
 
-    history.push('/timesheet/approval/');
+    history.push('/timesheet/approvals/');
   },
   handleSubmitFail: (props: ApprovalTimesheetsProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
     const { intl } = props;

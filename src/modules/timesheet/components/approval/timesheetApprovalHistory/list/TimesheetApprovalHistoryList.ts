@@ -1,11 +1,13 @@
 import AppMenu from '@constants/AppMenu';
 import { SortDirection } from '@generic/types';
+import { ICollectionValue } from '@layout/classes/core';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithNavBottom, withNavBottom } from '@layout/hoc/withNavBottom';
 import { WithUser, withUser } from '@layout/hoc/withUser';
-import { IListBarField } from '@layout/interfaces';
 import { TimesheetField } from '@timesheet/classes/types';
-import { TimesheetApprovalHistoryListView } from '@timesheet/components/approval/timesheetApprovalHistory/list/TimesheetApprovalHistoryListView';
+import {
+  TimesheetApprovalHistoryListView,
+} from '@timesheet/components/approval/timesheetApprovalHistory/list/TimesheetApprovalHistoryListView';
 import { WithTimesheetApproval, withTimesheetApproval } from '@timesheet/hoc/withTimesheetApproval';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
@@ -28,7 +30,7 @@ interface OwnHandlers {
   handleGoToPrevious: () => void;
   handleReloading: () => void;
   handleChangeSize: (value: number) => void;
-  handleChangeOrder: (field: IListBarField) => void;
+  handleChangeOrder: (field: ICollectionValue) => void;
   handleChangeSort: (direction: SortDirection) => void;
 }
 
@@ -89,8 +91,8 @@ const stateUpdaters: StateUpdaters<OwnOptions, OwnState, OwnStateUpdaters> = {
   stateReloading: (prevState: OwnState) => () => ({
     page: 1,
   }),
-  stateOrdering: (prevState: OwnState) => (field: IListBarField) => ({
-    orderBy: field.id,
+  stateOrdering: (prevState: OwnState) => (field: ICollectionValue) => ({
+    orderBy: field.value,
     page: 1,
   }),
   stateSorting: (prevState: OwnState) => (direction: SortDirection) => ({
@@ -109,7 +111,7 @@ const handlerCreators: HandleCreators<ApprovalHistoryListProps, OwnHandlers> = {
     const { isLoading } = props.timesheetApprovalState.all;
 
     if (!isLoading) {
-      history.push(`/timesheet/approval/${timesheetUid}`);
+      history.push(`/timesheet/approvals/${timesheetUid}`);
     }
   },
   handleGoToNext: (props: ApprovalHistoryListProps) => () => {
@@ -124,7 +126,7 @@ const handlerCreators: HandleCreators<ApprovalHistoryListProps, OwnHandlers> = {
     // force re-load from api
     loadData(props);
   },
-  handleChangeOrder: (props: ApprovalHistoryListProps) => (field: IListBarField) => {
+  handleChangeOrder: (props: ApprovalHistoryListProps) => (field: ICollectionValue) => {
     props.stateOrdering(field);
   },
   handleChangeSize: (props: ApprovalHistoryListProps) => (value: number) => {
@@ -157,6 +159,7 @@ const lifecycles: ReactLifeCycleFunctions<ApprovalHistoryListProps, OwnState> = 
     layoutDispatch.searchShow();
     layoutDispatch.actionCentreShow();
 
+    navBottomDispatch.addHide();
     navBottomDispatch.assignCallbacks({
       onNextCallback: handleGoToNext,
       onPrevCallback: handleGoToPrevious,
@@ -168,7 +171,7 @@ const lifecycles: ReactLifeCycleFunctions<ApprovalHistoryListProps, OwnState> = 
     });
 
     const items = Object.keys(TimesheetField)
-      .map(key => ({ id: key, name: TimesheetField[key] }));
+      .map(key => ({ value: key, name: TimesheetField[key] }));
 
     navBottomDispatch.assignFields(items);
 

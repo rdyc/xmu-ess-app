@@ -397,6 +397,9 @@ function* watchSettlementPostFetchRequest() {
       successEffects: (response: IApiResponse) => ([
         put(settlementPostSuccess(response.body)),
       ]),
+      successCallback: (response: IApiResponse) => {
+        action.payload.resolve(response.body.data);
+      },
       failureEffects: (response: IApiResponse) => ([
         put(settlementPostError(response.statusText)),
         put(layoutAlertAdd({
@@ -405,13 +408,28 @@ function* watchSettlementPostFetchRequest() {
           details: response
         })),
       ]),
+      failureCallback: (response: IApiResponse) => {
+        if (response.status === 400) {
+          const errors: any = {
+            // information -> based form section name
+            information: flattenObject(response.body.errors)
+          };
+
+          action.payload.reject(new SubmissionError(errors));
+        } else {
+          action.payload.reject(response.statusText);
+        }
+      },
       errorEffects: (error: TypeError) => ([
         put(settlementPostError(error.message)),
         put(layoutAlertAdd({
           time: new Date(),
           message: error.message
         }))
-      ])
+      ]), 
+      errorCallback: (error: any) => {
+        action.payload.reject(error);
+      }
     });
   };
 
@@ -427,6 +445,9 @@ function* watchSettlementPutFetchRequest() {
       successEffects: (response: IApiResponse) => ([
         put(settlementPutSuccess(response.body)),
       ]),
+      successCallback: (response: IApiResponse) => {
+        action.payload.resolve(response.body.data);
+      },
       failureEffects: (response: IApiResponse) => ([
         put(settlementPutError(response.statusText)),
         put(layoutAlertAdd({
@@ -435,13 +456,28 @@ function* watchSettlementPutFetchRequest() {
           details: response
         })),
       ]),
+      failureCallback: (response: IApiResponse) => {
+        if (response.status === 400) {
+          const errors: any = {
+            // information -> based form section name
+            information: flattenObject(response.body.errors)
+          };
+
+          action.payload.reject(new SubmissionError(errors));
+        } else {
+          action.payload.reject(response.statusText);
+        }
+      },
       errorEffects: (error: TypeError) => ([
         put(settlementPutError(error.message)),
         put(layoutAlertAdd({
           time: new Date(),
           message: error.message
         }))
-      ])
+      ]),
+      errorCallback: (error: any) => {
+        action.payload.reject(error);
+      }
     });
   };
 

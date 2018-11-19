@@ -1,4 +1,5 @@
 import { IAppState } from '@generic/interfaces';
+import { IViewConfig } from '@layout/classes/config/IViewConfig';
 import { IAlert, ILayoutState, IView } from '@layout/interfaces';
 import {
   layoutAccountColapse,
@@ -32,6 +33,7 @@ import {
   layoutNavBackShow,
   layoutSearchHide,
   layoutSearchShow,
+  layoutSetupView,
   layoutThemeChange,
 } from '@layout/store/actions';
 import { Anchor } from '@layout/types';
@@ -53,6 +55,8 @@ interface PropsFromDispatch {
     changeAnchor: typeof layoutChangeAnchor;
     changeNotif: typeof layoutChangeNotif;
     changeView: typeof layoutChangeView;
+    
+    setupView: typeof layoutSetupView;
 
     drawerMenuShow: typeof layoutDrawerMenuShow;
     drawerMenuHide: typeof layoutDrawerMenuHide;
@@ -102,6 +106,8 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     changeAnchor: (anchor: Anchor) => dispatch(layoutChangeAnchor(anchor)),
     changeNotif: (count: number) => dispatch(layoutChangeNotif(count)),
     changeView: (active: IView) => dispatch(layoutChangeView(active)),
+
+    setupView: (config: IViewConfig) => dispatch(layoutSetupView(config)),
     
     drawerMenuShow: () => dispatch(layoutDrawerMenuShow()),
     drawerMenuHide: () => dispatch(layoutDrawerMenuHide()),

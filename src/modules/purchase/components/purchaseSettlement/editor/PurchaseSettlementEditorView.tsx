@@ -32,10 +32,25 @@ export const PurchaseSettlementEditorView: React.SFC<PurchaseSettlementEditorPro
       uid: undefined,
       date: undefined,
       notes: undefined,
+      customerUid: undefined,
+      projectUid: undefined,
+      currencyType: undefined,
+      rate: 0,
+      request: 0,
+      actual: 0,
+      difference: 0,
+      
+      requestInIDR: 0,
+      actualInIDR: 0,
+      differenceInIDR: 0,
+      
+      advance: 0,
+      balanceDue: 0,
+
     },
     items: {
       items: [
-    ]
+      ]
     }
   };
 
@@ -51,10 +66,22 @@ export const PurchaseSettlementEditorView: React.SFC<PurchaseSettlementEditorPro
 
       initialValues.information.uid = data.uid;
       initialValues.information.notes = data.notes;
+      initialValues.information.projectUid = `${data.projectUid} - ${data.project && data.project.name}`;
+      initialValues.information.customerUid = data.customer && data.customer.name;
+      initialValues.information.rate = data.rate;
+      initialValues.information.currencyType = data.currency && data.currency.value;
+      initialValues.information.advance = data.advance;
+      initialValues.information.request = data.request;
+      initialValues.information.requestInIDR = data.requestInIDR;
 
       if (formMode === FormMode.Edit) {
-      initialValues.information.date = data.date;
-        }
+        initialValues.information.date = data.date;
+        initialValues.information.actual = data.actual;
+        initialValues.information.difference = data.difference;
+        initialValues.information.actualInIDR = data.actualInIDR;
+        initialValues.information.differenceInIDR = data.differenceInIDR;
+        initialValues.information.balanceDue = data.balanceDue;
+      }
 
       if (data.items) {
             data.items.forEach(item =>

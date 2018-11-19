@@ -26,16 +26,18 @@ const settlementInformation: React.SFC<AllProps> = props => {
   const render = (
     <Card square >
     <CardHeader 
-        title= {< FormattedMessage id = "purchase.infoTitle" />}
-        subheader = {< FormattedMessage id = "purchase.infoSubTitle" />}
+        title= {< FormattedMessage id = "purchasesettlement.infoTitle" />}
+        subheader={< FormattedMessage id= "purchasesettlement.infoSubTitle" />}
         />
         <CardContent >
+          { data.statusType ?
           <TextField
-          { ...styled }
-          margin = "dense"
-          label = {< FormattedMessage id = "purchase.field.information.status" />}
-          value = { data.status ? data.status.value : data.statusType }
+            {...styled}
+            margin="dense"
+            label={< FormattedMessage id="purchase.field.information.status" />}
+            value={data.status ? data.status.value : ''}
           />
+            : < FormattedMessage id="purchase.list.readySettle" /> }
           <TextField
           { ...styled }
           margin = "dense"
@@ -66,6 +68,7 @@ const settlementInformation: React.SFC<AllProps> = props => {
           label = { < FormattedMessage id = "purchase.field.information.notes" />  }
           value = { data.notes || 'N/A' }
           />
+          { data.date ?
           <TextField
           { ...styled }
           margin = "dense"
@@ -78,18 +81,19 @@ const settlementInformation: React.SFC<AllProps> = props => {
             })
           }
           />
+          : ''}
           <TextField
           { ...styled }
           margin = "dense"
-          label = { < FormattedMessage id = "purchase.field.information.currencyType" /> }
-          value = { data.currency ? data.currency.value : 'N/A' }
+          label={ < FormattedMessage id="purchase.field.information.currencyType" /> }
+          value={data.currency ? `${data.currency.value} - ${ intl.formatNumber(data.rate || 0) }` : 'N/A' }
           />
-          <TextField
+          {/* <TextField
           { ...styled }
           margin = "dense"
           label = { < FormattedMessage id = "purchase.field.information.rate" /> }
           value = { intl.formatNumber(data.rate || 0) }
-          />
+          /> */}
           <TextField
           { ...styled }
           margin = "dense"
@@ -102,19 +106,18 @@ const settlementInformation: React.SFC<AllProps> = props => {
           label={< FormattedMessage id= "purchase.field.information.actual" /> }
           value = { intl.formatNumber(data.actual) }
           />
-        {data.currencyType !== 'SCR01' ?
           <TextField
-          {...styled}
-          margin="dense"
-          label={< FormattedMessage id="purchase.field.information.differenceIDR" />}
-          value={intl.formatNumber(data.differenceInIDR || 0)}
-          /> 
-          : ''}
+          { ...styled }
+          margin = "dense"
+          label={< FormattedMessage id= "purchase.field.information.difference" /> }
+          value = { intl.formatNumber(data.difference) }
+          />
+          
           { data.currencyType !== 'SCR01' ?
           <TextField
           { ...styled }
           margin = "dense"
-          label = { < FormattedMessage id = "purchase.field.information.requestIDR" /> }
+          label = { < FormattedMessage id = "purchase.field.information.requestInIDR" /> }
           value = { intl.formatNumber(data.requestInIDR || 0) }
           />
           : ''}
@@ -122,8 +125,16 @@ const settlementInformation: React.SFC<AllProps> = props => {
           <TextField
             {...styled}
             margin="dense"
-            label={< FormattedMessage id="purchase.field.information.actualIDR" />}
+            label={< FormattedMessage id="purchase.field.information.actualInIDR" />}
             value={intl.formatNumber(data.actualInIDR || 0)}
+          />
+          : ''}
+          {data.currencyType !== 'SCR01' ?
+          <TextField
+            {...styled}
+            margin="dense"
+            label={< FormattedMessage id="purchase.field.information.differenceInIDR" />}
+            value={intl.formatNumber(data.differenceInIDR || 0)}
           />
           : ''}
           <TextField

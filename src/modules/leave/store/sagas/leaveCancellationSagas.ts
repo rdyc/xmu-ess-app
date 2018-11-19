@@ -27,7 +27,7 @@ function* watchGetAllRequest() {
 
     return saiyanSaga.fetch({
       method: 'get',
-      path: `/v1/leave/cancellations?${params}`,
+      path: `/v1/leave/cancelations?${params}`,
       successEffects: (response: IApiResponse) => [
         put(leaveCancellationGetAllSuccess(response.body)),
         put(listBarMetadata(response.body.metadata))
@@ -62,7 +62,7 @@ function* watchGetByIdRequest() {
   const worker = (action: ReturnType<typeof leaveCancellationGetByIdRequest>) => {
     return saiyanSaga.fetch({
       method: 'get',
-      path: `/v1/leave/cancellations/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.leaveUid}`,
+      path: `/v1/leave/cancelations/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.leaveUid}`,
       successEffects: (response: IApiResponse) => [
         put(leaveCancellationGetByIdSuccess(response.body))
       ],
@@ -95,7 +95,7 @@ function* watchPostRequest() {
   const worker = (action: ReturnType<typeof leaveCancellationPostRequest>) => {
     return saiyanSaga.fetch({
       method: 'post',
-      path: `/v1/leave/cancellations/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.leaveUid}`,
+      path: `/v1/leave/cancelations/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.leaveUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
         put(leaveCancellationPostSuccess(response.body))

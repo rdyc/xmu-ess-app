@@ -6,13 +6,13 @@ import { RequestForm, TravelRequestFormData } from './forms/RequestForm';
 import { RequestEditorProps } from './RequestEditor';
 
 export const RequestEditorView: React.SFC<RequestEditorProps> = props => {
-  const { formMode, handleValidate, handleSubmit, handleSubmitSuccess, handleSubmitFail } = props;
+  const { formMode, handleValidate, handleSubmit, handleSubmitSuccess, handleSubmitFail, intl, generateDiemData } = props;
   const { isLoading, response } = props.travelRequestState.detail;
   const { user } = props.userState;
-
   const renderForm = (formData: TravelRequestFormData) => (
     <RequestForm
       formMode={formMode}
+      diemRequest={generateDiemData()}
       initialValues={formData}
       validate={handleValidate}
       onSubmit={handleSubmit} 
@@ -31,16 +31,34 @@ export const RequestEditorView: React.SFC<RequestEditorProps> = props => {
       end: undefined,
       customerUid: undefined,
       projectUid: undefined,
-      // projectType: undefined, // coba
       siteUid: undefined,
       activityType: undefined,
       objective: undefined,
       target: undefined,
       comment: undefined,
+      total: 0,
     },
     item: {
       items: []
     }
+  };
+
+  const dateFormatEditor = (date: string): string => {
+    let result = date;
+  
+    if (date) {
+      result = intl.formatDate(date, {
+        second: 'numeric',
+        minute: 'numeric',
+        hour: 'numeric',
+        day: 'numeric',
+        month: 'numeric',
+        year: 'numeric',
+        timeZone: 'GMT',
+      });
+    }
+    
+    return result;
   };
 
   // new
@@ -70,15 +88,17 @@ export const RequestEditorView: React.SFC<RequestEditorProps> = props => {
       initialValues.information.end = data.end;
       initialValues.information.customerUid = data.customerUid;
       initialValues.information.projectUid = data.projectUid;
-      // initialValues.information.projectType = data.project ? data.project.projectType : '';
       initialValues.information.siteUid = data.siteUid;
       initialValues.information.activityType = data.activityType;
       initialValues.information.objective = data.objective;
       initialValues.information.target = data.target;
       initialValues.information.comment = data.comment;
+      initialValues.information.total = data.total;
 
       if (data.items) {
+        
         data.items.forEach(item =>
+          
           initialValues.item.items.push({
             uid: item.uid,
             employeeUid: item.employeeUid,
@@ -87,8 +107,8 @@ export const RequestEditorView: React.SFC<RequestEditorProps> = props => {
             isRoundTrip: item.isRoundTrip,
             from: item.from,
             destination: item.destination,
-            departureDate: item.departureDate,
-            returnDate: item.returnDate,
+            departureDate: dateFormatEditor (item.departureDate),
+            returnDate: dateFormatEditor(item.returnDate),
             costTransport: item.costTransport || 0,
             isTransportByCompany: item.isTransportByCompany,
             hotel: item.hotel,
