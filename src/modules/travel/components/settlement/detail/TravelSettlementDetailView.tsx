@@ -74,13 +74,38 @@ export const TravelSettlementDetailView: React.SFC<SettlementDetailProps> = prop
           justify="flex-start"
           alignItems="flex-start"
         >
+          <Grid item xs={12} md={3}>
+            <TravelSettlementSummary data = {response.data}/>
+          </Grid>
+          <Grid item xs={12} md={3}>
+            <TravelSettlementItem data = {response.data.items}/>
+          </Grid>          
+          <Grid item xs={12} md={3}>
+            <TravelRequestSummary data = {travelResponse.data}/>
+          </Grid>
+          <Grid item xs={12} md={3}>
+            <TravelRequestItem data = {travelResponse.data.items}/>
+          </Grid>
+        </Grid>
+      }
+      {
+        !isLoading &&
+        response &&
+        response.data && 
+        travelResponse &&
+        <Grid 
+          container 
+          spacing={16} 
+          direction="row"
+          justify="flex-start"
+          alignItems="flex-start"
+        >
           <Grid item xs={12} md={4}>
             <TravelSettlementInformation 
                 data = {response.data}
                 travelData = {travelResponse.data}
             />
           </Grid>
-
           <Grid item xs={12} md={4}>
             <TravelInformation data = {travelResponse.data}/>
           </Grid>
@@ -89,49 +114,7 @@ export const TravelSettlementDetailView: React.SFC<SettlementDetailProps> = prop
           <WorkflowHistory data={response.data.workflow} />
         </Grid>
         </Grid>
-      }
-      {
-        !isLoading &&
-        response &&
-        response.data && 
-        travelResponse &&
-        <Grid 
-          container 
-          spacing={16} 
-          direction="row"
-          justify="flex-start"
-          alignItems="flex-start"
-        >
-          <Grid item xs={12} md={4}>
-            <TravelSettlementSummary data = {response.data}/>
-          </Grid>
-          
-          <Grid item xs={12} md={4}>
-            <TravelRequestSummary data = {travelResponse.data}/>
-          </Grid>
-        </Grid>
-      }
-      {
-        !isLoading &&
-        response &&
-        response.data && 
-        travelResponse &&
-        <Grid 
-          container 
-          spacing={16} 
-          direction="row"
-          justify="flex-start"
-          alignItems="flex-start"
-        >
-          <Grid item xs={12} md={4}>
-            <TravelSettlementItem data = {response.data.items}/>
-          </Grid>
-          <Grid item xs={12} md={4}>
-            <TravelRequestItem data = {travelResponse.data.items}/>
-          </Grid>
-        </Grid>
-      }
-      
+      }           
       {renderDialog}
     </React.Fragment>
   );

@@ -20,12 +20,12 @@ import { FormattedMessage } from 'react-intl';
 import { Field } from 'redux-form';
 
 export const RequestItemFormView: React.SFC<RequestItemFormProps> = props => {
-  const { context, destinationTypeValue } = props;
+  const { context, destinationTypeValue, onCostChange } = props;
   const diemResponse = props.lookupDiemState.all.response;
 
   const diem = (diemResponse && diemResponse.data) ? 
                     diemResponse.data.filter(item => item.destinationType === destinationTypeValue &&
-                       item.projectType === 'SPT01')[0] 
+                       item.projectType === 'SPT04')[0] 
                     : undefined;
                     
   const render = (
@@ -107,6 +107,7 @@ export const RequestItemFormView: React.SFC<RequestItemFormProps> = props => {
                     name={`${field}.costTransport`}
                     label="Transport Cost"
                     component={InputNumber}
+                    onChange={onCostChange}
                   />
                   <FormControlLabel
                     label="comp Purchase?"                    
@@ -139,6 +140,7 @@ export const RequestItemFormView: React.SFC<RequestItemFormProps> = props => {
                     name={`${field}.costHotel`}
                     label="Hotel Cost"
                     component={InputNumber}
+                    onChange={onCostChange}
                   />
                   <FormControlLabel
                     label="comp Purchase?"                    
@@ -200,6 +202,7 @@ export const RequestItemFormView: React.SFC<RequestItemFormProps> = props => {
                     label="Diem Value"
                     disabled={true}
                     component={InputNumber}
+                    onChange={onCostChange}
                   />                               
                 </div>
               </CardContent>

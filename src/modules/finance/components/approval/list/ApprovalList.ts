@@ -3,10 +3,10 @@ import { FinanceField } from '@finance/classes/types';
 import { ApprovalListView } from '@finance/components/approval/list/ApprovalListView';
 import { WithFinanceApproval, withFinanceApproval } from '@finance/hoc/withFinanceApproval';
 import { SortDirection } from '@generic/types';
+import { ICollectionValue } from '@layout/classes/core';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithNavBottom, withNavBottom } from '@layout/hoc/withNavBottom';
 import { WithUser, withUser } from '@layout/hoc/withUser';
-import { IListBarField } from '@layout/interfaces';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import {
@@ -30,7 +30,7 @@ interface OwnHandlers {
   handleGoToPrevious: () => void;
   handleReloading: () => void;
   handleChangeSize: (value: number) => void;
-  handleChangeOrder: (field: IListBarField) => void;
+  handleChangeOrder: (field: ICollectionValue) => void;
   handleChangeSort: (direction: SortDirection) => void;
 }
 
@@ -97,8 +97,8 @@ const stateUpdaters: StateUpdaters<OwnOptions, OwnState, OwnStateUpdaters> = {
     stateReloading: (prevState: OwnState) => () => ({
       page: 1,
     }),
-    stateOrdering: (prevState: OwnState) => (field: IListBarField) => ({
-      orderBy: field.id,
+    stateOrdering: (prevState: OwnState) => (field: ICollectionValue) => ({
+      orderBy: field.value,
       page: 1,
     }),
     stateSorting: (prevState: OwnState) => (direction: SortDirection) => ({
@@ -148,7 +148,7 @@ const handlerCreators: HandleCreators<ApprovalListProps, OwnHandlers> = {
       // force re-load from api
       loadData(props);
     },
-    handleChangeOrder: (props: ApprovalListProps) => (field: IListBarField) => { 
+    handleChangeOrder: (props: ApprovalListProps) => (field: ICollectionValue) => { 
       props.stateOrdering(field);
     },
     handleChangeSize: (props: ApprovalListProps) => (value: number) => { 
@@ -194,7 +194,7 @@ const handlerCreators: HandleCreators<ApprovalListProps, OwnHandlers> = {
       });
   
       const items = Object.keys(FinanceField)
-        .map(key => ({ id: key, name: FinanceField[key] }));
+        .map(key => ({ value: key, name: FinanceField[key] }));
   
       navBottomDispatch.assignFields(items);
   

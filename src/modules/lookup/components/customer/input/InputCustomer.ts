@@ -101,7 +101,7 @@ const handlerCreators: HandleCreators<InputCustomerProps, OwnHandlers> = {
   }
 };
 
-export const InputCustomer = compose<InputCustomerProps, {}>(
+export const InputCustomer = compose<InputCustomerProps, OwnProps>(
   withUser,
   withLookupCustomer,
   withStateHandlers<OwnState, OwnStateUpdaters>(createProps, stateUpdaters), 

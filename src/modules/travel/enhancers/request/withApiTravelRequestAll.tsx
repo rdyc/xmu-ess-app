@@ -1,25 +1,25 @@
 import AppMenu from '@constants/AppMenu';
 import { SortDirection } from '@generic/types';
+import { ICollectionValue } from '@layout/classes/core';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
-import { IListBarField } from '@layout/interfaces';
 import { ITravelGetAllRequest } from '@travel/classes/queries';
 import withTravelRequestAll, { WithTravelRequestAll } from '@travel/enhancers/request/withTravelRequestAll';
 import { travelGetAllDispose, travelGetAllRequest } from '@travel/store/actions';
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { 
+import {
   compose,
-  HandleCreators, 
-  lifecycle, 
-  mapper, 
-  ReactLifeCycleFunctions, 
-  setDisplayName, 
-  StateHandler, 
-  StateHandlerMap, 
-  StateUpdaters, 
+  HandleCreators,
+  lifecycle,
+  mapper,
+  ReactLifeCycleFunctions,
+  setDisplayName,
+  StateHandler,
+  StateHandlerMap,
+  StateUpdaters,
   withHandlers,
-  withStateHandlers, 
+  withStateHandlers,
 } from 'recompose';
 import { Dispatch } from 'redux';
 
@@ -28,7 +28,7 @@ export interface WithApiTravelRequestAllHandler {
   handleNext: () => void;
   handlePrev: () => void;
   handleSize: (value: number) => void;
-  handleOrder: (field: IListBarField) => void;
+  handleOrder: (field: ICollectionValue) => void;
   handleSort: (direction: SortDirection) => void;
 }
 
@@ -97,8 +97,8 @@ const withApiTravelRequestAll = (options?: WithApiTravelRequestAllOptions) => (W
     onSync: (prevState: State) => () => ({
       page: 1,
     }),
-    onOrder: (prevState: State) => (field: IListBarField) => ({
-      orderBy: field.id,
+    onOrder: (prevState: State) => (field: ICollectionValue) => ({
+      orderBy: field.value,
       page: 1,
     }),
     onSort: (prevState: State) => (direction: SortDirection) => ({
@@ -124,7 +124,7 @@ const withApiTravelRequestAll = (options?: WithApiTravelRequestAllOptions) => (W
     handlePrev: (props: AllProps) => () => { 
       props.onPrev();
     },
-    handleOrder: (props: AllProps) => (field: IListBarField) => { 
+    handleOrder: (props: AllProps) => (field: ICollectionValue) => { 
       props.onOrder(field);
     },
     handleSize: (props: AllProps) => (value: number) => { 

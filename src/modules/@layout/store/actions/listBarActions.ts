@@ -1,6 +1,7 @@
 import { IBaseMetadata } from '@generic/interfaces';
 import { SortDirection } from '@generic/types';
-import { IListBarCallback, IListBarField } from '@layout/interfaces';
+import { ICollectionValue } from '@layout/classes/core';
+import { IListBarCallback } from '@layout/interfaces';
 import { action } from 'typesafe-actions';
 
 export const enum ListBarAction {
@@ -19,7 +20,7 @@ export const enum ListBarAction {
 
 export const listBarMetadata = (metadata: IBaseMetadata) => action(ListBarAction.ASSIGN_METADATA, metadata);
 export const listBarAssignCallbacks = (callbacks: IListBarCallback) => action(ListBarAction.ASSIGN_CALLBACKS, callbacks);
-export const listBarAssignFields = (fields: IListBarField[]) => action(ListBarAction.ASSIGN_FIELDS, fields);
+export const listBarAssignFields = (fields: ICollectionValue[]) => action(ListBarAction.ASSIGN_FIELDS, fields);
 export const listBarChangeOrder = (name: string) => action(ListBarAction.CHANGE_ORDER, name);
 export const listBarChangeDirection = (direction: SortDirection) => action(ListBarAction.CHANGE_DIRECTION, direction);
 export const listBarChangeSize = (size: number) => action(ListBarAction.CHANGE_SIZE, size);

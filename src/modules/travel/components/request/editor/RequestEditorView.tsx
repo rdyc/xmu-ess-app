@@ -36,6 +36,7 @@ export const RequestEditorView: React.SFC<RequestEditorProps> = props => {
       objective: undefined,
       target: undefined,
       comment: undefined,
+      total: 0,
     },
     item: {
       items: []
@@ -92,6 +93,7 @@ export const RequestEditorView: React.SFC<RequestEditorProps> = props => {
       initialValues.information.objective = data.objective;
       initialValues.information.target = data.target;
       initialValues.information.comment = data.comment;
+      initialValues.information.total = data.total;
 
       if (data.items) {
         

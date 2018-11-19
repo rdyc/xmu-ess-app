@@ -21,7 +21,6 @@ interface OwnProps {
   customerUidValue: string | undefined;
   isPresalesActivity: boolean;
   projectUidValue: string | undefined;
-  onChangeTime: (event: any, newValue: string, oldValue: string) => void;
   showSiteProject: boolean;
 }
 
@@ -43,7 +42,6 @@ const handlerCreators: HandleCreators<EntryDetailFormProps, OwnHandlers> = {
       customerUidValue,
       isPresalesActivity,
       projectUidValue,
-      onChangeTime,
       showSiteProject
     } = props;
 
@@ -52,8 +50,9 @@ const handlerCreators: HandleCreators<EntryDetailFormProps, OwnHandlers> = {
     const _projectTypes = isPresalesActivity ? ProjectType.PreSales : [ProjectType.Project, ProjectType.ExtraMiles, ProjectType.NonProject];
 
     const projectFilter: any = {
-      customerUid: customerUidValue,
-      projectTypes: _projectTypes
+        employeeUid: user && user.uid,
+        customerUid: customerUidValue,
+        projectTypes: _projectTypes
     };
 
     const fieldName = name.replace('information.', '');
@@ -84,7 +83,7 @@ const handlerCreators: HandleCreators<EntryDetailFormProps, OwnHandlers> = {
           type: 'text',
           disabled: isNullOrUndefined(activityTypeValue),
           placeholder: intl.formatMessage({ id: `timesheet.field.${name}.placeholder` }),
-          component: InputCustomer
+          component: !isNullOrUndefined(activityTypeValue) ? InputCustomer : InputText
         };
         break;
 
@@ -116,8 +115,7 @@ const handlerCreators: HandleCreators<EntryDetailFormProps, OwnHandlers> = {
           required: true,
           type: 'text',
           placeholder: intl.formatMessage({ id: `timesheet.field.${name}.placeholder` }),
-          component: InputDateTimesheet,
-          onChange: onChangeTime
+          component: InputDateTimesheet
         };
         break;
 

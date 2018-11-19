@@ -1,10 +1,10 @@
 import AppMenu from '@constants/AppMenu';
 import { SortDirection } from '@generic/types';
+import { ICollectionValue } from '@layout/classes/core';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithNavBottom, withNavBottom } from '@layout/hoc/withNavBottom';
 import { WithUser, withUser } from '@layout/hoc/withUser';
-import { IListBarField } from '@layout/interfaces';
-import { SettlementField } from '@purchase/classes/types';
+import { PurchaseField } from '@purchase/classes/types';
 import { SettlementApprovalListView } from '@purchase/components/settlementHistories/list/SettlementApprovalListView';
 import { WithSettlementApproval, withSettlementApproval } from '@purchase/hoc/settlementHistories/withSettlementApproval';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
@@ -28,7 +28,7 @@ export interface OwnHandlers {
   handleGoToPrevious: () => void;
   handleReloading: () => void;
   handleChangeSize: (value: number) => void;
-  handleChangeOrder: (field: IListBarField) => void;
+  handleChangeOrder: (field: ICollectionValue) => void;
   handleChangeSort: (direction: SortDirection) => void;
 }
 
@@ -89,8 +89,8 @@ const stateUpdaters: StateUpdaters<OwnOptions, OwnState, OwnStateUpdaters> = {
     stateReloading: (prevState: OwnState) => () => ({
       page: 1,
     }),
-    stateOrdering: (prevState: OwnState) => (field: IListBarField) => ({
-      orderBy: field.id,
+    stateOrdering: (prevState: OwnState) => (field: ICollectionValue) => ({
+      orderBy: field.value,
       page: 1,
     }),
     stateSorting: (prevState: OwnState) => (direction: SortDirection) => ({
@@ -124,7 +124,7 @@ const handlerCreators: HandleCreators<SettlementApprovalListProps, OwnHandlers> 
       // force re-load from api
       loadData(props);
     },
-    handleChangeOrder: (props: SettlementApprovalListProps) => (field: IListBarField) => { 
+    handleChangeOrder: (props: SettlementApprovalListProps) => (field: ICollectionValue) => { 
       props.stateOrdering(field);
     },
     handleChangeSize: (props: SettlementApprovalListProps) => (value: number) => { 
@@ -167,8 +167,8 @@ const lifecycles: ReactLifeCycleFunctions<SettlementApprovalListProps, OwnState>
         onSizeCallback: handleChangeSize,
       });
   
-      const items = Object.keys(SettlementField)
-        .map(key => ({ id: key, name: SettlementField[key] }));
+      const items = Object.keys(PurchaseField)
+        .map(key => ({ value: key, name: PurchaseField[key] }));
   
       navBottomDispatch.assignFields(items);
   

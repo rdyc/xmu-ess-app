@@ -22,7 +22,7 @@ interface OwnProps {
   onChangeCurrencyType: (event: any, newValue: string, oldValue: string) => void;
   onChangeRate: (event: any, newValue: number, oldValue: number) => void;
   onChangeValueIdr: (event: any, newValue: number, oldValue: number) => void;
-  // onChangeRequestItem: (event: any, newValue: number, oldValue: number) => void;
+  onChangeRequest: (event: any, newValue: number, oldValue: number) => void;
 }
 
 interface OwnHandlers {

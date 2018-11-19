@@ -1,9 +1,9 @@
 import AppMenu from '@constants/AppMenu';
 import { SortDirection } from '@generic/types';
+import { ICollectionValue } from '@layout/classes/core';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithNavBottom, withNavBottom } from '@layout/hoc/withNavBottom';
 import { WithUser, withUser } from '@layout/hoc/withUser';
-import { IListBarField } from '@layout/interfaces';
 import { PurchaseField } from '@purchase/classes/types';
 import { PurchaseRequestListView } from '@purchase/components/purchaseRequest/list/PurchaseRequestListView';
 import { WithPurchaseRequest, withPurchaseRequest } from '@purchase/hoc/purchaseRequest/withPurchaseRequest';
@@ -28,7 +28,7 @@ interface OwnHandlers {
   handleGoToPrevious: () => void;
   handleReloading: () => void;
   handleChangeSize: (value: number) => void;
-  handleChangeOrder: (field: IListBarField) => void;
+  handleChangeOrder: (field: ICollectionValue) => void;
   handleChangeSort: (direction: SortDirection) => void;
 }
 
@@ -90,8 +90,8 @@ const stateUpdaters: StateUpdaters<OwnOptions, OwnState, OwnStateUpdaters> = {
     page: 1,
     // page: prevState.page,
   }),
-  stateOrdering: (prevState: OwnState) => (field: IListBarField) => ({
-    orderBy: field.id,
+  stateOrdering: (prevState: OwnState) => (field: ICollectionValue) => ({
+    orderBy: field.value,
     page: 1,
   }),
   stateSorting: (prevState: OwnState) => (direction: SortDirection) => ({
@@ -125,7 +125,7 @@ const handlerCreators: HandleCreators<PurchaseRequestListProps, OwnHandlers> = {
     // force re-load from api
     loadData(props);
   },
-  handleChangeOrder: (props: PurchaseRequestListProps) => (field: IListBarField) => { 
+  handleChangeOrder: (props: PurchaseRequestListProps) => (field: ICollectionValue) => { 
     props.stateOrdering(field);
   },
   handleChangeSize: (props: PurchaseRequestListProps) => (value: number) => { 
@@ -169,7 +169,7 @@ const lifecycles: ReactLifeCycleFunctions<PurchaseRequestListProps, OwnState> = 
     });
 
     const items = Object.keys(PurchaseField)
-      .map(key => ({ id: key, name: PurchaseField[key] }));
+      .map(key => ({ value: key, name: PurchaseField[key] }));
 
     navBottomDispatch.assignFields(items);
 
