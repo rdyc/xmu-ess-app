@@ -137,10 +137,10 @@ const config: CollectionConfig<IProject, AllProps> = {
   // )
 
   // action component
-  actionComponent: (item: IProject) => (
+  actionComponent: (item: IProject, callback: CollectionHandler) => (
     <Button 
       size="small"
-      onClick={() => alert(`go to ${item.uid}`)}
+      onClick={() => callback.handleRedirectTo(`/payload/pages/demo/collection/${item.uid}`)}
     >
       <FormattedMessage {...layoutMessage.action.details}/>
     </Button>

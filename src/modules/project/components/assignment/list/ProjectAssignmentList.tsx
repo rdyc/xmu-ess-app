@@ -5,40 +5,40 @@ import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
 import { Button } from '@material-ui/core';
 import { isRequestEditable } from '@organization/helper/isRequestEditable';
-import { IProject } from '@project/classes/response';
-import { ProjectRegistrationField, ProjectUserAction } from '@project/classes/types';
-import { ProjectSumarry } from '@project/components/registration/detail/shared/ProjectSummary';
+import { IProjectAssignment } from '@project/classes/response';
+import { ProjectAssignmentField, ProjectUserAction } from '@project/classes/types';
 import { projectRegistrationFieldTranslator } from '@project/helper';
-import { WithProjectRegistration, withProjectRegistration } from '@project/hoc/withProjectRegistration';
+import { WithProjectAssignment, withProjectAssignment } from '@project/hoc/withProjectAssignment';
 import { projectMessage } from '@project/locales/messages/projectMessage';
 import * as moment from 'moment';
 import * as React from 'react';
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose } from 'recompose';
 
-const config: CollectionConfig<IProject, AllProps> = {
+import { ProjectAssignmentSummary } from '../detail/shared/ProjectAssignmentSummary';
+
+const config: CollectionConfig<IProjectAssignment, AllProps> = {
   // page
   page: (props: AllProps) => ({
-    uid: AppMenu.ProjectRegistrationRequest,
-    parentUid: AppMenu.ProjectRegistration,
-    title: props.intl.formatMessage(projectMessage.registration.page.listTitle),
-    description: props.intl.formatMessage(projectMessage.registration.page.listSubHeader),
+    uid: AppMenu.ProjectAssignmentRequest,
+    parentUid: AppMenu.ProjectAssignment,
+    title: props.intl.formatMessage(projectMessage.assignment.page.listTitle),
+    description : props.intl.formatMessage(projectMessage.assignment.page.listSubHeader)
   }),
-  
+
   // top bar
-  fields: Object.keys(ProjectRegistrationField)
-    .map(key => ({ 
-      value: key, 
-      name: ProjectRegistrationField[key] 
-    })),
+  fields: Object.keys(ProjectAssignmentField).map(key => ({ 
+    value: key, 
+    name: ProjectAssignmentField[key] 
+  })),
   fieldTranslator: projectRegistrationFieldTranslator,
 
   // searching
   hasSearching: true,
-  searchStatus: (props: AllProps): boolean => {
+  searchStatus: (states: AllProps): boolean => {
     let result: boolean = false;
 
-    const { request } = props.projectRegisterState.all;
+    const { request } = states.projectAssignmentState.all;
 
     if (request && request.filter && request.filter.find) {
       result = request.filter.find ? true : false;
@@ -65,7 +65,7 @@ const config: CollectionConfig<IProject, AllProps> = {
       name: props.intl.formatMessage(layoutMessage.action.create),
       enabled: true,
       visible: true,
-      onClick: () => callback.handleRedirectTo(`/project/requests/form`)
+      onClick: () => callback.handleRedirectTo(`/project/assignments/form`)
     }
   ]),
 
@@ -76,19 +76,21 @@ const config: CollectionConfig<IProject, AllProps> = {
   },
 
   // events
-  onDataLoad: (props: AllProps, callback: CollectionHandler, params: CollectionDataProps, forceReload?: boolean | false) => {
-    const { user } = props.userState;
-    const { isLoading, response } = props.projectRegisterState.all;
-    const { loadAllRequest } = props.projectRegisterDispatch;
+  onDataLoad: (states: AllProps, callback: CollectionHandler, params: CollectionDataProps, forceReload?: boolean | false) => {
+    const { user } = states.userState;
+    const { isLoading, response } = states.projectAssignmentState.all;
+    const { loadAllRequest } = states.projectAssignmentDispatch;
 
     // when user is set and not loading
     if (user && !isLoading) {
       // when response are empty or force reloading
       if (!response || forceReload) {
         loadAllRequest({
-          companyUid: user.company.uid,
-          positionUid: user.position.uid,
           filter: {
+            customerUids: undefined,
+            projectTypes: undefined,
+            statusTypes: undefined,
+            projectUid: undefined,
             find: params.find,
             findBy: params.findBy,
             orderBy: params.orderBy,
@@ -103,13 +105,13 @@ const config: CollectionConfig<IProject, AllProps> = {
       }
     }
   },
-  onUpdated: (props: AllProps, callback: CollectionHandler) => {
-    const { isLoading, response } = props.projectRegisterState.all;
+  onUpdated: (states: AllProps, callback: CollectionHandler) => {
+    const { isLoading, response } = states.projectAssignmentState.all;
     
     callback.handleLoading(isLoading);
     callback.handleResponse(response);
   },
-  onBind: (item: IProject, index: number) => ({
+  onBind: (item: IProjectAssignment, index: number) => ({
     key: index,
     primary: item.name,
     secondary: item.project && item.project.value || item.projectType,
@@ -120,18 +122,21 @@ const config: CollectionConfig<IProject, AllProps> = {
   }),
 
   // summary component
-  summaryComponent: (item: IProject) => ( 
-    <ProjectSumarry data={item} />
+  summaryComponent: (item: IProjectAssignment) => ( 
+    <ProjectAssignmentSummary data={item} />
   ),
 
   // action component
-  actionComponent: (item: IProject, callback: CollectionHandler) => (
+  actionComponent: (item: IProjectAssignment, callback: CollectionHandler) => (
     <React.Fragment>
       {
         isRequestEditable(item.statusType) &&
         <Button 
           size="small"
-          onClick={() => callback.handleRedirectTo(`/project/requests/form`, { uid: item.uid })}
+          onClick={() => callback.handleRedirectTo(`/project/assignments/form`, { 
+            companyUid: item.customer && item.customer.companyUid, 
+            assignmentUid: item.uid 
+          })}
         >
           <FormattedMessage {...layoutMessage.action.modify}/>
         </Button>
@@ -139,7 +144,7 @@ const config: CollectionConfig<IProject, AllProps> = {
 
       <Button 
         size="small"
-        onClick={() => callback.handleRedirectTo(`/project/requests/${item.uid}`)}
+        onClick={() => callback.handleRedirectTo(`/project/assignments/${item.uid}`)}
       >
         <FormattedMessage {...layoutMessage.action.details}/>
       </Button>
@@ -147,11 +152,11 @@ const config: CollectionConfig<IProject, AllProps> = {
   )
 };
 
-type AllProps 
+type AllProps
   = WithUser
-  & WithProjectRegistration
+  & WithProjectAssignment
   & InjectedIntlProps;
-
+  
 const listView: React.SFC<AllProps> = props => (
   <CollectionPage
     config={config}
@@ -159,8 +164,8 @@ const listView: React.SFC<AllProps> = props => (
   />
 );
 
-export const ProjectRegistrationList = compose(
+export const ProjectAssignmentList = compose(
   withUser,
-  withProjectRegistration,
+  withProjectAssignment,
   injectIntl
 )(listView);
