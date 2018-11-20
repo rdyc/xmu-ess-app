@@ -2,12 +2,16 @@ import { defineMessages } from 'react-intl';
 
 const prefix = 'project.registration';
 
+// message
 export const projectRegistrationMessage = defineMessages({
-  emptyProjectUid: { id: 'project.message.registration.emptyProps' },
-  createSuccess: { id: 'project.message.registration.create.success' },
-  createFailure: { id: 'project.message.registration.create.failure' },
-  updateSuccess: { id: 'project.message.registration.update.success' },
-  updateFailure: { id: 'project.message.registration.update.failure' },
+  emptyProps: { id: `${prefix}.message.emptyProps` },
+  emptyDocument: { id: `${prefix}.message.emptyProps` },
+  emptySales: { id: `${prefix}.message.emptyProps` },
+  emptySite: { id: `${prefix}.message.emptyProps` },
+  createSuccess: { id: `${prefix}.message.create.success` },
+  createFailure: { id: `${prefix}.message.create.failure` },
+  updateSuccess: { id: `${prefix}.message.update.success` },
+  updateFailure: { id: `${prefix}.message.update.failure` },
 });
 
 // page
@@ -20,6 +24,20 @@ export const projectRegistrationPage = defineMessages({
   newSubHeader: { id: `${prefix}.page.new.subHeader` },
   modifyTitle: { id: `${prefix}.page.modify.title` },
   modifySubHeader: { id: `${prefix}.page.modify.subHeader` },
+});
+
+// section
+export const projectRegistrationSection = defineMessages({
+  infoTitle: { id: `${prefix}.section.info.title` },
+  infoSubHeader: { id: `${prefix}.section.info.subHeader` },
+  documentProjectTitle: { id: `${prefix}.section.document.project.title` },
+  documentProjectSubHeader: { id: `${prefix}.section.document.project.subHeader` },
+  documentPreSalesTitle: { id: `${prefix}.section.document.preSales.title` },
+  documentPreSalesSubHeader: { id: `${prefix}.section.document.preSales.subHeader` },
+  salesTitle: { id: `${prefix}.section.sales.title` },
+  salesSubHeader: { id: `${prefix}.section.sales.subHeader` },
+  siteTitle: { id: `${prefix}.section.site.title` },
+  siteSubHeader: { id: `${prefix}.section.site.subHeader` },
 });
 
 // fields

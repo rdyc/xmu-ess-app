@@ -16,7 +16,7 @@ import {
 } from '@project/components/registration/editor/forms/ProjectRegistrationContainerForm';
 import { ProjectRegistrationEditorView } from '@project/components/registration/editor/ProjectRegistrationEditorView';
 import { WithProjectRegistration, withProjectRegistration } from '@project/hoc/withProjectRegistration';
-import { projectRegistrationMessage } from '@project/locales/messages/projectRegistrationMessage';
+import { projectMessage } from '@project/locales/messages/projectMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import {
@@ -186,7 +186,7 @@ const handlerCreators: HandleCreators<ProjectRegistrationEditorProps, OwnHandler
 
     // update checking
     if (!projectUid) {
-      const message = intl.formatMessage(projectRegistrationMessage.emptyProjectUid);
+      const message = intl.formatMessage(projectMessage.registration.message.emptyProps);
 
       return Promise.reject(message);
     }
@@ -213,11 +213,11 @@ const handlerCreators: HandleCreators<ProjectRegistrationEditorProps, OwnHandler
     let message: string = '';
 
     if (formMode === FormMode.New) {
-      message = intl.formatMessage(projectRegistrationMessage.createSuccess, { uid: response.uid });
+      message = intl.formatMessage(projectMessage.registration.message.createSuccess, { uid: response.uid });
     }
 
     if (formMode === FormMode.Edit) {
-      message = intl.formatMessage(projectRegistrationMessage.updateSuccess, { uid: response.uid });
+      message = intl.formatMessage(projectMessage.registration.message.updateSuccess, { uid: response.uid });
     }
 
     alertAdd({
@@ -242,11 +242,11 @@ const handlerCreators: HandleCreators<ProjectRegistrationEditorProps, OwnHandler
       let message: string = '';
 
       if (formMode === FormMode.New) {
-        message = intl.formatMessage(projectRegistrationMessage.createFailure);
+        message = intl.formatMessage(projectMessage.registration.message.createFailure);
       }
 
       if (formMode === FormMode.Edit) {
-        message = intl.formatMessage(projectRegistrationMessage.updateFailure);
+        message = intl.formatMessage(projectMessage.registration.message.updateFailure);
       }
 
       alertAdd({

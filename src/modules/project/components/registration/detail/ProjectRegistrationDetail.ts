@@ -9,6 +9,7 @@ import { IAppBarMenu } from '@layout/interfaces';
 import { ProjectUserAction } from '@project/classes/types';
 import { ProjectRegistrationDetailView } from '@project/components/registration/detail/ProjectRegistrationDetailView';
 import { WithProjectRegistration, withProjectRegistration } from '@project/hoc/withProjectRegistration';
+import { projectMessage } from '@project/locales/messages/projectMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import {
@@ -266,8 +267,8 @@ const lifecycles: ReactLifeCycleFunctions<ProjectRegistrationDetailProps, OwnSta
     layoutDispatch.changeView({
       uid: AppMenu.ProjectRegistrationRequest,
       parentUid: AppMenu.ProjectRegistration,
-      title: intl.formatMessage({id: 'project.detail.title'}),
-      subTitle : intl.formatMessage({id: 'project.detail.subTitle'})
+      title: intl.formatMessage(projectMessage.registration.page.detailTitle),
+      subTitle : intl.formatMessage(projectMessage.registration.page.detailSubHeader)
     });
 
     layoutDispatch.modeSearchOff();

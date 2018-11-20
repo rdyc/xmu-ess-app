@@ -7,7 +7,7 @@ import { Button } from '@material-ui/core';
 import { isRequestEditable } from '@organization/helper/isRequestEditable';
 import { IProject } from '@project/classes/response';
 import { ProjectRegistrationField, ProjectUserAction } from '@project/classes/types';
-import { ProjectSumarry } from '@project/components/registration/detail/shared/ProjectSummary';
+import { ProjectRegistrationSumarry } from '@project/components/registration/detail/shared/ProjectRegistrationSummary';
 import { projectRegistrationFieldTranslator } from '@project/helper';
 import { WithProjectRegistration, withProjectRegistration } from '@project/hoc/withProjectRegistration';
 import { projectMessage } from '@project/locales/messages/projectMessage';
@@ -121,7 +121,7 @@ const config: CollectionConfig<IProject, AllProps> = {
 
   // summary component
   summaryComponent: (item: IProject) => ( 
-    <ProjectSumarry data={item} />
+    <ProjectRegistrationSumarry data={item} />
   ),
 
   // action component
