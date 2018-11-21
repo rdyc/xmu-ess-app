@@ -1,4 +1,5 @@
 export enum TimesheetUserAction {
-  Refresh = 'Refresh',
-  Modify = 'Modify'
+  Refresh = 'refresh',
+  Modify = 'modify',
+  Create = 'create'
 }

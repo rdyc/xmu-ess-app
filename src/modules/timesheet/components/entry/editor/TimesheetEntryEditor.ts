@@ -13,7 +13,8 @@ import {
 } from '@timesheet/components/entry/editor/forms/TimesheetEntryForm';
 import { TimesheetEntryEditorView } from '@timesheet/components/entry/editor/TimesheetEntryEditorView';
 import { WithTimesheetEntry, withTimesheetEntry } from '@timesheet/hoc/withTimesheetEntry';
-import { timesheetMessage } from '@timesheet/locales/messages/timesheetMessage';
+import { timesheetEntryMessage } from '@timesheet/locales/messages/timesheetEntryMessage';
+// import { timesheetMessage } from '@timesheet/locales/messages/timesheetMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import {
@@ -87,7 +88,7 @@ const handlerCreators: HandleCreators<EntryEditorProps, OwnHandlers> = {
   handleSubmit: (props: EntryEditorProps) => (formData: TimesheetFormData) => {
     const { formMode, timesheetUid, intl } = props;
     const { user } = props.userState;
-    const { createRequest, updateRequest } = props.timesheetDispatch;
+    const { createRequest, updateRequest } = props.timesheetEntryDispatch;
 
     if (!user) {
       return Promise.reject('user was not found');
@@ -117,7 +118,7 @@ const handlerCreators: HandleCreators<EntryEditorProps, OwnHandlers> = {
 
     // update checking
     if (!timesheetUid) {
-      const message = intl.formatMessage(timesheetMessage.emptyTimesheetUid);
+      const message = intl.formatMessage(timesheetEntryMessage.emptyTimesheetUid);
 
       return Promise.reject(message);
     }
@@ -144,11 +145,11 @@ const handlerCreators: HandleCreators<EntryEditorProps, OwnHandlers> = {
     let message: string = '';
 
     if (formMode === FormMode.New) {
-      message = intl.formatMessage(timesheetMessage.createSuccess, { uid: response.uid });
+      message = intl.formatMessage(timesheetEntryMessage.createSuccess, { uid: response.uid });
     }
 
     if (formMode === FormMode.Edit) {
-      message = intl.formatMessage(timesheetMessage.updateSuccess, { uid: response.uid });
+      message = intl.formatMessage(timesheetEntryMessage.updateSuccess, { uid: response.uid });
     }
 
     alertAdd({
@@ -173,11 +174,11 @@ const handlerCreators: HandleCreators<EntryEditorProps, OwnHandlers> = {
       let message: string = '';
 
       if (formMode === FormMode.New) {
-        message = intl.formatMessage(timesheetMessage.createFailure);
+        message = intl.formatMessage(timesheetEntryMessage.createFailure);
       }
 
       if (formMode === FormMode.Edit) {
-        message = intl.formatMessage(timesheetMessage.updateFailure);
+        message = intl.formatMessage(timesheetEntryMessage.updateFailure);
       }
 
       alertAdd({
@@ -203,7 +204,7 @@ const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
 const lifecycles: ReactLifeCycleFunctions<EntryEditorProps, {}> = {
   componentDidMount() {
     const { layoutDispatch, intl, history, stateUpdate } = this.props;
-    const { loadDetailRequest } = this.props.timesheetDispatch;
+    const { loadDetailRequest } = this.props.timesheetEntryDispatch;
     const { user } = this.props.userState;
     
     const view = {
@@ -244,7 +245,7 @@ const lifecycles: ReactLifeCycleFunctions<EntryEditorProps, {}> = {
     layoutDispatch.navBackShow(); 
   },
   componentWillUnmount() {
-    const { layoutDispatch, appBarDispatch, timesheetDispatch } = this.props;
+    const { layoutDispatch, appBarDispatch, timesheetEntryDispatch } = this.props;
 
     layoutDispatch.changeView(null);
     layoutDispatch.navBackHide();
@@ -253,8 +254,8 @@ const lifecycles: ReactLifeCycleFunctions<EntryEditorProps, {}> = {
 
     appBarDispatch.dispose();
 
-    timesheetDispatch.createDispose();
-    timesheetDispatch.updateDispose();
+    timesheetEntryDispatch.createDispose();
+    timesheetEntryDispatch.updateDispose();
   }
 };
 
