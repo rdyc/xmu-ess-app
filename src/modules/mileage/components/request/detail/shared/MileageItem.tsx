@@ -12,12 +12,7 @@ import {
 } from '@material-ui/core';
 import { IMileageRequestItem } from '@mileage/classes/response';
 import * as React from 'react';
-import {
-  FormattedDate,
-  FormattedMessage,
-  InjectedIntlProps,
-  injectIntl
-} from 'react-intl';
+import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose } from 'recompose';
 
 interface OwnProps {
@@ -38,15 +33,14 @@ const mileageItem: React.SFC<AllProps> = props => {
       />
       <CardContent>
         <List>
-          {items &&
-            items.length === 0 && (
-              <ListItem>
-                <ListItemText
-                  primary={<FormattedMessage id="mileage.request.item.empty" />}
-                  primaryTypographyProps={{ align: 'center' }}
-                />
-              </ListItem>
-            )}
+          {items && items.length === 0 && (
+            <ListItem>
+              <ListItemText
+                primary={<FormattedMessage id="mileage.request.item.empty" />}
+                primaryTypographyProps={{ align: 'center' }}
+              />
+            </ListItem>
+          )}
           {items &&
             items.map((item, index) => (
               <div key={item.uid}>
@@ -54,23 +48,20 @@ const mileageItem: React.SFC<AllProps> = props => {
                   <Grid container spacing={24}>
                     <Grid item xs={8} sm={8}>
                       <Typography noWrap color="primary" variant="body2">
-                        {item.customer && item.customer.name}
+                        {intl.formatDate(item.date, {
+                          year: 'numeric',
+                          month: 'long'
+                        })}
                       </Typography>
                       <Typography noWrap variant="body1">
-                        {item.projectUid} &bull;{' '}
-                        {item.project && item.project.name}
+                        {item.customer && item.customer.name}
                       </Typography>
                       <Typography
                         noWrap
                         color="textSecondary"
                         variant="caption"
                       >
-                        <FormattedDate
-                          year="numeric"
-                          month="short"
-                          day="numeric"
-                          value={item.date}
-                        />
+                        {item.projectUid} &bull; {item.project && item.project.name}
                       </Typography>
                     </Grid>
                     <Grid item xs={4} sm={4}>
@@ -79,7 +70,12 @@ const mileageItem: React.SFC<AllProps> = props => {
                       </Typography>
                       <Typography
                         noWrap
-                        color={item.status && item.status.type === WorkflowStatusType.Rejected ? 'error' : 'secondary'}
+                        color={
+                          item.status &&
+                          item.status.type === WorkflowStatusType.Rejected
+                            ? 'error'
+                            : 'secondary'
+                        }
                         variant="body1"
                         align="right"
                       >

@@ -3,6 +3,7 @@ import * as React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router';
 import { LeaveApprovalDetail } from './approval/detail/LeaveApprovalDetail';
 import { LeaveApprovalList } from './approval/list/LeaveApprovalList';
+import { LeaveCancellationDetail } from './cancellation/detail/LeaveCancellationDetail';
 import { LeaveCancellationList } from './cancellation/list/LeaveCancellationList';
 import { LeaveRequestDetail } from './request/detail/LeaveRequestDetail';
 import LeaveRequestEditor from './request/editor/LeaveRequestEditor';
@@ -25,6 +26,7 @@ const approval = (props: RouteComponentProps) => (
 
 const cancellation = (props: RouteComponentProps) => (
   <Switch>
+    <Route path={`${props.match.path}/:leaveUid`} component={LeaveCancellationDetail} />
     <Route path={`${props.match.path}`} component={LeaveCancellationList} />
   </Switch>
 );

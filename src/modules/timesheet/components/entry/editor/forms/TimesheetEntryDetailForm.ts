@@ -1,7 +1,7 @@
 import { ProjectType } from '@common/classes/types';
 import { SelectSystem, SelectSystemOption } from '@common/components/select';
 import { FormMode } from '@generic/types';
-import { InputDate } from '@layout/components/input/date';
+import { InputDateTimesheet } from '@layout/components/input/date';
 import { InputText } from '@layout/components/input/text';
 import { InputTime } from '@layout/components/input/time';
 import { WithUser, withUser } from '@layout/hoc/withUser';
@@ -21,7 +21,6 @@ interface OwnProps {
   customerUidValue: string | undefined;
   isPresalesActivity: boolean;
   projectUidValue: string | undefined;
-  onChangeTime: (event: any, newValue: string, oldValue: string) => void;
   showSiteProject: boolean;
 }
 
@@ -43,7 +42,6 @@ const handlerCreators: HandleCreators<EntryDetailFormProps, OwnHandlers> = {
       customerUidValue,
       isPresalesActivity,
       projectUidValue,
-      onChangeTime,
       showSiteProject
     } = props;
 
@@ -52,8 +50,9 @@ const handlerCreators: HandleCreators<EntryDetailFormProps, OwnHandlers> = {
     const _projectTypes = isPresalesActivity ? ProjectType.PreSales : [ProjectType.Project, ProjectType.ExtraMiles, ProjectType.NonProject];
 
     const projectFilter: any = {
-      customerUid: customerUidValue,
-      projectTypes: _projectTypes
+        employeeUid: user && user.uid,
+        customerUid: customerUidValue,
+        projectTypes: _projectTypes
     };
 
     const fieldName = name.replace('information.', '');
@@ -71,6 +70,7 @@ const handlerCreators: HandleCreators<EntryDetailFormProps, OwnHandlers> = {
 
       case 'activityType':
         fieldProps = {
+          required: true,
           category: 'activity',
           placeholder: intl.formatMessage({ id: `timesheet.field.${name}.placeholder` }),
           component: SelectSystem
@@ -79,15 +79,17 @@ const handlerCreators: HandleCreators<EntryDetailFormProps, OwnHandlers> = {
 
       case 'customerUid':
         fieldProps = {
+          required: true,
           type: 'text',
           disabled: isNullOrUndefined(activityTypeValue),
           placeholder: intl.formatMessage({ id: `timesheet.field.${name}.placeholder` }),
-          component: InputCustomer
+          component: !isNullOrUndefined(activityTypeValue) ? InputCustomer : InputText
         };
         break;
 
       case 'projectUid':
         fieldProps = {
+          required: true,
           type: 'text',
           disabled: isNullOrUndefined(customerUidValue),
           placeholder: intl.formatMessage({ id: `timesheet.field.${name}.placeholder` }),
@@ -98,8 +100,8 @@ const handlerCreators: HandleCreators<EntryDetailFormProps, OwnHandlers> = {
 
       case 'siteUid':
         fieldProps = {
+          required: true,
           type: 'text',
-          // disabled: isNullOrUndefined(projectUidValue),
           disabled: !showSiteProject,
           placeholder: intl.formatMessage({ id: `timesheet.field.${name}.placeholder` }),
           component: !isNullOrUndefined(projectUidValue) ? SelectProjectSite : InputText,
@@ -110,15 +112,16 @@ const handlerCreators: HandleCreators<EntryDetailFormProps, OwnHandlers> = {
 
       case 'date':
         fieldProps = {
+          required: true,
           type: 'text',
           placeholder: intl.formatMessage({ id: `timesheet.field.${name}.placeholder` }),
-          component: InputDate,
-          onChange: onChangeTime
+          component: InputDateTimesheet
         };
         break;
 
       case 'start':
         fieldProps = {
+          required: true,
           type: 'text',
           placeholder: intl.formatMessage({ id: `timesheet.field.${name}.placeholder` }),
           component: InputTime
@@ -127,6 +130,7 @@ const handlerCreators: HandleCreators<EntryDetailFormProps, OwnHandlers> = {
 
       case 'end':
         fieldProps = {
+          required: true,
           type: 'text',
           placeholder: intl.formatMessage({ id: `timesheet.field.${name}.placeholder` }),
           component: InputTime

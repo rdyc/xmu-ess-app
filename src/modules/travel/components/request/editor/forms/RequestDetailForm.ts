@@ -2,6 +2,7 @@ import { WorkflowStatusType } from '@common/classes/types';
 import { SelectSystem, SelectSystemOption } from '@common/components/select';
 import { FormMode } from '@generic/types';
 import { InputDate } from '@layout/components/input/date';
+import { InputNumber } from '@layout/components/input/number';
 import { InputText } from '@layout/components/input/text';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { InputCustomer } from '@lookup/components/customer/input';
@@ -16,11 +17,13 @@ import { isNullOrUndefined } from 'util';
 interface OwnProps {
   formMode: FormMode;
   context: BaseFieldsProps;
+  onChangeProject: (event: any, newValue: string, oldValue: string) => void;
+  onChangeDestinationType: (event: any, newValue: string, oldValue: string) => void;
   customerUidValue: string | null | undefined;
   projectUidValue: string | null | undefined;
   destinationTypeValue: string | null | undefined;
-  // isGeneralPurpose: boolean;
-  // projectTypeValue: string | null | undefined;
+  isProjectSelected: boolean;
+  totalCostValue: number | undefined;
 }
 
 interface OwnHandlers {
@@ -36,7 +39,9 @@ export type RequestDetailFormProps
 const handlerCreators: HandleCreators<RequestDetailFormProps, OwnHandlers> = {
   generateFieldProps: (props: RequestDetailFormProps) => (name: string) => {
     const {
-      intl, customerUidValue, projectUidValue, destinationTypeValue
+      intl, customerUidValue, projectUidValue,
+      isProjectSelected, onChangeProject,
+      onChangeDestinationType
     } = props;
     const { user } = props.userState;
 
@@ -75,9 +80,8 @@ const handlerCreators: HandleCreators<RequestDetailFormProps, OwnHandlers> = {
         case 'customerUid': 
         fieldProps = {
           required: true,
-          disabled: isNullOrUndefined(destinationTypeValue),
           placeholder: intl.formatMessage({id: `travel.field.${name}.placeholder`}),
-          component: !isNullOrUndefined(destinationTypeValue) ? InputCustomer : InputText
+          component: InputCustomer
         };
         break;
 
@@ -86,15 +90,16 @@ const handlerCreators: HandleCreators<RequestDetailFormProps, OwnHandlers> = {
           required: true,
           disabled: isNullOrUndefined(customerUidValue),
           placeholder: intl.formatMessage({id: `travel.field.${name}.placeholder`}),
-          component: !isNullOrUndefined(customerUidValue) ? SelectProject : InputText,
+          component: SelectProject, 
           filter: projectFilter,
+          onChange: onChangeProject
           
         };
         break;
 
         case 'siteUid': 
         fieldProps = {
-          disabled: isNullOrUndefined(projectUidValue), 
+          disabled: !isProjectSelected, // isNullOrUndefined(projectUidValue), 
           placeholder: intl.formatMessage({id: `travel.field.${name}.placeholder`}),
           component: !isNullOrUndefined(projectUidValue) ? SelectProjectSite : InputText,
           companyUid: user && user.company.uid,
@@ -108,6 +113,7 @@ const handlerCreators: HandleCreators<RequestDetailFormProps, OwnHandlers> = {
           category: 'destination',
           placeholder: intl.formatMessage({id: `travel.field.${name}.placeholder`}),
           component: SelectSystem,
+          onChange: onChangeDestinationType
         };
         break;
         
@@ -133,6 +139,14 @@ const handlerCreators: HandleCreators<RequestDetailFormProps, OwnHandlers> = {
           required: true,
           placeholder: intl.formatMessage({id: `travel.field.${name}.placeholder`}),
           component: InputDate
+        };
+        break;
+
+      case 'total':
+        fieldProps = {
+          disabled: true,
+          placeholder: intl.formatMessage({id: `travel.field.${name}.placeholder`}),
+          component: InputNumber
         };
         break;
 

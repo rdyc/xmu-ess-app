@@ -3,6 +3,8 @@ import { FormMode } from '@generic/types';
 import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
+import { IDiem } from '@lookup/classes/response';
+import { WithLookupDiem, withLookupDiem } from '@lookup/hoc/withLookupDiem';
 import { ITravelPostPayload, ITravelPutPayload } from '@travel/classes/request';
 import { ITravelPutItem } from '@travel/classes/request/ITravelPutItem';
 import { ITravelRequest } from '@travel/classes/response';
@@ -22,6 +24,7 @@ interface OwnHandlers {
   handleSubmit: (payload: TravelRequestFormData) => void;
   handleSubmitSuccess: (result: any, dispatch: Dispatch<any>) => void;
   handleSubmitFail: (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => void;
+  generateDiemData: () => IDiem[] | undefined;
 }
 
 interface OwnRouteParams {
@@ -41,6 +44,7 @@ interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
 
 export type RequestEditorProps
   = WithTravelRequest
+  & WithLookupDiem
   & WithUser
   & WithLayout
   & WithAppBar
@@ -53,7 +57,8 @@ export type RequestEditorProps
 const handlerCreators: HandleCreators<RequestEditorProps, OwnHandlers> = {
   handleValidate: (props: RequestEditorProps) => (formData: TravelRequestFormData) => {
     const errors = {
-      information: {}
+      information: {},
+      item: {}
     };
 
     const requiredFields = [
@@ -63,11 +68,11 @@ const handlerCreators: HandleCreators<RequestEditorProps, OwnHandlers> = {
 
     requiredFields.forEach(field => {
       if (!formData.information[field] || isNullOrUndefined(formData.information[field])) {
-        errors.information[field] = props.intl.formatMessage({ id: `travel.field.information.${field}.required` });
+        Object.assign(errors.information, {[`${field}`]: props.intl.formatMessage({ id: `travel.field.information.${field}.required` })});
       }
     });
 
-    if (formData.item) {
+    if (formData.item.items) {
       const requiredItemFields = ['employeeUid', 'transportType'];
 
       const itemErrors: any[] = [];
@@ -87,12 +92,13 @@ const handlerCreators: HandleCreators<RequestEditorProps, OwnHandlers> = {
       });
 
       if (itemErrors.length) {
-        Object.assign(errors, {
+        Object.assign(errors.item, {
           items: itemErrors
         });
       }
     }
-
+    
+    // console.log(errors);
     return errors;
   },
   handleSubmit: (props: RequestEditorProps) => (formData: TravelRequestFormData) => {
@@ -104,8 +110,12 @@ const handlerCreators: HandleCreators<RequestEditorProps, OwnHandlers> = {
       return Promise.reject('user was not found');
     }
 
+    if (!formData.item.items.length) {
+      return Promise.reject('At least one item must be entered');
+    }
+
     const parsedItems = () => {
-      if (!formData.item) {
+      if (!formData.item.items) {
         return null;
       }
 
@@ -121,10 +131,10 @@ const handlerCreators: HandleCreators<RequestEditorProps, OwnHandlers> = {
           departureDate: item.departureDate,
           destination: item.destination,
           returnDate: item.returnDate,
-          costTransport: item.costTransport,
+          costTransport: item.costTransport ? item.costTransport : 0,
           isTransportByCompany: item.isTransportByCompany,
           hotel: item.hotel,
-          costHotel: item.costHotel,
+          costHotel: item.costHotel ? item.costHotel : 0,
           isHotelByCompany: item.isHotelByCompany,
           notes : item.notes
         })
@@ -222,6 +232,13 @@ const handlerCreators: HandleCreators<RequestEditorProps, OwnHandlers> = {
         details: isObject(submitError) ? submitError.message : submitError
       });
     }
+  }, 
+  generateDiemData: (props: RequestEditorProps) => (): IDiem[] | undefined => {
+    const { response } = props.lookupDiemState.all;
+    if (response && response.data) {
+      return response.data;
+    }
+    return undefined;
   }
 };
 
@@ -240,8 +257,16 @@ const lifecycles: ReactLifeCycleFunctions<RequestEditorProps, {}> = {
   componentDidMount() {
     const { layoutDispatch, intl, history, stateUpdate } = this.props;
     const { loadDetailRequest } = this.props.travelRequestDispatch;
+    const loadDiem = this.props.lookupDiemDispatch.loadAllRequest;
     const { user } = this.props.userState;
     
+    const filter: any = {
+      projectType: undefined,
+      destinationType: undefined,
+      find: user && user.company.uid,
+      findBy: 'companyUid'      
+    };
+
     const view = {
       title: 'travel.form.newTitle',
       subTitle: 'travel.form.newSubTitle',
@@ -269,8 +294,12 @@ const lifecycles: ReactLifeCycleFunctions<RequestEditorProps, {}> = {
         companyUid: user.company.uid,
         positionUid: user.position.uid,
         travelUid: history.location.state.uid
-      });
+      });      
     }
+    
+    loadDiem({
+      filter
+    });
 
     layoutDispatch.changeView({
       uid: AppMenu.TravelRequest,
@@ -282,7 +311,7 @@ const lifecycles: ReactLifeCycleFunctions<RequestEditorProps, {}> = {
     layoutDispatch.navBackShow(); 
   },
   componentWillUnmount() {
-    const { layoutDispatch, appBarDispatch, travelRequestDispatch } = this.props;
+    const { layoutDispatch, appBarDispatch, travelRequestDispatch, lookupDiemDispatch } = this.props;
 
     layoutDispatch.changeView(null);
     layoutDispatch.navBackHide();
@@ -291,6 +320,7 @@ const lifecycles: ReactLifeCycleFunctions<RequestEditorProps, {}> = {
 
     appBarDispatch.dispose();
 
+    lookupDiemDispatch.loadAllDispose();
     travelRequestDispatch.createDispose();
     travelRequestDispatch.updateDispose();
   }
@@ -302,6 +332,7 @@ export default compose<RequestEditorProps, {}>(
   withAppBar,
   withRouter,
   withTravelRequest,
+  withLookupDiem,
   injectIntl,
   withStateHandlers<OwnState, OwnStateUpdaters, {}>(createProps, stateUpdaters),
   withHandlers<RequestEditorProps, OwnHandlers>(handlerCreators),

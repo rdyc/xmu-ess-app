@@ -3,7 +3,7 @@ import commonReducers from '@common/store/reducers/commonReducers';
 import expenseReducers from '@expense/store/reducers/expenseReducers';
 import financeReducers from '@finance/store/reducers/financeReducers';
 import { IAppState } from '@generic/interfaces';
-import { appBarReducer, layoutReducer, listBarReducer, notificationReducer } from '@layout/store/reducers';
+import { appBarReducer, layoutReducer, listBarReducer, notificationReducer, pageReducer } from '@layout/store/reducers';
 import { userReducer } from '@layout/store/reducers/userReducer';
 import { leaveReducers } from '@leave/store/reducers/leaveReducers';
 import lookupReducers from '@lookup/store/reducers/lookupReducers';
@@ -18,15 +18,15 @@ import { reducer as reduxFormReducer } from 'redux-form';
 import { reducer as oidcReducer } from 'redux-oidc';
 
 export const rootReducer = combineReducers<IAppState>({
+  oidc: oidcReducer,
   user: userReducer,
   layout: layoutReducer,
-  oidc: oidcReducer,
+  view: pageReducer,
   notification: notificationReducer,
   form: reduxFormReducer,
   appBar: appBarReducer,
   navBottom: listBarReducer,
-  getEnd: leaveReducers.leaveRequestGetEnd,
-
+  
   /* modules */
   ...commonReducers,
   ...lookupReducers,

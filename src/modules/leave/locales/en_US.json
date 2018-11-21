@@ -62,6 +62,21 @@
   "leave.message.approval.create.success": "A leave request has been approved",
   "leave.message.approval.create.failure": "Unable to process your approval",
   "leave.message.approval.reject.success": "A leave request has been rejected",
-  "leave.message.owner.emptyProps": "Some props are empty"
+  "leave.message.approval.emptyProps": "Some props are empty",
+
+  "leave.request.noData": "No data Leave Request",
+  "leave.approval.noData": "No data Leave Approval",
+
+  "leave.CancellationTitle": "Cancellation",
+  "leave.cancellation.noData": "No data Leave Cancellation",
+  "leave.message.cancellation.update.success": "Leave has been cancelled",
+  "leave.message.cancellation.update.failure": "Unable to process your submission",
+  "leave.message.cancellation.emptyProps": "Some props are empty",
+  "leave.CancellationSubHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "leave.cancellation.field.cancelDate": "Cancel Date",
+  "leave.cancellation.field.cancelDate.placeholder": "Input Date",
+  "leave.cancellation.field.cancelDate.required": "Cancel date is required",
+  "leave.dialog.CancellationTitle": "Cancellation Confirmation",
+  "leave.dialog.CancellationContent": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
 }
 

@@ -3,8 +3,10 @@ import {
   Card,
   CardContent,
   CardHeader,
+  Checkbox,
   Collapse,
   Divider,
+  FormControlLabel,
   List,
   ListItem,
   ListItemAvatar,
@@ -97,11 +99,11 @@ const travelSettlementItem: React.SFC<AllProps> = props => {
                   timeout="auto"
                   unmountOnExit
                 >
-                  <TextField
-                    {...styled} 
-                    margin="dense"
+                  <FormControlLabel
+                    control={
+                      <Checkbox checked={item.isRoundTrip} />
+                    }
                     label={<FormattedMessage id="travel.item.field.information.isRoundTrip" />}
-                    value={item.isRoundTrip}
                   />
                   <TextField
                     {...styled} 
@@ -124,7 +126,8 @@ const travelSettlementItem: React.SFC<AllProps> = props => {
                       month: 'short',
                       day: 'numeric',
                       hour: 'numeric',
-                      minute: 'numeric',                      
+                      minute: 'numeric',
+                      hour12: false,                      
                       timeZone: 'GMT',
                       
                     })}
@@ -145,6 +148,7 @@ const travelSettlementItem: React.SFC<AllProps> = props => {
                       day: 'numeric',
                       hour: 'numeric',
                       minute: 'numeric',
+                      hour12: false,
                       timeZone: 'GMT',
                     })}
                   />
@@ -154,11 +158,11 @@ const travelSettlementItem: React.SFC<AllProps> = props => {
                     label={<FormattedMessage id="travel.item.field.information.costTransport" />}
                     value={intl.formatNumber(item.costTransport || 0)}
                   />
-                  <TextField
-                    {...styled}
-                    margin="dense"
+                  <FormControlLabel
+                    control={
+                      <Checkbox checked={item.isTransportByCompany} />
+                    }
                     label={<FormattedMessage id="travel.item.field.information.isTransportByCompany" />}
-                    value={item.isTransportByCompany}
                   />
                   <TextField
                     {...styled}
@@ -172,11 +176,11 @@ const travelSettlementItem: React.SFC<AllProps> = props => {
                     label={<FormattedMessage id="travel.item.field.information.costHotel" />}
                     value={intl.formatNumber(item.costHotel || 0)}
                   />
-                  <TextField
-                    {...styled}
-                    margin="dense"
+                  <FormControlLabel
+                    control={
+                      <Checkbox checked={item.isHotelByCompany} />
+                    }
                     label={<FormattedMessage id="travel.item.field.information.isHotelByCompany" />}
-                    value={item.isHotelByCompany}
                   />
                   <TextField
                     {...styled}

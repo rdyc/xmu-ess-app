@@ -138,12 +138,19 @@ const handlerCreators: HandleCreators<PurchaseSettlementDetailProps, Handler> = 
     stateReset();
   },
   handleDialogConfirmed: (props: PurchaseSettlementDetailProps) => () => {
-    const { match, history, stateReset } = props;
+    const { 
+      match, 
+      history, stateReset } = props;
+    const { response } = props.purchaseSettlementState.detail;
+
     const purchaseUid = match.params.purchaseUid;
+    // const purchaseUid = response && response.data.uid;
+    const status = response && response.data.statusType;
 
     stateReset();
 
-    history.push('/purchase/settlements/form/', { uid: purchaseUid });
+    history.push('/purchase/settlements/form/', { uid: purchaseUid, statusType: status });
+    
   },
 };
 
@@ -232,7 +239,7 @@ const lifecycles: ReactLifeCycleFunctions<PurchaseSettlementDetailProps, OwnStat
           id: PurchaseUserAction.Modify,
           name: intl.formatMessage({ id: 'purchase.action.modify' }),
           enabled: response !== undefined,
-          visible: isStatusTypeEquals([WorkflowStatusType.Submitted, WorkflowStatusType.InProgress, WorkflowStatusType.Approved])
+          visible: isStatusTypeEquals([WorkflowStatusType.Submitted, WorkflowStatusType.InProgress])
         },
         {
           id: PurchaseUserAction.Settle,

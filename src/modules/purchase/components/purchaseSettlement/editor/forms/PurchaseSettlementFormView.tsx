@@ -11,37 +11,51 @@ export const PurchaseSettlementFormView: React.SFC<PurchaseSettlementFormProps> 
   const {
     formMode,
     formIsCurrencyIDR, formRate, 
-    // formValue,
+    formActual,
+    formDifference,
+    formActualValue,
+    formDifferenceValue,
     change, initialValues
   } = props;
 
   const fields = Object.getOwnPropertyNames(initialValues.information);
 
-  const onChangeValueIdr = (event: any, newValue: number, oldValue: number) => {
+  const onChangeValueIdr = (event: any, newValue: number) => {
     change('information.actualIDR', newValue * formRate);
+    change('information.differenceInIDR', newValue * formRate );
   };
 
+  const onChangeActual = (event: any, newValue: number, oldValue: number) => {
+    change('information.actual', formActual);
+  };
+
+  const onChangeDifference = (event: any, newValue: number, oldValue: number) => {
+    change('information.difference', formDifference );
+  };
   const onChangeValueActual = (event: any, newValue: number, oldValue: number) => {
-    change('information.actual', newValue );
+    change('information.actualInIDR', formActualValue * formRate );
   };
 
-//   const componentPurchase = (context: PurchaseRequestDetailProps) => (
-// <PurchaseRequestDetail
-//       data={response.data}
-// />
-  // );
+  const onChangeValueDifference = (event: any, newValue: number, oldValue: number) => {
+    change('information.differenceInIDR', formDifferenceValue * formRate );
+  };
+
   const componentInformation = (context: BaseFieldsProps) => (
     <PurchaseSettlementDetailForm
       formMode={formMode}
       context={context}
       isCurrencyIdr={formIsCurrencyIDR}
       onChangeValueIdr={onChangeValueIdr}
-      onChangeRequestItem={onChangeValueActual}
+      onChangeActual={onChangeActual}
+      onChangeDifference={onChangeDifference}
+      onChangeActualValue={onChangeValueActual}
+      onChangeDifferenceValue={onChangeValueDifference}
     />
   );
 
   const componentItems = (context: WrappedFieldArrayProps<any>) => (
-  <PurchaseSettlementItemForm context={context} />
+  <PurchaseSettlementItemForm
+   context= {context} />
   );
 
   const render = (
@@ -53,14 +67,6 @@ export const PurchaseSettlementFormView: React.SFC<PurchaseSettlementFormProps> 
         justify="flex-start"
         alignItems="flex-start"
       >
-        {/* <Grid item xs={12} md={4} >
-          <FormSection name="request">
-            <Fields
-              names={fields}
-              component={componentPurchase}
-            />
-          </FormSection>
-        </Grid> */}
         <Grid item xs={12} md={4} >
           <FormSection name="information">
             <Fields
@@ -79,11 +85,8 @@ export const PurchaseSettlementFormView: React.SFC<PurchaseSettlementFormProps> 
           </FormSection>
         </Grid>
 
-        <Grid item 
-        // xs={12} 
-        md={4}>
+        <Grid item md={4}>
           <Submission
-            // valid={props.valid}
             valid={true}
             reset={props.reset}
             submitting={props.submitting}

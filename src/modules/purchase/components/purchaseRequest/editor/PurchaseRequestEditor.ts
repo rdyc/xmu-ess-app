@@ -10,11 +10,9 @@ import {
   IPurchasePutPayload
 } from '@purchase/classes/request/purchaseRequest';
 import { IPurchase, 
-  // IPurchaseDetail 
 } from '@purchase/classes/response/purchaseRequest';
 import {
-  PurchaseRequestFormData, 
-  // PurchaseRequestItemFormData,
+  PurchaseRequestFormData,
 } from '@purchase/components/purchaseRequest/editor/forms/PurchaseRequestForm';
 import { PurchaseRequestEditorView } from '@purchase/components/purchaseRequest/editor/PurchaseRequestEditorView';
 import { WithPurchaseRequest, withPurchaseRequest } from '@purchase/hoc/purchaseRequest/withPurchaseRequest';
@@ -38,6 +36,7 @@ import { FormErrors } from 'redux-form';
 import { isNullOrUndefined, isObject } from 'util';
 
 interface OwnHandlers {
+  // handleEventListener: (event: CustomEvent) => void;
   handleValidate: (payload: PurchaseRequestFormData) => FormErrors;
   handleSubmit: (payload: PurchaseRequestFormData) => void;
   handleSubmitSuccess: (result: any, dispatch: Dispatch<any>) => void;
@@ -49,6 +48,7 @@ interface OwnRouteParams {
 }
 
 interface OwnState {
+  // setState: PurchaseRequestFormData | undefined;
   formMode: FormMode;
   companyUid?: string | undefined;
   positionUid?: string | undefined;
@@ -57,6 +57,7 @@ interface OwnState {
 
 interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
   stateUpdate: StateHandler<OwnState>;
+  // setTotalRequest: StateHandler<OwnState>;
 }
 
 export type PurchaseRequestEditorProps
@@ -71,11 +72,12 @@ export type PurchaseRequestEditorProps
   & OwnStateUpdaters;
 
 const createProps: mapper<PurchaseRequestEditorProps, OwnState> = (props: PurchaseRequestEditorProps): OwnState => {
-  const { history } = props;
+  const { history, } = props;
 
   const state = history.location.state;
-
+  
   return {
+    // setState: state ? '' : undefined;
     formMode: state ? FormMode.Edit : FormMode.New,
     companyUid: state ? state.companyUid : undefined,
     positionUid: state ? state.positionUid : undefined,
@@ -91,26 +93,16 @@ const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
 };
 
 const handlers: HandleCreators<PurchaseRequestEditorProps, OwnHandlers> = {
-  // handleEventListener: (props: PurchaseRequestEditorProps) => (event: CustomEvent) => {
-  //   const formValues = event.detail as PurchaseRequestEditorProps;
-
-  //   let requestValue: number = 0;
-
-  //   if (formValues.items) {
-  //     formValues.items.items.forEach(items => requestValue += items.request);
-  //   }
-  // },
   handleValidate: (props: PurchaseRequestEditorProps) => (formData: PurchaseRequestFormData) => {
     const errors = {
       information: {},
       items: {
-        items: []
+        items: [{}]
       }
     };
 
     const requiredFields = [
       'customerUid', 'projectUid',
-      // 'advance',
       'date', 'rate', 'currencyType'
     ];
 
@@ -120,12 +112,36 @@ const handlers: HandleCreators<PurchaseRequestEditorProps, OwnHandlers> = {
       }
     });
 
+    if (formData.items) {
+      const requiredItemFields = ['description', 'request'];
+      const itemErrors: any[] = [];
+
+      formData.items.items.forEach((item, index) => {
+        const itemError: any = {};
+
+        if (!item) { return; }
+
+        requiredItemFields.forEach(field => {
+          if (!item[field] || isNullOrUndefined(item[field])) {
+            Object.assign(itemError, { [`${field}`]: props.intl.formatMessage({ id: `travel.field.information.item.${field}.required` }) });
+          }
+        });
+
+        itemErrors.push(itemError);
+      });
+
+      if (itemErrors.length) {
+        Object.assign(errors, {
+          items: itemErrors
+        });
+      }
+    }
+
     return errors;
   },
   handleSubmit: (props: PurchaseRequestEditorProps) => (formData: PurchaseRequestFormData) => {
     const { formMode, purchaseUid, intl } = props;
     const { user } = props.userState;
-    // const { response } = props.purchaseRequestState.detail;
     const { createRequest, updateRequest } = props.purchaseRequestDispatch;
 
     if (!user) {

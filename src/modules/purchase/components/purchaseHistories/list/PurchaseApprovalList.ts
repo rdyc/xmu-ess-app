@@ -1,9 +1,9 @@
 import AppMenu from '@constants/AppMenu';
 import { SortDirection } from '@generic/types';
+import { ICollectionValue } from '@layout/classes/core';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithNavBottom, withNavBottom } from '@layout/hoc/withNavBottom';
 import { WithUser, withUser } from '@layout/hoc/withUser';
-import { IListBarField } from '@layout/interfaces';
 import { PurchaseField } from '@purchase/classes/types';
 import { PurchaseApprovalListView } from '@purchase/components/purchaseHistories/list/PurchaseApprovalListView';
 import { WithPurchaseApproval, withPurchaseApproval } from '@purchase/hoc/purchaseHistories/withPurchaseApproval';
@@ -28,7 +28,7 @@ export interface OwnHandlers {
   handleGoToPrevious: () => void;
   handleReloading: () => void;
   handleChangeSize: (value: number) => void;
-  handleChangeOrder: (field: IListBarField) => void;
+  handleChangeOrder: (field: ICollectionValue) => void;
   handleChangeSort: (direction: SortDirection) => void;
 }
 
@@ -87,10 +87,11 @@ const stateUpdaters: StateUpdaters<OwnOptions, OwnState, OwnStateUpdaters> = {
       page: prevState.page - 1,
     }),
     stateReloading: (prevState: OwnState) => () => ({
-      page: prevState.page,
+      // page: prevState.page,
+      page: 1
     }),
-    stateOrdering: (prevState: OwnState) => (field: IListBarField) => ({
-      orderBy: field.id,
+    stateOrdering: (prevState: OwnState) => (field: ICollectionValue) => ({
+      orderBy: field.value,
       page: 1,
     }),
     stateSorting: (prevState: OwnState) => (direction: SortDirection) => ({
@@ -124,7 +125,7 @@ const handlerCreators: HandleCreators<PurchaseApprovalListProps, OwnHandlers> = 
       // force re-load from api
       loadData(props);
     },
-    handleChangeOrder: (props: PurchaseApprovalListProps) => (field: IListBarField) => { 
+    handleChangeOrder: (props: PurchaseApprovalListProps) => (field: ICollectionValue) => { 
       props.stateOrdering(field);
     },
     handleChangeSize: (props: PurchaseApprovalListProps) => (value: number) => { 
@@ -168,7 +169,7 @@ const lifecycles: ReactLifeCycleFunctions<PurchaseApprovalListProps, OwnState> =
       });
   
       const items = Object.keys(PurchaseField)
-        .map(key => ({ id: key, name: PurchaseField[key] }));
+        .map(key => ({ value: key, name: PurchaseField[key] }));
   
       navBottomDispatch.assignFields(items);
   

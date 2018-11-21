@@ -8,28 +8,60 @@ import { RequestItemForm } from './RequestItemForm';
 
 export const RequestFormView: React.SFC<RequestFormProps> = props => {
   const {
-    formMode, customerUidValue, projectUidValue, destinationtypeValue // isGeneralPurpose 
+    formMode, customerUidValue, projectUidValue, 
+    destinationtypeValue, isProjectSelected, diemRequest,
+    change, TotalCost, totalTravel
   } = props;
+  
+  const diem = (diemRequest) ? 
+                  diemRequest.filter(item => item.destinationType === destinationtypeValue &&
+                    item.projectType === 'SPT04')[0] 
+                  : undefined;
 
   const fields = Object.getOwnPropertyNames(props.initialValues.information);
+                
+  const onChangeProject = (event: any, newValue: string, oldValue: string) => {
+    if (newValue) {
+      change('item.items[0].currencyUid', (diem && diem.currency ? diem.currency.name : ''));
+      change('item.items[0].currencyRate', (diem && diem.currency ? diem.currency.rate : 0));
+      change('item.items[0].diemValue', (diem ? diem.value : 0));
+    }    
+  };
+
+  const onChangeDestinationType = (event: any, newValue: string, oldValue: string) => {
+    if (newValue && projectUidValue) {
+      change('item.items[0].currencyUid', (diem && diem.currency ? diem.currency.name : ''));
+      change('item.items[0].currencyRate', (diem && diem.currency ? diem.currency.rate : 0));
+      change('item.items[0].diemValue', (diem ? diem.value : 0));
+    }
+  };
+
+  const onCostChange = (event: any, newValue: number, oldValue: number) => {
+    if (newValue) {
+      change('information.total', (totalTravel - oldValue) + newValue);
+    }
+  };
 
   const componentInformation = (context: BaseFieldsProps) => (
     <RequestDetailForm 
       formMode={formMode}
       context={context}
+      onChangeProject={onChangeProject}
+      onChangeDestinationType={onChangeDestinationType}
       customerUidValue={customerUidValue}
       projectUidValue={projectUidValue}
       destinationTypeValue= {destinationtypeValue}
-      // isGeneralPurpose= {isGeneralPurpose}
-      // projectTypeValue= {projectTypeValue}
+      isProjectSelected= {isProjectSelected}
+      totalCostValue= {TotalCost}
     />    
   );
 
   const componentTravelItem = (context: WrappedFieldArrayProps<any>) => (
     <RequestItemForm 
       context={context}
-      // destinationTypeValue={destinationtypeValue}
-      // diemType={projectUidValue} 
+      diemRequest={diemRequest}
+      destinationTypeValue={destinationtypeValue}
+      onCostChange={onCostChange}
     />    
   );
 

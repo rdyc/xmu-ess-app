@@ -1,5 +1,5 @@
 import { ILookupPosition } from '@lookup/classes';
-import { IProject } from '@summary/classes/response/billable';
+import { IProject } from '@summary/classes/response/shared';
 
 export interface ITimesheetSummaryBillableAssignment {
   projectUid: string;

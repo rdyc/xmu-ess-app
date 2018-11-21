@@ -104,7 +104,6 @@ const travelRequestItem: React.SFC<AllProps> = props => {
                       <Checkbox checked={item.isRoundTrip} />
                     }
                     label={<FormattedMessage id="travel.item.field.information.isRoundTrip" />}
-                    // labelPlacement="start"
                   />
                   <TextField
                     {...styled} 

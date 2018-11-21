@@ -35,7 +35,10 @@ export const TravelSettlementApprovalDetailView: React.SFC<TravelSettlementAppro
         requestApprovalResponse &&
         <Grid container spacing={16}>
           <Grid item xs={12} md={4}>
-            <TravelSettlementInformation data = {response.data}/>
+            <TravelSettlementInformation 
+              data = {response.data}
+              travelData= {requestApprovalResponse.data}
+            />
           </Grid>
 
           <Grid item xs={12} md={4}>
