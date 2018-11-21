@@ -89,8 +89,8 @@ export const PurchaseSettlementEditorView: React.SFC<PurchaseSettlementEditorPro
                 uid: item.uid,
                 description: item.description,
                 request: item.requestValue,
-                actual: (formMode === FormMode.New ? 0 : item.actualValue),
-                variance: (formMode === FormMode.New ? 0 : item.varianceValue),
+                actual: item.actualValue,
+                variance: item.varianceValue,
           })
         );
       }

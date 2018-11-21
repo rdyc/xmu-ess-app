@@ -5,7 +5,7 @@ export enum PurchaseField {
   requestDate = 'Request Date',
   currencyType = 'Currency Type',
   rate = 'Currency Rate',
-  requestNote = 'Notes',
+  requestNotes = 'Notes',
   totalRequest = 'Request Amount',
   totalRequestIDR = 'Request Amount in Rupiah',
   advanceAmount = 'Advance Payment',
