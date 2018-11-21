@@ -40,17 +40,17 @@ export const projectSiteMessage = defineMessages({
 
 // fields
 export const projectSiteField = defineMessages({
-  name: { id: `${prefix}.field.site.name` },
-  nameRequired: { id: `${prefix}.field.site.name.required` },
-  namePlaceholder: { id: `${prefix}.field.site.name.placeholder` },
+  name: { id: `${prefix}.field.name` },
+  nameRequired: { id: `${prefix}.field.name.required` },
+  namePlaceholder: { id: `${prefix}.field.name.placeholder` },
   
-  siteType: { id: `${prefix}.field.site.siteType` },
-  siteTypeRequired: { id: `${prefix}.field.site.siteType.required` },
-  siteTypePlaceholder: { id: `${prefix}.field.site.siteType.placeholder` },
+  siteType: { id: `${prefix}.field.siteType` },
+  siteTypeRequired: { id: `${prefix}.field.siteType.required` },
+  siteTypePlaceholder: { id: `${prefix}.field.siteType.placeholder` },
 
-  value: { id: `${prefix}.field.site.value` },
-  valueRequired: { id: `${prefix}.field.site.value.required` },
-  valuePlaceholder: { id: `${prefix}.field.site.value.placeholder` },
+  value: { id: `${prefix}.field.value` },
+  valueRequired: { id: `${prefix}.field.value.required` },
+  valuePlaceholder: { id: `${prefix}.field.value.placeholder` },
 });
 
 export const projectSiteFieldHelperFor = (field: string, type: 'fieldName' | 'fieldRequired' | 'fieldPlaceholder') => {

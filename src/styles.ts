@@ -195,6 +195,11 @@ const styles = (theme: Theme) =>
       transform: 'rotate(180deg)',
     },
 
+    /* grid card */
+    gridCard: {
+      minWidth: 350
+    },
+
     /* -------- generic classes start----------*/
     /* positioning */
     absoluteTopRight: {
