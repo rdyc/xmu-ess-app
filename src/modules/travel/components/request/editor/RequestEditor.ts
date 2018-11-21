@@ -98,11 +98,11 @@ const handlerCreators: HandleCreators<RequestEditorProps, OwnHandlers> = {
       }
     }
     
-    // console.log(errors);
+    console.log(errors);
     return errors;
   },
   handleSubmit: (props: RequestEditorProps) => (formData: TravelRequestFormData) => {
-    const { formMode, travelUid, intl } = props;
+    const { formMode, travelUid } = props;
     const { user } = props.userState;
     const { createRequest, updateRequest } = props.travelRequestDispatch;
 
@@ -163,9 +163,9 @@ const handlerCreators: HandleCreators<RequestEditorProps, OwnHandlers> = {
 
     // update checking
     if (!travelUid) {
-      const message = intl.formatMessage(travelRequestMessage.emptyTravelUid);
+      // const message = intl.formatMessage(travelRequestMessage.emptyTravelUid);
 
-      return Promise.reject(message);
+      return Promise.reject('empty travelUid');
     }
 
     if (formMode === FormMode.Edit) {

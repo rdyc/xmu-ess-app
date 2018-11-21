@@ -18,6 +18,11 @@ export const RequestDetailFormView: React.SFC<RequestDetailFormProps> = props =>
       return null;
     }
 
+    const projectTypeFields = ['projectType'];
+    if (projectTypeFields.indexOf(fieldName) !== -1) {
+      return null;
+    }
+
     const fieldsSite = ['siteUid'];
     if (!isProjectSelected && fieldsSite.indexOf(fieldName) !== -1) {
         return null;
