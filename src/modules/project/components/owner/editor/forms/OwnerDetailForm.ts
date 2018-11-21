@@ -7,6 +7,7 @@ import { FormMode } from '@generic/types';
 import { InputText } from '@layout/components/input/text';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { WithAllowedProjectType, withAllowedProjectType } from '@project/hoc/withAllowedProjectType';
+import { projectMessage } from '@project/locales/messages/projectMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose, HandleCreators, withHandlers } from 'recompose';
 import { BaseFieldsProps } from 'redux-form';
@@ -35,16 +36,15 @@ const handlerCreators: HandleCreators<OwnerDetailFormProps, OwnHandlers> = {
   generateFieldProps: (props: OwnerDetailFormProps) => (name: string) => { 
     const { rolePmoUids, rolePmUids, allowedProjectTypes, intl } = props;
     const { user } = props.userState;
-    
-    const fieldName = name.replace('information.', '');
-    
+      
     let fieldProps: SelectSystemOption & any = {};
   
-    switch (fieldName) {
+    switch (name) {
       case 'employeeUid':
         fieldProps = {
           required: true,
-          placeholder: intl.formatMessage({id: `project.field.${name}.placeholder`}),
+          label: intl.formatMessage(projectMessage.registration.fieldFor(name, 'fieldName')),
+          placeholder: intl.formatMessage(projectMessage.registration.fieldFor(name, 'fieldPlaceholder')),
           component: SelectEmployee,
           companyUids: user && [user.company.uid],
           roleUids: user && isMemberOfSales(user.role.uid) ? rolePmoUids : rolePmUids
@@ -55,7 +55,8 @@ const handlerCreators: HandleCreators<OwnerDetailFormProps, OwnHandlers> = {
         fieldProps = {
           required: true,
           category: 'project',
-          placeholder: intl.formatMessage({id: `project.field.${name}.placeholder`}),
+          label: intl.formatMessage(projectMessage.registration.fieldFor(name, 'fieldName')),
+          placeholder: intl.formatMessage(projectMessage.registration.fieldFor(name, 'fieldPlaceholder')),
           component: SelectSystem,
           onlyForTypes: allowedProjectTypes
         };
@@ -64,7 +65,8 @@ const handlerCreators: HandleCreators<OwnerDetailFormProps, OwnHandlers> = {
       default:
         fieldProps = {
           disabled: true,
-          placeholder: intl.formatMessage({id: `project.field.${name}.placeholder`}),
+          label: intl.formatMessage(projectMessage.registration.fieldFor(name, 'fieldName')),
+          placeholder: intl.formatMessage(projectMessage.registration.fieldFor(name, 'fieldPlaceholder')),
           component: InputText
         };
         break;

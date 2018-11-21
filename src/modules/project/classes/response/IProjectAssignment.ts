@@ -17,7 +17,7 @@ export interface IProjectAssignment {
   readonly description: string | null;
   readonly ownerEmployeeUid: string;
   readonly owner: IAccountEmployee | null;
-  readonly start: string | null;
-  readonly end: string | null;
+  readonly start: string;
+  readonly end: string;
   readonly changes: IBaseChanges | null;
 }

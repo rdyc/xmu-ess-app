@@ -1,17 +1,18 @@
 import { FormMode } from '@generic/types';
 import { Card, CardContent, CardHeader } from '@material-ui/core';
-import { ProjectRegistrationDetailFormProps } from '@project/components/registration/editor/forms/ProjectRegistrationDetailForm';
+import {
+  ProjectRegistrationDetailFormProps,
+} from '@project/components/registration/editor/forms/ProjectRegistrationDetailForm';
+import { projectMessage } from '@project/locales/messages/projectMessage';
 import * as React from 'react';
-import { FormattedMessage } from 'react-intl';
 import { Field } from 'redux-form';
 
 export const ProjectRegistrationDetailFormView: React.SFC<ProjectRegistrationDetailFormProps> = props => {
-  const { formMode } = props;
-  const { names } = props.context;
+  const { formMode, intl } = props;
   
   const renderField = (name: string) => {
     const fieldName = name.replace('information.', '');
-    const fieldProps = props.generateFieldProps(name);
+    const fieldProps = props.generateFieldProps(fieldName);
 
     // don't show uid & ownerEmployeeUid for new form
     const fields = ['uid', 'ownerEmployeeUid'];
@@ -23,7 +24,6 @@ export const ProjectRegistrationDetailFormView: React.SFC<ProjectRegistrationDet
       <Field
         key={fieldName}
         name={fieldName}
-        label={<FormattedMessage id={`project.field.${name}`} />}
         {...fieldProps}
       />
     );
@@ -32,11 +32,13 @@ export const ProjectRegistrationDetailFormView: React.SFC<ProjectRegistrationDet
   const render = (
     <Card square>
       <CardHeader 
-        title={<FormattedMessage id="project.infoTitle"/>}
-        subheader={<FormattedMessage id="project.infoSubTitle" />}
+        title={intl.formatMessage(projectMessage.registration.section.infoTitle)}
+        subheader={intl.formatMessage(projectMessage.registration.section.infoSubHeader)}
       />
       <CardContent>
-        {names.map(name => renderField(name))}
+        {
+          props.context.names.map(name => renderField(name))
+        }
       </CardContent>
     </Card>
   );

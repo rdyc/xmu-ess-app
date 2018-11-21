@@ -1,4 +1,4 @@
-import AppBarSFC from '@layout/components/appBar/AppBarSFC';
+import { TopBar } from '@layout/components';
 import DrawerActionSFC from '@layout/components/drawer/DrawerActionSFC';
 import DrawerMenuSFC from '@layout/components/drawer/DrawerMenuSFC';
 import NavigationBottomSFC from '@layout/components/navigation/NavigationBottomSFC';
@@ -24,7 +24,7 @@ const layout: React.SFC<LayoutProps> = props => {
   return (
     <LayoutTheme>
       <div className={classes.root}>
-        <AppBarSFC />
+        <TopBar />
 
         <DrawerMenuSFC />
         

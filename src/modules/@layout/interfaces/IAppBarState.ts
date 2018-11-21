@@ -1,12 +1,19 @@
+import { ICollectionValue } from '@layout/classes/core';
+
 export interface IAppBarMenu {
-  readonly id: string;
-  readonly name: string;
-  readonly enabled: boolean;
-  readonly visible: boolean;
+  id: string;
+  name: string;
+  enabled: boolean;
+  visible: boolean;
+  onClick?: () => void;
 }
 
 export interface IAppBarState {
-  readonly callback: (menu: IAppBarMenu) => void;
-  readonly menus: IAppBarMenu[] | undefined;
-  readonly menuIsOpen: boolean;
+  onClickMenu: (menu: IAppBarMenu) => void;
+  onSearching: (find?: string | undefined, field?: ICollectionValue | undefined) => void;
+  onSelectionClear: () => void;
+  onSelectionProcess: (values: string[]) => void;
+  menus: IAppBarMenu[] | undefined;
+  fields: ICollectionValue[] | undefined;
+  selection: string[];
 }

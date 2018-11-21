@@ -15,7 +15,7 @@ const component: React.SFC<AllProps> = props => {
 
   return (
     <div>
-      <Hidden mdUp>
+      <Hidden smUp>
         <Drawer
           variant="temporary"
           anchor={layoutState.anchor}
@@ -31,7 +31,7 @@ const component: React.SFC<AllProps> = props => {
           <NavigationMenuSFC/>
         </Drawer>
       </Hidden>
-      <Hidden mdDown implementation="css">
+      <Hidden smDown implementation="css">
         <Drawer
           variant="permanent"
           anchor={layoutState.anchor}

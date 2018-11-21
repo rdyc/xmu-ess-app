@@ -1,12 +1,12 @@
 import AppMenu from '@constants/AppMenu';
 import { SortDirection } from '@generic/types';
+import { ICollectionValue } from '@layout/classes/core';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithNavBottom, withNavBottom } from '@layout/hoc/withNavBottom';
 import { WithUser, withUser } from '@layout/hoc/withUser';
-import { IListBarField } from '@layout/interfaces';
-import { ProjectRegistrationField } from '@project/classes/types';
-import { ProjectApprovalListView } from '@project/components/approval/list/ProjectApprovalListView';
-import { WithProjectApproval, withProjectApproval } from '@project/hoc/withProjectApproval';
+import { ProjectAssignmentField } from '@project/classes/types';
+import { WithProjectAcceptance, withProjectAcceptance } from '@project/hoc/withProjectAcceptance';
+import { projectMessage } from '@project/locales/messages/projectMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import {
@@ -22,13 +22,16 @@ import {
   withStateHandlers,
 } from 'recompose';
 
+import { ProjectAcceptanceListView } from './ProjectAcceptanceListView';
+
 interface OwnHandlers {
-  handleGoToDetail: (projectUid: string) => void;
+  loadData: () => void;
+  handleReloading: () => void;
+  handleGoToDetail: (assignmentUid: string) => void;
   handleGoToNext: () => void;
   handleGoToPrevious: () => void;
-  handleReloading: () => void;
   handleChangeSize: (value: number) => void;
-  handleChangeOrder: (field: IListBarField) => void;
+  handleChangeOrder: (field: ICollectionValue) => void;
   handleChangeSort: (direction: SortDirection) => void;
 }
 
@@ -55,8 +58,8 @@ interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
   stateSizing: StateHandler<OwnState>;
 }
 
-export type ProjectApprovalListProps 
-  = WithProjectApproval
+export type ProjectAcceptanceListProps 
+  = WithProjectAcceptance
   & WithUser
   & WithLayout
   & WithNavBottom
@@ -67,9 +70,9 @@ export type ProjectApprovalListProps
   & OwnState
   & OwnStateUpdaters;
 
-const createProps: mapper<ProjectApprovalListProps, OwnState> = (props: ProjectApprovalListProps): OwnState => {
+const createProps: mapper<ProjectAcceptanceListProps, OwnState> = (props: ProjectAcceptanceListProps): OwnState => {
   const { orderBy, direction, page, size } = props;
-  const { request } = props.projectApprovalState.all;
+  const { request } = props.projectAcceptanceState.all;
 
   return { 
     orderBy: request && request.filter && request.filter.query && request.filter.query.orderBy || orderBy || 'uid',
@@ -89,8 +92,8 @@ const stateUpdaters: StateUpdaters<OwnOptions, OwnState, OwnStateUpdaters> = {
   stateReloading: (prevState: OwnState) => () => ({
     page: 1,
   }),
-  stateOrdering: (prevState: OwnState) => (field: IListBarField) => ({
-    orderBy: field.id,
+  stateOrdering: (prevState: OwnState) => (field: ICollectionValue) => ({
+    orderBy: field.value,
     page: 1,
   }),
   stateSorting: (prevState: OwnState) => (direction: SortDirection) => ({
@@ -103,54 +106,70 @@ const stateUpdaters: StateUpdaters<OwnOptions, OwnState, OwnStateUpdaters> = {
   }),
 };
 
-const handlerCreators: HandleCreators<ProjectApprovalListProps, OwnHandlers> = {
-  handleGoToDetail: (props: ProjectApprovalListProps) => (projectUid) => {
-    const { history } = props;
-    const { isLoading } = props.projectApprovalState.all;
+const handlerCreators: HandleCreators<ProjectAcceptanceListProps, OwnHandlers> = {
+  loadData: (props: ProjectAcceptanceListProps) => () => { 
+    const { orderBy, direction, page, size } = props;
+    const { loadAllRequest } = props.projectAcceptanceDispatch;
+    const { isLoading } = props.projectAcceptanceState.all;
 
     if (!isLoading) {
-      history.push(`/project/approvals/${projectUid}`);
+      loadAllRequest({
+        filter: {
+          query: {
+            direction,
+            orderBy,
+            page,
+            size,
+            find: undefined,
+            findBy: undefined
+          },
+          // status: 'pending'
+        }
+      }); 
+    }
+  },
+  handleReloading: (props: ProjectAcceptanceListProps) => () => { 
+    props.stateReloading();
+  },
+  handleGoToDetail: (props: ProjectAcceptanceListProps) => (assignmentUid: string) => {
+    const { history } = props;
+    const { isLoading } = props.projectAcceptanceState.all;
+
+    if (!isLoading) {
+      history.push(`/project/acceptances/${assignmentUid}`);
     } 
   },
-  handleGoToNext: (props: ProjectApprovalListProps) => () => { 
+  handleGoToNext: (props: ProjectAcceptanceListProps) => () => { 
     props.stateNext();
   },
-  handleGoToPrevious: (props: ProjectApprovalListProps) => () => { 
+  handleGoToPrevious: (props: ProjectAcceptanceListProps) => () => { 
     props.statePrevious();
   },
-  handleReloading: (props: ProjectApprovalListProps) => () => { 
-    props.stateReloading();
-
-    // force re-load from api
-    loadData(props);
-  },
-  handleChangeOrder: (props: ProjectApprovalListProps) => (field: IListBarField) => { 
+  handleChangeOrder: (props: ProjectAcceptanceListProps) => (field: ICollectionValue) => { 
     props.stateOrdering(field);
   },
-  handleChangeSize: (props: ProjectApprovalListProps) => (value: number) => { 
+  handleChangeSize: (props: ProjectAcceptanceListProps) => (value: number) => { 
     props.stateSizing(value);
   },
-  handleChangeSort: (props: ProjectApprovalListProps) => (direction: SortDirection) => { 
+  handleChangeSort: (props: ProjectAcceptanceListProps) => (direction: SortDirection) => { 
     props.stateSorting(direction);
   }
 };
 
-const lifecycles: ReactLifeCycleFunctions<ProjectApprovalListProps, OwnState> = {
+const lifecycles: ReactLifeCycleFunctions<ProjectAcceptanceListProps, OwnState> = {
   componentDidMount() { 
     const { 
-      handleGoToNext, handleGoToPrevious, handleReloading, 
+      loadData, handleGoToNext, handleGoToPrevious, handleReloading, 
       handleChangeOrder, handleChangeSize, handleChangeSort, 
       layoutDispatch, navBottomDispatch, 
-      history, intl 
+      history, intl
     } = this.props;
     
-    const { isLoading, response } = this.props.projectApprovalState.all;
-
     layoutDispatch.changeView({
-      uid: AppMenu.ProjectRegistrationApproval,
-      parentUid: AppMenu.ProjectRegistrationApproval,
-      title: intl.formatMessage({id: 'project.view.approval.title'}),
-      subTitle : intl.formatMessage({id: 'project.view.approval.subHeader'})
+      uid: AppMenu.ProjectAssignmentAcceptance,
+      parentUid: AppMenu.ProjectAssignment,
+      title: intl.formatMessage(projectMessage.acceptance.page.listTitle),
+      subTitle : intl.formatMessage(projectMessage.acceptance.page.listSubHeader)
     });
 
     layoutDispatch.modeListOn();
@@ -167,17 +186,14 @@ const lifecycles: ReactLifeCycleFunctions<ProjectApprovalListProps, OwnState> = 
       onSizeCallback: handleChangeSize,
     });
 
-    const items = Object.keys(ProjectRegistrationField)
-      .map(key => ({ id: key, name: ProjectRegistrationField[key] }));
+    const items = Object.keys(ProjectAssignmentField)
+      .map(key => ({ value: key, name: ProjectAssignmentField[key] }));
 
     navBottomDispatch.assignFields(items);
 
-    // only load data when response are empty
-    if (!isLoading && !response) {
-      loadData(this.props);
-    }
+    loadData();
   },
-  componentDidUpdate(props: ProjectApprovalListProps, state: OwnState) {
+  componentDidUpdate(props: ProjectAcceptanceListProps, state: OwnState) {
     // only load when these props are different
     if (
       this.props.orderBy !== props.orderBy ||
@@ -185,13 +201,13 @@ const lifecycles: ReactLifeCycleFunctions<ProjectApprovalListProps, OwnState> = 
       this.props.page !== props.page ||
       this.props.size !== props.size
     ) {
-      loadData(this.props);
+      this.props.loadData();
     }
   },
   componentWillUnmount() {
     const { layoutDispatch, navBottomDispatch } = this.props;
     const { view } = this.props.layoutState;
-    const { loadAllDispose } = this.props.projectApprovalDispatch;
+    const { loadAllDispose } = this.props.projectAcceptanceDispatch;
 
     layoutDispatch.changeView(null);
     layoutDispatch.modeListOff();
@@ -202,52 +218,21 @@ const lifecycles: ReactLifeCycleFunctions<ProjectApprovalListProps, OwnState> = 
 
     navBottomDispatch.dispose();
 
-    // dispose 'get all' from 'redux store' when the page is 'out of project registration' context 
-    if (view && view.parentUid !== AppMenu.ProjectRegistrationApproval) {
+    // dispose 'get all' from 'redux store' when the page is 'out of project acceptance' context 
+    if (view && view.parentUid !== AppMenu.ProjectAssignment) {
       loadAllDispose();
     }
   }
 };
 
-const loadData = (props: ProjectApprovalListProps): void => {
-  const { orderBy, direction, page, size } = props;
-  const { user } = props.userState;
-  const { loadAllRequest } = props.projectApprovalDispatch;
-  const { alertAdd } = props.layoutDispatch;
-
-  if (user) {
-    loadAllRequest({
-      filter: {
-        companyUid: user.company.uid,
-        positionUid: user.position.uid,
-        query: {
-          direction,
-          orderBy,
-          page,
-          size,
-          find: undefined,
-          findBy: undefined
-        },
-        isNotify: undefined,
-        status: 'pending'
-      }
-    }); 
-  } else {
-    alertAdd({
-      time: new Date(),
-      message: 'Unable to find current user state'
-    });
-  }
-};
-
-export const ProjectApprovalList = compose<ProjectApprovalListProps, OwnOptions>(
-  withProjectApproval,
+export const ProjectAcceptanceListOld = compose<ProjectAcceptanceListProps, OwnOptions>(
+  withProjectAcceptance,
   withUser,
   withLayout,
   withNavBottom,
   withRouter,
   injectIntl,
-  withStateHandlers<OwnState, OwnStateUpdaters, OwnOptions>(createProps, stateUpdaters), 
-  withHandlers<ProjectApprovalListProps, OwnHandlers>(handlerCreators),
-  lifecycle<ProjectApprovalListProps, OwnState>(lifecycles),
-)(ProjectApprovalListView);
+  withStateHandlers(createProps, stateUpdaters), 
+  withHandlers(handlerCreators),
+  lifecycle(lifecycles),
+)(ProjectAcceptanceListView);

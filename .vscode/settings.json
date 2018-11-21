@@ -27,10 +27,10 @@
   "git.confirmSync": true,
   "javascript.preferences.quoteStyle": "single",
   "typescript.preferences.quoteStyle": "single",
-  "breadcrumbs.enabled": true,
+  "breadcrumbs.enabled": false,
   "git.enableSmartCommit": true,
-  "workbench.iconTheme": "material-icon-theme",
-  "window.zoomLevel": -1,
+  "workbench.iconTheme": "vscode-icons",
   "prettier.singleQuote": true,
   "npm-scripts.showStartNotification": false,
+  "editor.tabCompletion": "on",
 }

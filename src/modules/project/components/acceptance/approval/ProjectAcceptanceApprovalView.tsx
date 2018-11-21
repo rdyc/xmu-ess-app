@@ -1,11 +1,11 @@
 import { WorkflowStatusType } from '@common/classes/types';
+import { layoutMessage } from '@layout/locales/messages';
 import { Grid, Typography } from '@material-ui/core';
 import { WorkflowApprovalForm } from '@organization/components/workflow/approval/WorkflowApprovalForm';
 import { ProjectAssignmentItem } from '@project/components/assignment/detail/shared/ProjectAssignmentItem';
 import { ProjectInformationSimple } from '@project/components/registration/detail/shared/ProjectInformationSimple';
 import { projectMessage } from '@project/locales/messages/projectMessage';
 import * as React from 'react';
-import { FormattedMessage } from 'react-intl';
 
 import { ProjectAcceptanceApprovalProps } from './ProjectAcceptanceApproval';
 
@@ -22,7 +22,7 @@ export const ProjectAcceptanceApprovalView: React.SFC<ProjectAcceptanceApprovalP
       {
         isLoading && 
         <Typography variant="body2">
-          <FormattedMessage id="global.loading"/>
+          {props.intl.formatMessage(layoutMessage.text.loading)}
         </Typography>
       }
       {

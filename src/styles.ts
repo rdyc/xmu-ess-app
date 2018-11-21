@@ -108,12 +108,12 @@ const styles = (theme: Theme) =>
     content: {
       flexGrow: 1,
       padding: theme.spacing.unit * 2,
-      [theme.breakpoints.up('lg')]: {
-        marginTop: theme.spacing.unit * 10,
-      },
-      [theme.breakpoints.down('md')]: {
-        padding: 0,
+      [theme.breakpoints.up('md')]: {
         marginTop: theme.spacing.unit * 8,
+      },
+      [theme.breakpoints.down('sm')]: {
+        padding: 0,
+        marginTop: theme.spacing.unit * 7,
       }
     },
     contentShiftLeft: {
