@@ -3,6 +3,7 @@ import { financeMessages } from '@finance/locales/messages/financeMessages';
 import { GlobalFormat } from '@layout/types';
 import { GlobalStyle } from '@layout/types/GlobalStyle';
 import { Button, Card, CardContent, CardHeader, InputAdornment, TextField } from '@material-ui/core';
+import { TextFieldProps } from '@material-ui/core/TextField';
 import * as React from 'react';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose } from 'recompose';
@@ -19,8 +20,12 @@ type AllProps
 export const financeInformation: React.SFC<AllProps> = props => {
   const { data, intl, handleToDocument } = props;
 
-  const documentStyle = {
+  const documentStyle: Partial<TextFieldProps> = {
+    fullWidth: true,
+    margin: 'dense',
     InputProps: {
+      disableUnderline: true,
+      readOnly: true,
       endAdornment: 
         data &&
         <InputAdornment position="end">
@@ -57,7 +62,6 @@ export const financeInformation: React.SFC<AllProps> = props => {
         />
         <TextField
           {...documentStyle}
-          {...GlobalStyle.TextField.ReadOnly}
           label={intl.formatMessage(financeMessages.approval.field.documentUid)}
           value={data.documentUid ? data.documentUid : 'N/A'}
         />

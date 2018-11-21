@@ -10,23 +10,23 @@ export const financeApprovalMessage = defineMessages({
 });
 
 export const financeApprovalField = defineMessages({
-  uid: { id: `${prefix}.uid` },
-  moduleName: { id: `${prefix}.moduleName` },
-  documentUid: { id: `${prefix}.documentUid` },
-  requestor: { id: `${prefix}.requestor` },
-  approvalDate: { id: `${prefix}.approvalDate` },
-  advance: { id: `${prefix}.advance` },
-  total: { id: `${prefix}.total` },
-  status: { id: `${prefix}.status` },
-  notes: { id: `${prefix}.notes` },
-  notesPlaceholder: { id: `${prefix}.notes.placeholder` },
-  goToDocument: { id: `${prefix}.button.goToDocument` },
+  uid: { id: `${prefix}.field.uid` },
+  moduleName: { id: `${prefix}.field.moduleName` },
+  documentUid: { id: `${prefix}.field.documentUid` },
+  requestor: { id: `${prefix}.field.requestor` },
+  approvalDate: { id: `${prefix}.field.approvalDate` },
+  advance: { id: `${prefix}.field.advance` },
+  total: { id: `${prefix}.field.total` },
+  status: { id: `${prefix}.field.status` },
+  notes: { id: `${prefix}.field.notes` },
+  notesPlaceholder: { id: `${prefix}.field.notes.placeholder` },
+  goToDocument: { id: `${prefix}.field.button.goToDocument` },
 });
 
 export const financeApprovalAction = defineMessages({
-  paid: { id: `${prefix}.paid` },
-  hold: { id: `${prefix}.hold` },
-  notPaid: { id: `${prefix}.notPaid` },
+  paid: { id: `${prefix}.action.paid` },
+  hold: { id: `${prefix}.action.hold` },
+  notPaid: { id: `${prefix}.action.notPaid` },
 });
 
 export const financeApprovalPage = defineMessages({
@@ -44,6 +44,6 @@ export const financeApprovalSection = defineMessages({
 });
 
 export const financeApprovalDialog = defineMessages({
-  approvalTitle: {id: `${prefix}.approvalTitle`},
-  approvalSubTitle: {id: `${prefix}.approvalSubTitle`},
+  approvalTitle: {id: `${prefix}.dialog.approvalTitle`},
+  approvalSubTitle: {id: `${prefix}.dialog.approvalSubTitle`},
 });
