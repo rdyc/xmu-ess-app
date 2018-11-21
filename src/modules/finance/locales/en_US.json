@@ -10,6 +10,7 @@
   "finance.field.documentUid": "Document ID",
   "finance.field.requestor": "Requester Name",
   "finance.field.approvalDate": "Approval Date",
+  "finance.field.advance": "Advance Amount",
   "finance.field.total": "Total Amount",
   "finance.field.status": "Payment Status",
   "finance.field.notes": "Notes",
