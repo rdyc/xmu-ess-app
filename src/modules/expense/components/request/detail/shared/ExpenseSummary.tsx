@@ -36,6 +36,7 @@ const expenseSummary: React.SFC<AllProps> = props => (
           <TextField 
             {...styled}
             margin="dense"
+            multiline
             label={<FormattedMessage id="expense.field.rejectedReason" />}
             value={props.data.rejectedReason}
           />
@@ -61,6 +62,7 @@ const expenseSummary: React.SFC<AllProps> = props => (
         <TextField
           {...styled}
           margin="dense"
+          multiline
           label={<FormattedMessage id="expense.field.notes" />}
           value={props.data.notes || 'N/A'}
         />
