@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, Checkbox, FormControlLabel } from '@material-ui/core';
 import { ProjectDocumentFormProps } from '@project/components/registration/editor/forms/ProjectRegistrationDocumentForm';
+import { projectMessage } from '@project/locales/messages/projectMessage';
 import * as React from 'react';
-import { FormattedMessage } from 'react-intl';
 import { Field } from 'redux-form';
 
 export const ProjectRegistrationDocumentFormView: React.SFC<ProjectDocumentFormProps> = props => {
@@ -13,8 +13,8 @@ export const ProjectRegistrationDocumentFormView: React.SFC<ProjectDocumentFormP
   const render = (
     <Card square>
       <CardHeader 
-        title={<FormattedMessage id={`project.document.${category}Title`}/>}
-        subheader={<FormattedMessage id={`project.document.${category}SubTitle`}/>}
+        title={props.intl.formatMessage(category === 'project' ? projectMessage.registration.section.documentProjectTitle : projectMessage.registration.section.documentPreSalesTitle)}
+        subheader={props.intl.formatMessage(category === 'project' ? projectMessage.registration.section.documentProjectSubHeader : projectMessage.registration.section.documentPreSalesSubHeader)}
       />
       <CardContent>
         {

@@ -16,7 +16,7 @@ import * as React from 'react';
 import { FormattedNumber, FormattedPlural } from 'react-intl';
 import { isArray } from 'util';
 
-import { ProjectAcceptanceListProps } from './ProjectAcceptanceList';
+import { ProjectAcceptanceListProps } from './ProjectAcceptanceListOld';
 
 export const ProjectAcceptanceListView: React.SFC<ProjectAcceptanceListProps> = props => {
   const { handleGoToDetail } = props;

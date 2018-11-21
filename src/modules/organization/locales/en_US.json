@@ -1,7 +1,10 @@
 {
-  "workflow.approval.action.approve": "Approve",
-  "workflow.approval.action.accept": "Accept",
-  "workflow.approval.action.reject": "Reject",
+  "workflow.approval.section.history.title": "Approval History",
+  "workflow.approval.section.history.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+
+  "workflow.approval.option.approve": "Approve",
+  "workflow.approval.option.accept": "Accept",
+  "workflow.approval.option.reject": "Reject",
 
   "workflow.approval.field.isApproved": "Your decision",
   "workflow.approval.field.isApproved.required": "Your decision is required",
@@ -11,5 +14,5 @@
   "workflow.approval.field.remark.required": "Rejected reason is required",
   "workflow.approval.field.item.required":"Item is required",
 
-  "workflow.history.empty": "Workflow history not found"
+  "workflow.approval.history.empty": "Workflow history not found"
 }

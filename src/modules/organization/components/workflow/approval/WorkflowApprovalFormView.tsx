@@ -1,9 +1,10 @@
 import { DialogConfirmation } from '@layout/components/dialogs';
 import { RadioGroup } from '@layout/components/input/radioGroup';
 import { InputTextArea } from '@layout/components/input/textArea';
+import { layoutMessage } from '@layout/locales/messages';
 import { Button, Card, CardActions, CardContent, CardHeader } from '@material-ui/core';
+import { organizationMessage } from '@organization/locales/messages/organizationMessage';
 import * as React from 'react';
-import { FormattedMessage } from 'react-intl';
 import { Field } from 'redux-form';
 
 import { WorkflowApprovalFormProps } from './WorkflowApprovalForm';
@@ -20,8 +21,8 @@ export const WorkflowApprovalFormView: React.SFC<WorkflowApprovalFormProps> = pr
           <Field
             name="isApproved"
             required={true}
-            label={<FormattedMessage id={'workflow.approval.field.isApproved'} />}
-            placeholder={props.intl.formatMessage({id: 'workflow.approval.field.isApproved.placeholder'})}
+            label={props.intl.formatMessage(organizationMessage.workflow.field.isApproved)}
+            placeholder={props.intl.formatMessage(organizationMessage.workflow.field.isApprovedPlaceholder)}
             choices={props.approvalChoices}
             component={RadioGroup}
           />
@@ -31,8 +32,8 @@ export const WorkflowApprovalFormView: React.SFC<WorkflowApprovalFormProps> = pr
             <Field
               name="remark"
               required={true}
-              label={props.approvalRemarkLabel || <FormattedMessage id={'workflow.approval.field.remark'} />}
-              placeholder={props.approvalRemarkPlaceholder || props.intl.formatMessage({id: 'workflow.approval.field.remark.placeholder'})}
+              label={props.approvalRemarkLabel || props.intl.formatMessage(organizationMessage.workflow.field.remark)}
+              placeholder={props.approvalRemarkPlaceholder || props.intl.formatMessage(organizationMessage.workflow.field.remarkPlaceholder)}
               component={InputTextArea}
             />
           }
@@ -44,7 +45,7 @@ export const WorkflowApprovalFormView: React.SFC<WorkflowApprovalFormProps> = pr
             disabled={props.submitting}
             onClick={props.reset}
           >
-            <FormattedMessage id={'global.action.reset'} />
+            {props.intl.formatMessage(layoutMessage.action.reset)}
           </Button>
           <Button 
             type="button"
@@ -52,7 +53,7 @@ export const WorkflowApprovalFormView: React.SFC<WorkflowApprovalFormProps> = pr
             disabled={!props.valid || props.submitting}
             onClick={() => props.handleDialogOpen()}
           >
-            <FormattedMessage id={props.submitting ? 'global.processing' : 'global.action.submit'}/>
+            {props.intl.formatMessage(props.submitting ? layoutMessage.text.processing : layoutMessage.action.submit)}
           </Button>
         </CardActions>
       </Card>
