@@ -13,14 +13,20 @@
 //   projectAssignmentSubmission,
 // } from './projectAssignmentMessage';
 import { purchaseItemField } from './purchaseItemMessage';
-import { purchaseRequestField } from './purchaseRequestMessage';
+import { purchaseRequestField, purchaseRequestPage, purchaseRequestSection } from './purchaseRequestMessage';
 import { purchaseSettlementField } from './purchaseSettlementMessage';
 
 export const purchaseMessage = {
   request: {
+    pages: purchaseRequestPage,
+    section: purchaseRequestSection,
     field: purchaseRequestField,
     items: purchaseItemField,
   },
+  // approval: {
+  //   pages: purchase
+  //   section: 
+  // }
   settlement: {
     field: purchaseSettlementField,
     items: purchaseItemField,

@@ -4,8 +4,7 @@ import {
   CollectionConfig, 
   CollectionDataProps, 
   CollectionHandler,
-  CollectionPage,
-  CollectionPageProps } from '@layout/components/pages';
+  CollectionPage, } from '@layout/components/pages';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
@@ -13,7 +12,7 @@ import { Button } from '@material-ui/core';
 import { ISettlement } from '@purchase/classes/response/purchaseSettlement';
 import { PurchaseUserAction, SettlementField } from '@purchase/classes/types';
 import { SettlementSummary } from '@purchase/components/purchaseSettlement/detail/shared/SettlementSummary';
-import { purchaseRequestFieldTranslator } from '@purchase/helper';
+import { isSettlementEditable, isSettleReady, purchaseRequestFieldTranslator } from '@purchase/helper';
 import { withPurchaseSettlement, WithPurchaseSettlement } from '@purchase/hoc/purchaseSettlement/withPurchaseSettlement';
 import * as moment from 'moment';
 import * as React from 'react';
@@ -25,31 +24,16 @@ const purchaseFields: ICollectionValue[] = Object.keys(SettlementField).map(key 
   name: SettlementField[key] 
 }));
 
-const menuOptions = (props: CollectionPageProps): IAppBarMenu[] => ([
-  {
-    id: PurchaseUserAction.Refresh,
-    name: props.intl.formatMessage(layoutMessage.action.refresh),
-    enabled: true,
-    visible: true,
-    onClick: () => props.setForceReload(true)
-  },
-  {
-    id: PurchaseUserAction.Create,
-    name: props.intl.formatMessage(layoutMessage.action.create),
-    enabled: true,
-    visible: true,
-    onClick: () => ('/purchase/settlements/form'),
-  }
-]);
-
 const config: CollectionConfig<ISettlement, AllProps> = {
   // page info
+  page: (props: AllProps) => ({
   uid: AppMenu.PurchaseSettlementRequest,
   parentUid: AppMenu.Purchase,
   // title: intl.formatMessage({ id: 'purchase.title' }),
   // description: intl.formatMessage({ id: 'purchase.subTitle' }),
   title: 'Purchase Settlement',
   description: 'Lorem ipsum.',
+  }),
 
   // top bar
   fields: purchaseFields,
@@ -80,18 +64,27 @@ const config: CollectionConfig<ISettlement, AllProps> = {
 
   // more
   hasMore: true,
-  moreOptions: menuOptions,
-
-  // redirection
-  hasRedirection: true,
-  onRedirect: (item: ISettlement): string => {
-    return `/purchase/settlements/details/${item.uid}`;
-  },
+  moreOptions: (props: AllProps, callback: CollectionHandler): IAppBarMenu[] => ([
+    {
+      id: PurchaseUserAction.Refresh,
+      name: props.intl.formatMessage(layoutMessage.action.refresh),
+      enabled: true,
+      visible: true,
+      onClick: () => callback.handleForceReload()
+    },
+    {
+      id: PurchaseUserAction.Create,
+      name: props.intl.formatMessage(layoutMessage.action.create),
+      enabled: true,
+      visible: true,
+      onClick: () => callback.handleRedirectTo('/purchase/settlements/form'),
+    }
+  ]),
 
   // data filter
   filter: {
-    orderBy: 'uid',
-    direction: 'descending'
+    orderBy: 'settlementStatusType',
+    direction: 'ascending'
   },
 
   // events
@@ -125,12 +118,12 @@ const config: CollectionConfig<ISettlement, AllProps> = {
   onUpdated: (states: AllProps, callback: CollectionHandler) => {
     const { isLoading, response } = states.purchaseSettlementState.all;
 
-    callback.setLoading(isLoading);
+    callback.handleLoading(isLoading);
     callback.handleResponse(response);
   },
   onBind: (item: ISettlement, index: number) => ({
     key: index,
-    primary: item.notes || item.reject || '',
+    primary: `${item.currency && item.currency.value} ${item.actual}` || `${item.advance}` || 'Settle',
     secondary: item.projectUid || item.project && item.project.name || '',
     tertiary: item.customer && item.customer.name || item.customerUid || '',
     quaternary: item.uid,
@@ -144,14 +137,33 @@ const config: CollectionConfig<ISettlement, AllProps> = {
     ),
 
   // action component
-  actionComponent: (item: ISettlement) => (
+  actionComponent: (item: ISettlement, callback: CollectionHandler) => (
+    <React.Fragment>
+      {
+        isSettleReady(item.statusType) &&
+        <Button
+          size="small"
+          onClick={() => callback.handleRedirectTo(`/purchase/settlements/form`, { uid: item.uid})}
+        >
+          <FormattedMessage {...layoutMessage.action.modify} />
+        </Button>
+      }
+      {
+        isSettlementEditable(item.statusType ? item.statusType : '') &&
+        <Button
+          size="small"
+          onClick={() => callback.handleRedirectTo(`/purchase/settlements/form`, { uid: item.uid, statusType: item.statusType})}
+        >
+          <FormattedMessage {...layoutMessage.action.modify} />
+        </Button>
+      }
     <Button 
       size= "small"
-      // onClick = {() => alert(`go to ${item.uid}`)}
-      onClick = {() => alert(`go to ${item.uid}`)}
+      onClick={() => callback.handleRedirectTo(`/purchase/settlements/details/${item.uid}`)}
     >
       <FormattedMessage { ...layoutMessage.action.details } />
     </Button>
+    </React.Fragment>
   ),
 
   // custom row render: uncomment to see different

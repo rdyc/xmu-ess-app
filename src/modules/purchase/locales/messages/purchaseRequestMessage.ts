@@ -10,6 +10,27 @@ export const purchaseRequestMessage = defineMessages({
   updateFailure: { id: 'purchase.message.purchaseRequest.update.failure' },
 });
 
+export const purchaseRequestPage = defineMessages({
+  listTitle: { id: `${prefix}.requesttitle` },
+  listSubHeader: { id: `${prefix}.subTitle` },
+  detailTitle: { id: `${prefix}.infoTitle` },
+  detailSubHeader: { id: `${prefix}.infoSubTitle`},
+  newTitle: { id: `${prefix}.form.purchaseRequest.newTitle`},
+  // newSubHeader: { id: `${prefix}.form.newSubTitle`},
+  modifyTitle: { id: `${prefix}.form.purchaseRequest.editTitle`},
+  // modifySubHeader: { id: `${prefix}.form.editSubTitle`},
+
+  // statusModifyTitle: { id: },
+  // statusModifySubHeader: { id: },
+});
+
+export const purchaseRequestSection = defineMessages({
+  infoTitle: { id: `${prefix}.section.info.title` },
+  infoSubHeader: { id: `${prefix}.section.info.subtitle`},
+  itemTitle: { id: `${prefix}.section.info.itemTitle`},
+  itemSubHeader: { id: `${prefix}.section.info.itemSubTitle`},
+});
+
 // export const purchaseRequestItemField = defineMessages({
 //   uid: { id: `${prefix}.itemTitle.uid` },
 //   description: { id: `${prefix}.itemTitle.description` },

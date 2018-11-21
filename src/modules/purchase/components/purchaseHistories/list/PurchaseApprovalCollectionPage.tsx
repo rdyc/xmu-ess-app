@@ -1,11 +1,9 @@
 import AppMenu from '@constants/AppMenu';
-import { ICollectionValue } from '@layout/classes/core';
 import { 
   CollectionConfig, 
   CollectionDataProps, 
   CollectionHandler,
-  CollectionPage,
-  CollectionPageProps } from '@layout/components/pages';
+  CollectionPage, } from '@layout/components/pages';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
@@ -20,39 +18,22 @@ import * as React from 'react';
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose } from 'recompose';
 
-const purchaseFields: ICollectionValue[] = Object.keys(PurchaseField).map(key => ({ 
-  value: key, 
-  name: PurchaseField[key] 
-}));
-
-const menuOptions = (props: CollectionPageProps): IAppBarMenu[] => ([
-  {
-    id: PurchaseUserAction.Refresh,
-    name: props.intl.formatMessage(layoutMessage.action.refresh),
-    enabled: true,
-    visible: true,
-    onClick: () => props.setForceReload(true)
-  },
-]);
-
 const config: CollectionConfig<IPurchase, AllProps> = {
   // page info
+  page: (props: AllProps) => ({
   uid: AppMenu.PurchaseApproval,
   parentUid: AppMenu.Purchase,
-  // title: intl.formatMessage({ id: 'purchase.title' }),
-  // description: intl.formatMessage({ id: 'purchase.subTitle' }),
-  title: 'Purchase Request Approval',
-  description: 'Lorem ipsum.',
+  title: props.intl.formatMessage({ id: 'purchase.approval.list.title' }),
+  description: props.intl.formatMessage({ id: 'purchase.approval.list.subTitle' }),
+  }),
 
   // top bar
-  fields: purchaseFields,
+  fields: Object.keys(PurchaseField)
+  .map(key => ({
+    value: key,
+    name: PurchaseField[key]
+  })),
   fieldTranslator: purchaseRequestFieldTranslator,
-
-  // selection
-  hasSelection: false,
-  // selectionProcessing: (values: string[]) => {
-  //   alert(values.toString());
-  // },
 
   // searching
   hasSearching: true,
@@ -73,17 +54,19 @@ const config: CollectionConfig<IPurchase, AllProps> = {
 
   // more
   hasMore: true,
-  moreOptions: menuOptions,
-
-  // redirection
-  hasRedirection: true,
-  onRedirect: (item: IPurchase): string => {
-    return `/purchase/approvals/details/${item.uid}`;
+  moreOptions: (props: AllProps, callback: CollectionHandler): IAppBarMenu[] => ([
+  {
+    id: PurchaseUserAction.Refresh,
+    name: props.intl.formatMessage(layoutMessage.action.refresh),
+    enabled: true,
+    visible: true,
+    onClick: () => callback.handleForceReload()
   },
+]),
 
   // data filter
   filter: {
-    orderBy: 'settlementStatusType',
+    orderBy: 'requestStatusType',
     direction: 'descending'
   },
 
@@ -118,12 +101,12 @@ const config: CollectionConfig<IPurchase, AllProps> = {
   onUpdated: (states: AllProps, callback: CollectionHandler) => {
     const { isLoading, response } = states.purchaseApprovalState.all;
 
-    callback.setLoading(isLoading);
+    callback.handleLoading(isLoading);
     callback.handleResponse(response);
   },
   onBind: (item: IPurchase, index: number) => ({
     key: index,
-    primary: item.notes || item.reason || '',
+    primary: `${item.currency && item.currency.value} ${item.request}` || item.notes || '',
     secondary: item.projectUid || item.project && item.project.name || '',
     tertiary: item.customer && item.customer.name || item.customerUid || '',
     quaternary: item.uid,
@@ -137,20 +120,16 @@ const config: CollectionConfig<IPurchase, AllProps> = {
     ),
 
   // action component
-  actionComponent: (item: IPurchase) => (
+  actionComponent: (item: IPurchase, callback: CollectionHandler) => (
+    <React.Fragment>
     <Button 
       size= "small"
-      // onClick = {() => alert(`go to ${item.uid}`)}
-      onClick = {() => alert(`go to ${item.uid}`)}
+      onClick = {() => callback.handleRedirectTo(`/purchase/approvals/details/${item.uid}`)}
     >
       <FormattedMessage { ...layoutMessage.action.details } />
     </Button>
+      </React.Fragment>
   ),
-
-  // custom row render: uncomment to see different
-  // onRowRender: (item: IPurchase, index: number) => (
-  //   <div key={index}>{item.name}</div>
-  // )
 };
 
 type AllProps

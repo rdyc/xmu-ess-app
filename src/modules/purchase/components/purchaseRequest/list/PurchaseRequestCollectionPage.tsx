@@ -4,8 +4,8 @@ import {
   CollectionConfig, 
   CollectionDataProps, 
   CollectionHandler,
-  CollectionPage,
-  CollectionPageProps } from '@layout/components/pages';
+  CollectionPage 
+  } from '@layout/components/pages';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
@@ -15,6 +15,7 @@ import { PurchaseField, PurchaseUserAction } from '@purchase/classes/types';
 import { PurchaseSummary } from '@purchase/components/purchaseRequest/detail/shared/PurchaseSummary';
 import { purchaseRequestFieldTranslator } from '@purchase/helper';
 import { withPurchaseRequest, WithPurchaseRequest } from '@purchase/hoc/purchaseRequest/withPurchaseRequest';
+import { purchaseMessage } from '@purchase/locales/messages/purchaseMessage';
 import * as moment from 'moment';
 import * as React from 'react';
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
@@ -25,41 +26,18 @@ const purchaseFields: ICollectionValue[] = Object.keys(PurchaseField).map(key =>
   name: PurchaseField[key] 
 }));
 
-const menuOptions = (props: CollectionPageProps): IAppBarMenu[] => ([
-  {
-    id: PurchaseUserAction.Refresh,
-    name: props.intl.formatMessage(layoutMessage.action.refresh),
-    enabled: true,
-    visible: true,
-    onClick: () => props.setForceReload(true)
-  },
-  {
-    id: PurchaseUserAction.Create,
-    name: props.intl.formatMessage(layoutMessage.action.create),
-    enabled: true,
-    visible: true,
-    onClick: () => ('/purchase/requests/form'),
-  }
-]);
-
 const config: CollectionConfig<IPurchase, AllProps> = {
   // page info
-  uid: AppMenu.PurchaseRequest,
-  parentUid: AppMenu.Purchase,
-  // title: intl.formatMessage({ id: 'purchase.title' }),
-  // description: intl.formatMessage({ id: 'purchase.subTitle' }),
-  title: 'Purchase Request',
-  description: 'Lorem ipsum.',
+  page: (props: AllProps) => ({
+    uid: AppMenu.PurchaseRequest,
+    parentUid: AppMenu.Purchase,
+    title: props.intl.formatMessage(purchaseMessage.request.pages.listTitle),
+    description: props.intl.formatMessage(purchaseMessage.request.pages.listSubHeader),
+  }),
 
   // top bar
   fields: purchaseFields,
   fieldTranslator: purchaseRequestFieldTranslator,
-
-  // selection
-  hasSelection: false,
-  // selectionProcessing: (values: string[]) => {
-  //   alert(values.toString());
-  // },
 
   // searching
   hasSearching: true,
@@ -80,13 +58,22 @@ const config: CollectionConfig<IPurchase, AllProps> = {
 
   // more
   hasMore: true,
-  moreOptions: menuOptions,
-
-  // redirection
-  hasRedirection: true,
-  onRedirect: (item: IPurchase): string => {
-    return `/purchase/requests/details/${item.uid}`;
-  },
+  moreOptions: (props: AllProps, callback: CollectionHandler): IAppBarMenu[] => ([
+    {
+      id: PurchaseUserAction.Refresh,
+      name: props.intl.formatMessage(layoutMessage.action.refresh),
+      enabled: true,
+      visible: true,
+      onClick: () => callback.handleForceReload()
+    },
+    {
+      id: PurchaseUserAction.Create,
+      name: props.intl.formatMessage(layoutMessage.action.create),
+      enabled: true,
+      visible: true,
+      onClick: () => callback.handleRedirectTo('/purchase/requests/form'),
+    }
+  ]),
 
   // data filter
   filter: {
@@ -125,12 +112,12 @@ const config: CollectionConfig<IPurchase, AllProps> = {
   onUpdated: (states: AllProps, callback: CollectionHandler) => {
     const { isLoading, response } = states.purchaseRequestState.all;
 
-    callback.setLoading(isLoading);
+    callback.handleLoading(isLoading);
     callback.handleResponse(response);
   },
   onBind: (item: IPurchase, index: number) => ({
     key: index,
-    primary: item.notes || item.reason || '',
+    primary: `${item.currency && item.currency.value} ${item.request}` ||  '',
     secondary: item.projectUid || item.project && item.project.name || '',
     tertiary: item.customer && item.customer.name || item.customerUid || '',
     quaternary: item.uid,
@@ -144,20 +131,16 @@ const config: CollectionConfig<IPurchase, AllProps> = {
     ),
 
   // action component
-  actionComponent: (item: IPurchase) => (
+  actionComponent: (item: IPurchase, callback: CollectionHandler) => (
+    <React.Fragment>
     <Button 
       size= "small"
-      // onClick = {() => alert(`go to ${item.uid}`)}
-      onClick = {() => alert(`go to ${item.uid}`)}
+      onClick = {() => callback.handleRedirectTo(`/purchase/requests/details/${item.uid}`)}
     >
       <FormattedMessage { ...layoutMessage.action.details } />
-    </Button>
+    </Button>  
+</React.Fragment>
   ),
-
-  // custom row render: uncomment to see different
-  // onRowRender: (item: IPurchase, index: number) => (
-  //   <div key={index}>{item.name}</div>
-  // )
 };
 
 type AllProps
