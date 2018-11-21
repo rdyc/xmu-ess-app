@@ -1,8 +1,8 @@
 import { layoutMessage } from '@layout/locales/messages';
 import { GlobalFormat } from '@layout/types';
 import { ILeaveRequest } from '@leave/classes/response';
+import { leaveMessage } from '@leave/locales/messages/leaveMessage';
 import { Grid, TextField } from '@material-ui/core';
-import { projectMessage } from '@project/locales/messages/projectMessage';
 import * as React from 'react';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose } from 'recompose';
@@ -29,13 +29,13 @@ const leaveSummary: React.SFC<AllProps> = props => (
       <TextField
         {...styled}
         margin="dense"
-        label={props.intl.formatMessage(projectMessage.registration.field.statusType)}
+        label={props.intl.formatMessage(leaveMessage.request.field.statusType)}
         value={props.data.status ? props.data.status.value : props.data.statusType}
       />
       <TextField
         {...styled}
         margin="dense"
-        label={props.intl.formatMessage(projectMessage.registration.field.uid)}
+        label={props.intl.formatMessage(leaveMessage.request.field.uid)}
         value={props.data.uid}
       />
     </Grid>
@@ -44,26 +44,26 @@ const leaveSummary: React.SFC<AllProps> = props => (
       <TextField
       {...styled}
       margin="dense"
-      label={props.intl.formatMessage(projectMessage.registration.field.employeeUid)}
+      label={props.intl.formatMessage(leaveMessage.request.field.leaveType)}
       value={props.data.leave ? props.data.leave.value : 'N/A'}
     />
     <TextField
       {...styled}
       margin="dense"
-      label={props.intl.formatMessage(projectMessage.registration.field.customerUid)}
+      label={props.intl.formatMessage(leaveMessage.request.field.regularType)}
       value={props.data.regular ? props.data.regular.leave ? props.data.regular.leave.name : 'N/A' : 'N/A'}
     />
       <TextField
         {...styled}
         multiline={true}
         margin="dense"
-        label={props.intl.formatMessage(projectMessage.registration.field.description)}
+        label={props.intl.formatMessage(leaveMessage.request.field.contactNumber)}
         value={props.data.contactNumber || 'N/A'}
       />
       <TextField
         {...styled}
         margin="dense"
-        label={props.intl.formatMessage(projectMessage.registration.field.contractNumber)}
+        label={props.intl.formatMessage(leaveMessage.request.field.reason)}
         value={props.data.reason || 'N/A'}
       />
     </Grid>
@@ -72,13 +72,13 @@ const leaveSummary: React.SFC<AllProps> = props => (
       <TextField
         {...styled}
         margin="dense"
-        label={props.intl.formatMessage(projectMessage.registration.field.start)}
+        label={props.intl.formatMessage(leaveMessage.request.field.start)}
         value={props.intl.formatDate(props.data.start, GlobalFormat.Date)}
       />
       <TextField
         {...styled}
         margin="dense"
-        label={props.intl.formatMessage(projectMessage.registration.field.end)}
+        label={props.intl.formatMessage(leaveMessage.request.field.end)}
         value={props.intl.formatDate(props.data.end, GlobalFormat.Date)}
       />
     </Grid>

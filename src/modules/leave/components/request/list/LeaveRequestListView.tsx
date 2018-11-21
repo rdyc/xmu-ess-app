@@ -54,7 +54,7 @@ const config: CollectionConfig<ILeaveRequest, AllProps> = {
   fieldTranslator: projectRegistrationFieldTranslator,
 
   // selection
-  hasSelection: true,
+  hasSelection: false,
   selectionProcessing: (values: string[]) => {
     alert(values.toString());
   },
