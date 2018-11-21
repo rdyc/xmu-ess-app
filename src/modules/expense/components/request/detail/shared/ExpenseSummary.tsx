@@ -31,6 +31,15 @@ const expenseSummary: React.SFC<AllProps> = props => (
           label={<FormattedMessage id="expense.field.status" />}
           value={props.data.status ? props.data.status.value : props.data.statusType}
         />
+        {
+          props.data.rejectedReason &&
+          <TextField 
+            {...styled}
+            margin="dense"
+            label={<FormattedMessage id="expense.field.rejectedReason" />}
+            value={props.data.rejectedReason}
+          />
+        }
         <TextField
           {...styled}
           margin="dense"
