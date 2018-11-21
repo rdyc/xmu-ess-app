@@ -1,51 +1,41 @@
 import AppMenu from '@constants/AppMenu';
-import { ICollectionValue } from '@layout/classes/core';
 import {
   CollectionConfig,
   CollectionDataProps,
   CollectionHandler,
-  CollectionPage,
-  CollectionPageProps,
+  CollectionPage
 } from '@layout/components/pages';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
 import { Button } from '@material-ui/core';
-import { projectRegistrationFieldTranslator } from '@project/helper';
+import { isRequestEditable } from '@organization/helper/isRequestEditable';
 import { ITravelSettlement } from '@travel/classes/response';
 import { TravelRequestField, TravelUserAction } from '@travel/classes/types';
 import { TravelSummarySettlement } from '@travel/components/settlement/detail/shared/TravelSummarySettlement';
+import { travelFieldTranslator } from '@travel/helper/travelFieldTranslator';
 import { WithTravelSettlement, withTravelSettlement } from '@travel/hoc/withTravelSettlement';
+import { travelMessage } from '@travel/locales/messages/travelMessage';
 import * as moment from 'moment';
 import * as React from 'react';
-import { FormattedMessage, InjectedIntlProps } from 'react-intl';
+import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose } from 'recompose';
 
-const travelFields: ICollectionValue[] = Object.keys(TravelRequestField).map(key => ({ 
-  value: key, 
-  name: TravelRequestField[key] 
-}));
-
-const menuOptions = (props: CollectionPageProps): IAppBarMenu[] => ([
-  {
-    id: TravelUserAction.Refresh,
-    name: props.intl.formatMessage(layoutMessage.action.refresh),
-    enabled: true,
-    visible: true,
-    onClick: () => props.setForceReload(true)
-  }
-]);
-
 const config: CollectionConfig<ITravelSettlement, AllProps> = {
-  // page info
-  uid: AppMenu.TravelSettlementRequest,
-  parentUid: AppMenu.Travel,
-  title: 'Travel Settlement',
-  description: 'Description',
+  page: (props: AllProps) => ({
+    uid: AppMenu.TravelSettlementRequest,
+    parentUid: AppMenu.Travel,
+    title: props.intl.formatMessage(travelMessage.settlement.page.listTitle),
+    description: props.intl.formatMessage(travelMessage.settlement.page.listSubHeader),
+  }),
   
   // top bar
-  fields: travelFields,
-  fieldTranslator: projectRegistrationFieldTranslator,
+  fields: Object.keys(TravelRequestField)
+    .map(key => ({ 
+      value: key, 
+      name: TravelRequestField[key] 
+    })),
+  fieldTranslator: travelFieldTranslator,
 
   // selection
   hasSelection: false,
@@ -69,14 +59,16 @@ const config: CollectionConfig<ITravelSettlement, AllProps> = {
 
   // more
   hasMore: true,
-  moreOptions: menuOptions,
+  moreOptions: (props: AllProps, callback: CollectionHandler): IAppBarMenu[] => ([
+    {
+      id: TravelUserAction.Refresh,
+      name: props.intl.formatMessage(layoutMessage.action.refresh),
+      enabled: true,
+      visible: true,
+      onClick: () => callback.handleForceReload()
+    }
+  ]),
   
-  // redirection
-  hasRedirection: true,
-  onRedirect: (item: ITravelSettlement): string => {
-    return `/travel/settlement/${item.uid}`;
-  },
-
   // data filter
   filter: {
     orderBy: 'uid',
@@ -116,15 +108,15 @@ const config: CollectionConfig<ITravelSettlement, AllProps> = {
   onUpdated: (states: AllProps, callback: CollectionHandler) => {
     const { isLoading, response } = states.travelSettlementState.all;
     
-    callback.setLoading(isLoading);
+    callback.handleLoading(isLoading);
     callback.handleResponse(response);
   },
   onBind: (item: ITravelSettlement, index: number) => ({
     key: index,
-    primary: item.uid,
+    primary: item.objective ? item.objective : 'N/A',
     secondary: item.customer && item.customer.name || item.customerUid,
-    tertiary: item.project && item.project.name || item.projectUid,
-    quaternary: item.total.toString(),
+    tertiary: item.uid,
+    quaternary: item.project && item.project.name || item.projectUid,
     quinary: item.status && item.status.value || item.statusType,
     senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
   }),
@@ -135,19 +127,26 @@ const config: CollectionConfig<ITravelSettlement, AllProps> = {
   ),
 
   // action component
-  actionComponent: (item: ITravelSettlement) => (
-    <Button 
-      size="small"
-      onClick={() => alert(`go to ${item.uid}`)}
-    >
-      <FormattedMessage {...layoutMessage.action.details}/>
-    </Button>
-  ),
+  actionComponent: (item: ITravelSettlement, callback: CollectionHandler) => (
+    <React.Fragment>
+      {
+        isRequestEditable(item.statusType) &&
+        <Button 
+          size="small"
+          onClick={() => callback.handleRedirectTo(`/travel/settlements/form`, { uid: item.uid })}
+        >
+          <FormattedMessage {...layoutMessage.action.modify}/>
+        </Button>
+      }
 
-  // custom row render: uncomment to see different
-  // onRowRender: (item: IProject, index: number) => (
-  //   <div key={index}>{item.name}</div>
-  // )
+      <Button 
+        size="small"
+        onClick={() => callback.handleRedirectTo(`/travel/settlements/${item.uid}`)}
+      >
+        <FormattedMessage {...layoutMessage.action.details}/>
+      </Button>
+    </React.Fragment>
+  )
 };
 
 type AllProps 
@@ -155,7 +154,7 @@ type AllProps
   & WithTravelSettlement
   & InjectedIntlProps;
 
-const travelSettlementRequestList: React.SFC<AllProps> = props => (
+const listview: React.SFC<AllProps> = props => (
   <CollectionPage
     config={config}
     connectedProps={props}
@@ -164,5 +163,6 @@ const travelSettlementRequestList: React.SFC<AllProps> = props => (
 
 export const TravelSettlementRequestList = compose(
   withUser,
-  withTravelSettlement
-)(travelSettlementRequestList);
+  withTravelSettlement,
+  injectIntl
+)(listview);

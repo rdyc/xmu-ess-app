@@ -107,7 +107,8 @@ export type RequestFormProps
 const createProps: mapper<RequestFormProps, OwnState> = (props: RequestFormProps): OwnState => {
   return {
     TotalCost : props.initialValues.information && props.initialValues.information.total, 
-    projectType: props.initialValues.information && props.initialValues.information.projectType
+    projectType: props.initialValues.information && props.initialValues.information.projectType === ProjectType.Project ? 
+                      ProjectType.Project : ProjectType.NonProject
   };
 };
 

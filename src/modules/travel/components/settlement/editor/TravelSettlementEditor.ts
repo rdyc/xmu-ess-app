@@ -97,7 +97,7 @@ const handlerCreators: HandleCreators<TravelSettlementEditorProps, OwnHandlers> 
     return errors;
   },
   handleSubmit: (props: TravelSettlementEditorProps) => (formData: TravelSettlementFormData) => {
-    const { formMode, travelSettlementUid, intl } = props;
+    const { formMode, travelSettlementUid } = props;
     const { user } = props.userState;
     const { createRequest, updateRequest } = props.travelSettlementDispatch;
 
@@ -154,9 +154,9 @@ const handlerCreators: HandleCreators<TravelSettlementEditorProps, OwnHandlers> 
 
     // update checking
     if (!travelSettlementUid) {
-      const message = intl.formatMessage(travelRequestMessage.emptyTravelUid);
+      // const message = intl.formatMessage(travelRequestMessage.emptyTravelUid);
 
-      return Promise.reject(message);
+      return Promise.reject('empty travel settlement ID');
     }
 
     if (formMode === FormMode.Edit) {

@@ -39,12 +39,12 @@ const calculateDiem = (start: string , end: string): number => {
 };
 
 export const RequestItemFormView: React.SFC<RequestItemFormProps> = props => {
-  const { context, destinationTypeValue, onCostChange } = props;
+  const { context, destinationTypeValue, onCostChange, projectTypeValue } = props;
   const diemResponse = props.lookupDiemState.all.response;
 
   const diem = (diemResponse && diemResponse.data) ? 
                     diemResponse.data.filter(item => item.destinationType === destinationTypeValue &&
-                       item.projectType === 'SPT04')[0] 
+                       item.projectType === projectTypeValue)[0] 
                     : undefined;
                     
   const render = (

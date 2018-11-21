@@ -13,6 +13,7 @@ import { RequestItemFormView } from './RequestItemFormView';
 interface OwnProps {
   context: WrappedFieldArrayProps<TravelItemFormData>;
   destinationTypeValue: string | null | undefined;
+  projectTypeValue: string | null | undefined;
   diemRequest: IDiem[] | undefined;
   onCostChange: (event: any, newValue: number, oldValue: number) => void;
 }

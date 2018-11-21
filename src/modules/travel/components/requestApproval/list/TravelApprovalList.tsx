@@ -1,61 +1,41 @@
 import AppMenu from '@constants/AppMenu';
-import { ICollectionValue } from '@layout/classes/core';
 import {
   CollectionConfig,
   CollectionDataProps,
   CollectionHandler,
   CollectionPage,
-  CollectionPageProps,
 } from '@layout/components/pages';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
 import { Button } from '@material-ui/core';
-import { projectRegistrationFieldTranslator } from '@project/helper';
 import { ITravelRequest } from '@travel/classes/response';
 import { TravelRequestField, TravelUserAction } from '@travel/classes/types';
 import { TravelSummary } from '@travel/components/request/detail/shared/TravelSummary';
+import { travelFieldTranslator } from '@travel/helper/travelFieldTranslator';
 import { WithTravelApproval, withTravelApproval } from '@travel/hoc/withTravelApproval';
+import { travelMessage } from '@travel/locales/messages/travelMessage';
 import * as moment from 'moment';
 import * as React from 'react';
-import { FormattedMessage, InjectedIntlProps } from 'react-intl';
+import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose } from 'recompose';
 
-const travelApprovalFields: ICollectionValue[] = Object.keys(TravelRequestField).map(key => ({ 
-  value: key, 
-  name: TravelRequestField[key] 
-}));
-
-const menuOptions = (props: CollectionPageProps): IAppBarMenu[] => ([
-  {
-    id: TravelUserAction.Refresh,
-    name: props.intl.formatMessage(layoutMessage.action.refresh),
-    enabled: true,
-    visible: true,
-    onClick: () => props.setForceReload(true)
-  },
-  {
-    id: TravelUserAction.Create,
-    name: props.intl.formatMessage(layoutMessage.action.create),
-    enabled: true,
-    visible: true,
-    onClick: () => console.log('asdas')
-  }
-]);
-
 const config: CollectionConfig<ITravelRequest, AllProps> = {
-  // page info
-  uid: AppMenu.TravelApproval,
-  parentUid: AppMenu.Travel,
-  title: 'Travel Approval',
-  description: 'Description',
+  // page
+  page: (props: AllProps) => ({
+    uid: AppMenu.TravelApproval,
+    parentUid: AppMenu.Travel,
+    title: props.intl.formatMessage(travelMessage.requestApproval.page.listTitle),
+    description: props.intl.formatMessage(travelMessage.requestApproval.page.listSubHeader),
+  }),
   
   // top bar
-  fields: travelApprovalFields,
-  fieldTranslator: projectRegistrationFieldTranslator,
-
-  // selection
-  hasSelection: false,
+  fields: Object.keys(TravelRequestField)
+    .map(key => ({ 
+      value: key, 
+      name: TravelRequestField[key] 
+    })),
+  fieldTranslator: travelFieldTranslator,
 
   // searching
   hasSearching: true,
@@ -76,13 +56,15 @@ const config: CollectionConfig<ITravelRequest, AllProps> = {
 
   // more
   hasMore: true,
-  moreOptions: menuOptions,
-  
-  // redirection
-  hasRedirection: true,
-  onRedirect: (item: ITravelRequest): string => {
-    return `/travel/request/approval/${item.uid}`;
-  },
+  moreOptions: (props: AllProps, callback: CollectionHandler): IAppBarMenu[] => ([
+    {
+      id: TravelUserAction.Refresh,
+      name: props.intl.formatMessage(layoutMessage.action.refresh),
+      enabled: true,
+      visible: true,
+      onClick: () => callback.handleForceReload()
+    }
+  ]),
 
   // data filter
   filter: {
@@ -125,15 +107,15 @@ const config: CollectionConfig<ITravelRequest, AllProps> = {
   onUpdated: (states: AllProps, callback: CollectionHandler) => {
     const { isLoading, response } = states.travelApprovalState.all;
     
-    callback.setLoading(isLoading);
+    callback.handleLoading(isLoading);
     callback.handleResponse(response);
   },
   onBind: (item: ITravelRequest, index: number) => ({
     key: index,
-    primary: item.uid,
+    primary: item.objective ? item.objective : 'N/A',
     secondary: item.customer && item.customer.name || item.customerUid,
-    tertiary: item.project && item.project.name || item.projectUid,
-    quaternary: item.total.toString(),
+    tertiary: item.uid,
+    quaternary: item.project && item.project.name || item.projectUid,
     quinary: item.status && item.status.value || item.statusType,
     senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
   }),
@@ -144,19 +126,16 @@ const config: CollectionConfig<ITravelRequest, AllProps> = {
   ),
 
   // action component
-  actionComponent: (item: ITravelRequest) => (
-    <Button 
-      size="small"
-      onClick={() => alert(`go to ${item.uid}`)}
-    >
-      <FormattedMessage {...layoutMessage.action.details}/>
-    </Button>
-  ),
-
-  // custom row render: uncomment to see different
-  // onRowRender: (item: IProject, index: number) => (
-  //   <div key={index}>{item.name}</div>
-  // )
+  actionComponent: (item: ITravelRequest, callback: CollectionHandler) => (
+    <React.Fragment>
+      <Button 
+        size="small"
+        onClick={() => callback.handleRedirectTo(`/travel/request/approvals/${item.uid}`)}
+      >
+        <FormattedMessage {...layoutMessage.action.details}/>
+      </Button>
+    </React.Fragment>
+  )
 };
 
 type AllProps 
@@ -164,7 +143,7 @@ type AllProps
   & WithTravelApproval
   & InjectedIntlProps;
 
-const travelApprovalList: React.SFC<AllProps> = props => (
+const listView: React.SFC<AllProps> = props => (
   <CollectionPage
     config={config}
     connectedProps={props}
@@ -173,5 +152,6 @@ const travelApprovalList: React.SFC<AllProps> = props => (
 
 export const TravelApprovalList = compose(
   withUser,
-  withTravelApproval
-)(travelApprovalList);
+  withTravelApproval,
+  injectIntl
+)(listView);

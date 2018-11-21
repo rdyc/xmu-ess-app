@@ -63,6 +63,7 @@ export const RequestFormView: React.SFC<RequestFormProps> = props => {
       context={context}
       diemRequest={diemRequest}
       destinationTypeValue={destinationtypeValue}
+      projectTypeValue={props.projectType}
       onCostChange={onCostChange}
     />    
   );
