@@ -165,7 +165,7 @@ const billableTableView: React.SFC<AllProps> = props => {
                       item.categories &&
                       item.categories.map(cat =>
                         cat.name === BillableType.NonPresales
-                          ? <FormattedNumber key={cat.name} value={Math.ceil(cat.billable.hours)} />
+                          ? <FormattedNumber key={cat.name} value={Number(cat.billable.hours.toFixed(2))} />
                           : null
                       )
                     }
@@ -178,7 +178,7 @@ const billableTableView: React.SFC<AllProps> = props => {
                 <TableCell numeric>
                   {item.categories &&
                     item.categories.map(cat =>
-                      cat.name === BillableType.NonPresales ? <FormattedNumber key={cat.name} value={cat.billable.percentage} /> : null
+                      cat.name === BillableType.NonPresales ? <FormattedNumber key={cat.name} value={Number(cat.billable.percentage.toFixed(2))} /> : null
                     )}
                 </TableCell>
                 <TableCell numeric>
@@ -191,7 +191,7 @@ const billableTableView: React.SFC<AllProps> = props => {
                       item.categories &&
                       item.categories.map(cat =>
                         cat.name === BillableType.Presales
-                          ? <FormattedNumber key={cat.name} value={Math.ceil(cat.billable.hours)} />
+                          ? <FormattedNumber key={cat.name} value={Number(cat.billable.hours.toFixed(2))} />
                           : null
                       )
                     }
@@ -202,7 +202,7 @@ const billableTableView: React.SFC<AllProps> = props => {
                 <TableCell numeric>
                   {item.categories &&
                     item.categories.map(cat =>
-                      cat.name === BillableType.Presales ? <FormattedNumber key={cat.name} value={cat.billable.percentage} /> : null
+                      cat.name === BillableType.Presales ? <FormattedNumber key={cat.name} value={Number(cat.billable.percentage.toFixed(2))} /> : null
                     )}
                 </TableCell>
               </TableRow>
