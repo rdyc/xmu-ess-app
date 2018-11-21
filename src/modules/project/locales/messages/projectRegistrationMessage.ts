@@ -2,70 +2,200 @@ import { defineMessages } from 'react-intl';
 
 const prefix = 'project.registration';
 
-export const projectRegistrationMessage = defineMessages({
-  emptyProjectUid: { id: 'project.message.registration.emptyProps' },
-  createSuccess: { id: 'project.message.registration.create.success' },
-  createFailure: { id: 'project.message.registration.create.failure' },
-  updateSuccess: { id: 'project.message.registration.update.success' },
-  updateFailure: { id: 'project.message.registration.update.failure' },
+// page
+export const projectRegistrationPage = defineMessages({
+  listTitle: { id: `${prefix}.page.list.title` },
+  listSubHeader: { id: `${prefix}.page.list.subHeader` },
+  detailTitle: { id: `${prefix}.page.detail.title` },
+  detailSubHeader: { id: `${prefix}.page.detail.subHeader` },
+  newTitle: { id: `${prefix}.page.new.title` },
+  newSubHeader: { id: `${prefix}.page.new.subHeader` },
+  modifyTitle: { id: `${prefix}.page.modify.title` },
+  modifySubHeader: { id: `${prefix}.page.modify.subHeader` },
+  
+  ownerModifyTitle: { id: `${prefix}.page.owner.modify.title` },
+  ownerModifySubHeader: { id: `${prefix}.page.owner.modify.subHeader` },
+  
+  statusModifyTitle: { id: `${prefix}.page.status.modify.title` },
+  statusModifySubHeader: { id: `${prefix}.page.status.modify.subHeader` }
+});
+
+// option
+export const projectRegistrationOption = defineMessages({
+  close: { id: `${prefix}.option.close` },
+  reOpen: { id: `${prefix}.option.reOpen` },
+  owner: { id: `${prefix}.option.owner` },
+  site: { id: `${prefix}.option.site` }
+});
+
+// confimation
+export const projectRegistrationConfirm = defineMessages({
+  modifyTitle: { id: `${prefix}.confirm.modify.title` },
+  modifyDescription: { id: `${prefix}.confirm.modify.description` },
+  closeTitle: { id: `${prefix}.confirm.close.title` },
+  closeDescription: { id: `${prefix}.confirm.close.description` },
+  reOpenTitle: { id: `${prefix}.confirm.reOpen.title` },
+  reOpenDescription: { id: `${prefix}.confirm.reOpen.description` },
+  changeOwnerTitle: { id: `${prefix}.confirm.changeOwner.title` },
+  changeOwnerDescription: { id: `${prefix}.confirm.changeOwner.description` },
+  manageSiteTitle: { id: `${prefix}.confirm.manageSite.title` },
+  manageSiteDescription: { id: `${prefix}.confirm.manageSite.description` },
+});
+
+// section
+export const projectRegistrationSection = defineMessages({
+  infoTitle: { id: `${prefix}.section.info.title` },
+  infoSubHeader: { id: `${prefix}.section.info.subHeader` },
+  documentProjectTitle: { id: `${prefix}.section.document.project.title` },
+  documentProjectSubHeader: { id: `${prefix}.section.document.project.subHeader` },
+  documentPreSalesTitle: { id: `${prefix}.section.document.preSales.title` },
+  documentPreSalesSubHeader: { id: `${prefix}.section.document.preSales.subHeader` },
+  salesTitle: { id: `${prefix}.section.sales.title` },
+  salesSubHeader: { id: `${prefix}.section.sales.subHeader` },
+  siteTitle: { id: `${prefix}.section.site.title` },
+  siteSubHeader: { id: `${prefix}.section.site.subHeader` },
+  ownerTitle: { id: `${prefix}.section.owner.title` },
+  ownerSubHeader: { id: `${prefix}.section.owner.subHeader` },
+  statusTitle: { id: `${prefix}.section.status.title` },
+  statusSubHeader: { id: `${prefix}.section.status.subHeader` },
+  approvalTitle: { id: `${prefix}.section.approval.title` },
+  approvalSubHeader: { id: `${prefix}.section.approval.subHeader` },
 });
 
 // fields
 export const projectRegistrationField = defineMessages({
-  uid: { id: `${prefix}.field.information.uid` },
-  uidPlaceholder: { id: `${prefix}.field.information.uid.placeholder` },
+  // registration
+  uid: { id: `${prefix}.field.uid` },
+  uidPlaceholder: { id: `${prefix}.field.uid.placeholder` },
 
-  name: { id: `${prefix}.field.information.name` },
-  nameRequired: { id: `${prefix}.field.information.name.required` },
-  namePlaceholder: { id: `${prefix}.field.information.name.placeholder` },
+  name: { id: `${prefix}.field.name` },
+  nameRequired: { id: `${prefix}.field.name.required` },
+  namePlaceholder: { id: `${prefix}.field.name.placeholder` },
   
-  description: { id: `${prefix}.field.information.description` },
-  descriptionPlaceholder: { id: `${prefix}.field.information.description.placeholder` },
+  description: { id: `${prefix}.field.description` },
+  descriptionPlaceholder: { id: `${prefix}.field.description.placeholder` },
   
-  statusType: { id: `${prefix}.field.information.statusType` },
-  statusTypeRequired: { id: `${prefix}.field.information.statusType.required` },
-  statusTypePlaceholder: { id: `${prefix}.field.information.statusType.placeholder` },
+  statusType: { id: `${prefix}.field.statusType` },
+  statusTypeRequired: { id: `${prefix}.field.statusType.required` },
+  statusTypePlaceholder: { id: `${prefix}.field.statusType.placeholder` },
   
-  projectType: { id: `${prefix}.field.information.projectType` },
-  projectTypeRequired: { id: `${prefix}.field.information.projectType.required` },
-  projectTypePlaceholder: { id: `${prefix}.field.information.projectType.placeholder` },
+  projectType: { id: `${prefix}.field.projectType` },
+  projectTypeRequired: { id: `${prefix}.field.projectType.required` },
+  projectTypePlaceholder: { id: `${prefix}.field.projectType.placeholder` },
   
-  customerUid: { id: `${prefix}.field.information.customerUid` },
-  customerUidRequired: { id: `${prefix}.field.information.customerUid.required` },
-  customerUidPlaceholder: { id: `${prefix}.field.information.customerUid.placeholder` },
+  customerUid: { id: `${prefix}.field.customerUid` },
+  customerUidRequired: { id: `${prefix}.field.customerUid.required` },
+  customerUidPlaceholder: { id: `${prefix}.field.customerUid.placeholder` },
   
-  start: { id: `${prefix}.field.information.start` },
-  startRequired: { id: `${prefix}.field.information.start.required` },
-  startPlaceholder: { id: `${prefix}.field.information.start.placeholder` },
+  start: { id: `${prefix}.field.start` },
+  startRequired: { id: `${prefix}.field.start.required` },
+  startPlaceholder: { id: `${prefix}.field.start.placeholder` },
   
-  end: { id: `${prefix}.field.information.end` },
-  endRequired: { id: `${prefix}.field.information.end.required` },
-  endPlaceholder: { id: `${prefix}.field.information.end.placeholder` },
+  end: { id: `${prefix}.field.end` },
+  endRequired: { id: `${prefix}.field.end.required` },
+  endPlaceholder: { id: `${prefix}.field.end.placeholder` },
   
-  contractNumber: { id: `${prefix}.field.information.contractNumber` },
-  contractNumberPlaceholder: { id: `${prefix}.field.information.contractNumber.placeholder` },
+  contractNumber: { id: `${prefix}.field.contractNumber` },
+  contractNumberPlaceholder: { id: `${prefix}.field.contractNumber.placeholder` },
   
-  employeeUid: { id: `${prefix}.field.information.employeeUid` },
-  employeeUidRequired: { id: `${prefix}.field.information.employeeUid.required` },
-  employeeUidPlaceholder: { id: `${prefix}.field.information.employeeUid.placeholder` },
+  employeeUid: { id: `${prefix}.field.employeeUid` },
+  employeeUidRequired: { id: `${prefix}.field.employeeUid.required` },
+  employeeUidPlaceholder: { id: `${prefix}.field.employeeUid.placeholder` },
   
-  ownerEmployeeUid: { id: `${prefix}.field.information.ownerEmployeeUid` },
-  ownerEmployeeUidRequired: { id: `${prefix}.field.information.ownerEmployeeUid.required` },
-  ownerEmployeeUidPlaceholder: { id: `${prefix}.field.information.ownerEmployeeUid.placeholder` },
+  ownerEmployeeUid: { id: `${prefix}.field.ownerEmployeeUid` },
+  ownerEmployeeUidRequired: { id: `${prefix}.field.ownerEmployeeUid.required` },
+  ownerEmployeeUidPlaceholder: { id: `${prefix}.field.ownerEmployeeUid.placeholder` },
   
-  currencyType: { id: `${prefix}.field.information.currencyType` },
-  currencyTypeRequired: { id: `${prefix}.field.information.currencyType.required` },
-  currencyTypePlaceholder: { id: `${prefix}.field.information.currencyType.placeholder` },
+  currencyType: { id: `${prefix}.field.currencyType` },
+  currencyTypeRequired: { id: `${prefix}.field.currencyType.required` },
+  currencyTypePlaceholder: { id: `${prefix}.field.currencyType.placeholder` },
   
-  rate: { id: `${prefix}.field.information.rate` },
-  rateRequired: { id: `${prefix}.field.information.rate.required` },
-  ratePlaceholder: { id: `${prefix}.field.information.rate.placeholder` },
+  rate: { id: `${prefix}.field.rate` },
+  rateRequired: { id: `${prefix}.field.rate.required` },
+  ratePlaceholder: { id: `${prefix}.field.rate.placeholder` },
   
-  valueUsd: { id: `${prefix}.field.information.valueUsd` },
-  valueUsdRequired: { id: `${prefix}.field.information.valueUsd.required` },
-  valueUsdPlaceholder: { id: `${prefix}.field.information.valueUsd.placeholder` },
+  valueUsd: { id: `${prefix}.field.valueUsd` },
+  valueUsdRequired: { id: `${prefix}.field.valueUsd.required` },
+  valueUsdPlaceholder: { id: `${prefix}.field.valueUsd.placeholder` },
   
-  valueIdr: { id: `${prefix}.field.information.valueIdr` },
+  valueIdr: { id: `${prefix}.field.valueIdr` },
   
-  hours: { id: `${prefix}.field.information.hours` },
+  hours: { id: `${prefix}.field.hours` }
+
+});
+
+export const projectRegistrationFieldHelperFor = (field: string, type: 'fieldName' | 'fieldRequired' | 'fieldPlaceholder') => {
+  if (type === 'fieldName') {
+    switch (field) {
+      case 'uid': return projectRegistrationField.uid;
+      case 'name': return projectRegistrationField.name;
+      case 'description': return projectRegistrationField.description;
+      case 'statusType': return projectRegistrationField.statusType;
+      case 'projectType': return projectRegistrationField.projectType;
+      case 'customerUid': return projectRegistrationField.customerUid;
+      case 'start': return projectRegistrationField.start;
+      case 'end': return projectRegistrationField.end;
+      case 'contractNumber': return projectRegistrationField.contractNumber;
+      case 'ownerEmployeeUid': return projectRegistrationField.ownerEmployeeUid;
+      case 'currencyType': return projectRegistrationField.currencyType;
+      case 'rate': return projectRegistrationField.rate;
+      case 'valueUsd': return projectRegistrationField.valueUsd;
+      case 'valueIdr': return projectRegistrationField.valueIdr;
+      case 'hours': return projectRegistrationField.hours;
+    
+      default: return {id: field};
+    }
+  }
+
+  if (type === 'fieldRequired') {
+    switch (field) {
+      case 'name': return projectRegistrationField.nameRequired;
+      case 'statusType': return projectRegistrationField.statusTypeRequired;
+      case 'projectType': return projectRegistrationField.projectTypeRequired;
+      case 'customerUid': return projectRegistrationField.customerUidRequired;
+      case 'start': return projectRegistrationField.startRequired;
+      case 'end': return projectRegistrationField.endRequired;
+      case 'ownerEmployeeUid': return projectRegistrationField.ownerEmployeeUidRequired;
+      case 'currencyType': return projectRegistrationField.currencyTypeRequired;
+      case 'rate': return projectRegistrationField.rateRequired;
+      case 'valueUsd': return projectRegistrationField.valueUsdRequired;
+
+      default: return {id: field};
+    }
+  }
+
+  if (type === 'fieldPlaceholder') {
+    switch (field) {
+      case 'uid': return projectRegistrationField.uidPlaceholder;
+      case 'name': return projectRegistrationField.namePlaceholder;
+      case 'description': return projectRegistrationField.descriptionPlaceholder;
+      case 'statusType': return projectRegistrationField.statusTypePlaceholder;
+      case 'projectType': return projectRegistrationField.projectTypePlaceholder;
+      case 'customerUid': return projectRegistrationField.customerUidPlaceholder;
+      case 'start': return projectRegistrationField.startPlaceholder;
+      case 'end': return projectRegistrationField.endPlaceholder;
+      case 'contractNumber': return projectRegistrationField.contractNumberPlaceholder;
+      case 'ownerEmployeeUid': return projectRegistrationField.ownerEmployeeUidPlaceholder;
+      case 'currencyType': return projectRegistrationField.currencyTypePlaceholder;
+      case 'rate': return projectRegistrationField.ratePlaceholder;
+      case 'valueUsd': return projectRegistrationField.valueUsdPlaceholder;
+    
+      default: return {id: field};
+    }
+  }
+
+  return {id: field};
+};
+
+// message
+export const projectRegistrationMessage = defineMessages({
+  emptyProps: { id: `${prefix}.message.emptyProps` },
+  emptyDocument: { id: `${prefix}.message.emptyDocument` },
+  emptySite: { id: `${prefix}.message.emptySite` },
+  emptySales: { id: `${prefix}.message.emptySales` },
+  duplicateSales: { id: `${prefix}.message.duplicateSales` },
+  createSuccess: { id: `${prefix}.message.create.success` },
+  createFailure: { id: `${prefix}.message.create.failure` },
+  updateSuccess: { id: `${prefix}.message.update.success` },
+  updateFailure: { id: `${prefix}.message.update.failure` },
 });

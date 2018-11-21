@@ -5,11 +5,14 @@ import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IAppBarMenu } from '@layout/interfaces';
+import { layoutMessage } from '@layout/locales/messages';
 import { IWorkflowApprovalPayload } from '@organization/classes/request/workflow/approval';
 import { WorkflowApprovalFormData } from '@organization/components/workflow/approval/WorkflowApprovalForm';
+import { organizationMessage } from '@organization/locales/messages/organizationMessage';
 import { ProjectUserAction } from '@project/classes/types';
 import { WithProjectApproval, withProjectApproval } from '@project/hoc/withProjectApproval';
 import { projectApprovalMessage } from '@project/locales/messages/projectApprovalMessage';
+import { projectMessage } from '@project/locales/messages/projectMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import {
@@ -68,7 +71,7 @@ const handlerCreators: HandleCreators<ProjectApprovalDetailProps, OwnHandler> = 
   
     requiredFields.forEach(field => {
       if (!formData[field] || isNullOrUndefined(formData[field])) {
-        errors[field] = props.intl.formatMessage({id: `workflow.approval.field.${field}.required`});
+        errors[field] = props.intl.formatMessage(organizationMessage.workflow.fieldFor(field, 'fieldRequired'));
       }
     });
     
@@ -169,8 +172,8 @@ const lifecycles: ReactLifeCycleFunctions<ProjectApprovalDetailProps, {}> = {
     layoutDispatch.changeView({
       uid: AppMenu.ProjectRegistrationRequest,
       parentUid: AppMenu.ProjectRegistration,
-      title: intl.formatMessage({id: 'project.detail.title'}),
-      subTitle : intl.formatMessage({id: 'project.detail.subTitle'})
+      title: intl.formatMessage(projectMessage.registration.page.detailTitle),
+      subTitle : intl.formatMessage(projectMessage.registration.page.detailSubHeader)
     });
 
     layoutDispatch.navBackShow();
@@ -205,7 +208,7 @@ const lifecycles: ReactLifeCycleFunctions<ProjectApprovalDetailProps, {}> = {
       const currentMenus = [
         {
           id: ProjectUserAction.Refresh,
-          name: intl.formatMessage({id: 'global.action.refresh'}),
+          name: intl.formatMessage(layoutMessage.action.refresh),
           enabled: true,
           visible: true
         }
@@ -230,17 +233,17 @@ const createProps: mapper<ProjectApprovalDetailProps, OwnState> = (props: Projec
   const { intl } = props;
 
   return {
-    approvalTitle: intl.formatMessage({id: 'project.registration.section.approval.title'}),
-    approvalSubHeader: intl.formatMessage({id: 'project.registration.section.approval.subHeader'}),
+    approvalTitle: intl.formatMessage(projectMessage.registration.section.approvalTitle),
+    approvalSubHeader: intl.formatMessage(projectMessage.registration.section.approvalSubHeader),
     approvalChoices: [
-      { value: WorkflowStatusType.Approved, label: intl.formatMessage({id: 'workflow.approval.action.approve'}) },
-      { value: WorkflowStatusType.Rejected, label: intl.formatMessage({id: 'workflow.approval.action.reject'}) }
+      { value: WorkflowStatusType.Approved, label: intl.formatMessage(organizationMessage.workflow.option.approve) },
+      { value: WorkflowStatusType.Rejected, label: intl.formatMessage(organizationMessage.workflow.option.reject) }
     ],
     approvalTrueValue: WorkflowStatusType.Approved,
-    approvalDialogTitle: intl.formatMessage({id: 'project.dialog.approvalTitle'}),
-    approvalDialogContentText: intl.formatMessage({id: 'project.dialog.approvalContent'}),
-    approvalDialogCancelText: intl.formatMessage({id: 'global.action.cancel'}),
-    approvalDialogConfirmedText: intl.formatMessage({id: 'global.action.continue'}),
+    approvalDialogTitle: intl.formatMessage(projectMessage.approval.confirm.submissionTitle),
+    approvalDialogContentText: intl.formatMessage(projectMessage.approval.confirm.submissionContent),
+    approvalDialogCancelText: intl.formatMessage(layoutMessage.action.cancel),
+    approvalDialogConfirmedText: intl.formatMessage(layoutMessage.action.continue),
   };
 };
 

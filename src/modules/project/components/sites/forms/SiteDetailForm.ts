@@ -1,6 +1,7 @@
 import { SelectSystem, SelectSystemOption } from '@common/components/select';
 import { InputNumber } from '@layout/components/input/number';
 import { InputText } from '@layout/components/input/text';
+import { projectMessage } from '@project/locales/messages/projectMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose, HandleCreators, withHandlers } from 'recompose';
 import { BaseFieldsProps } from 'redux-form';
@@ -25,16 +26,15 @@ const handlerCreators: HandleCreators<SiteDetailFormProps, OwnHandlers> = {
   generateFieldProps: (props: SiteDetailFormProps) => (name: string) => { 
     const { intl, disabledControls } = props;
     
-    const fieldName = name.replace('information.', '');
-    
     let fieldProps: SelectSystemOption & any = {};
   
-    switch (fieldName) {
+    switch (name) {
       case 'name': 
         fieldProps = {
           disabled: disabledControls,
           required: true,
-          placeholder: intl.formatMessage({id: `project.site.field.${name}.placeholder`}),
+          label: intl.formatMessage(projectMessage.site.fieldFor(name, 'fieldName')),
+          placeholder: intl.formatMessage(projectMessage.site.fieldFor(name, 'fieldPlaceholder')),
           component: InputText
         };
         break;
@@ -44,7 +44,8 @@ const handlerCreators: HandleCreators<SiteDetailFormProps, OwnHandlers> = {
           disabled: disabledControls,
           required: true,
           category: 'site',
-          placeholder: intl.formatMessage({id: `project.site.field.${name}.placeholder`}),
+          label: intl.formatMessage(projectMessage.site.fieldFor(name, 'fieldName')),
+          placeholder: intl.formatMessage(projectMessage.site.fieldFor(name, 'fieldPlaceholder')),
           component: SelectSystem,
         };
         break;
@@ -53,7 +54,8 @@ const handlerCreators: HandleCreators<SiteDetailFormProps, OwnHandlers> = {
         fieldProps = {
           disabled: disabledControls,
           type: 'number',
-          placeholder: intl.formatMessage({id: `project.site.field.${name}.placeholder`}),
+          label: intl.formatMessage(projectMessage.site.fieldFor(name, 'fieldName')),
+          placeholder: intl.formatMessage(projectMessage.site.fieldFor(name, 'fieldPlaceholder')),
           component: InputNumber
         };
         break;
@@ -61,7 +63,8 @@ const handlerCreators: HandleCreators<SiteDetailFormProps, OwnHandlers> = {
       default:
         fieldProps = {
           disabled: true,
-          placeholder: intl.formatMessage({id: `project.site.field.${name}.placeholder`}),
+          label: intl.formatMessage(projectMessage.site.fieldFor(name, 'fieldName')),
+          placeholder: intl.formatMessage(projectMessage.site.fieldFor(name, 'fieldPlaceholder')),
           component: InputText
         };
         break;

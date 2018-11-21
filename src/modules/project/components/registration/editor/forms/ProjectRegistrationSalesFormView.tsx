@@ -15,63 +15,58 @@ import {
 } from '@material-ui/core';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import PersonIcon from '@material-ui/icons/Person';
-import { ProjectRegistrationSalesFormProps } from '@project/components/registration/editor/forms/ProjectRegistrationSalesForm';
+import {
+  ProjectRegistrationSalesFormProps,
+} from '@project/components/registration/editor/forms/ProjectRegistrationSalesForm';
+import { projectMessage } from '@project/locales/messages/projectMessage';
 import * as classNames from 'classnames';
 import * as React from 'react';
-import { FormattedMessage } from 'react-intl';
 
-export const ProjectRegistrationSalesFormView: React.SFC<ProjectRegistrationSalesFormProps> = props => {
-  const { classes, width, context, handleSelected, roleSalesUids } = props;
-  const { user } = props.userState;
-  
-  const render = (
-    <Card square>
-        <CardHeader 
-          title={<FormattedMessage id="project.salesTitle" />}
-          subheader={<FormattedMessage id="project.salesSubTitle" />}
-        />
-        <CardContent>
-          <List>
-            {
-              context.fields.map((field, index) => {
-                const sales = context.fields.get(index);
+export const ProjectRegistrationSalesFormView: React.SFC<ProjectRegistrationSalesFormProps> = props => (
+  <Card square>
+    <CardHeader 
+      title={props.intl.formatMessage(projectMessage.registration.section.salesTitle)}
+      subheader={props.intl.formatMessage(projectMessage.registration.section.siteSubHeader)}
+    />
+    <CardContent>
+      <List>
+        {
+          props.context.fields.map((field, index) => {
+            const sales = props.context.fields.get(index);
 
-                return (
-                  <ListItem 
-                    disableGutters 
-                    key={index}
+            return (
+              <ListItem 
+                disableGutters 
+                key={index}
+              >
+                <ListItemAvatar>
+                  <Avatar
+                    alt={sales.fullName} 
                   >
-                    <ListItemAvatar>
-                      <Avatar
-                        alt={sales.fullName} 
-                      >
-                        <PersonIcon/>
-                      </Avatar>
-                    </ListItemAvatar>
-                    <ListItemText
-                      primary={sales.fullName} 
-                      secondary={sales.email}
-                    />
-                    <ListItemSecondaryAction>
-                      <IconButton onClick={() => context.fields.remove(index)}>
-                        <DeleteForeverIcon/>
-                      </IconButton>
-                    </ListItemSecondaryAction>
-                  </ListItem>
-                );
-              })
-            }
-            <Divider className={classNames(classes.marginFarTop, classes.marginFarBottom)} />
-            <ListItemEmployeeSelector
-              width={width}
-              companyUids={user && [user.company.uid]}
-              roleUids={roleSalesUids}
-              onSelected={(employee: IEmployee) => handleSelected(employee)}
-            />
-          </List>
-        </CardContent>
-      </Card>
-  );
-
-  return render;
-};
+                    <PersonIcon/>
+                  </Avatar>
+                </ListItemAvatar>
+                <ListItemText
+                  primary={sales.fullName} 
+                  secondary={sales.email}
+                />
+                <ListItemSecondaryAction>
+                  <IconButton onClick={() => props.context.fields.remove(index)}>
+                    <DeleteForeverIcon/>
+                  </IconButton>
+                </ListItemSecondaryAction>
+              </ListItem>
+            );
+          })
+        }
+        <Divider className={classNames(props.classes.marginFarTop, props.classes.marginFarBottom)} />
+        <ListItemEmployeeSelector
+          width={props.width}
+          companyUids={props.userState.user && [props.userState.user.company.uid]}
+          roleUids={props.roleSalesUids}
+          onSelected={(employee: IEmployee) => props.handleSelected(employee)}
+        />
+      </List>
+    </CardContent>
+  </Card>
+);

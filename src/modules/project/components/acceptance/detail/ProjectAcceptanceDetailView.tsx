@@ -1,20 +1,13 @@
 import { FormMode } from '@generic/types';
+import { layoutMessage } from '@layout/locales/messages';
+import { GlobalStyle } from '@layout/types/GlobalStyle';
 import { Grid, TextField, Typography } from '@material-ui/core';
 import { ProjectAssignment } from '@project/components/assignment/detail/shared/ProjectAssignment';
 import { ProjectAssignmentItem } from '@project/components/assignment/detail/shared/ProjectAssignmentItem';
 import { projectMessage } from '@project/locales/messages/projectMessage';
 import * as React from 'react';
-import { FormattedMessage } from 'react-intl';
 
 import { ProjectAcceptanceDetailProps } from './ProjectAcceptanceDetail';
-
-const styled = {
-  fullWidth: true,
-  InputProps: {
-    disableUnderline: true,
-    readOnly: true
-  }
-};
 
 export const ProjectAcceptanceDetailView: React.SFC<ProjectAcceptanceDetailProps> = props => {
   const { isLoading, response } = props.projectAssignmentState.detail;
@@ -24,7 +17,7 @@ export const ProjectAcceptanceDetailView: React.SFC<ProjectAcceptanceDetailProps
       {
         isLoading && 
         <Typography variant="body2">
-          <FormattedMessage id="global.loading"/>
+          {props.intl.formatMessage(layoutMessage.text.loading)}
         </Typography>
       }
       {
@@ -39,20 +32,18 @@ export const ProjectAcceptanceDetailView: React.SFC<ProjectAcceptanceDetailProps
             >
               {
                 props.newMandays !== 0 &&
-                <div>
+                <React.Fragment>
                   <TextField
-                    {...styled}
-                    margin="dense"
+                    {...GlobalStyle.TextField.ReadOnly}
                     label={props.intl.formatMessage(projectMessage.assignment.field.newMandays)}
                     value={props.intl.formatNumber(props.newMandays)}
                   />
                   <TextField
-                    {...styled}
-                    margin="dense"
+                    {...GlobalStyle.TextField.ReadOnly}
                     label={props.intl.formatMessage(projectMessage.assignment.field.newHours)}
                     value={props.intl.formatNumber(props.newMandays * 8)}
                   />
-                </div>
+                </React.Fragment>
               }
             </ProjectAssignment>
           </Grid>

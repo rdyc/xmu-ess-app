@@ -8,6 +8,7 @@ import { IProjectSitePayload } from '@project/classes/request/site';
 import { IProjectSite } from '@project/classes/response';
 import { WithProjectRegistration, withProjectRegistration } from '@project/hoc/withProjectRegistration';
 import { WithProjectSite, withProjectSite } from '@project/hoc/withProjectSite';
+import { projectMessage } from '@project/locales/messages/projectMessage';
 import { projectOwnerMessage } from '@project/locales/messages/projectOwnerMessage';
 import { projectSiteMessage } from '@project/locales/messages/projectSiteMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
@@ -169,7 +170,7 @@ const handlerCreators: HandleCreators<SiteEditorProps, OwnHandlers> = {
       }
 
       if (!formData.information[field] || isNullOrUndefined(formData.information[field])) {
-        errors.information[field] = props.intl.formatMessage({id: `project.site.field.information.${field}.required`});
+        errors.information[field] = props.intl.formatMessage(projectMessage.site.fieldFor(field, 'fieldRequired'));
       }
     });
     
@@ -314,8 +315,8 @@ const lifecycles: ReactLifeCycleFunctions<SiteEditorProps, {}> = {
     layoutDispatch.changeView({
       uid: AppMenu.ProjectRegistrationRequest,
       parentUid: AppMenu.ProjectRegistration,
-      title: intl.formatMessage({id: 'project.page.siteTitle'}),
-      subTitle : intl.formatMessage({id: 'project.page.siteSubTitle'})
+      title: intl.formatMessage(projectMessage.site.page.modifyTitle),
+      subTitle : intl.formatMessage(projectMessage.site.page.modifyTitle)
     });
     
     layoutDispatch.navBackShow(); 

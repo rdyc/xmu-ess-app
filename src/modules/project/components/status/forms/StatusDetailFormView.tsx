@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader } from '@material-ui/core';
+import { projectMessage } from '@project/locales/messages/projectMessage';
 import * as React from 'react';
-import { FormattedMessage } from 'react-intl';
 import { Field } from 'redux-form';
 
 import { StatusDetailFormProps } from './StatusDetailForm';
@@ -10,13 +10,12 @@ export const StatusDetailFormView: React.SFC<StatusDetailFormProps> = props => {
   
   const renderField = (name: string) => {
     const fieldName = name.replace('information.', '');
-    const fieldProps = props.generateFieldProps(name);
+    const fieldProps = props.generateFieldProps(fieldName);
 
     return (
       <Field
         key={fieldName}
         name={fieldName}
-        label={<FormattedMessage id={`project.field.${name}`} />}
         {...fieldProps}
       />
     );
@@ -25,8 +24,8 @@ export const StatusDetailFormView: React.SFC<StatusDetailFormProps> = props => {
   const render = (
     <Card square>
       <CardHeader 
-        title={<FormattedMessage id="project.statusTitle"/>}
-        subheader={<FormattedMessage id="project.statusSubTitle" />}
+        title={props.intl.formatMessage(projectMessage.registration.section.statusTitle)}
+        subheader={props.intl.formatMessage(projectMessage.registration.section.statusSubHeader)}
       />
       <CardContent>
         {names.map(name => renderField(name))}
