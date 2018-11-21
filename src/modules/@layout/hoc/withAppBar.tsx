@@ -45,7 +45,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     assignCallback: (callback: (menu: IAppBarMenu) => void) => dispatch(appBarAssignMenuCallback(callback)),
     assignSearchCallback: (callback: (find: string, findBy?: ICollectionValue) => void) => dispatch(appBarAssignSearchCallback(callback)),
     assignSelectionClearCallback: (callback: () => void) => dispatch(appBarAssignSelectionClearCallback(callback)),
-    assignSelectionProcessCallback: (callback: (values: string[]) => void) => dispatch(appBarAssignSelectionProcessCallback(callback)),
+    assignSelectionProcessCallback: (callback: () => void) => dispatch(appBarAssignSelectionProcessCallback(callback)),
     assignMenus: (menus: IAppBarMenu[]) => dispatch(appBarAssignMenus(menus)),
     assignFields: (fields: ICollectionValue[]) => dispatch(appBarAssignFields(fields)),
     selectionAddRemove: (value: string) => dispatch(appBarSelectionAddRemove(value)),
