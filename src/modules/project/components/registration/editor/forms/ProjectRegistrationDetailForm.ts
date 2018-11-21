@@ -4,8 +4,11 @@ import { InputDate } from '@layout/components/input/date';
 import { InputNumber } from '@layout/components/input/number';
 import { InputText } from '@layout/components/input/text';
 import { InputCustomer } from '@lookup/components/customer/input';
-import { ProjectRegistrationDetailFormView } from '@project/components/registration/editor/forms/ProjectRegistrationDetailFormView';
+import {
+  ProjectRegistrationDetailFormView,
+} from '@project/components/registration/editor/forms/ProjectRegistrationDetailFormView';
 import { WithAllowedProjectType, withAllowedProjectType } from '@project/hoc/withAllowedProjectType';
+import { projectMessage } from '@project/locales/messages/projectMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose, HandleCreators, withHandlers } from 'recompose';
 import { BaseFieldsProps } from 'redux-form';
@@ -39,16 +42,15 @@ const handlerCreators: HandleCreators<ProjectRegistrationDetailFormProps, OwnHan
       onChangeRate, allowedProjectTypes 
     } = props;
     
-    const fieldName = name.replace('information.', '');
-    
     let fieldProps: SelectSystemOption & any = {};
   
-    switch (fieldName) {
+    switch (name) {
       case 'uid':
       case 'ownerEmployeeUid':
         fieldProps = {
           disabled: true,
-          placeholder: intl.formatMessage({id: `project.field.${name}.placeholder`}),
+          label: intl.formatMessage(projectMessage.registration.fieldFor(name, 'fieldName')),
+          placeholder: intl.formatMessage(projectMessage.registration.fieldFor(name, 'fieldPlaceholder')),
           component: InputText
         };
         break;
@@ -56,7 +58,8 @@ const handlerCreators: HandleCreators<ProjectRegistrationDetailFormProps, OwnHan
       case 'customerUid': 
         fieldProps = {
           required: true,
-          placeholder: intl.formatMessage({id: `project.field.${name}.placeholder`}),
+          label: intl.formatMessage(projectMessage.registration.fieldFor(name, 'fieldName')),
+          placeholder: intl.formatMessage(projectMessage.registration.fieldFor(name, 'fieldPlaceholder')),
           component: InputCustomer
         };
         break;
@@ -66,7 +69,8 @@ const handlerCreators: HandleCreators<ProjectRegistrationDetailFormProps, OwnHan
           required: formMode === FormMode.New,
           category: 'project',
           disabled: formMode === FormMode.Edit,
-          placeholder: intl.formatMessage({id: `project.field.${name}.placeholder`}),
+          label: intl.formatMessage(projectMessage.registration.fieldFor(name, 'fieldName')),
+          placeholder: intl.formatMessage(projectMessage.registration.fieldFor(name, 'fieldPlaceholder')),
           component: SelectSystem,
           onlyForTypes: allowedProjectTypes
         };
@@ -75,7 +79,8 @@ const handlerCreators: HandleCreators<ProjectRegistrationDetailFormProps, OwnHan
       case 'name': 
         fieldProps = {
           required: true,
-          placeholder: intl.formatMessage({id: `project.field.${name}.placeholder`}),
+          label: intl.formatMessage(projectMessage.registration.fieldFor(name, 'fieldName')),
+          placeholder: intl.formatMessage(projectMessage.registration.fieldFor(name, 'fieldPlaceholder')),
           component: InputText
         };
         break;
@@ -84,7 +89,8 @@ const handlerCreators: HandleCreators<ProjectRegistrationDetailFormProps, OwnHan
         fieldProps = {
           required: true,
           category: 'currency',
-          placeholder: intl.formatMessage({id: `project.field.${name}.placeholder`}),
+          label: intl.formatMessage(projectMessage.registration.fieldFor(name, 'fieldName')),
+          placeholder: intl.formatMessage(projectMessage.registration.fieldFor(name, 'fieldPlaceholder')),
           component: SelectSystem,
           onChange: onChangeCurrencyType
         };
@@ -93,7 +99,8 @@ const handlerCreators: HandleCreators<ProjectRegistrationDetailFormProps, OwnHan
       case 'start': 
         fieldProps = {
           required: true,
-          placeholder: intl.formatMessage({id: `project.field.${name}.placeholder`}),
+          label: intl.formatMessage(projectMessage.registration.fieldFor(name, 'fieldName')),
+          placeholder: intl.formatMessage(projectMessage.registration.fieldFor(name, 'fieldPlaceholder')),
           component: InputDate
         };
         break;
@@ -101,7 +108,8 @@ const handlerCreators: HandleCreators<ProjectRegistrationDetailFormProps, OwnHan
       case 'end': 
         fieldProps = {
           required: true,
-          placeholder: intl.formatMessage({id: `project.field.${name}.placeholder`}),
+          label: intl.formatMessage(projectMessage.registration.fieldFor(name, 'fieldName')),
+          placeholder: intl.formatMessage(projectMessage.registration.fieldFor(name, 'fieldPlaceholder')),
           component: InputDate
         };
         break;
@@ -110,7 +118,8 @@ const handlerCreators: HandleCreators<ProjectRegistrationDetailFormProps, OwnHan
         fieldProps = {
           type: 'number',
           required: !isCurrencyIdr,
-          placeholder: intl.formatMessage({id: `project.field.${name}.placeholder`}),
+          label: intl.formatMessage(projectMessage.registration.fieldFor(name, 'fieldName')),
+          placeholder: intl.formatMessage(projectMessage.registration.fieldFor(name, 'fieldPlaceholder')),
           disabled: isCurrencyIdr || isNullOrUndefined(formCurrencyType),
           component: InputNumber,
           onChange: onChangeRate
@@ -120,7 +129,8 @@ const handlerCreators: HandleCreators<ProjectRegistrationDetailFormProps, OwnHan
       case 'valueUsd':
         fieldProps = {
           type: 'number',
-          placeholder: intl.formatMessage({id: `project.field.${name}.placeholder`}),
+          label: intl.formatMessage(projectMessage.registration.fieldFor(name, 'fieldName')),
+          placeholder: intl.formatMessage(projectMessage.registration.fieldFor(name, 'fieldPlaceholder')),
           component: InputNumber,
           onChange: onChangeValueIdr
         };
@@ -129,6 +139,7 @@ const handlerCreators: HandleCreators<ProjectRegistrationDetailFormProps, OwnHan
       case 'valueIdr':
         fieldProps = {
           type: 'number',
+          label: intl.formatMessage(projectMessage.registration.fieldFor(name, 'fieldName')),
           disabled: true,
           component: InputNumber
         };
@@ -137,7 +148,8 @@ const handlerCreators: HandleCreators<ProjectRegistrationDetailFormProps, OwnHan
       default:
         fieldProps = {
           type: 'text',
-          placeholder: intl.formatMessage({id: `project.field.${name}.placeholder`}),
+          label: intl.formatMessage(projectMessage.registration.fieldFor(name, 'fieldName')),
+          placeholder: intl.formatMessage(projectMessage.registration.fieldFor(name, 'fieldPlaceholder')),
           component: InputText
         };
         break;

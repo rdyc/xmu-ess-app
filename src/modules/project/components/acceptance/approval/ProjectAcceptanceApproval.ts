@@ -5,8 +5,10 @@ import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IAppBarMenu } from '@layout/interfaces';
+import { layoutMessage } from '@layout/locales/messages';
 import { IWorkflowApprovalPayload } from '@organization/classes/request/workflow/approval';
 import { WorkflowApprovalFormData } from '@organization/components/workflow/approval/WorkflowApprovalForm';
+import { organizationMessage } from '@organization/locales/messages/organizationMessage';
 import { ProjectUserAction } from '@project/classes/types';
 import { WithProjectAcceptance, withProjectAcceptance } from '@project/hoc/withProjectAcceptance';
 import { projectApprovalMessage } from '@project/locales/messages/projectApprovalMessage';
@@ -69,14 +71,14 @@ const createProps: mapper<ProjectAcceptanceApprovalProps, OwnState> = (props: Pr
     approvalTitle: intl.formatMessage(projectMessage.acceptance.section.approvalTitle),
     approvalSubHeader: intl.formatMessage(projectMessage.acceptance.section.approvalSubHeader),
     approvalChoices: [
-      { value: WorkflowStatusType.Accepted, label: intl.formatMessage({id: 'workflow.approval.action.accept'}) },
-      { value: WorkflowStatusType.Rejected, label: intl.formatMessage({id: 'workflow.approval.action.reject'}) }
+      { value: WorkflowStatusType.Accepted, label: intl.formatMessage(organizationMessage.workflow.option.approve) },
+      { value: WorkflowStatusType.Rejected, label: intl.formatMessage(organizationMessage.workflow.option.reject) }
     ],
     approvalTrueValue: WorkflowStatusType.Accepted,
-    approvalDialogTitle: intl.formatMessage(projectMessage.acceptance.dialog.approvalTitle),
-    approvalDialogContentText: intl.formatMessage(projectMessage.acceptance.dialog.approvalContent),
-    approvalDialogCancelText: intl.formatMessage({id: 'global.action.cancel'}),
-    approvalDialogConfirmedText: intl.formatMessage({id: 'global.action.continue'}),
+    approvalDialogTitle: intl.formatMessage(projectMessage.acceptance.confirm.approvalTitle),
+    approvalDialogContentText: intl.formatMessage(projectMessage.acceptance.confirm.approvalContent),
+    approvalDialogCancelText: intl.formatMessage(layoutMessage.action.cancel),
+    approvalDialogConfirmedText: intl.formatMessage(layoutMessage.action.continue),
   };
 };
 
@@ -88,7 +90,7 @@ const handlerCreators: HandleCreators<ProjectAcceptanceApprovalProps, OwnHandler
   
     requiredFields.forEach(field => {
       if (!formData[field] || isNullOrUndefined(formData[field])) {
-        errors[field] = props.intl.formatMessage({id: `workflow.approval.field.${field}.required`});
+        errors[field] = props.intl.formatMessage(organizationMessage.workflow.fieldFor(field, 'fieldRequired'));
       }
     });
     
@@ -215,7 +217,7 @@ const lifecycles: ReactLifeCycleFunctions<ProjectAcceptanceApprovalProps, {}> = 
       const currentMenus = [
         {
           id: ProjectUserAction.Refresh,
-          name: intl.formatMessage({id: 'global.action.refresh'}),
+          name: intl.formatMessage(layoutMessage.action.refresh),
           enabled: true,
           visible: true
         }

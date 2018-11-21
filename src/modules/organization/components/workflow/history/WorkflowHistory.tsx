@@ -14,15 +14,20 @@ import {
 import PeopleIcon from '@material-ui/icons/People';
 import PersonIcon from '@material-ui/icons/Person';
 import { IOrganizationWorkflow, IOrganizationWorkflowStep } from '@organization/interfaces';
+import { organizationMessage } from '@organization/locales/messages/organizationMessage';
 import * as moment from 'moment';
 import * as React from 'react';
-import { FormattedMessage } from 'react-intl';
+import { InjectedIntlProps, injectIntl } from 'react-intl';
 
 interface OwnProps {
   data: IOrganizationWorkflow | null | undefined;
 }
 
-export const WorkflowHistory: React.SFC<OwnProps> = props => {
+type AllProps
+  = OwnProps
+  & InjectedIntlProps;
+
+const workflowHistoryView: React.SFC<AllProps> = props => {
   const { data } = props;
 
   const renderItem = (item: IOrganizationWorkflowStep) => {
@@ -74,15 +79,15 @@ export const WorkflowHistory: React.SFC<OwnProps> = props => {
   return (
     <Card square>
       <CardHeader 
-        title={<FormattedMessage id="workflow.stepsTitle" />}
-        subheader={<FormattedMessage id="workflow.stepsSubTitle" />}
+        title={props.intl.formatMessage(organizationMessage.workflow.section.historyTitle)}
+        subheader={props.intl.formatMessage(organizationMessage.workflow.section.historySubHeader)}
       />
       <CardContent>
         <List>
           { 
             !data && 
             <ListItemText
-              primary={<FormattedMessage id="workflow.history.empty" />} 
+              primary={props.intl.formatMessage(organizationMessage.workflow.message.emptyHistory)} 
             />
           }
           {
@@ -128,3 +133,5 @@ export const WorkflowHistory: React.SFC<OwnProps> = props => {
     </Card>
   );
 };
+
+export const WorkflowHistory = injectIntl(workflowHistoryView);

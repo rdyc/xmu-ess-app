@@ -16,7 +16,7 @@ import {
 } from '@project/components/registration/editor/forms/ProjectRegistrationContainerForm';
 import { ProjectRegistrationEditorView } from '@project/components/registration/editor/ProjectRegistrationEditorView';
 import { WithProjectRegistration, withProjectRegistration } from '@project/hoc/withProjectRegistration';
-import { projectRegistrationMessage } from '@project/locales/messages/projectRegistrationMessage';
+import { projectMessage } from '@project/locales/messages/projectMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import {
@@ -81,7 +81,7 @@ const handlerCreators: HandleCreators<ProjectRegistrationEditorProps, OwnHandler
   
     requiredFields.forEach(field => {
       if (!formData.information[field] || isNullOrUndefined(formData.information[field])) {
-        errors.information[field] = props.intl.formatMessage({id: `project.field.information.${field}.required`});
+        errors.information[field] = props.intl.formatMessage(projectMessage.registration.fieldFor(field, 'fieldRequired'));
       }
     });
     
@@ -186,7 +186,7 @@ const handlerCreators: HandleCreators<ProjectRegistrationEditorProps, OwnHandler
 
     // update checking
     if (!projectUid) {
-      const message = intl.formatMessage(projectRegistrationMessage.emptyProjectUid);
+      const message = intl.formatMessage(projectMessage.registration.message.emptyProps);
 
       return Promise.reject(message);
     }
@@ -213,11 +213,11 @@ const handlerCreators: HandleCreators<ProjectRegistrationEditorProps, OwnHandler
     let message: string = '';
 
     if (formMode === FormMode.New) {
-      message = intl.formatMessage(projectRegistrationMessage.createSuccess, { uid: response.uid });
+      message = intl.formatMessage(projectMessage.registration.message.createSuccess, { uid: response.uid });
     }
 
     if (formMode === FormMode.Edit) {
-      message = intl.formatMessage(projectRegistrationMessage.updateSuccess, { uid: response.uid });
+      message = intl.formatMessage(projectMessage.registration.message.updateSuccess, { uid: response.uid });
     }
 
     alertAdd({
@@ -242,11 +242,11 @@ const handlerCreators: HandleCreators<ProjectRegistrationEditorProps, OwnHandler
       let message: string = '';
 
       if (formMode === FormMode.New) {
-        message = intl.formatMessage(projectRegistrationMessage.createFailure);
+        message = intl.formatMessage(projectMessage.registration.message.createFailure);
       }
 
       if (formMode === FormMode.Edit) {
-        message = intl.formatMessage(projectRegistrationMessage.updateFailure);
+        message = intl.formatMessage(projectMessage.registration.message.updateFailure);
       }
 
       alertAdd({
@@ -276,8 +276,8 @@ const lifecycles: ReactLifeCycleFunctions<ProjectRegistrationEditorProps, {}> = 
     const { user } = this.props.userState;
     
     const view = {
-      title: 'project.form.registration.newTitle',
-      subTitle: 'project.form.registration.newSubTitle',
+      title: projectMessage.registration.page.newTitle,
+      subTitle: projectMessage.registration.page.newSubHeader,
     };
 
     if (!user) {
@@ -290,8 +290,8 @@ const lifecycles: ReactLifeCycleFunctions<ProjectRegistrationEditorProps, {}> = 
     });
 
     if (!isNullOrUndefined(history.location.state)) {
-      view.title = 'project.form.registration.editTitle';
-      view.subTitle = 'project.form.registration.editSubTitle';
+      view.title = projectMessage.registration.page.modifyTitle;
+      view.subTitle = projectMessage.registration.page.modifySubHeader;
 
       stateUpdate({ 
         formMode: FormMode.Edit,
@@ -308,8 +308,8 @@ const lifecycles: ReactLifeCycleFunctions<ProjectRegistrationEditorProps, {}> = 
     layoutDispatch.changeView({
       uid: AppMenu.ProjectRegistrationRequest,
       parentUid: AppMenu.ProjectRegistration,
-      title: intl.formatMessage({id: view.title}),
-      subTitle : intl.formatMessage({id: view.subTitle})
+      title: intl.formatMessage(view.title),
+      subTitle : intl.formatMessage(view.subTitle)
     });
 
     layoutDispatch.navBackShow(); 

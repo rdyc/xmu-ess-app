@@ -1,4 +1,5 @@
 import { FormMode } from '@generic/types';
+import { layoutMessage } from '@layout/locales/messages';
 import {
   Button,
   Dialog,
@@ -11,7 +12,6 @@ import {
 } from '@material-ui/core';
 import { ProjectAssignmentDetailProps } from '@project/components/assignment/detail/ProjectAssignmentDetail';
 import * as React from 'react';
-import { FormattedMessage } from 'react-intl';
 
 import { ProjectAssignment } from './shared/ProjectAssignment';
 import { ProjectAssignmentItem } from './shared/ProjectAssignmentItem';
@@ -55,7 +55,7 @@ export const ProjectAssignmentDetailView: React.SFC<ProjectAssignmentDetailProps
       {
         isLoading && 
         <Typography variant="body2">
-          <FormattedMessage id="global.loading"/>
+          {props.intl.formatMessage(layoutMessage.text.loading)}
         </Typography>
       }
       {

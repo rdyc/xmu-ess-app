@@ -128,7 +128,7 @@ const handlers: HandleCreators<ProjectAssignmentEditorProps, OwnHandlers> = {
   
     requiredFields.forEach(field => {
       if (!values[field] || isNullOrUndefined(values[field])) {
-        Object.assign(errors, {[field]: props.intl.formatMessage(projectMessage.assignment.for(field, 'fieldRequired'))});
+        Object.assign(errors, {[field]: props.intl.formatMessage(projectMessage.assignment.fieldFor(field, 'fieldRequired'))});
       }
     });
 
@@ -144,7 +144,7 @@ const handlers: HandleCreators<ProjectAssignmentEditorProps, OwnHandlers> = {
 
         requiredItemFields.forEach(field => {
           if (!item[field] || isNullOrUndefined(item[field])) {
-            Object.assign(itemError, {[`${field}`]: props.intl.formatMessage(projectMessage.assignment.for(field, 'fieldRequired'))});
+            Object.assign(itemError, {[`${field}`]: props.intl.formatMessage(projectMessage.assignment.fieldFor(field, 'fieldRequired'))});
           }
         });
 
@@ -172,7 +172,7 @@ const handlers: HandleCreators<ProjectAssignmentEditorProps, OwnHandlers> = {
 
     // props checking
     if (!values.projectUid) {
-      const message = intl.formatMessage(projectMessage.assignment.submission.invalidProps);
+      const message = intl.formatMessage(projectMessage.assignment.message.invalidProps);
 
       return Promise.reject(message);
     }
@@ -200,9 +200,9 @@ const handlers: HandleCreators<ProjectAssignmentEditorProps, OwnHandlers> = {
     let message: string = '';
 
     if (formMode === FormMode.Edit) {
-      message = intl.formatMessage(projectMessage.assignment.submission.updateSuccess);
+      message = intl.formatMessage(projectMessage.assignment.message.updateSuccess);
     } else {
-      message = intl.formatMessage(projectMessage.assignment.submission.createSuccess);
+      message = intl.formatMessage(projectMessage.assignment.message.createSuccess);
     }
 
     alertAdd({
@@ -225,7 +225,7 @@ const handlers: HandleCreators<ProjectAssignmentEditorProps, OwnHandlers> = {
     } else {
       alertAdd({
         time: new Date(),
-        message: intl.formatMessage(projectMessage.assignment.submission.createFailure),
+        message: intl.formatMessage(projectMessage.assignment.message.createFailure),
         details: isObject(submitError) ? submitError.message : submitError
       });
     }

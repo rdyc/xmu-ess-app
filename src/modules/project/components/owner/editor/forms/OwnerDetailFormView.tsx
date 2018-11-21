@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader } from '@material-ui/core';
+import { projectMessage } from '@project/locales/messages/projectMessage';
 import * as React from 'react';
-import { FormattedMessage } from 'react-intl';
 import { Field } from 'redux-form';
 
 import { OwnerDetailFormProps } from './OwnerDetailForm';
@@ -10,13 +10,12 @@ export const OwnerDetailFormView: React.SFC<OwnerDetailFormProps> = props => {
   
   const renderField = (name: string) => {
     const fieldName = name.replace('information.', '');
-    const fieldProps = props.generateFieldProps(name);
+    const fieldProps = props.generateFieldProps(fieldName);
 
     return (
       <Field
         key={fieldName}
         name={fieldName}
-        label={<FormattedMessage id={`project.field.${name}`} />}
         {...fieldProps}
       />
     );
@@ -25,8 +24,8 @@ export const OwnerDetailFormView: React.SFC<OwnerDetailFormProps> = props => {
   const render = (
     <Card square>
       <CardHeader 
-        title={<FormattedMessage id="project.ownerTitle"/>}
-        subheader={<FormattedMessage id="project.ownerSubTitle" />}
+        title={props.intl.formatMessage(projectMessage.registration.section.ownerTitle)}
+        subheader={props.intl.formatMessage(projectMessage.registration.section.ownerSubHeader)}
       />
       <CardContent>
         {names.map(name => renderField(name))}
