@@ -1,6 +1,5 @@
-import { WorkflowStatusType } from '@common/classes/types';
 import AppMenu from '@constants/AppMenu';
-import { ExpenseRequestUserAction } from '@expense/classes/types';
+import { ExpenseUserAction } from '@expense/classes/types';
 import { RequestDetailView } from '@expense/components/request/detail/RequestDetailView';
 import { WithExpenseRequest, withExpenseRequest } from '@expense/hoc/withExpenseRequest';
 import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
@@ -157,11 +156,11 @@ const lifecycles: ReactLifeCycleFunctions<RequestDetailProps, OwnState> = {
       
       const handleMenuClick = (menu: IAppBarMenu): void => {
         switch (menu.id) {
-          case ExpenseRequestUserAction.Refresh:
+          case ExpenseUserAction.Refresh:
             handleExpenseRefresh();
             break;
           
-          case ExpenseRequestUserAction.Modify:
+          case ExpenseUserAction.Modify:
             handleExpenseModify();
             break;
         
@@ -183,31 +182,14 @@ const lifecycles: ReactLifeCycleFunctions<RequestDetailProps, OwnState> = {
     componentWillReceiveProps(nextProps: RequestDetailProps) {
       if (nextProps.expenseRequestState.detail.response !== this.props.expenseRequestState.detail.response) {
         const { intl } = nextProps;
-        const { response } = nextProps.expenseRequestState.detail;
         const { assignMenus } = nextProps.appBarDispatch;
-        
-        const isStatusTypeEquals = (statusTypes: string[]): boolean => {
-          let result = false;
-  
-          if (response && response.data) {
-            result = statusTypes.indexOf(response.data.statusType) !== -1;
-          }
-  
-          return result;
-        };
-  
+          
         const currentMenus = [
           {
-            id: ExpenseRequestUserAction.Refresh,
+            id: ExpenseUserAction.Refresh,
             name: intl.formatMessage({id: 'global.action.refresh'}),
             enabled: true,
             visible: true
-          },
-          {
-            id: ExpenseRequestUserAction.Modify,
-            name: intl.formatMessage({id: 'expense.action.modify'}),
-            enabled: response !== undefined,
-            visible: isStatusTypeEquals([WorkflowStatusType.Submitted, WorkflowStatusType.InProgress])
           },
         ];
   

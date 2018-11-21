@@ -24,10 +24,11 @@ import { FormErrors } from 'redux-form';
 import { isNullOrUndefined, isObject } from 'util';
 
 import { WorkflowStatusType } from '@common/classes/types';
-import { ExpenseApprovalUserAction } from '@expense/classes/types';
+import { ExpenseUserAction } from '@expense/classes/types';
 import { RadioGroupChoice } from '@layout/components/input/radioGroup';
 import { IAppBarMenu } from '@layout/interfaces';
 import { WorkflowApprovalFormData } from '@organization/components/workflow/approval/WorkflowApprovalForm';
+import { organizationMessage } from '@organization/locales/messages/organizationMessage';
 import { ApprovalDetailView } from './ApprovalDetailView';
 
 interface OwnHandlers {
@@ -201,12 +202,11 @@ const lifecycles: ReactLifeCycleFunctions<ExpenseApprovalDetailProps, {}> = {
       subTitle : intl.formatMessage({id: 'expense.form.approval.newSubTitle'})
     });
     
-    layoutDispatch.navBackShow(); 
-    layoutDispatch.moreShow();
+    layoutDispatch.navBackShow();
     
     const handleMenuClick = (menu: IAppBarMenu): void => {
       switch (menu.id) {
-        case ExpenseApprovalUserAction.Refresh:
+        case ExpenseUserAction.Refresh:
           handleRefresh();
           break;
 
@@ -223,23 +223,6 @@ const lifecycles: ReactLifeCycleFunctions<ExpenseApprovalDetailProps, {}> = {
         positionUid: user.position.uid,
         expenseUid: match.params.expenseUid
       });
-    }
-  },
-  componentWillReceiveProps(nextProps: ExpenseApprovalDetailProps) {
-    if (nextProps.expenseApprovalState.detail.response !== this.props.expenseApprovalState.detail.response) {
-      const { intl } = nextProps;
-      const { assignMenus } = nextProps.appBarDispatch;
-
-      const currentMenus = [
-        {
-          id: ExpenseApprovalUserAction.Refresh,
-          name: intl.formatMessage({id: 'global.action.refresh'}),
-          enabled: true,
-          visible: true
-        }
-      ];
-
-      assignMenus(currentMenus);
     }
   },
   componentWillUnmount() {
@@ -261,8 +244,8 @@ const createProps: mapper<ExpenseApprovalDetailProps, OwnState> = (props: Expens
     approvalTitle: intl.formatMessage({id: 'expense.approvalTitle'}),
     approvalSubHeader: intl.formatMessage({id: 'expense.approvalSubHeader'}),
     approvalChoices: [
-      { value: WorkflowStatusType.Approved, label: intl.formatMessage({id: 'workflow.approval.action.approve'}) },
-      { value: WorkflowStatusType.Rejected, label: intl.formatMessage({id: 'workflow.approval.action.reject'}) }
+      { value: WorkflowStatusType.Approved, label: intl.formatMessage(organizationMessage.workflow.option.reject) },
+      { value: WorkflowStatusType.Rejected, label: intl.formatMessage(organizationMessage.workflow.option.reject) }
     ],
     approvalTrueValue: WorkflowStatusType.Approved,
     approvalDialogTitle: intl.formatMessage({id: 'expense.dialog.approvalTitle'}),

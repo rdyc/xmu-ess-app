@@ -1,137 +1,183 @@
+import AppMenu from '@constants/AppMenu';
 import { IExpense } from '@expense/classes/response';
-import { RequestListProps } from '@expense/components/request/list/RequestList';
-import { Divider, Grid, List, ListItem, ListSubheader, Paper, Typography } from '@material-ui/core';
-import { parseChanges } from '@utils/parseChanges';
+import { ExpenseField, ExpenseUserAction } from '@expense/classes/types';
+import { ExpenseSummary } from '@expense/components/request/detail/shared/ExpenseSummary';
+import { expenseFieldTranslator } from '@expense/helper';
+import { WithExpenseRequest, withExpenseRequest } from '@expense/hoc/withExpenseRequest';
+import {
+  CollectionConfig,
+  CollectionDataProps,
+  CollectionHandler,
+  CollectionPage,
+} from '@layout/components/pages';
+import { WithUser, withUser } from '@layout/hoc/withUser';
+import { IAppBarMenu } from '@layout/interfaces';
+import { layoutMessage } from '@layout/locales/messages';
+import { Button } from '@material-ui/core';
+import { isModuleRequestEditable } from '@organization/helper/isModuleRequestEditable';
 import * as moment from 'moment';
 import * as React from 'react';
-import { FormattedDate, FormattedNumber, FormattedPlural } from 'react-intl';
-import { isArray } from 'util';
+import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
+import { compose } from 'recompose';
 
-export const RequestListView: React.SFC<RequestListProps> = props => {
-  const { handleGoToDetail, intl } = props;
-  const { isLoading, response } = props.expenseRequestState.all;
-
-  const renderExpenseList = (expenses: IExpense[]) => {
-    const len = expenses.length - 1;
-
-    return (
-      expenses.map((expense, i) => 
-        <div key={expense.uid}>
-          <ListItem 
-            button={!isLoading} 
-            key={expense.uid} 
-            onClick={() => handleGoToDetail(expense.uid)}
-          >
-            <Grid container spacing={24}>
-              <Grid item xs={8} sm={8}>
-                <Typography 
-                  noWrap 
-                  color="primary" 
-                  variant="body2"
-                >
-                  {expense.notes} &bull;&nbsp; {intl.formatNumber(expense.value || 0)}
-                </Typography>
-                <Typography 
-                  noWrap
-                  variant="body1"
-                >
-                  {expense.customer && expense.customer.name} {expense.client && `(${expense.client.name})`} &bull;&nbsp;
-                  {expense.projectUid} {` - ${expense.project.name}`}
-                </Typography>
-                <Typography 
-                  noWrap
-                  color="textSecondary" 
-                  variant="caption"
-                >
-                  {expense.uid} &bull; {expense.expense && expense.expense.value} &bull; &nbsp;
-                  <FormattedDate 
-                    year="numeric"
-                    month="short"
-                    day="numeric"
-                    value={expense.date || ''} 
-                  />
-                </Typography>
-              </Grid>
-              <Grid item xs={4} sm={4}>
-                <Typography 
-                  noWrap 
-                  variant="body1" 
-                  align="right"
-                >
-                  {expense.status && expense.status.value}
-                </Typography>
-                <Typography 
-                  noWrap 
-                  color="secondary"
-                  variant="caption" 
-                  align="right"
-                >
-                  {parseChanges(expense.changes)}
-                </Typography>
-                <Typography 
-                  noWrap
-                  variant="caption" 
-                  align="right"
-                >
-                  {expense.changes && moment(expense.changes.updatedAt ? expense.changes.updatedAt : expense.changes.createdAt).fromNow()}
-                </Typography>
-              </Grid>
-            </Grid>
-          </ListItem>
-          {len !== i && <Divider />}
-        </div>
-      )
-    );
-  };
+const config: CollectionConfig<IExpense, AllProps> = {
+  // page info
+  page: (props: AllProps) => ({
+    uid: AppMenu.ExpenseRequest,
+    parentUid: AppMenu.Expense,
+    title: 'Expense', // intl.formatMessage({id: 'expense.title'}),
+    description: 'Lorem Ipsum Something', // intl.formatMessage({id: 'expense.subTitle'}),
+  }),
   
-  const RenderList = () => (
-    <List
-      component="nav"
-      subheader={
-        <ListSubheader
-          component="div"
-        >
-          {
-            response &&
-            response.metadata && 
-            response.metadata.paginate &&
-            <Grid container spacing={24}>
-              <Grid item xs={6} sm={6}>
-                <Typography variant="caption" color="primary">
-                  <FormattedNumber value={response.metadata.total} /> &nbsp;
-                  <FormattedPlural one="expense" other="expenses" value={response.metadata.total} />
-                </Typography>
-              </Grid>
-              <Grid item xs={6} sm={6}>
-                <Typography variant="caption" align="right" color="primary">
-                  <FormattedNumber value={response.metadata.paginate.current} /> of <FormattedNumber value={response.metadata.paginate.total} />
-                </Typography>
-              </Grid>
-            </Grid>
+  // top bar
+  fields: Object.keys(ExpenseField).map(key => ({ 
+    value: key, 
+    name: ExpenseField[key] 
+  })),
+  fieldTranslator: expenseFieldTranslator,
+
+  // selection
+  hasSelection: false,
+
+  // searching
+  hasSearching: true,
+  searchStatus: (states: AllProps): boolean => {
+    let result: boolean = false;
+
+    const { request } = states.expenseRequestState.all;
+
+    if (request && request.filter && request.filter.find) {
+      result = request.filter.find ? true : false;
+    }
+
+    return result;
+  },
+
+  // action centre
+  showActionCentre: true,
+
+  // more
+  hasMore: true,
+  moreOptions: (props: AllProps, callback: CollectionHandler): IAppBarMenu[] => ([
+    {
+      id: ExpenseUserAction.Refresh,
+      name: props.intl.formatMessage(layoutMessage.action.refresh),
+      enabled: true,
+      visible: true,
+      onClick: () => callback.handleForceReload()
+    },
+    {
+      id: ExpenseUserAction.Create,
+      name: props.intl.formatMessage(layoutMessage.action.create),
+      enabled: true,
+      visible: true,
+      onClick: () => callback.handleRedirectTo('/expense/requests/form')
+    }
+  ]),
+
+  // data filter
+  filter: {
+    orderBy: 'uid',
+    direction: 'descending'
+  },
+
+  // events
+  onDataLoad: (states: AllProps, callback: CollectionHandler, params: CollectionDataProps, forceReload?: boolean | false) => {
+    const { user } = states.userState;
+    const { isLoading, response } = states.expenseRequestState.all;
+    const { loadAllRequest } = states.expenseRequestDispatch;
+
+    // when user is set and not loading
+    if (user && !isLoading) {
+      // when response are empty or force reloading
+      if (!response || forceReload) {
+        loadAllRequest({
+          filter: {
+            companyUid: user.company.uid,
+            positionUid: user.position.uid,
+            start: undefined,
+            end: undefined,
+            status: undefined,
+            isRejected: undefined,
+            query: {
+              direction: params.direction,
+              orderBy: params.orderBy,
+              page: params.page,
+              size: params.size,
+              find: params.find,
+              findBy: params.findBy,
+            },
           }
-        </ListSubheader>
+        });
+      } else {
+        // just take data from previous response
+        callback.handleResponse(response);
       }
-    >
-      {
-        response &&
-        isArray(response.data) && 
-        renderExpenseList(response.data)
-      }
-    </List>
-  );
+    }
+  },
+  onUpdated: (states: AllProps, callback: CollectionHandler) => {
+    const { isLoading, response } = states.expenseRequestState.all;
+    
+    callback.handleLoading(isLoading);
+    callback.handleResponse(response);
+  },
+  onBind: (item: IExpense, index: number) => ({
+    key: index,
+    primary: item.notes && item.notes || '',
+    secondary: item.expense && item.expense.value || item.expenseType,
+    tertiary: item.project && item.project.name || item.projectUid,
+    quaternary: item.uid,
+    quinary: item.status && item.status.value || item.statusType,
+    senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
+  }),
 
-  const render = (
+  // summary component
+  summaryComponent: (item: IExpense) => ( 
+    <ExpenseSummary data={item} />
+  ),
+
+  // action component
+  actionComponent: (item: IExpense, callback: CollectionHandler) => (
     <React.Fragment>
-      {isLoading && response && <Typography variant="body2">loading</Typography>}     
-      {response &&
-        <Paper 
-          square 
-          elevation={1}
+      {
+        isModuleRequestEditable(item.statusType) &&
+        <Button 
+          size="small"
+          onClick={() => callback.handleRedirectTo(`/expense/requests/form`, { uid: item.uid })}
         >
-        <RenderList/>
-        </Paper>}
-    </React.Fragment>
-  );
+          <FormattedMessage {...layoutMessage.action.modify}/>
+        </Button> || ''
+      }
 
-  return render;
+      <Button 
+        size="small"
+        onClick={() => callback.handleRedirectTo(`/expense/requests/${item.uid}`)}
+      >
+        <FormattedMessage {...layoutMessage.action.details}/>
+      </Button>
+    </React.Fragment>
+  ),
+
+  // custom row render: uncomment to see different
+  // onRowRender: (item: IProject, index: number) => (
+  //   <div key={index}>{item.name}</div>
+  // )
 };
+
+type AllProps 
+  = WithUser
+  & WithExpenseRequest
+  & InjectedIntlProps;
+
+const requestListView: React.SFC<AllProps> = props => (
+  <CollectionPage
+    config={config}
+    connectedProps={props}
+  />
+);
+
+export const RequestListView = compose(
+  withUser,
+  withExpenseRequest,
+  injectIntl
+)(requestListView);
