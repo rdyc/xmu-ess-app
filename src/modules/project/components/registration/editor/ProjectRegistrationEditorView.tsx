@@ -1,4 +1,5 @@
 import { FormMode } from '@generic/types';
+import { layoutMessage } from '@layout/locales/messages';
 import { Typography } from '@material-ui/core';
 import {
   ProjectRegistrationContainerForm,
@@ -6,7 +7,6 @@ import {
 } from '@project/components/registration/editor/forms/ProjectRegistrationContainerForm';
 import { ProjectRegistrationEditorProps } from '@project/components/registration/editor/ProjectRegistrationEditor';
 import * as React from 'react';
-import { FormattedMessage } from 'react-intl';
 
 export const ProjectRegistrationEditorView: React.SFC<ProjectRegistrationEditorProps> = props => {
   const { formMode, handleValidate, handleSubmit, handleSubmitSuccess, handleSubmitFail } = props;
@@ -59,7 +59,7 @@ export const ProjectRegistrationEditorView: React.SFC<ProjectRegistrationEditorP
     if (isLoading && !response) {
       return (
         <Typography variant="body2">
-          <FormattedMessage id="global.loading"/>
+          {props.intl.formatMessage(layoutMessage.text.loading)}
         </Typography>
       );
     }

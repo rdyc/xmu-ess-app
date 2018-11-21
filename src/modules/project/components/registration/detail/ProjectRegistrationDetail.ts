@@ -6,11 +6,12 @@ import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithOidc, withOidc } from '@layout/hoc/withOidc';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IAppBarMenu } from '@layout/interfaces';
+import { layoutMessage } from '@layout/locales/messages';
 import { ProjectUserAction } from '@project/classes/types';
 import { ProjectRegistrationDetailView } from '@project/components/registration/detail/ProjectRegistrationDetailView';
 import { WithProjectRegistration, withProjectRegistration } from '@project/hoc/withProjectRegistration';
 import { projectMessage } from '@project/locales/messages/projectMessage';
-import { InjectedIntlProps, injectIntl } from 'react-intl';
+import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import {
   compose,
@@ -43,8 +44,8 @@ interface OwnState {
   dialogOpen: boolean;
   dialogTitle?: string | undefined;
   dialogDescription?: string | undefined;
-  dialogCancelText: string;
-  dialogConfirmedText: string;
+  dialogCancelText: FormattedMessage.MessageDescriptor;
+  dialogConfirmedText: FormattedMessage.MessageDescriptor;
 }
 
 interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
@@ -70,8 +71,8 @@ export type ProjectRegistrationDetailProps
 const createProps: mapper<ProjectRegistrationDetailProps, OwnState> = (props: ProjectRegistrationDetailProps): OwnState => ({ 
   dialogFullScreen: false,
   dialogOpen: false,
-  dialogCancelText: 'global.action.cancel',
-  dialogConfirmedText: 'global.action.ok',
+  dialogCancelText: layoutMessage.action.cancel,
+  dialogConfirmedText: layoutMessage.action.ok,
 });
 
 const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
@@ -85,8 +86,8 @@ const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
     dialogOpen: false,
     dialogTitle: undefined,
     dialogDescription: undefined,
-    dialogCancelText: 'global.action.cancel',
-    dialogConfirmedText: 'global.action.ok',
+    dialogCancelText: layoutMessage.action.cancel,
+    dialogConfirmedText: layoutMessage.action.ok,
   })
 };
 
@@ -111,10 +112,10 @@ const handlerCreators: HandleCreators<ProjectRegistrationDetailProps, Handler> =
       action: ProjectUserAction.Modify,
       dialogFullScreen: false,
       dialogOpen: true,
-      dialogTitle: intl.formatMessage({id: 'project.dialog.modifyTitle'}), 
-      dialogDescription: intl.formatMessage({id: 'project.dialog.modifyDescription'}),
-      dialogCancelText: intl.formatMessage({id: 'global.action.disaggree'}),
-      dialogConfirmedText: intl.formatMessage({id: 'global.action.aggree'})
+      dialogTitle: intl.formatMessage(projectMessage.registration.confirm.modifyTitle), 
+      dialogDescription: intl.formatMessage(projectMessage.registration.confirm.modifyDescription),
+      dialogCancelText: intl.formatMessage(layoutMessage.action.disaggree),
+      dialogConfirmedText: intl.formatMessage(layoutMessage.action.aggree)
     });
   },
   handleProjectClose: (props: ProjectRegistrationDetailProps) => () => { 
@@ -124,10 +125,10 @@ const handlerCreators: HandleCreators<ProjectRegistrationDetailProps, Handler> =
       action: ProjectUserAction.Close,
       dialogFullScreen: false,
       dialogOpen: true,
-      dialogTitle: intl.formatMessage({id: 'project.dialog.closeTitle'}), 
-      dialogDescription: intl.formatMessage({id: 'project.dialog.closeDescription'}),
-      dialogCancelText: intl.formatMessage({id: 'global.action.discard'}),
-      dialogConfirmedText: intl.formatMessage({id: 'global.action.continue'}),
+      dialogTitle: intl.formatMessage(projectMessage.registration.confirm.closeTitle), 
+      dialogDescription: intl.formatMessage(projectMessage.registration.confirm.closeDescription),
+      dialogCancelText: intl.formatMessage(layoutMessage.action.discard),
+      dialogConfirmedText: intl.formatMessage(layoutMessage.action.continue),
     });
   },
   handleProjectReOpen: (props: ProjectRegistrationDetailProps) => () => { 
@@ -137,10 +138,10 @@ const handlerCreators: HandleCreators<ProjectRegistrationDetailProps, Handler> =
       action: ProjectUserAction.ReOpen,
       dialogFullScreen: false,
       dialogOpen: true,
-      dialogTitle: intl.formatMessage({id: 'project.dialog.reOpenTitle'}), 
-      dialogDescription: intl.formatMessage({id: 'project.dialog.reOpenDescription'}),
-      dialogCancelText: intl.formatMessage({id: 'global.action.discard'}),
-      dialogConfirmedText: intl.formatMessage({id: 'global.action.continue'})
+      dialogTitle: intl.formatMessage(projectMessage.registration.confirm.reOpenDescription), 
+      dialogDescription: intl.formatMessage(projectMessage.registration.confirm.reOpenDescription),
+      dialogCancelText: intl.formatMessage(layoutMessage.action.discard),
+      dialogConfirmedText: intl.formatMessage(layoutMessage.action.continue)
     });
   },
   handleProjectChangeOwner: (props: ProjectRegistrationDetailProps) => () => { 
@@ -150,10 +151,10 @@ const handlerCreators: HandleCreators<ProjectRegistrationDetailProps, Handler> =
       action: ProjectUserAction.ChangeOwner,
       dialogFullScreen: false,
       dialogOpen: true,
-      dialogTitle: intl.formatMessage({id: 'project.dialog.changeOwnerTitle'}), 
-      dialogDescription: intl.formatMessage({id: 'project.dialog.changeOwnerDescription'}),
-      dialogCancelText: intl.formatMessage({id: 'global.action.discard'}),
-      dialogConfirmedText: intl.formatMessage({id: 'global.action.continue'}),
+      dialogTitle: intl.formatMessage(projectMessage.registration.confirm.changeOwnerTitle), 
+      dialogDescription: intl.formatMessage(projectMessage.registration.confirm.changeOwnerDescription),
+      dialogCancelText: intl.formatMessage(layoutMessage.action.discard),
+      dialogConfirmedText: intl.formatMessage(layoutMessage.action.continue),
     });
   },
   handleProjectManageSite: (props: ProjectRegistrationDetailProps) => () => { 
@@ -163,10 +164,10 @@ const handlerCreators: HandleCreators<ProjectRegistrationDetailProps, Handler> =
       action: ProjectUserAction.ManageSites,
       dialogFullScreen: false,
       dialogOpen: true,
-      dialogTitle: intl.formatMessage({id: 'project.dialog.manageSiteTitle'}), 
-      dialogDescription: intl.formatMessage({id: 'project.dialog.manageSiteDescription'}),
-      dialogCancelText: intl.formatMessage({id: 'global.action.discard'}),
-      dialogConfirmedText: intl.formatMessage({id: 'global.action.continue'}),
+      dialogTitle: intl.formatMessage(projectMessage.registration.confirm.manageSiteTitle), 
+      dialogDescription: intl.formatMessage(projectMessage.registration.confirm.manageSiteDescription),
+      dialogCancelText: intl.formatMessage(layoutMessage.action.discard),
+      dialogConfirmedText: intl.formatMessage(layoutMessage.action.continue),
     });
   },
   handleDialogOpen: (props: ProjectRegistrationDetailProps) => (title: string, description: string, cancelText?: string, confirmText?: string, fullScreen?: boolean) => { 
@@ -177,8 +178,8 @@ const handlerCreators: HandleCreators<ProjectRegistrationDetailProps, Handler> =
       dialogOpen: true,
       dialogTitle: title,
       dialogDescription: description,
-      dialogCancelText: cancelText || intl.formatMessage({id: dialogCancelText}),
-      dialogConfirmedText: confirmText || intl.formatMessage({id: dialogConfirmedText})
+      dialogCancelText: cancelText || intl.formatMessage(dialogCancelText),
+      dialogConfirmedText: confirmText || intl.formatMessage(dialogConfirmedText)
     });
   },
   handleDialogClose: (props: ProjectRegistrationDetailProps) => () => { 
@@ -356,13 +357,13 @@ const lifecycles: ReactLifeCycleFunctions<ProjectRegistrationDetailProps, OwnSta
       const currentMenus = [
         {
           id: ProjectUserAction.Refresh,
-          name: intl.formatMessage({id: 'global.action.refresh'}),
+          name: intl.formatMessage(layoutMessage.action.refresh),
           enabled: true,
           visible: true
         },
         {
           id: ProjectUserAction.Modify,
-          name: intl.formatMessage({id: 'project.action.modify'}),
+          name: intl.formatMessage(layoutMessage.action.modify),
           enabled: response !== undefined,
           visible: isStatusTypeEquals([
             WorkflowStatusType.Submitted, 
@@ -372,7 +373,7 @@ const lifecycles: ReactLifeCycleFunctions<ProjectRegistrationDetailProps, OwnSta
         },
         {
           id: ProjectUserAction.Close,
-          name: intl.formatMessage({id: 'project.action.close'}),
+          name: intl.formatMessage(projectMessage.registration.option.close),
           enabled: true,
           visible: isStatusTypeEquals([
             WorkflowStatusType.Approved, 
@@ -381,7 +382,7 @@ const lifecycles: ReactLifeCycleFunctions<ProjectRegistrationDetailProps, OwnSta
         },
         {
           id: ProjectUserAction.ReOpen,
-          name: intl.formatMessage({id: 'project.action.reOpen'}),
+          name: intl.formatMessage(projectMessage.registration.option.reOpen),
           enabled: true,
           visible: isStatusTypeEquals([
             WorkflowStatusType.Closed
@@ -389,7 +390,7 @@ const lifecycles: ReactLifeCycleFunctions<ProjectRegistrationDetailProps, OwnSta
         },
         {
           id: ProjectUserAction.ChangeOwner,
-          name: intl.formatMessage({id: 'project.action.owner'}),
+          name: intl.formatMessage(projectMessage.registration.option.owner),
           enabled: true,
           visible: isStatusTypeEquals([
             WorkflowStatusType.Approved,
@@ -397,7 +398,7 @@ const lifecycles: ReactLifeCycleFunctions<ProjectRegistrationDetailProps, OwnSta
         },
         {
           id: ProjectUserAction.ManageSites,
-          name: intl.formatMessage({id: 'project.action.site'}),
+          name: intl.formatMessage(projectMessage.registration.option.site),
           enabled: true,
           visible: isStatusTypeEquals([
             WorkflowStatusType.Approved,

@@ -1,49 +1,74 @@
 import {
-  projectAcceptanceDialog,
+  projectAcceptanceConfirm,
   projectAcceptanceMessage,
   projectAcceptancePage,
   projectAcceptanceSection,
 } from './projectAcceptanceMessage';
 import { projectAction } from './projectActionMessage';
-import { projectApprovalPage } from './projectApprovalMessage';
+import { projectApprovalConfirm, projectApprovalPage } from './projectApprovalMessage';
 import {
-  projectAssignmentAction,
+  projectAssignmentConfirm,
   projectAssignmentField,
   projectAssignmentFieldHelperFor,
+  projectAssignmentMessage,
+  projectAssignmentOption,
   projectAssignmentPage,
   projectAssignmentSection,
-  projectAssignmentSubmission,
 } from './projectAssignmentMessage';
 import {
+  projectRegistrationConfirm,
   projectRegistrationField,
+  projectRegistrationFieldHelperFor,
   projectRegistrationMessage,
+  projectRegistrationOption,
   projectRegistrationPage,
   projectRegistrationSection,
 } from './projectRegistrationMessage';
+import {
+  projectSiteField,
+  projectSiteFieldHelperFor,
+  projectSiteMessage,
+  projectSiteOption,
+  projectSitePage,
+  projectSiteSection,
+} from './projectSiteMessage';
 
 export const projectMessage = {
   action: projectAction,
   registration: {
     page: projectRegistrationPage,
+    option: projectRegistrationOption,
+    confirm: projectRegistrationConfirm,
     section: projectRegistrationSection,
     field: projectRegistrationField,
+    fieldFor: projectRegistrationFieldHelperFor,
     message: projectRegistrationMessage
   },
   approval: {
     page: projectApprovalPage,
+    confirm: projectApprovalConfirm
+  },
+  site: {
+    page: projectSitePage,
+    option: projectSiteOption,
+    section: projectSiteSection,
+    field: projectSiteField,
+    fieldFor: projectSiteFieldHelperFor,
+    message: projectSiteMessage
   },
   assignment: {
     page: projectAssignmentPage,
     section: projectAssignmentSection,
-    action: projectAssignmentAction,
+    option: projectAssignmentOption,
     field: projectAssignmentField,
-    for: projectAssignmentFieldHelperFor,
-    submission: projectAssignmentSubmission
+    fieldFor: projectAssignmentFieldHelperFor,
+    confirm: projectAssignmentConfirm,
+    message: projectAssignmentMessage
   },
   acceptance: {
     page: projectAcceptancePage,
     section: projectAcceptanceSection,
-    dialog: projectAcceptanceDialog,
+    confirm: projectAcceptanceConfirm,
     message: projectAcceptanceMessage,
   }
 };

@@ -25,9 +25,9 @@ export const projectAssignmentSection = defineMessages({
 });
 
 // action
-export const projectAssignmentAction = defineMessages({
-  addMember: { id: `${prefix}.action.addMember` },
-  acceptance: { id: `${prefix}.action.acceptance` },
+export const projectAssignmentOption = defineMessages({
+  addMember: { id: `${prefix}.option.addMember` },
+  acceptance: { id: `${prefix}.option.acceptance` },
 });
 
 // fields
@@ -103,8 +103,14 @@ export const projectAssignmentFieldHelperFor = (field: string, type: 'fieldName'
   return {id: field};
 };
 
-// process
-export const projectAssignmentSubmission = defineMessages({
+// confirm
+export const projectAssignmentConfirm = defineMessages({
+  modifyTitle: { id: `${prefix}.confirm.modify.title` },
+  modifyContent: { id: `${prefix}.confirm.modify.content` },
+});
+
+// messages
+export const projectAssignmentMessage = defineMessages({
   invalidProps: { id: `${prefix}.message.invalidProps` },
   createSuccess: { id: `${prefix}.message.create.success` },
   createFailure: { id: `${prefix}.message.create.failure` },

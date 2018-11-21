@@ -82,7 +82,7 @@ const projectAssignmentItem: React.SFC<AllProps> = props => (
           size="small"
           onClick={() => props.onClickItem && props.onClickItem()}
         >
-          {props.intl.formatMessage(projectMessage.assignment.action.acceptance)}
+          {props.intl.formatMessage(projectMessage.assignment.option.acceptance)}
         </Button>
       </CardActions>
     }

@@ -18,10 +18,10 @@ export const projectAcceptanceSection = defineMessages({
   approvalSubHeader: { id: `${prefix}.section.approval.subHeader` },
 });
 
-// dialog
-export const projectAcceptanceDialog = defineMessages({
-  approvalTitle: { id: `${prefix}.dialog.approval.title` },
-  approvalContent: { id: `${prefix}.dialog.approval.content` },
+// confirm
+export const projectAcceptanceConfirm = defineMessages({
+  approvalTitle: { id: `${prefix}.confirm.approval.title` },
+  approvalContent: { id: `${prefix}.confirm.approval.content` },
 });
 
 // message

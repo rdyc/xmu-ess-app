@@ -81,7 +81,7 @@ const handlerCreators: HandleCreators<ProjectRegistrationEditorProps, OwnHandler
   
     requiredFields.forEach(field => {
       if (!formData.information[field] || isNullOrUndefined(formData.information[field])) {
-        errors.information[field] = props.intl.formatMessage({id: `project.field.information.${field}.required`});
+        errors.information[field] = props.intl.formatMessage(projectMessage.registration.fieldFor(field, 'fieldRequired'));
       }
     });
     
@@ -276,8 +276,8 @@ const lifecycles: ReactLifeCycleFunctions<ProjectRegistrationEditorProps, {}> = 
     const { user } = this.props.userState;
     
     const view = {
-      title: 'project.form.registration.newTitle',
-      subTitle: 'project.form.registration.newSubTitle',
+      title: projectMessage.registration.page.newTitle,
+      subTitle: projectMessage.registration.page.newSubHeader,
     };
 
     if (!user) {
@@ -290,8 +290,8 @@ const lifecycles: ReactLifeCycleFunctions<ProjectRegistrationEditorProps, {}> = 
     });
 
     if (!isNullOrUndefined(history.location.state)) {
-      view.title = 'project.form.registration.editTitle';
-      view.subTitle = 'project.form.registration.editSubTitle';
+      view.title = projectMessage.registration.page.modifyTitle;
+      view.subTitle = projectMessage.registration.page.modifySubHeader;
 
       stateUpdate({ 
         formMode: FormMode.Edit,
@@ -308,8 +308,8 @@ const lifecycles: ReactLifeCycleFunctions<ProjectRegistrationEditorProps, {}> = 
     layoutDispatch.changeView({
       uid: AppMenu.ProjectRegistrationRequest,
       parentUid: AppMenu.ProjectRegistration,
-      title: intl.formatMessage({id: view.title}),
-      subTitle : intl.formatMessage({id: view.subTitle})
+      title: intl.formatMessage(view.title),
+      subTitle : intl.formatMessage(view.subTitle)
     });
 
     layoutDispatch.navBackShow(); 
