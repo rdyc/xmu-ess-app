@@ -10,6 +10,28 @@ export const leaveRequestMessage = defineMessages({
   updateFailure: { id: 'leave.message.request.update.failure' },
 });
 
+export const leaveRequestPage = defineMessages({
+  listTitle: { id: `${prefix}.page.list.title` },
+  listSubHeader: { id: `${prefix}.page.list.subHeader` },
+  detailTitle: { id: `${prefix}.page.detail.title` },
+  detailSubHeader: { id: `${prefix}.page.detail.subHeader` },
+  newTitle: { id: `${prefix}.page.new.title` },
+  newSubHeader: { id: `${prefix}.page.new.subHeader` },
+  modifyTitle: { id: `${prefix}.page.modify.title` },
+  modifySubHeader: { id: `${prefix}.page.modify.subHeader` },
+  
+  ownerModifyTitle: { id: `${prefix}.page.owner.modify.title` },
+  ownerModifySubHeader: { id: `${prefix}.page.owner.modify.subHeader` },
+  
+  statusModifyTitle: { id: `${prefix}.page.status.modify.title` },
+  statusModifySubHeader: { id: `${prefix}.page.status.modify.subHeader` }
+});
+
+export const leaveRequestConfirm = defineMessages({
+  modifyTitle: { id: `${prefix}.confirm.modify.title` },
+  modifyDescription: { id: `${prefix}.confirm.modify.description` },
+});
+
 // fields
 export const leaveRequestField = defineMessages({
   uid: { id: `${prefix}.field.information.uid` },
