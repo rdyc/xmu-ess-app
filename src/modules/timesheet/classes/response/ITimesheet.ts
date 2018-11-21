@@ -23,7 +23,7 @@ export interface ITimesheet {
   start: string;
   end: string;
   hours: number | null;
-  description: string | null;
+  description: string;
   rateUid: string | null;
   rateAmount: number | null;
   rateTotalAmount: number | null;

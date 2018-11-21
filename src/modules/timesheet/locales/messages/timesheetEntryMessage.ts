@@ -2,12 +2,37 @@ import { defineMessages } from 'react-intl';
 
 const prefix = 'timesheet.entry';
 
-export const timesheetEntryMessage = defineMessages({
-  emptyTimesheetUid: { id: 'timesheet.message.entry.empty.timesheetUid' },
-  createSuccess: { id: 'timesheet.message.entry.create.success' },
-  createFailure: { id: 'timesheet.message.entry.create.failure' },
-  updateSuccess: { id: 'timesheet.message.entry.update.success' },
-  updateFailure: { id: 'timesheet.message.entry.update.failure' },
+// page
+export const timesheetEntryPage = defineMessages({
+  listTitle: { id: `${prefix}.page.list.title` },
+  listSubHeader: { id: `${prefix}.page.list.subHeader` },
+  detailTitle: { id: `${prefix}.page.detail.title` },
+  detailSubHeader: { id: `${prefix}.page.detail.subHeader` },
+  newTitle: { id: `${prefix}.page.new.title` },
+  newSubHeader: { id: `${prefix}.page.new.subHeader` },
+  modifyTitle: { id: `${prefix}.page.modify.title` },
+  modifySubHeader: { id: `${prefix}.page.modify.subHeader` },
+  
+  statusModifyTitle: { id: `${prefix}.page.status.modify.title` },
+  statusModifySubHeader: { id: `${prefix}.page.status.modify.subHeader` }
+});
+
+// confirmation
+export const timesheetEntryConfirm = defineMessages({
+  modifyTitle: { id: `${prefix}.confirm.modify.title` },
+  modifyDescription: { id: `${prefix}.confirm.modify.description` },
+  closeTitle: { id: `${prefix}.confirm.close.title` },
+  closeDescription: { id: `${prefix}.confirm.close.description` },
+});
+
+// section
+export const timesheetEntrySection = defineMessages({
+  infoTitle: { id: `${prefix}.section.info.title` },
+  infoSubHeader: { id: `${prefix}.section.info.subHeader` },
+  statusTitle: { id: `${prefix}.section.status.title` },
+  statusSubHeader: { id: `${prefix}.section.status.subHeader` },
+  approvalTitle: { id: `${prefix}.section.approval.title` },
+  approvalSubHeader: { id: `${prefix}.section.approval.subHeader` },
 });
 
 // fields
@@ -49,6 +74,69 @@ export const timesheetEntryField = defineMessages({
   endRequired: { id: `${prefix}.field.information.end.required` },
   endPlaceholder: { id: `${prefix}.field.information.end.placeholder` },
   
-  notes: { id: `${prefix}.field.information.notes` },
-  notesPlaceholder: { id: `${prefix}.field.information.notes.placeholder` },
+  notes: { id: `${prefix}.field.information.description` },
+  notesPlaceholder: { id: `${prefix}.field.information.description.placeholder` },
+});
+
+export const timesheetEntryFieldHelperFor = (field: string, type: 'fieldName' | 'fieldRequired' | 'fieldPlaceholder') => {
+  if (type === 'fieldName') {
+    switch (field) {
+      case 'uid': return timesheetEntryField.uid;
+      case 'activityType': return timesheetEntryField.activityType;
+      case 'customerUid': return timesheetEntryField.customerUid;
+      case 'projectUid': return timesheetEntryField.projectUid;
+      case 'siteUid': return timesheetEntryField.siteUid;
+      case 'siteValue': return timesheetEntryField.siteValue;
+      case 'totalHours': return timesheetEntryField.totalHours;
+      case 'statusType': return timesheetEntryField.statusType;
+      case 'date': return timesheetEntryField.date;
+      case 'start': return timesheetEntryField.start;
+      case 'end': return timesheetEntryField.end;
+      case 'description': return timesheetEntryField.notes;
+    
+      default: return {id: field};
+    }
+  }
+
+  if (type === 'fieldRequired') {
+    switch (field) {
+      case 'activityType': return timesheetEntryField.activityTypeRequired;
+      case 'customerUid': return timesheetEntryField.customerUidRequired;
+      case 'projectUid': return timesheetEntryField.projectUidRequired;
+      case 'siteUid': return timesheetEntryField.siteUidRequired;
+      case 'date': return timesheetEntryField.dateRequired;
+      case 'start': return timesheetEntryField.startRequired;
+      case 'end': return timesheetEntryField.endRequired;
+
+      default: return {id: field};
+    }
+  }
+
+  if (type === 'fieldPlaceholder') {
+    switch (field) {
+      case 'uid': return timesheetEntryField.uidPlaceholder;
+      case 'activityType': return timesheetEntryField.activityTypePlaceholder;
+      case 'customerUid': return timesheetEntryField.customerUidPlaceholder;
+      case 'projectUid': return timesheetEntryField.projectUidPlaceholder;
+      case 'siteUid': return timesheetEntryField.siteUidPlaceholder;
+      case 'siteUid': return timesheetEntryField.siteUidPlaceholder;
+      case 'date': return timesheetEntryField.datePlaceholder;
+      case 'start': return timesheetEntryField.startPlaceholder;
+      case 'end': return timesheetEntryField.endPlaceholder;
+    
+      default: return {id: field};
+    }
+  }
+
+  return {id: field};
+};
+
+// message
+export const timesheetEntryMessage = defineMessages({
+  emptyTimesheetUid: { id: `${prefix}timesheet.message.empty.timesheetUid` },
+  emptyProps: { id: `${prefix}.message.emptyProps` },
+  createSuccess: { id: `${prefix}.message.create.success` },
+  createFailure: { id: `${prefix}.message.create.failure` },
+  updateSuccess: { id: `${prefix}.message.update.success` },
+  updateFailure: { id: `${prefix}.message.update.failure` },
 });

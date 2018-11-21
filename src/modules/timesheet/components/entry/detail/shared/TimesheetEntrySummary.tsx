@@ -23,7 +23,7 @@ type AllProps
   = OwnProps
   & InjectedIntlProps;
 
-const timesheetSummary: React.SFC<AllProps> = props => (
+const timesheetEntrySummary: React.SFC<AllProps> = props => (
   <Grid container>
     <Grid item xs={12} sm={6} md={3}>
       <TextField
@@ -147,6 +147,6 @@ const timesheetSummary: React.SFC<AllProps> = props => (
   </Grid>
 );
 
-export const TimesheetSumarry = compose<AllProps, OwnProps>(
+export const TimesheetEntrySumarry = compose<AllProps, OwnProps>(
   injectIntl
-)(timesheetSummary);
+)(timesheetEntrySummary);

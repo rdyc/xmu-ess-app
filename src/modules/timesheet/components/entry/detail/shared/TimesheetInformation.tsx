@@ -33,13 +33,13 @@ const timesheetInformation: React.SFC<AllProps> = props => {
         <TextField
           {...styled}
           margin="dense"
-          label={<FormattedMessage id="timesheet.field.information.uid" />}
+          label={<FormattedMessage id="timesheet.entry.field.information.uid" />}
           value={data.uid}
         />
         <TextField
           {...styled}
           margin="dense"
-          label={<FormattedMessage id="timesheet.field.information.date" />}
+          label={<FormattedMessage id="timesheet.entry.field.information.date" />}
           value={intl.formatDate(data.date, {
             year: 'numeric',
             month: 'short',
@@ -49,37 +49,37 @@ const timesheetInformation: React.SFC<AllProps> = props => {
         <TextField
           {...styled}
           margin="dense"
-          label={<FormattedMessage id="timesheet.field.information.activityType" />}
+          label={<FormattedMessage id="timesheet.entry.field.information.activityType" />}
           value={data.activity ? data.activity.value : 'N/A'}
         />
         <TextField
           {...styled}
           margin="dense"
-          label={<FormattedMessage id="timesheet.field.information.customerUid" />}
+          label={<FormattedMessage id="timesheet.entry.field.information.customerUid" />}
           value={data.customer ? data.customer.name : 'N/A'}
         />
         <TextField
           {...styled}
           margin="dense"
-          label={<FormattedMessage id="timesheet.field.information.projectUid" />}
+          label={<FormattedMessage id="timesheet.entry.field.information.projectUid" />}
           value={data.project ? `${data.project.uid} - ${data.project.name}` : 'N/A'}
         />
         <TextField
           {...styled}
           margin="dense"
-          label={<FormattedMessage id="timesheet.field.information.siteUid" />}
+          label={<FormattedMessage id="timesheet.entry.field.information.siteUid" />}
           value={data.site ? data.site.name : 'N/A'}
         />
         <TextField
           {...styled}
           margin="dense"
-          label={<FormattedMessage id="timesheet.field.information.siteValue" />}
+          label={<FormattedMessage id="timesheet.entry.field.information.siteValue" />}
           value={intl.formatNumber(data.site ? data.site.value : 0)}
         />
         <TextField
           {...styled}
           margin="dense"
-          label={<FormattedMessage id="timesheet.field.information.start" />}
+          label={<FormattedMessage id="timesheet.entry.field.information.start" />}
           value={intl.formatTime(data.start, {
             hour: 'numeric',
             minute: 'numeric',
@@ -90,7 +90,7 @@ const timesheetInformation: React.SFC<AllProps> = props => {
         <TextField
           {...styled}
           margin="dense"
-          label={<FormattedMessage id="timesheet.field.information.end" />}
+          label={<FormattedMessage id="timesheet.entry.field.information.end" />}
           value={intl.formatTime(data.end, {
             hour: 'numeric',
             minute: 'numeric',
@@ -101,20 +101,20 @@ const timesheetInformation: React.SFC<AllProps> = props => {
         <TextField
           {...styled}
           margin="dense"
-          label={<FormattedMessage id="timesheet.field.information.totalHours" />}
+          label={<FormattedMessage id="timesheet.entry.field.information.totalHours" />}
           value={data.hours ? data.hours : 0}
         />
         <TextField
           {...styled}
           margin="dense"
-          label={<FormattedMessage id="timesheet.field.information.description" />}
+          label={<FormattedMessage id="timesheet.entry.field.information.description" />}
           value={data.description || 'N/A'}
         />
         {(data.statusType === WorkflowStatusType.Approved || data.statusType === WorkflowStatusType.Rejected) ?
           <TextField
           {...styled}
           margin="dense"
-          label={<FormattedMessage id="timesheet.field.information.approvalNote" />}
+          label={<FormattedMessage id="timesheet.entry.field.information.approvalNote" />}
           value={data.notes || 'N/A'}
         /> : ''
         }

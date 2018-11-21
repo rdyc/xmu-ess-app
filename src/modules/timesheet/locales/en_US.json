@@ -1,9 +1,15 @@
 {
   "timesheet.title": "Time Report",
-  "timesheet.history.title": "Time Report History",
-  "timesheet.approval.title": "Time Report Approval",
-  "timesheet.approval.history.title": "Time Approval History",
-  "timesheet.subTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+
+  "timesheet.entry.page.list.title": "Time Report History",
+  "timesheet.entry.page.list.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  
+  "timesheet.approval.page.list.title": "Time Report Approval",
+  "timesheet.approval.page.list.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  
+  "timesheet.approval.history.page.list.title": "Time Approval History",
+  "timesheet.approval.history.page.list.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+
   "timesheet.detail.title": "Detail Time Report",
   "timesheet.detail.subTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
   "timesheet.form.newTitle": "Time Report Entry",
@@ -52,8 +58,8 @@
   "timesheet.entry.field.information.end.required": "End is required",
   "timesheet.entry.field.information.end.placeholder": "Select a time's up",
   
-  "timesheet.entry.field.information.notes": "Notes",
-  "timesheet.entry.field.information.notes.placeholder": "Please fill in the notes",
+  "timesheet.entry.field.information.description": "Notes",
+  "timesheet.entry.field.information.description.placeholder": "Please fill in the notes",
   
   "timesheet.entry.field.information.siteValue": "Site Value",
   "timesheet.entry.field.information.totalHours": "Total Hours",

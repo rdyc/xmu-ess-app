@@ -28,7 +28,7 @@ export const TimesheetEntryDetailFormView: React.SFC<EntryDetailFormProps> = pro
       <Field
         key={fieldName}
         name={fieldName}
-        label={<FormattedMessage id={`timesheet.field.${name}`} />}
+        label={<FormattedMessage id={`timesheet.entry.field.${name}`} />}
         {...fieldProps}
       />
     );
