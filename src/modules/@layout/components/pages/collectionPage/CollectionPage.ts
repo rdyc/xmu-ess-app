@@ -7,7 +7,7 @@ import { IAppBarMenu } from '@layout/interfaces';
 import { WithStyles, withStyles, withWidth } from '@material-ui/core';
 import { WithWidth } from '@material-ui/core/withWidth';
 import styles from '@styles';
-import { InjectedIntlProps, injectIntl } from 'react-intl';
+import { RouteComponentProps, withRouter } from 'react-router';
 import {
   compose,
   HandleCreators,
@@ -24,25 +24,26 @@ import {
 
 import { CollectionPageView } from './CollectionPageView';
 
-export interface CollectionConfig<Tres, Tconn> {
-  uid: AppMenu | string;
-  parentUid?: AppMenu | string;
-  title: string;
-  description: string;
+export interface CollectionConfig<Tresponse, Tinner> {
+  page: (props: Tinner) => {
+    uid: AppMenu | string;
+    parentUid?: AppMenu | string;
+    title: string;
+    description: string;
+  };
   fields: ICollectionValue[];
   fieldTranslator?: (find: string, field: ICollectionValue) => string;
   hasMore?: boolean | false;
-  moreOptions?: (props: CollectionPageProps) => IAppBarMenu[];
+  moreOptions?: (props: Tinner, callback: CollectionHandler) => IAppBarMenu[];
   hasSearching?: boolean | false;
-  searchStatus?: (states: Tconn) => boolean;
+  searchStatus?: (props: Tinner) => boolean;
   hasSelection?: boolean | false;
   selectionProcessing?: (values: string[]) => void;
-  hasRedirection?: boolean | false;
   showActionCentre?: boolean | false;
   filter?: IBasePagingFilter | IBaseFilter;
-  onDataLoad: (states: Tconn, callback: CollectionHandler, params: CollectionDataProps, forceReload?: boolean | false) => void;
-  onUpdated: (states: Tconn, callback: CollectionHandler) => void;
-  onBind: (item: Tres, index: number) => {
+  onDataLoad: (props: Tinner, callback: CollectionHandler, params: CollectionDataProps, forceReload?: boolean | false) => void;
+  onUpdated: (props: Tinner, callback: CollectionHandler) => void;
+  onBind: (item: Tresponse, index: number, props: Tinner) => {
     key: any;
     primary: string;
     secondary: string;
@@ -51,10 +52,9 @@ export interface CollectionConfig<Tres, Tconn> {
     quinary: string;
     senary: string;
   };
-  onRowRender?: (item: Tres, index: number) => JSX.Element;
-  summaryComponent: (item: Tres) => JSX.Element;
-  actionComponent?: (item: Tres) => JSX.Element;
-  onRedirect: (item: Tres) => string;
+  onRowRender?: (item: Tresponse, index: number) => JSX.Element;
+  summaryComponent: (item: Tresponse) => JSX.Element;
+  actionComponent?: (item: Tresponse, callback: CollectionHandler) => JSX.Element;
 }
 
 interface OwnOption {
@@ -106,12 +106,15 @@ interface OwnStateUpdater extends StateHandlerMap<OwnState> {
 }
 
 interface OwnHandler {
+  handleLoading: (isLoading: boolean) => void;
   handleResponse: (response: IResponseCollection<any> | undefined) => void;
+  handleForceReload: () => void;
   handleOnChangeSelection: (event: React.ChangeEvent<HTMLInputElement>) => void;
   handleOnSearch: (find: string | undefined, field: ICollectionValue | undefined) => void;
+  handleRedirectTo: (path: string, state?: any) => void;
 }
 
-export type CollectionHandler = Pick<CollectionPageProps, 'setLoading' | 'handleResponse'>;
+export type CollectionHandler = Pick<CollectionPageProps, 'handleLoading' | 'handleResponse' | 'handleForceReload' | 'handleRedirectTo'>;
 export type CollectionDataProps = Pick<CollectionPageProps, 'find' | 'findBy' | 'orderBy' | 'direction' | 'page' | 'size'>;
 
 export type CollectionPageProps
@@ -123,7 +126,7 @@ export type CollectionPageProps
   & WithWidth
   & WithLayout
   & WithAppBar
-  & InjectedIntlProps;
+  & RouteComponentProps;
 
 const createProps: mapper<OwnOption, OwnState> = (props: OwnOption): OwnState => ({
   forceReload: false,
@@ -207,8 +210,14 @@ const stateUpdaters: StateUpdaters<OwnOption, OwnState, OwnStateUpdater> = {
 };
 
 const handlerCreators: HandleCreators<CollectionPageProps, OwnHandler> = {
+  handleLoading: (props: CollectionPageProps) => (isLoading: boolean) => {
+    props.setLoading(isLoading);
+  },
   handleResponse: (props: CollectionPageProps) => (response: IResponseCollection<any> | undefined) => {
     props.setSource(response);
+  },
+  handleForceReload: (props: CollectionPageProps) => () => {
+    props.setForceReload(true);
   },
   handleOnChangeSelection: (props: CollectionPageProps) => (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
@@ -235,6 +244,9 @@ const handlerCreators: HandleCreators<CollectionPageProps, OwnHandler> = {
       // set search state props to default
       props.setSearchDefault();
     }
+  },
+  handleRedirectTo: (props: CollectionPageProps) => (path: string, state?: any) => {
+    props.history.push(path, state);
   }
 };
 
@@ -244,12 +256,13 @@ const lifecycles: ReactLifeCycleFunctions<CollectionPageProps, OwnState> = {
     const isSearching: boolean = this.props.config.searchStatus ? this.props.config.searchStatus(this.props.connectedProps) : false;
 
     // configure view
+    const page = this.props.config.page(this.props.connectedProps);
     this.props.layoutDispatch.setupView({
       view: {
-        uid: this.props.config.uid,
-        parentUid: this.props.config.parentUid,
-        title: this.props.config.title,
-        subTitle: this.props.config.description,
+        uid: page.uid,
+        parentUid: page.parentUid,
+        title: page.title,
+        subTitle: page.description,
       },
       status: {
         isSearchVisible: this.props.config.hasSearching,
@@ -282,7 +295,7 @@ const lifecycles: ReactLifeCycleFunctions<CollectionPageProps, OwnState> = {
 
     // assign more menu items
     if (this.props.config.hasMore && this.props.config.moreOptions) {
-      const menuOptions = this.props.config.moreOptions(this.props);
+      const menuOptions = this.props.config.moreOptions(this.props.connectedProps, this.props);
 
       this.props.appBarDispatch.assignMenus(menuOptions);
     }
@@ -311,11 +324,11 @@ const lifecycles: ReactLifeCycleFunctions<CollectionPageProps, OwnState> = {
 
 export const CollectionPage = compose<CollectionPageProps, OwnOption>(
   setDisplayName('CollectionPage'),
+  withRouter,
   withStyles(styles),
   withWidth(),
   withLayout,
   withAppBar,
-  injectIntl,
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
   lifecycle(lifecycles)

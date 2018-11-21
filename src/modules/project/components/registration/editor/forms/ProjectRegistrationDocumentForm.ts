@@ -3,6 +3,7 @@ import { ProjectDocumentFormData } from '@project/components/registration/editor
 import {
   ProjectRegistrationDocumentFormView,
 } from '@project/components/registration/editor/forms/ProjectRegistrationDocumentFormView';
+import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose, HandleCreators, lifecycle, ReactLifeCycleFunctions, withHandlers } from 'recompose';
 import { WrappedFieldArrayProps } from 'redux-form';
 
@@ -19,7 +20,8 @@ interface OwnHandlers {
 export type ProjectDocumentFormProps
   = OwnProps
   & OwnHandlers
-  & WithCommonSystem;
+  & WithCommonSystem
+  & InjectedIntlProps;
 
 const handlerCreators: HandleCreators<ProjectDocumentFormProps, OwnHandlers> = {
   handleChange: (props: ProjectDocumentFormProps) => (event: React.ChangeEvent<HTMLInputElement>, checked: boolean): void => { 
@@ -94,6 +96,7 @@ const lifecycles: ReactLifeCycleFunctions<ProjectDocumentFormProps, {}> = {
 
 export const ProjectRegistrationDocumentForm = compose<ProjectDocumentFormProps, OwnProps>(
   withCommonSystem,
+  injectIntl,
   withHandlers<ProjectDocumentFormProps, OwnHandlers>(handlerCreators),
   lifecycle<ProjectDocumentFormProps, {}>(lifecycles),
 )(ProjectRegistrationDocumentFormView);

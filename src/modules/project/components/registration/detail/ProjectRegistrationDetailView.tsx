@@ -1,4 +1,5 @@
 import { ProjectType } from '@common/classes/types';
+import { layoutMessage } from '@layout/locales/messages';
 import {
   Button,
   Dialog,
@@ -11,8 +12,8 @@ import {
 } from '@material-ui/core';
 import { WorkflowHistory } from '@organization/components/workflow/history/WorkflowHistory';
 import { ProjectRegistrationDetailProps } from '@project/components/registration/detail/ProjectRegistrationDetail';
+import { projectMessage } from '@project/locales/messages/projectMessage';
 import * as React from 'react';
-import { FormattedMessage } from 'react-intl';
 
 import { ProjectDocument } from './shared/ProjectDocument';
 import { ProjectInformation } from './shared/ProjectInformation';
@@ -58,7 +59,7 @@ export const ProjectRegistrationDetailView: React.SFC<ProjectRegistrationDetailP
       {
         isLoading && 
         <Typography variant="body2">
-          <FormattedMessage id="global.loading"/>
+          {intl.formatMessage(layoutMessage.text.loading)}
         </Typography>
       }
       {
@@ -76,8 +77,8 @@ export const ProjectRegistrationDetailView: React.SFC<ProjectRegistrationDetailP
                 response.data.projectType === ProjectType.Project &&
                 <Grid item>
                   <ProjectDocument 
-                    title={intl.formatMessage({id: 'project.document.projectTitle'})}
-                    subHeader={intl.formatMessage({id: 'project.document.projectSubTitle'})}
+                    title={intl.formatMessage(projectMessage.registration.section.documentProjectTitle)}
+                    subHeader={intl.formatMessage(projectMessage.registration.section.documentProjectSubHeader)}
                     data={response.data.documents}
                   />
                 </Grid>
@@ -87,8 +88,8 @@ export const ProjectRegistrationDetailView: React.SFC<ProjectRegistrationDetailP
                 response.data.projectType === ProjectType.PreSales &&
                 <Grid item>
                   <ProjectDocument 
-                    title={intl.formatMessage({id: 'project.document.preSalesTitle'})}
-                    subHeader={intl.formatMessage({id: 'project.document.preSalesSubTitle'})}
+                    title={intl.formatMessage(projectMessage.registration.section.documentPreSalesTitle)}
+                    subHeader={intl.formatMessage(projectMessage.registration.section.documentPreSalesSubHeader)}
                     data={response.data.documentPreSales}
                   />
                 </Grid>
