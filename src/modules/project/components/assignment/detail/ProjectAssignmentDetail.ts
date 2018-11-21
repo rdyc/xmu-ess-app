@@ -4,10 +4,11 @@ import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithOidc, withOidc } from '@layout/hoc/withOidc';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IAppBarMenu } from '@layout/interfaces';
+import { layoutMessage } from '@layout/locales/messages';
 import { ProjectUserAction } from '@project/classes/types';
 import { WithProjectAssignment, withProjectAssignment } from '@project/hoc/withProjectAssignment';
 import { projectMessage } from '@project/locales/messages/projectMessage';
-import { InjectedIntlProps, injectIntl } from 'react-intl';
+import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import {
   compose,
@@ -38,8 +39,8 @@ interface OwnState {
   dialogOpen: boolean;
   dialogTitle?: string | undefined;
   dialogDescription?: string | undefined;
-  dialogCancelText: string;
-  dialogConfirmedText: string;
+  dialogCancelText: FormattedMessage.MessageDescriptor;
+  dialogConfirmedText: FormattedMessage.MessageDescriptor;
 }
 
 interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
@@ -65,8 +66,8 @@ export type ProjectAssignmentDetailProps
 const createProps: mapper<ProjectAssignmentDetailProps, OwnState> = (props: ProjectAssignmentDetailProps): OwnState => ({ 
   dialogFullScreen: false,
   dialogOpen: false,
-  dialogCancelText: 'global.action.cancel',
-  dialogConfirmedText: 'global.action.ok',
+  dialogCancelText: layoutMessage.action.cancel,
+  dialogConfirmedText: layoutMessage.action.ok,
 });
 
 const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
@@ -80,8 +81,8 @@ const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
     dialogOpen: false,
     dialogTitle: undefined,
     dialogDescription: undefined,
-    dialogCancelText: 'global.action.cancel',
-    dialogConfirmedText: 'global.action.ok',
+    dialogCancelText: layoutMessage.action.cancel,
+    dialogConfirmedText: layoutMessage.action.ok,
   })
 };
 
@@ -105,10 +106,10 @@ const handlerCreators: HandleCreators<ProjectAssignmentDetailProps, Handler> = {
       action: ProjectUserAction.Modify,
       dialogFullScreen: false,
       dialogOpen: true,
-      dialogTitle: intl.formatMessage({id: 'project.dialog.modifyTitle'}), 
-      dialogDescription: intl.formatMessage({id: 'project.dialog.modifyDescription'}),
-      dialogCancelText: intl.formatMessage({id: 'global.action.disaggree'}),
-      dialogConfirmedText: intl.formatMessage({id: 'global.action.aggree'})
+      dialogTitle: intl.formatMessage(projectMessage.assignment.confirm.modifyTitle), 
+      dialogDescription: intl.formatMessage(projectMessage.assignment.confirm.modifyContent),
+      dialogCancelText: intl.formatMessage(layoutMessage.action.disaggree),
+      dialogConfirmedText: intl.formatMessage(layoutMessage.action.aggree)
     });
   },
   handleDialogOpen: (props: ProjectAssignmentDetailProps) => (title: string, description: string, cancelText?: string, confirmText?: string, fullScreen?: boolean) => { 
@@ -119,8 +120,8 @@ const handlerCreators: HandleCreators<ProjectAssignmentDetailProps, Handler> = {
       dialogOpen: true,
       dialogTitle: title,
       dialogDescription: description,
-      dialogCancelText: cancelText || intl.formatMessage({id: dialogCancelText}),
-      dialogConfirmedText: confirmText || intl.formatMessage({id: dialogConfirmedText})
+      dialogCancelText: cancelText || intl.formatMessage(dialogCancelText),
+      dialogConfirmedText: confirmText || intl.formatMessage(dialogConfirmedText)
     });
   },
   handleDialogClose: (props: ProjectAssignmentDetailProps) => () => { 
@@ -233,13 +234,13 @@ const lifecycles: ReactLifeCycleFunctions<ProjectAssignmentDetailProps, OwnState
       const currentMenus = [
         {
           id: ProjectUserAction.Refresh,
-          name: intl.formatMessage({id: 'global.action.refresh'}),
+          name: intl.formatMessage(layoutMessage.action.refresh),
           enabled: true,
           visible: true
         },
         {
           id: ProjectUserAction.Modify,
-          name: intl.formatMessage({id: 'project.action.modify'}),
+          name: intl.formatMessage(layoutMessage.action.modify),
           enabled: true,
           visible: true
         }

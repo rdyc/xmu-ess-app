@@ -2,6 +2,7 @@ import { SelectSystem, SelectSystemOption } from '@common/components/select';
 import { FormMode } from '@generic/types';
 import { InputText } from '@layout/components/input/text';
 import { WithAllowedStatusType, withAllowedStatusType } from '@project/hoc/withAllowedStatusType';
+import { projectMessage } from '@project/locales/messages/projectMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose, HandleCreators, withHandlers } from 'recompose';
 import { BaseFieldsProps } from 'redux-form';
@@ -28,16 +29,15 @@ const handlerCreators: HandleCreators<StatusDetailFormProps, OwnHandlers> = {
   generateFieldProps: (props: StatusDetailFormProps) => (name: string) => { 
     const { allowedStatusTypes, intl, statusType } = props;
     
-    const fieldName = name.replace('information.', '');
-    
     let fieldProps: SelectSystemOption & any = {};
   
-    switch (fieldName) {
+    switch (name) {
       case 'statusType':
         fieldProps = {
           required: true,
           category: 'status',
-          placeholder: intl.formatMessage({id: `project.field.${name}.placeholder`}),
+          label: intl.formatMessage(projectMessage.registration.fieldFor(name, 'fieldName')),
+          placeholder: intl.formatMessage(projectMessage.registration.fieldFor(name, 'fieldPlaceholder')),
           component: SelectSystem,
           onlyForTypes: allowedStatusTypes(statusType)
         };
@@ -46,7 +46,8 @@ const handlerCreators: HandleCreators<StatusDetailFormProps, OwnHandlers> = {
       default:
         fieldProps = {
           disabled: true,
-          placeholder: intl.formatMessage({id: `project.field.${name}.placeholder`}),
+          label: intl.formatMessage(projectMessage.registration.fieldFor(name, 'fieldName')),
+          placeholder: intl.formatMessage(projectMessage.registration.fieldFor(name, 'fieldPlaceholder')),
           component: InputText
         };
         break;

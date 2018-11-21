@@ -1,3 +1,4 @@
+import { layoutMessage } from '@layout/locales/messages';
 import {
   Button,
   Card,
@@ -20,8 +21,9 @@ import {
 } from '@material-ui/core';
 import { isWidthDown } from '@material-ui/core/withWidth';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
+import { projectMessage } from '@project/locales/messages/projectMessage';
 import * as React from 'react';
-import { FormattedMessage, FormattedNumber } from 'react-intl';
+import { FormattedNumber } from 'react-intl';
 import { FormInstance } from 'redux-form';
 
 import { ProjectInformation } from '../registration/detail/shared/ProjectInformation';
@@ -41,21 +43,21 @@ export const SiteEditorView: React.SFC<SiteEditorProps> = props => {
   const ref = React.createRef<FormInstance<any, any, any>>();
   const isMobile = isWidthDown('sm', width);
   
-  const dialogTitle = (): string => {
+  const dialogTitle = () => {
     switch (editAction) {
-      case 'update': return 'project.form.site.editTitle';
-      case 'delete': return 'project.form.site.deleteTitle';
+      case 'update': return projectMessage.site.page.modifyTitle;
+      case 'delete': return projectMessage.site.page.deleteTitle;
     
-      default: return 'project.form.site.addTitle';
+      default: return projectMessage.site.page.newTitle;
     }
   };
 
-  const dialogSubTitle = (): string => {
+  const dialogSubTitle = () => {
     switch (editAction) {
-      case 'update': return 'project.form.site.editSubTitle';
-      case 'delete': return 'project.form.site.deleteSubTitle';
+      case 'update': return projectMessage.site.page.modifySubHeader;
+      case 'delete': return projectMessage.site.page.deleteSubHeader;
     
-      default: return 'project.form.site.addSubTitle';
+      default: return projectMessage.site.page.newSubHeader;
     }
   };
 
@@ -66,11 +68,11 @@ export const SiteEditorView: React.SFC<SiteEditorProps> = props => {
     >
       <DialogTitle disableTypography>
         <Typography variant="title" color="primary">
-          <FormattedMessage id={dialogTitle()} />
+          {props.intl.formatMessage(dialogTitle())}
         </Typography>
 
         <Typography variant="subheading">
-        <FormattedMessage id={dialogSubTitle()} />
+          {props.intl.formatMessage(dialogSubTitle())}
         </Typography>
       </DialogTitle>
       
@@ -88,7 +90,7 @@ export const SiteEditorView: React.SFC<SiteEditorProps> = props => {
       
       <DialogActions>
         <Button onClick={() => handleDialogClose()} color="secondary">
-          <FormattedMessage id="global.action.discard" />
+          {props.intl.formatMessage(layoutMessage.action.discard)}
         </Button>
 
         {
@@ -98,7 +100,7 @@ export const SiteEditorView: React.SFC<SiteEditorProps> = props => {
             color="secondary"
             onClick={() => ref.current && ref.current.reset()}
           >
-            <FormattedMessage id={'global.action.reset' }/>
+            {props.intl.formatMessage(layoutMessage.action.reset)}
           </Button>
         }
 
@@ -107,7 +109,7 @@ export const SiteEditorView: React.SFC<SiteEditorProps> = props => {
           color="secondary"
           onClick={() => ref.current && ref.current.submit()}
         >
-          <FormattedMessage id={props.submitting ? 'global.processing' : 'global.action.submit' }/>
+          {props.intl.formatMessage(props.submitting ? layoutMessage.text.processing : layoutMessage.action.submit)}
         </Button>
       </DialogActions>
     </Dialog>
@@ -116,8 +118,8 @@ export const SiteEditorView: React.SFC<SiteEditorProps> = props => {
   const renderSites = (
     <Card square>
       <CardHeader 
-        title={<FormattedMessage id="project.siteTitle" />}
-        subheader={<FormattedMessage id="project.siteSubTitle" />}
+        title={props.intl.formatMessage(projectMessage.site.section.itemTitle)}
+        subheader={props.intl.formatMessage(projectMessage.site.section.itemSubHeader)}
       />
       <CardContent>
         <List>
@@ -171,10 +173,10 @@ export const SiteEditorView: React.SFC<SiteEditorProps> = props => {
           onClose={handleMenuClose}
         >
           <MenuItem onClick={() => handleEdit('update')}>
-            <FormattedMessage id="project.site.action.edit"/>
+            {props.intl.formatMessage(projectMessage.site.option.modify)}
           </MenuItem>
           <MenuItem onClick={() => handleEdit('delete')}>
-            <FormattedMessage id="project.site.action.delete"/>
+            {props.intl.formatMessage(projectMessage.site.option.remove)}
           </MenuItem>
         </Menu>
       </CardContent>
@@ -183,7 +185,7 @@ export const SiteEditorView: React.SFC<SiteEditorProps> = props => {
           color="secondary"
           onClick={() => handleNew()}
         >
-          <FormattedMessage id="project.site.action.new" />
+          {props.intl.formatMessage(projectMessage.site.option.new)}
         </Button>
       </CardActions>
     </Card>

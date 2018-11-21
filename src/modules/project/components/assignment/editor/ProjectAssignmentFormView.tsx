@@ -126,7 +126,7 @@ const ProjectAssignmentItemFormView: React.SFC<WrappedFieldArrayProps<ProjectAss
                 mandays: 0,
                 hours: 0
               })}>
-                {props.intl.formatMessage(projectMessage.assignment.action.addMember)}
+                {props.intl.formatMessage(projectMessage.assignment.option.addMember)}
               </Button>
             </CardActions>
           </Card>
