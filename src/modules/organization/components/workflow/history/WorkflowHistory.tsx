@@ -87,7 +87,10 @@ const workflowHistoryView: React.SFC<AllProps> = props => {
           { 
             !data && 
             <ListItemText
-              primary={props.intl.formatMessage(organizationMessage.workflow.message.emptyHistory)} 
+              primary={props.intl.formatMessage(organizationMessage.workflow.message.emptyHistory)}
+              primaryTypographyProps={{
+                align: 'center'
+              }}
             />
           }
           {
