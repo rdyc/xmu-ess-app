@@ -15,7 +15,7 @@ export const RequestFormView: React.SFC<RequestFormProps> = props => {
   
   const diem = (diemRequest) ? 
                   diemRequest.filter(item => item.destinationType === destinationtypeValue &&
-                    item.projectType === 'SPT04')[0] 
+                    item.projectType === props.projectType)[0] 
                   : undefined;
 
   const fields = Object.getOwnPropertyNames(props.initialValues.information);
@@ -38,7 +38,7 @@ export const RequestFormView: React.SFC<RequestFormProps> = props => {
 
   const onCostChange = (event: any, newValue: number, oldValue: number) => {
     if (newValue) {
-      change('information.total', (totalTravel - oldValue) + newValue);
+      change('information.comment', (totalTravel - oldValue) + newValue);
     }
   };
 
@@ -53,6 +53,8 @@ export const RequestFormView: React.SFC<RequestFormProps> = props => {
       destinationTypeValue= {destinationtypeValue}
       isProjectSelected= {isProjectSelected}
       totalCostValue= {TotalCost}
+      handleProjectChange={props.handleProjectChange}
+
     />    
   );
 

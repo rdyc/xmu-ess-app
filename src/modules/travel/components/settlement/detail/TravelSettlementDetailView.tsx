@@ -11,7 +11,7 @@ import {
 import { WorkflowHistory } from '@organization/components/workflow/history/WorkflowHistory';
 import { TravelInformation } from '@travel/components/request/detail/shared/TravelInformation';
 import { TravelRequestItem } from '@travel/components/request/detail/shared/TravelRequestItem';
-import { TravelRequestSummary } from '@travel/components/request/detail/shared/TravelRequestSummary';
+// import { TravelRequestSummary } from '@travel/components/request/detail/shared/TravelRequestSummary';
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { TravelSettlementInformation } from './shared/TravelSettlementInformation';
@@ -58,7 +58,7 @@ export const TravelSettlementDetailView: React.SFC<SettlementDetailProps> = prop
     <React.Fragment>
       {
         isLoading && 
-        <Typography variant="body2">
+        <Typography variant="body1">
           <FormattedMessage id="global.loading"/>
         </Typography>
       }
@@ -74,16 +74,18 @@ export const TravelSettlementDetailView: React.SFC<SettlementDetailProps> = prop
           justify="flex-start"
           alignItems="flex-start"
         >
-          <Grid item xs={12} md={3}>
-            <TravelSettlementSummary data = {response.data}/>
+          <Grid item xs={12} md={4}>
+            <TravelSettlementSummary 
+              data = {response.data}
+              travelData={travelResponse.data}/>
           </Grid>
-          <Grid item xs={12} md={3}>
+          <Grid item xs={12} md={4}>
             <TravelSettlementItem data = {response.data.items}/>
           </Grid>          
-          <Grid item xs={12} md={3}>
+          {/* <Grid item xs={12} md={3}>
             <TravelRequestSummary data = {travelResponse.data}/>
-          </Grid>
-          <Grid item xs={12} md={3}>
+          </Grid> */}
+          <Grid item xs={12} md={4}>
             <TravelRequestItem data = {travelResponse.data.items}/>
           </Grid>
         </Grid>
@@ -118,6 +120,5 @@ export const TravelSettlementDetailView: React.SFC<SettlementDetailProps> = prop
       {renderDialog}
     </React.Fragment>
   );
-
   return render;
 };

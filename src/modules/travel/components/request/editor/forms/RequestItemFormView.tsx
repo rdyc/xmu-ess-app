@@ -78,6 +78,7 @@ export const RequestItemFormView: React.SFC<RequestItemFormProps> = props => {
                     type="text"
                     name={`${field}.transportType`}
                     label="Transport Type"
+                    required={true}
                     component={SelectSystem}
                     category = "transportation"
                   />

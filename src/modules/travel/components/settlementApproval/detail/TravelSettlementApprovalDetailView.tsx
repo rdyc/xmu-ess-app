@@ -3,7 +3,7 @@ import { WorkflowApprovalForm } from '@organization/components/workflow/approval
 import { WorkflowHistory } from '@organization/components/workflow/history/WorkflowHistory';
 import { TravelInformation } from '@travel/components/request/detail/shared/TravelInformation';
 import { TravelRequestItem } from '@travel/components/request/detail/shared/TravelRequestItem';
-import { TravelRequestSummary } from '@travel/components/request/detail/shared/TravelRequestSummary';
+// import { TravelRequestSummary } from '@travel/components/request/detail/shared/TravelRequestSummary';
 import { TravelSettlementInformation } from '@travel/components/settlement/detail/shared/TravelSettlementInformation';
 import { TravelSettlementItem } from '@travel/components/settlement/detail/shared/TravelSettlementItem';
 import { TravelSettlementSummary } from '@travel/components/settlement/detail/shared/TravelSettlementSummary';
@@ -34,6 +34,27 @@ export const TravelSettlementApprovalDetailView: React.SFC<TravelSettlementAppro
         response.data &&
         requestApprovalResponse &&
         <Grid container spacing={16}>
+          
+          <Grid item xs={12} md={4}>
+            <TravelSettlementSummary 
+              data = {response.data}
+              travelData={requestApprovalResponse.data}
+              />
+          </Grid>
+          <Grid item xs={12} md={4}>
+            <TravelSettlementItem data = {response.data.items}/>
+          </Grid>
+          <Grid item xs={12} md={4}>
+            <TravelRequestItem data = {requestApprovalResponse.data.items}/>
+          </Grid>          
+        </Grid>        
+      }
+      {
+        !isLoading &&
+        response && 
+        response.data &&
+        requestApprovalResponse &&
+        <Grid container spacing={16}>
           <Grid item xs={12} md={4}>
             <TravelSettlementInformation 
               data = {response.data}
@@ -50,7 +71,6 @@ export const TravelSettlementApprovalDetailView: React.SFC<TravelSettlementAppro
               <Grid item>
                 <WorkflowHistory data={response.data.workflow} />
               </Grid>
-
               {
                 response.data.workflow &&
                 response.data.workflow.isApproval &&
@@ -74,38 +94,7 @@ export const TravelSettlementApprovalDetailView: React.SFC<TravelSettlementAppro
             </Grid>
           </Grid>
         </Grid>
-      }
-      {
-        !isLoading &&
-        response && 
-        response.data &&
-        requestApprovalResponse &&
-        <Grid container spacing={16}>
-          
-          <Grid item xs={12} md={4}>
-            <TravelSettlementSummary data = {response.data}/>
-          </Grid>
-
-          <Grid item xs={12} md={4}>
-            <TravelRequestSummary data = {requestApprovalResponse.data}/>
-          </Grid>
-        </Grid>        
-      }
-      {
-        !isLoading &&
-        response && 
-        response.data &&
-        requestApprovalResponse &&
-        <Grid container spacing={16}>
-          <Grid item xs={12} md={4}>
-            <TravelSettlementItem data = {response.data.items}/>
-          </Grid>
-
-          <Grid item xs={12} md={4}>
-            <TravelRequestItem data = {requestApprovalResponse.data.items}/>
-          </Grid>
-        </Grid>
-      }
+      }      
     </React.Fragment>
   );
 

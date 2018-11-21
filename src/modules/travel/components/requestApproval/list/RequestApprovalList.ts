@@ -72,10 +72,10 @@ const createProps: mapper<RequestApprovalListProps, OwnState> = (props: RequestA
     const { request } = props.travelApprovalState.all;
 
     return { 
-      orderBy: request && request.filter && request.filter['query.orderBy'] || orderBy || 'uid',
-      direction: request && request.filter && request.filter['query.direction'] || direction || 'descending',
-      page: request && request.filter && request.filter['query.page'] || page || 1, 
-      size: request && request.filter && request.filter['query.size'] || size || 10,
+      orderBy: request && request.filter && request.filter.query && request.filter.query.orderBy || orderBy || 'uid',
+      direction: request && request.filter && request.filter.query && request.filter.query.direction || direction || 'descending',
+      page: request && request.filter && request.filter.query && request.filter.query.page || page || 1, 
+      size: request && request.filter && request.filter.query && request.filter.query.size || size || 10,
     };
   };
 
@@ -218,16 +218,18 @@ const loadData = (props: RequestApprovalListProps): void => {
   if (user) {
     loadAllRequest({
       filter: {
-        'query.direction': direction,
-        'query.orderBy': orderBy,
-        'query.page': page,
-        'query.size': size,
         companyUid: user.company.uid,
         positionUid: user.position.uid,
+        query: {
+          direction,
+          orderBy,
+          page,
+          size,
+          find: undefined,
+          findBy: undefined
+        },
         status: undefined,
         isNotify: undefined,
-        'query.find': undefined,
-        'query.findBy': undefined,
       }
     }); 
   } else {

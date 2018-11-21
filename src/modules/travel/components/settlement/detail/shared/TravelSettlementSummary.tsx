@@ -1,11 +1,12 @@
-import { Card, CardContent, CardHeader, TextField } from '@material-ui/core';
-import { ITravelSettlementDetail } from '@travel/classes/response';
+import { Card, CardContent, CardHeader, Grid, TextField, Typography } from '@material-ui/core';
+import { ITravelRequestDetail, ITravelSettlementDetail } from '@travel/classes/response';
 import * as React from 'react';
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose } from 'recompose';
 
 interface OwnProps {
   data: ITravelSettlementDetail;
+  travelData: ITravelRequestDetail;
 }
 
 type AllProps
@@ -13,7 +14,7 @@ type AllProps
   & InjectedIntlProps;
 
 const travelSettlementSummary: React.SFC<AllProps> = props => {
-  const { data, intl } = props;
+  const { data, intl, travelData } = props;
 
   const styled = {
     fullWidth: true,
@@ -29,37 +30,79 @@ const travelSettlementSummary: React.SFC<AllProps> = props => {
         title={<FormattedMessage id="travelSettlement.summaryTitle" />}
         subheader={<FormattedMessage id="travelSettlement.summarySubTitle" />}
       />
-      <CardContent>        
-          <TextField
-            {...styled}
-            margin="dense"
-            label={<FormattedMessage id="travel.field.information.totalDuration" />}
-            value={intl.formatNumber(data.summary ? data.summary.totalDuration : 0)}
+      <CardContent>
+        <Grid container spacing={8}>
+          <Grid item xs={12} md={6}>
+            <Typography variant="body2">
+              <FormattedMessage id="travelSettlement.subTitleSummary"/>
+            </Typography>        
+            <TextField
+              {...styled}
+              margin="dense"
+              label={<FormattedMessage id="travel.field.information.totalDuration" />}
+              value={intl.formatNumber(data.summary ? data.summary.totalDuration : 0)}
+            />
+            <TextField
+              {...styled}
+              margin="dense"
+              label={<FormattedMessage id="travel.field.information.totalDiemValue" />}
+              value={intl.formatNumber(data.summary ? data.summary.totalDiemValue : 0)}
+            />
+            <TextField
+              {...styled}
+              margin="dense"
+              label={<FormattedMessage id="travel.field.information.costTransport" />}
+              value={intl.formatNumber(data.summary ? data.summary.totalCostTransport : 0)}
+            />
+            <TextField
+              {...styled}
+              margin="dense"
+              label={<FormattedMessage id="travel.field.information.costHotel" />}
+              value={intl.formatNumber(data.summary ? data.summary.totalCostHotel : 0)}
+            />
+            <TextField
+              {...styled}
+              margin="dense"
+              label={<FormattedMessage id="travel.field.information.total" />}
+              value={intl.formatNumber(data.total || 0)}
+        />
+        </Grid>
+          <Grid item xs={12} md={6}>
+            <Typography variant="body2">
+              <FormattedMessage id="travel.subTitleSummary"/>
+            </Typography>         
+            <TextField
+              {...styled}
+              margin="dense"
+              label={<FormattedMessage id="travel.field.information.totalDuration" />}
+              value={intl.formatNumber(travelData.summary ? travelData.summary.totalDuration : 0)}
+            />
+            <TextField
+              {...styled}
+              margin="dense"
+              label={<FormattedMessage id="travel.field.information.totalDiemValue" />}
+              value={intl.formatNumber(travelData.summary ? travelData.summary.totalDiemValue : 0)}
+            />
+            <TextField
+              {...styled}
+              margin="dense"
+              label={<FormattedMessage id="travel.field.information.costTransport" />}
+              value={intl.formatNumber(travelData.summary ? travelData.summary.totalCostTransport : 0)}
+            />
+            <TextField
+              {...styled}
+              margin="dense"
+              label={<FormattedMessage id="travel.field.information.costHotel" />}
+              value={intl.formatNumber(travelData.summary ? travelData.summary.totalCostHotel : 0)}
+            />
+            <TextField
+              {...styled}
+              margin="dense"
+              label={<FormattedMessage id="travel.field.information.total" />}
+              value={intl.formatNumber(travelData.total || 0)}
           />
-          <TextField
-            {...styled}
-            margin="dense"
-            label={<FormattedMessage id="travel.field.information.totalDiemValue" />}
-            value={intl.formatNumber(data.summary ? data.summary.totalDiemValue : 0)}
-          />
-          <TextField
-            {...styled}
-            margin="dense"
-            label={<FormattedMessage id="travel.field.information.costTransport" />}
-            value={intl.formatNumber(data.summary ? data.summary.totalCostTransport : 0)}
-          />
-          <TextField
-            {...styled}
-            margin="dense"
-            label={<FormattedMessage id="travel.field.information.costHotel" />}
-            value={intl.formatNumber(data.summary ? data.summary.totalCostHotel : 0)}
-          />
-          <TextField
-            {...styled}
-            margin="dense"
-            label={<FormattedMessage id="travel.field.information.total" />}
-            value={intl.formatNumber(data.total || 0)}
-        />        
+          </Grid>
+        </Grid>        
       </CardContent>
     </Card>
   );
