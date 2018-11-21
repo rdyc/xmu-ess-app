@@ -1,5 +1,6 @@
 import { IFinance } from '@finance/classes/response';
 import { ApprovalPaymentProps } from '@finance/components/approval/payment/ApprovalPayment';
+import { financeMessages } from '@finance/locales/messages/financeMessages';
 import {
   Card,
   CardContent,
@@ -13,13 +14,13 @@ import { WorkflowApprovalForm } from '@organization/components/workflow/approval
 import { parseChanges } from '@utils/parseChanges';
 import * as moment from 'moment';
 import * as React from 'react';
-import { FormattedDate, FormattedMessage } from 'react-intl';
+import { FormattedDate } from 'react-intl';
 
 export const ApprovalPaymentView: React.SFC<ApprovalPaymentProps> = props => {
   const { 
     approvalTitle, approvalSubHeader, approvalChoices, approvalTrueValue, approvalRemarkLabel, approvalRemarkPlaceholder,
     approvalDialogTitle, approvalDialogContentText, approvalDialogCancelText, approvalDialogConfirmedText, finances,
-    handleValidate, handleSubmit, handleSubmitSuccess, handleSubmitFail,
+    handleValidate, handleSubmit, handleSubmitSuccess, handleSubmitFail, intl,
   } = props;
 
   const renderDetails = (_finances: IFinance[] | null | undefined) => {
@@ -107,8 +108,8 @@ export const ApprovalPaymentView: React.SFC<ApprovalPaymentProps> = props => {
           <Grid item xs={12} md={4}>
             <Card square>
               <CardHeader 
-                title={finances && finances.length > 1 ? <FormattedMessage id="finance.title"/> : <FormattedMessage id="finance.infoTitle"/>}
-                subheader={<FormattedMessage id="finance.infoSubTitle" />}
+                title={finances && finances.length > 1 ? intl.formatMessage(financeMessages.approval.page.title) : intl.formatMessage(financeMessages.approval.section.approvalTitle)}
+                subheader={intl.formatMessage(financeMessages.approval.section.approvalSubTitle)}
               />
               <CardContent>
                 <List>

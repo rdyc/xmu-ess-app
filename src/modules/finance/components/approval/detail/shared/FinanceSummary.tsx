@@ -1,18 +1,12 @@
 import { IFinance } from '@finance/classes/response';
+import { financeMessages } from '@finance/locales/messages/financeMessages';
 import { layoutMessage } from '@layout/locales/messages';
 import { GlobalFormat } from '@layout/types';
+import { GlobalStyle } from '@layout/types/GlobalStyle';
 import { Grid, TextField } from '@material-ui/core';
 import * as React from 'react';
-import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
+import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose } from 'recompose';
-
-const styled = {
-  fullWidth: true,
-  InputProps: {
-    disableUnderline: true,
-    readOnly: true
-  }
-};
 
 interface OwnProps {
   data: IFinance;
@@ -26,50 +20,43 @@ const financeSummary: React.SFC<AllProps> = props => (
   <Grid container>
     <Grid item xs={12} sm={6} md={3}>
         <TextField
-          {...styled}
-          margin="normal"
-          label={<FormattedMessage id="finance.field.status" />}
+          {...GlobalStyle.TextField.ReadOnly}
+          label={props.intl.formatMessage(financeMessages.approval.field.status)}
           value={props.data.status ? props.data.status.value : 'N/A'}
         />
         <TextField
-          {...styled}
-          margin="normal"
+          {...GlobalStyle.TextField.ReadOnly}
           multiline
-          label={<FormattedMessage id="finance.field.notes" />}
+          label={props.intl.formatMessage(financeMessages.approval.field.notes)}
           value={props.data.notes || 'N/A'}
         />
         <TextField
-          {...styled}
-          margin="normal"
-          label={<FormattedMessage id="finance.field.uid" />}
+          {...GlobalStyle.TextField.ReadOnly}
+          label={props.intl.formatMessage(financeMessages.approval.field.uid)}
           value={props.data.uid}
         />
       </Grid>
       <Grid xs={12} sm={6} md={3}>
         <TextField
-          {...styled}
-          margin="normal"
-          label={<FormattedMessage id="finance.field.moduleName" />}
+          {...GlobalStyle.TextField.ReadOnly}
+          label={props.intl.formatMessage(financeMessages.approval.field.moduleName)}
           value={props.data.module ? props.data.module.value : 'N/A'}
         />
         <TextField
-          {...styled}
-          margin="normal"
-          label={<FormattedMessage id="finance.field.documentUid" />}
+          {...GlobalStyle.TextField.ReadOnly}
+          label={props.intl.formatMessage(financeMessages.approval.field.documentUid)}
           value={props.data.documentUid ? props.data.documentUid : 'N/A'}
         />
         <TextField
-          {...styled}
-          margin="normal"
-          label={<FormattedMessage id="finance.field.requestor" />}
+          {...GlobalStyle.TextField.ReadOnly}
+          label={props.intl.formatMessage(financeMessages.approval.field.requestor)}
           value={props.data.document.changes.created ? props.data.document.changes.created.fullName : 'N/A'}
         />
     </Grid>
     <Grid item xs={12} sm={6} md={3}>
       <TextField
-          {...styled}
-          margin="normal"
-          label={<FormattedMessage id="finance.field.approvalDate" />}
+          {...GlobalStyle.TextField.ReadOnly}
+          label={props.intl.formatMessage(financeMessages.approval.field.approvalDate)}
           value={props.data.document.changes.updatedAt ? 
             props.intl.formatDate(props.data.document.changes.updatedAt, GlobalFormat.Date) : ''}
         />
@@ -77,16 +64,14 @@ const financeSummary: React.SFC<AllProps> = props => (
           (props.data.document.amount &&
           props.data.document.amount.advance) &&
           <TextField
-            {...styled}
-            margin="normal"
-            label={<FormattedMessage id="finance.field.advance" />}
+          {...GlobalStyle.TextField.ReadOnly}
+            label={props.intl.formatMessage(financeMessages.approval.field.advance)}
             value={props.intl.formatNumber(props.data.document.amount.advance)}
           /> || ''
         }
         <TextField
-          {...styled}
-          margin="normal"
-          label={<FormattedMessage id="finance.field.total" />}
+          {...GlobalStyle.TextField.ReadOnly}
+          label={props.intl.formatMessage(financeMessages.approval.field.total)}
           value={props.data.document.amount ?
             props.intl.formatNumber(props.data.document.amount.total || 0) : 0}
         />
@@ -96,8 +81,7 @@ const financeSummary: React.SFC<AllProps> = props => (
       props.data.changes &&
       <Grid item xs={12} sm={6} md={3}>
         <TextField
-          {...styled}
-          margin="dense"
+          {...GlobalStyle.TextField.ReadOnly}
           label={props.intl.formatMessage(layoutMessage.field.createdBy)}
           value={props.data.changes.created && props.data.changes.created.fullName || 'N/A'}
           helperText={props.intl.formatDate(props.data.changes.createdAt, GlobalFormat.DateTime) || 'N/A'}
@@ -106,8 +90,7 @@ const financeSummary: React.SFC<AllProps> = props => (
         {
           (props.data.changes.updated && props.data.changes.updatedAt) &&
           <TextField
-            {...styled}
-            margin="dense"
+          {...GlobalStyle.TextField.ReadOnly}
             label={props.intl.formatMessage(layoutMessage.field.updatedBy)}
             value={props.data.changes.updated.fullName || 'N/A'}
             helperText={props.intl.formatDate(props.data.changes.updatedAt, GlobalFormat.DateTime) || 'N/A'}

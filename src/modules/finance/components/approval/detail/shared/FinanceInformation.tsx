@@ -1,8 +1,10 @@
 import { IFinanceDetail } from '@finance/classes/response';
+import { financeMessages } from '@finance/locales/messages/financeMessages';
 import { GlobalFormat } from '@layout/types';
+import { GlobalStyle } from '@layout/types/GlobalStyle';
 import { Button, Card, CardContent, CardHeader, InputAdornment, TextField } from '@material-ui/core';
 import * as React from 'react';
-import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
+import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose } from 'recompose';
 
 interface OwnProps {
@@ -17,19 +19,8 @@ type AllProps
 export const financeInformation: React.SFC<AllProps> = props => {
   const { data, intl, handleToDocument } = props;
 
-  const styled = {
-    fullWidth: true,
-    InputProps: {
-      disableUnderline: true,
-      readOnly: true
-    }
-  };
-
   const documentStyle = {
-    fullWidth: true,
     InputProps: {
-      disableUnderline: true,
-      readOnly: true,
       endAdornment: 
         data &&
         <InputAdornment position="end">
@@ -39,7 +30,7 @@ export const financeInformation: React.SFC<AllProps> = props => {
             size="large"
             onClick={() => handleToDocument(data.moduleUid, data.documentUid)}
           >
-            {<FormattedMessage id="finance.field.button.goToDocument" />}
+            {intl.formatMessage(financeMessages.approval.field.goToDocument)}
           </Button>
         </InputAdornment>
       
@@ -49,38 +40,35 @@ export const financeInformation: React.SFC<AllProps> = props => {
   const render = (
     <Card square>
       <CardHeader 
-        title={<FormattedMessage id="finance.infoTitle"/>}
-        subheader={<FormattedMessage id="finance.infoSubTitle" />}
+        title={intl.formatMessage(financeMessages.approval.section.infoTitle)}
+        subheader={intl.formatMessage(financeMessages.approval.section.infoSubTitle)}
       />
       <CardContent>
         <TextField
-          {...styled}
-          margin="normal"
-          label={<FormattedMessage id="finance.field.uid" />}
+          {...GlobalStyle.TextField.ReadOnly}
+          label={intl.formatMessage(financeMessages.approval.field.uid)}
           value={data.uid}
         />
         <TextField
-          {...styled}
-          margin="normal"
-          label={<FormattedMessage id="finance.field.moduleName" />}
+          
+          {...GlobalStyle.TextField.ReadOnly}
+          label={intl.formatMessage(financeMessages.approval.field.moduleName)}
           value={data.module ? data.module.value : 'N/A'}
         />
         <TextField
           {...documentStyle}
-          margin="normal"
-          label={<FormattedMessage id="finance.field.documentUid" />}
+          {...GlobalStyle.TextField.ReadOnly}
+          label={intl.formatMessage(financeMessages.approval.field.documentUid)}
           value={data.documentUid ? data.documentUid : 'N/A'}
         />
         <TextField
-          {...styled}
-          margin="normal"
-          label={<FormattedMessage id="finance.field.requestor" />}
+          {...GlobalStyle.TextField.ReadOnly}
+          label={intl.formatMessage(financeMessages.approval.field.requestor)}
           value={data.document.changes.created ? data.document.changes.created.fullName : 'N/A'}
         />
         <TextField
-          {...styled}
-          margin="normal"
-          label={<FormattedMessage id="finance.field.approvalDate" />}
+          {...GlobalStyle.TextField.ReadOnly}
+          label={intl.formatMessage(financeMessages.approval.field.approvalDate)}
           value={data.document.changes.updatedAt ? 
             intl.formatDate(data.document.changes.updatedAt, GlobalFormat.Date) : ''}
         />
@@ -88,30 +76,26 @@ export const financeInformation: React.SFC<AllProps> = props => {
           (data.document.amount &&
           data.document.amount.advance) &&
           <TextField
-            {...styled}
-            margin="normal"
-            label={<FormattedMessage id="finance.field.advance" />}
+          {...GlobalStyle.TextField.ReadOnly}
+            label={intl.formatMessage(financeMessages.approval.field.advance)}
             value={intl.formatNumber(data.document.amount.advance || 0)}
           /> || ''
         }
         <TextField
-          {...styled}
-          margin="normal"
-          label={<FormattedMessage id="finance.field.total" />}
+          {...GlobalStyle.TextField.ReadOnly}
+          label={intl.formatMessage(financeMessages.approval.field.total)}
           value={data.document.amount ?
             intl.formatNumber(data.document.amount.total || 0) : 0}
         />
         <TextField
-          {...styled}
-          margin="normal"
-          label={<FormattedMessage id="finance.field.status" />}
+          {...GlobalStyle.TextField.ReadOnly}
+          label={intl.formatMessage(financeMessages.approval.field.status)}
           value={data.status ? data.status.value : 'N/A'}
         />
         <TextField
-          {...styled}
-          margin="normal"
+          {...GlobalStyle.TextField.ReadOnly}
           multiline
-          label={<FormattedMessage id="finance.field.notes" />}
+          label={intl.formatMessage(financeMessages.approval.field.notes)}
           value={data.notes || 'N/A'}
         />
       </CardContent>

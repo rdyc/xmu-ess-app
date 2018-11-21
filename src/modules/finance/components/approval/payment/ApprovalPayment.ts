@@ -6,12 +6,15 @@ import { FinanceApprovalUserAction } from '@finance/classes/types';
 import { ApprovalPaymentView } from '@finance/components/approval/payment/ApprovalPaymentView';
 import { WithFinanceApproval, withFinanceApproval } from '@finance/hoc/withFinanceApproval';
 import { financeApprovalMessage } from '@finance/locales/messages/financeApprovalMessage';
+import { financeMessages } from '@finance/locales/messages/financeMessages';
 import { RadioGroupChoice } from '@layout/components/input/radioGroup';
 import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IAppBarMenu } from '@layout/interfaces';
+import { layoutMessage } from '@layout/locales/messages';
 import { WorkflowApprovalFormData } from '@organization/components/workflow/approval/WorkflowApprovalForm';
+import { organizationMessage } from '@organization/locales/messages/organizationMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import {
@@ -77,20 +80,20 @@ const createProps: mapper<ApprovalPaymentProps, OwnState> = (props: ApprovalPaym
   return {
     finances: [],
     financeUids: props.match.params.financeUids.split(','),
-    approvalTitle: intl.formatMessage({id: 'finance.approvalTitle'}),
-    approvalSubHeader: intl.formatMessage({id: 'finance.approvalSubHeader'}),
+    approvalTitle: intl.formatMessage(financeMessages.approval.section.approvalTitle),
+    approvalSubHeader: intl.formatMessage(financeMessages.approval.section.approvalSubTitle),
     approvalChoices: [
-      { value: FinanceStatusType.Paid, label: intl.formatMessage({id: 'finance.approval.action.paid'}) },
-      { value: FinanceStatusType.Hold, label: intl.formatMessage({id: 'finance.approval.action.hold'}) },
-      { value: FinanceStatusType.NotPaid, label: intl.formatMessage({id: 'finance.approval.action.notPaid'}) }
+      { value: FinanceStatusType.Paid, label: intl.formatMessage(financeMessages.approval.action.paid) },
+      { value: FinanceStatusType.Hold, label: intl.formatMessage(financeMessages.approval.action.hold) },
+      { value: FinanceStatusType.NotPaid, label: intl.formatMessage(financeMessages.approval.action.notPaid) }
     ],
     approvalTrueValue: WorkflowStatusType.Approved,
-    approvalDialogTitle: intl.formatMessage({id: 'finance.dialog.approvalTitle'}),
-    approvalDialogContentText: intl.formatMessage({id: 'finance.dialog.approvalContent'}),
-    approvalDialogCancelText: intl.formatMessage({id: 'global.action.cancel'}),
-    approvalDialogConfirmedText: intl.formatMessage({id: 'global.action.continue'}),
-    approvalRemarkLabel: intl.formatMessage({id: 'finance.field.notes'}),
-    approvalRemarkPlaceholder: intl.formatMessage({id: 'finance.field.notes.placeholder'})
+    approvalDialogTitle: intl.formatMessage(financeMessages.approval.dialog.approvalTitle),
+    approvalDialogContentText: intl.formatMessage(financeMessages.approval.dialog.approvalSubTitle),
+    approvalDialogCancelText: intl.formatMessage(layoutMessage.action.cancel),
+    approvalDialogConfirmedText: intl.formatMessage(layoutMessage.action.continue),
+    approvalRemarkLabel: intl.formatMessage(financeMessages.approval.field.notes),
+    approvalRemarkPlaceholder: intl.formatMessage(financeMessages.approval.field.notesPlaceholder)
   };
 };
   
@@ -105,8 +108,8 @@ const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
       dialogOpen: false,
       dialogTitle: undefined,
       dialogDescription: undefined,
-      dialogCancelText: 'global.action.cancel',
-      dialogConfirmedText: 'global.action.ok',
+      dialogCancelText: layoutMessage.action.cancel,
+      dialogConfirmedText: layoutMessage.action.ok,
     })
   };
   
@@ -118,7 +121,7 @@ const handlerCreators: HandleCreators<ApprovalPaymentProps, OwnHandler> = {
   
     requiredFields.forEach(field => {
       if (!formData[field] || isNullOrUndefined(formData[field])) {
-        errors[field] = props.intl.formatMessage({id: `workflow.approval.field.${field}.required`});
+        errors[field] = props.intl.formatMessage(organizationMessage.workflow.fieldFor(field, 'fieldRequired'));
       }
     });
     
@@ -208,8 +211,8 @@ const lifecycles: ReactLifeCycleFunctions<ApprovalPaymentProps, OwnState> = {
       layoutDispatch.changeView({
         uid: AppMenu.FinanceApproval,
         parentUid: AppMenu.Finance,
-        title: intl.formatMessage({id: 'finance.approval.title'}),
-        subTitle : intl.formatMessage({id: 'finance.approval.subTitle'})
+        title: intl.formatMessage(financeMessages.approval.page.detailTitle),
+        subTitle : intl.formatMessage(financeMessages.approval.page.detailSubTitle)
       });
   
       layoutDispatch.navBackShow();
@@ -241,7 +244,7 @@ const lifecycles: ReactLifeCycleFunctions<ApprovalPaymentProps, OwnState> = {
         const currentMenus = [
           {
             id: FinanceApprovalUserAction.Refresh,
-            name: intl.formatMessage({id: 'global.action.refresh'}),
+            name: intl.formatMessage(layoutMessage.action.refresh),
             enabled: true,
             visible: true
           }

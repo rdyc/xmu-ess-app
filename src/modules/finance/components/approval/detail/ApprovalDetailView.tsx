@@ -1,15 +1,15 @@
 import { ApprovalDetailProps } from '@finance/components/approval/detail/ApprovalDetail';
+import { layoutMessage } from '@layout/locales/messages';
 import {
   Grid,
   Typography,
 } from '@material-ui/core';
 import * as React from 'react';
-import { FormattedMessage } from 'react-intl';
 import { FinanceInformation } from './shared/FinanceInformation';
 
 export const ApprovalDetailView: React.SFC<ApprovalDetailProps> = props => {
   const { 
-    handleToDocument
+    handleToDocument, intl
   } = props;
   const { isLoading, response } = props.financeApprovalState.detail;
 
@@ -18,7 +18,7 @@ export const ApprovalDetailView: React.SFC<ApprovalDetailProps> = props => {
       {
         isLoading && 
         <Typography variant="body2">
-          <FormattedMessage id="global.loading"/>
+          {intl.formatMessage(layoutMessage.text.loading)}
         </Typography>
       }
       {

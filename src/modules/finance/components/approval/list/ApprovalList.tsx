@@ -4,13 +4,12 @@ import { FinanceApprovalUserAction, FinanceField } from '@finance/classes/types'
 import { FinanceSummary } from '@finance/components/approval/detail/shared/FinanceSummary';
 import { financeApprovalFieldTranslator } from '@finance/helper';
 import { WithFinanceApproval, withFinanceApproval } from '@finance/hoc/withFinanceApproval';
-import { ICollectionValue } from '@layout/classes/core';
+import { financeMessages } from '@finance/locales/messages/financeMessages';
 import {
   CollectionConfig,
   CollectionDataProps,
   CollectionHandler,
   CollectionPage,
-  CollectionPageProps,
 } from '@layout/components/pages';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IAppBarMenu } from '@layout/interfaces';
@@ -18,33 +17,23 @@ import { layoutMessage } from '@layout/locales/messages';
 import { Button } from '@material-ui/core';
 import * as moment from 'moment';
 import * as React from 'react';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose } from 'recompose';
-
-const financeFields: ICollectionValue[] = Object.keys(FinanceField).map(key => ({ 
-  value: key, 
-  name: FinanceField[key] 
-}));
-
-const menuOptions = (props: CollectionPageProps): IAppBarMenu[] => ([
-  {
-    id: FinanceApprovalUserAction.Refresh,
-    name: props.intl.formatMessage(layoutMessage.action.refresh),
-    enabled: true,
-    visible: true,
-    onClick: () => props.setForceReload(true)
-  },
-]);
 
 const config: CollectionConfig<IFinance, AllProps> = {
   // page info
-  uid: AppMenu.FinanceApproval,
-  parentUid: AppMenu.Finance,
-  title: 'Finance',
-  description : 'Lorem Ipsum Something',
+  page: (props: AllProps) => ({
+    uid: AppMenu.FinanceApproval,
+    parentUid: AppMenu.Finance,
+    title: props.intl.formatMessage(financeMessages.approval.page.title),
+    description: props.intl.formatMessage(financeMessages.approval.page.subTitle)
+  }),
   
   // top bar
-  fields: financeFields,
+  fields: Object.keys(FinanceField).map(key => ({ 
+    value: key, 
+    name: FinanceField[key] 
+  })),
   fieldTranslator: financeApprovalFieldTranslator,
 
   // selection
@@ -72,13 +61,15 @@ const config: CollectionConfig<IFinance, AllProps> = {
 
   // more
   hasMore: true,
-  moreOptions: menuOptions,
-  
-  // redirection
-  hasRedirection: true,
-  onRedirect: (item: IFinance): string => {
-    return `/finance/approvals/${item.uid}`;
-  },
+  moreOptions: (props: AllProps, callback: CollectionHandler): IAppBarMenu[] => ([
+    {
+      id: FinanceApprovalUserAction.Refresh,
+      name: props.intl.formatMessage(layoutMessage.action.refresh),
+      enabled: true,
+      visible: true,
+      onClick: () => callback.handleForceReload()
+    },
+  ]),
 
   // data filter
   filter: {
@@ -121,7 +112,7 @@ const config: CollectionConfig<IFinance, AllProps> = {
   onUpdated: (states: AllProps, callback: CollectionHandler) => {
     const { isLoading, response } = states.financeApprovalState.all;
     
-    callback.setLoading(isLoading);
+    callback.handleLoading(isLoading);
     callback.handleResponse(response);
   },
   onBind: (item: IFinance, index: number) => ({
@@ -140,14 +131,16 @@ const config: CollectionConfig<IFinance, AllProps> = {
   ),
 
   // action component
-  actionComponent: (item: IFinance) => (
-    <Button 
-      size="small"
-      onClick={() => alert(`go to ${item.uid}`)}
-    >
-      <FormattedMessage {...layoutMessage.action.details}/>
-    </Button>
-  ),
+  actionComponent: (item: IFinance, callback: CollectionHandler) => (
+    <React.Fragment>
+      <Button 
+        size="small"
+        onClick={() => callback.handleRedirectTo(`/finance/approvals/${item.uid}`)}
+      >
+        <FormattedMessage {...layoutMessage.action.details}/>
+      </Button>
+    </React.Fragment>
+  )
 
   // custom row render: uncomment to see different
   // onRowRender: (item: IProject, index: number) => (
@@ -157,7 +150,8 @@ const config: CollectionConfig<IFinance, AllProps> = {
 
 type AllProps 
   = WithUser
-  & WithFinanceApproval;
+  & WithFinanceApproval
+  & InjectedIntlProps;
 
 const approvalList: React.SFC<AllProps> = props => (
   <CollectionPage
@@ -168,5 +162,6 @@ const approvalList: React.SFC<AllProps> = props => (
 
 export const ApprovalList = compose(
   withUser,
-  withFinanceApproval
+  withFinanceApproval,
+  injectIntl,
 )(approvalList);

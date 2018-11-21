@@ -4,10 +4,12 @@ import { FinanceApprovalUserAction } from '@finance/classes/types';
 import { DocumentPath } from '@finance/classes/types/DocumentPath';
 import { ApprovalDetailView } from '@finance/components/approval/detail/ApprovalDetailView';
 import { WithFinanceApproval, withFinanceApproval } from '@finance/hoc/withFinanceApproval';
+import { financeMessages } from '@finance/locales/messages/financeMessages';
 import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IAppBarMenu } from '@layout/interfaces';
+import { layoutMessage } from '@layout/locales/messages';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import {
@@ -65,8 +67,8 @@ const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
       dialogOpen: false,
       dialogTitle: undefined,
       dialogDescription: undefined,
-      dialogCancelText: 'global.action.cancel',
-      dialogConfirmedText: 'global.action.ok',
+      dialogCancelText: layoutMessage.action.cancel,
+      dialogConfirmedText: layoutMessage.action.ok,
     })
   };
   
@@ -134,8 +136,8 @@ const lifecycles: ReactLifeCycleFunctions<ApprovalDetailProps, OwnState> = {
       layoutDispatch.changeView({
         uid: AppMenu.FinanceApproval,
         parentUid: AppMenu.Finance,
-        title: intl.formatMessage({id: 'finance.detail.title'}),
-        subTitle : intl.formatMessage({id: 'finance.detail.subTitle'})
+        title: intl.formatMessage(financeMessages.approval.page.detailTitle),
+        subTitle : intl.formatMessage(financeMessages.approval.page.detailSubTitle)
       });
   
       layoutDispatch.navBackShow();
@@ -170,7 +172,7 @@ const lifecycles: ReactLifeCycleFunctions<ApprovalDetailProps, OwnState> = {
         const currentMenus = [
           {
             id: FinanceApprovalUserAction.Refresh,
-            name: intl.formatMessage({id: 'global.action.refresh'}),
+            name: intl.formatMessage(layoutMessage.action.refresh),
             enabled: true,
             visible: true
           }
