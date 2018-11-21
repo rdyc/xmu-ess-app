@@ -5,7 +5,10 @@ import { WithVariables, withVariables } from '@layout/hoc/withVariables';
 import { WithStyles, withStyles } from '@material-ui/core';
 import withWidth, { WithWidth } from '@material-ui/core/withWidth';
 import { ProjectSalesFormData } from '@project/components/registration/editor/forms/ProjectRegistrationContainerForm';
-import { ProjectRegistrationSalesFormView } from '@project/components/registration/editor/forms/ProjectRegistrationSalesFormView';
+import {
+  ProjectRegistrationSalesFormView,
+} from '@project/components/registration/editor/forms/ProjectRegistrationSalesFormView';
+import { projectMessage } from '@project/locales/messages/projectMessage';
 import styles from '@styles';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose, HandleCreators, withHandlers } from 'recompose';
@@ -45,7 +48,7 @@ const handlerCreators: HandleCreators<ProjectRegistrationSalesFormProps, OwnHand
       if (isExist) {
         alertAdd({
           time: new Date,
-          message: intl.formatMessage({id: 'project.message.registration.sales.duplication'})
+          message: intl.formatMessage(projectMessage.registration.message.duplicateSales)
         });
 
         return false;

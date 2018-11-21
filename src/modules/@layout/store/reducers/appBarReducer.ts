@@ -44,7 +44,7 @@ const reducer: Reducer<IAppBarState> = (state = initialState, action) => {
     case Action.ASSIGN_FIELDS: return { ...state, fields: action.payload };
     case Action.SELECTION_ADD_REMOVE: return { ...state, selection: selectionAddRemove(state.selection, action.payload) };
     case Action.SELECTION_CLEAR: return { ...state, selection: [] };
-    case Action.DISPOSE: return { ...state, initialState };
+    case Action.DISPOSE: return { ...initialState };
     
     default: return state;
   }

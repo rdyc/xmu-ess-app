@@ -1,9 +1,11 @@
 import { FormMode } from '@generic/types';
+import { GlobalFormat } from '@layout/types';
+import { GlobalStyle } from '@layout/types/GlobalStyle';
 import { Card, CardContent, CardHeader, TextField } from '@material-ui/core';
 import { IProjectAssignmentDetail } from '@project/classes/response';
 import { projectMessage } from '@project/locales/messages/projectMessage';
 import * as React from 'react';
-import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
+import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose } from 'recompose';
 
 interface OwnProps {
@@ -16,137 +18,103 @@ type AllProps
   = OwnProps
   & InjectedIntlProps;
 
-const projectAssignment: React.SFC<AllProps> = props => {
-  const { formMode, data, intl } = props;
+const projectAssignment: React.SFC<AllProps> = props => (
+  <Card square>
+    <CardHeader 
+      title={props.intl.formatMessage(projectMessage.assignment.section.projectTitle)}
+      subheader={props.intl.formatMessage(projectMessage.assignment.section.projectSubHeader)}
+    />
+    <CardContent>
+      {
+        props.formMode === FormMode.New &&
+        props.children
+      }
 
-  const styled = {
-    fullWidth: true,
-    InputProps: {
-      disableUnderline: true,
-      readOnly: true
-    }
-  };
+      {
+        props.data &&
+        <React.Fragment>
+          {
+            props.formMode !== FormMode.New &&  
+            <React.Fragment>
+              <TextField
+                {...GlobalStyle.TextField.ReadOnly}
+                label={props.intl.formatMessage(projectMessage.assignment.field.uid)}
+                value={props.data.uid}
+              />
+              <TextField
+                {...GlobalStyle.TextField.ReadOnly}
+                label={props.intl.formatMessage(projectMessage.registration.field.uid)}
+                value={props.data.projectUid}
+              />
+            </React.Fragment>
+          }
 
-  const render = (
-    <Card square>
-      <CardHeader 
-        title={intl.formatMessage(projectMessage.assignment.section.projectTitle)}
-        subheader={intl.formatMessage(projectMessage.assignment.section.projectSubHeader)}
-      />
-      <CardContent>
-        {
-          props.formMode === FormMode.New &&
-          props.children
-        }
-
-        {
-          data &&
-          <div>
-            {
-              formMode !== FormMode.New &&  
-              <div>
-                <TextField
-                  {...styled}
-                  margin="dense"
-                  label={<FormattedMessage id="project.assignment.field.uid" />}
-                  value={data.uid}
-                />
-                <TextField
-                  {...styled}
-                  margin="dense"
-                  label={<FormattedMessage id="project.field.information.uid" />}
-                  value={data.projectUid}
-                />
-              </div>
-            }
-
-            <TextField
-              {...styled}
-              margin="dense"
-              label={<FormattedMessage id="project.field.information.ownerEmployeeUid" />}
-              value={data.owner ? data.owner.fullName : 'N/A'}
-            />
-            <TextField
-              {...styled}
-              margin="dense"
-              label={<FormattedMessage id="project.field.information.customerUid" />}
-              value={data.customer ? data.customer.name : 'N/A'}
-            />
-            <TextField
-              {...styled}
-              margin="dense"
-              label={<FormattedMessage id="project.field.information.projectType" />}
-              value={data.project ? data.project.value : 'N/A'}
-            />
-            <TextField
-              {...styled}
-              margin="dense"
-              label={<FormattedMessage id="project.field.information.name" />}
-              value={data.name}
-            />
-            <TextField
-              {...styled}
-              multiline={true}
-              margin="dense"
-              label={<FormattedMessage id="project.field.information.description" />}
-              value={data.description || 'N/A'}
-            />
-            <TextField
-              {...styled}
-              margin="dense"
-              label={<FormattedMessage id="project.field.information.start" />}
-              value={intl.formatDate(data.start, {
-                year: 'numeric',
-                month: 'short',
-                day: 'numeric'
-              })}
-            />
-            <TextField
-              {...styled}
-              margin="dense"
-              label={<FormattedMessage id="project.field.information.end" />}
-              value={intl.formatDate(data.end, {
-                year: 'numeric',
-                month: 'short',
-                day: 'numeric'
-              })}
-            />
-            {
-              props.showProjectHours &&
-              <div>
-                <TextField
-                  {...styled}
-                  margin="dense"
-                  label={<FormattedMessage id="project.field.information.hours" />}
-                  value={intl.formatNumber(data.maxHours)}
-                />
-                <TextField
-                  {...styled}
-                  margin="dense"
-                  label={<FormattedMessage id="project.assignment.field.assignedHours" />}
-                  value={intl.formatNumber(data.assignedHours)}
-                />
-                <TextField
-                  {...styled}
-                  margin="dense"
-                  label={<FormattedMessage id="project.assignment.field.unassignedHours" />}
-                  value={intl.formatNumber(data.unassignedHours)}
-                />
-              </div>
-            }
-          </div>
-        }
-        
-        {
-          props.formMode !== FormMode.New &&
-          props.children
-        }
-      </CardContent>
-    </Card>
-  );
-
-  return render;
-};
+          <TextField
+            {...GlobalStyle.TextField.ReadOnly}
+            label={props.intl.formatMessage(projectMessage.registration.field.ownerEmployeeUid)}
+            value={props.data.owner ? props.data.owner.fullName : 'N/A'}
+          />
+          <TextField
+            {...GlobalStyle.TextField.ReadOnly}
+            label={props.intl.formatMessage(projectMessage.registration.field.customerUid)}
+            value={props.data.customer ? props.data.customer.name : 'N/A'}
+          />
+          <TextField
+            {...GlobalStyle.TextField.ReadOnly}
+            label={props.intl.formatMessage(projectMessage.registration.field.projectType)}
+            value={props.data.project ? props.data.project.value : 'N/A'}
+          />
+          <TextField
+            {...GlobalStyle.TextField.ReadOnly}
+            label={props.intl.formatMessage(projectMessage.registration.field.name)}
+            value={props.data.name}
+          />
+          <TextField
+            {...GlobalStyle.TextField.ReadOnly}
+            multiline={true}
+            label={props.intl.formatMessage(projectMessage.registration.field.description)}
+            value={props.data.description || 'N/A'}
+          />
+          <TextField
+            {...GlobalStyle.TextField.ReadOnly}
+            label={props.intl.formatMessage(projectMessage.registration.field.start)}
+            value={props.intl.formatDate(props.data.start, GlobalFormat.Date)}
+          />
+          <TextField
+            {...GlobalStyle.TextField.ReadOnly}
+            label={props.intl.formatMessage(projectMessage.registration.field.end)}
+            value={props.intl.formatDate(props.data.end, GlobalFormat.Date)}
+          />
+          {
+            props.showProjectHours &&
+            <React.Fragment>
+              <TextField
+                {...GlobalStyle.TextField.ReadOnly}
+                label={props.intl.formatMessage(projectMessage.registration.field.hours)}
+                value={props.intl.formatNumber(props.data.maxHours)}
+              />
+              <TextField
+                {...GlobalStyle.TextField.ReadOnly}
+                label={props.intl.formatMessage(projectMessage.assignment.field.assignedHours)}
+                value={props.intl.formatNumber(props.data.assignedHours)}
+              />
+              <TextField
+                {...GlobalStyle.TextField.ReadOnly}
+                label={props.intl.formatMessage(projectMessage.assignment.field.unassignedHours)}
+                value={props.intl.formatNumber(props.data.unassignedHours)}
+              />
+            </React.Fragment>
+          }
+        </React.Fragment>
+      }
+      
+      {
+        props.formMode !== FormMode.New &&
+        props.children
+      }
+    </CardContent>
+  </Card>
+);
 
 export const ProjectAssignment = compose<AllProps, OwnProps>(
   injectIntl
