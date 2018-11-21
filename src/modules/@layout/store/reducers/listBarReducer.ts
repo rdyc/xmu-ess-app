@@ -72,8 +72,8 @@ const reducer: Reducer<IListBarState> = (state = initialState, action) => {
     case ListBarAction.ADD_HIDE:
       return { ...state, addDisabled: true };
 
-    // case ListBarAction.DISPOSE:
-    //   return initialState;
+    case ListBarAction.DISPOSE:
+      return { ... state, initialState };
     
     default:
       return state;

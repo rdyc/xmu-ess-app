@@ -61,6 +61,8 @@ const reducer: Reducer<ILayoutState> = (state = initialState, action) => {
     case Action.CHANGE_ANCHOR: return { ...state, anchor: action.payload };
     case Action.CHANGE_NOTIF_COUNT: return { ...state, notifCount: action.payload };
     case Action.CHANGE_VIEW: return { ...state, view: action.payload };
+
+    case Action.SETUP_VIEW: return { ...state, view: action.payload.view, ...action.payload.status };
     
     case Action.DRAWER_MENU_SHOW: return { ...state, isDrawerMenuVisible: true };
     case Action.DRAWER_MENU_HIDE: return { ...state, isDrawerMenuVisible: false };

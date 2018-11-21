@@ -1,6 +1,7 @@
 import { IAppState } from '@generic/interfaces';
 import { SortDirection } from '@generic/types';
-import { IListBarCallback, IListBarField, IListBarState } from '@layout/interfaces';
+import { ICollectionValue } from '@layout/classes/core';
+import { IListBarCallback, IListBarState } from '@layout/interfaces';
 import {
   listBarAddHide,
   listBarAssignCallbacks,
@@ -44,7 +45,7 @@ const mapStateToProps = ({ navBottom }: IAppState) => ({
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   navBottomDispatch: {
     assignCallbacks: (callbacks: IListBarCallback) => dispatch(listBarAssignCallbacks(callbacks)),
-    assignFields: (fields: IListBarField[]) => dispatch(listBarAssignFields(fields)),
+    assignFields: (fields: ICollectionValue[]) => dispatch(listBarAssignFields(fields)),
     changeOrder: (name: string) => dispatch(listBarChangeOrder(name)),
     changeSize: (size: number) => dispatch(listBarChangeSize(size)),
     changeDirection: (direction: SortDirection) => dispatch(listBarChangeDirection(direction)),
