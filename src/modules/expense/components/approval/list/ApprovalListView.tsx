@@ -1,16 +1,14 @@
 import AppMenu from '@constants/AppMenu';
 import { IExpense } from '@expense/classes/response';
-import { ExpenseApprovalUserAction, ExpenseField } from '@expense/classes/types';
+import { ExpenseField, ExpenseUserAction } from '@expense/classes/types';
 import { ExpenseSummary } from '@expense/components/request/detail/shared/ExpenseSummary';
 import { expenseFieldTranslator } from '@expense/helper';
-import { WithExpenseRequest, withExpenseRequest } from '@expense/hoc/withExpenseRequest';
-import { ICollectionValue } from '@layout/classes/core';
+import { WithExpenseApproval, withExpenseApproval } from '@expense/hoc/withExpenseApproval';
 import {
   CollectionConfig,
   CollectionDataProps,
   CollectionHandler,
   CollectionPage,
-  CollectionPageProps,
 } from '@layout/components/pages';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IAppBarMenu } from '@layout/interfaces';
@@ -18,33 +16,23 @@ import { layoutMessage } from '@layout/locales/messages';
 import { Button } from '@material-ui/core';
 import * as moment from 'moment';
 import * as React from 'react';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose } from 'recompose';
-
-const expenseFields: ICollectionValue[] = Object.keys(ExpenseField).map(key => ({ 
-  value: key, 
-  name: ExpenseField[key] 
-}));
-
-const menuOptions = (props: CollectionPageProps): IAppBarMenu[] => ([
-  {
-    id: ExpenseApprovalUserAction.Refresh,
-    name: props.intl.formatMessage(layoutMessage.action.refresh),
-    enabled: true,
-    visible: true,
-    onClick: () => props.setForceReload(true)
-  }
-]);
 
 const config: CollectionConfig<IExpense, AllProps> = {
   // page info
-  uid: AppMenu.ExpenseRequest,
-  parentUid: AppMenu.Expense,
-  title: 'Expense Approval', // intl.formatMessage({id: 'expense.title'}),
-  description: 'Lorem Ipsum Something', // intl.formatMessage({id: 'expense.subTitle'}),
+  page: (props: AllProps) => ({
+    uid: AppMenu.ExpenseRequest,
+    parentUid: AppMenu.Expense,
+    title: 'Expense Approval', // intl.formatMessage({id: 'expense.title'}),
+    description: 'Lorem Ipsum Something', // intl.formatMessage({id: 'expense.subTitle'}),
+  }),
   
   // top bar
-  fields: expenseFields,
+  fields: Object.keys(ExpenseField).map(key => ({ 
+    value: key, 
+    name: ExpenseField[key] 
+  })),
   fieldTranslator: expenseFieldTranslator,
 
   // selection
@@ -55,7 +43,7 @@ const config: CollectionConfig<IExpense, AllProps> = {
   searchStatus: (states: AllProps): boolean => {
     let result: boolean = false;
 
-    const { request } = states.expenseRequestState.all;
+    const { request } = states.expenseApprovalState.all;
 
     if (request && request.filter && request.filter.find) {
       result = request.filter.find ? true : false;
@@ -69,13 +57,15 @@ const config: CollectionConfig<IExpense, AllProps> = {
 
   // more
   hasMore: true,
-  moreOptions: menuOptions,
-  
-  // redirection
-  hasRedirection: true,
-  onRedirect: (item: IExpense): string => {
-    return `/expense/requests/${item.uid}`;
-  },
+  moreOptions: (props: AllProps, callback: CollectionHandler): IAppBarMenu[] => ([
+    {
+      id: ExpenseUserAction.Refresh,
+      name: props.intl.formatMessage(layoutMessage.action.refresh),
+      enabled: true,
+      visible: true,
+      onClick: () => callback.handleForceReload()
+    }
+  ]),
 
   // data filter
   filter: {
@@ -86,8 +76,8 @@ const config: CollectionConfig<IExpense, AllProps> = {
   // events
   onDataLoad: (states: AllProps, callback: CollectionHandler, params: CollectionDataProps, forceReload?: boolean | false) => {
     const { user } = states.userState;
-    const { isLoading, response } = states.expenseRequestState.all;
-    const { loadAllRequest } = states.expenseRequestDispatch;
+    const { isLoading, response } = states.expenseApprovalState.all;
+    const { loadAllRequest } = states.expenseApprovalDispatch;
 
     // when user is set and not loading
     if (user && !isLoading) {
@@ -100,7 +90,7 @@ const config: CollectionConfig<IExpense, AllProps> = {
             start: undefined,
             end: undefined,
             status: undefined,
-            isRejected: undefined,
+            isNotify: undefined,
             query: {
               direction: params.direction,
               orderBy: params.orderBy,
@@ -118,9 +108,9 @@ const config: CollectionConfig<IExpense, AllProps> = {
     }
   },
   onUpdated: (states: AllProps, callback: CollectionHandler) => {
-    const { isLoading, response } = states.expenseRequestState.all;
+    const { isLoading, response } = states.expenseApprovalState.all;
     
-    callback.setLoading(isLoading);
+    callback.handleLoading(isLoading);
     callback.handleResponse(response);
   },
   onBind: (item: IExpense, index: number) => ({
@@ -139,10 +129,10 @@ const config: CollectionConfig<IExpense, AllProps> = {
   ),
 
   // action component
-  actionComponent: (item: IExpense) => (
+  actionComponent: (item: IExpense, callback: CollectionHandler) => (
     <Button 
       size="small"
-      onClick={() => alert(`go to ${item.uid}`)}
+      onClick={() => callback.handleRedirectTo(`/expense/approvals/${item.uid}`)}
     >
       <FormattedMessage {...layoutMessage.action.details}/>
     </Button>
@@ -156,7 +146,8 @@ const config: CollectionConfig<IExpense, AllProps> = {
 
 type AllProps 
   = WithUser
-  & WithExpenseRequest;
+  & WithExpenseApproval
+  & InjectedIntlProps;
 
 const approvalListView: React.SFC<AllProps> = props => (
   <CollectionPage
@@ -167,5 +158,6 @@ const approvalListView: React.SFC<AllProps> = props => (
 
 export const ApprovalListView = compose(
   withUser,
-  withExpenseRequest
+  withExpenseApproval,
+  injectIntl
 )(approvalListView);
