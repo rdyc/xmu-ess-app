@@ -11,8 +11,9 @@ import {
   Typography
 } from '@material-ui/core';
 import { IMileageRequestItem } from '@mileage/classes/response';
+import { mileageMessage } from '@mileage/locales/messages/mileageMessage';
 import * as React from 'react';
-import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
+import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose } from 'recompose';
 
 interface OwnProps {
@@ -28,15 +29,15 @@ const mileageItem: React.SFC<AllProps> = props => {
   const render = (
     <Card square>
       <CardHeader
-        title={<FormattedMessage id="mileage.request.itemsTitle" />}
-        subheader={<FormattedMessage id="mileage.request.itemsSubTitle" />}
+        title={intl.formatMessage(mileageMessage.request.item.title)}
+        subheader={intl.formatMessage(mileageMessage.request.item.subHeader)}
       />
       <CardContent>
         <List>
           {items && items.length === 0 && (
             <ListItem>
               <ListItemText
-                primary={<FormattedMessage id="mileage.request.item.empty" />}
+                primary={intl.formatMessage(mileageMessage.request.item.empty)}
                 primaryTypographyProps={{ align: 'center' }}
               />
             </ListItem>

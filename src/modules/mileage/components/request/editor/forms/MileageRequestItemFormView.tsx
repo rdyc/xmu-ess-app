@@ -9,12 +9,14 @@ import {
   Typography
 } from '@material-ui/core';
 import { ItemFormProps } from '@mileage/components/request/editor/forms/MileageRequestItemForm';
+import { mileageMessage } from '@mileage/locales/messages/mileageMessage';
 import { ITimesheetMileages } from '@timesheet/classes/response/ITimesheetMileages';
 import * as React from 'react';
-import { FormattedDate, FormattedMessage } from 'react-intl';
+import { FormattedDate } from 'react-intl';
 
 export const MileageRequestItemFormView: React.SFC<ItemFormProps> = props => {
   const { isLoading, response } = props.timesheetMileagesState;
+  const { intl } = props;
   let { nolValue } = props;
 
   const renderFilter = (items: ITimesheetMileages[]) => {
@@ -77,8 +79,8 @@ export const MileageRequestItemFormView: React.SFC<ItemFormProps> = props => {
   const render = (
     <Card square>
       <CardHeader
-        title={<FormattedMessage id="mileage.request.item.Title" />}
-        subheader={<FormattedMessage id="mileage.request.item.SubTitle" />}
+        title={intl.formatMessage(mileageMessage.request.field.itemTitle)}
+        subheader={intl.formatMessage(mileageMessage.request.field.itemSubHeader)}
       />
       <CardContent>
         <Grid>
@@ -88,7 +90,7 @@ export const MileageRequestItemFormView: React.SFC<ItemFormProps> = props => {
             renderFilter(response.data) &&
             !nolValue && (
               <Typography variant="body2">
-                <FormattedMessage id="mileage.request.item.noData" />
+                {intl.formatMessage(mileageMessage.request.field.noData)}
               </Typography>
             )}
           {!isLoading &&
@@ -96,7 +98,7 @@ export const MileageRequestItemFormView: React.SFC<ItemFormProps> = props => {
               (response.data && response.data.length < 1) ||
               !nolValue) && (
               <Typography variant="body2">
-                <FormattedMessage id="mileage.request.item.noData" />
+                {intl.formatMessage(mileageMessage.request.field.noData)}
               </Typography>
             )}
           {!isLoading &&

@@ -1,9 +1,9 @@
 import { Layout } from '@layout/components/base';
 import { MileageApprovalDetail } from '@mileage/components/approval/detail/MileageApprovalDetail';
-import { MileageApprovalList } from '@mileage/components/approval/list/MileageApprovalList';
+import { MileageApprovalList } from '@mileage/components/approval/list/MileageApprovalListView';
 import { MileageRequestDetail } from '@mileage/components/request/detail/MileageRequestDetail';
 import MileageRequestEditor from '@mileage/components/request/editor/MileageRequestEditor';
-import { MileageRequestList } from '@mileage/components/request/list/MileageRequestList';
+import { MileageRequestList } from '@mileage/components/request/list/MileageRequestListView';
 import * as React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router';
 

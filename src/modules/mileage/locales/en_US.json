@@ -1,41 +1,41 @@
 {
-  "mileage.approval.title": "Mileage Approval",
-  "mileage.approval.subTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras mollis eros sit amet rhoncus fermentum",
-  "mileage.approval.detail.title": "Detail Approval",
-  "mileage.approval.infoTitle": "Detaiil",
-  "mileage.approval.infoSubTitle": "Lorem Ipsum dolor sit amet,",
-  "mileage.approval.field.uid": "Mileage Approval ID",
+  "mileage.approval.page.list.title": "Mileage Approval",
+  "mileage.approval.page.list.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras mollis eros sit amet rhoncus fermentum",
 
-  "mileage.request.title": "Mileage Request",
-  "mileage.request.subTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras mollis eros sit amet rhoncus fermentum",
-  "mileage.request.infoTitle": "Details Submit Mileage",
-  "mileage.request.infoSubTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.e",
-  "mileage.request.field.uid": "Mileage ID",
-  "mileage.request.field.month": "Month",
-  "mileage.request.field.employeeName": "Employee Name",
-  "mileage.request.field.year": "Year",
-  "mileage.request.field.total": "Total Mileage",
-  "mileage.request.itemsTitle": "Details Item",
-  "mileage.request.itemsSubTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-  "mileage.request.dialog.modifyTitle": "Modify Confirmation",
-  "mileage.request.dialog.modifyDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-  "mileage.request.dialog.closeTitle": "Modify Confirmation",
-  "mileage.request.dialog.closeDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
-  "mileage.request.detail.title": "Mileage Details",
-  "mileage.request.detail.subTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
+  "mileage.request.page.list.title": "Mileage Request",
+  "mileage.request.page.list.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras mollis eros sit amet rhoncus fermentum",
+  "mileage.request.page.detail.title": "Mileage Details",
+  "mileage.request.page.detail.subTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
+  "mileage.request.page.new.title": "New Mileage Request",
+  "mileage.request.page.new.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
+
+  "mileage.request.field.item.title": "Mileage Item",
+  "mileage.request.field.item.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
+  "mileage.request.field.information.title": "Details Submit Mileage",
+  "mileage.request.field.information.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+  "mileage.request.field.information.uid": "Mileage ID",
+  "mileage.request.field.information.statusType": "Status",
+  "mileage.request.field.information.date": "Date",
+  "mileage.request.field.information.employeeName": "Employee Name",
+  "mileage.request.field.information.amount": "Total Mileage",
+  "mileage.request.field.information.notes": "Notes",
+
   "mileage.request.field.information.year": "Year",
   "mileage.request.field.information.year.required": "Year is required",
   "mileage.request.field.information.year.placeholder": "Select a year",
+
   "mileage.request.field.information.month": "Month",
   "mileage.request.field.information.month.required": "Month is required",
   "mileage.request.field.information.month.placeholder": "Select a month",
-  "mileage.request.form.newTitle": "New Mileage Request",
-  "mileage.request.form.newSubTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
-  "mileage.request.noData": "No data Mileage request",
-  "mileage.request.item.Title": "Mileage Item",
-  "mileage.request.item.SubTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
-  "mileage.request.item.noData": "N/A",
-  "mileage.approval.item.noData": "N/A",
+
+  "mileage.request.field.information.noData": "N/A",
+
+  "mileage.request.field.submit.title": "Submit Mileage",
+  "mileage.request.field.submit.subHeader": "Lorem Ipsum dolor sit amet,",
+  
+  "mileage.request.item.title": "Details Item",
+  "mileage.request.item.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+  "mileage.request.item.empty": "No Item",
 
   "mileage.message.registration.create.success": "A new PID {uid} has been created",
   "mileage.message.registration.create.failure": "Unable to process your submission",
@@ -46,7 +46,6 @@
   "mileage.approvalSubHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
 
   "mileage.dialog.approvalTitle": "Mileage Approval Submission",
-  "mileage.dialog.approvalContent": "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
+  "mileage.dialog.approvalContent": "Lorem ipsum dolor sit amet, consectetur adipiscing elit"
 
-  "mileage.approval.detail.subTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit"
 }

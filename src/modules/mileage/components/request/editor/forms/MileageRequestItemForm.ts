@@ -4,6 +4,7 @@ import {
   WithTimesheetMileages,
   withTimesheetMileages
 } from '@timesheet/hoc/withTimesheetMileages';
+import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose, lifecycle, ReactLifeCycleFunctions } from 'recompose';
 
 interface OwnProps {
@@ -15,7 +16,7 @@ interface OwnState {
   nolValue: boolean;
 }
 
-export type ItemFormProps = WithTimesheetMileages & WithUser & OwnProps & OwnState;
+export type ItemFormProps = WithTimesheetMileages & WithUser & OwnProps & OwnState & InjectedIntlProps;
 
 const lifecycles: ReactLifeCycleFunctions<ItemFormProps, {}> = {
   componentDidMount() {
@@ -45,5 +46,6 @@ const lifecycles: ReactLifeCycleFunctions<ItemFormProps, {}> = {
 export const MileageRequestItemForm = compose<ItemFormProps, OwnProps>(
   withUser,
   withTimesheetMileages,
+  injectIntl,
   lifecycle<ItemFormProps, {}>(lifecycles)
 )(MileageRequestItemFormView);

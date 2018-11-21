@@ -1,6 +1,7 @@
 import { FormMode } from '@generic/types';
 import { Card, CardContent, CardHeader } from '@material-ui/core';
 import { MileageRequestDetailFormProps } from '@mileage/components/request/editor/forms/MileageRequestDetailForm';
+import { mileageMessage } from '@mileage/locales/messages/mileageMessage';
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Field } from 'redux-form';
@@ -32,8 +33,8 @@ export const MileageRequestDetailFormView: React.SFC<MileageRequestDetailFormPro
   const render = (
     <Card square>
       <CardHeader 
-        title={<FormattedMessage id="mileage.request.infoTitle"/>}
-        subheader={<FormattedMessage id="mileage.request.infoSubTitle" />}
+        title={props.intl.formatMessage(mileageMessage.request.field.submitTitle)}
+        subheader={props.intl.formatMessage(mileageMessage.request.field.submitSubHeader)}
       />
       <CardContent>
         {names.map(name => renderField(name))}

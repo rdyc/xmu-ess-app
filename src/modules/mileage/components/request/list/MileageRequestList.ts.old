@@ -1,12 +1,14 @@
 import AppMenu from '@constants/AppMenu';
 import { SortDirection } from '@generic/types';
 import { ICollectionValue } from '@layout/classes/core';
+import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithNavBottom, withNavBottom } from '@layout/hoc/withNavBottom';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { MileageRequestField } from '@mileage/classes/types';
 import { MileageRequestListView } from '@mileage/components/request/list/MileageRequestListView';
 import { WithMileageRequest, withMileageRequest } from '@mileage/hoc/withMileageRequest';
+import { projectRegistrationFieldTranslator } from '@project/helper';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import {
@@ -30,6 +32,7 @@ interface OwnHandlers {
   handleChangeSize: (value: number) => void;
   handleChangeOrder: (field: ICollectionValue) => void;
   handleChangeSort: (direction: SortDirection) => void;
+  handleOnSearch: (find: string | undefined, field: ICollectionValue | undefined ) => void; 
 }
 
 interface OwnOptions {
@@ -53,11 +56,13 @@ interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
   stateOrdering: StateHandler<OwnState>;
   stateSorting: StateHandler<OwnState>;
   stateSizing: StateHandler<OwnState>;
+  setSearch: StateHandler<OwnState>;
 }
 
 export type MileageRequestListProps 
   = WithMileageRequest
   & WithUser
+  & WithAppBar
   & WithLayout
   & WithNavBottom
   & RouteComponentProps
@@ -101,6 +106,11 @@ const stateUpdaters: StateUpdaters<OwnOptions, OwnState, OwnStateUpdaters> = {
     size,
     page: 1,
   }),
+  setSearch: (prevState: OwnState) => (find: string, field?: ICollectionValue) => ({
+    find: field ? projectRegistrationFieldTranslator(find, field) : find,
+    findBy: field ? field.value : undefined,
+    page: 1
+  })
 };
 
 const handlerCreators: HandleCreators<MileageRequestListProps, OwnHandlers> = {
@@ -132,6 +142,9 @@ const handlerCreators: HandleCreators<MileageRequestListProps, OwnHandlers> = {
   },
   handleChangeSort: (props: MileageRequestListProps) => (direction: SortDirection) => { 
     props.stateSorting(direction);
+  },
+  handleOnSearch: (props: MileageRequestListProps) => (find: string, field?: ICollectionValue) => {
+    props.setSearch(find, field);
   }
 };
 
@@ -140,8 +153,8 @@ const lifecycles: ReactLifeCycleFunctions<MileageRequestListProps, OwnState> = {
     const { 
       handleGoToNext, handleGoToPrevious, handleReloading, 
       handleChangeOrder, handleChangeSize, handleChangeSort, 
-      layoutDispatch, navBottomDispatch, 
-      history, intl 
+      layoutDispatch, navBottomDispatch, handleOnSearch,
+      history, intl, appBarDispatch
     } = this.props;
     
     const { isLoading, response } = this.props.mileageRequestState.all;
@@ -150,12 +163,15 @@ const lifecycles: ReactLifeCycleFunctions<MileageRequestListProps, OwnState> = {
       uid: AppMenu.MileageRequest,
       parentUid: AppMenu.Mileage,
       title: intl.formatMessage({id: 'mileage.request.title'}),
-      subTitle : intl.formatMessage({id: 'mileage.request.subTitle'})
+      subTitle : intl.formatMessage({id: 'mileage.request.subTitle'}),
+      isSearchable: true
     });
 
     layoutDispatch.modeListOn();
     layoutDispatch.searchShow();
     layoutDispatch.actionCentreShow();
+
+    appBarDispatch.assignSearchCallback(handleOnSearch);
 
     navBottomDispatch.assignCallbacks({
       onNextCallback: handleGoToNext,
@@ -170,6 +186,11 @@ const lifecycles: ReactLifeCycleFunctions<MileageRequestListProps, OwnState> = {
     const items = Object.keys(MileageRequestField)
       .map(key => ({ value: key, name: MileageRequestField[key] }));
 
+    const mileageFields: ICollectionValue[] = Object.keys(MileageRequestField).map(key => ({
+      value: key, name: MileageRequestField[key]
+    }));
+    
+    appBarDispatch.assignFields(items);    
     navBottomDispatch.assignFields(items);
 
     // only load data when response are empty
@@ -243,6 +264,7 @@ export const MileageRequestList = compose<MileageRequestListProps, OwnOptions>(
   withMileageRequest,
   withUser,
   withLayout,
+  withAppBar,
   withNavBottom,
   withRouter,
   injectIntl,
