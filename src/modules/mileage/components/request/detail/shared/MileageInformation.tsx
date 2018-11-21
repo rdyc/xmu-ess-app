@@ -5,9 +5,10 @@ import {
   TextField,
 } from '@material-ui/core';
 import { IMileageRequestDetail } from '@mileage/classes/response';
+import { mileageMessage } from '@mileage/locales/messages/mileageMessage';
 import * as moment from 'moment';
 import * as React from 'react';
-import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
+import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose } from 'recompose';
 
 interface OwnProps {
@@ -30,38 +31,38 @@ const mileageInformation: React.SFC<AllProps> = props => {
   const render = (
     <Card square>
     <CardHeader
-      title={<FormattedMessage id="mileage.request.infoTitle" />}
-      subheader={<FormattedMessage id="mileage.request.infoSubTitle" />}
+      title={intl.formatMessage(mileageMessage.request.field.title)}
+      subheader={intl.formatMessage(mileageMessage.request.field.subHeader)}
     />
     <CardContent>
       <TextField
         {...styled}
         margin="dense"
-        label={<FormattedMessage id="mileage.request.field.uid" />}
+        label={intl.formatMessage(mileageMessage.request.field.uid)}
         value={data.uid}
       />
       <TextField
         {...styled}
         margin="dense"
-        label={<FormattedMessage id="mileage.request.field.employeeName" />}
+        label={intl.formatMessage(mileageMessage.request.field.employeeName)}
         value={data.employee ? data.employee.fullName : ''}
       />
       <TextField
         {...styled}
         margin="dense"
-        label={<FormattedMessage id="mileage.request.field.month" />}
+        label={intl.formatMessage(mileageMessage.request.field.month)}
         value={moment.months(data.month - 1)}
       />
       <TextField
         {...styled}
         margin="dense"
-        label={<FormattedMessage id="mileage.request.field.year" />}
+        label={intl.formatMessage(mileageMessage.request.field.year)}
         value={data.year}
       />
       <TextField
         {...styled}
         margin="dense"
-        label={<FormattedMessage id="mileage.request.field.total" />}
+        label={intl.formatMessage(mileageMessage.request.field.amount)}
         value={intl.formatNumber(data.amount)}
       />
     </CardContent>

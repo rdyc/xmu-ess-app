@@ -125,7 +125,7 @@ const handlerCreators: HandleCreators<MileageRequestEditorProps, OwnHandlers> = 
     let message: string = '';
 
     if (formMode === FormMode.New) {
-      message = intl.formatMessage(mileageMessage.createSuccess, {
+      message = intl.formatMessage(mileageMessage.request.message.createSuccess, {
         uid: response.uid
       });
     }
@@ -156,7 +156,7 @@ const handlerCreators: HandleCreators<MileageRequestEditorProps, OwnHandlers> = 
       let message: string = '';
 
       if (formMode === FormMode.New) {
-        message = intl.formatMessage(mileageMessage.createFailure);
+        message = intl.formatMessage(mileageMessage.request.message.createFailure);
       }
 
       alertAdd({
@@ -185,8 +185,8 @@ const lifecycles: ReactLifeCycleFunctions<MileageRequestEditorProps, {}> = {
     const { user } = this.props.userState;
 
     const view = {
-      title: 'mileage.request.form.newTitle',
-      subTitle: 'mileage.request.form.newSubTitle',
+      title: intl.formatMessage(mileageMessage.request.page.newTitle),
+      subTitle: intl.formatMessage(mileageMessage.request.page.newSubHeader),
     };
 
     if (!user) {

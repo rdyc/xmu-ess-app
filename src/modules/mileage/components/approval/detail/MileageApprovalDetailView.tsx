@@ -14,6 +14,7 @@ import { IMileageRequestItem } from '@mileage/classes/response';
 import { MileageApprovalDetailProps } from '@mileage/components/approval/detail/MileageApprovalDetail';
 import { MileageInformation } from '@mileage/components/request/detail/shared/MileageInformation';
 import { MileageItem } from '@mileage/components/request/detail/shared/MileageItem';
+import { mileageMessage } from '@mileage/locales/messages/mileageMessage';
 import { WorkflowHistory } from '@organization/components/workflow/history/WorkflowHistory';
 import * as React from 'react';
 import { FormattedDate, FormattedMessage } from 'react-intl';
@@ -54,8 +55,8 @@ export const MileageApprovalDetailView: React.SFC<
     return (
       <Card square>
         <CardHeader
-          title={<FormattedMessage id="mileage.request.itemsTitle" />}
-          subheader={<FormattedMessage id="mileage.request.itemsSubTitle" />}
+          title={intl.formatMessage(mileageMessage.request.field.itemTitle)}
+          subheader={intl.formatMessage(mileageMessage.request.field.itemSubHeader)}
         />
         <CardContent>
           <List>

@@ -12,6 +12,7 @@ import {
   DialogContentText,
   DialogTitle
 } from '@material-ui/core';
+import { organizationMessage } from '@organization/locales/messages/organizationMessage';
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Field } from 'redux-form';
@@ -35,7 +36,6 @@ export const WorkflowMileageApprovalView: React.SFC<
     handleDialogConfirmed,
     approvalChoices,
     formIsApproved,
-    intl
   } = props;
 
   const renderDialog = (
@@ -73,12 +73,8 @@ export const WorkflowMileageApprovalView: React.SFC<
             <Field
               name="isApproved"
               required={true}
-              label={
-                <FormattedMessage id={'workflow.approval.field.isApproved'} />
-              }
-              placeholder={intl.formatMessage({
-                id: 'workflow.approval.field.isApproved.placeholder'
-              })}
+              label={props.intl.formatMessage(organizationMessage.workflow.field.isApproved)}
+              placeholder={props.intl.formatMessage(organizationMessage.workflow.field.isApprovedPlaceholder)}
               choices={approvalChoices}
               component={RadioGroup}
             />
@@ -87,12 +83,8 @@ export const WorkflowMileageApprovalView: React.SFC<
                 <Field
                   name="remark"
                   required={true}
-                  label={
-                    <FormattedMessage id={'workflow.approval.field.remark'} />
-                  }
-                  placeholder={intl.formatMessage({
-                    id: 'workflow.approval.field.remark.placeholder'
-                  })}
+                  label={props.approvalRemarkLabel || props.intl.formatMessage(organizationMessage.workflow.field.remark)}
+                  placeholder={props.approvalRemarkPlaceholder || props.intl.formatMessage(organizationMessage.workflow.field.remarkPlaceholder)}
                   component={InputTextArea}
                 />
               )}

@@ -1,5 +1,6 @@
 import { IAccountEmployee } from '@account/classes';
 import { ICommonSystem } from '@common/classes';
+import { IBaseChanges } from '@generic/interfaces';
 
 export interface IMileageRequest {
   uid: string;
@@ -13,4 +14,5 @@ export interface IMileageRequest {
   status?: ICommonSystem | null;
   notes?: string | null;
   isNotified: boolean;
+  changes: IBaseChanges | null;
 }
