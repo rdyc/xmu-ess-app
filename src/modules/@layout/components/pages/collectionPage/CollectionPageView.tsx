@@ -31,7 +31,6 @@ export const CollectionPageView: React.SFC<CollectionPageProps> = props => (
     metadata={props.response && props.response.metadata}
     fields={props.config.fields}
     onClickSync={() => props.setPageOne()}
-    onClickNew={() => alert('new')}
     onClickNext={() => props.setPageNext()}
     onClickPrevious={() => props.setPagePrevious()}
     onChangeField={props.setField}
@@ -49,7 +48,7 @@ export const CollectionPageView: React.SFC<CollectionPageProps> = props => (
         }   
 
         // collecting fields
-        const bind = props.config.onBind(item, index);
+        const bind = props.config.onBind(item, index, props.connectedProps);
         
         return (
           <Fade 
@@ -168,7 +167,7 @@ export const CollectionPageView: React.SFC<CollectionPageProps> = props => (
                 props.config.actionComponent &&
                 <Delayed time={2500}>
                   <ExpansionPanelActions>
-                    {props.config.actionComponent(item)}
+                    {props.config.actionComponent(item, props)}
                   </ExpansionPanelActions>
                 </Delayed>
               }

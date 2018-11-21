@@ -39,7 +39,6 @@ interface OwnOption {
   className: string;
   metadata: IBaseMetadata | undefined;
   fields: ICollectionValue[];
-  onClickNew: (event: React.MouseEvent<HTMLElement>) => void;
   onClickSync: (event: React.MouseEvent<HTMLElement>) => void;
   onClickNext: (event: React.MouseEvent<HTMLElement>) => void;
   onClickPrevious: (event: React.MouseEvent<HTMLElement>) => void;

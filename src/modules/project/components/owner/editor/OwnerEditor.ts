@@ -6,6 +6,7 @@ import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IProjectOwnerPutPayload } from '@project/classes/request/owner';
 import { WithProjectOwner, withProjectOwner } from '@project/hoc/withProjectOwner';
 import { WithProjectRegistration, withProjectRegistration } from '@project/hoc/withProjectRegistration';
+import { projectMessage } from '@project/locales/messages/projectMessage';
 import { projectOwnerMessage } from '@project/locales/messages/projectOwnerMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
@@ -72,7 +73,7 @@ const handlerCreators: HandleCreators<OwnerEditorProps, OwnHandlers> = {
   
     requiredFields.forEach(field => {
       if (!formData.information[field] || isNullOrUndefined(formData.information[field])) {
-        errors.information[field] = props.intl.formatMessage({id: `project.field.information.${field}.required`});
+        errors.information[field] = props.intl.formatMessage(projectMessage.registration.fieldFor(field, 'fieldRequired'));
       }
     });
     
@@ -179,8 +180,8 @@ const lifecycles: ReactLifeCycleFunctions<OwnerEditorProps, {}> = {
     layoutDispatch.changeView({
       uid: AppMenu.ProjectRegistrationRequest,
       parentUid: AppMenu.ProjectRegistration,
-      title: intl.formatMessage({id: 'project.form.owner.editTitle'}),
-      subTitle : intl.formatMessage({id: 'project.form.owner.editSubTitle'})
+      title: intl.formatMessage(projectMessage.registration.page.ownerModifyTitle),
+      subTitle : intl.formatMessage(projectMessage.registration.page.ownerModifySubHeader)
     });
     
     layoutDispatch.navBackShow(); 

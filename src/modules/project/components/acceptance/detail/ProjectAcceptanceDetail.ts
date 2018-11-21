@@ -4,6 +4,7 @@ import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IAppBarMenu } from '@layout/interfaces';
+import { layoutMessage } from '@layout/locales/messages';
 import { ProjectUserAction } from '@project/classes/types';
 import { WithProjectAssignment, withProjectAssignment } from '@project/hoc/withProjectAssignment';
 import { projectMessage } from '@project/locales/messages/projectMessage';
@@ -145,7 +146,7 @@ const lifecycles: ReactLifeCycleFunctions<ProjectAcceptanceDetailProps, {}> = {
       const currentMenus = [
         {
           id: ProjectUserAction.Refresh,
-          name: intl.formatMessage({id: 'global.action.refresh'}),
+          name: intl.formatMessage(layoutMessage.action.refresh),
           enabled: true,
           visible: true
         }

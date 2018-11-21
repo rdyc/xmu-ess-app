@@ -10,9 +10,10 @@ import {
   Grid,
   Typography,
 } from '@material-ui/core';
-import { WorkflowStep } from '@organization/components';
+import { WorkflowHistory } from '@organization/components/workflow/history/WorkflowHistory';
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
+
 import { LeaveInformation } from './shared/LeaveInformation';
 
 export const LeaveRequestDetailView: React.SFC<RequestDetailProps> = props => {
@@ -89,8 +90,7 @@ export const LeaveRequestDetailView: React.SFC<RequestDetailProps> = props => {
               response &&
               response.data &&
               response.data.workflow &&
-              response.data.workflow.steps &&
-              <WorkflowStep steps={response.data.workflow.steps} />
+              <WorkflowHistory data={response.data.workflow} />
             }
           </Grid>
         </Grid>
