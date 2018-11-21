@@ -63,7 +63,7 @@ const handlerCreators: HandleCreators<EntryDetailFormProps, OwnHandlers> = {
       case 'uid':
         fieldProps = {
           disabled: true,
-          placeholder: intl.formatMessage({ id: `timesheet.field.${name}.placeholder` }),
+          placeholder: intl.formatMessage({ id: `timesheet.entry.field.${name}.placeholder` }),
           component: InputText
         };
         break;
@@ -72,7 +72,7 @@ const handlerCreators: HandleCreators<EntryDetailFormProps, OwnHandlers> = {
         fieldProps = {
           required: true,
           category: 'activity',
-          placeholder: intl.formatMessage({ id: `timesheet.field.${name}.placeholder` }),
+          placeholder: intl.formatMessage({ id: `timesheet.entry.field.${name}.placeholder` }),
           component: SelectSystem
         };
         break;
@@ -82,7 +82,7 @@ const handlerCreators: HandleCreators<EntryDetailFormProps, OwnHandlers> = {
           required: true,
           type: 'text',
           disabled: isNullOrUndefined(activityTypeValue),
-          placeholder: intl.formatMessage({ id: `timesheet.field.${name}.placeholder` }),
+          placeholder: intl.formatMessage({ id: `timesheet.entry.field.${name}.placeholder` }),
           component: !isNullOrUndefined(activityTypeValue) ? InputCustomer : InputText
         };
         break;
@@ -92,7 +92,7 @@ const handlerCreators: HandleCreators<EntryDetailFormProps, OwnHandlers> = {
           required: true,
           type: 'text',
           disabled: isNullOrUndefined(customerUidValue),
-          placeholder: intl.formatMessage({ id: `timesheet.field.${name}.placeholder` }),
+          placeholder: intl.formatMessage({ id: `timesheet.entry.field.${name}.placeholder` }),
           component: !isNullOrUndefined(customerUidValue) ? SelectProjectAssigment : InputText,
           filter: projectFilter
         };
@@ -103,7 +103,7 @@ const handlerCreators: HandleCreators<EntryDetailFormProps, OwnHandlers> = {
           required: true,
           type: 'text',
           disabled: !showSiteProject,
-          placeholder: intl.formatMessage({ id: `timesheet.field.${name}.placeholder` }),
+          placeholder: intl.formatMessage({ id: `timesheet.entry.field.${name}.placeholder` }),
           component: !isNullOrUndefined(projectUidValue) ? SelectProjectSite : InputText,
           companyUid: user && user.company.uid,
           projectUid: projectUidValue
@@ -114,7 +114,7 @@ const handlerCreators: HandleCreators<EntryDetailFormProps, OwnHandlers> = {
         fieldProps = {
           required: true,
           type: 'text',
-          placeholder: intl.formatMessage({ id: `timesheet.field.${name}.placeholder` }),
+          placeholder: intl.formatMessage({ id: `timesheet.entry.field.${name}.placeholder` }),
           component: InputDateTimesheet
         };
         break;
@@ -123,7 +123,7 @@ const handlerCreators: HandleCreators<EntryDetailFormProps, OwnHandlers> = {
         fieldProps = {
           required: true,
           type: 'text',
-          placeholder: intl.formatMessage({ id: `timesheet.field.${name}.placeholder` }),
+          placeholder: intl.formatMessage({ id: `timesheet.entry.field.${name}.placeholder` }),
           component: InputTime
         };
         break;
@@ -132,7 +132,7 @@ const handlerCreators: HandleCreators<EntryDetailFormProps, OwnHandlers> = {
         fieldProps = {
           required: true,
           type: 'text',
-          placeholder: intl.formatMessage({ id: `timesheet.field.${name}.placeholder` }),
+          placeholder: intl.formatMessage({ id: `timesheet.entry.field.${name}.placeholder` }),
           component: InputTime
         };
         break;
@@ -140,7 +140,7 @@ const handlerCreators: HandleCreators<EntryDetailFormProps, OwnHandlers> = {
       default:
         fieldProps = {
           type: 'text',
-          placeholder: intl.formatMessage({ id: `timesheet.field.${name}.placeholder` }),
+          placeholder: intl.formatMessage({ id: `timesheet.entry.field.${name}.placeholder` }),
           component: InputText
         };
         break;

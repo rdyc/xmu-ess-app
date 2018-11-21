@@ -10,7 +10,7 @@ export const TimesheetEntryDetailView: React.SFC<EntryDetailProps> = props => {
     dialogFullScreen, dialogOpen, dialogTitle, dialogDescription, dialogCancelText, dialogConfirmedText, handleDialogClose, handleDialogConfirmed
   } = props;
 
-  const { isLoading, response } = props.timesheetState.detail;
+  const { isLoading, response } = props.timesheetEntryState.detail;
 
   const renderDialog = (
     <Dialog

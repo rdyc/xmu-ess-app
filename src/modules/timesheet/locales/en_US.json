@@ -1,9 +1,15 @@
 {
   "timesheet.title": "Time Report",
-  "timesheet.history.title": "Time Report History",
-  "timesheet.approval.title": "Time Report Approval",
-  "timesheet.approval.history.title": "Time Approval History",
-  "timesheet.subTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+
+  "timesheet.entry.page.list.title": "Time Report History",
+  "timesheet.entry.page.list.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  
+  "timesheet.approval.page.list.title": "Time Report Approval",
+  "timesheet.approval.page.list.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  
+  "timesheet.approval.history.page.list.title": "Time Approval History",
+  "timesheet.approval.history.page.list.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+
   "timesheet.detail.title": "Detail Time Report",
   "timesheet.detail.subTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
   "timesheet.form.newTitle": "Time Report Entry",
@@ -12,6 +18,7 @@
   "timesheet.form.editSubTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
   "timesheet.infoTitle": "Time Report",
   "timesheet.infoSubTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "timesheet.action.title": "Action Approval Time Report",
   
   "timesheet.dialog.modifyTitle": "Modify Confirmation",
   "timesheet.dialog.modifyDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
@@ -20,34 +27,44 @@
   "timesheet.dialog.approvalTitle": "Time Report Approval Submission",
   "timesheet.dialog.approvalContent": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
 
-  "timesheet.field.information.uid": "Time Report ID",
-  "timesheet.field.information.uid.placeholder": "Time Report ID",
-  "timesheet.field.information.activityType": "Activity Type",
-  "timesheet.field.information.activityType.required": "Activity Type is required",
-  "timesheet.field.information.activityType.placeholder": "Select a activity type",
-  "timesheet.field.information.customerUid": "Customer",
-  "timesheet.field.information.customerUid.required": "Customer is required",
-  "timesheet.field.information.customerUid.placeholder": "Select a customer",
-  "timesheet.field.information.projectUid": "Project",
-  "timesheet.field.information.projectUid.required": "Project is required",
-  "timesheet.field.information.projectUid.placeholder": "Select a project",
-  "timesheet.field.information.siteUid": "Site Project",
-  "timesheet.field.information.siteUid.required": "Site Project is required",
-  "timesheet.field.information.siteUid.placeholder": "Select a site project",
-  "timesheet.field.information.date": "Report Date",
-  "timesheet.field.information.date.required": "Date is required",
-  "timesheet.field.information.date.placeholder": "Select a report date",
-  "timesheet.field.information.start": "Start",
-  "timesheet.field.information.start.required": "Start is required",
-  "timesheet.field.information.start.placeholder": "Select a time start",
-  "timesheet.field.information.end": "End",
-  "timesheet.field.information.end.required": "End is required",
-  "timesheet.field.information.end.placeholder": "Select a time's up",
-  "timesheet.field.information.description": "Notes",
-  "timesheet.field.information.description.placeholder": "Please fill in the notes",
-  "timesheet.field.information.siteValue": "Site Value",
-  "timesheet.field.information.totalHours": "Total Hours",
-  "timesheet.field.information.approvalNote": "Approval Note",
+  "timesheet.entry.field.information.uid": "Time Report ID",
+  "timesheet.entry.field.information.uid.placeholder": "Time Report ID",
+
+  "timesheet.entry.field.information.activityType": "Activity Type",
+  "timesheet.entry.field.information.activityType.required": "Activity Type is required",
+  "timesheet.entry.field.information.activityType.placeholder": "Select a activity type",
+  
+  "timesheet.entry.field.information.customerUid": "Customer",
+  "timesheet.entry.field.information.customerUid.required": "Customer is required",
+  "timesheet.entry.field.information.customerUid.placeholder": "Select a customer",
+  
+  "timesheet.entry.field.information.projectUid": "Project",
+  "timesheet.entry.field.information.projectUid.required": "Project is required",
+  "timesheet.entry.field.information.projectUid.placeholder": "Select a project",
+  
+  "timesheet.entry.field.information.siteUid": "Site Project",
+  "timesheet.entry.field.information.siteUid.required": "Site Project is required",
+  "timesheet.entry.field.information.siteUid.placeholder": "Select a site project",
+  
+  "timesheet.entry.field.information.date": "Report Date",
+  "timesheet.entry.field.information.date.required": "Date is required",
+  "timesheet.entry.field.information.date.placeholder": "Select a report date",
+  
+  "timesheet.entry.field.information.start": "Start",
+  "timesheet.entry.field.information.start.required": "Start is required",
+  "timesheet.entry.field.information.start.placeholder": "Select a time start",
+  
+  "timesheet.entry.field.information.end": "End",
+  "timesheet.entry.field.information.end.required": "End is required",
+  "timesheet.entry.field.information.end.placeholder": "Select a time's up",
+  
+  "timesheet.entry.field.information.description": "Notes",
+  "timesheet.entry.field.information.description.placeholder": "Please fill in the notes",
+  
+  "timesheet.entry.field.information.siteValue": "Site Value",
+  "timesheet.entry.field.information.totalHours": "Total Hours",
+  "timesheet.entry.field.information.approvalNote": "Approval Note",
+  "timesheet.entry.field.information.statusType": "Status",
 
   "timesheet.action.modify": "Modify",
   "timesheet.action.close": "Close",

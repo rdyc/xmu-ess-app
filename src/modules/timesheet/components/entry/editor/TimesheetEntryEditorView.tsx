@@ -10,7 +10,7 @@ import { FormattedMessage } from 'react-intl';
 
 export const TimesheetEntryEditorView: React.SFC<EntryEditorProps> = props => {
   const { formMode, handleValidate, handleSubmit, handleSubmitSuccess, handleSubmitFail, intl } = props;
-  const { isLoading, response } = props.timesheetState.detail;
+  const { isLoading, response } = props.timesheetEntryState.detail;
 
   const renderForm = (formData: TimesheetFormData) => (
     <TimesheetEntryForm 
