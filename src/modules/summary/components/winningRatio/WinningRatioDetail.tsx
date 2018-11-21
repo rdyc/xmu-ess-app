@@ -20,7 +20,7 @@ import {
 } from '@summary/classes/types/winningRatio/WinningRatioHeaderDetail';
 import { WinningRatioType } from '@summary/classes/types/winningRatio/WinningRatioType';
 import * as React from 'react';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose } from 'recompose';
 
 interface OwnProps {
@@ -31,10 +31,10 @@ interface OwnProps {
   handleDialog: () => void;
 }
 
-type AllProps = OwnProps & WithWidth;
+type AllProps = OwnProps & WithWidth & InjectedIntlProps;
 
 const winningRatioDetail: React.SFC<AllProps> = props => {
-  const { uid, type, open, data, handleDialog, width } = props;
+  const { uid, type, open, data, handleDialog, width, intl } = props;
 
   const isMobile = isWidthDown('sm', width);
 
@@ -107,7 +107,13 @@ const winningRatioDetail: React.SFC<AllProps> = props => {
                                   {project.customer && project.customer.name}
                                 </TableCell>
                                 {type !== WinningRatioType.OnProgress ? (
-                                  <TableCell>{project.date}</TableCell>
+                                  <TableCell>
+                                    {intl.formatDate(project.date, {
+                                      year: 'numeric',
+                                      month: 'short',
+                                      day: 'numeric'
+                                    })}
+                                  </TableCell>
                                 ) : null}
                               </TableRow>
                             ))
@@ -130,6 +136,7 @@ const winningRatioDetail: React.SFC<AllProps> = props => {
   return render;
 };
 
-export const WinningRatioDetail = compose<AllProps, OwnProps>(withWidth())(
-  winningRatioDetail
-);
+export const WinningRatioDetail = compose<AllProps, OwnProps>(
+  injectIntl,
+  withWidth()
+)(winningRatioDetail);

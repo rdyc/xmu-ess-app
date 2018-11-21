@@ -157,7 +157,7 @@ const winningRatioTable: React.SFC<AllProps> = props => {
               <TableRow key={index}>
                 <TableCell numeric>{index + 1 + (page - 1) * size}</TableCell>
                 <TableCell>{item.employee && item.employee.fullName}</TableCell>
-                <TableCell numeric>{item.ratio}</TableCell>
+                <TableCell numeric>{item.ratio} %</TableCell>
                 <TableCell numeric>
                   <Tooltip title="Closed" disableFocusListener>
                     <Chip
