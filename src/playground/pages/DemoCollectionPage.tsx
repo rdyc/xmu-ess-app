@@ -140,7 +140,7 @@ const config: CollectionConfig<IProject, AllProps> = {
   actionComponent: (item: IProject, callback: CollectionHandler) => (
     <Button 
       size="small"
-      onClick={() => callback.handleRedirectTo(`/payload/pages/demo/collection/${item.uid}`)}
+      onClick={() => callback.handleRedirectTo(`/playground/pages/demo/single/${item.uid}`)}
     >
       <FormattedMessage {...layoutMessage.action.details}/>
     </Button>

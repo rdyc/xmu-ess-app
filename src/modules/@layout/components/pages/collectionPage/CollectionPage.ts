@@ -265,6 +265,7 @@ const lifecycles: ReactLifeCycleFunctions<CollectionPageProps, OwnState> = {
         subTitle: page.description,
       },
       status: {
+        isNavBackVisible: false,
         isSearchVisible: this.props.config.hasSearching,
         isActionCentreVisible: this.props.config.showActionCentre,
         isMoreVisible: this.props.config.hasMore,

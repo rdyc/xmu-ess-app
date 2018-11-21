@@ -255,13 +255,7 @@ const handlerCreators: HandleCreators<ProjectRegistrationDetailProps, Handler> =
 
 const lifecycles: ReactLifeCycleFunctions<ProjectRegistrationDetailProps, OwnState> = {
   componentDidMount() {
-    const { 
-      match, layoutDispatch, appBarDispatch, intl, 
-      handleProjectRefresh, handleProjectModify, 
-      handleProjectClose, handleProjectReOpen,
-      handleProjectChangeOwner, handleProjectManageSite,
-    } = this.props;
-
+    const { match, layoutDispatch, intl } = this.props;
     const { user } = this.props.userState;
     const { loadDetailRequest } = this.props.projectRegisterDispatch;
 
@@ -275,39 +269,6 @@ const lifecycles: ReactLifeCycleFunctions<ProjectRegistrationDetailProps, OwnSta
     layoutDispatch.modeSearchOff();
     layoutDispatch.navBackShow();
     layoutDispatch.moreShow();
-    
-    const handleMenuClick = (menu: IAppBarMenu): void => {
-      switch (menu.id) {
-        case ProjectUserAction.Refresh:
-          handleProjectRefresh();
-          break;
-        
-        case ProjectUserAction.Modify:
-          handleProjectModify();
-          break;
-  
-        case ProjectUserAction.Close:
-          handleProjectClose();
-          break;
-        
-        case ProjectUserAction.ReOpen:
-          handleProjectReOpen();
-          break;
-  
-        case ProjectUserAction.ChangeOwner:
-          handleProjectChangeOwner();
-          break;
-  
-        case ProjectUserAction.ManageSites:
-          handleProjectManageSite();
-          break;
-      
-        default:
-          break;
-      }
-    };
-
-    appBarDispatch.assignCallback(handleMenuClick);
 
     if (user) {
       loadDetailRequest({
@@ -354,12 +315,13 @@ const lifecycles: ReactLifeCycleFunctions<ProjectRegistrationDetailProps, OwnSta
 
       const isAdmin = fnIsAdmin();
 
-      const currentMenus = [
+      const currentMenus: IAppBarMenu[] = [
         {
           id: ProjectUserAction.Refresh,
           name: intl.formatMessage(layoutMessage.action.refresh),
           enabled: true,
-          visible: true
+          visible: true,
+          onClick: this.props.handleProjectRefresh
         },
         {
           id: ProjectUserAction.Modify,
@@ -369,7 +331,8 @@ const lifecycles: ReactLifeCycleFunctions<ProjectRegistrationDetailProps, OwnSta
             WorkflowStatusType.Submitted, 
             WorkflowStatusType.InProgress, 
             WorkflowStatusType.Approved
-          ])
+          ]),
+          onClick: this.props.handleProjectModify
         },
         {
           id: ProjectUserAction.Close,
@@ -378,7 +341,8 @@ const lifecycles: ReactLifeCycleFunctions<ProjectRegistrationDetailProps, OwnSta
           visible: isStatusTypeEquals([
             WorkflowStatusType.Approved, 
             WorkflowStatusType.ReOpened
-          ])
+          ]),
+          onClick: this.props.handleProjectClose
         },
         {
           id: ProjectUserAction.ReOpen,
@@ -386,7 +350,8 @@ const lifecycles: ReactLifeCycleFunctions<ProjectRegistrationDetailProps, OwnSta
           enabled: true,
           visible: isStatusTypeEquals([
             WorkflowStatusType.Closed
-          ])
+          ]),
+          onClick: this.props.handleProjectReOpen
         },
         {
           id: ProjectUserAction.ChangeOwner,
@@ -394,7 +359,8 @@ const lifecycles: ReactLifeCycleFunctions<ProjectRegistrationDetailProps, OwnSta
           enabled: true,
           visible: isStatusTypeEquals([
             WorkflowStatusType.Approved,
-          ])
+          ]),
+          onClick: this.props.handleProjectChangeOwner
         },
         {
           id: ProjectUserAction.ManageSites,
@@ -402,7 +368,8 @@ const lifecycles: ReactLifeCycleFunctions<ProjectRegistrationDetailProps, OwnSta
           enabled: true,
           visible: isStatusTypeEquals([
             WorkflowStatusType.Approved,
-          ]) && isAdmin
+          ]) && isAdmin,
+          onClick: this.props.handleProjectManageSite
         }
       ];
 
@@ -429,7 +396,7 @@ export const ProjectRegistrationDetail = compose<ProjectRegistrationDetailProps,
   withRouter,
   withProjectRegistration,
   injectIntl,
-  withStateHandlers<OwnState, OwnStateUpdaters, {}>(createProps, stateUpdaters), 
-  withHandlers<ProjectRegistrationDetailProps, Handler>(handlerCreators),
-  lifecycle<ProjectRegistrationDetailProps, OwnState>(lifecycles),
+  withStateHandlers(createProps, stateUpdaters), 
+  withHandlers(handlerCreators),
+  lifecycle(lifecycles),
 )(ProjectRegistrationDetailView);
