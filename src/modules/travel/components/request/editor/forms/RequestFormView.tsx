@@ -38,7 +38,7 @@ export const RequestFormView: React.SFC<RequestFormProps> = props => {
 
   const onCostChange = (event: any, newValue: number, oldValue: number) => {
     if (newValue) {
-      change('information.comment', (totalTravel - oldValue) + newValue);
+      change('information.total', (totalTravel - oldValue) + newValue);
     }
   };
 
