@@ -3,7 +3,7 @@ import * as React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router';
 import { RequestDetail } from './request/detail/RequestDetail';
 import RequestEditor from './request/editor/RequestEditor';
-import { TravelRequestCollectionList } from './request/list/TravelRequestCollectionList';
+import { TravelRequestList } from './request/list/TravelRequestList';
 import { TravelApprovalDetail } from './requestApproval/detail/TravelApprovalDetail';
 import { TravelApprovalList } from './requestApproval/list/TravelApprovalList';
 import { TravelSettlementDetail } from './settlement/detail/TravelSettlementDetail';
@@ -16,7 +16,7 @@ const request = (props: RouteComponentProps) => (
   <Switch>
     <Route path={`${props.match.path}/form`} component={RequestEditor} />
     <Route path={`${props.match.path}/:travelUid`} component={RequestDetail} />
-    <Route path={`${props.match.path}`} component={TravelRequestCollectionList} />
+    <Route path={`${props.match.path}`} component={TravelRequestList} />
   </Switch>
 );
 

@@ -163,14 +163,14 @@ type AllProps
   & WithTravelRequest
   & InjectedIntlProps;
 
-const travelRequestCollectionList: React.SFC<AllProps> = props => (
+const travelRequestList: React.SFC<AllProps> = props => (
   <CollectionPage
     config={config}
     connectedProps={props}
   />
 );
 
-export const TravelRequestCollectionList = compose(
+export const TravelRequestList = compose(
   withUser,
   withTravelRequest
-)(travelRequestCollectionList);
+)(travelRequestList);
