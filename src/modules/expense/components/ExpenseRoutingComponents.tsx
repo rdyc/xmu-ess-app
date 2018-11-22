@@ -1,27 +1,24 @@
-import { ApprovalDetail } from '@expense/components/approval/detail/ApprovalDetail';
-import { ApprovalListView } from '@expense/components/approval/list/ApprovalListView';
-import { RequestDetail } from '@expense/components/request/detail/RequestDetail';
+import { ExpenseApprovalDetail } from '@expense/components/approval/detail/ExpenseApprovalDetail';
+import { ExpenseApprovalListView } from '@expense/components/approval/list/ExpenseApprovalListView';
+import { ExpenseRequestDetail } from '@expense/components/request/detail/ExpenseRequestDetail';
 import RequestEditor from '@expense/components/request/editor/RequestEditor';
-import { RequestListView } from '@expense/components/request/list/RequestListView';
+import { ExpenseRequestListView } from '@expense/components/request/list/ExpenseRequestListView';
 import { Layout } from '@layout/components/base';
 import * as React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router';
 
-const RequestList = () => <RequestListView />;
-const ApprovalList = () => <ApprovalListView />;
-
 const request = (props: RouteComponentProps) => (
   <Switch>
     <Route path={`${props.match.path}/form`} component={RequestEditor} />
-    <Route path={`${props.match.path}/:expenseUid`} component={RequestDetail} />
-    <Route path={`${props.match.path}`} component={RequestList} />
+    <Route path={`${props.match.path}/:expenseUid`} component={ExpenseRequestDetail} />
+    <Route path={`${props.match.path}`} component={ExpenseRequestListView} />
   </Switch>
 );
 
 const approval = (props: RouteComponentProps) => (
   <Switch>
-    <Route path={`${props.match.path}/:expenseUid`} component={ApprovalDetail} />
-    <Route path={`${props.match.path}`} component={ApprovalList} />
+    <Route path={`${props.match.path}/:expenseUid`} component={ExpenseApprovalDetail} />
+    <Route path={`${props.match.path}`} component={ExpenseApprovalListView} />
   </Switch>
 );
 
