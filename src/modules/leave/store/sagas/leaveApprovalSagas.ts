@@ -1,6 +1,7 @@
-import { layoutAlertAdd, listBarLoading, listBarMetadata } from '@layout/store/actions';
+import { layoutAlertAdd } from '@layout/store/actions';
 import {
   LeaveApprovalAction as Action,
+  leaveApprovalGetAllDispose,
   leaveApprovalGetAllError,
   leaveApprovalGetAllRequest,
   leaveApprovalGetAllSuccess,
@@ -30,7 +31,6 @@ function* watchGetAllRequest() {
       path: `/v1/approvals/leave?${params}`,
       successEffects: (response: IApiResponse) => [
         put(leaveApprovalGetAllSuccess(response.body)),
-        put(listBarMetadata(response.body.metadata))
       ],
       failureEffects: (response: IApiResponse) => [
         put(leaveApprovalGetAllError(response.body)),
@@ -51,7 +51,9 @@ function* watchGetAllRequest() {
           })
         )
       ],
-      finallyEffects: [put(listBarLoading(false))]
+      finallyEffects: [
+        // nothing
+      ]
     });
   };
 
@@ -98,7 +100,8 @@ function* watchPostRequest() {
       path: `/v1/approvals/leave/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.leaveUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
-        put(leaveApprovalPostSuccess(response.body))
+        put(leaveApprovalPostSuccess(response.body)),
+        put(leaveApprovalGetAllDispose())
       ],
       successCallback: (response: IApiResponse) => {
         action.payload.resolve(response.body.data);

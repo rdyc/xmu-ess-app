@@ -11,16 +11,18 @@
   "leave.request.page.owner.modify.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
   "leave.request.page.status.modify.title": "Update Status",
   "leave.request.page.status.modify.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "leave.request.section.approval.title": "Approval",
+  "leave.request.section.approval.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "leave.request.noData": "No data Leave Request",
 
   "leave.form.newTitle": "Leave Request",
-  
   "leave.approvalTitle": "Leave Approval",
   "leave.approvalSubHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
   "leave.form.approval.detail.title": "Leave Approval Detail",
   "leave.form.approval.subTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
   "leave.dialog.approvalTitle": "leave Approval Submission",
   "leave.dialog.approvalContent": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-
+  
   "leave.action.modify": "Modify",
   
   "leave.dialog.modifyTitle": "Modify Confirmation",
@@ -93,18 +95,26 @@
   "leave.message.approval.reject.success": "A leave request has been rejected",
   "leave.message.approval.emptyProps": "Some props are empty",
 
-  "leave.request.noData": "No data Leave Request",
   "leave.approval.noData": "No data Leave Approval",
-
   "leave.approval.page.list.title": "Leave Approvals",
   "leave.approval.page.list.subHeader": "Lorem ip sum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-  
   "leave.approval.confirm.submission.title": "Leave Approval Submission",
   "leave.approval.confirm.submission.content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "leave.approval.page.detail.title": "Leave Approval Details",
+  "leave.approval.page.detail.subHeader": "Lorem ip sum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "leave.approval.message.emptyProps": "Some props are empty",
+  "leave.approval.message.submit.success": "Successfully processing approval submission",
+  "leave.approval.message.submit.failure": "Failure when processing approval submission",
 
+  "leave.cancellation.page.detail.title": "Leave Approval Details",
+  "leave.cancellation.page.detail.subHeader": "Lorem ip sum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "leave.cancellation.message.emptyProps": "Some props are empty",
+  "leave.cancellation.message.submit.success": "Successfully processing approval submission",
+  "leave.cancellation.message.submit.failure": "Failure when processing approval submission",
   "leave.cancellation.page.list.title": "Leave Cancellations",
   "leave.cancellation.page.list.subHeader": "Lorem ip sum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-
+  "leave.cancellation.confirm.submission.title": "Leave Approval Submission",
+  "leave.cancellation.confirm.submission.content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
   "leave.CancellationTitle": "Cancellation",
   "leave.cancellation.noData": "No data Leave Cancellation",
   "leave.message.cancellation.update.success": "Leave has been cancelled",

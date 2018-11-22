@@ -39,9 +39,9 @@ const config: CollectionConfig<ITimesheet, AllProps> = {
 
   // selection
   hasSelection: true,
-  // selectionProcessing: (values: string[]) => {
-  //   alert(values.toString());
-  // },
+  onProcessSelection: (values: string[]) => {
+    alert(values.toString());
+  },
 
   // searching
   hasSearching: true,
