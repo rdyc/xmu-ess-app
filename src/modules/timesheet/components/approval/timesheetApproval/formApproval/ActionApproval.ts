@@ -22,7 +22,6 @@ import { isNullOrUndefined, isObject } from 'util';
 import { ActionApprovalView } from './ActionApprovalView';
 
 interface OwnHandler {
-  handleRefresh: () => void;
   handleValidate: (payload: WorkflowApprovalFormData) => FormErrors;
   handleSubmit: (payload: WorkflowApprovalFormData) => void;
   handleSubmitSuccess: (result: any, dispatch: Dispatch<any>) => void;
@@ -200,7 +199,7 @@ const handlerCreators: HandleCreators<ApprovalTimesheetsProps, OwnHandler> = {
       });
     }
   },
-  handleRefresh: (props: ApprovalTimesheetsProps) => () => {
+  // handleRefresh: (props: ApprovalTimesheetsProps) => () => {
     // const { match } = props;
     // const { user } = props.userState;
     // const { loadDetailRequest } = props.timesheetApprovalDispatch;
@@ -212,7 +211,7 @@ const handlerCreators: HandleCreators<ApprovalTimesheetsProps, OwnHandler> = {
     //     timesheetUid: match.params.timesheetUid
     //   });
     // }
-  }
+  // }
 };
 
 const lifecycles: ReactLifeCycleFunctions<ApprovalTimesheetsProps, {}> = {
@@ -227,12 +226,12 @@ const lifecycles: ReactLifeCycleFunctions<ApprovalTimesheetsProps, {}> = {
     layoutDispatch.changeView({
       uid: AppMenu.TimesheetApproval,
       parentUid: AppMenu.Timesheet,
-      title: intl.formatMessage({ id: 'timesheet.detail.title' }),
+      title: intl.formatMessage({ id: 'timesheet.action.title' }),
       subTitle: intl.formatMessage({ id: 'timesheet.detail.subTitle' })
     });
 
     layoutDispatch.navBackShow();
-    layoutDispatch.moreShow();
+    // layoutDispatch.moreShow();
 
     const handleMenuClick = (menu: IAppBarMenu): void => {
       switch (menu.id) {

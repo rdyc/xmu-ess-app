@@ -85,7 +85,7 @@ const handlerCreators: HandleCreators<EntryDetailProps, Handler> = {
   handleTimesheetRefresh: (props: EntryDetailProps) => () => { 
     const { match } = props;
     const { user } = props.userState;
-    const { loadDetailRequest } = props.timesheetDispatch;
+    const { loadDetailRequest } = props.timesheetEntryDispatch;
 
     if (user) {
       loadDetailRequest({
@@ -140,7 +140,7 @@ const lifecycles: ReactLifeCycleFunctions<EntryDetailProps, OwnState> = {
     } = this.props;
 
     const { user } = this.props.userState;
-    const { loadDetailRequest } = this.props.timesheetDispatch;
+    const { loadDetailRequest } = this.props.timesheetEntryDispatch;
 
     layoutDispatch.changeView({
       uid: AppMenu.TimesheetHistory,
@@ -176,9 +176,9 @@ const lifecycles: ReactLifeCycleFunctions<EntryDetailProps, OwnState> = {
     }
   },
   componentWillReceiveProps(nextProps: EntryDetailProps) {
-    if (nextProps.timesheetState.detail.response !== this.props.timesheetState.detail.response) {
+    if (nextProps.timesheetEntryState.detail.response !== this.props.timesheetEntryState.detail.response) {
       const { intl } = nextProps;
-      const { response } = nextProps.timesheetState.detail;
+      const { response } = nextProps.timesheetEntryState.detail;
       const { assignMenus } = nextProps.appBarDispatch;
       
       const isStatusTypeEquals = (statusTypes: string[]): boolean => {
@@ -210,7 +210,7 @@ const lifecycles: ReactLifeCycleFunctions<EntryDetailProps, OwnState> = {
     }
   },
   componentWillUnmount() {
-    const { layoutDispatch, appBarDispatch, timesheetDispatch } = this.props;
+    const { layoutDispatch, appBarDispatch, timesheetEntryDispatch } = this.props;
 
     layoutDispatch.changeView(null);
     layoutDispatch.navBackHide();
@@ -219,7 +219,7 @@ const lifecycles: ReactLifeCycleFunctions<EntryDetailProps, OwnState> = {
 
     appBarDispatch.dispose();
 
-    timesheetDispatch.loadDetailDispose();
+    timesheetEntryDispatch.loadDetailDispose();
   }
 };
 

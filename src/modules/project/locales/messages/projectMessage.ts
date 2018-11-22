@@ -4,7 +4,6 @@ import {
   projectAcceptancePage,
   projectAcceptanceSection,
 } from './projectAcceptanceMessage';
-import { projectAction } from './projectActionMessage';
 import { projectApprovalConfirm, projectApprovalPage } from './projectApprovalMessage';
 import {
   projectAssignmentConfirm,
@@ -34,7 +33,6 @@ import {
 } from './projectSiteMessage';
 
 export const projectMessage = {
-  action: projectAction,
   registration: {
     page: projectRegistrationPage,
     option: projectRegistrationOption,

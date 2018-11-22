@@ -9,6 +9,7 @@ import {
   WithMileageRequest,
   withMileageRequest
 } from '@mileage/hoc/withMileageRequest';
+import { mileageMessage } from '@mileage/locales/messages/mileageMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import {
@@ -139,8 +140,8 @@ const lifecycles: ReactLifeCycleFunctions<MileageRequestDetailProps, OwnState> =
     layoutDispatch.changeView({
       uid: AppMenu.MileageRequest,
       parentUid: AppMenu.Mileage,
-      title: intl.formatMessage({id: 'mileage.request.detail.title'}),
-      subTitle : intl.formatMessage({id: 'mileage.request.detail.subTitle'})
+      title: intl.formatMessage(mileageMessage.request.page.detailTitle),
+      subTitle : intl.formatMessage(mileageMessage.request.page.detailSubHeader)
     });
 
     layoutDispatch.navBackShow();

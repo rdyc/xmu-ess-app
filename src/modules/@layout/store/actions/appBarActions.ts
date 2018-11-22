@@ -21,5 +21,5 @@ export const appBarAssignSearchCallback = (callback: (find: string, field?: ICol
 export const appBarSelectionAddRemove = (value: string) => action(AppBarAction.SELECTION_ADD_REMOVE, value);
 export const appBarSelectionClear = () => action(AppBarAction.SELECTION_CLEAR);
 export const appBarAssignSelectionClearCallback = (callback: () => void) => action(AppBarAction.ASSIGN_SELECTION_CLEAR_CALLBACK, callback);
-export const appBarAssignSelectionProcessCallback = (callback: (values: string[]) => void) => action(AppBarAction.ASSIGN_SELECTION_PROCESS_CALLBACK, callback);
+export const appBarAssignSelectionProcessCallback = (callback: () => void) => action(AppBarAction.ASSIGN_SELECTION_PROCESS_CALLBACK, callback);
 export const appBarDispose = () => action(AppBarAction.DISPOSE);

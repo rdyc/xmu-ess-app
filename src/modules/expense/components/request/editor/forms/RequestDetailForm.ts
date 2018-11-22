@@ -94,7 +94,16 @@ const handlerCreators: HandleCreators<RequestDetailFormProps, OwnHandlers> = {
             placeholder: intl.formatMessage({id: `expense.field.${name}.placeholder`}),
             component: InputNumber
           };
-          break;      
+          break;        
+      
+        case 'notes':
+          fieldProps = {
+            multiline: true,
+            type: 'text',
+            placeholder: intl.formatMessage({id: `expense.field.${name}.placeholder`}),
+            component: InputText
+          };
+          break;  
       
         default:
           fieldProps = {

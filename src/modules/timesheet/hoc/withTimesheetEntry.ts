@@ -15,14 +15,14 @@ import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 
 interface PropsFromState {
-  timesheetState: {
+  timesheetEntryState: {
     all: IQueryCollectionState<ITimesheetGetAllRequest, ITimesheet>;
     detail: IQuerySingleState<ITimesheetGetByIdRequest, ITimesheetDetail>;
   };
 }
 
 interface PropsFromDispatch {
-  timesheetDispatch: {
+  timesheetEntryDispatch: {
     // command
     createRequest: typeof timesheetPostRequest;
     createDispose: typeof timesheetPostDispose;
@@ -40,14 +40,14 @@ interface PropsFromDispatch {
 export interface WithTimesheetEntry extends PropsFromState, PropsFromDispatch {}
 
 const mapStateToProps = ({ timesheetGetAll, timesheetGetById }: IAppState) => ({
-  timesheetState: {
+  timesheetEntryState: {
     all: timesheetGetAll,
     detail: timesheetGetById
   }
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  timesheetDispatch: {
+  timesheetEntryDispatch: {
     // command
     createRequest: (request: ITimesheetPostRequest) => dispatch(timesheetPostRequest(request)),
     createDispose: () => dispatch(timesheetPostDispose()),

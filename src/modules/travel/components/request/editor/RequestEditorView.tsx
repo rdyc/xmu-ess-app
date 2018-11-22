@@ -31,6 +31,7 @@ export const RequestEditorView: React.SFC<RequestEditorProps> = props => {
       end: undefined,
       customerUid: undefined,
       projectUid: undefined,
+      projectType: undefined,
       siteUid: undefined,
       activityType: undefined,
       objective: undefined,
@@ -88,6 +89,7 @@ export const RequestEditorView: React.SFC<RequestEditorProps> = props => {
       initialValues.information.end = data.end;
       initialValues.information.customerUid = data.customerUid;
       initialValues.information.projectUid = data.projectUid;
+      initialValues.information.projectType = data.project ? data.project.projectType : undefined;
       initialValues.information.siteUid = data.siteUid;
       initialValues.information.activityType = data.activityType;
       initialValues.information.objective = data.objective;

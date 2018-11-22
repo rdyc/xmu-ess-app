@@ -87,9 +87,9 @@
   "project.registration.field.hours": "Max. Hours",
   
   "project.registration.message.emptyProps": "Some props are empty",
-  "project.registration.message.emptySales": "Empty sales data",
-  "project.registration.message.emptySite": "Empty site data",
-  "project.registration.message.emptyDocument": "Empty document data",
+  "project.registration.message.emptySales": "Sales not found",
+  "project.registration.message.emptySite": "Site not found",
+  "project.registration.message.emptyDocument": "Document not found",
   "project.registration.message.duplicateSales": "Sales person already added",
   "project.registration.message.create.success": "A new PID {uid} has been created",
   "project.registration.message.create.failure": "Unable to process your submission",

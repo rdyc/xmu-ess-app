@@ -1,4 +1,3 @@
-import { ICollectionValue } from '@layout/classes/core';
 import { CollectionConfig, CollectionDataProps, CollectionHandler, CollectionPage } from '@layout/components/pages';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IAppBarMenu } from '@layout/interfaces';
@@ -14,28 +13,6 @@ import * as React from 'react';
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose } from 'recompose';
 
-const projectFields: ICollectionValue[] = Object.keys(ProjectRegistrationField).map(key => ({ 
-  value: key, 
-  name: ProjectRegistrationField[key] 
-}));
-
-const menuOptions = (props: AllProps, callback: CollectionHandler): IAppBarMenu[] => ([
-  {
-    id: ProjectUserAction.Refresh,
-    name: props.intl.formatMessage(layoutMessage.action.refresh),
-    enabled: true,
-    visible: true,
-    onClick: () => callback.handleForceReload()
-  },
-  {
-    id: ProjectUserAction.Create,
-    name: props.intl.formatMessage(layoutMessage.action.create),
-    enabled: true,
-    visible: true,
-    onClick: () => alert('go to new page here')
-  }
-]);
-
 const config: CollectionConfig<IProject, AllProps> = {
   // page info
   page: (props: AllProps) => ({
@@ -46,13 +23,16 @@ const config: CollectionConfig<IProject, AllProps> = {
   }),
   
   // top bar
-  fields: projectFields,
+  fields: Object.keys(ProjectRegistrationField).map(key => ({ 
+    value: key, 
+    name: ProjectRegistrationField[key] 
+  })),
   fieldTranslator: projectRegistrationFieldTranslator,
 
   // selection
   hasSelection: true,
-  selectionProcessing: (values: string[]) => {
-    alert(values.toString());
+  onProcessSelection: (values: string[], callback: CollectionHandler) => {
+    callback.handleRedirectTo('/playground/pages/demo/selected', { values });
   },
 
   // searching
@@ -74,7 +54,22 @@ const config: CollectionConfig<IProject, AllProps> = {
 
   // more
   hasMore: true,
-  moreOptions: menuOptions,
+  moreOptions: (props: AllProps, callback: CollectionHandler): IAppBarMenu[] => ([
+    {
+      id: ProjectUserAction.Refresh,
+      name: props.intl.formatMessage(layoutMessage.action.refresh),
+      enabled: true,
+      visible: true,
+      onClick: () => callback.handleForceReload()
+    },
+    {
+      id: ProjectUserAction.Create,
+      name: props.intl.formatMessage(layoutMessage.action.create),
+      enabled: true,
+      visible: true,
+      onClick: () => alert('go to new page here')
+    }
+  ]),
 
   // data filter
   filter: {
@@ -140,7 +135,7 @@ const config: CollectionConfig<IProject, AllProps> = {
   actionComponent: (item: IProject, callback: CollectionHandler) => (
     <Button 
       size="small"
-      onClick={() => callback.handleRedirectTo(`/payload/pages/demo/collection/${item.uid}`)}
+      onClick={() => callback.handleRedirectTo(`/playground/pages/demo/single/${item.uid}`)}
     >
       <FormattedMessage {...layoutMessage.action.details}/>
     </Button>

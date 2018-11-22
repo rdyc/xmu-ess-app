@@ -100,10 +100,10 @@ const billableDetail: React.SFC<AllProps> = props => {
                                 <TableCell>
                                   {asign.position && asign.position.name}
                                 </TableCell>
-                                <TableCell><FormattedNumber value={asign.allocatedHours} /></TableCell>
-                                <TableCell><FormattedNumber value={asign.actualHours} /></TableCell>
+                                <TableCell><FormattedNumber value={Number(asign.allocatedHours.toFixed(2))} /></TableCell>
+                                <TableCell><FormattedNumber value={Number(asign.actualHours.toFixed(2))} /></TableCell>
                                 <TableCell>
-                                  <FormattedNumber value={asign.actualPercentage} /> %
+                                  <FormattedNumber value={Number(asign.actualPercentage.toFixed(2))} /> %
                                 </TableCell>
                               </TableRow>
                             ))

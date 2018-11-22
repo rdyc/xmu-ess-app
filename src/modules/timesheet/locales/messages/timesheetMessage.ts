@@ -1,9 +1,28 @@
-import { defineMessages } from 'react-intl';
+import { 
+  timesheetApprovalConfirm, 
+  timesheetApprovalHistoryPage, 
+  timesheetApprovalPage
+} from './timesheetApprovalMessage';
+import { 
+  timesheetEntryConfirm, 
+  timesheetEntryField, 
+  timesheetEntryFieldHelperFor, 
+  timesheetEntryMessage, 
+  timesheetEntryPage, 
+  timesheetEntrySection } from './timesheetEntryMessage';
 
-export const timesheetMessage = defineMessages({
-  emptyTimesheetUid: { id: 'timesheet.message.entry.empty.timesheetUid' },
-  createSuccess: { id: 'timesheet.message.entry.create.success' },
-  createFailure: { id: 'timesheet.message.entry.create.failure' },
-  updateSuccess: { id: 'timesheet.message.entry.update.success' },
-  updateFailure: { id: 'timesheet.message.entry.update.failure' },
-});
+export const timesheetMessage = {
+  entry: {
+    page: timesheetEntryPage,
+    confirm: timesheetEntryConfirm,
+    section: timesheetEntrySection,
+    field: timesheetEntryField,
+    fieldFor: timesheetEntryFieldHelperFor,
+    message: timesheetEntryMessage
+  },
+  approval: {
+    page: timesheetApprovalPage,
+    page2: timesheetApprovalHistoryPage,
+    confirm: timesheetApprovalConfirm
+  }
+};

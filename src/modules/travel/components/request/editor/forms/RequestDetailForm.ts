@@ -6,6 +6,7 @@ import { InputNumber } from '@layout/components/input/number';
 import { InputText } from '@layout/components/input/text';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { InputCustomer } from '@lookup/components/customer/input';
+import { IProjectList } from '@project/classes/response';
 import { SelectProject } from '@project/components/select/project';
 import { SelectProjectSite } from '@project/components/select/projectSite';
 import { RequestDetailFormView } from '@travel/components/request/editor/forms/RequestDetailFormView';
@@ -24,6 +25,7 @@ interface OwnProps {
   destinationTypeValue: string | null | undefined;
   isProjectSelected: boolean;
   totalCostValue: number | undefined;
+  handleProjectChange: (project: IProjectList | undefined) => void;
 }
 
 interface OwnHandlers {
@@ -92,7 +94,8 @@ const handlerCreators: HandleCreators<RequestDetailFormProps, OwnHandlers> = {
           placeholder: intl.formatMessage({id: `travel.field.${name}.placeholder`}),
           component: SelectProject, 
           filter: projectFilter,
-          onChange: onChangeProject
+          onChange: onChangeProject,
+          onSelected: props.handleProjectChange
           
         };
         break;

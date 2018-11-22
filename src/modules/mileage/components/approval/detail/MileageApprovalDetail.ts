@@ -15,6 +15,7 @@ import {
 } from '@mileage/hoc/withMileageApproval';
 import { mileageMessage } from '@mileage/locales/messages/mileageMessage';
 import { IWorkflowApprovalItemPayload } from '@organization/classes/request/workflow/approval';
+import { organizationMessage } from '@organization/locales/messages/organizationMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import {
@@ -88,14 +89,8 @@ const createProps: mapper<MileageApprovalDetailProps, OwnState> = (
     approvalTitle: intl.formatMessage({ id: 'mileage.approvalTitle' }),
     approvalSubHeader: intl.formatMessage({ id: 'mileage.approvalSubHeader' }),
     approvalChoices: [
-      {
-        value: WorkflowStatusType.Approved,
-        label: intl.formatMessage({ id: 'workflow.approval.action.approve' })
-      },
-      {
-        value: WorkflowStatusType.Rejected,
-        label: intl.formatMessage({ id: 'workflow.approval.action.reject' })
-      }
+      { value: WorkflowStatusType.Approved, label: intl.formatMessage(organizationMessage.workflow.option.approve) },
+      { value: WorkflowStatusType.Rejected, label: intl.formatMessage(organizationMessage.workflow.option.reject) }
     ],
     approvalTrueValue: WorkflowStatusType.Approved,
     approvalDialogTitle: intl.formatMessage({
@@ -179,7 +174,7 @@ const handlerCreators: HandleCreators<
 
     // props checking
     if (!match.params.mileageUid) {
-      const message = intl.formatMessage(mileageMessage.emptyProps);
+      const message = intl.formatMessage(mileageMessage.request.message.emptyProps);
 
       return Promise.reject(message);
     }
@@ -225,7 +220,7 @@ const handlerCreators: HandleCreators<
 
     alertAdd({
       time: new Date(),
-      message: intl.formatMessage(mileageMessage.updateSuccess, {
+      message: intl.formatMessage(mileageMessage.request.message.updateSuccess, {
         uid: detail.response && detail.response.data.uid
       })
     });
@@ -263,7 +258,7 @@ const handlerCreators: HandleCreators<
     } else {
       alertAdd({
         time: new Date(),
-        message: intl.formatMessage(mileageMessage.updateFailure),
+        message: intl.formatMessage(mileageMessage.request.message.updateFailure),
         details: isObject(submitError) ? submitError.message : submitError
       });
     }
@@ -284,8 +279,8 @@ const lifecycles: ReactLifeCycleFunctions<MileageApprovalDetailProps, {}> = {
     layoutDispatch.changeView({
       uid: AppMenu.MileageApproval,
       parentUid: AppMenu.Mileage,
-      title: intl.formatMessage({ id: 'mileage.approval.detail.title' }),
-      subTitle: intl.formatMessage({ id: 'mileage.approval.detail.subTitle' })
+      title: intl.formatMessage(mileageMessage.request.page.detailTitle),
+      subTitle: intl.formatMessage(mileageMessage.request.page.detailSubHeader)
     });
 
     layoutDispatch.navBackShow();
