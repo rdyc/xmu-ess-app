@@ -55,6 +55,11 @@ const timesheetInformation: React.SFC<AllProps> = props => {
         />
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
+          label={props.intl.formatMessage(timesheetMessage.entry.field.mileageException)}
+          value={`${props.data.mileageException ? props.data.mileageException.percentage : 0} %`}
+        />
+        <TextField
+          {...GlobalStyle.TextField.ReadOnly}
           label={props.intl.formatMessage(timesheetMessage.entry.field.siteValue)}
           value={props.intl.formatNumber(props.data.site ? props.data.site.value : 0)}
         />
@@ -88,10 +93,10 @@ const timesheetInformation: React.SFC<AllProps> = props => {
           label={props.intl.formatMessage(timesheetMessage.entry.field.notes)}
           value={props.data.description || 'N/A'}
         />
-        {(props.data.statusType === WorkflowStatusType.Approved || props.data.statusType === WorkflowStatusType.Rejected) ?
+        {(props.data.statusType === WorkflowStatusType.Rejected) ?
           <TextField
             {...GlobalStyle.TextField.ReadOnly}
-            label={props.intl.formatMessage(timesheetMessage.entry.field.approvalNote)}
+            label={props.intl.formatMessage(timesheetMessage.entry.field.rejectReason)}
             value={props.data.notes || 'N/A'}
           /> : ''
         }

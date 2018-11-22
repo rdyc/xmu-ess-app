@@ -8,6 +8,7 @@ import {
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
+import { GlobalFormat } from '@layout/types';
 import { Button } from '@material-ui/core';
 import { ITimesheet } from '@timesheet/classes/response';
 import { TimesheetEntryField, TimesheetUserAction } from '@timesheet/classes/types';
@@ -111,11 +112,7 @@ const config: CollectionConfig<ITimesheet, AllProps> = {
   onBind: (item: ITimesheet, index: number, props: AllProps) => ({
     key: index,
     primary: item.description ? item.description : 'N/A',
-    secondary: props.intl.formatDate(item.date, {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric'
-    }),
+    secondary: props.intl.formatDate(item.date, GlobalFormat.Date),
     tertiary: item.customer && item.customer.name || item.customerUid,
     quaternary: item.uid,
     quinary: item.status && item.status.value || item.statusType,

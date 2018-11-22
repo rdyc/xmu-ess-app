@@ -16,9 +16,9 @@
   "timesheet.approval.history.page.list.title": "Time Approval History",
   "timesheet.approval.history.page.list.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
 
-  "timesheet.entry.section.info.title": "Registration",
+  "timesheet.entry.section.info.title": "Time Report",
   "timesheet.entry.section.info.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-  "timesheet.entry.section.approval.title": "Registration",
+  "timesheet.entry.section.approval.title": "Time Report",
   "timesheet.entry.section.approval.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
 
   "timesheet.form.newTitle": "Time Report Entry",
@@ -70,9 +70,10 @@
   "timesheet.entry.field.information.description": "Notes",
   "timesheet.entry.field.information.description.placeholder": "Please fill in the notes",
   
+  "timesheet.entry.field.information.mileageException": "Percentage",
   "timesheet.entry.field.information.siteValue": "Site Value",
   "timesheet.entry.field.information.totalHours": "Total Hours",
-  "timesheet.entry.field.information.approvalNote": "Approval Note",
+  "timesheet.entry.field.information.rejectReason": "Reject Reason",
   "timesheet.entry.field.information.statusType": "Status",
 
   "timesheet.action.modify": "Modify",
