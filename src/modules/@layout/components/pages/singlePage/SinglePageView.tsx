@@ -57,5 +57,7 @@ export const SinglePageView: React.SFC<SinglePageProps> = props => (
 
       </Grid>
     }
+
+    {props.children}
   </React.Fragment>
 );
