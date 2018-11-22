@@ -68,8 +68,8 @@ const config: SingleConfig<IExpenseDetail, ExpenseRequestDetailProps> = {
       }
     }
   },
-  onUpdated: (states: ExpenseRequestDetailProps, callback: SingleHandler) => {
-    const { isLoading, response } = states.expenseRequestState.detail;
+  onUpdated: (props: ExpenseRequestDetailProps, callback: SingleHandler) => {
+    const { isLoading, response } = props.expenseRequestState.detail;
     
     callback.handleLoading(isLoading);
 

@@ -56,6 +56,10 @@ const config: SingleConfig<IExpenseDetail, ExpenseApprovalDetailProps> = {
       }
     }
   },
+  onDataLoaded: (props: ExpenseApprovalDetailProps) => {
+    // set data loaded in local state
+    props.setDataload();
+  },
   onUpdated: (states: ExpenseApprovalDetailProps, callback: SingleHandler) => {
     const { isLoading, response } = states.expenseApprovalState.detail;
     
@@ -103,5 +107,6 @@ export const ExpenseApprovalDetailView: React.SFC<ExpenseApprovalDetailProps> = 
   <SinglePage
     config={config}
     connectedProps={props}
+    shouldDataReload={props.shouldDataReload}
   />
 );

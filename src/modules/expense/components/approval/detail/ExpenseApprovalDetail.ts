@@ -39,6 +39,7 @@ interface OwnHandler {
 
 interface OwnState {
   isApprove?: boolean | undefined;
+  shouldDataReload: boolean;
   approvalTitle: string;
   approvalSubHeader: string;
   approvalChoices: RadioGroupChoice[];
@@ -51,6 +52,7 @@ interface OwnState {
 
 interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
   stateUpdate: StateHandler<OwnState>;
+  setDataload: StateHandler<OwnState>;
 }
 
 export type ExpenseApprovalDetailProps 
@@ -67,6 +69,7 @@ const createProps: mapper<ExpenseApprovalDetailProps, OwnState> = (props: Expens
   const { intl } = props;
 
   return {
+    shouldDataReload: false,
     approvalTitle: intl.formatMessage(expenseMessage.approval.section.title),
     approvalSubHeader: intl.formatMessage(expenseMessage.approval.section.subTitle),
     approvalChoices: [
@@ -85,6 +88,9 @@ const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
   stateUpdate: (prevState: OwnState) => (newState: any) => ({
     ...prevState,
     ...newState
+  }),
+  setDataload: (prevState: OwnState) => (): Partial<OwnState> => ({
+    shouldDataReload: !prevState.shouldDataReload
   })
 };
 
@@ -145,7 +151,7 @@ const handlerCreators: HandleCreators<ExpenseApprovalDetailProps, OwnHandler> = 
     });
   },
   handleSubmitSuccess: (props: ExpenseApprovalDetailProps) => () => {
-    const { intl, history, match, isApprove } = props;
+    const { intl, match, isApprove } = props;
     const { alertAdd } = props.layoutDispatch;
     let message: string = '';
     if (isApprove) {
@@ -157,9 +163,8 @@ const handlerCreators: HandleCreators<ExpenseApprovalDetailProps, OwnHandler> = 
       message,
       time: new Date()
     });
-    if (match.params.expenseUid) {
-      history.push(`/expense/approvals`);
-    }
+
+    props.setDataload();
   },
   handleSubmitFail: (props: ExpenseApprovalDetailProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
     const { intl } = props;
