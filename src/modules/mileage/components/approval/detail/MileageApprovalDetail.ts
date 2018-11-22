@@ -49,6 +49,7 @@ interface OwnRouteParams {
 }
 
 interface OwnState {
+  shouldDataReload: boolean;
   mileageItemUids: string[];
   approvalTitle: string;
   approvalSubHeader: string;
@@ -62,6 +63,7 @@ interface OwnState {
 
 interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
   stateCheckbox: StateHandler<OwnState>;
+  setDataload: StateHandler<OwnState>;
 }
 
 export type MileageApprovalDetailProps = WithMileageApproval &
@@ -81,7 +83,7 @@ const createProps: mapper<MileageApprovalDetailProps, OwnState> = (
 
   return {
     mileageItemUids: [],
-
+    shouldDataReload: false,
     approvalTitle: intl.formatMessage(mileageMessage.approval.submission.title),
     approvalSubHeader: intl.formatMessage(mileageMessage.approval.submission.subHeader),
     approvalChoices: [
@@ -99,6 +101,9 @@ const createProps: mapper<MileageApprovalDetailProps, OwnState> = (
 const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
   stateCheckbox: (prevState: OwnState) => (mileageItemUids: string[]) => ({
     mileageItemUids
+  }),
+  setDataload: (prevState: OwnState) => (): Partial<OwnState> => ({
+    shouldDataReload: !prevState.shouldDataReload
   })
 };
 
@@ -186,10 +191,10 @@ const handlerCreators: HandleCreators<
   handleSubmitSuccess: (props: MileageApprovalDetailProps) => (
     response: IMileageRequestDetail
   ) => {
-    const { intl, history, mileageItemUids } = props;
+    const { intl, /* mileageItemUids */ } = props;
     const { alertAdd } = props.layoutDispatch;
     const { detail } = props.mileageApprovalState;
-    let counter: number = 0;
+    // let counter: number = 0;
 
     alertAdd({
       time: new Date(),
@@ -198,20 +203,22 @@ const handlerCreators: HandleCreators<
       })
     });
 
-    if (detail.response && detail.response.data && detail.response.data.items) {
-      detail.response.data.items.map(item => {
-        return item.status && item.status.type === WorkflowStatusType.Submitted
-          ? (counter += 1)
-          : (counter += 0);
-      });
-    }
+    // if (detail.response && detail.response.data && detail.response.data.items) {
+    //   detail.response.data.items.map(item => {
+    //     return item.status && item.status.type === WorkflowStatusType.Submitted
+    //       ? (counter += 1)
+    //       : (counter += 0);
+    //   });
+    // }
 
-    if (mileageItemUids.length === counter) {
-      history.push('/mileage/approvals');
-    } else {
-      loadData(props);
-      mileageItemUids.splice(0, mileageItemUids.length);
-    }
+    props.setDataload();
+    // mileageItemUids.splice(0, mileageItemUids.length);
+    // if (mileageItemUids.length === counter) {
+    //   props.setDataload();
+    // } else {
+    //   loadData(props);
+    //   mileageItemUids.splice(0, mileageItemUids.length);
+    // }
   },
 
   handleSubmitFail: (props: MileageApprovalDetailProps) => (
@@ -238,19 +245,19 @@ const handlerCreators: HandleCreators<
   }
 };
 
-const loadData = (props: MileageApprovalDetailProps): void => {
-  const { match } = props;
-  const { user } = props.userState;
-  const { loadDetailRequest } = props.mileageApprovalDispatch;
+// const loadData = (props: MileageApprovalDetailProps): void => {
+//   const { match } = props;
+//   const { user } = props.userState;
+//   const { loadDetailRequest } = props.mileageApprovalDispatch;
 
-  if (user) {
-    loadDetailRequest({
-      mileageUid: match.params.mileageUid,
-      companyUid: user.company.uid,
-      positionUid: user.position.uid
-    });
-  }
-};
+//   if (user) {
+//     loadDetailRequest({
+//       mileageUid: match.params.mileageUid,
+//       companyUid: user.company.uid,
+//       positionUid: user.position.uid
+//     });
+//   }
+// };
 
 export const MileageApprovalDetail = compose<MileageApprovalDetailProps, {}>(
   withUser,

@@ -1,6 +1,7 @@
-import { layoutAlertAdd, listBarLoading, listBarMetadata } from '@layout/store/actions';
+import { layoutAlertAdd } from '@layout/store/actions';
 import {
   MileageApprovalAction as Action,
+  mileageApprovalGetAllDispose,
   mileageApprovalGetAllError,
   mileageApprovalGetAllRequest,
   mileageApprovalGetAllSuccess,
@@ -30,7 +31,6 @@ function* watchAllFetchRequest() {
       path: `/v1/approvals/mileage?${params}`, 
       successEffects: (response: IApiResponse) => ([
         put(mileageApprovalGetAllSuccess(response.body)),
-        put(listBarMetadata(response.body.metadata))
       ]), 
       failureEffects: (response: IApiResponse) => ([
         put(mileageApprovalGetAllError(response.body)),
@@ -48,7 +48,7 @@ function* watchAllFetchRequest() {
         }))
       ]),
       finallyEffects: [
-        put(listBarLoading(false))
+        // put(listBarLoading(false))
       ]
     });
   };
@@ -93,6 +93,7 @@ function* watchPostFetchRequest() {
       payload: action.payload.data, 
       successEffects: (response: IApiResponse) => ([
         put(mileageApprovalPostSuccess(response.body)),
+        put(mileageApprovalGetAllDispose())
       ]), 
       successCallback: (response: IApiResponse) => {
         action.payload.resolve(response.body.data);

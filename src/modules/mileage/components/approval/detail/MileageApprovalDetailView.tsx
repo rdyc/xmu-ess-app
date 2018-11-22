@@ -76,6 +76,10 @@ const config: SingleConfig<IMileageRequestDetail, MileageApprovalDetailProps> = 
       }
     }
   },
+  onDataLoaded: (props: MileageApprovalDetailProps) => {
+    // set data loaded in local state
+    props.setDataload();
+  },
   onUpdated: (states: MileageApprovalDetailProps, callback: SingleHandler) => {
     const { isLoading, response } = states.mileageApprovalState.detail;
 
@@ -127,5 +131,5 @@ const config: SingleConfig<IMileageRequestDetail, MileageApprovalDetailProps> = 
 };
 
 export const MileageApprovalDetailView: React.SFC<MileageApprovalDetailProps> = props => (
-  <SinglePage config={config} connectedProps={props} />
+  <SinglePage config={config} connectedProps={props} shouldDataReload={props.shouldDataReload}/>
 );
