@@ -105,8 +105,8 @@ const config: CollectionConfig<IProject, AllProps> = {
       }
     }
   },
-  onUpdated: (states: AllProps, callback: CollectionHandler) => {
-    const { isLoading, response } = states.projectRegisterState.all;
+  onUpdated: (props: AllProps, callback: CollectionHandler) => {
+    const { isLoading, response } = props.projectRegisterState.all;
     
     callback.handleLoading(isLoading);
     callback.handleResponse(response);
