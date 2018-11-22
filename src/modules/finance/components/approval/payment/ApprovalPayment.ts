@@ -6,7 +6,7 @@ import { FinanceUserAction } from '@finance/classes/types';
 import { ApprovalPaymentView } from '@finance/components/approval/payment/ApprovalPaymentView';
 import { WithFinanceApproval, withFinanceApproval } from '@finance/hoc/withFinanceApproval';
 import { financeApprovalMessage } from '@finance/locales/messages/financeApprovalMessage';
-import { financeMessages } from '@finance/locales/messages/financeMessages';
+import { financeMessage } from '@finance/locales/messages/financeMessage';
 import { RadioGroupChoice } from '@layout/components/input/radioGroup';
 import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
@@ -80,20 +80,20 @@ const createProps: mapper<ApprovalPaymentProps, OwnState> = (props: ApprovalPaym
   return {
     finances: [],
     financeUids: props.match.params.financeUids.split(','),
-    approvalTitle: intl.formatMessage(financeMessages.approval.section.approvalTitle),
-    approvalSubHeader: intl.formatMessage(financeMessages.approval.section.approvalSubTitle),
+    approvalTitle: intl.formatMessage(financeMessage.approval.section.approvalTitle),
+    approvalSubHeader: intl.formatMessage(financeMessage.approval.section.approvalSubTitle),
     approvalChoices: [
-      { value: FinanceStatusType.Paid, label: intl.formatMessage(financeMessages.approval.action.paid) },
-      { value: FinanceStatusType.Hold, label: intl.formatMessage(financeMessages.approval.action.hold) },
-      { value: FinanceStatusType.NotPaid, label: intl.formatMessage(financeMessages.approval.action.notPaid) }
+      { value: FinanceStatusType.Paid, label: intl.formatMessage(financeMessage.approval.action.paid) },
+      { value: FinanceStatusType.Hold, label: intl.formatMessage(financeMessage.approval.action.hold) },
+      { value: FinanceStatusType.NotPaid, label: intl.formatMessage(financeMessage.approval.action.notPaid) }
     ],
     approvalTrueValue: WorkflowStatusType.Approved,
-    approvalDialogTitle: intl.formatMessage(financeMessages.approval.dialog.approvalTitle),
-    approvalDialogContentText: intl.formatMessage(financeMessages.approval.dialog.approvalSubTitle),
+    approvalDialogTitle: intl.formatMessage(financeMessage.approval.dialog.approvalTitle),
+    approvalDialogContentText: intl.formatMessage(financeMessage.approval.dialog.approvalSubTitle),
     approvalDialogCancelText: intl.formatMessage(layoutMessage.action.cancel),
     approvalDialogConfirmedText: intl.formatMessage(layoutMessage.action.continue),
-    approvalRemarkLabel: intl.formatMessage(financeMessages.approval.field.notes),
-    approvalRemarkPlaceholder: intl.formatMessage(financeMessages.approval.field.notesPlaceholder)
+    approvalRemarkLabel: intl.formatMessage(financeMessage.approval.field.notes),
+    approvalRemarkPlaceholder: intl.formatMessage(financeMessage.approval.field.notesPlaceholder)
   };
 };
   
@@ -211,8 +211,8 @@ const lifecycles: ReactLifeCycleFunctions<ApprovalPaymentProps, OwnState> = {
       layoutDispatch.changeView({
         uid: AppMenu.FinanceApproval,
         parentUid: AppMenu.Finance,
-        title: intl.formatMessage(financeMessages.approval.page.detailTitle),
-        subTitle : intl.formatMessage(financeMessages.approval.page.detailSubTitle)
+        title: intl.formatMessage(financeMessage.approval.page.detailTitle),
+        subTitle : intl.formatMessage(financeMessage.approval.page.detailSubTitle)
       });
   
       layoutDispatch.navBackShow();

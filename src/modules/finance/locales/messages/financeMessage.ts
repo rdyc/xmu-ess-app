@@ -7,7 +7,7 @@ import {
   financeApprovalSection 
 } from './financeApprovalMessage';
 
-export const financeMessages = {
+export const financeMessage = {
   approval: {
     message: financeApprovalMessage,
     field: financeApprovalField,

@@ -1,5 +1,5 @@
 import { IFinanceDetail } from '@finance/classes/response';
-import { financeMessages } from '@finance/locales/messages/financeMessages';
+import { financeMessage } from '@finance/locales/messages/financeMessage';
 import { GlobalFormat } from '@layout/types';
 import { GlobalStyle } from '@layout/types/GlobalStyle';
 import { Button, Card, CardContent, CardHeader, InputAdornment, TextField } from '@material-ui/core';
@@ -35,7 +35,7 @@ export const financeInformation: React.SFC<AllProps> = props => {
             size="large"
             onClick={() => handleToDocument(data.moduleUid, data.documentUid)}
           >
-            {intl.formatMessage(financeMessages.approval.field.goToDocument)}
+            {intl.formatMessage(financeMessage.approval.field.goToDocument)}
           </Button>
         </InputAdornment>
       
@@ -45,34 +45,34 @@ export const financeInformation: React.SFC<AllProps> = props => {
   const render = (
     <Card square>
       <CardHeader 
-        title={intl.formatMessage(financeMessages.approval.section.infoTitle)}
-        subheader={intl.formatMessage(financeMessages.approval.section.infoSubTitle)}
+        title={intl.formatMessage(financeMessage.approval.section.infoTitle)}
+        subheader={intl.formatMessage(financeMessage.approval.section.infoSubTitle)}
       />
       <CardContent>
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
-          label={intl.formatMessage(financeMessages.approval.field.uid)}
+          label={intl.formatMessage(financeMessage.approval.field.uid)}
           value={data.uid}
         />
         <TextField
           
           {...GlobalStyle.TextField.ReadOnly}
-          label={intl.formatMessage(financeMessages.approval.field.moduleName)}
+          label={intl.formatMessage(financeMessage.approval.field.moduleName)}
           value={data.module ? data.module.value : 'N/A'}
         />
         <TextField
           {...documentStyle}
-          label={intl.formatMessage(financeMessages.approval.field.documentUid)}
+          label={intl.formatMessage(financeMessage.approval.field.documentUid)}
           value={data.documentUid ? data.documentUid : 'N/A'}
         />
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
-          label={intl.formatMessage(financeMessages.approval.field.requestor)}
+          label={intl.formatMessage(financeMessage.approval.field.requestor)}
           value={data.document.changes.created ? data.document.changes.created.fullName : 'N/A'}
         />
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
-          label={intl.formatMessage(financeMessages.approval.field.approvalDate)}
+          label={intl.formatMessage(financeMessage.approval.field.approvalDate)}
           value={data.document.changes.updatedAt ? 
             intl.formatDate(data.document.changes.updatedAt, GlobalFormat.Date) : ''}
         />
@@ -81,25 +81,25 @@ export const financeInformation: React.SFC<AllProps> = props => {
           data.document.amount.advance) &&
           <TextField
           {...GlobalStyle.TextField.ReadOnly}
-            label={intl.formatMessage(financeMessages.approval.field.advance)}
+            label={intl.formatMessage(financeMessage.approval.field.advance)}
             value={intl.formatNumber(data.document.amount.advance || 0)}
           /> || ''
         }
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
-          label={intl.formatMessage(financeMessages.approval.field.total)}
+          label={intl.formatMessage(financeMessage.approval.field.total)}
           value={data.document.amount ?
             intl.formatNumber(data.document.amount.total || 0) : 0}
         />
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
-          label={intl.formatMessage(financeMessages.approval.field.status)}
+          label={intl.formatMessage(financeMessage.approval.field.status)}
           value={data.status ? data.status.value : 'N/A'}
         />
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
           multiline
-          label={intl.formatMessage(financeMessages.approval.field.notes)}
+          label={intl.formatMessage(financeMessage.approval.field.notes)}
           value={data.notes || 'N/A'}
         />
       </CardContent>

@@ -4,7 +4,7 @@ import { FinanceField, FinanceUserAction } from '@finance/classes/types';
 import { FinanceSummary } from '@finance/components/approval/detail/shared/FinanceSummary';
 import { financeApprovalFieldTranslator } from '@finance/helper';
 import { WithFinanceApproval, withFinanceApproval } from '@finance/hoc/withFinanceApproval';
-import { financeMessages } from '@finance/locales/messages/financeMessages';
+import { financeMessage } from '@finance/locales/messages/financeMessage';
 import {
   CollectionConfig,
   CollectionDataProps,
@@ -25,8 +25,8 @@ const config: CollectionConfig<IFinance, AllProps> = {
   page: (props: AllProps) => ({
     uid: AppMenu.FinanceApproval,
     parentUid: AppMenu.Finance,
-    title: props.intl.formatMessage(financeMessages.approval.page.title),
-    description: props.intl.formatMessage(financeMessages.approval.page.subTitle)
+    title: props.intl.formatMessage(financeMessage.approval.page.title),
+    description: props.intl.formatMessage(financeMessage.approval.page.subTitle)
   }),
   
   // top bar

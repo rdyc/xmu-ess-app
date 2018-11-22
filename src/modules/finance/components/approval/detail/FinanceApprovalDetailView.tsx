@@ -6,7 +6,7 @@ import * as React from 'react';
 
 import { IFinanceDetail } from '@finance/classes/response';
 import { FinanceUserAction } from '@finance/classes/types';
-import { financeMessages } from '@finance/locales/messages/financeMessages';
+import { financeMessage } from '@finance/locales/messages/financeMessage';
 import { FinanceApprovalDetailProps } from './FinanceApprovalDetail';
 import { FinanceInformation } from './shared/FinanceInformation';
 
@@ -15,8 +15,8 @@ const config: SingleConfig<IFinanceDetail, FinanceApprovalDetailProps> = {
   page: (props: FinanceApprovalDetailProps) => ({
     uid: AppMenu.FinanceApproval,
     parentUid: AppMenu.Finance,
-    title: props.intl.formatMessage(financeMessages.approval.page.detailTitle),
-    description: props.intl.formatMessage(financeMessages.approval.page.detailSubTitle)
+    title: props.intl.formatMessage(financeMessage.approval.page.detailTitle),
+    description: props.intl.formatMessage(financeMessage.approval.page.detailSubTitle)
   }),
   
   // action centre

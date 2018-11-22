@@ -1,6 +1,6 @@
 import { IFinance } from '@finance/classes/response';
 import { ApprovalPaymentProps } from '@finance/components/approval/payment/ApprovalPayment';
-import { financeMessages } from '@finance/locales/messages/financeMessages';
+import { financeMessage } from '@finance/locales/messages/financeMessage';
 import {
   Card,
   CardContent,
@@ -108,8 +108,8 @@ export const ApprovalPaymentView: React.SFC<ApprovalPaymentProps> = props => {
           <Grid item xs={12} md={4}>
             <Card square>
               <CardHeader 
-                title={finances && finances.length > 1 ? intl.formatMessage(financeMessages.approval.page.title) : intl.formatMessage(financeMessages.approval.section.approvalTitle)}
-                subheader={intl.formatMessage(financeMessages.approval.section.approvalSubTitle)}
+                title={finances && finances.length > 1 ? intl.formatMessage(financeMessage.approval.page.title) : intl.formatMessage(financeMessage.approval.section.approvalTitle)}
+                subheader={intl.formatMessage(financeMessage.approval.section.approvalSubTitle)}
               />
               <CardContent>
                 <List>
