@@ -38,7 +38,7 @@ export interface CollectionConfig<Tresponse, Tinner> {
   hasSearching?: boolean | false;
   searchStatus?: (props: Tinner) => boolean;
   hasSelection?: boolean | false;
-  selectionProcessing?: (values: string[]) => void;
+  onProcessSelection?: (values: string[], callback: CollectionHandler) => void;
   showActionCentre?: boolean | false;
   filter?: IBasePagingFilter | IBaseFilter;
   onDataLoad: (props: Tinner, callback: CollectionHandler, params: CollectionDataProps, forceReload?: boolean | false) => void;
@@ -282,11 +282,10 @@ const lifecycles: ReactLifeCycleFunctions<CollectionPageProps, OwnState> = {
     if (this.props.config.hasSelection) {
       this.props.appBarDispatch.assignSelectionClearCallback(this.props.setSelectionClear);
 
-      // when processing was set
-      if (this.props.config.selectionProcessing) {
-        // call config processing callback
-        this.props.appBarDispatch.assignSelectionProcessCallback(this.props.config.selectionProcessing);
-      }
+      // call config processing callback
+      this.props.appBarDispatch.assignSelectionProcessCallback(() => {
+        return this.props.config.onProcessSelection ? this.props.config.onProcessSelection(this.props.selected, this.props) : undefined;
+      });
     }
     
     // assign fields

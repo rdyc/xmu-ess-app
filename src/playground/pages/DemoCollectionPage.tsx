@@ -51,8 +51,8 @@ const config: CollectionConfig<IProject, AllProps> = {
 
   // selection
   hasSelection: true,
-  selectionProcessing: (values: string[]) => {
-    alert(values.toString());
+  onProcessSelection: (values: string[], callback: CollectionHandler) => {
+    callback.handleRedirectTo('/playground/pages/demo/selected', { values });
   },
 
   // searching
