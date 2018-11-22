@@ -120,7 +120,7 @@ const handlerCreators: HandleCreators<TravelSettlementApprovalDetailProps, OwnHa
     
     alertAdd({
       time: new Date(),
-      message: intl.formatMessage(travelApprovalMessage.updateSuccess),
+      message: intl.formatMessage(travelApprovalMessage.submitSuccess),
     });
 
     history.push('/travel/approvals/settlement');
@@ -139,7 +139,7 @@ const handlerCreators: HandleCreators<TravelSettlementApprovalDetailProps, OwnHa
     } else {
       alertAdd({
         time: new Date(),
-        message: intl.formatMessage(travelApprovalMessage.updateFailure),
+        message: intl.formatMessage(travelApprovalMessage.submitFailure),
         details: isObject(submitError) ? submitError.message : submitError
       });
     }

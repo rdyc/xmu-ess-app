@@ -44,7 +44,7 @@ const config: CollectionConfig<ITravelRequest, AllProps> = {
 
     const { request } = states.travelApprovalState.all;
 
-    if (request && request.filter && request.filter.query && request.filter.query.find) {
+    if (request && request.filter && request.filter.query) {
       result = request.filter.query.find ? true : false;
     }
 
@@ -86,6 +86,8 @@ const config: CollectionConfig<ITravelRequest, AllProps> = {
           filter: {
             companyUid: user.company.uid,
             positionUid: user.position.uid,
+            status: 'pending',
+            isNotify: undefined,
             query: {
               direction: params.direction,
               orderBy: params.orderBy,
@@ -93,9 +95,7 @@ const config: CollectionConfig<ITravelRequest, AllProps> = {
               size: params.size,
               find: params.find,
               findBy: params.findBy
-            },
-            status: undefined,
-            isNotify: undefined
+            }            
           }          
         });
       } else {
@@ -130,7 +130,7 @@ const config: CollectionConfig<ITravelRequest, AllProps> = {
     <React.Fragment>
       <Button 
         size="small"
-        onClick={() => callback.handleRedirectTo(`/travel/request/approvals/${item.uid}`)}
+        onClick={() => callback.handleRedirectTo(`/travel/approvals/request/${item.uid}`)}
       >
         <FormattedMessage {...layoutMessage.action.details}/>
       </Button>

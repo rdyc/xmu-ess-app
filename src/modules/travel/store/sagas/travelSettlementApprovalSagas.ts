@@ -1,6 +1,7 @@
-import { layoutAlertAdd, listBarLoading, listBarMetadata } from '@layout/store/actions';
+import { layoutAlertAdd } from '@layout/store/actions';
 import {
   TravelSettlementApprovalAction as Action,
+  travelSettlementApprovalGetAllDispose,
   travelSettlementApprovalGetAllError,
   travelSettlementApprovalGetAllRequest,
   travelSettlementApprovalGetAllSuccess,
@@ -23,8 +24,7 @@ function* watchAllFetchRequest() {
       method: 'get',
       path: `/v1/approvals/travel/settlement${objectToQuerystring(action.payload.filter)}`, 
       successEffects: (response: IApiResponse) => ([
-        put(travelSettlementApprovalGetAllSuccess(response.body)),
-        put(listBarMetadata(response.body.metadata))
+        put(travelSettlementApprovalGetAllSuccess(response.body))
       ]), 
       failureEffects: (response: IApiResponse) => ([
         put(travelSettlementApprovalGetAllError(response.body)),
@@ -42,7 +42,7 @@ function* watchAllFetchRequest() {
         }))
       ]),
       finallyEffects: [
-        put(listBarLoading(false))
+        // nothing
       ]
     });
   };
@@ -87,6 +87,7 @@ function* watchPostFetchRequest() {
       payload: action.payload.data, 
       successEffects: (response: IApiResponse) => [
         put(travelSettlementApprovalPostSuccess(response.body)),
+        put(travelSettlementApprovalGetAllDispose())
       ],
       successCallback: (response: IApiResponse) => {
         action.payload.resolve(response.body.data);

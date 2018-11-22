@@ -1,12 +1,11 @@
 import { Card, CardContent, CardHeader, TextField } from '@material-ui/core';
-import { ITravelRequestDetail, ITravelSettlementDetail } from '@travel/classes/response';
+import { ITravelSettlementDetail } from '@travel/classes/response';
 import * as React from 'react';
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose } from 'recompose';
 
 interface OwnProps {
   data: ITravelSettlementDetail;
-  travelData: ITravelRequestDetail;
 }
 
 type AllProps

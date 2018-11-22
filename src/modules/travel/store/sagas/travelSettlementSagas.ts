@@ -1,6 +1,7 @@
-import { layoutAlertAdd, listBarLoading, listBarMetadata } from '@layout/store/actions';
+import { layoutAlertAdd } from '@layout/store/actions';
 import {
   TravelSettlementAction as Action,
+  travelSettlementGetAllDispose,
   travelSettlementGetAllError,
   travelSettlementGetAllRequest,
   travelSettlementGetAllSuccess,
@@ -11,6 +12,7 @@ import {
   travelSettlementPostRequest,
   travelSettlementPostSuccess,
   travelSettlementPutRequest,
+  travelSettlementPutSuccess,
 } from '@travel/store/actions';
 import { flattenObject } from '@utils/flattenObject';
 import saiyanSaga from '@utils/saiyanSaga';
@@ -25,7 +27,6 @@ function* watchAllFetchRequest() {
       path: `/v1/travel/settlements${objectToQuerystring(action.payload.filter)}`, 
       successEffects: (response: IApiResponse) => ([
         put(travelSettlementGetAllSuccess(response.body)),
-        put(listBarMetadata(response.body.metadata))
       ]), 
       failureEffects: (response: IApiResponse) => ([
         put(travelSettlementGetAllError(response.body)),
@@ -43,7 +44,7 @@ function* watchAllFetchRequest() {
         }))
       ]),
       finallyEffects: [
-        put(listBarLoading(false))
+        // nothing
       ]
     });
   };
@@ -88,6 +89,7 @@ function* watchPostFetchRequest() {
       payload: action.payload.data, 
       successEffects: (response: IApiResponse) => [
         put(travelSettlementPostSuccess(response.body)),
+        put(travelSettlementGetAllDispose())
       ], 
       successCallback: (response: IApiResponse) => {
         action.payload.resolve(response.body.data);
@@ -130,7 +132,8 @@ function* watchPutFetchRequest() {
       path: `/v1/travel/settlements/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.travelSettlementUid}`,
       payload: action.payload.data, 
       successEffects: (response: IApiResponse) => [
-        put(travelSettlementPostSuccess(response.body)),
+        put(travelSettlementPutSuccess(response.body)),
+        put(travelSettlementGetAllDispose())
       ],
       successCallback: (response: IApiResponse) => {
         action.payload.resolve(response.body.data);

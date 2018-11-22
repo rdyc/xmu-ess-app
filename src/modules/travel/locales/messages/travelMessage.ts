@@ -4,8 +4,10 @@ import {
   travelRequestConfirm, 
   travelRequestField, 
   travelRequestMessage, 
+  travelRequestOption, 
   travelRequestPage, 
-  travelRequestSection } 
+  travelRequestSection
+} 
 from './travelRequestMessage';
 import { travelSettlementApprovalConfirm, travelSettlementApprovalPage } from './travelSettlementApprovalMessages';
 import { 
@@ -20,6 +22,7 @@ export const travelMessage = {
   action: travelAction,
   request: {
     page: travelRequestPage,
+    option: travelRequestOption,
     confirm: travelRequestConfirm,
     section: travelRequestSection,
     field: travelRequestField,
