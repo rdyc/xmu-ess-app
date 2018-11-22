@@ -1,3 +1,4 @@
+import { layoutMessage } from '@layout/locales/messages';
 import {
   Button,
   Dialog,
@@ -13,7 +14,6 @@ import { MileageInformation } from '@mileage/components/request/detail/shared/Mi
 import { MileageItem } from '@mileage/components/request/detail/shared/MileageItem';
 import { WorkflowHistory } from '@organization/components/workflow/history/WorkflowHistory';
 import * as React from 'react';
-import { FormattedMessage } from 'react-intl';
 
 export const MileageRequestDetailView: React.SFC<
   MileageRequestDetailProps
@@ -61,7 +61,7 @@ export const MileageRequestDetailView: React.SFC<
     <React.Fragment>
       {isLoading && (
         <Typography variant="body2">
-          <FormattedMessage id="global.loading" />
+          {props.intl.formatMessage(layoutMessage.text.loading)}
         </Typography>
       )}
       {!isLoading &&

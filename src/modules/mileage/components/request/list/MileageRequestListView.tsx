@@ -115,10 +115,10 @@ const config: CollectionConfig<IMileageRequest, AllProps> = {
       year: 'numeric',
       month: 'long',
     }),
-    secondary: item.uid,
-    tertiary: item.employee && item.employee.fullName || item.employeeUid,
-    quaternary: item.status && item.status.value || item.statusType,
-    quinary: props.intl.formatNumber(item.amount),
+    secondary: item.employee && item.employee.fullName || item.employeeUid,
+    tertiary: props.intl.formatNumber(item.amount),
+    quaternary: item.uid,
+    quinary: item.status && item.status.value || item.statusType,
     senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
   }),
 

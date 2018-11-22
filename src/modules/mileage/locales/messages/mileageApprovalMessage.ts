@@ -5,8 +5,6 @@ const prefix = 'mileage.approval';
 // message
 export const mileageApprovalMessage = defineMessages({
   emptyProps: { id: 'mileage.message.approval.emptyProps' },
-  createSuccess: { id: 'mileage.message.approval.create.success' },
-  createFailure: { id: 'mileage.message.approval.create.failure' },
   updateSuccess: { id: 'mileage.message.approval.update.success' },
   updateFailure: { id: 'mileage.message.approval.update.failure' },
 });
@@ -17,4 +15,12 @@ export const mileageApprovalPage = defineMessages({
   listSubHeader: { id: `${prefix}.page.list.subHeader`},
   detailTitle: { id: `${prefix}.page.detail.title`},
   detailSubHeader: { id: `${prefix}.page.detail.subHeader`},
+});
+
+// submission
+export const mileageApprovalSubmission = defineMessages({
+  title: { id: `${prefix}.submission.title`},
+  subHeader: { id: `${prefix}.submission.subHeader`},
+  dialogTitle: { id: `${prefix}.submission.dialog.title`},
+  dialogContent: { id: `${prefix}.submission.dialog.content`},
 });

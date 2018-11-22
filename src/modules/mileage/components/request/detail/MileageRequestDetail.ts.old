@@ -3,6 +3,7 @@ import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IAppBarMenu } from '@layout/interfaces';
+import { layoutMessage } from '@layout/locales/messages';
 import { MileageUserAction } from '@mileage/classes/types';
 import { MileageRequestDetailView } from '@mileage/components/request/detail/MileageRequestDetailView';
 import {
@@ -10,7 +11,7 @@ import {
   withMileageRequest
 } from '@mileage/hoc/withMileageRequest';
 import { mileageMessage } from '@mileage/locales/messages/mileageMessage';
-import { InjectedIntlProps, injectIntl } from 'react-intl';
+import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import {
   compose,
@@ -42,8 +43,8 @@ interface OwnState {
   dialogOpen: boolean;
   dialogTitle?: string | undefined;
   dialogDescription?: string | undefined;
-  dialogCancelText: string;
-  dialogConfirmedText: string;
+  dialogCancelText: FormattedMessage.MessageDescriptor;
+  dialogConfirmedText: FormattedMessage.MessageDescriptor;
 }
 
 interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
@@ -69,8 +70,8 @@ const createProps: mapper<MileageRequestDetailProps, OwnState> = (
 ): OwnState => ({
   dialogFullScreen: false,
   dialogOpen: false,
-  dialogCancelText: 'global.action.cancel',
-  dialogConfirmedText: 'global.action.ok'
+  dialogCancelText: layoutMessage.action.cancel,
+  dialogConfirmedText: layoutMessage.action.ok
 });
 
 const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
@@ -84,8 +85,8 @@ const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
     dialogOpen: false,
     dialogTitle: undefined,
     dialogDescription: undefined,
-    dialogCancelText: 'global.action.cancel',
-    dialogConfirmedText: 'global.action.ok',
+    dialogCancelText: layoutMessage.action.cancel,
+    dialogConfirmedText: layoutMessage.action.ok,
   })
 };
 
@@ -112,8 +113,8 @@ const handlerCreators: HandleCreators<MileageRequestDetailProps, Handler> = {
       dialogOpen: true,
       dialogTitle: title,
       dialogDescription: description,
-      dialogCancelText: cancelText || intl.formatMessage({id: dialogCancelText}),
-      dialogConfirmedText: confirmText || intl.formatMessage({id: dialogConfirmedText})
+      dialogCancelText: cancelText || intl.formatMessage(dialogCancelText),
+      dialogConfirmedText: confirmText || intl.formatMessage(dialogConfirmedText)
     });
   },
 
@@ -176,7 +177,7 @@ const lifecycles: ReactLifeCycleFunctions<MileageRequestDetailProps, OwnState> =
       const currentMenus = [
         {
           id: MileageUserAction.Refresh,
-          name: intl.formatMessage({id: 'global.action.refresh'}),
+          name: intl.formatMessage(layoutMessage.action.refresh),
           enabled: true,
           visible: true
         }
