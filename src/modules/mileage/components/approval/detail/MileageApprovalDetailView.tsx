@@ -1,185 +1,135 @@
-import { WorkflowStatusType } from '@common/classes/types';
+import AppMenu from '@constants/AppMenu';
 import {
-  Card,
-  CardContent,
-  CardHeader,
-  Checkbox,
-  Divider,
-  Grid,
-  List,
-  ListItem,
-  Typography
-} from '@material-ui/core';
-import { IMileageRequestItem } from '@mileage/classes/response';
-import { MileageApprovalDetailProps } from '@mileage/components/approval/detail/MileageApprovalDetail';
+  SingleConfig,
+  SingleHandler,
+  SinglePage,
+  SingleState,
+} from '@layout/components/pages/singlePage/SinglePage';
+import { IAppBarMenu } from '@layout/interfaces';
+import { layoutMessage } from '@layout/locales/messages';
+import { IMileageRequestDetail } from '@mileage/classes/response';
+import { MileageUserAction } from '@mileage/classes/types';
 import { MileageInformation } from '@mileage/components/request/detail/shared/MileageInformation';
 import { MileageItem } from '@mileage/components/request/detail/shared/MileageItem';
+
+import { WorkflowStatusType } from '@common/classes/types';
+import { MileageApprovalItem } from '@mileage/components/approval/detail/MileageApprovalItem';
 import { mileageMessage } from '@mileage/locales/messages/mileageMessage';
 import { WorkflowHistory } from '@organization/components/workflow/history/WorkflowHistory';
+import { organizationMessage } from '@organization/locales/messages/organizationMessage';
 import * as React from 'react';
-import { FormattedDate, FormattedMessage } from 'react-intl';
+import { MileageApprovalDetailProps } from './MileageApprovalDetail';
 import { WorkflowMileageApproval } from './WorkflowMileageApproval';
 
-export const MileageApprovalDetailView: React.SFC<
-  MileageApprovalDetailProps
-> = props => {
-  const {
-    handleCheckbox,
-    mileageItemUids,
-    approvalTitle,
-    approvalSubHeader,
-    approvalChoices,
-    approvalTrueValue,
-    approvalDialogTitle,
-    approvalDialogContentText,
-    approvalDialogCancelText,
-    approvalDialogConfirmedText
-  } = props;
-  const {
-    intl,
-    handleValidate,
-    handleSubmit,
-    handleSubmitFail,
-    handleSubmitSuccess
-  } = props;
-  const { isLoading, response } = props.mileageApprovalState.detail;
+const config: SingleConfig<IMileageRequestDetail, MileageApprovalDetailProps> = {
+  // page info
+  page: (props: MileageApprovalDetailProps) => ({
+    uid: AppMenu.MileageApproval,
+    parentUid: AppMenu.Mileage,
+    title: props.intl.formatMessage(mileageMessage.request.page.detailTitle),
+    description: props.intl.formatMessage(
+      mileageMessage.request.page.detailSubHeader
+    )
+  }),
 
-  const isChecked = (mileageItemUid: string) => {
-    const _mileageItemUids = new Set(mileageItemUids);
-    return _mileageItemUids.has(mileageItemUid);
-  };
+  // action centre
+  showActionCentre: true,
 
-  const renderItem = (items: IMileageRequestItem[]) => {
-    const len = items.length - 1;
+  // more
+  hasMore: true,
+  moreOptions: (props: MileageApprovalDetailProps, state: SingleState, callback: SingleHandler): IAppBarMenu[] => [
+    {
+      id: MileageUserAction.Refresh,
+      name: props.intl.formatMessage(layoutMessage.action.refresh),
+      enabled: true,
+      visible: true,
+      onClick: () => callback.handleForceReload()
+    }
+  ],
 
-    return (
-      <Card square>
-        <CardHeader
-          title={intl.formatMessage(mileageMessage.request.field.itemTitle)}
-          subheader={intl.formatMessage(mileageMessage.request.field.itemSubHeader)}
-        />
-        <CardContent>
-          <List>
-            {items.map((item, index) => (
-              <div key={item.uid}>
-                <ListItem disableGutters key={item.uid}>
-                  <Grid container spacing={16}>
-                    <Grid item xs={1} sm={1}>
-                      {item.status &&
-                        item.status.type === WorkflowStatusType.Submitted && (
-                          <Checkbox
-                            key={item.uid}
-                            onChange={() => handleCheckbox(item.uid)}
-                            checked={isChecked(item.uid)}
-                          />
-                        )}
-                    </Grid>
-                    <Grid item xs={7} sm={7}>
-                      <Typography noWrap color="primary" variant="body2">
-                        {item.customer && item.customer.name}
-                      </Typography>
-                      <Typography noWrap variant="body1">
-                        {item.projectUid} &bull;
-                        {item.project && item.project.name}
-                      </Typography>
-                      <Typography
-                        noWrap
-                        color="textSecondary"
-                        variant="caption"
-                      >
-                        <FormattedDate
-                          year="numeric"
-                          month="short"
-                          day="numeric"
-                          value={item.date}
-                        />
-                      </Typography>
-                    </Grid>
-                    <Grid item xs={4} sm={4}>
-                      <Typography noWrap variant="body1" align="right">
-                        {item.site && item.site.name}
-                      </Typography>
-                      {item.status &&
-                        item.status.type !== WorkflowStatusType.Submitted && (
-                          <Typography
-                            noWrap
-                            color={
-                              item.status.type === WorkflowStatusType.Rejected
-                                ? 'error'
-                                : 'secondary'
-                            }
-                            variant="body1"
-                            align="right"
-                          >
-                            {item.status && item.status.value}
-                          </Typography>
-                        )}
-                      <Typography noWrap variant="body1" align="right">
-                        {intl.formatNumber(Number(item.amount))}
-                      </Typography>
-                    </Grid>
-                  </Grid>
-                </ListItem>
-                {len !== index && <Divider />}
-              </div>
-            ))}
-          </List>
-        </CardContent>
-      </Card>
-    );
-  };
+  // events
+  onDataLoad: (
+    props: MileageApprovalDetailProps,
+    callback: SingleHandler,
+    forceReload?: boolean | false
+  ) => {
+    const { user } = props.userState;
+    const { isLoading, request, response } = props.mileageApprovalState.detail;
+    const { loadDetailRequest } = props.mileageApprovalDispatch;
 
-  const render = (
+    // when user is set and not loading and has projectUid in route params
+    if (user && !isLoading && props.match.params.mileageUid) {
+      // when projectUid was changed or response are empty or force to reload
+      if (
+        (request && request.mileageUid !== props.match.params.mileageUid) ||
+        !response ||
+        forceReload
+      ) {
+        loadDetailRequest({
+          companyUid: user.company.uid,
+          positionUid: user.position.uid,
+          mileageUid: props.match.params.mileageUid
+        });
+      } else {
+        // just take data from previous response
+        callback.handleResponse(response);
+      }
+    }
+  },
+  onDataLoaded: (props: MileageApprovalDetailProps) => {
+    // set data loaded in local state
+    props.setDataload();
+  },
+  onUpdated: (states: MileageApprovalDetailProps, callback: SingleHandler) => {
+    const { isLoading, response } = states.mileageApprovalState.detail;
+
+    callback.handleLoading(isLoading);
+    callback.handleResponse(response);
+  },
+
+  // primary
+  primaryComponent: (data: IMileageRequestDetail) => (
+    <MileageInformation data={data} />
+  ),
+
+  // secondary (multiple components are allowed)
+  secondaryComponents: (data: IMileageRequestDetail, props: MileageApprovalDetailProps) => [
+    data.workflow && data.workflow.isApproval ? (
+        <MileageApprovalItem 
+          data={data.items}
+          ItemUids={props.mileageItemUids}
+          handleCheckbox={props.handleCheckbox}
+        />     
+      ) : (
+        <MileageItem items={data.items} />      
+      ),
+    <WorkflowHistory data={data.workflow} />,
     <React.Fragment>
-      {isLoading && (
-        <Typography variant="body2">
-          <FormattedMessage id="global.loading" />
-        </Typography>
-      )}
-      {!isLoading && response && response.data && (
-        <Grid container spacing={16}>
-          <Grid item xs={12} md={4}>
-            <MileageInformation data={response.data} />
-          </Grid>
-          {response.data.items &&
-          response.data.workflow &&
-          !response.data.workflow.isApproval ? (
-            <Grid item xs={12} md={4}>
-              <MileageItem items={response.data.items} />
-            </Grid>
-          ) : (
-            response.data.items && (
-              <Grid item xs={12} md={5}>
-                {renderItem(response.data.items)}
-              </Grid>
-            )
-          )}
-          {response.data.workflow && response.data.workflow.isApproval && (
-            <Grid item xs={12} md={3}>
-              <WorkflowMileageApproval
-                itemTrue={mileageItemUids.length < 1 ? true : false}
-                approvalTitle={approvalTitle}
-                approvalSubHeader={approvalSubHeader}
-                approvalChoices={approvalChoices}
-                approvalTrueValue={approvalTrueValue}
-                approvalDialogTitle={approvalDialogTitle}
-                approvalDialogContentText={approvalDialogContentText}
-                approvalDialogCancelText={approvalDialogCancelText}
-                approvalDialogConfirmedText={approvalDialogConfirmedText}
-                validate={handleValidate}
-                onSubmit={handleSubmit}
-                onSubmitSuccess={handleSubmitSuccess}
-                onSubmitFail={handleSubmitFail}
-              />
-            </Grid>
-          )}
-          <Grid item xs={12} md={4}>
-            <WorkflowHistory data={response.data.workflow} />
-          </Grid>
-        </Grid>
-      )}
+      {data.workflow && data.workflow.isApproval &&
+      <WorkflowMileageApproval 
+          itemTrue={props.mileageItemUids.length < 1 ? true : false}
+          approvalTitle={props.intl.formatMessage(mileageMessage.approval.submission.title)}
+          approvalSubHeader={props.intl.formatMessage(mileageMessage.approval.submission.subHeader)}
+          approvalChoices={[
+            { value: WorkflowStatusType.Approved, 
+              label: props.intl.formatMessage(organizationMessage.workflow.option.approve) },
+            { value: WorkflowStatusType.Rejected, 
+              label: props.intl.formatMessage(organizationMessage.workflow.option.reject) }
+          ]}
+          approvalTrueValue={WorkflowStatusType.Approved}
+          approvalDialogTitle={props.intl.formatMessage(mileageMessage.approval.submission.dialogTitle)}
+          approvalDialogContentText={props.intl.formatMessage(mileageMessage.approval.submission.dialogContent)}
+          approvalDialogCancelText={props.intl.formatMessage(layoutMessage.action.cancel)}
+          approvalDialogConfirmedText={props.intl.formatMessage(layoutMessage.action.continue)}
+          validate={props.handleValidate}
+          onSubmit={props.handleSubmit}
+          onSubmitSuccess={props.handleSubmitSuccess}
+          onSubmitFail={props.handleSubmitFail}
+        />}
     </React.Fragment>
-  );
-
-  return render;
+  ]
 };
+
+export const MileageApprovalDetailView: React.SFC<MileageApprovalDetailProps> = props => (
+  <SinglePage config={config} connectedProps={props} shouldDataReload={props.shouldDataReload}/>
+);

@@ -21,6 +21,18 @@ const layout: React.SFC<LayoutProps> = props => {
   const { classes } = props;
   const { anchor, isModeList } = props.layoutState;
 
+  // set document props
+  if (props.layoutState.view) {
+    const meta = document.getElementsByTagName('meta'); 
+    const desc = meta.namedItem('description');
+    
+    if (desc) {
+      desc.content = props.layoutState.view.subTitle;
+    }
+    
+    document.title = props.layoutState.view.title;
+  }
+
   return (
     <LayoutTheme>
       <div className={classes.root}>

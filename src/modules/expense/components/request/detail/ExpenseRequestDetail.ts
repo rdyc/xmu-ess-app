@@ -1,8 +1,7 @@
+import { WithExpenseRequest, withExpenseRequest } from '@expense/hoc/withExpenseRequest';
+import { expenseMessage } from '@expense/locales/messages/expenseMessage';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { layoutMessage } from '@layout/locales/messages';
-import { LeaveRequestUserAction } from '@leave/classes/types';
-import { WithLeaveRequest, withLeaveRequest } from '@leave/hoc/withLeaveRequest';
-import { leaveMessage } from '@leave/locales/messages/leaveMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import {
@@ -16,10 +15,11 @@ import {
   withStateHandlers,
 } from 'recompose';
 
-import { LeaveRequestDetailView } from './LeaveRequestDetailView';
+import { ExpenseUserAction } from '@expense/classes/types';
+import { ExpenseRequestDetailView } from './ExpenseRequestDetailView';
 
 interface OwnRouteParams {
-  leaveUid: string;
+  expenseUid: string;
 }
 
 interface OwnHandler {
@@ -30,7 +30,7 @@ interface OwnHandler {
 
 interface OwnState {
   isAdmin: boolean;
-  action?: LeaveRequestUserAction;
+  action?: ExpenseUserAction;
   dialogFullScreen: boolean;
   dialogOpen: boolean;
   dialogTitle?: string;
@@ -44,28 +44,28 @@ interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
   setDefault: StateHandler<OwnState>;
 }
 
-export type LeaveRequestDetailProps 
+export type ExpenseRequestDetailProps 
   = WithUser
-  & WithLeaveRequest
+  & WithExpenseRequest
   & RouteComponentProps<OwnRouteParams>
   & InjectedIntlProps
   & OwnState
   & OwnStateUpdaters
   & OwnHandler;
 
-const createProps: mapper<LeaveRequestDetailProps, OwnState> = (props: LeaveRequestDetailProps): OwnState => ({ 
+const createProps: mapper<ExpenseRequestDetailProps, OwnState> = (props: ExpenseRequestDetailProps): OwnState => ({ 
   isAdmin: false,
   dialogFullScreen: false,
   dialogOpen: false,
 });
 
-const stateUpdaters: StateUpdaters<LeaveRequestDetailProps, OwnState, OwnStateUpdaters> = {
-  setModify: (prevState: OwnState, props: LeaveRequestDetailProps) => (): Partial<OwnState> => ({
-    action: LeaveRequestUserAction.Modify,
+const stateUpdaters: StateUpdaters<ExpenseRequestDetailProps, OwnState, OwnStateUpdaters> = {
+  setModify: (prevState: OwnState, props: ExpenseRequestDetailProps) => (): Partial<OwnState> => ({
+    action: ExpenseUserAction.Modify,
     dialogFullScreen: false,
     dialogOpen: true,
-    dialogTitle: props.intl.formatMessage(leaveMessage.request.confirm.modifyTitle), 
-    dialogContent: props.intl.formatMessage(leaveMessage.request.confirm.modifyDescription),
+    dialogTitle: props.intl.formatMessage(expenseMessage.request.dialog.modifyTitle), 
+    dialogContent: props.intl.formatMessage(expenseMessage.request.dialog.modifyDescription),
     dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.disaggree),
     dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.aggree)
   }),
@@ -79,15 +79,15 @@ const stateUpdaters: StateUpdaters<LeaveRequestDetailProps, OwnState, OwnStateUp
   })
 };
 
-const handlerCreators: HandleCreators<LeaveRequestDetailProps, OwnHandler> = {
-  handleOnModify: (props: LeaveRequestDetailProps) => () => { 
+const handlerCreators: HandleCreators<ExpenseRequestDetailProps, OwnHandler> = {
+  handleOnModify: (props: ExpenseRequestDetailProps) => () => { 
     props.setModify();
   },
-  handleOnCloseDialog: (props: LeaveRequestDetailProps) => () => { 
+  handleOnCloseDialog: (props: ExpenseRequestDetailProps) => () => { 
     props.setDefault();
   },
-  handleOnConfirm: (props: LeaveRequestDetailProps) => () => { 
-    const { response } = props.leaveRequestState.detail;
+  handleOnConfirm: (props: ExpenseRequestDetailProps) => () => { 
+    const { response } = props.expenseRequestState.detail;
 
     // skipp untracked action or empty response
     if (!props.action || !response) {
@@ -95,24 +95,24 @@ const handlerCreators: HandleCreators<LeaveRequestDetailProps, OwnHandler> = {
     } 
 
     // define vars
-    let leaveUid: string | undefined;
+    let expenseUid: string | undefined;
 
-    // get Leave uid
+    // get expense uid
     if (response.data) {
-      leaveUid = response.data.uid;
+      expenseUid = response.data.uid;
     }
 
     // actions with new page
     const actions = [
-      LeaveRequestUserAction.Modify, 
+      ExpenseUserAction.Modify,
     ];
 
     if (actions.indexOf(props.action) !== -1) {
       let next: string = '404';
 
       switch (props.action) {
-        case LeaveRequestUserAction.Modify:
-          next = '/leave/requests/form';
+        case ExpenseUserAction.Modify:
+          next = '/expense/requests/form';
           break;
 
         default:
@@ -122,17 +122,17 @@ const handlerCreators: HandleCreators<LeaveRequestDetailProps, OwnHandler> = {
       props.setDefault();
 
       props.history.push(next, { 
-        uid: leaveUid 
+        uid: expenseUid 
       });
     }
   },
 };
 
-export const LeaveRequestDetail = compose(
+export const ExpenseRequestDetail = compose(
   withRouter,
   withUser,
-  withLeaveRequest,
+  withExpenseRequest,
   injectIntl,
   withStateHandlers(createProps, stateUpdaters), 
   withHandlers(handlerCreators),
-)(LeaveRequestDetailView);
+)(ExpenseRequestDetailView);

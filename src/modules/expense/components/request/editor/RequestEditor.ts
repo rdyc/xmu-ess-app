@@ -9,7 +9,7 @@ import {
 } from '@expense/components/request/editor/forms/RequestForm';
 import { RequestEditorView } from '@expense/components/request/editor/RequestEditorView';
 import { WithExpenseRequest, withExpenseRequest } from '@expense/hoc/withExpenseRequest';
-import { expenseRequestMessage } from '@expense/locales/messages/expenseRequestMessage';
+import { expenseMessage } from '@expense/locales/messages/expenseMessage';
 import { FormMode } from '@generic/types';
 import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
@@ -79,7 +79,7 @@ const handlerCreators: HandleCreators<RequestEditorProps, OwnHandlers> = {
   
     requiredFields.forEach(field => {
       if (!formData.information[field] || isNullOrUndefined(formData.information[field])) {
-        errors.information[field] = props.intl.formatMessage({id: `expense.field.information.${field}.required`});
+        errors.information[field] = props.intl.formatMessage(expenseMessage.request.fieldFor(field, 'fieldRequired'));
       }
     });
     
@@ -124,7 +124,7 @@ const handlerCreators: HandleCreators<RequestEditorProps, OwnHandlers> = {
 
     // update checking
     if (!expenseUid) {
-      const message = intl.formatMessage(expenseRequestMessage.emptyExpenseUid);
+      const message = intl.formatMessage(expenseMessage.request.message.emptyExpenseUid);
 
       return Promise.reject(message);
     }
@@ -151,11 +151,11 @@ const handlerCreators: HandleCreators<RequestEditorProps, OwnHandlers> = {
     let message: string = '';
 
     if (formMode === FormMode.New) {
-      message = intl.formatMessage(expenseRequestMessage.createSuccess, { uid: response.uid });
+      message = intl.formatMessage(expenseMessage.request.message.createSuccess, { uid: response.uid });
     }
 
     if (formMode === FormMode.Edit) {
-      message = intl.formatMessage(expenseRequestMessage.updateSuccess, { uid: response.uid });
+      message = intl.formatMessage(expenseMessage.request.message.updateSuccess, { uid: response.uid });
     }
 
     alertAdd({
@@ -180,11 +180,11 @@ const handlerCreators: HandleCreators<RequestEditorProps, OwnHandlers> = {
       let message: string = '';
 
       if (formMode === FormMode.New) {
-        message = intl.formatMessage(expenseRequestMessage.createFailure);
+        message = intl.formatMessage(expenseMessage.request.message.createFailure);
       }
 
       if (formMode === FormMode.Edit) {
-        message = intl.formatMessage(expenseRequestMessage.updateFailure);
+        message = intl.formatMessage(expenseMessage.request.message.updateFailure);
       }
 
       alertAdd({
@@ -214,8 +214,8 @@ const lifecycles: ReactLifeCycleFunctions<RequestEditorProps, {}> = {
     const { user } = this.props.userState;
     
     const view = {
-      title: 'expense.form.newTitle',
-      subTitle: 'expense.form.newSubTitle',
+      title: intl.formatMessage(expenseMessage.request.page.createTitle),
+      subTitle: intl.formatMessage(expenseMessage.request.page.createSubTitle),
     };
 
     if (!user) {
@@ -228,8 +228,8 @@ const lifecycles: ReactLifeCycleFunctions<RequestEditorProps, {}> = {
     });
 
     if (!isNullOrUndefined(history.location.state)) {
-      view.title = 'expense.form.editTitle';
-      view.subTitle = 'expense.form.editSubTitle';
+      view.title = intl.formatMessage(expenseMessage.request.page.editTitle);
+      view.subTitle = intl.formatMessage(expenseMessage.request.page.editSubTitle);
 
       stateUpdate({ 
         formMode: FormMode.Edit,
