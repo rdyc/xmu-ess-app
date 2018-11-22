@@ -1,6 +1,7 @@
-import { layoutAlertAdd, listBarLoading, listBarMetadata } from '@layout/store/actions';
+import { layoutAlertAdd } from '@layout/store/actions';
 import {
   ProjectAcceptanceAction as Action,
+  projectAcceptanceGetAllDispose,
   projectAcceptanceGetAllError,
   projectAcceptanceGetAllRequest,
   projectAcceptanceGetAllSuccess,
@@ -29,8 +30,7 @@ function* watchGetAllRequest() {
       method: 'get',
       path: `/v1/project/assignments/acceptances?${params}`,
       successEffects: (response: IApiResponse) => [
-        put(projectAcceptanceGetAllSuccess(response.body)),
-        put(listBarMetadata(response.body.metadata))
+        put(projectAcceptanceGetAllSuccess(response.body))
       ],
       failureEffects: (response: IApiResponse) => [
         put(projectAcceptanceGetAllError(response.body)),
@@ -51,7 +51,9 @@ function* watchGetAllRequest() {
           })
         )
       ],
-      finallyEffects: [put(listBarLoading(false))]
+      finallyEffects: [
+        // nothing
+      ]
     });
   };
 
@@ -98,7 +100,8 @@ function* watchPostRequest() {
       path: `/v1/project/assignments/acceptances/${action.payload.assignmentUid}/${action.payload.assignmentItemUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
-        put(projectAcceptancePostSuccess(response.body))
+        put(projectAcceptancePostSuccess(response.body)),
+        put(projectAcceptanceGetAllDispose())
       ],
       successCallback: (response: IApiResponse) => {
         action.payload.resolve(response.body.data);

@@ -1,19 +1,20 @@
-import { ExpenseInformation } from '@expense/components/request/detail/shared/ExpenseInformation';
+
+import { LeaveInformation } from '@leave/components/request/detail/shared/LeaveInformation';
 import { Grid, Typography } from '@material-ui/core';
 import { WorkflowApprovalForm } from '@organization/components/workflow/approval/WorkflowApprovalForm';
 import { WorkflowHistory } from '@organization/components/workflow/history/WorkflowHistory';
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 
-import { ExpenseApprovalDetailProps } from './ApprovalDetail';
+import { LeaveApprovalDetailProps } from './LeaveApprovalDetail';
 
-export const ApprovalDetailView: React.SFC<ExpenseApprovalDetailProps> = props => {
+export const LeaveApprovalDetailView: React.SFC<LeaveApprovalDetailProps> = props => {
   const { 
     approvalTitle, approvalSubHeader, approvalChoices, approvalTrueValue, 
     approvalDialogTitle, approvalDialogContentText, approvalDialogCancelText, approvalDialogConfirmedText 
   } = props;
   const { handleValidate, handleSubmit, handleSubmitSuccess, handleSubmitFail } = props;
-  const { isLoading, response } = props.expenseApprovalState.detail;
+  const { isLoading, response } = props.leaveApprovalState.detail;
 
   const render = (
     <React.Fragment>
@@ -29,8 +30,8 @@ export const ApprovalDetailView: React.SFC<ExpenseApprovalDetailProps> = props =
         response.data &&
         <Grid container spacing={16}>
           <Grid item xs={12} md={4}>
-            <ExpenseInformation data={response.data}/>
-          </Grid>
+            <LeaveInformation data={response.data}/>
+          </Grid>        
 
           <Grid item xs={12} md={4}>
             <Grid container spacing={16}>

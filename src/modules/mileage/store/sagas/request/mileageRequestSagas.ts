@@ -1,6 +1,7 @@
-import { layoutAlertAdd, listBarLoading, listBarMetadata } from '@layout/store/actions';
+import { layoutAlertAdd } from '@layout/store/actions';
 import {
   MileageRequestAction as Action,
+  mileageRequestGetAllDispose,
   mileageRequestGetAllError,
   mileageRequestGetAllRequest,
   mileageRequestGetAllSuccess,
@@ -24,7 +25,6 @@ function* watchAllFetchRequest() {
       path: `/v1/mileage/requests${objectToQuerystring(action.payload.filter)}`, 
       successEffects: (response: IApiResponse) => ([
         put(mileageRequestGetAllSuccess(response.body)),
-        put(listBarMetadata(response.body.metadata))
       ]), 
       failureEffects: (response: IApiResponse) => ([
         put(mileageRequestGetAllError(response.body)),
@@ -42,7 +42,7 @@ function* watchAllFetchRequest() {
         }))
       ]),
       finallyEffects: [
-        put(listBarLoading(false))
+        // put(listBarLoading(false))
       ]
     });
   };
@@ -87,6 +87,7 @@ function* watchPostFetchRequest() {
       payload: action.payload.data, 
       successEffects: (response: IApiResponse) => ([
         put(mileageRequestPostSuccess(response.body)),
+        put(mileageRequestGetAllDispose())
       ]),
       successCallback: (response: IApiResponse) => {
         action.payload.resolve(response.body.data);

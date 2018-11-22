@@ -1,103 +1,113 @@
 import { AccountLeave } from '@account/components/leave/AccountLeave';
-import { RequestDetailProps } from '@leave/components/request/detail/LeaveRequestDetail';
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  Grid,
-  Typography,
-} from '@material-ui/core';
+import { WorkflowStatusType } from '@common/classes/types';
+import AppMenu from '@constants/AppMenu';
+import { DialogConfirmation } from '@layout/components/dialogs';
+import { SingleConfig, SingleHandler, SinglePage, SingleState } from '@layout/components/pages/singlePage/SinglePage';
+import { IAppBarMenu } from '@layout/interfaces';
+import { layoutMessage } from '@layout/locales/messages';
+import { ILeaveRequestDetail } from '@leave/classes/response';
+import { LeaveRequestUserAction } from '@leave/classes/types';
+import { leaveMessage } from '@leave/locales/messages/leaveMessage';
 import { WorkflowHistory } from '@organization/components/workflow/history/WorkflowHistory';
 import * as React from 'react';
-import { FormattedMessage } from 'react-intl';
-
+import { LeaveRequestDetailProps } from './LeaveRequestDetail';
 import { LeaveInformation } from './shared/LeaveInformation';
 
-export const LeaveRequestDetailView: React.SFC<RequestDetailProps> = props => {
-  const { 
-    dialogFullScreen, dialogOpen, dialogTitle, dialogDescription, dialogCancelText, dialogConfirmedText,
-    handleDialogClose, handleDialogConfirmed
-  } = props;
-  const { isLoading, response } = props.leaveRequestState.detail;
-
-  const renderDialog = (
-    <Dialog
-      fullScreen={dialogFullScreen}
-      open={dialogOpen}
-      aria-labelledby="leaveRequest-detail-dialog-title"
-      aria-describedby="leaveRequest-detail-dialog-description"
-    >
-      <DialogTitle id="leaveRequest-detail-dialog-title">
-        {dialogTitle || 'title'}
-      </DialogTitle>
-      <DialogContent>
-        <DialogContentText id="leaveRequest-detail-dialog-description">
-          {dialogDescription || 'description'}
-        </DialogContentText>
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={handleDialogClose} color="primary">
-          {dialogCancelText || 'cancel'}
-        </Button>
-        <Button onClick={handleDialogConfirmed} color="primary" autoFocus>
-          {dialogConfirmedText || 'confirm'}
-        </Button>
-      </DialogActions>
-    </Dialog>
-  );
-
-  const render = (
-    <React.Fragment>
-      {
-        isLoading && 
-        <Typography variant="body2">
-          <FormattedMessage id="global.loading"/>
-        </Typography>
-      }
-      {
-        response && 
-        <Grid 
-          container 
-          spacing={16} 
-          direction="row"
-          justify="flex-start"
-          alignItems="flex-start"
-        >
-          <Grid item xs={12} md={4}>
-            {
-              response &&
-              response.data &&
-              <LeaveInformation
-                data={response.data}
-              />
-            }
-          </Grid>
-
-          <Grid item xs={12} md={4}>
-            {
-              response &&
-              response.data &&
-              <AccountLeave
-              />
-            }
-          </Grid> 
-
-          <Grid item xs={12} md={4}>
-            {
-              response &&
-              response.data &&
-              response.data.workflow &&
-              <WorkflowHistory data={response.data.workflow} />
-            }
-          </Grid>
-        </Grid>
-      }
-      {renderDialog}
-    </React.Fragment>
-  );
-
-  return render;
+const isContains = (statusType: WorkflowStatusType | undefined, statusTypes: string[]): boolean => { 
+  return statusType ? statusTypes.indexOf(statusType) !== -1 : false;
 };
+
+const config: SingleConfig<ILeaveRequestDetail, LeaveRequestDetailProps> = {
+  // page info
+  page: (props: LeaveRequestDetailProps) => ({
+    uid: AppMenu.LeaveRequest,
+    parentUid: AppMenu.Leave,
+    title: props.intl.formatMessage(leaveMessage.request.page.detailTitle),
+    description: props.intl.formatMessage(leaveMessage.request.page.detailSubHeader)
+  }),
+  
+  // action centre
+  showActionCentre: true,
+
+  // more
+  hasMore: true,
+  moreOptions: (props: LeaveRequestDetailProps, state: SingleState, callback: SingleHandler): IAppBarMenu[] => ([
+    {
+      id: LeaveRequestUserAction.Refresh,
+      name: props.intl.formatMessage(layoutMessage.action.refresh),
+      enabled: true,
+      visible: true,
+      onClick: callback.handleForceReload
+    },
+    {
+      id: LeaveRequestUserAction.Modify,
+      name: props.intl.formatMessage(layoutMessage.action.modify),
+      enabled: state.statusType !== undefined,
+      visible: isContains(state.statusType, [ WorkflowStatusType.Submitted ]),
+      onClick: props.handleOnModify
+    }
+  ]),
+
+  // events
+  onDataLoad: (props: LeaveRequestDetailProps, callback: SingleHandler, forceReload?: boolean | false) => {
+    const { user } = props.userState;
+    const { isLoading, request, response } = props.leaveRequestState.detail;
+    const { loadDetailRequest } = props.leaveRequestDispatch;
+
+    // when user is set and not loading and has LeaveUid in route params
+    if (user && !isLoading && props.match.params.leaveUid) {
+      // when LeaveUid was changed or response are empty or force to reload
+      if ((request && request.leaveUid !== props.match.params.leaveUid) || !response || forceReload) {
+        loadDetailRequest({
+          companyUid: user.company.uid,
+          positionUid: user.position.uid,
+          leaveUid: props.match.params.leaveUid
+        });
+      } else {
+        // just take data from previous response
+        callback.handleResponse(response);
+        callback.handleStatusType(response.data.statusType);
+      }
+    }
+  },
+  onUpdated: (props: LeaveRequestDetailProps, callback: SingleHandler) => {
+    const { isLoading, response } = props.leaveRequestState.detail;
+    
+    callback.handleLoading(isLoading);
+
+    // when got a response from api
+    if (response && response.data) {
+      callback.handleResponse(response);
+      callback.handleStatusType(response.data.statusType);
+    }
+  },
+
+  // primary
+  primaryComponent: (data: ILeaveRequestDetail, props: LeaveRequestDetailProps) => (
+    <LeaveInformation data={data} />
+  ),
+
+  // secondary (multiple components are allowed)
+  secondaryComponents: (data: ILeaveRequestDetail, props: LeaveRequestDetailProps) => ([
+    <AccountLeave />,
+    <WorkflowHistory data={data.workflow} />
+  ])
+};
+
+export const LeaveRequestDetailView: React.SFC<LeaveRequestDetailProps> = props => (
+  <SinglePage
+    config={config}
+    connectedProps={props}
+  >
+    <DialogConfirmation 
+      isOpen={props.dialogOpen}
+      fullScreen={props.dialogFullScreen}
+      title={props.dialogTitle}
+      content={props.dialogContent}
+      labelCancel={props.dialogCancelLabel}
+      labelConfirm={props.dialogConfirmLabel}
+      onClickCancel={props.handleOnCloseDialog}
+      onClickConfirm={props.handleOnConfirm}
+    />
+  </SinglePage>
+);

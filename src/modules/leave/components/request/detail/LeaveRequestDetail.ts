@@ -1,20 +1,14 @@
-import { WorkflowStatusType } from '@common/classes/types';
-import AppMenu from '@constants/AppMenu';
-import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
-import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
-import { IAppBarMenu } from '@layout/interfaces';
+import { layoutMessage } from '@layout/locales/messages';
 import { LeaveRequestUserAction } from '@leave/classes/types';
-import { LeaveRequestDetailView } from '@leave/components/request/detail/LeaveRequestDetailView';
 import { WithLeaveRequest, withLeaveRequest } from '@leave/hoc/withLeaveRequest';
+import { leaveMessage } from '@leave/locales/messages/leaveMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import {
   compose,
   HandleCreators,
-  lifecycle,
   mapper,
-  ReactLifeCycleFunctions,
   StateHandler,
   StateHandlerMap,
   StateUpdaters,
@@ -22,218 +16,123 @@ import {
   withStateHandlers,
 } from 'recompose';
 
-interface Handler {
-  handleLeaveRefresh: () => void;
-  handleLeaveModify: () => void;
-  handleDialogOpen: (title: string, description: string, cancelText?: string, confirmText?: string, fullScreen?: boolean) => void;
-  handleDialogClose: () => void;
-  handleDialogConfirmed: () => void;
-}
-
-interface OwnState {
-  dialogFullScreen: boolean;
-  dialogOpen: boolean;
-  dialogTitle?: string | undefined;
-  dialogDescription?: string | undefined;
-  dialogCancelText: string;
-  dialogConfirmedText: string;
-}
-
-interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
-  stateUpdate: StateHandler<OwnState>;
-}
+import { LeaveRequestDetailView } from './LeaveRequestDetailView';
 
 interface OwnRouteParams {
   leaveUid: string;
 }
 
-export type RequestDetailProps
-  = WithLeaveRequest
-  & WithUser
-  & WithLayout
-  & WithAppBar
-  & RouteComponentProps<OwnRouteParams> 
+interface OwnHandler {
+  handleOnModify: () => void;
+  handleOnCloseDialog: () => void;
+  handleOnConfirm: () => void;
+}
+
+interface OwnState {
+  isAdmin: boolean;
+  action?: LeaveRequestUserAction;
+  dialogFullScreen: boolean;
+  dialogOpen: boolean;
+  dialogTitle?: string;
+  dialogContent?: string;
+  dialogCancelLabel?: string;
+  dialogConfirmLabel?: string;
+}
+
+interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
+  setModify: StateHandler<OwnState>;
+  setDefault: StateHandler<OwnState>;
+}
+
+export type LeaveRequestDetailProps 
+  = WithUser
+  & WithLeaveRequest
+  & RouteComponentProps<OwnRouteParams>
   & InjectedIntlProps
   & OwnState
   & OwnStateUpdaters
-  & Handler;
+  & OwnHandler;
 
-const createProps: mapper<RequestDetailProps, OwnState> = (props: RequestDetailProps): OwnState => ({ 
+const createProps: mapper<LeaveRequestDetailProps, OwnState> = (props: LeaveRequestDetailProps): OwnState => ({ 
+  isAdmin: false,
   dialogFullScreen: false,
   dialogOpen: false,
-  dialogCancelText: 'global.action.cancel',
-  dialogConfirmedText: 'global.action.ok',
 });
 
-const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
-  stateUpdate: (prevState: OwnState) => (newState: any) => ({
-    ...prevState,
-    ...newState
+const stateUpdaters: StateUpdaters<LeaveRequestDetailProps, OwnState, OwnStateUpdaters> = {
+  setModify: (prevState: OwnState, props: LeaveRequestDetailProps) => (): Partial<OwnState> => ({
+    action: LeaveRequestUserAction.Modify,
+    dialogFullScreen: false,
+    dialogOpen: true,
+    dialogTitle: props.intl.formatMessage(leaveMessage.request.confirm.modifyTitle), 
+    dialogContent: props.intl.formatMessage(leaveMessage.request.confirm.modifyDescription),
+    dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.disaggree),
+    dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.aggree)
   }),
-  stateReset: (prevState: OwnState) => () => ({
-    ...prevState,
+  setDefault: (prevState: OwnState) => (): Partial<OwnState> => ({
     dialogFullScreen: false,
     dialogOpen: false,
     dialogTitle: undefined,
-    dialogDescription: undefined,
-    dialogCancelText: 'global.action.cancel',
-    dialogConfirmedText: 'global.action.ok',
+    dialogContent: undefined,
+    dialogCancelLabel: undefined,
+    dialogConfirmLabel: undefined,
   })
 };
 
-const handlerCreators: HandleCreators<RequestDetailProps, Handler> = {
-  handleLeaveRefresh: (props: RequestDetailProps) => () => { 
-    const { match } = props;
-    const { user } = props.userState;
-    const { loadDetailRequest } = props.leaveRequestDispatch;
+const handlerCreators: HandleCreators<LeaveRequestDetailProps, OwnHandler> = {
+  handleOnModify: (props: LeaveRequestDetailProps) => () => { 
+    props.setModify();
+  },
+  handleOnCloseDialog: (props: LeaveRequestDetailProps) => () => { 
+    props.setDefault();
+  },
+  handleOnConfirm: (props: LeaveRequestDetailProps) => () => { 
+    const { response } = props.leaveRequestState.detail;
 
-    if (user) {
-      loadDetailRequest({
-        leaveUid: match.params.leaveUid,
-        companyUid: user.company.uid,
-        positionUid: user.position.uid,
-      });
+    // skipp untracked action or empty response
+    if (!props.action || !response) {
+      return;
+    } 
+
+    // define vars
+    let leaveUid: string | undefined;
+
+    // get Leave uid
+    if (response.data) {
+      leaveUid = response.data.uid;
     }
-  },
-  handleLeaveModify: (props: RequestDetailProps) => () => { 
-    const { intl, stateUpdate } = props;
 
-    stateUpdate({
-      dialogFullScreen: false,
-      dialogOpen: true,
-      dialogTitle: intl.formatMessage({id: 'leave.dialog.modifyTitle'}), 
-      dialogDescription: intl.formatMessage({id: 'leave.dialog.modifyDescription'}),
-      dialogCancelText: intl.formatMessage({id: 'global.action.disaggree'}),
-      dialogConfirmedText: intl.formatMessage({id: 'global.action.aggree'})
-    });
-  },
-  handleDialogOpen: (props: RequestDetailProps) => (title: string, description: string, cancelText?: string, confirmText?: string, fullScreen?: boolean) => { 
-    const { intl, stateUpdate, dialogCancelText, dialogConfirmedText } = props;
+    // actions with new page
+    const actions = [
+      LeaveRequestUserAction.Modify, 
+    ];
 
-    stateUpdate({ 
-      dialogFullScreen: fullScreen || false,
-      dialogOpen: true,
-      dialogTitle: title,
-      dialogDescription: description,
-      dialogCancelText: cancelText || intl.formatMessage({id: dialogCancelText}),
-      dialogConfirmedText: confirmText || intl.formatMessage({id: dialogConfirmedText})
-    });
-  },
-  handleDialogClose: (props: RequestDetailProps) => () => { 
-    const { stateReset } = props;
+    if (actions.indexOf(props.action) !== -1) {
+      let next: string = '404';
 
-    stateReset();
-  },
-  handleDialogConfirmed: (props: RequestDetailProps) => () => { 
-    const { match, history, stateReset } = props;
-    const leaveUid = match.params.leaveUid;
-
-    stateReset();
-
-    history.push('/leave/requests/form/', { uid: leaveUid });
-  },
-};
-
-const lifecycles: ReactLifeCycleFunctions<RequestDetailProps, OwnState> = {
-  componentDidMount() {
-    const { 
-      match, layoutDispatch, appBarDispatch, intl, 
-      handleLeaveRefresh, handleLeaveModify
-    } = this.props;
-
-    const { user } = this.props.userState;
-    const { loadDetailRequest } = this.props.leaveRequestDispatch;
-
-    layoutDispatch.changeView({
-      uid: AppMenu.LeaveRequest,
-      parentUid: AppMenu.Leave,
-      title: intl.formatMessage({id: 'leave.detail.title'}),
-      subTitle : intl.formatMessage({id: 'leave.detail.subTitle'})
-    });
-
-    layoutDispatch.navBackShow();
-    layoutDispatch.moreShow();
-    
-    const handleMenuClick = (menu: IAppBarMenu): void => {
-      switch (menu.id) {
-        case LeaveRequestUserAction.Refresh:
-          handleLeaveRefresh();
-          break;
-        
+      switch (props.action) {
         case LeaveRequestUserAction.Modify:
-          handleLeaveModify();
+          next = '/leave/requests/form';
           break;
-      
+
         default:
           break;
       }
-    };
-    appBarDispatch.assignCallback(handleMenuClick);
 
-    if (user) {
-      loadDetailRequest({
-        leaveUid: match.params.leaveUid,
-        companyUid: user.company.uid,
-        positionUid: user.position.uid,
+      props.setDefault();
+
+      props.history.push(next, { 
+        uid: leaveUid 
       });
     }
   },
-  componentWillReceiveProps(nextProps: RequestDetailProps) {
-    if (nextProps.leaveRequestState.detail.response !== this.props.leaveRequestState.detail.response) {
-      const { intl } = nextProps;
-      const { response } = nextProps.leaveRequestState.detail;
-      const { assignMenus } = nextProps.appBarDispatch;
-      
-      const isStatusTypeEquals = (statusTypes: string[]): boolean => {
-        let result = false;
-
-        if (response && response.data) {
-          result = statusTypes.indexOf(response.data.statusType) !== -1;
-        }
-
-        return result;
-      };
-
-      const currentMenus = [
-        {
-          id: LeaveRequestUserAction.Refresh,
-          name: intl.formatMessage({id: 'global.action.refresh'}),
-          enabled: true,
-          visible: true
-        },
-        {
-          id: LeaveRequestUserAction.Modify,
-          name: intl.formatMessage({id: 'leave.action.modify'}),
-          enabled: response !== undefined,
-          visible: isStatusTypeEquals([WorkflowStatusType.Submitted])
-        },
-      ];
-
-      assignMenus(currentMenus);
-    }
-  },
-  componentWillUnmount() {
-    const { layoutDispatch, appBarDispatch, leaveRequestDispatch } = this.props;
-
-    layoutDispatch.changeView(null);
-    layoutDispatch.navBackHide();
-    layoutDispatch.moreHide();
-    layoutDispatch.actionCentreHide();
-
-    appBarDispatch.dispose();
-
-    leaveRequestDispatch.loadDetailDispose();
-  }
 };
 
-export const LeaveRequestDetail = compose<RequestDetailProps, {}>(
-  withUser,
-  withLayout,
-  withAppBar,
+export const LeaveRequestDetail = compose(
   withRouter,
+  withUser,
   withLeaveRequest,
   injectIntl,
-  withStateHandlers<OwnState, OwnStateUpdaters, {}>(createProps, stateUpdaters), 
-  withHandlers<RequestDetailProps, Handler>(handlerCreators),
-  lifecycle<RequestDetailProps, OwnState>(lifecycles),
+  withStateHandlers(createProps, stateUpdaters), 
+  withHandlers(handlerCreators),
 )(LeaveRequestDetailView);

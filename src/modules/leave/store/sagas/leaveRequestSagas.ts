@@ -1,9 +1,10 @@
-import { layoutAlertAdd, listBarLoading, listBarMetadata } from '@layout/store/actions';
+import { layoutAlertAdd } from '@layout/store/actions';
 import {
   LeaveRequestAction as Action,
   leaveRequestFetchError,
   leaveRequestFetchRequest,
   leaveRequestFetchSuccess,
+  leaveRequestGetAllDispose,
   leaveRequestGetAllError,
   leaveRequestGetAllRequest,
   leaveRequestGetAllSuccess,
@@ -30,7 +31,6 @@ function* watchAllFetchRequest() {
       path: `/v1/leave/requests/${objectToQuerystring(action.payload.filter)}`, 
       successEffects: (response: IApiResponse) => [
         put(leaveRequestGetAllSuccess(response.body)),
-        put(listBarMetadata(response.body.metadata))
       ], 
       failureEffects: (response: IApiResponse) => [
         put(leaveRequestGetAllError(response.body)),
@@ -49,7 +49,7 @@ function* watchAllFetchRequest() {
         }))
       ],
       finallyEffects: [
-        put(listBarLoading(false))
+        // nothing
       ]
     });
   };
@@ -123,6 +123,7 @@ function* watchPostFetchRequest() {
       payload: action.payload.data, 
       successEffects: (response: IApiResponse) => [
         put(leaveRequestPostSuccess(response.body)),
+        put(leaveRequestGetAllDispose())
       ], 
       successCallback: (response: IApiResponse) => {
         action.payload.resolve(response.body.data);
@@ -166,6 +167,7 @@ function* watchPutFetchRequest() {
       payload: action.payload.data, 
       successEffects: (response: IApiResponse) => [
         put(leaveRequestPutSuccess(response.body)),
+        put(leaveRequestGetAllDispose())
       ],
       successCallback: (response: IApiResponse) => {
         action.payload.resolve(response.body.data);

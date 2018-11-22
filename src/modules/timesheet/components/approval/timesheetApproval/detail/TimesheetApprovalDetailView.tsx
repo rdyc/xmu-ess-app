@@ -1,41 +1,87 @@
-import { Grid, Typography } from '@material-ui/core';
+import AppMenu from '@constants/AppMenu';
+import { SingleConfig, SingleHandler, SinglePage, SingleState } from '@layout/components/pages/singlePage/SinglePage';
+import { IAppBarMenu } from '@layout/interfaces';
+import { layoutMessage } from '@layout/locales/messages';
 import { WorkflowHistory } from '@organization/components/workflow/history/WorkflowHistory';
+import { ITimesheetDetail } from '@timesheet/classes/response';
+import { TimesheetUserAction } from '@timesheet/classes/types';
 import { TimesheetInformation } from '@timesheet/components/entry/detail/shared/TimesheetInformation';
+import { timesheetMessage } from '@timesheet/locales/messages/timesheetMessage';
 import * as React from 'react';
-import { FormattedMessage } from 'react-intl';
-import { ApprovalDetailProps } from './TimesheetApprovalDetail';
+import { TimesheetApprovalDetailProps } from './TimesheetApprovalDetail';
 
-export const TimesheetApprovalDetailView: React.SFC<ApprovalDetailProps> = props => {
-  const { isLoading, response } = props.timesheetApprovalState.detail;
+const config: SingleConfig<ITimesheetDetail, TimesheetApprovalDetailProps> = {
+  // page info
+  page: (props: TimesheetApprovalDetailProps) => ({
+    uid: AppMenu.TimesheetApproval,
+    parentUid: AppMenu.Timesheet,
+    title: props.intl.formatMessage(timesheetMessage.entry.page.detailTitle),
+    description: props.intl.formatMessage(timesheetMessage.entry.page.detailSubHeader),
+  }),
 
-  const render = (
-    <React.Fragment>
-      {
-        isLoading && 
-        <Typography variant="body2">
-          <FormattedMessage id="global.loading"/>
-        </Typography>
+  // action centre
+  showActionCentre: true,
+
+  // more
+  hasMore: true,
+  moreOptions: (props: TimesheetApprovalDetailProps, state: SingleState, callback: SingleHandler): IAppBarMenu[] => ([
+    {
+      id: TimesheetUserAction.Refresh,
+      name: props.intl.formatMessage(layoutMessage.action.refresh),
+      enabled: true,
+      visible: true,
+      onClick: () => callback.handleForceReload()
+    }
+  ]),
+
+  // events
+  onDataLoad: (props: TimesheetApprovalDetailProps, callback: SingleHandler, forceReload?: boolean | false) => {
+    const { user } = props.userState;
+    const { isLoading, request, response } = props.timesheetApprovalState.detail;
+    const { loadDetailRequest } = props.timesheetApprovalDispatch;
+
+    // when user is set and not loading and has timesheetUid in route params
+    if (user && !isLoading && props.match.params.timesheetUid) {
+      // when timesheetUid was changed or response are empty or force to reload
+      if ((request && request.timesheetUid !== props.match.params.timesheetUid) || !response || forceReload) {
+        loadDetailRequest({
+          companyUid: user.company.uid,
+          positionUid: user.position.uid,
+          timesheetUid: props.match.params.timesheetUid
+        });
+      } else {
+        // just take data from previous response
+        callback.handleResponse(response);
+        callback.handleStatusType(response.data.statusType);
       }
-      {
-        !isLoading &&
-        response && 
-        response.data &&
-        <Grid container spacing={16}>
-          <Grid item xs={12} md={4}>
-            <TimesheetInformation data={response.data}/>
-          </Grid>
+    }
+  },
+  onUpdated: (states: TimesheetApprovalDetailProps, callback: SingleHandler) => {
+    const { isLoading, response } = states.timesheetApprovalState.detail;
 
-          <Grid item xs={12} md={8}>
-            <Grid container spacing={16}>
-              <Grid item>
-                <WorkflowHistory data={response.data.workflow} />
-              </Grid>
-            </Grid>
-          </Grid>
-        </Grid>
-      }
-    </React.Fragment>
-  );
+    callback.handleLoading(isLoading);
 
-  return render;
+    // when got a response from api
+    if (response && response.data) {
+      callback.handleResponse(response);
+      callback.handleStatusType(response.data.statusType);
+    }
+  },
+
+  // primary
+  primaryComponent: (data: ITimesheetDetail, props: TimesheetApprovalDetailProps) => (
+    <TimesheetInformation data={data} />
+  ),
+
+  // secondary (multiple components are allowed)
+  secondaryComponents: (data: ITimesheetDetail, props: TimesheetApprovalDetailProps) => ([
+    <WorkflowHistory data={data.workflow} />
+  ])
 };
+
+export const TimesheetApprovalDetailView: React.SFC<TimesheetApprovalDetailProps> = props => (
+  <SinglePage
+    config={config}
+    connectedProps={props}
+  />
+);
