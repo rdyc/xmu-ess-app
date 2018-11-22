@@ -38,8 +38,8 @@ const config: CollectionConfig<IFinance, AllProps> = {
 
   // selection
   hasSelection: true,
-  selectionProcessing: (values: string[]) => {
-    return `/finance/approvals/payment/${values}`;
+  onProcessSelection: (values: string[], callback: CollectionHandler) => {
+    callback.handleRedirectTo(`/finance/approvals/payment/${values}`);
   },
 
   // searching
