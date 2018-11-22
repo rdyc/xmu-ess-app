@@ -1,3 +1,4 @@
+import { AccountLeave } from '@account/components/leave/AccountLeave';
 import { WorkflowStatusType } from '@common/classes/types';
 import AppMenu from '@constants/AppMenu';
 import { DialogConfirmation } from '@layout/components/dialogs';
@@ -9,7 +10,6 @@ import { LeaveRequestUserAction } from '@leave/classes/types';
 import { leaveMessage } from '@leave/locales/messages/leaveMessage';
 import { WorkflowHistory } from '@organization/components/workflow/history/WorkflowHistory';
 import * as React from 'react';
-
 import { LeaveRequestDetailProps } from './LeaveRequestDetail';
 import { LeaveInformation } from './shared/LeaveInformation';
 
@@ -43,7 +43,7 @@ const config: SingleConfig<ILeaveRequestDetail, LeaveRequestDetailProps> = {
       id: LeaveRequestUserAction.Modify,
       name: props.intl.formatMessage(layoutMessage.action.modify),
       enabled: state.statusType !== undefined,
-      visible: isContains(state.statusType, [ WorkflowStatusType.Submitted, WorkflowStatusType.InProgress, WorkflowStatusType.Approved ]),
+      visible: isContains(state.statusType, [ WorkflowStatusType.Submitted ]),
       onClick: props.handleOnModify
     }
   ]),
@@ -89,6 +89,7 @@ const config: SingleConfig<ILeaveRequestDetail, LeaveRequestDetailProps> = {
 
   // secondary (multiple components are allowed)
   secondaryComponents: (data: ILeaveRequestDetail, props: LeaveRequestDetailProps) => ([
+    <AccountLeave />,
     <WorkflowHistory data={data.workflow} />
   ])
 };
