@@ -104,10 +104,16 @@
 
   "project.approval.page.list.title": "Project Approvals",
   "project.approval.page.list.subHeader": "Lorem ip sum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "project.approval.page.detail.title": "Project Approval Details",
+  "project.approval.page.detail.subHeader": "Lorem ip sum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
   
   "project.approval.confirm.submission.title": "Project Approval Submission",
   "project.approval.confirm.submission.content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
   
+  "project.approval.message.emptyProps": "Some props are empty",
+  "project.approval.message.submit.success": "Successfully processing approval submission",
+  "project.approval.message.submit.failure": "Failure when processing approval submission",
+
   "project.site.page.list.title": "Manage Sites",
   "project.site.page.list.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
   "project.site.page.new.title": "New Site",
