@@ -4,10 +4,10 @@ import * as React from 'react';
 interface OwnProps {
   isOpen: boolean;
   fullScreen?: boolean | false;
-  title: string;
-  content: string;
-  labelCancel: string;
-  labelConfirm: string;
+  title?: string;
+  content?: string;
+  labelCancel?: string;
+  labelConfirm?: string;
   onClickCancel: () => void;
   onClickConfirm: () => void;
 }
@@ -20,19 +20,19 @@ export const DialogConfirmation: React.SFC<OwnProps> = props => (
     aria-describedby="dialog-confirm-description"
   >
     <DialogTitle id="dialog-confirm-title">
-      {props.title}
+      {props.title || 'title'}
     </DialogTitle>
     <DialogContent>
       <DialogContentText id="dialog-confirm-description">
-        {props.content}
+        {props.content || 'content'}
       </DialogContentText>
     </DialogContent>
     <DialogActions>
       <Button onClick={props.onClickCancel} color="primary">
-        {props.labelCancel}
+        {props.labelCancel || 'cancel'}
       </Button>
       <Button onClick={props.onClickConfirm} color="primary" autoFocus>
-        {props.labelConfirm}
+        {props.labelConfirm || 'confirm'}
       </Button>
     </DialogActions>
   </Dialog>

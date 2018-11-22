@@ -1,24 +1,14 @@
-import { WorkflowStatusType } from '@common/classes/types';
-import AppMenu from '@constants/AppMenu';
-import { AppRole } from '@constants/AppRole';
-import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
-import { WithLayout, withLayout } from '@layout/hoc/withLayout';
-import { WithOidc, withOidc } from '@layout/hoc/withOidc';
 import { WithUser, withUser } from '@layout/hoc/withUser';
-import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
 import { ProjectUserAction } from '@project/classes/types';
-import { ProjectRegistrationDetailView } from '@project/components/registration/detail/ProjectRegistrationDetailView';
 import { WithProjectRegistration, withProjectRegistration } from '@project/hoc/withProjectRegistration';
 import { projectMessage } from '@project/locales/messages/projectMessage';
-import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
+import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import {
   compose,
   HandleCreators,
-  lifecycle,
   mapper,
-  ReactLifeCycleFunctions,
   StateHandler,
   StateHandlerMap,
   StateUpdaters,
@@ -26,173 +16,137 @@ import {
   withStateHandlers,
 } from 'recompose';
 
-interface Handler {
-  handleProjectRefresh: () => void;
-  handleProjectModify: () => void;
-  handleProjectClose: () => void;
-  handleProjectReOpen: () => void;
-  handleProjectChangeOwner: () => void;
-  handleProjectManageSite: () => void;
-  handleDialogOpen: (title: string, description: string, cancelText?: string, confirmText?: string, fullScreen?: boolean) => void;
-  handleDialogClose: () => void;
-  handleDialogConfirmed: () => void;
-}
-
-interface OwnState {
-  action?: ProjectUserAction | undefined;
-  dialogFullScreen: boolean;
-  dialogOpen: boolean;
-  dialogTitle?: string | undefined;
-  dialogDescription?: string | undefined;
-  dialogCancelText: FormattedMessage.MessageDescriptor;
-  dialogConfirmedText: FormattedMessage.MessageDescriptor;
-}
-
-interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
-  stateUpdate: StateHandler<OwnState>;
-}
+import { ProjectRegistrationDetailView } from './ProjectRegistrationDetailView';
 
 interface OwnRouteParams {
   projectUid: string;
 }
 
-export type ProjectRegistrationDetailProps
-  = WithProjectRegistration
-  & WithOidc
-  & WithUser
-  & WithLayout
-  & WithAppBar
-  & RouteComponentProps<OwnRouteParams> 
+interface OwnHandler {
+  handleOnModify: () => void;
+  handleOnChangeStatus: () => void;
+  handleOnChangeOwner: () => void;
+  handleOnReOpen: () => void;
+  handleOnManageSite: () => void;
+  handleOnCloseDialog: () => void;
+  handleOnConfirm: () => void;
+}
+
+interface OwnState {
+  isAdmin: boolean;
+  action?: ProjectUserAction;
+  dialogFullScreen: boolean;
+  dialogOpen: boolean;
+  dialogTitle?: string;
+  dialogContent?: string;
+  dialogCancelLabel?: string;
+  dialogConfirmLabel?: string;
+}
+
+interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
+  setModify: StateHandler<OwnState>;
+  setClose: StateHandler<OwnState>;
+  setReopen: StateHandler<OwnState>;
+  setChangeOwner: StateHandler<OwnState>;
+  setManageSite: StateHandler<OwnState>;
+  setDefault: StateHandler<OwnState>;
+}
+
+export type ProjectRegistrationDetailProps 
+  = WithUser
+  & WithProjectRegistration
+  & RouteComponentProps<OwnRouteParams>
   & InjectedIntlProps
   & OwnState
   & OwnStateUpdaters
-  & Handler;
+  & OwnHandler;
 
 const createProps: mapper<ProjectRegistrationDetailProps, OwnState> = (props: ProjectRegistrationDetailProps): OwnState => ({ 
+  isAdmin: false,
   dialogFullScreen: false,
   dialogOpen: false,
-  dialogCancelText: layoutMessage.action.cancel,
-  dialogConfirmedText: layoutMessage.action.ok,
 });
 
-const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
-  stateUpdate: (prevState: OwnState) => (newState: any) => ({
-    ...prevState,
-    ...newState
+const stateUpdaters: StateUpdaters<ProjectRegistrationDetailProps, OwnState, OwnStateUpdaters> = {
+  setModify: (prevState: OwnState, props: ProjectRegistrationDetailProps) => (): Partial<OwnState> => ({
+    action: ProjectUserAction.Modify,
+    dialogFullScreen: false,
+    dialogOpen: true,
+    dialogTitle: props.intl.formatMessage(projectMessage.registration.confirm.modifyTitle), 
+    dialogContent: props.intl.formatMessage(projectMessage.registration.confirm.modifyDescription),
+    dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.disaggree),
+    dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.aggree)
   }),
-  stateReset: (prevState: OwnState) => () => ({
-    ...prevState,
+  setClose: (prevState: OwnState, props: ProjectRegistrationDetailProps) => (): Partial<OwnState> => ({
+    action: ProjectUserAction.Close,
+    dialogFullScreen: false,
+    dialogOpen: true,
+    dialogTitle: props.intl.formatMessage(projectMessage.registration.confirm.closeTitle), 
+    dialogContent: props.intl.formatMessage(projectMessage.registration.confirm.closeDescription),
+    dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.discard),
+    dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.continue),
+  }),
+  setReopen: (prevState: OwnState, props: ProjectRegistrationDetailProps) => (): Partial<OwnState> => ({
+    action: ProjectUserAction.ReOpen,
+    dialogFullScreen: false,
+    dialogOpen: true,
+    dialogTitle: props.intl.formatMessage(projectMessage.registration.confirm.reOpenDescription), 
+    dialogContent: props.intl.formatMessage(projectMessage.registration.confirm.reOpenDescription),
+    dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.discard),
+    dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.continue)
+  }),
+  setChangeOwner: (prevState: OwnState, props: ProjectRegistrationDetailProps) => (): Partial<OwnState> => ({
+    action: ProjectUserAction.ChangeOwner,
+    dialogFullScreen: false,
+    dialogOpen: true,
+    dialogTitle: props.intl.formatMessage(projectMessage.registration.confirm.changeOwnerTitle), 
+    dialogContent: props.intl.formatMessage(projectMessage.registration.confirm.changeOwnerDescription),
+    dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.discard),
+    dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.continue),
+  }),
+  setManageSite: (prevState: OwnState, props: ProjectRegistrationDetailProps) => (): Partial<OwnState> => ({
+    action: ProjectUserAction.ManageSites,
+    dialogFullScreen: false,
+    dialogOpen: true,
+    dialogTitle: props.intl.formatMessage(projectMessage.registration.confirm.manageSiteTitle), 
+    dialogContent: props.intl.formatMessage(projectMessage.registration.confirm.manageSiteDescription),
+    dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.discard),
+    dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.continue),
+  }),
+  setDefault: (prevState: OwnState) => (): Partial<OwnState> => ({
     dialogFullScreen: false,
     dialogOpen: false,
     dialogTitle: undefined,
-    dialogDescription: undefined,
-    dialogCancelText: layoutMessage.action.cancel,
-    dialogConfirmedText: layoutMessage.action.ok,
+    dialogContent: undefined,
+    dialogCancelLabel: undefined,
+    dialogConfirmLabel: undefined,
   })
 };
 
-const handlerCreators: HandleCreators<ProjectRegistrationDetailProps, Handler> = {
-  handleProjectRefresh: (props: ProjectRegistrationDetailProps) => () => { 
-    const { match } = props;
-    const { user } = props.userState;
-    const { loadDetailRequest } = props.projectRegisterDispatch;
-
-    if (user) {
-      loadDetailRequest({
-        projectUid: match.params.projectUid,
-        companyUid: user.company.uid,
-        positionUid: user.position.uid,
-      });
-    }
+const handlerCreators: HandleCreators<ProjectRegistrationDetailProps, OwnHandler> = {
+  handleOnModify: (props: ProjectRegistrationDetailProps) => () => { 
+    props.setModify();
   },
-  handleProjectModify: (props: ProjectRegistrationDetailProps) => () => { 
-    const { intl, stateUpdate } = props;
-
-    stateUpdate({
-      action: ProjectUserAction.Modify,
-      dialogFullScreen: false,
-      dialogOpen: true,
-      dialogTitle: intl.formatMessage(projectMessage.registration.confirm.modifyTitle), 
-      dialogDescription: intl.formatMessage(projectMessage.registration.confirm.modifyDescription),
-      dialogCancelText: intl.formatMessage(layoutMessage.action.disaggree),
-      dialogConfirmedText: intl.formatMessage(layoutMessage.action.aggree)
-    });
+  handleOnChangeStatus: (props: ProjectRegistrationDetailProps) => () => { 
+    props.setClose();
   },
-  handleProjectClose: (props: ProjectRegistrationDetailProps) => () => { 
-    const { intl, stateUpdate } = props;
-
-    stateUpdate({
-      action: ProjectUserAction.Close,
-      dialogFullScreen: false,
-      dialogOpen: true,
-      dialogTitle: intl.formatMessage(projectMessage.registration.confirm.closeTitle), 
-      dialogDescription: intl.formatMessage(projectMessage.registration.confirm.closeDescription),
-      dialogCancelText: intl.formatMessage(layoutMessage.action.discard),
-      dialogConfirmedText: intl.formatMessage(layoutMessage.action.continue),
-    });
+  handleOnReOpen: (props: ProjectRegistrationDetailProps) => () => { 
+    props.setReopen();
   },
-  handleProjectReOpen: (props: ProjectRegistrationDetailProps) => () => { 
-    const { intl, stateUpdate } = props;
-
-    stateUpdate({
-      action: ProjectUserAction.ReOpen,
-      dialogFullScreen: false,
-      dialogOpen: true,
-      dialogTitle: intl.formatMessage(projectMessage.registration.confirm.reOpenDescription), 
-      dialogDescription: intl.formatMessage(projectMessage.registration.confirm.reOpenDescription),
-      dialogCancelText: intl.formatMessage(layoutMessage.action.discard),
-      dialogConfirmedText: intl.formatMessage(layoutMessage.action.continue)
-    });
+  handleOnChangeOwner: (props: ProjectRegistrationDetailProps) => () => { 
+    props.setChangeOwner();
   },
-  handleProjectChangeOwner: (props: ProjectRegistrationDetailProps) => () => { 
-    const { intl, stateUpdate } = props;
-
-    stateUpdate({
-      action: ProjectUserAction.ChangeOwner,
-      dialogFullScreen: false,
-      dialogOpen: true,
-      dialogTitle: intl.formatMessage(projectMessage.registration.confirm.changeOwnerTitle), 
-      dialogDescription: intl.formatMessage(projectMessage.registration.confirm.changeOwnerDescription),
-      dialogCancelText: intl.formatMessage(layoutMessage.action.discard),
-      dialogConfirmedText: intl.formatMessage(layoutMessage.action.continue),
-    });
+  handleOnManageSite: (props: ProjectRegistrationDetailProps) => () => { 
+    props.setManageSite();
   },
-  handleProjectManageSite: (props: ProjectRegistrationDetailProps) => () => { 
-    const { intl, stateUpdate } = props;
-
-    stateUpdate({
-      action: ProjectUserAction.ManageSites,
-      dialogFullScreen: false,
-      dialogOpen: true,
-      dialogTitle: intl.formatMessage(projectMessage.registration.confirm.manageSiteTitle), 
-      dialogDescription: intl.formatMessage(projectMessage.registration.confirm.manageSiteDescription),
-      dialogCancelText: intl.formatMessage(layoutMessage.action.discard),
-      dialogConfirmedText: intl.formatMessage(layoutMessage.action.continue),
-    });
+  handleOnCloseDialog: (props: ProjectRegistrationDetailProps) => () => { 
+    props.setDefault();
   },
-  handleDialogOpen: (props: ProjectRegistrationDetailProps) => (title: string, description: string, cancelText?: string, confirmText?: string, fullScreen?: boolean) => { 
-    const { intl, stateUpdate, dialogCancelText, dialogConfirmedText } = props;
-
-    stateUpdate({ 
-      dialogFullScreen: fullScreen || false,
-      dialogOpen: true,
-      dialogTitle: title,
-      dialogDescription: description,
-      dialogCancelText: cancelText || intl.formatMessage(dialogCancelText),
-      dialogConfirmedText: confirmText || intl.formatMessage(dialogConfirmedText)
-    });
-  },
-  handleDialogClose: (props: ProjectRegistrationDetailProps) => () => { 
-    const { stateReset } = props;
-
-    stateReset();
-  },
-  handleDialogConfirmed: (props: ProjectRegistrationDetailProps) => () => { 
-    const { history, action, stateReset } = props;
+  handleOnConfirm: (props: ProjectRegistrationDetailProps) => () => { 
     const { response } = props.projectRegisterState.detail;
 
     // skipp untracked action or empty response
-    if (!action || !response) {
+    if (!props.action || !response) {
       return;
     } 
 
@@ -219,10 +173,10 @@ const handlerCreators: HandleCreators<ProjectRegistrationDetailProps, Handler> =
       ProjectUserAction.ManageSites
     ];
 
-    if (actions.indexOf(action) !== -1) {
+    if (actions.indexOf(props.action) !== -1) {
       let next: string = '404';
 
-      switch (action) {
+      switch (props.action) {
         case ProjectUserAction.Modify:
           next = '/project/requests/form';
           break;
@@ -244,159 +198,20 @@ const handlerCreators: HandleCreators<ProjectRegistrationDetailProps, Handler> =
           break;
       }
 
-      stateReset();
+      props.setDefault();
 
-      history.push(next, { 
+      props.history.push(next, { 
         uid: projectUid 
       });
     }
   },
 };
 
-const lifecycles: ReactLifeCycleFunctions<ProjectRegistrationDetailProps, OwnState> = {
-  componentDidMount() {
-    const { match, layoutDispatch, intl } = this.props;
-    const { user } = this.props.userState;
-    const { loadDetailRequest } = this.props.projectRegisterDispatch;
-
-    layoutDispatch.changeView({
-      uid: AppMenu.ProjectRegistrationRequest,
-      parentUid: AppMenu.ProjectRegistration,
-      title: intl.formatMessage(projectMessage.registration.page.detailTitle),
-      subTitle : intl.formatMessage(projectMessage.registration.page.detailSubHeader)
-    });
-
-    layoutDispatch.modeSearchOff();
-    layoutDispatch.navBackShow();
-    layoutDispatch.moreShow();
-
-    if (user) {
-      loadDetailRequest({
-        projectUid: match.params.projectUid,
-        companyUid: user.company.uid,
-        positionUid: user.position.uid,
-      });
-    }
-  },
-  componentWillReceiveProps(nextProps: ProjectRegistrationDetailProps) {
-    if (nextProps.projectRegisterState.detail.response !== this.props.projectRegisterState.detail.response) {
-      const { intl } = nextProps;
-      const { user } = nextProps.oidcState;
-      const { response } = nextProps.projectRegisterState.detail;
-      const { assignMenus } = nextProps.appBarDispatch;
-      
-      const isStatusTypeEquals = (statusTypes: string[]): boolean => {
-        let result = false;
-
-        if (response && response.data) {
-          result = statusTypes.indexOf(response.data.statusType) !== -1;
-        }
-
-        return result;
-      };
-
-      const fnIsAdmin = (): boolean => {
-        let result: boolean = false;
-
-        if (user) {
-          const role: string | string[] | undefined = user.profile.role;
-
-          if (role) {
-            if (Array.isArray(role)) {
-              result = role.indexOf(AppRole.Admin) !== -1;
-            } else {
-              result = role === AppRole.Admin;
-            }
-          }
-        }
-
-        return result;
-      };
-
-      const isAdmin = fnIsAdmin();
-
-      const currentMenus: IAppBarMenu[] = [
-        {
-          id: ProjectUserAction.Refresh,
-          name: intl.formatMessage(layoutMessage.action.refresh),
-          enabled: true,
-          visible: true,
-          onClick: this.props.handleProjectRefresh
-        },
-        {
-          id: ProjectUserAction.Modify,
-          name: intl.formatMessage(layoutMessage.action.modify),
-          enabled: response !== undefined,
-          visible: isStatusTypeEquals([
-            WorkflowStatusType.Submitted, 
-            WorkflowStatusType.InProgress, 
-            WorkflowStatusType.Approved
-          ]),
-          onClick: this.props.handleProjectModify
-        },
-        {
-          id: ProjectUserAction.Close,
-          name: intl.formatMessage(projectMessage.registration.option.close),
-          enabled: true,
-          visible: isStatusTypeEquals([
-            WorkflowStatusType.Approved, 
-            WorkflowStatusType.ReOpened
-          ]),
-          onClick: this.props.handleProjectClose
-        },
-        {
-          id: ProjectUserAction.ReOpen,
-          name: intl.formatMessage(projectMessage.registration.option.reOpen),
-          enabled: true,
-          visible: isStatusTypeEquals([
-            WorkflowStatusType.Closed
-          ]),
-          onClick: this.props.handleProjectReOpen
-        },
-        {
-          id: ProjectUserAction.ChangeOwner,
-          name: intl.formatMessage(projectMessage.registration.option.owner),
-          enabled: true,
-          visible: isStatusTypeEquals([
-            WorkflowStatusType.Approved,
-          ]),
-          onClick: this.props.handleProjectChangeOwner
-        },
-        {
-          id: ProjectUserAction.ManageSites,
-          name: intl.formatMessage(projectMessage.registration.option.site),
-          enabled: true,
-          visible: isStatusTypeEquals([
-            WorkflowStatusType.Approved,
-          ]) && isAdmin,
-          onClick: this.props.handleProjectManageSite
-        }
-      ];
-
-      assignMenus(currentMenus);
-    }
-  },
-  componentWillUnmount() {
-    const { layoutDispatch } = this.props;
-
-    layoutDispatch.changeView(null);
-    layoutDispatch.navBackHide();
-    layoutDispatch.moreHide();
-    layoutDispatch.actionCentreHide();
-
-    // appBarDispatch.dispose();
-  }
-};
-
-export const ProjectRegistrationDetail = compose<ProjectRegistrationDetailProps, {}>(
-  withOidc,
-  withUser,
-  withLayout,
-  withAppBar,
+export const ProjectRegistrationDetail = compose(
   withRouter,
+  withUser,
   withProjectRegistration,
   injectIntl,
   withStateHandlers(createProps, stateUpdaters), 
   withHandlers(handlerCreators),
-  lifecycle(lifecycles),
 )(ProjectRegistrationDetailView);
