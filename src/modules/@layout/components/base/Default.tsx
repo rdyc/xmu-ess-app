@@ -73,6 +73,9 @@ const root: React.SFC<AllProps> = props => {
 
     AppUserManager.signinRedirect();
   };
+
+  // set document props
+  document.title = 'Welcome to New TESSA';
   
   return (
     <React.Fragment>
