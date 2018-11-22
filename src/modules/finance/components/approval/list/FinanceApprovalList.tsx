@@ -153,15 +153,15 @@ type AllProps
   & WithFinanceApproval
   & InjectedIntlProps;
 
-const approvalList: React.SFC<AllProps> = props => (
+const financeApprovalList: React.SFC<AllProps> = props => (
   <CollectionPage
     config={config}
     connectedProps={props}
   />
 );
 
-export const ApprovalList = compose(
+export const FinanceApprovalList = compose(
   withUser,
   withFinanceApproval,
   injectIntl,
-)(approvalList);
+)(financeApprovalList);
