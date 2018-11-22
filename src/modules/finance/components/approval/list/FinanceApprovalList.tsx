@@ -1,6 +1,6 @@
 import AppMenu from '@constants/AppMenu';
 import { IFinance } from '@finance/classes/response';
-import { FinanceApprovalUserAction, FinanceField } from '@finance/classes/types';
+import { FinanceField, FinanceUserAction } from '@finance/classes/types';
 import { FinanceSummary } from '@finance/components/approval/detail/shared/FinanceSummary';
 import { financeApprovalFieldTranslator } from '@finance/helper';
 import { WithFinanceApproval, withFinanceApproval } from '@finance/hoc/withFinanceApproval';
@@ -63,7 +63,7 @@ const config: CollectionConfig<IFinance, AllProps> = {
   hasMore: true,
   moreOptions: (props: AllProps, callback: CollectionHandler): IAppBarMenu[] => ([
     {
-      id: FinanceApprovalUserAction.Refresh,
+      id: FinanceUserAction.Refresh,
       name: props.intl.formatMessage(layoutMessage.action.refresh),
       enabled: true,
       visible: true,

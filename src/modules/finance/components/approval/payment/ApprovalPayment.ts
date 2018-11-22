@@ -2,7 +2,7 @@ import { FinanceStatusType, WorkflowStatusType } from '@common/classes/types';
 import AppMenu from '@constants/AppMenu';
 import { IFinanceApprovalBulkPostPayload, IFinanceApprovalItem } from '@finance/classes/request/approval';
 import { IFinance } from '@finance/classes/response';
-import { FinanceApprovalUserAction } from '@finance/classes/types';
+import { FinanceUserAction } from '@finance/classes/types';
 import { ApprovalPaymentView } from '@finance/components/approval/payment/ApprovalPaymentView';
 import { WithFinanceApproval, withFinanceApproval } from '@finance/hoc/withFinanceApproval';
 import { financeApprovalMessage } from '@finance/locales/messages/financeApprovalMessage';
@@ -43,7 +43,7 @@ interface OwnHandler {
 interface OwnState {
   financeUids: string[];
   finances: IFinance[] | null | undefined;
-  action?: FinanceApprovalUserAction | undefined;
+  action?: FinanceUserAction | undefined;
   approvalTitle: string;
   approvalSubHeader: string;
   approvalChoices: RadioGroupChoice[];
@@ -219,7 +219,7 @@ const lifecycles: ReactLifeCycleFunctions<ApprovalPaymentProps, OwnState> = {
       
       const handleMenuClick = (menu: IAppBarMenu): void => {
         switch (menu.id) {
-          case FinanceApprovalUserAction.Refresh:
+          case FinanceUserAction.Refresh:
             handleRefresh();
             break;
         
@@ -243,7 +243,7 @@ const lifecycles: ReactLifeCycleFunctions<ApprovalPaymentProps, OwnState> = {
           
         const currentMenus = [
           {
-            id: FinanceApprovalUserAction.Refresh,
+            id: FinanceUserAction.Refresh,
             name: intl.formatMessage(layoutMessage.action.refresh),
             enabled: true,
             visible: true
