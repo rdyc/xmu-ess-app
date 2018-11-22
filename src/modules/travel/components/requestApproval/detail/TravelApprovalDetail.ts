@@ -118,7 +118,7 @@ const handlerCreators: HandleCreators<TravelApprovalDetailProps, OwnHandler> = {
     
     alertAdd({
       time: new Date(),
-      message: intl.formatMessage(travelApprovalMessage.updateSuccess),
+      message: intl.formatMessage(travelApprovalMessage.submitSuccess),
     });
 
     history.push('/travel/approvals/request');
@@ -136,7 +136,7 @@ const handlerCreators: HandleCreators<TravelApprovalDetailProps, OwnHandler> = {
     } else {
       alertAdd({
         time: new Date(),
-        message: intl.formatMessage(travelApprovalMessage.updateFailure),
+        message: intl.formatMessage(travelApprovalMessage.submitFailure),
         details: isObject(submitError) ? submitError.message : submitError
       });
     }

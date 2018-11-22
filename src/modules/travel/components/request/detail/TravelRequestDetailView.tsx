@@ -1,28 +1,30 @@
+import { WorkflowStatusType } from '@common/classes/types';
 import AppMenu from '@constants/AppMenu';
-import { SingleConfig, SingleHandler, SinglePage } from '@layout/components/pages/singlePage/SinglePage';
-import { WithUser, withUser } from '@layout/hoc/withUser';
+import { DialogConfirmation } from '@layout/components/dialogs';
+import { SingleConfig, SingleHandler, SinglePage, SingleState } from '@layout/components/pages/singlePage/SinglePage';
 import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
 import { WorkflowHistory } from '@organization/components/workflow/history/WorkflowHistory';
 import { ITravelRequestDetail } from '@travel/classes/response';
 import { TravelUserAction } from '@travel/classes/types';
-import { WithTravelRequest, withTravelRequest } from '@travel/hoc/withTravelRequest';
 import { travelMessage } from '@travel/locales/messages/travelMessage';
 import * as React from 'react';
-import { InjectedIntlProps, injectIntl } from 'react-intl';
-import { RouteComponentProps, withRouter } from 'react-router';
-import { compose } from 'recompose';
 import { TravelInformation } from './shared/TravelInformation';
 import { TravelRequestItem } from './shared/TravelRequestItem';
 import { TravelRequestSummary } from './shared/TravelRequestSummary';
+import { TravelRequestDetailProps } from './TravelRequestDetail';
 
-const config: SingleConfig<ITravelRequestDetail, AllProps> = {
+const isContains = (statusType: WorkflowStatusType | undefined, statusTypes: string[]): boolean => { 
+  return statusType ? statusTypes.indexOf(statusType) !== -1 : false;
+};
+
+const config: SingleConfig<ITravelRequestDetail, TravelRequestDetailProps> = {
   // page info
-  page: (props: AllProps) => ({
+  page: (props: TravelRequestDetailProps) => ({
     uid: AppMenu.TravelRequest,
     parentUid: AppMenu.Travel,
-    title: 'Single Page',
-    description: 'Demo of single page',
+    title: props.intl.formatMessage(travelMessage.request.page.detailTitle),
+    description: props.intl.formatMessage(travelMessage.request.page.detailSubHeader)
   }),
 
   // action centre
@@ -30,7 +32,7 @@ const config: SingleConfig<ITravelRequestDetail, AllProps> = {
 
   // more
   hasMore: true,
-  moreOptions: (props: AllProps, callback: SingleHandler): IAppBarMenu[] => ([
+  moreOptions: (props: TravelRequestDetailProps, state: SingleState, callback: SingleHandler): IAppBarMenu[] => ([
     {
       id: TravelUserAction.Refresh,
       name: props.intl.formatMessage(layoutMessage.action.refresh),
@@ -42,20 +44,20 @@ const config: SingleConfig<ITravelRequestDetail, AllProps> = {
       id: TravelUserAction.Modify,
       name: props.intl.formatMessage(layoutMessage.action.modify),
       enabled: true,
-      visible: true,
-      onClick: () => alert('go to modify page here')
+      visible: isContains(state.statusType, [ WorkflowStatusType.Submitted, WorkflowStatusType.InProgress]),
+      onClick: props.handleOnModify
     },
     {
       id: TravelUserAction.AddSettlement,
       name: props.intl.formatMessage(travelMessage.request.option.addSettlement),
       enabled: true,
-      visible: true,
-      onClick: () => alert('go to site page here')
+      visible: isContains(state.statusType, [ WorkflowStatusType.Approved]),
+      onClick: props.handleAddSettlement
     }
   ]),
 
   // events
-  onDataLoad: (props: AllProps, callback: SingleHandler, forceReload?: boolean | false) => {
+  onDataLoad: (props: TravelRequestDetailProps, callback: SingleHandler, forceReload?: boolean | false) => {
     const { user } = props.userState;
     const { isLoading, request, response } = props.travelRequestState.detail;
     const { loadDetailRequest } = props.travelRequestDispatch;
@@ -72,23 +74,28 @@ const config: SingleConfig<ITravelRequestDetail, AllProps> = {
       } else {
         // just take data from previous response
         callback.handleResponse(response);
+        callback.handleStatusType(response.data.statusType);
       }
     }
   },
-  onUpdated: (states: AllProps, callback: SingleHandler) => {
+  onUpdated: (states: TravelRequestDetailProps, callback: SingleHandler) => {
     const { isLoading, response } = states.travelRequestState.detail;
 
     callback.handleLoading(isLoading);
-    callback.handleResponse(response);
+
+    if (response && response.data) {
+      callback.handleResponse(response);
+      callback.handleStatusType(response.data.statusType);
+    }
   },
 
   // primary
-  primaryComponent: (data: ITravelRequestDetail, props: AllProps) => (
+  primaryComponent: (data: ITravelRequestDetail, props: TravelRequestDetailProps) => (
     <TravelRequestSummary data={data}/>
   ),
 
   // secondary (multiple components are allowed)
-  secondaryComponents: (data: ITravelRequestDetail, props: AllProps) => ([
+  secondaryComponents: (data: ITravelRequestDetail, props: TravelRequestDetailProps) => ([
     <TravelInformation data={data} />,
     <TravelRequestItem data={data.items} />,
     <WorkflowHistory data={data.workflow} />,
@@ -96,26 +103,20 @@ const config: SingleConfig<ITravelRequestDetail, AllProps> = {
   ])
 };
 
-interface OwnRouteParams {
-  travelUid: string;
-}
-
-type AllProps
-  = WithUser
-  & WithTravelRequest
-  & RouteComponentProps<OwnRouteParams>
-  & InjectedIntlProps;
-
-const travelRequestDetailView: React.SFC<AllProps> = props => (
+export const TravelRequestDetailView: React.SFC<TravelRequestDetailProps> = props => (
   <SinglePage
     config={config}
     connectedProps={props}
-  />
+  >
+    <DialogConfirmation 
+      isOpen={props.dialogOpen}
+      fullScreen={props.dialogFullScreen}
+      title={props.dialogTitle}
+      content={props.dialogContent}
+      labelCancel={props.dialogCancelLabel}
+      labelConfirm={props.dialogConfirmLabel}
+      onClickCancel={props.handleOnCloseDialog}
+      onClickConfirm={props.handleOnConfirm}
+    />
+  </SinglePage>
 );
-
-export const TravelRequestDetail = compose(
-  withRouter,
-  withUser,
-  withTravelRequest,
-  injectIntl,
-)(travelRequestDetailView);
