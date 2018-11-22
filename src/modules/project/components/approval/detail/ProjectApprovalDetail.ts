@@ -16,7 +16,7 @@ import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
 import { isNullOrUndefined, isObject } from 'util';
 
-import { ProjectApprovalDetailViewNew } from './ProjectApprovalDetailViewNew';
+import { ProjectApprovalDetailView } from './ProjectApprovalDetailView';
 
 interface OwnHandler {
   handleValidate: (payload: WorkflowApprovalFormData) => FormErrors;
@@ -158,4 +158,4 @@ export const ProjectApprovalDetail = compose<ProjectApprovalDetailProps, {}>(
   injectIntl,
   withStateHandlers(createProps, {}),
   withHandlers(handlerCreators),
-)(ProjectApprovalDetailViewNew);
+)(ProjectApprovalDetailView);
