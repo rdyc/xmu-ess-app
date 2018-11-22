@@ -1,12 +1,12 @@
 import { Layout } from '@layout/components/base';
 import * as React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router';
-import { RequestDetail } from './request/detail/RequestDetail';
+import { TravelRequestDetail } from './request/detail/TravelRequestDetail';
 import RequestEditor from './request/editor/RequestEditor';
 import { TravelRequestList } from './request/list/TravelRequestList';
 import { TravelApprovalDetail } from './requestApproval/detail/TravelApprovalDetail';
-import { TravelApprovalList } from './requestApproval/list/TravelApprovalList';
-import { TravelSettlementDetail } from './settlement/detail/TravelSettlementDetail';
+import { TravelRequestApprovalDetail } from './requestApproval/detail/TravelRequestApprovalDetail';
+import { TravelSettlementDetails } from './settlement/detail/TravelSettlementDetails';
 import TravelSettlementEditor from './settlement/editor/TravelSettlementEditor';
 import { TravelSettlementRequestList } from './settlement/list/TravelSettlementRequestList';
 import { TravelSettlementApprovalDetail } from './settlementApproval/detail/TravelSettlementApprovalDetail';
@@ -15,7 +15,7 @@ import { TravelSettlementListApproval } from './settlementApproval/list/TravelSe
 const request = (props: RouteComponentProps) => (
   <Switch>
     <Route path={`${props.match.path}/form`} component={RequestEditor} />
-    <Route path={`${props.match.path}/:travelUid`} component={RequestDetail} />
+    <Route path={`${props.match.path}/:travelUid`} component={TravelRequestDetail} />
     <Route path={`${props.match.path}`} component={TravelRequestList} />
   </Switch>
 );
@@ -23,7 +23,7 @@ const request = (props: RouteComponentProps) => (
 const settlement = (props: RouteComponentProps) => (
   <Switch>
     <Route path={`${props.match.path}/form`} component={TravelSettlementEditor} />
-    <Route path={`${props.match.path}/:travelSettlementUid`} component={TravelSettlementDetail} />
+    <Route path={`${props.match.path}/:travelSettlementUid`} component={TravelSettlementDetails} />
     <Route path={`${props.match.path}`} component={TravelSettlementRequestList} />
   </Switch>
 );
@@ -31,7 +31,7 @@ const settlement = (props: RouteComponentProps) => (
 const approvalRequest = (props: RouteComponentProps) => (
   <Switch>
     <Route path={`${props.match.path}/:travelUid`} component={TravelApprovalDetail} />
-    <Route path={`${props.match.path}`} component={TravelApprovalList} />
+    <Route path={`${props.match.path}`} component={TravelRequestApprovalDetail} />
   </Switch>
 );
 
