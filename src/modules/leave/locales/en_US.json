@@ -95,15 +95,15 @@
 
   "leave.request.noData": "No data Leave Request",
   "leave.approval.noData": "No data Leave Approval",
-
   "leave.approval.page.list.title": "Leave Approvals",
   "leave.approval.page.list.subHeader": "Lorem ip sum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-  
   "leave.approval.confirm.submission.title": "Leave Approval Submission",
   "leave.approval.confirm.submission.content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
 
   "leave.cancellation.page.list.title": "Leave Cancellations",
   "leave.cancellation.page.list.subHeader": "Lorem ip sum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "leave.cancellation.confirm.submission.title": "Leave Approval Submission",
+  "leave.cancellation.confirm.submission.content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
 
   "leave.CancellationTitle": "Cancellation",
   "leave.cancellation.noData": "No data Leave Cancellation",

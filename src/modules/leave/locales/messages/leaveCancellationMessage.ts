@@ -13,3 +13,8 @@ export const leaveCancellationPage = defineMessages({
   listTitle: { id: `${prefix}.page.list.title` },
   listSubHeader: { id: `${prefix}.page.list.subHeader` }
 });
+
+export const leaveCancellationConfirm = defineMessages({
+  submissionTitle: { id: `${prefix}.confirm.submission.title` },
+  submissionContent: { id: `${prefix}.confirm.submission.content` }
+});
