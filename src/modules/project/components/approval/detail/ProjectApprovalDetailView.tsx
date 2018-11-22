@@ -62,9 +62,14 @@ const config: SingleConfig<IProjectDetail, ProjectApprovalDetailProps> = {
       }
     }
   },
-  onUpdated: (states: ProjectApprovalDetailProps, callback: SingleHandler) => {
-    const { isLoading, response } = states.projectApprovalState.detail;
+  onDataLoaded: (props: ProjectApprovalDetailProps) => {
+    // set data loaded in local state
+    props.setDataload();
+  },
+  onUpdated: (props: ProjectApprovalDetailProps, callback: SingleHandler) => {
+    const { isLoading, response } = props.projectApprovalState.detail;
     
+    // set loading status
     callback.handleLoading(isLoading);
 
     // when got a response from api
@@ -116,5 +121,6 @@ export const ProjectApprovalDetailView: React.SFC<ProjectApprovalDetailProps> = 
   <SinglePage
     config={config}
     connectedProps={props}
+    shouldDataReload={props.shouldDataReload}
   />
 );

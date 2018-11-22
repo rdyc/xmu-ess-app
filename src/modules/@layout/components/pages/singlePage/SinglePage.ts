@@ -36,6 +36,7 @@ export interface SingleConfig<Tresponse, Tinner> {
   moreOptions?: (props: Tinner, state: SingleState, callback: SingleHandler) => IAppBarMenu[];
   showActionCentre?: boolean | false;
   onDataLoad: (props: Tinner, callback: SingleHandler, forceReload?: boolean | false) => void;
+  onDataLoaded?: (props: Tinner) => void;
   onUpdated: (props: Tinner, callback: SingleHandler) => void;
   primaryComponent: (data: Tresponse, props: Tinner) => JSX.Element;
   secondaryComponents: (data: Tresponse, props: Tinner) => JSX.Element[];
@@ -44,6 +45,7 @@ export interface SingleConfig<Tresponse, Tinner> {
 interface OwnOption {
   config: SingleConfig<any, any>;
   connectedProps: any;
+  shouldDataReload?: boolean;
 }
 
 interface OwnState {
@@ -177,6 +179,13 @@ const lifecycles: ReactLifeCycleFunctions<SinglePageProps, OwnState> = {
       }
     }
 
+    // track reload request from child
+    if (this.props.shouldDataReload !== prevProps.shouldDataReload) {
+      if (this.props.shouldDataReload) {
+        this.props.config.onDataLoad(this.props.connectedProps, this.props, true);
+      }
+    }
+
     // track inner props changes
     if (this.props.connectedProps !== prevProps.connectedProps) {  
       this.props.config.onUpdated(this.props.connectedProps, this.props);
@@ -184,6 +193,11 @@ const lifecycles: ReactLifeCycleFunctions<SinglePageProps, OwnState> = {
 
     // track response changes
     if (this.props.response !== prevProps.response) {
+      // call after receive any response 
+      if (this.props.config.onDataLoaded) {
+        this.props.config.onDataLoaded(this.props.connectedProps);
+      }
+
       // assign more menu items
       if (this.props.config.hasMore && this.props.config.moreOptions) {
         const menuOptions = this.props.config.moreOptions(this.props.connectedProps, this.props, this.props);
