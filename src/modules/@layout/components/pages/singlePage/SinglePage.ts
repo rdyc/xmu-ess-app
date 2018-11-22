@@ -35,8 +35,7 @@ export interface SingleConfig<Tresponse, Tinner> {
   onDataLoad: (props: Tinner, callback: SingleHandler, forceReload?: boolean | false) => void;
   onUpdated: (props: Tinner, callback: SingleHandler) => void;
   primaryComponent: (data: Tresponse, props: Tinner) => JSX.Element;
-  secondaryComponent: (data: Tresponse, props: Tinner) => JSX.Element[];
-  tertiaryComponent: (data: Tresponse, props: Tinner) => JSX.Element[];
+  secondaryComponents: (data: Tresponse, props: Tinner) => JSX.Element[];
 }
 
 interface OwnOption {

@@ -22,14 +22,14 @@ export const SinglePageView: React.SFC<SinglePageProps> = props => (
       !props.isLoading &&
       props.response &&
       props.response.data &&
-      <Grid container spacing={16}>
+      <Grid container spacing={16} direction="row" justify="flex-start">
         <Fade 
           in={!props.isLoading}
           timeout={1000}
           mountOnEnter
           unmountOnExit 
         >            
-          <Grid item xs={12} md={4} className={props.classes.gridCard}>
+          <Grid item xs={12} sm={6} md={6} lg={4} xl={3}>
             {props.config.primaryComponent(props.response.data, props.connectedProps)}
           </Grid>
         </Fade>
@@ -40,34 +40,13 @@ export const SinglePageView: React.SFC<SinglePageProps> = props => (
           mountOnEnter
           unmountOnExit 
         >
-          <Grid item xs={12} md={4}>
-            <Grid container spacing={16}>
+          <Grid item xs={12} sm={6} md={6} lg={8} xl={9}>
+            <Grid container spacing={16} direction="row" justify="flex-start">
               {
                 props.config
-                  .secondaryComponent(props.response.data, props.connectedProps)
+                  .secondaryComponents(props.response.data, props.connectedProps)
                   .map((children, index, array) =>
-                    <Grid item key={index} className={props.classes.gridCard}>
-                      {children}
-                    </Grid>
-                  )
-                }
-            </Grid>
-          </Grid>
-        </Fade>
-        
-        <Fade
-          in={!props.isLoading}
-          timeout={2000}
-          mountOnEnter
-          unmountOnExit 
-        >
-          <Grid item xs={12} md={4}>
-            <Grid container spacing={16}>
-              {
-                props.config
-                  .tertiaryComponent(props.response.data, props.connectedProps)
-                  .map((children, index, array) =>
-                    <Grid item key={index} className={props.classes.gridCard}>
+                    <Grid item key={index} xs={12} sm={12} md={12} lg={6} xl={4}>
                       {children}
                     </Grid>
                   )

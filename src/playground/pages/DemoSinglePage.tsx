@@ -58,13 +58,13 @@ const config: SingleConfig<IProjectDetail, AllProps> = {
   // events
   onDataLoad: (props: AllProps, callback: SingleHandler, forceReload?: boolean | false) => {
     const { user } = props.userState;
-    const { isLoading, response } = props.projectRegisterState.detail;
+    const { isLoading, request, response } = props.projectRegisterState.detail;
     const { loadDetailRequest } = props.projectRegisterDispatch;
 
     // when user is set and not loading and has projectUid in route params
     if (user && !isLoading && props.match.params.projectUid) {
-      // when response are empty or force reloading
-      if (!response || forceReload) {
+      // when projectUid was changed or response are empty or force to reload
+      if ((request && request.projectUid !== props.match.params.projectUid) || !response || forceReload) {
         loadDetailRequest({
           companyUid: user.company.uid,
           positionUid: user.position.uid,
@@ -88,18 +88,14 @@ const config: SingleConfig<IProjectDetail, AllProps> = {
     <ProjectInformation data={data} />
   ),
 
-  // secondary
-  secondaryComponent: (data: IProjectDetail, props: AllProps) => ([
+  // secondary (multiple components are allowed)
+  secondaryComponents: (data: IProjectDetail, props: AllProps) => ([
     <ProjectDocument 
       title={props.intl.formatMessage(data.projectType === ProjectType.Project ? projectMessage.registration.section.documentProjectTitle : projectMessage.registration.section.documentPreSalesTitle)}
       subHeader={props.intl.formatMessage(data.projectType === ProjectType.Project ? projectMessage.registration.section.documentProjectSubHeader : projectMessage.registration.section.documentPreSalesSubHeader)}
       data={data.projectType === ProjectType.Project ? data.documents : data.documentPreSales}
     />,
-    <ProjectSales data={data.sales} />
-  ]),
-
-  // tertiary
-  tertiaryComponent: (data: IProjectDetail, props: AllProps) => ([
+    <ProjectSales data={data.sales} />,
     <ProjectSite data={data.sites} />,
     <WorkflowHistory data={data.workflow} />
   ])
