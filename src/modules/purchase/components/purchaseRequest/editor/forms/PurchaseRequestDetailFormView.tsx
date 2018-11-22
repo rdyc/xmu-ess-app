@@ -1,12 +1,12 @@
 import { FormMode } from '@generic/types';
 import { Card, CardContent, CardHeader } from '@material-ui/core';
 import { PurchaseRequestDetailFormProps } from '@purchase/components/purchaseRequest/editor/forms/PurchaseRequestDetailForm';
+import { purchaseMessage } from '@purchase/locales/messages/purchaseMessage';
 import * as React from 'react';
-import { FormattedMessage } from 'react-intl';
 import { Field } from 'redux-form';
 
 export const PurchaseRequestDetailFormView: React.SFC<PurchaseRequestDetailFormProps> = props => {
-  const { formMode } = props;
+  const { formMode, intl } = props;
   const { names } = props.context;
 
   const renderField = (name: string) => {
@@ -23,7 +23,6 @@ export const PurchaseRequestDetailFormView: React.SFC<PurchaseRequestDetailFormP
       <Field
         key={fieldName}
         name={fieldName}
-        label={<FormattedMessage id={`purchase.field.${name}`} />}
         {...fieldProps}
       />
     );
@@ -32,8 +31,8 @@ export const PurchaseRequestDetailFormView: React.SFC<PurchaseRequestDetailFormP
   const render = (
     <Card square>
       <CardHeader
-        title={<FormattedMessage id="purchase.infoTitle" />}
-        subheader={<FormattedMessage id="purchase.infoSubTitle" />}
+        title={intl.formatMessage(purchaseMessage.request.section.infoTitle)}
+        subheader={intl.formatMessage(purchaseMessage.request.section.infoSubHeader)}
       />
       <CardContent>
         {names.map(name => renderField(name))}

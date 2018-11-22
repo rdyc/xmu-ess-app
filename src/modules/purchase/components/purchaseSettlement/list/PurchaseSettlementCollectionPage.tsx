@@ -1,5 +1,5 @@
 import AppMenu from '@constants/AppMenu';
-import { ICollectionValue } from '@layout/classes/core';
+// import { ICollectionValue } from '@layout/classes/core';
 import { 
   CollectionConfig, 
   CollectionDataProps, 
@@ -14,15 +14,16 @@ import { PurchaseUserAction, SettlementField } from '@purchase/classes/types';
 import { SettlementSummary } from '@purchase/components/purchaseSettlement/detail/shared/SettlementSummary';
 import { isSettlementEditable, isSettleReady, purchaseRequestFieldTranslator } from '@purchase/helper';
 import { withPurchaseSettlement, WithPurchaseSettlement } from '@purchase/hoc/purchaseSettlement/withPurchaseSettlement';
+import { purchaseMessage } from '@purchase/locales/messages/purchaseMessage';
 import * as moment from 'moment';
 import * as React from 'react';
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose } from 'recompose';
 
-const purchaseFields: ICollectionValue[] = Object.keys(SettlementField).map(key => ({ 
-  value: key, 
-  name: SettlementField[key] 
-}));
+// const purchaseFields: ICollectionValue[] = Object.keys(SettlementField).map(key => ({ 
+//   value: key, 
+//   name: SettlementField[key] 
+// }));
 
 const config: CollectionConfig<ISettlement, AllProps> = {
   // page info
@@ -36,14 +37,11 @@ const config: CollectionConfig<ISettlement, AllProps> = {
   }),
 
   // top bar
-  fields: purchaseFields,
+  fields: Object.keys(SettlementField).map(key => ({
+    value: key,
+    name: SettlementField[key]
+  })),
   fieldTranslator: purchaseRequestFieldTranslator,
-
-  // selection
-  hasSelection: false,
-  // selectionProcessing: (values: string[]) => {
-  //   alert(values.toString());
-  // },
 
   // searching
   hasSearching: true,
@@ -121,9 +119,9 @@ const config: CollectionConfig<ISettlement, AllProps> = {
     callback.handleLoading(isLoading);
     callback.handleResponse(response);
   },
-  onBind: (item: ISettlement, index: number) => ({
+  onBind: (item: ISettlement, index: number, props: AllProps) => ({
     key: index,
-    primary: `${item.currency && item.currency.value} ${item.actual}` || `${item.advance}` || 'Settle',
+    primary: item.actual ? `${item.currency && item.currency.value} ${item.actual}` : props.intl.formatMessage(purchaseMessage.settlement.field.uid),
     secondary: item.projectUid || item.project && item.project.name || '',
     tertiary: item.customer && item.customer.name || item.customerUid || '',
     quaternary: item.uid,
@@ -145,7 +143,7 @@ const config: CollectionConfig<ISettlement, AllProps> = {
           size="small"
           onClick={() => callback.handleRedirectTo(`/purchase/settlements/form`, { uid: item.uid})}
         >
-          <FormattedMessage {...layoutMessage.action.modify} />
+          <FormattedMessage {...layoutMessage.action.create} />
         </Button>
       }
       {
@@ -165,11 +163,6 @@ const config: CollectionConfig<ISettlement, AllProps> = {
     </Button>
     </React.Fragment>
   ),
-
-  // custom row render: uncomment to see different
-  // onRowRender: (item: ISettlement, index: number) => (
-  //   <div key={index}>{item.name}</div>
-  // )
 };
 
 type AllProps

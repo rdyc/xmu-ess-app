@@ -12,11 +12,13 @@
 //   projectAssignmentSection,
 //   projectAssignmentSubmission,
 // } from './projectAssignmentMessage';
+import { purchaseAction } from './purchaseAction';
 import { purchaseItemField } from './purchaseItemMessage';
 import { purchaseRequestField, purchaseRequestPage, purchaseRequestSection } from './purchaseRequestMessage';
 import { purchaseSettlementField } from './purchaseSettlementMessage';
 
 export const purchaseMessage = {
+  action: purchaseAction,
   request: {
     pages: purchaseRequestPage,
     section: purchaseRequestSection,

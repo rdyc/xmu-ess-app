@@ -11,24 +11,24 @@ export const purchaseRequestMessage = defineMessages({
 });
 
 export const purchaseRequestPage = defineMessages({
-  listTitle: { id: `${prefix}.requesttitle` },
-  listSubHeader: { id: `${prefix}.subTitle` },
-  detailTitle: { id: `${prefix}.infoTitle` },
-  detailSubHeader: { id: `${prefix}.infoSubTitle`},
-  newTitle: { id: `${prefix}.form.purchaseRequest.newTitle`},
+  listTitle: { id: `${prefix}.request.list.title` },
+  listSubHeader: { id: `${prefix}.request.list.subTitle` },
+  detailTitle: { id: `${prefix}.request.detail.itle` },
+  detailSubHeader: { id: `${prefix}.request.detail.subTitle`},
+  newTitle: { id: `${prefix}.form.request.newTitle`},
   // newSubHeader: { id: `${prefix}.form.newSubTitle`},
-  modifyTitle: { id: `${prefix}.form.purchaseRequest.editTitle`},
+  modifyTitle: { id: `${prefix}.form.request.editTitle`},
   // modifySubHeader: { id: `${prefix}.form.editSubTitle`},
 
-  // statusModifyTitle: { id: },
+  statusSettle: { id: `${prefix}.`},
   // statusModifySubHeader: { id: },
 });
 
 export const purchaseRequestSection = defineMessages({
-  infoTitle: { id: `${prefix}.section.info.title` },
-  infoSubHeader: { id: `${prefix}.section.info.subtitle`},
-  itemTitle: { id: `${prefix}.section.info.itemTitle`},
-  itemSubHeader: { id: `${prefix}.section.info.itemSubTitle`},
+  infoTitle: { id: `${prefix}.request.section.info.title` },
+  infoSubHeader: { id: `${prefix}.request.section.info.subtitle`},
+  itemTitle: { id: `${prefix}.item.purchaseTitle`},
+  itemSubHeader: { id: `${prefix}.item.purchaseSubTitle`},
 });
 
 // export const purchaseRequestItemField = defineMessages({

@@ -10,6 +10,13 @@ export const purchaseApprovalMessage = defineMessages({
   createFailure: { id: `${prefix}.message.approval.create.failure` },
 });
 
+export const purchaseApprovalPage = defineMessages({
+  listTitle: { id: `${prefix}.approval.list.title` },
+  listSubHeader: { id: `${prefix}.approval.list.subTitle` },
+  detailTitle: { id: `${prefix}.approval.detail.Title` },
+  detailSubHeader: { id: `${prefix}.approval.detail.SubTitle`},
+});
+
 export const purchaseApprovalField = defineMessages({
   uid: { id: `${prefix}.field.information.uid` },
   uidPlaceholder: { id: `${prefix}.field.information.uid.placeholder` },

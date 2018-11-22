@@ -68,7 +68,7 @@ const config: CollectionConfig<ISettlement, AllProps> = {
   // data filter
   filter: {
     orderBy: 'settlementStatusType',
-    direction: 'descending'
+    direction: 'ascending'
   },
 
   // events
@@ -127,7 +127,7 @@ const config: CollectionConfig<ISettlement, AllProps> = {
       // onClick = {() => alert(`go to ${item.uid}`)}
       onClick={() => callback.handleRedirectTo(`/purchase/settlementapprovals/details/${item.uid}`)}
     >
-      <FormattedMessage { ...layoutMessage.action.details } />
+      <FormattedMessage { ...layoutMessage.action.approve } />
     </Button>
   ),
 
