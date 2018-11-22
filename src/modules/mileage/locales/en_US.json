@@ -11,7 +11,7 @@
   "mileage.request.page.list.title": "Mileage Request",
   "mileage.request.page.list.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras mollis eros sit amet rhoncus fermentum",
   "mileage.request.page.detail.title": "Mileage Details",
-  "mileage.request.page.detail.subTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
+  "mileage.request.page.detail.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
   "mileage.request.page.new.title": "New Mileage Request",
   "mileage.request.page.new.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
 
@@ -43,9 +43,11 @@
   "mileage.request.item.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
   "mileage.request.item.empty": "No Item",
 
-  "mileage.message.approval.create.success": "A new PID {uid} has been created",
-  "mileage.message.approval.create.failure": "Unable to process your submission",
+  "mileage.message.approval.update.success": "A new PID {uid} has been updated",
+  "mileage.message.approval.update.failure": "Unable to process your submission",
   "mileage.message.approval.emptyProps": "Empty Props",
 
-  "mileage.message.request.emptyProps": "Empty Props"
+  "mileage.message.request.emptyProps": "Empty Props",
+  "mileage.message.request.create.success": "A new PID {uid} has been created",
+  "mileage.message.request.create.failure": "Unable to process your submission"
 }

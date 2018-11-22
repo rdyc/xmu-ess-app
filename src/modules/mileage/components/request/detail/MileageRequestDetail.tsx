@@ -1,5 +1,5 @@
 import AppMenu from '@constants/AppMenu';
-import { SingleConfig, SingleHandler, SinglePage } from '@layout/components/pages/singlePage/SinglePage';
+import { SingleConfig, SingleHandler, SinglePage, SingleState } from '@layout/components/pages/singlePage/SinglePage';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
@@ -29,7 +29,7 @@ const config: SingleConfig<IMileageRequestDetail, AllProps> = {
 
   // more
   hasMore: true,
-  moreOptions: (props: AllProps, callback: SingleHandler): IAppBarMenu[] => ([
+  moreOptions: (props: AllProps, state: SingleState, callback: SingleHandler): IAppBarMenu[] => ([
     {
       id: MileageUserAction.Refresh,
       name: props.intl.formatMessage(layoutMessage.action.refresh),
