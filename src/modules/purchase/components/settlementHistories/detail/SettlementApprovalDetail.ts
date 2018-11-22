@@ -141,9 +141,9 @@ const handlerCreators: HandleCreators<SettlementApprovalDetailProps, OwnHandler>
     let message: string = '';
 
     if (isApprove) {
-      message = intl.formatMessage(purchaseApprovalMessage.approveSuccess, { uid: match.params.purchaseUid });
+      message = intl.formatMessage(purchaseMessage.s_approval.message.approveSuccess, { uid: match.params.purchaseUid });
     } else {
-      message = intl.formatMessage(purchaseApprovalMessage.rejectSuccess, { uid: match.params.purchaseUid });
+      message = intl.formatMessage(purchaseMessage.s_approval.message.rejectSuccess, { uid: match.params.purchaseUid });
     }
 
     alertAdd({
@@ -168,7 +168,7 @@ const handlerCreators: HandleCreators<SettlementApprovalDetailProps, OwnHandler>
     } else {
       alertAdd({
         time: new Date(),
-        message: intl.formatMessage(purchaseApprovalMessage.createFailure),
+        message: intl.formatMessage(purchaseMessage.s_approval.message.createFailure),
         details: isObject(submitError) ? submitError.message : submitError
       });
     }
@@ -204,8 +204,8 @@ const lifecycles: ReactLifeCycleFunctions<SettlementApprovalDetailProps, {}> = {
     layoutDispatch.changeView({
       uid: AppMenu.PurchaseApproval,
       parentUid: AppMenu.Purchase,
-      title: intl.formatMessage(purchaseMessage.s_approval.pages.listTitle),
-      subTitle: intl.formatMessage(purchaseMessage.s_approval.pages.listTitle)
+      title: intl.formatMessage(purchaseMessage.s_approval.pages.detailTitle),
+      subTitle: intl.formatMessage(purchaseMessage.s_approval.pages.detailSubHeader)
     });
 
     layoutDispatch.navBackShow();

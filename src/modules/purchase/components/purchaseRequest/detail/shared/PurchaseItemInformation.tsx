@@ -10,7 +10,7 @@ import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose } from 'recompose';
 
 interface OwnProps {
-  data: IPurchaseItemRequest;
+  data: IPurchaseItemRequest | null | undefined ;
   title: string;
   // subheader: string;
 }
@@ -38,19 +38,19 @@ const purchaseItemInformation: React.SFC<AllProps> = props => (
           {...styled}
           margin="dense"
           label={props.intl.formatMessage(purchaseMessage.request.items.uid)} 
-          value={props.data.uid}
+          value={props.data && props.data.uid || ''}
         />
         <TextField
           {...styled}
           margin="dense"
-        label={props.intl.formatMessage(purchaseMessage.request.items.description)} 
-          value={props.data.description}
+          label={props.intl.formatMessage(purchaseMessage.request.items.description)} 
+          value={props.data && props.data.description || ''}
         />
         <TextField
           {...styled}
           margin="dense"
-        label={props.intl.formatMessage(purchaseMessage.request.items.request)} 
-          value={props.intl.formatNumber(props.data.requestValue)}
+          label={props.intl.formatMessage(purchaseMessage.request.items.request)} 
+          value={props.intl.formatNumber(props.data && props.data.requestValue || 0)}
         />
         
         {props.children}

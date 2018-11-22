@@ -13,8 +13,8 @@ export const settlementApprovalMessage = defineMessages({
 export const settlementApprovalPage = defineMessages({
   listTitle: { id: `${prefix}.settlementapproval.list.title` },
   listSubHeader: { id: `${prefix}.settlementapproval.list.subTitle` },
-  detailTitle: { id: `${prefix}.settlementapproval.detail.Title` },
-  detailSubHeader: { id: `${prefix}.settlementapproval.detail.SubTitle` },
+  detailTitle: { id: `${prefix}.settlementapproval.detail.title` },
+  detailSubHeader: { id: `${prefix}.settlementapproval.detail.subTitle` },
 });
 
 export const settlementApprovalConfirm = defineMessages({

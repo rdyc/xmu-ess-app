@@ -8,6 +8,7 @@ import { WorkflowHistory } from '@organization/components/workflow/history/Workf
 import { PurchaseApprovalDetailProps } from '@purchase/components/purchaseHistories/detail/PurchaseApprovalDetail';
 import { PurchaseInformation } from '@purchase/components/purchaseRequest/detail/shared/PurchaseInformation';
 import { PurchaseItemInformation } from '@purchase/components/purchaseRequest/detail/shared/PurchaseItemInformation';
+import { purchaseMessage } from '@purchase/locales/messages/purchaseMessage';
 import * as React from 'react';
 // import { FormattedMessage } from 'react-intl';
 
@@ -46,7 +47,7 @@ export const PurchaseApprovalDetailView: React.SFC<PurchaseApprovalDetailProps> 
               <Grid key={index} item xs={12} md={4}>
                 <PurchaseItemInformation 
                 data={item}
-                title={`Request Item #${index + 1} `} />
+                title={`${props.intl.formatMessage(purchaseMessage.request.section.itemTitle)} - #${index + 1} `} />
               </Grid>
               )
             }
@@ -55,7 +56,7 @@ export const PurchaseApprovalDetailView: React.SFC<PurchaseApprovalDetailProps> 
 
           <Grid item>
             <Grid container spacing={16}>
-              <Grid item>
+              <Grid item md={4}>
                 <WorkflowHistory data={response.data.workflow} />
               </Grid>
               {

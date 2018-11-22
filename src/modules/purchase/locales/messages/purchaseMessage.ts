@@ -1,9 +1,9 @@
 import { purchaseAction } from './purchaseAction';
-import { purchaseApprovalConfirm, purchaseApprovalPage, purchaseApprovalSection } from './purchaseApprovalMessage';
+import { purchaseApprovalConfirm, purchaseApprovalMessage, purchaseApprovalPage, purchaseApprovalSection } from './purchaseApprovalMessage';
 import { purchaseItemField } from './purchaseItemMessage';
 import { purchaseRequestConfirm, purchaseRequestField, purchaseRequestMessage, purchaseRequestPage, purchaseRequestSection } from './purchaseRequestMessage';
 import { purchaseSettlementConfirm, purchaseSettlementField, purchaseSettlementMessage, purchaseSettlementPage, purchaseSettlementSection } from './purchaseSettlementMessage';
-import { settlementApprovalConfirm, settlementApprovalPage, settlementApprovalSection } from './settlementApprovalMessage';
+import { settlementApprovalConfirm, settlementApprovalMessage, settlementApprovalPage, settlementApprovalSection } from './settlementApprovalMessage';
 
 export const purchaseMessage = {
   action: purchaseAction,
@@ -19,11 +19,13 @@ export const purchaseMessage = {
     pages: settlementApprovalPage,
     confirm: settlementApprovalConfirm,
     section: settlementApprovalSection,
+    message: settlementApprovalMessage
   },
   approval: {
     pages: purchaseApprovalPage,
     confirm: purchaseApprovalConfirm,
-    section: purchaseApprovalSection
+    section: purchaseApprovalSection,
+    message: purchaseApprovalMessage
   },
   settlement: {
     pages: purchaseSettlementPage,

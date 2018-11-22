@@ -127,7 +127,7 @@ const config: CollectionConfig<IPurchase, AllProps> = {
       size= "small"
       onClick = {() => callback.handleRedirectTo(`/purchase/approvals/details/${item.uid}`)}
     >
-      <FormattedMessage { ...layoutMessage.action.details } />
+      <FormattedMessage { ...layoutMessage.action.approve } />
     </Button>
       </React.Fragment>
   ),

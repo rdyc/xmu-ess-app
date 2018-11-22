@@ -13,8 +13,8 @@ export const purchaseApprovalMessage = defineMessages({
 export const purchaseApprovalPage = defineMessages({
   listTitle: { id: `${prefix}.approval.list.title` },
   listSubHeader: { id: `${prefix}.approval.list.subTitle` },
-  detailTitle: { id: `${prefix}.approval.detail.Title` },
-  detailSubHeader: { id: `${prefix}.approval.detail.SubTitle`},
+  detailTitle: { id: `${prefix}.approval.detail.title` },
+  detailSubHeader: { id: `${prefix}.approval.detail.subTitle`},
 });
 
 export const purchaseApprovalConfirm = defineMessages({
