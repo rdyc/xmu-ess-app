@@ -1,4 +1,5 @@
 import { RequestDetailProps } from '@expense/components/request/detail/RequestDetail';
+import { layoutMessage } from '@layout/locales/messages';
 import {
   Button,
   Dialog,
@@ -11,13 +12,12 @@ import {
 } from '@material-ui/core';
 import { WorkflowHistory } from '@organization/components/workflow/history/WorkflowHistory';
 import * as React from 'react';
-import { FormattedMessage } from 'react-intl';
 import { ExpenseInformation } from './shared/ExpenseInformation';
 
 export const RequestDetailView: React.SFC<RequestDetailProps> = props => {
   const { 
     dialogFullScreen, dialogOpen, dialogTitle, dialogDescription, dialogCancelText, dialogConfirmedText,
-    handleDialogClose, handleDialogConfirmed
+    handleDialogClose, handleDialogConfirmed, intl
   } = props;
   const { isLoading, response } = props.expenseRequestState.detail;
 
@@ -52,7 +52,7 @@ export const RequestDetailView: React.SFC<RequestDetailProps> = props => {
       {
         isLoading && 
         <Typography variant="body2">
-          <FormattedMessage id="global.loading"/>
+          {intl.formatMessage(layoutMessage.text.loading)}
         </Typography>
       }
       {

@@ -1,7 +1,6 @@
 import AppMenu from '@constants/AppMenu';
 import { IExpenseApprovalPostPayload } from '@expense/classes/request/approval';
 import { WithExpenseApproval, withExpenseApproval } from '@expense/hoc/withExpenseApproval';
-import { expenseApprovalMessage } from '@expense/locales/messages/expenseApprovalMessage';
 import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
@@ -25,8 +24,10 @@ import { isNullOrUndefined, isObject } from 'util';
 
 import { WorkflowStatusType } from '@common/classes/types';
 import { ExpenseUserAction } from '@expense/classes/types';
+import { expenseMessages } from '@expense/locales/messages/expenseMessages';
 import { RadioGroupChoice } from '@layout/components/input/radioGroup';
 import { IAppBarMenu } from '@layout/interfaces';
+import { layoutMessage } from '@layout/locales/messages';
 import { WorkflowApprovalFormData } from '@organization/components/workflow/approval/WorkflowApprovalForm';
 import { organizationMessage } from '@organization/locales/messages/organizationMessage';
 import { ApprovalDetailView } from './ApprovalDetailView';
@@ -80,7 +81,7 @@ const handlerCreators: HandleCreators<ExpenseApprovalDetailProps, OwnHandlers> =
   
     requiredFields.forEach(field => {
       if (!formData[field] || isNullOrUndefined(formData[field])) {
-        errors.information[field] = props.intl.formatMessage({id: `global.form.approval.field.${field}.required`});
+        errors.information[field] = props.intl.formatMessage(organizationMessage.workflow.fieldFor(field, 'fieldRequired'));
       }
     });
     
@@ -98,7 +99,7 @@ const handlerCreators: HandleCreators<ExpenseApprovalDetailProps, OwnHandlers> =
 
     // props checking
     if (!match.params.expenseUid) {
-      const message = intl.formatMessage(expenseApprovalMessage.emptyProps);
+      const message = intl.formatMessage(expenseMessages.request.message.emptyProps);
 
       return Promise.reject(message);
     }
@@ -135,9 +136,9 @@ const handlerCreators: HandleCreators<ExpenseApprovalDetailProps, OwnHandlers> =
     let message: string = '';
 
     if (isApprove) {
-      message = intl.formatMessage(expenseApprovalMessage.approveSuccess, {uid: match.params.expenseUid});
+      message = intl.formatMessage(expenseMessages.approval.message.approveSuccess, {uid: match.params.expenseUid});
     } else {
-      message = intl.formatMessage(expenseApprovalMessage.rejectSuccess, {uid: match.params.expenseUid});
+      message = intl.formatMessage(expenseMessages.approval.message.rejectSuccess, {uid: match.params.expenseUid});
     }
 
     alertAdd({
@@ -162,7 +163,7 @@ const handlerCreators: HandleCreators<ExpenseApprovalDetailProps, OwnHandlers> =
     } else {
       alertAdd({
         time: new Date(),
-        message: intl.formatMessage(expenseApprovalMessage.createFailure),
+        message: intl.formatMessage(expenseMessages.approval.message.createFailure),
         details: isObject(submitError) ? submitError.message : submitError
       });
     }
@@ -198,8 +199,8 @@ const lifecycles: ReactLifeCycleFunctions<ExpenseApprovalDetailProps, {}> = {
     layoutDispatch.changeView({
       uid: AppMenu.ExpenseApproval,
       parentUid: AppMenu.Expense,
-      title: intl.formatMessage({id: 'expense.form.approval.newTitle'}),
-      subTitle : intl.formatMessage({id: 'expense.form.approval.newSubTitle'})
+      title: intl.formatMessage(expenseMessages.approval.page.title),
+      subTitle : intl.formatMessage(expenseMessages.approval.page.subTitle)
     });
     
     layoutDispatch.navBackShow();
@@ -241,17 +242,17 @@ const createProps: mapper<ExpenseApprovalDetailProps, OwnState> = (props: Expens
   const { intl } = props;
 
   return {
-    approvalTitle: intl.formatMessage({id: 'expense.approvalTitle'}),
-    approvalSubHeader: intl.formatMessage({id: 'expense.approvalSubHeader'}),
+    approvalTitle: intl.formatMessage(expenseMessages.approval.section.title),
+    approvalSubHeader: intl.formatMessage(expenseMessages.approval.section.subTitle),
     approvalChoices: [
-      { value: WorkflowStatusType.Approved, label: intl.formatMessage(organizationMessage.workflow.option.reject) },
+      { value: WorkflowStatusType.Approved, label: intl.formatMessage(organizationMessage.workflow.option.approve) },
       { value: WorkflowStatusType.Rejected, label: intl.formatMessage(organizationMessage.workflow.option.reject) }
     ],
     approvalTrueValue: WorkflowStatusType.Approved,
-    approvalDialogTitle: intl.formatMessage({id: 'expense.dialog.approvalTitle'}),
-    approvalDialogContentText: intl.formatMessage({id: 'expense.dialog.approvalContent'}),
-    approvalDialogCancelText: intl.formatMessage({id: 'global.action.cancel'}),
-    approvalDialogConfirmedText: intl.formatMessage({id: 'global.action.continue'}),
+    approvalDialogTitle: intl.formatMessage(expenseMessages.approval.dialog.title),
+    approvalDialogContentText: intl.formatMessage(expenseMessages.approval.dialog.content),
+    approvalDialogCancelText: intl.formatMessage(layoutMessage.action.cancel),
+    approvalDialogConfirmedText: intl.formatMessage(layoutMessage.action.continue),
   };
 };
 

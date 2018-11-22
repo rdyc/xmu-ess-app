@@ -3,8 +3,8 @@ import { Grid, Typography } from '@material-ui/core';
 import { WorkflowApprovalForm } from '@organization/components/workflow/approval/WorkflowApprovalForm';
 import { WorkflowHistory } from '@organization/components/workflow/history/WorkflowHistory';
 import * as React from 'react';
-import { FormattedMessage } from 'react-intl';
 
+import { layoutMessage } from '@layout/locales/messages';
 import { ExpenseApprovalDetailProps } from './ApprovalDetail';
 
 export const ApprovalDetailView: React.SFC<ExpenseApprovalDetailProps> = props => {
@@ -12,7 +12,7 @@ export const ApprovalDetailView: React.SFC<ExpenseApprovalDetailProps> = props =
     approvalTitle, approvalSubHeader, approvalChoices, approvalTrueValue, 
     approvalDialogTitle, approvalDialogContentText, approvalDialogCancelText, approvalDialogConfirmedText 
   } = props;
-  const { handleValidate, handleSubmit, handleSubmitSuccess, handleSubmitFail } = props;
+  const { handleValidate, handleSubmit, handleSubmitSuccess, handleSubmitFail, intl } = props;
   const { isLoading, response } = props.expenseApprovalState.detail;
 
   const render = (
@@ -20,7 +20,7 @@ export const ApprovalDetailView: React.SFC<ExpenseApprovalDetailProps> = props =
       {
         isLoading && 
         <Typography variant="body2">
-          <FormattedMessage id="global.loading"/>
+          {intl.formatMessage(layoutMessage.text.loading)}
         </Typography>
       }
       {

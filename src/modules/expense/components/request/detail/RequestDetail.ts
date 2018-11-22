@@ -2,11 +2,13 @@ import AppMenu from '@constants/AppMenu';
 import { ExpenseUserAction } from '@expense/classes/types';
 import { RequestDetailView } from '@expense/components/request/detail/RequestDetailView';
 import { WithExpenseRequest, withExpenseRequest } from '@expense/hoc/withExpenseRequest';
+import { expenseMessages } from '@expense/locales/messages/expenseMessages';
 import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IAppBarMenu } from '@layout/interfaces';
-import { InjectedIntlProps, injectIntl } from 'react-intl';
+import { layoutMessage } from '@layout/locales/messages';
+import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import {
   compose,
@@ -34,8 +36,8 @@ interface OwnState {
   dialogOpen: boolean;
   dialogTitle?: string | undefined;
   dialogDescription?: string | undefined;
-  dialogCancelText: string;
-  dialogConfirmedText: string;
+  dialogCancelText: FormattedMessage.MessageDescriptor;
+  dialogConfirmedText: FormattedMessage.MessageDescriptor;
 }
 
 interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
@@ -60,8 +62,8 @@ export type RequestDetailProps
 const createProps: mapper<RequestDetailProps, OwnState> = (props: RequestDetailProps): OwnState => ({ 
     dialogFullScreen: false,
     dialogOpen: false,
-    dialogCancelText: 'global.action.cancel',
-    dialogConfirmedText: 'global.action.ok',
+    dialogCancelText: layoutMessage.action.cancel,
+    dialogConfirmedText: layoutMessage.action.ok,
   });
 
 const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
@@ -75,8 +77,8 @@ const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
       dialogOpen: false,
       dialogTitle: undefined,
       dialogDescription: undefined,
-      dialogCancelText: 'global.action.cancel',
-      dialogConfirmedText: 'global.action.ok',
+      dialogCancelText: layoutMessage.action.cancel,
+      dialogConfirmedText: layoutMessage.action.ok,
     })
   };
 
@@ -101,22 +103,22 @@ const handlerCreators: HandleCreators<RequestDetailProps, Handler> = {
       stateUpdate({
         dialogFullScreen: false,
         dialogOpen: true,
-        dialogTitle: intl.formatMessage({id: 'expense.dialog.modifyTitle'}), 
-        dialogDescription: intl.formatMessage({id: 'expense.dialog.modifyDescription'}),
-        dialogCancelText: intl.formatMessage({id: 'global.action.disaggree'}),
-        dialogConfirmedText: intl.formatMessage({id: 'global.action.aggree'})
+        dialogTitle: intl.formatMessage(expenseMessages.request.dialog.modifyTitle), 
+        dialogDescription: intl.formatMessage(expenseMessages.request.dialog.modifyDescription),
+        dialogCancelText: intl.formatMessage(layoutMessage.action.disaggree),
+        dialogConfirmedText: intl.formatMessage(layoutMessage.action.aggree)
       });
     },
     handleDialogOpen: (props: RequestDetailProps) => (title: string, description: string, cancelText?: string, confirmText?: string, fullScreen?: boolean) => { 
-      const { intl, stateUpdate, dialogCancelText, dialogConfirmedText } = props;
+      const { intl, stateUpdate} = props;
   
       stateUpdate({ 
         dialogFullScreen: fullScreen || false,
         dialogOpen: true,
         dialogTitle: title,
         dialogDescription: description,
-        dialogCancelText: cancelText || intl.formatMessage({id: dialogCancelText}),
-        dialogConfirmedText: confirmText || intl.formatMessage({id: dialogConfirmedText})
+        dialogCancelText: cancelText || intl.formatMessage(layoutMessage.action.cancel),
+        dialogConfirmedText: confirmText || intl.formatMessage(layoutMessage.action.continue)
       });
     },
     handleDialogClose: (props: RequestDetailProps) => () => { 
@@ -147,8 +149,8 @@ const lifecycles: ReactLifeCycleFunctions<RequestDetailProps, OwnState> = {
       layoutDispatch.changeView({
         uid: AppMenu.ExpenseRequest,
         parentUid: AppMenu.Expense,
-        title: intl.formatMessage({id: 'expense.detail.title'}),
-        subTitle : intl.formatMessage({id: 'expense.detail.subTitle'})
+        title: intl.formatMessage(expenseMessages.request.page.detailTitle),
+        subTitle : intl.formatMessage(expenseMessages.request.page.detailSubTitle)
       });
   
       layoutDispatch.navBackShow();
@@ -187,7 +189,7 @@ const lifecycles: ReactLifeCycleFunctions<RequestDetailProps, OwnState> = {
         const currentMenus = [
           {
             id: ExpenseUserAction.Refresh,
-            name: intl.formatMessage({id: 'global.action.refresh'}),
+            name: intl.formatMessage(layoutMessage.action.refresh),
             enabled: true,
             visible: true
           },
