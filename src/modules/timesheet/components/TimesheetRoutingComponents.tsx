@@ -1,10 +1,10 @@
 import { Layout } from '@layout/components/base';
 import * as React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router';
-// import { TimesheetApprovalDetail } from './approval/timesheetApproval/detail/TimesheetApprovalDetail';
+import { TimesheetApprovalDetail } from './approval/timesheetApproval/detail/TimesheetApprovalDetail';
 import { ActionApproval } from './approval/timesheetApproval/formApproval/ActionApproval';
 import { TimesheetApprovalList } from './approval/timesheetApproval/list/TimesheetApprovalList';
-// import { TimesheetApprovalHistoryDetail } from './approval/timesheetApprovalHistory/detail/TimesheetApprovalHistoryDetail';
+import { TimesheetApprovalHistoryDetail } from './approval/timesheetApprovalHistory/detail/TimesheetApprovalHistoryDetail';
 import { TimesheetApprovalHistoryList } from './approval/timesheetApprovalHistory/list/TimesheetApprovalHistoryList';
 import { TimesheetEntryDetail } from './entry/detail/TimesheetEntryDetail';
 import TimesheetEntryEditor from './entry/editor/TimesheetEntryEditor';
@@ -22,9 +22,9 @@ const entry = (props: RouteComponentProps) => (
 const approval = (props: RouteComponentProps) => (
   <Switch>
     <Route path={`${props.match.path}/action/:timesheetUids`} component={ActionApproval} />
+    <Route path={`${props.match.path}/history/:timesheetUid`} component={TimesheetApprovalHistoryDetail} />
     <Route path={`${props.match.path}/history`} component={TimesheetApprovalHistoryList} />
-    {/* <Route path={`${props.match.path}/:timesheetUid`} component={TimesheetApprovalHistoryDetail} />
-    <Route path={`${props.match.path}/:timesheetUid`} component={TimesheetApprovalDetail} /> */}
+    <Route path={`${props.match.path}/:timesheetUid`} component={TimesheetApprovalDetail} />
     <Route path={`${props.match.path}`} component={TimesheetApprovalList} />
   </Switch>
 );

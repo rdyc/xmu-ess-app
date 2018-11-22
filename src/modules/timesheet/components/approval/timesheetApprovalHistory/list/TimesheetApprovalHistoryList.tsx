@@ -129,7 +129,7 @@ const config: CollectionConfig<ITimesheet, AllProps> = {
     <React.Fragment>
       <Button 
         size="small"
-        onClick={() => callback.handleRedirectTo(`/timesheet/approvals/${item.uid}`)}
+        onClick={() => callback.handleRedirectTo(`/timesheet/approvals/history/${item.uid}`)}
       >
         <FormattedMessage {...layoutMessage.action.details}/>
       </Button>
