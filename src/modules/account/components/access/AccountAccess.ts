@@ -133,6 +133,9 @@ const lifecycles: ReactLifeCycleFunctions<AccessSwitcherProps, {}> = {
     const { isLoading } = this.props.accountEmployeeMyState.detail;
     const { loadRequest  } = this.props.accountEmployeeMyDispatch;
 
+    // set document props
+    document.title = 'Company Access Selection';
+
     if (!isLoading) {
       loadRequest();
     }

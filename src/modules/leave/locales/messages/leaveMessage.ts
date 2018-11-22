@@ -1,11 +1,12 @@
 import { leaveApprovalConfirm, leaveApprovalPage } from './leaveApprovalMessage';
-import { leaveCancellationPage } from './leaveCancellationMessage';
-import { leaveRequestConfirm, leaveRequestField, leaveRequestPage } from './leaveRequestMessage';
+import { leaveCancellationConfirm, leaveCancellationPage } from './leaveCancellationMessage';
+import { leaveRequestConfirm, leaveRequestField, leaveRequestPage, leaveRequestSection } from './leaveRequestMessage';
 
 export const leaveMessage = {
   request: {
     field: leaveRequestField,
     page: leaveRequestPage,
+    section: leaveRequestSection,
     confirm: leaveRequestConfirm
   },
   approval: {
@@ -13,6 +14,7 @@ export const leaveMessage = {
     confirm: leaveApprovalConfirm
   },
   cancellation: {
-    page: leaveCancellationPage
+    page: leaveCancellationPage,
+    confirm: leaveCancellationConfirm
   }
 };

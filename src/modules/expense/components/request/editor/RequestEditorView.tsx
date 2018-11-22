@@ -4,12 +4,12 @@ import {
 } from '@expense/components/request/editor/forms/RequestForm';
 import { RequestEditorProps } from '@expense/components/request/editor/RequestEditor';
 import { FormMode } from '@generic/types';
+import { layoutMessage } from '@layout/locales/messages';
 import { Typography } from '@material-ui/core';
 import * as React from 'react';
-import { FormattedMessage } from 'react-intl';
 
 export const RequestEditorView: React.SFC<RequestEditorProps> = props => {
-  const { formMode, handleValidate, handleSubmit, handleSubmitSuccess, handleSubmitFail } = props;
+  const { formMode, handleValidate, handleSubmit, handleSubmitSuccess, handleSubmitFail, intl } = props;
   const { isLoading, response } = props.expenseRequestState.detail;
 
   const renderForm = (formData: ExpenseRequestFormData) => (
@@ -50,7 +50,7 @@ export const RequestEditorView: React.SFC<RequestEditorProps> = props => {
     if (isLoading && !response) {
       return (
         <Typography variant="body2">
-          <FormattedMessage id="global.loading"/>
+          {intl.formatMessage(layoutMessage.text.loading)}
         </Typography>
       );
     }

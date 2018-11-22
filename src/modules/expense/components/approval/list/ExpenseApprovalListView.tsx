@@ -3,7 +3,8 @@ import { IExpense } from '@expense/classes/response';
 import { ExpenseField, ExpenseUserAction } from '@expense/classes/types';
 import { ExpenseSummary } from '@expense/components/request/detail/shared/ExpenseSummary';
 import { expenseFieldTranslator } from '@expense/helper';
-import { WithExpenseRequest, withExpenseRequest } from '@expense/hoc/withExpenseRequest';
+import { WithExpenseApproval, withExpenseApproval } from '@expense/hoc/withExpenseApproval';
+import { expenseMessage } from '@expense/locales/messages/expenseMessage';
 import {
   CollectionConfig,
   CollectionDataProps,
@@ -14,7 +15,6 @@ import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
 import { Button } from '@material-ui/core';
-import { isModuleRequestEditable } from '@organization/helper/isModuleRequestEditable';
 import * as moment from 'moment';
 import * as React from 'react';
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
@@ -25,8 +25,8 @@ const config: CollectionConfig<IExpense, AllProps> = {
   page: (props: AllProps) => ({
     uid: AppMenu.ExpenseRequest,
     parentUid: AppMenu.Expense,
-    title: 'Expense', // intl.formatMessage({id: 'expense.title'}),
-    description: 'Lorem Ipsum Something', // intl.formatMessage({id: 'expense.subTitle'}),
+    title: props.intl.formatMessage(expenseMessage.approval.page.title),
+    description: props.intl.formatMessage(expenseMessage.approval.page.subTitle),
   }),
   
   // top bar
@@ -44,7 +44,7 @@ const config: CollectionConfig<IExpense, AllProps> = {
   searchStatus: (states: AllProps): boolean => {
     let result: boolean = false;
 
-    const { request } = states.expenseRequestState.all;
+    const { request } = states.expenseApprovalState.all;
 
     if (request && request.filter && request.filter.find) {
       result = request.filter.find ? true : false;
@@ -65,13 +65,6 @@ const config: CollectionConfig<IExpense, AllProps> = {
       enabled: true,
       visible: true,
       onClick: () => callback.handleForceReload()
-    },
-    {
-      id: ExpenseUserAction.Create,
-      name: props.intl.formatMessage(layoutMessage.action.create),
-      enabled: true,
-      visible: true,
-      onClick: () => callback.handleRedirectTo('/expense/requests/form')
     }
   ]),
 
@@ -84,8 +77,8 @@ const config: CollectionConfig<IExpense, AllProps> = {
   // events
   onDataLoad: (states: AllProps, callback: CollectionHandler, params: CollectionDataProps, forceReload?: boolean | false) => {
     const { user } = states.userState;
-    const { isLoading, response } = states.expenseRequestState.all;
-    const { loadAllRequest } = states.expenseRequestDispatch;
+    const { isLoading, response } = states.expenseApprovalState.all;
+    const { loadAllRequest } = states.expenseApprovalDispatch;
 
     // when user is set and not loading
     if (user && !isLoading) {
@@ -98,7 +91,7 @@ const config: CollectionConfig<IExpense, AllProps> = {
             start: undefined,
             end: undefined,
             status: undefined,
-            isRejected: undefined,
+            isNotify: undefined,
             query: {
               direction: params.direction,
               orderBy: params.orderBy,
@@ -116,7 +109,7 @@ const config: CollectionConfig<IExpense, AllProps> = {
     }
   },
   onUpdated: (states: AllProps, callback: CollectionHandler) => {
-    const { isLoading, response } = states.expenseRequestState.all;
+    const { isLoading, response } = states.expenseApprovalState.all;
     
     callback.handleLoading(isLoading);
     callback.handleResponse(response);
@@ -138,24 +131,12 @@ const config: CollectionConfig<IExpense, AllProps> = {
 
   // action component
   actionComponent: (item: IExpense, callback: CollectionHandler) => (
-    <React.Fragment>
-      {
-        isModuleRequestEditable(item.statusType) &&
-        <Button 
-          size="small"
-          onClick={() => callback.handleRedirectTo(`/expense/requests/form`, { uid: item.uid })}
-        >
-          <FormattedMessage {...layoutMessage.action.modify}/>
-        </Button> || ''
-      }
-
-      <Button 
-        size="small"
-        onClick={() => callback.handleRedirectTo(`/expense/requests/${item.uid}`)}
-      >
-        <FormattedMessage {...layoutMessage.action.details}/>
-      </Button>
-    </React.Fragment>
+    <Button 
+      size="small"
+      onClick={() => callback.handleRedirectTo(`/expense/approvals/${item.uid}`)}
+    >
+      <FormattedMessage {...layoutMessage.action.details}/>
+    </Button>
   ),
 
   // custom row render: uncomment to see different
@@ -166,18 +147,18 @@ const config: CollectionConfig<IExpense, AllProps> = {
 
 type AllProps 
   = WithUser
-  & WithExpenseRequest
+  & WithExpenseApproval
   & InjectedIntlProps;
 
-const requestListView: React.SFC<AllProps> = props => (
+const expenseApprovalListView: React.SFC<AllProps> = props => (
   <CollectionPage
     config={config}
     connectedProps={props}
   />
 );
 
-export const RequestListView = compose(
+export const ExpenseApprovalListView = compose(
   withUser,
-  withExpenseRequest,
+  withExpenseApproval,
   injectIntl
-)(requestListView);
+)(expenseApprovalListView);

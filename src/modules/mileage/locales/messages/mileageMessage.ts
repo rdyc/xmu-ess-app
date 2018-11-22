@@ -1,4 +1,4 @@
-import { mileageApprovalPage } from './mileageApprovalMessage';
+import { mileageApprovalMessage, mileageApprovalPage, mileageApprovalSubmission } from './mileageApprovalMessage';
 import { mileageRequestField, mileageRequestItem, mileageRequestMessage, mileageRequestPage } from './mileageRequestMessage';
 
 export const mileageMessage = {
@@ -9,6 +9,8 @@ export const mileageMessage = {
     item: mileageRequestItem
   },
   approval: {
-    page: mileageApprovalPage
+    page: mileageApprovalPage,
+    message: mileageApprovalMessage,
+    submission: mileageApprovalSubmission
   }
 };

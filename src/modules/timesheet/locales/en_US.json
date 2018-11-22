@@ -3,6 +3,12 @@
 
   "timesheet.entry.page.list.title": "Time Report History",
   "timesheet.entry.page.list.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "timesheet.entry.page.detail.title": "Detail Time Report",
+  "timesheet.entry.page.detail.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "timesheet.entry.page.new.title": "New Time Report",
+  "timesheet.entry.page.new.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "timesheet.entry.page.modify.title": "Modify Time Report",
+  "timesheet.entry.page.modify.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
   
   "timesheet.approval.page.list.title": "Time Report Approval",
   "timesheet.approval.page.list.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
@@ -10,8 +16,14 @@
   "timesheet.approval.history.page.list.title": "Time Approval History",
   "timesheet.approval.history.page.list.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
 
-  "timesheet.detail.title": "Detail Time Report",
-  "timesheet.detail.subTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "timesheet.entry.confirm.modify.title": "Modify Confirmation",
+  "timesheet.entry.confirm.modify.description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+
+  "timesheet.entry.section.info.title": "Time Report",
+  "timesheet.entry.section.info.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "timesheet.entry.section.approval.title": "Time Report",
+  "timesheet.entry.section.approval.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+
   "timesheet.form.newTitle": "Time Report Entry",
   "timesheet.form.newSubTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
   "timesheet.form.editTitle": "Modify Time Report",
@@ -61,9 +73,12 @@
   "timesheet.entry.field.information.description": "Notes",
   "timesheet.entry.field.information.description.placeholder": "Please fill in the notes",
   
+  "timesheet.entry.field.information.percentage": "Percentage",
+  "timesheet.entry.field.information.descriptionOfME": "Description",
+  "timesheet.entry.field.information.reason": "Reason",
   "timesheet.entry.field.information.siteValue": "Site Value",
   "timesheet.entry.field.information.totalHours": "Total Hours",
-  "timesheet.entry.field.information.approvalNote": "Approval Note",
+  "timesheet.entry.field.information.rejectReason": "Reject Reason",
   "timesheet.entry.field.information.statusType": "Status",
 
   "timesheet.action.modify": "Modify",

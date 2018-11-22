@@ -1,6 +1,7 @@
-import { layoutAlertAdd, listBarLoading, listBarMetadata } from '@layout/store/actions';
+import { layoutAlertAdd } from '@layout/store/actions';
 import {
   LeaveCancellationAction as Action,
+  leaveCancellationGetAllDispose,
   leaveCancellationGetAllError,
   leaveCancellationGetAllRequest,
   leaveCancellationGetAllSuccess,
@@ -30,7 +31,6 @@ function* watchGetAllRequest() {
       path: `/v1/leave/cancelations?${params}`,
       successEffects: (response: IApiResponse) => [
         put(leaveCancellationGetAllSuccess(response.body)),
-        put(listBarMetadata(response.body.metadata))
       ],
       failureEffects: (response: IApiResponse) => [
         put(leaveCancellationGetAllError(response.body)),
@@ -51,7 +51,9 @@ function* watchGetAllRequest() {
           })
         )
       ],
-      finallyEffects: [put(listBarLoading(false))]
+      finallyEffects: [
+        // nothing
+      ]
     });
   };
 
@@ -98,7 +100,8 @@ function* watchPostRequest() {
       path: `/v1/leave/cancelations/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.leaveUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
-        put(leaveCancellationPostSuccess(response.body))
+        put(leaveCancellationPostSuccess(response.body)),
+        put(leaveCancellationGetAllDispose())
       ],
       successCallback: (response: IApiResponse) => {
         action.payload.resolve(response.body.data);
