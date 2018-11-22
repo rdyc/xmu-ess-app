@@ -40,14 +40,14 @@ const timesheetEntrySummary: React.SFC<AllProps> = props => (
         label={props.intl.formatMessage(timesheetMessage.entry.field.activityType)}
         value={props.data.activity ? props.data.activity.value : 'N/A'}
       />
+    </Grid>
+
+    <Grid item xs={12} sm={6} md={3}>
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
         label={props.intl.formatMessage(timesheetMessage.entry.field.customerUid)}
         value={props.data.customer ? props.data.customer.name : 'N/A'}
       />
-    </Grid>
-
-    <Grid item xs={12} sm={6} md={3}>
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
         label={props.intl.formatMessage(timesheetMessage.entry.field.projectUid)}
@@ -57,11 +57,6 @@ const timesheetEntrySummary: React.SFC<AllProps> = props => (
         {...GlobalStyle.TextField.ReadOnly}
         label={props.intl.formatMessage(timesheetMessage.entry.field.siteUid)}
         value={props.data.site ? props.data.site.name : 'N/A'}
-      />
-      <TextField
-        {...GlobalStyle.TextField.ReadOnly}
-        label={props.intl.formatMessage(timesheetMessage.entry.field.mileageException)}
-        value={`${props.data.mileageException ? props.data.mileageException.percentage : 0} %`}
       />
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
