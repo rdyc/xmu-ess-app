@@ -1,4 +1,5 @@
 import { WorkflowStatusType } from '@common/classes/types';
+import { layoutMessage } from '@layout/locales/messages';
 import {
   Card,
   CardContent,
@@ -17,7 +18,7 @@ import { MileageItem } from '@mileage/components/request/detail/shared/MileageIt
 import { mileageMessage } from '@mileage/locales/messages/mileageMessage';
 import { WorkflowHistory } from '@organization/components/workflow/history/WorkflowHistory';
 import * as React from 'react';
-import { FormattedDate, FormattedMessage } from 'react-intl';
+import { FormattedDate } from 'react-intl';
 import { WorkflowMileageApproval } from './WorkflowMileageApproval';
 
 export const MileageApprovalDetailView: React.SFC<
@@ -133,7 +134,7 @@ export const MileageApprovalDetailView: React.SFC<
     <React.Fragment>
       {isLoading && (
         <Typography variant="body2">
-          <FormattedMessage id="global.loading" />
+          {intl.formatMessage(layoutMessage.text.loading)}
         </Typography>
       )}
       {!isLoading && response && response.data && (

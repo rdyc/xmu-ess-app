@@ -2,6 +2,12 @@
   "mileage.approval.page.list.title": "Mileage Approval",
   "mileage.approval.page.list.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras mollis eros sit amet rhoncus fermentum",
 
+  "mileage.approval.submission.title": "Mileage Approval Submission",
+  "mileage.approval.submission.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
+
+  "mileage.approval.submission.dialog.title": "Mileage Approval Submission",
+  "mileage.approval.submission.dialog.content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
+
   "mileage.request.page.list.title": "Mileage Request",
   "mileage.request.page.list.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras mollis eros sit amet rhoncus fermentum",
   "mileage.request.page.detail.title": "Mileage Details",
@@ -37,15 +43,9 @@
   "mileage.request.item.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
   "mileage.request.item.empty": "No Item",
 
-  "mileage.message.registration.create.success": "A new PID {uid} has been created",
-  "mileage.message.registration.create.failure": "Unable to process your submission",
-  "mileage.message.registration.update.success": "Existing PID {uid} has been updated",
-  "mileage.message.registration.update.failure": "Unable to process your submission",
-  
-  "mileage.approvalTitle": "Mileage Approval Submission",
-  "mileage.approvalSubHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
+  "mileage.message.approval.create.success": "A new PID {uid} has been created",
+  "mileage.message.approval.create.failure": "Unable to process your submission",
+  "mileage.message.approval.emptyProps": "Empty Props",
 
-  "mileage.dialog.approvalTitle": "Mileage Approval Submission",
-  "mileage.dialog.approvalContent": "Lorem ipsum dolor sit amet, consectetur adipiscing elit"
-
+  "mileage.message.request.emptyProps": "Empty Props"
 }

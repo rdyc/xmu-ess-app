@@ -5,6 +5,7 @@ import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IAppBarMenu } from '@layout/interfaces';
+import { layoutMessage } from '@layout/locales/messages';
 import { IMileageApprovalPostItem } from '@mileage/classes/request';
 import { IMileageRequestDetail } from '@mileage/classes/response';
 import { MileageApprovalUserAction } from '@mileage/classes/types';
@@ -86,25 +87,17 @@ const createProps: mapper<MileageApprovalDetailProps, OwnState> = (
   return {
     mileageItemUids: [],
 
-    approvalTitle: intl.formatMessage({ id: 'mileage.approvalTitle' }),
-    approvalSubHeader: intl.formatMessage({ id: 'mileage.approvalSubHeader' }),
+    approvalTitle: intl.formatMessage(mileageMessage.approval.submission.title),
+    approvalSubHeader: intl.formatMessage(mileageMessage.approval.submission.subHeader),
     approvalChoices: [
       { value: WorkflowStatusType.Approved, label: intl.formatMessage(organizationMessage.workflow.option.approve) },
       { value: WorkflowStatusType.Rejected, label: intl.formatMessage(organizationMessage.workflow.option.reject) }
     ],
     approvalTrueValue: WorkflowStatusType.Approved,
-    approvalDialogTitle: intl.formatMessage({
-      id: 'mileage.dialog.approvalTitle'
-    }),
-    approvalDialogContentText: intl.formatMessage({
-      id: 'mileage.dialog.approvalContent'
-    }),
-    approvalDialogCancelText: intl.formatMessage({
-      id: 'global.action.cancel'
-    }),
-    approvalDialogConfirmedText: intl.formatMessage({
-      id: 'global.action.continue'
-    })
+    approvalDialogTitle: intl.formatMessage(mileageMessage.approval.submission.dialogTitle),
+    approvalDialogContentText: intl.formatMessage(mileageMessage.approval.submission.dialogContent),
+    approvalDialogCancelText: intl.formatMessage(layoutMessage.action.cancel),
+    approvalDialogConfirmedText: intl.formatMessage(layoutMessage.action.continue)
   };
 };
 
@@ -220,7 +213,7 @@ const handlerCreators: HandleCreators<
 
     alertAdd({
       time: new Date(),
-      message: intl.formatMessage(mileageMessage.request.message.updateSuccess, {
+      message: intl.formatMessage(mileageMessage.approval.message.updateSuccess, {
         uid: detail.response && detail.response.data.uid
       })
     });
@@ -258,7 +251,7 @@ const handlerCreators: HandleCreators<
     } else {
       alertAdd({
         time: new Date(),
-        message: intl.formatMessage(mileageMessage.request.message.updateFailure),
+        message: intl.formatMessage(mileageMessage.approval.message.updateFailure),
         details: isObject(submitError) ? submitError.message : submitError
       });
     }
@@ -314,7 +307,7 @@ const lifecycles: ReactLifeCycleFunctions<MileageApprovalDetailProps, {}> = {
       const currentMenus = [
         {
           id: MileageApprovalUserAction.Refresh,
-          name: intl.formatMessage({ id: 'global.action.refresh' }),
+          name: intl.formatMessage(layoutMessage.action.refresh),
           enabled: true,
           visible: true
         }
