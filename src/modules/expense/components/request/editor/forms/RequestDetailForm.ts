@@ -1,6 +1,7 @@
 import { WorkflowStatusType } from '@common/classes/types';
 import { SelectSystem, SelectSystemOption } from '@common/components/select';
 import { RequestDetailFormView } from '@expense/components/request/editor/forms/RequestDetailFormView';
+import { expenseMessage } from '@expense/locales/messages/expenseMessage';
 import { FormMode } from '@generic/types';
 import { InputDate } from '@layout/components/input/date';
 import { InputNumber } from '@layout/components/input/number';
@@ -48,7 +49,8 @@ const handlerCreators: HandleCreators<RequestDetailFormProps, OwnHandlers> = {
         case 'uid': 
           fieldProps = {
             disabled: true,
-            placeholder: intl.formatMessage({id: `expense.field.${name}.placeholder`}),
+            label: intl.formatMessage(expenseMessage.request.fieldFor(name, 'fieldName')),
+            placeholder: intl.formatMessage(expenseMessage.request.fieldFor(name, 'fieldPlaceholder')),
             component: InputText
           };
           break;
@@ -56,7 +58,8 @@ const handlerCreators: HandleCreators<RequestDetailFormProps, OwnHandlers> = {
         case 'date': 
           fieldProps = {
             type: 'text',
-            placeholder: intl.formatMessage({id: `expense.field.${name}.placeholder`}),
+            label: intl.formatMessage(expenseMessage.request.fieldFor(name, 'fieldName')),
+            placeholder: intl.formatMessage(expenseMessage.request.fieldFor(name, 'fieldPlaceholder')),
             component: InputDate
           };
           break;
@@ -64,7 +67,8 @@ const handlerCreators: HandleCreators<RequestDetailFormProps, OwnHandlers> = {
         case 'expenseType':
           fieldProps = {
             category: 'expense',
-            placeholder: intl.formatMessage({id: `expense.field.${name}.placeholder`}),
+            label: intl.formatMessage(expenseMessage.request.fieldFor(name, 'fieldName')),
+            placeholder: intl.formatMessage(expenseMessage.request.fieldFor(name, 'fieldPlaceholder')),
             component: SelectSystem
           };
           break;
@@ -72,7 +76,8 @@ const handlerCreators: HandleCreators<RequestDetailFormProps, OwnHandlers> = {
         case 'customerUid': 
           fieldProps = {
             type: 'text',
-            placeholder: intl.formatMessage({id: `expense.field.${name}.placeholder`}),
+            label: intl.formatMessage(expenseMessage.request.fieldFor(name, 'fieldName')),
+            placeholder: intl.formatMessage(expenseMessage.request.fieldFor(name, 'fieldPlaceholder')),
             component: InputCustomer,
             onChange: onChangeCustomer
           };
@@ -82,7 +87,8 @@ const handlerCreators: HandleCreators<RequestDetailFormProps, OwnHandlers> = {
           fieldProps = {
             type: 'text',
             disabled: isNullOrUndefined(customerUidValue),
-            placeholder: intl.formatMessage({id: `expense.field.${name}.placeholder`}),
+            label: intl.formatMessage(expenseMessage.request.fieldFor(name, 'fieldName')),
+            placeholder: intl.formatMessage(expenseMessage.request.fieldFor(name, 'fieldPlaceholder')),
             component: SelectProject,
             filter: projectFilter
           };
@@ -91,7 +97,8 @@ const handlerCreators: HandleCreators<RequestDetailFormProps, OwnHandlers> = {
         case 'value':
           fieldProps = {
             type: 'number',
-            placeholder: intl.formatMessage({id: `expense.field.${name}.placeholder`}),
+            label: intl.formatMessage(expenseMessage.request.fieldFor(name, 'fieldName')),
+            placeholder: intl.formatMessage(expenseMessage.request.fieldFor(name, 'fieldPlaceholder')),
             component: InputNumber
           };
           break;        
@@ -100,7 +107,8 @@ const handlerCreators: HandleCreators<RequestDetailFormProps, OwnHandlers> = {
           fieldProps = {
             multiline: true,
             type: 'text',
-            placeholder: intl.formatMessage({id: `expense.field.${name}.placeholder`}),
+            label: intl.formatMessage(expenseMessage.request.fieldFor(name, 'fieldName')),
+            placeholder: intl.formatMessage(expenseMessage.request.fieldFor(name, 'fieldPlaceholder')),
             component: InputText
           };
           break;  
@@ -108,7 +116,8 @@ const handlerCreators: HandleCreators<RequestDetailFormProps, OwnHandlers> = {
         default:
           fieldProps = {
             type: 'text',
-            placeholder: intl.formatMessage({id: `expense.field.${name}.placeholder`}),
+            label: intl.formatMessage(expenseMessage.request.fieldFor(name, 'fieldName')),
+            placeholder: intl.formatMessage(expenseMessage.request.fieldFor(name, 'fieldPlaceholder')),
             component: InputText
           };
           break;
