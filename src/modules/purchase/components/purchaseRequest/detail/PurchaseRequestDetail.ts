@@ -4,10 +4,12 @@ import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IAppBarMenu } from '@layout/interfaces';
+import { layoutMessage } from '@layout/locales/messages';
 import { PurchaseUserAction } from '@purchase/classes/types';
 import { PurchaseRequestDetailView } from '@purchase/components/purchaseRequest/detail/PurchaseRequestDetailView';
 import { WithPurchaseRequest, withPurchaseRequest } from '@purchase/hoc/purchaseRequest/withPurchaseRequest';
-import { InjectedIntlProps, injectIntl } from 'react-intl';
+import { purchaseMessage } from '@purchase/locales/messages/purchaseMessage';
+import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import {
   compose,
@@ -35,8 +37,8 @@ interface OwnState {
   dialogOpen: boolean;
   dialogTitle?: string | undefined;
   dialogDescription?: string | undefined;
-  dialogCancelText: string;
-  dialogConfirmedText: string;
+  dialogCancelText: FormattedMessage.MessageDescriptor;
+  dialogConfirmedText: FormattedMessage.MessageDescriptor;
 }
 
 interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
@@ -61,8 +63,8 @@ export type PurchaseRequestDetailProps
 const createProps: mapper<PurchaseRequestDetailProps, OwnState> = (props: PurchaseRequestDetailProps): OwnState => ({
   dialogFullScreen: false,
   dialogOpen: false,
-  dialogCancelText: 'global.action.cancel',
-  dialogConfirmedText: 'global.action.ok',
+  dialogCancelText: layoutMessage.action.cancel,
+  dialogConfirmedText: layoutMessage.action.ok,
 });
 
 const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
@@ -76,8 +78,8 @@ const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
     dialogOpen: false,
     dialogTitle: undefined,
     dialogDescription: undefined,
-    dialogCancelText: 'global.action.cancel',
-    dialogConfirmedText: 'global.action.ok',
+    dialogCancelText: layoutMessage.action.cancel,
+    dialogConfirmedText: layoutMessage.action.ok,
   })
 };
 
@@ -101,10 +103,10 @@ const handlerCreators: HandleCreators<PurchaseRequestDetailProps, Handler> = {
     stateUpdate({
       dialogFullScreen: false,
       dialogOpen: true,
-      dialogTitle: intl.formatMessage({ id: 'purchase.dialog.modifyTitle' }),
-      dialogDescription: intl.formatMessage({ id: 'purchase.dialog.modifyDescription' }),
-      dialogCancelText: intl.formatMessage({ id: 'global.action.disaggree' }),
-      dialogConfirmedText: intl.formatMessage({ id: 'global.action.aggree' })
+      dialogTitle: intl.formatMessage(purchaseMessage.request.confirm.modifyTitle),
+      dialogDescription: intl.formatMessage(purchaseMessage.request.confirm.modifyDescription),
+      dialogCancelText: intl.formatMessage(layoutMessage.action.discard),
+      dialogConfirmedText: intl.formatMessage(layoutMessage.action.continue)
     });
   },
   handleDialogOpen: (props: PurchaseRequestDetailProps) => (title: string, description: string, cancelText?: string, confirmText?: string, fullScreen?: boolean) => {
@@ -115,8 +117,8 @@ const handlerCreators: HandleCreators<PurchaseRequestDetailProps, Handler> = {
       dialogOpen: true,
       dialogTitle: title,
       dialogDescription: description,
-      dialogCancelText: cancelText || intl.formatMessage({ id: dialogCancelText }),
-      dialogConfirmedText: confirmText || intl.formatMessage({ id: dialogConfirmedText })
+      dialogCancelText: cancelText || intl.formatMessage(dialogCancelText),
+      dialogConfirmedText: confirmText || intl.formatMessage(dialogConfirmedText)
     });
   },
   handleDialogClose: (props: PurchaseRequestDetailProps) => () => {
@@ -147,8 +149,8 @@ const lifecycles: ReactLifeCycleFunctions<PurchaseRequestDetailProps, OwnState> 
     layoutDispatch.changeView({
       uid: AppMenu.PurchaseRequest,
       parentUid: AppMenu.Purchase,
-      title: intl.formatMessage({ id: 'purchase.detail.title' }),
-      subTitle: intl.formatMessage({ id: 'purchase.detail.subTitle' })
+      title: intl.formatMessage(purchaseMessage.request.pages.detailTitle),
+      subTitle: intl.formatMessage(purchaseMessage.request.pages.detailSubHeader)
     });
 
     layoutDispatch.navBackShow();
@@ -198,15 +200,17 @@ const lifecycles: ReactLifeCycleFunctions<PurchaseRequestDetailProps, OwnState> 
       const currentMenus = [
         {
           id: PurchaseUserAction.Refresh,
-          name: intl.formatMessage({ id: 'global.action.refresh' }),
+          name: intl.formatMessage(layoutMessage.action.refresh),
           enabled: true,
-          visible: true
+          visible: true,
+          onClick: this.props.handlePurchaseRefresh
         },
         {
           id: PurchaseUserAction.Modify,
-          name: intl.formatMessage({ id: 'purchase.action.modify' }),
+          name: intl.formatMessage(layoutMessage.action.modify),
           enabled: response !== undefined,
-          visible: isStatusTypeEquals([WorkflowStatusType.Submitted, WorkflowStatusType.InProgress])
+          visible: isStatusTypeEquals([WorkflowStatusType.Submitted, WorkflowStatusType.InProgress]),
+          onClick: this.props.handlePurchaseModify
         }
       ];
 

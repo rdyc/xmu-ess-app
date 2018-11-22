@@ -4,10 +4,9 @@ import { Card, CardContent, CardHeader,
   // Typography 
 } from '@material-ui/core';
 import { IPurchaseItemRequest } from '@purchase/classes/response/purchaseRequest';
+import { purchaseMessage } from '@purchase/locales/messages/purchaseMessage';
 import * as React from 'react';
-import { FormattedMessage, 
-  // FormattedNumber, 
-  InjectedIntlProps, injectIntl } from 'react-intl';
+import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose } from 'recompose';
 
 interface OwnProps {
@@ -38,20 +37,19 @@ const purchaseItemInformation: React.SFC<AllProps> = props => (
         <TextField
           {...styled}
           margin="dense"
-          // label={props.intl.formatMessage(purchaseMessage.field.itemUid)}
-          label={<FormattedMessage id="purchase.itemTitle.uid"/>} 
+          label={props.intl.formatMessage(purchaseMessage.request.items.uid)} 
           value={props.data.uid}
         />
         <TextField
           {...styled}
           margin="dense"
-          label={<FormattedMessage id="purchase.itemTitle.description"/>} 
+        label={props.intl.formatMessage(purchaseMessage.request.items.description)} 
           value={props.data.description}
         />
         <TextField
           {...styled}
           margin="dense"
-          label={<FormattedMessage id="purchase.itemTitle.request"/>} 
+        label={props.intl.formatMessage(purchaseMessage.request.items.request)} 
           value={props.intl.formatNumber(props.data.requestValue)}
         />
         

@@ -17,6 +17,16 @@ export const purchaseApprovalPage = defineMessages({
   detailSubHeader: { id: `${prefix}.approval.detail.SubTitle`},
 });
 
+export const purchaseApprovalConfirm = defineMessages({
+  approveTitle: { id: `${prefix}.confirm.approval.title` },
+  approveDescription: { id: `${prefix}.confirm.approval.description` },
+});
+
+export const purchaseApprovalSection = defineMessages({
+  approveForm: { id: `${prefix}.form.approval.newTitle` },
+  approveContent: { id: `${prefix}.form.approval.newSubTitle` }
+});
+
 export const purchaseApprovalField = defineMessages({
   uid: { id: `${prefix}.field.information.uid` },
   uidPlaceholder: { id: `${prefix}.field.information.uid.placeholder` },

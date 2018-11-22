@@ -5,12 +5,15 @@ import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IAppBarMenu } from '@layout/interfaces';
+import { layoutMessage } from '@layout/locales/messages';
 import { WorkflowApprovalFormData } from '@organization/components/workflow/approval/WorkflowApprovalForm';
+import { organizationMessage } from '@organization/locales/messages/organizationMessage';
 import { ISettlementApprovalPostPayload } from '@purchase/classes/request/settlementHistories';
 import { PurchaseApprovalUserAction } from '@purchase/classes/types';
 // import { Handler } from '@purchase/components/purchaseRequest/detail/PurchaseRequestDetail';
 import { WithSettlementApproval, withSettlementApproval } from '@purchase/hoc/settlementHistories/withSettlementApproval';
 import { purchaseApprovalMessage } from '@purchase/locales/messages/purchaseApprovalMessage';
+import { purchaseMessage } from '@purchase/locales/messages/purchaseMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import {
@@ -201,8 +204,8 @@ const lifecycles: ReactLifeCycleFunctions<SettlementApprovalDetailProps, {}> = {
     layoutDispatch.changeView({
       uid: AppMenu.PurchaseApproval,
       parentUid: AppMenu.Purchase,
-      title: intl.formatMessage({ id: 'purchase.form.s_approval.newTitle' }),
-      subTitle: intl.formatMessage({ id: 'purchase.form.s_approval.newSubTitle' })
+      title: intl.formatMessage(purchaseMessage.s_approval.pages.listTitle),
+      subTitle: intl.formatMessage(purchaseMessage.s_approval.pages.listTitle)
     });
 
     layoutDispatch.navBackShow();
@@ -237,7 +240,7 @@ const lifecycles: ReactLifeCycleFunctions<SettlementApprovalDetailProps, {}> = {
       const currentMenus = [
         {
           id: PurchaseApprovalUserAction.Refresh,
-          name: intl.formatMessage({ id: 'global.action.refresh' }),
+          name: intl.formatMessage(layoutMessage.action.refresh),
           enabled: true,
           visible: true
         }
@@ -262,17 +265,17 @@ const createProps: mapper<SettlementApprovalDetailProps, OwnState> = (props: Set
   const { intl } = props;
 
   return {
-    approvalTitle: intl.formatMessage({ id: 'purchase.approvalTitle' }),
-    approvalSubHeader: intl.formatMessage({ id: 'purchase.approvalSubHeader' }),
+    approvalTitle: intl.formatMessage(purchaseMessage.s_approval.section.approveForm),
+    approvalSubHeader: intl.formatMessage(purchaseMessage.s_approval.section.approveContent),
     approvalChoices: [
-      { value: WorkflowStatusType.Approved, label: intl.formatMessage({ id: 'workflow.approval.action.approve' }) },
-      { value: WorkflowStatusType.Rejected, label: intl.formatMessage({ id: 'workflow.approval.action.reject' }) }
+      { value: WorkflowStatusType.Approved, label: intl.formatMessage(organizationMessage.workflow.option.approve) },
+      { value: WorkflowStatusType.Rejected, label: intl.formatMessage(organizationMessage.workflow.option.reject) }
     ],
     approvalTrueValue: WorkflowStatusType.Approved,
-    approvalDialogTitle: intl.formatMessage({ id: 'purchase.dialog.approvalTitle' }),
-    approvalDialogContentText: intl.formatMessage({ id: 'purchase.dialog.approvalContent' }),
-    approvalDialogCancelText: intl.formatMessage({ id: 'global.action.cancel' }),
-    approvalDialogConfirmedText: intl.formatMessage({ id: 'global.action.continue' }),
+    approvalDialogTitle: intl.formatMessage(purchaseMessage.s_approval.confirm.approveTitle),
+    approvalDialogContentText: intl.formatMessage(purchaseMessage.s_approval.confirm.approveTitle),
+    approvalDialogCancelText: intl.formatMessage(layoutMessage.action.discard),
+    approvalDialogConfirmedText: intl.formatMessage(layoutMessage.action.continue),
   };
 };
 

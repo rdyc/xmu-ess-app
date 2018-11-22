@@ -10,17 +10,28 @@ export const purchaseSettlementMessage = defineMessages({
   updateFailure: { id: 'purchase.message.purchaseRequest.update.failure' },
 });
 
-// export const purchaseSettlementItemField = defineMessages({
-//   uid: { id: `${prefix}.itemTitle.uid`},
-//   description: { id: `${prefix}.itemTitle.description`},
-//   request: { id: `${prefix}.itemTitle.request`},
+export const purchaseSettlementConfirm = defineMessages({
+  settleTitle: { id: `${prefix}.confirm.settle.title` },
+  modifyTitle: { id: `${prefix}.confirm.modify.title` },
+  settleDescription: { id: `${prefix}.confirm.settle.description` },
+  modifyDescription: { id: `${prefix}.confirm.modify.description` },
+});
 
-//   actual: { id: `${prefix}.itemTitle.actual`},
-//   actualRequired: { id: `${prefix}.itemTitle.actual.required`},
-//   actualPlaceholder: { id: `${prefix}.itemTitle.actual.placeholder`},
-  
-//   variance: { id: `${prefix}.itemTitle.variance`},
-// });
+export const purchaseSettlementPage = defineMessages({
+  listTitle: { id: `${prefix}.settlement.list.title` },
+  listSubHeader: { id: `${prefix}.settlement.list.subTitle` },
+  detailTitle: { id: `${prefix}.settlement.detail.title` },
+  detailSubHeader: { id: `${prefix}.settlement.detail.subTitle` },
+  newTitle: { id: `${prefix}.form.settlement.newTitle` },
+  modifyTitle: { id: `${prefix}.form.settlement.editTitle` },
+});
+
+export const purchaseSettlementSection = defineMessages({
+  infoTitle: { id: `${prefix}.settlement.section.info.title` },
+  infoSubHeader: { id: `${prefix}.settlement.section.info.subTitle` },
+  itemTitle: { id: `${prefix}.item.settlementTitle` },
+  itemSubHeader: { id: `${prefix}.item.settlementSubTitle` },
+});
 
 export const purchaseSettlementField = defineMessages({
   uid: { id: `${prefix}.field.information.uid` },
@@ -52,6 +63,5 @@ export const purchaseSettlementField = defineMessages({
   actualInIDR: { id: `${prefix}.field.information.actualInIDR` },
   differenceInIDR: { id: `${prefix}.field.information.differenceInIDR` },
 
-  reject: { id: `${prefix}.field.information.reason` },
-
+  reject: { id: `${prefix}.field.information.rejectreason` },
 });

@@ -11,6 +11,7 @@ import {
 } from '@material-ui/core';
 import { WorkflowHistory } from '@organization/components/workflow/history/WorkflowHistory';
 import { PurchaseSettlementDetailProps } from '@purchase/components/purchaseSettlement/detail/PurchaseSettlementDetail';
+import { purchaseMessage } from '@purchase/locales/messages/purchaseMessage';
 import * as React from 'react';
 // import { FormattedMessage } from 'react-intl';
 import { SettlementInformation } from './shared/SettlementInformation';
@@ -73,13 +74,13 @@ export const PurchaseSettlementDetailView: React.SFC<PurchaseSettlementDetailPro
                   <Grid key={index} item xs={12} md={4}>
                     <SettlementItemInformation
                       data={item}
-                      title={`#${index + 1} `} />
+                      title={`${props.intl.formatMessage(purchaseMessage.settlement.section.itemTitle)}#${index + 1}`} />
                   </Grid>
                 )
               }
             </Grid>
           </Grid>
-          <Grid item>
+          <Grid item md={4}>
           { response.data.statusType ? 
             <WorkflowHistory data={response.data.workflow} />
           : '' }

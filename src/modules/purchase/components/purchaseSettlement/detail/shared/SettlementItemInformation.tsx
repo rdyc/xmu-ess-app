@@ -1,11 +1,9 @@
-import { Card, CardContent, CardHeader, TextField, 
-  // Grid, List, ListItem, ListItemText, Typography 
+import { Card, CardContent, CardHeader, TextField,
 } from '@material-ui/core';
 import { IPurchaseItem } from '@purchase/classes/response/purchaseSettlement';
+import { purchaseMessage } from '@purchase/locales/messages/purchaseMessage';
 import * as React from 'react';
-import { FormattedMessage, 
-  // FormattedNumber, 
-  InjectedIntlProps, injectIntl } from 'react-intl';
+import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose } from 'recompose';
 
 interface OwnProps {
@@ -34,31 +32,31 @@ const settlementItemInformation: React.SFC<AllProps> = props => (
       <TextField
         {...styled}
         margin="dense"
-        label={<FormattedMessage id="purchase.itemTitle.uid" />}
+        label={props.intl.formatMessage(purchaseMessage.settlement.items.uid)}
         value={props.data.uid}
       />
       <TextField
         {...styled}
         margin="dense"
-        label={<FormattedMessage id="purchase.itemTitle.description" />}
+        label={props.intl.formatMessage(purchaseMessage.settlement.items.description)}
         value={props.data.description}
       />
       <TextField
         {...styled}
         margin="dense"
-        label={<FormattedMessage id="purchase.itemTitle.request" />}
+        label={props.intl.formatMessage(purchaseMessage.settlement.items.request)}
         value={props.intl.formatNumber(props.data.requestValue)}
       />
       <TextField
         {...styled}
         margin="dense"
-        label={<FormattedMessage id="purchase.itemTitle.actual" />}
+        label={props.intl.formatMessage(purchaseMessage.settlement.items.actual)}
         value={props.intl.formatNumber(props.data.actualValue)}
       />
       <TextField
         {...styled}
         margin="dense"
-        label={<FormattedMessage id="purchase.itemTitle.variance" />}
+        label={props.intl.formatMessage(purchaseMessage.settlement.items.variance)}
         value={props.intl.formatNumber(props.data.varianceValue)}
       />
 

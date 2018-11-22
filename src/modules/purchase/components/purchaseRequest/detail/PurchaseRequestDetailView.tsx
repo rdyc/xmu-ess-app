@@ -11,6 +11,7 @@ import {
 } from '@material-ui/core';
 import { WorkflowHistory } from '@organization/components/workflow/history/WorkflowHistory';
 import { PurchaseRequestDetailProps } from '@purchase/components/purchaseRequest/detail/PurchaseRequestDetail';
+import { purchaseMessage } from '@purchase/locales/messages/purchaseMessage';
 import * as React from 'react';
 // import { FormattedMessage } from 'react-intl';
 import { PurchaseInformation } from './shared/PurchaseInformation';
@@ -73,13 +74,13 @@ export const PurchaseRequestDetailView: React.SFC<PurchaseRequestDetailProps> = 
               <Grid key={index} item xs={12} md={4}>
                 <PurchaseItemInformation 
                 data={item}
-                title={`Request Item #${index + 1} `} />
+                title={`${props.intl.formatMessage(purchaseMessage.request.section.itemTitle)} - #${index + 1} `} />
               </Grid>
               )
             }
             </Grid>
           </Grid>
-          <Grid item>
+          <Grid item md={4}>
             <WorkflowHistory data={response.data.workflow} />
           </Grid>
         </Grid>

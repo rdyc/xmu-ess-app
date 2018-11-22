@@ -8,31 +8,31 @@ import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
 import { Button } from '@material-ui/core';
-import { ISettlement } from '@purchase/classes/response/purchaseSettlement';
-import { PurchaseUserAction, SettlementField } from '@purchase/classes/types';
-import { SettlementSummary } from '@purchase/components/purchaseSettlement/detail/shared/SettlementSummary';
+import { IPurchase } from '@purchase/classes/response/purchaseRequest';
+import { PurchaseField, PurchaseUserAction } from '@purchase/classes/types';
+import { PurchaseSummary } from '@purchase/components/purchaseRequest/detail/shared/PurchaseSummary';
 import { purchaseRequestFieldTranslator } from '@purchase/helper';
-import { withSettlementApproval, WithSettlementApproval } from '@purchase/hoc/settlementHistories/withSettlementApproval';
+import { withPurchaseApproval, WithPurchaseApproval } from '@purchase/hoc/purchaseHistories/withPurchaseApproval';
+import { purchaseMessage } from '@purchase/locales/messages/purchaseMessage';
 import * as moment from 'moment';
 import * as React from 'react';
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose } from 'recompose';
 
-const config: CollectionConfig<ISettlement, AllProps> = {
+const config: CollectionConfig<IPurchase, AllProps> = {
   // page info
   page: (props: AllProps) => ({
-  uid: AppMenu.PurchaseSettlementApproval,
+  uid: AppMenu.PurchaseApproval,
   parentUid: AppMenu.Purchase,
-  // title: intl.formatMessage({ id: 'purchase.title' }),
-  // description: intl.formatMessage({ id: 'purchase.subTitle' }),
-  title: 'Purchase Settlement Approval',
-  description: 'Lorem ipsum.',
+  title: props.intl.formatMessage(purchaseMessage.approval.pages.listTitle),
+  description: props.intl.formatMessage(purchaseMessage.approval.pages.listSubHeader),
   }),
 
   // top bar
-  fields: Object.keys(SettlementField).map(key => ({
+  fields: Object.keys(PurchaseField)
+  .map(key => ({
     value: key,
-    name: SettlementField[key]
+    name: PurchaseField[key]
   })),
   fieldTranslator: purchaseRequestFieldTranslator,
 
@@ -41,7 +41,7 @@ const config: CollectionConfig<ISettlement, AllProps> = {
   searchStatus: (states: AllProps): boolean => {
     let result: boolean = false;
 
-    const { request } = states.settlementApprovalState.all;
+    const { request } = states.purchaseApprovalState.all;
 
     if (request && request.filter && request.filter['query.find']) {
       result = request.filter['query.find'] ? true : false;
@@ -56,26 +56,26 @@ const config: CollectionConfig<ISettlement, AllProps> = {
   // more
   hasMore: true,
   moreOptions: (props: AllProps, callback: CollectionHandler): IAppBarMenu[] => ([
-    {
-      id: PurchaseUserAction.Refresh,
-      name: props.intl.formatMessage(layoutMessage.action.refresh),
-      enabled: true,
-      visible: true,
-      onClick: () => callback.handleForceReload()
-    },
-  ]),
+  {
+    id: PurchaseUserAction.Refresh,
+    name: props.intl.formatMessage(layoutMessage.action.refresh),
+    enabled: true,
+    visible: true,
+    onClick: () => callback.handleForceReload()
+  },
+]),
 
   // data filter
   filter: {
-    orderBy: 'settlementStatusType',
+    orderBy: 'requestStatusType',
     direction: 'ascending'
   },
 
   // events
   onDataLoad: (states: AllProps, callback: CollectionHandler, params: CollectionDataProps, forceReload?: boolean | false) => {
     const { user } = states.userState;
-    const { isLoading, response } = states.settlementApprovalState.all;
-    const { loadAllRequest } = states.settlementApprovalDispatch;
+    const { isLoading, response } = states.purchaseApprovalState.all;
+    const { loadAllRequest } = states.purchaseApprovalDispatch;
 
     // when user is set and not loading
     if (user && !isLoading) {
@@ -100,12 +100,12 @@ const config: CollectionConfig<ISettlement, AllProps> = {
     }
   },
   onUpdated: (states: AllProps, callback: CollectionHandler) => {
-    const { isLoading, response } = states.settlementApprovalState.all;
+    const { isLoading, response } = states.purchaseApprovalState.all;
 
     callback.handleLoading(isLoading);
     callback.handleResponse(response);
   },
-  onBind: (item: ISettlement, index: number) => ({
+  onBind: (item: IPurchase, index: number) => ({
     key: index,
     primary: `${item.currency && item.currency.value} ${item.request}` || item.notes || '',
     secondary: item.projectUid || item.project && item.project.name || '',
@@ -116,41 +116,37 @@ const config: CollectionConfig<ISettlement, AllProps> = {
   }),
 
   // summary component
-  summaryComponent: (item: ISettlement) => (
-    <SettlementSummary data = {item} />
+  summaryComponent: (item: IPurchase) => (
+    <PurchaseSummary data = {item} />
     ),
 
   // action component
-  actionComponent: (item: ISettlement, callback: CollectionHandler ) => (
+  actionComponent: (item: IPurchase, callback: CollectionHandler) => (
+    <React.Fragment>
     <Button 
       size= "small"
-      // onClick = {() => alert(`go to ${item.uid}`)}
-      onClick={() => callback.handleRedirectTo(`/purchase/settlementapprovals/details/${item.uid}`)}
+      onClick = {() => callback.handleRedirectTo(`/purchase/approvals/details/${item.uid}`)}
     >
-      <FormattedMessage { ...layoutMessage.action.approve } />
+      <FormattedMessage { ...layoutMessage.action.details } />
     </Button>
+      </React.Fragment>
   ),
-
-  // custom row render: uncomment to see different
-  // onRowRender: (item: ISettlement, index: number) => (
-  //   <div key={index}>{item.name}</div>
-  // )
 };
 
 type AllProps
   = WithUser
   & InjectedIntlProps
-  & WithSettlementApproval;
+  & WithPurchaseApproval;
 
-const settlementApprovalCollectionPage: React.SFC<AllProps> = props => (
+const listView: React.SFC<AllProps> = props => (
   <CollectionPage
     config= { config }
     connectedProps = { props }
   />
 );
 
-export const SettlementApprovalCollectionPage = compose(
+export const PurchaseApprovalList = compose(
   withUser,
   injectIntl,
-  withSettlementApproval
-)(settlementApprovalCollectionPage);
+  withPurchaseApproval
+)(listView);

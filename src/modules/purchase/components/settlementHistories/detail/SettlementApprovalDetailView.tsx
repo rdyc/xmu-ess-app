@@ -8,15 +8,14 @@ import { WorkflowHistory } from '@organization/components/workflow/history/Workf
 import { SettlementInformation } from '@purchase/components/purchaseSettlement/detail/shared/SettlementInformation';
 import { SettlementItemInformation } from '@purchase/components/purchaseSettlement/detail/shared/SettlementItemInformation';
 import { SettlementApprovalDetailProps } from '@purchase/components/settlementHistories/detail/SettlementApprovalDetail';
+import { purchaseMessage } from '@purchase/locales/messages/purchaseMessage';
 import * as React from 'react';
-// import { FormattedMessage } from 'react-intl';
 
 export const SettlementApprovalDetailView: React.SFC<SettlementApprovalDetailProps> = props => {
   const {
     approvalTitle, approvalSubHeader, approvalChoices, approvalTrueValue,
-    approvalDialogTitle, approvalDialogContentText, approvalDialogCancelText, approvalDialogConfirmedText
-  } = props;
-  const { handleValidate, handleSubmit, handleSubmitSuccess, handleSubmitFail } = props;
+    approvalDialogTitle, approvalDialogContentText, approvalDialogCancelText, approvalDialogConfirmedText,
+    handleValidate, handleSubmit, handleSubmitSuccess, handleSubmitFail } = props;
   const { isLoading, response } = props.settlementApprovalState.detail;
 
   const render = (
@@ -42,7 +41,7 @@ export const SettlementApprovalDetailView: React.SFC<SettlementApprovalDetailPro
               <Grid key={index} item xs={12} md={4}>
                 <SettlementItemInformation 
                 data={item}
-                title={`Request Item #${index + 1} `} />
+                title={`${props.intl.formatMessage(purchaseMessage.settlement.section.itemTitle)} - #${index + 1} `} />
               </Grid>
               )
             }
@@ -51,7 +50,7 @@ export const SettlementApprovalDetailView: React.SFC<SettlementApprovalDetailPro
 
           <Grid item>
             <Grid container spacing={16}>
-              <Grid item>
+              <Grid item md={4}>
                 <WorkflowHistory data={response.data.workflow} />
               </Grid>
               {
