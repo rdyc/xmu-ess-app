@@ -1,5 +1,5 @@
 import { RequestDetailFormProps } from '@expense/components/request/editor/forms/RequestDetailForm';
-import { expenseMessages } from '@expense/locales/messages/expenseMessages';
+import { expenseMessage } from '@expense/locales/messages/expenseMessage';
 import { FormMode } from '@generic/types';
 import { Card, CardContent, CardHeader } from '@material-ui/core';
 import * as React from 'react';
@@ -31,8 +31,8 @@ export const RequestDetailFormView: React.SFC<RequestDetailFormProps> = props =>
   const render = (
     <Card square>
       <CardHeader 
-        title={intl.formatMessage(expenseMessages.request.section.title)}
-        subheader={intl.formatMessage(expenseMessages.request.section.subTitle)}
+        title={intl.formatMessage(expenseMessage.request.section.title)}
+        subheader={intl.formatMessage(expenseMessage.request.section.subTitle)}
       />
       <CardContent>
         {names.map(name => renderField(name))}

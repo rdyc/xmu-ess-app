@@ -1,5 +1,6 @@
 import {
   ExpenseRequestAction as Action,
+  expenseRequestGetAllDispose,
   expenseRequestGetAllError,
   expenseRequestGetAllRequest,
   expenseRequestGetAllSuccess,
@@ -96,6 +97,7 @@ function* watchPostRequest() {
       payload: action.payload.data, 
       successEffects: (response: IApiResponse) => [
         put(expenseRequestPostSuccess(response.body)),
+        put(expenseRequestGetAllDispose()),
       ], 
       successCallback: (response: IApiResponse) => {
         action.payload.resolve(response.body.data);
@@ -139,6 +141,7 @@ function* watchPutRequest() {
       payload: action.payload.data, 
       successEffects: (response: IApiResponse) => [
         put(expenseRequestPutSuccess(response.body)),
+        put(expenseRequestGetAllDispose()),
       ], 
       successCallback: (response: IApiResponse) => {
         action.payload.resolve(response.body.data);

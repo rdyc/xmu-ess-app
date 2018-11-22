@@ -1,5 +1,6 @@
 import {
   ExpenseApprovalAction as Action,
+  expenseApprovalGetAllDispose,
   expenseApprovalGetAllError,
   expenseApprovalGetAllRequest,
   expenseApprovalGetAllSuccess,
@@ -93,6 +94,7 @@ function* watchApprovalPostFetchRequest() {
       payload: action.payload.data, 
       successEffects: (response: IApiResponse) => [
         put(expenseApprovalPostSuccess(response.body)),
+        put(expenseApprovalGetAllDispose()),
       ], 
       successCallback: (response: IApiResponse) => {
         action.payload.resolve(response.body.data);
