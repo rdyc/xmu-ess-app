@@ -1,5 +1,5 @@
 import { IExpense } from '@expense/classes/response';
-import { expenseMessages } from '@expense/locales/messages/expenseMessages';
+import { expenseMessage } from '@expense/locales/messages/expenseMessage';
 import { layoutMessage } from '@layout/locales/messages';
 import { GlobalFormat } from '@layout/types';
 import { Grid, TextField } from '@material-ui/core';
@@ -29,7 +29,7 @@ const expenseSummary: React.SFC<AllProps> = props => (
         <TextField
           {...styled}
           margin="dense"
-          label={props.intl.formatMessage(expenseMessages.request.field.status)}
+          label={props.intl.formatMessage(expenseMessage.request.field.status)}
           value={props.data.status ? props.data.status.value : props.data.statusType}
         />
         {
@@ -38,33 +38,33 @@ const expenseSummary: React.SFC<AllProps> = props => (
             {...styled}
             margin="dense"
             multiline
-            label={props.intl.formatMessage(expenseMessages.request.field.rejectedReason)}
+            label={props.intl.formatMessage(expenseMessage.request.field.rejectedReason)}
             value={props.data.rejectedReason}
           />
         }
         <TextField
           {...styled}
           margin="dense"
-          label={props.intl.formatMessage(expenseMessages.request.field.uid)}
+          label={props.intl.formatMessage(expenseMessage.request.field.uid)}
           value={props.data.uid}
         />
         <TextField
           {...styled}
           margin="dense"
-          label={props.intl.formatMessage(expenseMessages.request.field.projectUid)}
+          label={props.intl.formatMessage(expenseMessage.request.field.projectUid)}
           value={props.data.project ? `${props.data.project.uid} - ${props.data.project.name}` : 'N/A'}
         />
         <TextField
           {...styled}
           margin="dense"
-          label={props.intl.formatMessage(expenseMessages.request.field.customerUid)}
+          label={props.intl.formatMessage(expenseMessage.request.field.customerUid)}
           value={props.data.customer ? props.data.customer.name : 'N/A'}
         />
         <TextField
           {...styled}
           margin="dense"
           multiline
-          label={props.intl.formatMessage(expenseMessages.request.field.notes)}
+          label={props.intl.formatMessage(expenseMessage.request.field.notes)}
           value={props.data.notes || 'N/A'}
         />
       </Grid>
@@ -72,31 +72,31 @@ const expenseSummary: React.SFC<AllProps> = props => (
         <TextField
           {...styled}
           margin="dense"
-          label={props.intl.formatMessage(expenseMessages.request.field.expenseType)}
+          label={props.intl.formatMessage(expenseMessage.request.field.expenseType)}
           value={props.data.expense ? props.data.expense.value : props.data.expenseType}
         />
         <TextField
           {...styled}
           margin="dense"
-          label={props.intl.formatMessage(expenseMessages.request.field.location)}
+          label={props.intl.formatMessage(expenseMessage.request.field.location)}
           value={props.data.location}
         />
         <TextField
           {...styled}
           margin="dense"
-          label={props.intl.formatMessage(expenseMessages.request.field.address)}
+          label={props.intl.formatMessage(expenseMessage.request.field.address)}
           value={props.data.address || 'N/A'}
         />
         <TextField
           {...styled}
           margin="dense"
-          label={props.intl.formatMessage(expenseMessages.request.field.name)}
+          label={props.intl.formatMessage(expenseMessage.request.field.name)}
           value={props.data.client ? props.data.client.name : 'N/A'}
         />
         <TextField
           {...styled}
           margin="dense"
-          label={props.intl.formatMessage(expenseMessages.request.field.title)}
+          label={props.intl.formatMessage(expenseMessage.request.field.title)}
           value={props.data.client ? props.data.client.title : 'N/A'}
         />
       </Grid>
@@ -104,14 +104,14 @@ const expenseSummary: React.SFC<AllProps> = props => (
         <TextField
           {...styled}
           margin="dense"
-          label={props.intl.formatMessage(expenseMessages.request.field.date)}
+          label={props.intl.formatMessage(expenseMessage.request.field.date)}
           value={props.data.date ?
             props.intl.formatDate(props.data.date, GlobalFormat.Date) : 'N/A'}
         />
         <TextField
           {...styled}
           margin="dense"
-          label={props.intl.formatMessage(expenseMessages.request.field.value)}
+          label={props.intl.formatMessage(expenseMessage.request.field.value)}
           value={props.intl.formatNumber(props.data.value || 0)}
         />
       </Grid>

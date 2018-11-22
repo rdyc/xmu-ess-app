@@ -14,7 +14,7 @@ import {
   expenseRequestSection 
 } from './expenseRequestMessage';
 
-export const expenseMessages = {
+export const expenseMessage = {
   request: {
     message: expenseRequestMessage,
     page: expenseRequestPage,

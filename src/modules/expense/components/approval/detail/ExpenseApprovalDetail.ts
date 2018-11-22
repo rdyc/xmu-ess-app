@@ -1,5 +1,5 @@
 import { WithExpenseApproval, withExpenseApproval } from '@expense/hoc/withExpenseApproval';
-import { expenseMessages } from '@expense/locales/messages/expenseMessages';
+import { expenseMessage } from '@expense/locales/messages/expenseMessage';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { layoutMessage } from '@layout/locales/messages';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
@@ -67,15 +67,15 @@ const createProps: mapper<ExpenseApprovalDetailProps, OwnState> = (props: Expens
   const { intl } = props;
 
   return {
-    approvalTitle: intl.formatMessage(expenseMessages.approval.section.title),
-    approvalSubHeader: intl.formatMessage(expenseMessages.approval.section.subTitle),
+    approvalTitle: intl.formatMessage(expenseMessage.approval.section.title),
+    approvalSubHeader: intl.formatMessage(expenseMessage.approval.section.subTitle),
     approvalChoices: [
       { value: WorkflowStatusType.Approved, label: intl.formatMessage(organizationMessage.workflow.option.approve) },
       { value: WorkflowStatusType.Rejected, label: intl.formatMessage(organizationMessage.workflow.option.reject) }
     ],
     approvalTrueValue: WorkflowStatusType.Approved,
-    approvalDialogTitle: intl.formatMessage(expenseMessages.approval.dialog.title),
-    approvalDialogContentText: intl.formatMessage(expenseMessages.approval.dialog.content),
+    approvalDialogTitle: intl.formatMessage(expenseMessage.approval.dialog.title),
+    approvalDialogContentText: intl.formatMessage(expenseMessage.approval.dialog.content),
     approvalDialogCancelText: intl.formatMessage(layoutMessage.action.cancel),
     approvalDialogConfirmedText: intl.formatMessage(layoutMessage.action.continue),
   };
@@ -114,7 +114,7 @@ const handlerCreators: HandleCreators<ExpenseApprovalDetailProps, OwnHandler> = 
 
     // props checking
     if (!match.params.expenseUid) {
-      const message = intl.formatMessage(expenseMessages.request.message.emptyProps);
+      const message = intl.formatMessage(expenseMessage.request.message.emptyProps);
 
       return Promise.reject(message);
     }
@@ -149,9 +149,9 @@ const handlerCreators: HandleCreators<ExpenseApprovalDetailProps, OwnHandler> = 
     const { alertAdd } = props.layoutDispatch;
     let message: string = '';
     if (isApprove) {
-      message = intl.formatMessage(expenseMessages.approval.message.approveSuccess, { uid: match.params.expenseUid });
+      message = intl.formatMessage(expenseMessage.approval.message.approveSuccess, { uid: match.params.expenseUid });
     } else {
-      message = intl.formatMessage(expenseMessages.approval.message.rejectSuccess, { uid: match.params.expenseUid });
+      message = intl.formatMessage(expenseMessage.approval.message.rejectSuccess, { uid: match.params.expenseUid });
     }
     alertAdd({
       message,
@@ -174,7 +174,7 @@ const handlerCreators: HandleCreators<ExpenseApprovalDetailProps, OwnHandler> = 
     } else {
       alertAdd({
         time: new Date(),
-        message: intl.formatMessage(expenseMessages.approval.message.createFailure),
+        message: intl.formatMessage(expenseMessage.approval.message.createFailure),
         details: isObject(submitError) ? submitError.message : submitError
       });
     }

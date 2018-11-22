@@ -1,5 +1,5 @@
 import { WithExpenseRequest, withExpenseRequest } from '@expense/hoc/withExpenseRequest';
-import { expenseMessages } from '@expense/locales/messages/expenseMessages';
+import { expenseMessage } from '@expense/locales/messages/expenseMessage';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { layoutMessage } from '@layout/locales/messages';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
@@ -64,8 +64,8 @@ const stateUpdaters: StateUpdaters<ExpenseRequestDetailProps, OwnState, OwnState
     action: ExpenseUserAction.Modify,
     dialogFullScreen: false,
     dialogOpen: true,
-    dialogTitle: props.intl.formatMessage(expenseMessages.request.dialog.modifyTitle), 
-    dialogContent: props.intl.formatMessage(expenseMessages.request.dialog.modifyDescription),
+    dialogTitle: props.intl.formatMessage(expenseMessage.request.dialog.modifyTitle), 
+    dialogContent: props.intl.formatMessage(expenseMessage.request.dialog.modifyDescription),
     dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.disaggree),
     dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.aggree)
   }),

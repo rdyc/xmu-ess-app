@@ -4,7 +4,7 @@ import { ExpenseField, ExpenseUserAction } from '@expense/classes/types';
 import { ExpenseSummary } from '@expense/components/request/detail/shared/ExpenseSummary';
 import { expenseFieldTranslator } from '@expense/helper';
 import { WithExpenseRequest, withExpenseRequest } from '@expense/hoc/withExpenseRequest';
-import { expenseMessages } from '@expense/locales/messages/expenseMessages';
+import { expenseMessage } from '@expense/locales/messages/expenseMessage';
 import {
   CollectionConfig,
   CollectionDataProps,
@@ -26,8 +26,8 @@ const config: CollectionConfig<IExpense, AllProps> = {
   page: (props: AllProps) => ({
     uid: AppMenu.ExpenseRequest,
     parentUid: AppMenu.Expense,
-    title: props.intl.formatMessage(expenseMessages.request.page.title),
-    description: props.intl.formatMessage(expenseMessages.request.page.subTitle),
+    title: props.intl.formatMessage(expenseMessage.request.page.title),
+    description: props.intl.formatMessage(expenseMessage.request.page.subTitle),
   }),
   
   // top bar

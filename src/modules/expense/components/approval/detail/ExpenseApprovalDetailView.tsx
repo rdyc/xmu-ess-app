@@ -2,7 +2,7 @@ import AppMenu from '@constants/AppMenu';
 import { IExpenseDetail } from '@expense/classes/response';
 import { ExpenseUserAction } from '@expense/classes/types';
 import { ExpenseInformation } from '@expense/components/request/detail/shared/ExpenseInformation';
-import { expenseMessages } from '@expense/locales/messages/expenseMessages';
+import { expenseMessage } from '@expense/locales/messages/expenseMessage';
 import { SingleConfig, SingleHandler, SinglePage, SingleState } from '@layout/components/pages/singlePage/SinglePage';
 import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
@@ -16,8 +16,8 @@ const config: SingleConfig<IExpenseDetail, ExpenseApprovalDetailProps> = {
   page: (props: ExpenseApprovalDetailProps) => ({
     uid: AppMenu.ExpenseRequest,
     parentUid: AppMenu.Expense,
-    title: props.intl.formatMessage(expenseMessages.request.page.detailTitle),
-    description : props.intl.formatMessage(expenseMessages.request.page.detailSubTitle)
+    title: props.intl.formatMessage(expenseMessage.request.page.detailTitle),
+    description : props.intl.formatMessage(expenseMessage.request.page.detailSubTitle)
   }),
   
   // action centre
