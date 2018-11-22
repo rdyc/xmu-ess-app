@@ -18,21 +18,6 @@ const isContains = (statusType: WorkflowStatusType | undefined, statusTypes: str
   return statusType ? statusTypes.indexOf(statusType) !== -1 : false;
 };
 
-// const renderItems = (data: IPurchaseDetail, props: PurchaseRequestDetailProps) => (
-//   <React.Fragment>
-//     {
-//       data.items &&
-//       data.items.map((item, index) =>
-
-//         <PurchaseItemInformation
-//           data={item}
-//           title={`${props.intl.formatMessage(purchaseMessage.request.section.itemTitle)} - #${index + 1} `} />
-
-//       )
-//     }
-//   </React.Fragment>
-// );
-
 const config: SingleConfig<IPurchaseDetail, PurchaseRequestDetailProps> = {
    // page info
   page: (props: PurchaseRequestDetailProps) => ({
