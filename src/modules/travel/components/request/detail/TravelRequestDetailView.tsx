@@ -9,6 +9,7 @@ import { ITravelRequestDetail } from '@travel/classes/response';
 import { TravelUserAction } from '@travel/classes/types';
 import { travelMessage } from '@travel/locales/messages/travelMessage';
 import * as React from 'react';
+import { isNull } from 'util';
 import { TravelInformation } from './shared/TravelInformation';
 import { TravelRequestItem } from './shared/TravelRequestItem';
 import { TravelRequestSummary } from './shared/TravelRequestSummary';
@@ -51,7 +52,7 @@ const config: SingleConfig<ITravelRequestDetail, TravelRequestDetailProps> = {
       id: TravelUserAction.AddSettlement,
       name: props.intl.formatMessage(travelMessage.request.option.addSettlement),
       enabled: true,
-      visible: isContains(state.statusType, [ WorkflowStatusType.Approved]),
+      visible: isContains(state.statusType, [ WorkflowStatusType.Approved]) && isNull(props.travelRequestState.detail.response && props.travelRequestState.detail.response.data.settlement)  ,
       onClick: props.handleAddSettlement
     }
   ]),
