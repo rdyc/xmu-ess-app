@@ -7,21 +7,18 @@ import { Layout } from '@layout/components/base';
 import * as React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router';
 
-const ExpenseRequestList = () => <ExpenseRequestListView />;
-const ExpenseApprovalList = () => <ExpenseApprovalListView />;
-
 const request = (props: RouteComponentProps) => (
   <Switch>
     <Route path={`${props.match.path}/form`} component={RequestEditor} />
     <Route path={`${props.match.path}/:expenseUid`} component={ExpenseRequestDetail} />
-    <Route path={`${props.match.path}`} component={ExpenseRequestList} />
+    <Route path={`${props.match.path}`} component={ExpenseRequestListView} />
   </Switch>
 );
 
 const approval = (props: RouteComponentProps) => (
   <Switch>
     <Route path={`${props.match.path}/:expenseUid`} component={ExpenseApprovalDetail} />
-    <Route path={`${props.match.path}`} component={ExpenseApprovalList} />
+    <Route path={`${props.match.path}`} component={ExpenseApprovalListView} />
   </Switch>
 );
 
