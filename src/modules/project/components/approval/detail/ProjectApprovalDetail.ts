@@ -1,15 +1,11 @@
 import { WorkflowStatusType } from '@common/classes/types';
-import AppMenu from '@constants/AppMenu';
 import { RadioGroupChoice } from '@layout/components/input/radioGroup';
-import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
-import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
 import { IWorkflowApprovalPayload } from '@organization/classes/request/workflow/approval';
 import { WorkflowApprovalFormData } from '@organization/components/workflow/approval/WorkflowApprovalForm';
 import { organizationMessage } from '@organization/locales/messages/organizationMessage';
-import { ProjectUserAction } from '@project/classes/types';
 import { WithProjectApproval, withProjectApproval } from '@project/hoc/withProjectApproval';
 import { projectApprovalMessage } from '@project/locales/messages/projectApprovalMessage';
 import { projectMessage } from '@project/locales/messages/projectMessage';
@@ -18,9 +14,10 @@ import { RouteComponentProps, withRouter } from 'react-router';
 import {
   compose,
   HandleCreators,
-  lifecycle,
   mapper,
-  ReactLifeCycleFunctions,
+  StateHandler,
+  StateHandlerMap,
+  StateUpdaters,
   withHandlers,
   withStateHandlers,
 } from 'recompose';
@@ -31,7 +28,6 @@ import { isNullOrUndefined, isObject } from 'util';
 import { ProjectApprovalDetailView } from './ProjectApprovalDetailView';
 
 interface OwnHandler {
-  handleRefresh: () => void;
   handleValidate: (payload: WorkflowApprovalFormData) => FormErrors;
   handleSubmit: (payload: WorkflowApprovalFormData) => void;
   handleSubmitSuccess: (result: any, dispatch: Dispatch<any>) => void;
@@ -43,6 +39,7 @@ interface OwnRouteParams {
 }
 
 interface OwnState {
+  shouldDataReload: boolean;
   approvalTitle: string;
   approvalSubHeader: string;
   approvalChoices: RadioGroupChoice[];
@@ -53,15 +50,40 @@ interface OwnState {
   approvalDialogConfirmedText: string;
 }
 
+interface OwnStateUpdater extends StateHandlerMap<OwnState> {
+  setDataload: StateHandler<OwnState>;
+}
+
 export type ProjectApprovalDetailProps
   = WithProjectApproval
   & WithUser
   & WithLayout
-  & WithAppBar
   & RouteComponentProps<OwnRouteParams> 
   & InjectedIntlProps
   & OwnHandler
-  & OwnState;
+  & OwnState
+  & OwnStateUpdater;
+
+const createProps: mapper<ProjectApprovalDetailProps, OwnState> = (props: ProjectApprovalDetailProps): OwnState => ({
+  shouldDataReload: false,
+  approvalTitle: props.intl.formatMessage(projectMessage.registration.section.approvalTitle),
+  approvalSubHeader: props.intl.formatMessage(projectMessage.registration.section.approvalSubHeader),
+  approvalChoices: [
+    { value: WorkflowStatusType.Approved, label: props.intl.formatMessage(organizationMessage.workflow.option.approve) },
+    { value: WorkflowStatusType.Rejected, label: props.intl.formatMessage(organizationMessage.workflow.option.reject) }
+  ],
+  approvalTrueValue: WorkflowStatusType.Approved,
+  approvalDialogTitle: props.intl.formatMessage(projectMessage.approval.confirm.submissionTitle),
+  approvalDialogContentText: props.intl.formatMessage(projectMessage.approval.confirm.submissionContent),
+  approvalDialogCancelText: props.intl.formatMessage(layoutMessage.action.cancel),
+  approvalDialogConfirmedText: props.intl.formatMessage(layoutMessage.action.continue)
+});
+
+const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdater> = {
+  setDataload: (prevState: OwnState) => (): Partial<OwnState> => ({
+    shouldDataReload: !prevState.shouldDataReload
+  })
+};
 
 const handlerCreators: HandleCreators<ProjectApprovalDetailProps, OwnHandler> = {
   handleValidate: (props: ProjectApprovalDetailProps) => (formData: WorkflowApprovalFormData) => { 
@@ -116,145 +138,36 @@ const handlerCreators: HandleCreators<ProjectApprovalDetailProps, OwnHandler> = 
     });
   },
   handleSubmitSuccess: (props: ProjectApprovalDetailProps) => (response: boolean) => {
-    const { intl, history } = props;
-    const { alertAdd } = props.layoutDispatch;
-    
-    alertAdd({
+    props.layoutDispatch.alertAdd({
       time: new Date(),
-      message: intl.formatMessage(projectApprovalMessage.updateSuccess),
+      message: props.intl.formatMessage(projectApprovalMessage.submitSuccess)
     });
 
-    history.push('/project/approvals');
+    props.setDataload();
   },
   handleSubmitFail: (props: ProjectApprovalDetailProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
-    const { intl } = props;
-    const { alertAdd } = props.layoutDispatch;
-    
     if (errors) {
       // validation errors from server (400: Bad Request)
-      alertAdd({
+      props.layoutDispatch.alertAdd({
         time: new Date(),
         message: isObject(submitError) ? submitError.message : submitError
       });
     } else {
-      alertAdd({
+      props.layoutDispatch.alertAdd({
         time: new Date(),
-        message: intl.formatMessage(projectApprovalMessage.updateFailure),
+        message: props.intl.formatMessage(projectApprovalMessage.submitFailure),
         details: isObject(submitError) ? submitError.message : submitError
       });
     }
-  },
-  handleRefresh: (props: ProjectApprovalDetailProps) => () => { 
-    const { match } = props;
-    const { user } = props.userState;
-    const { loadDetailRequest } = props.projectApprovalDispatch;
-
-    if (user) {
-      loadDetailRequest({
-        companyUid: user.company.uid,
-        positionUid: user.position.uid,
-        projectUid: match.params.projectUid
-      });
-    }
   }
-};
-
-const lifecycles: ReactLifeCycleFunctions<ProjectApprovalDetailProps, {}> = {
-  componentDidMount() {
-    const { 
-      match, layoutDispatch, appBarDispatch, intl, 
-      handleRefresh
-    } = this.props;
-
-    const { user } = this.props.userState;
-    const { loadDetailRequest } = this.props.projectApprovalDispatch;
-
-    layoutDispatch.changeView({
-      uid: AppMenu.ProjectRegistrationRequest,
-      parentUid: AppMenu.ProjectRegistration,
-      title: intl.formatMessage(projectMessage.registration.page.detailTitle),
-      subTitle : intl.formatMessage(projectMessage.registration.page.detailSubHeader)
-    });
-
-    layoutDispatch.navBackShow();
-    layoutDispatch.moreShow();
-    
-    const handleMenuClick = (menu: IAppBarMenu): void => {
-      switch (menu.id) {
-        case ProjectUserAction.Refresh:
-          handleRefresh();
-          break;
-
-        default:
-          break;
-      }
-    };
-
-    appBarDispatch.assignCallback(handleMenuClick);
-
-    if (user) {
-      loadDetailRequest({
-        projectUid: match.params.projectUid,
-        companyUid: user.company.uid,
-        positionUid: user.position.uid,
-      });
-    }
-  },
-  componentWillReceiveProps(nextProps: ProjectApprovalDetailProps) {
-    if (nextProps.projectApprovalState.detail.response !== this.props.projectApprovalState.detail.response) {
-      const { intl } = nextProps;
-      const { assignMenus } = nextProps.appBarDispatch;
-
-      const currentMenus = [
-        {
-          id: ProjectUserAction.Refresh,
-          name: intl.formatMessage(layoutMessage.action.refresh),
-          enabled: true,
-          visible: true
-        }
-      ];
-
-      assignMenus(currentMenus);
-    }
-  },
-  componentWillUnmount() {
-    const { layoutDispatch, appBarDispatch } = this.props;
-
-    layoutDispatch.changeView(null);
-    layoutDispatch.navBackHide();
-    layoutDispatch.moreHide();
-    layoutDispatch.actionCentreHide();
-
-    appBarDispatch.dispose();
-  }
-};
-
-const createProps: mapper<ProjectApprovalDetailProps, OwnState> = (props: ProjectApprovalDetailProps): OwnState => {
-  const { intl } = props;
-
-  return {
-    approvalTitle: intl.formatMessage(projectMessage.registration.section.approvalTitle),
-    approvalSubHeader: intl.formatMessage(projectMessage.registration.section.approvalSubHeader),
-    approvalChoices: [
-      { value: WorkflowStatusType.Approved, label: intl.formatMessage(organizationMessage.workflow.option.approve) },
-      { value: WorkflowStatusType.Rejected, label: intl.formatMessage(organizationMessage.workflow.option.reject) }
-    ],
-    approvalTrueValue: WorkflowStatusType.Approved,
-    approvalDialogTitle: intl.formatMessage(projectMessage.approval.confirm.submissionTitle),
-    approvalDialogContentText: intl.formatMessage(projectMessage.approval.confirm.submissionContent),
-    approvalDialogCancelText: intl.formatMessage(layoutMessage.action.cancel),
-    approvalDialogConfirmedText: intl.formatMessage(layoutMessage.action.continue),
-  };
 };
 
 export const ProjectApprovalDetail = compose<ProjectApprovalDetailProps, {}>(
+  withRouter,
   withUser,
   withLayout,
-  withAppBar,
-  withRouter,
   withProjectApproval,
   injectIntl,
-  withStateHandlers<OwnState, {}, {}>(createProps, {}),
-  withHandlers<ProjectApprovalDetailProps, OwnHandler>(handlerCreators),
-  lifecycle<ProjectApprovalDetailProps, {}>(lifecycles),
+  withStateHandlers(createProps, stateUpdaters),
+  withHandlers(handlerCreators),
 )(ProjectApprovalDetailView);

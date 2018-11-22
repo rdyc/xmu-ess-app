@@ -76,8 +76,8 @@ const config: SingleConfig<IProjectDetail, AllProps> = {
       }
     }
   },
-  onUpdated: (states: AllProps, callback: SingleHandler) => {
-    const { isLoading, response } = states.projectRegisterState.detail;
+  onUpdated: (props: AllProps, callback: SingleHandler) => {
+    const { isLoading, response } = props.projectRegisterState.detail;
     
     callback.handleLoading(isLoading);
     callback.handleResponse(response);

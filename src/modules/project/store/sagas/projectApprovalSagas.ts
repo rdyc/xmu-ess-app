@@ -1,6 +1,7 @@
-import { layoutAlertAdd, listBarLoading, listBarMetadata } from '@layout/store/actions';
+import { layoutAlertAdd } from '@layout/store/actions';
 import {
   ProjectApprovalAction as Action,
+  projectApprovalGetAllDispose,
   projectApprovalGetAllError,
   projectApprovalGetAllRequest,
   projectApprovalGetAllSuccess,
@@ -30,7 +31,6 @@ function* watchGetAllRequest() {
       path: `/v1/approvals/project?${params}`,
       successEffects: (response: IApiResponse) => [
         put(projectApprovalGetAllSuccess(response.body)),
-        put(listBarMetadata(response.body.metadata))
       ],
       failureEffects: (response: IApiResponse) => [
         put(projectApprovalGetAllError(response.body)),
@@ -51,7 +51,9 @@ function* watchGetAllRequest() {
           })
         )
       ],
-      finallyEffects: [put(listBarLoading(false))]
+      finallyEffects: [
+        // nothing
+      ]
     });
   };
 
@@ -98,7 +100,8 @@ function* watchPostRequest() {
       path: `/v1/approvals/project/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.projectUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
-        put(projectApprovalPostSuccess(response.body))
+        put(projectApprovalPostSuccess(response.body)),
+        put(projectApprovalGetAllDispose())
       ],
       successCallback: (response: IApiResponse) => {
         action.payload.resolve(response.body.data);

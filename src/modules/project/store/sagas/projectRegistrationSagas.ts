@@ -1,4 +1,5 @@
-import { layoutAlertAdd, listBarLoading, listBarMetadata } from '@layout/store/actions';
+import { projectGetAllDispose } from '@common/store/actions';
+import { layoutAlertAdd } from '@layout/store/actions';
 import {
   ProjectRegistrationAction as Action,
   projectRegistrationGetAllError,
@@ -30,7 +31,6 @@ function* watchGetAllRequest() {
       path: `/v1/project/registrations/${action.payload.companyUid}/${action.payload.positionUid}${objectToQuerystring(action.payload.filter)}`,
       successEffects: (response: IApiResponse) => [
         put(projectRegistrationGetAllSuccess(response.body)),
-        put(listBarMetadata(response.body.metadata))
       ],
       failureEffects: (response: IApiResponse) => [
         put(projectRegistrationGetAllError(response.body)),
@@ -51,7 +51,9 @@ function* watchGetAllRequest() {
           })
         )
       ],
-      finallyEffects: [put(listBarLoading(false))]
+      finallyEffects: [
+        // nothing
+      ]
     });
   };
 
@@ -129,7 +131,8 @@ function* watchPostRequest() {
       path: `/v1/project/registrations/${action.payload.companyUid}/${action.payload.positionUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
-        put(projectRegistrationPostSuccess(response.body))
+        put(projectRegistrationPostSuccess(response.body)),
+        put(projectGetAllDispose())
       ],
       successCallback: (response: IApiResponse) => {
         action.payload.resolve(response.body.data);
@@ -174,7 +177,8 @@ function* watchPutRequest() {
       path: `/v1/project/registrations/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.projectUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
-        put(projectRegistrationPutSuccess(response.body))
+        put(projectRegistrationPutSuccess(response.body)),
+        put(projectGetAllDispose())
       ],
       successCallback: (response: IApiResponse) => {
         action.payload.resolve(response.body.data);
