@@ -1,88 +1,109 @@
-import { RequestDetailProps } from '@expense/components/request/detail/RequestDetail';
+import AppMenu from '@constants/AppMenu';
+import { IExpenseDetail } from '@expense/classes/response';
+import { ExpenseUserAction } from '@expense/classes/types';
+import { ExpenseInformation } from '@expense/components/request/detail/shared/ExpenseInformation';
+import { WithExpenseRequest, withExpenseRequest } from '@expense/hoc/withExpenseRequest';
+import { expenseMessages } from '@expense/locales/messages/expenseMessages';
+import { SingleConfig, SingleHandler, SinglePage } from '@layout/components/pages/singlePage/SinglePage';
+import { WithUser, withUser } from '@layout/hoc/withUser';
+import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  Grid,
-  Typography,
-} from '@material-ui/core';
 import { WorkflowHistory } from '@organization/components/workflow/history/WorkflowHistory';
 import * as React from 'react';
-import { ExpenseInformation } from './shared/ExpenseInformation';
+import { InjectedIntlProps, injectIntl } from 'react-intl';
+import { RouteComponentProps, withRouter } from 'react-router';
+import { compose } from 'recompose';
 
-export const RequestDetailView: React.SFC<RequestDetailProps> = props => {
-  const { 
-    dialogFullScreen, dialogOpen, dialogTitle, dialogDescription, dialogCancelText, dialogConfirmedText,
-    handleDialogClose, handleDialogConfirmed, intl
-  } = props;
-  const { isLoading, response } = props.expenseRequestState.detail;
+const config: SingleConfig<IExpenseDetail, AllProps> = {
+  // page info
+  page: (props: AllProps) => ({
+    uid: AppMenu.ExpenseRequest,
+    parentUid: AppMenu.Expense,
+    title: props.intl.formatMessage(expenseMessages.request.page.detailTitle),
+    description : props.intl.formatMessage(expenseMessages.request.page.detailSubTitle)
+  }),
+  
+  // action centre
+  showActionCentre: true,
 
-  const renderDialog = (
-    <Dialog
-      fullScreen={dialogFullScreen}
-      open={dialogOpen}
-      aria-labelledby="expense-detail-dialog-title"
-      aria-describedby="expense-detail-dialog-description"
-    >
-      <DialogTitle id="expense-detail-dialog-title">
-        {dialogTitle || 'title'}
-      </DialogTitle>
-      <DialogContent>
-        <DialogContentText id="expense-detail-dialog-description">
-          {dialogDescription || 'description'}
-        </DialogContentText>
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={handleDialogClose} color="primary">
-          {dialogCancelText || 'cancel'}
-        </Button>
-        <Button onClick={handleDialogConfirmed} color="primary" autoFocus>
-          {dialogConfirmedText || 'confirm'}
-        </Button>
-      </DialogActions>
-    </Dialog>
-  );
+  // more
+  hasMore: true,
+  moreOptions: (props: AllProps, callback: SingleHandler): IAppBarMenu[] => ([
+    {
+      id: ExpenseUserAction.Refresh,
+      name: props.intl.formatMessage(layoutMessage.action.refresh),
+      enabled: true,
+      visible: true,
+      onClick: () => callback.handleForceReload()
+    },
+    {
+      id: ExpenseUserAction.Modify,
+      name: props.intl.formatMessage(layoutMessage.action.modify),
+      enabled: true,
+      visible: true,
+      onClick: () => alert('go to modify page here')
+    }
+  ]),
 
-  const render = (
-    <React.Fragment>
-      {
-        isLoading && 
-        <Typography variant="body2">
-          {intl.formatMessage(layoutMessage.text.loading)}
-        </Typography>
+  // events
+  onDataLoad: (props: AllProps, callback: SingleHandler, forceReload?: boolean | false) => {
+    const { user } = props.userState;
+    const { isLoading, request, response } = props.expenseRequestState.detail;
+    const { loadDetailRequest } = props.expenseRequestDispatch;
+
+    // when user is set and not loading and has projectUid in route params
+    if (user && !isLoading && props.match.params.expenseUid) {
+      // when projectUid was changed or response are empty or force to reload
+      if ((request && request.expenseUid !== props.match.params.expenseUid) || !response || forceReload) {
+        loadDetailRequest({
+          companyUid: user.company.uid,
+          positionUid: user.position.uid,
+          expenseUid: props.match.params.expenseUid
+        });
+      } else {
+        // just take data from previous response
+        callback.handleResponse(response);
       }
-      {
-        !isLoading &&
-        response && 
-        response.data &&
-        <Grid 
-          container 
-          spacing={16} 
-          direction="row"
-          justify="flex-start"
-          alignItems="flex-start"        
-        >
-          <Grid item xs={12} md={4}>
-            {
-              <ExpenseInformation data={response.data} />
-            }
-          </Grid>
+    }
+  },
+  onUpdated: (states: AllProps, callback: SingleHandler) => {
+    const { isLoading, response } = states.expenseRequestState.detail;
+    
+    callback.handleLoading(isLoading);
+    callback.handleResponse(response);
+  },
 
-          <Grid item xs={12} md={4}>
-            {
-              response.data.workflow &&
-              <WorkflowHistory data={response.data.workflow} />
-            }
-          </Grid>
-        </Grid>
-      }
-      {renderDialog}
-    </React.Fragment>
-  );
+  // primary
+  primaryComponent: (data: IExpenseDetail, props: AllProps) => (
+    <ExpenseInformation data={data} />
+  ),
 
-  return render;
+  // secondary (multiple components are allowed)
+  secondaryComponents: (data: IExpenseDetail, props: AllProps) => ([
+    <WorkflowHistory data={data.workflow} />
+  ])
 };
+
+interface OwnRouteParams {
+  expenseUid: string;
+}
+
+type AllProps 
+  = WithUser
+  & WithExpenseRequest
+  & RouteComponentProps<OwnRouteParams>
+  & InjectedIntlProps;
+
+const requestDetailView: React.SFC<AllProps> = props => (
+  <SinglePage
+    config={config}
+    connectedProps={props}
+  />
+);
+
+export const RequestDetailView = compose(
+  withRouter,
+  withUser,
+  withExpenseRequest,
+  injectIntl,
+)(requestDetailView);
