@@ -1,8 +1,11 @@
 import { WorkflowStatusType } from '@common/classes/types';
+import { GlobalFormat } from '@layout/types';
+import { GlobalStyle } from '@layout/types/GlobalStyle';
 import { Card, CardContent, CardHeader, TextField } from '@material-ui/core';
 import { ITimesheetDetail } from '@timesheet/classes/response';
+import { timesheetMessage } from '@timesheet/locales/messages/timesheetMessage';
 import * as React from 'react';
-import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
+import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose } from 'recompose';
 
 interface OwnProps {
@@ -13,74 +16,52 @@ type AllProps
   & InjectedIntlProps;
 
 const timesheetInformation: React.SFC<AllProps> = props => {
-  const { data, intl } = props;
-
-  const styled = {
-    fullWidth: true,
-    InputProps: {
-      disableUnderline: true,
-      readOnly: true
-    }
-  };
-
   const render = (
     <Card square>
       <CardHeader
-        title={<FormattedMessage id="timesheet.infoTitle" />}
-        subheader={<FormattedMessage id="timesheet.infoSubTitle" />}
+        title={props.intl.formatMessage(timesheetMessage.entry.section.infoTitle)}
+        subheader={props.intl.formatMessage(timesheetMessage.entry.section.infoSubHeader)}
       />
       <CardContent>
         <TextField
-          {...styled}
-          margin="dense"
-          label={<FormattedMessage id="timesheet.entry.field.information.uid" />}
-          value={data.uid}
+          {...GlobalStyle.TextField.ReadOnly}
+          label={props.intl.formatMessage(timesheetMessage.entry.field.uid)}
+          value={props.data.uid}
         />
         <TextField
-          {...styled}
-          margin="dense"
-          label={<FormattedMessage id="timesheet.entry.field.information.date" />}
-          value={intl.formatDate(data.date, {
-            year: 'numeric',
-            month: 'short',
-            day: 'numeric'
-          })}
+          {...GlobalStyle.TextField.ReadOnly}
+          label={props.intl.formatMessage(timesheetMessage.entry.field.date)}
+          value={props.intl.formatDate(props.data.date, GlobalFormat.Date)}
         />
         <TextField
-          {...styled}
-          margin="dense"
-          label={<FormattedMessage id="timesheet.entry.field.information.activityType" />}
-          value={data.activity ? data.activity.value : 'N/A'}
+          {...GlobalStyle.TextField.ReadOnly}
+          label={props.intl.formatMessage(timesheetMessage.entry.field.activityType)}
+          value={props.data.activity ? props.data.activity.value : 'N/A'}
         />
         <TextField
-          {...styled}
-          margin="dense"
-          label={<FormattedMessage id="timesheet.entry.field.information.customerUid" />}
-          value={data.customer ? data.customer.name : 'N/A'}
+          {...GlobalStyle.TextField.ReadOnly}
+          label={props.intl.formatMessage(timesheetMessage.entry.field.customerUid)}
+          value={props.data.customer ? props.data.customer.name : 'N/A'}
         />
         <TextField
-          {...styled}
-          margin="dense"
-          label={<FormattedMessage id="timesheet.entry.field.information.projectUid" />}
-          value={data.project ? `${data.project.uid} - ${data.project.name}` : 'N/A'}
+          {...GlobalStyle.TextField.ReadOnly}
+          label={props.intl.formatMessage(timesheetMessage.entry.field.projectUid)}
+          value={props.data.project ? `${props.data.project.uid} - ${props.data.project.name}` : 'N/A'}
         />
         <TextField
-          {...styled}
-          margin="dense"
-          label={<FormattedMessage id="timesheet.entry.field.information.siteUid" />}
-          value={data.site ? data.site.name : 'N/A'}
+          {...GlobalStyle.TextField.ReadOnly}
+          label={props.intl.formatMessage(timesheetMessage.entry.field.siteUid)}
+          value={props.data.site ? props.data.site.name : 'N/A'}
         />
         <TextField
-          {...styled}
-          margin="dense"
-          label={<FormattedMessage id="timesheet.entry.field.information.siteValue" />}
-          value={intl.formatNumber(data.site ? data.site.value : 0)}
+          {...GlobalStyle.TextField.ReadOnly}
+          label={props.intl.formatMessage(timesheetMessage.entry.field.siteValue)}
+          value={props.intl.formatNumber(props.data.site ? props.data.site.value : 0)}
         />
         <TextField
-          {...styled}
-          margin="dense"
-          label={<FormattedMessage id="timesheet.entry.field.information.start" />}
-          value={intl.formatTime(data.start, {
+          {...GlobalStyle.TextField.ReadOnly}
+          label={props.intl.formatMessage(timesheetMessage.entry.field.start)}
+          value={props.intl.formatTime(props.data.start, {
             hour: 'numeric',
             minute: 'numeric',
             timeZone: 'GMT',
@@ -88,10 +69,9 @@ const timesheetInformation: React.SFC<AllProps> = props => {
           })}
         />
         <TextField
-          {...styled}
-          margin="dense"
-          label={<FormattedMessage id="timesheet.entry.field.information.end" />}
-          value={intl.formatTime(data.end, {
+          {...GlobalStyle.TextField.ReadOnly}
+          label={props.intl.formatMessage(timesheetMessage.entry.field.end)}
+          value={props.intl.formatTime(props.data.end, {
             hour: 'numeric',
             minute: 'numeric',
             timeZone: 'GMT',
@@ -99,24 +79,21 @@ const timesheetInformation: React.SFC<AllProps> = props => {
           })}
         />
         <TextField
-          {...styled}
-          margin="dense"
-          label={<FormattedMessage id="timesheet.entry.field.information.totalHours" />}
-          value={data.hours ? data.hours : 0}
+          {...GlobalStyle.TextField.ReadOnly}
+          label={props.intl.formatMessage(timesheetMessage.entry.field.totalHours)}
+          value={props.data.hours ? props.data.hours : 0}
         />
         <TextField
-          {...styled}
-          margin="dense"
-          label={<FormattedMessage id="timesheet.entry.field.information.description" />}
-          value={data.description || 'N/A'}
+          {...GlobalStyle.TextField.ReadOnly}
+          label={props.intl.formatMessage(timesheetMessage.entry.field.notes)}
+          value={props.data.description || 'N/A'}
         />
-        {(data.statusType === WorkflowStatusType.Approved || data.statusType === WorkflowStatusType.Rejected) ?
+        {(props.data.statusType === WorkflowStatusType.Approved || props.data.statusType === WorkflowStatusType.Rejected) ?
           <TextField
-          {...styled}
-          margin="dense"
-          label={<FormattedMessage id="timesheet.entry.field.information.approvalNote" />}
-          value={data.notes || 'N/A'}
-        /> : ''
+            {...GlobalStyle.TextField.ReadOnly}
+            label={props.intl.formatMessage(timesheetMessage.entry.field.approvalNote)}
+            value={props.data.notes || 'N/A'}
+          /> : ''
         }
       </CardContent>
     </Card>

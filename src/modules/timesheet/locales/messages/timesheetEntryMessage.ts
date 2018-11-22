@@ -76,6 +76,8 @@ export const timesheetEntryField = defineMessages({
   
   notes: { id: `${prefix}.field.information.description` },
   notesPlaceholder: { id: `${prefix}.field.information.description.placeholder` },
+
+  approvalNote: { id: `${prefix}.field.information.approvalNote` },
 });
 
 export const timesheetEntryFieldHelperFor = (field: string, type: 'fieldName' | 'fieldRequired' | 'fieldPlaceholder') => {
@@ -93,6 +95,7 @@ export const timesheetEntryFieldHelperFor = (field: string, type: 'fieldName' | 
       case 'start': return timesheetEntryField.start;
       case 'end': return timesheetEntryField.end;
       case 'description': return timesheetEntryField.notes;
+      case 'approvalNote': return timesheetEntryField.approvalNote;
     
       default: return {id: field};
     }
