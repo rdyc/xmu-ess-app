@@ -1,0 +1,192 @@
+import { WithExpenseApproval, withExpenseApproval } from '@expense/hoc/withExpenseApproval';
+import { expenseMessages } from '@expense/locales/messages/expenseMessages';
+import { WithUser, withUser } from '@layout/hoc/withUser';
+import { layoutMessage } from '@layout/locales/messages';
+import { InjectedIntlProps, injectIntl } from 'react-intl';
+import { RouteComponentProps, withRouter } from 'react-router';
+import {
+  compose,
+  HandleCreators,
+  mapper,
+  StateHandler,
+  StateHandlerMap,
+  StateUpdaters,
+  withHandlers,
+  withStateHandlers,
+} from 'recompose';
+
+import { WorkflowStatusType } from '@common/classes/types';
+import { IExpenseApprovalPostPayload } from '@expense/classes/request/approval';
+import { RadioGroupChoice } from '@layout/components/input/radioGroup';
+import { WithLayout, withLayout } from '@layout/hoc/withLayout';
+import { WorkflowApprovalFormData } from '@organization/components/workflow/approval/WorkflowApprovalForm';
+import { organizationMessage } from '@organization/locales/messages/organizationMessage';
+import { Dispatch } from 'redux';
+import { FormErrors } from 'redux-form';
+import { isNullOrUndefined, isObject } from 'util';
+import { ExpenseApprovalDetailView } from './ExpenseApprovalDetailView';
+
+interface OwnRouteParams {
+  expenseUid: string;
+}
+
+interface OwnHandler {
+  handleValidate: (payload: WorkflowApprovalFormData) => FormErrors;
+  handleSubmit: (payload: WorkflowApprovalFormData) => void;
+  handleSubmitSuccess: (result: any, dispatch: Dispatch<any>) => void;
+  handleSubmitFail: (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => void;
+}
+
+interface OwnState {
+  isApprove?: boolean | undefined;
+  approvalTitle: string;
+  approvalSubHeader: string;
+  approvalChoices: RadioGroupChoice[];
+  approvalTrueValue: string;
+  approvalDialogTitle: string;
+  approvalDialogContentText: string;
+  approvalDialogCancelText: string;
+  approvalDialogConfirmedText: string;
+}
+
+interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
+  stateUpdate: StateHandler<OwnState>;
+}
+
+export type ExpenseApprovalDetailProps 
+  = WithUser
+  & WithLayout
+  & WithExpenseApproval
+  & RouteComponentProps<OwnRouteParams>
+  & InjectedIntlProps
+  & OwnState
+  & OwnHandler
+  & OwnStateUpdaters;
+
+const createProps: mapper<ExpenseApprovalDetailProps, OwnState> = (props: ExpenseApprovalDetailProps): OwnState => { 
+  const { intl } = props;
+
+  return {
+    approvalTitle: intl.formatMessage(expenseMessages.approval.section.title),
+    approvalSubHeader: intl.formatMessage(expenseMessages.approval.section.subTitle),
+    approvalChoices: [
+      { value: WorkflowStatusType.Approved, label: intl.formatMessage(organizationMessage.workflow.option.approve) },
+      { value: WorkflowStatusType.Rejected, label: intl.formatMessage(organizationMessage.workflow.option.reject) }
+    ],
+    approvalTrueValue: WorkflowStatusType.Approved,
+    approvalDialogTitle: intl.formatMessage(expenseMessages.approval.dialog.title),
+    approvalDialogContentText: intl.formatMessage(expenseMessages.approval.dialog.content),
+    approvalDialogCancelText: intl.formatMessage(layoutMessage.action.cancel),
+    approvalDialogConfirmedText: intl.formatMessage(layoutMessage.action.continue),
+  };
+};
+
+const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
+  stateUpdate: (prevState: OwnState) => (newState: any) => ({
+    ...prevState,
+    ...newState
+  })
+};
+
+const handlerCreators: HandleCreators<ExpenseApprovalDetailProps, OwnHandler> = {
+  handleValidate: (props: ExpenseApprovalDetailProps) => (formData: WorkflowApprovalFormData) => { 
+    const errors = {};
+  
+    const requiredFields = ['isApproved', 'remark'];    
+  
+    requiredFields.forEach(field => {
+      if (!formData[field] || isNullOrUndefined(formData[field])) {
+        errors[field] = props.intl.formatMessage(organizationMessage.workflow.fieldFor(field, 'fieldRequired'));
+      }
+    });
+    
+    return errors;
+  },
+  handleSubmit: (props: ExpenseApprovalDetailProps) => (formData: WorkflowApprovalFormData) => { 
+    const { match, intl, stateUpdate } = props;
+    const { user } = props.userState;
+    const { createRequest } = props.expenseApprovalDispatch;
+
+    // user checking
+    if (!user) {
+      return Promise.reject('user was not found');
+    }
+
+    // props checking
+    if (!match.params.expenseUid) {
+      const message = intl.formatMessage(expenseMessages.request.message.emptyProps);
+
+      return Promise.reject(message);
+    }
+
+    // compare approval status string
+    const isApproved = formData.isApproved === WorkflowStatusType.Approved;
+
+    stateUpdate({
+      isApprove: isApproved,
+    });
+    
+    // generate payload
+    const payload: IExpenseApprovalPostPayload = {
+      isApproved,
+      remark: !isApproved ? formData.remark : null
+    };
+
+    // dispatch create request
+    return new Promise((resolve, reject) => {
+      createRequest({
+        resolve, 
+        reject,
+        expenseUid: match.params.expenseUid, 
+        companyUid: user.company.uid,
+        positionUid: user.position.uid,
+        data: payload, 
+      });
+    });
+  },
+  handleSubmitSuccess: (props: ExpenseApprovalDetailProps) => () => {
+    const { intl, history, match, isApprove } = props;
+    const { alertAdd } = props.layoutDispatch;
+    let message: string = '';
+    if (isApprove) {
+      message = intl.formatMessage(expenseMessages.approval.message.approveSuccess, { uid: match.params.expenseUid });
+    } else {
+      message = intl.formatMessage(expenseMessages.approval.message.rejectSuccess, { uid: match.params.expenseUid });
+    }
+    alertAdd({
+      message,
+      time: new Date()
+    });
+    if (match.params.expenseUid) {
+      history.push(`/expense/approvals`);
+    }
+  },
+  handleSubmitFail: (props: ExpenseApprovalDetailProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
+    const { intl } = props;
+    const { alertAdd } = props.layoutDispatch;
+    
+    if (errors) {
+      // validation errors from server (400: Bad Request)
+      alertAdd({
+        time: new Date(),
+        message: isObject(submitError) ? submitError.message : submitError
+      });
+    } else {
+      alertAdd({
+        time: new Date(),
+        message: intl.formatMessage(expenseMessages.approval.message.createFailure),
+        details: isObject(submitError) ? submitError.message : submitError
+      });
+    }
+  },
+};
+
+export const ExpenseApprovalDetail = compose(
+  withRouter,
+  withUser,
+  withLayout,
+  withExpenseApproval,
+  injectIntl,
+  withStateHandlers(createProps, stateUpdaters), 
+  withHandlers(handlerCreators),
+)(ExpenseApprovalDetailView);
