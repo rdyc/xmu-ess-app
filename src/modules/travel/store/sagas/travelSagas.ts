@@ -1,6 +1,7 @@
-import { layoutAlertAdd, listBarLoading, listBarMetadata } from '@layout/store/actions';
+import { layoutAlertAdd } from '@layout/store/actions';
 import {
   TravelAction as Action,
+  travelGetAllDispose,
   travelGetAllError,
   travelGetAllRequest,
   travelGetAllSuccess,
@@ -26,8 +27,7 @@ function* watchAllFetchRequest() {
       method: 'get',
       path: `/v1/travel/requests${objectToQuerystring(action.payload.filter)}`, 
       successEffects: (response: IApiResponse) => ([
-        put(travelGetAllSuccess(response.body)),
-        put(listBarMetadata(response.body.metadata))
+        put(travelGetAllSuccess(response.body))
       ]), 
       failureEffects: (response: IApiResponse) => ([
         put(travelGetAllError(response.body)),
@@ -45,7 +45,7 @@ function* watchAllFetchRequest() {
         }))
       ]),
       finallyEffects: [
-        put(listBarLoading(false))
+        // nothing
       ]
     });
   };
@@ -90,6 +90,7 @@ function* watchPostFetchRequest() {
       payload: action.payload.data, 
       successEffects: (response: IApiResponse) => [
         put(travelPostSuccess(response.body)),
+        put(travelGetAllDispose())
       ], 
       successCallback: (response: IApiResponse) => {
         action.payload.resolve(response.body.data);
@@ -134,7 +135,8 @@ function* watchPutFetchRequest() {
       }/${action.payload.travelUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
-        put(travelPutSuccess(response.body))
+        put(travelPutSuccess(response.body)),
+        put(travelGetAllDispose())
       ],
       successCallback: (response: IApiResponse) => {
         action.payload.resolve(response.body.data);

@@ -11,7 +11,7 @@ import { travelApprovalMessage } from '@travel/locales/messages/travelApprovalMe
 import { travelMessage } from '@travel/locales/messages/travelMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
-import { compose, HandleCreators, mapper, withHandlers, withStateHandlers } from 'recompose';
+import { compose, HandleCreators, mapper, StateHandler, StateHandlerMap, StateUpdaters, withHandlers, withStateHandlers } from 'recompose';
 import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
 import { isNullOrUndefined, isObject } from 'util';
@@ -29,6 +29,7 @@ interface OwnRouteParams {
 }
 
 interface OwnState {
+  shouldDataReload: boolean;
   approvalTitle: string;
   approvalSubHeader: string;
   approvalChoices: RadioGroupChoice[];
@@ -39,6 +40,10 @@ interface OwnState {
   approvalDialogConfirmedText: string;
 }
 
+interface OwnStateUpdater extends StateHandlerMap<OwnState> {
+  setDataload: StateHandler<OwnState>;
+}
+
 export type TravelRequestApprovalDetailProps
   = WithTravelApproval
   & WithUser
@@ -46,24 +51,28 @@ export type TravelRequestApprovalDetailProps
   & RouteComponentProps<OwnRouteParams> 
   & InjectedIntlProps
   & OwnHandler
-  & OwnState;
+  & OwnState
+  & OwnStateUpdater;
 
-const createProps: mapper<TravelRequestApprovalDetailProps, OwnState> = (props: TravelRequestApprovalDetailProps): OwnState => {
-  const { intl } = props;
+const createProps: mapper<TravelRequestApprovalDetailProps, OwnState> = (props: TravelRequestApprovalDetailProps): OwnState => ({
+  shouldDataReload: false,
+  approvalTitle: props.intl.formatMessage(travelMessage.request.section.approvalTitle),
+  approvalSubHeader: props.intl.formatMessage(travelMessage.request.section.approvalSubHeader),
+  approvalChoices: [
+    { value: WorkflowStatusType.Approved, label: props.intl.formatMessage(organizationMessage.workflow.option.approve) },
+    { value: WorkflowStatusType.Rejected, label: props.intl.formatMessage(organizationMessage.workflow.option.reject) }
+  ],
+  approvalTrueValue: WorkflowStatusType.Approved,
+  approvalDialogTitle: props.intl.formatMessage(travelMessage.requestApproval.confirm.submissionTitle),
+  approvalDialogContentText: props.intl.formatMessage(travelMessage.requestApproval.confirm.submissionContent),
+  approvalDialogCancelText: props.intl.formatMessage(layoutMessage.action.cancel),
+  approvalDialogConfirmedText: props.intl.formatMessage(layoutMessage.action.continue)
+});
 
-  return {
-    approvalTitle: intl.formatMessage(travelMessage.request.section.approvalTitle),
-    approvalSubHeader: intl.formatMessage(travelMessage.request.section.approvalSubHeader),
-    approvalChoices: [
-      { value: WorkflowStatusType.Approved, label: intl.formatMessage(organizationMessage.workflow.option.approve) },
-      { value: WorkflowStatusType.Rejected, label: intl.formatMessage(organizationMessage.workflow.option.reject) }
-    ],
-    approvalTrueValue: WorkflowStatusType.Approved,
-    approvalDialogTitle: intl.formatMessage(travelMessage.requestApproval.confirm.submissionTitle),
-    approvalDialogContentText: intl.formatMessage(travelMessage.requestApproval.confirm.submissionContent),
-    approvalDialogCancelText: intl.formatMessage(layoutMessage.action.cancel),
-    approvalDialogConfirmedText: intl.formatMessage(layoutMessage.action.continue),
-  };
+const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdater> = {
+  setDataload: (prevState: OwnState) => (): Partial<OwnState> => ({
+    shouldDataReload: !prevState.shouldDataReload
+  })
 };
 
 const handlerCreators: HandleCreators<TravelRequestApprovalDetailProps, OwnHandler> = {
@@ -155,6 +164,6 @@ export const TravelRequestApprovalDetail = compose<TravelRequestApprovalDetailPr
   withLayout,
   withTravelApproval,
   injectIntl,
-  withStateHandlers(createProps, {}),
+  withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
 )(TravelRequestApprovalDetailView);

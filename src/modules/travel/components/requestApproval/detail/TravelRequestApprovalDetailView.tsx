@@ -60,9 +60,14 @@ const config: SingleConfig<ITravelRequestDetail, TravelRequestApprovalDetailProp
       }
     }
   },
-  onUpdated: (states: TravelRequestApprovalDetailProps, callback: SingleHandler) => {
-    const { isLoading, response } = states.travelApprovalState.detail;
+  onDataLoaded: (props: TravelRequestApprovalDetailProps) => {
+    // set data loaded in local state
+    props.setDataload();
+  },
+  onUpdated: (props: TravelRequestApprovalDetailProps, callback: SingleHandler) => {
+    const { isLoading, response } = props.travelApprovalState.detail;
     
+    // set loading status
     callback.handleLoading(isLoading);
 
     // when got a response from api
@@ -109,5 +114,6 @@ export const TravelRequestApprovalDetailView: React.SFC<TravelRequestApprovalDet
   <SinglePage
     config={config}
     connectedProps={props}
+    shouldDataReload={props.shouldDataReload}
   />
 );
