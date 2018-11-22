@@ -1,22 +1,24 @@
+import { WorkflowStatusType } from '@common/classes/types';
 import AppMenu from '@constants/AppMenu';
 import { IExpenseDetail } from '@expense/classes/response';
 import { ExpenseUserAction } from '@expense/classes/types';
 import { ExpenseInformation } from '@expense/components/request/detail/shared/ExpenseInformation';
-import { WithExpenseRequest, withExpenseRequest } from '@expense/hoc/withExpenseRequest';
 import { expenseMessages } from '@expense/locales/messages/expenseMessages';
-import { SingleConfig, SingleHandler, SinglePage } from '@layout/components/pages/singlePage/SinglePage';
-import { WithUser, withUser } from '@layout/hoc/withUser';
+import { DialogConfirmation } from '@layout/components/dialogs';
+import { SingleConfig, SingleHandler, SinglePage, SingleState } from '@layout/components/pages/singlePage/SinglePage';
 import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
 import { WorkflowHistory } from '@organization/components/workflow/history/WorkflowHistory';
 import * as React from 'react';
-import { InjectedIntlProps, injectIntl } from 'react-intl';
-import { RouteComponentProps, withRouter } from 'react-router';
-import { compose } from 'recompose';
+import { ExpenseRequestDetailProps } from './ExpenseRequestDetail';
 
-const config: SingleConfig<IExpenseDetail, AllProps> = {
+const isContains = (statusType: WorkflowStatusType | undefined, statusTypes: string[]): boolean => { 
+  return statusType ? statusTypes.indexOf(statusType) !== -1 : false;
+};
+
+const config: SingleConfig<IExpenseDetail, ExpenseRequestDetailProps> = {
   // page info
-  page: (props: AllProps) => ({
+  page: (props: ExpenseRequestDetailProps) => ({
     uid: AppMenu.ExpenseRequest,
     parentUid: AppMenu.Expense,
     title: props.intl.formatMessage(expenseMessages.request.page.detailTitle),
@@ -28,7 +30,7 @@ const config: SingleConfig<IExpenseDetail, AllProps> = {
 
   // more
   hasMore: true,
-  moreOptions: (props: AllProps, callback: SingleHandler): IAppBarMenu[] => ([
+  moreOptions: (props: ExpenseRequestDetailProps, state: SingleState, callback: SingleHandler): IAppBarMenu[] => ([
     {
       id: ExpenseUserAction.Refresh,
       name: props.intl.formatMessage(layoutMessage.action.refresh),
@@ -40,13 +42,13 @@ const config: SingleConfig<IExpenseDetail, AllProps> = {
       id: ExpenseUserAction.Modify,
       name: props.intl.formatMessage(layoutMessage.action.modify),
       enabled: true,
-      visible: true,
-      onClick: () => alert('go to modify page here')
+      visible: isContains(state.statusType, [ WorkflowStatusType.Submitted, WorkflowStatusType.InProgress ]),
+      onClick: props.handleOnModify
     }
   ]),
 
   // events
-  onDataLoad: (props: AllProps, callback: SingleHandler, forceReload?: boolean | false) => {
+  onDataLoad: (props: ExpenseRequestDetailProps, callback: SingleHandler, forceReload?: boolean | false) => {
     const { user } = props.userState;
     const { isLoading, request, response } = props.expenseRequestState.detail;
     const { loadDetailRequest } = props.expenseRequestDispatch;
@@ -66,44 +68,43 @@ const config: SingleConfig<IExpenseDetail, AllProps> = {
       }
     }
   },
-  onUpdated: (states: AllProps, callback: SingleHandler) => {
+  onUpdated: (states: ExpenseRequestDetailProps, callback: SingleHandler) => {
     const { isLoading, response } = states.expenseRequestState.detail;
     
     callback.handleLoading(isLoading);
-    callback.handleResponse(response);
+
+    // when got a response from api
+    if (response && response.data) {
+      callback.handleResponse(response);
+      callback.handleStatusType(response.data.statusType);
+    }
   },
 
   // primary
-  primaryComponent: (data: IExpenseDetail, props: AllProps) => (
+  primaryComponent: (data: IExpenseDetail, props: ExpenseRequestDetailProps) => (
     <ExpenseInformation data={data} />
   ),
 
   // secondary (multiple components are allowed)
-  secondaryComponents: (data: IExpenseDetail, props: AllProps) => ([
+  secondaryComponents: (data: IExpenseDetail, props: ExpenseRequestDetailProps) => ([
     <WorkflowHistory data={data.workflow} />
   ])
 };
 
-interface OwnRouteParams {
-  expenseUid: string;
-}
-
-type AllProps 
-  = WithUser
-  & WithExpenseRequest
-  & RouteComponentProps<OwnRouteParams>
-  & InjectedIntlProps;
-
-const requestDetailView: React.SFC<AllProps> = props => (
+export const ExpenseRequestDetailView: React.SFC<ExpenseRequestDetailProps> = props => (
   <SinglePage
     config={config}
     connectedProps={props}
-  />
+  >
+    <DialogConfirmation 
+      isOpen={props.dialogOpen}
+      fullScreen={props.dialogFullScreen}
+      title={props.dialogTitle}
+      content={props.dialogContent}
+      labelCancel={props.dialogCancelLabel}
+      labelConfirm={props.dialogConfirmLabel}
+      onClickCancel={props.handleOnCloseDialog}
+      onClickConfirm={props.handleOnConfirm}
+    />
+  </SinglePage>
 );
-
-export const RequestDetailView = compose(
-  withRouter,
-  withUser,
-  withExpenseRequest,
-  injectIntl,
-)(requestDetailView);
