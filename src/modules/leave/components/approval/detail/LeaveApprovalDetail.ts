@@ -11,7 +11,16 @@ import { WorkflowApprovalFormData } from '@organization/components/workflow/appr
 import { organizationMessage } from '@organization/locales/messages/organizationMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
-import { compose, HandleCreators, mapper, withHandlers, withStateHandlers } from 'recompose';
+import {
+  compose,
+  HandleCreators,
+  mapper,
+  StateHandler,
+  StateHandlerMap,
+  StateUpdaters,
+  withHandlers,
+  withStateHandlers,
+} from 'recompose';
 import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
 import { isNullOrUndefined, isObject } from 'util';
@@ -30,6 +39,7 @@ interface OwnRouteParams {
 }
 
 interface OwnState {
+  shouldDataReload: boolean;
   approvalTitle: string;
   approvalSubHeader: string;
   approvalChoices: RadioGroupChoice[];
@@ -40,6 +50,10 @@ interface OwnState {
   approvalDialogConfirmedText: string;
 }
 
+interface OwnStateUpdater extends StateHandlerMap<OwnState> {
+  setDataload: StateHandler<OwnState>;
+}
+
 export type LeaveApprovalDetailProps
   = WithLeaveApproval
   & WithUser
@@ -47,12 +61,14 @@ export type LeaveApprovalDetailProps
   & RouteComponentProps<OwnRouteParams> 
   & InjectedIntlProps
   & OwnHandler
-  & OwnState;
+  & OwnState
+  & OwnStateUpdater;
 
 const createProps: mapper<LeaveApprovalDetailProps, OwnState> = (props: LeaveApprovalDetailProps): OwnState => {
   const { intl } = props;
 
   return {
+    shouldDataReload: false,
     approvalTitle: intl.formatMessage(leaveMessage.request.section.approvalTitle),
     approvalSubHeader: intl.formatMessage(leaveMessage.request.section.approvalSubHeader),
     approvalChoices: [
@@ -65,6 +81,12 @@ const createProps: mapper<LeaveApprovalDetailProps, OwnState> = (props: LeaveApp
     approvalDialogCancelText: intl.formatMessage(layoutMessage.action.cancel),
     approvalDialogConfirmedText: intl.formatMessage(layoutMessage.action.continue),
   };
+};
+
+const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdater> = {
+  setDataload: (prevState: OwnState) => (): Partial<OwnState> => ({
+    shouldDataReload: !prevState.shouldDataReload
+  })
 };
 
 const handlerCreators: HandleCreators<LeaveApprovalDetailProps, OwnHandler> = {
@@ -120,30 +142,24 @@ const handlerCreators: HandleCreators<LeaveApprovalDetailProps, OwnHandler> = {
     });
   },
   handleSubmitSuccess: (props: LeaveApprovalDetailProps) => (response: boolean) => {
-    const { intl, history } = props;
-    const { alertAdd } = props.layoutDispatch;
-    
-    alertAdd({
+    props.layoutDispatch.alertAdd({
       time: new Date(),
-      message: intl.formatMessage(leaveApprovalMessage.submitSuccess),
+      message: props.intl.formatMessage(leaveApprovalMessage.submitSuccess)
     });
 
-    history.push('/Leave/approvals');
+    props.setDataload();
   },
   handleSubmitFail: (props: LeaveApprovalDetailProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
-    const { intl } = props;
-    const { alertAdd } = props.layoutDispatch;
-    
     if (errors) {
       // validation errors from server (400: Bad Request)
-      alertAdd({
+      props.layoutDispatch.alertAdd({
         time: new Date(),
         message: isObject(submitError) ? submitError.message : submitError
       });
     } else {
-      alertAdd({
+      props.layoutDispatch.alertAdd({
         time: new Date(),
-        message: intl.formatMessage(leaveApprovalMessage.submitFailure),
+        message: props.intl.formatMessage(leaveApprovalMessage.submitFailure),
         details: isObject(submitError) ? submitError.message : submitError
       });
     }
@@ -156,6 +172,6 @@ export const LeaveApprovalDetail = compose<LeaveApprovalDetailProps, {}>(
   withLayout,
   withLeaveApproval,
   injectIntl,
-  withStateHandlers(createProps, {}),
+  withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
 )(LeaveApprovalDetailView);

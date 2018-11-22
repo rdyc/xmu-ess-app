@@ -57,6 +57,10 @@ const config: SingleConfig<ILeaveRequestDetail, LeaveApprovalDetailProps> = {
       }
     }
   },
+  onDataLoaded: (props: LeaveApprovalDetailProps) => {
+    // set data loaded in local state
+    props.setDataload();
+  },
   onUpdated: (states: LeaveApprovalDetailProps, callback: SingleHandler) => {
     const { isLoading, response } = states.leaveApprovalState.detail;
     
@@ -104,5 +108,6 @@ export const LeaveApprovalDetailView: React.SFC<LeaveApprovalDetailProps> = prop
   <SinglePage
     config={config}
     connectedProps={props}
+    shouldDataReload={props.shouldDataReload}
   />
 );

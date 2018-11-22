@@ -70,8 +70,8 @@ const config: SingleConfig<ILeaveRequestDetail, LeaveRequestDetailProps> = {
       }
     }
   },
-  onUpdated: (states: LeaveRequestDetailProps, callback: SingleHandler) => {
-    const { isLoading, response } = states.leaveRequestState.detail;
+  onUpdated: (props: LeaveRequestDetailProps, callback: SingleHandler) => {
+    const { isLoading, response } = props.leaveRequestState.detail;
     
     callback.handleLoading(isLoading);
 
