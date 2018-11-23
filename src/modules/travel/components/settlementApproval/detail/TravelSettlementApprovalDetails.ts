@@ -130,7 +130,7 @@ const handlerCreators: HandleCreators<TravelSettlementApprovalDetailProps, OwnHa
     });
   },
   handleSubmitSuccess: (props: TravelSettlementApprovalDetailProps) => (response: boolean) => {
-    const { intl, history } = props;
+    const { intl } = props;
     const { alertAdd } = props.layoutDispatch;
     
     alertAdd({
@@ -138,7 +138,8 @@ const handlerCreators: HandleCreators<TravelSettlementApprovalDetailProps, OwnHa
       message: intl.formatMessage(travelApprovalMessage.submitSuccess),
     });
 
-    history.push('/travel/approvals/settlement');
+    props.setDataload();
+    // history.push('/travel/approvals/settlement');
   },
   handleSubmitFail: (props: TravelSettlementApprovalDetailProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
     const { intl } = props;

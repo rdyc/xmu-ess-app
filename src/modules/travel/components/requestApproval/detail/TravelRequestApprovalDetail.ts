@@ -128,7 +128,7 @@ const handlerCreators: HandleCreators<TravelRequestApprovalDetailProps, OwnHandl
     });
   },
   handleSubmitSuccess: (props: TravelRequestApprovalDetailProps) => (response: boolean) => {
-    const { intl, history } = props;
+    const { intl } = props;
     const { alertAdd } = props.layoutDispatch;
     
     alertAdd({
@@ -136,7 +136,8 @@ const handlerCreators: HandleCreators<TravelRequestApprovalDetailProps, OwnHandl
       message: intl.formatMessage(travelApprovalMessage.submitSuccess),
     });
 
-    history.push('/travel/approvals/request');
+    props.setDataload();
+    // history.push('/travel/approvals/request');
   },
   handleSubmitFail: (props: TravelRequestApprovalDetailProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
     const { intl } = props;
