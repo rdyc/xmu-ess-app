@@ -54,7 +54,7 @@ const purchaseInformation: React.SFC<AllProps> = props => {
           { ...styled }
           margin = "dense"
           label={intl.formatMessage(purchaseMessage.request.field.createdBy)}
-          value={ data.changes.created ? data.changes.created.fullName : 'N/A' }
+          value={ data.changes && data.changes.created ? data.changes.created.fullName : 'N/A' }
           />
           <TextField
           { ...styled }
@@ -95,7 +95,7 @@ const purchaseInformation: React.SFC<AllProps> = props => {
           { ...styled }
           margin = "dense"
           label={intl.formatMessage(purchaseMessage.request.field.request)}
-          value = { intl.formatNumber(data.request) }
+          value = { intl.formatNumber(data.request || 0) }
           />
           { data.currencyType !== 'SCR01' ?
           <TextField
@@ -109,7 +109,7 @@ const purchaseInformation: React.SFC<AllProps> = props => {
           { ...styled }
           margin = "dense"
           label={intl.formatMessage(purchaseMessage.request.field.advance)}
-          value = { intl.formatNumber(data.advance) }
+          value = { intl.formatNumber(data.advance || 0) }
           />
           </CardContent>
           </Card>

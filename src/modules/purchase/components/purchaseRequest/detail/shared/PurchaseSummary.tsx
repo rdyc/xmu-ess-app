@@ -38,6 +38,7 @@ const purchaseSummary: React.SFC<AllProps> = props => (
         margin="dense"
         label={props.intl.formatMessage(purchaseMessage.request.field.reason)}
         value={props.data.reason || 'N/A'}
+        multiline
       />
       : '' }
       <TextField
@@ -45,6 +46,13 @@ const purchaseSummary: React.SFC<AllProps> = props => (
         margin="dense"
         label={props.intl.formatMessage(purchaseMessage.request.field.uid)}
         value={props.data.uid}
+      />
+      <TextField
+        {...styled}
+        multiline={true}
+        margin="dense"
+        label={props.intl.formatMessage(purchaseMessage.request.field.notes)}
+        value={props.data.notes || 'N/A'}
       />
     </Grid>
 
@@ -54,24 +62,14 @@ const purchaseSummary: React.SFC<AllProps> = props => (
         margin="dense"
         label={props.intl.formatMessage(purchaseMessage.request.field.customerUid)}
         value={props.data.customer ? props.data.customer.name : 'N/A'}
+        multiline
       />
       <TextField
         {...styled}
         margin="dense"
         label={props.intl.formatMessage(purchaseMessage.request.field.projectUid)}
-        value={props.data.projectUid || 'N/A'}
-      />
-      <TextField
-        {...styled}
-        margin="dense"
-        value={props.data.project && props.data.project.name || 'N/A'}
-      />
-      <TextField
-        {...styled}
-        multiline={true}
-        margin="dense"
-        label={props.intl.formatMessage(purchaseMessage.request.field.notes)}
-        value={props.data.notes || 'N/A'}
+        value={`${props.data.projectUid || ''} - ${props.data.project && props.data.project.name || ''}`}
+        multiline
       />
     </Grid>
 

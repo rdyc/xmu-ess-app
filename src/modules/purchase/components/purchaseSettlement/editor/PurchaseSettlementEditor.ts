@@ -16,7 +16,7 @@ import {
 } from '@purchase/components/purchaseSettlement/editor/forms/PurchaseSettlementForm';
 import { PurchaseSettlementEditorView } from '@purchase/components/purchaseSettlement/editor/PurchaseSettlementEditorView';
 import { WithPurchaseSettlement, withPurchaseSettlement } from '@purchase/hoc/purchaseSettlement/withPurchaseSettlement';
-import { purchaseRequestMessage } from '@purchase/locales/messages/purchaseRequestMessage';
+import { purchaseMessage } from '@purchase/locales/messages/purchaseMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import {
@@ -198,7 +198,7 @@ const handlers: HandleCreators<PurchaseSettlementEditorProps, OwnHandlers> = {
       };
       
     if (!purchaseUid) {
-      const message = intl.formatMessage(purchaseRequestMessage.emptyPurchaseUid);
+      const message = intl.formatMessage(purchaseMessage.settlement.message.emptyPurchaseUid);
 
       return Promise.reject(message);
     }
@@ -240,11 +240,11 @@ const handlers: HandleCreators<PurchaseSettlementEditorProps, OwnHandlers> = {
     let message: string = '';
 
     if (formMode === FormMode.New) {
-      message = intl.formatMessage(purchaseRequestMessage.createSuccess, { uid: response.uid });
+      message = intl.formatMessage(purchaseMessage.settlement.message.settleSuccess, { uid: response.uid });
     }
 
     if (formMode === FormMode.Edit) {
-      message = intl.formatMessage(purchaseRequestMessage.updateSuccess, { uid: response.uid });
+      message = intl.formatMessage(purchaseMessage.settlement.message.updateSuccess, { uid: response.uid });
     }
 
     alertAdd({
@@ -269,11 +269,11 @@ const handlers: HandleCreators<PurchaseSettlementEditorProps, OwnHandlers> = {
       let message: string = '';
 
       if (formMode === FormMode.New) {
-        message = intl.formatMessage(purchaseRequestMessage.createFailure);
+        message = intl.formatMessage(purchaseMessage.settlement.message.settleFailure);
       }
 
       if (formMode === FormMode.Edit) {
-        message = intl.formatMessage(purchaseRequestMessage.updateFailure);
+        message = intl.formatMessage(purchaseMessage.settlement.message.updateFailure);
       }
 
       alertAdd({
@@ -292,8 +292,8 @@ const lifecycles: ReactLifeCycleFunctions<PurchaseSettlementEditorProps, {}> = {
     const { user } = this.props.userState;
 
     const purchase = {
-      title: 'purchase.form.purchaseSettlement.newTitle',
-      subTitle: 'purchase.form.purchaseSettlement.newSubTitle',
+      title: intl.formatMessage(purchaseMessage.settlement.pages.newTitle),
+      subTitle: intl.formatMessage(purchaseMessage.settlement.pages.newTitle)
     };
 
     if (!user) {
@@ -309,8 +309,8 @@ const lifecycles: ReactLifeCycleFunctions<PurchaseSettlementEditorProps, {}> = {
     if (!isNullOrUndefined(history.location.state)) {
 
       if (!isNullOrUndefined(history.location.state.statusType)) {
-      purchase.title = 'purchase.form.purchaseSettlement.editTitle';
-      purchase.subTitle = 'purchase.form.purchaseSettlement.editSubTitle';
+      purchase.title = intl.formatMessage(purchaseMessage.settlement.pages.modifyTitle);
+      purchase.subTitle = intl.formatMessage(purchaseMessage.settlement.pages.modifyTitle);
 
       stateUpdate({
           formMode: FormMode.Edit,

@@ -1,20 +1,15 @@
-import { WorkflowStatusType } from '@common/classes/types';
-import AppMenu from '@constants/AppMenu';
-import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
-import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
-import { IAppBarMenu } from '@layout/interfaces';
+import { layoutMessage } from '@layout/locales/messages';
 import { PurchaseUserAction } from '@purchase/classes/types';
 import { PurchaseSettlementDetailView } from '@purchase/components/purchaseSettlement/detail/PurchaseSettlementDetailView';
 import { WithPurchaseSettlement, withPurchaseSettlement } from '@purchase/hoc/purchaseSettlement/withPurchaseSettlement';
+import { purchaseMessage } from '@purchase/locales/messages/purchaseMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import {
   compose,
   HandleCreators,
-  lifecycle,
   mapper,
-  ReactLifeCycleFunctions,
   StateHandler,
   StateHandlerMap,
   StateUpdaters,
@@ -22,26 +17,27 @@ import {
   withStateHandlers,
 } from 'recompose';
 
-interface Handler {
-  handlePurchaseRefresh: () => void;
+interface OwnHandler {
   handlePurchaseModify: () => void;
-  handlePurchaseSettle: () => void;
-  handleDialogOpen: (title: string, description: string, cancelText?: string, confirmText?: string, fullScreen?: boolean) => void;
+  handlePurchaseSettle: () => void; 
   handleDialogClose: () => void;
   handleDialogConfirmed: () => void;
 }
 
 interface OwnState {
+  action?: PurchaseUserAction;
   dialogFullScreen: boolean;
   dialogOpen: boolean;
-  dialogTitle?: string | undefined;
-  dialogDescription?: string | undefined;
-  dialogCancelText: string;
-  dialogConfirmedText: string;
+  dialogTitle?: string;
+  dialogContent?: string;
+  dialogCancelLabel?: string;
+  dialogConfirmLabel?: string;
 }
 
 interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
-  stateUpdate: StateHandler<OwnState>;
+  setDefault: StateHandler<OwnState>;
+  setModify: StateHandler<OwnState>;
+  setSettle: StateHandler<OwnState>;
 }
 
 interface OwnRouteParams {
@@ -51,229 +47,85 @@ interface OwnRouteParams {
 export type PurchaseSettlementDetailProps
   = WithPurchaseSettlement
   & WithUser
-  & WithLayout
-  & WithAppBar
   & RouteComponentProps<OwnRouteParams>
   & InjectedIntlProps
   & OwnState
   & OwnStateUpdaters
-  & Handler;
+  & OwnHandler;
 
 const createProps: mapper<PurchaseSettlementDetailProps, OwnState> = (props: PurchaseSettlementDetailProps): OwnState => ({
   dialogFullScreen: false,
   dialogOpen: false,
-  dialogCancelText: 'global.action.cancel',
-  dialogConfirmedText: 'global.action.ok',
 });
 
-const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
-  stateUpdate: (prevState: OwnState) => (newState: any) => ({
-    ...prevState,
-    ...newState
+const stateUpdaters: StateUpdaters<PurchaseSettlementDetailProps, OwnState, OwnStateUpdaters> = {
+  setModify: (prevState: OwnState, props: PurchaseSettlementDetailProps) => (): Partial<OwnState> => ({
+    action: PurchaseUserAction.Modify,
+    dialogFullScreen: false,
+    dialogOpen: true,
+    dialogTitle: props.intl.formatMessage(purchaseMessage.settlement.confirm.modifyTitle),
+    dialogContent: props.intl.formatMessage(purchaseMessage.settlement.confirm.modifyDescription),
+    dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.disaggree),
+    dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.aggree)
   }),
-  stateReset: (prevState: OwnState) => () => ({
+  setSettle: (prevState: OwnState, props: PurchaseSettlementDetailProps) => (): Partial<OwnState> => ({
+    action: PurchaseUserAction.Settle,
+    dialogFullScreen: false,
+    dialogOpen: true,
+    dialogTitle: props.intl.formatMessage(purchaseMessage.settlement.confirm.settleTitle),
+    dialogContent: props.intl.formatMessage(purchaseMessage.settlement.confirm.settleDescription),
+    dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.disaggree),
+    dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.aggree)
+  }),
+  setDefault: (prevState: OwnState) => (): Partial<OwnState> => ({
     ...prevState,
     dialogFullScreen: false,
     dialogOpen: false,
     dialogTitle: undefined,
-    dialogDescription: undefined,
-    dialogCancelText: 'global.action.cancel',
-    dialogConfirmedText: 'global.action.ok',
+    dialogContent: undefined,
+    dialogCancelLabel: undefined,
+    dialogConfirmLabel: undefined,
   })
 };
 
-const handlerCreators: HandleCreators<PurchaseSettlementDetailProps, Handler> = {
-  handlePurchaseRefresh: (props: PurchaseSettlementDetailProps) => () => {
-    const { match } = props;
-    const { user } = props.userState;
-    const { loadDetailRequest } = props.purchaseSettlementDispatch;
-
-    if (user) {
-      loadDetailRequest({
-        purchaseUid: match.params.purchaseUid,
-        companyUid: user.company.uid,
-        positionUid: user.position.uid,
-      });
-    }
-  },
+const handlerCreators: HandleCreators<PurchaseSettlementDetailProps, OwnHandler> = {
   handlePurchaseModify: (props: PurchaseSettlementDetailProps) => () => {
-    const { intl, stateUpdate } = props;
-
-    stateUpdate({
-      dialogFullScreen: false,
-      dialogOpen: true,
-      dialogTitle: intl.formatMessage({ id: 'purchase.dialog.modifyTitle' }),
-      dialogDescription: intl.formatMessage({ id: 'purchase.dialog.modifyDescription' }),
-      dialogCancelText: intl.formatMessage({ id: 'global.action.disaggree' }),
-      dialogConfirmedText: intl.formatMessage({ id: 'global.action.aggree' })
-    });
+    props.setModify();
   },
+  
   handlePurchaseSettle: (props: PurchaseSettlementDetailProps) => () => {
-    const { intl, stateUpdate } = props;
-
-    stateUpdate({
-      dialogFullScreen: false,
-      dialogOpen: true,
-      dialogTitle: intl.formatMessage({ id: 'purchase.dialog.settleTitle' }),
-      dialogDescription: intl.formatMessage({ id: 'purchase.dialog.settleDescription' }),
-      dialogCancelText: intl.formatMessage({ id: 'global.action.disaggree' }),
-      dialogConfirmedText: intl.formatMessage({ id: 'global.action.aggree' })
-    });
+    props.setSettle();
   },
-  handleDialogOpen: (props: PurchaseSettlementDetailProps) => (title: string, description: string, cancelText?: string, confirmText?: string, fullScreen?: boolean) => {
-    const { intl, stateUpdate, dialogCancelText, dialogConfirmedText } = props;
 
-    stateUpdate({
-      dialogFullScreen: fullScreen || false,
-      dialogOpen: true,
-      dialogTitle: title,
-      dialogDescription: description,
-      dialogCancelText: cancelText || intl.formatMessage({ id: dialogCancelText }),
-      dialogConfirmedText: confirmText || intl.formatMessage({ id: dialogConfirmedText })
-    });
-  },
   handleDialogClose: (props: PurchaseSettlementDetailProps) => () => {
-    const { stateReset } = props;
-
-    stateReset();
+    props.setDefault();
   },
   handleDialogConfirmed: (props: PurchaseSettlementDetailProps) => () => {
-    const { 
-      match, 
-      history, stateReset } = props;
     const { response } = props.purchaseSettlementState.detail;
-
-    const purchaseUid = match.params.purchaseUid;
-    // const purchaseUid = response && response.data.uid;
-    const status = response && response.data.statusType;
-
-    stateReset();
-
-    history.push('/purchase/settlements/form/', { uid: purchaseUid, statusType: status });
     
+    let status: string | null | undefined;
+    let purchaseUid: string | undefined;
+
+    if (!props.action || !response) {
+      return;
+    }
+
+    if (response.data) {
+      status = response.data.statusType; 
+      purchaseUid = response.data.uid;
+    }
+
+    props.setDefault();
+
+    props.history.push('/purchase/settlements/form/', { uid: purchaseUid, statusType: status });
   },
 };
 
-const lifecycles: ReactLifeCycleFunctions<PurchaseSettlementDetailProps, OwnState> = {
-  componentDidMount() {
-    const {
-      match, layoutDispatch, appBarDispatch, intl,
-      handlePurchaseRefresh, handlePurchaseModify, handlePurchaseSettle
-    } = this.props;
-
-    const { user } = this.props.userState;
-    const { loadDetailRequest } = this.props.purchaseSettlementDispatch;
-
-    layoutDispatch.changeView({
-      uid: AppMenu.PurchaseSettlementRequest,
-      parentUid: AppMenu.Purchase,
-      title: intl.formatMessage({ id: 'purchasesettlement.detail.title' }),
-      subTitle: intl.formatMessage({ id: 'purchasesettlement.detail.subTitle' })
-    });
-
-    layoutDispatch.navBackShow();
-    layoutDispatch.moreShow();
-
-    const handleMenuClick = (menu: IAppBarMenu): void => {
-      switch (menu.id) {
-        case PurchaseUserAction.Refresh:
-          handlePurchaseRefresh();
-          break;
-
-        case PurchaseUserAction.Modify:
-          handlePurchaseModify();
-          break;
-
-          case PurchaseUserAction.Settle:
-          handlePurchaseSettle();
-          break;
-
-        default:
-          break;
-      }
-    };
-
-    appBarDispatch.assignCallback(handleMenuClick);
-
-    if (user) {
-      loadDetailRequest({
-        purchaseUid: match.params.purchaseUid,
-        companyUid: user.company.uid,
-        positionUid: user.position.uid,
-      });
-    }
-  },
-  componentWillReceiveProps(nextProps: PurchaseSettlementDetailProps) {
-    if (nextProps.purchaseSettlementState.detail.response !== this.props.purchaseSettlementState.detail.response) {
-      const { intl } = nextProps;
-      const { response } = nextProps.purchaseSettlementState.detail;
-      const { assignMenus } = nextProps.appBarDispatch;
-
-      const isStatusTypeEquals = (statusTypes: string[]): boolean => {
-        let result = false;
-
-        if (response && response.data) {
-          result = statusTypes.indexOf(response.data.statusType) !== -1;
-        }
-
-        return result;
-      };
-      const isStatusTypeNull = (): boolean => {
-        let result = false;
-
-        if (response && response.data) {
-          result = response.data.statusType === null;
-        }
-
-        return result;
-      };
-
-      const currentMenus = [
-        {
-          id: PurchaseUserAction.Refresh,
-          name: intl.formatMessage({ id: 'global.action.refresh' }),
-          enabled: true,
-          visible: true
-        },
-        {
-          id: PurchaseUserAction.Modify,
-          name: intl.formatMessage({ id: 'purchase.action.modify' }),
-          enabled: response !== undefined,
-          visible: isStatusTypeEquals([WorkflowStatusType.Submitted, WorkflowStatusType.InProgress])
-        },
-        {
-          id: PurchaseUserAction.Settle,
-          name: intl.formatMessage({ id: 'purchase.action.settle' }),
-          enabled: response !== undefined,
-          visible: (isStatusTypeNull())
-        }
-      ];
-
-      assignMenus(currentMenus);
-    }
-  },
-  componentWillUnmount() {
-    const { layoutDispatch, appBarDispatch, purchaseSettlementDispatch } = this.props;
-
-    layoutDispatch.changeView(null);
-    layoutDispatch.navBackHide();
-    layoutDispatch.moreHide();
-    layoutDispatch.actionCentreHide();
-
-    appBarDispatch.dispose();
-
-    purchaseSettlementDispatch.loadDetailDispose();
-  }
-};
-
-export const PurchaseSettlementDetail = compose<PurchaseSettlementDetailProps, {}>(
+export const PurchaseSettlementDetail = compose(
   withUser,
-  withLayout,
-  withAppBar,
   withRouter,
   withPurchaseSettlement,
   injectIntl,
-  withStateHandlers<OwnState, OwnStateUpdaters, {}>(createProps, stateUpdaters),
-  withHandlers<PurchaseSettlementDetailProps, Handler>(handlerCreators),
-  lifecycle<PurchaseSettlementDetailProps, OwnState>(lifecycles),
+  withStateHandlers(createProps, stateUpdaters),
+  withHandlers(handlerCreators),
 )(PurchaseSettlementDetailView);

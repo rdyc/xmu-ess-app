@@ -1,4 +1,5 @@
 import AppMenu from '@constants/AppMenu';
+// import { ICollectionValue } from '@layout/classes/core';
 import { 
   CollectionConfig, 
   CollectionDataProps, 
@@ -11,22 +12,28 @@ import { Button } from '@material-ui/core';
 import { ISettlement } from '@purchase/classes/response/purchaseSettlement';
 import { PurchaseUserAction, SettlementField } from '@purchase/classes/types';
 import { SettlementSummary } from '@purchase/components/purchaseSettlement/detail/shared/SettlementSummary';
-import { purchaseRequestFieldTranslator } from '@purchase/helper';
-import { withSettlementApproval, WithSettlementApproval } from '@purchase/hoc/settlementHistories/withSettlementApproval';
+import { isSettlementEditable, isSettleReady, purchaseRequestFieldTranslator } from '@purchase/helper';
+import { withPurchaseSettlement, WithPurchaseSettlement } from '@purchase/hoc/purchaseSettlement/withPurchaseSettlement';
+import { purchaseMessage } from '@purchase/locales/messages/purchaseMessage';
 import * as moment from 'moment';
 import * as React from 'react';
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose } from 'recompose';
 
+// const purchaseFields: ICollectionValue[] = Object.keys(SettlementField).map(key => ({ 
+//   value: key, 
+//   name: SettlementField[key] 
+// }));
+
 const config: CollectionConfig<ISettlement, AllProps> = {
   // page info
   page: (props: AllProps) => ({
-  uid: AppMenu.PurchaseSettlementApproval,
+  uid: AppMenu.PurchaseSettlementRequest,
   parentUid: AppMenu.Purchase,
   // title: intl.formatMessage({ id: 'purchase.title' }),
   // description: intl.formatMessage({ id: 'purchase.subTitle' }),
-  title: 'Purchase Settlement Approval',
-  description: 'Lorem ipsum.',
+  title: props.intl.formatMessage(purchaseMessage.settlement.pages.listTitle),
+    description: props.intl.formatMessage(purchaseMessage.settlement.pages.listSubHeader),
   }),
 
   // top bar
@@ -41,10 +48,10 @@ const config: CollectionConfig<ISettlement, AllProps> = {
   searchStatus: (states: AllProps): boolean => {
     let result: boolean = false;
 
-    const { request } = states.settlementApprovalState.all;
+    const { request } = states.purchaseSettlementState.all;
 
-    if (request && request.filter && request.filter['query.find']) {
-      result = request.filter['query.find'] ? true : false;
+    if (request && request.filter && request.filter.find) {
+      result = request.filter.find ? true : false;
     }
 
     return result;
@@ -68,14 +75,14 @@ const config: CollectionConfig<ISettlement, AllProps> = {
   // data filter
   filter: {
     orderBy: 'settlementStatusType',
-    direction: 'descending'
+    direction: 'ascending'
   },
 
   // events
   onDataLoad: (states: AllProps, callback: CollectionHandler, params: CollectionDataProps, forceReload?: boolean | false) => {
     const { user } = states.userState;
-    const { isLoading, response } = states.settlementApprovalState.all;
-    const { loadAllRequest } = states.settlementApprovalDispatch;
+    const { isLoading, response } = states.purchaseSettlementState.all;
+    const { loadAllRequest } = states.purchaseSettlementDispatch;
 
     // when user is set and not loading
     if (user && !isLoading) {
@@ -85,12 +92,12 @@ const config: CollectionConfig<ISettlement, AllProps> = {
           filter: {
             companyUid: user.company.uid,
             positionUid: user.position.uid,
-            'query.find': params.find,
-            'query.findBy': params.findBy,
-            'query.orderBy': params.orderBy,
-            'query.direction': params.direction,
-            'query.page': params.page,
-            'query.size': params.size,
+            find: params.find,
+            findBy: params.findBy,
+            orderBy: params.orderBy,
+            direction: params.direction,
+            page: params.page,
+            size: params.size,
           }
         });
       } else {
@@ -100,14 +107,14 @@ const config: CollectionConfig<ISettlement, AllProps> = {
     }
   },
   onUpdated: (states: AllProps, callback: CollectionHandler) => {
-    const { isLoading, response } = states.settlementApprovalState.all;
+    const { isLoading, response } = states.purchaseSettlementState.all;
 
     callback.handleLoading(isLoading);
     callback.handleResponse(response);
   },
-  onBind: (item: ISettlement, index: number) => ({
+  onBind: (item: ISettlement, index: number, props: AllProps) => ({
     key: index,
-    primary: `${item.currency && item.currency.value} ${item.request}` || item.notes || '',
+    primary: item.actual ? `${item.currency && item.currency.value} ${item.actual}` : props.intl.formatMessage(purchaseMessage.settlement.field.uid),
     secondary: item.projectUid || item.project && item.project.name || '',
     tertiary: item.customer && item.customer.name || item.customerUid || '',
     quaternary: item.uid,
@@ -121,36 +128,50 @@ const config: CollectionConfig<ISettlement, AllProps> = {
     ),
 
   // action component
-  actionComponent: (item: ISettlement, callback: CollectionHandler ) => (
+  actionComponent: (item: ISettlement, callback: CollectionHandler) => (
+    <React.Fragment>
+      {
+        isSettleReady(item.statusType) &&
+        <Button
+          size="small"
+          onClick={() => callback.handleRedirectTo(`/purchase/settlements/form`, { uid: item.uid})}
+        >
+          <FormattedMessage {...purchaseMessage.action.settle} />
+        </Button>
+      }
+      {
+        isSettlementEditable(item.statusType ? item.statusType : '') &&
+        <Button
+          size="small"
+          onClick={() => callback.handleRedirectTo(`/purchase/settlements/form`, { uid: item.uid, statusType: item.statusType})}
+        >
+          <FormattedMessage {...layoutMessage.action.modify} />
+        </Button>
+      }
     <Button 
       size= "small"
-      // onClick = {() => alert(`go to ${item.uid}`)}
-      onClick={() => callback.handleRedirectTo(`/purchase/settlementapprovals/details/${item.uid}`)}
+      onClick={() => callback.handleRedirectTo(`/purchase/settlements/details/${item.uid}`)}
     >
       <FormattedMessage { ...layoutMessage.action.details } />
     </Button>
+    </React.Fragment>
   ),
-
-  // custom row render: uncomment to see different
-  // onRowRender: (item: ISettlement, index: number) => (
-  //   <div key={index}>{item.name}</div>
-  // )
 };
 
 type AllProps
   = WithUser
   & InjectedIntlProps
-  & WithSettlementApproval;
+  & WithPurchaseSettlement;
 
-const settlementApprovalCollectionPage: React.SFC<AllProps> = props => (
+const listView: React.SFC<AllProps> = props => (
   <CollectionPage
     config= { config }
     connectedProps = { props }
   />
 );
 
-export const SettlementApprovalCollectionPage = compose(
+export const PurchaseSettlementList = compose(
   withUser,
   injectIntl,
-  withSettlementApproval
-)(settlementApprovalCollectionPage);
+  withPurchaseSettlement
+)(listView);

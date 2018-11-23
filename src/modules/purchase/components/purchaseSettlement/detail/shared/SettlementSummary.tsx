@@ -36,8 +36,9 @@ const settlementSummary: React.SFC<AllProps> = props => (
       <TextField
         {...styled}
         margin="dense"
-        label={props.intl.formatMessage(purchaseMessage.settlement.field.status)}
+        label={props.intl.formatMessage(purchaseMessage.settlement.field.reject)}
         value={props.data.reject || 'N/A'}
+        multiline
       />
       : '' }
       <TextField
@@ -50,7 +51,7 @@ const settlementSummary: React.SFC<AllProps> = props => (
         {...styled}
         margin="dense"
         label={props.intl.formatMessage(purchaseMessage.settlement.field.request)}
-        value={props.intl.formatNumber(props.data.request || 0)}
+        value={`${props.data.currency && props.data.currency.value} ${props.intl.formatNumber(props.data.request || 0)}`}
       />
     </Grid>
 
@@ -60,17 +61,14 @@ const settlementSummary: React.SFC<AllProps> = props => (
         margin="dense"
         label={props.intl.formatMessage(purchaseMessage.settlement.field.customerUid)}
         value={props.data.customer ? props.data.customer.name : 'N/A'}
+        multiline
       />
       <TextField
         {...styled}
         margin="dense"
         label={props.intl.formatMessage(purchaseMessage.settlement.field.projectUid)}
-        value={props.data.projectUid || 'N/A'}
-      />
-      <TextField
-        {...styled}
-        margin="dense"
-        value={props.data.project && props.data.project.name || 'N/A'}
+        value={`${props.data.projectUid || ''} - ${props.data.project && props.data.project.name || ''}`}
+        multiline
       />
       <TextField
         {...styled}
@@ -92,13 +90,13 @@ const settlementSummary: React.SFC<AllProps> = props => (
         {...styled}
         margin="dense"
         label={props.intl.formatMessage(purchaseMessage.settlement.field.actual)}
-        value={props.intl.formatNumber(props.data.actual || 0)}
+        value={`${props.data.currency && props.data.currency.value} ${props.intl.formatNumber(props.data.actual || 0)}`}
       />
       <TextField
         {...styled}
         margin="dense"
         label={props.intl.formatMessage(purchaseMessage.settlement.field.advance)}
-        value={props.intl.formatNumber(props.data.advance || 0)}
+        value={`${props.data.currency && props.data.currency.value} ${props.intl.formatNumber(props.data.advance || 0)}`}
       />
     </Grid>
 
