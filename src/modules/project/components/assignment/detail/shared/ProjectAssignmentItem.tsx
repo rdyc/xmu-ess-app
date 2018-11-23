@@ -78,8 +78,9 @@ const projectAssignmentItem: React.SFC<AllProps> = props => (
       props.onClickItem &&
       <CardActions>
         <Button 
-          color="secondary"
+          color="primary"
           size="small"
+          fullWidth={true}
           onClick={() => props.onClickItem && props.onClickItem()}
         >
           {props.intl.formatMessage(projectMessage.assignment.option.acceptance)}

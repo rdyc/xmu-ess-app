@@ -1,3 +1,5 @@
+import { WorkflowStatusType } from '@common/classes/types';
+import { layoutMessage } from '@layout/locales/messages';
 import { GlobalFormat } from '@layout/types';
 import { GlobalStyle } from '@layout/types/GlobalStyle';
 import { Card, CardContent, CardHeader, TextField } from '@material-ui/core';
@@ -98,6 +100,38 @@ const projectInformation: React.SFC<AllProps> = props => (
         label={props.intl.formatMessage(projectMessage.registration.field.hours)}
         value={props.intl.formatNumber(props.data.maxHours)}
       />
+
+      {
+        props.data.statusType === WorkflowStatusType.Rejected &&
+        <TextField
+          {...GlobalStyle.TextField.ReadOnly}
+          multiline={true}
+          label={props.intl.formatMessage(projectMessage.registration.field.rejectedReason)}
+          value={props.data.rejectedReason || 'N/A'}
+        />
+      }
+
+      {
+        props.data.changes &&
+        <React.Fragment>
+          <TextField
+            {...GlobalStyle.TextField.ReadOnly}
+            label={props.intl.formatMessage(layoutMessage.field.createdBy)}
+            value={props.data.changes.created && props.data.changes.created.fullName || 'N/A'}
+            helperText={props.intl.formatDate(props.data.changes.createdAt, GlobalFormat.DateTime) || 'N/A'}
+          />
+
+          {
+            (props.data.changes.updated && props.data.changes.updatedAt) &&
+            <TextField
+              {...GlobalStyle.TextField.ReadOnly}
+              label={props.intl.formatMessage(layoutMessage.field.updatedBy)}
+              value={props.data.changes.updated.fullName || 'N/A'}
+              helperText={props.intl.formatDate(props.data.changes.updatedAt, GlobalFormat.DateTime) || 'N/A'}
+            />
+          }
+        </React.Fragment>
+      }
     </CardContent>
   </Card>
 );

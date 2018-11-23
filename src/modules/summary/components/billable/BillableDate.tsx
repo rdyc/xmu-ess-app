@@ -31,7 +31,7 @@ const billableDate: React.SFC<AllProps> = props => {
       leftArrowIcon={<ChevronLeft />}
       rightArrowIcon={<ChevronRight />}
       format={'MMM DD, YYYY'}
-      label={intl.formatMessage({ id: label })}
+      label={label}
       showTodayButton
       disableFuture={disableFuture}
       value={val}
