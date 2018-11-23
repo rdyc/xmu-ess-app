@@ -1,4 +1,5 @@
 import { IEmployeeLeave } from '@account/classes/response';
+import { GlobalStyle } from '@layout/types/GlobalStyle';
 import { Card, CardContent, CardHeader, TextField } from '@material-ui/core';
 import * as React from 'react';
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
@@ -13,15 +14,15 @@ type AllProps
   & InjectedIntlProps;
 
 const accountLeaveInformation: React.SFC<AllProps> = props => {
-  const { data, intl } = props;
+  const { data } = props;
 
-  const styled = {
-    fullWidth: true,
-    InputProps: {
-      disableUnderline: true,
-      readOnly: true
-    }
-  };
+  // const styled = {
+  //   fullWidth: true,
+  //   InputProps: {
+  //     disableUnderline: true,
+  //     readOnly: true
+  //   }
+  // };
   
   const render = (
     <Card square>
@@ -31,34 +32,34 @@ const accountLeaveInformation: React.SFC<AllProps> = props => {
       />
       <CardContent>
         <TextField
-          {...styled}
+          {...GlobalStyle.TextField.ReadOnly}
           margin="normal"
           label={<FormattedMessage id="account.leave.field.information.previousRemain" />}
-          value={intl.formatNumber(data.previousRemain)}
+          value={props.intl.formatNumber(data.previousRemain)}
         />
         <TextField
-          {...styled}
+          {...GlobalStyle.TextField.ReadOnly}
           margin="normal"
           label={<FormattedMessage id="account.leave.field.information.quota" />}
-          value={intl.formatNumber(data.quota)}
+          value={props.intl.formatNumber(data.quota)}
         />
         <TextField
-          {...styled}
+          {...GlobalStyle.TextField.ReadOnly}
           margin="normal"
           label={<FormattedMessage id="account.leave.field.information.annualLeave" />}
-          value={intl.formatNumber(data.annualLeave || 0)}
+          value={props.intl.formatNumber(data.annualLeave || 0)}
         />
         <TextField
-          {...styled}
+          {...GlobalStyle.TextField.ReadOnly}
           margin="normal"
           label={<FormattedMessage id="account.leave.field.information.leaveTaken" />}
-          value={intl.formatNumber(data.leaveTaken || 0)}
+          value={props.intl.formatNumber(data.leaveTaken || 0)}
         />
         <TextField
-          {...styled}
+          {...GlobalStyle.TextField.ReadOnly}
           margin="normal"
           label={<FormattedMessage id="account.leave.field.information.remain" />}
-          value={intl.formatNumber(data.remain)}
+          value={props.intl.formatNumber(data.remain)}
         />
       </CardContent>
     </Card>
