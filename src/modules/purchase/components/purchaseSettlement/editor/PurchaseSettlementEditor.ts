@@ -16,6 +16,7 @@ import {
 } from '@purchase/components/purchaseSettlement/editor/forms/PurchaseSettlementForm';
 import { PurchaseSettlementEditorView } from '@purchase/components/purchaseSettlement/editor/PurchaseSettlementEditorView';
 import { WithPurchaseSettlement, withPurchaseSettlement } from '@purchase/hoc/purchaseSettlement/withPurchaseSettlement';
+import { purchaseMessage } from '@purchase/locales/messages/purchaseMessage';
 import { purchaseRequestMessage } from '@purchase/locales/messages/purchaseRequestMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
@@ -34,7 +35,6 @@ import {
 import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
 import { isNullOrUndefined, isObject } from 'util';
-import { purchaseMessage } from '@purchase/locales/messages/purchaseMessage';
 
 interface OwnHandlers {
   handleValidate: (payload: PurchaseSettlementFormData) => FormErrors;
