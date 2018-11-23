@@ -7,15 +7,16 @@ import { IWorkflowApprovalPayload } from '@organization/classes/request/workflow
 import { WorkflowApprovalFormData } from '@organization/components/workflow/approval/WorkflowApprovalForm';
 import { organizationMessage } from '@organization/locales/messages/organizationMessage';
 import { WithTravelApproval, withTravelApproval } from '@travel/hoc/withTravelApproval';
+import { WithTravelSettlementApproval, withTravelSettlementApproval } from '@travel/hoc/withTravelSettlementApproval';
 import { travelApprovalMessage } from '@travel/locales/messages/travelApprovalMessages';
 import { travelMessage } from '@travel/locales/messages/travelMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
-import { compose, HandleCreators, mapper, StateHandler, StateHandlerMap, StateUpdaters, withHandlers, withStateHandlers } from 'recompose';
+import { compose, HandleCreators, lifecycle, mapper, ReactLifeCycleFunctions, StateHandler, StateHandlerMap, StateUpdaters, withHandlers, withStateHandlers } from 'recompose';
 import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
 import { isNullOrUndefined, isObject } from 'util';
-import { TravelRequestApprovalDetailView } from './TravelRequestApprovalDetailView';
+import { TravelSettlementApprovalDetailViews } from './TravelSettlementApprovalDetailViews';
 
 interface OwnHandler {
   handleValidate: (payload: WorkflowApprovalFormData) => FormErrors;
@@ -25,7 +26,7 @@ interface OwnHandler {
 }
 
 interface OwnRouteParams {
-  travelUid: string;
+  travelSettlementUid: string;
 }
 
 interface OwnState {
@@ -44,8 +45,9 @@ interface OwnStateUpdater extends StateHandlerMap<OwnState> {
   setDataload: StateHandler<OwnState>;
 }
 
-export type TravelRequestApprovalDetailProps
-  = WithTravelApproval
+export type TravelSettlementApprovalDetailProps
+  = WithTravelSettlementApproval
+  & WithTravelApproval
   & WithUser
   & WithLayout
   & RouteComponentProps<OwnRouteParams> 
@@ -54,17 +56,17 @@ export type TravelRequestApprovalDetailProps
   & OwnState
   & OwnStateUpdater;
 
-const createProps: mapper<TravelRequestApprovalDetailProps, OwnState> = (props: TravelRequestApprovalDetailProps): OwnState => ({
+const createProps: mapper<TravelSettlementApprovalDetailProps, OwnState> = (props: TravelSettlementApprovalDetailProps): OwnState => ({
   shouldDataReload: false,
-  approvalTitle: props.intl.formatMessage(travelMessage.request.section.approvalTitle),
-  approvalSubHeader: props.intl.formatMessage(travelMessage.request.section.approvalSubHeader),
+  approvalTitle: props.intl.formatMessage(travelMessage.settlement.section.approvalTitle),
+  approvalSubHeader: props.intl.formatMessage(travelMessage.settlement.section.approvalSubHeader),
   approvalChoices: [
     { value: WorkflowStatusType.Approved, label: props.intl.formatMessage(organizationMessage.workflow.option.approve) },
     { value: WorkflowStatusType.Rejected, label: props.intl.formatMessage(organizationMessage.workflow.option.reject) }
   ],
   approvalTrueValue: WorkflowStatusType.Approved,
-  approvalDialogTitle: props.intl.formatMessage(travelMessage.requestApproval.confirm.submissionTitle),
-  approvalDialogContentText: props.intl.formatMessage(travelMessage.requestApproval.confirm.submissionContent),
+  approvalDialogTitle: props.intl.formatMessage(travelMessage.settlementApproval.confirm.submissionTitle),
+  approvalDialogContentText: props.intl.formatMessage(travelMessage.settlementApproval.confirm.submissionContent),
   approvalDialogCancelText: props.intl.formatMessage(layoutMessage.action.cancel),
   approvalDialogConfirmedText: props.intl.formatMessage(layoutMessage.action.continue)
 });
@@ -75,8 +77,8 @@ const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdater> = {
   })
 };
 
-const handlerCreators: HandleCreators<TravelRequestApprovalDetailProps, OwnHandler> = {
-  handleValidate: (props: TravelRequestApprovalDetailProps) => (formData: WorkflowApprovalFormData) => { 
+const handlerCreators: HandleCreators<TravelSettlementApprovalDetailProps, OwnHandler> = {
+  handleValidate: (props: TravelSettlementApprovalDetailProps) => (formData: WorkflowApprovalFormData) => { 
     const errors = {};
   
     const requiredFields = ['isApproved', 'remark'];
@@ -89,10 +91,10 @@ const handlerCreators: HandleCreators<TravelRequestApprovalDetailProps, OwnHandl
     
     return errors;
   },
-  handleSubmit: (props: TravelRequestApprovalDetailProps) => (formData: WorkflowApprovalFormData) => { 
+  handleSubmit: (props: TravelSettlementApprovalDetailProps) => (formData: WorkflowApprovalFormData) => { 
     const { match, intl } = props;
     const { user } = props.userState;
-    const { createRequest } = props.travelApprovalDispatch;
+    const { createRequest } = props.travelSettlementApprovalDispatch;
 
     // user checking
     if (!user) {
@@ -100,7 +102,7 @@ const handlerCreators: HandleCreators<TravelRequestApprovalDetailProps, OwnHandl
     }
 
     // props checking
-    if (!match.params.travelUid) {
+    if (!match.params.travelSettlementUid) {
       const message = intl.formatMessage(travelApprovalMessage.emptyProps);
 
       return Promise.reject(message);
@@ -122,12 +124,12 @@ const handlerCreators: HandleCreators<TravelRequestApprovalDetailProps, OwnHandl
         reject,
         companyUid: user.company.uid,
         positionUid: user.position.uid,
-        travelUid: match.params.travelUid, 
+        travelSettlementUid: match.params.travelSettlementUid, 
         data: payload, 
       });
     });
   },
-  handleSubmitSuccess: (props: TravelRequestApprovalDetailProps) => (response: boolean) => {
+  handleSubmitSuccess: (props: TravelSettlementApprovalDetailProps) => (response: boolean) => {
     const { intl } = props;
     const { alertAdd } = props.layoutDispatch;
     
@@ -137,9 +139,9 @@ const handlerCreators: HandleCreators<TravelRequestApprovalDetailProps, OwnHandl
     });
 
     props.setDataload();
-    // history.push('/travel/approvals/request');
+    // history.push('/travel/approvals/settlement');
   },
-  handleSubmitFail: (props: TravelRequestApprovalDetailProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
+  handleSubmitFail: (props: TravelSettlementApprovalDetailProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
     const { intl } = props;
     const { alertAdd } = props.layoutDispatch;
     
@@ -159,12 +161,39 @@ const handlerCreators: HandleCreators<TravelRequestApprovalDetailProps, OwnHandl
   }
 };
 
-export const TravelRequestApprovalDetail = compose<TravelRequestApprovalDetailProps, {}>(
+const lifecycles: ReactLifeCycleFunctions<TravelSettlementApprovalDetailProps, OwnState> = {
+  componentWillReceiveProps(nextProps: TravelSettlementApprovalDetailProps) {
+    if (nextProps.travelSettlementApprovalState.detail.response !== this.props.travelSettlementApprovalState.detail.response) {
+      const { response } = nextProps.travelSettlementApprovalState.detail;
+      const { user } = this.props.userState;
+      const { loadDetailRequest } = this.props.travelApprovalDispatch;
+
+      if (user && response) {
+            loadDetailRequest ({
+              companyUid: user.company.uid,
+              positionUid: user.position.uid,
+              travelUid: response.data.travelUid
+            });
+          }
+    }
+  },
+  componentWillUnmount() {
+    const { travelSettlementApprovalDispatch, travelApprovalDispatch } = this.props;
+
+    travelSettlementApprovalDispatch.loadDetailDispose();
+    travelApprovalDispatch.loadDetailDispose();
+    
+  }
+};
+
+export const TravelSettlementApprovalDetails = compose<TravelSettlementApprovalDetailProps, {}>(
   withRouter,
   withUser,
   withLayout,
   withTravelApproval,
+  withTravelSettlementApproval,
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
-)(TravelRequestApprovalDetailView);
+  lifecycle<TravelSettlementApprovalDetailProps, OwnState>(lifecycles),
+)(TravelSettlementApprovalDetailViews);

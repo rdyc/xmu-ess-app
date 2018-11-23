@@ -1,12 +1,14 @@
+import { GlobalStyle } from '@layout/types/GlobalStyle';
 import { Card, CardContent, CardHeader, Grid, TextField, Typography } from '@material-ui/core';
 import { ITravelRequestDetail, ITravelSettlementDetail } from '@travel/classes/response';
+import { travelMessage } from '@travel/locales/messages/travelMessage';
 import * as React from 'react';
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose } from 'recompose';
 
 interface OwnProps {
   data: ITravelSettlementDetail;
-  travelData: ITravelRequestDetail;
+  travelData: ITravelRequestDetail | undefined;
 }
 
 type AllProps
@@ -15,14 +17,6 @@ type AllProps
 
 const travelSettlementSummary: React.SFC<AllProps> = props => {
   const { data, intl, travelData } = props;
-
-  const styled = {
-    fullWidth: true,
-    InputProps: {
-      disableUnderline: true,
-      readOnly: true
-    }
-  };
 
   const render = (
     <Card square>
@@ -37,33 +31,33 @@ const travelSettlementSummary: React.SFC<AllProps> = props => {
               <FormattedMessage id="travelSettlement.subTitleSummary"/>
             </Typography>        
             <TextField
-              {...styled}
+              {...GlobalStyle.TextField.ReadOnly}
               margin="dense"
-              label={<FormattedMessage id="travel.field.information.totalDuration" />}
+              label={props.intl.formatMessage(travelMessage.request.field.totalDuration)}
               value={intl.formatNumber(data.summary ? data.summary.totalDuration : 0)}
             />
             <TextField
-              {...styled}
+              {...GlobalStyle.TextField.ReadOnly}
               margin="dense"
-              label={<FormattedMessage id="travel.field.information.totalDiemValue" />}
+              label={props.intl.formatMessage(travelMessage.request.field.totalDiemValue)}
               value={intl.formatNumber(data.summary ? data.summary.totalDiemValue : 0)}
             />
             <TextField
-              {...styled}
+              {...GlobalStyle.TextField.ReadOnly}
               margin="dense"
-              label={<FormattedMessage id="travel.field.information.costTransport" />}
+              label={props.intl.formatMessage(travelMessage.request.field.totalTransportCost)}
               value={intl.formatNumber(data.summary ? data.summary.totalCostTransport : 0)}
             />
             <TextField
-              {...styled}
+              {...GlobalStyle.TextField.ReadOnly}
               margin="dense"
-              label={<FormattedMessage id="travel.field.information.costHotel" />}
+              label={props.intl.formatMessage(travelMessage.request.field.totalHotelCost)}
               value={intl.formatNumber(data.summary ? data.summary.totalCostHotel : 0)}
             />
             <TextField
-              {...styled}
+              {...GlobalStyle.TextField.ReadOnly}
               margin="dense"
-              label={<FormattedMessage id="travel.field.information.total" />}
+              label={props.intl.formatMessage(travelMessage.request.field.total)}
               value={intl.formatNumber(data.total || 0)}
         />
         </Grid>
@@ -72,34 +66,34 @@ const travelSettlementSummary: React.SFC<AllProps> = props => {
               <FormattedMessage id="travel.subTitleSummary"/>
             </Typography>         
             <TextField
-              {...styled}
+              {...GlobalStyle.TextField.ReadOnly}
               margin="dense"
-              label={<FormattedMessage id="travel.field.information.totalDuration" />}
-              value={intl.formatNumber(travelData.summary ? travelData.summary.totalDuration : 0)}
+              label={props.intl.formatMessage(travelMessage.request.field.totalDuration)}
+              value={intl.formatNumber(travelData && travelData.summary ? travelData.summary.totalDuration : 0)}
             />
             <TextField
-              {...styled}
+              {...GlobalStyle.TextField.ReadOnly}
               margin="dense"
-              label={<FormattedMessage id="travel.field.information.totalDiemValue" />}
-              value={intl.formatNumber(travelData.summary ? travelData.summary.totalDiemValue : 0)}
+              label={props.intl.formatMessage(travelMessage.request.field.totalDiemValue)}
+              value={intl.formatNumber(travelData && travelData.summary ? travelData.summary.totalDiemValue : 0)}
             />
             <TextField
-              {...styled}
+              {...GlobalStyle.TextField.ReadOnly}
               margin="dense"
-              label={<FormattedMessage id="travel.field.information.costTransport" />}
-              value={intl.formatNumber(travelData.summary ? travelData.summary.totalCostTransport : 0)}
+              label={props.intl.formatMessage(travelMessage.request.field.totalTransportCost)}
+              value={intl.formatNumber(travelData && travelData.summary ? travelData.summary.totalCostTransport : 0)}
             />
             <TextField
-              {...styled}
+              {...GlobalStyle.TextField.ReadOnly}
               margin="dense"
-              label={<FormattedMessage id="travel.field.information.costHotel" />}
-              value={intl.formatNumber(travelData.summary ? travelData.summary.totalCostHotel : 0)}
+              label={props.intl.formatMessage(travelMessage.request.field.totalHotelCost)}
+              value={intl.formatNumber(travelData && travelData.summary ? travelData.summary.totalCostHotel : 0)}
             />
             <TextField
-              {...styled}
+              {...GlobalStyle.TextField.ReadOnly}
               margin="dense"
-              label={<FormattedMessage id="travel.field.information.total" />}
-              value={intl.formatNumber(travelData.total || 0)}
+              label={props.intl.formatMessage(travelMessage.request.field.total)}
+              value={intl.formatNumber(travelData && travelData.total || 0)}
           />
           </Grid>
         </Grid>        

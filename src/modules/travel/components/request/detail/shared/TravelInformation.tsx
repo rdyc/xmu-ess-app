@@ -1,11 +1,14 @@
+import { GlobalFormat } from '@layout/types';
+import { GlobalStyle } from '@layout/types/GlobalStyle';
 import { Card, CardContent, CardHeader, TextField } from '@material-ui/core';
 import { ITravelRequestDetail } from '@travel/classes/response';
+import { travelMessage } from '@travel/locales/messages/travelMessage';
 import * as React from 'react';
-import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
+import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose } from 'recompose';
 
 interface OwnProps {
-  data: ITravelRequestDetail;
+  data: ITravelRequestDetail | undefined;
 }
 
 type AllProps
@@ -15,112 +18,102 @@ type AllProps
 const travelInformation: React.SFC<AllProps> = props => {
   const { data, intl } = props;
 
-  const styled = {
-    fullWidth: true,
-    InputProps: {
-      disableUnderline: true,
-      readOnly: true
-    }
-  };
-
   const render = (
     <Card square>
       <CardHeader 
-        title={<FormattedMessage id="travel.infoTitle"/>}
-        subheader={<FormattedMessage id="travel.infoSubTitle" />}
+        title={props.intl.formatMessage(travelMessage.request.section.infoTitle)}
+        subheader={props.intl.formatMessage(travelMessage.request.section.infoSubHeader)}
       />
       <CardContent>
         <TextField
-          {...styled}
+          {...GlobalStyle.TextField.ReadOnly}
           margin="dense"
-          label={<FormattedMessage id="travel.field.information.uid" />}
-          value={data.uid}
+          label={props.intl.formatMessage(travelMessage.request.field.uid)}
+          value={data && data.uid}
         />
         <TextField
-          {...styled}
+          {...GlobalStyle.TextField.ReadOnly}
           margin="dense"
-          label={<FormattedMessage id="travel.field.information.statusType" />}
-          value={data.status ? data.status.value : 'N/A'}
+          label={props.intl.formatMessage(travelMessage.request.field.statusType)}
+          value={data && data.status ? data.status.value : 'N/A'}
         />
         <TextField
-          {...styled}
+          {...GlobalStyle.TextField.ReadOnly}
           margin="dense"
-          label={<FormattedMessage id="travel.field.information.requestor" />}
-          value={data.employee ? data.employee.fullName : 'N/A'}
+          label={props.intl.formatMessage(travelMessage.request.field.employeeUid)}
+          value={data && data.employee ? data.employee.fullName : 'N/A'}
         />
         <TextField
-          {...styled}
+          {...GlobalStyle.TextField.ReadOnly}
           margin="dense"
-          label={<FormattedMessage id="travel.field.information.positionUid" />}
-          value={data.position ? data.position.name : 'N/A'}
+          label={props.intl.formatMessage(travelMessage.request.field.positionUid)}
+          value={data && data.position ? data.position.name : 'N/A'}
         />
         <TextField
-          {...styled}
+          {...GlobalStyle.TextField.ReadOnly}
           margin="dense"
-          label={<FormattedMessage id="travel.field.information.destinationType" />}
-          value={data.destination ? data.destination.value : 'N/A'}
+          label={props.intl.formatMessage(travelMessage.request.field.destinationType)}
+          value={data && data.destination ? data.destination.value : 'N/A'}
+        />
+        {
+          data &&
+          <TextField
+            {...GlobalStyle.TextField.ReadOnly}
+            margin="dense"
+            label={props.intl.formatMessage(travelMessage.request.field.start)}
+            value={intl.formatDate(data.start, GlobalFormat.Date)}
+          />
+        }
+        {
+          data &&
+          <TextField
+            {...GlobalStyle.TextField.ReadOnly}
+            margin="dense"
+            label={props.intl.formatMessage(travelMessage.request.field.end)}
+            value={intl.formatDate(data.end, GlobalFormat.Date)}
+          />
+        }
+        <TextField
+          {...GlobalStyle.TextField.ReadOnly}
+          margin="dense"
+          label={props.intl.formatMessage(travelMessage.request.field.customerUid)}
+          value={data && data.customer ? data.customer.name : 'N/A'}
         />
         <TextField
-          {...styled}
+          {...GlobalStyle.TextField.ReadOnly}
           margin="dense"
-          label={<FormattedMessage id="travel.field.information.start" />}
-          value={intl.formatDate(data.start, {
-            year: 'numeric',
-            month: 'short',
-            day: 'numeric'
-          })}
+          label={props.intl.formatMessage(travelMessage.request.field.projectUid)}
+          value={data && data.project ? data.project.name : 'N/A'}
         />
         <TextField
-          {...styled}
+          {...GlobalStyle.TextField.ReadOnly}
           margin="dense"
-          label={<FormattedMessage id="travel.field.information.end" />}
-          value={intl.formatDate(data.end, {
-            year: 'numeric',
-            month: 'short',
-            day: 'numeric'
-          })}
+          label={props.intl.formatMessage(travelMessage.request.field.siteUid)}
+          value={data && data.site ? data.site.name : 'N/A'}
         />
         <TextField
-          {...styled}
+          {...GlobalStyle.TextField.ReadOnly}
           margin="dense"
-          label={<FormattedMessage id="travel.field.information.customerUid" />}
-          value={data.customer ? data.customer.name : 'N/A'}
+          label={props.intl.formatMessage(travelMessage.request.field.activityType)}
+          value={data && data.activity ? data.activity.value : 'N/A'}
         />
         <TextField
-          {...styled}
+          {...GlobalStyle.TextField.ReadOnly}
           margin="dense"
-          label={<FormattedMessage id="travel.field.information.projectUid" />}
-          value={data.project ? data.project.name : 'N/A'}
+          label={props.intl.formatMessage(travelMessage.request.field.objective)}
+          value={data && data.objective || 'N/A'}
         />
         <TextField
-          {...styled}
+          {...GlobalStyle.TextField.ReadOnly}
           margin="dense"
-          label={<FormattedMessage id="travel.field.information.siteUid" />}
-          value={data.site ? data.site.name : 'N/A'}
+          label={props.intl.formatMessage(travelMessage.request.field.target)}
+          value={data && data.target || 'N/A'}
         />
         <TextField
-          {...styled}
+          {...GlobalStyle.TextField.ReadOnly}
           margin="dense"
-          label={<FormattedMessage id="travel.field.information.activityType" />}
-          value={data.activity ? data.activity.value : 'N/A'}
-        />
-        <TextField
-          {...styled}
-          margin="dense"
-          label={<FormattedMessage id="travel.field.information.objective" />}
-          value={data.objective || 'N/A'}
-        />
-        <TextField
-          {...styled}
-          margin="dense"
-          label={<FormattedMessage id="travel.field.information.target" />}
-          value={data.target || 'N/A'}
-        />
-        <TextField
-          {...styled}
-          margin="dense"
-          label={<FormattedMessage id="travel.field.information.comment" />}
-          value={data.comment || 'N/A'}
+          label={props.intl.formatMessage(travelMessage.request.field.comment)}
+          value={data && data.comment || 'N/A'}
         />        
       </CardContent>
     </Card>
