@@ -147,8 +147,10 @@ const handlerCreators: HandleCreators<RequestEditorProps, OwnHandlers> = {
   handleSubmitSuccess: (props: RequestEditorProps) => (response: IExpense) => {
     const { formMode, intl, history } = props;
     const { alertAdd } = props.layoutDispatch;
+    const { loadDetailDispose } = props.expenseRequestDispatch;
     
     let message: string = '';
+    loadDetailDispose();
 
     if (formMode === FormMode.New) {
       message = intl.formatMessage(expenseMessage.request.message.createSuccess, { uid: response.uid });
@@ -163,7 +165,7 @@ const handlerCreators: HandleCreators<RequestEditorProps, OwnHandlers> = {
       time: new Date()
     });
 
-    history.push('/expense/requests');
+    history.push(`/expense/requests/${response.uid}`);
   },
   handleSubmitFail: (props: RequestEditorProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
     const { formMode, intl } = props;
