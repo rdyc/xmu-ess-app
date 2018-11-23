@@ -21,12 +21,12 @@ const settlementItemInformation: React.SFC<AllProps> = props => (
       title={props.title}
     />
     <CardContent>
-      <TextField
+      {/* <TextField
         {...GlobalStyle.TextField.ReadOnly}
         margin="dense"
         label={props.intl.formatMessage(purchaseMessage.settlement.items.uid)}
         value={props.data && props.data.uid || ''}
-      />
+      /> */}
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
         margin="dense"

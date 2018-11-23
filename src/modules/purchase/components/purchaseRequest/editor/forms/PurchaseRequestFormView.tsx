@@ -35,9 +35,9 @@ export const PurchaseRequestFormView: React.SFC<PurchaseRequestFormProps> = prop
   const onChangeValueRequest = (event: any, newValue: number, oldValue: number) => {
     change('information.request', formRequest );
   };
-  // const onChangeItemRequest = (event: any, newValue: number, oldValue: number) => {
-  //    change('information.request', oldValue);
-  // };
+  const onChangeItemRequest = (event: any, newValue: number, oldValue: number) => {
+    change('information.request', formRequest);
+  };
 
   const componentInformation = (context: BaseFieldsProps) => (
     <PurchaseRequestDetailForm
@@ -56,7 +56,7 @@ export const PurchaseRequestFormView: React.SFC<PurchaseRequestFormProps> = prop
   const componentItems = (context: WrappedFieldArrayProps<any>) => (
   <PurchaseRequestItemForm 
   context={context}
-  onRequestChange={onChangeValueRequest}
+  onRequestChange={onChangeItemRequest}
   />
   );
 

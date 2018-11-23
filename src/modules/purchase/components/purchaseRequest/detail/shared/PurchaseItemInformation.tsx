@@ -25,12 +25,12 @@ const purchaseItemInformation: React.SFC<AllProps> = props => (
         // subheader={<FormattedMessage id="purchase.itemSubTitle" />}
       />
       <CardContent>
-        <TextField
+        {/* <TextField
           {...GlobalStyle.TextField.ReadOnly}
           margin="dense"
           label={props.intl.formatMessage(purchaseMessage.request.items.uid)} 
           value={props.data && props.data.uid || ''}
-        />
+        /> */}
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
           margin="dense"

@@ -87,8 +87,8 @@ export const PurchaseRequestForm = reduxForm<PurchaseRequestFormData, OwnProps>(
   touchOnBlur: true,
   enableReinitialize: true,
   destroyOnUnmount: true,
-  onChange: (values: PurchaseRequestFormData, dispatch: any, props: any) => {
-    dispatchEvent(new CustomEvent('PURCHASE_FORM', { detail: values }));
-  },
+  // onChange: (values: PurchaseRequestFormData, dispatch: any, props: any) => {
+  //   dispatchEvent(new CustomEvent('PURCHASE_FORM', { detail: values }));
+  // },
 })(connectedView);
 // })(enhancedView);
