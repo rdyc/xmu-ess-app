@@ -5,7 +5,7 @@ import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose } from 'recompose';
 
 interface OwnProps {
-  data: ITravelRequestDetail;
+  data: ITravelRequestDetail | undefined;
 }
 
 type AllProps
@@ -34,93 +34,99 @@ const travelInformation: React.SFC<AllProps> = props => {
           {...styled}
           margin="dense"
           label={<FormattedMessage id="travel.field.information.uid" />}
-          value={data.uid}
+          value={data && data.uid}
         />
         <TextField
           {...styled}
           margin="dense"
           label={<FormattedMessage id="travel.field.information.statusType" />}
-          value={data.status ? data.status.value : 'N/A'}
+          value={data && data.status ? data.status.value : 'N/A'}
         />
         <TextField
           {...styled}
           margin="dense"
           label={<FormattedMessage id="travel.field.information.requestor" />}
-          value={data.employee ? data.employee.fullName : 'N/A'}
+          value={data && data.employee ? data.employee.fullName : 'N/A'}
         />
         <TextField
           {...styled}
           margin="dense"
           label={<FormattedMessage id="travel.field.information.positionUid" />}
-          value={data.position ? data.position.name : 'N/A'}
+          value={data && data.position ? data.position.name : 'N/A'}
         />
         <TextField
           {...styled}
           margin="dense"
           label={<FormattedMessage id="travel.field.information.destinationType" />}
-          value={data.destination ? data.destination.value : 'N/A'}
+          value={data && data.destination ? data.destination.value : 'N/A'}
         />
-        <TextField
-          {...styled}
-          margin="dense"
-          label={<FormattedMessage id="travel.field.information.start" />}
-          value={intl.formatDate(data.start, {
-            year: 'numeric',
-            month: 'short',
-            day: 'numeric'
-          })}
-        />
-        <TextField
-          {...styled}
-          margin="dense"
-          label={<FormattedMessage id="travel.field.information.end" />}
-          value={intl.formatDate(data.end, {
-            year: 'numeric',
-            month: 'short',
-            day: 'numeric'
-          })}
-        />
+        {
+          data &&
+          <TextField
+            {...styled}
+            margin="dense"
+            label={<FormattedMessage id="travel.field.information.end" />}
+            value={intl.formatDate(data.end , {
+              year: 'numeric',
+              month: 'short',
+              day: 'numeric'
+            })}
+          />
+        }
+        {
+          data &&
+          <TextField
+            {...styled}
+            margin="dense"
+            label={<FormattedMessage id="travel.field.information.end" />}
+            value={intl.formatDate(data.end , {
+              year: 'numeric',
+              month: 'short',
+              day: 'numeric'
+            })}
+          />
+        }
         <TextField
           {...styled}
           margin="dense"
           label={<FormattedMessage id="travel.field.information.customerUid" />}
-          value={data.customer ? data.customer.name : 'N/A'}
+          value={data && data.customer ? data.customer.name : 'N/A'}
         />
         <TextField
           {...styled}
           margin="dense"
           label={<FormattedMessage id="travel.field.information.projectUid" />}
-          value={data.project ? data.project.name : 'N/A'}
+          value={data && data.project ? data.project.name : 'N/A'}
         />
         <TextField
           {...styled}
           margin="dense"
           label={<FormattedMessage id="travel.field.information.siteUid" />}
-          value={data.site ? data.site.name : 'N/A'}
+          value={data && data.site ? data.site.name : 'N/A'}
         />
         <TextField
           {...styled}
           margin="dense"
           label={<FormattedMessage id="travel.field.information.activityType" />}
-          value={data.activity ? data.activity.value : 'N/A'}
+          value={data && data.activity ? data.activity.value : 'N/A'}
         />
         <TextField
           {...styled}
           margin="dense"
           label={<FormattedMessage id="travel.field.information.objective" />}
-          value={data.objective || 'N/A'}
+          value={data && data.objective || 'N/A'}
         />
         <TextField
           {...styled}
           margin="dense"
           label={<FormattedMessage id="travel.field.information.target" />}
-          value={data.target || 'N/A'}
+          value={data && data.target || 'N/A'}
         />
         <TextField
           {...styled}
           margin="dense"
           label={<FormattedMessage id="travel.field.information.comment" />}
-          value={data.comment || 'N/A'}
+          value={data && data.comment || 'N/A'}
         />        
       </CardContent>
     </Card>

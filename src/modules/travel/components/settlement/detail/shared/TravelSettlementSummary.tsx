@@ -6,7 +6,7 @@ import { compose } from 'recompose';
 
 interface OwnProps {
   data: ITravelSettlementDetail;
-  travelData: ITravelRequestDetail;
+  travelData: ITravelRequestDetail | undefined;
 }
 
 type AllProps
@@ -75,31 +75,31 @@ const travelSettlementSummary: React.SFC<AllProps> = props => {
               {...styled}
               margin="dense"
               label={<FormattedMessage id="travel.field.information.totalDuration" />}
-              value={intl.formatNumber(travelData.summary ? travelData.summary.totalDuration : 0)}
+              value={intl.formatNumber(travelData && travelData.summary ? travelData.summary.totalDuration : 0)}
             />
             <TextField
               {...styled}
               margin="dense"
               label={<FormattedMessage id="travel.field.information.totalDiemValue" />}
-              value={intl.formatNumber(travelData.summary ? travelData.summary.totalDiemValue : 0)}
+              value={intl.formatNumber(travelData && travelData.summary ? travelData.summary.totalDiemValue : 0)}
             />
             <TextField
               {...styled}
               margin="dense"
               label={<FormattedMessage id="travel.field.information.costTransport" />}
-              value={intl.formatNumber(travelData.summary ? travelData.summary.totalCostTransport : 0)}
+              value={intl.formatNumber(travelData && travelData.summary ? travelData.summary.totalCostTransport : 0)}
             />
             <TextField
               {...styled}
               margin="dense"
               label={<FormattedMessage id="travel.field.information.costHotel" />}
-              value={intl.formatNumber(travelData.summary ? travelData.summary.totalCostHotel : 0)}
+              value={intl.formatNumber(travelData && travelData.summary ? travelData.summary.totalCostHotel : 0)}
             />
             <TextField
               {...styled}
               margin="dense"
               label={<FormattedMessage id="travel.field.information.total" />}
-              value={intl.formatNumber(travelData.total || 0)}
+              value={intl.formatNumber(travelData && travelData.total || 0)}
           />
           </Grid>
         </Grid>        
