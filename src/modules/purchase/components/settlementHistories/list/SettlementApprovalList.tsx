@@ -26,8 +26,8 @@ const config: CollectionConfig<ISettlement, AllProps> = {
   parentUid: AppMenu.Purchase,
   // title: intl.formatMessage({ id: 'purchase.title' }),
   // description: intl.formatMessage({ id: 'purchase.subTitle' }),
-  title: props.intl.formatMessage(purchaseMessage.approval.pages.listTitle),
-  description: 'Lorem ipsum.',
+  title: props.intl.formatMessage(purchaseMessage.s_approval.pages.listTitle),
+  description: props.intl.formatMessage(purchaseMessage.s_approval.pages.listSubHeader),
   }),
 
   // top bar
@@ -106,9 +106,9 @@ const config: CollectionConfig<ISettlement, AllProps> = {
     callback.handleLoading(isLoading);
     callback.handleResponse(response);
   },
-  onBind: (item: ISettlement, index: number) => ({
+  onBind: (item: ISettlement, index: number, props: AllProps) => ({
     key: index,
-    primary: `${item.currency && item.currency.value} ${item.request}` || item.notes || '',
+    primary: `${item.currency && item.currency.value} ${props.intl.formatNumber(item.actual || 0)}` ||  '',
     secondary: item.projectUid || item.project && item.project.name || '',
     tertiary: item.customer && item.customer.name || item.customerUid || '',
     quaternary: item.uid,

@@ -115,9 +115,9 @@ const config: CollectionConfig<IPurchase, AllProps> = {
     callback.handleLoading(isLoading);
     callback.handleResponse(response);
   },
-  onBind: (item: IPurchase, index: number) => ({
+  onBind: (item: IPurchase, index: number, props: AllProps) => ({
     key: index,
-    primary: `${item.currency && item.currency.value} ${item.request}` ||  '',
+    primary: `${item.currency && item.currency.value} ${props.intl.formatNumber(item.request || 0)}` ||  '',
     secondary: item.projectUid || item.project && item.project.name || '',
     tertiary: item.customer && item.customer.name || item.customerUid || '',
     quaternary: item.uid,

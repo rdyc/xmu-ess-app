@@ -125,11 +125,9 @@ const handlerCreators: HandleCreators<SettlementApprovalDetailProps, OwnHandler>
   },
   handleSubmitSuccess: (props: SettlementApprovalDetailProps) => () => {
     let message: string = '';
-    if (props.isApprove) {
-      message = props.intl.formatMessage(purchaseMessage.s_approval.message.approveSuccess, { uid: props.match.params.purchaseUid });
-    } else {
-      message = props.intl.formatMessage(purchaseMessage.s_approval.message.rejectSuccess, { uid: props.match.params.purchaseUid });
-    }
+
+    message = props.intl.formatMessage(purchaseMessage.s_approval.message.submitSuccess, { uid: props.match.params.purchaseUid });
+
     props.layoutDispatch.alertAdd({
       message,
       time: new Date()
