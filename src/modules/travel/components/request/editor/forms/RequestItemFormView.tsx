@@ -194,18 +194,6 @@ export const RequestItemFormView: React.SFC<RequestItemFormProps> = props => {
                     label="notes"
                     component={InputText}
                   />
-                  {/* <Field 
-                    type="number"
-                    name={`${field}.duration`}
-                    label="Diem"
-                    disabled={true}
-                    component={InputNumber}
-                    onChange={ (event: any, newValue: any) => {
-                      if (!isNaN(newValue)) {
-                        // props.change(`${field}.amount`, newValue * item.diemValue);
-                      }
-                    }}
-                  /> */}
                   <TextField
                     margin="dense"
                     disabled={true}
@@ -233,14 +221,6 @@ export const RequestItemFormView: React.SFC<RequestItemFormProps> = props => {
                     disabled={true}
                     component={InputText}
                   />
-                   {/* <Field 
-                    type="number"
-                    name={`${field}.amount`}
-                    label="Diem Value"
-                    disabled={true}
-                    component={InputNumber}
-                    onChange={onCostChange}
-                  />*/}
                   <TextField
                     margin="dense"
                     disabled={true}
