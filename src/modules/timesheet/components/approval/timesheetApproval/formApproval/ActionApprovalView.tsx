@@ -1,143 +1,114 @@
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  Grid,
-  List,
-  ListItem,
-  Typography,
-} from '@material-ui/core';
+import AppMenu from '@constants/AppMenu';
+import { SingleConfig, SingleHandler, SinglePage, SingleState } from '@layout/components/pages/singlePage/SinglePage';
+import { IAppBarMenu } from '@layout/interfaces';
+import { layoutMessage } from '@layout/locales/messages';
 import { WorkflowApprovalForm } from '@organization/components/workflow/approval/WorkflowApprovalForm';
-import { ITimesheet } from '@timesheet/classes/response';
-import { ApprovalTimesheetsProps } from '@timesheet/components/approval/timesheetApproval/formApproval/ActionApproval';
-import { parseChanges } from '@utils/parseChanges';
-import * as moment from 'moment';
+import { ITimesheetDetail } from '@timesheet/classes/response';
+import { TimesheetUserAction } from '@timesheet/classes/types';
+import { timesheetMessage } from '@timesheet/locales/messages/timesheetMessage';
 import * as React from 'react';
-import {
-  FormattedDate, FormattedMessage
-} from 'react-intl';
+import { ApprovalTimesheetsProps } from './ActionApproval';
+import { TimesheetBulkInformation } from './TimesheetBulkInformation';
 
-export const ActionApprovalView: React.SFC<ApprovalTimesheetsProps> = props => {
-  const {
-    approvalTitle, approvalSubHeader, approvalChoices, approvalTrueValue,
-    approvalDialogTitle, approvalDialogContentText, approvalDialogCancelText, approvalDialogConfirmedText,
-    handleValidate, handleSubmit, handleSubmitSuccess, handleSubmitFail, timesheets
-  } = props;
+const config: SingleConfig<ITimesheetDetail, ApprovalTimesheetsProps> = {
+  // page info
+  page: (props: ApprovalTimesheetsProps) => ({
+    uid: AppMenu.TimesheetApproval,
+    parentUid: AppMenu.Timesheet,
+    title: props.intl.formatMessage(timesheetMessage.entry.page.detailTitle),
+    description: props.intl.formatMessage(timesheetMessage.entry.page.detailSubHeader)
+  }),
+  
+  // action centre
+  showActionCentre: true,
 
-  const renderDetails = (_timesheets: ITimesheet[] | null | undefined) => {
-    return (
-      timesheets && timesheets.map(timesheet => timesheet &&
-          <ListItem 
-           key={timesheet.uid}
-           button
-          >
-            <Grid container spacing={24}>
-              <Grid item xs={8} sm={8}>
-                <Typography 
-                  noWrap 
-                  color="primary" 
-                  variant="body2"
-                >
-                  {timesheet.uid}
-                </Typography>
-                <Typography 
-                  noWrap
-                  variant="body1"
-                >
-                  {timesheet.employee && timesheet.employee.fullName} &nbsp; &bull; &nbsp;
-                  <FormattedDate
-                    year="numeric"
-                    month="short"
-                    day="numeric"
-                    value={timesheet.date || ''}
-                  />
-                </Typography>
-                <Typography
-                  noWrap
-                  color="textSecondary"
-                  variant="caption"
-                >
-                  {timesheet.customer && timesheet.customer.name} &bull; {timesheet.project && timesheet.project.name}
-                </Typography>
-              </Grid>
-              <Grid item xs={4} sm={4}>
-                <Typography 
-                  noWrap 
-                  variant="body1" 
-                  align="right"
-                >
-                  {timesheet.status && timesheet.status.value}
-                </Typography>
-                <Typography 
-                  noWrap 
-                  color="secondary"
-                  variant="caption" 
-                  align="right"
-                >
-                  {parseChanges(timesheet.changes)}
-                </Typography>
-                <Typography 
-                  noWrap
-                  variant="caption" 
-                  align="right"
-                >
-                  {timesheet.changes && moment(timesheet.changes.updatedAt ? timesheet.changes.updatedAt : timesheet.changes.createdAt).fromNow()}
-                </Typography>
-              </Grid>
-            </Grid>
-          </ListItem>
-      )
-    );
-  };
+  // more
+  hasMore: true,
+  moreOptions: (props: ApprovalTimesheetsProps, state: SingleState, callback: SingleHandler): IAppBarMenu[] => ([
+    {
+      id: TimesheetUserAction.Refresh,
+      name: props.intl.formatMessage(layoutMessage.action.refresh),
+      enabled: true,
+      visible: true,
+      onClick: callback.handleForceReload
+    }
+  ]),
 
-  const render = (
-    <React.Fragment>
-      {
-        <Grid
-          container
-          spacing={16}
-          direction="row"
-          justify="flex-start"
-          alignItems="flex-start">
-          <Grid item xs={12} md={8}>
-            <Card square>
-              <CardHeader
-                title={<FormattedMessage id="timesheet.infoTitle" />}
-                subheader={<FormattedMessage id="timesheet.infoSubTitle" />}
-              />
-              <CardContent>
-                <List>
-                {
-                  timesheets &&
-                  renderDetails(timesheets)
-                }
-                </List>
-              </CardContent>
-            </Card>
-          </Grid>
-          <Grid item xs={12} md={4}>
-            <Grid container spacing={16}>
-              <Grid item>
-                <WorkflowApprovalForm
-                  approvalTitle={approvalTitle}
-                  approvalSubHeader={approvalSubHeader}
-                  approvalChoices={approvalChoices}
-                  approvalTrueValue={approvalTrueValue}
-                  approvalDialogTitle={approvalDialogTitle}
-                  approvalDialogContentText={approvalDialogContentText}
-                  approvalDialogCancelText={approvalDialogCancelText}
-                  approvalDialogConfirmedText={approvalDialogConfirmedText}
-                  validate={handleValidate}
-                  onSubmit={handleSubmit}
-                  onSubmitSuccess={handleSubmitSuccess}
-                  onSubmitFail={handleSubmitFail}
-                />
-              </Grid>
-            </Grid>
-          </Grid>
-        </Grid>
+  // events
+  onDataLoad: (props: ApprovalTimesheetsProps, callback: SingleHandler, forceReload?: boolean | false) => {
+    // fool the system
+    const { user } = props.userState;
+    const { isLoading, request, response } = props.timesheetApprovalState.detail;
+    const { loadDetailRequest } = props.timesheetApprovalDispatch;
+
+    // when user is set and not loading and has projectUid in route params
+    if (user && !isLoading && props.timesheetUids[0]) {
+      // when projectUid was changed or response are empty or force to reload
+      if ((request && request.timesheetUid !== props.timesheetUids[0]) || !response || forceReload) {
+        loadDetailRequest({
+          companyUid: user.company.uid,
+          positionUid: user.position.uid,
+          timesheetUid: props.timesheetUids[0]
+        });
+      } else {
+        // just take data from previous response
+        callback.handleResponse(response);
       }
-    </React.Fragment>
-  );
-  return render;
+    }
+
+    // actually pull data from list like a boss
+    const { handleLoadData } = props;
+    
+    handleLoadData();
+  },
+  onDataLoaded: (props: ApprovalTimesheetsProps) => {
+    // set data loaded in local state
+    props.setDataload();
+  },
+  onUpdated: (states: ApprovalTimesheetsProps, callback: SingleHandler) => {
+    const { isLoading, response } = states.timesheetApprovalState.detail;
+    
+    callback.handleLoading(isLoading);
+
+    // when got a response from api
+    if (response && response.data) {
+      callback.handleResponse(response);
+      callback.handleStatusType(response.data.statusType);
+    }
+  },
+
+  // primary
+  primaryComponent: (data: ITimesheetDetail, props: ApprovalTimesheetsProps) => (
+    <TimesheetBulkInformation 
+      data={props.timesheets}
+    />
+  ),
+
+  // secondary (multiple components are allowed)
+  secondaryComponents: (data: ITimesheetDetail, props: ApprovalTimesheetsProps) => ([
+    <React.Fragment>
+      <WorkflowApprovalForm
+        approvalTitle={props.approvalTitle}
+        approvalSubHeader={props.approvalSubHeader}
+        approvalChoices={props.approvalChoices}
+        approvalTrueValue={props.approvalTrueValue}
+        approvalDialogTitle={props.approvalDialogTitle}
+        approvalDialogContentText={props.approvalDialogContentText}
+        approvalDialogCancelText={props.approvalDialogCancelText}
+        approvalDialogConfirmedText={props.approvalDialogConfirmedText}
+        validate={props.handleValidate}
+        onSubmit={props.handleSubmit} 
+        onSubmitSuccess={props.handleSubmitSuccess}
+        onSubmitFail={props.handleSubmitFail}
+      />
+    </React.Fragment>,
+  ])
 };
+
+export const ActionApprovalView: React.SFC<ApprovalTimesheetsProps> = props => (
+  <SinglePage
+    config={config}
+    connectedProps={props}
+    shouldDataReload={props.shouldDataReload}
+  />
+);

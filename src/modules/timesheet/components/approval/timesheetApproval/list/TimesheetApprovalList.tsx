@@ -40,8 +40,8 @@ const config: CollectionConfig<ITimesheet, AllProps> = {
 
   // selection
   hasSelection: true,
-  onProcessSelection: (values: string[]) => {
-    alert(values.toString());
+  onProcessSelection: (values: string[], callback: CollectionHandler) => {
+    callback.handleRedirectTo(`/timesheet/approvals/action`, {values} );
   },
 
   // searching
