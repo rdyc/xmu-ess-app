@@ -85,6 +85,7 @@
   "project.registration.field.valueUsd.placeholder": "Type a project value",
   "project.registration.field.valueIdr": "Value (IDR)",
   "project.registration.field.hours": "Max. Hours",
+  "project.registration.field.rejectedReason": "Rejected Reason",
   
   "project.registration.message.emptyProps": "Some props are empty",
   "project.registration.message.emptySales": "Sales not found",
