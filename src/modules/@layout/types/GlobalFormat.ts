@@ -16,7 +16,15 @@ const DateTimeOption: IntlComponent.DateTimeFormatProps = {
   second: 'numeric'
 };
 
+const TimeOption: IntlComponent.DateTimeFormatProps = {
+  hour12: false,
+  hour: 'numeric',
+  minute: 'numeric',
+  timeZone: 'GMT'
+};
+
 export const GlobalFormat = {
   Date: DateOption,
-  DateTime: DateTimeOption
+  DateTime: DateTimeOption,
+  Time: TimeOption
 };

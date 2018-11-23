@@ -68,22 +68,12 @@ const timesheetEntrySummary: React.SFC<AllProps> = props => (
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
         label={props.intl.formatMessage(timesheetMessage.entry.field.start)}
-        value={props.intl.formatTime(props.data.start, {
-          hour: 'numeric',
-          minute: 'numeric',
-          timeZone: 'GMT',
-          hour12: false
-        })}
+        value={props.intl.formatTime(props.data.start, GlobalFormat.Time)}
       />
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
         label={props.intl.formatMessage(timesheetMessage.entry.field.end)}
-        value={props.intl.formatTime(props.data.end, {
-          hour: 'numeric',
-          minute: 'numeric',
-          timeZone: 'GMT',
-          hour12: false
-        })}
+        value={props.intl.formatTime(props.data.end, GlobalFormat.Time)}
       />
     </Grid>
 

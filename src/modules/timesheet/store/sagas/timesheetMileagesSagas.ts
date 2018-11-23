@@ -1,4 +1,4 @@
-import { layoutAlertAdd, listBarLoading, listBarMetadata } from '@layout/store/actions';
+import { layoutAlertAdd } from '@layout/store/actions';
 import {
   TimesheetMileagesAction as Action,
   timesheetMileagesGetAllError,
@@ -15,8 +15,7 @@ function* watchAllFetchRequest() {
       method: 'get',
       path: `/v1/timesheet/reports/mileages${objectToQuerystring(action.payload.filter)}`, 
       successEffects: (response: IApiResponse) => ([
-        put(timesheetMileagesGetAllSuccess(response.body)),
-        put(listBarMetadata(response.body.metadata))
+        put(timesheetMileagesGetAllSuccess(response.body))
       ]), 
       failureEffects: (response: IApiResponse) => ([
         put(timesheetMileagesGetAllError(response.body)),
@@ -34,7 +33,7 @@ function* watchAllFetchRequest() {
         }))
       ]),
       finallyEffects: [
-        put(listBarLoading(false))
+        // put(listBarLoading(false))
       ]
     });
   };
