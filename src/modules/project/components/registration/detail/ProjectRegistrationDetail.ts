@@ -114,6 +114,7 @@ const stateUpdaters: StateUpdaters<ProjectRegistrationDetailProps, OwnState, Own
     dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.continue),
   }),
   setDefault: (prevState: OwnState) => (): Partial<OwnState> => ({
+    action: undefined,
     dialogFullScreen: false,
     dialogOpen: false,
     dialogTitle: undefined,

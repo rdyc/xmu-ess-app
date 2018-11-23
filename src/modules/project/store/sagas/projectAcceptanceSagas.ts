@@ -5,6 +5,7 @@ import {
   projectAcceptanceGetAllError,
   projectAcceptanceGetAllRequest,
   projectAcceptanceGetAllSuccess,
+  projectAcceptanceGetByIdDispose,
   projectAcceptanceGetByIdError,
   projectAcceptanceGetByIdRequest,
   projectAcceptanceGetByIdSuccess,
@@ -101,7 +102,8 @@ function* watchPostRequest() {
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
         put(projectAcceptancePostSuccess(response.body)),
-        put(projectAcceptanceGetAllDispose())
+        put(projectAcceptanceGetAllDispose()),
+        put(projectAcceptanceGetByIdDispose())
       ],
       successCallback: (response: IApiResponse) => {
         action.payload.resolve(response.body.data);
