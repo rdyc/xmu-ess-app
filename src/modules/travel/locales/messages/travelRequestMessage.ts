@@ -94,10 +94,10 @@ export const travelRequestField = defineMessages({
   commentPlaceholder: { id: `${prefix}.field.comment.placeholder` },
 
   total: { id: `${prefix}.field.total` },
-  totalDuration: { id: `${prefix}.field.total` },
-  totalDiemValue: { id: `${prefix}.field.total` },
-  totalTransportCost: { id: `${prefix}.field.total` },
-  totalHotelCost: { id: `${prefix}.field.total` },
+  totalDuration: { id: `${prefix}.field.totalDuration` },
+  totalDiemValue: { id: `${prefix}.field.totalDiemValue` },
+  totalTransportCost: { id: `${prefix}.field.totalTransportCost` },
+  totalHotelCost: { id: `${prefix}.field.totalHotelCost` },
 
   //// item
   

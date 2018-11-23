@@ -68,31 +68,31 @@ const travelSettlementSummary: React.SFC<AllProps> = props => {
             <TextField
               {...GlobalStyle.TextField.ReadOnly}
               margin="dense"
-              label={<FormattedMessage id="travel.field.information.totalDuration" />}
+              label={props.intl.formatMessage(travelMessage.request.field.totalDuration)}
               value={intl.formatNumber(travelData && travelData.summary ? travelData.summary.totalDuration : 0)}
             />
             <TextField
               {...GlobalStyle.TextField.ReadOnly}
               margin="dense"
-              label={<FormattedMessage id="travel.field.information.totalDiemValue" />}
+              label={props.intl.formatMessage(travelMessage.request.field.totalDiemValue)}
               value={intl.formatNumber(travelData && travelData.summary ? travelData.summary.totalDiemValue : 0)}
             />
             <TextField
               {...GlobalStyle.TextField.ReadOnly}
               margin="dense"
-              label={<FormattedMessage id="travel.field.information.costTransport" />}
+              label={props.intl.formatMessage(travelMessage.request.field.totalTransportCost)}
               value={intl.formatNumber(travelData && travelData.summary ? travelData.summary.totalCostTransport : 0)}
             />
             <TextField
               {...GlobalStyle.TextField.ReadOnly}
               margin="dense"
-              label={<FormattedMessage id="travel.field.information.costHotel" />}
+              label={props.intl.formatMessage(travelMessage.request.field.totalHotelCost)}
               value={intl.formatNumber(travelData && travelData.summary ? travelData.summary.totalCostHotel : 0)}
             />
             <TextField
               {...GlobalStyle.TextField.ReadOnly}
               margin="dense"
-              label={<FormattedMessage id="travel.field.information.total" />}
+              label={props.intl.formatMessage(travelMessage.request.field.total)}
               value={intl.formatNumber(travelData && travelData.total || 0)}
           />
           </Grid>
