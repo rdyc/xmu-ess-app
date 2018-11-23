@@ -1,4 +1,5 @@
 import { GlobalFormat } from '@layout/types';
+import { GlobalStyle } from '@layout/types/GlobalStyle';
 import { Card, CardContent, CardHeader, TextField } from '@material-ui/core';
 import { ITravelRequestDetail } from '@travel/classes/response';
 import { travelMessage } from '@travel/locales/messages/travelMessage';
@@ -17,14 +18,6 @@ type AllProps
 const travelInformation: React.SFC<AllProps> = props => {
   const { data, intl } = props;
 
-  const styled = {
-    fullWidth: true,
-    InputProps: {
-      disableUnderline: true,
-      readOnly: true
-    }
-  };
-
   const render = (
     <Card square>
       <CardHeader 
@@ -33,31 +26,31 @@ const travelInformation: React.SFC<AllProps> = props => {
       />
       <CardContent>
         <TextField
-          {...styled}
+          {...GlobalStyle.TextField.ReadOnly}
           margin="dense"
           label={props.intl.formatMessage(travelMessage.request.field.uid)}
           value={data && data.uid}
         />
         <TextField
-          {...styled}
+          {...GlobalStyle.TextField.ReadOnly}
           margin="dense"
           label={props.intl.formatMessage(travelMessage.request.field.statusType)}
           value={data && data.status ? data.status.value : 'N/A'}
         />
         <TextField
-          {...styled}
+          {...GlobalStyle.TextField.ReadOnly}
           margin="dense"
           label={props.intl.formatMessage(travelMessage.request.field.employeeUid)}
           value={data && data.employee ? data.employee.fullName : 'N/A'}
         />
         <TextField
-          {...styled}
+          {...GlobalStyle.TextField.ReadOnly}
           margin="dense"
           label={props.intl.formatMessage(travelMessage.request.field.positionUid)}
           value={data && data.position ? data.position.name : 'N/A'}
         />
         <TextField
-          {...styled}
+          {...GlobalStyle.TextField.ReadOnly}
           margin="dense"
           label={props.intl.formatMessage(travelMessage.request.field.destinationType)}
           value={data && data.destination ? data.destination.value : 'N/A'}
@@ -65,7 +58,7 @@ const travelInformation: React.SFC<AllProps> = props => {
         {
           data &&
           <TextField
-            {...styled}
+            {...GlobalStyle.TextField.ReadOnly}
             margin="dense"
             label={props.intl.formatMessage(travelMessage.request.field.start)}
             value={intl.formatDate(data.start, GlobalFormat.Date)}
@@ -74,50 +67,50 @@ const travelInformation: React.SFC<AllProps> = props => {
         {
           data &&
           <TextField
-            {...styled}
+            {...GlobalStyle.TextField.ReadOnly}
             margin="dense"
             label={props.intl.formatMessage(travelMessage.request.field.end)}
             value={intl.formatDate(data.end, GlobalFormat.Date)}
           />
         }
         <TextField
-          {...styled}
+          {...GlobalStyle.TextField.ReadOnly}
           margin="dense"
           label={props.intl.formatMessage(travelMessage.request.field.customerUid)}
           value={data && data.customer ? data.customer.name : 'N/A'}
         />
         <TextField
-          {...styled}
+          {...GlobalStyle.TextField.ReadOnly}
           margin="dense"
           label={props.intl.formatMessage(travelMessage.request.field.projectUid)}
           value={data && data.project ? data.project.name : 'N/A'}
         />
         <TextField
-          {...styled}
+          {...GlobalStyle.TextField.ReadOnly}
           margin="dense"
           label={props.intl.formatMessage(travelMessage.request.field.siteUid)}
           value={data && data.site ? data.site.name : 'N/A'}
         />
         <TextField
-          {...styled}
+          {...GlobalStyle.TextField.ReadOnly}
           margin="dense"
           label={props.intl.formatMessage(travelMessage.request.field.activityType)}
           value={data && data.activity ? data.activity.value : 'N/A'}
         />
         <TextField
-          {...styled}
+          {...GlobalStyle.TextField.ReadOnly}
           margin="dense"
           label={props.intl.formatMessage(travelMessage.request.field.objective)}
           value={data && data.objective || 'N/A'}
         />
         <TextField
-          {...styled}
+          {...GlobalStyle.TextField.ReadOnly}
           margin="dense"
           label={props.intl.formatMessage(travelMessage.request.field.target)}
           value={data && data.target || 'N/A'}
         />
         <TextField
-          {...styled}
+          {...GlobalStyle.TextField.ReadOnly}
           margin="dense"
           label={props.intl.formatMessage(travelMessage.request.field.comment)}
           value={data && data.comment || 'N/A'}
