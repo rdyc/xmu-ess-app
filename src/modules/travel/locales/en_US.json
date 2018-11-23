@@ -13,7 +13,7 @@
   
   "travel.settlementApproval.page.list.title": "Travel Settlement Approval",
   "travel.settlementApproval.page.list.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-  "travel.settlementApproval.page.detail.title": "Travel Approval Detail",
+  "travel.settlementApproval.page.detail.title": "Travel Settlement Approval Detail",
   
   "travel.request.option.addSettlement": "Add Settlement",
 
@@ -27,9 +27,15 @@
 
   "travel.request.section.approval.title": "Approval",
   "travel.request.section.approval.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  
+  "travel.settlement.section.approval.title": "Approval",
+  "travel.settlement.section.approval.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
 
   "travel.approval.confirm.submission.title": "Travel Approval Submission",
   "travel.approval.confirm.submission.content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  
+  "travel.settlementApproval.confirm.submission.title": "Travel Approval Submission",
+  "travel.settlementApproval.confirm.submission.content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
 
   "travel.title": "Travels",
   "travelSettlement.title": "Travel Settlement",

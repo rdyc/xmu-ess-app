@@ -23,7 +23,7 @@ const isContains = (statusType: WorkflowStatusType | undefined, statusTypes: str
 const config: SingleConfig<ITravelSettlementDetail, TravelSettlementDetailProps> = {
   // page info
   page: (props: TravelSettlementDetailProps) => ({
-    uid: AppMenu.TravelRequest,
+    uid: AppMenu.TravelSettlementRequest,
     parentUid: AppMenu.Travel,
     title: props.intl.formatMessage(travelMessage.settlement.page.detailTitle),
     description: props.intl.formatMessage(travelMessage.settlement.page.detailSubHeader)
@@ -55,7 +55,6 @@ const config: SingleConfig<ITravelSettlementDetail, TravelSettlementDetailProps>
   onDataLoad: (props: TravelSettlementDetailProps, callback: SingleHandler, forceReload?: boolean | false) => {
     const { user } = props.userState;
     const { isLoading, request, response } = props.travelSettlementState.detail;
-    const travelResponse = props.travelRequestState.detail.response;
     const { loadRequest } = props.travelSettlementDispatch;
 
     // when user is set and not loading and has projectUid in route params
@@ -69,20 +68,20 @@ const config: SingleConfig<ITravelSettlementDetail, TravelSettlementDetailProps>
         });
       } else {
         // just take data from previous response
-        callback.handleResponse(response);
-        callback.handleResponse(travelResponse);
+        callback.handleResponse(response);        
         callback.handleStatusType(response.data.statusType);
       }
     }
   },
   onUpdated: (states: TravelSettlementDetailProps, callback: SingleHandler) => {
     const { isLoading, response } = states.travelSettlementState.detail;
-
+  
     callback.handleLoading(isLoading);
 
     if (response && response.data) {
       callback.handleResponse(response);
       callback.handleStatusType(response.data.statusType);
+      callback.handleForceReload();
     }
   },
 
