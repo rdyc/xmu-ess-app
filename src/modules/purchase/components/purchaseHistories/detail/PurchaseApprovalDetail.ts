@@ -163,7 +163,7 @@ const createProps: mapper<PurchaseApprovalDetailProps, OwnState> = (props: Purch
     ],
     approvalTrueValue: WorkflowStatusType.Approved,
     approvalDialogTitle: props.intl.formatMessage(purchaseMessage.approval.confirm.approveTitle),
-    approvalDialogContentText: props.intl.formatMessage(purchaseMessage.s_approval.confirm.approveTitle),
+    approvalDialogContentText: props.intl.formatMessage(purchaseMessage.approval.confirm.approveTitle),
     approvalDialogCancelText: props.intl.formatMessage(layoutMessage.action.discard),
     approvalDialogConfirmedText: props.intl.formatMessage(layoutMessage.action.continue),
 

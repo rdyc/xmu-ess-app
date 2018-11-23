@@ -3,11 +3,11 @@ import { defineMessages } from 'react-intl';
 const prefix = 'purchase';
 
 export const purchaseSettlementMessage = defineMessages({
-  emptyPurchaseUid: { id: 'purchase.message.purchaseRequest.empty.purchaseUid' },
-  createSuccess: { id: 'purchase.message.purchaseRequest.create.success' },
-  createFailure: { id: 'purchase.message.purchaseRequest.create.failure' },
-  updateSuccess: { id: 'purchase.message.purchaseRequest.update.success' },
-  updateFailure: { id: 'purchase.message.purchaseRequest.update.failure' },
+  emptyPurchaseUid: { id: 'purchase.message.request.empty.purchaseUid' },
+  settleSuccess: { id: 'purchase.message.settlement.settle.success' },
+  settleFailure: { id: 'purchase.message.settlement.settle.failure' },
+  updateSuccess: { id: 'purchase.message.request.update.success' },
+  updateFailure: { id: 'purchase.message.request.update.failure' },
 });
 
 export const purchaseSettlementConfirm = defineMessages({

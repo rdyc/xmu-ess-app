@@ -49,13 +49,13 @@ const settlementInformation: React.SFC<AllProps> = props => {
           { ...styled }
           margin = "dense"
           label={intl.formatMessage(purchaseMessage.settlement.field.createdBy)}
-          value={ data.changes.created ? data.changes.created.fullName : 'N/A' }
+          value={data.changes && data.changes.created && data.changes.created.fullName || 'N/A' }
           />
           <TextField
           { ...styled }
           margin = "dense"
           label={intl.formatMessage(purchaseMessage.settlement.field.customerUid)}
-          value = { data.customer ? data.customer.name : 'N/A' }
+          value = { data.customer && data.customer.name || 'N/A' }
           />
           <TextField
           { ...styled }
@@ -93,19 +93,19 @@ const settlementInformation: React.SFC<AllProps> = props => {
           { ...styled }
           margin = "dense"
           label={intl.formatMessage(purchaseMessage.settlement.field.request)}
-          value = { intl.formatNumber(data.request) }
+          value = { intl.formatNumber(data.request || 0) }
           />
           <TextField
           { ...styled }
           margin = "dense"
           label={intl.formatMessage(purchaseMessage.settlement.field.actual)}
-          value = { intl.formatNumber(data.actual) }
+          value = { intl.formatNumber(data.actual || 0) }
           />
           <TextField
           { ...styled }
           margin = "dense"
           label={intl.formatMessage(purchaseMessage.settlement.field.difference)}
-          value = { intl.formatNumber(data.difference) }
+          value = { intl.formatNumber(data.difference || 0) }
           />
           { data.currencyType !== 'SCR01' ?
           <TextField
@@ -135,13 +135,13 @@ const settlementInformation: React.SFC<AllProps> = props => {
           { ...styled }
           margin = "dense"
           label={intl.formatMessage(purchaseMessage.settlement.field.advance)}
-          value = { intl.formatNumber(data.advance) }
+          value = { intl.formatNumber(data.advance || 0) }
           />
           <TextField
           { ...styled }
           margin = "dense"
           label={intl.formatMessage(purchaseMessage.settlement.field.balanceDue)}
-          value = { intl.formatNumber(data.balanceDue) }
+          value = { intl.formatNumber(data.balanceDue || 0) }
           />
           </CardContent>
           </Card>

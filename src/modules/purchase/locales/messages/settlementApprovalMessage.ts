@@ -4,7 +4,7 @@ const prefix = 'purchase';
 
 export const settlementApprovalMessage = defineMessages({
   emptyProps: { id: `${prefix}.message.approval.emptyProps` },
-  emptyPurchaseUid: { id: `${prefix}.message.purchaseRequest.empty.purchaseUid` },
+  emptyPurchaseUid: { id: `${prefix}.message.request.empty.purchaseUid` },
   approveSuccess: { id: `${prefix}.message.approval.approve.success` },
   rejectSuccess: { id: `${prefix}.message.approval.reject.success` },
   createFailure: { id: `${prefix}.message.approval.create.failure` },

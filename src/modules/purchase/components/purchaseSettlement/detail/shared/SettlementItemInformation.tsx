@@ -7,7 +7,7 @@ import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose } from 'recompose';
 
 interface OwnProps {
-  data: IPurchaseItem;
+  data: IPurchaseItem | null | undefined;
   title: string;
 }
 
@@ -33,31 +33,31 @@ const settlementItemInformation: React.SFC<AllProps> = props => (
         {...styled}
         margin="dense"
         label={props.intl.formatMessage(purchaseMessage.settlement.items.uid)}
-        value={props.data.uid}
+        value={props.data && props.data.uid || ''}
       />
       <TextField
         {...styled}
         margin="dense"
         label={props.intl.formatMessage(purchaseMessage.settlement.items.description)}
-        value={props.data.description}
+        value={props.data && props.data.description || ''}
       />
       <TextField
         {...styled}
         margin="dense"
         label={props.intl.formatMessage(purchaseMessage.settlement.items.request)}
-        value={props.intl.formatNumber(props.data.requestValue)}
+        value={props.intl.formatNumber(props.data && props.data.requestValue || 0)}
       />
       <TextField
         {...styled}
         margin="dense"
         label={props.intl.formatMessage(purchaseMessage.settlement.items.actual)}
-        value={props.intl.formatNumber(props.data.actualValue)}
+        value={props.intl.formatNumber(props.data && props.data.actualValue || 0)}
       />
       <TextField
         {...styled}
         margin="dense"
         label={props.intl.formatMessage(purchaseMessage.settlement.items.variance)}
-        value={props.intl.formatNumber(props.data.varianceValue)}
+        value={props.intl.formatNumber(props.data && props.data.varianceValue || 0)}
       />
 
       {props.children}

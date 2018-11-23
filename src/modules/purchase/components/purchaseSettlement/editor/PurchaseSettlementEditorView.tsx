@@ -9,7 +9,6 @@ import {
 } from '@purchase/components/purchaseSettlement/editor/forms/PurchaseSettlementForm';
 import { PurchaseSettlementEditorProps } from '@purchase/components/purchaseSettlement/editor/PurchaseSettlementEditor';
 import * as React from 'react';
-// import { FormattedMessage } from 'react-intl';
 
 export const PurchaseSettlementEditorView: React.SFC<PurchaseSettlementEditorProps> = props => {
   const { formMode, handleValidate, handleSubmit, handleSubmitSuccess, handleSubmitFail } = props;
@@ -70,17 +69,17 @@ export const PurchaseSettlementEditorView: React.SFC<PurchaseSettlementEditorPro
       initialValues.information.customerUid = data.customer && data.customer.name;
       initialValues.information.rate = data.rate;
       initialValues.information.currencyType = data.currency && data.currency.value;
-      initialValues.information.advance = data.advance;
-      initialValues.information.request = data.request;
-      initialValues.information.requestInIDR = data.requestInIDR;
+      initialValues.information.advance = data.advance || 0;
+      initialValues.information.request = data.request || 0;
+      initialValues.information.requestInIDR = data.requestInIDR || 0;
 
       if (formMode === FormMode.Edit) {
         initialValues.information.date = data.date;
-        initialValues.information.actual = data.actual;
-        initialValues.information.difference = data.difference;
-        initialValues.information.actualInIDR = data.actualInIDR;
-        initialValues.information.differenceInIDR = data.differenceInIDR;
-        initialValues.information.balanceDue = data.balanceDue;
+        initialValues.information.actual = data.actual || 0;
+        initialValues.information.difference = data.difference || 0;
+        initialValues.information.actualInIDR = data.actualInIDR || 0;
+        initialValues.information.differenceInIDR = data.differenceInIDR || 0;
+        initialValues.information.balanceDue = data.balanceDue || 0;
       }
 
       if (data.items) {

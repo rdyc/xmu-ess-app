@@ -3,11 +3,11 @@ import { defineMessages } from 'react-intl';
 const prefix = 'purchase';
 
 export const purchaseRequestMessage = defineMessages({
-  emptyPurchaseUid: { id: `${prefix}.message.purchaseRequest.empty.purchaseUid` },
-  createSuccess: { id: `${prefix}.message.purchaseRequest.create.success` },
-  createFailure: { id: `${prefix}.message.purchaseRequest.create.failure` },
-  updateSuccess: { id: `${prefix}.message.purchaseRequest.update.success` },
-  updateFailure: { id: `${prefix}.message.purchaseRequest.update.failure` },
+  emptyPurchaseUid: { id: `${prefix}.message.request.empty.purchaseUid` },
+  createSuccess: { id: `${prefix}.message.request.create.success` },
+  createFailure: { id: `${prefix}.message.request.create.failure` },
+  updateSuccess: { id: `${prefix}.message.request.update.success` },
+  updateFailure: { id: `${prefix}.message.request.update.failure` },
  
 });
 
