@@ -73,9 +73,9 @@
   "timesheet.entry.field.information.description": "Notes",
   "timesheet.entry.field.information.description.placeholder": "Please fill in the notes",
   
-  "timesheet.entry.field.information.percentage": "Percentage",
-  "timesheet.entry.field.information.descriptionOfME": "Description",
-  "timesheet.entry.field.information.reason": "Reason",
+  "timesheet.entry.field.information.mileagePercentage": "Mileage Percentage",
+  "timesheet.entry.field.information.mileageDescription": "Mileage Description",
+  "timesheet.entry.field.information.mileageReason": "Mileage Reason",
   "timesheet.entry.field.information.siteValue": "Site Value",
   "timesheet.entry.field.information.totalHours": "Total Hours",
   "timesheet.entry.field.information.rejectReason": "Reject Reason",

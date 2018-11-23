@@ -56,9 +56,9 @@ export const timesheetEntryField = defineMessages({
   siteUidRequired: { id: `${prefix}.field.information.siteUid.required` },
   siteUidPlaceholder: { id: `${prefix}.field.information.siteUid.placeholder` },
 
-  percentage: { id: `${prefix}.field.information.percentage` },
-  descriptionOfME: { id: `${prefix}.field.information.description` },
-  reason: { id: `${prefix}.field.information.reason` },
+  mileagePercentage: { id: `${prefix}.field.information.mileagePercentage` },
+  mileageDescription: { id: `${prefix}.field.information.mileageDescription` },
+  mileageReason: { id: `${prefix}.field.information.mileageReason` },
 
   siteValue: { id: `${prefix}.field.information.siteValue` },
 
@@ -92,9 +92,9 @@ export const timesheetEntryFieldHelperFor = (field: string, type: 'fieldName' | 
       case 'customerUid': return timesheetEntryField.customerUid;
       case 'projectUid': return timesheetEntryField.projectUid;
       case 'siteUid': return timesheetEntryField.siteUid;
-      case 'percentage': return timesheetEntryField.percentage;
-      case 'description': return timesheetEntryField.descriptionOfME;
-      case 'reason': return timesheetEntryField.reason;
+      case 'mileagePercentage': return timesheetEntryField.mileagePercentage;
+      case 'mileageDescription': return timesheetEntryField.mileageDescription;
+      case 'mileageReason': return timesheetEntryField.mileageReason;
       case 'siteValue': return timesheetEntryField.siteValue;
       case 'totalHours': return timesheetEntryField.totalHours;
       case 'statusType': return timesheetEntryField.statusType;
