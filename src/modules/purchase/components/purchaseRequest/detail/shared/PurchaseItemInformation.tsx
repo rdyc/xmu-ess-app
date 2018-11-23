@@ -45,6 +45,7 @@ const purchaseItemInformation: React.SFC<AllProps> = props => (
           margin="dense"
           label={props.intl.formatMessage(purchaseMessage.request.items.description)} 
           value={props.data && props.data.description || ''}
+          multiline
         />
         <TextField
           {...styled}

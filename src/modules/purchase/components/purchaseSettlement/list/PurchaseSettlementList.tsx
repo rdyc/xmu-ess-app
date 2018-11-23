@@ -114,7 +114,7 @@ const config: CollectionConfig<ISettlement, AllProps> = {
   },
   onBind: (item: ISettlement, index: number, props: AllProps) => ({
     key: index,
-    primary: item.actual ? `${item.currency && item.currency.value} ${item.actual}` : props.intl.formatMessage(purchaseMessage.settlement.field.uid),
+    primary: `${item.currency && item.currency.value} ${item.actual}` || props.intl.formatMessage(purchaseMessage.action.settle),
     secondary: item.projectUid || item.project && item.project.name || '',
     tertiary: item.customer && item.customer.name || item.customerUid || '',
     quaternary: item.uid,

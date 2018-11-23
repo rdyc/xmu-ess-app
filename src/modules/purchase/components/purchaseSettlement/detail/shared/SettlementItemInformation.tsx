@@ -40,6 +40,7 @@ const settlementItemInformation: React.SFC<AllProps> = props => (
         margin="dense"
         label={props.intl.formatMessage(purchaseMessage.settlement.items.description)}
         value={props.data && props.data.description || ''}
+        multiline
       />
       <TextField
         {...styled}

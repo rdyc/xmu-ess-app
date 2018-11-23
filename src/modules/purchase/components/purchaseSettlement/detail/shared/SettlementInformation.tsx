@@ -50,24 +50,28 @@ const settlementInformation: React.SFC<AllProps> = props => {
           margin = "dense"
           label={intl.formatMessage(purchaseMessage.settlement.field.createdBy)}
           value={data.changes && data.changes.created && data.changes.created.fullName || 'N/A' }
+          multiline
           />
           <TextField
           { ...styled }
           margin = "dense"
           label={intl.formatMessage(purchaseMessage.settlement.field.customerUid)}
           value = { data.customer && data.customer.name || 'N/A' }
+          multiline
           />
           <TextField
           { ...styled }
           margin = "dense"
           label={intl.formatMessage(purchaseMessage.settlement.field.projectUid)}
           value={data.project ? `${data.project.uid} - ${data.project.name}` : 'N/A' }
+          multiline
           />
           <TextField
           { ...styled }
           margin = "dense"
           label={intl.formatMessage(purchaseMessage.settlement.field.notes)}
           value = { data.notes || 'N/A' }
+          multiline
           />
           { data.date ?
           <TextField
@@ -113,6 +117,7 @@ const settlementInformation: React.SFC<AllProps> = props => {
             margin = "dense"
             label={intl.formatMessage(purchaseMessage.settlement.field.requestInIDR)}
             value = { intl.formatNumber(data.requestInIDR || 0) }
+            multiline
           />
           : '' }
           { data.currencyType !== 'SCR01' ?
@@ -121,6 +126,7 @@ const settlementInformation: React.SFC<AllProps> = props => {
             margin="dense"
             label={intl.formatMessage(purchaseMessage.settlement.field.actualInIDR)}
             value={intl.formatNumber(data.actualInIDR || 0)}
+            multiline
           />
           : '' }
           {data.currencyType !== 'SCR01' ?
@@ -133,9 +139,10 @@ const settlementInformation: React.SFC<AllProps> = props => {
           : '' }
           <TextField
           { ...styled }
-          margin = "dense"
-          label={intl.formatMessage(purchaseMessage.settlement.field.advance)}
-          value = { intl.formatNumber(data.advance || 0) }
+            margin = "dense"
+            label={intl.formatMessage(purchaseMessage.settlement.field.advance)}
+            value = { intl.formatNumber(data.advance || 0) }
+            multiline
           />
           <TextField
           { ...styled }

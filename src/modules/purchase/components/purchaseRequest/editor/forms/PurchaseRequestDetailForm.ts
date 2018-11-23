@@ -92,6 +92,7 @@ const handlerCreators: HandleCreators<PurchaseRequestDetailFormProps, OwnHandler
         fieldProps = {
           required: true,
           category: 'currency',
+          label: intl.formatMessage(purchaseMessage.request.field.currencyType),
           placeholder: intl.formatMessage(purchaseMessage.request.field.currencyTypePlaceholder),
           component: SelectSystem,
           onChange: onChangeCurrencyType
@@ -101,6 +102,7 @@ const handlerCreators: HandleCreators<PurchaseRequestDetailFormProps, OwnHandler
       case 'date': 
         fieldProps = {
           required: true,
+          label: intl.formatMessage(purchaseMessage.request.field.date),
           placeholder: intl.formatMessage(purchaseMessage.request.field.datePlaceholder),
           component: InputDate
         };

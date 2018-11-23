@@ -13,7 +13,7 @@ import { Button } from '@material-ui/core';
 import { IPurchase } from '@purchase/classes/response/purchaseRequest';
 import { PurchaseField, PurchaseUserAction } from '@purchase/classes/types';
 import { PurchaseSummary } from '@purchase/components/purchaseRequest/detail/shared/PurchaseSummary';
-import { purchaseRequestFieldTranslator } from '@purchase/helper';
+import { isRequestEditable, purchaseRequestFieldTranslator } from '@purchase/helper';
 import { withPurchaseRequest, WithPurchaseRequest } from '@purchase/hoc/purchaseRequest/withPurchaseRequest';
 import { purchaseMessage } from '@purchase/locales/messages/purchaseMessage';
 import * as moment from 'moment';
@@ -133,6 +133,15 @@ const config: CollectionConfig<IPurchase, AllProps> = {
   // action component
   actionComponent: (item: IPurchase, callback: CollectionHandler) => (
     <React.Fragment>
+      {
+        isRequestEditable(item.statusType ? item.statusType : '') &&
+        <Button
+          size="small"
+          onClick={() => callback.handleRedirectTo(`/purchase/requests/form`, { uid: item.uid } )}
+        >
+          <FormattedMessage {...layoutMessage.action.modify} />
+        </Button>
+      }
     <Button 
       size= "small"
       onClick = {() => callback.handleRedirectTo(`/purchase/requests/details/${item.uid}`)}

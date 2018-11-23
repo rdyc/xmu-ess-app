@@ -42,6 +42,7 @@ const purchaseInformation: React.SFC<AllProps> = props => {
           margin="dense"
           label={intl.formatMessage(purchaseMessage.request.field.notes)}
           value={data.notes || 'N/A'}
+          multiline
         />
           <TextField
           { ...styled }
@@ -55,18 +56,21 @@ const purchaseInformation: React.SFC<AllProps> = props => {
           margin = "dense"
           label={intl.formatMessage(purchaseMessage.request.field.createdBy)}
           value={ data.changes && data.changes.created ? data.changes.created.fullName : 'N/A' }
+          multiline
           />
           <TextField
           { ...styled }
           margin = "dense"
           label={intl.formatMessage(purchaseMessage.request.field.customerUid)}
           value = { data.customer ? data.customer.name : 'N/A' }
+          multiline
           />
           <TextField
           { ...styled }
           margin = "dense"
           label={intl.formatMessage(purchaseMessage.request.field.projectUid)}
           value={data.project ? `${data.project.uid} - ${data.project.name}` : 'N/A' }
+          multiline
           />
           <TextField
           { ...styled }
