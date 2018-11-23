@@ -6,4 +6,5 @@ export * from './RelationType';
 export * from './WorkflowStatusType';
 export * from './FinanceStatusType';
 export * from './WorkflowRelationType';
+export * from './ModuleType';
 export * from './ExpenseType';
