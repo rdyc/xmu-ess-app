@@ -23,8 +23,14 @@ const TimeOption: IntlComponent.DateTimeFormatProps = {
   timeZone: 'GMT'
 };
 
+const MonthYearOption: IntlComponent.DateTimeFormatProps = {
+  year: 'numeric',
+  month: 'long'
+};
+
 export const GlobalFormat = {
   Date: DateOption,
   DateTime: DateTimeOption,
-  Time: TimeOption
+  Time: TimeOption,
+  MonthYear: MonthYearOption
 };

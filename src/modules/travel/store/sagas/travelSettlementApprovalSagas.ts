@@ -14,15 +14,21 @@ import {
 } from '@travel/store/actions';
 import { flattenObject } from '@utils/flattenObject';
 import saiyanSaga from '@utils/saiyanSaga';
+import * as qs from 'qs';
 import { SubmissionError } from 'redux-form';
 import { all, fork, put, takeEvery } from 'redux-saga/effects';
-import { IApiResponse, objectToQuerystring } from 'utils';
+import { IApiResponse } from 'utils';
 
 function* watchAllFetchRequest() {
   const worker = (action: ReturnType<typeof travelSettlementApprovalGetAllRequest>) => { 
+    const params = qs.stringify(action.payload.filter, { 
+      allowDots: true, 
+      skipNulls: true
+    });
+
     return saiyanSaga.fetch({
       method: 'get',
-      path: `/v1/approvals/travel/settlement${objectToQuerystring(action.payload.filter)}`, 
+      path: `/v1/approvals/travel/settlement?${params}`, 
       successEffects: (response: IApiResponse) => ([
         put(travelSettlementApprovalGetAllSuccess(response.body))
       ]), 

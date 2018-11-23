@@ -1,4 +1,5 @@
 import { WorkflowStatusType } from '@common/classes/types';
+import { GlobalFormat } from '@layout/types';
 import {
   Card,
   CardContent,
@@ -49,10 +50,7 @@ const mileageItem: React.SFC<AllProps> = props => {
                   <Grid container spacing={24}>
                     <Grid item xs={8} sm={8}>
                       <Typography noWrap color="primary" variant="body2">
-                        {intl.formatDate(item.date, {
-                          year: 'numeric',
-                          month: 'long'
-                        })}
+                        {intl.formatDate(item.date, GlobalFormat.MonthYear)}
                       </Typography>
                       <Typography noWrap variant="body1">
                         {item.customer && item.customer.name}

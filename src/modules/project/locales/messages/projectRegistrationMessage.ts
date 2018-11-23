@@ -120,8 +120,9 @@ export const projectRegistrationField = defineMessages({
   
   valueIdr: { id: `${prefix}.field.valueIdr` },
   
-  hours: { id: `${prefix}.field.hours` }
+  hours: { id: `${prefix}.field.hours` },
 
+  rejectedReason: { id: `${prefix}.field.rejectedReason` }
 });
 
 export const projectRegistrationFieldHelperFor = (field: string, type: 'fieldName' | 'fieldRequired' | 'fieldPlaceholder') => {

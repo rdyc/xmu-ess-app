@@ -1,3 +1,4 @@
+import { GlobalStyle } from '@layout/types/GlobalStyle';
 import {
   Card,
   CardContent,
@@ -20,14 +21,6 @@ type AllProps = OwnProps & InjectedIntlProps;
 const mileageInformation: React.SFC<AllProps> = props => {
   const { data, intl } = props;
 
-  const styled = {
-    fullWidth: true,
-    InputProps: {
-      disableUnderline: true,
-      readOnly: true
-    }
-  };
-
   const render = (
     <Card square>
     <CardHeader
@@ -36,31 +29,31 @@ const mileageInformation: React.SFC<AllProps> = props => {
     />
     <CardContent>
       <TextField
-        {...styled}
+        {...GlobalStyle.TextField.ReadOnly}
         margin="dense"
         label={intl.formatMessage(mileageMessage.request.field.uid)}
         value={data.uid}
       />
       <TextField
-        {...styled}
+        {...GlobalStyle.TextField.ReadOnly}
         margin="dense"
         label={intl.formatMessage(mileageMessage.request.field.employeeName)}
         value={data.employee ? data.employee.fullName : ''}
       />
       <TextField
-        {...styled}
+        {...GlobalStyle.TextField.ReadOnly}
         margin="dense"
         label={intl.formatMessage(mileageMessage.request.field.month)}
         value={moment.months(data.month - 1)}
       />
       <TextField
-        {...styled}
+        {...GlobalStyle.TextField.ReadOnly}
         margin="dense"
         label={intl.formatMessage(mileageMessage.request.field.year)}
         value={data.year}
       />
       <TextField
-        {...styled}
+        {...GlobalStyle.TextField.ReadOnly}
         margin="dense"
         label={intl.formatMessage(mileageMessage.request.field.amount)}
         value={intl.formatNumber(data.amount)}
