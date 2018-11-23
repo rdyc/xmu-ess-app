@@ -3,5 +3,6 @@ export enum TimesheetEntryField {
     // customerUid = 'Customer',
     // projectUid = 'Project',
     date = 'Date',
-    statusType = 'Status'
+    statusType = 'Status',
+    description = 'Notes'
 }

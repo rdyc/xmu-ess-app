@@ -8,6 +8,7 @@ import { WithUser, withUser } from '@layout/hoc/withUser';
 import { InputCustomer } from '@lookup/components/customer/input';
 import { SelectProjectAssigment } from '@project/components/select/projectAssignment';
 import { SelectProjectSite } from '@project/components/select/projectSite';
+import { timesheetMessage } from '@timesheet/locales/messages/timesheetMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose, HandleCreators, withHandlers } from 'recompose';
 import { BaseFieldsProps } from 'redux-form';
@@ -55,15 +56,14 @@ const handlerCreators: HandleCreators<EntryDetailFormProps, OwnHandlers> = {
         projectTypes: _projectTypes
     };
 
-    const fieldName = name.replace('information.', '');
-
     let fieldProps: SelectSystemOption & any = {};
 
-    switch (fieldName) {
+    switch (name) {
       case 'uid':
         fieldProps = {
           disabled: true,
-          placeholder: intl.formatMessage({ id: `timesheet.entry.field.${name}.placeholder` }),
+          label: intl.formatMessage(timesheetMessage.entry.fieldFor(name, 'fieldName')),
+          placeholder: intl.formatMessage(timesheetMessage.entry.fieldFor(name, 'fieldPlaceholder')),
           component: InputText
         };
         break;
@@ -72,7 +72,8 @@ const handlerCreators: HandleCreators<EntryDetailFormProps, OwnHandlers> = {
         fieldProps = {
           required: true,
           category: 'activity',
-          placeholder: intl.formatMessage({ id: `timesheet.entry.field.${name}.placeholder` }),
+          label: intl.formatMessage(timesheetMessage.entry.fieldFor(name, 'fieldName')),
+          placeholder: intl.formatMessage(timesheetMessage.entry.fieldFor(name, 'fieldPlaceholder')),
           component: SelectSystem
         };
         break;
@@ -80,9 +81,8 @@ const handlerCreators: HandleCreators<EntryDetailFormProps, OwnHandlers> = {
       case 'customerUid':
         fieldProps = {
           required: true,
-          type: 'text',
-          disabled: isNullOrUndefined(activityTypeValue),
-          placeholder: intl.formatMessage({ id: `timesheet.entry.field.${name}.placeholder` }),
+          label: intl.formatMessage(timesheetMessage.entry.fieldFor(name, 'fieldName')),
+          placeholder: intl.formatMessage(timesheetMessage.entry.fieldFor(name, 'fieldPlaceholder')),
           component: !isNullOrUndefined(activityTypeValue) ? InputCustomer : InputText
         };
         break;
@@ -90,9 +90,8 @@ const handlerCreators: HandleCreators<EntryDetailFormProps, OwnHandlers> = {
       case 'projectUid':
         fieldProps = {
           required: true,
-          type: 'text',
-          disabled: isNullOrUndefined(customerUidValue),
-          placeholder: intl.formatMessage({ id: `timesheet.entry.field.${name}.placeholder` }),
+          label: intl.formatMessage(timesheetMessage.entry.fieldFor(name, 'fieldName')),
+          placeholder: intl.formatMessage(timesheetMessage.entry.fieldFor(name, 'fieldPlaceholder')),
           component: !isNullOrUndefined(customerUidValue) ? SelectProjectAssigment : InputText,
           filter: projectFilter
         };
@@ -101,9 +100,9 @@ const handlerCreators: HandleCreators<EntryDetailFormProps, OwnHandlers> = {
       case 'siteUid':
         fieldProps = {
           required: true,
-          type: 'text',
           disabled: !showSiteProject,
-          placeholder: intl.formatMessage({ id: `timesheet.entry.field.${name}.placeholder` }),
+          label: intl.formatMessage(timesheetMessage.entry.fieldFor(name, 'fieldName')),
+          placeholder: intl.formatMessage(timesheetMessage.entry.fieldFor(name, 'fieldPlaceholder')),
           component: !isNullOrUndefined(projectUidValue) ? SelectProjectSite : InputText,
           companyUid: user && user.company.uid,
           projectUid: projectUidValue
@@ -113,8 +112,8 @@ const handlerCreators: HandleCreators<EntryDetailFormProps, OwnHandlers> = {
       case 'date':
         fieldProps = {
           required: true,
-          type: 'text',
-          placeholder: intl.formatMessage({ id: `timesheet.entry.field.${name}.placeholder` }),
+          label: intl.formatMessage(timesheetMessage.entry.fieldFor(name, 'fieldName')),
+          placeholder: intl.formatMessage(timesheetMessage.entry.fieldFor(name, 'fieldPlaceholder')),
           component: InputDateTimesheet
         };
         break;
@@ -122,8 +121,8 @@ const handlerCreators: HandleCreators<EntryDetailFormProps, OwnHandlers> = {
       case 'start':
         fieldProps = {
           required: true,
-          type: 'text',
-          placeholder: intl.formatMessage({ id: `timesheet.entry.field.${name}.placeholder` }),
+          label: intl.formatMessage(timesheetMessage.entry.fieldFor(name, 'fieldName')),
+          placeholder: intl.formatMessage(timesheetMessage.entry.fieldFor(name, 'fieldPlaceholder')),
           component: InputTime
         };
         break;
@@ -131,8 +130,8 @@ const handlerCreators: HandleCreators<EntryDetailFormProps, OwnHandlers> = {
       case 'end':
         fieldProps = {
           required: true,
-          type: 'text',
-          placeholder: intl.formatMessage({ id: `timesheet.entry.field.${name}.placeholder` }),
+          label: intl.formatMessage(timesheetMessage.entry.fieldFor(name, 'fieldName')),
+          placeholder: intl.formatMessage(timesheetMessage.entry.fieldFor(name, 'fieldPlaceholder')),
           component: InputTime
         };
         break;
@@ -140,7 +139,8 @@ const handlerCreators: HandleCreators<EntryDetailFormProps, OwnHandlers> = {
       default:
         fieldProps = {
           type: 'text',
-          placeholder: intl.formatMessage({ id: `timesheet.entry.field.${name}.placeholder` }),
+          label: intl.formatMessage(timesheetMessage.entry.fieldFor(name, 'fieldName')),
+          placeholder: intl.formatMessage(timesheetMessage.entry.fieldFor(name, 'fieldPlaceholder')),
           component: InputText
         };
         break;
