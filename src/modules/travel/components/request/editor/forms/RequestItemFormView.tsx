@@ -12,31 +12,35 @@ import {
   FormControlLabel,
   Grid,
   IconButton,
+  TextField,
 } from '@material-ui/core';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import { RequestItemFormProps } from '@travel/components/request/editor/forms/RequestItemForm';
-// import * as moment from 'moment';
+import { travelMessage } from '@travel/locales/messages/travelMessage';
+import * as moment from 'moment';
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Field } from 'redux-form';
 
-// const calculateDiem = (start: string , end: string): number => {
-//   let result: number = 0;
+const calculateDiem = (start: string , end: string): number => {
+  let result: number = 0;
   
-//   const startDate = moment(start);
-//   const endDate = moment(end);
-//   const diffHours = endDate.diff(startDate, 'hours');
-//   const diffDays = endDate.diff(startDate, 'days');
+  if (start !== '' && end !== '') {
+  const startDate = moment(start);
+  const endDate = moment(end);
+  const diffHours = endDate.diff(startDate, 'hours');
+  const diffDays = endDate.diff(startDate, 'days');
 
-//   if (startDate.isSame(endDate)) {
-//     result = diffHours >= 8 ? 1 : 0;
-//   } else if ( !startDate.isSame(endDate) && endDate.isSameOrAfter(17, 'hours')) {
-//     result = diffDays + 1;
-//   } else {
-//     result = diffDays;
-//   }  
-//   return result;
-// };
+  if (startDate.isSame(endDate)) {
+    result = diffHours >= 8 ? 1 : 0;
+  } else if ( !startDate.isSame(endDate) && endDate.isSameOrAfter(17, 'hours')) {
+    result = diffDays + 1;
+  } else {
+    result = diffDays;
+  }
+}  
+  return result;
+};
 
 export const RequestItemFormView: React.SFC<RequestItemFormProps> = props => {
   const { context, destinationTypeValue, onCostChange, projectTypeValue } = props;
@@ -118,21 +122,11 @@ export const RequestItemFormView: React.SFC<RequestItemFormProps> = props => {
                     name={`${field}.departureDate`}
                     label="Departure Date"
                     component={InputDateTime}
-                    onChange= {(event: any, newValue: any) => {
-                      if (newValue && item.returnDate) {
-                        // props.change(`${field}.duration`, calculateDiem(newValue, item.returnDate ));
-                      }
-                    }}
                   />
                   <Field 
                     name={`${field}.returnDate`}
                     label="return Date"
                     component={InputDateTime}
-                    onChange= {(event: any, newValue: any) => {
-                      if (newValue) {
-                        // props.change(`${field}.duration`, calculateDiem(item.departureDate, newValue));
-                      }
-                    }}
                   />
                   <Field 
                     type="number"
@@ -200,7 +194,7 @@ export const RequestItemFormView: React.SFC<RequestItemFormProps> = props => {
                     label="notes"
                     component={InputText}
                   />
-                  <Field 
+                  {/* <Field 
                     type="number"
                     name={`${field}.duration`}
                     label="Diem"
@@ -211,7 +205,13 @@ export const RequestItemFormView: React.SFC<RequestItemFormProps> = props => {
                         // props.change(`${field}.amount`, newValue * item.diemValue);
                       }
                     }}
-                  />
+                  /> */}
+                  <TextField
+                    margin="dense"
+                    disabled={true}
+                    label={props.intl.formatMessage(travelMessage.request.field.duration)}
+                    value={props.intl.formatNumber(calculateDiem(item.departureDate, item.returnDate))}
+                  />  
                   <Field 
                     type="number"
                     name={`${field}.diemValue`}
@@ -233,14 +233,20 @@ export const RequestItemFormView: React.SFC<RequestItemFormProps> = props => {
                     disabled={true}
                     component={InputText}
                   />
-                   <Field 
+                   {/* <Field 
                     type="number"
                     name={`${field}.amount`}
                     label="Diem Value"
                     disabled={true}
                     component={InputNumber}
                     onChange={onCostChange}
-                  />                               
+                  />*/}
+                  <TextField
+                    margin="dense"
+                    disabled={true}
+                    label={props.intl.formatMessage(travelMessage.request.field.amount)}
+                    value={props.intl.formatNumber(calculateDiem(item.departureDate, item.returnDate) * item.diemValue)}
+                  />  
                 </div>
               </CardContent>
             </Card>
