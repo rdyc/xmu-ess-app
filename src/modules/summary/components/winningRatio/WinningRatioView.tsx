@@ -9,13 +9,14 @@ import { BillableDate } from '@summary/components/billable/BillableDate';
 import { WinningRatioProps } from '@summary/components/winningRatio/WinningRatio';
 import { WinningRatioDetail } from '@summary/components/winningRatio/WinningRatioDetail';
 import { WinningRatioTable } from '@summary/components/winningRatio/WinningRatioTable';
+import { summaryMessage } from '@summary/locales/messages/summaryMessage';
 import * as React from 'react';
-import { FormattedMessage } from 'react-intl';
 
 export const WinningRatioView: React.SFC<WinningRatioProps> = props => {
   const { isLoading, response } = props.summaryState.winning;
   const { user } = props.userState;
   const {
+    intl,
     start,
     end,
     size,
@@ -41,21 +42,21 @@ export const WinningRatioView: React.SFC<WinningRatioProps> = props => {
           <TextField
             disabled
             margin="normal"
-            label={<FormattedMessage id="summary.winningRatio.field.company" />}
+            label={intl.formatMessage(summaryMessage.winningRatio.field.company)}
             value={user && user.company.name}
           />
         </Grid>
         <Grid item xs md>
           <TextField
             margin="normal"
-            label={<FormattedMessage id="summary.winningRatio.field.name" />}
+            label={intl.formatMessage(summaryMessage.winningRatio.field.name)}
             onChange={e => handleChangeFind(e.target.value)}
           />
         </Grid>
         <Grid item xs md>
           <BillableDate
             val={start}
-            label={'summary.winningRatio.field.start'}
+            label={intl.formatMessage(summaryMessage.winningRatio.field.start)}
             handleChange={handleChangeStart}
             disableFuture={false}
           />
@@ -63,7 +64,7 @@ export const WinningRatioView: React.SFC<WinningRatioProps> = props => {
         <Grid item xs md>
           <BillableDate
             val={end}
-            label={'summary.winningRatio.field.end'}
+            label={intl.formatMessage(summaryMessage.winningRatio.field.end)}
             handleChange={handleChangeEnd}
             disableFuture={true}
           />

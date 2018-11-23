@@ -16,7 +16,13 @@ const DateTimeOption: IntlComponent.DateTimeFormatProps = {
   second: 'numeric'
 };
 
+const MonthYearOption: IntlComponent.DateTimeFormatProps = {
+  year: 'numeric',
+  month: 'long'
+};
+
 export const GlobalFormat = {
   Date: DateOption,
-  DateTime: DateTimeOption
+  DateTime: DateTimeOption,
+  MonthYear: MonthYearOption
 };

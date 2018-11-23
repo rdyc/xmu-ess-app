@@ -24,8 +24,9 @@ import styles from '@styles';
 import { ISummaryBillable } from '@summary/classes/response/billable';
 import { BillableHeaderList } from '@summary/classes/types/billable/BillableHeaderList';
 import { BillableType } from '@summary/classes/types/billable/BillableType';
+import { summaryMessage } from '@summary/locales/messages/summaryMessage';
 import * as React from 'react';
-import { FormattedNumber } from 'react-intl';
+import { FormattedNumber, InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose } from 'recompose';
 
 interface OwnProps {
@@ -44,7 +45,7 @@ interface OwnProps {
   handleChangeSize: (value: number) => void;
 }
 
-type AllProps = OwnProps & WithStyles<typeof styles>;
+type AllProps = OwnProps & InjectedIntlProps & WithStyles<typeof styles>;
 
 const billableTableView: React.SFC<AllProps> = props => {
   const {
@@ -157,7 +158,7 @@ const billableTableView: React.SFC<AllProps> = props => {
                 <TableCell>{item.employee.fullName}</TableCell>
                 <TableCell numeric>
                 <Tooltip
-                  title="Detail Non Presales"
+                  title={props.intl.formatMessage(summaryMessage.billable.hover.nonPresales)}
                   disableFocusListener
                 >
                   <Chip
@@ -183,7 +184,7 @@ const billableTableView: React.SFC<AllProps> = props => {
                 </TableCell>
                 <TableCell numeric>
                   <Tooltip
-                    title="Detail Presales"
+                    title={props.intl.formatMessage(summaryMessage.billable.hover.presales)}
                     disableFocusListener
                   >
                   <Chip
@@ -233,6 +234,6 @@ const billableTableView: React.SFC<AllProps> = props => {
   return render;
 };
 
-export const BillableTableView = compose<AllProps, OwnProps>(withStyles(styles))(
+export const BillableTableView = compose<AllProps, OwnProps>(injectIntl, withStyles(styles))(
   billableTableView
 );
