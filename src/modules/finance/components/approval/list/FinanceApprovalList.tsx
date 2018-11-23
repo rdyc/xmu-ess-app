@@ -41,7 +41,7 @@ const config: CollectionConfig<IFinance, AllProps> = {
   hasSelection: true,
   notSelectionTypes: [FinanceStatusType.NotPaid, FinanceStatusType.Paid],
   onProcessSelection: (values: string[], callback: CollectionHandler) => {
-    callback.handleRedirectTo(`/finance/approvals/payment/${values}`);
+    callback.handleRedirectTo('/finance/approvals/payment', {values});
   },
 
   // searching
@@ -111,17 +111,17 @@ const config: CollectionConfig<IFinance, AllProps> = {
       }
     }
   },
-  onUpdated: (states: AllProps, callback: CollectionHandler) => {
-    const { isLoading, response } = states.financeApprovalState.all;
+  onUpdated: (props: AllProps, callback: CollectionHandler) => {
+    const { isLoading, response } = props.financeApprovalState.all;
     
     callback.handleLoading(isLoading);
     callback.handleResponse(response);
   },
-  onBind: (item: IFinance, index: number) => ({
+  onBind: (item: IFinance, index: number, props: AllProps) => ({
     key: index,
     primary: item.module && item.module.value,
     secondary: item.document.changes.created && item.document.changes.created.fullName || item.document.changes.createdBy,
-    tertiary: item.document.amount && item.document.amount.total && item.document.amount.total.toString() || '0',
+    tertiary: item.document.amount && item.document.amount.total && props.intl.formatNumber(item.document.amount.total) || '0',
     quaternary: item.uid,
     quinary: item.status && item.status.value || item.statusType,
     senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'

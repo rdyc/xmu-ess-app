@@ -3,10 +3,10 @@ import { SingleConfig, SingleHandler, SinglePage, SingleState } from '@layout/co
 import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
 import { WorkflowApprovalForm } from '@organization/components/workflow/approval/WorkflowApprovalForm';
-import { ProjectUserAction } from '@project/classes/types';
 import * as React from 'react';
 
 import { IFinanceDetail } from '@finance/classes/response';
+import { FinanceUserAction } from '@finance/classes/types';
 import { financeMessage } from '@finance/locales/messages/financeMessage';
 import { FinanceBulkInformation } from '../detail/shared/FinanceBulkInformation';
 import { FinanceApprovalPaymentProps } from './FinanceApprovalPayment';
@@ -27,7 +27,7 @@ const config: SingleConfig<IFinanceDetail, FinanceApprovalPaymentProps> = {
   hasMore: true,
   moreOptions: (props: FinanceApprovalPaymentProps, state: SingleState, callback: SingleHandler): IAppBarMenu[] => ([
     {
-      id: ProjectUserAction.Refresh,
+      id: FinanceUserAction.Refresh,
       name: props.intl.formatMessage(layoutMessage.action.refresh),
       enabled: true,
       visible: true,
@@ -36,16 +36,46 @@ const config: SingleConfig<IFinanceDetail, FinanceApprovalPaymentProps> = {
   ]),
 
   // events
-  onDataLoad: (props: FinanceApprovalPaymentProps) => {
-    const { handleLoadData } = props;
-    const { isLoading, response } = props.financeApprovalState.all;
+  onDataLoad: (props: FinanceApprovalPaymentProps, callback: SingleHandler, forceReload?: boolean | false) => {
+    // fool the system
+    const { user } = props.userState;
+    const { isLoading, request, response } = props.financeApprovalState.detail;
+    const { loadDetailRequest } = props.financeApprovalDispatch;
 
-    if (!isLoading && response && response.data) {
-      handleLoadData(response.data);
+    // when user is set and not loading and has projectUid in route params
+    if (user && !isLoading && props.financeUids[0]) {
+      // when projectUid was changed or response are empty or force to reload
+      if ((request && request.financeUid !== props.financeUids[0]) || !response || forceReload) {
+        loadDetailRequest({
+          companyUid: user.company.uid,
+          positionUid: user.position.uid,
+          financeUid: props.financeUids[0]
+        });
+      } else {
+        // just take data from previous response
+        callback.handleResponse(response);
+      }
     }
+
+    // actually pull data from list like a boss
+    const { handleLoadData } = props;
+    
+    handleLoadData();
   },
-  onUpdated: () => {
-    // nope
+  onDataLoaded: (props: FinanceApprovalPaymentProps) => {
+    // set data loaded in local state
+    props.setDataload();
+  },
+  onUpdated: (states: FinanceApprovalPaymentProps, callback: SingleHandler) => {
+    const { isLoading, response } = states.financeApprovalState.detail;
+    
+    callback.handleLoading(isLoading);
+
+    // when got a response from api
+    if (response && response.data) {
+      callback.handleResponse(response);
+      callback.handleStatusType(response.data.statusType);
+    }
   },
 
   // primary
@@ -57,9 +87,6 @@ const config: SingleConfig<IFinanceDetail, FinanceApprovalPaymentProps> = {
 
   // secondary (multiple components are allowed)
   secondaryComponents: (data: IFinanceDetail, props: FinanceApprovalPaymentProps) => ([
-    <FinanceBulkInformation 
-      data={props.finances} 
-    />,
     <React.Fragment>
       <WorkflowApprovalForm
         approvalTitle={props.approvalTitle}
@@ -85,5 +112,6 @@ export const FinanceApprovalPaymentView: React.SFC<FinanceApprovalPaymentProps> 
   <SinglePage
     config={config}
     connectedProps={props}
+    shouldDataReload={props.shouldDataReload}
   />
 );

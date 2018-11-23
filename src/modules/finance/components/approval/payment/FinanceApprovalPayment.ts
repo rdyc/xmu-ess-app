@@ -20,7 +20,7 @@ import { financeMessage } from '@finance/locales/messages/financeMessage';
 import { FinanceApprovalPaymentView } from './FinanceApprovalPaymentView';
 
 interface OwnHandler {
-  handleLoadData: (financeData: IFinance[]) => void;
+  handleLoadData: () => void;
   handleValidate: (payload: WorkflowApprovalFormData) => FormErrors;
   handleSubmit: (payload: WorkflowApprovalFormData) => void;
   handleSubmitSuccess: (result: any, dispatch: Dispatch<any>) => void;
@@ -28,15 +28,16 @@ interface OwnHandler {
 }
 
 interface OwnRouteParams {
-  financeUids: string;
 }
 interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
   stateUpdate: StateHandler<OwnState>;
+  setDataload: StateHandler<OwnState>;
 }
 
 interface OwnState {
   financeUids: string[];
   finances: IFinance[];
+  shouldDataReload: boolean;
   approvalTitle: string;
   approvalSubHeader: string;
   approvalChoices: RadioGroupChoice[];
@@ -60,11 +61,12 @@ export type FinanceApprovalPaymentProps
   & OwnState;
 
 const createProps: mapper<FinanceApprovalPaymentProps, OwnState> = (props: FinanceApprovalPaymentProps): OwnState => {
-  const { intl } = props;
+  const { intl, location } = props;
 
   return {
     finances: [],
-    financeUids: props.match.params.financeUids.split(','),
+    shouldDataReload: false,
+    financeUids: location.state.values || [],
     approvalTitle: intl.formatMessage(financeMessage.approval.section.approvalTitle),
     approvalSubHeader: intl.formatMessage(financeMessage.approval.section.approvalSubTitle),
     approvalChoices: [
@@ -86,21 +88,28 @@ const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
       ...prevState,
       ...newState
     }),
+    setDataload: (prevState: OwnState) => (): Partial<OwnState> => ({
+      shouldDataReload: !prevState.shouldDataReload
+    })
   };
 
 const handlerCreators: HandleCreators<FinanceApprovalPaymentProps, OwnHandler> = {
-  handleLoadData: (props: FinanceApprovalPaymentProps) => (financeData: IFinance[]) => {
-    const { financeUids, stateUpdate } = props;
-    // const { response } = props.financeApprovalState.all;
+  handleLoadData: (props: FinanceApprovalPaymentProps) => () => {
+    const { financeUids, stateUpdate, history } = props;
+    const { response } = props.financeApprovalState.all;
 
-    const _finances = financeData.filter(finance => 
-      financeUids.some(financeUid => 
-        financeUid === finance.uid
-    ));
+    if (response && response.data) {
+      const _finances = response.data.filter(finance => 
+        financeUids.some(financeUid => 
+          financeUid === finance.uid
+      ));
 
-    stateUpdate({
-      finances: _finances
-    });
+      stateUpdate({
+        finances: _finances
+      });
+    } else {
+      history.push('/finance/approvals');
+    }
   },
   handleValidate: (props: FinanceApprovalPaymentProps) => (formData: WorkflowApprovalFormData) => { 
     const errors = {};
@@ -116,7 +125,7 @@ const handlerCreators: HandleCreators<FinanceApprovalPaymentProps, OwnHandler> =
     return errors;
   },
   handleSubmit: (props: FinanceApprovalPaymentProps) => (formData: WorkflowApprovalFormData) => { 
-    const { match, intl, financeUids } = props;
+    const { location, intl, financeUids } = props;
     const { user } = props.userState;
     const { bulkCreateRequest } = props.financeApprovalDispatch;
 
@@ -126,7 +135,7 @@ const handlerCreators: HandleCreators<FinanceApprovalPaymentProps, OwnHandler> =
     }
 
     // props checking
-    if (!match.params.financeUids) {
+    if (!location.state.values) {
       const message = intl.formatMessage(projectApprovalMessage.emptyProps);
 
       return Promise.reject(message);
@@ -164,7 +173,8 @@ const handlerCreators: HandleCreators<FinanceApprovalPaymentProps, OwnHandler> =
       time: new Date(),
       message: intl.formatMessage(projectApprovalMessage.submitSuccess),
     });
-    history.push('/project/approvals');
+
+    history.push('/finance/approvals');
   },
   handleSubmitFail: (props: FinanceApprovalPaymentProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
     const { intl } = props;
@@ -186,13 +196,12 @@ const handlerCreators: HandleCreators<FinanceApprovalPaymentProps, OwnHandler> =
   }
 };
 
-export const FinanceApprovalPayment = compose<FinanceApprovalPaymentProps, {}>(
+export const FinanceApprovalPayment = compose(
   withRouter,
   withUser,
   withLayout,
   withFinanceApproval,
   injectIntl,
-  withStateHandlers<OwnState, OwnStateUpdaters, {}>(createProps, stateUpdaters),
-  withStateHandlers(createProps, {}),
+  withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
 )(FinanceApprovalPaymentView);
