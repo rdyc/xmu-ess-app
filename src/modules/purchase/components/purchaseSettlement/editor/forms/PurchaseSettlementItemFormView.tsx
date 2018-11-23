@@ -3,11 +3,12 @@ import { InputText } from '@layout/components/input/text';
 import {
   Card,
   CardContent,
+  CardHeader,
   Grid,
 } from '@material-ui/core';
 import { PurchaseSettlementItemFormProps } from '@purchase/components/purchaseSettlement/editor/forms/PurchaseSettlementItemForm';
+import { purchaseMessage } from '@purchase/locales/messages/purchaseMessage';
 import * as React from 'react';
-import { FormattedMessage } from 'react-intl';
 import { Field, 
   // change 
 } from 'redux-form';
@@ -26,33 +27,36 @@ export const PurchaseSettlementItemFormView: React.SFC<PurchaseSettlementItemFor
           context.fields.map((field, index) =>
             <Grid key={index} item xs={12} md={4}>
               <Card square>
+                <CardHeader
+                title={`#${index + 1}`}
+                />
                 <CardContent>
                   <div>
                     <Field
                       type="text"
                       name={`${field}.uid`}
-                      label={<FormattedMessage id="purchase.itemTitle.uid" />}
+                      label={props.intl.formatMessage(purchaseMessage.settlement.items.uid)}
                       disabled
                       component={InputText}
                     />
                     <Field
                       type="text"
                       name={`${field}.description`}
-                      label={<FormattedMessage id="purchase.itemTitle.description" />}
+                      label={props.intl.formatMessage(purchaseMessage.settlement.items.description)}
                       disabled
                       component={InputText}
                     />
                     <Field
                       type="number"
                       name={`${field}.request`}
-                      label={<FormattedMessage id="purchase.itemTitle.request" />}
+                      label={props.intl.formatMessage(purchaseMessage.settlement.items.request)}
                       disabled={true}
                       component={InputNumber}
                     />
                     <Field
                       type="number"
                       name={`${field}.actual`}
-                      label={<FormattedMessage id="purchase.itemTitle.actual" />}
+                      label={props.intl.formatMessage(purchaseMessage.settlement.items.actual)}
                       required={true}
                       // onChange={onActualChange}
                       //   onChange={(event: any, newValue: any) => {
@@ -65,7 +69,7 @@ export const PurchaseSettlementItemFormView: React.SFC<PurchaseSettlementItemFor
                     <Field
                       type="number"
                       name={`${field}.variance`}
-                      label={<FormattedMessage id="purchase.itemTitle.variance" />}
+                      label={props.intl.formatMessage(purchaseMessage.settlement.items.variance)}
                       disabled={true}
                       component={InputNumber}
                     />

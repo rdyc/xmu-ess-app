@@ -8,6 +8,7 @@ import { InputText } from '@layout/components/input/text';
 import { InputCustomer } from '@lookup/components/customer/input';
 import { SelectProject } from '@project/components/select/project';
 import { PurchaseRequestDetailFormView } from '@purchase/components/purchaseRequest/editor/forms/PurchaseRequestDetailFormView';
+import { purchaseMessage } from '@purchase/locales/messages/purchaseMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose, HandleCreators, withHandlers } from 'recompose';
 import { BaseFieldsProps } from 'redux-form';
@@ -59,16 +60,17 @@ const handlerCreators: HandleCreators<PurchaseRequestDetailFormProps, OwnHandler
     switch (fieldName) {
       case 'uid': 
       fieldProps = {
-          disabled: true,
-          placeholder: intl.formatMessage({ id: `purchase.field.${name}.placeholder` }),
-          component: InputText
+        disabled: true,
+        label: intl.formatMessage(purchaseMessage.request.field.uid),
+        component: InputText
         };
       break;
       
       case 'customerUid': 
         fieldProps = {
           required: true,
-          placeholder: intl.formatMessage({ id: `purchase.field.${name}.placeholder`}),
+          label: intl.formatMessage(purchaseMessage.request.field.customerUid),
+          placeholder: intl.formatMessage(purchaseMessage.request.field.customerUidPlaceholder),
           component: InputCustomer,
           customerUid: projectFilter
         };
@@ -79,7 +81,8 @@ const handlerCreators: HandleCreators<PurchaseRequestDetailFormProps, OwnHandler
           required: true,
           disabled: isNullOrUndefined(formCustomer),
           category: 'project',
-          placeholder: intl.formatMessage({ id: `purchase.field.${name}.placeholder` }),
+          label: intl.formatMessage(purchaseMessage.request.field.projectUid),
+          placeholder: intl.formatMessage(purchaseMessage.request.field.projectUidPlaceholder),
           component: !isNullOrUndefined(formCustomer) ? SelectProject : InputText,
           filter: projectFilter,
         };
@@ -89,7 +92,7 @@ const handlerCreators: HandleCreators<PurchaseRequestDetailFormProps, OwnHandler
         fieldProps = {
           required: true,
           category: 'currency',
-          placeholder: intl.formatMessage({id: `purchase.field.${name}.placeholder`}),
+          placeholder: intl.formatMessage(purchaseMessage.request.field.currencyTypePlaceholder),
           component: SelectSystem,
           onChange: onChangeCurrencyType
         };
@@ -98,7 +101,7 @@ const handlerCreators: HandleCreators<PurchaseRequestDetailFormProps, OwnHandler
       case 'date': 
         fieldProps = {
           required: true,
-          placeholder: intl.formatMessage({id: `purchase.field.${name}.placeholder`}),
+          placeholder: intl.formatMessage(purchaseMessage.request.field.datePlaceholder),
           component: InputDate
         };
         break;
@@ -107,7 +110,8 @@ const handlerCreators: HandleCreators<PurchaseRequestDetailFormProps, OwnHandler
         fieldProps = {
           type: 'number',
           required: !isCurrencyIdr,
-          placeholder: intl.formatMessage({id: `purchase.field.${name}.placeholder`}),
+          label: intl.formatMessage(purchaseMessage.request.field.rate),
+          placeholder: intl.formatMessage(purchaseMessage.request.field.ratePlaceholder),
           disabled: isCurrencyIdr || isNullOrUndefined(formCurrencyType),
           component: InputNumber,
           onChange: onChangeRate
@@ -117,7 +121,8 @@ const handlerCreators: HandleCreators<PurchaseRequestDetailFormProps, OwnHandler
       case 'request':
         fieldProps = {
           type: 'number',
-          placeholder: intl.formatMessage({id: `purchase.field.${name}.placeholder`}),
+          label: intl.formatMessage(purchaseMessage.request.field.request),
+          placeholder: intl.formatMessage(purchaseMessage.request.field.requestPlaceholder),
           component: InputNumber,
           onChange: onChangeValueIdr,
           disabled: true
@@ -127,6 +132,7 @@ const handlerCreators: HandleCreators<PurchaseRequestDetailFormProps, OwnHandler
        case 'requestIDR':
          fieldProps = {
            type: 'number',
+           label: intl.formatMessage(purchaseMessage.request.field.requestInIDR),
            disabled: true,
            component: InputNumber
          };
@@ -135,14 +141,16 @@ const handlerCreators: HandleCreators<PurchaseRequestDetailFormProps, OwnHandler
       case 'advance':
         fieldProps = {
           type: 'number',
-          placeholder: intl.formatMessage({ id: `purchase.field.${name}.placeholder` }),
+          label: intl.formatMessage(purchaseMessage.request.field.advance),
+          placeholder: intl.formatMessage(purchaseMessage.request.field.advancePlaceholder),
           component: InputNumber
         };
         break;
   
       case 'notes':
         fieldProps = {
-          placeholder: intl.formatMessage({ id: `purchase.field.${name}.placeholder` }),
+          label: intl.formatMessage(purchaseMessage.request.field.notes),
+          placeholder: intl.formatMessage(purchaseMessage.request.field.notesPlaceholder),
           component: InputText
         };
         break;

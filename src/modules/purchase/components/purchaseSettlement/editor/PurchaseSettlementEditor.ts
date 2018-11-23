@@ -34,6 +34,7 @@ import {
 import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
 import { isNullOrUndefined, isObject } from 'util';
+import { purchaseMessage } from '@purchase/locales/messages/purchaseMessage';
 
 interface OwnHandlers {
   handleValidate: (payload: PurchaseSettlementFormData) => FormErrors;
@@ -292,8 +293,8 @@ const lifecycles: ReactLifeCycleFunctions<PurchaseSettlementEditorProps, {}> = {
     const { user } = this.props.userState;
 
     const purchase = {
-      title: 'purchase.form.purchaseSettlement.newTitle',
-      subTitle: 'purchase.form.purchaseSettlement.newSubTitle',
+      title: intl.formatMessage(purchaseMessage.settlement.pages.newTitle),
+      subTitle: intl.formatMessage(purchaseMessage.settlement.pages.newTitle)
     };
 
     if (!user) {
@@ -309,8 +310,8 @@ const lifecycles: ReactLifeCycleFunctions<PurchaseSettlementEditorProps, {}> = {
     if (!isNullOrUndefined(history.location.state)) {
 
       if (!isNullOrUndefined(history.location.state.statusType)) {
-      purchase.title = 'purchase.form.purchaseSettlement.editTitle';
-      purchase.subTitle = 'purchase.form.purchaseSettlement.editSubTitle';
+      purchase.title = intl.formatMessage(purchaseMessage.settlement.pages.modifyTitle);
+      purchase.subTitle = intl.formatMessage(purchaseMessage.settlement.pages.modifyTitle);
 
       stateUpdate({
           formMode: FormMode.Edit,

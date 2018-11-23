@@ -10,9 +10,8 @@ import {
 } from '@material-ui/core';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import { PurchaseRequestItemFormProps } from '@purchase/components/purchaseRequest/editor/forms/PurchaseRequestItemForm';
-import { purchaseItemField } from '@purchase/locales/messages/purchaseItemMessage';
+import { purchaseMessage } from '@purchase/locales/messages/purchaseMessage';
 import * as React from 'react';
-import { FormattedMessage } from 'react-intl';
 import { Field } from 'redux-form';
 
 // export const PurchaseRequestItemFormView: React.SFC<WrappedFieldArrayProps<PurchaseRequestItemFormData> & PurchaseRequestItemFormProps> = props => {
@@ -40,21 +39,21 @@ export const PurchaseRequestItemFormView: React.SFC<PurchaseRequestItemFormProps
                   <Field
                     type="text"
                     name={`${field}.uid`}
-                    label={props.intl.formatMessage(purchaseItemField.uid)}
+                    label={props.intl.formatMessage(purchaseMessage.request.items.uid)}
                     disabled
                     component={InputText}
                   />
                   <Field
                     type="text"
                     name={`${field}.description`}
-                    label={props.intl.formatMessage(purchaseItemField.description)}
+                    label={props.intl.formatMessage(purchaseMessage.request.items.description)}
                     required
                     component={InputText}
                   />
                   <Field
                     type="number"
                     name={`${field}.request`}
-                    label={props.intl.formatMessage(purchaseItemField.request)}
+                    label={props.intl.formatMessage(purchaseMessage.request.items.request)}
                     required
                     onChange={onRequestChange}
                     component={InputNumber}
@@ -73,7 +72,7 @@ export const PurchaseRequestItemFormView: React.SFC<PurchaseRequestItemFormProps
               description: '',
               request: 0,
             })}>
-              <FormattedMessage id="purchase.action.add" />
+              {props.intl.formatMessage(purchaseMessage.action.add)}
             </Button>
           </Grid>
         </Grid>

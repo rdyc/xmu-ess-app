@@ -1,48 +1,38 @@
-// import {
-//   projectAcceptanceDialog,
-//   projectAcceptanceMessage,
-//   projectAcceptancePage,
-//   projectAcceptanceSection,
-// } from './projectAcceptanceMessage';
-// import {
-//   projectAssignmentAction,
-//   projectAssignmentField,
-//   projectAssignmentFieldHelperFor,
-//   projectAssignmentPage,
-//   projectAssignmentSection,
-//   projectAssignmentSubmission,
-// } from './projectAssignmentMessage';
+import { purchaseAction } from './purchaseAction';
+import { purchaseApprovalConfirm, purchaseApprovalMessage, purchaseApprovalPage, purchaseApprovalSection } from './purchaseApprovalMessage';
 import { purchaseItemField } from './purchaseItemMessage';
-import { purchaseRequestField, purchaseRequestPage, purchaseRequestSection } from './purchaseRequestMessage';
-import { purchaseSettlementField } from './purchaseSettlementMessage';
+import { purchaseRequestConfirm, purchaseRequestField, purchaseRequestMessage, purchaseRequestPage, purchaseRequestSection } from './purchaseRequestMessage';
+import { purchaseSettlementConfirm, purchaseSettlementField, purchaseSettlementMessage, purchaseSettlementPage, purchaseSettlementSection } from './purchaseSettlementMessage';
+import { settlementApprovalConfirm, settlementApprovalMessage, settlementApprovalPage, settlementApprovalSection } from './settlementApprovalMessage';
 
 export const purchaseMessage = {
+  action: purchaseAction,
   request: {
     pages: purchaseRequestPage,
     section: purchaseRequestSection,
     field: purchaseRequestField,
     items: purchaseItemField,
+    confirm: purchaseRequestConfirm,
+    message: purchaseRequestMessage
   },
-  // approval: {
-  //   pages: purchase
-  //   section: 
-  // }
+  s_approval: {
+    pages: settlementApprovalPage,
+    confirm: settlementApprovalConfirm,
+    section: settlementApprovalSection,
+    message: settlementApprovalMessage
+  },
+  approval: {
+    pages: purchaseApprovalPage,
+    confirm: purchaseApprovalConfirm,
+    section: purchaseApprovalSection,
+    message: purchaseApprovalMessage
+  },
   settlement: {
+    pages: purchaseSettlementPage,
+    section: purchaseSettlementSection,
     field: purchaseSettlementField,
     items: purchaseItemField,
+    confirm: purchaseSettlementConfirm,
+    message: purchaseSettlementMessage,
   },
-  // assignment: {
-  //   page: projectAssignmentPage,
-  //   section: projectAssignmentSection,
-  //   action: projectAssignmentAction,
-  //   field: projectAssignmentField,
-  //   for: projectAssignmentFieldHelperFor,
-  //   submission: projectAssignmentSubmission
-  // },
-  // acceptance: {
-  //   page: projectAcceptancePage,
-  //   section: projectAcceptanceSection,
-  //   dialog: projectAcceptanceDialog,
-  //   message: projectAcceptanceMessage,
-  // }
 };
