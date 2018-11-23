@@ -1,20 +1,20 @@
+
+import { LeaveInformation } from '@leave/components/request/detail/shared/LeaveInformation';
 import { Grid, Typography } from '@material-ui/core';
 import { WorkflowApprovalForm } from '@organization/components/workflow/approval/WorkflowApprovalForm';
 import { WorkflowHistory } from '@organization/components/workflow/history/WorkflowHistory';
-import { TravelInformation } from '@travel/components/request/detail/shared/TravelInformation';
-import { TravelRequestItem } from '@travel/components/request/detail/shared/TravelRequestItem';
-import { TravelRequestSummary } from '@travel/components/request/detail/shared/TravelRequestSummary';
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
-import { TravelApprovalDetailProps } from './TravelApprovalDetail';
 
-export const TravelApprovalDetailView: React.SFC<TravelApprovalDetailProps> = props => {
+import { LeaveApprovalDetailProps } from './LeaveApprovalDetail';
+
+export const LeaveApprovalDetailView: React.SFC<LeaveApprovalDetailProps> = props => {
   const { 
     approvalTitle, approvalSubHeader, approvalChoices, approvalTrueValue, 
     approvalDialogTitle, approvalDialogContentText, approvalDialogCancelText, approvalDialogConfirmedText 
   } = props;
   const { handleValidate, handleSubmit, handleSubmitSuccess, handleSubmitFail } = props;
-  const { isLoading, response } = props.travelApprovalState.detail;
+  const { isLoading, response } = props.leaveApprovalState.detail;
 
   const render = (
     <React.Fragment>
@@ -30,18 +30,10 @@ export const TravelApprovalDetailView: React.SFC<TravelApprovalDetailProps> = pr
         response.data &&
         <Grid container spacing={16}>
           <Grid item xs={12} md={4}>
-            <TravelInformation data = {response.data}/>
-          </Grid>
+            <LeaveInformation data={response.data}/>
+          </Grid>        
 
-          <Grid item xs={12} md={3}>
-            <TravelRequestSummary data = {response.data}/>
-          </Grid>
-
-          <Grid item xs={12} md={5}>
-            <TravelRequestItem data = {response.data.items}/>
-          </Grid>
-
-          <Grid item xs={12} md={6}>
+          <Grid item xs={12} md={4}>
             <Grid container spacing={16}>
               <Grid item>
                 <WorkflowHistory data={response.data.workflow} />

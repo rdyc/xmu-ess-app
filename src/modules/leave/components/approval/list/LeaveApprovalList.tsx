@@ -6,10 +6,10 @@ import { layoutMessage } from '@layout/locales/messages';
 import { ILeaveRequest } from '@leave/classes/response';
 import { LeaveRequestField, LeaveRequestUserAction } from '@leave/classes/types';
 import { LeaveSummary } from '@leave/components/request/detail/shared/LeaveSummary';
+import { leaveRequestFieldTranslator } from '@leave/helper';
 import { WithLeaveApproval, withLeaveApproval } from '@leave/hoc/withLeaveApproval';
 import { leaveMessage } from '@leave/locales/messages/leaveMessage';
 import { Button } from '@material-ui/core';
-import { projectRegistrationFieldTranslator } from '@project/helper';
 import * as moment from 'moment';
 import * as React from 'react';
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
@@ -30,7 +30,7 @@ const config: CollectionConfig<ILeaveRequest, AllProps> = {
       value: key, 
       name: LeaveRequestField[key] 
     })),
-  fieldTranslator: projectRegistrationFieldTranslator,
+  fieldTranslator: leaveRequestFieldTranslator,
 
   // searching
   hasSearching: true,

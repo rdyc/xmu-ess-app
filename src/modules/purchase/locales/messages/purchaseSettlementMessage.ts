@@ -3,24 +3,35 @@ import { defineMessages } from 'react-intl';
 const prefix = 'purchase';
 
 export const purchaseSettlementMessage = defineMessages({
-  emptyPurchaseUid: { id: 'purchase.message.purchaseRequest.empty.purchaseUid' },
-  createSuccess: { id: 'purchase.message.purchaseRequest.create.success' },
-  createFailure: { id: 'purchase.message.purchaseRequest.create.failure' },
-  updateSuccess: { id: 'purchase.message.purchaseRequest.update.success' },
-  updateFailure: { id: 'purchase.message.purchaseRequest.update.failure' },
+  emptyPurchaseUid: { id: 'purchase.message.request.empty.purchaseUid' },
+  settleSuccess: { id: 'purchase.message.settlement.settle.success' },
+  settleFailure: { id: 'purchase.message.settlement.settle.failure' },
+  updateSuccess: { id: 'purchase.message.request.update.success' },
+  updateFailure: { id: 'purchase.message.request.update.failure' },
 });
 
-// export const purchaseSettlementItemField = defineMessages({
-//   uid: { id: `${prefix}.itemTitle.uid`},
-//   description: { id: `${prefix}.itemTitle.description`},
-//   request: { id: `${prefix}.itemTitle.request`},
+export const purchaseSettlementConfirm = defineMessages({
+  settleTitle: { id: `${prefix}.confirm.settle.title` },
+  modifyTitle: { id: `${prefix}.confirm.modify.title` },
+  settleDescription: { id: `${prefix}.confirm.settle.description` },
+  modifyDescription: { id: `${prefix}.confirm.modify.description` },
+});
 
-//   actual: { id: `${prefix}.itemTitle.actual`},
-//   actualRequired: { id: `${prefix}.itemTitle.actual.required`},
-//   actualPlaceholder: { id: `${prefix}.itemTitle.actual.placeholder`},
-  
-//   variance: { id: `${prefix}.itemTitle.variance`},
-// });
+export const purchaseSettlementPage = defineMessages({
+  listTitle: { id: `${prefix}.settlement.list.title` },
+  listSubHeader: { id: `${prefix}.settlement.list.subTitle` },
+  detailTitle: { id: `${prefix}.settlement.detail.title` },
+  detailSubHeader: { id: `${prefix}.settlement.detail.subTitle` },
+  newTitle: { id: `${prefix}.form.settlement.newTitle` },
+  modifyTitle: { id: `${prefix}.form.settlement.editTitle` },
+});
+
+export const purchaseSettlementSection = defineMessages({
+  infoTitle: { id: `${prefix}.settlement.section.info.title` },
+  infoSubHeader: { id: `${prefix}.settlement.section.info.subTitle` },
+  itemTitle: { id: `${prefix}.item.settlementTitle` },
+  itemSubHeader: { id: `${prefix}.item.settlementSubTitle` },
+});
 
 export const purchaseSettlementField = defineMessages({
   uid: { id: `${prefix}.field.information.uid` },
@@ -52,6 +63,5 @@ export const purchaseSettlementField = defineMessages({
   actualInIDR: { id: `${prefix}.field.information.actualInIDR` },
   differenceInIDR: { id: `${prefix}.field.information.differenceInIDR` },
 
-  reject: { id: `${prefix}.field.information.reason` },
-
+  reject: { id: `${prefix}.field.information.rejectreason` },
 });

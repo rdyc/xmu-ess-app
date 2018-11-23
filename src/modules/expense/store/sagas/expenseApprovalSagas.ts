@@ -1,5 +1,6 @@
 import {
   ExpenseApprovalAction as Action,
+  expenseApprovalGetAllDispose,
   expenseApprovalGetAllError,
   expenseApprovalGetAllRequest,
   expenseApprovalGetAllSuccess,
@@ -10,7 +11,7 @@ import {
   expenseApprovalPostRequest,
   expenseApprovalPostSuccess,
 } from '@expense/store/actions';
-import { layoutAlertAdd, listBarLoading, listBarMetadata } from '@layout/store/actions';
+import { layoutAlertAdd } from '@layout/store/actions';
 import { flattenObject } from '@utils/flattenObject';
 import saiyanSaga from '@utils/saiyanSaga';
 import * as qs from 'qs';
@@ -29,8 +30,7 @@ function* watchApprovalAllFetchRequest() {
       method: 'get',
       path: `/v1/approvals/expense?${params}`, 
       successEffects: (response: IApiResponse) => ([
-        put(expenseApprovalGetAllSuccess(response.body)),
-        put(listBarMetadata(response.body.metadata))
+        put(expenseApprovalGetAllSuccess(response.body))
       ]), 
       failureEffects: (response: IApiResponse) => ([
         put(expenseApprovalGetAllError(response.body)),
@@ -48,7 +48,6 @@ function* watchApprovalAllFetchRequest() {
         }))
       ]),
       finallyEffects: [
-        put(listBarLoading(false))
       ]
     });
   };
@@ -93,6 +92,7 @@ function* watchApprovalPostFetchRequest() {
       payload: action.payload.data, 
       successEffects: (response: IApiResponse) => [
         put(expenseApprovalPostSuccess(response.body)),
+        put(expenseApprovalGetAllDispose()),
       ], 
       successCallback: (response: IApiResponse) => {
         action.payload.resolve(response.body.data);

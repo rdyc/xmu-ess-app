@@ -11,7 +11,16 @@ import { projectApprovalMessage } from '@project/locales/messages/projectApprova
 import { projectMessage } from '@project/locales/messages/projectMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
-import { compose, HandleCreators, mapper, withHandlers, withStateHandlers } from 'recompose';
+import {
+  compose,
+  HandleCreators,
+  mapper,
+  StateHandler,
+  StateHandlerMap,
+  StateUpdaters,
+  withHandlers,
+  withStateHandlers,
+} from 'recompose';
 import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
 import { isNullOrUndefined, isObject } from 'util';
@@ -30,6 +39,7 @@ interface OwnRouteParams {
 }
 
 interface OwnState {
+  shouldDataReload: boolean;
   approvalTitle: string;
   approvalSubHeader: string;
   approvalChoices: RadioGroupChoice[];
@@ -40,6 +50,10 @@ interface OwnState {
   approvalDialogConfirmedText: string;
 }
 
+interface OwnStateUpdater extends StateHandlerMap<OwnState> {
+  setDataload: StateHandler<OwnState>;
+}
+
 export type ProjectApprovalDetailProps
   = WithProjectApproval
   & WithUser
@@ -47,24 +61,28 @@ export type ProjectApprovalDetailProps
   & RouteComponentProps<OwnRouteParams> 
   & InjectedIntlProps
   & OwnHandler
-  & OwnState;
+  & OwnState
+  & OwnStateUpdater;
 
-const createProps: mapper<ProjectApprovalDetailProps, OwnState> = (props: ProjectApprovalDetailProps): OwnState => {
-  const { intl } = props;
+const createProps: mapper<ProjectApprovalDetailProps, OwnState> = (props: ProjectApprovalDetailProps): OwnState => ({
+  shouldDataReload: false,
+  approvalTitle: props.intl.formatMessage(projectMessage.registration.section.approvalTitle),
+  approvalSubHeader: props.intl.formatMessage(projectMessage.registration.section.approvalSubHeader),
+  approvalChoices: [
+    { value: WorkflowStatusType.Approved, label: props.intl.formatMessage(organizationMessage.workflow.option.approve) },
+    { value: WorkflowStatusType.Rejected, label: props.intl.formatMessage(organizationMessage.workflow.option.reject) }
+  ],
+  approvalTrueValue: WorkflowStatusType.Approved,
+  approvalDialogTitle: props.intl.formatMessage(projectMessage.approval.confirm.submissionTitle),
+  approvalDialogContentText: props.intl.formatMessage(projectMessage.approval.confirm.submissionContent),
+  approvalDialogCancelText: props.intl.formatMessage(layoutMessage.action.cancel),
+  approvalDialogConfirmedText: props.intl.formatMessage(layoutMessage.action.continue)
+});
 
-  return {
-    approvalTitle: intl.formatMessage(projectMessage.registration.section.approvalTitle),
-    approvalSubHeader: intl.formatMessage(projectMessage.registration.section.approvalSubHeader),
-    approvalChoices: [
-      { value: WorkflowStatusType.Approved, label: intl.formatMessage(organizationMessage.workflow.option.approve) },
-      { value: WorkflowStatusType.Rejected, label: intl.formatMessage(organizationMessage.workflow.option.reject) }
-    ],
-    approvalTrueValue: WorkflowStatusType.Approved,
-    approvalDialogTitle: intl.formatMessage(projectMessage.approval.confirm.submissionTitle),
-    approvalDialogContentText: intl.formatMessage(projectMessage.approval.confirm.submissionContent),
-    approvalDialogCancelText: intl.formatMessage(layoutMessage.action.cancel),
-    approvalDialogConfirmedText: intl.formatMessage(layoutMessage.action.continue),
-  };
+const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdater> = {
+  setDataload: (prevState: OwnState) => (): Partial<OwnState> => ({
+    shouldDataReload: !prevState.shouldDataReload
+  })
 };
 
 const handlerCreators: HandleCreators<ProjectApprovalDetailProps, OwnHandler> = {
@@ -120,30 +138,24 @@ const handlerCreators: HandleCreators<ProjectApprovalDetailProps, OwnHandler> = 
     });
   },
   handleSubmitSuccess: (props: ProjectApprovalDetailProps) => (response: boolean) => {
-    const { intl, history } = props;
-    const { alertAdd } = props.layoutDispatch;
-    
-    alertAdd({
+    props.layoutDispatch.alertAdd({
       time: new Date(),
-      message: intl.formatMessage(projectApprovalMessage.submitSuccess),
+      message: props.intl.formatMessage(projectApprovalMessage.submitSuccess)
     });
 
-    history.push('/project/approvals');
+    props.setDataload();
   },
   handleSubmitFail: (props: ProjectApprovalDetailProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
-    const { intl } = props;
-    const { alertAdd } = props.layoutDispatch;
-    
     if (errors) {
       // validation errors from server (400: Bad Request)
-      alertAdd({
+      props.layoutDispatch.alertAdd({
         time: new Date(),
         message: isObject(submitError) ? submitError.message : submitError
       });
     } else {
-      alertAdd({
+      props.layoutDispatch.alertAdd({
         time: new Date(),
-        message: intl.formatMessage(projectApprovalMessage.submitFailure),
+        message: props.intl.formatMessage(projectApprovalMessage.submitFailure),
         details: isObject(submitError) ? submitError.message : submitError
       });
     }
@@ -156,6 +168,6 @@ export const ProjectApprovalDetail = compose<ProjectApprovalDetailProps, {}>(
   withLayout,
   withProjectApproval,
   injectIntl,
-  withStateHandlers(createProps, {}),
+  withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
 )(ProjectApprovalDetailView);

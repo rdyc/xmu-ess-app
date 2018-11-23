@@ -1,7 +1,10 @@
 import { IExpenseDetail } from '@expense/classes/response';
+import { expenseMessage } from '@expense/locales/messages/expenseMessage';
+import { GlobalFormat } from '@layout/types';
+import { GlobalStyle } from '@layout/types/GlobalStyle';
 import { Card, CardContent, CardHeader, TextField } from '@material-ui/core';
 import * as React from 'react';
-import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
+import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose } from 'recompose';
 import { isNullOrUndefined } from 'util';
 
@@ -16,139 +19,85 @@ type AllProps
 export const expenseInformation: React.SFC<AllProps> = props => {
   const { data, intl } = props;
 
-  const styled = {
-    fullWidth: true,
-    InputProps: {
-      disableUnderline: true,
-      readOnly: true
-    }
-  };
-
   const render = (
     <Card square>
       <CardHeader 
-        title={<FormattedMessage id="expense.infoTitle"/>}
-        subheader={<FormattedMessage id="expense.infoSubTitle" />}
+        title={props.intl.formatMessage(expenseMessage.request.section.title)}
+        subheader={props.intl.formatMessage(expenseMessage.request.section.subTitle)}
       />
       <CardContent>
         <TextField
-          {...styled}
-          fullWidth
-          contentEditable={false}
-          margin="dense"
-          label={<FormattedMessage id="expense.field.uid" />}
+          {...GlobalStyle.TextField.ReadOnly}
+          label={props.intl.formatMessage(expenseMessage.request.field.uid)}
           value={data.uid}
         />
         <TextField
-          {...styled}
-          fullWidth
-          contentEditable={false}
-          margin="dense"
-          label={<FormattedMessage id="expense.field.date" />}
+          {...GlobalStyle.TextField.ReadOnly}
+          label={props.intl.formatMessage(expenseMessage.request.field.date)}
           value={data.date ?
-            intl.formatDate(data.date, {
-            year: 'numeric',
-            month: 'short',
-            day: 'numeric'
-          }) : 'N/A'}
+            intl.formatDate(data.date, GlobalFormat.Date) : 'N/A'}
         />
         <TextField
-          {...styled}
-          fullWidth
-          contentEditable={false}
-          margin="dense"
-          label={<FormattedMessage id="expense.field.createdBy" />}
+          {...GlobalStyle.TextField.ReadOnly}
+          label={props.intl.formatMessage(expenseMessage.request.field.createdBy)}
           value={data.changes && data.changes.created && data.changes.created.fullName ? data.changes.created.fullName : 'N/A'}
         />
         <TextField
-          {...styled}
-          fullWidth
-          contentEditable={false}
-          margin="dense"
-          label={<FormattedMessage id="expense.field.type" />}
+          {...GlobalStyle.TextField.ReadOnly}
+          label={props.intl.formatMessage(expenseMessage.request.field.expenseType)}
           value={data.expense ? data.expense.value : 'N/A'}
         />
         <TextField
-          {...styled}
-          fullWidth
-          contentEditable={false}
-          margin="dense"
-          label={<FormattedMessage id="expense.field.project" />}
+          {...GlobalStyle.TextField.ReadOnly}
+          label={props.intl.formatMessage(expenseMessage.request.field.projectUid)}
           value={data.project ? `${data.project.uid} - ${data.project.name}` : 'N/A'}
         />
         <TextField
-          {...styled}
-          fullWidth
-          contentEditable={false}
-          margin="dense"
-          label={<FormattedMessage id="expense.field.customer" />}
+          {...GlobalStyle.TextField.ReadOnly}
+          label={props.intl.formatMessage(expenseMessage.request.field.customerUid)}
           value={data.customer ? data.customer.name : 'N/A'}
         />
         <TextField
-          {...styled}
-          fullWidth
-          contentEditable={false}
-          margin="dense"
-          label={<FormattedMessage id="expense.field.value" />}
+          {...GlobalStyle.TextField.ReadOnly}
+          label={props.intl.formatMessage(expenseMessage.request.field.value)}
           value={intl.formatNumber(data.value || 0)}
         />
         <TextField
-          {...styled}
-          fullWidth
-          contentEditable={false}
-          margin="dense"
-          label={<FormattedMessage id="expense.field.location" />}
+          {...GlobalStyle.TextField.ReadOnly}
+          label={props.intl.formatMessage(expenseMessage.request.field.location)}
           value={data.location}
         />
         <TextField
-          {...styled}
-          fullWidth
-          contentEditable={false}
-          margin="dense"
-          label={<FormattedMessage id="expense.field.address" />}
+          {...GlobalStyle.TextField.ReadOnly}
+          label={props.intl.formatMessage(expenseMessage.request.field.address)}
           value={data.address || 'N/A'}
         />
         <TextField
-          {...styled}
-          fullWidth
-          contentEditable={false}
-          margin="dense"
-          label={<FormattedMessage id="expense.field.clientName" />}
+          {...GlobalStyle.TextField.ReadOnly}
+          label={props.intl.formatMessage(expenseMessage.request.field.name)}
           value={data.client ? data.client.name : 'N/A'}
         />
         <TextField
-          {...styled}
-          fullWidth
-          contentEditable={false}
-          margin="dense"
-          label={<FormattedMessage id="expense.field.clientTitle" />}
+          {...GlobalStyle.TextField.ReadOnly}
+          label={props.intl.formatMessage(expenseMessage.request.field.title)}
           value={data.client ? data.client.title : 'N/A'}
         />
         <TextField
-          {...styled}
-          fullWidth
-          contentEditable={false}
-          margin="dense"
-          label={<FormattedMessage id="expense.field.notes" />}
+          {...GlobalStyle.TextField.ReadOnly}
+          label={props.intl.formatMessage(expenseMessage.request.field.notes)}
           value={data.notes || 'N/A'}
         />
         <TextField
-          {...styled}
-          fullWidth
-          contentEditable={false}
-          margin="dense"
-          label={<FormattedMessage id="expense.field.status" />}
+          {...GlobalStyle.TextField.ReadOnly}
+          label={props.intl.formatMessage(expenseMessage.request.field.status)}
           value={data.status ? data.status.value : 'N/A'}
         />
         {!isNullOrUndefined(data.rejectedReason) ?
           <TextField
-          {...styled}
-          fullWidth
-          contentEditable={false}
-          margin="dense"
-          label={<FormattedMessage id="expense.field.rejectedReason" />}
-          value={data.rejectedReason || 'N/A'}
-        /> : ''
+            {...GlobalStyle.TextField.ReadOnly}
+            label={props.intl.formatMessage(expenseMessage.request.field.rejectedReason)}
+            value={data.rejectedReason || 'N/A'}
+          /> : ''
         }
         
       </CardContent>

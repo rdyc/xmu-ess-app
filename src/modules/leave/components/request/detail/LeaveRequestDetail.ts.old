@@ -4,25 +4,33 @@ import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IAppBarMenu } from '@layout/interfaces';
-import { TravelUserAction } from '@travel/classes/types';
-import { RequestDetailView } from '@travel/components/request/detail/RequestDetailView';
-import { WithTravelRequest, withTravelRequest } from '@travel/hoc/withTravelRequest';
+import { LeaveRequestUserAction } from '@leave/classes/types';
+import { LeaveRequestDetailView } from '@leave/components/request/detail/LeaveRequestDetailView';
+import { WithLeaveRequest, withLeaveRequest } from '@leave/hoc/withLeaveRequest';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
-import { compose, HandleCreators, lifecycle, mapper, ReactLifeCycleFunctions, StateHandler, StateHandlerMap, StateUpdaters, withHandlers, withStateHandlers } from 'recompose';
-import { isNullOrUndefined } from 'util';
+import {
+  compose,
+  HandleCreators,
+  lifecycle,
+  mapper,
+  ReactLifeCycleFunctions,
+  StateHandler,
+  StateHandlerMap,
+  StateUpdaters,
+  withHandlers,
+  withStateHandlers,
+} from 'recompose';
 
 interface Handler {
-  handleTravelRefresh: () => void;
-  handleTravelModify: () => void;
-  handleAddSettlement: () => void;
+  handleLeaveRefresh: () => void;
+  handleLeaveModify: () => void;
   handleDialogOpen: (title: string, description: string, cancelText?: string, confirmText?: string, fullScreen?: boolean) => void;
   handleDialogClose: () => void;
   handleDialogConfirmed: () => void;
 }
 
 interface OwnState {
-  action?: TravelUserAction | undefined;
   dialogFullScreen: boolean;
   dialogOpen: boolean;
   dialogTitle?: string | undefined;
@@ -36,11 +44,11 @@ interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
 }
 
 interface OwnRouteParams {
-  travelUid: string;
+  leaveUid: string;
 }
 
 export type RequestDetailProps
-  = WithTravelRequest
+  = WithLeaveRequest
   & WithUser
   & WithLayout
   & WithAppBar
@@ -74,41 +82,27 @@ const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
 };
 
 const handlerCreators: HandleCreators<RequestDetailProps, Handler> = {
-  handleTravelRefresh: (props: RequestDetailProps) => () => { 
+  handleLeaveRefresh: (props: RequestDetailProps) => () => { 
     const { match } = props;
     const { user } = props.userState;
-    const { loadDetailRequest } = props.travelRequestDispatch;
+    const { loadDetailRequest } = props.leaveRequestDispatch;
 
     if (user) {
       loadDetailRequest({
-        travelUid: match.params.travelUid,
+        leaveUid: match.params.leaveUid,
         companyUid: user.company.uid,
         positionUid: user.position.uid,
       });
     }
   },
-  handleTravelModify: (props: RequestDetailProps) => () => { 
+  handleLeaveModify: (props: RequestDetailProps) => () => { 
     const { intl, stateUpdate } = props;
 
     stateUpdate({
-      action: TravelUserAction.Modify,
       dialogFullScreen: false,
       dialogOpen: true,
-      dialogTitle: intl.formatMessage({id: 'travel.dialog.modifyTitle'}), 
-      dialogDescription: intl.formatMessage({id: 'travel.dialog.modifyDescription'}),
-      dialogCancelText: intl.formatMessage({id: 'global.action.disaggree'}),
-      dialogConfirmedText: intl.formatMessage({id: 'global.action.aggree'})
-    });
-  },
-  handleAddSettlement: (props: RequestDetailProps) => () => { 
-    const { intl, stateUpdate } = props;
-
-    stateUpdate({
-      action: TravelUserAction.AddSettlement,
-      dialogFullScreen: false,
-      dialogOpen: true,
-      dialogTitle: intl.formatMessage({id: 'travel.dialog.addSettlementTitle'}), 
-      dialogDescription: intl.formatMessage({id: 'travel.dialog.addSettlementDescription'}),
+      dialogTitle: intl.formatMessage({id: 'leave.dialog.modifyTitle'}), 
+      dialogDescription: intl.formatMessage({id: 'leave.dialog.modifyDescription'}),
       dialogCancelText: intl.formatMessage({id: 'global.action.disaggree'}),
       dialogConfirmedText: intl.formatMessage({id: 'global.action.aggree'})
     });
@@ -131,42 +125,12 @@ const handlerCreators: HandleCreators<RequestDetailProps, Handler> = {
     stateReset();
   },
   handleDialogConfirmed: (props: RequestDetailProps) => () => { 
-    const { match, history, stateReset, action } = props;
-    const { response } = props.travelRequestState.detail;
-    const travelUid = match.params.travelUid;
+    const { match, history, stateReset } = props;
+    const leaveUid = match.params.leaveUid;
 
-    // skipp untracked action or empty response
-    if (!action || !response) {
-      return;
-    } 
+    stateReset();
 
-    const actions = [
-      TravelUserAction.Modify,
-      TravelUserAction.AddSettlement
-    ];
-
-    if (actions.indexOf(action) !== -1) {
-      let next: string = '404';
-
-      switch (action) {
-        case TravelUserAction.Modify:
-          next = '/travel/requests/form/';
-          break;
-
-        case TravelUserAction.AddSettlement:
-          next = '/travel/settlements/form/';
-          break;
-
-        default:
-          break;
-      }
-      stateReset();
-      if (action === TravelUserAction.AddSettlement) {
-        history.push(next, { traveluid: travelUid });      
-      } else { 
-        history.push(next, { uid: travelUid });
-      }
-    }      
+    history.push('/leave/requests/form/', { uid: leaveUid });
   },
 };
 
@@ -174,17 +138,17 @@ const lifecycles: ReactLifeCycleFunctions<RequestDetailProps, OwnState> = {
   componentDidMount() {
     const { 
       match, layoutDispatch, appBarDispatch, intl, 
-      handleTravelRefresh, handleTravelModify, handleAddSettlement, 
+      handleLeaveRefresh, handleLeaveModify
     } = this.props;
 
     const { user } = this.props.userState;
-    const { loadDetailRequest } = this.props.travelRequestDispatch;
+    const { loadDetailRequest } = this.props.leaveRequestDispatch;
 
     layoutDispatch.changeView({
-      uid: AppMenu.TravelRequest,
-      parentUid: AppMenu.Travel,
-      title: intl.formatMessage({id: 'travel.detail.title'}),
-      subTitle : intl.formatMessage({id: 'travel.detail.subTitle'})
+      uid: AppMenu.LeaveRequest,
+      parentUid: AppMenu.Leave,
+      title: intl.formatMessage({id: 'leave.detail.title'}),
+      subTitle : intl.formatMessage({id: 'leave.detail.subTitle'})
     });
 
     layoutDispatch.navBackShow();
@@ -192,37 +156,32 @@ const lifecycles: ReactLifeCycleFunctions<RequestDetailProps, OwnState> = {
     
     const handleMenuClick = (menu: IAppBarMenu): void => {
       switch (menu.id) {
-        case TravelUserAction.Refresh:
-          handleTravelRefresh();
+        case LeaveRequestUserAction.Refresh:
+          handleLeaveRefresh();
           break;
         
-        case TravelUserAction.Modify:
-          handleTravelModify();
+        case LeaveRequestUserAction.Modify:
+          handleLeaveModify();
           break;
-
-        case TravelUserAction.AddSettlement:
-          handleAddSettlement();
-          break;
-
+      
         default:
           break;
       }
     };
-
     appBarDispatch.assignCallback(handleMenuClick);
 
     if (user) {
       loadDetailRequest({
-        travelUid: match.params.travelUid,
+        leaveUid: match.params.leaveUid,
         companyUid: user.company.uid,
         positionUid: user.position.uid,
       });
     }
   },
   componentWillReceiveProps(nextProps: RequestDetailProps) {
-    if (nextProps.travelRequestState.detail.response !== this.props.travelRequestState.detail.response) {
+    if (nextProps.leaveRequestState.detail.response !== this.props.leaveRequestState.detail.response) {
       const { intl } = nextProps;
-      const { response } = nextProps.travelRequestState.detail;
+      const { response } = nextProps.leaveRequestState.detail;
       const { assignMenus } = nextProps.appBarDispatch;
       
       const isStatusTypeEquals = (statusTypes: string[]): boolean => {
@@ -237,31 +196,24 @@ const lifecycles: ReactLifeCycleFunctions<RequestDetailProps, OwnState> = {
 
       const currentMenus = [
         {
-          id: TravelUserAction.Refresh,
+          id: LeaveRequestUserAction.Refresh,
           name: intl.formatMessage({id: 'global.action.refresh'}),
           enabled: true,
           visible: true
         },
         {
-          id: TravelUserAction.Modify,
-          name: intl.formatMessage({id: 'global.action.modify'}),
+          id: LeaveRequestUserAction.Modify,
+          name: intl.formatMessage({id: 'leave.action.modify'}),
           enabled: response !== undefined,
-          visible: isStatusTypeEquals([WorkflowStatusType.Submitted, WorkflowStatusType.InProgress])
+          visible: isStatusTypeEquals([WorkflowStatusType.Submitted])
         },
-        {
-          id: TravelUserAction.AddSettlement,
-          name: intl.formatMessage({id: 'travel.action.addsettlement'}),
-          enabled: response !== undefined,
-          visible: isNullOrUndefined(response && response.data.settlement) 
-                      && isStatusTypeEquals([WorkflowStatusType.Approved])
-        }
       ];
 
       assignMenus(currentMenus);
     }
   },
   componentWillUnmount() {
-    const { layoutDispatch, appBarDispatch, travelRequestDispatch } = this.props;
+    const { layoutDispatch, appBarDispatch, leaveRequestDispatch } = this.props;
 
     layoutDispatch.changeView(null);
     layoutDispatch.navBackHide();
@@ -270,18 +222,18 @@ const lifecycles: ReactLifeCycleFunctions<RequestDetailProps, OwnState> = {
 
     appBarDispatch.dispose();
 
-    travelRequestDispatch.loadDetailDispose();
+    leaveRequestDispatch.loadDetailDispose();
   }
 };
 
-export const RequestDetail = compose<RequestDetailProps, {}>(
+export const LeaveRequestDetail = compose<RequestDetailProps, {}>(
   withUser,
   withLayout,
   withAppBar,
   withRouter,
-  withTravelRequest,
+  withLeaveRequest,
   injectIntl,
   withStateHandlers<OwnState, OwnStateUpdaters, {}>(createProps, stateUpdaters), 
   withHandlers<RequestDetailProps, Handler>(handlerCreators),
   lifecycle<RequestDetailProps, OwnState>(lifecycles),
-)(RequestDetailView);
+)(LeaveRequestDetailView);

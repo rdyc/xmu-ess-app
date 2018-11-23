@@ -2,6 +2,7 @@ import { layoutAlertAdd, listBarLoading, listBarMetadata } from '@layout/store/a
 import {
   PurchaseAction,
   PurchaseApprovalAction,
+  purchaseApprovalGetAllDispose,
   purchaseApprovalGetAllError,
   purchaseApprovalGetAllRequest,
   purchaseApprovalGetAllSuccess,
@@ -11,6 +12,7 @@ import {
   purchaseApprovalPostError,
   purchaseApprovalPostRequest,
   purchaseApprovalPostSuccess,
+  purchaseGetAllDispose,
   purchaseGetAllError,
   purchaseGetAllRequest,
   purchaseGetAllSuccess,
@@ -27,6 +29,7 @@ import {
   purchasePutSuccess,
   SettlementAction,
   SettlementApprovalAction,
+  settlementApprovalGetAllDispose,
   settlementApprovalGetAllError,
   settlementApprovalGetAllRequest,
   settlementApprovalGetAllSuccess,
@@ -36,6 +39,7 @@ import {
   settlementApprovalPostError,
   settlementApprovalPostRequest,
   settlementApprovalPostSuccess,
+  settlementGetAllDispose,
   settlementGetAllError,
   settlementGetAllRequest,
   settlementGetAllSuccess,
@@ -127,6 +131,7 @@ function* watchPurchasePostFetchRequest() {
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => ([
         put(purchasePostSuccess(response.body)),
+        put(purchaseGetAllDispose())
       ]),
       successCallback: (response: IApiResponse) => {
         action.payload.resolve(response.body.data);
@@ -175,6 +180,7 @@ function* watchPurchasePutFetchRequest() {
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => ([
         put(purchasePutSuccess(response.body)),
+        put(purchaseGetAllDispose())
       ]),
       successCallback: (response: IApiResponse) => {
         action.payload.resolve(response.body.data);
@@ -286,6 +292,7 @@ function* watchPurchaseApprovalPostFetchRequest() {
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => ([
         put(purchaseApprovalPostSuccess(response.body)),
+        put(purchaseApprovalGetAllDispose())
       ]),
       successCallback: (response: IApiResponse) => {
         action.payload.resolve(response.body.data);
@@ -396,6 +403,7 @@ function* watchSettlementPostFetchRequest() {
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => ([
         put(settlementPostSuccess(response.body)),
+        put(settlementGetAllDispose())
       ]),
       successCallback: (response: IApiResponse) => {
         action.payload.resolve(response.body.data);
@@ -444,6 +452,7 @@ function* watchSettlementPutFetchRequest() {
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => ([
         put(settlementPutSuccess(response.body)),
+        put(settlementGetAllDispose())
       ]),
       successCallback: (response: IApiResponse) => {
         action.payload.resolve(response.body.data);
@@ -554,6 +563,7 @@ function* watchSettlementApprovalPostFetchRequest() {
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => ([
         put(settlementApprovalPostSuccess(response.body)),
+        put(settlementApprovalGetAllDispose())
       ]),
       successCallback: (response: IApiResponse) => {
         action.payload.resolve(response.body.data);

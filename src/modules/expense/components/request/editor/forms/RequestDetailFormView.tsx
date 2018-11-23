@@ -1,17 +1,17 @@
 import { RequestDetailFormProps } from '@expense/components/request/editor/forms/RequestDetailForm';
+import { expenseMessage } from '@expense/locales/messages/expenseMessage';
 import { FormMode } from '@generic/types';
 import { Card, CardContent, CardHeader } from '@material-ui/core';
 import * as React from 'react';
-import { FormattedMessage } from 'react-intl';
 import { Field } from 'redux-form';
 
 export const RequestDetailFormView: React.SFC<RequestDetailFormProps> = props => {
-  const { formMode } = props;
+  const { formMode, intl } = props;
   const { names } = props.context;
   
   const renderField = (name: string) => {
     const fieldName = name.replace('information.', '');
-    const fieldProps = props.generateFieldProps(name);
+    const fieldProps = props.generateFieldProps(fieldName);
 
     // don't show uid for new form
     const fields = ['uid'];
@@ -23,7 +23,6 @@ export const RequestDetailFormView: React.SFC<RequestDetailFormProps> = props =>
       <Field
         key={fieldName}
         name={fieldName}
-        label={<FormattedMessage id={`expense.field.${name}`} />}
         {...fieldProps}
       />
     );
@@ -32,8 +31,8 @@ export const RequestDetailFormView: React.SFC<RequestDetailFormProps> = props =>
   const render = (
     <Card square>
       <CardHeader 
-        title={<FormattedMessage id="expense.infoTitle"/>}
-        subheader={<FormattedMessage id="expense.infoSubTitle" />}
+        title={intl.formatMessage(expenseMessage.request.section.title)}
+        subheader={intl.formatMessage(expenseMessage.request.section.subTitle)}
       />
       <CardContent>
         {names.map(name => renderField(name))}

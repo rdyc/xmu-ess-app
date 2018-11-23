@@ -1,6 +1,7 @@
-import { layoutAlertAdd, listBarLoading, listBarMetadata } from '@layout/store/actions';
+import { layoutAlertAdd } from '@layout/store/actions';
 import {
   ProjectAssignmentAction as Action,
+  projectAssignmentGetAllDispose,
   projectAssignmentGetAllError,
   projectAssignmentGetAllRequest,
   projectAssignmentGetAllSuccess,
@@ -26,8 +27,7 @@ function* watchGetAllRequest() {
       method: 'get',
       path: `/v1/project/assignments${objectToQuerystring(action.payload.filter)}`,
       successEffects: (response: IApiResponse) => [
-        put(projectAssignmentGetAllSuccess(response.body)),
-        put(listBarMetadata(response.body.metadata))
+        put(projectAssignmentGetAllSuccess(response.body))
       ],
       failureEffects: (response: IApiResponse) => [
         put(projectAssignmentGetAllError(response.body)),
@@ -48,7 +48,9 @@ function* watchGetAllRequest() {
           })
         )
       ],
-      finallyEffects: [put(listBarLoading(false))]
+      finallyEffects: [
+        // nothing
+      ]
     });
   };
 
@@ -126,7 +128,8 @@ function* watchPatchRequest() {
       path: `/v1/project/assignments/${action.payload.companyUid}/${action.payload.projectUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
-        put(projectAssignmentPatchSuccess(response.body))
+        put(projectAssignmentPatchSuccess(response.body)),
+        put(projectAssignmentGetAllDispose())
       ],
       successCallback: (response: IApiResponse) => {
         action.payload.resolve(response.body.data);

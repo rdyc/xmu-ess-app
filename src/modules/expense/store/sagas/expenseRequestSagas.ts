@@ -1,5 +1,6 @@
 import {
   ExpenseRequestAction as Action,
+  expenseRequestGetAllDispose,
   expenseRequestGetAllError,
   expenseRequestGetAllRequest,
   expenseRequestGetAllSuccess,
@@ -13,7 +14,7 @@ import {
   expenseRequestPutRequest,
   expenseRequestPutSuccess,
 } from '@expense/store/actions';
-import { layoutAlertAdd, listBarLoading, listBarMetadata } from '@layout/store/actions';
+import { layoutAlertAdd } from '@layout/store/actions';
 import { flattenObject } from '@utils/flattenObject';
 import saiyanSaga from '@utils/saiyanSaga';
 import * as qs from 'qs';
@@ -33,7 +34,6 @@ function* watchAllRequest() {
       path: `/v1/expense/requests?${params}`, 
       successEffects: (response: IApiResponse) => ([
         put(expenseRequestGetAllSuccess(response.body)),
-        put(listBarMetadata(response.body.metadata))
       ]), 
       failureEffects: (response: IApiResponse) => ([
         put(expenseRequestGetAllError(response.body)),
@@ -51,7 +51,6 @@ function* watchAllRequest() {
         }))
       ]),
       finallyEffects: [
-        put(listBarLoading(false))
       ]
     });
   };
@@ -96,6 +95,7 @@ function* watchPostRequest() {
       payload: action.payload.data, 
       successEffects: (response: IApiResponse) => [
         put(expenseRequestPostSuccess(response.body)),
+        put(expenseRequestGetAllDispose()),
       ], 
       successCallback: (response: IApiResponse) => {
         action.payload.resolve(response.body.data);
@@ -139,6 +139,7 @@ function* watchPutRequest() {
       payload: action.payload.data, 
       successEffects: (response: IApiResponse) => [
         put(expenseRequestPutSuccess(response.body)),
+        put(expenseRequestGetAllDispose()),
       ], 
       successCallback: (response: IApiResponse) => {
         action.payload.resolve(response.body.data);

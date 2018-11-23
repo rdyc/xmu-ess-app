@@ -1,5 +1,6 @@
 import { RadioGroup } from '@layout/components/input/radioGroup';
 import { InputTextArea } from '@layout/components/input/textArea';
+import { layoutMessage } from '@layout/locales/messages';
 import {
   Button,
   Card,
@@ -14,7 +15,6 @@ import {
 } from '@material-ui/core';
 import { organizationMessage } from '@organization/locales/messages/organizationMessage';
 import * as React from 'react';
-import { FormattedMessage } from 'react-intl';
 import { Field } from 'redux-form';
 import { WorkflowApprovalMileageFormProps } from './WorkflowMileageApproval';
 
@@ -96,7 +96,7 @@ export const WorkflowMileageApprovalView: React.SFC<
               disabled={props.submitting}
               onClick={props.reset}
             >
-              <FormattedMessage id={'global.action.reset'} />
+              {props.intl.formatMessage(layoutMessage.action.reset)}
             </Button>
             <Button
               type="button"
@@ -104,13 +104,7 @@ export const WorkflowMileageApprovalView: React.SFC<
               disabled={(!props.valid || props.submitting) || itemTrue}
               onClick={() => handleDialogOpen()}
             >
-              <FormattedMessage
-                id={
-                  props.submitting
-                    ? 'global.processing'
-                    : 'global.action.submit'
-                }
-              />
+              {props.intl.formatMessage(props.submitting ? layoutMessage.text.processing : layoutMessage.action.submit)}
             </Button>
           </CardActions>
         </Card>

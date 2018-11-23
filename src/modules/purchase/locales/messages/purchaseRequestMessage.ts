@@ -3,42 +3,35 @@ import { defineMessages } from 'react-intl';
 const prefix = 'purchase';
 
 export const purchaseRequestMessage = defineMessages({
-  emptyPurchaseUid: { id: 'purchase.message.purchaseRequest.empty.purchaseUid' },
-  createSuccess: { id: 'purchase.message.purchaseRequest.create.success' },
-  createFailure: { id: 'purchase.message.purchaseRequest.create.failure' },
-  updateSuccess: { id: 'purchase.message.purchaseRequest.update.success' },
-  updateFailure: { id: 'purchase.message.purchaseRequest.update.failure' },
+  emptyPurchaseUid: { id: `${prefix}.message.request.empty.purchaseUid` },
+  createSuccess: { id: `${prefix}.message.request.create.success` },
+  createFailure: { id: `${prefix}.message.request.create.failure` },
+  updateSuccess: { id: `${prefix}.message.request.update.success` },
+  updateFailure: { id: `${prefix}.message.request.update.failure` },
+ 
 });
 
 export const purchaseRequestPage = defineMessages({
-  listTitle: { id: `${prefix}.requesttitle` },
-  listSubHeader: { id: `${prefix}.subTitle` },
-  detailTitle: { id: `${prefix}.infoTitle` },
-  detailSubHeader: { id: `${prefix}.infoSubTitle`},
-  newTitle: { id: `${prefix}.form.purchaseRequest.newTitle`},
-  // newSubHeader: { id: `${prefix}.form.newSubTitle`},
-  modifyTitle: { id: `${prefix}.form.purchaseRequest.editTitle`},
-  // modifySubHeader: { id: `${prefix}.form.editSubTitle`},
+  listTitle: { id: `${prefix}.request.list.title` },
+  listSubHeader: { id: `${prefix}.request.list.subTitle` },
+  detailTitle: { id: `${prefix}.request.detail.title` },
+  detailSubHeader: { id: `${prefix}.request.detail.subTitle`},
+  newTitle: { id: `${prefix}.form.request.newTitle`},
+  modifyTitle: { id: `${prefix}.form.request.editTitle`},
 
-  // statusModifyTitle: { id: },
-  // statusModifySubHeader: { id: },
 });
 
 export const purchaseRequestSection = defineMessages({
-  infoTitle: { id: `${prefix}.section.info.title` },
-  infoSubHeader: { id: `${prefix}.section.info.subtitle`},
-  itemTitle: { id: `${prefix}.section.info.itemTitle`},
-  itemSubHeader: { id: `${prefix}.section.info.itemSubTitle`},
+  infoTitle: { id: `${prefix}.request.section.info.title` },
+  infoSubHeader: { id: `${prefix}.request.section.info.subTitle`},
+  itemTitle: { id: `${prefix}.item.purchaseTitle`},
+  itemSubHeader: { id: `${prefix}.item.purchaseSubTitle`},
 });
 
-// export const purchaseRequestItemField = defineMessages({
-//   uid: { id: `${prefix}.itemTitle.uid` },
-//   description: { id: `${prefix}.itemTitle.description` },
-
-//   request: { id: `${prefix}.itemTitle.request` },
-//   requestRequired: { id: `${prefix}.itemTitle.request.required` },
-//   requestPlaceholder: { id: `${prefix}.itemTitle.request.placeholder` },
-// });
+export const purchaseRequestConfirm = defineMessages({
+  modifyTitle: { id: `${prefix}.confirm.modify.title` },
+  modifyDescription: { id: `${prefix}.confirm.modify.description` },
+});
 
 export const purchaseRequestField = defineMessages({
   uid: { id: `${prefix}.field.information.uid` },
@@ -82,5 +75,5 @@ export const purchaseRequestField = defineMessages({
 
   requestInIDR: { id: `${prefix}.field.information.requestInIDR` },
 
-  reason: { id: `${prefix}.field.information.reason` },
+  reason: { id: `${prefix}.field.information.rejectreason` },
 });

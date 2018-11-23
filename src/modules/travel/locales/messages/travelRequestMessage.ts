@@ -16,6 +16,11 @@ export const travelRequestPage = defineMessages({
   statusModifySubHeader: { id: `${prefix}.page.status.modify.subHeader` }
 });
 
+// option
+export const travelRequestOption = defineMessages({
+  addSettlement: { id: `${prefix}.option.addSettlement` },
+});
+
 // confimation
 export const travelRequestConfirm = defineMessages({
   modifyTitle: { id: `${prefix}.confirm.modify.title` },

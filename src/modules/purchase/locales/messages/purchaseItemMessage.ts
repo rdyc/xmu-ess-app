@@ -1,6 +1,6 @@
 import { defineMessages } from 'react-intl';
 
-const prefix = 'purchase.itemTitle';
+const prefix = 'purchase.item';
 
 export const purchaseItemField = defineMessages({
   uid: { id: `${prefix}.uid`},

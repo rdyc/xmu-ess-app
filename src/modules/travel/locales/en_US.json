@@ -1,14 +1,36 @@
 {
   "travel.request.page.list.title": "Travel Request",
   "travel.request.page.list.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "travel.request.page.detail.title": "Travel Request Detail",
+  
   "travel.settlement.page.list.title": "Travel Settlement",
   "travel.settlement.page.list.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "travel.settlement.page.detail.title": "Travel Settlement Detail",
+
   "travel.approval.page.list.title": "Travel Approval",
   "travel.approval.page.list.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "travel.approval.page.detail.title": "Travel Approval Detail",
+  
   "travel.settlementApproval.page.list.title": "Travel Settlement Approval",
   "travel.settlementApproval.page.list.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "travel.settlementApproval.page.detail.title": "Travel Approval Detail",
   
-  
+  "travel.request.option.addSettlement": "Add Settlement",
+
+  "travel.request.confirm.modify.title": "Modify Confirmation",
+  "travel.request.confirm.modify.description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "travel.request.confirm.addSettlement.title": "Add Settlement Confirmation",
+  "travel.request.confirm.addSettlement.description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+
+  "travel.settlement.confirm.modify.title": "Modify Confirmation",
+  "travel.settlement.confirm.modify.description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+
+  "travel.request.section.approval.title": "Approval",
+  "travel.request.section.approval.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+
+  "travel.approval.confirm.submission.title": "Travel Approval Submission",
+  "travel.approval.confirm.submission.content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+
   "travel.title": "Travels",
   "travelSettlement.title": "Travel Settlement",
   "travel.approvalTitle": "Approval",

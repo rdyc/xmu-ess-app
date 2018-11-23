@@ -68,5 +68,15 @@ export const leaveRequestField = defineMessages({
   employeeUid: { id: `${prefix}.field.information.employeeUid` },
   employeeUidRequired: { id: `${prefix}.field.information.employeeUid.required` },
   employeeUidPlaceholder: { id: `${prefix}.field.information.employeeUid.placeholder` },
-  
+});
+
+export const leaveRequestSection = defineMessages({
+  infoTitle: { id: `${prefix}.section.info.title` },
+  infoSubHeader: { id: `${prefix}.section.info.subHeader` },
+  statusTitle: { id: `${prefix}.section.status.title` },
+  statusSubHeader: { id: `${prefix}.section.status.subHeader` },
+  approvalTitle: { id: `${prefix}.section.approval.title` },
+  approvalSubHeader: { id: `${prefix}.section.approval.subHeader` },
+  cancellationTitle: { id: `${prefix}.section.approval.title` },
+  cancellationSubHeader: { id: `${prefix}.section.approval.subHeader` },
 });

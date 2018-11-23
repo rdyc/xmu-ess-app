@@ -4,10 +4,27 @@ const prefix = 'purchase';
 
 export const purchaseApprovalMessage = defineMessages({
   emptyProps: { id: `${prefix}.message.approval.emptyProps` },
-  emptyPurchaseUid: { id: `${prefix}.message.purchaseRequest.empty.purchaseUid` },
+  emptyPurchaseUid: { id: `${prefix}.message.request.empty.purchaseUid` },
   approveSuccess: { id: `${prefix}.message.approval.approve.success` },
   rejectSuccess: { id: `${prefix}.message.approval.reject.success` },
   createFailure: { id: `${prefix}.message.approval.create.failure` },
+});
+
+export const purchaseApprovalPage = defineMessages({
+  listTitle: { id: `${prefix}.approval.list.title` },
+  listSubHeader: { id: `${prefix}.approval.list.subTitle` },
+  detailTitle: { id: `${prefix}.approval.detail.title` },
+  detailSubHeader: { id: `${prefix}.approval.detail.subTitle`},
+});
+
+export const purchaseApprovalConfirm = defineMessages({
+  approveTitle: { id: `${prefix}.confirm.approval.title` },
+  approveDescription: { id: `${prefix}.confirm.approval.description` },
+});
+
+export const purchaseApprovalSection = defineMessages({
+  approveForm: { id: `${prefix}.form.approval.newTitle` },
+  approveContent: { id: `${prefix}.form.approval.newSubTitle` }
 });
 
 export const purchaseApprovalField = defineMessages({

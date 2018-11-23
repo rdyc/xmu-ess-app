@@ -5,6 +5,9 @@ import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IAppBarMenu } from '@layout/interfaces';
+import { LeaveRequestUserAction } from '@leave/classes/types';
+import { WithLeaveApproval, withLeaveApproval } from '@leave/hoc/withLeaveApproval';
+import { leaveApprovalMessage } from '@leave/locales/messages/leaveApprovalMessage';
 import { IWorkflowApprovalPayload } from '@organization/classes/request/workflow/approval';
 import { WorkflowApprovalFormData } from '@organization/components/workflow/approval/WorkflowApprovalForm';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
@@ -22,10 +25,7 @@ import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
 import { isNullOrUndefined, isObject } from 'util';
 
-import { TravelUserAction } from '@travel/classes/types';
-import { WithTravelApproval, withTravelApproval } from '@travel/hoc/withTravelApproval';
-import { travelApprovalMessage } from '@travel/locales/messages/travelApprovalMessages';
-import { TravelApprovalDetailView } from './TravelApprovalDetailView';
+import { LeaveApprovalDetailView } from './LeaveApprovalDetailView';
 
 interface OwnHandler {
   handleRefresh: () => void;
@@ -36,7 +36,7 @@ interface OwnHandler {
 }
 
 interface OwnRouteParams {
-  travelUid: string;
+  leaveUid: string;
 }
 
 interface OwnState {
@@ -50,8 +50,8 @@ interface OwnState {
   approvalDialogConfirmedText: string;
 }
 
-export type TravelApprovalDetailProps
-  = WithTravelApproval
+export type LeaveApprovalDetailProps
+  = WithLeaveApproval
   & WithUser
   & WithLayout
   & WithAppBar
@@ -60,8 +60,8 @@ export type TravelApprovalDetailProps
   & OwnHandler
   & OwnState;
 
-const handlerCreators: HandleCreators<TravelApprovalDetailProps, OwnHandler> = {
-  handleValidate: (props: TravelApprovalDetailProps) => (formData: WorkflowApprovalFormData) => { 
+const handlerCreators: HandleCreators<LeaveApprovalDetailProps, OwnHandler> = {
+  handleValidate: (props: LeaveApprovalDetailProps) => (formData: WorkflowApprovalFormData) => { 
     const errors = {};
   
     const requiredFields = ['isApproved', 'remark'];
@@ -74,10 +74,10 @@ const handlerCreators: HandleCreators<TravelApprovalDetailProps, OwnHandler> = {
     
     return errors;
   },
-  handleSubmit: (props: TravelApprovalDetailProps) => (formData: WorkflowApprovalFormData) => { 
+  handleSubmit: (props: LeaveApprovalDetailProps) => (formData: WorkflowApprovalFormData) => { 
     const { match, intl } = props;
     const { user } = props.userState;
-    const { createRequest } = props.travelApprovalDispatch;
+    const { createRequest } = props.leaveApprovalDispatch;
 
     // user checking
     if (!user) {
@@ -85,8 +85,8 @@ const handlerCreators: HandleCreators<TravelApprovalDetailProps, OwnHandler> = {
     }
 
     // props checking
-    if (!match.params.travelUid) {
-      const message = intl.formatMessage(travelApprovalMessage.emptyProps);
+    if (!match.params.leaveUid) {
+      const message = intl.formatMessage(leaveApprovalMessage.emptyProps);
 
       return Promise.reject(message);
     }
@@ -107,23 +107,23 @@ const handlerCreators: HandleCreators<TravelApprovalDetailProps, OwnHandler> = {
         reject,
         companyUid: user.company.uid,
         positionUid: user.position.uid,
-        travelUid: match.params.travelUid, 
+        leaveUid: match.params.leaveUid, 
         data: payload, 
       });
     });
   },
-  handleSubmitSuccess: (props: TravelApprovalDetailProps) => (response: boolean) => {
+  handleSubmitSuccess: (props: LeaveApprovalDetailProps) => (response: boolean) => {
     const { intl, history } = props;
     const { alertAdd } = props.layoutDispatch;
     
     alertAdd({
       time: new Date(),
-      message: intl.formatMessage(travelApprovalMessage.updateSuccess),
+      message: intl.formatMessage(leaveApprovalMessage.updateSuccess),
     });
 
-    history.push('/travel/approvals/request');
+    history.push('/leave/approvals/');
   },
-  handleSubmitFail: (props: TravelApprovalDetailProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
+  handleSubmitFail: (props: LeaveApprovalDetailProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
     const { intl } = props;
     const { alertAdd } = props.layoutDispatch;
     
@@ -136,27 +136,27 @@ const handlerCreators: HandleCreators<TravelApprovalDetailProps, OwnHandler> = {
     } else {
       alertAdd({
         time: new Date(),
-        message: intl.formatMessage(travelApprovalMessage.updateFailure),
+        message: intl.formatMessage(leaveApprovalMessage.updateFailure),
         details: isObject(submitError) ? submitError.message : submitError
       });
     }
   },
-  handleRefresh: (props: TravelApprovalDetailProps) => () => { 
+  handleRefresh: (props: LeaveApprovalDetailProps) => () => { 
     const { match } = props;
     const { user } = props.userState;
-    const { loadDetailRequest } = props.travelApprovalDispatch;
+    const { loadDetailRequest } = props.leaveApprovalDispatch;
 
     if (user) {
       loadDetailRequest({
         companyUid: user.company.uid,
         positionUid: user.position.uid,
-        travelUid: match.params.travelUid
+        leaveUid: match.params.leaveUid
       });
     }
   }
 };
 
-const lifecycles: ReactLifeCycleFunctions<TravelApprovalDetailProps, {}> = {
+const lifecycles: ReactLifeCycleFunctions<LeaveApprovalDetailProps, {}> = {
   componentDidMount() {
     const { 
       match, layoutDispatch, appBarDispatch, intl, 
@@ -164,13 +164,13 @@ const lifecycles: ReactLifeCycleFunctions<TravelApprovalDetailProps, {}> = {
     } = this.props;
 
     const { user } = this.props.userState;
-    const { loadDetailRequest } = this.props.travelApprovalDispatch;
+    const { loadDetailRequest } = this.props.leaveApprovalDispatch;
 
     layoutDispatch.changeView({
-      uid: AppMenu.TravelApproval,
-      parentUid: AppMenu.Travel,
-      title: intl.formatMessage({id: 'travel.detail.title'}),
-      subTitle : intl.formatMessage({id: 'travel.detail.subTitle'})
+      uid: AppMenu.LeaveRequest,
+      parentUid: AppMenu.Leave,
+      title: intl.formatMessage({id: 'leave.detail.title'}),
+      subTitle : intl.formatMessage({id: 'leave.detail.subTitle'})
     });
 
     layoutDispatch.navBackShow();
@@ -178,7 +178,7 @@ const lifecycles: ReactLifeCycleFunctions<TravelApprovalDetailProps, {}> = {
     
     const handleMenuClick = (menu: IAppBarMenu): void => {
       switch (menu.id) {
-        case TravelUserAction.Refresh:
+        case LeaveRequestUserAction.Refresh:
           handleRefresh();
           break;
 
@@ -191,20 +191,20 @@ const lifecycles: ReactLifeCycleFunctions<TravelApprovalDetailProps, {}> = {
 
     if (user) {
       loadDetailRequest({
-        travelUid: match.params.travelUid,
+        leaveUid: match.params.leaveUid,
         companyUid: user.company.uid,
         positionUid: user.position.uid,
       });
     }
   },
-  componentWillReceiveProps(nextProps: TravelApprovalDetailProps) {
-    if (nextProps.travelApprovalState.detail.response !== this.props.travelApprovalState.detail.response) {
+  componentWillReceiveProps(nextProps: LeaveApprovalDetailProps) {
+    if (nextProps.leaveApprovalState.detail.response !== this.props.leaveApprovalState.detail.response) {
       const { intl } = nextProps;
       const { assignMenus } = nextProps.appBarDispatch;
 
       const currentMenus = [
         {
-          id: TravelUserAction.Refresh,
+          id: LeaveRequestUserAction.Refresh,
           name: intl.formatMessage({id: 'global.action.refresh'}),
           enabled: true,
           visible: true
@@ -226,32 +226,32 @@ const lifecycles: ReactLifeCycleFunctions<TravelApprovalDetailProps, {}> = {
   }
 };
 
-const createProps: mapper<TravelApprovalDetailProps, OwnState> = (props: TravelApprovalDetailProps): OwnState => {
+const createProps: mapper<LeaveApprovalDetailProps, OwnState> = (props: LeaveApprovalDetailProps): OwnState => {
   const { intl } = props;
 
   return {
-    approvalTitle: intl.formatMessage({id: 'travel.approvalTitle'}),
-    approvalSubHeader: intl.formatMessage({id: 'travel.approvalSubHeader'}),
+    approvalTitle: intl.formatMessage({id: 'leave.approvalTitle'}),
+    approvalSubHeader: intl.formatMessage({id: 'leave.approvalSubHeader'}),
     approvalChoices: [
       { value: WorkflowStatusType.Approved, label: intl.formatMessage({id: 'workflow.approval.action.approve'}) },
       { value: WorkflowStatusType.Rejected, label: intl.formatMessage({id: 'workflow.approval.action.reject'}) }
     ],
     approvalTrueValue: WorkflowStatusType.Approved,
-    approvalDialogTitle: intl.formatMessage({id: 'travel.dialog.approvalTitle'}),
-    approvalDialogContentText: intl.formatMessage({id: 'travel.dialog.approvalContent'}),
+    approvalDialogTitle: intl.formatMessage({id: 'leave.dialog.approvalTitle'}),
+    approvalDialogContentText: intl.formatMessage({id: 'leave.dialog.approvalContent'}),
     approvalDialogCancelText: intl.formatMessage({id: 'global.action.cancel'}),
     approvalDialogConfirmedText: intl.formatMessage({id: 'global.action.continue'}),
   };
 };
 
-export const TravelApprovalDetail = compose<TravelApprovalDetailProps, {}>(
+export const LeaveApprovalDetail = compose<LeaveApprovalDetailProps, {}>(
   withUser,
   withLayout,
   withAppBar,
   withRouter,
-  withTravelApproval,
+  withLeaveApproval,
   injectIntl,
   withStateHandlers<OwnState, {}, {}>(createProps, {}),
-  withHandlers<TravelApprovalDetailProps, OwnHandler>(handlerCreators),
-  lifecycle<TravelApprovalDetailProps, {}>(lifecycles),
-)(TravelApprovalDetailView);
+  withHandlers<LeaveApprovalDetailProps, OwnHandler>(handlerCreators),
+  lifecycle<LeaveApprovalDetailProps, {}>(lifecycles),
+)(LeaveApprovalDetailView);
