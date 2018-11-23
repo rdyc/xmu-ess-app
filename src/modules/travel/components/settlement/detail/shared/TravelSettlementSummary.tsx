@@ -1,5 +1,6 @@
 import { Card, CardContent, CardHeader, Grid, TextField, Typography } from '@material-ui/core';
 import { ITravelRequestDetail, ITravelSettlementDetail } from '@travel/classes/response';
+import { travelMessage } from '@travel/locales/messages/travelMessage';
 import * as React from 'react';
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose } from 'recompose';
@@ -39,31 +40,31 @@ const travelSettlementSummary: React.SFC<AllProps> = props => {
             <TextField
               {...styled}
               margin="dense"
-              label={<FormattedMessage id="travel.field.information.totalDuration" />}
+              label={props.intl.formatMessage(travelMessage.request.field.totalDuration)}
               value={intl.formatNumber(data.summary ? data.summary.totalDuration : 0)}
             />
             <TextField
               {...styled}
               margin="dense"
-              label={<FormattedMessage id="travel.field.information.totalDiemValue" />}
+              label={props.intl.formatMessage(travelMessage.request.field.totalDiemValue)}
               value={intl.formatNumber(data.summary ? data.summary.totalDiemValue : 0)}
             />
             <TextField
               {...styled}
               margin="dense"
-              label={<FormattedMessage id="travel.field.information.costTransport" />}
+              label={props.intl.formatMessage(travelMessage.request.field.totalTransportCost)}
               value={intl.formatNumber(data.summary ? data.summary.totalCostTransport : 0)}
             />
             <TextField
               {...styled}
               margin="dense"
-              label={<FormattedMessage id="travel.field.information.costHotel" />}
+              label={props.intl.formatMessage(travelMessage.request.field.totalHotelCost)}
               value={intl.formatNumber(data.summary ? data.summary.totalCostHotel : 0)}
             />
             <TextField
               {...styled}
               margin="dense"
-              label={<FormattedMessage id="travel.field.information.total" />}
+              label={props.intl.formatMessage(travelMessage.request.field.total)}
               value={intl.formatNumber(data.total || 0)}
         />
         </Grid>

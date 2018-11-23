@@ -50,6 +50,9 @@ export const travelRequestField = defineMessages({
   employeeUid: { id: `${prefix}.field.employeeUid` },
   employeeUidPlaceholder: { id: `${prefix}.field.employeeUid.placeholder` },
   
+  positionUid: { id: `${prefix}.field.positionUid` },
+  positionUidPlaceholder: { id: `${prefix}.field.positionUid.placeholder` },
+  
   destinationType: { id: `${prefix}.field.destinationType` },
   destinationTypeRequired: { id: `${prefix}.field.destinationType.required` },
   destinationTypePlaceholder: { id: `${prefix}.field.destinationType.placeholder` },
@@ -57,6 +60,10 @@ export const travelRequestField = defineMessages({
   projectUid: { id: `${prefix}.field.projectUid` },
   projectUidRequired: { id: `${prefix}.field.projectUid.required` },
   projectUidPlaceholder: { id: `${prefix}.field.projectUid.placeholder` },
+  
+  siteUid: { id: `${prefix}.field.siteUid` },
+  siteUidRequired: { id: `${prefix}.field.siteUid.required` },
+  siteUidPlaceholder: { id: `${prefix}.field.siteUid.placeholder` },
   
   customerUid: { id: `${prefix}.field.customerUid` },
   customerUidRequired: { id: `${prefix}.field.customerUid.required` },
@@ -74,6 +81,9 @@ export const travelRequestField = defineMessages({
   activityTypeRequired: { id: `${prefix}.field.activityType.required` },
   activityTypePlaceholder: { id: `${prefix}.field.activityType.placeholder` },
   
+  statusType: { id: `${prefix}.field.statusType` },
+  statusTypePlaceholder: { id: `${prefix}.field.statusType.placeholder` },
+  
   objective: { id: `${prefix}.field.objective` },
   objectivePlaceholder: { id: `${prefix}.field.objective.placeholder` },
 
@@ -84,6 +94,85 @@ export const travelRequestField = defineMessages({
   commentPlaceholder: { id: `${prefix}.field.comment.placeholder` },
 
   total: { id: `${prefix}.field.total` },
+  totalDuration: { id: `${prefix}.field.total` },
+  totalDiemValue: { id: `${prefix}.field.total` },
+  totalTransportCost: { id: `${prefix}.field.total` },
+  totalHotelCost: { id: `${prefix}.field.total` },
+
+  //// item
+  
+  itemEmployeeUid: { id: `${prefix}.field.item.itemEmployeeUid` },
+  itemEmployeeUidRequired: { id: `${prefix}.field.item.itemEmployeeUid.required` },
+  itemEmployeeUidPlaceholder: { id: `${prefix}.field.item.itemEmployeeUid.placeholder` },
+
+  transportType: { id: `${prefix}.field.item.transportType` },
+  transportTypeRequired: { id: `${prefix}.field.item.transportType.required` },
+  transportTypePlaceholder: { id: `${prefix}.field.item.transportType.placeholder` },
+  
+  from: { id: `${prefix}.field.item.from` },
+  fromRequired: { id: `${prefix}.field.item.from.required` },
+  fromPlaceholder: { id: `${prefix}.field.item.from.placeholder` },
+
+  destination: { id: `${prefix}.field.item.destination` },
+  destinationRequired: { id: `${prefix}.field.item.destination.required` },
+  destinationPlaceholder: { id: `${prefix}.field.item.destination.placeholder` },
+
+  itemStart: { id: `${prefix}.field.item.itemStart` },
+  itemStartRequired: { id: `${prefix}.field.item.itemStart.required` },
+  itemStartPlaceholder: { id: `${prefix}.field.item.itemStart.placeholder` },
+
+  itemEnd: { id: `${prefix}.field.item.itemEnd` },
+  itemEndRequired: { id: `${prefix}.field.item.itemEnd.required` },
+  itemEndPlaceholder: { id: `${prefix}.field.item.itemEnd.placeholder` },
+
+  transportCost: { id: `${prefix}.field.item.transportCost` },
+  transportCostRequired: { id: `${prefix}.field.item.transportCost.required` },
+  transportCostPlaceholder: { id: `${prefix}.field.item.transportCost.placeholder` },
+
+  hotelCost: { id: `${prefix}.field.item.hotelCost` },
+  hotelCostRequired: { id: `${prefix}.field.item.hotelCost.required` },
+  hotelCostPlaceholder: { id: `${prefix}.field.item.hotelCost.placeholder` },
+  
+  hotel: { id: `${prefix}.field.item.hotel` },
+  hotelRequired: { id: `${prefix}.field.item.hotel.required` },
+  hotelPlaceholder: { id: `${prefix}.field.item.hotel.placeholder` },
+
+  note: { id: `${prefix}.field.item.note` },
+  noteRequired: { id: `${prefix}.field.item.note.required` },
+  notePlaceholder: { id: `${prefix}.field.item.note.placeholder` },
+
+  duration: { id: `${prefix}.field.item.duration` },
+  durationRequired: { id: `${prefix}.field.item.duration.required` },
+  durationPlaceholder: { id: `${prefix}.field.item.duration.placeholder` },
+
+  diemValue: { id: `${prefix}.field.item.diemValue` },
+  diemValueRequired: { id: `${prefix}.field.item.diemValue.required` },
+  diemValuePlaceholder: { id: `${prefix}.field.item.diemValue.placeholder` },
+
+  amount: { id: `${prefix}.field.item.amount` },
+  amountRequired: { id: `${prefix}.field.item.amount.required` },
+  amountPlaceholder: { id: `${prefix}.field.item.amount.placeholder` },
+
+  currencyUid: { id: `${prefix}.field.item.currencyUid` },
+  currencyUidRequired: { id: `${prefix}.field.item.currencyUid.required` },
+  currencyUidPlaceholder: { id: `${prefix}.field.item.currencyUid.placeholder` },
+  
+  currencyRate: { id: `${prefix}.field.item.currencyRate` },
+  currencyRateRequired: { id: `${prefix}.field.item.currencyRate.required` },
+  currencyRatePlaceholder: { id: `${prefix}.field.item.currencyRate.placeholder` },
+  
+  isRoundTrip: { id: `${prefix}.field.item.isRoundTrip` },
+  isRoundTripRequired: { id: `${prefix}.field.item.isRoundTrip.required` },
+  isRoundTripPlaceholder: { id: `${prefix}.field.item.isRoundTrip.placeholder` },
+  
+  isHotelByCompany: { id: `${prefix}.field.item.isHotelByCompany` },
+  isHotelByCompanyRequired: { id: `${prefix}.field.item.isHotelByCompany.required` },
+  isHotelByCompanyPlaceholder: { id: `${prefix}.field.item.isHotelByCompany.placeholder` },
+  
+  isTransportByCompany: { id: `${prefix}.field.item.isTransportByCompany` },
+  isTransportByCompanyRequired: { id: `${prefix}.field.item.isTransportByCompany.required` },
+  isTransportByCompanyPlaceholder: { id: `${prefix}.field.item.isTransportByCompany.placeholder` },
+
 });
 
 // message

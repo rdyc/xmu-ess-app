@@ -1,7 +1,9 @@
+import { GlobalFormat } from '@layout/types';
 import { Card, CardContent, CardHeader, TextField } from '@material-ui/core';
 import { ITravelRequestDetail } from '@travel/classes/response';
+import { travelMessage } from '@travel/locales/messages/travelMessage';
 import * as React from 'react';
-import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
+import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose } from 'recompose';
 
 interface OwnProps {
@@ -26,38 +28,38 @@ const travelInformation: React.SFC<AllProps> = props => {
   const render = (
     <Card square>
       <CardHeader 
-        title={<FormattedMessage id="travel.infoTitle"/>}
-        subheader={<FormattedMessage id="travel.infoSubTitle" />}
+        title={props.intl.formatMessage(travelMessage.request.section.infoTitle)}
+        subheader={props.intl.formatMessage(travelMessage.request.section.infoSubHeader)}
       />
       <CardContent>
         <TextField
           {...styled}
           margin="dense"
-          label={<FormattedMessage id="travel.field.information.uid" />}
+          label={props.intl.formatMessage(travelMessage.request.field.uid)}
           value={data && data.uid}
         />
         <TextField
           {...styled}
           margin="dense"
-          label={<FormattedMessage id="travel.field.information.statusType" />}
+          label={props.intl.formatMessage(travelMessage.request.field.statusType)}
           value={data && data.status ? data.status.value : 'N/A'}
         />
         <TextField
           {...styled}
           margin="dense"
-          label={<FormattedMessage id="travel.field.information.requestor" />}
+          label={props.intl.formatMessage(travelMessage.request.field.employeeUid)}
           value={data && data.employee ? data.employee.fullName : 'N/A'}
         />
         <TextField
           {...styled}
           margin="dense"
-          label={<FormattedMessage id="travel.field.information.positionUid" />}
+          label={props.intl.formatMessage(travelMessage.request.field.positionUid)}
           value={data && data.position ? data.position.name : 'N/A'}
         />
         <TextField
           {...styled}
           margin="dense"
-          label={<FormattedMessage id="travel.field.information.destinationType" />}
+          label={props.intl.formatMessage(travelMessage.request.field.destinationType)}
           value={data && data.destination ? data.destination.value : 'N/A'}
         />
         {
@@ -65,12 +67,8 @@ const travelInformation: React.SFC<AllProps> = props => {
           <TextField
             {...styled}
             margin="dense"
-            label={<FormattedMessage id="travel.field.information.end" />}
-            value={intl.formatDate(data.end , {
-              year: 'numeric',
-              month: 'short',
-              day: 'numeric'
-            })}
+            label={props.intl.formatMessage(travelMessage.request.field.start)}
+            value={intl.formatDate(data.start, GlobalFormat.Date)}
           />
         }
         {
@@ -78,54 +76,50 @@ const travelInformation: React.SFC<AllProps> = props => {
           <TextField
             {...styled}
             margin="dense"
-            label={<FormattedMessage id="travel.field.information.end" />}
-            value={intl.formatDate(data.end , {
-              year: 'numeric',
-              month: 'short',
-              day: 'numeric'
-            })}
+            label={props.intl.formatMessage(travelMessage.request.field.end)}
+            value={intl.formatDate(data.end, GlobalFormat.Date)}
           />
         }
         <TextField
           {...styled}
           margin="dense"
-          label={<FormattedMessage id="travel.field.information.customerUid" />}
+          label={props.intl.formatMessage(travelMessage.request.field.customerUid)}
           value={data && data.customer ? data.customer.name : 'N/A'}
         />
         <TextField
           {...styled}
           margin="dense"
-          label={<FormattedMessage id="travel.field.information.projectUid" />}
+          label={props.intl.formatMessage(travelMessage.request.field.projectUid)}
           value={data && data.project ? data.project.name : 'N/A'}
         />
         <TextField
           {...styled}
           margin="dense"
-          label={<FormattedMessage id="travel.field.information.siteUid" />}
+          label={props.intl.formatMessage(travelMessage.request.field.siteUid)}
           value={data && data.site ? data.site.name : 'N/A'}
         />
         <TextField
           {...styled}
           margin="dense"
-          label={<FormattedMessage id="travel.field.information.activityType" />}
+          label={props.intl.formatMessage(travelMessage.request.field.activityType)}
           value={data && data.activity ? data.activity.value : 'N/A'}
         />
         <TextField
           {...styled}
           margin="dense"
-          label={<FormattedMessage id="travel.field.information.objective" />}
+          label={props.intl.formatMessage(travelMessage.request.field.objective)}
           value={data && data.objective || 'N/A'}
         />
         <TextField
           {...styled}
           margin="dense"
-          label={<FormattedMessage id="travel.field.information.target" />}
+          label={props.intl.formatMessage(travelMessage.request.field.target)}
           value={data && data.target || 'N/A'}
         />
         <TextField
           {...styled}
           margin="dense"
-          label={<FormattedMessage id="travel.field.information.comment" />}
+          label={props.intl.formatMessage(travelMessage.request.field.comment)}
           value={data && data.comment || 'N/A'}
         />        
       </CardContent>
