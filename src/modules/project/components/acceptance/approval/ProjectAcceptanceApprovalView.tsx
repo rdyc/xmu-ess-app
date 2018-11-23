@@ -37,8 +37,8 @@ export const ProjectAcceptanceApprovalView: React.SFC<ProjectAcceptanceApprovalP
           <Grid item xs={12} md={4}>
             <ProjectAssignmentItem 
               data={response.data} 
-              title={props.intl.formatMessage(projectMessage.assignment.section.acceptanceTitle)} 
-              subHeader={props.intl.formatMessage(projectMessage.assignment.section.acceptanceSubHeader)} 
+              title={props.intl.formatMessage(projectMessage.assignment.section.itemTitle)} 
+              subHeader={props.intl.formatMessage(projectMessage.assignment.section.itemSubHeader)} 
             />
           </Grid>
 

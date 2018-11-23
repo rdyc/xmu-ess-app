@@ -1,21 +1,17 @@
-import AppMenu from '@constants/AppMenu';
 import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithOidc, withOidc } from '@layout/hoc/withOidc';
 import { WithUser, withUser } from '@layout/hoc/withUser';
-import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
 import { ProjectUserAction } from '@project/classes/types';
 import { WithProjectAssignment, withProjectAssignment } from '@project/hoc/withProjectAssignment';
 import { projectMessage } from '@project/locales/messages/projectMessage';
-import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
+import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import {
   compose,
   HandleCreators,
-  lifecycle,
   mapper,
-  ReactLifeCycleFunctions,
   StateHandler,
   StateHandlerMap,
   StateUpdaters,
@@ -25,30 +21,29 @@ import {
 
 import { ProjectAssignmentDetailView } from './ProjectAssignmentDetailView';
 
-interface Handler {
-  handleAssignmentRefresh: () => void;
-  handleAssignmentModify: () => void;
-  handleDialogOpen: (title: string, description: string, cancelText?: string, confirmText?: string, fullScreen?: boolean) => void;
-  handleDialogClose: () => void;
-  handleDialogConfirmed: () => void;
+interface OwnRouteParams {
+  assignmentUid: string;
 }
 
 interface OwnState {
   action?: ProjectUserAction | undefined;
   dialogFullScreen: boolean;
   dialogOpen: boolean;
-  dialogTitle?: string | undefined;
-  dialogDescription?: string | undefined;
-  dialogCancelText: FormattedMessage.MessageDescriptor;
-  dialogConfirmedText: FormattedMessage.MessageDescriptor;
+  dialogTitle?: string;
+  dialogContent?: string;
+  dialogCancelLabel?: string;
+  dialogConfirmLabel?: string;
 }
 
 interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
-  stateUpdate: StateHandler<OwnState>;
+  setModify: StateHandler<OwnState>;
+  setDefault: StateHandler<OwnState>;
 }
 
-interface OwnRouteParams {
-  assignmentUid: string;
+interface OwnHandler {
+  handleOnModify: () => void;
+  handleOnCloseDialog: () => void;
+  handleOnConfirm: () => void;
 }
 
 export type ProjectAssignmentDetailProps
@@ -61,80 +56,46 @@ export type ProjectAssignmentDetailProps
   & InjectedIntlProps
   & OwnState
   & OwnStateUpdaters
-  & Handler;
+  & OwnHandler;
 
 const createProps: mapper<ProjectAssignmentDetailProps, OwnState> = (props: ProjectAssignmentDetailProps): OwnState => ({ 
   dialogFullScreen: false,
-  dialogOpen: false,
-  dialogCancelText: layoutMessage.action.cancel,
-  dialogConfirmedText: layoutMessage.action.ok,
+  dialogOpen: false
 });
 
 const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
-  stateUpdate: (prevState: OwnState) => (newState: any) => ({
-    ...prevState,
-    ...newState
+  setModify: (prevState: OwnState, props: ProjectAssignmentDetailProps) => (): Partial<OwnState> => ({
+    action: ProjectUserAction.Modify,
+    dialogFullScreen: false,
+    dialogOpen: true,
+    dialogTitle: props.intl.formatMessage(projectMessage.assignment.confirm.modifyTitle), 
+    dialogContent: props.intl.formatMessage(projectMessage.assignment.confirm.modifyContent),
+    dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.disaggree),
+    dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.aggree)
   }),
-  stateReset: (prevState: OwnState) => () => ({
-    ...prevState,
+  setDefault: (prevState: OwnState) => (): Partial<OwnState> => ({
+    action: undefined,
     dialogFullScreen: false,
     dialogOpen: false,
     dialogTitle: undefined,
-    dialogDescription: undefined,
-    dialogCancelText: layoutMessage.action.cancel,
-    dialogConfirmedText: layoutMessage.action.ok,
+    dialogContent: undefined,
+    dialogCancelLabel: undefined,
+    dialogConfirmLabel: undefined,
   })
 };
 
-const handlerCreators: HandleCreators<ProjectAssignmentDetailProps, Handler> = {
-  handleAssignmentRefresh: (props: ProjectAssignmentDetailProps) => () => { 
-    const { match } = props;
-    const { user } = props.userState;
-    const { loadDetailRequest } = props.projectAssignmentDispatch;
-
-    if (user) {
-      loadDetailRequest({
-        companyUid: user.company.uid,
-        assignmentUid: match.params.assignmentUid,
-      });
-    }
+const handlerCreators: HandleCreators<ProjectAssignmentDetailProps, OwnHandler> = {
+  handleOnModify: (props: ProjectAssignmentDetailProps) => () => { 
+    props.setModify();
   },
-  handleAssignmentModify: (props: ProjectAssignmentDetailProps) => () => { 
-    const { intl, stateUpdate } = props;
-
-    stateUpdate({
-      action: ProjectUserAction.Modify,
-      dialogFullScreen: false,
-      dialogOpen: true,
-      dialogTitle: intl.formatMessage(projectMessage.assignment.confirm.modifyTitle), 
-      dialogDescription: intl.formatMessage(projectMessage.assignment.confirm.modifyContent),
-      dialogCancelText: intl.formatMessage(layoutMessage.action.disaggree),
-      dialogConfirmedText: intl.formatMessage(layoutMessage.action.aggree)
-    });
+  handleOnCloseDialog: (props: ProjectAssignmentDetailProps) => () => { 
+    props.setDefault();
   },
-  handleDialogOpen: (props: ProjectAssignmentDetailProps) => (title: string, description: string, cancelText?: string, confirmText?: string, fullScreen?: boolean) => { 
-    const { intl, stateUpdate, dialogCancelText, dialogConfirmedText } = props;
-
-    stateUpdate({ 
-      dialogFullScreen: fullScreen || false,
-      dialogOpen: true,
-      dialogTitle: title,
-      dialogDescription: description,
-      dialogCancelText: cancelText || intl.formatMessage(dialogCancelText),
-      dialogConfirmedText: confirmText || intl.formatMessage(dialogConfirmedText)
-    });
-  },
-  handleDialogClose: (props: ProjectAssignmentDetailProps) => () => { 
-    const { stateReset } = props;
-
-    stateReset();
-  },
-  handleDialogConfirmed: (props: ProjectAssignmentDetailProps) => () => { 
-    const { history, action, stateReset } = props;
+  handleOnConfirm: (props: ProjectAssignmentDetailProps) => () => { 
     const { response } = props.projectAssignmentState.detail;
 
     // skipp untracked action or empty response
-    if (!action || !response) {
+    if (!props.action || !response) {
       return;
     } 
 
@@ -159,10 +120,10 @@ const handlerCreators: HandleCreators<ProjectAssignmentDetailProps, Handler> = {
       ProjectUserAction.Modify
     ];
 
-    if (actions.indexOf(action) !== -1) {
+    if (actions.indexOf(props.action) !== -1) {
       let next: string = '404';
 
-      switch (action) {
+      switch (props.action) {
         case ProjectUserAction.Modify:
           next = '/project/assignments/form';
           break;
@@ -171,96 +132,15 @@ const handlerCreators: HandleCreators<ProjectAssignmentDetailProps, Handler> = {
           break;
       }
 
-      stateReset();
+      props.setDefault();
 
-      history.push(next, {
+      props.history.push(next, {
         companyUid,
         assignmentUid, 
         projectUid 
       });
     }
   },
-};
-
-const lifecycles: ReactLifeCycleFunctions<ProjectAssignmentDetailProps, OwnState> = {
-  componentDidMount() {
-    const { 
-      match, layoutDispatch, appBarDispatch, intl, 
-      handleAssignmentRefresh, handleAssignmentModify
-    } = this.props;
-
-    const { user } = this.props.userState;
-    const { loadDetailRequest } = this.props.projectAssignmentDispatch;
-
-    layoutDispatch.changeView({
-      uid: AppMenu.ProjectAssignmentRequest,
-      parentUid: AppMenu.ProjectAssignment,
-      title: intl.formatMessage(projectMessage.assignment.page.detailTitle),
-      subTitle : intl.formatMessage(projectMessage.assignment.page.detailSubHeader)
-    });
-
-    layoutDispatch.navBackShow();
-    layoutDispatch.moreShow();
-    
-    const handleMenuClick = (menu: IAppBarMenu): void => {
-      switch (menu.id) {
-        case ProjectUserAction.Refresh:
-          handleAssignmentRefresh();
-          break;
-        
-        case ProjectUserAction.Modify:
-          handleAssignmentModify();
-          break;
-      
-        default:
-          break;
-      }
-    };
-
-    appBarDispatch.assignCallback(handleMenuClick);
-
-    if (user) {
-      loadDetailRequest({
-        companyUid: user.company.uid,
-        assignmentUid: match.params.assignmentUid,
-      });
-    }
-  },
-  componentWillReceiveProps(nextProps: ProjectAssignmentDetailProps) {
-    if (nextProps.projectAssignmentState.detail.response !== this.props.projectAssignmentState.detail.response) {
-      const { intl } = nextProps;
-      const { assignMenus } = nextProps.appBarDispatch;
-      
-      const currentMenus = [
-        {
-          id: ProjectUserAction.Refresh,
-          name: intl.formatMessage(layoutMessage.action.refresh),
-          enabled: true,
-          visible: true
-        },
-        {
-          id: ProjectUserAction.Modify,
-          name: intl.formatMessage(layoutMessage.action.modify),
-          enabled: true,
-          visible: true
-        }
-      ];
-
-      assignMenus(currentMenus);
-    }
-  },
-  componentWillUnmount() {
-    const { layoutDispatch, appBarDispatch, projectAssignmentDispatch } = this.props;
-
-    layoutDispatch.changeView(null);
-    layoutDispatch.navBackHide();
-    layoutDispatch.moreHide();
-    layoutDispatch.actionCentreHide();
-
-    appBarDispatch.dispose();
-
-    projectAssignmentDispatch.loadDetailDispose();
-  }
 };
 
 export const ProjectAssignmentDetail = compose<ProjectAssignmentDetailProps, {}>(
@@ -271,7 +151,6 @@ export const ProjectAssignmentDetail = compose<ProjectAssignmentDetailProps, {}>
   withRouter,
   withProjectAssignment,
   injectIntl,
-  withStateHandlers<OwnState, OwnStateUpdaters, {}>(createProps, stateUpdaters), 
-  withHandlers<ProjectAssignmentDetailProps, Handler>(handlerCreators),
-  lifecycle<ProjectAssignmentDetailProps, OwnState>(lifecycles),
+  withStateHandlers(createProps, stateUpdaters), 
+  withHandlers(handlerCreators)
 )(ProjectAssignmentDetailView);

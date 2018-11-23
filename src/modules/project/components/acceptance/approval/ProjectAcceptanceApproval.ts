@@ -71,7 +71,7 @@ const createProps: mapper<ProjectAcceptanceApprovalProps, OwnState> = (props: Pr
     approvalTitle: intl.formatMessage(projectMessage.acceptance.section.approvalTitle),
     approvalSubHeader: intl.formatMessage(projectMessage.acceptance.section.approvalSubHeader),
     approvalChoices: [
-      { value: WorkflowStatusType.Accepted, label: intl.formatMessage(organizationMessage.workflow.option.approve) },
+      { value: WorkflowStatusType.Accepted, label: intl.formatMessage(organizationMessage.workflow.option.accept) },
       { value: WorkflowStatusType.Rejected, label: intl.formatMessage(organizationMessage.workflow.option.reject) }
     ],
     approvalTrueValue: WorkflowStatusType.Accepted,
