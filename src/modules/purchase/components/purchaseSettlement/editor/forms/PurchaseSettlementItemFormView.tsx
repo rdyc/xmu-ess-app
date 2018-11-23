@@ -3,6 +3,7 @@ import { InputText } from '@layout/components/input/text';
 import {
   Card,
   CardContent,
+  CardHeader,
   Grid,
 } from '@material-ui/core';
 import { PurchaseSettlementItemFormProps } from '@purchase/components/purchaseSettlement/editor/forms/PurchaseSettlementItemForm';
@@ -26,6 +27,9 @@ export const PurchaseSettlementItemFormView: React.SFC<PurchaseSettlementItemFor
           context.fields.map((field, index) =>
             <Grid key={index} item xs={12} md={4}>
               <Card square>
+                <CardHeader
+                title={`#${index + 1}`}
+                />
                 <CardContent>
                   <div>
                     <Field

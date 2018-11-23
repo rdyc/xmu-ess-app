@@ -293,7 +293,7 @@ const lifecycles: ReactLifeCycleFunctions<PurchaseRequestEditorProps, {}> = {
 
     const purchase = {
       title: intl.formatMessage(purchaseMessage.request.pages.newTitle),
-      // subTitle: intl.formatMessage(purchaseMessage.request.pages.newSubTitle),
+      subTitle: intl.formatMessage(purchaseMessage.request.pages.newTitle),
     };
 
     if (!user) {
@@ -308,7 +308,7 @@ const lifecycles: ReactLifeCycleFunctions<PurchaseRequestEditorProps, {}> = {
     if (!isNullOrUndefined(history.location.state)) {
       
       purchase.title = intl.formatMessage(purchaseMessage.request.pages.modifyTitle),
-      // purchase.subTitle = intl.formatMessage(purchaseMessage.request.pages.modifySubTitle),
+        purchase.subTitle = intl.formatMessage(purchaseMessage.request.pages.newTitle),
 
       stateUpdate({
         formMode: FormMode.Edit,
@@ -326,8 +326,8 @@ const lifecycles: ReactLifeCycleFunctions<PurchaseRequestEditorProps, {}> = {
     layoutDispatch.changeView({
       uid: AppMenu.PurchaseRequest,
       parentUid: AppMenu.Purchase,
-      title: intl.formatMessage(purchaseMessage.request.pages.listTitle),
-      subTitle: intl.formatMessage(purchaseMessage.request.pages.listSubHeader)
+      title: purchase.title,
+      subTitle: purchase.subTitle
     });
 
     layoutDispatch.navBackShow();
