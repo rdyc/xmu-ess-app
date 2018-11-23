@@ -1,3 +1,4 @@
+import { WorkflowStatusType } from '@common/classes/types';
 import { layoutMessage } from '@layout/locales/messages';
 import { GlobalFormat } from '@layout/types';
 import { GlobalStyle } from '@layout/types/GlobalStyle';
@@ -23,6 +24,7 @@ const summaryView: React.SFC<AllProps> = props => (
         {...GlobalStyle.TextField.ReadOnly}
         label={props.intl.formatMessage(projectMessage.registration.field.statusType)}
         value={props.data.status ? props.data.status.value : props.data.statusType}
+        helperText={props.data.statusType === WorkflowStatusType.Rejected ? props.data.rejectedReason || 'N/A' : undefined}
       />
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
@@ -81,6 +83,16 @@ const summaryView: React.SFC<AllProps> = props => (
         label={props.intl.formatMessage(projectMessage.registration.field.hours)}
         value={props.intl.formatNumber(props.data.maxHours)}
       />
+
+      {
+        props.data.statusType === WorkflowStatusType.Rejected &&
+        <TextField
+          {...GlobalStyle.TextField.ReadOnly}
+          multiline={true}
+          label={props.intl.formatMessage(projectMessage.registration.field.rejectedReason)}
+          value={props.data.rejectedReason || 'N/A'}
+        />
+      }
     </Grid>
     
     {

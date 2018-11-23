@@ -1,13 +1,6 @@
 import { WorkflowStatusType } from '@common/classes/types';
-import AppMenu from '@constants/AppMenu';
-import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
-import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
-import { IAppBarMenu } from '@layout/interfaces';
-import { layoutMessage } from '@layout/locales/messages';
-import { ProjectUserAction } from '@project/classes/types';
 import { WithProjectAssignment, withProjectAssignment } from '@project/hoc/withProjectAssignment';
-import { projectMessage } from '@project/locales/messages/projectMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import {
@@ -26,7 +19,6 @@ import {
 import { ProjectAcceptanceDetailView } from './ProjectAcceptanceDetailView';
 
 interface OwnHandler {
-  handleRefresh: () => void;
   handleOnClickItem: (assignmentItemUid: string) => void;
   handleCalculateNewAssignment: () => void;
 }
@@ -40,14 +32,12 @@ interface OwnState {
 }
 
 interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
-  stateUpdate: StateHandler<OwnState>;
+  setMandays: StateHandler<OwnState>;
 }
 
 export type ProjectAcceptanceDetailProps
   = WithProjectAssignment
   & WithUser
-  & WithLayout
-  & WithAppBar
   & RouteComponentProps<OwnRouteParams> 
   & InjectedIntlProps
   & OwnHandler
@@ -59,26 +49,12 @@ const createProps: mapper<ProjectAcceptanceDetailProps, OwnState> = (props: Proj
 });
 
 const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
-  stateUpdate: (prevState: OwnState) => (newState: any) => ({
-    ...prevState,
-    ...newState
+  setMandays: (prevState: OwnState) => (value: number): Partial<OwnState> => ({
+    newMandays: value
   })
 };
 
 const handlerCreators: HandleCreators<ProjectAcceptanceDetailProps, OwnHandler> = {
-  handleRefresh: (props: ProjectAcceptanceDetailProps) => () => { 
-    const { match } = props;
-    const { user } = props.userState;
-    const { isLoading } = props.projectAssignmentState.detail;
-    const { loadDetailRequest } = props.projectAssignmentDispatch;
-
-    if (user && !isLoading) { 
-      loadDetailRequest({
-        companyUid: user.company.uid,
-        assignmentUid: match.params.assignmentUid
-      });
-    }
-  },
   handleOnClickItem: (props: ProjectAcceptanceDetailProps) => (assignmentItemUid: string) => {
     props.history.push(`/project/acceptances/${props.match.params.assignmentUid}/${assignmentItemUid}`);
   },
@@ -99,80 +75,21 @@ const handlerCreators: HandleCreators<ProjectAcceptanceDetailProps, OwnHandler> 
         }); 
       }
 
-      props.stateUpdate({
-        newMandays
-      });
+      props.setMandays(newMandays);
     }
   }
 };
 
 const lifecycles: ReactLifeCycleFunctions<ProjectAcceptanceDetailProps, {}> = {
-  componentDidMount() {
-    const { 
-      layoutDispatch, appBarDispatch, intl, 
-      handleRefresh
-    } = this.props;
-
-    layoutDispatch.changeView({
-      uid: AppMenu.ProjectAssignmentAcceptance,
-      parentUid: AppMenu.ProjectAssignment,
-      title: intl.formatMessage(projectMessage.acceptance.page.detailTitle),
-      subTitle : intl.formatMessage(projectMessage.acceptance.page.detailSubHeader)
-    });
-
-    layoutDispatch.navBackShow();
-    layoutDispatch.moreShow();
-    
-    const handleMenuClick = (menu: IAppBarMenu): void => {
-      switch (menu.id) {
-        case ProjectUserAction.Refresh:
-          handleRefresh();
-          break;
-
-        default:
-          break;
-      }
-    };
-
-    appBarDispatch.assignCallback(handleMenuClick);
-
-    handleRefresh();
-  },
   componentWillReceiveProps(nextProps: ProjectAcceptanceDetailProps) {
     if (nextProps.projectAssignmentState.detail.response !== this.props.projectAssignmentState.detail.response) {
-      const { intl } = nextProps;
-      const { assignMenus } = nextProps.appBarDispatch;
-
-      const currentMenus = [
-        {
-          id: ProjectUserAction.Refresh,
-          name: intl.formatMessage(layoutMessage.action.refresh),
-          enabled: true,
-          visible: true
-        }
-      ];
-
-      assignMenus(currentMenus);
-
       this.props.handleCalculateNewAssignment();
     }
   },
-  componentWillUnmount() {
-    const { layoutDispatch, appBarDispatch } = this.props;
-
-    layoutDispatch.changeView(null);
-    layoutDispatch.navBackHide();
-    layoutDispatch.moreHide();
-    layoutDispatch.actionCentreHide();
-
-    appBarDispatch.dispose();
-  }
 };
 
 export const ProjectAcceptanceDetail = compose<ProjectAcceptanceDetailProps, {}>(
   withUser,
-  withLayout,
-  withAppBar,
   withRouter,
   withProjectAssignment,
   injectIntl,
