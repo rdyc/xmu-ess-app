@@ -1,9 +1,10 @@
-import { Button, Card, CardContent, CardHeader, Grid, Table, TableBody, TableCell, TableHead, TableRow, WithStyles } from '@material-ui/core';
+import { Card, CardContent, CardHeader, Chip, Grid, Table, TableBody, TableCell, TableHead, TableRow, WithStyles } from '@material-ui/core';
 import { isWidthDown, WithWidth } from '@material-ui/core/withWidth';
 import { ISummaryAssignment, ISummaryModuleCost, ISummaryProgressProject } from '@summary/classes/response/progress';
+import { summaryMessage } from '@summary/locales/messages/summaryMessage';
 import * as classNames from 'classnames';
 import * as React from 'react';
-import { FormattedMessage, InjectedIntlProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 
 interface OwnProps {
   projects: ISummaryProgressProject[];
@@ -32,12 +33,12 @@ export const ProgressProjectView: React.SFC<AllProps> = props => {
           <TableHead>
             <TableRow>
               <TableCell numeric>
-                <FormattedMessage id="summary.progress.tableHead.consultant" />
+                {summaryMessage.progress.header.consultant}
               </TableCell>
               {
                 assignmentFields.map(assignmentField =>
                   <TableCell numeric>
-                    <FormattedMessage id={`summary.progress.tableHead.${assignmentField}`} />
+                    {summaryMessage.progress.headerFor(assignmentField)}
                   </TableCell>
                 )
               }
@@ -99,7 +100,7 @@ export const ProgressProjectView: React.SFC<AllProps> = props => {
                             numeric
                             className= {classNames(classes.cellWidthXXS)}
                           >
-                            <FormattedMessage id={`summary.progress.tableHead.${projectField}`} />
+                            {summaryMessage.progress.headerFor(projectField)}
                           </TableCell>
                         )
                       }
@@ -126,12 +127,10 @@ export const ProgressProjectView: React.SFC<AllProps> = props => {
                         {intl.formatNumber(project.actualRates)}
                       </TableCell>
                       <TableCell numeric>
-                        <Button 
-                          variant= "contained"
+                        <Chip 
                           onClick= {() => handleDialogOpen(isMobile, project.moduleCosts ? project.moduleCosts : [], project.projectUid)}
-                        >
-                          {intl.formatNumber(project.actualCosts)}
-                        </Button>
+                          label= {intl.formatNumber(project.actualCosts)}
+                        />
                       </TableCell>
                       <TableCell numeric>
                         {intl.formatNumber(project.cogs)}

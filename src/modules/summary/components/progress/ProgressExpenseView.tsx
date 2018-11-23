@@ -1,8 +1,10 @@
+import { GlobalFormat } from '@layout/types';
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Table, TableBody, TableCell, TableHead, TableRow, WithStyles } from '@material-ui/core';
 import { ISummaryModuleCost } from '@summary/classes/response/progress';
+import { summaryMessage } from '@summary/locales/messages/summaryMessage';
 import * as classNames from 'classnames';
 import * as React from 'react';
-import { FormattedMessage, InjectedIntlProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 
 interface OwnProps {
   expenses: ISummaryModuleCost[];
@@ -30,7 +32,7 @@ export const ProgressExpenseView: React.SFC<AllProps> = props => {
       maxWidth="md"
     >
       <DialogTitle id="progress-expense-dialog-title">
-        <FormattedMessage id="summary.progress.dialog.title" />
+        {summaryMessage.progress.dialog.title}
         {expenseProjectUid}
       </DialogTitle>
       <DialogContent>
@@ -44,7 +46,7 @@ export const ProgressExpenseView: React.SFC<AllProps> = props => {
                   <TableCell
                     className= {classNames(classes.stickyHeader)}
                   >
-                    <FormattedMessage id={`summary.progress.tableHead.${expenseField}`} />
+                    {summaryMessage.progress.headerFor(expenseField)}
                   </TableCell>
                 )
               }
@@ -52,7 +54,7 @@ export const ProgressExpenseView: React.SFC<AllProps> = props => {
                 numeric
                 className= {classNames(classes.stickyHeader)}
               >
-                <FormattedMessage id="summary.progress.tableHead.amount" />
+                {summaryMessage.progress.header.amount}
               </TableCell>
             </TableRow>
           </TableHead>
@@ -64,11 +66,7 @@ export const ProgressExpenseView: React.SFC<AllProps> = props => {
                     {expense.module}
                   </TableCell>
                   <TableCell>
-                    {intl.formatDate(expense.date, {
-                      year: 'numeric',
-                      month: 'short',
-                      day: 'numeric'
-                    })}
+                    {intl.formatDate(expense.date, GlobalFormat.Date)}
                   </TableCell>
                   <TableCell>
                     {expense.documentUid}
@@ -87,7 +85,7 @@ export const ProgressExpenseView: React.SFC<AllProps> = props => {
       </DialogContent>
       <DialogActions>
         <Button onClick={handleDialogClose} color="primary">
-          <FormattedMessage id="summary.progress.dialog.close" />
+          {summaryMessage.progress.dialog.close}
         </Button>
       </DialogActions>
     </Dialog>

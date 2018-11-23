@@ -1,9 +1,10 @@
-import {  Card, CardContent, Grid, Table, TableBody, TableCell, TableRow, Typography } from '@material-ui/core';
+import { layoutMessage } from '@layout/locales/messages';
+import { Card, CardContent, Grid, Table, TableBody, TableCell, TableRow } from '@material-ui/core';
 import { ISummaryProgress } from '@summary/classes/response/progress';
 import { ProgressProps } from '@summary/components/progress/Progress';
 import { FilterForm } from '@summary/components/progress/sharedFilterForm/FilterForm';
+import { summaryMessage } from '@summary/locales/messages/summaryMessage';
 import * as React from 'react';
-import { FormattedMessage } from 'react-intl';
 import { ProgressExpenseView } from './ProgressExpenseView';
 import { ProgressProjectView } from './ProgressProjectView';
 
@@ -36,31 +37,31 @@ export const ProgressView: React.SFC<ProgressProps> = props => {
                   <TableBody>
                     <TableRow>
                       <TableCell variant="head">
-                        <FormattedMessage id="summary.progress.tableHead.totalValue" />
+                        {summaryMessage.progress.header.totalValue}
                       </TableCell>
                       <TableCell numeric>
-                        {progress.totalValue}
+                        {intl.formatNumber(progress.totalValue)}
                       </TableCell>
                     </TableRow>
                     <TableRow>
                       <TableCell variant="head">
-                        <FormattedMessage id="summary.progress.tableHead.totalCogs" />
+                        {summaryMessage.progress.header.totalCogs}
                       </TableCell>
                       <TableCell numeric>
-                        {progress.totalCogs}
+                        {intl.formatNumber(progress.totalCogs)}
                       </TableCell>
                     </TableRow>
                     <TableRow>
                       <TableCell variant="head">
-                        <FormattedMessage id="summary.progress.tableHead.profit" />
+                        {summaryMessage.progress.header.profit}
                       </TableCell>
                       <TableCell numeric>
-                        {progress.profit}
+                        {intl.formatNumber(progress.profit)}
                       </TableCell>
                     </TableRow>
                     <TableRow>
                       <TableCell variant="head">
-                        <FormattedMessage id="summary.progress.tableHead.percentage" />
+                        {summaryMessage.progress.header.percentage}
                       </TableCell>
                       <TableCell numeric>
                         {`${progress.percentage} %`}
@@ -92,7 +93,7 @@ export const ProgressView: React.SFC<ProgressProps> = props => {
         <Grid item xs={12}>
         {
           isLoading &&
-          <Typography variant="body2">loading</Typography>
+          layoutMessage.text.loading
         }
         {
           !isLoading &&
