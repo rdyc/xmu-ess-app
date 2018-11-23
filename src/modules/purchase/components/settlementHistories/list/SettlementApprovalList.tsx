@@ -1,42 +1,40 @@
 import AppMenu from '@constants/AppMenu';
-import { ICollectionValue } from '@layout/classes/core';
 import { 
   CollectionConfig, 
   CollectionDataProps, 
   CollectionHandler,
-  CollectionPage 
-  } from '@layout/components/pages';
+  CollectionPage, } from '@layout/components/pages';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
 import { Button } from '@material-ui/core';
-import { IPurchase } from '@purchase/classes/response/purchaseRequest';
-import { PurchaseField, PurchaseUserAction } from '@purchase/classes/types';
-import { PurchaseSummary } from '@purchase/components/purchaseRequest/detail/shared/PurchaseSummary';
+import { ISettlement } from '@purchase/classes/response/purchaseSettlement';
+import { PurchaseUserAction, SettlementField } from '@purchase/classes/types';
+import { SettlementSummary } from '@purchase/components/purchaseSettlement/detail/shared/SettlementSummary';
 import { purchaseRequestFieldTranslator } from '@purchase/helper';
-import { withPurchaseRequest, WithPurchaseRequest } from '@purchase/hoc/purchaseRequest/withPurchaseRequest';
+import { withSettlementApproval, WithSettlementApproval } from '@purchase/hoc/settlementHistories/withSettlementApproval';
 import { purchaseMessage } from '@purchase/locales/messages/purchaseMessage';
 import * as moment from 'moment';
 import * as React from 'react';
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose } from 'recompose';
 
-const purchaseFields: ICollectionValue[] = Object.keys(PurchaseField).map(key => ({ 
-  value: key, 
-  name: PurchaseField[key] 
-}));
-
-const config: CollectionConfig<IPurchase, AllProps> = {
+const config: CollectionConfig<ISettlement, AllProps> = {
   // page info
   page: (props: AllProps) => ({
-    uid: AppMenu.PurchaseRequest,
-    parentUid: AppMenu.Purchase,
-    title: props.intl.formatMessage(purchaseMessage.request.pages.listTitle),
-    description: props.intl.formatMessage(purchaseMessage.request.pages.listSubHeader),
+  uid: AppMenu.PurchaseSettlementApproval,
+  parentUid: AppMenu.Purchase,
+  // title: intl.formatMessage({ id: 'purchase.title' }),
+  // description: intl.formatMessage({ id: 'purchase.subTitle' }),
+  title: props.intl.formatMessage(purchaseMessage.approval.pages.listTitle),
+  description: 'Lorem ipsum.',
   }),
 
   // top bar
-  fields: purchaseFields,
+  fields: Object.keys(SettlementField).map(key => ({
+    value: key,
+    name: SettlementField[key]
+  })),
   fieldTranslator: purchaseRequestFieldTranslator,
 
   // searching
@@ -44,10 +42,10 @@ const config: CollectionConfig<IPurchase, AllProps> = {
   searchStatus: (states: AllProps): boolean => {
     let result: boolean = false;
 
-    const { request } = states.purchaseRequestState.all;
+    const { request } = states.settlementApprovalState.all;
 
-    if (request && request.filter && request.filter.find) {
-      result = request.filter.find ? true : false;
+    if (request && request.filter && request.filter['query.find']) {
+      result = request.filter['query.find'] ? true : false;
     }
 
     return result;
@@ -66,26 +64,19 @@ const config: CollectionConfig<IPurchase, AllProps> = {
       visible: true,
       onClick: () => callback.handleForceReload()
     },
-    {
-      id: PurchaseUserAction.Create,
-      name: props.intl.formatMessage(layoutMessage.action.create),
-      enabled: true,
-      visible: true,
-      onClick: () => callback.handleRedirectTo('/purchase/requests/form'),
-    }
   ]),
 
   // data filter
   filter: {
-    orderBy: 'uid',
-    direction: 'descending'
+    orderBy: 'settlementStatusType',
+    direction: 'ascending'
   },
 
   // events
   onDataLoad: (states: AllProps, callback: CollectionHandler, params: CollectionDataProps, forceReload?: boolean | false) => {
     const { user } = states.userState;
-    const { isLoading, response } = states.purchaseRequestState.all;
-    const { loadAllRequest } = states.purchaseRequestDispatch;
+    const { isLoading, response } = states.settlementApprovalState.all;
+    const { loadAllRequest } = states.settlementApprovalDispatch;
 
     // when user is set and not loading
     if (user && !isLoading) {
@@ -95,12 +86,12 @@ const config: CollectionConfig<IPurchase, AllProps> = {
           filter: {
             companyUid: user.company.uid,
             positionUid: user.position.uid,
-            find: params.find,
-            findBy: params.findBy,
-            orderBy: params.orderBy,
-            direction: params.direction,
-            page: params.page,
-            size: params.size,
+            'query.find': params.find,
+            'query.findBy': params.findBy,
+            'query.orderBy': params.orderBy,
+            'query.direction': params.direction,
+            'query.page': params.page,
+            'query.size': params.size,
           }
         });
       } else {
@@ -110,14 +101,14 @@ const config: CollectionConfig<IPurchase, AllProps> = {
     }
   },
   onUpdated: (states: AllProps, callback: CollectionHandler) => {
-    const { isLoading, response } = states.purchaseRequestState.all;
+    const { isLoading, response } = states.settlementApprovalState.all;
 
     callback.handleLoading(isLoading);
     callback.handleResponse(response);
   },
-  onBind: (item: IPurchase, index: number) => ({
+  onBind: (item: ISettlement, index: number) => ({
     key: index,
-    primary: `${item.currency && item.currency.value} ${item.request}` ||  '',
+    primary: `${item.currency && item.currency.value} ${item.request}` || item.notes || '',
     secondary: item.projectUid || item.project && item.project.name || '',
     tertiary: item.customer && item.customer.name || item.customerUid || '',
     quaternary: item.uid,
@@ -126,37 +117,41 @@ const config: CollectionConfig<IPurchase, AllProps> = {
   }),
 
   // summary component
-  summaryComponent: (item: IPurchase) => (
-    <PurchaseSummary data = {item} />
+  summaryComponent: (item: ISettlement) => (
+    <SettlementSummary data = {item} />
     ),
 
   // action component
-  actionComponent: (item: IPurchase, callback: CollectionHandler) => (
-    <React.Fragment>
+  actionComponent: (item: ISettlement, callback: CollectionHandler ) => (
     <Button 
       size= "small"
-      onClick = {() => callback.handleRedirectTo(`/purchase/requests/details/${item.uid}`)}
+      // onClick = {() => alert(`go to ${item.uid}`)}
+      onClick={() => callback.handleRedirectTo(`/purchase/settlementapprovals/details/${item.uid}`)}
     >
-      <FormattedMessage { ...layoutMessage.action.details } />
-    </Button>  
-</React.Fragment>
+      <FormattedMessage { ...layoutMessage.action.approve } />
+    </Button>
   ),
+
+  // custom row render: uncomment to see different
+  // onRowRender: (item: ISettlement, index: number) => (
+  //   <div key={index}>{item.name}</div>
+  // )
 };
 
 type AllProps
   = WithUser
   & InjectedIntlProps
-  & WithPurchaseRequest;
+  & WithSettlementApproval;
 
-const purchaseRequestCollectionPage: React.SFC<AllProps> = props => (
+const listView: React.SFC<AllProps> = props => (
   <CollectionPage
     config= { config }
     connectedProps = { props }
   />
 );
 
-export const PurchaseRequestCollectionPage = compose(
+export const SettlementApprovalList = compose(
   withUser,
   injectIntl,
-  withPurchaseRequest
-)(purchaseRequestCollectionPage);
+  withSettlementApproval
+)(listView);

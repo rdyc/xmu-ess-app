@@ -16,7 +16,7 @@ import {
 } from '@purchase/components/purchaseRequest/editor/forms/PurchaseRequestForm';
 import { PurchaseRequestEditorView } from '@purchase/components/purchaseRequest/editor/PurchaseRequestEditorView';
 import { WithPurchaseRequest, withPurchaseRequest } from '@purchase/hoc/purchaseRequest/withPurchaseRequest';
-import { purchaseRequestMessage } from '@purchase/locales/messages/purchaseRequestMessage';
+import { purchaseMessage } from '@purchase/locales/messages/purchaseMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import {
@@ -145,7 +145,7 @@ const handlers: HandleCreators<PurchaseRequestEditorProps, OwnHandlers> = {
     const { createRequest, updateRequest } = props.purchaseRequestDispatch;
 
     if (!user) {
-      return Promise.reject('item was not found');
+      return Promise.reject('user was not found');
     }
 
     const parsedItems = () => {
@@ -213,7 +213,7 @@ const handlers: HandleCreators<PurchaseRequestEditorProps, OwnHandlers> = {
 
     // update checking
     if (!purchaseUid) {
-      const message = intl.formatMessage(purchaseRequestMessage.emptyPurchaseUid);
+      const message = intl.formatMessage(purchaseMessage.request.message.emptyPurchaseUid);
 
       return Promise.reject(message);
     }
@@ -240,11 +240,11 @@ const handlers: HandleCreators<PurchaseRequestEditorProps, OwnHandlers> = {
     let message: string = '';
 
     if (formMode === FormMode.New) {
-      message = intl.formatMessage(purchaseRequestMessage.createSuccess, { uid: response.uid });
+      message = intl.formatMessage(purchaseMessage.request.message.createSuccess, { uid: response.uid });
     }
 
     if (formMode === FormMode.Edit) {
-      message = intl.formatMessage(purchaseRequestMessage.updateSuccess, { uid: response.uid });
+      message = intl.formatMessage(purchaseMessage.request.message.updateSuccess, { uid: response.uid });
     }
 
     alertAdd({
@@ -269,11 +269,11 @@ const handlers: HandleCreators<PurchaseRequestEditorProps, OwnHandlers> = {
       let message: string = '';
 
       if (formMode === FormMode.New) {
-        message = intl.formatMessage(purchaseRequestMessage.createFailure);
+        message = intl.formatMessage(purchaseMessage.request.message.createFailure);
       }
 
       if (formMode === FormMode.Edit) {
-        message = intl.formatMessage(purchaseRequestMessage.updateFailure);
+        message = intl.formatMessage(purchaseMessage.request.message.updateFailure);
       }
 
       alertAdd({
@@ -292,8 +292,8 @@ const lifecycles: ReactLifeCycleFunctions<PurchaseRequestEditorProps, {}> = {
     const { user } = this.props.userState;
 
     const purchase = {
-      title: 'purchase.form.purchaseRequest.newTitle',
-      subTitle: 'purchase.form.purchaseRequest.newSubTitle',
+      title: intl.formatMessage(purchaseMessage.request.pages.newTitle),
+      subTitle: intl.formatMessage(purchaseMessage.request.pages.newTitle),
     };
 
     if (!user) {
@@ -306,8 +306,9 @@ const lifecycles: ReactLifeCycleFunctions<PurchaseRequestEditorProps, {}> = {
     });
 
     if (!isNullOrUndefined(history.location.state)) {
-      purchase.title = 'purchase.form.purchaseRequest.editTitle';
-      purchase.subTitle = 'purchase.form.purchaseRequest.editSubTitle';
+      
+      purchase.title = intl.formatMessage(purchaseMessage.request.pages.modifyTitle),
+        purchase.subTitle = intl.formatMessage(purchaseMessage.request.pages.newTitle),
 
       stateUpdate({
         formMode: FormMode.Edit,
@@ -325,8 +326,8 @@ const lifecycles: ReactLifeCycleFunctions<PurchaseRequestEditorProps, {}> = {
     layoutDispatch.changeView({
       uid: AppMenu.PurchaseRequest,
       parentUid: AppMenu.Purchase,
-      title: intl.formatMessage({ id: purchase.title }),
-      subTitle: intl.formatMessage({ id: purchase.subTitle })
+      title: purchase.title,
+      subTitle: purchase.subTitle
     });
 
     layoutDispatch.navBackShow();

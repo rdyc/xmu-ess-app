@@ -1,15 +1,13 @@
-import { Card, CardContent, CardHeader, TextField, 
-  // Grid, List, ListItem, ListItemText, Typography 
+import { Card, CardContent, CardHeader, TextField,
 } from '@material-ui/core';
 import { IPurchaseItem } from '@purchase/classes/response/purchaseSettlement';
+import { purchaseMessage } from '@purchase/locales/messages/purchaseMessage';
 import * as React from 'react';
-import { FormattedMessage, 
-  // FormattedNumber, 
-  InjectedIntlProps, injectIntl } from 'react-intl';
+import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose } from 'recompose';
 
 interface OwnProps {
-  data: IPurchaseItem;
+  data: IPurchaseItem | null | undefined;
   title: string;
 }
 
@@ -34,32 +32,32 @@ const settlementItemInformation: React.SFC<AllProps> = props => (
       <TextField
         {...styled}
         margin="dense"
-        label={<FormattedMessage id="purchase.itemTitle.uid" />}
-        value={props.data.uid}
+        label={props.intl.formatMessage(purchaseMessage.settlement.items.uid)}
+        value={props.data && props.data.uid || ''}
       />
       <TextField
         {...styled}
         margin="dense"
-        label={<FormattedMessage id="purchase.itemTitle.description" />}
-        value={props.data.description}
+        label={props.intl.formatMessage(purchaseMessage.settlement.items.description)}
+        value={props.data && props.data.description || ''}
       />
       <TextField
         {...styled}
         margin="dense"
-        label={<FormattedMessage id="purchase.itemTitle.request" />}
-        value={props.intl.formatNumber(props.data.requestValue)}
+        label={props.intl.formatMessage(purchaseMessage.settlement.items.request)}
+        value={props.intl.formatNumber(props.data && props.data.requestValue || 0)}
       />
       <TextField
         {...styled}
         margin="dense"
-        label={<FormattedMessage id="purchase.itemTitle.actual" />}
-        value={props.intl.formatNumber(props.data.actualValue)}
+        label={props.intl.formatMessage(purchaseMessage.settlement.items.actual)}
+        value={props.intl.formatNumber(props.data && props.data.actualValue || 0)}
       />
       <TextField
         {...styled}
         margin="dense"
-        label={<FormattedMessage id="purchase.itemTitle.variance" />}
-        value={props.intl.formatNumber(props.data.varianceValue)}
+        label={props.intl.formatMessage(purchaseMessage.settlement.items.variance)}
+        value={props.intl.formatNumber(props.data && props.data.varianceValue || 0)}
       />
 
       {props.children}

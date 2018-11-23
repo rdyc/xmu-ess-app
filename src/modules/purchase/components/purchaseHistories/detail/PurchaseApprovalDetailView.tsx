@@ -1,89 +1,116 @@
-import {
-  Grid,
-  LinearProgress,
-  // Typography,
-} from '@material-ui/core';
+import AppMenu from '@constants/AppMenu';
+import { SingleConfig, SingleHandler, SinglePage, SingleState } from '@layout/components/pages/singlePage/SinglePage';
+import { IAppBarMenu } from '@layout/interfaces';
+import { layoutMessage } from '@layout/locales/messages';
 import { WorkflowApprovalForm } from '@organization/components/workflow/approval/WorkflowApprovalForm';
 import { WorkflowHistory } from '@organization/components/workflow/history/WorkflowHistory';
-import { PurchaseApprovalDetailProps } from '@purchase/components/purchaseHistories/detail/PurchaseApprovalDetail';
+import { IPurchaseDetail } from '@purchase/classes/response/purchaseRequest';
+import { PurchaseUserAction } from '@purchase/classes/types';
 import { PurchaseInformation } from '@purchase/components/purchaseRequest/detail/shared/PurchaseInformation';
-import { PurchaseItemInformation } from '@purchase/components/purchaseRequest/detail/shared/PurchaseItemInformation';
+import { PurchaseItemContainer } from '@purchase/components/purchaseRequest/detail/shared/PurchaseItemContainer';
+import { purchaseMessage } from '@purchase/locales/messages/purchaseMessage';
 import * as React from 'react';
-// import { FormattedMessage } from 'react-intl';
+import { PurchaseApprovalDetailProps } from './PurchaseApprovalDetail';
 
-export const PurchaseApprovalDetailView: React.SFC<PurchaseApprovalDetailProps> = props => {
-  const {
-    approvalTitle, approvalSubHeader, approvalChoices, approvalTrueValue,
-    approvalDialogTitle, approvalDialogContentText, approvalDialogCancelText, approvalDialogConfirmedText
-  } = props;
-  const { handleValidate, handleSubmit, handleSubmitSuccess, handleSubmitFail } = props;
-  const { isLoading, response } = props.purchaseApprovalState.detail;
+const config: SingleConfig<IPurchaseDetail, PurchaseApprovalDetailProps> = {
+  // page info
+  page: (props: PurchaseApprovalDetailProps) => ({
+    uid: AppMenu.PurchaseApproval,
+    parentUid: AppMenu.Purchase,
+    title: props.intl.formatMessage(purchaseMessage.approval.pages.detailTitle),
+    description: props.intl.formatMessage(purchaseMessage.approval.pages.detailTitle)
+  }),
 
-  const render = (
+  // action centre
+  showActionCentre: true,
+
+  // more
+  hasMore: true,
+  moreOptions: (props: PurchaseApprovalDetailProps, state: SingleState, callback: SingleHandler): IAppBarMenu[] => ([
+    {
+      id: PurchaseUserAction.Refresh,
+      name: props.intl.formatMessage(layoutMessage.action.refresh),
+      enabled: true,
+      visible: true,
+      onClick: callback.handleForceReload
+    }
+  ]),
+
+  // events
+  onDataLoad: (props: PurchaseApprovalDetailProps, callback: SingleHandler, forceReload?: boolean | false) => {
+    const { user } = props.userState;
+    const { isLoading, request, response } = props.purchaseApprovalState.detail;
+    const { loadDetailRequest } = props.purchaseApprovalDispatch;
+
+    // when user is set and not loading and has purchaseUid in route params
+    if (user && !isLoading && props.match.params.purchaseUid) {
+      // when purchaseUid was changed or response are empty or force to reload
+      if ((request && request.purchaseUid !== props.match.params.purchaseUid) || !response || forceReload) {
+        loadDetailRequest({
+          companyUid: user.company.uid,
+          positionUid: user.position.uid,
+          purchaseUid: props.match.params.purchaseUid
+        });
+      } else {
+        // just take data from previous response
+        callback.handleResponse(response);
+        callback.handleStatusType(response.data.statusType || '');
+      }
+    }
+  },
+  onDataLoaded: (props: PurchaseApprovalDetailProps) => {
+    // set data loaded in local state
+    props.setDataload();
+  },
+  onUpdated: (props: PurchaseApprovalDetailProps, callback: SingleHandler) => {
+    const { isLoading, response } = props.purchaseApprovalState.detail;
+
+    // set loading status
+    callback.handleLoading(isLoading);
+
+    // when got a response from api
+    if (response && response.data) {
+      callback.handleResponse(response);
+      callback.handleStatusType(response.data.statusType || '');
+    }
+  },
+
+  // primary
+  primaryComponent: (data: IPurchaseDetail, props: PurchaseApprovalDetailProps) => (
+    <PurchaseInformation data={data} />
+  ),
+
+  // secondary (multiple components are allowed)
+  secondaryComponents: (data: IPurchaseDetail, props: PurchaseApprovalDetailProps) => ([
+    <PurchaseItemContainer data={data} />,
+    <WorkflowHistory data={data.workflow} />,
     <React.Fragment>
       {
-        isLoading &&
-        // <Typography variant="body2">
-        //   <FormattedMessage id="global.loading" />
-        // </Typography>
-        // && 
-        <LinearProgress/>
-      }
-      {
-        !isLoading &&
-        response &&
-        response.data &&
-        <Grid container spacing={16}>
-          <Grid item xs={12} md={4}>
-            <PurchaseInformation data={response.data} />
-          </Grid>
-
-          <Grid container item xs={12} md={8}>
-            <Grid container spacing={16}>
-            {
-              response.data.items &&
-              response.data.items.map((item, index) =>
-              <Grid key={index} item xs={12} md={4}>
-                <PurchaseItemInformation 
-                data={item}
-                title={`Request Item #${index + 1} `} />
-              </Grid>
-              )
-            }
-            </Grid>
-          </Grid>
-
-          <Grid item>
-            <Grid container spacing={16}>
-              <Grid item>
-                <WorkflowHistory data={response.data.workflow} />
-              </Grid>
-              {
-                response.data.workflow &&
-                response.data.workflow.isApproval &&
-                <Grid item>
-                  <WorkflowApprovalForm
-                    approvalTitle={approvalTitle}
-                    approvalSubHeader={approvalSubHeader}
-                    approvalChoices={approvalChoices}
-                    approvalTrueValue={approvalTrueValue}
-                    approvalDialogTitle={approvalDialogTitle}
-                    approvalDialogContentText={approvalDialogContentText}
-                    approvalDialogCancelText={approvalDialogCancelText}
-                    approvalDialogConfirmedText={approvalDialogConfirmedText}
-                    validate={handleValidate}
-                    onSubmit={handleSubmit}
-                    onSubmitSuccess={handleSubmitSuccess}
-                    onSubmitFail={handleSubmitFail}
-                  />
-                </Grid>
-              }
-            </Grid>
-          </Grid>
-        </Grid>
+        data.workflow &&
+        data.workflow.isApproval &&
+        <WorkflowApprovalForm
+          approvalTitle={props.approvalTitle}
+          approvalSubHeader={props.approvalSubHeader}
+          approvalChoices={props.approvalChoices}
+          approvalTrueValue={props.approvalTrueValue}
+          approvalDialogTitle={props.approvalDialogTitle}
+          approvalDialogContentText={props.approvalDialogContentText}
+          approvalDialogCancelText={props.approvalDialogCancelText}
+          approvalDialogConfirmedText={props.approvalDialogConfirmedText}
+          validate={props.handleValidate}
+          onSubmit={props.handleSubmit}
+          onSubmitSuccess={props.handleSubmitSuccess}
+          onSubmitFail={props.handleSubmitFail}
+        />
       }
     </React.Fragment>
-  );
-
-  return render;
+  ])
 };
+
+export const PurchaseApprovalDetailView: React.SFC<PurchaseApprovalDetailProps> = props => (
+  <SinglePage
+    config={config}
+    connectedProps={props}
+    shouldDataReload={props.shouldDataReload}
+  />
+);
