@@ -16,7 +16,7 @@ import {
 } from '@purchase/components/purchaseSettlement/editor/forms/PurchaseSettlementForm';
 import { PurchaseSettlementEditorView } from '@purchase/components/purchaseSettlement/editor/PurchaseSettlementEditorView';
 import { WithPurchaseSettlement, withPurchaseSettlement } from '@purchase/hoc/purchaseSettlement/withPurchaseSettlement';
-import { purchaseRequestMessage } from '@purchase/locales/messages/purchaseRequestMessage';
+import { purchaseMessage } from '@purchase/locales/messages/purchaseMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import {
@@ -34,7 +34,6 @@ import {
 import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
 import { isNullOrUndefined, isObject } from 'util';
-import { purchaseMessage } from '@purchase/locales/messages/purchaseMessage';
 
 interface OwnHandlers {
   handleValidate: (payload: PurchaseSettlementFormData) => FormErrors;
@@ -199,7 +198,7 @@ const handlers: HandleCreators<PurchaseSettlementEditorProps, OwnHandlers> = {
       };
       
     if (!purchaseUid) {
-      const message = intl.formatMessage(purchaseRequestMessage.emptyPurchaseUid);
+      const message = intl.formatMessage(purchaseMessage.settlement.message.emptyPurchaseUid);
 
       return Promise.reject(message);
     }
@@ -241,11 +240,11 @@ const handlers: HandleCreators<PurchaseSettlementEditorProps, OwnHandlers> = {
     let message: string = '';
 
     if (formMode === FormMode.New) {
-      message = intl.formatMessage(purchaseRequestMessage.createSuccess, { uid: response.uid });
+      message = intl.formatMessage(purchaseMessage.settlement.message.settleSuccess, { uid: response.uid });
     }
 
     if (formMode === FormMode.Edit) {
-      message = intl.formatMessage(purchaseRequestMessage.updateSuccess, { uid: response.uid });
+      message = intl.formatMessage(purchaseMessage.settlement.message.updateSuccess, { uid: response.uid });
     }
 
     alertAdd({
@@ -270,11 +269,11 @@ const handlers: HandleCreators<PurchaseSettlementEditorProps, OwnHandlers> = {
       let message: string = '';
 
       if (formMode === FormMode.New) {
-        message = intl.formatMessage(purchaseRequestMessage.createFailure);
+        message = intl.formatMessage(purchaseMessage.settlement.message.settleFailure);
       }
 
       if (formMode === FormMode.Edit) {
-        message = intl.formatMessage(purchaseRequestMessage.updateFailure);
+        message = intl.formatMessage(purchaseMessage.settlement.message.updateFailure);
       }
 
       alertAdd({

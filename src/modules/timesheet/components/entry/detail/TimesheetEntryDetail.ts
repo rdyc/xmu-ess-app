@@ -16,7 +16,7 @@ import {
 } from 'recompose';
 
 import { WithTimesheetEntry, withTimesheetEntry } from '@timesheet/hoc/withTimesheetEntry';
-import { TimesheetEntryDetailView } from './TimesheetEntryDetailVIew';
+import { TimesheetEntryDetailView } from './TimesheetEntryDetailView';
 
 interface OwnRouteParams {
   timesheetUid: string;
