@@ -3,6 +3,7 @@ import {
   financeApprovalBulkPostError,
   financeApprovalBulkPostRequest,
   financeApprovalBulkPostSuccess,
+  financeApprovalGetAllDispose,
   financeApprovalGetAllError,
   financeApprovalGetAllRequest,
   financeApprovalGetAllSuccess,
@@ -13,7 +14,7 @@ import {
   financeApprovalPostRequest,
   financeApprovalPostSuccess,
 } from '@finance/store/actions';
-import { layoutAlertAdd, listBarLoading, listBarMetadata } from '@layout/store/actions';
+import { layoutAlertAdd } from '@layout/store/actions';
 import { flattenObject } from '@utils/flattenObject';
 import saiyanSaga from '@utils/saiyanSaga';
 import { SubmissionError } from 'redux-form';
@@ -27,7 +28,6 @@ function* watchAllFetchRequest() {
       path: `/v1/approvals/finance/${action.payload.companyUid}/${action.payload.positionUid}${objectToQuerystring(action.payload.filter)}`, 
       successEffects: (response: IApiResponse) => ([
         put(financeApprovalGetAllSuccess(response.body)),
-        put(listBarMetadata(response.body.metadata))
       ]), 
       failureEffects: (response: IApiResponse) => ([
         put(financeApprovalGetAllError(response.body)),
@@ -45,7 +45,6 @@ function* watchAllFetchRequest() {
         }))
       ]),
       finallyEffects: [
-        put(listBarLoading(false))
       ]
     });
   };
@@ -90,6 +89,7 @@ function* watchPostFetchRequest() {
       payload: action.payload.data, 
       successEffects: (response: IApiResponse) => [
         put(financeApprovalPostSuccess(response.body)),
+        put(financeApprovalGetAllDispose()),
       ], 
       successCallback: (response: IApiResponse) => {
         action.payload.resolve(response.body.data);
@@ -133,6 +133,7 @@ function* watchBulkPostFetchRequest() {
       payload: action.payload.data, 
       successEffects: (response: IApiResponse) => [
         put(financeApprovalBulkPostSuccess(response.body)),
+        put(financeApprovalGetAllDispose()),
       ], 
       successCallback: (response: IApiResponse) => {
         action.payload.resolve(response.body.data);

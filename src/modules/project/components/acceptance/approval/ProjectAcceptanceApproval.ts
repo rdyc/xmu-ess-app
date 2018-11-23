@@ -1,15 +1,11 @@
 import { WorkflowStatusType } from '@common/classes/types';
-import AppMenu from '@constants/AppMenu';
 import { RadioGroupChoice } from '@layout/components/input/radioGroup';
-import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
-import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
 import { IWorkflowApprovalPayload } from '@organization/classes/request/workflow/approval';
 import { WorkflowApprovalFormData } from '@organization/components/workflow/approval/WorkflowApprovalForm';
 import { organizationMessage } from '@organization/locales/messages/organizationMessage';
-import { ProjectUserAction } from '@project/classes/types';
 import { WithProjectAcceptance, withProjectAcceptance } from '@project/hoc/withProjectAcceptance';
 import { projectApprovalMessage } from '@project/locales/messages/projectApprovalMessage';
 import { projectMessage } from '@project/locales/messages/projectMessage';
@@ -18,9 +14,10 @@ import { RouteComponentProps, withRouter } from 'react-router';
 import {
   compose,
   HandleCreators,
-  lifecycle,
   mapper,
-  ReactLifeCycleFunctions,
+  StateHandler,
+  StateHandlerMap,
+  StateUpdaters,
   withHandlers,
   withStateHandlers,
 } from 'recompose';
@@ -31,7 +28,7 @@ import { isNullOrUndefined, isObject } from 'util';
 import { ProjectAcceptanceApprovalView } from './ProjectAcceptanceApprovalView';
 
 interface OwnHandler {
-  handleRefresh: () => void;
+  // handleRefresh: () => void;
   handleValidate: (payload: WorkflowApprovalFormData) => FormErrors;
   handleSubmit: (payload: WorkflowApprovalFormData) => void;
   handleSubmitSuccess: (result: any, dispatch: Dispatch<any>) => void;
@@ -44,6 +41,7 @@ interface OwnRouteParams {
 }
 
 interface OwnState {
+  shouldDataReload: boolean;
   approvalTitle: string;
   approvalSubHeader: string;
   approvalChoices: RadioGroupChoice[];
@@ -54,32 +52,40 @@ interface OwnState {
   approvalDialogConfirmedText: string;
 }
 
+interface OwnStateUpdater extends StateHandlerMap<OwnState> {
+  setDataload: StateHandler<OwnState>;
+}
+
 export type ProjectAcceptanceApprovalProps
   = WithProjectAcceptance
   & WithUser
   & WithLayout
-  & WithAppBar
+  // & WithAppBar
   & RouteComponentProps<OwnRouteParams> 
   & InjectedIntlProps
   & OwnHandler
-  & OwnState;
+  & OwnState
+  & OwnStateUpdater;
 
-const createProps: mapper<ProjectAcceptanceApprovalProps, OwnState> = (props: ProjectAcceptanceApprovalProps): OwnState => {
-  const { intl } = props;
-
-  return {
-    approvalTitle: intl.formatMessage(projectMessage.acceptance.section.approvalTitle),
-    approvalSubHeader: intl.formatMessage(projectMessage.acceptance.section.approvalSubHeader),
+const createProps: mapper<ProjectAcceptanceApprovalProps, OwnState> = (props: ProjectAcceptanceApprovalProps): OwnState => ({
+  shouldDataReload: false,
+    approvalTitle: props.intl.formatMessage(projectMessage.acceptance.section.approvalTitle),
+    approvalSubHeader: props.intl.formatMessage(projectMessage.acceptance.section.approvalSubHeader),
     approvalChoices: [
-      { value: WorkflowStatusType.Accepted, label: intl.formatMessage(organizationMessage.workflow.option.approve) },
-      { value: WorkflowStatusType.Rejected, label: intl.formatMessage(organizationMessage.workflow.option.reject) }
+      { value: WorkflowStatusType.Accepted, label: props.intl.formatMessage(organizationMessage.workflow.option.accept) },
+      { value: WorkflowStatusType.Rejected, label: props.intl.formatMessage(organizationMessage.workflow.option.reject) }
     ],
     approvalTrueValue: WorkflowStatusType.Accepted,
-    approvalDialogTitle: intl.formatMessage(projectMessage.acceptance.confirm.approvalTitle),
-    approvalDialogContentText: intl.formatMessage(projectMessage.acceptance.confirm.approvalContent),
-    approvalDialogCancelText: intl.formatMessage(layoutMessage.action.cancel),
-    approvalDialogConfirmedText: intl.formatMessage(layoutMessage.action.continue),
-  };
+    approvalDialogTitle: props.intl.formatMessage(projectMessage.acceptance.confirm.approvalTitle),
+    approvalDialogContentText: props.intl.formatMessage(projectMessage.acceptance.confirm.approvalContent),
+    approvalDialogCancelText: props.intl.formatMessage(layoutMessage.action.cancel),
+    approvalDialogConfirmedText: props.intl.formatMessage(layoutMessage.action.continue),
+});
+
+const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdater> = {
+  setDataload: (prevState: OwnState) => (): Partial<OwnState> => ({
+    shouldDataReload: !prevState.shouldDataReload
+  })
 };
 
 const handlerCreators: HandleCreators<ProjectAcceptanceApprovalProps, OwnHandler> = {
@@ -134,15 +140,12 @@ const handlerCreators: HandleCreators<ProjectAcceptanceApprovalProps, OwnHandler
     });
   },
   handleSubmitSuccess: (props: ProjectAcceptanceApprovalProps) => (response: boolean) => {
-    const { intl, match, history } = props;
-    const { alertAdd } = props.layoutDispatch;
-    
-    alertAdd({
+    props.layoutDispatch.alertAdd({
       time: new Date(),
-      message: intl.formatMessage(projectMessage.acceptance.message.approvalSuccess),
+      message: props.intl.formatMessage(projectMessage.acceptance.message.approvalSuccess),
     });
 
-    history.push(`/project/acceptances/${match.params.assignmentUid}`);
+    props.setDataload();
   },
   handleSubmitFail: (props: ProjectAcceptanceApprovalProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
     const { intl } = props;
@@ -162,21 +165,22 @@ const handlerCreators: HandleCreators<ProjectAcceptanceApprovalProps, OwnHandler
       });
     }
   },
-  handleRefresh: (props: ProjectAcceptanceApprovalProps) => () => { 
-    const { match } = props;
-    const { user } = props.userState;
-    const { isLoading } = props.projectAcceptanceState.detail;
-    const { loadDetailRequest } = props.projectAcceptanceDispatch;
+  // handleRefresh: (props: ProjectAcceptanceApprovalProps) => () => { 
+  //   const { match } = props;
+  //   const { user } = props.userState;
+  //   const { isLoading } = props.projectAcceptanceState.detail;
+  //   const { loadDetailRequest } = props.projectAcceptanceDispatch;
 
-    if (user && !isLoading) { 
-      loadDetailRequest({
-        assignmentUid: match.params.assignmentUid,
-        assignmentItemUid: match.params.assignmentItemUid
-      });
-    }
-  }
+  //   if (user && !isLoading) { 
+  //     loadDetailRequest({
+  //       assignmentUid: match.params.assignmentUid,
+  //       assignmentItemUid: match.params.assignmentItemUid
+  //     });
+  //   }
+  // }
 };
 
+/*
 const lifecycles: ReactLifeCycleFunctions<ProjectAcceptanceApprovalProps, {}> = {
   componentDidMount() {
     const { 
@@ -237,15 +241,16 @@ const lifecycles: ReactLifeCycleFunctions<ProjectAcceptanceApprovalProps, {}> = 
     appBarDispatch.dispose();
   }
 };
+*/
 
 export const ProjectAcceptanceApproval = compose<ProjectAcceptanceApprovalProps, {}>(
   withUser,
   withLayout,
-  withAppBar,
+  // withAppBar,
   withRouter,
   withProjectAcceptance,
   injectIntl,
-  withStateHandlers<OwnState, {}, {}>(createProps, {}),
-  withHandlers<ProjectAcceptanceApprovalProps, OwnHandler>(handlerCreators),
-  lifecycle<ProjectAcceptanceApprovalProps, {}>(lifecycles),
+  withStateHandlers(createProps, stateUpdaters),
+  withHandlers(handlerCreators),
+  // lifecycle<ProjectAcceptanceApprovalProps, {}>(lifecycles),
 )(ProjectAcceptanceApprovalView);

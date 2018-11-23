@@ -89,12 +89,12 @@ const config: CollectionConfig<ITravelSettlement, AllProps> = {
             status: 'pending',
             isNotify: undefined,
             query: {
-              direction: params.direction,
+              find: params.find,
+              findBy: params.findBy,
               orderBy: params.orderBy,
+              direction: params.direction,
               page: params.page,
               size: params.size,
-              find: params.find,
-              findBy: params.findBy
             }
           }          
         });

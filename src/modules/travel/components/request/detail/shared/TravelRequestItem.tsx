@@ -1,3 +1,4 @@
+import { GlobalStyle } from '@layout/types/GlobalStyle';
 import {
   Avatar,
   Card,
@@ -18,6 +19,7 @@ import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import PersonIcon from '@material-ui/icons/Person';
 import { ITravelRequestItem } from '@travel/classes/response';
+import { travelMessage } from '@travel/locales/messages/travelMessage';
 import * as React from 'react';
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose, mapper, StateHandlerMap, StateUpdaters, withStateHandlers } from 'recompose';
@@ -44,19 +46,11 @@ type AllProps
 const travelRequestItem: React.SFC<AllProps> = props => {
   const { data, intl, active, isExpanded, handleToggle } = props;
 
-  const styled = {
-    fullWidth: true,
-    InputProps: {
-      disableUnderline: true,
-      readOnly: true
-    }
-  };
-
   const render = (
     <Card square>
       <CardHeader
-        title={<FormattedMessage id="travel.itemTitle" />}
-        subheader={<FormattedMessage id="travel.itemSubTitle" />}
+        title={props.intl.formatMessage(travelMessage.request.section.itemTitle)}
+        subheader={props.intl.formatMessage(travelMessage.request.section.itemSubHeader)}
       />
       <CardContent>
         <List>
@@ -103,24 +97,24 @@ const travelRequestItem: React.SFC<AllProps> = props => {
                     control={
                       <Checkbox checked={item.isRoundTrip} />
                     }
-                    label={<FormattedMessage id="travel.item.field.information.isRoundTrip" />}
+                    label={props.intl.formatMessage(travelMessage.request.field.isRoundTrip)}
                   />
                   <TextField
-                    {...styled} 
+                    {...GlobalStyle.TextField.ReadOnly} 
                     margin="dense"
-                    label={<FormattedMessage id="travel.item.field.information.transport" />}
+                    label={props.intl.formatMessage(travelMessage.request.field.transportType)}
                     value={item.transport ? item.transport.value : '-'}
                   />
                   <TextField
-                    {...styled}
+                    {...GlobalStyle.TextField.ReadOnly}
                     margin="dense"
-                    label={<FormattedMessage id="travel.item.t.field.information.from" />}
+                    label={props.intl.formatMessage(travelMessage.request.field.from)}
                     value={item.from || '-'}
                   />
                   <TextField
-                    {...styled}
+                    {...GlobalStyle.TextField.ReadOnly}
                     margin="dense"
-                    label={<FormattedMessage id="travel.item.field.information.departureDate" />}
+                    label={props.intl.formatMessage(travelMessage.request.field.itemStart)}
                     value={intl.formatDate(item.departureDate, {
                       year: 'numeric',
                       month: 'short',
@@ -132,15 +126,15 @@ const travelRequestItem: React.SFC<AllProps> = props => {
                     })}
                   />
                   <TextField
-                    {...styled}
+                    {...GlobalStyle.TextField.ReadOnly}
                     margin="dense"
-                    label={<FormattedMessage id="travel.item.field.information.destination" />}
+                    label={props.intl.formatMessage(travelMessage.request.field.destination)}
                     value={item.destination || '-'}
                   />
                   <TextField
-                    {...styled}
+                    {...GlobalStyle.TextField.ReadOnly}
                     margin="dense"
-                    label={<FormattedMessage id="travel.item.field.information.returnDate" />}
+                    label={props.intl.formatMessage(travelMessage.request.field.itemEnd)}
                     value={intl.formatDate(item.returnDate, {
                       year: 'numeric',
                       month: 'short',
@@ -152,70 +146,70 @@ const travelRequestItem: React.SFC<AllProps> = props => {
                     })}
                   />
                   <TextField
-                    {...styled}
+                    {...GlobalStyle.TextField.ReadOnly}
                     margin="dense"
-                    label={<FormattedMessage id="travel.item.field.information.costTransport" />}
+                    label={props.intl.formatMessage(travelMessage.request.field.transportCost)}
                     value={intl.formatNumber(item.costTransport || 0)}
                   />
                   <FormControlLabel
                     control={
                       <Checkbox checked={item.isTransportByCompany} />
                     }
-                    label={<FormattedMessage id="travel.item.field.information.isTransportByCompany" />}
+                    label={props.intl.formatMessage(travelMessage.request.field.isTransportByCompany)}
                   />
                   <TextField
-                    {...styled}
+                    {...GlobalStyle.TextField.ReadOnly}
                     margin="dense"
-                    label={<FormattedMessage id="travel.item.field.information.hotel" />}
+                    label={props.intl.formatMessage(travelMessage.request.field.hotel)}
                     value={item.hotel || '-'}
                   />
                   <TextField
-                    {...styled}
+                    {...GlobalStyle.TextField.ReadOnly}
                     margin="dense"
-                    label={<FormattedMessage id="travel.item.field.information.costHotel" />}
+                    label={props.intl.formatMessage(travelMessage.request.field.hotelCost)}
                     value={intl.formatNumber(item.costHotel || 0)}
                   />
                   <FormControlLabel
                     control={
                       <Checkbox checked={item.isHotelByCompany} />
                     }
-                    label={<FormattedMessage id="travel.item.field.information.isHotelByCompany" />}
+                    label={props.intl.formatMessage(travelMessage.request.field.isHotelByCompany)}
                   />
                   <TextField
-                    {...styled}
+                    {...GlobalStyle.TextField.ReadOnly}
                     margin="dense"
-                    label={<FormattedMessage id="travel.item.field.information.notes" />}
+                    label={props.intl.formatMessage(travelMessage.request.field.note)}
                     value={item.notes || '-'}
                   />                    
                   <TextField
-                    {...styled}
+                    {...GlobalStyle.TextField.ReadOnly}
                     margin="dense"
-                    label={<FormattedMessage id="travel.item.field.information.duration" />}
+                    label={props.intl.formatMessage(travelMessage.request.field.duration)}
                     value={intl.formatNumber(item.duration || 0)}
                   />
                   <TextField
-                    {...styled}
+                    {...GlobalStyle.TextField.ReadOnly}
                     margin="dense"
-                    label={<FormattedMessage id="travel.item.field.information.currencyUid" />}
+                    label={props.intl.formatMessage(travelMessage.request.field.currencyUid)}
                     value={item.currency ? item.currency.name : '-'}
                   />
                   <TextField
-                    {...styled}
+                    {...GlobalStyle.TextField.ReadOnly}
                     margin="dense"
-                    label={<FormattedMessage id="travel.item.field.information.diemValue" />}
+                    label={props.intl.formatMessage(travelMessage.request.field.diemValue)}
                     value={intl.formatNumber(item.diemValue || 0)}
                   />
                   <TextField
-                    {...styled}
+                    {...GlobalStyle.TextField.ReadOnly}
                     margin="dense"
-                    label={<FormattedMessage id="travel.item.field.information.currencyRate" />}
+                    label={props.intl.formatMessage(travelMessage.request.field.currencyRate)}
                     value={item.currency ? item.currency.rate : 0}
                   />
                                   
                   <TextField
-                    {...styled}
+                    {...GlobalStyle.TextField.ReadOnly}
                     margin="dense"
-                    label={<FormattedMessage id="travel.item.field.information.amount" />}
+                    label={props.intl.formatMessage(travelMessage.request.field.amount)}
                     value={intl.formatNumber(item.amount || 0)}
                   />
                   <Divider />

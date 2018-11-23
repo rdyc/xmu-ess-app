@@ -3,6 +3,7 @@ import { CollectionConfig, CollectionDataProps, CollectionHandler, CollectionPag
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
+import { GlobalFormat } from '@layout/types';
 import { Button } from '@material-ui/core';
 import { IMileageRequest } from '@mileage/classes/response';
 import { MileageRequestField, MileageUserAction } from '@mileage/classes/types';
@@ -106,10 +107,7 @@ const config: CollectionConfig<IMileageRequest, AllProps> = {
   },
   onBind: (item: IMileageRequest, index: number, props: AllProps) => ({
     key: index,
-    primary: props.intl.formatDate(new Date(item.year, item.month - 1), {
-      year: 'numeric',
-      month: 'long',
-    }),
+    primary: props.intl.formatDate(new Date(item.year, item.month - 1), GlobalFormat.MonthYear),
     secondary: item.employee && item.employee.fullName || item.employeeUid,
     tertiary: props.intl.formatNumber(item.amount),
     quaternary: item.uid,
