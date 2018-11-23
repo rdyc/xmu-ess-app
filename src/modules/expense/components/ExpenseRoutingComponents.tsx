@@ -1,7 +1,7 @@
 import { ExpenseApprovalDetail } from '@expense/components/approval/detail/ExpenseApprovalDetail';
 import { ExpenseApprovalListView } from '@expense/components/approval/list/ExpenseApprovalListView';
 import { ExpenseRequestDetail } from '@expense/components/request/detail/ExpenseRequestDetail';
-import RequestEditor from '@expense/components/request/editor/RequestEditor';
+import RequestEditor from '@expense/components/request/editor/ExpenseRequestEditor';
 import { ExpenseRequestListView } from '@expense/components/request/list/ExpenseRequestListView';
 import { Layout } from '@layout/components/base';
 import * as React from 'react';

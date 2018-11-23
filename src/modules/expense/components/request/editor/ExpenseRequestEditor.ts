@@ -4,10 +4,10 @@ import {
   IExpenseRequestPutPayload,
 } from '@expense/classes/request/request';
 import { IExpense } from '@expense/classes/response';
+import { ExpenseRequestEditorView } from '@expense/components/request/editor/ExpenseRequestEditorView';
 import {
   ExpenseRequestFormData,
 } from '@expense/components/request/editor/forms/RequestForm';
-import { RequestEditorView } from '@expense/components/request/editor/RequestEditorView';
 import { WithExpenseRequest, withExpenseRequest } from '@expense/hoc/withExpenseRequest';
 import { expenseMessage } from '@expense/locales/messages/expenseMessage';
 import { FormMode } from '@generic/types';
@@ -54,7 +54,7 @@ interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
   stateUpdate: StateHandler<OwnState>;
 }
 
-export type RequestEditorProps
+export type ExpenseRequestEditorProps
   = WithExpenseRequest
   & WithUser
   & WithLayout
@@ -65,8 +65,8 @@ export type RequestEditorProps
   & OwnState
   & OwnStateUpdaters;
 
-const handlerCreators: HandleCreators<RequestEditorProps, OwnHandlers> = {
-  handleValidate: (props: RequestEditorProps) => (formData: ExpenseRequestFormData) => { 
+const handlerCreators: HandleCreators<ExpenseRequestEditorProps, OwnHandlers> = {
+  handleValidate: (props: ExpenseRequestEditorProps) => (formData: ExpenseRequestFormData) => { 
     const errors = {
       information: {}
     };
@@ -85,7 +85,7 @@ const handlerCreators: HandleCreators<RequestEditorProps, OwnHandlers> = {
     
     return errors;
   },
-  handleSubmit: (props: RequestEditorProps) => (formData: ExpenseRequestFormData) => { 
+  handleSubmit: (props: ExpenseRequestEditorProps) => (formData: ExpenseRequestFormData) => { 
     const { formMode, expenseUid, intl } = props;
     const { user } = props.userState;
     const { createRequest, updateRequest } = props.expenseRequestDispatch;
@@ -144,7 +144,7 @@ const handlerCreators: HandleCreators<RequestEditorProps, OwnHandlers> = {
 
     return null;
   },
-  handleSubmitSuccess: (props: RequestEditorProps) => (response: IExpense) => {
+  handleSubmitSuccess: (props: ExpenseRequestEditorProps) => (response: IExpense) => {
     const { formMode, intl, history } = props;
     const { alertAdd } = props.layoutDispatch;
     const { loadDetailDispose } = props.expenseRequestDispatch;
@@ -167,7 +167,7 @@ const handlerCreators: HandleCreators<RequestEditorProps, OwnHandlers> = {
 
     history.push(`/expense/requests/${response.uid}`);
   },
-  handleSubmitFail: (props: RequestEditorProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
+  handleSubmitFail: (props: ExpenseRequestEditorProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
     const { formMode, intl } = props;
     const { alertAdd } = props.layoutDispatch;
     
@@ -198,7 +198,7 @@ const handlerCreators: HandleCreators<RequestEditorProps, OwnHandlers> = {
   }
 };
 
-const createProps: mapper<RequestEditorProps, OwnState> = (props: RequestEditorProps): OwnState => ({ 
+const createProps: mapper<ExpenseRequestEditorProps, OwnState> = (props: ExpenseRequestEditorProps): OwnState => ({ 
   formMode: FormMode.New
 });
 
@@ -209,7 +209,7 @@ const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
   })
 };
 
-const lifecycles: ReactLifeCycleFunctions<RequestEditorProps, {}> = {
+const lifecycles: ReactLifeCycleFunctions<ExpenseRequestEditorProps, {}> = {
   componentDidMount() {
     const { layoutDispatch, intl, history, stateUpdate } = this.props;
     const { loadDetailRequest } = this.props.expenseRequestDispatch;
@@ -269,7 +269,7 @@ const lifecycles: ReactLifeCycleFunctions<RequestEditorProps, {}> = {
   }
 };
 
-export default compose<RequestEditorProps, {}>(
+export default compose<ExpenseRequestEditorProps, {}>(
   withUser,
   withLayout,
   withAppBar,
@@ -277,6 +277,6 @@ export default compose<RequestEditorProps, {}>(
   withExpenseRequest,
   injectIntl,
   withStateHandlers<OwnState, OwnStateUpdaters, {}>(createProps, stateUpdaters),
-  withHandlers<RequestEditorProps, OwnHandlers>(handlerCreators),
-  lifecycle<RequestEditorProps, {}>(lifecycles),
-)(RequestEditorView);
+  withHandlers<ExpenseRequestEditorProps, OwnHandlers>(handlerCreators),
+  lifecycle<ExpenseRequestEditorProps, {}>(lifecycles),
+)(ExpenseRequestEditorView);
