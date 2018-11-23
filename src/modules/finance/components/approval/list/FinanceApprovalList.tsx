@@ -1,3 +1,4 @@
+import { FinanceStatusType } from '@common/classes/types';
 import AppMenu from '@constants/AppMenu';
 import { IFinance } from '@finance/classes/response';
 import { FinanceField, FinanceUserAction } from '@finance/classes/types';
@@ -38,16 +39,17 @@ const config: CollectionConfig<IFinance, AllProps> = {
 
   // selection
   hasSelection: true,
+  notSelectionTypes: [FinanceStatusType.NotPaid, FinanceStatusType.Paid],
   onProcessSelection: (values: string[], callback: CollectionHandler) => {
     callback.handleRedirectTo(`/finance/approvals/payment/${values}`);
   },
 
   // searching
   hasSearching: true,
-  searchStatus: (states: AllProps): boolean => {
+  searchStatus: (props: AllProps): boolean => {
     let result: boolean = false;
 
-    const { request } = states.financeApprovalState.all;
+    const { request } = props.financeApprovalState.all;
 
     if (request && request.filter && request.filter.find) {
       result = request.filter.find ? true : false;

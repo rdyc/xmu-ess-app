@@ -5,22 +5,22 @@ import { WithUser, withUser } from '@layout/hoc/withUser';
 import { layoutMessage } from '@layout/locales/messages';
 import { WorkflowApprovalFormData } from '@organization/components/workflow/approval/WorkflowApprovalForm';
 import { organizationMessage } from '@organization/locales/messages/organizationMessage';
-import { withProjectApproval } from '@project/hoc/withProjectApproval';
 import { projectApprovalMessage } from '@project/locales/messages/projectApprovalMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
-import { compose, HandleCreators, mapper, withHandlers, withStateHandlers } from 'recompose';
+import { compose, HandleCreators, mapper, StateHandler, StateHandlerMap, StateUpdaters, withHandlers, withStateHandlers } from 'recompose';
 import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
 import { isNullOrUndefined, isObject } from 'util';
 
 import { IFinanceApprovalBulkPostPayload, IFinanceApprovalItem } from '@finance/classes/request/approval';
 import { IFinance } from '@finance/classes/response';
-import { WithFinanceApproval } from '@finance/hoc/withFinanceApproval';
+import { WithFinanceApproval, withFinanceApproval } from '@finance/hoc/withFinanceApproval';
 import { financeMessage } from '@finance/locales/messages/financeMessage';
 import { FinanceApprovalPaymentView } from './FinanceApprovalPaymentView';
 
 interface OwnHandler {
+  handleLoadData: (financeData: IFinance[]) => void;
   handleValidate: (payload: WorkflowApprovalFormData) => FormErrors;
   handleSubmit: (payload: WorkflowApprovalFormData) => void;
   handleSubmitSuccess: (result: any, dispatch: Dispatch<any>) => void;
@@ -29,6 +29,9 @@ interface OwnHandler {
 
 interface OwnRouteParams {
   financeUids: string;
+}
+interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
+  stateUpdate: StateHandler<OwnState>;
 }
 
 interface OwnState {
@@ -53,6 +56,7 @@ export type FinanceApprovalPaymentProps
   & RouteComponentProps<OwnRouteParams> 
   & InjectedIntlProps
   & OwnHandler
+  & OwnStateUpdaters
   & OwnState;
 
 const createProps: mapper<FinanceApprovalPaymentProps, OwnState> = (props: FinanceApprovalPaymentProps): OwnState => {
@@ -77,8 +81,27 @@ const createProps: mapper<FinanceApprovalPaymentProps, OwnState> = (props: Finan
     approvalRemarkPlaceholder: intl.formatMessage(financeMessage.approval.field.notesPlaceholder)
   };
 };
+const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
+    stateUpdate: (prevState: OwnState) => (newState: any) => ({
+      ...prevState,
+      ...newState
+    }),
+  };
 
 const handlerCreators: HandleCreators<FinanceApprovalPaymentProps, OwnHandler> = {
+  handleLoadData: (props: FinanceApprovalPaymentProps) => (financeData: IFinance[]) => {
+    const { financeUids, stateUpdate } = props;
+    // const { response } = props.financeApprovalState.all;
+
+    const _finances = financeData.filter(finance => 
+      financeUids.some(financeUid => 
+        financeUid === finance.uid
+    ));
+
+    stateUpdate({
+      finances: _finances
+    });
+  },
   handleValidate: (props: FinanceApprovalPaymentProps) => (formData: WorkflowApprovalFormData) => { 
     const errors = {};
   
@@ -167,8 +190,9 @@ export const FinanceApprovalPayment = compose<FinanceApprovalPaymentProps, {}>(
   withRouter,
   withUser,
   withLayout,
-  withProjectApproval,
+  withFinanceApproval,
   injectIntl,
+  withStateHandlers<OwnState, OwnStateUpdaters, {}>(createProps, stateUpdaters),
   withStateHandlers(createProps, {}),
   withHandlers(handlerCreators),
 )(FinanceApprovalPaymentView);

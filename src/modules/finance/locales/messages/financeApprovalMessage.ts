@@ -45,5 +45,5 @@ export const financeApprovalSection = defineMessages({
 
 export const financeApprovalDialog = defineMessages({
   approvalTitle: {id: `${prefix}.dialog.approvalTitle`},
-  approvalSubTitle: {id: `${prefix}.dialog.approvalSubTitle`},
+  approvalSubTitle: {id: `${prefix}.dialog.approvalContent`},
 });

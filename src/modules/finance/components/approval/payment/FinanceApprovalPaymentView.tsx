@@ -6,12 +6,12 @@ import { WorkflowApprovalForm } from '@organization/components/workflow/approval
 import { ProjectUserAction } from '@project/classes/types';
 import * as React from 'react';
 
-import { IFinance } from '@finance/classes/response';
+import { IFinanceDetail } from '@finance/classes/response';
 import { financeMessage } from '@finance/locales/messages/financeMessage';
 import { FinanceBulkInformation } from '../detail/shared/FinanceBulkInformation';
 import { FinanceApprovalPaymentProps } from './FinanceApprovalPayment';
 
-const config: SingleConfig<IFinance[], FinanceApprovalPaymentProps> = {
+const config: SingleConfig<IFinanceDetail, FinanceApprovalPaymentProps> = {
   // page info
   page: (props: FinanceApprovalPaymentProps) => ({
     uid: AppMenu.FinanceApproval,
@@ -36,22 +36,30 @@ const config: SingleConfig<IFinance[], FinanceApprovalPaymentProps> = {
   ]),
 
   // events
-  onDataLoad: (props: FinanceApprovalPaymentProps, callback: SingleHandler) => {
-    // nope
+  onDataLoad: (props: FinanceApprovalPaymentProps) => {
+    const { handleLoadData } = props;
+    const { isLoading, response } = props.financeApprovalState.all;
+
+    if (!isLoading && response && response.data) {
+      handleLoadData(response.data);
+    }
   },
-  onUpdated: (props: FinanceApprovalPaymentProps, callback: SingleHandler) => {
+  onUpdated: () => {
     // nope
   },
 
   // primary
-  primaryComponent: (data: IFinance[], props: FinanceApprovalPaymentProps) => (
+  primaryComponent: (data: IFinanceDetail, props: FinanceApprovalPaymentProps) => (
     <FinanceBulkInformation 
       data={props.finances} 
     />
   ),
 
   // secondary (multiple components are allowed)
-  secondaryComponents: (data: IFinance[], props: FinanceApprovalPaymentProps) => ([
+  secondaryComponents: (data: IFinanceDetail, props: FinanceApprovalPaymentProps) => ([
+    <FinanceBulkInformation 
+      data={props.finances} 
+    />,
     <React.Fragment>
       <WorkflowApprovalForm
         approvalTitle={props.approvalTitle}
@@ -69,7 +77,7 @@ const config: SingleConfig<IFinance[], FinanceApprovalPaymentProps> = {
         approvalRemarkLabel={props.approvalRemarkLabel}
         approvalRemarkPlaceholder={props.approvalRemarkPlaceholder}
       />
-    </React.Fragment>
+    </React.Fragment>,
   ])
 };
 
