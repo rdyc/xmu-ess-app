@@ -208,7 +208,7 @@ export const RequestItemFormView: React.SFC<RequestItemFormProps> = props => {
                     component={InputNumber}
                     onChange={ (event: any, newValue: any) => {
                       if (!isNaN(newValue)) {
-                        props.change(`${field}.amount`, newValue * item.diemValue);
+                        // props.change(`${field}.amount`, newValue * item.diemValue);
                       }
                     }}
                   />
