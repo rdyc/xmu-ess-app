@@ -1,3 +1,4 @@
+import { GlobalFormat } from '@layout/types';
 import {
   Button,
   Dialog,
@@ -19,8 +20,9 @@ import {
   WinningRatioHeaderDetailWin
 } from '@summary/classes/types/winningRatio/WinningRatioHeaderDetail';
 import { WinningRatioType } from '@summary/classes/types/winningRatio/WinningRatioType';
+import { summaryMessage } from '@summary/locales/messages/summaryMessage';
 import * as React from 'react';
-import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
+import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose } from 'recompose';
 
 interface OwnProps {
@@ -72,7 +74,7 @@ const winningRatioDetail: React.SFC<AllProps> = props => {
               fullScreen={isMobile}
             >
               <DialogTitle>
-                <FormattedMessage id="summary.winningRatio.detail.title" />{' '}
+                {intl.formatMessage(summaryMessage.winningRatio.page.detail)}
                 &bull; {type}
               </DialogTitle>
               <DialogContent>
@@ -99,20 +101,14 @@ const winningRatioDetail: React.SFC<AllProps> = props => {
                                 <TableCell>
                                   {project.childProjectUid !== null ? (
                                     project.childProjectUid
-                                  ) : (
-                                    <FormattedMessage id="summary.winningRatio.detail.projectNull" />
-                                  )}
+                                  ) : intl.formatMessage(summaryMessage.winningRatio.field.null)}
                                 </TableCell>
                                 <TableCell>
                                   {project.customer && project.customer.name}
                                 </TableCell>
                                 {type !== WinningRatioType.OnProgress ? (
                                   <TableCell>
-                                    {intl.formatDate(project.date, {
-                                      year: 'numeric',
-                                      month: 'short',
-                                      day: 'numeric'
-                                    })}
+                                    {intl.formatDate(project.date, GlobalFormat.Date)}
                                   </TableCell>
                                 ) : null}
                               </TableRow>

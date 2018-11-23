@@ -3,6 +3,7 @@ import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { WinningRatioView } from '@summary/components/winningRatio/WinningRatioView';
 import { WithSummary, withSummary } from '@summary/hoc/withSummary';
+import { summaryMessage } from '@summary/locales/messages/summaryMessage';
 import * as moment from 'moment';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
@@ -195,8 +196,8 @@ const lifecycles: ReactLifeCycleFunctions<WinningRatioProps, OwnState> = {
     layoutDispatch.changeView({
       uid: AppMenu.ReportProgress,
       parentUid: AppMenu.Report,
-      title: intl.formatMessage({ id: 'summary.winningRatio.title' }),
-      subTitle: intl.formatMessage({ id: 'summary.winningRatio.subTitle' })
+      title: intl.formatMessage(summaryMessage.winningRatio.page.title),
+      subTitle: intl.formatMessage(summaryMessage.winningRatio.page.subHeader)
     });
 
     // only load data when response are empty
