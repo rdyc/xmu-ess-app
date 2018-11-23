@@ -38,6 +38,7 @@ export interface CollectionConfig<Tresponse, Tinner> {
   hasSearching?: boolean | false;
   searchStatus?: (props: Tinner) => boolean;
   hasSelection?: boolean | false;
+  notSelectionTypes?: string[] | [];
   onProcessSelection?: (values: string[], callback: CollectionHandler) => void;
   showActionCentre?: boolean | false;
   filter?: IBasePagingFilter | IBaseFilter;
@@ -87,6 +88,9 @@ interface OwnState {
 
   // transition
   inTransition: boolean;
+
+  // not selection types
+  notSelectionTypes: string[];
 }
 
 interface OwnStateUpdater extends StateHandlerMap<OwnState> {
@@ -103,6 +107,7 @@ interface OwnStateUpdater extends StateHandlerMap<OwnState> {
   setField: StateHandler<OwnState>;
   setOrder: StateHandler<OwnState>;
   setSize: StateHandler<OwnState>;
+  setNotSelectionTypes: StateHandler<OwnState>;
 }
 
 interface OwnHandler {
@@ -135,6 +140,7 @@ const createProps: mapper<OwnOption, OwnState> = (props: OwnOption): OwnState =>
   page: 1,
   size: 10,
   inTransition: true,
+  notSelectionTypes: [],
   ...props.config.filter
 });
 
@@ -206,6 +212,9 @@ const stateUpdaters: StateUpdaters<OwnOption, OwnState, OwnStateUpdater> = {
     size,
     page: 1,
     forceReload: true
+  }),
+  setNotSelectionTypes: (prevState: OwnState) => (types: string[]) => ({
+    notSelectionTypes: types
   })
 };
 
@@ -281,6 +290,8 @@ const lifecycles: ReactLifeCycleFunctions<CollectionPageProps, OwnState> = {
     // assign selection callback
     if (this.props.config.hasSelection) {
       this.props.appBarDispatch.assignSelectionClearCallback(this.props.setSelectionClear);
+
+      this.props.setNotSelectionTypes(this.props.config.notSelectionTypes);
 
       // call config processing callback
       this.props.appBarDispatch.assignSelectionProcessCallback(() => {

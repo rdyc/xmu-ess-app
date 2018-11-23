@@ -1,3 +1,4 @@
+import { WorkflowStatusType } from '@common/classes/types';
 import { GlobalFormat } from '@layout/types';
 import { GlobalStyle } from '@layout/types/GlobalStyle';
 import { Card, CardContent, CardHeader, TextField } from '@material-ui/core';
@@ -78,6 +79,16 @@ const projectInformationSimple: React.SFC<AllProps> = props => (
         label={props.intl.formatMessage(projectMessage.registration.field.hours)}
         value={props.intl.formatNumber(props.data.maxHours)}
       />
+      
+      {
+        props.data.statusType === WorkflowStatusType.Rejected &&
+        <TextField
+          {...GlobalStyle.TextField.ReadOnly}
+          multiline={true}
+          label={props.intl.formatMessage(projectMessage.registration.field.rejectedReason)}
+          value={props.data.rejectedReason || 'N/A'}
+        />
+      }
     </CardContent>
   </Card>
 );
