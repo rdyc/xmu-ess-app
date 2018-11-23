@@ -28,7 +28,7 @@
   "project.registration.confirm.manageSite.title": "Project Site",
   "project.registration.confirm.manageSite.description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
 
-  "project.registration.section.info.title": "Registration",
+  "project.registration.section.info.title": "Project",
   "project.registration.section.info.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
   "project.registration.section.document.project.title": "Documents (Project)",
   "project.registration.section.document.project.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
@@ -85,6 +85,7 @@
   "project.registration.field.valueUsd.placeholder": "Type a project value",
   "project.registration.field.valueIdr": "Value (IDR)",
   "project.registration.field.hours": "Max. Hours",
+  "project.registration.field.rejectedReason": "Rejected Reason",
   
   "project.registration.message.emptyProps": "Some props are empty",
   "project.registration.message.emptySales": "Sales not found",
@@ -156,10 +157,10 @@
   "project.assignment.page.modify.title": "Modify Assignment",
   "project.assignment.page.modify.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
   
-  "project.assignment.section.create.title": "Assignment",
-  "project.assignment.section.create.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
   "project.assignment.section.project.title": "Project",
   "project.assignment.section.project.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "project.assignment.section.item.title": "Assignment",
+  "project.assignment.section.item.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
   "project.assignment.section.member.add.title": "Add Member",
   "project.assignment.section.member.add.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
   "project.assignment.section.member.title": "Members",
@@ -170,7 +171,7 @@
   "project.assignment.section.member.action.save": "Save",
   
   "project.assignment.option.addMember": "Add More",
-  "project.assignment.option.acceptance": "Respond",
+  "project.assignment.option.acceptance": "Acceptance",
 
   "project.assignment.confirm.modify.title": "Assignment Modify Confirm",
   "project.assignment.confirm.modify.content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",

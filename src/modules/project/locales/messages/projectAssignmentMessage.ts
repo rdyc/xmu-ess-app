@@ -20,8 +20,8 @@ export const projectAssignmentSection = defineMessages({
   projectSubHeader: { id: `${prefix}.section.project.subHeader` },
   memberAddTitle: { id: `${prefix}.section.member.add.title` },
   memberAddSubHeader: { id: `${prefix}.section.member.add.subHeader` },
-  acceptanceTitle: { id: `${prefix}.section.acceptance.title` },
-  acceptanceSubHeader: { id: `${prefix}.section.acceptance.subHeader` },
+  itemTitle: { id: `${prefix}.section.item.title` },
+  itemSubHeader: { id: `${prefix}.section.item.subHeader` },
 });
 
 // action
