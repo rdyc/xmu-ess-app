@@ -1,5 +1,7 @@
 import { Submission } from '@layout/components/submission/Submission';
-import { Grid } from '@material-ui/core';
+import { 
+  Card, CardContent, CardHeader, 
+  Grid } from '@material-ui/core';
 import { PurchaseRequestDetailForm } from '@purchase/components/purchaseRequest/editor/forms/PurchaseRequestDetailForm';
 import { PurchaseRequestFormProps } from '@purchase/components/purchaseRequest/editor/forms/PurchaseRequestForm';
 import { PurchaseRequestItemForm } from '@purchase/components/purchaseRequest/editor/forms/PurchaseRequestItemForm';
@@ -10,9 +12,11 @@ export const PurchaseRequestFormView: React.SFC<PurchaseRequestFormProps> = prop
   const {
     formMode,
     formCustomer,
-    formIsCurrencyIDR, formRate, formValue,
+    formIsCurrencyIDR, formRate, 
+    formValues,
     formRequest,
-    formCurrencyType, change, initialValues
+    formCurrencyType, change, initialValues,
+    // TotalRequest
   } = props;
 
   const fields = Object.getOwnPropertyNames(initialValues.information);
@@ -20,23 +24,29 @@ export const PurchaseRequestFormView: React.SFC<PurchaseRequestFormProps> = prop
   const onChangeCurrencyType = (event: any, newValue: string, oldValue: string) => {
     if (newValue === 'SCR01') {
       change('information.rate', 1);
-      change('information.requestIDR', formValue);
+      change('information.requestIDR', formRequest);
     }
   };
 
   const onChangeRate = (event: any, newValue: number, oldValue: number) => {
-    change('information.requestIDR', newValue * formValue);
+    change('information.requestIDR', newValue * formRequest);
   };
 
   const onChangeValueIdr = (event: any, newValue: number, oldValue: number) => {
     change('information.requestIDR', newValue * formRate);
   };
-  
-  const onChangeValueRequest = (event: any, newValue: number, oldValue: number) => {
-    change('information.request', formRequest );
-  };
+  // const onChangeValueRequest = (event: any, newValue: number, oldValue: number) => {
+  //   change('information.request', formRequest );
+  // };
   const onChangeItemRequest = (event: any, newValue: number, oldValue: number) => {
-    change('information.request', formRequest);
+    // change('information.request', formRequest);
+
+    let request: number = 0;
+    // if (formValues.items) {
+    formValues.items.items.forEach(item => request += item.request);
+    // }
+    change('information.request', request);
+    
   };
 
   const componentInformation = (context: BaseFieldsProps) => (
@@ -49,7 +59,8 @@ export const PurchaseRequestFormView: React.SFC<PurchaseRequestFormProps> = prop
       onChangeCurrencyType={onChangeCurrencyType}
       onChangeRate={onChangeRate}
       onChangeValueIdr={onChangeValueIdr}
-      onChangeRequest={onChangeValueRequest}
+      // onChangeRequest={onChangeValueRequest}
+      // requestValue={onChangeItemRequest}
     />
   );
 
@@ -78,16 +89,23 @@ export const PurchaseRequestFormView: React.SFC<PurchaseRequestFormProps> = prop
           </FormSection>
         </Grid>
 
-        <Grid item xs={12} md={8}>
+        <Grid container spacing={16} item xs={12} md={8}>
           <FormSection name="items">
             <FieldArray
               name="items"
               component={componentItems}
             />
           </FormSection>
+          <Grid item md={4}>
+            <Submission
+              valid={true}
+              reset={props.reset}
+              submitting={props.submitting}
+            />
+          </Grid>
         </Grid>
 
-        {/* <Grid item xs={12} md={4}>
+        <Grid item xs={12} md={4}>
         <Card>
           <CardHeader 
             title="Values"
@@ -97,18 +115,8 @@ export const PurchaseRequestFormView: React.SFC<PurchaseRequestFormProps> = prop
             <pre>{JSON.stringify(props.formValues, null, 2)}</pre>
           </CardContent>
         </Card>
-      </Grid> */}
+      </Grid>
       
-        <Grid item 
-        // xs={12} 
-        md={4}>
-          <Submission
-            // valid={props.valid}
-            valid={true}
-            reset={props.reset}
-            submitting={props.submitting}
-          />
-        </Grid>
       </Grid>
     </form>
   );

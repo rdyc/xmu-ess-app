@@ -1,6 +1,7 @@
 import { FormMode } from '@generic/types';
 import { PurchaseRequestFormView } from '@purchase/components/purchaseRequest/editor/forms/PurchaseRequestFormView';
 import { connect } from 'react-redux';
+import { compose, HandleCreators, lifecycle, mapper, ReactLifeCycleFunctions, StateHandler, StateHandlerMap, StateUpdaters, withHandlers, withStateHandlers } from 'recompose';
 import { formValueSelector, getFormValues, InjectedFormProps, reduxForm } from 'redux-form';
 
 const formName = 'purchaseRequest';
@@ -21,7 +22,7 @@ export type PurchaseRequestFormData = {
     date: string | null | undefined;
     currencyType: string | null | undefined;
     rate: number;
-    request: number;
+    request: number | 0;
   },
   items:  {
    items: PurchaseRequestItemFormData[];
@@ -30,15 +31,27 @@ export type PurchaseRequestFormData = {
 
 interface OwnProps {
   formMode: FormMode;
+  initialForm?: PurchaseRequestFormData | undefined;
 }
 
+interface OwnHandlers {
+  handleEventListener: (event: CustomEvent) => void;
+}
+
+interface OwnState {
+  PurchaseForm?: PurchaseRequestFormData | undefined; 
+  TotalRequest?: number | undefined;
+}
+
+interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
+  setRequest: StateHandler<OwnState>;
+}
 interface FormValueProps {
   formCustomer: string | null;
   formIsCurrencyIDR: boolean | false;
   formCurrencyType: string | null;
   formRate: number | 1;
-  formValue: number | 1;
-  formItems: any;
+  // formValue: number | 0;
   formValues: PurchaseRequestFormData;
   formRequest: number | 0;
 }
@@ -46,7 +59,30 @@ interface FormValueProps {
 export type PurchaseRequestFormProps
   = InjectedFormProps<PurchaseRequestFormData, OwnProps>
   & FormValueProps
-  & OwnProps;
+  & OwnHandlers
+  & OwnProps
+  & OwnState
+  & OwnStateUpdaters;
+
+const createProps: mapper<PurchaseRequestFormProps, OwnState> = (props: PurchaseRequestFormProps): OwnState => {
+  return {
+    PurchaseForm: props.initialForm,
+    // TotalRequest: props.formValue,
+  };
+};
+
+const handlers: HandleCreators<PurchaseRequestFormProps, OwnHandlers> = {
+  handleEventListener: (props: PurchaseRequestFormProps) => (event: CustomEvent) => {
+    const { setRequest } = props;
+    const formValues = event.detail as PurchaseRequestFormData;
+
+    let total: number = 0;
+    if (formValues.items.items) {
+      formValues.items.items.forEach((item) => total += item.request);
+    }
+    setRequest(total);
+  },
+};
 
 const selector = formValueSelector(formName);
 
@@ -55,31 +91,50 @@ const mapStateToProps = (state: any): FormValueProps => {
   const currencyType = selector(state, 'information.currencyType');
   const rate = selector(state, 'information.rate');
   const value = selector(state, 'information.request'); 
-  const itemsValue = selector(state, 'items.items');
   const forms = getFormValues(formName)(state) as PurchaseRequestFormData;
-
-  let request: number = 0;
-  if (forms.items) {
-    forms.items.items.forEach(item => request += item.request);
-  }
 
   return {
     formCustomer: customer,
     formIsCurrencyIDR: currencyType === 'SCR01',
     formCurrencyType: currencyType,
     formRate: rate,
-    formValue: value,
-    formItems: itemsValue,
     formValues: forms,
-    formRequest: request,
+    formRequest: value,
   };
 };
 
-// const enhancedView = compose<PurchaseRequestFormProps, OwnProps & InjectedFormProps<PurchaseRequestFormData, OwnProps>>(
-//   connect(mapStateToProps),
-// )(PurchaseRequestFormView);
+const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
+  setRequest: (prevState: OwnState) => (total: number) => {
+      return {
+        ...prevState,
+        initialForm: {
+          ...prevState.PurchaseForm,
+          request: total,
+        }
+        };
+  },
+};
 
-const connectedView = connect(mapStateToProps)(PurchaseRequestFormView);
+const lifecycles: ReactLifeCycleFunctions<PurchaseRequestFormProps, OwnState> = {
+  componentDidMount() {
+    addEventListener('PURCHASE_FORM', this.props.handleEventListener);
+  },
+  // componentWillReceiveProps() {
+
+  // },
+  componentWillUnmount() {
+    removeEventListener('PURCHASE_FORM', this.props.handleEventListener);
+  }
+};
+
+const enhancedView = compose<PurchaseRequestFormProps, OwnProps & InjectedFormProps<PurchaseRequestFormData, OwnProps>>(
+  connect(mapStateToProps),
+  withStateHandlers(createProps, stateUpdaters),
+  withHandlers(handlers),
+  lifecycle(lifecycles),
+)(PurchaseRequestFormView);
+
+// const connectedView = connect(mapStateToProps)(PurchaseRequestFormView);
 
 export const PurchaseRequestForm = reduxForm<PurchaseRequestFormData, OwnProps>({
   form: formName,
@@ -87,8 +142,7 @@ export const PurchaseRequestForm = reduxForm<PurchaseRequestFormData, OwnProps>(
   touchOnBlur: true,
   enableReinitialize: true,
   destroyOnUnmount: true,
-  // onChange: (values: PurchaseRequestFormData, dispatch: any, props: any) => {
-  //   dispatchEvent(new CustomEvent('PURCHASE_FORM', { detail: values }));
-  // },
-})(connectedView);
-// })(enhancedView);
+  onChange: (values: PurchaseRequestFormData, dispatch: any, props: any) => {
+    dispatchEvent(new CustomEvent('PURCHASE_FORM', { detail: values }));
+  },
+})(enhancedView);

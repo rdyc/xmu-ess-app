@@ -16,7 +16,9 @@ import { Field } from 'redux-form';
 
 // export const PurchaseRequestItemFormView: React.SFC<WrappedFieldArrayProps<PurchaseRequestItemFormData> & PurchaseRequestItemFormProps> = props => {
 export const PurchaseRequestItemFormView: React.SFC<PurchaseRequestItemFormProps> = props => {
-  const { context, onRequestChange } = props;
+  const { context, 
+    onRequestChange 
+  } = props;
   
   const render = (
     <Grid container spacing={16}>
@@ -26,9 +28,11 @@ export const PurchaseRequestItemFormView: React.SFC<PurchaseRequestItemFormProps
             <Card square>
               <CardHeader
                 action={
+                  index > 0 ? 
                   <IconButton onClick={() => context.fields.remove(index)}>
                     <DeleteForeverIcon />
                   </IconButton>
+                  : ''
                 }
                 title={`#${index + 1}`}
               />

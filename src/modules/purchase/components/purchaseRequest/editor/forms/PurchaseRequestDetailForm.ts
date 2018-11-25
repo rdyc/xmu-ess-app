@@ -20,10 +20,11 @@ interface OwnProps {
   formCurrencyType: string | null | undefined;
   formCustomer: string | null | undefined;
   isCurrencyIdr: boolean;
+  // requestValue: number | undefined;
   onChangeCurrencyType: (event: any, newValue: string, oldValue: string) => void;
   onChangeRate: (event: any, newValue: number, oldValue: number) => void;
   onChangeValueIdr: (event: any, newValue: number, oldValue: number) => void;
-  onChangeRequest: (event: any, newValue: number, oldValue: number) => void;
+  // onChangeRequest: (event: any, newValue: number, oldValue: number) => void;
 }
 
 interface OwnHandlers {
@@ -131,7 +132,7 @@ const handlerCreators: HandleCreators<PurchaseRequestDetailFormProps, OwnHandler
         };
         break;
 
-       case 'requestIDR':
+       case 'requestInIDR':
          fieldProps = {
            type: 'number',
            label: intl.formatMessage(purchaseMessage.request.field.requestInIDR),
@@ -172,6 +173,5 @@ const handlerCreators: HandleCreators<PurchaseRequestDetailFormProps, OwnHandler
 
 export const PurchaseRequestDetailForm = compose<PurchaseRequestDetailFormProps, OwnProps>(
   injectIntl,
-  // withUser,
   withHandlers<PurchaseRequestDetailFormProps, OwnHandlers>(handlerCreators),
 )(PurchaseRequestDetailFormView);
