@@ -3,7 +3,7 @@ import { ICommonSystem } from '@common/classes';
 import { IBaseChanges } from '@generic/interfaces';
 import { ILeaveId } from '@leave/classes/response';
 
-export interface ILeaveRequest {
+export interface ILeave {
   uid:              string;
   employeeUid:      string;
   employee:         IAccountEmployee | null;

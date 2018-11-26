@@ -7,7 +7,7 @@ import {
   IOrganizationWorkflow
 } from '@organization/interfaces';
 
-export interface ILeaveRequestDetail {
+export interface ILeaveDetail {
   uid:              string;
   employeeUid:      string;
   employee:         IAccountEmployee | null;

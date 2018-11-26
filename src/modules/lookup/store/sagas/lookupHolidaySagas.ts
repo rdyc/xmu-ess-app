@@ -1,30 +1,30 @@
 import { layoutAlertAdd } from '@layout/store/actions';
 import {
-  HolidayAction as Action,
-  holidayGetAllError,
-  holidayGetAllRequest,
-  holidayGetAllSuccess,
-  holidayGetByIdError,
-  holidayGetByIdRequest,
-  holidayGetByIdSuccess,
-  holidayGetListError,
-  holidayGetListRequest,
-  holidayGetListSuccess,
+  LookupHolidayAction as Action,
+  lookupHolidayGetAllError,
+  lookupHolidayGetAllRequest,
+  lookupHolidayGetAllSuccess,
+  lookupHolidayGetByIdError,
+  lookupHolidayGetByIdRequest,
+  lookupHolidayGetByIdSuccess,
+  lookupHolidayGetListError,
+  lookupHolidayGetListRequest,
+  lookupHolidayGetListSuccess,
 } from '@lookup/store/actions';
 import saiyanSaga from '@utils/saiyanSaga';
 import { all, fork, put, takeEvery } from 'redux-saga/effects';
 import { IApiResponse, objectToQuerystring } from 'utils';
 
 function* watchFetchAllRequest() {
-  const worker = (action: ReturnType<typeof holidayGetAllRequest>) => {
+  const worker = (action: ReturnType<typeof lookupHolidayGetAllRequest>) => {
     return saiyanSaga.fetch({
       method: 'get',
       path: `/v1/lookup/holidays${objectToQuerystring(action.payload.filter)}`, 
       successEffects: (response: IApiResponse) => ([
-        put(holidayGetAllSuccess(response.body)),
+        put(lookupHolidayGetAllSuccess(response.body)),
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(holidayGetAllError(response.statusText)),
+        put(lookupHolidayGetAllError(response.statusText)),
         put(layoutAlertAdd({
           time: new Date(),
           message: response.statusText,
@@ -32,7 +32,7 @@ function* watchFetchAllRequest() {
         }))
       ]), 
       errorEffects: (error: TypeError) => ([
-        put(holidayGetAllError(error.message)),
+        put(lookupHolidayGetAllError(error.message)),
         put(layoutAlertAdd({
           time: new Date(),
           message: error.message
@@ -45,15 +45,15 @@ function* watchFetchAllRequest() {
 }
 
 function* watchFetchListRequest() {
-  const worker = (action: ReturnType<typeof holidayGetListRequest>) => {
+  const worker = (action: ReturnType<typeof lookupHolidayGetListRequest>) => {
     return saiyanSaga.fetch({
       method: 'get',
       path: `/v1/lookup/holidays/list${objectToQuerystring(action.payload.filter)}`,
       successEffects: (response: IApiResponse) => ([
-        put(holidayGetListSuccess(response.body)),
+        put(lookupHolidayGetListSuccess(response.body)),
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(holidayGetListError(response.statusText)),
+        put(lookupHolidayGetListError(response.statusText)),
         put(layoutAlertAdd({
           time: new Date(),
           message: response.statusText,
@@ -61,7 +61,7 @@ function* watchFetchListRequest() {
         }))
       ]), 
       errorEffects: (error: TypeError) => ([
-        put(holidayGetListError(error.message)),
+        put(lookupHolidayGetListError(error.message)),
         put(layoutAlertAdd({
           time: new Date(),
           message: error.message
@@ -74,15 +74,15 @@ function* watchFetchListRequest() {
 }
 
 function* watchFetchByIdRequest() {
-  const worker = (action: ReturnType<typeof holidayGetByIdRequest>) => {
+  const worker = (action: ReturnType<typeof lookupHolidayGetByIdRequest>) => {
     return saiyanSaga.fetch({
       method: 'get',
       path: `/v1/lookup/holidays/${action.payload.companyUid}/${action.payload.holidayUid}`,
       successEffects: (response: IApiResponse) => ([
-        put(holidayGetByIdSuccess(response.body)),
+        put(lookupHolidayGetByIdSuccess(response.body)),
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(holidayGetByIdError(response.statusText)),
+        put(lookupHolidayGetByIdError(response.statusText)),
         put(layoutAlertAdd({
           time: new Date(),
           message: response.statusText,
@@ -90,7 +90,7 @@ function* watchFetchByIdRequest() {
         }))
       ]), 
       errorEffects: (error: TypeError) => ([
-        put(holidayGetByIdError(error.message)),
+        put(lookupHolidayGetByIdError(error.message)),
         put(layoutAlertAdd({
           time: new Date(),
           message: error.message,

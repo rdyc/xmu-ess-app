@@ -1,7 +1,7 @@
 import { IBaseChanges } from '@generic/interfaces';
 import { ICompanyList } from '@lookup/classes/response';
 
-export interface IHoliday {
+export interface ILookupHoliday {
   uid: string;
   companyUid: string;
   company: ICompanyList | null;

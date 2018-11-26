@@ -1,10 +1,10 @@
 import { IQuerySingleState } from '@generic/interfaces';
-import { IHolidayByIdRequest } from '@lookup/classes/queries';
-import { IHolidayDetail } from '@lookup/classes/response';
-import { HolidayAction as Action } from '@lookup/store/actions';
+import { ILookupHolidayGetByIdRequest } from '@lookup/classes/queries';
+import { ILookupHolidayDetail } from '@lookup/classes/response';
+import { LookupHolidayAction as Action } from '@lookup/store/actions';
 import { Reducer } from 'redux';
 
-const initialState: IQuerySingleState<IHolidayByIdRequest, IHolidayDetail> = {
+const initialState: IQuerySingleState<ILookupHolidayGetByIdRequest, ILookupHolidayDetail> = {
   request: undefined,
   response: undefined,
   isError: false,
@@ -12,7 +12,7 @@ const initialState: IQuerySingleState<IHolidayByIdRequest, IHolidayDetail> = {
   errors: undefined,
 };
 
-const reducer: Reducer<IQuerySingleState<IHolidayByIdRequest, IHolidayDetail>> = (state = initialState, action) => {
+const reducer: Reducer<IQuerySingleState<ILookupHolidayGetByIdRequest, ILookupHolidayDetail>> = (state = initialState, action) => {
   switch (action.type) {
     case Action.GET_BY_ID_REQUEST: return { ...state, isLoading: true, request: action.payload };
     case Action.GET_BY_ID_SUCCESS: return { ...state, isLoading: false, response: action.payload };
@@ -23,4 +23,4 @@ const reducer: Reducer<IQuerySingleState<IHolidayByIdRequest, IHolidayDetail>> =
   }
 };
 
-export { reducer as holidayGetByIdReducer };
+export { reducer as lookupHolidayGetByIdReducer };

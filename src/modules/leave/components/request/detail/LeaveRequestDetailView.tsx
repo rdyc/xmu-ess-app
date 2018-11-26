@@ -5,7 +5,7 @@ import { DialogConfirmation } from '@layout/components/dialogs';
 import { SingleConfig, SingleHandler, SinglePage, SingleState } from '@layout/components/pages/singlePage/SinglePage';
 import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
-import { ILeaveRequestDetail } from '@leave/classes/response';
+import { ILeaveDetail } from '@leave/classes/response';
 import { LeaveRequestUserAction } from '@leave/classes/types';
 import { leaveMessage } from '@leave/locales/messages/leaveMessage';
 import { WorkflowHistory } from '@organization/components/workflow/history/WorkflowHistory';
@@ -17,7 +17,7 @@ const isContains = (statusType: WorkflowStatusType | undefined, statusTypes: str
   return statusType ? statusTypes.indexOf(statusType) !== -1 : false;
 };
 
-const config: SingleConfig<ILeaveRequestDetail, LeaveRequestDetailProps> = {
+const config: SingleConfig<ILeaveDetail, LeaveRequestDetailProps> = {
   // page info
   page: (props: LeaveRequestDetailProps) => ({
     uid: AppMenu.LeaveRequest,
@@ -83,12 +83,12 @@ const config: SingleConfig<ILeaveRequestDetail, LeaveRequestDetailProps> = {
   },
 
   // primary
-  primaryComponent: (data: ILeaveRequestDetail, props: LeaveRequestDetailProps) => (
+  primaryComponent: (data: ILeaveDetail, props: LeaveRequestDetailProps) => (
     <LeaveInformation data={data} />
   ),
 
   // secondary (multiple components are allowed)
-  secondaryComponents: (data: ILeaveRequestDetail, props: LeaveRequestDetailProps) => ([
+  secondaryComponents: (data: ILeaveDetail, props: LeaveRequestDetailProps) => ([
     <AccountLeave />,
     <WorkflowHistory data={data.workflow} />
   ])

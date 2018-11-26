@@ -1,6 +1,6 @@
 import { layoutMessage } from '@layout/locales/messages';
 import { GlobalFormat } from '@layout/types';
-import { ILeaveRequest } from '@leave/classes/response';
+import { ILeave } from '@leave/classes/response';
 import { leaveMessage } from '@leave/locales/messages/leaveMessage';
 import { Grid, TextField } from '@material-ui/core';
 import * as React from 'react';
@@ -16,7 +16,7 @@ const styled = {
 };
 
 interface OwnProps {
-  data: ILeaveRequest;
+  data: ILeave;
 }
 
 type AllProps

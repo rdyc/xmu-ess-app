@@ -6,13 +6,13 @@ import {
   IDiemAllRequest,
   IDiemByIdRequest,
   IDiemListRequest,
-  IHolidayAllRequest,
-  IHolidayByIdRequest,
-  IHolidayListRequest,
   ILeaveGetAllRequest,
   ILeaveGetDetailRequest,
   ILeaveGetListRequest,
   ILeavePutRequest,
+  ILookupHolidayGetAllRequest,
+  ILookupHolidayGetByIdRequest,
+  ILookupHolidayGetListRequest,
   IMenuGetAllRequest,
   IMenuGetByIdRequest,
   IMenuListRequest,
@@ -54,12 +54,12 @@ import {
   IDiem,
   IDiemDetail,
   IDiemList,
-  IHoliday,
-  IHolidayDetail,
-  IHolidayList,
   ILeave,
   ILeaveDetail,
   ILeaveList,
+  ILookupHoliday,
+  ILookupHolidayDetail,
+  ILookupHolidayList,
   IMenu,
   IMenuDetail,
   IMenuList,
@@ -115,9 +115,9 @@ export interface ILookupState {
   currencyGetList: IQueryCollectionState<ICurrencyListRequest, ICurrencyList>;
   currencyGetById: IQuerySingleState<ICurrencyByIdRequest, ICurrencyDetail>;
 
-  holidayGetAll: IQueryCollectionState<IHolidayAllRequest, IHoliday>;
-  holidayGetList: IQueryCollectionState<IHolidayListRequest, IHolidayList>;
-  holidayGetById: IQuerySingleState<IHolidayByIdRequest, IHolidayDetail>;
+  lookupHolidayGetAll: IQueryCollectionState<ILookupHolidayGetAllRequest, ILookupHoliday>;
+  lookupHolidayGetList: IQueryCollectionState<ILookupHolidayGetListRequest, ILookupHolidayList>;
+  lookupHolidayGetById: IQuerySingleState<ILookupHolidayGetByIdRequest, ILookupHolidayDetail>;
 
   leaveGetAll: IQueryCollectionState<ILeaveGetAllRequest, ILeave>;
   leaveGetList: IQueryCollectionState<ILeaveGetListRequest, ILeaveList>;

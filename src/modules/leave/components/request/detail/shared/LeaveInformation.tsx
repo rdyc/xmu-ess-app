@@ -1,11 +1,11 @@
-import { ILeaveRequestDetail } from '@leave/classes/response';
+import { ILeaveDetail } from '@leave/classes/response';
 import { Card, CardContent, CardHeader, TextField } from '@material-ui/core';
 import * as React from 'react';
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose } from 'recompose';
 
 interface OwnProps {
-  data: ILeaveRequestDetail;
+  data: ILeaveDetail;
 }
 
 type AllProps
