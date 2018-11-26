@@ -7,6 +7,7 @@ import styles from '@styles';
 import { ISummaryModuleCost } from '@summary/classes/response/profitability';
 import { ProfitabilityView } from '@summary/components/profitability/ProfitabilityView';
 import { WithSummary, withSummary } from '@summary/hoc/withSummary';
+import { summaryMessage } from '@summary/locales/messages/summaryMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
 import { RouteComponentProps, withRouter } from 'react-router';
@@ -124,8 +125,8 @@ const lifecycles: ReactLifeCycleFunctions<ProfitabilityProps, OwnState> = {
     layoutDispatch.changeView({
       uid: AppMenu.ReportProfitability,
       parentUid: AppMenu.Report,
-      title: intl.formatMessage({ id: 'summary.profitability.title' }),
-      subTitle: intl.formatMessage({ id: 'summary.profitability.subTitle' })
+      title: intl.formatMessage(summaryMessage.profitability.page.title),
+      subTitle: intl.formatMessage(summaryMessage.profitability.page.subTitle)
     });
 
     layoutDispatch.searchShow();

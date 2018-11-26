@@ -6,6 +6,7 @@ import { WithWidth } from '@material-ui/core/withWidth';
 import styles from '@styles';
 import { EffectivenessView } from '@summary/components/effectiveness/EffectivenessView';
 import { WithSummary, withSummary } from '@summary/hoc/withSummary';
+import { summaryMessage } from '@summary/locales/messages/summaryMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import {
@@ -85,8 +86,8 @@ const lifecycles: ReactLifeCycleFunctions<EffectivenessProps, OwnState> = {
       layoutDispatch.changeView({
         uid: AppMenu.ReportEffectiveness,
         parentUid: AppMenu.Report,
-        title: intl.formatMessage({id: 'summary.effectiveness.title'}),
-        subTitle : intl.formatMessage({id: 'summary.effectiveness.subTitle'})
+        title: intl.formatMessage(summaryMessage.effectiveness.page.title),
+        subTitle : intl.formatMessage(summaryMessage.effectiveness.page.subTitle)
       });
   
       // layoutDispatch.modeListOn();
