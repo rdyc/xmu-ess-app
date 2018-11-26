@@ -6,6 +6,7 @@ import documentPresalesReducers from '@common/store/reducers/documentPresales/do
 import expenseReducers from '@common/store/reducers/expense/expenseReducers';
 import leaveReducers from '@common/store/reducers/leave/leaveReducers';
 import siteReducers from '@common/store/reducers/site/siteReducers';
+import systemReducers from '@common/store/reducers/system/systemReducers';
 import { commonProjectReducers } from './project';
 import purposeReducers from './purpose/purposeReducers';
 import statusReducers from './status/statusReducers';
@@ -13,6 +14,7 @@ import transportationReducers from './transportation/transportationReducers';
 
 const commonReducers = {
   ...activityReducers,
+  ...systemReducers,
   ...currencyReducers,
   ...documentReducers,
   ...documentPresalesReducers,

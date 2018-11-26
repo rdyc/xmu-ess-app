@@ -1,5 +1,5 @@
-import { ISystemListRequest } from '@common/classes/queries';
-import { ISystemList } from '@common/classes/response';
+import { ISystemAllRequest, ISystemByIdRequest, ISystemListRequest } from '@common/classes/queries';
+import { ISystem, ISystemDetail, ISystemList, ISystemType } from '@common/classes/response';
 import {
   activityGetListRequest,
   currencyGetListRequest,
@@ -12,13 +12,24 @@ import {
   purposeGetListRequest,
   siteGetListRequest,
   statusGetListRequest,
+  systemGetAllRequest,
+  systemGetByIdRequest,
+  systemGetTypeRequest,
   transportationGetListRequest,
 } from '@common/store/actions';
-import { IAppState, IQueryCollectionState } from '@generic/interfaces';
+import { IAppState, IQueryCollectionState, IQuerySingleState } from '@generic/interfaces';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 
 interface PropsFromState {
+  // system
+  commonSystemState: {
+    all: IQueryCollectionState<ISystemAllRequest, ISystem>;
+    list: IQueryCollectionState<ISystemListRequest, ISystemList>;
+    detail: IQuerySingleState<ISystemByIdRequest, ISystemDetail>;
+    type: IQueryCollectionState<{}, ISystemType>;
+  };
+
   // all
 
   // list
@@ -41,6 +52,7 @@ interface PropsFromState {
 interface PropsFromDispatch {
   commonDispatch: {
     // all
+    systemAllRequest: typeof systemGetAllRequest;
 
     // list
     activityListRequest: typeof activityGetListRequest;
@@ -57,6 +69,10 @@ interface PropsFromDispatch {
     transportationListRequest: typeof transportationGetListRequest;
 
     // detail
+    systemDetailRequest: typeof systemGetByIdRequest;
+
+    // other
+    systemTypeRequest: typeof systemGetTypeRequest;
   };
 }
 
@@ -75,8 +91,20 @@ const mapStateToProps = ({
   commonDestinationList,
   commonPurposeList,
   commonTransportationList,
+  commonSystemAll,
+  commonSystemList,
+  commonSystemDetail,
+  commonSystemType,
 
 }: IAppState) => ({
+  // system
+  commonRequestState: {
+    all: commonSystemAll,
+    list: commonSystemList,
+    detail: commonSystemDetail,
+    type: commonSystemType,
+  },
+
   // all
   
   // list
@@ -100,6 +128,7 @@ const mapStateToProps = ({
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   commonDispatch: {
     // all
+    systemListRequest: (request: ISystemAllRequest) => dispatch(systemGetAllRequest(request)),
 
     // list
     activityListRequest: (request: ISystemListRequest) => dispatch(activityGetListRequest(request)),
@@ -116,6 +145,10 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     transportationListRequest: (request: ISystemListRequest) => dispatch(transportationGetListRequest(request)),
 
     // detail
+    systemDetailRequest: (request: ISystemByIdRequest) => dispatch(systemGetByIdRequest(request)),
+
+    // type
+    systemTypeRequest: () => dispatch(systemGetTypeRequest()),
   }
 });
 
