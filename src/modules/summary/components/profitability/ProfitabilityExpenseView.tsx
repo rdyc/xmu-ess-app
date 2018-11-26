@@ -1,8 +1,10 @@
+import { GlobalFormat } from '@layout/types';
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Table, TableBody, TableCell, TableHead, TableRow, WithStyles } from '@material-ui/core';
 import { ISummaryModuleCost } from '@summary/classes/response/profitability';
+import { summaryMessage } from '@summary/locales/messages/summaryMessage';
 import * as classNames from 'classnames';
 import * as React from 'react';
-import { FormattedMessage, InjectedIntlProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 
 interface OwnProps {
   expenses: ISummaryModuleCost[];
@@ -30,7 +32,7 @@ export const ProfitabilityExpenseView: React.SFC<AllProps> = props => {
       maxWidth="md"
     >
       <DialogTitle id="progress-expense-dialog-title">
-        <FormattedMessage id="summary.profitability.dialog.title" />
+        {intl.formatMessage(summaryMessage.profitability.dialog.title)}
         {expenseProjectUid}
       </DialogTitle>
       <DialogContent>
@@ -42,9 +44,10 @@ export const ProfitabilityExpenseView: React.SFC<AllProps> = props => {
               {
                 expenseFields.map(expenseField =>
                   <TableCell
+                    key= {expenseField}
                     className={classNames(classes.stickyHeader)}
                   >
-                    <FormattedMessage id={`summary.profitability.tableHead.${expenseField}`} />
+                    {intl.formatMessage(summaryMessage.profitability.headerFor(expenseField))}
                   </TableCell>
                 )
               }
@@ -52,23 +55,19 @@ export const ProfitabilityExpenseView: React.SFC<AllProps> = props => {
                 numeric
                 className={classNames(classes.stickyHeader)}
               >
-                <FormattedMessage id="summary.profitability.tableHead.amount" />
+                {summaryMessage.profitability.header.amount}
               </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {
               expenses.map(expense =>
-                <TableRow>
+                <TableRow key={expense.documentUid}>
                   <TableCell>
                     {expense.module}
                   </TableCell>
                   <TableCell>
-                    {intl.formatDate(expense.date, {
-                      year: 'numeric',
-                      month: 'short',
-                      day: 'numeric'
-                    })}
+                    {intl.formatDate(expense.date, GlobalFormat.Date)}
                   </TableCell>
                   <TableCell>
                     {expense.documentUid}
@@ -87,7 +86,7 @@ export const ProfitabilityExpenseView: React.SFC<AllProps> = props => {
       </DialogContent>
       <DialogActions>
         <Button onClick={handleDialogClose} color="primary">
-          <FormattedMessage id="summary.profitability.dialog.close" />
+          {summaryMessage.profitability.dialog.close}
         </Button>
       </DialogActions>
     </Dialog>
