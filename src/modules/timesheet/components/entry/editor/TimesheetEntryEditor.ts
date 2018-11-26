@@ -13,8 +13,7 @@ import {
 } from '@timesheet/components/entry/editor/forms/TimesheetEntryForm';
 import { TimesheetEntryEditorView } from '@timesheet/components/entry/editor/TimesheetEntryEditorView';
 import { WithTimesheetEntry, withTimesheetEntry } from '@timesheet/hoc/withTimesheetEntry';
-import { timesheetEntryMessage } from '@timesheet/locales/messages/timesheetEntryMessage';
-// import { timesheetMessage } from '@timesheet/locales/messages/timesheetMessage';
+import { timesheetMessage } from '@timesheet/locales/messages/timesheetMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import {
@@ -79,7 +78,7 @@ const handlerCreators: HandleCreators<EntryEditorProps, OwnHandlers> = {
 
     requiredFields.forEach(field => {
       if (!formData.information[field] || isNullOrUndefined(formData.information[field])) {
-        errors.information[field] = props.intl.formatMessage({ id: `timesheet.field.information.${field}.required` });
+        errors.information[field] = props.intl.formatMessage(timesheetMessage.entry.fieldFor(field, 'fieldRequired'));
       }
     });
 
@@ -99,8 +98,8 @@ const handlerCreators: HandleCreators<EntryEditorProps, OwnHandlers> = {
       companyUid: user.company.uid,
       positionUid: user.position.uid,
       notes: formData.information.description,
-      start: `${formData.information.date && formData.information.date.substring(0, 10)}${formData.information.start && formData.information.start.substring(10, 16)}`,
-      end: `${formData.information.date && formData.information.date.substring(0, 10)}${formData.information.end && formData.information.end.substring(10, 16)}`,
+      start: `${formData.information.date && formData.information.date.substring(0, 10)}${formData.information.start && formData.information.start.substring(10)}`,
+      end: `${formData.information.date && formData.information.date.substring(0, 10)}${formData.information.end && formData.information.end.substring(10)}`,
     };
 
     // creating
@@ -118,7 +117,7 @@ const handlerCreators: HandleCreators<EntryEditorProps, OwnHandlers> = {
 
     // update checking
     if (!timesheetUid) {
-      const message = intl.formatMessage(timesheetEntryMessage.emptyTimesheetUid);
+      const message = intl.formatMessage(timesheetMessage.entry.message.emptyProps);
 
       return Promise.reject(message);
     }
@@ -145,11 +144,11 @@ const handlerCreators: HandleCreators<EntryEditorProps, OwnHandlers> = {
     let message: string = '';
 
     if (formMode === FormMode.New) {
-      message = intl.formatMessage(timesheetEntryMessage.createSuccess, { uid: response.uid });
+      message = intl.formatMessage(timesheetMessage.entry.message.createSuccess, { uid: response.uid });
     }
 
     if (formMode === FormMode.Edit) {
-      message = intl.formatMessage(timesheetEntryMessage.updateSuccess, { uid: response.uid });
+      message = intl.formatMessage(timesheetMessage.entry.message.updateSuccess, { uid: response.uid });
     }
 
     alertAdd({
@@ -174,11 +173,11 @@ const handlerCreators: HandleCreators<EntryEditorProps, OwnHandlers> = {
       let message: string = '';
 
       if (formMode === FormMode.New) {
-        message = intl.formatMessage(timesheetEntryMessage.createFailure);
+        message = intl.formatMessage(timesheetMessage.entry.message.createFailure);
       }
 
       if (formMode === FormMode.Edit) {
-        message = intl.formatMessage(timesheetEntryMessage.updateFailure);
+        message = intl.formatMessage(timesheetMessage.entry.message.updateFailure);
       }
 
       alertAdd({
@@ -208,8 +207,8 @@ const lifecycles: ReactLifeCycleFunctions<EntryEditorProps, {}> = {
     const { user } = this.props.userState;
     
     const view = {
-      title: 'timesheet.form.newTitle',
-      subTitle: 'timesheet.form.newSubTitle',
+      title: timesheetMessage.entry.page.newTitle,
+      subTitle: timesheetMessage.entry.page.newSubHeader,
     };
 
     if (!user) {
@@ -222,8 +221,8 @@ const lifecycles: ReactLifeCycleFunctions<EntryEditorProps, {}> = {
     });
 
     if (!isNullOrUndefined(history.location.state)) {
-      view.title = 'timesheet.form.editTitle';
-      view.subTitle = 'timesheet.form.editSubTitle';
+      view.title = timesheetMessage.entry.page.modifyTitle;
+      view.subTitle = timesheetMessage.entry.page.modifySubHeader;
 
       stateUpdate({ 
         formMode: FormMode.Edit,
@@ -238,8 +237,8 @@ const lifecycles: ReactLifeCycleFunctions<EntryEditorProps, {}> = {
     layoutDispatch.changeView({
       uid: AppMenu.TimesheetRequest,
       parentUid: AppMenu.Timesheet,
-      title: intl.formatMessage({id: view.title}),
-      subTitle : intl.formatMessage({id: view.subTitle})
+      title: intl.formatMessage(view.title),
+      subTitle : intl.formatMessage(view.subTitle)
     });
 
     layoutDispatch.navBackShow(); 

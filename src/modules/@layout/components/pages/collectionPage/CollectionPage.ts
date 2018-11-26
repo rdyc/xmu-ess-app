@@ -191,7 +191,7 @@ const stateUpdaters: StateUpdaters<OwnOption, OwnState, OwnStateUpdater> = {
     forceReload: true
   }),
   setPagePrevious: (prevState: OwnState) => () => ({
-    page: prevState.page - 1,
+    page: prevState.page > 1 ? prevState.page - 1 : 1,
     forceReload: true
   }),
   setPageOne: (prevState: OwnState) => () => ({

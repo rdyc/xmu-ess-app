@@ -37,51 +37,51 @@ export const timesheetEntrySection = defineMessages({
 
 // fields
 export const timesheetEntryField = defineMessages({
-  uid: { id: `${prefix}.field.information.uid` },
-  uidPlaceholder: { id: `${prefix}.field.information.uid.placeholder` },
+  uid: { id: `${prefix}.field.uid` },
+  uidPlaceholder: { id: `${prefix}.field.uid.placeholder` },
 
-  activityType: { id: `${prefix}.field.information.activityType`},
-  activityTypeRequired: { id: `${prefix}.field.information.activityType.required`},
-  activityTypePlaceholder: { id: `${prefix}.field.information.activityType.placeholder`},
+  activityType: { id: `${prefix}.field.activityType`},
+  activityTypeRequired: { id: `${prefix}.field.activityType.required`},
+  activityTypePlaceholder: { id: `${prefix}.field.activityType.placeholder`},
 
-  customerUid: { id: `${prefix}.field.information.customerUid` },
-  customerUidRequired: { id: `${prefix}.field.information.customerUid.required` },
-  customerUidPlaceholder: { id: `${prefix}.field.information.customerUid.placeholder` },
+  customerUid: { id: `${prefix}.field.customerUid` },
+  customerUidRequired: { id: `${prefix}.field.customerUid.required` },
+  customerUidPlaceholder: { id: `${prefix}.field.customerUid.placeholder` },
 
-  projectUid: { id: `${prefix}.field.information.projectUid` },
-  projectUidRequired: { id: `${prefix}.field.information.projectUid.required` },
-  projectUidPlaceholder: { id: `${prefix}.field.information.projectUid.placeholder` },
+  projectUid: { id: `${prefix}.field.projectUid` },
+  projectUidRequired: { id: `${prefix}.field.projectUid.required` },
+  projectUidPlaceholder: { id: `${prefix}.field.projectUid.placeholder` },
 
-  siteUid: { id: `${prefix}.field.information.siteUid` },
-  siteUidRequired: { id: `${prefix}.field.information.siteUid.required` },
-  siteUidPlaceholder: { id: `${prefix}.field.information.siteUid.placeholder` },
+  siteUid: { id: `${prefix}.field.siteUid` },
+  siteUidRequired: { id: `${prefix}.field.siteUid.required` },
+  siteUidPlaceholder: { id: `${prefix}.field.siteUid.placeholder` },
 
-  percentage: { id: `${prefix}.field.information.percentage` },
-  descriptionOfME: { id: `${prefix}.field.information.description` },
-  reason: { id: `${prefix}.field.information.reason` },
+  mileagePercentage: { id: `${prefix}.field.mileagePercentage` },
+  mileageDescription: { id: `${prefix}.field.mileageDescription` },
+  mileageReason: { id: `${prefix}.field.mileageReason` },
 
-  siteValue: { id: `${prefix}.field.information.siteValue` },
+  siteValue: { id: `${prefix}.field.siteValue` },
 
-  totalHours: { id: `${prefix}.field.information.totalHours` },
+  totalHours: { id: `${prefix}.field.totalHours` },
 
-  statusType: { id: `${prefix}.field.information.statusType` },
+  statusType: { id: `${prefix}.field.statusType` },
 
-  date: { id: `${prefix}.field.information.date` },
-  dateRequired: { id: `${prefix}.field.information.date.required` },
-  datePlaceholder: { id: `${prefix}.field.information.date.placeholder` },
+  date: { id: `${prefix}.field.date` },
+  dateRequired: { id: `${prefix}.field.date.required` },
+  datePlaceholder: { id: `${prefix}.field.date.placeholder` },
 
-  start: { id: `${prefix}.field.information.start` },
-  startRequired: { id: `${prefix}.field.information.start.required` },
-  startPlaceholder: { id: `${prefix}.field.information.start.placeholder` },
+  start: { id: `${prefix}.field.start` },
+  startRequired: { id: `${prefix}.field.start.required` },
+  startPlaceholder: { id: `${prefix}.field.start.placeholder` },
   
-  end: { id: `${prefix}.field.information.end` },
-  endRequired: { id: `${prefix}.field.information.end.required` },
-  endPlaceholder: { id: `${prefix}.field.information.end.placeholder` },
+  end: { id: `${prefix}.field.end` },
+  endRequired: { id: `${prefix}.field.end.required` },
+  endPlaceholder: { id: `${prefix}.field.end.placeholder` },
   
-  notes: { id: `${prefix}.field.information.description` },
-  notesPlaceholder: { id: `${prefix}.field.information.description.placeholder` },
+  notes: { id: `${prefix}.field.description` },
+  notesPlaceholder: { id: `${prefix}.field.description.placeholder` },
 
-  rejectReason: { id: `${prefix}.field.information.rejectReason` },
+  rejectReason: { id: `${prefix}.field.rejectReason` },
 });
 
 export const timesheetEntryFieldHelperFor = (field: string, type: 'fieldName' | 'fieldRequired' | 'fieldPlaceholder') => {
@@ -92,9 +92,9 @@ export const timesheetEntryFieldHelperFor = (field: string, type: 'fieldName' | 
       case 'customerUid': return timesheetEntryField.customerUid;
       case 'projectUid': return timesheetEntryField.projectUid;
       case 'siteUid': return timesheetEntryField.siteUid;
-      case 'percentage': return timesheetEntryField.percentage;
-      case 'description': return timesheetEntryField.descriptionOfME;
-      case 'reason': return timesheetEntryField.reason;
+      case 'mileagePercentage': return timesheetEntryField.mileagePercentage;
+      case 'mileageDescription': return timesheetEntryField.mileageDescription;
+      case 'mileageReason': return timesheetEntryField.mileageReason;
       case 'siteValue': return timesheetEntryField.siteValue;
       case 'totalHours': return timesheetEntryField.totalHours;
       case 'statusType': return timesheetEntryField.statusType;
@@ -143,7 +143,7 @@ export const timesheetEntryFieldHelperFor = (field: string, type: 'fieldName' | 
 
 // message
 export const timesheetEntryMessage = defineMessages({
-  emptyTimesheetUid: { id: `${prefix}timesheet.message.empty.timesheetUid` },
+  emptyTimesheetUid: { id: `${prefix}.message.empty.timesheetUid` },
   emptyProps: { id: `${prefix}.message.emptyProps` },
   createSuccess: { id: `${prefix}.message.create.success` },
   createFailure: { id: `${prefix}.message.create.failure` },
