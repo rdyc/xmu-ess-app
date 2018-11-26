@@ -25,6 +25,11 @@ const timesheetInformation: React.SFC<AllProps> = props => {
       <CardContent>
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
+          label={props.intl.formatMessage(timesheetMessage.entry.field.statusType)}
+          value={props.data.status ? props.data.status.value : props.data.statusType}
+        />
+        <TextField
+          {...GlobalStyle.TextField.ReadOnly}
           label={props.intl.formatMessage(timesheetMessage.entry.field.uid)}
           value={props.data.uid}
         />
@@ -54,11 +59,18 @@ const timesheetInformation: React.SFC<AllProps> = props => {
           label={props.intl.formatMessage(timesheetMessage.entry.field.siteUid)}
           value={props.data.site ? props.data.site.name : 'N/A'}
         />
-        <TextField
-          {...GlobalStyle.TextField.ReadOnly}
-          label={props.intl.formatMessage(timesheetMessage.entry.field.siteValue)}
-          value={props.intl.formatNumber(props.data.site ? props.data.site.value : 0)}
-        />
+        {(props.data.mileageExceptionUid) ?
+          <TextField
+            {...GlobalStyle.TextField.ReadOnly}
+            label={props.intl.formatMessage(timesheetMessage.entry.field.siteValue)}
+            value={props.intl.formatNumber(((props.data.mileageException ? props.data.mileageException.percentage : 0) / 100) * (props.data.site ? props.data.site.value : 0))}
+          /> :
+          <TextField
+            {...GlobalStyle.TextField.ReadOnly}
+            label={props.intl.formatMessage(timesheetMessage.entry.field.siteValue)}
+            value={props.intl.formatNumber(props.data.site ? props.data.site.value : 0)}
+          />
+        }
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
           label={props.intl.formatMessage(timesheetMessage.entry.field.start)}
@@ -80,7 +92,7 @@ const timesheetInformation: React.SFC<AllProps> = props => {
           label={props.intl.formatMessage(timesheetMessage.entry.field.notes)}
           value={props.data.description || 'N/A'}
         />
-        {(props.data.mileageExceptionUid) ?
+        {/* {(props.data.mileageExceptionUid) ?
           <TextField
             {...GlobalStyle.TextField.ReadOnly}
             label={props.intl.formatMessage(timesheetMessage.entry.field.mileagePercentage)}
@@ -94,12 +106,12 @@ const timesheetInformation: React.SFC<AllProps> = props => {
             label={props.intl.formatMessage(timesheetMessage.entry.field.mileageDescription)}
             value={props.data.mileageException && props.data.mileageException.description || 'N/A'}
           /> : ''
-        }
+        } */}
         {(props.data.mileageExceptionUid) ?
           <TextField
             {...GlobalStyle.TextField.ReadOnly}
             multiline={true}
-            label={props.intl.formatMessage(timesheetMessage.entry.field.mileageReason)}
+            label={props.intl.formatMessage(timesheetMessage.entry.field.mileageException)}
             value={props.data.mileageException && props.data.mileageException.reason || 'N/A'}
           /> : ''
         }
