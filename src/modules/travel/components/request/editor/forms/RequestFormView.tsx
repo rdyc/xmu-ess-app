@@ -10,7 +10,7 @@ export const RequestFormView: React.SFC<RequestFormProps> = props => {
   const {
     formMode, customerUidValue, projectUidValue, 
     destinationtypeValue, isProjectSelected, diemRequest,
-    change, TotalCost, totalTravel
+    TotalCost
   } = props;
   
   const diem = (diemRequest) ? 
@@ -20,34 +20,28 @@ export const RequestFormView: React.SFC<RequestFormProps> = props => {
 
   const fields = Object.getOwnPropertyNames(props.initialValues.information);
                 
-  const onChangeProject = (event: any, newValue: string, oldValue: string) => {
-    if (newValue) {
-      change('item.items[0].currencyUid', (diem && diem.currency ? diem.currency.name : ''));
-      change('item.items[0].currencyRate', (diem && diem.currency ? diem.currency.rate : 0));
-      change('item.items[0].diemValue', (diem ? diem.value : 0));
-    }    
-  };
+  // const onChangeProject = (event: any, newValue: string, oldValue: string) => {
+  //   if (newValue) {
+  //     change('item.items[0].currencyUid', (diem && diem.currency ? diem.currency.name : ''));
+  //     change('item.items[0].currencyRate', (diem && diem.currency ? diem.currency.rate : 0));
+  //     change('item.items[0].diemValue', (diem ? diem.value : 0));
+  //   }    
+  // };
 
-  const onChangeDestinationType = (event: any, newValue: string, oldValue: string) => {
-    if (newValue && projectUidValue) {
-      change('item.items[0].currencyUid', (diem && diem.currency ? diem.currency.name : ''));
-      change('item.items[0].currencyRate', (diem && diem.currency ? diem.currency.rate : 0));
-      change('item.items[0].diemValue', (diem ? diem.value : 0));
-    }
-  };
-
-  const onCostChange = (event: any, newValue: number, oldValue: number) => {
-    if (newValue) {
-      change('information.total', (totalTravel - oldValue) + newValue);
-    }
-  };
+  // const onChangeDestinationType = (event: any, newValue: string, oldValue: string) => {
+  //   if (newValue && projectUidValue) {
+  //     change('item.items[0].currencyUid', (diem && diem.currency ? diem.currency.name : ''));
+  //     change('item.items[0].currencyRate', (diem && diem.currency ? diem.currency.rate : 0));
+  //     change('item.items[0].diemValue', (diem ? diem.value : 0));
+  //   }
+  // };
 
   const componentInformation = (context: BaseFieldsProps) => (
     <RequestDetailForm 
       formMode={formMode}
       context={context}
-      onChangeProject={onChangeProject}
-      onChangeDestinationType={onChangeDestinationType}
+      // onChangeProject={onChangeProject}
+      // onChangeDestinationType={onChangeDestinationType}
       customerUidValue={customerUidValue}
       projectUidValue={projectUidValue}
       destinationTypeValue= {destinationtypeValue}
@@ -61,10 +55,10 @@ export const RequestFormView: React.SFC<RequestFormProps> = props => {
   const componentTravelItem = (context: WrappedFieldArrayProps<any>) => (
     <RequestItemForm 
       context={context}
-      diemRequest={diemRequest}
+      diemRequest={diem}
       destinationTypeValue={destinationtypeValue}
       projectTypeValue={props.projectType}
-      onCostChange={onCostChange}
+      // onCostChange={onCostChange}
     />    
   );
 

@@ -18,8 +18,8 @@ import { isNullOrUndefined } from 'util';
 interface OwnProps {
   formMode: FormMode;
   context: BaseFieldsProps;
-  onChangeProject: (event: any, newValue: string, oldValue: string) => void;
-  onChangeDestinationType: (event: any, newValue: string, oldValue: string) => void;
+  // onChangeProject: (event: any, newValue: string, oldValue: string) => void;
+  // onChangeDestinationType: (event: any, newValue: string, oldValue: string) => void;
   customerUidValue: string | null | undefined;
   projectUidValue: string | null | undefined;
   destinationTypeValue: string | null | undefined;
@@ -42,8 +42,7 @@ const handlerCreators: HandleCreators<RequestDetailFormProps, OwnHandlers> = {
   generateFieldProps: (props: RequestDetailFormProps) => (name: string) => {
     const {
       intl, customerUidValue, projectUidValue,
-      isProjectSelected, onChangeProject,
-      onChangeDestinationType
+      isProjectSelected
     } = props;
     const { user } = props.userState;
 
@@ -94,7 +93,7 @@ const handlerCreators: HandleCreators<RequestDetailFormProps, OwnHandlers> = {
           placeholder: intl.formatMessage({id: `travel.field.${name}.placeholder`}),
           component: SelectProject, 
           filter: projectFilter,
-          onChange: onChangeProject,
+          // onChange: onChangeProject,
           onSelected: props.handleProjectChange
           
         };
@@ -102,7 +101,7 @@ const handlerCreators: HandleCreators<RequestDetailFormProps, OwnHandlers> = {
 
         case 'siteUid': 
         fieldProps = {
-          disabled: !isProjectSelected, // isNullOrUndefined(projectUidValue), 
+          disabled: !isProjectSelected, 
           placeholder: intl.formatMessage({id: `travel.field.${name}.placeholder`}),
           component: !isNullOrUndefined(projectUidValue) ? SelectProjectSite : InputText,
           companyUid: user && user.company.uid,
@@ -116,7 +115,7 @@ const handlerCreators: HandleCreators<RequestDetailFormProps, OwnHandlers> = {
           category: 'destination',
           placeholder: intl.formatMessage({id: `travel.field.${name}.placeholder`}),
           component: SelectSystem,
-          onChange: onChangeDestinationType
+          // onChange: onChangeDestinationType
         };
         break;
         
