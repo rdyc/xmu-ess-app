@@ -45,6 +45,7 @@ const timesheetInformation: React.SFC<AllProps> = props => {
         />
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
+          multiline={true}
           label={props.intl.formatMessage(timesheetMessage.entry.field.projectUid)}
           value={props.data.project ? `${props.data.project.uid} - ${props.data.project.name}` : 'N/A'}
         />
@@ -53,27 +54,6 @@ const timesheetInformation: React.SFC<AllProps> = props => {
           label={props.intl.formatMessage(timesheetMessage.entry.field.siteUid)}
           value={props.data.site ? props.data.site.name : 'N/A'}
         />
-        {(props.data.mileageExceptionUid) ?
-          <TextField
-            {...GlobalStyle.TextField.ReadOnly}
-            label={props.intl.formatMessage(timesheetMessage.entry.field.percentage)}
-            value={`${props.data.mileageException ? props.data.mileageException.percentage : 0} %`}
-          /> : ''
-        }
-        {(props.data.mileageExceptionUid) ?
-          <TextField
-            {...GlobalStyle.TextField.ReadOnly}
-            label={props.intl.formatMessage(timesheetMessage.entry.field.descriptionOfME)}
-            value={props.data.mileageException && props.data.mileageException.description || 'N/A'}
-          /> : ''
-        }
-        {(props.data.mileageExceptionUid) ?
-          <TextField
-            {...GlobalStyle.TextField.ReadOnly}
-            label={props.intl.formatMessage(timesheetMessage.entry.field.reason)}
-            value={props.data.mileageException && props.data.mileageException.reason || 'N/A'}
-          /> : ''
-        }
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
           label={props.intl.formatMessage(timesheetMessage.entry.field.siteValue)}
@@ -82,22 +62,12 @@ const timesheetInformation: React.SFC<AllProps> = props => {
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
           label={props.intl.formatMessage(timesheetMessage.entry.field.start)}
-          value={props.intl.formatTime(props.data.start, {
-            hour: 'numeric',
-            minute: 'numeric',
-            timeZone: 'GMT',
-            hour12: false
-          })}
+          value={props.intl.formatTime(props.data.start, GlobalFormat.Time)}
         />
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
           label={props.intl.formatMessage(timesheetMessage.entry.field.end)}
-          value={props.intl.formatTime(props.data.end, {
-            hour: 'numeric',
-            minute: 'numeric',
-            timeZone: 'GMT',
-            hour12: false
-          })}
+          value={props.intl.formatTime(props.data.end, GlobalFormat.Time)}
         />
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
@@ -106,12 +76,37 @@ const timesheetInformation: React.SFC<AllProps> = props => {
         />
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
+          multiline={true}
           label={props.intl.formatMessage(timesheetMessage.entry.field.notes)}
           value={props.data.description || 'N/A'}
         />
+        {(props.data.mileageExceptionUid) ?
+          <TextField
+            {...GlobalStyle.TextField.ReadOnly}
+            label={props.intl.formatMessage(timesheetMessage.entry.field.mileagePercentage)}
+            value={`${props.data.mileageException ? props.data.mileageException.percentage : 0} %`}
+          /> : ''
+        }
+        {(props.data.mileageExceptionUid) ?
+          <TextField
+            {...GlobalStyle.TextField.ReadOnly}
+            multiline={true}
+            label={props.intl.formatMessage(timesheetMessage.entry.field.mileageDescription)}
+            value={props.data.mileageException && props.data.mileageException.description || 'N/A'}
+          /> : ''
+        }
+        {(props.data.mileageExceptionUid) ?
+          <TextField
+            {...GlobalStyle.TextField.ReadOnly}
+            multiline={true}
+            label={props.intl.formatMessage(timesheetMessage.entry.field.mileageReason)}
+            value={props.data.mileageException && props.data.mileageException.reason || 'N/A'}
+          /> : ''
+        }
         {(props.data.statusType === WorkflowStatusType.Rejected) ?
           <TextField
             {...GlobalStyle.TextField.ReadOnly}
+            multiline={true}
             label={props.intl.formatMessage(timesheetMessage.entry.field.rejectReason)}
             value={props.data.notes || 'N/A'}
           /> : ''
