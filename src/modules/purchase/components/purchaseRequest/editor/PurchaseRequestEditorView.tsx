@@ -37,6 +37,7 @@ export const PurchaseRequestEditorView: React.SFC<PurchaseRequestEditorProps> = 
       currencyType: undefined,
       rate: 1,
       request: 0,
+      requestInIDR: 0,
       notes: undefined,
     },
     items: {
@@ -75,6 +76,7 @@ export const PurchaseRequestEditorView: React.SFC<PurchaseRequestEditorProps> = 
       initialValues.information.currencyType = data.currencyType;
       initialValues.information.rate = data.rate || 1;
       initialValues.information.request = data.request || 0;
+      initialValues.information.requestInIDR = data.requestIDR || 0;
       initialValues.information.advance = data.advance || 0;
 
       if (data.items) {

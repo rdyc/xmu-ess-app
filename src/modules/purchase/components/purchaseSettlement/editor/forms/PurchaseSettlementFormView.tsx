@@ -11,8 +11,8 @@ export const PurchaseSettlementFormView: React.SFC<PurchaseSettlementFormProps> 
   const {
     formMode,
     formIsCurrencyIDR, formRate, 
-    formActual,
-    formDifference,
+    // formActual,
+    // formDifference,
     formActualValue,
     formDifferenceValue,
     change, initialValues
@@ -21,17 +21,17 @@ export const PurchaseSettlementFormView: React.SFC<PurchaseSettlementFormProps> 
   const fields = Object.getOwnPropertyNames(initialValues.information);
 
   const onChangeValueIdr = (event: any, newValue: number) => {
-    change('information.actualIDR', newValue * formRate);
+    change('information.actualInIDR', newValue * formRate);
     change('information.differenceInIDR', newValue * formRate );
   };
 
-  const onChangeActual = (event: any, newValue: number, oldValue: number) => {
-    change('information.actual', formActual);
-  };
+  // const onChangeActual = (event: any, newValue: number, oldValue: number) => {
+  //   change('information.actual', formActual);
+  // };
 
-  const onChangeDifference = (event: any, newValue: number, oldValue: number) => {
-    change('information.difference', formDifference );
-  };
+  // const onChangeDifference = (event: any, newValue: number, oldValue: number) => {
+  //   change('information.difference', formDifference );
+  // };
   const onChangeValueActual = (event: any, newValue: number, oldValue: number) => {
     change('information.actualInIDR', formActualValue * formRate );
   };
@@ -46,8 +46,8 @@ export const PurchaseSettlementFormView: React.SFC<PurchaseSettlementFormProps> 
       context={context}
       isCurrencyIdr={formIsCurrencyIDR}
       onChangeValueIdr={onChangeValueIdr}
-      onChangeActual={onChangeActual}
-      onChangeDifference={onChangeDifference}
+      // onChangeActual={onChangeActual}
+      // onChangeDifference={onChangeDifference}
       onChangeActualValue={onChangeValueActual}
       onChangeDifferenceValue={onChangeValueDifference}
     />

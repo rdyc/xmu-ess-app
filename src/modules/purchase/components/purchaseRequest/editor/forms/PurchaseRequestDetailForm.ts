@@ -45,9 +45,7 @@ const handlerCreators: HandleCreators<PurchaseRequestDetailFormProps, OwnHandler
       formCurrencyType, isCurrencyIdr, 
       onChangeCurrencyType, onChangeValueIdr, 
       onChangeRate,
-      // onChangeRequestItem
     } = props;
-    // const { user } = props.userState;
     
     const projectFilter: any = {
       customerUids: formCustomer,

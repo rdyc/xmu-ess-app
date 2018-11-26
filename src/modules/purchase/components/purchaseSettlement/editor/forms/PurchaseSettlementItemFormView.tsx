@@ -5,7 +5,7 @@ import {
   CardContent,
   CardHeader,
   Grid,
-  TextField,
+  // TextField,
 } from '@material-ui/core';
 import { PurchaseSettlementItemFormProps } from '@purchase/components/purchaseSettlement/editor/forms/PurchaseSettlementItemForm';
 import { purchaseMessage } from '@purchase/locales/messages/purchaseMessage';
@@ -60,12 +60,13 @@ export const PurchaseSettlementItemFormView: React.SFC<PurchaseSettlementItemFor
                     // onChange={''}
                     component={InputNumber}
                   />
-                  <TextField
+                  <Field
                     type="number"
                     name={`${field}.variance`}
                     label={props.intl.formatMessage(purchaseMessage.settlement.items.variance)}
                     disabled={true}
                     value={props.intl.formatNumber(items.request - items.actual)}
+                    component={InputNumber}
                   />
                 </div>
               </CardContent>

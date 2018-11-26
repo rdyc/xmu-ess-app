@@ -11,7 +11,6 @@ import { WrappedFieldArrayProps } from 'redux-form';
 
 interface OwnProps {
   context: WrappedFieldArrayProps<PurchaseRequestItemFormData>;
-  onRequestChange: (event: any, newValue: number, oldValue: number) => void;
 }
 
 export type PurchaseRequestItemFormProps
