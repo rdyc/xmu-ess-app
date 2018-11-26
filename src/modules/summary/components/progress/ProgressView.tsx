@@ -37,7 +37,7 @@ export const ProgressView: React.SFC<ProgressProps> = props => {
                   <TableBody>
                     <TableRow>
                       <TableCell variant="head">
-                        {summaryMessage.progress.header.totalValue}
+                        {intl.formatMessage(summaryMessage.progress.header.totalValue)}
                       </TableCell>
                       <TableCell numeric>
                         {intl.formatNumber(progress.totalValue)}
@@ -45,7 +45,7 @@ export const ProgressView: React.SFC<ProgressProps> = props => {
                     </TableRow>
                     <TableRow>
                       <TableCell variant="head">
-                        {summaryMessage.progress.header.totalCogs}
+                        {intl.formatMessage(summaryMessage.progress.header.totalCogs)}
                       </TableCell>
                       <TableCell numeric>
                         {intl.formatNumber(progress.totalCogs)}
@@ -53,7 +53,7 @@ export const ProgressView: React.SFC<ProgressProps> = props => {
                     </TableRow>
                     <TableRow>
                       <TableCell variant="head">
-                        {summaryMessage.progress.header.profit}
+                        {intl.formatMessage(summaryMessage.progress.header.profit)}
                       </TableCell>
                       <TableCell numeric>
                         {intl.formatNumber(progress.profit)}
@@ -61,7 +61,7 @@ export const ProgressView: React.SFC<ProgressProps> = props => {
                     </TableRow>
                     <TableRow>
                       <TableCell variant="head">
-                        {summaryMessage.progress.header.percentage}
+                        {intl.formatMessage(summaryMessage.progress.header.percentage)}
                       </TableCell>
                       <TableCell numeric>
                         {`${progress.percentage} %`}
@@ -93,7 +93,7 @@ export const ProgressView: React.SFC<ProgressProps> = props => {
         <Grid item xs={12}>
         {
           isLoading &&
-          layoutMessage.text.loading
+          intl.formatMessage(layoutMessage.text.loading)
         }
         {
           !isLoading &&

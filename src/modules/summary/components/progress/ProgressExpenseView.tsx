@@ -32,7 +32,7 @@ export const ProgressExpenseView: React.SFC<AllProps> = props => {
       maxWidth="md"
     >
       <DialogTitle id="progress-expense-dialog-title">
-        {summaryMessage.progress.dialog.title}
+        {intl.formatMessage(summaryMessage.progress.dialog.title)}
         {expenseProjectUid}
       </DialogTitle>
       <DialogContent>
@@ -44,9 +44,10 @@ export const ProgressExpenseView: React.SFC<AllProps> = props => {
               {
                 expenseFields.map(expenseField =>
                   <TableCell
+                    key= {expenseField}
                     className= {classNames(classes.stickyHeader)}
                   >
-                    {summaryMessage.progress.headerFor(expenseField)}
+                    {intl.formatMessage(summaryMessage.progress.headerFor(expenseField))}
                   </TableCell>
                 )
               }
@@ -61,7 +62,7 @@ export const ProgressExpenseView: React.SFC<AllProps> = props => {
           <TableBody>
             {
               expenses.map(expense =>
-                <TableRow>
+                <TableRow key={expense.documentUid}>
                   <TableCell>
                     {expense.module}
                   </TableCell>

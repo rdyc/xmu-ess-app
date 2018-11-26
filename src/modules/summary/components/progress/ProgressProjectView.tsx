@@ -27,18 +27,16 @@ export const ProgressProjectView: React.SFC<AllProps> = props => {
   const RenderProgressAssignment = (assignments: ISummaryAssignment[]) => {
     return (
       <CardContent>
-        <Table
-          padding= "dense"
-        >
+        <Table padding= "dense">
           <TableHead>
             <TableRow>
               <TableCell numeric>
-                {summaryMessage.progress.header.consultant}
+                {intl.formatMessage(summaryMessage.progress.header.consultant)}
               </TableCell>
               {
                 assignmentFields.map(assignmentField =>
-                  <TableCell numeric>
-                    {summaryMessage.progress.headerFor(assignmentField)}
+                  <TableCell numeric key={assignmentField}>
+                    {intl.formatMessage(summaryMessage.progress.headerFor(assignmentField))}
                   </TableCell>
                 )
               }
@@ -47,7 +45,7 @@ export const ProgressProjectView: React.SFC<AllProps> = props => {
           <TableBody>
             {
               assignments.map(assignment =>
-                <TableRow>
+                <TableRow key={`${assignment.employeeUid}-${assignment.role}`}>
                   <TableCell>
                     {assignment.employee && assignment.employee.fullName}
                   </TableCell>
@@ -76,7 +74,7 @@ export const ProgressProjectView: React.SFC<AllProps> = props => {
     <Grid container spacing={16}>
     {
       projects.map(project =>
-        <Grid item xs={12}>
+        <Grid item xs={12} key={project.projectUid} >
           <Card
             square
             className= {!isMobile ? classNames(classes.reportPaperPartial) : classNames(classes.reportPaperPartialMobile)}
@@ -98,9 +96,10 @@ export const ProgressProjectView: React.SFC<AllProps> = props => {
                         projectFields.map(projectField => 
                           <TableCell 
                             numeric
+                            key= {projectField}
                             className= {classNames(classes.cellWidthXXS)}
                           >
-                            {summaryMessage.progress.headerFor(projectField)}
+                            {intl.formatMessage(summaryMessage.progress.headerFor(projectField))}
                           </TableCell>
                         )
                       }
