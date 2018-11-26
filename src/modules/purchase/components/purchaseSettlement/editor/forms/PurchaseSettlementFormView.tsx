@@ -76,7 +76,9 @@ export const PurchaseSettlementFormView: React.SFC<PurchaseSettlementFormProps> 
           </FormSection>
         </Grid>
 
-        <Grid item xs={12} md={8}>
+        <Grid item 
+         xs={12}
+         md={8}>
           <FormSection name="items">
             <FieldArray
               name="items"

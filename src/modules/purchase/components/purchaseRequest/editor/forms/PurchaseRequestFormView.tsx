@@ -78,13 +78,14 @@ export const PurchaseRequestFormView: React.SFC<PurchaseRequestFormProps> = prop
               component={componentItems}
             />
           </FormSection>
-          <Grid item md={4}>
-            <Submission
-              valid={true}
-              reset={props.reset}
-              submitting={props.submitting}
-            />
-          </Grid>
+        </Grid>
+        
+        <Grid item md={4}>
+          <Submission
+            valid={true}
+            reset={props.reset}
+            submitting={props.submitting}
+          />
         </Grid>
 
         {/* <Grid item xs={12} md={4}>
