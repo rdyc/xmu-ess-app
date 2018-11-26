@@ -1,5 +1,5 @@
 import { IResponseCollection } from '@generic/interfaces';
-import { ILookupCompanyAllRequest, ILookupCompanyByIdRequest, ILookupCompanyListRequest } from '@lookup/classes/queries/company';
+import { ILookupCompanyGetAllRequest, ILookupCompanyGetDetailRequest, ILookupCompanyGetListRequest } from '@lookup/classes/queries/company';
 import { ICompany, ICompanyDetail, ICompanyList } from '@lookup/classes/response';
 import { action } from 'typesafe-actions';
 
@@ -19,19 +19,19 @@ export const enum LookupCompanyAction {
 }
 
 // get all
-export const lookupCompanyGetAllRequest = (request: ILookupCompanyAllRequest) => action(LookupCompanyAction.GET_ALL_REQUEST, request);
+export const lookupCompanyGetAllRequest = (request: ILookupCompanyGetAllRequest) => action(LookupCompanyAction.GET_ALL_REQUEST, request);
 export const lookupCompanyGetAllSuccess = (response: IResponseCollection<ICompany>) => action(LookupCompanyAction.GET_ALL_SUCCESS, response);
 export const lookupCompanyGetAllError = (message: string) => action(LookupCompanyAction.GET_ALL_ERROR, message);
 export const lookupCompanyGetAllDispose = () => action(LookupCompanyAction.GET_ALL_DISPOSE);
 
 // get list
-export const lookupCompanyGetListRequest = (request: ILookupCompanyListRequest) => action(LookupCompanyAction.GET_LIST_REQUEST, request);
+export const lookupCompanyGetListRequest = (request: ILookupCompanyGetListRequest) => action(LookupCompanyAction.GET_LIST_REQUEST, request);
 export const lookupCompanyGetListSuccess = (response: IResponseCollection<ICompanyList>) => action(LookupCompanyAction.GET_LIST_SUCCESS, response);
 export const lookupCompanyGetListError = (message: string) => action(LookupCompanyAction.GET_LIST_ERROR, message);
 export const lookupCompanyGetListDispose = () => action(LookupCompanyAction.GET_LIST_DISPOSE);
 
 // get by id
-export const lookupCompanyGetByIdRequest = (request: ILookupCompanyByIdRequest) => action(LookupCompanyAction.GET_BY_ID_REQUEST, request);
+export const lookupCompanyGetByIdRequest = (request: ILookupCompanyGetDetailRequest) => action(LookupCompanyAction.GET_BY_ID_REQUEST, request);
 export const lookupCompanyGetByIdSuccess = (response: IResponseCollection<ICompanyDetail>) => action(LookupCompanyAction.GET_BY_ID_SUCCESS, response);
 export const lookupCompanyGetByIdError = (message: string) => action(LookupCompanyAction.GET_BY_ID_ERROR, message);
 export const lookupCompanyGetByIdDispose = () => action(LookupCompanyAction.GET_BY_ID_DISPOSE);
