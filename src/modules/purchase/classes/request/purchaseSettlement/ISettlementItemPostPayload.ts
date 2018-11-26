@@ -1,4 +1,4 @@
 export interface ISettlementItemPostPayload {
-  uid: string;
+  uid: string | null | undefined;
   amount: number;
 }

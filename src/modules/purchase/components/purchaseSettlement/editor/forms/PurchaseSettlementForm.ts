@@ -9,7 +9,7 @@ import { formValueSelector,
 const formName = 'purchaseSettlement';
 
 export type PurchaseSettlementItemFormData = {
-  uid: string;
+  uid: string | null | undefined;
   description: string | null;
   request: number;
   actual: number;
@@ -57,8 +57,8 @@ interface FormValueProps {
   formRate: number | 1;
   formActualValue: number | 0;
   formDifferenceValue: number | 0;
-  // formActual: number | 0;
-  // formDifference: number | 0;
+  formAdvance: number | 0;
+  // formBalanceDue: number | 0;
 }
 
 export type PurchaseSettlementFormProps
@@ -80,7 +80,12 @@ const handlers: HandleCreators<PurchaseSettlementFormProps, OwnHandlers> = {
       formValues.items.items.forEach(item => difference += item.variance);
     }
     props.change('information.actual', actual);
+    props.change('information.actualInIDR', actual * props.formRate);
+    // props.change('information.difference', formValues.information.request - actual);
     props.change('information.difference', difference);
+    // props.change('information.differenceInIDR', props.formDifferenceValue * props.formRate);
+    props.change('information.differenceInIDR', difference *  props.formRate);
+    props.change('information.balanceDue', props.formAdvance - actual);
   },
 };
 const selector = formValueSelector(formName);
@@ -90,6 +95,7 @@ const mapStateToProps = (state: any): FormValueProps => {
   const rate = selector(state, 'information.rate');
   const actValue = selector(state, 'information.actual'); 
   const difValue = selector(state, 'information.difference'); 
+  const advance = selector(state, 'information.advance');
   // const forms = getFormValues(formName)(state) as PurchaseSettlementFormData;
 
   // let actual: number = 0;
@@ -105,7 +111,7 @@ const mapStateToProps = (state: any): FormValueProps => {
     formRate: rate,
     formActualValue: actValue,
     formDifferenceValue: difValue,
-    // formActual: actual,
+    formAdvance: advance,
     // formDifference: difference
   };
 };
