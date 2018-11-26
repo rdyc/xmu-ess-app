@@ -1,15 +1,15 @@
-import { ApprovalDetail } from '@finance/components/approval/detail/ApprovalDetail';
-import { ApprovalList } from '@finance/components/approval/list/ApprovalList';
-import { ApprovalPayment } from '@finance/components/approval/payment/ApprovalPayment';
+import { FinanceApprovalDetail } from '@finance/components/approval/detail/FinanceApprovalDetail';
+import { FinanceApprovalList } from '@finance/components/approval/list/FinanceApprovalList';
+import { FinanceApprovalPayment } from '@finance/components/approval/payment/FinanceApprovalPayment';
 import { Layout } from '@layout/components/base';
 import * as React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router';
 
 const approval = (props: RouteComponentProps) => (
   <Switch>
-    <Route path={`${props.match.path}/payment/:financeUids`} component={ApprovalPayment} />
-    <Route path={`${props.match.path}/:financeUid`} component={ApprovalDetail} />
-    <Route path={`${props.match.path}`} component={ApprovalList} />
+    <Route path={`${props.match.path}/payment`} component={FinanceApprovalPayment} />
+    <Route path={`${props.match.path}/:financeUid`} component={FinanceApprovalDetail} />
+    <Route path={`${props.match.path}`} component={FinanceApprovalList} />
   </Switch>
 );
 

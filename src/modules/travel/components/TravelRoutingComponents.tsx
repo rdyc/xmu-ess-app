@@ -6,10 +6,10 @@ import RequestEditor from './request/editor/RequestEditor';
 import { TravelRequestList } from './request/list/TravelRequestList';
 import { TravelRequestApprovalDetail } from './requestApproval/detail/TravelRequestApprovalDetail';
 import { TravelApprovalList } from './requestApproval/list/TravelApprovalList';
-import { TravelSettlementDetail } from './settlement/detail/TravelSettlementDetail';
+import { TravelSettlementDetails } from './settlement/detail/TravelSettlementDetails';
 import TravelSettlementEditor from './settlement/editor/TravelSettlementEditor';
 import { TravelSettlementRequestList } from './settlement/list/TravelSettlementRequestList';
-import { TravelSettlementApprovalDetail } from './settlementApproval/detail/TravelSettlementApprovalDetail';
+import { TravelSettlementApprovalDetails } from './settlementApproval/detail/TravelSettlementApprovalDetails';
 import { TravelSettlementListApproval } from './settlementApproval/list/TravelSettlementListApproval';
 
 const request = (props: RouteComponentProps) => (
@@ -23,7 +23,7 @@ const request = (props: RouteComponentProps) => (
 const settlement = (props: RouteComponentProps) => (
   <Switch>
     <Route path={`${props.match.path}/form`} component={TravelSettlementEditor} />
-    <Route path={`${props.match.path}/:travelSettlementUid`} component={TravelSettlementDetail} />
+    <Route path={`${props.match.path}/:travelSettlementUid`} component={TravelSettlementDetails} />
     <Route path={`${props.match.path}`} component={TravelSettlementRequestList} />
   </Switch>
 );
@@ -37,7 +37,7 @@ const approvalRequest = (props: RouteComponentProps) => (
 
 const approvalSettlement = (props: RouteComponentProps) => (
   <Switch>
-    <Route path={`${props.match.path}/:travelSettlementUid`} component={TravelSettlementApprovalDetail} />
+    <Route path={`${props.match.path}/:travelSettlementUid`} component={TravelSettlementApprovalDetails} />
     <Route path={`${props.match.path}`} component={TravelSettlementListApproval} />
   </Switch>
 );

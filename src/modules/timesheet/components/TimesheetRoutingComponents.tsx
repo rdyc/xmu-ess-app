@@ -21,7 +21,7 @@ const entry = (props: RouteComponentProps) => (
 
 const approval = (props: RouteComponentProps) => (
   <Switch>
-    <Route path={`${props.match.path}/action/:timesheetUids`} component={ActionApproval} />
+    <Route path={`${props.match.path}/action`} component={ActionApproval} />
     <Route path={`${props.match.path}/history/:timesheetUid`} component={TimesheetApprovalHistoryDetail} />
     <Route path={`${props.match.path}/history`} component={TimesheetApprovalHistoryList} />
     <Route path={`${props.match.path}/:timesheetUid`} component={TimesheetApprovalDetail} />

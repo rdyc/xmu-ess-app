@@ -3,6 +3,7 @@ import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { BillableListView } from '@summary/components/billable/BillableListView';
 import { WithSummary, withSummary } from '@summary/hoc/withSummary';
+import { summaryMessage } from '@summary/locales/messages/summaryMessage';
 import * as moment from 'moment';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
@@ -193,8 +194,8 @@ const lifecycles: ReactLifeCycleFunctions<BillableListProps, OwnState> = {
     layoutDispatch.changeView({
       uid: AppMenu.ReportBillable,
       parentUid: AppMenu.Report,
-      title: intl.formatMessage({ id: 'billable.title' }),
-      subTitle: intl.formatMessage({ id: 'billable.subTitle' })
+      title: intl.formatMessage(summaryMessage.billable.page.title),
+      subTitle: intl.formatMessage(summaryMessage.billable.page.subHeader)
     });
 
     // only load data when response are empty

@@ -6,15 +6,20 @@
   "summary.filter.field.projectUid.placeholder": "Select a Project",
   "summary.filter.field.employeeUid.placeholder": "Select an Employee",
 
-  "billable.title": "Employee and Presales Billable",
-  "billable.field.company": "Company",
-  "billable.field.name": "Employee Name",
-  "billable.field.start": "Start",
-  "billable.field.end": "End",
-  "billable.subTitle": "Lorem IPSUM",
-  "billable.note": "Note:",
-  "billable.totalhours": "*Total available Hours = 2080 Hour",
-  "billable.percentage": "*Billable (%) = (Billable Hours / 2080) * 100%",
+  "summary.billable.page.title": "Employee and Presales Billable",
+  "summary.billable.page.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
+
+  "summary.billable.field.company": "Company",
+  "summary.billable.field.name": "Employee Name",
+  "summary.billable.field.start": "Start",
+  "summary.billable.field.end": "End",
+
+  "summary.billable.note": "Note:",
+  "summary.billable.totalhours": "*Total available Hours = 2080 Hour",
+  "summary.billable.percentage": "*Billable (%) = (Billable Hours / 2080) * 100%",
+
+  "summary.billable.hover.presales": "Detail Presales",
+  "summary.billable.hover.nonPresales": "Detail Non Presales",
 
   "summary.effectiveness.title": "Resource Effectiveness",
   "summary.effectiveness.subTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
@@ -26,7 +31,16 @@
   "summary.effectiveness.tableHead.actual": "Total Actual Hours",
   "summary.effectiveness.tableHead.remaining": "Remaining Hours",
   "summary.effectiveness.tableHead.progress": "Total Progress",
+
+  "summary.winningRatio.page.title": "Report Winning Ratio",
+  "summary.winningRatio.page.subHeader": "Lorem IPSUM",
+  "summary.winningRatio.page.detail.title" : "Details Winning Ratio",
+  "summary.winningRatio.field.null": "No Data",
   
+  "summary.billable.hover.closed": "Closed",
+  "summary.billable.hover.onProgress": "On Progress",
+  "summary.billable.hover.win": "Win",
+
   "profitability.title": "Project Profitability",
   "summary.profitability.title": "Project Profitability",
   "summary.profitability.subTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",

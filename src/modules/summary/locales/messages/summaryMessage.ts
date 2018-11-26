@@ -1,7 +1,9 @@
+import { summaryBillableField, summaryBillableHover, summaryBillableNote, summaryBillablePage } from './summaryBillableMessage';
 import { summaryEffectivenessHeader, summaryEffectivenessPage } from './summaryEffectivenessMessages';
 import { summaryFilterField } from './summaryFilterMessages';
 import { summaryProfitabilityDialog, summaryProfitabilityHeader, summaryProfitabilityPage } from './summaryProfitabilityMessages';
 import { summaryProgressDialog, summaryProgressHeader, summaryProgressHeaderHelper, summaryProgressPage } from './summaryProgressMessages';
+import { summaryWinningRatioField, summaryWinningRatioHover, summaryWinningRatioPage } from './summaryWinningRatioMessage';
 
 export const summaryMessage = {
   filter: summaryFilterField,
@@ -19,5 +21,16 @@ export const summaryMessage = {
   effectiveness: {
     page: summaryEffectivenessPage,
     header: summaryEffectivenessHeader
+  },
+  billable: {
+    page: summaryBillablePage,
+    field: summaryBillableField,
+    note: summaryBillableNote,
+    hover: summaryBillableHover
+  },
+  winningRatio: {
+    page: summaryWinningRatioPage,
+    field: summaryWinningRatioField,
+    hover: summaryWinningRatioHover
   },
 };

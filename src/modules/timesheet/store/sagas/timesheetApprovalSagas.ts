@@ -1,4 +1,4 @@
-import { layoutAlertAdd, listBarLoading, listBarMetadata } from '@layout/store/actions';
+import { layoutAlertAdd } from '@layout/store/actions';
 import {
   TimesheetApprovalAction as Action,
   timesheetApprovalGetAllError,
@@ -32,8 +32,7 @@ function* watchAllFetchRequest() {
       method: 'get',
       path: `/v1/approvals/timesheet?${params}`, 
       successEffects: (response: IApiResponse) => ([
-        put(timesheetApprovalGetAllSuccess(response.body)),
-        put(listBarMetadata(response.body.metadata))
+        put(timesheetApprovalGetAllSuccess(response.body))
       ]), 
       failureEffects: (response: IApiResponse) => ([
         put(timesheetApprovalGetAllError(response.body)),
@@ -51,7 +50,7 @@ function* watchAllFetchRequest() {
         }))
       ]),
       finallyEffects: [
-        put(listBarLoading(false))
+        // put(listBarLoading(false))
       ]
     });
   };
