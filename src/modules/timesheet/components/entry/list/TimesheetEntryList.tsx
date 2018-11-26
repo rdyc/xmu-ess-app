@@ -71,7 +71,7 @@ const config: CollectionConfig<ITimesheet, AllProps> = {
       name: props.intl.formatMessage(layoutMessage.action.create),
       enabled: true,
       visible: true,
-      onClick: () => callback.handleRedirectTo(`/timesheet/entry/form`)
+      onClick: () => callback.handleRedirectTo(`/timesheet/entry`)
     }
   ]),
 
