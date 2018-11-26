@@ -117,14 +117,6 @@ export const TravelSettlementItemFormView: React.SFC<TravelSettlementItemFormPro
                     label="notes"
                     component={InputText}
                   />
-                  {/* <Field 
-                    type="number"
-                    disabled= {true}
-                    name={`${field}.duration`}
-                    label="Diem"
-                    required={true}
-                    component={InputNumber}
-                  /> */}
                   <TextField
                     margin="dense"
                     disabled={true}
@@ -152,14 +144,6 @@ export const TravelSettlementItemFormView: React.SFC<TravelSettlementItemFormPro
                     disabled={true}
                     component={InputText}
                   />
-                  {/* <Field 
-                    type="number"
-                    name={`${field}.amount`}
-                    label="Diem Value"
-                    disabled={true}
-                    component={InputNumber}
-                    onChange= {props.onCostChange}
-                  /> */}
                   <TextField
                     margin="dense"
                     disabled={true}
