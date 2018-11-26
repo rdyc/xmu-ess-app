@@ -43,8 +43,8 @@ export const TravelSettlementItemFormView: React.SFC<TravelSettlementItemFormPro
       {
         context.fields.map((field, index) => {
           const item = context.fields.get(index);
-          const amount: number = calculateDiem(item.departureDate, item.returnDate) * item.diemValue * item.currencyRate;
-          item.amount = amount;
+          // const amount: number = calculateDiem(item.departureDate, item.returnDate) * item.diemValue * item.currencyRate;
+          // item.amount = amount;
           return (
           <Grid key={index} item xs={12} md={4}>
             <Card square>
@@ -152,13 +152,20 @@ export const TravelSettlementItemFormView: React.SFC<TravelSettlementItemFormPro
                     disabled={true}
                     component={InputText}
                   />
-                  <Field 
+                  {/* <Field 
                     type="number"
                     name={`${field}.amount`}
                     label="Diem Value"
                     disabled={true}
                     component={InputNumber}
                     onChange= {props.onCostChange}
+                  /> */}
+                  <TextField
+                    margin="dense"
+                    disabled={true}
+                    fullWidth={true}
+                    label={props.intl.formatMessage(travelMessage.request.field.amount)}
+                    value={props.intl.formatNumber(calculateDiem(item.departureDate, item.returnDate) * (item.currencyRate) * (item.diemValue))}
                   />                               
                 </div>
               </CardContent>
