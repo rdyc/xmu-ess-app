@@ -43,7 +43,7 @@ const config: SingleConfig<IPurchaseDetail, PurchaseRequestDetailProps> = {
       name: props.intl.formatMessage(layoutMessage.action.modify),
       enabled: true,
       visible: isContains(state.statusType, [WorkflowStatusType.Submitted, WorkflowStatusType.InProgress]),
-      onClick: props.handlePurchaseModify
+      onClick: props.handleOnModify
     }
   ]),
   onDataLoad: (props: PurchaseRequestDetailProps, callback: SingleHandler, forceReload?: boolean | false) => {
