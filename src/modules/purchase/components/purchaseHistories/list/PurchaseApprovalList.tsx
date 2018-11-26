@@ -85,6 +85,7 @@ const config: CollectionConfig<IPurchase, AllProps> = {
           filter: {
             companyUid: user.company.uid,
             positionUid: user.position.uid,
+            status: 'pending',
             'query.find': params.find,
             'query.findBy': params.findBy,
             'query.orderBy': params.orderBy,
