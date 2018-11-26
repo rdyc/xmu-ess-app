@@ -66,12 +66,6 @@ const config: CollectionConfig<ISettlement, AllProps> = {
     },
   ]),
 
-  // data filter
-  filter: {
-    orderBy: 'settlementStatusType',
-    direction: 'ascending'
-  },
-
   // events
   onDataLoad: (states: AllProps, callback: CollectionHandler, params: CollectionDataProps, forceReload?: boolean | false) => {
     const { user } = states.userState;
@@ -86,6 +80,7 @@ const config: CollectionConfig<ISettlement, AllProps> = {
           filter: {
             companyUid: user.company.uid,
             positionUid: user.position.uid,
+            status: 'pending',
             'query.find': params.find,
             'query.findBy': params.findBy,
             'query.orderBy': params.orderBy,

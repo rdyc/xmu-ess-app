@@ -61,12 +61,6 @@ const config: CollectionConfig<IMileageRequest, AllProps> = {
     }
   ]),
 
-  // data filter
-  filter: {
-    orderBy: 'uid',
-    direction: 'descending'
-  },
-
   // events
   onDataLoad: (props: AllProps, callback: CollectionHandler, params: CollectionDataProps, forceReload?: boolean | false) => {
     const { user } = props.userState;
@@ -79,7 +73,7 @@ const config: CollectionConfig<IMileageRequest, AllProps> = {
       if (!response || forceReload) {
         loadAllRequest({
           filter: {
-            status: undefined,
+            status: 'pending',
             isNotify: undefined,
             query: {
               direction: params.direction,

@@ -70,12 +70,6 @@ const config: CollectionConfig<ISettlement, AllProps> = {
     },
   ]),
 
-  // data filter
-  filter: {
-    orderBy: 'settlementStatusType',
-    direction: 'ascending'
-  },
-
   // events
   onDataLoad: (states: AllProps, callback: CollectionHandler, params: CollectionDataProps, forceReload?: boolean | false) => {
     const { user } = states.userState;

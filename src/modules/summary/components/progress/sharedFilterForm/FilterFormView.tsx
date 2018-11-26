@@ -2,6 +2,7 @@ import { WorkflowStatusType } from '@common/classes/types';
 import { InputCustomer } from '@lookup/components/customer/input';
 import { Grid } from '@material-ui/core';
 import { SelectProject } from '@project/components/select/project';
+import { summaryMessage } from '@summary/locales/messages/summaryMessage';
 import * as React from 'react';
 import { Field } from 'redux-form';
 import { isNullOrUndefined } from 'util';
@@ -24,8 +25,8 @@ export const FilterFormView: React.SFC<FilterFormProps> = props => {
             type="text"
             name="customerUid"
             required={true}
-            label={props.intl.formatMessage({id: 'summary.filter.field.customerUid'})}
-            placeholder={props.intl.formatMessage({id: 'summary.filter.field.customerUid.placeholder'})}
+            label={props.intl.formatMessage(summaryMessage.filter.customerUid)}
+            placeholder={props.intl.formatMessage(summaryMessage.filter.customerUidPlaceholder)}
             component={InputCustomer}
             onChange={handleChangeCustomer}
           />
@@ -35,8 +36,8 @@ export const FilterFormView: React.SFC<FilterFormProps> = props => {
             type="text"
             name="projectUid"
             required={true}
-            label={props.intl.formatMessage({id: 'summary.filter.field.projectUid'})}
-            placeholder={props.intl.formatMessage({id: 'summary.filter.field.projectUid.placeholder'})}
+            label={props.intl.formatMessage(summaryMessage.filter.projectUid)}
+            placeholder={props.intl.formatMessage(summaryMessage.filter.projectUidPlaceholder)}
             component={SelectProject}
             disabled={isNullOrUndefined(customerUidValue)}
             onChange={handleChangeProject}

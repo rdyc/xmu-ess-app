@@ -1,9 +1,10 @@
-import {  Card, CardContent, Grid, Table, TableBody, TableCell, TableRow, Typography } from '@material-ui/core';
+import { layoutMessage } from '@layout/locales/messages';
+import {  Card, CardContent, Grid, Table, TableBody, TableCell, TableRow } from '@material-ui/core';
 import { ISummaryProfitability } from '@summary/classes/response/profitability';
 import { ProfitabilityProps } from '@summary/components/profitability/Profitability';
 import { FilterForm } from '@summary/components/progress/sharedFilterForm/FilterForm';
+import { summaryMessage } from '@summary/locales/messages/summaryMessage';
 import * as React from 'react';
-import { FormattedMessage } from 'react-intl';
 import { ProfitabilityExpenseView } from './ProfitabilityExpenseView';
 import { ProfitabilityProjectView } from './ProfitabilityProjectView';
 
@@ -36,7 +37,7 @@ export const ProfitabilityView: React.SFC<ProfitabilityProps> = props => {
                   <TableBody>
                     <TableRow>
                       <TableCell variant="head">
-                        <FormattedMessage id="summary.profitability.tableHead.totalValue" />
+                        {intl.formatMessage(summaryMessage.profitability.header.totalValue)}
                       </TableCell>
                       <TableCell numeric>
                         {intl.formatNumber(profitability.totalValue)}
@@ -44,7 +45,7 @@ export const ProfitabilityView: React.SFC<ProfitabilityProps> = props => {
                     </TableRow>
                     <TableRow>
                       <TableCell variant="head">
-                        <FormattedMessage id="summary.profitability.tableHead.totalCogs" />
+                        {intl.formatMessage(summaryMessage.profitability.header.totalCogs)}
                       </TableCell>
                       <TableCell numeric>
                         {intl.formatNumber(profitability.totalCogs)}
@@ -52,7 +53,7 @@ export const ProfitabilityView: React.SFC<ProfitabilityProps> = props => {
                     </TableRow>
                     <TableRow>
                       <TableCell variant="head">
-                        <FormattedMessage id="summary.profitability.tableHead.profit" />
+                        {intl.formatMessage(summaryMessage.profitability.header.profit)}
                       </TableCell>
                       <TableCell numeric>
                         {intl.formatNumber(profitability.profit)}
@@ -60,7 +61,7 @@ export const ProfitabilityView: React.SFC<ProfitabilityProps> = props => {
                     </TableRow>
                     <TableRow>
                       <TableCell variant="head">
-                        <FormattedMessage id="summary.profitability.tableHead.percentage" />
+                        {intl.formatMessage(summaryMessage.profitability.header.percentage)}
                       </TableCell>
                       <TableCell numeric>
                         {`${profitability.percentage} %`}
@@ -92,7 +93,7 @@ export const ProfitabilityView: React.SFC<ProfitabilityProps> = props => {
         <Grid item xs={12}>
         {
           isLoading &&
-          <Typography variant="body2">loading</Typography>
+          intl.formatMessage(layoutMessage.text.loading)
         }
         {
           !isLoading &&

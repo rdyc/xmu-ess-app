@@ -51,6 +51,7 @@ interface OwnOption {
 interface OwnState {
   menuAnchor?: string;
   menuItems?: ICollectionValue[];
+  menuOrderItems: ICollectionValue[];
   menuItemActive?: any;
 }
 
@@ -72,7 +73,10 @@ export type DataContainerProps
   & InjectedIntlProps;
 
 const createProps: mapper<OwnOption, OwnState> = (props: OwnOption): OwnState => ({
-
+  menuOrderItems: [
+    ...props.fields,
+    { name: 'Last Changes', value: undefined }
+  ]
 });
   
 const stateUpdaters: StateUpdaters<OwnOption, OwnState, OwnStateUpdater> = {
@@ -98,7 +102,7 @@ const handlerCreators: HandleCreators<DataContainerProps, OwnHandler> = {
     
     switch (anchor) {
       case 'option-field':
-        items = props.fields;
+        items = props.menuOrderItems;
         props.setMenuActive(props.state.field);
         break;
 
