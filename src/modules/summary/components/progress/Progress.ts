@@ -7,6 +7,7 @@ import styles from '@styles';
 import { ISummaryModuleCost } from '@summary/classes/response/progress';
 import { ProgressView } from '@summary/components/progress/ProgressView';
 import { WithSummary, withSummary } from '@summary/hoc/withSummary';
+import { summaryMessage } from '@summary/locales/messages/summaryMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
 import { RouteComponentProps, withRouter } from 'react-router';
@@ -124,8 +125,8 @@ const lifecycles: ReactLifeCycleFunctions<ProgressProps, OwnState> = {
       layoutDispatch.changeView({
         uid: AppMenu.ReportProgress,
         parentUid: AppMenu.Report,
-        title: intl.formatMessage({id: 'summary.progress.title'}),
-        subTitle : intl.formatMessage({id: 'summary.progress.subTitle'})
+        title: intl.formatMessage(summaryMessage.progress.page.title),
+        subTitle : intl.formatMessage(summaryMessage.progress.page.subTitle)
       });
   
       layoutDispatch.searchShow();

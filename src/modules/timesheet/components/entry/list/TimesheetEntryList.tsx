@@ -75,12 +75,6 @@ const config: CollectionConfig<ITimesheet, AllProps> = {
     }
   ]),
 
-  // data filter
-  filter: {
-    orderBy: 'uid',
-    direction: 'descending'
-  },
-
   // events
   onDataLoad: (props: AllProps, callback: CollectionHandler, params: CollectionDataProps, forceReload?: boolean | false) => {
     const { user } = props.userState;
