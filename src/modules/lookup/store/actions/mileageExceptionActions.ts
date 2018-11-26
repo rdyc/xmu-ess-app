@@ -74,3 +74,6 @@ export const mileageExceptionGetByIdError = (message: string) =>
 
 export const mileageExceptionGetByIdDispose = () =>
   action(MileageExceptionAction.GET_BY_ID_DISPOSE);
+
+// post
+// export const mileageExceptionPostRequest = (request: )
