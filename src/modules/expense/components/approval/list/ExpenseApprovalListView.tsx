@@ -68,12 +68,6 @@ const config: CollectionConfig<IExpense, AllProps> = {
     }
   ]),
 
-  // data filter
-  filter: {
-    orderBy: 'uid',
-    direction: 'descending'
-  },
-
   // events
   onDataLoad: (states: AllProps, callback: CollectionHandler, params: CollectionDataProps, forceReload?: boolean | false) => {
     const { user } = states.userState;
@@ -90,7 +84,7 @@ const config: CollectionConfig<IExpense, AllProps> = {
             positionUid: user.position.uid,
             start: undefined,
             end: undefined,
-            status: undefined,
+            status: 'pending',
             isNotify: undefined,
             query: {
               direction: params.direction,

@@ -72,13 +72,7 @@ const config: CollectionConfig<IFinance, AllProps> = {
       onClick: () => callback.handleForceReload()
     },
   ]),
-
-  // data filter
-  filter: {
-    orderBy: 'uid',
-    direction: 'descending'
-  },
-
+  
   // events
   onDataLoad: (states: AllProps, callback: CollectionHandler, params: CollectionDataProps, forceReload?: boolean | false) => {
     const { user } = states.userState;
