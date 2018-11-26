@@ -11,7 +11,7 @@ export const TimesheetEntryDetailFormView: React.SFC<EntryDetailFormProps> = pro
   
   const renderField = (name: string) => {
     const fieldName = name.replace('information.', '');
-    const fieldProps = props.generateFieldProps(name);
+    const fieldProps = props.generateFieldProps(fieldName);
 
     // don't show uid for new form
     const fields = ['uid'];
@@ -28,7 +28,6 @@ export const TimesheetEntryDetailFormView: React.SFC<EntryDetailFormProps> = pro
       <Field
         key={fieldName}
         name={fieldName}
-        label={<FormattedMessage id={`timesheet.entry.field.${name}`} />}
         {...fieldProps}
       />
     );

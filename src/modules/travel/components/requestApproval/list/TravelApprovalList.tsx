@@ -66,12 +66,6 @@ const config: CollectionConfig<ITravelRequest, AllProps> = {
     }
   ]),
 
-  // data filter
-  filter: {
-    orderBy: 'uid',
-    direction: 'descending'
-  },
-
   // events
   onDataLoad: (states: AllProps, callback: CollectionHandler, params: CollectionDataProps, forceReload?: boolean | false) => {
     const { user } = states.userState;
@@ -89,12 +83,12 @@ const config: CollectionConfig<ITravelRequest, AllProps> = {
             status: 'pending',
             isNotify: undefined,
             query: {
-              direction: params.direction,
+              find: params.find,
+              findBy: params.findBy,
               orderBy: params.orderBy,
+              direction: params.direction,
               page: params.page,
               size: params.size,
-              find: params.find,
-              findBy: params.findBy
             }            
           }          
         });

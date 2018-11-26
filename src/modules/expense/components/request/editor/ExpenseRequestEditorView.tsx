@@ -1,14 +1,14 @@
+import { ExpenseRequestEditorProps } from '@expense/components/request/editor/ExpenseRequestEditor';
 import {
   ExpenseRequestFormData,
   RequestForm,
 } from '@expense/components/request/editor/forms/RequestForm';
-import { RequestEditorProps } from '@expense/components/request/editor/RequestEditor';
 import { FormMode } from '@generic/types';
 import { layoutMessage } from '@layout/locales/messages';
 import { Typography } from '@material-ui/core';
 import * as React from 'react';
 
-export const RequestEditorView: React.SFC<RequestEditorProps> = props => {
+export const ExpenseRequestEditorView: React.SFC<ExpenseRequestEditorProps> = props => {
   const { formMode, handleValidate, handleSubmit, handleSubmitSuccess, handleSubmitFail, intl } = props;
   const { isLoading, response } = props.expenseRequestState.detail;
 

@@ -9,8 +9,8 @@ import { BillableDate } from '@summary/components/billable/BillableDate';
 import { BillableDetail } from '@summary/components/billable/BillableDetailView';
 import { BillableListProps } from '@summary/components/billable/BillableList';
 import { BillableTableView } from '@summary/components/billable/BillableTableView';
+import { summaryMessage } from '@summary/locales/messages/summaryMessage';
 import * as React from 'react';
-import { FormattedMessage } from 'react-intl';
 
 export const BillableListView: React.SFC<BillableListProps> = props => {
   const { isLoading, response } = props.summaryState.billable;
@@ -41,21 +41,21 @@ export const BillableListView: React.SFC<BillableListProps> = props => {
           <TextField
             disabled
             margin="normal"
-            label={<FormattedMessage id="billable.field.company" />}
+            label={props.intl.formatMessage(summaryMessage.billable.field.company)}
             value={user && user.company.name}
           />
         </Grid>
         <Grid item xs md>
           <TextField
             margin="normal"
-            label={<FormattedMessage id="billable.field.name" />}
+            label={props.intl.formatMessage(summaryMessage.billable.field.name)}
             onChange={e => handleChangeFind(e.target.value)}
           />
         </Grid>
         <Grid item xs md>
           <BillableDate
             val={start}
-            label={'billable.field.start'}
+            label={props.intl.formatMessage(summaryMessage.billable.field.start)}
             handleChange={handleChangeStart}
             disableFuture={false}
           />
@@ -63,7 +63,7 @@ export const BillableListView: React.SFC<BillableListProps> = props => {
         <Grid item xs md>
           <BillableDate
             val={end}
-            label={'billable.field.end'}
+            label={props.intl.formatMessage(summaryMessage.billable.field.end)}
             handleChange={handleChangeEnd}
             disableFuture={true}
           />
@@ -82,9 +82,9 @@ export const BillableListView: React.SFC<BillableListProps> = props => {
             </Grid>
             <Grid item xs={12} md={12}>
               <Typography noWrap align="left" variant="caption">
-                <FormattedMessage id="billable.note" /> <br />
-                <FormattedMessage id="billable.totalhours" /> <br />
-                <FormattedMessage id="billable.percentage" />
+                {props.intl.formatMessage(summaryMessage.billable.note.note)} <br />
+                {props.intl.formatMessage(summaryMessage.billable.note.totalHours)} <br />
+                {props.intl.formatMessage(summaryMessage.billable.note.percentage)}
               </Typography>
             </Grid>
           </Grid>

@@ -68,12 +68,6 @@ const config: CollectionConfig<ITravelSettlement, AllProps> = {
       onClick: () => callback.handleForceReload()
     }
   ]),
-  
-  // data filter
-  filter: {
-    orderBy: 'uid',
-    direction: 'descending'
-  },
 
   // events
   onDataLoad: (states: AllProps, callback: CollectionHandler, params: CollectionDataProps, forceReload?: boolean | false) => {

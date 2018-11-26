@@ -1,9 +1,10 @@
-import { Button, Card, CardContent, CardHeader, Grid, Table, TableBody, TableCell, TableHead, TableRow, WithStyles } from '@material-ui/core';
+import { Card, CardContent, CardHeader, Chip, Grid, Table, TableBody, TableCell, TableHead, TableRow, WithStyles } from '@material-ui/core';
 import { isWidthDown, WithWidth } from '@material-ui/core/withWidth';
 import { ISummaryAssignment, ISummaryModuleCost, ISummaryProgressProject } from '@summary/classes/response/progress';
+import { summaryMessage } from '@summary/locales/messages/summaryMessage';
 import * as classNames from 'classnames';
 import * as React from 'react';
-import { FormattedMessage, InjectedIntlProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 
 interface OwnProps {
   projects: ISummaryProgressProject[];
@@ -26,18 +27,16 @@ export const ProgressProjectView: React.SFC<AllProps> = props => {
   const RenderProgressAssignment = (assignments: ISummaryAssignment[]) => {
     return (
       <CardContent>
-        <Table
-          padding= "dense"
-        >
+        <Table padding= "dense">
           <TableHead>
             <TableRow>
               <TableCell numeric>
-                <FormattedMessage id="summary.progress.tableHead.consultant" />
+                {intl.formatMessage(summaryMessage.progress.header.consultant)}
               </TableCell>
               {
                 assignmentFields.map(assignmentField =>
-                  <TableCell numeric>
-                    <FormattedMessage id={`summary.progress.tableHead.${assignmentField}`} />
+                  <TableCell numeric key={assignmentField}>
+                    {intl.formatMessage(summaryMessage.progress.headerFor(assignmentField))}
                   </TableCell>
                 )
               }
@@ -46,7 +45,7 @@ export const ProgressProjectView: React.SFC<AllProps> = props => {
           <TableBody>
             {
               assignments.map(assignment =>
-                <TableRow>
+                <TableRow key={`${assignment.employeeUid}-${assignment.role}`}>
                   <TableCell>
                     {assignment.employee && assignment.employee.fullName}
                   </TableCell>
@@ -75,7 +74,7 @@ export const ProgressProjectView: React.SFC<AllProps> = props => {
     <Grid container spacing={16}>
     {
       projects.map(project =>
-        <Grid item xs={12}>
+        <Grid item xs={12} key={project.projectUid} >
           <Card
             square
             className= {!isMobile ? classNames(classes.reportPaperPartial) : classNames(classes.reportPaperPartialMobile)}
@@ -97,9 +96,10 @@ export const ProgressProjectView: React.SFC<AllProps> = props => {
                         projectFields.map(projectField => 
                           <TableCell 
                             numeric
+                            key= {projectField}
                             className= {classNames(classes.cellWidthXXS)}
                           >
-                            <FormattedMessage id={`summary.progress.tableHead.${projectField}`} />
+                            {intl.formatMessage(summaryMessage.progress.headerFor(projectField))}
                           </TableCell>
                         )
                       }
@@ -126,12 +126,10 @@ export const ProgressProjectView: React.SFC<AllProps> = props => {
                         {intl.formatNumber(project.actualRates)}
                       </TableCell>
                       <TableCell numeric>
-                        <Button 
-                          variant= "contained"
+                        <Chip 
                           onClick= {() => handleDialogOpen(isMobile, project.moduleCosts ? project.moduleCosts : [], project.projectUid)}
-                        >
-                          {intl.formatNumber(project.actualCosts)}
-                        </Button>
+                          label= {intl.formatNumber(project.actualCosts)}
+                        />
                       </TableCell>
                       <TableCell numeric>
                         {intl.formatNumber(project.cogs)}

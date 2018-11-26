@@ -21,6 +21,16 @@ export const timesheetApprovalHistoryPage = defineMessages({
   listSubHeader: { id: `${prefix2}.page.list.subHeader` }
 });
 
+// section
+export const timesheetApprovalSection = defineMessages({
+  infoTitle: { id: `${prefix}.section.info.approvalTitle` },
+  infoSubHeader: { id: `${prefix}.section.info.approvalSubHeader` },
+  statusTitle: { id: `${prefix}.section.status.title` },
+  statusSubHeader: { id: `${prefix}.section.status.subHeader` },
+  approvalTitle: { id: `${prefix}.section.approval.title` },
+  approvalSubHeader: { id: `${prefix}.section.approval.subHeader` },
+});
+
 // confirm
 export const timesheetApprovalConfirm = defineMessages({
   submissionTitle: { id: `${prefix}.confirm.submission.title` },

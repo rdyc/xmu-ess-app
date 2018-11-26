@@ -40,8 +40,8 @@ const config: CollectionConfig<ITimesheet, AllProps> = {
 
   // selection
   hasSelection: true,
-  onProcessSelection: (values: string[]) => {
-    alert(values.toString());
+  onProcessSelection: (values: string[], callback: CollectionHandler) => {
+    callback.handleRedirectTo(`/timesheet/approvals/action`, {values} );
   },
 
   // searching
@@ -72,12 +72,6 @@ const config: CollectionConfig<ITimesheet, AllProps> = {
       onClick: () => callback.handleForceReload()
     }
   ]),
-
-  // data filter
-  filter: {
-    orderBy: 'uid',
-    direction: 'descending'
-  },
 
   // events
   onDataLoad: (props: AllProps, callback: CollectionHandler, params: CollectionDataProps, forceReload?: boolean | false) => {
