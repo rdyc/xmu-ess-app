@@ -52,6 +52,8 @@ export const RequestItemFormView: React.SFC<RequestItemFormProps> = props => {
       {
         context.fields.map((field, index) => {
           const item = context.fields.get(index);
+          const amount: number = calculateDiem(item.departureDate, item.returnDate) * (diem ? diem.value : 0);
+          item.amount = amount;
           return (
           <Grid key={index} item xs={12} md={4}>
             <Card square>
@@ -191,6 +193,7 @@ export const RequestItemFormView: React.SFC<RequestItemFormProps> = props => {
                   <TextField
                     margin="dense"
                     disabled={true}
+                    fullWidth={true}
                     label={props.intl.formatMessage(travelMessage.request.field.duration)}
                     value={props.intl.formatNumber(calculateDiem(item.departureDate, item.returnDate))}
                   />  
@@ -218,26 +221,30 @@ export const RequestItemFormView: React.SFC<RequestItemFormProps> = props => {
                   <TextField
                     margin="dense"
                     disabled={true}
+                    fullWidth={true}
                     label={props.intl.formatMessage(travelMessage.request.field.diemValue)}
                     value={props.intl.formatNumber(diem ? diem.value : 0)}
                   />  
                   <TextField
                     margin="dense"
                     disabled={true}
+                    fullWidth={true}
                     label={props.intl.formatMessage(travelMessage.request.field.currencyUid)}
                     value={diem && diem.currency ? diem.currency.name : ''}
                   />  
                   <TextField
                     margin="dense"
                     disabled={true}
+                    fullWidth={true}
                     label={props.intl.formatMessage(travelMessage.request.field.currencyRate)}
                     value={props.intl.formatNumber(diem && diem.currency ? diem.currency.rate : 0)}
                   />
-                  <TextField
-                    margin="dense"
+                  <Field 
+                    type="text"
+                    name={`${field}.amount`}
+                    label="Diem Value"
                     disabled={true}
-                    label={props.intl.formatMessage(travelMessage.request.field.amount)}
-                    value={props.intl.formatNumber(calculateDiem(item.departureDate, item.returnDate) * (diem ? diem.value : 0))}
+                    component={InputNumber}
                   />  
                 </div>
               </CardContent>
