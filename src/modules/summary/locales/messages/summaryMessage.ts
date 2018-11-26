@@ -1,7 +1,7 @@
 import { summaryBillableField, summaryBillableHover, summaryBillableNote, summaryBillablePage } from './summaryBillableMessage';
 import { summaryEffectivenessHeader, summaryEffectivenessPage } from './summaryEffectivenessMessages';
 import { summaryFilterField } from './summaryFilterMessages';
-import { summaryProfitabilityDialog, summaryProfitabilityHeader, summaryProfitabilityPage } from './summaryProfitabilityMessages';
+import { summaryProfitabilityDialog, summaryProfitabilityHeader, summaryProfitabilityHeaderHelper, summaryProfitabilityPage } from './summaryProfitabilityMessages';
 import { summaryProgressDialog, summaryProgressHeader, summaryProgressHeaderHelper, summaryProgressPage } from './summaryProgressMessages';
 import { summaryWinningRatioField, summaryWinningRatioHover, summaryWinningRatioPage } from './summaryWinningRatioMessage';
 
@@ -16,7 +16,8 @@ export const summaryMessage = {
   profitability: {
     page: summaryProfitabilityPage,
     dialog: summaryProfitabilityDialog,
-    header: summaryProfitabilityHeader
+    header: summaryProfitabilityHeader,
+    headerFor: summaryProfitabilityHeaderHelper
   },
   effectiveness: {
     page: summaryEffectivenessPage,

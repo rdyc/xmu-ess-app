@@ -20,26 +20,21 @@
 
   "summary.billable.hover.presales": "Detail Presales",
   "summary.billable.hover.nonPresales": "Detail Non Presales",
-
-  "summary.effectiveness.title": "Resource Effectiveness",
-  "summary.effectiveness.subTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-  "summary.effectiveness.tableHead.name": "Employee Name",
-  "summary.effectiveness.tableHead.positionRole": "Position - Role in Project",
-  "summary.effectiveness.tableHead.project": "Project",
-  "summary.effectiveness.tableHead.customer": "Customer",
-  "summary.effectiveness.tableHead.allocated": "Total Allocated Hours",
-  "summary.effectiveness.tableHead.actual": "Total Actual Hours",
-  "summary.effectiveness.tableHead.remaining": "Remaining Hours",
-  "summary.effectiveness.tableHead.progress": "Total Progress",
-
-  "summary.winningRatio.page.title": "Report Winning Ratio",
-  "summary.winningRatio.page.subHeader": "Lorem IPSUM",
-  "summary.winningRatio.page.detail.title" : "Details Winning Ratio",
-  "summary.winningRatio.field.null": "No Data",
   
   "summary.billable.hover.closed": "Closed",
   "summary.billable.hover.onProgress": "On Progress",
   "summary.billable.hover.win": "Win",
+
+  "summary.effectiveness.title": "Resource Effectiveness",
+  "summary.effectiveness.subTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "summary.effectiveness.header.name": "Employee Name",
+  "summary.effectiveness.header.positionRole": "Position - Role in Project",
+  "summary.effectiveness.header.project": "Project",
+  "summary.effectiveness.header.customer": "Customer",
+  "summary.effectiveness.header.allocated": "Total Allocated Hours",
+  "summary.effectiveness.header.actual": "Total Actual Hours",
+  "summary.effectiveness.header.remaining": "Remaining Hours",
+  "summary.effectiveness.header.progress": "Total Progress",
 
   "summary.profitability.title": "Project Profitability",
   "summary.profitability.subTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
@@ -60,7 +55,7 @@
   "summary.profitability.header.progressAssignment": "Progress",
   "summary.profitability.header.actualRate": "People Cost (IDR)",
   "summary.profitability.header.totalValue": "PROJECT VALUE (IDR)",
-  "summary.profitability.header.totalCogs": "Grand Total COGS (IDR)",
+  "summary.profitability.header.totalCogs": "GRAND TOTAL COGS (IDR)",
   "summary.profitability.header.profit": "GROSS PROFIT (IDR)",
   "summary.profitability.header.percentage": "GROSS PROFIT",
   "summary.profitability.header.type": "Type",
@@ -87,7 +82,7 @@
   "summary.progress.header.remaining": "Remaining Hours",
   "summary.progress.header.progressAssignment": "Progress",
   "summary.progress.header.totalValue": "PROJECT VALUE (IDR)",
-  "summary.progress.header.totalCogs": "GRANF TOTAL COGS (IDR)",
+  "summary.progress.header.totalCogs": "GRAND TOTAL COGS (IDR)",
   "summary.progress.header.profit": "GROSS PROFIT (IDR)",
   "summary.progress.header.percentage": "GROSS PROFIT",
   "summary.progress.header.type": "Type",
@@ -104,5 +99,10 @@
   "summary.winningRatio.field.start": "Start",
   "summary.winningRatio.field.end": "End",
   "summary.winningRatio.subTitle": "Lorem IPSUM",
-  "summary.winningRatio.detail.projectNull": "No Data"
+  "summary.winningRatio.detail.projectNull": "No Data",
+
+  "summary.winningRatio.page.title": "Report Winning Ratio",
+  "summary.winningRatio.page.subHeader": "Lorem IPSUM",
+  "summary.winningRatio.page.detail.title" : "Details Winning Ratio",
+  "summary.winningRatio.field.null": "No Data"
 }

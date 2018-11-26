@@ -1,9 +1,10 @@
-import { Button, Card, CardContent, CardHeader, Grid, Table, TableBody, TableCell, TableHead, TableRow, WithStyles } from '@material-ui/core';
+import { Card, CardContent, CardHeader, Chip, Grid, Table, TableBody, TableCell, TableHead, TableRow, WithStyles } from '@material-ui/core';
 import { isWidthDown, WithWidth } from '@material-ui/core/withWidth';
 import { ISummaryAssignmentTimesheet, ISummaryModuleCost, ISummaryProfitabilityProject } from '@summary/classes/response/profitability';
+import { summaryMessage } from '@summary/locales/messages/summaryMessage';
 import * as classNames from 'classnames';
 import * as React from 'react';
-import { FormattedMessage, InjectedIntlProps } from 'react-intl';
+import { InjectedIntlProps } from 'react-intl';
 
 interface OwnProps {
   projects: ISummaryProfitabilityProject[];
@@ -32,12 +33,12 @@ export const ProfitabilityProjectView: React.SFC<AllProps> = props => {
           <TableHead>
             <TableRow>
               <TableCell>
-                <FormattedMessage id="summary.profitability.tableHead.consultant" />
+                {intl.formatMessage(summaryMessage.profitability.header.consultant)}
               </TableCell>
               {
                 assignmentFields.map(assignmentField =>
-                  <TableCell>
-                    <FormattedMessage id={`summary.profitability.tableHead.${assignmentField}`} />
+                  <TableCell numeric key={assignmentField}>
+                    {intl.formatMessage(summaryMessage.profitability.headerFor(assignmentField))}
                   </TableCell>
                 )
               }
@@ -46,12 +47,12 @@ export const ProfitabilityProjectView: React.SFC<AllProps> = props => {
           <TableBody>
             {
               assignments.map(assignment =>
-                <TableRow>
+                <TableRow key={`${assignment.employeeUid}-${assignment.role}`}>
                   <TableCell>
                     {assignment.employee && assignment.employee.fullName}
                   </TableCell>
                   <TableCell numeric>
-                    {intl.formatNumber(assignment.allocatedHours)}
+                    {assignment.allocatedHours}
                   </TableCell>
                   <TableCell numeric>
                     {assignment.actualHours}
@@ -98,9 +99,11 @@ export const ProfitabilityProjectView: React.SFC<AllProps> = props => {
                         {
                           projectFields.map(projectField =>
                             <TableCell
+                              numeric
+                              key= {projectField}
                               className={classNames(classes.cellWidthXXS)}
                             >
-                              <FormattedMessage id={`summary.profitability.tableHead.${projectField}`} />
+                              {intl.formatMessage(summaryMessage.profitability.headerFor(projectField))}
                             </TableCell>
                           )
                         }
@@ -127,12 +130,10 @@ export const ProfitabilityProjectView: React.SFC<AllProps> = props => {
                           {intl.formatNumber(project.actualRates)}
                         </TableCell>
                         <TableCell numeric>
-                          <Button
-                            variant="contained"
-                            onClick={() => handleDialogOpen(isMobile, project.moduleCosts ? project.moduleCosts : [], project.projectUid)}
-                          >
-                            {intl.formatNumber(project.actualCosts)}
-                          </Button>
+                          <Chip 
+                            onClick= {() => handleDialogOpen(isMobile, project.moduleCosts ? project.moduleCosts : [], project.projectUid)}
+                            label= {intl.formatNumber(project.actualCosts)}
+                          />
                         </TableCell>
                         <TableCell numeric>
                           {intl.formatNumber(project.cogs)}

@@ -38,3 +38,26 @@ export const summaryProfitabilityHeader = defineMessages({
   requester: {id: `${headerPrefix}.requester`},
   amount: {id: `${headerPrefix}.amount`},
 });
+
+export const summaryProfitabilityHeaderHelper = (field: string) => {
+  switch (field) {
+    case 'actualRate' : return summaryProfitabilityHeader.actualRate;
+    case 'allocated': return summaryProfitabilityHeader.allocated;
+    case 'actual': return summaryProfitabilityHeader.actual;
+    case 'remaining': return summaryProfitabilityHeader.remaining;
+    case 'progressAssignment': return summaryProfitabilityHeader.progressAssignment;
+    case 'maxHours': return summaryProfitabilityHeader.allocatedHours;
+    case 'allocatedHours': return summaryProfitabilityHeader.allocatedHours;
+    case 'actualHours': return summaryProfitabilityHeader.actualHours;
+    case 'remainHours': return summaryProfitabilityHeader.remainHours;
+    case 'progress': return summaryProfitabilityHeader.progress;
+    case 'actualRates': return summaryProfitabilityHeader.actualRates;
+    case 'actualCosts': return summaryProfitabilityHeader.actualCosts;
+    case 'cogs': return summaryProfitabilityHeader.cogs;
+    case 'type': return summaryProfitabilityHeader.type;
+    case 'date': return summaryProfitabilityHeader.date;
+    case 'documentUid': return summaryProfitabilityHeader.documentUid;
+    case 'requester': return summaryProfitabilityHeader.requester;
+    default: return {id: field};
+  }
+};
