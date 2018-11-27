@@ -109,12 +109,15 @@ const config: CollectionConfig<ICurrency, AllProps> = {
     callback.handleLoading(isLoading);
     callback.handleResponse(response);
   },
-  onBind: (item: ICurrency, index: number) => ({
+  onBind: (item: ICurrency, index: number, props: AllProps) => ({
     key: index,
     primary: `${item.symbol}` ||  '',
     secondary: `${item.rate}` || '',
     tertiary: `${item.name}` || '',
-    quaternary: '',
+    quaternary: item.isActive ?
+        props.intl.formatMessage(lookupMessage.currency.field.isActive) :
+        props.intl.formatMessage(lookupMessage.currency.field.isNotActive)
+    ,
     quinary: item.uid || '',
     senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
   }),

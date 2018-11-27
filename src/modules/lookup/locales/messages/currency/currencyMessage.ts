@@ -23,6 +23,7 @@ export const currencyField = defineMessages({
   symbol: { id: `${prefix}.field.symbol` },
   rate: { id: `${prefix}.field.rate` },
   isActive: { id: `${prefix}.field.isActive` },
+  isNotActive: { id: `${prefix}.field.isNotActive` },
  
   infoTitle: { id: `${prefix}.field.info.title` },
   infoSubHeader: { id: `${prefix}.field.info.subHeader` },

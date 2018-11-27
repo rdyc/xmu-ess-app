@@ -3,7 +3,7 @@ import { GlobalFormat } from '@layout/types';
 import { GlobalStyle } from '@layout/types/GlobalStyle';
 import { ICurrency } from '@lookup/classes/response/currency';
 import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
-import { Grid, TextField } from '@material-ui/core';
+import { Checkbox, FormControlLabel, Grid, TextField } from '@material-ui/core';
 import * as React from 'react';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose } from 'recompose';
@@ -49,12 +49,12 @@ const currencySummary: React.SFC<AllProps> = props => (
         value={props.data.rate || 0}
         multiline
       />
-      <TextField
-        {...GlobalStyle.TextField.ReadOnly}
-        margin="dense"
-        label={props.intl.formatMessage(lookupMessage.currency.field.isActive)}
-        value={`${props.data.isActive}`}
-      />
+      <FormControlLabel
+        control={ <Checkbox checked={props.data.isActive} /> }
+        label={props.data.isActive ?
+          props.intl.formatMessage(lookupMessage.currency.field.isActive) :
+          props.intl.formatMessage(lookupMessage.currency.field.isNotActive)}
+        />
     </Grid>
 
     {
