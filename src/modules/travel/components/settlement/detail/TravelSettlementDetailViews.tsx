@@ -29,6 +29,9 @@ const config: SingleConfig<ITravelSettlementDetail, TravelSettlementDetailProps>
     description: props.intl.formatMessage(travelMessage.settlement.page.detailSubHeader)
   }),
 
+  // parent url
+  parentUrl: (props: TravelSettlementDetailProps) => '/travel/settlement/requests',
+
   // action centre
   showActionCentre: true,
 

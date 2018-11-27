@@ -128,14 +128,14 @@ const config: CollectionConfig<IPurchase, AllProps> = {
     ?
     <Button 
       size= "small"
-      onClick = {() => callback.handleRedirectTo(`/purchase/approvals/details/${item.uid}`)}
+      onClick = {() => callback.handleRedirectTo(`/purchase/approvals/${item.uid}`)}
     >
       <FormattedMessage { ...layoutMessage.action.approve } />
     </Button>
     :
     <Button 
       size= "small"
-      onClick = {() => callback.handleRedirectTo(`/purchase/approvals/details/${item.uid}`)}
+      onClick = {() => callback.handleRedirectTo(`/purchase/approvals/${item.uid}`)}
     >
       <FormattedMessage { ...layoutMessage.action.details } />
     </Button>

@@ -124,7 +124,7 @@ const config: CollectionConfig<ITravelRequest, AllProps> = {
     <React.Fragment>
       <Button 
         size="small"
-        onClick={() => callback.handleRedirectTo(`/travel/approvals/request/${item.uid}`)}
+        onClick={() => callback.handleRedirectTo(`/travel/approvals/${item.uid}`)}
       >
         <FormattedMessage {...layoutMessage.action.details}/>
       </Button>

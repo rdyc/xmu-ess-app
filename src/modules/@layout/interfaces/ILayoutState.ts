@@ -6,6 +6,7 @@ import { Anchor } from '../types/Anchor';
 export interface ILayoutState {
   readonly theme: any;
   readonly view: IView | undefined;
+  readonly parentUrl: string | undefined;
   readonly anchor: Anchor;
   readonly isDrawerMenuVisible: boolean;
   readonly isDrawerActionVisible: boolean;

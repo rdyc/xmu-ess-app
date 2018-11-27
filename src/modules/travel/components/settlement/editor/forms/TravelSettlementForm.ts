@@ -1,12 +1,12 @@
 import { FormMode } from '@generic/types';
 import { connect } from 'react-redux';
-import { InjectedFormProps, reduxForm } from 'redux-form';
+import { formValueSelector, InjectedFormProps, reduxForm } from 'redux-form';
 import { TravelSettlementFormView } from './TravelSettlementFormView';
 
 const formName = 'travelSettlement';
 
 export type TravelSettlementItemFormData = {
-  uid: string | null ;
+  uid: string | null;
   employeeUid: string;
   fullName: string;
   transportType: string;
@@ -44,9 +44,10 @@ export type TravelSettlementFormData = {
     objective: string | null | undefined;
     target: string | null | undefined;
     comment: string | null | undefined;
+    total: number | null | undefined;
   },
   item: {
-    items: TravelSettlementItemFormData[]  
+    items: TravelSettlementItemFormData[]
   }
 };
 
@@ -54,11 +55,24 @@ interface OwnProps {
   formMode: FormMode;
 }
 
-export type TravelSettlementFormProps 
-  = InjectedFormProps<TravelSettlementFormData, OwnProps> 
+interface FormValueProps {
+  totalCostValue: number | 0;
+}
+
+export type TravelSettlementFormProps
+  = InjectedFormProps<TravelSettlementFormData, OwnProps>
+  & FormValueProps
   & OwnProps;
 
-const connectedView = connect()(TravelSettlementFormView);
+const selector = formValueSelector(formName);
+
+const mapStateToProps = (state: any): FormValueProps => {
+  const totalCost = selector(state, 'information.total');
+  return {
+    totalCostValue: totalCost
+  };
+};
+const connectedView = connect(mapStateToProps)(TravelSettlementFormView);
 
 export const TravelSettlementForm = reduxForm<TravelSettlementFormData, OwnProps>({
   form: formName,

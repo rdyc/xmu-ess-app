@@ -40,15 +40,15 @@ const timesheetEntrySummary: React.SFC<AllProps> = props => (
         label={props.intl.formatMessage(timesheetMessage.entry.field.activityType)}
         value={props.data.activity ? props.data.activity.value : 'N/A'}
       />
+    </Grid>
+
+    <Grid item xs={12} sm={6} md={3}>
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
         multiline={true}
         label={props.intl.formatMessage(timesheetMessage.entry.field.customerUid)}
         value={props.data.customer ? props.data.customer.name : 'N/A'}
       />
-    </Grid>
-
-    <Grid item xs={12} sm={6} md={3}>
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
         multiline={true}
@@ -60,24 +60,26 @@ const timesheetEntrySummary: React.SFC<AllProps> = props => (
         label={props.intl.formatMessage(timesheetMessage.entry.field.siteUid)}
         value={props.data.site ? props.data.site.name : 'N/A'}
       />
-      <TextField
-        {...GlobalStyle.TextField.ReadOnly}
-        label={props.intl.formatMessage(timesheetMessage.entry.field.siteValue)}
-        value={props.intl.formatNumber(props.data.site ? props.data.site.value : 0)}
-      />
-      <TextField
-        {...GlobalStyle.TextField.ReadOnly}
-        label={props.intl.formatMessage(timesheetMessage.entry.field.start)}
-        value={props.intl.formatTime(props.data.start, GlobalFormat.Time)}
-      />
-      <TextField
-        {...GlobalStyle.TextField.ReadOnly}
-        label={props.intl.formatMessage(timesheetMessage.entry.field.end)}
-        value={props.intl.formatTime(props.data.end, GlobalFormat.Time)}
-      />
+      {(props.data.mileageExceptionUid) ?
+        <TextField
+          {...GlobalStyle.TextField.ReadOnly}
+          label={props.intl.formatMessage(timesheetMessage.entry.field.siteValue)}
+          value={props.intl.formatNumber(((props.data.mileageException ? props.data.mileageException.percentage : 0) / 100) * (props.data.site ? props.data.site.value : 0))}
+        /> :
+        <TextField
+          {...GlobalStyle.TextField.ReadOnly}
+          label={props.intl.formatMessage(timesheetMessage.entry.field.siteValue)}
+          value={props.intl.formatNumber(props.data.site ? props.data.site.value : 0)}
+        />
+      }
     </Grid>
 
     <Grid item xs={12} sm={6} md={3}>
+      <TextField
+        {...GlobalStyle.TextField.ReadOnly}
+        label={props.intl.formatMessage(timesheetMessage.entry.field.officeTime)}
+        value={`${props.intl.formatTime(props.data.start, GlobalFormat.Time)} - ${props.intl.formatTime(props.data.end, GlobalFormat.Time)}`}
+      />
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
         label={props.intl.formatMessage(timesheetMessage.entry.field.totalHours)}
@@ -89,7 +91,7 @@ const timesheetEntrySummary: React.SFC<AllProps> = props => (
         label={props.intl.formatMessage(timesheetMessage.entry.field.notes)}
         value={props.data.description || 'N/A'}
       />
-      {(props.data.mileageExceptionUid) ?
+      {/* {(props.data.mileageExceptionUid) ?
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
           label={props.intl.formatMessage(timesheetMessage.entry.field.mileagePercentage)}
@@ -103,12 +105,12 @@ const timesheetEntrySummary: React.SFC<AllProps> = props => (
           label={props.intl.formatMessage(timesheetMessage.entry.field.mileageDescription)}
           value={props.data.mileageException && props.data.mileageException.description || 'N/A'}
         /> : ''
-      }
+      } */}
       {(props.data.mileageExceptionUid) ?
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
           multiline={true}
-          label={props.intl.formatMessage(timesheetMessage.entry.field.mileageReason)}
+          label={props.intl.formatMessage(timesheetMessage.entry.field.mileageException)}
           value={props.data.mileageException && props.data.mileageException.reason || 'N/A'}
         /> : ''
       }

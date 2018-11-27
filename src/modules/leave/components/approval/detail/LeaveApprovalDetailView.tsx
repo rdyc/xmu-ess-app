@@ -19,6 +19,9 @@ const config: SingleConfig<ILeaveRequestDetail, LeaveApprovalDetailProps> = {
     title: props.intl.formatMessage(leaveMessage.approval.page.detailTitle),
     description: props.intl.formatMessage(leaveMessage.approval.page.detailTitle)
   }),
+
+  // parent url
+  parentUrl: (props: LeaveApprovalDetailProps) => '/leave/approvals',
   
   // action centre
   showActionCentre: true,

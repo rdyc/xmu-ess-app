@@ -19,6 +19,9 @@ const config: SingleConfig<ITimesheetDetail, TimesheetApprovalHistoryDetailProps
     description: props.intl.formatMessage(timesheetMessage.entry.page.detailSubHeader),
   }),
 
+  // parent url
+  parentUrl: (props: TimesheetApprovalHistoryDetailProps) => '/timesheet/approvals/history',
+
   // action centre
   showActionCentre: true,
 
