@@ -157,7 +157,7 @@ export const menuLinkMapper = (menuUid: string) => {
       break;
 
     case 'MNU59':
-      path = '/lookup/mileageexception/list';
+      path = '/lookup/mileageexception';
       break;
 
     default:

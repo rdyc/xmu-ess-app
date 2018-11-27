@@ -10,6 +10,7 @@ import { TravelSettlementItemFormView } from './TravelSettlementItemFormView';
 
 interface OwnProps {
   context: WrappedFieldArrayProps<TravelSettlementItemFormData>;
+  onCostChange: (event: any, newValue: number, oldValue: number) => void;
 }
 
 interface OwnState {

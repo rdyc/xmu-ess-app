@@ -12,7 +12,6 @@ import { TimesheetEntryList } from './entry/list/TimesheetEntryList';
 
 const entry = (props: RouteComponentProps) => (
   <Switch>
-    <Route path={`${props.match.path}/form`} component={TimesheetEntryEditor} />
     <Route path={`${props.match.path}/history`} component={TimesheetEntryList} />
     <Route path={`${props.match.path}/:timesheetUid`} component={TimesheetEntryDetail} />
     <Route path={`${props.match.path}`} component={TimesheetEntryEditor} />

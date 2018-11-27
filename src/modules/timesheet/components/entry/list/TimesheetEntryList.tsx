@@ -71,15 +71,9 @@ const config: CollectionConfig<ITimesheet, AllProps> = {
       name: props.intl.formatMessage(layoutMessage.action.create),
       enabled: true,
       visible: true,
-      onClick: () => callback.handleRedirectTo(`/timesheet/entry/form`)
+      onClick: () => callback.handleRedirectTo(`/timesheet/entry`)
     }
   ]),
-
-  // data filter
-  filter: {
-    orderBy: 'uid',
-    direction: 'descending'
-  },
 
   // events
   onDataLoad: (props: AllProps, callback: CollectionHandler, params: CollectionDataProps, forceReload?: boolean | false) => {

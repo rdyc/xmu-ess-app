@@ -1,5 +1,7 @@
 import { Submission } from '@layout/components/submission/Submission';
-import { Grid } from '@material-ui/core';
+import { 
+  // Card, CardContent, CardHeader, 
+  Grid } from '@material-ui/core';
 import { PurchaseRequestDetailForm } from '@purchase/components/purchaseRequest/editor/forms/PurchaseRequestDetailForm';
 import { PurchaseRequestFormProps } from '@purchase/components/purchaseRequest/editor/forms/PurchaseRequestForm';
 import { PurchaseRequestItemForm } from '@purchase/components/purchaseRequest/editor/forms/PurchaseRequestItemForm';
@@ -10,9 +12,9 @@ export const PurchaseRequestFormView: React.SFC<PurchaseRequestFormProps> = prop
   const {
     formMode,
     formCustomer,
-    formIsCurrencyIDR, formRate, formValue,
+    formIsCurrencyIDR, formRate, 
     formRequest,
-    formCurrencyType, change, initialValues
+    formCurrencyType, change, initialValues,
   } = props;
 
   const fields = Object.getOwnPropertyNames(initialValues.information);
@@ -20,24 +22,17 @@ export const PurchaseRequestFormView: React.SFC<PurchaseRequestFormProps> = prop
   const onChangeCurrencyType = (event: any, newValue: string, oldValue: string) => {
     if (newValue === 'SCR01') {
       change('information.rate', 1);
-      change('information.requestIDR', formValue);
+      change('information.requestInIDR', formRequest);
     }
   };
 
   const onChangeRate = (event: any, newValue: number, oldValue: number) => {
-    change('information.requestIDR', newValue * formValue);
+    change('information.requestInIDR', newValue * formRequest);
   };
 
   const onChangeValueIdr = (event: any, newValue: number, oldValue: number) => {
-    change('information.requestIDR', newValue * formRate);
+    change('information.requestInIDR', newValue * formRate);
   };
-  
-  const onChangeValueRequest = (event: any, newValue: number, oldValue: number) => {
-    change('information.request', formRequest );
-  };
-  // const onChangeItemRequest = (event: any, newValue: number, oldValue: number) => {
-  //    change('information.request', oldValue);
-  // };
 
   const componentInformation = (context: BaseFieldsProps) => (
     <PurchaseRequestDetailForm
@@ -49,14 +44,12 @@ export const PurchaseRequestFormView: React.SFC<PurchaseRequestFormProps> = prop
       onChangeCurrencyType={onChangeCurrencyType}
       onChangeRate={onChangeRate}
       onChangeValueIdr={onChangeValueIdr}
-      onChangeRequest={onChangeValueRequest}
     />
   );
 
   const componentItems = (context: WrappedFieldArrayProps<any>) => (
   <PurchaseRequestItemForm 
   context={context}
-  onRequestChange={onChangeValueRequest}
   />
   );
 
@@ -78,13 +71,21 @@ export const PurchaseRequestFormView: React.SFC<PurchaseRequestFormProps> = prop
           </FormSection>
         </Grid>
 
-        <Grid item xs={12} md={8}>
+        <Grid container spacing={16} item xs={12} md={8}>
           <FormSection name="items">
             <FieldArray
               name="items"
               component={componentItems}
             />
           </FormSection>
+        </Grid>
+        
+        <Grid item md={4}>
+          <Submission
+            valid={true}
+            reset={props.reset}
+            submitting={props.submitting}
+          />
         </Grid>
 
         {/* <Grid item xs={12} md={4}>
@@ -99,16 +100,6 @@ export const PurchaseRequestFormView: React.SFC<PurchaseRequestFormProps> = prop
         </Card>
       </Grid> */}
       
-        <Grid item 
-        // xs={12} 
-        md={4}>
-          <Submission
-            // valid={props.valid}
-            valid={true}
-            reset={props.reset}
-            submitting={props.submitting}
-          />
-        </Grid>
       </Grid>
     </form>
   );

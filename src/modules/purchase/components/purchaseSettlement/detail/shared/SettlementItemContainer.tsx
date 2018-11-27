@@ -24,7 +24,7 @@ const settlementItemContainer: React.SFC<AllProps> = props => {
     {
       data &&
         <Grid container item xs={12}>
-          {/* <Grid container spacing={16}> */}
+          <Grid container spacing={16}>
             {
               data.items &&
               data.items.map((item, index) =>
@@ -35,7 +35,7 @@ const settlementItemContainer: React.SFC<AllProps> = props => {
                 </Grid>
               )
             }
-          {/* </Grid> */}
+          </Grid>
         </Grid>
     }
   </React.Fragment>

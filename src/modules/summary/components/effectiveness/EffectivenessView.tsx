@@ -1,16 +1,17 @@
-import {  Card, CardContent, Grid, Paper, Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@material-ui/core';
+import { layoutMessage } from '@layout/locales/messages';
+import {  Card, CardContent, Grid, Paper, Table, TableBody, TableCell, TableHead, TableRow } from '@material-ui/core';
 import { isWidthDown } from '@material-ui/core/withWidth';
 import { ISummaryEffectiveness } from '@summary/classes/response/effectiveness';
 import { EffectivenessProps } from '@summary/components/effectiveness/Effectiveness';
+import { summaryMessage } from '@summary/locales/messages/summaryMessage';
 import * as classNames from 'classnames';
 import * as React from 'react';
-import { FormattedMessage, } from 'react-intl';
 import { isArray } from 'util';
 import { FilterForm } from './filterForm/FilterForm';
 
 export const EffectivenessView: React.SFC<EffectivenessProps> = props => {
   const { isLoading, response } = props.summaryState.effectiveness;
-  const { width, classes, handleChangeFilter } = props;
+  const { width, classes, handleChangeFilter, intl } = props;
 
   const isMobile = isWidthDown('sm', width);
 
@@ -63,46 +64,46 @@ export const EffectivenessView: React.SFC<EffectivenessProps> = props => {
           <TableCell 
             className={classNames(classes.cellWidthSm, classes.stickyHeader)}
           >
-            <FormattedMessage id="summary.effectiveness.tableHead.name" />
+            {intl.formatMessage(summaryMessage.effectiveness.header.name)}
           </TableCell>
           <TableCell
             className={classNames(classes.cellWidthMd, classes.stickyHeader)}
           >
-            <FormattedMessage id="summary.effectiveness.tableHead.positionRole" />
+            {intl.formatMessage(summaryMessage.effectiveness.header.positionRole)}
           </TableCell>
           <TableCell
             className={classNames(classes.cellWidthMd, classes.stickyHeader)}
           >
-            <FormattedMessage id="summary.effectiveness.tableHead.project" />
+            {intl.formatMessage(summaryMessage.effectiveness.header.project)}
           </TableCell>
           <TableCell
             className={classNames(classes.cellWidthSm, classes.stickyHeader)}
           >
-            <FormattedMessage id="summary.effectiveness.tableHead.customer" />
+            {intl.formatMessage(summaryMessage.effectiveness.header.customer)}
           </TableCell>
           <TableCell 
             numeric
             className={classNames(classes.cellWidthXS, classes.stickyHeader)}
           >
-            <FormattedMessage id="summary.effectiveness.tableHead.allocated" />
+            {intl.formatMessage(summaryMessage.effectiveness.header.allocated)}
           </TableCell>
           <TableCell 
             numeric
             className={classNames(classes.cellWidthXS, classes.stickyHeader)}
           >
-            <FormattedMessage id="summary.effectiveness.tableHead.actual" />
+            {intl.formatMessage(summaryMessage.effectiveness.header.actual)}
           </TableCell>
           <TableCell 
             numeric
             className={classNames(classes.cellWidthXS, classes.stickyHeader)}
           >
-            <FormattedMessage id="summary.effectiveness.tableHead.remaining" />
+            {intl.formatMessage(summaryMessage.effectiveness.header.remaining)}
           </TableCell>
           <TableCell 
             numeric
             className={classNames(classes.cellWidthXS, classes.stickyHeader)}
           >
-            <FormattedMessage id="summary.effectiveness.tableHead.progress" />
+            {intl.formatMessage(summaryMessage.effectiveness.header.progress)}
           </TableCell>
         </TableRow>
       </TableHead>
@@ -118,7 +119,6 @@ export const EffectivenessView: React.SFC<EffectivenessProps> = props => {
 
   const render = (
     <React.Fragment>
-      {isLoading && response && <Typography variant="body2">loading</Typography>}     
       <Grid container spacing={8}>
         <Grid item xs={12}>
           <Card
@@ -133,6 +133,11 @@ export const EffectivenessView: React.SFC<EffectivenessProps> = props => {
         </Grid>
         <Grid item xs={12}>
           {
+            isLoading && 
+            intl.formatMessage(layoutMessage.text.loading)
+          }     
+          {
+            !isLoading &&
             response &&
             <Paper 
               square 

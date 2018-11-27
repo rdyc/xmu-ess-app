@@ -72,10 +72,10 @@ const config: CollectionConfig<IProject, AllProps> = {
   ]),
 
   // data filter
-  filter: {
-    orderBy: 'uid',
-    direction: 'descending'
-  },
+  // filter: {
+  //   orderBy: 'uid',
+  //   direction: 'descending'
+  // },
 
   // events
   onDataLoad: (states: AllProps, callback: CollectionHandler, params: CollectionDataProps, forceReload?: boolean | false) => {
