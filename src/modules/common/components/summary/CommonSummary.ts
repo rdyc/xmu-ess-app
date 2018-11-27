@@ -13,7 +13,7 @@ import {
 import AppMenu from '@constants/AppMenu';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
-import { CommonListView } from './CommonListView';
+import { CommonSummaryView } from './CommonSummaryView';
 
 interface OwnOption {
 }
@@ -89,10 +89,10 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<CommonListProps, OwnState> = {
   }
 };
 
-export const CommonList = compose<CommonListProps, OwnOption>(
+export const CommonSummary = compose<CommonListProps, OwnOption>(
   withLayout,
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
   lifecycle(lifeCycleFunctions)
-)(CommonListView);
+)(CommonSummaryView);

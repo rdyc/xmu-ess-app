@@ -1,9 +1,9 @@
 import { layoutMessage } from '@layout/locales/messages';
 import { Button, Card, CardActions, CardContent, CardHeader, Grid, Typography } from '@material-ui/core';
 import * as React from 'react';
-import { CommonListProps } from './CommonList';
+import { CommonListProps } from './CommonSummary';
 
-export const CommonListView: React.SFC<CommonListProps> = props => {
+export const CommonSummaryView: React.SFC<CommonListProps> = props => {
   const { editableTypes, intl } = props;
 
   const RenderTypes = () => (
