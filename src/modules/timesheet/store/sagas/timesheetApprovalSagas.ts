@@ -1,6 +1,7 @@
 import { layoutAlertAdd } from '@layout/store/actions';
 import {
   TimesheetApprovalAction as Action,
+  timesheetApprovalGetAllDispose,
   timesheetApprovalGetAllError,
   timesheetApprovalGetAllRequest,
   timesheetApprovalGetAllSuccess,
@@ -10,9 +11,6 @@ import {
   timesheetApprovalPostBulkError,
   timesheetApprovalPostBulkRequest,
   timesheetApprovalPostBulkSuccess,
-  // timesheetApprovalPostError,
-  // timesheetApprovalPostRequest,
-  // timesheetApprovalPostSuccess,
 } from '@timesheet/store/actions';
 import { flattenObject } from '@utils/flattenObject';
 import saiyanSaga from '@utils/saiyanSaga';
@@ -50,7 +48,7 @@ function* watchAllFetchRequest() {
         }))
       ]),
       finallyEffects: [
-        // put(listBarLoading(false))
+
       ]
     });
   };
@@ -139,6 +137,7 @@ function* watchPostBulkRequest() {
       path: `/v1/approvals/timesheet/${action.payload.companyUid}/${action.payload.positionUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
+        put(timesheetApprovalGetAllDispose()),
         put(timesheetApprovalPostBulkSuccess(response.body))
       ],
       successCallback: (response: IApiResponse) => {
@@ -181,7 +180,6 @@ function* timesheetApprovalSagas() {
   yield all([
     fork(watchAllFetchRequest),
     fork(watchByIdFetchRequest),
-    // fork(watchPostRequest),
     fork(watchPostBulkRequest)
   ]);
 }

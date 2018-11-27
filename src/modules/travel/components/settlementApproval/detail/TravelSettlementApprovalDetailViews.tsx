@@ -24,6 +24,9 @@ const config: SingleConfig<ITravelSettlementDetail, TravelSettlementApprovalDeta
     title: props.intl.formatMessage(travelMessage.settlementApproval.page.detailTitle),
     description: props.intl.formatMessage(travelMessage.settlementApproval.page.detailTitle)
   }),
+
+  // parent url
+  parentUrl: (props: TravelSettlementApprovalDetailProps) => '/travel/settlement/approvals',
   
   // action centre
   showActionCentre: true,

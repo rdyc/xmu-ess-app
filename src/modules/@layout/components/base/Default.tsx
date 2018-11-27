@@ -92,7 +92,7 @@ const root: React.SFC<AllProps> = props => {
         <div className={classes.heroUnit}>
           <div className={classes.heroContent}>
             <Typography component="h1" variant="title" align="center" color="textPrimary" gutterBottom>
-              Welcome brothers...
+              Welcome to new TESSA
             </Typography>
             <Typography variant="subheading" align="center" color="textSecondary" paragraph>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.

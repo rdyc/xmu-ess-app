@@ -56,20 +56,14 @@ const config: CollectionConfig<IPurchase, AllProps> = {
   // more
   hasMore: true,
   moreOptions: (props: AllProps, callback: CollectionHandler): IAppBarMenu[] => ([
-  {
-    id: PurchaseUserAction.Refresh,
-    name: props.intl.formatMessage(layoutMessage.action.refresh),
-    enabled: true,
-    visible: true,
-    onClick: () => callback.handleForceReload()
-  },
-]),
-
-  // data filter
-  filter: {
-    orderBy: 'requestStatusType',
-    direction: 'ascending'
-  },
+    {
+      id: PurchaseUserAction.Refresh,
+      name: props.intl.formatMessage(layoutMessage.action.refresh),
+      enabled: true,
+      visible: true,
+      onClick: () => callback.handleForceReload()
+    },
+  ]),
 
   // events
   onDataLoad: (states: AllProps, callback: CollectionHandler, params: CollectionDataProps, forceReload?: boolean | false) => {
@@ -128,14 +122,14 @@ const config: CollectionConfig<IPurchase, AllProps> = {
     ?
     <Button 
       size= "small"
-      onClick = {() => callback.handleRedirectTo(`/purchase/approvals/details/${item.uid}`)}
+      onClick = {() => callback.handleRedirectTo(`/purchase/approvals/${item.uid}`)}
     >
       <FormattedMessage { ...layoutMessage.action.approve } />
     </Button>
     :
     <Button 
       size= "small"
-      onClick = {() => callback.handleRedirectTo(`/purchase/approvals/details/${item.uid}`)}
+      onClick = {() => callback.handleRedirectTo(`/purchase/approvals/${item.uid}`)}
     >
       <FormattedMessage { ...layoutMessage.action.details } />
     </Button>
