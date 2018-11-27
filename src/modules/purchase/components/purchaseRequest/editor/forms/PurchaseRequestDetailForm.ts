@@ -20,10 +20,11 @@ interface OwnProps {
   formCurrencyType: string | null | undefined;
   formCustomer: string | null | undefined;
   isCurrencyIdr: boolean;
+  // requestValue: number | undefined;
   onChangeCurrencyType: (event: any, newValue: string, oldValue: string) => void;
   onChangeRate: (event: any, newValue: number, oldValue: number) => void;
   onChangeValueIdr: (event: any, newValue: number, oldValue: number) => void;
-  onChangeRequest: (event: any, newValue: number, oldValue: number) => void;
+  // onChangeRequest: (event: any, newValue: number, oldValue: number) => void;
 }
 
 interface OwnHandlers {
@@ -44,9 +45,7 @@ const handlerCreators: HandleCreators<PurchaseRequestDetailFormProps, OwnHandler
       formCurrencyType, isCurrencyIdr, 
       onChangeCurrencyType, onChangeValueIdr, 
       onChangeRate,
-      // onChangeRequestItem
     } = props;
-    // const { user } = props.userState;
     
     const projectFilter: any = {
       customerUids: formCustomer,
@@ -92,6 +91,7 @@ const handlerCreators: HandleCreators<PurchaseRequestDetailFormProps, OwnHandler
         fieldProps = {
           required: true,
           category: 'currency',
+          label: intl.formatMessage(purchaseMessage.request.field.currencyType),
           placeholder: intl.formatMessage(purchaseMessage.request.field.currencyTypePlaceholder),
           component: SelectSystem,
           onChange: onChangeCurrencyType
@@ -101,6 +101,7 @@ const handlerCreators: HandleCreators<PurchaseRequestDetailFormProps, OwnHandler
       case 'date': 
         fieldProps = {
           required: true,
+          label: intl.formatMessage(purchaseMessage.request.field.date),
           placeholder: intl.formatMessage(purchaseMessage.request.field.datePlaceholder),
           component: InputDate
         };
@@ -129,7 +130,7 @@ const handlerCreators: HandleCreators<PurchaseRequestDetailFormProps, OwnHandler
         };
         break;
 
-       case 'requestIDR':
+       case 'requestInIDR':
          fieldProps = {
            type: 'number',
            label: intl.formatMessage(purchaseMessage.request.field.requestInIDR),
@@ -170,6 +171,5 @@ const handlerCreators: HandleCreators<PurchaseRequestDetailFormProps, OwnHandler
 
 export const PurchaseRequestDetailForm = compose<PurchaseRequestDetailFormProps, OwnProps>(
   injectIntl,
-  // withUser,
   withHandlers<PurchaseRequestDetailFormProps, OwnHandlers>(handlerCreators),
 )(PurchaseRequestDetailFormView);

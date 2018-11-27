@@ -26,8 +26,8 @@ const config: CollectionConfig<ISettlement, AllProps> = {
   parentUid: AppMenu.Purchase,
   // title: intl.formatMessage({ id: 'purchase.title' }),
   // description: intl.formatMessage({ id: 'purchase.subTitle' }),
-  title: props.intl.formatMessage(purchaseMessage.approval.pages.listTitle),
-  description: 'Lorem ipsum.',
+  title: props.intl.formatMessage(purchaseMessage.s_approval.pages.listTitle),
+  description: props.intl.formatMessage(purchaseMessage.s_approval.pages.listSubHeader),
   }),
 
   // top bar
@@ -66,12 +66,6 @@ const config: CollectionConfig<ISettlement, AllProps> = {
     },
   ]),
 
-  // data filter
-  filter: {
-    orderBy: 'settlementStatusType',
-    direction: 'ascending'
-  },
-
   // events
   onDataLoad: (states: AllProps, callback: CollectionHandler, params: CollectionDataProps, forceReload?: boolean | false) => {
     const { user } = states.userState;
@@ -86,6 +80,7 @@ const config: CollectionConfig<ISettlement, AllProps> = {
           filter: {
             companyUid: user.company.uid,
             positionUid: user.position.uid,
+            status: 'pending',
             'query.find': params.find,
             'query.findBy': params.findBy,
             'query.orderBy': params.orderBy,
@@ -106,9 +101,9 @@ const config: CollectionConfig<ISettlement, AllProps> = {
     callback.handleLoading(isLoading);
     callback.handleResponse(response);
   },
-  onBind: (item: ISettlement, index: number) => ({
+  onBind: (item: ISettlement, index: number, props: AllProps) => ({
     key: index,
-    primary: `${item.currency && item.currency.value} ${item.request}` || item.notes || '',
+    primary: `${item.currency && item.currency.value} ${props.intl.formatNumber(item.actual || 0)}` ||  '',
     secondary: item.projectUid || item.project && item.project.name || '',
     tertiary: item.customer && item.customer.name || item.customerUid || '',
     quaternary: item.uid,

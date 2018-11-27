@@ -18,10 +18,10 @@ import {
 } from 'recompose';
 
 interface OwnHandler {
-  handlePurchaseModify: () => void;
-  handlePurchaseSettle: () => void; 
-  handleDialogClose: () => void;
-  handleDialogConfirmed: () => void;
+  handleOnModify: () => void;
+  handleOnSettle: () => void; 
+  handleOnCloseDialog: () => void;
+  handleOnConfirm: () => void;
 }
 
 interface OwnState {
@@ -89,18 +89,18 @@ const stateUpdaters: StateUpdaters<PurchaseSettlementDetailProps, OwnState, OwnS
 };
 
 const handlerCreators: HandleCreators<PurchaseSettlementDetailProps, OwnHandler> = {
-  handlePurchaseModify: (props: PurchaseSettlementDetailProps) => () => {
+  handleOnModify: (props: PurchaseSettlementDetailProps) => () => {
     props.setModify();
   },
   
-  handlePurchaseSettle: (props: PurchaseSettlementDetailProps) => () => {
+  handleOnSettle: (props: PurchaseSettlementDetailProps) => () => {
     props.setSettle();
   },
 
-  handleDialogClose: (props: PurchaseSettlementDetailProps) => () => {
+  handleOnCloseDialog: (props: PurchaseSettlementDetailProps) => () => {
     props.setDefault();
   },
-  handleDialogConfirmed: (props: PurchaseSettlementDetailProps) => () => {
+  handleOnConfirm: (props: PurchaseSettlementDetailProps) => () => {
     const { response } = props.purchaseSettlementState.detail;
     
     let status: string | null | undefined;
@@ -115,9 +115,30 @@ const handlerCreators: HandleCreators<PurchaseSettlementDetailProps, OwnHandler>
       purchaseUid = response.data.uid;
     }
 
-    props.setDefault();
+    const actions = [
+      PurchaseUserAction.Modify,
+      PurchaseUserAction.Settle,
+    ];
 
-    props.history.push('/purchase/settlements/form/', { uid: purchaseUid, statusType: status });
+    if (actions.indexOf(props.action) !== -1) {
+      let next: string = '404';
+
+      switch (props.action) {
+        case PurchaseUserAction.Modify:
+          next = '/purchase/settlements/form/';
+          break;
+        case PurchaseUserAction.Settle:
+          next = '/purchase/settlements/form/';
+          break;
+
+        default:
+          break;
+      }
+
+      props.setDefault();
+
+      props.history.push(next, { uid: purchaseUid, statusType: status });
+    }
   },
 };
 

@@ -1,5 +1,12 @@
+import { ICommonSystem } from '@common/classes';
+import { ICompanyList } from '@lookup/classes/response';
+
 export interface ILookupRole {
-    uid: string;
-    name: string;
-    description: string | null;
+  uid: string;
+  companyUid: string;
+  company: ICompanyList;
+  gradeType: string | null;
+  grade: ICommonSystem | null;
+  name: string;
+  description: string | null;
 }

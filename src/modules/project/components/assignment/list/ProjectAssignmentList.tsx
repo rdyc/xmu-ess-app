@@ -68,13 +68,7 @@ const config: CollectionConfig<IProjectAssignment, AllProps> = {
       onClick: () => callback.handleRedirectTo(`/project/assignments/form`)
     }
   ]),
-
-  // data filter
-  filter: {
-    orderBy: 'uid',
-    direction: 'descending'
-  },
-
+  
   // events
   onDataLoad: (states: AllProps, callback: CollectionHandler, params: CollectionDataProps, forceReload?: boolean | false) => {
     const { user } = states.userState;
