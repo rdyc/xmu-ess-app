@@ -1,4 +1,4 @@
-import { currencyConfirm, currencyField, currencyPage } from './currency/currencyMessage';
+import { currencyConfirm, currencyField, currencyForm, currencyMessage, currencyPage, currencySection } from './currency/currencyMessage';
 import { mileageExceptionConfirm, mileageExceptionField, mileageExceptionPage } from './mileageException';
 
 export const lookupMessage = {
@@ -11,6 +11,9 @@ export const lookupMessage = {
     page: currencyPage,
     field: currencyField,
     confirm: currencyConfirm,
+    section: currencySection,
+    form: currencyForm,
+    message: currencyMessage
   }
 
 };
