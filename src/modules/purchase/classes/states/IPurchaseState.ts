@@ -3,7 +3,7 @@ import {
   IPurchaseApprovalGetAllRequest,
   IPurchaseApprovalGetByIdRequest,
   IPurchaseApprovalPostRequest,
-} from '@purchase/classes/queries/purchaseHistories';
+} from '@purchase/classes/queries/purchaseApproval';
 import {
   IPurchaseGetAllRequest,
   IPurchaseGetByIdRequest,
@@ -20,7 +20,7 @@ import {
   ISettlementApprovalGetAllRequest,
   ISettlementApprovalGetByIdRequest,
   ISettlementApprovalPostRequest,
-} from '@purchase/classes/queries/settlementHistories';
+} from '@purchase/classes/queries/settlementApproval';
 import { IPurchase, IPurchaseDetail } from '@purchase/classes/response/purchaseRequest';
 import { ISettlement, ISettlementDetail } from '@purchase/classes/response/purchaseSettlement';
 

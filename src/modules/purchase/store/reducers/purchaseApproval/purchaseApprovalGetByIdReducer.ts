@@ -1,5 +1,5 @@
 import { IQuerySingleState } from '@generic/interfaces';
-import { IPurchaseApprovalGetByIdRequest } from '@purchase/classes/queries/purchaseHistories';
+import { IPurchaseApprovalGetByIdRequest } from '@purchase/classes/queries/purchaseApproval';
 import { IPurchaseDetail } from '@purchase/classes/response/purchaseRequest';
 import { PurchaseApprovalAction as Action } from '@purchase/store/actions';
 import { Reducer } from 'redux';
