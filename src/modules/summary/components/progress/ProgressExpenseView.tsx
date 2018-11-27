@@ -55,7 +55,7 @@ export const ProgressExpenseView: React.SFC<AllProps> = props => {
                 numeric
                 className= {classNames(classes.stickyHeader)}
               >
-                {summaryMessage.progress.header.amount}
+                {intl.formatMessage(summaryMessage.progress.header.amount)}
               </TableCell>
             </TableRow>
           </TableHead>
@@ -86,7 +86,7 @@ export const ProgressExpenseView: React.SFC<AllProps> = props => {
       </DialogContent>
       <DialogActions>
         <Button onClick={handleDialogClose} color="primary">
-          {summaryMessage.progress.dialog.close}
+          {intl.formatMessage(summaryMessage.progress.dialog.close)}
         </Button>
       </DialogActions>
     </Dialog>
