@@ -4,6 +4,7 @@ import {
   projectOwnerPutError,
   projectOwnerPutRequest,
   projectOwnerPutSuccess,
+  projectRegistrationGetByIdDispose,
 } from '@project/store/actions';
 import { flattenObject } from '@utils/flattenObject';
 import saiyanSaga from '@utils/saiyanSaga';
@@ -18,6 +19,7 @@ function* watchPutRequest() {
       path: `/v1/project/registrations/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.projectUid}/owner`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
+        put(projectRegistrationGetByIdDispose()),
         put(projectOwnerPutSuccess(response.body))
       ],
       successCallback: (response: IApiResponse) => {

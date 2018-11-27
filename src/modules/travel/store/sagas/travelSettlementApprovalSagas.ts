@@ -92,8 +92,8 @@ function* watchPostFetchRequest() {
       path: `/v1/approvals/travel/settlement/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.travelSettlementUid}`, 
       payload: action.payload.data, 
       successEffects: (response: IApiResponse) => [
-        put(travelSettlementApprovalPostSuccess(response.body)),
-        put(travelSettlementApprovalGetAllDispose())
+        put(travelSettlementApprovalGetAllDispose()),
+        put(travelSettlementApprovalPostSuccess(response.body))
       ],
       successCallback: (response: IApiResponse) => {
         action.payload.resolve(response.body.data);

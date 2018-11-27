@@ -4,6 +4,7 @@ import {
   expenseApprovalGetAllError,
   expenseApprovalGetAllRequest,
   expenseApprovalGetAllSuccess,
+  expenseApprovalGetByIdDispose,
   expenseApprovalGetByIdError,
   expenseApprovalGetByIdRequest,
   expenseApprovalGetByIdSuccess,
@@ -91,8 +92,9 @@ function* watchApprovalPostFetchRequest() {
       path: `/v1/approvals/expense/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.expenseUid}`, 
       payload: action.payload.data, 
       successEffects: (response: IApiResponse) => [
-        put(expenseApprovalPostSuccess(response.body)),
         put(expenseApprovalGetAllDispose()),
+        put(expenseApprovalGetByIdDispose()),
+        put(expenseApprovalPostSuccess(response.body)),
       ], 
       successCallback: (response: IApiResponse) => {
         action.payload.resolve(response.body.data);

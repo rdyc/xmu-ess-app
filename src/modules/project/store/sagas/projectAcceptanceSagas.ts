@@ -101,9 +101,9 @@ function* watchPostRequest() {
       path: `/v1/project/assignments/acceptances/${action.payload.assignmentUid}/${action.payload.assignmentItemUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
-        put(projectAcceptancePostSuccess(response.body)),
         put(projectAcceptanceGetAllDispose()),
-        put(projectAcceptanceGetByIdDispose())
+        put(projectAcceptanceGetByIdDispose()),
+        put(projectAcceptancePostSuccess(response.body))
       ],
       successCallback: (response: IApiResponse) => {
         action.payload.resolve(response.body.data);

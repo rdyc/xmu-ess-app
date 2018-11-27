@@ -156,7 +156,7 @@ const handlerCreators: HandleCreators<EntryEditorProps, OwnHandlers> = {
       time: new Date()
     });
 
-    history.push(`/timesheet/entry/${response.uid}`);
+    history.push(`/timesheet/requests/${response.uid}`);
   },
   handleSubmitFail: (props: EntryEditorProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
     const { formMode, intl } = props;

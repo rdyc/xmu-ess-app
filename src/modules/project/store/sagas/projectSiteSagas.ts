@@ -1,9 +1,10 @@
-import { layoutAlertAdd, listBarLoading, listBarMetadata } from '@layout/store/actions';
+import { layoutAlertAdd } from '@layout/store/actions';
 import {
   ProjectSiteAction as Action,
   projectSiteDeleteError,
   projectSiteDeleteRequest,
   projectSiteDeleteSuccess,
+  projectSiteGetDispose,
   projectSiteGetError,
   projectSiteGetRequest,
   projectSiteGetSuccess,
@@ -26,8 +27,7 @@ function* watchGetRequest() {
       method: 'get',
       path: `/v1/project/sites/${action.payload.companyUid}/${action.payload.projectUid}`,
       successEffects: (response: IApiResponse) => [
-        put(projectSiteGetSuccess(response.body)),
-        put(listBarMetadata(response.body.metadata))
+        put(projectSiteGetSuccess(response.body))
       ],
       failureEffects: (response: IApiResponse) => [
         put(projectSiteGetError(response.body)),
@@ -48,7 +48,9 @@ function* watchGetRequest() {
           })
         )
       ],
-      finallyEffects: [put(listBarLoading(false))]
+      finallyEffects: [
+        
+      ]
     });
   };
 
@@ -62,6 +64,7 @@ function* watchPostRequest() {
       path: `/v1/project/sites/${action.payload.companyUid}/${action.payload.projectUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
+        put(projectSiteGetDispose()),
         put(projectSitePostSuccess(response.body))
       ],
       successCallback: (response: IApiResponse) => {
@@ -107,6 +110,7 @@ function* watchPutRequest() {
       path: `/v1/project/sites/${action.payload.companyUid}/${action.payload.projectUid}/${action.payload.siteUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
+        put(projectSiteGetDispose()),
         put(projectSitePutSuccess(response.body))
       ],
       successCallback: (response: IApiResponse) => {
@@ -152,6 +156,7 @@ function* watchDeleteRequest() {
       method: 'delete',
       path: `/v1/project/sites/${action.payload.companyUid}/${action.payload.projectUid}/${action.payload.siteUid}`,
       successEffects: (response: IApiResponse) => [
+        put(projectSiteGetDispose()),
         put(projectSiteDeleteSuccess(response.body))
       ],
       successCallback: (response: IApiResponse) => {
