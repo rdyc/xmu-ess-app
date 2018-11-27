@@ -24,8 +24,6 @@ export const LookupRoutingComponents: React.SFC<RouteComponentProps> = props => 
   <Switch>
     <Layout>
       <Route path={`${props.match.path}/mileageexception`} component={mileageException} />
-    </Layout>
-    <Layout>
       <Route path={`${props.match.path}/currency`} component={currency} />
     </Layout>
   </Switch>

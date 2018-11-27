@@ -14,8 +14,8 @@ import { CurrencyField, CurrencyUserAction } from '@lookup/classes/types';
 import { CurrencySummary } from '@lookup/components/currency/detail/shared/CurrencySummary';
 import { currencyFieldTranslator } from '@lookup/helper';
 import { withLookupCurrency, WithLookupCurrency } from '@lookup/hoc/currency/withLookupCurrency';
+import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
 import { Button } from '@material-ui/core';
-// import { currencyMessage } from '@lookup/locales/messages/currency/currencyMessage';
 import * as moment from 'moment';
 import * as React from 'react';
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
@@ -31,10 +31,10 @@ const config: CollectionConfig<ICurrency, AllProps> = {
   page: (props: AllProps) => ({
     uid: AppMenu.LookupCurrency,
     parentUid: AppMenu.Lookup,
-    // title: props.intl.formatMessage(currencyMessage.request.pages.listTitle),
-    title: 'Currency Mock Up',
-    // description: props.intl.formatMessage(currencyMessage.request.pages.listSubHeader),
-    description: 'Currency Mock Up',
+    title: props.intl.formatMessage(lookupMessage.currency.page.listTitle),
+    // title: 'Currency Mock Up',
+    description: props.intl.formatMessage(lookupMessage.currency.page.listTitle),
+    // description: 'Currency Mock Up',
   }),
 
   // top bar
@@ -113,7 +113,7 @@ const config: CollectionConfig<ICurrency, AllProps> = {
     key: index,
     primary: `${item.symbol}` ||  '',
     secondary: `${item.rate}` || '',
-    tertiary: '',
+    tertiary: `${item.name}` || '',
     quaternary: '',
     quinary: item.uid || '',
     senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'

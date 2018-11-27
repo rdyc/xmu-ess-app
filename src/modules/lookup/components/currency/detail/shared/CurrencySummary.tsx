@@ -2,8 +2,8 @@ import { layoutMessage } from '@layout/locales/messages';
 import { GlobalFormat } from '@layout/types';
 import { GlobalStyle } from '@layout/types/GlobalStyle';
 import { ICurrency } from '@lookup/classes/response/currency';
+import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
 import { Grid, TextField } from '@material-ui/core';
-// import { currencyMessages } from '@lookup/locales/messages/currency/currencyMessages';
 import * as React from 'react';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose } from 'recompose';
@@ -22,14 +22,14 @@ const currencySummary: React.SFC<AllProps> = props => (
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
         margin="dense"
-        // label={props.intl.formatMessage(currencyMessages.field.uid)}
+        label={props.intl.formatMessage(lookupMessage.currency.field.uid)}
         value={props.data.uid}
       />
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
         multiline={true}
         margin="dense"
-        // label={props.intl.formatMessage(currencyMessages.field.name)}
+        label={props.intl.formatMessage(lookupMessage.currency.field.name)}
         value={props.data.name || 'N/A'}
       />
     </Grid>
@@ -38,21 +38,21 @@ const currencySummary: React.SFC<AllProps> = props => (
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
         margin="dense"
-        // label={props.intl.formatMessage(currencyMessages.request.field.symbol)}
+        label={props.intl.formatMessage(lookupMessage.currency.field.symbol)}
         value={props.data.symbol || 'N/A'}
         multiline
       />
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
         margin="dense"
-        // label={props.intl.formatMessage(currencyMessages.request.field.rate)}
+        label={props.intl.formatMessage(lookupMessage.currency.field.rate)}
         value={props.data.rate || 0}
         multiline
       />
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
         margin="dense"
-        // label={props.intl.formatMessage(currencyMessages.request.field.isActive)}
+        label={props.intl.formatMessage(lookupMessage.currency.field.isActive)}
         value={`${props.data.isActive}`}
       />
     </Grid>

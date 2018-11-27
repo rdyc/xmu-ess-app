@@ -1,3 +1,4 @@
+import { currencyConfirm, currencyField, currencyPage } from './currency/currencyMessage';
 import { mileageExceptionConfirm, mileageExceptionField, mileageExceptionPage } from './mileageException';
 
 export const lookupMessage = {
@@ -7,9 +8,9 @@ export const lookupMessage = {
     confirm: mileageExceptionConfirm, 
   },
   currency: {
-    // page: ,
-    // field: ,
-    // confirm: ,
+    page: currencyPage,
+    field: currencyField,
+    confirm: currencyConfirm,
   }
 
 };

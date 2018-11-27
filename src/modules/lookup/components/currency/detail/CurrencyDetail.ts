@@ -3,6 +3,7 @@ import { layoutMessage } from '@layout/locales/messages';
 import { CurrencyUserAction } from '@lookup/classes/types';
 import { CurrencyDetailView } from '@lookup/components/currency/detail/CurrencyDetailView';
 import { WithLookupCurrency, withLookupCurrency } from '@lookup/hoc/currency/withLookupCurrency';
+import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
 // import { currencyMessage } from '@lookup/locales/messages/currency/currencyMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
@@ -61,10 +62,10 @@ const stateUpdaters: StateUpdaters<CurrencyDetailProps, OwnState, OwnStateUpdate
     action: CurrencyUserAction.Modify,
     dialogFullScreen: false,
     dialogOpen: true,
-    // dialogTitle: props.intl.formatMessage(currencyMessage.confirm.modifyTitle),
-    // dialogContent: props.intl.formatMessage(currencyMessage.confirm.modifyDescription),
-    dialogTitle: 'Modify?',
-    dialogContent: 'Modify content.',
+    dialogTitle: props.intl.formatMessage(lookupMessage.currency.confirm.modifyTitle),
+    dialogContent: props.intl.formatMessage(lookupMessage.currency.confirm.modifyDescription),
+    // dialogTitle: 'Modify?',
+    // dialogContent: 'Modify content.',
     dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.disaggree),
     dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.aggree)
   }),

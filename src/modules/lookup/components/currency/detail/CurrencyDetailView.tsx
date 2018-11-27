@@ -5,7 +5,7 @@ import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
 import { ICurrencyDetail } from '@lookup/classes/response/currency';
 import { CurrencyUserAction } from '@lookup/classes/types';
-import { purchaseMessage } from '@purchase/locales/messages/purchaseMessage';
+import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
 import * as React from 'react';
 import { CurrencyDetailProps } from './CurrencyDetail';
 import { CurrencyInformation } from './shared/CurrencyInformation';
@@ -15,8 +15,8 @@ const config: SingleConfig<ICurrencyDetail, CurrencyDetailProps> = {
   page: (props: CurrencyDetailProps) => ({
     uid: AppMenu.LookupCurrency,
     parentUid: AppMenu.Lookup,
-    title: props.intl.formatMessage(purchaseMessage.request.pages.detailTitle),
-    description: props.intl.formatMessage(purchaseMessage.request.pages.detailSubHeader)
+    title: props.intl.formatMessage(lookupMessage.currency.page.detailTitle),
+    description: props.intl.formatMessage(lookupMessage.currency.page.detailSubHeader)
   }),
   // action centre
   showActionCentre: true,
