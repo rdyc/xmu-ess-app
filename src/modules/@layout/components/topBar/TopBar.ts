@@ -45,8 +45,14 @@ interface OwnStateUpdater extends StateHandlerMap<OwnState> {
 }
 
 interface OwnHandler {
+  handleOnClickMenu: (event: React.MouseEvent) => void;
+  handleOnClickBack: (event: React.MouseEvent) => void;
   handleOnClickSearch: (event: React.MouseEvent) => void;
-  handleOnClickMenuItem: (menu: IAppBarMenu) => void;
+  handleOnClickNotif: (event: React.MouseEvent) => void;
+  handleOnClickAction: (event: React.MouseEvent) => void;
+  handleOnClickMore: (event: React.MouseEvent) => void;
+  handleOnClickMoreItem: (menu: IAppBarMenu) => void;
+  handleOnCloseMore: () => void;
   handleOnChangeSearch: (event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => void;
   handleOnDiscardSearch: () => void;
   handleOnClearSearch: () => void;
@@ -101,23 +107,43 @@ const stateUpdaters: StateUpdaters<OwnOption, OwnState, OwnStateUpdater> = {
 };
 
 const handlerCreators: HandleCreators<TopBarProps, OwnHandler> = {
+  handleOnClickBack: (props: TopBarProps) => (event: React.MouseEvent) => {
+    props.layoutDispatch.navBackShow();
+
+    props.history.push(props.layoutState.parentUrl ? props.layoutState.parentUrl : '/home/dashboard');
+  },
+  handleOnClickMenu: (props: TopBarProps) => (event: React.MouseEvent) => {
+    props.layoutDispatch.drawerMenuShow();
+  },
   handleOnClickSearch: (props: TopBarProps) => (event: React.MouseEvent) => {
     event.preventDefault();
 
     props.setMode('search');
     props.layoutDispatch.modeSearchOn();
   },
-  handleOnChangeSearch: (props: TopBarProps) => (event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
-    props.setSearch(event.target.value);
+  handleOnClickNotif: (props: TopBarProps) => (event: React.MouseEvent) => {
+    props.layoutDispatch.drawerActionShow();
   },
-  handleOnClickMenuItem: (props: TopBarProps) => (menu: IAppBarMenu) => {
+  handleOnClickAction: (props: TopBarProps) => (event: React.MouseEvent) => {
+    props.layoutDispatch.drawerActionShow();
+  },
+  handleOnClickMore: (props: TopBarProps) => (event: React.MouseEvent) => {
+    props.setMenuVisibility();
+  },
+  handleOnClickMoreItem: (props: TopBarProps) => (item: IAppBarMenu) => {
     // hide menu popup
     props.setMenuVisibility();
     
     // call menu item callback (if any)
-    if (menu.onClick) {
-      menu.onClick();
+    if (item.onClick) {
+      item.onClick();
     }
+  },
+  handleOnCloseMore: (props: TopBarProps) => () => {
+    props.setMenuVisibility();
+  },
+  handleOnChangeSearch: (props: TopBarProps) => (event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+    props.setSearch(event.target.value);
   },
   handleOnDiscardSearch: (props: TopBarProps) => () => {
     props.setFieldVisibility();
@@ -217,7 +243,16 @@ const lifeCycles: ReactLifeCycleFunctions<TopBarProps, OwnState> = {
         }
       }
     }
-  }
+  },
+  // shouldComponentUpdate(nextProps: TopBarProps) {
+  //   let result: boolean = true;
+
+  //   if (nextProps.isOpenMenu !== this.props.isOpenMenu) {
+  //     result = false;
+  //   }
+
+  //   return result;
+  // }
 };
 
 export const TopBar = compose<TopBarProps, OwnOption>(

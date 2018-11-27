@@ -20,6 +20,9 @@ const config: SingleConfig<ISettlementDetail, SettlementApprovalDetailProps> = {
     title: props.intl.formatMessage(purchaseMessage.s_approval.pages.detailTitle),
     description: props.intl.formatMessage(purchaseMessage.s_approval.pages.detailTitle)
   }),
+  
+  // parent url
+  parentUrl: (props: SettlementApprovalDetailProps) => '/purchase/settlement/approvals',
 
   // action centre
   showActionCentre: true,

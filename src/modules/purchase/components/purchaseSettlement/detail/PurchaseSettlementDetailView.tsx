@@ -30,8 +30,13 @@ const config: SingleConfig<ISettlementDetail, PurchaseSettlementDetailProps> = {
     title: props.intl.formatMessage(purchaseMessage.settlement.pages.detailTitle),
     description: props.intl.formatMessage(purchaseMessage.settlement.pages.detailSubHeader)
   }),
+
+  // parent url
+  parentUrl: (props: PurchaseSettlementDetailProps) => '/purchase/settlement/requests',
+
   // action centre
   showActionCentre: true,
+
   // more
   hasMore: true,
   moreOptions: (props: PurchaseSettlementDetailProps, state: SingleState, callback: SingleHandler): IAppBarMenu[] => ([
@@ -57,6 +62,8 @@ const config: SingleConfig<ISettlementDetail, PurchaseSettlementDetailProps> = {
       onClick: props.handlePurchaseSettle
     }
   ]),
+
+  // events
   onDataLoad: (props: PurchaseSettlementDetailProps, callback: SingleHandler, forceReload?: boolean | false) => {
     const { user } = props.userState;
     const { isLoading, request, response } = props.purchaseSettlementState.detail;

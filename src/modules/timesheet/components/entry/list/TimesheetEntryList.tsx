@@ -133,7 +133,7 @@ const config: CollectionConfig<ITimesheet, AllProps> = {
         isTimesheetEditable(item.statusType) &&
         <Button
           size="small"
-          onClick={() => callback.handleRedirectTo(`/timesheet/entry/form`, { uid: item.uid })}
+          onClick={() => callback.handleRedirectTo(`/timesheet/requests/form`, { uid: item.uid })}
         >
           <FormattedMessage {...layoutMessage.action.modify} />
         </Button>
@@ -141,7 +141,7 @@ const config: CollectionConfig<ITimesheet, AllProps> = {
 
       <Button
         size="small"
-        onClick={() => callback.handleRedirectTo(`/timesheet/entry/${item.uid}`)}
+        onClick={() => callback.handleRedirectTo(`/timesheet/requests/${item.uid}`)}
       >
         <FormattedMessage {...layoutMessage.action.details} />
       </Button>

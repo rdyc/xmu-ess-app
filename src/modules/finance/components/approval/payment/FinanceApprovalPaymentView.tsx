@@ -19,6 +19,9 @@ const config: SingleConfig<IFinanceDetail, FinanceApprovalPaymentProps> = {
     title: props.intl.formatMessage(financeMessage.approval.page.detailTitle),
     description: props.intl.formatMessage(financeMessage.approval.page.detailTitle)
   }),
+
+  // parent url
+  parentUrl: (props: FinanceApprovalPaymentProps) => '/finance/approvals',
   
   // action centre
   showActionCentre: true,

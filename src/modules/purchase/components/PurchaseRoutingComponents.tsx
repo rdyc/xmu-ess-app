@@ -19,7 +19,6 @@ import { Route, RouteComponentProps, Switch } from 'react-router';
 const purchase = (props: RouteComponentProps) => (
   <Switch>
     <Route path={`${props.match.path}/list`} component={PurchaseRequestList} />
-    {/* <Route path={`${props.match.path}/list`} component={PurchaseRequestCollectionPage} /> */}
     <Route path={`${props.match.path}/details/:purchaseUid`} component={PurchaseRequestDetail} />
     <Route path={`${props.match.path}/form`} component={PurchaseRequestEditor} />
   </Switch>
@@ -28,14 +27,12 @@ const purchase = (props: RouteComponentProps) => (
 const purchaseApproval = (props: RouteComponentProps) => (
   <Switch>
     <Route path={`${props.match.path}/list`} component={PurchaseApprovalList} />
-    {/* <Route path={`${props.match.path}/list`} component={PurchaseApprovalCollectionPage} /> */}
     <Route path={`${props.match.path}/details/:purchaseUid`} component={PurchaseApprovalDetail} />
   </Switch>
 );
 const settlement = (props: RouteComponentProps) => (
   <Switch>
     <Route path={`${props.match.path}/list`} component={PurchaseSettlementList} />
-    {/* <Route path={`${props.match.path}/list`} component={PurchaseSettlementCollectionPage} /> */}
     <Route path={`${props.match.path}/details/:purchaseUid`} component={PurchaseSettlementDetail} />    
     <Route path={`${props.match.path}/form`} component={PurchaseSettlementEditor} />
   </Switch>
@@ -44,7 +41,6 @@ const settlement = (props: RouteComponentProps) => (
 const settlementApproval = (props: RouteComponentProps) => (
   <Switch>
     <Route path={`${props.match.path}/list`} component={SettlementApprovalList} />
-    {/* <Route path={`${props.match.path}/list`} component={SettlementApprovalCollectionPage} /> */}
     <Route path={`${props.match.path}/details/:purchaseUid`} component={SettlementApprovalDetail} />
   </Switch>
 );
@@ -54,8 +50,8 @@ export const PurchaseRoutingComponents: React.SFC<RouteComponentProps> = props =
     <Layout>
       <Route path={`${props.match.path}/requests`} component={purchase} />
       <Route path={`${props.match.path}/approvals`} component={purchaseApproval} />
-      <Route path={`${props.match.path}/settlements`} component={settlement} />
-      <Route path={`${props.match.path}/settlementapprovals`} component={settlementApproval} />
+      <Route path={`${props.match.path}/settlement/requests`} component={settlement} />
+      <Route path={`${props.match.path}/settlement/approvals`} component={settlementApproval} />
     </Layout>
   </Switch>
 );

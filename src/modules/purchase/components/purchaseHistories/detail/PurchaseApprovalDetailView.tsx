@@ -21,6 +21,9 @@ const config: SingleConfig<IPurchaseDetail, PurchaseApprovalDetailProps> = {
     description: props.intl.formatMessage(purchaseMessage.approval.pages.detailTitle)
   }),
 
+  // parent url
+  parentUrl: (props: PurchaseApprovalDetailProps) => '/purchase/approvals',
+
   // action centre
   showActionCentre: true,
 

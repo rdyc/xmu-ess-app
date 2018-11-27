@@ -28,6 +28,9 @@ const config: SingleConfig<IProjectDetail, ProjectRegistrationDetailProps> = {
     title: props.intl.formatMessage(projectMessage.registration.page.detailTitle),
     description: props.intl.formatMessage(projectMessage.registration.page.detailSubHeader)
   }),
+
+  // parent url
+  parentUrl: (props: ProjectRegistrationDetailProps) => '/project/requests',
   
   // action centre
   showActionCentre: true,
