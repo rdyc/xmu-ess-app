@@ -5,6 +5,7 @@ import {
   travelApprovalGetAllError,
   travelApprovalGetAllRequest,
   travelApprovalGetAllSuccess,
+  travelApprovalGetByIdDispose,
   travelApprovalGetByIdError,
   travelApprovalGetByIdRequest,
   travelApprovalGetByIdSuccess,
@@ -92,8 +93,9 @@ function* watchPostFetchRequest() {
       path: `/v1/approvals/travel/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.travelUid}`, 
       payload: action.payload.data, 
       successEffects: (response: IApiResponse) => [
-        put(travelApprovalPostSuccess(response.body)),
-        put(travelApprovalGetAllDispose())
+        put(travelApprovalGetAllDispose()),
+        put(travelApprovalGetByIdDispose()),
+        put(travelApprovalPostSuccess(response.body))
       ],
       successCallback: (response: IApiResponse) => {
         action.payload.resolve(response.body.data);

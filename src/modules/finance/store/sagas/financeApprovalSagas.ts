@@ -7,6 +7,7 @@ import {
   financeApprovalGetAllError,
   financeApprovalGetAllRequest,
   financeApprovalGetAllSuccess,
+  financeApprovalGetByIdDispose,
   financeApprovalGetByIdError,
   financeApprovalGetByIdRequest,
   financeApprovalGetByIdSuccess,
@@ -88,8 +89,9 @@ function* watchPostFetchRequest() {
       path: `/v1/approvals/finance/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.financeUid}`, 
       payload: action.payload.data, 
       successEffects: (response: IApiResponse) => [
-        put(financeApprovalPostSuccess(response.body)),
         put(financeApprovalGetAllDispose()),
+        put(financeApprovalGetByIdDispose()),
+        put(financeApprovalPostSuccess(response.body))
       ], 
       successCallback: (response: IApiResponse) => {
         action.payload.resolve(response.body.data);
@@ -132,8 +134,9 @@ function* watchBulkPostFetchRequest() {
       path: `/v1/approvals/finance/${action.payload.companyUid}/${action.payload.positionUid}`,
       payload: action.payload.data, 
       successEffects: (response: IApiResponse) => [
-        put(financeApprovalBulkPostSuccess(response.body)),
         put(financeApprovalGetAllDispose()),
+        put(financeApprovalGetByIdDispose()),
+        put(financeApprovalBulkPostSuccess(response.body))
       ], 
       successCallback: (response: IApiResponse) => {
         action.payload.resolve(response.body.data);

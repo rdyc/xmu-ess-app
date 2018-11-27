@@ -5,6 +5,7 @@ import {
   projectAssignmentGetAllError,
   projectAssignmentGetAllRequest,
   projectAssignmentGetAllSuccess,
+  projectAssignmentGetByIdDispose,
   projectAssignmentGetByIdError,
   projectAssignmentGetByIdRequest,
   projectAssignmentGetByIdSuccess,
@@ -128,8 +129,9 @@ function* watchPatchRequest() {
       path: `/v1/project/assignments/${action.payload.companyUid}/${action.payload.projectUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
-        put(projectAssignmentPatchSuccess(response.body)),
-        put(projectAssignmentGetAllDispose())
+        put(projectAssignmentGetByIdDispose()),
+        put(projectAssignmentGetAllDispose()),
+        put(projectAssignmentPatchSuccess(response.body))
       ],
       successCallback: (response: IApiResponse) => {
         action.payload.resolve(response.body.data);
