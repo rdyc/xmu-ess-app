@@ -5,6 +5,7 @@ import {
   projectApprovalGetAllError,
   projectApprovalGetAllRequest,
   projectApprovalGetAllSuccess,
+  projectApprovalGetByIdDispose,
   projectApprovalGetByIdError,
   projectApprovalGetByIdRequest,
   projectApprovalGetByIdSuccess,
@@ -100,8 +101,9 @@ function* watchPostRequest() {
       path: `/v1/approvals/project/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.projectUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
-        put(projectApprovalPostSuccess(response.body)),
-        put(projectApprovalGetAllDispose())
+        put(projectApprovalGetAllDispose()),
+        put(projectApprovalGetByIdDispose()),
+        put(projectApprovalPostSuccess(response.body))
       ],
       successCallback: (response: IApiResponse) => {
         action.payload.resolve(response.body.data);

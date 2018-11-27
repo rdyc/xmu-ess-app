@@ -1,4 +1,4 @@
-import { layoutAlertAdd, listBarLoading, listBarMetadata } from '@layout/store/actions';
+import { layoutAlertAdd } from '@layout/store/actions';
 import {
   PurchaseAction,
   PurchaseApprovalAction,
@@ -6,6 +6,7 @@ import {
   purchaseApprovalGetAllError,
   purchaseApprovalGetAllRequest,
   purchaseApprovalGetAllSuccess,
+  purchaseApprovalGetByIdDispose,
   purchaseApprovalGetByIdError,
   purchaseApprovalGetByIdRequest,
   purchaseApprovalGetByIdSuccess,
@@ -16,14 +17,13 @@ import {
   purchaseGetAllError,
   purchaseGetAllRequest,
   purchaseGetAllSuccess,
+  purchaseGetByIdDispose,
   purchaseGetByIdError,
   purchaseGetByIdRequest,
   purchaseGetByIdSuccess,
-  // purchasePostDispose,
   purchasePostError,
   purchasePostRequest,
   purchasePostSuccess,
-  // purchasePutDispose,
   purchasePutError,
   purchasePutRequest,
   purchasePutSuccess,
@@ -33,6 +33,7 @@ import {
   settlementApprovalGetAllError,
   settlementApprovalGetAllRequest,
   settlementApprovalGetAllSuccess,
+  settlementApprovalGetByIdDispose,
   settlementApprovalGetByIdError,
   settlementApprovalGetByIdRequest,
   settlementApprovalGetByIdSuccess,
@@ -43,14 +44,13 @@ import {
   settlementGetAllError,
   settlementGetAllRequest,
   settlementGetAllSuccess,
+  settlementGetByIdDispose,
   settlementGetByIdError,
   settlementGetByIdRequest,
   settlementGetByIdSuccess,
-  // settlementPostDispose,
   settlementPostError,
   settlementPostRequest,
   settlementPostSuccess,
-  // settlementPutDispose,
   settlementPutError,
   settlementPutRequest,
   settlementPutSuccess,
@@ -67,8 +67,7 @@ function* watchPurchaseAllFetchRequest() {
       method: 'get',
       path: `/v1/purchase/requests${objectToQuerystring(action.payload.filter)}`, 
       successEffects: (response: IApiResponse) => ([
-        put(purchaseGetAllSuccess(response.body)),
-        put(listBarMetadata(response.body.metadata))
+        put(purchaseGetAllSuccess(response.body))
       ]), 
       failureEffects: (response: IApiResponse) => ([
         put(purchaseGetAllError(response.body)),
@@ -86,7 +85,7 @@ function* watchPurchaseAllFetchRequest() {
         }))
       ]),
       finallyEffects: [
-        put(listBarLoading(false))
+        
       ]
     });
   };
@@ -130,8 +129,8 @@ function* watchPurchasePostFetchRequest() {
       path: `/v1/purchase/requests/${action.payload.companyUid}/${action.payload.positionUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => ([
-        put(purchasePostSuccess(response.body)),
-        put(purchaseGetAllDispose())
+        put(purchaseGetAllDispose()),
+        put(purchasePostSuccess(response.body))
       ]),
       successCallback: (response: IApiResponse) => {
         action.payload.resolve(response.body.data);
@@ -179,8 +178,9 @@ function* watchPurchasePutFetchRequest() {
       path: `/v1/purchase/requests/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.purchaseUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => ([
-        put(purchasePutSuccess(response.body)),
-        put(purchaseGetAllDispose())
+        put(purchaseGetAllDispose()),
+        put(purchaseGetByIdDispose()),
+        put(purchasePutSuccess(response.body))
       ]),
       successCallback: (response: IApiResponse) => {
         action.payload.resolve(response.body.data);
@@ -228,8 +228,7 @@ function* watchPurchaseApprovalAllFetchRequest() {
       method: 'get',
       path: `/v1/approvals/purchase/request${objectToQuerystring(action.payload.filter)}`,
       successEffects: (response: IApiResponse) => ([
-        put(purchaseApprovalGetAllSuccess(response.body)),
-        put(listBarMetadata(response.body.metadata))
+        put(purchaseApprovalGetAllSuccess(response.body))
       ]),
       failureEffects: (response: IApiResponse) => ([
         put(purchaseApprovalGetAllError(response.body)),
@@ -247,7 +246,7 @@ function* watchPurchaseApprovalAllFetchRequest() {
         }))
       ]),
       finallyEffects: [
-        put(listBarLoading(false))
+
       ]
     });
   };
@@ -291,8 +290,9 @@ function* watchPurchaseApprovalPostFetchRequest() {
       path: `/v1/approvals/purchase/request/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.purchaseUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => ([
-        put(purchaseApprovalPostSuccess(response.body)),
-        put(purchaseApprovalGetAllDispose())
+        put(purchaseApprovalGetAllDispose()),
+        put(purchaseApprovalGetByIdDispose()),
+        put(purchaseApprovalPostSuccess(response.body))
       ]),
       successCallback: (response: IApiResponse) => {
         action.payload.resolve(response.body.data);
@@ -340,7 +340,6 @@ function* watchSettlementAllFetchRequest() {
       path: `/v1/purchase/settlements${objectToQuerystring(action.payload.filter)}`,
       successEffects: (response: IApiResponse) => ([
         put(settlementGetAllSuccess(response.body)),
-        put(listBarMetadata(response.body.metadata))
       ]),
       failureEffects: (response: IApiResponse) => ([
         put(settlementGetAllError(response.body)),
@@ -358,7 +357,7 @@ function* watchSettlementAllFetchRequest() {
         }))
       ]),
       finallyEffects: [
-        put(listBarLoading(false))
+        
       ]
     });
   };
@@ -451,8 +450,9 @@ function* watchSettlementPutFetchRequest() {
       path: `/v1/purchase/settlements/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.purchaseUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => ([
-        put(settlementPutSuccess(response.body)),
-        put(settlementGetAllDispose())
+        put(settlementGetAllDispose()),
+        put(settlementGetByIdDispose()),
+        put(settlementPutSuccess(response.body))
       ]),
       successCallback: (response: IApiResponse) => {
         action.payload.resolve(response.body.data);
@@ -500,7 +500,6 @@ function* watchSettlementApprovalAllFetchRequest() {
       path: `/v1/approvals/purchase/settlement${objectToQuerystring(action.payload.filter)}`,
       successEffects: (response: IApiResponse) => ([
         put(settlementApprovalGetAllSuccess(response.body)),
-        put(listBarMetadata(response.body.metadata))
       ]),
       failureEffects: (response: IApiResponse) => ([
         put(settlementApprovalGetAllError(response.body)),
@@ -518,7 +517,7 @@ function* watchSettlementApprovalAllFetchRequest() {
         }))
       ]),
       finallyEffects: [
-        put(listBarLoading(false))
+
       ]
     });
   };
@@ -562,8 +561,9 @@ function* watchSettlementApprovalPostFetchRequest() {
       path: `/v1/approvals/purchase/settlement/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.purchaseUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => ([
-        put(settlementApprovalPostSuccess(response.body)),
-        put(settlementApprovalGetAllDispose())
+        put(settlementApprovalGetAllDispose()),
+        put(settlementApprovalGetByIdDispose()),
+        put(settlementApprovalPostSuccess(response.body))
       ]),
       successCallback: (response: IApiResponse) => {
         action.payload.resolve(response.body.data);

@@ -137,7 +137,7 @@ const handlerCreators: HandleCreators<StatusEditorProps, OwnHandlers> = {
     });
 
     if (projectUid) {
-      history.push(`/project/details/${projectUid}`);
+      history.push(`/project/requests/${projectUid}`);
     }
   },
   handleSubmitFail: (props: StatusEditorProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {

@@ -5,6 +5,7 @@ import {
   travelSettlementGetAllError,
   travelSettlementGetAllRequest,
   travelSettlementGetAllSuccess,
+  travelSettlementGetByIdDispose,
   travelSettlementGetByIdError,
   travelSettlementGetByIdRequest,
   travelSettlementGetByIdSuccess,
@@ -88,8 +89,8 @@ function* watchPostFetchRequest() {
       path: `/v1/travel/settlements/${action.payload.companyUid}/${action.payload.positionUid}`, 
       payload: action.payload.data, 
       successEffects: (response: IApiResponse) => [
-        put(travelSettlementPostSuccess(response.body)),
-        put(travelSettlementGetAllDispose())
+        put(travelSettlementGetAllDispose()),
+        put(travelSettlementPostSuccess(response.body))
       ], 
       successCallback: (response: IApiResponse) => {
         action.payload.resolve(response.body.data);
@@ -132,8 +133,9 @@ function* watchPutFetchRequest() {
       path: `/v1/travel/settlements/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.travelSettlementUid}`,
       payload: action.payload.data, 
       successEffects: (response: IApiResponse) => [
-        put(travelSettlementPutSuccess(response.body)),
-        put(travelSettlementGetAllDispose())
+        put(travelSettlementGetAllDispose()),
+        put(travelSettlementGetByIdDispose()),
+        put(travelSettlementPutSuccess(response.body))
       ],
       successCallback: (response: IApiResponse) => {
         action.payload.resolve(response.body.data);

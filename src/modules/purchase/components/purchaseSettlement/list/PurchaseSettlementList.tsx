@@ -126,7 +126,7 @@ const config: CollectionConfig<ISettlement, AllProps> = {
         isSettleReady(item.statusType) &&
         <Button
           size="small"
-          onClick={() => callback.handleRedirectTo(`/purchase/settlements/form`, { uid: item.uid, statusType: item.statusType})}
+          onClick={() => callback.handleRedirectTo(`/purchase/settlement/requests/form`, { uid: item.uid, statusType: item.statusType})}
         >
           <FormattedMessage {...purchaseMessage.action.settle} />
         </Button>
@@ -135,14 +135,14 @@ const config: CollectionConfig<ISettlement, AllProps> = {
         isSettlementEditable(item.statusType ? item.statusType : '') &&
         <Button
           size="small"
-          onClick={() => callback.handleRedirectTo(`/purchase/settlements/form`, { uid: item.uid, statusType: item.statusType})}
+          onClick={() => callback.handleRedirectTo(`/purchase/settlement/requests/form`, { uid: item.uid, statusType: item.statusType})}
         >
           <FormattedMessage {...layoutMessage.action.modify} />
         </Button>
       }
     <Button 
       size= "small"
-      onClick={() => callback.handleRedirectTo(`/purchase/settlements/details/${item.uid}`)}
+      onClick={() => callback.handleRedirectTo(`/purchase/settlement/requests/${item.uid}`)}
     >
       <FormattedMessage { ...layoutMessage.action.details } />
     </Button>
