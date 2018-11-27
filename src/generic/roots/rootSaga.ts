@@ -12,6 +12,7 @@ import commonProjectSagas from '@common/store/sagas/projectSagas';
 import commonPurposeSagas from '@common/store/sagas/purposeSagas';
 import commonSiteSagas from '@common/store/sagas/siteSagas';
 import commonStatusSagas from '@common/store/sagas/statusSagas';
+import commonSystemSagas from '@common/store/sagas/systemSagas';
 import commonTransportationSagas from '@common/store/sagas/transportationSagas';
 import expenseApprovalSagas from '@expense/store/sagas/expenseApprovalSagas';
 import expenseSagas from '@expense/store/sagas/expenseRequestSagas';
@@ -68,6 +69,7 @@ export function* rootSaga() {
     fork(commonDestinationSagas),
     fork(commonPurposeSagas),
     fork(commonTransportationSagas),
+    fork(commonSystemSagas),
 
     // lookup
     fork(lookupCustomerSagas),

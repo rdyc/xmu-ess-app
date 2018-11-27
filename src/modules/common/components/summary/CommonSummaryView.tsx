@@ -1,39 +1,63 @@
+import { ISystemType } from '@common/classes/response';
+import { commonMessage } from '@common/locales/messages/commonMessage';
 import { layoutMessage } from '@layout/locales/messages';
 import { Button, Card, CardActions, CardContent, CardHeader, Grid, Typography } from '@material-ui/core';
 import * as React from 'react';
-import { CommonListProps } from './CommonSummary';
+import { CommonSummaryProps } from './CommonSummary';
 
-export const CommonSummaryView: React.SFC<CommonListProps> = props => {
-  const { editableTypes, intl } = props;
+export const CommonSummaryView: React.SFC<CommonSummaryProps> = props => {
+  const { editableCategories, intl, handleGoToCategoryList } = props;
+  const { isLoading, response } = props.commonSystemState.type;
 
-  const RenderTypes = () => (
-    editableTypes.map(editableType => 
-      <Grid item xs={12} sm={6} md={3}>
-        <Card square>
-          <CardHeader
-            title={editableType}
-            titleTypographyProps={{
-              noWrap: true
-            }}
-          />
-          <CardContent>
-            <Typography>Active: 9</Typography>
-            <Typography>Inactive: 3</Typography>
-          </CardContent>
-          <CardActions>
-            <Button>
-              {intl.formatMessage(layoutMessage.action.modify)}
-            </Button>
-          </CardActions>
-        </Card>
-      </Grid>
-    )
+  const RenderTypes = (categories: ISystemType[]) => (
+    editableCategories.map(editableCategory => {
+      
+      const category = categories.find(_category => 
+          _category.name === editableCategory.name
+        );
+
+      return (
+        category &&
+        <Grid item xs={12} sm={6} lg={3}>
+          <Card square key={category.name}>
+            <CardHeader
+              title={category.name}
+              titleTypographyProps={{
+                noWrap: true
+              }}
+            />
+            <CardContent>
+              <Typography>
+                {`${intl.formatMessage(commonMessage.system.text.active)} : `}
+                {category.active}
+              </Typography>
+              <Typography>
+                {`${intl.formatMessage(commonMessage.system.text.inActive)} : `}
+                {category.inActive}
+              </Typography>
+            </CardContent>
+            <CardActions>
+              <Button
+                onClick={() => handleGoToCategoryList(editableCategory.value)}
+              >
+                {intl.formatMessage(layoutMessage.action.modify)}
+              </Button>
+            </CardActions>
+          </Card>
+        </Grid>
+        );
+      })
   );
 
   const render = (
     <React.Fragment>
       <Grid container spacing={16}>
-        {RenderTypes()}
+        {
+          !isLoading &&
+          response &&
+          response.data &&
+          RenderTypes(response.data)
+        }
       </Grid>
     </React.Fragment>
   );

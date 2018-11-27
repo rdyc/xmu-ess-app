@@ -134,7 +134,7 @@ function* watchFetchByIdRequest() {
   yield takeEvery(Action.GET_BY_ID_REQUEST, worker);
 }
 
-function* systemActivitySagas() {
+function* commonSystemSagas() {
   yield all([
     fork(watchFetchAllRequest),
     fork(watchFetchListRequest),
@@ -143,4 +143,4 @@ function* systemActivitySagas() {
   ]);
 }
 
-export default systemActivitySagas;
+export default commonSystemSagas;

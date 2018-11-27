@@ -12,8 +12,11 @@ import {
   purposeGetListRequest,
   siteGetListRequest,
   statusGetListRequest,
+  systemGetAllDispose,
   systemGetAllRequest,
+  systemGetByIdDispose,
   systemGetByIdRequest,
+  systemGetTypeDispose,
   systemGetTypeRequest,
   transportationGetListRequest,
 } from '@common/store/actions';
@@ -53,6 +56,7 @@ interface PropsFromDispatch {
   commonDispatch: {
     // all
     systemAllRequest: typeof systemGetAllRequest;
+    systemAllDispose: typeof systemGetAllDispose;
 
     // list
     activityListRequest: typeof activityGetListRequest;
@@ -70,9 +74,11 @@ interface PropsFromDispatch {
 
     // detail
     systemDetailRequest: typeof systemGetByIdRequest;
+    systemDetailDispose: typeof systemGetByIdDispose;
 
     // other
     systemTypeRequest: typeof systemGetTypeRequest;
+    systemTypeDispose: typeof systemGetTypeDispose;
   };
 }
 
@@ -98,7 +104,7 @@ const mapStateToProps = ({
 
 }: IAppState) => ({
   // system
-  commonRequestState: {
+  commonSystemState: {
     all: commonSystemAll,
     list: commonSystemList,
     detail: commonSystemDetail,
@@ -128,7 +134,8 @@ const mapStateToProps = ({
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   commonDispatch: {
     // all
-    systemListRequest: (request: ISystemAllRequest) => dispatch(systemGetAllRequest(request)),
+    systemAllRequest: (request: ISystemAllRequest) => dispatch(systemGetAllRequest(request)),
+    systemAllDispose: (request: ISystemAllRequest) => dispatch(systemGetAllDispose()),
 
     // list
     activityListRequest: (request: ISystemListRequest) => dispatch(activityGetListRequest(request)),
@@ -146,9 +153,11 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
 
     // detail
     systemDetailRequest: (request: ISystemByIdRequest) => dispatch(systemGetByIdRequest(request)),
+    systemDetailDispose: (request: ISystemByIdRequest) => dispatch(systemGetByIdDispose()),
 
     // type
     systemTypeRequest: () => dispatch(systemGetTypeRequest()),
+    systemTypeDispose: () => dispatch(systemGetTypeDispose()),
   }
 });
 

@@ -1,0 +1,40 @@
+{
+  "common.message.create.success": "A new Expense {uid} has been created",
+  "common.message.create.failure": "Unable to process your submission",
+  "common.message.update.success": "Existing Expense {uid} has been updated",
+  "common.message.update.failure": "Unable to process your submission",
+  "common.message.emptyProps": "Some props are empty",
+
+  "common.title": "System Setup",
+  "common.subTitle": "Lorem ipsum something something something something something something something something",
+  "common.detail.title": "Type Details",
+  "common.detail.subTitle": "Lorem ipsum something something something something something something something something something",
+  "common.form.newTitle": "New Type",
+  "common.form.newSubTitle": "Lorem ipsum something something something something something something something something something something",
+  "common.form.editTitle": "Modify Type",
+  "common.form.editSubTitle": "Lorem ipsum something something something something something something something something something something",
+
+  "common.infoTitle": "Type",
+  "common.infoSubTitle": "Lorem ipsum something something something something something something something something something something something",
+
+  "common.dialog.modifyTitle": "Modify Confirmation",
+  "common.dialog.modifyDescription": "Lorem ipsum something something something something something something something something something something something",
+
+  "common.text.active": "Active",
+  "common.text.inActive": "Inactive",
+  "common.text.businessUnit": "(Business Unit)",
+
+  "common.field.category": "Category",
+  "common.field.companyUid": "Company",
+  "common.field.companyUidPlaceholder": "Select a Company",
+  "common.field.parentCode": "Parent",
+  "common.field.parentCodePlaceholder": "Select a Parent",
+  "common.field.name": "System Value",
+  "common.field.namePlaceholder": "Type the Value",
+  "common.field.nameRequired": "System Value is Required",
+  "common.field.type": "System Code",
+  "common.field.description": "Description",
+  "common.field.descriptionPlaceholder": "Type the Description",
+  "common.field.descriptionRequired": "Description is Required",
+  "common.field.isActive": "Active"
+}

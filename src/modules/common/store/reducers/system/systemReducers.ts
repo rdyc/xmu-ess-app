@@ -1,10 +1,10 @@
 import { systemGetAllReducer, systemGetByIdReducer, systemGetListReducer, systemGetTypeReducer } from '@common/store/reducers/system';
 
 const systemReducers = {
-  commonAll: systemGetAllReducer,
-  commonList: systemGetListReducer,
-  commonDetail: systemGetByIdReducer,
-  commonType: systemGetTypeReducer,
+  commonSystemAll: systemGetAllReducer,
+  commonSystemList: systemGetListReducer,
+  commonSystemDetail: systemGetByIdReducer,
+  commonSystemType: systemGetTypeReducer,
 };
 
 export default systemReducers;
