@@ -2,6 +2,7 @@ import { WithUser, withUser } from '@layout/hoc/withUser';
 import { layoutMessage } from '@layout/locales/messages';
 import { CompanyUserAction } from '@lookup/classes/types';
 import { WithLookupCompany, withLookupCompany } from '@lookup/hoc/withLookupCompany';
+import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { compose, HandleCreators, mapper, StateHandler, StateHandlerMap, StateUpdaters, withHandlers, withStateHandlers } from 'recompose';
@@ -53,8 +54,8 @@ const stateUpdaters: StateUpdaters<CompanyDetailProps, OwnState, OwnStateUpdater
     action: CompanyUserAction.Modify,
     dialogFullScreen: false,
     dialogOpen: true,
-    dialogTitle: 'Modify Company',
-    dialogContent: 'Lorem ipsum.....',
+    dialogTitle: props.intl.formatMessage(lookupMessage.company.confirm.modifyTitle),
+    dialogContent: props.intl.formatMessage(lookupMessage.company.confirm.modifyDescription),
     dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.disaggree),
     dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.aggree)
   }),

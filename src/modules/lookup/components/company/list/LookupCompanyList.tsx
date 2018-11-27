@@ -11,20 +11,21 @@ import { layoutMessage } from '@layout/locales/messages';
 import { ICompany } from '@lookup/classes/response';
 import { CompanyField, CompanyUserAction } from '@lookup/classes/types';
 import { WithLookupCompany, withLookupCompany } from '@lookup/hoc/withLookupCompany';
+import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
 import { Button } from '@material-ui/core';
 import * as moment from 'moment';
 import * as React from 'react';
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose } from 'recompose';
-import { CompanySumarry } from './CompanySummary';
+import { LookupCompanySumarry } from './LookupCompanySummary';
 
 const config: CollectionConfig<ICompany, AllProps> = {
   // page info
   page: (props: AllProps) => ({
     uid: AppMenu.LookupCompany,
     parentUid: AppMenu.Lookup,
-    title: 'Lookup Company', // props.intl.formatMessage(timesheetMessage.entry.page.listTitle),
-    description: '' // props.intl.formatMessage(timesheetMessage.entry.page.listSubHeader),
+    title: props.intl.formatMessage(lookupMessage.company.page.listTitle),
+    description: props.intl.formatMessage(lookupMessage.company.page.listSubHeader),
   }),
 
   // top bar
@@ -121,21 +122,25 @@ const config: CollectionConfig<ICompany, AllProps> = {
 
   // summary component
   summaryComponent: (item: ICompany) => (
-    <CompanySumarry data={item} />
+    <LookupCompanySumarry data={item} />
   ),
 
   // action component
   actionComponent: (item: ICompany, callback: CollectionHandler) => (
     <React.Fragment>
-      {
-        // isTimesheetEditable(item.statusType) &&
-        // <Button
-        //   size="small"
-        //   onClick={() => callback.handleRedirectTo(`/timesheet/entry/form`, { uid: item.uid })}
-        // >
-        //   <FormattedMessage {...layoutMessage.action.modify} />
-        // </Button>
-      }
+      <Button
+        size="small"
+        onClick= {() => alert('go to new page here')}
+      >
+        Delete
+      </Button>
+      
+      <Button
+        size="small"
+        onClick={() => callback.handleRedirectTo(`/lookup/company/form`, { uid: item.uid })}
+      >
+        <FormattedMessage {...layoutMessage.action.modify} />
+      </Button>
 
       <Button
         size="small"
@@ -160,7 +165,7 @@ const listView: React.SFC<AllProps> = props => (
   />
 );
 
-export const CompanyList = compose(
+export const LookupCompanyList = compose(
   withUser,
   withLookupCompany,
   injectIntl

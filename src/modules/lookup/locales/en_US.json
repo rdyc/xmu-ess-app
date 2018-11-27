@@ -21,6 +21,22 @@
   "lookup.mileageException.field.project.site": "Project Site Name",
 
   "lookup.mileageException.confirm.modify.title": "Modify Confirmation",
-  "lookup.mileageException.confirm.modify.description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+  "lookup.mileageException.confirm.modify.description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+
+  "lookup.company.page.list.title": "Company",
+  "lookup.company.page.list.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras mollis eros sit amet rhoncus fermentum",
+
+  "lookup.company.page.detail.title": "Company Detail",
+  "lookup.company.page.detail.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras mollis eros sit amet rhoncus fermentum",
+
+  "lookup.company.section.info.title": "Company",
+  "lookup.company.section.info.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras mollis eros sit amet rhoncus fermentum",
+
+  "lookup.company.field.id": "Company ID",
+  "lookup.company.field.code": "Company Code",
+  "lookup.company.field.name": "Company Name",
+
+  "lookup.company.confirm.modify.title": "Modify Confirmation",
+  "lookup.company.confirm.modify.description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
 
 }

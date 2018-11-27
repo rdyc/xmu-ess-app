@@ -2,6 +2,7 @@ import { layoutMessage } from '@layout/locales/messages';
 import { GlobalFormat } from '@layout/types';
 import { GlobalStyle } from '@layout/types/GlobalStyle';
 import { ICompany } from '@lookup/classes/response';
+import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
 import { Grid, TextField } from '@material-ui/core';
 import * as React from 'react';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
@@ -15,12 +16,20 @@ type AllProps
   = OwnProps
   & InjectedIntlProps;
 
-const companySummary: React.SFC<AllProps> = props => (
+const lookupCompanySummary: React.SFC<AllProps> = props => (
   <Grid container>
     <Grid item xs={12} sm={6} md={3}>
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
-        label={'Company Name'} // props.intl.formatMessage()
+        label={props.intl.formatMessage(lookupMessage.company.field.uid)}
+        value={props.data.uid}
+      />
+    </Grid>
+
+    <Grid item xs={12} sm={6} md={3}>
+      <TextField
+        {...GlobalStyle.TextField.ReadOnly}
+        label={props.intl.formatMessage(lookupMessage.company.field.name)}
         value={props.data.name}
       />
     </Grid>
@@ -28,16 +37,8 @@ const companySummary: React.SFC<AllProps> = props => (
     <Grid item xs={12} sm={6} md={3}>
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
-        label={'Code'} // props.intl.formatMessage()
+        label={props.intl.formatMessage(lookupMessage.company.field.code)}
         value={props.data.code}
-      />
-    </Grid>
-
-    <Grid item xs={12} sm={6} md={3}>
-      <TextField
-        {...GlobalStyle.TextField.ReadOnly}
-        label={'Uid'} // props.intl.formatMessage()
-        value={props.data.uid}
       />
     </Grid>
 
@@ -65,6 +66,6 @@ const companySummary: React.SFC<AllProps> = props => (
   </Grid>
 );
 
-export const CompanySumarry = compose<AllProps, OwnProps>(
+export const LookupCompanySumarry = compose<AllProps, OwnProps>(
   injectIntl
-)(companySummary);
+)(lookupCompanySummary);

@@ -5,6 +5,7 @@ import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
 import { ICompanyDetail } from '@lookup/classes/response';
 import { CompanyUserAction } from '@lookup/classes/types';
+import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
 import * as React from 'react';
 import { CompanyDetailProps } from './CompanyDetail';
 import { CompanyInformation } from './CompanyInformation';
@@ -14,8 +15,8 @@ const config: SingleConfig<ICompanyDetail, CompanyDetailProps> = {
   page: (props: CompanyDetailProps) => ({
     uid: AppMenu.LookupCompany,
     parentUid: AppMenu.Lookup,
-    title: 'Company Detail',
-    description: '',
+    title: props.intl.formatMessage(lookupMessage.company.page.detailTitle),
+    description: props.intl.formatMessage(lookupMessage.company.page.detailSubHeader),
   }),
 
   // action centre
