@@ -1,30 +1,40 @@
-import { layoutAlertAdd } from '@layout/store/actions';
+import { layoutAlertAdd, listBarLoading, listBarMetadata } from '@layout/store/actions';
 import {
   CurrencyAction as Action,
-  currencyGetAllError,
-  currencyGetAllRequest,
-  currencyGetAllSuccess,
-  currencyGetByIdError,
-  currencyGetByIdRequest,
-  currencyGetByIdSuccess,
-  currencyGetListError,
-  currencyGetListRequest,
-  currencyGetListSuccess,
+  lookupCurrencyGetAllDispose,
+  lookupCurrencyGetAllError,
+  lookupCurrencyGetAllRequest,
+  lookupCurrencyGetAllSuccess,
+  lookupCurrencyGetByIdError,
+  lookupCurrencyGetByIdRequest,
+  lookupCurrencyGetByIdSuccess,
+  lookupCurrencyGetListError,
+  lookupCurrencyGetListRequest,
+  lookupCurrencyGetListSuccess,
+  lookupCurrencyPostError,
+  lookupCurrencyPostRequest,
+  lookupCurrencyPostSuccess,
+  lookupCurrencyPutError,
+  lookupCurrencyPutRequest,
+  lookupCurrencyPutSuccess,
 } from '@lookup/store/actions';
+import { flattenObject } from '@utils/flattenObject';
 import saiyanSaga from '@utils/saiyanSaga';
+import { SubmissionError } from 'redux-form';
 import { all, fork, put, takeEvery } from 'redux-saga/effects';
 import { IApiResponse, objectToQuerystring } from 'utils';
 
 function* watchFetchAllRequest() {
-  const worker = (action: ReturnType<typeof currencyGetAllRequest>) => {
+  const worker = (action: ReturnType<typeof lookupCurrencyGetAllRequest>) => {
     return saiyanSaga.fetch({
       method: 'get',
       path: `/v1/lookup/currencies${objectToQuerystring(action.payload.filter)}`, 
       successEffects: (response: IApiResponse) => ([
-        put(currencyGetAllSuccess(response.body)),
+        put(lookupCurrencyGetAllSuccess(response.body)),
+        put(listBarMetadata(response.body.metadata))    
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(currencyGetAllError(response.statusText)),
+        put(lookupCurrencyGetAllError(response.statusText)),
         put(layoutAlertAdd({
           time: new Date(),
           message: response.statusText,
@@ -32,12 +42,15 @@ function* watchFetchAllRequest() {
         }))
       ]), 
       errorEffects: (error: TypeError) => ([
-        put(currencyGetAllError(error.message)),
+        put(lookupCurrencyGetAllError(error.message)),
         put(layoutAlertAdd({
           time: new Date(),
           message: error.message
         }))
-      ])
+      ]),
+      finallyEffects: [
+        put(listBarLoading(false))
+      ]
     });
   };
   
@@ -45,15 +58,15 @@ function* watchFetchAllRequest() {
 }
 
 function* watchFetchListRequest() {
-  const worker = (action: ReturnType<typeof currencyGetListRequest>) => {
+  const worker = (action: ReturnType<typeof lookupCurrencyGetListRequest>) => {
     return saiyanSaga.fetch({
       method: 'get',
       path: `/v1/lookup/currencies/list${objectToQuerystring(action.payload.filter)}`,
       successEffects: (response: IApiResponse) => ([
-        put(currencyGetListSuccess(response.body)),
+        put(lookupCurrencyGetListSuccess(response.body)),
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(currencyGetListError(response.statusText)),
+        put(lookupCurrencyGetListError(response.statusText)),
         put(layoutAlertAdd({
           time: new Date(),
           message: response.statusText,
@@ -61,7 +74,7 @@ function* watchFetchListRequest() {
         }))
       ]), 
       errorEffects: (error: TypeError) => ([
-        put(currencyGetListError(error.message)),
+        put(lookupCurrencyGetListError(error.message)),
         put(layoutAlertAdd({
           time: new Date(),
           message: error.message
@@ -74,15 +87,15 @@ function* watchFetchListRequest() {
 }
 
 function* watchFetchByIdRequest() {
-  const worker = (action: ReturnType<typeof currencyGetByIdRequest>) => {
+  const worker = (action: ReturnType<typeof lookupCurrencyGetByIdRequest>) => {
     return saiyanSaga.fetch({
       method: 'get',
       path: `/v1/lookup/currencies/${action.payload.currencyUid}`,
       successEffects: (response: IApiResponse) => ([
-        put(currencyGetByIdSuccess(response.body)),
+        put(lookupCurrencyGetByIdSuccess(response.body)),
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(currencyGetByIdError(response.statusText)),
+        put(lookupCurrencyGetByIdError(response.statusText)),
         put(layoutAlertAdd({
           time: new Date(),
           message: response.statusText,
@@ -90,7 +103,7 @@ function* watchFetchByIdRequest() {
         }))
       ]), 
       errorEffects: (error: TypeError) => ([
-        put(currencyGetByIdError(error.message)),
+        put(lookupCurrencyGetByIdError(error.message)),
         put(layoutAlertAdd({
           time: new Date(),
           message: error.message,
@@ -102,11 +115,111 @@ function* watchFetchByIdRequest() {
   yield takeEvery(Action.GET_BY_ID_REQUEST, worker);
 }
 
+function* watchFetchPostRequest() {
+  const worker = (action: ReturnType<typeof lookupCurrencyPostRequest>) => {
+    return saiyanSaga.fetch({
+      method: 'post',
+      path: `/v1/lookup/currencies${objectToQuerystring(action.payload)}`,
+      payload: action.payload.data,
+      successEffects: (response: IApiResponse) => ([
+        put(lookupCurrencyPostSuccess(response.body)),
+        put(lookupCurrencyGetAllDispose())
+      ]),
+      successCallback: (response: IApiResponse) => {
+        action.payload.resolve(response.body.data);
+      },
+      failureEffects: (response: IApiResponse) => ([
+        put(lookupCurrencyPostError(response.statusText)),
+        put(layoutAlertAdd({
+          time: new Date(),
+          message: response.statusText,
+          details: response
+        })),
+      ]),
+      failureCallback: (response: IApiResponse) => {
+        if (response.status === 400) {
+          const errors: any = {
+            // information -> based form section name
+            information: flattenObject(response.body.errors)
+          };
+
+          action.payload.reject(new SubmissionError(errors));
+        } else {
+          action.payload.reject(response.statusText);
+        }
+      },
+      errorEffects: (error: TypeError) => [
+        put(lookupCurrencyPostError(error.message)),
+        put(layoutAlertAdd({
+          time: new Date(),
+          message: error.message
+        }))
+      ],
+      errorCallback: (error: any) => {
+        action.payload.reject(error);
+      }
+    });
+  };
+
+  yield takeEvery(Action.POST_REQUEST, worker);
+}
+
+function* watchFetchPutRequest() {
+  const worker = (action: ReturnType<typeof lookupCurrencyPutRequest>) => {
+    return saiyanSaga.fetch({
+      method: 'post',
+      path: `/v1/lookup/currencies/${action.payload.currencyUid}`,
+      payload: action.payload.data,
+      successEffects: (response: IApiResponse) => ([
+        put(lookupCurrencyPutSuccess(response.body)),
+        put(lookupCurrencyGetAllDispose())
+      ]),
+      successCallback: (response: IApiResponse) => {
+        action.payload.resolve(response.body.data);
+      },
+      failureEffects: (response: IApiResponse) => ([
+        put(lookupCurrencyPutError(response.statusText)),
+        put(layoutAlertAdd({
+          time: new Date(),
+          message: response.statusText,
+          details: response
+        })),
+      ]),
+      failureCallback: (response: IApiResponse) => {
+        if (response.status === 400) {
+          const errors: any = {
+            // information -> based form section name
+            information: flattenObject(response.body.errors)
+          };
+
+          action.payload.reject(new SubmissionError(errors));
+        } else {
+          action.payload.reject(response.statusText);
+        }
+      },
+      errorEffects: (error: TypeError) => [
+        put(lookupCurrencyPutError(error.message)),
+        put(layoutAlertAdd({
+          time: new Date(),
+          message: error.message
+        }))
+      ],
+      errorCallback: (error: any) => {
+        action.payload.reject(error);
+      }
+    });
+  };
+
+  yield takeEvery(Action.PUT_REQUEST, worker);
+}
+
 function* lookupCurrencySagas() {
   yield all([
     fork(watchFetchAllRequest),
     fork(watchFetchListRequest),
     fork(watchFetchByIdRequest),
+    fork(watchFetchPostRequest),
+    fork(watchFetchPutRequest),
   ]);
 }
 

@@ -1,10 +1,10 @@
 import { IQueryCollectionState } from '@generic/interfaces';
-import { ICurrencyAllRequest } from '@lookup/classes/queries';
+import { ILookupCurrencyAllRequest } from '@lookup/classes/queries';
 import { ICurrency } from '@lookup/classes/response';
 import { CurrencyAction as Action } from '@lookup/store/actions';
 import { Reducer } from 'redux';
 
-const initialState: IQueryCollectionState<ICurrencyAllRequest, ICurrency> = {
+const initialState: IQueryCollectionState<ILookupCurrencyAllRequest, ICurrency> = {
   request: undefined,
   response: undefined,
   isError: false,
@@ -12,7 +12,7 @@ const initialState: IQueryCollectionState<ICurrencyAllRequest, ICurrency> = {
   errors: undefined,
 };
 
-const reducer: Reducer<IQueryCollectionState<ICurrencyAllRequest, ICurrency>> = (state = initialState, action) => {
+const reducer: Reducer<IQueryCollectionState<ILookupCurrencyAllRequest, ICurrency>> = (state = initialState, action) => {
   switch (action.type) {
     case Action.GET_ALL_REQUEST: return { ...state, isLoading: true, isError: false, request: action.payload };
     case Action.GET_ALL_SUCCESS: return { ...state, isLoading: false, isError: false, response: action.payload };
@@ -23,4 +23,4 @@ const reducer: Reducer<IQueryCollectionState<ICurrencyAllRequest, ICurrency>> = 
   }
 };
 
-export { reducer as currencyGetAllReducer };
+export { reducer as lookupCurrencyGetAllReducer };

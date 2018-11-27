@@ -1,4 +1,5 @@
 export enum CurrencyUserAction {
   Refresh = 'refresh',
-  Modify = 'modify'
+  Modify = 'modify',
+  Create = 'create'
 }
