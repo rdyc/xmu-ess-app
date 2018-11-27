@@ -1,7 +1,27 @@
 import { IAppState, IQueryCollectionState, IQuerySingleState } from '@generic/interfaces';
-import { ILookupCompanyGetAllRequest, ILookupCompanyGetDetailRequest, ILookupCompanyGetListRequest } from '@lookup/classes/queries/company';
+import { 
+  ILookupCompanyDeleteRequest, 
+  ILookupCompanyGetAllRequest, 
+  ILookupCompanyGetDetailRequest, 
+  ILookupCompanyGetListRequest, 
+  ILookupCompanyPostRequest, 
+  ILookupCompanyPutRequest 
+} from '@lookup/classes/queries/company';
 import { ICompany, ICompanyDetail, ICompanyList } from '@lookup/classes/response';
-import { lookupCompanyGetAllDispose, lookupCompanyGetAllRequest, lookupCompanyGetByIdDispose, lookupCompanyGetByIdRequest, lookupCompanyGetListDispose, lookupCompanyGetListRequest } from '@lookup/store/actions';
+import { 
+  lookupCompanyDeleteDispose, 
+  lookupCompanyDeleteRequest, 
+  lookupCompanyGetAllDispose, 
+  lookupCompanyGetAllRequest, 
+  lookupCompanyGetByIdDispose, 
+  lookupCompanyGetByIdRequest, 
+  lookupCompanyGetListDispose, 
+  lookupCompanyGetListRequest, 
+  lookupCompanyPostDispose, 
+  lookupCompanyPostRequest, 
+  lookupCompanyPutDispose, 
+  lookupCompanyPutRequest 
+} from '@lookup/store/actions';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 
@@ -16,6 +36,12 @@ interface PropsFromState {
 interface PropsFromDispatch {
   lookupCompanyDispatch: {
     // command
+    createRequest: typeof lookupCompanyPostRequest;
+    createDispose: typeof lookupCompanyPostDispose;
+    updateRequest: typeof lookupCompanyPutRequest;
+    updateDispose: typeof lookupCompanyPutDispose;
+    deleteRequest: typeof lookupCompanyDeleteRequest;
+    deleteDispose: typeof lookupCompanyDeleteDispose;
 
     // query
     loadAllRequest: typeof lookupCompanyGetAllRequest;
@@ -40,7 +66,13 @@ const mapStateToProps = ({ lookupCompanyGetAll, lookupCompanyGetList, lookupComp
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   lookupCompanyDispatch: {
     // command
-    
+    createRequest: (request: ILookupCompanyPostRequest) => dispatch(lookupCompanyPostRequest(request)),
+    createDispose: () => dispatch(lookupCompanyPostDispose()),
+    updateRequest: (request: ILookupCompanyPutRequest) => dispatch(lookupCompanyPutRequest(request)),
+    updateDispose: () => dispatch(lookupCompanyPutDispose()),
+    deleteRequest: (request: ILookupCompanyDeleteRequest) => dispatch(lookupCompanyDeleteRequest(request)),
+    deleteDispose: () => dispatch(lookupCompanyDeleteDispose()),
+
     // query
     loadAllRequest: (request: ILookupCompanyGetAllRequest) => dispatch(lookupCompanyGetAllRequest(request)),
     loadAllDispose: () => dispatch(lookupCompanyGetAllDispose()),

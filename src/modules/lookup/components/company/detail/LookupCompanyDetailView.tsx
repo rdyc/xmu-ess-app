@@ -7,8 +7,8 @@ import { ICompanyDetail } from '@lookup/classes/response';
 import { CompanyUserAction } from '@lookup/classes/types';
 import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
 import * as React from 'react';
-import { CompanyDetailProps } from './CompanyDetail';
-import { CompanyInformation } from './CompanyInformation';
+import { CompanyDetailProps } from './LookupCompanyDetail';
+import { CompanyInformation } from './LookupCompanyInformation';
 
 const config: SingleConfig<ICompanyDetail, CompanyDetailProps> = {
   // page info
@@ -37,8 +37,15 @@ const config: SingleConfig<ICompanyDetail, CompanyDetailProps> = {
       name: props.intl.formatMessage(layoutMessage.action.modify),
       enabled: true,
       visible: true,
-      onClick: () => alert('go to modify page here')
-    }
+      onClick: props.handleOnModify
+    },
+    // {
+    //   id: CompanyUserAction.Delete,
+    //   name: props.intl.formatMessage(layoutMessage.action.),
+    //   enabled: true,
+    //   visible: true,
+    //   onClick: () => alert('go to new page here')
+    // }
   ]),
 
   // events
@@ -82,7 +89,7 @@ const config: SingleConfig<ICompanyDetail, CompanyDetailProps> = {
   ])
 };
 
-export const CompanyDetailView: React.SFC<CompanyDetailProps> = props => (
+export const LookupCompanyDetailView: React.SFC<CompanyDetailProps> = props => (
   <SinglePage
     config={config}
     connectedProps={props}

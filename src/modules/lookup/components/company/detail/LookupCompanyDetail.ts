@@ -6,7 +6,7 @@ import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { compose, HandleCreators, mapper, StateHandler, StateHandlerMap, StateUpdaters, withHandlers, withStateHandlers } from 'recompose';
-import { CompanyDetailView } from './CompanyDetailView';
+import { LookupCompanyDetailView } from './LookupCompanyDetailView';
 
 interface OwnRouteParams {
   companyUid: string;
@@ -118,11 +118,11 @@ const handlerCreators: HandleCreators<CompanyDetailProps, OwnHandler> = {
   },
 };
 
-export const CompanyDetail = compose(
+export const LookupCompanyDetail = compose(
   withRouter,
   withUser,
   withLookupCompany,
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
-)(CompanyDetailView);
+)(LookupCompanyDetailView);

@@ -27,9 +27,12 @@ import {
   ISystemLimitListRequest,
 } from '@lookup/classes/queries';
 import {
+  ILookupCompanyDeleteRequest,
   ILookupCompanyGetAllRequest,
   ILookupCompanyGetDetailRequest,
   ILookupCompanyGetListRequest,
+  ILookupCompanyPostRequest,
+  ILookupCompanyPutRequest,
 } from '@lookup/classes/queries/company';
 import {
   ILookupCustomerGetAllRequest,
@@ -100,6 +103,9 @@ export interface ILookupState {
   lookupCompanyGetAll: IQueryCollectionState<ILookupCompanyGetAllRequest, ICompany>;
   lookupCompanyGetList: IQueryCollectionState<ILookupCompanyGetListRequest, ICompanyList>;
   lookupCompanyGetById: IQuerySingleState<ILookupCompanyGetDetailRequest, ICompanyDetail>;
+  lookupCompanyPost: IQuerySingleState<ILookupCompanyPostRequest, ICompany>;
+  lookupCompanyPut: IQuerySingleState<ILookupCompanyPutRequest, ICompany>;
+  lookupCompanyDelete: IQuerySingleState<ILookupCompanyDeleteRequest, boolean>;
 
   diemGetAll: IQueryCollectionState<IDiemAllRequest, IDiem>;
   diemGetList: IQueryCollectionState<IDiemListRequest, IDiemList>;

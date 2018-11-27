@@ -1,7 +1,8 @@
 import { Layout } from '@layout/components/base';
 import * as React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router';
-import { CompanyDetail } from './company/detail/CompanyDetail';
+import { LookupCompanyDetail } from './company/detail/LookupCompanyDetail';
+import LookupCompanyEditor from './company/editor/LookupCompanyEditor';
 import { LookupCompanyList } from './company/list/LookupCompanyList';
 import { MileageExceptionDetail } from './mileageException/detail/MileageExceptionDetail';
 import { MileageExceptionList } from './mileageException/list/LookupMileageExceptionListView';
@@ -9,7 +10,8 @@ import { MileageExceptionList } from './mileageException/list/LookupMileageExcep
 const company = (props: RouteComponentProps) => (
   <Switch>
     <Route path={`${props.match.path}/list`} component={LookupCompanyList} />
-    <Route path={`${props.match.path}/:companyUid`} component={CompanyDetail} />
+    <Route path={`${props.match.path}/form`} component={LookupCompanyEditor} />
+    <Route path={`${props.match.path}/:companyUid`} component={LookupCompanyDetail} />
   </Switch>
 );
 

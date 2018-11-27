@@ -1,4 +1,4 @@
-import { companyConfirm, companyField, companyPage, companySection } from './lookupCompanyMessage';
+import { companyConfirm, companyField, companyFieldHelperFor, companyMessage, companyPage, companySection } from './lookupCompanyMessage';
 import { mileageExceptionConfirm, mileageExceptionField, mileageExceptionPage } from './mileageException';
 
 export const lookupMessage = {
@@ -10,7 +10,9 @@ export const lookupMessage = {
   company: {
     page: companyPage,
     field: companyField,
+    fieldFor: companyFieldHelperFor,
     section: companySection,
-    confirm: companyConfirm
+    confirm: companyConfirm,
+    message: companyMessage
   },
 };

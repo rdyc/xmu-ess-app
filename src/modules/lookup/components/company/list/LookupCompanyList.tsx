@@ -68,7 +68,7 @@ const config: CollectionConfig<ICompany, AllProps> = {
       name: props.intl.formatMessage(layoutMessage.action.create),
       enabled: true,
       visible: true,
-      onClick: () => alert('go to new page here')
+      onClick: () => callback.handleRedirectTo(`/lookup/company/form`)
     }
   ]),
 
