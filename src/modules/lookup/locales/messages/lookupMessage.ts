@@ -5,5 +5,11 @@ export const lookupMessage = {
     page: mileageExceptionPage,
     field: mileageExceptionField,
     confirm: mileageExceptionConfirm, 
+  },
+  currency: {
+    // page: ,
+    // field: ,
+    // confirm: ,
   }
+
 };

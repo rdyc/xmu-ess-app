@@ -1,3 +1,3 @@
-export interface ILookupCurrencyByIdRequest {
+export interface ICurrencyGetByIdRequest {
   currencyUid: string;
 }

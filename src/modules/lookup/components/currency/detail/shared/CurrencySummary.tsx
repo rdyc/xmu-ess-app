@@ -1,19 +1,12 @@
 import { layoutMessage } from '@layout/locales/messages';
 import { GlobalFormat } from '@layout/types';
+import { GlobalStyle } from '@layout/types/GlobalStyle';
 import { ICurrency } from '@lookup/classes/response/currency';
 import { Grid, TextField } from '@material-ui/core';
 // import { currencyMessages } from '@lookup/locales/messages/currency/currencyMessages';
 import * as React from 'react';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose } from 'recompose';
-
-const styled = {
-  fullWidth: true,
-  InputProps: {
-    disableUnderline: true,
-    readOnly: true
-  }
-};
 
 interface OwnProps {
   data: ICurrency;
@@ -25,15 +18,15 @@ type AllProps
 
 const currencySummary: React.SFC<AllProps> = props => (
   <Grid container>
-    <Grid item xs={12} sm={6} md={3}>
+    <Grid item xs={12} sm={6} md={4}>
       <TextField
-        {...styled}
+        {...GlobalStyle.TextField.ReadOnly}
         margin="dense"
         // label={props.intl.formatMessage(currencyMessages.field.uid)}
         value={props.data.uid}
       />
       <TextField
-        {...styled}
+        {...GlobalStyle.TextField.ReadOnly}
         multiline={true}
         margin="dense"
         // label={props.intl.formatMessage(currencyMessages.field.name)}
@@ -41,42 +34,34 @@ const currencySummary: React.SFC<AllProps> = props => (
       />
     </Grid>
 
-    <Grid item xs={12} sm={6} md={3}>
+    <Grid item xs={12} sm={6} md={4}>
       <TextField
-        {...styled}
+        {...GlobalStyle.TextField.ReadOnly}
         margin="dense"
         // label={props.intl.formatMessage(currencyMessages.request.field.symbol)}
         value={props.data.symbol || 'N/A'}
         multiline
       />
-    </Grid>
-
-    <Grid item xs={12} sm={6} md={3}>
       <TextField
-        {...styled}
+        {...GlobalStyle.TextField.ReadOnly}
         margin="dense"
-        label={props.intl.formatMessage(currencyMessages.request.field.date)}
-        value={props.intl.formatDate(props.data.date, GlobalFormat.Date)}
+        // label={props.intl.formatMessage(currencyMessages.request.field.rate)}
+        value={props.data.rate || 0}
+        multiline
       />
       <TextField
-        {...styled}
+        {...GlobalStyle.TextField.ReadOnly}
         margin="dense"
-        label={props.intl.formatMessage(currencyMessages.request.field.request)}
-        value={`${props.data.currency && props.data.currency.value} ${props.intl.formatNumber(props.data.request || 0)}`}
-      />
-      <TextField
-        {...styled}
-        margin="dense"
-        // label={props.intl.formatMessage(currencyMessages.request.field.advance)}
+        // label={props.intl.formatMessage(currencyMessages.request.field.isActive)}
         value={`${props.data.isActive}`}
       />
     </Grid>
 
     {
       props.data.changes &&
-      <Grid item xs={12} sm={6} md={3}>
+      <Grid item xs={12} sm={6} md={4}>
         <TextField
-          {...styled}
+          {...GlobalStyle.TextField.ReadOnly}
           margin="dense"
           label={props.intl.formatMessage(layoutMessage.field.createdBy)}
           value={props.data.changes.created && props.data.changes.created.fullName || 'N/A'}
@@ -86,7 +71,7 @@ const currencySummary: React.SFC<AllProps> = props => (
         {
           (props.data.changes.updated && props.data.changes.updatedAt) &&
           <TextField
-            {...styled}
+            {...GlobalStyle.TextField.ReadOnly}
             margin="dense"
             label={props.intl.formatMessage(layoutMessage.field.updatedBy)}
             value={props.data.changes.updated.fullName || 'N/A'}

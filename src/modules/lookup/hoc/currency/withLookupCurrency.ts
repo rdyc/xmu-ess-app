@@ -1,11 +1,11 @@
 import { IAppState, IQueryCollectionState, IQuerySingleState } from '@generic/interfaces';
 import {
-  ILookupCurrencyDeleteRequest,
-  ILookupCurrencyGetAllRequest,
-  ILookupCurrencyGetDetailRequest,
-  ILookupCurrencyGetListRequest,
-  ILookupCurrencyPostRequest,
-  ILookupCurrencyPutRequest,
+  ICurrencyDeleteRequest,
+  ICurrencyGetAllRequest,
+  ICurrencyGetByIdRequest,
+  ICurrencyGetListRequest,
+  ICurrencyPostRequest,
+  ICurrencyPutRequest,
 } from '@lookup/classes/queries/currency';
 import { ICurrency, ICurrencyDetail, ICurrencyList } from '@lookup/classes/response';
 import {
@@ -27,9 +27,9 @@ import { Dispatch } from 'redux';
 
 interface PropsFromState {
   lookupCurrencyState: {
-    all: IQueryCollectionState<ILookupCurrencyGetAllRequest, ICurrency>;
-    list: IQueryCollectionState<ILookupCurrencyGetListRequest, ICurrencyList>;
-    detail: IQuerySingleState<ILookupCurrencyGetDetailRequest, ICurrencyDetail>;
+    all: IQueryCollectionState<ICurrencyGetAllRequest, ICurrency>;
+    list: IQueryCollectionState<ICurrencyGetListRequest, ICurrencyList>;
+    detail: IQuerySingleState<ICurrencyGetByIdRequest, ICurrencyDetail>;
   };
 }
 
@@ -66,19 +66,19 @@ const mapStateToProps = ({ currencyGetAll, currencyGetList, currencyGetById }: I
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   lookupCurrencyDispatch: {
     // command
-    createRequest: (request: ILookupCurrencyPostRequest) => dispatch(lookupCurrencyPostRequest(request)),
+    createRequest: (request: ICurrencyPostRequest) => dispatch(lookupCurrencyPostRequest(request)),
     createDispose: () => dispatch(lookupCurrencyPostDispose()),
-    updateRequest: (request: ILookupCurrencyPutRequest) => dispatch(lookupCurrencyPutRequest(request)),
+    updateRequest: (request: ICurrencyPutRequest) => dispatch(lookupCurrencyPutRequest(request)),
     updateDispose: () => dispatch(lookupCurrencyPutDispose()),
-    deleteRequest: (request: ILookupCurrencyDeleteRequest) => dispatch(lookupCurrencyDeleteRequest(request)),
+    deleteRequest: (request: ICurrencyDeleteRequest) => dispatch(lookupCurrencyDeleteRequest(request)),
     deleteDispose: () => dispatch(lookupCurrencyDeleteDispose()),
     
     // query
-    loadAllRequest: (request: ILookupCurrencyGetAllRequest) => dispatch(lookupCurrencyGetAllRequest(request)),
+    loadAllRequest: (request: ICurrencyGetAllRequest) => dispatch(lookupCurrencyGetAllRequest(request)),
     loadAllDispose: () => dispatch(lookupCurrencyGetAllDispose()),
-    loadListRequest: (request: ILookupCurrencyGetListRequest) => dispatch(lookupCurrencyGetListRequest(request)),
+    loadListRequest: (request: ICurrencyGetListRequest) => dispatch(lookupCurrencyGetListRequest(request)),
     loadListDispose: () => dispatch(lookupCurrencyGetListDispose()),
-    loadDetailRequest: (request: ILookupCurrencyGetDetailRequest) => dispatch(lookupCurrencyGetByIdRequest(request)),
+    loadDetailRequest: (request: ICurrencyGetByIdRequest) => dispatch(lookupCurrencyGetByIdRequest(request)),
     loadDetailDispose: () => dispatch(lookupCurrencyGetByIdDispose()),
   }
 });

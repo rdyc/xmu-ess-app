@@ -1,5 +1,5 @@
-import { ILookupCurrencyListFilter } from '@lookup/classes/filters';
+import { ICurrencyListFilter } from '@lookup/classes/filters';
 
-export interface ILookupCurrencyListRequest {
-  readonly filter?: ILookupCurrencyListFilter | undefined;
+export interface ICurrencyGetListRequest {
+  readonly filter?: ICurrencyListFilter | undefined;
 }

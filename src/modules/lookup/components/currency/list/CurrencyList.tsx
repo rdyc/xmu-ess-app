@@ -21,7 +21,7 @@ import * as React from 'react';
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose } from 'recompose';
 
-const purchaseFields: ICollectionValue[] = Object.keys(CurrencyField).map(key => ({ 
+const currencyFields: ICollectionValue[] = Object.keys(CurrencyField).map(key => ({ 
   value: key, 
   name: CurrencyField[key] 
 }));
@@ -29,14 +29,16 @@ const purchaseFields: ICollectionValue[] = Object.keys(CurrencyField).map(key =>
 const config: CollectionConfig<ICurrency, AllProps> = {
   // page info
   page: (props: AllProps) => ({
-    uid: AppMenu.PurchaseRequest,
-    parentUid: AppMenu.Purchase,
+    uid: AppMenu.LookupCurrency,
+    parentUid: AppMenu.Lookup,
     // title: props.intl.formatMessage(currencyMessage.request.pages.listTitle),
+    title: 'Currency Mock Up',
     // description: props.intl.formatMessage(currencyMessage.request.pages.listSubHeader),
+    description: 'Currency Mock Up',
   }),
 
   // top bar
-  fields: purchaseFields,
+  fields: currencyFields,
   fieldTranslator: currencyFieldTranslator,
 
   // searching
@@ -44,7 +46,7 @@ const config: CollectionConfig<ICurrency, AllProps> = {
   searchStatus: (states: AllProps): boolean => {
     let result: boolean = false;
 
-    const { request } = states.currencyState.all;
+    const { request } = states.lookupCurrencyState.all;
 
     if (request && request.filter && request.filter.find) {
       result = request.filter.find ? true : false;
@@ -78,8 +80,8 @@ const config: CollectionConfig<ICurrency, AllProps> = {
   // events
   onDataLoad: (states: AllProps, callback: CollectionHandler, params: CollectionDataProps, forceReload?: boolean | false) => {
     const { user } = states.userState;
-    const { isLoading, response } = states.purchaseRequestState.all;
-    const { loadAllRequest } = states.purchaseRequestDispatch;
+    const { isLoading, response } = states.lookupCurrencyState.all;
+    const { loadAllRequest } = states.lookupCurrencyDispatch;
 
     // when user is set and not loading
     if (user && !isLoading) {
@@ -87,8 +89,6 @@ const config: CollectionConfig<ICurrency, AllProps> = {
       if (!response || forceReload) {
         loadAllRequest({
           filter: {
-            companyUid: user.company.uid,
-            positionUid: user.position.uid,
             find: params.find,
             findBy: params.findBy,
             orderBy: params.orderBy,
@@ -104,7 +104,7 @@ const config: CollectionConfig<ICurrency, AllProps> = {
     }
   },
   onUpdated: (states: AllProps, callback: CollectionHandler) => {
-    const { isLoading, response } = states.purchaseRequestState.all;
+    const { isLoading, response } = states.lookupCurrencyState.all;
 
     callback.handleLoading(isLoading);
     callback.handleResponse(response);
@@ -129,7 +129,7 @@ const config: CollectionConfig<ICurrency, AllProps> = {
     <React.Fragment>
     <Button 
       size= "small"
-      onClick = {() => callback.handleRedirectTo(`/purchase/requests/details/${item.uid}`)}
+      onClick = {() => callback.handleRedirectTo(`/lookup/currency/${item.uid}`)}
     >
       <FormattedMessage { ...layoutMessage.action.details } />
     </Button>  
@@ -149,7 +149,7 @@ const listView: React.SFC<AllProps> = props => (
   />
 );
 
-export const PurchaseRequestList = compose(
+export const CurrencyList = compose(
   withUser,
   injectIntl,
   withLookupCurrency

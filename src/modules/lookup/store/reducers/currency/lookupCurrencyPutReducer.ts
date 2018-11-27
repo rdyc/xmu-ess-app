@@ -1,10 +1,10 @@
 import { IQuerySingleState } from '@generic/interfaces';
-import { ILookupCurrencyPutRequest } from '@lookup/classes/queries/currency';
+import { ICurrencyPutRequest } from '@lookup/classes/queries/currency';
 import { ICurrency } from '@lookup/classes/response/currency';
 import { CurrencyAction as Action } from '@lookup/store/actions';
 import { Reducer } from 'redux';
 
-const initialState: IQuerySingleState<ILookupCurrencyPutRequest, ICurrency> = {
+const initialState: IQuerySingleState<ICurrencyPutRequest, ICurrency> = {
   request: undefined,
   response: undefined,
   isError: false,
@@ -12,7 +12,7 @@ const initialState: IQuerySingleState<ILookupCurrencyPutRequest, ICurrency> = {
   errors: undefined,
 };
 
-const reducer: Reducer<IQuerySingleState<ILookupCurrencyPutRequest, ICurrency>> = (state = initialState, action) => {
+const reducer: Reducer<IQuerySingleState<ICurrencyPutRequest, ICurrency>> = (state = initialState, action) => {
   switch (action.type) {
     case Action.POST_REQUEST: return { ...state, isLoading: true, request: action.payload };
     case Action.POST_SUCCESS: return { ...state, isLoading: false, response: action.payload };

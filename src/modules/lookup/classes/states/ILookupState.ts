@@ -1,8 +1,8 @@
 import { IQueryCollectionState, IQuerySingleState } from '@generic/interfaces';
 import {
-  ICurrencyAllRequest,
-  ICurrencyByIdRequest,
-  ICurrencyListRequest,
+  ICurrencyGetAllRequest,
+  ICurrencyGetByIdRequest,
+  ICurrencyGetListRequest,
   IDiemAllRequest,
   IDiemByIdRequest,
   IDiemListRequest,
@@ -111,9 +111,9 @@ export interface ILookupState {
   positionGetList: IQueryCollectionState<IPositionListRequest, IPositionList>;
   positionGetById: IQuerySingleState<IPositionGetByIdRequest, IPositionDetail>;
 
-  currencyGetAll: IQueryCollectionState<ICurrencyAllRequest, ICurrency>;
-  currencyGetList: IQueryCollectionState<ICurrencyListRequest, ICurrencyList>;
-  currencyGetById: IQuerySingleState<ICurrencyByIdRequest, ICurrencyDetail>;
+  currencyGetAll: IQueryCollectionState<ICurrencyGetAllRequest, ICurrency>;
+  currencyGetList: IQueryCollectionState<ICurrencyGetListRequest, ICurrencyList>;
+  currencyGetById: IQuerySingleState<ICurrencyGetByIdRequest, ICurrencyDetail>;
 
   holidayGetAll: IQueryCollectionState<IHolidayAllRequest, IHoliday>;
   holidayGetList: IQueryCollectionState<IHolidayListRequest, IHolidayList>;

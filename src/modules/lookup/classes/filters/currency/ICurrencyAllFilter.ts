@@ -1,5 +1,5 @@
 import { IBaseFilter, IBasePagingFilter } from '@generic/interfaces';
 
-export interface ILookupCurrencyAllFilter extends IBaseFilter, IBasePagingFilter {
+export interface ICurrencyAllFilter extends IBaseFilter, IBasePagingFilter {
   //
 }
