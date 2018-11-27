@@ -1,6 +1,7 @@
 import { SelectSystemOption } from '@common/components/select';
 import { FormMode } from '@generic/types';
 import { InputDate } from '@layout/components/input/date';
+import { InputNumber } from '@layout/components/input/number';
 import { InputText } from '@layout/components/input/text';
 import { RequestDetailFormView } from '@travel/components/request/editor/forms/RequestDetailFormView';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
@@ -61,6 +62,14 @@ const handlerCreators: HandleCreators<TravelSettlementDetailFormProps, OwnHandle
           required: true,
           placeholder: intl.formatMessage({id: `travel.field.${name}.placeholder`}),
           component: InputText
+        };
+        break;
+
+        case 'total':
+        fieldProps = {
+          disabled: true,
+          placeholder: intl.formatMessage({id: `travel.field.${name}.placeholder`}),
+          component: InputNumber
         };
         break;
 

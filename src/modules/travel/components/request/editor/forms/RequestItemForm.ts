@@ -14,8 +14,7 @@ interface OwnProps {
   context: WrappedFieldArrayProps<TravelItemFormData>;
   destinationTypeValue: string | null | undefined;
   projectTypeValue: string | null | undefined;
-  diemRequest: IDiem[] | undefined;
-  onCostChange: (event: any, newValue: number, oldValue: number) => void;
+  diemRequest: IDiem | undefined;
 }
 
 interface OwnState {
@@ -36,32 +35,6 @@ export type RequestItemFormProps
   & WithLookupDiem
   & WithStyles
   & InjectedIntlProps;
-
-// const lifecycles: ReactLifeCycleFunctions<RequestItemFormProps, {}> = {
-//   componentDidMount() {
-//     const { user } = this.props.userState;
-//     const { loadAllRequest } = this.props.lookupDiemDispatch;
-//     const { destinationTypeValue } = this.props;
-
-//     const filter: any = {
-//       projectType: undefined,
-//       destinationType: destinationTypeValue,
-//       find: user && user.company.uid,
-//       findBy: 'companyUid'      
-//     };
-//     if (user) {
-//       loadAllRequest ({
-//         filter
-//       });
-//     }
-//   },
-//   componentWillUnmount() {
-
-//     const { lookupDiemDispatch } = this.props;
-
-//     lookupDiemDispatch.loadAllDispose();
-//   }
-// };
 
 const createProps: mapper<RequestItemFormProps, OwnState> = (props: RequestItemFormProps): OwnState => ({
   active: undefined,
