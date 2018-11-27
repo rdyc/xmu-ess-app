@@ -1,97 +1,79 @@
 {
-  "timesheet.title": "Time Report",
-
   "timesheet.entry.page.list.title": "Time Report History",
   "timesheet.entry.page.list.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-  "timesheet.entry.page.detail.title": "Detail Time Report",
+  "timesheet.entry.page.detail.title": "Time Report Details",
   "timesheet.entry.page.detail.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
   "timesheet.entry.page.new.title": "New Time Report",
   "timesheet.entry.page.new.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
   "timesheet.entry.page.modify.title": "Modify Time Report",
   "timesheet.entry.page.modify.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
   
-  "timesheet.approval.page.list.title": "Time Report Approval",
-  "timesheet.approval.page.list.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-  
-  "timesheet.approval.history.page.list.title": "Time Approval History",
-  "timesheet.approval.history.page.list.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-
   "timesheet.entry.confirm.modify.title": "Modify Confirmation",
   "timesheet.entry.confirm.modify.description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-
+  
   "timesheet.entry.section.info.title": "Time Report",
   "timesheet.entry.section.info.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-  "timesheet.entry.section.approval.title": "Time Report",
+  "timesheet.entry.section.approval.title": "Approval",
   "timesheet.entry.section.approval.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-
-  "timesheet.form.newTitle": "Time Report Entry",
-  "timesheet.form.newSubTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-  "timesheet.form.editTitle": "Modify Time Report",
-  "timesheet.form.editSubTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-  "timesheet.infoTitle": "Time Report",
-  "timesheet.infoSubTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-  "timesheet.action.title": "Action Approval Time Report",
   
-  "timesheet.dialog.modifyTitle": "Modify Confirmation",
-  "timesheet.dialog.modifyDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-  "timesheet.dialog.closeTitle": "Close Confirmation",
-  "timesheet.dialog.closeDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-  "timesheet.dialog.approvalTitle": "Time Report Approval Submission",
-  "timesheet.dialog.approvalContent": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-
   "timesheet.entry.field.uid": "Time Report ID",
   "timesheet.entry.field.uid.placeholder": "Time Report ID",
-
   "timesheet.entry.field.activityType": "Activity Type",
   "timesheet.entry.field.activityType.required": "Activity Type is required",
   "timesheet.entry.field.activityType.placeholder": "Select a activity type",
-  
   "timesheet.entry.field.customerUid": "Customer",
   "timesheet.entry.field.customerUid.required": "Customer is required",
   "timesheet.entry.field.customerUid.placeholder": "Select a customer",
-  
   "timesheet.entry.field.projectUid": "Project",
   "timesheet.entry.field.projectUid.required": "Project is required",
   "timesheet.entry.field.projectUid.placeholder": "Select a project",
-  
   "timesheet.entry.field.siteUid": "Site Project",
   "timesheet.entry.field.siteUid.required": "Site Project is required",
   "timesheet.entry.field.siteUid.placeholder": "Select a site project",
-  
   "timesheet.entry.field.date": "Report Date",
-  "timesheet.entry.field.date.required": "Date is required",
+  "timesheet.entry.field.date.required": "Report Date is required",
   "timesheet.entry.field.date.placeholder": "Select a report date",
-  
+  "timesheet.entry.field.officeTime": "Office Time (Start - End)",
   "timesheet.entry.field.start": "Start",
   "timesheet.entry.field.start.required": "Start is required",
-  "timesheet.entry.field.start.placeholder": "Select a time start",
-  
+  "timesheet.entry.field.start.placeholder": "Select a start time",
   "timesheet.entry.field.end": "End",
   "timesheet.entry.field.end.required": "End is required",
-  "timesheet.entry.field.end.placeholder": "Select a time's up",
-  
+  "timesheet.entry.field.end.placeholder": "Select a end time",
   "timesheet.entry.field.description": "Notes",
-  "timesheet.entry.field.description.placeholder": "Please fill in the notes",
-  
+  "timesheet.entry.field.description.placeholder": "Type a notes",
   "timesheet.entry.field.mileagePercentage": "Mileage Percentage",
   "timesheet.entry.field.mileageDescription": "Mileage Description",
   "timesheet.entry.field.mileageReason": "Mileage Reason",
+  "timesheet.entry.field.mileageException": "Mileage Exception",
   "timesheet.entry.field.siteValue": "Site Value",
   "timesheet.entry.field.totalHours": "Total Hours",
-  "timesheet.entry.field.rejectReason": "Reject Reason",
+  "timesheet.entry.field.rejectReason": "Rejected Reason",
   "timesheet.entry.field.statusType": "Status",
-
-  "timesheet.action.modify": "Modify",
-  "timesheet.action.close": "Close",
-
-  "timesheet.entry.history.noData": "Empty data",
-  "timesheet.approval.history.noData": "Empty data",
   
-  "timesheet.view.approval.title": "Time Report Approvals",
-  "timesheet.view.approval.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-
+  "timesheet.entry.message.emptyProps": "Some props are empty",
   "timesheet.entry.message.create.success": "A new Timesheet ID {uid} has been created",
   "timesheet.entry.message.create.failure": "Unable to process your submission",
   "timesheet.entry.message.update.success": "Existing Timesheet ID {uid} has been updated",
-  "timesheet.entry.message.update.failure": "Unable to process your submission"
+  "timesheet.entry.message.update.failure": "Unable to process your submission",
+
+  "timesheet.approval.page.list.title": "Time Report Approval",
+  "timesheet.approval.page.list.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "timesheet.approval.page.detail.title": "Time Report Approval Details",
+  "timesheet.approval.page.detail.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  
+  "timesheet.approval.history.page.list.title": "Time Report Approval History",
+  "timesheet.approval.history.page.list.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "timesheet.approval.history.page.detail.title": "Time Report Approval Details",
+  "timesheet.approval.history.page.detail.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  
+  "timesheet.approval.confirm.submission.title": "Time Report Approval Submission",
+  "timesheet.approval.confirm.submission.content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  
+  "timesheet.approval.message.emptyProps": "Some props are empty",
+  "timesheet.approval.message.submit.success": "Successfully processing approval submission",
+  "timesheet.approval.message.submit.failure": "Failure when processing approval submission",
+
+  "timesheet.approval.section.approval.title": "Approval",
+  "timesheet.approval.section.approval.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. "
 }

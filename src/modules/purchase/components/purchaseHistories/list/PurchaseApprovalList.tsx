@@ -11,7 +11,7 @@ import { Button } from '@material-ui/core';
 import { IPurchase } from '@purchase/classes/response/purchaseRequest';
 import { PurchaseField, PurchaseUserAction } from '@purchase/classes/types';
 import { PurchaseSummary } from '@purchase/components/purchaseRequest/detail/shared/PurchaseSummary';
-import { purchaseRequestFieldTranslator } from '@purchase/helper';
+import { isRequestEditable, purchaseRequestFieldTranslator } from '@purchase/helper';
 import { withPurchaseApproval, WithPurchaseApproval } from '@purchase/hoc/purchaseHistories/withPurchaseApproval';
 import { purchaseMessage } from '@purchase/locales/messages/purchaseMessage';
 import * as moment from 'moment';
@@ -106,9 +106,9 @@ const config: CollectionConfig<IPurchase, AllProps> = {
     callback.handleLoading(isLoading);
     callback.handleResponse(response);
   },
-  onBind: (item: IPurchase, index: number) => ({
+  onBind: (item: IPurchase, index: number, props: AllProps) => ({
     key: index,
-    primary: `${item.currency && item.currency.value} ${item.request}` || item.notes || '',
+    primary: `${item.currency && item.currency.value} ${props.intl.formatNumber(item.request || 0)}` || '',
     secondary: item.projectUid || item.project && item.project.name || '',
     tertiary: item.customer && item.customer.name || item.customerUid || '',
     quaternary: item.uid,
@@ -124,12 +124,22 @@ const config: CollectionConfig<IPurchase, AllProps> = {
   // action component
   actionComponent: (item: IPurchase, callback: CollectionHandler) => (
     <React.Fragment>
+    { isRequestEditable(item.statusType || '')
+    ?
     <Button 
       size= "small"
       onClick = {() => callback.handleRedirectTo(`/purchase/approvals/details/${item.uid}`)}
     >
       <FormattedMessage { ...layoutMessage.action.approve } />
     </Button>
+    :
+    <Button 
+      size= "small"
+      onClick = {() => callback.handleRedirectTo(`/purchase/approvals/details/${item.uid}`)}
+    >
+      <FormattedMessage { ...layoutMessage.action.details } />
+    </Button>
+    }
       </React.Fragment>
   ),
 };

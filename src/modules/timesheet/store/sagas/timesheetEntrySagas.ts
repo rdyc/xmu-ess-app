@@ -5,6 +5,7 @@ import {
   timesheetGetAllError,
   timesheetGetAllRequest,
   timesheetGetAllSuccess,
+  timesheetGetByIdDispose,
   timesheetGetByIdError,
   timesheetGetByIdRequest,
   timesheetGetByIdSuccess,
@@ -134,6 +135,7 @@ function* watchPutFetchRequest() {
       payload: action.payload.data, 
       successEffects: (response: IApiResponse) => ([
         put(timesheetPutSuccess(response.body)),
+        put(timesheetGetByIdDispose()),
         put(timesheetGetAllDispose())
       ]),
       successCallback: (response: IApiResponse) => {

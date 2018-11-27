@@ -49,8 +49,8 @@ const mileageApprovalItem: React.SFC<AllProps> = props => {
             data.map((item, index) => (
               <div key={item.uid}>
                 <ListItem disableGutters key={item.uid}>
-                  <Grid container spacing={16}>
-                    <Grid item xs={1} sm={1}>
+                  <Grid container spacing={24}>
+                    <Grid item xs={2} sm={2}>
                       {item.status &&
                         item.status.type === WorkflowStatusType.Submitted && (
                           <Checkbox
@@ -60,7 +60,7 @@ const mileageApprovalItem: React.SFC<AllProps> = props => {
                           />
                         )}
                     </Grid>
-                    <Grid item xs={7} sm={7}>
+                    <Grid item xs={6} sm={6}>
                       <Typography noWrap color="primary" variant="body2">
                         {intl.formatDate(item.date, GlobalFormat.MonthYear)}
                       </Typography>

@@ -14,9 +14,9 @@ interface OwnProps {
   formMode: FormMode;
   context: BaseFieldsProps;
   isCurrencyIdr: boolean;
-  onChangeValueIdr: (event: any, newValue: number, oldValue: number) => void;
-  onChangeActual: (event: any, newValue: number, oldValue: number) => void;
-  onChangeDifference: (event: any, newValue: number, oldValue: number) => void;
+  // onChangeValueIdr: (event: any, newValue: number, oldValue: number) => void;  
+  // onChangeActual: (event: any, newValue: number, oldValue: number) => void;
+  // onChangeDifference: (event: any, newValue: number, oldValue: number) => void;
   onChangeActualValue: (event: any, newValue: number, oldValue: number) => void;
   onChangeDifferenceValue: (event: any, newValue: number, oldValue: number) => void;
 }
@@ -114,7 +114,7 @@ const handlerCreators: HandleCreators<PurchaseSettlementDetailFormProps, OwnHand
       case 'actual':
         fieldProps = {
           type: 'number',
-          onChange: props.onChangeValueIdr,
+          // onChange: props.onChangeValueIdr,
           label: props.intl.formatMessage(purchaseMessage.settlement.field.actual),
           component: InputNumber,
           disabled: true
@@ -134,7 +134,7 @@ const handlerCreators: HandleCreators<PurchaseSettlementDetailFormProps, OwnHand
         fieldProps = {
           type: 'number',
           label: props.intl.formatMessage(purchaseMessage.settlement.field.difference),
-          onChange: props.onChangeValueIdr,
+          // onChange: props.onChangeValueIdr,
           component: InputNumber,
           disabled: true
         };
