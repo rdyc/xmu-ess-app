@@ -9,3 +9,5 @@ export * from './systemLimit/SystemLimitUserAction';
 export * from './holiday/HolidayField';
 export * from './leave/LeaveField';
 export * from './leave/LeaveUserAction';
+export * from './mileageException/MileageExceptionRequestField';
+export * from './mileageException/MileageExceptionUserAction';

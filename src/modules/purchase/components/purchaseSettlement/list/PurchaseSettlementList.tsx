@@ -30,10 +30,8 @@ const config: CollectionConfig<ISettlement, AllProps> = {
   page: (props: AllProps) => ({
   uid: AppMenu.PurchaseSettlementRequest,
   parentUid: AppMenu.Purchase,
-  // title: intl.formatMessage({ id: 'purchase.title' }),
-  // description: intl.formatMessage({ id: 'purchase.subTitle' }),
   title: props.intl.formatMessage(purchaseMessage.settlement.pages.listTitle),
-    description: props.intl.formatMessage(purchaseMessage.settlement.pages.listSubHeader),
+  description: props.intl.formatMessage(purchaseMessage.settlement.pages.listSubHeader),
   }),
 
   // top bar
@@ -108,7 +106,7 @@ const config: CollectionConfig<ISettlement, AllProps> = {
   },
   onBind: (item: ISettlement, index: number, props: AllProps) => ({
     key: index,
-    primary: item.actual ? `${item.currency && item.currency.value} ${item.actual}` : props.intl.formatMessage(purchaseMessage.settlement.field.uid),
+    primary: item.statusType !== null ? `${item.currency && item.currency.value} ${props.intl.formatNumber(item.actual || 0)}` : props.intl.formatMessage(purchaseMessage.action.settle),
     secondary: item.projectUid || item.project && item.project.name || '',
     tertiary: item.customer && item.customer.name || item.customerUid || '',
     quaternary: item.uid,
@@ -128,7 +126,7 @@ const config: CollectionConfig<ISettlement, AllProps> = {
         isSettleReady(item.statusType) &&
         <Button
           size="small"
-          onClick={() => callback.handleRedirectTo(`/purchase/settlements/form`, { uid: item.uid})}
+          onClick={() => callback.handleRedirectTo(`/purchase/settlements/form`, { uid: item.uid, statusType: item.statusType})}
         >
           <FormattedMessage {...purchaseMessage.action.settle} />
         </Button>
@@ -137,14 +135,14 @@ const config: CollectionConfig<ISettlement, AllProps> = {
         isSettlementEditable(item.statusType ? item.statusType : '') &&
         <Button
           size="small"
-          onClick={() => callback.handleRedirectTo(`/purchase/settlements/form`, { uid: item.uid, statusType: item.statusType})}
+          onClick={() => callback.handleRedirectTo(`/purchase/settlement/requests/form`, { uid: item.uid, statusType: item.statusType})}
         >
           <FormattedMessage {...layoutMessage.action.modify} />
         </Button>
       }
     <Button 
       size= "small"
-      onClick={() => callback.handleRedirectTo(`/purchase/settlements/details/${item.uid}`)}
+      onClick={() => callback.handleRedirectTo(`/purchase/settlement/requests/${item.uid}`)}
     >
       <FormattedMessage { ...layoutMessage.action.details } />
     </Button>

@@ -18,7 +18,7 @@ const config: SingleConfig<IPurchaseDetail, PurchaseApprovalDetailProps> = {
     uid: AppMenu.PurchaseApproval,
     parentUid: AppMenu.Purchase,
     title: props.intl.formatMessage(purchaseMessage.approval.pages.detailTitle),
-    description: props.intl.formatMessage(purchaseMessage.approval.pages.detailTitle)
+    description: props.intl.formatMessage(purchaseMessage.approval.pages.detailSubHeader)
   }),
 
   // parent url

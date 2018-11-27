@@ -110,7 +110,13 @@ const handlerCreators: HandleCreators<TopBarProps, OwnHandler> = {
   handleOnClickBack: (props: TopBarProps) => (event: React.MouseEvent) => {
     props.layoutDispatch.navBackShow();
 
-    props.history.push(props.layoutState.parentUrl ? props.layoutState.parentUrl : '/home/dashboard');
+    // props.history.push(props.layoutState.parentUrl ? props.layoutState.parentUrl : '/home/dashboard');
+
+    if (props.layoutState.parentUrl) {
+      props.history.push(props.layoutState.parentUrl);
+    } else {
+      props.history.goBack();
+    }
   },
   handleOnClickMenu: (props: TopBarProps) => (event: React.MouseEvent) => {
     props.layoutDispatch.drawerMenuShow();

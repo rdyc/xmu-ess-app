@@ -28,7 +28,7 @@ const config: SingleConfig<IPurchaseDetail, PurchaseRequestDetailProps> = {
   }),
 
   // parent url
-  parentUrl: (props: PurchaseRequestDetailProps) => '/purhase/requests',
+  parentUrl: (props: PurchaseRequestDetailProps) => '/purchase/requests',
 
   // action centre
   showActionCentre: true,
@@ -48,7 +48,7 @@ const config: SingleConfig<IPurchaseDetail, PurchaseRequestDetailProps> = {
       name: props.intl.formatMessage(layoutMessage.action.modify),
       enabled: true,
       visible: isContains(state.statusType, [WorkflowStatusType.Submitted, WorkflowStatusType.InProgress]),
-      onClick: props.handlePurchaseModify
+      onClick: props.handleOnModify
     }
   ]),
 

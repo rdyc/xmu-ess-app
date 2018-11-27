@@ -11,12 +11,12 @@
   
   "purchase.approval.list.title": "Purchase Requests Approvals",
   "purchase.approval.list.subTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-  "purchase.approval.detail.title": "Purchase Request Details",
+  "purchase.approval.detail.title": "Request Approval Form",
   "purchase.approval.detail.subTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
   
   "purchase.settlementapproval.list.title": "Purchase Settlement Approvals",
   "purchase.settlementapproval.list.subTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-  "purchase.settlementapproval.detail.title": "Purchase Settlement Approvals Details",
+  "purchase.settlementapproval.detail.title": "Settlement Approval Form",
   "purchase.settlementapproval.detail.subTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
   
   "purchase.request.section.info.title": "Request Detail",
@@ -26,6 +26,10 @@
   
   "purchase.item.purchaseTitle": "Request Manifest",
   "purchase.item.purchaseSubTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+
+  "purchase.item.settlementTitle": "Settlement Manifest",
+  "purchase.item.settlementSubTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+
   "purchase.item.uid": "Item ID: ",
   "purchase.item.description": "Description: ",
   "purchase.item.request": "Request Value:",
@@ -35,8 +39,6 @@
   "purchase.item.actual.required": "Value neeeded",
   "purchase.item.actual.placeholder": "Fill Actual Value: ",
   "purchase.item.variance": "Difference: ",
-  "purchase.item.settlementTitle": "Settlement Manifest",
-  "purchase.item.settlementSubTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
   
   "purchase.confirm.modify.title": "Modify Confirmation",
   "purchase.confirm.modify.description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
@@ -104,6 +106,8 @@
   "purchase.message.approval.emptyProps": "Some important data's are empty, please check again",
   "purchase.message.approval.approve.success": "Purchase ID {uid} has been approved",
   "purchase.message.approval.reject.success": "Purchase ID {uid} has been rejected",
+  "purchase.message.approval.submit.success": "Approval decision for {uid} has been submitted",
+
 
   "purchase.form.request.editTitle": "Edit Request",
   "purchase.form.request.newTitle": "Create New Request",

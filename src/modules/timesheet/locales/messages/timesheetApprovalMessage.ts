@@ -5,20 +5,24 @@ const prefix2 = 'timesheet.approval.history';
 
 // message
 export const timesheetApprovalMessage = defineMessages({
-  emptyProps: { id: 'timesheet.message.approval.emptyProps' },
-  updateSuccess: { id: 'timesheet.message.approval.create.success' },
-  updateFailure: { id: 'timesheet.message.approval.create.failure' },
+  emptyProps: { id: `${prefix}.message.emptyProps` },
+  submitSuccess: { id: `${prefix}.message.submit.success` },
+  submitFailure: { id: `${prefix}.message.submit.failure` },
 });
 
 // page
 export const timesheetApprovalPage = defineMessages({
   listTitle: { id: `${prefix}.page.list.title` },
-  listSubHeader: { id: `${prefix}.page.list.subHeader` }
+  listSubHeader: { id: `${prefix}.page.list.subHeader` },
+  detailTitle: { id: `${prefix}.page.detail.title` },
+  detailSubHeader: { id: `${prefix}.page.detail.subHeader` }
 });
 
 export const timesheetApprovalHistoryPage = defineMessages({
   listTitle: { id: `${prefix2}.page.list.title` },
-  listSubHeader: { id: `${prefix2}.page.list.subHeader` }
+  listSubHeader: { id: `${prefix2}.page.list.subHeader` },
+  detailTitle: { id: `${prefix2}.page.detail.title` },
+  detailSubHeader: { id: `${prefix2}.page.detail.subHeader` }
 });
 
 // section

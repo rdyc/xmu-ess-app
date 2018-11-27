@@ -18,9 +18,9 @@ import {
 } from 'recompose';
 
 interface OwnHandler {
-  handlePurchaseModify: () => void;
-  handleDialogClose: () => void;
-  handleDialogConfirmed: () => void;
+  handleOnModify: () => void;
+  handleOnCloseDialog: () => void;
+  handleOnConfirm: () => void;
 }
 
 interface OwnState {
@@ -78,13 +78,13 @@ const stateUpdaters: StateUpdaters<PurchaseRequestDetailProps, OwnState, OwnStat
 };
 
 const handlerCreators: HandleCreators<PurchaseRequestDetailProps, OwnHandler> = {
-  handlePurchaseModify: (props: PurchaseRequestDetailProps) => () => {
+  handleOnModify: (props: PurchaseRequestDetailProps) => () => {
     props.setModify();
   },
-  handleDialogClose: (props: PurchaseRequestDetailProps) => () => {
+  handleOnCloseDialog: (props: PurchaseRequestDetailProps) => () => {
     props.setDefault();
   },
-  handleDialogConfirmed: (props: PurchaseRequestDetailProps) => () => {
+  handleOnConfirm: (props: PurchaseRequestDetailProps) => () => {
     const { response } = props.purchaseRequestState.detail;
 
     let purchaseUid: string | undefined;
@@ -97,9 +97,26 @@ const handlerCreators: HandleCreators<PurchaseRequestDetailProps, OwnHandler> = 
       purchaseUid = response.data.uid;
     }
 
-    props.setDefault();
+    const actions = [
+      PurchaseUserAction.Modify, 
+    ];
 
-    props.history.push('/purchase/requests/form/', { uid: purchaseUid });
+    if (actions.indexOf(props.action) !== -1) {
+      let next: string = '404';
+
+      switch (props.action) {
+        case PurchaseUserAction.Modify:
+          next = '/purchase/requests/form';
+          break;
+
+        default:
+          break;
+      }
+
+      props.setDefault();
+
+      props.history.push(next, { uid: purchaseUid });
+    }
   },
 };
 

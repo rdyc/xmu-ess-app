@@ -16,7 +16,7 @@ import { all, fork, put, takeEvery } from 'redux-saga/effects';
 import { IApiResponse, objectToQuerystring } from 'utils';
 
 // Get All
-function* watchFetchAllRequest() {
+function* watchGetAllRequest() {
   const worker = (action: ReturnType<typeof mileageExceptionGetAllRequest>) => {
     return saiyanSaga.fetch({
       method: 'get',
@@ -25,7 +25,7 @@ function* watchFetchAllRequest() {
         put(mileageExceptionGetAllSuccess(response.body))
       ]),
       failureEffects: (response: IApiResponse) => ([
-        put(mileageExceptionGetAllError(response.statusText)),
+        put(mileageExceptionGetAllError(response.body)),
         put(
           layoutAlertAdd({
             time: new Date(),
@@ -42,7 +42,10 @@ function* watchFetchAllRequest() {
             message: error.message
           })
         )
-      ])
+      ]),
+      finallyEffects: [
+        // put(listBarLoading(false))
+      ]
     });
   };
 
@@ -50,7 +53,7 @@ function* watchFetchAllRequest() {
 }
 
 // Get List
-function* watchFetchListRequest() {
+function* watchGetListRequest() {
   const worker = (
     action: ReturnType<typeof mileageExceptionGetListRequest>
   ) => {
@@ -61,7 +64,7 @@ function* watchFetchListRequest() {
         put(mileageExceptionGetListSuccess(response.body))
       ]),
       failureEffects: (response: IApiResponse) => ([
-        put(mileageExceptionGetListError(response.statusText)),
+        put(mileageExceptionGetListError(response.body)),
         put(
           layoutAlertAdd({
             time: new Date(),
@@ -86,7 +89,7 @@ function* watchFetchListRequest() {
 }
 
 // Get By ID
-function* watchFetchByIdRequest() {
+function* watchGetByIdRequest() {
   const worker = (
     action: ReturnType<typeof mileageExceptionGetByIdRequest>
   ) => {
@@ -99,7 +102,7 @@ function* watchFetchByIdRequest() {
         put(mileageExceptionGetByIdSuccess(response.body))
       ]),
       failureEffects: (response: IApiResponse) => ([
-        put(mileageExceptionGetByIdError(response.statusText)),
+        put(mileageExceptionGetByIdError(response.body)),
         put(
           layoutAlertAdd({
             time: new Date(),
@@ -125,9 +128,9 @@ function* watchFetchByIdRequest() {
 
 function* lookupMileageExceptionSagas() {
   yield all([
-    fork(watchFetchAllRequest),
-    fork(watchFetchListRequest),
-    fork(watchFetchByIdRequest),
+    fork(watchGetAllRequest),
+    fork(watchGetListRequest),
+    fork(watchGetByIdRequest),
   ]);
 }
 

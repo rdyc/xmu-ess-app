@@ -9,10 +9,16 @@ import { TravelSettlementItemForm } from './TravelSettlementItemForm';
 
 export const TravelSettlementFormView: React.SFC<TravelSettlementFormProps> = props => {
   const {
-    formMode
+    formMode, totalCostValue
   } = props;
 
   const fields = Object.getOwnPropertyNames(props.initialValues.information);
+
+  const onCostChange = (event: any, newValue: number, oldValue: number) => {
+    if (newValue) {
+      props.change('information.total', (totalCostValue - oldValue) + newValue);
+    }
+  };
 
   const componentInformation = (context: BaseFieldsProps) => (
     <TravelSettlementDetailForm
@@ -22,7 +28,10 @@ export const TravelSettlementFormView: React.SFC<TravelSettlementFormProps> = pr
   );
 
   const componentTravelSettlementItem = (context: WrappedFieldArrayProps<any>) => (
-    <TravelSettlementItemForm context={context} />    
+    <TravelSettlementItemForm 
+      context={context}
+      onCostChange={onCostChange}
+    />    
   );
 
   const render = (
