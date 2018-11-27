@@ -100,7 +100,7 @@ const handlers: HandleCreators<PurchaseSettlementEditorProps, OwnHandlers> = {
     };
 
     const requiredFields = [
-      'settlementDate',
+      'date',
     ];
 
     requiredFields.forEach(field => {
