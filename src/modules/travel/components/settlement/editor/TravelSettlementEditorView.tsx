@@ -142,6 +142,7 @@ export const travelSettlementEditorView: React.SFC<TravelSettlementEditorProps> 
       initialValues.information.objective = data.objective;
       initialValues.information.target = data.target;
       initialValues.information.comment = data.comment;
+      initialValues.information.total = data.total;
 
       if (data.items) {
         data.items.forEach(item =>
