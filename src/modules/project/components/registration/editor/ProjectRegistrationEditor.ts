@@ -225,7 +225,7 @@ const handlerCreators: HandleCreators<ProjectRegistrationEditorProps, OwnHandler
       time: new Date()
     });
 
-    history.push('/project/requests');
+    history.push(`/project/requests/${response.uid}`);
   },
   handleSubmitFail: (props: ProjectRegistrationEditorProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
     const { formMode, intl } = props;

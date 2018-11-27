@@ -5,12 +5,13 @@ import {
   mileageApprovalGetAllError,
   mileageApprovalGetAllRequest,
   mileageApprovalGetAllSuccess,
+  mileageApprovalGetByIdDispose,
   mileageApprovalGetByIdError,
   mileageApprovalGetByIdRequest,
   mileageApprovalGetByIdSuccess,
   mileageApprovalPostError,
   mileageApprovalPostRequest,
-  mileageApprovalPostSuccess
+  mileageApprovalPostSuccess,
 } from '@mileage/store/actions';
 import { flattenObject } from '@utils/flattenObject';
 import saiyanSaga from '@utils/saiyanSaga';
@@ -92,8 +93,9 @@ function* watchPostFetchRequest() {
       path: `/v1/approvals/mileage/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.mileageUid}`, 
       payload: action.payload.data, 
       successEffects: (response: IApiResponse) => ([
-        put(mileageApprovalPostSuccess(response.body)),
-        put(mileageApprovalGetAllDispose())
+        put(mileageApprovalGetAllDispose()),
+        put(mileageApprovalGetByIdDispose()),
+        put(mileageApprovalPostSuccess(response.body))
       ]), 
       successCallback: (response: IApiResponse) => {
         action.payload.resolve(response.body.data);

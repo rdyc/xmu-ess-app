@@ -8,6 +8,7 @@ import {
   leaveRequestGetAllError,
   leaveRequestGetAllRequest,
   leaveRequestGetAllSuccess,
+  leaveRequestGetByIdDispose,
   leaveRequestGetByIdError,
   leaveRequestGetByIdRequest,
   leaveRequestGetByIdSuccess,
@@ -122,8 +123,8 @@ function* watchPostFetchRequest() {
       path: `/v1/leave/requests/${action.payload.companyUid}/${action.payload.positionUid}`, 
       payload: action.payload.data, 
       successEffects: (response: IApiResponse) => [
-        put(leaveRequestPostSuccess(response.body)),
-        put(leaveRequestGetAllDispose())
+        put(leaveRequestGetAllDispose()),
+        put(leaveRequestPostSuccess(response.body))
       ], 
       successCallback: (response: IApiResponse) => {
         action.payload.resolve(response.body.data);
@@ -166,8 +167,9 @@ function* watchPutFetchRequest() {
       path: `/v1/leave/requests/${action.payload.companyUid}/${action.payload.positionUid}`,
       payload: action.payload.data, 
       successEffects: (response: IApiResponse) => [
-        put(leaveRequestPutSuccess(response.body)),
-        put(leaveRequestGetAllDispose())
+        put(leaveRequestGetAllDispose()),
+        put(leaveRequestGetByIdDispose()),
+        put(leaveRequestPutSuccess(response.body))
       ],
       successCallback: (response: IApiResponse) => {
         action.payload.resolve(response.body.data);
