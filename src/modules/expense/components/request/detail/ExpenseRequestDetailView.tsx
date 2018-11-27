@@ -24,6 +24,9 @@ const config: SingleConfig<IExpenseDetail, ExpenseRequestDetailProps> = {
     title: props.intl.formatMessage(expenseMessage.request.page.detailTitle),
     description : props.intl.formatMessage(expenseMessage.request.page.detailSubTitle)
   }),
+
+  // parent url
+  parentUrl: (props: ExpenseRequestDetailProps) => '/expense/requests',
   
   // action centre
   showActionCentre: true,

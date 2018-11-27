@@ -138,7 +138,7 @@ const config: CollectionConfig<IPurchase, AllProps> = {
       }
     <Button 
       size= "small"
-      onClick = {() => callback.handleRedirectTo(`/purchase/requests/details/${item.uid}`)}
+      onClick = {() => callback.handleRedirectTo(`/purchase/requests/${item.uid}`)}
     >
       <FormattedMessage { ...layoutMessage.action.details } />
     </Button>  

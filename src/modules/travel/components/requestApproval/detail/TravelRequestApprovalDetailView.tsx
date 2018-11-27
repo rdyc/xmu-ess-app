@@ -22,6 +22,9 @@ const config: SingleConfig<ITravelRequestDetail, TravelRequestApprovalDetailProp
     title: props.intl.formatMessage(travelMessage.requestApproval.page.detailTitle),
     description: props.intl.formatMessage(travelMessage.requestApproval.page.detailTitle)
   }),
+
+  // parent url
+  parentUrl: (props: TravelRequestApprovalDetailProps) => '/travel/approvals',
   
   // action centre
   showActionCentre: true,

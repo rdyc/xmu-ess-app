@@ -26,8 +26,13 @@ const config: SingleConfig<IPurchaseDetail, PurchaseRequestDetailProps> = {
     title: props.intl.formatMessage(purchaseMessage.request.pages.detailTitle),
     description: props.intl.formatMessage(purchaseMessage.request.pages.detailSubHeader)
   }),
+
+  // parent url
+  parentUrl: (props: PurchaseRequestDetailProps) => '/purchase/requests',
+
   // action centre
   showActionCentre: true,
+
   // more
   hasMore: true,
   moreOptions: (props: PurchaseRequestDetailProps, state: SingleState, callback: SingleHandler): IAppBarMenu[] => ([
@@ -46,6 +51,8 @@ const config: SingleConfig<IPurchaseDetail, PurchaseRequestDetailProps> = {
       onClick: props.handleOnModify
     }
   ]),
+
+  // envents
   onDataLoad: (props: PurchaseRequestDetailProps, callback: SingleHandler, forceReload?: boolean | false) => {
     const { user } = props.userState;
     const { isLoading, request, response } = props.purchaseRequestState.detail;
