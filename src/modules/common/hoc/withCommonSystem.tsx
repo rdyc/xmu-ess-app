@@ -18,7 +18,9 @@ import {
   systemGetByIdRequest,
   systemGetTypeDispose,
   systemGetTypeRequest,
+  systemPostDispose,
   systemPostRequest,
+  systemPutDispose,
   systemPutRequest,
   transportationGetListRequest,
 } from '@common/store/actions';
@@ -79,8 +81,10 @@ interface PropsFromDispatch {
     systemDetailDispose: typeof systemGetByIdDispose;
 
     // command
-    systemPostRequest: typeof systemPostRequest;
-    systemPutRequest: typeof systemPutRequest;
+    systemCreateRequest: typeof systemPostRequest;
+    systemCreateDispose: typeof systemPostDispose;
+    systemUpdateRequest: typeof systemPutRequest;
+    systemUpdateDispose: typeof systemPutDispose;
 
     // other
     systemTypeRequest: typeof systemGetTypeRequest;
@@ -162,8 +166,10 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     systemDetailDispose: () => dispatch(systemGetByIdDispose()),
 
     // command
-    systemPostRequest: (request: ISystemPostRequest) => dispatch(systemPostRequest(request)),
-    systemPutRequest: (request: ISystemPutRequest) => dispatch(systemPutRequest(request)),
+    systemCreateRequest: (request: ISystemPostRequest) => dispatch(systemPostRequest(request)),
+    systemCreateDispose: () => dispatch(systemPostDispose()),
+    systemUpdateRequest: (request: ISystemPutRequest) => dispatch(systemPutRequest(request)),
+    systemUpdateDispose: () => dispatch(systemPutDispose()),
 
     // type
     systemTypeRequest: () => dispatch(systemGetTypeRequest()),

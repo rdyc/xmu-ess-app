@@ -5,5 +5,5 @@ export interface ISystemPostPayload extends IBasePayload {
   parentCode: string;
   name: string;
   description: string;
-  isActive: true;
+  isActive: boolean;
 }

@@ -5,5 +5,5 @@ export interface ISystemPutPayload extends IBasePayload {
   parentCode: string;
   name: string;
   description: string;
-  isActive: true;
+  isActive: boolean;
 }

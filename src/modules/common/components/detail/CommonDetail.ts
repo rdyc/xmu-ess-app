@@ -124,7 +124,7 @@ const handlerCreators: HandleCreators<CommonDetailProps, OwnHandler> = {
       props.setDefault();
 
       props.history.push(next, { 
-        uid: typeId,
+        id: typeId,
       });
     }
   },

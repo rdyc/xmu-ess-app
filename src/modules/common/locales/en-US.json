@@ -1,7 +1,7 @@
 {
-  "common.message.create.success": "A new Expense {uid} has been created",
+  "common.message.create.success": "A new Type {uid} has been created",
   "common.message.create.failure": "Unable to process your submission",
-  "common.message.update.success": "Existing Expense {uid} has been updated",
+  "common.message.update.success": "Existing Type {uid} has been updated",
   "common.message.update.failure": "Unable to process your submission",
   "common.message.emptyProps": "Some props are empty",
 
@@ -26,15 +26,15 @@
 
   "common.field.category": "Category",
   "common.field.companyUid": "Company",
-  "common.field.companyUidPlaceholder": "Select a Company",
+  "common.field.companyUid.placeholder": "Select a Company",
   "common.field.parentCode": "Parent",
-  "common.field.parentCodePlaceholder": "Select a Parent",
+  "common.field.parentCode.placeholder": "Select a Parent",
   "common.field.name": "System Value",
-  "common.field.namePlaceholder": "Type the Value",
-  "common.field.nameRequired": "System Value is Required",
+  "common.field.name.placeholder": "Type the Value",
+  "common.field.name.required": "System Value is Required",
   "common.field.type": "System Code",
   "common.field.description": "Description",
-  "common.field.descriptionPlaceholder": "Type the Description",
-  "common.field.descriptionRequired": "Description is Required",
+  "common.field.description.placeholder": "Type the Description",
+  "common.field.description.required": "Description is Required",
   "common.field.isActive": "Active"
 }
