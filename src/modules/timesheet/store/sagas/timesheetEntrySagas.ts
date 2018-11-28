@@ -46,7 +46,7 @@ function* watchAllFetchRequest() {
         }))
       ]),
       finallyEffects: [
-        // put(listBarLoading(false))
+
       ]
     });
   };
@@ -90,8 +90,8 @@ function* watchPostFetchRequest() {
       path: `/v1/timesheet/reports/${action.payload.companyUid}/${action.payload.positionUid}`, 
       payload: action.payload.data, 
       successEffects: (response: IApiResponse) => [
-        put(timesheetPostSuccess(response.body)),
-        put(timesheetGetAllDispose())
+        put(timesheetGetAllDispose()),
+        put(timesheetPostSuccess(response.body))
       ],
       successCallback: (response: IApiResponse) => {
         action.payload.resolve(response.body.data);

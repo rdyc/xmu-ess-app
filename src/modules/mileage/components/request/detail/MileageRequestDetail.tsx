@@ -15,21 +15,24 @@ import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { compose } from 'recompose';
 
-const config: SingleConfig<IMileageRequestDetail, AllProps> = {
+const config: SingleConfig<IMileageRequestDetail, MileageRequestDetailProps> = {
   // page info
-  page: (props: AllProps) => ({
+  page: (props: MileageRequestDetailProps) => ({
     uid: AppMenu.MileageRequest,
     parentUid: AppMenu.Mileage,
     title: props.intl.formatMessage(mileageMessage.request.page.detailTitle),
     description: props.intl.formatMessage(mileageMessage.request.page.detailSubHeader),
   }),
+
+  // parent url
+  parentUrl: (props: MileageRequestDetailProps) => '/mileage/requests',
   
   // action centre
   showActionCentre: true,
 
   // more
   hasMore: true,
-  moreOptions: (props: AllProps, state: SingleState, callback: SingleHandler): IAppBarMenu[] => ([
+  moreOptions: (props: MileageRequestDetailProps, state: SingleState, callback: SingleHandler): IAppBarMenu[] => ([
     {
       id: MileageUserAction.Refresh,
       name: props.intl.formatMessage(layoutMessage.action.refresh),
@@ -40,7 +43,7 @@ const config: SingleConfig<IMileageRequestDetail, AllProps> = {
   ]),
 
   // events
-  onDataLoad: (props: AllProps, callback: SingleHandler, forceReload?: boolean | false) => {
+  onDataLoad: (props: MileageRequestDetailProps, callback: SingleHandler, forceReload?: boolean | false) => {
     const { user } = props.userState;
     const { isLoading, request, response } = props.mileageRequestState.detail;
     const { loadDetailRequest } = props.mileageRequestDispatch;
@@ -60,7 +63,7 @@ const config: SingleConfig<IMileageRequestDetail, AllProps> = {
       }
     }
   },
-  onUpdated: (states: AllProps, callback: SingleHandler) => {
+  onUpdated: (states: MileageRequestDetailProps, callback: SingleHandler) => {
     const { isLoading, response } = states.mileageRequestState.detail;
     
     callback.handleLoading(isLoading);
@@ -68,12 +71,12 @@ const config: SingleConfig<IMileageRequestDetail, AllProps> = {
   },
 
   // primary
-  primaryComponent: (data: IMileageRequestDetail, props: AllProps) => (
+  primaryComponent: (data: IMileageRequestDetail, props: MileageRequestDetailProps) => (
     <MileageInformation data={data} />
   ),
 
   // secondary (multiple components are allowed)
-  secondaryComponents: (data: IMileageRequestDetail, props: AllProps) => ([
+  secondaryComponents: (data: IMileageRequestDetail, props: MileageRequestDetailProps) => ([
     <MileageItem items={data.items}/>,
     <WorkflowHistory data={data.workflow} />
   ])
@@ -83,13 +86,13 @@ interface OwnRouteParams {
   mileageUid: string;
 }
 
-type AllProps 
+type MileageRequestDetailProps 
   = WithUser
   & WithMileageRequest
   & RouteComponentProps<OwnRouteParams>
   & InjectedIntlProps;
 
-const mileageRequestDetail: React.SFC<AllProps> = props => (
+const mileageRequestDetail: React.SFC<MileageRequestDetailProps> = props => (
   <SinglePage
     config={config}
     connectedProps={props}

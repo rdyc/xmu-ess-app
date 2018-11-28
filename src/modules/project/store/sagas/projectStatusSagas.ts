@@ -1,5 +1,7 @@
 import { layoutAlertAdd } from '@layout/store/actions';
 import {
+  projectRegistrationGetAllDispose,
+  projectRegistrationGetByIdDispose,
   ProjectStatusAction as Action,
   projectStatusPutError,
   projectStatusPutRequest,
@@ -18,6 +20,8 @@ function* watchPutRequest() {
       path: `/v1/project/registrations/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.projectUid}/status`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
+        put(projectRegistrationGetAllDispose()),
+        put(projectRegistrationGetByIdDispose()),
         put(projectStatusPutSuccess(response.body))
       ],
       successCallback: (response: IApiResponse) => {

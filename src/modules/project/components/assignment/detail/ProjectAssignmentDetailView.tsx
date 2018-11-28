@@ -21,6 +21,9 @@ const config: SingleConfig<IProjectAssignmentDetail, ProjectAssignmentDetailProp
     title: props.intl.formatMessage(projectMessage.assignment.page.detailTitle),
     description: props.intl.formatMessage(projectMessage.assignment.page.detailSubHeader)
   }),
+
+  // parent url
+  parentUrl: (props: ProjectAssignmentDetailProps) => '/project/assignments',
   
   // action centre
   showActionCentre: true,

@@ -10,11 +10,11 @@ import { TimesheetEntryDetail } from './entry/detail/TimesheetEntryDetail';
 import TimesheetEntryEditor from './entry/editor/TimesheetEntryEditor';
 import { TimesheetEntryList } from './entry/list/TimesheetEntryList';
 
-const entry = (props: RouteComponentProps) => (
+const request = (props: RouteComponentProps) => (
   <Switch>
-    <Route path={`${props.match.path}/history`} component={TimesheetEntryList} />
+    <Route path={`${props.match.path}/form`} component={TimesheetEntryEditor} />
     <Route path={`${props.match.path}/:timesheetUid`} component={TimesheetEntryDetail} />
-    <Route path={`${props.match.path}`} component={TimesheetEntryEditor} />
+    <Route path={`${props.match.path}`} component={TimesheetEntryList} />
   </Switch>
 );
 
@@ -31,7 +31,7 @@ const approval = (props: RouteComponentProps) => (
 export const TimesheetRoutingComponents: React.SFC<RouteComponentProps> = props => (
   <Switch>
     <Layout>
-      <Route path={`${props.match.path}/entry`} component={entry} />
+      <Route path={`${props.match.path}/requests`} component={request} />
       <Route path={`${props.match.path}/approvals`} component={approval} />
     </Layout>
   </Switch>

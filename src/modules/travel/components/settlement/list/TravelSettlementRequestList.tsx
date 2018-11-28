@@ -127,7 +127,7 @@ const config: CollectionConfig<ITravelSettlement, AllProps> = {
         isRequestEditable(item.statusType) &&
         <Button 
           size="small"
-          onClick={() => callback.handleRedirectTo(`/travel/settlements/form`, { uid: item.uid })}
+          onClick={() => callback.handleRedirectTo(`/travel/settlement/requests/form`, { uid: item.uid })}
         >
           <FormattedMessage {...layoutMessage.action.modify}/>
         </Button>
@@ -135,7 +135,7 @@ const config: CollectionConfig<ITravelSettlement, AllProps> = {
 
       <Button 
         size="small"
-        onClick={() => callback.handleRedirectTo(`/travel/settlements/${item.uid}`)}
+        onClick={() => callback.handleRedirectTo(`/travel/settlement/requests/${item.uid}`)}
       >
         <FormattedMessage {...layoutMessage.action.details}/>
       </Button>

@@ -24,8 +24,6 @@ const config: CollectionConfig<ISettlement, AllProps> = {
   page: (props: AllProps) => ({
   uid: AppMenu.PurchaseSettlementApproval,
   parentUid: AppMenu.Purchase,
-  // title: intl.formatMessage({ id: 'purchase.title' }),
-  // description: intl.formatMessage({ id: 'purchase.subTitle' }),
   title: props.intl.formatMessage(purchaseMessage.s_approval.pages.listTitle),
   description: props.intl.formatMessage(purchaseMessage.s_approval.pages.listSubHeader),
   }),
@@ -121,16 +119,11 @@ const config: CollectionConfig<ISettlement, AllProps> = {
     <Button 
       size= "small"
       // onClick = {() => alert(`go to ${item.uid}`)}
-      onClick={() => callback.handleRedirectTo(`/purchase/settlementapprovals/details/${item.uid}`)}
+      onClick={() => callback.handleRedirectTo(`/purchase/settlement/approvals/${item.uid}`)}
     >
       <FormattedMessage { ...layoutMessage.action.approve } />
     </Button>
-  ),
-
-  // custom row render: uncomment to see different
-  // onRowRender: (item: ISettlement, index: number) => (
-  //   <div key={index}>{item.name}</div>
-  // )
+  )
 };
 
 type AllProps
