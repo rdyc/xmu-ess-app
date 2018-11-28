@@ -5,6 +5,7 @@ import {
   travelSettlementGetAllError,
   travelSettlementGetAllRequest,
   travelSettlementGetAllSuccess,
+  travelSettlementGetByIdDispose,
   travelSettlementGetByIdError,
   travelSettlementGetByIdRequest,
   travelSettlementGetByIdSuccess,
@@ -133,7 +134,8 @@ function* watchPutFetchRequest() {
       payload: action.payload.data, 
       successEffects: (response: IApiResponse) => [
         put(travelSettlementPutSuccess(response.body)),
-        put(travelSettlementGetAllDispose())
+        put(travelSettlementGetAllDispose()),
+        put(travelSettlementGetByIdDispose())
       ],
       successCallback: (response: IApiResponse) => {
         action.payload.resolve(response.body.data);

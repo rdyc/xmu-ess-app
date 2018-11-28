@@ -4,6 +4,7 @@ import { IDiem } from '@lookup/classes/response';
 import { WithLookupDiem } from '@lookup/hoc/withLookupDiem';
 import { IProjectDetail, IProjectList } from '@project/classes/response';
 import { RequestFormView } from '@travel/components/request/editor/forms/RequestFormView';
+import * as moment from 'moment';
 import { connect } from 'react-redux';
 import { 
   compose, 
@@ -113,12 +114,35 @@ const createProps: mapper<RequestFormProps, OwnState> = (props: RequestFormProps
 
 const handlers: HandleCreators<RequestFormProps, OwnHandlers> = {
   handleEventListener: (props: RequestFormProps) => (event: CustomEvent) => {
-    const { setTotal } = props;
+    const { setTotal, diemRequest, destinationtypeValue } = props;
     const formValues = event.detail as TravelRequestFormData;
+    const diem = (diemRequest) ? diemRequest.filter(item => item.destinationType === destinationtypeValue &&
+                                  item.projectType === props.projectType)[0] 
+                                  : undefined;
+
+    const calculateDiem = (start: string , end: string): number => {
+      let result: number = 0;
+      
+      if (start !== '' && end !== '') {
+      const startDate = moment(start);
+      const endDate = moment(end);
+      const diffHours = endDate.diff(startDate, 'hours');
+      const diffDays = endDate.diff(startDate, 'days');
+    
+      if (startDate.isSame(endDate)) {
+        result = diffHours >= 8 ? 1 : 0;
+      } else if ( !startDate.isSame(endDate) && endDate.isSameOrAfter(17, 'hours')) {
+        result = diffDays + 1;
+      } else {
+        result = diffDays;
+      }
+    }  
+      return result;
+    };
 
     let total: number = 0;
     if (formValues.item.items) {
-      formValues.item.items.forEach((item) => total += item.costTransport + item.costHotel + item.amount);
+      formValues.item.items.forEach((item) => total += item.costTransport + item.costHotel + (calculateDiem(item.departureDate, item.returnDate) * (diem && diem.currency ? diem.currency.rate : 0) * (diem ? diem.value : 0)));
     }
     props.change('information.total', total);
     setTotal(total);

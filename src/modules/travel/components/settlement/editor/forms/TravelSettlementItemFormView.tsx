@@ -27,7 +27,7 @@ const calculateDiem = (start: string , end: string): number => {
   if (startDate.isSame(endDate)) {
     result = diffHours >= 8 ? 1 : 0;
   } else if ( !startDate.isSame(endDate) && endDate.isSameOrAfter(17, 'hours')) {
-    result = diffDays;
+    result = diffDays + 1;
   } else {
     result = diffDays;
   }
@@ -54,7 +54,7 @@ export const TravelSettlementItemFormView: React.SFC<TravelSettlementItemFormPro
                     type="text"
                     disabled = "true"
                     name={`${field}.employeeUid`}
-                    label="employee"
+                    label={props.intl.formatMessage(travelMessage.request.field.itemEmployeeUid)}
                     placeholder="Employee"
                     required={true}
                     companyUids={props.userState.user && [props.userState.user.company.uid]}
@@ -63,58 +63,58 @@ export const TravelSettlementItemFormView: React.SFC<TravelSettlementItemFormPro
                   <Field 
                     type="text"
                     name={`${field}.transportType`}
-                    label="Transport Type"
+                    label={props.intl.formatMessage(travelMessage.request.field.transportType)}
                     component={SelectSystem}
                     category = "transportation"
                   />
                   <Field 
                     type="text"
                     name={`${field}.from`}
-                    label="from"
+                    label={props.intl.formatMessage(travelMessage.request.field.from)}
                     component={InputText}
                   />
                   <Field 
                     type="text"
                     name={`${field}.destination`}
-                    label="destination"
+                    label={props.intl.formatMessage(travelMessage.request.field.destination)}
                     component={InputText}
                   />
                   <Field 
                     name={`${field}.departureDate`}
-                    label="Departure Date"
+                    label={props.intl.formatMessage(travelMessage.request.field.itemStart)}
                     component={InputDateTime}
                   />
                   <Field 
                     name={`${field}.returnDate`}
-                    label="return Date"
+                    label={props.intl.formatMessage(travelMessage.request.field.itemEnd)}
                     component={InputDateTime}
                   />
                   <Field 
                     type="number"
                     name={`${field}.costTransport`}
-                    label="Cost Transport"
+                    label={props.intl.formatMessage(travelMessage.request.field.transportCost)}
                     required={true}
                     component={InputNumber}
-                    onChange= {props.onCostChange}
+                    // onChange= {props.onCostChange}
                   />
                   <Field 
                     type="text"
                     name={`${field}.hotel`}
-                    label="Hotel Name"
+                    label={props.intl.formatMessage(travelMessage.request.field.hotel)}
                     component={InputText}
                   />
                   <Field 
                     type="number"
                     name={`${field}.costHotel`}
-                    label="Cost Hotel"
+                    label={props.intl.formatMessage(travelMessage.request.field.hotelCost)}
                     required={true}
                     component={InputNumber}
-                    onChange= {props.onCostChange}
+                    // onChange= {props.onCostChange}
                   />
                   <Field 
                     type="text"
                     name={`${field}.notes`}
-                    label="notes"
+                    label={props.intl.formatMessage(travelMessage.request.field.note)}
                     component={InputText}
                   />
                   <TextField
@@ -126,21 +126,21 @@ export const TravelSettlementItemFormView: React.SFC<TravelSettlementItemFormPro
                   <Field 
                     type="number"
                     name={`${field}.diemValue`}
-                    label="Per Diem"
+                    label={props.intl.formatMessage(travelMessage.request.field.diemValue)}
                     disabled={true}
                     component={InputNumber}
                   />     
                   <Field 
                     type="text"
                     name={`${field}.currencyUid`}
-                    label="Currency"
+                    label={props.intl.formatMessage(travelMessage.request.field.currencyUid)}
                     disabled={true}
                     component={InputText}
                   />
                   <Field 
                     type="text"
                     name={`${field}.currencyRate`}
-                    label="Currency Rate"
+                    label={props.intl.formatMessage(travelMessage.request.field.currencyRate)}
                     disabled={true}
                     component={InputText}
                   />
