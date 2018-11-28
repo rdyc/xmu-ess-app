@@ -25,6 +25,9 @@ const config: SingleConfig<ITimesheetDetail, TimesheetEntryDetailProps> = {
     description: props.intl.formatMessage(timesheetMessage.entry.page.detailSubHeader),
   }),
 
+  // parent url
+  parentUrl: (props: TimesheetEntryDetailProps) => '/timesheet/requests',
+
   // action centre
   showActionCentre: true,
 

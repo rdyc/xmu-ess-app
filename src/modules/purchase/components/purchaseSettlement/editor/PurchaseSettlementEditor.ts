@@ -252,7 +252,7 @@ const handlers: HandleCreators<PurchaseSettlementEditorProps, OwnHandlers> = {
       time: new Date()
     });
 
-    history.push('/purchase/settlements/list');
+    history.push(`/purchase/settlement/requests/${response.uid}`);
   },
   handleSubmitFail: (props: PurchaseSettlementEditorProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
     const { formMode, intl } = props;

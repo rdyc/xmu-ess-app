@@ -27,10 +27,11 @@ const config: SingleConfig<IMileageRequestDetail, MileageApprovalDetailProps> = 
     uid: AppMenu.MileageApproval,
     parentUid: AppMenu.Mileage,
     title: props.intl.formatMessage(mileageMessage.request.page.detailTitle),
-    description: props.intl.formatMessage(
-      mileageMessage.request.page.detailSubHeader
-    )
+    description: props.intl.formatMessage(mileageMessage.request.page.detailSubHeader)
   }),
+
+  // parent url
+  parentUrl: (props: MileageApprovalDetailProps) => '/mileage/approvals',
 
   // action centre
   showActionCentre: true,
