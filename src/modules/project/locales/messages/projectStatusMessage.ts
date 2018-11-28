@@ -1,7 +1,9 @@
 import { defineMessages } from 'react-intl';
 
+const prefix = 'project.registration';
+
 export const projectStatusMessage = defineMessages({
-  emptyProps: { id: 'project.message.status.emptyProps' },
-  updateSuccess: { id: 'project.message.status.update.success' },
-  updateFailure: { id: 'project.message.status.update.failure' },
+  emptyProps: { id: `${prefix}.message.status.emptyProps` },
+  updateSuccess: { id: `${prefix}.message.status.update.success` },
+  updateFailure: { id: `${prefix}.message.status.update.failure` },
 });
