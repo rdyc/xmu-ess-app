@@ -122,6 +122,12 @@ const config: CollectionConfig<IMileageException, AllProps> = {
   actionComponent: (item: IMileageException, callback: CollectionHandler) => (
     <React.Fragment>
       <Button 
+          size="small"
+          onClick={() => callback.handleRedirectTo(`/lookup/mileageexception/form`, { uid: item.uid })}
+        >
+          <FormattedMessage {...layoutMessage.action.modify}/>
+        </Button>
+      <Button 
         size="small"
         onClick={() => callback.handleRedirectTo(`/lookup/mileageexception/${item.uid}`)}
       >

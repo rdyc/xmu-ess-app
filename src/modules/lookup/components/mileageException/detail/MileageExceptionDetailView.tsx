@@ -34,7 +34,7 @@ const config: SingleConfig<IMileageExceptionDetail, MileageExceptionDetailProps>
     {
       id: MileageExceptionUserAction.Modify,
       name: props.intl.formatMessage(layoutMessage.action.modify),
-      enabled: state.statusType !== undefined,
+      enabled: true,
       visible: true,
       onClick: props.handleOnModify
     }

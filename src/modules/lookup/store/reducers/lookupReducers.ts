@@ -15,9 +15,6 @@ import {
   menuGetAllReducer,
   menuGetByIdReducer,
   menuGetListReducer,
-  mileageExceptionGetAllReducer,
-  mileageExceptionGetByIdReducer,
-  mileageExceptionGetListReducer,
   positionGetAllReducer,
   positionGetByIdReducer,
   positionGetListReducer,
@@ -29,6 +26,7 @@ import {
 import { lookupCompanyReducers } from './company';
 import { lookupCustomerReducers } from './customer';
 import { leaveReducers } from './leave';
+import { mileageExceptionReducers } from './mileageException/mileageExceptionReducers';
 import { lookupRoleReducers } from './role';
 
 const lookupReducers = {
@@ -36,10 +34,7 @@ const lookupReducers = {
   ...lookupCompanyReducers,
   ...lookupRoleReducers,
   ...leaveReducers,
-
-  mileageExceptionGetAll: mileageExceptionGetAllReducer,
-  mileageExceptionGetById: mileageExceptionGetByIdReducer,
-  mileageExceptionGetList: mileageExceptionGetListReducer,
+  ...mileageExceptionReducers,
 
   diemGetAll: diemGetAllReducer,
   diemGetList: diemGetListReducer,

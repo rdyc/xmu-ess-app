@@ -3,9 +3,11 @@ import { MileageExceptionList } from '@lookup/components/mileageException/list/L
 import * as React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router';
 import { MileageExceptionDetail } from './mileageException/detail/MileageExceptionDetail';
+import MileageExceptionEditor from './mileageException/editor/MileageExceptionEditor';
 
 const mileageException = (props: RouteComponentProps) => (
   <Switch>
+    <Route path={`${props.match.path}/form`} component={MileageExceptionEditor} />
     <Route path={`${props.match.path}/:mileageExceptionUid`} component={MileageExceptionDetail} />
     <Route path={`${props.match.path}`} component={MileageExceptionList} />
    </Switch>
