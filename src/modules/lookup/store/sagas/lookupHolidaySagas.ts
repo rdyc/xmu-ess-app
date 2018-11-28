@@ -37,7 +37,10 @@ function* watchFetchAllRequest() {
           time: new Date(),
           message: error.message
         }))
-      ])
+      ]),
+      finallyEffects: [
+        // put(listBarLoading(false))
+      ]
     });
   };
   

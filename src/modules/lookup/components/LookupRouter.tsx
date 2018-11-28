@@ -2,6 +2,8 @@ import { Layout } from '@layout/components/base';
 import { MileageExceptionList } from '@lookup/components/mileageException/list/LookupMileageExceptionListView';
 import * as React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router';
+import { LookupHolidayDetail } from './holiday/detail/LookupHolidayDetail';
+import { LookupHolidayList } from './holiday/list/LookupHolidayList';
 import { MileageExceptionDetail } from './mileageException/detail/MileageExceptionDetail';
 
 const mileageException = (props: RouteComponentProps) => (
@@ -11,10 +13,18 @@ const mileageException = (props: RouteComponentProps) => (
    </Switch>
 );
 
+const holiday = (props: RouteComponentProps) => (
+  <Switch>
+    <Route path={`${props.match.path}/:holidayUid`} component={LookupHolidayDetail} />
+    <Route path={`${props.match.path}`} component={LookupHolidayList} />
+   </Switch>
+);
+
 export const LookupRoutingComponents: React.SFC<RouteComponentProps> = props => (
   <Switch>
     <Layout>
       <Route path={`${props.match.path}/mileageexception`} component={mileageException} />
+      <Route path={`${props.match.path}/holiday`} component={holiday} />
     </Layout>
   </Switch>
 );
