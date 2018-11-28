@@ -83,8 +83,8 @@ const config: CollectionConfig<ILookupHoliday, AllProps> = {
       if (!response || forceReload) {
         loadAllRequest({
           filter: {
-            find: params.find,
-            findBy: params.findBy,
+            find: 'CP002',
+            findBy: 'companyUid',
             orderBy: params.orderBy,
             direction: params.direction,
             page: params.page,

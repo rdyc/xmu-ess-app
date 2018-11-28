@@ -1,4 +1,4 @@
-export enum LeaveField {
+export enum LookupLeaveField {
   uid = 'Leave ID',
   companyUid = 'Company',
   year = 'Year',

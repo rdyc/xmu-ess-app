@@ -12,5 +12,5 @@ export * from './systemLimit/ISystemLimitListFilter';
 export * from './systemLimit/ISystemLimitAllFilter';
 export * from './holiday/ILookupHolidayGetAllFilter';
 export * from './holiday/ILookupHolidayGetListFilter';
-export * from './leave/ILeaveAllFilter';
-export * from './leave/ILeaveListFilter';
+export * from './leave/ILookupLeaveGetAllFilter';
+export * from './leave/ILookupLeaveGetListFilter';

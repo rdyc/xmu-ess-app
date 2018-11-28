@@ -1,10 +1,10 @@
 import { IQuerySingleState } from '@generic/interfaces';
-import { ILeaveGetDetailRequest } from '@lookup/classes/queries';
-import { ILeaveDetail } from '@lookup/classes/response';
-import { LeaveAction as Action } from '@lookup/store/actions';
+import { ILookupLeaveGetDetailRequest } from '@lookup/classes/queries';
+import { ILookupLeaveDetail } from '@lookup/classes/response';
+import { LookupLeaveAction as Action } from '@lookup/store/actions';
 import { Reducer } from 'redux';
 
-const initialState: IQuerySingleState<ILeaveGetDetailRequest, ILeaveDetail> = {
+const initialState: IQuerySingleState<ILookupLeaveGetDetailRequest, ILookupLeaveDetail> = {
   request: undefined,
   response: undefined,
   isError: false,
@@ -12,7 +12,7 @@ const initialState: IQuerySingleState<ILeaveGetDetailRequest, ILeaveDetail> = {
   errors: undefined,
 };
 
-const reducer: Reducer<IQuerySingleState<ILeaveGetDetailRequest, ILeaveDetail>> = (state = initialState, action) => {
+const reducer: Reducer<IQuerySingleState<ILookupLeaveGetDetailRequest, ILookupLeaveDetail>> = (state = initialState, action) => {
   switch (action.type) {
     case Action.GET_BY_ID_REQUEST: return { ...state, isLoading: true, request: action.payload };
     case Action.GET_BY_ID_SUCCESS: return { ...state, isLoading: false, response: action.payload };
@@ -23,4 +23,4 @@ const reducer: Reducer<IQuerySingleState<ILeaveGetDetailRequest, ILeaveDetail>> 
   }
 };
 
-export { reducer as leaveGetByIdReducer };
+export { reducer as lookupLeaveGetByIdReducer };

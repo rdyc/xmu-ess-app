@@ -2,7 +2,7 @@ import { ICommonSystem } from '@common/classes';
 import { IBaseChanges } from '@generic/interfaces';
 import { ICompanyList } from '@lookup/classes/response';
 
-export interface ILeave {
+export interface ILookupLeaveDetail {
   uid: string;
   companyUid: string;
   company: ICompanyList | null;

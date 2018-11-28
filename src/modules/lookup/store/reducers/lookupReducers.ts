@@ -5,13 +5,13 @@ import {
   diemGetAllReducer,
   diemGetByIdReducer,
   diemGetListReducer,
-  leaveGetAllReducer,
-  leaveGetByIdReducer,
-  leaveGetListReducer,
-  leavePutReducer,
   lookupHolidayGetAllReducer,
   lookupHolidayGetByIdReducer,
   lookupHolidayGetListReducer,
+  lookupLeaveGetAllReducer,
+  lookupLeaveGetByIdReducer,
+  lookupLeaveGetListReducer,
+  lookupLeavePutReducer,
   menuGetAllReducer,
   menuGetByIdReducer,
   menuGetListReducer,
@@ -28,14 +28,14 @@ import {
 
 import { lookupCompanyReducers } from './company';
 import { lookupCustomerReducers } from './customer';
-import { leaveReducers } from './leave';
+import { lookupLeaveReducers } from './leave';
 import { lookupRoleReducers } from './role';
 
 const lookupReducers = {
   ...lookupCustomerReducers,
   ...lookupCompanyReducers,
   ...lookupRoleReducers,
-  ...leaveReducers,
+  ...lookupLeaveReducers,
 
   mileageExceptionGetAll: mileageExceptionGetAllReducer,
   mileageExceptionGetById: mileageExceptionGetByIdReducer,
@@ -65,10 +65,10 @@ const lookupReducers = {
   lookupHolidayGetList: lookupHolidayGetListReducer,
   lookupHolidayGetById: lookupHolidayGetByIdReducer,
 
-  leaveGetAll: leaveGetAllReducer,
-  leaveGetList: leaveGetListReducer,
-  leaveGetById: leaveGetByIdReducer,
-  leavePut: leavePutReducer
+  lookupLeaveGetAll: lookupLeaveGetAllReducer,
+  lookupLeaveGetList: lookupLeaveGetListReducer,
+  lookupLeaveGetById: lookupLeaveGetByIdReducer,
+  lookupLeavePut: lookupLeavePutReducer
 };
 
 export default lookupReducers;

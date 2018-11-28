@@ -6,13 +6,13 @@ import {
   IDiemAllRequest,
   IDiemByIdRequest,
   IDiemListRequest,
-  ILeaveGetAllRequest,
-  ILeaveGetDetailRequest,
-  ILeaveGetListRequest,
-  ILeavePutRequest,
   ILookupHolidayGetAllRequest,
   ILookupHolidayGetByIdRequest,
   ILookupHolidayGetListRequest,
+  ILookupLeaveGetAllRequest,
+  ILookupLeaveGetDetailRequest,
+  ILookupLeaveGetListRequest,
+  ILookupLeavePutRequest,
   IMenuGetAllRequest,
   IMenuGetByIdRequest,
   IMenuListRequest,
@@ -54,12 +54,12 @@ import {
   IDiem,
   IDiemDetail,
   IDiemList,
-  ILeave,
-  ILeaveDetail,
-  ILeaveList,
   ILookupHoliday,
   ILookupHolidayDetail,
   ILookupHolidayList,
+  ILookupLeave,
+  ILookupLeaveDetail,
+  ILookupLeaveList,
   IMenu,
   IMenuDetail,
   IMenuList,
@@ -119,10 +119,10 @@ export interface ILookupState {
   lookupHolidayGetList: IQueryCollectionState<ILookupHolidayGetListRequest, ILookupHolidayList>;
   lookupHolidayGetById: IQuerySingleState<ILookupHolidayGetByIdRequest, ILookupHolidayDetail>;
 
-  leaveGetAll: IQueryCollectionState<ILeaveGetAllRequest, ILeave>;
-  leaveGetList: IQueryCollectionState<ILeaveGetListRequest, ILeaveList>;
-  leaveGetById: IQuerySingleState<ILeaveGetDetailRequest, ILeaveDetail>;
-  leavePut: IQuerySingleState<ILeavePutRequest, ILeave>;
+  lookupLeaveGetAll: IQueryCollectionState<ILookupLeaveGetAllRequest, ILookupLeave>;
+  lookupLeaveGetList: IQueryCollectionState<ILookupLeaveGetListRequest, ILookupLeaveList>;
+  lookupLeaveGetById: IQuerySingleState<ILookupLeaveGetDetailRequest, ILookupLeaveDetail>;
+  lookupLeavePut: IQuerySingleState<ILookupLeavePutRequest, ILookupLeave>;
 
   systemLimitGetAll: IQueryCollectionState<ISystemLimitAllRequest, ISystemLimit>;
   systemLimitGetList: IQueryCollectionState<ISystemLimitListRequest, ISystemLimitList>;

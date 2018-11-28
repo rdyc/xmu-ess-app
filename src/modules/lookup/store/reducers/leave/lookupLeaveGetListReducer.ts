@@ -1,10 +1,10 @@
 import { IQueryCollectionState } from '@generic/interfaces';
-import { ILeaveGetListRequest } from '@lookup/classes/queries';
-import { ILeaveList } from '@lookup/classes/response';
-import { LeaveAction as Action } from '@lookup/store/actions';
+import { ILookupLeaveGetListRequest } from '@lookup/classes/queries';
+import { ILookupLeaveList } from '@lookup/classes/response';
+import { LookupLeaveAction as Action } from '@lookup/store/actions';
 import { Reducer } from 'redux';
 
-const initialState: IQueryCollectionState<ILeaveGetListRequest, ILeaveList> = {
+const initialState: IQueryCollectionState<ILookupLeaveGetListRequest, ILookupLeaveList> = {
   request: undefined,
   response: undefined,
   isError: false,
@@ -12,7 +12,7 @@ const initialState: IQueryCollectionState<ILeaveGetListRequest, ILeaveList> = {
   errors: undefined,
 };
 
-const reducer: Reducer<IQueryCollectionState<ILeaveGetListRequest, ILeaveList>> = (state = initialState, action) => {
+const reducer: Reducer<IQueryCollectionState<ILookupLeaveGetListRequest, ILookupLeaveList>> = (state = initialState, action) => {
   switch (action.type) {
     case Action.GET_LIST_REQUEST: return { ...state, isLoading: true, isError: false, request: action.payload };
     case Action.GET_LIST_SUCCESS: return { ...state, isLoading: false, isError: false, response: action.payload };
@@ -23,4 +23,4 @@ const reducer: Reducer<IQueryCollectionState<ILeaveGetListRequest, ILeaveList>> 
   }
 };
 
-export { reducer as leaveGetListReducer };
+export { reducer as lookupLeaveGetListReducer };

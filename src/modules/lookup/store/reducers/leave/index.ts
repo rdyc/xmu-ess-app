@@ -1,7 +1,7 @@
 // export * from './lookupCustomerDeleteReducer';
-export * from './leaveGetAllReducer';
-export * from './leaveGetByIdReducer';
-export * from './leaveGetListReducer';
+export * from './lookupLeaveGetAllReducer';
+export * from './lookupLeaveGetByIdReducer';
+export * from './lookupLeaveGetListReducer';
 // export * from './lookupCustomerPostReducer';
-export * from './leavePutReducer';
-export * from './leaveReducers';
+export * from './lookupLeavePutReducer';
+export * from './lookupLeaveReducers';

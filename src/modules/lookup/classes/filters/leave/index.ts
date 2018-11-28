@@ -1,2 +1,2 @@
-export * from './ILeaveAllFilter';
-export * from './ILeaveListFilter';
+export * from './ILookupLeaveGetAllFilter';
+export * from './ILookupLeaveGetListFilter';

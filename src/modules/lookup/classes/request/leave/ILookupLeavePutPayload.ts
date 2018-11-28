@@ -1,6 +1,6 @@
 import { IBasePayload } from '@generic/interfaces';
 
-export interface ILeavePutPayload extends IBasePayload {
+export interface ILookupLeavePutPayload extends IBasePayload {
   companyUid: string;
   categoryType: string;
   year: number;

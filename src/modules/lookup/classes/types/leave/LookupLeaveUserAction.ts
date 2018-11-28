@@ -1,4 +1,4 @@
-export enum LeaveUserAction {
+export enum LookupLeaveUserAction {
   Refresh = 'refresh',
   Modify = 'modify',
 }

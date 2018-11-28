@@ -1,6 +1,6 @@
 import { IResponseCollection } from '@generic/interfaces';
-import { ILeaveListFilter } from '@lookup/classes/filters/leave';
-import { ILeaveList } from '@lookup/classes/response';
+import { ILookupLeaveGetListFilter } from '@lookup/classes/filters/leave';
+import { ILookupLeaveList } from '@lookup/classes/response';
 import { WithLookupLeave, withLookupLeave } from '@lookup/hoc/withLookupLeave';
 import { withWidth } from '@material-ui/core';
 import { WithWidth } from '@material-ui/core/withWidth';
@@ -21,21 +21,21 @@ import { LookupLeaveDialogView } from './LookupLeaveDialogView';
 
 interface OwnOptions {
   value?: string | undefined;
-  filter?: ILeaveListFilter | undefined;
+  filter?: ILookupLeaveGetListFilter | undefined;
   isOpen: boolean;
-  onSelected: (leave: ILeaveList) => void;
+  onSelected: (leave: ILookupLeaveList) => void;
   onClose: () => void;
 }
 
 interface OwnHandlers {
   searchOnChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   searchOnKeyUp: (event: React.KeyboardEvent<HTMLDivElement>) => void;
-  filterLeaves: (response: IResponseCollection<ILeaveList> | undefined) => ILeaveList[];
+  filterLeaves: (response: IResponseCollection<ILookupLeaveList> | undefined) => ILookupLeaveList[];
 }
 
 interface OwnState {
   _value: string | undefined;
-  _filter: ILeaveListFilter;
+  _filter: ILookupLeaveGetListFilter;
   _search: string;
 }
 
@@ -82,10 +82,10 @@ const stateUpdaters: StateUpdaters<OwnOptions, OwnState, OwnStateUpdaters> = {
 };
 
 const handlerCreators: HandleCreators<LookupLeaveDialogProps, OwnHandlers> = {
-  filterLeaves: (props: LookupLeaveDialogProps) => (response: IResponseCollection<ILeaveList> | undefined): ILeaveList[] => {
+  filterLeaves: (props: LookupLeaveDialogProps) => (response: IResponseCollection<ILookupLeaveList> | undefined): ILookupLeaveList[] => {
     const { _search } = props;
 
-    let result: ILeaveList[] = [];
+    let result: ILookupLeaveList[] = [];
 
     if (response && response.data) {
       if (_search !== '') {

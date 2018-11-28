@@ -1,15 +1,15 @@
 import { layoutAlertAdd, listBarLoading,  listBarMetadata } from '@layout/store/actions';
 import {
-  LeaveAction as Action,
-  leaveGetAllError,
-  leaveGetAllRequest,
-  leaveGetAllSuccess,
-  leaveGetByIdError,
-  leaveGetByIdRequest,
-  leaveGetByIdSuccess,
-  leaveGetListError,
-  leaveGetListRequest,
-  leaveGetListSuccess,
+  LookupLeaveAction as Action,
+  lookupLeaveGetAllError,
+  lookupLeaveGetAllRequest,
+  lookupLeaveGetAllSuccess,
+  lookupLeaveGetByIdError,
+  lookupLeaveGetByIdRequest,
+  lookupLeaveGetByIdSuccess,
+  lookupLeaveGetListError,
+  lookupLeaveGetListRequest,
+  lookupLeaveGetListSuccess,
   // leavePutError,
   // leavePutRequest,
   // leavePutSuccess,
@@ -20,16 +20,16 @@ import { all, fork, put, takeEvery } from 'redux-saga/effects';
 import { IApiResponse, objectToQuerystring } from 'utils';
 
 function* watchGetAllRequest() {
-  const worker = (action: ReturnType<typeof leaveGetAllRequest>) => {
+  const worker = (action: ReturnType<typeof lookupLeaveGetAllRequest>) => {
     return saiyanSaga.fetch({
       method: 'get',
       path: `/v1/lookup/leaves${objectToQuerystring(action.payload.filter)}`, 
       successEffects: (response: IApiResponse) => ([
-        put(leaveGetAllSuccess(response.body)),
+        put(lookupLeaveGetAllSuccess(response.body)),
         put(listBarMetadata(response.body.metadata))
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(leaveGetAllError(response.statusText)),
+        put(lookupLeaveGetAllError(response.statusText)),
         put(layoutAlertAdd({
           time: new Date(),
           message: response.statusText,
@@ -37,7 +37,7 @@ function* watchGetAllRequest() {
         }))
       ]), 
       errorEffects: (error: TypeError) => ([
-        put(leaveGetAllError(error.message)),
+        put(lookupLeaveGetAllError(error.message)),
         put(layoutAlertAdd({
           time: new Date(),
           message: error.message
@@ -51,15 +51,15 @@ function* watchGetAllRequest() {
 }
 
 function* watchGetListRequest() {
-  const worker = (action: ReturnType<typeof leaveGetListRequest>) => {
+  const worker = (action: ReturnType<typeof lookupLeaveGetListRequest>) => {
     return saiyanSaga.fetch({
       method: 'get',
       path: `/v1/lookup/leaves/list${objectToQuerystring(action.payload.filter)}`,
       successEffects: (response: IApiResponse) => ([
-        put(leaveGetListSuccess(response.body)),
+        put(lookupLeaveGetListSuccess(response.body)),
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(leaveGetListError(response.statusText)),
+        put(lookupLeaveGetListError(response.statusText)),
         put(layoutAlertAdd({
           time: new Date(),
           message: response.statusText,
@@ -67,7 +67,7 @@ function* watchGetListRequest() {
         }))
       ]), 
       errorEffects: (error: TypeError) => ([
-        put(leaveGetListError(error.message)),
+        put(lookupLeaveGetListError(error.message)),
         put(layoutAlertAdd({
           time: new Date(),
           message: error.message
@@ -80,15 +80,15 @@ function* watchGetListRequest() {
 }
 
 function* watchGetByIdRequest() {
-  const worker = (action: ReturnType<typeof leaveGetByIdRequest>) => {
+  const worker = (action: ReturnType<typeof lookupLeaveGetByIdRequest>) => {
     return saiyanSaga.fetch({
       method: 'get',
       path: `/v1/lookup/leaves/${action.payload.companyUid}/${action.payload.leaveUid}`,
       successEffects: (response: IApiResponse) => ([
-        put(leaveGetByIdSuccess(response.body)),
+        put(lookupLeaveGetByIdSuccess(response.body)),
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(leaveGetByIdError(response.statusText)),
+        put(lookupLeaveGetByIdError(response.statusText)),
         put(layoutAlertAdd({
           time: new Date(),
           message: response.statusText,
@@ -96,7 +96,7 @@ function* watchGetByIdRequest() {
         }))
       ]), 
       errorEffects: (error: TypeError) => ([
-        put(leaveGetByIdError(error.message)),
+        put(lookupLeaveGetByIdError(error.message)),
         put(layoutAlertAdd({
           time: new Date(),
           message: error.message,
@@ -108,7 +108,7 @@ function* watchGetByIdRequest() {
   yield takeEvery(Action.GET_BY_ID_REQUEST, worker);
 }
 
-function* leaveSagas() {
+function* lookupLeaveSagas() {
   yield all([
     fork(watchGetAllRequest),
     fork(watchGetListRequest),
@@ -116,4 +116,4 @@ function* leaveSagas() {
   ]);
 }
 
-export default leaveSagas;
+export default lookupLeaveSagas;

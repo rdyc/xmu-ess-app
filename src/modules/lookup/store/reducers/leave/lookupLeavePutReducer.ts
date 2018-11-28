@@ -1,10 +1,10 @@
 import { IQuerySingleState } from '@generic/interfaces';
-import { ILeavePutRequest } from '@lookup/classes/queries';
-import { ILeave } from '@lookup/classes/response';
-import { LeaveAction as Action } from '@lookup/store/actions';
+import { ILookupLeavePutRequest } from '@lookup/classes/queries';
+import { ILookupLeave } from '@lookup/classes/response';
+import { LookupLeaveAction as Action } from '@lookup/store/actions';
 import { Reducer } from 'redux';
 
-const initialState: IQuerySingleState<ILeavePutRequest, ILeave> = {
+const initialState: IQuerySingleState<ILookupLeavePutRequest, ILookupLeave> = {
   request: undefined,
   response: undefined,
   isError: false,
@@ -12,7 +12,7 @@ const initialState: IQuerySingleState<ILeavePutRequest, ILeave> = {
   errors: undefined,
 };
 
-const reducer: Reducer<IQuerySingleState<ILeavePutRequest, ILeave>> = (state = initialState, action) => {
+const reducer: Reducer<IQuerySingleState<ILookupLeavePutRequest, ILookupLeave>> = (state = initialState, action) => {
   switch (action.type) {
     case Action.PUT_REQUEST: return { ...state, isLoading: true, request: action.payload };
     case Action.PUT_SUCCESS: return { ...state, isLoading: false, response: action.payload };
@@ -23,4 +23,4 @@ const reducer: Reducer<IQuerySingleState<ILeavePutRequest, ILeave>> = (state = i
   }
 };
 
-export { reducer as leavePutReducer };
+export { reducer as lookupLeavePutReducer };
