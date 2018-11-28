@@ -12,6 +12,7 @@ import {
   projectAcceptancePostError,
   projectAcceptancePostRequest,
   projectAcceptancePostSuccess,
+  projectAssignmentGetByIdDispose,
 } from '@project/store/actions';
 import { flattenObject } from '@utils/flattenObject';
 import saiyanSaga from '@utils/saiyanSaga';
@@ -103,6 +104,7 @@ function* watchPostRequest() {
       successEffects: (response: IApiResponse) => [
         put(projectAcceptanceGetAllDispose()),
         put(projectAcceptanceGetByIdDispose()),
+        put(projectAssignmentGetByIdDispose()),
         put(projectAcceptancePostSuccess(response.body))
       ],
       successCallback: (response: IApiResponse) => {
