@@ -108,6 +108,7 @@ interface OwnStateUpdater extends StateHandlerMap<OwnState> {
   setField: StateHandler<OwnState>;
   setOrder: StateHandler<OwnState>;
   setSize: StateHandler<OwnState>;
+  setPageAndSize: StateHandler<OwnState>;
   setNotSelectionTypes: StateHandler<OwnState>;
 }
 
@@ -214,6 +215,10 @@ const stateUpdaters: StateUpdaters<OwnOption, OwnState, OwnStateUpdater> = {
     page: 1,
     forceReload: true
   }),
+  setPageAndSize: (prevState: OwnState) => (page: number, size: number) => ({
+    size,
+    page
+  }),
   setNotSelectionTypes: (prevState: OwnState) => (types: string[]) => ({
     notSelectionTypes: types
   })
@@ -225,6 +230,11 @@ const handlerCreators: HandleCreators<CollectionPageProps, OwnHandler> = {
   },
   handleResponse: (props: CollectionPageProps) => (response: IResponseCollection<any> | undefined) => {
     props.setSource(response);
+
+    // reading metadata, when page and size was present then set into the state
+    if (response && response.metadata && response.metadata.paginate) {
+      props.setPageAndSize(response.metadata.paginate.current, response.metadata.size);
+    }
   },
   handleForceReload: (props: CollectionPageProps) => () => {
     props.setForceReload(true);

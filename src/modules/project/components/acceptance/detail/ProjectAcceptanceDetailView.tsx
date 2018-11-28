@@ -22,6 +22,9 @@ const config: SingleConfig<IProjectAssignmentDetail, ProjectAcceptanceDetailProp
     title: props.intl.formatMessage(projectMessage.assignment.page.detailTitle),
     description: props.intl.formatMessage(projectMessage.assignment.page.detailSubHeader)
   }),
+
+  // parent url
+  parentUrl: (props: ProjectAcceptanceDetailProps) => '/project/acceptances',
   
   // action centre
   showActionCentre: true,

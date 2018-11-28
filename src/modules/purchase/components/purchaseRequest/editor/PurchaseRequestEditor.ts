@@ -252,7 +252,7 @@ const handlers: HandleCreators<PurchaseRequestEditorProps, OwnHandlers> = {
       time: new Date()
     });
 
-    history.push('/purchase/requests/list');
+    history.push(`/purchase/requests/${response.uid}`);
   },
   handleSubmitFail: (props: PurchaseRequestEditorProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
     const { formMode, intl } = props;

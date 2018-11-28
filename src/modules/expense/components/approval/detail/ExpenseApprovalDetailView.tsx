@@ -19,6 +19,9 @@ const config: SingleConfig<IExpenseDetail, ExpenseApprovalDetailProps> = {
     title: props.intl.formatMessage(expenseMessage.request.page.detailTitle),
     description : props.intl.formatMessage(expenseMessage.request.page.detailSubTitle)
   }),
+
+  // parent url
+  parentUrl: (props: ExpenseApprovalDetailProps) => '/expense/approvals',
   
   // action centre
   showActionCentre: true,

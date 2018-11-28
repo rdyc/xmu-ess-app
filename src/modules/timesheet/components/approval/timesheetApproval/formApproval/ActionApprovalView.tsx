@@ -18,6 +18,9 @@ const config: SingleConfig<ITimesheetDetail, ApprovalTimesheetsProps> = {
     title: props.intl.formatMessage(timesheetMessage.entry.page.detailTitle),
     description: props.intl.formatMessage(timesheetMessage.entry.page.detailSubHeader)
   }),
+
+  // parent url
+  parentUrl: (props: ApprovalTimesheetsProps) => '/timesheet/approvals',
   
   // action centre
   showActionCentre: true,

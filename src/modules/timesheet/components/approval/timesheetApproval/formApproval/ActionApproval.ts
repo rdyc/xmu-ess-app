@@ -11,7 +11,7 @@ import {
 } from '@timesheet/classes/request/approval';
 import { ITimesheet } from '@timesheet/classes/response';
 import { WithTimesheetApproval, withTimesheetApproval } from '@timesheet/hoc/withTimesheetApproval';
-import { timesheetApprovalMessage } from '@timesheet/locales/messages/timesheetApprovalMessage';
+import { timesheetMessage } from '@timesheet/locales/messages/timesheetMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { compose, HandleCreators, mapper, StateHandler, StateHandlerMap, StateUpdaters, withHandlers, withStateHandlers } from 'recompose';
@@ -69,15 +69,15 @@ const createProps: mapper<ApprovalTimesheetsProps, OwnState> = (props: ApprovalT
     timesheets: [],
     shouldDataReload: false,
     timesheetUids: location.state.values || [],
-    approvalTitle: intl.formatMessage({ id: 'timesheet.view.approval.title' }),
-    approvalSubHeader: intl.formatMessage({ id: 'timesheet.view.approval.subHeader' }),
+    approvalTitle: intl.formatMessage(timesheetMessage.approval.section.approvalTitle),
+    approvalSubHeader: intl.formatMessage(timesheetMessage.approval.section.approvalSubHeader),
     approvalChoices: [
       { value: WorkflowStatusType.Approved, label: intl.formatMessage(organizationMessage.workflow.option.approve) },
       { value: WorkflowStatusType.Rejected, label: intl.formatMessage(organizationMessage.workflow.option.reject) }
     ],
     approvalTrueValue: WorkflowStatusType.Approved,
-    approvalDialogTitle: intl.formatMessage({ id: 'timesheet.dialog.approvalTitle' }),
-    approvalDialogContentText: intl.formatMessage({ id: 'timesheet.dialog.approvalContent' }),
+    approvalDialogTitle: intl.formatMessage(timesheetMessage.approval.confirm.submissionTitle),
+    approvalDialogContentText: intl.formatMessage(timesheetMessage.approval.confirm.submissionContent),
     approvalDialogCancelText: intl.formatMessage(layoutMessage.action.cancel),
     approvalDialogConfirmedText: intl.formatMessage(layoutMessage.action.continue)
   };
@@ -136,7 +136,7 @@ const handlerCreators: HandleCreators<ApprovalTimesheetsProps, OwnHandler> = {
 
     // props checking
     if (!location.state.values) {
-      const message = intl.formatMessage(timesheetApprovalMessage.emptyProps);
+      const message = intl.formatMessage(timesheetMessage.approval.message.emptyProps);
 
       return Promise.reject(message);
     }
@@ -175,14 +175,13 @@ const handlerCreators: HandleCreators<ApprovalTimesheetsProps, OwnHandler> = {
 
     alertAdd({
       time: new Date(),
-      message: intl.formatMessage(timesheetApprovalMessage.updateSuccess),
+      message: intl.formatMessage(timesheetMessage.approval.message.submitSuccess),
     });
 
-    history.push('/timesheet/approvals/');
+    history.push('/timesheet/approvals');
   },
   handleSubmitFail: (props: ApprovalTimesheetsProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
     const { intl } = props;
-    // const { alertAdd } = props.layoutDispatch;
 
     if (errors) {
       // validation errors from server (400: Bad Request)
@@ -193,7 +192,7 @@ const handlerCreators: HandleCreators<ApprovalTimesheetsProps, OwnHandler> = {
     } else {
       props.layoutDispatch.alertAdd({
         time: new Date(),
-        message: intl.formatMessage(timesheetApprovalMessage.updateFailure),
+        message: intl.formatMessage(timesheetMessage.approval.message.submitFailure),
         details: isObject(submitError) ? submitError.message : submitError
       });
     }

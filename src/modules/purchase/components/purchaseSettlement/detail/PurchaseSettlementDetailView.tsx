@@ -30,8 +30,13 @@ const config: SingleConfig<ISettlementDetail, PurchaseSettlementDetailProps> = {
     title: props.intl.formatMessage(purchaseMessage.settlement.pages.detailTitle),
     description: props.intl.formatMessage(purchaseMessage.settlement.pages.detailSubHeader)
   }),
+
+  // parent url
+  parentUrl: (props: PurchaseSettlementDetailProps) => '/purchase/settlement/requests',
+
   // action centre
   showActionCentre: true,
+
   // more
   hasMore: true,
   moreOptions: (props: PurchaseSettlementDetailProps, state: SingleState, callback: SingleHandler): IAppBarMenu[] => ([
@@ -47,16 +52,18 @@ const config: SingleConfig<ISettlementDetail, PurchaseSettlementDetailProps> = {
       name: props.intl.formatMessage(layoutMessage.action.modify),
       enabled: true,
       visible: isContains(state.statusType, [WorkflowStatusType.Submitted, WorkflowStatusType.InProgress]),
-      onClick: props.handlePurchaseModify
+      onClick: props.handleOnModify
     },
     {
       id: PurchaseUserAction.Settle,
       name: props.intl.formatMessage(purchaseMessage.action.settle),
       enabled: true,
       visible: isSettle(state.statusType, null),
-      onClick: props.handlePurchaseSettle
+      onClick: props.handleOnSettle
     }
   ]),
+
+  // events
   onDataLoad: (props: PurchaseSettlementDetailProps, callback: SingleHandler, forceReload?: boolean | false) => {
     const { user } = props.userState;
     const { isLoading, request, response } = props.purchaseSettlementState.detail;

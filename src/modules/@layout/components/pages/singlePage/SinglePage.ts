@@ -32,6 +32,7 @@ export interface SingleConfig<Tresponse, Tinner> {
     title: string;
     description: string;
   };
+  parentUrl?: (props: Tinner) => string;
   hasMore?: boolean | false;
   moreOptions?: (props: Tinner, state: SingleState, callback: SingleHandler) => IAppBarMenu[];
   showActionCentre?: boolean | false;
@@ -140,6 +141,7 @@ const lifecycles: ReactLifeCycleFunctions<SinglePageProps, OwnState> = {
         title: page.title,
         subTitle: page.description,
       },
+      parentUrl: this.props.config.parentUrl ? this.props.config.parentUrl(this.props.connectedProps) : undefined,
       status: {
         isNavBackVisible: true,
         isSearchVisible: false,

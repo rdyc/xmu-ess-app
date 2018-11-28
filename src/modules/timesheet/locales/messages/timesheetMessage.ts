@@ -1,7 +1,9 @@
 import { 
   timesheetApprovalConfirm, 
   timesheetApprovalHistoryPage, 
-  timesheetApprovalPage
+  timesheetApprovalMessage,
+  timesheetApprovalPage,
+  timesheetApprovalSection
 } from './timesheetApprovalMessage';
 import { 
   timesheetEntryConfirm, 
@@ -23,6 +25,8 @@ export const timesheetMessage = {
   approval: {
     page: timesheetApprovalPage,
     page2: timesheetApprovalHistoryPage,
-    confirm: timesheetApprovalConfirm
+    section: timesheetApprovalSection,
+    confirm: timesheetApprovalConfirm,
+    message: timesheetApprovalMessage,
   }
 };

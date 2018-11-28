@@ -1,12 +1,12 @@
 import { FormMode } from '@generic/types';
 import { Card, CardContent, CardHeader } from '@material-ui/core';
 import { EntryDetailFormProps } from '@timesheet/components/entry/editor/forms/TimesheetEntryDetailForm';
+import { timesheetMessage } from '@timesheet/locales/messages/timesheetMessage';
 import * as React from 'react';
-import { FormattedMessage } from 'react-intl';
 import { Field } from 'redux-form';
 
 export const TimesheetEntryDetailFormView: React.SFC<EntryDetailFormProps> = props => {
-  const { formMode, showSiteProject  } = props;
+  const { formMode, showSiteProject, intl  } = props;
   const { names } = props.context;
   
   const renderField = (name: string) => {
@@ -36,8 +36,8 @@ export const TimesheetEntryDetailFormView: React.SFC<EntryDetailFormProps> = pro
   const render = (
     <Card square>
       <CardHeader 
-        title={<FormattedMessage id="timesheet.infoTitle"/>}
-        subheader={<FormattedMessage id="timesheet.infoSubTitle" />}
+        title={intl.formatMessage(timesheetMessage.entry.section.infoTitle)}
+        subheader={intl.formatMessage(timesheetMessage.entry.section.infoSubHeader)}
       />
       <CardContent>
         {names.map(name => renderField(name))}

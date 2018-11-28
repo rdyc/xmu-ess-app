@@ -98,7 +98,7 @@ const handlerCreators: HandleCreators<RequestEditorProps, OwnHandlers> = {
       }
     }
     
-    console.log(errors);
+    // console.log(errors);
     return errors;
   },
   handleSubmit: (props: RequestEditorProps) => (formData: TravelRequestFormData) => {

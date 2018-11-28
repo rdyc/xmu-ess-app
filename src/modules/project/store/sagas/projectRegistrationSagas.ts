@@ -1,10 +1,11 @@
-import { projectGetAllDispose } from '@common/store/actions';
 import { layoutAlertAdd } from '@layout/store/actions';
 import {
   ProjectRegistrationAction as Action,
+  projectRegistrationGetAllDispose,
   projectRegistrationGetAllError,
   projectRegistrationGetAllRequest,
   projectRegistrationGetAllSuccess,
+  projectRegistrationGetByIdDispose,
   projectRegistrationGetByIdError,
   projectRegistrationGetByIdRequest,
   projectRegistrationGetByIdSuccess,
@@ -131,8 +132,9 @@ function* watchPostRequest() {
       path: `/v1/project/registrations/${action.payload.companyUid}/${action.payload.positionUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
-        put(projectRegistrationPostSuccess(response.body)),
-        put(projectGetAllDispose())
+        put(projectRegistrationGetByIdDispose()),
+        put(projectRegistrationGetAllDispose()),
+        put(projectRegistrationPostSuccess(response.body))
       ],
       successCallback: (response: IApiResponse) => {
         action.payload.resolve(response.body.data);
@@ -177,8 +179,9 @@ function* watchPutRequest() {
       path: `/v1/project/registrations/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.projectUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
-        put(projectRegistrationPutSuccess(response.body)),
-        put(projectGetAllDispose())
+        put(projectRegistrationGetByIdDispose()),
+        put(projectRegistrationGetAllDispose()),
+        put(projectRegistrationPutSuccess(response.body))
       ],
       successCallback: (response: IApiResponse) => {
         action.payload.resolve(response.body.data);

@@ -25,6 +25,9 @@ const config: SingleConfig<ILeaveRequestDetail, LeaveRequestDetailProps> = {
     title: props.intl.formatMessage(leaveMessage.request.page.detailTitle),
     description: props.intl.formatMessage(leaveMessage.request.page.detailSubHeader)
   }),
+
+  // parent url
+  parentUrl: (props: LeaveRequestDetailProps) => '/leave/requests',
   
   // action centre
   showActionCentre: true,

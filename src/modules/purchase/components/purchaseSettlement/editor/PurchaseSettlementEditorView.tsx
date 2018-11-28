@@ -48,8 +48,7 @@ export const PurchaseSettlementEditorView: React.SFC<PurchaseSettlementEditorPro
 
     },
     items: {
-      items: [
-      ]
+      items: []
     }
   };
 
@@ -88,8 +87,8 @@ export const PurchaseSettlementEditorView: React.SFC<PurchaseSettlementEditorPro
                 uid: item.uid,
                 description: item.description,
                 request: item.requestValue,
-                actual: item.actualValue,
-                variance: item.varianceValue,
+                actual: item.actualValue || 0,
+                variance: item.varianceValue || 0,
           })
         );
       }
