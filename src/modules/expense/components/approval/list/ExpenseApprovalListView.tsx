@@ -102,18 +102,18 @@ const config: CollectionConfig<IExpense, AllProps> = {
       }
     }
   },
-  onUpdated: (states: AllProps, callback: CollectionHandler) => {
-    const { isLoading, response } = states.expenseApprovalState.all;
+  onUpdated: (props: AllProps, callback: CollectionHandler) => {
+    const { isLoading, response } = props.expenseApprovalState.all;
     
     callback.handleLoading(isLoading);
     callback.handleResponse(response);
   },
-  onBind: (item: IExpense, index: number) => ({
+  onBind: (item: IExpense, index: number, props: AllProps) => ({
     key: index,
-    primary: item.notes && item.notes || '',
-    secondary: item.expense && item.expense.value || item.expenseType,
-    tertiary: item.project && item.project.name || item.projectUid,
-    quaternary: item.uid,
+    primary: item.uid,
+    secondary: item.notes && item.notes || '',
+    tertiary: item.customer && item.customer.name || item.customerUid,
+    quaternary: props.intl.formatNumber(item.value),
     quinary: item.status && item.status.value || item.statusType,
     senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
   }),
