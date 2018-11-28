@@ -108,12 +108,12 @@ const handlers: HandleCreators<TravelSettlementFormProps, OwnHandlers> = {
       const startDate = moment(start);
       const endDate = moment(end);
       const diffHours = endDate.diff(startDate, 'hours');
-      const diffDays = endDate.diff(startDate, 'days');
+      const diffDays = endDate.dayOfYear() - startDate.dayOfYear();
     
-      if (startDate.isSame(endDate)) {
+      if (startDate.isSame(endDate, 'days')) {
         result = diffHours >= 8 ? 1 : 0;
-      } else if ( !startDate.isSame(endDate) && endDate.isSameOrAfter(17, 'hours')) {
-        result = diffDays + 1;
+      } else if ( !startDate.isSame(endDate, 'days') && endDate.hours() >= 17) {
+        result =  diffDays + 1;
       } else {
         result = diffDays;
       }
