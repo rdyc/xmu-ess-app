@@ -9,30 +9,30 @@ import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
 import { leaveMessage } from '@leave/locales/messages/leaveMessage';
-import { ILookupHoliday } from '@lookup/classes/response';
-import { LookupHolidayField, LookupHolidayUserAction } from '@lookup/classes/types';
-import { WithLookupHoliday, withLookupHoliday } from '@lookup/hoc/withLookupHoliday';
+import { ILookupLeave } from '@lookup/classes/response';
+import { LookupLeaveField, LookupLeaveUserAction } from '@lookup/classes/types';
+import { WithLookupLeave, withLookupLeave } from '@lookup/hoc/withLookupLeave';
 import { Button } from '@material-ui/core';
 import * as moment from 'moment';
 import * as React from 'react';
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose } from 'recompose';
-import { LookupHolidaySummary } from '../detail/shared/LookupHolidaySummary';
+import { LookupLeaveSummary } from '../detail/shared/LookupLeaveSummary';
 
-const config: CollectionConfig<ILookupHoliday, AllProps> = {
+const config: CollectionConfig<ILookupLeave, AllProps> = {
   // page
   page: (props: AllProps) => ({
-    uid: AppMenu.LookupHoliday,
+    uid: AppMenu.LookupLeave,
     parentUid: AppMenu.Lookup,
     title: props.intl.formatMessage(leaveMessage.request.page.listTitle),
     description: props.intl.formatMessage(leaveMessage.request.page.listSubHeader),
   }),
   
   // top bar
-  fields: Object.keys(LookupHolidayField)
+  fields: Object.keys(LookupLeaveField)
     .map(key => ({ 
       value: key, 
-      name: LookupHolidayField[key] 
+      name: LookupLeaveField[key] 
     })),
 
   // searching
@@ -40,7 +40,7 @@ const config: CollectionConfig<ILookupHoliday, AllProps> = {
   searchStatus: (props: AllProps): boolean => {
     let result: boolean = false;
 
-    const { request } = props.lookupHolidayState.all;
+    const { request } = props.lookupLeaveState.all;
 
     if (request && request.filter && request.filter.find) {
       result = request.filter.find ? true : false;
@@ -56,26 +56,26 @@ const config: CollectionConfig<ILookupHoliday, AllProps> = {
   hasMore: true,
   moreOptions: (props: AllProps, callback: CollectionHandler): IAppBarMenu[] => ([
     {
-      id: LookupHolidayUserAction.Refresh,
+      id: LookupLeaveUserAction.Refresh,
       name: props.intl.formatMessage(layoutMessage.action.refresh),
       enabled: true,
       visible: true,
       onClick: () => callback.handleForceReload()
     },
     {
-      id: LookupHolidayUserAction.Create,
+      id: LookupLeaveUserAction.Create,
       name: props.intl.formatMessage(layoutMessage.action.create),
       enabled: true,
       visible: true,
-      onClick: () => callback.handleRedirectTo(`/lookup/holiday/form`)
+      onClick: () => callback.handleRedirectTo(`/lookup/leave/form`)
     }
   ]),
 
   // events
   onDataLoad: (props: AllProps, callback: CollectionHandler, params: CollectionDataProps, forceReload?: boolean | false) => {
     const { user } = props.userState;
-    const { isLoading, response } = props.lookupHolidayState.all;
-    const { loadAllRequest } = props.lookupHolidayDispatch;
+    const { isLoading, response } = props.lookupLeaveState.all;
+    const { loadAllRequest } = props.lookupLeaveDispatch;
 
     // when user is set and not loading
     if (user && !isLoading) {
@@ -83,8 +83,8 @@ const config: CollectionConfig<ILookupHoliday, AllProps> = {
       if (!response || forceReload) {
         loadAllRequest({
           filter: {
-            find: 'CP002',
-            findBy: 'companyUid',
+            find: params.find,
+            findBy: params.findBy,
             orderBy: params.orderBy,
             direction: params.direction,
             page: params.page,
@@ -98,33 +98,33 @@ const config: CollectionConfig<ILookupHoliday, AllProps> = {
     }
   },
   onUpdated: (props: AllProps, callback: CollectionHandler) => {
-    const { isLoading, response } = props.lookupHolidayState.all;
+    const { isLoading, response } = props.lookupLeaveState.all;
     
     callback.handleLoading(isLoading);
     callback.handleResponse(response);
   },
-  onBind: (item: ILookupHoliday, index: number) => ({
+  onBind: (item: ILookupLeave, index: number) => ({
     key: index,
-    primary: item.description ? item.description : 'N/A',
-    secondary: item.companyUid,
-    tertiary: item.date,
+    primary: item.name,
+    secondary: item.company ? item.company.name : 'N/A',
+    tertiary: item.category ? item.category.description : 'N/A',
     quaternary: item.uid,
-    quinary: '',
+    quinary: item.allocation.toString(),
     senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
   }),
 
   // summary component
-  summaryComponent: (item: ILookupHoliday) => ( 
-    <LookupHolidaySummary data={item} />
+  summaryComponent: (item: ILookupLeave) => ( 
+    <LookupLeaveSummary data={item} />
   ),
 
   // action component
-  actionComponent: (item: ILookupHoliday, callback: CollectionHandler) => (
+  actionComponent: (item: ILookupLeave, callback: CollectionHandler) => (
     <React.Fragment>
       {}
         <Button 
           size="small"
-          onClick={() => callback.handleRedirectTo(`/lookup/holiday/form`, { uid: item.uid })}
+          onClick={() => callback.handleRedirectTo(`/lookup/leave/form`, { uid: item.uid })}
         >
           <FormattedMessage {...layoutMessage.action.modify}/>
         </Button>
@@ -132,7 +132,7 @@ const config: CollectionConfig<ILookupHoliday, AllProps> = {
 
       <Button 
         size="small"
-        onClick={() => callback.handleRedirectTo(`/lookup/holiday/${item.uid}`)}
+        onClick={() => callback.handleRedirectTo(`/lookup/L=leave/${item.uid}`)}
       >
         <FormattedMessage {...layoutMessage.action.details}/>
       </Button>
@@ -142,7 +142,7 @@ const config: CollectionConfig<ILookupHoliday, AllProps> = {
 
 type AllProps 
   = WithUser
-  & WithLookupHoliday
+  & WithLookupLeave
   & InjectedIntlProps;
 
 const listView: React.SFC<AllProps> = props => (
@@ -152,8 +152,8 @@ const listView: React.SFC<AllProps> = props => (
   />
 );
 
-export const LookupHolidayList = compose(
+export const LookupLeaveList = compose(
   withUser,
-  withLookupHoliday,
+  withLookupLeave,
   injectIntl
 )(listView);
