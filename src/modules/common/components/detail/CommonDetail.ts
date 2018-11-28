@@ -20,7 +20,7 @@ import { CommonDetailView } from './CommonDetailView';
 
 interface OwnRouteParams {
   category: string;
-  typeId: string;
+  id: string;
 }
 
 interface OwnHandler {
@@ -97,6 +97,7 @@ const handlerCreators: HandleCreators<CommonDetailProps, OwnHandler> = {
 
     // define vars
     let typeId: number | undefined;
+    const category = props.match.params.category;
 
     // get expense uid
     if (response.data) {
@@ -113,7 +114,7 @@ const handlerCreators: HandleCreators<CommonDetailProps, OwnHandler> = {
 
       switch (props.action) {
         case CommonUserAction.Modify:
-          next = '/common/form';
+          next = `/common/system/${category}/form`;
           break;
 
         default:
@@ -123,7 +124,6 @@ const handlerCreators: HandleCreators<CommonDetailProps, OwnHandler> = {
       props.setDefault();
 
       props.history.push(next, { 
-        activity: props.match.params.category,
         uid: typeId,
       });
     }

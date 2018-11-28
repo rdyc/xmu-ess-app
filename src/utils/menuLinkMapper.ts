@@ -145,7 +145,7 @@ export const menuLinkMapper = (menuUid: string) => {
       break;
 
     case 'MNU53':
-      path = '/common';
+      path = '/common/system';
       break;
 
     case 'MNU54':

@@ -80,7 +80,7 @@ const handlerCreators: HandleCreators<CommonSummaryProps, OwnHandler> = {
   handleGoToCategoryList: (props: CommonSummaryProps) => (category: string) => {
     const { history } = props;
 
-    history.push(`/common/${category}`);
+    history.push(`/common/system/${category}`);
   }
 };
 
@@ -92,14 +92,21 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<CommonSummaryProps, OwnState> 
     const { systemTypeRequest } = this.props.commonDispatch;
 
     systemTypeRequest();
-    
-    layoutDispatch.searchHide();
 
-    layoutDispatch.changeView({
-      uid: AppMenu.Common,
-      parentUid: AppMenu.Lookup,
-      title: intl.formatMessage(commonMessage.system.page.title),
-      subTitle : intl.formatMessage(commonMessage.system.page.title)
+    layoutDispatch.setupView({
+      view: {
+        uid: AppMenu.Common,
+        parentUid: AppMenu.Lookup,
+        title: intl.formatMessage(commonMessage.system.page.title),
+        subTitle : intl.formatMessage(commonMessage.system.page.title)
+      },
+      status: {
+        isNavBackVisible: false,
+        isSearchVisible: false,
+        isActionCentreVisible: false,
+        isMoreVisible: false,
+        isModeSearch: false
+      }
     });
   },
   componentWillUnmount() {

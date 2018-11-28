@@ -18,8 +18,8 @@ export const CommonSummaryView: React.SFC<CommonSummaryProps> = props => {
 
       return (
         category &&
-        <Grid item xs={12} sm={6} lg={3}>
-          <Card square key={category.name}>
+        <Grid item xs={12} sm={6} lg={3} key={editableCategory.name}>
+          <Card square>
             <CardHeader
               title={category.name}
               titleTypographyProps={{

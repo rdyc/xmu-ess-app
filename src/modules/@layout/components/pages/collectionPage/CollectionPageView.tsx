@@ -174,7 +174,7 @@ export const CollectionPageView: React.SFC<CollectionPageProps> = props => (
                 props.config.actionComponent &&
                 <Delayed time={2500}>
                   <ExpansionPanelActions>
-                    {props.config.actionComponent(item, props)}
+                    {props.config.actionComponent(item, props, props.connectedProps)}
                   </ExpansionPanelActions>
                 </Delayed>
               }

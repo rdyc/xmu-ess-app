@@ -39,6 +39,7 @@ export interface CollectionConfig<Tresponse, Tinner> {
   searchStatus?: (props: Tinner) => boolean;
   hasSelection?: boolean | false;
   notSelectionTypes?: string[] | [];
+  hasNavBack?: boolean | false;
   onProcessSelection?: (values: string[], callback: CollectionHandler) => void;
   showActionCentre?: boolean | false;
   filter?: IBasePagingFilter | IBaseFilter;
@@ -274,7 +275,7 @@ const lifecycles: ReactLifeCycleFunctions<CollectionPageProps, OwnState> = {
         subTitle: page.description,
       },
       status: {
-        isNavBackVisible: false,
+        isNavBackVisible: this.props.config.hasNavBack || false,
         isSearchVisible: this.props.config.hasSearching,
         isActionCentreVisible: this.props.config.showActionCentre,
         isMoreVisible: this.props.config.hasMore,

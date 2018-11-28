@@ -40,6 +40,9 @@ const config: CollectionConfig<ISystem, AllProps> = {
   // selection
   hasSelection: false,
 
+  // nav back?
+  hasNavBack: true,
+
   // searching
   hasSearching: true,
   searchStatus: (props: AllProps): boolean => {
@@ -72,7 +75,7 @@ const config: CollectionConfig<ISystem, AllProps> = {
       name: props.intl.formatMessage(layoutMessage.action.create),
       enabled: true,
       visible: true,
-      onClick: () => callback.handleRedirectTo('/common/form')
+      onClick: () => callback.handleRedirectTo(`/common/system/${props.match.params.category}/form`)
     }
   ]),
 
@@ -108,10 +111,10 @@ const config: CollectionConfig<ISystem, AllProps> = {
     
     callback.handleLoading(isLoading);
     callback.handleResponse(response);
-    callback.handleForceReload();
+    
   },
   onBind: (item: ISystem, index: number) => ({
-    key: index,
+    key: item.id,
     primary: item.name,
     secondary: '',
     tertiary: item.description && item.description || 'N/A',
@@ -130,14 +133,14 @@ const config: CollectionConfig<ISystem, AllProps> = {
     <React.Fragment>
       <Button 
         size="small"
-        onClick={() => callback.handleRedirectTo(`/common/${props.match.params.category}/form`, { uid: item.id })}
+        onClick={() => callback.handleRedirectTo(`/common/system/${props.match.params.category}/form`, { uid: item.id })}
       >
         <FormattedMessage {...layoutMessage.action.modify}/>
       </Button>
 
       <Button 
         size="small"
-        onClick={() => callback.handleRedirectTo(`/common/${props.match.params.category}/${item.id}`)}
+        onClick={() => callback.handleRedirectTo(`/common/system/${props.match.params.category}/${item.id}`)}
       >
         <FormattedMessage {...layoutMessage.action.details}/>
       </Button>

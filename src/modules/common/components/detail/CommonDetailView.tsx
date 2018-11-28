@@ -49,12 +49,12 @@ const config: SingleConfig<ISystemDetail, CommonDetailProps> = {
     const { systemDetailRequest } = props.commonDispatch;
 
     // when user is set and not loading and has projectUid in route params
-    if (user && !isLoading && props.match.params.category && props.match.params.typeId) {
+    if (user && !isLoading && props.match.params.category && props.match.params.id) {
       // when projectUid was changed or response are empty or force to reload
-      if ((request && request.id !== props.match.params.typeId) || !response || forceReload) {
+      if ((request && request.id !== props.match.params.id) || !response || forceReload) {
         systemDetailRequest({
           category: categoryTypeTranslator(props.match.params.category),
-          id: props.match.params.typeId
+          id: props.match.params.id
         });
       } else {
         // just take data from previous response
