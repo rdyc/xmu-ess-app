@@ -37,9 +37,12 @@ import {
   ILookupCustomerGetListRequest,
  } from '@lookup/classes/queries/customer';
 import { 
-  ILookupRoleAllRequest,
-  ILookupRoleByIdRequest,
-  ILookupRoleListRequest,
+  ILookupRoleDeleteRequest,
+  ILookupRoleGetAllRequest,
+  ILookupRoleGetDetailRequest,
+  ILookupRoleGetListRequest,
+  ILookupRolePostRequest,
+  ILookupRolePutRequest,
  } from '@lookup/classes/queries/role';
 import {
   ICompany,
@@ -91,9 +94,12 @@ export interface ILookupState {
   mileageExceptionGetList: IQueryCollectionState<IMileageExceptionListRequest, IMileageExceptionList>;
   mileageExceptionGetById: IQuerySingleState<IMileageExceptionByIdRequest, IMileageExceptionDetail>;
 
-  lookupRoleGetAll: IQueryCollectionState<ILookupRoleAllRequest, IRole>;
-  lookupRoleGetList: IQueryCollectionState<ILookupRoleListRequest, IRoleList>;
-  lookupRoleGetById: IQuerySingleState<ILookupRoleByIdRequest, IRoleDetail>;
+  lookupRoleGetAll: IQueryCollectionState<ILookupRoleGetAllRequest, IRole>;
+  lookupRoleGetList: IQueryCollectionState<ILookupRoleGetListRequest, IRoleList>;
+  lookupRoleGetById: IQuerySingleState<ILookupRoleGetDetailRequest, IRoleDetail>;
+  lookupRoleGetPost: IQuerySingleState<ILookupRolePostRequest, IRole>;
+  lookupRoleGetPut: IQuerySingleState<ILookupRolePutRequest, IRole>;
+  lookupRoleGetDelete: IQuerySingleState<ILookupRoleDeleteRequest, boolean>;
 
   lookupCompanyGetAll: IQueryCollectionState<ILookupCompanyAllRequest, ICompany>;
   lookupCompanyGetList: IQueryCollectionState<ILookupCompanyListRequest, ICompanyList>;
