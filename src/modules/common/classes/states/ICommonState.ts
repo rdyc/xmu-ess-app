@@ -1,4 +1,4 @@
-import { ISystemAllRequest, ISystemByIdRequest, ISystemListRequest } from '@common/classes/queries';
+import { ISystemAllRequest, ISystemByIdRequest, ISystemListRequest, ISystemPostRequest, ISystemPutRequest } from '@common/classes/queries';
 import { ISystem, ISystemDetail, ISystemList, ISystemType } from '@common/classes/response';
 import { IQueryCollectionState, IQuerySingleState } from '@generic/interfaces';
 
@@ -7,6 +7,8 @@ export interface ICommonState {
   commonSystemList: IQueryCollectionState<ISystemListRequest, ISystemList>;
   commonSystemDetail: IQuerySingleState<ISystemByIdRequest, ISystemDetail>;
   commonSystemType: IQueryCollectionState<{}, ISystemType>;
+  commonSystemPost: IQuerySingleState<ISystemPostRequest, ISystem>;
+  commonSystemPut: IQuerySingleState<ISystemPutRequest, ISystem>;
 
   commonActivityAll: IQueryCollectionState<ISystemAllRequest, ISystem>;
   commonActivityList: IQueryCollectionState<ISystemListRequest, ISystemList>;

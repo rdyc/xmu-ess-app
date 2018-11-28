@@ -1,4 +1,4 @@
-import { ISystemAllRequest, ISystemByIdRequest, ISystemListRequest } from '@common/classes/queries';
+import { ISystemAllRequest, ISystemByIdRequest, ISystemListRequest, ISystemPostRequest, ISystemPutRequest } from '@common/classes/queries';
 import { ISystem, ISystemDetail, ISystemList, ISystemType } from '@common/classes/response';
 import {
   activityGetListRequest,
@@ -18,6 +18,8 @@ import {
   systemGetByIdRequest,
   systemGetTypeDispose,
   systemGetTypeRequest,
+  systemPostRequest,
+  systemPutRequest,
   transportationGetListRequest,
 } from '@common/store/actions';
 import { IAppState, IQueryCollectionState, IQuerySingleState } from '@generic/interfaces';
@@ -75,6 +77,10 @@ interface PropsFromDispatch {
     // detail
     systemDetailRequest: typeof systemGetByIdRequest;
     systemDetailDispose: typeof systemGetByIdDispose;
+
+    // command
+    systemPostRequest: typeof systemPostRequest;
+    systemPutRequest: typeof systemPutRequest;
 
     // other
     systemTypeRequest: typeof systemGetTypeRequest;
@@ -135,7 +141,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   commonDispatch: {
     // all
     systemAllRequest: (request: ISystemAllRequest) => dispatch(systemGetAllRequest(request)),
-    systemAllDispose: (request: ISystemAllRequest) => dispatch(systemGetAllDispose()),
+    systemAllDispose: () => dispatch(systemGetAllDispose()),
 
     // list
     activityListRequest: (request: ISystemListRequest) => dispatch(activityGetListRequest(request)),
@@ -153,7 +159,11 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
 
     // detail
     systemDetailRequest: (request: ISystemByIdRequest) => dispatch(systemGetByIdRequest(request)),
-    systemDetailDispose: (request: ISystemByIdRequest) => dispatch(systemGetByIdDispose()),
+    systemDetailDispose: () => dispatch(systemGetByIdDispose()),
+
+    // command
+    systemPostRequest: (request: ISystemPostRequest) => dispatch(systemPostRequest(request)),
+    systemPutRequest: (request: ISystemPutRequest) => dispatch(systemPutRequest(request)),
 
     // type
     systemTypeRequest: () => dispatch(systemGetTypeRequest()),
