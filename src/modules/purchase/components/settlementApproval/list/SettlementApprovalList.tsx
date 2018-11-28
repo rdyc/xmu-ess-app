@@ -12,7 +12,7 @@ import { ISettlement } from '@purchase/classes/response/purchaseSettlement';
 import { PurchaseUserAction, SettlementField } from '@purchase/classes/types';
 import { SettlementSummary } from '@purchase/components/purchaseSettlement/detail/shared/SettlementSummary';
 import { purchaseRequestFieldTranslator } from '@purchase/helper';
-import { withSettlementApproval, WithSettlementApproval } from '@purchase/hoc/settlementHistories/withSettlementApproval';
+import { withSettlementApproval, WithSettlementApproval } from '@purchase/hoc/settlementApproval/withSettlementApproval';
 import { purchaseMessage } from '@purchase/locales/messages/purchaseMessage';
 import * as moment from 'moment';
 import * as React from 'react';

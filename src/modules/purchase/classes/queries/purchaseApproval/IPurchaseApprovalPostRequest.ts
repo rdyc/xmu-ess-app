@@ -1,5 +1,5 @@
 import { IBaseCommand } from '@generic/interfaces';
-import { IPurchaseApprovalPostPayload } from '@purchase/classes/request/purchaseHistories';
+import { IPurchaseApprovalPostPayload } from '@purchase/classes/request/purchaseApproval';
 
 export interface IPurchaseApprovalPostRequest extends IBaseCommand<IPurchaseApprovalPostPayload> {
   companyUid: string;

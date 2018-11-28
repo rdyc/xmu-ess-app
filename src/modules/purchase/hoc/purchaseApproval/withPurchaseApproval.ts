@@ -3,7 +3,7 @@ import {
   IPurchaseApprovalGetAllRequest,
   IPurchaseApprovalGetByIdRequest,
   IPurchaseApprovalPostRequest,
-} from '@purchase/classes/queries/purchaseHistories';
+} from '@purchase/classes/queries/purchaseApproval';
 import { IPurchase, IPurchaseDetail } from '@purchase/classes/response/purchaseRequest';
 import {
   purchaseApprovalGetAllDispose,
