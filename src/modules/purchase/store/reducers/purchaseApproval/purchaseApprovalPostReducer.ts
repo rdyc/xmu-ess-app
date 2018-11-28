@@ -1,5 +1,5 @@
 import { IQuerySingleState } from '@generic/interfaces';
-import { IPurchaseApprovalPostRequest } from '@purchase/classes/queries/purchaseHistories';
+import { IPurchaseApprovalPostRequest } from '@purchase/classes/queries/purchaseApproval';
 import { PurchaseApprovalAction as Action } from '@purchase/store/actions';
 import { Reducer } from 'redux';
 
