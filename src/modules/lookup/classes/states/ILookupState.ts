@@ -97,9 +97,9 @@ export interface ILookupState {
   lookupRoleGetAll: IQueryCollectionState<ILookupRoleGetAllRequest, IRole>;
   lookupRoleGetList: IQueryCollectionState<ILookupRoleGetListRequest, IRoleList>;
   lookupRoleGetById: IQuerySingleState<ILookupRoleGetDetailRequest, IRoleDetail>;
-  lookupRoleGetPost: IQuerySingleState<ILookupRolePostRequest, IRole>;
-  lookupRoleGetPut: IQuerySingleState<ILookupRolePutRequest, IRole>;
-  lookupRoleGetDelete: IQuerySingleState<ILookupRoleDeleteRequest, boolean>;
+  lookupRolePost: IQuerySingleState<ILookupRolePostRequest, IRole>;
+  lookupRolePut: IQuerySingleState<ILookupRolePutRequest, IRole>;
+  lookupRoleDelete: IQuerySingleState<ILookupRoleDeleteRequest, boolean>;
 
   lookupCompanyGetAll: IQueryCollectionState<ILookupCompanyAllRequest, ICompany>;
   lookupCompanyGetList: IQueryCollectionState<ILookupCompanyListRequest, ICompanyList>;
