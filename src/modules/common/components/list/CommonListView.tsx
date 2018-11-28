@@ -24,8 +24,8 @@ import { compose } from 'recompose';
 const config: CollectionConfig<ISystem, AllProps> = {
   // page info
   page: (props: AllProps) => ({
-    uid: AppMenu.SystemSetup,
-    parentUid: AppMenu.Setup,
+    uid: AppMenu.Common,
+    parentUid: AppMenu.Lookup,
     title: props.intl.formatMessage(commonMessage.system.page.title),
     description: props.intl.formatMessage(commonMessage.system.page.subTitle),
   }),
@@ -126,18 +126,18 @@ const config: CollectionConfig<ISystem, AllProps> = {
   ),
 
   // action component
-  actionComponent: (item: ISystem, callback: CollectionHandler) => (
+  actionComponent: (item: ISystem, callback: CollectionHandler, props: AllProps) => (
     <React.Fragment>
       <Button 
         size="small"
-        onClick={() => callback.handleRedirectTo(`/common/requests`, { uid: item.id })}
+        onClick={() => callback.handleRedirectTo(`/common/${props.match.params.category}/form`, { uid: item.id })}
       >
         <FormattedMessage {...layoutMessage.action.modify}/>
       </Button>
 
       <Button 
         size="small"
-        onClick={() => callback.handleRedirectTo(`/common/requests/${item.id}`)}
+        onClick={() => callback.handleRedirectTo(`/common/${props.match.params.category}/${item.id}`)}
       >
         <FormattedMessage {...layoutMessage.action.details}/>
       </Button>

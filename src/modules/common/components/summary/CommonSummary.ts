@@ -96,15 +96,15 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<CommonSummaryProps, OwnState> 
     layoutDispatch.searchHide();
 
     layoutDispatch.changeView({
-      uid: AppMenu.SystemSetup,
-      parentUid: AppMenu.Setup,
+      uid: AppMenu.Common,
+      parentUid: AppMenu.Lookup,
       title: intl.formatMessage(commonMessage.system.page.title),
       subTitle : intl.formatMessage(commonMessage.system.page.title)
     });
   },
   componentWillUnmount() {
     const { layoutDispatch } = this.props;
-    const { view } = this.props.layoutState;
+    // const { view } = this.props.layoutState;
     const { systemTypeDispose } = this.props.commonDispatch;
     
     layoutDispatch.changeView(null);
@@ -113,10 +113,10 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<CommonSummaryProps, OwnState> 
     layoutDispatch.modeSearchOff();
     layoutDispatch.actionCentreHide();
     layoutDispatch.moreHide();
+    systemTypeDispose();
 
-    if (view && view.uid !== AppMenu.SystemSetup) {
-      systemTypeDispose();
-    }
+    // if (view && view.uid !== AppMenu.SystemSetup) {
+    // }
   }
 };
 
