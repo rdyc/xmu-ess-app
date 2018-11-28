@@ -7,6 +7,7 @@ export interface IViewConfig {
     title: string;
     subTitle: string;
   };
+  parentUrl?: string;
   status: {
     isModeSearch?: boolean | false;
     isModeList?: boolean | false;

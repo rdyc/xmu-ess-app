@@ -56,9 +56,9 @@ export const timesheetEntryField = defineMessages({
   siteUidRequired: { id: `${prefix}.field.siteUid.required` },
   siteUidPlaceholder: { id: `${prefix}.field.siteUid.placeholder` },
 
-  mileagePercentage: { id: `${prefix}.field.mileagePercentage` },
-  mileageDescription: { id: `${prefix}.field.mileageDescription` },
-  mileageReason: { id: `${prefix}.field.mileageReason` },
+  // mileagePercentage: { id: `${prefix}.field.mileagePercentage` },
+  // mileageDescription: { id: `${prefix}.field.mileageDescription` },
+  mileageException: { id: `${prefix}.field.mileageException` },
 
   siteValue: { id: `${prefix}.field.siteValue` },
 
@@ -70,6 +70,8 @@ export const timesheetEntryField = defineMessages({
   dateRequired: { id: `${prefix}.field.date.required` },
   datePlaceholder: { id: `${prefix}.field.date.placeholder` },
 
+  officeTime: { id: `${prefix}.field.officeTime` },
+  
   start: { id: `${prefix}.field.start` },
   startRequired: { id: `${prefix}.field.start.required` },
   startPlaceholder: { id: `${prefix}.field.start.placeholder` },
@@ -92,13 +94,14 @@ export const timesheetEntryFieldHelperFor = (field: string, type: 'fieldName' | 
       case 'customerUid': return timesheetEntryField.customerUid;
       case 'projectUid': return timesheetEntryField.projectUid;
       case 'siteUid': return timesheetEntryField.siteUid;
-      case 'mileagePercentage': return timesheetEntryField.mileagePercentage;
-      case 'mileageDescription': return timesheetEntryField.mileageDescription;
-      case 'mileageReason': return timesheetEntryField.mileageReason;
+      // case 'mileagePercentage': return timesheetEntryField.mileagePercentage;
+      // case 'mileageDescription': return timesheetEntryField.mileageDescription;
+      case 'mileageException': return timesheetEntryField.mileageException;
       case 'siteValue': return timesheetEntryField.siteValue;
       case 'totalHours': return timesheetEntryField.totalHours;
       case 'statusType': return timesheetEntryField.statusType;
       case 'date': return timesheetEntryField.date;
+      case 'officeTime': return timesheetEntryField.officeTime;
       case 'start': return timesheetEntryField.start;
       case 'end': return timesheetEntryField.end;
       case 'description': return timesheetEntryField.notes;
@@ -133,6 +136,7 @@ export const timesheetEntryFieldHelperFor = (field: string, type: 'fieldName' | 
       case 'date': return timesheetEntryField.datePlaceholder;
       case 'start': return timesheetEntryField.startPlaceholder;
       case 'end': return timesheetEntryField.endPlaceholder;
+      case 'description': return timesheetEntryField.notesPlaceholder;
     
       default: return {id: field};
     }

@@ -1,3 +1,4 @@
+import { IAppBarMenu } from '@layout/interfaces';
 import {
   AppBar,
   Badge,
@@ -31,6 +32,163 @@ import { FormattedMessage } from 'react-intl';
 
 import { TopBarProps } from './TopBar';
 
+interface MoreControlOptions {
+  isOpen: boolean;
+  items: IAppBarMenu[] | undefined;
+  onClick: (event: React.MouseEvent<HTMLDivElement>) => void;
+  onClickItem: (item: IAppBarMenu) => void;
+  onClose: () => void;
+}
+
+const MoreControl: React.SFC<MoreControlOptions> = props => (
+  <React.Fragment>
+    <IconButton
+      id="appbar.btn.more"
+      color="inherit"
+      aria-label="More"
+      onClick={props.onClick}
+    >
+      <MoreVertIcon />
+    </IconButton>
+
+    <Menu
+      id="appbar-more-menu" 
+      anchorEl={document.getElementById('appbar.btn.more')} 
+      open={props.isOpen} 
+      onClose={props.onClose}
+    >
+      {
+        props.items && 
+        props.items
+          .filter(item => item.visible)
+          .map(item =>
+            <MenuItem 
+              button
+              key={item.id}
+              value={item.id}
+              disabled={!item.enabled}
+              onClick={() => props.onClickItem(item)} 
+            >
+              {item.name}
+            </MenuItem>  
+          )
+      }
+    </Menu>
+  </React.Fragment>
+);
+
+interface ToolbarControlOptions {
+  menuclassName: string;
+  OnClickMenu: (event: React.MouseEvent<HTMLDivElement>) => void;
+  title: string | undefined;
+  titleClassName: string;
+  showBack: boolean;
+  OnClickBack: (event: React.MouseEvent<HTMLDivElement>) => void;
+  showSearch: boolean;
+  OnClickSearch: (event: React.MouseEvent<HTMLDivElement>) => void;
+  showNotif: boolean;
+  notifCount: number;
+  OnClickNotif: (event: React.MouseEvent<HTMLDivElement>) => void;
+  showAction: boolean;
+  OnClickAction: (event: React.MouseEvent<HTMLDivElement>) => void;
+  showMore: boolean;
+  isOpenMore: boolean;
+  moreItems: IAppBarMenu[] | undefined;
+  onClickMore: (event: React.MouseEvent<HTMLDivElement>) => void;
+  onClickMoreItem: (item: IAppBarMenu) => void;
+  onCloseMore: () => void;
+}
+
+const ToolbarControl: React.SFC<ToolbarControlOptions> = props => (
+  <React.Fragment>
+    {
+      /* menu */
+      !props.showBack &&
+      <IconButton
+        color="inherit"
+        aria-label="open drawer"
+        onClick={props.OnClickMenu}
+        className={props.menuclassName}
+      >
+        <MenuIcon />
+      </IconButton>
+    }
+
+    {
+      /* back */
+      props.showBack &&
+      <IconButton
+        color="inherit"
+        onClick={props.OnClickBack}
+      >
+        <ArrowBackIcon />
+      </IconButton>
+    }
+
+    {/* title */}
+    <Typography 
+      noWrap 
+      variant="title" 
+      color="inherit" 
+      className={props.titleClassName}
+    >
+      {props.title || ''}
+    </Typography>
+
+    {/* search */}
+    {
+      props.showSearch &&
+      <IconButton
+        color="inherit"
+        aria-label="Search"
+        onClick={props.OnClickSearch}
+      >
+        <SearchIcon />
+      </IconButton>
+    }
+    
+    <Hidden xsDown>
+      {
+        /* notifications */
+        props.showNotif &&
+        props.notifCount > 0 &&
+        <IconButton
+          color="inherit"
+          aria-label="Notifications"
+          onClick={props.OnClickNotif}
+        >
+          <Badge badgeContent={props.notifCount} color="error">
+            <NotificationImportant />
+          </Badge>
+        </IconButton>
+      }
+
+      {
+        /* action */
+        props.showAction &&
+        <IconButton
+          color="inherit"
+          aria-label="Action"
+          onClick={props.OnClickAction}
+        >
+          <AppsIcon />
+        </IconButton>
+      }
+    </Hidden>
+
+    {
+      props.showMore &&
+      <MoreControl 
+        items={props.moreItems}
+        isOpen={props.isOpenMore}
+        onClick={props.onClickMore}
+        onClickItem={props.onClickMoreItem}
+        onClose={props.onCloseMore}
+      />
+    }
+  </React.Fragment>
+);
+
 export const TopBarView: React.SFC<TopBarProps> = props => (
   <AppBar 
     elevation={0}
@@ -42,92 +200,27 @@ export const TopBarView: React.SFC<TopBarProps> = props => (
       props.mode === 'normal' &&
       props.appBarState.selection.length === 0 &&
       <Toolbar>
-        {
-          /* menu */
-          !props.layoutState.isNavBackVisible &&
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            onClick={() => props.layoutDispatch.drawerMenuShow()}
-            className={classNames(props.classes.navIconHide, props.layoutState.isDrawerMenuVisible && props.classes.hide)}
-          >
-            <MenuIcon />
-          </IconButton>
-        }
-    
-        {
-          /* back */
-          props.layoutState.isNavBackVisible && 
-          <IconButton
-            color="inherit"
-            onClick={() => props.layoutDispatch.navBackShow() && props.history.goBack()}
-          >
-            <ArrowBackIcon />
-          </IconButton>
-        }
-    
-        {/* title */}
-        <Typography 
-          noWrap 
-          variant="title" 
-          color="inherit" 
-          className={props.classes.flex}
-        >
-          {props.layoutState.view && props.layoutState.view.title}
-        </Typography>
-    
-        {/* search */}
-        {
-          props.layoutState.isSearchVisible &&
-          <IconButton
-            color="inherit"
-            aria-label="Search"
-            onClick={props.handleOnClickSearch}
-          >
-            <SearchIcon />
-          </IconButton>
-        }
-        
-        <Hidden xsDown>
-          {
-            /* notifications */
-            props.getCountNotif() > 0 &&
-            <IconButton
-              color="inherit"
-              aria-label="Notifications"
-              onClick={() => props.layoutDispatch.drawerActionShow()}
-            >
-              <Badge badgeContent={props.getCountNotif()} color="error">
-                <NotificationImportant />
-              </Badge>
-            </IconButton>
-          }
-
-          {
-            /* action */
-            props.layoutState.isActionCentreVisible &&
-            <IconButton
-              color="inherit"
-              aria-label="Action"
-              onClick={() => props.layoutDispatch.drawerActionShow()}
-            >
-              <AppsIcon />
-            </IconButton>
-          }
-        </Hidden>
-
-        {
-          /* more */
-          props.layoutState.isMoreVisible &&
-          <IconButton
-            id="appbar.btn.more"
-            color="inherit"
-            aria-label="More"
-            onClick={props.setMenuVisibility}
-          >
-            <MoreVertIcon />
-          </IconButton>
-        }
+        <ToolbarControl
+          menuclassName={classNames(props.classes.navIconHide, props.layoutState.isDrawerMenuVisible && props.classes.hide)}
+          OnClickMenu={props.handleOnClickMenu}
+          title={props.layoutState.view && props.layoutState.view.title}
+          titleClassName={props.classes.flex}
+          showBack={props.layoutState.isNavBackVisible}
+          OnClickBack={props.handleOnClickBack}
+          showSearch={props.layoutState.isSearchVisible}
+          OnClickSearch={props.handleOnClickSearch}
+          showNotif={true}
+          notifCount={props.getCountNotif()}
+          OnClickNotif={props.handleOnClickNotif}
+          showAction={props.layoutState.isActionCentreVisible}
+          OnClickAction={props.handleOnClickAction}
+          showMore={props.layoutState.isMoreVisible}
+          moreItems={props.appBarState.menus}
+          isOpenMore={props.isOpenMenu}
+          onClickMore={props.handleOnClickMore}
+          onClickMoreItem={props.handleOnClickMoreItem}
+          onCloseMore={props.handleOnCloseMore}
+        />
       </Toolbar>
     }
 
@@ -271,29 +364,5 @@ export const TopBarView: React.SFC<TopBarProps> = props => (
         </Toolbar>
       </Slide>
     }
-
-    <Menu
-      id="appbar-more-menu" 
-      anchorEl={document.getElementById('appbar.btn.more')} 
-      open={props.isOpenMenu} 
-      onClose={props.setMenuVisibility}
-    >
-      {
-        props.appBarState.menus && 
-        props.appBarState.menus
-          .filter(item => item.visible)
-          .map(item =>
-            <MenuItem 
-              button
-              key={item.id}
-              value={item.id}
-              disabled={!item.enabled}
-              onClick={() => props.handleOnClickMenuItem(item)} 
-            >
-              {item.name}
-            </MenuItem>  
-          )
-      }
-    </Menu>
   </AppBar>
 );

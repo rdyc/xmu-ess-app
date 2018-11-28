@@ -18,6 +18,9 @@ const config: SingleConfig<ILeaveDetail, LeaveCancellationDetailProps> = {
     title: props.intl.formatMessage(leaveMessage.cancellation.page.detailTitle),
     description: props.intl.formatMessage(leaveMessage.cancellation.page.detailTitle)
   }),
+
+  // parent url
+  parentUrl: (props: LeaveCancellationDetailProps) => '/leave/cancellations',
   
   // action centre
   showActionCentre: true,

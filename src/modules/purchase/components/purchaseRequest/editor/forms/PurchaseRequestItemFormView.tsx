@@ -16,10 +16,8 @@ import { Field } from 'redux-form';
 
 // export const PurchaseRequestItemFormView: React.SFC<WrappedFieldArrayProps<PurchaseRequestItemFormData> & PurchaseRequestItemFormProps> = props => {
 export const PurchaseRequestItemFormView: React.SFC<PurchaseRequestItemFormProps> = props => {
-  const { context, onRequestChange } = props;
-  // const onChangeRequestValue = (event: any, newValue: number, oldValue: number) => {
-  //   change('information.requestIDR', newValue - oldValue);
-  // };
+  const { context } = props;
+  
   const render = (
     <Grid container spacing={16}>
       {
@@ -28,21 +26,16 @@ export const PurchaseRequestItemFormView: React.SFC<PurchaseRequestItemFormProps
             <Card square>
               <CardHeader
                 action={
+                  context.fields.length > 1 ?
                   <IconButton onClick={() => context.fields.remove(index)}>
                     <DeleteForeverIcon />
                   </IconButton>
+                  : ''
                 }
                 title={`#${index + 1}`}
               />
               <CardContent>
                 <div>
-                  <Field
-                    type="text"
-                    name={`${field}.uid`}
-                    label={props.intl.formatMessage(purchaseMessage.request.items.uid)}
-                    disabled
-                    component={InputText}
-                  />
                   <Field
                     type="text"
                     name={`${field}.description`}
@@ -55,7 +48,6 @@ export const PurchaseRequestItemFormView: React.SFC<PurchaseRequestItemFormProps
                     name={`${field}.request`}
                     label={props.intl.formatMessage(purchaseMessage.request.items.request)}
                     required
-                    onChange={onRequestChange}
                     component={InputNumber}
                   />
                 </div>
@@ -68,7 +60,7 @@ export const PurchaseRequestItemFormView: React.SFC<PurchaseRequestItemFormProps
         <Grid container spacing={16}>
           <Grid item xs={12} md={4}>
             <Button onClick={() => context.fields.push({
-              uid: 'Draft',
+              uid: undefined,
               description: '',
               request: 0,
             })}>

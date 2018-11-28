@@ -130,7 +130,7 @@ const config: CollectionConfig<ITravelSettlement, AllProps> = {
     <React.Fragment>
       <Button 
         size="small"
-        onClick={() => callback.handleRedirectTo(`/travel/approvals/settlement/${item.uid}`)}
+        onClick={() => callback.handleRedirectTo(`/travel/settlement/approvals/${item.uid}`)}
       >
         <FormattedMessage {...layoutMessage.action.details}/>
       </Button>

@@ -92,7 +92,6 @@ interface FormValueProps {
   destinationtypeValue: string | undefined;
   projectUidValue: string | undefined;
   isProjectSelected: boolean | false;
-  totalTravel: number | 0;
 }
 
 export type RequestFormProps 
@@ -121,6 +120,7 @@ const handlers: HandleCreators<RequestFormProps, OwnHandlers> = {
     if (formValues.item.items) {
       formValues.item.items.forEach((item) => total += item.costTransport + item.costHotel + item.amount);
     }
+    props.change('information.total', total);
     setTotal(total);
   },
   handleProjectChange: (props: RequestFormProps) => (project: IProjectList | undefined) => { 
@@ -135,13 +135,11 @@ const mapStateToProps = (state: any): FormValueProps => {
    const customerUid = selector(state, 'information.customerUid');
    const destinationtype = selector(state, 'information.destinationType');
    const projectUid = selector(state, 'information.projectUid');
-   const total = selector(state, 'information.total');
    return {
      customerUidValue: customerUid,
      destinationtypeValue: destinationtype,
      projectUidValue: projectUid,
-     isProjectSelected: projectUid,
-     totalTravel: total 
+     isProjectSelected: projectUid
    };   
  };
 

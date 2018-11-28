@@ -51,9 +51,9 @@ const handlerCreators: HandleCreators<EntryDetailFormProps, OwnHandlers> = {
     const _projectTypes = isPresalesActivity ? ProjectType.PreSales : [ProjectType.Project, ProjectType.ExtraMiles, ProjectType.NonProject];
 
     const projectFilter: any = {
-        employeeUid: user && user.uid,
-        customerUid: customerUidValue,
-        projectTypes: _projectTypes
+      employeeUid: user && user.uid,
+      customerUid: customerUidValue,
+      projectTypes: _projectTypes
     };
 
     let fieldProps: SelectSystemOption & any = {};
@@ -81,6 +81,7 @@ const handlerCreators: HandleCreators<EntryDetailFormProps, OwnHandlers> = {
       case 'customerUid':
         fieldProps = {
           required: true,
+          disabled: isNullOrUndefined(activityTypeValue),
           label: intl.formatMessage(timesheetMessage.entry.fieldFor(name, 'fieldName')),
           placeholder: intl.formatMessage(timesheetMessage.entry.fieldFor(name, 'fieldPlaceholder')),
           component: !isNullOrUndefined(activityTypeValue) ? InputCustomer : InputText
@@ -90,6 +91,7 @@ const handlerCreators: HandleCreators<EntryDetailFormProps, OwnHandlers> = {
       case 'projectUid':
         fieldProps = {
           required: true,
+          disabled: isNullOrUndefined(customerUidValue),
           label: intl.formatMessage(timesheetMessage.entry.fieldFor(name, 'fieldName')),
           placeholder: intl.formatMessage(timesheetMessage.entry.fieldFor(name, 'fieldPlaceholder')),
           component: !isNullOrUndefined(customerUidValue) ? SelectProjectAssigment : InputText,
@@ -133,6 +135,14 @@ const handlerCreators: HandleCreators<EntryDetailFormProps, OwnHandlers> = {
           label: intl.formatMessage(timesheetMessage.entry.fieldFor(name, 'fieldName')),
           placeholder: intl.formatMessage(timesheetMessage.entry.fieldFor(name, 'fieldPlaceholder')),
           component: InputTime
+        };
+        break;
+
+      case 'description':
+        fieldProps = {
+          label: intl.formatMessage(timesheetMessage.entry.fieldFor(name, 'fieldName')),
+          placeholder: intl.formatMessage(timesheetMessage.entry.fieldFor(name, 'fieldPlaceholder')),
+          component: InputText
         };
         break;
 
