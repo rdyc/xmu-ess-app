@@ -132,7 +132,6 @@ const handlerCreators: HandleCreators<SinglePageProps, OwnHandler> = {
 
 const lifecycles: ReactLifeCycleFunctions<SinglePageProps, OwnState> = {
   componentDidMount() {
-    console.log(this.props.match);
     // configure view
     const page = this.props.config.page(this.props.connectedProps);
     this.props.layoutDispatch.setupView({

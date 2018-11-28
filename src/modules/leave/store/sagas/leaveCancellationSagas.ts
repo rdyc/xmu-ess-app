@@ -100,8 +100,8 @@ function* watchPostRequest() {
       path: `/v1/leave/cancelations/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.leaveUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
-        put(leaveCancellationPostSuccess(response.body)),
-        put(leaveCancellationGetAllDispose())
+        put(leaveCancellationGetAllDispose()),
+        put(leaveCancellationPostSuccess(response.body))
       ],
       successCallback: (response: IApiResponse) => {
         action.payload.resolve(response.body.data);

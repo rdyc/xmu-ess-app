@@ -90,8 +90,8 @@ function* watchPostFetchRequest() {
       path: `/v1/travel/requests/${action.payload.companyUid}/${action.payload.positionUid}`, 
       payload: action.payload.data, 
       successEffects: (response: IApiResponse) => [
-        put(travelPostSuccess(response.body)),
-        put(travelGetAllDispose())
+        put(travelGetAllDispose()),
+        put(travelPostSuccess(response.body))
       ], 
       successCallback: (response: IApiResponse) => {
         action.payload.resolve(response.body.data);
@@ -136,9 +136,9 @@ function* watchPutFetchRequest() {
       }/${action.payload.travelUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
-        put(travelPutSuccess(response.body)),
         put(travelGetAllDispose()),
-        put(travelGetByIdDispose())
+        put(travelGetByIdDispose()),
+        put(travelPutSuccess(response.body))
       ],
       successCallback: (response: IApiResponse) => {
         action.payload.resolve(response.body.data);

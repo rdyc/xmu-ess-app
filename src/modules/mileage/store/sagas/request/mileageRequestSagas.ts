@@ -86,8 +86,8 @@ function* watchPostFetchRequest() {
       path: `/v1/mileage/requests/${action.payload.companyUid}/${action.payload.positionUid}`, 
       payload: action.payload.data, 
       successEffects: (response: IApiResponse) => ([
-        put(mileageRequestPostSuccess(response.body)),
-        put(mileageRequestGetAllDispose())
+        put(mileageRequestGetAllDispose()),
+        put(mileageRequestPostSuccess(response.body))
       ]),
       successCallback: (response: IApiResponse) => {
         action.payload.resolve(response.body.data);

@@ -11,8 +11,8 @@ import { Button } from '@material-ui/core';
 import { IPurchase } from '@purchase/classes/response/purchaseRequest';
 import { PurchaseField, PurchaseUserAction } from '@purchase/classes/types';
 import { PurchaseSummary } from '@purchase/components/purchaseRequest/detail/shared/PurchaseSummary';
-import { isRequestEditable, purchaseRequestFieldTranslator } from '@purchase/helper';
-import { withPurchaseApproval, WithPurchaseApproval } from '@purchase/hoc/purchaseHistories/withPurchaseApproval';
+import { purchaseRequestFieldTranslator } from '@purchase/helper';
+import { withPurchaseApproval, WithPurchaseApproval } from '@purchase/hoc/purchaseApproval/withPurchaseApproval';
 import { purchaseMessage } from '@purchase/locales/messages/purchaseMessage';
 import * as moment from 'moment';
 import * as React from 'react';
@@ -56,20 +56,14 @@ const config: CollectionConfig<IPurchase, AllProps> = {
   // more
   hasMore: true,
   moreOptions: (props: AllProps, callback: CollectionHandler): IAppBarMenu[] => ([
-  {
-    id: PurchaseUserAction.Refresh,
-    name: props.intl.formatMessage(layoutMessage.action.refresh),
-    enabled: true,
-    visible: true,
-    onClick: () => callback.handleForceReload()
-  },
-]),
-
-  // data filter
-  filter: {
-    orderBy: 'requestStatusType',
-    direction: 'ascending'
-  },
+    {
+      id: PurchaseUserAction.Refresh,
+      name: props.intl.formatMessage(layoutMessage.action.refresh),
+      enabled: true,
+      visible: true,
+      onClick: () => callback.handleForceReload()
+    },
+  ]),
 
   // events
   onDataLoad: (states: AllProps, callback: CollectionHandler, params: CollectionDataProps, forceReload?: boolean | false) => {
@@ -124,23 +118,13 @@ const config: CollectionConfig<IPurchase, AllProps> = {
   // action component
   actionComponent: (item: IPurchase, callback: CollectionHandler) => (
     <React.Fragment>
-    { isRequestEditable(item.statusType || '')
-    ?
-    <Button 
-      size= "small"
-      onClick = {() => callback.handleRedirectTo(`/purchase/approvals/${item.uid}`)}
-    >
-      <FormattedMessage { ...layoutMessage.action.approve } />
-    </Button>
-    :
-    <Button 
-      size= "small"
-      onClick = {() => callback.handleRedirectTo(`/purchase/approvals/${item.uid}`)}
-    >
-      <FormattedMessage { ...layoutMessage.action.details } />
-    </Button>
-    }
-      </React.Fragment>
+      <Button 
+        size= "small"
+        onClick = {() => callback.handleRedirectTo(`/purchase/approvals/${item.uid}`)}
+      >
+        <FormattedMessage { ...layoutMessage.action.details } />
+      </Button>
+    </React.Fragment>
   ),
 };
 
