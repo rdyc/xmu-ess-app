@@ -20,7 +20,7 @@ export const SelectLookupCompanyView: React.SFC<SelectLookupCompanyProps> = prop
     if (isMobile) {
       return (
         <option key={item.uid} value={item.uid}>
-          {item.uid} - {item.name}
+          {item.name}
         </option>
       );
     }
@@ -29,7 +29,7 @@ export const SelectLookupCompanyView: React.SFC<SelectLookupCompanyProps> = prop
     if (!isMobile) {
       return (
         <MenuItem key={item.uid} value={item.uid}>
-          {item.uid} - {item.name}
+          {item.name}
         </MenuItem>
       );
     }
