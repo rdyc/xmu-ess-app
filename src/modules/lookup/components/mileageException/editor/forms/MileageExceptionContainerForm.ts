@@ -6,15 +6,14 @@ import { MileageExceptionContainerFormView } from './MileageExceptionContainerFo
 const formName = 'mileageException';
 
 export type MileageExceptionFormData = {
-  // companyUid: string | null | undefined;
   information: {
     uid: string | null | undefined;
     companyUid: string | null | undefined;
     roleUid: string | null | undefined;
-    percentage: number;
-    projectUid: string | null | undefined;
     siteType: string | null | undefined;
-    projectSiteUid: string | null | undefined;
+    projectUid: string | null | undefined;
+    siteUid: string | null | undefined;
+    percentage: number;
     description: string | null | undefined;
     reason: string | null | undefined;
     inactiveDate: string | null | undefined;
@@ -28,6 +27,7 @@ interface OwnProps {
 interface FormValueProps {
   companyUidValue: string | undefined;
   projectUidValue: string | undefined;
+  showSite: boolean | false;
 }
 
 export type MileageExceptionContainerFormProps 
@@ -43,7 +43,8 @@ const mapStateToProps = (state: any): FormValueProps => {
   
   return {
     companyUidValue: companyUid,
-    projectUidValue: projectUid
+    projectUidValue: projectUid,
+    showSite: projectUid
   };
 };
 

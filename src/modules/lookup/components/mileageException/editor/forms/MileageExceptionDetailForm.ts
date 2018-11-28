@@ -1,7 +1,12 @@
+import { WorkflowStatusType } from '@common/classes/types';
 import { SelectSystem, SelectSystemOption } from '@common/components/select';
 import { FormMode } from '@generic/types';
+import { InputDate } from '@layout/components/input/date';
+import { InputNumber } from '@layout/components/input/number';
 import { InputText } from '@layout/components/input/text';
 import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
+import { SelectProject } from '@project/components/select/project';
+import { SelectProjectSite } from '@project/components/select/projectSite';
 import { timesheetMessage } from '@timesheet/locales/messages/timesheetMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose, HandleCreators, withHandlers } from 'recompose';
@@ -14,7 +19,7 @@ interface OwnProps {
   context: BaseFieldsProps;
   companyUidValue: string | undefined;
   projectUidValue: string | undefined;
-
+  showSite: boolean;
 }
 
 interface OwnHandlers {
@@ -28,12 +33,16 @@ export type MileageExceptionDetailFormProps =
 
 const handlerCreators: HandleCreators<MileageExceptionDetailFormProps, OwnHandlers> = {
   generateFieldProps: (props: MileageExceptionDetailFormProps) => (name: string) => {
-    const { intl, formMode, companyUidValue, /* projectUidValue */ } = props;
+    const { intl, formMode, companyUidValue, projectUidValue, showSite } = props;
+
+    const projectFilter: any = {
+      statusTypes: WorkflowStatusType.Approved,
+      activeOnly: true
+    };
 
     let fieldProps: SelectSystemOption & any = {};
 
     switch (name) {
-
       case 'uid':
         fieldProps = {
           disabled: true,
@@ -60,24 +69,8 @@ const handlerCreators: HandleCreators<MileageExceptionDetailFormProps, OwnHandle
           component: InputText
         };
         break;
-
-        case 'percentage':
-        fieldProps = {
-          label: intl.formatMessage(lookupMessage.mileageException.fieldFor(name, 'fieldName')),
-          placeholder: intl.formatMessage(lookupMessage.mileageException.fieldFor(name, 'fieldPlaceholder')),
-          component: InputText
-        };
-        break;
-
-        case 'projectUid':
-        fieldProps = {
-          label: intl.formatMessage(lookupMessage.mileageException.fieldFor(name, 'fieldName')),
-          placeholder: intl.formatMessage(lookupMessage.mileageException.fieldFor(name, 'fieldPlaceholder')),
-          component: InputText
-        };
-        break;
-
-        case 'siteType':
+      
+      case 'siteType':
         fieldProps = {
           category: 'site',
           label: intl.formatMessage(lookupMessage.mileageException.fieldFor(name, 'fieldName')),
@@ -85,8 +78,35 @@ const handlerCreators: HandleCreators<MileageExceptionDetailFormProps, OwnHandle
           component: SelectSystem
         };
         break;
+      
+      case 'projectUid':
+        fieldProps = {
+          label: intl.formatMessage(lookupMessage.mileageException.fieldFor(name, 'fieldName')),
+          placeholder: intl.formatMessage(lookupMessage.mileageException.fieldFor(name, 'fieldPlaceholder')),
+          component: SelectProject,
+          filter: projectFilter
+        };
+        break;
+      
+      case 'siteUid':
+        fieldProps = {
+          disabled: !showSite,
+          label: intl.formatMessage(lookupMessage.mileageException.fieldFor(name, 'fieldName')),
+          placeholder: intl.formatMessage(lookupMessage.mileageException.fieldFor(name, 'fieldPlaceholder')),
+          component: !isNullOrUndefined(projectUidValue) ? SelectProjectSite : InputText,
+          projectUid: projectUidValue
+        };
+        break;
 
-        case 'projectSiteUid':
+      case 'percentage':
+        fieldProps = {
+          label: intl.formatMessage(lookupMessage.mileageException.fieldFor(name, 'fieldName')),
+          placeholder: intl.formatMessage(lookupMessage.mileageException.fieldFor(name, 'fieldPlaceholder')),
+          component: InputNumber
+        };
+        break;
+
+      case 'description':
         fieldProps = {
           label: intl.formatMessage(lookupMessage.mileageException.fieldFor(name, 'fieldName')),
           placeholder: intl.formatMessage(lookupMessage.mileageException.fieldFor(name, 'fieldPlaceholder')),
@@ -94,7 +114,7 @@ const handlerCreators: HandleCreators<MileageExceptionDetailFormProps, OwnHandle
         };
         break;
 
-        case 'description':
+      case 'reason':
         fieldProps = {
           label: intl.formatMessage(lookupMessage.mileageException.fieldFor(name, 'fieldName')),
           placeholder: intl.formatMessage(lookupMessage.mileageException.fieldFor(name, 'fieldPlaceholder')),
@@ -102,23 +122,15 @@ const handlerCreators: HandleCreators<MileageExceptionDetailFormProps, OwnHandle
         };
         break;
 
-        case 'reason':
+      case 'inactiveDate':
         fieldProps = {
           label: intl.formatMessage(lookupMessage.mileageException.fieldFor(name, 'fieldName')),
           placeholder: intl.formatMessage(lookupMessage.mileageException.fieldFor(name, 'fieldPlaceholder')),
-          component: InputText
+          component: InputDate
         };
         break;
 
-        case 'inactiveDate':
-        fieldProps = {
-          label: intl.formatMessage(lookupMessage.mileageException.fieldFor(name, 'fieldName')),
-          placeholder: intl.formatMessage(lookupMessage.mileageException.fieldFor(name, 'fieldPlaceholder')),
-          component: InputText
-        };
-        break;
-
-        default:
+      default:
         fieldProps = {
           type: 'text',
           label: intl.formatMessage(timesheetMessage.entry.fieldFor(name, 'fieldName')),

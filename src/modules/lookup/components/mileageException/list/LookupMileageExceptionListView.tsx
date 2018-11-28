@@ -3,12 +3,12 @@ import { CollectionConfig, CollectionDataProps, CollectionHandler, CollectionPag
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
-import { GlobalFormat } from '@layout/types';
 import { IMileageException } from '@lookup/classes/response';
 import { MileageExceptionRequestField, MileageExceptionUserAction } from '@lookup/classes/types';
 import { WithLookupMileageException, withLookupMileageException } from '@lookup/hoc/withLookupMileageException';
 import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
 import { Button } from '@material-ui/core';
+import * as moment from 'moment';
 import * as React from 'react';
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose } from 'recompose';
@@ -62,7 +62,7 @@ const config: CollectionConfig<IMileageException, AllProps> = {
       name: props.intl.formatMessage(layoutMessage.action.create),
       enabled: true,
       visible: true,
-      onClick: () => callback.handleRedirectTo(`/lookup/mileageexception/form`)
+      onClick: () => callback.handleRedirectTo(`/lookup/mileageexceptions/form`)
     }
   ]),
 
@@ -107,10 +107,10 @@ const config: CollectionConfig<IMileageException, AllProps> = {
     key: index,
     primary: item.role.name,
     secondary: `${item.percentage.toString()} %`,
-    tertiary: item.type && item.type.value || item.siteType,
+    tertiary: item.type ? item.type.value : 'N/A',
     quaternary: item.reason ? item.reason : 'N/A',
     quinary: item.role && item.role.company && item.role.company.name,
-    senary: item.inactiveDate ? props.intl.formatDate(item.inactiveDate, GlobalFormat.Date) : 'N/A'
+    senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
   }),
 
   // summary component
@@ -123,13 +123,13 @@ const config: CollectionConfig<IMileageException, AllProps> = {
     <React.Fragment>
       <Button 
           size="small"
-          onClick={() => callback.handleRedirectTo(`/lookup/mileageexception/form`, { uid: item.uid })}
+          onClick={() => callback.handleRedirectTo(`/lookup/mileageexceptions/form`, { uid: item.uid })}
         >
           <FormattedMessage {...layoutMessage.action.modify}/>
         </Button>
       <Button 
         size="small"
-        onClick={() => callback.handleRedirectTo(`/lookup/mileageexception/${item.uid}`)}
+        onClick={() => callback.handleRedirectTo(`/lookup/mileageexceptions/${item.uid}`)}
       >
         <FormattedMessage {...layoutMessage.action.details}/>
       </Button>

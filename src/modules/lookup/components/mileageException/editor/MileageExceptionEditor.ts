@@ -139,7 +139,7 @@ const handlerCreators: HandleCreators<MileageExceptionEditorProps, OwnHandlers> 
       time: new Date()
     });
 
-    history.push('/lookup/mileageexception');
+    history.push(`/lookup/mileageexceptions/${response.uid}`);
   },
   handleSubmitFail: (props: MileageExceptionEditorProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
     const { formMode, intl } = props;

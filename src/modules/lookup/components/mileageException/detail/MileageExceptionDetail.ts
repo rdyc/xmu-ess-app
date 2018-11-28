@@ -111,7 +111,7 @@ const handlerCreators: HandleCreators<MileageExceptionDetailProps, OwnHandler> =
 
       switch (props.action) {
         case MileageExceptionUserAction.Modify:
-          next = '/lookup/mileageexception/form';
+          next = '/lookup/mileageexceptions/form';
           break;
 
         default:

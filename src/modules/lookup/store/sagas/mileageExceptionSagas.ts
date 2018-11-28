@@ -5,6 +5,7 @@ import {
   mileageExceptionGetAllError,
   mileageExceptionGetAllRequest,
   mileageExceptionGetAllSuccess,
+  mileageExceptionGetByIdDispose,
   mileageExceptionGetByIdError,
   mileageExceptionGetByIdRequest,
   mileageExceptionGetByIdSuccess,
@@ -141,8 +142,9 @@ function* watchPostRequest() {
       path: `/v1/lookup/mileageexceptions`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
-        put(mileageExceptionPostRequest(response.body)),
-        put(mileageExceptionGetAllDispose())
+        put(mileageExceptionGetByIdDispose()),
+        put(mileageExceptionGetAllDispose()),
+        put(mileageExceptionPostRequest(response.body))
       ],
       successCallback: (response: IApiResponse) => {
         action.payload.resolve(response.body.data);
@@ -187,8 +189,9 @@ function* watchPutRequest() {
       path: `/v1/lookup/mileageexceptions/${action.payload.mileageExceptionUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
-        put(mileageExceptionPutSuccess(response.body)),
-        put(mileageExceptionGetAllDispose())
+        put(mileageExceptionGetByIdDispose()),
+        put(mileageExceptionGetAllDispose()),
+        put(mileageExceptionPutSuccess(response.body))
       ],
       successCallback: (response: IApiResponse) => {
         action.payload.resolve(response.body.data);

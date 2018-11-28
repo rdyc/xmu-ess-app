@@ -16,7 +16,7 @@ const mileageException = (props: RouteComponentProps) => (
 export const LookupRoutingComponents: React.SFC<RouteComponentProps> = props => (
   <Switch>
     <Layout>
-      <Route path={`${props.match.path}/mileageexception`} component={mileageException} />
+      <Route path={`${props.match.path}/mileageexceptions`} component={mileageException} />
     </Layout>
   </Switch>
 );

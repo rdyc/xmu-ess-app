@@ -54,8 +54,8 @@ export const mileageExceptionField = defineMessages({
   description: { id: `${prefix}.field.description`},
   descriptionPlaceholder: { id: `${prefix}.field.description.placeholder`},
 
-  projectUid: { id: `${prefix}.field.projectUid`},
-  projectUidPlaceholder: { id: `${prefix}.field.projectUid.placeholder`},
+  projectUid: { id: `${prefix}.field.project.name`},
+  projectUidPlaceholder: { id: `${prefix}.field.project.name.placeholder`},
   
   projectSite: { id: `${prefix}.field.project.site`},
   projectSitePlaceholder: { id: `${prefix}.field.project.site.placeholder`},
@@ -85,7 +85,7 @@ export const mileageExceptionFieldHelperFor = (field: string, type: 'fieldName' 
       case 'percentage': return mileageExceptionField.percentage;
       case 'projectUid': return mileageExceptionField.projectUid;
       case 'siteType': return mileageExceptionField.site;
-      case 'projectSiteUid': return mileageExceptionField.projectSite;
+      case 'siteUid': return mileageExceptionField.projectSite;
       case 'description': return mileageExceptionField.description;
       case 'reason': return mileageExceptionField.reason;
       case 'inactiveDate': return mileageExceptionField.inActiveDate;
@@ -111,7 +111,7 @@ export const mileageExceptionFieldHelperFor = (field: string, type: 'fieldName' 
       case 'percentage': return mileageExceptionField.percentagePlaceholder;
       case 'projectUid': return mileageExceptionField.projectUidPlaceholder;
       case 'siteType': return mileageExceptionField.sitePlaceholder;
-      case 'projectSiteUid': return mileageExceptionField.projectSitePlaceholder;
+      case 'siteUid': return mileageExceptionField.projectSitePlaceholder;
       case 'description': return mileageExceptionField.descriptionPlaceholder;
       case 'reason': return mileageExceptionField.reasonPlaceholder;
       case 'inactiveDate': return mileageExceptionField.inActiveDatePlaceholder;
