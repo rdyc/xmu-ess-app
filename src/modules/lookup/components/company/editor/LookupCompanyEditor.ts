@@ -110,7 +110,7 @@ const handlerCreators: HandleCreators<CompanyEditorProps, OwnHandlers> = {
     if (formMode === FormMode.Edit) {
       return new Promise((resolve, reject) => {
         updateRequest({
-          companyUid,
+          // companyUid,
           resolve,
           reject,
           data: payload as ILookupCompanyPutPayload,
