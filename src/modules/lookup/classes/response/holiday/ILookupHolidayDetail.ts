@@ -5,7 +5,7 @@ export interface ILookupHolidayDetail {
   uid: string;
   companyUid: string;
   company: ICompanyList | null;
-  description: string | null;
-  date: string | null;
+  description: string;
+  date: string;
   changes: IBaseChanges | null;
 }

@@ -35,6 +35,7 @@ enum AppMenu {
   PurchaseSettlementRequest = 'MNU37',
   PurchaseSettlementApproval = 'MNU38',
   Lookup = 'MNU01',
+  LookupHoliday = 'MNU36',
   LookupApprovalHierarchy = 'MNU04',
   Timesheet = 'MNU09',
   TimesheetRequest = 'MNU10',
