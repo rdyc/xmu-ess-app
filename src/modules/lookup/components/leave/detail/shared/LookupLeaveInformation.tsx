@@ -14,7 +14,7 @@ type AllProps
   & InjectedIntlProps;
 
 const lookupLeaveInformation: React.SFC<AllProps> = props => {
-  const { data, intl } = props;
+  const { data } = props;
 
   const styled = {
     fullWidth: true,
