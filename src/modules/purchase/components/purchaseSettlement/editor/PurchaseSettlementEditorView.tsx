@@ -48,15 +48,7 @@ export const PurchaseSettlementEditorView: React.SFC<PurchaseSettlementEditorPro
 
     },
     items: {
-      items: [ 
-        // {
-        // uid: undefined,
-        // description: '',
-        // request: 0,
-        // actual: 0,
-        // variance: 0,
-        // }
-      ]
+      items: []
     }
   };
 

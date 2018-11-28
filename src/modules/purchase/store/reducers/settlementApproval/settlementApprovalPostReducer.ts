@@ -1,5 +1,5 @@
 import { IQuerySingleState } from '@generic/interfaces';
-import { ISettlementApprovalPostRequest } from '@purchase/classes/queries/settlementHistories';
+import { ISettlementApprovalPostRequest } from '@purchase/classes/queries/settlementApproval';
 import { SettlementApprovalAction as Action } from '@purchase/store/actions';
 import { Reducer } from 'redux';
 

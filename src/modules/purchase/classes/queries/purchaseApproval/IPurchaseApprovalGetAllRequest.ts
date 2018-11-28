@@ -1,4 +1,4 @@
-import { IPurchaseApprovalGetAllFilter } from '@purchase/classes/filters/purchaseHistories';
+import { IPurchaseApprovalGetAllFilter } from '@purchase/classes/filters/purchaseApproval';
 
 export interface IPurchaseApprovalGetAllRequest {
   readonly filter: IPurchaseApprovalGetAllFilter | undefined;
