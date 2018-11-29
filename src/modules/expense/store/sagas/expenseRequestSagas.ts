@@ -4,6 +4,7 @@ import {
   expenseRequestGetAllError,
   expenseRequestGetAllRequest,
   expenseRequestGetAllSuccess,
+  expenseRequestGetByIdDispose,
   expenseRequestGetByIdError,
   expenseRequestGetByIdRequest,
   expenseRequestGetByIdSuccess,
@@ -94,8 +95,8 @@ function* watchPostRequest() {
       path: `/v1/expense/requests/${action.payload.companyUid}/${action.payload.positionUid}`, 
       payload: action.payload.data, 
       successEffects: (response: IApiResponse) => [
-        put(expenseRequestPostSuccess(response.body)),
         put(expenseRequestGetAllDispose()),
+        put(expenseRequestPostSuccess(response.body))
       ], 
       successCallback: (response: IApiResponse) => {
         action.payload.resolve(response.body.data);
@@ -138,8 +139,9 @@ function* watchPutRequest() {
       path: `/v1/expense/requests/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.expenseUid}`,
       payload: action.payload.data, 
       successEffects: (response: IApiResponse) => [
-        put(expenseRequestPutSuccess(response.body)),
         put(expenseRequestGetAllDispose()),
+        put(expenseRequestGetByIdDispose()),
+        put(expenseRequestPutSuccess(response.body))
       ], 
       successCallback: (response: IApiResponse) => {
         action.payload.resolve(response.body.data);

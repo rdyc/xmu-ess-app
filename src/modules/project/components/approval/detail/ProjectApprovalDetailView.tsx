@@ -24,6 +24,9 @@ const config: SingleConfig<IProjectDetail, ProjectApprovalDetailProps> = {
     title: props.intl.formatMessage(projectMessage.approval.page.detailTitle),
     description: props.intl.formatMessage(projectMessage.approval.page.detailTitle)
   }),
+
+  // parent url
+  parentUrl: (props: ProjectApprovalDetailProps) => '/project/approvals',
   
   // action centre
   showActionCentre: true,

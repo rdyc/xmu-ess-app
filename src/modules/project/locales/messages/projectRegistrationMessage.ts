@@ -137,6 +137,7 @@ export const projectRegistrationFieldHelperFor = (field: string, type: 'fieldNam
       case 'start': return projectRegistrationField.start;
       case 'end': return projectRegistrationField.end;
       case 'contractNumber': return projectRegistrationField.contractNumber;
+      case 'employeeUid': return projectRegistrationField.employeeUid;
       case 'ownerEmployeeUid': return projectRegistrationField.ownerEmployeeUid;
       case 'currencyType': return projectRegistrationField.currencyType;
       case 'rate': return projectRegistrationField.rate;
@@ -156,6 +157,7 @@ export const projectRegistrationFieldHelperFor = (field: string, type: 'fieldNam
       case 'customerUid': return projectRegistrationField.customerUidRequired;
       case 'start': return projectRegistrationField.startRequired;
       case 'end': return projectRegistrationField.endRequired;
+      case 'employeeUid': return projectRegistrationField.employeeUidRequired;
       case 'ownerEmployeeUid': return projectRegistrationField.ownerEmployeeUidRequired;
       case 'currencyType': return projectRegistrationField.currencyTypeRequired;
       case 'rate': return projectRegistrationField.rateRequired;
@@ -176,6 +178,7 @@ export const projectRegistrationFieldHelperFor = (field: string, type: 'fieldNam
       case 'start': return projectRegistrationField.startPlaceholder;
       case 'end': return projectRegistrationField.endPlaceholder;
       case 'contractNumber': return projectRegistrationField.contractNumberPlaceholder;
+      case 'employeeUid': return projectRegistrationField.employeeUidPlaceholder;
       case 'ownerEmployeeUid': return projectRegistrationField.ownerEmployeeUidPlaceholder;
       case 'currencyType': return projectRegistrationField.currencyTypePlaceholder;
       case 'rate': return projectRegistrationField.ratePlaceholder;

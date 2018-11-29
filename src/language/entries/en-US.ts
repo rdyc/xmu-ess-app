@@ -5,6 +5,7 @@ import enExpenseMessages from '../../modules/expense/locales/en_US.json';
 import enFinanceMessages from '../../modules/finance/locales/en_US.json';
 import enHomeMessages from '../../modules/home/locales/en_US.json';
 import enLeaveMessages from '../../modules/leave/locales/en_US.json';
+import enLookupMessages from '../../modules/lookup/locales/en_US.json';
 import enMileageMessages from '../../modules/mileage/locales/en_US.json';
 import enWorkflowMessages from '../../modules/organization/locales/en_US.json';
 import enProjectMessages from '../../modules/project/locales/en_US.json';
@@ -28,7 +29,8 @@ const EnLang = {
     ...enExpenseMessages,
     ...enFinanceMessages,
     ...enLeaveMessages,
-    ...enSummaryMessages
+    ...enSummaryMessages,
+    ...enLookupMessages
   },
   locale: 'en-US',
   data: appLocaleData,

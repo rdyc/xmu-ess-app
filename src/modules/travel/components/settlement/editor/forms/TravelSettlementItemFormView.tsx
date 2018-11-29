@@ -7,10 +7,33 @@ import {
   Card,
   CardContent,
   Grid,
+  TextField,
 } from '@material-ui/core';
+import { travelMessage } from '@travel/locales/messages/travelMessage';
+import * as moment from 'moment';
 import * as React from 'react';
 import { Field } from 'redux-form';
 import { TravelSettlementItemFormProps } from './TravelSettlementItemForm';
+
+const calculateDiem = (start: string , end: string): number => {
+  let result: number = 0;
+  
+  if (start !== '' && end !== '') {
+  const startDate = moment(start);
+  const endDate = moment(end);
+  const diffHours = endDate.diff(startDate, 'hours');
+  const diffDays = endDate.dayOfYear() - startDate.dayOfYear();
+
+  if (startDate.isSame(endDate, 'days')) {
+    result = diffHours >= 8 ? 1 : 0;
+  } else if ( !startDate.isSame(endDate, 'days') && endDate.hours() >= 17) {
+    result =  diffDays + 1;
+  } else {
+    result = diffDays;
+  }
+}  
+  return result;
+};
 
 export const TravelSettlementItemFormView: React.SFC<TravelSettlementItemFormProps> = props => {
   const { context } = props;
@@ -18,7 +41,11 @@ export const TravelSettlementItemFormView: React.SFC<TravelSettlementItemFormPro
   const render = (
     <Grid container spacing={16}>
       {
-        context.fields.map((field, index) => 
+        context.fields.map((field, index) => {
+          const item = context.fields.get(index);
+          // const amount: number = calculateDiem(item.departureDate, item.returnDate) * item.diemValue * item.currencyRate;
+          // item.amount = amount;
+          return (
           <Grid key={index} item xs={12} md={4}>
             <Card square>
               <CardContent>
@@ -27,7 +54,7 @@ export const TravelSettlementItemFormView: React.SFC<TravelSettlementItemFormPro
                     type="text"
                     disabled = "true"
                     name={`${field}.employeeUid`}
-                    label="employee"
+                    label={props.intl.formatMessage(travelMessage.request.field.itemEmployeeUid)}
                     placeholder="Employee"
                     required={true}
                     companyUids={props.userState.user && [props.userState.user.company.uid]}
@@ -36,130 +63,101 @@ export const TravelSettlementItemFormView: React.SFC<TravelSettlementItemFormPro
                   <Field 
                     type="text"
                     name={`${field}.transportType`}
-                    label="Transport Type"
+                    label={props.intl.formatMessage(travelMessage.request.field.transportType)}
                     component={SelectSystem}
                     category = "transportation"
                   />
                   <Field 
                     type="text"
                     name={`${field}.from`}
-                    label="from"
+                    label={props.intl.formatMessage(travelMessage.request.field.from)}
                     component={InputText}
                   />
                   <Field 
                     type="text"
                     name={`${field}.destination`}
-                    label="destination"
+                    label={props.intl.formatMessage(travelMessage.request.field.destination)}
                     component={InputText}
                   />
                   <Field 
                     name={`${field}.departureDate`}
-                    label="Departure Date"
+                    label={props.intl.formatMessage(travelMessage.request.field.itemStart)}
                     component={InputDateTime}
                   />
                   <Field 
                     name={`${field}.returnDate`}
-                    label="return Date"
+                    label={props.intl.formatMessage(travelMessage.request.field.itemEnd)}
                     component={InputDateTime}
                   />
                   <Field 
                     type="number"
                     name={`${field}.costTransport`}
-                    label="Cost Transport"
+                    label={props.intl.formatMessage(travelMessage.request.field.transportCost)}
                     required={true}
                     component={InputNumber}
+                    // onChange= {props.onCostChange}
                   />
                   <Field 
                     type="text"
                     name={`${field}.hotel`}
-                    label="Hotel Name"
+                    label={props.intl.formatMessage(travelMessage.request.field.hotel)}
                     component={InputText}
                   />
                   <Field 
                     type="number"
                     name={`${field}.costHotel`}
-                    label="Cost Hotel"
+                    label={props.intl.formatMessage(travelMessage.request.field.hotelCost)}
                     required={true}
                     component={InputNumber}
+                    // onChange= {props.onCostChange}
                   />
                   <Field 
                     type="text"
                     name={`${field}.notes`}
-                    label="notes"
+                    label={props.intl.formatMessage(travelMessage.request.field.note)}
                     component={InputText}
                   />
-                  <Field 
-                    type="number"
-                    disabled= {true}
-                    name={`${field}.duration`}
-                    label="Diem"
-                    required={true}
-                    component={InputNumber}
-                  />
+                  <TextField
+                    margin="dense"
+                    disabled={true}
+                    label={props.intl.formatMessage(travelMessage.request.field.duration)}
+                    value={props.intl.formatNumber(calculateDiem(item.departureDate, item.returnDate))}
+                  />  
                   <Field 
                     type="number"
                     name={`${field}.diemValue`}
-                    label="Per Diem"
+                    label={props.intl.formatMessage(travelMessage.request.field.diemValue)}
                     disabled={true}
                     component={InputNumber}
                   />     
                   <Field 
                     type="text"
                     name={`${field}.currencyUid`}
-                    label="Currency"
+                    label={props.intl.formatMessage(travelMessage.request.field.currencyUid)}
                     disabled={true}
                     component={InputText}
                   />
                   <Field 
                     type="text"
                     name={`${field}.currencyRate`}
-                    label="Currency Rate"
+                    label={props.intl.formatMessage(travelMessage.request.field.currencyRate)}
                     disabled={true}
                     component={InputText}
                   />
-                   <Field 
-                    type="number"
-                    name={`${field}.amount`}
-                    label="Diem Value"
+                  <TextField
+                    margin="dense"
                     disabled={true}
-                    component={InputNumber}
+                    fullWidth={true}
+                    label={props.intl.formatMessage(travelMessage.request.field.amount)}
+                    value={props.intl.formatNumber(calculateDiem(item.departureDate, item.returnDate) * (item.currencyRate) * (item.diemValue))}
                   />                               
                 </div>
               </CardContent>
             </Card>
           </Grid>
-        )
+          );
+        })
       }
-      {/* <Grid item xs={12} md={4}>
-        <Grid container spacing={16}>
-          <Grid item xs={12} md={4}>
-            <Button onClick={() => context.fields.push({
-              uid: null,
-              employeeUid: '',
-              fullName: '',
-              transportType: '',
-              isRoundTrip: false,
-              from: '',
-              destination: '',
-              departureDate: '',
-              returnDate: '',
-              costTransport: 0,
-              isTransportByCompany: false,
-              hotel: '',
-              costHotel: 0,
-              isHotelByCompany: false,
-              notes: '',
-              duration: 0,
-              amount: 0,            
-              currencyUid: '',
-              currencyRate: 0,
-              diemValue: 0,
-              })}>
-              <FormattedMessage id="travel.section.item.action.add" />
-            </Button>
-          </Grid>
-        </Grid>
-      </Grid> */}
     </Grid>
   );
   return render;

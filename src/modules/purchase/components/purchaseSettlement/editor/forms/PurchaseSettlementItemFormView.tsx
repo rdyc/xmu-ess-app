@@ -5,78 +5,67 @@ import {
   CardContent,
   CardHeader,
   Grid,
+  TextField,
 } from '@material-ui/core';
 import { PurchaseSettlementItemFormProps } from '@purchase/components/purchaseSettlement/editor/forms/PurchaseSettlementItemForm';
 import { purchaseMessage } from '@purchase/locales/messages/purchaseMessage';
 import * as React from 'react';
-import { Field, 
-  // change 
-} from 'redux-form';
+import { Field } from 'redux-form';
 
-export const PurchaseSettlementItemFormView: React.SFC<PurchaseSettlementItemFormProps 
-> = props => {
+export const PurchaseSettlementItemFormView: React.SFC<PurchaseSettlementItemFormProps> = props => {
   const { context } = props;
-
-  // const onActualChange = (event: any, newValue: number, oldValue: number) => {
-  //   change('actualInIDR', newValue * formRate);
-  // };
-
+  
   const render = (
       <Grid container spacing={16}>
         {
-          context.fields.map((field, index) =>
-            <Grid key={index} item xs={12} md={4}>
-              <Card square>
-                <CardHeader
+          context.fields.map((field, index) => {
+            const items = context.fields.get(index);
+           
+            return (
+          <Grid key={index} item xs={12} md={4}>
+            <Card square>
+              <CardHeader
                 title={`#${index + 1}`}
-                />
-                <CardContent>
-                  <div>
-                    <Field
-                      type="text"
-                      name={`${field}.uid`}
-                      label={props.intl.formatMessage(purchaseMessage.settlement.items.uid)}
-                      disabled
-                      component={InputText}
-                    />
-                    <Field
-                      type="text"
-                      name={`${field}.description`}
-                      label={props.intl.formatMessage(purchaseMessage.settlement.items.description)}
-                      disabled
-                      component={InputText}
-                    />
-                    <Field
-                      type="number"
-                      name={`${field}.request`}
-                      label={props.intl.formatMessage(purchaseMessage.settlement.items.request)}
-                      disabled={true}
-                      component={InputNumber}
-                    />
-                    <Field
-                      type="number"
-                      name={`${field}.actual`}
-                      label={props.intl.formatMessage(purchaseMessage.settlement.items.actual)}
-                      required={true}
-                      // onChange={onActualChange}
-                      //   onChange={(event: any, newValue: any) => {
-                      //   if (!isNaN(newValue)) {
-                      //     props.change(`${field}.variance`, newValue);
-                      //   }
-                      // }}
-                      component={InputNumber}
-                    />
-                    <Field
-                      type="number"
-                      name={`${field}.variance`}
-                      label={props.intl.formatMessage(purchaseMessage.settlement.items.variance)}
-                      disabled={true}
-                      component={InputNumber}
-                    />
-                  </div>
-                </CardContent>
-              </Card>
-            </Grid>
+              />
+              <CardContent>
+                <div>
+                  <Field
+                    type="text"
+                    name={`${field}.description`}
+                    label={props.intl.formatMessage(purchaseMessage.settlement.items.description)}
+                    disabled
+                    component={InputText}
+                  />
+                  <Field
+                    type="number"
+                    name={`${field}.request`}
+                    label={props.intl.formatMessage(purchaseMessage.settlement.items.request)}
+                    disabled={true}
+                    component={InputNumber}
+             
+                  />
+                  <Field
+                    type="number"
+                    name={`${field}.actual`}
+                    label={props.intl.formatMessage(purchaseMessage.settlement.items.actual)}
+                    required={true}
+                    component={InputNumber}
+                  />
+                  <TextField
+                    type="number"
+                    name={`${field}.variance`}
+                    label={props.intl.formatMessage(purchaseMessage.settlement.items.variance)}
+                    disabled={true}
+                    value={items.request - items.actual}
+                    fullWidth
+                  />
+                </div>
+              </CardContent>
+            </Card>
+          </Grid>
+            );
+          }
+            
           )
         }      
         </Grid>

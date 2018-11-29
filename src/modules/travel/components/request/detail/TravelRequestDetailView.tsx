@@ -28,6 +28,9 @@ const config: SingleConfig<ITravelRequestDetail, TravelRequestDetailProps> = {
     description: props.intl.formatMessage(travelMessage.request.page.detailSubHeader)
   }),
 
+  // parent url
+  parentUrl: (props: TravelRequestDetailProps) => '/travel/requests',
+
   // action centre
   showActionCentre: true,
 

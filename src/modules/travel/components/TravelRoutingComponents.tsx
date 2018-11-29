@@ -46,9 +46,9 @@ export const TravelRoutingComponents: React.SFC<RouteComponentProps> = props => 
   <Switch>
     <Layout>
       <Route path={`${props.match.path}/requests`} component={request} />
-      <Route path={`${props.match.path}/approvals/request`} component={approvalRequest} />
-      <Route path={`${props.match.path}/settlements`} component={settlement} />
-      <Route path={`${props.match.path}/approvals/settlement`} component={approvalSettlement} />
+      <Route path={`${props.match.path}/approvals`} component={approvalRequest} />
+      <Route path={`${props.match.path}/settlement/requests`} component={settlement} />
+      <Route path={`${props.match.path}/settlement/approvals`} component={approvalSettlement} />
     </Layout>
   </Switch>
 );

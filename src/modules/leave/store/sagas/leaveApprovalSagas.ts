@@ -5,6 +5,7 @@ import {
   leaveApprovalGetAllError,
   leaveApprovalGetAllRequest,
   leaveApprovalGetAllSuccess,
+  leaveApprovalGetByIdDispose,
   leaveApprovalGetByIdError,
   leaveApprovalGetByIdRequest,
   leaveApprovalGetByIdSuccess,
@@ -100,8 +101,9 @@ function* watchPostRequest() {
       path: `/v1/approvals/leave/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.leaveUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
-        put(leaveApprovalPostSuccess(response.body)),
-        put(leaveApprovalGetAllDispose())
+        put(leaveApprovalGetAllDispose()),
+        put(leaveApprovalGetByIdDispose()),
+        put(leaveApprovalPostSuccess(response.body))
       ],
       successCallback: (response: IApiResponse) => {
         action.payload.resolve(response.body.data);

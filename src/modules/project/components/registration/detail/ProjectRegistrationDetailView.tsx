@@ -28,56 +28,71 @@ const config: SingleConfig<IProjectDetail, ProjectRegistrationDetailProps> = {
     title: props.intl.formatMessage(projectMessage.registration.page.detailTitle),
     description: props.intl.formatMessage(projectMessage.registration.page.detailSubHeader)
   }),
+
+  // parent url
+  parentUrl: (props: ProjectRegistrationDetailProps) => '/project/requests',
   
   // action centre
   showActionCentre: true,
 
   // more
   hasMore: true,
-  moreOptions: (props: ProjectRegistrationDetailProps, state: SingleState, callback: SingleHandler): IAppBarMenu[] => ([
-    {
-      id: ProjectUserAction.Refresh,
-      name: props.intl.formatMessage(layoutMessage.action.refresh),
-      enabled: true,
-      visible: true,
-      onClick: callback.handleForceReload
-    },
-    {
-      id: ProjectUserAction.Modify,
-      name: props.intl.formatMessage(layoutMessage.action.modify),
-      enabled: state.statusType !== undefined,
-      visible: isContains(state.statusType, [ WorkflowStatusType.Submitted, WorkflowStatusType.InProgress, WorkflowStatusType.Approved ]),
-      onClick: props.handleOnModify
-    },
-    {
-      id: ProjectUserAction.Close,
-      name: props.intl.formatMessage(projectMessage.registration.option.close),
-      enabled: true,
-      visible: isContains(state.statusType, [ WorkflowStatusType.Approved, WorkflowStatusType.ReOpened ]),
-      onClick: props.handleOnChangeStatus
-    },
-    {
-      id: ProjectUserAction.ReOpen,
-      name: props.intl.formatMessage(projectMessage.registration.option.reOpen),
-      enabled: true,
-      visible: isContains(state.statusType, [ WorkflowStatusType.Closed ]),
-      onClick: props.handleOnReOpen
-    },
-    {
-      id: ProjectUserAction.ChangeOwner,
-      name: props.intl.formatMessage(projectMessage.registration.option.owner),
-      enabled: true,
-      visible: isContains(state.statusType, [ WorkflowStatusType.Approved ]),
-      onClick: props.handleOnChangeOwner
-    },
-    {
-      id: ProjectUserAction.ManageSites,
-      name: props.intl.formatMessage(projectMessage.registration.option.site),
-      enabled: true,
-      visible: isContains(state.statusType, [WorkflowStatusType.Approved]) && state.isAdmin,
-      onClick: props.handleOnManageSite
+  moreOptions: (props: ProjectRegistrationDetailProps, state: SingleState, callback: SingleHandler): IAppBarMenu[] => {
+    const { user } = props.userState;
+    const { response } = props.projectRegisterState.detail;
+    
+    let isOwner = false;
+
+    // checking project owner with current user
+    if (user && response && response.data && response.data.ownerEmployeeUid) {
+      isOwner = user.uid === response.data.ownerEmployeeUid;
     }
-  ]),
+
+    return [
+      {
+        id: ProjectUserAction.Refresh,
+        name: props.intl.formatMessage(layoutMessage.action.refresh),
+        enabled: true,
+        visible: true,
+        onClick: callback.handleForceReload
+      },
+      {
+        id: ProjectUserAction.Modify,
+        name: props.intl.formatMessage(layoutMessage.action.modify),
+        enabled: state.statusType !== undefined,
+        visible: isContains(state.statusType, [ WorkflowStatusType.Submitted, WorkflowStatusType.InProgress, WorkflowStatusType.Approved ]) && isOwner,
+        onClick: props.handleOnModify
+      },
+      {
+        id: ProjectUserAction.Close,
+        name: props.intl.formatMessage(projectMessage.registration.option.close),
+        enabled: true,
+        visible: isContains(state.statusType, [ WorkflowStatusType.Approved, WorkflowStatusType.ReOpened ]) && (isOwner || state.isAdmin),
+        onClick: props.handleOnChangeStatus
+      },
+      {
+        id: ProjectUserAction.ReOpen,
+        name: props.intl.formatMessage(projectMessage.registration.option.reOpen),
+        enabled: true,
+        visible: isContains(state.statusType, [ WorkflowStatusType.Closed ]) && state.isAdmin,
+        onClick: props.handleOnReOpen
+      },
+      {
+        id: ProjectUserAction.ChangeOwner,
+        name: props.intl.formatMessage(projectMessage.registration.option.owner),
+        enabled: true,
+        visible: isContains(state.statusType, [ WorkflowStatusType.Approved ]) && (isOwner || state.isAdmin),
+        onClick: props.handleOnChangeOwner
+      },
+      {
+        id: ProjectUserAction.ManageSites,
+        name: props.intl.formatMessage(projectMessage.registration.option.site),
+        enabled: true,
+        visible: isContains(state.statusType, [WorkflowStatusType.Approved]) && state.isAdmin,
+        onClick: props.handleOnManageSite
+      }
+    ];
+  },
 
   // events
   onDataLoad: (props: ProjectRegistrationDetailProps, callback: SingleHandler, forceReload?: boolean | false) => {

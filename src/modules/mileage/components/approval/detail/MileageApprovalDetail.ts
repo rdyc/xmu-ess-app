@@ -191,7 +191,7 @@ const handlerCreators: HandleCreators<
   handleSubmitSuccess: (props: MileageApprovalDetailProps) => (
     response: IMileageRequestDetail
   ) => {
-    const { intl, /* mileageItemUids */ } = props;
+    const { intl, mileageItemUids } = props;
     const { alertAdd } = props.layoutDispatch;
     const { detail } = props.mileageApprovalState;
     // let counter: number = 0;
@@ -212,7 +212,7 @@ const handlerCreators: HandleCreators<
     // }
 
     props.setDataload();
-    // mileageItemUids.splice(0, mileageItemUids.length);
+    mileageItemUids.splice(0, mileageItemUids.length);
     // if (mileageItemUids.length === counter) {
     //   props.setDataload();
     // } else {

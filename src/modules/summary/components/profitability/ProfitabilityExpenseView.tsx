@@ -55,7 +55,7 @@ export const ProfitabilityExpenseView: React.SFC<AllProps> = props => {
                 numeric
                 className={classNames(classes.stickyHeader)}
               >
-                {summaryMessage.profitability.header.amount}
+                {intl.formatMessage(summaryMessage.profitability.header.amount)}
               </TableCell>
             </TableRow>
           </TableHead>
@@ -86,7 +86,7 @@ export const ProfitabilityExpenseView: React.SFC<AllProps> = props => {
       </DialogContent>
       <DialogActions>
         <Button onClick={handleDialogClose} color="primary">
-          {summaryMessage.profitability.dialog.close}
+          {intl.formatMessage(summaryMessage.profitability.dialog.close)}
         </Button>
       </DialogActions>
     </Dialog>

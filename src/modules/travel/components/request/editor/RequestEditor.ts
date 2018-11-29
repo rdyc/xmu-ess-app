@@ -98,7 +98,7 @@ const handlerCreators: HandleCreators<RequestEditorProps, OwnHandlers> = {
       }
     }
     
-    console.log(errors);
+    // console.log(errors);
     return errors;
   },
   handleSubmit: (props: RequestEditorProps) => (formData: TravelRequestFormData) => {
@@ -202,7 +202,7 @@ const handlerCreators: HandleCreators<RequestEditorProps, OwnHandlers> = {
       time: new Date()
     });
 
-    history.push('/travel/requests');
+    history.push(`/travel/requests/${response.uid}`);
   },
   handleSubmitFail: (props: RequestEditorProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
     const { formMode, intl } = props;

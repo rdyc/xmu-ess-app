@@ -60,16 +60,16 @@ export const menuLinkMapper = (menuUid: string) => {
       path = '/reports/progress';
       break;
     case 'MNU23':
-      path = '/purchase/requests/list';
+      path = '/purchase/requests';
       break;
     case 'MNU37':
-      path = '/purchase/settlements/list';
+      path = '/purchase/settlement/requests';
       break;
     case 'MNU38':
-      path = '/purchase/settlementapprovals/list';
+      path = '/purchase/settlement/approvals';
       break;
     case 'MNU24':
-      path = '/purchase/approvals/list';
+      path = '/purchase/approvals';
       break;
     case 'MNU39':
       path = '/timesheet/approvals/history';
@@ -78,22 +78,22 @@ export const menuLinkMapper = (menuUid: string) => {
       path = '/timesheet/approvals';
       break;
     case 'MNU10':
-      path = '/timesheet/entry';
+      path = '/timesheet/requests/form';
       break;
     case 'MNU34':
-      path = '/timesheet/entry/history';
+      path = '/timesheet/requests';
       break;
     case 'MNU28':
       path = '/travel/requests';
       break;
     case 'MNU40':
-      path = '/travel/approvals/request';
+      path = '/travel/approvals';
       break;
     case 'MNU29':
-      path = '/travel/settlements';
+      path = '/travel/settlement/requests';
       break;
     case 'MNU41':
-      path = '/travel/approvals/settlement';
+      path = '/travel/settlement/approvals';
       break;
 
     case 'MNU02':
@@ -157,7 +157,7 @@ export const menuLinkMapper = (menuUid: string) => {
       break;
 
     case 'MNU59':
-      path = '/lookup/mileageexception/list';
+      path = '/lookup/mileageexception';
       break;
 
     default:

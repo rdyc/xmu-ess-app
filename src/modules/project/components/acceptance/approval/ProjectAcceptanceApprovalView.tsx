@@ -21,6 +21,9 @@ const config: SingleConfig<IProjectAssignmentDetailItem, ProjectAcceptanceApprov
     title: props.intl.formatMessage(projectMessage.acceptance.page.approvalTitle),
     description: props.intl.formatMessage(projectMessage.acceptance.page.approvalSubHeader)
   }),
+
+  // parent url
+  parentUrl: (props: ProjectAcceptanceApprovalProps) => `/project/acceptances/${props.match.params.assignmentUid}`,
   
   // action centre
   showActionCentre: true,

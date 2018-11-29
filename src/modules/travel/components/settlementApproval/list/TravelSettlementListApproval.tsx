@@ -110,12 +110,12 @@ const config: CollectionConfig<ITravelSettlement, AllProps> = {
     callback.handleLoading(isLoading);
     callback.handleResponse(response);
   },
-  onBind: (item: ITravelSettlement, index: number) => ({
+  onBind: (item: ITravelSettlement, index: number, props: AllProps) => ({
     key: index,
-    primary: item.objective ? item.objective : 'N/A',
-    secondary: item.customer && item.customer.name || item.customerUid,
-    tertiary: item.uid,
-    quaternary: item.project && item.project.name || item.projectUid,
+    primary: item.uid, 
+    secondary: item.customer && item.customer.name || item.customerUid, 
+    tertiary: item.objective ? item.objective : 'N/A',
+    quaternary: props.intl.formatNumber(item.total),
     quinary: item.status && item.status.value || item.statusType,
     senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
   }),
@@ -130,7 +130,7 @@ const config: CollectionConfig<ITravelSettlement, AllProps> = {
     <React.Fragment>
       <Button 
         size="small"
-        onClick={() => callback.handleRedirectTo(`/travel/approvals/settlement/${item.uid}`)}
+        onClick={() => callback.handleRedirectTo(`/travel/settlement/approvals/${item.uid}`)}
       >
         <FormattedMessage {...layoutMessage.action.details}/>
       </Button>
