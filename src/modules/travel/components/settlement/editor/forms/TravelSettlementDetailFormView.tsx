@@ -1,6 +1,7 @@
 import { FormMode } from '@generic/types';
 import { Card, CardContent, CardHeader } from '@material-ui/core';
 import { TravelSettlementDetailFormProps } from '@travel/components/settlement/editor/forms/TravelSettlementDetailForm';
+import { travelMessage } from '@travel/locales/messages/travelMessage';
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Field } from 'redux-form';
@@ -31,8 +32,8 @@ export const TravelSettlementDetailFormView: React.SFC<TravelSettlementDetailFor
   const render = (
     <Card square>
       <CardHeader 
-        title={<FormattedMessage id="travel.infoTitle"/>}
-        subheader={<FormattedMessage id="travel.infoSubTitle" />}
+        title={props.intl.formatMessage(travelMessage.settlement.section.infoTitle)}
+        subheader={props.intl.formatMessage(travelMessage.settlement.section.infoSubHeader)}
       />
       <CardContent>
         {names.map(name => renderField(name))}

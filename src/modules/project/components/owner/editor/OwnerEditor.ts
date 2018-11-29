@@ -116,7 +116,7 @@ const handlerCreators: HandleCreators<OwnerEditorProps, OwnHandlers> = {
     });
   },
   handleSubmitSuccess: (props: OwnerEditorProps) => (response: boolean) => {
-    const { formMode, intl, history, projectUid } = props;
+    const { formMode, intl, history } = props;
     const { alertAdd } = props.layoutDispatch;
     
     let message: string = '';
@@ -130,9 +130,8 @@ const handlerCreators: HandleCreators<OwnerEditorProps, OwnHandlers> = {
       time: new Date()
     });
 
-    if (projectUid) {
-      history.push(`/project/requests/${projectUid}`);
-    }
+    // when owner was changed, it must removed form project list
+    history.push('/project/requests');
   },
   handleSubmitFail: (props: OwnerEditorProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
     const { intl } = props;
