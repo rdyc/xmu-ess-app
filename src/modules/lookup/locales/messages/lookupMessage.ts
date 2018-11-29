@@ -1,3 +1,4 @@
+import { currencyConfirm, currencyField, currencyForm, currencyMessage, currencyPage, currencySection } from './currency/currencyMessage';
 import { companyConfirm, companyField, companyFieldHelperFor, companyMessage, companyPage, companySection } from './lookupCompanyMessage';
 import {
   mileageExceptionField,
@@ -26,6 +27,14 @@ export const lookupMessage = {
   },
   shared: {
     confirm: lookupConfirm
+  },
+  currency: {
+    page: currencyPage,
+    field: currencyField,
+    confirm: currencyConfirm,
+    section: currencySection,
+    form: currencyForm,
+    message: currencyMessage
   },
   company: {
     page: companyPage,
