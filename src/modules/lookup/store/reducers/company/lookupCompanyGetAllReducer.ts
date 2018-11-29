@@ -1,10 +1,10 @@
 import { IQueryCollectionState } from '@generic/interfaces';
-import { ILookupCompanyAllRequest } from '@lookup/classes/queries/company';
+import { ILookupCompanyGetAllRequest } from '@lookup/classes/queries/company';
 import { ICompany } from '@lookup/classes/response';
 import { LookupCompanyAction as Action } from '@lookup/store/actions';
 import { Reducer } from 'redux';
 
-const initialState: IQueryCollectionState<ILookupCompanyAllRequest, ICompany> = {
+const initialState: IQueryCollectionState<ILookupCompanyGetAllRequest, ICompany> = {
   request: undefined,
   response: undefined,
   isError: false,
@@ -12,7 +12,7 @@ const initialState: IQueryCollectionState<ILookupCompanyAllRequest, ICompany> = 
   errors: undefined,
 };
 
-const reducer: Reducer<IQueryCollectionState<ILookupCompanyAllRequest, ICompany>> = (state = initialState, action) => {
+const reducer: Reducer<IQueryCollectionState<ILookupCompanyGetAllRequest, ICompany>> = (state = initialState, action) => {
   switch (action.type) {
     case Action.GET_ALL_REQUEST: return { ...state, isLoading: true, isError: false, request: action.payload };
     case Action.GET_ALL_SUCCESS: return { ...state, isLoading: false, isError: false, response: action.payload };

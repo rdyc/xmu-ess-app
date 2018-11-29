@@ -1,5 +1,5 @@
-import { ISystemListRequest } from '@common/classes/queries';
-import { ISystemList } from '@common/classes/response';
+import { ISystemAllRequest, ISystemByIdRequest, ISystemListRequest, ISystemPostRequest, ISystemPutRequest } from '@common/classes/queries';
+import { ISystem, ISystemDetail, ISystemList, ISystemType } from '@common/classes/response';
 import {
   activityGetListRequest,
   currencyGetListRequest,
@@ -12,16 +12,36 @@ import {
   purposeGetListRequest,
   siteGetListRequest,
   statusGetListRequest,
+  systemGetAllDispose,
+  systemGetAllRequest,
+  systemGetByIdDispose,
+  systemGetByIdRequest,
+  systemGetTypeDispose,
+  systemGetTypeRequest,
+  systemPostDispose,
+  systemPostRequest,
+  systemPutDispose,
+  systemPutRequest,
   transportationGetListRequest,
+  unitGetListRequest,
 } from '@common/store/actions';
-import { IAppState, IQueryCollectionState } from '@generic/interfaces';
+import { IAppState, IQueryCollectionState, IQuerySingleState } from '@generic/interfaces';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 
 interface PropsFromState {
+  // system
+  commonSystemState: {
+    all: IQueryCollectionState<ISystemAllRequest, ISystem>;
+    list: IQueryCollectionState<ISystemListRequest, ISystemList>;
+    detail: IQuerySingleState<ISystemByIdRequest, ISystemDetail>;
+    type: IQueryCollectionState<{}, ISystemType>;
+  };
+
   // all
 
   // list
+  commonUnitListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
   commonActivityListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
   commonCurrencyListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
   commonDocumentListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
@@ -41,8 +61,11 @@ interface PropsFromState {
 interface PropsFromDispatch {
   commonDispatch: {
     // all
+    systemAllRequest: typeof systemGetAllRequest;
+    systemAllDispose: typeof systemGetAllDispose;
 
     // list
+    unitListRequest: typeof unitGetListRequest;
     activityListRequest: typeof activityGetListRequest;
     currencyListRequest: typeof currencyGetListRequest;
     documentListRequest: typeof documentGetListRequest;
@@ -57,6 +80,18 @@ interface PropsFromDispatch {
     transportationListRequest: typeof transportationGetListRequest;
 
     // detail
+    systemDetailRequest: typeof systemGetByIdRequest;
+    systemDetailDispose: typeof systemGetByIdDispose;
+
+    // command
+    systemCreateRequest: typeof systemPostRequest;
+    systemCreateDispose: typeof systemPostDispose;
+    systemUpdateRequest: typeof systemPutRequest;
+    systemUpdateDispose: typeof systemPutDispose;
+
+    // other
+    systemTypeRequest: typeof systemGetTypeRequest;
+    systemTypeDispose: typeof systemGetTypeDispose;
   };
 }
 
@@ -75,11 +110,25 @@ const mapStateToProps = ({
   commonDestinationList,
   commonPurposeList,
   commonTransportationList,
+  commonSystemAll,
+  commonSystemList,
+  commonSystemDetail,
+  commonSystemType,
+  commonUnitList,
 
 }: IAppState) => ({
+  // system
+  commonSystemState: {
+    all: commonSystemAll,
+    list: commonSystemList,
+    detail: commonSystemDetail,
+    type: commonSystemType,
+  },
+
   // all
   
   // list
+  commonUnitListState: commonUnitList,
   commonActivityListState: commonActivityList,
   commonCurrencyListState: commonCurrencyList,
   commonDocumentListState: commonDocumentList,
@@ -100,8 +149,11 @@ const mapStateToProps = ({
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   commonDispatch: {
     // all
+    systemAllRequest: (request: ISystemAllRequest) => dispatch(systemGetAllRequest(request)),
+    systemAllDispose: () => dispatch(systemGetAllDispose()),
 
     // list
+    unitListRequest: (request: ISystemListRequest) => dispatch(unitGetListRequest(request)),
     activityListRequest: (request: ISystemListRequest) => dispatch(activityGetListRequest(request)),
     currencyListRequest: (request: ISystemListRequest) => dispatch(currencyGetListRequest(request)),
     documentListRequest: (request: ISystemListRequest) => dispatch(documentGetListRequest(request)),
@@ -116,6 +168,18 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     transportationListRequest: (request: ISystemListRequest) => dispatch(transportationGetListRequest(request)),
 
     // detail
+    systemDetailRequest: (request: ISystemByIdRequest) => dispatch(systemGetByIdRequest(request)),
+    systemDetailDispose: () => dispatch(systemGetByIdDispose()),
+
+    // command
+    systemCreateRequest: (request: ISystemPostRequest) => dispatch(systemPostRequest(request)),
+    systemCreateDispose: () => dispatch(systemPostDispose()),
+    systemUpdateRequest: (request: ISystemPutRequest) => dispatch(systemPutRequest(request)),
+    systemUpdateDispose: () => dispatch(systemPutDispose()),
+
+    // type
+    systemTypeRequest: () => dispatch(systemGetTypeRequest()),
+    systemTypeDispose: () => dispatch(systemGetTypeDispose()),
   }
 });
 

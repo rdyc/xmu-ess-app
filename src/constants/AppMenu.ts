@@ -35,6 +35,7 @@ enum AppMenu {
   PurchaseSettlementRequest = 'MNU37',
   PurchaseSettlementApproval = 'MNU38',
   Lookup = 'MNU01',
+  LookupCompany = 'MNU02',
   LookupApprovalHierarchy = 'MNU04',
   LookupMileageException = 'MNU59',
   LookupCustomer = 'MNU33',
@@ -47,7 +48,8 @@ enum AppMenu {
   TravelRequest = 'MNU28',
   TravelApproval = 'MNU40',
   TravelSettlementRequest = 'MNU29',
-  TravelSettlementApproval = 'MNU41'
+  TravelSettlementApproval = 'MNU41',
+  Common = 'MNU53',
 }
 
 export default AppMenu;
