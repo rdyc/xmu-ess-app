@@ -31,6 +31,7 @@ export interface CollectionConfig<Tresponse, Tinner> {
     title: string;
     description: string;
   };
+  parentUrl?: (props: Tinner) => string;
   fields: ICollectionValue[];
   fieldTranslator?: (find: string, field: ICollectionValue) => string;
   hasMore?: boolean | false;
@@ -55,7 +56,7 @@ export interface CollectionConfig<Tresponse, Tinner> {
     senary: string;
   };
   onRowRender?: (item: Tresponse, index: number) => JSX.Element;
-  summaryComponent: (item: Tresponse) => JSX.Element;
+  summaryComponent: (item: Tresponse, props?: Tinner) => JSX.Element;
   actionComponent?: (item: Tresponse, callback: CollectionHandler, props?: Tinner) => JSX.Element;
 }
 
@@ -284,6 +285,7 @@ const lifecycles: ReactLifeCycleFunctions<CollectionPageProps, OwnState> = {
         title: page.title,
         subTitle: page.description,
       },
+      parentUrl: this.props.config.parentUrl ? this.props.config.parentUrl(this.props.connectedProps) : undefined,
       status: {
         isNavBackVisible: this.props.config.hasNavBack || false,
         isSearchVisible: this.props.config.hasSearching,

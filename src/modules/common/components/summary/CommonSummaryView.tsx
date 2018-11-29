@@ -1,4 +1,5 @@
 import { ISystemType } from '@common/classes/response';
+import { editableCategories } from '@common/classes/types';
 import { commonMessage } from '@common/locales/messages/commonMessage';
 import { layoutMessage } from '@layout/locales/messages';
 import { Button, Card, CardActions, CardContent, CardHeader, Grid, Typography } from '@material-ui/core';
@@ -6,11 +7,11 @@ import * as React from 'react';
 import { CommonSummaryProps } from './CommonSummary';
 
 export const CommonSummaryView: React.SFC<CommonSummaryProps> = props => {
-  const { editableCategories, intl, handleGoToCategoryList } = props;
+  const { intl, handleGoToCategoryList } = props;
   const { isLoading, response } = props.commonSystemState.type;
 
   const RenderTypes = (categories: ISystemType[]) => (
-    editableCategories.map(editableCategory => {
+    editableCategories().map(editableCategory => {
       
       const category = categories.find(_category => 
           _category.name === editableCategory.name

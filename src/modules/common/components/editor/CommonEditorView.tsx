@@ -52,7 +52,7 @@ export const CommonEditorView: React.SFC<CommonEditorProps> = props => {
 
       initialValues.information.name = data.name;
       initialValues.information.companyUid = data.companyUid;
-      // initialValues.information.parentCode = data.parentCode;
+      initialValues.information.parentCode = data.parentCode;
       initialValues.information.description = data.description;
       initialValues.information.isActive = data.isActive;
       

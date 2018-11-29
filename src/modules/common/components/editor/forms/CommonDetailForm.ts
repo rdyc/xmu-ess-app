@@ -31,7 +31,7 @@ const handlerCreators: HandleCreators<CommonDetailFormProps, OwnHandlers> = {
       
       let fieldProps: SelectSystemOption & any = {};
   
-      switch (fieldName) {      
+      switch (fieldName) {     
         default:
           fieldProps = {
             type: 'text',

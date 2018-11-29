@@ -31,7 +31,7 @@ const EnLang = {
     ...enFinanceMessages,
     ...enLeaveMessages,
     ...enSummaryMessages,
-    ...enCommonMessages
+    ...enCommonMessages,
     ...enLookupMessages
   },
   locale: 'en-US',

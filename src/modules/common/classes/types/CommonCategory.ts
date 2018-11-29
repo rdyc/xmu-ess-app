@@ -1,3 +1,5 @@
+import { ICollectionValue } from '@layout/classes/core';
+
 // DO NOT DELETE, CAN BE USEFUL FOR FUTURE (MAYBE?? IDK JUST DONT DELETE PLS)
 // export type CommonCategory = 
 //   'Activity Type' | 
@@ -13,6 +15,51 @@
 //   'Relation' | 'Religion' | 
 //   'Status' | 'Site Type' | 
 //   'PTKP Status' | 'Training Type' | 'Transport Type';
+
+const toObjectCategories = (categories: CommonCategory[]): ICollectionValue[] => {
+  const objectCategories =  Object.keys(CommonCategory).map(key => ({ 
+    value: key, 
+    name: CommonCategory[key] 
+  }));
+
+  return objectCategories.filter(objectCategory =>
+    categories.some(category =>
+      category === objectCategory.name));
+};
+
+export const isWithCompany = (category: string): boolean => {
+  const withCompany = [
+    CommonCategory.unit, CommonCategory.employment,
+    CommonCategory.tax, CommonCategory.blood, CommonCategory.religion,
+    CommonCategory.degree, CommonCategory.family, CommonCategory.training,
+    CommonCategory.certification, CommonCategory.site, 
+  ];
+  
+  return toObjectCategories(withCompany).some(objectCategory => {
+      return category === objectCategory.value;
+  });
+};
+
+export const isWithParent = (category: string): boolean => {
+  const withCompany = [
+    CommonCategory.department
+  ];
+  
+  return toObjectCategories(withCompany).some(objectCategory => {
+      return category === objectCategory.value;
+  });
+};
+
+export const editableCategories = (): ICollectionValue[] => {
+  const categories = [
+    CommonCategory.unit, CommonCategory.department, CommonCategory.employment,
+    CommonCategory.tax, CommonCategory.blood, CommonCategory.religion,
+    CommonCategory.degree, CommonCategory.family, CommonCategory.training,
+    CommonCategory.certification, CommonCategory.site,
+  ];
+
+  return toObjectCategories(categories);
+};
 
 export enum CommonCategory {
   employment = 'Employement Status',

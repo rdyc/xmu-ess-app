@@ -1,5 +1,5 @@
 import { ISystemDetail } from '@common/classes/response';
-import { CommonUserAction } from '@common/classes/types';
+import { CommonUserAction, isWithCompany, isWithParent } from '@common/classes/types';
 import { categoryTypeTranslator } from '@common/helper';
 import { commonMessage } from '@common/locales/messages/commonMessage';
 import AppMenu from '@constants/AppMenu';
@@ -19,6 +19,8 @@ const config: SingleConfig<ISystemDetail, CommonDetailProps> = {
     title: props.intl.formatMessage(commonMessage.system.page.detailTitle),
     description : props.intl.formatMessage(commonMessage.system.page.detailSubTitle)
   }),
+  
+  parentUrl: (props: CommonDetailProps) => `/common/system/${props.match.params.category}`,
   
   // action centre
   showActionCentre: true,
@@ -74,8 +76,12 @@ const config: SingleConfig<ISystemDetail, CommonDetailProps> = {
   },
 
   // primary
-  primaryComponent: (data: ISystemDetail) => (
-    <CommonInformation data={data} />
+  primaryComponent: (data: ISystemDetail, props: CommonDetailProps) => (
+    <CommonInformation 
+      data={data} 
+      withCompany={isWithCompany(props.match.params.category)}
+      withParent={isWithParent(props.match.params.category)}
+    />
   ),
   
   // secondary (multiple components are allowed)

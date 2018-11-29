@@ -1,5 +1,5 @@
 import { ISystem } from '@common/classes/response';
-import { CommonField, CommonUserAction } from '@common/classes/types';
+import { CommonCategory, CommonField, CommonUserAction, isWithCompany, isWithParent } from '@common/classes/types';
 import { CommonSummary } from '@common/components/detail/shared/CommonSummary';
 import { categoryTypeTranslator, commonFieldTranslator } from '@common/helper';
 import { withCommonSystem, WithCommonSystem } from '@common/hoc/withCommonSystem';
@@ -26,9 +26,11 @@ const config: CollectionConfig<ISystem, AllProps> = {
   page: (props: AllProps) => ({
     uid: AppMenu.Common,
     parentUid: AppMenu.Lookup,
-    title: props.intl.formatMessage(commonMessage.system.page.title),
+    title: `${props.intl.formatMessage(commonMessage.system.page.title)} ${CommonCategory[props.match.params.category]}`,
     description: props.intl.formatMessage(commonMessage.system.page.subTitle),
   }),
+  
+  parentUrl: (props: AllProps) => `/common/system`,
   
   // top bar
   fields: Object.keys(CommonField).map(key => ({ 
@@ -87,6 +89,10 @@ const config: CollectionConfig<ISystem, AllProps> = {
 
     // when user is set and not loading
     if (user && !isLoading) {
+      // if (response) {
+      //   callback.handleForceReload();
+      // }
+
       // when response are empty or force reloading
       if (!response || forceReload) {
         systemAllRequest({
@@ -111,21 +117,29 @@ const config: CollectionConfig<ISystem, AllProps> = {
     
     callback.handleLoading(isLoading);
     callback.handleResponse(response);
+
+    if (response) {
+      callback.handleForceReload();
+    }
     
   },
   onBind: (item: ISystem, index: number) => ({
     key: item.id,
-    primary: item.name,
-    secondary: '',
+    primary: item.type,
+    secondary: item.name,
     tertiary: item.description && item.description || 'N/A',
-    quaternary: item.type,
+    quaternary: (item.company && item.company.name) || (item.parent && item.parent.value) || 'N/A',
     quinary: item.isActive ? 'Active' : 'Inactive',
     senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
   }),
 
   // summary component
-  summaryComponent: (item: ISystem) => ( 
-    <CommonSummary data={item} />
+  summaryComponent: (item: ISystem, props: AllProps) => ( 
+    <CommonSummary 
+      data={item}
+      withCompany={isWithCompany(props.match.params.category)}
+      withParent={isWithParent(props.match.params.category)}
+    />
   ),
 
   // action component
@@ -133,7 +147,7 @@ const config: CollectionConfig<ISystem, AllProps> = {
     <React.Fragment>
       <Button 
         size="small"
-        onClick={() => callback.handleRedirectTo(`/common/system/${props.match.params.category}/form`, { uid: item.id })}
+        onClick={() => callback.handleRedirectTo(`/common/system/${props.match.params.category}/form`, { id: item.id })}
       >
         <FormattedMessage {...layoutMessage.action.modify}/>
       </Button>

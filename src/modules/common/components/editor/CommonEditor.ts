@@ -41,7 +41,7 @@ interface OwnRouteParams {
 
 interface OwnState {
   formMode: FormMode;
-  id: string | null;
+  id?: string | null;
 }
 
 interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
@@ -132,11 +132,11 @@ const handlerCreators: HandleCreators<CommonEditorProps, OwnHandlers> = {
     systemDetailDispose();
 
     if (formMode === FormMode.New) {
-      message = intl.formatMessage(commonMessage.system.message.createSuccess, { uid: response.id });
+      message = intl.formatMessage(commonMessage.system.message.createSuccess, { uid: response.type });
     }
 
     if (formMode === FormMode.Edit) {
-      message = intl.formatMessage(commonMessage.system.message.updateSuccess, { uid: response.id });
+      message = intl.formatMessage(commonMessage.system.message.updateSuccess, { uid: response.type });
     }
 
     alertAdd({
@@ -182,7 +182,7 @@ const createProps: mapper<CommonEditorProps, OwnState> = (props: CommonEditorPro
 
   return {
     formMode: FormMode.New,
-    id: location.state.id,
+    id: location.state && location.state.id || '',
   };
 };
 

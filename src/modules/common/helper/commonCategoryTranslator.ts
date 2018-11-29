@@ -1,7 +1,7 @@
 import { CommonCategoryType } from '@common/classes/types';
 
 export const categoryTypeTranslator = (category: string): CommonCategoryType => {
-  let result: CommonCategoryType = 'religion';
+  let result: CommonCategoryType = 'department';
 
   switch (category) {
     case 'employment':
@@ -20,7 +20,7 @@ export const categoryTypeTranslator = (category: string): CommonCategoryType => 
       result = 'tax';
       break;
 
-    case 'Business Unit':
+    case 'unit':
       result = 'unit';
       break;
 
@@ -40,7 +40,7 @@ export const categoryTypeTranslator = (category: string): CommonCategoryType => 
       result = 'blood';
       break;
 
-    case 'Department':
+    case 'department':
       result = 'department';
       break;
 

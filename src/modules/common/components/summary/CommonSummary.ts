@@ -10,11 +10,9 @@ import {
   withStateHandlers,
 } from 'recompose';
 
-import { CommonCategory } from '@common/classes/types';
 import { WithCommonSystem, withCommonSystem } from '@common/hoc/withCommonSystem';
 import { commonMessage } from '@common/locales/messages/commonMessage';
 import AppMenu from '@constants/AppMenu';
-import { ICollectionValue } from '@layout/classes/core';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps } from 'react-router';
@@ -24,7 +22,6 @@ interface OwnOption {
 }
 
 interface OwnState {
-  editableCategories: ICollectionValue[];
 }
 
 interface OwnStateUpdater extends StateHandlerMap<OwnState> {
@@ -51,26 +48,8 @@ export type CommonSummaryProps
   & WithLayout;
 
 const createProps: mapper<OwnOption, OwnState> = (): OwnState => {
-  // put editable common category here
-  const editables = [
-    CommonCategory.unit, CommonCategory.department, CommonCategory.employment,
-    CommonCategory.tax, CommonCategory.blood, CommonCategory.religion,
-    CommonCategory.degree, CommonCategory.family, CommonCategory.training,
-    CommonCategory.certification, CommonCategory.site,
-  ];
 
-  const categories = Object.keys(CommonCategory).map(key => ({ 
-    value: key, 
-    name: CommonCategory[key] 
-  }));
-
-  const editableCategories = categories.filter(category =>
-    editables.some(editable =>
-      editable === category.name));
-
-  return {
-    editableCategories
-  };
+  return {};
 };
 
 const stateUpdaters: StateUpdaters<OwnOption, OwnState, OwnStateUpdater> = {
@@ -90,8 +69,7 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<CommonSummaryProps, OwnState> 
       layoutDispatch, intl
     } = this.props;
     const { systemTypeRequest } = this.props.commonDispatch;
-
-    systemTypeRequest();
+    const { response, isLoading } = this.props.commonSystemState.type;
 
     layoutDispatch.setupView({
       view: {
@@ -108,10 +86,14 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<CommonSummaryProps, OwnState> 
         isModeSearch: false
       }
     });
+
+    if (!response && !isLoading) {
+      systemTypeRequest();
+    }
   },
   componentWillUnmount() {
     const { layoutDispatch } = this.props;
-    // const { view } = this.props.layoutState;
+    const { view } = this.props.layoutState;
     const { systemTypeDispose } = this.props.commonDispatch;
     
     layoutDispatch.changeView(null);
@@ -120,10 +102,10 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<CommonSummaryProps, OwnState> 
     layoutDispatch.modeSearchOff();
     layoutDispatch.actionCentreHide();
     layoutDispatch.moreHide();
-    systemTypeDispose();
 
-    // if (view && view.uid !== AppMenu.SystemSetup) {
-    // }
+    if (view && view.uid !== AppMenu.Common) {
+      systemTypeDispose();
+    }
   }
 };
 

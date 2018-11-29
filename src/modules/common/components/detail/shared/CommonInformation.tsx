@@ -8,6 +8,8 @@ import { compose } from 'recompose';
 
 interface OwnProps {
   data: ISystemDetail;
+  withCompany: boolean;
+  withParent: boolean;
 }
 
 type AllProps
@@ -15,7 +17,7 @@ type AllProps
   & InjectedIntlProps;
 
 export const commonInformation: React.SFC<AllProps> = props => {
-  const { data } = props;
+  const { data , withCompany, withParent} = props;
 
   const render = (
     <Card square>
@@ -24,6 +26,14 @@ export const commonInformation: React.SFC<AllProps> = props => {
         subheader={props.intl.formatMessage(commonMessage.system.section.subTitle)}
       />
       <CardContent>
+        {
+          withCompany &&
+          <TextField
+            {...GlobalStyle.TextField.ReadOnly}
+            label={props.intl.formatMessage(commonMessage.system.field.companyUid)}
+            value={data.company && data.company.name || 'N/A'}
+          />
+        }
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
           label={props.intl.formatMessage(commonMessage.system.field.type)}
@@ -39,6 +49,14 @@ export const commonInformation: React.SFC<AllProps> = props => {
           label={props.intl.formatMessage(commonMessage.system.field.description)}
           value={data.description || 'N/A'}
         />
+        {
+          withParent &&
+          <TextField
+            {...GlobalStyle.TextField.ReadOnly}
+            label={props.intl.formatMessage(commonMessage.system.field.parentCode)}
+            value={data.parent && data.parent.value || 'N/A'}
+          />
+        }
       </CardContent>
     </Card>
   );

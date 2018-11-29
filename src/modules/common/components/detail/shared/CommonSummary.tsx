@@ -17,6 +17,8 @@ const styled = {
 
 interface OwnProps {
   data: ISystem;
+  withCompany: boolean;
+  withParent: boolean;
 }
 
 type AllProps
@@ -38,14 +40,32 @@ const commonSummary: React.SFC<AllProps> = props => (
           label={props.intl.formatMessage(commonMessage.system.field.description)}
           value={props.data.description || 'N/A'}
         />
-      </Grid>
-      <Grid item xs={12} sm={6} md={3}>
         <TextField
           {...styled}
           margin="dense"
           label={props.intl.formatMessage(commonMessage.system.field.type)}
           value={props.data.type}
         />
+      </Grid>
+      <Grid item xs={12} sm={6} md={3}>
+        {
+          props.withCompany &&
+          <TextField
+            {...styled}
+            margin="dense"
+            label={props.intl.formatMessage(commonMessage.system.field.companyUid)}
+            value={props.data.company && props.data.company.name || 'N/A'}
+          />
+        }
+        {
+          props.withParent &&
+          <TextField
+            {...styled}
+            margin="dense"
+            label={props.intl.formatMessage(commonMessage.system.field.parentCode)}
+            value={props.data.parent && props.data.parent.value || 'N/A'}
+          />
+        }
         <TextField
           {...styled}
           margin="dense"
