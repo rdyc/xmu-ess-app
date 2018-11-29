@@ -8,7 +8,7 @@ import {
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
-import { leaveMessage } from '@leave/locales/messages/leaveMessage';
+import { lookupMessage } from '@leave/locales/messages/leaveMessage';
 import { ILookupLeave } from '@lookup/classes/response';
 import { LookupLeaveField, LookupLeaveUserAction } from '@lookup/classes/types';
 import { WithLookupLeave, withLookupLeave } from '@lookup/hoc/withLookupLeave';
@@ -24,8 +24,8 @@ const config: CollectionConfig<ILookupLeave, AllProps> = {
   page: (props: AllProps) => ({
     uid: AppMenu.LookupLeave,
     parentUid: AppMenu.Lookup,
-    title: props.intl.formatMessage(leaveMessage.request.page.listTitle),
-    description: props.intl.formatMessage(leaveMessage.request.page.listSubHeader),
+    title: props.intl.formatMessage(lookupMessage.request.page.listTitle),
+    description: props.intl.formatMessage(lookupMessage.request.page.listSubHeader),
   }),
   
   // top bar

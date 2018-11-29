@@ -5,7 +5,7 @@ import { layoutMessage } from '@layout/locales/messages';
 import { ILeaveDetail } from '@leave/classes/response';
 import { LeaveRequestUserAction } from '@leave/classes/types';
 import { LeaveInformation } from '@leave/components/request/detail/shared/LeaveInformation';
-import { leaveMessage } from '@leave/locales/messages/leaveMessage';
+import { lookupMessage } from '@leave/locales/messages/leaveMessage';
 import * as React from 'react';
 import { LeaveCancellationForm } from '../form/LeaveCancellationForm';
 import { LeaveCancellationDetailProps } from './LeaveCancellationDetail';
@@ -15,8 +15,8 @@ const config: SingleConfig<ILeaveDetail, LeaveCancellationDetailProps> = {
   page: (props: LeaveCancellationDetailProps) => ({
     uid: AppMenu.LeaveCancelation,
     parentUid: AppMenu.Leave,
-    title: props.intl.formatMessage(leaveMessage.cancellation.page.detailTitle),
-    description: props.intl.formatMessage(leaveMessage.cancellation.page.detailTitle)
+    title: props.intl.formatMessage(lookupMessage.cancellation.page.detailTitle),
+    description: props.intl.formatMessage(lookupMessage.cancellation.page.detailTitle)
   }),
 
   // parent url

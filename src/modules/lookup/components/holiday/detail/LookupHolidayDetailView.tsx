@@ -4,9 +4,9 @@ import { DialogConfirmation } from '@layout/components/dialogs';
 import { SingleConfig, SingleHandler, SinglePage, SingleState } from '@layout/components/pages/singlePage/SinglePage';
 import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
-import { leaveMessage } from '@leave/locales/messages/leaveMessage';
 import { ILookupHolidayDetail } from '@lookup/classes/response';
 import { LookupHolidayUserAction } from '@lookup/classes/types';
+import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
 import * as React from 'react';
 import { LookupHolidayDetailProps } from './LookupHolidayDetail';
 import { LookupHolidayInformation } from './shared/LookupHolidayInformation';
@@ -20,8 +20,8 @@ const config: SingleConfig<ILookupHolidayDetail, LookupHolidayDetailProps> = {
   page: (props: LookupHolidayDetailProps) => ({
     uid: AppMenu.LookupHoliday,
     parentUid: AppMenu.Lookup,
-    title: props.intl.formatMessage(leaveMessage.request.page.detailTitle),
-    description: props.intl.formatMessage(leaveMessage.request.page.detailSubHeader)
+    title: props.intl.formatMessage(lookupMessage.holiday.page.detailTitle),
+    description: props.intl.formatMessage(lookupMessage.holiday.page.detailSubHeader)
   }),
   
   // action centre

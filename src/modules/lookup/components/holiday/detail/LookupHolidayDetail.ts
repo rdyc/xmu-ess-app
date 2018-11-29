@@ -1,8 +1,8 @@
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { layoutMessage } from '@layout/locales/messages';
-import { leaveMessage } from '@leave/locales/messages/leaveMessage';
 import { LookupHolidayUserAction } from '@lookup/classes/types';
 import { WithLookupHoliday, withLookupHoliday } from '@lookup/hoc/withLookupHoliday';
+import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import {
@@ -64,8 +64,8 @@ const stateUpdaters: StateUpdaters<LookupHolidayDetailProps, OwnState, OwnStateU
     action: LookupHolidayUserAction.Modify,
     dialogFullScreen: false,
     dialogOpen: true,
-    dialogTitle: props.intl.formatMessage(leaveMessage.request.confirm.modifyTitle), 
-    dialogContent: props.intl.formatMessage(leaveMessage.request.confirm.modifyDescription),
+    dialogTitle: props.intl.formatMessage(lookupMessage.holiday.confirm.modifyTitle), 
+    dialogContent: props.intl.formatMessage(lookupMessage.holiday.confirm.modifyDescription),
     dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.disaggree),
     dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.aggree)
   }),

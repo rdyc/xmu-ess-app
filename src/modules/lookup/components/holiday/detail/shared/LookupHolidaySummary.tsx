@@ -1,7 +1,7 @@
 import { layoutMessage } from '@layout/locales/messages';
 import { GlobalFormat } from '@layout/types';
-import { leaveMessage } from '@leave/locales/messages/leaveMessage';
 import { ILookupHoliday } from '@lookup/classes/response';
+import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
 import { Grid, TextField } from '@material-ui/core';
 import * as React from 'react';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
@@ -29,13 +29,13 @@ const lookupHolidaySummary: React.SFC<AllProps> = props => (
       <TextField
         {...styled}
         margin="dense"
-        label={props.intl.formatMessage(leaveMessage.request.field.uid)}
+        label={props.intl.formatMessage(lookupMessage.holiday.field.uid)}
         value={props.data.uid}
       />
       <TextField
         {...styled}
         margin="dense"
-        label={props.intl.formatMessage(leaveMessage.request.field.uid)}
+        label={props.intl.formatMessage(lookupMessage.holiday.field.company)}
         value={props.data.company ? props.data.company.name : 'N/A'}
       />
     </Grid>
@@ -45,13 +45,13 @@ const lookupHolidaySummary: React.SFC<AllProps> = props => (
         {...styled}
         multiline={true}
         margin="dense"
-        label={props.intl.formatMessage(leaveMessage.request.field.contactNumber)}
+        label={props.intl.formatMessage(lookupMessage.holiday.field.description)}
         value={props.data.description || 'N/A'}
       />
       <TextField
         {...styled}
         margin="dense"
-        label={props.intl.formatMessage(leaveMessage.request.field.start)}
+        label={props.intl.formatMessage(lookupMessage.holiday.field.date)}
         value={props.intl.formatDate(props.data.date, GlobalFormat.Date)}
       />
     </Grid>

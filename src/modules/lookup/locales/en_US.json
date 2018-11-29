@@ -21,6 +21,42 @@
   "lookup.mileageException.field.project.site": "Project Site Name",
 
   "lookup.mileageException.confirm.modify.title": "Modify Confirmation",
-  "lookup.mileageException.confirm.modify.description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+  "lookup.mileageException.confirm.modify.description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
 
+  "lookup.holiday.page.list.title": "Holiday",
+  "lookup.holiday.page.list.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "lookup.holiday.page.detail.title": "Holiday Details",
+  "lookup.holiday.page.detail.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "lookup.holiday.field.info.title": "Detail Holiday",
+  "lookup.holiday.field.info.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras mollis eros sit amet rhoncus fermentum",
+  "lookup.holiday.page.new.title": "New Holiday",
+  "lookup.holiday.page.new.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "lookup.holiday.page.modify.title": "Modify Holiday",
+  "lookup.holiday.page.modify.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "lookup.holiday.page.status.modify.title": "Update Status",
+  "lookup.holiday.page.status.modify.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "lookup.holiday.noData": "No data Holiday",
+  "lookup.holiday.form.newTitle": "Holiday",
+  "lookup.holiday.action.modify": "Modify",
+  "lookup.holiday.dialog.modifyTitle": "Modify Confirmation",
+  "lookup.holiday.dialog.modifyDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "lookup.holiday.field.uid": "PID",
+  "lookup.holiday.field.uid.placeholder": "PID",
+  "lookup.holiday.field.company": "Leave Type",
+  "lookup.holiday.field.company.required": "Leave type is required",
+  "lookup.holiday.field.company.placeholder": "Select a leave type",
+  "lookup.holiday.field.description": "Regular Type",
+  "lookup.holiday.field.descirption.required": "Regular type is required",
+  "lookup.holiday.field.description.placeholder": "Select a regular type",
+  "lookup.holiday.field.date": "Start",
+  "lookup.holiday.field.date.required": "leave start is required",
+  "lookup.holiday.field.date.placeholder": "Select a leave start date",
+  "lookup.holiday.message.create.success": "A new PID {uid} has been created",
+  "lookup.holiday.message.create.failure": "Unable to process your submission",
+  "lookup.holiday.message.update.success": "Existing PID {uid} has been updated",
+  "lookup.holiday.message.update.failure": "Unable to process your submission",
+  "lookup.holiday.confirm.modify.title": "Modify Confirmation",
+  "lookup.holiday.confirm.modify.description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+
+  
 }

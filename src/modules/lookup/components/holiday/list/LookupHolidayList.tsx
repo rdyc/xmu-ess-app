@@ -8,10 +8,10 @@ import {
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
-import { leaveMessage } from '@leave/locales/messages/leaveMessage';
 import { ILookupHoliday } from '@lookup/classes/response';
 import { LookupHolidayField, LookupHolidayUserAction } from '@lookup/classes/types';
 import { WithLookupHoliday, withLookupHoliday } from '@lookup/hoc/withLookupHoliday';
+import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
 import { Button } from '@material-ui/core';
 import * as moment from 'moment';
 import * as React from 'react';
@@ -24,8 +24,8 @@ const config: CollectionConfig<ILookupHoliday, AllProps> = {
   page: (props: AllProps) => ({
     uid: AppMenu.LookupHoliday,
     parentUid: AppMenu.Lookup,
-    title: props.intl.formatMessage(leaveMessage.request.page.listTitle),
-    description: props.intl.formatMessage(leaveMessage.request.page.listSubHeader),
+    title: props.intl.formatMessage(lookupMessage.holiday.page.listTitle),
+    description: props.intl.formatMessage(lookupMessage.holiday.page.listSubHeader),
   }),
   
   // top bar

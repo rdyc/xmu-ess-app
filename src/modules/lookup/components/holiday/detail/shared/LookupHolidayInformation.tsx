@@ -1,7 +1,10 @@
+import { GlobalFormat } from '@layout/types';
+import { GlobalStyle } from '@layout/types/GlobalStyle';
 import { ILookupHolidayDetail } from '@lookup/classes/response';
+import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
 import { Card, CardContent, CardHeader, TextField } from '@material-ui/core';
 import * as React from 'react';
-import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
+import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose } from 'recompose';
 
 interface OwnProps {
@@ -13,51 +16,32 @@ type AllProps
   & InjectedIntlProps;
 
 const lookupHolidayInformation: React.SFC<AllProps> = props => {
-  const { data, intl } = props;
-
-  const styled = {
-    fullWidth: true,
-    InputProps: {
-      disableUnderline: true,
-      readOnly: true
-    }
-  };
-
   const render = (
     <Card square>
-      <CardHeader 
-        title={<FormattedMessage id="leave.infoTitle"/>}
-        subheader={<FormattedMessage id="leave.infoSubTitle" />}
+      <CardHeader
+        title={props.intl.formatMessage(lookupMessage.holiday.field.infoTitle)}
+        subheader={props.intl.formatMessage(lookupMessage.holiday.field.infoSubHeader)}
       />
       <CardContent>
-        <TextField
-          {...styled}
-          margin="normal"
-          label={<FormattedMessage id="leave.field.information.uid" />}
-          value={data.uid}
+      <TextField
+          {...GlobalStyle.TextField.ReadOnly}
+          label={props.intl.formatMessage(lookupMessage.holiday.field.uid)}
+          value={props.data.uid}
         />
         <TextField
-          {...styled}
-          margin="normal"
-          label={<FormattedMessage id="leave.field.information.status" />}
-          value={data.company ? data.company.name : 'N/A'}
+          {...GlobalStyle.TextField.ReadOnly}
+          label={props.intl.formatMessage(lookupMessage.holiday.field.company)}
+          value={props.data.company.name}
         />
         <TextField
-          {...styled}
-          margin="normal"
-          label={<FormattedMessage id="leave.field.information.leaveType" />}
-          value={data.description}
+          {...GlobalStyle.TextField.ReadOnly}
+          label={props.intl.formatMessage(lookupMessage.holiday.field.description)}
+          value={props.data.description}
         />
-
         <TextField
-          {...styled}
-          margin="normal"
-          label={<FormattedMessage id="leave.field.information.start" />}
-          value={intl.formatDate(data.date, {
-            year: 'numeric',
-            month: 'short',
-            day: 'numeric'
-          })}
+          {...GlobalStyle.TextField.ReadOnly}
+          label={props.intl.formatMessage(lookupMessage.holiday.field.date)}
+          value={props.intl.formatDate(props.data.date, GlobalFormat.Date)}
         />
       </CardContent>
     </Card>
