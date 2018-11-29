@@ -1,8 +1,8 @@
 import { IQueryCollectionState, IQuerySingleState } from '@generic/interfaces';
 import {
-  ICurrencyAllRequest,
-  ICurrencyByIdRequest,
-  ICurrencyListRequest,
+  ICurrencyGetAllRequest,
+  ICurrencyGetByIdRequest,
+  ICurrencyGetListRequest,
   IDiemAllRequest,
   IDiemByIdRequest,
   IDiemListRequest,
@@ -82,6 +82,9 @@ import {
   ICompanyList
 } from '@lookup/classes/response/company';
 
+import { 
+  // ICurrencyDeleteRequest,
+  ICurrencyPostRequest, ICurrencyPutRequest } from '../queries/currency';
 import { ILookupCustomerDeleteRequest, ILookupCustomerPostRequest, ILookupCustomerPutRequest } from '../queries/customer';
 
 export interface ILookupState {
@@ -119,9 +122,12 @@ export interface ILookupState {
   positionGetList: IQueryCollectionState<IPositionListRequest, IPositionList>;
   positionGetById: IQuerySingleState<IPositionGetByIdRequest, IPositionDetail>;
 
-  currencyGetAll: IQueryCollectionState<ICurrencyAllRequest, ICurrency>;
-  currencyGetList: IQueryCollectionState<ICurrencyListRequest, ICurrencyList>;
-  currencyGetById: IQuerySingleState<ICurrencyByIdRequest, ICurrencyDetail>;
+  currencyGetAll: IQueryCollectionState<ICurrencyGetAllRequest, ICurrency>;
+  currencyGetList: IQueryCollectionState<ICurrencyGetListRequest, ICurrencyList>;
+  currencyGetById: IQuerySingleState<ICurrencyGetByIdRequest, ICurrencyDetail>;
+  currencyPost: IQuerySingleState<ICurrencyPostRequest, ICurrency>;
+  currencyPut: IQuerySingleState<ICurrencyPutRequest, ICurrency>;
+  // currencyDelete: IQuerySingleState<ICurrencyDeleteRequest, boolean>;
 
   holidayGetAll: IQueryCollectionState<IHolidayAllRequest, IHoliday>;
   holidayGetList: IQueryCollectionState<IHolidayListRequest, IHolidayList>;

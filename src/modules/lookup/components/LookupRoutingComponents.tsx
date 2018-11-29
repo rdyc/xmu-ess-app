@@ -1,4 +1,7 @@
 import { Layout } from '@layout/components/base';
+import { CurrencyDetail } from '@lookup/components/currency/detail/CurrencyDetail';
+import { CurrencyEditor } from '@lookup/components/currency/editor/CurrencyEditor';
+import { CurrencyList } from '@lookup/components/currency/list/CurrencyList';
 import * as React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router';
 import { LookupCompanyDetail } from './company/detail/LookupCompanyDetail';
@@ -16,11 +19,19 @@ const company = (props: RouteComponentProps) => (
   </Switch>
 );
 
+const currency = (props: RouteComponentProps) => (
+  <Switch>
+    <Route path={`${props.match.path}/form`} component={CurrencyEditor} />
+    <Route path={`${props.match.path}/:currencyUid`} component={CurrencyDetail} />
+    <Route path={`${props.match.path}`} component={CurrencyList} />
+  </Switch>
+);
+
 const mileageException = (props: RouteComponentProps) => (
   <Switch>
     <Route path={`${props.match.path}/:mileageExceptionUid`} component={MileageExceptionDetail} />
     <Route path={`${props.match.path}`} component={MileageExceptionList} />
-   </Switch>
+  </Switch>
 );
 
 const lookupCustomer = (props: RouteComponentProps) => (
@@ -35,6 +46,7 @@ export const LookupRoutingComponents: React.SFC<RouteComponentProps> = props => 
       <Route path={`${props.match.path}/company`} component={company} />
       <Route path={`${props.match.path}/mileageexception`} component={mileageException} />
       <Route path={`${props.match.path}/customer`} component={lookupCustomer} />
+      <Route path={`${props.match.path}/currency`} component={currency} />
     </Layout>
   </Switch>
 );
