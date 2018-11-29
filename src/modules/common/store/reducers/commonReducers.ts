@@ -6,6 +6,7 @@ import documentPresalesReducers from '@common/store/reducers/documentPresales/do
 import expenseReducers from '@common/store/reducers/expense/expenseReducers';
 import leaveReducers from '@common/store/reducers/leave/leaveReducers';
 import siteReducers from '@common/store/reducers/site/siteReducers';
+import limiterReducers from './limiter/limiterReducers';
 import { commonProjectReducers } from './project';
 import purposeReducers from './purpose/purposeReducers';
 import statusReducers from './status/statusReducers';
@@ -24,6 +25,7 @@ const commonReducers = {
   ...destinationReducers,
   ...purposeReducers,
   ...transportationReducers,
+  ...limiterReducers
 };
 
 export default commonReducers;

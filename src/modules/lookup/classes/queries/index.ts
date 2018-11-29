@@ -20,6 +20,8 @@ export * from './currency/ICurrencyListRequest';
 export * from './systemLimit/ISystemLimitAllRequest';
 export * from './systemLimit/ISystemLimitByIdRequest';
 export * from './systemLimit/ISystemLimitListRequest';
+export * from './systemLimit/ISystemLimitPostRequest';
+export * from './systemLimit/ISystemLimitPutRequest';
 export * from './holiday/IHolidayAllRequest';
 export * from './holiday/IHolidayByIdRequest';
 export * from './holiday/IHolidayListRequest';

@@ -1,4 +1,6 @@
-export interface IMileageExceptionPostPayload {
+import { IBasePayload } from '@generic/interfaces';
+
+export interface IMileageExceptionPostPayload extends IBasePayload {
   roleUid: string;
   percentage: number;
   projectUid?: string | null;

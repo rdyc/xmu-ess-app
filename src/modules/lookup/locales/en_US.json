@@ -1,13 +1,13 @@
 {
+  "lookup.confirm.modify.title": "Modify Confirmation",
+  "lookup.confirm.modify.description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+
   "lookup.mileageException.page.list.title": "Mileage Exception",
   "lookup.mileageException.page.list.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras mollis eros sit amet rhoncus fermentum",
-
   "lookup.mileageException.page.detail.title": "Mileage Exception Detail",
   "lookup.mileageException.page.detail.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras mollis eros sit amet rhoncus fermentum",
-
   "lookup.mileageException.page.new.title": "Create Mileage Exception",
   "lookup.mileageException.page.new.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras mollis eros sit amet rhoncus fermentum",
-
   "lookup.mileageException.page.modify.title": "Modify Mileage Exception",
   "lookup.mileageException.page.modify.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras mollis eros sit amet rhoncus fermentum",
 
@@ -52,9 +52,42 @@
   "lookup.mileageException.field.project.site": "Project Site Name",
   "lookup.mileageException.field.project.site.placeholder": "Project Site Name",
 
-  "lookup.mileageException.confirm.modify.title": "Modify Confirmation",
-  "lookup.mileageException.confirm.modify.description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-
   "lookup.mileageException.section.info.title": "Mileage Exception",
-  "lookup.mileageException.section.info.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras mollis eros sit amet rhoncus fermentum"
+  "lookup.mileageException.section.info.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras mollis eros sit amet rhoncus fermentum",
+
+  "lookup.systemLimit.page.list.title": "System Limit",
+  "lookup.systemLimit.page.list.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras mollis eros sit amet rhoncus fermentum",
+  "lookup.systemLimit.page.detail.title": "System Limit Detail",
+  "lookup.systemLimit.page.detail.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras mollis eros sit amet rhoncus fermentum",
+  "lookup.systemLimit.page.new.title": "Create System Limit",
+  "lookup.systemLimit.page.new.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras mollis eros sit amet rhoncus fermentum",
+  "lookup.systemLimit.page.modify.title": "Modify System Limit",
+  "lookup.systemLimit.page.modify.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras mollis eros sit amet rhoncus fermentum",
+
+  "lookup.systemLimit.message.emptyProps": "Some props are empty",
+  "lookup.systemLimit.message.create.success": "New System Limit has been created",
+  "lookup.systemLimit.message.create.failure": "Unable to process your submission",
+  "lookup.systemLimit.message.update.success": "Current site has been updated",
+  "lookup.systemLimit.message.update.failure": "Unable to process your submission",
+
+  "lookup.systemLimit.field.uid": "System Limit ID",
+  "lookup.systemLimit.field.uid.placeholder": "System Limit ID",
+  
+  "lookup.systemLimit.field.company": "Company Name",
+  "lookup.systemLimit.field.company.placeholder": "Company Name",
+
+  "lookup.systemLimit.field.category": "Category",
+  "lookup.systemLimit.field.category.required": "Category is required",
+  "lookup.systemLimit.field.category.placeholder": "Category",
+  
+  "lookup.systemLimit.field.days": "Limit Value",
+  "lookup.systemLimit.field.days.required": "Limit value is required",
+  "lookup.systemLimit.field.days.placeholder": "Limit Value",
+
+  "lookup.systemLimit.field.info.title": "Detail System Limit Information",
+  "lookup.systemLimit.field.info.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras mollis eros sit amet rhoncus fermentum",
+
+  "lookup.systemLimit.section.info.title": "System Limit",
+  "lookup.systemLimit.section.info.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras mollis eros sit amet rhoncus fermentum"
+
 }

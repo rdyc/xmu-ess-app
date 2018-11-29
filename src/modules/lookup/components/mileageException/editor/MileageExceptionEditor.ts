@@ -4,6 +4,7 @@ import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IMileageExceptionPostPayload } from '@lookup/classes/request/mileageException/IMileageExceptionPostPayload';
+import { IMileageExceptionPutPayload } from '@lookup/classes/request/mileageException/IMileageExceptionPutPayload';
 import { IMileageException } from '@lookup/classes/response';
 import { WithLookupMileageException, withLookupMileageException } from '@lookup/hoc/withLookupMileageException';
 import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
@@ -113,7 +114,7 @@ const handlerCreators: HandleCreators<MileageExceptionEditorProps, OwnHandlers> 
           mileageExceptionUid, 
           resolve, 
           reject,
-          data: payload as IMileageExceptionPostPayload, 
+          data: payload as IMileageExceptionPutPayload, 
         });
       });
     }

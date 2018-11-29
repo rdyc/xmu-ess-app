@@ -1,19 +1,29 @@
 import {
-  mileageExceptionConfirm,
   mileageExceptionField,
   mileageExceptionFieldHelperFor,
   mileageExceptionMessage,
   mileageExceptionPage,
   mileageExceptionSection
 } from './mileageException';
+import { lookupConfirm } from './shared';
+import { systemLimitField, systemLimitFieldHelperFor, systemLimitMessage, systemLimitPage, systemLimitSection } from './systemLimit';
 
 export const lookupMessage = {
   mileageException: {
     page: mileageExceptionPage,
     field: mileageExceptionField,
-    confirm: mileageExceptionConfirm,
     fieldFor: mileageExceptionFieldHelperFor,
     section: mileageExceptionSection,
     message: mileageExceptionMessage
+  },
+  systemLimit: {
+    page: systemLimitPage,
+    field: systemLimitField,
+    fieldFor: systemLimitFieldHelperFor,
+    section: systemLimitSection,
+    message: systemLimitMessage,
+  },
+  shared: {
+    confirm: lookupConfirm
   }
 };

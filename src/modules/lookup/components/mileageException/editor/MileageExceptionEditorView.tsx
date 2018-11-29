@@ -58,7 +58,7 @@ export const MileageExceptionEditorView: React.SFC<MileageExceptionEditorProps> 
 
       initialValues.information.uid = data.uid;
       initialValues.information.companyUid = data.role.company.name;
-      initialValues.information.roleUid = data.role.name;
+      initialValues.information.roleUid = data.roleUid;
       initialValues.information.siteType = data.siteType;
       initialValues.information.projectUid = data.projectUid;
       initialValues.information.siteUid = data.site && data.site.name;

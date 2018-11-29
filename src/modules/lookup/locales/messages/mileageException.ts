@@ -14,12 +14,6 @@ export const mileageExceptionPage = defineMessages({
   modifySubHeader: { id: `${prefix}.page.modify.subHeader`},
 });
 
-// confirmation
-export const mileageExceptionConfirm = defineMessages({
-  modifyTitle: { id: `${prefix}.confirm.modify.title` },
-  modifyDescription: { id: `${prefix}.confirm.modify.description` }
-});
-
 // messages
 export const mileageExceptionMessage = defineMessages({
   emptyProps: { id: `${prefix}.message.emptyProps` },

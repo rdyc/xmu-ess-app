@@ -50,4 +50,8 @@ export interface ICommonState {
   commonTransportationAll: IQueryCollectionState<ISystemAllRequest, ISystem>;
   commonTransportationList: IQueryCollectionState<ISystemListRequest, ISystemList>;
   commonTransportationDetail: IQuerySingleState<ISystemByIdRequest, ISystemDetail>;
+
+  commonLimiterAll: IQueryCollectionState<ISystemAllRequest, ISystem>;
+  commonLimiterList: IQueryCollectionState<ISystemListRequest, ISystemList>;
+  commonLimiterDetail: IQuerySingleState<ISystemByIdRequest, ISystemDetail>;
 }

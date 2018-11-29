@@ -133,7 +133,7 @@ export const menuLinkMapper = (menuUid: string) => {
       break;
 
     case 'MNU47':
-      path = '/lookup/timelimit/list';
+      path = '/lookup/systemlimits';
       break;
 
     case 'MNU48':

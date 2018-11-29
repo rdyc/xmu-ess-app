@@ -19,12 +19,16 @@ import {
   IMileageExceptionAllRequest,
   IMileageExceptionByIdRequest,
   IMileageExceptionListRequest,
+  IMileageExceptionPostRequest,
+  IMileageExceptionPutRequest,
   IPositionGetAllRequest,
   IPositionGetByIdRequest,
   IPositionListRequest,
   ISystemLimitAllRequest,
   ISystemLimitByIdRequest,
   ISystemLimitListRequest,
+  ISystemLimitPostRequest,
+  ISystemLimitPutRequest,
 } from '@lookup/classes/queries';
 import { 
   ILookupCompanyAllRequest,
@@ -90,6 +94,8 @@ export interface ILookupState {
   mileageExceptionGetAll: IQueryCollectionState<IMileageExceptionAllRequest, IMileageException>;
   mileageExceptionGetList: IQueryCollectionState<IMileageExceptionListRequest, IMileageExceptionList>;
   mileageExceptionGetById: IQuerySingleState<IMileageExceptionByIdRequest, IMileageExceptionDetail>;
+  mileageExceptionPost: IQuerySingleState<IMileageExceptionPostRequest, IMileageException>;
+  mileageExceptionPut: IQuerySingleState<IMileageExceptionPutRequest, IMileageException>;
 
   lookupRoleGetAll: IQueryCollectionState<ILookupRoleAllRequest, IRole>;
   lookupRoleGetList: IQueryCollectionState<ILookupRoleListRequest, IRoleList>;
@@ -127,4 +133,6 @@ export interface ILookupState {
   systemLimitGetAll: IQueryCollectionState<ISystemLimitAllRequest, ISystemLimit>;
   systemLimitGetList: IQueryCollectionState<ISystemLimitListRequest, ISystemLimitList>;
   systemLimitGetById: IQuerySingleState<ISystemLimitByIdRequest, ISystemLimitDetail>;
+  systemLimitPost: IQuerySingleState<ISystemLimitPostRequest, ISystemLimit>;
+  systemLimitPut: IQuerySingleState<ISystemLimitPutRequest, ISystemLimit>;
 }
