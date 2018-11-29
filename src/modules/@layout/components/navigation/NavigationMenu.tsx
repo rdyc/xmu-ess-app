@@ -8,6 +8,9 @@ import {
   ListItem,
   ListItemSecondaryAction,
   ListItemText,
+  MenuItem,
+  MenuList,
+  Typography,
   WithStyles,
   withStyles,
 } from '@material-ui/core';
@@ -44,7 +47,7 @@ type InnerProps
   & WithStyles<typeof styles>
   & RouteComponentProps; 
 
-const component: React.SFC<InnerProps> = props => {
+const navigationMenu: React.SFC<InnerProps> = props => {
   const { active, isExpanded, layoutState, layoutDispatch, classes } = props;
   const { user } = props.userState;
  
@@ -75,7 +78,7 @@ const component: React.SFC<InnerProps> = props => {
       layoutDispatch.drawerMenuHide();
     }
 
-    // history.push(menuLinkMapper(item.uid));
+    props.history.push(menuLinkMapper(uid));
   };
 
   return (
@@ -114,22 +117,17 @@ const component: React.SFC<InnerProps> = props => {
       </ListItem>
       <Collapse in={isExpanded && parentUid === AppMenu.Home || active === AppMenu.Home }>
         <List component="div" disablePadding>
-          <Link 
-            to={menuLinkMapper(AppMenu.Dashboard)} 
-            onClick={() => handleClick(AppMenu.Dashboard)}
-          >
-            <ListItem button>
-              <ListItemText
-                className={classes.marginFarLeft}
-                primary="Dashboard"
-                primaryTypographyProps={{
-                  noWrap: true,
-                  variant: 'body1',
-                  color: AppMenu.Dashboard === viewMenuUid() ? 'primary' : 'textPrimary'
-                }}
-              />
-            </ListItem>
-          </Link>
+          <ListItem button onClick={() => handleClick(AppMenu.Dashboard)}>
+            <ListItemText
+              className={classes.marginFarLeft}
+              primary="Dashboard"
+              primaryTypographyProps={{
+                noWrap: true,
+                variant: 'body1',
+                color: AppMenu.Dashboard === viewMenuUid() ? 'primary' : 'textPrimary'
+              }}
+            />
+          </ListItem>
         </List>
       </Collapse>
 
@@ -145,39 +143,36 @@ const component: React.SFC<InnerProps> = props => {
               <ListItemText primary={header.name}
                 primaryTypographyProps={{
                   noWrap: true,
-                  variant: 'body1',
-                  color: header.uid === parentUid ? 'secondary' : 'textPrimary'
+                  variant: 'body1'
                 }}
               />
               <ListItemSecondaryAction>
                 {isExpanded && parentUid === header.uid || active === header.uid ? <ExpandLess color="action" /> : <ExpandMore color="action" />}
               </ListItemSecondaryAction>
             </ListItem>
+            
             <Collapse in={isExpanded && parentUid === header.uid || active === header.uid }>
-              <List component="div" disablePadding>
+              <MenuList>
+                
                 {
                   header.childs &&
                   header.childs.map(item =>
-                    <Link 
+                    <MenuItem 
                       key={item.uid} 
-                      to={menuLinkMapper(item.uid)} 
                       onClick={() => handleClick(item.uid)}
+                      selected={active === item.uid}
                     >
-                      <ListItem button>
-                        <ListItemText
-                          className={classes.marginFarLeft}
-                          primary={item.name}
-                          primaryTypographyProps={{
-                            noWrap: true,
-                            variant: 'body1',
-                            color: item.uid === viewMenuUid() ? 'primary' : 'textPrimary'
-                          }}
-                        />
-                      </ListItem>
-                    </Link>
+                      <Typography
+                        className={classes.marginFarLeft}
+                        noWrap={true}
+                        variant={'body1'}
+                      >
+                        {item.name}
+                      </Typography>
+                    </MenuItem>
                   )
                 }
-              </List>
+              </MenuList>
             </Collapse>
           </div>
         ))
@@ -209,14 +204,14 @@ const stateUpdaters: StateUpdaters<OutterProps, State, Updaters> = {
   })
 };
 
-const NavigationMenuSFC = compose<InnerProps, OutterProps>(
-  setDisplayName('NavigationMenuSFC'),
+const NavigationMenu = compose<InnerProps, OutterProps>(
+  setDisplayName('NavigationMenu'),
   withStateHandlers<State, Updaters>(createProps, stateUpdaters),
   withUser,
   withLayout,
   withWidth(),
   withStyles(styles),
   withRouter
-)(component);
+)(navigationMenu);
 
-export default NavigationMenuSFC;
+export default NavigationMenu;

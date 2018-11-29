@@ -162,21 +162,19 @@ export const CollectionPageView: React.SFC<CollectionPageProps> = props => (
                 
               <Divider/>
               
-              <ExpansionPanelDetails>
-                <Delayed time={2500}>
+              <Delayed time={1000}>
+                <ExpansionPanelDetails>
                   {props.config.summaryComponent(item)}
-                </Delayed>
-              </ExpansionPanelDetails>
+                </ExpansionPanelDetails>
+              </Delayed>
               
               <Divider/>
 
               {
                 props.config.actionComponent &&
-                <Delayed time={2500}>
-                  <ExpansionPanelActions>
-                    {props.config.actionComponent(item, props)}
-                  </ExpansionPanelActions>
-                </Delayed>
+                <ExpansionPanelActions>
+                  {props.config.actionComponent(item, props)}
+                </ExpansionPanelActions>
               }
             </ExpansionPanel>
           </Fade>
