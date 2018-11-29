@@ -111,10 +111,10 @@ const config: CollectionConfig<IPurchase, AllProps> = {
   },
   onBind: (item: IPurchase, index: number, props: AllProps) => ({
     key: index,
-    primary: `${item.currency && item.currency.value} ${props.intl.formatNumber(item.request || 0)}` ||  '',
+    primary: item.uid,
     secondary: item.projectUid || item.project && item.project.name || '',
     tertiary: item.customer && item.customer.name || item.customerUid || '',
-    quaternary: item.uid,
+    quaternary: `${props.intl.formatMessage(purchaseMessage.complement.symbolIDR)} ${props.intl.formatNumber(item.requestIDR || 0)}` ||  '',
     quinary: item.status && item.status.value || item.statusType || '',
     senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
   }),
