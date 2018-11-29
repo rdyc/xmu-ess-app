@@ -4,7 +4,7 @@ export * from './lookupRoleActions';
 export * from './lookupCompanyActions';
 export * from './diemActions';
 export * from './menuActions';
-export * from './positionActions';
+export * from './position/positionActions';
 export * from './holiday/holidayActions';
 export * from './leave/leaveActions';
 export * from './currencyActions';

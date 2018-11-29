@@ -1,17 +1,29 @@
 import { layoutAlertAdd } from '@layout/store/actions';
 import {
   PositionAction as Action,
+  positionDeleteError,
+  positionDeleteSuccess,
+  positionGetAllDispose,
   positionGetAllError,
   positionGetAllRequest,
   positionGetAllSuccess,
+  positionGetByIdDispose,
   positionGetByIdError,
   positionGetByIdRequest,
   positionGetByIdSuccess,
   positionGetListError,
   positionGetListRequest,
   positionGetListSuccess,
+  positionPostError,
+  positionPostRequest,
+  positionPostSuccess,
+  positionPutError,
+  positionPutRequest,
+  positionPutSuccess,
 } from '@lookup/store/actions';
+import { flattenObject } from '@utils/flattenObject';
 import saiyanSaga from '@utils/saiyanSaga';
+import { SubmissionError } from 'redux-form';
 import { all, fork, put, takeEvery } from 'redux-saga/effects';
 import { IApiResponse, objectToQuerystring } from 'utils';
 
@@ -102,11 +114,162 @@ function* watchFetchByIdRequest() {
   yield takeEvery(Action.GET_BY_ID_REQUEST, worker);
 }
 
+function* watchFetchPostRequest() {
+  const worker = (action: ReturnType<typeof positionPostRequest>) => {
+    return saiyanSaga.fetch({
+      method: 'post',
+      path: `/v1/lookup/currencies${objectToQuerystring(action.payload.data)}`,
+      successEffects: (response: IApiResponse) => ([
+        put(positionGetAllDispose()),
+        put(positionPostSuccess(response.body))
+      ]),
+      successCallback: (response: IApiResponse) => {
+        action.payload.resolve(response.body.data);
+      },
+      failureEffects: (response: IApiResponse) => ([
+        put(positionPostError(response.statusText)),
+        put(layoutAlertAdd({
+          time: new Date(),
+          message: response.statusText,
+          details: response
+        })),
+      ]),
+      failureCallback: (response: IApiResponse) => {
+        if (response.status === 400) {
+          const errors: any = {
+            // information -> based form section name
+            information: flattenObject(response.body.errors)
+          };
+
+          action.payload.reject(new SubmissionError(errors));
+        } else {
+          action.payload.reject(response.statusText);
+        }
+      },
+      errorEffects: (error: TypeError) => [
+        put(positionPostError(error.message)),
+        put(layoutAlertAdd({
+          time: new Date(),
+          message: error.message
+        }))
+      ],
+      errorCallback: (error: any) => {
+        action.payload.reject(error);
+      }
+    });
+  };
+
+  yield takeEvery(Action.POST_REQUEST, worker);
+}
+
+function* watchFetchPutRequest() {
+  const worker = (action: ReturnType<typeof positionPutRequest>) => {
+    return saiyanSaga.fetch({
+      method: 'put',
+      path: `/v1/lookup/currencies/${action.payload.positionUid}`,
+      payload: action.payload.data,
+      successEffects: (response: IApiResponse) => ([
+        put(positionGetAllDispose()),
+        put(positionGetByIdDispose()),
+        put(positionPutSuccess(response.body)),
+      ]),
+      successCallback: (response: IApiResponse) => {
+        action.payload.resolve(response.body.data);
+      },
+      failureEffects: (response: IApiResponse) => ([
+        put(positionPutError(response.statusText)),
+        put(layoutAlertAdd({
+          time: new Date(),
+          message: response.statusText,
+          details: response
+        })),
+      ]),
+      failureCallback: (response: IApiResponse) => {
+        if (response.status === 400) {
+          const errors: any = {
+            // information -> based form section name
+            information: flattenObject(response.body.errors)
+          };
+
+          action.payload.reject(new SubmissionError(errors));
+        } else {
+          action.payload.reject(response.statusText);
+        }
+      },
+      errorEffects: (error: TypeError) => [
+        put(positionPutError(error.message)),
+        put(layoutAlertAdd({
+          time: new Date(),
+          message: error.message
+        }))
+      ],
+      errorCallback: (error: any) => {
+        action.payload.reject(error);
+      }
+    });
+  };
+
+  yield takeEvery(Action.PUT_REQUEST, worker);
+}
+
+function* watchFetchDeleteRequest() {
+  const worker = (action: ReturnType<typeof positionPutRequest>) => {
+    return saiyanSaga.fetch({
+      method: 'delete',
+      path: `/v1/lookup/currencies/`,
+      payload: action.payload.data,
+      successEffects: (response: IApiResponse) => ([
+        put(positionGetAllDispose()),
+        put(positionGetByIdDispose()),
+        put(positionDeleteSuccess(response.body)),
+      ]),
+      successCallback: (response: IApiResponse) => {
+        action.payload.resolve(response.body.data);
+      },
+      failureEffects: (response: IApiResponse) => ([
+        put(positionDeleteError(response.statusText)),
+        put(layoutAlertAdd({
+          time: new Date(),
+          message: response.statusText,
+          details: response
+        })),
+      ]),
+      failureCallback: (response: IApiResponse) => {
+        if (response.status === 400) {
+          const errors: any = {
+            // information -> based form section name
+            information: flattenObject(response.body.errors)
+          };
+
+          action.payload.reject(new SubmissionError(errors));
+        } else {
+          action.payload.reject(response.statusText);
+        }
+      },
+      errorEffects: (error: TypeError) => [
+        put(positionDeleteError(error.message)),
+        put(layoutAlertAdd({
+          time: new Date(),
+          message: error.message
+        }))
+      ],
+      errorCallback: (error: any) => {
+        action.payload.reject(error);
+      }
+    });
+  };
+
+  yield takeEvery(Action.DELETE_REQUEST, worker);
+}
+
 function* lookupPositionSagas() {
   yield all([
     fork(watchFetchAllRequest),
     fork(watchFetchListRequest),
     fork(watchFetchByIdRequest),
+    fork(watchFetchPostRequest),
+    fork(watchFetchPutRequest),
+    fork(watchFetchDeleteRequest),
   ]);
 }
 

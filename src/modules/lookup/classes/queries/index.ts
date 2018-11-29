@@ -12,6 +12,7 @@ export * from './position/IPositionGetAllRequest';
 export * from './position/IPositionGetByIdRequest';
 export * from './position/IPositionPostRequest';
 export * from './position/IPositionPutRequest';
+export * from './position/IPositionDeleteRequest';
 export * from './currency/ICurrencyAllRequest';
 export * from './currency/ICurrencyByIdRequest';
 export * from './currency/ICurrencyListRequest';

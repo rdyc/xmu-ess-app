@@ -22,6 +22,8 @@ import {
   IPositionGetAllRequest,
   IPositionGetByIdRequest,
   IPositionListRequest,
+  IPositionPostRequest,
+  IPositionPutRequest,
   ISystemLimitAllRequest,
   ISystemLimitByIdRequest,
   ISystemLimitListRequest,
@@ -78,6 +80,7 @@ import {
 } from '@lookup/classes/response';
 
 import { ILookupCustomerDeleteRequest, ILookupCustomerPostRequest, ILookupCustomerPutRequest } from '../queries/customer';
+import { IPositionDeleteRequest } from '../queries/position/IPositionDeleteRequest';
 
 export interface ILookupState {
   lookupCustomerGetAll: IQueryCollectionState<ILookupCustomerGetAllRequest, ICustomer>;
@@ -110,6 +113,9 @@ export interface ILookupState {
   positionGetAll: IQueryCollectionState<IPositionGetAllRequest, IPosition>;
   positionGetList: IQueryCollectionState<IPositionListRequest, IPositionList>;
   positionGetById: IQuerySingleState<IPositionGetByIdRequest, IPositionDetail>;
+  positionPost: IQuerySingleState<IPositionPostRequest, IPosition>;
+  positionPut: IQuerySingleState<IPositionPutRequest, IPosition>;
+  positionDelete: IQuerySingleState<IPositionDeleteRequest, boolean>;
 
   currencyGetAll: IQueryCollectionState<ICurrencyAllRequest, ICurrency>;
   currencyGetList: IQueryCollectionState<ICurrencyListRequest, ICurrencyList>;
