@@ -15,33 +15,28 @@ import {
   menuGetAllReducer,
   menuGetByIdReducer,
   menuGetListReducer,
-  mileageExceptionGetAllReducer,
-  mileageExceptionGetByIdReducer,
-  mileageExceptionGetListReducer,
   positionGetAllReducer,
   positionGetByIdReducer,
   positionGetListReducer,
-  systemLimitGetAllReducer,
-  systemLimitGetByIdReducer,
-  systemLimitGetListReducer,
 } from '@lookup/store/reducers';
 
 import { lookupCompanyReducers } from './company';
 import { lookupCurrencyReducers } from './currency';
 import { lookupCustomerReducers } from './customer';
 import { leaveReducers } from './leave';
+import { mileageExceptionReducers } from './mileageException/mileageExceptionReducers';
 import { lookupRoleReducers } from './role';
+import { systemLimitReducers } from './systemLimit';
 
 const lookupReducers = {
   ...lookupCustomerReducers,
   ...lookupCompanyReducers,
   ...lookupRoleReducers,
   ...leaveReducers,
+  ...mileageExceptionReducers,
+  ...systemLimitReducers,
+  
   ...lookupCurrencyReducers,
-
-  mileageExceptionGetAll: mileageExceptionGetAllReducer,
-  mileageExceptionGetById: mileageExceptionGetByIdReducer,
-  mileageExceptionGetList: mileageExceptionGetListReducer,
 
   diemGetAll: diemGetAllReducer,
   diemGetList: diemGetListReducer,
@@ -58,10 +53,6 @@ const lookupReducers = {
   // currencyGetAll: currencyGetAllReducer,
   // currencyGetList: currencyGetListReducer,
   // currencyGetById: currencyGetByIdReducer,
-
-  systemLimitGetAll: systemLimitGetAllReducer,
-  systemLimitGetList: systemLimitGetListReducer,
-  systemLimitGetById: systemLimitGetByIdReducer,
 
   holidayGetAll: holidayGetAllReducer,
   holidayGetList: holidayGetListReducer,
