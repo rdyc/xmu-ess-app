@@ -57,6 +57,14 @@ export const commonInformation: React.SFC<AllProps> = props => {
             value={data.parent && data.parent.value || 'N/A'}
           />
         }
+        <TextField
+          {...GlobalStyle.TextField.ReadOnly}
+          label={props.intl.formatMessage(commonMessage.system.field.isActive)}
+          value={data.isActive ? 
+            props.intl.formatMessage(commonMessage.system.text.active)
+            : props.intl.formatMessage(commonMessage.system.text.inActive)
+          }
+        />
       </CardContent>
     </Card>
   );

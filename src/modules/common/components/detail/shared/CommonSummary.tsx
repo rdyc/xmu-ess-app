@@ -70,7 +70,10 @@ const commonSummary: React.SFC<AllProps> = props => (
           {...styled}
           margin="dense"
           label={props.intl.formatMessage(commonMessage.system.field.isActive)}
-          value={props.data.isActive}
+          value={props.data.isActive ? 
+            props.intl.formatMessage(commonMessage.system.text.active)
+            : props.intl.formatMessage(commonMessage.system.text.inActive)
+          }
         />
       </Grid>
       {

@@ -229,7 +229,7 @@ const lifecycles: ReactLifeCycleFunctions<CommonEditorProps, {}> = {
         title: intl.formatMessage({id: view.title}),
         subTitle : intl.formatMessage({id: view.subTitle})
       },
-      parentUrl: '/common/system',
+      parentUrl: `/common/system/${this.props.match.params.category}`,
       status: {
         isNavBackVisible: true,
         isSearchVisible: false,
