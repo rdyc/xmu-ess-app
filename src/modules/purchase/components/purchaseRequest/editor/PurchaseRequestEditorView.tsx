@@ -80,6 +80,7 @@ export const PurchaseRequestEditorView: React.SFC<PurchaseRequestEditorProps> = 
       initialValues.information.advance = data.advance || 0;
 
       if (data.items) {
+        initialValues.items.items = [];
         data.items.forEach(item =>
           initialValues.items.items.push({
             uid: item.uid,

@@ -4,6 +4,7 @@ import {
   projectOwnerPutError,
   projectOwnerPutRequest,
   projectOwnerPutSuccess,
+  projectRegistrationGetAllDispose,
   projectRegistrationGetByIdDispose,
 } from '@project/store/actions';
 import { flattenObject } from '@utils/flattenObject';
@@ -19,6 +20,7 @@ function* watchPutRequest() {
       path: `/v1/project/registrations/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.projectUid}/owner`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
+        put(projectRegistrationGetAllDispose()),
         put(projectRegistrationGetByIdDispose()),
         put(projectOwnerPutSuccess(response.body))
       ],
