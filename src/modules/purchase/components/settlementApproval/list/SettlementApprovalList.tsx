@@ -104,7 +104,7 @@ const config: CollectionConfig<ISettlement, AllProps> = {
     primary: item.uid,
     secondary: item.projectUid || item.project && item.project.name || '',
     tertiary: item.customer && item.customer.name || item.customerUid || '',
-    quaternary: `IDR (Rp) ${props.intl.formatNumber(item.actualInIDR || 0)}` ||  '',
+    quaternary: `${props.intl.formatMessage(purchaseMessage.complement.symbolIDR)} ${props.intl.formatNumber(item.actualInIDR || 0)}` ||  '',
     quinary: item.status && item.status.value || item.statusType || '',
     senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
   }),
