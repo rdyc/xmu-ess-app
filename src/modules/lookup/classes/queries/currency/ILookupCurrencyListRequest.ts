@@ -1,5 +1,5 @@
 import { ICurrencyListFilter } from '@lookup/classes/filters';
 
-export interface ICurrencyListRequest {
+export interface ICurrencyGetListRequest {
   readonly filter?: ICurrencyListFilter | undefined;
 }
