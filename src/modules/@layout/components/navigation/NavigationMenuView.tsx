@@ -116,9 +116,5 @@ export const navigationMenu: React.SFC<NavigationMenuProps> = props => (
     }
 
     <Divider />
-
-    <ListItem button>
-      <ListItemText primary="Help" />
-    </ListItem>
   </List>
 );

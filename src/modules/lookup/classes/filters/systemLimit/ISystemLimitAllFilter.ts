@@ -1,5 +1,5 @@
-import { IBaseFilter, IBasePagingFilter } from '@generic/interfaces';
+import { IBasePagingFilter } from '@generic/interfaces';
 
-export interface ISystemLimitAllFilter extends IBaseFilter, IBasePagingFilter {
+export interface ISystemLimitAllFilter extends IBasePagingFilter {
   //
 }

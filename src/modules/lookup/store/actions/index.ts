@@ -7,5 +7,5 @@ export * from './menuActions';
 export * from './position/positionActions';
 export * from './holiday/holidayActions';
 export * from './leave/leaveActions';
-export * from './currencyActions';
+export * from './currency/currencyActions';
 export * from './systemLimitAction';

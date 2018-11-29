@@ -3,7 +3,8 @@
   "layout.text.processing": "Processing",
   "layout.text.dataInfo": "{total} record(s)",
   "layout.text.pagingInfo": "{current} of {total}",
-
+  "layout.text.idr": "IDR (RP) ",
+  
   "layout.tooltip.more": "More options",
   "layout.tooltip.orderBy": "Order by",
   "layout.tooltip.sortDirection": "Sort direction",

@@ -51,7 +51,7 @@ const mileageExceptionInformation: React.SFC<AllProps> = props => {
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
           label={props.intl.formatMessage(lookupMessage.mileageException.field.projectSite)}
-          value={'DATA MISSING'}
+          value={props.data.site ? props.data.site.name : 'N/A'}
         />
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
@@ -65,15 +65,15 @@ const mileageExceptionInformation: React.SFC<AllProps> = props => {
         />
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
-          label={props.intl.formatMessage(lookupMessage.mileageException.field.inActiveDate)}
-          value={props.data.inactiveDate ? props.intl.formatDate(props.data.inactiveDate, GlobalFormat.Date) : 'N/A'}
-        />
-        <TextField
-          {...GlobalStyle.TextField.ReadOnly}
           multiline
           rowsMax="4"
           label={props.intl.formatMessage(lookupMessage.mileageException.field.reason)}
           value={props.data.reason ? props.data.reason : 'N/A'}
+        />
+        <TextField
+          {...GlobalStyle.TextField.ReadOnly}
+          label={props.intl.formatMessage(lookupMessage.mileageException.field.inActiveDate)}
+          value={props.data.inactiveDate ? props.intl.formatDate(props.data.inactiveDate, GlobalFormat.Date) : 'N/A'}
         />
       </CardContent>
     </Card>
