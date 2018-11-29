@@ -1,8 +1,19 @@
 import { Layout } from '@layout/components/base';
-import { MileageExceptionList } from '@lookup/components/mileageException/list/LookupMileageExceptionListView';
 import * as React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router';
+import { LookupCompanyDetail } from './company/detail/LookupCompanyDetail';
+import LookupCompanyEditor from './company/editor/LookupCompanyEditor';
+import { LookupCompanyList } from './company/list/LookupCompanyList';
 import { MileageExceptionDetail } from './mileageException/detail/MileageExceptionDetail';
+import { MileageExceptionList } from './mileageException/list/LookupMileageExceptionListView';
+
+const company = (props: RouteComponentProps) => (
+  <Switch>
+    <Route path={`${props.match.path}/list`} component={LookupCompanyList} />
+    <Route path={`${props.match.path}/form`} component={LookupCompanyEditor} />
+    <Route path={`${props.match.path}/:companyUid`} component={LookupCompanyDetail} />
+  </Switch>
+);
 
 const mileageException = (props: RouteComponentProps) => (
   <Switch>
@@ -14,6 +25,7 @@ const mileageException = (props: RouteComponentProps) => (
 export const LookupRoutingComponents: React.SFC<RouteComponentProps> = props => (
   <Switch>
     <Layout>
+      <Route path={`${props.match.path}/company`} component={company} />
       <Route path={`${props.match.path}/mileageexception`} component={mileageException} />
     </Layout>
   </Switch>
