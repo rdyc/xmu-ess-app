@@ -1,10 +1,10 @@
-import NavigationMenuSFC from '@layout/components/navigation/NavigationMenuSFC';
 import { withLayout, WithLayout } from '@layout/hoc/withLayout';
 import { Drawer, Hidden, WithStyles, withStyles } from '@material-ui/core';
 import styles from '@styles';
 import * as classNames from 'classnames';
 import * as React from 'react';
 import { compose, setDisplayName } from 'recompose';
+import { NavigationMenu } from '../navigation/NavigationMenu';
 
 type AllProps 
   = WithLayout 
@@ -28,7 +28,7 @@ const component: React.SFC<AllProps> = props => {
             keepMounted: true, // Better open performance on mobile.
           }}
         >
-          <NavigationMenuSFC/>
+          <NavigationMenu/>
         </Drawer>
       </Hidden>
       <Hidden smDown implementation="css">
@@ -40,7 +40,7 @@ const component: React.SFC<AllProps> = props => {
             paper: classNames(classes.drawerPaper, layoutState.isDrawerMenuVisible && classes.drawerPaperClose),
           }}
         >
-          <NavigationMenuSFC/>
+          <NavigationMenu/>
         </Drawer>
       </Hidden>
     </div>
