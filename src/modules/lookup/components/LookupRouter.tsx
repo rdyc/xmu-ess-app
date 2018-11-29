@@ -3,6 +3,7 @@ import { MileageExceptionList } from '@lookup/components/mileageException/list/L
 import * as React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router';
 import { LookupHolidayDetail } from './holiday/detail/LookupHolidayDetail';
+import LookupHolidayEditor from './holiday/editor/LookupHolidayEditor';
 import { LookupHolidayList } from './holiday/list/LookupHolidayList';
 import { LookupLeaveDetail } from './leave/detail/LookupLeaveDetail';
 import { LookupLeaveList } from './leave/list/LookupLeaveList';
@@ -17,6 +18,7 @@ const mileageException = (props: RouteComponentProps) => (
 
 const holiday = (props: RouteComponentProps) => (
   <Switch>
+    <Route path={`${props.match.path}/form`} component={LookupHolidayEditor} />
     <Route path={`${props.match.path}/:holidayUid`} component={LookupHolidayDetail} />
     <Route path={`${props.match.path}`} component={LookupHolidayList} />
    </Switch>

@@ -3,6 +3,8 @@ import {
   ILookupHolidayGetAllRequest,
   ILookupHolidayGetByIdRequest,
   ILookupHolidayGetListRequest,
+  ILookupHolidayPostRequest,
+  ILookupHolidayPutRequest,
 } from '@lookup/classes/queries';
 import { ILookupHoliday, ILookupHolidayDetail, ILookupHolidayList } from '@lookup/classes/response';
 import {
@@ -12,6 +14,10 @@ import {
   lookupHolidayGetByIdRequest,
   lookupHolidayGetListDispose,
   lookupHolidayGetListRequest,
+  lookupHolidayPostDispose,
+  lookupHolidayPostRequest,
+  lookupHolidayPutDispose,
+  lookupHolidayPutRequest,
 } from '@lookup/store/actions';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
@@ -26,6 +32,12 @@ interface PropsFromState {
 
 interface PropsFromDispatch {
   lookupHolidayDispatch: {
+    // command
+    createRequest: typeof lookupHolidayPostRequest;
+    createDispose: typeof lookupHolidayPostDispose;
+    updateRequest: typeof lookupHolidayPutRequest;
+    updateDispose: typeof lookupHolidayPutDispose;
+
     // query
     loadAllRequest: typeof lookupHolidayGetAllRequest;
     loadAllDispose: typeof lookupHolidayGetAllDispose;
@@ -48,6 +60,12 @@ const mapStateToProps = ({ lookupHolidayGetAll, lookupHolidayGetList, lookupHoli
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   lookupHolidayDispatch: {
+    // command
+    createRequest: (request: ILookupHolidayPostRequest) => dispatch(lookupHolidayPostRequest(request)),
+    createDispose: () => dispatch(lookupHolidayPostDispose()),
+    updateRequest: (request: ILookupHolidayPutRequest) => dispatch(lookupHolidayPutRequest(request)),
+    updateDispose: () => dispatch(lookupHolidayPutDispose()),
+    
     // query
     loadAllRequest: (request: ILookupHolidayGetAllRequest) => dispatch(lookupHolidayGetAllRequest(request)),
     loadAllDispose: () => dispatch(lookupHolidayGetAllDispose()),

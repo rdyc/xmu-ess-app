@@ -21,6 +21,8 @@ export * from './systemLimit/ISystemLimitListRequest';
 export * from './holiday/ILookupHolidayGetAllRequest';
 export * from './holiday/ILookupHolidayGetByIdRequest';
 export * from './holiday/ILookupHolidayGetListRequest';
+export * from './holiday/ILookupHolidayPostRequest';
+export * from './holiday/ILookupHolidayPutRequest';
 export * from './leave/ILookupLeaveGetAllRequest';
 export * from './leave/ILookupLeaveGetDetailRequest';
 export * from './leave/ILookupLeaveGetListRequest';
