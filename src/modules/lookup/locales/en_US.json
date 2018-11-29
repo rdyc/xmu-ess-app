@@ -21,6 +21,43 @@
   "lookup.mileageException.field.project.site": "Project Site Name",
 
   "lookup.mileageException.confirm.modify.title": "Modify Confirmation",
-  "lookup.mileageException.confirm.modify.description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+  "lookup.mileageException.confirm.modify.description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+
+  "lookup.role.page.list.title": "Role",
+  "lookup.role.page.list.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras mollis eros sit amet rhoncus fermentum",
+  "lookup.role.page.detail.title": "Role Detail",
+  "lookup.role.page.detail.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras mollis eros sit amet rhoncus fermentum",
+  "lookup.role.page.modify.title": "Modify Role",
+  "lookup.role.page.modify.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras mollis eros sit amet rhoncus fermentum",
+  "lookup.role.page.new.title": "New Role",
+  "lookup.role.page.new.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras mollis eros sit amet rhoncus fermentum",
+
+  "lookup.role.section.info.title": "Role",
+  "lookup.role.section.info.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras mollis eros sit amet rhoncus fermentum",
+
+  "lookup.role.field.uid": "Role ID",
+  "lookup.role.field.uid.placeholder": "Role ID",
+  "lookup.role.field.companyUid": "Company",
+  "lookup.role.field.companyUid.placeholder": "Select a company",
+  "lookup.role.field.companyUid.required": "Company is required",
+  "lookup.role.field.name": "Role Name",
+  "lookup.role.field.name.placeholder": "Type a role name",
+  "lookup.role.field.name.required": "Role name is required",
+  "lookup.role.field.gradeType": "Grade",
+  "lookup.role.field.gradeType.placeholder": "Type a role name",
+  "lookup.role.field.isActive": "Is Active",
+  "lookup.role.field.isActive.placeholder": "Select a isActive option",
+  "lookup.role.field.isActive.required": "Is Active is required",
+  "lookup.role.field.description": "Description",
+  "lookup.role.field.description.placeholder": "Type a description",
+
+  "lookup.role.confirm.modify.title": "Modify Confirmation",
+  "lookup.role.confirm.modify.description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+
+  "lookup.role.message.emptyProps": "Some props are empty",
+  "lookup.role.message.create.success": "A new Role ID {uid} has been created",
+  "lookup.role.message.create.failure": "Unable to process your submission",
+  "lookup.role.message.update.success": "Existing Role ID {uid} has been updated",
+  "lookup.role.message.update.failure": "Unable to process your submission"
 
 }
