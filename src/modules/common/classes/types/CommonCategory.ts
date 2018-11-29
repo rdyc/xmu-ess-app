@@ -29,7 +29,7 @@ const toObjectCategories = (categories: CommonCategory[]): ICollectionValue[] =>
 
 export const isWithCompany = (category: string): boolean => {
   const withCompany = [
-    CommonCategory.unit, CommonCategory.employment,
+    CommonCategory.unit, CommonCategory.employment, CommonCategory.department,
     CommonCategory.tax, CommonCategory.blood, CommonCategory.religion,
     CommonCategory.degree, CommonCategory.family, CommonCategory.training,
     CommonCategory.certification, CommonCategory.site, 

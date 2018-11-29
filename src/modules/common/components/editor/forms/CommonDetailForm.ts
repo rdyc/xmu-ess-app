@@ -1,4 +1,5 @@
-import { SelectSystemOption } from '@common/components/select';
+import { SelectSystem, SelectSystemOption } from '@common/components/select';
+import { parentTypeTranslator } from '@common/helper';
 import { commonMessage } from '@common/locales/messages/commonMessage';
 import { FormMode } from '@generic/types';
 import { InputText } from '@layout/components/input/text';
@@ -10,6 +11,7 @@ import { CommonDetailFormView } from './CommonDetailFormView';
 interface OwnProps {
   formMode: FormMode;
   context: BaseFieldsProps;
+  category: string;
 }
 
 interface OwnHandlers {
@@ -24,14 +26,25 @@ export type CommonDetailFormProps
 const handlerCreators: HandleCreators<CommonDetailFormProps, OwnHandlers> = {
     generateFieldProps: (props: CommonDetailFormProps) => (name: string) => { 
       const { 
-        intl
+        intl, category
       } = props;
       
       const fieldName = name.replace('information.', '');
       
       let fieldProps: SelectSystemOption & any = {};
+
+      const selectType = parentTypeTranslator(category);
   
-      switch (fieldName) {     
+      switch (fieldName) {    
+        case 'parentCode':
+          fieldProps = {
+            category: selectType,
+            label: intl.formatMessage(commonMessage.system.fieldFor(name, 'fieldName')),
+            placeholder: intl.formatMessage(commonMessage.system.fieldFor(name, 'fieldPlaceholder')),
+            component: SelectSystem
+          };
+          break;
+        
         default:
           fieldProps = {
             type: 'text',

@@ -8,7 +8,7 @@ import { CommonFormProps } from './CommonForm';
 
 export const CommonFormView: React.SFC<CommonFormProps> = props => {
   const {
-    formMode,
+    formMode, category
   } = props;
 
   const fields = Object.getOwnPropertyNames(props.initialValues.information);
@@ -17,6 +17,7 @@ export const CommonFormView: React.SFC<CommonFormProps> = props => {
     <CommonDetailForm 
       formMode={formMode}
       context={context}
+      category={category}
     />
   );
 

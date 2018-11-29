@@ -222,14 +222,22 @@ const lifecycles: ReactLifeCycleFunctions<CommonEditorProps, {}> = {
       });
     }
 
-    layoutDispatch.changeView({
-      uid: AppMenu.Common,
-      parentUid: AppMenu.Lookup,
-      title: intl.formatMessage({id: view.title}),
-      subTitle : intl.formatMessage({id: view.subTitle})
-    });
-
-    layoutDispatch.navBackShow(); 
+    layoutDispatch.setupView({
+      view: {
+        uid: AppMenu.Common,
+        parentUid: AppMenu.Lookup,
+        title: intl.formatMessage({id: view.title}),
+        subTitle : intl.formatMessage({id: view.subTitle})
+      },
+      parentUrl: '/common/system',
+      status: {
+        isNavBackVisible: true,
+        isSearchVisible: false,
+        isActionCentreVisible: false,
+        isMoreVisible: false,
+        isModeSearch: false
+      }
+    }); 
   },
   componentWillUnmount() {
     const { layoutDispatch, appBarDispatch, commonDispatch } = this.props;

@@ -23,6 +23,7 @@ import {
   systemPutDispose,
   systemPutRequest,
   transportationGetListRequest,
+  unitGetListRequest,
 } from '@common/store/actions';
 import { IAppState, IQueryCollectionState, IQuerySingleState } from '@generic/interfaces';
 import { connect } from 'react-redux';
@@ -40,6 +41,7 @@ interface PropsFromState {
   // all
 
   // list
+  commonUnitListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
   commonActivityListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
   commonCurrencyListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
   commonDocumentListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
@@ -63,6 +65,7 @@ interface PropsFromDispatch {
     systemAllDispose: typeof systemGetAllDispose;
 
     // list
+    unitListRequest: typeof unitGetListRequest;
     activityListRequest: typeof activityGetListRequest;
     currencyListRequest: typeof currencyGetListRequest;
     documentListRequest: typeof documentGetListRequest;
@@ -111,6 +114,7 @@ const mapStateToProps = ({
   commonSystemList,
   commonSystemDetail,
   commonSystemType,
+  commonUnitList,
 
 }: IAppState) => ({
   // system
@@ -124,6 +128,7 @@ const mapStateToProps = ({
   // all
   
   // list
+  commonUnitListState: commonUnitList,
   commonActivityListState: commonActivityList,
   commonCurrencyListState: commonCurrencyList,
   commonDocumentListState: commonDocumentList,
@@ -148,6 +153,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     systemAllDispose: () => dispatch(systemGetAllDispose()),
 
     // list
+    unitListRequest: (request: ISystemListRequest) => dispatch(unitGetListRequest(request)),
     activityListRequest: (request: ISystemListRequest) => dispatch(activityGetListRequest(request)),
     currencyListRequest: (request: ISystemListRequest) => dispatch(currencyGetListRequest(request)),
     documentListRequest: (request: ISystemListRequest) => dispatch(documentGetListRequest(request)),

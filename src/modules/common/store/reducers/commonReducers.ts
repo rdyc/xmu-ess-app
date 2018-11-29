@@ -11,6 +11,7 @@ import { commonProjectReducers } from './project';
 import purposeReducers from './purpose/purposeReducers';
 import statusReducers from './status/statusReducers';
 import transportationReducers from './transportation/transportationReducers';
+import unitReducers from './unit/unitReducers';
 
 const commonReducers = {
   ...activityReducers,
@@ -26,6 +27,7 @@ const commonReducers = {
   ...destinationReducers,
   ...purposeReducers,
   ...transportationReducers,
+  ...unitReducers,
 };
 
 export default commonReducers;

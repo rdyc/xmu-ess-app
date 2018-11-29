@@ -10,6 +10,10 @@ export interface ICommonState {
   commonSystemPost: IQuerySingleState<ISystemPostRequest, ISystem>;
   commonSystemPut: IQuerySingleState<ISystemPutRequest, ISystem>;
 
+  commonUnitAll: IQueryCollectionState<ISystemAllRequest, ISystem>;
+  commonUnitList: IQueryCollectionState<ISystemListRequest, ISystemList>;
+  commonUnitDetail: IQuerySingleState<ISystemByIdRequest, ISystemDetail>;
+
   commonActivityAll: IQueryCollectionState<ISystemAllRequest, ISystem>;
   commonActivityList: IQueryCollectionState<ISystemListRequest, ISystemList>;
   commonActivityDetail: IQuerySingleState<ISystemByIdRequest, ISystemDetail>;

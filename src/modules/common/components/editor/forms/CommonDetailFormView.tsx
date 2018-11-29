@@ -1,3 +1,4 @@
+import { isWithCompany, isWithParent } from '@common/classes/types';
 import { commonMessage } from '@common/locales/messages/commonMessage';
 import { Card, CardContent, CardHeader, Checkbox, FormControlLabel } from '@material-ui/core';
 import * as React from 'react';
@@ -5,7 +6,7 @@ import { Field } from 'redux-form';
 import { CommonDetailFormProps } from './CommonDetailForm';
 
 export const CommonDetailFormView: React.SFC<CommonDetailFormProps> = props => {
-  const { intl } = props;
+  const { intl, category } = props;
   const { names } = props.context;
   
   const renderField = (name: string) => {
@@ -37,6 +38,15 @@ export const CommonDetailFormView: React.SFC<CommonDetailFormProps> = props => {
         } 
         />
       );
+    }
+
+    const useWithCompany = ['companyUid'];
+    if (!isWithCompany(category) && useWithCompany.indexOf(fieldName) !== -1) {
+      return null;
+    }
+    const useWithParent = ['parentCode'];
+    if (!isWithParent(category) && useWithParent.indexOf(fieldName) !== -1) {
+      return null;
     }
 
     return (

@@ -4,52 +4,41 @@ export const categoryTypeTranslator = (category: string): CommonCategoryType => 
   let result: CommonCategoryType = 'department';
 
   switch (category) {
-    case 'employment':
-      result = 'employment';
-      break;
+    case 'employment': result = 'employment'; break;
 
-    case 'religion':
-      result = 'religion';
-      break;
+    case 'religion': result = 'religion'; break;
 
-    case 'family':
-      result = 'family';
-      break;
+    case 'family': result = 'family'; break;
 
-    case 'tax':
-      result = 'tax';
-      break;
+    case 'tax': result = 'tax'; break;
 
-    case 'unit':
-      result = 'unit';
-      break;
+    case 'unit': result = 'unit'; break;
 
-    case 'training':
-      result = 'training';
-      break;
+    case 'training': result = 'training'; break;
 
-    case 'certification':
-      result = 'certification';
-      break;
+    case 'certification': result = 'certification'; break;
 
-    case 'degree':
-      result = 'degree';
-      break;
+    case 'degree': result = 'degree'; break;
 
-    case 'blood':
-      result = 'blood';
-      break;
+    case 'blood': result = 'blood'; break;
 
-    case 'department':
-      result = 'department';
-      break;
+    case 'department': result = 'department'; break;
 
-    case 'site':
-      result = 'site';
-      break;
+    case 'site': result = 'site'; break;
 
-    default:
-      break;
+    default:  break;
+  }
+
+  return result;
+};
+
+export const parentTypeTranslator = (category: string): string => {
+  let result = '';
+
+  switch (category) {
+    case 'department': result = 'unit'; break;
+
+    default : break;
   }
 
   return result;

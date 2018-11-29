@@ -6,7 +6,7 @@ import { CommonEditorProps } from './CommonEditor';
 import { CommonForm, CommonFormData } from './forms/CommonForm';
 
 export const CommonEditorView: React.SFC<CommonEditorProps> = props => {
-  const { formMode, handleValidate, handleSubmit, handleSubmitSuccess, handleSubmitFail, intl } = props;
+  const { formMode, handleValidate, handleSubmit, handleSubmitSuccess, handleSubmitFail, intl, match } = props;
   const { isLoading, response } = props.commonSystemState.detail;
 
   const renderForm = (formData: CommonFormData) => (
@@ -17,6 +17,7 @@ export const CommonEditorView: React.SFC<CommonEditorProps> = props => {
       onSubmit={handleSubmit} 
       onSubmitSuccess={handleSubmitSuccess}
       onSubmitFail={handleSubmitFail}
+      category={match.params.category}
     />
   );
 

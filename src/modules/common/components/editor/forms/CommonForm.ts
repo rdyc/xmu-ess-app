@@ -17,6 +17,7 @@ export type CommonFormData = {
 
 interface OwnProps {
   formMode: FormMode;
+  category: string;
 }
 
 interface FormValueProps {
