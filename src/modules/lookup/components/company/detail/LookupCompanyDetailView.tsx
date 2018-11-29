@@ -8,7 +8,7 @@ import { CompanyUserAction } from '@lookup/classes/types';
 import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
 import * as React from 'react';
 import { CompanyDetailProps } from './LookupCompanyDetail';
-import { CompanyInformation } from './LookupCompanyInformation';
+import { CompanyInformation } from './shared/LookupCompanyInformation';
 
 const config: SingleConfig<ICompanyDetail, CompanyDetailProps> = {
   // page info

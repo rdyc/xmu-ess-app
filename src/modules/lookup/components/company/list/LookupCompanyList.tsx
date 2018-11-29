@@ -17,7 +17,7 @@ import * as moment from 'moment';
 import * as React from 'react';
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose } from 'recompose';
-import { LookupCompanySumarry } from './LookupCompanySummary';
+import { LookupCompanySumarry } from '../detail/shared/LookupCompanySummary';
 
 const config: CollectionConfig<ICompany, AllProps> = {
   // page info
