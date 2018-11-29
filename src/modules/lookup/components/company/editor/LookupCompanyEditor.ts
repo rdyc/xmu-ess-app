@@ -78,12 +78,7 @@ const handlerCreators: HandleCreators<CompanyEditorProps, OwnHandlers> = {
   },
   handleSubmit: (props: CompanyEditorProps) => (formData: LookupCompanyFormData) => {
     const { formMode, companyUid, intl } = props;
-    const { user } = props.userState;
     const { createRequest, updateRequest } = props.lookupCompanyDispatch;
-
-    if (!user) {
-      return Promise.reject('user was not found');
-    }
 
     const payload = {
       ...formData.information
@@ -110,7 +105,7 @@ const handlerCreators: HandleCreators<CompanyEditorProps, OwnHandlers> = {
     if (formMode === FormMode.Edit) {
       return new Promise((resolve, reject) => {
         updateRequest({
-          // companyUid,
+          companyUid,
           resolve,
           reject,
           data: payload as ILookupCompanyPutPayload,
@@ -197,11 +192,6 @@ const lifecycles: ReactLifeCycleFunctions<CompanyEditorProps, {}> = {
     if (!user) {
       return;
     }
-
-    stateUpdate({ 
-      companyUid: user.company.uid,
-      positionUid: user.position.uid
-    });
 
     if (!isNullOrUndefined(history.location.state)) {
       view.title = lookupMessage.company.page.modifyTitle;

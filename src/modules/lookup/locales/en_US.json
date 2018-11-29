@@ -49,9 +49,9 @@
   "lookup.company.confirm.modify.description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
 
   "lookup.company.message.emptyProps": "Some props are empty",
-  "lookup.company.message.create.success": "A new Timesheet ID {uid} has been created",
+  "lookup.company.message.create.success": "A new Company ID {uid} has been created",
   "lookup.company.message.create.failure": "Unable to process your submission",
-  "lookup.company.message.update.success": "Existing Timesheet ID {uid} has been updated",
+  "lookup.company.message.update.success": "Existing Company ID {uid} has been updated",
   "lookup.company.message.update.failure": "Unable to process your submission"
 
 
