@@ -72,7 +72,7 @@ export const PurchaseSettlementFormView: React.SFC<PurchaseSettlementFormProps> 
 
         <Grid item md={4}>
           <Submission
-            valid={true}
+            valid={props.valid}
             reset={props.reset}
             submitting={props.submitting}
           />

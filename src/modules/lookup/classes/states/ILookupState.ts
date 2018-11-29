@@ -30,25 +30,25 @@ import {
   ISystemLimitPostRequest,
   ISystemLimitPutRequest,
 } from '@lookup/classes/queries';
-import { 
-  ILookupCompanyAllRequest,
-  ILookupCompanyByIdRequest,
-  ILookupCompanyListRequest,
- } from '@lookup/classes/queries/company';
-import { 
+import {
+  ILookupCompanyDeleteRequest,
+  ILookupCompanyGetAllRequest,
+  ILookupCompanyGetDetailRequest,
+  ILookupCompanyGetListRequest,
+  ILookupCompanyPostRequest,
+  ILookupCompanyPutRequest,
+} from '@lookup/classes/queries/company';
+import {
   ILookupCustomerGetAllRequest,
   ILookupCustomerGetDetailRequest,
   ILookupCustomerGetListRequest,
- } from '@lookup/classes/queries/customer';
-import { 
+} from '@lookup/classes/queries/customer';
+import {
   ILookupRoleAllRequest,
   ILookupRoleByIdRequest,
   ILookupRoleListRequest,
- } from '@lookup/classes/queries/role';
+} from '@lookup/classes/queries/role';
 import {
-  ICompany,
-  ICompanyDetail,
-  ICompanyList,
   ICurrency,
   ICurrencyDetail,
   ICurrencyList,
@@ -80,6 +80,11 @@ import {
   ISystemLimitDetail,
   ISystemLimitList,
 } from '@lookup/classes/response';
+import {
+  ICompany,
+  ICompanyDetail,
+  ICompanyList
+} from '@lookup/classes/response/company';
 
 import { ILookupCustomerDeleteRequest, ILookupCustomerPostRequest, ILookupCustomerPutRequest } from '../queries/customer';
 
@@ -101,9 +106,12 @@ export interface ILookupState {
   lookupRoleGetList: IQueryCollectionState<ILookupRoleListRequest, IRoleList>;
   lookupRoleGetById: IQuerySingleState<ILookupRoleByIdRequest, IRoleDetail>;
 
-  lookupCompanyGetAll: IQueryCollectionState<ILookupCompanyAllRequest, ICompany>;
-  lookupCompanyGetList: IQueryCollectionState<ILookupCompanyListRequest, ICompanyList>;
-  lookupCompanyGetById: IQuerySingleState<ILookupCompanyByIdRequest, ICompanyDetail>;
+  lookupCompanyGetAll: IQueryCollectionState<ILookupCompanyGetAllRequest, ICompany>;
+  lookupCompanyGetList: IQueryCollectionState<ILookupCompanyGetListRequest, ICompanyList>;
+  lookupCompanyGetById: IQuerySingleState<ILookupCompanyGetDetailRequest, ICompanyDetail>;
+  lookupCompanyPost: IQuerySingleState<ILookupCompanyPostRequest, ICompany>;
+  lookupCompanyPut: IQuerySingleState<ILookupCompanyPutRequest, ICompany>;
+  lookupCompanyDelete: IQuerySingleState<ILookupCompanyDeleteRequest, boolean>;
 
   diemGetAll: IQueryCollectionState<IDiemAllRequest, IDiem>;
   diemGetList: IQueryCollectionState<IDiemListRequest, IDiemList>;

@@ -1,12 +1,23 @@
 import { Layout } from '@layout/components/base';
-import { MileageExceptionList } from '@lookup/components/mileageException/list/LookupMileageExceptionListView';
 import * as React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router';
+import { LookupCompanyDetail } from './company/detail/LookupCompanyDetail';
+import LookupCompanyEditor from './company/editor/LookupCompanyEditor';
+import { LookupCompanyList } from './company/list/LookupCompanyList';
 import { MileageExceptionDetail } from './mileageException/detail/MileageExceptionDetail';
 import MileageExceptionEditor from './mileageException/editor/MileageExceptionEditor';
+import { MileageExceptionList } from './mileageException/list/LookupMileageExceptionListView';
 import { LookupSystemLimitDetail } from './systemLimit/detail/LookupSystemLimitDetail';
 import LookupSystemLimitEditor from './systemLimit/editor/LookupSystemLimitEditor';
 import { LookupSystemLimitListView } from './systemLimit/list/LookupSystemLimitListView';
+
+const company = (props: RouteComponentProps) => (
+  <Switch>
+    <Route path={`${props.match.path}/list`} component={LookupCompanyList} />
+    <Route path={`${props.match.path}/form`} component={LookupCompanyEditor} />
+    <Route path={`${props.match.path}/:companyUid`} component={LookupCompanyDetail} />
+  </Switch>
+);
 
 const mileageException = (props: RouteComponentProps) => (
   <Switch>
@@ -27,8 +38,9 @@ const systemLimit = (props: RouteComponentProps) => (
 export const LookupRoutingComponents: React.SFC<RouteComponentProps> = props => (
   <Switch>
     <Layout>
-      <Route path={`${props.match.path}/mileageexceptions`} component={mileageException} />
+      <Route path={`${props.match.path}/company`} component={company} />
       <Route path={`${props.match.path}/systemlimits`} component={systemLimit} />
+      <Route path={`${props.match.path}/mileageexception`} component={mileageException} />
     </Layout>
   </Switch>
 );

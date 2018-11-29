@@ -51,6 +51,18 @@ export const travelFieldTranslator = (find: string, field: ICollectionValue): st
         result = WorkflowStatusType.Closed;
         break;
 
+      case 'in':
+      case 'in indo':
+      case 'in indonesia':
+        result = 'TT001';
+        break;
+      
+      case 'out':
+      case 'out indo':
+      case 'out indonesia':
+        result = 'TT002';
+        break;
+
       default:
         break;
     }

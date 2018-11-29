@@ -1,3 +1,4 @@
+import { companyConfirm, companyField, companyFieldHelperFor, companyMessage, companyPage, companySection } from './lookupCompanyMessage';
 import {
   mileageExceptionField,
   mileageExceptionFieldHelperFor,
@@ -25,5 +26,13 @@ export const lookupMessage = {
   },
   shared: {
     confirm: lookupConfirm
-  }
+  },
+  company: {
+    page: companyPage,
+    field: companyField,
+    fieldFor: companyFieldHelperFor,
+    section: companySection,
+    confirm: companyConfirm,
+    message: companyMessage
+  },
 };
