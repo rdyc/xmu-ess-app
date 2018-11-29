@@ -116,7 +116,7 @@ const travelSettlementItem: React.SFC<AllProps> = props => {
                     {...GlobalStyle.TextField.ReadOnly}
                     margin="dense"
                     label={props.intl.formatMessage(travelMessage.request.field.itemStart)}
-                    value={intl.formatDate(item.departureDate, GlobalFormat.DateTime)}
+                    value={intl.formatDate(item.departureDate, GlobalFormat.TimeDate)}
                   />
                   <TextField
                     {...GlobalStyle.TextField.ReadOnly}
@@ -128,16 +128,7 @@ const travelSettlementItem: React.SFC<AllProps> = props => {
                     {...GlobalStyle.TextField.ReadOnly}
                     margin="dense"
                     label={props.intl.formatMessage(travelMessage.request.field.itemEnd)}
-                    value={intl.formatDate(item.returnDate, GlobalFormat.DateTime)}
-                    // {
-                    //   year: 'numeric',
-                    //   month: 'short',
-                    //   day: 'numeric',
-                    //   hour: 'numeric',
-                    //   minute: 'numeric',
-                    //   hour12: false,
-                    //   timeZone: 'GMT',
-                    // }
+                    value={intl.formatDate(item.returnDate, GlobalFormat.TimeDate)}
                   />
                   <TextField
                     {...GlobalStyle.TextField.ReadOnly}
