@@ -163,7 +163,7 @@ const handlerCreators: HandleCreators<DashboardProps, OwnHandlers> = {
         
       case 'Travel':
         if (type === 'Approval' || type === 'Notify') {
-          history.push(`/travel/approvals/request/${uid}`);
+          history.push(`/travel/approvals/${uid}`);
         } else {
           history.push(`/travel/requests/${uid}`);
         }
@@ -171,7 +171,7 @@ const handlerCreators: HandleCreators<DashboardProps, OwnHandlers> = {
 
       case 'Travel Settlement':
         if (type === 'Approval' || type === 'Notify') {
-          history.push(`/travel/approvals/settlement/${uid}`);
+          history.push(`/travel/settlement/approvals/${uid}`);
         } else {
           history.push(`/travel/settlements/${uid}`);
         }
