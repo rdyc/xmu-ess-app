@@ -67,15 +67,15 @@ const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
 const handlerCreators: HandleCreators<CurrencyEditorProps, OwnHandlers> = {
   handleValidate: (props: CurrencyEditorProps) => (formData: CurrencyFormData) => {
     const errors = {
+      information: {}
     };
-
     const requiredFields = [
       'name', 'symbol',
-      'rate', 'isActive',
+      'rate',
     ];
 
     requiredFields.forEach(field => {
-      if (!formData[field] || isNullOrUndefined(formData[field])) {
+      if (!formData.information[field] || isNullOrUndefined(formData.information[field])) {
         errors[field] = props.intl.formatMessage({ id: `lookup.currency.field.${field}.required` });
       }
     });
@@ -118,7 +118,7 @@ const handlerCreators: HandleCreators<CurrencyEditorProps, OwnHandlers> = {
         updateRequest({
           resolve,
           reject,
-          currencyUid,
+          currencyUid: payload.uid || currencyUid,
           data: payload as ILookupCurrencyPutPayload,
         });
       });

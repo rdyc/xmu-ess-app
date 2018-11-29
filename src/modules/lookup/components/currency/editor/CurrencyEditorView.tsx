@@ -22,6 +22,7 @@ export const CurrencyEditorView: React.SFC<CurrencyEditorProps> = props => {
   // init form values
   const initialValues: CurrencyFormData = {
     information: {
+      uid: undefined,
       name: undefined,
       symbol: undefined,
       rate: 1,
@@ -46,7 +47,7 @@ export const CurrencyEditorView: React.SFC<CurrencyEditorProps> = props => {
       // todo: replace values with response data
       const data = response.data;
 
-      // initialValues.uid = data.uid;
+      initialValues.information.uid = data.uid;
       initialValues.information.name = data.name;
       initialValues.information.symbol = data.symbol;
       initialValues.information.rate = data.rate || 1;

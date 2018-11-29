@@ -1,5 +1,4 @@
 import { FormMode } from '@generic/types';
-import { CheckBox } from '@layout/components/input/checkBox';
 import { InputNumber } from '@layout/components/input/number';
 import { InputText } from '@layout/components/input/text';
 import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
@@ -25,20 +24,24 @@ export type CurrencyDetailFormProps
 const handlerCreators: HandleCreators<CurrencyDetailFormProps, OwnHandlers> = {
   generateFieldProps: (props: CurrencyDetailFormProps) => (name: string) => {
     
-    const fieldName = name.replace('information.', '');
+    // const fieldName = name.replace('information.', '');
 
     let fieldProps: any = {};
 
-    switch (fieldName) {
+    // switch (fieldName) {
+    switch (name) {
       case 'uid':
         fieldProps = {
+          disabled: true,
           label: props.intl.formatMessage(lookupMessage.currency.field.uid),
-          component: InputText
+          component: InputText,
         };
         break;
 
       case 'name':
         fieldProps = {
+          type: 'text',
+          required: true,
           label: props.intl.formatMessage(lookupMessage.currency.field.name),
           placeholder: props.intl.formatMessage(lookupMessage.currency.field.namePlaceholder),
           component: InputText
@@ -47,6 +50,8 @@ const handlerCreators: HandleCreators<CurrencyDetailFormProps, OwnHandlers> = {
 
       case 'symbol':
         fieldProps = {
+          type: 'text',
+          required: true,
           label: props.intl.formatMessage(lookupMessage.currency.field.symbol),
           placeholder: props.intl.formatMessage(lookupMessage.currency.field.symbolPlaceholder),
           component: InputText
@@ -56,8 +61,9 @@ const handlerCreators: HandleCreators<CurrencyDetailFormProps, OwnHandlers> = {
       case 'rate':
         fieldProps = {
           type: 'number',
+          required: true,
           label: props.intl.formatMessage(lookupMessage.currency.field.rate),
-          placeholder: props.intl.formatMessage(lookupMessage.currency.field.ratePlaceholder),
+          // placeholder: props.intl.formatMessage(lookupMessage.currency.field.ratePlaceholder),
           component: InputNumber,
         };
         break;
@@ -65,7 +71,6 @@ const handlerCreators: HandleCreators<CurrencyDetailFormProps, OwnHandlers> = {
       case 'isActive':
         fieldProps = {
           label: props.intl.formatMessage(lookupMessage.currency.field.ActiveStatus),
-          component: CheckBox,
         };
         break;
         

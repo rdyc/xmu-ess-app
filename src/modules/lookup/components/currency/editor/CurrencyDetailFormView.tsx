@@ -11,7 +11,7 @@ export const CurrencyDetailFormView: React.SFC<CurrencyDetailFormProps> = props 
 
   const renderField = (name: string) => {
     const fieldName = name.replace('information.', '');
-    const fieldProps = props.generateFieldProps(name);
+    const fieldProps = props.generateFieldProps(fieldName);
 
     // don't show uid for new form
     const fields = ['uid'];
@@ -33,7 +33,6 @@ export const CurrencyDetailFormView: React.SFC<CurrencyDetailFormProps> = props 
                 ({ input, meta }: any) => (
                   <Checkbox
                     {...input}
-                    value={name}
                     disabled={meta.submitting}
                     onFocus={undefined}
                     onBlur={undefined}

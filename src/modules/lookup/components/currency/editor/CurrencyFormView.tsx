@@ -8,7 +8,8 @@ import { CurrencyFormProps } from './CurrencyForm';
 export const CurrencyFormView: React.SFC<CurrencyFormProps> = props => {
   
   const { formMode, initialValues } = props;
-  const fields = Object.getOwnPropertyNames(initialValues);
+
+  const fields = Object.getOwnPropertyNames(initialValues.information);
 
   const componentInformation = (context: BaseFieldsProps) => (
     <CurrencyDetailForm
@@ -37,7 +38,7 @@ export const CurrencyFormView: React.SFC<CurrencyFormProps> = props => {
 
         <Grid item md={4}>
           <Submission
-            valid={true}
+            valid={props.valid}
             reset={props.reset}
             submitting={props.submitting}
           />

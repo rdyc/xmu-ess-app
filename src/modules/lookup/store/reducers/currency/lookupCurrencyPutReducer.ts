@@ -14,10 +14,10 @@ const initialState: IQuerySingleState<ICurrencyPutRequest, ICurrency> = {
 
 const reducer: Reducer<IQuerySingleState<ICurrencyPutRequest, ICurrency>> = (state = initialState, action) => {
   switch (action.type) {
-    case Action.POST_REQUEST: return { ...state, isLoading: true, request: action.payload };
-    case Action.POST_SUCCESS: return { ...state, isLoading: false, response: action.payload };
-    case Action.POST_ERROR: return { ...state, isLoading: false, isError: true, errors: action.payload };
-    case Action.POST_DISPOSE: return initialState;
+    case Action.PUT_REQUEST: return { ...state, isLoading: true, request: action.payload };
+    case Action.PUT_SUCCESS: return { ...state, isLoading: false, response: action.payload };
+    case Action.PUT_ERROR: return { ...state, isLoading: false, isError: true, errors: action.payload };
+    case Action.PUT_DISPOSE: return initialState;
 
     default: return state;
   }

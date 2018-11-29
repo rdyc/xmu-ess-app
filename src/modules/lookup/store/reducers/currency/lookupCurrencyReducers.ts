@@ -1,8 +1,4 @@
-import { currencyGetAllReducer } from './lookupCurrencyGetAllReducer';
-import { currencyGetByIdReducer } from './lookupCurrencyGetByIdReducer';
-import { currencyGetListReducer } from './lookupCurrencyGetListReducer';
-import { lookupCurrencyPostReducer } from './lookupCurrencyPostReducer';
-import { lookupCurrencyPutReducer } from './lookupCurrencyPutReducer';
+import { currencyGetAllReducer, currencyGetByIdReducer, currencyGetListReducer, lookupCurrencyDeleteReducer, lookupCurrencyPostReducer, lookupCurrencyPutReducer } from '.';
 
 export const lookupCurrencyReducers = {
   currencyGetAll: currencyGetAllReducer,
@@ -10,5 +6,5 @@ export const lookupCurrencyReducers = {
   currencyGetById: currencyGetByIdReducer,
   currencyPost: lookupCurrencyPostReducer,
   currencyPut: lookupCurrencyPutReducer,
-  // currencyDelete: lookupCurrencyDeleteReducer
+  currencyDelete: lookupCurrencyDeleteReducer
 };

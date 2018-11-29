@@ -42,7 +42,7 @@ const config: SingleConfig<ICurrencyDetail, CurrencyDetailProps> = {
       name: props.intl.formatMessage(layoutMessage.action.discard),
       enabled: true,
       visible: true,
-      onClick: props.handleOnModify
+      onClick: props.handleOnDelete
     }
   ]),
   onDataLoad: (props: CurrencyDetailProps, callback: SingleHandler, forceReload?: boolean | false) => {

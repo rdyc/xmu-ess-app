@@ -7,10 +7,11 @@ const formName = 'lookupCurrency';
 
 export type CurrencyFormData = {
   information: {
-    symbol: string | null | undefined,
-    name: string | null | undefined,
+    uid: string | undefined,
+    symbol: string | undefined,
+    name: string | undefined,
     rate: number | undefined,
-    isActive: boolean | null | undefined,
+    isActive: boolean  | undefined,
   }
 };
 
@@ -18,14 +19,14 @@ interface OwnProps {
   formMode: FormMode;
 }
 
-interface OwnHandlers {
-  generateFieldProps: (name: string) => any;
-}
+// interface OwnHandlers {
+//   generateFieldProps: (name: string) => any;
+// }
 
 export type CurrencyFormProps
   = InjectedFormProps<CurrencyFormData, OwnProps>
   & InjectedIntlProps
-  & OwnHandlers
+  // & OwnHandlers
   & OwnProps;
 
 export const CurrencyForm = reduxForm<CurrencyFormData, OwnProps>({

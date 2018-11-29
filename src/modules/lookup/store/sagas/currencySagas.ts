@@ -1,6 +1,8 @@
 import { layoutAlertAdd } from '@layout/store/actions';
 import {
   CurrencyAction as Action,
+  lookupCurrencyDeleteError,
+  lookupCurrencyDeleteSuccess,
   lookupCurrencyGetAllDispose,
   lookupCurrencyGetAllError,
   lookupCurrencyGetAllRequest,
@@ -165,7 +167,7 @@ function* watchFetchPostRequest() {
 function* watchFetchPutRequest() {
   const worker = (action: ReturnType<typeof lookupCurrencyPutRequest>) => {
     return saiyanSaga.fetch({
-      method: 'post',
+      method: 'put',
       path: `/v1/lookup/currencies/${action.payload.currencyUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => ([
@@ -212,6 +214,56 @@ function* watchFetchPutRequest() {
   yield takeEvery(Action.PUT_REQUEST, worker);
 }
 
+function* watchFetchDeleteRequest() {
+  const worker = (action: ReturnType<typeof lookupCurrencyPutRequest>) => {
+    return saiyanSaga.fetch({
+      method: 'delete',
+      path: `/v1/lookup/currencies/`,
+      payload: action.payload.data,
+      successEffects: (response: IApiResponse) => ([
+        put(lookupCurrencyGetAllDispose()),
+        put(lookupCurrencyGetByIdDispose()),
+        put(lookupCurrencyDeleteSuccess(response.body)),
+      ]),
+      successCallback: (response: IApiResponse) => {
+        action.payload.resolve(response.body.data);
+      },
+      failureEffects: (response: IApiResponse) => ([
+        put(lookupCurrencyDeleteError(response.statusText)),
+        put(layoutAlertAdd({
+          time: new Date(),
+          message: response.statusText,
+          details: response
+        })),
+      ]),
+      failureCallback: (response: IApiResponse) => {
+        if (response.status === 400) {
+          const errors: any = {
+            // information -> based form section name
+            information: flattenObject(response.body.errors)
+          };
+
+          action.payload.reject(new SubmissionError(errors));
+        } else {
+          action.payload.reject(response.statusText);
+        }
+      },
+      errorEffects: (error: TypeError) => [
+        put(lookupCurrencyDeleteError(error.message)),
+        put(layoutAlertAdd({
+          time: new Date(),
+          message: error.message
+        }))
+      ],
+      errorCallback: (error: any) => {
+        action.payload.reject(error);
+      }
+    });
+  };
+
+  yield takeEvery(Action.DELETE_REQUEST, worker);
+}
+
 function* lookupCurrencySagas() {
   yield all([
     fork(watchFetchAllRequest),
@@ -219,6 +271,7 @@ function* lookupCurrencySagas() {
     fork(watchFetchByIdRequest),
     fork(watchFetchPostRequest),
     fork(watchFetchPutRequest),
+    fork(watchFetchDeleteRequest),
   ]);
 }
 
