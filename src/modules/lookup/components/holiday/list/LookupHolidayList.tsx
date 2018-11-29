@@ -121,14 +121,12 @@ const config: CollectionConfig<ILookupHoliday, AllProps> = {
   // action component
   actionComponent: (item: ILookupHoliday, callback: CollectionHandler) => (
     <React.Fragment>
-      {}
         <Button 
           size="small"
           onClick={() => callback.handleRedirectTo(`/lookup/holiday/form`, { uid: item.uid })}
         >
           <FormattedMessage {...layoutMessage.action.modify}/>
         </Button>
-      }
 
       <Button 
         size="small"

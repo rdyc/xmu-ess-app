@@ -1,4 +1,5 @@
 import { holidayConfirm, holidayField, holidayPage } from './holiday';
+import { leaveConfirm, leaveField, leavePage } from './leave';
 import { mileageExceptionConfirm, mileageExceptionField, mileageExceptionPage } from './mileageException';
 
 export const lookupMessage = {
@@ -11,5 +12,10 @@ export const lookupMessage = {
     page: holidayPage,
     field: holidayField,
     confirm: holidayConfirm, 
+  },
+  leave: {
+    page: leavePage,
+    field: leaveField,
+    confirm: leaveConfirm, 
   }
 };

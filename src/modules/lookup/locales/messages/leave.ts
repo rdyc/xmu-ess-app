@@ -1,9 +1,9 @@
 import { defineMessages } from 'react-intl';
 
-const prefix = 'lookup.holiday';
+const prefix = 'lookup.leave';
 
 // page
-export const holidayPage = defineMessages({
+export const leavePage = defineMessages({
   listTitle: { id: `${prefix}.page.list.title`},
   listSubHeader: { id: `${prefix}.page.list.subHeader`},
   detailTitle: { id: `${prefix}.page.detail.title`},
@@ -11,7 +11,7 @@ export const holidayPage = defineMessages({
 });
 
 // confirmation
-export const holidayConfirm = defineMessages({
+export const leaveConfirm = defineMessages({
   modifyTitle: { id: `${prefix}.confirm.modify.title` },
   modifyDescription: { id: `${prefix}.confirm.modify.description` },
   // closeTitle: { id: `${prefix}.confirm.close.title` },
@@ -19,11 +19,15 @@ export const holidayConfirm = defineMessages({
 });
 
 // field
-export const holidayField = defineMessages({
+export const leaveField = defineMessages({
   uid: { id: `${prefix}.field.id`},
   company: { id: `${prefix}.field.company`},
+  category: { id: `${prefix}.field.category`},
+  name: { id: `${prefix}.field.name`},
   description: { id: `${prefix}.field.description`},
-  date: { id: `${prefix}.field.date`},
+  year: { id: `${prefix}.field.year`},
+  allocation: { id: `${prefix}.field.allocation`},
+  isWithHoliday: { id: `${prefix}.field.isWithHoliday`},
 
   infoTitle: { id: `${prefix}.field.info.title`},
   infoSubHeader: { id: `${prefix}.field.info.subHeader`},

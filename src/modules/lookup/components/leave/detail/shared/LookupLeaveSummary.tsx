@@ -1,8 +1,8 @@
 import { layoutMessage } from '@layout/locales/messages';
 import { GlobalFormat } from '@layout/types';
 import { GlobalStyle } from '@layout/types/GlobalStyle';
-import { lookupMessage } from '@leave/locales/messages/leaveMessage';
 import { ILookupLeave } from '@lookup/classes/response';
+import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
 import { Grid, TextField } from '@material-ui/core';
 import * as React from 'react';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
@@ -30,13 +30,13 @@ const lookupLeaveSummary: React.SFC<AllProps> = props => (
       <TextField
         {...styled}
         margin="dense"
-        label={props.intl.formatMessage(lookupMessage.request.field.uid)}
+        label={props.intl.formatMessage(lookupMessage.leave.field.uid)}
         value={props.data.uid}
       />
       <TextField
         {...styled}
         margin="dense"
-        label={props.intl.formatMessage(lookupMessage.request.field.uid)}
+        label={props.intl.formatMessage(lookupMessage.leave.field.uid)}
         value={props.data.company ? props.data.company.name : 'N/A'}
       />
     </Grid>
@@ -46,26 +46,26 @@ const lookupLeaveSummary: React.SFC<AllProps> = props => (
         {...styled}
         multiline={true}
         margin="dense"
-        label={props.intl.formatMessage(lookupMessage.request.field.contactNumber)}
+        label={props.intl.formatMessage(lookupMessage.leave.field.name)}
         value={props.data.name || 'N/A'}
       />
       <TextField
         {...styled}
         multiline={true}
         margin="dense"
-        label={props.intl.formatMessage(lookupMessage.request.field.contactNumber)}
+        label={props.intl.formatMessage(lookupMessage.leave.field.description)}
         value={props.data.category && props.data.category.description || 'N/A'}
       />
     </Grid>
     <Grid item xs={12} sm={6} md={3}>
     <TextField
         {...GlobalStyle.TextField.ReadOnly}
-        label={props.intl.formatMessage(lookupMessage.request.field.contactNumber)}
+        label={props.intl.formatMessage(lookupMessage.leave.field.year)}
         value={props.intl.formatNumber(props.data.year)}
       />
     <TextField
         {...GlobalStyle.TextField.ReadOnly}
-        label={props.intl.formatMessage(lookupMessage.request.field.contactNumber)}
+        label={props.intl.formatMessage(lookupMessage.leave.field.allocation)}
         value={props.intl.formatNumber(props.data.allocation)}
       />
     </Grid>

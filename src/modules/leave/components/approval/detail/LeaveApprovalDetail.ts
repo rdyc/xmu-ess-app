@@ -5,7 +5,7 @@ import { WithUser, withUser } from '@layout/hoc/withUser';
 import { layoutMessage } from '@layout/locales/messages';
 import { WithLeaveApproval, withLeaveApproval } from '@leave/hoc/withLeaveApproval';
 import { leaveApprovalMessage } from '@leave/locales/messages/leaveApprovalMessage';
-import { lookupMessage } from '@leave/locales/messages/leaveMessage';
+import { leaveMessage } from '@leave/locales/messages/leaveMessage';
 import { IWorkflowApprovalPayload } from '@organization/classes/request/workflow/approval';
 import { WorkflowApprovalFormData } from '@organization/components/workflow/approval/WorkflowApprovalForm';
 import { organizationMessage } from '@organization/locales/messages/organizationMessage';
@@ -69,15 +69,15 @@ const createProps: mapper<LeaveApprovalDetailProps, OwnState> = (props: LeaveApp
 
   return {
     shouldDataReload: false,
-    approvalTitle: intl.formatMessage(lookupMessage.request.section.approvalTitle),
-    approvalSubHeader: intl.formatMessage(lookupMessage.request.section.approvalSubHeader),
+    approvalTitle: intl.formatMessage(leaveMessage.request.section.approvalTitle),
+    approvalSubHeader: intl.formatMessage(leaveMessage.request.section.approvalSubHeader),
     approvalChoices: [
       { value: WorkflowStatusType.Approved, label: intl.formatMessage(organizationMessage.workflow.option.approve) },
       { value: WorkflowStatusType.Rejected, label: intl.formatMessage(organizationMessage.workflow.option.reject) }
     ],
     approvalTrueValue: WorkflowStatusType.Approved,
-    approvalDialogTitle: intl.formatMessage(lookupMessage.approval.confirm.submissionTitle),
-    approvalDialogContentText: intl.formatMessage(lookupMessage.approval.confirm.submissionContent),
+    approvalDialogTitle: intl.formatMessage(leaveMessage.approval.confirm.submissionTitle),
+    approvalDialogContentText: intl.formatMessage(leaveMessage.approval.confirm.submissionContent),
     approvalDialogCancelText: intl.formatMessage(layoutMessage.action.cancel),
     approvalDialogConfirmedText: intl.formatMessage(layoutMessage.action.continue),
   };

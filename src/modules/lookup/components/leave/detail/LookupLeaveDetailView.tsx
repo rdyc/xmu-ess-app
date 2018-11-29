@@ -4,9 +4,9 @@ import { DialogConfirmation } from '@layout/components/dialogs';
 import { SingleConfig, SingleHandler, SinglePage, SingleState } from '@layout/components/pages/singlePage/SinglePage';
 import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
-import { lookupMessage } from '@leave/locales/messages/leaveMessage';
 import { ILookupLeaveDetail } from '@lookup/classes/response';
 import { LookupLeaveUserAction } from '@lookup/classes/types';
+import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
 import * as React from 'react';
 import { LookupLeaveDetailProps } from './LookupLeaveDetail';
 import { LookupLeaveInformation } from './shared/LookupLeaveInformation';
@@ -20,8 +20,8 @@ const config: SingleConfig<ILookupLeaveDetail, LookupLeaveDetailProps> = {
   page: (props: LookupLeaveDetailProps) => ({
     uid: AppMenu.LookupLeave,
     parentUid: AppMenu.Lookup,
-    title: props.intl.formatMessage(lookupMessage.request.page.detailTitle),
-    description: props.intl.formatMessage(lookupMessage.request.page.detailSubHeader)
+    title: props.intl.formatMessage(lookupMessage.leave.page.detailTitle),
+    description: props.intl.formatMessage(lookupMessage.leave.page.detailSubHeader)
   }),
   
   // action centre

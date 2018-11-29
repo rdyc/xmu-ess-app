@@ -8,7 +8,7 @@ import { LeaveRequestField, LeaveRequestUserAction } from '@leave/classes/types'
 import { LeaveSummary } from '@leave/components/request/detail/shared/LeaveSummary';
 import { leaveRequestFieldTranslator } from '@leave/helper';
 import { WithLeaveCancellation, withLeaveCancellation } from '@leave/hoc/withLeaveCancellation';
-import { lookupMessage } from '@leave/locales/messages/leaveMessage';
+import { leaveMessage } from '@leave/locales/messages/leaveMessage';
 import { Button } from '@material-ui/core';
 import * as moment from 'moment';
 import * as React from 'react';
@@ -20,8 +20,8 @@ const config: CollectionConfig<ILeave, AllProps> = {
   page: (props: AllProps) => ({
     uid: AppMenu.LeaveApproval,
     parentUid: AppMenu.LeaveRequest,
-    title: props.intl.formatMessage(lookupMessage.cancellation.page.listTitle),
-    description: props.intl.formatMessage(lookupMessage.cancellation.page.listSubHeader),
+    title: props.intl.formatMessage(leaveMessage.cancellation.page.listTitle),
+    description: props.intl.formatMessage(leaveMessage.cancellation.page.listSubHeader),
   }),
   
   // top bar

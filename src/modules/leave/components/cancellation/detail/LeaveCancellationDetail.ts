@@ -4,7 +4,7 @@ import { layoutMessage } from '@layout/locales/messages';
 import { ILeaveCancellationPostPayload } from '@leave/classes/request';
 import { WithLeaveCancellation, withLeaveCancellation } from '@leave/hoc/withLeaveCancellation';
 import { leaveCancellationMessage } from '@leave/locales/messages/leaveCancellationMessage';
-import { lookupMessage } from '@leave/locales/messages/leaveMessage';
+import { leaveMessage } from '@leave/locales/messages/leaveMessage';
 import { organizationMessage } from '@organization/locales/messages/organizationMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
@@ -48,10 +48,10 @@ const createProps: mapper<LeaveCancellationDetailProps, OwnState> = (props: Leav
   const { intl } = props;
 
   return {
-    cancellationTitle: intl.formatMessage(lookupMessage.request.section.cancellationTitle),
-    cancellationSubHeader: intl.formatMessage(lookupMessage.request.section.cancellationSubHeader),
-    cancellationDialogTitle: intl.formatMessage(lookupMessage.cancellation.confirm.submissionTitle),
-    cancellationDialogContentText: intl.formatMessage(lookupMessage.cancellation.confirm.submissionContent),
+    cancellationTitle: intl.formatMessage(leaveMessage.request.section.cancellationTitle),
+    cancellationSubHeader: intl.formatMessage(leaveMessage.request.section.cancellationSubHeader),
+    cancellationDialogTitle: intl.formatMessage(leaveMessage.cancellation.confirm.submissionTitle),
+    cancellationDialogContentText: intl.formatMessage(leaveMessage.cancellation.confirm.submissionContent),
     cancellationDialogCancelText: intl.formatMessage(layoutMessage.action.cancel),
     cancellationDialogConfirmedText: intl.formatMessage(layoutMessage.action.continue),
   };

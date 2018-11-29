@@ -1,8 +1,8 @@
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { layoutMessage } from '@layout/locales/messages';
-import { lookupMessage } from '@leave/locales/messages/leaveMessage';
 import { LookupLeaveUserAction } from '@lookup/classes/types';
 import { WithLookupLeave, withLookupLeave } from '@lookup/hoc/withLookupLeave';
+import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import {
@@ -64,8 +64,8 @@ const stateUpdaters: StateUpdaters<LookupLeaveDetailProps, OwnState, OwnStateUpd
     action: LookupLeaveUserAction.Modify,
     dialogFullScreen: false,
     dialogOpen: true,
-    dialogTitle: props.intl.formatMessage(lookupMessage.request.confirm.modifyTitle), 
-    dialogContent: props.intl.formatMessage(lookupMessage.request.confirm.modifyDescription),
+    dialogTitle: props.intl.formatMessage(lookupMessage.leave.confirm.modifyTitle), 
+    dialogContent: props.intl.formatMessage(lookupMessage.leave.confirm.modifyDescription),
     dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.disaggree),
     dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.aggree)
   }),

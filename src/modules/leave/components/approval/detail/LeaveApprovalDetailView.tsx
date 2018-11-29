@@ -5,7 +5,7 @@ import { layoutMessage } from '@layout/locales/messages';
 import { ILeaveDetail } from '@leave/classes/response';
 import { LeaveRequestUserAction } from '@leave/classes/types';
 import { LeaveInformation } from '@leave/components/request/detail/shared/LeaveInformation';
-import { lookupMessage } from '@leave/locales/messages/leaveMessage';
+import { leaveMessage } from '@leave/locales/messages/leaveMessage';
 import { WorkflowApprovalForm } from '@organization/components/workflow/approval/WorkflowApprovalForm';
 import { WorkflowHistory } from '@organization/components/workflow/history/WorkflowHistory';
 import * as React from 'react';
@@ -16,8 +16,8 @@ const config: SingleConfig<ILeaveDetail, LeaveApprovalDetailProps> = {
   page: (props: LeaveApprovalDetailProps) => ({
     uid: AppMenu.LeaveApproval,
     parentUid: AppMenu.Leave,
-    title: props.intl.formatMessage(lookupMessage.approval.page.detailTitle),
-    description: props.intl.formatMessage(lookupMessage.approval.page.detailTitle)
+    title: props.intl.formatMessage(leaveMessage.approval.page.detailTitle),
+    description: props.intl.formatMessage(leaveMessage.approval.page.detailTitle)
   }),
 
   // parent url

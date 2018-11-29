@@ -2,7 +2,7 @@ import { WithUser, withUser } from '@layout/hoc/withUser';
 import { layoutMessage } from '@layout/locales/messages';
 import { LeaveRequestUserAction } from '@leave/classes/types';
 import { WithLeaveRequest, withLeaveRequest } from '@leave/hoc/withLeaveRequest';
-import { lookupMessage } from '@leave/locales/messages/leaveMessage';
+import { leaveMessage } from '@leave/locales/messages/leaveMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import {
@@ -64,8 +64,8 @@ const stateUpdaters: StateUpdaters<LeaveRequestDetailProps, OwnState, OwnStateUp
     action: LeaveRequestUserAction.Modify,
     dialogFullScreen: false,
     dialogOpen: true,
-    dialogTitle: props.intl.formatMessage(lookupMessage.request.confirm.modifyTitle), 
-    dialogContent: props.intl.formatMessage(lookupMessage.request.confirm.modifyDescription),
+    dialogTitle: props.intl.formatMessage(leaveMessage.request.confirm.modifyTitle), 
+    dialogContent: props.intl.formatMessage(leaveMessage.request.confirm.modifyDescription),
     dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.disaggree),
     dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.aggree)
   }),

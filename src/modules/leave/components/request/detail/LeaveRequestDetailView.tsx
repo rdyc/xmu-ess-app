@@ -7,7 +7,7 @@ import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
 import { ILeaveDetail } from '@leave/classes/response';
 import { LeaveRequestUserAction } from '@leave/classes/types';
-import { lookupMessage } from '@leave/locales/messages/leaveMessage';
+import { leaveMessage } from '@leave/locales/messages/leaveMessage';
 import { WorkflowHistory } from '@organization/components/workflow/history/WorkflowHistory';
 import * as React from 'react';
 import { LeaveRequestDetailProps } from './LeaveRequestDetail';
@@ -22,8 +22,8 @@ const config: SingleConfig<ILeaveDetail, LeaveRequestDetailProps> = {
   page: (props: LeaveRequestDetailProps) => ({
     uid: AppMenu.LeaveRequest,
     parentUid: AppMenu.Leave,
-    title: props.intl.formatMessage(lookupMessage.request.page.detailTitle),
-    description: props.intl.formatMessage(lookupMessage.request.page.detailSubHeader)
+    title: props.intl.formatMessage(leaveMessage.request.page.detailTitle),
+    description: props.intl.formatMessage(leaveMessage.request.page.detailSubHeader)
   }),
 
   // parent url
