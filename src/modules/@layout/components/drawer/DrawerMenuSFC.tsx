@@ -1,10 +1,10 @@
-import NavigationMenu from '@layout/components/navigation/NavigationMenu';
 import { withLayout, WithLayout } from '@layout/hoc/withLayout';
 import { Drawer, Hidden, WithStyles, withStyles } from '@material-ui/core';
 import styles from '@styles';
 import * as classNames from 'classnames';
 import * as React from 'react';
 import { compose, setDisplayName } from 'recompose';
+import { NavigationMenu } from '../navigation/NavigationMenu';
 
 type AllProps 
   = WithLayout 

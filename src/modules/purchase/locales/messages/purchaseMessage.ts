@@ -1,5 +1,6 @@
 import { purchaseAction } from './purchaseAction';
 import { purchaseApprovalConfirm, purchaseApprovalMessage, purchaseApprovalPage, purchaseApprovalSection } from './purchaseApprovalMessage';
+import { purchaseComplement } from './purchaseComplement';
 import { purchaseItemField } from './purchaseItemMessage';
 import { purchaseRequestConfirm, purchaseRequestField, purchaseRequestMessage, purchaseRequestPage, purchaseRequestSection } from './purchaseRequestMessage';
 import { purchaseSettlementConfirm, purchaseSettlementField, purchaseSettlementMessage, purchaseSettlementPage, purchaseSettlementSection } from './purchaseSettlementMessage';
@@ -7,6 +8,7 @@ import { settlementApprovalConfirm, settlementApprovalMessage, settlementApprova
 
 export const purchaseMessage = {
   action: purchaseAction,
+  complement: purchaseComplement,
   request: {
     pages: purchaseRequestPage,
     section: purchaseRequestSection,
