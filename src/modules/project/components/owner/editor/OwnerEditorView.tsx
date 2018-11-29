@@ -24,10 +24,10 @@ export const OwnerEditorView: React.SFC<OwnerEditorProps> = props => {
   const initialValues: ProjectOwnerFormData = {
     information: {
       uid: undefined,
-      employeeUid: undefined,
       customerUid: undefined,
+      name: undefined,
       projectType: undefined,
-      name: undefined
+      employeeUid: undefined
     }
   };
   

@@ -1,7 +1,9 @@
 import { SelectEmployee } from '@account/components/select';
+import { isMemberOfPMO } from '@account/helper/isMemberOfPMO';
 import { isMemberOfSales } from '@account/helper/isMemberOfSales';
 import { WithAccountPMORoles, withAccountPMORoles } from '@account/hoc/withAccountPMORoles';
 import { WithAccountPMRoles, withAccountPMRoles } from '@account/hoc/withAccountPMRoles';
+import { WithAccountSalesRoles, withAccountSalesRoles } from '@account/hoc/withAccountSalesRoles';
 import { SelectSystem, SelectSystemOption } from '@common/components/select';
 import { FormMode } from '@generic/types';
 import { InputText } from '@layout/components/input/text';
@@ -29,13 +31,27 @@ export type OwnerDetailFormProps
   & WithUser
   & WithAccountPMORoles
   & WithAccountPMRoles
+  & WithAccountSalesRoles
   & WithAllowedProjectType
   & InjectedIntlProps;
 
 const handlerCreators: HandleCreators<OwnerDetailFormProps, OwnHandlers> = {
   generateFieldProps: (props: OwnerDetailFormProps) => (name: string) => { 
-    const { rolePmoUids, rolePmUids, allowedProjectTypes, intl } = props;
+    const { rolePmUids, roleSalesUids, allowedProjectTypes, intl } = props;
     const { user } = props.userState;
+
+    let _roleUids: string[] | undefined = undefined;
+
+    // check roles
+    if (user) {
+      if (isMemberOfSales(user.role.uid)) {
+        _roleUids = roleSalesUids;
+      }
+
+      if (isMemberOfPMO(user.role.uid)) {
+        _roleUids = rolePmUids;
+      } 
+    }
       
     let fieldProps: SelectSystemOption & any = {};
   
@@ -47,7 +63,7 @@ const handlerCreators: HandleCreators<OwnerDetailFormProps, OwnHandlers> = {
           placeholder: intl.formatMessage(projectMessage.registration.fieldFor(name, 'fieldPlaceholder')),
           component: SelectEmployee,
           companyUids: user && [user.company.uid],
-          roleUids: user && isMemberOfSales(user.role.uid) ? rolePmoUids : rolePmUids
+          roleUids: _roleUids
         };
         break;
 
@@ -80,6 +96,7 @@ export const OwnerDetailForm = compose<OwnerDetailFormProps, OwnProps>(
   withUser,
   withAccountPMORoles,
   withAccountPMRoles,
+  withAccountSalesRoles,
   withAllowedProjectType,
   injectIntl,
   withHandlers<OwnerDetailFormProps, OwnHandlers>(handlerCreators),
