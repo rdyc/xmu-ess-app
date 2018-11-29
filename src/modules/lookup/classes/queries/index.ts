@@ -7,7 +7,7 @@ export * from './diem/IDiemListRequest';
 export * from './menu/IMenuListRequest';
 export * from './menu/IMenuGetAllRequest';
 export * from './menu/IMenuGetByIdRequest';
-export * from './position/IPositionListRequest';
+export * from './position/IPositionGetListRequest';
 export * from './position/IPositionGetAllRequest';
 export * from './position/IPositionGetByIdRequest';
 export * from './position/IPositionPostRequest';

@@ -5,7 +5,7 @@ export * from './diem/IDiemListFilter';
 export * from './menu/IMenuGetAllFilter';
 export * from './menu/IMenuListFilter';
 export * from './position/IPositionGetAllFilter';
-export * from './position/IPositionListFilter';
+export * from './position/IPositionGetListFilter';
 export * from './currency/ICurrencyListFilter';
 export * from './currency/ICurrencyAllFilter';
 export * from './systemLimit/ISystemLimitListFilter';
