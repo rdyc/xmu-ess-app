@@ -66,6 +66,7 @@ const handlers: HandleCreators<PurchaseRequestFormProps, OwnHandlers> = {
       formValues.items.items.forEach((item) => total += item.request);
     }
     props.change('information.request', total);
+    props.change('information.requestInIDR', total * props.formRate);
   },
 };
 

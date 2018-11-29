@@ -26,7 +26,7 @@ import { Store } from 'redux';
 import { loadUser, OidcProvider } from 'redux-oidc';
 import * as store from 'store';
 
-import { LookupRoutingComponents } from '@lookup/components/LookupRouter';
+import { LookupRoutingComponents } from '@lookup/components';
 import { IAppState } from './generic/interfaces';
 import AppLocale from './language';
 import config, { getCurrentLanguage } from './language/config';
