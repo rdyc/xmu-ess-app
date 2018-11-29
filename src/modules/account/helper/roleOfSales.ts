@@ -1,6 +1,6 @@
-const roleUids = process.env.REACT_APP_ROLE_IDS_PM;
+const roleUids = process.env.REACT_APP_ROLE_IDS_SALES;
 
-export const roleOfPM = (): string[] => {
+export const roleOfSales = (): string[] => {
   let result: string[] = [];
 
   if (roleUids) {
