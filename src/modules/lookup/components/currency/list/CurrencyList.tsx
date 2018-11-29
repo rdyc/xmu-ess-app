@@ -1,5 +1,4 @@
 import AppMenu from '@constants/AppMenu';
-import { ICollectionValue } from '@layout/classes/core';
 import { 
   CollectionConfig, 
   CollectionDataProps, 
@@ -21,11 +20,6 @@ import * as React from 'react';
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose } from 'recompose';
 
-const currencyFields: ICollectionValue[] = Object.keys(CurrencyField).map(key => ({ 
-  value: key, 
-  name: CurrencyField[key] 
-}));
-
 const config: CollectionConfig<ICurrency, AllProps> = {
   // page info
   page: (props: AllProps) => ({
@@ -38,7 +32,11 @@ const config: CollectionConfig<ICurrency, AllProps> = {
   }),
 
   // top bar
-  fields: currencyFields,
+  fields: Object.keys(CurrencyField)
+  .map(key => ({
+    value: key,
+    name: CurrencyField[key]
+  })),
   fieldTranslator: currencyFieldTranslator,
 
   // searching

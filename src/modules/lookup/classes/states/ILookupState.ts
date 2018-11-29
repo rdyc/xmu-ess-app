@@ -77,6 +77,9 @@ import {
   ISystemLimitList,
 } from '@lookup/classes/response';
 
+import { 
+  // ICurrencyDeleteRequest,
+  ICurrencyPostRequest, ICurrencyPutRequest } from '../queries/currency';
 import { ILookupCustomerDeleteRequest, ILookupCustomerPostRequest, ILookupCustomerPutRequest } from '../queries/customer';
 
 export interface ILookupState {
@@ -114,6 +117,9 @@ export interface ILookupState {
   currencyGetAll: IQueryCollectionState<ICurrencyGetAllRequest, ICurrency>;
   currencyGetList: IQueryCollectionState<ICurrencyGetListRequest, ICurrencyList>;
   currencyGetById: IQuerySingleState<ICurrencyGetByIdRequest, ICurrencyDetail>;
+  currencyPost: IQuerySingleState<ICurrencyPostRequest, ICurrency>;
+  currencyPut: IQuerySingleState<ICurrencyPutRequest, ICurrency>;
+  // currencyDelete: IQuerySingleState<ICurrencyDeleteRequest, boolean>;
 
   holidayGetAll: IQueryCollectionState<IHolidayAllRequest, IHoliday>;
   holidayGetList: IQueryCollectionState<IHolidayListRequest, IHolidayList>;

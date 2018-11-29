@@ -6,11 +6,12 @@ import { CurrencyFormView } from './CurrencyFormView';
 const formName = 'lookupCurrency';
 
 export type CurrencyFormData = {
-  // uid: string | null | undefined,
-  symbol: string | null | undefined,
-  name: string | null | undefined,
-  rate: number | undefined,
-  isActive: boolean | null | undefined,
+  information: {
+    symbol: string | null | undefined,
+    name: string | null | undefined,
+    rate: number | undefined,
+    isActive: boolean | null | undefined,
+  }
 };
 
 interface OwnProps {

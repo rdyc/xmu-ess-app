@@ -1,5 +1,6 @@
 import { Layout } from '@layout/components/base';
 import { CurrencyDetail } from '@lookup/components/currency/detail/CurrencyDetail';
+import { CurrencyEditor } from '@lookup/components/currency/editor/CurrencyEditor';
 import { CurrencyList } from '@lookup/components/currency/list/CurrencyList';
 import { MileageExceptionList } from '@lookup/components/mileageException/list/LookupMileageExceptionListView';
 import * as React from 'react';
@@ -8,16 +9,17 @@ import { MileageExceptionDetail } from './mileageException/detail/MileageExcepti
 
 const currency = (props: RouteComponentProps) => (
   <Switch>
+    <Route path={`${props.match.path}/form`} component={CurrencyEditor} />
     <Route path={`${props.match.path}/:currencyUid`} component={CurrencyDetail} />
     <Route path={`${props.match.path}`} component={CurrencyList} />
-   </Switch>
+  </Switch>
 );
 
 const mileageException = (props: RouteComponentProps) => (
   <Switch>
     <Route path={`${props.match.path}/:mileageExceptionUid`} component={MileageExceptionDetail} />
     <Route path={`${props.match.path}`} component={MileageExceptionList} />
-   </Switch>
+  </Switch>
 );
 
 export const LookupRoutingComponents: React.SFC<RouteComponentProps> = props => (

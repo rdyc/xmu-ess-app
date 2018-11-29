@@ -21,11 +21,12 @@ export const CurrencyEditorView: React.SFC<CurrencyEditorProps> = props => {
 
   // init form values
   const initialValues: CurrencyFormData = {
-      // uid: undefined,
+    information: {
       name: undefined,
       symbol: undefined,
-      rate: 0,
+      rate: 1,
       isActive: false,
+    }
   };
 
   // New
@@ -46,10 +47,10 @@ export const CurrencyEditorView: React.SFC<CurrencyEditorProps> = props => {
       const data = response.data;
 
       // initialValues.uid = data.uid;
-      initialValues.name = data.name;
-      initialValues.symbol = data.symbol;
-      initialValues.rate = data.rate || 0;
-      initialValues.isActive = data.isActive;
+      initialValues.information.name = data.name;
+      initialValues.information.symbol = data.symbol;
+      initialValues.information.rate = data.rate || 1;
+      initialValues.information.isActive = data.isActive;
 
       return renderForm(initialValues);
     }

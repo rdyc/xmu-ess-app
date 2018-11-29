@@ -9,7 +9,7 @@ import {
   ICurrencyPostRequest, 
   ICurrencyPutRequest 
 } from '@lookup/classes/queries/currency';
-import { ICurrency, ICurrencyList } from '@lookup/classes/response';
+import { ICurrency, ICurrencyDetail, ICurrencyList } from '@lookup/classes/response';
 import { action } from 'typesafe-actions';
 
 export const enum CurrencyAction {
@@ -53,7 +53,7 @@ export const lookupCurrencyGetListDispose = () => action(CurrencyAction.GET_LIST
 
 // get by id
 export const lookupCurrencyGetByIdRequest = (request: ICurrencyGetByIdRequest) => action(CurrencyAction.GET_BY_ID_REQUEST, request);
-export const lookupCurrencyGetByIdSuccess = (response: IResponseCollection<ICurrency>) => action(CurrencyAction.GET_BY_ID_SUCCESS, response);
+export const lookupCurrencyGetByIdSuccess = (response: IResponseCollection<ICurrencyDetail>) => action(CurrencyAction.GET_BY_ID_SUCCESS, response);
 export const lookupCurrencyGetByIdError = (message: string) => action(CurrencyAction.GET_BY_ID_ERROR, message);
 export const lookupCurrencyGetByIdDispose = () => action(CurrencyAction.GET_BY_ID_DISPOSE);
 

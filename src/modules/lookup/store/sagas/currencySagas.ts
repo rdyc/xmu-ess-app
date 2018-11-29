@@ -1,10 +1,11 @@
-import { layoutAlertAdd, listBarLoading, listBarMetadata } from '@layout/store/actions';
+import { layoutAlertAdd } from '@layout/store/actions';
 import {
   CurrencyAction as Action,
   lookupCurrencyGetAllDispose,
   lookupCurrencyGetAllError,
   lookupCurrencyGetAllRequest,
   lookupCurrencyGetAllSuccess,
+  lookupCurrencyGetByIdDispose,
   lookupCurrencyGetByIdError,
   lookupCurrencyGetByIdRequest,
   lookupCurrencyGetByIdSuccess,
@@ -30,8 +31,7 @@ function* watchFetchAllRequest() {
       method: 'get',
       path: `/v1/lookup/currencies${objectToQuerystring(action.payload.filter)}`, 
       successEffects: (response: IApiResponse) => ([
-        put(lookupCurrencyGetAllSuccess(response.body)),
-        put(listBarMetadata(response.body.metadata))    
+        put(lookupCurrencyGetAllSuccess(response.body)), 
       ]), 
       failureEffects: (response: IApiResponse) => ([
         put(lookupCurrencyGetAllError(response.statusText)),
@@ -49,7 +49,6 @@ function* watchFetchAllRequest() {
         }))
       ]),
       finallyEffects: [
-        put(listBarLoading(false))
       ]
     });
   };
@@ -119,11 +118,10 @@ function* watchFetchPostRequest() {
   const worker = (action: ReturnType<typeof lookupCurrencyPostRequest>) => {
     return saiyanSaga.fetch({
       method: 'post',
-      path: `/v1/lookup/currencies${objectToQuerystring(action.payload)}`,
-      payload: action.payload.data,
+      path: `/v1/lookup/currencies${objectToQuerystring(action.payload.data)}`,
       successEffects: (response: IApiResponse) => ([
-        put(lookupCurrencyPostSuccess(response.body)),
-        put(lookupCurrencyGetAllDispose())
+        put(lookupCurrencyGetAllDispose()),
+        put(lookupCurrencyPostSuccess(response.body))
       ]),
       successCallback: (response: IApiResponse) => {
         action.payload.resolve(response.body.data);
@@ -171,8 +169,9 @@ function* watchFetchPutRequest() {
       path: `/v1/lookup/currencies/${action.payload.currencyUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => ([
+        put(lookupCurrencyGetAllDispose()),
+        put(lookupCurrencyGetByIdDispose()),
         put(lookupCurrencyPutSuccess(response.body)),
-        put(lookupCurrencyGetAllDispose())
       ]),
       successCallback: (response: IApiResponse) => {
         action.payload.resolve(response.body.data);

@@ -46,7 +46,7 @@ const currencySummary: React.SFC<AllProps> = props => (
         {...GlobalStyle.TextField.ReadOnly}
         margin="dense"
         label={props.intl.formatMessage(lookupMessage.currency.field.rate)}
-        value={props.data.rate || 0}
+        value={props.intl.formatNumber(props.data.rate || 0)}
         multiline
       />
       <FormControlLabel

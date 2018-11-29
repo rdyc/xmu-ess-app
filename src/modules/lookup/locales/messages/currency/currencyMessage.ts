@@ -37,6 +37,8 @@ export const currencyForm = defineMessages({
 export const currencyConfirm = defineMessages({
   modifyTitle: { id: `${prefix}.confirm.modify.title` },
   modifyDescription: { id: `${prefix}.confirm.modify.description` },
+  deleteTitle: { id: `${prefix}.confirm.delete.title` },
+  deleteDescription: { id: `${prefix}.confirm.delete.description` },
 });
 
 // field
@@ -54,7 +56,4 @@ export const currencyField = defineMessages({
   ActiveStatus: { id: `${prefix}.field.status` },
   isActive: { id: `${prefix}.field.isActive` },
   isNotActive: { id: `${prefix}.field.isNotActive` },
- 
-  infoTitle: { id: `${prefix}.field.info.title` },
-  infoSubHeader: { id: `${prefix}.field.info.subHeader` },
-});
+ });

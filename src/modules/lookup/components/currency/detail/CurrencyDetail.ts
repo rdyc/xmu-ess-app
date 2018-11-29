@@ -22,6 +22,7 @@ interface OwnHandler {
   handleOnModify: () => void;
   handleOnCloseDialog: () => void;
   handleOnConfirm: () => void;
+  handleOnDelete: () => void;
 }
 
 interface OwnState {
@@ -37,6 +38,7 @@ interface OwnState {
 interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
   setDefault: StateHandler<OwnState>;
   setModify: StateHandler<OwnState>;
+  setDelete: StateHandler<OwnState>;
 }
 
 interface OwnRouteParams {
@@ -64,8 +66,15 @@ const stateUpdaters: StateUpdaters<CurrencyDetailProps, OwnState, OwnStateUpdate
     dialogOpen: true,
     dialogTitle: props.intl.formatMessage(lookupMessage.currency.confirm.modifyTitle),
     dialogContent: props.intl.formatMessage(lookupMessage.currency.confirm.modifyDescription),
-    // dialogTitle: 'Modify?',
-    // dialogContent: 'Modify content.',
+    dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.disaggree),
+    dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.aggree)
+  }),
+  setDelete: (prevState: OwnState, props: CurrencyDetailProps) => (): Partial<OwnState> => ({
+    action: CurrencyUserAction.Delete,
+    dialogFullScreen: false,
+    dialogOpen: true,
+    dialogTitle: props.intl.formatMessage(lookupMessage.currency.confirm.deleteTitle),
+    dialogContent: props.intl.formatMessage(lookupMessage.currency.confirm.deleteDescription),
     dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.disaggree),
     dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.aggree)
   }),
@@ -83,6 +92,9 @@ const stateUpdaters: StateUpdaters<CurrencyDetailProps, OwnState, OwnStateUpdate
 const handlerCreators: HandleCreators<CurrencyDetailProps, OwnHandler> = {
   handleOnModify: (props: CurrencyDetailProps) => () => {
     props.setModify();
+  },
+  handleOnDelete: (props: CurrencyDetailProps) => () => {
+    props.setDelete();
   },
   handleOnCloseDialog: (props: CurrencyDetailProps) => () => {
     props.setDefault();
@@ -102,6 +114,7 @@ const handlerCreators: HandleCreators<CurrencyDetailProps, OwnHandler> = {
 
     const actions = [
       CurrencyUserAction.Modify,
+      CurrencyUserAction.Delete
     ];
 
     if (actions.indexOf(props.action) !== -1) {
@@ -111,7 +124,11 @@ const handlerCreators: HandleCreators<CurrencyDetailProps, OwnHandler> = {
         case CurrencyUserAction.Modify:
           next = '/lookup/currency/form';
           break;
-
+        
+        case CurrencyUserAction.Delete:
+          next = '';
+          break;
+          
         default:
           break;
       }

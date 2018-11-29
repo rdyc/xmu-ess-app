@@ -3,7 +3,7 @@ import { FormMode } from '@generic/types';
 import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
-import { ILookupCurrencyPutPayload } from '@lookup/classes/request/currency';
+import { ILookupCurrencyPostPayload, ILookupCurrencyPutPayload } from '@lookup/classes/request/currency';
 import { ICurrency } from '@lookup/classes/response';
 import { WithLookupCurrency, withLookupCurrency } from '@lookup/hoc/currency/withLookupCurrency';
 import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
@@ -22,7 +22,6 @@ interface OwnHandlers {
   handleSubmitSuccess: (result: any, dispatch: Dispatch<any>) => void;
   handleSubmitFail: (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => void;
 }
-
 interface OwnRouteParams {
   currencyUid: string;
 }
@@ -47,20 +46,37 @@ export type CurrencyEditorProps
   & OwnState
   & OwnStateUpdaters;
 
+const createProps: mapper<CurrencyEditorProps, OwnState> = (props: CurrencyEditorProps): OwnState => {
+  const { history } = props;
+
+  const state = history.location.state;
+
+  return {
+    formMode: state ? FormMode.Edit : FormMode.New,
+    currencyUid: state ? state.currencyUid : undefined
+  };
+};
+
+const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
+  stateUpdate: (prevState: OwnState) => (newState: any) => ({
+    ...prevState,
+    ...newState
+  })
+};
+
 const handlerCreators: HandleCreators<CurrencyEditorProps, OwnHandlers> = {
   handleValidate: (props: CurrencyEditorProps) => (formData: CurrencyFormData) => {
     const errors = {
-      
     };
 
     const requiredFields = [
-      'name', 'isActive', 'symbol',
-      'rate'
+      'name', 'symbol',
+      'rate', 'isActive',
     ];
 
     requiredFields.forEach(field => {
       if (!formData[field] || isNullOrUndefined(formData[field])) {
-        errors[field] = props.intl.formatMessage({ id: `lookup.field.${field}.required` });
+        errors[field] = props.intl.formatMessage({ id: `lookup.currency.field.${field}.required` });
       }
     });
 
@@ -76,7 +92,7 @@ const handlerCreators: HandleCreators<CurrencyEditorProps, OwnHandlers> = {
     }
 
     const payload = {
-      ...formData,
+      ...formData.information,
     };
 
     // creating
@@ -85,20 +101,16 @@ const handlerCreators: HandleCreators<CurrencyEditorProps, OwnHandlers> = {
         createRequest({
           resolve,
           reject,
-          symbol: formData.symbol || '',
-          name: formData.name || '',
-          rate: formData.rate || 0,
-          isActive: formData.isActive || false,
-          data: {},
+          data: payload as ILookupCurrencyPostPayload,
         });
       });
     }
 
     // update checking
     if (!currencyUid) {
-      // const message = intl.formatMessage(llookup.currency.message.emptyUid);
+      const message = props.intl.formatMessage(lookupMessage.currency.message.emptyCurrencyUid);
 
-      return Promise.reject('empty Currency ID');
+      return Promise.reject(message);
     }
 
     if (formMode === FormMode.Edit) {
@@ -133,7 +145,7 @@ const handlerCreators: HandleCreators<CurrencyEditorProps, OwnHandlers> = {
       time: new Date()
     });
 
-    history.push('/lookup/currency/');
+    history.push(`/lookup/currency/${response.uid}`);
   },
   handleSubmitFail: (props: CurrencyEditorProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
     const { formMode, intl } = props;
@@ -166,17 +178,6 @@ const handlerCreators: HandleCreators<CurrencyEditorProps, OwnHandlers> = {
   }
 };
 
-const createProps: mapper<CurrencyEditorProps, OwnState> = (props: CurrencyEditorProps): OwnState => ({
-  formMode: FormMode.New
-});
-
-const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
-  stateUpdate: (prevState: OwnState) => (newState: any) => ({
-    ...prevState,
-    ...newState
-  })
-};
-
 const lifecycles: ReactLifeCycleFunctions<CurrencyEditorProps, {}> = {
   componentDidMount() {
     const { layoutDispatch, intl, history, stateUpdate } = this.props;
@@ -192,15 +193,10 @@ const lifecycles: ReactLifeCycleFunctions<CurrencyEditorProps, {}> = {
       return;
     }
 
-    stateUpdate({
-      formMode: FormMode.New,
-    });
-
     if (!isNullOrUndefined(history.location.state)) {
 
-      if (!isNullOrUndefined(history.location.state.uid)) {
         view.title = intl.formatMessage(lookupMessage.currency.form.editTitle),
-          view.subTitle = intl.formatMessage(lookupMessage.currency.form.editSubTitle),
+        view.subTitle = intl.formatMessage(lookupMessage.currency.form.editSubTitle),
 
         stateUpdate({
           formMode: FormMode.Edit,
@@ -210,14 +206,14 @@ const lifecycles: ReactLifeCycleFunctions<CurrencyEditorProps, {}> = {
         loadDetailRequest({
           currencyUid: history.location.state.uid
         });
-      }
+      
     }
 
     layoutDispatch.changeView({
       uid: AppMenu.LookupCurrency,
       parentUid: AppMenu.Lookup,
-      title: intl.formatMessage({ id: view.title }),
-      subTitle: intl.formatMessage({ id: view.subTitle })
+      title: view.title,
+      subTitle: view.subTitle
     });
 
     layoutDispatch.navBackShow();
@@ -236,7 +232,8 @@ const lifecycles: ReactLifeCycleFunctions<CurrencyEditorProps, {}> = {
     lookupCurrencyDispatch.updateDispose();
   }
 };
-export default compose<CurrencyEditorProps, {}>(
+
+export const CurrencyEditor = compose<CurrencyEditorProps, {}>(
   withUser,
   withLayout,
   withAppBar,

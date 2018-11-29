@@ -5,9 +5,10 @@ import { lookupCurrencyPostReducer } from './lookupCurrencyPostReducer';
 import { lookupCurrencyPutReducer } from './lookupCurrencyPutReducer';
 
 export const lookupCurrencyReducers = {
-  lookupCurrencyGetAll: currencyGetAllReducer,
-  lookupCurrencyGetList: currencyGetListReducer,
-  lookupCurrencyGetById: currencyGetByIdReducer,
-  lookupCurrencyPost: lookupCurrencyPostReducer,
-  lookupCurrencyPut: lookupCurrencyPutReducer,
+  currencyGetAll: currencyGetAllReducer,
+  currencyGetList: currencyGetListReducer,
+  currencyGetById: currencyGetByIdReducer,
+  currencyPost: lookupCurrencyPostReducer,
+  currencyPut: lookupCurrencyPutReducer,
+  // currencyDelete: lookupCurrencyDeleteReducer
 };

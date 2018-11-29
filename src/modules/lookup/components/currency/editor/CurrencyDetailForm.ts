@@ -1,4 +1,5 @@
 import { FormMode } from '@generic/types';
+import { CheckBox } from '@layout/components/input/checkBox';
 import { InputNumber } from '@layout/components/input/number';
 import { InputText } from '@layout/components/input/text';
 import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
@@ -18,7 +19,6 @@ interface OwnHandlers {
 
 export type CurrencyDetailFormProps
   = OwnProps
-  // & WithUser
   & OwnHandlers
   & InjectedIntlProps;
 
@@ -32,7 +32,6 @@ const handlerCreators: HandleCreators<CurrencyDetailFormProps, OwnHandlers> = {
     switch (fieldName) {
       case 'uid':
         fieldProps = {
-          disabled: true,
           label: props.intl.formatMessage(lookupMessage.currency.field.uid),
           component: InputText
         };
@@ -40,24 +39,16 @@ const handlerCreators: HandleCreators<CurrencyDetailFormProps, OwnHandlers> = {
 
       case 'name':
         fieldProps = {
-          disabled: true,
-          label: props.intl.formatMessage(lookupMessage.currency.field.uid),
+          label: props.intl.formatMessage(lookupMessage.currency.field.name),
+          placeholder: props.intl.formatMessage(lookupMessage.currency.field.namePlaceholder),
           component: InputText
         };
         break;
 
       case 'symbol':
         fieldProps = {
-          disabled: true,
-          label: props.intl.formatMessage(lookupMessage.currency.field.uid),
-          component: InputText
-        };
-        break;
-
-      case 'rate':
-        fieldProps = {
-          disabled: true,
-          label: props.intl.formatMessage(lookupMessage.currency.field.uid),
+          label: props.intl.formatMessage(lookupMessage.currency.field.symbol),
+          placeholder: props.intl.formatMessage(lookupMessage.currency.field.symbolPlaceholder),
           component: InputText
         };
         break;
@@ -68,7 +59,13 @@ const handlerCreators: HandleCreators<CurrencyDetailFormProps, OwnHandlers> = {
           label: props.intl.formatMessage(lookupMessage.currency.field.rate),
           placeholder: props.intl.formatMessage(lookupMessage.currency.field.ratePlaceholder),
           component: InputNumber,
-          disabled: true
+        };
+        break;
+
+      case 'isActive':
+        fieldProps = {
+          label: props.intl.formatMessage(lookupMessage.currency.field.ActiveStatus),
+          component: CheckBox,
         };
         break;
         

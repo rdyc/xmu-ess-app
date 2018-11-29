@@ -4,3 +4,4 @@ export * from './lookupCurrencyGetByIdReducer';
 export * from './lookupCurrencyPostReducer';
 export * from './lookupCurrencyPutReducer';
 // export * from './lookupCurrencyDeleteReducer';
+export * from './lookupCurrencyReducers';

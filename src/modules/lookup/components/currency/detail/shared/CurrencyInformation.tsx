@@ -20,8 +20,8 @@ const currencyInformation: React.SFC<AllProps> = props => {
   const render = (
     <Card square >
       <CardHeader
-        title={intl.formatMessage(lookupMessage.currency.field.infoTitle)}
-        subheader={intl.formatMessage(lookupMessage.currency.field.infoSubHeader)}
+        title={intl.formatMessage(lookupMessage.currency.section.infoTitle)}
+        subheader={intl.formatMessage(lookupMessage.currency.section.infoSubHeader)}
         // title={'Currency Information'}
         // subheader={'Currency main information'}
       />
@@ -53,7 +53,7 @@ const currencyInformation: React.SFC<AllProps> = props => {
           margin="dense"
           label={intl.formatMessage(lookupMessage.currency.field.rate)}
           // label={'Rate'}
-          value={data.rate || 0}
+          value={props.intl.formatNumber(data.rate || 0)}
         />
         <FormControlLabel
           control={<Checkbox checked={props.data.isActive} />}
