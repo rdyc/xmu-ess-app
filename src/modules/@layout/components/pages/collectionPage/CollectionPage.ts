@@ -31,6 +31,7 @@ export interface CollectionConfig<Tresponse, Tinner> {
     title: string;
     description: string;
   };
+  parentUrl?: (props: Tinner) => string;
   fields: ICollectionValue[];
   fieldTranslator?: (find: string, field: ICollectionValue) => string;
   hasMore?: boolean | false;
@@ -39,6 +40,7 @@ export interface CollectionConfig<Tresponse, Tinner> {
   searchStatus?: (props: Tinner) => boolean;
   hasSelection?: boolean | false;
   notSelectionTypes?: string[] | [];
+  hasNavBack?: boolean | false;
   onProcessSelection?: (values: string[], callback: CollectionHandler) => void;
   showActionCentre?: boolean | false;
   filter?: IBasePagingFilter | IBaseFilter;
@@ -54,8 +56,8 @@ export interface CollectionConfig<Tresponse, Tinner> {
     senary: string;
   };
   onRowRender?: (item: Tresponse, index: number) => JSX.Element;
-  summaryComponent: (item: Tresponse) => JSX.Element;
-  actionComponent?: (item: Tresponse, callback: CollectionHandler) => JSX.Element;
+  summaryComponent: (item: Tresponse, props?: Tinner) => JSX.Element;
+  actionComponent?: (item: Tresponse, callback: CollectionHandler, props?: Tinner) => JSX.Element;
 }
 
 interface OwnOption {
@@ -283,8 +285,9 @@ const lifecycles: ReactLifeCycleFunctions<CollectionPageProps, OwnState> = {
         title: page.title,
         subTitle: page.description,
       },
+      parentUrl: this.props.config.parentUrl ? this.props.config.parentUrl(this.props.connectedProps) : undefined,
       status: {
-        isNavBackVisible: false,
+        isNavBackVisible: this.props.config.hasNavBack || false,
         isSearchVisible: this.props.config.hasSearching,
         isActionCentreVisible: this.props.config.showActionCentre,
         isMoreVisible: this.props.config.hasMore,
