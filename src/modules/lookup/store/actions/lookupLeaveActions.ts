@@ -1,5 +1,5 @@
 import { IResponseCollection, IResponseSingle } from '@generic/interfaces';
-import { ILookupLeaveGetAllRequest, ILookupLeaveGetDetailRequest, ILookupLeaveGetListRequest, ILookupLeavePutRequest } from '@lookup/classes/queries';
+import { ILookupLeaveGetAllRequest, ILookupLeaveGetDetailRequest, ILookupLeaveGetListRequest, ILookupLeavePostRequest, ILookupLeavePutRequest } from '@lookup/classes/queries';
 import { ILookupLeave, ILookupLeaveDetail, ILookupLeaveList } from '@lookup/classes/response';
 import { action } from 'typesafe-actions';
 
@@ -16,6 +16,10 @@ export const enum LookupLeaveAction {
   GET_BY_ID_SUCCESS = '@@leave/GET_BY_ID_SUCCESS',
   GET_BY_ID_ERROR = '@@leave/GET_BY_ID_ERROR',
   GET_BY_ID_DISPOSE = '@@leave/GET_BY_ID_DISPOSE',
+  POST_REQUEST = '@@leave/POST_REQUEST',
+  POST_SUCCESS = '@@leave/POST_SUCCESS',
+  POST_ERROR = '@@leave/POST_ERROR',
+  POST_DISPOSE = '@@leave/POST_DISPOSE',
   PUT_REQUEST = '@@leave/PUT_REQUEST',
   PUT_SUCCESS = '@@leave/PUT_SUCCESS',
   PUT_ERROR = '@@leave/PUT_ERROR',
@@ -39,6 +43,12 @@ export const lookupLeaveGetByIdRequest = (request: ILookupLeaveGetDetailRequest)
 export const lookupLeaveGetByIdSuccess = (response: IResponseCollection<ILookupLeaveDetail>) => action(LookupLeaveAction.GET_BY_ID_SUCCESS, response);
 export const lookupLeaveGetByIdError = (message: string) => action(LookupLeaveAction.GET_BY_ID_ERROR, message);
 export const lookupLeaveGetByIdDispose = () => action(LookupLeaveAction.GET_BY_ID_DISPOSE);
+
+// post
+export const lookupLeavePostRequest = (request: ILookupLeavePostRequest) => action(LookupLeaveAction.POST_REQUEST, request);
+export const lookupLeavePostSuccess = (response: IResponseSingle<ILookupLeave>) => action(LookupLeaveAction.POST_SUCCESS, response);
+export const lookupLeavePostError = (message: string) => action(LookupLeaveAction.POST_ERROR, message);
+export const lookupLeavePostDispose = () => action(LookupLeaveAction.POST_DISPOSE);
 
 // put
 export const lookupLeavePutRequest = (request: ILookupLeavePutRequest) => action(LookupLeaveAction.PUT_REQUEST, request);

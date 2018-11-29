@@ -3,7 +3,8 @@ import {
   ILookupLeaveGetAllRequest,
   ILookupLeaveGetDetailRequest,
   ILookupLeaveGetListRequest,
-  ILookupLeavePutRequest
+  ILookupLeavePostRequest,
+  ILookupLeavePutRequest,
 } from '@lookup/classes/queries';
 import { ILookupLeave, ILookupLeaveDetail, ILookupLeaveList } from '@lookup/classes/response';
 import {
@@ -13,6 +14,8 @@ import {
   lookupLeaveGetByIdRequest,
   lookupLeaveGetListDispose,
   lookupLeaveGetListRequest,
+  lookupLeavePostDispose,
+  lookupLeavePostRequest,
   lookupLeavePutDispose,
   lookupLeavePutRequest,
 } from '@lookup/store/actions';
@@ -30,6 +33,8 @@ interface PropsFromState {
 interface PropsFromDispatch {
   lookupLeaveDispatch: {
     // command
+    createRequest: typeof lookupLeavePostRequest;
+    createDispose: typeof lookupLeavePostDispose;
     updateRequest: typeof lookupLeavePutRequest;
     updateDispose: typeof lookupLeavePutDispose;
 
@@ -55,6 +60,9 @@ const mapStateToProps = ({ lookupLeaveGetAll, lookupLeaveGetList, lookupLeaveGet
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   lookupLeaveDispatch: {
+    // command
+    createRequest: (request: ILookupLeavePostRequest) => dispatch(lookupLeavePostRequest(request)),
+    createDispose: () => dispatch(lookupLeavePostDispose()),
     updateRequest: (request: ILookupLeavePutRequest) => dispatch(lookupLeavePutRequest(request)),
     updateDispose: () => dispatch(lookupLeavePutDispose()),
     

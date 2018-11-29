@@ -18,8 +18,6 @@ interface OwnProps {
 }
 
 interface FormValueProps {
-  formIsRegularType: boolean | false;
-  formRegularType: string | null;
   formValue: string | null;
 }
 

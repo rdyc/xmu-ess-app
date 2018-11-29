@@ -6,6 +6,7 @@ import { LookupHolidayDetail } from './holiday/detail/LookupHolidayDetail';
 import LookupHolidayEditor from './holiday/editor/LookupHolidayEditor';
 import { LookupHolidayList } from './holiday/list/LookupHolidayList';
 import { LookupLeaveDetail } from './leave/detail/LookupLeaveDetail';
+import LookupLeaveEditor from './leave/editor/LookupLeaveEditor';
 import { LookupLeaveList } from './leave/list/LookupLeaveList';
 import { MileageExceptionDetail } from './mileageException/detail/MileageExceptionDetail';
 
@@ -26,6 +27,7 @@ const holiday = (props: RouteComponentProps) => (
 
 const leave = (props: RouteComponentProps) => (
   <Switch>
+    <Route path={`${props.match.path}/form`} component={LookupLeaveEditor} />
     <Route path={`${props.match.path}/:leaveUid`} component={LookupLeaveDetail} />
     <Route path={`${props.match.path}`} component={LookupLeaveList} />
    </Switch>
