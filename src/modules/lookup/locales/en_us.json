@@ -60,6 +60,17 @@
   "lookup.currency.field.modifiedDate": "Modified at",
 
   "lookup.currency.confirm.modify.title": "Modify Confirmation",
-  "lookup.currency.confirm.modify.description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+  "lookup.currency.confirm.modify.description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  
+  "lookup.currency.confirm.delete.title": "Delete Confirmation",
+  "lookup.currency.confirm.delete.description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  
+  "lookup.currency.message.create.success": "New currency has been created",
+  "lookup.currency.message.create.failure": "Submission failed",
+  "lookup.currency.message.update.success": "Currency has been updated",
+  "lookup.currency.message.update.failure": "Update submission failed",
+  "lookup.currency.message.delete.success": "This currency has been deleted from system",
+  "lookup.currency.message.delete.failure": "Delete confirmation failed",
+  "lookup.currency.message.empty.currencyUid": "Currency ID not found"
 
 }
