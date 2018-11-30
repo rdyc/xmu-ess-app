@@ -4,7 +4,7 @@ import { ICompanyList } from '@lookup/classes/response';
 export interface ISystemLimitList {
   uid: string;
   companyUid: string;
-  company: ICompanyList | null;
+  company: ICompanyList;
   categoryType: string;
   category: ICommonSystem | null;
   days: number;
