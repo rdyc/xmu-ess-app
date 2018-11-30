@@ -126,6 +126,6 @@
   "purchase.form.s_approval.newSubTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
   "purchase.list.readySettle": "READY TO SETTLE",
 
-  "purchase.complement.value.idr": "IDR (Rp) ",
-  "purchase.complement.value.usd": "USD ($) "
+  "purchase.complement.symbol.idr": "IDR (Rp) ",
+  "purchase.complement.symbol.usd": "USD ($) "
 }
