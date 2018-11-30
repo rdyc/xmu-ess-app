@@ -18,6 +18,10 @@ export const PositionDetailFormView: React.SFC<PositionDetailFormProps> = props 
     if (formMode === FormMode.New && fields.indexOf(fieldName) !== -1) {
       return null;
     }
+    const fieldnull = ['information'];
+    if (fieldnull.indexOf(fieldName) !== -1) {
+      return null;
+    }
 
     const fieldIsAllow = ['isAllowMultiple'];
     if (fieldIsAllow.indexOf(fieldName) !== -1) {

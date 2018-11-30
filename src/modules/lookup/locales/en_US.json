@@ -205,7 +205,7 @@
   "lookup.position.field.inactiveDate.required": "Date required",
   "lookup.position.field.inactiveDate.placeholder": "input any date",
   "lookup.position.field.isExpired": "Allow Member?",
-  "lookup.position.field.isExpired.isExpired": "This position has been expired",
+  "lookup.position.field.isExpired.isExpired": "This position has expired",
   "lookup.position.field.isExpired.isNotExpired": "This position is still available",
   "lookup.position.field.createdBy": "Created By",
   "lookup.position.field.modifiedBy": "Modified by",

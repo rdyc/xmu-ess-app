@@ -118,7 +118,8 @@ function* watchFetchPostRequest() {
   const worker = (action: ReturnType<typeof positionPostRequest>) => {
     return saiyanSaga.fetch({
       method: 'post',
-      path: `/v1/lookup/currencies${objectToQuerystring(action.payload.data)}`,
+      path: `/v1/lookup/positions/${action.payload.companyUid}`,
+      payload: action.payload.data,
       successEffects: (response: IApiResponse) => ([
         put(positionGetAllDispose()),
         put(positionPostSuccess(response.body))
@@ -166,11 +167,11 @@ function* watchFetchPutRequest() {
   const worker = (action: ReturnType<typeof positionPutRequest>) => {
     return saiyanSaga.fetch({
       method: 'put',
-      path: `/v1/lookup/currencies/${action.payload.positionUid}`,
+      path: `/v1/lookup/positions/${action.payload.companyUid}/${action.payload.positionUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => ([
-        put(positionGetAllDispose()),
         put(positionGetByIdDispose()),
+        put(positionGetAllDispose()),
         put(positionPutSuccess(response.body)),
       ]),
       successCallback: (response: IApiResponse) => {
@@ -216,7 +217,7 @@ function* watchFetchDeleteRequest() {
   const worker = (action: ReturnType<typeof positionPutRequest>) => {
     return saiyanSaga.fetch({
       method: 'delete',
-      path: `/v1/lookup/currencies/`,
+      path: `/v1/lookup/positions/`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => ([
         put(positionGetAllDispose()),

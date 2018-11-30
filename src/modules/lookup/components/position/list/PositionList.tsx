@@ -8,6 +8,7 @@ import {
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
+import { GlobalFormat } from '@layout/types';
 import { IPosition } from '@lookup/classes/response/';
 import { PositionField, PositionUserAction } from '@lookup/classes/types';
 import { PositionSummary } from '@lookup/components/position/detail/shared/PositionSummary';
@@ -108,13 +109,13 @@ const config: CollectionConfig<IPosition, AllProps> = {
   onBind: (item: IPosition, index: number, props: AllProps) => ({
     key: index,
     primary: `${item.uid}` ||  '',
-    secondary: `${item.company && item.company.name}` || '',
-    tertiary: `${item.name}` || '',
+    secondary: `${item.name}` || '',
+    tertiary: `${item.company && item.company.name}` || '',
     quaternary: item.isAllowMultiple ?
         props.intl.formatMessage(lookupMessage.position.field.isAllowed) :
         props.intl.formatMessage(lookupMessage.position.field.isNotAllowed)
     ,
-    quinary: item.uid || '',
+    quinary: item.inactiveDate ? props.intl.formatDate(item.inactiveDate, GlobalFormat.Date) : '',
     senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
   }),
 

@@ -1,6 +1,8 @@
+import { SelectSystemOption } from '@common/components/select';
 import { FormMode } from '@generic/types';
-import { InputNumber } from '@layout/components/input/number';
+import { InputDate } from '@layout/components/input/date';
 import { InputText } from '@layout/components/input/text';
+import { SelectLookupCompany } from '@lookup/components/company/select';
 import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose, HandleCreators, withHandlers } from 'recompose';
@@ -26,7 +28,7 @@ const handlerCreators: HandleCreators<PositionDetailFormProps, OwnHandlers> = {
     
     // const fieldName = name.replace('information.', '');
 
-    let fieldProps: any = {};
+    let fieldProps: SelectSystemOption & any = {};
 
     // switch (fieldName) {
     switch (name) {
@@ -35,6 +37,13 @@ const handlerCreators: HandleCreators<PositionDetailFormProps, OwnHandlers> = {
           disabled: true,
           label: props.intl.formatMessage(lookupMessage.position.field.uid),
           component: InputText,
+        };
+        break;
+
+      case 'companyUid':
+        fieldProps = {
+          label: props.intl.formatMessage(lookupMessage.position.field.companyUid),
+          component: SelectLookupCompany,
         };
         break;
 
@@ -57,13 +66,13 @@ const handlerCreators: HandleCreators<PositionDetailFormProps, OwnHandlers> = {
         };
         break;
 
-      case 'date':
+      case 'inactiveDate':
         fieldProps = {
-          type: 'number',
+          type: 'date',
           required: true,
           label: props.intl.formatMessage(lookupMessage.position.field.inactiveDate),
           placeholder: props.intl.formatMessage(lookupMessage.position.field.inactiveDatePlaceholder),
-          component: InputNumber,
+          component: InputDate,
         };
         break;
 

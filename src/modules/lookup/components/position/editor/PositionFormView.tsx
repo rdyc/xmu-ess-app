@@ -9,7 +9,9 @@ export const PositionFormView: React.SFC<PositionFormProps> = props => {
   
   const { formMode, initialValues } = props;
 
-  const fields = Object.getOwnPropertyNames(initialValues.information);
+  const field = Object.getOwnPropertyNames(initialValues);
+  const fieldinfo = Object.getOwnPropertyNames(initialValues.information);
+  const fields = fieldinfo.concat(field);
 
   const componentInformation = (context: BaseFieldsProps) => (
     <PositionDetailForm

@@ -72,7 +72,7 @@ const handlerCreators: HandleCreators<PositionEditorProps, OwnHandlers> = {
       information: {}
     };
     const requiredFields = [
-      'name', 'symbol',
+      'companyUid', 'name', 'symbol',
       'rate',
     ];
 
@@ -92,7 +92,6 @@ const handlerCreators: HandleCreators<PositionEditorProps, OwnHandlers> = {
     if (!user) {
       return Promise.reject('user was not found');
     }
-
     const payload = {
       ...formData,
     };
