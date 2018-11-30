@@ -21,12 +21,13 @@ export const PositionEditorView: React.SFC<PositionEditorProps> = props => {
 
   // init form values
   const initialValues: PositionFormData = {
+    uid: undefined,
+    companyUid: undefined,
     information: {
-      uid: undefined,
       name: undefined,
-      symbol: undefined,
-      rate: 1,
-      isActive: false,
+      description: undefined,
+      inactiveDate: undefined,
+      isAllowMultiple: false,
     }
   };
 
@@ -47,11 +48,12 @@ export const PositionEditorView: React.SFC<PositionEditorProps> = props => {
       // todo: replace values with response data
       const data = response.data;
 
-      initialValues.information.uid = data.uid;
+      initialValues.uid = data.uid;
+      initialValues.companyUid = data.companyUid;
       initialValues.information.name = data.name;
-      initialValues.information.symbol = data.symbol;
-      initialValues.information.rate = data.rate || 1;
-      initialValues.information.isActive = data.isActive;
+      initialValues.information.description = data.description || '';
+      initialValues.information.inactiveDate = data.inactiveDate || '';
+      initialValues.information.isAllowMultiple = data.isAllowMultiple;
 
       return renderForm(initialValues);
     }

@@ -11,7 +11,7 @@ export type PositionFormData = {
   information: {
     name: string | undefined,
     description: string | null | undefined,
-    inactiveDate: number | undefined,
+    inactiveDate: string | undefined,
     isAllowMultiple: boolean  | undefined,
   }
 };

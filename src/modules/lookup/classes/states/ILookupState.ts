@@ -23,7 +23,7 @@ import {
   IMileageExceptionPutRequest,
   IPositionGetAllRequest,
   IPositionGetByIdRequest,
-  IPositionListRequest,
+  IPositionGetListRequest,
   IPositionPostRequest,
   IPositionPutRequest,
   ISystemLimitAllRequest,
@@ -128,7 +128,7 @@ export interface ILookupState {
   menuGetById: IQuerySingleState<IMenuGetByIdRequest, IMenuDetail>;
 
   positionGetAll: IQueryCollectionState<IPositionGetAllRequest, IPosition>;
-  positionGetList: IQueryCollectionState<IPositionListRequest, IPositionList>;
+  positionGetList: IQueryCollectionState<IPositionGetListRequest, IPositionList>;
   positionGetById: IQuerySingleState<IPositionGetByIdRequest, IPositionDetail>;
   positionPost: IQuerySingleState<IPositionPostRequest, IPosition>;
   positionPut: IQuerySingleState<IPositionPutRequest, IPosition>;

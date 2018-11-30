@@ -14,10 +14,10 @@ import {
   leavePutReducer,
   menuGetAllReducer,
   menuGetByIdReducer,
+  // positionGetAllReducer,
+  // positionGetByIdReducer,
+  // positionGetListReducer,
   menuGetListReducer,
-  positionGetAllReducer,
-  positionGetByIdReducer,
-  positionGetListReducer,
 } from '@lookup/store/reducers';
 
 import { lookupCompanyReducers } from './company';
@@ -25,6 +25,7 @@ import { lookupCurrencyReducers } from './currency';
 import { lookupCustomerReducers } from './customer';
 import { leaveReducers } from './leave';
 import { mileageExceptionReducers } from './mileageException/mileageExceptionReducers';
+import { lookupPositionReducers } from './position';
 import { lookupRoleReducers } from './role';
 import { systemLimitReducers } from './systemLimit';
 
@@ -32,6 +33,7 @@ const lookupReducers = {
   ...lookupCustomerReducers,
   ...lookupCompanyReducers,
   ...lookupRoleReducers,
+  ...lookupPositionReducers,
   ...leaveReducers,
   ...mileageExceptionReducers,
   ...systemLimitReducers,
@@ -46,9 +48,9 @@ const lookupReducers = {
   menuGetById: menuGetByIdReducer,
   menuGetList: menuGetListReducer,
 
-  positionGetAll: positionGetAllReducer,
-  positionGetById: positionGetByIdReducer,
-  positionGetList: positionGetListReducer,
+  // positionGetAll: positionGetAllReducer,
+  // positionGetById: positionGetByIdReducer,
+  // positionGetList: positionGetListReducer,
 
   // currencyGetAll: currencyGetAllReducer,
   // currencyGetList: currencyGetListReducer,
