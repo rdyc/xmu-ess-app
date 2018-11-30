@@ -55,6 +55,7 @@ const config: SingleConfig<IPositionDetail, PositionDetailProps> = {
       // when purchaseUid was changed or response are empty or force to reload
       if ((request && request.positionUid !== props.match.params.positionUid) || !response || forceReload) {
         loadDetailRequest({
+          companyUid: '',
           positionUid: props.match.params.positionUid
         });
       } else {

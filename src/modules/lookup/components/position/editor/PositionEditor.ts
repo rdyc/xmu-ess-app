@@ -3,9 +3,9 @@ import { FormMode } from '@generic/types';
 import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
-import { ILookupPositionPostPayload, ILookupPositionPutPayload } from '@lookup/classes/request/position';
+import { IPositionPostPayload, IPositionPutPayload } from '@lookup/classes/request';
 import { IPosition } from '@lookup/classes/response';
-import { WithLookupPosition, withLookupPosition } from '@lookup/hoc/position/withLookupPosition';
+import { WithLookupPosition, withLookupPosition } from '@lookup/hoc/withLookupPosition';
 import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
@@ -23,11 +23,13 @@ interface OwnHandlers {
   handleSubmitFail: (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => void;
 }
 interface OwnRouteParams {
+  companyUid: string;
   positionUid: string;
 }
 
 interface OwnState {
   formMode: FormMode;
+  companyUid?: string | undefined;
   positionUid?: string | undefined;
 }
 
@@ -83,7 +85,7 @@ const handlerCreators: HandleCreators<PositionEditorProps, OwnHandlers> = {
     return errors;
   },
   handleSubmit: (props: PositionEditorProps) => (formData: PositionFormData) => {
-    const { formMode, positionUid } = props;
+    const { formMode, positionUid, companyUid } = props;
     const { user } = props.userState;
     const { createRequest, updateRequest } = props.lookupPositionDispatch;
 
@@ -92,7 +94,7 @@ const handlerCreators: HandleCreators<PositionEditorProps, OwnHandlers> = {
     }
 
     const payload = {
-      ...formData.information,
+      ...formData,
     };
 
     // creating
@@ -101,12 +103,19 @@ const handlerCreators: HandleCreators<PositionEditorProps, OwnHandlers> = {
         createRequest({
           resolve,
           reject,
-          data: payload as ILookupPositionPostPayload,
+          companyUid: payload.companyUid || '',
+          data: payload.information as IPositionPostPayload,
         });
       });
     }
 
     // update checking
+    if (!companyUid) {
+      const message = props.intl.formatMessage(lookupMessage.position.message.emptyCompanyUid);
+
+      return Promise.reject(message);
+    }
+
     if (!positionUid) {
       const message = props.intl.formatMessage(lookupMessage.position.message.emptyPositionUid);
 
@@ -118,8 +127,9 @@ const handlerCreators: HandleCreators<PositionEditorProps, OwnHandlers> = {
         updateRequest({
           resolve,
           reject,
+          companyUid: payload.companyUid || companyUid,
           positionUid: payload.uid || positionUid,
-          data: payload as ILookupPositionPutPayload,
+          data: payload.information as IPositionPutPayload,
         });
       });
     }
@@ -204,6 +214,7 @@ const lifecycles: ReactLifeCycleFunctions<PositionEditorProps, {}> = {
         });
 
         loadDetailRequest({
+          companyUid: history.location.state.companyUid,
           positionUid: history.location.state.uid
         });
       

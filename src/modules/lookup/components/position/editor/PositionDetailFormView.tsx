@@ -19,8 +19,8 @@ export const PositionDetailFormView: React.SFC<PositionDetailFormProps> = props 
       return null;
     }
 
-    const fieldIsActive = ['isExpired'];
-    if (fieldIsActive.indexOf(fieldName) !== -1) {
+    const fieldIsExpired = ['isExpired'];
+    if (fieldIsExpired.indexOf(fieldName) !== -1) {
       return (
         <FormControlLabel
           {...fieldProps}

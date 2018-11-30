@@ -26,9 +26,7 @@ const config: CollectionConfig<IPosition, AllProps> = {
     uid: AppMenu.LookupPosition,
     parentUid: AppMenu.Lookup,
     title: props.intl.formatMessage(lookupMessage.position.page.listTitle),
-    // title: 'Position Mock Up',
     description: props.intl.formatMessage(lookupMessage.position.page.listTitle),
-    // description: 'Position Mock Up',
   }),
 
   // top bar
@@ -109,12 +107,12 @@ const config: CollectionConfig<IPosition, AllProps> = {
   },
   onBind: (item: IPosition, index: number, props: AllProps) => ({
     key: index,
-    primary: `${item.symbol}` ||  '',
-    secondary: `${item.rate}` || '',
+    primary: `${item.uid}` ||  '',
+    secondary: `${item.company && item.company.name}` || '',
     tertiary: `${item.name}` || '',
-    quaternary: item.isActive ?
-        props.intl.formatMessage(lookupMessage.position.field.isActive) :
-        props.intl.formatMessage(lookupMessage.position.field.isNotActive)
+    quaternary: item.isAllowMultiple ?
+        props.intl.formatMessage(lookupMessage.position.field.isAllowed) :
+        props.intl.formatMessage(lookupMessage.position.field.isNotAllowed)
     ,
     quinary: item.uid || '',
     senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'

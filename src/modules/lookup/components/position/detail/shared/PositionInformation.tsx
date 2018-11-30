@@ -1,7 +1,9 @@
+import { GlobalFormat } from '@layout/types';
 import { GlobalStyle } from '@layout/types/GlobalStyle';
 import { IPositionDetail } from '@lookup/classes/response';
 import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
-import { Card, CardContent, CardHeader, Checkbox, FormControlLabel, TextField } from '@material-ui/core';
+import { Card, CardContent, CardHeader, Checkbox, FormControlLabel, InputAdornment, TextField } from '@material-ui/core';
+import { TextFieldProps } from '@material-ui/core/TextField';
 import * as React from 'react';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose } from 'recompose';
@@ -17,17 +19,37 @@ type AllProps
 const positionInformation: React.SFC<AllProps> = props => {
   const { data, intl } = props;
 
+  const allowedStatusStyle: Partial<TextFieldProps> = {
+    fullWidth: true,
+    margin: 'dense',
+    InputProps: {
+      disableUnderline: true,
+      readOnly: true,
+      endAdornment:
+        data &&
+        <InputAdornment position="end">
+          <TextField
+            color={data.isAllowMultiple ? 'primary' : 'secondary'}
+          >
+            { data.isAllowMultiple ?
+              intl.formatMessage(lookupMessage.position.field.isAllowed) :
+              intl.formatMessage(lookupMessage.position.field.isNotAllowed) 
+            }
+          </TextField>
+        </InputAdornment>
+
+    }
+  };
+
   const render = (
     <Card square >
       <CardHeader
         title={intl.formatMessage(lookupMessage.position.section.infoTitle)}
         subheader={intl.formatMessage(lookupMessage.position.section.infoSubHeader)}
-        // title={'Position Information'}
-        // subheader={'Position main information'}
       />
       <CardContent >
         <TextField
-          {...GlobalStyle.TextField.ReadOnly}
+          {...allowedStatusStyle}
           margin="dense"
           label={intl.formatMessage(lookupMessage.position.field.uid)}
           // label={'Position ID'}
@@ -41,31 +63,42 @@ const positionInformation: React.SFC<AllProps> = props => {
           value={data.name || 'N/A'}
           multiline
         />
+        {
+          data.description ?
+          <TextField
+            {...GlobalStyle.TextField.ReadOnly}
+            margin="dense"
+            label={intl.formatMessage(lookupMessage.position.field.description)}        
+            value={data.description}
+            multiline
+          />
+          : ''
+        }
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
           margin="dense"
-          label={intl.formatMessage(lookupMessage.position.field.symbol)}
-          // label={'Symbol'}
-          value={data.symbol || 'N/A'}
-        />
-        <TextField
-          {...GlobalStyle.TextField.ReadOnly}
-          margin="dense"
-          label={intl.formatMessage(lookupMessage.position.field.rate)}
-          // label={'Rate'}
-          value={props.intl.formatNumber(data.rate || 0)}
+          label={intl.formatMessage(lookupMessage.position.field.companyUid)}
+          value={data.company && data.company.name || data.companyUid}
         />
         <FormControlLabel
-          control={<Checkbox checked={props.data.isActive} />}
-          label={props.data.isActive ? 
-            props.intl.formatMessage(lookupMessage.position.field.isActive) :
-            props.intl.formatMessage(lookupMessage.position.field.isNotActive) }
+          control={<Checkbox checked={props.data.isExpired} />}
+          label={props.data.isExpired ? 
+            props.intl.formatMessage(lookupMessage.position.field.isExpired) :
+            props.intl.formatMessage(lookupMessage.position.field.isNotExpired) }
+        />
+        <TextField
+          {...GlobalStyle.TextField.ReadOnly}
+          margin="dense"
+          label={intl.formatMessage(lookupMessage.position.field.inactiveDate)}
+          // label={'Rate'}
+          value={data.inactiveDate ? 
+            intl.formatDate(data.inactiveDate, GlobalFormat.Date) : intl.formatMessage(lookupMessage.position.field.indefinitely)}
         />
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
           margin="dense"
           // label={intl.formatMessage(lookupMessage.position.field.createdBy)}
-          label={'Created By'}
+          label={props.intl.formatMessage(lookupMessage.position.field.createdBy)}
           value={data.changes && data.changes.created ? data.changes.created.fullName : 'N/A'}
           multiline
         />

@@ -27,7 +27,7 @@ const positionSummary: React.SFC<AllProps> = props => (
       />
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
-        multiline={true}
+        multiline
         margin="dense"
         label={props.intl.formatMessage(lookupMessage.position.field.name)}
         value={props.data.name || 'N/A'}
@@ -38,22 +38,15 @@ const positionSummary: React.SFC<AllProps> = props => (
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
         margin="dense"
-        label={props.intl.formatMessage(lookupMessage.position.field.symbol)}
-        value={props.data.symbol || 'N/A'}
-        multiline
-      />
-      <TextField
-        {...GlobalStyle.TextField.ReadOnly}
-        margin="dense"
-        label={props.intl.formatMessage(lookupMessage.position.field.rate)}
-        value={props.intl.formatNumber(props.data.rate || 0)}
+        label={props.intl.formatMessage(lookupMessage.position.field.inactiveDate)}
+        value={props.data.inactiveDate ? props.intl.formatDate(props.data.inactiveDate, GlobalFormat.Date) : props.intl.formatMessage(lookupMessage.position.field.indefinitely)}
         multiline
       />
       <FormControlLabel
-        control={ <Checkbox checked={props.data.isActive} /> }
-        label={props.data.isActive ?
-          props.intl.formatMessage(lookupMessage.position.field.isActive) :
-          props.intl.formatMessage(lookupMessage.position.field.isNotActive)}
+        control={ <Checkbox checked={props.data.isExpired} /> }
+        label={props.data.isExpired ?
+          props.intl.formatMessage(lookupMessage.position.field.isNotExpired) :
+          props.intl.formatMessage(lookupMessage.position.field.isNotExpired)}
         />
     </Grid>
 

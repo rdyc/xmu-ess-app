@@ -7,6 +7,7 @@ import {
   mileageExceptionPage,
   mileageExceptionSection
 } from './mileageException';
+import { positionConfirm, positionField, positionFieldHelperFor, positionForm, positionMessage, positionPage, positionSection } from './positionMessage';
 import { lookupConfirm } from './shared';
 import { systemLimitField, systemLimitFieldHelperFor, systemLimitMessage, systemLimitPage, systemLimitSection } from './systemLimit';
 
@@ -44,4 +45,13 @@ export const lookupMessage = {
     confirm: companyConfirm,
     message: companyMessage
   },
+  position: {
+    page: positionPage,
+    field: positionField,
+    fieldFor: positionFieldHelperFor,
+    section: positionSection,
+    confirm: positionConfirm,
+    form: positionForm,
+    message: positionMessage
+  }
 };

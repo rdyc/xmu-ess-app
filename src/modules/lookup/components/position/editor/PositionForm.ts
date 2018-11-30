@@ -6,12 +6,13 @@ import { PositionFormView } from './PositionFormView';
 const formName = 'lookupPosition';
 
 export type PositionFormData = {
+  uid: string | undefined,
+  companyUid: string | undefined,
   information: {
-    uid: string | undefined,
-    symbol: string | undefined,
     name: string | undefined,
-    rate: number | undefined,
-    isActive: boolean  | undefined,
+    description: string | null | undefined,
+    inactiveDate: number | undefined,
+    isAllowMultiple: boolean  | undefined,
   }
 };
 

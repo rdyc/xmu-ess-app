@@ -48,29 +48,28 @@ const handlerCreators: HandleCreators<PositionDetailFormProps, OwnHandlers> = {
         };
         break;
 
-      case 'symbol':
+      case 'description':
         fieldProps = {
           type: 'text',
-          required: true,
-          label: props.intl.formatMessage(lookupMessage.position.field.symbol),
-          placeholder: props.intl.formatMessage(lookupMessage.position.field.symbolPlaceholder),
+          label: props.intl.formatMessage(lookupMessage.position.field.description),
+          placeholder: props.intl.formatMessage(lookupMessage.position.field.descriptionPlaceholder),
           component: InputText
         };
         break;
 
-      case 'rate':
+      case 'date':
         fieldProps = {
           type: 'number',
           required: true,
-          label: props.intl.formatMessage(lookupMessage.position.field.rate),
-          // placeholder: props.intl.formatMessage(lookupMessage.position.field.ratePlaceholder),
+          label: props.intl.formatMessage(lookupMessage.position.field.inactiveDate),
+          placeholder: props.intl.formatMessage(lookupMessage.position.field.inactiveDatePlaceholder),
           component: InputNumber,
         };
         break;
 
       case 'isExpired':
         fieldProps = {
-          label: props.intl.formatMessage(lookupMessage.position.field.ActiveStatus),
+          label: props.intl.formatMessage(lookupMessage.position.field.isExpired),
         };
         break;
         
