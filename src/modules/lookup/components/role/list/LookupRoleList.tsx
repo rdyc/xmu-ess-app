@@ -138,7 +138,7 @@ const config: CollectionConfig<IRole, AllProps> = {
       
       <Button
         size="small"
-        onClick={() => callback.handleRedirectTo(`/lookup/roles/form`, { uid: item.uid })}
+        onClick={() => callback.handleRedirectTo(`/lookup/roles/form`, { uid: item.uid, companyUid: item.companyUid })}
       >
         <FormattedMessage {...layoutMessage.action.modify} />
       </Button>

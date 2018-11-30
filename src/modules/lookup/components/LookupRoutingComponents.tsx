@@ -4,10 +4,12 @@ import { Route, RouteComponentProps, Switch } from 'react-router';
 import { MileageExceptionDetail } from './mileageException/detail/MileageExceptionDetail';
 import { MileageExceptionList } from './mileageException/list/LookupMileageExceptionListView';
 import { LookupRoleDetail } from './role/detail/LookupRoleDetail';
+import LookupRoleEditor from './role/editor/LookupRoleEditor';
 import { LookupRoleList } from './role/list/LookupRoleList';
 
 const role = (props: RouteComponentProps) => (
   <Switch>
+    <Route path={`${props.match.path}/form`} component={LookupRoleEditor} />
     <Route path={`${props.match.path}/list`} component={LookupRoleList} />
     <Route path={`${props.match.path}/:roleUid`} component={LookupRoleDetail} />
   </Switch>
