@@ -19,8 +19,8 @@ export const PositionDetailFormView: React.SFC<PositionDetailFormProps> = props 
       return null;
     }
 
-    const fieldIsExpired = ['isExpired'];
-    if (fieldIsExpired.indexOf(fieldName) !== -1) {
+    const fieldIsAllow = ['isAllowMultiple'];
+    if (fieldIsAllow.indexOf(fieldName) !== -1) {
       return (
         <FormControlLabel
           {...fieldProps}
@@ -33,6 +33,7 @@ export const PositionDetailFormView: React.SFC<PositionDetailFormProps> = props 
                 ({ input, meta }: any) => (
                   <Checkbox
                     {...input}
+                    // label=
                     disabled={meta.submitting}
                     onFocus={undefined}
                     onBlur={undefined}

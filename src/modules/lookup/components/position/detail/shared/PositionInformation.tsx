@@ -2,7 +2,7 @@ import { GlobalFormat } from '@layout/types';
 import { GlobalStyle } from '@layout/types/GlobalStyle';
 import { IPositionDetail } from '@lookup/classes/response';
 import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
-import { Card, CardContent, CardHeader, Checkbox, FormControlLabel, InputAdornment, TextField } from '@material-ui/core';
+import { Button, Card, CardContent, CardHeader, Checkbox, FormControlLabel, InputAdornment, TextField } from '@material-ui/core';
 import { TextFieldProps } from '@material-ui/core/TextField';
 import * as React from 'react';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
@@ -28,16 +28,15 @@ const positionInformation: React.SFC<AllProps> = props => {
       endAdornment:
         data &&
         <InputAdornment position="end">
-          <TextField
-            color={data.isAllowMultiple ? 'primary' : 'secondary'}
-          >
-            { data.isAllowMultiple ?
-              intl.formatMessage(lookupMessage.position.field.isAllowed) :
-              intl.formatMessage(lookupMessage.position.field.isNotAllowed) 
-            }
-          </TextField>
+          <Button
+            color={data.isAllowMultiple ? 'primary' : 'secondary'}>
+              {
+                data.isAllowMultiple ?
+                intl.formatMessage(lookupMessage.position.field.isAllowed) :
+                intl.formatMessage(lookupMessage.position.field.isNotAllowed)
+              }
+            </Button>
         </InputAdornment>
-
     }
   };
 
@@ -81,7 +80,7 @@ const positionInformation: React.SFC<AllProps> = props => {
           value={data.company && data.company.name || data.companyUid}
         />
         <FormControlLabel
-          control={<Checkbox checked={props.data.isExpired} />}
+          control={<Checkbox checked={!props.data.isExpired} />}
           label={props.data.isExpired ? 
             props.intl.formatMessage(lookupMessage.position.field.isExpired) :
             props.intl.formatMessage(lookupMessage.position.field.isNotExpired) }

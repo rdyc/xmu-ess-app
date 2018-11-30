@@ -43,6 +43,7 @@ interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
 
 interface OwnRouteParams {
   positionUid: string;
+  companyUid: string;
 }
 
 export type PositionDetailProps
@@ -103,6 +104,7 @@ const handlerCreators: HandleCreators<PositionDetailProps, OwnHandler> = {
     const { response } = props.lookupPositionState.detail;
 
     let positionUid: string | undefined;
+    let companyUid: string | undefined;
 
     if (!props.action || !response) {
       return;
@@ -110,6 +112,7 @@ const handlerCreators: HandleCreators<PositionDetailProps, OwnHandler> = {
 
     if (response.data) {
       positionUid = response.data.uid;
+      companyUid = response.data.companyUid;
     }
 
     const actions = [
@@ -126,7 +129,7 @@ const handlerCreators: HandleCreators<PositionDetailProps, OwnHandler> = {
           break;
         
         case PositionUserAction.Delete:
-          next = `lookup/position/${positionUid}`;
+          next = `lookup/position/${companyUid}/${positionUid}`;
           break;
           
         default:
@@ -135,7 +138,7 @@ const handlerCreators: HandleCreators<PositionDetailProps, OwnHandler> = {
 
       props.setDefault();
 
-      props.history.push(next, { uid: positionUid });
+      props.history.push(next, { companyUid, uid: positionUid});
     }
   },
 };

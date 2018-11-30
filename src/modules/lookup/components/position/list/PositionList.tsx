@@ -128,7 +128,7 @@ const config: CollectionConfig<IPosition, AllProps> = {
     <React.Fragment>
     <Button 
       size= "small"
-      onClick = {() => callback.handleRedirectTo(`/lookup/position/${item.uid}`)}
+        onClick={() => callback.handleRedirectTo(`/lookup/position/${item.companyUid}/${item.uid}`)}
     >
       <FormattedMessage { ...layoutMessage.action.details } />
     </Button>  

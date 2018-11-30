@@ -67,9 +67,9 @@ const handlerCreators: HandleCreators<PositionDetailFormProps, OwnHandlers> = {
         };
         break;
 
-      case 'isExpired':
+      case 'isAllowMultiple':
         fieldProps = {
-          label: props.intl.formatMessage(lookupMessage.position.field.isExpired),
+          label: props.intl.formatMessage(lookupMessage.position.field.isAllowMultiple),
         };
         break;
         

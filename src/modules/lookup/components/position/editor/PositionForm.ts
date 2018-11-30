@@ -20,10 +20,6 @@ interface OwnProps {
   formMode: FormMode;
 }
 
-// interface OwnHandlers {
-//   generateFieldProps: (name: string) => any;
-// }
-
 export type PositionFormProps
   = InjectedFormProps<PositionFormData, OwnProps>
   & InjectedIntlProps
