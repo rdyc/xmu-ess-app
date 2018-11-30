@@ -13,6 +13,8 @@ import { compose } from 'recompose';
 
 import { ErrorBoundary } from './ErrorBoundary';
 
+const envWebName = process.env.REACT_APP_WEBSITE_NAME;
+
 type LayoutProps 
   = WithLayout
   & WithStyles<typeof styles>;
@@ -30,7 +32,9 @@ const layout: React.SFC<LayoutProps> = props => {
       desc.content = props.layoutState.view.subTitle;
     }
     
-    document.title = props.layoutState.view.title;
+    document.title = `${props.layoutState.view.title} - ${envWebName}`;
+  } else {
+    document.title = envWebName || '?';
   }
 
   return (

@@ -1,4 +1,5 @@
 import AppMenu from '@constants/AppMenu';
+import { DialogConfirmation } from '@layout/components/dialogs';
 import { SingleConfig, SingleHandler, SinglePage, SingleState } from '@layout/components/pages/singlePage/SinglePage';
 import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
@@ -18,6 +19,9 @@ const config: SingleConfig<IMileageExceptionDetail, MileageExceptionDetailProps>
     description: props.intl.formatMessage(lookupMessage.mileageException.page.detailSubHeader),
   }),
   
+  // parent url
+  parentUrl: (props: MileageExceptionDetailProps) => '/lookup/mileageexceptions',
+
   // action centre
   showActionCentre: true,
 
@@ -34,7 +38,7 @@ const config: SingleConfig<IMileageExceptionDetail, MileageExceptionDetailProps>
     {
       id: MileageExceptionUserAction.Modify,
       name: props.intl.formatMessage(layoutMessage.action.modify),
-      enabled: state.statusType !== undefined,
+      enabled: true,
       visible: true,
       onClick: props.handleOnModify
     }
@@ -84,5 +88,16 @@ export const MileageExceptionDetailView: React.SFC<MileageExceptionDetailProps> 
   <SinglePage
     config={config}
     connectedProps={props}
-  />
+  >
+    <DialogConfirmation 
+      isOpen={props.dialogOpen}
+      fullScreen={props.dialogFullScreen}
+      title={props.dialogTitle}
+      content={props.dialogContent}
+      labelCancel={props.dialogCancelLabel}
+      labelConfirm={props.dialogConfirmLabel}
+      onClickCancel={props.handleOnCloseDialog}
+      onClickConfirm={props.handleOnConfirm}
+    />
+  </SinglePage>
 );
