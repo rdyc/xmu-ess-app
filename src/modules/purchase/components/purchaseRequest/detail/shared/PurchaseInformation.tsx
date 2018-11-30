@@ -1,3 +1,4 @@
+import { GlobalFormat } from '@layout/types';
 import { GlobalStyle } from '@layout/types/GlobalStyle';
 import { Card, CardContent, CardHeader, TextField } from '@material-ui/core';
 import { IPurchaseDetail } from '@purchase/classes/response/purchaseRequest';
@@ -70,11 +71,7 @@ const purchaseInformation: React.SFC<AllProps> = props => {
           margin = "dense"
           label={intl.formatMessage(purchaseMessage.request.field.date)}
           value = {
-            intl.formatDate(data.date, {
-              year: 'numeric',
-              month: 'short',
-              day: 'numeric'
-            })
+            intl.formatDate(data.date, GlobalFormat.Date)
           }
           />
           <TextField
