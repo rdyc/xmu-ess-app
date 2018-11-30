@@ -171,7 +171,34 @@
   "lookup.currency.message.update.failure": "Update submission failed",
   "lookup.currency.message.delete.success": "This currency has been deleted from system",
   "lookup.currency.message.delete.failure": "Delete confirmation failed",
-  "lookup.currency.message.empty.currencyUid": "Currency ID not found"
+  "lookup.currency.message.empty.currencyUid": "Currency ID not found",
+
+  "lookup.diem.page.list.title": "Mileage Exception",
+  "lookup.diem.page.list.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras mollis eros sit amet rhoncus fermentum",
+
+  "lookup.diem.page.detail.title": "Mileage Exception Detail",
+  "lookup.diem.page.detail.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras mollis eros sit amet rhoncus fermentum",
+  
+  "lookup.diem.section.diem.title": "Diem Value",
+  "lookup.diem.section.diem.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras mollis eros sit amet rhoncus fermentum",
+
+  "lookup.diem.field.info.title": "Detail Mileage Exception",
+  "lookup.diem.field.info.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras mollis eros sit amet rhoncus fermentum",
+
+  "lookup.diem.field.uid": "Diem ID",
+  "lookup.diem.field.uid.placeholder": "Diem ID",
+  "lookup.diem.field.destinationType": "Destination Type",
+  "lookup.diem.field.destinationType.placeholder": "Select the destination type",
+  "lookup.diem.field.projectType": "Project Type",
+  "lookup.diem.field.projectType.placeholder": "Select the project type",
+  "lookup.diem.field.companyUid": "Company",
+  "lookup.diem.field.companyUid.placeholder": "Select the company",
+  "lookup.diem.field.currencyUid": "Currency",
+  "lookup.diem.field.currencyUid.placeholder": "Select the currency",
+  "lookup.diem.field.travelType": "Travel Type",
+  "lookup.diem.field.travelType.placeholder": "Select the travel Type",
+  "lookup.diem.field.value": "Value",
+  "lookup.diem.field.value.placeholder": "Type the value"
 
 
 
