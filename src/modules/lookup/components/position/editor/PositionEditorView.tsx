@@ -21,9 +21,9 @@ export const PositionEditorView: React.SFC<PositionEditorProps> = props => {
 
   // init form values
   const initialValues: PositionFormData = {
-    uid: undefined,
-    companyUid: undefined,
     information: {
+      uid: undefined,
+      companyUid: undefined,
       name: undefined,
       description: undefined,
       inactiveDate: undefined,
@@ -48,8 +48,8 @@ export const PositionEditorView: React.SFC<PositionEditorProps> = props => {
       // todo: replace values with response data
       const data = response.data;
 
-      initialValues.uid = data.uid;
-      initialValues.companyUid = data.companyUid;
+      initialValues.information.uid = data.uid;
+      initialValues.information.companyUid = data.companyUid;
       initialValues.information.name = data.name;
       initialValues.information.description = data.description || '';
       initialValues.information.inactiveDate = data.inactiveDate || '';

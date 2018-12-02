@@ -6,9 +6,9 @@ import { PositionFormView } from './PositionFormView';
 const formName = 'lookupPosition';
 
 export type PositionFormData = {
-  uid: string | undefined,
-  companyUid: string | undefined,
   information: {
+    uid: string | undefined,
+    companyUid: string | undefined,
     name: string | undefined,
     description: string | null | undefined,
     inactiveDate: string | undefined,

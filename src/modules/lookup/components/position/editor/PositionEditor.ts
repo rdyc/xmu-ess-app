@@ -55,6 +55,7 @@ const createProps: mapper<PositionEditorProps, OwnState> = (props: PositionEdito
 
   return {
     formMode: state ? FormMode.Edit : FormMode.New,
+    companyUid: state ? state.companyUid : undefined,
     positionUid: state ? state.positionUid : undefined
   };
 };
@@ -72,8 +73,8 @@ const handlerCreators: HandleCreators<PositionEditorProps, OwnHandlers> = {
       information: {}
     };
     const requiredFields = [
-      'companyUid', 'name', 'symbol',
-      'rate',
+      'companyUid', 'name', 'inactiveDate',
+      'isAllowMultiple',
     ];
 
     requiredFields.forEach(field => {
@@ -92,8 +93,16 @@ const handlerCreators: HandleCreators<PositionEditorProps, OwnHandlers> = {
     if (!user) {
       return Promise.reject('user was not found');
     }
+
     const payload = {
-      ...formData,
+      ...formData.information,
+    };
+
+    const newPayload = {
+      name: payload.name,
+      description: payload.description,
+      inactiveDate: payload.inactiveDate,
+      isAllowMultiple: payload.isAllowMultiple
     };
 
     // creating
@@ -103,7 +112,7 @@ const handlerCreators: HandleCreators<PositionEditorProps, OwnHandlers> = {
           resolve,
           reject,
           companyUid: payload.companyUid || '',
-          data: payload.information as IPositionPostPayload,
+          data: newPayload as IPositionPostPayload,
         });
       });
     }
@@ -128,7 +137,7 @@ const handlerCreators: HandleCreators<PositionEditorProps, OwnHandlers> = {
           reject,
           companyUid: payload.companyUid || companyUid,
           positionUid: payload.uid || positionUid,
-          data: payload.information as IPositionPutPayload,
+          data: newPayload as IPositionPutPayload,
         });
       });
     }
@@ -154,7 +163,7 @@ const handlerCreators: HandleCreators<PositionEditorProps, OwnHandlers> = {
       time: new Date()
     });
 
-    history.push(`/lookup/position/${response.uid}`);
+    history.push(`/lookup/position/${response.companyUid}/${response.uid}`);
   },
   handleSubmitFail: (props: PositionEditorProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
     const { formMode, intl } = props;
