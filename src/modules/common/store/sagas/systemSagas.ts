@@ -60,7 +60,7 @@ function* watchFetchAllRequest() {
   const worker = (action: ReturnType<typeof systemGetAllRequest>) => {
     return saiyanSaga.fetch({
       method: 'get',
-      path: `/v1/common/types/${action.payload.category}${objectToQuerystring(action.payload.filter)}`, 
+      path: `/v1/common/types/${action.payload.category}/${objectToQuerystring(action.payload.filter)}`, 
       successEffects: (response: IApiResponse) => ([
         put(systemGetAllSuccess(response.body)),
       ]), 
