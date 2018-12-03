@@ -1,8 +1,8 @@
 import { Submission } from '@layout/components/submission/Submission';
-import { LookupHolidayDetailForm } from '@lookup/components/holiday/editor/forms/LookupHolidayDetailForm';
 import { Grid } from '@material-ui/core';
 import * as React from 'react';
 import { BaseFieldsProps, Fields, FormSection } from 'redux-form';
+import { LookupHolidayDetailForm } from './LookupHolidayDetailForm';
 import { RequestFormProps } from './LookupHolidayForm';
 
 export const LookupHolidayFormView: React.SFC<RequestFormProps> = props => {

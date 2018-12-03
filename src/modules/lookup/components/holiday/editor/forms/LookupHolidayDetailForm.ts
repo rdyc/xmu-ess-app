@@ -1,13 +1,13 @@
-import { SelectSystem, SelectSystemOption } from '@common/components/select';
+import { SelectSystemOption } from '@common/components/select';
 import { FormMode } from '@generic/types';
 import { InputDate } from '@layout/components/input/date';
 import { InputText } from '@layout/components/input/text';
+import { SelectLookupCompany } from '@lookup/components/company/select';
 import { LookupHolidayDetailFormView } from '@lookup/components/holiday/editor/forms/LookupHolidayDetailFormView';
+import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose, HandleCreators, withHandlers } from 'recompose';
 import { BaseFieldsProps } from 'redux-form';
-import { SelectLookupCompany } from '@lookup/components/company/select';
-import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
 
 interface OwnProps {
   formMode: FormMode;

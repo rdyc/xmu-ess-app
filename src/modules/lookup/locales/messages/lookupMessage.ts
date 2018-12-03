@@ -1,5 +1,5 @@
 import { currencyConfirm, currencyField, currencyForm, currencyMessage, currencyPage, currencySection } from './currency/currencyMessage';
-import { holidayConfirm, holidayField, holidayPage, holidayFieldHelperFor, holidaySection, holidayMessage } from './holiday';
+import { holidayConfirm, holidayField, holidayFieldHelperFor, holidayMessage, holidayPage, holidaySection } from './holiday';
 import { leaveConfirm, leaveField, leavePage } from './leave';
 import { companyConfirm, companyField, companyFieldHelperFor, companyMessage, companyPage, companySection } from './lookupCompanyMessage';
 import {

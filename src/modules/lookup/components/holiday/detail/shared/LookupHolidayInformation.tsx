@@ -19,8 +19,8 @@ const lookupHolidayInformation: React.SFC<AllProps> = props => {
   const render = (
     <Card square>
       <CardHeader
-        title={props.intl.formatMessage(lookupMessage.holiday.field.infoTitle)}
-        subheader={props.intl.formatMessage(lookupMessage.holiday.field.infoSubHeader)}
+        title={props.intl.formatMessage(lookupMessage.holiday.section.infoTitle)}
+        subheader={props.intl.formatMessage(lookupMessage.holiday.section.infoSubHeader)}
       />
       <CardContent>
       <TextField

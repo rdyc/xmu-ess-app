@@ -1,4 +1,5 @@
 import { FormMode } from '@generic/types';
+import { layoutMessage } from '@layout/locales/messages';
 import {
   HolidayForm,
   LookupHolidayFormData,
@@ -6,7 +7,6 @@ import {
 import { RequestEditorProps } from '@lookup/components/holiday/editor/LookupHolidayEditor';
 import { Typography } from '@material-ui/core';
 import * as React from 'react';
-import { FormattedMessage } from 'react-intl';
 
 export const LookupHolidayEditorView: React.SFC<RequestEditorProps> = props => {
   const { formMode, handleValidate, handleSubmit, handleSubmitSuccess, handleSubmitFail } = props;
@@ -43,7 +43,7 @@ export const LookupHolidayEditorView: React.SFC<RequestEditorProps> = props => {
     if (isLoading && !response) {
       return (
         <Typography variant="body2">
-          <FormattedMessage id="global.loading"/>
+          {props.intl.formatMessage(layoutMessage.text.loading)}
         </Typography>
       );
     }

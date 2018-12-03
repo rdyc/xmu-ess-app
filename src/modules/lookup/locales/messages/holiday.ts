@@ -34,23 +34,23 @@ export const holidayField = defineMessages({
   uidPlaceholder: {id: `${prefix}.field.uid.placeholder`},
 
   company: { id: `${prefix}.field.company`},
-  companyRequired: {id: `${prefix}.field.code.required`},
-  companyPlaceholder: {id: `${prefix}.field.code.placeholder`},
+  companyRequired: {id: `${prefix}.field.company.required`},
+  companyPlaceholder: {id: `${prefix}.field.company.placeholder`},
 
   description: { id: `${prefix}.field.description`},
-  descriptionRequired: {id: `${prefix}.field.code.required`},
-  descriptionPlaceholder: {id: `${prefix}.field.code.placeholder`},
+  descriptionRequired: {id: `${prefix}.field.description.required`},
+  descriptionPlaceholder: {id: `${prefix}.field.description.placeholder`},
 
   date: { id: `${prefix}.field.date`},
-  dateRequired: {id: `${prefix}.field.code.required`},
-  datePlaceholder: {id: `${prefix}.field.code.placeholder`},
+  dateRequired: {id: `${prefix}.field.date.required`},
+  datePlaceholder: {id: `${prefix}.field.date.placeholder`},
 });
 
 export const holidayFieldHelperFor = (field: string, type: 'fieldName' | 'fieldRequired' | 'fieldPlaceholder') => {
   if (type === 'fieldName') {
     switch (field) {
       case 'uid': return holidayField.uid;
-      case 'company': return holidayField.company;
+      case 'companyUid': return holidayField.company;
       case 'description': return holidayField.description;
       case 'date': return holidayField.date;
           
@@ -60,7 +60,7 @@ export const holidayFieldHelperFor = (field: string, type: 'fieldName' | 'fieldR
 
   if (type === 'fieldRequired') {
     switch (field) {
-      case 'company': return holidayField.company;
+      case 'companyUid': return holidayField.company;
       case 'description': return holidayField.description;
       case 'date': return holidayField.date;
 
@@ -71,7 +71,7 @@ export const holidayFieldHelperFor = (field: string, type: 'fieldName' | 'fieldR
   if (type === 'fieldPlaceholder') {
     switch (field) {
       case 'uid': return holidayField.uidPlaceholder;
-      case 'company': return holidayField.companyPlaceholder;
+      case 'companyUid': return holidayField.companyPlaceholder;
       case 'description': return holidayField.descriptionPlaceholder;
       case 'date': return holidayField.datePlaceholder;
       

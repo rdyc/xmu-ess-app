@@ -12,6 +12,7 @@ import {
   LookupHolidayFormData,
 } from '@lookup/components/holiday/editor/forms/LookupHolidayForm';
 import { WithLookupHoliday, withLookupHoliday } from '@lookup/hoc/withLookupHoliday';
+import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import {
@@ -30,7 +31,6 @@ import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
 import { isNullOrUndefined, isObject } from 'util';
 import { LookupHolidayEditorView } from './LookupHolidayEditorView';
-import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
 
 interface OwnHandlers {
   handleValidate: (payload: LookupHolidayFormData) => FormErrors;
@@ -71,8 +71,7 @@ const handlerCreators: HandleCreators<RequestEditorProps, OwnHandlers> = {
     };
   
     const requiredFields = [
-      'categoryType', 'start',
-      'address', 'contactNumber', 'reason'
+      'company', 'description', 'date',
     ];
 
     requiredFields.forEach(field => {
@@ -85,19 +84,26 @@ const handlerCreators: HandleCreators<RequestEditorProps, OwnHandlers> = {
   },
   handleSubmit: (props: RequestEditorProps) => (formData: LookupHolidayFormData) => { 
     const { formMode, holidayUid, intl } = props;
+    const { user } = props.userState;
     const { createRequest, updateRequest } = props.lookupHolidayDispatch;
+
+    if (!user) {
+      return Promise.reject('user was not found');
+    }
 
     const payload = {
       ...formData.information,
     };
 
+    const company = payload.companyUid;
+
     // creating
-    if (formMode === FormMode.New) {
+    if (formMode === FormMode.New && !isNullOrUndefined(company)) {
       return new Promise((resolve, reject) => {
         createRequest({
           resolve, 
           reject,
-          companyUid: payload.companyUid ? payload.companyUid : '',
+          companyUid: company,
           data: payload as ILookupHolidayPostPayload
         });
       });
@@ -110,13 +116,13 @@ const handlerCreators: HandleCreators<RequestEditorProps, OwnHandlers> = {
       return Promise.reject(message);
     }
 
-    if (formMode === FormMode.Edit) {
+    if (formMode === FormMode.Edit && !isNullOrUndefined(company)) {
       return new Promise((resolve, reject) => {
         updateRequest({
           holidayUid, 
           resolve, 
           reject,
-          companyUid: payload.companyUid ? payload.companyUid : '',
+          companyUid: company,
           data: payload as ILookupHolidayPutPayload, 
         });
       });
@@ -143,7 +149,7 @@ const handlerCreators: HandleCreators<RequestEditorProps, OwnHandlers> = {
       time: new Date()
     });
 
-    history.push('/lookup/requests/');
+    history.push(`/lookup/holiday`);
   },
   handleSubmitFail: (props: RequestEditorProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
     const { formMode, intl } = props;
@@ -208,12 +214,13 @@ const lifecycles: ReactLifeCycleFunctions<RequestEditorProps, {}> = {
 
       stateUpdate({ 
         formMode: FormMode.Edit,
-        holidayUid: history.location.state.uid
+        holidayUid: history.location.state.uid,
+        companyUid: history.location.state.companyUid
       });
 
       loadDetailRequest({
         companyUid: user.company.uid,
-        holidayUid: history.location.state.uid
+        holidayUid: history.location.state.uid,
       });
     }
 

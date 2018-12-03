@@ -27,6 +27,8 @@ import { lookupCompanyReducers } from './company';
 import { lookupCurrencyReducers } from './currency';
 import { lookupCustomerReducers } from './customer';
 import { lookupHolidayReducers } from './holiday';
+import { lookupHolidayPostReducer } from './holiday/lookupHolidayPostReducer';
+import { lookupHolidayPutReducer } from './holiday/lookupHolidayPutReducer';
 import { lookupLeaveReducers } from './leave';
 import { mileageExceptionReducers } from './mileageException/mileageExceptionReducers';
 import { lookupRoleReducers } from './role';
@@ -41,7 +43,6 @@ const lookupReducers = {
   ...lookupLeaveReducers,
   ...mileageExceptionReducers,
   ...systemLimitReducers,
-  
   ...lookupCurrencyReducers,
 
   diemGetAll: diemGetAllReducer,
@@ -67,6 +68,8 @@ const lookupReducers = {
   lookupHolidayGetAll: lookupHolidayGetAllReducer,
   lookupHolidayGetList: lookupHolidayGetListReducer,
   lookupHolidayGetById: lookupHolidayGetByIdReducer,
+  lookupHolidayPost: lookupHolidayPostReducer,
+  lookupHolidayPut: lookupHolidayPutReducer,
 
   lookupLeaveGetAll: lookupLeaveGetAllReducer,
   lookupLeaveGetList: lookupLeaveGetListReducer,
