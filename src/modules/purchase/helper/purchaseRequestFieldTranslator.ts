@@ -35,8 +35,11 @@ export const purchaseRequestFieldTranslator = (find: string, field: ICollectionV
         break;
 
       default:
+        result = WorkflowStatusType.InProgress || WorkflowStatusType.Submitted || WorkflowStatusType.Approved || WorkflowStatusType.Rejected;
         break;
     }
+  } else {
+    result = `${find.toLowerCase()}`;
   }
 
   // if (field.name === PurchaseField.requestDate) {
