@@ -2,6 +2,7 @@ import { SelectSystemOption } from '@common/components/select';
 import { FormMode } from '@generic/types';
 import { InputText } from '@layout/components/input/text';
 import { WithUser, withUser } from '@layout/hoc/withUser';
+import { SelectLookupCompany } from '@lookup/components/company/select';
 import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose, HandleCreators, withHandlers } from 'recompose';
@@ -44,7 +45,7 @@ const handlerCreators: HandleCreators<RoleDetailFormProps, OwnHandlers> = {
           required: true,
           label: intl.formatMessage(lookupMessage.role.fieldFor(name, 'fieldName')),
           placeholder: intl.formatMessage(lookupMessage.role.fieldFor(name, 'fieldPlaceholder')),
-          component: InputText
+          component: SelectLookupCompany
         };
         break;
 
