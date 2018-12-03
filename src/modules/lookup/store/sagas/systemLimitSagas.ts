@@ -1,6 +1,9 @@
 import { layoutAlertAdd } from '@layout/store/actions';
 import {
   SystemLimitAction as Action,
+  systemLimitDeleteError,
+  systemLimitDeleteRequest,
+  systemLimitDeleteSuccess,
   systemLimitGetAllDispose,
   systemLimitGetAllError,
   systemLimitGetAllRequest,
@@ -210,13 +213,61 @@ function* watchPutRequest() {
   yield takeEvery(Action.PUT_REQUEST, worker);
 }
 
+function* watchDeleteRequest() {
+  const worker = (action: ReturnType<typeof systemLimitDeleteRequest>) => {
+    return saiyanSaga.fetch({
+      method: 'delete',
+      path: `/v1/lookup/systemlimits`,
+      payload: action.payload.data,
+      successEffects: (response: IApiResponse) => [
+        put(systemLimitGetAllDispose()),
+        put(systemLimitDeleteSuccess(response.body))
+      ],
+      successCallback: (response: IApiResponse) => {
+        action.payload.resolve(response.body.data);
+      },
+      failureEffects: (response: IApiResponse) => [
+        put(systemLimitDeleteError(response.statusText))
+      ],
+      failureCallback: (response: IApiResponse) => {
+        if (response.status === 400) {
+          const errors: any = { 
+            // information -> based on form section name
+            information: flattenObject(response.body.errors) 
+          };
+          
+          // action.payload.reject(new SubmissionError(response.body.errors));
+          action.payload.reject(new SubmissionError(errors));
+        } else {
+          action.payload.reject(response.statusText);
+        }
+      },
+      errorEffects: (error: TypeError) => [
+        put(systemLimitDeleteError(error.message)),
+        put(
+          layoutAlertAdd({
+            time: new Date(),
+            message: error.message
+          })
+        )
+      ],
+      errorCallback: (error: any) => {
+        action.payload.reject(error);
+      }
+    });
+  };
+
+  yield takeEvery(Action.DELETE_REQUEST, worker);
+}
+
 function* lookupSystemLimitSagas() {
   yield all([
     fork(watchGetAllRequest),
     fork(watchGetListRequest),
     fork(watchGetByIdRequest),
     fork(watchPostRequest),
-    fork(watchPutRequest)
+    fork(watchPutRequest),
+    fork(watchDeleteRequest)
   ]);
 }
 

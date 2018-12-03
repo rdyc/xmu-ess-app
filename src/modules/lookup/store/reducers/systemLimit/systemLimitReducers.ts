@@ -1,4 +1,5 @@
 import {
+  systemLimitDeleteReducer,
   systemLimitGetAllReducer,
   systemLimitGetByIdReducer,
   systemLimitGetListReducer,
@@ -11,5 +12,6 @@ export const systemLimitReducers = {
   systemLimitGetList: systemLimitGetListReducer,
   systemLimitGetById: systemLimitGetByIdReducer,
   systemLimitPost: systemLimitPostReducer,
-  systemLimitPut: systemLimitPutReducer
+  systemLimitPut: systemLimitPutReducer,
+  systemLimitDelete: systemLimitDeleteReducer
 };
