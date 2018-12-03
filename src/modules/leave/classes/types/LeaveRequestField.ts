@@ -3,6 +3,6 @@ export enum LeaveRequestField {
   leaveType = 'Leave Type',
   start = 'Start Date',
   end = 'End Date',
-  description = 'Description',
+  reason = 'Reason',
   statusType = 'Status',
 }

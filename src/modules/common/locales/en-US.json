@@ -36,5 +36,5 @@
   "common.field.description": "Description",
   "common.field.description.placeholder": "Type the Description",
   "common.field.description.required": "Description is Required",
-  "common.field.isActive": "Active"
+  "common.field.isActive": "Active Status"
 }
