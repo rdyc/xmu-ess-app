@@ -147,6 +147,7 @@ const lifecycles: ReactLifeCycleFunctions<SinglePageProps, OwnState> = {
         isSearchVisible: false,
         isActionCentreVisible: this.props.config.showActionCentre,
         isMoreVisible: this.props.config.hasMore,
+        isModeList: false,
         isModeSearch: false
       }
     });
