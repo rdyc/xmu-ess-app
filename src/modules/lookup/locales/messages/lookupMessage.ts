@@ -1,6 +1,6 @@
 import { currencyConfirm, currencyField, currencyForm, currencyMessage, currencyPage, currencySection } from './currency/currencyMessage';
 import { companyConfirm, companyField, companyFieldHelperFor, companyMessage, companyPage, companySection } from './lookupCompanyMessage';
-import { lookupCustomerConfirm, lookupCustomerFields, lookupCustomerPage, lookupCustomerSection } from './lookupCustomerMessage';
+import { customerFieldHelperFor, lookupCustomerConfirm, lookupCustomerFields, lookupCustomerMessage, lookupCustomerPage, lookupCustomerSection } from './lookupCustomerMessage';
 import {
   mileageExceptionField,
   mileageExceptionFieldHelperFor,
@@ -30,11 +30,13 @@ export const lookupMessage = {
     confirm: lookupConfirm
   },
 
-  LookupCustomer: {
+  lookupCustomer: {
     page: lookupCustomerPage,
     section: lookupCustomerSection,
     field: lookupCustomerFields,
+    fieldFor: customerFieldHelperFor,
     confirm: lookupCustomerConfirm,
+    message: lookupCustomerMessage
   },
   
   currency: {

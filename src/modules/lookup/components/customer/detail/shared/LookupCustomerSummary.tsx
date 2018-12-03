@@ -21,17 +21,17 @@ const summaryView: React.SFC<AllProps> = props => (
     <Grid item xs={12} sm={6} md={3}>
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
-        label={props.intl.formatMessage(lookupMessage.LookupCustomer.field.uid)}
+        label={props.intl.formatMessage(lookupMessage.lookupCustomer.field.uid)}
         value={props.data.uid}
       />
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
-        label={props.intl.formatMessage(lookupMessage.LookupCustomer.field.name)}
+        label={props.intl.formatMessage(lookupMessage.lookupCustomer.field.name)}
         value={props.data.name || 'N/A'}
       />
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
-        label={props.intl.formatMessage(lookupMessage.LookupCustomer.field.company)}
+        label={props.intl.formatMessage(lookupMessage.lookupCustomer.field.companyUid)}
         value={props.data.company ? props.data.company.name : 'N/A'}
       />
     </Grid>
@@ -39,12 +39,12 @@ const summaryView: React.SFC<AllProps> = props => (
     <Grid item xs={12} sm={6} md={3}>
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
-        label={props.intl.formatMessage(lookupMessage.LookupCustomer.field.email)}
+        label={props.intl.formatMessage(lookupMessage.lookupCustomer.field.email)}
         value={props.data.email || 'N/A'}
       />
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
-        label={props.intl.formatMessage(lookupMessage.LookupCustomer.field.phone)}
+        label={props.intl.formatMessage(lookupMessage.lookupCustomer.field.phone)}
         value={props.data.phone || 'N/A'}
       />
     </Grid>
@@ -52,13 +52,13 @@ const summaryView: React.SFC<AllProps> = props => (
     <Grid item xs={12} sm={6} md={3}>
     <TextField
         {...GlobalStyle.TextField.ReadOnly}
-        label={props.intl.formatMessage(lookupMessage.LookupCustomer.field.npwp)}
+        label={props.intl.formatMessage(lookupMessage.lookupCustomer.field.npwp)}
         value={props.data.npwp || 'N/A'}
       />      
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
         multiline
-        label={props.intl.formatMessage(lookupMessage.LookupCustomer.field.address)}
+        label={props.intl.formatMessage(lookupMessage.lookupCustomer.field.address)}
         value={props.data.address || 'N/A'}
       />
     </Grid>    

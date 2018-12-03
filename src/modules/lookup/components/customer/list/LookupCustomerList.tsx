@@ -20,8 +20,8 @@ const config: CollectionConfig<ICustomer, AllProps> = {
   page: (props: AllProps) => ({
     uid: AppMenu.LookupCustomer,
     parentUid: AppMenu.Lookup,
-    title: props.intl.formatMessage(lookupMessage.LookupCustomer.page.listTitle),
-    description: props.intl.formatMessage(lookupMessage.LookupCustomer.page.listSubHeader),
+    title: props.intl.formatMessage(lookupMessage.lookupCustomer.page.listTitle),
+    description: props.intl.formatMessage(lookupMessage.lookupCustomer.page.listSubHeader),
   }),
   
   // top bar
@@ -121,9 +121,16 @@ const config: CollectionConfig<ICustomer, AllProps> = {
   // action component
   actionComponent: (item: ICustomer, callback: CollectionHandler) => (
     <React.Fragment>
+      <Button
+        size="small"
+        onClick={() => callback.handleRedirectTo(`/lookup/customer/form`, { uid: item.uid, companyUid: item.companyUid })}
+      >
+        <FormattedMessage {...layoutMessage.action.modify} />
+      </Button>
+
       <Button 
         size="small"
-        onClick={() => callback.handleRedirectTo(`/lookup/customer/${item.uid}`)}
+        onClick={() => callback.handleRedirectTo(`/lookup/customer/${item.uid}`, {companyUid: item.companyUid})}
       >
         <FormattedMessage {...layoutMessage.action.details}/>
       </Button>

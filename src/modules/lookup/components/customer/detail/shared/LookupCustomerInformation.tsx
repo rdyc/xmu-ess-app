@@ -14,93 +14,95 @@ type AllProps
   = OwnProps
   & InjectedIntlProps;
 
-const lookupDiemInformation: React.SFC<AllProps> = props => (
+const lookupcustomerInformation: React.SFC<AllProps> = props => (
   <Card square>
     <CardHeader
-      title={props.intl.formatMessage(lookupMessage.LookupCustomer.section.infoTitle)}
-      subheader={props.intl.formatMessage(lookupMessage.LookupCustomer.section.infoSubHeader)}
+      title={props.intl.formatMessage(lookupMessage.lookupCustomer.section.infoTitle)}
+      subheader={props.intl.formatMessage(lookupMessage.lookupCustomer.section.infoSubHeader)}
     />
     <CardContent>
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
-        label={props.intl.formatMessage(lookupMessage.LookupCustomer.field.company)}
+        label={props.intl.formatMessage(lookupMessage.lookupCustomer.field.companyUid)}
         value={props.data.name}
       />
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
-        label={props.intl.formatMessage(lookupMessage.LookupCustomer.field.company)}
+        label={props.intl.formatMessage(lookupMessage.lookupCustomer.field.companyUid)}
         value={props.data.company ? props.data.company.name : props.data.companyUid}
       />
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
-        label={props.intl.formatMessage(lookupMessage.LookupCustomer.field.npwp)}
+        label={props.intl.formatMessage(lookupMessage.lookupCustomer.field.npwp)}
         value={props.data.npwp ? props.data.npwp : 'N/A'}
       />
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
-        label={props.intl.formatMessage(lookupMessage.LookupCustomer.field.address)}
+        label={props.intl.formatMessage(lookupMessage.lookupCustomer.field.address)}
         value={props.data.address ? props.data.address : 'N/A'}
+        multiline={true}
       />
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
-        label={props.intl.formatMessage(lookupMessage.LookupCustomer.field.addressAdditional)}
+        label={props.intl.formatMessage(lookupMessage.lookupCustomer.field.addressAdditional)}
         value={props.data.addressAdditional ? props.data.addressAdditional : 'N/A'}
+        multiline={true}
       />
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
-        label={props.intl.formatMessage(lookupMessage.LookupCustomer.field.phone)}
+        label={props.intl.formatMessage(lookupMessage.lookupCustomer.field.phone)}
         value={props.data.phone ? props.data.phone : 'N/A'}
       />
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
-        label={props.intl.formatMessage(lookupMessage.LookupCustomer.field.phoneAdditional)}
+        label={props.intl.formatMessage(lookupMessage.lookupCustomer.field.phoneAdditional)}
         value={props.data.phoneAdditional ? props.data.phoneAdditional : 'N/A'}
       />
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
-        label={props.intl.formatMessage(lookupMessage.LookupCustomer.field.mobile)}
+        label={props.intl.formatMessage(lookupMessage.lookupCustomer.field.mobile)}
         value={props.data.mobile ? props.data.mobile : 'N/A'}
       />
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
-        label={props.intl.formatMessage(lookupMessage.LookupCustomer.field.mobileAdditional)}
+        label={props.intl.formatMessage(lookupMessage.lookupCustomer.field.mobileAdditional)}
         value={props.data.mobileAdditional ? props.data.mobileAdditional : 'N/A'}
       />
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
-        label={props.intl.formatMessage(lookupMessage.LookupCustomer.field.fax)}
+        label={props.intl.formatMessage(lookupMessage.lookupCustomer.field.fax)}
         value={props.data.fax ? props.data.fax : 'N/A'}
       />
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
-        label={props.intl.formatMessage(lookupMessage.LookupCustomer.field.email)}
+        label={props.intl.formatMessage(lookupMessage.lookupCustomer.field.email)}
         value={props.data.email ? props.data.email : 'N/A'}
       />
       <FormControlLabel
         control={
           <Checkbox checked={props.data.isActive} />
         }
-        label={props.intl.formatMessage(lookupMessage.LookupCustomer.field.isActive)}
+        label={props.intl.formatMessage(lookupMessage.lookupCustomer.field.isActive)}
       />
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
-        label={props.intl.formatMessage(lookupMessage.LookupCustomer.field.contactPerson)}
+        label={props.intl.formatMessage(lookupMessage.lookupCustomer.field.contactPerson)}
         value={props.data.contactPerson ? props.data.contactPerson : 'N/A'}
       />
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
-        label={props.intl.formatMessage(lookupMessage.LookupCustomer.field.contactTitle)}
+        label={props.intl.formatMessage(lookupMessage.lookupCustomer.field.contactTitle)}
         value={props.data.contactTitle ? props.data.contactTitle : 'N/A'}
       />
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
-        label={props.intl.formatMessage(lookupMessage.LookupCustomer.field.contactPersonAdditional)}
+        label={props.intl.formatMessage(lookupMessage.lookupCustomer.field.contactPersonAdditional)}
         value={props.data.contactTitleAdditional ? props.data.contactTitleAdditional : 'N/A'}
       />
     </CardContent>
   </Card>
 );
 
-export const LookupDiemInformation = compose<AllProps, OwnProps>(
+export const LookupCustomerInformation = compose<AllProps, OwnProps>(
   injectIntl
-)(lookupDiemInformation);
+)(lookupcustomerInformation);

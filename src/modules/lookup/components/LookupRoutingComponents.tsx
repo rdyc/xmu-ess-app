@@ -7,6 +7,8 @@ import { Route, RouteComponentProps, Switch } from 'react-router';
 import { LookupCompanyDetail } from './company/detail/LookupCompanyDetail';
 import LookupCompanyEditor from './company/editor/LookupCompanyEditor';
 import { LookupCompanyList } from './company/list/LookupCompanyList';
+import { LookupCustomerDetail } from './customer/detail/LookupCustomerDetail';
+import LookupCustomerEditor from './customer/editor/LookupCustomerEditor';
 import { LookupCustomerList } from './customer/list/LookupCustomerList';
 import { MileageExceptionDetail } from './mileageException/detail/MileageExceptionDetail';
 import MileageExceptionEditor from './mileageException/editor/MileageExceptionEditor';
@@ -49,7 +51,9 @@ const systemLimit = (props: RouteComponentProps) => (
 
 const lookupCustomer = (props: RouteComponentProps) => (
   <Switch>
-    <Route path={`${props.match.path}`} component={LookupCustomerList} />
+    <Route path={`${props.match.path}/list`} component={LookupCustomerList} />
+    <Route path={`${props.match.path}/form`} component={LookupCustomerEditor} />
+    <Route path={`${props.match.path}/:customerUid`} component={LookupCustomerDetail} />
 </Switch> 
 );
 

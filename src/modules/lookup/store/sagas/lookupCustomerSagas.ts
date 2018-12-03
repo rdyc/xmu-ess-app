@@ -164,7 +164,7 @@ function* watchPutRequest() {
   const worker = (action: ReturnType<typeof lookupCustomerPutRequest>) => {
     return saiyanSaga.fetch({
       method: 'put',
-      path: `/v1/lookup/customers/${action.payload.companyUid}/${action.payload.companyUid}/${action.payload.customerUid}`,
+      path: `/v1/lookup/customers/${action.payload.companyUid}/${action.payload.customerUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
         put(lookupCustomerPutSuccess(response.body))
