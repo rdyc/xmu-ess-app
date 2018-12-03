@@ -3,8 +3,9 @@ import { companyConfirm, companyField, companyFieldHelperFor, companyMessage, co
 import { 
   lookupDiemConfirm, 
   lookupDiemField, 
+  lookupDiemMessage, 
   lookupDiemPage, 
-  lookupDiemSection 
+  lookupDiemSection
 } from './lookupDiemMessage';
 import {
   mileageExceptionField,
@@ -50,11 +51,12 @@ export const lookupMessage = {
     confirm: companyConfirm,
     message: companyMessage
   },
-  LookupDiem: {
+  lookupDiem: {
     page: lookupDiemPage,
     section: lookupDiemSection,
     field: lookupDiemField,
     confirm: lookupDiemConfirm,
+    message: lookupDiemMessage
 
   }
 };

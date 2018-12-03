@@ -8,7 +8,6 @@ import { LookupDiemField } from '@lookup/classes/types/diem/DiemField';
 import { DiemUserAction } from '@lookup/classes/types/diem/DiemUserAction';
 import { WithLookupDiem, withLookupDiem } from '@lookup/hoc/withLookupDiem';
 import { Button } from '@material-ui/core';
-import { projectRegistrationFieldTranslator } from '@project/helper';
 import * as moment from 'moment';
 import * as React from 'react';
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
@@ -30,7 +29,6 @@ const config: CollectionConfig<IDiem, AllProps> = {
       value: key,
       name: LookupDiemField[key]
     })),
-  fieldTranslator: projectRegistrationFieldTranslator,
 
   // searching
   hasSearching: true,

@@ -6,6 +6,7 @@ import { WithUser, withUser } from '@layout/hoc/withUser';
 import { ILookupDiemPostPayload, ILookupDiemPutPayload } from '@lookup/classes/request/diem';
 import { IDiem } from '@lookup/classes/response';
 import { WithLookupDiem, withLookupDiem } from '@lookup/hoc/withLookupDiem';
+import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
 import { projectMessage } from '@project/locales/messages/projectMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
@@ -84,13 +85,14 @@ const handlerCreators: HandleCreators<LookupDiemEditorProps, OwnHandlers> = {
       ...formData.information,
     };
 
+    const companyId = payload.companyUid;
     // creating 
-    if (formMode === FormMode.New) {
+    if (formMode === FormMode.New && !isNullOrUndefined(companyId)) {
       return new Promise((resolve, reject) => {
         createRequest({
           resolve, 
           reject,
-          companyUid: payload.companyUid ? payload.companyUid : '',
+          companyUid: companyId,
           data: payload as ILookupDiemPostPayload
         });
       });
@@ -98,18 +100,18 @@ const handlerCreators: HandleCreators<LookupDiemEditorProps, OwnHandlers> = {
 
     // update checking
     if (!diemUid) {
-      const message = intl.formatMessage(projectMessage.registration.message.emptyProps);
+      const message = intl.formatMessage(lookupMessage.lookupDiem.message.emptyProps);
 
       return Promise.reject(message);
     }
 
-    if (formMode === FormMode.Edit) {
+    if (formMode === FormMode.Edit && !isNullOrUndefined(companyId)) {
       return new Promise((resolve, reject) => {
         updateRequest({
           diemUid, 
           resolve, 
           reject,
-          companyUid: payload.companyUid ? payload.companyUid : '',
+          companyUid: companyId,
           data: payload as ILookupDiemPutPayload, 
         });
       });
@@ -124,11 +126,11 @@ const handlerCreators: HandleCreators<LookupDiemEditorProps, OwnHandlers> = {
     let message: string = '';
 
     if (formMode === FormMode.New) {
-      message = intl.formatMessage(projectMessage.registration.message.createSuccess, { uid: response.uid });
+      message = intl.formatMessage(lookupMessage.lookupDiem.message.createSuccess, { uid: response.uid });
     }
 
     if (formMode === FormMode.Edit) {
-      message = intl.formatMessage(projectMessage.registration.message.updateSuccess, { uid: response.uid });
+      message = intl.formatMessage(lookupMessage.lookupDiem.message.updateSuccess, { uid: response.uid });
     }
 
     alertAdd({
@@ -153,11 +155,11 @@ const handlerCreators: HandleCreators<LookupDiemEditorProps, OwnHandlers> = {
       let message: string = '';
 
       if (formMode === FormMode.New) {
-        message = intl.formatMessage(projectMessage.registration.message.createFailure);
+        message = intl.formatMessage(lookupMessage.lookupDiem.message.createFailure);
       }
 
       if (formMode === FormMode.Edit) {
-        message = intl.formatMessage(projectMessage.registration.message.updateFailure);
+        message = intl.formatMessage(lookupMessage.lookupDiem.message.updateFailure);
       }
 
       alertAdd({

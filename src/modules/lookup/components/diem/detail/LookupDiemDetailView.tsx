@@ -46,7 +46,7 @@ const config: SingleConfig<IDiem, LookupDiemDetailProps> = {
     const { isLoading, request, response } = props.lookupDiemState.detail;
     const { loadDetailRequest } = props.lookupDiemDispatch;
 
-    // when user is set and not loading and has projectUid in route params
+    // when user is set and not loading and has diemUid in route params
     if (user && !isLoading && props.match.params.diemUid && props.history.location.state) {
       // when diemUid was changed or response are empty or force to reload
       if ((request && request.diemUid !== props.match.params.diemUid) || !response || forceReload) {
