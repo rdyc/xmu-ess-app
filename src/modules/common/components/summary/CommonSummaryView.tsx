@@ -1,5 +1,5 @@
 import { ISystemType } from '@common/classes/response';
-import { editableCategories } from '@common/classes/types';
+import { editableCategories } from '@common/helper';
 import { commonMessage } from '@common/locales/messages/commonMessage';
 import { layoutMessage } from '@layout/locales/messages';
 import { Button, Card, CardActions, CardContent, CardHeader, Grid, Typography } from '@material-ui/core';
@@ -53,6 +53,12 @@ export const CommonSummaryView: React.SFC<CommonSummaryProps> = props => {
   const render = (
     <React.Fragment>
       <Grid container spacing={16}>
+        {
+          isLoading &&
+          <Typography>
+            {intl.formatMessage(layoutMessage.text.loading)}
+          </Typography>
+        }
         {
           !isLoading &&
           response &&

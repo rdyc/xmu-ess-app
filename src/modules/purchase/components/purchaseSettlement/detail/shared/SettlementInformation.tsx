@@ -1,3 +1,4 @@
+import { GlobalFormat } from '@layout/types';
 import { GlobalStyle } from '@layout/types/GlobalStyle';
 import { Card, CardContent, CardHeader, TextField } from '@material-ui/core';
 import { ISettlementDetail } from '@purchase/classes/response/purchaseSettlement';
@@ -72,11 +73,7 @@ const settlementInformation: React.SFC<AllProps> = props => {
           margin = "dense"
             label={intl.formatMessage(purchaseMessage.settlement.field.date)}
           value = {
-            intl.formatDate(data.date, {
-              year: 'numeric',
-              month: 'short',
-              day: 'numeric'
-            })
+            intl.formatDate(data.date, GlobalFormat.Date)
           }
           />
           : ''}
