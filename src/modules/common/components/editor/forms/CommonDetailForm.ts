@@ -3,6 +3,7 @@ import { parentTypeTranslator } from '@common/helper';
 import { commonMessage } from '@common/locales/messages/commonMessage';
 import { FormMode } from '@generic/types';
 import { InputText } from '@layout/components/input/text';
+import { SelectLookupCompany } from '@lookup/components/company/select';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose, HandleCreators, withHandlers } from 'recompose';
 import { BaseFieldsProps } from 'redux-form';
@@ -35,7 +36,15 @@ const handlerCreators: HandleCreators<CommonDetailFormProps, OwnHandlers> = {
 
       const selectType = parentTypeTranslator(category);
   
-      switch (fieldName) {    
+      switch (fieldName) {       
+        case 'companyUid':
+          fieldProps = {
+            label: intl.formatMessage(commonMessage.system.fieldFor(name, 'fieldName')),
+            placeholder: intl.formatMessage(commonMessage.system.fieldFor(name, 'fieldPlaceholder')),
+            component: SelectLookupCompany
+          };
+          break;
+
         case 'parentCode':
           fieldProps = {
             category: selectType,
