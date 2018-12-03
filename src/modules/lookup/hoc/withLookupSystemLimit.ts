@@ -6,6 +6,7 @@ import {
 import {
   ISystemLimitAllRequest,
   ISystemLimitByIdRequest,
+  ISystemLimitDeleteRequest,
   ISystemLimitListRequest,
   ISystemLimitPostRequest,
   ISystemLimitPutRequest
@@ -16,6 +17,8 @@ import {
   ISystemLimitList
 } from '@lookup/classes/response';
 import {
+  systemLimitDeleteDispose,
+  systemLimitDeleteRequest,
   systemLimitGetAllDispose,
   systemLimitGetAllRequest,
   systemLimitGetByIdDispose,
@@ -47,6 +50,8 @@ interface PropsFromDispatch {
     updateRequest: typeof systemLimitPutRequest;
     updateDispose: typeof systemLimitPutDispose;
 
+    deleteRequest: typeof systemLimitDeleteRequest;
+    deleteDispose: typeof systemLimitDeleteDispose;
     // query
     loadAllRequest: typeof systemLimitGetAllRequest;
     loadAllDispose: typeof systemLimitGetAllDispose;
@@ -77,6 +82,9 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
 
     updateRequest: (request: ISystemLimitPutRequest) => dispatch(systemLimitPutRequest(request)),
     updateDispose: () => dispatch(systemLimitPutDispose()),
+
+    deleteRequest: (request: ISystemLimitDeleteRequest) => dispatch(systemLimitDeleteRequest(request)),
+    deleteDispose: () => dispatch(systemLimitDeleteDispose()),
 
     // query
     loadAllRequest: (request: ISystemLimitAllRequest) => dispatch(systemLimitGetAllRequest(request)),

@@ -184,5 +184,6 @@ export const CollectionPageView: React.SFC<CollectionPageProps> = props => (
         );
       })
     }
+    {props.children}
   </DataContainer>
 );
