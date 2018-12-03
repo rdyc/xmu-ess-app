@@ -210,6 +210,20 @@
   "lookup.position.field.createdBy": "Created By",
   "lookup.position.field.modifiedBy": "Modified by",
   "lookup.position.field.createdDate": "Created at",
-  "lookup.position.field.modifiedDate": "Modified at"
+  "lookup.position.field.modifiedDate": "Modified at",
+  
+  "lookup.position.confirm.modify.title": "Modify Confirmation",
+  "lookup.position.confirm.modify.description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+
+  "lookup.position.confirm.delete.title": "Delete Confirmation",
+  "lookup.position.confirm.delete.description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+
+  "lookup.position.message.create.success": "New position has been created",
+  "lookup.position.message.create.failure": "Submission failed",
+  "lookup.position.message.update.success": "Position has been updated",
+  "lookup.position.message.update.failure": "Update submission failed",
+  "lookup.position.message.delete.success": "This position has been deleted from system",
+  "lookup.position.message.delete.failure": "Delete confirmation failed",
+  "lookup.position.message.empty.currencyUid": "Position ID not found"
 
 }
