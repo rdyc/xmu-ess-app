@@ -1,4 +1,6 @@
 import { ISystemDetail } from '@common/classes/response';
+import { CommonCategory } from '@common/classes/types';
+import { isWithCompany, isWithParent } from '@common/helper';
 import { commonMessage } from '@common/locales/messages/commonMessage';
 import { GlobalStyle } from '@layout/types/GlobalStyle';
 import { Card, CardContent, CardHeader, TextField } from '@material-ui/core';
@@ -8,8 +10,7 @@ import { compose } from 'recompose';
 
 interface OwnProps {
   data: ISystemDetail;
-  withCompany: boolean;
-  withParent: boolean;
+  category?: string;
 }
 
 type AllProps
@@ -17,7 +18,7 @@ type AllProps
   & InjectedIntlProps;
 
 export const commonInformation: React.SFC<AllProps> = props => {
-  const { data , withCompany, withParent} = props;
+  const { data, category} = props;
 
   const render = (
     <Card square>
@@ -27,7 +28,15 @@ export const commonInformation: React.SFC<AllProps> = props => {
       />
       <CardContent>
         {
-          withCompany &&
+          category &&
+          <TextField
+            {...GlobalStyle.TextField.ReadOnly}
+            label={props.intl.formatMessage(commonMessage.system.field.category)}
+            value={CommonCategory[category]}
+          />
+        }
+        {
+          isWithCompany(category) &&
           <TextField
             {...GlobalStyle.TextField.ReadOnly}
             label={props.intl.formatMessage(commonMessage.system.field.companyUid)}
@@ -50,7 +59,7 @@ export const commonInformation: React.SFC<AllProps> = props => {
           value={data.description || 'N/A'}
         />
         {
-          withParent &&
+          isWithParent(category) &&
           <TextField
             {...GlobalStyle.TextField.ReadOnly}
             label={props.intl.formatMessage(commonMessage.system.field.parentCode)}

@@ -101,10 +101,10 @@ const config: CollectionConfig<ILeaveRequest, AllProps> = {
   },
   onBind: (item: ILeaveRequest, index: number) => ({
     key: index,
-    primary: item.reason,
-    secondary: item.leave && item.leave.value || item.leaveType,
-    tertiary: item.regular && item.regular.leave && item.regular.leave.name || 'N/A',
-    quaternary: item.uid,
+    primary: item.uid,
+    secondary: item.reason,
+    tertiary: item.leave && item.leave.value || item.leaveType,
+    quaternary: item.regular && item.regular.leave && item.regular.leave.name || 'N/A',
     quinary: item.status && item.status.value || item.statusType,
     senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
   }),
