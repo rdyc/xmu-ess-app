@@ -49,7 +49,8 @@ export const layoutAction = defineMessages({
   next: { id: `${prefix}.action.next`},
   nextCount: { id: `${prefix}.action.nextCount`},
   previous: { id: `${prefix}.action.previous`},
-  previousCount: { id: `${prefix}.action.previousCount`}
+  previousCount: { id: `${prefix}.action.previousCount`},
+  delete: { id: `${prefix}.action.delete`}
 });
 
 // field

@@ -38,6 +38,7 @@
   "layout.action.discard": "Discard",
   "layout.action.edit": "Edit",
   "layout.action.modify": "Modify",
+  "layout.action.delete": "Delete",
   "layout.action.close": "Close",
   "layout.action.dismiss": "Dismiss",
   "layout.action.approve": "Approve",

@@ -4,3 +4,4 @@ export * from './position/IPositionDeletePayload';
 export * from './leave/ILeavePutPayload';
 export * from './systemLimit/ISystemLimitPostPayload';
 export * from './systemLimit/ISystemLimitPutPayload';
+export * from './systemLimit/ISystemLimitDeletePayload';
