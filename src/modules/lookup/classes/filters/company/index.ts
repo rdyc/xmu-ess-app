@@ -1,2 +1,2 @@
-export * from './ILookupCompanyAllFilter';
-export * from './ILookupCompanyListFilter';
+export * from './ILookupCompanyGetAllFilter';
+export * from './ILookupCompanyGetListFilter';

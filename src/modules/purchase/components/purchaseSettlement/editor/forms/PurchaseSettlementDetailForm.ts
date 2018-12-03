@@ -14,9 +14,6 @@ interface OwnProps {
   formMode: FormMode;
   context: BaseFieldsProps;
   isCurrencyIdr: boolean;
-  // onChangeValueIdr: (event: any, newValue: number, oldValue: number) => void;  
-  // onChangeActual: (event: any, newValue: number, oldValue: number) => void;
-  // onChangeDifference: (event: any, newValue: number, oldValue: number) => void;
   onChangeActualValue: (event: any, newValue: number, oldValue: number) => void;
   onChangeDifferenceValue: (event: any, newValue: number, oldValue: number) => void;
 }

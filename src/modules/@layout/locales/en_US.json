@@ -3,7 +3,8 @@
   "layout.text.processing": "Processing",
   "layout.text.dataInfo": "{total} record(s)",
   "layout.text.pagingInfo": "{current} of {total}",
-
+  "layout.text.idr": "IDR (RP) ",
+  
   "layout.tooltip.more": "More options",
   "layout.tooltip.orderBy": "Order by",
   "layout.tooltip.sortDirection": "Sort direction",
@@ -37,6 +38,7 @@
   "layout.action.discard": "Discard",
   "layout.action.edit": "Edit",
   "layout.action.modify": "Modify",
+  "layout.action.delete": "Delete",
   "layout.action.close": "Close",
   "layout.action.dismiss": "Dismiss",
   "layout.action.approve": "Approve",

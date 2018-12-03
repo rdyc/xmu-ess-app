@@ -1,3 +1,4 @@
+import { GlobalFormat } from '@layout/types';
 import { GlobalStyle } from '@layout/types/GlobalStyle';
 import {
   Avatar,
@@ -115,15 +116,7 @@ const travelRequestItem: React.SFC<AllProps> = props => {
                     {...GlobalStyle.TextField.ReadOnly}
                     margin="dense"
                     label={props.intl.formatMessage(travelMessage.request.field.itemStart)}
-                    value={intl.formatDate(item.departureDate, {
-                      year: 'numeric',
-                      month: 'short',
-                      day: 'numeric',
-                      hour: 'numeric',
-                      minute: 'numeric',
-                      hour12: false,
-                      timeZone: 'GMT',
-                    })}
+                    value={intl.formatDate(item.departureDate, GlobalFormat.TimeDate)}
                   />
                   <TextField
                     {...GlobalStyle.TextField.ReadOnly}
@@ -135,15 +128,7 @@ const travelRequestItem: React.SFC<AllProps> = props => {
                     {...GlobalStyle.TextField.ReadOnly}
                     margin="dense"
                     label={props.intl.formatMessage(travelMessage.request.field.itemEnd)}
-                    value={intl.formatDate(item.returnDate, {
-                      year: 'numeric',
-                      month: 'short',
-                      day: 'numeric',
-                      hour: 'numeric',
-                      minute: 'numeric',
-                      hour12: false,
-                      timeZone: 'GMT',
-                    })}
+                    value={intl.formatDate(item.returnDate, GlobalFormat.TimeDate)}
                   />
                   <TextField
                     {...GlobalStyle.TextField.ReadOnly}

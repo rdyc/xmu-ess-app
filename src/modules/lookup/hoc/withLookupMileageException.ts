@@ -6,7 +6,9 @@ import {
 import {
   IMileageExceptionAllRequest,
   IMileageExceptionByIdRequest,
-  IMileageExceptionListRequest
+  IMileageExceptionListRequest,
+  IMileageExceptionPostRequest,
+  IMileageExceptionPutRequest
 } from '@lookup/classes/queries';
 import {
   IMileageException,
@@ -19,7 +21,11 @@ import {
   mileageExceptionGetByIdDispose,
   mileageExceptionGetByIdRequest,
   mileageExceptionGetListDispose,
-  mileageExceptionGetListRequest
+  mileageExceptionGetListRequest,
+  mileageExceptionPostDispose,
+  mileageExceptionPostRequest,
+  mileageExceptionPutDispose,
+  mileageExceptionPutRequest
 } from '@lookup/store/actions';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
@@ -35,6 +41,11 @@ interface PropsFromState {
 interface PropsFromDispatch {
   mileageExceptionDispatch: {
     // command
+    createRequest: typeof mileageExceptionPostRequest;
+    createDispose: typeof mileageExceptionPostDispose;
+
+    updateRequest: typeof mileageExceptionPutRequest;
+    updateDispose: typeof mileageExceptionPutDispose;
 
     // query
     loadAllRequest: typeof mileageExceptionGetAllRequest;
@@ -61,6 +72,11 @@ const mapStateToProps = ({ mileageExceptionGetAll, mileageExceptionGetById, mile
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   mileageExceptionDispatch: {
     // command
+    createRequest: (request: IMileageExceptionPostRequest) => dispatch(mileageExceptionPostRequest(request)),
+    createDispose: () => dispatch(mileageExceptionPostDispose()),
+
+    updateRequest: (request: IMileageExceptionPutRequest) => dispatch(mileageExceptionPutRequest(request)), 
+    updateDispose: () => dispatch(mileageExceptionPutDispose()),
 
     // query
     loadAllRequest: (request: IMileageExceptionAllRequest) => dispatch(mileageExceptionGetAllRequest(request)),

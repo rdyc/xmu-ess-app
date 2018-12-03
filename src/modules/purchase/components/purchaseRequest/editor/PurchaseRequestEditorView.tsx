@@ -42,11 +42,11 @@ export const PurchaseRequestEditorView: React.SFC<PurchaseRequestEditorProps> = 
     },
     items: {
       items: [
-        {
-          uid: undefined,
-          request: 0,
-          description: '',
-        }
+        // {
+        //   uid: undefined,
+        //   request: 0,
+        //   description: '',
+        // }
     ]
     }
   };
@@ -80,6 +80,7 @@ export const PurchaseRequestEditorView: React.SFC<PurchaseRequestEditorProps> = 
       initialValues.information.advance = data.advance || 0;
 
       if (data.items) {
+        initialValues.items.items = [];
         data.items.forEach(item =>
           initialValues.items.items.push({
             uid: item.uid,
