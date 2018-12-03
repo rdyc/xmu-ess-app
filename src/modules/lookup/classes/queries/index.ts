@@ -1,6 +1,8 @@
 export * from './mileageException/IMileageExceptionAllRequest';
 export * from './mileageException/IMileageExceptionListRequest';
 export * from './mileageException/IMileageExceptionByIdRequest';
+export * from './mileageException/IMileageExceptionPostRequest';
+export * from './mileageException/IMileageExceptionPutRequest';
 export * from './diem/IDiemAllRequest';
 export * from './diem/IDiemByIdRequest';
 export * from './diem/IDiemListRequest';
@@ -28,3 +30,5 @@ export * from './leave/ILookupLeaveGetDetailRequest';
 export * from './leave/ILookupLeaveGetListRequest';
 export * from './leave/ILookupLeavePostRequest';
 export * from './leave/ILookupLeavePutRequest';
+export * from './systemLimit/ISystemLimitPostRequest';
+export * from './systemLimit/ISystemLimitPutRequest';
