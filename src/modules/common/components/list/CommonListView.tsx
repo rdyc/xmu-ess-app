@@ -1,5 +1,5 @@
 import { ISystem } from '@common/classes/response';
-import { CommonCategory, CommonField, CommonUserAction, isWithCompany, isWithParent } from '@common/classes/types';
+import { CommonCategory, CommonField, CommonUserAction } from '@common/classes/types';
 import { CommonSummary } from '@common/components/detail/shared/CommonSummary';
 import { categoryTypeTranslator, commonFieldTranslator } from '@common/helper';
 import { withCommonSystem, WithCommonSystem } from '@common/hoc/withCommonSystem';
@@ -84,17 +84,11 @@ const config: CollectionConfig<ISystem, AllProps> = {
   // events
   onDataLoad: (props: AllProps, callback: CollectionHandler, params: CollectionDataProps, forceReload?: boolean | false) => {
     const { user } = props.userState;
-    const { isLoading, response } = props.commonSystemState.all;
+    const { isLoading } = props.commonSystemState.all;
     const { systemAllRequest } = props.commonDispatch;
 
     // when user is set and not loading
     if (user && !isLoading) {
-      // if (response) {
-      //   callback.handleForceReload();
-      // }
-
-      // when response are empty or force reloading
-      if (!response || forceReload) {
         systemAllRequest({
           category: categoryTypeTranslator(props.match.params.category),
           filter: {
@@ -106,10 +100,6 @@ const config: CollectionConfig<ISystem, AllProps> = {
             findBy: params.findBy,
           }
         });
-      } else {
-        // just take data from previous response
-        callback.handleResponse(response);
-      }
     }
   },
   onUpdated: (props: AllProps, callback: CollectionHandler) => {
@@ -117,11 +107,6 @@ const config: CollectionConfig<ISystem, AllProps> = {
     
     callback.handleLoading(isLoading);
     callback.handleResponse(response);
-
-    if (response) {
-      callback.handleForceReload();
-    }
-    
   },
   onBind: (item: ISystem, index: number) => ({
     key: item.id,
@@ -137,8 +122,7 @@ const config: CollectionConfig<ISystem, AllProps> = {
   summaryComponent: (item: ISystem, props: AllProps) => ( 
     <CommonSummary 
       data={item}
-      withCompany={isWithCompany(props.match.params.category)}
-      withParent={isWithParent(props.match.params.category)}
+      category={props.match.params.category}
     />
   ),
 

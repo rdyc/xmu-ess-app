@@ -1,5 +1,5 @@
 import { ISystemDetail } from '@common/classes/response';
-import { CommonUserAction, isWithCompany, isWithParent } from '@common/classes/types';
+import { CommonUserAction } from '@common/classes/types';
 import { categoryTypeTranslator } from '@common/helper';
 import { commonMessage } from '@common/locales/messages/commonMessage';
 import AppMenu from '@constants/AppMenu';
@@ -79,8 +79,7 @@ const config: SingleConfig<ISystemDetail, CommonDetailProps> = {
   primaryComponent: (data: ISystemDetail, props: CommonDetailProps) => (
     <CommonInformation 
       data={data} 
-      withCompany={isWithCompany(props.match.params.category)}
-      withParent={isWithParent(props.match.params.category)}
+      category={props.match.params.category}
     />
   ),
   

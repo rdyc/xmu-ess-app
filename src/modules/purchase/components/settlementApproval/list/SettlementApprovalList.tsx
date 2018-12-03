@@ -121,7 +121,7 @@ const config: CollectionConfig<ISettlement, AllProps> = {
       // onClick = {() => alert(`go to ${item.uid}`)}
       onClick={() => callback.handleRedirectTo(`/purchase/settlement/approvals/${item.uid}`)}
     >
-      <FormattedMessage { ...layoutMessage.action.approve } />
+      <FormattedMessage { ...layoutMessage.action.details } />
     </Button>
   )
 };
