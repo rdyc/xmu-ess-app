@@ -12,6 +12,7 @@ import * as moment from 'moment';
 import * as React from 'react';
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose } from 'recompose';
+import { LookupMileageExceptionFilter } from './LookupMileageExceptionFilter';
 import { LookupMileageExceptionSummary } from './LookupMileageExceptionSummary';
 
 const config: CollectionConfig<IMileageException, AllProps> = {
@@ -113,6 +114,11 @@ const config: CollectionConfig<IMileageException, AllProps> = {
     senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
   }),
 
+  // filter
+  filterComponent: (callback: CollectionHandler) => (
+    <LookupMileageExceptionFilter handleFind={callback.handleFilter}/>
+  ),
+  
   // summary component
   summaryComponent: (item: IMileageException) => ( 
     <LookupMileageExceptionSummary data={item} />
