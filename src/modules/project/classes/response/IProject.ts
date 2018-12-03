@@ -17,6 +17,7 @@ export interface IProject {
   maxHours: number;
   start: string;
   end: string;
+  valueIdr?: number | null;
   statusType: string;
   status: ICommonSystem | null;
   rejectedReason: string | null;
