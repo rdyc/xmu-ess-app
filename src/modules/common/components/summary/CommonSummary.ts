@@ -31,12 +31,6 @@ interface OwnHandler {
   handleGoToCategoryList: (category: string) => void;
 }
 
-export type CommonCategoryCount = {
-  name: string,
-  active: number | 0,
-  inactive: number | 0
-};
-
 export type CommonSummaryProps
   = OwnOption
   & WithCommonSystem
@@ -93,7 +87,6 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<CommonSummaryProps, OwnState> 
   },
   componentWillUnmount() {
     const { layoutDispatch } = this.props;
-    const { view } = this.props.layoutState;
     const { systemTypeDispose } = this.props.commonDispatch;
     
     layoutDispatch.changeView(null);
@@ -102,10 +95,7 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<CommonSummaryProps, OwnState> 
     layoutDispatch.modeSearchOff();
     layoutDispatch.actionCentreHide();
     layoutDispatch.moreHide();
-
-    if (view && view.uid !== AppMenu.Common) {
-      systemTypeDispose();
-    }
+    systemTypeDispose();
   }
 };
 
