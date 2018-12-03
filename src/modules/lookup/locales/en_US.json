@@ -87,6 +87,11 @@
   "lookup.systemLimit.field.info.title": "Detail System Limit Information",
   "lookup.systemLimit.field.info.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras mollis eros sit amet rhoncus fermentum",
 
+  "lookup.systemLimit.field.filter.company": "Company",
+  "lookup.systemLimit.field.filter.company.placeholder": "Company",
+  "lookup.systemLimit.field.filter.category": "Category",
+  "lookup.systemLimit.field.filter.category.placeholder": "Category",
+
   "lookup.systemLimit.section.info.title": "System Limit",
   "lookup.systemLimit.section.info.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras mollis eros sit amet rhoncus fermentum",
   

@@ -12,6 +12,7 @@ import * as moment from 'moment';
 import * as React from 'react';
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose } from 'recompose';
+import { LookupSystemLimitFilter } from './LookupSystemLimitFilter';
 import { LookupSystemLimitSummary } from './LookupSystemLimitSummary';
 
 const config: CollectionConfig<ISystemLimit, AllProps> = {
@@ -76,19 +77,19 @@ const config: CollectionConfig<ISystemLimit, AllProps> = {
     const { user } = props.userState;
     const { isLoading, response } = props.systemLimitState.all;
     const { loadAllRequest } = props.systemLimitDispatch;
-
+    
     // when user is set and not loading
     if (user && !isLoading) {
       // when response are empty or force reloading
       if (!response || forceReload) {
         loadAllRequest({
           filter: {
+            find: params.find,
+            findBy: params.findBy,
             direction: params.direction,
             orderBy: params.orderBy,
             page: params.page,
             size: params.size,
-            find: params.find,
-            findBy: params.findBy,
           }
         });
       } else {
@@ -99,7 +100,7 @@ const config: CollectionConfig<ISystemLimit, AllProps> = {
   },
   onUpdated: (props: AllProps, callback: CollectionHandler) => {
     const { isLoading, response } = props.systemLimitState.all;
-    
+
     callback.handleLoading(isLoading);
     callback.handleResponse(response);
   },
@@ -113,6 +114,11 @@ const config: CollectionConfig<ISystemLimit, AllProps> = {
     senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
   }),
 
+  // filter
+  filterComponent: (callback: CollectionHandler) => (
+    <LookupSystemLimitFilter handleFind={callback.handleFilter}/>
+  ),
+  
   // summary component
   summaryComponent: (item: ISystemLimit) => ( 
     <LookupSystemLimitSummary data={item} />
@@ -143,14 +149,16 @@ type AllProps
   & WithLookupSystemLimit;
 
 const systemLimitList: React.SFC<AllProps> = props => (
-  <CollectionPage
-    config={config}
-    connectedProps={props}
-  />
+  <React.Fragment>
+    <CollectionPage
+      config={config}
+      connectedProps={props}
+    />
+  </React.Fragment>
 );
 
 export const LookupSystemLimitListView = compose(
   withUser,
   injectIntl,
-  withLookupSystemLimit
+  withLookupSystemLimit,
 )(systemLimitList);

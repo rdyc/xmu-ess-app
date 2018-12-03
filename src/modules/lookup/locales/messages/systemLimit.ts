@@ -41,6 +41,12 @@ export const systemLimitField = defineMessages({
 
   infoTitle: { id: `${prefix}.field.info.title`},
   infoSubHeader: { id: `${prefix}.field.info.subHeader`},
+
+  filterCompany: { id: `${prefix}.field.filter.company`},
+  filterCompanyPlaceholder: { id: `${prefix}.field.filter.company.placeholder`},
+
+  filterCategory: { id: `${prefix}.field.filter.category`},
+  filterCategoryPlaceholder: { id: `${prefix}.field.filter.category.placeholder`},
 });
 
 // section
