@@ -6,6 +6,8 @@ import { LookupHolidayDetailFormView } from '@lookup/components/holiday/editor/f
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose, HandleCreators, withHandlers } from 'recompose';
 import { BaseFieldsProps } from 'redux-form';
+import { SelectLookupCompany } from '@lookup/components/company/select';
+import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
 
 interface OwnProps {
   formMode: FormMode;
@@ -23,36 +25,34 @@ export type RequestDetailFormProps
 
 const handlerCreators: HandleCreators<RequestDetailFormProps, OwnHandlers> = {
   generateFieldProps: (props: RequestDetailFormProps) => (name: string) => { 
-    const { 
-      intl, formMode
-    } = props;
-
-    const fieldName = name.replace('information.', '');
+    const { intl } = props;
 
     let fieldProps: SelectSystemOption & any = {};
 
-    switch (fieldName) {
+    switch (name) {
       case 'uid':
         fieldProps = {
           disabled: true,
-          placeholder: intl.formatMessage({id: `leave.field.${name}.placeholder`}),
+          label: intl.formatMessage(lookupMessage.holiday.fieldFor(name, 'fieldName')),
+          placeholder: intl.formatMessage(lookupMessage.holiday.fieldFor(name, 'fieldPlaceholder')),
           component: InputText
         };
         break;
       
       case 'companyUid':
         fieldProps = {
-          required: formMode === FormMode.New,
-          category: 'company',
-          placeholder: intl.formatMessage({id: `leave.field.${name}.placeholder`}),
-          component: SelectSystem,
+          required: true,
+          label: intl.formatMessage(lookupMessage.holiday.fieldFor(name, 'fieldName')),
+          placeholder: intl.formatMessage(lookupMessage.holiday.fieldFor(name, 'fieldPlaceholder')),
+          component: SelectLookupCompany,
         };
         break;
 
       case 'description':
         fieldProps = {
           required: false,
-          placeholder: intl.formatMessage({id: `leave.field.${name}.placeholder`}),
+          label: intl.formatMessage(lookupMessage.holiday.fieldFor(name, 'fieldName')),
+          placeholder: intl.formatMessage(lookupMessage.holiday.fieldFor(name, 'fieldPlaceholder')),
           component: InputText,
         };
         break;
@@ -60,7 +60,8 @@ const handlerCreators: HandleCreators<RequestDetailFormProps, OwnHandlers> = {
       case 'date': 
         fieldProps = {
           required: true,
-          placeholder: intl.formatMessage({id: `leave.field.${name}.placeholder`}),
+          label: intl.formatMessage(lookupMessage.holiday.fieldFor(name, 'fieldName')),
+          placeholder: intl.formatMessage(lookupMessage.holiday.fieldFor(name, 'fieldPlaceholder')),
           component: InputDate,
         };
         break;
@@ -68,7 +69,8 @@ const handlerCreators: HandleCreators<RequestDetailFormProps, OwnHandlers> = {
       default:
         fieldProps = {
           type: 'text',
-          placeholder: intl.formatMessage({id: `leave.field.${name}.placeholder`}),
+          label: intl.formatMessage(lookupMessage.holiday.fieldFor(name, 'fieldName')),
+          placeholder: intl.formatMessage(lookupMessage.holiday.fieldFor(name, 'fieldPlaceholder')),
           component: InputText
         };
         break;

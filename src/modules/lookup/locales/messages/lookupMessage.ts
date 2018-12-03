@@ -1,5 +1,5 @@
 import { currencyConfirm, currencyField, currencyForm, currencyMessage, currencyPage, currencySection } from './currency/currencyMessage';
-import { holidayConfirm, holidayField, holidayPage } from './holiday';
+import { holidayConfirm, holidayField, holidayPage, holidayFieldHelperFor, holidaySection, holidayMessage } from './holiday';
 import { leaveConfirm, leaveField, leavePage } from './leave';
 import { companyConfirm, companyField, companyFieldHelperFor, companyMessage, companyPage, companySection } from './lookupCompanyMessage';
 import {
@@ -33,7 +33,10 @@ export const lookupMessage = {
   holiday: {
     page: holidayPage,
     field: holidayField,
-    confirm: holidayConfirm, 
+    fieldFor: holidayFieldHelperFor,
+    section: holidaySection,
+    confirm: holidayConfirm,
+    message: holidayMessage
   },
   leave: {
     page: leavePage,

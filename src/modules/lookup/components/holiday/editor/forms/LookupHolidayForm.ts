@@ -1,4 +1,5 @@
 import { FormMode } from '@generic/types';
+import { connect } from 'react-redux';
 import { LookupHolidayFormView } from '@lookup/components/holiday/editor/forms/LookupHolidayFormView';
 import { InjectedFormProps, reduxForm } from 'redux-form';
 
@@ -17,14 +18,11 @@ interface OwnProps {
   formMode: FormMode;
 }
 
-interface FormValueProps {
-  formValue: string | null;
-}
-
 export type RequestFormProps 
   = InjectedFormProps<LookupHolidayFormData, OwnProps> 
-  & FormValueProps
   & OwnProps;
+
+const connectedView = connect()(LookupHolidayFormView);
 
 export const HolidayForm = reduxForm<LookupHolidayFormData, OwnProps>({
   form: formName,
@@ -32,4 +30,4 @@ export const HolidayForm = reduxForm<LookupHolidayFormData, OwnProps>({
   touchOnBlur: true,
   enableReinitialize: true,
   destroyOnUnmount: true
-})(LookupHolidayFormView);
+})(connectedView);

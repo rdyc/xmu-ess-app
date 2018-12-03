@@ -207,6 +207,7 @@
   "lookup.holiday.message.update.failure": "Unable to process your submission",
   "lookup.holiday.confirm.modify.title": "Modify Confirmation",
   "lookup.holiday.confirm.modify.description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "lookup.holiday.message.emptyProps": "Some props are empty",
 
   "lookup.leave.page.list.title": "Leave",
   "lookup.leave.page.list.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",

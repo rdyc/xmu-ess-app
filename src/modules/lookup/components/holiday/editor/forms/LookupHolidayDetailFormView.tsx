@@ -2,11 +2,11 @@ import { FormMode } from '@generic/types';
 import { RequestDetailFormProps } from '@lookup/components/holiday/editor/forms/LookupHolidayDetailForm';
 import { Card, CardContent, CardHeader } from '@material-ui/core';
 import * as React from 'react';
-import { FormattedMessage } from 'react-intl';
 import { Field } from 'redux-form';
+import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
 
 export const LookupHolidayDetailFormView: React.SFC<RequestDetailFormProps> = props => {
-  const { formMode } = props;
+  const { formMode, intl } = props;
   const { names } = props.context;
   
   const renderField = (name: string) => {
@@ -23,7 +23,6 @@ export const LookupHolidayDetailFormView: React.SFC<RequestDetailFormProps> = pr
       <Field
         key={fieldName}
         name={fieldName}
-        label={<FormattedMessage id={`leave.field.${name}`} />}
         {...fieldProps}
       />
     );
@@ -32,8 +31,8 @@ export const LookupHolidayDetailFormView: React.SFC<RequestDetailFormProps> = pr
   const render = (
     <Card square>
       <CardHeader 
-        title={<FormattedMessage id="leave.infoTitle"/>}
-        subheader={<FormattedMessage id="leave.infoSubTitle" />}
+        title={intl.formatMessage(lookupMessage.holiday.section.infoTitle)}
+        subheader={intl.formatMessage(lookupMessage.holiday.section.infoSubHeader)}
       />
       <CardContent>
         {names.map(name => renderField(name))}

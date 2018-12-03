@@ -3,7 +3,6 @@ import { FormMode } from '@generic/types';
 import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
-import { leaveRequestMessage } from '@leave/locales/messages/leaveRequestMessage';
 import {
   ILookupHolidayPostPayload,
   ILookupHolidayPutPayload,
@@ -31,6 +30,7 @@ import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
 import { isNullOrUndefined, isObject } from 'util';
 import { LookupHolidayEditorView } from './LookupHolidayEditorView';
+import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
 
 interface OwnHandlers {
   handleValidate: (payload: LookupHolidayFormData) => FormErrors;
@@ -71,13 +71,13 @@ const handlerCreators: HandleCreators<RequestEditorProps, OwnHandlers> = {
     };
   
     const requiredFields = [
-      'LookupHolidayType', 'start',
+      'categoryType', 'start',
       'address', 'contactNumber', 'reason'
     ];
 
     requiredFields.forEach(field => {
       if (!formData.information[field] || isNullOrUndefined(formData.information[field])) {
-        errors.information[field] = props.intl.formatMessage({id: `LookupHoliday.field.information.${field}.required`});
+        errors.information[field] = props.intl.formatMessage(lookupMessage.holiday.fieldFor(field, 'fieldRequired'));
       }
     });
     
@@ -85,12 +85,7 @@ const handlerCreators: HandleCreators<RequestEditorProps, OwnHandlers> = {
   },
   handleSubmit: (props: RequestEditorProps) => (formData: LookupHolidayFormData) => { 
     const { formMode, holidayUid, intl } = props;
-    const { user } = props.userState;
     const { createRequest, updateRequest } = props.lookupHolidayDispatch;
-
-    if (!user) {
-      return Promise.reject('user was not found');
-    }
 
     const payload = {
       ...formData.information,
@@ -102,7 +97,7 @@ const handlerCreators: HandleCreators<RequestEditorProps, OwnHandlers> = {
         createRequest({
           resolve, 
           reject,
-          companyUid: user.company.uid,
+          companyUid: payload.companyUid ? payload.companyUid : '',
           data: payload as ILookupHolidayPostPayload
         });
       });
@@ -110,7 +105,7 @@ const handlerCreators: HandleCreators<RequestEditorProps, OwnHandlers> = {
 
     // update checking
     if (!holidayUid) {
-      const message = intl.formatMessage(leaveRequestMessage.emptyLeaveUid);
+      const message = intl.formatMessage(lookupMessage.holiday.message.emptyHolidayUid);
 
       return Promise.reject(message);
     }
@@ -121,7 +116,7 @@ const handlerCreators: HandleCreators<RequestEditorProps, OwnHandlers> = {
           holidayUid, 
           resolve, 
           reject,
-          companyUid: user.company.uid,
+          companyUid: payload.companyUid ? payload.companyUid : '',
           data: payload as ILookupHolidayPutPayload, 
         });
       });
@@ -136,11 +131,11 @@ const handlerCreators: HandleCreators<RequestEditorProps, OwnHandlers> = {
     let message: string = '';
 
     if (formMode === FormMode.New) {
-      message = intl.formatMessage(leaveRequestMessage.createSuccess, { uid: response.uid });
+      message = intl.formatMessage(lookupMessage.holiday.message.createSuccess, { uid: response.uid });
     }
 
     if (formMode === FormMode.Edit) {
-      message = intl.formatMessage(leaveRequestMessage.updateSuccess, { uid: response.uid });
+      message = intl.formatMessage(lookupMessage.holiday.message.updateSuccess, { uid: response.uid });
     }
 
     alertAdd({
@@ -148,7 +143,7 @@ const handlerCreators: HandleCreators<RequestEditorProps, OwnHandlers> = {
       time: new Date()
     });
 
-    history.push('/LookupHoliday/requests/');
+    history.push('/lookup/requests/');
   },
   handleSubmitFail: (props: RequestEditorProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
     const { formMode, intl } = props;
@@ -165,11 +160,11 @@ const handlerCreators: HandleCreators<RequestEditorProps, OwnHandlers> = {
       let message: string = '';
 
       if (formMode === FormMode.New) {
-        message = intl.formatMessage(leaveRequestMessage.createFailure);
+        message = intl.formatMessage(lookupMessage.holiday.message.createFailure);
       }
 
       if (formMode === FormMode.Edit) {
-        message = intl.formatMessage(leaveRequestMessage.updateFailure);
+        message = intl.formatMessage(lookupMessage.holiday.message.updateFailure);
       }
 
       alertAdd({
@@ -199,22 +194,17 @@ const lifecycles: ReactLifeCycleFunctions<RequestEditorProps, {}> = {
     const { user } = this.props.userState;
     
     const view = {
-      title: 'LookupHoliday.form.newTitle',
-      subTitle: 'LookupHoliday.form.newSubTitle',
+      title: lookupMessage.holiday.page.newTitle,
+      subTitle: lookupMessage.holiday.page.newSubHeader,
     };
 
     if (!user) {
       return;
     }
 
-    stateUpdate({ 
-      companyUid: user.company.uid,
-      positionUid: user.position.uid
-    });
-
     if (!isNullOrUndefined(history.location.state)) {
-      view.title = 'LookupHoliday.form.editTitle';
-      view.subTitle = 'LookupHoliday.form.editSubTitle';
+      view.title = lookupMessage.holiday.page.modifyTitle;
+      view.subTitle = lookupMessage.holiday.page.modifySubHeader;
 
       stateUpdate({ 
         formMode: FormMode.Edit,
@@ -229,9 +219,9 @@ const lifecycles: ReactLifeCycleFunctions<RequestEditorProps, {}> = {
 
     layoutDispatch.changeView({
       uid: AppMenu.LookupHoliday,
-      parentUid: AppMenu.LookupHoliday,
-      title: intl.formatMessage({id: view.title}),
-      subTitle : intl.formatMessage({id: view.subTitle})
+      parentUid: AppMenu.Lookup,
+      title: intl.formatMessage(view.title),
+      subTitle : intl.formatMessage(view.subTitle)
     });
 
     layoutDispatch.navBackShow(); 

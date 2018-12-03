@@ -6,12 +6,9 @@ import { BaseFieldsProps, Fields, FormSection } from 'redux-form';
 import { RequestFormProps } from './LookupHolidayForm';
 
 export const LookupHolidayFormView: React.SFC<RequestFormProps> = props => {
-  
-  const { 
-    formMode, initialValues,
-  } = props;
+  const { formMode } = props;
 
-  const fields = Object.getOwnPropertyNames(initialValues.information);
+  const fields = Object.getOwnPropertyNames(props.initialValues.information);
 
   const componentInformation = (context: BaseFieldsProps) => (
     <LookupHolidayDetailForm 
