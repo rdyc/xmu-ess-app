@@ -57,15 +57,15 @@ const lifecycles: ReactLifeCycleFunctions<SelectProjectProps, {}> = {
       loadListRequest({filter});
     }
   },
-  componentWillReceiveProps(nextProps: SelectProjectProps) {
-    if (nextProps.filter !== this.props.filter) {
-      const { loadListDispose, loadListRequest } = this.props.projectRegisterDispatch;
-      const { filter } = nextProps;
+  // componentWillReceiveProps(nextProps: SelectProjectProps) {
+  //   if (nextProps.filter !== this.props.filter) {
+  //     const { loadListDispose, loadListRequest } = this.props.projectRegisterDispatch;
+  //     const { filter } = nextProps;
       
-      loadListDispose();
-      loadListRequest({filter});
-    }
-  },
+  //     loadListDispose();
+  //     loadListRequest({filter});
+  //   }
+  // },
   componentWillUnmount() {
     const { loadListDispose } = this.props.projectRegisterDispatch;
     loadListDispose();

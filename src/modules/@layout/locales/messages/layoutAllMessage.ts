@@ -7,7 +7,8 @@ export const layoutText = defineMessages({
   loading: { id: `${prefix}.text.loading`},
   processing: { id: `${prefix}.text.processing`},
   dataInfo: { id: `${prefix}.text.dataInfo` },
-  pagingInfo: { id: `${prefix}.text.pagingInfo` }
+  pagingInfo: { id: `${prefix}.text.pagingInfo` },
+  idr: { id: `${prefix}.text.idr`}
 });
 
 // tooltip

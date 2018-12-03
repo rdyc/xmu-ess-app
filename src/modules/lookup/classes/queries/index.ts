@@ -1,6 +1,8 @@
 export * from './mileageException/IMileageExceptionAllRequest';
 export * from './mileageException/IMileageExceptionListRequest';
 export * from './mileageException/IMileageExceptionByIdRequest';
+export * from './mileageException/IMileageExceptionPostRequest';
+export * from './mileageException/IMileageExceptionPutRequest';
 export * from './diem/IDiemAllRequest';
 export * from './diem/IDiemByIdRequest';
 export * from './diem/IDiemListRequest';
@@ -18,6 +20,8 @@ export * from './currency/ILookupCurrencyListRequest';
 export * from './systemLimit/ISystemLimitAllRequest';
 export * from './systemLimit/ISystemLimitByIdRequest';
 export * from './systemLimit/ISystemLimitListRequest';
+export * from './systemLimit/ISystemLimitPostRequest';
+export * from './systemLimit/ISystemLimitPutRequest';
 export * from './holiday/IHolidayAllRequest';
 export * from './holiday/IHolidayByIdRequest';
 export * from './holiday/IHolidayListRequest';
