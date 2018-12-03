@@ -1,4 +1,4 @@
-import { SelectSystemOption } from '@common/components/select';
+import { SelectSystem, SelectSystemOption } from '@common/components/select';
 import { FormMode } from '@generic/types';
 import { InputText } from '@layout/components/input/text';
 import { WithUser, withUser } from '@layout/hoc/withUser';
@@ -60,16 +60,15 @@ const handlerCreators: HandleCreators<RoleDetailFormProps, OwnHandlers> = {
 
       case 'gradeType':
         fieldProps = {
-          required: true,
+          category: 'grade',
           label: intl.formatMessage(lookupMessage.role.fieldFor(name, 'fieldName')),
           placeholder: intl.formatMessage(lookupMessage.role.fieldFor(name, 'fieldPlaceholder')),
-          component: InputText
+          component: SelectSystem
         };
         break;
 
       case 'description':
         fieldProps = {
-          required: true,
           label: intl.formatMessage(lookupMessage.role.fieldFor(name, 'fieldName')),
           placeholder: intl.formatMessage(lookupMessage.role.fieldFor(name, 'fieldPlaceholder')),
           component: InputText
@@ -78,10 +77,7 @@ const handlerCreators: HandleCreators<RoleDetailFormProps, OwnHandlers> = {
 
       case 'isActive':
         fieldProps = {
-          required: true,
-          label: intl.formatMessage(lookupMessage.role.fieldFor(name, 'fieldName')),
-          placeholder: intl.formatMessage(lookupMessage.role.fieldFor(name, 'fieldPlaceholder')),
-          component: InputText
+          label: intl.formatMessage(lookupMessage.role.fieldFor(name, 'fieldName'))
         };
         break;
 

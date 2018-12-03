@@ -27,8 +27,8 @@ export const LookupRoleEditorView: React.SFC<RoleEditorProps> = props => {
       companyUid: undefined,
       name: undefined,
       gradeType: undefined,
-      isActive: undefined,
       description: undefined,
+      isActive: undefined,
     }
   };
 
@@ -55,8 +55,8 @@ export const LookupRoleEditorView: React.SFC<RoleEditorProps> = props => {
       initialValues.information.companyUid = data.companyUid;
       initialValues.information.name = data.name;
       initialValues.information.gradeType = data.gradeType;
-      initialValues.information.isActive = data.isActive;
       initialValues.information.description = data.description;
+      initialValues.information.isActive = data.isActive;
           
       return renderForm(initialValues);
     }

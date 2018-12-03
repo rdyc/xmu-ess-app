@@ -1,14 +1,14 @@
 import { FormMode } from '@generic/types';
 import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
-import { Card, CardContent, CardHeader } from '@material-ui/core';
+import { Card, CardContent, CardHeader, Checkbox, FormControlLabel } from '@material-ui/core';
 import * as React from 'react';
 import { Field } from 'redux-form';
 import { RoleDetailFormProps } from './LookupRoleDetailForm';
 
 export const LookupRoleDetailFormView: React.SFC<RoleDetailFormProps> = props => {
-  const { formMode, intl  } = props;
+  const { formMode, intl } = props;
   const { names } = props.context;
-  
+
   const renderField = (name: string) => {
     const fieldName = name.replace('information.', '');
     const fieldProps = props.generateFieldProps(fieldName);
@@ -17,6 +17,32 @@ export const LookupRoleDetailFormView: React.SFC<RoleDetailFormProps> = props =>
     const fields = ['uid'];
     if (formMode === FormMode.New && fields.indexOf(fieldName) !== -1) {
       return null;
+    }
+
+    const fieldIsActive = ['isActive'];
+    if (fieldIsActive.indexOf(fieldName) !== -1) {
+      return (
+        <FormControlLabel
+          {...fieldProps}
+          control={
+            <Field
+              key={fieldName}
+              type="checkbox"
+              name={fieldName}
+              component={
+                ({ input, meta }: any) => (
+                  <Checkbox
+                    {...input}
+                    disabled={meta.submitting}
+                    onFocus={undefined}
+                    onBlur={undefined}
+                  />
+                )
+              }
+            />
+          }
+        />
+      );
     }
 
     return (
@@ -30,7 +56,7 @@ export const LookupRoleDetailFormView: React.SFC<RoleDetailFormProps> = props =>
 
   const render = (
     <Card square>
-      <CardHeader 
+      <CardHeader
         title={intl.formatMessage(lookupMessage.role.section.infoTitle)}
         subheader={intl.formatMessage(lookupMessage.role.section.infoSubHeader)}
       />
