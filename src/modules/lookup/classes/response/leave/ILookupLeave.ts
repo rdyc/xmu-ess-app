@@ -12,5 +12,5 @@ export interface ILookupLeave {
   name: string;
   allocation: number;
   isWithinHoliday: boolean;
-  changes: IBaseChanges | null;
+  changes: IBaseChanges;
 }

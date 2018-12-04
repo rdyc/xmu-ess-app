@@ -22,5 +22,6 @@ export * from './holiday/lookupHolidayPutReducer';
 export * from './leave/lookupLeaveGetAllReducer';
 export * from './leave/lookupLeaveGetByIdReducer';
 export * from './leave/lookupLeaveGetListReducer';
+export * from './leave/lookupLeaveDeleteReducer';
 export * from './leave/lookupLeavePostReducer';
 export * from './leave/lookupLeavePutReducer';

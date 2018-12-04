@@ -1,6 +1,9 @@
 import { layoutAlertAdd, listBarLoading,  listBarMetadata } from '@layout/store/actions';
 import {
   LookupLeaveAction as Action,
+  lookupLeaveDeleteError,
+  lookupLeaveDeleteRequest,
+  lookupLeaveDeleteSuccess,
   lookupLeaveGetAllDispose,
   lookupLeaveGetAllError,
   lookupLeaveGetAllRequest,
@@ -166,7 +169,7 @@ function* watchPutRequest() {
   const worker = (action: ReturnType<typeof lookupLeavePutRequest>) => {
     return saiyanSaga.fetch({
       method: 'put',
-      path: `/v1/lookup/Leaves/${action.payload.companyUid}/${action.payload.leaveUid}`,
+      path: `/v1/lookup/leaves/${action.payload.companyUid}/${action.payload.leaveUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
         put(lookupLeavePutSuccess(response.body)),
@@ -210,6 +213,53 @@ function* watchPutRequest() {
   yield takeEvery(Action.PUT_REQUEST, worker);
 }
 
+function* watchDeleteRequest() {
+  const worker = (action: ReturnType<typeof lookupLeaveDeleteRequest>) => {
+    return saiyanSaga.fetch({
+      method: 'delete',
+      path: `/v1/lookup/leaves`,
+      payload: action.payload.data,
+      successEffects: (response: IApiResponse) => [
+        put(lookupLeaveGetAllDispose()),
+        put(lookupLeaveDeleteSuccess(response.body))
+      ],
+      successCallback: (response: IApiResponse) => {
+        action.payload.resolve(response.body.data);
+      },
+      failureEffects: (response: IApiResponse) => [
+        put(lookupLeaveDeleteError(response.statusText))
+      ],
+      failureCallback: (response: IApiResponse) => {
+        if (response.status === 400) {
+          const errors: any = { 
+            // information -> based on form section name
+            information: flattenObject(response.body.errors) 
+          };
+          
+          // action.payload.reject(new SubmissionError(response.body.errors));
+          action.payload.reject(new SubmissionError(errors));
+        } else {
+          action.payload.reject(response.statusText);
+        }
+      },
+      errorEffects: (error: TypeError) => [
+        put(lookupLeaveDeleteError(error.message)),
+        put(
+          layoutAlertAdd({
+            time: new Date(),
+            message: error.message
+          })
+        )
+      ],
+      errorCallback: (error: any) => {
+        action.payload.reject(error);
+      }
+    });
+  };
+
+  yield takeEvery(Action.DELETE_REQUEST, worker);
+}
+
 function* lookupLeaveSagas() {
   yield all([
     fork(watchGetAllRequest),
@@ -217,6 +267,7 @@ function* lookupLeaveSagas() {
     fork(watchGetByIdRequest),
     fork(watchPostRequest),
     fork(watchPutRequest),
+    fork(watchDeleteRequest)
   ]);
 }
 

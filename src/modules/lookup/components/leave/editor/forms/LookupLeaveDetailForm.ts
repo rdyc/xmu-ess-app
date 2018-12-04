@@ -1,6 +1,6 @@
 import { SelectSystem, SelectSystemOption } from '@common/components/select';
 import { FormMode } from '@generic/types';
-import { InputNumber } from '@layout/components/input/number';
+import { InputLookupNumber } from '@layout/components/input/number';
 import { InputText } from '@layout/components/input/text';
 import { SelectLookupCompany } from '@lookup/components/company/select';
 import { LookupLeaveDetailFormView } from '@lookup/components/leave/editor/forms/LookupLeaveDetailFormView';
@@ -71,7 +71,7 @@ const handlerCreators: HandleCreators<RequestDetailFormProps, OwnHandlers> = {
           required: true,
           label: intl.formatMessage(lookupMessage.leave.fieldFor(name, 'fieldName')),
           placeholder: intl.formatMessage(lookupMessage.leave.fieldFor(name, 'fieldPlaceholder')),
-          component: InputNumber,
+          component: InputLookupNumber,
         };
         break;
 
@@ -80,7 +80,7 @@ const handlerCreators: HandleCreators<RequestDetailFormProps, OwnHandlers> = {
           required: true,
           label: intl.formatMessage(lookupMessage.leave.fieldFor(name, 'fieldName')),
           placeholder: intl.formatMessage(lookupMessage.leave.fieldFor(name, 'fieldPlaceholder')),
-          component: InputNumber,
+          component: InputLookupNumber,
         };
         break;
 

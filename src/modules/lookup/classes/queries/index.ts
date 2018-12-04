@@ -29,6 +29,7 @@ export * from './holiday/ILookupHolidayPutRequest';
 export * from './leave/ILookupLeaveGetAllRequest';
 export * from './leave/ILookupLeaveGetDetailRequest';
 export * from './leave/ILookupLeaveGetListRequest';
+export * from './leave/ILookupLeaveDeleteRequest';
 export * from './leave/ILookupLeavePostRequest';
 export * from './leave/ILookupLeavePutRequest';
 export * from './systemLimit/ISystemLimitPostRequest';

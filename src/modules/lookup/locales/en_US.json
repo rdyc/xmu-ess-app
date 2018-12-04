@@ -272,7 +272,11 @@
   "lookup.leave.message.create.failure": "Unable to process your submission",
   "lookup.leave.message.update.success": "Existing PID {uid} has been updated",
   "lookup.leave.message.update.failure": "Unable to process your submission",
+  "lookup.leave.message.delete.success": "Current {uid} has been deleted",
+  "lookup.leave.message.delete.failure": "Unable to process your submission",
   "lookup.leave.confirm.modify.title": "Modify Confirmation",
   "lookup.leave.confirm.modify.description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-  "lookup.leave.message.emptyProps": "Some props are empty"
+  "lookup.leave.message.emptyProps": "Some props are empty",
+  "lookup.leave.field.filter.company": "Company",
+  "lookup.leave.field.filter.company.placeholder": "Company"
 }

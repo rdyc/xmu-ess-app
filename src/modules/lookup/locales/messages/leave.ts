@@ -60,6 +60,9 @@ export const leaveField = defineMessages({
   isWithinHoliday: { id: `${prefix}.field.isWithinHoliday`},
   notWithinHoliday: {id: `${prefix}.field.notWithinHoliday`},
   isWithinHolidayPlaceholder: {id: `${prefix}.field.isWithinHoliday.placeholder`},
+  
+  filterCompany: { id: `${prefix}.field.filter.company`},
+  filterCompanyPlaceholder: { id: `${prefix}.field.filter.company.placeholder`},
 });
 
 export const leaveFieldHelperFor = (field: string, type: 'fieldName' | 'fieldRequired' | 'fieldPlaceholder') => {

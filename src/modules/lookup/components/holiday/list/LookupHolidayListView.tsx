@@ -109,7 +109,7 @@ const config: CollectionConfig<ILookupHoliday, HolidayListProps> = {
     secondary: item.company ? item.company.name : 'N/A',
     tertiary: item.description ? item.description : 'N/A',
     quaternary: item.date.toString(),
-    quinary: '',
+    quinary: item.changes && item.changes.updated && item.changes.updated.fullName || item.changes.created && item.changes.created.fullName || '?',
     senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
   }),
 

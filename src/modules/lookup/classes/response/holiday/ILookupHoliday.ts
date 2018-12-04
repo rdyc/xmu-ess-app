@@ -7,5 +7,5 @@ export interface ILookupHoliday {
   company: ICompanyList | null;
   description: string | null;
   date: string;
-  changes: IBaseChanges | null;
+  changes: IBaseChanges;
 }

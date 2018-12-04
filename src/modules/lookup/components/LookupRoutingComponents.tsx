@@ -4,7 +4,7 @@ import { CurrencyEditor } from '@lookup/components/currency/editor/CurrencyEdito
 import { CurrencyList } from '@lookup/components/currency/list/CurrencyList';
 import { LookupHolidayDetail } from '@lookup/components/holiday/detail/LookupHolidayDetail';
 import { LookupLeaveDetail } from '@lookup/components/leave/detail/LookupLeaveDetail';
-import { LookupLeaveList } from '@lookup/components/leave/list/LookupLeaveList';
+import LookupLeaveList from '@lookup/components/leave/list/LookupLeaveList';
 import * as React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router';
 import { LookupCompanyDetail } from './company/detail/LookupCompanyDetail';

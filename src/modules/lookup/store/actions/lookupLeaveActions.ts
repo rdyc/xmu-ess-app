@@ -1,29 +1,33 @@
 import { IResponseCollection, IResponseSingle } from '@generic/interfaces';
-import { ILookupLeaveGetAllRequest, ILookupLeaveGetDetailRequest, ILookupLeaveGetListRequest, ILookupLeavePostRequest, ILookupLeavePutRequest } from '@lookup/classes/queries';
+import { ILookupLeaveDeleteRequest, ILookupLeaveGetAllRequest, ILookupLeaveGetDetailRequest, ILookupLeaveGetListRequest, ILookupLeavePostRequest, ILookupLeavePutRequest } from '@lookup/classes/queries';
 import { ILookupLeave, ILookupLeaveDetail, ILookupLeaveList } from '@lookup/classes/response';
 import { action } from 'typesafe-actions';
 
 export const enum LookupLeaveAction {
-  GET_ALL_REQUEST = '@@leave/GET_ALL_REQUEST',
-  GET_ALL_SUCCESS = '@@leave/GET_ALL_SUCCESS',
-  GET_ALL_ERROR = '@@leave/GET_ALL_ERROR',
-  GET_ALL_DISPOSE = '@@leave/GET_ALL_DISPOSE',
-  GET_LIST_REQUEST = '@@leave/GET_LIST_REQUEST',
-  GET_LIST_SUCCESS = '@@leave/GET_LIST_SUCCESS',
-  GET_LIST_ERROR = '@@leave/GET_LIST_ERROR',
-  GET_LIST_DISPOSE = '@@leave/GET_LIST_DISPOSE',
-  GET_BY_ID_REQUEST = '@@leave/GET_BY_ID_REQUEST',
-  GET_BY_ID_SUCCESS = '@@leave/GET_BY_ID_SUCCESS',
-  GET_BY_ID_ERROR = '@@leave/GET_BY_ID_ERROR',
-  GET_BY_ID_DISPOSE = '@@leave/GET_BY_ID_DISPOSE',
-  POST_REQUEST = '@@leave/POST_REQUEST',
-  POST_SUCCESS = '@@leave/POST_SUCCESS',
-  POST_ERROR = '@@leave/POST_ERROR',
-  POST_DISPOSE = '@@leave/POST_DISPOSE',
-  PUT_REQUEST = '@@leave/PUT_REQUEST',
-  PUT_SUCCESS = '@@leave/PUT_SUCCESS',
-  PUT_ERROR = '@@leave/PUT_ERROR',
-  PUT_DISPOSE = '@@leave/PUT_DISPOSE',
+  GET_ALL_REQUEST = '@@lookup/leave/GET_ALL_REQUEST',
+  GET_ALL_SUCCESS = '@@lookup/leave/GET_ALL_SUCCESS',
+  GET_ALL_ERROR = '@@lookup/leave/GET_ALL_ERROR',
+  GET_ALL_DISPOSE = '@@lookup/leave/GET_ALL_DISPOSE',
+  GET_LIST_REQUEST = '@@lookup/leave/GET_LIST_REQUEST',
+  GET_LIST_SUCCESS = '@@lookup/leave/GET_LIST_SUCCESS',
+  GET_LIST_ERROR = '@@lookup/leave/GET_LIST_ERROR',
+  GET_LIST_DISPOSE = '@@lookup/leave/GET_LIST_DISPOSE',
+  GET_BY_ID_REQUEST = '@@lookup/leave/GET_BY_ID_REQUEST',
+  GET_BY_ID_SUCCESS = '@@lookup/leave/GET_BY_ID_SUCCESS',
+  GET_BY_ID_ERROR = '@@lookup/leave/GET_BY_ID_ERROR',
+  GET_BY_ID_DISPOSE = '@@lookup/leave/GET_BY_ID_DISPOSE',
+  POST_REQUEST = '@@lookup/leave/POST_REQUEST',
+  POST_SUCCESS = '@@lookup/leave/POST_SUCCESS',
+  POST_ERROR = '@@lookup/leave/POST_ERROR',
+  POST_DISPOSE = '@@lookup/leave/POST_DISPOSE',
+  PUT_REQUEST = '@@lookup/leave/PUT_REQUEST',
+  PUT_SUCCESS = '@@lookup/leave/PUT_SUCCESS',
+  PUT_ERROR = '@@lookup/leave/PUT_ERROR',
+  PUT_DISPOSE = '@@lookup/leave/PUT_DISPOSE',
+  DELETE_REQUEST = '@@lookup/leave/DELETE_REQUEST',
+  DELETE_SUCCESS = '@@lookup/leave/DELETE_SUCCESS',
+  DELETE_ERROR = '@@lookup/leave/DELETE_ERROR',
+  DELETE_DISPOSE = '@@lookup/leave/DELETE_DISPOSE'
 }
 
 // get all
@@ -55,3 +59,9 @@ export const lookupLeavePutRequest = (request: ILookupLeavePutRequest) => action
 export const lookupLeavePutSuccess = (response: IResponseSingle<ILookupLeave>) => action(LookupLeaveAction.PUT_SUCCESS, response);
 export const lookupLeavePutError = (message: string) => action(LookupLeaveAction.PUT_ERROR, message);
 export const lookupLeavePutDispose = () => action(LookupLeaveAction.PUT_DISPOSE);
+
+// delete
+export const lookupLeaveDeleteRequest = (request: ILookupLeaveDeleteRequest) => action(LookupLeaveAction.DELETE_REQUEST, request);
+export const lookupLeaveDeleteSuccess = (response: IResponseSingle<ILookupLeave>) => action(LookupLeaveAction.DELETE_SUCCESS, response);
+export const lookupLeaveDeleteError = (message: string) => action(LookupLeaveAction.DELETE_ERROR, message);
+export const lookupLeaveDeleteDispose = () => action(LookupLeaveAction.DELETE_DISPOSE);

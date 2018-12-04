@@ -8,6 +8,7 @@ import {
   lookupHolidayGetAllReducer,
   lookupHolidayGetByIdReducer,
   lookupHolidayGetListReducer,
+  lookupLeaveDeleteReducer,
   lookupLeaveGetAllReducer,
   lookupLeaveGetByIdReducer,
   lookupLeaveGetListReducer,
@@ -77,7 +78,8 @@ const lookupReducers = {
   lookupLeaveGetList: lookupLeaveGetListReducer,
   lookupLeaveGetById: lookupLeaveGetByIdReducer,
   lookupLeavePost: lookupLeavePostReducer,
-  lookupLeavePut: lookupLeavePutReducer
+  lookupLeavePut: lookupLeavePutReducer,
+  lookupLeaveDelete: lookupLeaveDeleteReducer,
 };
 
 export default lookupReducers;

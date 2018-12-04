@@ -1,5 +1,6 @@
 import { IAppState, IQueryCollectionState, IQuerySingleState } from '@generic/interfaces';
 import {
+  ILookupLeaveDeleteRequest,
   ILookupLeaveGetAllRequest,
   ILookupLeaveGetDetailRequest,
   ILookupLeaveGetListRequest,
@@ -8,6 +9,8 @@ import {
 } from '@lookup/classes/queries';
 import { ILookupLeave, ILookupLeaveDetail, ILookupLeaveList } from '@lookup/classes/response';
 import {
+  lookupLeaveDeleteDispose,
+  lookupLeaveDeleteRequest,
   lookupLeaveGetAllDispose,
   lookupLeaveGetAllRequest,
   lookupLeaveGetByIdDispose,
@@ -37,6 +40,8 @@ interface PropsFromDispatch {
     createDispose: typeof lookupLeavePostDispose;
     updateRequest: typeof lookupLeavePutRequest;
     updateDispose: typeof lookupLeavePutDispose;
+    deleteRequest: typeof lookupLeaveDeleteRequest;
+    deleteDispose: typeof lookupLeaveDeleteDispose;
 
     // query
     loadAllRequest: typeof lookupLeaveGetAllRequest;
@@ -65,6 +70,8 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     createDispose: () => dispatch(lookupLeavePostDispose()),
     updateRequest: (request: ILookupLeavePutRequest) => dispatch(lookupLeavePutRequest(request)),
     updateDispose: () => dispatch(lookupLeavePutDispose()),
+    deleteRequest: (request: ILookupLeaveDeleteRequest) => dispatch(lookupLeaveDeleteRequest(request)),
+    deleteDispose: () => dispatch(lookupLeaveDeleteDispose()),
     
     // query
     loadAllRequest: (request: ILookupLeaveGetAllRequest) => dispatch(lookupLeaveGetAllRequest(request)),
