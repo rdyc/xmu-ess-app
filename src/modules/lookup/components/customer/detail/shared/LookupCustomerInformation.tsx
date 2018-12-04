@@ -75,7 +75,7 @@ const lookupcustomerInformation: React.SFC<AllProps> = props => (
       />
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
-        label={props.intl.formatMessage(lookupMessage.lookupCustomer.field.email)}
+        label={props.intl.formatMessage(lookupMessage.lookupCustomer.field.emailAddress)}
         value={props.data.email ? props.data.email : 'N/A'}
       />
       <FormControlLabel

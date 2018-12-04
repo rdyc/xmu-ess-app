@@ -8,12 +8,16 @@ export const lookupCustomerPage = defineMessages({
   listSubHeader: { id: `${prefix}.page.list.subHeader`},
   detailTitle: { id: `${prefix}.page.detail.title`},
   detailSubHeader: { id: `${prefix}.page.detail.subHeader`},
+  newTitle: { id: `${prefix}.page.new.title` },
+  newSubHeader: { id: `${prefix}.page.new.subHeader` },
+  modifyTitle: { id: `${prefix}.page.modify.title` },
+  modifySubHeader: { id: `${prefix}.page.modify.subHeader` },
 });
 
 // section
 export const lookupCustomerSection = defineMessages({
-  infoTitle: { id: `${prefix}.section.title` },
-  infoSubHeader: { id: `${prefix}.section.subHeader` },
+  infoTitle: { id: `${prefix}.section.info.title` },
+  infoSubHeader: { id: `${prefix}.section.info.subHeader` },
   customerTitle: { id: `${prefix}.section.title` },
   customerSubHeader: { id: `${prefix}.section.subHeader` },
 
@@ -41,8 +45,8 @@ export const lookupCustomerFields = defineMessages({
   phonePlaceholder: { id: `${prefix}.field.phone.placeholder`},
   phoneAdditional: { id: `${prefix}.field.phoneAdditional`},
   phoneAdditionalPlaceholder: { id: `${prefix}.field.phoneAdditional.placeholder`},
-  email: { id: `${prefix}.field.email`},
-  emailPlaceholder: { id: `${prefix}.field.email.placeholder`},
+  emailAddress: { id: `${prefix}.field.email`},
+  emailAddressPlaceholder: { id: `${prefix}.field.email.placeholder`},
   address: { id: `${prefix}.field.address`},
   addressPlaceholder: { id: `${prefix}.field.address.placeholder`},
   addressAdditional: { id: `${prefix}.field.addressAdditional`},
@@ -76,7 +80,7 @@ export const customerFieldHelperFor = (field: string, type: 'fieldName' | 'field
       case 'companyUid': return lookupCustomerFields.companyUid;
       case 'phone': return lookupCustomerFields.phone;
       case 'phoneAdditional': return lookupCustomerFields.phoneAdditional;
-      case 'email': return lookupCustomerFields.email;
+      case 'emailAddress': return lookupCustomerFields.emailAddress;
       case 'address': return lookupCustomerFields.address;
       case 'addressAdditional': return lookupCustomerFields.addressAdditional;
       case 'mobile': return lookupCustomerFields.mobile;
@@ -109,7 +113,7 @@ export const customerFieldHelperFor = (field: string, type: 'fieldName' | 'field
       case 'companyUid': return lookupCustomerFields.companyUidPlaceholder;
       case 'phone': return lookupCustomerFields.phonePlaceholder;
       case 'phoneAdditional': return lookupCustomerFields.phoneAdditionalPlaceholder;
-      case 'email': return lookupCustomerFields.emailPlaceholder;
+      case 'emailAddress': return lookupCustomerFields.emailAddressPlaceholder;
       case 'address': return lookupCustomerFields.addressPlaceholder;
       case 'addressAdditional': return lookupCustomerFields.addressAdditionalPlaceholder;
       case 'mobile': return lookupCustomerFields.mobilePlaceholder;

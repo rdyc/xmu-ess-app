@@ -186,9 +186,13 @@
 
   "lookup.customer.page.list.title": "Customer",
   "lookup.customer.page.list.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras mollis eros sit amet rhoncus fermentum",
-
   "lookup.customer.page.detail.title": "Customer Detail",
   "lookup.customer.page.detail.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras mollis eros sit amet rhoncus fermentum",
+  "lookup.customer.page.modify.title": "Modify Customer",
+  "lookup.customer.page.modify.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras mollis eros sit amet rhoncus fermentum",
+  "lookup.customer.page.new.title": "New Customer",
+  "lookup.customer.page.new.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras mollis eros sit amet rhoncus fermentum",
+
 
   "lookup.customer.form.newTitle": "New Customer",
   "lookup.customer.form.newSubTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras mollis eros sit amet rhoncus fermentum",
@@ -231,6 +235,8 @@
   "lookup.customer.field.contactTitle.placeholder": "Type the contact title",
   "lookup.customer.field.contactTitleAdditional": "Contact Person 2's Title",
   "lookup.customer.field.contactTitleAdditional.placeholder": "Type the contact title",
+  "lookup.customer.field.npwp": "NPWP",
+  "lookup.customer.field.npwp.placeholder": "Type the npwp number",
   
   
   "lookup.customer.confirm.modify.title": "Modify Confirmation",

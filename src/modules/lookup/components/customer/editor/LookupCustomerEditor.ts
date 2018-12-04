@@ -189,7 +189,7 @@ const lifecycles: ReactLifeCycleFunctions<LookupCustomerEditorProps, {}> = {
     const { user } = this.props.userState;
     
     const view = {
-      title: lookupMessage.company.page.newTitle,
+      title: lookupMessage.lookupCustomer.page.newTitle,
       subTitle: lookupMessage.company.page.newSubHeader,
     };
 
@@ -198,8 +198,8 @@ const lifecycles: ReactLifeCycleFunctions<LookupCustomerEditorProps, {}> = {
     }
 
     if (!isNullOrUndefined(history.location.state)) {
-      view.title = lookupMessage.company.page.modifyTitle;
-      view.subTitle = lookupMessage.company.page.modifySubHeader;
+      view.title = lookupMessage.lookupCustomer.page.modifyTitle;
+      view.subTitle = lookupMessage.lookupCustomer.page.modifySubHeader;
 
       stateUpdate({ 
         formMode: FormMode.Edit,
