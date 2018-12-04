@@ -1,6 +1,8 @@
 {
   "lookup.confirm.modify.title": "Modify Confirmation",
   "lookup.confirm.modify.description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "lookup.confirm.delete.title": "Delete Confirmation",
+  "lookup.confirm.delete.description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
 
   "lookup.mileageException.page.list.title": "Mileage Exception",
   "lookup.mileageException.page.list.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras mollis eros sit amet rhoncus fermentum",
@@ -16,6 +18,8 @@
   "lookup.mileageException.message.create.failure": "Unable to process your submission",
   "lookup.mileageException.message.update.success": "Current site has been updated",
   "lookup.mileageException.message.update.failure": "Unable to process your submission",
+  "lookup.mileageException.message.delete.success": "Current {uid} has been deleted",
+  "lookup.mileageException.message.delete.failure": "Unable to process your submission",
 
   "lookup.mileageException.field.info.title": "Detail Mileage Exception",
   "lookup.mileageException.field.info.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras mollis eros sit amet rhoncus fermentum",
@@ -67,8 +71,10 @@
   "lookup.systemLimit.message.emptyProps": "Some props are empty",
   "lookup.systemLimit.message.create.success": "New System Limit has been created",
   "lookup.systemLimit.message.create.failure": "Unable to process your submission",
-  "lookup.systemLimit.message.update.success": "Current site has been updated",
+  "lookup.systemLimit.message.update.success": "Current {uid} has been updated",
   "lookup.systemLimit.message.update.failure": "Unable to process your submission",
+  "lookup.systemLimit.message.delete.success": "Current {uid} has been deleted",
+  "lookup.systemLimit.message.delete.failure": "Unable to process your submission",
 
   "lookup.systemLimit.field.uid": "System Limit ID",
   "lookup.systemLimit.field.uid.placeholder": "System Limit ID",
@@ -86,6 +92,11 @@
 
   "lookup.systemLimit.field.info.title": "Detail System Limit Information",
   "lookup.systemLimit.field.info.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras mollis eros sit amet rhoncus fermentum",
+
+  "lookup.systemLimit.field.filter.company": "Company",
+  "lookup.systemLimit.field.filter.company.placeholder": "Company",
+  "lookup.systemLimit.field.filter.category": "Category",
+  "lookup.systemLimit.field.filter.category.placeholder": "Category",
 
   "lookup.systemLimit.section.info.title": "System Limit",
   "lookup.systemLimit.section.info.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras mollis eros sit amet rhoncus fermentum",
@@ -143,7 +154,7 @@
   "lookup.currency.field.name": "Currency Name",
   "lookup.currency.field.name.required": "Currency name required",
   "lookup.currency.field.name.placeholder": "Type any name",
-  "lookup.currency.field.symbol": "Symbol",
+  "lookup.currency.field.ymbol": "Symbol",
   "lookup.currency.field.symbol.required": "Symbol required",
   "lookup.currency.field.symbol.placeholder": "Type any symbol",
   "lookup.currency.field.rate": "Currency Rate (IDR)",
