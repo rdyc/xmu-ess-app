@@ -27,6 +27,7 @@ import {
   IPositionListRequest,
   ISystemLimitAllRequest,
   ISystemLimitByIdRequest,
+  ISystemLimitDeleteRequest,
   ISystemLimitListRequest,
   ISystemLimitPostRequest,
   ISystemLimitPutRequest,
@@ -151,4 +152,5 @@ export interface ILookupState {
   systemLimitGetById: IQuerySingleState<ISystemLimitByIdRequest, ISystemLimitDetail>;
   systemLimitPost: IQuerySingleState<ISystemLimitPostRequest, ISystemLimit>;
   systemLimitPut: IQuerySingleState<ISystemLimitPutRequest, ISystemLimit>;
+  systemLimitDelete: IQuerySingleState<ISystemLimitDeleteRequest, ISystemLimit>;
 }

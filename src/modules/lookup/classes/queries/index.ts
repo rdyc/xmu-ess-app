@@ -32,3 +32,4 @@ export * from './leave/ILookupLeavePostRequest';
 export * from './leave/ILookupLeavePutRequest';
 export * from './systemLimit/ISystemLimitPostRequest';
 export * from './systemLimit/ISystemLimitPutRequest';
+export * from './systemLimit/ISystemLimitDeleteRequest';
