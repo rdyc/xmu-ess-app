@@ -112,7 +112,7 @@ const component: React.SFC<AllProps> = props => {
                   secondary={userState.user.email}
                   primaryTypographyProps={{
                     noWrap: true,
-                    variant: 'body1'
+                    variant: 'body2'
                   }}
                   secondaryTypographyProps={{
                     noWrap: true,
@@ -132,7 +132,7 @@ const component: React.SFC<AllProps> = props => {
                     <ListItemText inset 
                       primary={<FormattedMessage id="global.profile.my.title"/>}
                       primaryTypographyProps={{
-                        variant: 'body1'
+                        variant: 'body2'
                       }}
                     />
                   </ListItem>
@@ -143,7 +143,7 @@ const component: React.SFC<AllProps> = props => {
                     <ListItemText inset 
                       primary={<FormattedMessage id="global.access.switch.title"/>}
                       primaryTypographyProps={{
-                        variant: 'body1'
+                        variant: 'body2'
                       }}
                     />
                   </ListItem>
@@ -154,7 +154,7 @@ const component: React.SFC<AllProps> = props => {
                     <ListItemText inset 
                       primary={<FormattedMessage id="global.logout.title"/>}
                       primaryTypographyProps={{
-                        variant: 'body1'
+                        variant: 'body2'
                       }}
                     />
                   </ListItem>
@@ -180,13 +180,13 @@ const component: React.SFC<AllProps> = props => {
             <ListItemText 
               primary="Dark mode"
               primaryTypographyProps={{
-                variant: 'body1'
+                variant: 'body2'
               }}
             />
             <ListItemSecondaryAction>
               <Switch color="secondary"
                 onChange={() => layoutDispatch.themeChange()}
-                checked={layoutState.theme.palette.type === 'dark'}
+                checked={layoutState.theme.palette ? layoutState.theme.palette.type === 'dark' : false}
               />
             </ListItemSecondaryAction>
           </ListItem>
@@ -197,7 +197,7 @@ const component: React.SFC<AllProps> = props => {
             <ListItemText 
               primary="Right hand"
               primaryTypographyProps={{
-                variant: 'body1'
+                variant: 'body2'
               }}
             />
             <ListItemSecondaryAction>

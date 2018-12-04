@@ -132,7 +132,7 @@ const ToolbarControl: React.SFC<ToolbarControlOptions> = props => (
     {/* title */}
     <Typography 
       noWrap 
-      variant="title" 
+      variant="h6" 
       color={props.color}
       className={props.titleClassName}
     >
@@ -226,7 +226,7 @@ const SearchControl: React.SFC<SearchControlOptions> = props => (
           position="start" 
           onClick={props.OnClickField}>
           <Typography 
-            variant="body1" 
+            variant="body2" 
             color="inherit"
             noWrap
           >
@@ -294,7 +294,7 @@ export const TopBarView: React.SFC<TopBarProps> = props => (
 
             <Typography 
               noWrap 
-              variant="body1" 
+              variant="body2" 
               color="inherit" 
               className={props.classes.flex}
             >
@@ -342,7 +342,7 @@ export const TopBarView: React.SFC<TopBarProps> = props => (
             <ListItemText 
               primary={`${props.search} in Any`}
               primaryTypographyProps={{
-                variant: 'body1'
+                variant: 'body2'
               }}
             />
             <ListItemSecondaryAction>
@@ -360,7 +360,7 @@ export const TopBarView: React.SFC<TopBarProps> = props => (
                 <ListItemText 
                   primary={`${props.search} in ${field.name}`}
                   primaryTypographyProps={{
-                    variant: 'body1'
+                    variant: 'body2'
                   }}
                 />
                 <ListItemSecondaryAction>
