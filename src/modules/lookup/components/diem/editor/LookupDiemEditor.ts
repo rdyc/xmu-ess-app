@@ -65,13 +65,13 @@ const handlerCreators: HandleCreators<LookupDiemEditorProps, OwnHandlers> = {
     };
 
     const requiredFields = [
-      'companyuid', 'projectType', 'travelType',
+      'companyUid', 'projectType', 'destinationType',
       'currencyUid', 'value'
     ];
 
     requiredFields.forEach(field => {
       if (!formData.information[field] || isNullOrUndefined(formData.information[field])) {
-        errors.information[field] = 'required';
+        errors.information[field] =  props.intl.formatMessage(lookupMessage.lookupDiem.fieldFor(field, 'fieldRequired'));
       }
     });
     return errors;

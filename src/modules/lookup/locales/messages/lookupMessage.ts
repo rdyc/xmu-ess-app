@@ -1,10 +1,11 @@
 import { currencyConfirm, currencyField, currencyForm, currencyMessage, currencyPage, currencySection } from './currency/currencyMessage';
 import { companyConfirm, companyField, companyFieldHelperFor, companyMessage, companyPage, companySection } from './lookupCompanyMessage';
 import { 
+  diemFieldHelperFor, 
   lookupDiemConfirm, 
   lookupDiemField, 
   lookupDiemMessage, 
-  lookupDiemPage, 
+  lookupDiemPage,
   lookupDiemSection
 } from './lookupDiemMessage';
 import {
@@ -55,6 +56,7 @@ export const lookupMessage = {
     page: lookupDiemPage,
     section: lookupDiemSection,
     field: lookupDiemField,
+    fieldFor: diemFieldHelperFor,
     confirm: lookupDiemConfirm,
     message: lookupDiemMessage
 

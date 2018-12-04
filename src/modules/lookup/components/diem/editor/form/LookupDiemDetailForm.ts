@@ -4,6 +4,7 @@ import { InputNumber } from '@layout/components/input/number';
 import { InputText } from '@layout/components/input/text';
 import { SelectLookupCompany } from '@lookup/components/company/select';
 import { SelectCurrency } from '@lookup/components/currency/select/SelectCurrency';
+import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose, HandleCreators, withHandlers } from 'recompose';
 import { BaseFieldsProps } from 'redux-form';
@@ -25,15 +26,15 @@ export type LookupDiemDetailFormProps
 
 const handlerCreators: HandleCreators<LookupDiemDetailFormProps, OwnHandlers> = {
   generateFieldProps: (props: LookupDiemDetailFormProps) => (name: string) => {
-
+    const { intl } = props;
     let fieldProps: SelectSystemOption & any = {};
 
     switch (name) {
       case 'companyUid':
         fieldProps = {
           requeired: true,
-          label: 'Company',
-          placeholder: 'Select The Company',
+          label: intl.formatMessage(lookupMessage.lookupDiem.fieldFor(name, 'fieldName')),
+          placeholder: intl.formatMessage(lookupMessage.lookupDiem.fieldFor(name, 'fieldPlaceholder')),
           component: SelectLookupCompany 
         };
         break;
@@ -42,8 +43,8 @@ const handlerCreators: HandleCreators<LookupDiemDetailFormProps, OwnHandlers> = 
         fieldProps = {
           requeired: true,
           category: 'project',
-          label: 'Project Type',
-          placeholder: 'Select The Project Type',
+          label: intl.formatMessage(lookupMessage.lookupDiem.fieldFor(name, 'fieldName')),
+          placeholder: intl.formatMessage(lookupMessage.lookupDiem.fieldFor(name, 'fieldPlaceholder')),
           component: SelectSystem 
         };
         break;
@@ -52,8 +53,8 @@ const handlerCreators: HandleCreators<LookupDiemDetailFormProps, OwnHandlers> = 
         fieldProps = {
           requeired: true,
           category: 'destination',
-          label: 'Travel Type',
-          placeholder: 'Select The Travel Type',
+          label: intl.formatMessage(lookupMessage.lookupDiem.fieldFor(name, 'fieldName')),
+          placeholder: intl.formatMessage(lookupMessage.lookupDiem.fieldFor(name, 'fieldPlaceholder')),
           component: SelectSystem 
         };
         break;
@@ -61,8 +62,8 @@ const handlerCreators: HandleCreators<LookupDiemDetailFormProps, OwnHandlers> = 
       case 'currencyUid':
         fieldProps = {
           requeired: true,
-          label: 'Currency',
-          placeholder: 'Select The Currency',
+          label: intl.formatMessage(lookupMessage.lookupDiem.fieldFor(name, 'fieldName')),
+          placeholder: intl.formatMessage(lookupMessage.lookupDiem.fieldFor(name, 'fieldPlaceholder')),
           component: SelectCurrency 
         };
         break;
@@ -70,8 +71,8 @@ const handlerCreators: HandleCreators<LookupDiemDetailFormProps, OwnHandlers> = 
       case 'value':
         fieldProps = {
           requeired: true,
-          label: 'Value',
-          placeholder: 'Type the Value',
+          label: intl.formatMessage(lookupMessage.lookupDiem.fieldFor(name, 'fieldName')),
+          placeholder: intl.formatMessage(lookupMessage.lookupDiem.fieldFor(name, 'fieldPlaceholder')),
           component: InputNumber 
         };
         break;
@@ -79,8 +80,8 @@ const handlerCreators: HandleCreators<LookupDiemDetailFormProps, OwnHandlers> = 
       default:
         fieldProps = {
           type: 'text',
-          label: '',
-          placeholder: '',
+          label: intl.formatMessage(lookupMessage.lookupDiem.fieldFor(name, 'fieldName')),
+          placeholder: intl.formatMessage(lookupMessage.lookupDiem.fieldFor(name, 'fieldPlaceholder')),
           component: InputText
         };
         break;
