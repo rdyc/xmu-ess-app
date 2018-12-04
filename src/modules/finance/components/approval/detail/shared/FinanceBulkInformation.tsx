@@ -39,7 +39,7 @@ const financeBulkInformation: React.SFC<AllProps> = props => (
                 </Typography>
                 <Typography 
                   noWrap
-                  variant="body1"
+                  variant="body2"
                 >
                   {finance.document.changes.created && finance.document.changes.created.fullName} &bull;&nbsp;
                   {props.intl.formatDate(finance.document.changes.updatedAt || '', GlobalFormat.Date)} &bull;&nbsp;
@@ -47,7 +47,7 @@ const financeBulkInformation: React.SFC<AllProps> = props => (
                 </Typography>
                 <Typography 
                   noWrap
-                  variant="body1"
+                  variant="body2"
                 >
                 {finance.document.amount && finance.document.amount.advance} &nbsp;&bull;&nbsp;
                 {finance.document.amount && finance.document.amount.total}
@@ -63,7 +63,7 @@ const financeBulkInformation: React.SFC<AllProps> = props => (
               <Grid item xs={4} sm={4}>
                 <Typography 
                   noWrap 
-                  variant="body1" 
+                  variant="body2" 
                   align="right"
                 >
                   {finance.status && finance.status.value}

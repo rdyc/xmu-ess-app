@@ -1,5 +1,13 @@
 import { currencyConfirm, currencyField, currencyForm, currencyMessage, currencyPage, currencySection } from './currency/currencyMessage';
 import { companyConfirm, companyField, companyFieldHelperFor, companyMessage, companyPage, companySection } from './lookupCompanyMessage';
+import { 
+  diemFieldHelperFor, 
+  lookupDiemConfirm, 
+  lookupDiemField, 
+  lookupDiemMessage, 
+  lookupDiemPage,
+  lookupDiemSection
+} from './lookupDiemMessage';
 import {
   mileageExceptionField,
   mileageExceptionFieldHelperFor,
@@ -44,4 +52,13 @@ export const lookupMessage = {
     confirm: companyConfirm,
     message: companyMessage
   },
+  lookupDiem: {
+    page: lookupDiemPage,
+    section: lookupDiemSection,
+    field: lookupDiemField,
+    fieldFor: diemFieldHelperFor,
+    confirm: lookupDiemConfirm,
+    message: lookupDiemMessage
+
+  }
 };
