@@ -1,6 +1,3 @@
-export * from './diem/diemGetAllReducer';
-export * from './diem/diemGetByIdReducer';
-export * from './diem/diemGetListReducer';
 export * from './menu/menuGetListReducer';
 export * from './menu/menuGetAllReducer';
 export * from './menu/menuGetByIdReducer';

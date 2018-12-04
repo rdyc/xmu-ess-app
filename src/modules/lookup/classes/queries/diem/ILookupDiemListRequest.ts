@@ -1,5 +1,5 @@
 import { IDiemListFilter } from '@lookup/classes/filters';
 
-export interface IDiemListRequest {
+export interface ILookupDiemListRequest {
   readonly filter: IDiemListFilter | undefined; 
 }
