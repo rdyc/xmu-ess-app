@@ -1,7 +1,4 @@
 import {
-  // currencyGetAllReducer,
-  // currencyGetByIdReducer,
-  // currencyGetListReducer,
   lookupHolidayGetAllReducer,
   lookupHolidayGetByIdReducer,
   lookupHolidayGetListReducer,
@@ -14,9 +11,6 @@ import {
   menuGetAllReducer,
   menuGetByIdReducer,
   menuGetListReducer,
-  positionGetAllReducer,
-  positionGetByIdReducer,
-  positionGetListReducer,
   systemLimitGetAllReducer,
   systemLimitGetByIdReducer,
   systemLimitGetListReducer,
@@ -49,15 +43,7 @@ const lookupReducers = {
   menuGetAll: menuGetAllReducer,
   menuGetById: menuGetByIdReducer,
   menuGetList: menuGetListReducer,
-
-  positionGetAll: positionGetAllReducer,
-  positionGetById: positionGetByIdReducer,
-  positionGetList: positionGetListReducer,
-
-  // currencyGetAll: currencyGetAllReducer,
-  // currencyGetList: currencyGetListReducer,
-  // currencyGetById: currencyGetByIdReducer,
-
+  
   systemLimitGetAll: systemLimitGetAllReducer,
   systemLimitGetList: systemLimitGetListReducer,
   systemLimitGetById: systemLimitGetByIdReducer,
