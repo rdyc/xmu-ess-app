@@ -72,12 +72,6 @@ const config: CollectionConfig<IRole, RoleListProps> = {
     }
   ]),
 
-  // data filter
-  filter: {
-    orderBy: 'uid',
-    direction: 'descending'
-  },
-
   // events
   onDataLoad: (props: RoleListProps, callback: CollectionHandler, params: CollectionDataProps, forceReload?: boolean | false) => {
     const { user } = props.userState;
