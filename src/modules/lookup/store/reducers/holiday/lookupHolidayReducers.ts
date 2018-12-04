@@ -6,10 +6,10 @@ import { lookupHolidayPostReducer } from './lookupHolidayPostReducer';
 import { lookupHolidayPutReducer } from './lookupHolidayPutReducer';
 
 export const lookupHolidayReducers = {
-  holidayGetAll: lookupHolidayGetAllReducer,
-  holidayGetList: lookupHolidayGetListReducer,
-  holidayGetById: lookupHolidayGetByIdReducer,
-  holidayPost: lookupHolidayPostReducer,
-  holidayPut: lookupHolidayPutReducer,
-  holidayDelete: lookupHolidayDeleteReducer
+  lookupHolidayGetAll: lookupHolidayGetAllReducer,
+  lookupHolidayGetList: lookupHolidayGetListReducer,
+  lookupHolidayGetById: lookupHolidayGetByIdReducer,
+  lookupHolidayPost: lookupHolidayPostReducer,
+  lookupHolidayPut: lookupHolidayPutReducer,
+  lookupHolidayDelete: lookupHolidayDeleteReducer
 };

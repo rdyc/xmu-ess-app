@@ -1,19 +1,4 @@
 import {
-  lookupHolidayGetAllReducer,
-  lookupHolidayGetByIdReducer,
-  lookupHolidayGetListReducer,
-  lookupLeaveDeleteReducer,
-  lookupLeaveGetAllReducer,
-  lookupLeaveGetByIdReducer,
-  lookupLeaveGetListReducer,
-  lookupLeavePostReducer,
-  lookupLeavePutReducer,
-  menuGetAllReducer,
-  menuGetByIdReducer,
-  menuGetListReducer,
-  systemLimitGetAllReducer,
-  systemLimitGetByIdReducer,
-  systemLimitGetListReducer,
   menuGetAllReducer,
   menuGetByIdReducer,
   menuGetListReducer,
@@ -45,24 +30,6 @@ const lookupReducers = {
   menuGetAll: menuGetAllReducer,
   menuGetById: menuGetByIdReducer,
   menuGetList: menuGetListReducer,
-  
-  systemLimitGetAll: systemLimitGetAllReducer,
-  systemLimitGetList: systemLimitGetListReducer,
-  systemLimitGetById: systemLimitGetByIdReducer,
-
-  lookupHolidayGetAll: lookupHolidayGetAllReducer,
-  lookupHolidayGetList: lookupHolidayGetListReducer,
-  lookupHolidayGetById: lookupHolidayGetByIdReducer,
-  lookupHolidayPost: lookupHolidayPostReducer,
-  lookupHolidayPut: lookupHolidayPutReducer,
-  lookupHolidayDelete: lookupHolidayDeleteReducer,
-
-  lookupLeaveGetAll: lookupLeaveGetAllReducer,
-  lookupLeaveGetList: lookupLeaveGetListReducer,
-  lookupLeaveGetById: lookupLeaveGetByIdReducer,
-  lookupLeavePost: lookupLeavePostReducer,
-  lookupLeavePut: lookupLeavePutReducer,
-  lookupLeaveDelete: lookupLeaveDeleteReducer,
 };
 
 export default lookupReducers;
