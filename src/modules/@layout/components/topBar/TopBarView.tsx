@@ -1,3 +1,4 @@
+import { ICollectionValue } from '@layout/classes/core';
 import { IAppBarMenu } from '@layout/interfaces';
 import {
   AppBar,
@@ -14,10 +15,11 @@ import {
   ListItemText,
   Menu,
   MenuItem,
-  Slide,
+  PropTypes,
   Toolbar,
   Typography,
 } from '@material-ui/core';
+import { isWidthUp } from '@material-ui/core/withWidth';
 import AppsIcon from '@material-ui/icons/Apps';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import CallMadeIcon from '@material-ui/icons/CallMade';
@@ -33,6 +35,7 @@ import { FormattedMessage } from 'react-intl';
 import { TopBarProps } from './TopBar';
 
 interface MoreControlOptions {
+  color: PropTypes.Color;
   isOpen: boolean;
   items: IAppBarMenu[] | undefined;
   onClick: (event: React.MouseEvent<HTMLDivElement>) => void;
@@ -44,7 +47,7 @@ const MoreControl: React.SFC<MoreControlOptions> = props => (
   <React.Fragment>
     <IconButton
       id="appbar.btn.more"
-      color="inherit"
+      color={props.color}
       aria-label="More"
       onClick={props.onClick}
     >
@@ -78,6 +81,7 @@ const MoreControl: React.SFC<MoreControlOptions> = props => (
 );
 
 interface ToolbarControlOptions {
+  color: PropTypes.Color;
   menuclassName: string;
   OnClickMenu: (event: React.MouseEvent<HTMLDivElement>) => void;
   title: string | undefined;
@@ -105,7 +109,7 @@ const ToolbarControl: React.SFC<ToolbarControlOptions> = props => (
       /* menu */
       !props.showBack &&
       <IconButton
-        color="inherit"
+      color={props.color}
         aria-label="open drawer"
         onClick={props.OnClickMenu}
         className={props.menuclassName}
@@ -118,7 +122,7 @@ const ToolbarControl: React.SFC<ToolbarControlOptions> = props => (
       /* back */
       props.showBack &&
       <IconButton
-        color="inherit"
+        color={props.color}
         onClick={props.OnClickBack}
       >
         <ArrowBackIcon />
@@ -129,7 +133,7 @@ const ToolbarControl: React.SFC<ToolbarControlOptions> = props => (
     <Typography 
       noWrap 
       variant="title" 
-      color="inherit" 
+      color={props.color}
       className={props.titleClassName}
     >
       {props.title || ''}
@@ -139,7 +143,7 @@ const ToolbarControl: React.SFC<ToolbarControlOptions> = props => (
     {
       props.showSearch &&
       <IconButton
-        color="inherit"
+        color={props.color}
         aria-label="Search"
         onClick={props.OnClickSearch}
       >
@@ -153,7 +157,7 @@ const ToolbarControl: React.SFC<ToolbarControlOptions> = props => (
         props.showNotif &&
         props.notifCount > 0 &&
         <IconButton
-          color="inherit"
+          color={props.color}
           aria-label="Notifications"
           onClick={props.OnClickNotif}
         >
@@ -167,7 +171,7 @@ const ToolbarControl: React.SFC<ToolbarControlOptions> = props => (
         /* action */
         props.showAction &&
         <IconButton
-          color="inherit"
+          color={props.color}
           aria-label="Action"
           onClick={props.OnClickAction}
         >
@@ -179,6 +183,7 @@ const ToolbarControl: React.SFC<ToolbarControlOptions> = props => (
     {
       props.showMore &&
       <MoreControl 
+        color={props.color}
         items={props.moreItems}
         isOpen={props.isOpenMore}
         onClick={props.onClickMore}
@@ -189,18 +194,71 @@ const ToolbarControl: React.SFC<ToolbarControlOptions> = props => (
   </React.Fragment>
 );
 
+interface SearchControlOptions {
+  find: string;
+  field: ICollectionValue | undefined;
+  OnClickBack: (event: React.MouseEvent) => void;
+  OnClickClear: (event: React.MouseEvent) => void;
+  OnClickField: (event: React.MouseEvent) => void;
+  OnChangeFind: (event: React.ChangeEvent) => void;
+  OnKeyUpFind: (event: React.KeyboardEvent) => void;
+}
+
+const SearchControl: React.SFC<SearchControlOptions> = props => (
+  <React.Fragment>
+    <IconButton
+      aria-label="close search"
+      onClick={props.OnClickBack}
+    >
+      <ArrowBackIcon />
+    </IconButton>
+    
+    <Input 
+      fullWidth
+      autoFocus
+      disableUnderline
+      placeholder="Type something"
+      value={props.find}
+      onChange={props.OnChangeFind}
+      onKeyUp={props.OnKeyUpFind}
+      startAdornment={
+        <InputAdornment 
+          position="start" 
+          onClick={props.OnClickField}>
+          <Typography 
+            variant="body1" 
+            color="inherit"
+            noWrap
+          >
+            {props.field ? props.field.name : ''}
+          </Typography>
+        </InputAdornment>
+      }
+      endAdornment={
+        props.find.length > 0 &&
+        <InputAdornment position="end">
+          <IconButton onClick={props.OnClickClear}>
+            <ClearIcon/>
+          </IconButton>
+        </InputAdornment>
+      }
+    />
+  </React.Fragment>
+);
+
 export const TopBarView: React.SFC<TopBarProps> = props => (
   <AppBar 
     elevation={0}
-    position="fixed"
-    color={props.getClassColor()}
+    position={isWidthUp('md', props.width) ? 'static' : 'fixed'}
+    color={isWidthUp('md', props.width) ? props.getClassColor() : 'primary'}
     className={classNames(props.getClassNames())}
   >
-    {
-      props.mode === 'normal' &&
-      props.appBarState.selection.length === 0 &&
-      <Toolbar>
+    <Toolbar>
+      {
+        props.mode === 'normal' &&
+        props.appBarState.selection.length === 0 &&
         <ToolbarControl
+          color={isWidthUp('md', props.width) ? 'default' : 'inherit'}
           menuclassName={classNames(props.classes.navIconHide, props.layoutState.isDrawerMenuVisible && props.classes.hide)}
           OnClickMenu={props.handleOnClickMenu}
           title={props.layoutState.view && props.layoutState.view.title}
@@ -221,148 +279,99 @@ export const TopBarView: React.SFC<TopBarProps> = props => (
           onClickMoreItem={props.handleOnClickMoreItem}
           onCloseMore={props.handleOnCloseMore}
         />
-      </Toolbar>
-    }
+      }
 
-    {
-      props.mode === 'search' &&
-      props.appBarState.selection.length === 0 &&
-      <Slide 
-        mountOnEnter 
-        unmountOnExit
-        direction="down" 
-        in={props.mode === 'search'} 
-        timeout={300}
-      >
-        <div>
-          <Toolbar >
-            <IconButton
-              aria-label="close search"
-              onClick={() => props.handleOnDiscardSearch()}
+      {
+        props.mode === 'normal' &&
+        props.appBarState.selection.length > 0 &&
+        <React.Fragment>
+          <IconButton
+              aria-label="close selection"
+              onClick={() => props.handleOnDiscardSelection()}
             >
               <ArrowBackIcon />
             </IconButton>
-            
-            <Input 
-              fullWidth
-              autoFocus
-              disableUnderline
-              placeholder="Type something"
-              value={props.search}
-              onChange={props.handleOnChangeSearch}
-              onKeyUp={props.handleOnKeyUpSearch}
-              startAdornment={
-                <InputAdornment 
-                  position="start" 
-                  onClick={() => props.setFieldVisibility()}>
-                  <Typography 
-                    variant="body1" 
-                    color="inherit"
-                    noWrap
-                  >
-                    {props.field ? props.field.name : ''}
-                  </Typography>
-                </InputAdornment>
-              }
-              endAdornment={
-                props.search.length > 0 &&
-                <InputAdornment position="end">
-                  <IconButton onClick={() => props.handleOnClearSearch()}>
-                    <ClearIcon/>
-                  </IconButton>
-                </InputAdornment>
-              }
-            />
-          </Toolbar>
-          
-          {
-            props.isShowFields &&
-            props.appBarState.fields &&
-            <div className={props.search.length < 3 ? props.classes.hide : ''}>
-              <Divider />
-              <List 
-                component="div" 
-                disablePadding
-                className={props.theme.palette.background.default}
-              >
-                <ListItem
-                  button 
-                  component="div"
-                  onClick={() => props.handleOnClickField()}
-                >
-                  <ListItemText 
-                    primary={`${props.search} in Any`}
-                    primaryTypographyProps={{
-                      variant: 'body1'
-                    }}
-                  />
-                  <ListItemSecondaryAction>
-                    <CallMadeIcon color="action" />
-                  </ListItemSecondaryAction>
-                </ListItem>
-                {
-                  props.appBarState.fields.map((field, index) =>
-                    <ListItem 
-                      key={index} 
-                      button 
-                      component="div"
-                      onClick={() => props.handleOnClickField(field)}
-                    >
-                      <ListItemText 
-                        primary={`${props.search} in ${field.name}`}
-                        primaryTypographyProps={{
-                          variant: 'body1'
-                        }}
-                      />
-                      <ListItemSecondaryAction>
-                        <CallMadeIcon color="action" />
-                      </ListItemSecondaryAction>
-                    </ListItem>   
-                  )
-                }
-              </List>
-            </div>
-          }
-          
-        </div>
-      </Slide>
-    }
+
+            <Typography 
+              noWrap 
+              variant="body1" 
+              color="inherit" 
+              className={props.classes.flex}
+            >
+              <FormattedMessage id="layout.label.selection" values={{count: props.appBarState.selection.length}} />
+            </Typography>
+
+            <Button 
+              size="small" 
+              color="primary"
+              onClick={() => props.handleOnClickProcess()}
+            >
+              <FormattedMessage id="layout.action.process" />
+            </Button>
+          </React.Fragment>
+      }
+
+      {
+        props.mode === 'search' &&
+        <SearchControl
+          find={props.search}
+          field={props.field}
+          OnClickBack={props.handleOnDiscardSearch}
+          OnClickClear={props.handleOnClearSearch}
+          OnKeyUpFind={props.handleOnKeyUpSearch}
+          OnClickField={props.setFieldVisibility}
+          OnChangeFind={props.handleOnChangeSearch}
+        />
+      }
+    </Toolbar>
 
     {
-      props.appBarState.selection.length > 0 &&
-      <Slide 
-        mountOnEnter 
-        unmountOnExit
-        direction="down" 
-        in={true} 
-        timeout={300}
-      >
-        <Toolbar>
-          <IconButton
-            aria-label="close selection"
-            onClick={() => props.handleOnDiscardSelection()}
+      props.isShowFields &&
+      props.appBarState.fields &&
+      <div className={props.search.length < 3 ? props.classes.hide : ''}>
+        <Divider />
+        <List 
+          component="div" 
+          disablePadding
+        >
+          <ListItem
+            button 
+            component="div"
+            onClick={() => props.handleOnClickField()}
           >
-            <ArrowBackIcon />
-          </IconButton>
-
-          <Typography 
-            noWrap 
-            variant="body1" 
-            color="inherit" 
-            className={props.classes.flex}
-          >
-            <FormattedMessage id="layout.label.selection" values={{count: props.appBarState.selection.length}} />
-          </Typography>
-
-          <Button 
-            size="small" 
-            color="secondary"
-            onClick={() => props.handleOnClickProcess()}
-          >
-            <FormattedMessage id="layout.action.process" />
-          </Button>
-        </Toolbar>
-      </Slide>
+            <ListItemText 
+              primary={`${props.search} in Any`}
+              primaryTypographyProps={{
+                variant: 'body1'
+              }}
+            />
+            <ListItemSecondaryAction>
+              <CallMadeIcon color="action" />
+            </ListItemSecondaryAction>
+          </ListItem>
+          {
+            props.appBarState.fields.map((field, index) =>
+              <ListItem 
+                key={index} 
+                button 
+                component="div"
+                onClick={() => props.handleOnClickField(field)}
+              >
+                <ListItemText 
+                  primary={`${props.search} in ${field.name}`}
+                  primaryTypographyProps={{
+                    variant: 'body1'
+                  }}
+                />
+                <ListItemSecondaryAction>
+                  <CallMadeIcon color="action" />
+                </ListItemSecondaryAction>
+              </ListItem>   
+            )
+          }
+        </List>
+      </div>
     }
+
   </AppBar>
 );
