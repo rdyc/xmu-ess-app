@@ -6,7 +6,4 @@ export * from './leave/ILookupLeavePostPayload';
 export * from './leave/ILookupLeavePutPayload';
 export * from './systemLimit/ISystemLimitPostPayload';
 export * from './systemLimit/ISystemLimitPutPayload';
-<<<<<<< HEAD
-=======
 export * from './systemLimit/ISystemLimitDeletePayload';
->>>>>>> develop
