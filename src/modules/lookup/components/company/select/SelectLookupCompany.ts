@@ -1,5 +1,5 @@
 import { ILookupCompanyGetListFilter } from '@lookup/classes/filters/company';
-import { ICompanyList } from '@lookup/classes/response';
+import { ICompanyList } from '@lookup/classes/response/company';
 import { WithLookupCompany, withLookupCompany } from '@lookup/hoc/withLookupCompany';
 import withWidth, { WithWidth } from '@material-ui/core/withWidth';
 import { compose, HandleCreators, lifecycle, ReactLifeCycleFunctions, withHandlers } from 'recompose';

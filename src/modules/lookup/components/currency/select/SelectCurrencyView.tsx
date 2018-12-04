@@ -20,7 +20,7 @@ export const SelectCurrencyView: React.SFC<SelectCurrencyProps> = props => {
     if (isMobile) {
       return (
         <option key={item.uid} value={item.uid}>
-          {item.uid} - {item.name}
+          {item.name}
         </option>
       );
     }

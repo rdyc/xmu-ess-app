@@ -1,6 +1,6 @@
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { layoutMessage } from '@layout/locales/messages';
-import { CompanyUserAction } from '@lookup/classes/types';
+import { CompanyUserAction } from '@lookup/classes/types/company';
 import { WithLookupCompany, withLookupCompany } from '@lookup/hoc/withLookupCompany';
 import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';

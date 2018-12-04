@@ -1,5 +1,5 @@
 import { layoutMessage } from '@layout/locales/messages';
-import {  Card, CardContent, Grid, Table, TableBody, TableCell, TableRow } from '@material-ui/core';
+import {  Card, CardContent, Grid, Table, TableBody, TableCell, TableRow, Typography } from '@material-ui/core';
 import { ISummaryProfitability } from '@summary/classes/response/profitability';
 import { ProfitabilityProps } from '@summary/components/profitability/Profitability';
 import { FilterForm } from '@summary/components/progress/sharedFilterForm/FilterForm';
@@ -93,7 +93,9 @@ export const ProfitabilityView: React.SFC<ProfitabilityProps> = props => {
         <Grid item xs={12}>
         {
           isLoading &&
-          intl.formatMessage(layoutMessage.text.loading)
+          <Typography>
+            {intl.formatMessage(layoutMessage.text.loading)}
+          </Typography>
         }
         {
           !isLoading &&
