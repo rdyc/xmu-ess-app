@@ -41,6 +41,7 @@ enum AppMenu {
   LookupDiem = 'MNU54',
   LookupApprovalHierarchy = 'MNU04',
   LookupMileageException = 'MNU59',
+  LookupPosition = 'MNU06',
   LookupSystemLimit = 'MNU47',
   LookupCurrency = 'MNU55',
   Timesheet = 'MNU09',
