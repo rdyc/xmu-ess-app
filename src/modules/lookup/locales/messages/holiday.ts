@@ -31,7 +31,7 @@ export const holidaySection = defineMessages({
 // field
 export const holidayField = defineMessages({
   uid: { id: `${prefix}.field.id`},
-  uidPlaceholder: {id: `${prefix}.field.uid.placeholder`},
+  uidPlaceholder: {id: `${prefix}.field.id.placeholder`},
 
   company: { id: `${prefix}.field.company`},
   companyRequired: {id: `${prefix}.field.company.required`},
@@ -60,9 +60,9 @@ export const holidayFieldHelperFor = (field: string, type: 'fieldName' | 'fieldR
 
   if (type === 'fieldRequired') {
     switch (field) {
-      case 'companyUid': return holidayField.company;
-      case 'description': return holidayField.description;
-      case 'date': return holidayField.date;
+      case 'companyUid': return holidayField.companyRequired;
+      case 'description': return holidayField.descriptionRequired;
+      case 'date': return holidayField.dateRequired;
 
       default: return {id: field};
     }

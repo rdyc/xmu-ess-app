@@ -18,8 +18,8 @@ const lookupLeaveInformation: React.SFC<AllProps> = props => {
   const render = (
     <Card square>
       <CardHeader
-        title={props.intl.formatMessage(lookupMessage.leave.field.infoTitle)}
-        subheader={props.intl.formatMessage(lookupMessage.leave.field.infoSubHeader)}
+        title={props.intl.formatMessage(lookupMessage.leave.section.infoTitle)}
+        subheader={props.intl.formatMessage(lookupMessage.leave.section.infoSubHeader)}
       />
       <CardContent>
       <TextField

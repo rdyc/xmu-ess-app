@@ -21,15 +21,16 @@ import {
   systemLimitGetAllReducer,
   systemLimitGetByIdReducer,
   systemLimitGetListReducer,
+  lookupLeavePostReducer,
 } from '@lookup/store/reducers';
 
 import { lookupCompanyReducers } from './company';
 import { lookupCurrencyReducers } from './currency';
 import { lookupCustomerReducers } from './customer';
-import { lookupHolidayReducers } from './holiday';
 import { lookupHolidayPostReducer } from './holiday/lookupHolidayPostReducer';
 import { lookupHolidayPutReducer } from './holiday/lookupHolidayPutReducer';
-import { lookupLeaveReducers } from './leave';
+import { lookupHolidayReducers } from './holiday/lookupHolidayReducers';
+import { lookupLeaveReducers } from './leave/lookupLeaveReducers';
 import { mileageExceptionReducers } from './mileageException/mileageExceptionReducers';
 import { lookupRoleReducers } from './role';
 import { systemLimitReducers } from './systemLimit';
@@ -40,7 +41,6 @@ const lookupReducers = {
   ...lookupRoleReducers,
   ...lookupLeaveReducers,
   ...lookupHolidayReducers,
-  ...lookupLeaveReducers,
   ...mileageExceptionReducers,
   ...systemLimitReducers,
   ...lookupCurrencyReducers,
@@ -74,6 +74,7 @@ const lookupReducers = {
   lookupLeaveGetAll: lookupLeaveGetAllReducer,
   lookupLeaveGetList: lookupLeaveGetListReducer,
   lookupLeaveGetById: lookupLeaveGetByIdReducer,
+  lookupLeavePost: lookupLeavePostReducer,
   lookupLeavePut: lookupLeavePutReducer
 };
 

@@ -1,4 +1,5 @@
 import { FormMode } from '@generic/types';
+import { layoutMessage } from '@layout/locales/messages';
 import {
   LeaveForm,
   LookupLeaveFormData,
@@ -6,7 +7,6 @@ import {
 import { RequestEditorProps } from '@lookup/components/leave/editor/LookupLeaveEditor';
 import { Typography } from '@material-ui/core';
 import * as React from 'react';
-import { FormattedMessage } from 'react-intl';
 
 export const LookupLeaveEditorView: React.SFC<RequestEditorProps> = props => {
   const { formMode, handleValidate, handleSubmit, handleSubmitSuccess, handleSubmitFail } = props;
@@ -27,6 +27,7 @@ export const LookupLeaveEditorView: React.SFC<RequestEditorProps> = props => {
   const initialValues: LookupLeaveFormData = {
     information: {
       uid: undefined,
+      companyUid: undefined,
       categoryType: undefined,
       year: undefined,
       name: undefined,
@@ -45,7 +46,7 @@ export const LookupLeaveEditorView: React.SFC<RequestEditorProps> = props => {
     if (isLoading && !response) {
       return (
         <Typography variant="body2">
-          <FormattedMessage id="global.loading"/>
+          {props.intl.formatMessage(layoutMessage.text.loading)}
         </Typography>
       );
     }
@@ -55,6 +56,7 @@ export const LookupLeaveEditorView: React.SFC<RequestEditorProps> = props => {
       const data = response.data;
 
       initialValues.information.uid = data.uid;
+      initialValues.information.companyUid = data.companyUid;
       initialValues.information.categoryType = data.categoryType;
       initialValues.information.year = data.year;
       initialValues.information.name = data.name;

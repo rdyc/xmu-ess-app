@@ -1,6 +1,6 @@
 import { currencyConfirm, currencyField, currencyForm, currencyMessage, currencyPage, currencySection } from './currency/currencyMessage';
 import { holidayConfirm, holidayField, holidayFieldHelperFor, holidayMessage, holidayPage, holidaySection } from './holiday';
-import { leaveConfirm, leaveField, leavePage } from './leave';
+import { leaveConfirm, leaveField, leaveFieldHelperFor, leaveMessage, leavePage, leaveSection } from './leave';
 import { companyConfirm, companyField, companyFieldHelperFor, companyMessage, companyPage, companySection } from './lookupCompanyMessage';
 import {
   mileageExceptionField,
@@ -41,7 +41,10 @@ export const lookupMessage = {
   leave: {
     page: leavePage,
     field: leaveField,
-    confirm: leaveConfirm, 
+    fieldFor: leaveFieldHelperFor,
+    section: leaveSection,
+    confirm: leaveConfirm,
+    message: leaveMessage
   },
   currency: {
     page: currencyPage,

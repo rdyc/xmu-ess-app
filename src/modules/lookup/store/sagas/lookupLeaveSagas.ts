@@ -1,20 +1,27 @@
 import { layoutAlertAdd, listBarLoading,  listBarMetadata } from '@layout/store/actions';
 import {
   LookupLeaveAction as Action,
+  lookupLeaveGetAllDispose,
   lookupLeaveGetAllError,
   lookupLeaveGetAllRequest,
   lookupLeaveGetAllSuccess,
+  lookupLeaveGetByIdDispose,
   lookupLeaveGetByIdError,
   lookupLeaveGetByIdRequest,
   lookupLeaveGetByIdSuccess,
   lookupLeaveGetListError,
   lookupLeaveGetListRequest,
   lookupLeaveGetListSuccess,
-  // leavePutError,
-  // leavePutRequest,
-  // leavePutSuccess,
+  lookupLeavePostError,
+  lookupLeavePostRequest,
+  lookupLeavePostSuccess,
+  lookupLeavePutError,
+  lookupLeavePutRequest,
+  lookupLeavePutSuccess,
 } from '@lookup/store/actions';
+import { flattenObject } from '@utils/flattenObject';
 import saiyanSaga from '@utils/saiyanSaga';
+import { SubmissionError } from 'redux-form';
 // import { SubmissionError } from 'redux-form';
 import { all, fork, put, takeEvery } from 'redux-saga/effects';
 import { IApiResponse, objectToQuerystring } from 'utils';
@@ -108,11 +115,108 @@ function* watchGetByIdRequest() {
   yield takeEvery(Action.GET_BY_ID_REQUEST, worker);
 }
 
+function* watchPostRequest() {
+  const worker = (action: ReturnType<typeof lookupLeavePostRequest>) => {
+    return saiyanSaga.fetch({
+      method: 'post',
+      path: `/v1/lookup/leaves/${action.payload.companyUid}`,
+      payload: action.payload.data,
+      successEffects: (response: IApiResponse) => [
+        put(lookupLeavePostSuccess(response.body)),
+        put(lookupLeaveGetByIdDispose()),
+        put(lookupLeaveGetAllDispose())
+      ],
+      successCallback: (response: IApiResponse) => {
+        action.payload.resolve(response.body.data);
+      },
+      failureEffects: (response: IApiResponse) => [
+        put(lookupLeavePostError(response.statusText))
+      ],
+      failureCallback: (response: IApiResponse) => {
+        if (response.status === 400) {
+          const errors: any = { 
+            // information -> based form section name
+            information: flattenObject(response.body.errors) 
+          };
+
+          action.payload.reject(new SubmissionError(errors));
+        } else {
+          action.payload.reject(response.statusText);
+        }
+      },
+      errorEffects: (error: TypeError) => [
+        put(lookupLeavePostError(error.message)),
+        put(
+          layoutAlertAdd({
+            time: new Date(),
+            message: error.message
+          })
+        )
+      ],
+      errorCallback: (error: any) => {
+        action.payload.reject(error);
+      }
+    });
+  };
+
+  yield takeEvery(Action.POST_REQUEST, worker);
+}
+
+function* watchPutRequest() {
+  const worker = (action: ReturnType<typeof lookupLeavePutRequest>) => {
+    return saiyanSaga.fetch({
+      method: 'put',
+      path: `/v1/lookup/Leaves/${action.payload.companyUid}/${action.payload.leaveUid}`,
+      payload: action.payload.data,
+      successEffects: (response: IApiResponse) => [
+        put(lookupLeavePutSuccess(response.body)),
+        put(lookupLeaveGetByIdDispose()),
+        put(lookupLeaveGetAllDispose())
+      ],
+      successCallback: (response: IApiResponse) => {
+        action.payload.resolve(response.body.data);
+      },
+      failureEffects: (response: IApiResponse) => [
+        put(lookupLeavePutError(response.statusText))
+      ],
+      failureCallback: (response: IApiResponse) => {
+        if (response.status === 400) {
+          const errors: any = { 
+            // information -> based on form section name
+            information: flattenObject(response.body.errors) 
+          };
+          
+          // action.payload.reject(new SubmissionError(response.body.errors));
+          action.payload.reject(new SubmissionError(errors));
+        } else {
+          action.payload.reject(response.statusText);
+        }
+      },
+      errorEffects: (error: TypeError) => [
+        put(lookupLeavePutError(error.message)),
+        put(
+          layoutAlertAdd({
+            time: new Date(),
+            message: error.message
+          })
+        )
+      ],
+      errorCallback: (error: any) => {
+        action.payload.reject(error);
+      }
+    });
+  };
+
+  yield takeEvery(Action.PUT_REQUEST, worker);
+}
+
 function* lookupLeaveSagas() {
   yield all([
     fork(watchGetAllRequest),
     fork(watchGetListRequest),
     fork(watchGetByIdRequest),
+    fork(watchPostRequest),
+    fork(watchPutRequest),
   ]);
 }
 

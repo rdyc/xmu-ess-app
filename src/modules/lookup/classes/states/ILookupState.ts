@@ -12,6 +12,7 @@ import {
   ILookupLeaveGetAllRequest,
   ILookupLeaveGetDetailRequest,
   ILookupLeaveGetListRequest,
+  ILookupLeavePostRequest,
   ILookupLeavePutRequest,
   IMenuGetAllRequest,
   IMenuGetByIdRequest,
@@ -142,6 +143,7 @@ export interface ILookupState {
   lookupLeaveGetAll: IQueryCollectionState<ILookupLeaveGetAllRequest, ILookupLeave>;
   lookupLeaveGetList: IQueryCollectionState<ILookupLeaveGetListRequest, ILookupLeaveList>;
   lookupLeaveGetById: IQuerySingleState<ILookupLeaveGetDetailRequest, ILookupLeaveDetail>;
+  lookupLeavePost: IQuerySingleState<ILookupLeavePostRequest, ILookupLeave>;
   lookupLeavePut: IQuerySingleState<ILookupLeavePutRequest, ILookupLeave>;
 
   systemLimitGetAll: IQueryCollectionState<ISystemLimitAllRequest, ISystemLimit>;

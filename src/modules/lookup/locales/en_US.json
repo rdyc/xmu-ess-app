@@ -247,10 +247,14 @@
   "lookup.leave.field.allocation": "Allocation",
   "lookup.leave.field.allocation.required": "leave allocation is required",
   "lookup.leave.field.allocation.placeholder": "Select a leave allocation",
+  "lookup.leave.field.isWithHoliday": "With Holiday",
+  "lookup.leave.field.isWithHoliday.required": "With Holiday is required",
+  "lookup.leave.field.isWithHoliday.placeholder": "Select with holiday",
   "lookup.leave.message.create.success": "A new PID {uid} has been created",
   "lookup.leave.message.create.failure": "Unable to process your submission",
   "lookup.leave.message.update.success": "Existing PID {uid} has been updated",
   "lookup.leave.message.update.failure": "Unable to process your submission",
   "lookup.leave.confirm.modify.title": "Modify Confirmation",
-  "lookup.leave.confirm.modify.description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+  "lookup.leave.confirm.modify.description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "lookup.leave.message.emptyProps": "Some props are empty"
 }

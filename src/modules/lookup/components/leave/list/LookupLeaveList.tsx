@@ -129,7 +129,7 @@ const config: CollectionConfig<ILookupLeave, AllProps> = {
         </Button>
       <Button 
         size="small"
-        onClick={() => callback.handleRedirectTo(`/lookup/L=leave/${item.uid}`)}
+        onClick={() => callback.handleRedirectTo(`/lookup/leave/${item.uid}`)}
       >
         <FormattedMessage {...layoutMessage.action.details}/>
       </Button>

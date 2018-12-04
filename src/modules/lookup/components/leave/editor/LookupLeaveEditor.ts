@@ -3,7 +3,6 @@ import { FormMode } from '@generic/types';
 import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
-import { leaveRequestMessage } from '@leave/locales/messages/leaveRequestMessage';
 import {
   ILookupLeavePostPayload,
   ILookupLeavePutPayload,
@@ -13,6 +12,7 @@ import {
   LookupLeaveFormData,
 } from '@lookup/components/leave/editor/forms/LookupLeaveForm';
 import { WithLookupLeave, withLookupLeave } from '@lookup/hoc/withLookupLeave';
+import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import {
@@ -71,13 +71,13 @@ const handlerCreators: HandleCreators<RequestEditorProps, OwnHandlers> = {
     };
   
     const requiredFields = [
-      'LookupLeaveType', 'start',
-      'address', 'contactNumber', 'reason'
+      'company', 'name',
+      'year', 'allocation', 'category'
     ];
 
     requiredFields.forEach(field => {
       if (!formData.information[field] || isNullOrUndefined(formData.information[field])) {
-        errors.information[field] = props.intl.formatMessage({id: `LookupLeave.field.information.${field}.required`});
+        errors.information[field] = props.intl.formatMessage(lookupMessage.leave.fieldFor(field, 'fieldRequired'));
       }
     });
     
@@ -96,13 +96,15 @@ const handlerCreators: HandleCreators<RequestEditorProps, OwnHandlers> = {
       ...formData.information,
     };
 
+    const company = payload.companyUid;
+
     // creating
-    if (formMode === FormMode.New) {
+    if (formMode === FormMode.New && !isNullOrUndefined(company)) {
       return new Promise((resolve, reject) => {
         createRequest({
           resolve, 
           reject,
-          companyUid: user.company.uid,
+          companyUid: company,
           data: payload as ILookupLeavePostPayload
         });
       });
@@ -110,18 +112,18 @@ const handlerCreators: HandleCreators<RequestEditorProps, OwnHandlers> = {
 
     // update checking
     if (!leaveUid) {
-      const message = intl.formatMessage(leaveRequestMessage.emptyLeaveUid);
+      const message = intl.formatMessage(lookupMessage.leave.message.emptyLeaveUid);
 
       return Promise.reject(message);
     }
 
-    if (formMode === FormMode.Edit) {
+    if (formMode === FormMode.Edit && !isNullOrUndefined(company)) {
       return new Promise((resolve, reject) => {
         updateRequest({
           leaveUid, 
           resolve, 
           reject,
-          companyUid: user.company.uid,
+          companyUid: company,
           data: payload as ILookupLeavePutPayload, 
         });
       });
@@ -136,11 +138,11 @@ const handlerCreators: HandleCreators<RequestEditorProps, OwnHandlers> = {
     let message: string = '';
 
     if (formMode === FormMode.New) {
-      message = intl.formatMessage(leaveRequestMessage.createSuccess, { uid: response.uid });
+      message = intl.formatMessage(lookupMessage.leave.message.createSuccess, { uid: response.uid });
     }
 
     if (formMode === FormMode.Edit) {
-      message = intl.formatMessage(leaveRequestMessage.updateSuccess, { uid: response.uid });
+      message = intl.formatMessage(lookupMessage.leave.message.updateSuccess, { uid: response.uid });
     }
 
     alertAdd({
@@ -148,7 +150,7 @@ const handlerCreators: HandleCreators<RequestEditorProps, OwnHandlers> = {
       time: new Date()
     });
 
-    history.push('/LookupLeave/requests/');
+    history.push('/lookup/leave');
   },
   handleSubmitFail: (props: RequestEditorProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
     const { formMode, intl } = props;
@@ -165,11 +167,11 @@ const handlerCreators: HandleCreators<RequestEditorProps, OwnHandlers> = {
       let message: string = '';
 
       if (formMode === FormMode.New) {
-        message = intl.formatMessage(leaveRequestMessage.createFailure);
+        message = intl.formatMessage(lookupMessage.leave.message.createFailure);
       }
 
       if (formMode === FormMode.Edit) {
-        message = intl.formatMessage(leaveRequestMessage.updateFailure);
+        message = intl.formatMessage(lookupMessage.leave.message.updateFailure);
       }
 
       alertAdd({
@@ -199,8 +201,8 @@ const lifecycles: ReactLifeCycleFunctions<RequestEditorProps, {}> = {
     const { user } = this.props.userState;
     
     const view = {
-      title: 'LookupLeave.form.newTitle',
-      subTitle: 'LookupLeave.form.newSubTitle',
+      title: lookupMessage.leave.page.newTitle,
+      subTitle: lookupMessage.leave.page.newSubHeader,
     };
 
     if (!user) {
@@ -213,12 +215,13 @@ const lifecycles: ReactLifeCycleFunctions<RequestEditorProps, {}> = {
     });
 
     if (!isNullOrUndefined(history.location.state)) {
-      view.title = 'LookupLeave.form.editTitle';
-      view.subTitle = 'LookupLeave.form.editSubTitle';
+      view.title = lookupMessage.leave.page.modifyTitle;
+      view.subTitle = lookupMessage.leave.page.modifySubHeader;
 
       stateUpdate({ 
         formMode: FormMode.Edit,
-        leaveUid: history.location.state.uid
+        leaveUid: history.location.state.uid,
+        companyUid: history.location.state.companyUid
       });
 
       loadDetailRequest({
@@ -230,8 +233,8 @@ const lifecycles: ReactLifeCycleFunctions<RequestEditorProps, {}> = {
     layoutDispatch.changeView({
       uid: AppMenu.LookupLeave,
       parentUid: AppMenu.LookupLeave,
-      title: intl.formatMessage({id: view.title}),
-      subTitle : intl.formatMessage({id: view.subTitle})
+      title: intl.formatMessage(view.title),
+      subTitle : intl.formatMessage(view.subTitle)
     });
 
     layoutDispatch.navBackShow(); 

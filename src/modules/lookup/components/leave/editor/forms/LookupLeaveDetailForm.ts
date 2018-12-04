@@ -6,6 +6,7 @@ import { LookupLeaveDetailFormView } from '@lookup/components/leave/editor/forms
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose, HandleCreators, withHandlers } from 'recompose';
 import { BaseFieldsProps } from 'redux-form';
+import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
 
 interface OwnProps {
   formMode: FormMode;
@@ -23,36 +24,34 @@ export type RequestDetailFormProps
 
 const handlerCreators: HandleCreators<RequestDetailFormProps, OwnHandlers> = {
   generateFieldProps: (props: RequestDetailFormProps) => (name: string) => { 
-    const { 
-      intl, formMode
-    } = props;
-
-    const fieldName = name.replace('information.', '');
+    const { intl } = props;
 
     let fieldProps: SelectSystemOption & any = {};
 
-    switch (fieldName) {
+    switch (name) {
       case 'uid':
         fieldProps = {
-          disabled: true,
-          placeholder: intl.formatMessage({id: `leave.field.${name}.placeholder`}),
+          label: intl.formatMessage(lookupMessage.leave.fieldFor(name, 'fieldName')),
+          placeholder: intl.formatMessage(lookupMessage.leave.fieldFor(name, 'fieldPlaceholder')),
           component: InputText
         };
         break;
       
       case 'categoryType':
         fieldProps = {
-          required: formMode === FormMode.New,
-          category: 'category',
-          placeholder: intl.formatMessage({id: `leave.field.${name}.placeholder`}),
+          required: true,
+          category: 'leave',
+          label: intl.formatMessage(lookupMessage.leave.fieldFor(name, 'fieldName')),
+          placeholder: intl.formatMessage(lookupMessage.leave.fieldFor(name, 'fieldPlaceholder')),
           component: SelectSystem,
         };
         break;
 
       case 'year':
         fieldProps = {
-          required: false,
-          placeholder: intl.formatMessage({id: `leave.field.${name}.placeholder`}),
+          required: true,
+          label: intl.formatMessage(lookupMessage.leave.fieldFor(name, 'fieldName')),
+          placeholder: intl.formatMessage(lookupMessage.leave.fieldFor(name, 'fieldPlaceholder')),
           component: InputNumber,
         };
         break;
@@ -60,7 +59,8 @@ const handlerCreators: HandleCreators<RequestDetailFormProps, OwnHandlers> = {
       case 'name': 
         fieldProps = {
           required: true,
-          placeholder: intl.formatMessage({id: `leave.field.${name}.placeholder`}),
+          label: intl.formatMessage(lookupMessage.leave.fieldFor(name, 'fieldName')),
+          placeholder: intl.formatMessage(lookupMessage.leave.fieldFor(name, 'fieldPlaceholder')),
           component: InputText,
         };
         break;
@@ -68,23 +68,26 @@ const handlerCreators: HandleCreators<RequestDetailFormProps, OwnHandlers> = {
       case 'allocation': 
         fieldProps = {
           required: true,
-          placeholder: intl.formatMessage({id: `leave.field.${name}.placeholder`}),
+          label: intl.formatMessage(lookupMessage.leave.fieldFor(name, 'fieldName')),
+          placeholder: intl.formatMessage(lookupMessage.leave.fieldFor(name, 'fieldPlaceholder')),
           component: InputNumber,
         };
         break;
 
-      case 'isWithinHoliday': 
-        fieldProps = {
-          required: true,
-          placeholder: intl.formatMessage({id: `leave.field.${name}.placeholder`}),
-          component: InputText,
-        };
-        break;
+      // case 'isWithinHoliday': 
+      //   fieldProps = {
+      //     required: false,
+      //     label: intl.formatMessage(lookupMessage.leave.fieldFor(name, 'fieldName')),
+      //     placeholder: intl.formatMessage(lookupMessage.leave.fieldFor(name, 'fieldPlaceholder')),
+      //     component: InputText,
+      //   };
+      //   break;
     
       default:
         fieldProps = {
           type: 'text',
-          placeholder: intl.formatMessage({id: `leave.field.${name}.placeholder`}),
+          label: intl.formatMessage(lookupMessage.leave.fieldFor(name, 'fieldName')),
+          placeholder: intl.formatMessage(lookupMessage.leave.fieldFor(name, 'fieldPlaceholder')),
           component: InputText
         };
         break;

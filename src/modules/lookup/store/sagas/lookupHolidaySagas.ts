@@ -14,6 +14,7 @@ import {
   lookupHolidayGetListSuccess,
   lookupHolidayPostError,
   lookupHolidayPostRequest,
+  lookupHolidayPostSuccess,
   lookupHolidayPutError,
   lookupHolidayPutRequest,
   lookupHolidayPutSuccess,
@@ -121,9 +122,9 @@ function* watchPostRequest() {
       path: `/v1/lookup/holidays/${action.payload.companyUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
-        put(lookupHolidayPostRequest(response.body)),
         put(lookupHolidayGetByIdDispose()),
-        put(lookupHolidayGetAllDispose())
+        put(lookupHolidayGetAllDispose()),
+        put(lookupHolidayPostSuccess(response.body)),
       ],
       successCallback: (response: IApiResponse) => {
         action.payload.resolve(response.body.data);
@@ -168,9 +169,9 @@ function* watchPutRequest() {
       path: `/v1/lookup/holidays/${action.payload.companyUid}/${action.payload.holidayUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
-        put(lookupHolidayPutSuccess(response.body)),
         put(lookupHolidayGetByIdDispose()),
-        put(lookupHolidayGetAllDispose())
+        put(lookupHolidayGetAllDispose()),
+        put(lookupHolidayPutSuccess(response.body)),
       ],
       successCallback: (response: IApiResponse) => {
         action.payload.resolve(response.body.data);
