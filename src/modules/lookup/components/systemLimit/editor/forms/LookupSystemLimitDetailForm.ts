@@ -2,6 +2,7 @@ import { SelectSystem, SelectSystemOption } from '@common/components/select';
 import { FormMode } from '@generic/types';
 import { InputNumber } from '@layout/components/input/number';
 import { InputText } from '@layout/components/input/text';
+import { SelectLookupCompany } from '@lookup/components/company/select';
 import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
 import { timesheetMessage } from '@timesheet/locales/messages/timesheetMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
@@ -44,7 +45,7 @@ const handlerCreators: HandleCreators<SystemLimitDetailFormProps, OwnHandlers> =
           disabled: formMode === FormMode.Edit,
           label: intl.formatMessage(lookupMessage.systemLimit.fieldFor(name, 'fieldName')),
           placeholder: intl.formatMessage(lookupMessage.systemLimit.fieldFor(name, 'fieldPlaceholder')),
-          component: InputText
+          component: SelectLookupCompany
         };
         break;
 
