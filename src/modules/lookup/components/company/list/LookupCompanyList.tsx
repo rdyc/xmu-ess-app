@@ -72,12 +72,6 @@ const config: CollectionConfig<ICompany, AllProps> = {
     }
   ]),
 
-  // data filter
-  filter: {
-    orderBy: 'uid',
-    direction: 'descending'
-  },
-
   // events
   onDataLoad: (props: AllProps, callback: CollectionHandler, params: CollectionDataProps, forceReload?: boolean | false) => {
     const { user } = props.userState;
@@ -116,7 +110,7 @@ const config: CollectionConfig<ICompany, AllProps> = {
     secondary: item.code,
     tertiary: '',
     quaternary: item.uid,
-    quinary: '',
+    quinary: item.changes && item.changes.updated && item.changes.updated.fullName || item.changes && item.changes.created && item.changes.created.fullName || 'N/A',
     senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
   }),
 
