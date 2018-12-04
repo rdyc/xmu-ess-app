@@ -35,23 +35,14 @@ export const purchaseRequestFieldTranslator = (find: string, field: ICollectionV
         break;
 
       default:
-        result = WorkflowStatusType.InProgress || WorkflowStatusType.Submitted || WorkflowStatusType.Approved || WorkflowStatusType.Rejected;
+        // result = WorkflowStatusType.InProgress || WorkflowStatusType.Submitted || WorkflowStatusType.Approved || WorkflowStatusType.Rejected;
         break;
     }
-  } else {
-    result = `${find.toLowerCase()}`;
+  } 
+  
+  if (typeof Number(find) === 'number') {
+    result = ` ${find} `;
   }
-
-  // if (field.name === PurchaseField.requestDate) {
-  //   switch (find.toLowerCase()) {
-      
-  //     case 'jan':
-  //     case 'january':
-  //     case 'januari':
-  //       result = 
-  //       break;
-  //   }
-  // }
 
   return result;
 };

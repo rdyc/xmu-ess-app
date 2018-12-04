@@ -37,20 +37,11 @@ export const purchaseSettlementFieldTranslator = (find: string, field: ICollecti
       default:
         break;
     }
-  } else {
-    result = `${find.toLowerCase()}`;
   }
 
-  // if (field.name === PurchaseField.requestDate) {
-  //   switch (find.toLowerCase()) {
-      
-  //     case 'jan':
-  //     case 'january':
-  //     case 'januari':
-  //       result = 
-  //       break;
-  //   }
-  // }
+  if (typeof Number(find) === 'number') {
+    result = ` ${find} `;
+  }
 
   return result;
 };
