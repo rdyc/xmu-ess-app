@@ -126,7 +126,7 @@ const config: CollectionConfig<ICompany, AllProps> = {
         size="small"
         onClick= {() => alert('go to new page here')}
       >
-        Delete
+        <FormattedMessage {...layoutMessage.action.delete}/>
       </Button>
       
       <Button
