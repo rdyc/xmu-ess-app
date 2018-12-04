@@ -52,6 +52,12 @@ const stateUpdaters: StateUpdaters<OwnOption, OwnState, OwnStateUpdater> = {
 const handlerCreators: HandleCreators<CommonSummaryProps, OwnHandler> = {
   handleGoToCategoryList: (props: CommonSummaryProps) => (category: string) => {
     const { history } = props;
+    const { response } = props.commonSystemState.all;
+    const { systemAllDispose } = props.commonDispatch;
+
+    if (response) {
+      systemAllDispose();
+    }
 
     history.push(`/common/system/${category}`);
   }
