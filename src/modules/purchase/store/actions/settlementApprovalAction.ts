@@ -3,7 +3,7 @@ import {
   ISettlementApprovalGetAllRequest,
   ISettlementApprovalGetByIdRequest,
   ISettlementApprovalPostRequest
-} from '@purchase/classes/queries/settlementHistories';
+} from '@purchase/classes/queries/settlementApproval';
 import { ISettlement, ISettlementDetail } from '@purchase/classes/response/purchaseSettlement';
 import { action } from 'typesafe-actions';
 

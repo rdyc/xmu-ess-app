@@ -131,7 +131,7 @@ const handlerCreators: HandleCreators<TravelRequestDetailProps, OwnHandler> = {
           break;
           
         case TravelUserAction.AddSettlement:
-          next = '/travel/settlements/form';
+          next = '/travel/settlement/requests/form';
           break;
 
         default:

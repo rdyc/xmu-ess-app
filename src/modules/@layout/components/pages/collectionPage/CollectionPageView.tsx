@@ -38,6 +38,11 @@ export const CollectionPageView: React.SFC<CollectionPageProps> = props => (
     onChangeSize={props.setSize}
   >
     {
+      props.config.filterComponent && 
+      props.config.filterComponent(props)
+    }
+
+    {
       // !props.isLoading &&
       props.response &&
       props.response.data &&
@@ -164,7 +169,7 @@ export const CollectionPageView: React.SFC<CollectionPageProps> = props => (
               
               <Delayed time={1000}>
                 <ExpansionPanelDetails>
-                  {props.config.summaryComponent(item)}
+                  {props.config.summaryComponent(item, props.connectedProps)}
                 </ExpansionPanelDetails>
               </Delayed>
               

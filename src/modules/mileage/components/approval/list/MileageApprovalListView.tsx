@@ -101,10 +101,10 @@ const config: CollectionConfig<IMileageRequest, AllProps> = {
   },
   onBind: (item: IMileageRequest, index: number, props: AllProps) => ({
     key: index,
-    primary: props.intl.formatDate(new Date(item.year, item.month - 1), GlobalFormat.MonthYear),
-    secondary: item.employee && item.employee.fullName || item.employeeUid,
-    tertiary: props.intl.formatNumber(item.amount),
-    quaternary: item.uid,
+    primary: item.uid,
+    secondary: props.intl.formatDate(new Date(item.year, item.month - 1), GlobalFormat.MonthYear),
+    tertiary: item.employee && item.employee.fullName || item.employeeUid,
+    quaternary: props.intl.formatNumber(item.amount),
     quinary: item.status && item.status.value || item.statusType,
     senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
   }),

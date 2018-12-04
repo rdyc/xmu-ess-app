@@ -102,6 +102,14 @@ const lifecycles: ReactLifeCycleFunctions<SelectSystemProps, OwnProps> = {
           commonDispatch.transportationListRequest(request);
           break;
 
+        case 'limiter':
+          commonDispatch.limiterListRequest(request);
+          break;
+          
+        case 'unit':
+          commonDispatch.unitListRequest(request);
+          break;
+
         default:
           break;
       }
@@ -131,6 +139,8 @@ const fnGetContext = (props: SelectSystemProps) => {
     case 'destination': return props.commonDestinationListState;
     case 'purpose': return props.commonPurposeListState;
     case 'transportation': return props.commonTransportationListState;
+    case 'limiter': return props.commonLimiterListState;
+    case 'unit': return props.commonUnitListState;
   
     default: return props.commonActivityListState;
   }

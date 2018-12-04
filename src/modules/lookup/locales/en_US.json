@@ -1,26 +1,189 @@
 {
+  "lookup.confirm.modify.title": "Modify Confirmation",
+  "lookup.confirm.modify.description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "lookup.confirm.delete.title": "Delete Confirmation",
+  "lookup.confirm.delete.description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+
   "lookup.mileageException.page.list.title": "Mileage Exception",
   "lookup.mileageException.page.list.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras mollis eros sit amet rhoncus fermentum",
-
   "lookup.mileageException.page.detail.title": "Mileage Exception Detail",
   "lookup.mileageException.page.detail.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras mollis eros sit amet rhoncus fermentum",
+  "lookup.mileageException.page.new.title": "Create Mileage Exception",
+  "lookup.mileageException.page.new.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras mollis eros sit amet rhoncus fermentum",
+  "lookup.mileageException.page.modify.title": "Modify Mileage Exception",
+  "lookup.mileageException.page.modify.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras mollis eros sit amet rhoncus fermentum",
+
+  "lookup.mileageException.message.emptyProps": "Some props are empty",
+  "lookup.mileageException.message.create.success": "New Mileage Exception has been created",
+  "lookup.mileageException.message.create.failure": "Unable to process your submission",
+  "lookup.mileageException.message.update.success": "Current site has been updated",
+  "lookup.mileageException.message.update.failure": "Unable to process your submission",
+  "lookup.mileageException.message.delete.success": "Current {uid} has been deleted",
+  "lookup.mileageException.message.delete.failure": "Unable to process your submission",
 
   "lookup.mileageException.field.info.title": "Detail Mileage Exception",
   "lookup.mileageException.field.info.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras mollis eros sit amet rhoncus fermentum",
 
   "lookup.mileageException.field.id": "Mileage Exception ID",
+  "lookup.mileageException.field.id.placeholder": "Mileage Exception ID",
+  
   "lookup.mileageException.field.role": "Role Name",
-  "lookup.mileageException.field.company": "Company Name",
-  "lookup.mileageException.field.site": "Site Project",
-  "lookup.mileageException.field.reason": "Reason",
-  "lookup.mileageException.field.percentage": "Percentage",
-  "lookup.mileageException.field.description": "Description",
-  "lookup.mileageException.field.projectUid": "Project ID",
-  "lookup.mileageException.field.inactiveDate": "Date Inactive",  
-  "lookup.mileageException.field.project.name": "Project Name",
-  "lookup.mileageException.field.project.site": "Project Site Name",
+  "lookup.mileageException.field.role.required": "Role Name is required",
+  "lookup.mileageException.field.role.placeholder": "Role Name",
 
+  "lookup.mileageException.field.company": "Company Name",
+  "lookup.mileageException.field.company.placeholder": "Company Name",
+
+  "lookup.mileageException.field.site": "Site Type",
+  "lookup.mileageException.field.site.placeholder": "Site Type",
+
+  "lookup.mileageException.field.reason": "Reason",
+  "lookup.mileageException.field.reason.placeholder": "Reason",
+
+  "lookup.mileageException.field.percentage": "Percentage",
+  "lookup.mileageException.field.percentage.required": "Percentage is required",
+  "lookup.mileageException.field.percentage.placeholder": "Percentage",
+
+  "lookup.mileageException.field.description": "Description",
+  "lookup.mileageException.field.description.placeholder": "Description",
+  
+  "lookup.mileageException.field.inactiveDate": "Date Inactive",  
+  "lookup.mileageException.field.inactiveDate.placeholder": "Date Inactive",  
+
+  "lookup.mileageException.field.project.name": "Project Name",
+  "lookup.mileageException.field.project.name.placeholder": "Project Name",
+  
+  "lookup.mileageException.field.project.site": "Project Site Name",
+  "lookup.mileageException.field.project.site.placeholder": "Project Site Name",
+
+  "lookup.mileageException.section.info.title": "Mileage Exception",
+  "lookup.mileageException.section.info.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras mollis eros sit amet rhoncus fermentum",
+
+  "lookup.systemLimit.page.list.title": "System Limit",
+  "lookup.systemLimit.page.list.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras mollis eros sit amet rhoncus fermentum",
+  "lookup.systemLimit.page.detail.title": "System Limit Detail",
+  "lookup.systemLimit.page.detail.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras mollis eros sit amet rhoncus fermentum",
+  "lookup.systemLimit.page.new.title": "Create System Limit",
+  "lookup.systemLimit.page.new.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras mollis eros sit amet rhoncus fermentum",
+  "lookup.systemLimit.page.modify.title": "Modify System Limit",
+  "lookup.systemLimit.page.modify.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras mollis eros sit amet rhoncus fermentum",
+
+  "lookup.systemLimit.message.emptyProps": "Some props are empty",
+  "lookup.systemLimit.message.create.success": "New System Limit has been created",
+  "lookup.systemLimit.message.create.failure": "Unable to process your submission",
+  "lookup.systemLimit.message.update.success": "Current {uid} has been updated",
+  "lookup.systemLimit.message.update.failure": "Unable to process your submission",
+  "lookup.systemLimit.message.delete.success": "Current {uid} has been deleted",
+  "lookup.systemLimit.message.delete.failure": "Unable to process your submission",
+
+  "lookup.systemLimit.field.uid": "System Limit ID",
+  "lookup.systemLimit.field.uid.placeholder": "System Limit ID",
+  
+  "lookup.systemLimit.field.company": "Company Name",
+  "lookup.systemLimit.field.company.placeholder": "Company Name",
+
+  "lookup.systemLimit.field.category": "Category",
+  "lookup.systemLimit.field.category.required": "Category is required",
+  "lookup.systemLimit.field.category.placeholder": "Category",
+  
+  "lookup.systemLimit.field.days": "Limit Value",
+  "lookup.systemLimit.field.days.required": "Limit value is required",
+  "lookup.systemLimit.field.days.placeholder": "Limit Value",
+
+  "lookup.systemLimit.field.info.title": "Detail System Limit Information",
+  "lookup.systemLimit.field.info.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras mollis eros sit amet rhoncus fermentum",
+
+  "lookup.systemLimit.field.filter.company": "Company",
+  "lookup.systemLimit.field.filter.company.placeholder": "Company",
+  "lookup.systemLimit.field.filter.category": "Category",
+  "lookup.systemLimit.field.filter.category.placeholder": "Category",
+
+  "lookup.systemLimit.section.info.title": "System Limit",
+  "lookup.systemLimit.section.info.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras mollis eros sit amet rhoncus fermentum",
+  
   "lookup.mileageException.confirm.modify.title": "Modify Confirmation",
-  "lookup.mileageException.confirm.modify.description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+  "lookup.mileageException.confirm.modify.description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+
+  "lookup.company.page.list.title": "Company",
+  "lookup.company.page.list.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras mollis eros sit amet rhoncus fermentum",
+
+  "lookup.company.page.detail.title": "Company Detail",
+  "lookup.company.page.detail.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras mollis eros sit amet rhoncus fermentum",
+  "lookup.company.page.modify.title": "Modify Company",
+  "lookup.company.page.modify.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras mollis eros sit amet rhoncus fermentum",
+  "lookup.company.page.new.title": "New Company",
+  "lookup.company.page.new.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras mollis eros sit amet rhoncus fermentum",
+
+  "lookup.company.section.info.title": "Company",
+  "lookup.company.section.info.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras mollis eros sit amet rhoncus fermentum",
+
+  "lookup.company.field.uid": "Company ID",
+  "lookup.company.field.uid.placeholder": "Company ID",
+  "lookup.company.field.code": "Company Code",
+  "lookup.company.field.code.placeholder": "Type a company code",
+  "lookup.company.field.code.required": "Company code is required",
+  "lookup.company.field.name": "Company Name",
+  "lookup.company.field.name.placeholder": "Type a company name",
+  "lookup.company.field.name.required": "Company name is required",
+
+  "lookup.company.confirm.modify.title": "Modify Confirmation",
+  "lookup.company.confirm.modify.description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+
+  "lookup.company.message.emptyProps": "Some props are empty",
+  "lookup.company.message.create.success": "A new Company ID {uid} has been created",
+  "lookup.company.message.create.failure": "Unable to process your submission",
+  "lookup.company.message.update.success": "Existing Company ID {uid} has been updated",
+  "lookup.company.message.update.failure": "Unable to process your submission",
+  
+  "lookup.currency.page.list.title": "Currency",
+  "lookup.currency.page.list.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras mollis eros sit amet rhoncus fermentum",
+
+  "lookup.currency.page.detail.title": "Currency Detail",
+  "lookup.currency.page.detail.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras mollis eros sit amet rhoncus fermentum",
+
+  "lookup.currency.form.newTitle": "New Currency",
+  "lookup.currency.form.newSubTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras mollis eros sit amet rhoncus fermentum",
+
+  "lookup.currency.form.editTitle": "Edit Currency",
+  "lookup.currency.form.editSubTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras mollis eros sit amet rhoncus fermentum",
+
+  "lookup.currency.section.info.title": "Currency Information",
+  "lookup.currency.section.info.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras mollis eros sit amet rhoncus fermentum",
+
+  "lookup.currency.field.uid": "Currency ID",
+  "lookup.currency.field.name": "Currency Name",
+  "lookup.currency.field.name.required": "Currency name required",
+  "lookup.currency.field.name.placeholder": "Type any name",
+  "lookup.currency.field.ymbol": "Symbol",
+  "lookup.currency.field.symbol.required": "Symbol required",
+  "lookup.currency.field.symbol.placeholder": "Type any symbol",
+  "lookup.currency.field.rate": "Currency Rate (IDR)",
+  "lookup.currency.field.rate.required": "Rate needed",
+  "lookup.currency.field.rate.placeholder": "Write any number",
+  "lookup.currency.field.status": "Is Active?",
+  "lookup.currency.field.isActive": "Currently Active",
+  "lookup.currency.field.isActive.required": "Status need to be ticked",
+  "lookup.currency.field.isActive.placeholder": "Check or uncheck",
+  "lookup.currency.field.isNotActive": "Inactive",
+  "lookup.currency.field.createdBy": "Created By",
+  "lookup.currency.field.modifiedBy": "Modified by",
+  "lookup.currency.field.createdDate": "Created at",
+  "lookup.currency.field.modifiedDate": "Modified at",
+
+  "lookup.currency.confirm.modify.title": "Modify Confirmation",
+  "lookup.currency.confirm.modify.description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+
+  "lookup.currency.confirm.delete.title": "Delete Confirmation",
+  "lookup.currency.confirm.delete.description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+
+  "lookup.currency.message.create.success": "New currency has been created",
+  "lookup.currency.message.create.failure": "Submission failed",
+  "lookup.currency.message.update.success": "Currency has been updated",
+  "lookup.currency.message.update.failure": "Update submission failed",
+  "lookup.currency.message.delete.success": "This currency has been deleted from system",
+  "lookup.currency.message.delete.failure": "Delete confirmation failed",
+  "lookup.currency.message.empty.currencyUid": "Currency ID not found"
+
+
 
 }

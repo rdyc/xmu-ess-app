@@ -14,18 +14,12 @@ import { Field } from 'redux-form';
 
 export const PurchaseSettlementItemFormView: React.SFC<PurchaseSettlementItemFormProps> = props => {
   const { context } = props;
-
-  // const onActualChange = (field: string, value: number) => {
-
-  // };
-
+  
   const render = (
       <Grid container spacing={16}>
         {
           context.fields.map((field, index) => {
             const items = context.fields.get(index);
-            // const diff = items.request - items.actual;
-            // items.variance = diff;
            
             return (
           <Grid key={index} item xs={12} md={4}>
@@ -35,13 +29,6 @@ export const PurchaseSettlementItemFormView: React.SFC<PurchaseSettlementItemFor
               />
               <CardContent>
                 <div>
-                  {/* <Field
-                    type="text"
-                    name={`${field}.uid`}
-                    label={props.intl.formatMessage(purchaseMessage.settlement.items.uid)}
-                    disabled
-                    component={InputText}
-                  /> */}
                   <Field
                     type="text"
                     name={`${field}.description`}
@@ -63,16 +50,14 @@ export const PurchaseSettlementItemFormView: React.SFC<PurchaseSettlementItemFor
                     label={props.intl.formatMessage(purchaseMessage.settlement.items.actual)}
                     required={true}
                     component={InputNumber}
-                    // onChange={(event: any) => onActualChange(`${field}.variance`, items.request - items.actual)} 
                   />
                   <TextField
                     type="number"
                     name={`${field}.variance`}
                     label={props.intl.formatMessage(purchaseMessage.settlement.items.variance)}
                     disabled={true}
-                    value={items.request - items.actual}
+                    value={`${props.intl.formatNumber(items.request - items.actual)}`}
                     fullWidth
-                    // component={InputNumber}
                   />
                 </div>
               </CardContent>
