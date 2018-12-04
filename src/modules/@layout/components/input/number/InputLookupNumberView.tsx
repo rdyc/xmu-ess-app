@@ -1,5 +1,5 @@
 import { TextField } from '@material-ui/core';
-import { InputComponentProps } from '@material-ui/core/Input';
+import { InputBaseComponentProps } from '@material-ui/core/InputBase';
 import * as React from 'react';
 import NumberFormat, { NumberFormatValues } from 'react-number-format';
 import { isNullOrUndefined, isUndefined } from 'util';
@@ -10,7 +10,7 @@ export const InputLookupNumberView: React.SFC<InputLookupNumberProps> = props =>
   
   let _value: number;
 
-  const InputLookupNumberComponent = (compProps: InputComponentProps) => (
+  const InputLookupNumberComponent = (compProps: InputBaseComponentProps) => (
     <NumberFormat 
       value={input.value} 
       disabled={disabled}

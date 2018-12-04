@@ -70,7 +70,9 @@ export const leaveFieldHelperFor = (field: string, type: 'fieldName' | 'fieldReq
     switch (field) {
       case 'uid': return leaveField.uid;
       case 'companyUid': return leaveField.company;
+      case 'company': return leaveField.company;
       case 'categoryType': return leaveField.category;
+      case 'category': return leaveField.category;
       case 'name': return leaveField.name;
       case 'description': return leaveField.description;
       case 'year': return leaveField.year;
@@ -84,7 +86,9 @@ export const leaveFieldHelperFor = (field: string, type: 'fieldName' | 'fieldReq
   if (type === 'fieldRequired') {
     switch (field) {
       case 'companyUid': return leaveField.companyRequired;
+      case 'company': return leaveField.companyRequired;
       case 'categoryType': return leaveField.categoryRequired;
+      case 'category': return leaveField.categoryRequired;
       case 'name': return leaveField.nameRequired;
       case 'description': return leaveField.descriptionRequired;
       case 'year': return leaveField.yearRequired;
@@ -98,7 +102,9 @@ export const leaveFieldHelperFor = (field: string, type: 'fieldName' | 'fieldReq
     switch (field) {
       case 'uid': return leaveField.uidPlaceholder;
       case 'companyUid': return leaveField.companyPlaceholder;
+      case 'company': return leaveField.companyPlaceholder;
       case 'categoryType': return leaveField.categoryPlaceholder;
+      case 'category': return leaveField.categoryPlaceholder;
       case 'name': return leaveField.namePlaceholder;
       case 'description': return leaveField.descriptionPlaceholder;
       case 'year': return leaveField.yearPlaceholder;

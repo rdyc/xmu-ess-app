@@ -54,6 +54,7 @@ export const holidayFieldHelperFor = (field: string, type: 'fieldName' | 'fieldR
     switch (field) {
       case 'uid': return holidayField.uid;
       case 'companyUid': return holidayField.company;
+      case 'company' : return holidayField.company;
       case 'description': return holidayField.description;
       case 'date': return holidayField.date;
           
@@ -64,6 +65,7 @@ export const holidayFieldHelperFor = (field: string, type: 'fieldName' | 'fieldR
   if (type === 'fieldRequired') {
     switch (field) {
       case 'companyUid': return holidayField.companyRequired;
+      case 'company' : return holidayField.companyRequired;
       case 'description': return holidayField.descriptionRequired;
       case 'date': return holidayField.dateRequired;
 
@@ -75,6 +77,7 @@ export const holidayFieldHelperFor = (field: string, type: 'fieldName' | 'fieldR
     switch (field) {
       case 'uid': return holidayField.uidPlaceholder;
       case 'companyUid': return holidayField.companyPlaceholder;
+      case 'company' : return holidayField.companyPlaceholder;
       case 'description': return holidayField.descriptionPlaceholder;
       case 'date': return holidayField.datePlaceholder;
       
