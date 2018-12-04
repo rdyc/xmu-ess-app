@@ -9,7 +9,7 @@ import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
 import { Button } from '@material-ui/core';
-import { isRequestEditable } from '@organization/helper/isRequestEditable';
+import { isModuleRequestEditable } from '@organization/helper/isModuleRequestEditable';
 import { ITravelRequest } from '@travel/classes/response';
 import { TravelRequestField, TravelUserAction } from '@travel/classes/types';
 import { travelFieldTranslator } from '@travel/helper/travelFieldTranslator';
@@ -130,7 +130,7 @@ const config: CollectionConfig<ITravelRequest, AllProps> = {
   actionComponent: (item: ITravelRequest, callback: CollectionHandler) => (
     <React.Fragment>
       {
-        isRequestEditable(item.statusType) &&
+        isModuleRequestEditable(item.statusType) &&
         <Button 
           size="small"
           onClick={() => callback.handleRedirectTo(`/travel/requests/form`, { uid: item.uid })}
