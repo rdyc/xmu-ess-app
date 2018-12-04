@@ -53,6 +53,10 @@ export const lookupDiemField = defineMessages({
   value: { id: `${prefix}.field.value`},
   valueRequired: { id: `${prefix}.field.value.required`},
   valuePlaceholder: { id: `${prefix}.field.value.placeholder`},
+  filterCompany: { id: `${prefix}.field.filter.company`},
+  filterCompanyPlaceholder: { id: `${prefix}.field.filter.company.placeholder`},
+  filterDestination: { id: `${prefix}.field.filter.destination`},
+  filterDestinationplaceholder: { id: `${prefix}.field.filter.destination.placeholder`},
   
   infoTitle: { id: `${prefix}.field.info.title`},
   infoSubHeader: { id: `${prefix}.field.info.subHeader`},

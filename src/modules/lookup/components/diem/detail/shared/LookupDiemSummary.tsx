@@ -39,7 +39,7 @@ const summaryView: React.SFC<AllProps> = props => (
       />
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
-        label={props.intl.formatMessage(lookupMessage.lookupDiem.field.travel)}
+        label={props.intl.formatMessage(lookupMessage.lookupDiem.field.destination)}
         value={props.data.destination ? props.data.destination.value : 'N/A'}
       />
     </Grid>

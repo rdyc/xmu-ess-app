@@ -221,6 +221,12 @@
   "lookup.diem.field.value.placeholder": "Type the value",
   "lookup.diem.field.value.required": "Value is required",
 
+  "lookup.diem.field.filter.company": "Company",
+  "lookup.diem.field.filter.company.placeholder": "Company",
+  "lookup.diem.field.filter.destination": "Travel Type",
+  "lookup.diem.field.filter.destination.placeholder": "Travel Type",
+
+
   "lookup.diem.message.emptyProps": "Some props are empty",
   "lookup.diem.message.create.success": "A new Diem ID {uid} has been created",
   "lookup.diem.message.create.failure": "Unable to process your submission",

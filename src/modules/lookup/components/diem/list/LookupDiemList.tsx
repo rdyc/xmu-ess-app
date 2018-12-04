@@ -7,20 +7,22 @@ import { IDiem } from '@lookup/classes/response';
 import { LookupDiemField } from '@lookup/classes/types/diem/DiemField';
 import { DiemUserAction } from '@lookup/classes/types/diem/DiemUserAction';
 import { WithLookupDiem, withLookupDiem } from '@lookup/hoc/withLookupDiem';
+import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
 import { Button } from '@material-ui/core';
 import * as moment from 'moment';
 import * as React from 'react';
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose } from 'redux';
 import { LookupDiemSummary } from '../detail/shared/LookupDiemSummary';
+import { LookupDiemFilter } from './LookupDiemFilter';
 
 const config: CollectionConfig<IDiem, AllProps> = {
   // page
   page: (props: AllProps) => ({
     uid: AppMenu.LookupDiem,
     parentUid: AppMenu.Lookup,
-    title: 'Diem Value',
-    description: 'description',
+    title: props.intl.formatMessage(lookupMessage.lookupDiem.page.listTitle),
+    description: props.intl.formatMessage(lookupMessage.lookupDiem.page.listSubHeader),
   }),
 
   // top bar
@@ -116,6 +118,11 @@ const config: CollectionConfig<IDiem, AllProps> = {
     senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
   }),
 
+  // filter
+  filterComponent: (callback: CollectionHandler) => (
+    <LookupDiemFilter handleFind={callback.handleFilter}/>
+  ),
+
   // summary component
   summaryComponent: (item: IDiem) => (
     <LookupDiemSummary data={item} />
@@ -129,7 +136,7 @@ const config: CollectionConfig<IDiem, AllProps> = {
           size="small"
           onClick={() => alert(item.uid)}
         >
-          <FormattedMessage {...layoutMessage.action.discard} />
+          <FormattedMessage {...layoutMessage.action.delete} />
         </Button>
       }
 
