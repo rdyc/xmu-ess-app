@@ -10,6 +10,10 @@ const initialState: ILayoutState = {
       primary: indigo,
       secondary: orange,
       type: 'light'
+    },
+    typography: {
+      fontSize: 14,
+      useNextVariants: true,
     }
   },
   anchor: 'left',
@@ -52,7 +56,7 @@ const reducer: Reducer<ILayoutState> = (state = initialState, action) => {
     case Action.THEME_CHANGE: return { ...state, theme: {
       palette: {
         ...state.theme.palette,
-        type: state.theme.palette.type === 'light' ? 'dark' : 'light'}
+        type: state.theme.palette ? state.theme.palette.type === 'light' ? 'dark' : 'light' : undefined}
       }
     };
 

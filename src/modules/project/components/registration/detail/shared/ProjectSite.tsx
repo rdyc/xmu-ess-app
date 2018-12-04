@@ -48,7 +48,7 @@ const projectSite: React.SFC<AllProps> = props => (
                 <Grid item xs={5}>
                   <Typography 
                     noWrap 
-                    variant="display1" 
+                    variant="h4" 
                     align="right"
                   >
                     <FormattedNumber 

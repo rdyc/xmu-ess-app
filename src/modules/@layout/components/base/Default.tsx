@@ -82,7 +82,7 @@ const root: React.SFC<AllProps> = props => {
       <CssBaseline />
       <AppBar position="static" color="secondary" className={classes.appBar}>
         <Toolbar>
-          <Typography variant="title" color="inherit" noWrap>
+          <Typography variant="h4" color="inherit" noWrap>
             All New Tessa
           </Typography>
         </Toolbar>
@@ -91,7 +91,7 @@ const root: React.SFC<AllProps> = props => {
         {/* Hero unit */}
         <div className={classes.heroUnit}>
           <div className={classes.heroContent}>
-            <Typography component="h1" variant="title" align="center" color="textPrimary" gutterBottom>
+            <Typography component="h1" variant="h4" align="center" color="textPrimary" gutterBottom>
               Welcome to new TESSA
             </Typography>
             <Typography variant="subheading" align="center" color="textSecondary" paragraph>
@@ -136,7 +136,7 @@ const root: React.SFC<AllProps> = props => {
       </main>
       {/* Footer */}
       <footer className={classes.footer}>
-        <Typography variant="body1" align="center" gutterBottom>
+        <Typography variant="body2" align="center" gutterBottom>
           All New Tessa
         </Typography>
         <Typography variant="body2" align="center" color="textSecondary" component="p">

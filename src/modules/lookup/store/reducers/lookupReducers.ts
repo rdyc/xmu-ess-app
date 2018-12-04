@@ -2,28 +2,35 @@ import {
   // currencyGetAllReducer,
   // currencyGetByIdReducer,
   // currencyGetListReducer,
-  diemGetAllReducer,
-  diemGetByIdReducer,
-  diemGetListReducer,
-  holidayGetAllReducer,
-  holidayGetByIdReducer,
-  holidayGetListReducer,
-  leaveGetAllReducer,
-  leaveGetByIdReducer,
-  leaveGetListReducer,
-  leavePutReducer,
+  lookupHolidayGetAllReducer,
+  lookupHolidayGetByIdReducer,
+  lookupHolidayGetListReducer,
+  lookupLeaveDeleteReducer,
+  lookupLeaveGetAllReducer,
+  lookupLeaveGetByIdReducer,
+  lookupLeaveGetListReducer,
+  lookupLeavePostReducer,
+  lookupLeavePutReducer,
   menuGetAllReducer,
   menuGetByIdReducer,
   menuGetListReducer,
   positionGetAllReducer,
   positionGetByIdReducer,
   positionGetListReducer,
+  systemLimitGetAllReducer,
+  systemLimitGetByIdReducer,
+  systemLimitGetListReducer,
 } from '@lookup/store/reducers';
 
 import { lookupCompanyReducers } from './company';
 import { lookupCurrencyReducers } from './currency';
 import { lookupCustomerReducers } from './customer';
-import { leaveReducers } from './leave';
+import { lookupDiemReducers } from './diem';
+import { lookupHolidayDeleteReducer } from './holiday/lookupHolidayDeleteReducer';
+import { lookupHolidayPostReducer } from './holiday/lookupHolidayPostReducer';
+import { lookupHolidayPutReducer } from './holiday/lookupHolidayPutReducer';
+import { lookupHolidayReducers } from './holiday/lookupHolidayReducers';
+import { lookupLeaveReducers } from './leave/lookupLeaveReducers';
 import { mileageExceptionReducers } from './mileageException/mileageExceptionReducers';
 import { lookupRoleReducers } from './role';
 import { systemLimitReducers } from './systemLimit';
@@ -32,15 +39,12 @@ const lookupReducers = {
   ...lookupCustomerReducers,
   ...lookupCompanyReducers,
   ...lookupRoleReducers,
-  ...leaveReducers,
+  ...lookupLeaveReducers,
+  ...lookupHolidayReducers,
   ...mileageExceptionReducers,
   ...systemLimitReducers,
-  
+  ...lookupDiemReducers,
   ...lookupCurrencyReducers,
-
-  diemGetAll: diemGetAllReducer,
-  diemGetList: diemGetListReducer,
-  diemGetById: diemGetByIdReducer,
 
   menuGetAll: menuGetAllReducer,
   menuGetById: menuGetByIdReducer,
@@ -54,14 +58,23 @@ const lookupReducers = {
   // currencyGetList: currencyGetListReducer,
   // currencyGetById: currencyGetByIdReducer,
 
-  holidayGetAll: holidayGetAllReducer,
-  holidayGetList: holidayGetListReducer,
-  holidayGetById: holidayGetByIdReducer,
+  systemLimitGetAll: systemLimitGetAllReducer,
+  systemLimitGetList: systemLimitGetListReducer,
+  systemLimitGetById: systemLimitGetByIdReducer,
 
-  leaveGetAll: leaveGetAllReducer,
-  leaveGetList: leaveGetListReducer,
-  leaveGetById: leaveGetByIdReducer,
-  leavePut: leavePutReducer
+  lookupHolidayGetAll: lookupHolidayGetAllReducer,
+  lookupHolidayGetList: lookupHolidayGetListReducer,
+  lookupHolidayGetById: lookupHolidayGetByIdReducer,
+  lookupHolidayPost: lookupHolidayPostReducer,
+  lookupHolidayPut: lookupHolidayPutReducer,
+  lookupHolidayDelete: lookupHolidayDeleteReducer,
+
+  lookupLeaveGetAll: lookupLeaveGetAllReducer,
+  lookupLeaveGetList: lookupLeaveGetListReducer,
+  lookupLeaveGetById: lookupLeaveGetByIdReducer,
+  lookupLeavePost: lookupLeavePostReducer,
+  lookupLeavePut: lookupLeavePutReducer,
+  lookupLeaveDelete: lookupLeaveDeleteReducer,
 };
 
 export default lookupReducers;

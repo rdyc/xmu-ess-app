@@ -7,7 +7,7 @@ import {
   ILeaveRequestPostPayload,
   ILeaveRequestPutPayload,
 } from '@leave/classes/request/';
-import { ILeaveRequest } from '@leave/classes/response';
+import { ILeave } from '@leave/classes/response';
 import {
   LeaveRequestFormData,
 } from '@leave/components/request/editor/forms/LeaveRequestForm';
@@ -132,7 +132,7 @@ const handlerCreators: HandleCreators<RequestEditorProps, OwnHandlers> = {
 
     return null;
   },
-  handleSubmitSuccess: (props: RequestEditorProps) => (response: ILeaveRequest) => {
+  handleSubmitSuccess: (props: RequestEditorProps) => (response: ILeave) => {
     const { formMode, intl, history } = props;
     const { alertAdd } = props.layoutDispatch;
     
