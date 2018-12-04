@@ -119,8 +119,8 @@ const config: CollectionConfig<ISystem, AllProps> = {
     primary: item.type,
     secondary: item.name,
     tertiary: item.description && item.description || 'N/A',
-    quaternary: (item.company && item.company.name) || (item.parent && item.parent.value) || 'N/A',
-    quinary: item.isActive ? 'Active' : 'Inactive',
+    quaternary: item.isActive ? 'Active' : 'Inactive',
+    quinary: item.changes && item.changes.updated && item.changes.updated.fullName || item.changes.created && item.changes.created.fullName || '?',
     senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
   }),
 
