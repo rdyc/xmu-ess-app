@@ -18,7 +18,7 @@ export const navigationMenu: React.SFC<NavigationMenuProps> = props => (
           primary={props.userState.user.company.name}
           secondary={props.userState.user.position.name}
           primaryTypographyProps={{
-            variant: 'body1',
+            variant: 'body2',
             color: 'inherit'
           }}
           secondaryTypographyProps={{
@@ -28,7 +28,7 @@ export const navigationMenu: React.SFC<NavigationMenuProps> = props => (
       </ListItem>
     }
 
-    <Divider />
+    <Divider light />
     
     <ListItem 
       button
@@ -37,7 +37,7 @@ export const navigationMenu: React.SFC<NavigationMenuProps> = props => (
       <ListItemText 
         primary="Home" 
         primaryTypographyProps={{
-          variant: 'body1',
+          variant: 'body2',
           color: 'inherit'
         }}
       />
@@ -50,6 +50,7 @@ export const navigationMenu: React.SFC<NavigationMenuProps> = props => (
       <ListItem
         button
         color={'inherit'}
+        selected={props.childUid === AppMenu.Dashboard}
         onClick={() => props.handleOnClickMenuItem(AppMenu.Home, AppMenu.Dashboard)}
       >
         <ListItemText 
@@ -57,7 +58,7 @@ export const navigationMenu: React.SFC<NavigationMenuProps> = props => (
           primary={'Dashboard'}
           primaryTypographyProps={{
             noWrap: true,
-            variant: props.childUid === AppMenu.Dashboard ? 'body2' : 'body1',
+            variant: 'body2',
             color: 'inherit'
           }}
         />
@@ -78,7 +79,7 @@ export const navigationMenu: React.SFC<NavigationMenuProps> = props => (
               primary={header.name}
               primaryTypographyProps={{
                 noWrap: true,
-                variant: 'body1',
+                variant: 'body2',
                 color: 'inherit'
               }}
             />
@@ -95,6 +96,7 @@ export const navigationMenu: React.SFC<NavigationMenuProps> = props => (
                   key={child.uid}
                   button
                   color={'inherit'}
+                  selected={props.childUid === child.uid}
                   onClick={() => props.handleOnClickMenuItem(header.uid, child.uid)}
                 >
                   <ListItemText 
@@ -102,40 +104,18 @@ export const navigationMenu: React.SFC<NavigationMenuProps> = props => (
                     primary={child.name}
                     primaryTypographyProps={{
                       noWrap: true,
-                      variant: props.childUid === child.uid ? 'body2' : 'body1',
+                      variant: 'body2',
                       color: 'inherit'
                     }}
                   />
                 </ListItem>
               )
             }
-            {/* <MenuList color="inherit">          
-              {
-                header.childs &&
-                header.childs.map(child =>
-                  <MenuItem 
-                    color=""
-                    key={child.uid} 
-                    selected={props.childUid === child.uid}
-                    onClick={() => props.handleOnClickMenuItem(header.uid, child.uid)}
-                  >
-                    <Typography
-                      className={props.classes.marginFarLeft}
-                      noWrap={true}
-                      variant={'body1'} 
-                      color={'textPrimary'}
-                    >
-                      {child.name}
-                    </Typography>
-                  </MenuItem>
-                )
-              }
-            </MenuList> */}
           </Collapse>
         </div>
       ))
     }
 
-    <Divider />
+    <Divider light />
   </List>
 );

@@ -16,7 +16,7 @@ export const DataContainerView: React.SFC<DataContainerProps> = props => (
     <Toolbar>
       <Typography
         noWrap
-        variant="body1"
+        variant="body2"
         className={props.className}
       >
         {
@@ -109,7 +109,7 @@ export const DataContainerView: React.SFC<DataContainerProps> = props => (
 
         <Typography
           noWrap
-          variant="body1"
+          variant="body2"
           align="center"
           className={props.className}
         >

@@ -3,7 +3,7 @@ import {
   ChevronLeft,
   ChevronRight,
 } from '@material-ui/icons';
-import DatePicker from 'material-ui-pickers/DatePicker';
+import { DatePicker } from 'material-ui-pickers';
 import { Moment } from 'moment';
 import * as React from 'react';
 import { InjectedIntlProps, injectIntl } from 'react-intl';

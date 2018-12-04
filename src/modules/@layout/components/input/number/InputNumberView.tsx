@@ -1,5 +1,5 @@
 import { TextField } from '@material-ui/core';
-import { InputComponentProps } from '@material-ui/core/Input';
+import { InputBaseComponentProps } from '@material-ui/core/InputBase';
 import * as React from 'react';
 import NumberFormat, { NumberFormatValues } from 'react-number-format';
 import { isNullOrUndefined, isUndefined } from 'util';
@@ -11,7 +11,7 @@ export const InputNumberView: React.SFC<InputNumberProps> = props => {
   
   let _value: number;
 
-  const inputNumberComponent = (compProps: InputComponentProps) => (
+  const inputNumberComponent = (compProps: InputBaseComponentProps) => (
     <NumberFormat 
       value={input.value} 
       disabled={disabled}
