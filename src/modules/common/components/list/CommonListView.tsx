@@ -114,12 +114,12 @@ const config: CollectionConfig<ISystem, AllProps> = {
     callback.handleLoading(isLoading);
     callback.handleResponse(response);
   },
-  onBind: (item: ISystem, index: number) => ({
+  onBind: (item: ISystem, index: number, props: AllProps) => ({
     key: item.id,
     primary: item.type,
     secondary: item.name,
     tertiary: item.description && item.description || 'N/A',
-    quaternary: item.isActive ? 'Active' : 'Inactive',
+    quaternary: item.isActive ? props.intl.formatMessage(layoutMessage.text.active) : props.intl.formatMessage(layoutMessage.text.inactive),
     quinary: item.changes && item.changes.updated && item.changes.updated.fullName || item.changes.created && item.changes.created.fullName || '?',
     senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
   }),
