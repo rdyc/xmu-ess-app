@@ -126,7 +126,7 @@ const handlerCreators: HandleCreators<CurrencyDetailProps, OwnHandler> = {
           break;
         
         case CurrencyUserAction.Delete:
-          next = `lookup/currency/${currencyUid}`;
+          next = `lookup/currency`;
           break;
           
         default:

@@ -3,7 +3,7 @@ import { CollectionConfig, CollectionDataProps, CollectionHandler, CollectionPag
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
-import { ILeaveRequest } from '@leave/classes/response';
+import { ILeave } from '@leave/classes/response';
 import { LeaveRequestField, LeaveRequestUserAction } from '@leave/classes/types';
 import { LeaveSummary } from '@leave/components/request/detail/shared/LeaveSummary';
 import { leaveRequestFieldTranslator } from '@leave/helper';
@@ -15,7 +15,7 @@ import * as React from 'react';
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose } from 'recompose';
 
-const config: CollectionConfig<ILeaveRequest, AllProps> = {
+const config: CollectionConfig<ILeave, AllProps> = {
   // page
   page: (props: AllProps) => ({
     uid: AppMenu.LeaveApproval,
@@ -95,7 +95,7 @@ const config: CollectionConfig<ILeaveRequest, AllProps> = {
     callback.handleLoading(isLoading);
     callback.handleResponse(response);
   },
-  onBind: (item: ILeaveRequest, index: number) => ({
+  onBind: (item: ILeave, index: number) => ({
     key: index,
     primary: item.uid,
     secondary: item.reason,
@@ -106,12 +106,12 @@ const config: CollectionConfig<ILeaveRequest, AllProps> = {
   }),
 
   // summary component
-  summaryComponent: (item: ILeaveRequest) => ( 
+  summaryComponent: (item: ILeave) => ( 
     <LeaveSummary data={item} />
   ),
 
   // action component
-  actionComponent: (item: ILeaveRequest, callback: CollectionHandler) => (
+  actionComponent: (item: ILeave, callback: CollectionHandler) => (
     <React.Fragment>
       <Button 
         size="small"

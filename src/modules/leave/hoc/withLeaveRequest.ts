@@ -5,7 +5,7 @@ import {
   ILeaveRequestPostRequest,
   ILeaveRequestPutRequest,
 } from '@leave/classes/queries/request/';
-import { ILeaveRequest, ILeaveRequestDetail } from '@leave/classes/response';
+import { ILeave, ILeaveDetail } from '@leave/classes/response';
 import {
   leaveRequestGetAllDispose,
   leaveRequestGetAllRequest,
@@ -21,8 +21,8 @@ import { Dispatch } from 'redux';
 
 interface PropsFromState {
   leaveRequestState: {
-    all: IQueryCollectionState<ILeaveRequestGetAllRequest, ILeaveRequest>;
-    detail: IQuerySingleState<ILeaveRequestGetByIdRequest, ILeaveRequestDetail>;
+    all: IQueryCollectionState<ILeaveRequestGetAllRequest, ILeave>;
+    detail: IQuerySingleState<ILeaveRequestGetByIdRequest, ILeaveDetail>;
   };
 }
 

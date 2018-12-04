@@ -7,7 +7,7 @@ import {
   ILookupCompanyPostRequest, 
   ILookupCompanyPutRequest 
 } from '@lookup/classes/queries/company';
-import { ICompany, ICompanyDetail, ICompanyList } from '@lookup/classes/response';
+import { ICompany, ICompanyDetail, ICompanyList } from '@lookup/classes/response/company';
 import { 
   lookupCompanyDeleteDispose, 
   lookupCompanyDeleteRequest, 

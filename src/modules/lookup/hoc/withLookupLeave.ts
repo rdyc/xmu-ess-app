@@ -1,70 +1,85 @@
 import { IAppState, IQueryCollectionState, IQuerySingleState } from '@generic/interfaces';
 import {
-  ILeaveGetAllRequest,
-  ILeaveGetDetailRequest,
-  ILeaveGetListRequest,
-  ILeavePutRequest
+  ILookupLeaveDeleteRequest,
+  ILookupLeaveGetAllRequest,
+  ILookupLeaveGetDetailRequest,
+  ILookupLeaveGetListRequest,
+  ILookupLeavePostRequest,
+  ILookupLeavePutRequest,
 } from '@lookup/classes/queries';
-import { ILeave, ILeaveDetail, ILeaveList } from '@lookup/classes/response';
+import { ILookupLeave, ILookupLeaveDetail, ILookupLeaveList } from '@lookup/classes/response';
 import {
-  leaveGetAllDispose,
-  leaveGetAllRequest,
-  leaveGetByIdDispose,
-  leaveGetByIdRequest,
-  leaveGetListDispose,
-  leaveGetListRequest,
-  leavePutDispose,
-  leavePutRequest,
+  lookupLeaveDeleteDispose,
+  lookupLeaveDeleteRequest,
+  lookupLeaveGetAllDispose,
+  lookupLeaveGetAllRequest,
+  lookupLeaveGetByIdDispose,
+  lookupLeaveGetByIdRequest,
+  lookupLeaveGetListDispose,
+  lookupLeaveGetListRequest,
+  lookupLeavePostDispose,
+  lookupLeavePostRequest,
+  lookupLeavePutDispose,
+  lookupLeavePutRequest,
 } from '@lookup/store/actions';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 
 interface PropsFromState {
   lookupLeaveState: {
-    all: IQueryCollectionState<ILeaveGetAllRequest, ILeave>;
-    list: IQueryCollectionState<ILeaveGetListRequest, ILeaveList>;
-    detail: IQuerySingleState<ILeaveGetDetailRequest, ILeaveDetail>;
+    all: IQueryCollectionState<ILookupLeaveGetAllRequest, ILookupLeave>;
+    list: IQueryCollectionState<ILookupLeaveGetListRequest, ILookupLeaveList>;
+    detail: IQuerySingleState<ILookupLeaveGetDetailRequest, ILookupLeaveDetail>;
   };
 }
 
 interface PropsFromDispatch {
   lookupLeaveDispatch: {
     // command
-    updateRequest: typeof leavePutRequest;
-    updateDispose: typeof leavePutDispose;
+    createRequest: typeof lookupLeavePostRequest;
+    createDispose: typeof lookupLeavePostDispose;
+    updateRequest: typeof lookupLeavePutRequest;
+    updateDispose: typeof lookupLeavePutDispose;
+    deleteRequest: typeof lookupLeaveDeleteRequest;
+    deleteDispose: typeof lookupLeaveDeleteDispose;
 
     // query
-    loadAllRequest: typeof leaveGetAllRequest;
-    loadAllDispose: typeof leaveGetAllDispose;
-    loadListRequest: typeof leaveGetListRequest;
-    loadListDispose: typeof leaveGetListDispose;
-    loadDetailRequest: typeof leaveGetByIdRequest;
-    loadDetailDispose: typeof leaveGetByIdDispose;
+    loadAllRequest: typeof lookupLeaveGetAllRequest;
+    loadAllDispose: typeof lookupLeaveGetAllDispose;
+    loadListRequest: typeof lookupLeaveGetListRequest;
+    loadListDispose: typeof lookupLeaveGetListDispose;
+    loadDetailRequest: typeof lookupLeaveGetByIdRequest;
+    loadDetailDispose: typeof lookupLeaveGetByIdDispose;
   };
 }
 
 export interface WithLookupLeave extends PropsFromState, PropsFromDispatch {}
 
-const mapStateToProps = ({ leaveGetAll, leaveGetList, leaveGetById }: IAppState) => ({
+const mapStateToProps = ({ lookupLeaveGetAll, lookupLeaveGetList, lookupLeaveGetById }: IAppState) => ({
   lookupLeaveState: {
-    all: leaveGetAll,
-    list: leaveGetList,
-    detail: leaveGetById,
+    all: lookupLeaveGetAll,
+    list: lookupLeaveGetList,
+    detail: lookupLeaveGetById,
   }
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   lookupLeaveDispatch: {
-    updateRequest: (request: ILeavePutRequest) => dispatch(leavePutRequest(request)),
-    updateDispose: () => dispatch(leavePutDispose()),
+    // command
+    createRequest: (request: ILookupLeavePostRequest) => dispatch(lookupLeavePostRequest(request)),
+    createDispose: () => dispatch(lookupLeavePostDispose()),
+    updateRequest: (request: ILookupLeavePutRequest) => dispatch(lookupLeavePutRequest(request)),
+    updateDispose: () => dispatch(lookupLeavePutDispose()),
+    deleteRequest: (request: ILookupLeaveDeleteRequest) => dispatch(lookupLeaveDeleteRequest(request)),
+    deleteDispose: () => dispatch(lookupLeaveDeleteDispose()),
     
     // query
-    loadAllRequest: (request: ILeaveGetAllRequest) => dispatch(leaveGetAllRequest(request)),
-    loadAllDispose: () => dispatch(leaveGetAllDispose()),
-    loadListRequest: (request: ILeaveGetListRequest) => dispatch(leaveGetListRequest(request)),
-    loadListDispose: () => dispatch(leaveGetListDispose()),
-    loadDetailRequest: (request: ILeaveGetDetailRequest) => dispatch(leaveGetByIdRequest(request)),
-    loadDetailDispose: () => dispatch(leaveGetByIdDispose()),
+    loadAllRequest: (request: ILookupLeaveGetAllRequest) => dispatch(lookupLeaveGetAllRequest(request)),
+    loadAllDispose: () => dispatch(lookupLeaveGetAllDispose()),
+    loadListRequest: (request: ILookupLeaveGetListRequest) => dispatch(lookupLeaveGetListRequest(request)),
+    loadListDispose: () => dispatch(lookupLeaveGetListDispose()),
+    loadDetailRequest: (request: ILookupLeaveGetDetailRequest) => dispatch(lookupLeaveGetByIdRequest(request)),
+    loadDetailDispose: () => dispatch(lookupLeaveGetByIdDispose()),
   }
 });
 

@@ -40,6 +40,7 @@ const component: React.SFC<AllProps> = props => {
             paper: classNames(classes.drawerPaper, classes.drawerPaperBackground, layoutState.isDrawerMenuVisible && classes.drawerPaperClose),
           }}
         >
+          <div className={props.classes.drawerPaperBackgroundImage} />
           <NavigationMenu/>
         </Drawer>
       </Hidden>

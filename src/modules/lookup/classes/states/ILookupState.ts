@@ -3,13 +3,14 @@ import {
   ICurrencyGetAllRequest,
   ICurrencyGetByIdRequest,
   ICurrencyGetListRequest,
-  IHolidayAllRequest,
-  IHolidayByIdRequest,
-  IHolidayListRequest,
-  ILeaveGetAllRequest,
-  ILeaveGetDetailRequest,
-  ILeaveGetListRequest,
-  ILeavePutRequest,
+  ILookupHolidayGetAllRequest,
+  ILookupHolidayGetByIdRequest,
+  ILookupHolidayGetListRequest,
+  ILookupLeaveGetAllRequest,
+  ILookupLeaveGetDetailRequest,
+  ILookupLeaveGetListRequest,
+  ILookupLeavePostRequest,
+  ILookupLeavePutRequest,
   IMenuGetAllRequest,
   IMenuGetByIdRequest,
   IMenuListRequest,
@@ -64,12 +65,12 @@ import {
   IDiem,
   IDiemDetail,
   IDiemList,
-  IHoliday,
-  IHolidayDetail,
-  IHolidayList,
-  ILeave,
-  ILeaveDetail,
-  ILeaveList,
+  ILookupHoliday,
+  ILookupHolidayDetail,
+  ILookupHolidayList,
+  ILookupLeave,
+  ILookupLeaveDetail,
+  ILookupLeaveList,
   IMenu,
   IMenuDetail,
   IMenuList,
@@ -144,14 +145,15 @@ export interface ILookupState {
   currencyPut: IQuerySingleState<ICurrencyPutRequest, ICurrency>;
   // currencyDelete: IQuerySingleState<ICurrencyDeleteRequest, boolean>;
 
-  holidayGetAll: IQueryCollectionState<IHolidayAllRequest, IHoliday>;
-  holidayGetList: IQueryCollectionState<IHolidayListRequest, IHolidayList>;
-  holidayGetById: IQuerySingleState<IHolidayByIdRequest, IHolidayDetail>;
+  lookupHolidayGetAll: IQueryCollectionState<ILookupHolidayGetAllRequest, ILookupHoliday>;
+  lookupHolidayGetList: IQueryCollectionState<ILookupHolidayGetListRequest, ILookupHolidayList>;
+  lookupHolidayGetById: IQuerySingleState<ILookupHolidayGetByIdRequest, ILookupHolidayDetail>;
 
-  leaveGetAll: IQueryCollectionState<ILeaveGetAllRequest, ILeave>;
-  leaveGetList: IQueryCollectionState<ILeaveGetListRequest, ILeaveList>;
-  leaveGetById: IQuerySingleState<ILeaveGetDetailRequest, ILeaveDetail>;
-  leavePut: IQuerySingleState<ILeavePutRequest, ILeave>;
+  lookupLeaveGetAll: IQueryCollectionState<ILookupLeaveGetAllRequest, ILookupLeave>;
+  lookupLeaveGetList: IQueryCollectionState<ILookupLeaveGetListRequest, ILookupLeaveList>;
+  lookupLeaveGetById: IQuerySingleState<ILookupLeaveGetDetailRequest, ILookupLeaveDetail>;
+  lookupLeavePost: IQuerySingleState<ILookupLeavePostRequest, ILookupLeave>;
+  lookupLeavePut: IQuerySingleState<ILookupLeavePutRequest, ILookupLeave>;
 
   systemLimitGetAll: IQueryCollectionState<ISystemLimitAllRequest, ISystemLimit>;
   systemLimitGetList: IQueryCollectionState<ISystemLimitListRequest, ISystemLimitList>;
