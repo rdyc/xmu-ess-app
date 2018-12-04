@@ -1,7 +1,9 @@
 import { createStyles, Theme } from '@material-ui/core';
 import red from '@material-ui/core/colors/red';
 
-const drawerWidth = 260;
+// var backgroundColorDefault = theme.palette.type === 'light' ? theme.palette.grey[100] : theme.palette.grey[900];
+
+const drawerWidth = 280;
 
 const size = {
   thin: 1,
@@ -84,6 +86,10 @@ const styles = (theme: Theme) =>
         duration: theme.transitions.duration.enteringScreen
       })
     },
+    drawerPaperBackground: {
+      backgroundColor: theme.palette.type === 'light' ? theme.palette.primary.main : theme.palette.grey[900],
+      color: theme.palette.primary.contrastText
+    },
     drawerPaperAdditional: {
       width: drawerWidth
     },
@@ -109,7 +115,7 @@ const styles = (theme: Theme) =>
       flexGrow: 1,
       padding: theme.spacing.unit * 2,
       [theme.breakpoints.up('md')]: {
-        marginTop: theme.spacing.unit * 8,
+        // marginTop: theme.spacing.unit * 8,
       },
       [theme.breakpoints.down('sm')]: {
         padding: 0,
