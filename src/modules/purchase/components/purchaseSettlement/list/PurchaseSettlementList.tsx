@@ -12,7 +12,7 @@ import { Button } from '@material-ui/core';
 import { ISettlement } from '@purchase/classes/response/purchaseSettlement';
 import { PurchaseUserAction, SettlementField } from '@purchase/classes/types';
 import { SettlementSummary } from '@purchase/components/purchaseSettlement/detail/shared/SettlementSummary';
-import { isSettlementEditable, isSettleReady, purchaseRequestFieldTranslator } from '@purchase/helper';
+import { isSettlementEditable, isSettleReady, purchaseSettlementFieldTranslator } from '@purchase/helper';
 import { withPurchaseSettlement, WithPurchaseSettlement } from '@purchase/hoc/purchaseSettlement/withPurchaseSettlement';
 import { purchaseMessage } from '@purchase/locales/messages/purchaseMessage';
 import * as moment from 'moment';
@@ -34,7 +34,7 @@ const config: CollectionConfig<ISettlement, AllProps> = {
     value: key,
     name: SettlementField[key]
   })),
-  fieldTranslator: purchaseRequestFieldTranslator,
+  fieldTranslator: purchaseSettlementFieldTranslator,
 
   // searching
   hasSearching: true,

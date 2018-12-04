@@ -1,5 +1,5 @@
 import { IEmployee } from '@account/classes/response';
-import ListItemEmployeeSelector from '@account/components/views/ListItemEmployeeSelector';
+import { ListItemEmployeeSelector } from '@account/components/selector/ListItemEmployeeSelector';
 import {
   Avatar,
   Card,
@@ -59,9 +59,10 @@ export const ProjectRegistrationSalesFormView: React.SFC<ProjectRegistrationSale
             );
           })
         }
+        
         <Divider className={classNames(props.classes.marginFarTop, props.classes.marginFarBottom)} />
+        
         <ListItemEmployeeSelector
-          width={props.width}
           companyUids={props.userState.user && [props.userState.user.company.uid]}
           roleUids={props.roleSalesUids}
           onSelected={(employee: IEmployee) => props.handleSelected(employee)}

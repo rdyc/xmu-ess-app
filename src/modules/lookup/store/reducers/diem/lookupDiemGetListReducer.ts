@@ -1,10 +1,10 @@
 import { IQueryCollectionState } from '@generic/interfaces';
-import { IDiemListRequest } from '@lookup/classes/queries';
+import { ILookupDiemListRequest } from '@lookup/classes/queries/diem';
 import { IDiemList } from '@lookup/classes/response';
-import { DiemAction as Action } from '@lookup/store/actions';
+import { LookupDiemAction as Action } from '@lookup/store/actions';
 import { Reducer } from 'redux';
 
-const initialState: IQueryCollectionState<IDiemListRequest, IDiemList> = {
+const initialState: IQueryCollectionState<ILookupDiemListRequest, IDiemList> = {
   request: undefined,
   response: undefined,
   isError: false,
@@ -12,7 +12,7 @@ const initialState: IQueryCollectionState<IDiemListRequest, IDiemList> = {
   errors: undefined,
 };
 
-const reducer: Reducer<IQueryCollectionState<IDiemListRequest, IDiemList>> = (state = initialState, action) => {
+const reducer: Reducer<IQueryCollectionState<ILookupDiemListRequest, IDiemList>> = (state = initialState, action) => {
   switch (action.type) {
     case Action.GET_LIST_REQUEST: return { ...state, isLoading: true, isError: false, request: action.payload };
     case Action.GET_LIST_SUCCESS: return { ...state, isLoading: false, isError: false, response: action.payload };
@@ -23,4 +23,4 @@ const reducer: Reducer<IQueryCollectionState<IDiemListRequest, IDiemList>> = (st
   }
 };
 
-export { reducer as diemGetListReducer };
+export { reducer as lookupDiemGetListReducer };
