@@ -11,6 +11,7 @@ import {
   lookupLeaveGetAllReducer,
   lookupLeaveGetByIdReducer,
   lookupLeaveGetListReducer,
+  lookupLeavePostReducer,
   lookupLeavePutReducer,
   menuGetAllReducer,
   menuGetByIdReducer,
@@ -21,7 +22,6 @@ import {
   systemLimitGetAllReducer,
   systemLimitGetByIdReducer,
   systemLimitGetListReducer,
-  lookupLeavePostReducer,
 } from '@lookup/store/reducers';
 
 import { lookupCompanyReducers } from './company';

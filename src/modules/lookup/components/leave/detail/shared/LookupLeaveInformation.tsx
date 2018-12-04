@@ -1,7 +1,7 @@
 import { GlobalStyle } from '@layout/types/GlobalStyle';
 import { ILookupLeaveDetail } from '@lookup/classes/response';
 import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
-import { Card, CardContent, CardHeader, TextField } from '@material-ui/core';
+import { Card, CardContent, CardHeader, Checkbox, FormControlLabel, TextField } from '@material-ui/core';
 import * as React from 'react';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose } from 'recompose';
@@ -46,6 +46,12 @@ const lookupLeaveInformation: React.SFC<AllProps> = props => {
           {...GlobalStyle.TextField.ReadOnly}
           label={props.intl.formatMessage(lookupMessage.leave.field.allocation)}
           value={props.intl.formatNumber(props.data.allocation)}
+        />
+        <FormControlLabel
+          control={<Checkbox checked={props.data.isWithinHoliday} />}
+          label={props.data.isWithinHoliday ? 
+            props.intl.formatMessage(lookupMessage.currency.field.isActive) :
+            props.intl.formatMessage(lookupMessage.currency.field.isNotActive) }
         />
         />
       </CardContent>

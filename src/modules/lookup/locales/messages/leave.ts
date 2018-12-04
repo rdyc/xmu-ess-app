@@ -57,8 +57,8 @@ export const leaveField = defineMessages({
   allocationRequired: {id: `${prefix}.field.allocation.required`},
   allocationPlaceholder: {id: `${prefix}.field.allocation.placeholder`},
 
-  isWithHoliday: { id: `${prefix}.field.isWithHoliday`},
-  isWithHolidayPlaceholder: {id: `${prefix}.field.isWithHoliday.placeholder`},
+  isWithinHoliday: { id: `${prefix}.field.isWithinHoliday`},
+  isWithinHolidayPlaceholder: {id: `${prefix}.field.isWithinHoliday.placeholder`},
 });
 
 export const leaveFieldHelperFor = (field: string, type: 'fieldName' | 'fieldRequired' | 'fieldPlaceholder') => {
@@ -66,12 +66,12 @@ export const leaveFieldHelperFor = (field: string, type: 'fieldName' | 'fieldReq
     switch (field) {
       case 'uid': return leaveField.uid;
       case 'companyUid': return leaveField.company;
-      case 'category': return leaveField.category;
+      case 'categoryType': return leaveField.category;
       case 'name': return leaveField.name;
       case 'description': return leaveField.description;
       case 'year': return leaveField.year;
       case 'allocation': return leaveField.allocation;
-      case 'isWithHoliday': return leaveField.isWithHoliday;
+      case 'isWithimHoliday': return leaveField.isWithinHoliday;
           
       default: return {id: field};
     }
@@ -80,7 +80,7 @@ export const leaveFieldHelperFor = (field: string, type: 'fieldName' | 'fieldReq
   if (type === 'fieldRequired') {
     switch (field) {
       case 'companyUid': return leaveField.companyRequired;
-      case 'category': return leaveField.categoryRequired;
+      case 'categoryType': return leaveField.categoryRequired;
       case 'name': return leaveField.nameRequired;
       case 'description': return leaveField.descriptionRequired;
       case 'year': return leaveField.yearRequired;
@@ -94,12 +94,12 @@ export const leaveFieldHelperFor = (field: string, type: 'fieldName' | 'fieldReq
     switch (field) {
       case 'uid': return leaveField.uidPlaceholder;
       case 'companyUid': return leaveField.companyPlaceholder;
-      case 'category': return leaveField.categoryPlaceholder;
+      case 'categoryType': return leaveField.categoryPlaceholder;
       case 'name': return leaveField.namePlaceholder;
       case 'description': return leaveField.descriptionPlaceholder;
       case 'year': return leaveField.yearPlaceholder;
       case 'allocation': return leaveField.allocationPlaceholder;
-      case 'isWithHoliday': return leaveField.isWithHolidayPlaceholder;
+      case 'isWithinHoliday': return leaveField.isWithinHolidayPlaceholder;
       
       default: return {id: field};
     }

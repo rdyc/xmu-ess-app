@@ -11,6 +11,6 @@ export interface ILookupLeaveDetail {
   year: number;
   name: string;
   allocation: number;
-  isWithinHoliday: boolean | null;
+  isWithinHoliday: boolean;
   changes: IBaseChanges | null;
 }

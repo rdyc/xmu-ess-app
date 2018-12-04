@@ -1,5 +1,5 @@
 import { IResponseCollection } from '@generic/interfaces';
-import { ILookupLeaveGetListFilter } from '@lookup/classes/filters/leave';
+import { ILookupLeaveGetListFilter } from '@lookup/classes/filters';
 import { ILookupLeaveList } from '@lookup/classes/response';
 import { WithLookupLeave, withLookupLeave } from '@lookup/hoc/withLookupLeave';
 import { withWidth } from '@material-ui/core';
