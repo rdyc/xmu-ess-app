@@ -2,6 +2,7 @@ export * from './position/IPositionPostPayload';
 export * from './position/IPositionPutPayload';
 export * from './holiday/ILookupHolidayPostPayload';
 export * from './holiday/ILookupHolidayPutPayload';
+export * from './holiday/ILookupHolidayDeletePayload';
 export * from './leave/ILookupLeavePostPayload';
 export * from './leave/ILookupLeavePutPayload';
 export * from './systemLimit/ISystemLimitPostPayload';

@@ -2,6 +2,7 @@ import { SelectSystem, SelectSystemOption } from '@common/components/select';
 import { FormMode } from '@generic/types';
 import { InputNumber } from '@layout/components/input/number';
 import { InputText } from '@layout/components/input/text';
+import { SelectLookupCompany } from '@lookup/components/company/select';
 import { LookupLeaveDetailFormView } from '@lookup/components/leave/editor/forms/LookupLeaveDetailFormView';
 import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
@@ -37,6 +38,15 @@ const handlerCreators: HandleCreators<RequestDetailFormProps, OwnHandlers> = {
         };
         break;
       
+      case 'companyUid':
+        fieldProps = {
+          required: true,
+          label: intl.formatMessage(lookupMessage.leave.fieldFor(name, 'fieldName')),
+          placeholder: intl.formatMessage(lookupMessage.leave.fieldFor(name, 'fieldPlaceholder')),
+          component: SelectLookupCompany,
+        };
+        break;
+
       case 'categoryType':
         fieldProps = {
           required: true,
@@ -47,21 +57,21 @@ const handlerCreators: HandleCreators<RequestDetailFormProps, OwnHandlers> = {
         };
         break;
 
-      case 'year':
-        fieldProps = {
-          required: true,
-          label: intl.formatMessage(lookupMessage.leave.fieldFor(name, 'fieldName')),
-          placeholder: intl.formatMessage(lookupMessage.leave.fieldFor(name, 'fieldPlaceholder')),
-          component: InputNumber,
-        };
-        break;
-      
       case 'name': 
         fieldProps = {
           required: true,
           label: intl.formatMessage(lookupMessage.leave.fieldFor(name, 'fieldName')),
           placeholder: intl.formatMessage(lookupMessage.leave.fieldFor(name, 'fieldPlaceholder')),
           component: InputText,
+        };
+        break;
+
+      case 'year':
+        fieldProps = {
+          required: true,
+          label: intl.formatMessage(lookupMessage.leave.fieldFor(name, 'fieldName')),
+          placeholder: intl.formatMessage(lookupMessage.leave.fieldFor(name, 'fieldPlaceholder')),
+          component: InputNumber,
         };
         break;
 
@@ -76,7 +86,7 @@ const handlerCreators: HandleCreators<RequestDetailFormProps, OwnHandlers> = {
 
         case 'isWithinHoliday':
         fieldProps = {
-          label: props.intl.formatMessage(lookupMessage.currency.field.ActiveStatus),
+          label: props.intl.formatMessage(lookupMessage.leave.field.isWithinHoliday),
         };
         break;
     

@@ -25,7 +25,7 @@ export type RequestDetailFormProps
 
 const handlerCreators: HandleCreators<RequestDetailFormProps, OwnHandlers> = {
   generateFieldProps: (props: RequestDetailFormProps) => (name: string) => { 
-    const { intl } = props;
+    const { intl, formMode } = props;
 
     let fieldProps: SelectSystemOption & any = {};
 
@@ -42,6 +42,7 @@ const handlerCreators: HandleCreators<RequestDetailFormProps, OwnHandlers> = {
       case 'companyUid':
         fieldProps = {
           required: true,
+          disabled: formMode === FormMode.Edit,
           label: intl.formatMessage(lookupMessage.holiday.fieldFor(name, 'fieldName')),
           placeholder: intl.formatMessage(lookupMessage.holiday.fieldFor(name, 'fieldPlaceholder')),
           component: SelectLookupCompany,

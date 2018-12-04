@@ -1,27 +1,22 @@
 import AppMenu from '@constants/AppMenu';
-import {
-  CollectionConfig,
-  CollectionDataProps,
-  CollectionHandler,
-  CollectionPage,
-} from '@layout/components/pages';
-import { WithUser, withUser } from '@layout/hoc/withUser';
+import { DialogConfirmation } from '@layout/components/dialogs';
+import { CollectionConfig, CollectionDataProps, CollectionHandler, CollectionPage } from '@layout/components/pages';
 import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
 import { ILookupHoliday } from '@lookup/classes/response';
 import { LookupHolidayField, LookupHolidayUserAction } from '@lookup/classes/types';
-import { WithLookupHoliday, withLookupHoliday } from '@lookup/hoc/withLookupHoliday';
 import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
 import { Button } from '@material-ui/core';
 import * as moment from 'moment';
 import * as React from 'react';
-import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
-import { compose } from 'recompose';
+import { FormattedMessage } from 'react-intl';
 import { LookupHolidaySummary } from '../detail/shared/LookupHolidaySummary';
+import { LookupHolidayFilter } from './LookupHolidayFilter';
+import { HolidayListProps } from './LookupHolidayList';
 
-const config: CollectionConfig<ILookupHoliday, AllProps> = {
-  // page
-  page: (props: AllProps) => ({
+const config: CollectionConfig<ILookupHoliday, HolidayListProps> = {
+  // page info
+  page: (props: HolidayListProps) => ({
     uid: AppMenu.LookupHoliday,
     parentUid: AppMenu.Lookup,
     title: props.intl.formatMessage(lookupMessage.holiday.page.listTitle),
@@ -29,15 +24,15 @@ const config: CollectionConfig<ILookupHoliday, AllProps> = {
   }),
   
   // top bar
-  fields: Object.keys(LookupHolidayField)
-    .map(key => ({ 
-      value: key, 
-      name: LookupHolidayField[key] 
-    })),
+  fields: Object.keys(LookupHolidayField).map(key => ({
+    value: key,
+    name: LookupHolidayField[key]
+  })),
+  // fieldTranslator: ,
 
   // searching
   hasSearching: true,
-  searchStatus: (props: AllProps): boolean => {
+  searchStatus: (props: HolidayListProps): boolean => {
     let result: boolean = false;
 
     const { request } = props.lookupHolidayState.all;
@@ -54,7 +49,7 @@ const config: CollectionConfig<ILookupHoliday, AllProps> = {
 
   // more
   hasMore: true,
-  moreOptions: (props: AllProps, callback: CollectionHandler): IAppBarMenu[] => ([
+  moreOptions: (props: HolidayListProps, callback: CollectionHandler): IAppBarMenu[] => ([
     {
       id: LookupHolidayUserAction.Refresh,
       name: props.intl.formatMessage(layoutMessage.action.refresh),
@@ -71,22 +66,27 @@ const config: CollectionConfig<ILookupHoliday, AllProps> = {
     }
   ]),
 
+  // data filter
+  filter: {
+    orderBy: 'uid',
+    direction: 'descending'
+  },
   // events
-  onDataLoad: (props: AllProps, callback: CollectionHandler, params: CollectionDataProps, forceReload?: boolean | false) => {
+  onDataLoad: (props: HolidayListProps, callback: CollectionHandler, params: CollectionDataProps, forceReload?: boolean | false) => {
     const { user } = props.userState;
     const { isLoading, response } = props.lookupHolidayState.all;
     const { loadAllRequest } = props.lookupHolidayDispatch;
-
+    
     // when user is set and not loading
     if (user && !isLoading) {
       // when response are empty or force reloading
       if (!response || forceReload) {
         loadAllRequest({
           filter: {
-            find: 'CP002',
-            findBy: 'companyUid',
-            orderBy: params.orderBy,
+            find: params.find,
+            findBy: params.findBy,
             direction: params.direction,
+            orderBy: params.orderBy,
             page: params.page,
             size: params.size,
           }
@@ -97,61 +97,71 @@ const config: CollectionConfig<ILookupHoliday, AllProps> = {
       }
     }
   },
-  onUpdated: (props: AllProps, callback: CollectionHandler) => {
+  onUpdated: (props: HolidayListProps, callback: CollectionHandler) => {
     const { isLoading, response } = props.lookupHolidayState.all;
-    
+
     callback.handleLoading(isLoading);
     callback.handleResponse(response);
   },
   onBind: (item: ILookupHoliday, index: number) => ({
     key: index,
-    primary: item.description ? item.description : 'N/A',
-    secondary: item.companyUid,
-    tertiary: item.date,
-    quaternary: item.uid,
+    primary: item.uid,
+    secondary: item.company ? item.company.name : 'N/A',
+    tertiary: item.description ? item.description : 'N/A',
+    quaternary: item.date.toString(),
     quinary: '',
     senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
   }),
 
+  // filter
+  filterComponent: (callback: CollectionHandler) => (
+    <LookupHolidayFilter handleFind={callback.handleFilter}/>
+  ),
+  
   // summary component
   summaryComponent: (item: ILookupHoliday) => ( 
     <LookupHolidaySummary data={item} />
   ),
 
   // action component
-  actionComponent: (item: ILookupHoliday, callback: CollectionHandler) => (
+  actionComponent: (item: ILookupHoliday, callback: CollectionHandler, props: HolidayListProps) => (
     <React.Fragment>
-        <Button 
+      <Button
+        size="small"
+        onClick={() => props.handleOnDelete(item.uid, callback.handleForceReload)}
+      >
+        <FormattedMessage {...layoutMessage.action.delete}/>        
+      </Button>
+      <Button 
           size="small"
           onClick={() => callback.handleRedirectTo(`/lookup/holiday/form`, { uid: item.uid })}
         >
           <FormattedMessage {...layoutMessage.action.modify}/>
         </Button>
-
       <Button 
         size="small"
-        onClick={() => callback.handleRedirectTo(`/lookup/holiday/${item.uid}`)}
+        onClick={() => callback.handleRedirectTo(`/lookup/holiday/${item.uid}`, { companyUid: item.companyUid })}
       >
         <FormattedMessage {...layoutMessage.action.details}/>
       </Button>
     </React.Fragment>
-  )
+  ),
 };
 
-type AllProps 
-  = WithUser
-  & WithLookupHoliday
-  & InjectedIntlProps;
-
-const listView: React.SFC<AllProps> = props => (
+export const LookupHolidayListView: React.SFC<HolidayListProps> = props => (
   <CollectionPage
-    config={config}
-    connectedProps={props}
-  />
+      config={config}
+      connectedProps={props}
+    >
+      <DialogConfirmation 
+      isOpen={props.dialogOpen}
+      fullScreen={props.dialogFullScreen}
+      title={props.dialogTitle}
+      content={props.dialogContent}
+      labelCancel={props.dialogCancelLabel}
+      labelConfirm={props.dialogConfirmLabel}
+      onClickCancel={props.handleOnCloseDialog}
+      onClickConfirm={props.handleSubmit}
+    />
+  </CollectionPage>
 );
-
-export const LookupHolidayList = compose(
-  withUser,
-  withLookupHoliday,
-  injectIntl
-)(listView);

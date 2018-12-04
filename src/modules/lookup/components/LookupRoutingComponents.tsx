@@ -3,7 +3,6 @@ import { CurrencyDetail } from '@lookup/components/currency/detail/CurrencyDetai
 import { CurrencyEditor } from '@lookup/components/currency/editor/CurrencyEditor';
 import { CurrencyList } from '@lookup/components/currency/list/CurrencyList';
 import { LookupHolidayDetail } from '@lookup/components/holiday/detail/LookupHolidayDetail';
-import { LookupHolidayList } from '@lookup/components/holiday/list/LookupHolidayList';
 import { LookupLeaveDetail } from '@lookup/components/leave/detail/LookupLeaveDetail';
 import { LookupLeaveList } from '@lookup/components/leave/list/LookupLeaveList';
 import * as React from 'react';
@@ -12,6 +11,7 @@ import { LookupCompanyDetail } from './company/detail/LookupCompanyDetail';
 import LookupCompanyEditor from './company/editor/LookupCompanyEditor';
 import { LookupCompanyList } from './company/list/LookupCompanyList';
 import LookupHolidayEditor from './holiday/editor/LookupHolidayEditor';
+import LookupHolidayList from './holiday/list/LookupHolidayList';
 import LookupLeaveEditor from './leave/editor/LookupLeaveEditor';
 import { MileageExceptionDetail } from './mileageException/detail/MileageExceptionDetail';
 import MileageExceptionEditor from './mileageException/editor/MileageExceptionEditor';

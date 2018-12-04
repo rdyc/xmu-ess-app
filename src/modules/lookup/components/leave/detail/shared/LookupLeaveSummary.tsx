@@ -63,8 +63,8 @@ const lookupLeaveSummary: React.SFC<AllProps> = props => (
     <FormControlLabel
         control={ <Checkbox checked={props.data.isWithinHoliday} /> }
         label={props.data.isWithinHoliday ?
-          props.intl.formatMessage(lookupMessage.currency.field.isActive) :
-          props.intl.formatMessage(lookupMessage.currency.field.isNotActive)}
+          props.intl.formatMessage(lookupMessage.leave.field.isWithinHoliday) :
+          props.intl.formatMessage(lookupMessage.leave.field.notWithinHoliday)}
         />
     </Grid>
     {

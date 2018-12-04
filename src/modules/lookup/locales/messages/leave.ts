@@ -58,6 +58,7 @@ export const leaveField = defineMessages({
   allocationPlaceholder: {id: `${prefix}.field.allocation.placeholder`},
 
   isWithinHoliday: { id: `${prefix}.field.isWithinHoliday`},
+  notWithinHoliday: {id: `${prefix}.field.notWithinHoliday`},
   isWithinHolidayPlaceholder: {id: `${prefix}.field.isWithinHoliday.placeholder`},
 });
 
@@ -71,7 +72,7 @@ export const leaveFieldHelperFor = (field: string, type: 'fieldName' | 'fieldReq
       case 'description': return leaveField.description;
       case 'year': return leaveField.year;
       case 'allocation': return leaveField.allocation;
-      case 'isWithimHoliday': return leaveField.isWithinHoliday;
+      case 'isWithinHoliday': return leaveField.isWithinHoliday;
           
       default: return {id: field};
     }
@@ -116,4 +117,6 @@ export const leaveMessage = defineMessages({
   createFailure: { id: `${prefix}.message.create.failure` },
   updateSuccess: { id: `${prefix}.message.update.success` },
   updateFailure: { id: `${prefix}.message.update.failure` },
+  deleteSuccess: { id: `${prefix}.message.delete.success`},
+  deleteFailure: { id: `${prefix}.message.delete.failure`},
 });

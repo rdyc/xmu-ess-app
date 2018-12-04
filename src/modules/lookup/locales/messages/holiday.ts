@@ -44,6 +44,9 @@ export const holidayField = defineMessages({
   date: { id: `${prefix}.field.date`},
   dateRequired: {id: `${prefix}.field.date.required`},
   datePlaceholder: {id: `${prefix}.field.date.placeholder`},
+
+  filterCompany: { id: `${prefix}.field.filter.company`},
+  filterCompanyPlaceholder: { id: `${prefix}.field.filter.company.placeholder`},
 });
 
 export const holidayFieldHelperFor = (field: string, type: 'fieldName' | 'fieldRequired' | 'fieldPlaceholder') => {
@@ -90,4 +93,6 @@ export const holidayMessage = defineMessages({
   createFailure: { id: `${prefix}.message.create.failure` },
   updateSuccess: { id: `${prefix}.message.update.success` },
   updateFailure: { id: `${prefix}.message.update.failure` },
+  deleteSuccess: { id: `${prefix}.message.delete.success`},
+  deleteFailure: { id: `${prefix}.message.delete.failure`},
 });

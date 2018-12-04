@@ -1,6 +1,9 @@
 import { layoutAlertAdd } from '@layout/store/actions';
 import {
   LookupHolidayAction as Action,
+  lookupHolidayDeleteError,
+  lookupHolidayDeleteRequest,
+  lookupHolidayDeleteSuccess,
   lookupHolidayGetAllDispose,
   lookupHolidayGetAllError,
   lookupHolidayGetAllRequest,
@@ -210,6 +213,53 @@ function* watchPutRequest() {
   yield takeEvery(Action.PUT_REQUEST, worker);
 }
 
+function* watchDeleteRequest() {
+  const worker = (action: ReturnType<typeof lookupHolidayDeleteRequest>) => {
+    return saiyanSaga.fetch({
+      method: 'delete',
+      path: `/v1/lookup/holidays`,
+      payload: action.payload.data,
+      successEffects: (response: IApiResponse) => [
+        put(lookupHolidayGetAllDispose()),
+        put(lookupHolidayDeleteSuccess(response.body))
+      ],
+      successCallback: (response: IApiResponse) => {
+        action.payload.resolve(response.body.data);
+      },
+      failureEffects: (response: IApiResponse) => [
+        put(lookupHolidayDeleteError(response.statusText))
+      ],
+      failureCallback: (response: IApiResponse) => {
+        if (response.status === 400) {
+          const errors: any = { 
+            // information -> based on form section name
+            information: flattenObject(response.body.errors) 
+          };
+          
+          // action.payload.reject(new SubmissionError(response.body.errors));
+          action.payload.reject(new SubmissionError(errors));
+        } else {
+          action.payload.reject(response.statusText);
+        }
+      },
+      errorEffects: (error: TypeError) => [
+        put(lookupHolidayDeleteError(error.message)),
+        put(
+          layoutAlertAdd({
+            time: new Date(),
+            message: error.message
+          })
+        )
+      ],
+      errorCallback: (error: any) => {
+        action.payload.reject(error);
+      }
+    });
+  };
+
+  yield takeEvery(Action.DELETE_REQUEST, worker);
+}
+
 function* lookupHolidaySagas() {
   yield all([
     fork(watchFetchAllRequest),
@@ -217,6 +267,7 @@ function* lookupHolidaySagas() {
     fork(watchFetchByIdRequest),
     fork(watchPostRequest),
     fork(watchPutRequest),
+    fork(watchDeleteRequest)
   ]);
 }
 

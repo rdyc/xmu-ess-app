@@ -34,8 +34,13 @@ const lookupLeaveInformation: React.SFC<AllProps> = props => {
         />
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
+          label={props.intl.formatMessage(lookupMessage.leave.field.name)}
+          value={props.data.name}
+        />
+        <TextField
+          {...GlobalStyle.TextField.ReadOnly}
           label={props.intl.formatMessage(lookupMessage.leave.field.description)}
-          value={props.data.category.description}
+          value={props.data.category.value}
         />
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
@@ -50,9 +55,8 @@ const lookupLeaveInformation: React.SFC<AllProps> = props => {
         <FormControlLabel
           control={<Checkbox checked={props.data.isWithinHoliday} />}
           label={props.data.isWithinHoliday ? 
-            props.intl.formatMessage(lookupMessage.currency.field.isActive) :
-            props.intl.formatMessage(lookupMessage.currency.field.isNotActive) }
-        />
+            props.intl.formatMessage(lookupMessage.leave.field.isWithinHoliday) :
+            props.intl.formatMessage(lookupMessage.leave.field.notWithinHoliday) }
         />
       </CardContent>
     </Card>

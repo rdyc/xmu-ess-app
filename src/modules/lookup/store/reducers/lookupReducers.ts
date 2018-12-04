@@ -27,6 +27,7 @@ import {
 import { lookupCompanyReducers } from './company';
 import { lookupCurrencyReducers } from './currency';
 import { lookupCustomerReducers } from './customer';
+import { lookupHolidayDeleteReducer } from './holiday/lookupHolidayDeleteReducer';
 import { lookupHolidayPostReducer } from './holiday/lookupHolidayPostReducer';
 import { lookupHolidayPutReducer } from './holiday/lookupHolidayPutReducer';
 import { lookupHolidayReducers } from './holiday/lookupHolidayReducers';
@@ -70,6 +71,7 @@ const lookupReducers = {
   lookupHolidayGetById: lookupHolidayGetByIdReducer,
   lookupHolidayPost: lookupHolidayPostReducer,
   lookupHolidayPut: lookupHolidayPutReducer,
+  lookupHolidayDelete: lookupHolidayDeleteReducer,
 
   lookupLeaveGetAll: lookupLeaveGetAllReducer,
   lookupLeaveGetList: lookupLeaveGetListReducer,

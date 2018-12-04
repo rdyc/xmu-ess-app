@@ -16,6 +16,7 @@ export * from './systemLimit/systemLimitGetListReducer';
 export * from './holiday/lookupHolidayGetAllReducer';
 export * from './holiday/lookupHolidayGetByIdReducer';
 export * from './holiday/lookupHolidayGetListReducer';
+export * from './holiday/lookupHolidayDeleteReducer';
 export * from './holiday/lookupHolidayPostReducer';
 export * from './holiday/lookupHolidayPutReducer';
 export * from './leave/lookupLeaveGetAllReducer';

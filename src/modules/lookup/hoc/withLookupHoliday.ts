@@ -1,5 +1,6 @@
 import { IAppState, IQueryCollectionState, IQuerySingleState } from '@generic/interfaces';
 import {
+  ILookupHolidayDeleteRequest,
   ILookupHolidayGetAllRequest,
   ILookupHolidayGetByIdRequest,
   ILookupHolidayGetListRequest,
@@ -8,6 +9,8 @@ import {
 } from '@lookup/classes/queries';
 import { ILookupHoliday, ILookupHolidayDetail, ILookupHolidayList } from '@lookup/classes/response';
 import {
+  lookupHolidayDeleteDispose,
+  lookupHolidayDeleteRequest,
   lookupHolidayGetAllDispose,
   lookupHolidayGetAllRequest,
   lookupHolidayGetByIdDispose,
@@ -37,6 +40,8 @@ interface PropsFromDispatch {
     createDispose: typeof lookupHolidayPostDispose;
     updateRequest: typeof lookupHolidayPutRequest;
     updateDispose: typeof lookupHolidayPutDispose;
+    deleteRequest: typeof lookupHolidayDeleteRequest;
+    deleteDispose: typeof lookupHolidayDeleteDispose;
 
     // query
     loadAllRequest: typeof lookupHolidayGetAllRequest;
@@ -65,6 +70,8 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     createDispose: () => dispatch(lookupHolidayPostDispose()),
     updateRequest: (request: ILookupHolidayPutRequest) => dispatch(lookupHolidayPutRequest(request)),
     updateDispose: () => dispatch(lookupHolidayPutDispose()),
+    deleteRequest: (request: ILookupHolidayDeleteRequest) => dispatch(lookupHolidayDeleteRequest(request)),
+    deleteDispose: () => dispatch(lookupHolidayDeleteDispose()),
     
     // query
     loadAllRequest: (request: ILookupHolidayGetAllRequest) => dispatch(lookupHolidayGetAllRequest(request)),
