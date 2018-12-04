@@ -1,4 +1,4 @@
-import { ICompanyList } from '@lookup/classes/response';
+import { ICompanyList } from '@lookup/classes/response/company';
 import { MenuItem, TextField } from '@material-ui/core';
 import { isWidthDown } from '@material-ui/core/withWidth';
 import * as React from 'react';

@@ -8,8 +8,8 @@ import {
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
-import { ICompany } from '@lookup/classes/response';
-import { CompanyField, CompanyUserAction } from '@lookup/classes/types';
+import { ICompany } from '@lookup/classes/response/company';
+import { CompanyField, CompanyUserAction } from '@lookup/classes/types/company';
 import { WithLookupCompany, withLookupCompany } from '@lookup/hoc/withLookupCompany';
 import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
 import { Button } from '@material-ui/core';
