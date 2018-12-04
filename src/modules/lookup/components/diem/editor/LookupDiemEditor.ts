@@ -7,7 +7,6 @@ import { ILookupDiemPostPayload, ILookupDiemPutPayload } from '@lookup/classes/r
 import { IDiem } from '@lookup/classes/response';
 import { WithLookupDiem, withLookupDiem } from '@lookup/hoc/withLookupDiem';
 import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
-import { projectMessage } from '@project/locales/messages/projectMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { 
@@ -189,8 +188,8 @@ const lifecycles: ReactLifeCycleFunctions<LookupDiemEditorProps, {}> = {
     const { user } = this.props.userState;
     
     const view = {
-      title: 'New Diem Value' , // projectMessage.registration.page.newTitle,
-      subTitle: projectMessage.registration.page.newSubHeader,
+      title: lookupMessage.lookupDiem.page.newTitle,
+      subTitle: lookupMessage.lookupDiem.page.newSubHeader,
     };
 
     if (!user) {
@@ -198,8 +197,8 @@ const lifecycles: ReactLifeCycleFunctions<LookupDiemEditorProps, {}> = {
     }
 
     if (!isNullOrUndefined(history.location.state)) {
-      view.title = 'Modify Diem Value', // projectMessage.registration.page.modifyTitle;
-      view.subTitle = projectMessage.registration.page.modifySubHeader;
+      view.title = lookupMessage.company.page.modifyTitle;
+      view.subTitle = lookupMessage.company.page.modifySubHeader;
 
       stateUpdate({ 
         formMode: FormMode.Edit,

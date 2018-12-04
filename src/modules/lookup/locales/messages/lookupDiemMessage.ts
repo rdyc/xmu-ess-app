@@ -8,6 +8,10 @@ export const lookupDiemPage = defineMessages({
   listSubHeader: { id: `${prefix}.page.list.subHeader`},
   detailTitle: { id: `${prefix}.page.detail.title`},
   detailSubHeader: { id: `${prefix}.page.detail.subHeader`},
+  newTitle: { id: `${prefix}.page.new.title` },
+  newSubHeader: { id: `${prefix}.page.new.subHeader` },
+  modifyTitle: { id: `${prefix}.page.modify.title` },
+  modifySubHeader: { id: `${prefix}.page.modify.subHeader` },
 });
 
 // section
