@@ -59,15 +59,14 @@ const lifecycles: ReactLifeCycleFunctions<SelectProjectAssignmentProps, {}> = {
       });
     }
   },
-  // componentWillReceiveProps(nextProps: SelectProjectAssignmentProps) {
-  //   if (nextProps.filter !== this.props.filter) {
-  //     const { loadListDispose, loadListRequest } = this.props.projectAssignmentDispatch;
-  //     const { filter } = nextProps;
+  componentWillReceiveProps(nextProps: SelectProjectAssignmentProps) {
+    if (nextProps.filter !== this.props.filter) {
+      const { loadListRequest } = this.props.projectAssignmentDispatch;
+      const { filter } = nextProps;
       
-  //     loadListDispose();
-  //     loadListRequest({filter});
-  //   }
-  // },
+      loadListRequest({filter});
+    }
+  },
   componentWillUnmount() {
     const { loadListDispose } = this.props.projectAssignmentDispatch;
     loadListDispose();
