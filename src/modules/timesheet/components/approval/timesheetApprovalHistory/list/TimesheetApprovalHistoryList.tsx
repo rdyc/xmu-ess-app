@@ -74,7 +74,7 @@ const config: CollectionConfig<ITimesheet, AllProps> = {
     const { loadAllRequest } = props.timesheetApprovalDispatch;
 
     // when user is set and not loading
-    if (user) {
+    if (user && !isLoading) {
       // when response are empty or force reloading
       if (!response || !isLoading || forceReload) {
         loadAllRequest({
