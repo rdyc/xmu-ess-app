@@ -37,6 +37,7 @@ export const CollectionPageView: React.SFC<CollectionPageProps> = props => (
     onChangeOrder={props.setOrder}
     onChangeSize={props.setSize}
   >
+  {props.config.filterComponent && props.config.filterComponent(props)}
     {
       // !props.isLoading &&
       props.response &&
@@ -172,7 +173,7 @@ export const CollectionPageView: React.SFC<CollectionPageProps> = props => (
 
               {
                 props.config.actionComponent &&
-                <Delayed time={2500}>
+                <Delayed time={1000}>
                   <ExpansionPanelActions>
                     {props.config.actionComponent(item, props, props.connectedProps)}
                   </ExpansionPanelActions>
@@ -183,5 +184,7 @@ export const CollectionPageView: React.SFC<CollectionPageProps> = props => (
         );
       })
     }
+
+    {props.children}
   </DataContainer>
 );

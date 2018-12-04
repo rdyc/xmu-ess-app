@@ -37,7 +37,7 @@ const component: React.SFC<AllProps> = props => {
           anchor={layoutState.anchor}
           open={layoutState.isDrawerMenuVisible}
           classes={{
-            paper: classNames(classes.drawerPaper, layoutState.isDrawerMenuVisible && classes.drawerPaperClose),
+            paper: classNames(classes.drawerPaper, classes.drawerPaperBackground, layoutState.isDrawerMenuVisible && classes.drawerPaperClose),
           }}
         >
           <NavigationMenu/>

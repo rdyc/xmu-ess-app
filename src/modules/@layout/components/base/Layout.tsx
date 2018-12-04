@@ -1,7 +1,6 @@
 import { TopBar } from '@layout/components';
 import DrawerActionSFC from '@layout/components/drawer/DrawerActionSFC';
 import DrawerMenuSFC from '@layout/components/drawer/DrawerMenuSFC';
-import NavigationBottomSFC from '@layout/components/navigation/NavigationBottomSFC';
 import SnackbarAlertSFC from '@layout/components/snackbar/SnackbarAlertSFC';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { LayoutTheme } from '@layout/hoc/withRoot';
@@ -55,8 +54,6 @@ const layout: React.SFC<LayoutProps> = props => {
             {props.children}
           </ErrorBoundary>
         </main>
-        
-        <NavigationBottomSFC />
         
         <SnackbarAlertSFC />
       </div>
