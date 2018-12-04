@@ -33,4 +33,5 @@
   "prettier.singleQuote": true,
   "npm-scripts.showStartNotification": false,
   "editor.tabCompletion": "on",
+  "typescript.tsdk": "node_modules\\typescript\\lib",
 }

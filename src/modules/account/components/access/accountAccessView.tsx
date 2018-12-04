@@ -20,7 +20,7 @@ export const accountAccessView: React.SFC<AccessSwitcherProps> = props => (
   <Grid container spacing={16} justify="center">
     <Grid item xs={12} md={4}>
       <div className={classNames(props.classes.marginWideTop, props.classes.marginWideBottom)}>
-        <Typography variant="body1" align="center">   
+        <Typography variant="body2" align="center">   
           {
             props.accountEmployeeMyState.detail.isLoading &&
             <span>Please wait...</span>
@@ -63,7 +63,7 @@ export const accountAccessView: React.SFC<AccessSwitcherProps> = props => (
                             secondary={item.role && item.role.name}
                             primaryTypographyProps={{
                               noWrap: true,
-                              variant: 'body1'
+                              variant: 'body2'
                             }}
                             secondaryTypographyProps={{
                               noWrap: true,
@@ -76,7 +76,7 @@ export const accountAccessView: React.SFC<AccessSwitcherProps> = props => (
                               secondary={item.unit && item.unit.value}
                               primaryTypographyProps={{
                                 noWrap: true,
-                                variant: 'body1',
+                                variant: 'body2',
                               }}
                               secondaryTypographyProps={{
                                 noWrap: true,

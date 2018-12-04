@@ -84,11 +84,13 @@ const config: CollectionConfig<ISystem, AllProps> = {
   // events
   onDataLoad: (props: AllProps, callback: CollectionHandler, params: CollectionDataProps, forceReload?: boolean | false) => {
     const { user } = props.userState;
-    const { isLoading } = props.commonSystemState.all;
+    const { isLoading, response } = props.commonSystemState.all;
     const { systemAllRequest } = props.commonDispatch;
 
     // when user is set and not loading
     if (user && !isLoading) {
+      // when response are empty or force reloading
+      if (!response || forceReload) {
         systemAllRequest({
           category: categoryTypeTranslator(props.match.params.category),
           filter: {
@@ -100,6 +102,10 @@ const config: CollectionConfig<ISystem, AllProps> = {
             findBy: params.findBy,
           }
         });
+      } else {
+        // just take data from previous response
+        callback.handleResponse(response);
+      }
     }
   },
   onUpdated: (props: AllProps, callback: CollectionHandler) => {

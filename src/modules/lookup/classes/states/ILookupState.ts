@@ -3,9 +3,6 @@ import {
   ICurrencyGetAllRequest,
   ICurrencyGetByIdRequest,
   ICurrencyGetListRequest,
-  IDiemAllRequest,
-  IDiemByIdRequest,
-  IDiemListRequest,
   IHolidayAllRequest,
   IHolidayByIdRequest,
   IHolidayListRequest,
@@ -43,15 +40,23 @@ import {
   ILookupCustomerGetAllRequest,
   ILookupCustomerGetDetailRequest,
   ILookupCustomerGetListRequest,
- } from '@lookup/classes/queries/customer';
-import { 
+} from '@lookup/classes/queries/customer';
+import {
+  ILookupDiemAllRequest,
+  ILookupDiemDeleteRequest,
+  ILookupDiemDetailRequest,
+  ILookupDiemListRequest,
+  ILookupDiemPostRequest,
+  ILookupDiemPutRequest,
+} from '@lookup/classes/queries/diem';
+import {
   ILookupRoleDeleteRequest,
   ILookupRoleGetAllRequest,
   ILookupRoleGetDetailRequest,
   ILookupRoleGetListRequest,
   ILookupRolePostRequest,
   ILookupRolePutRequest,
- } from '@lookup/classes/queries/role';
+} from '@lookup/classes/queries/role';
 import {
   ICurrency,
   ICurrencyDetail,
@@ -90,9 +95,10 @@ import {
   ICompanyList
 } from '@lookup/classes/response/company';
 
-import { 
+import {
   // ICurrencyDeleteRequest,
-  ICurrencyPostRequest, ICurrencyPutRequest } from '../queries/currency';
+  ICurrencyPostRequest, ICurrencyPutRequest
+} from '../queries/currency';
 import { ILookupCustomerDeleteRequest, ILookupCustomerPostRequest, ILookupCustomerPutRequest } from '../queries/customer';
 
 export interface ILookupState {
@@ -123,9 +129,12 @@ export interface ILookupState {
   lookupCompanyPut: IQuerySingleState<ILookupCompanyPutRequest, ICompany>;
   lookupCompanyDelete: IQuerySingleState<ILookupCompanyDeleteRequest, boolean>;
 
-  diemGetAll: IQueryCollectionState<IDiemAllRequest, IDiem>;
-  diemGetList: IQueryCollectionState<IDiemListRequest, IDiemList>;
-  diemGetById: IQuerySingleState<IDiemByIdRequest, IDiemDetail>;
+  lookupDiemGetAll: IQueryCollectionState<ILookupDiemAllRequest, IDiem>;
+  lookupDiemGetList: IQueryCollectionState<ILookupDiemListRequest, IDiemList>;
+  lookupDiemGetById: IQuerySingleState<ILookupDiemDetailRequest, IDiemDetail>;
+  lookupDiemPost: IQuerySingleState<ILookupDiemPostRequest, IDiem>;
+  lookupDiemPut: IQuerySingleState<ILookupDiemPutRequest, IDiem>;
+  lookupDiemDelete: IQuerySingleState<ILookupDiemDeleteRequest, boolean>;
 
   menuGetAll: IQueryCollectionState<IMenuGetAllRequest, IMenu>;
   menuGetList: IQueryCollectionState<IMenuListRequest, IMenuList>;

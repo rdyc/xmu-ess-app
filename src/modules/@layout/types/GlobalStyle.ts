@@ -1,6 +1,6 @@
-import { TextFieldProps } from '@material-ui/core/TextField';
+import { StandardTextFieldProps } from '@material-ui/core/TextField';
 
-const readOnly: Partial<TextFieldProps> = {
+const readOnly: Partial<StandardTextFieldProps> = {
   fullWidth: true,
   margin: 'dense',
   InputProps: {
