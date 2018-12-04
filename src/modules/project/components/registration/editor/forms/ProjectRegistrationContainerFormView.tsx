@@ -80,7 +80,7 @@ export const ProjectRegistrationContainerFormView: React.SFC<ProjectRegistration
         <Grid item xs={12} md={4}>
           <Grid container spacing={16}>
             {(formIsProject || formIsPresales) &&
-            <Grid item>
+            <Grid item md={12}>
               <FormSection name="document">
                 {formIsProject &&
                   <FieldArray
@@ -99,7 +99,7 @@ export const ProjectRegistrationContainerFormView: React.SFC<ProjectRegistration
             </Grid>
             }
 
-            <Grid item>
+            <Grid item md={12}>
               <FormSection name="sales">
                 <FieldArray 
                   name="employees" 

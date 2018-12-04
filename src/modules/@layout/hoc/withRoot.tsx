@@ -1,9 +1,9 @@
 import 'typeface-roboto';
 
+import MomentUtils from '@date-io/moment';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { createMuiTheme, MuiThemeProvider, Theme } from '@material-ui/core/styles';
-import MomentUtils from 'material-ui-pickers/utils/moment-utils';
-import MuiPickersUtilsProvider from 'material-ui-pickers/utils/MuiPickersUtilsProvider';
+import { MuiPickersUtilsProvider } from 'material-ui-pickers';
 import * as React from 'react';
 
 import { WithLayout, withLayout } from './withLayout';
@@ -41,6 +41,11 @@ theme.overrides = Object.assign(muiPickers);*/
 
 const themeOverides: Partial<Theme> = {
   overrides: { 
+    MuiCardHeader: {
+      subheader: {
+        fontSize: '85%'
+      }
+    },
     MuiExpansionPanelSummary: {
       expanded: {
         margin: 0
@@ -50,7 +55,11 @@ const themeOverides: Partial<Theme> = {
 };
 
 const layoutThemeView: React.SFC<WithLayout> = props => (
-  <MuiThemeProvider theme={createMuiTheme({...props.layoutState.theme, ...themeOverides})}>
+  <MuiThemeProvider theme={
+    createMuiTheme({
+      ...props.layoutState.theme, 
+      ...themeOverides
+    })}>
     <MuiPickersUtilsProvider utils={MomentUtils}>
       <CssBaseline />
       {props.children}

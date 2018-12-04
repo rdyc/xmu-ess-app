@@ -195,7 +195,7 @@ const handlerCreators: HandleCreators<TopBarProps, OwnHandler> = {
   getClassColor: (props: TopBarProps) => (): PropTypes.Color => {
     let result: PropTypes.Color = 'default';
 
-    if (props.layoutState.theme.palette.type !== 'dark') {
+    if (props.layoutState.theme.palette && props.layoutState.theme.palette.type !== 'dark') {
      if (props.mode === 'search' || (props.layoutState.isModeList && props.appBarState.selection.length > 0)) {
         result = 'inherit';
       } else {
