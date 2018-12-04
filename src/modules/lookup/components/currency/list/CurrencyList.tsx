@@ -128,12 +128,18 @@ const config: CollectionConfig<ICurrency, AllProps> = {
   // action component
   actionComponent: (item: ICurrency, callback: CollectionHandler) => (
     <React.Fragment>
+    <Button
+      size="small"
+      onClick={() => callback.handleRedirectTo(`/lookup/currency/form`, {currencyUid: item.uid})}
+    >
+      <FormattedMessage {...layoutMessage.action.modify} />
+    </Button>  
     <Button 
       size= "small"
       onClick = {() => callback.handleRedirectTo(`/lookup/currency/${item.uid}`)}
     >
       <FormattedMessage { ...layoutMessage.action.details } />
-    </Button>  
+    </Button>
 </React.Fragment>
   ),
 };
