@@ -17,7 +17,7 @@ import { ProjectAcceptanceDetailProps } from './ProjectAcceptanceDetail';
 const config: SingleConfig<IProjectAssignmentDetail, ProjectAcceptanceDetailProps> = {
   // page info
   page: (props: ProjectAcceptanceDetailProps) => ({
-    uid: AppMenu.ProjectAssignmentRequest,
+    uid: AppMenu.ProjectAssignmentAcceptance,
     parentUid: AppMenu.ProjectAssignment,
     title: props.intl.formatMessage(projectMessage.assignment.page.detailTitle),
     description: props.intl.formatMessage(projectMessage.assignment.page.detailSubHeader)

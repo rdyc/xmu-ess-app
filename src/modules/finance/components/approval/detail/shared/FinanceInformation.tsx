@@ -3,7 +3,7 @@ import { financeMessage } from '@finance/locales/messages/financeMessage';
 import { GlobalFormat } from '@layout/types';
 import { GlobalStyle } from '@layout/types/GlobalStyle';
 import { Button, Card, CardContent, CardHeader, InputAdornment, TextField } from '@material-ui/core';
-import { TextFieldProps } from '@material-ui/core/TextField';
+import { StandardTextFieldProps } from '@material-ui/core/TextField';
 import * as React from 'react';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose } from 'recompose';
@@ -20,7 +20,7 @@ type AllProps
 export const financeInformation: React.SFC<AllProps> = props => {
   const { data, intl, handleToDocument } = props;
 
-  const documentStyle: Partial<TextFieldProps> = {
+  const documentStyle: Partial<StandardTextFieldProps> = {
     fullWidth: true,
     margin: 'dense',
     InputProps: {

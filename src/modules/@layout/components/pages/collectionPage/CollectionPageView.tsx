@@ -90,7 +90,7 @@ export const CollectionPageView: React.SFC<CollectionPageProps> = props => (
                       <Grid container>
                         <Grid item xs={12} sm={8} md={3}>
                           <Typography
-                            variant="body1"
+                            variant="body2"
                             noWrap={true}
                             paragraph={false}
                           >
@@ -101,7 +101,7 @@ export const CollectionPageView: React.SFC<CollectionPageProps> = props => (
                         <Hidden xsDown>
                           <Grid item sm={4} md={3}>
                             <Typography 
-                              variant="body1"
+                              variant="body2"
                               noWrap={true}
                               paragraph={false}
                             >
@@ -111,7 +111,7 @@ export const CollectionPageView: React.SFC<CollectionPageProps> = props => (
 
                           <Grid item sm={8} md={3}>
                             <Typography 
-                              variant={isWidthDown('sm', props.width) ? 'caption' : 'body1'}
+                              variant={isWidthDown('sm', props.width) ? 'caption' : 'body2'}
                               noWrap={true}
                               paragraph={false}
                             >
@@ -122,7 +122,7 @@ export const CollectionPageView: React.SFC<CollectionPageProps> = props => (
 
                         <Grid item xs={12} sm={4} md={3}>
                           <Typography 
-                            variant={isWidthDown('sm', props.width) ? 'caption' : 'body1'}
+                            variant={isWidthDown('sm', props.width) ? 'caption' : 'body2'}
                             noWrap={true}
                             paragraph={false}
                           >
@@ -136,7 +136,7 @@ export const CollectionPageView: React.SFC<CollectionPageProps> = props => (
                       <Grid container>
                         <Grid item xs={12} md={6}>
                           <Typography 
-                            variant="body1"
+                            variant="body2"
                             noWrap={true}
                             paragraph={false} 
                             align={isWidthDown('sm', props.width) ? 'right' : 'inherit'}
@@ -147,7 +147,7 @@ export const CollectionPageView: React.SFC<CollectionPageProps> = props => (
 
                         <Grid item xs={12} md={6}>
                           <Typography
-                            variant={isWidthDown('sm', props.width) ? 'caption' : 'body1'}                            
+                            variant={isWidthDown('sm', props.width) ? 'caption' : 'body2'}                            
                             noWrap={true}
                             paragraph={false}
                             align="right"

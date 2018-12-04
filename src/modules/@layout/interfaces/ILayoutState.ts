@@ -1,10 +1,11 @@
 import { IAlert } from '@layout/interfaces/IAlert';
 import { IView } from '@layout/interfaces/IView';
+import { ThemeOptions } from '@material-ui/core/styles/createMuiTheme';
 
 import { Anchor } from '../types/Anchor';
 
 export interface ILayoutState {
-  readonly theme: any;
+  readonly theme: Partial<ThemeOptions>;
   readonly view: IView | undefined;
   readonly parentUrl: string | undefined;
   readonly anchor: Anchor;
