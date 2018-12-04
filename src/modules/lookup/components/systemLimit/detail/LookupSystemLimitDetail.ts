@@ -98,7 +98,7 @@ const handlerCreators: HandleCreators<SystemLimitDetailProps, OwnHandler> = {
     let systemLimitUid: string | undefined;
     let companyUid: string | undefined;
 
-    // get project uid
+    // get uid
     if (response.data) {
       systemLimitUid = response.data.uid;
       companyUid = response.data.companyUid;

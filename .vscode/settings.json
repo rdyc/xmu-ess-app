@@ -29,8 +29,9 @@
   "typescript.preferences.quoteStyle": "single",
   "breadcrumbs.enabled": false,
   "git.enableSmartCommit": true,
-  "workbench.iconTheme": "material-icon-theme",
+  "workbench.iconTheme": "vscode-icons",
   "prettier.singleQuote": true,
   "npm-scripts.showStartNotification": false,
   "editor.tabCompletion": "on",
+  "typescript.tsdk": "node_modules\\typescript\\lib",
 }

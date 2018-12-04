@@ -29,25 +29,18 @@ export const dashboardView: React.SFC<DashboardProps> = props => (
       </IconButton>
     </div>
     <div className={props.classes.marginWideBottom}>
-      <Typography variant="headline">
+      <Typography variant="h6">
         {props.intl.formatMessage(homeMessage.dashboard.section.notificationTitle)}
       </Typography>
-      <Typography variant="body1">
+      <Typography variant="body2">
         {props.intl.formatMessage(homeMessage.dashboard.section.notificationSubHeader)}
       </Typography>
     </div>
 
     {
       props.notificationState.loading &&
-      <Typography variant="body1">
+      <Typography variant="body2">
         Loading
-      </Typography>
-    }
-
-    {
-      !props.notificationState.result &&
-      <Typography variant="body1">
-        There are no notifications at this time
       </Typography>
     }
 
@@ -112,7 +105,7 @@ export const dashboardView: React.SFC<DashboardProps> = props => (
                                 secondary={`${item.uid} ${moment(item.date).fromNow()}`}
                                 primaryTypographyProps={{
                                   noWrap: true,
-                                  variant: 'body1'
+                                  variant: 'body2'
                                 }}
                                 secondaryTypographyProps={{
                                   variant: 'caption'

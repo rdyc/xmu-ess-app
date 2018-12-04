@@ -1,15 +1,5 @@
 import AppMenu from '@constants/AppMenu';
-import {
-  Collapse,
-  Divider,
-  List,
-  ListItem,
-  ListItemSecondaryAction,
-  ListItemText,
-  MenuItem,
-  MenuList,
-  Typography,
-} from '@material-ui/core';
+import { Collapse, Divider, List, ListItem, ListItemSecondaryAction, ListItemText } from '@material-ui/core';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import * as React from 'react';
@@ -19,7 +9,7 @@ import { NavigationMenuProps } from './NavigationMenu';
 export const navigationMenu: React.SFC<NavigationMenuProps> = props => (
   <List 
     disablePadding 
-    component="div"
+    component="nav"
   >
     {
       props.userState.user &&
@@ -28,13 +18,17 @@ export const navigationMenu: React.SFC<NavigationMenuProps> = props => (
           primary={props.userState.user.company.name}
           secondary={props.userState.user.position.name}
           primaryTypographyProps={{
-            variant: 'body1'
+            variant: 'body2',
+            color: 'inherit'
+          }}
+          secondaryTypographyProps={{
+            color: 'inherit'
           }}
         />
       </ListItem>
     }
 
-    <Divider />
+    <Divider light />
     
     <ListItem 
       button
@@ -43,29 +37,32 @@ export const navigationMenu: React.SFC<NavigationMenuProps> = props => (
       <ListItemText 
         primary="Home" 
         primaryTypographyProps={{
-          variant: 'body1'
+          variant: 'body2',
+          color: 'inherit'
         }}
       />
       <ListItemSecondaryAction>
-        {props.headerUid === AppMenu.Home ? <ExpandLess color="action" /> : <ExpandMore color="action" />}
+        {props.headerUid === AppMenu.Home ? <ExpandLess color="inherit" /> : <ExpandMore color="inherit" />}
       </ListItemSecondaryAction>
     </ListItem>
 
     <Collapse in={props.headerUid === AppMenu.Home}>
-      <MenuList>
-        <MenuItem
-          selected={props.childUid === AppMenu.Dashboard}
-          onClick={() => props.handleOnClickMenuItem(AppMenu.Home, AppMenu.Dashboard)}
-        >
-          <Typography
-            className={props.classes.marginFarLeft}
-            noWrap={true}
-            variant={'body1'}
-          >
-            {'Dashboard'}
-          </Typography>
-        </MenuItem>
-      </MenuList>
+      <ListItem
+        button
+        color={'inherit'}
+        selected={props.childUid === AppMenu.Dashboard}
+        onClick={() => props.handleOnClickMenuItem(AppMenu.Home, AppMenu.Dashboard)}
+      >
+        <ListItemText 
+          className={props.classes.marginFarLeft}
+          primary={'Dashboard'}
+          primaryTypographyProps={{
+            noWrap: true,
+            variant: 'body2',
+            color: 'inherit'
+          }}
+        />
+      </ListItem>
     </Collapse>
 
     {
@@ -75,46 +72,50 @@ export const navigationMenu: React.SFC<NavigationMenuProps> = props => (
         <div key={header.uid}>
           <ListItem
             button
+            color={'inherit'}
             onClick={() => props.handleOnClickMenuHeader(header.uid)}
           >
             <ListItemText 
               primary={header.name}
               primaryTypographyProps={{
                 noWrap: true,
-                variant: 'body1'
+                variant: 'body2',
+                color: 'inherit'
               }}
             />
             <ListItemSecondaryAction>
-              {props.headerUid === header.uid ? <ExpandLess color="action" /> : <ExpandMore color="action" />}
+              {props.headerUid === header.uid ? <ExpandLess color="inherit" /> : <ExpandMore color="inherit" />}
             </ListItemSecondaryAction>
           </ListItem>
           
           <Collapse in={props.headerUid === header.uid}>
-            <MenuList>          
-              {
-                header.childs &&
-                header.childs.map(child =>
-                  <MenuItem 
-                    key={child.uid} 
-                    selected={props.childUid === child.uid}
-                    onClick={() => props.handleOnClickMenuItem(header.uid, child.uid)}
-                  >
-                    <Typography
-                      className={props.classes.marginFarLeft}
-                      noWrap={true}
-                      variant={'body1'}
-                    >
-                      {child.name}
-                    </Typography>
-                  </MenuItem>
-                )
-              }
-            </MenuList>
+            {
+              header.childs &&
+              header.childs.map(child =>
+                <ListItem 
+                  key={child.uid}
+                  button
+                  color={'inherit'}
+                  selected={props.childUid === child.uid}
+                  onClick={() => props.handleOnClickMenuItem(header.uid, child.uid)}
+                >
+                  <ListItemText 
+                    className={props.classes.marginFarLeft}
+                    primary={child.name}
+                    primaryTypographyProps={{
+                      noWrap: true,
+                      variant: 'body2',
+                      color: 'inherit'
+                    }}
+                  />
+                </ListItem>
+              )
+            }
           </Collapse>
         </div>
       ))
     }
 
-    <Divider />
+    <Divider light />
   </List>
 );

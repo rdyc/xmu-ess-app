@@ -7,12 +7,16 @@ import { Route, RouteComponentProps, Switch } from 'react-router';
 import { LookupCompanyDetail } from './company/detail/LookupCompanyDetail';
 import LookupCompanyEditor from './company/editor/LookupCompanyEditor';
 import { LookupCompanyList } from './company/list/LookupCompanyList';
+import { LookupDiemDetail } from './diem/detail/LookupDiemDetail';
+import LookupDiemEditor from './diem/editor/LookupDiemEditor';
+import { LookupDiemList } from './diem/list/LookupDiemList';
 import { MileageExceptionDetail } from './mileageException/detail/MileageExceptionDetail';
 import MileageExceptionEditor from './mileageException/editor/MileageExceptionEditor';
 import { MileageExceptionList } from './mileageException/list/LookupMileageExceptionListView';
 import { LookupSystemLimitDetail } from './systemLimit/detail/LookupSystemLimitDetail';
 import LookupSystemLimitEditor from './systemLimit/editor/LookupSystemLimitEditor';
-import { LookupSystemLimitListView } from './systemLimit/list/LookupSystemLimitListView';
+// import { LookupSystemLimitListView } from './systemLimit/list/LookupSystemLimitListView';
+import LookupSystemLimitList from './systemLimit/list/LookupSystemLimitList';
 
 const company = (props: RouteComponentProps) => (
   <Switch>
@@ -42,7 +46,15 @@ const systemLimit = (props: RouteComponentProps) => (
   <Switch>
     <Route path={`${props.match.path}/form`} component={LookupSystemLimitEditor}/>
     <Route path={`${props.match.path}/:systemLimitUid`} component={LookupSystemLimitDetail} />
-    <Route path={`${props.match.path}`} component={LookupSystemLimitListView}/>
+    <Route path={`${props.match.path}`} component={LookupSystemLimitList}/>
+  </Switch>
+);
+
+const diem = (props: RouteComponentProps) => (
+  <Switch>
+    <Route path={`${props.match.path}/form`} component={LookupDiemEditor} />
+    <Route path={`${props.match.path}/list`} component={LookupDiemList} />
+    <Route path={`${props.match.path}/:diemUid`} component={LookupDiemDetail} />
   </Switch>
 );
 
@@ -53,6 +65,7 @@ export const LookupRoutingComponents: React.SFC<RouteComponentProps> = props => 
       <Route path={`${props.match.path}/systemlimits`} component={systemLimit} />
       <Route path={`${props.match.path}/mileageexceptions`} component={mileageException} />
       <Route path={`${props.match.path}/currency`} component={currency} />
+      <Route path={`${props.match.path}/diemvalue`} component={diem} />
     </Layout>
   </Switch>
 );

@@ -4,7 +4,7 @@ import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithNotification, withNotification } from '@layout/hoc/withNotification';
 import { IAppBarMenu } from '@layout/interfaces';
 import { PropTypes, WithStyles, withStyles, WithTheme, withTheme } from '@material-ui/core';
-import { WithWidth } from '@material-ui/core/withWidth';
+import withWidth, { WithWidth } from '@material-ui/core/withWidth';
 import styles from '@styles';
 import { RouteComponentProps, withRouter } from 'react-router';
 import {
@@ -13,6 +13,7 @@ import {
   lifecycle,
   mapper,
   ReactLifeCycleFunctions,
+  setDisplayName,
   StateHandler,
   StateHandlerMap,
   StateUpdaters,
@@ -194,11 +195,11 @@ const handlerCreators: HandleCreators<TopBarProps, OwnHandler> = {
   getClassColor: (props: TopBarProps) => (): PropTypes.Color => {
     let result: PropTypes.Color = 'default';
 
-    if (props.layoutState.theme.palette.type !== 'dark') {
-     if (props.mode === 'search' || props.appBarState.selection.length > 0) {
+    if (props.layoutState.theme.palette && props.layoutState.theme.palette.type !== 'dark') {
+     if (props.mode === 'search' || (props.layoutState.isModeList && props.appBarState.selection.length > 0)) {
         result = 'inherit';
       } else {
-        result = 'primary';
+        result = 'default';
       }
     }
 
@@ -249,25 +250,18 @@ const lifeCycles: ReactLifeCycleFunctions<TopBarProps, OwnState> = {
         }
       }
     }
-  },
-  // shouldComponentUpdate(nextProps: TopBarProps) {
-  //   let result: boolean = true;
-
-  //   if (nextProps.isOpenMenu !== this.props.isOpenMenu) {
-  //     result = false;
-  //   }
-
-  //   return result;
-  // }
+  }
 };
 
 export const TopBar = compose<TopBarProps, OwnOption>(
+  setDisplayName('TopBar'),
   withLayout,
   withNotification,
   withAppBar,
   withRouter,
   withTheme(),
   withStyles(styles),
+  withWidth(),
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
   lifecycle(lifeCycles)
