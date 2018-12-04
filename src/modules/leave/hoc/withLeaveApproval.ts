@@ -4,7 +4,7 @@ import {
   ILeaveApprovalGetByIdRequest,
   ILeaveApprovalPostRequest,
 } from '@leave/classes/queries/approval/';
-import { ILeaveRequest, ILeaveRequestDetail } from '@leave/classes/response';
+import { ILeave, ILeaveDetail } from '@leave/classes/response';
 import {
   leaveApprovalGetAllDispose,
   leaveApprovalGetAllRequest,
@@ -18,8 +18,8 @@ import { Dispatch } from 'redux';
 
 interface PropsFromState {
   leaveApprovalState: {
-    all: IQueryCollectionState<ILeaveApprovalGetAllRequest, ILeaveRequest>;
-    detail: IQuerySingleState<ILeaveApprovalGetByIdRequest, ILeaveRequestDetail>;
+    all: IQueryCollectionState<ILeaveApprovalGetAllRequest, ILeave>;
+    detail: IQuerySingleState<ILeaveApprovalGetByIdRequest, ILeaveDetail>;
   };
 }
 

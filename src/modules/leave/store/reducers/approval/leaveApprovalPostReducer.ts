@@ -1,10 +1,10 @@
 import { IQuerySingleState } from '@generic/interfaces';
 import { ILeaveApprovalPostRequest } from '@leave/classes/queries/approval';
-import { ILeaveRequest } from '@leave/classes/response';
+import { ILeave } from '@leave/classes/response';
 import { LeaveApprovalAction as Action } from '@leave/store/actions';
 import { Reducer } from 'redux';
 
-const initialState: IQuerySingleState<ILeaveApprovalPostRequest, ILeaveRequest> = {
+const initialState: IQuerySingleState<ILeaveApprovalPostRequest, ILeave> = {
   request: undefined,
   response: undefined,
   isError: false,
@@ -12,7 +12,7 @@ const initialState: IQuerySingleState<ILeaveApprovalPostRequest, ILeaveRequest> 
   errors: undefined,
 };
 
-const reducer: Reducer<IQuerySingleState<ILeaveApprovalPostRequest, ILeaveRequest>> = (state = initialState, action) => {
+const reducer: Reducer<IQuerySingleState<ILeaveApprovalPostRequest, ILeave>> = (state = initialState, action) => {
   switch (action.type) {
     case Action.POST_REQUEST: return { ...state, isLoading: true, request: action.payload };
     case Action.POST_SUCCESS: return { ...state, isLoading: false, response: action.payload };

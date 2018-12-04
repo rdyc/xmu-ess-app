@@ -1,4 +1,4 @@
-import { ILookupLeave } from '@lookup/classes';
+import { ILookupLeave } from '@lookup/classes/response';
 
 export interface ILeaveId {
   leaveRequestUid:      string;
