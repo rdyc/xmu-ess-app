@@ -11,7 +11,7 @@ export type CommonFormData = {
     parentCode: string | null | undefined;
     name: string | null | undefined;
     description: string | null | undefined;
-    isActive: boolean | true | undefined;
+    isActive: boolean | false ;
   },
 };
 

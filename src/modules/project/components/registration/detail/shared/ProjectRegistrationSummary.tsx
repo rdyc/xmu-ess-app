@@ -24,7 +24,6 @@ const summaryView: React.SFC<AllProps> = props => (
         {...GlobalStyle.TextField.ReadOnly}
         label={props.intl.formatMessage(projectMessage.registration.field.statusType)}
         value={props.data.status ? props.data.status.value : props.data.statusType}
-        helperText={props.data.statusType === WorkflowStatusType.Rejected ? props.data.rejectedReason || 'N/A' : undefined}
       />
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
@@ -80,10 +79,17 @@ const summaryView: React.SFC<AllProps> = props => (
       />
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
+        label={props.intl.formatMessage(projectMessage.registration.field.valueIdr)}
+        value={props.intl.formatNumber(props.data.valueIdr || 0)}
+      />
+      <TextField
+        {...GlobalStyle.TextField.ReadOnly}
         label={props.intl.formatMessage(projectMessage.registration.field.hours)}
         value={props.intl.formatNumber(props.data.maxHours)}
       />
-
+    </Grid>
+    
+    <Grid item xs={12} sm={6} md={3}>
       {
         props.data.statusType === WorkflowStatusType.Rejected &&
         <TextField
@@ -93,29 +99,29 @@ const summaryView: React.SFC<AllProps> = props => (
           value={props.data.rejectedReason || 'N/A'}
         />
       }
-    </Grid>
-    
-    {
-      props.data.changes &&
-      <Grid item xs={12} sm={6} md={3}>
-        <TextField
-          {...GlobalStyle.TextField.ReadOnly}
-          label={props.intl.formatMessage(layoutMessage.field.createdBy)}
-          value={props.data.changes.created && props.data.changes.created.fullName || 'N/A'}
-          helperText={props.intl.formatDate(props.data.changes.createdAt, GlobalFormat.DateTime) || 'N/A'}
-        />
-
-        {
-          (props.data.changes.updated && props.data.changes.updatedAt) &&
+      
+      {
+        props.data.changes &&
+        <React.Fragment>
           <TextField
             {...GlobalStyle.TextField.ReadOnly}
-            label={props.intl.formatMessage(layoutMessage.field.updatedBy)}
-            value={props.data.changes.updated.fullName || 'N/A'}
-            helperText={props.intl.formatDate(props.data.changes.updatedAt, GlobalFormat.DateTime) || 'N/A'}
+            label={props.intl.formatMessage(layoutMessage.field.createdBy)}
+            value={props.data.changes.created && props.data.changes.created.fullName || 'N/A'}
+            helperText={props.intl.formatDate(props.data.changes.createdAt, GlobalFormat.DateTime) || 'N/A'}
           />
-        }
-      </Grid>
-    }
+
+          {
+            (props.data.changes.updated && props.data.changes.updatedAt) &&
+            <TextField
+              {...GlobalStyle.TextField.ReadOnly}
+              label={props.intl.formatMessage(layoutMessage.field.updatedBy)}
+              value={props.data.changes.updated.fullName || 'N/A'}
+              helperText={props.intl.formatDate(props.data.changes.updatedAt, GlobalFormat.DateTime) || 'N/A'}
+            />
+          }
+        </React.Fragment>
+      }
+    </Grid>
   </Grid>
 );
 

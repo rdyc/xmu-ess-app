@@ -28,7 +28,7 @@ export const CommonEditorView: React.SFC<CommonEditorProps> = props => {
       parentCode: undefined,
       name: undefined,
       description: undefined,
-      isActive: undefined,
+      isActive: false,
     },
   };
 

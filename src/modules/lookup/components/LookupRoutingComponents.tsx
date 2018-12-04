@@ -15,7 +15,8 @@ import MileageExceptionEditor from './mileageException/editor/MileageExceptionEd
 import { MileageExceptionList } from './mileageException/list/LookupMileageExceptionListView';
 import { LookupSystemLimitDetail } from './systemLimit/detail/LookupSystemLimitDetail';
 import LookupSystemLimitEditor from './systemLimit/editor/LookupSystemLimitEditor';
-import { LookupSystemLimitListView } from './systemLimit/list/LookupSystemLimitListView';
+// import { LookupSystemLimitListView } from './systemLimit/list/LookupSystemLimitListView';
+import LookupSystemLimitList from './systemLimit/list/LookupSystemLimitList';
 
 const company = (props: RouteComponentProps) => (
   <Switch>
@@ -45,7 +46,7 @@ const systemLimit = (props: RouteComponentProps) => (
   <Switch>
     <Route path={`${props.match.path}/form`} component={LookupSystemLimitEditor}/>
     <Route path={`${props.match.path}/:systemLimitUid`} component={LookupSystemLimitDetail} />
-    <Route path={`${props.match.path}`} component={LookupSystemLimitListView}/>
+    <Route path={`${props.match.path}`} component={LookupSystemLimitList}/>
   </Switch>
 );
 

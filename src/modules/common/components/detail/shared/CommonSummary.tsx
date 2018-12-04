@@ -1,4 +1,5 @@
 import { ISystem } from '@common/classes/response';
+import { isWithCompany, isWithParent } from '@common/helper';
 import { commonMessage } from '@common/locales/messages/commonMessage';
 import { layoutMessage } from '@layout/locales/messages';
 import { GlobalFormat } from '@layout/types';
@@ -17,8 +18,7 @@ const styled = {
 
 interface OwnProps {
   data: ISystem;
-  withCompany: boolean;
-  withParent: boolean;
+  category?: string;
 }
 
 type AllProps
@@ -49,7 +49,7 @@ const commonSummary: React.SFC<AllProps> = props => (
       </Grid>
       <Grid item xs={12} sm={6} md={3}>
         {
-          props.withCompany &&
+          isWithCompany(props.category) &&
           <TextField
             {...styled}
             margin="dense"
@@ -58,7 +58,8 @@ const commonSummary: React.SFC<AllProps> = props => (
           />
         }
         {
-          props.withParent &&
+          
+          isWithParent(props.category) &&
           <TextField
             {...styled}
             margin="dense"

@@ -1,6 +1,7 @@
-import { isWithCompany, isWithParent } from '@common/classes/types';
+import { CommonCategory } from '@common/classes/types';
+import { isWithCompany, isWithParent } from '@common/helper';
 import { commonMessage } from '@common/locales/messages/commonMessage';
-import { Card, CardContent, CardHeader, Checkbox, FormControlLabel } from '@material-ui/core';
+import { Card, CardContent, CardHeader, Checkbox, FormControlLabel, TextField } from '@material-ui/core';
 import * as React from 'react';
 import { Field } from 'redux-form';
 import { CommonDetailFormProps } from './CommonDetailForm';
@@ -65,6 +66,15 @@ export const CommonDetailFormView: React.SFC<CommonDetailFormProps> = props => {
         subheader={intl.formatMessage(commonMessage.system.section.subTitle)}
       />
       <CardContent>
+        <TextField
+          fullWidth={true}
+          InputProps={{
+            disableUnderline: true,
+            readOnly: true
+          }}
+          label={props.intl.formatMessage(commonMessage.system.field.category)}
+          value={CommonCategory[category]}
+        />
         {names.map(name => renderField(name))}
       </CardContent>
     </Card>

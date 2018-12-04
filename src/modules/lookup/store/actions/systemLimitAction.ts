@@ -1,5 +1,5 @@
 import { IResponseCollection, IResponseSingle } from '@generic/interfaces';
-import { ISystemLimitAllRequest, ISystemLimitByIdRequest, ISystemLimitListRequest, ISystemLimitPostRequest, ISystemLimitPutRequest } from '@lookup/classes/queries';
+import { ISystemLimitAllRequest, ISystemLimitByIdRequest, ISystemLimitDeleteRequest, ISystemLimitListRequest, ISystemLimitPostRequest, ISystemLimitPutRequest } from '@lookup/classes/queries';
 import { ISystemLimit, ISystemLimitDetail, ISystemLimitList } from '@lookup/classes/response';
 import { action } from 'typesafe-actions';
 
@@ -23,7 +23,11 @@ export const enum SystemLimitAction {
   PUT_REQUEST = '@@lookup/systemLimit/PUT_REQUEST',
   PUT_SUCCESS = '@@lookup/systemLimit/PUT_SUCCESS',
   PUT_ERROR = '@@lookup/systemLimit/PUT_ERROR',
-  PUT_DISPOSE = '@@lookup/systemLimit/PUT_DISPOSE'
+  PUT_DISPOSE = '@@lookup/systemLimit/PUT_DISPOSE',
+  DELETE_REQUEST = '@@lookup/systemLimit/DELETE_REQUEST',
+  DELETE_SUCCESS = '@@lookup/systemLimit/DELETE_SUCCESS',
+  DELETE_ERROR = '@@lookup/systemLimit/DELETE_ERROR',
+  DELETE_DISPOSE = '@@lookup/systemLimit/DELETE_DISPOSE'
 }
 
 // get all
@@ -55,3 +59,9 @@ export const systemLimitPutRequest = (request: ISystemLimitPutRequest) => action
 export const systemLimitPutSuccess = (response: IResponseSingle<ISystemLimit>) => action(SystemLimitAction.PUT_SUCCESS, response);
 export const systemLimitPutError = (message: string) => action(SystemLimitAction.POST_ERROR, message);
 export const systemLimitPutDispose = () => action(SystemLimitAction.PUT_DISPOSE);
+
+// delete
+export const systemLimitDeleteRequest = (request: ISystemLimitDeleteRequest) => action(SystemLimitAction.DELETE_REQUEST, request);
+export const systemLimitDeleteSuccess = (response: IResponseSingle<ISystemLimit>) => action(SystemLimitAction.DELETE_SUCCESS, response);
+export const systemLimitDeleteError = (message: string) => action(SystemLimitAction.DELETE_ERROR, message);
+export const systemLimitDeleteDispose = () => action(SystemLimitAction.DELETE_DISPOSE);
