@@ -7,6 +7,9 @@ import { Route, RouteComponentProps, Switch } from 'react-router';
 import { LookupCompanyDetail } from './company/detail/LookupCompanyDetail';
 import LookupCompanyEditor from './company/editor/LookupCompanyEditor';
 import { LookupCompanyList } from './company/list/LookupCompanyList';
+import { LookupDiemDetail } from './diem/detail/LookupDiemDetail';
+import LookupDiemEditor from './diem/editor/LookupDiemEditor';
+import { LookupDiemList } from './diem/list/LookupDiemList';
 import { MileageExceptionDetail } from './mileageException/detail/MileageExceptionDetail';
 import MileageExceptionEditor from './mileageException/editor/MileageExceptionEditor';
 import { MileageExceptionList } from './mileageException/list/LookupMileageExceptionListView';
@@ -58,6 +61,14 @@ const position = (props: RouteComponentProps) => (
   </Switch>
 );
 
+const diem = (props: RouteComponentProps) => (
+  <Switch>
+    <Route path={`${props.match.path}/form`} component={LookupDiemEditor} />
+    <Route path={`${props.match.path}/list`} component={LookupDiemList} />
+    <Route path={`${props.match.path}/:diemUid`} component={LookupDiemDetail} />
+  </Switch>
+);
+
 export const LookupRoutingComponents: React.SFC<RouteComponentProps> = props => (
   <Switch>
     <Layout>
@@ -66,6 +77,7 @@ export const LookupRoutingComponents: React.SFC<RouteComponentProps> = props => 
       <Route path={`${props.match.path}/mileageexceptions`} component={mileageException} />
       <Route path={`${props.match.path}/currency`} component={currency} />
       <Route path={`${props.match.path}/position`} component={position} />
+      <Route path={`${props.match.path}/diemvalue`} component={diem} />
     </Layout>
   </Switch>
 );

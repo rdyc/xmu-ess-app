@@ -2,7 +2,7 @@ export * from './lookupCustomerActions';
 export * from './mileageExceptionActions';
 export * from './lookupRoleActions';
 export * from './lookupCompanyActions';
-export * from './diemActions';
+export * from './LookupDiemActions';
 export * from './menuActions';
 export * from './position/positionActions';
 export * from './holiday/holidayActions';
