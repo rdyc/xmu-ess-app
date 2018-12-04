@@ -28,7 +28,7 @@ export const navigationMenu: React.SFC<NavigationMenuProps> = props => (
       </ListItem>
     }
 
-    <Divider />
+    <Divider light />
     
     <ListItem 
       button
@@ -116,6 +116,6 @@ export const navigationMenu: React.SFC<NavigationMenuProps> = props => (
       ))
     }
 
-    <Divider />
+    <Divider light />
   </List>
 );
