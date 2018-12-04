@@ -112,11 +112,8 @@ const config: CollectionConfig<ICurrency, AllProps> = {
     primary: `${item.symbol}` ||  '',
     secondary: `${item.rate}` || '',
     tertiary: `${item.name}` || '',
-    quaternary: item.isActive ?
-        props.intl.formatMessage(lookupMessage.currency.field.isActive) :
-        props.intl.formatMessage(lookupMessage.currency.field.isNotActive)
-    ,
-    quinary: item.uid || '',
+    quaternary: `${item.uid }`,
+    quinary: item.changes && item.changes.updated && item.changes.updated.fullName || item.changes && item.changes.created && item.changes.created.fullName || 'N/A',
     senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
   }),
 
