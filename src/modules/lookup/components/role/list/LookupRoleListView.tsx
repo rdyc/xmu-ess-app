@@ -1,27 +1,27 @@
 import AppMenu from '@constants/AppMenu';
+import { DialogConfirmation } from '@layout/components/dialogs';
 import {
   CollectionConfig,
   CollectionDataProps,
   CollectionHandler,
   CollectionPage,
 } from '@layout/components/pages';
-import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
 import { IRole } from '@lookup/classes/response';
 import { RoleField, RoleUserAction } from '@lookup/classes/types';
-import { WithLookupRole, withLookupRole } from '@lookup/hoc/withLookupRole';
 import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
 import { Button } from '@material-ui/core';
 import * as moment from 'moment';
 import * as React from 'react';
-import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
-import { compose } from 'recompose';
+import { FormattedMessage } from 'react-intl';
 import { LookupRoleSumarry } from '../detail/shared/LookupRoleSummary';
+import { LookupRoleFilter } from './LookupRoleFilter';
+import { RoleListProps } from './LookupRoleList';
 
-const config: CollectionConfig<IRole, AllProps> = {
+const config: CollectionConfig<IRole, RoleListProps> = {
   // page info
-  page: (props: AllProps) => ({
+  page: (props: RoleListProps) => ({
     uid: AppMenu.LookupRole,
     parentUid: AppMenu.Lookup,
     title: props.intl.formatMessage(lookupMessage.role.page.listTitle),
@@ -38,7 +38,7 @@ const config: CollectionConfig<IRole, AllProps> = {
 
   // searching
   hasSearching: true,
-  searchStatus: (props: AllProps): boolean => {
+  searchStatus: (props: RoleListProps): boolean => {
     let result: boolean = false;
 
     const { request } = props.lookupRoleState.all;
@@ -55,7 +55,7 @@ const config: CollectionConfig<IRole, AllProps> = {
 
   // more
   hasMore: true,
-  moreOptions: (props: AllProps, callback: CollectionHandler): IAppBarMenu[] => ([
+  moreOptions: (props: RoleListProps, callback: CollectionHandler): IAppBarMenu[] => ([
     {
       id: RoleUserAction.Refresh,
       name: props.intl.formatMessage(layoutMessage.action.refresh),
@@ -79,7 +79,7 @@ const config: CollectionConfig<IRole, AllProps> = {
   },
 
   // events
-  onDataLoad: (props: AllProps, callback: CollectionHandler, params: CollectionDataProps, forceReload?: boolean | false) => {
+  onDataLoad: (props: RoleListProps, callback: CollectionHandler, params: CollectionDataProps, forceReload?: boolean | false) => {
     const { user } = props.userState;
     const { isLoading, response } = props.lookupRoleState.all;
     const { loadAllRequest } = props.lookupRoleDispatch;
@@ -105,13 +105,13 @@ const config: CollectionConfig<IRole, AllProps> = {
       }
     }
   },
-  onUpdated: (props: AllProps, callback: CollectionHandler) => {
+  onUpdated: (props: RoleListProps, callback: CollectionHandler) => {
     const { isLoading, response } = props.lookupRoleState.all;
 
     callback.handleLoading(isLoading);
     callback.handleResponse(response);
   },
-  onBind: (item: IRole, index: number, props: AllProps) => ({
+  onBind: (item: IRole, index: number, props: RoleListProps) => ({
     key: index,
     primary: item.uid,
     secondary: item.name,
@@ -121,21 +121,26 @@ const config: CollectionConfig<IRole, AllProps> = {
     senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
   }),
 
+  // filter
+  filterComponent: (callback: CollectionHandler) => (
+    <LookupRoleFilter handleFind={callback.handleFilter} />
+  ),
+
   // summary component
   summaryComponent: (item: IRole) => (
     <LookupRoleSumarry data={item} />
   ),
 
   // action component
-  actionComponent: (item: IRole, callback: CollectionHandler) => (
+  actionComponent: (item: IRole, callback: CollectionHandler, props: RoleListProps) => (
     <React.Fragment>
       <Button
         size="small"
-        onClick= {() => alert('go to new page here')}
+        onClick={() => props.handleOnDelete(item.uid, callback.handleForceReload)}
       >
-        Delete
+        <FormattedMessage {...layoutMessage.action.delete}/>
       </Button>
-      
+
       <Button
         size="small"
         onClick={() => callback.handleRedirectTo(`/lookup/roles/form`, { uid: item.uid, companyUid: item.companyUid })}
@@ -154,20 +159,31 @@ const config: CollectionConfig<IRole, AllProps> = {
 
 };
 
-type AllProps
-  = WithUser
-  & WithLookupRole
-  & InjectedIntlProps;
+// type AllProps
+//   = WithUser
+//   & WithLookupRole
+//   & InjectedIntlProps;
 
-const listView: React.SFC<AllProps> = props => (
+export const LookupRoleListView: React.SFC<RoleListProps> = props => (
   <CollectionPage
     config={config}
     connectedProps={props}
-  />
+  >
+    <DialogConfirmation
+      isOpen={props.dialogOpen}
+      fullScreen={props.dialogFullScreen}
+      title={props.dialogTitle}
+      content={props.dialogContent}
+      labelCancel={props.dialogCancelLabel}
+      labelConfirm={props.dialogConfirmLabel}
+      onClickCancel={props.handleOnCloseDialog}
+      onClickConfirm={props.handleSubmit}
+    />
+  </CollectionPage>
 );
 
-export const LookupRoleList = compose(
-  withUser,
-  withLookupRole,
-  injectIntl
-)(listView);
+// export const LookupRoleListView = compose(
+//   withUser,
+//   withLookupRole,
+//   injectIntl
+// )(listView);

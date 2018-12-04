@@ -11,7 +11,7 @@ import { MileageExceptionDetail } from './mileageException/detail/MileageExcepti
 import { MileageExceptionList } from './mileageException/list/LookupMileageExceptionListView';
 import { LookupRoleDetail } from './role/detail/LookupRoleDetail';
 import LookupRoleEditor from './role/editor/LookupRoleEditor';
-import { LookupRoleList } from './role/list/LookupRoleList';
+import LookupRoleList from './role/list/LookupRoleList';
 import { LookupSystemLimitDetail } from './systemLimit/detail/LookupSystemLimitDetail';
 import LookupSystemLimitEditor from './systemLimit/editor/LookupSystemLimitEditor';
 // import { LookupSystemLimitListView } from './systemLimit/list/LookupSystemLimitListView';
