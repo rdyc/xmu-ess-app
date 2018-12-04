@@ -1,41 +1,13 @@
 import {
-  holidayGetAllReducer,
-  holidayGetByIdReducer,
-  holidayGetListReducer,
-  leaveGetAllReducer,
-  leaveGetByIdReducer,
-  leaveGetListReducer,
-  leavePutReducer,
   menuGetAllReducer,
   menuGetByIdReducer,
   menuGetListReducer,
-  lookupHolidayGetAllReducer,
-  lookupHolidayGetByIdReducer,
-  lookupHolidayGetListReducer,
-  lookupLeaveDeleteReducer,
-  lookupLeaveGetAllReducer,
-  lookupLeaveGetByIdReducer,
-  lookupLeaveGetListReducer,
-  lookupLeavePostReducer,
-  lookupLeavePutReducer,
-  menuGetAllReducer,
-  menuGetByIdReducer,
-  menuGetListReducer,
-  positionGetAllReducer,
-  positionGetByIdReducer,
-  positionGetListReducer,
-  systemLimitGetAllReducer,
-  systemLimitGetByIdReducer,
-  systemLimitGetListReducer,
 } from '@lookup/store/reducers';
 
 import { lookupCompanyReducers } from './company';
 import { lookupCurrencyReducers } from './currency';
 import { lookupCustomerReducers } from './customer';
 import { lookupDiemReducers } from './diem';
-import { lookupHolidayDeleteReducer } from './holiday/lookupHolidayDeleteReducer';
-import { lookupHolidayPostReducer } from './holiday/lookupHolidayPostReducer';
-import { lookupHolidayPutReducer } from './holiday/lookupHolidayPutReducer';
 import { lookupHolidayReducers } from './holiday/lookupHolidayReducers';
 import { lookupLeaveReducers } from './leave/lookupLeaveReducers';
 import { mileageExceptionReducers } from './mileageException/mileageExceptionReducers';
@@ -48,7 +20,6 @@ const lookupReducers = {
   ...lookupCompanyReducers,
   ...lookupRoleReducers,
   ...lookupPositionReducers,
-  ...leaveReducers,
   ...lookupLeaveReducers,
   ...lookupHolidayReducers,
   ...mileageExceptionReducers,
@@ -59,35 +30,6 @@ const lookupReducers = {
   menuGetAll: menuGetAllReducer,
   menuGetById: menuGetByIdReducer,
   menuGetList: menuGetListReducer,
-  holidayGetAll: holidayGetAllReducer,
-  holidayGetList: holidayGetListReducer,
-  holidayGetById: holidayGetByIdReducer,
-
-  positionGetAll: positionGetAllReducer,
-  positionGetById: positionGetByIdReducer,
-  positionGetList: positionGetListReducer,
-
-  // currencyGetAll: currencyGetAllReducer,
-  // currencyGetList: currencyGetListReducer,
-  // currencyGetById: currencyGetByIdReducer,
-
-  systemLimitGetAll: systemLimitGetAllReducer,
-  systemLimitGetList: systemLimitGetListReducer,
-  systemLimitGetById: systemLimitGetByIdReducer,
-
-  lookupHolidayGetAll: lookupHolidayGetAllReducer,
-  lookupHolidayGetList: lookupHolidayGetListReducer,
-  lookupHolidayGetById: lookupHolidayGetByIdReducer,
-  lookupHolidayPost: lookupHolidayPostReducer,
-  lookupHolidayPut: lookupHolidayPutReducer,
-  lookupHolidayDelete: lookupHolidayDeleteReducer,
-
-  lookupLeaveGetAll: lookupLeaveGetAllReducer,
-  lookupLeaveGetList: lookupLeaveGetListReducer,
-  lookupLeaveGetById: lookupLeaveGetByIdReducer,
-  lookupLeavePost: lookupLeavePostReducer,
-  lookupLeavePut: lookupLeavePutReducer,
-  lookupLeaveDelete: lookupLeaveDeleteReducer,
 };
 
 export default lookupReducers;
