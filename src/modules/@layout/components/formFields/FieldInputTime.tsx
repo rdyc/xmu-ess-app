@@ -1,4 +1,4 @@
-import TimePicker from 'material-ui-pickers/TimePicker';
+import { TimePicker } from 'material-ui-pickers';
 import { Moment } from 'moment';
 import * as React from 'react';
 import { BaseFieldProps, WrappedFieldProps } from 'redux-form';
