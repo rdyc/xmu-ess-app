@@ -101,10 +101,10 @@ const config: CollectionConfig<ISettlement, AllProps> = {
   },
   onBind: (item: ISettlement, index: number, props: AllProps) => ({
     key: index,
-    primary: `${item.currency && item.currency.value} ${props.intl.formatNumber(item.actual || 0)}` ||  '',
+    primary: item.uid,
     secondary: item.projectUid || item.project && item.project.name || '',
     tertiary: item.customer && item.customer.name || item.customerUid || '',
-    quaternary: item.uid,
+    quaternary: `${props.intl.formatMessage(purchaseMessage.complement.symbolIDR)} ${props.intl.formatNumber(item.actualInIDR || 0)}` ||  '',
     quinary: item.status && item.status.value || item.statusType || '',
     senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
   }),
@@ -121,7 +121,7 @@ const config: CollectionConfig<ISettlement, AllProps> = {
       // onClick = {() => alert(`go to ${item.uid}`)}
       onClick={() => callback.handleRedirectTo(`/purchase/settlement/approvals/${item.uid}`)}
     >
-      <FormattedMessage { ...layoutMessage.action.approve } />
+      <FormattedMessage { ...layoutMessage.action.details } />
     </Button>
   )
 };

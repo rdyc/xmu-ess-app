@@ -20,11 +20,6 @@ import * as React from 'react';
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose } from 'recompose';
 
-// const purchaseFields: ICollectionValue[] = Object.keys(SettlementField).map(key => ({ 
-//   value: key, 
-//   name: SettlementField[key] 
-// }));
-
 const config: CollectionConfig<ISettlement, AllProps> = {
   // page info
   page: (props: AllProps) => ({
@@ -106,10 +101,10 @@ const config: CollectionConfig<ISettlement, AllProps> = {
   },
   onBind: (item: ISettlement, index: number, props: AllProps) => ({
     key: index,
-    primary: item.statusType !== null ? `${item.currency && item.currency.value} ${props.intl.formatNumber(item.actual || 0)}` : props.intl.formatMessage(purchaseMessage.action.settle),
+    primary: item.uid,
     secondary: item.projectUid || item.project && item.project.name || '',
     tertiary: item.customer && item.customer.name || item.customerUid || '',
-    quaternary: item.uid,
+    quaternary: item.statusType !== null ? `${props.intl.formatMessage(purchaseMessage.complement.symbolIDR)} ${props.intl.formatNumber(item.actualInIDR || 0)}` : props.intl.formatMessage(purchaseMessage.action.settle),
     quinary: item.status && item.status.value || item.statusType || '',
     senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
   }),

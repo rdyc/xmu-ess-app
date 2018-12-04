@@ -12,8 +12,8 @@ export interface IMileageExceptionDetail {
   role: ILookupRole;
   projectUid?: string | null;
   project?: ILookupProject | null;
-  projectSiteUid?: string | null;
-  projectSite?: ILookupProjectSite | null;
+  siteUid?: string | null;
+  site?: ILookupProjectSite | null;
   siteType?: string | null;
   type?: ICommonSystem | null;
   percentage: number;

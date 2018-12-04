@@ -133,7 +133,7 @@ export const menuLinkMapper = (menuUid: string) => {
       break;
 
     case 'MNU47':
-      path = '/lookup/timelimit/list';
+      path = '/lookup/systemlimits';
       break;
 
     case 'MNU48':
@@ -145,7 +145,7 @@ export const menuLinkMapper = (menuUid: string) => {
       break;
 
     case 'MNU53':
-      path = '/lookup/systemsetup/list';
+      path = '/common/system';
       break;
 
     case 'MNU54':
@@ -157,7 +157,7 @@ export const menuLinkMapper = (menuUid: string) => {
       break;
 
     case 'MNU59':
-      path = '/lookup/mileageexception';
+      path = '/lookup/mileageexceptions';
       break;
 
     default:

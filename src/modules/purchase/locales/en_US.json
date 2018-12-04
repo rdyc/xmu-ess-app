@@ -124,5 +124,8 @@
   "purchase.form.purchaseSettlement.editSubTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
   "purchase.form.s_approval.newTitle": "Settlement Approval Form",
   "purchase.form.s_approval.newSubTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-  "purchase.list.readySettle": "READY TO SETTLE"
+  "purchase.list.readySettle": "READY TO SETTLE",
+
+  "purchase.complement.symbol.idr": "IDR (Rp) ",
+  "purchase.complement.symbol.usd": "USD ($) "
 }

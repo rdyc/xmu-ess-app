@@ -1,6 +1,3 @@
-export * from './mileageException/mileageExceptionGetAllReducer';
-export * from './mileageException/mileageExceptionGetByIdReducer';
-export * from './mileageException/mileageExceptionGetListReducer';
 export * from './diem/diemGetAllReducer';
 export * from './diem/diemGetByIdReducer';
 export * from './diem/diemGetListReducer';
