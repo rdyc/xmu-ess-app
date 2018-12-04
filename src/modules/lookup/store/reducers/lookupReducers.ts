@@ -1,7 +1,4 @@
 import {
-  // currencyGetAllReducer,
-  // currencyGetByIdReducer,
-  // currencyGetListReducer,
   holidayGetAllReducer,
   holidayGetByIdReducer,
   holidayGetListReducer,
@@ -11,9 +8,6 @@ import {
   leavePutReducer,
   menuGetAllReducer,
   menuGetByIdReducer,
-  // positionGetAllReducer,
-  // positionGetByIdReducer,
-  // positionGetListReducer,
   menuGetListReducer,
 } from '@lookup/store/reducers';
 
@@ -42,15 +36,6 @@ const lookupReducers = {
   menuGetAll: menuGetAllReducer,
   menuGetById: menuGetByIdReducer,
   menuGetList: menuGetListReducer,
-
-  // positionGetAll: positionGetAllReducer,
-  // positionGetById: positionGetByIdReducer,
-  // positionGetList: positionGetListReducer,
-
-  // currencyGetAll: currencyGetAllReducer,
-  // currencyGetList: currencyGetListReducer,
-  // currencyGetById: currencyGetByIdReducer,
-
   holidayGetAll: holidayGetAllReducer,
   holidayGetList: holidayGetListReducer,
   holidayGetById: holidayGetByIdReducer,

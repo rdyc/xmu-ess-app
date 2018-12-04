@@ -8,7 +8,6 @@ import {
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
-import { GlobalFormat } from '@layout/types';
 import { IPosition } from '@lookup/classes/response/';
 import { PositionField, PositionUserAction } from '@lookup/classes/types';
 import { PositionSummary } from '@lookup/components/position/detail/shared/PositionSummary';
@@ -20,6 +19,7 @@ import * as moment from 'moment';
 import * as React from 'react';
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose } from 'recompose';
+import { PositionFilter } from './PositionFilter';
 
 const config: CollectionConfig<IPosition, AllProps> = {
   // page info
@@ -115,9 +115,14 @@ const config: CollectionConfig<IPosition, AllProps> = {
         props.intl.formatMessage(lookupMessage.position.field.isAllowed) :
         props.intl.formatMessage(lookupMessage.position.field.isNotAllowed)
     ,
-    quinary: item.inactiveDate ? props.intl.formatDate(item.inactiveDate, GlobalFormat.Date) : '',
+    quinary: item.changes && item.changes.updated && item.changes.updated.fullName || item.changes && item.changes.created && item.changes.created.fullName || 'N/A',
     senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
   }),
+
+  // filter
+  filterComponent: (callback: CollectionHandler) => (
+    <PositionFilter handleFind={callback.handleFilter} />
+  ),
 
   // summary component
   summaryComponent: (item: IPosition) => (
@@ -127,6 +132,12 @@ const config: CollectionConfig<IPosition, AllProps> = {
   // action component
   actionComponent: (item: IPosition, callback: CollectionHandler) => (
     <React.Fragment>
+    <Button 
+      size= "small"
+        onClick={() => callback.handleRedirectTo('/lookup/position/form', {companyUid: item.companyUid, uid: item.uid})}
+    >
+      <FormattedMessage { ...layoutMessage.action.modify } />
+    </Button>  
     <Button 
       size= "small"
         onClick={() => callback.handleRedirectTo(`/lookup/position/${item.companyUid}/${item.uid}`)}

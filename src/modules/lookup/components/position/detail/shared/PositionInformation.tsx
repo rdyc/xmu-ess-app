@@ -19,7 +19,7 @@ type AllProps
 const positionInformation: React.SFC<AllProps> = props => {
   const { data, intl } = props;
 
-  const allowedStatusStyle: Partial<TextFieldProps> = {
+  const allowedStatusStyle: TextFieldProps = {
     fullWidth: true,
     margin: 'dense',
     InputProps: {
@@ -49,16 +49,13 @@ const positionInformation: React.SFC<AllProps> = props => {
       <CardContent >
         <TextField
           {...allowedStatusStyle}
-          margin="dense"
           label={intl.formatMessage(lookupMessage.position.field.uid)}
-          // label={'Position ID'}
           value={data.uid}
         />
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
           margin="dense"
           label={intl.formatMessage(lookupMessage.position.field.name)}
-          // label={'Position Name'}
           value={data.name || 'N/A'}
           multiline
         />

@@ -18,6 +18,10 @@ const config: SingleConfig<IPositionDetail, PositionDetailProps> = {
     title: props.intl.formatMessage(lookupMessage.position.page.detailTitle),
     description: props.intl.formatMessage(lookupMessage.position.page.detailSubHeader)
   }),
+
+  // parent url
+  parentUrl: (props: PositionDetailProps) => '/lookup/position',
+
   // action centre
   showActionCentre: true,
   // more
