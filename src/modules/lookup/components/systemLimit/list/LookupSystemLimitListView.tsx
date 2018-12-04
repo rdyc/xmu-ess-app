@@ -31,18 +31,18 @@ const config: CollectionConfig<ISystemLimit, SystemLimitListProps> = {
   // fieldTranslator: ,
 
   // searching
-  hasSearching: true,
-  searchStatus: (props: SystemLimitListProps): boolean => {
-    let result: boolean = false;
+  // hasSearching: true,
+  // searchStatus: (props: SystemLimitListProps): boolean => {
+  //   let result: boolean = false;
 
-    const { request } = props.systemLimitState.all;
+  //   const { request } = props.systemLimitState.all;
 
-    if (request && request.filter && request.filter.find) {
-      result = request.filter.find ? true : false;
-    }
+  //   if (request && request.filter && request.filter.find) {
+  //     result = request.filter.find ? true : false;
+  //   }
 
-    return result;
-  },
+  //   return result;
+  // },
 
   // action centre
   showActionCentre: true,

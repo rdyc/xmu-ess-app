@@ -32,18 +32,18 @@ const config: CollectionConfig<IMileageException, AllProps> = {
   // fieldTranslator: mileageRequestFieldTranslator,
 
   // searching
-  hasSearching: true,
-  searchStatus: (props: AllProps): boolean => {
-    let result: boolean = false;
+  // hasSearching: true,
+  // searchStatus: (props: AllProps): boolean => {
+  //   let result: boolean = false;
 
-    const { request } = props.mileageExceptionState.all;
+  //   const { request } = props.mileageExceptionState.all;
 
-    if (request && request.filter && request.filter.find) {
-      result = request.filter.find ? true : false;
-    }
+  //   if (request && request.filter && request.filter.find) {
+  //     result = request.filter.find ? true : false;
+  //   }
 
-    return result;
-  },
+  //   return result;
+  // },
 
   // action centre
   showActionCentre: true,
