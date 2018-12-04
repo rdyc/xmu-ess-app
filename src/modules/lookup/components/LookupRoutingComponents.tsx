@@ -1,6 +1,12 @@
 import { Layout } from '@layout/components/base';
 import * as React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router';
+import { LookupCompanyDetail } from './company/detail/LookupCompanyDetail';
+import LookupCompanyEditor from './company/editor/LookupCompanyEditor';
+import { LookupCompanyList } from './company/list/LookupCompanyList';
+import { CurrencyDetail } from './currency/detail/CurrencyDetail';
+import { CurrencyEditor } from './currency/editor/CurrencyEditor';
+import { CurrencyList } from './currency/list/CurrencyList';
 import { MileageExceptionDetail } from './mileageException/detail/MileageExceptionDetail';
 import { MileageExceptionList } from './mileageException/list/LookupMileageExceptionListView';
 import { LookupRoleDetail } from './role/detail/LookupRoleDetail';
@@ -16,6 +22,21 @@ const role = (props: RouteComponentProps) => (
     <Route path={`${props.match.path}/form`} component={LookupRoleEditor} />
     <Route path={`${props.match.path}/list`} component={LookupRoleList} />
     <Route path={`${props.match.path}/:roleUid`} component={LookupRoleDetail} />
+  </Switch>
+);
+
+const company = (props: RouteComponentProps) => (
+  <Switch>
+    <Route path={`${props.match.path}/list`} component={LookupCompanyList} />
+    <Route path={`${props.match.path}/form`} component={LookupCompanyEditor} />
+    <Route path={`${props.match.path}/:companyUid`} component={LookupCompanyDetail} />
+  </Switch>
+);
+const currency = (props: RouteComponentProps) => (
+  <Switch>
+    <Route path={`${props.match.path}/form`} component={CurrencyEditor} />
+    <Route path={`${props.match.path}/:currencyUid`} component={CurrencyDetail} />
+    <Route path={`${props.match.path}`} component={CurrencyList} />
   </Switch>
 );
 
@@ -37,9 +58,11 @@ const systemLimit = (props: RouteComponentProps) => (
 export const LookupRoutingComponents: React.SFC<RouteComponentProps> = props => (
   <Switch>
     <Layout>
-      <Route path={`${props.match.path}/roles`} component={role} />
-      <Route path={`${props.match.path}/mileageexception`} component={mileageException} />
+      <Route path={`${props.match.path}/company`} component={company} />
       <Route path={`${props.match.path}/systemlimits`} component={systemLimit} />
+      <Route path={`${props.match.path}/mileageexception`} component={mileageException} />
+      <Route path={`${props.match.path}/currency`} component={currency} />
+      <Route path={`${props.match.path}/roles`} component={role} />
     </Layout>
   </Switch>
 );
