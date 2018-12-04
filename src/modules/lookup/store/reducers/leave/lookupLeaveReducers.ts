@@ -6,10 +6,10 @@ import { lookupLeavePostReducer } from './lookupLeavePostReducer';
 import { lookupLeavePutReducer } from './lookupLeavePutReducer';
 
 export const lookupLeaveReducers = {
-  leaveGetAll: lookupLeaveGetAllReducer,
-  leaveGetList: lookupLeaveGetListReducer,
-  leaveGetById: lookupLeaveGetByIdReducer,
-  leavePost: lookupLeavePostReducer,
-  leavePut: lookupLeavePutReducer,
-  leaveDelete: lookupLeaveDeleteReducer
+  lookupLeaveGetAll: lookupLeaveGetAllReducer,
+  lookupLeaveGetList: lookupLeaveGetListReducer,
+  lookupLeaveGetById: lookupLeaveGetByIdReducer,
+  lookupLeavePost: lookupLeavePostReducer,
+  lookupLeavePut: lookupLeavePutReducer,
+  lookupLeaveDelete: lookupLeaveDeleteReducer
 };
