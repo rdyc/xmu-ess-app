@@ -8,8 +8,8 @@ import {
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
-import { ICompany } from '@lookup/classes/response';
-import { CompanyField, CompanyUserAction } from '@lookup/classes/types';
+import { ICompany } from '@lookup/classes/response/company';
+import { CompanyField, CompanyUserAction } from '@lookup/classes/types/company';
 import { WithLookupCompany, withLookupCompany } from '@lookup/hoc/withLookupCompany';
 import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
 import { Button } from '@material-ui/core';
@@ -72,12 +72,6 @@ const config: CollectionConfig<ICompany, AllProps> = {
     }
   ]),
 
-  // data filter
-  filter: {
-    orderBy: 'uid',
-    direction: 'descending'
-  },
-
   // events
   onDataLoad: (props: AllProps, callback: CollectionHandler, params: CollectionDataProps, forceReload?: boolean | false) => {
     const { user } = props.userState;
@@ -116,7 +110,7 @@ const config: CollectionConfig<ICompany, AllProps> = {
     secondary: item.code,
     tertiary: '',
     quaternary: item.uid,
-    quinary: '',
+    quinary: item.changes && item.changes.updated && item.changes.updated.fullName || item.changes && item.changes.created && item.changes.created.fullName || 'N/A',
     senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
   }),
 
@@ -132,7 +126,7 @@ const config: CollectionConfig<ICompany, AllProps> = {
         size="small"
         onClick= {() => alert('go to new page here')}
       >
-        Delete
+        <FormattedMessage {...layoutMessage.action.delete}/>
       </Button>
       
       <Button
