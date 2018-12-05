@@ -194,7 +194,7 @@ const lifecycles: ReactLifeCycleFunctions<WinningRatioProps, OwnState> = {
     const { isLoading, response } = this.props.summaryState.winning;
 
     layoutDispatch.changeView({
-      uid: AppMenu.ReportProgress,
+      uid: AppMenu.ReportWinningRatio,
       parentUid: AppMenu.Report,
       title: intl.formatMessage(summaryMessage.winningRatio.page.title),
       subTitle: intl.formatMessage(summaryMessage.winningRatio.page.subHeader)
