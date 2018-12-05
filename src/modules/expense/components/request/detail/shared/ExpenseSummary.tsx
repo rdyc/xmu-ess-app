@@ -112,7 +112,7 @@ const expenseSummary: React.SFC<AllProps> = props => (
           {...styled}
           margin="dense"
           label={props.intl.formatMessage(expenseMessage.request.field.value)}
-          value={props.intl.formatNumber(props.data.value || 0)}
+          value={`${props.intl.formatMessage(layoutMessage.text.idr)}${props.intl.formatNumber(props.data.value || 0)}`}
         />
       </Grid>
       {

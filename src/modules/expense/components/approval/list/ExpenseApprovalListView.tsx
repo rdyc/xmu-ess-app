@@ -113,7 +113,7 @@ const config: CollectionConfig<IExpense, AllProps> = {
     primary: item.uid,
     secondary: item.notes && item.notes || '',
     tertiary: item.customer && item.customer.name || item.customerUid,
-    quaternary: props.intl.formatNumber(item.value),
+    quaternary: `${props.intl.formatMessage(layoutMessage.text.idr)}${props.intl.formatNumber(item.value)}`,
     quinary: item.status && item.status.value || item.statusType,
     senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
   }),
