@@ -14,6 +14,7 @@ import * as React from 'react';
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose } from 'recompose';
 import { LookupCustomerSummary } from '../detail/shared/LookupCustomerSummary';
+import { LookupCustomerFilter } from './LookupCustomerFilter';
 
 const config: CollectionConfig<ICustomer, AllProps> = {
   // page info
@@ -112,6 +113,11 @@ const config: CollectionConfig<ICustomer, AllProps> = {
     quinary: item.email ? item.email : 'N/A',
     senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
   }),
+
+  // filter
+  filterComponent: (callback: CollectionHandler) => (
+    <LookupCustomerFilter handleFind={callback.handleFilter}/>
+  ),
 
   // summary component
   summaryComponent: (item: ICustomer) => ( 
