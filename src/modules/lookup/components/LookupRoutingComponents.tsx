@@ -15,7 +15,7 @@ import LookupCustomerEditor from './customer/editor/LookupCustomerEditor';
 import LookupCustomerList  from './customer/list/LookupCustomerList';
 import { LookupDiemDetail } from './diem/detail/LookupDiemDetail';
 import LookupDiemEditor from './diem/editor/LookupDiemEditor';
-import { LookupDiemList } from './diem/list/LookupDiemList';
+import LookupDiemList from './diem/list/LookupDiemList';
 import LookupHolidayEditor from './holiday/editor/LookupHolidayEditor';
 import LookupHolidayList from './holiday/list/LookupHolidayList';
 import LookupLeaveEditor from './leave/editor/LookupLeaveEditor';

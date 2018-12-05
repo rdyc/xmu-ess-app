@@ -46,7 +46,7 @@
   "timesheet.entry.field.mileageDescription": "Mileage Description",
   "timesheet.entry.field.mileageReason": "Mileage Reason",
   "timesheet.entry.field.mileageException": "Mileage Exception",
-  "timesheet.entry.field.siteValue": "Site Value",
+  "timesheet.entry.field.siteValue": "Site Value (IDR)",
   "timesheet.entry.field.totalHours": "Total Hours",
   "timesheet.entry.field.rejectReason": "Rejected Reason",
   "timesheet.entry.field.statusType": "Status",

@@ -1,9 +1,11 @@
 import { IAppState, IQueryCollectionState, IQuerySingleState } from '@generic/interfaces';
-import { ILookupDiemAllRequest, ILookupDiemDetailRequest, ILookupDiemListRequest } from '@lookup/classes/queries/diem';
+import { ILookupDiemAllRequest, ILookupDiemDeleteRequest, ILookupDiemDetailRequest, ILookupDiemListRequest } from '@lookup/classes/queries/diem';
 import { ILookupDiemPostRequest } from '@lookup/classes/queries/diem/ILookupDiemPostRequest';
 import { ILookupDiemPutRequest } from '@lookup/classes/queries/diem/ILookupDiemPutRequest';
 import { IDiem, IDiemDetail, IDiemList } from '@lookup/classes/response';
 import { 
+  lookupDiemDeleteDispose, 
+  lookupDiemDeleteRequest, 
   lookupDiemGetAllDispose, 
   lookupDiemGetAllRequest, 
   lookupDiemGetByIdDispose, 
@@ -12,8 +14,8 @@ import {
   lookupDiemGetListRequest, 
   lookupDiemPostDispose, 
   lookupDiemPostRequest, 
-  lookupDiemPutDispose, 
-  lookupDiemPutRequest 
+  lookupDiemPutDispose,
+  lookupDiemPutRequest
 } from '@lookup/store/actions';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
@@ -33,6 +35,8 @@ interface PropsFromDispatch {
     createDispose: typeof lookupDiemPostDispose;
     updateRequest: typeof lookupDiemPutRequest;
     updateDispose: typeof lookupDiemPutDispose;
+    deleteRequest: typeof lookupDiemDeleteRequest;
+    deleteDispose: typeof lookupDiemDeleteDispose;
 
     // query
     loadAllRequest: typeof lookupDiemGetAllRequest;
@@ -61,6 +65,9 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     createDispose: () => dispatch(lookupDiemPostDispose()),
     updateRequest: (request: ILookupDiemPutRequest) => dispatch(lookupDiemPutRequest(request)),
     updateDispose: () => dispatch(lookupDiemPutDispose()),
+
+    deleteRequest: (request: ILookupDiemDeleteRequest) => dispatch(lookupDiemDeleteRequest(request)),
+    deleteDispose: () => dispatch(lookupDiemDeleteDispose()),
     
     // query
     loadAllRequest: (request: ILookupDiemAllRequest) => dispatch(lookupDiemGetAllRequest(request)),
