@@ -9,7 +9,7 @@ import * as React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router';
 import { LookupCompanyDetail } from './company/detail/LookupCompanyDetail';
 import LookupCompanyEditor from './company/editor/LookupCompanyEditor';
-import { LookupCompanyList } from './company/list/LookupCompanyList';
+import LookupCompanyList from './company/list/LookupCompanyList';
 import { LookupDiemDetail } from './diem/detail/LookupDiemDetail';
 import LookupDiemEditor from './diem/editor/LookupDiemEditor';
 import LookupDiemList from './diem/list/LookupDiemList';
