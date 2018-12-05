@@ -1,5 +1,5 @@
 import { IResponseCollection, IResponseSingle } from '@generic/interfaces';
-import { IPositionGetAllRequest, IPositionGetByIdRequest, IPositionListRequest, IPositionPostRequest, IPositionPutRequest } from '@lookup/classes/queries';
+import { IPositionDeleteRequest, IPositionGetAllRequest, IPositionGetByIdRequest, IPositionGetListRequest, IPositionPostRequest, IPositionPutRequest } from '@lookup/classes/queries';
 import { IPosition, IPositionDetail, IPositionList } from '@lookup/classes/response';
 import { action } from 'typesafe-actions';
 
@@ -24,6 +24,10 @@ export const enum PositionAction {
   PUT_SUCCESS = '@@position/PUT_SUCCESS',
   PUT_ERROR = '@@position/PUT_ERROR',
   PUT_DISPOSE = '@@position/PUT_DISPOSE',
+  DELETE_REQUEST = '@@position/DELETE_REQUEST',
+  DELETE_SUCCESS = '@@position/DELETE_SUCCESS',
+  DELETE_ERROR = '@@position/DELETE_ERROR',
+  DELETE_DISPOSE = '@@position/DELETE_DISPOSE',
 }
 
 // get all
@@ -33,7 +37,7 @@ export const positionGetAllError = (message: string) => action(PositionAction.GE
 export const positionGetAllDispose = () => action(PositionAction.GET_ALL_DISPOSE);
 
 // get list
-export const positionGetListRequest = (request: IPositionListRequest) => action(PositionAction.GET_LIST_REQUEST, request);
+export const positionGetListRequest = (request: IPositionGetListRequest) => action(PositionAction.GET_LIST_REQUEST, request);
 export const positionGetListSuccess = (response: IResponseCollection<IPositionList>) => action(PositionAction.GET_LIST_SUCCESS, response);
 export const positionGetListError = (message: string) => action(PositionAction.GET_LIST_ERROR, message);
 export const positionGetListDispose = () => action(PositionAction.GET_LIST_DISPOSE);
@@ -55,3 +59,8 @@ export const positionPutRequest = (request: IPositionPutRequest) => action(Posit
 export const positionPutSuccess = (response: IResponseSingle<IPosition>) => action(PositionAction.PUT_SUCCESS, response);
 export const positionPutError = (message: string) => action(PositionAction.PUT_ERROR, message);
 export const positionPutDispose = () => action(PositionAction.PUT_DISPOSE);
+
+export const positionDeleteRequest = (request: IPositionDeleteRequest) => action(PositionAction.DELETE_REQUEST, request);
+export const positionDeleteSuccess = (response: boolean) => action(PositionAction.DELETE_SUCCESS, response);
+export const positionDeleteError = (message: string) => action(PositionAction.DELETE_ERROR, message);
+export const positionDeleteDispose = () => action(PositionAction.DELETE_DISPOSE);

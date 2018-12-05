@@ -21,7 +21,9 @@ import {
   IMileageExceptionPutRequest,
   IPositionGetAllRequest,
   IPositionGetByIdRequest,
-  IPositionListRequest,
+  IPositionGetListRequest,
+  IPositionPostRequest,
+  IPositionPutRequest,
   ISystemLimitAllRequest,
   ISystemLimitByIdRequest,
   ISystemLimitDeleteRequest,
@@ -97,6 +99,7 @@ import {
   // ICurrencyDeleteRequest,
   ICurrencyPostRequest, ICurrencyPutRequest } from '../queries/currency';
 import { ILookupCustomerDeleteRequest, ILookupCustomerPostRequest, ILookupCustomerPutRequest } from '../queries/customer';
+import { IPositionDeleteRequest } from '../queries/position/IPositionDeleteRequest';
 
 export interface ILookupState {
   lookupCustomerGetAll: IQueryCollectionState<ILookupCustomerGetAllRequest, ICustomer>;
@@ -135,8 +138,11 @@ export interface ILookupState {
   menuGetById: IQuerySingleState<IMenuGetByIdRequest, IMenuDetail>;
 
   positionGetAll: IQueryCollectionState<IPositionGetAllRequest, IPosition>;
-  positionGetList: IQueryCollectionState<IPositionListRequest, IPositionList>;
+  positionGetList: IQueryCollectionState<IPositionGetListRequest, IPositionList>;
   positionGetById: IQuerySingleState<IPositionGetByIdRequest, IPositionDetail>;
+  positionPost: IQuerySingleState<IPositionPostRequest, IPosition>;
+  positionPut: IQuerySingleState<IPositionPutRequest, IPosition>;
+  positionDelete: IQuerySingleState<IPositionDeleteRequest, boolean>;
 
   currencyGetAll: IQueryCollectionState<ICurrencyGetAllRequest, ICurrency>;
   currencyGetList: IQueryCollectionState<ICurrencyGetListRequest, ICurrencyList>;
