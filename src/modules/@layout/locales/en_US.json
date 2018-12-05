@@ -3,7 +3,7 @@
   "layout.text.processing": "Processing",
   "layout.text.dataInfo": "{total} record(s)",
   "layout.text.pagingInfo": "{current} of {total}",
-  "layout.text.idr": "IDR (RP) ",
+  "layout.text.idr": "IDR",
   "layout.text.active": "Active",
   "layout.text.inactive": "Inactive",
   
