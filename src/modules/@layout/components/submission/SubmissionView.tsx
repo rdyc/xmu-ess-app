@@ -1,3 +1,4 @@
+import { DialogConfirmation } from '@layout/components/dialogs';
 import { SubmissionProps } from '@layout/components/submission/Submission';
 import { Button, Card, CardActions, CardHeader } from '@material-ui/core';
 import * as React from 'react';
@@ -19,9 +20,10 @@ export const SubmissionView: React.SFC<SubmissionProps> = props => (
         <FormattedMessage id={props.labelReset || 'global.action.reset' } />
       </Button>
       <Button 
-        type="submit"
+        type={props.withSubmitDialog ? 'button' : 'submit'}
         color="secondary"
         disabled={!props.valid || props.submitting}
+        onClick={props.withSubmitDialog ? () => props.handleDialogOpen() : undefined}
       >
         <FormattedMessage id={props.submitting ? 
           props.labelProcessing || 'global.processing' 
@@ -29,6 +31,17 @@ export const SubmissionView: React.SFC<SubmissionProps> = props => (
           props.labelSubmit || 'global.action.submit' } 
         />
       </Button>
+
+      <DialogConfirmation
+        title={props.submitDialogTitle}
+        content={props.submitDialogContentText}
+        labelCancel={props.submitDialogCancelText}
+        labelConfirm={props.submitDialogConfirmedText}
+        isOpen={props.isOpenDialog}
+        fullScreen={props.submitDialogFullScreen}
+        onClickCancel={props.handleDialogClose}
+        onClickConfirm={props.handleDialogConfirmed}
+      />
     </CardActions>
   </Card>
 );
