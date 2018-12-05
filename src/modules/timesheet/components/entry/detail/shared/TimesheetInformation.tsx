@@ -68,7 +68,7 @@ const timesheetInformation: React.SFC<AllProps> = props => {
           <TextField
             {...GlobalStyle.TextField.ReadOnly}
             label={props.intl.formatMessage(timesheetMessage.entry.field.siteValue)}
-            value={props.intl.formatNumber(props.data.site ? props.data.site.value : 0)}
+            value={props.intl.formatNumber(props.data.site ? props.data.site.value : 0, GlobalFormat.CurrencyDefault)}
           />
         }
         <TextField
