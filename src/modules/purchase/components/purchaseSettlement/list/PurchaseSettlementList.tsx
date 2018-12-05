@@ -3,6 +3,7 @@ import { CollectionConfig, CollectionDataProps, CollectionHandler, CollectionPag
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
+import { GlobalFormat } from '@layout/types';
 import { Button } from '@material-ui/core';
 import { ISettlement } from '@purchase/classes/response/purchaseSettlement';
 import { PurchaseUserAction, SettlementField } from '@purchase/classes/types';
@@ -100,7 +101,7 @@ const config: CollectionConfig<ISettlement, AllProps> = {
     primary: item.uid,
     secondary: item.projectUid || item.project && item.project.name || '',
     tertiary: item.customer && item.customer.name || item.customerUid || '',
-    quaternary: item.statusType !== null ? `${props.intl.formatMessage(purchaseMessage.complement.symbolIDR)} ${props.intl.formatNumber(item.actualInIDR || 0)}` : props.intl.formatMessage(purchaseMessage.action.settle),
+    quaternary: item.actualInIDR && `${props.intl.formatNumber(item.actualInIDR, GlobalFormat.CurrencyDefault)}` || props.intl.formatMessage(purchaseMessage.action.settle),
     quinary: item.status && item.status.value || item.statusType || '',
     senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
   }),
