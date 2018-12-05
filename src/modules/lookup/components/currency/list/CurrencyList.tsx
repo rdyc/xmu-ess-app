@@ -127,7 +127,7 @@ const config: CollectionConfig<ICurrency, AllProps> = {
     <React.Fragment>
     <Button
       size="small"
-      onClick={() => callback.handleRedirectTo(`/lookup/currency/form`, {currencyUid: item.uid})}
+      onClick={() => callback.handleRedirectTo(`/lookup/currency/form`, {uid: item.uid})}
     >
       <FormattedMessage {...layoutMessage.action.modify} />
     </Button>  
