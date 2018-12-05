@@ -21,15 +21,7 @@ const config: SingleConfig<IExpenseDetail, ExpenseApprovalDetailProps> = {
   }),
 
   // parent url
-  parentUrl: (props: ExpenseApprovalDetailProps) => {
-    let path = '';
-    if (props.location.state && props.location.state.financeUid) {
-      path = `/finance/approvals/${props.location.state.financeUid}`;
-    } else {
-      path = '/expense/approvals';
-    }
-    return path;
-  },
+  parentUrl: (props: ExpenseApprovalDetailProps) => '/expense/approvals',
   
   // action centre
   showActionCentre: true,

@@ -80,7 +80,7 @@ const handlerCreators: HandleCreators<FinanceApprovalDetailProps, OwnHandler> = 
 
     }
 
-    history.push(`/${path}/${documentUid}`, {financeUid: props.match.params.financeUid});
+    history.push(`/${path}/${documentUid}`);
   }
 };
 

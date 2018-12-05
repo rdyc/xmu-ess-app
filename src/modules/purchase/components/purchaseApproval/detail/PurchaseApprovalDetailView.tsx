@@ -22,15 +22,7 @@ const config: SingleConfig<IPurchaseDetail, PurchaseApprovalDetailProps> = {
   }),
 
   // parent url
-  parentUrl: (props: PurchaseApprovalDetailProps) => {
-    let path = '';
-    if (props.location.state && props.location.state.financeUid) {
-      path = `/finance/approvals/${props.location.state.financeUid}`;
-    } else {
-      path = '/purchase/approvals';
-    }
-    return path;
-  },
+  parentUrl: (props: PurchaseApprovalDetailProps) => '/purchase/approvals',
 
   // action centre
   showActionCentre: true,

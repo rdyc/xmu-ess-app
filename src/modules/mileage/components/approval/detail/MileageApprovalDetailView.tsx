@@ -31,15 +31,7 @@ const config: SingleConfig<IMileageRequestDetail, MileageApprovalDetailProps> = 
   }),
 
   // parent url
-  parentUrl: (props: MileageApprovalDetailProps) => {
-    let path = '';
-    if (props.location.state && props.location.state.financeUid) {
-      path = `/finance/approvals/${props.location.state.financeUid}`;
-    } else {
-      path = '/mileage/approvals';
-    }
-    return path;
-  },
+  parentUrl: (props: MileageApprovalDetailProps) => '/mileage/approvals',
 
   // action centre
   showActionCentre: true,

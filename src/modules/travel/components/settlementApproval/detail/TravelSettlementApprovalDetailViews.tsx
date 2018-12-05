@@ -26,15 +26,7 @@ const config: SingleConfig<ITravelSettlementDetail, TravelSettlementApprovalDeta
   }),
 
   // parent url
-  parentUrl: (props: TravelSettlementApprovalDetailProps) => {
-    let path = '';
-    if (props.location.state && props.location.state.financeUid) {
-      path = `/finance/approvals/${props.location.state.financeUid}`;
-    } else {
-      path = '/travel/settlement/approvals';
-    }
-    return path;
-  },
+  parentUrl: (props: TravelSettlementApprovalDetailProps) => '/travel/settlement/approvals',
   
   // action centre
   showActionCentre: true,
