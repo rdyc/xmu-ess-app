@@ -14,6 +14,7 @@ import {
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
+import { GlobalFormat } from '@layout/types';
 import { Button } from '@material-ui/core';
 import * as moment from 'moment';
 import * as React from 'react';
@@ -113,7 +114,7 @@ const config: CollectionConfig<IExpense, AllProps> = {
     primary: item.uid,
     secondary: item.notes && item.notes || '',
     tertiary: item.customer && item.customer.name || item.customerUid,
-    quaternary: `${props.intl.formatMessage(layoutMessage.text.idr)}${props.intl.formatNumber(item.value)}`,
+    quaternary: props.intl.formatNumber(item.value, GlobalFormat.CurrencyDefault),
     quinary: item.status && item.status.value || item.statusType,
     senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
   }),

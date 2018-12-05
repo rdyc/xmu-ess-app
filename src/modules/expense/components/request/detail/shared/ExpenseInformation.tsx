@@ -1,6 +1,5 @@
 import { IExpenseDetail } from '@expense/classes/response';
 import { expenseMessage } from '@expense/locales/messages/expenseMessage';
-import { layoutMessage } from '@layout/locales/messages';
 import { GlobalFormat } from '@layout/types';
 import { GlobalStyle } from '@layout/types/GlobalStyle';
 import { Card, CardContent, CardHeader, TextField } from '@material-ui/core';
@@ -61,7 +60,7 @@ export const expenseInformation: React.SFC<AllProps> = props => {
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
           label={props.intl.formatMessage(expenseMessage.request.field.value)}
-          value={`${props.intl.formatMessage(layoutMessage.text.idr)}${intl.formatNumber(data.value || 0)}`}
+          value={intl.formatNumber(data.value || 0, GlobalFormat.CurrencyDefault)}
         />
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
