@@ -10,6 +10,7 @@ import { layoutMessage } from '@layout/locales/messages';
 import { Button } from '@material-ui/core';
 import { ISettlement } from '@purchase/classes/response/purchaseSettlement';
 import { PurchaseUserAction, SettlementField } from '@purchase/classes/types';
+import { PurchaseSettlementFilter } from '@purchase/components/purchaseSettlement/detail/shared/PurchaseSettlementFilter';
 import { SettlementSummary } from '@purchase/components/purchaseSettlement/detail/shared/SettlementSummary';
 import { purchaseSettlementFieldTranslator } from '@purchase/helper';
 import { withSettlementApproval, WithSettlementApproval } from '@purchase/hoc/settlementApproval/withSettlementApproval';
@@ -108,6 +109,11 @@ const config: CollectionConfig<ISettlement, AllProps> = {
     quinary: item.status && item.status.value || item.statusType || '',
     senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
   }),
+  
+  // filter
+  filterComponent: (callback: CollectionHandler) => (
+    <PurchaseSettlementFilter handleFind={callback.handleFilter} />
+  ),
 
   // summary component
   summaryComponent: (item: ISettlement) => (

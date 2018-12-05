@@ -1,18 +1,15 @@
 import AppMenu from '@constants/AppMenu';
-import { 
-  CollectionConfig, 
-  CollectionDataProps, 
-  CollectionHandler,
-  CollectionPage, } from '@layout/components/pages';
+import { CollectionConfig, CollectionDataProps, CollectionHandler, CollectionPage } from '@layout/components/pages';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
 import { Button } from '@material-ui/core';
 import { IPurchase } from '@purchase/classes/response/purchaseRequest';
 import { PurchaseField, PurchaseUserAction } from '@purchase/classes/types';
+import { PurchaseRequestFilter } from '@purchase/components/purchaseRequest/detail/shared/PurchaseRequestFilter';
 import { PurchaseSummary } from '@purchase/components/purchaseRequest/detail/shared/PurchaseSummary';
 import { purchaseRequestFieldTranslator } from '@purchase/helper';
-import { withPurchaseApproval, WithPurchaseApproval } from '@purchase/hoc/purchaseApproval/withPurchaseApproval';
+import { WithPurchaseApproval, withPurchaseApproval } from '@purchase/hoc/purchaseApproval/withPurchaseApproval';
 import { purchaseMessage } from '@purchase/locales/messages/purchaseMessage';
 import * as moment from 'moment';
 import * as React from 'react';
@@ -109,6 +106,11 @@ const config: CollectionConfig<IPurchase, AllProps> = {
     quinary: item.status && item.status.value || item.statusType || '',
     senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
   }),
+
+  // filter
+  filterComponent: (callback: CollectionHandler) => (
+    <PurchaseRequestFilter handleFind={callback.handleFilter} />
+  ),
 
   // summary component
   summaryComponent: (item: IPurchase) => (
