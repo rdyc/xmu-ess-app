@@ -52,11 +52,11 @@ export const PurchaseSettlementItemFormView: React.SFC<PurchaseSettlementItemFor
                     component={InputNumber}
                   />
                   <TextField
-                    type="number"
+                    type="text"
                     name={`${field}.variance`}
                     label={props.intl.formatMessage(purchaseMessage.settlement.items.variance)}
                     disabled={true}
-                    value={`${props.intl.formatNumber(items.request - items.actual)}`}
+                    value={`${props.intl.formatNumber(items.request - items.actual)}` || '0'}
                     fullWidth
                   />
                 </div>

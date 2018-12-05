@@ -6,7 +6,7 @@ import {
   ILeaveRequestPostRequest,
   ILeaveRequestPutRequest,
 } from '@leave/classes/queries/request';
-import { ILeaveGetEnd, ILeaveRequest, ILeaveRequestDetail } from '@leave/classes/response';
+import { ILeave, ILeaveDetail, ILeaveGetEnd } from '@leave/classes/response';
 import { action } from 'typesafe-actions';
 
 export const enum LeaveRequestAction {
@@ -34,13 +34,13 @@ export const enum LeaveRequestAction {
 
 // get all
 export const leaveRequestGetAllRequest = (request: ILeaveRequestGetAllRequest) => action(LeaveRequestAction.GET_ALL_REQUEST, request);
-export const leaveRequestGetAllSuccess = (response: IResponseCollection<ILeaveRequest>) => action(LeaveRequestAction.GET_ALL_SUCCESS, response);
+export const leaveRequestGetAllSuccess = (response: IResponseCollection<ILeave>) => action(LeaveRequestAction.GET_ALL_SUCCESS, response);
 export const leaveRequestGetAllError = (message: string) => action(LeaveRequestAction.GET_ALL_ERROR, message);
 export const leaveRequestGetAllDispose = () => action(LeaveRequestAction.GET_ALL_DISPOSE);
 
 // get by id
 export const leaveRequestGetByIdRequest = (request: ILeaveRequestGetByIdRequest) => action(LeaveRequestAction.GET_BY_ID_REQUEST, request);
-export const leaveRequestGetByIdSuccess = (response: IResponseSingle<ILeaveRequestDetail>) => action(LeaveRequestAction.GET_BY_ID_SUCCESS, response);
+export const leaveRequestGetByIdSuccess = (response: IResponseSingle<ILeaveDetail>) => action(LeaveRequestAction.GET_BY_ID_SUCCESS, response);
 export const leaveRequestGetByIdError = (message: string) => action(LeaveRequestAction.GET_BY_ID_ERROR, message);
 export const leaveRequestGetByIdDispose = () => action(LeaveRequestAction.GET_BY_ID_DISPOSE);
 
@@ -52,12 +52,12 @@ export const leaveRequestFetchDispose = () => action(LeaveRequestAction.FETCH_DI
 
 // post
 export const leaveRequestPostRequest = (request: ILeaveRequestPostRequest) => action(LeaveRequestAction.POST_REQUEST, request);
-export const leaveRequestPostSuccess = (response: IResponseSingle<ILeaveRequest>) => action(LeaveRequestAction.POST_SUCCESS, response);
+export const leaveRequestPostSuccess = (response: IResponseSingle<ILeave>) => action(LeaveRequestAction.POST_SUCCESS, response);
 export const leaveRequestPostError = (message: string) => action(LeaveRequestAction.POST_ERROR, message);
 export const leaveRequestPostDispose = () => action(LeaveRequestAction.POST_DISPOSE);
 
 // put
 export const leaveRequestPutRequest = (request: ILeaveRequestPutRequest) => action(LeaveRequestAction.PUT_REQUEST, request);
-export const leaveRequestPutSuccess = (response: IResponseSingle<ILeaveRequest>) => action(LeaveRequestAction.PUT_SUCCESS, response);
+export const leaveRequestPutSuccess = (response: IResponseSingle<ILeave>) => action(LeaveRequestAction.PUT_SUCCESS, response);
 export const leaveRequestPutError = (message: string) => action(LeaveRequestAction.PUT_ERROR, message);
 export const leaveRequestPutDispose = () => action(LeaveRequestAction.PUT_DISPOSE);

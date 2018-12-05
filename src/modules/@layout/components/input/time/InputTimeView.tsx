@@ -1,4 +1,4 @@
-import TimePicker from 'material-ui-pickers/TimePicker';
+import { TimePicker } from 'material-ui-pickers';
 import { MaterialUiPickersDate } from 'material-ui-pickers/typings/date';
 import { Moment } from 'moment';
 import * as React from 'react';

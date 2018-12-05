@@ -52,7 +52,7 @@ const createProps: mapper<NavigationMenuProps, OwnState> = (props: NavigationMen
 });
 
 const stateUpdaters: StateUpdaters<NavigationMenuProps, OwnState, OwnStateUpdaters> = {
-  setHeader: (prevState: OwnState) => (uid: string): Partial<OwnState> => ({
+  setHeader: (prevState: OwnState) => (uid?: string): Partial<OwnState> => ({
     headerUid: uid
   }),
   setHeaderAndChild: (prevState: OwnState) => (headerUid: string, childUid: string): Partial<OwnState> => ({
@@ -63,7 +63,11 @@ const stateUpdaters: StateUpdaters<NavigationMenuProps, OwnState, OwnStateUpdate
 
 const handlerCreator: HandleCreators<NavigationMenuProps, OwnHandler> = {
   handleOnClickMenuHeader: (props: NavigationMenuProps) => (uid: string) => {
-    props.setHeader(uid);
+    if (props.headerUid !== uid) {
+      props.setHeader(uid);
+    } else {
+      props.setHeader();
+    }
   },
   handleOnClickMenuItem: (props: NavigationMenuProps) => (headerUid: string, childUid: string) => {
     props.setHeaderAndChild(headerUid, childUid);

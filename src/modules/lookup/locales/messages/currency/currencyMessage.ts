@@ -59,3 +59,39 @@ export const currencyField = defineMessages({
   isActive: { id: `${prefix}.field.isActive` },
   isNotActive: { id: `${prefix}.field.isNotActive` },
  });
+
+export const currencyFieldHelperFor = (field: string, type: 'fieldName' | 'fieldRequired' | 'fieldPlaceholder') => {
+  if (type === 'fieldName') {
+    switch (field) {
+      case 'uid': return currencyField.uid;
+      case 'name': return currencyField.name;
+      case 'symbol': return currencyField.symbol;
+      case 'rate': return currencyField.rate;
+      case 'isActive': return currencyField.ActiveStatus;
+      default: return { id: field };
+    }
+  }
+
+  if (type === 'fieldRequired') {
+    switch (field) {
+      case 'name': return currencyField.nameRequired;
+      case 'symbol': return currencyField.symbolRequired;
+      case 'rate': return currencyField.rateRequired;
+
+      default: return { id: field };
+    }
+  }
+
+  if (type === 'fieldPlaceholder') {
+    switch (field) {
+      case 'name': return currencyField.namePlaceholder;
+      case 'symbol': return currencyField.symbolPlaceholder;
+      case 'rate': return currencyField.ratePlaceholder;
+      case 'isActive': return currencyField.isActive;
+
+      default: return { id: field };
+    }
+  }
+
+  return { id: field };
+};

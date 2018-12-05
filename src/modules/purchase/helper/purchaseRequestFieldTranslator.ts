@@ -35,20 +35,10 @@ export const purchaseRequestFieldTranslator = (find: string, field: ICollectionV
         break;
 
       default:
+        // result = WorkflowStatusType.InProgress || WorkflowStatusType.Submitted || WorkflowStatusType.Approved || WorkflowStatusType.Rejected;
         break;
     }
-  }
-
-  // if (field.name === PurchaseField.requestDate) {
-  //   switch (find.toLowerCase()) {
-      
-  //     case 'jan':
-  //     case 'january':
-  //     case 'januari':
-  //       result = 
-  //       break;
-  //   }
-  // }
+  } 
 
   return result;
 };
