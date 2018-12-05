@@ -312,8 +312,6 @@ const lifecycles: ReactLifeCycleFunctions<CollectionPageProps, OwnState> = {
 
     // assign selection callback
     if (this.props.config.hasSelection) {
-      this.props.appBarDispatch.selectionClear();
-      
       this.props.appBarDispatch.assignSelectionClearCallback(this.props.setSelectionClear);
 
       this.props.setNotSelectionTypes(this.props.config.notSelectionTypes);
