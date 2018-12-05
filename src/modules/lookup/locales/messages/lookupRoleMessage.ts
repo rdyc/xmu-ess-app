@@ -26,6 +26,8 @@ export const roleConfirm = defineMessages({
 export const roleSection = defineMessages({
   infoTitle: { id: `${prefix}.section.info.title` },
   infoSubHeader: { id: `${prefix}.section.info.subHeader` },
+  roleMenuTitle: { id: `${prefix}.section.roleMenu.title` },
+  roleMenuSubHeader: { id: `${prefix}.section.roleMenu.subHeader` },
 });
 
 // fields

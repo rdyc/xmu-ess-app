@@ -9,6 +9,7 @@ import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
 import * as React from 'react';
 import { RoleDetailProps } from './LookupRoleDetail';
 import { LookupRoleInformation } from './shared/LookupRoleInformation';
+import { LookupRoleMenu } from './shared/LookupRoleMenu';
 
 const config: SingleConfig<IRoleDetail, RoleDetailProps> = {
   // page info
@@ -86,7 +87,11 @@ const config: SingleConfig<IRoleDetail, RoleDetailProps> = {
 
   // secondary (multiple components are allowed)
   secondaryComponents: (data: IRoleDetail, props: RoleDetailProps) => ([
-    // <WorkflowHistory data={data.workflow} />
+    <LookupRoleMenu 
+      data={data.menus}
+      title={props.intl.formatMessage(lookupMessage.role.section.roleMenuTitle)}
+      subHeader={props.intl.formatMessage(lookupMessage.role.section.roleMenuSubHeader)}
+    />
   ])
 };
 

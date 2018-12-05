@@ -115,6 +115,8 @@
 
   "lookup.role.section.info.title": "Role",
   "lookup.role.section.info.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras mollis eros sit amet rhoncus fermentum",
+  "lookup.role.section.roleMenu.title": "Role Menu",
+  "lookup.role.section.roleMenu.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras mollis eros sit amet rhoncus fermentum",
 
   "lookup.role.field.uid": "Role ID",
   "lookup.role.field.uid.placeholder": "Role ID",
