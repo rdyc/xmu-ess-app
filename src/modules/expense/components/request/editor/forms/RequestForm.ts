@@ -23,10 +23,15 @@ export type ExpenseRequestFormData = {
 
 interface OwnProps {
   formMode: FormMode;
+  submitDialogTitle: string;
+  submitDialogContentText: string;
+  submitDialogCancelText: string;
+  submitDialogConfirmedText: string;
 }
 
 interface FormValueProps {
   customerUidValue: string | undefined;
+  formName: string;
 }
 
 export type RequestFormProps 
@@ -40,7 +45,8 @@ const mapStateToProps = (state: any): FormValueProps => {
     const customerUid = selector(state, 'information.customerUid');
     
     return {
-      customerUidValue: customerUid,
+      formName,
+      customerUidValue: customerUid,      
     };
   };
 
