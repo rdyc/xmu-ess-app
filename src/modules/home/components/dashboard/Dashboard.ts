@@ -157,7 +157,7 @@ const handlerCreators: HandleCreators<DashboardProps, OwnHandlers> = {
         if (type === 'Approval' || type === 'Notify') {
           history.push(`/timesheet/approvals/${uid}`);
         } else {
-          history.push(`/timesheet/entry/${uid}`);
+          history.push(`/timesheet/requests/${uid}`);
         }
         break;
         
@@ -179,19 +179,19 @@ const handlerCreators: HandleCreators<DashboardProps, OwnHandlers> = {
     
       case 'Purchase':
         if (type === 'Approval' || type === 'Notify' || type === 'Rejected') {
-          history.push(`/purchase/approvals/details/${uid}`);
+          history.push(`/purchase/approvals/${uid}`);
         } else if (type === 'Settlement') {
-          history.push(`/purchase/settlements/details/${uid}`);
+          history.push(`/purchase/settlement/requests/form`, {uid});
         } else {
-          history.push(`/purchase/requests/details/${uid}`);
+          history.push(`/purchase/requests/${uid}`);
         }
         break;
     
       case 'Purchase Settlement':
         if (type === 'Approval' || type === 'Notify' || type === 'Rejected') {
-          history.push(`/purchase/settlementapprovals/details/${uid}`);
+          history.push(`/purchase/settlement/approvals/${uid}`);
         } else {
-          history.push(`/purchase/settlements/details/${uid}`);
+          history.push(`/purchase/settlement/requests/${uid}`);
         }
         break;
     

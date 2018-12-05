@@ -1,8 +1,8 @@
 import { createStyles, Theme } from '@material-ui/core';
 import red from '@material-ui/core/colors/red';
+import sidebar from './image/sidebar/satrio-tower.jpg';
 
 // var backgroundColorDefault = theme.palette.type === 'light' ? theme.palette.grey[100] : theme.palette.grey[900];
-
 const drawerWidth = 280;
 
 const size = {
@@ -88,7 +88,18 @@ const styles = (theme: Theme) =>
     },
     drawerPaperBackground: {
       backgroundColor: theme.palette.type === 'light' ? theme.palette.primary.main : theme.palette.grey[900],
-      color: theme.palette.primary.contrastText
+      color: theme.palette.primary.contrastText,
+    },
+    drawerPaperBackgroundImage: {
+      background: `linear-gradient(rgba(0,130,170,0), ${theme.palette.primary.main}), url(${sidebar})`,
+      backgroundSize: 'cover',
+      backgroundPosition: 'center center',
+      opacity: .2,
+      position: 'absolute',
+      width: '100%',
+      height: '100%',
+      content: '""',
+      display: 'block'
     },
     drawerPaperAdditional: {
       width: drawerWidth

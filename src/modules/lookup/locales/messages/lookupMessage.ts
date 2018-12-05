@@ -7,6 +7,22 @@ import {
   currencySection 
 } from './currency/currencyMessage';
 import { 
+  holidayConfirm, 
+  holidayField, 
+  holidayFieldHelperFor, 
+  holidayMessage, 
+  holidayPage, 
+  holidaySection 
+} from './holiday';
+import { 
+  leaveConfirm, 
+  leaveField, 
+  leaveFieldHelperFor, 
+  leaveMessage, 
+  leavePage, 
+  leaveSection 
+} from './leave';
+import { 
   companyConfirm, 
   companyField, 
   companyFieldHelperFor, 
@@ -37,6 +53,7 @@ import {
   mileageExceptionPage,
   mileageExceptionSection
 } from './mileageException';
+import { positionConfirm, positionField, positionFieldHelperFor, positionForm, positionMessage, positionPage, positionSection } from './positionMessage';
 import { lookupConfirm } from './shared';
 import { systemLimitField, systemLimitFieldHelperFor, systemLimitMessage, systemLimitPage, systemLimitSection } from './systemLimit';
 
@@ -66,6 +83,22 @@ export const lookupMessage = {
   shared: {
     confirm: lookupConfirm
   },
+  holiday: {
+    page: holidayPage,
+    field: holidayField,
+    fieldFor: holidayFieldHelperFor,
+    section: holidaySection,
+    confirm: holidayConfirm,
+    message: holidayMessage
+  },
+  leave: {
+    page: leavePage,
+    field: leaveField,
+    fieldFor: leaveFieldHelperFor,
+    section: leaveSection,
+    confirm: leaveConfirm,
+    message: leaveMessage
+  },
   currency: {
     page: currencyPage,
     field: currencyField,
@@ -81,6 +114,15 @@ export const lookupMessage = {
     section: companySection,
     confirm: companyConfirm,
     message: companyMessage
+  },
+  position: {
+    page: positionPage,
+    field: positionField,
+    fieldFor: positionFieldHelperFor,
+    section: positionSection,
+    confirm: positionConfirm,
+    form: positionForm,
+    message: positionMessage
   },
   lookupDiem: {
     page: lookupDiemPage,

@@ -2,7 +2,7 @@ import AppMenu from '@constants/AppMenu';
 import { SingleConfig, SingleHandler, SinglePage, SingleState } from '@layout/components/pages/singlePage/SinglePage';
 import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
-import { ILeaveRequestDetail } from '@leave/classes/response';
+import { ILeaveDetail } from '@leave/classes/response';
 import { LeaveRequestUserAction } from '@leave/classes/types';
 import { LeaveInformation } from '@leave/components/request/detail/shared/LeaveInformation';
 import { leaveMessage } from '@leave/locales/messages/leaveMessage';
@@ -10,7 +10,7 @@ import * as React from 'react';
 import { LeaveCancellationForm } from '../form/LeaveCancellationForm';
 import { LeaveCancellationDetailProps } from './LeaveCancellationDetail';
 
-const config: SingleConfig<ILeaveRequestDetail, LeaveCancellationDetailProps> = {
+const config: SingleConfig<ILeaveDetail, LeaveCancellationDetailProps> = {
   // page info
   page: (props: LeaveCancellationDetailProps) => ({
     uid: AppMenu.LeaveCancelation,
@@ -72,12 +72,12 @@ const config: SingleConfig<ILeaveRequestDetail, LeaveCancellationDetailProps> = 
   },
 
   // primary
-  primaryComponent: (data: ILeaveRequestDetail, props: LeaveCancellationDetailProps) => (
+  primaryComponent: (data: ILeaveDetail, props: LeaveCancellationDetailProps) => (
     <LeaveInformation data={data} />
   ),
 
   // secondary (multiple components are allowed)
-  secondaryComponents: (data: ILeaveRequestDetail, props: LeaveCancellationDetailProps) => ([
+  secondaryComponents: (data: ILeaveDetail, props: LeaveCancellationDetailProps) => ([
     <React.Fragment>
       {
       <LeaveCancellationForm

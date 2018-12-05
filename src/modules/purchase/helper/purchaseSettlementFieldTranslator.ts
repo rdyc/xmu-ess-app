@@ -39,9 +39,5 @@ export const purchaseSettlementFieldTranslator = (find: string, field: ICollecti
     }
   }
 
-  if (typeof Number(find) === 'number') {
-    result = ` ${find} `;
-  }
-
   return result;
 };

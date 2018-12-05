@@ -1,5 +1,7 @@
 import { IntlComponent } from 'react-intl';
 
+const currencyCode = process.env.REACT_APP_DEFAULT_CURRENCY_CODE;
+
 const DateOption: IntlComponent.DateTimeFormatProps = {
   year: 'numeric',
   month: 'long',
@@ -39,10 +41,26 @@ const MonthYearOption: IntlComponent.DateTimeFormatProps = {
   month: 'long'
 };
 
+const CurrencyOption = (symbol: string): ReactIntl.FormattedNumber.PropsBase => ({
+  localeMatcher: 'best fit',
+  style: 'currency',
+  currency: symbol,
+  currencyDisplay: 'symbol'
+});
+
+const CurrencyDefaultOption: ReactIntl.FormattedNumber.PropsBase = {
+  localeMatcher: 'best fit',
+  style: 'currency',
+  currency: currencyCode || '$',
+  currencyDisplay: 'symbol'
+};
+
 export const GlobalFormat = {
   Date: DateOption,
   DateTime: DateTimeOption,
   TimeDate: TimeDateOption,
   Time: TimeOption,
-  MonthYear: MonthYearOption
+  MonthYear: MonthYearOption,
+  Currency: CurrencyOption,
+  CurrencyDefault: CurrencyDefaultOption
 };

@@ -1,6 +1,6 @@
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { layoutMessage } from '@layout/locales/messages';
-import { CompanyUserAction } from '@lookup/classes/types';
+import { CompanyUserAction } from '@lookup/classes/types/company';
 import { WithLookupCompany, withLookupCompany } from '@lookup/hoc/withLookupCompany';
 import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
@@ -56,8 +56,8 @@ const stateUpdaters: StateUpdaters<CompanyDetailProps, OwnState, OwnStateUpdater
     dialogOpen: true,
     dialogTitle: props.intl.formatMessage(lookupMessage.company.confirm.modifyTitle),
     dialogContent: props.intl.formatMessage(lookupMessage.company.confirm.modifyDescription),
-    dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.disaggree),
-    dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.aggree)
+    dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.disaggre),
+    dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.aggre)
   }),
   setDefault: (prevState: OwnState) => (): Partial<OwnState> => ({
     dialogFullScreen: false,

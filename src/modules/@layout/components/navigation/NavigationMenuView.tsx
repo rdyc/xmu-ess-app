@@ -22,6 +22,7 @@ export const navigationMenu: React.SFC<NavigationMenuProps> = props => (
             color: 'inherit'
           }}
           secondaryTypographyProps={{
+            variant: 'body2',
             color: 'inherit'
           }}
         />

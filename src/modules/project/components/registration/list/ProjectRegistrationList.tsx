@@ -3,6 +3,7 @@ import { CollectionConfig, CollectionDataProps, CollectionHandler, CollectionPag
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
+import { GlobalFormat } from '@layout/types';
 import { Button } from '@material-ui/core';
 import { isRequestEditable } from '@organization/helper/isRequestEditable';
 import { IProject } from '@project/classes/response';
@@ -109,7 +110,7 @@ const config: CollectionConfig<IProject, AllProps> = {
     secondary: item.name,
     tertiary: item.customer && item.customer.name || item.customerUid,
     quaternary: item.project && item.project.value || item.projectType,
-    quinary: item.valueIdr && props.intl.formatNumber(item.valueIdr) || '-',
+    quinary: item.valueIdr && props.intl.formatNumber(item.valueIdr, GlobalFormat.CurrencyDefault) || '-',
     senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
   }),
 
