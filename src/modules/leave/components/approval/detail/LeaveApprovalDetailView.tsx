@@ -2,7 +2,7 @@ import AppMenu from '@constants/AppMenu';
 import { SingleConfig, SingleHandler, SinglePage, SingleState } from '@layout/components/pages/singlePage/SinglePage';
 import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
-import { ILeaveRequestDetail } from '@leave/classes/response';
+import { ILeaveDetail } from '@leave/classes/response';
 import { LeaveRequestUserAction } from '@leave/classes/types';
 import { LeaveInformation } from '@leave/components/request/detail/shared/LeaveInformation';
 import { leaveMessage } from '@leave/locales/messages/leaveMessage';
@@ -11,7 +11,7 @@ import { WorkflowHistory } from '@organization/components/workflow/history/Workf
 import * as React from 'react';
 import { LeaveApprovalDetailProps } from './LeaveApprovalDetail';
 
-const config: SingleConfig<ILeaveRequestDetail, LeaveApprovalDetailProps> = {
+const config: SingleConfig<ILeaveDetail, LeaveApprovalDetailProps> = {
   // page info
   page: (props: LeaveApprovalDetailProps) => ({
     uid: AppMenu.LeaveApproval,
@@ -77,12 +77,12 @@ const config: SingleConfig<ILeaveRequestDetail, LeaveApprovalDetailProps> = {
   },
 
   // primary
-  primaryComponent: (data: ILeaveRequestDetail, props: LeaveApprovalDetailProps) => (
+  primaryComponent: (data: ILeaveDetail, props: LeaveApprovalDetailProps) => (
     <LeaveInformation data={data} />
   ),
 
   // secondary (multiple components are allowed)
-  secondaryComponents: (data: ILeaveRequestDetail, props: LeaveApprovalDetailProps) => ([
+  secondaryComponents: (data: ILeaveDetail, props: LeaveApprovalDetailProps) => ([
     <WorkflowHistory data={data.workflow} />,
     <React.Fragment>
       {

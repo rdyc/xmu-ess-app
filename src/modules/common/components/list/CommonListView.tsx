@@ -84,11 +84,13 @@ const config: CollectionConfig<ISystem, AllProps> = {
   // events
   onDataLoad: (props: AllProps, callback: CollectionHandler, params: CollectionDataProps, forceReload?: boolean | false) => {
     const { user } = props.userState;
-    const { isLoading } = props.commonSystemState.all;
+    const { isLoading, response } = props.commonSystemState.all;
     const { systemAllRequest } = props.commonDispatch;
 
     // when user is set and not loading
     if (user && !isLoading) {
+      // when response are empty or force reloading
+      if (!response || forceReload) {
         systemAllRequest({
           category: categoryTypeTranslator(props.match.params.category),
           filter: {
@@ -100,6 +102,10 @@ const config: CollectionConfig<ISystem, AllProps> = {
             findBy: params.findBy,
           }
         });
+      } else {
+        // just take data from previous response
+        callback.handleResponse(response);
+      }
     }
   },
   onUpdated: (props: AllProps, callback: CollectionHandler) => {
@@ -108,13 +114,13 @@ const config: CollectionConfig<ISystem, AllProps> = {
     callback.handleLoading(isLoading);
     callback.handleResponse(response);
   },
-  onBind: (item: ISystem, index: number) => ({
+  onBind: (item: ISystem, index: number, props: AllProps) => ({
     key: item.id,
     primary: item.type,
     secondary: item.name,
     tertiary: item.description && item.description || 'N/A',
-    quaternary: (item.company && item.company.name) || (item.parent && item.parent.value) || 'N/A',
-    quinary: item.isActive ? 'Active' : 'Inactive',
+    quaternary: item.isActive ? props.intl.formatMessage(layoutMessage.text.active) : props.intl.formatMessage(layoutMessage.text.inactive),
+    quinary: item.changes && item.changes.updated && item.changes.updated.fullName || item.changes.created && item.changes.created.fullName || '?',
     senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
   }),
 

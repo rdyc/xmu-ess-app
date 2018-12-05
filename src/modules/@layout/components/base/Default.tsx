@@ -80,9 +80,9 @@ const root: React.SFC<AllProps> = props => {
   return (
     <React.Fragment>
       <CssBaseline />
-      <AppBar position="static" color="secondary" className={classes.appBar}>
+      <AppBar position="static" color="primary" className={classes.appBar}>
         <Toolbar>
-          <Typography variant="title" color="inherit" noWrap>
+          <Typography variant="h6" color="inherit" noWrap>
             All New Tessa
           </Typography>
         </Toolbar>
@@ -91,7 +91,7 @@ const root: React.SFC<AllProps> = props => {
         {/* Hero unit */}
         <div className={classes.heroUnit}>
           <div className={classes.heroContent}>
-            <Typography component="h1" variant="title" align="center" color="textPrimary" gutterBottom>
+            <Typography component="h1" variant="h4" align="center" color="textPrimary" gutterBottom>
               Welcome to new TESSA
             </Typography>
             <Typography variant="subheading" align="center" color="textSecondary" paragraph>
@@ -100,7 +100,7 @@ const root: React.SFC<AllProps> = props => {
             <div className={classes.heroButtons}>
               <Grid container spacing={16} justify="center">
                 <Grid item>
-                  <Button variant="contained" color="secondary" onClick={handleLogin}>
+                  <Button variant="contained" color="primary" onClick={handleLogin}>
                     Let me in
                   </Button>
                 </Grid>
@@ -136,7 +136,7 @@ const root: React.SFC<AllProps> = props => {
       </main>
       {/* Footer */}
       <footer className={classes.footer}>
-        <Typography variant="body1" align="center" gutterBottom>
+        <Typography variant="body2" align="center" gutterBottom>
           All New Tessa
         </Typography>
         <Typography variant="body2" align="center" color="textSecondary" component="p">
