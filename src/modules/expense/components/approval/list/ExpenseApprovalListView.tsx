@@ -23,7 +23,7 @@ import { compose } from 'recompose';
 const config: CollectionConfig<IExpense, AllProps> = {
   // page info
   page: (props: AllProps) => ({
-    uid: AppMenu.ExpenseRequest,
+    uid: AppMenu.ExpenseApproval,
     parentUid: AppMenu.Expense,
     title: props.intl.formatMessage(expenseMessage.approval.page.title),
     description: props.intl.formatMessage(expenseMessage.approval.page.subTitle),
