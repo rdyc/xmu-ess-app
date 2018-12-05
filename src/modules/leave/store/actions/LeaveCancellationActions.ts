@@ -4,7 +4,7 @@ import {
   ILeaveCancellationGetByIdRequest,
   ILeaveCancellationPostRequest,
 } from '@leave/classes/queries/cancellation';
-import { ILeaveRequest, ILeaveRequestDetail } from '@leave/classes/response';
+import { ILeave, ILeaveDetail } from '@leave/classes/response';
 import { action } from 'typesafe-actions';
 
 export const enum LeaveCancellationAction {
@@ -24,18 +24,18 @@ export const enum LeaveCancellationAction {
 
 // get all
 export const leaveCancellationGetAllRequest = (request: ILeaveCancellationGetAllRequest) => action(LeaveCancellationAction.GET_ALL_REQUEST, request);
-export const leaveCancellationGetAllSuccess = (response: IResponseCollection<ILeaveRequest>) => action(LeaveCancellationAction.GET_ALL_SUCCESS, response);
+export const leaveCancellationGetAllSuccess = (response: IResponseCollection<ILeave>) => action(LeaveCancellationAction.GET_ALL_SUCCESS, response);
 export const leaveCancellationGetAllError = (message: string) => action(LeaveCancellationAction.GET_ALL_ERROR, message);
 export const leaveCancellationGetAllDispose = () => action(LeaveCancellationAction.GET_ALL_DISPOSE);
 
 // get by id
 export const leaveCancellationGetByIdRequest = (request: ILeaveCancellationGetByIdRequest) => action(LeaveCancellationAction.GET_BY_ID_REQUEST, request);
-export const leaveCancellationGetByIdSuccess = (response: IResponseSingle<ILeaveRequestDetail>) => action(LeaveCancellationAction.GET_BY_ID_SUCCESS, response);
+export const leaveCancellationGetByIdSuccess = (response: IResponseSingle<ILeaveDetail>) => action(LeaveCancellationAction.GET_BY_ID_SUCCESS, response);
 export const leaveCancellationGetByIdError = (message: string) => action(LeaveCancellationAction.GET_BY_ID_ERROR, message);
 export const leaveCancellationGetByIdDispose = () => action(LeaveCancellationAction.GET_BY_ID_DISPOSE);
 
 // post
 export const leaveCancellationPostRequest = (request: ILeaveCancellationPostRequest) => action(LeaveCancellationAction.POST_REQUEST, request);
-export const leaveCancellationPostSuccess = (response: IResponseSingle<ILeaveRequest>) => action(LeaveCancellationAction.POST_SUCCESS, response);
+export const leaveCancellationPostSuccess = (response: IResponseSingle<ILeave>) => action(LeaveCancellationAction.POST_SUCCESS, response);
 export const leaveCancellationPostError = (message: string) => action(LeaveCancellationAction.POST_ERROR, message);
 export const leaveCancellationPostDispose = () => action(LeaveCancellationAction.POST_DISPOSE);

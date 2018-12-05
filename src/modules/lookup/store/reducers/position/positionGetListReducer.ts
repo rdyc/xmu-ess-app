@@ -1,10 +1,10 @@
 import { IQueryCollectionState } from '@generic/interfaces';
-import { IPositionListRequest } from '@lookup/classes/queries';
+import { IPositionGetListRequest } from '@lookup/classes/queries';
 import { IPositionList } from '@lookup/classes/response';
 import { PositionAction as Action } from '@lookup/store/actions';
 import { Reducer } from 'redux';
 
-const initialState: IQueryCollectionState<IPositionListRequest, IPositionList> = {
+const initialState: IQueryCollectionState<IPositionGetListRequest, IPositionList> = {
   request: undefined,
   response: undefined,
   isError: false,
@@ -12,7 +12,7 @@ const initialState: IQueryCollectionState<IPositionListRequest, IPositionList> =
   errors: undefined,
 };
 
-const reducer: Reducer<IQueryCollectionState<IPositionListRequest, IPositionList>> = (state = initialState, action) => {
+const reducer: Reducer<IQueryCollectionState<IPositionGetListRequest, IPositionList>> = (state = initialState, action) => {
   switch (action.type) {
     case Action.GET_LIST_REQUEST: return { ...state, isLoading: true, isError: false, request: action.payload };
     case Action.GET_LIST_SUCCESS: return { ...state, isLoading: false, isError: false, response: action.payload };

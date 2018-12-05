@@ -1,5 +1,5 @@
 import { WithUser, withUser } from '@layout/hoc/withUser';
-import { ILeaveList } from '@lookup/classes/response';
+import { ILookupLeaveList } from '@lookup/classes/response';
 import { WithLookupLeave, withLookupLeave } from '@lookup/hoc/withLookupLeave';
 import {
   compose,
@@ -39,7 +39,7 @@ interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
 interface OwnHandlers {
   handleDialogOpen: () => void;
   handleDialogClose: () => void;
-  handleSelected: (leave: ILeaveList) => void;
+  handleSelected: (leave: ILookupLeaveList) => void;
   getValueName: () => string;
 }
 
@@ -72,7 +72,7 @@ const handlerCreators: HandleCreators<InputLeaveProps, OwnHandlers> = {
   handleDialogClose: (props: InputLeaveProps) => () => {
     props.setDialogVisibility();
   },
-  handleSelected: (props: InputLeaveProps) => (leave: ILeaveList) => {
+  handleSelected: (props: InputLeaveProps) => (leave: ILookupLeaveList) => {
     props.setDialogVisibility();
 
     props.input.onChange(leave.uid);

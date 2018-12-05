@@ -1,10 +1,10 @@
 import { IQueryCollectionState } from '@generic/interfaces';
 import { ILeaveApprovalGetAllRequest } from '@leave/classes/queries/approval';
-import { ILeaveRequest } from '@leave/classes/response';
+import { ILeave } from '@leave/classes/response';
 import { LeaveApprovalAction as Action } from '@leave/store/actions';
 import { Reducer } from 'redux';
 
-const initialState: IQueryCollectionState<ILeaveApprovalGetAllRequest, ILeaveRequest> = {
+const initialState: IQueryCollectionState<ILeaveApprovalGetAllRequest, ILeave> = {
   request: undefined,
   response: undefined,
   isError: false,
@@ -12,7 +12,7 @@ const initialState: IQueryCollectionState<ILeaveApprovalGetAllRequest, ILeaveReq
   errors: undefined,
 };
 
-const reducer: Reducer<IQueryCollectionState<ILeaveApprovalGetAllRequest, ILeaveRequest>> = (state = initialState, action) => {
+const reducer: Reducer<IQueryCollectionState<ILeaveApprovalGetAllRequest, ILeave>> = (state = initialState, action) => {
   switch (action.type) {
     case Action.GET_ALL_REQUEST: return { ...state, isLoading: true, isError: false, request: action.payload };
     case Action.GET_ALL_SUCCESS: return { ...state, isLoading: false, isError: false, response: action.payload };

@@ -1,5 +1,5 @@
 import { layoutMessage } from '@layout/locales/messages';
-import {  Card, CardContent, Grid, Paper, Table, TableBody, TableCell, TableHead, TableRow } from '@material-ui/core';
+import {  Card, CardContent, Grid, Paper, Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@material-ui/core';
 import { isWidthDown } from '@material-ui/core/withWidth';
 import { ISummaryEffectiveness } from '@summary/classes/response/effectiveness';
 import { EffectivenessProps } from '@summary/components/effectiveness/Effectiveness';
@@ -134,7 +134,9 @@ export const EffectivenessView: React.SFC<EffectivenessProps> = props => {
         <Grid item xs={12}>
           {
             isLoading && 
-            intl.formatMessage(layoutMessage.text.loading)
+            <Typography>
+              {intl.formatMessage(layoutMessage.text.loading)}
+            </Typography>
           }     
           {
             !isLoading &&

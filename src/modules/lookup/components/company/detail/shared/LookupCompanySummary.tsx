@@ -1,7 +1,7 @@
 import { layoutMessage } from '@layout/locales/messages';
 import { GlobalFormat } from '@layout/types';
 import { GlobalStyle } from '@layout/types/GlobalStyle';
-import { ICompany } from '@lookup/classes/response';
+import { ICompany } from '@lookup/classes/response/company';
 import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
 import { Grid, TextField } from '@material-ui/core';
 import * as React from 'react';

@@ -4,7 +4,7 @@ import {
   ILeaveCancellationGetByIdRequest,
   ILeaveCancellationPostRequest,
 } from '@leave/classes/queries/cancellation/';
-import { ILeaveRequest, ILeaveRequestDetail } from '@leave/classes/response';
+import { ILeave, ILeaveDetail } from '@leave/classes/response';
 import {
   leaveCancellationGetAllDispose,
   leaveCancellationGetAllRequest,
@@ -18,8 +18,8 @@ import { Dispatch } from 'redux';
 
 interface PropsFromState {
   leaveCancellationState: {
-    all: IQueryCollectionState<ILeaveCancellationGetAllRequest, ILeaveRequest>;
-    detail: IQuerySingleState<ILeaveCancellationGetByIdRequest, ILeaveRequestDetail>;
+    all: IQueryCollectionState<ILeaveCancellationGetAllRequest, ILeave>;
+    detail: IQuerySingleState<ILeaveCancellationGetByIdRequest, ILeaveDetail>;
   };
 }
 

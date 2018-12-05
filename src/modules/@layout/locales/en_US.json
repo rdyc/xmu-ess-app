@@ -4,6 +4,8 @@
   "layout.text.dataInfo": "{total} record(s)",
   "layout.text.pagingInfo": "{current} of {total}",
   "layout.text.idr": "IDR (RP) ",
+  "layout.text.active": "Active",
+  "layout.text.inactive": "Inactive",
   
   "layout.tooltip.more": "More options",
   "layout.tooltip.orderBy": "Order by",
