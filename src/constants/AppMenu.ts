@@ -28,6 +28,7 @@ enum AppMenu {
   ReportPresales = 'MNU61',
   ReportProfitability = 'MNU56',
   ReportProgress = 'MNU52',
+  ReportWinningRatio = 'MNU60',
   ReportEffectiveness = 'MNU51',
   Purchase = 'MNU17',
   PurchaseRequest = 'MNU23',
