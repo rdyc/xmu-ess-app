@@ -65,7 +65,7 @@ const handlerCreators: HandleCreators<LookupCustomerEditorProps, OwnHandlers> = 
     };
 
     const requiredFields = [
-      'companyUid', 'name',
+      'companyUid', 'name', 'emailAddress'
     ];
 
     requiredFields.forEach(field => {

@@ -1,6 +1,6 @@
 import { FormMode } from '@generic/types';
 import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
-import { Card, CardContent, CardHeader } from '@material-ui/core';
+import { Card, CardContent, CardHeader, Checkbox, FormControlLabel } from '@material-ui/core';
 import * as React from 'react';
 import { Field } from 'redux-form';
 import { LookupCustomerDetailFormProps } from './LookupCustomerDetailForm';
@@ -17,6 +17,32 @@ export const LookupCustomerDetailFormView: React.SFC<LookupCustomerDetailFormPro
     const fields = ['uid'];
     if (formMode === FormMode.New && fields.indexOf(fieldName) !== -1) {
       return null;
+    }
+
+    const fieldIsActive = ['isActive'];
+    if (fieldIsActive.indexOf(fieldName) !== -1) {
+      return (
+        <FormControlLabel
+          {...fieldProps}
+          control={
+            <Field
+              key={fieldName}
+              type="checkbox"
+              name={fieldName}
+              component={
+                ({ input, meta }: any) => (
+                  <Checkbox
+                    {...input}
+                    disabled={meta.submitting}
+                    onFocus={undefined}
+                    onBlur={undefined}
+                  />
+                )
+              }
+            />
+          }
+        />
+      );
     }
 
     return (

@@ -16,7 +16,8 @@ type AllProps = OwnProps & InjectedIntlProps;
 
 const lookupCustomerFilter: React.SFC<AllProps> = props => (
   <Grid container spacing={16}>
-      <Field 
+    <Grid item xs={12} md={6}>
+      <Field
         type="text"
         name="companyUid"
         label={props.intl.formatMessage(lookupMessage.lookupCustomer.field.companyUid)}
@@ -24,6 +25,7 @@ const lookupCustomerFilter: React.SFC<AllProps> = props => (
         component={SelectLookupCompany}
         onChange={props.handleFind}
       />
+    </Grid>
   </Grid>
 );
 

@@ -4,6 +4,7 @@ import {
   lookupCustomerDeleteError,
   lookupCustomerDeleteRequest,
   lookupCustomerDeleteSuccess,
+  lookupCustomerGetAllDispose,
   lookupCustomerGetAllError,
   lookupCustomerGetAllRequest,
   lookupCustomerGetAllSuccess,
@@ -209,10 +210,11 @@ function* watchPutRequest() {
 function* watchDeleteRequest() {
   const worker = (action: ReturnType<typeof lookupCustomerDeleteRequest>) => {
     return saiyanSaga.fetch({
-      method: 'put',
+      method: 'delete',
       path: `/v1/lookup/customers`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
+        put(lookupCustomerGetAllDispose()),
         put(lookupCustomerDeleteSuccess(response.body))
       ],
       successCallback: (response: IApiResponse) => {

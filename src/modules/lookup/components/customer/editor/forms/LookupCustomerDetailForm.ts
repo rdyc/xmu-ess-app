@@ -59,14 +59,20 @@ const handlerCreators: HandleCreators<LookupCustomerDetailFormProps, OwnHandlers
           component: InputTextArea
         };
         break;
-      
-        case 'addressAdditional':
+
+      case 'addressAdditional':
         fieldProps = {
           required: true,
           multiline: true,
           label: intl.formatMessage(lookupMessage.lookupCustomer.fieldFor(name, 'fieldName')),
           placeholder: intl.formatMessage(lookupMessage.lookupCustomer.fieldFor(name, 'fieldPlaceholder')),
           component: InputTextArea
+        };
+        break;
+
+      case 'isActive':
+        fieldProps = {
+          label: props.intl.formatMessage(lookupMessage.currency.field.ActiveStatus),
         };
         break;
 

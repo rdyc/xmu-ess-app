@@ -46,6 +46,7 @@ export const lookupCustomerFields = defineMessages({
   phoneAdditional: { id: `${prefix}.field.phoneAdditional`},
   phoneAdditionalPlaceholder: { id: `${prefix}.field.phoneAdditional.placeholder`},
   emailAddress: { id: `${prefix}.field.email`},
+  emailAddressRequired: { id: `${prefix}.field.email.required`},
   emailAddressPlaceholder: { id: `${prefix}.field.email.placeholder`},
   address: { id: `${prefix}.field.address`},
   addressPlaceholder: { id: `${prefix}.field.address.placeholder`},
@@ -100,6 +101,7 @@ export const customerFieldHelperFor = (field: string, type: 'fieldName' | 'field
     switch (field) {
       case 'name': return lookupCustomerFields.nameRequired;
       case 'companyUid': return lookupCustomerFields.companyUidRequired;
+      case 'emailAddress': return lookupCustomerFields.emailAddressRequired;
 
       default: return {id: field};
     }

@@ -418,6 +418,7 @@
   "lookup.customer.field.mobileAdditional": "Mobile 2",
   "lookup.customer.field.mobileAdditional.placeholder": "Type the phone",
   "lookup.customer.field.email": "E-mail",
+  "lookup.customer.field.email.required": "Email is required",
   "lookup.customer.field.email.placeholder": "Type the email",
   "lookup.customer.field.fax": "Fax",
   "lookup.customer.field.fax.placeholder": "Type the fax",
