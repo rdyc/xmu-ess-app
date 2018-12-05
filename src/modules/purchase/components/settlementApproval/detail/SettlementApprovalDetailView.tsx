@@ -22,7 +22,15 @@ const config: SingleConfig<ISettlementDetail, SettlementApprovalDetailProps> = {
   }),
   
   // parent url
-  parentUrl: (props: SettlementApprovalDetailProps) => '/purchase/settlement/approvals',
+  parentUrl: (props: SettlementApprovalDetailProps) => {
+    let path = '';
+    if (props.location.state && props.location.state.financeUid) {
+      path = `/finance/approvals/${props.location.state.financeUid}`;
+    } else {
+      path = '/purchase/settlement/approvals';
+    }
+    return path;
+  },
 
   // action centre
   showActionCentre: true,
