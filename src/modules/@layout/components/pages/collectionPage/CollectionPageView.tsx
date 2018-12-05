@@ -178,7 +178,7 @@ export const CollectionPageView: React.SFC<CollectionPageProps> = props => (
               {
                 props.config.actionComponent &&
                 <ExpansionPanelActions>
-                  {props.config.actionComponent(item, props)}
+                  {props.config.actionComponent(item, props, props.connectedProps)}
                 </ExpansionPanelActions>
               }
             </ExpansionPanel>
