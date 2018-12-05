@@ -39,10 +39,6 @@ export const purchaseRequestFieldTranslator = (find: string, field: ICollectionV
         break;
     }
   } 
-  
-  if (typeof Number(find) === 'number') {
-    result = ` ${find} `;
-  }
 
   return result;
 };

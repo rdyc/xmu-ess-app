@@ -91,15 +91,15 @@ const styles = (theme: Theme) =>
       color: theme.palette.primary.contrastText,
     },
     drawerPaperBackgroundImage: {
-      backgroundImage: `url(${sidebar})`,
+      background: `linear-gradient(rgba(0,130,170,0), ${theme.palette.primary.main}), url(${sidebar})`,
       backgroundSize: 'cover',
       backgroundPosition: 'center center',
-      opacity: .1,
+      opacity: .2,
       position: 'absolute',
       width: '100%',
       height: '100%',
       content: '""',
-      display: 'block',
+      display: 'block'
     },
     drawerPaperAdditional: {
       width: drawerWidth
