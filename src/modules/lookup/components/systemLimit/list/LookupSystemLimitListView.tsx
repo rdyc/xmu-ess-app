@@ -109,7 +109,7 @@ const config: CollectionConfig<ISystemLimit, SystemLimitListProps> = {
     secondary: item.company.name,
     tertiary: item.category ? item.category.value : 'N/A',
     quaternary: item.days.toString(),
-    quinary: item.category ? item.category.description : 'N/A',
+    quinary: item.changes && item.changes.updated && item.changes.updated.fullName || item.changes && item.changes.created && item.changes.created.fullName || 'N/A',
     senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
   }),
 
