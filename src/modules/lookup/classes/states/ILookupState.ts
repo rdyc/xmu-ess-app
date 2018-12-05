@@ -3,13 +3,14 @@ import {
   ICurrencyGetAllRequest,
   ICurrencyGetByIdRequest,
   ICurrencyGetListRequest,
-  IHolidayAllRequest,
-  IHolidayByIdRequest,
-  IHolidayListRequest,
-  ILeaveGetAllRequest,
-  ILeaveGetDetailRequest,
-  ILeaveGetListRequest,
-  ILeavePutRequest,
+  ILookupHolidayGetAllRequest,
+  ILookupHolidayGetByIdRequest,
+  ILookupHolidayGetListRequest,
+  ILookupLeaveGetAllRequest,
+  ILookupLeaveGetDetailRequest,
+  ILookupLeaveGetListRequest,
+  ILookupLeavePostRequest,
+  ILookupLeavePutRequest,
   IMenuGetAllRequest,
   IMenuGetByIdRequest,
   IMenuListRequest,
@@ -20,7 +21,9 @@ import {
   IMileageExceptionPutRequest,
   IPositionGetAllRequest,
   IPositionGetByIdRequest,
-  IPositionListRequest,
+  IPositionGetListRequest,
+  IPositionPostRequest,
+  IPositionPutRequest,
   ISystemLimitAllRequest,
   ISystemLimitByIdRequest,
   ISystemLimitDeleteRequest,
@@ -64,12 +67,12 @@ import {
   IDiem,
   IDiemDetail,
   IDiemList,
-  IHoliday,
-  IHolidayDetail,
-  IHolidayList,
-  ILeave,
-  ILeaveDetail,
-  ILeaveList,
+  ILookupHoliday,
+  ILookupHolidayDetail,
+  ILookupHolidayList,
+  ILookupLeave,
+  ILookupLeaveDetail,
+  ILookupLeaveList,
   IMenu,
   IMenuDetail,
   IMenuList,
@@ -96,6 +99,7 @@ import {
   // ICurrencyDeleteRequest,
   ICurrencyPostRequest, ICurrencyPutRequest } from '../queries/currency';
 import { ILookupCustomerDeleteRequest, ILookupCustomerPostRequest, ILookupCustomerPutRequest } from '../queries/customer';
+import { IPositionDeleteRequest } from '../queries/position/IPositionDeleteRequest';
 
 export interface ILookupState {
   lookupCustomerGetAll: IQueryCollectionState<ILookupCustomerGetAllRequest, ICustomer>;
@@ -134,8 +138,11 @@ export interface ILookupState {
   menuGetById: IQuerySingleState<IMenuGetByIdRequest, IMenuDetail>;
 
   positionGetAll: IQueryCollectionState<IPositionGetAllRequest, IPosition>;
-  positionGetList: IQueryCollectionState<IPositionListRequest, IPositionList>;
+  positionGetList: IQueryCollectionState<IPositionGetListRequest, IPositionList>;
   positionGetById: IQuerySingleState<IPositionGetByIdRequest, IPositionDetail>;
+  positionPost: IQuerySingleState<IPositionPostRequest, IPosition>;
+  positionPut: IQuerySingleState<IPositionPutRequest, IPosition>;
+  positionDelete: IQuerySingleState<IPositionDeleteRequest, boolean>;
 
   currencyGetAll: IQueryCollectionState<ICurrencyGetAllRequest, ICurrency>;
   currencyGetList: IQueryCollectionState<ICurrencyGetListRequest, ICurrencyList>;
@@ -144,14 +151,15 @@ export interface ILookupState {
   currencyPut: IQuerySingleState<ICurrencyPutRequest, ICurrency>;
   // currencyDelete: IQuerySingleState<ICurrencyDeleteRequest, boolean>;
 
-  holidayGetAll: IQueryCollectionState<IHolidayAllRequest, IHoliday>;
-  holidayGetList: IQueryCollectionState<IHolidayListRequest, IHolidayList>;
-  holidayGetById: IQuerySingleState<IHolidayByIdRequest, IHolidayDetail>;
+  lookupHolidayGetAll: IQueryCollectionState<ILookupHolidayGetAllRequest, ILookupHoliday>;
+  lookupHolidayGetList: IQueryCollectionState<ILookupHolidayGetListRequest, ILookupHolidayList>;
+  lookupHolidayGetById: IQuerySingleState<ILookupHolidayGetByIdRequest, ILookupHolidayDetail>;
 
-  leaveGetAll: IQueryCollectionState<ILeaveGetAllRequest, ILeave>;
-  leaveGetList: IQueryCollectionState<ILeaveGetListRequest, ILeaveList>;
-  leaveGetById: IQuerySingleState<ILeaveGetDetailRequest, ILeaveDetail>;
-  leavePut: IQuerySingleState<ILeavePutRequest, ILeave>;
+  lookupLeaveGetAll: IQueryCollectionState<ILookupLeaveGetAllRequest, ILookupLeave>;
+  lookupLeaveGetList: IQueryCollectionState<ILookupLeaveGetListRequest, ILookupLeaveList>;
+  lookupLeaveGetById: IQuerySingleState<ILookupLeaveGetDetailRequest, ILookupLeaveDetail>;
+  lookupLeavePost: IQuerySingleState<ILookupLeavePostRequest, ILookupLeave>;
+  lookupLeavePut: IQuerySingleState<ILookupLeavePutRequest, ILookupLeave>;
 
   systemLimitGetAll: IQueryCollectionState<ISystemLimitAllRequest, ISystemLimit>;
   systemLimitGetList: IQueryCollectionState<ISystemLimitListRequest, ISystemLimitList>;

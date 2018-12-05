@@ -1,5 +1,5 @@
 import { GlobalStyle } from '@layout/types/GlobalStyle';
-import { ICompanyDetail } from '@lookup/classes/response';
+import { ICompanyDetail } from '@lookup/classes/response/company';
 import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
 import { Card, CardContent, CardHeader, TextField } from '@material-ui/core';
 import * as React from 'react';

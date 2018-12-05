@@ -18,8 +18,13 @@ const config: SingleConfig<ICurrencyDetail, CurrencyDetailProps> = {
     title: props.intl.formatMessage(lookupMessage.currency.page.detailTitle),
     description: props.intl.formatMessage(lookupMessage.currency.page.detailSubHeader)
   }),
+
+  // parent url
+  parentUrl: (props: CurrencyDetailProps) => '/lookup/currency',
+
   // action centre
   showActionCentre: true,
+  
   // more
   hasMore: true,
   moreOptions: (props: CurrencyDetailProps, state: SingleState, callback: SingleHandler): IAppBarMenu[] => ([

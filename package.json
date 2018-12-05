@@ -58,7 +58,7 @@
     "react-redux": "^5.0.7",
     "react-router-dom": "^4.3.1",
     "react-router-redux": "^4.0.8",
-    "react-scripts-ts": "2.17.0",
+    "react-scripts-ts": "^4.0.8",
     "react-select": "^2.1.0",
     "react-virtualized": "^9.20.1",
     "recompose": "^0.30.0",
@@ -77,5 +77,11 @@
   },
   "devDependencies": {
     "@types/qs": "^6.5.1"
-  }
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
 }

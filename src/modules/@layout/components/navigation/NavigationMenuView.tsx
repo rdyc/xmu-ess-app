@@ -22,13 +22,14 @@ export const navigationMenu: React.SFC<NavigationMenuProps> = props => (
             color: 'inherit'
           }}
           secondaryTypographyProps={{
+            variant: 'body2',
             color: 'inherit'
           }}
         />
       </ListItem>
     }
 
-    <Divider />
+    <Divider light />
     
     <ListItem 
       button
@@ -116,6 +117,6 @@ export const navigationMenu: React.SFC<NavigationMenuProps> = props => (
       ))
     }
 
-    <Divider />
+    <Divider light />
   </List>
 );
