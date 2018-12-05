@@ -78,7 +78,7 @@ const positionInformation: React.SFC<AllProps> = props => {
         />
         <FormControlLabel
           control={<Checkbox checked={!props.data.isExpired} />}
-          label={props.data.isExpired ? 
+          label={!props.data.isExpired ? 
             props.intl.formatMessage(lookupMessage.position.field.isExpired) :
             props.intl.formatMessage(lookupMessage.position.field.isNotExpired) }
         />
