@@ -60,7 +60,7 @@ export const expenseInformation: React.SFC<AllProps> = props => {
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
           label={props.intl.formatMessage(expenseMessage.request.field.value)}
-          value={intl.formatNumber(data.value || 0)}
+          value={intl.formatNumber(data.value || 0, GlobalFormat.CurrencyDefault)}
         />
         <TextField
           {...GlobalStyle.TextField.ReadOnly}

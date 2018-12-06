@@ -107,11 +107,11 @@ const config: CollectionConfig<IProjectAssignment, AllProps> = {
   },
   onBind: (item: IProjectAssignment, index: number) => ({
     key: index,
-    primary: item.name,
-    secondary: item.project && item.project.value || item.projectType,
-    tertiary: item.customer && item.customer.name || item.customerUid,
-    quaternary: item.uid,
-    quinary: item.status && item.status.value || item.statusType,
+    primary: item.uid,
+    secondary: item.projectUid,
+    tertiary: item.name,
+    quaternary: item.customer && item.customer.name || item.customerUid,
+    quinary: item.project && item.project.value || item.projectType,
     senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
   }),
 

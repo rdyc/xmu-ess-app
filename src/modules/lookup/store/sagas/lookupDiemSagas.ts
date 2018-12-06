@@ -4,6 +4,7 @@ import {
   lookupDiemDeleteError,
   lookupDiemDeleteRequest,
   lookupDiemDeleteSuccess,
+  lookupDiemGetAllDispose,
   lookupDiemGetAllError,
   lookupDiemGetAllRequest,
   lookupDiemGetAllSuccess,
@@ -211,11 +212,13 @@ function* watchPutRequest() {
 function* watchDeleteRequest() {
   const worker = (action: ReturnType<typeof lookupDiemDeleteRequest>) => {
     return saiyanSaga.fetch({
-      method: 'put',
+      method: 'delete',
       path: `/v1/lookup/diems`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
+        put(lookupDiemGetAllDispose()),
         put(lookupDiemDeleteSuccess(response.body))
+
       ],
       successCallback: (response: IApiResponse) => {
         action.payload.resolve(response.body.data);

@@ -9,10 +9,13 @@ import * as React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router';
 import { LookupCompanyDetail } from './company/detail/LookupCompanyDetail';
 import LookupCompanyEditor from './company/editor/LookupCompanyEditor';
-import { LookupCompanyList } from './company/list/LookupCompanyList';
+import LookupCompanyList from './company/list/LookupCompanyList';
+import { LookupCustomerDetail } from './customer/detail/LookupCustomerDetail';
+import LookupCustomerEditor from './customer/editor/LookupCustomerEditor';
+import LookupCustomerList  from './customer/list/LookupCustomerList';
 import { LookupDiemDetail } from './diem/detail/LookupDiemDetail';
 import LookupDiemEditor from './diem/editor/LookupDiemEditor';
-import { LookupDiemList } from './diem/list/LookupDiemList';
+import LookupDiemList from './diem/list/LookupDiemList';
 import LookupHolidayEditor from './holiday/editor/LookupHolidayEditor';
 import LookupHolidayList from './holiday/list/LookupHolidayList';
 import LookupLeaveEditor from './leave/editor/LookupLeaveEditor';
@@ -83,6 +86,14 @@ const position = (props: RouteComponentProps) => (
   </Switch>
 );
 
+const lookupCustomer = (props: RouteComponentProps) => (
+  <Switch>
+    <Route path={`${props.match.path}/list`} component={LookupCustomerList} />
+    <Route path={`${props.match.path}/form`} component={LookupCustomerEditor} />
+    <Route path={`${props.match.path}/:customerUid`} component={LookupCustomerDetail} />
+</Switch>
+);
+
 const diem = (props: RouteComponentProps) => (
   <Switch>
     <Route path={`${props.match.path}/form`} component={LookupDiemEditor} />
@@ -102,6 +113,7 @@ export const LookupRoutingComponents: React.SFC<RouteComponentProps> = props => 
       <Route path={`${props.match.path}/diemvalue`} component={diem} />
       <Route path={`${props.match.path}/holiday`} component={holiday} />
       <Route path={`${props.match.path}/leave`} component={leave} />
+      <Route path={`${props.match.path}/customer`} component={lookupCustomer} />
     </Layout>
   </Switch>
 );
