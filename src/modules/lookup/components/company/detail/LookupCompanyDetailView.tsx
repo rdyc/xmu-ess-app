@@ -19,6 +19,9 @@ const config: SingleConfig<ICompanyDetail, CompanyDetailProps> = {
     description: props.intl.formatMessage(lookupMessage.company.page.detailSubHeader),
   }),
 
+  // parent url
+  parentUrl: (props: CompanyDetailProps) => '/lookup/company/list',
+
   // action centre
   showActionCentre: true,
 
