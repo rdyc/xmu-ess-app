@@ -1,13 +1,14 @@
 import { leaveApprovalConfirm, leaveApprovalPage } from './leaveApprovalMessage';
 import { leaveCancellationConfirm, leaveCancellationPage } from './leaveCancellationMessage';
-import { leaveRequestConfirm, leaveRequestField, leaveRequestPage, leaveRequestSection } from './leaveRequestMessage';
+import { leaveRequestConfirm, leaveRequestDialog, leaveRequestField, leaveRequestPage, leaveRequestSection } from './leaveRequestMessage';
 
 export const leaveMessage = {
   request: {
     field: leaveRequestField,
     page: leaveRequestPage,
     section: leaveRequestSection,
-    confirm: leaveRequestConfirm
+    confirm: leaveRequestConfirm,
+    dialog: leaveRequestDialog,
   },
   approval: {
     page: leaveApprovalPage,

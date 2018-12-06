@@ -3,6 +3,7 @@ import { FormMode } from '@generic/types';
 import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
+import { layoutMessage } from '@layout/locales/messages';
 import {
   ILeaveRequestPostPayload,
   ILeaveRequestPutPayload,
@@ -13,6 +14,7 @@ import {
 } from '@leave/components/request/editor/forms/LeaveRequestForm';
 import { LeaveRequestEditorView } from '@leave/components/request/editor/LeaveRequestEditorView';
 import { WithLeaveRequest, withLeaveRequest } from '@leave/hoc/withLeaveRequest';
+import { leaveMessage } from '@leave/locales/messages/leaveMessage';
 import { leaveRequestMessage } from '@leave/locales/messages/leaveRequestMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
@@ -48,6 +50,10 @@ interface OwnState {
   companyUid?: string | undefined;
   positionUid?: string | undefined;
   leaveUid?: string | undefined;
+  submitDialogTitle: string;
+  submitDialogContentText: string;
+  submitDialogCancelText: string;
+  submitDialogConfirmedText: string;
 }
 
 interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
@@ -185,7 +191,11 @@ const handlerCreators: HandleCreators<RequestEditorProps, OwnHandlers> = {
 };
 
 const createProps: mapper<RequestEditorProps, OwnState> = (props: RequestEditorProps): OwnState => ({ 
-  formMode: FormMode.New
+  formMode: FormMode.New,
+  submitDialogTitle: props.intl.formatMessage(leaveMessage.request.dialog.createTitle),
+  submitDialogContentText: props.intl.formatMessage(leaveMessage.request.dialog.createDescription),
+  submitDialogCancelText: props.intl.formatMessage(layoutMessage.action.cancel),
+  submitDialogConfirmedText: props.intl.formatMessage(layoutMessage.action.ok),
 });
 
 const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
@@ -221,7 +231,9 @@ const lifecycles: ReactLifeCycleFunctions<RequestEditorProps, {}> = {
 
       stateUpdate({ 
         formMode: FormMode.Edit,
-        leaveUid: history.location.state.uid
+        leaveUid: history.location.state.uid,
+        submitDialogTitle: this.props.intl.formatMessage(leaveMessage.request.dialog.editTitle),
+        submitDialogContentText: this.props.intl.formatMessage(leaveMessage.request.dialog.editDescription),
       });
 
       loadDetailRequest({
