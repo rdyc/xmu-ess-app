@@ -1,10 +1,10 @@
 import { IQuerySingleState } from '@generic/interfaces';
 import { ILeaveCancellationPostRequest } from '@leave/classes/queries/cancellation';
-import { ILeaveRequest } from '@leave/classes/response';
+import { ILeave } from '@leave/classes/response';
 import { LeaveCancellationAction as Action } from '@leave/store/actions';
 import { Reducer } from 'redux';
 
-const initialState: IQuerySingleState<ILeaveCancellationPostRequest, ILeaveRequest> = {
+const initialState: IQuerySingleState<ILeaveCancellationPostRequest, ILeave> = {
   request: undefined,
   response: undefined,
   isError: false,
@@ -12,7 +12,7 @@ const initialState: IQuerySingleState<ILeaveCancellationPostRequest, ILeaveReque
   errors: undefined,
 };
 
-const reducer: Reducer<IQuerySingleState<ILeaveCancellationPostRequest, ILeaveRequest>> = (state = initialState, action) => {
+const reducer: Reducer<IQuerySingleState<ILeaveCancellationPostRequest, ILeave>> = (state = initialState, action) => {
   switch (action.type) {
     case Action.POST_REQUEST: return { ...state, isLoading: true, request: action.payload };
     case Action.POST_SUCCESS: return { ...state, isLoading: false, response: action.payload };

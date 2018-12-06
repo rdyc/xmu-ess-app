@@ -129,6 +129,7 @@ function* watchPurchasePostFetchRequest() {
       path: `/v1/purchase/requests/${action.payload.companyUid}/${action.payload.positionUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => ([
+        put(purchaseGetByIdDispose()),
         put(purchaseGetAllDispose()),
         put(purchasePostSuccess(response.body))
       ]),
@@ -178,8 +179,8 @@ function* watchPurchasePutFetchRequest() {
       path: `/v1/purchase/requests/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.purchaseUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => ([
-        put(purchaseGetAllDispose()),
         put(purchaseGetByIdDispose()),
+        put(purchaseGetAllDispose()),
         put(purchasePutSuccess(response.body))
       ]),
       successCallback: (response: IApiResponse) => {
@@ -401,8 +402,9 @@ function* watchSettlementPostFetchRequest() {
       path: `/v1/purchase/settlements/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.purchaseUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => ([
+        put(settlementGetByIdDispose()),
+        put(settlementGetAllDispose()),
         put(settlementPostSuccess(response.body)),
-        put(settlementGetAllDispose())
       ]),
       successCallback: (response: IApiResponse) => {
         action.payload.resolve(response.body.data);
@@ -450,8 +452,8 @@ function* watchSettlementPutFetchRequest() {
       path: `/v1/purchase/settlements/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.purchaseUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => ([
-        put(settlementGetAllDispose()),
         put(settlementGetByIdDispose()),
+        put(settlementGetAllDispose()),
         put(settlementPutSuccess(response.body))
       ]),
       successCallback: (response: IApiResponse) => {

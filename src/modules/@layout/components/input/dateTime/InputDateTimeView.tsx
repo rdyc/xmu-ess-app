@@ -1,6 +1,6 @@
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import DateTimePicker from 'material-ui-pickers/DateTimePicker';
+import { DateTimePicker } from 'material-ui-pickers';
 import { MaterialUiPickersDate } from 'material-ui-pickers/typings/date';
 import { Moment } from 'moment';
 import * as React from 'react';

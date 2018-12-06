@@ -16,25 +16,25 @@ import {
   ILeaveRequestPostRequest,
   ILeaveRequestPutRequest,
 } from '@leave/classes/queries/request';
-import { ILeaveGetEnd, ILeaveRequest, ILeaveRequestDetail } from '@leave/classes/response';
+import { ILeave, ILeaveDetail, ILeaveGetEnd } from '@leave/classes/response';
 
 export interface ILeaveState {
   // request
-  leaveRequestGetAll: IQueryCollectionState<ILeaveRequestGetAllRequest, ILeaveRequest>;
-  leaveRequestGetById: IQuerySingleState<ILeaveRequestGetByIdRequest, ILeaveRequestDetail>;
-  leaveRequestPost: IQuerySingleState<ILeaveRequestPostRequest, ILeaveRequest>;
-  leaveRequestPut: IQuerySingleState<ILeaveRequestPutRequest, ILeaveRequest>;
+  leaveRequestGetAll: IQueryCollectionState<ILeaveRequestGetAllRequest, ILeave>;
+  leaveRequestGetById: IQuerySingleState<ILeaveRequestGetByIdRequest, ILeaveDetail>;
+  leaveRequestPost: IQuerySingleState<ILeaveRequestPostRequest, ILeave>;
+  leaveRequestPut: IQuerySingleState<ILeaveRequestPutRequest, ILeave>;
 
   // get end
   leaveGetEnd: IQuerySingleState<ILeaveGetEndQuery, ILeaveGetEnd>;
 
   // approval
-  leaveApprovalGetAll: IQueryCollectionState<ILeaveApprovalGetAllRequest, ILeaveRequest>;
-  leaveApprovalGetById: IQuerySingleState<ILeaveApprovalGetByIdRequest, ILeaveRequestDetail>;
-  leaveApprovalPost: IQuerySingleState<ILeaveApprovalPostRequest, ILeaveRequest>;
+  leaveApprovalGetAll: IQueryCollectionState<ILeaveApprovalGetAllRequest, ILeave>;
+  leaveApprovalGetById: IQuerySingleState<ILeaveApprovalGetByIdRequest, ILeaveDetail>;
+  leaveApprovalPost: IQuerySingleState<ILeaveApprovalPostRequest, ILeave>;
 
   // approval
-  leaveCancellationGetAll: IQueryCollectionState<ILeaveCancellationGetAllRequest, ILeaveRequest>;
-  leaveCancellationGetById: IQuerySingleState<ILeaveCancellationGetByIdRequest, ILeaveRequestDetail>;
-  leaveCancellationPost: IQuerySingleState<ILeaveCancellationPostRequest, ILeaveRequest>;
+  leaveCancellationGetAll: IQueryCollectionState<ILeaveCancellationGetAllRequest, ILeave>;
+  leaveCancellationGetById: IQuerySingleState<ILeaveCancellationGetByIdRequest, ILeaveDetail>;
+  leaveCancellationPost: IQuerySingleState<ILeaveCancellationPostRequest, ILeave>;
 }

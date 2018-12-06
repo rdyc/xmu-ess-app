@@ -21,9 +21,14 @@ export type TimesheetFormData = {
 
 interface OwnProps {
   formMode: FormMode;
+  submitDialogTitle: string;
+  submitDialogContentText: string;
+  submitDialogCancelText: string;
+  submitDialogConfirmedText: string;
 }
 
 interface FormValueProps {
+  formName: string;
   activityTypeValue: string | undefined;
   customerUidValue: string | undefined;
   isPresalesActivity: boolean | true;
@@ -44,6 +49,7 @@ const mapStateToProps = (state: any): FormValueProps => {
   const projectUid = selector(state, 'information.projectUid');
 
   return {
+    formName,
     activityTypeValue: activityType,
     customerUidValue: customerUid,
     isPresalesActivity: activityType === 'SAT02',

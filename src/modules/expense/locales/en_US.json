@@ -15,6 +15,10 @@
   "expense.dialog.modifyTitle": "Modify Confirmation",
   "expense.dialog.modifyDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
   "expense.action.modify": "Modify",
+  "expense.dialog.newTitle": "Submit Confirmation",
+  "expense.dialog.newDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "expense.dialog.editTitle": "Modify Confirmation",
+  "expense.dialog.editDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
 
   "expense.approval.title": "Approval",
   "expense.approval.subTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
@@ -55,6 +59,7 @@
   "expense.field.address.required": "Address is Required",
   "expense.field.name.required": "Customer Name is Required",
   "expense.field.title.required": "Customer Job Title is Required",  
+  "expense.field.notes.required": "Notes is Required",  
 
   "expense.message.request.create.success": "A new Expense {uid} has been created",
   "expense.message.request.create.failure": "Unable to process your submission",

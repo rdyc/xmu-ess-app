@@ -120,7 +120,8 @@ function* watchFetchPostRequest() {
   const worker = (action: ReturnType<typeof lookupCurrencyPostRequest>) => {
     return saiyanSaga.fetch({
       method: 'post',
-      path: `/v1/lookup/currencies${objectToQuerystring(action.payload.data)}`,
+      path: `/v1/lookup/currencies`,
+      payload: action.payload.data,
       successEffects: (response: IApiResponse) => ([
         put(lookupCurrencyGetAllDispose()),
         put(lookupCurrencyPostSuccess(response.body))

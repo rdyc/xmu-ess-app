@@ -1,4 +1,5 @@
 import { FormMode } from '@generic/types';
+import { GlobalFormat } from '@layout/types';
 import { Typography } from '@material-ui/core';
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
@@ -6,7 +7,9 @@ import { TravelSettlementForm, TravelSettlementFormData } from './forms/TravelSe
 import { TravelSettlementEditorProps } from './TravelSettlementEditor';
 
 export const travelSettlementEditorView: React.SFC<TravelSettlementEditorProps> = props => {
-  const { formMode, handleValidate, handleSubmit, handleSubmitSuccess, handleSubmitFail, intl } = props;
+  const { formMode, handleValidate, handleSubmit, handleSubmitSuccess, 
+    handleSubmitFail, intl, submitDialogTitle, submitDialogContentText, 
+    submitDialogConfirmedText, submitDialogCancelText } = props;
   const { isLoading, response } = props.travelSettlementState.detail;
   const travelResponse = props.travelRequestState.detail.response;
   const isloading = props.travelRequestState.detail.isLoading;
@@ -20,6 +23,10 @@ export const travelSettlementEditorView: React.SFC<TravelSettlementEditorProps> 
       onSubmit={handleSubmit} 
       onSubmitSuccess={handleSubmitSuccess}
       onSubmitFail={handleSubmitFail}
+      submitDialogTitle={submitDialogTitle}
+      submitDialogContentText={submitDialogContentText}
+      submitDialogCancelText={submitDialogCancelText}
+      submitDialogConfirmedText={submitDialogConfirmedText}
     />
   );
 
@@ -78,24 +85,8 @@ export const travelSettlementEditorView: React.SFC<TravelSettlementEditorProps> 
             isRoundTrip: item.isRoundTrip,
             from: item.from,
             destination: item.destination,
-            departureDate: intl.formatDate(item.departureDate, {
-              second: 'numeric',
-              minute: 'numeric',
-              hour: 'numeric',
-              day: 'numeric',
-              month: 'numeric',
-              year: 'numeric',
-              timeZone: 'GMT',
-            }),
-            returnDate: intl.formatDate(item.returnDate, {
-              second: 'numeric',
-              minute: 'numeric',
-              hour: 'numeric',
-              day: 'numeric',
-              month: 'numeric',
-              year: 'numeric',
-              timeZone: 'GMT',
-            }),
+            departureDate: intl.formatDate(item.departureDate, GlobalFormat.TimeDate),
+            returnDate: intl.formatDate(item.returnDate, GlobalFormat.TimeDate),
             costTransport: item.costTransport || 0,
             isTransportByCompany: item.isTransportByCompany,
             hotel: item.hotel,
@@ -154,24 +145,8 @@ export const travelSettlementEditorView: React.SFC<TravelSettlementEditorProps> 
             isRoundTrip: item.isRoundTrip,
             from: item.from,
             destination: item.destination,
-            departureDate: intl.formatDate(item.departureDate, {
-              second: 'numeric',
-              minute: 'numeric',
-              hour: 'numeric',
-              day: 'numeric',
-              month: 'numeric',
-              year: 'numeric',
-              timeZone: 'GMT',
-            }),
-            returnDate: intl.formatDate(item.returnDate, {
-              second: 'numeric',
-              minute: 'numeric',
-              hour: 'numeric',
-              day: 'numeric',
-              month: 'numeric',
-              year: 'numeric',
-              timeZone: 'GMT',
-            }),
+            departureDate: intl.formatDate(item.departureDate, GlobalFormat.TimeDate),
+            returnDate: intl.formatDate(item.returnDate, GlobalFormat.TimeDate),
             costTransport: item.costTransport || 0,
             isTransportByCompany: item.isTransportByCompany,
             hotel: item.hotel,
