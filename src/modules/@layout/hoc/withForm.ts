@@ -6,12 +6,18 @@ interface PropsFromDispatch {
   workflowApprovalDispatch: {
     submitForm: (formName: string) => void;
   };
+  submitDispatch: {
+    submitForm: (formName: string) => void;
+  };
 }
 
 export interface WithForm extends PropsFromDispatch {}
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   workflowApprovalDispatch: {
+    submitForm: (formName: string) => dispatch(submit(formName)),
+  },
+  submitDispatch: {
     submitForm: (formName: string) => dispatch(submit(formName)),
   }
 });
