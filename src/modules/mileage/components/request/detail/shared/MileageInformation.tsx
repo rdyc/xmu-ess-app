@@ -1,3 +1,4 @@
+import { GlobalFormat } from '@layout/types';
 import { GlobalStyle } from '@layout/types/GlobalStyle';
 import {
   Card,
@@ -56,7 +57,7 @@ const mileageInformation: React.SFC<AllProps> = props => {
         {...GlobalStyle.TextField.ReadOnly}
         margin="dense"
         label={intl.formatMessage(mileageMessage.request.field.amount)}
-        value={intl.formatNumber(data.amount)}
+        value={intl.formatNumber(data.amount, GlobalFormat.CurrencyDefault)}
       />
     </CardContent>
   </Card>

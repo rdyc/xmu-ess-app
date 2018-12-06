@@ -72,6 +72,10 @@ export type TravelRequestFormData = {
 interface OwnProps {
   formMode: FormMode;
   diemRequest: IDiem[] | undefined;
+  submitDialogTitle: string;
+  submitDialogContentText: string;
+  submitDialogCancelText: string;
+  submitDialogConfirmedText: string;
 }
 
 interface OwnHandlers {
@@ -82,6 +86,7 @@ interface OwnHandlers {
 interface OwnState {
   TotalCost: number | undefined;
   projectType: string | undefined;
+  formName: string;
 }
 
 interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
@@ -107,6 +112,7 @@ export type RequestFormProps
 
 const createProps: mapper<RequestFormProps, OwnState> = (props: RequestFormProps): OwnState => {
   return {
+    formName,
     TotalCost: props.initialValues.information && props.initialValues.information.total,
     projectType: props.initialValues.information && props.initialValues.information.projectType === ProjectType.Project ?
       ProjectType.Project : ProjectType.NonProject
