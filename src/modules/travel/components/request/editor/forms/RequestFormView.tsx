@@ -40,6 +40,8 @@ export const RequestFormView: React.SFC<RequestFormProps> = props => {
       diemRequest={diem}
       destinationTypeValue={destinationtypeValue}
       projectTypeValue={props.projectType}
+      minDate={props.startDate}
+      maxDate={props.endDate}
     />    
   );
 

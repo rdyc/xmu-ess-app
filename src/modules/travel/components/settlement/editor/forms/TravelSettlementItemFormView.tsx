@@ -105,11 +105,15 @@ export const TravelSettlementItemFormView: React.SFC<TravelSettlementItemFormPro
                     name={`${field}.departureDate`}
                     label={props.intl.formatMessage(travelMessage.request.field.itemStart)}
                     component={InputDateTime}
+                    minDate={props.minDate}
+                    maxDate={props.maxDate}
                   />
                   <Field 
                     name={`${field}.returnDate`}
                     label={props.intl.formatMessage(travelMessage.request.field.itemEnd)}
                     component={InputDateTime}
+                    minDate={props.minDate}
+                    maxDate={props.maxDate}
                   />
                   <Field 
                     type="number"
