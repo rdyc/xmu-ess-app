@@ -55,8 +55,10 @@ const component: React.SFC<AllProps> = props => {
     layoutDispatch.logoutDialogHide();
 
     if (confirm) {
-      store.clearAll();
-      AppUserManager.signoutRedirect();
+      AppUserManager.signoutRedirect()
+        .then(() => {
+          store.clearAll();
+        });
     }
   };
 

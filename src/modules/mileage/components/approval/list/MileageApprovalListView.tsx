@@ -104,7 +104,7 @@ const config: CollectionConfig<IMileageRequest, AllProps> = {
     primary: item.uid,
     secondary: props.intl.formatDate(new Date(item.year, item.month - 1), GlobalFormat.MonthYear),
     tertiary: item.employee && item.employee.fullName || item.employeeUid,
-    quaternary: props.intl.formatNumber(item.amount),
+    quaternary: props.intl.formatNumber(item.amount, GlobalFormat.CurrencyDefault),
     quinary: item.status && item.status.value || item.statusType,
     senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
   }),
