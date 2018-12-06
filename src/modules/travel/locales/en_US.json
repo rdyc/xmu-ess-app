@@ -21,6 +21,14 @@
 
   "travel.request.option.addSettlement": "Add Settlement",
 
+  "travel.request.dialog.modifyTitle": "Modify Confirmation",
+  "travel.request.modifyDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "travel.request.action.modify": "Modify",
+  "travel.request.dialog.newTitle": "Submit Confirmation",
+  "travel.request.dialog.newDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "travel.request.dialog.editTitle": "Modify Confirmation",
+  "travel.request.dialog.editDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+
   "travel.request.confirm.modify.title": "Modify Confirmation",
   "travel.request.confirm.modify.description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
   "travel.request.confirm.addSettlement.title": "Add Settlement Confirmation",
@@ -254,6 +262,10 @@
   "travel.request.message.create.failure": "Unable to process your submission",
   "travel.request.message.update.success": "Existing TravelID {uid} has been updated",
   "travel.request.message.update.failure": "Unable to process your submission",
+
+  "travel.approval.message.emptyProps": "Some props are empty",
+  "travel.approval.message.submit.success": "Successfully processing approval submission",
+  "travel.approval.message.submit.failure": "Failure when processing approval submission",
 
   "travel.message.settlement.emptyProps": "Some props are empty",
   "travel.message.settlement.create.success": "A TravelID {uid} has been Settle",
