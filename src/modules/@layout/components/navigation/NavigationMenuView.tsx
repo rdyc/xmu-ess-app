@@ -4,7 +4,6 @@ import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import * as React from 'react';
 
-import { Link } from 'react-router-dom';
 import { NavigationMenuProps } from './NavigationMenu';
 
 export const navigationMenu: React.SFC<NavigationMenuProps> = props => (
@@ -64,19 +63,6 @@ export const navigationMenu: React.SFC<NavigationMenuProps> = props => (
             color: 'inherit'
           }}
         />
-      </ListItem>
-        <ListItem button color={'inherit'}>
-          <Link to={'/reports/winningratio'}>
-          <ListItemText 
-            className={props.classes.marginFarLeft}
-            primary={'Winning Ratio'}
-            primaryTypographyProps={{
-              noWrap: true,
-              variant: 'body1',
-              color: 'inherit'
-            }}
-          />
-          </Link>
       </ListItem>
     </Collapse>
 

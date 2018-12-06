@@ -1,15 +1,14 @@
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import DatePicker from 'material-ui-pickers/DatePicker';
+import { DatePicker } from 'material-ui-pickers';
 import { MaterialUiPickersDate } from 'material-ui-pickers/typings/date';
 import { Moment } from 'moment';
 import * as React from 'react';
 import { isNullOrUndefined } from 'util';
-
 import { InputDateWithValueProps } from './InputDateWithValue';
 
 export const InputDateWithValueView: React.SFC<InputDateWithValueProps> = props => {
-  const { dateFormat, input, required, label, disabled, meta, intl, disableFuture, disablePast } = props;
+  const { dateFormat, input, required, label, disabled, meta, intl, future, val } = props;
 
   const labelFunction = (date: MaterialUiPickersDate, invalidLabel: string): string => {
     let result: string = invalidLabel;
@@ -42,10 +41,9 @@ export const InputDateWithValueView: React.SFC<InputDateWithValueProps> = props 
       helperText={meta.touched && meta.error}
       onChange={(moment: Moment) => input.onChange(moment.toISOString(true))}
       labelFunc={labelFunction}
-      disablePast={disablePast}
-      disableFuture={disableFuture}
       invalidLabel={''}
-      value={props.val}
+      disableFuture={future}
+      value={val}
     />
   );
 

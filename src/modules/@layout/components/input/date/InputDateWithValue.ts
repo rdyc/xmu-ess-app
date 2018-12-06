@@ -9,9 +9,8 @@ interface OwnProps extends WrappedFieldProps, BaseFieldProps {
   type?: string; 
   required?: boolean;
   label: string; 
-  disabled: boolean; 
-  disablePast?: boolean;
-  disableFuture?: boolean;
+  disabled: boolean;
+  future?: boolean;
   val: string;
 }
 

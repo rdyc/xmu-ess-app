@@ -1,5 +1,5 @@
 import { SelectEmployee } from '@account/components/select';
-import { InputDateWithValue } from '@layout/components/input/date/InputDateWithValue';
+import { InputDateWithValue } from '@layout/components/input/date';
 import { Grid, TextField } from '@material-ui/core';
 import { summaryMessage } from '@summary/locales/messages/summaryMessage';
 import * as React from 'react';
@@ -47,7 +47,7 @@ export const BillableFilterFormView: React.SFC<
             placeholder={props.intl.formatMessage(summaryMessage.billable.field.start)}
             component={InputDateWithValue}
             onChange={handleChangeStart}
-            disableFuture={true}
+            future={true}
             val={props.startValue ? props.startValue : props.start}
           />
         </Grid>
@@ -58,7 +58,7 @@ export const BillableFilterFormView: React.SFC<
             placeholder={props.intl.formatMessage(summaryMessage.billable.field.end)}
             component={InputDateWithValue}
             onChange={handleChangeEnd}
-            disableFuture={true}
+            future={true}
             val={props.endValue ? props.endValue : props.end}
           />
         </Grid>
