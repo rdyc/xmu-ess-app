@@ -66,8 +66,8 @@ const stateUpdaters: StateUpdaters<TimesheetEntryDetailProps, OwnState, OwnState
     dialogOpen: true,
     dialogTitle: props.intl.formatMessage(timesheetMessage.entry.confirm.modifyTitle),
     dialogContent: props.intl.formatMessage(timesheetMessage.entry.confirm.modifyDescription),
-    dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.disaggree),
-    dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.aggree)
+    dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.disaggre),
+    dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.aggre)
   }),
   setDefault: (prevState: OwnState) => (): Partial<OwnState> => ({
     dialogFullScreen: false,

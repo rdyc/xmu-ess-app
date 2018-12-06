@@ -14,6 +14,7 @@ import { FormMode } from '@generic/types';
 import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
+import { layoutMessage } from '@layout/locales/messages';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import {
@@ -48,6 +49,10 @@ interface OwnState {
   companyUid?: string | undefined;
   positionUid?: string | undefined;
   expenseUid?: string | undefined;
+  submitDialogTitle: string;
+  submitDialogContentText: string;
+  submitDialogCancelText: string;
+  submitDialogConfirmedText: string;
 }
 
 interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
@@ -74,7 +79,7 @@ const handlerCreators: HandleCreators<ExpenseRequestEditorProps, OwnHandlers> = 
     const requiredFields = [
       'customerUid', 'projectUid', 'date',  
       'expenseType', 'value', 'location', 
-      'address', 'name', 'title',
+      'address', 'name', 'title', 'notes',
     ];
   
     requiredFields.forEach(field => {
@@ -199,7 +204,11 @@ const handlerCreators: HandleCreators<ExpenseRequestEditorProps, OwnHandlers> = 
 };
 
 const createProps: mapper<ExpenseRequestEditorProps, OwnState> = (props: ExpenseRequestEditorProps): OwnState => ({ 
-  formMode: FormMode.New
+  formMode: FormMode.New,
+  submitDialogTitle: props.intl.formatMessage(expenseMessage.request.dialog.createTitle),
+  submitDialogContentText: props.intl.formatMessage(expenseMessage.request.dialog.createDescription),
+  submitDialogCancelText: props.intl.formatMessage(layoutMessage.action.cancel),
+  submitDialogConfirmedText: props.intl.formatMessage(layoutMessage.action.ok),
 });
 
 const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
@@ -235,7 +244,9 @@ const lifecycles: ReactLifeCycleFunctions<ExpenseRequestEditorProps, {}> = {
 
       stateUpdate({ 
         formMode: FormMode.Edit,
-        expenseUid: history.location.state.uid
+        expenseUid: history.location.state.uid,
+        submitDialogTitle: this.props.intl.formatMessage(expenseMessage.request.dialog.editTitle),
+        submitDialogContentText: this.props.intl.formatMessage(expenseMessage.request.dialog.editDescription),
       });
 
       loadDetailRequest({
