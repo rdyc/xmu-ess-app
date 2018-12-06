@@ -1,9 +1,7 @@
 export enum MileageRequestField {
   uid = 'Mileage ID',
-  employeeUid = 'Employee ID',
+  employeeUid = 'Employee',
   month = 'Month',
   year = 'Year',
-  period = 'Period',
   statusType = 'Status',
-  notes = 'Notes'
 }
