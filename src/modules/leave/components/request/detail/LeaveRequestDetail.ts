@@ -64,10 +64,10 @@ const stateUpdaters: StateUpdaters<LeaveRequestDetailProps, OwnState, OwnStateUp
     action: LeaveRequestUserAction.Modify,
     dialogFullScreen: false,
     dialogOpen: true,
-    dialogTitle: props.intl.formatMessage(leaveMessage.request.confirm.modifyTitle), 
-    dialogContent: props.intl.formatMessage(leaveMessage.request.confirm.modifyDescription),
-    dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.disaggre),
-    dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.aggre)
+    dialogTitle: props.intl.formatMessage(leaveMessage.request.dialog.modifyTitle), 
+    dialogContent: props.intl.formatMessage(leaveMessage.request.dialog.modifyDescription),
+    dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.discard),
+    dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.continue)
   }),
   setDefault: (prevState: OwnState) => (): Partial<OwnState> => ({
     dialogFullScreen: false,

@@ -32,6 +32,15 @@ export const leaveRequestConfirm = defineMessages({
   modifyDescription: { id: `${prefix}.confirm.modify.description` },
 });
 
+export const leaveRequestDialog = defineMessages({
+  modifyTitle: { id: `${prefix}.dialog.modifyTitle`},
+  modifyDescription: { id: `${prefix}.dialog.modifyDescription`},
+  createTitle: { id: `${prefix}.dialog.newTitle`},
+  createDescription: { id: `${prefix}.dialog.newDescription`},
+  editTitle: { id: `${prefix}.dialog.editTitle`},
+  editDescription: { id: `${prefix}.dialog.editDescription`},
+});
+
 // fields
 export const leaveRequestField = defineMessages({
   uid: { id: `${prefix}.field.information.uid` },
