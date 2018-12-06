@@ -7,7 +7,6 @@ import styles from '@styles';
 import * as React from 'react';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose, mapper, StateHandlerMap, StateUpdaters, withStateHandlers } from 'recompose';
-// import { isNullOrUndefined } from 'util';
 
 interface OwnProps {
   title: string;
@@ -60,16 +59,20 @@ const roleMenu: React.SFC<AllProps> = props => {
             data.map(item => item.menu ? (!item.menu.parentUid) &&
               <div key={item.menuUid}>
                 <ListItem
-                  disableGutters
                   button
                   onClick={() => handleToggle(item.menuUid)}
+                  color={'inherit'}
                 >
                   <ListItemText
                     className={(!item.isAccess) ? props.classes.textStrikethrough : ''}
                     primary={item.menu.name}
+                    primaryTypographyProps={{
+                      noWrap: true,
+                      color: 'inherit'
+                    }}
                   />
                   <ListItemSecondaryAction>
-                    {active === item.menuUid && isExpanded ? <ExpandLess /> : <ExpandMore />}
+                    {active === item.menuUid && isExpanded ? <ExpandLess color="inherit" /> : <ExpandMore color="inherit" />}
                   </ListItemSecondaryAction>
                 </ListItem>
 
@@ -78,17 +81,30 @@ const roleMenu: React.SFC<AllProps> = props => {
                   timeout="auto"
                   unmountOnExit
                 >
-                  <List>
-                    <ListItemText
-                      className={(!item.isAccess) ? props.classes.textStrikethrough : ''}
-                      primary={item.menu.name}
-                    />
-                  </List>
+                  {
+                    data &&
+                    data.map(child => child.menu && (child.menu.parentUid === item.menuUid) &&
+                      <ListItem
+                        button
+                        color={'inherit'}
+                        className={props.classes.marginFarLeft}
+                      >
+                        <ListItemText
+                          className={(!child.isAccess) ? props.classes.textStrikethrough : ''}
+                          primary={child.menu.name}
+                          primaryTypographyProps={{
+                            noWrap: true,
+                            color: 'inherit'
+                          }}
+                        />
+                      </ListItem>
+                    )
+                  }
                 </Collapse>
-              </div> : '')
+              </div> : ''
+            )
           }
         </List>
-        {props.children}
       </CardContent>
     </Card>
   );
