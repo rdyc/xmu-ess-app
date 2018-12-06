@@ -1,10 +1,10 @@
 import { IQueryCollectionState } from '@generic/interfaces';
-import { ILookupRoleAllRequest } from '@lookup/classes/queries/role';
+import { ILookupRoleGetAllRequest } from '@lookup/classes/queries/role';
 import { IRole } from '@lookup/classes/response';
 import { LookupRoleAction as Action } from '@lookup/store/actions';
 import { Reducer } from 'redux';
 
-const initialState: IQueryCollectionState<ILookupRoleAllRequest, IRole> = {
+const initialState: IQueryCollectionState<ILookupRoleGetAllRequest, IRole> = {
   request: undefined,
   response: undefined,
   isError: false,
@@ -12,7 +12,7 @@ const initialState: IQueryCollectionState<ILookupRoleAllRequest, IRole> = {
   errors: undefined,
 };
 
-const reducer: Reducer<IQueryCollectionState<ILookupRoleAllRequest, IRole>> = (state = initialState, action) => {
+const reducer: Reducer<IQueryCollectionState<ILookupRoleGetAllRequest, IRole>> = (state = initialState, action) => {
   switch (action.type) {
     case Action.GET_ALL_REQUEST: return { ...state, isLoading: true, isError: false, request: action.payload };
     case Action.GET_ALL_SUCCESS: return { ...state, isLoading: false, isError: false, response: action.payload };

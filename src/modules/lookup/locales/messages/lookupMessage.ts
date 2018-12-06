@@ -1,8 +1,43 @@
-import { currencyConfirm, currencyField, currencyForm, currencyMessage, currencyPage, currencySection } from './currency/currencyMessage';
-import { holidayConfirm, holidayField, holidayFieldHelperFor, holidayMessage, holidayPage, holidaySection } from './holiday';
-import { leaveConfirm, leaveField, leaveFieldHelperFor, leaveMessage, leavePage, leaveSection } from './leave';
-import { companyConfirm, companyField, companyFieldHelperFor, companyMessage, companyPage, companySection } from './lookupCompanyMessage';
-import { customerFieldHelperFor, lookupCustomerConfirm, lookupCustomerFields, lookupCustomerMessage, lookupCustomerPage, lookupCustomerSection } from './lookupCustomerMessage';
+import { 
+  currencyConfirm, 
+  currencyField, 
+  currencyForm, 
+  currencyMessage, 
+  currencyPage, 
+  currencySection 
+} from './currency/currencyMessage';
+import { 
+  holidayConfirm, 
+  holidayField, 
+  holidayFieldHelperFor, 
+  holidayMessage, 
+  holidayPage, 
+  holidaySection 
+} from './holiday';
+import { 
+  leaveConfirm, 
+  leaveField, 
+  leaveFieldHelperFor, 
+  leaveMessage, 
+  leavePage, 
+  leaveSection 
+} from './leave';
+import { 
+  companyConfirm, 
+  companyField, 
+  companyFieldHelperFor, 
+  companyMessage, 
+  companyPage, 
+  companySection 
+} from './lookupCompanyMessage';
+import { 
+  customerFieldHelperFor, 
+  lookupCustomerConfirm, 
+  lookupCustomerFields, 
+  lookupCustomerMessage, 
+  lookupCustomerPage, 
+  lookupCustomerSection 
+} from './lookupCustomerMessage';
 import { 
   diemFieldHelperFor, 
   lookupDiemConfirm, 
@@ -11,6 +46,14 @@ import {
   lookupDiemPage,
   lookupDiemSection
 } from './lookupDiemMessage';
+import { 
+  roleConfirm, 
+  roleField, 
+  roleFieldHelperFor, 
+  roleMessage, 
+  rolePage, 
+  roleSection 
+} from './lookupRoleMessage';
 import {
   mileageExceptionField,
   mileageExceptionFieldHelperFor,
@@ -29,6 +72,14 @@ export const lookupMessage = {
     fieldFor: mileageExceptionFieldHelperFor,
     section: mileageExceptionSection,
     message: mileageExceptionMessage
+  },
+  role: {
+    page: rolePage,
+    field: roleField,
+    fieldFor: roleFieldHelperFor,
+    section: roleSection,
+    confirm: roleConfirm,
+    message: roleMessage
   },
   systemLimit: {
     page: systemLimitPage,

@@ -1,4 +1,6 @@
 export enum RoleUserAction {
   Refresh = 'refresh',
-  Modify = 'modify'
+  Modify = 'modify',
+  Create = 'create',
+  Delete = 'delete'
 }

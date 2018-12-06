@@ -1,2 +1,2 @@
-export * from './ILookupRoleAllFilter';
-export * from './ILookupRoleListFilter';
+export * from './ILookupRoleGetAllFilter';
+export * from './ILookupRoleGetListFilter';
