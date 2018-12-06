@@ -70,8 +70,8 @@ const stateUpdaters: StateUpdaters<TravelSettlementDetailProps, OwnState, OwnSta
     dialogOpen: true,
     dialogTitle: props.intl.formatMessage(travelMessage.request.confirm.modifyTitle), 
     dialogContent: props.intl.formatMessage(travelMessage.request.confirm.modifyDescription),
-    dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.disaggre),
-    dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.aggre)
+    dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.discard),
+    dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.continue)
   }),
   setDefault: (prevState: OwnState) => (): Partial<OwnState> => ({
     dialogFullScreen: false,

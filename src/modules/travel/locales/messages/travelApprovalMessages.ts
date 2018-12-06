@@ -4,9 +4,9 @@ const prefix = 'travel.approval';
 
 // message
 export const travelApprovalMessage = defineMessages({
-  emptyProps: { id: 'travel.message.approval.emptyProps' },
-  submitSuccess: { id: 'travel.message.approval.create.success' },
-  submitFailure: { id: 'travel.message.approval.create.failure' },
+  emptyProps: { id: `${prefix}.message.approval.emptyProps` },
+  submitSuccess: { id: `${prefix}.message.submit.success` },
+  submitFailure: { id: `${prefix}.message.submit.failure` },
 });
 
 // page

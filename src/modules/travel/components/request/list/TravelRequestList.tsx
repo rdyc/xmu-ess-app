@@ -8,6 +8,7 @@ import {
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
+import { GlobalFormat } from '@layout/types';
 import { Button } from '@material-ui/core';
 import { isModuleRequestEditable } from '@organization/helper/isModuleRequestEditable';
 import { ITravelRequest } from '@travel/classes/response';
@@ -116,7 +117,7 @@ const config: CollectionConfig<ITravelRequest, AllProps> = {
     primary: item.uid, 
     secondary: item.customer && item.customer.name || item.customerUid, 
     tertiary: item.objective ? item.objective : 'N/A',
-    quaternary: props.intl.formatNumber(item.total),
+    quaternary: item.total && props.intl.formatNumber(item.total, GlobalFormat.CurrencyDefault) || '-',
     quinary: item.status && item.status.value || item.statusType,
     senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
   }),
