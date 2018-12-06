@@ -11,7 +11,10 @@ import { PurchaseSettlementEditorProps } from '@purchase/components/purchaseSett
 import * as React from 'react';
 
 export const PurchaseSettlementEditorView: React.SFC<PurchaseSettlementEditorProps> = props => {
-  const { formMode, handleValidate, handleSubmit, handleSubmitSuccess, handleSubmitFail } = props;
+  const { formMode, handleValidate, handleSubmit, handleSubmitSuccess,
+    handleSubmitFail, submitDialogTitle, submitDialogContentText,
+    submitDialogCancelText, submitDialogConfirmedText
+  } = props;
   const { isLoading, response } = props.purchaseSettlementState.detail;
 
   const renderForm = (formData: PurchaseSettlementFormData) => (
@@ -21,7 +24,12 @@ export const PurchaseSettlementEditorView: React.SFC<PurchaseSettlementEditorPro
       validate={handleValidate}
       onSubmit={handleSubmit}
       onSubmitSuccess={handleSubmitSuccess}
-      onSubmitFail={handleSubmitFail}
+      onSubmitFail={handleSubmitFail} 
+      submitDialogTitle={submitDialogTitle}
+      submitDialogContentText={submitDialogContentText}
+      submitDialogCancelText={submitDialogCancelText}
+      submitDialogConfirmedText={submitDialogConfirmedText}
+
     />
   );
 

@@ -41,6 +41,10 @@ export type PurchaseSettlementFormData = {
 
 interface OwnProps {
   formMode: FormMode;
+  submitDialogTitle: string;
+  submitDialogContentText: string;
+  submitDialogCancelText: string;
+  submitDialogConfirmedText: string;
 }
 
 interface OwnHandlers {
@@ -48,8 +52,6 @@ interface OwnHandlers {
 }
 
 interface OwnState {
-  // TotalActual?: number | undefined;
-  // TotalDiff?: number | undefined;
 }
 
 interface FormValueProps {
@@ -58,7 +60,7 @@ interface FormValueProps {
   formActualValue: number | 0;
   formDifferenceValue: number | 0;
   formAdvance: number | 0;
-  // formBalanceDue: number | 0;
+  formName: string;
 }
 
 export type PurchaseSettlementFormProps
@@ -82,9 +84,7 @@ const handlers: HandleCreators<PurchaseSettlementFormProps, OwnHandlers> = {
     props.change('information.actual', actual);
     props.change('information.actualInIDR', actual * props.formRate);
     props.change('information.difference', difference);
-    // props.change('information.difference', difference);
     props.change('information.differenceInIDR', difference * props.formRate);
-    // props.change('information.differenceInIDR', difference *  props.formRate);
     props.change('information.balanceDue', props.formAdvance - actual);
   },
 };
@@ -96,23 +96,14 @@ const mapStateToProps = (state: any): FormValueProps => {
   const actValue = selector(state, 'information.actual'); 
   const difValue = selector(state, 'information.difference'); 
   const advance = selector(state, 'information.advance');
-  // const forms = getFormValues(formName)(state) as PurchaseSettlementFormData;
-
-  // let actual: number = 0;
-  // let difference: number = 0;
-
-  // if (forms.items) {
-  //   forms.items.items.forEach(item => actual += item.actual);
-  //   forms.items.items.forEach(item => difference += item.variance);
-  // }
 
   return {
+    formName,
     formIsCurrencyIDR: currencyType === 'SCR01',
     formRate: rate,
     formActualValue: actValue,
     formDifferenceValue: difValue,
     formAdvance: advance,
-    // formDifference: difference
   };
 };
 
@@ -131,8 +122,6 @@ const enhancedView = compose<PurchaseSettlementFormProps, OwnProps & InjectedFor
   lifecycle(lifecycles),
 )(PurchaseSettlementFormView);
 
-// const connectedView = connect(mapStateToProps)(PurchaseSettlementFormView);
-
 export const PurchaseSettlementForm = reduxForm<PurchaseSettlementFormData, OwnProps>({
   form: formName,
   touchOnChange: true,
@@ -143,4 +132,3 @@ export const PurchaseSettlementForm = reduxForm<PurchaseSettlementFormData, OwnP
     dispatchEvent(new CustomEvent('SETTLEMENT_FORM', { detail: values }));
   },
 })(enhancedView);
-// })(connectedView);
