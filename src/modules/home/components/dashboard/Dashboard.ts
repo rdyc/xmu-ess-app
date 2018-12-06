@@ -157,7 +157,7 @@ const handlerCreators: HandleCreators<DashboardProps, OwnHandlers> = {
         if (type === 'Approval' || type === 'Notify') {
           history.push(`/timesheet/approvals/${uid}`);
         } else {
-          history.push(`/timesheet/entry/${uid}`);
+          history.push(`/timesheet/requests/${uid}`);
         }
         break;
         
