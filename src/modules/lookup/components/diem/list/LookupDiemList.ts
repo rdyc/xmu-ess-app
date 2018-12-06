@@ -1,7 +1,7 @@
 import { withLayout, WithLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { layoutMessage } from '@layout/locales/messages';
-import { ISystemLimitDeletePayload } from '@lookup/classes/request';
+import { ILookupDiemDeletePayload } from '@lookup/classes/request/diem';
 import { DiemUserAction } from '@lookup/classes/types/diem/DiemUserAction';
 import { WithLookupDiem, withLookupDiem } from '@lookup/hoc/withLookupDiem';
 import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
@@ -89,7 +89,7 @@ const handlerCreators: HandleCreators<LookupDiemListProps, OwnHandlers> = {
       deleteRequest({
         resolve,
         reject,
-        data: payload as ISystemLimitDeletePayload
+        data: payload as ILookupDiemDeletePayload
       });
 
       alertAdd({

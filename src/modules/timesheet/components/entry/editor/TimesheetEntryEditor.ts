@@ -3,6 +3,7 @@ import { FormMode } from '@generic/types';
 import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
+import { layoutMessage } from '@layout/locales/messages';
 import {
   ITimesheetPostPayload,
   ITimesheetPutPayload,
@@ -40,7 +41,7 @@ interface OwnHandlers {
 }
 
 interface OwnRouteParams {
-  projectUid: string;
+  timesheetUid: string;
 }
 
 interface OwnState {
@@ -48,6 +49,10 @@ interface OwnState {
   companyUid?: string | undefined;
   positionUid?: string | undefined;
   timesheetUid?: string | undefined;
+  submitDialogTitle: string;
+  submitDialogContentText: string;
+  submitDialogCancelText: string;
+  submitDialogConfirmedText: string;
 }
 
 interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
@@ -190,7 +195,11 @@ const handlerCreators: HandleCreators<EntryEditorProps, OwnHandlers> = {
 };
 
 const createProps: mapper<EntryEditorProps, OwnState> = (props: EntryEditorProps): OwnState => ({ 
-  formMode: FormMode.New
+  formMode: FormMode.New,
+  submitDialogTitle: props.intl.formatMessage(timesheetMessage.entry.dialog.createTitle),
+  submitDialogContentText: props.intl.formatMessage(timesheetMessage.entry.dialog.createDescription),
+  submitDialogCancelText: props.intl.formatMessage(layoutMessage.action.cancel),
+  submitDialogConfirmedText: props.intl.formatMessage(layoutMessage.action.ok),
 });
 
 const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {

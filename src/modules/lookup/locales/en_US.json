@@ -75,13 +75,13 @@
   "lookup.systemLimit.message.update.failure": "Unable to process your submission",
   "lookup.systemLimit.message.delete.success": "Current {uid} has been deleted",
   "lookup.systemLimit.message.delete.failure": "Unable to process your submission",
-
+  
   "lookup.systemLimit.field.uid": "System Limit ID",
   "lookup.systemLimit.field.uid.placeholder": "System Limit ID",
   
   "lookup.systemLimit.field.company": "Company Name",
   "lookup.systemLimit.field.company.placeholder": "Company Name",
-
+  
   "lookup.systemLimit.field.category": "Category",
   "lookup.systemLimit.field.category.required": "Category is required",
   "lookup.systemLimit.field.category.placeholder": "Category",
@@ -89,10 +89,10 @@
   "lookup.systemLimit.field.days": "Limit Value",
   "lookup.systemLimit.field.days.required": "Limit value is required",
   "lookup.systemLimit.field.days.placeholder": "Limit Value",
-
+  
   "lookup.systemLimit.field.info.title": "Detail System Limit Information",
   "lookup.systemLimit.field.info.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras mollis eros sit amet rhoncus fermentum",
-
+  
   "lookup.systemLimit.field.filter.company": "Company",
   "lookup.systemLimit.field.filter.company.placeholder": "Company",
   "lookup.systemLimit.field.filter.category": "Category",
@@ -145,17 +145,17 @@
   
   "lookup.company.page.list.title": "Company",
   "lookup.company.page.list.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras mollis eros sit amet rhoncus fermentum",
-
+  
   "lookup.company.page.detail.title": "Company Detail",
   "lookup.company.page.detail.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras mollis eros sit amet rhoncus fermentum",
   "lookup.company.page.modify.title": "Modify Company",
   "lookup.company.page.modify.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras mollis eros sit amet rhoncus fermentum",
   "lookup.company.page.new.title": "New Company",
   "lookup.company.page.new.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras mollis eros sit amet rhoncus fermentum",
-
+  
   "lookup.company.section.info.title": "Company",
   "lookup.company.section.info.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras mollis eros sit amet rhoncus fermentum",
-
+  
   "lookup.company.field.uid": "Company ID",
   "lookup.company.field.uid.placeholder": "Company ID",
   "lookup.company.field.code": "Company Code",
@@ -164,15 +164,17 @@
   "lookup.company.field.name": "Company Name",
   "lookup.company.field.name.placeholder": "Type a company name",
   "lookup.company.field.name.required": "Company name is required",
-
+  
   "lookup.company.confirm.modify.title": "Modify Confirmation",
   "lookup.company.confirm.modify.description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-
+  
   "lookup.company.message.emptyProps": "Some props are empty",
   "lookup.company.message.create.success": "A new Company ID {uid} has been created",
   "lookup.company.message.create.failure": "Unable to process your submission",
   "lookup.company.message.update.success": "Existing Company ID {uid} has been updated",
   "lookup.company.message.update.failure": "Unable to process your submission",
+  "lookup.company.message.delete.success": "Current {uid} has been deleted",
+  "lookup.company.message.delete.failure": "Unable to process your submission",
   
   "lookup.currency.page.list.title": "Currency",
   "lookup.currency.page.list.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras mollis eros sit amet rhoncus fermentum",
@@ -415,5 +417,75 @@
   "lookup.leave.confirm.modify.description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
   "lookup.leave.message.emptyProps": "Some props are empty",
   "lookup.leave.field.filter.company": "Company",
-  "lookup.leave.field.filter.company.placeholder": "Company"
+  "lookup.leave.field.filter.company.placeholder": "Company",
+
+  "lookup.customer.page.list.title": "Customer",
+  "lookup.customer.page.list.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras mollis eros sit amet rhoncus fermentum",
+  "lookup.customer.page.detail.title": "Customer Detail",
+  "lookup.customer.page.detail.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras mollis eros sit amet rhoncus fermentum",
+  "lookup.customer.page.modify.title": "Modify Customer",
+  "lookup.customer.page.modify.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras mollis eros sit amet rhoncus fermentum",
+  "lookup.customer.page.new.title": "New Customer",
+  "lookup.customer.page.new.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras mollis eros sit amet rhoncus fermentum",
+
+
+  "lookup.customer.form.newTitle": "New Customer",
+  "lookup.customer.form.newSubTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras mollis eros sit amet rhoncus fermentum",
+
+  "lookup.customer.form.editTitle": "Edit Customer",
+  "lookup.customer.form.editSubTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras mollis eros sit amet rhoncus fermentum",
+
+  "lookup.customer.section.info.title": "Customer",
+  "lookup.customer.section.info.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras mollis eros sit amet rhoncus fermentum",
+
+  "lookup.customer.field.uid": "Customer ID",
+  "lookup.customer.field.isActive": "Is Active? ",
+  "lookup.customer.field.name": "Customer Name",
+  "lookup.customer.field.name.required": "Customer name required",
+  "lookup.customer.field.name.placeholder": "Type any name",
+  "lookup.customer.field.companyUid": "Company",
+  "lookup.customer.field.companyUid.required": "Customer name required",
+  "lookup.customer.field.companyUid.placeholder": "select the Company",
+  "lookup.customer.field.address": "Address 1",
+  "lookup.customer.field.address.placeholder": "Type the address",
+  "lookup.customer.field.addressAdditional": "Address 2",
+  "lookup.customer.field.addressAdditional.placeholder": "Type the address",
+  "lookup.customer.field.phone": "Phone 1",
+  "lookup.customer.field.phone.placeholder": "Type the phone",
+  "lookup.customer.field.phoneAdditional": "Phone 2",
+  "lookup.customer.field.phoneAdditional.placeholder": "Type the phone",
+  "lookup.customer.field.mobile": "Mobile 1",
+  "lookup.customer.field.mobile.placeholder": "Type the phone",
+  "lookup.customer.field.mobileAdditional": "Mobile 2",
+  "lookup.customer.field.mobileAdditional.placeholder": "Type the phone",
+  "lookup.customer.field.email": "E-mail",
+  "lookup.customer.field.email.required": "Email is required",
+  "lookup.customer.field.email.placeholder": "Type the email",
+  "lookup.customer.field.fax": "Fax",
+  "lookup.customer.field.fax.placeholder": "Type the fax",
+  "lookup.customer.field.contactPerson": "Contact Person 1",
+  "lookup.customer.field.contactPerson.placeholder": "Type the contact person",
+  "lookup.customer.field.contactPersonAdditional": "Contact Person 2",
+  "lookup.customer.field.contactPersonAdditional.placeholder": "Type the contact person",
+  "lookup.customer.field.contactTitle": "Contact Person 1's Title",
+  "lookup.customer.field.contactTitle.placeholder": "Type the contact title",
+  "lookup.customer.field.contactTitleAdditional": "Contact Person 2's Title",
+  "lookup.customer.field.contactTitleAdditional.placeholder": "Type the contact title",
+  "lookup.customer.field.npwp": "NPWP",
+  "lookup.customer.field.npwp.placeholder": "Type the npwp number",
+  
+  
+  "lookup.customer.confirm.modify.title": "Modify Confirmation",
+  "lookup.customer.confirm.modify.description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+
+  "lookup.customer.confirm.delete.title": "Delete Confirmation",
+  "lookup.customer.confirm.delete.description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+
+  "lookup.customer.message.create.success": "New currency has been created",
+  "lookup.customer.message.create.failure": "Submission failed",
+  "lookup.customer.message.update.success": "Currency has been updated",
+  "lookup.customer.message.update.failure": "Update submission failed",
+  "lookup.customer.message.delete.success": "This currency has been deleted from system",
+  "lookup.customer.message.delete.failure": "Delete confirmation failed",
+  "lookup.customer.message.empty.currencyUid": "Currency ID not found"
 }

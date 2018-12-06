@@ -31,6 +31,14 @@ import {
   companySection 
 } from './lookupCompanyMessage';
 import { 
+  customerFieldHelperFor, 
+  lookupCustomerConfirm, 
+  lookupCustomerFields, 
+  lookupCustomerMessage, 
+  lookupCustomerPage, 
+  lookupCustomerSection 
+} from './lookupCustomerMessage';
+import { 
   diemFieldHelperFor, 
   lookupDiemConfirm, 
   lookupDiemField, 
@@ -131,6 +139,13 @@ export const lookupMessage = {
     fieldFor: diemFieldHelperFor,
     confirm: lookupDiemConfirm,
     message: lookupDiemMessage
-
-  }
+  },
+  lookupCustomer: {
+    page: lookupCustomerPage,
+    section: lookupCustomerSection,
+    field: lookupCustomerFields,
+    fieldFor: customerFieldHelperFor,
+    confirm: lookupCustomerConfirm,
+    message: lookupCustomerMessage
+  },
 };
