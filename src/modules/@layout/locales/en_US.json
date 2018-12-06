@@ -3,11 +3,6 @@
   "layout.text.processing": "Processing",
   "layout.text.dataInfo": "{total} record(s)",
   "layout.text.pagingInfo": "{current} of {total}",
-<<<<<<< HEAD
-  "layout.text.idr": "IDR",
-=======
-  "layout.text.idr": "IDR ",
->>>>>>> develop
   "layout.text.active": "Active",
   "layout.text.inactive": "Inactive",
   

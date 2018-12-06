@@ -1,5 +1,4 @@
 import { WorkflowStatusType } from '@common/classes/types';
-import { layoutMessage } from '@layout/locales/messages';
 import { GlobalFormat } from '@layout/types';
 import {
   Card,
@@ -82,7 +81,7 @@ const mileageItem: React.SFC<AllProps> = props => {
                         {item.status && item.status.value}
                       </Typography>
                       <Typography noWrap variant="body1" align="right">
-                        {`${intl.formatMessage(layoutMessage.text.idr)} ${intl.formatNumber(Number(item.amount))}`}
+                        {intl.formatNumber(Number(item.amount), GlobalFormat.CurrencyDefault)}
                       </Typography>
                     </Grid>
                   </Grid>
