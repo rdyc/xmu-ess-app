@@ -7,11 +7,13 @@ import {
 } from './timesheetApprovalMessage';
 import { 
   timesheetEntryConfirm, 
+  timesheetEntryDialog, 
   timesheetEntryField, 
   timesheetEntryFieldHelperFor, 
   timesheetEntryMessage, 
   timesheetEntryPage, 
-  timesheetEntrySection } from './timesheetEntryMessage';
+  timesheetEntrySection
+} from './timesheetEntryMessage';
 
 export const timesheetMessage = {
   entry: {
@@ -20,7 +22,8 @@ export const timesheetMessage = {
     section: timesheetEntrySection,
     field: timesheetEntryField,
     fieldFor: timesheetEntryFieldHelperFor,
-    message: timesheetEntryMessage
+    message: timesheetEntryMessage,
+    dialog: timesheetEntryDialog
   },
   approval: {
     page: timesheetApprovalPage,

@@ -112,7 +112,7 @@ const handlerCreators: HandleCreators<TimesheetEntryDetailProps, OwnHandler> = {
 
       switch (props.action) {
         case TimesheetUserAction.Modify:
-          next = '/timesheet/entry/form';
+          next = '/timesheet/requests/form';
           break;
 
         default:
