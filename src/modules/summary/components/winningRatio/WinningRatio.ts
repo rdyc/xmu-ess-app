@@ -21,16 +21,14 @@ import {
 } from 'recompose';
 
 interface OwnHandlers {
-  handleChangeStart: (start: string) => void;
-  handleChangeEnd: (end: string) => void;
   handleGoToNext: () => void;
   handleGoToPrevious: () => void;
   handleChangeSize: (value: number) => void;
   handleChangeSort: (direction: boolean) => void;
   handleChangePage: (page: number) => void;
-  handleDialog: () => void;
   handleDetail: (uid: string, type: string) => void;
-  handleChangeFind: (find: string) => void;
+  handleDialog: () => void;
+  handleChangeFilter: (employeeUid: string | undefined, start: string, end: string) => void;
 }
 
 interface OwnOptions {
@@ -60,8 +58,6 @@ interface OwnState {
 }
 
 interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
-  stateStart: StateHandler<OwnState>;
-  stateEnd: StateHandler<OwnState>;
   stateNext: StateHandler<OwnState>;
   statePrevious: StateHandler<OwnState>;
   stateSorting: StateHandler<OwnState>;
@@ -69,7 +65,7 @@ interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
   statePage: StateHandler<OwnState>;
   stateDetail: StateHandler<OwnState>;
   stateDialog: StateHandler<OwnState>;
-  stateFind: StateHandler<OwnState>;
+  stateUpdate: StateHandler<OwnState>;
 }
 
 export type WinningRatioProps =
@@ -104,17 +100,11 @@ const createProps: mapper<WinningRatioProps, OwnState> = (props: WinningRatioPro
       direction ||
       'ascending',
     page: (request && request.filter && request.filter.page) || page || 1,
-    size: (request && request.filter && request.filter.size) || size || 5
+    size: (request && request.filter && request.filter.size) || size || 10
   };
 };
 
 const stateUpdaters: StateUpdaters<OwnOptions, OwnState, OwnStateUpdaters> = {
-  stateStart: (prevState: OwnState) => (start: string) => ({
-    start
-  }),
-  stateEnd: (prevState: OwnState) => (end: string) => ({
-    end
-  }),
   stateNext: (prevState: OwnState) => () => ({
     page: prevState.page + 1
   }),
@@ -139,20 +129,13 @@ const stateUpdaters: StateUpdaters<OwnOptions, OwnState, OwnStateUpdaters> = {
   stateDialog: (prevState: OwnState) => (open: boolean) => ({
     open
   }),
-
-  stateFind: (prevState: OwnState) => (find: string) => ({
-    find,
-    findBy: 'fullName'
+  stateUpdate: (prevState: OwnState) => (newState: any) => ({
+    ...prevState,
+    ...newState
   }),
 };
 
 const handlerCreators: HandleCreators<WinningRatioProps, OwnHandlers> = {
-  handleChangeStart: (props: WinningRatioProps) => (start: string) => {
-    props.stateStart(start);
-  },
-  handleChangeEnd: (props: WinningRatioProps) => (end: string) => {
-    props.stateEnd(end);
-  },
   handleGoToNext: (props: WinningRatioProps) => () => {
     props.stateNext();
   },
@@ -179,9 +162,15 @@ const handlerCreators: HandleCreators<WinningRatioProps, OwnHandlers> = {
     open = !open;
     props.stateDialog(open);
   },
-  handleChangeFind: (props: WinningRatioProps) => (find: string) => {
-    props.stateFind(find.toUpperCase());
-  },
+  handleChangeFilter: (props: WinningRatioProps) => (employeeUid: string | undefined, start: string, end: string) => {
+    const { stateUpdate } = props;
+
+    stateUpdate({
+      start,
+      end,
+      find: employeeUid,
+    });
+  }
 };
 
 const lifecycles: ReactLifeCycleFunctions<WinningRatioProps, OwnState> = {
