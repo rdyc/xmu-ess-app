@@ -5,6 +5,7 @@ import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
 import { ISystemLimit } from '@lookup/classes/response';
 import { SystemLimitField, SystemLimitUserAction } from '@lookup/classes/types';
+import { systemLimitFieldTranslator } from '@lookup/helper';
 import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
 import { Button } from '@material-ui/core';
 import * as moment from 'moment';
@@ -28,21 +29,21 @@ const config: CollectionConfig<ISystemLimit, SystemLimitListProps> = {
     value: key,
     name: SystemLimitField[key]
   })),
-  // fieldTranslator: ,
+  fieldTranslator: systemLimitFieldTranslator,
 
   // searching
-  // hasSearching: true,
-  // searchStatus: (props: SystemLimitListProps): boolean => {
-  //   let result: boolean = false;
+  hasSearching: true,
+  searchStatus: (props: SystemLimitListProps): boolean => {
+    let result: boolean = false;
 
-  //   const { request } = props.systemLimitState.all;
+    const { request } = props.systemLimitState.all;
 
-  //   if (request && request.filter && request.filter.find) {
-  //     result = request.filter.find ? true : false;
-  //   }
+    if (request && request.filter && request.filter.find) {
+      result = request.filter.find ? true : false;
+    }
 
-  //   return result;
-  // },
+    return result;
+  },
 
   // action centre
   showActionCentre: true,
@@ -62,7 +63,7 @@ const config: CollectionConfig<ISystemLimit, SystemLimitListProps> = {
       name: props.intl.formatMessage(layoutMessage.action.create),
       enabled: true,
       visible: true,
-      onClick: () => callback.handleRedirectTo(`/lookup/systemlimits/form`)
+      onClick: props.handleOnCreate
     }
   ]),
 

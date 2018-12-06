@@ -1,6 +1,5 @@
-export enum MileageExceptionRequestField {
+export enum MileageExceptionField {
   uid = 'ID',
-  roleUid = 'Role',
   projectUid = 'Project',
   percentage = 'Percentage',
   reason = 'Reason'

@@ -21,13 +21,12 @@ import LookupHolidayList from './holiday/list/LookupHolidayList';
 import LookupLeaveEditor from './leave/editor/LookupLeaveEditor';
 import { MileageExceptionDetail } from './mileageException/detail/MileageExceptionDetail';
 import MileageExceptionEditor from './mileageException/editor/MileageExceptionEditor';
-import { MileageExceptionList } from './mileageException/list/LookupMileageExceptionListView';
+import { LookupMileageExceptionList } from './mileageException/list/LookupMileageExceptionList';
 import { PositionDetail } from './position/detail/PositionDetail';
 import { PositionEditor } from './position/editor/PositionEditor';
 import { PositionList } from './position/list/PositionList';
 import { LookupSystemLimitDetail } from './systemLimit/detail/LookupSystemLimitDetail';
 import LookupSystemLimitEditor from './systemLimit/editor/LookupSystemLimitEditor';
-// import { LookupSystemLimitListView } from './systemLimit/list/LookupSystemLimitListView';
 import LookupSystemLimitList from './systemLimit/list/LookupSystemLimitList';
 
 const company = (props: RouteComponentProps) => (
@@ -50,7 +49,7 @@ const mileageException = (props: RouteComponentProps) => (
   <Switch>
     <Route path={`${props.match.path}/form`} component={MileageExceptionEditor} />
     <Route path={`${props.match.path}/:mileageExceptionUid`} component={MileageExceptionDetail} />
-    <Route path={`${props.match.path}`} component={MileageExceptionList} />
+    <Route path={`${props.match.path}`} component={LookupMileageExceptionList} />
   </Switch>
 );
 
