@@ -82,7 +82,11 @@ const config: SingleConfig<IProjectAssignmentDetail, ProjectAssignmentDetailProp
 
   // primary
   primaryComponent: (data: IProjectAssignmentDetail, props: ProjectAssignmentDetailProps) => (
-    <ProjectAssignment formMode={FormMode.View} data={data} />
+    <ProjectAssignment 
+      formMode={FormMode.View}
+      data={data}
+      showProjectHours={true}
+    />
   ),
 
   // secondary

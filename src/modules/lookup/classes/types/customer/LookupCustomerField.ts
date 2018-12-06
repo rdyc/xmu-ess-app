@@ -1,0 +1,18 @@
+export enum LookupCustomerField {
+  Uid = 'ID',
+  CompanyUid = 'Company',
+  Name = 'Customer Name',
+  Npwp = 'Npwp',
+  Address = 'Address',
+  // AddressAdditional = 'Address',
+  Phone = 'Phone Number',
+  // PhoneAdditional = 'Phone Number',
+  Mobile = 'Mobile Phone',
+  // MobileAdditional = 'Mobile Phone',
+  Fax = 'Fax',
+  EmailAddress = 'Email',
+  ContactPerson = 'Contact Person',
+  ContactPersonAdditional = 'Contact Person',
+  // ContactTitle = 'Company',
+  // ContactTitleAdditional = 'Company',
+}

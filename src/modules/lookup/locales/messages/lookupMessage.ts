@@ -2,6 +2,7 @@ import { currencyConfirm, currencyField, currencyForm, currencyMessage, currency
 import { holidayConfirm, holidayField, holidayFieldHelperFor, holidayMessage, holidayPage, holidaySection } from './holiday';
 import { leaveConfirm, leaveField, leaveFieldHelperFor, leaveMessage, leavePage, leaveSection } from './leave';
 import { companyConfirm, companyField, companyFieldHelperFor, companyMessage, companyPage, companySection } from './lookupCompanyMessage';
+import { customerFieldHelperFor, lookupCustomerConfirm, lookupCustomerFields, lookupCustomerMessage, lookupCustomerPage, lookupCustomerSection } from './lookupCustomerMessage';
 import { 
   diemFieldHelperFor, 
   lookupDiemConfirm, 
@@ -87,6 +88,13 @@ export const lookupMessage = {
     fieldFor: diemFieldHelperFor,
     confirm: lookupDiemConfirm,
     message: lookupDiemMessage
-
-  }
+  },
+  lookupCustomer: {
+    page: lookupCustomerPage,
+    section: lookupCustomerSection,
+    field: lookupCustomerFields,
+    fieldFor: customerFieldHelperFor,
+    confirm: lookupCustomerConfirm,
+    message: lookupCustomerMessage
+  },
 };

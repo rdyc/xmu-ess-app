@@ -113,10 +113,10 @@ const config: CollectionConfig<IProjectAssignmentDetail, AllProps> = {
   },
   onBind: (item: IProjectAssignmentDetail, index: number, props: AllProps) => ({
     key: index,
-    primary: item.name,
-    secondary: item.project && item.project.value || item.projectType,
-    tertiary: item.customer && item.customer.name || item.customerUid,
-    quaternary: item.uid,
+    primary: item.uid,
+    secondary: item.projectUid,
+    tertiary: item.name,
+    quaternary: item.customer && item.customer.name || item.customerUid,
     quinary: parseAcceptance(item.items, props.userState.user),
     senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
   }),
