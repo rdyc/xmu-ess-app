@@ -15,21 +15,11 @@ export const PurchaseSettlementFormView: React.SFC<PurchaseSettlementFormProps> 
 
   const fields = Object.getOwnPropertyNames(initialValues.information);
 
-  // const onChangeValueActual = (event: any, newValue: number, oldValue: number) => {
-  //   change('information.actualInIDR', formActualValue * formRate );
-  // };
-
-  // const onChangeValueDifference = (event: any, newValue: number, oldValue: number) => {
-  //   change('information.differenceInIDR', formDifferenceValue * formRate );
-  // };
-
   const componentInformation = (context: BaseFieldsProps) => (
     <PurchaseSettlementDetailForm
       formMode={formMode}
       context={context}
       isCurrencyIdr={formIsCurrencyIDR}
-      // onChangeActualValue={onChangeValueActual}
-      // onChangeDifferenceValue={onChangeValueDifference}
     />
   );
 
@@ -72,6 +62,12 @@ export const PurchaseSettlementFormView: React.SFC<PurchaseSettlementFormProps> 
             valid={props.valid}
             reset={props.reset}
             submitting={props.submitting}
+            withSubmitDialog={true}
+            formName={props.formName}
+            submitDialogTitle={props.submitDialogTitle}
+            submitDialogContentText={props.submitDialogContentText}
+            submitDialogCancelText={props.submitDialogCancelText}
+            submitDialogConfirmedText={props.submitDialogConfirmedText}
           />
         </Grid>
       </Grid>

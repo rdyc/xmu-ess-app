@@ -7,9 +7,11 @@ import {
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
+import { GlobalFormat } from '@layout/types';
 import { Button } from '@material-ui/core';
 import { ISettlement } from '@purchase/classes/response/purchaseSettlement';
 import { PurchaseUserAction, SettlementField } from '@purchase/classes/types';
+import { PurchaseSettlementFilter } from '@purchase/components/purchaseSettlement/detail/shared/PurchaseSettlementFilter';
 import { SettlementSummary } from '@purchase/components/purchaseSettlement/detail/shared/SettlementSummary';
 import { purchaseSettlementFieldTranslator } from '@purchase/helper';
 import { withSettlementApproval, WithSettlementApproval } from '@purchase/hoc/settlementApproval/withSettlementApproval';
@@ -104,10 +106,15 @@ const config: CollectionConfig<ISettlement, AllProps> = {
     primary: item.uid,
     secondary: item.projectUid || item.project && item.project.name || '',
     tertiary: item.customer && item.customer.name || item.customerUid || '',
-    quaternary: `${props.intl.formatMessage(purchaseMessage.complement.symbolIDR)} ${props.intl.formatNumber(item.actualInIDR || 0)}` ||  '',
+    quaternary: item.actualInIDR && `${props.intl.formatNumber(item.actualInIDR, GlobalFormat.CurrencyDefault)}` ||  '',
     quinary: item.status && item.status.value || item.statusType || '',
     senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
   }),
+  
+  // filter
+  filterComponent: (callback: CollectionHandler) => (
+    <PurchaseSettlementFilter handleFind={callback.handleFilter} />
+  ),
 
   // summary component
   summaryComponent: (item: ISettlement) => (
