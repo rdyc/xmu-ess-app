@@ -111,7 +111,7 @@ const config: CollectionConfig<IRole, RoleListProps> = {
     secondary: item.name,
     tertiary: item.company ? item.company.name : 'N/A',
     quaternary: item.description ? item.description : 'N/A',
-    quinary: item.grade ? item.grade.value : 'N/A',
+    quinary: item.changes && item.changes.updated && item.changes.updated.fullName || item.changes && item.changes.created && item.changes.created.fullName || 'N/A',
     senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
   }),
 
