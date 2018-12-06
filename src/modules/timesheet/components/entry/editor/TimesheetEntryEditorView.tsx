@@ -9,7 +9,18 @@ import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 
 export const TimesheetEntryEditorView: React.SFC<EntryEditorProps> = props => {
-  const { formMode, handleValidate, handleSubmit, handleSubmitSuccess, handleSubmitFail, intl } = props;
+  const { 
+    formMode, 
+    handleValidate, 
+    handleSubmit, 
+    handleSubmitSuccess, 
+    handleSubmitFail, 
+    intl, 
+    submitDialogTitle, 
+    submitDialogContentText, 
+    submitDialogConfirmedText, 
+    submitDialogCancelText
+  } = props;
   const { isLoading, response } = props.timesheetEntryState.detail;
 
   const renderForm = (formData: TimesheetFormData) => (
@@ -20,6 +31,10 @@ export const TimesheetEntryEditorView: React.SFC<EntryEditorProps> = props => {
       onSubmit={handleSubmit} 
       onSubmitSuccess={handleSubmitSuccess}
       onSubmitFail={handleSubmitFail}
+      submitDialogTitle={submitDialogTitle}
+      submitDialogContentText={submitDialogContentText}
+      submitDialogCancelText={submitDialogCancelText}
+      submitDialogConfirmedText={submitDialogConfirmedText}
     />
   );
 

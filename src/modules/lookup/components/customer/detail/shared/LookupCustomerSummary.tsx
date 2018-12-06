@@ -1,67 +1,72 @@
 import { layoutMessage } from '@layout/locales/messages';
 import { GlobalFormat } from '@layout/types';
 import { GlobalStyle } from '@layout/types/GlobalStyle';
+import { ICustomer } from '@lookup/classes/response';
+import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
 import { Grid, TextField } from '@material-ui/core';
-import { IMileageRequest } from '@mileage/classes/response';
-import { mileageMessage } from '@mileage/locales/messages/mileageMessage';
 import * as React from 'react';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose } from 'recompose';
 
 interface OwnProps {
-  data: IMileageRequest;
+  data: ICustomer;
 }
 
 type AllProps
   = OwnProps
   & InjectedIntlProps;
 
-const mileageSummary: React.SFC<AllProps> = props => (
+const summaryView: React.SFC<AllProps> = props => (
   <Grid container>
     <Grid item xs={12} sm={6} md={3}>
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
-        margin="dense"
-        label={props.intl.formatMessage(mileageMessage.request.field.statusType)}
-        value={props.data.status ? props.data.status.value : props.data.statusType}
+        label={props.intl.formatMessage(lookupMessage.lookupCustomer.field.uid)}
+        value={props.data.uid}
       />
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
-        margin="dense"
-        label={props.intl.formatMessage(mileageMessage.request.field.amount)}
-        value={props.intl.formatNumber(props.data.amount, GlobalFormat.CurrencyDefault)}
+        label={props.intl.formatMessage(lookupMessage.lookupCustomer.field.name)}
+        value={props.data.name || 'N/A'}
+      />
+      <TextField
+        {...GlobalStyle.TextField.ReadOnly}
+        label={props.intl.formatMessage(lookupMessage.lookupCustomer.field.companyUid)}
+        value={props.data.company ? props.data.company.name : 'N/A'}
       />
     </Grid>
 
     <Grid item xs={12} sm={6} md={3}>
       <TextField
-          {...GlobalStyle.TextField.ReadOnly}
-          margin="dense"
-          label={props.intl.formatMessage(mileageMessage.request.field.date)}
-          value={props.intl.formatDate(new Date(props.data.year, props.data.month - 1), GlobalFormat.MonthYear)}
-        />
+        {...GlobalStyle.TextField.ReadOnly}
+        label={props.intl.formatMessage(lookupMessage.lookupCustomer.field.emailAddress)}
+        value={props.data.email || 'N/A'}
+      />
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
-        margin="dense"
-        label={props.intl.formatMessage(mileageMessage.request.field.notes)}
-        value={props.data.notes ? props.data.notes : 'N/A'}
+        label={props.intl.formatMessage(lookupMessage.lookupCustomer.field.phone)}
+        value={props.data.phone || 'N/A'}
       />
     </Grid>
-    <Grid item xs={12} sm={6} md={3}>
-      <TextField
-          {...GlobalStyle.TextField.ReadOnly}
-          margin="dense"
-          label={props.intl.formatMessage(mileageMessage.request.field.uid)}
-          value={props.data.uid}
-        />
-    </Grid>
     
+    <Grid item xs={12} sm={6} md={3}>
+    <TextField
+        {...GlobalStyle.TextField.ReadOnly}
+        label={props.intl.formatMessage(lookupMessage.lookupCustomer.field.npwp)}
+        value={props.data.npwp || 'N/A'}
+      />      
+      <TextField
+        {...GlobalStyle.TextField.ReadOnly}
+        multiline
+        label={props.intl.formatMessage(lookupMessage.lookupCustomer.field.address)}
+        value={props.data.address || 'N/A'}
+      />
+    </Grid>    
     {
       props.data.changes &&
       <Grid item xs={12} sm={6} md={3}>
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
-          margin="dense"
           label={props.intl.formatMessage(layoutMessage.field.createdBy)}
           value={props.data.changes.created && props.data.changes.created.fullName || 'N/A'}
           helperText={props.intl.formatDate(props.data.changes.createdAt, GlobalFormat.DateTime) || 'N/A'}
@@ -71,7 +76,6 @@ const mileageSummary: React.SFC<AllProps> = props => (
           (props.data.changes.updated && props.data.changes.updatedAt) &&
           <TextField
             {...GlobalStyle.TextField.ReadOnly}
-            margin="dense"
             label={props.intl.formatMessage(layoutMessage.field.updatedBy)}
             value={props.data.changes.updated.fullName || 'N/A'}
             helperText={props.intl.formatDate(props.data.changes.updatedAt, GlobalFormat.DateTime) || 'N/A'}
@@ -82,6 +86,6 @@ const mileageSummary: React.SFC<AllProps> = props => (
   </Grid>
 );
 
-export const MileageSummary = compose<AllProps, OwnProps>(
+export const LookupCustomerSummary = compose<AllProps, OwnProps>(
   injectIntl
-)(mileageSummary);
+)(summaryView);

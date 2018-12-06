@@ -1,14 +1,14 @@
 import { withLayout, WithLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { layoutMessage } from '@layout/locales/messages';
-import { ILookupDiemDeletePayload } from '@lookup/classes/request/diem';
-import { DiemUserAction } from '@lookup/classes/types/diem/DiemUserAction';
-import { WithLookupDiem, withLookupDiem } from '@lookup/hoc/withLookupDiem';
+import { ILookupCustomerDeletePayload } from '@lookup/classes/request/customer';
+import { SystemLimitUserAction } from '@lookup/classes/types';
+import { WithLookupCustomer, withLookupCustomer } from '@lookup/hoc/withLookupCustomer';
 import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { compose, HandleCreators, mapper, StateHandler, StateHandlerMap, StateUpdaters, withHandlers, withStateHandlers } from 'recompose';
-import { LookupDiemListView } from './LookupDiemListView';
+import { lookupCustomerListView } from './LookupCustomerListView';
 
 interface OwnHandlers {
   handleOnDelete: (uid: string, callback: () => void) => void;
@@ -17,10 +17,10 @@ interface OwnHandlers {
 }
 
 interface OwnState {
-  diemUid: string;
+  customerUid: string;
   callback?: () => void;
   reload: boolean;
-  action?: DiemUserAction;
+  action?: SystemLimitUserAction;
   dialogFullScreen: boolean;
   dialogOpen: boolean;
   dialogTitle?: string;
@@ -34,18 +34,18 @@ interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
   setDefault: StateHandler<OwnState>;
 }
 
-const createProps: mapper<LookupDiemListProps, OwnState> = (props: LookupDiemListProps): OwnState => ({
-  diemUid: '',
+const createProps: mapper<LookupCustomerListProps, OwnState> = (props: LookupCustomerListProps): OwnState => ({
+  customerUid: '',
   reload: false,
   dialogFullScreen: false,
   dialogOpen: false,
 });
 
-const stateUpdaters: StateUpdaters<LookupDiemListProps, OwnState, OwnStateUpdaters> = {
-  setDelete: (prevState: OwnState, props: LookupDiemListProps) => (uid: string, callback: () => void): Partial<OwnState> => ({
+const stateUpdaters: StateUpdaters<LookupCustomerListProps, OwnState, OwnStateUpdaters> = {
+  setDelete: (prevState: OwnState, props: LookupCustomerListProps) => (uid: string, callback: () => void): Partial<OwnState> => ({
     callback,
-    action: DiemUserAction.Delete,
-    diemUid: uid,
+    action: SystemLimitUserAction.Delete,
+    customerUid: uid,
     dialogFullScreen: false,
     dialogOpen: true,
     dialogTitle: props.intl.formatMessage(lookupMessage.shared.confirm.deleteTitle),
@@ -54,7 +54,7 @@ const stateUpdaters: StateUpdaters<LookupDiemListProps, OwnState, OwnStateUpdate
     dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.aggre)
   }),
   setDefault: () => (): Partial<OwnState> => ({
-    diemUid: '',
+    customerUid: '',
     reload: false,
     dialogFullScreen: false,
     dialogOpen: false,
@@ -65,31 +65,31 @@ const stateUpdaters: StateUpdaters<LookupDiemListProps, OwnState, OwnStateUpdate
   })
 };
 
-const handlerCreators: HandleCreators<LookupDiemListProps, OwnHandlers> = {
-  handleOnDelete: (props: LookupDiemListProps) => (uid: string, callback: () => void) => {
+const handlerCreators: HandleCreators<LookupCustomerListProps, OwnHandlers> = {
+  handleOnDelete: (props: LookupCustomerListProps) => (uid: string, callback: () => void) => {
     props.setDelete(uid, callback);
   },
-  handleOnCloseDialog: (props: LookupDiemListProps) => () => {
+  handleOnCloseDialog: (props: LookupCustomerListProps) => () => {
     props.setDefault();
   },
-  handleSubmit: (props: LookupDiemListProps) => () => {
-    const { response } = props.lookupDiemState.all;
-    const { deleteRequest, loadAllDispose } = props.lookupDiemDispatch;
-    const { diemUid, intl } = props;
+  handleSubmit: (props: LookupCustomerListProps) => () => {
+    const { response } = props.lookupCustomerState.all;
+    const { deleteRequest, loadAllDispose } = props.lookupCustomerDispatch;
+    const { customerUid, intl } = props;
     const { alertAdd } = props.layoutDispatch;
 
     const payload = {
-      uid: diemUid
+      uid: customerUid
     };
     
-    const message = intl.formatMessage(lookupMessage.systemLimit.message.deleteSuccess, {uid: diemUid});
+    const message = intl.formatMessage(lookupMessage.systemLimit.message.deleteSuccess, {uid: customerUid});
 
     // get uid
     return new Promise((resolve, reject) => {
       deleteRequest({
         resolve,
         reject,
-        data: payload as ILookupDiemDeletePayload
+        data: payload as ILookupCustomerDeletePayload
       });
 
       alertAdd({
@@ -102,12 +102,12 @@ const handlerCreators: HandleCreators<LookupDiemListProps, OwnHandlers> = {
         props.callback();
       }
       props.setDefault();
-      props.history.push(`/lookup/diemvalue/list`);
+      props.history.push(`/lookup/customer/list`);
     });
   },
 };
 
-export type LookupDiemListProps
+export type LookupCustomerListProps
   = WithUser
   & WithLayout
   & OwnState
@@ -115,14 +115,14 @@ export type LookupDiemListProps
   & OwnHandlers
   & RouteComponentProps
   & InjectedIntlProps
-  & WithLookupDiem;
+  & WithLookupCustomer;
 
-export default compose<LookupDiemListProps, {}>(
+export default compose<LookupCustomerListProps, {}>(
   withUser,
   withLayout,
   withRouter,
   injectIntl,
-  withLookupDiem,
+  withLookupCustomer,
   withStateHandlers<OwnState, OwnStateUpdaters, {}>(createProps, stateUpdaters),
-  withHandlers<LookupDiemListProps, OwnHandlers>(handlerCreators),
-)(LookupDiemListView);
+  withHandlers<LookupCustomerListProps, OwnHandlers>(handlerCreators),
+)(lookupCustomerListView);

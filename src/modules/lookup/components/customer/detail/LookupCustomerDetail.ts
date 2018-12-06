@@ -1,25 +1,15 @@
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { layoutMessage } from '@layout/locales/messages';
-import { TimesheetUserAction } from '@timesheet/classes/types';
-import { timesheetMessage } from '@timesheet/locales/messages/timesheetMessage';
+import { LookupCustomerUserAction } from '@lookup/classes/types/customer/LookupCustomerUserAction';
+import { WithLookupCustomer, withLookupCustomer } from '@lookup/hoc/withLookupCustomer';
+import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
-import {
-  compose,
-  HandleCreators,
-  mapper,
-  StateHandler,
-  StateHandlerMap,
-  StateUpdaters,
-  withHandlers,
-  withStateHandlers,
-} from 'recompose';
-
-import { WithTimesheetEntry, withTimesheetEntry } from '@timesheet/hoc/withTimesheetEntry';
-import { TimesheetEntryDetailView } from './TimesheetEntryDetailView';
+import { compose, HandleCreators, mapper, StateHandler, StateHandlerMap, StateUpdaters, withHandlers, withStateHandlers } from 'recompose';
+import { LookupCustomerDetailView } from './LookupCustomerDetailView';
 
 interface OwnRouteParams {
-  timesheetUid: string;
+  customerUid: string;
 }
 
 interface OwnHandler {
@@ -30,7 +20,7 @@ interface OwnHandler {
 
 interface OwnState {
   isAdmin: boolean;
-  action?: TimesheetUserAction;
+  action?: LookupCustomerUserAction;
   dialogFullScreen: boolean;
   dialogOpen: boolean;
   dialogTitle?: string;
@@ -44,28 +34,28 @@ interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
   setDefault: StateHandler<OwnState>;
 }
 
-export type TimesheetEntryDetailProps
+export type LookupCustomerDetailProps
   = WithUser
-  & WithTimesheetEntry
+  & WithLookupCustomer
   & RouteComponentProps<OwnRouteParams>
   & InjectedIntlProps
   & OwnState
   & OwnStateUpdaters
   & OwnHandler;
 
-const createProps: mapper<TimesheetEntryDetailProps, OwnState> = (props: TimesheetEntryDetailProps): OwnState => ({
+const createProps: mapper<LookupCustomerDetailProps, OwnState> = (props: LookupCustomerDetailProps): OwnState => ({
   isAdmin: false,
   dialogFullScreen: false,
   dialogOpen: false,
 });
 
-const stateUpdaters: StateUpdaters<TimesheetEntryDetailProps, OwnState, OwnStateUpdaters> = {
-  setModify: (prevState: OwnState, props: TimesheetEntryDetailProps) => (): Partial<OwnState> => ({
-    action: TimesheetUserAction.Modify,
+const stateUpdaters: StateUpdaters<LookupCustomerDetailProps, OwnState, OwnStateUpdaters> = {
+  setModify: (prevState: OwnState, props: LookupCustomerDetailProps) => (): Partial<OwnState> => ({
+    action: LookupCustomerUserAction.Modify,
     dialogFullScreen: false,
     dialogOpen: true,
-    dialogTitle: props.intl.formatMessage(timesheetMessage.entry.confirm.modifyTitle),
-    dialogContent: props.intl.formatMessage(timesheetMessage.entry.confirm.modifyDescription),
+    dialogTitle: props.intl.formatMessage(lookupMessage.company.confirm.modifyTitle),
+    dialogContent: props.intl.formatMessage(lookupMessage.company.confirm.modifyDescription),
     dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.disaggre),
     dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.aggre)
   }),
@@ -79,15 +69,15 @@ const stateUpdaters: StateUpdaters<TimesheetEntryDetailProps, OwnState, OwnState
   })
 };
 
-const handlerCreators: HandleCreators<TimesheetEntryDetailProps, OwnHandler> = {
-  handleOnModify: (props: TimesheetEntryDetailProps) => () => {
+const handlerCreators: HandleCreators<LookupCustomerDetailProps, OwnHandler> = {
+  handleOnModify: (props: LookupCustomerDetailProps) => () => {
     props.setModify();
   },
-  handleOnCloseDialog: (props: TimesheetEntryDetailProps) => () => {
+  handleOnCloseDialog: (props: LookupCustomerDetailProps) => () => {
     props.setDefault();
   },
-  handleOnConfirm: (props: TimesheetEntryDetailProps) => () => {
-    const { response } = props.timesheetEntryState.detail;
+  handleOnConfirm: (props: LookupCustomerDetailProps) => () => {
+    const { response } = props.lookupCustomerState.detail;
 
     // skipp untracked action or empty response
     if (!props.action || !response) {
@@ -95,24 +85,24 @@ const handlerCreators: HandleCreators<TimesheetEntryDetailProps, OwnHandler> = {
     }
 
     // define vars
-    let timesheetUid: string | undefined;
+    let customerUid: string | undefined;
 
     // get project uid
     if (response.data) {
-      timesheetUid = response.data.uid;
+      customerUid = response.data.uid;
     }
 
     // actions with new page
     const actions = [
-      TimesheetUserAction.Modify
+      LookupCustomerUserAction.Modify
     ];
 
     if (actions.indexOf(props.action) !== -1) {
       let next: string = '404';
 
       switch (props.action) {
-        case TimesheetUserAction.Modify:
-          next = '/timesheet/requests/form';
+        case LookupCustomerUserAction.Modify:
+          next = '/lookup/customer/form';
           break;
 
         default:
@@ -122,17 +112,17 @@ const handlerCreators: HandleCreators<TimesheetEntryDetailProps, OwnHandler> = {
       props.setDefault();
 
       props.history.push(next, { 
-        uid: timesheetUid 
+        uid: customerUid 
       });
     }
   },
 };
 
-export const TimesheetEntryDetail = compose(
+export const LookupCustomerDetail = compose(
   withRouter,
   withUser,
-  withTimesheetEntry,
+  withLookupCustomer,
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
-)(TimesheetEntryDetailView);
+)(LookupCustomerDetailView);

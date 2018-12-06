@@ -2,26 +2,19 @@ import { Submission } from '@layout/components/submission/Submission';
 import { Grid } from '@material-ui/core';
 import * as React from 'react';
 import { BaseFieldsProps, Fields, FormSection } from 'redux-form';
-import { TimesheetEntryDetailForm } from './TimesheetEntryDetailForm';
-import { EntryFormProps } from './TimesheetEntryForm';
+import { LookupCustomerDetailForm } from './LookupCustomerDetailForm';
+import { LookupCustomerFormProps } from './LookupCustomerForm';
 
-export const TimesheetEntryFormView: React.SFC<EntryFormProps> = props => {
-  const {
-    formMode, activityTypeValue, customerUidValue, isPresalesActivity, projectUidValue, formIsSiteProject
-  } = props;
+export const LookupCustomerFormView: React.SFC<LookupCustomerFormProps> = props => {
+  const { formMode } = props;
 
   const fields = Object.getOwnPropertyNames(props.initialValues.information);
 
   const componentInformation = (context: BaseFieldsProps) => (
-    <TimesheetEntryDetailForm
+    <LookupCustomerDetailForm
       formMode={formMode}
       context={context}
-      activityTypeValue={activityTypeValue}
-      customerUidValue={customerUidValue}
-      isPresalesActivity={isPresalesActivity}
-      projectUidValue={projectUidValue}
-      showSiteProject={formIsSiteProject}
-      />
+    />
   );
 
   const render = (
@@ -42,16 +35,10 @@ export const TimesheetEntryFormView: React.SFC<EntryFormProps> = props => {
           </FormSection>
         </Grid>
         <Grid item xs={12} md={4}>
-          <Submission 
+          <Submission
             valid={props.valid}
             reset={props.reset}
             submitting={props.submitting}
-            withSubmitDialog={true}
-            formName={props.formName}
-            submitDialogTitle={props.submitDialogTitle}
-            submitDialogContentText={props.submitDialogContentText}
-            submitDialogCancelText={props.submitDialogCancelText}
-            submitDialogConfirmedText={props.submitDialogConfirmedText}
           />
         </Grid>
       </Grid>
