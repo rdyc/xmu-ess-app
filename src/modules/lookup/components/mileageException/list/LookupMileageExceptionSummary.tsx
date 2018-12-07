@@ -83,7 +83,7 @@ const mileageExceptionSummary: React.SFC<AllProps> = props => (
           {...GlobalStyle.TextField.ReadOnly}
           margin="dense"
           label={props.intl.formatMessage(lookupMessage.mileageException.field.inActiveDate)}
-          value={props.data.inactiveDate ? props.intl.formatDate(props.data.inactiveDate, GlobalFormat.MonthYear) : 'N/A'}
+          value={props.data.inactiveDate ? props.intl.formatDate(props.data.inactiveDate, GlobalFormat.Date) : 'N/A'}
         />
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
