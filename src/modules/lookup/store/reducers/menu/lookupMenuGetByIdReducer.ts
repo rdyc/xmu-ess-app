@@ -23,4 +23,4 @@ const reducer: Reducer<IQuerySingleState<IMenuGetByIdRequest, IMenuDetail>> = (s
   }
 };
 
-export { reducer as menuGetByIdReducer };
+export { reducer as lookupMenuGetByIdReducer };

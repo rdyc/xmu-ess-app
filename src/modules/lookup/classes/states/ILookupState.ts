@@ -140,9 +140,9 @@ export interface ILookupState {
   lookupDiemPut: IQuerySingleState<ILookupDiemPutRequest, IDiem>;
   lookupDiemDelete: IQuerySingleState<ILookupDiemDeleteRequest, boolean>;
 
-  menuGetAll: IQueryCollectionState<IMenuGetAllRequest, IMenu>;
-  menuGetList: IQueryCollectionState<IMenuListRequest, IMenuList>;
-  menuGetById: IQuerySingleState<IMenuGetByIdRequest, IMenuDetail>;
+  lookupMenuGetAll: IQueryCollectionState<IMenuGetAllRequest, IMenu>;
+  lookupMenuGetList: IQueryCollectionState<IMenuListRequest, IMenuList>;
+  lookupMenuGetById: IQuerySingleState<IMenuGetByIdRequest, IMenuDetail>;
 
   positionGetAll: IQueryCollectionState<IPositionGetAllRequest, IPosition>;
   positionGetList: IQueryCollectionState<IPositionGetListRequest, IPositionList>;
