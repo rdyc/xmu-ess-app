@@ -32,6 +32,10 @@ export type PurchaseRequestFormData = {
 
 interface OwnProps {
   formMode: FormMode;
+  submitDialogTitle: string;
+  submitDialogContentText: string;
+  submitDialogCancelText: string;
+  submitDialogConfirmedText: string;
 }
 
 interface OwnHandlers {
@@ -39,7 +43,6 @@ interface OwnHandlers {
 }
 
 interface OwnState {
-  // TotalRequest?: number | undefined;
 }
 
 interface FormValueProps {
@@ -48,6 +51,7 @@ interface FormValueProps {
   formCurrencyType: string | null;
   formRate: number | 1;  
   formRequest: number | 0;
+  formName: string;
 }
 
 export type PurchaseRequestFormProps
@@ -79,6 +83,7 @@ const mapStateToProps = (state: any): FormValueProps => {
   const value = selector(state, 'information.request');
 
   return {
+    formName,
     formCustomer: customer,
     formIsCurrencyIDR: currencyType === 'SCR01',
     formCurrencyType: currencyType,
@@ -101,8 +106,6 @@ const enhancedView = compose<PurchaseRequestFormProps, OwnProps & InjectedFormPr
   withHandlers(handlers),
   lifecycle(lifecycles),
 )(PurchaseRequestFormView);
-
-// const connectedView = connect(mapStateToProps)(PurchaseRequestFormView);
 
 export const PurchaseRequestForm = reduxForm<PurchaseRequestFormData, OwnProps>({
   form: formName,

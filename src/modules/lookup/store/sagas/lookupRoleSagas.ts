@@ -1,6 +1,9 @@
 import { layoutAlertAdd, listBarMetadata } from '@layout/store/actions';
 import {
   LookupRoleAction as Action,
+  lookupRoleDeleteError,
+  lookupRoleDeleteRequest,
+  lookupRoleDeleteSuccess,
   lookupRoleGetAllError,
   lookupRoleGetAllRequest,
   lookupRoleGetAllSuccess,
@@ -10,8 +13,16 @@ import {
   lookupRoleGetListError,
   lookupRoleGetListRequest,
   lookupRoleGetListSuccess,
+  lookupRolePostError,
+  lookupRolePostRequest,
+  lookupRolePostSuccess,
+  lookupRolePutError,
+  lookupRolePutRequest,
+  lookupRolePutSuccess,
 } from '@lookup/store/actions';
+import { flattenObject } from '@utils/flattenObject';
 import saiyanSaga from '@utils/saiyanSaga';
+import { SubmissionError } from 'redux-form';
 import { all, fork, put, takeEvery } from 'redux-saga/effects';
 import { IApiResponse, objectToQuerystring } from 'utils';
 
@@ -103,11 +114,151 @@ function* watchFetchByIdRequest() {
   yield takeEvery(Action.GET_BY_ID_REQUEST, worker);
 }
 
+function* watchPostRequest() {
+  const worker = (action: ReturnType<typeof lookupRolePostRequest>) => {
+    return saiyanSaga.fetch({
+      method: 'post',
+      path: `/v1/lookup/roles/${action.payload.companyUid}`,
+      payload: action.payload.data,
+      successEffects: (response: IApiResponse) => [
+        put(lookupRolePostSuccess(response.body))
+      ],
+      successCallback: (response: IApiResponse) => {
+        action.payload.resolve(response.body.data);
+      },
+      failureEffects: (response: IApiResponse) => [
+        put(lookupRolePostError(response.statusText))
+      ],
+      failureCallback: (response: IApiResponse) => {
+        if (response.status === 400) {
+          const errors: any = { 
+            // information -> based form section name
+            information: flattenObject(response.body.errors) 
+          };
+
+          action.payload.reject(new SubmissionError(errors));
+        } else {
+          action.payload.reject(response.statusText);
+        }
+      },
+      errorEffects: (error: TypeError) => [
+        put(lookupRolePostError(error.message)),
+        put(
+          layoutAlertAdd({
+            time: new Date(),
+            message: error.message
+          })
+        )
+      ],
+      errorCallback: (error: any) => {
+        action.payload.reject(error);
+      }
+    });
+  };
+
+  yield takeEvery(Action.POST_REQUEST, worker);
+}
+
+function* watchPutRequest() {
+  const worker = (action: ReturnType<typeof lookupRolePutRequest>) => {
+    return saiyanSaga.fetch({
+      method: 'put',
+      path: `/v1/lookup/roles/${action.payload.companyUid}/${action.payload.roleUid}`,
+      payload: action.payload.data,
+      successEffects: (response: IApiResponse) => [
+        put(lookupRolePutSuccess(response.body))
+      ],
+      successCallback: (response: IApiResponse) => {
+        action.payload.resolve(response.body.data);
+      },
+      failureEffects: (response: IApiResponse) => [
+        put(lookupRolePutError(response.statusText))
+      ],
+      failureCallback: (response: IApiResponse) => {
+        if (response.status === 400) {
+          const errors: any = { 
+            // information -> based on form section name
+            information: flattenObject(response.body.errors) 
+          };
+          
+          // action.payload.reject(new SubmissionError(response.body.errors));
+          action.payload.reject(new SubmissionError(errors));
+        } else {
+          action.payload.reject(response.statusText);
+        }
+      },
+      errorEffects: (error: TypeError) => [
+        put(lookupRolePutError(error.message)),
+        put(
+          layoutAlertAdd({
+            time: new Date(),
+            message: error.message
+          })
+        )
+      ],
+      errorCallback: (error: any) => {
+        action.payload.reject(error);
+      }
+    });
+  };
+
+  yield takeEvery(Action.PUT_REQUEST, worker);
+}
+
+function* watchDeleteRequest() {
+  const worker = (action: ReturnType<typeof lookupRoleDeleteRequest>) => {
+    return saiyanSaga.fetch({
+      method: 'put',
+      path: `/v1/lookup/roles`,
+      payload: action.payload.data,
+      successEffects: (response: IApiResponse) => [
+        put(lookupRoleDeleteSuccess(response.body))
+      ],
+      successCallback: (response: IApiResponse) => {
+        action.payload.resolve(response.body.data);
+      },
+      failureEffects: (response: IApiResponse) => [
+        put(lookupRoleDeleteError(response.statusText))
+      ],
+      failureCallback: (response: IApiResponse) => {
+        if (response.status === 400) {
+          const errors: any = { 
+            // information -> based on form section name
+            information: flattenObject(response.body.errors) 
+          };
+          
+          // action.payload.reject(new SubmissionError(response.body.errors));
+          action.payload.reject(new SubmissionError(errors));
+        } else {
+          action.payload.reject(response.statusText);
+        }
+      },
+      errorEffects: (error: TypeError) => [
+        put(lookupRoleDeleteError(error.message)),
+        put(
+          layoutAlertAdd({
+            time: new Date(),
+            message: error.message
+          })
+        )
+      ],
+      errorCallback: (error: any) => {
+        action.payload.reject(error);
+      }
+    });
+  };
+
+  yield takeEvery(Action.DELETE_REQUEST, worker);
+}
+
 function* lookupRoleSagas() {
   yield all([
     fork(watchFetchAllRequest),
     fork(watchFetchListRequest),
-    fork(watchFetchByIdRequest)
+    fork(watchFetchByIdRequest),
+    fork(watchPostRequest),
+    fork(watchPutRequest),
+    fork(watchDeleteRequest),
   ]);
 }
 

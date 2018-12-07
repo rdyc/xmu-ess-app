@@ -1,5 +1,5 @@
 import { IBaseFilter } from '@generic/interfaces';
 
-export interface ILookupRoleListFilter extends IBaseFilter {
+export interface ILookupRoleGetListFilter extends IBaseFilter {
   readonly companyUid: string | undefined;
 }

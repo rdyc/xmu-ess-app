@@ -178,7 +178,7 @@ const handlerCreators: HandleCreators<DashboardProps, OwnHandlers> = {
         break;        
     
       case 'Purchase':
-        if (type === 'Approval' || type === 'Notify' || type === 'Rejected') {
+        if (type === 'Approval' || type === 'Notify') {
           history.push(`/purchase/approvals/${uid}`);
         } else if (type === 'Settlement') {
           history.push(`/purchase/settlement/requests/form`, {uid});
@@ -188,7 +188,7 @@ const handlerCreators: HandleCreators<DashboardProps, OwnHandlers> = {
         break;
     
       case 'Purchase Settlement':
-        if (type === 'Approval' || type === 'Notify' || type === 'Rejected') {
+        if (type === 'Approval' || type === 'Notify') {
           history.push(`/purchase/settlement/approvals/${uid}`);
         } else {
           history.push(`/purchase/settlement/requests/${uid}`);
