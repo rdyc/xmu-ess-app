@@ -57,9 +57,11 @@ export const travelRequestField = defineMessages({
   uidPlaceholder: { id: `${prefix}.field.uid.placeholder` },
 
   employeeUid: { id: `${prefix}.field.employeeUid` },
+  fullName: { id: `${prefix}.field.employeeUid` },
   employeeUidPlaceholder: { id: `${prefix}.field.employeeUid.placeholder` },
   
   positionUid: { id: `${prefix}.field.positionUid` },
+  position: { id: `${prefix}.field.positionUid` },
   positionUidPlaceholder: { id: `${prefix}.field.positionUid.placeholder` },
   
   destinationType: { id: `${prefix}.field.destinationType` },
@@ -103,6 +105,7 @@ export const travelRequestField = defineMessages({
   commentPlaceholder: { id: `${prefix}.field.comment.placeholder` },
 
   total: { id: `${prefix}.field.total` },
+  totalPlaceholder: { id: `${prefix}.field.total.placeholder` },
   totalDuration: { id: `${prefix}.field.totalDuration` },
   totalDiemValue: { id: `${prefix}.field.totalDiemValue` },
   totalTransportCost: { id: `${prefix}.field.totalTransportCost` },
@@ -183,6 +186,121 @@ export const travelRequestField = defineMessages({
   isTransportByCompanyPlaceholder: { id: `${prefix}.field.item.isTransportByCompany.placeholder` },
 
 });
+
+export const travelRequestFieldHelperFor = (field: string, type: 'fieldName' | 'fieldRequired' | 'fieldPlaceholder') => {
+  if (type === 'fieldName') {
+    switch (field) {
+      case 'uid': return travelRequestField.uid;
+      case 'travelUid': return travelRequestField.uid;
+      case 'employeeUid': return travelRequestField.employeeUid;
+      case 'fullName': return travelRequestField.employeeUid;
+      case 'positionUid': return travelRequestField.positionUid;
+      case 'position': return travelRequestField.positionUid;
+      case 'destinationType': return travelRequestField.destinationType;
+      case 'projectUid': return travelRequestField.projectUid;
+      case 'siteUid': return travelRequestField.siteUid;
+      case 'customerUid': return travelRequestField.customerUid;
+      case 'start': return travelRequestField.start;
+      case 'end': return travelRequestField.end;
+      case 'activityType': return travelRequestField.activityType;
+      case 'statusType': return travelRequestField.statusType;
+      case 'objective': return travelRequestField.objective;
+      case 'target': return travelRequestField.target;
+      case 'comment': return travelRequestField.comment;
+      case 'total': return travelRequestField.total;
+
+      // item
+      case 'itemEmployeeUid': return travelRequestField.itemEmployeeUid;
+      case 'transportType': return travelRequestField.transportType;
+      case 'from': return travelRequestField.from;
+      case 'destination': return travelRequestField.destination;
+      case 'itemStart': return travelRequestField.itemStart;
+      case 'itemEnd': return travelRequestField.itemEnd;
+      case 'transportCost': return travelRequestField.transportCost;
+      case 'hotelCost': return travelRequestField.hotelCost;
+      case 'note': return travelRequestField.note;
+      case 'duration': return travelRequestField.duration;
+      case 'diemValue': return travelRequestField.diemValue;
+      case 'amount': return travelRequestField.amount;
+      case 'currencyUid': return travelRequestField.currencyUid;
+      case 'currencyRate': return travelRequestField.currencyRate;
+      case 'isRoundTrip': return travelRequestField.isRoundTrip;
+      case 'isTransportByCompany': return travelRequestField.isTransportByCompany;
+      case 'isHotelByCompany': return travelRequestField.isHotelByCompany;
+
+      default: return {id: field};
+    }
+  }
+
+  if (type === 'fieldRequired') {
+    switch (field) {
+      case 'employeeUid': return travelRequestField.itemEmployeeUidRequired;
+      case 'destinationUid': return travelRequestField.destinationTypeRequired;
+      case 'projectUid': return travelRequestField.projectUidRequired;
+      case 'siteUid': return travelRequestField.siteUidRequired;
+      case 'customerUid': return travelRequestField.customerUidRequired;
+      case 'start': return travelRequestField.startRequired;
+      case 'end': return travelRequestField.endRequired;
+      case 'activityType': return travelRequestField.activityTypeRequired;
+      
+      // item
+      case 'itemEmployeeUid': return travelRequestField.itemEmployeeUidRequired;
+      case 'transportType': return travelRequestField.transportTypeRequired;
+      case 'from': return travelRequestField.fromRequired;
+      case 'destination': return travelRequestField.destinationRequired;
+      case 'itemStart': return travelRequestField.itemStartRequired;
+      case 'itemEnd': return travelRequestField.itemEndRequired;
+      
+      default: return {id: field};
+    }
+  }
+
+  if (type === 'fieldPlaceholder') {
+    switch (field) {
+      case 'uid': return travelRequestField.uidPlaceholder;
+      case 'travelUid': return travelRequestField.uidPlaceholder;
+      case 'employeeUid': return travelRequestField.employeeUidPlaceholder;
+      case 'fullName': return travelRequestField.employeeUidPlaceholder;
+      case 'positionUid': return travelRequestField.positionUidPlaceholder;
+      case 'position': return travelRequestField.positionUidPlaceholder;
+      case 'destinationType': return travelRequestField.destinationTypePlaceholder;
+      case 'projectUid': return travelRequestField.projectUidPlaceholder;
+      case 'siteUid': return travelRequestField.siteUidPlaceholder;
+      case 'customerUid': return travelRequestField.customerUidPlaceholder;
+      case 'start': return travelRequestField.startPlaceholder;
+      case 'end': return travelRequestField.endPlaceholder;
+      case 'activityType': return travelRequestField.activityTypePlaceholder;
+      case 'statusType': return travelRequestField.statusTypePlaceholder;
+      case 'objective': return travelRequestField.objectivePlaceholder;
+      case 'target': return travelRequestField.targetPlaceholder;
+      case 'comment': return travelRequestField.commentPlaceholder;
+      case 'total': return travelRequestField.totalPlaceholder;
+
+      // item
+      case 'itemEmployeeUid': return travelRequestField.itemEmployeeUidPlaceholder;
+      case 'transportType': return travelRequestField.transportTypePlaceholder;
+      case 'from': return travelRequestField.fromPlaceholder;
+      case 'destination': return travelRequestField.destinationPlaceholder;
+      case 'itemStart': return travelRequestField.itemStartPlaceholder;
+      case 'itemEnd': return travelRequestField.itemEndPlaceholder;
+      case 'transportCost': return travelRequestField.transportCostPlaceholder;
+      case 'hotelCost': return travelRequestField.hotelCostPlaceholder;
+      case 'note': return travelRequestField.notePlaceholder;
+      case 'duration': return travelRequestField.durationPlaceholder;
+      case 'diemValue': return travelRequestField.diemValuePlaceholder;
+      case 'amount': return travelRequestField.amountPlaceholder;
+      case 'currencyUid': return travelRequestField.currencyUidPlaceholder;
+      case 'currencyRate': return travelRequestField.currencyRatePlaceholder;
+      case 'isRoundTrip': return travelRequestField.isRoundTripPlaceholder;
+      case 'isTransportByCompany': return travelRequestField.isTransportByCompanyPlaceholder;
+      case 'isHotelByCompany': return travelRequestField.isHotelByCompanyPlaceholder;
+      
+      default: return {id: field};
+    }
+  }
+
+  return {id: field};
+};
 
 // message
 export const travelRequestMessage = defineMessages({

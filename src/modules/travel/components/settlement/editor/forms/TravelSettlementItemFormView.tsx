@@ -54,7 +54,7 @@ export const TravelSettlementItemFormView: React.SFC<TravelSettlementItemFormPro
                 <div>
                   <Field 
                     type="text"
-                    disabled = "true"
+                    disabled ={true}
                     name={`${field}.employeeUid`}
                     label={props.intl.formatMessage(travelMessage.request.field.itemEmployeeUid)}
                     placeholder="Employee"

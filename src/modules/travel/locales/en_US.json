@@ -3,11 +3,20 @@
   "travel.request.page.list.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
   "travel.request.page.detail.title": "Travel Request Detail",
   "travel.request.page.detail.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "travel.request.page.new.title": "New Travel",
+  "travel.request.page.new.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "travel.request.page.modify.title": "Modify Travel",
+  "travel.request.page.modify.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  
 
   "travel.settlement.page.list.title": "Travel Settlement",
   "travel.settlement.page.list.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
   "travel.settlement.page.detail.title": "Travel Settlement Detail",
   "travel.settlement.page.detail.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "travel.settlement.page.new.title": "New Travel Settlement",
+  "travel.settlement.page.new.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "travel.settlement.page.modify.title": "Modify Travel Settlement",
+  "travel.settlement.page.modify.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
 
   "travel.approval.page.list.title": "Travel Approval",
   "travel.approval.page.list.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
@@ -54,7 +63,7 @@
   "travel.approval.confirm.submission.title": "Travel Approval Submission",
   "travel.approval.confirm.submission.content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
   
-  "travel.settlementApproval.confirm.submission.title": "Travel Approval Submission",
+  "travel.settlementApproval.confirm.submission.title": "Travel Settlement Approval Submission",
   "travel.settlementApproval.confirm.submission.content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
   
   "travel.request.field.uid": "Travel ID",
@@ -64,7 +73,9 @@
   "travel.request.field.uid.placeholder": "Travel ID",
   "travel.request.field.statusType": "Status",
   "travel.request.field.employeeUid": "Preparer Name",
+  "travel.request.field.employeeUid.placeholder": "Preparer Name",
   "travel.request.field.positionUid": "Position",
+  "travel.request.field.positionUid.placeholder": "Position",
   "travel.request.field.position": "Position",
   "travel.request.field.requestor": "Preparer Name",
   "travel.request.field.destinationType": "Travel Type",
