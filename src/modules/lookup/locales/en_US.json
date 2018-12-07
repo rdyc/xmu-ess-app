@@ -1,4 +1,6 @@
 {
+  "lookup.confirm.create.title": "Create Confirmation",
+  "lookup.confirm.create.description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
   "lookup.confirm.modify.title": "Modify Confirmation",
   "lookup.confirm.modify.description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
   "lookup.confirm.delete.title": "Delete Confirmation",
@@ -23,38 +25,32 @@
 
   "lookup.mileageException.field.info.title": "Detail Mileage Exception",
   "lookup.mileageException.field.info.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras mollis eros sit amet rhoncus fermentum",
-
   "lookup.mileageException.field.id": "Mileage Exception ID",
   "lookup.mileageException.field.id.placeholder": "Mileage Exception ID",
-  
   "lookup.mileageException.field.role": "Role Name",
   "lookup.mileageException.field.role.required": "Role Name is required",
   "lookup.mileageException.field.role.placeholder": "Role Name",
-
   "lookup.mileageException.field.company": "Company Name",
   "lookup.mileageException.field.company.placeholder": "Company Name",
-
   "lookup.mileageException.field.site": "Site Type",
   "lookup.mileageException.field.site.placeholder": "Site Type",
-
   "lookup.mileageException.field.reason": "Reason",
   "lookup.mileageException.field.reason.placeholder": "Reason",
-
   "lookup.mileageException.field.percentage": "Percentage",
   "lookup.mileageException.field.percentage.required": "Percentage is required",
   "lookup.mileageException.field.percentage.placeholder": "Percentage",
-
   "lookup.mileageException.field.description": "Description",
   "lookup.mileageException.field.description.placeholder": "Description",
-  
   "lookup.mileageException.field.inactiveDate": "Date Inactive",  
   "lookup.mileageException.field.inactiveDate.placeholder": "Date Inactive",  
-
   "lookup.mileageException.field.project.name": "Project Name",
   "lookup.mileageException.field.project.name.placeholder": "Project Name",
-  
   "lookup.mileageException.field.project.site": "Project Site Name",
   "lookup.mileageException.field.project.site.placeholder": "Project Site Name",
+  "lookup.mileageException.field.filter.company": "Company",
+  "lookup.mileageException.field.filter.company.placeholder": "Company",
+  "lookup.mileageException.field.filter.role": "Role",
+  "lookup.mileageException.field.filter.role.placeholder": "Role",
 
   "lookup.mileageException.section.info.title": "Mileage Exception",
   "lookup.mileageException.section.info.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras mollis eros sit amet rhoncus fermentum",
@@ -78,18 +74,15 @@
   
   "lookup.systemLimit.field.uid": "System Limit ID",
   "lookup.systemLimit.field.uid.placeholder": "System Limit ID",
-  
   "lookup.systemLimit.field.company": "Company Name",
   "lookup.systemLimit.field.company.placeholder": "Company Name",
   
   "lookup.systemLimit.field.category": "Category",
   "lookup.systemLimit.field.category.required": "Category is required",
   "lookup.systemLimit.field.category.placeholder": "Category",
-  
   "lookup.systemLimit.field.days": "Limit Value",
   "lookup.systemLimit.field.days.required": "Limit value is required",
   "lookup.systemLimit.field.days.placeholder": "Limit Value",
-  
   "lookup.systemLimit.field.info.title": "Detail System Limit Information",
   "lookup.systemLimit.field.info.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras mollis eros sit amet rhoncus fermentum",
   

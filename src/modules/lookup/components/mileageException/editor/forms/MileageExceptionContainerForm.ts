@@ -27,7 +27,6 @@ interface OwnProps {
 interface FormValueProps {
   companyUidValue: string | undefined;
   projectUidValue: string | undefined;
-  showSite: boolean | false;
 }
 
 export type MileageExceptionContainerFormProps 
@@ -38,13 +37,12 @@ export type MileageExceptionContainerFormProps
 const selector = formValueSelector(formName);
 
 const mapStateToProps = (state: any): FormValueProps => {
-  const companyUid = selector(state, 'companyUid');
+  const companyUid = selector(state, 'information.companyUid');
   const projectUid = selector(state, 'information.projectUid');
   
   return {
     companyUidValue: companyUid,
     projectUidValue: projectUid,
-    showSite: projectUid
   };
 };
 

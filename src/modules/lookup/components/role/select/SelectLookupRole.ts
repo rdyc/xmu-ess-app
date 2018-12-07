@@ -12,7 +12,7 @@ interface OwnProps extends WrappedFieldProps, BaseFieldProps {
   required?: boolean;
   label?: string;
   disabled?: boolean;
-  _filter?: ILookupRoleGetListFilter | undefined;
+  filter?: ILookupRoleGetListFilter | undefined;
   onSelected?: (project: IRoleList | undefined) => void | undefined;
 }
 
@@ -47,13 +47,25 @@ const handlerCreators: HandleCreators<SelectLookupRoleProps, OwnHandlers> = {
 
 const lifecycles: ReactLifeCycleFunctions<SelectLookupRoleProps, {}> = {
   componentDidMount() {
-    const { _filter } = this.props;
+    const { filter } = this.props;
     const { isLoading, response } = this.props.lookupRoleState.list;
     const { loadListRequest } = this.props.lookupRoleDispatch;
 
     if (!isLoading && !response) {
-      loadListRequest({ filter: _filter});
+      loadListRequest({ filter });
     }
+  },
+  componentWillReceiveProps(nextProps: SelectLookupRoleProps) {
+    if (nextProps.filter !== this.props.filter) {
+    const { loadListRequest } = this.props.lookupRoleDispatch;
+    const { filter } = nextProps;
+
+    loadListRequest({ filter });
+    }
+  },
+  componentWillUnmount() {
+    const { loadListDispose } = this.props.lookupRoleDispatch;
+    loadListDispose();
   }
 };
 
