@@ -1,6 +1,5 @@
 enum AppStorage {
-  User = 'ess:user',
-  Menu = 'ess:menu',
+  Profile = 'ess:profile',
   Access = 'ess:access'
 }
 
