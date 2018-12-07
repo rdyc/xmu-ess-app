@@ -44,6 +44,7 @@ export const PurchaseRequestFormView: React.SFC<PurchaseRequestFormProps> = prop
       onChangeCurrencyType={onChangeCurrencyType}
       onChangeRate={onChangeRate}
       onChangeValueIdr={onChangeValueIdr}
+      requestMinDate={props.requestMinDate}
     />
   );
 
