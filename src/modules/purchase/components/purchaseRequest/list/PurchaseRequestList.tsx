@@ -1,30 +1,22 @@
 import AppMenu from '@constants/AppMenu';
-import { ICollectionValue } from '@layout/classes/core';
-import { 
-  CollectionConfig, 
-  CollectionDataProps, 
-  CollectionHandler,
-  CollectionPage 
-  } from '@layout/components/pages';
+import { CollectionConfig, CollectionDataProps, CollectionHandler, CollectionPage } from '@layout/components/pages';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
+import { GlobalFormat } from '@layout/types';
 import { Button } from '@material-ui/core';
+import { isRequestEditable } from '@organization/helper/isRequestEditable';
 import { IPurchase } from '@purchase/classes/response/purchaseRequest';
 import { PurchaseField, PurchaseUserAction } from '@purchase/classes/types';
-import { PurchaseSummary } from '@purchase/components/purchaseRequest/detail/shared/PurchaseSummary';
-import { isRequestEditable, purchaseRequestFieldTranslator } from '@purchase/helper';
-import { withPurchaseRequest, WithPurchaseRequest } from '@purchase/hoc/purchaseRequest/withPurchaseRequest';
+import { purchaseRequestFieldTranslator } from '@purchase/helper';
+import { WithPurchaseRequest, withPurchaseRequest } from '@purchase/hoc/purchaseRequest/withPurchaseRequest';
 import { purchaseMessage } from '@purchase/locales/messages/purchaseMessage';
 import * as moment from 'moment';
 import * as React from 'react';
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose } from 'recompose';
-
-const purchaseFields: ICollectionValue[] = Object.keys(PurchaseField).map(key => ({ 
-  value: key, 
-  name: PurchaseField[key] 
-}));
+import { PurchaseRequestFilter } from '../detail/shared/PurchaseRequestFilter';
+import { PurchaseSummary } from '../detail/shared/PurchaseSummary';
 
 const config: CollectionConfig<IPurchase, AllProps> = {
   // page info
@@ -36,7 +28,10 @@ const config: CollectionConfig<IPurchase, AllProps> = {
   }),
 
   // top bar
-  fields: purchaseFields,
+  fields: Object.keys(PurchaseField).map(key => ({
+    value: key,
+    name: PurchaseField[key]
+  })),
   fieldTranslator: purchaseRequestFieldTranslator,
 
   // searching
@@ -114,10 +109,15 @@ const config: CollectionConfig<IPurchase, AllProps> = {
     primary: item.uid,
     secondary: item.projectUid || item.project && item.project.name || '',
     tertiary: item.customer && item.customer.name || item.customerUid || '',
-    quaternary: `${props.intl.formatMessage(purchaseMessage.complement.symbolIDR)} ${props.intl.formatNumber(item.requestIDR || 0)}` ||  '',
+    quaternary: item.requestIDR && `${props.intl.formatNumber(item.requestIDR, GlobalFormat.CurrencyDefault)}` || '',
     quinary: item.status && item.status.value || item.statusType || '',
     senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
   }),
+
+  // filter
+  filterComponent: (callback: CollectionHandler) => (
+    <PurchaseRequestFilter handleFind={callback.handleFilter} />
+  ),
 
   // summary component
   summaryComponent: (item: IPurchase) => (

@@ -25,9 +25,20 @@ import { LookupMileageExceptionList } from './mileageException/list/LookupMileag
 import { PositionDetail } from './position/detail/PositionDetail';
 import { PositionEditor } from './position/editor/PositionEditor';
 import { PositionList } from './position/list/PositionList';
+import { LookupRoleDetail } from './role/detail/LookupRoleDetail';
+import LookupRoleEditor from './role/editor/LookupRoleEditor';
+import LookupRoleList from './role/list/LookupRoleList';
 import { LookupSystemLimitDetail } from './systemLimit/detail/LookupSystemLimitDetail';
 import LookupSystemLimitEditor from './systemLimit/editor/LookupSystemLimitEditor';
 import LookupSystemLimitList from './systemLimit/list/LookupSystemLimitList';
+
+const role = (props: RouteComponentProps) => (
+  <Switch>
+    <Route path={`${props.match.path}/form`} component={LookupRoleEditor} />
+    <Route path={`${props.match.path}/list`} component={LookupRoleList} />
+    <Route path={`${props.match.path}/:roleUid`} component={LookupRoleDetail} />
+  </Switch>
+);
 
 const company = (props: RouteComponentProps) => (
   <Switch>
@@ -36,7 +47,6 @@ const company = (props: RouteComponentProps) => (
     <Route path={`${props.match.path}/:companyUid`} component={LookupCompanyDetail} />
   </Switch>
 );
-
 const currency = (props: RouteComponentProps) => (
   <Switch>
     <Route path={`${props.match.path}/form`} component={CurrencyEditor} />
@@ -71,9 +81,9 @@ const leave = (props: RouteComponentProps) => (
 
 const systemLimit = (props: RouteComponentProps) => (
   <Switch>
-    <Route path={`${props.match.path}/form`} component={LookupSystemLimitEditor}/>
+    <Route path={`${props.match.path}/form`} component={LookupSystemLimitEditor} />
     <Route path={`${props.match.path}/:systemLimitUid`} component={LookupSystemLimitDetail} />
-    <Route path={`${props.match.path}`} component={LookupSystemLimitList}/>
+    <Route path={`${props.match.path}`} component={LookupSystemLimitList} />
   </Switch>
 );
 
@@ -106,12 +116,13 @@ export const LookupRoutingComponents: React.SFC<RouteComponentProps> = props => 
     <Layout>
       <Route path={`${props.match.path}/company`} component={company} />
       <Route path={`${props.match.path}/systemlimits`} component={systemLimit} />
-      <Route path={`${props.match.path}/mileageexceptions`} component={mileageException} />
+      <Route path={`${props.match.path}/mileageexception`} component={mileageException} />
       <Route path={`${props.match.path}/currency`} component={currency} />
       <Route path={`${props.match.path}/position`} component={position} />
       <Route path={`${props.match.path}/diemvalue`} component={diem} />
       <Route path={`${props.match.path}/holiday`} component={holiday} />
       <Route path={`${props.match.path}/leave`} component={leave} />
+      <Route path={`${props.match.path}/roles`} component={role} />
       <Route path={`${props.match.path}/customer`} component={lookupCustomer} />
     </Layout>
   </Switch>
