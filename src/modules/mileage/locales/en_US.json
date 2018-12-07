@@ -21,7 +21,7 @@
   "mileage.request.field.information.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
   "mileage.request.field.information.uid": "Mileage ID",
   "mileage.request.field.information.statusType": "Status",
-  "mileage.request.field.information.date": "Date",
+  "mileage.request.field.information.date": "Month",
   "mileage.request.field.information.employeeName": "Employee Name",
   "mileage.request.field.information.amount": "Total Mileage",
   "mileage.request.field.information.notes": "Notes",
@@ -42,6 +42,9 @@
   "mileage.request.item.title": "Details Item",
   "mileage.request.item.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
   "mileage.request.item.empty": "No Item",
+
+  "mileage.request.confirm.modify.title": "Create Mileage",
+  "mileage.request.confirm.modify.description": "Lorem ipsum dolor sit amet",
 
   "mileage.message.approval.update.success": "A new PID {uid} has been updated",
   "mileage.message.approval.update.failure": "Unable to process your submission",

@@ -9,7 +9,8 @@ import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 
 export const LeaveRequestEditorView: React.SFC<RequestEditorProps> = props => {
-  const { formMode, handleValidate, handleSubmit, handleSubmitSuccess, handleSubmitFail } = props;
+  const { formMode, handleValidate, handleSubmit, handleSubmitSuccess, handleSubmitFail,
+    submitDialogTitle, submitDialogContentText, submitDialogConfirmedText, submitDialogCancelText } = props;
   const { isLoading, response } = props.leaveRequestState.detail;
 
   const renderForm = (formData: LeaveRequestFormData) => (
@@ -20,6 +21,10 @@ export const LeaveRequestEditorView: React.SFC<RequestEditorProps> = props => {
       onSubmit={handleSubmit} 
       onSubmitSuccess={handleSubmitSuccess}
       onSubmitFail={handleSubmitFail}
+      submitDialogTitle={submitDialogTitle}
+      submitDialogContentText={submitDialogContentText}
+      submitDialogCancelText={submitDialogCancelText}
+      submitDialogConfirmedText={submitDialogConfirmedText}
     />
   );
 

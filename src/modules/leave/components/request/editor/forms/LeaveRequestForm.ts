@@ -21,10 +21,15 @@ export type LeaveRequestFormData = {
 
 interface OwnProps {
   formMode: FormMode;
+  submitDialogTitle: string;
+  submitDialogContentText: string;
+  submitDialogCancelText: string;
+  submitDialogConfirmedText: string;
 }
 
 interface FormValueProps {
   formIsRegularType: boolean | false;
+  formName: string;
   formRegularType: string | null;
   formValue: string | null;
 }
@@ -41,6 +46,7 @@ const mapStateToProps = (state: any): FormValueProps => {
   const start = selector(state, 'information.start');
   
   return {
+    formName,
     formIsRegularType: leaveType === LeaveType.CutiKhusus,
     formRegularType: leaveType,
     formValue: start,
@@ -54,5 +60,4 @@ export const RequestForm = reduxForm<LeaveRequestFormData, OwnProps>({
   touchOnChange: true,
   touchOnBlur: true,
   enableReinitialize: true,
-  destroyOnUnmount: true
 })(connectedView);

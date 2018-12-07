@@ -65,8 +65,8 @@ const stateUpdaters: StateUpdaters<PurchaseSettlementDetailProps, OwnState, OwnS
     dialogOpen: true,
     dialogTitle: props.intl.formatMessage(purchaseMessage.settlement.confirm.modifyTitle),
     dialogContent: props.intl.formatMessage(purchaseMessage.settlement.confirm.modifyDescription),
-    dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.disaggree),
-    dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.aggree)
+    dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.disaggre),
+    dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.aggre)
   }),
   setSettle: (prevState: OwnState, props: PurchaseSettlementDetailProps) => (): Partial<OwnState> => ({
     action: PurchaseUserAction.Settle,
@@ -74,8 +74,8 @@ const stateUpdaters: StateUpdaters<PurchaseSettlementDetailProps, OwnState, OwnS
     dialogOpen: true,
     dialogTitle: props.intl.formatMessage(purchaseMessage.settlement.confirm.settleTitle),
     dialogContent: props.intl.formatMessage(purchaseMessage.settlement.confirm.settleDescription),
-    dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.disaggree),
-    dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.aggree)
+    dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.disaggre),
+    dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.aggre)
   }),
   setDefault: (prevState: OwnState) => (): Partial<OwnState> => ({
     ...prevState,
@@ -125,10 +125,10 @@ const handlerCreators: HandleCreators<PurchaseSettlementDetailProps, OwnHandler>
 
       switch (props.action) {
         case PurchaseUserAction.Modify:
-          next = '/purchase/settlements/form/';
+          next = '/purchase/settlement/requests/form/';
           break;
         case PurchaseUserAction.Settle:
-          next = '/purchase/settlements/form/';
+          next = '/purchase/settlement/requests/form/';
           break;
 
         default:

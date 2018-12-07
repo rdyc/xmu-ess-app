@@ -96,7 +96,7 @@ const mileageApprovalItem: React.SFC<AllProps> = props => {
                           </Typography>
                         )}
                       <Typography noWrap variant="body1" align="right">
-                        {intl.formatNumber(Number(item.amount))}
+                        {intl.formatNumber(Number(item.amount), GlobalFormat.CurrencyDefault)}
                       </Typography>
                     </Grid>
                   </Grid>

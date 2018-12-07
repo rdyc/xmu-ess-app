@@ -66,8 +66,8 @@ const stateUpdaters: StateUpdaters<CurrencyDetailProps, OwnState, OwnStateUpdate
     dialogOpen: true,
     dialogTitle: props.intl.formatMessage(lookupMessage.currency.confirm.modifyTitle),
     dialogContent: props.intl.formatMessage(lookupMessage.currency.confirm.modifyDescription),
-    dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.disaggree),
-    dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.aggree)
+    dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.disaggre),
+    dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.aggre)
   }),
   setDelete: (prevState: OwnState, props: CurrencyDetailProps) => (): Partial<OwnState> => ({
     action: CurrencyUserAction.Delete,
@@ -75,8 +75,8 @@ const stateUpdaters: StateUpdaters<CurrencyDetailProps, OwnState, OwnStateUpdate
     dialogOpen: true,
     dialogTitle: props.intl.formatMessage(lookupMessage.currency.confirm.deleteTitle),
     dialogContent: props.intl.formatMessage(lookupMessage.currency.confirm.deleteDescription),
-    dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.disaggree),
-    dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.aggree)
+    dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.disaggre),
+    dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.aggre)
   }),
   setDefault: (prevState: OwnState) => (): Partial<OwnState> => ({
     ...prevState,
@@ -126,7 +126,7 @@ const handlerCreators: HandleCreators<CurrencyDetailProps, OwnHandler> = {
           break;
         
         case CurrencyUserAction.Delete:
-          next = `lookup/currency`;
+          next = `/lookup/currency`;
           break;
           
         default:

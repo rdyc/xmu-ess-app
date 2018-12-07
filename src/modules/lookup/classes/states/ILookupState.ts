@@ -44,18 +44,21 @@ import {
   ILookupCustomerGetDetailRequest,
   ILookupCustomerGetListRequest,
 } from '@lookup/classes/queries/customer';
-import { 
+import {
   ILookupDiemAllRequest,
   ILookupDiemDeleteRequest,
   ILookupDiemDetailRequest,
   ILookupDiemListRequest,
   ILookupDiemPostRequest,
   ILookupDiemPutRequest,
- } from '@lookup/classes/queries/diem';
+} from '@lookup/classes/queries/diem';
 import {
-  ILookupRoleAllRequest,
-  ILookupRoleByIdRequest,
-  ILookupRoleListRequest,
+  ILookupRoleDeleteRequest,
+  ILookupRoleGetAllRequest,
+  ILookupRoleGetDetailRequest,
+  ILookupRoleGetListRequest,
+  ILookupRolePostRequest,
+  ILookupRolePutRequest,
 } from '@lookup/classes/queries/role';
 import {
   ICurrency,
@@ -95,9 +98,10 @@ import {
   ICompanyList
 } from '@lookup/classes/response/company';
 
-import { 
+import {
   // ICurrencyDeleteRequest,
-  ICurrencyPostRequest, ICurrencyPutRequest } from '../queries/currency';
+  ICurrencyPostRequest, ICurrencyPutRequest
+} from '../queries/currency';
 import { ILookupCustomerDeleteRequest, ILookupCustomerPostRequest, ILookupCustomerPutRequest } from '../queries/customer';
 import { IPositionDeleteRequest } from '../queries/position/IPositionDeleteRequest';
 
@@ -115,9 +119,12 @@ export interface ILookupState {
   mileageExceptionPost: IQuerySingleState<IMileageExceptionPostRequest, IMileageException>;
   mileageExceptionPut: IQuerySingleState<IMileageExceptionPutRequest, IMileageException>;
 
-  lookupRoleGetAll: IQueryCollectionState<ILookupRoleAllRequest, IRole>;
-  lookupRoleGetList: IQueryCollectionState<ILookupRoleListRequest, IRoleList>;
-  lookupRoleGetById: IQuerySingleState<ILookupRoleByIdRequest, IRoleDetail>;
+  lookupRoleGetAll: IQueryCollectionState<ILookupRoleGetAllRequest, IRole>;
+  lookupRoleGetList: IQueryCollectionState<ILookupRoleGetListRequest, IRoleList>;
+  lookupRoleGetById: IQuerySingleState<ILookupRoleGetDetailRequest, IRoleDetail>;
+  lookupRolePost: IQuerySingleState<ILookupRolePostRequest, IRole>;
+  lookupRolePut: IQuerySingleState<ILookupRolePutRequest, IRole>;
+  lookupRoleDelete: IQuerySingleState<ILookupRoleDeleteRequest, boolean>;
 
   lookupCompanyGetAll: IQueryCollectionState<ILookupCompanyGetAllRequest, ICompany>;
   lookupCompanyGetList: IQueryCollectionState<ILookupCompanyGetListRequest, ICompanyList>;

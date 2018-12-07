@@ -9,23 +9,36 @@ import * as React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router';
 import { LookupCompanyDetail } from './company/detail/LookupCompanyDetail';
 import LookupCompanyEditor from './company/editor/LookupCompanyEditor';
-import { LookupCompanyList } from './company/list/LookupCompanyList';
+import LookupCompanyList from './company/list/LookupCompanyList';
+import { LookupCustomerDetail } from './customer/detail/LookupCustomerDetail';
+import LookupCustomerEditor from './customer/editor/LookupCustomerEditor';
+import LookupCustomerList  from './customer/list/LookupCustomerList';
 import { LookupDiemDetail } from './diem/detail/LookupDiemDetail';
 import LookupDiemEditor from './diem/editor/LookupDiemEditor';
-import { LookupDiemList } from './diem/list/LookupDiemList';
+import LookupDiemList from './diem/list/LookupDiemList';
 import LookupHolidayEditor from './holiday/editor/LookupHolidayEditor';
 import LookupHolidayList from './holiday/list/LookupHolidayList';
 import LookupLeaveEditor from './leave/editor/LookupLeaveEditor';
 import { MileageExceptionDetail } from './mileageException/detail/MileageExceptionDetail';
-import MileageExceptionEditor from './mileageException/editor/MileageExceptionEditor';
 import { MileageExceptionList } from './mileageException/list/LookupMileageExceptionListView';
 import { PositionDetail } from './position/detail/PositionDetail';
 import { PositionEditor } from './position/editor/PositionEditor';
 import { PositionList } from './position/list/PositionList';
+import { LookupRoleDetail } from './role/detail/LookupRoleDetail';
+import LookupRoleEditor from './role/editor/LookupRoleEditor';
+import LookupRoleList from './role/list/LookupRoleList';
 import { LookupSystemLimitDetail } from './systemLimit/detail/LookupSystemLimitDetail';
 import LookupSystemLimitEditor from './systemLimit/editor/LookupSystemLimitEditor';
 // import { LookupSystemLimitListView } from './systemLimit/list/LookupSystemLimitListView';
 import LookupSystemLimitList from './systemLimit/list/LookupSystemLimitList';
+
+const role = (props: RouteComponentProps) => (
+  <Switch>
+    <Route path={`${props.match.path}/form`} component={LookupRoleEditor} />
+    <Route path={`${props.match.path}/list`} component={LookupRoleList} />
+    <Route path={`${props.match.path}/:roleUid`} component={LookupRoleDetail} />
+  </Switch>
+);
 
 const company = (props: RouteComponentProps) => (
   <Switch>
@@ -34,7 +47,6 @@ const company = (props: RouteComponentProps) => (
     <Route path={`${props.match.path}/:companyUid`} component={LookupCompanyDetail} />
   </Switch>
 );
-
 const currency = (props: RouteComponentProps) => (
   <Switch>
     <Route path={`${props.match.path}/form`} component={CurrencyEditor} />
@@ -45,7 +57,6 @@ const currency = (props: RouteComponentProps) => (
 
 const mileageException = (props: RouteComponentProps) => (
   <Switch>
-    <Route path={`${props.match.path}/form`} component={MileageExceptionEditor} />
     <Route path={`${props.match.path}/:mileageExceptionUid`} component={MileageExceptionDetail} />
     <Route path={`${props.match.path}`} component={MileageExceptionList} />
   </Switch>
@@ -69,9 +80,9 @@ const leave = (props: RouteComponentProps) => (
 
 const systemLimit = (props: RouteComponentProps) => (
   <Switch>
-    <Route path={`${props.match.path}/form`} component={LookupSystemLimitEditor}/>
+    <Route path={`${props.match.path}/form`} component={LookupSystemLimitEditor} />
     <Route path={`${props.match.path}/:systemLimitUid`} component={LookupSystemLimitDetail} />
-    <Route path={`${props.match.path}`} component={LookupSystemLimitList}/>
+    <Route path={`${props.match.path}`} component={LookupSystemLimitList} />
   </Switch>
 );
 
@@ -81,6 +92,14 @@ const position = (props: RouteComponentProps) => (
     <Route path={`${props.match.path}/:companyUid/:positionUid`} component={PositionDetail} />
     <Route path={`${props.match.path}`} component={PositionList}/>
   </Switch>
+);
+
+const lookupCustomer = (props: RouteComponentProps) => (
+  <Switch>
+    <Route path={`${props.match.path}/list`} component={LookupCustomerList} />
+    <Route path={`${props.match.path}/form`} component={LookupCustomerEditor} />
+    <Route path={`${props.match.path}/:customerUid`} component={LookupCustomerDetail} />
+</Switch>
 );
 
 const diem = (props: RouteComponentProps) => (
@@ -96,12 +115,14 @@ export const LookupRoutingComponents: React.SFC<RouteComponentProps> = props => 
     <Layout>
       <Route path={`${props.match.path}/company`} component={company} />
       <Route path={`${props.match.path}/systemlimits`} component={systemLimit} />
-      <Route path={`${props.match.path}/mileageexceptions`} component={mileageException} />
+      <Route path={`${props.match.path}/mileageexception`} component={mileageException} />
       <Route path={`${props.match.path}/currency`} component={currency} />
       <Route path={`${props.match.path}/position`} component={position} />
       <Route path={`${props.match.path}/diemvalue`} component={diem} />
       <Route path={`${props.match.path}/holiday`} component={holiday} />
       <Route path={`${props.match.path}/leave`} component={leave} />
+      <Route path={`${props.match.path}/roles`} component={role} />
+      <Route path={`${props.match.path}/customer`} component={lookupCustomer} />
     </Layout>
   </Switch>
 );

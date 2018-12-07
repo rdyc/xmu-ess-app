@@ -212,11 +212,12 @@ function* watchPutRequest() {
 function* watchDeleteRequest() {
   const worker = (action: ReturnType<typeof lookupCompanyDeleteRequest>) => {
     return saiyanSaga.fetch({
-      method: 'put',
+      method: 'delete',
       path: `/v1/lookup/companies`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
-        put(lookupCompanyDeleteSuccess(response.body))
+        put(lookupCompanyDeleteSuccess(response.body)),
+        put(lookupCompanyGetAllDispose())        
       ],
       successCallback: (response: IApiResponse) => {
         action.payload.resolve(response.body.data);

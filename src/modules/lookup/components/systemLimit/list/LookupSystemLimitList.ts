@@ -19,7 +19,6 @@ interface OwnHandlers {
 interface OwnState {
   systemLimitUid: string;
   callback?: () => void;
-  reload: boolean;
   action?: SystemLimitUserAction;
   dialogFullScreen: boolean;
   dialogOpen: boolean;
@@ -36,7 +35,6 @@ interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
 
 const createProps: mapper<SystemLimitListProps, OwnState> = (props: SystemLimitListProps): OwnState => ({
   systemLimitUid: '',
-  reload: false,
   dialogFullScreen: false,
   dialogOpen: false,
 });
@@ -50,12 +48,11 @@ const stateUpdaters: StateUpdaters<SystemLimitListProps, OwnState, OwnStateUpdat
     dialogOpen: true,
     dialogTitle: props.intl.formatMessage(lookupMessage.shared.confirm.deleteTitle),
     dialogContent: props.intl.formatMessage(lookupMessage.shared.confirm.deleteDescription),
-    dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.disaggree),
-    dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.aggree)
+    dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.disaggre),
+    dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.aggre)
   }),
   setDefault: () => (): Partial<OwnState> => ({
     systemLimitUid: '',
-    reload: false,
     dialogFullScreen: false,
     dialogOpen: false,
     dialogTitle: undefined,

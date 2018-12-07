@@ -9,7 +9,8 @@ import { Typography } from '@material-ui/core';
 import * as React from 'react';
 
 export const ExpenseRequestEditorView: React.SFC<ExpenseRequestEditorProps> = props => {
-  const { formMode, handleValidate, handleSubmit, handleSubmitSuccess, handleSubmitFail, intl } = props;
+  const { formMode, handleValidate, handleSubmit, handleSubmitSuccess, handleSubmitFail, intl,
+    submitDialogTitle, submitDialogContentText, submitDialogConfirmedText, submitDialogCancelText } = props;
   const { isLoading, response } = props.expenseRequestState.detail;
 
   const renderForm = (formData: ExpenseRequestFormData) => (
@@ -20,6 +21,10 @@ export const ExpenseRequestEditorView: React.SFC<ExpenseRequestEditorProps> = pr
       onSubmit={handleSubmit} 
       onSubmitSuccess={handleSubmitSuccess}
       onSubmitFail={handleSubmitFail}
+      submitDialogTitle={submitDialogTitle}
+      submitDialogContentText={submitDialogContentText}
+      submitDialogCancelText={submitDialogCancelText}
+      submitDialogConfirmedText={submitDialogConfirmedText}
     />
   );
 

@@ -1,6 +1,6 @@
 import AppMenu from '@constants/AppMenu';
+import { DialogConfirmation } from '@layout/components/dialogs';
 import { CollectionConfig, CollectionDataProps, CollectionHandler, CollectionPage } from '@layout/components/pages';
-import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
 import { GlobalFormat } from '@layout/types';
@@ -9,16 +9,15 @@ import { IMileageRequest } from '@mileage/classes/response';
 import { MileageRequestField, MileageUserAction } from '@mileage/classes/types';
 import { MileageSummary } from '@mileage/components/request/shared/MileageSummary';
 import { mileageRequestFieldTranslator } from '@mileage/helper';
-import { WithMileageRequest, withMileageRequest } from '@mileage/hoc/withMileageRequest';
 import { mileageMessage } from '@mileage/locales/messages/mileageMessage';
 import * as moment from 'moment';
 import * as React from 'react';
-import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
-import { compose } from 'recompose';
+import { FormattedMessage } from 'react-intl';
+import { MileageRequestListProps } from './MileageRequestList';
 
-const config: CollectionConfig<IMileageRequest, AllProps> = {
+const config: CollectionConfig<IMileageRequest, MileageRequestListProps> = {
   // page info
-  page: (props: AllProps) => ({
+  page: (props: MileageRequestListProps) => ({
     uid: AppMenu.MileageRequest,
     parentUid: AppMenu.Mileage,
     title: props.intl.formatMessage(mileageMessage.request.page.listTitle),
@@ -34,7 +33,7 @@ const config: CollectionConfig<IMileageRequest, AllProps> = {
 
   // searching
   hasSearching: true,
-  searchStatus: (props: AllProps): boolean => {
+  searchStatus: (props: MileageRequestListProps): boolean => {
     let result: boolean = false;
 
     const { request } = props.mileageRequestState.all;
@@ -51,7 +50,7 @@ const config: CollectionConfig<IMileageRequest, AllProps> = {
 
   // more
   hasMore: true,
-  moreOptions: (props: AllProps, callback: CollectionHandler): IAppBarMenu[] => ([
+  moreOptions: (props: MileageRequestListProps, callback: CollectionHandler): IAppBarMenu[] => ([
     {
       id: MileageUserAction.Refresh,
       name: props.intl.formatMessage(layoutMessage.action.refresh),
@@ -64,12 +63,12 @@ const config: CollectionConfig<IMileageRequest, AllProps> = {
       name: props.intl.formatMessage(layoutMessage.action.create),
       enabled: true,
       visible: true,
-      onClick: () => callback.handleRedirectTo(`/mileage/requests/form`)
+      onClick: props.handleOnCreate
     }
   ]),
 
   // events
-  onDataLoad: (props: AllProps, callback: CollectionHandler, params: CollectionDataProps, forceReload?: boolean | false) => {
+  onDataLoad: (props: MileageRequestListProps, callback: CollectionHandler, params: CollectionDataProps, forceReload?: boolean | false) => {
     const { user } = props.userState;
     const { isLoading, response } = props.mileageRequestState.all;
     const { loadAllRequest } = props.mileageRequestDispatch;
@@ -99,18 +98,18 @@ const config: CollectionConfig<IMileageRequest, AllProps> = {
       }
     }
   },
-  onUpdated: (props: AllProps, callback: CollectionHandler) => {
+  onUpdated: (props: MileageRequestListProps, callback: CollectionHandler) => {
     const { isLoading, response } = props.mileageRequestState.all;
     
     callback.handleLoading(isLoading);
     callback.handleResponse(response);
   },
-  onBind: (item: IMileageRequest, index: number, props: AllProps) => ({
+  onBind: (item: IMileageRequest, index: number, props: MileageRequestListProps) => ({
     key: index,
     primary: item.uid,
     secondary: props.intl.formatDate(new Date(item.year, item.month - 1), GlobalFormat.MonthYear),
     tertiary: item.employee && item.employee.fullName || item.employeeUid,
-    quaternary: `${props.intl.formatMessage(layoutMessage.text.idr)} ${props.intl.formatNumber(item.amount)}`,
+    quaternary: props.intl.formatNumber(item.amount, GlobalFormat.CurrencyDefault),
     quinary: item.status && item.status.value || item.statusType,
     senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
   }),
@@ -133,20 +132,20 @@ const config: CollectionConfig<IMileageRequest, AllProps> = {
   ),
 };
 
-type AllProps
-  = WithUser
-  & InjectedIntlProps
-  & WithMileageRequest;
-
-const mileageRequestList: React.SFC<AllProps> = props => (
+export const MileageRequestListView: React.SFC<MileageRequestListProps> = props => (
   <CollectionPage
     config={config}
     connectedProps={props}
-  />
+  >
+    <DialogConfirmation 
+      isOpen={props.dialogOpen}
+      fullScreen={props.dialogFullScreen}
+      title={props.dialogTitle}
+      content={props.dialogContent}
+      labelCancel={props.dialogCancelLabel}
+      labelConfirm={props.dialogConfirmLabel}
+      onClickCancel={props.handleOnCloseDialog}
+      onClickConfirm={props.handleOnConfirm}
+    />
+  </CollectionPage>
 );
-
-export const MileageRequestList = compose(
-  withUser,
-  injectIntl,
-  withMileageRequest
-)(mileageRequestList);
