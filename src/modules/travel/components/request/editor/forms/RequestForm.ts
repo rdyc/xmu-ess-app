@@ -87,6 +87,7 @@ interface OwnHandlers {
 interface OwnState {
   TotalCost: number | undefined;
   projectType: string | undefined;
+  isGeneralPurpose: boolean | false;
 }
 
 interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
@@ -117,7 +118,9 @@ const createProps: mapper<RequestFormProps, OwnState> = (props: RequestFormProps
   return {
     TotalCost: props.initialValues.information && props.initialValues.information.total,
     projectType: props.initialValues.information && props.initialValues.information.projectType === ProjectType.Project ?
-      ProjectType.Project : ProjectType.NonProject
+      ProjectType.Project : ProjectType.NonProject,
+    isGeneralPurpose: props.initialValues.information && props.initialValues.information.projectType === ProjectType.GeneralPurpose ? true : false
+
   };
 };
 
@@ -194,7 +197,9 @@ const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
       return {
         ...prevState,
         projectType: projectFormValue.projectType === ProjectType.Project ?
-          ProjectType.Project : ProjectType.NonProject
+          ProjectType.Project : ProjectType.NonProject,
+        isGeneralPurpose: projectFormValue.projectType === ProjectType.GeneralPurpose ?
+          true : false
       };
     }
 
