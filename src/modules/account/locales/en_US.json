@@ -1,0 +1,33 @@
+{
+  "account.employee.page.list.title": "Employee",
+  "account.employee.page.list.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras mollis eros sit amet rhoncus fermentum",
+  "account.employee.page.detail.title": "Employee Details",
+  "account.employee.page.detail.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
+  "account.employee.page.new.title": "New Employee",
+  "account.employee.page.new.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
+
+  "account.employee.field.uid": "Employee ID",
+  "account.employee.field.uid.placeholder": "Employee ID",
+
+  "account.employee.field.company": "Company",
+  "account.employee.field.company.placeholder": "Company",
+
+  "account.employee.field.name": "Name",
+  "account.employee.field.name.placeholder": "Name",
+
+  "account.employee.field.nik": "NIK",
+  "account.employee.field.nik.placeholder": "NIK",
+
+  "account.employee.field.email": "Email",
+  "account.employee.field.email.placeholder": "Email",
+
+  "account.employee.field.phone": "Phone",
+  "account.employee.field.phone.placeholder": "Phone",
+
+  "account.employee.field.joinDate": "Join Date",
+  "account.employee.field.joinDate.placeholder": "Join Date",
+
+  "account.employee.confirm.modify.title": "Create Account",
+  "account.employee.confirm.modify.description": "Lorem ipsum dolor sit amet"
+ 
+}
