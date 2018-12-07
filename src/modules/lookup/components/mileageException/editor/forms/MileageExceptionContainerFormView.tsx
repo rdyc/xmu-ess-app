@@ -7,7 +7,7 @@ import { MileageExceptionDetailForm } from './MileageExceptionDetailForm';
 
 export const MileageExceptionContainerFormView: React.SFC<MileageExceptionContainerFormProps> = props => {
   const { 
-    formMode, companyUidValue, projectUidValue, initialValues, showSite
+    formMode, companyUidValue, projectUidValue, initialValues
   } = props;
   
   const fields = Object.getOwnPropertyNames(initialValues.information);
@@ -18,7 +18,6 @@ export const MileageExceptionContainerFormView: React.SFC<MileageExceptionContai
       context={context}
       companyUidValue={companyUidValue}
       projectUidValue={projectUidValue}
-      showSite={showSite}
     />
   );
 
