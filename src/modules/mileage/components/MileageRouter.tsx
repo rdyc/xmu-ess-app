@@ -3,7 +3,7 @@ import { MileageApprovalDetail } from '@mileage/components/approval/detail/Milea
 import { MileageApprovalList } from '@mileage/components/approval/list/MileageApprovalListView';
 import { MileageRequestDetail } from '@mileage/components/request/detail/MileageRequestDetail';
 import MileageRequestEditor from '@mileage/components/request/editor/MileageRequestEditor';
-import { MileageRequestList } from '@mileage/components/request/list/MileageRequestListView';
+import { MileageRequestList } from '@mileage/components/request/list/MileageRequestList';
 import * as React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router';
 

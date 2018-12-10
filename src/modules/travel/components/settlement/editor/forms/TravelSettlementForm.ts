@@ -66,6 +66,10 @@ export type TravelSettlementFormData = {
 
 interface OwnProps {
   formMode: FormMode;
+  submitDialogTitle: string;
+  submitDialogContentText: string;
+  submitDialogCancelText: string;
+  submitDialogConfirmedText: string;
 }
 
 interface OwnHandlers {
@@ -82,6 +86,7 @@ interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
 
 interface FormValueProps {
   totalCostValue: number | 0;
+  formName: string;
 }
 
 export type TravelSettlementFormProps
@@ -134,6 +139,7 @@ const selector = formValueSelector(formName);
 const mapStateToProps = (state: any): FormValueProps => {
   const totalCost = selector(state, 'information.total');
   return {
+    formName,
     totalCostValue: totalCost
   };
 };

@@ -106,10 +106,10 @@ const config: CollectionConfig<ICustomer, LookupCustomerListProps> = {
   onBind: (item: ICustomer, index: number, props: LookupCustomerListProps) => ({
     key: index,
     primary: item.name,
-    secondary: item.npwp ? item.npwp : 'N/A',
+    secondary: item.email ? item.email : 'N/A',
     tertiary: item.phone ? item.phone : (item.phoneAdditional ? item.phoneAdditional : 'N/A'),
     quaternary: item.company && item.company.name || item.companyUid,
-    quinary: item.email ? item.email : 'N/A',
+    quinary: item.changes && item.changes.updated && item.changes.updated.fullName || item.changes && item.changes.created && item.changes.created.fullName || 'N/A',
     senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
   }),
 

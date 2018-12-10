@@ -36,7 +36,7 @@ const loadUser = (WrappedComponent: React.ComponentType) => {
   const lifeCycleFunctions: ReactLifeCycleFunctions<AllProps, {}> = {
     componentWillMount() {
       if (!this.props.userState.user) {
-        const user: IAppUser = store.get(AppStorage.User);
+        const user: IAppUser = store.get(AppStorage.Profile);
 
         if (user) {
           this.props.assignUser(user);

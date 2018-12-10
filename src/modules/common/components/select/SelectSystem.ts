@@ -110,6 +110,10 @@ const lifecycles: ReactLifeCycleFunctions<SelectSystemProps, OwnProps> = {
           commonDispatch.unitListRequest(request);
           break;
 
+        case 'grade':
+          commonDispatch.gradeListRequest(request);
+          break;
+
         default:
           break;
       }
@@ -141,6 +145,7 @@ const fnGetContext = (props: SelectSystemProps) => {
     case 'transportation': return props.commonTransportationListState;
     case 'limiter': return props.commonLimiterListState;
     case 'unit': return props.commonUnitListState;
+    case 'grade': return props.commonGradeListState;
   
     default: return props.commonActivityListState;
   }

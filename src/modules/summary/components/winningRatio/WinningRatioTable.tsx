@@ -201,6 +201,7 @@ const winningRatioTable: React.SFC<AllProps> = props => {
           <TableRow>
             {metadata && (
               <TablePagination
+                rowsPerPageOptions={[10, 15, 25]}
                 count={metadata.total}
                 rowsPerPage={size}
                 page={page - 1}

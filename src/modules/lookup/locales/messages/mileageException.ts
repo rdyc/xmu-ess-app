@@ -61,6 +61,12 @@ export const mileageExceptionField = defineMessages({
 
   infoTitle: { id: `${prefix}.field.info.title`},
   infoSubHeader: { id: `${prefix}.field.info.subHeader`},
+
+  filterCompany: { id: `${prefix}.field.filter.company`},
+  filterCompanyPlaceholder: { id: `${prefix}.field.filter.company.placeholder`},
+
+  filterRole: { id: `${prefix}.field.filter.role`},
+  filterRolePlaceholder: { id: `${prefix}.field.filter.role.placeholder`},
 });
 
 // section

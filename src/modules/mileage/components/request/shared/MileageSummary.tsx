@@ -29,7 +29,7 @@ const mileageSummary: React.SFC<AllProps> = props => (
         {...GlobalStyle.TextField.ReadOnly}
         margin="dense"
         label={props.intl.formatMessage(mileageMessage.request.field.amount)}
-        value={`${props.intl.formatMessage(layoutMessage.text.idr)} ${props.intl.formatNumber(props.data.amount)}`}
+        value={props.intl.formatNumber(props.data.amount, GlobalFormat.CurrencyDefault)}
       />
     </Grid>
 
