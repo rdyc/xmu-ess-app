@@ -13,7 +13,7 @@ import { compose, HandleCreators, lifecycle, mapper, ReactLifeCycleFunctions, St
 import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
 import { isNullOrUndefined, isObject } from 'util';
-import { LookupRoleFormData } from './forms/LookupRoleForm';
+import { LookupRoleFormData, LookupRoleMenuFormData } from './forms/LookupRoleForm';
 import { LookupRoleEditorView } from './LookupRoleEditorView';
 
 interface OwnHandlers {
@@ -29,6 +29,7 @@ interface OwnRouteParams {
 
 interface OwnState {
   formMode: FormMode;
+  companyUid?: string | undefined;
   roleUid?: string | undefined;
 }
 
@@ -68,14 +69,47 @@ const handlerCreators: HandleCreators<RoleEditorProps, OwnHandlers> = {
   handleSubmit: (props: RoleEditorProps) => (formData: LookupRoleFormData) => {
     const { formMode, roleUid, intl } = props;
     const { user } = props.userState;
+    const { response } = props.lookupRoleState.detail;
     const { createRequest, updateRequest } = props.lookupRoleDispatch;
 
     if (!user) {
       return Promise.reject('user was not found');
     }
 
+    const parsedRoleMenu = () => {
+      const menus: any[] = [];
+      const fillMenus = (item: LookupRoleMenuFormData) => {
+        const _uid = Object.keys(item)[0];
+
+        let uid: string | null = null;
+
+        if (response && response.data) {
+          const source = [
+            ...response.data.menus
+          ];
+
+          const menu = source.find(mn => mn.menuUid === _uid);
+
+          if (!isNullOrUndefined(menu)) {
+            uid = menu.menuUid;
+          }
+        }
+
+        menus.push({
+          uid,
+          _uid,
+          isChecked: item[_uid]
+        });
+      };
+
+      formData.menu.menus.forEach(fillMenus);
+
+      return menus;
+    };
+
     const payload = {
-      ...formData.information
+      ...formData.information,
+      menus: parsedRoleMenu()
     };
 
     // creating

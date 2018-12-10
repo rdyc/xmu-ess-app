@@ -5,6 +5,10 @@ import { LookupRoleFormView } from './LookupRoleFormView';
 
 const formName = 'lookupRole';
 
+export type LookupRoleMenuFormData = {
+  [key: string]: boolean
+};
+
 export type LookupRoleFormData = {
   information: {
     uid: string | null | undefined;
@@ -13,6 +17,9 @@ export type LookupRoleFormData = {
     gradeType: string | null | undefined;
     description: string | null | undefined;
     isActive: boolean | undefined;
+  },
+  menu: {
+    menus: LookupRoleMenuFormData[]
   }
 };
 

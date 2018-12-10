@@ -10,11 +10,11 @@ export const LookupRoleEditorView: React.SFC<RoleEditorProps> = props => {
   const { isLoading, response } = props.lookupRoleState.detail;
 
   const renderForm = (formData: LookupRoleFormData) => (
-    <LookupRoleForm 
+    <LookupRoleForm
       formMode={formMode}
       initialValues={formData}
       validate={handleValidate}
-      onSubmit={handleSubmit} 
+      onSubmit={handleSubmit}
       onSubmitSuccess={handleSubmitSuccess}
       onSubmitFail={handleSubmitFail}
     />
@@ -29,6 +29,9 @@ export const LookupRoleEditorView: React.SFC<RoleEditorProps> = props => {
       gradeType: undefined,
       description: undefined,
       isActive: undefined,
+    },
+    menu: {
+      menus: []
     }
   };
 
@@ -42,22 +45,30 @@ export const LookupRoleEditorView: React.SFC<RoleEditorProps> = props => {
     if (isLoading && !response) {
       return (
         <Typography variant="body2">
-          <FormattedMessage id="global.loading"/>
+          <FormattedMessage id="global.loading" />
         </Typography>
       );
     }
-    
+
     if (!isLoading && response && response.data) {
       // todo: replace values with response data
       const data = response.data;
-     
+
       initialValues.information.uid = data.uid;
       initialValues.information.companyUid = data.companyUid;
       initialValues.information.name = data.name;
       initialValues.information.gradeType = data.gradeType;
       initialValues.information.description = data.description;
       initialValues.information.isActive = data.isActive;
-          
+
+      if (data.menus) {
+        data.menus.forEach(item => 
+          initialValues.menu.menus.push({
+            [`${item.menuUid}`]: item.isAccess
+          })
+        );
+      }
+
       return renderForm(initialValues);
     }
   }

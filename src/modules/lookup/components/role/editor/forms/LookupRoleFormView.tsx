@@ -1,9 +1,10 @@
 import { Submission } from '@layout/components/submission/Submission';
 import { Grid } from '@material-ui/core';
 import * as React from 'react';
-import { BaseFieldsProps, Fields, FormSection } from 'redux-form';
+import { BaseFieldsProps, FieldArray, Fields, FormSection, WrappedFieldArrayProps } from 'redux-form';
 import { LookupRoleDetailForm } from './LookupRoleDetailForm';
 import { RoleFormProps } from './LookupRoleForm';
+import { LookupRoleMenuForm } from './LookupRoleMenuForm';
 
 export const LookupRoleFormView: React.SFC<RoleFormProps> = props => {
   const { formMode } = props;
@@ -15,6 +16,10 @@ export const LookupRoleFormView: React.SFC<RoleFormProps> = props => {
       formMode={formMode}
       context={context}
     />
+  );
+
+  const componentRoleMenu = (context: WrappedFieldArrayProps<any>) => (
+    <LookupRoleMenuForm context={context} />
   );
 
   const render = (
@@ -34,6 +39,16 @@ export const LookupRoleFormView: React.SFC<RoleFormProps> = props => {
             />
           </FormSection>
         </Grid>
+
+        <Grid item xs={12} md={4}>
+          <FormSection name="roleMenu">
+            <FieldArray
+              name="menus"
+              component={componentRoleMenu}
+            />
+          </FormSection>
+        </Grid>
+
         <Grid item xs={12} md={4}>
           <Submission
             valid={props.valid}
