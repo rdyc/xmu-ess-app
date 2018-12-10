@@ -3,5 +3,5 @@ export enum PositionField {
   name = 'Name',
   description = 'Description',
   inactiveDate = 'Inactived Date',
-  isExpired = 'Allowance Status',
+  isAllowMultiple = 'Allowance Status'
 }
