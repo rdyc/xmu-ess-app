@@ -1,7 +1,7 @@
 import { IQueryCollectionState } from '@generic/interfaces';
 import { ICurrencyGetAllRequest } from '@lookup/classes/queries';
 import { ICurrency } from '@lookup/classes/response';
-import { CurrencyAction as Action } from '@lookup/store/actions';
+import { LookupCurrencyAction as Action } from '@lookup/store/actions';
 import { Reducer } from 'redux';
 
 const initialState: IQueryCollectionState<ICurrencyGetAllRequest, ICurrency> = {
