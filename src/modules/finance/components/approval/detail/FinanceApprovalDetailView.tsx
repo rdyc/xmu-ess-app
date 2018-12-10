@@ -4,11 +4,23 @@ import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
 import * as React from 'react';
 
+import { FinanceStatusType } from '@common/classes/types';
 import { IFinanceDetail } from '@finance/classes/response';
 import { FinanceUserAction } from '@finance/classes/types';
 import { financeMessage } from '@finance/locales/messages/financeMessage';
+import { WorkflowApprovalForm } from '@organization/components/workflow/approval/WorkflowApprovalForm';
 import { FinanceApprovalDetailProps } from './FinanceApprovalDetail';
 import { FinanceInformation } from './shared/FinanceInformation';
+
+const isApproval = (status: string): boolean => {
+  let result = false;
+
+  if (status === FinanceStatusType.Approved || status === FinanceStatusType.Hold) {
+    result = true;
+  }
+
+  return result;
+};
 
 const config: SingleConfig<IFinanceDetail, FinanceApprovalDetailProps> = {
   // page info
@@ -59,8 +71,12 @@ const config: SingleConfig<IFinanceDetail, FinanceApprovalDetailProps> = {
       }
     }
   },
-  onUpdated: (states: FinanceApprovalDetailProps, callback: SingleHandler) => {
-    const { isLoading, response } = states.financeApprovalState.detail;
+  onDataLoaded: (props: FinanceApprovalDetailProps) => {
+    // set data loaded in local state
+    props.setDataload();
+  },
+  onUpdated: (props: FinanceApprovalDetailProps, callback: SingleHandler) => {
+    const { isLoading, response } = props.financeApprovalState.detail;
     
     callback.handleLoading(isLoading);
 
@@ -80,7 +96,28 @@ const config: SingleConfig<IFinanceDetail, FinanceApprovalDetailProps> = {
   ),
 
   // secondary (multiple components are allowed)
-  secondaryComponents: () => ([
+  secondaryComponents: (data: IFinanceDetail, props: FinanceApprovalDetailProps) => ([
+    <React.Fragment>
+      {
+        isApproval(data.statusType) &&
+        <WorkflowApprovalForm
+          approvalTitle={props.approvalTitle}
+          approvalSubHeader={props.approvalSubHeader}
+          approvalChoices={props.approvalChoices}
+          approvalTrueValue={props.approvalTrueValue}
+          approvalDialogTitle={props.approvalDialogTitle}
+          approvalDialogContentText={props.approvalDialogContentText}
+          approvalDialogCancelText={props.approvalDialogCancelText}
+          approvalDialogConfirmedText={props.approvalDialogConfirmedText}
+          validate={props.handleValidate}
+          onSubmit={props.handleSubmit} 
+          onSubmitSuccess={props.handleSubmitSuccess}
+          onSubmitFail={props.handleSubmitFail}
+          approvalRemarkLabel={props.approvalRemarkLabel}
+          approvalRemarkPlaceholder={props.approvalRemarkPlaceholder}
+        />
+      }
+    </React.Fragment>,
   ])
 };
 
@@ -88,6 +125,7 @@ export const FinanceApprovalDetailView: React.SFC<FinanceApprovalDetailProps> = 
   <SinglePage
     config={config}
     connectedProps={props}
+    shouldDataReload={props.shouldDataReload}
   >
   </SinglePage>
 );
