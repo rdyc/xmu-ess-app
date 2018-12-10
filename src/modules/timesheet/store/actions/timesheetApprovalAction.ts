@@ -18,6 +18,10 @@ export const enum TimesheetApprovalAction {
   POST_SUCCESS = '@@timesheet/approval/POST_SUCCESS',
   POST_ERROR = '@@timesheet/approval/POST_ERROR',
   POST_DISPOSE = '@@timesheet/approval/POST_DISPOSE',
+  POST_BULK_REQUEST = '@@timesheet/approval/POST_BULK_REQUEST',
+  POST_BULK_SUCCESS = '@@timesheet/approval/POST_BULK_SUCCESS',
+  POST_BULK_ERROR = '@@timesheet/approval/POST_BULK_ERROR',
+  POST_BULK_DISPOSE = '@@timesheet/approval/POST_BULK_DISPOSE',
 }
 
 // get all
@@ -39,7 +43,7 @@ export const timesheetApprovalPostError = (message: string) => action(TimesheetA
 export const timesheetApprovalPostDispose = () => action(TimesheetApprovalAction.POST_DISPOSE);
 
 // post bulk
-export const timesheetApprovalPostBulkRequest = (request: ITimesheetApprovalPostBulkRequest) => action (TimesheetApprovalAction.POST_REQUEST, request);
-export const timesheetApprovalPostBulkSuccess = (response: boolean) => action (TimesheetApprovalAction.POST_SUCCESS, response);
-export const timesheetApprovalPostBulkError = (message: string) => action(TimesheetApprovalAction.POST_ERROR, message);
-export const timesheetApprovalPostBulkDispose = () => action(TimesheetApprovalAction.POST_DISPOSE);
+export const timesheetApprovalPostBulkRequest = (request: ITimesheetApprovalPostBulkRequest) => action (TimesheetApprovalAction.POST_BULK_REQUEST, request);
+export const timesheetApprovalPostBulkSuccess = (response: boolean) => action (TimesheetApprovalAction.POST_BULK_SUCCESS, response);
+export const timesheetApprovalPostBulkError = (message: string) => action(TimesheetApprovalAction.POST_BULK_ERROR, message);
+export const timesheetApprovalPostBulkDispose = () => action(TimesheetApprovalAction.POST_BULK_DISPOSE);
