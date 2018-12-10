@@ -217,14 +217,22 @@ const lifecycles: ReactLifeCycleFunctions<SystemLimitEditorProps, {}> = {
       });
     }
 
-    layoutDispatch.changeView({
-      uid: AppMenu.LookupSystemLimit,
-      parentUid: AppMenu.Lookup,
-      title: intl.formatMessage(view.title),
-      subTitle : intl.formatMessage(view.subTitle)
+    layoutDispatch.setupView({
+      view: {
+        uid: AppMenu.LookupSystemLimit,
+        parentUid: AppMenu.Lookup,
+        title: intl.formatMessage(view.title),
+        subTitle : intl.formatMessage(view.subTitle)
+      },
+      parentUrl: `/lookup/systemlimits`,
+      status: {
+        isNavBackVisible: true,
+        isSearchVisible: false,
+        isActionCentreVisible: false,
+        isMoreVisible: false,
+        isModeSearch: false
+      }
     });
-
-    layoutDispatch.navBackShow(); 
   },
   componentWillUnmount() {
     const { layoutDispatch, appBarDispatch, systemLimitDispatch } = this.props;

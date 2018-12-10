@@ -3,6 +3,7 @@ import { FormMode } from '@generic/types';
 import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
+import { layoutMessage } from '@layout/locales/messages';
 import { IDiem } from '@lookup/classes/response';
 import { WithLookupDiem, withLookupDiem } from '@lookup/hoc/withLookupDiem';
 import { ITravelPostPayload, ITravelPutPayload } from '@travel/classes/request';
@@ -11,6 +12,7 @@ import { ITravelRequest } from '@travel/classes/response';
 import { RequestEditorView } from '@travel/components/request/editor//RequestEditorView';
 import { TravelRequestFormData } from '@travel/components/request/editor/forms/RequestForm';
 import { WithTravelRequest, withTravelRequest } from '@travel/hoc/withTravelRequest';
+import { travelMessage } from '@travel/locales/messages/travelMessage';
 import { travelRequestMessage } from '@travel/locales/messages/travelRequestMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
@@ -36,6 +38,10 @@ interface OwnState {
   companyUid?: string | undefined;
   positionUid?: string | undefined;
   travelUid?: string | undefined;
+  submitDialogTitle: string;
+  submitDialogContentText: string;
+  submitDialogCancelText: string;
+  submitDialogConfirmedText: string;
 }
 
 interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
@@ -243,7 +249,11 @@ const handlerCreators: HandleCreators<RequestEditorProps, OwnHandlers> = {
 };
 
 const createProps: mapper<RequestEditorProps, OwnState> = (props: RequestEditorProps): OwnState => ({ 
-  formMode: FormMode.New
+  formMode: FormMode.New,
+  submitDialogTitle: props.intl.formatMessage(travelMessage.request.dialog.createTitle),
+  submitDialogContentText: props.intl.formatMessage(travelMessage.request.dialog.createDescription),
+  submitDialogCancelText: props.intl.formatMessage(layoutMessage.action.cancel),
+  submitDialogConfirmedText: props.intl.formatMessage(layoutMessage.action.ok),
 });
 
 const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {

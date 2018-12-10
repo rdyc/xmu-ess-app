@@ -125,10 +125,10 @@ const handlerCreators: HandleCreators<PurchaseSettlementDetailProps, OwnHandler>
 
       switch (props.action) {
         case PurchaseUserAction.Modify:
-          next = '/purchase/settlements/form/';
+          next = '/purchase/settlement/requests/form/';
           break;
         case PurchaseUserAction.Settle:
-          next = '/purchase/settlements/form/';
+          next = '/purchase/settlement/requests/form/';
           break;
 
         default:

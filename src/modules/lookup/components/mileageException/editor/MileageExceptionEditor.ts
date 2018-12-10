@@ -213,14 +213,22 @@ const lifecycles: ReactLifeCycleFunctions<MileageExceptionEditorProps, {}> = {
       });
     }
 
-    layoutDispatch.changeView({
-      uid: AppMenu.LookupMileageException,
-      parentUid: AppMenu.Lookup,
-      title: intl.formatMessage(view.title),
-      subTitle : intl.formatMessage(view.subTitle)
+    layoutDispatch.setupView({
+      view: {
+        uid: AppMenu.LookupMileageException,
+        parentUid: AppMenu.Lookup,
+        title: intl.formatMessage(view.title),
+        subTitle : intl.formatMessage(view.subTitle)
+      },
+      parentUrl: `/lookup/mileageexceptions`,
+      status: {
+        isNavBackVisible: true,
+        isSearchVisible: false,
+        isActionCentreVisible: false,
+        isMoreVisible: false,
+        isModeSearch: false
+      }
     });
-
-    layoutDispatch.navBackShow(); 
   },
   componentWillUnmount() {
     const { layoutDispatch, appBarDispatch, mileageExceptionDispatch } = this.props;

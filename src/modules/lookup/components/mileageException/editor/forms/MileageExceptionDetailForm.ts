@@ -4,6 +4,8 @@ import { FormMode } from '@generic/types';
 import { InputDate } from '@layout/components/input/date';
 import { InputNumber } from '@layout/components/input/number';
 import { InputText } from '@layout/components/input/text';
+import { SelectLookupCompany } from '@lookup/components/company/select';
+import { SelectLookupRole } from '@lookup/components/role/select/SelectLookupRole';
 import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
 import { SelectProject } from '@project/components/select/project';
 import { SelectProjectSite } from '@project/components/select/projectSite';
@@ -19,7 +21,7 @@ interface OwnProps {
   context: BaseFieldsProps;
   companyUidValue: string | undefined;
   projectUidValue: string | undefined;
-  showSite: boolean;
+  // showSite: boolean;
 }
 
 interface OwnHandlers {
@@ -33,11 +35,15 @@ export type MileageExceptionDetailFormProps =
 
 const handlerCreators: HandleCreators<MileageExceptionDetailFormProps, OwnHandlers> = {
   generateFieldProps: (props: MileageExceptionDetailFormProps) => (name: string) => {
-    const { intl, formMode, companyUidValue, projectUidValue, showSite } = props;
+    const { intl, formMode, companyUidValue, projectUidValue } = props;
 
     const projectFilter: any = {
       statusTypes: WorkflowStatusType.Approved,
       activeOnly: true
+    };
+
+    const roleFilter: any = {
+      companyUid: companyUidValue
     };
 
     let fieldProps: SelectSystemOption & any = {};
@@ -57,16 +63,18 @@ const handlerCreators: HandleCreators<MileageExceptionDetailFormProps, OwnHandle
           disabled: formMode === FormMode.Edit,
           label: intl.formatMessage(lookupMessage.mileageException.fieldFor(name, 'fieldName')),
           placeholder: intl.formatMessage(lookupMessage.mileageException.fieldFor(name, 'fieldPlaceholder')),
-          component: InputText
+          component: SelectLookupCompany
         };
         break;
 
       case 'roleUid':
         fieldProps = {
+          required: true,
           disabled: formMode === FormMode.Edit  || isNullOrUndefined(companyUidValue),
           label: intl.formatMessage(lookupMessage.mileageException.fieldFor(name, 'fieldName')),
           placeholder: intl.formatMessage(lookupMessage.mileageException.fieldFor(name, 'fieldPlaceholder')),
-          component: InputText
+          component: !isNullOrUndefined(companyUidValue) ? SelectLookupRole : InputText,
+          filter: !isNullOrUndefined(companyUidValue) ? roleFilter : undefined
         };
         break;
       
@@ -90,16 +98,18 @@ const handlerCreators: HandleCreators<MileageExceptionDetailFormProps, OwnHandle
       
       case 'siteUid':
         fieldProps = {
-          disabled: !showSite,
+          disabled: isNullOrUndefined(projectUidValue && companyUidValue),
           label: intl.formatMessage(lookupMessage.mileageException.fieldFor(name, 'fieldName')),
           placeholder: intl.formatMessage(lookupMessage.mileageException.fieldFor(name, 'fieldPlaceholder')),
-          component: !isNullOrUndefined(projectUidValue) ? SelectProjectSite : InputText,
+          component: !isNullOrUndefined(projectUidValue && companyUidValue) ? SelectProjectSite : InputText,
+          companyUid: companyUidValue,
           projectUid: projectUidValue
         };
         break;
 
       case 'percentage':
         fieldProps = {
+          required: true,
           label: intl.formatMessage(lookupMessage.mileageException.fieldFor(name, 'fieldName')),
           placeholder: intl.formatMessage(lookupMessage.mileageException.fieldFor(name, 'fieldPlaceholder')),
           component: InputNumber
@@ -126,7 +136,8 @@ const handlerCreators: HandleCreators<MileageExceptionDetailFormProps, OwnHandle
         fieldProps = {
           label: intl.formatMessage(lookupMessage.mileageException.fieldFor(name, 'fieldName')),
           placeholder: intl.formatMessage(lookupMessage.mileageException.fieldFor(name, 'fieldPlaceholder')),
-          component: InputDate
+          component: InputDate,
+          disablePast: true
         };
         break;
 

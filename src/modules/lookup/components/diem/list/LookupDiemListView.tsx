@@ -113,7 +113,7 @@ const config: CollectionConfig<IDiem, LookupDiemListProps> = {
     secondary: item.project && item.project.value || item.projectType,
     tertiary: item.destination && item.destination.value || item.destinationType,
     quaternary: props.intl.formatNumber(item.value),
-    quinary: item.currency && item.currency.name || item.currencyUid,
+    quinary: item.changes && item.changes.updated && item.changes.updated.fullName || item.changes && item.changes.created && item.changes.created.fullName || 'N/A',
     senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
   }),
 

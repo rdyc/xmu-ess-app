@@ -48,8 +48,8 @@ const stateUpdaters: StateUpdaters<MileageRequestListProps, OwnState, OwnStateUp
     action: MileageUserAction.Create,
     dialogFullScreen: false,
     dialogOpen: true,
-    dialogTitle: props.intl.formatMessage(mileageMessage.request.confirm.modifyTitle), 
-    dialogContent: props.intl.formatMessage(mileageMessage.request.confirm.modifyDescription),
+    dialogTitle: props.intl.formatMessage(mileageMessage.request.confirm.createTitle), 
+    dialogContent: props.intl.formatMessage(mileageMessage.request.confirm.createDescription),
     dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.cancel),
     dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.ok)
   }),

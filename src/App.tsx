@@ -9,7 +9,7 @@ import { WithOidc, withOidc } from '@layout/hoc/withOidc';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IAppUser } from '@layout/interfaces';
 import { LeaveRoutingComponents } from '@leave/components/LeaveRoutingComponents';
-import { LookupRoutingComponents } from '@lookup/components';
+import { LookupRoutingComponents } from '@lookup/components/LookupRoutingComponents';
 import { MileageRoutingComponents } from '@mileage/components/MileageRouter';
 import { ProjectRoutingComponents } from '@project/components';
 import { PurchaseRoutingComponents } from '@purchase/components/PurchaseRoutingComponents';

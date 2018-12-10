@@ -5,6 +5,7 @@ import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
 import { ISystemLimit } from '@lookup/classes/response';
 import { SystemLimitField, SystemLimitUserAction } from '@lookup/classes/types';
+import { systemLimitFieldTranslator } from '@lookup/helper';
 import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
 import { Button } from '@material-ui/core';
 import * as moment from 'moment';
@@ -28,7 +29,7 @@ const config: CollectionConfig<ISystemLimit, SystemLimitListProps> = {
     value: key,
     name: SystemLimitField[key]
   })),
-  // fieldTranslator: ,
+  fieldTranslator: systemLimitFieldTranslator,
 
   // searching
   hasSearching: true,
@@ -62,7 +63,7 @@ const config: CollectionConfig<ISystemLimit, SystemLimitListProps> = {
       name: props.intl.formatMessage(layoutMessage.action.create),
       enabled: true,
       visible: true,
-      onClick: () => callback.handleRedirectTo(`/lookup/systemlimits/form`)
+      onClick: props.handleOnCreate
     }
   ]),
 
@@ -109,7 +110,7 @@ const config: CollectionConfig<ISystemLimit, SystemLimitListProps> = {
     secondary: item.company.name,
     tertiary: item.category ? item.category.value : 'N/A',
     quaternary: item.days.toString(),
-    quinary: item.category ? item.category.description : 'N/A',
+    quinary: item.changes && item.changes.updated && item.changes.updated.fullName || item.changes && item.changes.created && item.changes.created.fullName || 'N/A',
     senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
   }),
 
