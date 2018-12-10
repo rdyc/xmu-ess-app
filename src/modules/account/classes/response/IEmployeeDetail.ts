@@ -6,6 +6,7 @@ import { ILookupCompany } from '@lookup/classes';
 export interface IEmployeeDetail {
     uid: string;
     joinDate: Date;
+    inactiveDate: Date | null;
     companyUid: string | null;
     company: ILookupCompany | null;
     employmentNumber: string;

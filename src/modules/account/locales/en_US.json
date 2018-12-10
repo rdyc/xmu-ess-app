@@ -27,7 +27,75 @@
   "account.employee.field.joinDate": "Join Date",
   "account.employee.field.joinDate.placeholder": "Join Date",
 
-  "account.employee.confirm.modify.title": "Create Account",
-  "account.employee.confirm.modify.description": "Lorem ipsum dolor sit amet"
+  "account.employee.field.inactiveDate": "Date inActive",
+  "account.employee.field.inactiveDate.placeholder": "Date inActive",
+
+  "account.employee.field.employement": "Employement Status",
+  "account.employee.field.employement.placeholder": "Employement Status",
+
+  "account.employee.field.rate": "Rate",
+  "account.employee.field.rate.placeholder": "Rate",
+
+  "account.employee.field.gender": "Gender",
+  "account.employee.field.gender.placeholder": "Gender",
+
+  "account.employee.field.birthPlace": "Birth Place",
+  "account.employee.field.birthPlace.placeholder": "Birth Place",
+
+  "account.employee.field.birthDate": "Birth Date",
+  "account.employee.field.birthDate.placeholder": "Birth Date",
+
+  "account.employee.field.blood": "Blood Type",
+  "account.employee.field.blood.placeholder": "Blood Type",
+
+  "account.employee.field.ktp": "KTP",
+  "account.employee.field.ktp.placeholder": "KTP",
+
+  "account.employee.field.npwp": "NPWP",
+  "account.employee.field.npwp.placeholder": "NPWP",
+
+  "account.employee.field.ptkp": "PTKP Status",
+  "account.employee.field.ptkp.placeholder": "PTKP Status",
+
+  "account.employee.field.kartuKeluarga": "Kartu Keluarga",
+  "account.employee.field.kartuKeluarga.placeholder": "Kartu Keluarga",
+
+  "account.employee.field.bpjsKetenagakerjaan": "BPJS Ketenagakerjaan",
+  "account.employee.field.bpjsKetenagakerjaan.placeholder": "BPJS Ketenagakerjaan",
+
+  "account.employee.field.bpjsKesehatan": "BPJS Kesehatan",
+  "account.employee.field.bpjsKesehatan.placeholder": "BPJS Kesehatan",
+
+  "account.employee.field.mobile": "Mobile",
+  "account.employee.field.mobile.placeholder": "Mobile",
+  
+  "account.employee.field.emergencyName": "Emergency Contact Name",
+  "account.employee.field.emergencyName.placeholder": "Emergency Contact Name",
+  
+  "account.employee.field.emergencyRelation": "Emergency Contact Relation",
+  "account.employee.field.emergencyRelation.placeholder": "Emergency Contact Relation",
+  
+  "account.employee.field.emergencyPhone1": "Emergency Phone 1",
+  "account.employee.field.emergencyPhone1.placeholder": "Emergency Phone 1",
+  
+  "account.employee.field.emergencyPhone2": "Emergency Phone 2",
+  "account.employee.field.emergencyPhone2.placeholder": "Emergency Phone 2",
+  
+  "account.employee.field.companyEmail": "Company Email",
+  "account.employee.field.companyEmail.placeholder": "Company Email",
+
+  "account.employee.field.addressKtp": "Address (KTP)",
+  "account.employee.field.addressKtp.placeholder": "Address (KTP)",
+  
+  "account.employee.field.addressNpwp": "Address (NPWP)",
+  "account.employee.field.addressNpwp.placeholder": "Address (NPWP)",
+
+  "account.employee.confirm.create.title": "Create Account",
+  "account.employee.confirm.create.subHeader": "Lorem ipsum dolor sit amet",
  
+  "account.employee.field.information.title": "Employee Information",
+  "account.employee.field.information.subHeader": "Lorem ipsum dolor sit amet",
+  
+  "account.employee.field.information.contact.title": "Employee Contacts",
+  "account.employee.field.information.contact.subHeader": "Lorem ipsum dolor sit amet"
 }
