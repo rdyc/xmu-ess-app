@@ -22,14 +22,14 @@ const mileageExceptionSummary: React.SFC<AllProps> = props => (
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
         margin="dense"
-        label={props.intl.formatMessage(lookupMessage.mileageException.field.role)}
-        value={props.data.role.name}
+        label={props.intl.formatMessage(lookupMessage.mileageException.field.uid)}
+        value={props.data.uid}
       />
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
         margin="dense"
-        label={props.intl.formatMessage(lookupMessage.mileageException.field.company)}
-        value={props.data.role.company.name}
+        label={props.intl.formatMessage(lookupMessage.mileageException.field.projectUid)}
+        value={props.data.projectUid ? props.data.projectUid : 'N/A'}
       />
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
@@ -43,31 +43,37 @@ const mileageExceptionSummary: React.SFC<AllProps> = props => (
 
     <Grid item xs={12} sm={6} md={3}>
       <TextField
-          {...GlobalStyle.TextField.ReadOnly}
-          margin="dense"
-          label={props.intl.formatMessage(lookupMessage.mileageException.field.site)}
-          value={props.data.type && props.data.type.value || props.data.siteType}
-        />
+        {...GlobalStyle.TextField.ReadOnly}
+        margin="dense"
+        label={props.intl.formatMessage(lookupMessage.mileageException.field.company)}
+        value={props.data.role.company.name}
+      />
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
         margin="dense"
-        label={props.intl.formatMessage(lookupMessage.mileageException.field.projectUid)}
-        value={props.data.projectUid ? props.data.projectUid : 'N/A'}
+        label={props.intl.formatMessage(lookupMessage.mileageException.field.site)}
+        value={props.data.type && props.data.type.value || props.data.siteType}
+      />
+      <TextField
+        {...GlobalStyle.TextField.ReadOnly}
+        margin="dense"
+        label={props.intl.formatMessage(lookupMessage.mileageException.field.description)}
+        value={props.data.description ? props.data.description : 'N/A'}
       />
     </Grid>
     <Grid item xs={12} sm={6} md={3}>
       <TextField
-          {...GlobalStyle.TextField.ReadOnly}
-          margin="dense"
-          label={props.intl.formatMessage(lookupMessage.mileageException.field.percentage)}
-          value={`${props.data.percentage} %`}
-        />
+        {...GlobalStyle.TextField.ReadOnly}
+        margin="dense"
+        label={props.intl.formatMessage(lookupMessage.mileageException.field.role)}
+        value={props.data.role.name}
+      />
       <TextField
-          {...GlobalStyle.TextField.ReadOnly}
-          margin="dense"
-          label={props.intl.formatMessage(lookupMessage.mileageException.field.description)}
-          value={props.data.description ? props.data.description : 'N/A'}
-        />
+        {...GlobalStyle.TextField.ReadOnly}
+        margin="dense"
+        label={props.intl.formatMessage(lookupMessage.mileageException.field.percentage)}
+        value={`${props.data.percentage} %`}
+      />
     </Grid>
     
     {
@@ -77,7 +83,7 @@ const mileageExceptionSummary: React.SFC<AllProps> = props => (
           {...GlobalStyle.TextField.ReadOnly}
           margin="dense"
           label={props.intl.formatMessage(lookupMessage.mileageException.field.inActiveDate)}
-          value={props.data.inactiveDate ? props.intl.formatDate(props.data.inactiveDate, GlobalFormat.MonthYear) : 'N/A'}
+          value={props.data.inactiveDate ? props.intl.formatDate(props.data.inactiveDate, GlobalFormat.Date) : 'N/A'}
         />
         <TextField
           {...GlobalStyle.TextField.ReadOnly}

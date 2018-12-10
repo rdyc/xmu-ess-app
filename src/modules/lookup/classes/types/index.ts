@@ -12,5 +12,5 @@ export * from './holiday/LookupHolidayField';
 export * from './holiday/LookupHolidayUserAction';
 export * from './leave/LookupLeaveField';
 export * from './leave/LookupLeaveUserAction';
-export * from './mileageException/MileageExceptionRequestField';
+export * from './mileageException/MileageExceptionField';
 export * from './mileageException/MileageExceptionUserAction';
