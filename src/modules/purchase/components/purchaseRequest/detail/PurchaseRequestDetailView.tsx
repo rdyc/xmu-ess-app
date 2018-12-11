@@ -49,7 +49,15 @@ const config: SingleConfig<IPurchaseDetail, PurchaseRequestDetailProps> = {
       enabled: true,
       visible: isContains(state.statusType, [WorkflowStatusType.Submitted, WorkflowStatusType.InProgress]),
       onClick: props.handleOnModify
+    },
+    {
+      id: PurchaseUserAction.Settle,
+      name: props.intl.formatMessage(purchaseMessage.action.settle),
+      enabled: true,
+      visible: isContains(state.statusType, [WorkflowStatusType.Approved]),
+      onClick: props.handleOnSettle
     }
+    
   ]),
 
   // envents
