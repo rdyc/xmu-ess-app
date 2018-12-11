@@ -45,15 +45,12 @@ const calculateDiem = (start: string , end: string): number => {
 export const RequestItemFormView: React.SFC<RequestItemFormProps> = props => {
   const { context } = props;
 
-  const diem = props.diemRequest;
-                    
+  const diem = props.diemRequest;                
   const render = (
     <Grid container spacing={16}>
       {
         context.fields.map((field, index) => {
           const item = context.fields.get(index);
-          // const amount: number = calculateDiem(item.departureDate, item.returnDate) * (diem ? diem.value : 0);
-          // item.amount = amount;
           return (
           <Grid key={index} item xs={12} md={4}>
             <Card square>
@@ -120,11 +117,15 @@ export const RequestItemFormView: React.SFC<RequestItemFormProps> = props => {
                     name={`${field}.departureDate`}
                     label={props.intl.formatMessage(travelMessage.request.field.itemStart)}
                     component={InputDateTime}
+                    minDate={props.minDate}
+                    maxDate={props.maxDate}
                   />
                   <Field 
                     name={`${field}.returnDate`}
                     label={props.intl.formatMessage(travelMessage.request.field.itemEnd)}
                     component={InputDateTime}
+                    minDate={props.minDate}
+                    maxDate={props.maxDate}
                   />
                   <Field 
                     type="number"
