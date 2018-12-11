@@ -5,6 +5,7 @@ import { WithLookupDiem, withLookupDiem } from '@lookup/hoc/withLookupDiem';
 import { WithStyles, withStyles } from '@material-ui/core';
 import styles from '@styles';
 import { TravelItemFormData, TravelRequestFormData } from '@travel/components/request/editor/forms/RequestForm';
+import { DateType } from 'material-ui-pickers/constants/prop-types';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose, mapper, StateHandlerMap, StateUpdaters, withStateHandlers } from 'recompose';
 import { InjectedFormProps, WrappedFieldArrayProps } from 'redux-form';
@@ -15,6 +16,8 @@ interface OwnProps {
   destinationTypeValue: string | null | undefined;
   projectTypeValue: string | null | undefined;
   diemRequest: IDiem | undefined;
+  minDate?: DateType; 
+  maxDate?: DateType; 
 }
 
 interface OwnState {

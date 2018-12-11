@@ -13,7 +13,6 @@ import { RequestEditorView } from '@travel/components/request/editor//RequestEdi
 import { TravelRequestFormData } from '@travel/components/request/editor/forms/RequestForm';
 import { WithTravelRequest, withTravelRequest } from '@travel/hoc/withTravelRequest';
 import { travelMessage } from '@travel/locales/messages/travelMessage';
-import { travelRequestMessage } from '@travel/locales/messages/travelRequestMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { compose, HandleCreators, lifecycle, mapper, ReactLifeCycleFunctions, StateHandler, StateHandlerMap, StateUpdaters, withHandlers, withStateHandlers } from 'recompose';
@@ -196,11 +195,11 @@ const handlerCreators: HandleCreators<RequestEditorProps, OwnHandlers> = {
     let message: string = '';
 
     if (formMode === FormMode.New) {
-      message = intl.formatMessage(travelRequestMessage.createSuccess, { uid: response.uid });
+      message = intl.formatMessage(travelMessage.request.message.createSuccess, { uid: response.uid });
     }
 
     if (formMode === FormMode.Edit) {
-      message = intl.formatMessage(travelRequestMessage.updateSuccess, { uid: response.uid });
+      message = intl.formatMessage(travelMessage.request.message.updateSuccess, { uid: response.uid });
     }
 
     alertAdd({
@@ -225,11 +224,11 @@ const handlerCreators: HandleCreators<RequestEditorProps, OwnHandlers> = {
       let message: string = '';
 
       if (formMode === FormMode.New) {
-        message = intl.formatMessage(travelRequestMessage.createFailure);
+        message = intl.formatMessage(travelMessage.request.message.createFailure);
       }
 
       if (formMode === FormMode.Edit) {
-        message = intl.formatMessage(travelRequestMessage.updateFailure);
+        message = intl.formatMessage(travelMessage.request.message.updateFailure);
       }
 
       alertAdd({
@@ -278,8 +277,8 @@ const lifecycles: ReactLifeCycleFunctions<RequestEditorProps, {}> = {
     };
 
     const view = {
-      title: 'travel.form.newTitle',
-      subTitle: 'travel.form.newSubTitle',
+      title: travelMessage.request.page.newTitle,
+      subTitle: travelMessage.request.page.newSubHeader,
     };
 
     if (!user) {
@@ -292,8 +291,8 @@ const lifecycles: ReactLifeCycleFunctions<RequestEditorProps, {}> = {
     });
 
     if (!isNullOrUndefined(history.location.state)) {
-      view.title = 'travel.form.editTitle';
-      view.subTitle = 'travel.form.editSubTitle';
+      view.title = travelMessage.request.page.modifyTitle;
+      view.subTitle = travelMessage.request.page.modifySubHeader;
 
       stateUpdate({ 
         formMode: FormMode.Edit,
@@ -314,8 +313,8 @@ const lifecycles: ReactLifeCycleFunctions<RequestEditorProps, {}> = {
     layoutDispatch.changeView({
       uid: AppMenu.TravelRequest,
       parentUid: AppMenu.Travel,
-      title: intl.formatMessage({id: view.title}),
-      subTitle : intl.formatMessage({id: view.subTitle})
+      title: intl.formatMessage(view.title),
+      subTitle : intl.formatMessage(view.subTitle)
     });
 
     layoutDispatch.navBackShow(); 
