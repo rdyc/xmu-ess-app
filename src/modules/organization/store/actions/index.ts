@@ -1,1 +1,1 @@
-export * from './organizationHierarchyAction';
+export * from './organizationStructureAction';

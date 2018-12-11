@@ -1,9 +1,9 @@
 import { IQuerySingleState } from '@generic/interfaces';
-import { IOrganizationHierarchyDeleteRequest } from '@organization/classes/queries/hierarchy';
-import { OrganizationHierarchyAction as Action } from '@organization/store/actions';
+import { IOrganizationStructureDeleteRequest } from '@organization/classes/queries/structure';
+import { OrganizationStructureAction as Action } from '@organization/store/actions';
 import { Reducer } from 'redux';
 
-const initialState: IQuerySingleState<IOrganizationHierarchyDeleteRequest, boolean> = {
+const initialState: IQuerySingleState<IOrganizationStructureDeleteRequest, boolean> = {
   request: undefined,
   response: undefined,
   isError: false,
@@ -11,7 +11,7 @@ const initialState: IQuerySingleState<IOrganizationHierarchyDeleteRequest, boole
   errors: undefined,
 };
 
-const reducer: Reducer<IQuerySingleState<IOrganizationHierarchyDeleteRequest, boolean>> = (state = initialState, action) => {
+const reducer: Reducer<IQuerySingleState<IOrganizationStructureDeleteRequest, boolean>> = (state = initialState, action) => {
   switch (action.type) {
     case Action.DELETE_REQUEST: return { ...state, isLoading: true, request: action.payload };
     case Action.DELETE_SUCCESS: return { ...state, isLoading: false, response: action.payload };
@@ -22,4 +22,4 @@ const reducer: Reducer<IQuerySingleState<IOrganizationHierarchyDeleteRequest, bo
   }
 };
 
-export { reducer as organizationHierarchyDeleteReducer };
+export { reducer as organizationStructureDeleteReducer };

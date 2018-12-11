@@ -1,25 +1,22 @@
 import { layoutAlertAdd, listBarLoading, listBarMetadata } from '@layout/store/actions';
 import {
-  OrganizationHierarchyAction as Action,
-  organizationHierarchyDeleteError,
-  organizationHierarchyDeleteRequest,
-  organizationHierarchyDeleteSuccess,
-  organizationHierarchyGetAllDispose,
-  organizationHierarchyGetAllError,
-  organizationHierarchyGetAllRequest,
-  organizationHierarchyGetAllSuccess,
-  organizationHierarchyGetByIdError,
-  organizationHierarchyGetByIdRequest,
-  organizationHierarchyGetByIdSuccess,
-  organizationHierarchyGetListError,
-  organizationHierarchyGetListRequest,
-  organizationHierarchyGetListSuccess,
-  organizationHierarchyPostError,
-  organizationHierarchyPostRequest,
-  organizationHierarchyPostSuccess,
-  organizationHierarchyPutError,
-  organizationHierarchyPutRequest,
-  organizationHierarchyPutSuccess,
+  OrganizationStructureAction as Action,
+  organizationStructureDeleteError,
+  organizationStructureDeleteRequest,
+  organizationStructureDeleteSuccess,
+  organizationStructureGetAllDispose,
+  organizationStructureGetAllError,
+  organizationStructureGetAllRequest,
+  organizationStructureGetAllSuccess,
+  organizationStructureGetByIdError,
+  organizationStructureGetByIdRequest,
+  organizationStructureGetByIdSuccess,
+  organizationStructurePostError,
+  organizationStructurePostRequest,
+  organizationStructurePostSuccess,
+  organizationStructurePutError,
+  organizationStructurePutRequest,
+  organizationStructurePutSuccess,
 } from '@organization/store/actions';
 import { flattenObject } from '@utils/flattenObject';
 import saiyanSaga from '@utils/saiyanSaga';
@@ -28,16 +25,16 @@ import { all, fork, put, takeEvery } from 'redux-saga/effects';
 import { IApiResponse, objectToQuerystring } from 'utils';
 
 function* watchGetAllRequest() {
-  const worker = (action: ReturnType<typeof organizationHierarchyGetAllRequest>) => {
+  const worker = (action: ReturnType<typeof organizationStructureGetAllRequest>) => {
     return saiyanSaga.fetch({
       method: 'get',
-      path: `/v1/organization/hierarchies${objectToQuerystring(action.payload.filter)}`, 
+      path: `/v1/organization/structures${objectToQuerystring(action.payload.filter)}`, 
       successEffects: (response: IApiResponse) => ([
-        put(organizationHierarchyGetAllSuccess(response.body)),
+        put(organizationStructureGetAllSuccess(response.body)),
         put(listBarMetadata(response.body.metadata))
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(organizationHierarchyGetAllError(response.statusText)),
+        put(organizationStructureGetAllError(response.statusText)),
         put(layoutAlertAdd({
           time: new Date(),
           message: response.statusText,
@@ -45,7 +42,7 @@ function* watchGetAllRequest() {
         }))
       ]), 
       errorEffects: (error: TypeError) => ([
-        put(organizationHierarchyGetAllError(error.message)),
+        put(organizationStructureGetAllError(error.message)),
         put(layoutAlertAdd({
           time: new Date(),
           message: error.message
@@ -58,45 +55,16 @@ function* watchGetAllRequest() {
   yield takeEvery(Action.GET_ALL_REQUEST, worker);
 }
 
-function* watchGetListRequest() {
-  const worker = (action: ReturnType<typeof organizationHierarchyGetListRequest>) => {
-    return saiyanSaga.fetch({
-      method: 'get',
-      path: `/v1/organization/hierarchies/list${objectToQuerystring(action.payload.filter)}`,
-      successEffects: (response: IApiResponse) => ([
-        put(organizationHierarchyGetListSuccess(response.body)),
-      ]), 
-      failureEffects: (response: IApiResponse) => ([
-        put(organizationHierarchyGetListError(response.statusText)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        }))
-      ]), 
-      errorEffects: (error: TypeError) => ([
-        put(organizationHierarchyGetListError(error.message)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: error.message
-        }))
-      ])
-    });
-  };
-
-  yield takeEvery(Action.GET_LIST_REQUEST, worker);
-}
-
 function* watchGetByIdRequest() {
-  const worker = (action: ReturnType<typeof organizationHierarchyGetByIdRequest>) => {
+  const worker = (action: ReturnType<typeof organizationStructureGetByIdRequest>) => {
     return saiyanSaga.fetch({
       method: 'get',
-      path: `/v1/organization/hierarchies/${action.payload.companyUid}/${action.payload.hierarchyUid}`,
+      path: `/v1/organization/structures/${action.payload.companyUid}/${action.payload.structureUid}`,
       successEffects: (response: IApiResponse) => ([
-        put(organizationHierarchyGetByIdSuccess(response.body)),
+        put(organizationStructureGetByIdSuccess(response.body)),
       ]), 
       failureEffects: (response: IApiResponse) => ([
-        put(organizationHierarchyGetByIdError(response.statusText)),
+        put(organizationStructureGetByIdError(response.statusText)),
         put(layoutAlertAdd({
           time: new Date(),
           message: response.statusText,
@@ -104,7 +72,7 @@ function* watchGetByIdRequest() {
         }))
       ]), 
       errorEffects: (error: TypeError) => ([
-        put(organizationHierarchyGetByIdError(error.message)),
+        put(organizationStructureGetByIdError(error.message)),
         put(layoutAlertAdd({
           time: new Date(),
           message: error.message,
@@ -117,20 +85,20 @@ function* watchGetByIdRequest() {
 }
 
 function* watchPostRequest() {
-  const worker = (action: ReturnType<typeof organizationHierarchyPostRequest>) => {
+  const worker = (action: ReturnType<typeof organizationStructurePostRequest>) => {
     return saiyanSaga.fetch({
       method: 'post',
-      path: `/v1/organization/hierarchies/${action.payload.companyUid}`,
+      path: `/v1/organization/structures/${action.payload.companyUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
-        put(organizationHierarchyGetAllDispose()),
-        put(organizationHierarchyPostSuccess(response.body))
+        put(organizationStructureGetAllDispose()),
+        put(organizationStructurePostSuccess(response.body))
       ],
       successCallback: (response: IApiResponse) => {
         action.payload.resolve(response.body.data);
       },
       failureEffects: (response: IApiResponse) => [
-        put(organizationHierarchyPostError(response.statusText))
+        put(organizationStructurePostError(response.statusText))
       ],
       failureCallback: (response: IApiResponse) => {
         if (response.status === 400) {
@@ -145,7 +113,7 @@ function* watchPostRequest() {
         }
       },
       errorEffects: (error: TypeError) => [
-        put(organizationHierarchyPostError(error.message)),
+        put(organizationStructurePostError(error.message)),
         put(
           layoutAlertAdd({
             time: new Date(),
@@ -163,20 +131,20 @@ function* watchPostRequest() {
 }
 
 function* watchPutRequest() {
-  const worker = (action: ReturnType<typeof organizationHierarchyPutRequest>) => {
+  const worker = (action: ReturnType<typeof organizationStructurePutRequest>) => {
     return saiyanSaga.fetch({
       method: 'put',
-      path: `/v1/organization/hierarchies/${action.payload.companyUid}/${action.payload.hierarchyUid}`,
+      path: `/v1/organization/structures/${action.payload.companyUid}/${action.payload.structureUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
-        put(organizationHierarchyGetAllDispose()),
-        put(organizationHierarchyPutSuccess(response.body))
+        put(organizationStructureGetAllDispose()),
+        put(organizationStructurePutSuccess(response.body))
       ],
       successCallback: (response: IApiResponse) => {
         action.payload.resolve(response.body.data);
       },
       failureEffects: (response: IApiResponse) => [
-        put(organizationHierarchyPutError(response.statusText))
+        put(organizationStructurePutError(response.statusText))
       ],
       failureCallback: (response: IApiResponse) => {
         if (response.status === 400) {
@@ -192,7 +160,7 @@ function* watchPutRequest() {
         }
       },
       errorEffects: (error: TypeError) => [
-        put(organizationHierarchyPutError(error.message)),
+        put(organizationStructurePutError(error.message)),
         put(
           layoutAlertAdd({
             time: new Date(),
@@ -210,20 +178,20 @@ function* watchPutRequest() {
 }
 
 function* watchDeleteRequest() {
-  const worker = (action: ReturnType<typeof organizationHierarchyDeleteRequest>) => {
+  const worker = (action: ReturnType<typeof organizationStructureDeleteRequest>) => {
     return saiyanSaga.fetch({
       method: 'delete',
-      path: `/v1/organization/hierarchies`,
+      path: `/v1/organization/structures`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
-        put(organizationHierarchyGetAllDispose()),
-        put(organizationHierarchyDeleteSuccess(response.body))
+        put(organizationStructureGetAllDispose()),
+        put(organizationStructureDeleteSuccess(response.body))
       ],
       successCallback: (response: IApiResponse) => {
         action.payload.resolve(response.body.data);
       },
       failureEffects: (response: IApiResponse) => [
-        put(organizationHierarchyDeleteError(response.statusText))
+        put(organizationStructureDeleteError(response.statusText))
       ],
       failureCallback: (response: IApiResponse) => {
         if (response.status === 400) {
@@ -239,7 +207,7 @@ function* watchDeleteRequest() {
         }
       },
       errorEffects: (error: TypeError) => [
-        put(organizationHierarchyDeleteError(error.message)),
+        put(organizationStructureDeleteError(error.message)),
         put(
           layoutAlertAdd({
             time: new Date(),
@@ -256,10 +224,9 @@ function* watchDeleteRequest() {
   yield takeEvery(Action.DELETE_REQUEST, worker);
 }
 
-function* organizationHierarchySagas() {
+function* organizationStructureSagas() {
   yield all([
     fork(watchGetAllRequest),
-    fork(watchGetListRequest),
     fork(watchGetByIdRequest),
     fork(watchPostRequest),
     fork(watchPutRequest),
@@ -267,4 +234,4 @@ function* organizationHierarchySagas() {
   ]);
 }
 
-export default organizationHierarchySagas;
+export default organizationStructureSagas;

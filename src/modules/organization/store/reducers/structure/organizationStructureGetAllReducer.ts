@@ -1,10 +1,10 @@
 import { IQueryCollectionState } from '@generic/interfaces';
-import { IOrganizationHierarchyAllRequest } from '@organization/classes/queries/hierarchy';
-import { IHierarchy } from '@organization/classes/response/hierarchy';
-import { OrganizationHierarchyAction as Action } from '@organization/store/actions';
+import { IOrganizationStructureAllRequest } from '@organization/classes/queries/structure';
+import { IStructure } from '@organization/classes/response/structure';
+import { OrganizationStructureAction as Action } from '@organization/store/actions';
 import { Reducer } from 'redux';
 
-const initialState: IQueryCollectionState<IOrganizationHierarchyAllRequest, IHierarchy> = {
+const initialState: IQueryCollectionState<IOrganizationStructureAllRequest, IStructure> = {
   request: undefined,
   response: undefined,
   isError: false,
@@ -12,7 +12,7 @@ const initialState: IQueryCollectionState<IOrganizationHierarchyAllRequest, IHie
   errors: undefined,
 };
 
-const reducer: Reducer<IQueryCollectionState<IOrganizationHierarchyAllRequest, IHierarchy>> = (state = initialState, action) => {
+const reducer: Reducer<IQueryCollectionState<IOrganizationStructureAllRequest, IStructure>> = (state = initialState, action) => {
   switch (action.type) {
     case Action.GET_ALL_REQUEST: return { ...state, isLoading: true, isError: false, request: action.payload };
     case Action.GET_ALL_SUCCESS: return { ...state, isLoading: false, isError: false, response: action.payload };
@@ -23,4 +23,4 @@ const reducer: Reducer<IQueryCollectionState<IOrganizationHierarchyAllRequest, I
   }
 };
 
-export { reducer as organizationHierarchyGetAllReducer };
+export { reducer as organizationStructureGetAllReducer };

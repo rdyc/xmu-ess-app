@@ -1,10 +1,10 @@
 import { IQuerySingleState } from '@generic/interfaces';
-import { IOrganizationHierarchyPutRequest } from '@organization/classes/queries/hierarchy';
-import { IHierarchy } from '@organization/classes/response/hierarchy';
-import { OrganizationHierarchyAction as Action } from '@organization/store/actions';
+import { IOrganizationStructurePutRequest } from '@organization/classes/queries/structure';
+import { IStructure } from '@organization/classes/response/structure';
+import { OrganizationStructureAction as Action } from '@organization/store/actions';
 import { Reducer } from 'redux';
 
-const initialState: IQuerySingleState<IOrganizationHierarchyPutRequest, IHierarchy> = {
+const initialState: IQuerySingleState<IOrganizationStructurePutRequest, IStructure> = {
   request: undefined,
   response: undefined,
   isError: false,
@@ -12,7 +12,7 @@ const initialState: IQuerySingleState<IOrganizationHierarchyPutRequest, IHierarc
   errors: undefined,
 };
 
-const reducer: Reducer<IQuerySingleState<IOrganizationHierarchyPutRequest, IHierarchy>> = (state = initialState, action) => {
+const reducer: Reducer<IQuerySingleState<IOrganizationStructurePutRequest, IStructure>> = (state = initialState, action) => {
   switch (action.type) {
     case Action.PUT_REQUEST: return { ...state, isLoading: true, request: action.payload };
     case Action.PUT_SUCCESS: return { ...state, isLoading: false, response: action.payload };
@@ -23,4 +23,4 @@ const reducer: Reducer<IQuerySingleState<IOrganizationHierarchyPutRequest, IHier
   }
 };
 
-export { reducer as organizationHierarchyPutReducer };
+export { reducer as organizationStructurePutReducer };

@@ -1,87 +1,78 @@
 import { IAppState, IQueryCollectionState, IQuerySingleState } from '@generic/interfaces';
 import {
-  IOrganizationHierarchyAllRequest,
-  IOrganizationHierarchyByIdRequest,
-  IOrganizationHierarchyDeleteRequest,
-  IOrganizationHierarchyListRequest,
-  IOrganizationHierarchyPostRequest,
-  IOrganizationHierarchyPutRequest,
-} from '@organization/classes/queries/hierarchy';
-import { IHierarchy, IHierarchyDetail, IHierarchyList } from '@organization/classes/response/hierarchy';
+  IOrganizationStructureAllRequest,
+  IOrganizationStructureByIdRequest,
+  IOrganizationStructureDeleteRequest,
+  IOrganizationStructurePostRequest,
+  IOrganizationStructurePutRequest,
+} from '@organization/classes/queries/structure';
+import { IStructure, IStructureDetail } from '@organization/classes/response/structure';
 import {
-  organizationHierarchyDeleteDispose,
-  organizationHierarchyDeleteRequest,
-  organizationHierarchyGetAllDispose,
-  organizationHierarchyGetAllRequest,
-  organizationHierarchyGetByIdDispose,
-  organizationHierarchyGetByIdRequest,
-  organizationHierarchyGetListDispose,
-  organizationHierarchyGetListRequest,
-  organizationHierarchyPostDispose,
-  organizationHierarchyPostRequest,
-  organizationHierarchyPutDispose,
-  organizationHierarchyPutRequest,
+  organizationStructureDeleteDispose,
+  organizationStructureDeleteRequest,
+  organizationStructureGetAllDispose,
+  organizationStructureGetAllRequest,
+  organizationStructureGetByIdDispose,
+  organizationStructureGetByIdRequest,
+  organizationStructurePostDispose,
+  organizationStructurePostRequest,
+  organizationStructurePutDispose,
+  organizationStructurePutRequest,
 } from '@organization/store/actions';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 
 interface PropsFromState {
-  organizationHierarchyState: {
-    all: IQueryCollectionState<IOrganizationHierarchyAllRequest, IHierarchy>;
-    list: IQueryCollectionState<IOrganizationHierarchyListRequest, IHierarchyList>;
-    detail: IQuerySingleState<IOrganizationHierarchyByIdRequest, IHierarchyDetail>;
+  organizationStructureState: {
+    all: IQueryCollectionState<IOrganizationStructureAllRequest, IStructure>;
+    detail: IQuerySingleState<IOrganizationStructureByIdRequest, IStructureDetail>;
   };
 }
 
 interface PropsFromDispatch {
-  organizationHierarchyDispatch: {
+  organizationStructureDispatch: {
     // command
-    createRequest: typeof organizationHierarchyPostRequest;
-    createDispose: typeof organizationHierarchyPostDispose;
-    updateRequest: typeof organizationHierarchyPutRequest;
-    updateDispose: typeof organizationHierarchyPutDispose;
-    deleteRequest: typeof organizationHierarchyDeleteRequest;
-    deleteDispose: typeof organizationHierarchyDeleteDispose;
+    createRequest: typeof organizationStructurePostRequest;
+    createDispose: typeof organizationStructurePostDispose;
+    updateRequest: typeof organizationStructurePutRequest;
+    updateDispose: typeof organizationStructurePutDispose;
+    deleteRequest: typeof organizationStructureDeleteRequest;
+    deleteDispose: typeof organizationStructureDeleteDispose;
 
     // query
-    loadAllRequest: typeof organizationHierarchyGetAllRequest;
-    loadAllDispose: typeof organizationHierarchyGetAllDispose;
-    loadListRequest: typeof organizationHierarchyGetListRequest;
-    loadListDispose: typeof organizationHierarchyGetListDispose;
-    loadDetailRequest: typeof organizationHierarchyGetByIdRequest;
-    loadDetailDispose: typeof organizationHierarchyGetByIdDispose;
+    loadAllRequest: typeof organizationStructureGetAllRequest;
+    loadAllDispose: typeof organizationStructureGetAllDispose;
+    loadDetailRequest: typeof organizationStructureGetByIdRequest;
+    loadDetailDispose: typeof organizationStructureGetByIdDispose;
   };
 }
 
-export interface WithOrganizationHierarchy extends PropsFromState, PropsFromDispatch {}
+export interface WithOrganizationStructure extends PropsFromState, PropsFromDispatch {}
 
-const mapStateToProps = ({ organizationHierarchyGetAll, organizationHierarchyGetList, organizationHierarchyGetById }: IAppState) => ({
-  organizationHierarchyState: {
-    all: organizationHierarchyGetAll,
-    list: organizationHierarchyGetList,
-    detail: organizationHierarchyGetById,
+const mapStateToProps = ({ organizationStructureGetAll, organizationStructureGetById }: IAppState) => ({
+  organizationStructureState: {
+    all: organizationStructureGetAll,
+    detail: organizationStructureGetById,
   }
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  organizationHierarchyDispatch: {
+  organizationStructureDispatch: {
     // command
-    createRequest: (request: IOrganizationHierarchyPostRequest) => dispatch(organizationHierarchyPostRequest(request)),
-    createDispose: () => dispatch(organizationHierarchyPostDispose()),
-    updateRequest: (request: IOrganizationHierarchyPutRequest) => dispatch(organizationHierarchyPutRequest(request)),
-    updateDispose: () => dispatch(organizationHierarchyPutDispose()),
-    deleteRequest: (request: IOrganizationHierarchyDeleteRequest) => dispatch(organizationHierarchyDeleteRequest(request)),
-    deleteDispose: () => dispatch(organizationHierarchyDeleteDispose()),
+    createRequest: (request: IOrganizationStructurePostRequest) => dispatch(organizationStructurePostRequest(request)),
+    createDispose: () => dispatch(organizationStructurePostDispose()),
+    updateRequest: (request: IOrganizationStructurePutRequest) => dispatch(organizationStructurePutRequest(request)),
+    updateDispose: () => dispatch(organizationStructurePutDispose()),
+    deleteRequest: (request: IOrganizationStructureDeleteRequest) => dispatch(organizationStructureDeleteRequest(request)),
+    deleteDispose: () => dispatch(organizationStructureDeleteDispose()),
     
     // query
-    loadAllRequest: (request: IOrganizationHierarchyAllRequest) => dispatch(organizationHierarchyGetAllRequest(request)),
-    loadAllDispose: () => dispatch(organizationHierarchyGetAllDispose()),
-    loadListRequest: (request: IOrganizationHierarchyListRequest) => dispatch(organizationHierarchyGetListRequest(request)),
-    loadListDispose: () => dispatch(organizationHierarchyGetListDispose()),
-    loadDetailRequest: (request: IOrganizationHierarchyByIdRequest) => dispatch(organizationHierarchyGetByIdRequest(request)),
-    loadDetailDispose: () => dispatch(organizationHierarchyGetByIdDispose()),
+    loadAllRequest: (request: IOrganizationStructureAllRequest) => dispatch(organizationStructureGetAllRequest(request)),
+    loadAllDispose: () => dispatch(organizationStructureGetAllDispose()),
+    loadDetailRequest: (request: IOrganizationStructureByIdRequest) => dispatch(organizationStructureGetByIdRequest(request)),
+    loadDetailDispose: () => dispatch(organizationStructureGetByIdDispose()),
   }
 });
 
-export const withOrganizationHierarchy = (component: React.ComponentType) =>
+export const withOrganizationStructure = (component: React.ComponentType) =>
   connect(mapStateToProps, mapDispatchToProps)(component);

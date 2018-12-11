@@ -8,6 +8,7 @@ import { IUserState } from '@layout/interfaces/IUserState';
 import { ILeaveState } from '@leave/classes/states';
 import { ILookupState } from '@lookup/classes/states';
 import { IMileageState } from '@mileage/classes/states';
+import { IOrganizationState } from '@organization/classes/states';
 import { IProjectState } from '@project/classes/states';
 import { IPurchaseState } from '@purchase/classes/states';
 import { ISummaryState } from '@summary/classes/states';
@@ -19,6 +20,7 @@ import { UserState } from 'redux-oidc';
 export interface IAppState extends
   ICommonState, 
   ILookupState, 
+  IOrganizationState,
   IAccountState, 
   IProjectState, 
   ITimesheetState,

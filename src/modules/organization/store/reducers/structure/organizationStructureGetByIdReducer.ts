@@ -1,10 +1,10 @@
 import { IQuerySingleState } from '@generic/interfaces';
-import { IOrganizationHierarchyByIdRequest } from '@organization/classes/queries/hierarchy';
-import { IHierarchyDetail } from '@organization/classes/response/hierarchy';
-import { OrganizationHierarchyAction as Action } from '@organization/store/actions';
+import { IOrganizationStructureByIdRequest } from '@organization/classes/queries/structure';
+import { IStructureDetail } from '@organization/classes/response/structure';
+import { OrganizationStructureAction as Action } from '@organization/store/actions';
 import { Reducer } from 'redux';
 
-const initialState: IQuerySingleState<IOrganizationHierarchyByIdRequest, IHierarchyDetail> = {
+const initialState: IQuerySingleState<IOrganizationStructureByIdRequest, IStructureDetail> = {
   request: undefined,
   response: undefined,
   isError: false,
@@ -12,7 +12,7 @@ const initialState: IQuerySingleState<IOrganizationHierarchyByIdRequest, IHierar
   errors: undefined,
 };
 
-const reducer: Reducer<IQuerySingleState<IOrganizationHierarchyByIdRequest, IHierarchyDetail>> = (state = initialState, action) => {
+const reducer: Reducer<IQuerySingleState<IOrganizationStructureByIdRequest, IStructureDetail>> = (state = initialState, action) => {
   switch (action.type) {
     case Action.GET_BY_ID_REQUEST: return { ...state, isLoading: true, request: action.payload };
     case Action.GET_BY_ID_SUCCESS: return { ...state, isLoading: false, response: action.payload };
@@ -23,4 +23,4 @@ const reducer: Reducer<IQuerySingleState<IOrganizationHierarchyByIdRequest, IHie
   }
 };
 
-export { reducer as organizationHierarchyGetByIdReducer };
+export { reducer as organizationStructureGetByIdReducer };
