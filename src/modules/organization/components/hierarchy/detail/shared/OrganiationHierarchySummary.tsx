@@ -1,16 +1,16 @@
-import { ISystem } from '@common/classes/response';
 import { isWithCompany, isWithParent } from '@common/helper';
-import { commonMessage } from '@common/locales/messages/commonMessage';
 import { layoutMessage } from '@layout/locales/messages';
 import { GlobalFormat } from '@layout/types';
 import { GlobalStyle } from '@layout/types/GlobalStyle';
 import { Grid, TextField } from '@material-ui/core';
+import { IHierarchy } from '@organization/classes/response/hierarchy';
+import { organizationMessage } from '@organization/locales/messages/organizationMessage';
 import * as React from 'react';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose } from 'recompose';
 
 interface OwnProps {
-  data: ISystem;
+  data: IHierarchy;
   category?: string;
 }
 
@@ -18,23 +18,23 @@ type AllProps
   = OwnProps
   & InjectedIntlProps;
 
-const commonSummary: React.SFC<AllProps> = props => (
+const organizationHierarchySummary: React.SFC<AllProps> = props => (
     <Grid container>
       <Grid item xs={12} sm={6} md={3}>
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
-          label={props.intl.formatMessage(commonMessage.system.field.name)}
+          label={props.intl.formatMessage(organizationMessage.hierarchy.field.uid)}
+          value={props.data.uid}
+        />
+        <TextField
+          {...GlobalStyle.TextField.ReadOnly}
+          label={props.intl.formatMessage(organizationMessage.hierarchy.field.name)}
           value={props.data.name}
         />
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
-          label={props.intl.formatMessage(commonMessage.system.field.description)}
+          label={props.intl.formatMessage(organizationMessage.hierarchy.field.description)}
           value={props.data.description || 'N/A'}
-        />
-        <TextField
-          {...GlobalStyle.TextField.ReadOnly}
-          label={props.intl.formatMessage(commonMessage.system.field.type)}
-          value={props.data.type}
         />
       </Grid>
       <Grid item xs={12} sm={6} md={3}>
@@ -42,7 +42,7 @@ const commonSummary: React.SFC<AllProps> = props => (
           isWithCompany(props.category) &&
           <TextField
             {...GlobalStyle.TextField.ReadOnly}
-            label={props.intl.formatMessage(commonMessage.system.field.companyUid)}
+            label={props.intl.formatMessage(organizationMessage.hierarchy.field.companyUid)}
             value={props.data.company && props.data.company.name || 'N/A'}
           />
         }
@@ -51,18 +51,10 @@ const commonSummary: React.SFC<AllProps> = props => (
           isWithParent(props.category) &&
           <TextField
             {...GlobalStyle.TextField.ReadOnly}
-            label={props.intl.formatMessage(commonMessage.system.field.parentCode)}
-            value={props.data.parent && props.data.parent.value || 'N/A'}
+            label={props.intl.formatMessage(organizationMessage.hierarchy.field.inactiveDate)}
+            value={props.data.inactiveDate && props.intl.formatDate(props.data.inactiveDate, GlobalFormat.Date) || 'N/A'}
           />
         }
-        <TextField
-          {...GlobalStyle.TextField.ReadOnly}
-          label={props.intl.formatMessage(commonMessage.system.field.isActive)}
-          value={props.data.isActive ? 
-            props.intl.formatMessage(commonMessage.system.text.active)
-            : props.intl.formatMessage(commonMessage.system.text.inActive)
-          }
-        />
       </Grid>
       {
       props.data.changes &&
@@ -88,6 +80,6 @@ const commonSummary: React.SFC<AllProps> = props => (
     </Grid>
 );
 
-export const CommonSummary = compose<AllProps, OwnProps>(
+export const OrganizationHierarchySummary = compose<AllProps, OwnProps>(
   injectIntl
-)(commonSummary);
+)(organizationHierarchySummary);

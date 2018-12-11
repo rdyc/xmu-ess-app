@@ -1,7 +1,7 @@
 import { ICollectionValue } from '@layout/classes/core';
 import { HierarchyField } from '@organization/classes/types/hierarchy/HierarchyField';
 
-export const commonFieldTranslator = (find: string, field: ICollectionValue): string => {
+export const hierarchyFieldTranslator = (find: string, field: ICollectionValue): string => {
   let result: string = find;
 
   if (field.name === HierarchyField.companyUid) {
