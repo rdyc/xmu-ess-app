@@ -72,6 +72,10 @@ export const travelRequestField = defineMessages({
   projectUidRequired: { id: `${prefix}.field.projectUid.required` },
   projectUidPlaceholder: { id: `${prefix}.field.projectUid.placeholder` },
   
+  projectType: { id: `${prefix}.field.projectType` },
+  projectTypeRequired: { id: `${prefix}.field.projectType.required` },
+  projectTypePlaceholder: { id: `${prefix}.field.projectType.placeholder` },
+  
   siteUid: { id: `${prefix}.field.siteUid` },
   siteUidRequired: { id: `${prefix}.field.siteUid.required` },
   siteUidPlaceholder: { id: `${prefix}.field.siteUid.placeholder` },
@@ -198,6 +202,7 @@ export const travelRequestFieldHelperFor = (field: string, type: 'fieldName' | '
       case 'position': return travelRequestField.positionUid;
       case 'destinationType': return travelRequestField.destinationType;
       case 'projectUid': return travelRequestField.projectUid;
+      case 'projectType': return travelRequestField.projectType;
       case 'siteUid': return travelRequestField.siteUid;
       case 'customerUid': return travelRequestField.customerUid;
       case 'start': return travelRequestField.start;
@@ -265,6 +270,7 @@ export const travelRequestFieldHelperFor = (field: string, type: 'fieldName' | '
       case 'position': return travelRequestField.positionUidPlaceholder;
       case 'destinationType': return travelRequestField.destinationTypePlaceholder;
       case 'projectUid': return travelRequestField.projectUidPlaceholder;
+      case 'projectType': return travelRequestField.projectTypePlaceholder;
       case 'siteUid': return travelRequestField.siteUidPlaceholder;
       case 'customerUid': return travelRequestField.customerUidPlaceholder;
       case 'start': return travelRequestField.startPlaceholder;

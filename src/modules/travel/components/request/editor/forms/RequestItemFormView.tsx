@@ -45,15 +45,12 @@ const calculateDiem = (start: string , end: string): number => {
 export const RequestItemFormView: React.SFC<RequestItemFormProps> = props => {
   const { context } = props;
 
-  const diem = props.diemRequest;
-  console.log(props.minDate);                
+  const diem = props.diemRequest;                
   const render = (
     <Grid container spacing={16}>
       {
         context.fields.map((field, index) => {
           const item = context.fields.get(index);
-          // const amount: number = calculateDiem(item.departureDate, item.returnDate) * (diem ? diem.value : 0);
-          // item.amount = amount;
           return (
           <Grid key={index} item xs={12} md={4}>
             <Card square>
