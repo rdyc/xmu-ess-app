@@ -11,6 +11,7 @@ import { compose, HandleCreators, mapper, StateHandler, StateHandlerMap, StateUp
 import { LookupSystemLimitListView } from './LookupSystemLimitListView';
 
 interface OwnHandlers {
+  handleOnCreate: () => void;
   handleOnDelete: (uid: string, callback: () => void) => void;
   handleOnCloseDialog: () => void;
   handleSubmit: () => void;
@@ -29,6 +30,7 @@ interface OwnState {
 }
 
 interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
+  setCreate: StateHandler<OwnState>;
   setDelete: StateHandler<OwnState>;
   setDefault: StateHandler<OwnState>;
 }
@@ -40,6 +42,15 @@ const createProps: mapper<SystemLimitListProps, OwnState> = (props: SystemLimitL
 });
 
 const stateUpdaters: StateUpdaters<SystemLimitListProps, OwnState, OwnStateUpdaters> = {
+  setCreate: (prevState: OwnState, props: SystemLimitListProps) => (): Partial<OwnState> => ({
+    action: SystemLimitUserAction.Create,
+    dialogFullScreen: false,
+    dialogOpen: true,
+    dialogTitle: props.intl.formatMessage(lookupMessage.shared.confirm.createTitle), 
+    dialogContent: props.intl.formatMessage(lookupMessage.shared.confirm.createDescription),
+    dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.cancel),
+    dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.ok)
+  }),
   setDelete: (prevState: OwnState, props: SystemLimitListProps) => (uid: string, callback: () => void): Partial<OwnState> => ({
     callback,
     action: SystemLimitUserAction.Delete,
@@ -63,6 +74,9 @@ const stateUpdaters: StateUpdaters<SystemLimitListProps, OwnState, OwnStateUpdat
 };
 
 const handlerCreators: HandleCreators<SystemLimitListProps, OwnHandlers> = {
+  handleOnCreate: (props: SystemLimitListProps) => () => { 
+    props.setCreate();
+  },
   handleOnDelete: (props: SystemLimitListProps) => (uid: string, callback: () => void) => {
     props.setDelete(uid, callback);
   },
@@ -72,7 +86,7 @@ const handlerCreators: HandleCreators<SystemLimitListProps, OwnHandlers> = {
   handleSubmit: (props: SystemLimitListProps) => () => {
     const { response } = props.systemLimitState.all;
     const { deleteRequest, loadAllDispose } = props.systemLimitDispatch;
-    const { systemLimitUid, intl } = props;
+    const { action, systemLimitUid, intl } = props;
     const { alertAdd } = props.layoutDispatch;
 
     const payload = {
@@ -81,27 +95,33 @@ const handlerCreators: HandleCreators<SystemLimitListProps, OwnHandlers> = {
     
     const message = intl.formatMessage(lookupMessage.systemLimit.message.deleteSuccess, {uid: systemLimitUid});
 
-    // get uid
-    return new Promise((resolve, reject) => {
-      deleteRequest({
-        resolve,
-        reject,
-        data: payload as ISystemLimitDeletePayload
-      });
+    if (action === SystemLimitUserAction.Create) {
+      props.history.push('systemlimits/form');
+    } else if (action === SystemLimitUserAction.Delete) {
 
-      alertAdd({
-        message,
-        time: new Date()
+      return new Promise((resolve, reject) => {
+        deleteRequest({
+          resolve,
+          reject,
+          data: payload as ISystemLimitDeletePayload
+        });
+
+        alertAdd({
+          message,
+          time: new Date()
+        });
+    
+        if (response && props.callback) {
+          loadAllDispose();
+          props.callback();
+        }
+        props.setDefault();
+        props.history.push(`/lookup/systemlimits/`);
       });
-  
-      if (response && props.callback) {
-        loadAllDispose();
-        props.callback();
-      }
-      props.setDefault();
-      props.history.push(`/lookup/systemlimits/`);
-    });
-  },
+    }
+
+    return null;
+  }
 };
 
 export type SystemLimitListProps

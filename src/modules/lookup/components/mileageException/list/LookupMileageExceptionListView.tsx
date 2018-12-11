@@ -1,22 +1,22 @@
 import AppMenu from '@constants/AppMenu';
+import { DialogConfirmation } from '@layout/components/dialogs';
 import { CollectionConfig, CollectionDataProps, CollectionHandler, CollectionPage } from '@layout/components/pages';
-import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
 import { IMileageException } from '@lookup/classes/response';
-import { MileageExceptionRequestField, MileageExceptionUserAction } from '@lookup/classes/types';
-import { WithLookupMileageException, withLookupMileageException } from '@lookup/hoc/withLookupMileageException';
+import { MileageExceptionField, MileageExceptionUserAction } from '@lookup/classes/types';
 import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
 import { Button } from '@material-ui/core';
 import * as moment from 'moment';
 import * as React from 'react';
-import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
-import { compose } from 'recompose';
+import { FormattedMessage } from 'react-intl';
+import { LookupMileageExceptionFilter } from './LookupMileageExceptionFilter';
+import { MileageExceptionListProps } from './LookupMileageExceptionList';
 import { LookupMileageExceptionSummary } from './LookupMileageExceptionSummary';
 
-const config: CollectionConfig<IMileageException, AllProps> = {
+const config: CollectionConfig<IMileageException, MileageExceptionListProps> = {
   // page info
-  page: (props: AllProps) => ({
+  page: (props: MileageExceptionListProps) => ({
     uid: AppMenu.LookupMileageException,
     parentUid: AppMenu.Lookup,
     title: props.intl.formatMessage(lookupMessage.mileageException.page.listTitle),
@@ -24,15 +24,15 @@ const config: CollectionConfig<IMileageException, AllProps> = {
   }),
   
   // top bar
-  fields: Object.keys(MileageExceptionRequestField).map(key => ({
+  fields: Object.keys(MileageExceptionField).map(key => ({
     value: key,
-    name: MileageExceptionRequestField[key]
+    name: MileageExceptionField[key]
   })),
   // fieldTranslator: mileageRequestFieldTranslator,
 
   // searching
   hasSearching: true,
-  searchStatus: (props: AllProps): boolean => {
+  searchStatus: (props: MileageExceptionListProps): boolean => {
     let result: boolean = false;
 
     const { request } = props.mileageExceptionState.all;
@@ -49,7 +49,7 @@ const config: CollectionConfig<IMileageException, AllProps> = {
 
   // more
   hasMore: true,
-  moreOptions: (props: AllProps, callback: CollectionHandler): IAppBarMenu[] => ([
+  moreOptions: (props: MileageExceptionListProps, callback: CollectionHandler): IAppBarMenu[] => ([
     {
       id: MileageExceptionUserAction.Refresh,
       name: props.intl.formatMessage(layoutMessage.action.refresh),
@@ -62,7 +62,7 @@ const config: CollectionConfig<IMileageException, AllProps> = {
       name: props.intl.formatMessage(layoutMessage.action.create),
       enabled: true,
       visible: true,
-      onClick: () => callback.handleRedirectTo(`/lookup/mileageexceptions/form`)
+      onClick: props.handleOnCreate
     }
   ]),
 
@@ -72,7 +72,7 @@ const config: CollectionConfig<IMileageException, AllProps> = {
     direction: 'descending'
   },
   // events
-  onDataLoad: (props: AllProps, callback: CollectionHandler, params: CollectionDataProps, forceReload?: boolean | false) => {
+  onDataLoad: (props: MileageExceptionListProps, callback: CollectionHandler, params: CollectionDataProps, forceReload?: boolean | false) => {
     const { user } = props.userState;
     const { isLoading, response } = props.mileageExceptionState.all;
     const { loadAllRequest } = props.mileageExceptionDispatch;
@@ -97,22 +97,27 @@ const config: CollectionConfig<IMileageException, AllProps> = {
       }
     }
   },
-  onUpdated: (props: AllProps, callback: CollectionHandler) => {
+  onUpdated: (props: MileageExceptionListProps, callback: CollectionHandler) => {
     const { isLoading, response } = props.mileageExceptionState.all;
     
     callback.handleLoading(isLoading);
     callback.handleResponse(response);
   },
-  onBind: (item: IMileageException, index: number, props: AllProps) => ({
+  onBind: (item: IMileageException, index: number) => ({
     key: index,
-    primary: item.role.name,
-    secondary: `${item.percentage.toString()} %`,
-    tertiary: item.type ? item.type.value : 'N/A',
+    primary: item.uid,
+    secondary: item.role && item.role.company && item.role.company.name,
+    tertiary: item.role.name,
     quaternary: item.reason ? item.reason : 'N/A',
-    quinary: item.role && item.role.company && item.role.company.name,
+    quinary: item.changes && item.changes.updated && item.changes.updated.fullName || item.changes && item.changes.created && item.changes.created.fullName || 'N/A',
     senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
   }),
 
+  // filter
+  filterComponent: (callback: CollectionHandler) => (
+    <LookupMileageExceptionFilter handleFind={callback.handleFilter}/>
+  ),
+  
   // summary component
   summaryComponent: (item: IMileageException) => ( 
     <LookupMileageExceptionSummary data={item} />
@@ -137,20 +142,20 @@ const config: CollectionConfig<IMileageException, AllProps> = {
   ),
 };
 
-type AllProps
-  = WithUser
-  & InjectedIntlProps
-  & WithLookupMileageException;
-
-const mileageExceptionList: React.SFC<AllProps> = props => (
+export const LookupMileageExceptionListView: React.SFC<MileageExceptionListProps> = props => (
   <CollectionPage
     config={config}
     connectedProps={props}
-  />
+  >
+    <DialogConfirmation 
+        isOpen={props.dialogOpen}
+        fullScreen={props.dialogFullScreen}
+        title={props.dialogTitle}
+        content={props.dialogContent}
+        labelCancel={props.dialogCancelLabel}
+        labelConfirm={props.dialogConfirmLabel}
+        onClickCancel={props.handleOnCloseDialog}
+        onClickConfirm={props.handleOnConfirm}
+      />
+  </CollectionPage>
 );
-
-export const MileageExceptionList = compose(
-  withUser,
-  injectIntl,
-  withLookupMileageException
-)(mileageExceptionList);

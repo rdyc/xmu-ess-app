@@ -15,6 +15,7 @@ import {
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
+import { GlobalFormat } from '@layout/types';
 import { Button } from '@material-ui/core';
 import * as moment from 'moment';
 import * as React from 'react';
@@ -115,7 +116,7 @@ const config: CollectionConfig<IFinance, AllProps> = {
     key: index,
     primary: item.module && item.module.value,
     secondary: item.document.changes.created && item.document.changes.created.fullName || item.document.changes.createdBy,
-    tertiary: item.document.amount && item.document.amount.total && props.intl.formatNumber(item.document.amount.total) || '0',
+    tertiary: item.document.amount && item.document.amount.total && props.intl.formatNumber(item.document.amount.total, GlobalFormat.CurrencyDefault) || '0',
     quaternary: item.uid,
     quinary: item.status && item.status.value || item.statusType,
     senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'

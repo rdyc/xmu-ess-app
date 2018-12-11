@@ -1,12 +1,12 @@
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { layoutMessage } from '@layout/locales/messages';
-import { MileageUserAction } from '@mileage/classes/types';
-import { WithMileageRequest, withMileageRequest } from '@mileage/hoc/withMileageRequest';
-import { mileageMessage } from '@mileage/locales/messages/mileageMessage';
+import { MileageExceptionUserAction } from '@lookup/classes/types';
+import { WithLookupMileageException, withLookupMileageException } from '@lookup/hoc/withLookupMileageException';
+import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { compose, HandleCreators, mapper, StateHandler, StateHandlerMap, StateUpdaters, withHandlers, withStateHandlers } from 'recompose';
-import { MileageRequestListView } from './MileageRequestListView';
+import { LookupMileageExceptionListView } from './LookupMileageExceptionListView';
 
 interface OwnHandler {
   handleOnCreate: () => void;
@@ -15,7 +15,7 @@ interface OwnHandler {
 }
 
 interface OwnState {
-  action?: MileageUserAction;
+  action?: MileageExceptionUserAction;
   dialogFullScreen: boolean;
   dialogOpen: boolean;
   dialogTitle?: string;
@@ -29,27 +29,27 @@ interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
   setDefault: StateHandler<OwnState>;
 }
 
-export type MileageRequestListProps
+export type MileageExceptionListProps
   = WithUser
   & OwnState
   & OwnStateUpdaters
   & OwnHandler
   & RouteComponentProps
   & InjectedIntlProps
-  & WithMileageRequest;
+  & WithLookupMileageException;
 
-const createProps: mapper<MileageRequestListProps, OwnState> = (): OwnState => ({
+const createProps: mapper<MileageExceptionListProps, OwnState> = (): OwnState => ({
   dialogFullScreen: false,
   dialogOpen: false,
 });
 
-const stateUpdaters: StateUpdaters<MileageRequestListProps, OwnState, OwnStateUpdaters> = {
-  setCreate: (prevState: OwnState, props: MileageRequestListProps) => (): Partial<OwnState> => ({
-    action: MileageUserAction.Create,
+const stateUpdaters: StateUpdaters<MileageExceptionListProps, OwnState, OwnStateUpdaters> = {
+  setCreate: (prevState: OwnState, props: MileageExceptionListProps) => (): Partial<OwnState> => ({
+    action: MileageExceptionUserAction.Create,
     dialogFullScreen: false,
     dialogOpen: true,
-    dialogTitle: props.intl.formatMessage(mileageMessage.request.confirm.createTitle), 
-    dialogContent: props.intl.formatMessage(mileageMessage.request.confirm.createDescription),
+    dialogTitle: props.intl.formatMessage(lookupMessage.shared.confirm.createTitle), 
+    dialogContent: props.intl.formatMessage(lookupMessage.shared.confirm.createDescription),
     dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.cancel),
     dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.ok)
   }),
@@ -64,23 +64,23 @@ const stateUpdaters: StateUpdaters<MileageRequestListProps, OwnState, OwnStateUp
   })
 };
 
-const handlerCreators: HandleCreators<MileageRequestListProps, OwnHandler> = {
-  handleOnCreate: (props: MileageRequestListProps) => () => { 
+const handlerCreators: HandleCreators<MileageExceptionListProps, OwnHandler> = {
+  handleOnCreate: (props: MileageExceptionListProps) => () => { 
     props.setCreate();
   },
-  handleOnCloseDialog: (props: MileageRequestListProps) => () => { 
+  handleOnCloseDialog: (props: MileageExceptionListProps) => () => { 
     props.setDefault();
   },
-  handleOnConfirm: (props: MileageRequestListProps) => () => { 
-    props.history.push('requests/form');
+  handleOnConfirm: (props: MileageExceptionListProps) => () => { 
+    props.history.push('mileageexceptions/form');
   },
 };
 
-export const MileageRequestList = compose(
+export const LookupMileageExceptionList = compose(
   withRouter,
   withUser,
-  withMileageRequest,
+  withLookupMileageException,
   injectIntl,
   withStateHandlers(createProps, stateUpdaters), 
   withHandlers(handlerCreators),
-)(MileageRequestListView);
+)(LookupMileageExceptionListView);

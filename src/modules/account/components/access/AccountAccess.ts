@@ -104,7 +104,7 @@ const handlerCreators: HandleCreators<AccessSwitcherProps, OwnHandlers> = {
         };
     
         // save to local storage
-        store.set(AppStorage.User, user);
+        store.set(AppStorage.Profile, user);
         store.set(AppStorage.Access, response.data.access);
     
         // set redux state
