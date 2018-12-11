@@ -198,14 +198,22 @@ const lifecycles: ReactLifeCycleFunctions<MileageRequestEditorProps, {}> = {
       positionUid: user.position.uid
     });
 
-    layoutDispatch.changeView({
-      uid: AppMenu.MileageRequest,
-      parentUid: AppMenu.Mileage,
-      title: intl.formatMessage({id: view.title}),
-      subTitle : intl.formatMessage({id: view.subTitle})
+    layoutDispatch.setupView({
+      view: {
+        uid: AppMenu.Mileage,
+        parentUid: AppMenu.Lookup,
+        title: intl.formatMessage({id: view.title}),
+        subTitle : intl.formatMessage({id: view.subTitle})
+      },
+      parentUrl: `/mileage/requests`,
+      status: {
+        isNavBackVisible: true,
+        isSearchVisible: false,
+        isActionCentreVisible: false,
+        isMoreVisible: false,
+        isModeSearch: false
+      }
     });
-
-    layoutDispatch.navBackShow(); 
   },
   componentWillUnmount() {
     const { layoutDispatch, appBarDispatch, mileageRequestDispatch } = this.props;

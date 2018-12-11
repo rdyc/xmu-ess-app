@@ -19,7 +19,7 @@ export const MileageExceptionEditorView: React.SFC<MileageExceptionEditorProps> 
       onSubmitFail={handleSubmitFail}
     />
   );
-
+    
   // init form values & PENEMPATAN POSISI FORM
   const initialValues: MileageExceptionFormData = {
     // companyUid: undefined,
@@ -57,11 +57,11 @@ export const MileageExceptionEditorView: React.SFC<MileageExceptionEditorProps> 
       const data = response.data;
 
       initialValues.information.uid = data.uid;
-      initialValues.information.companyUid = data.role.company.name;
+      initialValues.information.companyUid = data.role.companyUid;
       initialValues.information.roleUid = data.roleUid;
       initialValues.information.siteType = data.siteType;
       initialValues.information.projectUid = data.projectUid;
-      initialValues.information.siteUid = data.site && data.site.name;
+      initialValues.information.siteUid = data.siteUid;
       initialValues.information.percentage = data.percentage;
       initialValues.information.description = data.description;
       initialValues.information.reason = data.reason;

@@ -2,6 +2,7 @@ import { layoutAlertAdd } from '@layout/store/actions';
 import {
   PositionAction as Action,
   positionDeleteError,
+  positionDeleteRequest,
   positionDeleteSuccess,
   positionGetAllDispose,
   positionGetAllError,
@@ -122,6 +123,7 @@ function* watchFetchPostRequest() {
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => ([
         put(positionGetAllDispose()),
+        put(positionGetByIdDispose()),
         put(positionPostSuccess(response.body))
       ]),
       successCallback: (response: IApiResponse) => {
@@ -214,7 +216,7 @@ function* watchFetchPutRequest() {
 }
 
 function* watchFetchDeleteRequest() {
-  const worker = (action: ReturnType<typeof positionPutRequest>) => {
+  const worker = (action: ReturnType<typeof positionDeleteRequest>) => {
     return saiyanSaga.fetch({
       method: 'delete',
       path: `/v1/lookup/positions/`,

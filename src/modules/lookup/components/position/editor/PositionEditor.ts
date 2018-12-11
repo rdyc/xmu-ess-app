@@ -101,7 +101,7 @@ const handlerCreators: HandleCreators<PositionEditorProps, OwnHandlers> = {
     const newPayload = {
       name: payload.name,
       description: payload.description,
-      inactiveDate: payload.inactiveDate,
+      inactiveDate: payload.inactiveDate || '',
       isAllowMultiple: payload.isAllowMultiple
     };
 

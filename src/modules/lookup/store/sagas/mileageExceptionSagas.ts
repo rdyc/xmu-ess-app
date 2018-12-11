@@ -14,6 +14,7 @@ import {
   mileageExceptionGetListSuccess,
   mileageExceptionPostError,
   mileageExceptionPostRequest,
+  mileageExceptionPostSuccess,
   mileageExceptionPutError,
   mileageExceptionPutRequest,
   mileageExceptionPutSuccess,
@@ -144,7 +145,7 @@ function* watchPostRequest() {
       successEffects: (response: IApiResponse) => [
         put(mileageExceptionGetByIdDispose()),
         put(mileageExceptionGetAllDispose()),
-        put(mileageExceptionPostRequest(response.body))
+        put(mileageExceptionPostSuccess(response.body))
       ],
       successCallback: (response: IApiResponse) => {
         action.payload.resolve(response.body.data);
