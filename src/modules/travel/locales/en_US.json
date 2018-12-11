@@ -272,10 +272,15 @@
   "travel.request.message.items.empty": "Empty Travel Item",
 
   "travel.request.message.emptyProps": "Some props are empty",
+  "travel.settlement.message.emptyProps": "Some props are empty",
   "travel.request.message.create.success": "A new Travel {uid} has been created",
+  "travel.settlement.message.create.success": "A new Travel Settlement {uid} has been created",
   "travel.request.message.create.failure": "Unable to process your submission",
+  "travel.settlement.message.create.failure": "Unable to process your submission",
   "travel.request.message.update.success": "Existing TravelID {uid} has been updated",
+  "travel.settlement.message.update.success": "Existing Travel Settlement ID {uid} has been updated",
   "travel.request.message.update.failure": "Unable to process your submission",
+  "travel.settlement.message.update.failure": "Unable to process your submission",
 
   "travel.approval.message.emptyProps": "Some props are empty",
   "travel.approval.message.submit.success": "Successfully processing approval submission",
