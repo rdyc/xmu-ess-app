@@ -208,11 +208,12 @@ function* watchPutRequest() {
 function* watchDeleteRequest() {
   const worker = (action: ReturnType<typeof lookupRoleDeleteRequest>) => {
     return saiyanSaga.fetch({
-      method: 'put',
+      method: 'delete',
       path: `/v1/lookup/roles`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
-        put(lookupRoleDeleteSuccess(response.body))
+        put(lookupRoleDeleteSuccess(response.body)),
+        put(lookupRoleGetAllRequest(response.body))
       ],
       successCallback: (response: IApiResponse) => {
         action.payload.resolve(response.body.data);
