@@ -41,7 +41,7 @@ export const LookupRoleFormView: React.SFC<RoleFormProps> = props => {
         </Grid>
 
         <Grid item xs={12} md={4}>
-          <FormSection name="roleMenu">
+          <FormSection name="menu">
             <FieldArray
               name="menus"
               component={componentRoleMenu}

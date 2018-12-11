@@ -4,6 +4,7 @@ import {
   lookupRoleDeleteError,
   lookupRoleDeleteRequest,
   lookupRoleDeleteSuccess,
+  lookupRoleGetAllDispose,
   lookupRoleGetAllError,
   lookupRoleGetAllRequest,
   lookupRoleGetAllSuccess,
@@ -213,7 +214,7 @@ function* watchDeleteRequest() {
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
         put(lookupRoleDeleteSuccess(response.body)),
-        put(lookupRoleGetAllRequest(response.body))
+        put(lookupRoleGetAllDispose())
       ],
       successCallback: (response: IApiResponse) => {
         action.payload.resolve(response.body.data);

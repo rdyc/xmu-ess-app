@@ -55,7 +55,7 @@ const handlerCreators: HandleCreators<RoleEditorProps, OwnHandlers> = {
     };
 
     const requiredFields = [
-      'companyUid', 'name',
+      'companyUid', 'name', 'description'
     ];
 
     requiredFields.forEach(field => {

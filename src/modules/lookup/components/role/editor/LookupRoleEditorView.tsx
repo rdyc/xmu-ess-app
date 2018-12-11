@@ -1,7 +1,7 @@
 import { FormMode } from '@generic/types';
+import { layoutMessage } from '@layout/locales/messages';
 import { Typography } from '@material-ui/core';
 import * as React from 'react';
-import { FormattedMessage } from 'react-intl';
 import { LookupRoleForm, LookupRoleFormData } from './forms/LookupRoleForm';
 import { RoleEditorProps } from './LookupRoleEditor';
 
@@ -45,7 +45,7 @@ export const LookupRoleEditorView: React.SFC<RoleEditorProps> = props => {
     if (isLoading && !response) {
       return (
         <Typography variant="body2">
-          <FormattedMessage id="global.loading" />
+          {props.intl.formatMessage(layoutMessage.text.loading)}
         </Typography>
       );
     }
