@@ -2,6 +2,7 @@ import AppMenu from '@constants/AppMenu';
 import { SingleConfig, SingleHandler, SinglePage, SingleState } from '@layout/components/pages/singlePage/SinglePage';
 import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
+import { WorkflowApprovalForm } from '@organization/components/workflow/approval/WorkflowApprovalForm';
 import { WorkflowHistory } from '@organization/components/workflow/history/WorkflowHistory';
 import { ITimesheetDetail } from '@timesheet/classes/response';
 import { TimesheetUserAction } from '@timesheet/classes/types';
@@ -18,6 +19,9 @@ const config: SingleConfig<ITimesheetDetail, TimesheetApprovalDetailProps> = {
     title: props.intl.formatMessage(timesheetMessage.entry.page.detailTitle),
     description: props.intl.formatMessage(timesheetMessage.entry.page.detailSubHeader),
   }),
+
+  // parent url
+  parentUrl: (props: TimesheetApprovalDetailProps) => '/timesheet/approvals',
 
   // action centre
   showActionCentre: true,
@@ -56,6 +60,10 @@ const config: SingleConfig<ITimesheetDetail, TimesheetApprovalDetailProps> = {
       }
     }
   },
+  onDataLoaded: (props: TimesheetApprovalDetailProps) => {
+    // set data loaded in local state
+    props.setDataload();
+  },
   onUpdated: (states: TimesheetApprovalDetailProps, callback: SingleHandler) => {
     const { isLoading, response } = states.timesheetApprovalState.detail;
 
@@ -75,7 +83,27 @@ const config: SingleConfig<ITimesheetDetail, TimesheetApprovalDetailProps> = {
 
   // secondary (multiple components are allowed)
   secondaryComponents: (data: ITimesheetDetail, props: TimesheetApprovalDetailProps) => ([
-    <WorkflowHistory data={data.workflow} />
+    <WorkflowHistory data={data.workflow} />,
+    <React.Fragment>
+      {
+        data.workflow && 
+        data.workflow.isApproval &&
+        <WorkflowApprovalForm
+          approvalTitle={props.approvalTitle}
+          approvalSubHeader={props.approvalSubHeader}
+          approvalChoices={props.approvalChoices}
+          approvalTrueValue={props.approvalTrueValue}
+          approvalDialogTitle={props.approvalDialogTitle}
+          approvalDialogContentText={props.approvalDialogContentText}
+          approvalDialogCancelText={props.approvalDialogCancelText}
+          approvalDialogConfirmedText={props.approvalDialogConfirmedText}
+          validate={props.handleValidate}
+          onSubmit={props.handleSubmit} 
+          onSubmitSuccess={props.handleSubmitSuccess}
+          onSubmitFail={props.handleSubmitFail}
+        />
+      }
+    </React.Fragment>
   ])
 };
 
@@ -83,5 +111,6 @@ export const TimesheetApprovalDetailView: React.SFC<TimesheetApprovalDetailProps
   <SinglePage
     config={config}
     connectedProps={props}
+    shouldDataReload={props.shouldDataReload}
   />
 );

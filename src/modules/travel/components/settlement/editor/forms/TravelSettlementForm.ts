@@ -1,4 +1,5 @@
 import { FormMode } from '@generic/types';
+import { DateType } from 'material-ui-pickers/constants/prop-types';
 import * as moment from 'moment';
 import { connect } from 'react-redux';
 import { 
@@ -86,6 +87,8 @@ interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
 
 interface FormValueProps {
   totalCostValue: number | 0;
+  minDate?: DateType;
+  maxDate?: DateType;
   formName: string;
 }
 
@@ -138,9 +141,13 @@ const selector = formValueSelector(formName);
 
 const mapStateToProps = (state: any): FormValueProps => {
   const totalCost = selector(state, 'information.total');
+  const startValue = selector(state, 'information.start');
+  const endValue = selector(state, 'information.end');
   return {
     formName,
-    totalCostValue: totalCost
+    totalCostValue: totalCost,
+    minDate: startValue,
+    maxDate: endValue
   };
 };
 

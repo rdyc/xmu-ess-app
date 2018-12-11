@@ -2,18 +2,11 @@ import { IExpense } from '@expense/classes/response';
 import { expenseMessage } from '@expense/locales/messages/expenseMessage';
 import { layoutMessage } from '@layout/locales/messages';
 import { GlobalFormat } from '@layout/types';
+import { GlobalStyle } from '@layout/types/GlobalStyle';
 import { Grid, TextField } from '@material-ui/core';
 import * as React from 'react';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose } from 'recompose';
-
-const styled = {
-  fullWidth: true,
-  InputProps: {
-    disableUnderline: true,
-    readOnly: true
-  }
-};
 
 interface OwnProps {
   data: IExpense;
@@ -27,7 +20,7 @@ const expenseSummary: React.SFC<AllProps> = props => (
     <Grid container>
       <Grid item xs={12} sm={6} md={3}>
         <TextField
-          {...styled}
+          {...GlobalStyle.TextField.ReadOnly}
           margin="dense"
           label={props.intl.formatMessage(expenseMessage.request.field.status)}
           value={props.data.status ? props.data.status.value : props.data.statusType}
@@ -35,7 +28,7 @@ const expenseSummary: React.SFC<AllProps> = props => (
         {
           props.data.rejectedReason &&
           <TextField 
-            {...styled}
+            {...GlobalStyle.TextField.ReadOnly}
             margin="dense"
             multiline
             label={props.intl.formatMessage(expenseMessage.request.field.rejectedReason)}
@@ -43,25 +36,25 @@ const expenseSummary: React.SFC<AllProps> = props => (
           />
         }
         <TextField
-          {...styled}
+          {...GlobalStyle.TextField.ReadOnly}
           margin="dense"
           label={props.intl.formatMessage(expenseMessage.request.field.uid)}
           value={props.data.uid}
         />
         <TextField
-          {...styled}
+          {...GlobalStyle.TextField.ReadOnly}
           margin="dense"
           label={props.intl.formatMessage(expenseMessage.request.field.projectUid)}
           value={props.data.project ? `${props.data.project.uid} - ${props.data.project.name}` : 'N/A'}
         />
         <TextField
-          {...styled}
+          {...GlobalStyle.TextField.ReadOnly}
           margin="dense"
           label={props.intl.formatMessage(expenseMessage.request.field.customerUid)}
           value={props.data.customer ? props.data.customer.name : 'N/A'}
         />
         <TextField
-          {...styled}
+          {...GlobalStyle.TextField.ReadOnly}
           margin="dense"
           multiline
           label={props.intl.formatMessage(expenseMessage.request.field.notes)}
@@ -70,31 +63,31 @@ const expenseSummary: React.SFC<AllProps> = props => (
       </Grid>
       <Grid item xs={12} sm={6} md={3}>
         <TextField
-          {...styled}
+          {...GlobalStyle.TextField.ReadOnly}
           margin="dense"
           label={props.intl.formatMessage(expenseMessage.request.field.expenseType)}
           value={props.data.expense ? props.data.expense.value : props.data.expenseType}
         />
         <TextField
-          {...styled}
+          {...GlobalStyle.TextField.ReadOnly}
           margin="dense"
           label={props.intl.formatMessage(expenseMessage.request.field.location)}
           value={props.data.location}
         />
         <TextField
-          {...styled}
+          {...GlobalStyle.TextField.ReadOnly}
           margin="dense"
           label={props.intl.formatMessage(expenseMessage.request.field.address)}
           value={props.data.address || 'N/A'}
         />
         <TextField
-          {...styled}
+          {...GlobalStyle.TextField.ReadOnly}
           margin="dense"
           label={props.intl.formatMessage(expenseMessage.request.field.name)}
           value={props.data.client ? props.data.client.name : 'N/A'}
         />
         <TextField
-          {...styled}
+          {...GlobalStyle.TextField.ReadOnly}
           margin="dense"
           label={props.intl.formatMessage(expenseMessage.request.field.title)}
           value={props.data.client ? props.data.client.title : 'N/A'}
@@ -102,14 +95,14 @@ const expenseSummary: React.SFC<AllProps> = props => (
       </Grid>
       <Grid item xs={12} sm={6} md={3}>
         <TextField
-          {...styled}
+          {...GlobalStyle.TextField.ReadOnly}
           margin="dense"
           label={props.intl.formatMessage(expenseMessage.request.field.date)}
           value={props.data.date ?
             props.intl.formatDate(props.data.date, GlobalFormat.Date) : 'N/A'}
         />
         <TextField
-          {...styled}
+          {...GlobalStyle.TextField.ReadOnly}
           margin="dense"
           label={props.intl.formatMessage(expenseMessage.request.field.value)}
           value={props.intl.formatNumber(props.data.value || 0, GlobalFormat.CurrencyDefault)}
@@ -119,7 +112,7 @@ const expenseSummary: React.SFC<AllProps> = props => (
       props.data.changes &&
       <Grid item xs={12} sm={6} md={3}>
         <TextField
-          {...styled}
+          {...GlobalStyle.TextField.ReadOnly}
           margin="dense"
           label={props.intl.formatMessage(layoutMessage.field.createdBy)}
           value={props.data.changes.created && props.data.changes.created.fullName || 'N/A'}
@@ -129,7 +122,7 @@ const expenseSummary: React.SFC<AllProps> = props => (
         {
           (props.data.changes.updated && props.data.changes.updatedAt) &&
           <TextField
-            {...styled}
+            {...GlobalStyle.TextField.ReadOnly}
             margin="dense"
             label={props.intl.formatMessage(layoutMessage.field.updatedBy)}
             value={props.data.changes.updated.fullName || 'N/A'}

@@ -44,6 +44,9 @@ export const InputDateView: React.SFC<InputDateProps> = props => {
       labelFunc={labelFunction}
       invalidLabel={''}
       disablePast={disablePast}
+      disableFuture={props.disableFuture}
+      minDate={props.minDate}
+      maxDate={props.maxDate}
     />
   );
 
