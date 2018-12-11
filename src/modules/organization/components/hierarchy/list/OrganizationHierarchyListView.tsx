@@ -144,7 +144,7 @@ const config: CollectionConfig<IHierarchy, AllProps> = {
 
       <Button 
         size="small"
-        onClick={() => callback.handleRedirectTo(`/organization/hierarchy/${item.uid}`)}
+        onClick={() => callback.handleRedirectTo(`/organization/hierarchy/${item.uid}`, { companyUid: item.companyUid })}
       >
         <FormattedMessage {...layoutMessage.action.details}/>
       </Button>

@@ -64,5 +64,7 @@
   "organization.hierarchy.field.positionUid.placeholder": "Select a Position",
   "organization.hierarchy.field.positionUid.required": "Position is required",
   "organization.hierarchy.field.relationType": "Relation",
-  "organization.hierarchy.field.relationType.placeholder": "Select a relation"
+  "organization.hierarchy.field.relationType.placeholder": "Select a relation",
+
+  "organization.hierarchy.text.submitter": "Submitter"
 }

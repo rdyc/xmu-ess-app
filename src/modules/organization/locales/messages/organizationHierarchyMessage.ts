@@ -46,6 +46,11 @@ export const workflowHierarchyDialog = defineMessages({
   editDescription: { id: `${prefix}.confirm.create.description` },
 });
 
+// text
+export const workflowHierarchyText = defineMessages({
+  submitter: {id: `${prefix}.text.submitter`}
+});
+
 // field
 export const workflowHierarchyField = defineMessages({
   uid: { id: `${fieldPrefix}.uid` },

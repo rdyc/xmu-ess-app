@@ -4,7 +4,8 @@ import {
   workflowHierarchyFieldHelperFor, 
   workflowHierarchyMessage, 
   workflowHierarchyPage, 
-  workflowHierarchySection, 
+  workflowHierarchySection,
+  workflowHierarchyText, 
 } from './organizationHierarchyMessage';
 import {
   organizationWorkflowField,
@@ -27,6 +28,7 @@ export const organizationMessage = {
     page: workflowHierarchyPage,
     section: workflowHierarchySection,
     dialog: workflowHierarchyDialog,
+    text: workflowHierarchyText,
     field: workflowHierarchyField,
     fieldFor: workflowHierarchyFieldHelperFor
   }
