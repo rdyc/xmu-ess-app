@@ -44,6 +44,8 @@ export const InputDateTimeView: React.SFC<InputDateTimeProps> = props => {
       onChange={(moment: Moment) => input.onChange(moment.toISOString(true))}
       labelFunc={labelFunction}
       invalidLabel={''}
+      minDate={props.minDate}
+      maxDate={props.maxDate}
     />
   );
 
