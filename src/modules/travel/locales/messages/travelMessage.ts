@@ -4,8 +4,9 @@ import {
   travelRequestConfirm, 
   travelRequestDialog, 
   travelRequestField, 
+  travelRequestFieldHelperFor, 
   travelRequestMessage, 
-  travelRequestOption, 
+  travelRequestOption,
   travelRequestPage,
   travelRequestSection
 } 
@@ -28,6 +29,7 @@ export const travelMessage = {
     confirm: travelRequestConfirm,
     section: travelRequestSection,
     field: travelRequestField,
+    fieldFor: travelRequestFieldHelperFor,
     message: travelRequestMessage
   },
   settlement: {
