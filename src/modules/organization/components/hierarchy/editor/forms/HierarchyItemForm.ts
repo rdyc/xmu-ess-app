@@ -1,4 +1,4 @@
-import { SelectSystemOption } from '@common/components/select';
+import { SelectSystem, SelectSystemOption } from '@common/components/select';
 import { InputNumber } from '@layout/components/input/number';
 import { InputText } from '@layout/components/input/text';
 import { SelectPosition } from '@lookup/components/position/select';
@@ -37,6 +37,16 @@ const handlerCreators: HandleCreators<HierarchyItemFormProps, OwnHandlers> = {
       };
   
       switch (name) {
+        case 'relationType':
+          fieldProps = {
+            type: 'text',
+            label: intl.formatMessage(organizationMessage.hierarchy.fieldFor(name, 'fieldName')),
+            placeholder: intl.formatMessage(organizationMessage.hierarchy.fieldFor(name, 'fieldPlaceholder')),
+            category: 'relation',
+            component: SelectSystem
+          };
+          break;
+
         case 'sequence':
           fieldProps = {
             type: 'number',

@@ -12,6 +12,7 @@ import commonLeaveSagas from '@common/store/sagas/leaveSagas';
 import commonLimiterSagas from '@common/store/sagas/limiterSagas';
 import commonProjectSagas from '@common/store/sagas/projectSagas';
 import commonPurposeSagas from '@common/store/sagas/purposeSagas';
+import commonRelationSagas from '@common/store/sagas/relationSagas';
 import commonSiteSagas from '@common/store/sagas/siteSagas';
 import commonStatusSagas from '@common/store/sagas/statusSagas';
 import commonSystemSagas from '@common/store/sagas/systemSagas';
@@ -77,6 +78,7 @@ export function* rootSaga() {
     fork(commonSystemSagas),
     fork(commonUnitSagas),
     fork(commonGradeSagas),
+    fork(commonRelationSagas),
 
     // lookup
     fork(lookupCustomerSagas),
