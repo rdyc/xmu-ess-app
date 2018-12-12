@@ -2,9 +2,9 @@ import { Card, CardContent, CardHeader } from '@material-ui/core';
 import { organizationMessage } from '@organization/locales/messages/organizationMessage';
 import * as React from 'react';
 import { Field } from 'redux-form';
-import { CommonDetailFormProps } from './HierarchyDetailForm';
+import { HierarchyDetailFormProps } from './HierarchyDetailForm';
 
-export const HierarchyDetailFormView: React.SFC<CommonDetailFormProps> = props => {
+export const HierarchyDetailFormView: React.SFC<HierarchyDetailFormProps> = props => {
   const { intl } = props;
   const { names } = props.context;
   

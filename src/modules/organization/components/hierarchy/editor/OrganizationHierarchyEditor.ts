@@ -40,6 +40,7 @@ interface OwnRouteParams {
 
 interface OwnState {
   formMode: FormMode;
+  companyUid?: string;
 }
 
 interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
@@ -64,7 +65,7 @@ const handlerCreators: HandleCreators<OrganizationHierarchyEditorProps, OwnHandl
     };
   
     const requiredFields = [
-      'companyUid', 'name', 'description',
+      'companyUid', 'name', 'positionUid', 'sequence', 'RelationType'
     ];
   
     requiredFields.forEach(field => {
@@ -76,7 +77,7 @@ const handlerCreators: HandleCreators<OrganizationHierarchyEditorProps, OwnHandl
     return errors;
   },
   handleSubmit: (props: OrganizationHierarchyEditorProps) => (formData: OrganizationHierarchyFormData) => { 
-    const { formMode, id, intl, match } = props;
+    const { formMode, intl, location, stateUpdate } = props;
     const { user } = props.userState;
     const { createRequest, updateRequest } = props.organizationHierarchyDispatch;
 
@@ -84,8 +85,53 @@ const handlerCreators: HandleCreators<OrganizationHierarchyEditorProps, OwnHandl
       return Promise.reject('user was not found');
     }
 
-    const payload = {
+    stateUpdate({
+      companyUid: formData.information.companyUid
+    });
 
+    const parsedItemsPost = () => {
+      const payloadItems: any[] = [];
+
+      formData.item.items.forEach(item => 
+        payloadItems.push({
+          sequence: item.sequence,
+          positionUid: item.positionUid,
+          relationType: item.relationType
+        })
+      );
+
+      return payloadItems;
+    };
+
+    const parsedItemsPut = () => {
+      const payloadItems: any[] = [];
+
+      formData.item.items.forEach(item => 
+        payloadItems.push({
+          uid: item.uid,
+          sequence: item.sequence,
+          positionUid: item.positionUid,
+          relationType: item.relationType
+        })
+      );
+
+      return payloadItems;
+    };
+    
+    const payloadHeader = {
+      name: formData.information.name,
+      description: formData.information.description,
+      inactiveDate: formData.information.inactiveDate,
+    };
+
+    const payloadPost = {
+      ...payloadHeader,
+      items: parsedItemsPost()
+    };
+
+    const payloadPut = {
+      ...payloadHeader,
+      items: parsedItemsPut()
     };
 
     // creating
@@ -95,13 +141,13 @@ const handlerCreators: HandleCreators<OrganizationHierarchyEditorProps, OwnHandl
           resolve, 
           reject,
           companyUid: formData.information.companyUid || '',
-          data: payload as IOrganizationHierarchyPostPayload
+          data: payloadPost as IOrganizationHierarchyPostPayload
         });
       });
     }
 
     // update checking
-    if (!id) {
+    if (!location.state.hierarchyUid && !formData.information.companyUid) {
       const message = intl.formatMessage(organizationMessage.hierarchy.message.emptyProps);
 
       return Promise.reject(message);
@@ -112,9 +158,9 @@ const handlerCreators: HandleCreators<OrganizationHierarchyEditorProps, OwnHandl
         updateRequest({
           resolve, 
           reject,
-          hierarchyUid: match.params.hierarchyUid,
+          hierarchyUid: location.state.hierarchyUid,
           companyUid: formData.information.companyUid || '',
-          data: payload as IOrganizationHierarchyPutPayload 
+          data: payloadPut as IOrganizationHierarchyPutPayload 
         });
       });
     }
@@ -122,7 +168,7 @@ const handlerCreators: HandleCreators<OrganizationHierarchyEditorProps, OwnHandl
     return null;
   },
   handleSubmitSuccess: (props: OrganizationHierarchyEditorProps) => (response: IHierarchy) => {
-    const { formMode, intl, history } = props;
+    const { formMode, intl, history, companyUid } = props;
     const { alertAdd } = props.layoutDispatch;
     const { loadDetailDispose } = props.organizationHierarchyDispatch;
     
@@ -142,7 +188,7 @@ const handlerCreators: HandleCreators<OrganizationHierarchyEditorProps, OwnHandl
       time: new Date()
     });
 
-    history.push(`/organization/hierarchy/${props.location.state.companyUid}/${props.match.params.hierarchyUid}`);
+    history.push(`/organization/hierarchy/${response.uid}`, {companyUid});
   },
   handleSubmitFail: (props: OrganizationHierarchyEditorProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
     const { formMode, intl } = props;
@@ -175,7 +221,7 @@ const handlerCreators: HandleCreators<OrganizationHierarchyEditorProps, OwnHandl
   }
 };
 
-const createProps: mapper<OrganizationHierarchyEditorProps, OwnState> = (): OwnState => {
+const createProps: mapper<OrganizationHierarchyEditorProps, OwnState> = (props: OrganizationHierarchyEditorProps): OwnState => {
   return {
     formMode: FormMode.New,
   };

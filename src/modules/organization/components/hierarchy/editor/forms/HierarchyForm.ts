@@ -1,6 +1,6 @@
 import { FormMode } from '@generic/types';
 import { connect } from 'react-redux';
-import {  InjectedFormProps, reduxForm } from 'redux-form';
+import {  formValueSelector, InjectedFormProps, reduxForm } from 'redux-form';
 import { HierarchyFormView } from './HierarchyFormView';
 
 const formName = 'OrganizationHierarchy';
@@ -18,6 +18,7 @@ export type OrganizationHierarchyFormData = {
 };
 
 export type OrganizationHierarchyItemFormData = {
+  uid: string | null | undefined;
   sequence: number | null | undefined;
   positionUid: string | null | undefined;
   relationType: string | null | undefined;
@@ -28,6 +29,7 @@ interface OwnProps {
 }
 
 interface FormValueProps {
+  companyUidValue: string | undefined;
 }
 
 export type HierarchyFormProps 
@@ -35,8 +37,14 @@ export type HierarchyFormProps
   & FormValueProps
   & OwnProps;
   
-const mapStateToProps = (): FormValueProps => {
-  return {};
+const selector = formValueSelector(formName);
+
+const mapStateToProps = (state: any): FormValueProps => {
+  const companyUid = selector(state, 'information.companyUid');
+
+  return {
+    companyUidValue: companyUid
+  };
 };
 
 const connectedView = connect(mapStateToProps)(HierarchyFormView);

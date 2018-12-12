@@ -48,7 +48,9 @@ export const workflowHierarchyDialog = defineMessages({
 
 // text
 export const workflowHierarchyText = defineMessages({
-  submitter: {id: `${prefix}.text.submitter`}
+  submitter: {id: `${prefix}.text.submitter`},
+  draft: {id: `${prefix}.text.draft`},
+  addItem: {id: `${prefix}.text.addItem`}
 });
 
 // field
@@ -71,6 +73,8 @@ export const workflowHierarchyField = defineMessages({
   descriptionRequired: {id: `${fieldPrefix}.description.required`},
 
   sequence: {id: `${fieldPrefix}.sequence`},
+  sequencePlaceholder: {id: `${fieldPrefix}.sequence.placeholder`},
+  sequenceRequired: {id: `${fieldPrefix}.sequence.required`},
   
   positionUid: {id: `${fieldPrefix}.positionUid`},
   positionUidPlaceholder: {id: `${fieldPrefix}.positionUid.placeholder`},
@@ -102,6 +106,7 @@ export const workflowHierarchyFieldHelperFor = (field: string, type: 'fieldName'
       case 'name': return workflowHierarchyField.nameRequired;
       case 'companyUid': return workflowHierarchyField.companyUidRequired;
       case 'description': return workflowHierarchyField.descriptionRequired;
+      case 'sequence': return workflowHierarchyField.sequenceRequired;
       case 'positionUid': return workflowHierarchyField.positionUidRequired;
 
       default: return { id: field };
@@ -114,6 +119,7 @@ export const workflowHierarchyFieldHelperFor = (field: string, type: 'fieldName'
       case 'companyUid': return workflowHierarchyField.companyUidPlaceholder;
       case 'inactiveDate': return workflowHierarchyField.inactiveDatePlaceholder;
       case 'description': return workflowHierarchyField.descriptionPlaceholder;
+      case 'sequence': return workflowHierarchyField.sequencePlaceholder;
       case 'positionUid': return workflowHierarchyField.positionUidPlaceholder;
       case 'relationType': return workflowHierarchyField.relationTypePlaceholder;
       

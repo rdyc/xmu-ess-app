@@ -2,13 +2,14 @@
 import { Submission } from '@layout/components/submission/Submission';
 import { Grid } from '@material-ui/core';
 import * as React from 'react';
-import { BaseFieldsProps, Fields, FormSection } from 'redux-form';
+import { BaseFieldsProps, FieldArray, Fields, FormSection, WrappedFieldArrayProps } from 'redux-form';
 import { HierarchyDetailForm } from './HierarchyDetailForm';
 import { HierarchyFormProps } from './HierarchyForm';
+import { HierarchyItemForm } from './HierarchyItemForm';
 
 export const HierarchyFormView: React.SFC<HierarchyFormProps> = props => {
   const {
-    formMode,
+    formMode, companyUidValue
   } = props;
 
   const fields = Object.getOwnPropertyNames(props.initialValues.information);
@@ -17,6 +18,13 @@ export const HierarchyFormView: React.SFC<HierarchyFormProps> = props => {
     <HierarchyDetailForm 
       formMode={formMode}
       context={context}
+    />
+  );
+
+  const componentHierarchyItem = (context: WrappedFieldArrayProps<any>) => (
+    <HierarchyItemForm
+      context={context}
+      companyUidValue={companyUidValue}
     />
   );
 
@@ -34,6 +42,15 @@ export const HierarchyFormView: React.SFC<HierarchyFormProps> = props => {
             <Fields 
               names={fields}
               component={componentInformation}
+            />
+          </FormSection>
+        </Grid>
+
+        <Grid item xs={12} md={4}>
+          <FormSection name="item">
+            <FieldArray 
+              name="items"
+              component={componentHierarchyItem}
             />
           </FormSection>
         </Grid>

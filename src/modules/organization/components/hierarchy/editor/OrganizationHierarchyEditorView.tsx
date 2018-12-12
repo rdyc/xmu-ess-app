@@ -60,6 +60,7 @@ export const CommonEditorView: React.SFC<OrganizationHierarchyEditorProps> = pro
       if (data.items) {
         data.items.forEach(item => 
           initialValues.item.items.push({
+            uid: item.uid,
             sequence: item.level,
             positionUid: item.positionUid,
             relationType: item.relationType

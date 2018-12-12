@@ -17,13 +17,13 @@ interface OwnHandlers {
   generateFieldProps: (name: string) => any;
 }
 
-export type CommonDetailFormProps 
+export type HierarchyDetailFormProps 
   = OwnProps
   & OwnHandlers
   & InjectedIntlProps;
 
-const handlerCreators: HandleCreators<CommonDetailFormProps, OwnHandlers> = {
-    generateFieldProps: (props: CommonDetailFormProps) => (name: string) => { 
+const handlerCreators: HandleCreators<HierarchyDetailFormProps, OwnHandlers> = {
+    generateFieldProps: (props: HierarchyDetailFormProps) => (name: string) => { 
       const { 
         intl
       } = props;
@@ -55,7 +55,7 @@ const handlerCreators: HandleCreators<CommonDetailFormProps, OwnHandlers> = {
   }
 };
 
-export const HierarchyDetailForm = compose<CommonDetailFormProps, OwnProps>(
+export const HierarchyDetailForm = compose<HierarchyDetailFormProps, OwnProps>(
   injectIntl,
-  withHandlers<CommonDetailFormProps, OwnHandlers>(handlerCreators),
+  withHandlers<HierarchyDetailFormProps, OwnHandlers>(handlerCreators),
 )(HierarchyDetailFormView);
