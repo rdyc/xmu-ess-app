@@ -1,5 +1,7 @@
+import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { layoutMessage } from '@layout/locales/messages';
+import { ILookupCurrencyDeletePayload } from '@lookup/classes/request/currency';
 import { CurrencyUserAction } from '@lookup/classes/types';
 import { CurrencyDetailView } from '@lookup/components/currency/detail/CurrencyDetailView';
 import { WithLookupCurrency, withLookupCurrency } from '@lookup/hoc/currency/withLookupCurrency';
@@ -17,8 +19,6 @@ import {
   withHandlers,
   withStateHandlers,
 } from 'recompose';
-import { ILookupCurrencyDeletePayload } from '@lookup/classes/request/currency';
-import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 
 interface OwnHandler {
   handleOnModify: () => void;
