@@ -24,3 +24,8 @@ export const mileageApprovalSubmission = defineMessages({
   dialogTitle: { id: `${prefix}.submission.dialog.title`},
   dialogContent: { id: `${prefix}.submission.dialog.content`},
 });
+
+// field
+export const mileageApprovalField = defineMessages({
+  filterEmployee: { id: `${prefix}.field.filter.employee`}
+});

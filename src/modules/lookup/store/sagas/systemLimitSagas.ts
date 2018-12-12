@@ -221,7 +221,8 @@ function* watchDeleteRequest() {
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
         put(systemLimitGetAllDispose()),
-        put(systemLimitDeleteSuccess(response.body))
+        put(systemLimitDeleteSuccess(response.body)),
+        put(systemLimitGetAllRequest(response.body))
       ],
       successCallback: (response: IApiResponse) => {
         action.payload.resolve(response.body.data);

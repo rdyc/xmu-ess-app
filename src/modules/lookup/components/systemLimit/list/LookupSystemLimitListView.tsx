@@ -1,23 +1,24 @@
 import AppMenu from '@constants/AppMenu';
-import { DialogConfirmation } from '@layout/components/dialogs';
 import { CollectionConfig, CollectionDataProps, CollectionHandler, CollectionPage } from '@layout/components/pages';
+import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
 import { ISystemLimit } from '@lookup/classes/response';
 import { SystemLimitField, SystemLimitUserAction } from '@lookup/classes/types';
 import { systemLimitFieldTranslator } from '@lookup/helper';
+import { withLookupSystemLimit, WithLookupSystemLimit } from '@lookup/hoc/withLookupSystemLimit';
 import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
 import { Button } from '@material-ui/core';
 import * as moment from 'moment';
 import * as React from 'react';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
+import { compose } from 'recompose';
 import { LookupSystemLimitFilter } from './LookupSystemLimitFilter';
-import { SystemLimitListProps } from './LookupSystemLimitList';
 import { LookupSystemLimitSummary } from './LookupSystemLimitSummary';
 
-const config: CollectionConfig<ISystemLimit, SystemLimitListProps> = {
+const config: CollectionConfig<ISystemLimit, AllProps> = {
   // page info
-  page: (props: SystemLimitListProps) => ({
+  page: (props: AllProps) => ({
     uid: AppMenu.LookupSystemLimit,
     parentUid: AppMenu.Lookup,
     title: props.intl.formatMessage(lookupMessage.systemLimit.page.listTitle),
@@ -33,7 +34,7 @@ const config: CollectionConfig<ISystemLimit, SystemLimitListProps> = {
 
   // searching
   hasSearching: true,
-  searchStatus: (props: SystemLimitListProps): boolean => {
+  searchStatus: (props: AllProps): boolean => {
     let result: boolean = false;
 
     const { request } = props.systemLimitState.all;
@@ -50,7 +51,7 @@ const config: CollectionConfig<ISystemLimit, SystemLimitListProps> = {
 
   // more
   hasMore: true,
-  moreOptions: (props: SystemLimitListProps, callback: CollectionHandler): IAppBarMenu[] => ([
+  moreOptions: (props: AllProps, callback: CollectionHandler): IAppBarMenu[] => ([
     {
       id: SystemLimitUserAction.Refresh,
       name: props.intl.formatMessage(layoutMessage.action.refresh),
@@ -63,7 +64,7 @@ const config: CollectionConfig<ISystemLimit, SystemLimitListProps> = {
       name: props.intl.formatMessage(layoutMessage.action.create),
       enabled: true,
       visible: true,
-      onClick: props.handleOnCreate
+      onClick: () => callback.handleRedirectTo(`/lookup/systemlimits/form`)
     }
   ]),
 
@@ -73,7 +74,7 @@ const config: CollectionConfig<ISystemLimit, SystemLimitListProps> = {
     direction: 'descending'
   },
   // events
-  onDataLoad: (props: SystemLimitListProps, callback: CollectionHandler, params: CollectionDataProps, forceReload?: boolean | false) => {
+  onDataLoad: (props: AllProps, callback: CollectionHandler, params: CollectionDataProps, forceReload?: boolean | false) => {
     const { user } = props.userState;
     const { isLoading, response } = props.systemLimitState.all;
     const { loadAllRequest } = props.systemLimitDispatch;
@@ -98,7 +99,7 @@ const config: CollectionConfig<ISystemLimit, SystemLimitListProps> = {
       }
     }
   },
-  onUpdated: (props: SystemLimitListProps, callback: CollectionHandler) => {
+  onUpdated: (props: AllProps, callback: CollectionHandler) => {
     const { isLoading, response } = props.systemLimitState.all;
 
     callback.handleLoading(isLoading);
@@ -125,14 +126,14 @@ const config: CollectionConfig<ISystemLimit, SystemLimitListProps> = {
   ),
 
   // action component
-  actionComponent: (item: ISystemLimit, callback: CollectionHandler, props: SystemLimitListProps) => (
+  actionComponent: (item: ISystemLimit, callback: CollectionHandler, props: AllProps) => (
     <React.Fragment>
-      <Button
+      {/* <Button
         size="small"
-        onClick={() => props.handleOnDelete(item.uid, callback.handleForceReload)}
+        onClick={() => props.handleOnDelete(item.uid)}
       >
         <FormattedMessage {...layoutMessage.action.delete}/>        
-      </Button>
+      </Button> */}
       <Button 
           size="small"
           onClick={() => callback.handleRedirectTo(`/lookup/systemlimits/form`, { uid: item.uid })}
@@ -149,20 +150,20 @@ const config: CollectionConfig<ISystemLimit, SystemLimitListProps> = {
   ),
 };
 
-export const LookupSystemLimitListView: React.SFC<SystemLimitListProps> = props => (
+type AllProps
+  = WithUser
+  & WithLookupSystemLimit
+  & InjectedIntlProps;
+
+const lookupSystemLimitListView: React.SFC<AllProps> = props => (
   <CollectionPage
       config={config}
       connectedProps={props}
-    >
-      <DialogConfirmation 
-      isOpen={props.dialogOpen}
-      fullScreen={props.dialogFullScreen}
-      title={props.dialogTitle}
-      content={props.dialogContent}
-      labelCancel={props.dialogCancelLabel}
-      labelConfirm={props.dialogConfirmLabel}
-      onClickCancel={props.handleOnCloseDialog}
-      onClickConfirm={props.handleSubmit}
-    />
-  </CollectionPage>
+  />
 );
+
+export const LookupSystemLimitList = compose(
+  withUser,
+  withLookupSystemLimit,
+  injectIntl
+)(lookupSystemLimitListView);
