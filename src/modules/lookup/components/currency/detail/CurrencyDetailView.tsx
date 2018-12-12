@@ -44,7 +44,7 @@ const config: SingleConfig<ICurrencyDetail, CurrencyDetailProps> = {
     },
     {
       id: CurrencyUserAction.Delete,
-      name: props.intl.formatMessage(layoutMessage.action.discard),
+      name: props.intl.formatMessage(layoutMessage.action.delete),
       enabled: true,
       visible: true,
       onClick: props.handleOnDelete

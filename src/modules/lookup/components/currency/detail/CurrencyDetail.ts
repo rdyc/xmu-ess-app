@@ -17,6 +17,8 @@ import {
   withHandlers,
   withStateHandlers,
 } from 'recompose';
+import { ILookupCurrencyDeletePayload } from '@lookup/classes/request/currency';
+import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 
 interface OwnHandler {
   handleOnModify: () => void;
@@ -48,6 +50,7 @@ interface OwnRouteParams {
 export type CurrencyDetailProps
   = WithLookupCurrency
   & WithUser
+  & WithLayout
   & RouteComponentProps<OwnRouteParams>
   & InjectedIntlProps
   & OwnState
@@ -101,6 +104,8 @@ const handlerCreators: HandleCreators<CurrencyDetailProps, OwnHandler> = {
   },
   handleOnConfirm: (props: CurrencyDetailProps) => () => {
     const { response } = props.lookupCurrencyState.detail;
+    const { deleteRequest } = props.lookupCurrencyDispatch;
+    const { alertAdd } = props.layoutDispatch;
 
     let currencyUid: string | undefined;
 
@@ -119,6 +124,7 @@ const handlerCreators: HandleCreators<CurrencyDetailProps, OwnHandler> = {
 
     if (actions.indexOf(props.action) !== -1) {
       let next: string = '404';
+      let deleteAction: boolean = false;
 
       switch (props.action) {
         case CurrencyUserAction.Modify:
@@ -126,6 +132,7 @@ const handlerCreators: HandleCreators<CurrencyDetailProps, OwnHandler> = {
           break;
         
         case CurrencyUserAction.Delete:
+          deleteAction = true;
           next = `/lookup/currency`;
           break;
           
@@ -134,14 +141,28 @@ const handlerCreators: HandleCreators<CurrencyDetailProps, OwnHandler> = {
       }
 
       props.setDefault();
+      if (deleteAction) {
+        deleteRequest({
+          reject: Promise.reject,
+          resolve: Promise.resolve,
+          data: {uid: currencyUid} as ILookupCurrencyDeletePayload
+        });
 
-      props.history.push(next, { uid: currencyUid });
+        alertAdd({
+          message: props.intl.formatMessage(lookupMessage.currency.message.deleteSuccess),
+          time: new Date(),
+        });
+        props.history.push(next);
+      } else {
+        props.history.push(next, { uid: currencyUid });
+      }
     }
   },
 };
 
 export const CurrencyDetail = compose(
   withUser,
+  withLayout,
   withRouter,
   withLookupCurrency,
   injectIntl,

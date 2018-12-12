@@ -1,3 +1,3 @@
 export interface ILookupCurrencyDeletePayload {
-  currencyUid: string;
+  uid: string;
 }
