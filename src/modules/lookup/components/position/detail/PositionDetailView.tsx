@@ -43,7 +43,7 @@ const config: SingleConfig<IPositionDetail, PositionDetailProps> = {
     },
     {
       id: PositionUserAction.Delete,
-      name: props.intl.formatMessage(layoutMessage.action.discard),
+      name: props.intl.formatMessage(layoutMessage.action.delete),
       enabled: true,
       visible: true,
       onClick: props.handleOnDelete
@@ -54,9 +54,9 @@ const config: SingleConfig<IPositionDetail, PositionDetailProps> = {
     const { isLoading, request, response } = props.lookupPositionState.detail;
     const { loadDetailRequest } = props.lookupPositionDispatch;
 
-    // when user is set and not loading and has purchaseUid in route params
+    // when user is set and not loading and has positionUid in route params
     if (user && !isLoading && props.match.params.positionUid) {
-      // when purchaseUid was changed or response are empty or force to reload
+      // when positionUid was changed or response are empty or force to reload
       if ((request && request.positionUid !== props.match.params.positionUid) || !response || forceReload) {
         loadDetailRequest({
           companyUid: props.match.params.companyUid,

@@ -1,10 +1,10 @@
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { layoutMessage } from '@layout/locales/messages';
+import { IPositionDeletePayload } from '@lookup/classes/request';
 import { PositionUserAction } from '@lookup/classes/types';
 import { PositionDetailView } from '@lookup/components/position/detail/PositionDetailView';
 import { WithLookupPosition, withLookupPosition } from '@lookup/hoc/withLookupPosition';
 import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
-// import { positionMessage } from '@lookup/locales/messages/position/positionMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import {
@@ -102,6 +102,7 @@ const handlerCreators: HandleCreators<PositionDetailProps, OwnHandler> = {
   },
   handleOnConfirm: (props: PositionDetailProps) => () => {
     const { response } = props.lookupPositionState.detail;
+    const { deleteRequest } = props.lookupPositionDispatch;
 
     let positionUid: string | undefined;
     let companyUid: string | undefined;
@@ -122,6 +123,7 @@ const handlerCreators: HandleCreators<PositionDetailProps, OwnHandler> = {
 
     if (actions.indexOf(props.action) !== -1) {
       let next: string = '404';
+      let deleteAction: boolean = false;
 
       switch (props.action) {
         case PositionUserAction.Modify:
@@ -129,7 +131,8 @@ const handlerCreators: HandleCreators<PositionDetailProps, OwnHandler> = {
           break;
         
         case PositionUserAction.Delete:
-          next = `lookup/position/${companyUid}/${positionUid}`;
+          deleteAction = true;
+          next = `/lookup/position`;
           break;
           
         default:
@@ -137,8 +140,18 @@ const handlerCreators: HandleCreators<PositionDetailProps, OwnHandler> = {
       }
 
       props.setDefault();
+      
+      if (deleteAction) {
+         deleteRequest({
+          reject: Promise.reject,
+          resolve: Promise.resolve,
+          data: {uid: positionUid} as IPositionDeletePayload
+        });
+         props.history.push(next, ); 
+      } else {
+        props.history.push(next, { companyUid, uid: positionUid });
+      }
 
-      props.history.push(next, { companyUid, uid: positionUid});
     }
   },
 };
