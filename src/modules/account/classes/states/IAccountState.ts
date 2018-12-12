@@ -1,10 +1,13 @@
 import {
+  IEmployeeAccessGetAllRequest,
+  IEmployeeAccessGetDetailRequest,
+  IEmployeeAccessGetListRequest,
   IEmployeeAllRequest,
   IEmployeeByIdRequest,
   IEmployeeLeaveByIdRequest,
   IEmployeeListRequest,
 } from '@account/classes/queries';
-import { IEmployee, IEmployeeDetail, IEmployeeLeave } from '@account/classes/response';
+import { IEmployee, IEmployeeAccess, IEmployeeAccessList, IEmployeeDetail, IEmployeeLeave } from '@account/classes/response';
 import { IQueryCollectionState, IQuerySingleState } from '@generic/interfaces';
 import { IEmployeeMy } from '../response/IEmployeeMy';
 
@@ -16,4 +19,8 @@ export interface IAccountState {
   accountEmployeeMyGet: IQuerySingleState<{}, IEmployeeMy>;
 
   accountEmployeeLeaveGet: IQuerySingleState<IEmployeeLeaveByIdRequest, IEmployeeLeave>;
+
+  accountEmployeeAccessGetAll: IQueryCollectionState<IEmployeeAccessGetAllRequest, IEmployeeAccess>;
+  accountEmployeeAccessGetList: IQueryCollectionState<IEmployeeAccessGetListRequest, IEmployeeAccessList>;
+  accountEmployeeAccessGetById: IQuerySingleState<IEmployeeAccessGetDetailRequest, IEmployeeAccess>;
 }
