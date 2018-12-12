@@ -1,5 +1,6 @@
 import { SelectSystemOption } from '@common/components/select';
 import { FormMode } from '@generic/types';
+import { InputDate } from '@layout/components/input/date';
 import { InputText } from '@layout/components/input/text';
 import { SelectLookupCompany } from '@lookup/components/company/select';
 import { organizationMessage } from '@organization/locales/messages/organizationMessage';
@@ -39,6 +40,16 @@ const handlerCreators: HandleCreators<HierarchyDetailFormProps, OwnHandlers> = {
             label: intl.formatMessage(organizationMessage.hierarchy.fieldFor(name, 'fieldName')),
             placeholder: intl.formatMessage(organizationMessage.hierarchy.fieldFor(name, 'fieldPlaceholder')),
             component: SelectLookupCompany
+          };
+          break;
+
+        case 'inactiveDate': 
+          fieldProps = {
+            type: 'text',
+            label: intl.formatMessage(organizationMessage.hierarchy.fieldFor(name, 'fieldName')),
+            placeholder: intl.formatMessage(organizationMessage.hierarchy.fieldFor(name, 'fieldPlaceholder')),
+            disablePast: true,
+            component: InputDate
           };
           break;
         

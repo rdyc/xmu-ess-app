@@ -57,7 +57,7 @@ export const HierarchyItemFormView: React.SFC<HierarchyItemFormProps> = props =>
           <Grid item xs={12} md={4}>
             <Button onClick={() => context.fields.push({
               uid: undefined,
-              sequence: undefined,
+              sequence: 1,
               positionUid: undefined,
               relationType: undefined
             })}
