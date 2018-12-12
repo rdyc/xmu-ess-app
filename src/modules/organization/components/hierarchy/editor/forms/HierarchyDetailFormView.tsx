@@ -1,3 +1,4 @@
+import { FormMode } from '@generic/types';
 import { Card, CardContent, CardHeader } from '@material-ui/core';
 import { organizationMessage } from '@organization/locales/messages/organizationMessage';
 import * as React from 'react';
@@ -5,7 +6,7 @@ import { Field } from 'redux-form';
 import { HierarchyDetailFormProps } from './HierarchyDetailForm';
 
 export const HierarchyDetailFormView: React.SFC<HierarchyDetailFormProps> = props => {
-  const { intl } = props;
+  const { intl, formMode } = props;
   const { names } = props.context;
   
   const renderField = (name: string) => {
@@ -14,7 +15,7 @@ export const HierarchyDetailFormView: React.SFC<HierarchyDetailFormProps> = prop
 
     // don't show uid for new form
     const fields = ['uid'];
-    if (fields.indexOf(fieldName) !== -1) {
+    if (formMode === FormMode.New && fields.indexOf(fieldName) !== -1) {
       return null;
     }
 

@@ -23,6 +23,7 @@ export const CommonEditorView: React.SFC<OrganizationHierarchyEditorProps> = pro
   // init form values
   const initialValues: OrganizationHierarchyFormData = {
     information: {
+      uid: undefined,
       companyUid: undefined,
       name: undefined,
       description: undefined,
@@ -52,6 +53,7 @@ export const CommonEditorView: React.SFC<OrganizationHierarchyEditorProps> = pro
       // todo: replace values with response data
       const data = response.data;
 
+      initialValues.information.uid = data.uid;
       initialValues.information.name = data.name;
       initialValues.information.companyUid = data.companyUid;
       initialValues.information.description = data.description;

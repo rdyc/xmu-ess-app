@@ -33,7 +33,16 @@ const handlerCreators: HandleCreators<HierarchyDetailFormProps, OwnHandlers> = {
       
       let fieldProps: SelectSystemOption & any = {};
   
-      switch (fieldName) {   
+      switch (fieldName) {  
+        case 'uid': 
+          fieldProps = {
+            disabled: true,
+            label: intl.formatMessage(organizationMessage.hierarchy.fieldFor(name, 'fieldName')),
+            placeholder: intl.formatMessage(organizationMessage.hierarchy.fieldFor(name, 'fieldPlaceholder')),
+            component: InputText
+          };
+          break;
+        
         case 'companyUid':
           fieldProps = {
             type: 'text',

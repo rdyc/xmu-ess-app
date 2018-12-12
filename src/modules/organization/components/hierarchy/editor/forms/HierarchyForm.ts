@@ -7,6 +7,7 @@ const formName = 'OrganizationHierarchy';
 
 export type OrganizationHierarchyFormData = {
   information: {
+    uid: string | null | undefined;
     name: string | null | undefined;
     companyUid: string | null | undefined;
     inactiveDate: string | null | undefined;

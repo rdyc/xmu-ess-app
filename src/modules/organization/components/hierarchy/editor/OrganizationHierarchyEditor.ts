@@ -65,7 +65,7 @@ const handlerCreators: HandleCreators<OrganizationHierarchyEditorProps, OwnHandl
     };
   
     const requiredFields = [
-      'companyUid', 'name', 'positionUid', 'sequence', 'RelationType'
+      'companyUid', 'name', 'positionUid', 'items'
     ];
   
     requiredFields.forEach(field => {
@@ -73,6 +73,32 @@ const handlerCreators: HandleCreators<OrganizationHierarchyEditorProps, OwnHandl
         errors.information[field] = props.intl.formatMessage(organizationMessage.hierarchy.fieldFor(field, 'fieldRequired'));
       }
     });
+
+    if (formData.item.items) {
+      const requiredItemFields = ['sequence', 'RelationType'];
+      
+      const itemErrors: any[] = [];
+      
+      formData.item.items.forEach((item, index) => {
+        const itemError: any = {};
+        
+        if (!item) { return ; }
+
+        requiredItemFields.forEach(field => {
+          if (!item[field] || isNullOrUndefined(item[field])) {
+            Object.assign(itemError, {[`${field}`]: props.intl.formatMessage(organizationMessage.hierarchy.fieldFor(field, 'fieldRequired'))});
+          }
+        });
+
+        itemErrors.push(itemError);
+      });
+
+      if (itemErrors.length) {
+        Object.assign(errors, {
+          items: itemErrors
+        });
+      }
+    }
     
     return errors;
   },

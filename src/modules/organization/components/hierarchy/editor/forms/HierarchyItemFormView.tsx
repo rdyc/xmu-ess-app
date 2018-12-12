@@ -10,7 +10,7 @@ export const HierarchyItemFormView: React.SFC<HierarchyItemFormProps> = props =>
   const names = ['sequence', 'positionUid', 'relationType'];
   
   const renderField = (name: string, field: string) => {
-    const fieldName = name.replace('information.', '');
+    const fieldName = name.replace('items.', '');
     const fieldProps = props.generateFieldProps(fieldName);
 
     // don't show uid for new form
