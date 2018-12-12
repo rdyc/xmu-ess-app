@@ -6,7 +6,8 @@ import { MileageRequestEditorProps } from '@mileage/components/request/editor/Mi
 import * as React from 'react';
 
 export const MileageRequestEditorView: React.SFC<MileageRequestEditorProps> = props => {
-  const { formMode, handleValidate, handleSubmit, handleSubmitSuccess, handleSubmitFail } = props;
+  const { formMode, handleValidate, handleSubmit, handleSubmitSuccess, handleSubmitFail,
+  submitDialogCancelText, submitDialogConfirmedText, submitDialogContentText, submitDialogTitle } = props;
 
   const renderForm = (formData: MileageRequestFormData) => (
     <MileageRequestForm 
@@ -16,6 +17,10 @@ export const MileageRequestEditorView: React.SFC<MileageRequestEditorProps> = pr
       onSubmit={handleSubmit} 
       onSubmitSuccess={handleSubmitSuccess}
       onSubmitFail={handleSubmitFail}
+      submitDialogTitle={submitDialogTitle}
+      submitDialogContentText={submitDialogContentText}
+      submitDialogCancelText={submitDialogCancelText}
+      submitDialogConfirmedText={submitDialogConfirmedText}
     />
   );
 

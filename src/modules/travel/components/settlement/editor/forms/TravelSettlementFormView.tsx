@@ -31,6 +31,8 @@ export const TravelSettlementFormView: React.SFC<TravelSettlementFormProps> = pr
     <TravelSettlementItemForm 
       context={context}
       onCostChange={onCostChange}
+      minDate={props.minDate}
+      maxDate={props.maxDate}
     />    
   );
 

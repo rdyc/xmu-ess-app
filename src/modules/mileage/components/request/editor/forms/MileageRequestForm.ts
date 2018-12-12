@@ -14,9 +14,14 @@ export type MileageRequestFormData = {
 
 interface OwnProps {
   formMode: FormMode;
+  submitDialogTitle: string;
+  submitDialogContentText: string;
+  submitDialogCancelText: string;
+  submitDialogConfirmedText: string;
 }
 
 interface FormValueProps {
+  formName: string;
   formYear?: number | undefined;
   formMonth?: number | undefined;
 }
@@ -34,6 +39,7 @@ const mapStateToProps = (state: any): FormValueProps => {
   const year = selector(state, 'information.year');
   const month = selector(state, 'information.month');
   return {
+    formName,
     formYear: year,
     formMonth: month
   };
