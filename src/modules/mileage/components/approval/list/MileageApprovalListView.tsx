@@ -15,6 +15,7 @@ import * as moment from 'moment';
 import * as React from 'react';
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose } from 'recompose';
+import { MileageApprovalFilter } from './MileageApprovalFilter';
 
 const config: CollectionConfig<IMileageRequest, AllProps> = {
   // page info
@@ -114,6 +115,11 @@ const config: CollectionConfig<IMileageRequest, AllProps> = {
     <MileageSummary data={item} />
   ),
 
+  // filter
+  filterComponent: (callback: CollectionHandler) => (
+    <MileageApprovalFilter handleFind={callback.handleFilter}/>
+  ),
+  
   // action component
   actionComponent: (item: IMileageRequest, callback: CollectionHandler) => (
     <React.Fragment>

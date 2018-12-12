@@ -64,4 +64,6 @@ export const mileageRequestItem = defineMessages({
 export const mileageRequestConfirm = defineMessages({
   createTitle: { id: `${prefix}.confirm.create.title` },
   createDescription: { id: `${prefix}.confirm.create.description` },
+  modifyTitle: { id: `${prefix}.confirm.modify.title` },
+  modifyDescription: { id: `${prefix}.confirm.modify.description` },
 });
