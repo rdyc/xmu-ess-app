@@ -2,6 +2,7 @@ import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose } from 'recompose';
 import { BaseFieldProps, WrappedFieldProps } from 'redux-form';
 
+import { DateType } from 'material-ui-pickers/constants/prop-types';
 import { InputDateTimeView } from './InputDateTimeView';
 
 interface OwnProps extends WrappedFieldProps, BaseFieldProps { 
@@ -9,7 +10,9 @@ interface OwnProps extends WrappedFieldProps, BaseFieldProps {
   type?: string; 
   required?: boolean;
   label: string; 
-  disabled: boolean; 
+  disabled: boolean;
+  minDate?: DateType;
+  maxDate?: DateType;
 }
 
 export type InputDateTimeProps 

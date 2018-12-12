@@ -9,7 +9,6 @@ import { ITravelRequest } from '@travel/classes/response';
 import { WithTravelRequest, withTravelRequest } from '@travel/hoc/withTravelRequest';
 import { WithTravelSettlement, withTravelSettlement } from '@travel/hoc/withTravelSettlement';
 import { travelMessage } from '@travel/locales/messages/travelMessage';
-import { travelRequestMessage } from '@travel/locales/messages/travelRequestMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { compose, HandleCreators, lifecycle, mapper, ReactLifeCycleFunctions, StateHandler, StateHandlerMap, StateUpdaters, withHandlers, withStateHandlers } from 'recompose';
@@ -187,11 +186,11 @@ const handlerCreators: HandleCreators<TravelSettlementEditorProps, OwnHandlers> 
     let message: string = '';
 
     if (formMode === FormMode.New) {
-      message = intl.formatMessage(travelRequestMessage.createSuccess, { uid: response.uid });
+      message = intl.formatMessage(travelMessage.settlement.message.createSuccess, { uid: response.uid });
     }
 
     if (formMode === FormMode.Edit) {
-      message = intl.formatMessage(travelRequestMessage.updateSuccess, { uid: response.uid });
+      message = intl.formatMessage(travelMessage.settlement.message.updateSuccess, { uid: response.uid });
     }
 
     alertAdd({
@@ -216,11 +215,11 @@ const handlerCreators: HandleCreators<TravelSettlementEditorProps, OwnHandlers> 
       let message: string = '';
 
       if (formMode === FormMode.New) {
-        message = intl.formatMessage(travelRequestMessage.createFailure);
+        message = intl.formatMessage(travelMessage.settlement.message.createFailure);
       }
 
       if (formMode === FormMode.Edit) {
-        message = intl.formatMessage(travelRequestMessage.updateFailure);
+        message = intl.formatMessage(travelMessage.settlement.message.updateFailure);
       }
 
       alertAdd({
@@ -255,8 +254,8 @@ const lifecycles: ReactLifeCycleFunctions<TravelSettlementEditorProps, {}> = {
     const { user } = this.props.userState;
 
     const view = {
-      title: 'travelSettlement.form.newTitle',
-      subTitle: 'travelSettlement.form.newSubTitle',
+      title: travelMessage.settlement.page.newTitle,
+      subTitle: travelMessage.settlement.page.newSubHeader,
     };
 
     if (!user) {
@@ -271,8 +270,8 @@ const lifecycles: ReactLifeCycleFunctions<TravelSettlementEditorProps, {}> = {
     if (!isNullOrUndefined(history.location.state)) {
 
       if (!isNullOrUndefined(history.location.state.uid)) {
-        view.title = 'travelSettlement.form.editTitle';
-        view.subTitle = 'travelSettlement.form.editSubTitle';
+        view.title = travelMessage.settlement.page.modifyTitle;
+        view.subTitle = travelMessage.settlement.page.modifySubHeader;
 
         stateUpdate({
           formMode: FormMode.Edit,
@@ -287,8 +286,8 @@ const lifecycles: ReactLifeCycleFunctions<TravelSettlementEditorProps, {}> = {
       }
 
       if (!isNullOrUndefined(history.location.state.traveluid)) {
-        view.title = 'travelSettlement.form.newTitle';
-        view.subTitle = 'travelSettlement.form.newSubTitle';
+        view.title = travelMessage.settlement.page.newTitle,
+        view.subTitle = travelMessage.settlement.page.newSubHeader,
 
         // stateUpdate({ 
         //   formMode: FormMode.New,
@@ -306,8 +305,8 @@ const lifecycles: ReactLifeCycleFunctions<TravelSettlementEditorProps, {}> = {
     layoutDispatch.changeView({
       uid: AppMenu.TravelSettlementRequest,
       parentUid: AppMenu.Travel,
-      title: intl.formatMessage({ id: view.title }),
-      subTitle: intl.formatMessage({ id: view.subTitle })
+      title: intl.formatMessage(view.title),
+      subTitle: intl.formatMessage(view.subTitle)
     });
 
     layoutDispatch.navBackShow();

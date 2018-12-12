@@ -1,22 +1,23 @@
 import AppMenu from '@constants/AppMenu';
-import { DialogConfirmation } from '@layout/components/dialogs';
 import { CollectionConfig, CollectionDataProps, CollectionHandler, CollectionPage } from '@layout/components/pages';
+import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
 import { IMileageException } from '@lookup/classes/response';
 import { MileageExceptionField, MileageExceptionUserAction } from '@lookup/classes/types';
+import { WithLookupMileageException, withLookupMileageException } from '@lookup/hoc/withLookupMileageException';
 import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
 import { Button } from '@material-ui/core';
 import * as moment from 'moment';
 import * as React from 'react';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
+import { compose } from 'recompose';
 import { LookupMileageExceptionFilter } from './LookupMileageExceptionFilter';
-import { MileageExceptionListProps } from './LookupMileageExceptionList';
 import { LookupMileageExceptionSummary } from './LookupMileageExceptionSummary';
 
-const config: CollectionConfig<IMileageException, MileageExceptionListProps> = {
+const config: CollectionConfig<IMileageException, AllProps> = {
   // page info
-  page: (props: MileageExceptionListProps) => ({
+  page: (props: AllProps) => ({
     uid: AppMenu.LookupMileageException,
     parentUid: AppMenu.Lookup,
     title: props.intl.formatMessage(lookupMessage.mileageException.page.listTitle),
@@ -32,7 +33,7 @@ const config: CollectionConfig<IMileageException, MileageExceptionListProps> = {
 
   // searching
   hasSearching: true,
-  searchStatus: (props: MileageExceptionListProps): boolean => {
+  searchStatus: (props: AllProps): boolean => {
     let result: boolean = false;
 
     const { request } = props.mileageExceptionState.all;
@@ -49,7 +50,7 @@ const config: CollectionConfig<IMileageException, MileageExceptionListProps> = {
 
   // more
   hasMore: true,
-  moreOptions: (props: MileageExceptionListProps, callback: CollectionHandler): IAppBarMenu[] => ([
+  moreOptions: (props: AllProps, callback: CollectionHandler): IAppBarMenu[] => ([
     {
       id: MileageExceptionUserAction.Refresh,
       name: props.intl.formatMessage(layoutMessage.action.refresh),
@@ -62,7 +63,7 @@ const config: CollectionConfig<IMileageException, MileageExceptionListProps> = {
       name: props.intl.formatMessage(layoutMessage.action.create),
       enabled: true,
       visible: true,
-      onClick: props.handleOnCreate
+      onClick: () => callback.handleRedirectTo(`/lookup/mileageexceptions/form`)
     }
   ]),
 
@@ -72,7 +73,7 @@ const config: CollectionConfig<IMileageException, MileageExceptionListProps> = {
     direction: 'descending'
   },
   // events
-  onDataLoad: (props: MileageExceptionListProps, callback: CollectionHandler, params: CollectionDataProps, forceReload?: boolean | false) => {
+  onDataLoad: (props: AllProps, callback: CollectionHandler, params: CollectionDataProps, forceReload?: boolean | false) => {
     const { user } = props.userState;
     const { isLoading, response } = props.mileageExceptionState.all;
     const { loadAllRequest } = props.mileageExceptionDispatch;
@@ -97,7 +98,7 @@ const config: CollectionConfig<IMileageException, MileageExceptionListProps> = {
       }
     }
   },
-  onUpdated: (props: MileageExceptionListProps, callback: CollectionHandler) => {
+  onUpdated: (props: AllProps, callback: CollectionHandler) => {
     const { isLoading, response } = props.mileageExceptionState.all;
     
     callback.handleLoading(isLoading);
@@ -142,20 +143,20 @@ const config: CollectionConfig<IMileageException, MileageExceptionListProps> = {
   ),
 };
 
-export const LookupMileageExceptionListView: React.SFC<MileageExceptionListProps> = props => (
+type AllProps
+  = WithUser
+  & WithLookupMileageException
+  & InjectedIntlProps;
+
+const lookupMileageExceptionListView: React.SFC<AllProps> = props => (
   <CollectionPage
     config={config}
     connectedProps={props}
-  >
-    <DialogConfirmation 
-        isOpen={props.dialogOpen}
-        fullScreen={props.dialogFullScreen}
-        title={props.dialogTitle}
-        content={props.dialogContent}
-        labelCancel={props.dialogCancelLabel}
-        labelConfirm={props.dialogConfirmLabel}
-        onClickCancel={props.handleOnCloseDialog}
-        onClickConfirm={props.handleOnConfirm}
-      />
-  </CollectionPage>
+  />
 );
+
+export const LookupMileageExceptionList = compose(
+  withUser,
+  withLookupMileageException,
+  injectIntl
+)(lookupMileageExceptionListView);

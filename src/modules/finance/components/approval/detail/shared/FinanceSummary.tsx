@@ -66,14 +66,14 @@ const financeSummary: React.SFC<AllProps> = props => (
           <TextField
           {...GlobalStyle.TextField.ReadOnly}
             label={props.intl.formatMessage(financeMessage.approval.field.advance)}
-            value={props.intl.formatNumber(props.data.document.amount.advance)}
+            value={props.intl.formatNumber(props.data.document.amount.advance, GlobalFormat.CurrencyDefault)}
           /> || ''
         }
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
           label={props.intl.formatMessage(financeMessage.approval.field.total)}
-          value={props.data.document.amount ?
-            props.intl.formatNumber(props.data.document.amount.total || 0) : 0}
+          value={props.data.document.amount && props.data.document.amount.total &&
+            props.intl.formatNumber(props.data.document.amount.total, GlobalFormat.CurrencyDefault) || props.intl.formatNumber(0, GlobalFormat.CurrencyDefault)}
         />
     </Grid>
     

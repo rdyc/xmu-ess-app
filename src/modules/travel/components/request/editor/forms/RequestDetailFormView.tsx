@@ -25,7 +25,7 @@ export const RequestDetailFormView: React.SFC<RequestDetailFormProps> = props =>
     }
 
     const fieldsSite = ['siteUid'];
-    if (!isProjectSelected && fieldsSite.indexOf(fieldName) !== -1) {
+    if ((!isProjectSelected || props.isGeneralPurpose) && fieldsSite.indexOf(fieldName) !== -1) {
         return null;
     }  
     
