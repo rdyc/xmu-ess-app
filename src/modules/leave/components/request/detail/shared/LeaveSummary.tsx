@@ -52,7 +52,7 @@ const leaveSummary: React.SFC<AllProps> = props => (
           {...GlobalStyle.TextField.ReadOnly}
       margin="dense"
       label={props.intl.formatMessage(leaveMessage.request.field.regularType)}
-      value={props.data.regular ? props.data.regular.leave ? props.data.regular.leave.name : 'N/A' : 'N/A'}
+      value={props.data.regular ? props.data.regular.leave ? props.data.regular.leave.name : 'Regular Type' : 'Regular Type'}
     />
       <TextField
           {...GlobalStyle.TextField.ReadOnly}

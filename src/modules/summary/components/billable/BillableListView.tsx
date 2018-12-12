@@ -2,73 +2,37 @@ import {
   Card,
   CardContent,
   Grid,
-  TextField,
   Typography
 } from '@material-ui/core';
-import { BillableDate } from '@summary/components/billable/BillableDate';
 import { BillableDetail } from '@summary/components/billable/BillableDetailView';
 import { BillableListProps } from '@summary/components/billable/BillableList';
 import { BillableTableView } from '@summary/components/billable/BillableTableView';
 import { summaryMessage } from '@summary/locales/messages/summaryMessage';
 import * as React from 'react';
+import { BillableFilterForm } from './billableFilterForm/BillableFilterForm';
 
 export const BillableListView: React.SFC<BillableListProps> = props => {
   const { isLoading, response } = props.summaryState.billable;
-  const { user } = props.userState;
   const {
-    start,
-    end,
     size,
     orderBy,
     page,
     direction,
-    handleChangeStart,
-    handleChangeEnd,
     handleChangePage,
     handleChangeSize,
     handleGoToNext,
     handleGoToPrevious,
     handleChangeSort,
-    handleChangeFind,
     handleDialog,
-    handleDetail
+    handleDetail,
+    handleChangeFilter
   } = props;
 
   const renderFilter = () => {
     return (
-      <Grid container spacing={16}>
-        <Grid item xs md>
-          <TextField
-            disabled
-            margin="normal"
-            label={props.intl.formatMessage(summaryMessage.billable.field.company)}
-            value={user && user.company.name}
-          />
-        </Grid>
-        <Grid item xs md>
-          <TextField
-            margin="normal"
-            label={props.intl.formatMessage(summaryMessage.billable.field.name)}
-            onChange={e => handleChangeFind(e.target.value)}
-          />
-        </Grid>
-        <Grid item xs md>
-          <BillableDate
-            val={start}
-            label={props.intl.formatMessage(summaryMessage.billable.field.start)}
-            handleChange={handleChangeStart}
-            disableFuture={false}
-          />
-        </Grid>
-        <Grid item xs md>
-          <BillableDate
-            val={end}
-            label={props.intl.formatMessage(summaryMessage.billable.field.end)}
-            handleChange={handleChangeEnd}
-            disableFuture={true}
-          />
-        </Grid>
-      </Grid>
+      <BillableFilterForm 
+        onFilterChange={handleChangeFilter}
+      />
     );
   };
 

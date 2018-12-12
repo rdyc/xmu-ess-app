@@ -6,7 +6,9 @@ import { RequestForm, TravelRequestFormData } from './forms/RequestForm';
 import { RequestEditorProps } from './RequestEditor';
 
 export const RequestEditorView: React.SFC<RequestEditorProps> = props => {
-  const { formMode, handleValidate, handleSubmit, handleSubmitSuccess, handleSubmitFail, intl, generateDiemData } = props;
+  const { formMode, handleValidate, handleSubmit, handleSubmitSuccess, 
+    handleSubmitFail, intl, generateDiemData, submitDialogTitle, 
+    submitDialogContentText, submitDialogConfirmedText, submitDialogCancelText } = props;
   const { isLoading, response } = props.travelRequestState.detail;
   const { user } = props.userState;
   const renderForm = (formData: TravelRequestFormData) => (
@@ -18,6 +20,10 @@ export const RequestEditorView: React.SFC<RequestEditorProps> = props => {
       onSubmit={handleSubmit} 
       onSubmitSuccess={handleSubmitSuccess}
       onSubmitFail={handleSubmitFail}
+      submitDialogTitle={submitDialogTitle}
+      submitDialogContentText={submitDialogContentText}
+      submitDialogCancelText={submitDialogCancelText}
+      submitDialogConfirmedText={submitDialogConfirmedText}
     />
   );
 

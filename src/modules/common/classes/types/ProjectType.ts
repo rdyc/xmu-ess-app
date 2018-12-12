@@ -3,4 +3,5 @@ export enum ProjectType {
   PreSales = 'SPT02',
   ExtraMiles = 'SPT03',
   NonProject = 'SPT04',
+  GeneralPurpose = 'GNLPS'
 }

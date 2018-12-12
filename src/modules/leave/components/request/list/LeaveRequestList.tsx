@@ -113,7 +113,7 @@ const config: CollectionConfig<ILeave, AllProps> = {
     primary: item.uid,
     secondary: item.reason,
     tertiary: item.leave && item.leave.value || item.leaveType,
-    quaternary: item.regular && item.regular.leave && item.regular.leave.name || 'N/A',
+    quaternary: item.regular && item.regular.leave && item.regular.leave.name || 'Regular Type',
     quinary: item.status && item.status.value || item.statusType,
     senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
   }),

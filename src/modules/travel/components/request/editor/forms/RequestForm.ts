@@ -4,6 +4,7 @@ import { IDiem } from '@lookup/classes/response';
 import { WithLookupDiem } from '@lookup/hoc/withLookupDiem';
 import { IProjectDetail, IProjectList } from '@project/classes/response';
 import { RequestFormView } from '@travel/components/request/editor/forms/RequestFormView';
+import { DateType } from 'material-ui-pickers/constants/prop-types';
 import * as moment from 'moment';
 import { connect } from 'react-redux';
 import {
@@ -72,6 +73,10 @@ export type TravelRequestFormData = {
 interface OwnProps {
   formMode: FormMode;
   diemRequest: IDiem[] | undefined;
+  submitDialogTitle: string;
+  submitDialogContentText: string;
+  submitDialogCancelText: string;
+  submitDialogConfirmedText: string;
 }
 
 interface OwnHandlers {
@@ -82,6 +87,7 @@ interface OwnHandlers {
 interface OwnState {
   TotalCost: number | undefined;
   projectType: string | undefined;
+  isGeneralPurpose: boolean | false;
 }
 
 interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
@@ -94,6 +100,9 @@ interface FormValueProps {
   destinationtypeValue: string | undefined;
   projectUidValue: string | undefined;
   isProjectSelected: boolean | false;
+  startDate?: DateType;
+  endDate?: DateType;
+  formName: string;  
 }
 
 export type RequestFormProps
@@ -109,7 +118,9 @@ const createProps: mapper<RequestFormProps, OwnState> = (props: RequestFormProps
   return {
     TotalCost: props.initialValues.information && props.initialValues.information.total,
     projectType: props.initialValues.information && props.initialValues.information.projectType === ProjectType.Project ?
-      ProjectType.Project : ProjectType.NonProject
+      ProjectType.Project : ProjectType.NonProject,
+    isGeneralPurpose: props.initialValues.information && props.initialValues.information.projectType === ProjectType.GeneralPurpose ? true : false
+
   };
 };
 
@@ -160,11 +171,16 @@ const mapStateToProps = (state: any): FormValueProps => {
   const customerUid = selector(state, 'information.customerUid');
   const destinationtype = selector(state, 'information.destinationType');
   const projectUid = selector(state, 'information.projectUid');
+  const startvalue = selector(state, 'information.start');
+  const endvalue = selector(state, 'information.end');
   return {
+    formName,
     customerUidValue: customerUid,
     destinationtypeValue: destinationtype,
     projectUidValue: projectUid,
-    isProjectSelected: projectUid
+    isProjectSelected: projectUid,
+    startDate: startvalue,
+    endDate: endvalue
   };
 };
 
@@ -181,7 +197,9 @@ const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
       return {
         ...prevState,
         projectType: projectFormValue.projectType === ProjectType.Project ?
-          ProjectType.Project : ProjectType.NonProject
+          ProjectType.Project : ProjectType.NonProject,
+        isGeneralPurpose: projectFormValue.projectType === ProjectType.GeneralPurpose ?
+          true : false
       };
     }
 
