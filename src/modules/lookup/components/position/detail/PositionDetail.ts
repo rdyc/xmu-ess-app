@@ -1,3 +1,4 @@
+import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { layoutMessage } from '@layout/locales/messages';
 import { IPositionDeletePayload } from '@lookup/classes/request';
@@ -49,6 +50,7 @@ interface OwnRouteParams {
 export type PositionDetailProps
   = WithLookupPosition
   & WithUser
+  & WithLayout
   & RouteComponentProps<OwnRouteParams>
   & InjectedIntlProps
   & OwnState
@@ -103,6 +105,7 @@ const handlerCreators: HandleCreators<PositionDetailProps, OwnHandler> = {
   handleOnConfirm: (props: PositionDetailProps) => () => {
     const { response } = props.lookupPositionState.detail;
     const { deleteRequest } = props.lookupPositionDispatch;
+    const { alertAdd } = props.layoutDispatch;
 
     let positionUid: string | undefined;
     let companyUid: string | undefined;
@@ -146,7 +149,12 @@ const handlerCreators: HandleCreators<PositionDetailProps, OwnHandler> = {
           reject: Promise.reject,
           resolve: Promise.resolve,
           data: {uid: positionUid} as IPositionDeletePayload
-        });
+          });  
+
+         alertAdd({
+           message: props.intl.formatMessage(lookupMessage.position.message.deleteSuccess),
+            time: new Date(),
+          });
          props.history.push(next, ); 
       } else {
         props.history.push(next, { companyUid, uid: positionUid });
@@ -158,6 +166,7 @@ const handlerCreators: HandleCreators<PositionDetailProps, OwnHandler> = {
 
 export const PositionDetail = compose(
   withUser,
+  withLayout,
   withRouter,
   withLookupPosition,
   injectIntl,
