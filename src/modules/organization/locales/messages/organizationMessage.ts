@@ -1,4 +1,12 @@
 import {
+  organizationStructureField,
+  organizationStructureFieldHelperFor,
+  organizationStructureMessage,
+  organizationStructureOption,
+  organizationStructurePage,
+  organizationStructureSection,
+} from './organizationStructureMessage';
+import {
   organizationWorkflowField,
   organizationWorkflowFieldHelperFor,
   organizationWorkflowMessage,
@@ -13,5 +21,13 @@ export const organizationMessage = {
     fieldFor: organizationWorkflowFieldHelperFor,
     option: organizationWorkflowOption,
     message: organizationWorkflowMessage
+  },
+  structure: {
+    page: organizationStructurePage,
+    section: organizationStructureSection,
+    field: organizationStructureField,
+    fieldFor: organizationStructureFieldHelperFor,
+    option: organizationStructureOption,
+    message: organizationStructureMessage
   }
 };

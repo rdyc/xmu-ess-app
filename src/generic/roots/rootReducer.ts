@@ -8,6 +8,7 @@ import { userReducer } from '@layout/store/reducers/userReducer';
 import { leaveReducers } from '@leave/store/reducers/leaveReducers';
 import lookupReducers from '@lookup/store/reducers/lookupReducers';
 import mileageReducers from '@mileage/store/reducers/mileageReducers';
+import organizationReducers from '@organization/store/reducers/organizationReducers';
 import { projectReducers } from '@project/store/reducers/projectReducers';
 import purchaseReducers from '@purchase/store/reducers/purchaseReducers';
 import summaryReducers from '@summary/store/reducers/summaryReducers';
@@ -30,6 +31,7 @@ export const rootReducer = combineReducers<IAppState>({
   /* modules */
   ...commonReducers,
   ...lookupReducers,
+  ...organizationReducers,
   ...accountReducers,
   ...projectReducers,
   ...leaveReducers,
