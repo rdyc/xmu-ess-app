@@ -137,7 +137,7 @@ const config: CollectionConfig<IHierarchy, AllProps> = {
     <React.Fragment>
       <Button 
         size="small"
-        onClick={() => callback.handleRedirectTo(`/organization/hierarchy/form`, { id: item.uid })}
+        onClick={() => callback.handleRedirectTo(`/organization/hierarchy/form`, { companyUid: item.companyUid, hierarchyUid: item.uid })}
       >
         <FormattedMessage {...layoutMessage.action.modify}/>
       </Button>

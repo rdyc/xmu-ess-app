@@ -36,14 +36,14 @@ export const workflowHierarchySection = defineMessages({
 
 // dialog
 export const workflowHierarchyDialog = defineMessages({
-  modifyTitle: { id: `${prefix}.confirm.modify.title` },
-  modifyDescription: { id: `${prefix}.confirm.modify.description` },
-  deleteTitle: { id: `${prefix}.confirm.delete.title` },
-  deleteDescription: { id: `${prefix}.confirm.delete.description` },
-  createTitle: { id: `${prefix}.confirm.create.title` },
-  createDescription: { id: `${prefix}.confirm.create.description` },
-  editTitle: { id: `${prefix}.confirm.create.title` },
-  editDescription: { id: `${prefix}.confirm.create.description` },
+  modifyTitle: { id: `${prefix}.dialog.modify.title` },
+  modifyDescription: { id: `${prefix}.dialog.modify.description` },
+  deleteTitle: { id: `${prefix}.dialog.delete.title` },
+  deleteDescription: { id: `${prefix}.dialog.delete.description` },
+  createTitle: { id: `${prefix}.dialog.create.title` },
+  createDescription: { id: `${prefix}.dialog.create.description` },
+  editTitle: { id: `${prefix}.dialog.create.title` },
+  editDescription: { id: `${prefix}.dialog.create.description` },
 });
 
 // text
@@ -57,24 +57,24 @@ export const workflowHierarchyField = defineMessages({
   
   name: {id: `${fieldPrefix}.name`},
   namePlaceholder: {id: `${fieldPrefix}.name.placeholder`},
-  nameRequired: {id: `${fieldPrefix}.name.Required`},
+  nameRequired: {id: `${fieldPrefix}.name.required`},
   
   companyUid: {id: `${fieldPrefix}.companyUid`},
   companyUidPlaceholder: {id: `${fieldPrefix}.companyUid.placeholder`},
-  companyUidRequired: {id: `${fieldPrefix}.companyUid.Required`},
+  companyUidRequired: {id: `${fieldPrefix}.companyUid.required`},
   
   inactiveDate: {id: `${fieldPrefix}.inactiveDate`},
   inactiveDatePlaceholder: {id: `${fieldPrefix}.inactiveDate.placeholder`},
   
   description: {id: `${fieldPrefix}.description`},
   descriptionPlaceholder: {id: `${fieldPrefix}.description.placeholder`},
-  descriptionRequired: {id: `${fieldPrefix}.description.Required`},
+  descriptionRequired: {id: `${fieldPrefix}.description.required`},
 
   sequence: {id: `${fieldPrefix}.sequence`},
   
   positionUid: {id: `${fieldPrefix}.positionUid`},
   positionUidPlaceholder: {id: `${fieldPrefix}.positionUid.placeholder`},
-  positionUidRequired: {id: `${fieldPrefix}.positionUid.Required`},
+  positionUidRequired: {id: `${fieldPrefix}.positionUid.required`},
   
   relationType: {id: `${fieldPrefix}.relationType`},
   relationTypePlaceholder: {id: `${fieldPrefix}.relationType.placeholder`},

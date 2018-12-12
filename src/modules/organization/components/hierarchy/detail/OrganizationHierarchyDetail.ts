@@ -95,11 +95,13 @@ const handlerCreators: HandleCreators<OrganizationHierarchyDetailProps, OwnHandl
     } 
 
     // define vars
-    let typeId: string | undefined;
+    let hierarchyUid: string | undefined;
+    let companyUid: string | undefined;
 
     // get expense uid
     if (response.data) {
-      typeId = response.data.uid;
+      hierarchyUid = response.data.uid;
+      companyUid = response.data.companyUid;
     }
 
     // actions with new page
@@ -122,7 +124,7 @@ const handlerCreators: HandleCreators<OrganizationHierarchyDetailProps, OwnHandl
       props.setDefault();
 
       props.history.push(next, { 
-        hierarchyUid: typeId,
+        companyUid, hierarchyUid
       });
     }
   },
