@@ -52,7 +52,7 @@ interface FormValueProps {
   formRate: number | 1;  
   formRequest: number | 0;
   formName: string;
-  requestMinDate?: string;
+  requestMinDate?: Date;
 }
 
 export type PurchaseRequestFormProps

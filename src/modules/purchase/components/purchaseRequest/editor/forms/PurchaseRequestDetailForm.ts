@@ -1,7 +1,7 @@
 import { WorkflowStatusType } from '@common/classes/types';
 import { SelectSystem, SelectSystemOption } from '@common/components/select';
 import { FormMode } from '@generic/types';
-import { InputDateRanged } from '@layout/components/input/date/InputDateRanged';
+import { InputDate } from '@layout/components/input/date/InputDate';
 // import { InputDate } from '@layout/components/input/date';
 import { InputNumber } from '@layout/components/input/number';
 import { InputText } from '@layout/components/input/text';
@@ -20,7 +20,7 @@ interface OwnProps {
   formCurrencyType: string | null | undefined;
   formCustomer: string | null | undefined;
   isCurrencyIdr: boolean;
-  requestMinDate?: string;
+  requestMinDate?: Date;
   onChangeCurrencyType: (event: any, newValue: string, oldValue: string) => void;
   onChangeRate: (event: any, newValue: number, oldValue: number) => void;
   onChangeValueIdr: (event: any, newValue: number, oldValue: number) => void;
@@ -102,7 +102,7 @@ const handlerCreators: HandleCreators<PurchaseRequestDetailFormProps, OwnHandler
           required: true,
           label: intl.formatMessage(purchaseMessage.request.field.date),
           placeholder: intl.formatMessage(purchaseMessage.request.field.datePlaceholder),
-          component: InputDateRanged,
+          component: InputDate,
           minDate:  props.requestMinDate,
           disabled: false,
         };
