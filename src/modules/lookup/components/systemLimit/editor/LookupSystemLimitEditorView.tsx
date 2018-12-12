@@ -6,7 +6,8 @@ import { LookupSystemLimitContainerForm, SystemLimitFormData } from './forms/Loo
 import { SystemLimitEditorProps } from './LookupSystemLimitEditor';
 
 export const LookupSystemLimitEditorView: React.SFC<SystemLimitEditorProps> = props => {
-  const { formMode, handleValidate, handleSubmit, handleSubmitSuccess, handleSubmitFail } = props;
+  const { formMode, handleValidate, handleSubmit, handleSubmitSuccess, handleSubmitFail,
+  submitDialogCancelText, submitDialogConfirmedText, submitDialogContentText, submitDialogTitle } = props;
   const { isLoading, response } = props.systemLimitState.detail;
 
   const renderForm = (formData: SystemLimitFormData) => (
@@ -17,6 +18,10 @@ export const LookupSystemLimitEditorView: React.SFC<SystemLimitEditorProps> = pr
       onSubmit={handleSubmit} 
       onSubmitSuccess={handleSubmitSuccess}
       onSubmitFail={handleSubmitFail}
+      submitDialogTitle={submitDialogTitle}
+      submitDialogContentText={submitDialogContentText}
+      submitDialogCancelText={submitDialogCancelText}
+      submitDialogConfirmedText={submitDialogConfirmedText}
     />
   );
 
