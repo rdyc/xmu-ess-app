@@ -39,12 +39,17 @@
   "mileage.request.field.submit.title": "Submit Mileage",
   "mileage.request.field.submit.subHeader": "Lorem Ipsum dolor sit amet,",
   
+  "mileage.approval.field.filter.employee": "Employee Name",
+  
   "mileage.request.item.title": "Details Item",
   "mileage.request.item.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
   "mileage.request.item.empty": "No Item",
 
   "mileage.request.confirm.create.title": "Create Mileage",
   "mileage.request.confirm.create.description": "Lorem ipsum dolor sit amet",
+
+  "mileage.request.confirm.modify.title": "Modify Mileage",
+  "mileage.request.confirm.modify.description": "Lorem ipsum dolor sit amet",
 
   "mileage.message.approval.update.success": "A new PID {uid} has been updated",
   "mileage.message.approval.update.failure": "Unable to process your submission",

@@ -25,6 +25,16 @@ export const systemLimitMessage = defineMessages({
   deleteFailure: { id: `${prefix}.message.delete.failure`},
 });
 
+// confirmation
+export const systemLimitConfirm = defineMessages({
+  createTitle: { id: `${prefix}.confirm.create.title` },
+  createDescription: { id: `${prefix}.confirm.create.description` },
+  modifyTitle: { id: `${prefix}.confirm.modify.title` },
+  modifyDescription: { id: `${prefix}.confirm.modify.description` },
+  deleteTitle: { id: `${prefix}.confirm.delete.title` },
+  deleteDescription: { id: `${prefix}.confirm.delete.description` },
+});
+
 // field
 export const systemLimitField = defineMessages({
   uid: { id: `${prefix}.field.uid`},
