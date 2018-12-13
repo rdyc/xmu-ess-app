@@ -42,4 +42,5 @@ export const rootReducer = combineReducers<IAppState>({
   ...mileageReducers,
   ...travelReducers,
   ...summaryReducers,
+  ...organizationReducers,
 });

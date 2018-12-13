@@ -30,6 +30,7 @@ export interface IAppState extends
   IExpenseState,
   ILeaveState,
   IPurchaseState,
+  IOrganizationState,
   ISummaryState {
   oidc: UserState;
   user: IUserState;

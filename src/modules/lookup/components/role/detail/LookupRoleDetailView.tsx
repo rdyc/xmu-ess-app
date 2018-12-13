@@ -19,10 +19,13 @@ const config: SingleConfig<IRoleDetail, RoleDetailProps> = {
     title: props.intl.formatMessage(lookupMessage.role.page.detailTitle),
     description: props.intl.formatMessage(lookupMessage.role.page.detailSubHeader),
   }),
-
+  
+  // parent url
+  parentUrl: (props: RoleDetailProps) => '/lookup/roles',
+  
   // action centre
   showActionCentre: true,
-
+  
   // more
   hasMore: true,
   moreOptions: (props: RoleDetailProps, state: SingleState, callback: SingleHandler): IAppBarMenu[] => ([

@@ -101,8 +101,8 @@ const config: CollectionConfig<ISettlement, AllProps> = {
     primary: item.uid,
     secondary: item.projectUid || item.project && item.project.name || '',
     tertiary: item.customer && item.customer.name || item.customerUid || '',
-    quaternary: item.actualInIDR && `${props.intl.formatNumber(item.actualInIDR, GlobalFormat.CurrencyDefault)}` || props.intl.formatMessage(purchaseMessage.action.settle),
-    quinary: item.status && item.status.value || item.statusType || '',
+    quaternary: item.actualInIDR && `${props.intl.formatNumber(item.actualInIDR, GlobalFormat.CurrencyDefault)}` || '',
+    quinary: item.status && item.status.value || item.statusType || props.intl.formatMessage(purchaseMessage.action.settle),
     senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
   }),
 
@@ -137,12 +137,16 @@ const config: CollectionConfig<ISettlement, AllProps> = {
           <FormattedMessage {...layoutMessage.action.modify} />
         </Button>
       }
-    <Button 
-      size= "small"
-      onClick={() => callback.handleRedirectTo(`/purchase/settlement/requests/${item.uid}`)}
-    >
-      <FormattedMessage { ...layoutMessage.action.details } />
-    </Button>
+      {
+        item.statusType && 
+        <Button
+          size="small"
+          onClick={() => callback.handleRedirectTo(`/purchase/settlement/requests/${item.uid}`)}
+        >
+          <FormattedMessage {...layoutMessage.action.details} />
+        </Button>
+      }
+      
     </React.Fragment>
   ),
 };

@@ -4,3 +4,4 @@ export * from './IEmployeeAccessList';
 export * from './IEmployeeCommand';
 export * from './IEmployeeCommandData';
 export * from './IEmployeeQuery';
+export * from './IAccountEmployeeAccess';
