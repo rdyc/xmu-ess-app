@@ -1,6 +1,6 @@
 import { defineMessages } from 'react-intl';
 
-const prefix = 'workflow.structure';
+const prefix = 'organization.structure';
 // section
 export const organizationStructurePage = defineMessages({
   listTitle: { id: `${prefix}.page.list.title` },

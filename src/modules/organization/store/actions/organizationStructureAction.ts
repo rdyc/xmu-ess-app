@@ -40,7 +40,7 @@ export const organizationStructureGetAllDispose = () => action(OrganizationStruc
 
 // get by id
 export const organizationStructureGetByIdRequest = (request: IOrganizationStructureByIdRequest) => action(OrganizationStructureAction.GET_BY_ID_REQUEST, request);
-export const organizationStructureGetByIdSuccess = (response: IResponseCollection<IStructureDetail>) => action(OrganizationStructureAction.GET_BY_ID_SUCCESS, response);
+export const organizationStructureGetByIdSuccess = (response: IResponseSingle<IStructureDetail>) => action(OrganizationStructureAction.GET_BY_ID_SUCCESS, response);
 export const organizationStructureGetByIdError = (message: string) => action(OrganizationStructureAction.GET_BY_ID_ERROR, message);
 export const organizationStructureGetByIdDispose = () => action(OrganizationStructureAction.GET_BY_ID_DISPOSE);
 
