@@ -1,10 +1,9 @@
 import AppMenu from '@constants/AppMenu';
-// import { DialogConfirmation } from '@layout/components/dialogs';
 import { SingleConfig, SingleHandler, SinglePage, SingleState } from '@layout/components/pages/singlePage/SinglePage';
 import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
 import { ISystemLimitDetail } from '@lookup/classes/response';
-import { SystemLimitUserAction } from '@lookup/classes/types';
+import { LookupUserAction } from '@lookup/classes/types';
 import { Delete } from '@lookup/components/shared/Delete';
 import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
 import * as React from 'react';
@@ -30,25 +29,25 @@ const config: SingleConfig<ISystemLimitDetail, SystemLimitDetailProps> = {
   hasMore: true,
   moreOptions: (props: SystemLimitDetailProps, state: SingleState, callback: SingleHandler): IAppBarMenu[] => ([
     {
-      id: SystemLimitUserAction.Refresh,
+      id: LookupUserAction.Refresh,
       name: props.intl.formatMessage(layoutMessage.action.refresh),
       enabled: true,
       visible: true,
       onClick: () => callback.handleForceReload()
     },
     {
-      id: SystemLimitUserAction.Modify,
+      id: LookupUserAction.Modify,
       name: props.intl.formatMessage(layoutMessage.action.modify),
       enabled: true,
       visible: true,
-      onClick: () => props.handleOnOpenDialog(SystemLimitUserAction.Modify)
+      onClick: () => props.handleOnOpenDialog(LookupUserAction.Modify)
     },
     {
-      id: SystemLimitUserAction.Delete,
+      id: LookupUserAction.Delete,
       name: props.intl.formatMessage(layoutMessage.action.delete),
       enabled: true,
       visible: true,
-      onClick: () => props.handleOnOpenDialog(SystemLimitUserAction.Delete)
+      onClick: () => props.handleOnOpenDialog(LookupUserAction.Delete)
     }
   ]),
 

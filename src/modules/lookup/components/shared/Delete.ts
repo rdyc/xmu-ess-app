@@ -1,5 +1,5 @@
 import { withForm, WithForm } from '@layout/hoc/withForm';
-import { SystemLimitUserAction } from '@lookup/classes/types';
+import { LookupUserAction } from '@lookup/classes/types';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose, HandleCreators, StateHandler, StateHandlerMap, StateUpdaters, withHandlers, withStateHandlers } from 'recompose';
 import { InjectedFormProps, reduxForm } from 'redux-form';
@@ -12,14 +12,14 @@ export type DeleteFormData = {
 };
 
 interface OwnProps {
-  action: SystemLimitUserAction | undefined;
+  action: LookupUserAction | undefined;
   isOpenDialog: boolean;
   fullScreen?: boolean | false;
   title?: string;
   content?: string;
   labelCancel?: string;
   labelConfirm?: string;
-  handleDialogOpen: (action: SystemLimitUserAction) => void;
+  handleDialogOpen: (action: LookupUserAction) => void;
   handleDialogClose: () => void;
   handleDialogConfirmed: () => void;
 }

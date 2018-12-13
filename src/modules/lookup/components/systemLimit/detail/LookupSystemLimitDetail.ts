@@ -2,7 +2,7 @@ import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { layoutMessage } from '@layout/locales/messages';
 import { ISystemLimitDeletePayload } from '@lookup/classes/request';
-import { SystemLimitUserAction } from '@lookup/classes/types';
+import { LookupUserAction } from '@lookup/classes/types';
 import { DeleteFormData } from '@lookup/components/shared/Delete';
 import { WithLookupSystemLimit, withLookupSystemLimit } from '@lookup/hoc/withLookupSystemLimit';
 import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
@@ -29,7 +29,7 @@ interface OwnRouteParams {
 }
 
 interface OwnHandler {
-  handleOnOpenDialog: (action: SystemLimitUserAction) => void;
+  handleOnOpenDialog: (action: LookupUserAction) => void;
   handleOnCloseDialog: () => void;
   handleOnConfirm: () => void;
   handleSubmit: (payload: DeleteFormData) => void;
@@ -38,7 +38,7 @@ interface OwnHandler {
 }
 
 interface OwnState {
-  action?: SystemLimitUserAction;
+  action?: LookupUserAction;
   dialogFullScreen: boolean;
   dialogOpen: boolean;
   dialogTitle?: string;
@@ -76,17 +76,17 @@ const stateUpdaters: StateUpdaters<SystemLimitDetailProps, OwnState, OwnStateUpd
 };
 
 const handlerCreators: HandleCreators<SystemLimitDetailProps, OwnHandler> = {
-  handleOnOpenDialog: (props: SystemLimitDetailProps) => (action: SystemLimitUserAction) => {
-    if (action === SystemLimitUserAction.Modify) {
+  handleOnOpenDialog: (props: SystemLimitDetailProps) => (action: LookupUserAction) => {
+    if (action === LookupUserAction.Modify) {
       props.stateUpdate({
-        action: SystemLimitUserAction.Modify,
+        action: LookupUserAction.Modify,
         dialogOpen: true,
         dialogTitle: props.intl.formatMessage(lookupMessage.shared.confirm.modifyTitle),
         dialogContent: props.intl.formatMessage(lookupMessage.shared.confirm.modifyDescription),
       });
-    } else if (action === SystemLimitUserAction.Delete) {
+    } else if (action === LookupUserAction.Delete) {
       props.stateUpdate({
-        action: SystemLimitUserAction.Delete,
+        action: LookupUserAction.Delete,
         dialogOpen: true,
         dialogTitle: props.intl.formatMessage(lookupMessage.shared.confirm.deleteTitle),
         dialogContent: props.intl.formatMessage(lookupMessage.shared.confirm.deleteDescription),
@@ -118,14 +118,14 @@ const handlerCreators: HandleCreators<SystemLimitDetailProps, OwnHandler> = {
 
     // actions with new page
     const actions = [
-      SystemLimitUserAction.Modify
+      LookupUserAction.Modify
     ];
 
     if (actions.indexOf(props.action) !== -1) {
       let next: string = '404';
 
       switch (props.action) {
-        case SystemLimitUserAction.Modify:
+        case LookupUserAction.Modify:
           next = '/lookup/systemlimits/form';
           break;
 

@@ -1,5 +1,5 @@
 import { DialogConfirmation } from '@layout/components/dialogs';
-import { SystemLimitUserAction } from '@lookup/classes/types';
+import { LookupUserAction } from '@lookup/classes/types';
 import * as React from 'react';
 import { DeleteProps } from './Delete';
 
@@ -15,7 +15,7 @@ export const DeleteView: React.SFC<DeleteProps> = props => (
         fullScreen={props.fullScreen}
         onClickCancel={props.handleDialogClose}
         onClickConfirm={
-          props.action === SystemLimitUserAction.Modify
+          props.action === LookupUserAction.Modify
             ? props.handleDialogConfirmed
             : props.handleDeleteConfirmed
         }
