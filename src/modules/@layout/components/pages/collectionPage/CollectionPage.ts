@@ -58,7 +58,7 @@ export interface CollectionConfig<Tresponse, Tinner> {
   onRowRender?: (item: Tresponse, index: number) => JSX.Element;
   summaryComponent: (item: Tresponse, props?: Tinner) => JSX.Element;
   actionComponent?: (item: Tresponse, callback: CollectionHandler, props?: Tinner) => JSX.Element;
-  filterComponent?: (callback: CollectionHandler) => JSX.Element;
+  filterComponent?: (callback: CollectionHandler, props?: Tinner) => JSX.Element;
 }
 
 interface OwnOption {
