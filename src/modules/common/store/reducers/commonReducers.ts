@@ -11,6 +11,7 @@ import gradeReducers from './grade/gradeReducer';
 import limiterReducers from './limiter/limiterReducers';
 import { commonProjectReducers } from './project';
 import purposeReducers from './purpose/purposeReducers';
+import relationReducers from './relation/relationReducer';
 import statusReducers from './status/statusReducers';
 import transportationReducers from './transportation/transportationReducers';
 import unitReducers from './unit/unitReducers';
@@ -31,7 +32,8 @@ const commonReducers = {
   ...transportationReducers,
   ...limiterReducers,
   ...unitReducers,
-  ...gradeReducers
+  ...gradeReducers,
+  ...relationReducers
 };
 
 export default commonReducers;

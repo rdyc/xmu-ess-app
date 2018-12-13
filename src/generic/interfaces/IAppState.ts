@@ -8,6 +8,7 @@ import { IUserState } from '@layout/interfaces/IUserState';
 import { ILeaveState } from '@leave/classes/states';
 import { ILookupState } from '@lookup/classes/states';
 import { IMileageState } from '@mileage/classes/states';
+import { IOrganizationState } from '@organization/classes/states';
 import { IProjectState } from '@project/classes/states';
 import { IPurchaseState } from '@purchase/classes/states';
 import { ISummaryState } from '@summary/classes/states';
@@ -28,6 +29,7 @@ export interface IAppState extends
   IExpenseState,
   ILeaveState,
   IPurchaseState,
+  IOrganizationState,
   ISummaryState {
   oidc: UserState;
   user: IUserState;

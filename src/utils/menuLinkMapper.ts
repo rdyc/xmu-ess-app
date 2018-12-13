@@ -139,7 +139,7 @@ export const menuLinkMapper = (menuUid: string) => {
       break;
 
     case 'MNU04':
-      path = '/lookup/approvalhierarchy/list';
+      path = '/organization/hierarchy';
       break;
 
     case 'MNU05':
