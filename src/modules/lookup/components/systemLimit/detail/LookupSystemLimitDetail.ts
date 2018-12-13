@@ -1,6 +1,9 @@
+import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { layoutMessage } from '@layout/locales/messages';
+import { ISystemLimitDeletePayload } from '@lookup/classes/request';
 import { SystemLimitUserAction } from '@lookup/classes/types';
+import { DeleteFormData } from '@lookup/components/shared/Delete';
 import { WithLookupSystemLimit, withLookupSystemLimit } from '@lookup/hoc/withLookupSystemLimit';
 import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
@@ -15,6 +18,9 @@ import {
   withHandlers,
   withStateHandlers,
 } from 'recompose';
+import { Dispatch } from 'redux';
+import { FormErrors } from 'redux-form';
+import { isObject } from 'util';
 import { LookupSystemLimitDetailView } from './LookupSystemLimitDetailView';
 
 interface OwnRouteParams {
@@ -23,13 +29,15 @@ interface OwnRouteParams {
 }
 
 interface OwnHandler {
-  handleOnModify: () => void;
+  handleOnOpenDialog: (action: SystemLimitUserAction) => void;
   handleOnCloseDialog: () => void;
   handleOnConfirm: () => void;
+  handleSubmit: (payload: DeleteFormData) => void;
+  handleSubmitSuccess: (result: any, dispatch: Dispatch<any>) => void;
+  handleSubmitFail: (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => void;
 }
 
 interface OwnState {
-  isAdmin: boolean;
   action?: SystemLimitUserAction;
   dialogFullScreen: boolean;
   dialogOpen: boolean;
@@ -40,12 +48,12 @@ interface OwnState {
 }
 
 interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
-  setModify: StateHandler<OwnState>;
-  setDefault: StateHandler<OwnState>;
+  stateUpdate: StateHandler<OwnState>;
 }
 
 export type SystemLimitDetailProps
   = WithUser
+  & WithLayout
   & WithLookupSystemLimit
   & RouteComponentProps<OwnRouteParams>
   & InjectedIntlProps
@@ -54,37 +62,41 @@ export type SystemLimitDetailProps
   & OwnHandler;
 
 const createProps: mapper<SystemLimitDetailProps, OwnState> = (props: SystemLimitDetailProps): OwnState => ({
-  isAdmin: false,
   dialogFullScreen: false,
   dialogOpen: false,
+  dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.disaggre),
+  dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.aggre)
 });
 
 const stateUpdaters: StateUpdaters<SystemLimitDetailProps, OwnState, OwnStateUpdaters> = {
-  setModify: (prevState: OwnState, props: SystemLimitDetailProps) => (): Partial<OwnState> => ({
-    action: SystemLimitUserAction.Modify,
-    dialogFullScreen: false,
-    dialogOpen: true,
-    dialogTitle: props.intl.formatMessage(lookupMessage.shared.confirm.modifyTitle),
-    dialogContent: props.intl.formatMessage(lookupMessage.shared.confirm.modifyDescription),
-    dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.disaggre),
-    dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.aggre)
-  }),
-  setDefault: (prevState: OwnState) => (): Partial<OwnState> => ({
-    dialogFullScreen: false,
-    dialogOpen: false,
-    dialogTitle: undefined,
-    dialogContent: undefined,
-    dialogCancelLabel: undefined,
-    dialogConfirmLabel: undefined,
+  stateUpdate: (prevState: OwnState) => (newState: any) => ({
+    ...prevState,
+    ...newState
   })
 };
 
 const handlerCreators: HandleCreators<SystemLimitDetailProps, OwnHandler> = {
-  handleOnModify: (props: SystemLimitDetailProps) => () => {
-    props.setModify();
+  handleOnOpenDialog: (props: SystemLimitDetailProps) => (action: SystemLimitUserAction) => {
+    if (action === SystemLimitUserAction.Modify) {
+      props.stateUpdate({
+        action: SystemLimitUserAction.Modify,
+        dialogOpen: true,
+        dialogTitle: props.intl.formatMessage(lookupMessage.shared.confirm.modifyTitle),
+        dialogContent: props.intl.formatMessage(lookupMessage.shared.confirm.modifyDescription),
+      });
+    } else if (action === SystemLimitUserAction.Delete) {
+      props.stateUpdate({
+        action: SystemLimitUserAction.Delete,
+        dialogOpen: true,
+        dialogTitle: props.intl.formatMessage(lookupMessage.shared.confirm.deleteTitle),
+        dialogContent: props.intl.formatMessage(lookupMessage.shared.confirm.deleteDescription),
+      });
+    }
   },
   handleOnCloseDialog: (props: SystemLimitDetailProps) => () => {
-    props.setDefault();
+    props.stateUpdate({
+      dialogOpen: false
+    });
   },
   handleOnConfirm: (props: SystemLimitDetailProps) => () => {
     const { response } = props.systemLimitState.detail;
@@ -121,21 +133,71 @@ const handlerCreators: HandleCreators<SystemLimitDetailProps, OwnHandler> = {
           break;
       }
 
-      props.setDefault();
+      props.stateUpdate({
+        dialogOpen: false
+      });
 
       props.history.push(next, {
         companyUid,
         uid: systemLimitUid
       });
     }
+
   },
+  handleSubmit: (props: SystemLimitDetailProps) => () => {
+    const { match, intl } = props;
+    const { user } = props.userState;
+    const { deleteRequest } = props.systemLimitDispatch;
+    // user checking
+    if (!user) {
+      return Promise.reject('user was not found');
+    }
+    // props checking
+    if (!match.params.systemLimitUid) {
+      const message = intl.formatMessage(lookupMessage.systemLimit.message.emptyProps);
+      return Promise.reject(message);
+    }
+    const payload = {
+      uid: match.params.systemLimitUid
+    };
+    return new Promise((resolve, reject) => {
+      deleteRequest({
+        resolve,
+        reject,
+        data: payload as ISystemLimitDeletePayload
+      });
+    });
+  },
+  handleSubmitSuccess: (props: SystemLimitDetailProps) => (response: boolean) => {
+    props.history.push('/lookup/systemlimits/');
+
+    props.layoutDispatch.alertAdd({
+      time: new Date(),
+      message: props.intl.formatMessage(lookupMessage.systemLimit.message.deleteSuccess, { uid : props.match.params.systemLimitUid })
+    });
+  },
+  handleSubmitFail: (props: SystemLimitDetailProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
+    if (errors) {
+      props.layoutDispatch.alertAdd({
+        time: new Date(),
+        message: isObject(submitError) ? submitError.message : submitError
+      });
+    } else {
+      props.layoutDispatch.alertAdd({
+        time: new Date(),
+        message: props.intl.formatMessage(lookupMessage.systemLimit.message.deleteFailure),
+        details: isObject(submitError) ? submitError.message : submitError
+      });
+    }
+  }
 };
 
-export const LookupSystemLimitDetail = compose(
+export const LookupSystemLimitDetail = compose<SystemLimitDetailProps, {}>(
   withRouter,
   withUser,
+  withLayout,
   withLookupSystemLimit,
   injectIntl,
-  withStateHandlers(createProps, stateUpdaters),
-  withHandlers(handlerCreators),
+  withStateHandlers<OwnState, OwnStateUpdaters, {}>(createProps, stateUpdaters),
+  withHandlers<SystemLimitDetailProps, OwnHandler>(handlerCreators),
 )(LookupSystemLimitDetailView);

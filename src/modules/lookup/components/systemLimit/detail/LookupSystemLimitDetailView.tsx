@@ -1,10 +1,11 @@
 import AppMenu from '@constants/AppMenu';
-import { DialogConfirmation } from '@layout/components/dialogs';
+// import { DialogConfirmation } from '@layout/components/dialogs';
 import { SingleConfig, SingleHandler, SinglePage, SingleState } from '@layout/components/pages/singlePage/SinglePage';
 import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
 import { ISystemLimitDetail } from '@lookup/classes/response';
 import { SystemLimitUserAction } from '@lookup/classes/types';
+import { Delete } from '@lookup/components/shared/Delete';
 import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
 import * as React from 'react';
 import { SystemLimitDetailProps } from './LookupSystemLimitDetail';
@@ -40,7 +41,14 @@ const config: SingleConfig<ISystemLimitDetail, SystemLimitDetailProps> = {
       name: props.intl.formatMessage(layoutMessage.action.modify),
       enabled: true,
       visible: true,
-      onClick: props.handleOnModify
+      onClick: () => props.handleOnOpenDialog(SystemLimitUserAction.Modify)
+    },
+    {
+      id: SystemLimitUserAction.Delete,
+      name: props.intl.formatMessage(layoutMessage.action.delete),
+      enabled: true,
+      visible: true,
+      onClick: () => props.handleOnOpenDialog(SystemLimitUserAction.Delete)
     }
   ]),
 
@@ -90,15 +98,21 @@ export const LookupSystemLimitDetailView: React.SFC<SystemLimitDetailProps> = pr
     config={config}
     connectedProps={props}
   >
-    <DialogConfirmation 
-      isOpen={props.dialogOpen}
-      fullScreen={props.dialogFullScreen}
-      title={props.dialogTitle}
-      content={props.dialogContent}
-      labelCancel={props.dialogCancelLabel}
-      labelConfirm={props.dialogConfirmLabel}
-      onClickCancel={props.handleOnCloseDialog}
-      onClickConfirm={props.handleOnConfirm}
-    />
+    <React.Fragment>
+      <Delete 
+        action={props.action}
+        isOpenDialog={props.dialogOpen}
+        title={props.dialogTitle}
+        content={props.dialogContent}
+        labelCancel={props.dialogCancelLabel}
+        labelConfirm={props.dialogConfirmLabel}
+        handleDialogOpen={props.handleOnOpenDialog}
+        handleDialogClose={props.handleOnCloseDialog}
+        handleDialogConfirmed={props.handleOnConfirm}
+        onSubmit={props.handleSubmit} 
+        onSubmitSuccess={props.handleSubmitSuccess}
+        onSubmitFail={props.handleSubmitFail}
+      />
+    </React.Fragment>
   </SinglePage>
 );
