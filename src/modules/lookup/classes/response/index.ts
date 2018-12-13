@@ -31,6 +31,7 @@ export * from './systemLimit/ISystemLimitDetail';
 export * from './holiday/ILookupHoliday';
 export * from './holiday/ILookupHolidayDetail';
 export * from './holiday/ILookupHolidayList';
+export * from './leave/ILeaveCalculation';
 export * from './leave/ILookupLeave';
 export * from './leave/ILookupLeaveDetail';
 export * from './leave/ILookupLeaveList';
