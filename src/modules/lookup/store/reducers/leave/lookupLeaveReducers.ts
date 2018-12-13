@@ -1,3 +1,4 @@
+import { leaveCalculationGetAllReducer } from './leaveCalculationGetAllReducer';
 import { lookupLeaveDeleteReducer } from './lookupLeaveDeleteReducer';
 import { lookupLeaveGetAllReducer } from './lookupLeaveGetAllReducer';
 import { lookupLeaveGetByIdReducer } from './lookupLeaveGetByIdReducer';
@@ -6,6 +7,7 @@ import { lookupLeavePostReducer } from './lookupLeavePostReducer';
 import { lookupLeavePutReducer } from './lookupLeavePutReducer';
 
 export const lookupLeaveReducers = {
+  leaveCalculationGetAll: leaveCalculationGetAllReducer,
   lookupLeaveGetAll: lookupLeaveGetAllReducer,
   lookupLeaveGetList: lookupLeaveGetListReducer,
   lookupLeaveGetById: lookupLeaveGetByIdReducer,
