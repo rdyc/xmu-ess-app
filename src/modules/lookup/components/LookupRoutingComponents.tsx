@@ -21,7 +21,7 @@ import LookupHolidayList from './holiday/list/LookupHolidayList';
 import LookupLeaveEditor from './leave/editor/LookupLeaveEditor';
 import { MileageExceptionDetail } from './mileageException/detail/MileageExceptionDetail';
 import MileageExceptionEditor from './mileageException/editor/MileageExceptionEditor';
-import { LookupMileageExceptionList } from './mileageException/list/LookupMileageExceptionList';
+import { LookupMileageExceptionList } from './mileageException/list/LookupMileageExceptionListView';
 import { PositionDetail } from './position/detail/PositionDetail';
 import { PositionEditor } from './position/editor/PositionEditor';
 import { PositionList } from './position/list/PositionList';
@@ -30,7 +30,7 @@ import LookupRoleEditor from './role/editor/LookupRoleEditor';
 import LookupRoleList from './role/list/LookupRoleList';
 import { LookupSystemLimitDetail } from './systemLimit/detail/LookupSystemLimitDetail';
 import LookupSystemLimitEditor from './systemLimit/editor/LookupSystemLimitEditor';
-import LookupSystemLimitList from './systemLimit/list/LookupSystemLimitList';
+import { LookupSystemLimitList } from './systemLimit/list/LookupSystemLimitListView';
 
 const role = (props: RouteComponentProps) => (
   <Switch>
