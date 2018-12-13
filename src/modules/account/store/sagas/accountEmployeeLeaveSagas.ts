@@ -13,7 +13,7 @@ function* watchByIdFetchRequest() {
   const worker = (action: ReturnType<typeof accountEmployeeLeaveGetByIdRequest>) => {
     return saiyanSaga.fetch({
       method: 'get',
-      path: `/v1/account/employees/${action.payload.companyUid}/${action.payload.year}/leaves`,
+      path: `/v1/account/employees/${action.payload.employeeUid}/${action.payload.year}/leaves`,
       successEffects: (response: IApiResponse) => [
         put(accountEmployeeLeaveGetByIdSuccess(response.body)),
       ], 
