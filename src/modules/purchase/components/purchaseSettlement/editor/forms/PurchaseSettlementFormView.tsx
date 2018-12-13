@@ -10,7 +10,8 @@ import { BaseFieldsProps, FieldArray, Fields, FormSection, WrappedFieldArrayProp
 export const PurchaseSettlementFormView: React.SFC<PurchaseSettlementFormProps> = props => {
   const {
     formMode,
-    formIsCurrencyIDR, initialValues
+    formIsCurrencyIDR, initialValues,
+    settleMinDate
   } = props;
 
   const fields = Object.getOwnPropertyNames(initialValues.information);
@@ -20,6 +21,7 @@ export const PurchaseSettlementFormView: React.SFC<PurchaseSettlementFormProps> 
       formMode={formMode}
       context={context}
       isCurrencyIdr={formIsCurrencyIDR}
+      settleMinDate={settleMinDate}
     />
   );
 
