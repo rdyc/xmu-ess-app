@@ -3,13 +3,13 @@ import * as React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router';
 import { OrganizationHierarchyDetail } from './hierarchy/detail/OrganizationHierarchyDetail';
 import OrganizationHierarchyEditor from './hierarchy/editor/OrganizationHierarchyEditor';
-import { OrganizationHierarchyListView } from './hierarchy/list/OrganizationHierarchyListView';
+import OrganizationHierarchyList from './hierarchy/list/OrganizationHierarchyList';
 
 const OrganizationHierarchy = (props: RouteComponentProps) => (
   <Switch>
     <Route path={`${props.match.path}/form`} component={OrganizationHierarchyEditor} />
     <Route path={`${props.match.path}/:hierarchyUid`} component={OrganizationHierarchyDetail} />
-    <Route path={`${props.match.path}`} component={OrganizationHierarchyListView} />
+    <Route path={`${props.match.path}`} component={OrganizationHierarchyList} />
   </Switch>
 );
 

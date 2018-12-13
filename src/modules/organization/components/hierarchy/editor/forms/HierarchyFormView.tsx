@@ -4,7 +4,7 @@ import { Grid } from '@material-ui/core';
 import * as React from 'react';
 import { BaseFieldsProps, FieldArray, Fields, FormSection, WrappedFieldArrayProps } from 'redux-form';
 import { HierarchyDetailForm } from './HierarchyDetailForm';
-import { HierarchyFormProps } from './HierarchyForm';
+import { HierarchyFormProps, OrganizationHierarchyItemFormData } from './HierarchyForm';
 import { HierarchyItemForm } from './HierarchyItemForm';
 
 export const HierarchyFormView: React.SFC<HierarchyFormProps> = props => {
@@ -21,7 +21,7 @@ export const HierarchyFormView: React.SFC<HierarchyFormProps> = props => {
     />
   );
 
-  const componentHierarchyItem = (context: WrappedFieldArrayProps<any>) => (
+  const componentHierarchyItem = (context: WrappedFieldArrayProps<OrganizationHierarchyItemFormData>) => (
     <HierarchyItemForm
       context={context}
       companyUidValue={companyUidValue}

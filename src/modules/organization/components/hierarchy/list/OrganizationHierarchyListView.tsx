@@ -6,7 +6,6 @@ import {
   CollectionHandler,
   CollectionPage,
 } from '@layout/components/pages';
-import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
 import { GlobalFormat } from '@layout/types';
@@ -14,18 +13,17 @@ import { Button } from '@material-ui/core';
 import { IHierarchy } from '@organization/classes/response/hierarchy';
 import { HierarchyField } from '@organization/classes/types';
 import { hierarchyFieldTranslator } from '@organization/helper/hierarchyFieldTranslator';
-import { withOrganizationHierarchy, WithOrganizationHierarchy } from '@organization/hoc/withOrganizationHierarchy';
 import { organizationMessage } from '@organization/locales/messages/organizationMessage';
 import * as moment from 'moment';
 import * as React from 'react';
-import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
-import { RouteComponentProps } from 'react-router';
-import { compose } from 'recompose';
+import { FormattedMessage } from 'react-intl';
 import { OrganizationHierarchySummary } from '../detail/shared/OrganiationHierarchySummary';
+import { OrganizationHierarchyFilter } from './OrganizationHierarchyFilter';
+import { OrganizationHierarchyListProps } from './OrganizationHierarchyList';
 
-const config: CollectionConfig<IHierarchy, AllProps> = {
+const config: CollectionConfig<IHierarchy, OrganizationHierarchyListProps> = {
   // page info
-  page: (props: AllProps) => ({
+  page: (props: OrganizationHierarchyListProps) => ({
     uid: AppMenu.LookupApprovalHierarchy,
     parentUid: AppMenu.Lookup,
     title: `${props.intl.formatMessage(organizationMessage.hierarchy.page.listTitle)}`,
@@ -47,7 +45,7 @@ const config: CollectionConfig<IHierarchy, AllProps> = {
 
   // searching
   hasSearching: true,
-  searchStatus: (props: AllProps): boolean => {
+  searchStatus: (props: OrganizationHierarchyListProps): boolean => {
     let result: boolean = false;
 
     const { request } = props.organizationHierarchyState.all;
@@ -64,7 +62,7 @@ const config: CollectionConfig<IHierarchy, AllProps> = {
 
   // more
   hasMore: true,
-  moreOptions: (props: AllProps, callback: CollectionHandler): IAppBarMenu[] => ([
+  moreOptions: (props: OrganizationHierarchyListProps, callback: CollectionHandler): IAppBarMenu[] => ([
     {
       id: CommonUserAction.Refresh,
       name: props.intl.formatMessage(layoutMessage.action.refresh),
@@ -82,7 +80,7 @@ const config: CollectionConfig<IHierarchy, AllProps> = {
   ]),
 
   // events
-  onDataLoad: (props: AllProps, callback: CollectionHandler, params: CollectionDataProps, forceReload?: boolean | false) => {
+  onDataLoad: (props: OrganizationHierarchyListProps, callback: CollectionHandler, params: CollectionDataProps, forceReload?: boolean | false) => {
     const { user } = props.userState;
     const { isLoading, response } = props.organizationHierarchyState.all;
     const { loadAllRequest } = props.organizationHierarchyDispatch;
@@ -93,7 +91,7 @@ const config: CollectionConfig<IHierarchy, AllProps> = {
       if (!response || forceReload) {
         loadAllRequest({
           filter: {
-            companyUid: undefined,
+            companyUid: props.companyUid,
             direction: params.direction,
             orderBy: params.orderBy,
             page: params.page,
@@ -108,13 +106,13 @@ const config: CollectionConfig<IHierarchy, AllProps> = {
       }
     }
   },
-  onUpdated: (props: AllProps, callback: CollectionHandler) => {
+  onUpdated: (props: OrganizationHierarchyListProps, callback: CollectionHandler) => {
     const { isLoading, response } = props.organizationHierarchyState.all;
     
     callback.handleLoading(isLoading);
     callback.handleResponse(response);
   },
-  onBind: (item: IHierarchy, index: number, props: AllProps) => ({
+  onBind: (item: IHierarchy, index: number, props: OrganizationHierarchyListProps) => ({
     key: item.uid,
     primary: item.uid,
     secondary: item.name,
@@ -124,11 +122,18 @@ const config: CollectionConfig<IHierarchy, AllProps> = {
     senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
   }),
 
+  // filter
+  filterComponent: (callback: CollectionHandler, props: OrganizationHierarchyListProps) => (
+    <OrganizationHierarchyFilter 
+      handleFind={props.handleChangeFilter} 
+      callbackForceReload={callback.handleForceReload}
+    />
+  ),
+
   // summary component
-  summaryComponent: (item: IHierarchy, props: AllProps) => ( 
+  summaryComponent: (item: IHierarchy, props: OrganizationHierarchyListProps) => ( 
     <OrganizationHierarchySummary 
       data={item}
-      category={props.match.params.category}
     />
   ),
 
@@ -157,25 +162,9 @@ const config: CollectionConfig<IHierarchy, AllProps> = {
   // )
 };
 
-type AllProps 
-  = WithUser
-  & WithOrganizationHierarchy
-  & RouteComponentProps<OwnRouteParams>
-  & InjectedIntlProps;
-
-interface OwnRouteParams {
-  category: string;
-}
-
-const organizationHierarchyListView: React.SFC<AllProps> = props => (
+export const organizationHierarchyListView: React.SFC<OrganizationHierarchyListProps> = props => (
   <CollectionPage
     config={config}
     connectedProps={props}
   />
 );
-
-export const OrganizationHierarchyListView = compose(
-  withUser,
-  withOrganizationHierarchy,
-  injectIntl
-)(organizationHierarchyListView);
