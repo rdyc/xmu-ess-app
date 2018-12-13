@@ -48,9 +48,7 @@ interface OwnRouteParams {
 }
 
 interface OwnState {
-  // setState: PurchaseRequestFormData | undefined;
   formMode: FormMode;
-  requestMinDate?: Date | undefined;
   companyUid?: string | undefined;
   positionUid?: string | undefined;
   purchaseUid?: string | undefined;
@@ -85,7 +83,6 @@ const createProps: mapper<PurchaseRequestEditorProps, OwnState> = (props: Purcha
     companyUid: state ? state.companyUid : undefined,
     positionUid: state ? state.positionUid : undefined,
     purchaseUid: state ? state.purchaseUid : undefined,
-    requestMinDate: state ? state.requestMinDate : undefined,
     submitDialogTitle: !state ? props.intl.formatMessage(purchaseMessage.request.confirm.createTitle) : props.intl.formatMessage(purchaseMessage.request.confirm.modifyTitle) ,
     submitDialogContentText: !state ? props.intl.formatMessage(purchaseMessage.request.confirm.createDescription) : props.intl.formatMessage(purchaseMessage.request.confirm.modifyDescription) ,
     submitDialogCancelText: props.intl.formatMessage(layoutMessage.action.cancel),
@@ -298,7 +295,6 @@ const lifecycles: ReactLifeCycleFunctions<PurchaseRequestEditorProps, {}> = {
     const { layoutDispatch, intl, history, stateUpdate } = this.props;
     const { loadDetailRequest } = this.props.purchaseRequestDispatch;
     const { user } = this.props.userState;
-    const now = new Date();
 
     const purchase = {
       title: intl.formatMessage(purchaseMessage.request.pages.newTitle),
@@ -312,7 +308,6 @@ const lifecycles: ReactLifeCycleFunctions<PurchaseRequestEditorProps, {}> = {
     stateUpdate({
       companyUid: user.company.uid,
       positionUid: user.position.uid,
-      requestMinDate: now.setDate(now.getDate() - 7)  
     });
 
     if (!isNullOrUndefined(history.location.state)) {
@@ -323,7 +318,6 @@ const lifecycles: ReactLifeCycleFunctions<PurchaseRequestEditorProps, {}> = {
       stateUpdate({
         formMode: FormMode.Edit,
         purchaseUid: history.location.state.uid,
-        requestMinDate: this.props.requestMinDate,
         submitDialogTitle: this.props.intl.formatMessage(purchaseMessage.request.confirm.modifyTitle),
         submitDialogContentText: this.props.intl.formatMessage(purchaseMessage.request.confirm.modifyDescription),
       });

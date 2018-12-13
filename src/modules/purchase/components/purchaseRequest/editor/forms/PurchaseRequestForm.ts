@@ -52,7 +52,7 @@ interface FormValueProps {
   formRate: number | 1;  
   formRequest: number | 0;
   formName: string;
-  requestMinDate?: Date;
+  requestMinDate?: any;
 }
 
 export type PurchaseRequestFormProps
@@ -77,11 +77,18 @@ const handlers: HandleCreators<PurchaseRequestFormProps, OwnHandlers> = {
 
 const selector = formValueSelector(formName);
 
+const dateLimit = new Date();
+dateLimit.setDate(dateLimit.getDate() - 7);
+
 const mapStateToProps = (state: any): FormValueProps => {
   const customer = selector(state, 'information.customerUid');
   const currencyType = selector(state, 'information.currencyType');
   const rate = selector(state, 'information.rate');
   const value = selector(state, 'information.request');
+  const date = selector(state, 'information.date');
+  const dateData = new Date(date);
+  dateData.setDate(dateData.getDate() - 7);
+  const dateFinal = dateData.toDateString();
 
   return {
     formName,
@@ -90,6 +97,7 @@ const mapStateToProps = (state: any): FormValueProps => {
     formCurrencyType: currencyType,
     formRate: rate,
     formRequest: value,
+    requestMinDate: date ? dateFinal : dateLimit
   };
 };
 
