@@ -1,4 +1,4 @@
-import { layoutAlertAdd, listBarMetadata } from '@layout/store/actions';
+import { layoutAlertAdd } from '@layout/store/actions';
 import {
   LookupRoleAction as Action,
   lookupRoleDeleteError,
@@ -8,6 +8,7 @@ import {
   lookupRoleGetAllError,
   lookupRoleGetAllRequest,
   lookupRoleGetAllSuccess,
+  // lookupRoleGetByIdDispose,
   lookupRoleGetByIdError,
   lookupRoleGetByIdRequest,
   lookupRoleGetByIdSuccess,
@@ -33,8 +34,7 @@ function* watchFetchAllRequest() {
       method: 'get',
       path: `/v1/lookup/roles${objectToQuerystring(action.payload.filter)}`, 
       successEffects: (response: IApiResponse) => ([
-        put(lookupRoleGetAllSuccess(response.body)),
-        put(listBarMetadata(response.body.metadata))
+        put(lookupRoleGetAllSuccess(response.body))
       ]), 
       failureEffects: (response: IApiResponse) => ([
         put(lookupRoleGetAllError(response.statusText)),
@@ -122,7 +122,9 @@ function* watchPostRequest() {
       path: `/v1/lookup/roles/${action.payload.companyUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
-        put(lookupRolePostSuccess(response.body))
+        put(lookupRoleGetAllDispose()),
+        put(lookupRolePostSuccess(response.body)),
+        put(lookupRoleGetByIdSuccess(response.body))
       ],
       successCallback: (response: IApiResponse) => {
         action.payload.resolve(response.body.data);
@@ -167,7 +169,9 @@ function* watchPutRequest() {
       path: `/v1/lookup/roles/${action.payload.companyUid}/${action.payload.roleUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
-        put(lookupRolePutSuccess(response.body))
+        put(lookupRolePutSuccess(response.body)),
+        put(lookupRoleGetAllDispose()),
+        put(lookupRoleGetByIdSuccess(response.body))
       ],
       successCallback: (response: IApiResponse) => {
         action.payload.resolve(response.body.data);
@@ -214,7 +218,7 @@ function* watchDeleteRequest() {
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
         put(lookupRoleDeleteSuccess(response.body)),
-        put(lookupRoleGetAllDispose())
+        put(lookupRoleGetAllSuccess(response.body))
       ],
       successCallback: (response: IApiResponse) => {
         action.payload.resolve(response.body.data);

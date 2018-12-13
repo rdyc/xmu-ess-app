@@ -3,6 +3,7 @@ import { FormMode } from '@generic/types';
 import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
+import { layoutMessage } from '@layout/locales/messages';
 import { ILookupRolePostPayload, ILookupRolePutPayload } from '@lookup/classes/request/role';
 import { IRole } from '@lookup/classes/response';
 import { WithLookupRole, withLookupRole } from '@lookup/hoc/withLookupRole';
@@ -31,6 +32,10 @@ interface OwnState {
   formMode: FormMode;
   companyUid?: string | undefined;
   roleUid?: string | undefined;
+  submitDialogTitle: string;
+  submitDialogContentText: string;
+  submitDialogCancelText: string;
+  submitDialogConfirmedText: string;
 }
 
 interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
@@ -55,7 +60,7 @@ const handlerCreators: HandleCreators<RoleEditorProps, OwnHandlers> = {
     };
 
     const requiredFields = [
-      'companyUid', 'name', 'description'
+      'companyUid', 'name', 'gradeType', 'description'
     ];
 
     requiredFields.forEach(field => {
@@ -69,7 +74,7 @@ const handlerCreators: HandleCreators<RoleEditorProps, OwnHandlers> = {
   handleSubmit: (props: RoleEditorProps) => (formData: LookupRoleFormData) => {
     const { formMode, roleUid, intl } = props;
     const { user } = props.userState;
-    const { response } = props.lookupRoleState.detail;
+    // const { response } = props.lookupRoleState.detail;
     const { createRequest, updateRequest } = props.lookupRoleDispatch;
 
     if (!user) {
@@ -79,26 +84,11 @@ const handlerCreators: HandleCreators<RoleEditorProps, OwnHandlers> = {
     const parsedRoleMenu = () => {
       const menus: any[] = [];
       const fillMenus = (item: LookupRoleMenuFormData) => {
-        const _uid = Object.keys(item)[0];
-
-        let uid: string | null = null;
-
-        if (response && response.data) {
-          const source = [
-            ...response.data.menus
-          ];
-
-          const menu = source.find(mn => mn.menuUid === _uid);
-
-          if (!isNullOrUndefined(menu)) {
-            uid = menu.menuUid;
-          }
-        }
+        const menuUid = Object.keys(item)[0];
 
         menus.push({
-          uid,
-          _uid,
-          isChecked: item[_uid]
+          menuUid,
+          isAccess: item[menuUid]
         });
       };
 
@@ -164,6 +154,7 @@ const handlerCreators: HandleCreators<RoleEditorProps, OwnHandlers> = {
       time: new Date()
     });
 
+    // history.push(`/lookup/roles`);
     history.push(`/lookup/roles/${response.uid}`);
   },
   handleSubmitFail: (props: RoleEditorProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
@@ -198,7 +189,11 @@ const handlerCreators: HandleCreators<RoleEditorProps, OwnHandlers> = {
 };
 
 const createProps: mapper<RoleEditorProps, OwnState> = (props: RoleEditorProps): OwnState => ({ 
-  formMode: FormMode.New
+  formMode: FormMode.New,
+  submitDialogTitle: props.intl.formatMessage(lookupMessage.role.dialog.createTitle),
+  submitDialogContentText: props.intl.formatMessage(lookupMessage.role.dialog.createDescription),
+  submitDialogCancelText: props.intl.formatMessage(layoutMessage.action.cancel),
+  submitDialogConfirmedText: props.intl.formatMessage(layoutMessage.action.ok),
 });
 
 const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {

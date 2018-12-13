@@ -48,11 +48,12 @@ import {
 } from './lookupDiemMessage';
 import { 
   roleConfirm, 
+  roleDialog, 
   roleField, 
   roleFieldHelperFor, 
   roleMessage, 
   rolePage, 
-  roleSection 
+  roleSection
 } from './lookupRoleMessage';
 import {
   mileageExceptionField,
@@ -79,7 +80,8 @@ export const lookupMessage = {
     fieldFor: roleFieldHelperFor,
     section: roleSection,
     confirm: roleConfirm,
-    message: roleMessage
+    message: roleMessage,
+    dialog: roleDialog
   },
   systemLimit: {
     page: systemLimitPage,

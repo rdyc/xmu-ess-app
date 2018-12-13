@@ -25,13 +25,28 @@ export type LookupRoleFormData = {
 
 interface OwnProps {
   formMode: FormMode;
+  submitDialogTitle: string;
+  submitDialogContentText: string;
+  submitDialogCancelText: string;
+  submitDialogConfirmedText: string;
+}
+
+interface FormValueProps {
+  formName: string;
 }
 
 export type RoleFormProps
   = InjectedFormProps<LookupRoleFormData, OwnProps>
-  & OwnProps;
+  & OwnProps
+  & FormValueProps;
 
-const connectedView = connect()(LookupRoleFormView);
+const mapStateToProps = (state: any): FormValueProps => {
+  return {
+    formName,
+  };
+};
+
+const connectedView = connect(mapStateToProps)(LookupRoleFormView);
 
 export const LookupRoleForm = reduxForm<LookupRoleFormData, OwnProps>({
   form: formName,

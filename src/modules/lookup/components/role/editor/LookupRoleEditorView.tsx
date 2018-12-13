@@ -6,7 +6,17 @@ import { LookupRoleForm, LookupRoleFormData } from './forms/LookupRoleForm';
 import { RoleEditorProps } from './LookupRoleEditor';
 
 export const LookupRoleEditorView: React.SFC<RoleEditorProps> = props => {
-  const { formMode, handleValidate, handleSubmit, handleSubmitSuccess, handleSubmitFail } = props;
+  const { 
+    formMode, 
+    handleValidate, 
+    handleSubmit, 
+    handleSubmitSuccess, 
+    handleSubmitFail,
+    submitDialogTitle, 
+    submitDialogContentText, 
+    submitDialogConfirmedText, 
+    submitDialogCancelText 
+  } = props;
   const { isLoading, response } = props.lookupRoleState.detail;
 
   const renderForm = (formData: LookupRoleFormData) => (
@@ -17,6 +27,10 @@ export const LookupRoleEditorView: React.SFC<RoleEditorProps> = props => {
       onSubmit={handleSubmit}
       onSubmitSuccess={handleSubmitSuccess}
       onSubmitFail={handleSubmitFail}
+      submitDialogTitle={submitDialogTitle}
+      submitDialogContentText={submitDialogContentText}
+      submitDialogCancelText={submitDialogCancelText}
+      submitDialogConfirmedText={submitDialogConfirmedText}
     />
   );
 

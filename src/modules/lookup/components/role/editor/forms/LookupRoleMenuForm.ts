@@ -48,40 +48,10 @@ const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateHandler> = {
 
 const handlerCreators: HandleCreators<LookupRoleMenuFormProps, OwnHandlers> = {
   handleChange: (props: LookupRoleMenuFormProps) => (event: React.ChangeEvent<HTMLInputElement>, checked: boolean): void => {
-    // const { context } = props;
-    // const el = event.currentTarget.value;
-
-    // // all documents
-    // const documents = context.fields.getAll();
-
-    // // check exist
-    // const document = documents.find(item => item.documentType === el);
-
-    // // insert or update
-    // if (isNullOrUndefined(document)) {
-    //   context.fields.push({
-    //     uid: '',
-    //     documentType: el,
-    //     isChecked: checked
-    //   });
-    // } else {
-    //   document.isChecked = checked;
-    // }
+    // 
   },
   isChecked: (props: LookupRoleMenuFormProps) => (type: string): boolean => {
-    // const { context } = props;
-
     const result: boolean = false;
-
-    // // all documents
-    // const documents = context.fields.getAll();
-
-    // // check exist
-    // const document = documents.find(item => item.documentType === type);
-
-    // if (!isNullOrUndefined(document)) {
-    //   result = document.isChecked;
-    // }
 
     return result;
   }
@@ -94,7 +64,7 @@ const lifecycles: ReactLifeCycleFunctions<LookupRoleMenuFormProps, {}> = {
     if (!lookupMenuState.list.isLoading && !lookupMenuState.list.response) {
       lookupMenuDispatch.loadListRequest({
         filter: {
-          orderBy: 'code',
+          orderBy: 'uid',
           direction: 'ascending'
         }
       });

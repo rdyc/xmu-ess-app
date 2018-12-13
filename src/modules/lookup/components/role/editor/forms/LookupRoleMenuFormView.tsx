@@ -35,7 +35,7 @@ export const LookupRoleMenuFormView: React.SFC<LookupRoleMenuFormProps> = props 
                       control={
                         <Field
                           type="checkbox"
-                          name={`[${index}].${parent.name}`}
+                          name={`menus[${index}].${parent.uid}`}
                           component={
                             ({ input, meta }: any) => (
                               <Checkbox
@@ -69,39 +69,41 @@ export const LookupRoleMenuFormView: React.SFC<LookupRoleMenuFormProps> = props 
                       !isLoading &&
                       response &&
                       response.data &&
-                      response.data.map(child => (child.parentUid === parent.uid) &&
-                        <ListItem
-                          button
-                          color={'inherit'}
-                          className={props.classes.marginFarLeft}
-                        >
-                          <FormControlLabel
-                            label={child.name}
-                            control={
-                              <Field
-                                type="checkbox"
-                                name={`[${index}].${child.name}`}
-                                component={
-                                  ({ input, meta }: any) => (
-                                    <Checkbox
-                                      {...input}
-                                      value={child.uid}
-                                      disabled={meta.submitting}
-                                      onFocus={undefined}
-                                      onBlur={undefined}
-                                      style={{
-                                        height: 10,
-                                        width: 10,
-                                        marginLeft: 10,
-                                        marginRight: 10
-                                      }}
-                                    />
-                                  )
-                                }
-                              />
-                            }
-                          />
-                        </ListItem>
+                      response.data.map((child, index2) => (child.parentUid === parent.uid) &&
+                        <div key={index2}>
+                          <ListItem
+                            button
+                            color={'inherit'}
+                            className={props.classes.marginFarLeft}
+                          >
+                            <FormControlLabel
+                              label={child.name}
+                              control={
+                                <Field
+                                  type="checkbox"
+                                  name={`menus[${index2}].${child.uid}`}
+                                  component={
+                                    ({ input, meta }: any) => (
+                                      <Checkbox
+                                        {...input}
+                                        value={child.uid}
+                                        disabled={meta.submitting}
+                                        onFocus={undefined}
+                                        onBlur={undefined}
+                                        style={{
+                                          height: 10,
+                                          width: 10,
+                                          marginLeft: 10,
+                                          marginRight: 10
+                                        }}
+                                      />
+                                    )
+                                  }
+                                />
+                              }
+                            />
+                          </ListItem>
+                        </div>
                       )
                     }
                   </Collapse>
