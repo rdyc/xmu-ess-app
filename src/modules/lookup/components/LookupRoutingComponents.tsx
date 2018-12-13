@@ -35,8 +35,8 @@ import { LookupSystemLimitList } from './systemLimit/list/LookupSystemLimitListV
 const role = (props: RouteComponentProps) => (
   <Switch>
     <Route path={`${props.match.path}/form`} component={LookupRoleEditor} />
-    <Route path={`${props.match.path}/list`} component={LookupRoleList} />
     <Route path={`${props.match.path}/:roleUid`} component={LookupRoleDetail} />
+    <Route path={`${props.match.path}`} component={LookupRoleList} />
   </Switch>
 );
 

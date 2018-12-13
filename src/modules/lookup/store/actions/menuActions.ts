@@ -1,6 +1,6 @@
 import { IResponseCollection } from '@generic/interfaces';
-import { IMenuGetAllRequest, IMenuGetByIdRequest, IMenuListRequest } from '@lookup/classes/queries';
-import { IMenu, IMenuDetail, IMenuList } from '@lookup/classes/response';
+import { IMenuGetAllRequest, IMenuGetByIdRequest, IMenuListRequest } from '@lookup/classes/queries/menu';
+import { IMenu, IMenuDetail, IMenuList } from '@lookup/classes/response/menu';
 import { action } from 'typesafe-actions';
 
 export const enum MenuAction {
