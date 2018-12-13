@@ -102,7 +102,7 @@ const handlerCreators: HandleCreators<RoleListProps, OwnHandlers> = {
         props.callback();
       }
       props.setDefault();
-      props.history.push(`/lookup/roles/list`);
+      props.history.push(`/lookup/roles`);
     });
   },
 };
