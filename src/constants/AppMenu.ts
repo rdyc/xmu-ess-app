@@ -42,7 +42,7 @@ enum AppMenu {
   LookupCompany = 'MNU02',
   LookupDiem = 'MNU54',
   LookupApprovalHierarchy = 'MNU04',
-  LookupOrganization = 'MNU05',
+  LookupOrganizationStructure = 'MNU05',
   LookupMileageException = 'MNU59',
   LookupCustomer = 'MNU33',
   LookupPosition = 'MNU06',

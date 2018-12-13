@@ -6,7 +6,6 @@ import {
   CollectionHandler,
   CollectionPage,
 } from '@layout/components/pages';
-import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
 import { GlobalFormat } from '@layout/types';
@@ -14,20 +13,18 @@ import { Button } from '@material-ui/core';
 import { IStructure } from '@organization/classes/response/structure';
 import { StructureField } from '@organization/classes/types';
 import { structureFieldTranslator } from '@organization/helper/structureFieldTranslator';
-import { withOrganizationStructure, WithOrganizationStructure } from '@organization/hoc/withOrganizationStructure';
 import { organizationMessage } from '@organization/locales/messages/organizationMessage';
 import * as moment from 'moment';
 import * as React from 'react';
-import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
-import { RouteComponentProps } from 'react-router';
-import { compose } from 'recompose';
+import { FormattedMessage } from 'react-intl';
 import { StructureSummary } from '../shared/StructureSummary';
 import { StructureFilter } from './StructureFilter';
+import { OrganizationStructureListProps } from './StructureList';
 
-const config: CollectionConfig<IStructure, AllProps> = {
+const config: CollectionConfig<IStructure, OrganizationStructureListProps> = {
   // page info
-  page: (props: AllProps) => ({
-    uid: AppMenu.LookupOrganization,
+  page: (props: OrganizationStructureListProps) => ({
+    uid: AppMenu.LookupOrganizationStructure,
     parentUid: AppMenu.Lookup,
     title: `${props.intl.formatMessage(organizationMessage.structure.page.listTitle)}`,
     description: props.intl.formatMessage(organizationMessage.structure.page.listSubHeader),
@@ -48,7 +45,7 @@ const config: CollectionConfig<IStructure, AllProps> = {
 
   // searching
   hasSearching: true,
-  searchStatus: (props: AllProps): boolean => {
+  searchStatus: (props: OrganizationStructureListProps): boolean => {
     let result: boolean = false;
 
     const { request } = props.organizationStructureState.all;
@@ -65,7 +62,7 @@ const config: CollectionConfig<IStructure, AllProps> = {
 
   // more
   hasMore: true,
-  moreOptions: (props: AllProps, callback: CollectionHandler): IAppBarMenu[] => ([
+  moreOptions: (props: OrganizationStructureListProps, callback: CollectionHandler): IAppBarMenu[] => ([
     {
       id: CommonUserAction.Refresh,
       name: props.intl.formatMessage(layoutMessage.action.refresh),
@@ -83,7 +80,7 @@ const config: CollectionConfig<IStructure, AllProps> = {
   ]),
 
   // events
-  onDataLoad: (props: AllProps, callback: CollectionHandler, params: CollectionDataProps, forceReload?: boolean | false) => {
+  onDataLoad: (props: OrganizationStructureListProps, callback: CollectionHandler, params: CollectionDataProps, forceReload?: boolean | false) => {
     const { user } = props.userState;
     const { isLoading, response } = props.organizationStructureState.all;
     const { loadAllRequest } = props.organizationStructureDispatch;
@@ -94,7 +91,7 @@ const config: CollectionConfig<IStructure, AllProps> = {
       if (!response || forceReload) {
         loadAllRequest({
           filter: {
-            companyUid: undefined,
+            companyUid: props.companyUid,
             direction: params.direction,
             orderBy: params.orderBy,
             page: params.page,
@@ -109,13 +106,13 @@ const config: CollectionConfig<IStructure, AllProps> = {
       }
     }
   },
-  onUpdated: (props: AllProps, callback: CollectionHandler) => {
+  onUpdated: (props: OrganizationStructureListProps, callback: CollectionHandler) => {
     const { isLoading, response } = props.organizationStructureState.all;
 
     callback.handleLoading(isLoading);
     callback.handleResponse(response);
   },
-  onBind: (item: IStructure, index: number, props: AllProps) => ({
+  onBind: (item: IStructure, index: number, props: OrganizationStructureListProps) => ({
     key: item.uid,
     primary: item.uid,
     secondary: item.description || '-',
@@ -126,12 +123,14 @@ const config: CollectionConfig<IStructure, AllProps> = {
   }),
 
     // filter
-  filterComponent: (callback: CollectionHandler) => (
-    <StructureFilter handleFind={callback.handleFilter} />
+  filterComponent: (callback: CollectionHandler, props: OrganizationStructureListProps) => (
+    <StructureFilter 
+      handleFind={props.handleChangeFilter}
+      callbackForceReload={callback.handleForceReload}/>
   ),
 
   // summary component
-  summaryComponent: (item: IStructure, props: AllProps) => (
+  summaryComponent: (item: IStructure) => (
     <StructureSummary
       data={item}
       // category={props.match.params.category}
@@ -157,22 +156,25 @@ const config: CollectionConfig<IStructure, AllProps> = {
     </React.Fragment>
   ),
 };
-type AllProps
-  = WithUser
-  & WithOrganizationStructure
-  & RouteComponentProps<OwnRouteParams>
-  & InjectedIntlProps;
-interface OwnRouteParams {
-  category: string;
-}
-const structureList: React.SFC<AllProps> = props => (
+
+// type AllProps
+//   = WithUser
+//   & WithOrganizationStructure
+//   & RouteComponentProps<OwnRouteParams>
+//   & InjectedIntlProps;
+
+// interface OwnRouteParams {
+//   category: string;
+// }
+
+export const structureListView: React.SFC<OrganizationStructureListProps> = props => (
   <CollectionPage
     config={config}
     connectedProps={props}
   />
 );
-export const StructureList = compose(
-  withUser,
-  withOrganizationStructure,
-  injectIntl
-)(structureList);
+// export const StructureListView = compose(
+//   withUser,
+//   withOrganizationStructure,
+//   injectIntl
+// )(structureListView);
