@@ -5,7 +5,7 @@ import { compose, HandleCreators, StateHandler, StateHandlerMap, StateUpdaters, 
 import { InjectedFormProps, reduxForm } from 'redux-form';
 import { DeleteFormView } from './DeleteFormView';
 
-const formName = 'lookupDelete';
+const formName = 'lookupPositionDelete';
 
 export type DeleteFormData = {
   uid: string | null | undefined;
