@@ -21,6 +21,7 @@ export const purchaseRequestFieldTranslator = (find: string, field: ICollectionV
 
       case 'approve':
       case 'approved':
+      case 'settle':
         result = WorkflowStatusType.Approved;
         break;
 

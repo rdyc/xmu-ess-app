@@ -46,12 +46,13 @@ import {
   lookupDiemPage,
   lookupDiemSection
 } from './lookupDiemMessage';
-import {
-  roleConfirm,
-  roleField,
-  roleFieldHelperFor,
-  roleMessage,
-  rolePage,
+import { 
+  roleConfirm, 
+  roleDialog, 
+  roleField, 
+  roleFieldHelperFor, 
+  roleMessage, 
+  rolePage, 
   roleSection
 } from './lookupRoleMessage';
 import {
@@ -99,7 +100,8 @@ export const lookupMessage = {
     fieldFor: roleFieldHelperFor,
     section: roleSection,
     confirm: roleConfirm,
-    message: roleMessage
+    message: roleMessage,
+    dialog: roleDialog
   },
   systemLimit: {
     page: systemLimitPage,

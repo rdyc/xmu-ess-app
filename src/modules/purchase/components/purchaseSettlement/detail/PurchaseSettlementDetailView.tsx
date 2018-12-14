@@ -18,10 +18,6 @@ const isContains = (statusType: WorkflowStatusType | undefined, statusTypes: str
   return statusType ? statusTypes.indexOf(statusType) !== -1 : false;
 };
 
-const isSettle = (statusType: WorkflowStatusType | undefined, statusTypes: string | null): boolean => {
-  return statusType ? false : true;
-};
-
 const config: SingleConfig<ISettlementDetail, PurchaseSettlementDetailProps> = {
   // page info
   page: (props: PurchaseSettlementDetailProps) => ({
@@ -51,15 +47,8 @@ const config: SingleConfig<ISettlementDetail, PurchaseSettlementDetailProps> = {
       id: PurchaseUserAction.Modify,
       name: props.intl.formatMessage(layoutMessage.action.modify),
       enabled: true,
-      visible: isContains(state.statusType, [WorkflowStatusType.Submitted, WorkflowStatusType.InProgress]),
+      visible: isContains(state.statusType, [WorkflowStatusType.Submitted, WorkflowStatusType.InProgress, WorkflowStatusType.Rejected]),
       onClick: props.handleOnModify
-    },
-    {
-      id: PurchaseUserAction.Settle,
-      name: props.intl.formatMessage(purchaseMessage.action.settle),
-      enabled: true,
-      visible: isSettle(state.statusType, null),
-      onClick: props.handleOnSettle
     }
   ]),
 

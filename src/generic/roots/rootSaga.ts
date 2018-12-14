@@ -12,6 +12,7 @@ import commonLeaveSagas from '@common/store/sagas/leaveSagas';
 import commonLimiterSagas from '@common/store/sagas/limiterSagas';
 import commonProjectSagas from '@common/store/sagas/projectSagas';
 import commonPurposeSagas from '@common/store/sagas/purposeSagas';
+import commonRelationSagas from '@common/store/sagas/relationSagas';
 import commonSiteSagas from '@common/store/sagas/siteSagas';
 import commonStatusSagas from '@common/store/sagas/statusSagas';
 import commonSystemSagas from '@common/store/sagas/systemSagas';
@@ -25,6 +26,7 @@ import leaveApprovalSagas from '@leave/store/sagas/leaveApprovalSagas';
 import leaveCancellationSagas from '@leave/store/sagas/leaveCancellationSagas';
 import leaveRequestSagas from '@leave/store/sagas/leaveRequestSagas';
 import lookupCurrencySagas from '@lookup/store/sagas/currencySagas';
+import leaveCalculationSagas from '@lookup/store/sagas/leaveCalculationSagas';
 import lookupCompanySagas from '@lookup/store/sagas/lookupCompanySagas';
 import lookupCustomerSagas from '@lookup/store/sagas/lookupCustomerSagas';
 import lookupDiemSagas from '@lookup/store/sagas/lookupDiemSagas';
@@ -37,6 +39,7 @@ import lookupPositionSagas from '@lookup/store/sagas/positionSagas';
 import lookupSystemLimitSagas from '@lookup/store/sagas/systemLimitSagas';
 import mileageApprovalSagas from '@mileage/store/sagas/approval/mileageApprovalSagas';
 import mileageRequestSagas from '@mileage/store/sagas/request/mileageRequestSagas';
+import organizationHierarchySagas from '@organization/store/sagas/organizationHierarchySagas';
 import projectAcceptanceSagas from '@project/store/sagas/projectAcceptanceSagas';
 import projectApprovalSagas from '@project/store/sagas/projectApprovalSagas';
 import projectAssignmentSagas from '@project/store/sagas/projectAssignmentSagas';
@@ -76,8 +79,10 @@ export function* rootSaga() {
     fork(commonSystemSagas),
     fork(commonUnitSagas),
     fork(commonGradeSagas),
+    fork(commonRelationSagas),
 
     // lookup
+    fork(leaveCalculationSagas),
     fork(lookupCustomerSagas),
     fork(lookupMileageExceptionSagas),
     fork(lookupCompanySagas),
@@ -89,6 +94,9 @@ export function* rootSaga() {
     fork(lookupSystemLimitSagas),
     fork(lookupHolidaySagas),
     fork(lookupLeaveSagas),
+
+    // organization
+    fork(organizationHierarchySagas),
     
     // account
     fork(accountEmployeeSagas),

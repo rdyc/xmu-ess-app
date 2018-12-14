@@ -69,4 +69,8 @@ export interface ICommonState {
   commonGradeAll: IQueryCollectionState<ISystemAllRequest, ISystem>;
   commonGradeList: IQueryCollectionState<ISystemListRequest, ISystemList>;
   commonGradeDetail: IQuerySingleState<ISystemByIdRequest, ISystemDetail>;
+
+  commonRelationAll: IQueryCollectionState<ISystemAllRequest, ISystem>;
+  commonRelationList: IQueryCollectionState<ISystemListRequest, ISystemList>;
+  commonRelationDetail: IQuerySingleState<ISystemByIdRequest, ISystemDetail>;
 }
