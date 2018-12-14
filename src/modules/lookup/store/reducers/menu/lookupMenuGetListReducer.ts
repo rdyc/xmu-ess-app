@@ -23,4 +23,4 @@ const reducer: Reducer<IQueryCollectionState<IMenuListRequest, IMenuList>> = (st
   }
 };
 
-export { reducer as menuGetListReducer };
+export { reducer as lookupMenuGetListReducer };

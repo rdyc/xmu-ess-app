@@ -30,6 +30,13 @@ export const roleSection = defineMessages({
   roleMenuSubHeader: { id: `${prefix}.section.roleMenu.subHeader` },
 });
 
+export const roleDialog = defineMessages({
+  modifyTitle: { id: `${prefix}.dialog.modifyTitle`},
+  modifyDescription: { id: `${prefix}.dialog.modifyDescription`},
+  createTitle: { id: `${prefix}.dialog.newTitle`},
+  createDescription: { id: `${prefix}.dialog.newDescription`},
+});
+
 // fields
 export const roleField = defineMessages({
   uid: {id: `${prefix}.field.uid`},
@@ -44,6 +51,7 @@ export const roleField = defineMessages({
   namePlaceholder: {id: `${prefix}.field.name.placeholder`},
   
   gradeType: {id: `${prefix}.field.gradeType`},
+  gradeTypeRequired: {id: `${prefix}.field.gradeType.required`},
   gradeTypePlaceholder: {id: `${prefix}.field.gradeType.placeholder`},
   
   isActive: {id: `${prefix}.field.isActive`},
@@ -51,6 +59,7 @@ export const roleField = defineMessages({
   isActivePlaceholder: {id: `${prefix}.field.isActive.placeholder`},
   
   description: {id: `${prefix}.field.description`},
+  descriptionRequired: {id: `${prefix}.field.description.required`},
   descriptionPlaceholder: {id: `${prefix}.field.description.placeholder`},
 });
 
@@ -72,6 +81,8 @@ export const roleFieldHelperFor = (field: string, type: 'fieldName' | 'fieldRequ
     switch (field) {
       case 'companyUid': return roleField.companyUidRequired;
       case 'name': return roleField.nameRequired;
+      case 'gradeType': return roleField.gradeTypeRequired;
+      case 'description': return roleField.descriptionRequired;
       case 'isActive': return roleField.isActiveRequired;
 
       default: return {id: field};
@@ -102,4 +113,6 @@ export const roleMessage = defineMessages({
   createFailure: { id: `${prefix}.message.create.failure` },
   updateSuccess: { id: `${prefix}.message.update.success` },
   updateFailure: { id: `${prefix}.message.update.failure` },
+  deleteSuccess: { id: `${prefix}.message.delete.success` },
+  deleteFailure: { id: `${prefix}.message.delete.failure` },
 });

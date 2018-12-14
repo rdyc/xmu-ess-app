@@ -72,7 +72,6 @@ const lookupMileageExceptionFilter: React.SFC<AllProps> = props => {
   };
 
   return (
-    <form>
     <Grid container spacing={16}>
       <Grid item xs={12} md={6}>
         <Field 
@@ -97,7 +96,6 @@ const lookupMileageExceptionFilter: React.SFC<AllProps> = props => {
         />
       </Grid>
     </Grid>
-    </form>
   );
 };
 

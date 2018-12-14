@@ -69,6 +69,7 @@ const handlerCreators: HandleCreators<RoleDetailFormProps, OwnHandlers> = {
 
       case 'description':
         fieldProps = {
+          required: true,
           label: intl.formatMessage(lookupMessage.role.fieldFor(name, 'fieldName')),
           placeholder: intl.formatMessage(lookupMessage.role.fieldFor(name, 'fieldPlaceholder')),
           component: InputText
