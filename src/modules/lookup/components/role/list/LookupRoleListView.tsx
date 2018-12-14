@@ -84,7 +84,7 @@ const config: CollectionConfig<IRole, RoleListProps> = {
       if (!response || forceReload) {
         loadAllRequest({
           filter: {
-            // companyUid: undefined,
+            companyUid: props.companyUid,
             find: params.find,
             findBy: params.findBy,
             orderBy: params.orderBy,
@@ -116,8 +116,11 @@ const config: CollectionConfig<IRole, RoleListProps> = {
   }),
 
   // filter
-  filterComponent: (callback: CollectionHandler) => (
-    <LookupRoleFilter handleFind={callback.handleFilter} />
+  filterComponent: (callback: CollectionHandler, props: RoleListProps) => (
+    <LookupRoleFilter 
+      handleFind={props.handleChangeFilter}
+      callbackForceReload={callback.handleForceReload}
+    />
   ),
 
   // summary component
@@ -153,11 +156,6 @@ const config: CollectionConfig<IRole, RoleListProps> = {
 
 };
 
-// type AllProps
-//   = WithUser
-//   & WithLookupRole
-//   & InjectedIntlProps;
-
 export const LookupRoleListView: React.SFC<RoleListProps> = props => (
   <CollectionPage
     config={config}
@@ -175,9 +173,3 @@ export const LookupRoleListView: React.SFC<RoleListProps> = props => (
     />
   </CollectionPage>
 );
-
-// export const LookupRoleListView = compose(
-//   withUser,
-//   withLookupRole,
-//   injectIntl
-// )(listView);

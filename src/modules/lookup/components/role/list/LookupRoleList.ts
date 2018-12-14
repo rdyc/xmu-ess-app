@@ -14,9 +14,11 @@ interface OwnHandlers {
   handleOnDelete: (uid: string, callback: () => void) => void;
   handleOnCloseDialog: () => void;
   handleSubmit: () => void;
+  handleChangeFilter: (companyUid: string) => void;
 }
 
 interface OwnState {
+  companyUid: string | undefined;
   roleUid: string;
   callback?: () => void;
   reload: boolean;
@@ -35,6 +37,7 @@ interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
 }
 
 const createProps: mapper<RoleListProps, OwnState> = (props: RoleListProps): OwnState => ({
+  companyUid: undefined,
   roleUid: '',
   reload: false,
   dialogFullScreen: false,
@@ -62,6 +65,10 @@ const stateUpdaters: StateUpdaters<RoleListProps, OwnState, OwnStateUpdaters> = 
     dialogContent: undefined,
     dialogCancelLabel: undefined,
     dialogConfirmLabel: undefined,
+  }),
+  stateUpdate: (prevState: OwnState) => (newState: any) => ({
+    ...prevState,
+    ...newState
   })
 };
 
@@ -105,6 +112,11 @@ const handlerCreators: HandleCreators<RoleListProps, OwnHandlers> = {
       props.history.push(`/lookup/roles`);
     });
   },
+  handleChangeFilter: (props: RoleListProps) => (companyUid: string) => {
+    props.stateUpdate({
+      companyUid
+    });
+  }
 };
 
 export type RoleListProps
