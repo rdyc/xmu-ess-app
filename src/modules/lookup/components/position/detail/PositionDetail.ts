@@ -18,6 +18,9 @@ import {
   withHandlers,
   withStateHandlers,
 } from 'recompose';
+import { Dispatch } from 'redux';
+import { FormErrors } from 'redux-form';
+import { isObject } from 'util';
 
 interface OwnHandler {
   handleOnModify: () => void;
@@ -104,8 +107,6 @@ const handlerCreators: HandleCreators<PositionDetailProps, OwnHandler> = {
   },
   handleOnConfirm: (props: PositionDetailProps) => () => {
     const { response } = props.lookupPositionState.detail;
-    const { deleteRequest } = props.lookupPositionDispatch;
-    const { alertAdd } = props.layoutDispatch;
 
     let positionUid: string | undefined;
     let companyUid: string | undefined;
@@ -121,47 +122,73 @@ const handlerCreators: HandleCreators<PositionDetailProps, OwnHandler> = {
 
     const actions = [
       PositionUserAction.Modify,
-      PositionUserAction.Delete
     ];
 
     if (actions.indexOf(props.action) !== -1) {
       let next: string = '404';
-      let deleteAction: boolean = false;
 
       switch (props.action) {
         case PositionUserAction.Modify:
-          next = '/lookup/position/form';
+          next = '/lookup/positions/form';
           break;
-        
-        case PositionUserAction.Delete:
-          deleteAction = true;
-          next = `/lookup/position`;
-          break;
-          
+
         default:
           break;
       }
 
       props.setDefault();
-      
-      if (deleteAction) {
-         deleteRequest({
-          reject: Promise.reject,
-          resolve: Promise.resolve,
-          data: {uid: positionUid} as IPositionDeletePayload
-          });  
-
-         alertAdd({
-           message: props.intl.formatMessage(lookupMessage.position.message.deleteSuccess),
-            time: new Date(),
-          });
-         props.history.push(next, ); 
-      } else {
-        props.history.push(next, { companyUid, uid: positionUid });
-      }
+   
+      props.history.push(next, { companyUid, uid: positionUid });
 
     }
   },
+
+  handleSubmit: (props: PositionDetailProps) => () => {
+    const { match, intl } = props;
+    const { user } = props.userState;
+    const { deleteRequest } = props.lookupPositionDispatch;
+    // user checking
+    if (!user) {
+      return Promise.reject('user was not found');
+    }
+    // props checking
+    if (!match.params.positionUid) {
+      const message = intl.formatMessage(lookupMessage.position.message.emptyPositionUid);
+      return Promise.reject(message);
+    }
+    const payload = {
+      uid: match.params.positionUid
+    };
+    return new Promise((resolve, reject) => {
+      deleteRequest({
+        resolve,
+        reject,
+        data: payload as IPositionDeletePayload
+      });
+    });
+  },
+  handleSubmitSuccess: (props: PositionDetailProps) => (response: boolean) => {
+    props.history.push('/lookup/positions/');
+
+    props.layoutDispatch.alertAdd({
+      time: new Date(),
+      message: props.intl.formatMessage(lookupMessage.position.message.deleteSuccess, { uid: props.match.params.positionUid })
+    });
+  },
+  handleSubmitFail: (props: PositionDetailProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
+    if (errors) {
+      props.layoutDispatch.alertAdd({
+        time: new Date(),
+        message: isObject(submitError) ? submitError.message : submitError
+      });
+    } else {
+      props.layoutDispatch.alertAdd({
+        time: new Date(),
+        message: props.intl.formatMessage(lookupMessage.position.message.deleteFailure),
+        details: isObject(submitError) ? submitError.message : submitError
+      });
+    }
+  }
 };
 
 export const PositionDetail = compose(
