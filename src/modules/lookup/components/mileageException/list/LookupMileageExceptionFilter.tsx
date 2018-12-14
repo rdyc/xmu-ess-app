@@ -21,6 +21,8 @@ interface FormValueProps {
 }
 
 interface OwnProps {
+  callbackForceReload: () => void;
+  handleCompanyFilter: (companyUid: string) => void;
   handleFind: (event: any, newValue: string, oldValue: string) => void;
 }
 
@@ -42,9 +44,9 @@ type AllProps = WithForm
 
 const handlerCreators: HandleCreators<AllProps, OwnHandler> = {
   handleChangeCompanyUid: (props: AllProps) => (event: any, newValue: string, oldValue: string) => {
-    if (!isNullOrUndefined(oldValue)) {
-      props.change('companyUid', '');
-    }
+    props.change('companyUid', '');
+    props.handleCompanyFilter(newValue);
+    props.callbackForceReload();
   }
 };
 
@@ -80,7 +82,7 @@ const lookupMileageExceptionFilter: React.SFC<AllProps> = props => {
           label={intl.formatMessage(lookupMessage.mileageException.field.filterCompany)}
           placeholder={intl.formatMessage(lookupMessage.mileageException.field.filterCompanyPlaceholder)}
           component={SelectLookupCompany}
-          onChange={!isNullOrUndefined(companyUidValue) ? handleChangeCompanyUid : handleFind}
+          onChange={handleChangeCompanyUid}
         />
       </Grid>
       <Grid item xs={12} md={6}>
