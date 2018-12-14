@@ -133,7 +133,6 @@ const config: CollectionConfig<IStructure, OrganizationStructureListProps> = {
   summaryComponent: (item: IStructure) => (
     <StructureSummary
       data={item}
-      // category={props.match.params.category}
     />
   ),
 

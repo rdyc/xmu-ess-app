@@ -9,10 +9,22 @@ export const organizationStructurePage = defineMessages({
   detailSubHeader: { id: `${prefix}.page.detail.subHeader` },
 });
 
+export const organizationStructureDialog = defineMessages({
+  modifyTitle: { id: `${prefix}.dialog.modify.title` },
+  modifyDescription: { id: `${prefix}.dialog.modify.description` },
+  deleteTitle: { id: `${prefix}.dialog.delete.title` },
+  deleteDescription: { id: `${prefix}.dialog.delete.description` },
+  createTitle: { id: `${prefix}.dialog.create.title` },
+  createDescription: { id: `${prefix}.dialog.create.description` },
+  editTitle: { id: `${prefix}.dialog.create.title` },
+  editDescription: { id: `${prefix}.dialog.create.description` },
+});
 // section
 export const organizationStructureSection = defineMessages({
-  historyTitle: { id: `${prefix}.section.history.title`},
-  historySubHeader: { id: `${prefix}.section.history.subHeader`},
+  infoTitle: { id: `${prefix}.section.info.title`},
+  infoSubHeader: { id: `${prefix}.section.info.subHeader`},
+  itemTitle: { id: `${prefix}.section.item.title`},
+  itemSubHeader: { id: `${prefix}.section.item.subHeader`},
 });
 
 // option

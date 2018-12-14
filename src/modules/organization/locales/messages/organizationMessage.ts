@@ -8,6 +8,7 @@ import {
   workflowHierarchyText, 
 } from './organizationHierarchyMessage';
 import {
+  organizationStructureDialog,
   organizationStructureField,
   organizationStructureFieldHelperFor,
   organizationStructureMessage,
@@ -36,6 +37,7 @@ export const organizationMessage = {
     section: organizationStructureSection,
     field: organizationStructureField,
     fieldFor: organizationStructureFieldHelperFor,
+    dialog: organizationStructureDialog,
     option: organizationStructureOption,
     message: organizationStructureMessage
   },
