@@ -217,8 +217,8 @@ function* watchDeleteRequest() {
       path: `/v1/lookup/roles`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
+        put(lookupRoleGetAllDispose()),
         put(lookupRoleDeleteSuccess(response.body)),
-        put(lookupRoleGetAllSuccess(response.body))
       ],
       successCallback: (response: IApiResponse) => {
         action.payload.resolve(response.body.data);

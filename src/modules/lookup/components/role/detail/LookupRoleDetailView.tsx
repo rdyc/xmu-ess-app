@@ -1,5 +1,4 @@
 import AppMenu from '@constants/AppMenu';
-import { DialogConfirmation } from '@layout/components/dialogs';
 import { SingleConfig, SingleHandler, SinglePage, SingleState } from '@layout/components/pages/singlePage/SinglePage';
 import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
@@ -7,6 +6,7 @@ import { IRoleDetail } from '@lookup/classes/response';
 import { RoleUserAction } from '@lookup/classes/types';
 import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
 import * as React from 'react';
+import { LookupRoleDelete } from './LookupRoleDelete';
 import { RoleDetailProps } from './LookupRoleDetail';
 import { LookupRoleInformation } from './shared/LookupRoleInformation';
 import { LookupRoleMenu } from './shared/LookupRoleMenu';
@@ -41,15 +41,15 @@ const config: SingleConfig<IRoleDetail, RoleDetailProps> = {
       name: props.intl.formatMessage(layoutMessage.action.modify),
       enabled: true,
       visible: true,
-      onClick: props.handleOnModify
+      onClick: () => props.handleOnOpenDialog(RoleUserAction.Modify)
     },
-    // {
-    //   id: CompanyUserAction.Delete,
-    //   name: props.intl.formatMessage(layoutMessage.action.),
-    //   enabled: true,
-    //   visible: true,
-    //   onClick: () => alert('go to new page here')
-    // }
+    {
+      id: RoleUserAction.Delete,
+      name: props.intl.formatMessage(layoutMessage.action.delete),
+      enabled: true,
+      visible: true,
+      onClick: () => props.handleOnOpenDialog(RoleUserAction.Delete)
+    }
   ]),
 
   // events
@@ -103,7 +103,7 @@ export const LookupRoleDetailView: React.SFC<RoleDetailProps> = props => (
     config={config}
     connectedProps={props}
   >
-    <DialogConfirmation 
+    {/* <DialogConfirmation 
       isOpen={props.dialogOpen}
       fullScreen={props.dialogFullScreen}
       title={props.dialogTitle}
@@ -112,6 +112,20 @@ export const LookupRoleDetailView: React.SFC<RoleDetailProps> = props => (
       labelConfirm={props.dialogConfirmLabel}
       onClickCancel={props.handleOnCloseDialog}
       onClickConfirm={props.handleOnConfirm}
+    /> */}
+    <LookupRoleDelete
+      action={props.action}
+      isOpenDialog={props.dialogOpen}
+      title={props.dialogTitle}
+      content={props.dialogContent}
+      labelCancel={props.dialogCancelLabel}
+      labelConfirm={props.dialogConfirmLabel}
+      handleDialogOpen={props.handleOnOpenDialog}
+      handleDialogClose={props.handleOnCloseDialog}
+      handleDialogConfirmed={props.handleOnConfirm}
+      onSubmit={props.handleDelete} 
+      onSubmitSuccess={props.handleDeleteSuccess}
+      onSubmitFail={props.handleDeleteFail}
     />
   </SinglePage>
 );
