@@ -30,7 +30,7 @@ import LookupRoleEditor from './role/editor/LookupRoleEditor';
 import LookupRoleList from './role/list/LookupRoleList';
 import { LookupSystemLimitDetail } from './systemLimit/detail/LookupSystemLimitDetail';
 import LookupSystemLimitEditor from './systemLimit/editor/LookupSystemLimitEditor';
-import { LookupSystemLimitList } from './systemLimit/list/LookupSystemLimitListView';
+import LookupSystemLimitList from './systemLimit/list/LookupSystemLimitList';
 
 const role = (props: RouteComponentProps) => (
   <Switch>
