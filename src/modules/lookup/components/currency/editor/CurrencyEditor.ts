@@ -145,7 +145,7 @@ const handlerCreators: HandleCreators<CurrencyEditorProps, OwnHandlers> = {
       time: new Date()
     });
 
-    history.push(`/lookup/currency/${response.uid}`);
+    history.push(`/lookup/currencies/${response.uid}`);
   },
   handleSubmitFail: (props: CurrencyEditorProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
     const { formMode, intl } = props;

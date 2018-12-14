@@ -19,6 +19,9 @@ import {
   withHandlers,
   withStateHandlers,
 } from 'recompose';
+import { Dispatch } from 'redux';
+import { FormErrors } from 'redux-form';
+import { isObject } from 'util';
 
 interface OwnHandler {
   handleOnModify: () => void;
@@ -104,9 +107,6 @@ const handlerCreators: HandleCreators<CurrencyDetailProps, OwnHandler> = {
   },
   handleOnConfirm: (props: CurrencyDetailProps) => () => {
     const { response } = props.lookupCurrencyState.detail;
-    const { deleteRequest } = props.lookupCurrencyDispatch;
-    const { alertAdd } = props.layoutDispatch;
-
     let currencyUid: string | undefined;
 
     if (!props.action || !response) {
@@ -119,21 +119,14 @@ const handlerCreators: HandleCreators<CurrencyDetailProps, OwnHandler> = {
 
     const actions = [
       CurrencyUserAction.Modify,
-      CurrencyUserAction.Delete
     ];
 
     if (actions.indexOf(props.action) !== -1) {
       let next: string = '404';
-      let deleteAction: boolean = false;
 
       switch (props.action) {
         case CurrencyUserAction.Modify:
-          next = '/lookup/currency/form';
-          break;
-        
-        case CurrencyUserAction.Delete:
-          deleteAction = true;
-          next = `/lookup/currency`;
+          next = '/lookup/currencies/form';
           break;
           
         default:
@@ -141,23 +134,57 @@ const handlerCreators: HandleCreators<CurrencyDetailProps, OwnHandler> = {
       }
 
       props.setDefault();
-      if (deleteAction) {
-        deleteRequest({
-          reject: Promise.reject,
-          resolve: Promise.resolve,
-          data: {uid: currencyUid} as ILookupCurrencyDeletePayload
-        });
-
-        alertAdd({
-          message: props.intl.formatMessage(lookupMessage.currency.message.deleteSuccess),
-          time: new Date(),
-        });
-        props.history.push(next);
-      } else {
-        props.history.push(next, { uid: currencyUid });
-      }
+      
+      props.history.push(next, { uid: currencyUid });
     }
   },
+
+  handleSubmit: (props: CurrencyDetailProps) => () => {
+    const { match, intl } = props;
+    const { user } = props.userState;
+    const { deleteRequest } = props.lookupCurrencyDispatch;
+    // user checking
+    if (!user) {
+      return Promise.reject('user was not found');
+    }
+    // props checking
+    if (!match.params.currencyUid) {
+      const message = intl.formatMessage(lookupMessage.currency.message.emptyCurrencyUid);
+      return Promise.reject(message);
+    }
+    const payload = {
+      uid: match.params.currencyUid
+    };
+    return new Promise((resolve, reject) => {
+      deleteRequest({
+        resolve,
+        reject,
+        data: payload as ILookupCurrencyDeletePayload
+      });
+    });
+  },
+  handleSubmitSuccess: (props: CurrencyDetailProps) => (response: boolean) => {
+    props.history.push('/lookup/currencies/');
+
+    props.layoutDispatch.alertAdd({
+      time: new Date(),
+      message: props.intl.formatMessage(lookupMessage.currency.message.deleteSuccess, { uid: props.match.params.currencyUid })
+    });
+  },
+  handleSubmitFail: (props: CurrencyDetailProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
+    if (errors) {
+      props.layoutDispatch.alertAdd({
+        time: new Date(),
+        message: isObject(submitError) ? submitError.message : submitError
+      });
+    } else {
+      props.layoutDispatch.alertAdd({
+        time: new Date(),
+        message: props.intl.formatMessage(lookupMessage.currency.message.deleteFailure),
+        details: isObject(submitError) ? submitError.message : submitError
+      });
+    }
+  }
 };
 
 export const CurrencyDetail = compose(

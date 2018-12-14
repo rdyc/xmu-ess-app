@@ -187,7 +187,7 @@ export const menuLinkMapper = (menuUid: string) => {
       break;
 
     case 'MNU55':
-      path = '/lookup/currency';
+      path = '/lookup/currencies';
       break;
 
     case 'MNU59':
