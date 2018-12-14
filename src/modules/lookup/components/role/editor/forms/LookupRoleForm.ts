@@ -5,6 +5,10 @@ import { LookupRoleFormView } from './LookupRoleFormView';
 
 const formName = 'lookupRole';
 
+export type LookupRoleMenuFormData = {
+  [key: string]: boolean
+};
+
 export type LookupRoleFormData = {
   information: {
     uid: string | null | undefined;
@@ -13,18 +17,36 @@ export type LookupRoleFormData = {
     gradeType: string | null | undefined;
     description: string | null | undefined;
     isActive: boolean | undefined;
+  },
+  menu: {
+    menus: LookupRoleMenuFormData[]
   }
 };
 
 interface OwnProps {
   formMode: FormMode;
+  submitDialogTitle: string;
+  submitDialogContentText: string;
+  submitDialogCancelText: string;
+  submitDialogConfirmedText: string;
+}
+
+interface FormValueProps {
+  formName: string;
 }
 
 export type RoleFormProps
   = InjectedFormProps<LookupRoleFormData, OwnProps>
-  & OwnProps;
+  & OwnProps
+  & FormValueProps;
 
-const connectedView = connect()(LookupRoleFormView);
+const mapStateToProps = (state: any): FormValueProps => {
+  return {
+    formName,
+  };
+};
+
+const connectedView = connect(mapStateToProps)(LookupRoleFormView);
 
 export const LookupRoleForm = reduxForm<LookupRoleFormData, OwnProps>({
   form: formName,

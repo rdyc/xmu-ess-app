@@ -1,3 +1,4 @@
+import { WorkflowStatusType } from '@common/classes/types';
 import AppMenu from '@constants/AppMenu';
 import { CollectionConfig, CollectionDataProps, CollectionHandler, CollectionPage } from '@layout/components/pages';
 import { WithUser, withUser } from '@layout/hoc/withUser';
@@ -134,6 +135,15 @@ const config: CollectionConfig<IPurchase, AllProps> = {
           onClick={() => callback.handleRedirectTo(`/purchase/requests/form`, { uid: item.uid } )}
         >
           <FormattedMessage {...layoutMessage.action.modify} />
+        </Button>
+      }
+      {
+        WorkflowStatusType.Approved === (item.statusType) &&
+        <Button
+          size="small"
+          onClick={() => callback.handleRedirectTo(`/purchase/settlement/requests/form`, { uid: item.uid })}
+        >
+          <FormattedMessage {...purchaseMessage.action.settle} />
         </Button>
       }
     <Button 

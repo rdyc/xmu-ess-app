@@ -27,6 +27,7 @@ export * from './holiday/ILookupHolidayGetListRequest';
 export * from './holiday/ILookupHolidayDeleteRequest';
 export * from './holiday/ILookupHolidayPostRequest';
 export * from './holiday/ILookupHolidayPutRequest';
+export * from './leave/ILeaveCalculationGetAllRequest';
 export * from './leave/ILookupLeaveGetAllRequest';
 export * from './leave/ILookupLeaveGetDetailRequest';
 export * from './leave/ILookupLeaveGetListRequest';
