@@ -7,7 +7,6 @@ import { GlobalFormat } from '@layout/types';
 import { Button } from '@material-ui/core';
 import { IPurchase } from '@purchase/classes/response/purchaseRequest';
 import { PurchaseField, PurchaseUserAction } from '@purchase/classes/types';
-import { PurchaseRequestFilter } from '@purchase/components/purchaseRequest/detail/shared/PurchaseRequestFilter';
 import { PurchaseSummary } from '@purchase/components/purchaseRequest/detail/shared/PurchaseSummary';
 import { purchaseRequestFieldTranslator } from '@purchase/helper';
 import { WithPurchaseApproval, withPurchaseApproval } from '@purchase/hoc/purchaseApproval/withPurchaseApproval';
@@ -75,8 +74,8 @@ const config: CollectionConfig<IPurchase, AllProps> = {
       if (!response || forceReload) {
         loadAllRequest({
           filter: {
-            companyUid: user.company.uid,
-            positionUid: user.position.uid,
+            companyUid: user.company.uid ? user.company.uid : '',
+            positionUid: user.position.uid ? user.position.uid : '',
             status: 'pending',
             'query.find': params.find,
             'query.findBy': params.findBy,
@@ -108,10 +107,10 @@ const config: CollectionConfig<IPurchase, AllProps> = {
     senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
   }),
 
-  // filter
-  filterComponent: (callback: CollectionHandler) => (
-    <PurchaseRequestFilter handleFind={callback.handleFilter} />
-  ),
+  // // filter
+  // filterComponent: (callback: CollectionHandler) => (
+  //   <PurchaseRequestFilter handleFind={callback.handleFilter} />
+  // ),
 
   // summary component
   summaryComponent: (item: IPurchase) => (
