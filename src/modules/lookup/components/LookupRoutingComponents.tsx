@@ -118,7 +118,7 @@ export const LookupRoutingComponents: React.SFC<RouteComponentProps> = props => 
       <Route path={`${props.match.path}/systemlimits`} component={systemLimit} />
       <Route path={`${props.match.path}/mileageexceptions`} component={mileageException} />
       <Route path={`${props.match.path}/currencies`} component={currency} />
-      <Route path={`${props.match.path}/position`} component={position} />
+      <Route path={`${props.match.path}/positions`} component={position} />
       <Route path={`${props.match.path}/diemvalue`} component={diem} />
       <Route path={`${props.match.path}/holiday`} component={holiday} />
       <Route path={`${props.match.path}/leave`} component={leave} />
