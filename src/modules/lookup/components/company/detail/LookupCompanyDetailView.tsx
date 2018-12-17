@@ -1,5 +1,4 @@
 import AppMenu from '@constants/AppMenu';
-import { DialogConfirmation } from '@layout/components/dialogs';
 import { SingleConfig, SingleHandler, SinglePage, SingleState } from '@layout/components/pages/singlePage/SinglePage';
 import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
@@ -7,6 +6,7 @@ import { ICompanyDetail } from '@lookup/classes/response/company';
 import { CompanyUserAction } from '@lookup/classes/types/company';
 import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
 import * as React from 'react';
+import { LookupCompanyDelete } from './LookupCompanyDelete';
 import { CompanyDetailProps } from './LookupCompanyDetail';
 import { CompanyInformation } from './shared/LookupCompanyInformation';
 
@@ -20,7 +20,7 @@ const config: SingleConfig<ICompanyDetail, CompanyDetailProps> = {
   }),
 
   // parent url
-  parentUrl: (props: CompanyDetailProps) => '/lookup/company/list',
+  parentUrl: (props: CompanyDetailProps) => '/lookup/company',
 
   // action centre
   showActionCentre: true,
@@ -40,15 +40,15 @@ const config: SingleConfig<ICompanyDetail, CompanyDetailProps> = {
       name: props.intl.formatMessage(layoutMessage.action.modify),
       enabled: true,
       visible: true,
-      onClick: props.handleOnModify
+      onClick: () => props.handleOnOpenDialog(CompanyUserAction.Modify)
     },
-    // {
-    //   id: CompanyUserAction.Delete,
-    //   name: props.intl.formatMessage(layoutMessage.action.),
-    //   enabled: true,
-    //   visible: true,
-    //   onClick: () => alert('go to new page here')
-    // }
+    {
+      id: CompanyUserAction.Delete,
+      name: props.intl.formatMessage(layoutMessage.action.delete),
+      enabled: true,
+      visible: true,
+      onClick: () => props.handleOnOpenDialog(CompanyUserAction.Delete)
+    }
   ]),
 
   // events
@@ -97,7 +97,7 @@ export const LookupCompanyDetailView: React.SFC<CompanyDetailProps> = props => (
     config={config}
     connectedProps={props}
   >
-    <DialogConfirmation 
+    {/* <DialogConfirmation 
       isOpen={props.dialogOpen}
       fullScreen={props.dialogFullScreen}
       title={props.dialogTitle}
@@ -106,6 +106,20 @@ export const LookupCompanyDetailView: React.SFC<CompanyDetailProps> = props => (
       labelConfirm={props.dialogConfirmLabel}
       onClickCancel={props.handleOnCloseDialog}
       onClickConfirm={props.handleOnConfirm}
+    /> */}
+    <LookupCompanyDelete
+      action={props.action}
+      isOpenDialog={props.dialogOpen}
+      title={props.dialogTitle}
+      content={props.dialogContent}
+      labelCancel={props.dialogCancelLabel}
+      labelConfirm={props.dialogConfirmLabel}
+      handleDialogOpen={props.handleOnOpenDialog}
+      handleDialogClose={props.handleOnCloseDialog}
+      handleDialogConfirmed={props.handleOnConfirm}
+      onSubmit={props.handleDelete} 
+      onSubmitSuccess={props.handleDeleteSuccess}
+      onSubmitFail={props.handleDeleteFail}
     />
   </SinglePage>
 );

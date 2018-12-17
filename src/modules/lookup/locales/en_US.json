@@ -165,10 +165,10 @@
   
   "lookup.company.field.uid": "Company ID",
   "lookup.company.field.uid.placeholder": "Company ID",
-  "lookup.company.field.code": "Company Code",
+  "lookup.company.field.code": "Code",
   "lookup.company.field.code.placeholder": "Type a company code",
   "lookup.company.field.code.required": "Company code is required",
-  "lookup.company.field.name": "Company Name",
+  "lookup.company.field.name": "Name",
   "lookup.company.field.name.placeholder": "Type a company name",
   "lookup.company.field.name.required": "Company name is required",
   
