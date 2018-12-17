@@ -1,10 +1,10 @@
+import { ISystemByIdRequest } from '@common/classes/queries';
+import { ISystemDetail } from '@common/classes/response';
+import { RelationAction as Action } from '@common/store/actions';
 import { IQuerySingleState } from '@generic/interfaces';
-import { IMenuGetByIdRequest } from '@lookup/classes/queries';
-import { IMenuDetail } from '@lookup/classes/response';
-import { MenuAction as Action } from '@lookup/store/actions';
 import { Reducer } from 'redux';
 
-const initialState: IQuerySingleState<IMenuGetByIdRequest, IMenuDetail> = {
+const initialState: IQuerySingleState<ISystemByIdRequest, ISystemDetail> = {
   request: undefined,
   response: undefined,
   isError: false,
@@ -12,15 +12,15 @@ const initialState: IQuerySingleState<IMenuGetByIdRequest, IMenuDetail> = {
   errors: undefined,
 };
 
-const reducer: Reducer<IQuerySingleState<IMenuGetByIdRequest, IMenuDetail>> = (state = initialState, action) => {
+const reducer: Reducer<IQuerySingleState<ISystemByIdRequest, ISystemDetail>> = (state = initialState, action) => {
   switch (action.type) {
     case Action.GET_BY_ID_REQUEST: return { ...state, isLoading: true, request: action.payload };
     case Action.GET_BY_ID_SUCCESS: return { ...state, isLoading: false, response: action.payload };
     case Action.GET_BY_ID_ERROR: return { ...state, isLoading: false, isError: true, errors: action.payload };
-    case Action.GET_BY_ID_DISPOSE: return initialState;
+    case Action.GET_BY_ID_DISPOSE: return { ...state, ...initialState };
     
     default: return state;
   }
 };
 
-export { reducer as menuGetByIdReducer };
+export { reducer as relationGetByIdReducer };
