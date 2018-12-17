@@ -4,7 +4,6 @@ import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
 import { ICompanyDetail } from '@lookup/classes/response/company';
 import { LookupUserAction } from '@lookup/classes/types';
-import { CompanyUserAction } from '@lookup/classes/types/company';
 import { Delete } from '@lookup/components/shared/Delete';
 import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
 import * as React from 'react';
@@ -30,21 +29,21 @@ const config: SingleConfig<ICompanyDetail, CompanyDetailProps> = {
   hasMore: true,
   moreOptions: (props: CompanyDetailProps, state: SingleState, callback: SingleHandler): IAppBarMenu[] => ([
     {
-      id: CompanyUserAction.Refresh,
+      id: LookupUserAction.Refresh,
       name: props.intl.formatMessage(layoutMessage.action.refresh),
       enabled: true,
       visible: true,
       onClick: callback.handleForceReload
     },
     {
-      id: CompanyUserAction.Modify,
+      id: LookupUserAction.Modify,
       name: props.intl.formatMessage(layoutMessage.action.modify),
       enabled: true,
       visible: true,
       onClick: () => props.handleOnOpenDialog(LookupUserAction.Modify)
     },
     {
-      id: CompanyUserAction.Delete,
+      id: LookupUserAction.Delete,
       name: props.intl.formatMessage(layoutMessage.action.delete),
       enabled: true,
       visible: true,
