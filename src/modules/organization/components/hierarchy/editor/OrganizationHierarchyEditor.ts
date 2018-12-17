@@ -3,6 +3,7 @@ import { FormMode } from '@generic/types';
 import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
+import { layoutMessage } from '@layout/locales/messages';
 import { IOrganizationHierarchyPostPayload, IOrganizationHierarchyPutPayload } from '@organization/classes/request/hierarchy';
 import { IHierarchy } from '@organization/classes/response/hierarchy';
 import { WithOrganizationHierarchy, withOrganizationHierarchy } from '@organization/hoc/withOrganizationHierarchy';
@@ -41,6 +42,10 @@ interface OwnRouteParams {
 interface OwnState {
   formMode: FormMode;
   companyUid?: string;
+  submitDialogTitle: string;
+  submitDialogContentText: string;
+  submitDialogCancelText: string;
+  submitDialogConfirmedText: string;
 }
 
 interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
@@ -250,6 +255,10 @@ const handlerCreators: HandleCreators<OrganizationHierarchyEditorProps, OwnHandl
 const createProps: mapper<OrganizationHierarchyEditorProps, OwnState> = (props: OrganizationHierarchyEditorProps): OwnState => {
   return {
     formMode: FormMode.New,
+    submitDialogTitle: props.intl.formatMessage(organizationMessage.hierarchy.dialog.createTitle),
+    submitDialogContentText: props.intl.formatMessage(organizationMessage.hierarchy.dialog.createDescription),
+    submitDialogCancelText: props.intl.formatMessage(layoutMessage.action.cancel),
+    submitDialogConfirmedText: props.intl.formatMessage(layoutMessage.action.ok),
   };
 };
 
