@@ -148,7 +148,7 @@ const config: CollectionConfig<IStructure, OrganizationStructureListProps> = {
 
       <Button
         size="small"
-        onClick={() => callback.handleRedirectTo(`/organization/structure/${item.uid}`)}
+        onClick={() => callback.handleRedirectTo(`/organization/structure/${item.uid}`, { companyUid: item.companyUid })}
       >
         <FormattedMessage {...layoutMessage.action.details} />
       </Button>

@@ -89,7 +89,7 @@ const config: SingleConfig<IStructureDetail, OrganizationStructureDetailProps> =
       {
         data.reportTo &&
         <StructureItemInformation
-          data={data.reportTo && data.reportTo}
+          data={data.reportTo}
         />
       }
     </div>

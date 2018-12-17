@@ -14,10 +14,10 @@ const initialState: IQueryCollectionState<IOrganizationStructureAllRequest, IStr
 
 const reducer: Reducer<IQueryCollectionState<IOrganizationStructureAllRequest, IStructure>> = (state = initialState, action) => {
   switch (action.type) {
-    case Action.GET_ALL_REQUEST: return { ...state, isLoading: true, isError: false, request: action.payload };
-    case Action.GET_ALL_SUCCESS: return { ...state, isLoading: false, isError: false, response: action.payload };
-    case Action.GET_ALL_ERROR: return { ...state, isLoading: false, isError: true, errors: action.payload };
-    case Action.GET_ALL_DISPOSE: return { ...state, isLoading: false, isError: false, request: undefined, response: undefined };
+    case Action.GET_ALL_STRUCTURE_REQUEST: return { ...state, isLoading: true, isError: false, request: action.payload };
+    case Action.GET_ALL_STRUCTURE_SUCCESS: return { ...state, isLoading: false, isError: false, response: action.payload };
+    case Action.GET_ALL_STRUCTURE_ERROR: return { ...state, isLoading: false, isError: true, errors: action.payload };
+    case Action.GET_ALL_STRUCTURE_DISPOSE: return { ...state, isLoading: false, isError: false, request: undefined, response: undefined };
 
     default: { return state; }
   }

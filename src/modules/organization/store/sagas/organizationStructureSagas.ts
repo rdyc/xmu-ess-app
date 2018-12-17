@@ -52,7 +52,7 @@ function* watchGetAllRequest() {
     });
   };
   
-  yield takeEvery(Action.GET_ALL_REQUEST, worker);
+  yield takeEvery(Action.GET_ALL_STRUCTURE_REQUEST, worker);
 }
 
 function* watchGetByIdRequest() {
@@ -81,7 +81,7 @@ function* watchGetByIdRequest() {
     });
   };
   
-  yield takeEvery(Action.GET_BY_ID_REQUEST, worker);
+  yield takeEvery(Action.GET_BY_ID_STRUCTURE_REQUEST, worker);
 }
 
 function* watchPostRequest() {
@@ -127,7 +127,7 @@ function* watchPostRequest() {
     });
   };
 
-  yield takeEvery(Action.POST_REQUEST, worker);
+  yield takeEvery(Action.POST_STRUCTURE_REQUEST, worker);
 }
 
 function* watchPutRequest() {
@@ -174,7 +174,7 @@ function* watchPutRequest() {
     });
   };
 
-  yield takeEvery(Action.PUT_REQUEST, worker);
+  yield takeEvery(Action.PUT_STRUCTURE_REQUEST, worker);
 }
 
 function* watchDeleteRequest() {
@@ -221,7 +221,7 @@ function* watchDeleteRequest() {
     });
   };
 
-  yield takeEvery(Action.DELETE_REQUEST, worker);
+  yield takeEvery(Action.DELETE_STRUCTURE_REQUEST, worker);
 }
 
 function* organizationStructureSagas() {

@@ -14,10 +14,10 @@ const initialState: IQuerySingleState<IOrganizationStructurePutRequest, IStructu
 
 const reducer: Reducer<IQuerySingleState<IOrganizationStructurePutRequest, IStructure>> = (state = initialState, action) => {
   switch (action.type) {
-    case Action.PUT_REQUEST: return { ...state, isLoading: true, request: action.payload };
-    case Action.PUT_SUCCESS: return { ...state, isLoading: false, response: action.payload };
-    case Action.PUT_ERROR: return { ...state, isLoading: false, isError: true, errors: action.payload };
-    case Action.PUT_DISPOSE: return { ...state, isLoading: false, isError: false, request: undefined, response: undefined };
+    case Action.PUT_STRUCTURE_REQUEST: return { ...state, isLoading: true, request: action.payload };
+    case Action.PUT_STRUCTURE_SUCCESS: return { ...state, isLoading: false, response: action.payload };
+    case Action.PUT_STRUCTURE_ERROR: return { ...state, isLoading: false, isError: true, errors: action.payload };
+    case Action.PUT_STRUCTURE_DISPOSE: return { ...state, isLoading: false, isError: false, request: undefined, response: undefined };
     
     default: return state;
   }

@@ -13,10 +13,10 @@ const initialState: IQuerySingleState<IOrganizationStructureDeleteRequest, boole
 
 const reducer: Reducer<IQuerySingleState<IOrganizationStructureDeleteRequest, boolean>> = (state = initialState, action) => {
   switch (action.type) {
-    case Action.DELETE_REQUEST: return { ...state, isLoading: true, request: action.payload };
-    case Action.DELETE_SUCCESS: return { ...state, isLoading: false, response: action.payload };
-    case Action.DELETE_ERROR: return { ...state, isLoading: false, isError: true, errors: action.payload };
-    case Action.DELETE_DISPOSE: return { ...state, isLoading: false, isError: false, request: undefined, response: undefined };
+    case Action.DELETE_STRUCTURE_REQUEST: return { ...state, isLoading: true, request: action.payload };
+    case Action.DELETE_STRUCTURE_SUCCESS: return { ...state, isLoading: false, response: action.payload };
+    case Action.DELETE_STRUCTURE_ERROR: return { ...state, isLoading: false, isError: true, errors: action.payload };
+    case Action.DELETE_STRUCTURE_DISPOSE: return { ...state, isLoading: false, isError: false, request: undefined, response: undefined };
     
     default: return state;
   }

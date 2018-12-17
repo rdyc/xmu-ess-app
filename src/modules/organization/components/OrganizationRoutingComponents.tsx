@@ -4,6 +4,7 @@ import { Route, RouteComponentProps, Switch } from 'react-router';
 import { OrganizationHierarchyDetail } from './hierarchy/detail/OrganizationHierarchyDetail';
 import OrganizationHierarchyEditor from './hierarchy/editor/OrganizationHierarchyEditor';
 import OrganizationHierarchyList from './hierarchy/list/OrganizationHierarchyList';
+import { StructureDetail } from './structure/detail/StructureDetail';
 import { StructureList } from './structure/list/StructureList';
 
 const OrganizationHierarchy = (props: RouteComponentProps) => (
@@ -16,6 +17,7 @@ const OrganizationHierarchy = (props: RouteComponentProps) => (
 
 const OrganizationStructure = (props: RouteComponentProps) => (
   <Switch>
+    <Route path={`${props.match.path}/:structureUid`} component={StructureDetail} />
     <Route path={`${props.match.path}`} component={StructureList} />
   </Switch>
 );
