@@ -6,10 +6,12 @@ import { LookupSystemLimitListView } from './LookupSystemLimitListView';
 
 interface OwnHandlers {
   handleCompanyFilter: (companyUid: string) => void;
+  handleCategoryFilter: (categoryType: string) => void;
 }
 
 interface OwnState {
   companyUid: string | undefined;
+  categoryType: string | undefined;
 }
 
 interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
@@ -25,7 +27,8 @@ export type LookupSystemLimitListProps
   & OwnStateUpdaters;
 
 const createProps: mapper<LookupSystemLimitListProps, OwnState> = (): OwnState => ({
-  companyUid: undefined
+  companyUid: undefined,
+  categoryType: undefined
 });
 
 const handlerCreators: HandleCreators<LookupSystemLimitListProps, OwnHandlers> = {
@@ -33,7 +36,12 @@ const handlerCreators: HandleCreators<LookupSystemLimitListProps, OwnHandlers> =
     props.stateUpdate({
       companyUid
     });
-  },  
+  },
+  handleCategoryFilter: (props: LookupSystemLimitListProps) => (categoryType: string) => {
+    props.stateUpdate({
+      categoryType
+    });
+  }
 };
 
 const stateUpdaters: StateUpdaters<LookupSystemLimitListProps, OwnState, OwnStateUpdaters> = {

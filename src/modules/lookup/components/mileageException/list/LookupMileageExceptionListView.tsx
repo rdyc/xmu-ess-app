@@ -9,7 +9,6 @@ import { Button } from '@material-ui/core';
 import * as moment from 'moment';
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
-import { isNullOrUndefined } from 'util';
 import { LookupMileageExceptionFilter } from './LookupMileageExceptionFilter';
 import { LookupMileageExceptionListProps } from './LookupMileageExceptionList';
 import { LookupMileageExceptionSummary } from './LookupMileageExceptionSummary';
@@ -84,11 +83,12 @@ const config: CollectionConfig<IMileageException, LookupMileageExceptionListProp
         loadAllRequest({
           filter: {
             companyUid: props.companyUid,
+            roleUid: props.roleUid,
             direction: params.direction,
             orderBy: params.orderBy,
             page: params.page,
             size: params.size,
-            find: isNullOrUndefined(props.companyUid) ? undefined : params.find,
+            find: params.find,
             findBy: params.findBy,
           }
         });
@@ -117,8 +117,7 @@ const config: CollectionConfig<IMileageException, LookupMileageExceptionListProp
   // filter
   filterComponent: (callback: CollectionHandler, props: LookupMileageExceptionListProps) => (
     <LookupMileageExceptionFilter 
-      handleFind={callback.handleFilter}
-      handleCompanyFilter={props.handleCompanyFilter}
+      handleChangeFilter={props.handleChangeFilter}
       callbackForceReload={callback.handleForceReload}
     />
   ),

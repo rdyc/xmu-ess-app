@@ -84,6 +84,7 @@ const config: CollectionConfig<ISystemLimit, LookupSystemLimitListProps> = {
         loadAllRequest({
           filter: {
             companyUid: props.companyUid,
+            categoryType: props.categoryType,
             find: params.find,
             findBy: params.findBy,
             direction: params.direction,
@@ -117,8 +118,8 @@ const config: CollectionConfig<ISystemLimit, LookupSystemLimitListProps> = {
   // filter
   filterComponent: (callback: CollectionHandler, props: LookupSystemLimitListProps) => (
     <LookupSystemLimitFilter 
-      handleFind={callback.handleFilter} 
       handleCompanyFilter={props.handleCompanyFilter}
+      handleCategoryFilter={props.handleCategoryFilter}
       callbackForceReload={callback.handleForceReload}
     />
   ),
@@ -131,12 +132,6 @@ const config: CollectionConfig<ISystemLimit, LookupSystemLimitListProps> = {
   // action component
   actionComponent: (item: ISystemLimit, callback: CollectionHandler) => (
     <React.Fragment>
-      {/* <Button
-        size="small"
-        onClick={() => props.handleOnDelete(item.uid)}
-      >
-        <FormattedMessage {...layoutMessage.action.delete}/>        
-      </Button> */}
       <Button 
           size="small"
           onClick={() => callback.handleRedirectTo(`/lookup/systemlimits/form`, { uid: item.uid })}

@@ -6,11 +6,12 @@ import { WithLookupMileageException, withLookupMileageException } from '@lookup/
 import { LookupMileageExceptionListView } from './LookupMileageExceptionListView';
 
 interface OwnHandlers {
-  handleCompanyFilter: (companyUid: string) => void;
+  handleChangeFilter: (companyUid: string, roleUid: string | undefined) => void;
 }
 
 interface OwnState {
   companyUid: string | undefined;
+  roleUid: string | undefined;
 }
 
 interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
@@ -26,15 +27,17 @@ export type LookupMileageExceptionListProps
   & OwnStateUpdaters;
 
 const createProps: mapper<LookupMileageExceptionListProps, OwnState> = (): OwnState => ({
-  companyUid: undefined
+  companyUid: undefined,
+  roleUid: undefined
 });
 
 const handlerCreators: HandleCreators<LookupMileageExceptionListProps, OwnHandlers> = {
-  handleCompanyFilter: (props: LookupMileageExceptionListProps) => (companyUid: string) => {
+  handleChangeFilter: (props: LookupMileageExceptionListProps) => (companyUid: string, roleUid: string | undefined) => {
     props.stateUpdate({
-      companyUid
+      companyUid,
+      roleUid
     });
-  },  
+  }
 };
 
 const stateUpdaters: StateUpdaters<LookupMileageExceptionListProps, OwnState, OwnStateUpdaters> = {

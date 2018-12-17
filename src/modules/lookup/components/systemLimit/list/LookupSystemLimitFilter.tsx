@@ -10,18 +10,23 @@ import { Field, InjectedFormProps, reduxForm } from 'redux-form';
 interface OwnProps {
   callbackForceReload: () => void;
   handleCompanyFilter: (companyUid: string) => void;
-  handleFind: (event: any, newValue: string, oldValue: string) => void;
+  handleCategoryFilter: (categoryType: string) => void;
 }
 
 interface OwnHandlers {
   handleChangeCompany: (event: any, newValue: string, oldValue: string) => void;
+  handleChangeCategory: (event: any, newValue: string, oldValue: string) => void;
 }
 
 const handlerCreators: HandleCreators<AllProps, OwnHandlers> = {
   handleChangeCompany: (props: AllProps) => (event: any, newValue: string, oldValue: string) => {
     props.handleCompanyFilter(newValue);
     props.callbackForceReload();
-  },  
+  },
+  handleChangeCategory: (props: AllProps) => (event: any, newValue: string, oldValue: string) => {
+    props.handleCategoryFilter(newValue);
+    props.callbackForceReload();
+  }
 };
 
 const formName = 'LookupSystemLimitFilter';
@@ -48,7 +53,7 @@ const lookupSystemLimitFilter: React.SFC<AllProps> = props => (
         label={props.intl.formatMessage(lookupMessage.systemLimit.field.filterCategory)}
         placeholder={props.intl.formatMessage(lookupMessage.systemLimit.field.filterCategoryPlaceholder)}
         component={SelectSystem}
-        onChange={props.handleFind}
+        onChange={props.handleChangeCategory}
       />
     </Grid>
   </Grid>
