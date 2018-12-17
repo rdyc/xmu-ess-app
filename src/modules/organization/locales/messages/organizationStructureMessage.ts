@@ -53,9 +53,9 @@ export const organizationStructureField = defineMessages({
   isExpired: { id: `${prefix}.field.isExpired`},
   isNotExpired: { id: `${prefix}.field.isNotExpired`},
 
-  remark: { id: `${prefix}.field.remark`},
-  remarkRequired: { id: `${prefix}.field.remark.required`},
-  remarkPlaceholder: { id: `${prefix}.field.remark.placeholder`},
+  inactiveDate: { id: `${prefix}.field.inactiveDate`},
+  inactiveDateRequired: { id: `${prefix}.field.inactiveDate.required`},
+  inactiveDatePlaceholder: { id: `${prefix}.field.inactiveDate.placeholder`},
 
   reportTo: { id: `${prefix}.field.reportTo`},
   reportToRequired: { id: `${prefix}.field.reportTo.required`},
@@ -70,7 +70,7 @@ export const organizationStructureFieldHelperFor = (field: string, type: 'fieldN
       case 'companyUid': return organizationStructureField.companyUid;
       case 'description': return organizationStructureField.description;
       case 'isExpired': return organizationStructureField.isExpired;
-      case 'remark': return organizationStructureField.remark;
+      case 'inactiveDate': return organizationStructureField.inactiveDate;
     
       default: return {id: field};
     }
@@ -80,7 +80,7 @@ export const organizationStructureFieldHelperFor = (field: string, type: 'fieldN
     switch (field) {
       case 'positionUid': return organizationStructureField.positionUidRequired;
       case 'companyUid': return organizationStructureField.companyUidRequired;
-      case 'remark': return organizationStructureField.remarkRequired;
+      case 'inactiveDate': return organizationStructureField.inactiveDateRequired;
       case 'reportTo': return organizationStructureField.reportToRequired;
 
       default: return {id: field};
@@ -91,7 +91,7 @@ export const organizationStructureFieldHelperFor = (field: string, type: 'fieldN
     switch (field) {
       case 'positionUid': return organizationStructureField.positionUidPlaceholder;
       case 'companyUid': return organizationStructureField.companyUidPlaceholder;
-      case 'remark': return organizationStructureField.remarkPlaceholder;
+      case 'inactiveDate': return organizationStructureField.inactiveDatePlaceholder;
     
       default: return {id: field};
     }
@@ -102,5 +102,11 @@ export const organizationStructureFieldHelperFor = (field: string, type: 'fieldN
 
 // message
 export const organizationStructureMessage = defineMessages({
-  emptyHistory: { id: `${prefix}.history.empty`}
+  emptyProps: { id: `${prefix}.message.empty.emptyProps` },
+  createSuccess: { id: `${prefix}.message.create.success` },
+  createFailure: { id: `${prefix}.message.create.failure` },
+  updateSuccess: { id: `${prefix}.message.update.success` },
+  updateFailure: { id: `${prefix}.message.update.failure` },
+  deleteSuccess: { id: `${prefix}.message.delete.success` },
+  deleteFailure: { id: `${prefix}.message.delete.failure` },
 });

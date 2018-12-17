@@ -1,6 +1,6 @@
 import { GlobalFormat } from '@layout/types';
 import { GlobalStyle } from '@layout/types/GlobalStyle';
-import { Card, CardContent, CardHeader, TextField } from '@material-ui/core';
+import { Card, CardContent, CardHeader, Checkbox, FormControlLabel, TextField } from '@material-ui/core';
 import { IStructureDetail } from '@organization/classes/response/structure';
 import { organizationMessage } from '@organization/locales/messages/organizationMessage';
 import * as React from 'react';
@@ -47,8 +47,14 @@ export const structureInformation: React.SFC<AllProps> = props => {
         />
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
-          label={props.intl.formatMessage(organizationMessage.structure.field.isExpired)}
+          label={props.intl.formatMessage(organizationMessage.structure.field.inactiveDate)}
           value={props.data.inactiveDate && props.intl.formatDate(props.data.inactiveDate, GlobalFormat.Date) || 'N/A'}
+        />
+        <FormControlLabel
+          control={<Checkbox checked={!props.data.isExpired} />}
+          label={!props.data.isExpired ?
+            props.intl.formatMessage(organizationMessage.structure.field.isExpired) :
+            props.intl.formatMessage(organizationMessage.structure.field.isNotExpired)}
         />
       </CardContent>
     </Card>

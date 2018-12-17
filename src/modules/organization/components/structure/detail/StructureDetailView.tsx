@@ -85,14 +85,15 @@ const config: SingleConfig<IStructureDetail, OrganizationStructureDetailProps> =
 
   // secondary (multiple components are allowed)
   secondaryComponents: (data: IStructureDetail) => ([
-    <div>
-      {
-        data.reportTo &&
-        <StructureItemInformation
-          data={data.reportTo}
-        />
-      }
-    </div>
+    // <div>
+    //   {
+    //     data.reportTo &&
+    //     <StructureItemInformation
+    //       data={data.reportTo}
+    //     />
+    //   }
+    // </div>
+      <StructureItemInformation data={data.reportTo ? data.reportTo : []} />
   ]),
 };
 
