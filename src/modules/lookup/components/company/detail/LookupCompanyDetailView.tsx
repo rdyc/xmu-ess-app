@@ -3,10 +3,11 @@ import { SingleConfig, SingleHandler, SinglePage, SingleState } from '@layout/co
 import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
 import { ICompanyDetail } from '@lookup/classes/response/company';
+import { LookupUserAction } from '@lookup/classes/types';
 import { CompanyUserAction } from '@lookup/classes/types/company';
+import { Delete } from '@lookup/components/shared/Delete';
 import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
 import * as React from 'react';
-import { LookupCompanyDelete } from './LookupCompanyDelete';
 import { CompanyDetailProps } from './LookupCompanyDetail';
 import { CompanyInformation } from './shared/LookupCompanyInformation';
 
@@ -40,14 +41,14 @@ const config: SingleConfig<ICompanyDetail, CompanyDetailProps> = {
       name: props.intl.formatMessage(layoutMessage.action.modify),
       enabled: true,
       visible: true,
-      onClick: () => props.handleOnOpenDialog(CompanyUserAction.Modify)
+      onClick: () => props.handleOnOpenDialog(LookupUserAction.Modify)
     },
     {
       id: CompanyUserAction.Delete,
       name: props.intl.formatMessage(layoutMessage.action.delete),
       enabled: true,
       visible: true,
-      onClick: () => props.handleOnOpenDialog(CompanyUserAction.Delete)
+      onClick: () => props.handleOnOpenDialog(LookupUserAction.Delete)
     }
   ]),
 
@@ -97,17 +98,7 @@ export const LookupCompanyDetailView: React.SFC<CompanyDetailProps> = props => (
     config={config}
     connectedProps={props}
   >
-    {/* <DialogConfirmation 
-      isOpen={props.dialogOpen}
-      fullScreen={props.dialogFullScreen}
-      title={props.dialogTitle}
-      content={props.dialogContent}
-      labelCancel={props.dialogCancelLabel}
-      labelConfirm={props.dialogConfirmLabel}
-      onClickCancel={props.handleOnCloseDialog}
-      onClickConfirm={props.handleOnConfirm}
-    /> */}
-    <LookupCompanyDelete
+    <Delete
       action={props.action}
       isOpenDialog={props.dialogOpen}
       title={props.dialogTitle}
