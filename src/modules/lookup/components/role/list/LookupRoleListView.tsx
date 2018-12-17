@@ -1,5 +1,4 @@
 import AppMenu from '@constants/AppMenu';
-import { DialogConfirmation } from '@layout/components/dialogs';
 import {
   CollectionConfig,
   CollectionDataProps,
@@ -133,13 +132,6 @@ const config: CollectionConfig<IRole, RoleListProps> = {
     <React.Fragment>
       <Button
         size="small"
-        onClick={() => props.handleOnDelete(item.uid, callback.handleForceReload)}
-      >
-        <FormattedMessage {...layoutMessage.action.delete}/>
-      </Button>
-
-      <Button
-        size="small"
         onClick={() => callback.handleRedirectTo(`/lookup/roles/form`, { uid: item.uid, companyUid: item.companyUid })}
       >
         <FormattedMessage {...layoutMessage.action.modify} />
@@ -160,16 +152,5 @@ export const LookupRoleListView: React.SFC<RoleListProps> = props => (
   <CollectionPage
     config={config}
     connectedProps={props}
-  >
-    <DialogConfirmation
-      isOpen={props.dialogOpen}
-      fullScreen={props.dialogFullScreen}
-      title={props.dialogTitle}
-      content={props.dialogContent}
-      labelCancel={props.dialogCancelLabel}
-      labelConfirm={props.dialogConfirmLabel}
-      onClickCancel={props.handleOnCloseDialog}
-      onClickConfirm={props.handleSubmit}
-    />
-  </CollectionPage>
+  />
 );
