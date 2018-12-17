@@ -2,7 +2,8 @@ import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { layoutMessage } from '@layout/locales/messages';
 import { ILookupRoleDeletePayload } from '@lookup/classes/request/role';
-import { RoleUserAction } from '@lookup/classes/types';
+import { LookupUserAction } from '@lookup/classes/types';
+import { DeleteFormData } from '@lookup/components/currency/editor/DeleteForm';
 import { WithLookupRole, withLookupRole } from '@lookup/hoc/withLookupRole';
 import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
@@ -11,7 +12,6 @@ import { compose, HandleCreators, mapper, StateHandler, StateHandlerMap, StateUp
 import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
 import { isObject } from 'util';
-import { RoleDeleteFormData } from './LookupRoleDelete';
 import { LookupRoleDetailView } from './LookupRoleDetailView';
 
 interface OwnRouteParams {
@@ -19,18 +19,16 @@ interface OwnRouteParams {
 }
 
 interface OwnHandler {
-  // handleOnModify: () => void;
-  handleOnOpenDialog: (action: RoleUserAction) => void;
+  handleOnOpenDialog: (action: LookupUserAction) => void;
   handleOnCloseDialog: () => void;
   handleOnConfirm: () => void;
-  handleDelete: (payload: RoleDeleteFormData) => void;
+  handleDelete: (payload: DeleteFormData) => void;
   handleDeleteSuccess: (result: any, dispatch: Dispatch<any>) => void;
   handleDeleteFail: (errors: FormErrors | undefined, dispatch: Dispatch<any>, deleteError: any) => void;
 }
 
 interface OwnState {
-  isAdmin: boolean;
-  action?: RoleUserAction;
+  action?: LookupUserAction;
   dialogFullScreen: boolean;
   dialogOpen: boolean;
   dialogTitle?: string;
@@ -40,8 +38,6 @@ interface OwnState {
 }
 
 interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
-  // setModify: StateHandler<OwnState>;
-  // setDefault: StateHandler<OwnState>;
   stateUpdate: StateHandler<OwnState>;
 }
 
@@ -56,7 +52,6 @@ export type RoleDetailProps
   & OwnHandler;
 
 const createProps: mapper<RoleDetailProps, OwnState> = (props: RoleDetailProps): OwnState => ({
-  isAdmin: false,
   dialogFullScreen: false,
   dialogOpen: false,
   dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.disaggre),
@@ -64,23 +59,6 @@ const createProps: mapper<RoleDetailProps, OwnState> = (props: RoleDetailProps):
 });
 
 const stateUpdaters: StateUpdaters<RoleDetailProps, OwnState, OwnStateUpdaters> = {
-  // setModify: (prevState: OwnState, props: RoleDetailProps) => (): Partial<OwnState> => ({
-  //   action: RoleUserAction.Modify,
-  //   dialogFullScreen: false,
-  //   dialogOpen: true,
-  //   dialogTitle: props.intl.formatMessage(lookupMessage.role.confirm.modifyTitle),
-  //   dialogContent: props.intl.formatMessage(lookupMessage.role.confirm.modifyDescription),
-  //   dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.disaggre),
-  //   dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.aggre)
-  // }),
-  // setDefault: (prevState: OwnState) => (): Partial<OwnState> => ({
-  //   dialogFullScreen: false,
-  //   dialogOpen: false,
-  //   dialogTitle: undefined,
-  //   dialogContent: undefined,
-  //   dialogCancelLabel: undefined,
-  //   dialogConfirmLabel: undefined,
-  // }),
   stateUpdate: (prevState: OwnState) => (newState: any) => ({
     ...prevState,
     ...newState
@@ -88,24 +66,17 @@ const stateUpdaters: StateUpdaters<RoleDetailProps, OwnState, OwnStateUpdaters> 
 };
 
 const handlerCreators: HandleCreators<RoleDetailProps, OwnHandler> = {
-  
-  // handleOnModify: (props: RoleDetailProps) => () => {
-  //   props.setModify();
-  // },
-  // handleOnCloseDialog: (props: RoleDetailProps) => () => {
-  //   props.setDefault();
-  // },
-  handleOnOpenDialog: (props: RoleDetailProps) => (action: RoleUserAction) => {
-    if (action === RoleUserAction.Modify) {
+  handleOnOpenDialog: (props: RoleDetailProps) => (action: LookupUserAction) => {
+    if (action === LookupUserAction.Modify) {
       props.stateUpdate({
-        action: RoleUserAction.Modify,
+        action: LookupUserAction.Modify,
         dialogOpen: true,
         dialogTitle: props.intl.formatMessage(lookupMessage.shared.confirm.modifyTitle),
         dialogContent: props.intl.formatMessage(lookupMessage.shared.confirm.modifyDescription),
       });
-    } else if (action === RoleUserAction.Delete) {
+    } else if (action === LookupUserAction.Delete) {
       props.stateUpdate({
-        action: RoleUserAction.Delete,
+        action: LookupUserAction.Delete,
         dialogOpen: true,
         dialogTitle: props.intl.formatMessage(lookupMessage.shared.confirm.deleteTitle),
         dialogContent: props.intl.formatMessage(lookupMessage.shared.confirm.deleteDescription),
@@ -134,14 +105,14 @@ const handlerCreators: HandleCreators<RoleDetailProps, OwnHandler> = {
 
     // actions with new page
     const actions = [
-      RoleUserAction.Modify
+      LookupUserAction.Modify
     ];
 
     if (actions.indexOf(props.action) !== -1) {
       let next: string = '404';
 
       switch (props.action) {
-        case RoleUserAction.Modify:
+        case LookupUserAction.Modify:
           next = '/lookup/roles/form';
           break;
 
