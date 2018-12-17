@@ -10,9 +10,12 @@ import {
   TableCell,
   TableHead,
   TableRow,
+  WithStyles,
+  withStyles,
   withWidth
 } from '@material-ui/core';
 import { isWidthDown, WithWidth } from '@material-ui/core/withWidth';
+import styles from '@styles';
 import { ISummaryBillable } from '@summary/classes/response/billable';
 import {
   BillableHeaderDetailNonPresales,
@@ -31,10 +34,10 @@ interface OwnProps {
   handleDialog: () => void;
 }
 
-type AllProps = OwnProps & WithUser & WithWidth;
+type AllProps = OwnProps & WithUser & WithWidth & WithStyles<typeof styles>;
 
 const billableDetail: React.SFC<AllProps> = props => {
-  const { uid, type, open, data, handleDialog, width } = props;
+  const { uid, type, open, data, handleDialog, width, classes } = props;
   const { user } = props.userState;
 
   const isMobile = isWidthDown('sm', width);
@@ -71,12 +74,12 @@ const billableDetail: React.SFC<AllProps> = props => {
                       <TableRow>
                         {type === BillableType.Presales
                           ? headerPresales.map(headerItem => (
-                              <TableCell key={headerItem.id} padding="default">
+                              <TableCell key={headerItem.id} padding="default" className= {classes.stickyHeader}>
                                 {headerItem.name}
                               </TableCell>
                             ))
                           : headerNonPresales.map(headerItem => (
-                              <TableCell key={headerItem.id} padding="default">
+                              <TableCell key={headerItem.id} padding="default" className= {classes.stickyHeader}>
                                 {headerItem.name}
                               </TableCell>
                             ))}
@@ -126,6 +129,6 @@ const billableDetail: React.SFC<AllProps> = props => {
   return render;
 };
 
-export const BillableDetail = compose<AllProps, OwnProps>(withUser, withWidth())(
+export const BillableDetail = compose<AllProps, OwnProps>(withUser, withWidth(), withStyles(styles))(
   billableDetail
 );
