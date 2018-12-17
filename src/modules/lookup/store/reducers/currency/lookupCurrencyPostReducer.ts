@@ -1,7 +1,7 @@
 import { IQuerySingleState } from '@generic/interfaces';
 import { ICurrencyPostRequest } from '@lookup/classes/queries/currency';
 import { ICurrency } from '@lookup/classes/response/currency';
-import { CurrencyAction as Action } from '@lookup/store/actions';
+import { LookupCurrencyAction as Action } from '@lookup/store/actions';
 import { Reducer } from 'redux';
 
 const initialState: IQuerySingleState<ICurrencyPostRequest, ICurrency> = {
