@@ -8,6 +8,7 @@ import { FormMode } from '@generic/types';
 import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
+import { layoutMessage } from '@layout/locales/messages';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import {
@@ -42,6 +43,10 @@ interface OwnRouteParams {
 interface OwnState {
   formMode: FormMode;
   id?: string | null;
+  submitDialogTitle: string;
+  submitDialogContentText: string;
+  submitDialogCancelText: string;
+  submitDialogConfirmedText: string;
 }
 
 interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
@@ -183,6 +188,10 @@ const createProps: mapper<CommonEditorProps, OwnState> = (props: CommonEditorPro
   return {
     formMode: FormMode.New,
     id: location.state && location.state.id || '',
+    submitDialogTitle: props.intl.formatMessage(commonMessage.system.dialog.createTitle),
+    submitDialogContentText: props.intl.formatMessage(commonMessage.system.dialog.createDescription),
+    submitDialogCancelText: props.intl.formatMessage(layoutMessage.action.cancel),
+    submitDialogConfirmedText: props.intl.formatMessage(layoutMessage.action.ok),
   };
 };
 

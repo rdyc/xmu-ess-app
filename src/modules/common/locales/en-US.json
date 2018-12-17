@@ -19,6 +19,11 @@
 
   "common.dialog.modifyTitle": "Modify Confirmation",
   "common.dialog.modifyDescription": "Lorem ipsum something something something something something something something something something something something",
+  "common.dialog.newTitle": "Submit Confirmation",
+  "common.dialog.newDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "common.dialog.editTitle": "Modify Confirmation",
+  "common.dialog.editDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+
 
   "common.text.active": "Active",
   "common.text.inActive": "Inactive",
