@@ -1,5 +1,5 @@
 import AppMenu from '@constants/AppMenu';
-import { DialogConfirmation } from '@layout/components/dialogs';
+// import { DialogConfirmation } from '@layout/components/dialogs';
 import { SingleConfig, SingleHandler, SinglePage, SingleState } from '@layout/components/pages/singlePage/SinglePage';
 import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
@@ -7,6 +7,7 @@ import { IPositionDetail } from '@lookup/classes/response';
 import { PositionUserAction } from '@lookup/classes/types';
 import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
 import * as React from 'react';
+import { DeleteForm } from '../editor/DeleteForm';
 import { PositionDetailProps } from './PositionDetail';
 import { PositionInformation } from './shared/PositionInformation';
 
@@ -20,7 +21,7 @@ const config: SingleConfig<IPositionDetail, PositionDetailProps> = {
   }),
 
   // parent url
-  parentUrl: (props: PositionDetailProps) => '/lookup/position',
+  parentUrl: (props: PositionDetailProps) => '/lookup/positions',
 
   // action centre
   showActionCentre: true,
@@ -43,7 +44,7 @@ const config: SingleConfig<IPositionDetail, PositionDetailProps> = {
     },
     {
       id: PositionUserAction.Delete,
-      name: props.intl.formatMessage(layoutMessage.action.discard),
+      name: props.intl.formatMessage(layoutMessage.action.delete),
       enabled: true,
       visible: true,
       onClick: props.handleOnDelete
@@ -54,9 +55,9 @@ const config: SingleConfig<IPositionDetail, PositionDetailProps> = {
     const { isLoading, request, response } = props.lookupPositionState.detail;
     const { loadDetailRequest } = props.lookupPositionDispatch;
 
-    // when user is set and not loading and has purchaseUid in route params
+    // when user is set and not loading and has positionUid in route params
     if (user && !isLoading && props.match.params.positionUid) {
-      // when purchaseUid was changed or response are empty or force to reload
+      // when positionUid was changed or response are empty or force to reload
       if ((request && request.positionUid !== props.match.params.positionUid) || !response || forceReload) {
         loadDetailRequest({
           companyUid: props.match.params.companyUid,
@@ -97,15 +98,21 @@ export const PositionDetailView: React.SFC<PositionDetailProps> = props => (
     config={config}
     connectedProps={props}
   >
-    <DialogConfirmation
-      isOpen={props.dialogOpen}
-      fullScreen={props.dialogFullScreen}
-      title={props.dialogTitle}
-      content={props.dialogContent}
-      labelCancel={props.dialogCancelLabel}
-      labelConfirm={props.dialogConfirmLabel}
-      onClickCancel={props.handleOnCloseDialog}
-      onClickConfirm={props.handleOnConfirm}
-    />
+    <React.Fragment>
+      <DeleteForm
+        action={props.action}
+        isOpenDialog={props.dialogOpen}
+        title={props.dialogTitle}
+        content={props.dialogContent}
+        labelCancel={props.dialogCancelLabel}
+        labelConfirm={props.dialogConfirmLabel}
+        handleDialogOpen={props.handleOnOpenDialog}
+        handleDialogClose={props.handleOnCloseDialog}
+        handleDialogConfirmed={props.handleOnConfirm}
+        onSubmit={props.handleSubmit}
+        onSubmitSuccess={props.handleSubmitSuccess}
+        onSubmitFail={props.handleSubmitFail}
+      />
+    </React.Fragment>
   </SinglePage>
 );

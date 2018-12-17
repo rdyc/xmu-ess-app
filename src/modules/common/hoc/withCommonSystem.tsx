@@ -11,6 +11,7 @@ import {
   leaveGetListRequest,
   projectGetListRequest,
   purposeGetListRequest,
+  relationGetListRequest,
   siteGetListRequest,
   statusGetListRequest,
   systemGetAllDispose,
@@ -58,6 +59,7 @@ interface PropsFromState {
   commonTransportationListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
   commonLimiterListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
   commonGradeListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
+  commonRelationListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
 
   // detail
 }
@@ -84,6 +86,7 @@ interface PropsFromDispatch {
     transportationListRequest: typeof transportationGetListRequest;
     limiterListRequest: typeof limiterGetListRequest;
     gradeListRequest: typeof gradeGetListRequest;
+    relationListRequest: typeof relationGetListRequest;
 
     // detail
     systemDetailRequest: typeof systemGetByIdRequest;
@@ -123,6 +126,7 @@ const mapStateToProps = ({
   commonSystemType,
   commonUnitList,
   commonGradeList,
+  commonRelationList,
 
 }: IAppState) => ({
   // system
@@ -151,6 +155,7 @@ const mapStateToProps = ({
   commonTransportationListState: commonTransportationList,
   commonLimiterListState: commonLimiterList,
   commonGradeListState: commonGradeList,
+  commonRelationListState: commonRelationList,
 
   // detail
  
@@ -178,6 +183,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     transportationListRequest: (request: ISystemListRequest) => dispatch(transportationGetListRequest(request)),
     limiterListRequest: (request: ISystemListRequest) => dispatch(limiterGetListRequest(request)),
     gradeListRequest: (request: ISystemListRequest) => dispatch(gradeGetListRequest(request)),
+    relationListRequest: (request: ISystemListRequest) => dispatch(relationGetListRequest(request)),
 
     // detail
     systemDetailRequest: (request: ISystemByIdRequest) => dispatch(systemGetByIdRequest(request)),

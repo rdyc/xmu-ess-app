@@ -23,7 +23,7 @@ const settlementSummary: React.SFC<AllProps> = props => (
         {...GlobalStyle.TextField.ReadOnly}
         margin="dense"
         label={props.intl.formatMessage(purchaseMessage.settlement.field.status)}
-        value={props.data.status ? props.data.status.value : 'N/A'}
+        value={props.data.status ? props.data.status.value : props.intl.formatMessage(purchaseMessage.action.settle)}
       />
       { props.data.reject ?
       <TextField
@@ -77,7 +77,7 @@ const settlementSummary: React.SFC<AllProps> = props => (
         {...GlobalStyle.TextField.ReadOnly}
         margin="dense"
         label={props.intl.formatMessage(purchaseMessage.settlement.field.date)}
-        value={props.intl.formatDate(props.data.date || '', GlobalFormat.Date)}
+        value={props.data.date && props.intl.formatDate(props.data.date, GlobalFormat.Date) || '-'}
       />
       <TextField
         {...GlobalStyle.TextField.ReadOnly}

@@ -21,7 +21,7 @@ import LookupHolidayList from './holiday/list/LookupHolidayList';
 import LookupLeaveEditor from './leave/editor/LookupLeaveEditor';
 import { MileageExceptionDetail } from './mileageException/detail/MileageExceptionDetail';
 import MileageExceptionEditor from './mileageException/editor/MileageExceptionEditor';
-import { LookupMileageExceptionList } from './mileageException/list/LookupMileageExceptionList';
+import { LookupMileageExceptionList } from './mileageException/list/LookupMileageExceptionListView';
 import { PositionDetail } from './position/detail/PositionDetail';
 import { PositionEditor } from './position/editor/PositionEditor';
 import { PositionList } from './position/list/PositionList';
@@ -30,13 +30,13 @@ import LookupRoleEditor from './role/editor/LookupRoleEditor';
 import LookupRoleList from './role/list/LookupRoleList';
 import { LookupSystemLimitDetail } from './systemLimit/detail/LookupSystemLimitDetail';
 import LookupSystemLimitEditor from './systemLimit/editor/LookupSystemLimitEditor';
-import LookupSystemLimitList from './systemLimit/list/LookupSystemLimitList';
+import { LookupSystemLimitList } from './systemLimit/list/LookupSystemLimitListView';
 
 const role = (props: RouteComponentProps) => (
   <Switch>
     <Route path={`${props.match.path}/form`} component={LookupRoleEditor} />
-    <Route path={`${props.match.path}/list`} component={LookupRoleList} />
     <Route path={`${props.match.path}/:roleUid`} component={LookupRoleDetail} />
+    <Route path={`${props.match.path}`} component={LookupRoleList} />
   </Switch>
 );
 
@@ -117,8 +117,8 @@ export const LookupRoutingComponents: React.SFC<RouteComponentProps> = props => 
       <Route path={`${props.match.path}/company`} component={company} />
       <Route path={`${props.match.path}/systemlimits`} component={systemLimit} />
       <Route path={`${props.match.path}/mileageexceptions`} component={mileageException} />
-      <Route path={`${props.match.path}/currency`} component={currency} />
-      <Route path={`${props.match.path}/position`} component={position} />
+      <Route path={`${props.match.path}/currencies`} component={currency} />
+      <Route path={`${props.match.path}/positions`} component={position} />
       <Route path={`${props.match.path}/diemvalue`} component={diem} />
       <Route path={`${props.match.path}/holiday`} component={holiday} />
       <Route path={`${props.match.path}/leave`} component={leave} />

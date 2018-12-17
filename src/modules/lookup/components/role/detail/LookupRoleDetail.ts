@@ -101,7 +101,7 @@ const handlerCreators: HandleCreators<RoleDetailProps, OwnHandler> = {
 
       switch (props.action) {
         case RoleUserAction.Modify:
-          next = '/lookup/role/form';
+          next = '/lookup/roles/form';
           break;
 
         default:

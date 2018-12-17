@@ -6,6 +6,7 @@ export const isSettlementEditable = (statusType: string): boolean => {
   const statusTypes: string[] = [
     WorkflowStatusType.Submitted,
     WorkflowStatusType.InProgress,
+    WorkflowStatusType.Rejected,
   ];
 
   result = statusTypes.indexOf(statusType) !== -1;

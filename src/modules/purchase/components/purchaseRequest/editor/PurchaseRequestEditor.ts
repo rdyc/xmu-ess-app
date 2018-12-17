@@ -48,7 +48,6 @@ interface OwnRouteParams {
 }
 
 interface OwnState {
-  // setState: PurchaseRequestFormData | undefined;
   formMode: FormMode;
   companyUid?: string | undefined;
   positionUid?: string | undefined;
@@ -78,7 +77,7 @@ const createProps: mapper<PurchaseRequestEditorProps, OwnState> = (props: Purcha
   const { history, } = props;
 
   const state = history.location.state;
-  
+
   return {
     formMode: state ? FormMode.Edit : FormMode.New,
     companyUid: state ? state.companyUid : undefined,
@@ -308,7 +307,7 @@ const lifecycles: ReactLifeCycleFunctions<PurchaseRequestEditorProps, {}> = {
 
     stateUpdate({
       companyUid: user.company.uid,
-      positionUid: user.position.uid
+      positionUid: user.position.uid,
     });
 
     if (!isNullOrUndefined(history.location.state)) {

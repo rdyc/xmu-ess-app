@@ -22,9 +22,14 @@ export type MileageExceptionFormData = {
 
 interface OwnProps {
   formMode: FormMode;
+  submitDialogTitle: string;
+  submitDialogContentText: string;
+  submitDialogCancelText: string;
+  submitDialogConfirmedText: string;
 }
 
 interface FormValueProps {
+  formName: string;
   companyUidValue: string | undefined;
   projectUidValue: string | undefined;
 }
@@ -41,6 +46,7 @@ const mapStateToProps = (state: any): FormValueProps => {
   const projectUid = selector(state, 'information.projectUid');
   
   return {
+    formName,
     companyUidValue: companyUid,
     projectUidValue: projectUid,
   };

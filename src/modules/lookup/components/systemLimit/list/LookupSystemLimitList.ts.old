@@ -12,14 +12,13 @@ import { LookupSystemLimitListView } from './LookupSystemLimitListView';
 
 interface OwnHandlers {
   handleOnCreate: () => void;
-  handleOnDelete: (uid: string, callback: () => void) => void;
+  handleOnDelete: (uid: string) => void;
   handleOnCloseDialog: () => void;
   handleSubmit: () => void;
 }
 
 interface OwnState {
   systemLimitUid: string;
-  callback?: () => void;
   action?: SystemLimitUserAction;
   dialogFullScreen: boolean;
   dialogOpen: boolean;
@@ -52,7 +51,6 @@ const stateUpdaters: StateUpdaters<SystemLimitListProps, OwnState, OwnStateUpdat
     dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.ok)
   }),
   setDelete: (prevState: OwnState, props: SystemLimitListProps) => (uid: string, callback: () => void): Partial<OwnState> => ({
-    callback,
     action: SystemLimitUserAction.Delete,
     systemLimitUid: uid,
     dialogFullScreen: false,
@@ -77,15 +75,14 @@ const handlerCreators: HandleCreators<SystemLimitListProps, OwnHandlers> = {
   handleOnCreate: (props: SystemLimitListProps) => () => { 
     props.setCreate();
   },
-  handleOnDelete: (props: SystemLimitListProps) => (uid: string, callback: () => void) => {
-    props.setDelete(uid, callback);
+  handleOnDelete: (props: SystemLimitListProps) => (uid: string) => {
+    props.setDelete(uid);
   },
   handleOnCloseDialog: (props: SystemLimitListProps) => () => {
     props.setDefault();
   },
   handleSubmit: (props: SystemLimitListProps) => () => {
-    const { response } = props.systemLimitState.all;
-    const { deleteRequest, loadAllDispose } = props.systemLimitDispatch;
+    const { deleteRequest } = props.systemLimitDispatch;
     const { action, systemLimitUid, intl } = props;
     const { alertAdd } = props.layoutDispatch;
 
@@ -111,10 +108,6 @@ const handlerCreators: HandleCreators<SystemLimitListProps, OwnHandlers> = {
           time: new Date()
         });
     
-        if (response && props.callback) {
-          loadAllDispose();
-          props.callback();
-        }
         props.setDefault();
         props.history.push(`/lookup/systemlimits/`);
       });

@@ -29,6 +29,7 @@ import { Store } from 'redux';
 import { loadUser, OidcProvider } from 'redux-oidc';
 import * as store from 'store';
 
+import { OrganizationRoutingComponents } from '@organization/components/OrganizationRoutingComponents';
 import { IAppState } from './generic/interfaces';
 import AppLocale from './language';
 import config, { getCurrentLanguage } from './language/config';
@@ -75,6 +76,7 @@ const app: React.ComponentType<AllProps> = props => (
               <Route path="/travel" component={TravelRoutingComponents} />
               <Route path="/common" component={CommonRoutingComponents} />
               <Route path="/lookup" component={LookupRoutingComponents} />
+              <Route path="/organization" component={OrganizationRoutingComponents} />
 
               <Route path="/playground" component={playgroundRouter} />
             </Switch>

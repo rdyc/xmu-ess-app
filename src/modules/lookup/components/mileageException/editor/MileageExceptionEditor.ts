@@ -3,6 +3,7 @@ import { FormMode } from '@generic/types';
 import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
+import { layoutMessage } from '@layout/locales/messages';
 import { IMileageExceptionPostPayload } from '@lookup/classes/request/mileageException/IMileageExceptionPostPayload';
 import { IMileageExceptionPutPayload } from '@lookup/classes/request/mileageException/IMileageExceptionPutPayload';
 import { IMileageException } from '@lookup/classes/response';
@@ -42,6 +43,10 @@ interface OwnRouteParams {
 interface OwnState {
   formMode: FormMode;
   mileageExceptionUid?: string | undefined;
+  submitDialogTitle: string;
+  submitDialogContentText: string;
+  submitDialogCancelText: string;
+  submitDialogConfirmedText: string;
 }
 
 interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
@@ -174,7 +179,11 @@ const handlerCreators: HandleCreators<MileageExceptionEditorProps, OwnHandlers> 
 };
 
 const createProps: mapper<MileageExceptionEditorProps, OwnState> = (props: MileageExceptionEditorProps): OwnState => ({ 
-  formMode: FormMode.New
+  formMode: FormMode.New,
+  submitDialogTitle: props.intl.formatMessage(lookupMessage.shared.confirm.createTitle),
+  submitDialogContentText: props.intl.formatMessage(lookupMessage.shared.confirm.createDescription),
+  submitDialogCancelText: props.intl.formatMessage(layoutMessage.action.cancel),
+  submitDialogConfirmedText: props.intl.formatMessage(layoutMessage.action.ok),
 });
 
 const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
@@ -205,7 +214,9 @@ const lifecycles: ReactLifeCycleFunctions<MileageExceptionEditorProps, {}> = {
 
       stateUpdate({ 
         formMode: FormMode.Edit,
-        mileageExceptionUid: history.location.state.uid
+        mileageExceptionUid: history.location.state.uid,
+        submitDialogTitle: this.props.intl.formatMessage(lookupMessage.shared.confirm.modifyTitle),
+        submitDialogContentText : this.props.intl.formatMessage(lookupMessage.shared.confirm.modifyDescription)
       });
 
       loadDetailRequest({
