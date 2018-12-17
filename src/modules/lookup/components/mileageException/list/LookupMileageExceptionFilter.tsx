@@ -14,18 +14,22 @@ const formName = 'LookupMileageExceptionFilter';
 
 export type MileageExceptionFormData = {
   companyUid: string | null;
+  roleUid: string | null;
 };
 
 interface FormValueProps {
-  companyUidValue: string | undefined;
+  companyUidValue: string;
+  roleUidValue: string | undefined;
 }
 
 interface OwnProps {
-  handleFind: (event: any, newValue: string, oldValue: string) => void;
+  callbackForceReload: () => void;
+  handleChangeFilter: (companyUid: string, roleUid: string | undefined) => void;
 }
 
 interface OwnHandler {
   handleChangeCompanyUid: (event: any, newValue: string, oldValue: string) => void;
+  handleChangeRoleUid: (event: any, newValue: string, oldValue: string) => void;
 }
 
 interface OwnStateUpdaters extends StateHandlerMap<{}> {
@@ -42,9 +46,17 @@ type AllProps = WithForm
 
 const handlerCreators: HandleCreators<AllProps, OwnHandler> = {
   handleChangeCompanyUid: (props: AllProps) => (event: any, newValue: string, oldValue: string) => {
+    // to set the filter into nothing / null
     if (!isNullOrUndefined(oldValue)) {
-      props.change('companyUid', '');
+      props.change('roleUid', '');
     }
+
+    props.handleChangeFilter(newValue, undefined);
+    props.callbackForceReload();
+  },
+  handleChangeRoleUid: (props: AllProps) => (event: any, newValue: string, oldValue: string) => {
+    props.handleChangeFilter(props.companyUidValue, newValue);
+    props.callbackForceReload();
   }
 };
 
@@ -59,14 +71,17 @@ const selector = formValueSelector(formName);
 
 const mapStateToProps = (state: any): FormValueProps => {
   const companyUid = selector(state, 'companyUid');
-    
+  const roleUid = selector(state, 'roleUid');
+
   return {
-    companyUidValue: companyUid
+    companyUidValue: companyUid,
+    roleUidValue: roleUid
   };
 };
 
 const lookupMileageExceptionFilter: React.SFC<AllProps> = props => {
-  const { intl, companyUidValue, handleChangeCompanyUid, handleFind } = props;
+  const { intl, companyUidValue, handleChangeCompanyUid, handleChangeRoleUid } = props;
+
   const Filter: any = {
     companyUid: companyUidValue
   };
@@ -80,7 +95,7 @@ const lookupMileageExceptionFilter: React.SFC<AllProps> = props => {
           label={intl.formatMessage(lookupMessage.mileageException.field.filterCompany)}
           placeholder={intl.formatMessage(lookupMessage.mileageException.field.filterCompanyPlaceholder)}
           component={SelectLookupCompany}
-          onChange={!isNullOrUndefined(companyUidValue) ? handleChangeCompanyUid : handleFind}
+          onChange={handleChangeCompanyUid}
         />
       </Grid>
       <Grid item xs={12} md={6}>
@@ -90,7 +105,7 @@ const lookupMileageExceptionFilter: React.SFC<AllProps> = props => {
           label={intl.formatMessage(lookupMessage.mileageException.field.filterRole)}
           placeholder={intl.formatMessage(lookupMessage.mileageException.field.filterRolePlaceholder)}
           component={SelectLookupRole}
-          onChange={handleFind}
+          onChange={handleChangeRoleUid}
           disabled={isNullOrUndefined(companyUidValue)}
           filter={!isNullOrUndefined(companyUidValue) ? Filter : undefined}
         />

@@ -30,6 +30,10 @@ export const commonSystemSection = defineMessages({
 export const commonSystemDialog = defineMessages({
   modifyTitle: { id: `${prefix}.dialog.modifyTitle`},
   modifyDescription: { id: `${prefix}.dialog.modifyDescription`},
+  createTitle: { id: `${prefix}.dialog.newTitle`},
+  createDescription: { id: `${prefix}.dialog.newDescription`},
+  editTitle: { id: `${prefix}.dialog.editTitle`},
+  editDescription: { id: `${prefix}.dialog.editDescription`},
 });
 
 export const commonSystemText = defineMessages({
