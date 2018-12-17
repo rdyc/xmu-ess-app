@@ -6,7 +6,7 @@ export const purchaseRequestFieldTranslator = (find: string, field: ICollectionV
   let result: string = find;
 
   // replace status type
-  if (field.name === PurchaseField.requestStatusType) {
+  if (field.name === PurchaseField.requestStatusType || find) {
     switch (find.toLowerCase()) {
       case 'submit':
       case 'submitted':
@@ -21,6 +21,7 @@ export const purchaseRequestFieldTranslator = (find: string, field: ICollectionV
 
       case 'approve':
       case 'approved':
+      case 'settle':
         result = WorkflowStatusType.Approved;
         break;
 
@@ -35,7 +36,7 @@ export const purchaseRequestFieldTranslator = (find: string, field: ICollectionV
         break;
 
       default:
-        // result = WorkflowStatusType.InProgress || WorkflowStatusType.Submitted || WorkflowStatusType.Approved || WorkflowStatusType.Rejected;
+        result = find;
         break;
     }
   } 

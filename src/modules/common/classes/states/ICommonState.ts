@@ -65,4 +65,12 @@ export interface ICommonState {
   commonLimiterAll: IQueryCollectionState<ISystemAllRequest, ISystem>;
   commonLimiterList: IQueryCollectionState<ISystemListRequest, ISystemList>;
   commonLimiterDetail: IQuerySingleState<ISystemByIdRequest, ISystemDetail>;
+
+  commonGradeAll: IQueryCollectionState<ISystemAllRequest, ISystem>;
+  commonGradeList: IQueryCollectionState<ISystemListRequest, ISystemList>;
+  commonGradeDetail: IQuerySingleState<ISystemByIdRequest, ISystemDetail>;
+
+  commonRelationAll: IQueryCollectionState<ISystemAllRequest, ISystem>;
+  commonRelationList: IQueryCollectionState<ISystemListRequest, ISystemList>;
+  commonRelationDetail: IQuerySingleState<ISystemByIdRequest, ISystemDetail>;
 }

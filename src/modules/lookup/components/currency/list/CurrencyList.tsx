@@ -8,6 +8,7 @@ import {
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
+import { GlobalFormat } from '@layout/types';
 import { ICurrency } from '@lookup/classes/response/currency';
 import { CurrencyField, CurrencyUserAction } from '@lookup/classes/types';
 import { CurrencySummary } from '@lookup/components/currency/detail/shared/CurrencySummary';
@@ -26,9 +27,7 @@ const config: CollectionConfig<ICurrency, AllProps> = {
     uid: AppMenu.LookupCurrency,
     parentUid: AppMenu.Lookup,
     title: props.intl.formatMessage(lookupMessage.currency.page.listTitle),
-    // title: 'Currency Mock Up',
     description: props.intl.formatMessage(lookupMessage.currency.page.listTitle),
-    // description: 'Currency Mock Up',
   }),
 
   // top bar
@@ -71,7 +70,7 @@ const config: CollectionConfig<ICurrency, AllProps> = {
       name: props.intl.formatMessage(layoutMessage.action.create),
       enabled: true,
       visible: true,
-      onClick: () => callback.handleRedirectTo('/lookup/currency/form'),
+      onClick: () => callback.handleRedirectTo('/lookup/currencies/form'),
     }
   ]),
   
@@ -109,14 +108,15 @@ const config: CollectionConfig<ICurrency, AllProps> = {
   },
   onBind: (item: ICurrency, index: number, props: AllProps) => ({
     key: index,
-    primary: `${item.symbol}` ||  '',
-    secondary: `${item.rate}` || '',
-    tertiary: `${item.name}` || '',
-    quaternary: `${item.uid }`,
+    primary: item.symbol ||  '-',
+    secondary: props.intl.formatNumber(item.rate, GlobalFormat.CurrencyDefault) || '-',
+    tertiary: item.name || '-',
+    quaternary: item.isActive 
+            ? props.intl.formatMessage(lookupMessage.currency.field.isActive) 
+            : props.intl.formatMessage(lookupMessage.currency.field.isNotActive),
     quinary: item.changes && item.changes.updated && item.changes.updated.fullName || item.changes && item.changes.created && item.changes.created.fullName || 'N/A',
     senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
   }),
-
   // summary component
   summaryComponent: (item: ICurrency) => (
     <CurrencySummary data = {item} />
@@ -127,13 +127,13 @@ const config: CollectionConfig<ICurrency, AllProps> = {
     <React.Fragment>
     <Button
       size="small"
-      onClick={() => callback.handleRedirectTo(`/lookup/currency/form`, {currencyUid: item.uid})}
+      onClick={() => callback.handleRedirectTo(`/lookup/currencies/form`, {uid: item.uid})}
     >
       <FormattedMessage {...layoutMessage.action.modify} />
     </Button>  
     <Button 
       size= "small"
-      onClick = {() => callback.handleRedirectTo(`/lookup/currency/${item.uid}`)}
+      onClick = {() => callback.handleRedirectTo(`/lookup/currencies/${item.uid}`)}
     >
       <FormattedMessage { ...layoutMessage.action.details } />
     </Button>

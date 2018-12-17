@@ -35,6 +35,10 @@ export const expenseRequestAction = defineMessages({
 export const expenseRequestDialog = defineMessages({
   modifyTitle: { id: `${prefix}.dialog.modifyTitle`},
   modifyDescription: { id: `${prefix}.dialog.modifyDescription`},
+  createTitle: { id: `${prefix}.dialog.newTitle`},
+  createDescription: { id: `${prefix}.dialog.newDescription`},
+  editTitle: { id: `${prefix}.dialog.editTitle`},
+  editDescription: { id: `${prefix}.dialog.editDescription`},
 });
 
 export const expenseRequestField = defineMessages({
@@ -79,6 +83,7 @@ export const expenseRequestField = defineMessages({
 
   notes: { id: `${fieldPrefix}.notes`},
   notesPlaceholder: { id: `${fieldPrefix}.notes.placeholder`},
+  notesRequired: { id: `${fieldPrefix}.notes.required`},
 
   rejectedReason: { id: `${fieldPrefix}.rejectedReason`},
 
@@ -120,6 +125,7 @@ export const expenseRequestFieldHelperFor = (field: string, type: 'fieldName' | 
       case 'address': return expenseRequestField.addressRequired;
       case 'name': return expenseRequestField.nameRequired;
       case 'title': return expenseRequestField.titleRequired;
+      case 'notes': return expenseRequestField.notesRequired;
       
       default: return {id: field};
     }

@@ -1,7 +1,8 @@
 import { layoutAlertAdd } from '@layout/store/actions';
 import {
-  CurrencyAction as Action,
+  LookupCurrencyAction as Action,
   lookupCurrencyDeleteError,
+  lookupCurrencyDeleteRequest,
   lookupCurrencyDeleteSuccess,
   lookupCurrencyGetAllDispose,
   lookupCurrencyGetAllError,
@@ -216,7 +217,7 @@ function* watchFetchPutRequest() {
 }
 
 function* watchFetchDeleteRequest() {
-  const worker = (action: ReturnType<typeof lookupCurrencyPutRequest>) => {
+  const worker = (action: ReturnType<typeof lookupCurrencyDeleteRequest>) => {
     return saiyanSaga.fetch({
       method: 'delete',
       path: `/v1/lookup/currencies/`,

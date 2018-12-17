@@ -21,16 +21,14 @@ import {
 } from 'recompose';
 
 interface OwnHandlers {
-  handleChangeStart: (start: string) => void;
-  handleChangeEnd: (end: string) => void;
   handleGoToNext: () => void;
   handleGoToPrevious: () => void;
   handleChangeSize: (value: number) => void;
   handleChangeSort: (direction: boolean) => void;
   handleChangePage: (page: number) => void;
-  handleChangeFind: (find: string) => void;
   handleDetail: (uid: string, type: string) => void;
   handleDialog: () => void;
+  handleChangeFilter: (employeeUid: string | undefined, start: string, end: string) => void;
 }
 
 interface OwnOptions {
@@ -60,16 +58,14 @@ interface OwnState {
 }
 
 interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
-  stateStart: StateHandler<OwnState>;
-  stateEnd: StateHandler<OwnState>;
   stateNext: StateHandler<OwnState>;
   statePrevious: StateHandler<OwnState>;
   stateSorting: StateHandler<OwnState>;
   stateSizing: StateHandler<OwnState>;
   statePage: StateHandler<OwnState>;
-  stateFind: StateHandler<OwnState>;
   stateDetail: StateHandler<OwnState>;
   stateDialog: StateHandler<OwnState>;
+  stateUpdate: StateHandler<OwnState>;
 }
 
 export type BillableListProps = WithSummary &
@@ -103,17 +99,11 @@ const createProps: mapper<BillableListProps, OwnState> = (props: BillableListPro
       direction ||
       'ascending',
     page: (request && request.filter && request.filter.page) || page || 1,
-    size: (request && request.filter && request.filter.size) || size || 5
+    size: (request && request.filter && request.filter.size) || size || 10
   };
 };
 
 const stateUpdaters: StateUpdaters<OwnOptions, OwnState, OwnStateUpdaters> = {
-  stateStart: (prevState: OwnState) => (start: string) => ({
-    start
-  }),
-  stateEnd: (prevState: OwnState) => (end: string) => ({
-    end
-  }),
   stateNext: (prevState: OwnState) => () => ({
     page: prevState.page + 1
   }),
@@ -131,26 +121,20 @@ const stateUpdaters: StateUpdaters<OwnOptions, OwnState, OwnStateUpdaters> = {
   statePage: (prevState: OwnState) => (page: number) => ({
     page
   }),
-  stateFind: (prevState: OwnState) => (find: string) => ({
-    find,
-    findBy: 'fullName'
-  }),
   stateDetail: (prevState: OwnState) => (uid: string, type: string) => ({
     uid,
     type
   }),
   stateDialog: (prevState: OwnState) => (open: boolean) => ({
     open
-  })
+  }),
+  stateUpdate: (prevState: OwnState) => (newState: any) => ({
+    ...prevState,
+    ...newState
+  }),
 };
 
 const handlerCreators: HandleCreators<BillableListProps, OwnHandlers> = {
-  handleChangeStart: (props: BillableListProps) => (start: string) => {
-    props.stateStart(start);
-  },
-  handleChangeEnd: (props: BillableListProps) => (end: string) => {
-    props.stateEnd(end);
-  },
   handleGoToNext: (props: BillableListProps) => () => {
     props.stateNext();
   },
@@ -168,9 +152,6 @@ const handlerCreators: HandleCreators<BillableListProps, OwnHandlers> = {
   handleChangePage: (props: BillableListProps) => (page: number) => {
     props.statePage(page);
   },
-  handleChangeFind: (props: BillableListProps) => (find: string) => {
-    props.stateFind(find.toUpperCase());
-  },
   handleDetail: (props: BillableListProps) => (uid: string, type: string) => {
     props.stateDetail(uid, type);
   },
@@ -179,6 +160,15 @@ const handlerCreators: HandleCreators<BillableListProps, OwnHandlers> = {
 
     open = !open;
     props.stateDialog(open);
+  },
+  handleChangeFilter: (props: BillableListProps) => (employeeUid: string | undefined, start: string, end: string) => {
+    const { stateUpdate } = props;
+
+    stateUpdate({
+      start,
+      end,
+      find: employeeUid,
+    });
   }
 };
 

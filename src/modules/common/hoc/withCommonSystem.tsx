@@ -7,9 +7,11 @@ import {
   documentGetListRequest,
   documentPresalesGetListRequest,
   expenseGetListRequest,
+  gradeGetListRequest,
   leaveGetListRequest,
   projectGetListRequest,
   purposeGetListRequest,
+  relationGetListRequest,
   siteGetListRequest,
   statusGetListRequest,
   systemGetAllDispose,
@@ -56,6 +58,8 @@ interface PropsFromState {
   commonPurposeListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
   commonTransportationListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
   commonLimiterListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
+  commonGradeListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
+  commonRelationListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
 
   // detail
 }
@@ -81,6 +85,8 @@ interface PropsFromDispatch {
     purposeListRequest: typeof purposeGetListRequest;
     transportationListRequest: typeof transportationGetListRequest;
     limiterListRequest: typeof limiterGetListRequest;
+    gradeListRequest: typeof gradeGetListRequest;
+    relationListRequest: typeof relationGetListRequest;
 
     // detail
     systemDetailRequest: typeof systemGetByIdRequest;
@@ -119,6 +125,8 @@ const mapStateToProps = ({
   commonSystemDetail,
   commonSystemType,
   commonUnitList,
+  commonGradeList,
+  commonRelationList,
 
 }: IAppState) => ({
   // system
@@ -145,7 +153,9 @@ const mapStateToProps = ({
   commonDestinationListState: commonDestinationList,
   commonPurposeListState: commonPurposeList,
   commonTransportationListState: commonTransportationList,
-  commonLimiterListState: commonLimiterList
+  commonLimiterListState: commonLimiterList,
+  commonGradeListState: commonGradeList,
+  commonRelationListState: commonRelationList,
 
   // detail
  
@@ -172,6 +182,8 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     purposeListRequest: (request: ISystemListRequest) => dispatch(purposeGetListRequest(request)),
     transportationListRequest: (request: ISystemListRequest) => dispatch(transportationGetListRequest(request)),
     limiterListRequest: (request: ISystemListRequest) => dispatch(limiterGetListRequest(request)),
+    gradeListRequest: (request: ISystemListRequest) => dispatch(gradeGetListRequest(request)),
+    relationListRequest: (request: ISystemListRequest) => dispatch(relationGetListRequest(request)),
 
     // detail
     systemDetailRequest: (request: ISystemByIdRequest) => dispatch(systemGetByIdRequest(request)),

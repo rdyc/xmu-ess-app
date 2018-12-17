@@ -4,7 +4,7 @@ import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
 import { IMileageException } from '@lookup/classes/response';
-import { MileageExceptionRequestField, MileageExceptionUserAction } from '@lookup/classes/types';
+import { MileageExceptionField, MileageExceptionUserAction } from '@lookup/classes/types';
 import { WithLookupMileageException, withLookupMileageException } from '@lookup/hoc/withLookupMileageException';
 import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
 import { Button } from '@material-ui/core';
@@ -12,6 +12,7 @@ import * as moment from 'moment';
 import * as React from 'react';
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose } from 'recompose';
+import { LookupMileageExceptionFilter } from './LookupMileageExceptionFilter';
 import { LookupMileageExceptionSummary } from './LookupMileageExceptionSummary';
 
 const config: CollectionConfig<IMileageException, AllProps> = {
@@ -24,9 +25,9 @@ const config: CollectionConfig<IMileageException, AllProps> = {
   }),
   
   // top bar
-  fields: Object.keys(MileageExceptionRequestField).map(key => ({
+  fields: Object.keys(MileageExceptionField).map(key => ({
     value: key,
-    name: MileageExceptionRequestField[key]
+    name: MileageExceptionField[key]
   })),
   // fieldTranslator: mileageRequestFieldTranslator,
 
@@ -103,16 +104,21 @@ const config: CollectionConfig<IMileageException, AllProps> = {
     callback.handleLoading(isLoading);
     callback.handleResponse(response);
   },
-  onBind: (item: IMileageException, index: number, props: AllProps) => ({
+  onBind: (item: IMileageException, index: number) => ({
     key: index,
-    primary: item.role.name,
-    secondary: `${item.percentage.toString()} %`,
-    tertiary: item.type ? item.type.value : 'N/A',
+    primary: item.uid,
+    secondary: item.role && item.role.company && item.role.company.name,
+    tertiary: item.role.name,
     quaternary: item.reason ? item.reason : 'N/A',
-    quinary: item.role && item.role.company && item.role.company.name,
+    quinary: item.changes && item.changes.updated && item.changes.updated.fullName || item.changes && item.changes.created && item.changes.created.fullName || 'N/A',
     senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
   }),
 
+  // filter
+  filterComponent: (callback: CollectionHandler) => (
+    <LookupMileageExceptionFilter handleFind={callback.handleFilter}/>
+  ),
+  
   // summary component
   summaryComponent: (item: IMileageException) => ( 
     <LookupMileageExceptionSummary data={item} />
@@ -139,18 +145,18 @@ const config: CollectionConfig<IMileageException, AllProps> = {
 
 type AllProps
   = WithUser
-  & InjectedIntlProps
-  & WithLookupMileageException;
+  & WithLookupMileageException
+  & InjectedIntlProps;
 
-const mileageExceptionList: React.SFC<AllProps> = props => (
+const lookupMileageExceptionListView: React.SFC<AllProps> = props => (
   <CollectionPage
     config={config}
     connectedProps={props}
   />
 );
 
-export const MileageExceptionList = compose(
+export const LookupMileageExceptionList = compose(
   withUser,
-  injectIntl,
-  withLookupMileageException
-)(mileageExceptionList);
+  withLookupMileageException,
+  injectIntl
+)(lookupMileageExceptionListView);

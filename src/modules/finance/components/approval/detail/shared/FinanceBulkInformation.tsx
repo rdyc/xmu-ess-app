@@ -49,8 +49,8 @@ const financeBulkInformation: React.SFC<AllProps> = props => (
                   noWrap
                   variant="body2"
                 >
-                {finance.document.amount && finance.document.amount.advance} &nbsp;&bull;&nbsp;
-                {finance.document.amount && finance.document.amount.total}
+                {finance.document.amount && finance.document.amount.advance && props.intl.formatNumber(finance.document.amount.advance)} &nbsp;&bull;&nbsp;
+                {finance.document.amount && finance.document.amount.total && props.intl.formatNumber(finance.document.amount.total)}
                 </Typography>
                 <Typography 
                   noWrap

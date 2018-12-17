@@ -1,33 +1,107 @@
-import { currencyConfirm, currencyField, currencyForm, currencyMessage, currencyPage, currencySection } from './currency/currencyMessage';
-import { holidayConfirm, holidayField, holidayFieldHelperFor, holidayMessage, holidayPage, holidaySection } from './holiday';
-import { leaveConfirm, leaveField, leaveFieldHelperFor, leaveMessage, leavePage, leaveSection } from './leave';
-import { companyConfirm, companyField, companyFieldHelperFor, companyMessage, companyPage, companySection } from './lookupCompanyMessage';
-import { 
-  diemFieldHelperFor, 
-  lookupDiemConfirm, 
-  lookupDiemField, 
-  lookupDiemMessage, 
+import {
+  currencyConfirm,
+  currencyField,
+  currencyForm,
+  currencyMessage,
+  currencyPage,
+  currencySection
+} from './currency/currencyMessage';
+import {
+  holidayConfirm,
+  holidayField,
+  holidayFieldHelperFor,
+  holidayMessage,
+  holidayPage,
+  holidaySection
+} from './holiday';
+import {
+  leaveConfirm,
+  leaveField,
+  leaveFieldHelperFor,
+  leaveMessage,
+  leavePage,
+  leaveSection
+} from './leave';
+import {
+  companyConfirm,
+  companyField,
+  companyFieldHelperFor,
+  companyMessage,
+  companyPage,
+  companySection
+} from './lookupCompanyMessage';
+import {
+  customerFieldHelperFor,
+  lookupCustomerConfirm,
+  lookupCustomerFields,
+  lookupCustomerMessage,
+  lookupCustomerPage,
+  lookupCustomerSection
+} from './lookupCustomerMessage';
+import {
+  diemFieldHelperFor,
+  lookupDiemConfirm,
+  lookupDiemField,
+  lookupDiemMessage,
   lookupDiemPage,
   lookupDiemSection
 } from './lookupDiemMessage';
+import { 
+  roleConfirm, 
+  roleDialog, 
+  roleField, 
+  roleFieldHelperFor, 
+  roleMessage, 
+  rolePage, 
+  roleSection
+} from './lookupRoleMessage';
 import {
+  mileageExceptionConfirm,
   mileageExceptionField,
   mileageExceptionFieldHelperFor,
   mileageExceptionMessage,
   mileageExceptionPage,
   mileageExceptionSection
 } from './mileageException';
-import { positionConfirm, positionField, positionFieldHelperFor, positionForm, positionMessage, positionPage, positionSection } from './positionMessage';
+import {
+  positionConfirm,
+  positionField,
+  positionFieldHelperFor,
+  positionForm,
+  positionMessage,
+  positionPage,
+  positionSection
+} from './positionMessage';
 import { lookupConfirm } from './shared';
-import { systemLimitField, systemLimitFieldHelperFor, systemLimitMessage, systemLimitPage, systemLimitSection } from './systemLimit';
+import {
+  systemLimitConfirm,
+  systemLimitField,
+  systemLimitFieldHelperFor,
+  systemLimitMessage,
+  systemLimitPage,
+  systemLimitSection
+} from './systemLimit';
 
 export const lookupMessage = {
+  shared: {
+    confirm: lookupConfirm
+  },
   mileageException: {
     page: mileageExceptionPage,
     field: mileageExceptionField,
     fieldFor: mileageExceptionFieldHelperFor,
     section: mileageExceptionSection,
-    message: mileageExceptionMessage
+    message: mileageExceptionMessage,
+    confirm: mileageExceptionConfirm
+  },
+  role: {
+    page: rolePage,
+    field: roleField,
+    fieldFor: roleFieldHelperFor,
+    section: roleSection,
+    confirm: roleConfirm,
+    message: roleMessage,
+    dialog: roleDialog
   },
   systemLimit: {
     page: systemLimitPage,
@@ -35,9 +109,7 @@ export const lookupMessage = {
     fieldFor: systemLimitFieldHelperFor,
     section: systemLimitSection,
     message: systemLimitMessage,
-  },
-  shared: {
-    confirm: lookupConfirm
+    confirm: systemLimitConfirm
   },
   holiday: {
     page: holidayPage,
@@ -87,6 +159,13 @@ export const lookupMessage = {
     fieldFor: diemFieldHelperFor,
     confirm: lookupDiemConfirm,
     message: lookupDiemMessage
-
+  },
+  lookupCustomer: {
+    page: lookupCustomerPage,
+    section: lookupCustomerSection,
+    field: lookupCustomerFields,
+    fieldFor: customerFieldHelperFor,
+    confirm: lookupCustomerConfirm,
+    message: lookupCustomerMessage
   }
 };

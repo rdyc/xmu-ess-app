@@ -6,7 +6,8 @@ import { MileageExceptionContainerForm, MileageExceptionFormData } from './forms
 import { MileageExceptionEditorProps } from './MileageExceptionEditor';
 
 export const MileageExceptionEditorView: React.SFC<MileageExceptionEditorProps> = props => {
-  const { formMode, handleValidate, handleSubmit, handleSubmitSuccess, handleSubmitFail } = props;
+  const { formMode, handleValidate, handleSubmit, handleSubmitSuccess, handleSubmitFail, submitDialogTitle,
+  submitDialogCancelText, submitDialogConfirmedText, submitDialogContentText } = props;
   const { isLoading, response } = props.mileageExceptionState.detail;
 
   const renderForm = (formData: MileageExceptionFormData) => (
@@ -17,9 +18,13 @@ export const MileageExceptionEditorView: React.SFC<MileageExceptionEditorProps> 
       onSubmit={handleSubmit} 
       onSubmitSuccess={handleSubmitSuccess}
       onSubmitFail={handleSubmitFail}
+      submitDialogTitle={submitDialogTitle}
+      submitDialogContentText={submitDialogContentText}
+      submitDialogCancelText={submitDialogCancelText}
+      submitDialogConfirmedText={submitDialogConfirmedText}
     />
   );
-
+    
   // init form values & PENEMPATAN POSISI FORM
   const initialValues: MileageExceptionFormData = {
     // companyUid: undefined,
@@ -57,11 +62,11 @@ export const MileageExceptionEditorView: React.SFC<MileageExceptionEditorProps> 
       const data = response.data;
 
       initialValues.information.uid = data.uid;
-      initialValues.information.companyUid = data.role.company.name;
+      initialValues.information.companyUid = data.role.companyUid;
       initialValues.information.roleUid = data.roleUid;
       initialValues.information.siteType = data.siteType;
       initialValues.information.projectUid = data.projectUid;
-      initialValues.information.siteUid = data.site && data.site.name;
+      initialValues.information.siteUid = data.siteUid;
       initialValues.information.percentage = data.percentage;
       initialValues.information.description = data.description;
       initialValues.information.reason = data.reason;

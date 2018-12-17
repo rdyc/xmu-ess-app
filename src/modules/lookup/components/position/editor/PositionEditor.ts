@@ -101,7 +101,7 @@ const handlerCreators: HandleCreators<PositionEditorProps, OwnHandlers> = {
     const newPayload = {
       name: payload.name,
       description: payload.description,
-      inactiveDate: payload.inactiveDate,
+      inactiveDate: payload.inactiveDate || '',
       isAllowMultiple: payload.isAllowMultiple
     };
 
@@ -163,7 +163,7 @@ const handlerCreators: HandleCreators<PositionEditorProps, OwnHandlers> = {
       time: new Date()
     });
 
-    history.push(`/lookup/position/${response.companyUid}/${response.uid}`);
+    history.push(`/lookup/positions/${response.companyUid}/${response.uid}`);
   },
   handleSubmitFail: (props: PositionEditorProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
     const { formMode, intl } = props;

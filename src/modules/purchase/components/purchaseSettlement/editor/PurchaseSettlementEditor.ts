@@ -3,6 +3,7 @@ import { FormMode } from '@generic/types';
 import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
+import { layoutMessage } from '@layout/locales/messages';
 import {
   ISettlementItemPostPayload,
   ISettlementItemPutPayload,
@@ -52,6 +53,10 @@ interface OwnState {
   companyUid?: string | undefined;
   positionUid?: string | undefined;
   purchaseUid?: string | undefined;
+  submitDialogTitle: string;
+  submitDialogContentText: string;
+  submitDialogCancelText: string;
+  submitDialogConfirmedText: string;
 }
 
 interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
@@ -79,7 +84,12 @@ const createProps: mapper<PurchaseSettlementEditorProps, OwnState> = (props: Pur
     formMode: state.statusType ? FormMode.Edit : FormMode.New,
     companyUid: state ? state.companyUid : undefined,
     positionUid: state ? state.positionUid : undefined,
-    purchaseUid: state ? state.uid : undefined
+    purchaseUid: state ? state.uid : undefined, 
+    submitDialogTitle: !state ? props.intl.formatMessage(purchaseMessage.request.confirm.createTitle) : props.intl.formatMessage(purchaseMessage.request.confirm.modifyTitle),
+    submitDialogContentText: !state ? props.intl.formatMessage(purchaseMessage.request.confirm.createDescription) : props.intl.formatMessage(purchaseMessage.request.confirm.modifyDescription),
+    submitDialogCancelText: props.intl.formatMessage(layoutMessage.action.cancel),
+    submitDialogConfirmedText: props.intl.formatMessage(layoutMessage.action.ok),
+
   };
 };
 
@@ -314,6 +324,8 @@ const lifecycles: ReactLifeCycleFunctions<PurchaseSettlementEditorProps, {}> = {
 
       stateUpdate({
           formMode: FormMode.Edit,
+          submitDialogTitle: this.props.intl.formatMessage(purchaseMessage.request.confirm.modifyTitle),
+          submitDialogContentText: this.props.intl.formatMessage(purchaseMessage.request.confirm.modifyDescription),
         });  
     }
 

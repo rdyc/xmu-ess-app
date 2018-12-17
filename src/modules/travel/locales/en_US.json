@@ -3,11 +3,20 @@
   "travel.request.page.list.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
   "travel.request.page.detail.title": "Travel Request Detail",
   "travel.request.page.detail.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "travel.request.page.new.title": "New Travel",
+  "travel.request.page.new.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "travel.request.page.modify.title": "Modify Travel",
+  "travel.request.page.modify.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  
 
   "travel.settlement.page.list.title": "Travel Settlement",
   "travel.settlement.page.list.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
   "travel.settlement.page.detail.title": "Travel Settlement Detail",
   "travel.settlement.page.detail.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "travel.settlement.page.new.title": "New Travel Settlement",
+  "travel.settlement.page.new.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "travel.settlement.page.modify.title": "Modify Travel Settlement",
+  "travel.settlement.page.modify.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
 
   "travel.approval.page.list.title": "Travel Approval",
   "travel.approval.page.list.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
@@ -20,6 +29,14 @@
   "travel.settlementApproval.page.detail.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
 
   "travel.request.option.addSettlement": "Add Settlement",
+
+  "travel.request.dialog.modifyTitle": "Modify Confirmation",
+  "travel.request.modifyDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "travel.request.action.modify": "Modify",
+  "travel.request.dialog.newTitle": "Submit Confirmation",
+  "travel.request.dialog.newDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "travel.request.dialog.editTitle": "Modify Confirmation",
+  "travel.request.dialog.editDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
 
   "travel.request.confirm.modify.title": "Modify Confirmation",
   "travel.request.confirm.modify.description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
@@ -46,7 +63,7 @@
   "travel.approval.confirm.submission.title": "Travel Approval Submission",
   "travel.approval.confirm.submission.content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
   
-  "travel.settlementApproval.confirm.submission.title": "Travel Approval Submission",
+  "travel.settlementApproval.confirm.submission.title": "Travel Settlement Approval Submission",
   "travel.settlementApproval.confirm.submission.content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
   
   "travel.request.field.uid": "Travel ID",
@@ -56,7 +73,9 @@
   "travel.request.field.uid.placeholder": "Travel ID",
   "travel.request.field.statusType": "Status",
   "travel.request.field.employeeUid": "Preparer Name",
+  "travel.request.field.employeeUid.placeholder": "Preparer Name",
   "travel.request.field.positionUid": "Position",
+  "travel.request.field.positionUid.placeholder": "Position",
   "travel.request.field.position": "Position",
   "travel.request.field.requestor": "Preparer Name",
   "travel.request.field.destinationType": "Travel Type",
@@ -83,6 +102,9 @@
   "travel.request.field.projectUid": "Project Name",
   "travel.request.field.projectUid.required": "Project is required",
   "travel.request.field.projectUid.placeholder": "Select the Project",
+  "travel.request.field.projectType": "Project type",
+  "travel.request.field.projectType.required": "Project Type is required",
+  "travel.request.field.projectType.placeholder": "Select the Project type",
   "travel.request.field.siteUid": "Site Name",
   "travel.request.field.siteUid.placeholder": "Select the Site",
   "travel.request.field.siteValue": "Site Value",
@@ -250,10 +272,19 @@
   "travel.request.message.items.empty": "Empty Travel Item",
 
   "travel.request.message.emptyProps": "Some props are empty",
+  "travel.settlement.message.emptyProps": "Some props are empty",
   "travel.request.message.create.success": "A new Travel {uid} has been created",
+  "travel.settlement.message.create.success": "A new Travel Settlement {uid} has been created",
   "travel.request.message.create.failure": "Unable to process your submission",
+  "travel.settlement.message.create.failure": "Unable to process your submission",
   "travel.request.message.update.success": "Existing TravelID {uid} has been updated",
+  "travel.settlement.message.update.success": "Existing Travel Settlement ID {uid} has been updated",
   "travel.request.message.update.failure": "Unable to process your submission",
+  "travel.settlement.message.update.failure": "Unable to process your submission",
+
+  "travel.approval.message.emptyProps": "Some props are empty",
+  "travel.approval.message.submit.success": "Successfully processing approval submission",
+  "travel.approval.message.submit.failure": "Failure when processing approval submission",
 
   "travel.message.settlement.emptyProps": "Some props are empty",
   "travel.message.settlement.create.success": "A TravelID {uid} has been Settle",

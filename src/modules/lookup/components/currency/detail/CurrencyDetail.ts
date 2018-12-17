@@ -1,5 +1,7 @@
+import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { layoutMessage } from '@layout/locales/messages';
+import { ILookupCurrencyDeletePayload } from '@lookup/classes/request/currency';
 import { CurrencyUserAction } from '@lookup/classes/types';
 import { CurrencyDetailView } from '@lookup/components/currency/detail/CurrencyDetailView';
 import { WithLookupCurrency, withLookupCurrency } from '@lookup/hoc/currency/withLookupCurrency';
@@ -17,6 +19,9 @@ import {
   withHandlers,
   withStateHandlers,
 } from 'recompose';
+import { Dispatch } from 'redux';
+import { FormErrors } from 'redux-form';
+import { isObject } from 'util';
 
 interface OwnHandler {
   handleOnModify: () => void;
@@ -48,6 +53,7 @@ interface OwnRouteParams {
 export type CurrencyDetailProps
   = WithLookupCurrency
   & WithUser
+  & WithLayout
   & RouteComponentProps<OwnRouteParams>
   & InjectedIntlProps
   & OwnState
@@ -66,8 +72,8 @@ const stateUpdaters: StateUpdaters<CurrencyDetailProps, OwnState, OwnStateUpdate
     dialogOpen: true,
     dialogTitle: props.intl.formatMessage(lookupMessage.currency.confirm.modifyTitle),
     dialogContent: props.intl.formatMessage(lookupMessage.currency.confirm.modifyDescription),
-    dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.disaggree),
-    dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.aggree)
+    dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.disaggre),
+    dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.aggre)
   }),
   setDelete: (prevState: OwnState, props: CurrencyDetailProps) => (): Partial<OwnState> => ({
     action: CurrencyUserAction.Delete,
@@ -75,8 +81,8 @@ const stateUpdaters: StateUpdaters<CurrencyDetailProps, OwnState, OwnStateUpdate
     dialogOpen: true,
     dialogTitle: props.intl.formatMessage(lookupMessage.currency.confirm.deleteTitle),
     dialogContent: props.intl.formatMessage(lookupMessage.currency.confirm.deleteDescription),
-    dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.disaggree),
-    dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.aggree)
+    dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.disaggre),
+    dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.aggre)
   }),
   setDefault: (prevState: OwnState) => (): Partial<OwnState> => ({
     ...prevState,
@@ -101,7 +107,6 @@ const handlerCreators: HandleCreators<CurrencyDetailProps, OwnHandler> = {
   },
   handleOnConfirm: (props: CurrencyDetailProps) => () => {
     const { response } = props.lookupCurrencyState.detail;
-
     let currencyUid: string | undefined;
 
     if (!props.action || !response) {
@@ -114,7 +119,6 @@ const handlerCreators: HandleCreators<CurrencyDetailProps, OwnHandler> = {
 
     const actions = [
       CurrencyUserAction.Modify,
-      CurrencyUserAction.Delete
     ];
 
     if (actions.indexOf(props.action) !== -1) {
@@ -122,11 +126,7 @@ const handlerCreators: HandleCreators<CurrencyDetailProps, OwnHandler> = {
 
       switch (props.action) {
         case CurrencyUserAction.Modify:
-          next = '/lookup/currency/form';
-          break;
-        
-        case CurrencyUserAction.Delete:
-          next = `lookup/currency`;
+          next = '/lookup/currencies/form';
           break;
           
         default:
@@ -134,14 +134,62 @@ const handlerCreators: HandleCreators<CurrencyDetailProps, OwnHandler> = {
       }
 
       props.setDefault();
-
+      
       props.history.push(next, { uid: currencyUid });
     }
   },
+
+  handleSubmit: (props: CurrencyDetailProps) => () => {
+    const { match, intl } = props;
+    const { user } = props.userState;
+    const { deleteRequest } = props.lookupCurrencyDispatch;
+    // user checking
+    if (!user) {
+      return Promise.reject('user was not found');
+    }
+    // props checking
+    if (!match.params.currencyUid) {
+      const message = intl.formatMessage(lookupMessage.currency.message.emptyCurrencyUid);
+      return Promise.reject(message);
+    }
+    const payload = {
+      uid: match.params.currencyUid
+    };
+    return new Promise((resolve, reject) => {
+      deleteRequest({
+        resolve,
+        reject,
+        data: payload as ILookupCurrencyDeletePayload
+      });
+    });
+  },
+  handleSubmitSuccess: (props: CurrencyDetailProps) => (response: boolean) => {
+    props.history.push('/lookup/currencies/');
+
+    props.layoutDispatch.alertAdd({
+      time: new Date(),
+      message: props.intl.formatMessage(lookupMessage.currency.message.deleteSuccess, { uid: props.match.params.currencyUid })
+    });
+  },
+  handleSubmitFail: (props: CurrencyDetailProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
+    if (errors) {
+      props.layoutDispatch.alertAdd({
+        time: new Date(),
+        message: isObject(submitError) ? submitError.message : submitError
+      });
+    } else {
+      props.layoutDispatch.alertAdd({
+        time: new Date(),
+        message: props.intl.formatMessage(lookupMessage.currency.message.deleteFailure),
+        details: isObject(submitError) ? submitError.message : submitError
+      });
+    }
+  }
 };
 
 export const CurrencyDetail = compose(
   withUser,
+  withLayout,
   withRouter,
   withLookupCurrency,
   injectIntl,

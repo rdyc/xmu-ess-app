@@ -19,7 +19,6 @@ import {
 
 interface OwnHandler {
   handleOnModify: () => void;
-  handleOnSettle: () => void; 
   handleOnCloseDialog: () => void;
   handleOnConfirm: () => void;
 }
@@ -37,7 +36,6 @@ interface OwnState {
 interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
   setDefault: StateHandler<OwnState>;
   setModify: StateHandler<OwnState>;
-  setSettle: StateHandler<OwnState>;
 }
 
 interface OwnRouteParams {
@@ -65,17 +63,8 @@ const stateUpdaters: StateUpdaters<PurchaseSettlementDetailProps, OwnState, OwnS
     dialogOpen: true,
     dialogTitle: props.intl.formatMessage(purchaseMessage.settlement.confirm.modifyTitle),
     dialogContent: props.intl.formatMessage(purchaseMessage.settlement.confirm.modifyDescription),
-    dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.disaggree),
-    dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.aggree)
-  }),
-  setSettle: (prevState: OwnState, props: PurchaseSettlementDetailProps) => (): Partial<OwnState> => ({
-    action: PurchaseUserAction.Settle,
-    dialogFullScreen: false,
-    dialogOpen: true,
-    dialogTitle: props.intl.formatMessage(purchaseMessage.settlement.confirm.settleTitle),
-    dialogContent: props.intl.formatMessage(purchaseMessage.settlement.confirm.settleDescription),
-    dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.disaggree),
-    dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.aggree)
+    dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.disaggre),
+    dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.aggre)
   }),
   setDefault: (prevState: OwnState) => (): Partial<OwnState> => ({
     ...prevState,
@@ -92,11 +81,6 @@ const handlerCreators: HandleCreators<PurchaseSettlementDetailProps, OwnHandler>
   handleOnModify: (props: PurchaseSettlementDetailProps) => () => {
     props.setModify();
   },
-  
-  handleOnSettle: (props: PurchaseSettlementDetailProps) => () => {
-    props.setSettle();
-  },
-
   handleOnCloseDialog: (props: PurchaseSettlementDetailProps) => () => {
     props.setDefault();
   },
@@ -117,7 +101,6 @@ const handlerCreators: HandleCreators<PurchaseSettlementDetailProps, OwnHandler>
 
     const actions = [
       PurchaseUserAction.Modify,
-      PurchaseUserAction.Settle,
     ];
 
     if (actions.indexOf(props.action) !== -1) {
@@ -125,10 +108,7 @@ const handlerCreators: HandleCreators<PurchaseSettlementDetailProps, OwnHandler>
 
       switch (props.action) {
         case PurchaseUserAction.Modify:
-          next = '/purchase/settlements/form/';
-          break;
-        case PurchaseUserAction.Settle:
-          next = '/purchase/settlements/form/';
+          next = '/purchase/settlement/requests/form/';
           break;
 
         default:

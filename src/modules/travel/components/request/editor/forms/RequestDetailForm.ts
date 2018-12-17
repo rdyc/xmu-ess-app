@@ -10,6 +10,8 @@ import { IProjectList } from '@project/classes/response';
 import { SelectProject } from '@project/components/select/project';
 import { SelectProjectSite } from '@project/components/select/projectSite';
 import { RequestDetailFormView } from '@travel/components/request/editor/forms/RequestDetailFormView';
+import { travelMessage } from '@travel/locales/messages/travelMessage';
+import { DateType } from 'material-ui-pickers/constants/prop-types';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose, HandleCreators, withHandlers } from 'recompose';
 import { BaseFieldsProps } from 'redux-form';
@@ -18,12 +20,12 @@ import { isNullOrUndefined } from 'util';
 interface OwnProps {
   formMode: FormMode;
   context: BaseFieldsProps;
-  // onChangeProject: (event: any, newValue: string, oldValue: string) => void;
-  // onChangeDestinationType: (event: any, newValue: string, oldValue: string) => void;
+  startDate?: DateType;
   customerUidValue: string | null | undefined;
   projectUidValue: string | null | undefined;
   destinationTypeValue: string | null | undefined;
   isProjectSelected: boolean;
+  isGeneralPurpose: boolean;
   totalCostValue: number | undefined;
   handleProjectChange: (project: IProjectList | undefined) => void;
 }
@@ -59,7 +61,6 @@ const handlerCreators: HandleCreators<RequestDetailFormProps, OwnHandlers> = {
       case 'uid':
       fieldProps = {
           disabled: true,
-          placeholder: intl.formatMessage({id: `travel.field.${name}.placeholder`}),
           component: InputText
       };
       break;
@@ -81,7 +82,8 @@ const handlerCreators: HandleCreators<RequestDetailFormProps, OwnHandlers> = {
         case 'customerUid': 
         fieldProps = {
           required: true,
-          placeholder: intl.formatMessage({id: `travel.field.${name}.placeholder`}),
+          label: intl.formatMessage(travelMessage.request.fieldFor(fieldName, 'fieldName')),
+          placeholder: intl.formatMessage(travelMessage.request.fieldFor(fieldName, 'fieldPlaceholder')),
           component: InputCustomer
         };
         break;
@@ -90,10 +92,10 @@ const handlerCreators: HandleCreators<RequestDetailFormProps, OwnHandlers> = {
         fieldProps = {
           required: true,
           disabled: isNullOrUndefined(customerUidValue),
-          placeholder: intl.formatMessage({id: `travel.field.${name}.placeholder`}),
-          component: SelectProject, 
+          label: intl.formatMessage(travelMessage.request.fieldFor(fieldName, 'fieldName')),
+          placeholder: intl.formatMessage(travelMessage.request.fieldFor(fieldName, 'fieldPlaceholder')),
+          component: !isNullOrUndefined(customerUidValue) ? SelectProject : InputText, 
           filter: projectFilter,
-          // onChange: onChangeProject,
           onSelected: props.handleProjectChange
           
         };
@@ -101,8 +103,9 @@ const handlerCreators: HandleCreators<RequestDetailFormProps, OwnHandlers> = {
 
         case 'siteUid': 
         fieldProps = {
-          disabled: !isProjectSelected, 
-          placeholder: intl.formatMessage({id: `travel.field.${name}.placeholder`}),
+          disabled: !isProjectSelected,
+          label: intl.formatMessage(travelMessage.request.fieldFor(fieldName, 'fieldName')),
+          placeholder: intl.formatMessage(travelMessage.request.fieldFor(fieldName, 'fieldPlaceholder')),
           component: !isNullOrUndefined(projectUidValue) ? SelectProjectSite : InputText,
           companyUid: user && user.company.uid,
           projectUid: projectUidValue,
@@ -113,7 +116,8 @@ const handlerCreators: HandleCreators<RequestDetailFormProps, OwnHandlers> = {
         fieldProps = {
           required: true,
           category: 'destination',
-          placeholder: intl.formatMessage({id: `travel.field.${name}.placeholder`}),
+          label: intl.formatMessage(travelMessage.request.fieldFor(fieldName, 'fieldName')),
+          placeholder: intl.formatMessage(travelMessage.request.fieldFor(fieldName, 'fieldPlaceholder')),
           component: SelectSystem,
           // onChange: onChangeDestinationType
         };
@@ -123,7 +127,8 @@ const handlerCreators: HandleCreators<RequestDetailFormProps, OwnHandlers> = {
         fieldProps = {
           required: true,
           category: 'purpose',
-          placeholder: intl.formatMessage({id: `travel.field.${name}.placeholder`}),
+          label: intl.formatMessage(travelMessage.request.fieldFor(fieldName, 'fieldName')),
+          placeholder: intl.formatMessage(travelMessage.request.fieldFor(fieldName, 'fieldPlaceholder')),
           component: SelectSystem,
         };
         break;
@@ -131,23 +136,28 @@ const handlerCreators: HandleCreators<RequestDetailFormProps, OwnHandlers> = {
         case 'start': 
         fieldProps = {
           required: true,
-          placeholder: intl.formatMessage({id: `travel.field.${name}.placeholder`}),
-          component: InputDate
+          label: intl.formatMessage(travelMessage.request.fieldFor(fieldName, 'fieldName')),
+          placeholder: intl.formatMessage(travelMessage.request.fieldFor(fieldName, 'fieldPlaceholder')),
+          component: InputDate,
+          disablePast: true
         };
         break;
         
       case 'end': 
         fieldProps = {
           required: true,
-          placeholder: intl.formatMessage({id: `travel.field.${name}.placeholder`}),
-          component: InputDate
+          label: intl.formatMessage(travelMessage.request.fieldFor(fieldName, 'fieldName')),
+          placeholder: intl.formatMessage(travelMessage.request.fieldFor(fieldName, 'fieldPlaceholder')),
+          component: InputDate,
+          minDate: props.startDate
         };
         break;
 
       case 'total':
         fieldProps = {
           disabled: true,
-          placeholder: intl.formatMessage({id: `travel.field.${name}.placeholder`}),
+          label: intl.formatMessage(travelMessage.request.fieldFor(fieldName, 'fieldName')),
+          placeholder: intl.formatMessage(travelMessage.request.fieldFor(fieldName, 'fieldPlaceholder')),
           component: InputNumber
         };
         break;
@@ -155,7 +165,8 @@ const handlerCreators: HandleCreators<RequestDetailFormProps, OwnHandlers> = {
         default:
         fieldProps = {
           type: 'text',
-          placeholder: intl.formatMessage({id: `travel.field.${name}.placeholder`}),
+          label: intl.formatMessage(travelMessage.request.fieldFor(fieldName, 'fieldName')),
+          placeholder: intl.formatMessage(travelMessage.request.fieldFor(fieldName, 'fieldPlaceholder')),
           component: InputText
         };
         break;

@@ -32,6 +32,10 @@ export type PurchaseRequestFormData = {
 
 interface OwnProps {
   formMode: FormMode;
+  submitDialogTitle: string;
+  submitDialogContentText: string;
+  submitDialogCancelText: string;
+  submitDialogConfirmedText: string;
 }
 
 interface OwnHandlers {
@@ -39,7 +43,6 @@ interface OwnHandlers {
 }
 
 interface OwnState {
-  // TotalRequest?: number | undefined;
 }
 
 interface FormValueProps {
@@ -48,6 +51,8 @@ interface FormValueProps {
   formCurrencyType: string | null;
   formRate: number | 1;  
   formRequest: number | 0;
+  formName: string;
+  requestMinDate?: any;
 }
 
 export type PurchaseRequestFormProps
@@ -72,18 +77,27 @@ const handlers: HandleCreators<PurchaseRequestFormProps, OwnHandlers> = {
 
 const selector = formValueSelector(formName);
 
+const dateLimit = new Date();
+dateLimit.setDate(dateLimit.getDate() - 7);
+
 const mapStateToProps = (state: any): FormValueProps => {
   const customer = selector(state, 'information.customerUid');
   const currencyType = selector(state, 'information.currencyType');
   const rate = selector(state, 'information.rate');
   const value = selector(state, 'information.request');
+  const date = selector(state, 'information.date');
+  const dateData = new Date(date);
+  dateData.setDate(dateData.getDate() - 7);
+  const dateFinal = dateData.toDateString();
 
   return {
+    formName,
     formCustomer: customer,
     formIsCurrencyIDR: currencyType === 'SCR01',
     formCurrencyType: currencyType,
     formRate: rate,
     formRequest: value,
+    requestMinDate: date ? dateFinal : dateLimit
   };
 };
 
@@ -101,8 +115,6 @@ const enhancedView = compose<PurchaseRequestFormProps, OwnProps & InjectedFormPr
   withHandlers(handlers),
   lifecycle(lifecycles),
 )(PurchaseRequestFormView);
-
-// const connectedView = connect(mapStateToProps)(PurchaseRequestFormView);
 
 export const PurchaseRequestForm = reduxForm<PurchaseRequestFormData, OwnProps>({
   form: formName,

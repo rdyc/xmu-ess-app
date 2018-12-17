@@ -12,6 +12,7 @@ const settings: UserManagerSettings = {
   response_type: 'token id_token',
   redirect_uri: `${selfHost}/callback`,
   silent_redirect_uri: `${selfHost}/silent_renew.html`,
+  post_logout_redirect_uri: selfHost,
   automaticSilentRenew: true,
   filterProtocolClaims: true,
   loadUserInfo: true,

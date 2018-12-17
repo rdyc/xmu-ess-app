@@ -48,7 +48,7 @@ function* watchFetchListRequest() {
   const worker = (action: ReturnType<typeof menuGetListRequest>) => {
     return saiyanSaga.fetch({
       method: 'get',
-      path: `/v1/lookup/menu/list`,
+      path: `/v1/lookup/menu/list${objectToQuerystring(action.payload.filter)}`,
       successEffects: (response: IApiResponse) => ([
         put(menuGetListSuccess(response.body)),
       ]), 

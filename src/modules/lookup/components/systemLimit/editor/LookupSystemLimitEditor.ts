@@ -3,6 +3,7 @@ import { FormMode } from '@generic/types';
 import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
+import { layoutMessage } from '@layout/locales/messages';
 import { ISystemLimitPostPayload, ISystemLimitPutPayload } from '@lookup/classes/request';
 import { ISystemLimit } from '@lookup/classes/response';
 import { WithLookupSystemLimit, withLookupSystemLimit } from '@lookup/hoc/withLookupSystemLimit';
@@ -42,6 +43,10 @@ interface OwnState {
   formMode: FormMode;
   systemLimitUid?: string | undefined;
   companyUid?: string | undefined;
+  submitDialogTitle: string;
+  submitDialogContentText: string;
+  submitDialogCancelText: string;
+  submitDialogConfirmedText: string;
 }
 
 interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
@@ -176,7 +181,11 @@ const handlerCreators: HandleCreators<SystemLimitEditorProps, OwnHandlers> = {
 };
 
 const createProps: mapper<SystemLimitEditorProps, OwnState> = (props: SystemLimitEditorProps): OwnState => ({ 
-  formMode: FormMode.New
+  formMode: FormMode.New,
+  submitDialogTitle: props.intl.formatMessage(lookupMessage.shared.confirm.createTitle),
+  submitDialogContentText: props.intl.formatMessage(lookupMessage.shared.confirm.createDescription),
+  submitDialogCancelText: props.intl.formatMessage(layoutMessage.action.cancel),
+  submitDialogConfirmedText: props.intl.formatMessage(layoutMessage.action.ok),
 });
 
 const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
@@ -208,7 +217,9 @@ const lifecycles: ReactLifeCycleFunctions<SystemLimitEditorProps, {}> = {
       stateUpdate({ 
         formMode: FormMode.Edit,
         systemLimitUid: history.location.state.uid,
-        companyUid: history.location.state.companyUid
+        companyUid: history.location.state.companyUid,
+        submitDialogTitle: this.props.intl.formatMessage(lookupMessage.shared.confirm.modifyTitle),
+        submitDialogContentText : this.props.intl.formatMessage(lookupMessage.shared.confirm.modifyDescription)
       });
 
       loadDetailRequest({
@@ -217,14 +228,22 @@ const lifecycles: ReactLifeCycleFunctions<SystemLimitEditorProps, {}> = {
       });
     }
 
-    layoutDispatch.changeView({
-      uid: AppMenu.LookupSystemLimit,
-      parentUid: AppMenu.Lookup,
-      title: intl.formatMessage(view.title),
-      subTitle : intl.formatMessage(view.subTitle)
+    layoutDispatch.setupView({
+      view: {
+        uid: AppMenu.LookupSystemLimit,
+        parentUid: AppMenu.Lookup,
+        title: intl.formatMessage(view.title),
+        subTitle : intl.formatMessage(view.subTitle)
+      },
+      parentUrl: `/lookup/systemlimits`,
+      status: {
+        isNavBackVisible: true,
+        isSearchVisible: false,
+        isActionCentreVisible: false,
+        isMoreVisible: false,
+        isModeSearch: false
+      }
     });
-
-    layoutDispatch.navBackShow(); 
   },
   componentWillUnmount() {
     const { layoutDispatch, appBarDispatch, systemLimitDispatch } = this.props;

@@ -4,22 +4,26 @@ import { PositionField } from '@lookup/classes/types';
 export const positionFieldTranslator = (find: string, field: ICollectionValue): string => {
   let result: string = find;
 
-  if (field.name === PositionField.isExpired) {
+  if (field.name === PositionField.isAllowMultiple) {
     switch (find.toLowerCase()) {
 
-      case 'expire':
-      case 'expired':
-      case 'not active':
-      case 'not actived':
-      case 'inactive':
-      case 'inactived':
+      case 'allow':
+      case 'allowed':
+      case 'active':
+      case 'actived':
+      case 'open':
+      case 'opened':
         result = 'true';
         break;
 
-      case 'active':
-      case 'actived':
-      case 'aktif':
-      case '':
+      case 'inactive':
+      case 'inactived':
+      case 'not allow':
+      case 'not allowed':
+      case 'disallow':
+      case 'disallowed':
+      case 'close':
+      case 'closed':
         result = 'false';
         break;
 

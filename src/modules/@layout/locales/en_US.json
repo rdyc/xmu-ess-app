@@ -3,7 +3,6 @@
   "layout.text.processing": "Processing",
   "layout.text.dataInfo": "{total} record(s)",
   "layout.text.pagingInfo": "{current} of {total}",
-  "layout.text.idr": "IDR (RP) ",
   "layout.text.active": "Active",
   "layout.text.inactive": "Inactive",
   
@@ -30,8 +29,8 @@
   "layout.action.yes": "Yes",
   "layout.action.no": "No",
   "layout.action.ok": "Ok",
-  "layout.action.aggree": "Aggree",
-  "layout.action.disaggree": "Disaggree",
+  "layout.action.aggre": "Agree",
+  "layout.action.disaggre": "Disaggre",
   "layout.action.continue": "Continue",
   "layout.action.process": "Process",
   "layout.action.create": "Create",
