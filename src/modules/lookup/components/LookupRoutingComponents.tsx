@@ -11,7 +11,7 @@ import * as React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router';
 import { LookupCompanyDetail } from './company/detail/LookupCompanyDetail';
 import LookupCompanyEditor from './company/editor/LookupCompanyEditor';
-import LookupCompanyList from './company/list/LookupCompanyList';
+import { LookupCompanyList } from './company/list/LookupCompanyList';
 import { LookupCustomerDetail } from './customer/detail/LookupCustomerDetail';
 import LookupCustomerEditor from './customer/editor/LookupCustomerEditor';
 import LookupCustomerList  from './customer/list/LookupCustomerList';
@@ -44,9 +44,9 @@ const role = (props: RouteComponentProps) => (
 
 const company = (props: RouteComponentProps) => (
   <Switch>
-    <Route path={`${props.match.path}/list`} component={LookupCompanyList} />
     <Route path={`${props.match.path}/form`} component={LookupCompanyEditor} />
     <Route path={`${props.match.path}/:companyUid`} component={LookupCompanyDetail} />
+    <Route path={`${props.match.path}`} component={LookupCompanyList} />
   </Switch>
 );
 const currency = (props: RouteComponentProps) => (
