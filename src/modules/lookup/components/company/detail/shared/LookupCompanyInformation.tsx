@@ -29,13 +29,13 @@ const companyInformation: React.SFC<AllProps> = props => {
         />
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
-          label={props.intl.formatMessage(lookupMessage.company.field.name)}
-          value={props.data.name}
+          label={props.intl.formatMessage(lookupMessage.company.field.code)}
+          value={props.data.code}
         />
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
-          label={props.intl.formatMessage(lookupMessage.company.field.code)}
-          value={props.data.code}
+          label={props.intl.formatMessage(lookupMessage.company.field.name)}
+          value={props.data.name}
         />
       </CardContent>
     </Card>
