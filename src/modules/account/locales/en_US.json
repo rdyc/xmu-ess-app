@@ -90,6 +90,15 @@
   "account.employee.field.addressNpwp": "Address (NPWP)",
   "account.employee.field.addressNpwp.placeholder": "Address (NPWP)",
 
+  "account.employee.field.bca.number": "BCA Account Number",
+  "account.employee.field.bca.number.placeholder": "BCA Account Number",
+  
+  "account.employee.field.bca.name": "BCA Account Name",
+  "account.employee.field.bca.name.placeholder": "BCA Account Name",
+  
+  "account.employee.field.bca.branch": "BCA Account Branch",
+  "account.employee.field.bca.branch.placeholder": "BCA Account Branch",
+
   "account.employee.confirm.create.title": "Create Account",
   "account.employee.confirm.create.subHeader": "Lorem ipsum dolor sit amet",
  
@@ -97,5 +106,8 @@
   "account.employee.field.information.subHeader": "Lorem ipsum dolor sit amet",
   
   "account.employee.field.information.contact.title": "Employee Contacts",
-  "account.employee.field.information.contact.subHeader": "Lorem ipsum dolor sit amet"
+  "account.employee.field.information.contact.subHeader": "Lorem ipsum dolor sit amet",
+
+  "account.employee.field.information.bank.title": "BCA Account Information",
+  "account.employee.field.information.bank.subHeader": "Lorem ipsum dolor sit amet"
 }

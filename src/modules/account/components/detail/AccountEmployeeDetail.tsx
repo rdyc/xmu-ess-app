@@ -11,6 +11,7 @@ import * as React from 'react';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { compose } from 'recompose';
+import { AccountEmployeeBank } from './AccountEmployeeBank';
 import { AccountEmployeeContact } from './AccountEmployeeContact';
 import { AccountEmployeeInformation } from './AccountEmployeeInformation';
 
@@ -75,7 +76,7 @@ const config: SingleConfig<IEmployeeDetail, AccountEmployeeDetailProps> = {
   // secondary (multiple components are allowed)
   secondaryComponents: (data: IEmployeeDetail, props: AccountEmployeeDetailProps) => ([
     <AccountEmployeeContact data={data}/>,
-    // <WorkflowHistory data={data.workflow} />
+    <AccountEmployeeBank data={data}/> 
   ])
 };
 

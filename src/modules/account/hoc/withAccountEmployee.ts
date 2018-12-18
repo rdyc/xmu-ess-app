@@ -1,8 +1,11 @@
 import { IEmployeeAllRequest, IEmployeeByIdRequest, IEmployeeListRequest } from '@account/classes/queries';
 import { IEmployee, IEmployeeDetail } from '@account/classes/response';
 import {
+  accountEmployeeGetAllDispose,
   accountEmployeeGetAllRequest,
+  accountEmployeeGetByIdDispose,
   accountEmployeeGetByIdRequest,
+  accountEmployeeGetListDispose,
   accountEmployeeGetListRequest,
 } from '@account/store/actions';
 import { IAppState, IQueryCollectionState } from '@generic/interfaces';
@@ -23,8 +26,13 @@ interface PropsFromDispatch {
     
     // query
     loadAllRequest: typeof accountEmployeeGetAllRequest;
+    loadAllDispose: typeof accountEmployeeGetAllDispose;
+    
     loadListRequest: typeof accountEmployeeGetListRequest;
+    loadListDispose: typeof accountEmployeeGetListDispose;
+
     loadDetailRequest: typeof accountEmployeeGetByIdRequest;
+    loadDetailDispose: typeof accountEmployeeGetByIdDispose;
   };
 }
 

@@ -81,6 +81,9 @@ export const accountEmployeeField = defineMessages({
   contactTitle: { id: `${prefix}.field.information.contact.title`},
   contactSubHeader: { id: `${prefix}.field.information.contact.subHeader`},
 
+  bankTitle: { id: `${prefix}.field.information.bank.title`},
+  bankSubHeader: { id: `${prefix}.field.information.bank.subHeader`},
+
   // contacts
   mobile: { id: `${prefix}.field.mobile`},
   mobilePlaceholder: { id: `${prefix}.field.mobile.placeholder`},
@@ -106,6 +109,15 @@ export const accountEmployeeField = defineMessages({
   addressNpwp: { id: `${prefix}.field.addressNpwp`},
   addressNpwpPlaceholder: { id: `${prefix}.field.addressNpwp.placeholder`},
 
+  // bank
+  bcaNumber: { id: `${prefix}.field.bca.number`},
+  bcaNumberPlaceholder: { id: `${prefix}.field.bca.number.placeholder`},
+
+  bcaName: { id: `${prefix}.field.bca.name`},
+  bcaNamePlaceholder: { id: `${prefix}.field.bca.name.placeholder`},
+
+  bcaBranch: { id: `${prefix}.field.bca.branch`},
+  bcaBranchPlaceholder: { id: `${prefix}.field.bca.branch.placeholder`},
 });
 
 // confirmation
