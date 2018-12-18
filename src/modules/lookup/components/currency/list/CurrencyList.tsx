@@ -70,7 +70,7 @@ const config: CollectionConfig<ICurrency, AllProps> = {
       name: props.intl.formatMessage(layoutMessage.action.create),
       enabled: true,
       visible: true,
-      onClick: () => callback.handleRedirectTo('/lookup/currency/form'),
+      onClick: () => callback.handleRedirectTo('/lookup/currencies/form'),
     }
   ]),
   
@@ -127,13 +127,13 @@ const config: CollectionConfig<ICurrency, AllProps> = {
     <React.Fragment>
     <Button
       size="small"
-      onClick={() => callback.handleRedirectTo(`/lookup/currency/form`, {uid: item.uid})}
+      onClick={() => callback.handleRedirectTo(`/lookup/currencies/form`, {uid: item.uid})}
     >
       <FormattedMessage {...layoutMessage.action.modify} />
     </Button>  
     <Button 
       size= "small"
-      onClick = {() => callback.handleRedirectTo(`/lookup/currency/${item.uid}`)}
+      onClick = {() => callback.handleRedirectTo(`/lookup/currencies/${item.uid}`)}
     >
       <FormattedMessage { ...layoutMessage.action.details } />
     </Button>

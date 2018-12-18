@@ -158,12 +158,17 @@
   "lookup.company.section.info.title": "Company",
   "lookup.company.section.info.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras mollis eros sit amet rhoncus fermentum",
   
+  "lookup.company.dialog.modifyTitle": "Modify Confirmation",
+  "lookup.company.dialog.modifyDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras mollis eros sit amet rhoncus fermentum",
+  "lookup.company.dialog.newTitle": "Submit Confirmation",
+  "lookup.company.dialog.newDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras mollis eros sit amet rhoncus fermentum",
+  
   "lookup.company.field.uid": "Company ID",
   "lookup.company.field.uid.placeholder": "Company ID",
-  "lookup.company.field.code": "Company Code",
+  "lookup.company.field.code": "Code",
   "lookup.company.field.code.placeholder": "Type a company code",
   "lookup.company.field.code.required": "Company code is required",
-  "lookup.company.field.name": "Company Name",
+  "lookup.company.field.name": "Name",
   "lookup.company.field.name.placeholder": "Type a company name",
   "lookup.company.field.name.required": "Company name is required",
   

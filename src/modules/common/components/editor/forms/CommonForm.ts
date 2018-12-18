@@ -18,9 +18,14 @@ export type CommonFormData = {
 interface OwnProps {
   formMode: FormMode;
   category: string;
+  submitDialogTitle: string;
+  submitDialogContentText: string;
+  submitDialogCancelText: string;
+  submitDialogConfirmedText: string;
 }
 
 interface FormValueProps {
+  formName: string;
 }
 
 export type CommonFormProps 
@@ -29,7 +34,9 @@ export type CommonFormProps
   & OwnProps;
   
 const mapStateToProps = (): FormValueProps => {
-  return {};
+  return {
+    formName
+  };
 };
 
 const connectedView = connect(mapStateToProps)(CommonFormView);

@@ -48,7 +48,7 @@ export const LookupRoleMenuFormView: React.SFC<LookupRoleMenuFormProps> = props 
                                   height: 10,
                                   width: 10,
                                   marginRight: 10,
-                                  marginLeft: -10,
+                                  marginLeft: 10,
                                 }}
                               />
                             )
