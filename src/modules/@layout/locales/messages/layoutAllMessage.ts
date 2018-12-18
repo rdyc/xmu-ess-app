@@ -7,7 +7,9 @@ export const layoutText = defineMessages({
   loading: { id: `${prefix}.text.loading`},
   processing: { id: `${prefix}.text.processing`},
   dataInfo: { id: `${prefix}.text.dataInfo` },
-  pagingInfo: { id: `${prefix}.text.pagingInfo` }
+  pagingInfo: { id: `${prefix}.text.pagingInfo` },
+  active: { id: `${prefix}.text.active`},
+  inactive: { id: `${prefix}.text.inactive`}
 });
 
 // tooltip
@@ -27,8 +29,8 @@ export const layoutAction = defineMessages({
   yes: { id: `${prefix}.action.yes`},
   no: { id: `${prefix}.action.no`},
   ok: { id: `${prefix}.action.ok`},
-  aggree: { id: `${prefix}.action.aggree`},
-  disaggree: { id: `${prefix}.action.disaggree`},
+  aggre: { id: `${prefix}.action.aggre`},
+  disaggre: { id: `${prefix}.action.disaggre`},
   continue: { id: `${prefix}.action.continue`},
   create: { id: `${prefix}.action.create`},
   save: { id: `${prefix}.action.save`},
@@ -48,7 +50,8 @@ export const layoutAction = defineMessages({
   next: { id: `${prefix}.action.next`},
   nextCount: { id: `${prefix}.action.nextCount`},
   previous: { id: `${prefix}.action.previous`},
-  previousCount: { id: `${prefix}.action.previousCount`}
+  previousCount: { id: `${prefix}.action.previousCount`},
+  delete: { id: `${prefix}.action.delete`}
 });
 
 // field

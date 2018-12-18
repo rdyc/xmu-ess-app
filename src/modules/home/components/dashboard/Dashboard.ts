@@ -157,13 +157,13 @@ const handlerCreators: HandleCreators<DashboardProps, OwnHandlers> = {
         if (type === 'Approval' || type === 'Notify') {
           history.push(`/timesheet/approvals/${uid}`);
         } else {
-          history.push(`/timesheet/entry/${uid}`);
+          history.push(`/timesheet/requests/${uid}`);
         }
         break;
         
       case 'Travel':
         if (type === 'Approval' || type === 'Notify') {
-          history.push(`/travel/approvals/request/${uid}`);
+          history.push(`/travel/approvals/${uid}`);
         } else {
           history.push(`/travel/requests/${uid}`);
         }
@@ -171,27 +171,27 @@ const handlerCreators: HandleCreators<DashboardProps, OwnHandlers> = {
 
       case 'Travel Settlement':
         if (type === 'Approval' || type === 'Notify') {
-          history.push(`/travel/approvals/settlement/${uid}`);
+          history.push(`/travel/settlement/approvals/${uid}`);
         } else {
           history.push(`/travel/settlements/${uid}`);
         }
         break;        
     
       case 'Purchase':
-        if (type === 'Approval' || type === 'Notify' || type === 'Rejected') {
-          history.push(`/purchase/approvals/details/${uid}`);
+        if (type === 'Approval' || type === 'Notify') {
+          history.push(`/purchase/approvals/${uid}`);
         } else if (type === 'Settlement') {
-          history.push(`/purchase/settlements/details/${uid}`);
+          history.push(`/purchase/settlement/requests/form`, {uid});
         } else {
-          history.push(`/purchase/requests/details/${uid}`);
+          history.push(`/purchase/requests/${uid}`);
         }
         break;
     
       case 'Purchase Settlement':
-        if (type === 'Approval' || type === 'Notify' || type === 'Rejected') {
-          history.push(`/purchase/settlementapprovals/details/${uid}`);
+        if (type === 'Approval' || type === 'Notify') {
+          history.push(`/purchase/settlement/approvals/${uid}`);
         } else {
-          history.push(`/purchase/settlements/details/${uid}`);
+          history.push(`/purchase/settlement/requests/${uid}`);
         }
         break;
     

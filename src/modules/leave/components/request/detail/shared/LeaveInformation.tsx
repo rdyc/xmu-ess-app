@@ -1,11 +1,13 @@
-import { ILeaveRequestDetail } from '@leave/classes/response';
+import { GlobalFormat } from '@layout/types';
+import { GlobalStyle } from '@layout/types/GlobalStyle';
+import { ILeaveDetail } from '@leave/classes/response';
 import { Card, CardContent, CardHeader, TextField } from '@material-ui/core';
 import * as React from 'react';
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose } from 'recompose';
 
 interface OwnProps {
-  data: ILeaveRequestDetail;
+  data: ILeaveDetail;
 }
 
 type AllProps
@@ -13,15 +15,15 @@ type AllProps
   & InjectedIntlProps;
 
 const leaveInformation: React.SFC<AllProps> = props => {
-  const { data, intl } = props;
+  const { data } = props;
 
-  const styled = {
-    fullWidth: true,
-    InputProps: {
-      disableUnderline: true,
-      readOnly: true
-    }
-  };
+  // const styled = {
+  //   fullWidth: true,
+  //   InputProps: {
+  //     disableUnderline: true,
+  //     readOnly: true
+  //   }
+  // };
 
   const render = (
     <Card square>
@@ -31,26 +33,26 @@ const leaveInformation: React.SFC<AllProps> = props => {
       />
       <CardContent>
         <TextField
-          {...styled}
+          {...GlobalStyle.TextField.ReadOnly}
           margin="normal"
           label={<FormattedMessage id="leave.field.information.uid" />}
           value={data.uid}
         />
         <TextField
-          {...styled}
+          {...GlobalStyle.TextField.ReadOnly}
           margin="normal"
           label={<FormattedMessage id="leave.field.information.status" />}
           value={data.status ? data.status.value : 'N/A'}
         />
         <TextField
-          {...styled}
+          {...GlobalStyle.TextField.ReadOnly}
           margin="normal"
           label={<FormattedMessage id="leave.field.information.leaveType" />}
           value={data.leave ? data.leave.value : 'N/A'}
         />
         {data.regular && data.regular.leave && data.regular.leave.name ?
         <TextField
-          {...styled}
+        {...GlobalStyle.TextField.ReadOnly}
           hidden 
           margin="normal"
           label={<FormattedMessage id="leave.field.information.regularType" />}
@@ -58,39 +60,31 @@ const leaveInformation: React.SFC<AllProps> = props => {
         /> : null}
 
         <TextField
-          {...styled}
+          {...GlobalStyle.TextField.ReadOnly}
           margin="normal"
           label={<FormattedMessage id="leave.field.information.start" />}
-          value={intl.formatDate(data.start, {
-            year: 'numeric',
-            month: 'short',
-            day: 'numeric'
-          })}
+          value={props.intl.formatDate(props.data.start, GlobalFormat.Date)}
         />
         <TextField
-          {...styled}
+        {...GlobalStyle.TextField.ReadOnly}
           margin="normal"
           label={<FormattedMessage id="leave.field.information.end" />}
-          value={intl.formatDate(data.end, {
-            year: 'numeric',
-            month: 'short',
-            day: 'numeric'
-          })}
+          value={props.intl.formatDate(props.data.end, GlobalFormat.Date)}
         />
         <TextField
-          {...styled}
+        {...GlobalStyle.TextField.ReadOnly}
           margin="normal"
           label={<FormattedMessage id="leave.field.information.address" />}
           value={data.address}
         />
         <TextField
-          {...styled}
+        {...GlobalStyle.TextField.ReadOnly}
           margin="normal"
           label={<FormattedMessage id="leave.field.information.contactNumber" />}
           value={data.contactNumber}
         />
         <TextField
-          {...styled}
+        {...GlobalStyle.TextField.ReadOnly}
           margin="normal"
           label={<FormattedMessage id="leave.field.information.reason" />}
           value={data.reason}

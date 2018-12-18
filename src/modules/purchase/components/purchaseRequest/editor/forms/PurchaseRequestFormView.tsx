@@ -15,6 +15,7 @@ export const PurchaseRequestFormView: React.SFC<PurchaseRequestFormProps> = prop
     formIsCurrencyIDR, formRate, 
     formRequest,
     formCurrencyType, change, initialValues,
+    requestMinDate
   } = props;
 
   const fields = Object.getOwnPropertyNames(initialValues.information);
@@ -44,6 +45,7 @@ export const PurchaseRequestFormView: React.SFC<PurchaseRequestFormProps> = prop
       onChangeCurrencyType={onChangeCurrencyType}
       onChangeRate={onChangeRate}
       onChangeValueIdr={onChangeValueIdr}
+      requestMinDate={requestMinDate}
     />
   );
 
@@ -82,24 +84,17 @@ export const PurchaseRequestFormView: React.SFC<PurchaseRequestFormProps> = prop
         
         <Grid item md={4}>
           <Submission
-            valid={true}
+            valid={props.valid}
             reset={props.reset}
-            submitting={props.submitting}
+            submitting={props.submitting} 
+            withSubmitDialog={true}
+            formName={props.formName}
+            submitDialogTitle={props.submitDialogTitle}
+            submitDialogContentText={props.submitDialogContentText}
+            submitDialogCancelText={props.submitDialogCancelText}
+            submitDialogConfirmedText={props.submitDialogConfirmedText}
           />
         </Grid>
-
-        {/* <Grid item xs={12} md={4}>
-        <Card>
-          <CardHeader 
-            title="Values"
-            subheader="form values as object"
-          />
-          <CardContent>
-            <pre>{JSON.stringify(props.formValues, null, 2)}</pre>
-          </CardContent>
-        </Card>
-      </Grid> */}
-      
       </Grid>
     </form>
   );

@@ -6,7 +6,7 @@ export const purchaseSettlementFieldTranslator = (find: string, field: ICollecti
   let result: string = find;
 
   // replace status type
-  if (field.name === SettlementField.settlementStatusType) {
+  if (field.name === SettlementField.settlementStatusType || find) {
     switch (find.toLowerCase()) {
       case 'submit':
       case 'submitted':
@@ -35,20 +35,10 @@ export const purchaseSettlementFieldTranslator = (find: string, field: ICollecti
         break;
 
       default:
+        result = find;
         break;
     }
   }
-
-  // if (field.name === PurchaseField.requestDate) {
-  //   switch (find.toLowerCase()) {
-      
-  //     case 'jan':
-  //     case 'january':
-  //     case 'januari':
-  //       result = 
-  //       break;
-  //   }
-  // }
 
   return result;
 };

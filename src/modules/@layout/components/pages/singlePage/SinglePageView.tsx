@@ -11,7 +11,7 @@ export const SinglePageView: React.SFC<SinglePageProps> = props => (
       props.isLoading &&
       <Typography
         noWrap
-        variant="body1"
+        variant="body2"
         className={props.classes.flex}
       >
         <FormattedMessage {...layoutMessage.text.loading} />

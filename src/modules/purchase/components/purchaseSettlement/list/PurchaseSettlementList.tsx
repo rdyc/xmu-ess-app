@@ -1,29 +1,21 @@
 import AppMenu from '@constants/AppMenu';
-// import { ICollectionValue } from '@layout/classes/core';
-import { 
-  CollectionConfig, 
-  CollectionDataProps, 
-  CollectionHandler,
-  CollectionPage, } from '@layout/components/pages';
+import { CollectionConfig, CollectionDataProps, CollectionHandler, CollectionPage } from '@layout/components/pages';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
+import { GlobalFormat } from '@layout/types';
 import { Button } from '@material-ui/core';
 import { ISettlement } from '@purchase/classes/response/purchaseSettlement';
 import { PurchaseUserAction, SettlementField } from '@purchase/classes/types';
-import { SettlementSummary } from '@purchase/components/purchaseSettlement/detail/shared/SettlementSummary';
-import { isSettlementEditable, isSettleReady, purchaseRequestFieldTranslator } from '@purchase/helper';
-import { withPurchaseSettlement, WithPurchaseSettlement } from '@purchase/hoc/purchaseSettlement/withPurchaseSettlement';
+import { isSettlementEditable, isSettleReady, purchaseSettlementFieldTranslator } from '@purchase/helper';
+import { WithPurchaseSettlement, withPurchaseSettlement } from '@purchase/hoc/purchaseSettlement/withPurchaseSettlement';
 import { purchaseMessage } from '@purchase/locales/messages/purchaseMessage';
 import * as moment from 'moment';
 import * as React from 'react';
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose } from 'recompose';
-
-// const purchaseFields: ICollectionValue[] = Object.keys(SettlementField).map(key => ({ 
-//   value: key, 
-//   name: SettlementField[key] 
-// }));
+import { PurchaseSettlementFilter } from '../detail/shared/PurchaseSettlementFilter';
+import { SettlementSummary } from '../detail/shared/SettlementSummary';
 
 const config: CollectionConfig<ISettlement, AllProps> = {
   // page info
@@ -39,7 +31,7 @@ const config: CollectionConfig<ISettlement, AllProps> = {
     value: key,
     name: SettlementField[key]
   })),
-  fieldTranslator: purchaseRequestFieldTranslator,
+  fieldTranslator: purchaseSettlementFieldTranslator,
 
   // searching
   hasSearching: true,
@@ -106,13 +98,18 @@ const config: CollectionConfig<ISettlement, AllProps> = {
   },
   onBind: (item: ISettlement, index: number, props: AllProps) => ({
     key: index,
-    primary: item.statusType !== null ? `${item.currency && item.currency.value} ${props.intl.formatNumber(item.actual || 0)}` : props.intl.formatMessage(purchaseMessage.action.settle),
+    primary: item.uid,
     secondary: item.projectUid || item.project && item.project.name || '',
     tertiary: item.customer && item.customer.name || item.customerUid || '',
-    quaternary: item.uid,
-    quinary: item.status && item.status.value || item.statusType || '',
+    quaternary: item.actualInIDR && `${props.intl.formatNumber(item.actualInIDR, GlobalFormat.CurrencyDefault)}` || '',
+    quinary: item.status && item.status.value || item.statusType || props.intl.formatMessage(purchaseMessage.action.settle),
     senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
   }),
+
+  // filter
+  filterComponent: (callback: CollectionHandler) => (
+    <PurchaseSettlementFilter handleFind={callback.handleFilter} />
+  ),
 
   // summary component
   summaryComponent: (item: ISettlement) => (
@@ -140,12 +137,16 @@ const config: CollectionConfig<ISettlement, AllProps> = {
           <FormattedMessage {...layoutMessage.action.modify} />
         </Button>
       }
-    <Button 
-      size= "small"
-      onClick={() => callback.handleRedirectTo(`/purchase/settlement/requests/${item.uid}`)}
-    >
-      <FormattedMessage { ...layoutMessage.action.details } />
-    </Button>
+      {
+        item.statusType && 
+        <Button
+          size="small"
+          onClick={() => callback.handleRedirectTo(`/purchase/settlement/requests/${item.uid}`)}
+        >
+          <FormattedMessage {...layoutMessage.action.details} />
+        </Button>
+      }
+      
     </React.Fragment>
   ),
 };

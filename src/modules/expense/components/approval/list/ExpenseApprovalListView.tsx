@@ -14,6 +14,7 @@ import {
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
+import { GlobalFormat } from '@layout/types';
 import { Button } from '@material-ui/core';
 import * as moment from 'moment';
 import * as React from 'react';
@@ -23,7 +24,7 @@ import { compose } from 'recompose';
 const config: CollectionConfig<IExpense, AllProps> = {
   // page info
   page: (props: AllProps) => ({
-    uid: AppMenu.ExpenseRequest,
+    uid: AppMenu.ExpenseApproval,
     parentUid: AppMenu.Expense,
     title: props.intl.formatMessage(expenseMessage.approval.page.title),
     description: props.intl.formatMessage(expenseMessage.approval.page.subTitle),
@@ -102,18 +103,18 @@ const config: CollectionConfig<IExpense, AllProps> = {
       }
     }
   },
-  onUpdated: (states: AllProps, callback: CollectionHandler) => {
-    const { isLoading, response } = states.expenseApprovalState.all;
+  onUpdated: (props: AllProps, callback: CollectionHandler) => {
+    const { isLoading, response } = props.expenseApprovalState.all;
     
     callback.handleLoading(isLoading);
     callback.handleResponse(response);
   },
-  onBind: (item: IExpense, index: number) => ({
+  onBind: (item: IExpense, index: number, props: AllProps) => ({
     key: index,
-    primary: item.notes && item.notes || '',
-    secondary: item.expense && item.expense.value || item.expenseType,
-    tertiary: item.project && item.project.name || item.projectUid,
-    quaternary: item.uid,
+    primary: item.uid,
+    secondary: item.notes && item.notes || '',
+    tertiary: item.customer && item.customer.name || item.customerUid,
+    quaternary: props.intl.formatNumber(item.value, GlobalFormat.CurrencyDefault),
     quinary: item.status && item.status.value || item.statusType,
     senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
   }),

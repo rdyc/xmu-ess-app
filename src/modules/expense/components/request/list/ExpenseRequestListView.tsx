@@ -14,6 +14,7 @@ import {
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
+import { GlobalFormat } from '@layout/types';
 import { Button } from '@material-ui/core';
 import { isModuleRequestEditable } from '@organization/helper/isModuleRequestEditable';
 import * as moment from 'moment';
@@ -77,10 +78,10 @@ const config: CollectionConfig<IExpense, AllProps> = {
   ]),
 
   // events
-  onDataLoad: (states: AllProps, callback: CollectionHandler, params: CollectionDataProps, forceReload?: boolean | false) => {
-    const { user } = states.userState;
-    const { isLoading, response } = states.expenseRequestState.all;
-    const { loadAllRequest } = states.expenseRequestDispatch;
+  onDataLoad: (props: AllProps, callback: CollectionHandler, params: CollectionDataProps, forceReload?: boolean | false) => {
+    const { user } = props.userState;
+    const { isLoading, response } = props.expenseRequestState.all;
+    const { loadAllRequest } = props.expenseRequestDispatch;
 
     // when user is set and not loading
     if (user && !isLoading) {
@@ -116,12 +117,12 @@ const config: CollectionConfig<IExpense, AllProps> = {
     callback.handleLoading(isLoading);
     callback.handleResponse(response);
   },
-  onBind: (item: IExpense, index: number) => ({
+  onBind: (item: IExpense, index: number, props: AllProps) => ({
     key: index,
-    primary: item.notes && item.notes || '',
-    secondary: item.expense && item.expense.value || item.expenseType,
-    tertiary: item.project && item.project.name || item.projectUid,
-    quaternary: item.uid,
+    primary: item.uid,
+    secondary: item.notes && item.notes || '',
+    tertiary: item.customer && item.customer.name || item.customerUid,
+    quaternary: props.intl.formatNumber(item.value, GlobalFormat.CurrencyDefault),
     quinary: item.status && item.status.value || item.statusType,
     senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
   }),

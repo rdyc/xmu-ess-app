@@ -3,10 +3,11 @@ import { FormMode } from '@generic/types';
 import { InputDate } from '@layout/components/input/date';
 import { InputNumber } from '@layout/components/input/number';
 import { InputText } from '@layout/components/input/text';
-import { RequestDetailFormView } from '@travel/components/request/editor/forms/RequestDetailFormView';
+import { travelMessage } from '@travel/locales/messages/travelMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose, HandleCreators, withHandlers } from 'recompose';
 import { BaseFieldsProps } from 'redux-form';
+import { TravelSettlementDetailFormView } from './TravelSettlementDetailFormView';
 
 interface OwnProps {
   formMode: FormMode;
@@ -36,7 +37,6 @@ const handlerCreators: HandleCreators<TravelSettlementDetailFormProps, OwnHandle
       case 'uid':
       fieldProps = {
           disabled: true,
-          placeholder: intl.formatMessage({id: `travel.field.${name}.placeholder`}),
           component: InputText
       };
       break;
@@ -44,7 +44,8 @@ const handlerCreators: HandleCreators<TravelSettlementDetailFormProps, OwnHandle
       case 'start': 
         fieldProps = {
           required: true,
-          placeholder: intl.formatMessage({id: `travel.field.${name}.placeholder`}),
+          label: intl.formatMessage(travelMessage.request.fieldFor(fieldName, 'fieldName')),
+          placeholder: intl.formatMessage(travelMessage.request.fieldFor(fieldName, 'fieldPlaceholder')),
           component: InputDate
         };
         break;
@@ -52,7 +53,8 @@ const handlerCreators: HandleCreators<TravelSettlementDetailFormProps, OwnHandle
       case 'end': 
         fieldProps = {
           required: true,
-          placeholder: intl.formatMessage({id: `travel.field.${name}.placeholder`}),
+          label: intl.formatMessage(travelMessage.request.fieldFor(fieldName, 'fieldName')),
+          placeholder: intl.formatMessage(travelMessage.request.fieldFor(fieldName, 'fieldPlaceholder')),
           component: InputDate
         };
         break;
@@ -60,7 +62,8 @@ const handlerCreators: HandleCreators<TravelSettlementDetailFormProps, OwnHandle
         case 'comment': 
         fieldProps = {
           required: true,
-          placeholder: intl.formatMessage({id: `travel.field.${name}.placeholder`}),
+          label: intl.formatMessage(travelMessage.request.fieldFor(fieldName, 'fieldName')),
+          placeholder: intl.formatMessage(travelMessage.request.fieldFor(fieldName, 'fieldPlaceholder')),
           component: InputText
         };
         break;
@@ -68,7 +71,8 @@ const handlerCreators: HandleCreators<TravelSettlementDetailFormProps, OwnHandle
         case 'total':
         fieldProps = {
           disabled: true,
-          placeholder: intl.formatMessage({id: `travel.field.${name}.placeholder`}),
+          label: intl.formatMessage(travelMessage.request.fieldFor(fieldName, 'fieldName')),
+          placeholder: intl.formatMessage(travelMessage.request.fieldFor(fieldName, 'fieldPlaceholder')),
           component: InputNumber
         };
         break;
@@ -77,7 +81,8 @@ const handlerCreators: HandleCreators<TravelSettlementDetailFormProps, OwnHandle
         fieldProps = {
           type: 'text',
           disabled: true,
-          placeholder: intl.formatMessage({id: `travel.field.${name}.placeholder`}),
+          label: intl.formatMessage(travelMessage.request.fieldFor(fieldName, 'fieldName')),
+          placeholder: intl.formatMessage(travelMessage.request.fieldFor(fieldName, 'fieldPlaceholder')),
           component: InputText
         };
         break;
@@ -89,4 +94,4 @@ const handlerCreators: HandleCreators<TravelSettlementDetailFormProps, OwnHandle
 export const TravelSettlementDetailForm = compose<TravelSettlementDetailFormProps, OwnProps>(
   injectIntl,
   withHandlers<TravelSettlementDetailFormProps, OwnHandlers>(handlerCreators),
-)(RequestDetailFormView);
+)(TravelSettlementDetailFormView);

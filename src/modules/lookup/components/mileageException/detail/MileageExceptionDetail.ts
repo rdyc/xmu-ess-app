@@ -63,10 +63,10 @@ const stateUpdaters: StateUpdaters<MileageExceptionDetailProps, OwnState, OwnSta
     action: MileageExceptionUserAction.Modify,
     dialogFullScreen: false,
     dialogOpen: true,
-    dialogTitle: props.intl.formatMessage(lookupMessage.mileageException.confirm.modifyTitle),
-    dialogContent: props.intl.formatMessage(lookupMessage.mileageException.confirm.modifyDescription),
-    dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.disaggree),
-    dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.aggree)
+    dialogTitle: props.intl.formatMessage(lookupMessage.shared.confirm.modifyTitle),
+    dialogContent: props.intl.formatMessage(lookupMessage.shared.confirm.modifyDescription),
+    dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.disaggre),
+    dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.aggre)
   }),
   setDefault: (prevState: OwnState) => (): Partial<OwnState> => ({
     dialogFullScreen: false,
@@ -111,7 +111,7 @@ const handlerCreators: HandleCreators<MileageExceptionDetailProps, OwnHandler> =
 
       switch (props.action) {
         case MileageExceptionUserAction.Modify:
-          next = '/lookup/mileageexception/form';
+          next = '/lookup/mileageexceptions/form';
           break;
 
         default:

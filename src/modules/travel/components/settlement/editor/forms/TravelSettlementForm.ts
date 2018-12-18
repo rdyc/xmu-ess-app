@@ -1,5 +1,19 @@
 import { FormMode } from '@generic/types';
+import { DateType } from 'material-ui-pickers/constants/prop-types';
+import * as moment from 'moment';
 import { connect } from 'react-redux';
+import { 
+  compose, 
+  HandleCreators, 
+  lifecycle, 
+  mapper, 
+  ReactLifeCycleFunctions, 
+  StateHandler, 
+  StateHandlerMap, 
+  StateUpdaters, 
+  withHandlers, 
+  withStateHandlers 
+} from 'recompose';
 import { formValueSelector, InjectedFormProps, reduxForm } from 'redux-form';
 import { TravelSettlementFormView } from './TravelSettlementFormView';
 
@@ -53,30 +67,122 @@ export type TravelSettlementFormData = {
 
 interface OwnProps {
   formMode: FormMode;
+  submitDialogTitle: string;
+  submitDialogContentText: string;
+  submitDialogCancelText: string;
+  submitDialogConfirmedText: string;
+}
+
+interface OwnHandlers {
+  handleEventListener: (event: CustomEvent) => void;
+}
+
+interface OwnState {
+  TotalCost: number | null | undefined;
+}
+
+interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
+  setTotal: StateHandler<OwnState>;
 }
 
 interface FormValueProps {
   totalCostValue: number | 0;
+  minDate?: DateType;
+  maxDate?: DateType;
+  formName: string;
 }
 
 export type TravelSettlementFormProps
   = InjectedFormProps<TravelSettlementFormData, OwnProps>
   & FormValueProps
-  & OwnProps;
+  & OwnProps
+  & OwnHandlers
+  & OwnState
+  & OwnStateUpdaters;
+
+const createProps: mapper<TravelSettlementFormProps, OwnState> = (props: TravelSettlementFormProps): OwnState => {
+  return {
+    TotalCost: props.initialValues.information && props.initialValues.information.total,
+  };
+};
+
+const handlers: HandleCreators<TravelSettlementFormProps, OwnHandlers> = {
+  handleEventListener: (props: TravelSettlementFormProps) => (event: CustomEvent) => {
+    const formValues = event.detail as TravelSettlementFormData;
+    const calculateDiem = (start: string , end: string): number => {
+      let result: number = 0;
+      
+      if (start !== '' && end !== '') {
+      const startDate = moment(start);
+      const endDate = moment(end);
+      const diffHours = endDate.diff(startDate, 'hours');
+      const diffDays = endDate.dayOfYear() - startDate.dayOfYear();
+    
+      if (startDate.isSame(endDate, 'days')) {
+        result = diffHours >= 8 ? 1 : 0;
+      } else if ( !startDate.isSame(endDate, 'days') && endDate.hours() >= 17) {
+        result =  diffDays + 1;
+      } else {
+        result = diffDays;
+      }
+    }  
+      return result;
+    };
+
+    let total: number = 0;
+    if (formValues.item.items) {
+      formValues.item.items.forEach((item) => total += item.costTransport + item.costHotel + (calculateDiem(item.departureDate, item.returnDate) * (item.currencyRate) * (item.diemValue)));
+    }
+    props.change('information.total', total);
+  }
+};
 
 const selector = formValueSelector(formName);
 
 const mapStateToProps = (state: any): FormValueProps => {
   const totalCost = selector(state, 'information.total');
+  const startValue = selector(state, 'information.start');
+  const endValue = selector(state, 'information.end');
   return {
-    totalCostValue: totalCost
+    formName,
+    totalCostValue: totalCost,
+    minDate: startValue,
+    maxDate: endValue
   };
 };
-const connectedView = connect(mapStateToProps)(TravelSettlementFormView);
+
+const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
+  setTotal: (prevState: OwnState) => (total: number) => {
+    return {
+      TotalCost: total
+    };
+  }
+};
+
+const lifecycles: ReactLifeCycleFunctions<TravelSettlementFormProps, OwnState> = {
+  componentDidMount() {
+    addEventListener('TRV_FORM', this.props.handleEventListener);
+  },
+  componentWillUnmount() {
+    removeEventListener('TRV_FORM', this.props.handleEventListener);
+  }
+};
+
+// const connectedView = connect(mapStateToProps)(TravelSettlementFormView);
+
+const enhance = compose<TravelSettlementFormProps, OwnProps & InjectedFormProps<TravelSettlementFormData, OwnProps>> (
+  connect(mapStateToProps),
+  withStateHandlers(createProps, stateUpdaters),
+  withHandlers(handlers),
+  lifecycle(lifecycles),
+)(TravelSettlementFormView);
 
 export const TravelSettlementForm = reduxForm<TravelSettlementFormData, OwnProps>({
   form: formName,
   touchOnChange: true,
   touchOnBlur: true,
-  enableReinitialize: true
-})(connectedView);
+  enableReinitialize: true,
+  onChange: (values: TravelSettlementFormData, dispatch: any, props: any) => {
+    dispatchEvent(new CustomEvent('TRV_FORM', {detail: values}));
+  },
+})(enhance);

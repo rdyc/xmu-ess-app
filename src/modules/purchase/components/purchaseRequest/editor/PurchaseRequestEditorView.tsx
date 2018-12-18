@@ -12,7 +12,10 @@ import * as React from 'react';
 // import { FormattedMessage } from 'react-intl';
 
 export const PurchaseRequestEditorView: React.SFC<PurchaseRequestEditorProps> = props => {
-  const { formMode, handleValidate, handleSubmit, handleSubmitSuccess, handleSubmitFail } = props;
+  const { formMode, handleValidate, handleSubmit, handleSubmitSuccess, 
+    handleSubmitFail, submitDialogTitle, submitDialogContentText, 
+    submitDialogCancelText, submitDialogConfirmedText 
+  } = props;
   const { isLoading, response } = props.purchaseRequestState.detail;
 
   const renderForm = (formData: PurchaseRequestFormData) => (
@@ -23,6 +26,10 @@ export const PurchaseRequestEditorView: React.SFC<PurchaseRequestEditorProps> = 
       onSubmit={handleSubmit}
       onSubmitSuccess={handleSubmitSuccess}
       onSubmitFail={handleSubmitFail}
+      submitDialogTitle={submitDialogTitle}
+      submitDialogContentText={submitDialogContentText}
+      submitDialogCancelText={submitDialogCancelText}
+      submitDialogConfirmedText={submitDialogConfirmedText}
     />
   );
 
@@ -80,6 +87,7 @@ export const PurchaseRequestEditorView: React.SFC<PurchaseRequestEditorProps> = 
       initialValues.information.advance = data.advance || 0;
 
       if (data.items) {
+        initialValues.items.items = [];
         data.items.forEach(item =>
           initialValues.items.items.push({
             uid: item.uid,

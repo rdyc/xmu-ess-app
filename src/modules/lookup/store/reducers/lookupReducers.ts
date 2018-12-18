@@ -1,74 +1,27 @@
-import {
-  currencyGetAllReducer,
-  currencyGetByIdReducer,
-  currencyGetListReducer,
-  diemGetAllReducer,
-  diemGetByIdReducer,
-  diemGetListReducer,
-  holidayGetAllReducer,
-  holidayGetByIdReducer,
-  holidayGetListReducer,
-  leaveGetAllReducer,
-  leaveGetByIdReducer,
-  leaveGetListReducer,
-  leavePutReducer,
-  menuGetAllReducer,
-  menuGetByIdReducer,
-  menuGetListReducer,
-  mileageExceptionGetAllReducer,
-  mileageExceptionGetByIdReducer,
-  mileageExceptionGetListReducer,
-  positionGetAllReducer,
-  positionGetByIdReducer,
-  positionGetListReducer,
-  systemLimitGetAllReducer,
-  systemLimitGetByIdReducer,
-  systemLimitGetListReducer,
-} from '@lookup/store/reducers';
-
 import { lookupCompanyReducers } from './company';
+import { lookupCurrencyReducers } from './currency';
 import { lookupCustomerReducers } from './customer';
-import { leaveReducers } from './leave';
+import { lookupDiemReducers } from './diem';
+import { lookupHolidayReducers } from './holiday/lookupHolidayReducers';
+import { lookupLeaveReducers } from './leave/lookupLeaveReducers';
+import { lookupMenuReducers } from './menu';
+import { mileageExceptionReducers } from './mileageException/mileageExceptionReducers';
+import { lookupPositionReducers } from './position';
 import { lookupRoleReducers } from './role';
+import { systemLimitReducers } from './systemLimit';
 
 const lookupReducers = {
   ...lookupCustomerReducers,
   ...lookupCompanyReducers,
   ...lookupRoleReducers,
-  ...leaveReducers,
-
-  mileageExceptionGetAll: mileageExceptionGetAllReducer,
-  mileageExceptionGetById: mileageExceptionGetByIdReducer,
-  mileageExceptionGetList: mileageExceptionGetListReducer,
-
-  diemGetAll: diemGetAllReducer,
-  diemGetList: diemGetListReducer,
-  diemGetById: diemGetByIdReducer,
-
-  menuGetAll: menuGetAllReducer,
-  menuGetById: menuGetByIdReducer,
-  menuGetList: menuGetListReducer,
-
-  positionGetAll: positionGetAllReducer,
-  positionGetById: positionGetByIdReducer,
-  positionGetList: positionGetListReducer,
-
-  currencyGetAll: currencyGetAllReducer,
-  currencyGetList: currencyGetListReducer,
-  currencyGetById: currencyGetByIdReducer,
-
-  systemLimitGetAll: systemLimitGetAllReducer,
-  systemLimitGetList: systemLimitGetListReducer,
-  systemLimitGetById: systemLimitGetByIdReducer,
-
-  holidayGetAll: holidayGetAllReducer,
-  holidayGetList: holidayGetListReducer,
-  holidayGetById: holidayGetByIdReducer,
-
-  leaveGetAll: leaveGetAllReducer,
-  leaveGetList: leaveGetListReducer,
-  leaveGetById: leaveGetByIdReducer,
-  leavePut: leavePutReducer
+  ...lookupPositionReducers,
+  ...lookupLeaveReducers,
+  ...lookupHolidayReducers,
+  ...mileageExceptionReducers,
+  ...systemLimitReducers,
+  ...lookupDiemReducers,
+  ...lookupCurrencyReducers,
+  ...lookupMenuReducers
 };
 
 export default lookupReducers;

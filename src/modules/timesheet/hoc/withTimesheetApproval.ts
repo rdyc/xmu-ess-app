@@ -1,5 +1,5 @@
 import { IAppState, IQueryCollectionState, IQuerySingleState } from '@generic/interfaces';
-import { ITimesheetApprovalGetAllRequest, ITimesheetApprovalGetByIdRequest, ITimesheetApprovalPostBulkRequest,  } from '@timesheet/classes/queries/approval';
+import { ITimesheetApprovalGetAllRequest, ITimesheetApprovalGetByIdRequest, ITimesheetApprovalPostBulkRequest, ITimesheetApprovalPostRequest,  } from '@timesheet/classes/queries/approval';
 import { ITimesheet, ITimesheetDetail } from '@timesheet/classes/response';
 import { 
   timesheetApprovalGetAllDispose,
@@ -8,8 +8,8 @@ import {
   timesheetApprovalGetByIdRequest,
   timesheetApprovalPostBulkDispose,
   timesheetApprovalPostBulkRequest,
-  // timesheetApprovalPostDispose,
-  // timesheetApprovalPostRequest,
+  timesheetApprovalPostDispose,
+  timesheetApprovalPostRequest,
 } from '@timesheet/store/actions';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
@@ -24,8 +24,8 @@ interface PropsFromState {
 interface PropsFromDispatch {
   timesheetApprovalDispatch: {
     // command
-    // createRequest: typeof timesheetApprovalPostRequest;
-    // createDispose: typeof timesheetApprovalPostDispose;
+    createRequest: typeof timesheetApprovalPostRequest;
+    createDispose: typeof timesheetApprovalPostDispose;
     createRequestBulk: typeof timesheetApprovalPostBulkRequest;
     createDisposeBulk: typeof timesheetApprovalPostBulkDispose;
 
@@ -49,8 +49,8 @@ const mapStateToProps = ({ timesheetApprovalGetAll, timesheetApprovalGetById }: 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   timesheetApprovalDispatch: {
     // command
-    // createRequest: (request: ITimesheetApprovalPostRequest) => dispatch(timesheetApprovalPostRequest(request)),
-    // createDispose: () => dispatch(timesheetApprovalPostDispose()),
+    createRequest: (request: ITimesheetApprovalPostRequest) => dispatch(timesheetApprovalPostRequest(request)),
+    createDispose: () => dispatch(timesheetApprovalPostDispose()),
     createRequestBulk: (request: ITimesheetApprovalPostBulkRequest) => dispatch(timesheetApprovalPostBulkRequest(request)),
     createDisposeBulk: () => dispatch(timesheetApprovalPostBulkDispose()),
     

@@ -8,8 +8,9 @@ import {
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
+import { GlobalFormat } from '@layout/types';
 import { Button } from '@material-ui/core';
-import { isRequestEditable } from '@organization/helper/isRequestEditable';
+import { isModuleRequestEditable } from '@organization/helper/isModuleRequestEditable';
 import { ITravelSettlement } from '@travel/classes/response';
 import { TravelRequestField, TravelUserAction } from '@travel/classes/types';
 import { TravelSummarySettlement } from '@travel/components/settlement/detail/shared/TravelSummarySettlement';
@@ -105,12 +106,12 @@ const config: CollectionConfig<ITravelSettlement, AllProps> = {
     callback.handleLoading(isLoading);
     callback.handleResponse(response);
   },
-  onBind: (item: ITravelSettlement, index: number) => ({
+  onBind: (item: ITravelSettlement, index: number, props: AllProps) => ({
     key: index,
-    primary: item.objective ? item.objective : 'N/A',
-    secondary: item.customer && item.customer.name || item.customerUid,
-    tertiary: item.uid,
-    quaternary: item.project && item.project.name || item.projectUid,
+    primary: item.uid, 
+    secondary: item.customer && item.customer.name || item.customerUid, 
+    tertiary: item.objective ? item.objective : 'N/A',
+    quaternary: props.intl.formatNumber(item.total, GlobalFormat.CurrencyDefault) || '-',
     quinary: item.status && item.status.value || item.statusType,
     senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
   }),
@@ -124,7 +125,7 @@ const config: CollectionConfig<ITravelSettlement, AllProps> = {
   actionComponent: (item: ITravelSettlement, callback: CollectionHandler) => (
     <React.Fragment>
       {
-        isRequestEditable(item.statusType) &&
+        isModuleRequestEditable(item.statusType) &&
         <Button 
           size="small"
           onClick={() => callback.handleRedirectTo(`/travel/settlement/requests/form`, { uid: item.uid })}

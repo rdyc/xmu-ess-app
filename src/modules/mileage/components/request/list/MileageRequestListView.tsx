@@ -1,6 +1,6 @@
 import AppMenu from '@constants/AppMenu';
 import { CollectionConfig, CollectionDataProps, CollectionHandler, CollectionPage } from '@layout/components/pages';
-import { WithUser, withUser } from '@layout/hoc/withUser';
+import { withUser, WithUser } from '@layout/hoc/withUser';
 import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
 import { GlobalFormat } from '@layout/types';
@@ -107,10 +107,10 @@ const config: CollectionConfig<IMileageRequest, AllProps> = {
   },
   onBind: (item: IMileageRequest, index: number, props: AllProps) => ({
     key: index,
-    primary: props.intl.formatDate(new Date(item.year, item.month - 1), GlobalFormat.MonthYear),
-    secondary: item.employee && item.employee.fullName || item.employeeUid,
-    tertiary: props.intl.formatNumber(item.amount),
-    quaternary: item.uid,
+    primary: item.uid,
+    secondary: props.intl.formatDate(new Date(item.year, item.month - 1), GlobalFormat.MonthYear),
+    tertiary: item.employee && item.employee.fullName || item.employeeUid,
+    quaternary: props.intl.formatNumber(item.amount, GlobalFormat.CurrencyDefault),
     quinary: item.status && item.status.value || item.statusType,
     senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
   }),
@@ -135,18 +135,18 @@ const config: CollectionConfig<IMileageRequest, AllProps> = {
 
 type AllProps
   = WithUser
-  & InjectedIntlProps
-  & WithMileageRequest;
+  & WithMileageRequest
+  & InjectedIntlProps;
 
-const mileageRequestList: React.SFC<AllProps> = props => (
+const mileageRequestListView: React.SFC<AllProps> = props => (
   <CollectionPage
     config={config}
     connectedProps={props}
   />
 );
 
-export const MileageRequestList = compose(
+export const MileageRequestListView = compose(
   withUser,
-  injectIntl,
-  withMileageRequest
-)(mileageRequestList);
+  withMileageRequest,
+  injectIntl
+)(mileageRequestListView);

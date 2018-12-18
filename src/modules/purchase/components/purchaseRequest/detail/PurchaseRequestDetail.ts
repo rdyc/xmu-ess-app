@@ -19,6 +19,7 @@ import {
 
 interface OwnHandler {
   handleOnModify: () => void;
+  handleOnSettle: () => void; 
   handleOnCloseDialog: () => void;
   handleOnConfirm: () => void;
 }
@@ -35,6 +36,7 @@ interface OwnState {
 
 interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
   setDefault: StateHandler<OwnState>;
+  setSettle: StateHandler<OwnState>;
   setModify: StateHandler<OwnState>;
 }
 
@@ -63,8 +65,17 @@ const stateUpdaters: StateUpdaters<PurchaseRequestDetailProps, OwnState, OwnStat
     dialogOpen: true,
     dialogTitle: props.intl.formatMessage(purchaseMessage.request.confirm.modifyTitle),
     dialogContent: props.intl.formatMessage(purchaseMessage.request.confirm.modifyDescription),
-    dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.disaggree),
-    dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.aggree)
+    dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.disaggre),
+    dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.aggre)
+  }),
+  setSettle: (prevState: OwnState, props: PurchaseRequestDetailProps) => (): Partial<OwnState> => ({
+    action: PurchaseUserAction.Settle,
+    dialogFullScreen: false,
+    dialogOpen: true,
+    dialogTitle: props.intl.formatMessage(purchaseMessage.settlement.confirm.settleTitle),
+    dialogContent: props.intl.formatMessage(purchaseMessage.settlement.confirm.settleDescription),
+    dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.disaggre),
+    dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.aggre)
   }),
   setDefault: (prevState: OwnState) => (): Partial<OwnState> => ({
     ...prevState,
@@ -80,6 +91,9 @@ const stateUpdaters: StateUpdaters<PurchaseRequestDetailProps, OwnState, OwnStat
 const handlerCreators: HandleCreators<PurchaseRequestDetailProps, OwnHandler> = {
   handleOnModify: (props: PurchaseRequestDetailProps) => () => {
     props.setModify();
+  },
+  handleOnSettle: (props: PurchaseRequestDetailProps) => () => {
+    props.setSettle();
   },
   handleOnCloseDialog: (props: PurchaseRequestDetailProps) => () => {
     props.setDefault();
@@ -98,7 +112,8 @@ const handlerCreators: HandleCreators<PurchaseRequestDetailProps, OwnHandler> = 
     }
 
     const actions = [
-      PurchaseUserAction.Modify, 
+      PurchaseUserAction.Modify,
+      PurchaseUserAction.Settle,
     ];
 
     if (actions.indexOf(props.action) !== -1) {
@@ -109,6 +124,10 @@ const handlerCreators: HandleCreators<PurchaseRequestDetailProps, OwnHandler> = 
           next = '/purchase/requests/form';
           break;
 
+        case PurchaseUserAction.Settle:
+          next = '/purchase/settlement/requests/form/';
+          break;
+          
         default:
           break;
       }

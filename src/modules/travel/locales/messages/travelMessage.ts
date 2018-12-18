@@ -2,10 +2,12 @@ import { travelAction } from './travelActionMessage';
 import { travelApprovalConfirm, travelApprovalPage } from './travelApprovalMessages';
 import { 
   travelRequestConfirm, 
+  travelRequestDialog, 
   travelRequestField, 
+  travelRequestFieldHelperFor, 
   travelRequestMessage, 
-  travelRequestOption, 
-  travelRequestPage, 
+  travelRequestOption,
+  travelRequestPage,
   travelRequestSection
 } 
 from './travelRequestMessage';
@@ -22,10 +24,12 @@ export const travelMessage = {
   action: travelAction,
   request: {
     page: travelRequestPage,
+    dialog: travelRequestDialog,
     option: travelRequestOption,
     confirm: travelRequestConfirm,
     section: travelRequestSection,
     field: travelRequestField,
+    fieldFor: travelRequestFieldHelperFor,
     message: travelRequestMessage
   },
   settlement: {

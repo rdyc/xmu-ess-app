@@ -12,7 +12,7 @@ export const timesheetEntryPage = defineMessages({
   newSubHeader: { id: `${prefix}.page.new.subHeader` },
   modifyTitle: { id: `${prefix}.page.modify.title` },
   modifySubHeader: { id: `${prefix}.page.modify.subHeader` },
-  
+
   statusModifyTitle: { id: `${prefix}.page.status.modify.title` },
   statusModifySubHeader: { id: `${prefix}.page.status.modify.subHeader` }
 });
@@ -35,14 +35,21 @@ export const timesheetEntrySection = defineMessages({
   approvalSubHeader: { id: `${prefix}.section.approval.subHeader` },
 });
 
+export const timesheetEntryDialog = defineMessages({
+  modifyTitle: { id: `${prefix}.dialog.modifyTitle`},
+  modifyDescription: { id: `${prefix}.dialog.modifyDescription`},
+  createTitle: { id: `${prefix}.dialog.newTitle`},
+  createDescription: { id: `${prefix}.dialog.newDescription`},
+});
+
 // fields
 export const timesheetEntryField = defineMessages({
   uid: { id: `${prefix}.field.uid` },
   uidPlaceholder: { id: `${prefix}.field.uid.placeholder` },
 
-  activityType: { id: `${prefix}.field.activityType`},
-  activityTypeRequired: { id: `${prefix}.field.activityType.required`},
-  activityTypePlaceholder: { id: `${prefix}.field.activityType.placeholder`},
+  activityType: { id: `${prefix}.field.activityType` },
+  activityTypeRequired: { id: `${prefix}.field.activityType.required` },
+  activityTypePlaceholder: { id: `${prefix}.field.activityType.placeholder` },
 
   customerUid: { id: `${prefix}.field.customerUid` },
   customerUidRequired: { id: `${prefix}.field.customerUid.required` },
@@ -71,15 +78,15 @@ export const timesheetEntryField = defineMessages({
   datePlaceholder: { id: `${prefix}.field.date.placeholder` },
 
   officeTime: { id: `${prefix}.field.officeTime` },
-  
+
   start: { id: `${prefix}.field.start` },
   startRequired: { id: `${prefix}.field.start.required` },
   startPlaceholder: { id: `${prefix}.field.start.placeholder` },
-  
+
   end: { id: `${prefix}.field.end` },
   endRequired: { id: `${prefix}.field.end.required` },
   endPlaceholder: { id: `${prefix}.field.end.placeholder` },
-  
+
   notes: { id: `${prefix}.field.description` },
   notesPlaceholder: { id: `${prefix}.field.description.placeholder` },
 
@@ -106,8 +113,8 @@ export const timesheetEntryFieldHelperFor = (field: string, type: 'fieldName' | 
       case 'end': return timesheetEntryField.end;
       case 'description': return timesheetEntryField.notes;
       case 'rejectReason': return timesheetEntryField.rejectReason;
-    
-      default: return {id: field};
+
+      default: return { id: field };
     }
   }
 
@@ -121,7 +128,7 @@ export const timesheetEntryFieldHelperFor = (field: string, type: 'fieldName' | 
       case 'start': return timesheetEntryField.startRequired;
       case 'end': return timesheetEntryField.endRequired;
 
-      default: return {id: field};
+      default: return { id: field };
     }
   }
 
@@ -137,12 +144,12 @@ export const timesheetEntryFieldHelperFor = (field: string, type: 'fieldName' | 
       case 'start': return timesheetEntryField.startPlaceholder;
       case 'end': return timesheetEntryField.endPlaceholder;
       case 'description': return timesheetEntryField.notesPlaceholder;
-    
-      default: return {id: field};
+
+      default: return { id: field };
     }
   }
 
-  return {id: field};
+  return { id: field };
 };
 
 // message

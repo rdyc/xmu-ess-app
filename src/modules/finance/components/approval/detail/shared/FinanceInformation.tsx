@@ -2,8 +2,9 @@ import { IFinanceDetail } from '@finance/classes/response';
 import { financeMessage } from '@finance/locales/messages/financeMessage';
 import { GlobalFormat } from '@layout/types';
 import { GlobalStyle } from '@layout/types/GlobalStyle';
-import { Button, Card, CardContent, CardHeader, InputAdornment, TextField } from '@material-ui/core';
-import { TextFieldProps } from '@material-ui/core/TextField';
+import { Card, CardContent, CardHeader, IconButton, InputAdornment, TextField, Tooltip } from '@material-ui/core';
+import { StandardTextFieldProps } from '@material-ui/core/TextField';
+import { Description } from '@material-ui/icons';
 import * as React from 'react';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose } from 'recompose';
@@ -20,7 +21,7 @@ type AllProps
 export const financeInformation: React.SFC<AllProps> = props => {
   const { data, intl, handleToDocument } = props;
 
-  const documentStyle: Partial<TextFieldProps> = {
+  const documentStyle: Partial<StandardTextFieldProps> = {
     fullWidth: true,
     margin: 'dense',
     InputProps: {
@@ -29,14 +30,16 @@ export const financeInformation: React.SFC<AllProps> = props => {
       endAdornment: 
         data &&
         <InputAdornment position="end">
-          <Button
-            variant="outlined"
-            color="primary"
-            size="large"
-            onClick={() => handleToDocument(data.moduleUid, data.documentUid)}
-          >
-            {intl.formatMessage(financeMessage.approval.field.goToDocument)}
-          </Button>
+          <Tooltip
+            title={intl.formatMessage(financeMessage.approval.field.goToDocument)}
+            >
+            <IconButton
+              color="primary"
+              onClick={() => handleToDocument(data.moduleUid, data.documentUid)}
+            >
+              <Description />
+            </IconButton>
+          </Tooltip>
         </InputAdornment>
       
     }
@@ -82,14 +85,14 @@ export const financeInformation: React.SFC<AllProps> = props => {
           <TextField
           {...GlobalStyle.TextField.ReadOnly}
             label={intl.formatMessage(financeMessage.approval.field.advance)}
-            value={intl.formatNumber(data.document.amount.advance || 0)}
+            value={intl.formatNumber(data.document.amount.advance, GlobalFormat.CurrencyDefault)}
           /> || ''
         }
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
           label={intl.formatMessage(financeMessage.approval.field.total)}
-          value={data.document.amount ?
-            intl.formatNumber(data.document.amount.total || 0) : 0}
+          value={data.document.amount && data.document.amount.total &&
+            intl.formatNumber(data.document.amount.total, GlobalFormat.CurrencyDefault) || intl.formatNumber(0, GlobalFormat.CurrencyDefault)}
         />
         <TextField
           {...GlobalStyle.TextField.ReadOnly}

@@ -41,6 +41,10 @@ export type PurchaseSettlementFormData = {
 
 interface OwnProps {
   formMode: FormMode;
+  submitDialogTitle: string;
+  submitDialogContentText: string;
+  submitDialogCancelText: string;
+  submitDialogConfirmedText: string;
 }
 
 interface OwnHandlers {
@@ -48,8 +52,6 @@ interface OwnHandlers {
 }
 
 interface OwnState {
-  // TotalActual?: number | undefined;
-  // TotalDiff?: number | undefined;
 }
 
 interface FormValueProps {
@@ -58,7 +60,8 @@ interface FormValueProps {
   formActualValue: number | 0;
   formDifferenceValue: number | 0;
   formAdvance: number | 0;
-  // formBalanceDue: number | 0;
+  formName: string;
+  settleMinDate: any;
 }
 
 export type PurchaseSettlementFormProps
@@ -77,18 +80,20 @@ const handlers: HandleCreators<PurchaseSettlementFormProps, OwnHandlers> = {
 
     if (formValues.items) {
       formValues.items.items.forEach(item => actual += item.actual);
-      formValues.items.items.forEach(item => difference += item.variance);
+      formValues.items.items.forEach(item => difference += (item.request - item.actual));
     }
     props.change('information.actual', actual);
     props.change('information.actualInIDR', actual * props.formRate);
-    props.change('information.difference', formValues.information.request - actual);
-    // props.change('information.difference', difference);
-    props.change('information.differenceInIDR', props.formDifferenceValue * props.formRate);
-    // props.change('information.differenceInIDR', difference *  props.formRate);
+    props.change('information.difference', difference);
+    props.change('information.differenceInIDR', difference * props.formRate);
     props.change('information.balanceDue', props.formAdvance - actual);
   },
 };
+
 const selector = formValueSelector(formName);
+
+const dateLimit = new Date();
+dateLimit.setDate(dateLimit.getDate() - 7);
 
 const mapStateToProps = (state: any): FormValueProps => {
   const currencyType = selector(state, 'information.currencyType');
@@ -96,23 +101,19 @@ const mapStateToProps = (state: any): FormValueProps => {
   const actValue = selector(state, 'information.actual'); 
   const difValue = selector(state, 'information.difference'); 
   const advance = selector(state, 'information.advance');
-  // const forms = getFormValues(formName)(state) as PurchaseSettlementFormData;
-
-  // let actual: number = 0;
-  // let difference: number = 0;
-
-  // if (forms.items) {
-  //   forms.items.items.forEach(item => actual += item.actual);
-  //   forms.items.items.forEach(item => difference += item.variance);
-  // }
+  const date = selector(state, 'information.date');
+  const dateData = new Date(date);
+  dateData.setDate(dateData.getDate() - 7);
+  const dateFinal = dateData.toDateString();
 
   return {
+    formName,
     formIsCurrencyIDR: currencyType === 'SCR01',
     formRate: rate,
     formActualValue: actValue,
     formDifferenceValue: difValue,
     formAdvance: advance,
-    // formDifference: difference
+    settleMinDate: date ? dateFinal : dateLimit
   };
 };
 
@@ -131,8 +132,6 @@ const enhancedView = compose<PurchaseSettlementFormProps, OwnProps & InjectedFor
   lifecycle(lifecycles),
 )(PurchaseSettlementFormView);
 
-// const connectedView = connect(mapStateToProps)(PurchaseSettlementFormView);
-
 export const PurchaseSettlementForm = reduxForm<PurchaseSettlementFormData, OwnProps>({
   form: formName,
   touchOnChange: true,
@@ -143,4 +142,3 @@ export const PurchaseSettlementForm = reduxForm<PurchaseSettlementFormData, OwnP
     dispatchEvent(new CustomEvent('SETTLEMENT_FORM', { detail: values }));
   },
 })(enhancedView);
-// })(connectedView);

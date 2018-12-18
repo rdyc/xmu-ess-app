@@ -29,12 +29,12 @@ const calculateDiem = (start: string , end: string): number => {
   const startDate = moment(start);
   const endDate = moment(end);
   const diffHours = endDate.diff(startDate, 'hours');
-  const diffDays = endDate.diff(startDate, 'days');
+  const diffDays = endDate.dayOfYear() - startDate.dayOfYear();
 
-  if (startDate.isSame(endDate)) {
+  if (startDate.isSame(endDate, 'days')) {
     result = diffHours >= 8 ? 1 : 0;
-  } else if ( !startDate.isSame(endDate) && endDate.isSameOrAfter(17, 'hours')) {
-    result = diffDays;
+  } else if ( !startDate.isSame(endDate, 'days') && endDate.hours() >= 17) {
+    result =  diffDays + 1;
   } else {
     result = diffDays;
   }
@@ -45,15 +45,12 @@ const calculateDiem = (start: string , end: string): number => {
 export const RequestItemFormView: React.SFC<RequestItemFormProps> = props => {
   const { context } = props;
 
-  const diem = props.diemRequest;
-                    
+  const diem = props.diemRequest;                
   const render = (
     <Grid container spacing={16}>
       {
         context.fields.map((field, index) => {
           const item = context.fields.get(index);
-          // const amount: number = calculateDiem(item.departureDate, item.returnDate) * (diem ? diem.value : 0);
-          // item.amount = amount;
           return (
           <Grid key={index} item xs={12} md={4}>
             <Card square>
@@ -70,7 +67,7 @@ export const RequestItemFormView: React.SFC<RequestItemFormProps> = props => {
                   <Field 
                     type="text"
                     name={`${field}.employeeUid`}
-                    label="employee"
+                    label={props.intl.formatMessage(travelMessage.request.field.itemEmployeeUid)}
                     placeholder="Employee"
                     required={true}
                     companyUids={props.userState.user && [props.userState.user.company.uid]}
@@ -79,13 +76,13 @@ export const RequestItemFormView: React.SFC<RequestItemFormProps> = props => {
                   <Field 
                     type="text"
                     name={`${field}.transportType`}
-                    label="Transport Type"
+                    label={props.intl.formatMessage(travelMessage.request.field.transportType)}
                     required={true}
                     component={SelectSystem}
                     category = "transportation"
                   />
                   <FormControlLabel
-                    label="Is RoundTrip?"                    
+                    label={props.intl.formatMessage(travelMessage.request.field.isRoundTrip)}                    
                     control={
                     <Field
                       type="checkbox"
@@ -107,33 +104,37 @@ export const RequestItemFormView: React.SFC<RequestItemFormProps> = props => {
                   <Field 
                     type="text"
                     name={`${field}.from`}
-                    label="from"
+                    label={props.intl.formatMessage(travelMessage.request.field.from)}
                     component={InputText}
                   />
                   <Field 
                     type="text"
                     name={`${field}.destination`}
-                    label="destination"
+                    label={props.intl.formatMessage(travelMessage.request.field.destination)}
                     component={InputText}
                   />
                   <Field 
                     name={`${field}.departureDate`}
-                    label="Departure Date"
+                    label={props.intl.formatMessage(travelMessage.request.field.itemStart)}
                     component={InputDateTime}
+                    minDate={props.minDate}
+                    maxDate={props.maxDate}
                   />
                   <Field 
                     name={`${field}.returnDate`}
-                    label="return Date"
+                    label={props.intl.formatMessage(travelMessage.request.field.itemEnd)}
                     component={InputDateTime}
+                    minDate={props.minDate}
+                    maxDate={props.maxDate}
                   />
                   <Field 
                     type="number"
                     name={`${field}.costTransport`}
-                    label="Transport Cost"
+                    label={props.intl.formatMessage(travelMessage.request.field.transportCost)}
                     component={InputNumber}
                   />
                   <FormControlLabel
-                    label="comp Purchase?"                    
+                    label={props.intl.formatMessage(travelMessage.request.field.isTransportByCompany)}                    
                     control={
                     <Field
                       type="checkbox"
@@ -155,17 +156,17 @@ export const RequestItemFormView: React.SFC<RequestItemFormProps> = props => {
                   <Field 
                     type="text"
                     name={`${field}.hotel`}
-                    label="Hotel Name"
+                    label={props.intl.formatMessage(travelMessage.request.field.hotel)}
                     component={InputText}
                   />
                   <Field 
                     type="number"
                     name={`${field}.costHotel`}
-                    label="Hotel Cost"
+                    label={props.intl.formatMessage(travelMessage.request.field.hotelCost)}
                     component={InputNumber}
                   />
                   <FormControlLabel
-                    label="comp Purchase?"                    
+                    label={props.intl.formatMessage(travelMessage.request.field.isHotelByCompany)}                    
                     control={
                     <Field
                       type="checkbox"
@@ -187,7 +188,7 @@ export const RequestItemFormView: React.SFC<RequestItemFormProps> = props => {
                   <Field 
                     type="text"
                     name={`${field}.notes`}
-                    label="notes"
+                    label={props.intl.formatMessage(travelMessage.request.field.note)}
                     component={InputText}
                   />
                   <TextField
@@ -196,28 +197,7 @@ export const RequestItemFormView: React.SFC<RequestItemFormProps> = props => {
                     fullWidth={true}
                     label={props.intl.formatMessage(travelMessage.request.field.duration)}
                     value={props.intl.formatNumber(calculateDiem(item.departureDate, item.returnDate))}
-                  />  
-                  {/* <Field 
-                    type="number"
-                    name={`${field}.diemValue`}
-                    label="Per Diem"
-                    disabled={true}
-                    component={InputNumber}
-                  />     
-                  <Field 
-                    type="text"
-                    name={`${field}.currencyUid`}
-                    label="Currency"
-                    disabled={true}
-                    component={InputText}
-                  />
-                  <Field 
-                    type="text"
-                    name={`${field}.currencyRate`}
-                    label="Currency Rate"
-                    disabled={true}
-                    component={InputText}
-                  /> */}
+                  /> 
                   <TextField
                     margin="dense"
                     disabled={true}

@@ -1,4 +1,5 @@
 export enum RoleField {
   uid = 'Role ID',
-  name = 'Role Name'
+  name = 'Role Name',
+  description = 'Description'
 }

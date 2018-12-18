@@ -71,7 +71,7 @@ const config: CollectionConfig<ITimesheet, AllProps> = {
       name: props.intl.formatMessage(layoutMessage.action.create),
       enabled: true,
       visible: true,
-      onClick: () => callback.handleRedirectTo(`/timesheet/entry`)
+      onClick: () => callback.handleRedirectTo(`/timesheet/requests/form`)
     }
   ]),
 
@@ -113,10 +113,10 @@ const config: CollectionConfig<ITimesheet, AllProps> = {
   },
   onBind: (item: ITimesheet, index: number, props: AllProps) => ({
     key: index,
-    primary: item.description ? item.description : 'N/A',
+    primary: item.uid,
     secondary: props.intl.formatDate(item.date, GlobalFormat.Date),
     tertiary: item.customer && item.customer.name || item.customerUid,
-    quaternary: item.uid,
+    quaternary: item.description ? item.description : 'N/A',
     quinary: item.status && item.status.value || item.statusType,
     senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
   }),

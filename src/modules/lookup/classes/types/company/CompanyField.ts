@@ -1,4 +1,5 @@
 export enum CompanyField {
   uid = 'Company ID',
-  name = 'Name'
+  name = 'Name',
+  code = 'Code'
 }

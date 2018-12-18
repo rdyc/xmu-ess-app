@@ -1,6 +1,7 @@
 import { ICommonSystem } from '@common/classes';
 import { IBaseChanges } from '@generic/interfaces';
 import { ICompanyList } from '@lookup/classes/response';
+import { IRoleMenu } from './IRoleMenu';
 
 export interface IRoleDetail {
   uid: string;
@@ -10,6 +11,7 @@ export interface IRoleDetail {
   grade: ICommonSystem | null;
   name: string;
   description: string | null;
+  menus: IRoleMenu[];
   isActive: boolean;
   changes: IBaseChanges | null;
 }

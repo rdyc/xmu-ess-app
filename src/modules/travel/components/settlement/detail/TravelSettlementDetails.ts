@@ -70,8 +70,8 @@ const stateUpdaters: StateUpdaters<TravelSettlementDetailProps, OwnState, OwnSta
     dialogOpen: true,
     dialogTitle: props.intl.formatMessage(travelMessage.request.confirm.modifyTitle), 
     dialogContent: props.intl.formatMessage(travelMessage.request.confirm.modifyDescription),
-    dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.disaggree),
-    dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.aggree)
+    dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.discard),
+    dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.continue)
   }),
   setDefault: (prevState: OwnState) => (): Partial<OwnState> => ({
     dialogFullScreen: false,
@@ -117,7 +117,7 @@ const handlerCreators: HandleCreators<TravelSettlementDetailProps, OwnHandler> =
 
       switch (props.action) {
         case TravelUserAction.Modify:
-          next = '/travel/settlements/form';
+          next = '/travel/settlement/requests/form';
           break;
 
         default:

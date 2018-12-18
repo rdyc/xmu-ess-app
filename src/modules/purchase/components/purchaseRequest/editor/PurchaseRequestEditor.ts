@@ -3,6 +3,7 @@ import { FormMode } from '@generic/types';
 import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
+import { layoutMessage } from '@layout/locales/messages';
 import {
   IPurchaseItemPostPayload,
   IPurchaseItemPutPayload,
@@ -36,7 +37,6 @@ import { FormErrors } from 'redux-form';
 import { isNullOrUndefined, isObject } from 'util';
 
 interface OwnHandlers {
-  // handleEventListener: (event: CustomEvent) => void;
   handleValidate: (payload: PurchaseRequestFormData) => FormErrors;
   handleSubmit: (payload: PurchaseRequestFormData) => void;
   handleSubmitSuccess: (result: any, dispatch: Dispatch<any>) => void;
@@ -48,16 +48,18 @@ interface OwnRouteParams {
 }
 
 interface OwnState {
-  // setState: PurchaseRequestFormData | undefined;
   formMode: FormMode;
   companyUid?: string | undefined;
   positionUid?: string | undefined;
   purchaseUid?: string | undefined;
+  submitDialogTitle: string;
+  submitDialogContentText: string;
+  submitDialogCancelText: string;
+  submitDialogConfirmedText: string;
 }
 
 interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
   stateUpdate: StateHandler<OwnState>;
-  // setTotalRequest: StateHandler<OwnState>;
 }
 
 export type PurchaseRequestEditorProps
@@ -75,13 +77,16 @@ const createProps: mapper<PurchaseRequestEditorProps, OwnState> = (props: Purcha
   const { history, } = props;
 
   const state = history.location.state;
-  
+
   return {
-    // setState: state ? '' : undefined;
     formMode: state ? FormMode.Edit : FormMode.New,
     companyUid: state ? state.companyUid : undefined,
     positionUid: state ? state.positionUid : undefined,
-    purchaseUid: state ? state.purchaseUid : undefined
+    purchaseUid: state ? state.purchaseUid : undefined,
+    submitDialogTitle: !state ? props.intl.formatMessage(purchaseMessage.request.confirm.createTitle) : props.intl.formatMessage(purchaseMessage.request.confirm.modifyTitle) ,
+    submitDialogContentText: !state ? props.intl.formatMessage(purchaseMessage.request.confirm.createDescription) : props.intl.formatMessage(purchaseMessage.request.confirm.modifyDescription) ,
+    submitDialogCancelText: props.intl.formatMessage(layoutMessage.action.cancel),
+    submitDialogConfirmedText: props.intl.formatMessage(layoutMessage.action.ok),
   };
 };
 
@@ -302,7 +307,7 @@ const lifecycles: ReactLifeCycleFunctions<PurchaseRequestEditorProps, {}> = {
 
     stateUpdate({
       companyUid: user.company.uid,
-      positionUid: user.position.uid
+      positionUid: user.position.uid,
     });
 
     if (!isNullOrUndefined(history.location.state)) {
@@ -312,7 +317,9 @@ const lifecycles: ReactLifeCycleFunctions<PurchaseRequestEditorProps, {}> = {
 
       stateUpdate({
         formMode: FormMode.Edit,
-        purchaseUid: history.location.state.uid
+        purchaseUid: history.location.state.uid,
+        submitDialogTitle: this.props.intl.formatMessage(purchaseMessage.request.confirm.modifyTitle),
+        submitDialogContentText: this.props.intl.formatMessage(purchaseMessage.request.confirm.modifyDescription),
       });
 
       loadDetailRequest({

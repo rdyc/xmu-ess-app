@@ -17,17 +17,17 @@ import { FormattedDate } from 'react-intl';
 export const MileageRequestItemFormView: React.SFC<ItemFormProps> = props => {
   const { isLoading, response } = props.timesheetMileagesState;
   const { intl } = props;
-  let { nolValue } = props;
+  // let { nolValue } = props;
 
-  const renderFilter = (items: ITimesheetMileages[]) => {
-    items.map(item => {
-      if (item.value !== 0) {
-        nolValue = true;
-      }
-    });
+  // const renderFilter = (items: ITimesheetMileages[]) => {
+  //   items.map(item => {
+  //     if (item.value !== 0) {
+  //       nolValue = true;
+  //     }
+  //   });
 
-    return nolValue;
-  };
+  //   return nolValue;
+  // };
 
   const renderItem = (items: ITimesheetMileages[]) => {
     const len = items.length - 1;
@@ -84,7 +84,7 @@ export const MileageRequestItemFormView: React.SFC<ItemFormProps> = props => {
       />
       <CardContent>
         <Grid>
-          {!isLoading &&
+          {/* {!isLoading &&
             response &&
             response.data &&
             renderFilter(response.data) &&
@@ -92,11 +92,11 @@ export const MileageRequestItemFormView: React.SFC<ItemFormProps> = props => {
               <Typography variant="body2">
                 {intl.formatMessage(mileageMessage.request.field.noData)}
               </Typography>
-            )}
+            )} */}
           {!isLoading &&
             (!response ||
-              (response.data && response.data.length < 1) ||
-              !nolValue) && (
+              (response.data && response.data.length < 1)/*  ||
+              !nolValue */) && (
               <Typography variant="body2">
                 {intl.formatMessage(mileageMessage.request.field.noData)}
               </Typography>
@@ -104,7 +104,7 @@ export const MileageRequestItemFormView: React.SFC<ItemFormProps> = props => {
           {!isLoading &&
             response &&
             response.data &&
-            nolValue &&
+            // nolValue &&
             renderItem(response.data)}
         </Grid>
       </CardContent>

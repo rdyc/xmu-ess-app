@@ -14,11 +14,7 @@ interface OwnProps {
   formMode: FormMode;
   context: BaseFieldsProps;
   isCurrencyIdr: boolean;
-  // onChangeValueIdr: (event: any, newValue: number, oldValue: number) => void;  
-  // onChangeActual: (event: any, newValue: number, oldValue: number) => void;
-  // onChangeDifference: (event: any, newValue: number, oldValue: number) => void;
-  onChangeActualValue: (event: any, newValue: number, oldValue: number) => void;
-  onChangeDifferenceValue: (event: any, newValue: number, oldValue: number) => void;
+  settleMinDate?: Date;
 }
 
 interface OwnHandlers {
@@ -80,7 +76,8 @@ const handlerCreators: HandleCreators<PurchaseSettlementDetailFormProps, OwnHand
           category: 'date',
           label: props.intl.formatMessage(purchaseMessage.settlement.field.date),
           placeholder: props.intl.formatMessage(purchaseMessage.settlement.field.datePlaceholder),
-          component: InputDate
+          component: InputDate,
+          minDate: props.settleMinDate
         };
         break;
         

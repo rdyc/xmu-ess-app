@@ -1,6 +1,7 @@
 import { FormMode } from '@generic/types';
 import { Card, CardContent, CardHeader } from '@material-ui/core';
 import { RequestDetailFormProps } from '@travel/components/request/editor/forms/RequestDetailForm';
+import { travelMessage } from '@travel/locales/messages/travelMessage';
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Field } from 'redux-form';
@@ -24,7 +25,7 @@ export const RequestDetailFormView: React.SFC<RequestDetailFormProps> = props =>
     }
 
     const fieldsSite = ['siteUid'];
-    if (!isProjectSelected && fieldsSite.indexOf(fieldName) !== -1) {
+    if ((!isProjectSelected || props.isGeneralPurpose) && fieldsSite.indexOf(fieldName) !== -1) {
         return null;
     }  
     
@@ -41,8 +42,8 @@ export const RequestDetailFormView: React.SFC<RequestDetailFormProps> = props =>
   const render = (
     <Card square>
       <CardHeader 
-        title={<FormattedMessage id="travel.infoTitle"/>}
-        subheader={<FormattedMessage id="travel.infoSubTitle" />}
+        title={props.intl.formatMessage(travelMessage.request.section.infoTitle)}
+        subheader={props.intl.formatMessage(travelMessage.request.section.infoSubHeader)}
       />
       <CardContent>
         {names.map(name => renderField(name))}

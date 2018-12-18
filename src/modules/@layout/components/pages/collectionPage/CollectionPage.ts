@@ -31,6 +31,7 @@ export interface CollectionConfig<Tresponse, Tinner> {
     title: string;
     description: string;
   };
+  parentUrl?: (props: Tinner) => string;
   fields: ICollectionValue[];
   fieldTranslator?: (find: string, field: ICollectionValue) => string;
   hasMore?: boolean | false;
@@ -39,6 +40,7 @@ export interface CollectionConfig<Tresponse, Tinner> {
   searchStatus?: (props: Tinner) => boolean;
   hasSelection?: boolean | false;
   notSelectionTypes?: string[] | [];
+  hasNavBack?: boolean | false;
   onProcessSelection?: (values: string[], callback: CollectionHandler) => void;
   showActionCentre?: boolean | false;
   filter?: IBasePagingFilter | IBaseFilter;
@@ -54,8 +56,9 @@ export interface CollectionConfig<Tresponse, Tinner> {
     senary: string;
   };
   onRowRender?: (item: Tresponse, index: number) => JSX.Element;
-  summaryComponent: (item: Tresponse) => JSX.Element;
-  actionComponent?: (item: Tresponse, callback: CollectionHandler) => JSX.Element;
+  summaryComponent: (item: Tresponse, props?: Tinner) => JSX.Element;
+  actionComponent?: (item: Tresponse, callback: CollectionHandler, props?: Tinner) => JSX.Element;
+  filterComponent?: (callback: CollectionHandler, props?: Tinner) => JSX.Element;
 }
 
 interface OwnOption {
@@ -107,7 +110,9 @@ interface OwnStateUpdater extends StateHandlerMap<OwnState> {
   setField: StateHandler<OwnState>;
   setOrder: StateHandler<OwnState>;
   setSize: StateHandler<OwnState>;
+  setPageAndSize: StateHandler<OwnState>;
   setNotSelectionTypes: StateHandler<OwnState>;
+  setFilter: StateHandler<OwnState>;
 }
 
 interface OwnHandler {
@@ -117,9 +122,10 @@ interface OwnHandler {
   handleOnChangeSelection: (event: React.ChangeEvent<HTMLInputElement>) => void;
   handleOnSearch: (find: string | undefined, field: ICollectionValue | undefined) => void;
   handleRedirectTo: (path: string, state?: any) => void;
+  handleFilter: (event: any, newValue: string, oldValue: string) => void;
 }
 
-export type CollectionHandler = Pick<CollectionPageProps, 'handleLoading' | 'handleResponse' | 'handleForceReload' | 'handleRedirectTo'>;
+export type CollectionHandler = Pick<CollectionPageProps, 'handleLoading' | 'handleResponse' | 'handleForceReload' | 'handleRedirectTo' | 'handleFilter'>;
 export type CollectionDataProps = Pick<CollectionPageProps, 'find' | 'findBy' | 'orderBy' | 'direction' | 'page' | 'size'>;
 
 export type CollectionPageProps
@@ -213,8 +219,15 @@ const stateUpdaters: StateUpdaters<OwnOption, OwnState, OwnStateUpdater> = {
     page: 1,
     forceReload: true
   }),
+  setPageAndSize: (prevState: OwnState) => (page: number, size: number) => ({
+    size,
+    page
+  }),
   setNotSelectionTypes: (prevState: OwnState) => (types: string[]) => ({
     notSelectionTypes: types
+  }),
+  setFilter: (prevState: OwnState) => (newState: string) => ({
+    find: newState
   })
 };
 
@@ -224,6 +237,11 @@ const handlerCreators: HandleCreators<CollectionPageProps, OwnHandler> = {
   },
   handleResponse: (props: CollectionPageProps) => (response: IResponseCollection<any> | undefined) => {
     props.setSource(response);
+
+    // reading metadata, when page and size was present then set into the state
+    if (response && response.metadata && response.metadata.paginate) {
+      props.setPageAndSize(response.metadata.paginate.current, response.metadata.size);
+    }
   },
   handleForceReload: (props: CollectionPageProps) => () => {
     props.setForceReload(true);
@@ -256,6 +274,9 @@ const handlerCreators: HandleCreators<CollectionPageProps, OwnHandler> = {
   },
   handleRedirectTo: (props: CollectionPageProps) => (path: string, state?: any) => {
     props.history.push(path, state);
+  },
+  handleFilter: (props: CollectionPageProps) => (event: any, newValue: string, oldValue: string) => {
+    props.setFilter(newValue);
   }
 };
 
@@ -273,11 +294,13 @@ const lifecycles: ReactLifeCycleFunctions<CollectionPageProps, OwnState> = {
         title: page.title,
         subTitle: page.description,
       },
+      parentUrl: this.props.config.parentUrl ? this.props.config.parentUrl(this.props.connectedProps) : undefined,
       status: {
-        isNavBackVisible: false,
+        isNavBackVisible: this.props.config.hasNavBack || false,
         isSearchVisible: this.props.config.hasSearching,
         isActionCentreVisible: this.props.config.showActionCentre,
         isMoreVisible: this.props.config.hasMore,
+        isModeList: true,
         isModeSearch: this.props.config.hasSearching && isSearching,
       }
     });
@@ -320,6 +343,11 @@ const lifecycles: ReactLifeCycleFunctions<CollectionPageProps, OwnState> = {
       if (this.props.forceReload) {
         this.props.config.onDataLoad(this.props.connectedProps, this.props, this.props, true);
       }
+    }
+    
+    // filter
+    if (this.props.find !== prevProps.find || this.props.findBy !== prevProps.findBy) {
+      this.props.config.onDataLoad(this.props.connectedProps, this.props, this.props, true);
     }
 
     // track inner props changes

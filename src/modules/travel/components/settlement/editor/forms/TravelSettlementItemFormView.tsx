@@ -6,6 +6,8 @@ import { InputText } from '@layout/components/input/text';
 import {
   Card,
   CardContent,
+  Checkbox,
+  FormControlLabel,
   Grid,
   TextField,
 } from '@material-ui/core';
@@ -22,12 +24,12 @@ const calculateDiem = (start: string , end: string): number => {
   const startDate = moment(start);
   const endDate = moment(end);
   const diffHours = endDate.diff(startDate, 'hours');
-  const diffDays = endDate.diff(startDate, 'days');
+  const diffDays = endDate.dayOfYear() - startDate.dayOfYear();
 
-  if (startDate.isSame(endDate)) {
+  if (startDate.isSame(endDate, 'days')) {
     result = diffHours >= 8 ? 1 : 0;
-  } else if ( !startDate.isSame(endDate) && endDate.isSameOrAfter(17, 'hours')) {
-    result = diffDays;
+  } else if ( !startDate.isSame(endDate, 'days') && endDate.hours() >= 17) {
+    result =  diffDays + 1;
   } else {
     result = diffDays;
   }
@@ -52,9 +54,9 @@ export const TravelSettlementItemFormView: React.SFC<TravelSettlementItemFormPro
                 <div>
                   <Field 
                     type="text"
-                    disabled = "true"
+                    disabled ={true}
                     name={`${field}.employeeUid`}
-                    label="employee"
+                    label={props.intl.formatMessage(travelMessage.request.field.itemEmployeeUid)}
                     placeholder="Employee"
                     required={true}
                     companyUids={props.userState.user && [props.userState.user.company.uid]}
@@ -63,58 +65,122 @@ export const TravelSettlementItemFormView: React.SFC<TravelSettlementItemFormPro
                   <Field 
                     type="text"
                     name={`${field}.transportType`}
-                    label="Transport Type"
+                    label={props.intl.formatMessage(travelMessage.request.field.transportType)}
                     component={SelectSystem}
                     category = "transportation"
+                  />
+                  <FormControlLabel
+                    label={props.intl.formatMessage(travelMessage.request.field.isRoundTrip)}                    
+                    control={
+                    <Field
+                      type="checkbox"
+                      name={`${field}.isRoundTrip`}
+                      component={
+                        ({ input, meta }: any) => (
+                          <Checkbox
+                            {...input}
+                            value={`${field}.isRoundTrip`}
+                            disabled={meta.submitting}
+                            onFocus={undefined}
+                            onBlur={undefined}
+                          />
+                        )
+                      }
+                    />
+                  } 
                   />
                   <Field 
                     type="text"
                     name={`${field}.from`}
-                    label="from"
+                    label={props.intl.formatMessage(travelMessage.request.field.from)}
                     component={InputText}
                   />
                   <Field 
                     type="text"
                     name={`${field}.destination`}
-                    label="destination"
+                    label={props.intl.formatMessage(travelMessage.request.field.destination)}
                     component={InputText}
                   />
                   <Field 
                     name={`${field}.departureDate`}
-                    label="Departure Date"
+                    label={props.intl.formatMessage(travelMessage.request.field.itemStart)}
                     component={InputDateTime}
+                    minDate={props.minDate}
+                    maxDate={props.maxDate}
                   />
                   <Field 
                     name={`${field}.returnDate`}
-                    label="return Date"
+                    label={props.intl.formatMessage(travelMessage.request.field.itemEnd)}
                     component={InputDateTime}
+                    minDate={props.minDate}
+                    maxDate={props.maxDate}
                   />
                   <Field 
                     type="number"
                     name={`${field}.costTransport`}
-                    label="Cost Transport"
+                    label={props.intl.formatMessage(travelMessage.request.field.transportCost)}
                     required={true}
                     component={InputNumber}
-                    onChange= {props.onCostChange}
+                    // onChange= {props.onCostChange}
                   />
+                  <FormControlLabel
+                    label={props.intl.formatMessage(travelMessage.request.field.isTransportByCompany)}                    
+                    control={
+                    <Field
+                      type="checkbox"
+                      name={`${field}.isTransportByCompany`}
+                      component={
+                        ({ input, meta }: any) => (
+                          <Checkbox 
+                            {...input}
+                            value={`${field}.isTransportByCompany`}
+                            disabled={meta.submitting}
+                            onFocus={undefined}
+                            onBlur={undefined}
+                          />
+                        )
+                      }
+                    />
+                  } 
+                  /> 
                   <Field 
                     type="text"
                     name={`${field}.hotel`}
-                    label="Hotel Name"
+                    label={props.intl.formatMessage(travelMessage.request.field.hotel)}
                     component={InputText}
                   />
                   <Field 
                     type="number"
                     name={`${field}.costHotel`}
-                    label="Cost Hotel"
+                    label={props.intl.formatMessage(travelMessage.request.field.hotelCost)}
                     required={true}
                     component={InputNumber}
-                    onChange= {props.onCostChange}
+                    // onChange= {props.onCostChange}
+                  />
+                  <FormControlLabel
+                    label={props.intl.formatMessage(travelMessage.request.field.isHotelByCompany)}                    
+                    control={
+                    <Field
+                      type="checkbox"
+                      name={`${field}.isHotelByCompany`}
+                      component={
+                        ({ input, meta }: any) => (
+                          <Checkbox 
+                            {...input}
+                            value={`${field}.isHotelByCompany`}
+                            disabled={meta.submitting}
+                            onFocus={undefined}
+                            onBlur={undefined}
+                          />
+                        )
+                      }
+                    />
+                  } 
                   />
                   <Field 
                     type="text"
                     name={`${field}.notes`}
-                    label="notes"
+                    label={props.intl.formatMessage(travelMessage.request.field.note)}
                     component={InputText}
                   />
                   <TextField
@@ -126,21 +192,21 @@ export const TravelSettlementItemFormView: React.SFC<TravelSettlementItemFormPro
                   <Field 
                     type="number"
                     name={`${field}.diemValue`}
-                    label="Per Diem"
+                    label={props.intl.formatMessage(travelMessage.request.field.diemValue)}
                     disabled={true}
                     component={InputNumber}
                   />     
                   <Field 
                     type="text"
                     name={`${field}.currencyUid`}
-                    label="Currency"
+                    label={props.intl.formatMessage(travelMessage.request.field.currencyUid)}
                     disabled={true}
                     component={InputText}
                   />
                   <Field 
                     type="text"
                     name={`${field}.currencyRate`}
-                    label="Currency Rate"
+                    label={props.intl.formatMessage(travelMessage.request.field.currencyRate)}
                     disabled={true}
                     component={InputText}
                   />

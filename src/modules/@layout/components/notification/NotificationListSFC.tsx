@@ -38,7 +38,7 @@ const NotificationListSFC: React.SFC<AllProps> = props => {
       <ListItemText 
         primary={<FormattedMessage id="global.loading"/>}
         primaryTypographyProps={{
-          variant: 'body1'
+          variant: 'body2'
         }}
       />
     </ListItem>
@@ -51,7 +51,7 @@ const NotificationListSFC: React.SFC<AllProps> = props => {
           <FormattedMessage id="global.notification.emptySubTitle"/>
         }
         primaryTypographyProps={{
-          variant: 'body1'
+          variant: 'body2'
         }}
       />
     </ListItem>
@@ -76,7 +76,7 @@ const NotificationListSFC: React.SFC<AllProps> = props => {
                   key={category.name}
                   primary={`${category.name} (${detail.total})`}
                   primaryTypographyProps={{
-                    variant: 'body1'
+                    variant: 'body2'
                   }}
                 />
                 <ListItemSecondaryAction key={category.name}>
@@ -104,7 +104,7 @@ const NotificationListSFC: React.SFC<AllProps> = props => {
                         primary={`${item.uid} - ${item.name}`}
                         secondary={`${detail.type} ${moment(item.date).fromNow()}`}
                         primaryTypographyProps={{
-                          variant: 'body1'
+                          variant: 'body2'
                         }}
                       />
                     </ListItem>

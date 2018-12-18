@@ -4,25 +4,28 @@ import { IDiem } from '@lookup/classes/response';
 import { WithLookupDiem } from '@lookup/hoc/withLookupDiem';
 import { IProjectDetail, IProjectList } from '@project/classes/response';
 import { RequestFormView } from '@travel/components/request/editor/forms/RequestFormView';
+import { DateType } from 'material-ui-pickers/constants/prop-types';
+import * as moment from 'moment';
 import { connect } from 'react-redux';
-import { 
-  compose, 
-  HandleCreators, 
-  lifecycle, 
-  mapper, 
-  ReactLifeCycleFunctions, 
-  StateHandler, 
-  StateHandlerMap, 
-  StateUpdaters, 
+import {
+  compose,
+  HandleCreators,
+  lifecycle,
+  mapper,
+  ReactLifeCycleFunctions,
+  StateHandler,
+  StateHandlerMap,
+  StateUpdaters,
   withHandlers,
-  withStateHandlers } 
-from 'recompose';
+  withStateHandlers
+}
+  from 'recompose';
 import { formValueSelector, InjectedFormProps, reduxForm } from 'redux-form';
 
 const formName = 'travelRequest';
 
 export type TravelItemFormData = {
-  uid: string | null ;
+  uid: string | null;
   employeeUid: string;
   fullName: string;
   transportType: string;
@@ -63,23 +66,28 @@ export type TravelRequestFormData = {
     total: number | undefined;
   },
   item: {
-    items: TravelItemFormData[]  
+    items: TravelItemFormData[]
   }
 };
 
 interface OwnProps {
   formMode: FormMode;
   diemRequest: IDiem[] | undefined;
+  submitDialogTitle: string;
+  submitDialogContentText: string;
+  submitDialogCancelText: string;
+  submitDialogConfirmedText: string;
 }
 
 interface OwnHandlers {
   handleEventListener: (event: CustomEvent) => void;
-  handleProjectChange: (project: IProjectList | undefined) => void; 
+  handleProjectChange: (project: IProjectList | undefined) => void;
 }
 
 interface OwnState {
   TotalCost: number | undefined;
   projectType: string | undefined;
+  isGeneralPurpose: boolean | false;
 }
 
 interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
@@ -92,12 +100,15 @@ interface FormValueProps {
   destinationtypeValue: string | undefined;
   projectUidValue: string | undefined;
   isProjectSelected: boolean | false;
+  startDate?: DateType;
+  endDate?: DateType;
+  formName: string;  
 }
 
-export type RequestFormProps 
+export type RequestFormProps
   = InjectedFormProps<TravelRequestFormData, OwnProps>
   & WithLookupDiem
-  & FormValueProps 
+  & FormValueProps
   & OwnHandlers
   & OwnProps
   & OwnState
@@ -105,25 +116,50 @@ export type RequestFormProps
 
 const createProps: mapper<RequestFormProps, OwnState> = (props: RequestFormProps): OwnState => {
   return {
-    TotalCost : props.initialValues.information && props.initialValues.information.total, 
-    projectType: props.initialValues.information && props.initialValues.information.projectType === ProjectType.Project ? 
-                      ProjectType.Project : ProjectType.NonProject
+    TotalCost: props.initialValues.information && props.initialValues.information.total,
+    projectType: props.initialValues.information && props.initialValues.information.projectType === ProjectType.Project ?
+      ProjectType.Project : ProjectType.NonProject,
+    isGeneralPurpose: props.initialValues.information && props.initialValues.information.projectType === ProjectType.GeneralPurpose ? true : false
+
   };
 };
 
 const handlers: HandleCreators<RequestFormProps, OwnHandlers> = {
   handleEventListener: (props: RequestFormProps) => (event: CustomEvent) => {
-    const { setTotal } = props;
+    const { setTotal, diemRequest, destinationtypeValue } = props;
     const formValues = event.detail as TravelRequestFormData;
+    const diem = (diemRequest) ? diemRequest.filter(item => item.destinationType === destinationtypeValue &&
+      item.projectType === props.projectType)[0]
+      : undefined;
+
+    const calculateDiem = (start: string, end: string): number => {
+      let result: number = 0;
+
+      if (start !== '' && end !== '') {
+        const startDate = moment(start);
+        const endDate = moment(end);
+        const diffHours = endDate.diff(startDate, 'hours');
+        const diffDays = endDate.dayOfYear() - startDate.dayOfYear();
+
+        if (startDate.isSame(endDate, 'days')) {
+          result = diffHours >= 8 ? 1 : 0;
+        } else if (!startDate.isSame(endDate, 'days') && endDate.hours() >= 17) {
+          result = diffDays + 1;
+        } else {
+          result = diffDays;
+        }
+      }
+      return result;
+    };
 
     let total: number = 0;
     if (formValues.item.items) {
-      formValues.item.items.forEach((item) => total += item.costTransport + item.costHotel + item.amount);
+      formValues.item.items.forEach((item) => total += item.costTransport + item.costHotel + (calculateDiem(item.departureDate, item.returnDate) * (diem && diem.currency ? diem.currency.rate : 0) * (diem ? diem.value : 0)));
     }
     props.change('information.total', total);
     setTotal(total);
   },
-  handleProjectChange: (props: RequestFormProps) => (project: IProjectList | undefined) => { 
+  handleProjectChange: (props: RequestFormProps) => (project: IProjectList | undefined) => {
     const { setProject } = props;
     setProject(project);
   }
@@ -132,16 +168,21 @@ const handlers: HandleCreators<RequestFormProps, OwnHandlers> = {
 const selector = formValueSelector(formName);
 
 const mapStateToProps = (state: any): FormValueProps => {
-   const customerUid = selector(state, 'information.customerUid');
-   const destinationtype = selector(state, 'information.destinationType');
-   const projectUid = selector(state, 'information.projectUid');
-   return {
-     customerUidValue: customerUid,
-     destinationtypeValue: destinationtype,
-     projectUidValue: projectUid,
-     isProjectSelected: projectUid
-   };   
- };
+  const customerUid = selector(state, 'information.customerUid');
+  const destinationtype = selector(state, 'information.destinationType');
+  const projectUid = selector(state, 'information.projectUid');
+  const startvalue = selector(state, 'information.start');
+  const endvalue = selector(state, 'information.end');
+  return {
+    formName,
+    customerUidValue: customerUid,
+    destinationtypeValue: destinationtype,
+    projectUidValue: projectUid,
+    isProjectSelected: projectUid,
+    startDate: startvalue,
+    endDate: endvalue
+  };
+};
 
 const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
   setTotal: (prevState: OwnState) => (total: number) => {
@@ -156,7 +197,9 @@ const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
       return {
         ...prevState,
         projectType: projectFormValue.projectType === ProjectType.Project ?
-                        ProjectType.Project : ProjectType.NonProject
+          ProjectType.Project : ProjectType.NonProject,
+        isGeneralPurpose: projectFormValue.projectType === ProjectType.GeneralPurpose ?
+          true : false
       };
     }
 
@@ -176,7 +219,7 @@ const lifecycles: ReactLifeCycleFunctions<RequestFormProps, OwnState> = {
 };
 
 // const connectedView = connect(mapStateToProps)(RequestFormView);
-const enhance = compose<RequestFormProps, OwnProps & InjectedFormProps<TravelRequestFormData, OwnProps>> (
+const enhance = compose<RequestFormProps, OwnProps & InjectedFormProps<TravelRequestFormData, OwnProps>>(
   connect(mapStateToProps),
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlers),
@@ -189,6 +232,6 @@ export const RequestForm = reduxForm<TravelRequestFormData, OwnProps>({
   touchOnBlur: true,
   enableReinitialize: true,
   onChange: (values: TravelRequestFormData, dispatch: any, props: any) => {
-    dispatchEvent(new CustomEvent('TRV_FORM', {detail: values}));
+    dispatchEvent(new CustomEvent('TRV_FORM', { detail: values }));
   },
 })(enhance);
