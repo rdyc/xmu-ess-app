@@ -1,6 +1,3 @@
-export * from './menu/menuGetListReducer';
-export * from './menu/menuGetAllReducer';
-export * from './menu/menuGetByIdReducer';
 export * from './systemLimit/systemLimitGetAllReducer';
 export * from './systemLimit/systemLimitGetByIdReducer';
 export * from './systemLimit/systemLimitGetListReducer';

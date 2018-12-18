@@ -1,12 +1,23 @@
 import { FormMode } from '@generic/types';
+import { layoutMessage } from '@layout/locales/messages';
 import { Typography } from '@material-ui/core';
 import * as React from 'react';
-import { FormattedMessage } from 'react-intl';
 import { LookupCompanyForm, LookupCompanyFormData } from './form/LookupCompanyForm';
 import { CompanyEditorProps } from './LookupCompanyEditor';
 
 export const LookupCompanyEditorView: React.SFC<CompanyEditorProps> = props => {
-  const { formMode, handleValidate, handleSubmit, handleSubmitSuccess, handleSubmitFail } = props;
+  const { 
+    formMode, 
+    handleValidate, 
+    handleSubmit, 
+    handleSubmitSuccess, 
+    handleSubmitFail,
+    intl,
+    submitDialogTitle, 
+    submitDialogContentText, 
+    submitDialogConfirmedText, 
+    submitDialogCancelText 
+  } = props;
   const { isLoading, response } = props.lookupCompanyState.detail;
 
   const renderForm = (formData: LookupCompanyFormData) => (
@@ -17,6 +28,10 @@ export const LookupCompanyEditorView: React.SFC<CompanyEditorProps> = props => {
       onSubmit={handleSubmit} 
       onSubmitSuccess={handleSubmitSuccess}
       onSubmitFail={handleSubmitFail}
+      submitDialogTitle={submitDialogTitle}
+      submitDialogContentText={submitDialogContentText}
+      submitDialogCancelText={submitDialogCancelText}
+      submitDialogConfirmedText={submitDialogConfirmedText}
     />
   );
 
@@ -39,7 +54,7 @@ export const LookupCompanyEditorView: React.SFC<CompanyEditorProps> = props => {
     if (isLoading && !response) {
       return (
         <Typography variant="body2">
-          <FormattedMessage id="global.loading"/>
+          {intl.formatMessage(layoutMessage.text.loading)}
         </Typography>
       );
     }

@@ -22,11 +22,12 @@ import {
   leavePage,
   leaveSection
 } from './leave';
-import {
+import { 
   companyConfirm,
-  companyField,
-  companyFieldHelperFor,
-  companyMessage,
+  companyDialog, 
+  companyField, 
+  companyFieldHelperFor, 
+  companyMessage, 
   companyPage,
   companySection
 } from './lookupCompanyMessage';
@@ -46,12 +47,13 @@ import {
   lookupDiemPage,
   lookupDiemSection
 } from './lookupDiemMessage';
-import {
-  roleConfirm,
-  roleField,
-  roleFieldHelperFor,
-  roleMessage,
-  rolePage,
+import { 
+  roleConfirm, 
+  roleDialog, 
+  roleField, 
+  roleFieldHelperFor, 
+  roleMessage, 
+  rolePage, 
   roleSection
 } from './lookupRoleMessage';
 import {
@@ -99,7 +101,8 @@ export const lookupMessage = {
     fieldFor: roleFieldHelperFor,
     section: roleSection,
     confirm: roleConfirm,
-    message: roleMessage
+    message: roleMessage,
+    dialog: roleDialog
   },
   systemLimit: {
     page: systemLimitPage,
@@ -139,7 +142,8 @@ export const lookupMessage = {
     fieldFor: companyFieldHelperFor,
     section: companySection,
     confirm: companyConfirm,
-    message: companyMessage
+    message: companyMessage,
+    dialog: companyDialog
   },
   position: {
     page: positionPage,

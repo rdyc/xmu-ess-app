@@ -1,15 +1,10 @@
-import {
-  menuGetAllReducer,
-  menuGetByIdReducer,
-  menuGetListReducer,
-} from '@lookup/store/reducers';
-
 import { lookupCompanyReducers } from './company';
 import { lookupCurrencyReducers } from './currency';
 import { lookupCustomerReducers } from './customer';
 import { lookupDiemReducers } from './diem';
 import { lookupHolidayReducers } from './holiday/lookupHolidayReducers';
 import { lookupLeaveReducers } from './leave/lookupLeaveReducers';
+import { lookupMenuReducers } from './menu';
 import { mileageExceptionReducers } from './mileageException/mileageExceptionReducers';
 import { lookupPositionReducers } from './position';
 import { lookupRoleReducers } from './role';
@@ -26,10 +21,7 @@ const lookupReducers = {
   ...systemLimitReducers,
   ...lookupDiemReducers,
   ...lookupCurrencyReducers,
-
-  menuGetAll: menuGetAllReducer,
-  menuGetById: menuGetByIdReducer,
-  menuGetList: menuGetListReducer,
+  ...lookupMenuReducers
 };
 
 export default lookupReducers;
