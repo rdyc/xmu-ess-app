@@ -3,6 +3,7 @@ import {
   ICurrencyGetAllRequest,
   ICurrencyGetByIdRequest,
   ICurrencyGetListRequest,
+  ILeaveCalculationGetAllRequest,
   ILookupHolidayGetAllRequest,
   ILookupHolidayGetByIdRequest,
   ILookupHolidayGetListRequest,
@@ -70,6 +71,7 @@ import {
   IDiem,
   IDiemDetail,
   IDiemList,
+  ILeaveCalculation,
   ILookupHoliday,
   ILookupHolidayDetail,
   ILookupHolidayList,
@@ -167,6 +169,8 @@ export interface ILookupState {
   lookupLeaveGetById: IQuerySingleState<ILookupLeaveGetDetailRequest, ILookupLeaveDetail>;
   lookupLeavePost: IQuerySingleState<ILookupLeavePostRequest, ILookupLeave>;
   lookupLeavePut: IQuerySingleState<ILookupLeavePutRequest, ILookupLeave>;
+
+  leaveCalculationGetAll: IQueryCollectionState<ILeaveCalculationGetAllRequest, ILeaveCalculation>;
 
   systemLimitGetAll: IQueryCollectionState<ISystemLimitAllRequest, ISystemLimit>;
   systemLimitGetList: IQueryCollectionState<ISystemLimitListRequest, ISystemLimitList>;

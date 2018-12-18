@@ -63,6 +63,13 @@ const config: CollectionConfig<ILookupLeave, LeaveListProps> = {
       enabled: true,
       visible: true,
       onClick: () => callback.handleRedirectTo(`/lookup/leave/form`)
+    },
+    {
+      id: LookupLeaveUserAction.Calculation,
+      name: props.intl.formatMessage(layoutMessage.action.calculation),
+      enabled: true,
+      visible: true,
+      onClick: () => callback.handleRedirectTo(`/lookup/calculation`)
     }
   ]),
 

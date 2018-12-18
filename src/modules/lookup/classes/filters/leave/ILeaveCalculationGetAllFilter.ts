@@ -1,4 +1,4 @@
-import { IBaseFilter } from '@generic/interfaces';
+import { IBasePagingFilter } from '@generic/interfaces';
 
-export interface ILeaveCalculationGetAllFilter extends IBaseFilter {
+export interface ILeaveCalculationGetAllFilter extends IBasePagingFilter {
 }

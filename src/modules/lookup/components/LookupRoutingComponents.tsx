@@ -18,6 +18,7 @@ import LookupDiemEditor from './diem/editor/LookupDiemEditor';
 import LookupDiemList from './diem/list/LookupDiemList';
 import LookupHolidayEditor from './holiday/editor/LookupHolidayEditor';
 import LookupHolidayList from './holiday/list/LookupHolidayList';
+import { LeaveCalculationList } from './leave/calculation/LeaveCalculationList';
 import LookupLeaveEditor from './leave/editor/LookupLeaveEditor';
 import { MileageExceptionDetail } from './mileageException/detail/MileageExceptionDetail';
 import MileageExceptionEditor from './mileageException/editor/MileageExceptionEditor';
@@ -79,6 +80,12 @@ const leave = (props: RouteComponentProps) => (
    </Switch>
 );
 
+const calculation = (props: RouteComponentProps) => (
+  <Switch>
+    <Route path={`${props.match.path}`} component={LeaveCalculationList} />
+   </Switch>
+);
+
 const systemLimit = (props: RouteComponentProps) => (
   <Switch>
     <Route path={`${props.match.path}/form`} component={LookupSystemLimitEditor} />
@@ -122,6 +129,7 @@ export const LookupRoutingComponents: React.SFC<RouteComponentProps> = props => 
       <Route path={`${props.match.path}/diemvalue`} component={diem} />
       <Route path={`${props.match.path}/holiday`} component={holiday} />
       <Route path={`${props.match.path}/leave`} component={leave} />
+      <Route path={`${props.match.path}/calculation`} component={calculation} />
       <Route path={`${props.match.path}/roles`} component={role} />
       <Route path={`${props.match.path}/customer`} component={lookupCustomer} />
     </Layout>
