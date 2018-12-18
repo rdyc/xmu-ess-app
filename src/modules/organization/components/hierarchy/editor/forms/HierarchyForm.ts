@@ -27,10 +27,15 @@ export type OrganizationHierarchyItemFormData = {
 
 interface OwnProps {
   formMode: FormMode;
+  submitDialogTitle: string;
+  submitDialogContentText: string;
+  submitDialogCancelText: string;
+  submitDialogConfirmedText: string;
 }
 
 interface FormValueProps {
   companyUidValue: string | undefined;
+  formName: string;
 }
 
 export type HierarchyFormProps 
@@ -44,6 +49,7 @@ const mapStateToProps = (state: any): FormValueProps => {
   const companyUid = selector(state, 'information.companyUid');
 
   return {
+    formName,
     companyUidValue: companyUid
   };
 };

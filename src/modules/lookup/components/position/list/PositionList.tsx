@@ -70,7 +70,7 @@ const config: CollectionConfig<IPosition, AllProps> = {
       name: props.intl.formatMessage(layoutMessage.action.create),
       enabled: true,
       visible: true,
-      onClick: () => callback.handleRedirectTo('/lookup/position/form'),
+      onClick: () => callback.handleRedirectTo('/lookup/positions/form'),
     }
   ]),
   
@@ -134,13 +134,13 @@ const config: CollectionConfig<IPosition, AllProps> = {
     <React.Fragment>
     <Button 
       size= "small"
-        onClick={() => callback.handleRedirectTo('/lookup/position/form', {companyUid: item.companyUid, uid: item.uid})}
+        onClick={() => callback.handleRedirectTo('/lookup/positions/form', {companyUid: item.companyUid, uid: item.uid})}
     >
       <FormattedMessage { ...layoutMessage.action.modify } />
     </Button>  
     <Button 
       size= "small"
-        onClick={() => callback.handleRedirectTo(`/lookup/position/${item.companyUid}/${item.uid}`)}
+        onClick={() => callback.handleRedirectTo(`/lookup/positions/${item.companyUid}/${item.uid}`)}
     >
       <FormattedMessage { ...layoutMessage.action.details } />
     </Button>  

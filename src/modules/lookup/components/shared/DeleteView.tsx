@@ -1,4 +1,5 @@
 import { DialogConfirmation } from '@layout/components/dialogs';
+import { LookupUserAction } from '@lookup/classes/types';
 import * as React from 'react';
 import { DeleteProps } from './Delete';
 
@@ -13,7 +14,11 @@ export const DeleteView: React.SFC<DeleteProps> = props => (
         isOpen={props.isOpenDialog}
         fullScreen={props.fullScreen}
         onClickCancel={props.handleDialogClose}
-        onClickConfirm={props.handleDialogConfirmed}
+        onClickConfirm={
+          props.action === LookupUserAction.Modify
+            ? props.handleDialogConfirmed
+            : props.handleDeleteConfirmed
+        }
       />
     </form>
   </div>

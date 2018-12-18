@@ -23,11 +23,12 @@ import {
   leaveSection
 } from './leave';
 import { leaveCalculationField, leaveCalculationFilter, leaveCalculationPage } from './leaveCalculation';
-import {
+import { 
   companyConfirm,
-  companyField,
-  companyFieldHelperFor,
-  companyMessage,
+  companyDialog, 
+  companyField, 
+  companyFieldHelperFor, 
+  companyMessage, 
   companyPage,
   companySection
 } from './lookupCompanyMessage';
@@ -147,7 +148,8 @@ export const lookupMessage = {
     fieldFor: companyFieldHelperFor,
     section: companySection,
     confirm: companyConfirm,
-    message: companyMessage
+    message: companyMessage,
+    dialog: companyDialog
   },
   position: {
     page: positionPage,
