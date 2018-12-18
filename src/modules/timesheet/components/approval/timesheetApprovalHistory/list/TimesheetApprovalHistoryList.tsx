@@ -108,7 +108,7 @@ const config: CollectionConfig<ITimesheet, AllProps> = {
     primary: item.uid,
     secondary: props.intl.formatDate(item.date, GlobalFormat.Date),
     tertiary: item.customer && item.customer.name || item.customerUid,
-    quaternary: item.description ? item.description : 'N/A',
+    quaternary: item.employee ? item.employee.fullName : 'N/A',
     quinary: item.status && item.status.value || item.statusType,
     senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
   }),
