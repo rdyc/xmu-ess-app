@@ -12,9 +12,9 @@ import {
   organizationStructureField,
   organizationStructureFieldHelperFor,
   organizationStructureMessage,
-  organizationStructureOption,
   organizationStructurePage,
   organizationStructureSection,
+  organizationStructureText,
 } from './organizationStructureMessage';
 import {
   organizationWorkflowField,
@@ -38,7 +38,7 @@ export const organizationMessage = {
     field: organizationStructureField,
     fieldFor: organizationStructureFieldHelperFor,
     dialog: organizationStructureDialog,
-    option: organizationStructureOption,
+    text: organizationStructureText,
     message: organizationStructureMessage
   },
   hierarchy: {

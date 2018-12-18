@@ -8,7 +8,7 @@ const formName = 'OrganizationStructure';
 export type OrganizationStructureFormData = {
   information: {
     uid: string | null | undefined;
-    name: string | null | undefined;
+    positionUid: string | null | undefined;
     companyUid: string | null | undefined;
     inactiveDate: string | null | undefined;
     description: string | null | undefined;
@@ -20,9 +20,9 @@ export type OrganizationStructureFormData = {
 
 export type OrganizationStructureItemFormData = {
   uid: string | null | undefined;
-  sequence: number | null | undefined;
   positionUid: string | null | undefined;
-  relationType: string | null | undefined;
+  start: string | null | undefined;
+  end: string | null | undefined; 
 };
 
 interface OwnProps {
@@ -31,6 +31,7 @@ interface OwnProps {
 
 interface FormValueProps {
   companyUidValue: string | undefined;
+  inactiveDateValue: string | undefined;
 }
 
 export type StructureFormProps 
@@ -42,9 +43,11 @@ const selector = formValueSelector(formName);
 
 const mapStateToProps = (state: any): FormValueProps => {
   const companyUid = selector(state, 'information.companyUid');
+  const inactiveDate = selector(state, 'information.inactiveDate');
 
   return {
-    companyUidValue: companyUid
+    companyUidValue: companyUid,
+    inactiveDateValue: inactiveDate,
   };
 };
 

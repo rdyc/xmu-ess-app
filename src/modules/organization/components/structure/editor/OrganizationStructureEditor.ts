@@ -24,7 +24,7 @@ import {
 import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
 import { isNullOrUndefined, isObject } from 'util';
-import { OrganizationStructureFormData } from './forms/StructureForm';
+import { OrganizationStructureFormData } from './form/StructureForm';
 import { CommonEditorView } from './OrganizationStructureEditorView';
 
 interface OwnHandlers {
@@ -120,9 +120,9 @@ const handlerCreators: HandleCreators<OrganizationStructureEditorProps, OwnHandl
 
       formData.item.items.forEach(item => 
         payloadItems.push({
-          sequence: item.sequence,
           positionUid: item.positionUid,
-          relationType: item.relationType
+          start: item.start,
+          end: item.end
         })
       );
 
@@ -135,9 +135,9 @@ const handlerCreators: HandleCreators<OrganizationStructureEditorProps, OwnHandl
       formData.item.items.forEach(item => 
         payloadItems.push({
           uid: item.uid,
-          sequence: item.sequence,
           positionUid: item.positionUid,
-          relationType: item.relationType
+          start: item.start,
+          end: item.end
         })
       );
 
@@ -145,19 +145,19 @@ const handlerCreators: HandleCreators<OrganizationStructureEditorProps, OwnHandl
     };
     
     const payloadHeader = {
-      name: formData.information.name,
+      positionUid: formData.information.positionUid,
       description: formData.information.description,
       inactiveDate: formData.information.inactiveDate,
     };
 
     const payloadPost = {
       ...payloadHeader,
-      items: parsedItemsPost()
+      reportTo: parsedItemsPost()
     };
 
     const payloadPut = {
       ...payloadHeader,
-      items: parsedItemsPut()
+      reportTo: parsedItemsPut()
     };
 
     // creating
@@ -291,7 +291,7 @@ const lifecycles: ReactLifeCycleFunctions<OrganizationStructureEditorProps, {}> 
 
     layoutDispatch.setupView({
       view: {
-        uid: AppMenu.LookupApprovalStructure,
+        uid: AppMenu.LookupOrganizationStructure,
         parentUid: AppMenu.Lookup,
         title: intl.formatMessage({id: view.title}),
         subTitle : intl.formatMessage({id: view.subTitle})

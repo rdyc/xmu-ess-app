@@ -9,7 +9,8 @@ import { StructureItemForm } from './StructureItemForm';
 
 export const StructureFormView: React.SFC<StructureFormProps> = props => {
   const {
-    formMode, companyUidValue
+    formMode, companyUidValue,
+    inactiveDateValue
   } = props;
 
   const fields = Object.getOwnPropertyNames(props.initialValues.information);
@@ -17,6 +18,7 @@ export const StructureFormView: React.SFC<StructureFormProps> = props => {
   const componentInformation = (context: BaseFieldsProps) => (
     <StructureDetailForm 
       formMode={formMode}
+      formCompany={companyUidValue}
       context={context}
     />
   );
@@ -25,6 +27,7 @@ export const StructureFormView: React.SFC<StructureFormProps> = props => {
     <StructureItemForm
       context={context}
       companyUidValue={companyUidValue}
+      inactiveDateValue={inactiveDateValue}
     />
   );
 

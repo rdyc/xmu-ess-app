@@ -7,7 +7,7 @@ import { StructureItemFormProps } from './StructureItemForm';
 
 export const StructureItemFormView: React.SFC<StructureItemFormProps> = props => {
   const { intl, context } = props;
-  const names = ['sequence', 'positionUid', 'relationType'];
+  const names = ['uid', 'positionUid', 'start', 'end'];
   
   const renderField = (name: string, field: string) => {
     const fieldName = name.replace('items.', '');
@@ -42,7 +42,7 @@ export const StructureItemFormView: React.SFC<StructureItemFormProps> = props =>
                     <DeleteForeverIcon />
                   </IconButton>
                 }
-                title={item.uid && `#${item.sequence} - ${item.uid}` || intl.formatMessage(organizationMessage.structure.text.draft)}
+                title={item.uid && `#${index + 1} - ${item.uid}` || intl.formatMessage(organizationMessage.structure.text.draft)}
               />
               <CardContent>
                 {names.map(name => renderField(name, field))}
@@ -57,9 +57,9 @@ export const StructureItemFormView: React.SFC<StructureItemFormProps> = props =>
           <Grid item xs={12} md={4}>
             <Button onClick={() => context.fields.push({
               uid: undefined,
-              sequence: 1,
               positionUid: undefined,
-              relationType: undefined
+              start: undefined,
+              end: undefined
             })}
             >
               {intl.formatMessage(organizationMessage.structure.text.addItem)}

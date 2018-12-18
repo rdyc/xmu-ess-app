@@ -30,6 +30,9 @@
   "organization.structure.section.item.title": "Super Ordinate",
   "organization.structure.section.item.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras mollis eros sit amet rhoncus fermentum",
 
+  "organization.structure.text.addItem": "Add New",
+  "organization.structure.text.draft": "New Draft",
+  
   "organization.structure.dialog.modify.title": "Modify Confirmation",
   "organization.structure.dialog.modify.description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
   "organization.structure.dialog.delete.title": "Delete Confirmation",
@@ -57,6 +60,12 @@
   "organization.structure.field.inactiveDate": "Date Inactive",
   "organization.structure.field.inactiveDate.placeholder": "Select a Date",
   "organization.structure.field.inactiveDate.required": "Date is required",
+  "organization.structure.field.start": "Start Date",
+  "organization.structure.field.start.placeholder": "Select a Start Date",
+  "organization.structure.field.start.required": "Start Date is required",
+  "organization.structure.field.end": "End Date",
+  "organization.structure.field.end.placeholder": "Select a End Date",
+  "organization.structure.field.end.required": "End Date is required",
   "organization.structure.field.description": "Description",
   "organization.structure.field.description.placeholder": "Type a Description",
   "organization.structure.field.description.required": "Description is required",

@@ -1,5 +1,5 @@
-import { SelectSystem, SelectSystemOption } from '@common/components/select';
-import { InputNumber } from '@layout/components/input/number';
+import { SelectSystemOption } from '@common/components/select';
+import { InputDate } from '@layout/components/input/date';
 import { InputText } from '@layout/components/input/text';
 import { SelectPosition } from '@lookup/components/position/select';
 import { organizationMessage } from '@organization/locales/messages/organizationMessage';
@@ -13,6 +13,7 @@ import { StructureItemFormView } from './StructureItemFormView';
 interface OwnProps {
   context: WrappedFieldArrayProps<OrganizationStructureItemFormData>;
   companyUidValue: string | null | undefined;
+  inactiveDateValue: string | null | undefined;
 }
 
 interface OwnHandlers {
@@ -27,7 +28,8 @@ export type StructureItemFormProps
 const handlerCreators: HandleCreators<StructureItemFormProps, OwnHandlers> = {
     generateFieldProps: (props: StructureItemFormProps) => (name: string) => { 
       const { 
-        intl, companyUidValue
+        intl, companyUidValue,
+        inactiveDateValue
       } = props;
       
       let fieldProps: SelectSystemOption & any = {};
@@ -37,25 +39,7 @@ const handlerCreators: HandleCreators<StructureItemFormProps, OwnHandlers> = {
       };
   
       switch (name) {
-        case 'relationType':
-          fieldProps = {
-            type: 'text',
-            label: intl.formatMessage(organizationMessage.structure.fieldFor(name, 'fieldName')),
-            placeholder: intl.formatMessage(organizationMessage.structure.fieldFor(name, 'fieldPlaceholder')),
-            category: 'relation',
-            component: SelectSystem
-          };
-          break;
-
-        case 'sequence':
-          fieldProps = {
-            type: 'number',
-            label: intl.formatMessage(organizationMessage.structure.fieldFor(name, 'fieldName')),
-            placeholder: intl.formatMessage(organizationMessage.structure.fieldFor(name, 'fieldPlaceholder')),
-            component: InputNumber
-          };
-          break;
-
+        
         case 'positionUid':
           fieldProps = {
             type: 'text',
@@ -66,13 +50,35 @@ const handlerCreators: HandleCreators<StructureItemFormProps, OwnHandlers> = {
             filter: positionFilter
           };
           break;
+
+        case 'start':
+          fieldProps = {
+            type: 'date',
+            label: intl.formatMessage(organizationMessage.structure.fieldFor(name, 'fieldName')),
+            placeholder: intl.formatMessage(organizationMessage.structure.fieldFor(name, 'fieldPlaceholder')),
+            component: InputDate,
+            maxDate: inactiveDateValue,
+          };
+          break;
+
+        case 'end':
+          fieldProps = {
+            type: 'date',
+            label: intl.formatMessage(organizationMessage.structure.fieldFor(name, 'fieldName')),
+            placeholder: intl.formatMessage(organizationMessage.structure.fieldFor(name, 'fieldPlaceholder')),
+            component: InputDate,
+            disablePast: true,
+            maxDate: inactiveDateValue,
+          };
+          break;
         
         default:
           fieldProps = {
             type: 'text',
             label: intl.formatMessage(organizationMessage.structure.fieldFor(name, 'fieldName')),
             placeholder: intl.formatMessage(organizationMessage.structure.fieldFor(name, 'fieldPlaceholder')),
-            component: InputText
+            component: InputText,
+            disabled: true,
           };
           break;
       }

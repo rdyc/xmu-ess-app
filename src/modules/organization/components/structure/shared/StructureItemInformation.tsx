@@ -1,4 +1,5 @@
-import { Card, CardContent, CardHeader, List, ListItem, ListItemIcon, ListItemText, Typography } from '@material-ui/core';
+import { GlobalFormat } from '@layout/types';
+import { Card, CardContent, CardHeader, List, ListItem, ListItemText } from '@material-ui/core';
 import { IStructureItem } from '@organization/classes/response/structure';
 import { organizationMessage } from '@organization/locales/messages/organizationMessage';
 import * as React from 'react';
@@ -27,14 +28,9 @@ export const structureItemInformation: React.SFC<AllProps> = props => {
           {
             data.map(item =>
               <ListItem>
-                <ListItemIcon>
-                  <Typography variant="h5">
-                    {`#${item.positionUid}`}
-                  </Typography>
-                </ListItemIcon>
                 <ListItemText
                   primary={item.position && item.position.name}
-                  secondary={item.start}
+                  secondary={item.end ? `${props.intl.formatDate(item.start, GlobalFormat.Date)} - ${props.intl.formatDate(item.end, GlobalFormat.Date)}` : props.intl.formatDate(item.start, GlobalFormat.Date)}
                 />
               </ListItem>
             )

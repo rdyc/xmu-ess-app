@@ -7,6 +7,11 @@ export const organizationStructurePage = defineMessages({
   listSubHeader: { id: `${prefix}.page.list.subHeader` },
   detailTitle: { id: `${prefix}.page.detail.title` },
   detailSubHeader: { id: `${prefix}.page.detail.subHeader` },
+
+  newTitle: { id: `${prefix}.page.new.title` },
+  newSubHeader: { id: `${prefix}.page.new.subHeader` },
+  modifyTitle: { id: `${prefix}.page.modify.title` },
+  modifySubHeader: { id: `${prefix}.page.modify.subHeader` },
 });
 
 export const organizationStructureDialog = defineMessages({
@@ -28,10 +33,9 @@ export const organizationStructureSection = defineMessages({
 });
 
 // option
-export const organizationStructureOption = defineMessages({
-  approve: { id: `${prefix}.option.approve`},
-  accept: { id: `${prefix}.option.accept`},
-  reject: { id: `${prefix}.option.reject`},
+export const organizationStructureText = defineMessages({
+  draft: { id: `${prefix}.text.draft`},
+  addItem: { id: `${prefix}.text.addItem`},
 });
 
 // fields
@@ -57,6 +61,13 @@ export const organizationStructureField = defineMessages({
   inactiveDateRequired: { id: `${prefix}.field.inactiveDate.required`},
   inactiveDatePlaceholder: { id: `${prefix}.field.inactiveDate.placeholder`},
 
+  start: { id: `${prefix}.field.start`},
+  startRequired: { id: `${prefix}.field.start.required`},
+  startPlaceholder: { id: `${prefix}.field.start.placeholder`},
+  end: { id: `${prefix}.field.end`},
+  endRequired: { id: `${prefix}.field.end.required`},
+  endPlaceholder: { id: `${prefix}.field.end.placeholder`},
+
   reportTo: { id: `${prefix}.field.reportTo`},
   reportToRequired: { id: `${prefix}.field.reportTo.required`},
   reportToPlaceholder: { id: `${prefix}.field.reportTo.placeholder`},
@@ -71,6 +82,8 @@ export const organizationStructureFieldHelperFor = (field: string, type: 'fieldN
       case 'description': return organizationStructureField.description;
       case 'isExpired': return organizationStructureField.isExpired;
       case 'inactiveDate': return organizationStructureField.inactiveDate;
+      case 'start': return organizationStructureField.start;
+      case 'end': return organizationStructureField.end;
     
       default: return {id: field};
     }
@@ -82,6 +95,8 @@ export const organizationStructureFieldHelperFor = (field: string, type: 'fieldN
       case 'companyUid': return organizationStructureField.companyUidRequired;
       case 'inactiveDate': return organizationStructureField.inactiveDateRequired;
       case 'reportTo': return organizationStructureField.reportToRequired;
+      case 'start': return organizationStructureField.startRequired;
+      case 'end': return organizationStructureField.endRequired;
 
       default: return {id: field};
     }
@@ -92,6 +107,8 @@ export const organizationStructureFieldHelperFor = (field: string, type: 'fieldN
       case 'positionUid': return organizationStructureField.positionUidPlaceholder;
       case 'companyUid': return organizationStructureField.companyUidPlaceholder;
       case 'inactiveDate': return organizationStructureField.inactiveDatePlaceholder;
+      case 'start': return organizationStructureField.startPlaceholder;
+      case 'end': return organizationStructureField.endPlaceholder;
     
       default: return {id: field};
     }

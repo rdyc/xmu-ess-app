@@ -141,7 +141,7 @@ const config: CollectionConfig<IStructure, OrganizationStructureListProps> = {
     <React.Fragment>
       <Button
         size="small"
-        onClick={() => callback.handleRedirectTo(`/organization/structure/form`, { id: item.uid })}
+        onClick={() => callback.handleRedirectTo(`/organization/structure/form`, { structureUid: item.uid, companyUid: item.companyUid  })}
       >
         <FormattedMessage {...layoutMessage.action.modify} />
       </Button>

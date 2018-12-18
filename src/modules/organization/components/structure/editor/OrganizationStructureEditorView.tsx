@@ -2,7 +2,7 @@ import { FormMode } from '@generic/types';
 import { layoutMessage } from '@layout/locales/messages';
 import { Typography } from '@material-ui/core';
 import * as React from 'react';
-import { StructureForm, OrganizationStructureFormData } from './forms/StructureForm';
+import { OrganizationStructureFormData, StructureForm } from './form/StructureForm';
 import { OrganizationStructureEditorProps } from './OrganizationStructureEditor';
 
 export const CommonEditorView: React.SFC<OrganizationStructureEditorProps> = props => {
@@ -25,12 +25,17 @@ export const CommonEditorView: React.SFC<OrganizationStructureEditorProps> = pro
     information: {
       uid: undefined,
       companyUid: undefined,
-      name: undefined,
+      positionUid: undefined,
       description: undefined,
       inactiveDate: undefined,
     },
     item: {
-      items: []
+      items: [{
+        uid: undefined,
+        positionUid: undefined,
+        start: undefined,
+        end: undefined 
+      }]
     }
   };
 
@@ -54,18 +59,19 @@ export const CommonEditorView: React.SFC<OrganizationStructureEditorProps> = pro
       const data = response.data;
 
       initialValues.information.uid = data.uid;
-      initialValues.information.name = data.name;
+      initialValues.information.positionUid = data.positionUid;
       initialValues.information.companyUid = data.companyUid;
       initialValues.information.description = data.description;
       initialValues.information.inactiveDate = data.inactiveDate;
 
-      if (data.items) {
-        data.items.forEach(item => 
+      if (data.reportTo) {
+        initialValues.item.items = [];
+        data.reportTo.forEach(item => 
           initialValues.item.items.push({
             uid: item.uid,
-            sequence: item.level,
             positionUid: item.positionUid,
-            relationType: item.relationType
+            start: item.start,
+            end: item.end
           }));
       }
       
