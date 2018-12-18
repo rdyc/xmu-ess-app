@@ -31,6 +31,7 @@ export const rootReducer = combineReducers<IAppState>({
   /* modules */
   ...commonReducers,
   ...lookupReducers,
+  ...organizationReducers,
   ...accountReducers,
   ...projectReducers,
   ...leaveReducers,
