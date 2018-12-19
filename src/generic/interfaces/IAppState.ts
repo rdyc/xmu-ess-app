@@ -20,6 +20,7 @@ import { UserState } from 'redux-oidc';
 export interface IAppState extends
   ICommonState, 
   ILookupState, 
+  IOrganizationState,
   IAccountState, 
   IProjectState, 
   ITimesheetState,
