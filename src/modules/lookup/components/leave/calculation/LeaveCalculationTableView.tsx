@@ -23,7 +23,7 @@ import {
 } from '@material-ui/icons';
 import styles from '@styles';
 import * as React from 'react';
-import { InjectedIntlProps, injectIntl } from 'react-intl';
+import { FormattedNumber, InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose } from 'recompose';
 
 interface OwnProps {
@@ -150,21 +150,21 @@ const leaveCalculationTableView: React.SFC<AllProps> = props => {
                 <TableCell>{item.employee ? item.employee.joinDate : 'N/A'}</TableCell>
                 {item.employeeLeave && item.employeeLeave.map(emp => (
                   emp.year === year ? ( 
-                    <React.Fragment>
+                    <React.Fragment key={emp.employeeUid}>
                     <TableCell numeric>
-                      {emp.previousRemain}
+                      <FormattedNumber value={Number (emp.previousRemain)}/>
                     </TableCell>
-                    <TableCell numeric>
-                      {emp.quota}
+                    <TableCell>
+                    <FormattedNumber value={Number (emp.quota)}/>
                     </TableCell>
-                    <TableCell numeric>
-                      {emp.annualLeave}
+                    <TableCell>
+                    <FormattedNumber value={Number (emp.annualLeave)}/>
                     </TableCell>
-                    <TableCell numeric>
-                      {emp.leaveTaken}
+                    <TableCell>
+                    <FormattedNumber value={Number (emp.leaveTaken)}/>
                     </TableCell>
-                    <TableCell numeric>
-                      {emp.remain}
+                    <TableCell>
+                    <FormattedNumber value={Number (emp.remain)}/>
                     </TableCell>
                     </React.Fragment>
                   ) : null ))}
