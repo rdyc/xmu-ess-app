@@ -1,4 +1,5 @@
 import { AccountEmployeeDetail } from '@account/components/detail/AccountEmployeeDetail';
+import AccountEmployeeEditor from '@account/components/editor/AccountEmployeeEditor';
 import { AccountEmployeeList } from '@account/components/list/AccountEmployeeList';
 import { Layout } from '@layout/components/base';
 import { CurrencyDetail } from '@lookup/components/currency/detail/CurrencyDetail';
@@ -115,9 +116,9 @@ const diem = (props: RouteComponentProps) => (
 
 const employee = (props: RouteComponentProps) => (
   <Switch>
-    {/* <Route path={`${props.match.path}/form`} component={LookupDiemEditor} /> */}
-    <Route path={`${props.match.path}/list`} component={AccountEmployeeList} />
+    <Route path={`${props.match.path}/form`} component={AccountEmployeeEditor} />
     <Route path={`${props.match.path}/:employeeUid`} component={AccountEmployeeDetail} />
+    <Route path={`${props.match.path}`} component={AccountEmployeeList} />
   </Switch>
 );
 

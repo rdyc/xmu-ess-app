@@ -2,16 +2,20 @@ import { ISystemAllRequest, ISystemByIdRequest, ISystemListRequest, ISystemPostR
 import { ISystem, ISystemDetail, ISystemList, ISystemType } from '@common/classes/response';
 import {
   activityGetListRequest,
+  bloodGetListRequest,
   currencyGetListRequest,
   destinationGetListRequest,
   documentGetListRequest,
   documentPresalesGetListRequest,
+  employmentGetListRequest,
   expenseGetListRequest,
+  genderGetListRequest,
   gradeGetListRequest,
   leaveGetListRequest,
   projectGetListRequest,
   purposeGetListRequest,
   relationGetListRequest,
+  religionGetListRequest,
   siteGetListRequest,
   statusGetListRequest,
   systemGetAllDispose,
@@ -24,6 +28,7 @@ import {
   systemPostRequest,
   systemPutDispose,
   systemPutRequest,
+  taxGetListRequest,
   transportationGetListRequest,
   unitGetListRequest,
 } from '@common/store/actions';
@@ -60,6 +65,11 @@ interface PropsFromState {
   commonLimiterListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
   commonGradeListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
   commonRelationListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
+  commonReligionListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
+  commonGenderListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
+  commonBloodListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
+  commonTaxListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
+  commonEmploymentListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
 
   // detail
 }
@@ -87,6 +97,11 @@ interface PropsFromDispatch {
     limiterListRequest: typeof limiterGetListRequest;
     gradeListRequest: typeof gradeGetListRequest;
     relationListRequest: typeof relationGetListRequest;
+    religionListRequest: typeof religionGetListRequest;
+    genderListRequest: typeof genderGetListRequest;
+    bloodListRequest: typeof bloodGetListRequest;
+    taxListRequest: typeof taxGetListRequest;
+    employmentListRequest: typeof employmentGetListRequest;
 
     // detail
     systemDetailRequest: typeof systemGetByIdRequest;
@@ -127,7 +142,11 @@ const mapStateToProps = ({
   commonUnitList,
   commonGradeList,
   commonRelationList,
-
+  commonReligionList,
+  commonGenderList,
+  commonBloodList,
+  commonTaxList,
+  commonEmploymentList
 }: IAppState) => ({
   // system
   commonSystemState: {
@@ -156,7 +175,12 @@ const mapStateToProps = ({
   commonLimiterListState: commonLimiterList,
   commonGradeListState: commonGradeList,
   commonRelationListState: commonRelationList,
-
+  commonReligionListState: commonRelationList,
+  commonGenderListState: commonGenderList,
+  commonBloodListState: commonBloodList,
+  commonTaxListState: commonTaxList,
+  commonEmploymentListState: commonEmploymentList
+  
   // detail
  
 });
@@ -184,6 +208,11 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     limiterListRequest: (request: ISystemListRequest) => dispatch(limiterGetListRequest(request)),
     gradeListRequest: (request: ISystemListRequest) => dispatch(gradeGetListRequest(request)),
     relationListRequest: (request: ISystemListRequest) => dispatch(relationGetListRequest(request)),
+    religionListRequest: (request: ISystemListRequest) => dispatch(religionGetListRequest(request)),
+    genderListRequest: (request: ISystemListRequest) => dispatch(genderGetListRequest(request)),
+    bloodListRequest: (request: ISystemListRequest) => dispatch(bloodGetListRequest(request)),
+    taxListRequest: (request: ISystemListRequest) => dispatch(taxGetListRequest(request)),
+    employmentListRequest: (request: ISystemListRequest) => dispatch(employmentGetListRequest(request)),
 
     // detail
     systemDetailRequest: (request: ISystemByIdRequest) => dispatch(systemGetByIdRequest(request)),

@@ -62,6 +62,6 @@ export const accountEmployeePutDispose = () => action(AccountEmployeeAction.PUT_
 
 // delete
 export const accountEmployeeDeleteRequest = (request: IEmployeeDeleteRequest) => action(AccountEmployeeAction.DELETE_REQUEST, request);
-export const accountEmployeeDeleteSuccess = (response: IResponseSingle<IEmployee>) => action(AccountEmployeeAction.DELETE_SUCCESS, response);
+export const accountEmployeeDeleteSuccess = (response: boolean) => action(AccountEmployeeAction.DELETE_SUCCESS, response);
 export const accountEmployeeDeleteError = (message: string) => action(AccountEmployeeAction.DELETE_ERROR, message);
 export const accountEmployeeDeleteDispose = () => action(AccountEmployeeAction.DELETE_DISPOSE);

@@ -62,7 +62,7 @@ const config: CollectionConfig<IEmployee, AccountEmployeeListProps> = {
       name: props.intl.formatMessage(layoutMessage.action.create),
       enabled: true,
       visible: true,
-      onClick: props.handleOnCreate
+      onClick: () => callback.handleRedirectTo(`/lookup/employee/form`)
     }
   ]),
 
@@ -119,6 +119,12 @@ const config: CollectionConfig<IEmployee, AccountEmployeeListProps> = {
   // action component
   actionComponent: (item: IEmployee, callback: CollectionHandler) => (
     <React.Fragment>
+      <Button 
+          size="small"
+          onClick={() => callback.handleRedirectTo(`/lookup/employee/form`, { uid: item.uid })}
+        >
+          <FormattedMessage {...layoutMessage.action.modify}/>
+      </Button>
       <Button 
         size="small"
         onClick={() => callback.handleRedirectTo(`/lookup/employee/${item.uid}`)}

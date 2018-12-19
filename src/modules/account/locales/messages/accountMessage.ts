@@ -1,9 +1,19 @@
-import { accountEmployeeConfirm, accountEmployeeField, accountEmployeePage } from './accountEmployeeMessage';
+import {
+  accountEmployeeConfirm,
+  accountEmployeeField,
+  accountEmployeeFieldHelperFor,
+  accountEmployeeMessage,
+  accountEmployeePage,
+  accountEmployeeSection
+} from './accountEmployeeMessage';
 
 export const accountMessage = {
   employee: {
     page: accountEmployeePage,
     field: accountEmployeeField,
-    confirm: accountEmployeeConfirm
+    confirm: accountEmployeeConfirm,
+    fieldFor: accountEmployeeFieldHelperFor,
+    section: accountEmployeeSection,
+    message: accountEmployeeMessage
   }
 };

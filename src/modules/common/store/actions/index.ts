@@ -15,3 +15,8 @@ export * from './systemActions';
 export * from './unitActions';
 export * from './gradeAction';
 export * from './relationAction';
+export * from './religionActions';
+export * from './bloodActions';
+export * from './employmentActions';
+export * from './genderActions';
+export * from './taxActions';

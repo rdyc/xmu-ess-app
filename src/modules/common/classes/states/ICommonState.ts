@@ -73,4 +73,24 @@ export interface ICommonState {
   commonRelationAll: IQueryCollectionState<ISystemAllRequest, ISystem>;
   commonRelationList: IQueryCollectionState<ISystemListRequest, ISystemList>;
   commonRelationDetail: IQuerySingleState<ISystemByIdRequest, ISystemDetail>;
+
+  commonReligionAll: IQueryCollectionState<ISystemAllRequest, ISystem>;
+  commonReligionList: IQueryCollectionState<ISystemListRequest, ISystemList>;
+  commonReligionDetail: IQuerySingleState<ISystemByIdRequest, ISystemDetail>;
+
+  commonGenderAll: IQueryCollectionState<ISystemAllRequest, ISystem>;
+  commonGenderList: IQueryCollectionState<ISystemListRequest, ISystemList>;
+  commonGenderDetail: IQuerySingleState<ISystemByIdRequest, ISystemDetail>;
+
+  commonBloodAll: IQueryCollectionState<ISystemAllRequest, ISystem>;
+  commonBloodList: IQueryCollectionState<ISystemListRequest, ISystemList>;
+  commonBloodDetail: IQuerySingleState<ISystemByIdRequest, ISystemDetail>;
+
+  commonTaxAll: IQueryCollectionState<ISystemAllRequest, ISystem>;
+  commonTaxList: IQueryCollectionState<ISystemListRequest, ISystemList>;
+  commonTaxDetail: IQuerySingleState<ISystemByIdRequest, ISystemDetail>;
+
+  commonEmploymentAll: IQueryCollectionState<ISystemAllRequest, ISystem>;
+  commonEmploymentList: IQueryCollectionState<ISystemListRequest, ISystemList>;
+  commonEmploymentDetail: IQuerySingleState<ISystemByIdRequest, ISystemDetail>;
 }
