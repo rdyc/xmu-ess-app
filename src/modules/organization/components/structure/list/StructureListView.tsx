@@ -156,24 +156,9 @@ const config: CollectionConfig<IStructure, OrganizationStructureListProps> = {
   ),
 };
 
-// type AllProps
-//   = WithUser
-//   & WithOrganizationStructure
-//   & RouteComponentProps<OwnRouteParams>
-//   & InjectedIntlProps;
-
-// interface OwnRouteParams {
-//   category: string;
-// }
-
 export const structureListView: React.SFC<OrganizationStructureListProps> = props => (
   <CollectionPage
     config={config}
     connectedProps={props}
   />
 );
-// export const StructureListView = compose(
-//   withUser,
-//   withOrganizationStructure,
-//   injectIntl
-// )(structureListView);
