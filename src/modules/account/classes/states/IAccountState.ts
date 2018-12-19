@@ -17,7 +17,7 @@ export interface IAccountState {
   accountEmployeeGetById: IQuerySingleState<IEmployeeByIdRequest, IEmployeeDetail>;
   accountEmployeePost: IQuerySingleState<IEmployeePostRequest, IEmployee>;
   accountEmployeePut: IQuerySingleState<IEmployeePutRequest, IEmployee>;
-  accountEmployeeDelete: IQuerySingleState<IEmployeeDeleteRequest, IEmployee>;
+  accountEmployeeDelete: IQuerySingleState<IEmployeeDeleteRequest, boolean>;
   
   accountEmployeeMyGet: IQuerySingleState<{}, IEmployeeMy>;
 

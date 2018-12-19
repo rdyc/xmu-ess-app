@@ -2,20 +2,25 @@ import accountEmployeeLeaveSagas from '@account/store/sagas/accountEmployeeLeave
 import accountEmployeeMySagas from '@account/store/sagas/accountEmployeeMySagas';
 import accountEmployeeSagas from '@account/store/sagas/accountEmployeeSagas';
 import commonActivitySagas from '@common/store/sagas/activitySagas';
+import commonBloodSagas from '@common/store/sagas/bloodSagas';
 import commonCurrencySagas from '@common/store/sagas/currencySagas';
 import commonDestinationSagas from '@common/store/sagas/destinationSagas';
 import commonDocumentPresalesSagas from '@common/store/sagas/documentPresalesSagas';
 import commonDocumentSagas from '@common/store/sagas/documentSagas';
+import commonEmploymentSagas from '@common/store/sagas/employmentSagas';
 import commonExpenseSagas from '@common/store/sagas/expenseSagas';
+import commonGenderSagas from '@common/store/sagas/genderSagas';
 import commonGradeSagas from '@common/store/sagas/gradeSagas';
 import commonLeaveSagas from '@common/store/sagas/leaveSagas';
 import commonLimiterSagas from '@common/store/sagas/limiterSagas';
 import commonProjectSagas from '@common/store/sagas/projectSagas';
 import commonPurposeSagas from '@common/store/sagas/purposeSagas';
 import commonRelationSagas from '@common/store/sagas/relationSagas';
+import commonReligionSagas from '@common/store/sagas/religionSagas';
 import commonSiteSagas from '@common/store/sagas/siteSagas';
 import commonStatusSagas from '@common/store/sagas/statusSagas';
 import commonSystemSagas from '@common/store/sagas/systemSagas';
+import commonTaxSagas from '@common/store/sagas/taxSagas';
 import commonTransportationSagas from '@common/store/sagas/transportationSagas';
 import commonUnitSagas from '@common/store/sagas/unitSagas';
 import expenseApprovalSagas from '@expense/store/sagas/expenseApprovalSagas';
@@ -79,6 +84,11 @@ export function* rootSaga() {
     fork(commonUnitSagas),
     fork(commonGradeSagas),
     fork(commonRelationSagas),
+    fork(commonReligionSagas),
+    fork(commonGenderSagas),
+    fork(commonBloodSagas),
+    fork(commonTaxSagas),
+    fork(commonEmploymentSagas),
 
     // lookup
     fork(lookupCustomerSagas),

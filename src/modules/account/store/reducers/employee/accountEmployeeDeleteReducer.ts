@@ -1,10 +1,10 @@
 import { IEmployeeDeleteRequest } from '@account/classes/queries';
-import { IEmployee } from '@account/classes/response';
+// import { IEmployee } from '@account/classes/response';
 import { AccountEmployeeAction as Action } from '@account/store/actions';
 import { IQuerySingleState } from '@generic/interfaces';
 import { Reducer } from 'redux';
 
-const initialState: IQuerySingleState<IEmployeeDeleteRequest, IEmployee> = {
+const initialState: IQuerySingleState<IEmployeeDeleteRequest, boolean> = {
   request: undefined,
   response: undefined,
   isError: false,
@@ -12,7 +12,7 @@ const initialState: IQuerySingleState<IEmployeeDeleteRequest, IEmployee> = {
   errors: undefined,
 };
 
-const reducer: Reducer<IQuerySingleState<IEmployeeDeleteRequest, IEmployee>> = (state = initialState, action) => {
+const reducer: Reducer<IQuerySingleState<IEmployeeDeleteRequest, boolean>> = (state = initialState, action) => {
   switch (action.type) {
     case Action.DELETE_REQUEST: return { ...state, isLoading: true, request: action.payload };
     case Action.DELETE_SUCCESS: return { ...state, isLoading: false, response: action.payload };

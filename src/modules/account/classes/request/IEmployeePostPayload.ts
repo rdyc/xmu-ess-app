@@ -1,11 +1,12 @@
 export interface IEmployeePostPayload {
   companyUid: string;
   employmentNumber: string;
-  employementType: string;
+  employmentType: string;
   joinDate: string;
   inactiveDate?: string | null;
   fullName: string;
   dateOfBirth: string;
+  birthPlace: string;
   email: string;
   emailPersonal: string;
   phone: string;
@@ -19,7 +20,7 @@ export interface IEmployeePostPayload {
   familyCardNumber: string;
   citizenNumber: string;
   taxNumber: string;
-  bpjsEmployementNumber?: string | null;
+  bpjsEmploymentNumber?: string | null;
   bpjsHealthCareNumber?: string | null;
   bankAccount: string;
   bankAccountName: string;

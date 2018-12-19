@@ -117,6 +117,26 @@ const lifecycles: ReactLifeCycleFunctions<SelectSystemProps, OwnProps> = {
         case 'relation':
           commonDispatch.relationListRequest(request);
           break;
+          
+        case 'religion':
+          commonDispatch.religionListRequest(request);
+          break;
+
+        case 'gender':
+          commonDispatch.genderListRequest(request);
+          break;
+          
+        case 'blood':
+          commonDispatch.bloodListRequest(request);
+          break;
+
+        case 'tax':
+          commonDispatch.taxListRequest(request);
+          break;
+
+        case 'employment':
+          commonDispatch.employmentListRequest(request);
+          break;
 
         default:
           break;
@@ -151,7 +171,12 @@ const fnGetContext = (props: SelectSystemProps) => {
     case 'unit': return props.commonUnitListState;
     case 'grade': return props.commonGradeListState;
     case 'relation': return props.commonRelationListState;
-  
+    case 'religion': return props.commonReligionListState;
+    case 'gender': return props.commonGenderListState;
+    case 'blood': return props.commonBloodListState;
+    case 'tax': return props.commonTaxListState;
+    case 'employment': return props.commonEmploymentListState;
+
     default: return props.commonActivityListState;
   }
 };
