@@ -138,7 +138,7 @@ export const accountEmployeeField = defineMessages({
 
   bcaNumber: { id: `${prefix}.field.bca.number`},
   bcaNumberPlaceholder: { id: `${prefix}.field.bca.number.placeholder`},
-  bcaNumberRequired: { id: `${prefix}.field.bca.umber.required`},
+  bcaNumberRequired: { id: `${prefix}.field.bca.number.required`},
 
   bcaName: { id: `${prefix}.field.bca.name`},
   bcaNamePlaceholder: { id: `${prefix}.field.bca.name.placeholder`},

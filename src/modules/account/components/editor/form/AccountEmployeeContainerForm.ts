@@ -22,18 +22,18 @@ export type AccountEmployeeFormData = {
     taxType: string | null | undefined;
     bloodType: string | null | undefined;
     image: string | null | undefined;
-
-    // bank
+  },
+  bank: {
     familyCardNumber: string | null | undefined;
     citizenNumber: string | null | undefined;
     taxNumber: string | null | undefined;
-    bpjsEmployementNumber: string | null | undefined;
+    bpjsEmploymentNumber: string | null | undefined;
     bpjsHealthCareNumber: string | null | undefined;
     bankAccount: string | null | undefined;
     bankAccountName: string | null | undefined;
     bankAccountBranch: string | null | undefined;
-
-    // contacts
+  },
+  contact: {
     address: string | null | undefined;
     addressAdditional: string | null | undefined;
     email: string | null | undefined;

@@ -9,7 +9,7 @@ export const AccountEmployeeBankFormView: React.SFC<AccountEmployeeBankFormProps
   const { names } = props.context;
 
   const renderField = (name: string) => {
-    const fieldName = name.replace('information.', '');
+    const fieldName = name.replace('bank.', '');
     const fieldProps = props.generateFieldProps(fieldName);
 
     return (

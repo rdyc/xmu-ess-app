@@ -27,43 +27,42 @@ export const AccountEmployeeEditorView: React.SFC<AccountEmployeeEditorProps> = 
 
   const initialValues: AccountEmployeeFormData = {
     information: {
-      // basic
       uid: undefined,
-      companyUid: undefined,
-      employmentNumber: undefined,
-      employmentType: undefined,
-      joinDate: undefined,
-      inactiveDate: undefined,
-      fullName: undefined,
-      dateOfBirth: undefined,
-      birthPlace: undefined,
-      genderType: undefined,
-      religionType: undefined,
-      taxType: undefined,
-      bloodType: undefined,
-      image: undefined,
-
-      // bank
-      familyCardNumber: undefined,
-      citizenNumber: undefined,
-      taxNumber: undefined,
-      bpjsEmployementNumber: undefined,
-      bpjsHealthCareNumber: undefined,
-      bankAccount: undefined,
-      bankAccountName: undefined,
-      bankAccountBranch: undefined,
-
-      // contacts
-      address: undefined,
-      addressAdditional: undefined,
-      email: undefined,
-      emailPersonal: undefined,
-      phone: undefined,
-      mobilePhone: undefined,
-      emergencyContactName: undefined,
-      emergencyContactRelation: undefined,
-      emergencyContactPhone: undefined,
-      emergencyContactPhoneAdditional: undefined,
+      employmentNumber: null,
+      fullName: null,
+      genderType: null,
+      birthPlace: null,
+      dateOfBirth: null,
+      companyUid: null,
+      employmentType: null,
+      joinDate: null,
+      taxType: null,
+      inactiveDate: null,
+      bloodType: null,
+      religionType: null,
+      image: null,
+    },
+    bank: {
+      citizenNumber: null,
+      taxNumber: null,
+      familyCardNumber: null,
+      bpjsEmploymentNumber: null,
+      bpjsHealthCareNumber: null,
+      bankAccount: null,
+      bankAccountName: null,
+      bankAccountBranch: null,
+    },
+    contact: {
+      phone: null,
+      mobilePhone: null,
+      email: null,
+      emailPersonal: null,
+      address: null,
+      addressAdditional: null,
+      emergencyContactName: null,
+      emergencyContactRelation: null,
+      emergencyContactPhone: null,
+      emergencyContactPhoneAdditional: null,
     }
   };
 
@@ -102,26 +101,26 @@ export const AccountEmployeeEditorView: React.SFC<AccountEmployeeEditorProps> = 
       initialValues.information.image = data.image;
 
       // bank
-      initialValues.information.citizenNumber = data.citizenNumber;
-      initialValues.information.taxNumber = data.taxNumber;
-      initialValues.information.familyCardNumber = data.familyCardNumber;
-      initialValues.information.bpjsEmployementNumber = data.bpjsEmploymentNumber;
-      initialValues.information.bpjsHealthCareNumber = data.bpjsHealthCareNumber;
-      initialValues.information.bankAccount = data.bank && data.bank.account;
-      initialValues.information.bankAccountName = data.bank && data.bank.name;
-      initialValues.information.bankAccountBranch = data.bank && data.bank.branch;
+      initialValues.bank.citizenNumber = data.citizenNumber;
+      initialValues.bank.taxNumber = data.taxNumber;
+      initialValues.bank.familyCardNumber = data.familyCardNumber;
+      initialValues.bank.bpjsEmploymentNumber = data.bpjsEmploymentNumber;
+      initialValues.bank.bpjsHealthCareNumber = data.bpjsHealthCareNumber;
+      initialValues.bank.bankAccount = data.bank && data.bank.account;
+      initialValues.bank.bankAccountName = data.bank && data.bank.name;
+      initialValues.bank.bankAccountBranch = data.bank && data.bank.branch;
 
       // contacts
-      initialValues.information.phone = data.phone;
-      initialValues.information.mobilePhone = data.mobilePhone;
-      initialValues.information.email = data.email;
-      initialValues.information.emailPersonal = data.emailPersonal;
-      initialValues.information.address = data.address;
-      initialValues.information.addressAdditional = data.addressAdditional;
-      initialValues.information.emergencyContactName = data.contact && data.contact.name;
-      initialValues.information.emergencyContactRelation = data.contact && data.contact.relation;
-      initialValues.information.emergencyContactPhone = data.contact && data.contact.phone;
-      initialValues.information.emergencyContactPhoneAdditional = data.contact && data.contact.phoneAdditional;
+      initialValues.contact.phone = data.phone;
+      initialValues.contact.mobilePhone = data.mobilePhone;
+      initialValues.contact.email = data.email;
+      initialValues.contact.emailPersonal = data.emailPersonal;
+      initialValues.contact.address = data.address;
+      initialValues.contact.addressAdditional = data.addressAdditional;
+      initialValues.contact.emergencyContactName = data.contact && data.contact.name;
+      initialValues.contact.emergencyContactRelation = data.contact && data.contact.relation;
+      initialValues.contact.emergencyContactPhone = data.contact && data.contact.phone;
+      initialValues.contact.emergencyContactPhoneAdditional = data.contact && data.contact.phoneAdditional;
 
       return renderForm(initialValues);
     }

@@ -94,7 +94,9 @@ const handlerCreators: HandleCreators<AccountEmployeeEditorProps, OwnHandlers> =
     }
 
     const payload = {
-      ...formData.information
+      ...formData.information,
+      ...formData.bank,
+      ...formData.contact
     };
 
     // creating

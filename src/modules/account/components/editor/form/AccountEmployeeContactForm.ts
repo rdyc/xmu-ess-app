@@ -1,7 +1,6 @@
 import { accountMessage } from '@account/locales/messages/accountMessage';
 import { SelectSystemOption } from '@common/components/select';
 import { FormMode } from '@generic/types';
-import { InputNumber } from '@layout/components/input/number';
 import { InputText } from '@layout/components/input/text';
 import { timesheetMessage } from '@timesheet/locales/messages/timesheetMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
@@ -36,7 +35,7 @@ const handleCreators: HandleCreators<AccountEmployeeContactFormProps, OwnHandler
           required: true,
           label: intl.formatMessage(accountMessage.employee.fieldFor(name, 'fieldName')),
           placeholder: intl.formatMessage(accountMessage.employee.fieldFor(name, 'fieldPlaceholder')),
-          component: InputNumber
+          component: InputText
         };
         break;
 
@@ -44,7 +43,7 @@ const handleCreators: HandleCreators<AccountEmployeeContactFormProps, OwnHandler
         fieldProps = {
           label: intl.formatMessage(accountMessage.employee.fieldFor(name, 'fieldName')),
           placeholder: intl.formatMessage(accountMessage.employee.fieldFor(name, 'fieldPlaceholder')),
-          component: InputNumber
+          component: InputText
         };
         break;
 
@@ -104,7 +103,7 @@ const handleCreators: HandleCreators<AccountEmployeeContactFormProps, OwnHandler
         fieldProps = {
           label: intl.formatMessage(accountMessage.employee.fieldFor(name, 'fieldName')),
           placeholder: intl.formatMessage(accountMessage.employee.fieldFor(name, 'fieldPlaceholder')),
-          component: InputNumber
+          component: InputText
         };
         break;
 
@@ -112,7 +111,7 @@ const handleCreators: HandleCreators<AccountEmployeeContactFormProps, OwnHandler
         fieldProps = {
           label: intl.formatMessage(accountMessage.employee.fieldFor(name, 'fieldName')),
           placeholder: intl.formatMessage(accountMessage.employee.fieldFor(name, 'fieldPlaceholder')),
-          component: InputNumber
+          component: InputText
         };
         break;
 

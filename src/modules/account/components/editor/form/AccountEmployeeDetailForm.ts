@@ -109,6 +109,7 @@ const handleCreators: HandleCreators<AccountEmployeeDetailFormProps, OwnHandlers
         case 'joinDate':
         fieldProps = {
           required: true,
+          disableFuture: true,
           label: intl.formatMessage(accountMessage.employee.fieldFor(name, 'fieldName')),
           placeholder: intl.formatMessage(accountMessage.employee.fieldFor(name, 'fieldPlaceholder')),
           component: InputDate  
@@ -127,6 +128,7 @@ const handleCreators: HandleCreators<AccountEmployeeDetailFormProps, OwnHandlers
 
         case 'inactiveDate':
         fieldProps = {
+          disablePast: true,
           label: intl.formatMessage(accountMessage.employee.fieldFor(name, 'fieldName')),
           placeholder: intl.formatMessage(accountMessage.employee.fieldFor(name, 'fieldPlaceholder')),
           component: InputDate  

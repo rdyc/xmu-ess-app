@@ -55,6 +55,7 @@
 
   "account.employee.field.gender": "Gender",
   "account.employee.field.gender.placeholder": "Gender",
+  "account.employee.field.gender.required": "Gender is required",
 
   "account.employee.field.birthPlace": "Birth Place",
   "account.employee.field.birthPlace.placeholder": "Birth Place",
@@ -149,11 +150,11 @@
   "account.employee.field.information.bank.subHeader": "Lorem ipsum dolor sit amet",
 
   "account.employee.section.basic.title": "Employee Basic Data",
-  "account.employee.section.basic.subheader": "Lorem ipsum dolor sit amet",
+  "account.employee.section.basic.subHeader": "Lorem ipsum dolor sit amet",
   
   "account.employee.section.bank.title": "Employee Identity and BCA Account",
-  "account.employee.section.bank.subheader": "Lorem ipsum dolor sit amet",
+  "account.employee.section.bank.subHeader": "Lorem ipsum dolor sit amet",
 
   "account.employee.section.contact.title": "Employee Contact and Address",
-  "account.employee.section.contact.subheader": "Lorem ipsum dolor sit amet"
+  "account.employee.section.contact.subHeader": "Lorem ipsum dolor sit amet"
 }

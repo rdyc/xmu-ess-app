@@ -166,7 +166,7 @@ function* watchPutRequest() {
   const worker = (action: ReturnType<typeof accountEmployeePutRequest>) => {
     return saiyanSaga.fetch({
       method: 'put',
-      path: `/v1/account/employee`,
+      path: `/v1/account/employees`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
         put(accountEmployeeGetByIdDispose()),

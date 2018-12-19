@@ -175,7 +175,7 @@ const mapStateToProps = ({
   commonLimiterListState: commonLimiterList,
   commonGradeListState: commonGradeList,
   commonRelationListState: commonRelationList,
-  commonReligionListState: commonRelationList,
+  commonReligionListState: commonReligionList,
   commonGenderListState: commonGenderList,
   commonBloodListState: commonBloodList,
   commonTaxListState: commonTaxList,

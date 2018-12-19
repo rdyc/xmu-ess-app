@@ -1,18 +1,15 @@
 import { IEmployeeDetail } from '@account/classes/response';
 import { AccountEmployeeUserAction } from '@account/classes/types';
-import { WithAccountEmployee, withAccountEmployee } from '@account/hoc/withAccountEmployee';
 import { accountMessage } from '@account/locales/messages/accountMessage';
 import AppMenu from '@constants/AppMenu';
 import { SingleConfig, SingleHandler, SinglePage, SingleState } from '@layout/components/pages/singlePage/SinglePage';
-import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
+import { AppBar, Tab, Tabs, Typography } from '@material-ui/core';
 import * as React from 'react';
-import { InjectedIntlProps, injectIntl } from 'react-intl';
-import { RouteComponentProps, withRouter } from 'react-router';
-import { compose } from 'recompose';
 import { AccountEmployeeBank } from './AccountEmployeeBank';
 import { AccountEmployeeContact } from './AccountEmployeeContact';
+import { AccountEmployeeDetailProps } from './AccountEmployeeDetail';
 import { AccountEmployeeInformation } from './AccountEmployeeInformation';
 
 const config: SingleConfig<IEmployeeDetail, AccountEmployeeDetailProps> = {
@@ -25,7 +22,7 @@ const config: SingleConfig<IEmployeeDetail, AccountEmployeeDetailProps> = {
   }),
 
   // parent url
-  parentUrl: (props: AccountEmployeeDetailProps) => '/lookup/employee/list',
+  parentUrl: () => '/lookup/employee',
   
   // action centre
   showActionCentre: true,
@@ -69,37 +66,44 @@ const config: SingleConfig<IEmployeeDetail, AccountEmployeeDetailProps> = {
   },
 
   // primary
-  primaryComponent: (data: IEmployeeDetail, props: AccountEmployeeDetailProps) => (
+  primaryComponent: (data: IEmployeeDetail) => (
     <AccountEmployeeInformation data={data} />
   ),
 
   // secondary (multiple components are allowed)
-  secondaryComponents: (data: IEmployeeDetail, props: AccountEmployeeDetailProps) => ([
+  secondaryComponents: (data: IEmployeeDetail) => ([
     <AccountEmployeeContact data={data}/>,
     <AccountEmployeeBank data={data}/> 
   ])
 };
 
-interface OwnRouteParams {
-  employeeUid: string;
-}
-
-type AccountEmployeeDetailProps
-  = WithUser
-  & WithAccountEmployee
-  & RouteComponentProps<OwnRouteParams>
-  & InjectedIntlProps;
-
-const accountEmployeeDetail: React.SFC<AccountEmployeeDetailProps> = props => (
-  <SinglePage
-    config={config}
-    connectedProps={props}
-  />
+export const AccountEmployeeDetailView: React.SFC<AccountEmployeeDetailProps> = props => (
+  <React.Fragment>
+    <AppBar position="static">
+      <Tabs 
+        value={props.tab} 
+        onChange={props.handleTab}
+        scrollable
+        scrollButtons="auto"
+      >
+        <Tab label="Detail" />
+        <Tab label="History" />
+        <Tab label="Education" />
+        <Tab label="Family Structure" />
+        <Tab label="Job Experience" />
+        <Tab label="Training and Certification" />
+        <Tab label="Multi Company Access" />
+      </Tabs>
+    </AppBar>
+    {props.tab === 0 && 
+      <div style={{ padding: 8 * 3 }}>
+        <SinglePage
+          config={config}
+          connectedProps={props}
+        />
+      </div>
+    }
+    {props.tab === 1 && <Typography style={{ padding: 8 * 3 }}>TAB 2</Typography>}
+    {props.tab === 2 && <Typography style={{ padding: 8 * 3 }}>TAB 3</Typography>}
+  </React.Fragment>
 );
-
-export const AccountEmployeeDetail = compose(
-  withRouter,
-  withUser,
-  withAccountEmployee,
-  injectIntl
-)(accountEmployeeDetail);

@@ -9,7 +9,7 @@ export const AccountEmployeeContactFormView: React.SFC<AccountEmployeeContactFor
   const { names } = props.context;
 
   const renderField = (name: string) => {
-    const fieldName = name.replace('information.', '');
+    const fieldName = name.replace('contact.', '');
     const fieldProps = props.generateFieldProps(fieldName);
 
     return (
