@@ -240,12 +240,12 @@ const component: React.SFC<AllProps> = props => {
   );
 };
 
-const NavigationBottomSFC = compose<AllProps, {}>(
-  setDisplayName('NavigationBottomSFC'),
+const NavigationBottom = compose<AllProps, {}>(
+  setDisplayName('NavigationBottom'),
   withNavBottom,
   withLayout,
   withWidth(),
   withStyles(styles)
 )(component);
 
-export default NavigationBottomSFC;
+export default NavigationBottom;

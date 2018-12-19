@@ -46,6 +46,9 @@ const styles = (theme: Theme) =>
         marginRight: drawerWidth
       }
     },
+    appBarDialog: {
+      position: 'relative'
+    },
 
     // App Tabs
     tabs: {
