@@ -3,3 +3,4 @@ export * from './accountEmployeeMyActions';
 export * from './employeeProfileActions';
 export * from './accountEmployeeLeaveActions';
 export * from './accountEmployeeAccessHistoryAction';
+export * from './accountEmployeeEducationAction';

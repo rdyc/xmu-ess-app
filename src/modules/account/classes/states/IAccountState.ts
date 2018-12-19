@@ -19,10 +19,23 @@ import {
   IEmployeeAccessHistoryListRequest 
 } from '../queries/employeeAccessHistory';
 import { 
+  IEmployeeEducationAllRequest, 
+  IEmployeeEducationByIdRequest, 
+  IEmployeeEducationDeleteRequest, 
+  IEmployeeEducationListRequest, 
+  IEmployeeEducationPostRequest, 
+  IEmployeeEducationPutRequest 
+} from '../queries/employeeEducation';
+import { 
   IEmployeeAccessHistory, 
   IEmployeeAccessHistoryDetail, 
   IEmployeeAccessHistoryList
 } from '../response/employeeAccessHistory';
+import { 
+  IEmployeeEducation, 
+  IEmployeeEducationDetail, 
+  IEmployeeEducationList 
+} from '../response/employeeEducation';
 import { IEmployeeMy } from '../response/IEmployeeMy';
 
 export interface IAccountState {
@@ -38,6 +51,14 @@ export interface IAccountState {
   accountEmployeeAccessHistoryGetAll: IQueryCollectionState<IEmployeeAccessHistoryAllRequest, IEmployeeAccessHistory>;
   accountEmployeeAccessHistoryGetList: IQueryCollectionState<IEmployeeAccessHistoryListRequest, IEmployeeAccessHistoryList>;
   accountEmployeeAccessHistoryGetById: IQuerySingleState<IEmployeeAccessHistoryByIdRequest, IEmployeeAccessHistoryDetail>;
+
+  // account employee education
+  accountEmployeeEducationGetAll: IQueryCollectionState<IEmployeeEducationAllRequest, IEmployeeEducation>;
+  accountEmployeeEducationGetList: IQueryCollectionState<IEmployeeEducationListRequest, IEmployeeEducationList>;
+  accountEmployeeEducationGetById: IQuerySingleState<IEmployeeEducationByIdRequest, IEmployeeEducationDetail>;
+  accountEmployeeEducationPost: IQuerySingleState<IEmployeeEducationPostRequest, IEmployeeEducation>;
+  accountEmployeeEducationPut: IQuerySingleState<IEmployeeEducationPutRequest, IEmployeeEducation>;
+  accountEmployeeEducationDelete: IQuerySingleState<IEmployeeEducationDeleteRequest, boolean>;
   
   accountEmployeeMyGet: IQuerySingleState<{}, IEmployeeMy>;
 

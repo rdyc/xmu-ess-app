@@ -1,3 +1,5 @@
+import accountEmployeeAccessHistorySagas from '@account/store/sagas/accountEmployeeAccessHistorySagas';
+import accountEmployeeEducationSagas from '@account/store/sagas/accountEmployeeEducationSagas';
 import accountEmployeeLeaveSagas from '@account/store/sagas/accountEmployeeLeaveSagas';
 import accountEmployeeMySagas from '@account/store/sagas/accountEmployeeMySagas';
 import accountEmployeeSagas from '@account/store/sagas/accountEmployeeSagas';
@@ -100,6 +102,8 @@ export function* rootSaga() {
     fork(accountEmployeeSagas),
     fork(accountEmployeeMySagas),
     fork(accountEmployeeLeaveSagas),
+    fork(accountEmployeeAccessHistorySagas),
+    fork(accountEmployeeEducationSagas),
 
     // project
     fork(projectRegistrationSagas),
