@@ -5,7 +5,9 @@ const prefix = 'layout';
 // text
 export const layoutText = defineMessages({
   loading: { id: `${prefix}.text.loading`},
+  waiting: { id: `${prefix}.text.waiting`},
   processing: { id: `${prefix}.text.processing`},
+  none: { id: `${prefix}.text.none`},
   dataInfo: { id: `${prefix}.text.dataInfo` },
   pagingInfo: { id: `${prefix}.text.pagingInfo` },
   active: { id: `${prefix}.text.active`},
@@ -15,6 +17,7 @@ export const layoutText = defineMessages({
 // tooltip
 export const layoutTooltip = defineMessages({
   more: { id: `${prefix}.tooltip.more`},
+  filter: { id: `${prefix}.tooltip.filter`},
   orderBy: { id: `${prefix}.tooltip.orderBy`},
   sortDirection: { id: `${prefix}.tooltip.sortDirection`},
   rowsPerPage: { id: `${prefix}.tooltip.rowsPerPage` },
@@ -26,6 +29,7 @@ export const layoutTooltip = defineMessages({
 
 // action
 export const layoutAction = defineMessages({
+  apply: { id: `${prefix}.action.apply`},
   yes: { id: `${prefix}.action.yes`},
   no: { id: `${prefix}.action.no`},
   ok: { id: `${prefix}.action.ok`},

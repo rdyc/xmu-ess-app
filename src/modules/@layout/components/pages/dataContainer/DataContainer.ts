@@ -1,5 +1,6 @@
 import { IBaseMetadata } from '@generic/interfaces';
 import { ICollectionValue } from '@layout/classes/core';
+import { SvgIconProps } from '@material-ui/core/SvgIcon';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import {
   compose,
@@ -14,6 +15,14 @@ import {
 } from 'recompose';
 
 import { DataContainerView } from './DataContainerView';
+
+export interface IDataControl {
+  id: string;
+  title: string;
+  icon: React.ComponentType<SvgIconProps>;
+  showBadgeWhen: () => boolean;
+  onClick: (event: React.MouseEvent<HTMLElement>) => void;
+}
 
 const sizes: ICollectionValue[] = [
   { value: 5, name: '5' },
@@ -46,6 +55,8 @@ interface OwnOption {
   onChangeField: (field: string) => void;
   onChangeOrder: (direction: string) => void;
   onChangeSize: (size: number) => void;
+
+  additionalControls?: IDataControl[]; 
 }
 
 interface OwnState {
@@ -152,5 +163,5 @@ export const DataContainer = compose<DataContainerProps, OwnOption>(
   setDisplayName('DataContainer'),
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),
-  withHandlers(handlerCreators),
+  withHandlers(handlerCreators)
 )(DataContainerView);

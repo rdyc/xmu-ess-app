@@ -1,6 +1,5 @@
-import AppStorage from '@constants/AppStorage';
-import { rootStore } from '@generic/roots';
 import { WithOidc, withOidc } from '@layout/hoc/withOidc';
+import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IAppUser } from '@layout/interfaces';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
@@ -8,16 +7,11 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Grid from '@material-ui/core/Grid';
-import {
-  createStyles,
-  Theme,
-  WithStyles,
-  withStyles
-} from '@material-ui/core/styles';
+import { createStyles, Theme, WithStyles, withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import classNames from 'classnames';
-import { User } from 'oidc-client';
 import * as React from 'react';
+import { FormattedMessage } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import {
   compose,
@@ -29,10 +23,8 @@ import {
   StateHandlerMap,
   StateUpdaters,
   withHandlers,
-  withStateHandlers
+  withStateHandlers,
 } from 'recompose';
-import { loadUser } from 'redux-oidc';
-import * as store from 'store';
 
 import { AppUserManager } from '../../../../utils';
 
@@ -104,16 +96,16 @@ interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
   setUser: StateHandler<OwnState>;
 }
 
-type AllProps = RouteComponentProps &
-  WithOidc &
-  WithStyles<typeof styles> &
-  OwnState &
-  OwnStateUpdaters &
-  OwnHandler;
+type AllProps 
+  = RouteComponentProps 
+  & WithOidc 
+  & WithUser
+  & WithStyles<typeof styles> 
+  & OwnState 
+  & OwnStateUpdaters 
+  & OwnHandler;
 
-const createProps: mapper<AllProps, OwnState> = (
-  props: AllProps
-): OwnState => ({
+const createProps: mapper<AllProps, OwnState> = (props: AllProps): OwnState => ({
   isLoggedIn: false
 });
 
@@ -128,9 +120,9 @@ const stateUpdaters: StateUpdaters<AllProps, OwnState, OwnStateUpdaters> = {
 
 const handlerCreators: HandleCreators<AllProps, OwnHandler> = {
   handleOnClickLogin: (props: AllProps) => () => {
-    // check login status
-    if (props.isLoggedIn) {
-      if (props.user) {
+    // check user login
+    if (props.oidcState.user) {
+      if (props.userState.user) {
         // user profile exist
         props.history.push('/home/dashboard');
       } else {
@@ -152,16 +144,16 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, {}> = {
     document.title = 'Welcome to New TESSA';
 
     // load odic user state
-    loadUser(rootStore, AppUserManager).then((user: User) => {
-      // console.log('loaded user', user);
+    // loadUser(rootStore, AppUserManager).then((user: User) => {
+    //   // console.log('loaded user', user);
 
-      if (user) {
-        // found user access, then get user profile
-        const appUser: IAppUser = store.get(AppStorage.Profile);
+    //   if (user) {
+    //     // found user access, then get user profile
+    //     const appUser: IAppUser = store.get(AppStorage.Profile);
 
-        this.props.setUser(appUser);
-      }
-    });
+    //     this.props.setUser(appUser);
+    //   }
+    // });
   }
 };
 
@@ -196,15 +188,25 @@ const root: React.SFC<AllProps> = props => (
           <div className={props.classes.heroButtons}>
             <Grid container spacing={16} justify="center">
               <Grid item>
-                {props.user && (
-                  <div>
+                {
+                  props.oidcState.isLoadingUser &&
+                  <Typography variant="body2">
+                    <FormattedMessage id="layout.text.loading" />
+                  </Typography>
+                }
+
+                {
+                  !props.oidcState.isLoadingUser &&
+                  props.oidcState.user &&
+                  props.userState.user &&
+                  <React.Fragment>
                     <Button
                       className={props.classes.button}
                       // variant="contained"
                       color="primary"
                       onClick={() => props.handleOnClickLogin()}
                     >
-                      {`Hi ${props.user && props.user.fullName}, Let's start!`}
+                      {`Hi ${props.userState.user && props.userState.user.fullName}, Let's start!`}
                     </Button>
 
                     <Button
@@ -214,10 +216,12 @@ const root: React.SFC<AllProps> = props => (
                     >
                       Logout
                     </Button>
-                  </div>
-                )}
+                  </React.Fragment>
+                }
 
-                {!props.user && (
+                {
+                  !props.oidcState.isLoadingUser &&
+                  !props.oidcState.user &&
                   <Button
                     variant="contained"
                     color="primary"
@@ -225,7 +229,7 @@ const root: React.SFC<AllProps> = props => (
                   >
                     Let me in
                   </Button>
-                )}
+                }
               </Grid>
             </Grid>
           </div>
@@ -278,6 +282,7 @@ const root: React.SFC<AllProps> = props => (
 export const Root = compose<AllProps, {}>(
   withRouter,
   withOidc,
+  withUser,
   withStyles(styles),
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),

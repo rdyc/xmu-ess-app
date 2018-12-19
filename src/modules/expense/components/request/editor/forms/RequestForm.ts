@@ -27,6 +27,7 @@ interface OwnProps {
   submitDialogContentText: string;
   submitDialogCancelText: string;
   submitDialogConfirmedText: string;
+  minDate: Date;
 }
 
 interface FormValueProps {
