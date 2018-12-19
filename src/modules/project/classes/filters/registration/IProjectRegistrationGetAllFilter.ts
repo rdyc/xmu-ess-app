@@ -4,7 +4,10 @@ export interface IProjectRegistrationGetAllFilter extends IBasePagingFilter {
   // customerUids?: string[] | undefined;
   // projectTypes?: string[] | undefined;
   // statusTypes?: string[] | undefined;
-  status?: string;
+  customerUid?: string;
+  projectType?: string;
+  statusType?: string;
+  status?: 'pending' | 'complete' | string;
   isRejected?: boolean;
   isNewOwner?: boolean;
 }
