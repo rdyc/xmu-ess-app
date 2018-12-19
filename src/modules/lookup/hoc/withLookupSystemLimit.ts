@@ -5,6 +5,7 @@ import {
 } from '@generic/interfaces';
 import {
   ISystemLimitAllRequest,
+  ISystemLimitAmountRequest,
   ISystemLimitByIdRequest,
   ISystemLimitDeleteRequest,
   ISystemLimitListRequest,
@@ -13,6 +14,7 @@ import {
 } from '@lookup/classes/queries';
 import {
   ISystemLimit,
+  ISystemLimitAmount,
   ISystemLimitDetail,
   ISystemLimitList
 } from '@lookup/classes/response';
@@ -21,6 +23,8 @@ import {
   systemLimitDeleteRequest,
   systemLimitGetAllDispose,
   systemLimitGetAllRequest,
+  systemLimitGetAmountDispose,
+  systemLimitGetAmountRequest,
   systemLimitGetByIdDispose,
   systemLimitGetByIdRequest,
   systemLimitGetListDispose,
@@ -36,6 +40,7 @@ import { Dispatch } from 'redux';
 interface PropsFromState {
   systemLimitState: {
     all: IQueryCollectionState<ISystemLimitAllRequest, ISystemLimit>;
+    amount: IQuerySingleState<ISystemLimitAmountRequest, ISystemLimitAmount>;
     list: IQueryCollectionState<ISystemLimitListRequest, ISystemLimitList>;
     detail: IQuerySingleState<ISystemLimitByIdRequest, ISystemLimitDetail>;
   };
@@ -56,6 +61,9 @@ interface PropsFromDispatch {
     loadAllRequest: typeof systemLimitGetAllRequest;
     loadAllDispose: typeof systemLimitGetAllDispose;
 
+    loadAmountRequest: typeof systemLimitGetAmountRequest;
+    loadAmountDispose: typeof systemLimitGetAmountDispose;
+
     loadListRequest: typeof systemLimitGetListRequest;
     loadListDispose: typeof systemLimitGetListDispose;
 
@@ -66,9 +74,10 @@ interface PropsFromDispatch {
 
 export interface WithLookupSystemLimit extends PropsFromState, PropsFromDispatch {}
 
-const mapStateToProps = ({systemLimitGetAll, systemLimitGetById, systemLimitGetList }: IAppState) => ({
+const mapStateToProps = ({systemLimitGetAll, systemLimitGetAmount, systemLimitGetById, systemLimitGetList }: IAppState) => ({
   systemLimitState: {
     all: systemLimitGetAll,
+    amount: systemLimitGetAmount,
     list: systemLimitGetList,
     detail: systemLimitGetById
   }
@@ -89,6 +98,9 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     // query
     loadAllRequest: (request: ISystemLimitAllRequest) => dispatch(systemLimitGetAllRequest(request)),
     loadAllDispose: () => dispatch(systemLimitGetAllDispose()),
+    
+    loadAmountRequest: (request: ISystemLimitAmountRequest) => dispatch(systemLimitGetAmountRequest(request)),
+    loadAmountDispose: () => dispatch(systemLimitGetAmountDispose()),
 
     loadListRequest: (request: ISystemLimitListRequest) => dispatch(systemLimitGetListRequest(request)),
     loadListDispose: () => dispatch(systemLimitGetListDispose()),
