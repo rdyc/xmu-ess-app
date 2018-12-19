@@ -1,4 +1,4 @@
 export interface ISystemLimitAmountRequest {
-  companyUid: string;
-  categoryType: string;
+  readonly companyUid: string | undefined;
+  readonly categoryType: string | undefined;
 }

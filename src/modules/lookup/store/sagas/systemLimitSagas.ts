@@ -67,7 +67,7 @@ function* watchGetAmountRequest() {
   const worker = (action: ReturnType<typeof systemLimitGetAmountRequest>) => {
     return saiyanSaga.fetch({
       method: 'get',
-      path: `/v1/lookup/systemlimits/limit/${objectToQuerystring(action.payload.companyUid)}/${objectToQuerystring(action.payload.categoryType)}`, 
+      path: `/v1/lookup/systemlimits/limit/${action.payload.companyUid}/${action.payload.categoryType}`, 
       successEffects: (response: IApiResponse) => ([
         put(systemLimitGetAmountSuccess(response.body)),
       ]), 
@@ -85,10 +85,7 @@ function* watchGetAmountRequest() {
           time: new Date(),
           message: error.message
         }))
-      ]),
-      finallyEffects: [
-        // nothing
-      ]
+      ])
     });
   };
   
