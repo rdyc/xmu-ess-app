@@ -1,5 +1,4 @@
 import AppMenu from '@constants/AppMenu';
-import { DialogConfirmation } from '@layout/components/dialogs';
 import {
   CollectionConfig,
   CollectionDataProps,
@@ -84,7 +83,7 @@ const config: CollectionConfig<IRole, RoleListProps> = {
       if (!response || forceReload) {
         loadAllRequest({
           filter: {
-            // companyUid: undefined,
+            companyUid: props.companyUid,
             find: params.find,
             findBy: params.findBy,
             orderBy: params.orderBy,
@@ -116,8 +115,11 @@ const config: CollectionConfig<IRole, RoleListProps> = {
   }),
 
   // filter
-  filterComponent: (callback: CollectionHandler) => (
-    <LookupRoleFilter handleFind={callback.handleFilter} />
+  filterComponent: (callback: CollectionHandler, props: RoleListProps) => (
+    <LookupRoleFilter 
+      handleFind={props.handleChangeFilter}
+      callbackForceReload={callback.handleForceReload}
+    />
   ),
 
   // summary component
@@ -128,13 +130,6 @@ const config: CollectionConfig<IRole, RoleListProps> = {
   // action component
   actionComponent: (item: IRole, callback: CollectionHandler, props: RoleListProps) => (
     <React.Fragment>
-      <Button
-        size="small"
-        onClick={() => props.handleOnDelete(item.uid, callback.handleForceReload)}
-      >
-        <FormattedMessage {...layoutMessage.action.delete}/>
-      </Button>
-
       <Button
         size="small"
         onClick={() => callback.handleRedirectTo(`/lookup/roles/form`, { uid: item.uid, companyUid: item.companyUid })}
@@ -153,31 +148,9 @@ const config: CollectionConfig<IRole, RoleListProps> = {
 
 };
 
-// type AllProps
-//   = WithUser
-//   & WithLookupRole
-//   & InjectedIntlProps;
-
 export const LookupRoleListView: React.SFC<RoleListProps> = props => (
   <CollectionPage
     config={config}
     connectedProps={props}
-  >
-    <DialogConfirmation
-      isOpen={props.dialogOpen}
-      fullScreen={props.dialogFullScreen}
-      title={props.dialogTitle}
-      content={props.dialogContent}
-      labelCancel={props.dialogCancelLabel}
-      labelConfirm={props.dialogConfirmLabel}
-      onClickCancel={props.handleOnCloseDialog}
-      onClickConfirm={props.handleSubmit}
-    />
-  </CollectionPage>
+  />
 );
-
-// export const LookupRoleListView = compose(
-//   withUser,
-//   withLookupRole,
-//   injectIntl
-// )(listView);

@@ -1,7 +1,6 @@
 import { WorkflowStatusType } from '@common/classes/types';
 import AppMenu from '@constants/AppMenu';
 import { CollectionConfig, CollectionDataProps, CollectionHandler, CollectionPage } from '@layout/components/pages';
-import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
 import { GlobalFormat } from '@layout/types';
@@ -10,18 +9,17 @@ import { isRequestEditable } from '@organization/helper/isRequestEditable';
 import { IPurchase } from '@purchase/classes/response/purchaseRequest';
 import { PurchaseField, PurchaseUserAction } from '@purchase/classes/types';
 import { purchaseRequestFieldTranslator } from '@purchase/helper';
-import { WithPurchaseRequest, withPurchaseRequest } from '@purchase/hoc/purchaseRequest/withPurchaseRequest';
 import { purchaseMessage } from '@purchase/locales/messages/purchaseMessage';
 import * as moment from 'moment';
 import * as React from 'react';
-import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
-import { compose } from 'recompose';
+import { FormattedMessage } from 'react-intl';
 import { PurchaseRequestFilter } from '../detail/shared/PurchaseRequestFilter';
 import { PurchaseSummary } from '../detail/shared/PurchaseSummary';
+import { PurchaseRequestListProps } from './PurchaseRequestList';
 
-const config: CollectionConfig<IPurchase, AllProps> = {
+const config: CollectionConfig<IPurchase, PurchaseRequestListProps> = {
   // page info
-  page: (props: AllProps) => ({
+  page: (props: PurchaseRequestListProps) => ({
     uid: AppMenu.PurchaseRequest,
     parentUid: AppMenu.Purchase,
     title: props.intl.formatMessage(purchaseMessage.request.pages.listTitle),
@@ -37,7 +35,7 @@ const config: CollectionConfig<IPurchase, AllProps> = {
 
   // searching
   hasSearching: true,
-  searchStatus: (states: AllProps): boolean => {
+  searchStatus: (states: PurchaseRequestListProps): boolean => {
     let result: boolean = false;
 
     const { request } = states.purchaseRequestState.all;
@@ -54,7 +52,7 @@ const config: CollectionConfig<IPurchase, AllProps> = {
 
   // more
   hasMore: true,
-  moreOptions: (props: AllProps, callback: CollectionHandler): IAppBarMenu[] => ([
+  moreOptions: (props: PurchaseRequestListProps, callback: CollectionHandler): IAppBarMenu[] => ([
     {
       id: PurchaseUserAction.Refresh,
       name: props.intl.formatMessage(layoutMessage.action.refresh),
@@ -72,7 +70,7 @@ const config: CollectionConfig<IPurchase, AllProps> = {
   ]),
   
   // events
-  onDataLoad: (states: AllProps, callback: CollectionHandler, params: CollectionDataProps, forceReload?: boolean | false) => {
+  onDataLoad: (states: PurchaseRequestListProps, callback: CollectionHandler, params: CollectionDataProps, forceReload?: boolean | false) => {
     const { user } = states.userState;
     const { isLoading, response } = states.purchaseRequestState.all;
     const { loadAllRequest } = states.purchaseRequestDispatch;
@@ -85,6 +83,7 @@ const config: CollectionConfig<IPurchase, AllProps> = {
           filter: {
             companyUid: user.company.uid,
             positionUid: user.position.uid,
+            customerUid: states.customerUid,
             find: params.find,
             findBy: params.findBy,
             orderBy: params.orderBy,
@@ -99,13 +98,13 @@ const config: CollectionConfig<IPurchase, AllProps> = {
       }
     }
   },
-  onUpdated: (states: AllProps, callback: CollectionHandler) => {
+  onUpdated: (states: PurchaseRequestListProps, callback: CollectionHandler) => {
     const { isLoading, response } = states.purchaseRequestState.all;
 
     callback.handleLoading(isLoading);
     callback.handleResponse(response);
   },
-  onBind: (item: IPurchase, index: number, props: AllProps) => ({
+  onBind: (item: IPurchase, index: number, props: PurchaseRequestListProps) => ({
     key: index,
     primary: item.uid,
     secondary: item.projectUid || item.project && item.project.name || '',
@@ -116,8 +115,10 @@ const config: CollectionConfig<IPurchase, AllProps> = {
   }),
 
   // filter
-  filterComponent: (callback: CollectionHandler) => (
-    <PurchaseRequestFilter handleFind={callback.handleFilter} />
+  filterComponent: (callback: CollectionHandler, props: PurchaseRequestListProps) => (
+    <PurchaseRequestFilter 
+      handleFind={props.handleChangeFilter}
+      callbackForceReload={callback.handleForceReload} />
   ),
 
   // summary component
@@ -156,20 +157,9 @@ const config: CollectionConfig<IPurchase, AllProps> = {
   ),
 };
 
-type AllProps
-  = WithUser
-  & InjectedIntlProps
-  & WithPurchaseRequest;
-
-const listView: React.SFC<AllProps> = props => (
+export const PurchaseRequestListView: React.SFC<PurchaseRequestListProps> = props => (
   <CollectionPage
     config= { config }
     connectedProps = { props }
   />
 );
-
-export const PurchaseRequestList = compose(
-  withUser,
-  injectIntl,
-  withPurchaseRequest
-)(listView);
