@@ -7,8 +7,8 @@ export interface IProjectApprovalGetAllFilter {
   positionUid?: string;
   customerUid?: string;
   projectType?: string;
-  statusType?: 'pending' | 'complete' | string;
-  status?: string;
+  statusType?: string;
+  status?: 'pending' | 'complete' | string;
   isNotify?: boolean;
   query?: IExtendedQuery;
 }
