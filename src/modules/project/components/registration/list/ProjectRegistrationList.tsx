@@ -15,6 +15,7 @@ import { projectMessage } from '@project/locales/messages/projectMessage';
 import * as moment from 'moment';
 import * as React from 'react';
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
+import { RouteComponentProps, withRouter } from 'react-router';
 import { compose } from 'recompose';
 
 const config: CollectionConfig<IProject, AllProps> = {
@@ -75,6 +76,9 @@ const config: CollectionConfig<IProject, AllProps> = {
     const { user } = props.userState;
     const { isLoading, response } = props.projectRegisterState.all;
     const { loadAllRequest } = props.projectRegisterDispatch;
+    const { state } = props.location;
+
+    console.log(state);
 
     // when user is set and not loading
     if (user && !isLoading) {
@@ -84,6 +88,9 @@ const config: CollectionConfig<IProject, AllProps> = {
           companyUid: user.company.uid,
           positionUid: user.position.uid,
           filter: {
+            status: state && state.status,
+            isNewOwner: state && state.isNewOwner,
+            isRejected: state && state.isRejected,
             find: params.find,
             findBy: params.findBy,
             orderBy: params.orderBy,
@@ -92,6 +99,8 @@ const config: CollectionConfig<IProject, AllProps> = {
             size: params.size,
           }
         });
+
+        console.log(state);
       } else {
         // just take data from previous response
         callback.handleResponse(response);
@@ -145,7 +154,8 @@ const config: CollectionConfig<IProject, AllProps> = {
 type AllProps 
   = WithUser
   & WithProjectRegistration
-  & InjectedIntlProps;
+  & InjectedIntlProps
+  & RouteComponentProps;
 
 const listView: React.SFC<AllProps> = props => (
   <CollectionPage
@@ -157,5 +167,6 @@ const listView: React.SFC<AllProps> = props => (
 export const ProjectRegistrationList = compose(
   withUser,
   withProjectRegistration,
-  injectIntl
+  injectIntl,
+  withRouter
 )(listView);

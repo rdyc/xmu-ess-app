@@ -86,6 +86,8 @@
   "project.registration.field.valueIdr": "Value (IDR)",
   "project.registration.field.hours": "Maximum Hours",
   "project.registration.field.rejectedReason": "Rejected Reason",
+  "project.registration.field.completion": "Completion",
+  "project.registration.field.isNotify": "Notified Only",
   
   "project.registration.message.emptyProps": "Some props are empty",
   "project.registration.message.emptySales": "Sales not found",

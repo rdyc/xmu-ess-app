@@ -1,9 +1,10 @@
 import { layoutMessage } from '@layout/locales/messages';
-import { IconButton, Menu, MenuItem, Toolbar, Tooltip, Typography } from '@material-ui/core';
+import { Badge, IconButton, Menu, MenuItem, Toolbar, Tooltip, Typography } from '@material-ui/core';
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import FilterListIcon from '@material-ui/icons/FilterList';
-import LibraryBooksSharpIcon from '@material-ui/icons/LibraryBooksSharp';
+import ListAltIcon from '@material-ui/icons/ListAlt';
+import ReorderIcon from '@material-ui/icons/Reorder';
 import SortByAlphaIcon from '@material-ui/icons/SortByAlpha';
 import SyncIcon from '@material-ui/icons/Sync';
 import * as React from 'react';
@@ -13,7 +14,7 @@ import { DataContainerProps } from './DataContainer';
 
 export const DataContainerView: React.SFC<DataContainerProps> = props => (
   <React.Fragment>
-    <Toolbar>
+    <Toolbar disableGutters>
       <Typography
         noWrap
         variant="body2"
@@ -32,6 +33,30 @@ export const DataContainerView: React.SFC<DataContainerProps> = props => (
           }} />
         }
       </Typography>
+
+      {
+        props.additionalControls &&
+        props.additionalControls.map((item, index) =>
+          <Tooltip
+            key={index}
+            placement="bottom"
+            title={item.title}
+          >
+            <IconButton
+              id={item.id}
+              disabled={props.isLoading}
+              onClick={item.onClick} 
+            >
+              <Badge
+                invisible={!item.showBadgeWhen()}
+                badgeContent={<CheckCircleIcon color="primary" />}
+              >
+                <item.icon/>
+              </Badge>
+            </IconButton>
+          </Tooltip>
+        )
+      }
       
       <Tooltip
         placement="bottom"
@@ -40,9 +65,9 @@ export const DataContainerView: React.SFC<DataContainerProps> = props => (
         <IconButton
           id="option-field"
           disabled={props.isLoading}
-          onClick={props.handleOnClickMenu}
+          onClick={props.handleOnClickMenu} 
           >
-          <FilterListIcon />
+          <ReorderIcon />
         </IconButton>
       </Tooltip>
 
@@ -68,7 +93,7 @@ export const DataContainerView: React.SFC<DataContainerProps> = props => (
           disabled={props.isLoading}
           onClick={props.handleOnClickMenu}
         >
-          <LibraryBooksSharpIcon />
+          <ListAltIcon />
         </IconButton>
       </Tooltip>
 

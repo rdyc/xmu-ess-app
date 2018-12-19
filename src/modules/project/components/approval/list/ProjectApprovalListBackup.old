@@ -1,0 +1,610 @@
+import { ISystemList } from '@common/classes/response';
+import { LookupSystemDialog } from '@common/components/dialog/lookupSystemDialog/LookupSystemDialog';
+import AppMenu from '@constants/AppMenu';
+import { ICollectionValue } from '@layout/classes/core';
+import { DialogValue } from '@layout/components/dialogs/DialogValue';
+import { IListConfig, ListDataProps, ListHandler, ListPage } from '@layout/components/pages';
+import { WithLayout, withLayout } from '@layout/hoc/withLayout';
+import { WithUser, withUser } from '@layout/hoc/withUser';
+import { layoutMessage } from '@layout/locales/messages';
+import { GlobalFormat } from '@layout/types';
+import { ICustomerList } from '@lookup/classes/response';
+import { LookupCustomerDialog } from '@lookup/components/customer/dialog';
+import {
+  AppBar,
+  Button,
+  Dialog,
+  Divider,
+  IconButton,
+  List,
+  ListItem,
+  ListItemSecondaryAction,
+  ListItemText,
+  Switch,
+  Toolbar,
+  Typography,
+  WithStyles,
+  withStyles,
+} from '@material-ui/core';
+import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import CloseIcon from '@material-ui/icons/Close';
+import ClearIcon from '@material-ui/icons/SettingsBackupRestore';
+import TuneIcon from '@material-ui/icons/Tune';
+import { IProject } from '@project/classes/response';
+import { ProjectRegistrationField } from '@project/classes/types';
+import { ProjectRegistrationSumarry } from '@project/components/registration/detail/shared/ProjectRegistrationSummary';
+import { projectRegistrationFieldTranslator } from '@project/helper';
+import { WithProjectApproval, withProjectApproval } from '@project/hoc/withProjectApproval';
+import { projectMessage } from '@project/locales/messages/projectMessage';
+import styles from '@styles';
+import * as moment from 'moment';
+import * as React from 'react';
+import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
+import { RouteComponentProps, withRouter } from 'react-router';
+import {
+  compose,
+  HandleCreators,
+  lifecycle,
+  mapper,
+  ReactLifeCycleFunctions,
+  setDisplayName,
+  StateHandler,
+  StateHandlerMap,
+  StateUpdaters,
+  withHandlers,
+  withStateHandlers,
+} from 'recompose';
+
+const completionStatus: ICollectionValue[] = [
+  { value: 'pending', name: 'Pending' },
+  { value: 'complete', name: 'Complete' }
+];
+
+interface IOwnOption {
+  
+}
+
+interface IOwnState {
+  config?: IListConfig<IProject>;
+
+  // main filter
+  isFilterOpen: boolean;
+
+  // filter customer
+  isFilterCustomerOpen: boolean;
+  filterCustomer?: ICustomerList;
+
+  // filter type
+  isFilterTypeOpen: boolean;
+  filterType?: ISystemList;
+
+  // filter status
+  isFilterStatusOpen: boolean;
+  filterStatus?: ISystemList;
+
+  // filter completion
+  isFilterCompletionOpen: boolean;
+  filterCompletion?: ICollectionValue;
+
+  // filter notify
+  filterNotify?: boolean;
+}
+
+interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
+  setConfig: StateHandler<IOwnState>;
+  
+  // main filter
+  setFilterVisibility: StateHandler<IOwnState>;
+  setFilterReset: StateHandler<IOwnState>;
+
+  // filter customer
+  setFilterCustomerVisibility: StateHandler<IOwnState>;
+  setFilterCustomer: StateHandler<IOwnState>;
+
+  // filter type
+  setFilterTypeVisibility: StateHandler<IOwnState>;
+  setFilterType: StateHandler<IOwnState>;
+
+  // filter type
+  setFilterStatusVisibility: StateHandler<IOwnState>;
+  setFilterStatus: StateHandler<IOwnState>;
+
+  // filter completion
+  setFilterCompletionVisibility: StateHandler<IOwnState>;
+  setFilterCompletion: StateHandler<IOwnState>;
+  
+  // filter notify
+  setFilterNotify: StateHandler<IOwnState>;
+}
+
+interface IOwnHandler {
+  // main filter
+  handleFilterOnClick: (event: React.MouseEvent<HTMLElement>) => void;
+  handleFilterOnReset: (event: React.MouseEvent<HTMLElement>) => void;
+
+  // filter customer
+  handleFilterCustomerVisibility: (event: React.MouseEvent<HTMLElement>) => void;
+  handleFilterCustomerOnSelected: (customer: ICustomerList) => void;
+  handleFilterCustomerOnClear: (event: React.MouseEvent<HTMLElement>) => void;
+  handleFilterCustomerOnClose: () => void;
+
+  // filter type
+  handleFilterTypeVisibility: (event: React.MouseEvent<HTMLElement>) => void;
+  handleFilterTypeOnSelected: (data: ISystemList) => void;
+  handleFilterTypeOnClear: (event: React.MouseEvent<HTMLElement>) => void;
+  handleFilterTypeOnClose: () => void;
+
+  // filter status
+  handleFilterStatusVisibility: (event: React.MouseEvent<HTMLElement>) => void;
+  handleFilterStatusOnSelected: (data: ISystemList) => void;
+  handleFilterStatusOnClear: (event: React.MouseEvent<HTMLElement>) => void;
+  handleFilterStatusOnClose: () => void;
+
+  // filter completion
+  handleFilterCompletionVisibility: (event: React.MouseEvent<HTMLElement>) => void;
+  handleFilterCompletionOnSelected: (data: ICollectionValue) => void;
+  handleFilterCompletionOnClear: (event: React.MouseEvent<HTMLElement>) => void;
+  handleFilterCompletionOnClose: () => void;
+
+  // filter notify
+  handleFilterNotifyOnChange: (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => void;
+}
+
+type AllProps 
+  = IOwnOption
+  & IOwnState
+  & IOwnStateUpdater
+  & IOwnHandler
+  & WithStyles<typeof styles>
+  & WithLayout
+  & WithUser
+  & WithProjectApproval
+  & InjectedIntlProps
+  & RouteComponentProps;
+
+const listView: React.SFC<AllProps> = props => (
+  <React.Fragment>
+    {
+      props.config &&
+      <ListPage 
+        config={props.config} 
+        source={props.projectApprovalState.all} 
+        reloadOn={props.state} 
+      />
+    }
+
+    <Dialog
+      fullScreen
+      className={props.layoutState.anchor === 'right' ? props.classes.contentShiftRight : props.classes.contentShiftLeft}
+      disableBackdropClick
+      open={props.isFilterOpen}
+      onClose={() => props.setFilterVisibility()}
+    >
+      <AppBar className={props.classes.appBarDialog}>
+        <Toolbar>
+          <IconButton color="inherit" onClick={() => props.setFilterVisibility()} aria-label="Close">
+            <CloseIcon />
+          </IconButton>
+
+          <Typography variant="h6" color="inherit" className={props.classes.flex}>
+            Filter
+          </Typography>
+
+          {
+            (props.filterCustomer || props.filterType || props.filterStatus || props.filterCompletion || props.filterNotify) &&
+            <Button color="inherit" onClick={props.handleFilterOnReset}>
+              Reset
+            </Button>
+          }
+
+          <Button 
+            color="inherit" 
+            onClick={() => props.setFilterVisibility()}
+          >
+            Apply
+          </Button>
+        </Toolbar>
+      </AppBar>
+      
+      <List>
+        <ListItem>
+          <ListItemText 
+            primary="Customer" 
+            secondary={props.filterCustomer && props.filterCustomer.name || 'None'}
+          />
+          <ListItemSecondaryAction>
+            { 
+              props.filterCustomer &&
+              <IconButton onClick={props.handleFilterCustomerOnClear}>
+                <ClearIcon />
+              </IconButton> 
+            }
+
+            <IconButton
+              onClick={props.handleFilterCustomerVisibility}
+            >
+              <ChevronRightIcon />
+            </IconButton> 
+          </ListItemSecondaryAction>
+        </ListItem>
+        <Divider />
+        
+        <ListItem>
+          <ListItemText 
+            primary="Type" 
+            secondary={props.filterType && props.filterType.name || 'None'} 
+          />
+          <ListItemSecondaryAction>
+            { 
+              props.filterType &&
+              <IconButton onClick={props.handleFilterTypeOnClear}>
+                <ClearIcon />
+              </IconButton> 
+            }
+
+            <IconButton onClick={props.handleFilterTypeVisibility}>
+              <ChevronRightIcon />
+            </IconButton> 
+          </ListItemSecondaryAction>
+        </ListItem>
+        <Divider />
+
+        <ListItem>
+          <ListItemText 
+            primary="Status" 
+            secondary={props.filterStatus && props.filterStatus.name || 'None'} 
+          />
+          <ListItemSecondaryAction>
+          { 
+              props.filterStatus &&
+              <IconButton onClick={props.handleFilterStatusOnClear}>
+                <ClearIcon />
+              </IconButton> 
+            }
+
+            <IconButton onClick={props.handleFilterStatusVisibility}>
+              <ChevronRightIcon />
+            </IconButton> 
+          </ListItemSecondaryAction>
+        </ListItem>
+        <Divider />
+
+        <ListItem>
+          <ListItemText 
+            primary="Completion" 
+            secondary={props.filterCompletion && props.filterCompletion.name || 'None'} 
+          />
+          <ListItemSecondaryAction>
+          { 
+              props.filterCompletion &&
+              <IconButton onClick={props.handleFilterCompletionOnClear}>
+                <ClearIcon />
+              </IconButton> 
+            }
+
+            <IconButton onClick={props.handleFilterCompletionVisibility}>
+              <ChevronRightIcon />
+            </IconButton> 
+          </ListItemSecondaryAction>
+        </ListItem>
+        <Divider />
+
+        <ListItem>
+          <ListItemText 
+            primary="Notified Only"
+            secondary={props.filterNotify ? 'Yes' : 'No'}
+          />
+          <ListItemSecondaryAction>
+            <Switch
+              color="primary"
+              checked={props.filterNotify || false}
+              onChange={props.handleFilterNotifyOnChange}
+            />
+          </ListItemSecondaryAction>
+        </ListItem>
+        <Divider />
+
+      </List>
+    </Dialog>
+
+    <LookupCustomerDialog 
+      hideBackdrop={true}
+      isOpen={props.isFilterCustomerOpen} 
+      onSelected={props.handleFilterCustomerOnSelected} 
+      onClose={props.handleFilterCustomerOnClose}
+    />
+
+    <LookupSystemDialog
+      title="Type"
+      category="project"
+      hideBackdrop={true}
+      isOpen={props.isFilterTypeOpen}
+      value={props.filterType && props.filterType.type}
+      onSelected={props.handleFilterTypeOnSelected}
+      onClose={props.handleFilterTypeOnClose}
+    />
+
+    <LookupSystemDialog
+      title="Status"
+      category="status"
+      hideBackdrop={true}
+      isOpen={props.isFilterStatusOpen}
+      value={props.filterStatus && props.filterStatus.type}
+      onSelected={props.handleFilterStatusOnSelected}
+      onClose={props.handleFilterStatusOnClose}
+    />
+    
+    <DialogValue
+      title="Completion"
+      isOpen={props.isFilterCompletionOpen}
+      hideBackdrop={true}
+      items={completionStatus}
+      value={props.filterCompletion && props.filterCompletion.value}
+      onSelected={props.handleFilterCompletionOnSelected}
+      onClose={props.handleFilterCompletionOnClose}
+    />
+
+    <pre>
+      {JSON.stringify(props.state, null, 2)}
+    </pre>
+  </React.Fragment>
+);
+
+const createProps: mapper<AllProps, IOwnState> = (props: AllProps): IOwnState => ({
+  isFilterOpen: false,
+  isFilterCustomerOpen: false,
+  isFilterTypeOpen: false,
+  isFilterCompletionOpen: false,
+  isFilterStatusOpen: false
+});
+
+const stateUpdaters: StateUpdaters<AllProps, IOwnState, IOwnStateUpdater> = {
+  setConfig: (prevState: IOwnState) => (config: IListConfig<IProject>) => ({
+    config
+  }),
+  
+  // main filter
+  setFilterVisibility: (prevState: IOwnState) => () => ({
+    isFilterOpen: !prevState.isFilterOpen
+  }),
+  setFilterReset: (prevState: IOwnState) => () => ({
+    filterCustomer: undefined,
+    filterType: undefined,
+    filterStatus: undefined,
+    filterCompletion: undefined,
+    filterNotify: false
+  }),
+
+  // filter customer
+  setFilterCustomerVisibility: (prevState: IOwnState) => () => ({
+    isFilterCustomerOpen: !prevState.isFilterCustomerOpen
+  }),
+  setFilterCustomer: (prevState: IOwnState) => (customer?: ICustomerList) => ({
+    isFilterCustomerOpen: false,
+    filterCustomer: customer
+  }),
+
+  // filter type
+  setFilterTypeVisibility: (prevState: IOwnState) => () => ({
+    isFilterTypeOpen: !prevState.isFilterTypeOpen
+  }),
+  setFilterType: (prevState: IOwnState) => (data?: ISystemList) => ({
+    isFilterTypeOpen: false,
+    filterType: data
+  }),
+
+  // filter status
+  setFilterStatusVisibility: (prevState: IOwnState) => () => ({
+    isFilterStatusOpen: !prevState.isFilterStatusOpen
+  }),
+  setFilterStatus: (prevState: IOwnState) => (data?: ISystemList) => ({
+    isFilterStatusOpen: false,
+    filterStatus: data
+  }),
+
+  // filter completion
+  setFilterCompletionVisibility: (prevState: IOwnState) => () => ({
+    isFilterCompletionOpen: !prevState.isFilterCompletionOpen
+  }),
+  setFilterCompletion: (prevState: IOwnState) => (data?: ICollectionValue) => ({
+    isFilterCompletionOpen: false,
+    filterCompletion: data
+  }),
+
+  // filter notify
+  setFilterNotify: (prevState: IOwnState) => (checked: boolean) => ({
+    filterNotify: checked
+  }),
+};
+
+const handlerCreators: HandleCreators<AllProps, IOwnHandler> = {
+  // main filter
+  handleFilterOnClick: (props: AllProps) => (event: React.MouseEvent<HTMLElement>) => {
+    props.setFilterVisibility();
+  },
+  handleFilterOnReset: (props: AllProps) => (event: React.MouseEvent<HTMLElement>) => {
+    props.setFilterReset();
+  },
+
+  // filter customer
+  handleFilterCustomerVisibility: (props: AllProps) => (event: React.MouseEvent<HTMLElement>) => {
+    props.setFilterCustomerVisibility();
+  },
+  handleFilterCustomerOnSelected: (props: AllProps) => (customer: ICustomerList) => {
+    props.setFilterCustomer(customer);
+  },
+  handleFilterCustomerOnClear: (props: AllProps) => (event: React.MouseEvent<HTMLElement>) => {
+    props.setFilterCustomer();
+  },
+  handleFilterCustomerOnClose: (props: AllProps) => () => {
+    props.setFilterCustomerVisibility();
+  },
+
+  // filter type
+  handleFilterTypeVisibility: (props: AllProps) => (event: React.MouseEvent<HTMLElement>) => {
+    props.setFilterTypeVisibility();
+  },
+  handleFilterTypeOnSelected: (props: AllProps) => (data: ISystemList) => {
+    props.setFilterType(data);
+  },
+  handleFilterTypeOnClear: (props: AllProps) => (event: React.MouseEvent<HTMLElement>) => {
+    props.setFilterType();
+  },
+  handleFilterTypeOnClose: (props: AllProps) => () => {
+    props.setFilterTypeVisibility();
+  },
+  
+  // filter status
+  handleFilterStatusVisibility: (props: AllProps) => (event: React.MouseEvent<HTMLElement>) => {
+    props.setFilterStatusVisibility();
+  },
+  handleFilterStatusOnSelected: (props: AllProps) => (data: ISystemList) => {
+    props.setFilterStatus(data);
+  },
+  handleFilterStatusOnClear: (props: AllProps) => (event: React.MouseEvent<HTMLElement>) => {
+    props.setFilterStatus();
+  },
+  handleFilterStatusOnClose: (props: AllProps) => () => {
+    props.setFilterStatusVisibility();
+  },
+  
+  // filter completion
+  handleFilterCompletionVisibility: (props: AllProps) => (event: React.MouseEvent<HTMLElement>) => {
+    props.setFilterCompletionVisibility();
+  },
+  handleFilterCompletionOnSelected: (props: AllProps) => (data: ICollectionValue) => {
+    props.setFilterCompletion(data);
+  },
+  handleFilterCompletionOnClear: (props: AllProps) => (event: React.MouseEvent<HTMLElement>) => {
+    props.setFilterCompletion();
+  },
+  handleFilterCompletionOnClose: (props: AllProps) => () => {
+    props.setFilterCompletionVisibility();
+  },
+  
+  // filter notify
+  handleFilterNotifyOnChange: (props: AllProps) => (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
+    props.setFilterNotify(checked);
+  }
+};
+
+const lifeCycleFunctions: ReactLifeCycleFunctions<AllProps, IOwnState> = {
+  componentDidMount() { 
+    const { user } = this.props.userState;
+    const { isLoading, request, response } = this.props.projectApprovalState.all;
+    const { loadAllRequest } = this.props.projectApprovalDispatch;
+
+    const config: IListConfig<IProject> = {
+      // page
+      page: {
+        uid: AppMenu.ProjectRegistrationApproval,
+        parentUid: AppMenu.ProjectRegistration,
+        title: this.props.intl.formatMessage(projectMessage.approval.page.listTitle),
+        description: this.props.intl.formatMessage(projectMessage.approval.page.listSubHeader),
+      },
+      
+      // top bar
+      fields: Object.keys(ProjectRegistrationField)
+        .map(key => ({ 
+          value: key, 
+          name: ProjectRegistrationField[key] 
+        })),
+      fieldTranslator: projectRegistrationFieldTranslator,
+    
+      // searching
+      hasSearching: true,
+      searchStatus: () => {
+        let result: boolean = false;
+    
+        if (request && request.filter && request.filter.query) {
+          result = request.filter.query.find ? true : false;
+        }
+    
+        return result;
+      },
+    
+      // action centre
+      showActionCentre: false,
+    
+      // events
+      onDataLoad: (callback: ListHandler, params: ListDataProps, forceReload?: boolean | false) => {  
+        // when user is set and not loading
+        if (user && !isLoading) {
+          // when response are empty or force reloading
+          if (!response || forceReload) {
+            loadAllRequest({
+              filter: {
+                companyUid: user.company.uid,
+                positionUid: user.position.uid,
+                // status: this.props.filterStatus && this.props.filterStatus.type,
+                isNotify: this.props.filterNotify,
+                query: {
+                  find: params.find,
+                  findBy: params.findBy,
+                  orderBy: params.orderBy,
+                  direction: params.direction,
+                  page: params.page,
+                  size: params.size,
+                }
+              }
+            });
+          } else {
+            // just take data from previous response
+            callback.handleResponse(response);
+          }
+        }
+      },
+      onBind: (item: IProject, index: number) => ({
+        key: index,
+        primary: item.uid,
+        secondary: item.name,
+        tertiary: item.customer && item.customer.name || item.customerUid,
+        quaternary: item.project && item.project.value || item.projectType,
+        quinary: item.valueIdr && this.props.intl.formatNumber(item.valueIdr, GlobalFormat.CurrencyDefault) || '-',
+        senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
+      }),
+    
+      // summary component
+      summaryComponent: (item: IProject) => ( 
+        <ProjectRegistrationSumarry data={item} />
+      ),
+    
+      // action component
+      actionComponent: (item: IProject, callback: ListHandler) => (
+        <React.Fragment>
+          <Button 
+            size="small"
+            onClick={() => callback.handleRedirectTo(`/project/approvals/${item.uid}`)}
+          >
+            <FormattedMessage {...layoutMessage.action.details}/>
+          </Button>
+        </React.Fragment>
+      ),
+
+      // additional controls
+      additionalControls: [
+        {
+          id: 'option-filter',
+          title: 'Filter',
+          icon: TuneIcon,
+          onClick: this.props.handleFilterOnClick
+        }
+      ]
+    };
+
+    this.props.setConfig(config);
+  }
+};
+
+export const ProjectApprovalListBackup = compose<AllProps, IOwnOption>(
+  setDisplayName('ProjectApprovalList'),
+  withUser,
+  withProjectApproval,
+  withRouter,
+  withLayout,
+  withStyles(styles),
+  injectIntl,
+  withStateHandlers(createProps, stateUpdaters),
+  withHandlers(handlerCreators),
+  lifecycle(lifeCycleFunctions)
+)(listView);
