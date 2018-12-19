@@ -1,3 +1,5 @@
+import { accountMessage } from '@account/locales/messages/accountMessage';
+import { layoutMessage } from '@layout/locales/messages';
 import {
   Divider,
   ExpansionPanel,
@@ -6,7 +8,6 @@ import {
   Grid,
   List,
   ListItem,
-  ListItemSecondaryAction,
   ListItemText,
   Typography,
 } from '@material-ui/core';
@@ -20,28 +21,36 @@ export const accountAccessView: React.SFC<AccessSwitcherProps> = props => (
   <Grid container spacing={16} justify="center">
     <Grid item xs={12} md={4}>
       <div className={classNames(props.classes.marginWideTop, props.classes.marginWideBottom)}>
-        <Typography variant="body2" align="center">   
-          {
-            props.accountEmployeeMyState.detail.isLoading &&
-            <span>Please wait...</span>
-          }
+        {
+          props.accountEmployeeMyState.detail.isLoading &&
+          <Typography variant="body2" align="center">   
+            {props.intl.formatMessage(layoutMessage.text.waiting)}
+          </Typography>
+        }
 
-          {
-            !props.accountEmployeeMyState.detail.isLoading &&
-            props.accountEmployeeMyState.detail.response &&
-            <span>Hi {props.name || 'unknown'}, Please select your access</span>
-          }   
-        </Typography>
+        {
+          !props.accountEmployeeMyState.detail.isLoading &&
+          props.accountEmployeeMyState.detail.response &&
+          <React.Fragment>
+            <Typography variant="body2" align="center">   
+              {props.intl.formatMessage(accountMessage.access.message.greeting, { name: props.name })}
+            </Typography>
+            <Typography variant="body1" align="center">   
+              {props.intl.formatMessage(accountMessage.access.message.selection)}
+            </Typography>
+          </React.Fragment>
+        }   
       </div>
       
       {
         props.access.map((access, index) => 
           <ExpansionPanel key={access.companyUid} disabled={access.isExpired}>
             <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-              <Typography variant="body2">
+              <Typography variant="body1">
                 {access.company && access.company.name}
               </Typography>
             </ExpansionPanelSummary>
+
             <ExpansionPanelDetails style={{padding: 0}}>
               <List component="div" disablePadding style={{width: '100%'}}>
                 {
@@ -60,30 +69,11 @@ export const accountAccessView: React.SFC<AccessSwitcherProps> = props => (
                         >
                           <ListItemText
                             primary={item.position && item.position.name}
-                            secondary={item.role && item.role.name}
                             primaryTypographyProps={{
                               noWrap: true,
                               variant: 'body2'
                             }}
-                            secondaryTypographyProps={{
-                              noWrap: true,
-                              variant: 'caption',
-                            }}
                           />
-                          <ListItemSecondaryAction>
-                            <ListItemText
-                              primary={item.department && item.department.value}
-                              secondary={item.unit && item.unit.value}
-                              primaryTypographyProps={{
-                                noWrap: true,
-                                variant: 'body2',
-                              }}
-                              secondaryTypographyProps={{
-                                noWrap: true,
-                                variant: 'caption',
-                              }}
-                            />
-                          </ListItemSecondaryAction>
                         </ListItem> 
                       </div>
                   )

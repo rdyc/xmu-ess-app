@@ -4,7 +4,6 @@ import {
   CollectionDataProps, 
   CollectionHandler,
   CollectionPage, } from '@layout/components/pages';
-import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
 import { GlobalFormat } from '@layout/types';
@@ -14,16 +13,15 @@ import { PurchaseUserAction, SettlementField } from '@purchase/classes/types';
 import { PurchaseSettlementFilter } from '@purchase/components/purchaseSettlement/detail/shared/PurchaseSettlementFilter';
 import { SettlementSummary } from '@purchase/components/purchaseSettlement/detail/shared/SettlementSummary';
 import { purchaseSettlementFieldTranslator } from '@purchase/helper';
-import { withSettlementApproval, WithSettlementApproval } from '@purchase/hoc/settlementApproval/withSettlementApproval';
 import { purchaseMessage } from '@purchase/locales/messages/purchaseMessage';
 import * as moment from 'moment';
 import * as React from 'react';
-import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
-import { compose } from 'recompose';
+import { FormattedMessage } from 'react-intl';
+import { SettlementApprovalListProps } from './SettlementApprovalList';
 
-const config: CollectionConfig<ISettlement, AllProps> = {
+const config: CollectionConfig<ISettlement, SettlementApprovalListProps> = {
   // page info
-  page: (props: AllProps) => ({
+  page: (props: SettlementApprovalListProps) => ({
   uid: AppMenu.PurchaseSettlementApproval,
   parentUid: AppMenu.Purchase,
   title: props.intl.formatMessage(purchaseMessage.s_approval.pages.listTitle),
@@ -39,7 +37,7 @@ const config: CollectionConfig<ISettlement, AllProps> = {
 
   // searching
   hasSearching: true,
-  searchStatus: (states: AllProps): boolean => {
+  searchStatus: (states: SettlementApprovalListProps): boolean => {
     let result: boolean = false;
 
     const { request } = states.settlementApprovalState.all;
@@ -56,7 +54,7 @@ const config: CollectionConfig<ISettlement, AllProps> = {
 
   // more
   hasMore: true,
-  moreOptions: (props: AllProps, callback: CollectionHandler): IAppBarMenu[] => ([
+  moreOptions: (props: SettlementApprovalListProps, callback: CollectionHandler): IAppBarMenu[] => ([
     {
       id: PurchaseUserAction.Refresh,
       name: props.intl.formatMessage(layoutMessage.action.refresh),
@@ -67,7 +65,7 @@ const config: CollectionConfig<ISettlement, AllProps> = {
   ]),
 
   // events
-  onDataLoad: (states: AllProps, callback: CollectionHandler, params: CollectionDataProps, forceReload?: boolean | false) => {
+  onDataLoad: (states: SettlementApprovalListProps, callback: CollectionHandler, params: CollectionDataProps, forceReload?: boolean | false) => {
     const { user } = states.userState;
     const { isLoading, response } = states.settlementApprovalState.all;
     const { loadAllRequest } = states.settlementApprovalDispatch;
@@ -80,6 +78,7 @@ const config: CollectionConfig<ISettlement, AllProps> = {
           filter: {
             companyUid: user.company.uid,
             positionUid: user.position.uid,
+            customerUid: states.customerUid,
             status: 'pending',
             'query.find': params.find,
             'query.findBy': params.findBy,
@@ -95,13 +94,13 @@ const config: CollectionConfig<ISettlement, AllProps> = {
       }
     }
   },
-  onUpdated: (states: AllProps, callback: CollectionHandler) => {
+  onUpdated: (states: SettlementApprovalListProps, callback: CollectionHandler) => {
     const { isLoading, response } = states.settlementApprovalState.all;
 
     callback.handleLoading(isLoading);
     callback.handleResponse(response);
   },
-  onBind: (item: ISettlement, index: number, props: AllProps) => ({
+  onBind: (item: ISettlement, index: number, props: SettlementApprovalListProps) => ({
     key: index,
     primary: item.uid,
     secondary: item.projectUid || item.project && item.project.name || '',
@@ -133,20 +132,9 @@ const config: CollectionConfig<ISettlement, AllProps> = {
   )
 };
 
-type AllProps
-  = WithUser
-  & InjectedIntlProps
-  & WithSettlementApproval;
-
-const listView: React.SFC<AllProps> = props => (
+export const SettlementApprovalListView: React.SFC<SettlementApprovalListProps> = props => (
   <CollectionPage
     config= { config }
     connectedProps = { props }
   />
 );
-
-export const SettlementApprovalList = compose(
-  withUser,
-  injectIntl,
-  withSettlementApproval
-)(listView);

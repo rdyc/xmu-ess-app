@@ -15,3 +15,9 @@ export const homeDashboardSection = defineMessages({
   billableTitle: { id: `${prefix}.section.billable.title` },
   billableSubHeader: { id: `${prefix}.section.billable.subHeader` }
 });
+
+// text
+export const homeDashboardText = defineMessages({
+  showAll: { id: `${prefix}.text.showAll` },
+  showAllDesc: { id: `${prefix}.text.showAll.description` }
+});

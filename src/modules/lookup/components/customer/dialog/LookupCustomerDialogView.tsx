@@ -1,19 +1,20 @@
 import {
+  AppBar,
   Avatar,
   Button,
   Dialog,
-  DialogActions,
   DialogContent,
-  DialogTitle,
+  IconButton,
   InputAdornment,
   List,
   ListItem,
   ListItemAvatar,
   ListItemText,
   TextField,
+  Toolbar,
   Typography,
 } from '@material-ui/core';
-import { isWidthDown } from '@material-ui/core/withWidth';
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import BusinessIcon from '@material-ui/icons/Business';
 import SearchIcon from '@material-ui/icons/Search';
 import * as React from 'react';
@@ -24,11 +25,10 @@ import { LookupCustomerDialogProps } from './LookupCustomerDialog';
 
 export const LookupCustomerDialogView: React.SFC<LookupCustomerDialogProps> = props => {
   const { isOpen, _search } = props;
-  const { width, intl } = props;
+  const { intl } = props;
   const { onSelected, onClose, filterCustomers, searchOnChange, searchOnKeyUp } = props;
   const { response } = props.lookupCustomerState.list;
   
-  const isMobile = isWidthDown('sm', width);
   const customers = filterCustomers(response);
 
   const rowRenderer = (row: ListRowProps) => {
@@ -71,23 +71,28 @@ export const LookupCustomerDialogView: React.SFC<LookupCustomerDialogProps> = pr
 
   const render = (
     <Dialog 
-      fullScreen={isMobile}
+      fullScreen
+      hideBackdrop={props.hideBackdrop}
+      className={props.layoutState.anchor === 'right' ? props.classes.contentShiftRight : props.classes.contentShiftLeft}
       open={isOpen}
-      aria-labelledby="lookup-customer-dialog-title" 
+      aria-labelledby="lookup-customer-dialog-title"
       onClose={onClose}
     >
-      <DialogTitle 
-        id="lookup-customer-dialog-title"
-        disableTypography
-      >
-        <Typography variant="title" color="primary">
-          <FormattedMessage id="lookup.customer.lookupTitle" />
-        </Typography>
-
-        <Typography variant="subheading">
-          <FormattedMessage id="lookup.customer.lookupDescription" />
-        </Typography>
-        
+      <AppBar className={props.classes.appBarDialog}>
+        <Toolbar>
+          <IconButton color="inherit" onClick={() => onClose()} aria-label="Close">
+            <ArrowBackIcon />
+          </IconButton>
+          <Typography variant="h6" color="inherit" className={props.classes.flex}>
+            <FormattedMessage id="lookup.customer.lookupTitle" />
+          </Typography>
+          <Button color="inherit" onClick={() => onClose()}>
+            <FormattedMessage id="global.action.discard" />
+          </Button>
+        </Toolbar>
+      </AppBar>
+      
+      <DialogContent>
         <TextField
           id="lookup-customer-selector-text"
           fullWidth
@@ -106,29 +111,19 @@ export const LookupCustomerDialogView: React.SFC<LookupCustomerDialogProps> = pr
           onChange={searchOnChange}
           onKeyUp={searchOnKeyUp}
         />
-      </DialogTitle>
-      <DialogContent 
-        style={{ 
-          padding: 0 
-        }}
-      >
+        
         <List>
           <VirtualizedList
-            width={600}
-            height={550}
-            // autoWidth
-            // autoHeight
+            width={9999}
+            height={9999}
+            autoWidth
+            autoHeight
             rowCount={customers.length}
-            rowHeight={60}
+            rowHeight={70}
             rowRenderer={rowRenderer}
           />
         </List>
       </DialogContent>
-      <DialogActions>
-        <Button onClick={() => onClose()} color="secondary">
-          <FormattedMessage id="global.action.discard" />
-        </Button>
-      </DialogActions>
     </Dialog>
   );
 
