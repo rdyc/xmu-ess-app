@@ -184,7 +184,7 @@ const lifecycles: ReactLifeCycleFunctions<LeaveCalculationListProps, OwnState> =
         }
     }
   },
-  componentWillUpdate(props: LeaveCalculationListProps, state: OwnState) {
+  componentDidUpdate(props: LeaveCalculationListProps, state: OwnState) {
     // only load when these props are different
     if (
       this.props.companyUid !== props.companyUid ||
@@ -195,7 +195,10 @@ const lifecycles: ReactLifeCycleFunctions<LeaveCalculationListProps, OwnState> =
       this.props.size !== props.size ||
       this.props.find !== props.find
     ) {
-      loadData(props);
+      const { loadAllDispose } = this.props.leaveCalculationDispatch;
+
+      loadAllDispose();
+      loadData(this.props);
     }
   },
   componentWillUnmount() {

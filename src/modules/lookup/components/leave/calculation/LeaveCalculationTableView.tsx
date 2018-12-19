@@ -146,39 +146,28 @@ const leaveCalculationTableView: React.SFC<AllProps> = props => {
             data.map((item, index) => (
               <TableRow key={index}>
                 <TableCell numeric>{index + 1 + (page - 1) * size}</TableCell>
-                <TableCell>{item.employee.fullName}</TableCell>
-                <TableCell>{item.employee.joinDate}</TableCell>
+                <TableCell>{item.employee ? item.employee.fullName : 'N/A'}</TableCell>
+                <TableCell>{item.employee ? item.employee.joinDate : 'N/A'}</TableCell>
                 {item.employeeLeave && item.employeeLeave.map(emp => (
                   emp.year === year ? ( 
-                    <TableCell>
+                    <React.Fragment>
+                    <TableCell numeric>
                       {emp.previousRemain}
                     </TableCell>
-                  ) : null ))}
-                {item.employeeLeave && item.employeeLeave.map(emp => (
-                  emp.year === year ? ( 
-                    <TableCell>
+                    <TableCell numeric>
                       {emp.quota}
                     </TableCell>
-                  ) : null ))}
-                {item.employeeLeave && item.employeeLeave.map(emp => (
-                  emp.year === year ? ( 
-                    <TableCell>
+                    <TableCell numeric>
                       {emp.annualLeave}
                     </TableCell>
-                  ) : null ))}
-                {item.employeeLeave && item.employeeLeave.map(emp => (
-                  emp.year === year ? ( 
-                    <TableCell>
+                    <TableCell numeric>
                       {emp.leaveTaken}
                     </TableCell>
-                  ) : null ))}
-                {item.employeeLeave && item.employeeLeave.map(emp => (
-                  emp.year === year ? ( 
-                    <TableCell>
+                    <TableCell numeric>
                       {emp.remain}
                     </TableCell>
+                    </React.Fragment>
                   ) : null ))}
-
               </TableRow>
             ))}
         </TableBody>
