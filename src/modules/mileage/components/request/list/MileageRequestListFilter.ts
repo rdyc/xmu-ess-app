@@ -1,121 +1,246 @@
-// import { ISystemList } from '@common/classes/response';
-// import { ICollectionValue } from '@layout/classes/core';
-// import { WithLayout, withLayout } from '@layout/hoc/withLayout';
-// import { ICustomerList } from '@lookup/classes/response';
-// import { WithStyles, withStyles } from '@material-ui/core';
-// import { IProjectRegistrationGetAllFilter } from '@project/classes/filters/registration';
-// import styles from '@styles';
-// import { InjectedIntlProps, injectIntl } from 'react-intl';
-// import {
-//   compose,
-//   HandleCreators,
-//   mapper,
-//   setDisplayName,
-//   StateHandler,
-//   StateHandlerMap,
-//   StateUpdaters,
-//   withHandlers,
-//   withStateHandlers,
-// } from 'recompose';
-// import * as moment from 'moment';
-// import { IMileageRequestGetAllFilter } from '@mileage/classes/filters';
+import { ISystemList } from '@common/classes/response';
+import { ICollectionValue } from '@layout/classes/core';
+import { WithLayout, withLayout } from '@layout/hoc/withLayout';
+import { WithStyles, withStyles } from '@material-ui/core';
+import { IMileageRequestGetAllFilter } from '@mileage/classes/filters';
+import styles from '@styles';
+import * as moment from 'moment';
+import { InjectedIntlProps, injectIntl } from 'react-intl';
+import {
+  compose,
+  HandleCreators,
+  mapper,
+  setDisplayName,
+  StateHandler,
+  StateHandlerMap,
+  StateUpdaters,
+  withHandlers,
+  withStateHandlers,
+} from 'recompose';
+import { MileageRequestListFilterView } from './MileageRequestListFilterView';
 
-// import { ILookupCompany } from '@lookup/classes';
+const getYear: number = Number(moment().format('YYYY'));
 
-// const getYear: number = Number(moment().format('YYYY'));
+const yearList: ICollectionValue[] = [
+  {value: getYear - 1, name: (getYear - 1).toString() },
+  {value: getYear, name: (getYear).toString() },
+  {value: getYear + 1, name: (getYear + 1).toString() },
+];
 
-// const year: ICollectionValue = [
-//   {value: getYear - 1, name: (getYear - 1).toString() },
-//   {value: getYear, name: (getYear).toString() },
-//   {value: getYear + 1, name: (getYear + 1).toString() },
-// ];
+const monthList: ICollectionValue[] = [];
 
-// const month: ICollectionValue[] = moment.months().map((item, i) => [
-//   {value: i + 1, name: item.toString()}
-// ]);
+moment.months().map((item, i) => (
+  monthList.push({value: i + 1, name: item.toString()})
+  )
+);
 
-// export type IMileageRequestListFilterResult = Pick<IMileageRequestGetAllFilter, 'month' | 'year' | 
-// 'isRejected' | 'statusType'>;
+export type IMileageRequestListFilterResult = Pick<IMileageRequestGetAllFilter, 'month' | 'year' | 
+'isRejected' | 'statusType'>;
 
-// interface OwnOption {
-//   isOpen: boolean;
-//   initialProps?: IMileageRequestListFilterResult;
-//   onClose: (event: React.MouseEvent<HTMLElement>) => void;
-//   onApply: (filter: IMileageRequestListFilterResult) => void;
-// }
+interface OwnOption {
+  isOpen: boolean;
+  initialProps?: IMileageRequestListFilterResult;
+  onClose: (event: React.MouseEvent<HTMLElement>) => void;
+  onApply: (filter: IMileageRequestListFilterResult) => void;
+}
 
-// interface OwnState {
-//   filterMonth: ICollectionValue[];
+interface OwnState {
+  monthList: ICollectionValue[];
 
-//   filterYear: ICollectionValue[]
+  yearList: ICollectionValue[];
 
-//   // filter status
-//   isFilterStatusOpen: boolean;
-//   filterStatus?: ISystemList;
+  // filter month
+  isFilterMonthOpen: boolean;
+  filterMonth?: ICollectionValue;
 
-//   // filter rejected
-//   filterRejected?: boolean;
-// }
+  // filter year
+  isFilterYearOpen: boolean;
+  filterYear?: ICollectionValue;
 
-// interface OwnStateUpdater extends StateHandlerMap<OwnState> {
-//   // main filter
-//   setFilterReset: StateHandler<OwnState>;
+  // filter status
+  isFilterStatusOpen: boolean;
+  filterStatus?: ISystemList;
 
-//   // filter month
-//   setFilterMonthVisibility: StateHandler<OwnState>;
-//   setFilterMonth: StateHandler<OwnState>;
+  // filter rejected
+  filterRejected?: boolean;
+}
 
-//   // filter month
-//   setFilterYearVisibility: StateHandler<OwnState>;
-//   setFilterYear: StateHandler<OwnState>;
+interface OwnStateUpdater extends StateHandlerMap<OwnState> {
+  // main filter
+  setFilterReset: StateHandler<OwnState>;
 
-//   // filter status
-//   setFilterStatusVisibility: StateHandler<OwnState>;
-//   setFilterStatus: StateHandler<OwnState>;
+  // filter month
+  setFilterMonthVisibility: StateHandler<OwnState>;
+  setFilterMonth: StateHandler<OwnState>;
 
-//   // filter rejected
-//   setFilterRejected: StateHandler<OwnState>;
-// }
+  // filter month
+  setFilterYearVisibility: StateHandler<OwnState>;
+  setFilterYear: StateHandler<OwnState>;
 
-// interface OwnHandler {
-//   // main filter
-//   handleFilterOnReset: (event: React.MouseEvent<HTMLElement>) => void;
-//   handleFilterOnApply: (event: React.MouseEvent<HTMLElement>) => void;
+  // filter status
+  setFilterStatusVisibility: StateHandler<OwnState>;
+  setFilterStatus: StateHandler<OwnState>;
 
-//   // filter month
-//   handleFilterMonthVisibility: (event: React.MouseEvent<HTMLElement>) => void;
-//   handleFilterMonthOnSelected: (data: ICollectionValue) => void;
-//   handleFilterMonthOnClear: (event: React.MouseEvent<HTMLElement>) => void;
-//   handleFilterMonthOnClose: () => void;
+  // filter rejected
+  setFilterRejected: StateHandler<OwnState>;
+}
 
-//   // filter year
-//   handleFilterYearVisibility: (event: React.MouseEvent<HTMLElement>) => void;
-//   handleFilterYearOnSelected: (data: ICollectionValue) => void;
-//   handleFilterYearOnClear: (event: React.MouseEvent<HTMLElement>) => void;
-//   handleFilterYearOnClose: () => void;
+interface OwnHandler {
+  // main filter
+  handleFilterOnReset: (event: React.MouseEvent<HTMLElement>) => void;
+  handleFilterOnApply: (event: React.MouseEvent<HTMLElement>) => void;
 
-//   // filter status
-//   handleFilterStatusVisibility: (event: React.MouseEvent<HTMLElement>) => void;
-//   handleFilterStatusOnSelected: (data: ISystemList) => void;
-//   handleFilterStatusOnClear: (event: React.MouseEvent<HTMLElement>) => void;
-//   handleFilterStatusOnClose: () => void;
+  // filter month
+  handleFilterMonthVisibility: (event: React.MouseEvent<HTMLElement>) => void;
+  handleFilterMonthOnSelected: (data: ICollectionValue) => void;
+  handleFilterMonthOnClear: (event: React.MouseEvent<HTMLElement>) => void;
+  handleFilterMonthOnClose: () => void;
 
-//   // filter rejected
-//   handleFilterRejectedOnChange: (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => void;
-// }
+  // filter year
+  handleFilterYearVisibility: (event: React.MouseEvent<HTMLElement>) => void;
+  handleFilterYearOnSelected: (data: ICollectionValue) => void;
+  handleFilterYearOnClear: (event: React.MouseEvent<HTMLElement>) => void;
+  handleFilterYearOnClose: () => void;
 
-// export type MileageRequestListFilterProps
-//   = OwnOption
-//   & OwnState
-//   & OwnHandler
-//   & OwnStateUpdater
-//   & WithStyles<typeof styles>
-//   & WithLayout
-//   & InjectedIntlProps;
+  // filter status
+  handleFilterStatusVisibility: (event: React.MouseEvent<HTMLElement>) => void;
+  handleFilterStatusOnSelected: (data: ISystemList) => void;
+  handleFilterStatusOnClear: (event: React.MouseEvent<HTMLElement>) => void;
+  handleFilterStatusOnClose: () => void;
 
-// const createProps: mapper<MileageRequestListFilterProps, OwnState> = (props: MileageRequestListFilterProps): OwnState => ({
-//   filterMonth,
-//   filterYear,
-//   isFilterStatusOpen: false,
+  // filter rejected
+  handleFilterRejectedOnChange: (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => void;
+}
 
-// })
+export type MileageRequestListFilterProps
+  = OwnOption
+  & OwnState
+  & OwnHandler
+  & OwnStateUpdater
+  & WithStyles<typeof styles>
+  & WithLayout
+  & InjectedIntlProps;
+
+const createProps: mapper<MileageRequestListFilterProps, OwnState> = (props: MileageRequestListFilterProps): OwnState => ({
+  monthList,
+  yearList,
+  isFilterMonthOpen: false,
+  isFilterYearOpen: false,
+  isFilterStatusOpen: false,
+
+  // pass initial value for primitive types only, bellow is 'boolean'
+  filterRejected: props.initialProps && props.initialProps.isRejected
+});
+
+const stateUpdaters: StateUpdaters<MileageRequestListFilterProps, OwnState, OwnStateUpdater> = {
+  // main filter
+  setFilterReset: () => () => ({
+    filterMonth: undefined,
+    filterYear: undefined,
+    filterStatus: undefined,
+    filterRejected: undefined
+  }),
+
+  // filter month
+  setFilterMonthVisibility: (prevState: OwnState) => () => ({
+    isFilterMonthOpen: !prevState.isFilterMonthOpen
+  }),
+  setFilterMonth: () => (data?: ICollectionValue) => ({
+    isFilterMonthOpen: false,
+    filterMonth: data
+  }),
+
+  // filter year
+  setFilterYearVisibility: (prevState: OwnState) => () => ({
+    isFilterYearOpen: !prevState.isFilterYearOpen
+  }),
+  setFilterYear: () => (data?: ICollectionValue) => ({
+    isFilterYearOpen: false,
+    filterYear: data
+  }),
+
+  // filter status
+  setFilterStatusVisibility: (prevState: OwnState) => () => ({
+    isFilterStatusOpen: !prevState.isFilterStatusOpen
+  }),
+  setFilterStatus: () => (data?: ISystemList) => ({
+    isFilterStatusOpen: false,
+    filterStatus: data
+  }),
+
+  // filter rejected
+  setFilterRejected: () => (checked: boolean) => ({
+    filterRejected: checked
+  }),
+};
+
+const handlerCreators: HandleCreators<MileageRequestListFilterProps, OwnHandler> = {
+  // main filter
+  handleFilterOnReset: (props: MileageRequestListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
+    props.setFilterReset();
+  },
+  handleFilterOnApply: (props: MileageRequestListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
+    props.onApply({
+      month: props.filterMonth && props.filterMonth.value,
+      year: props.filterYear && props.filterYear.value,
+      statusType: props.filterStatus && props.filterStatus.type,
+      isRejected: props.filterRejected
+    });
+  },
+
+  // filter month
+  handleFilterMonthVisibility: (props: MileageRequestListFilterProps) => () => {
+    props.setFilterMonthVisibility();
+  },
+  handleFilterMonthOnSelected: (props: MileageRequestListFilterProps) => (data: ICollectionValue) => {
+    props.setFilterMonth(data);
+  },
+  handleFilterMonthOnClear: (props: MileageRequestListFilterProps) => () => {
+    props.setFilterMonth();
+  },
+  handleFilterMonthOnClose: (props: MileageRequestListFilterProps) => () => {
+    props.setFilterMonthVisibility();
+  },
+  
+  // filter year
+  handleFilterYearVisibility: (props: MileageRequestListFilterProps) => () => {
+    props.setFilterYearVisibility();
+  },
+  handleFilterYearOnSelected: (props: MileageRequestListFilterProps) => (data: ICollectionValue) => {
+    props.setFilterYear(data);
+  },
+  handleFilterYearOnClear: (props: MileageRequestListFilterProps) => () => {
+    props.setFilterYear();
+  },
+  handleFilterYearOnClose: (props: MileageRequestListFilterProps) => () => {
+    props.setFilterYearVisibility();
+  },
+  
+  // filter status
+  handleFilterStatusVisibility: (props: MileageRequestListFilterProps) => () => {
+    props.setFilterStatusVisibility();
+  },
+  handleFilterStatusOnSelected: (props: MileageRequestListFilterProps) => (data: ISystemList) => {
+    props.setFilterStatus(data);
+  },
+  handleFilterStatusOnClear: (props: MileageRequestListFilterProps) => () => {
+    props.setFilterStatus();
+  },
+  handleFilterStatusOnClose: (props: MileageRequestListFilterProps) => () => {
+    props.setFilterStatusVisibility();
+  },
+
+  // filter rejected
+  handleFilterRejectedOnChange: (props: MileageRequestListFilterProps) => (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
+    props.setFilterRejected(checked);
+  },
+};
+
+export const MileageRequestListFilter = compose<MileageRequestListFilterProps, OwnOption>(
+  setDisplayName('MileageRequestListFilter'),
+  withLayout,
+  withStyles(styles),
+  injectIntl,
+  withStateHandlers(createProps, stateUpdaters),
+  withHandlers(handlerCreators)
+)(MileageRequestListFilterView);

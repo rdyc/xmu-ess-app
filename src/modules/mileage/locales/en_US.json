@@ -34,6 +34,8 @@
   "mileage.request.field.information.month.required": "Month is required",
   "mileage.request.field.information.month.placeholder": "Select a month",
 
+  "mileage.request.field.isRejected": "Rejected Only",
+
   "mileage.request.field.information.noData": "N/A",
 
   "mileage.request.field.submit.title": "Submit Mileage",
