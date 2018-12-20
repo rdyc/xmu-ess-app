@@ -1,7 +1,7 @@
 export enum ExpenseField {
   uid = 'Expense ID',
   // customerUid = 'Customer',
-  projectUid = 'Project ID',
+  // projectUid = 'Project ID',
   // date = 'Date',
   // expenseType = 'Expense Type',
   // location = 'Location',
