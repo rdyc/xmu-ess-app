@@ -8,9 +8,7 @@ import { WithUser, withUser } from '@layout/hoc/withUser';
 import { layoutMessage } from '@layout/locales/messages';
 import { GlobalFormat } from '@layout/types';
 import { Button } from '@material-ui/core';
-import AddCircleIcon from '@material-ui/icons/AddCircle';
 import TuneIcon from '@material-ui/icons/Tune';
-import { isRequestEditable } from '@organization/helper/isRequestEditable';
 import * as moment from 'moment';
 import * as React from 'react';
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
@@ -77,6 +75,7 @@ const listView: React.SFC<AllProps> = props => (
           isOpen={props.isFilterOpen}
           initialProps={{
             customerUid: props.customerUid,
+            projectUid: props.projectUid,
             expenseType: props.expenseType,
             statusType: props.statusType,
             status: props.status,
@@ -158,16 +157,6 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
 
       // action centre
       showActionCentre: false,
-
-      // toolbar controls
-      toolbarControls: (callback: ListHandler) => [
-        {
-          icon: AddCircleIcon,
-          onClick: () => { 
-            this.props.history.push('/expense/approvals/form'); 
-          }
-        }
-      ],
     
       // events
       onDataLoad: (callback: ListHandler, params: ListDataProps, forceReload?: boolean | false) => {
@@ -180,6 +169,7 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
                 companyUid: user.company.uid,
                 positionUid: user.position.uid,
                 customerUid: this.props.customerUid,
+                projectUid: this.props.projectUid,
                 expenseType: this.props.expenseType,
                 start: undefined,
                 end: undefined,
@@ -220,16 +210,6 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
       // action component
       actionComponent: (item: IExpense, callback: ListHandler) => (
         <React.Fragment>
-          {
-            isRequestEditable(item.statusType) &&
-            <Button 
-              size="small"
-              onClick={() => this.props.history.push(`/expense/approvals/form`, { uid: item.uid })}
-            >
-              <FormattedMessage {...layoutMessage.action.modify}/>
-            </Button>
-          }
-
           <Button 
             size="small"
             onClick={() => this.props.history.push(`/expense/approvals/${item.uid}`)}
@@ -247,7 +227,7 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
           icon: TuneIcon,
           showBadgeWhen: () => {
             return this.props.customerUid !== undefined || 
-              this.props.projectType !== undefined || 
+              this.props.projectUid !== undefined || 
               this.props.statusType !== undefined || 
               this.props.status !== undefined || 
               this.props.isNotify === true;

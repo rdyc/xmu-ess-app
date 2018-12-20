@@ -22,6 +22,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import ClearIcon from '@material-ui/icons/SettingsBackupRestore';
 import * as React from 'react';
 
+import { ProjectRegistrationDialog } from '@project/components/dialog/project';
 import { ExpenseApprovalListFilterProps } from './ExpenseApprovalListFilter';
 
 export const ExpenseApprovalListFilterView: React.SFC<ExpenseApprovalListFilterProps> = props => (
@@ -74,6 +75,26 @@ export const ExpenseApprovalListFilterView: React.SFC<ExpenseApprovalListFilterP
             }
 
             <IconButton onClick={props.handleFilterCustomerVisibility}>
+              <ChevronRightIcon />
+            </IconButton> 
+          </ListItemSecondaryAction>
+        </ListItem>
+        <Divider />
+
+        <ListItem button onClick={props.filterCustomer && props.handleFilterProjectVisibility}>
+          <ListItemText 
+            primary={props.intl.formatMessage(expenseMessage.request.field.projectUid)}
+            secondary={props.filterProject && props.filterProject.name || props.intl.formatMessage(layoutMessage.text.none)}
+          />
+          <ListItemSecondaryAction>
+            { 
+              props.filterProject &&
+              <IconButton onClick={props.handleFilterProjectOnClear}>
+                <ClearIcon />
+              </IconButton> 
+            }
+
+            <IconButton onClick={props.filterCustomer && props.handleFilterProjectVisibility}>
               <ChevronRightIcon />
             </IconButton> 
           </ListItemSecondaryAction>
@@ -164,6 +185,14 @@ export const ExpenseApprovalListFilterView: React.SFC<ExpenseApprovalListFilterP
       onSelected={props.handleFilterCustomerOnSelected} 
       onClose={props.handleFilterCustomerOnClose}
       filter={props.filterCustomerDialog}
+    />
+
+    <ProjectRegistrationDialog 
+      hideBackdrop={true}
+      isOpen={props.isFilterProjectOpen} 
+      filter={props.filterProjectDialog}
+      onSelected={props.handleFilterProjectOnSelected} 
+      onClose={props.handleFilterProjectOnClose}
     />
 
     <LookupSystemDialog

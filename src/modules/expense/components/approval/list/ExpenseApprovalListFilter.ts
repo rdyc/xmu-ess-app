@@ -20,6 +20,8 @@ import {
 
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { ILookupCustomerGetListFilter } from '@lookup/classes/filters/customer';
+import { IProjectRegistrationGetListFilter } from '@project/classes/filters/registration';
+import { IProjectList } from '@project/classes/response';
 import { ExpenseApprovalListFilterView } from './ExpenseApprovalListFilterView';
 
 const completionStatus: ICollectionValue[] = [
@@ -27,7 +29,7 @@ const completionStatus: ICollectionValue[] = [
   { value: 'complete', name: 'Complete' }
 ];
 
-export type IExpenseApprovalListFilterResult = Pick<IExpenseApprovalGetAllFilter, 'customerUid' | 'expenseType' | 'statusType' | 'status' | 'isNotify' >;
+export type IExpenseApprovalListFilterResult = Pick<IExpenseApprovalGetAllFilter, 'customerUid' | 'projectUid' | 'expenseType' | 'statusType' | 'status' | 'isNotify' >;
 
 interface IOwnOption {
   isOpen: boolean;
@@ -43,6 +45,16 @@ interface IOwnState {
   isFilterCustomerOpen: boolean;
   filterCustomer?: ICustomerList;
 
+  // filter Customer Dialog
+  filterCustomerDialog: ILookupCustomerGetListFilter;
+
+  // filter project
+  isFilterProjectOpen: boolean;
+  filterProject?: IProjectList;
+
+  // filter Project Dialog
+  filterProjectDialog: IProjectRegistrationGetListFilter;
+
   // filter type
   isFilterTypeOpen: boolean;
   filterType?: ISystemList;
@@ -57,9 +69,6 @@ interface IOwnState {
 
   // filter rejected
   filterNotify?: boolean;
-
-  // filter Customer Dialog
-  filterCustomerDialog: ILookupCustomerGetListFilter;
 }
 
 interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
@@ -69,6 +78,10 @@ interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
   // filter customer
   setFilterCustomerVisibility: StateHandler<IOwnState>;
   setFilterCustomer: StateHandler<IOwnState>;
+
+  // filter project
+  setFilterProjectVisibility: StateHandler<IOwnState>;
+  setFilterProject: StateHandler<IOwnState>;
 
   // filter type
   setFilterTypeVisibility: StateHandler<IOwnState>;
@@ -83,7 +96,7 @@ interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
   setFilterCompletion: StateHandler<IOwnState>;
   
   // filter rejected
-  setFilterRejected: StateHandler<IOwnState>;
+  setFilterNotify: StateHandler<IOwnState>;
 }
 
 interface IOwnHandler {
@@ -96,6 +109,12 @@ interface IOwnHandler {
   handleFilterCustomerOnSelected: (customer: ICustomerList) => void;
   handleFilterCustomerOnClear: (event: React.MouseEvent<HTMLElement>) => void;
   handleFilterCustomerOnClose: () => void;
+
+  // filter project
+  handleFilterProjectVisibility: (event: React.MouseEvent<HTMLElement>) => void;
+  handleFilterProjectOnSelected: (project: IProjectList) => void;
+  handleFilterProjectOnClear: (event: React.MouseEvent<HTMLElement>) => void;
+  handleFilterProjectOnClose: () => void;
 
   // filter type
   handleFilterTypeVisibility: (event: React.MouseEvent<HTMLElement>) => void;
@@ -132,6 +151,7 @@ export type ExpenseApprovalListFilterProps
 const createProps: mapper<ExpenseApprovalListFilterProps, IOwnState> = (props: ExpenseApprovalListFilterProps): IOwnState => ({
   completionStatus,
   isFilterCustomerOpen: false,
+  isFilterProjectOpen: false,
   isFilterTypeOpen: false,
   isFilterCompletionOpen: false,
   isFilterStatusOpen: false,
@@ -142,6 +162,11 @@ const createProps: mapper<ExpenseApprovalListFilterProps, IOwnState> = (props: E
   // default filter customer dialog
   filterCustomerDialog: {
     companyUid: props.userState.user ? props.userState.user.company.uid : undefined
+  },
+
+  // default filter project dialog
+  filterProjectDialog: {
+    customerUids: undefined
   }
 });
 
@@ -161,7 +186,19 @@ const stateUpdaters: StateUpdaters<ExpenseApprovalListFilterProps, IOwnState, IO
   }),
   setFilterCustomer: (prevState: IOwnState) => (customer?: ICustomerList) => ({
     isFilterCustomerOpen: false,
-    filterCustomer: customer
+    filterCustomer: customer,
+    filterProjectDialog: {
+      customerUids: customer && [customer.uid] || undefined
+    }
+  }),
+
+  // filter project
+  setFilterProjectVisibility: (prevState: IOwnState) => () => ({
+    isFilterProjectOpen: !prevState.isFilterProjectOpen
+  }),
+  setFilterProject: (prevState: IOwnState) => (project?: IProjectList) => ({
+    isFilterProjectOpen: false,
+    filterProject: project
   }),
 
   // filter type
@@ -192,7 +229,7 @@ const stateUpdaters: StateUpdaters<ExpenseApprovalListFilterProps, IOwnState, IO
   }),
 
   // filter rejected
-  setFilterRejected: (prevState: IOwnState) => (checked: boolean) => ({
+  setFilterNotify: (prevState: IOwnState) => (checked: boolean) => ({
     filterNotify: checked
   }),
 };
@@ -205,6 +242,7 @@ const handlerCreators: HandleCreators<ExpenseApprovalListFilterProps, IOwnHandle
   handleFilterOnApply: (props: ExpenseApprovalListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
     props.onApply({
       customerUid: props.filterCustomer && props.filterCustomer.uid,
+      projectUid: props.filterProject && props.filterProject.uid,
       expenseType: props.filterType && props.filterType.type,
       statusType: props.filterStatus && props.filterStatus.type,
       status: props.filterCompletion && props.filterCompletion.value,
@@ -224,6 +262,20 @@ const handlerCreators: HandleCreators<ExpenseApprovalListFilterProps, IOwnHandle
   },
   handleFilterCustomerOnClose: (props: ExpenseApprovalListFilterProps) => () => {
     props.setFilterCustomerVisibility();
+  },
+
+  // filter project
+  handleFilterProjectVisibility: (props: ExpenseApprovalListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
+    props.setFilterProjectVisibility();
+  },
+  handleFilterProjectOnSelected: (props: ExpenseApprovalListFilterProps) => (project: IProjectList) => {
+    props.setFilterProject(project);
+  },
+  handleFilterProjectOnClear: (props: ExpenseApprovalListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
+    props.setFilterProject();
+  },
+  handleFilterProjectOnClose: (props: ExpenseApprovalListFilterProps) => () => {
+    props.setFilterProjectVisibility();
   },
 
   // filter type
@@ -270,7 +322,7 @@ const handlerCreators: HandleCreators<ExpenseApprovalListFilterProps, IOwnHandle
   
   // filter rejected
   handleFilterRejectedOnChange: (props: ExpenseApprovalListFilterProps) => (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
-    props.setFilterRejected(checked);
+    props.setFilterNotify(checked);
   },
 };
 
