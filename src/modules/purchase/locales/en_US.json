@@ -93,6 +93,9 @@
   "purchase.field.information.actualInIDR": "Actual Value (IDR)",
   "purchase.field.information.difference": " Difference",
   "purchase.field.information.differenceInIDR": "Difference Value (IDR)",
+
+  "purchase.field.isNotify": "Notify Status",
+  "purchase.field.completion": "Purchase Status",
   
   "purchase.action.modify": "Modify",
   "purchase.action.settle": "Settle",
