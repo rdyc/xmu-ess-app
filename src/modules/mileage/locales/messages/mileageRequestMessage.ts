@@ -53,6 +53,10 @@ export const mileageRequestField = defineMessages({
   submitTitle: { id: `${prefix}.field.submit.title`},
   submitSubHeader: { id: `${prefix}.field.submit.subHeader`},
 
+  employee: { id: `${prefix}.field.employee`},
+
+  isNotify: { id: `${prefix}.field.isNotify` },
+  completion: { id: `${prefix}.field.completion` },
   isRejected: { id: `${prefix}.field.isRejected` },
 });
 

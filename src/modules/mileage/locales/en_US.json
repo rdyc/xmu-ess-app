@@ -34,7 +34,11 @@
   "mileage.request.field.information.month.required": "Month is required",
   "mileage.request.field.information.month.placeholder": "Select a month",
 
+  "mileage.request.field.employee": "Employee",
+
+  "mileage.request.field.isNotify": "Notify Only",
   "mileage.request.field.isRejected": "Rejected Only",
+  "mileage.request.field.completion": "Completion",
 
   "mileage.request.field.information.noData": "N/A",
 

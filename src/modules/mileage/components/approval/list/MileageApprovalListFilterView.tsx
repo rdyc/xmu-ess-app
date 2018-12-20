@@ -21,9 +21,10 @@ import ClearIcon from '@material-ui/icons/SettingsBackupRestore';
 import { mileageMessage } from '@mileage/locales/messages/mileageMessage';
 import * as React from 'react';
 
-import { MileageRequestListFilterProps } from './MileageRequestListFilter';
+import { EmployeeFilter } from '../filter';
+import { MileageApprovalListFilterProps } from './MileageApprovalListFilter';
 
-export const MileageRequestListFilterView: React.SFC<MileageRequestListFilterProps> = props => (
+export const MileageApprovalListFilterView: React.SFC<MileageApprovalListFilterProps> = props => (
   <React.Fragment>
     <Dialog
       fullScreen
@@ -61,6 +62,26 @@ export const MileageRequestListFilterView: React.SFC<MileageRequestListFilterPro
 
       <List>
         
+        <ListItem button onClick={props.handleFilterEmployeeVisibility}>
+          <ListItemText 
+            primary={props.intl.formatMessage(mileageMessage.request.field.employee)}
+            secondary={props.filterEmployee && props.filterEmployee.employee && props.filterEmployee.employee.fullName || props.intl.formatMessage(layoutMessage.text.none)}
+          />
+          <ListItemSecondaryAction>
+            { 
+              props.filterEmployee &&
+              <IconButton onClick={props.handleFilterEmployeeOnClear}>
+                <ClearIcon />
+              </IconButton> 
+            }
+
+            <IconButton onClick={props.handleFilterEmployeeVisibility}>
+              <ChevronRightIcon />
+            </IconButton> 
+          </ListItemSecondaryAction>
+        </ListItem>
+        <Divider />
+
         <ListItem button onClick={props.handleFilterMonthVisibility}>
           <ListItemText 
             primary={props.intl.formatMessage(mileageMessage.request.field.month)}
@@ -143,14 +164,14 @@ export const MileageRequestListFilterView: React.SFC<MileageRequestListFilterPro
 
         <ListItem>
           <ListItemText 
-            primary={props.intl.formatMessage(mileageMessage.request.field.isRejected)}
-            secondary={props.intl.formatMessage(props.filterRejected ? layoutMessage.action.yes : layoutMessage.action.no)}
+            primary={props.intl.formatMessage(mileageMessage.request.field.isNotify)}
+            secondary={props.intl.formatMessage(props.filterNotify ? layoutMessage.action.yes : layoutMessage.action.no)}
           />
           <ListItemSecondaryAction>
             <Switch
               color="primary"
-              checked={props.filterRejected || false}
-              onChange={props.handleFilterRejectedOnChange}
+              checked={props.filterNotify || false}
+              onChange={props.handleFilterNotifyOnChange}
             />
           </ListItemSecondaryAction>
         </ListItem>
@@ -158,6 +179,15 @@ export const MileageRequestListFilterView: React.SFC<MileageRequestListFilterPro
 
       </List>
     </Dialog>
+
+    <EmployeeFilter 
+      title={props.intl.formatMessage(mileageMessage.request.field.employee)}
+      hideBackdrop={true}
+      isOpen={props.isFilterEmployeeOpen}
+      value={props.filterEmployee && props.filterEmployee.employeeUid}
+      onSelected={props.handleFilterEmployeeOnSelected}
+      onClose={props.handleFilterEmployeeOnClose}
+    />
 
     <DialogValue
       title={props.intl.formatMessage(mileageMessage.request.field.month)}

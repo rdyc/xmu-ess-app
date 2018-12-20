@@ -2,7 +2,7 @@ import { ISystemList } from '@common/classes/response';
 import { ICollectionValue } from '@layout/classes/core';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithStyles, withStyles } from '@material-ui/core';
-import { IMileageRequestGetAllFilter } from '@mileage/classes/filters';
+import { IMileageApprovalGetAllFilter } from '@mileage/classes/filters';
 import styles from '@styles';
 import * as moment from 'moment';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
@@ -17,7 +17,9 @@ import {
   withHandlers,
   withStateHandlers,
 } from 'recompose';
-import { MileageRequestListFilterView } from './MileageRequestListFilterView';
+
+import { IMileageRequest } from '@mileage/classes/response';
+import { MileageApprovalListFilterView } from './MileageApprovalListFilterView';
 
 const getYear: number = Number(moment().format('YYYY'));
 
@@ -39,14 +41,14 @@ const completionStatus: ICollectionValue[] = [
   { value: 'complete', name: 'Complete' }
 ];
 
-export type IMileageRequestListFilterResult = Pick<IMileageRequestGetAllFilter, 
-'month' | 'year' | 'isRejected' | 'statusType' | 'status'>;
+export type IMileageApprovalListFilterResult = Pick<IMileageApprovalGetAllFilter, 
+  'employeeUid' | 'month' | 'year' | 'statusType' | 'status' | 'isNotify'>;
 
 interface OwnOption {
   isOpen: boolean;
-  initialProps?: IMileageRequestListFilterResult;
+  initialProps?: IMileageApprovalListFilterResult;
   onClose: (event: React.MouseEvent<HTMLElement>) => void;
-  onApply: (filter: IMileageRequestListFilterResult) => void;
+  onApply: (filter: IMileageApprovalListFilterResult) => void;
 }
 
 interface OwnState {
@@ -55,6 +57,10 @@ interface OwnState {
   monthList: ICollectionValue[];
 
   yearList: ICollectionValue[];
+
+  // filter employee
+  isFilterEmployeeOpen: boolean;
+  filterEmployee?: IMileageRequest;
 
   // filter month
   isFilterMonthOpen: boolean;
@@ -72,13 +78,17 @@ interface OwnState {
   isFilterCompletionOpen: boolean;
   filterCompletion?: ICollectionValue;
 
-  // filter rejected
-  filterRejected?: boolean;
+  // filter notify
+  filterNotify?: boolean;
 }
 
 interface OwnStateUpdater extends StateHandlerMap<OwnState> {
   // main filter
   setFilterReset: StateHandler<OwnState>;
+
+  // filter employee
+  setFilterEmployeeVisibility: StateHandler<OwnState>;
+  setFilterEmployee: StateHandler<OwnState>;
 
   // filter month
   setFilterMonthVisibility: StateHandler<OwnState>;
@@ -96,14 +106,20 @@ interface OwnStateUpdater extends StateHandlerMap<OwnState> {
   setFilterCompletionVisibility: StateHandler<OwnState>;
   setFilterCompletion: StateHandler<OwnState>;
 
-  // filter rejected
-  setFilterRejected: StateHandler<OwnState>;
+  // filter notify
+  setFilterNotify: StateHandler<OwnState>;
 }
 
 interface OwnHandler {
   // main filter
   handleFilterOnReset: (event: React.MouseEvent<HTMLElement>) => void;
   handleFilterOnApply: (event: React.MouseEvent<HTMLElement>) => void;
+
+  // filter employee
+  handleFilterEmployeeVisibility: (event: React.MouseEvent<HTMLElement>) => void;
+  handleFilterEmployeeOnSelected: (employee: IMileageRequest) => void;
+  handleFilterEmployeeOnClear: (event: React.MouseEvent<HTMLElement>) => void;
+  handleFilterEmployeeOnClose: () => void;
 
   // filter month
   handleFilterMonthVisibility: (event: React.MouseEvent<HTMLElement>) => void;
@@ -129,11 +145,11 @@ interface OwnHandler {
   handleFilterCompletionOnClear: (event: React.MouseEvent<HTMLElement>) => void;
   handleFilterCompletionOnClose: () => void;
 
-  // filter rejected
-  handleFilterRejectedOnChange: (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => void;
+  // filter notify
+  handleFilterNotifyOnChange: (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => void;
 }
 
-export type MileageRequestListFilterProps
+export type MileageApprovalListFilterProps
   = OwnOption
   & OwnState
   & OwnHandler
@@ -142,29 +158,40 @@ export type MileageRequestListFilterProps
   & WithLayout
   & InjectedIntlProps;
 
-const createProps: mapper<MileageRequestListFilterProps, OwnState> = (props: MileageRequestListFilterProps): OwnState => ({
+const createProps: mapper<MileageApprovalListFilterProps, OwnState> = (props: MileageApprovalListFilterProps): OwnState => ({
   monthList,
   yearList,
   completionStatus,
+  isFilterEmployeeOpen: false,
   isFilterMonthOpen: false,
   isFilterYearOpen: false,
   isFilterStatusOpen: false,
   isFilterCompletionOpen: false,
 
   // pass initial value for primitive types only, bellow is 'boolean'
-  filterRejected: props.initialProps && props.initialProps.isRejected
+  filterNotify: props.initialProps && props.initialProps.isNotify
 });
 
-const stateUpdaters: StateUpdaters<MileageRequestListFilterProps, OwnState, OwnStateUpdater> = {
+const stateUpdaters: StateUpdaters<MileageApprovalListFilterProps, OwnState, OwnStateUpdater> = {
   // main filter
   setFilterReset: () => () => ({
+    filterEmployee: undefined,
     filterMonth: undefined,
     filterYear: undefined,
     filterStatus: undefined,
     filterCompletion: undefined,
-    filterRejected: undefined
+    filterNotify: undefined
   }),
 
+  // filter employee
+  setFilterEmployeeVisibility: (prevState: OwnState) => () => ({
+    isFilterEmployeeOpen: !prevState.isFilterEmployeeOpen
+  }),
+  setFilterEmployee: () => (employee?: IMileageRequest) => ({
+    isFilterEmployeeOpen: false,
+    filterEmployee: employee
+  }),
+  
   // filter month
   setFilterMonthVisibility: (prevState: OwnState) => () => ({
     isFilterMonthOpen: !prevState.isFilterMonthOpen
@@ -201,94 +228,109 @@ const stateUpdaters: StateUpdaters<MileageRequestListFilterProps, OwnState, OwnS
     filterCompletion: data
   }),
 
-  // filter rejected
-  setFilterRejected: () => (checked: boolean) => ({
-    filterRejected: checked
+  // filter notify
+  setFilterNotify: (prevState: OwnState) => (checked: boolean) => ({
+    filterNotify: checked
   }),
 };
 
-const handlerCreators: HandleCreators<MileageRequestListFilterProps, OwnHandler> = {
+const handlerCreators: HandleCreators<MileageApprovalListFilterProps, OwnHandler> = {
   // main filter
-  handleFilterOnReset: (props: MileageRequestListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
+  handleFilterOnReset: (props: MileageApprovalListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
     props.setFilterReset();
   },
-  handleFilterOnApply: (props: MileageRequestListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
+  handleFilterOnApply: (props: MileageApprovalListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
     props.onApply({
+      employeeUid: props.filterEmployee && props.filterEmployee.employeeUid,
       month: props.filterMonth && props.filterMonth.value,
       year: props.filterYear && props.filterYear.value,
       statusType: props.filterStatus && props.filterStatus.type,
       status: props.filterCompletion && props.filterCompletion.value,
-      isRejected: props.filterRejected
+      isNotify: props.filterNotify
     });
   },
 
+  // filter employee
+  handleFilterEmployeeVisibility: (props: MileageApprovalListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
+    props.setFilterEmployeeVisibility();
+  },
+  handleFilterEmployeeOnSelected: (props: MileageApprovalListFilterProps) => (employee: IMileageRequest) => {
+    props.setFilterEmployee(employee);
+  },
+  handleFilterEmployeeOnClear: (props: MileageApprovalListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
+    props.setFilterEmployee();
+  },
+  handleFilterEmployeeOnClose: (props: MileageApprovalListFilterProps) => () => {
+    props.setFilterEmployeeVisibility();
+  },
+
   // filter month
-  handleFilterMonthVisibility: (props: MileageRequestListFilterProps) => () => {
+  handleFilterMonthVisibility: (props: MileageApprovalListFilterProps) => () => {
     props.setFilterMonthVisibility();
   },
-  handleFilterMonthOnSelected: (props: MileageRequestListFilterProps) => (data: ICollectionValue) => {
+  handleFilterMonthOnSelected: (props: MileageApprovalListFilterProps) => (data: ICollectionValue) => {
     props.setFilterMonth(data);
   },
-  handleFilterMonthOnClear: (props: MileageRequestListFilterProps) => () => {
+  handleFilterMonthOnClear: (props: MileageApprovalListFilterProps) => () => {
     props.setFilterMonth();
   },
-  handleFilterMonthOnClose: (props: MileageRequestListFilterProps) => () => {
+  handleFilterMonthOnClose: (props: MileageApprovalListFilterProps) => () => {
     props.setFilterMonthVisibility();
   },
   
   // filter year
-  handleFilterYearVisibility: (props: MileageRequestListFilterProps) => () => {
+  handleFilterYearVisibility: (props: MileageApprovalListFilterProps) => () => {
     props.setFilterYearVisibility();
   },
-  handleFilterYearOnSelected: (props: MileageRequestListFilterProps) => (data: ICollectionValue) => {
+  handleFilterYearOnSelected: (props: MileageApprovalListFilterProps) => (data: ICollectionValue) => {
     props.setFilterYear(data);
   },
-  handleFilterYearOnClear: (props: MileageRequestListFilterProps) => () => {
+  handleFilterYearOnClear: (props: MileageApprovalListFilterProps) => () => {
     props.setFilterYear();
   },
-  handleFilterYearOnClose: (props: MileageRequestListFilterProps) => () => {
+  handleFilterYearOnClose: (props: MileageApprovalListFilterProps) => () => {
     props.setFilterYearVisibility();
   },
   
   // filter status
-  handleFilterStatusVisibility: (props: MileageRequestListFilterProps) => () => {
+  handleFilterStatusVisibility: (props: MileageApprovalListFilterProps) => () => {
     props.setFilterStatusVisibility();
   },
-  handleFilterStatusOnSelected: (props: MileageRequestListFilterProps) => (data: ISystemList) => {
+  handleFilterStatusOnSelected: (props: MileageApprovalListFilterProps) => (data: ISystemList) => {
     props.setFilterStatus(data);
   },
-  handleFilterStatusOnClear: (props: MileageRequestListFilterProps) => () => {
+  handleFilterStatusOnClear: (props: MileageApprovalListFilterProps) => () => {
     props.setFilterStatus();
   },
-  handleFilterStatusOnClose: (props: MileageRequestListFilterProps) => () => {
+  handleFilterStatusOnClose: (props: MileageApprovalListFilterProps) => () => {
     props.setFilterStatusVisibility();
   },
 
   // filter completion
-  handleFilterCompletionVisibility: (props: MileageRequestListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
+  handleFilterCompletionVisibility: (props: MileageApprovalListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
     props.setFilterCompletionVisibility();
   },
-  handleFilterCompletionOnSelected: (props: MileageRequestListFilterProps) => (data: ICollectionValue) => {
+  handleFilterCompletionOnSelected: (props: MileageApprovalListFilterProps) => (data: ICollectionValue) => {
     props.setFilterCompletion(data);
   },
-  handleFilterCompletionOnClear: (props: MileageRequestListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
+  handleFilterCompletionOnClear: (props: MileageApprovalListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
     props.setFilterCompletion();
   },
-  handleFilterCompletionOnClose: (props: MileageRequestListFilterProps) => () => {
+  handleFilterCompletionOnClose: (props: MileageApprovalListFilterProps) => () => {
     props.setFilterCompletionVisibility();
   },
 
-  // filter rejected
-  handleFilterRejectedOnChange: (props: MileageRequestListFilterProps) => (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
-    props.setFilterRejected(checked);
-  },
+  // filter notify
+  handleFilterNotifyOnChange: (props: MileageApprovalListFilterProps) => (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
+    props.setFilterNotify(checked);
+  }
 };
 
-export const MileageRequestListFilter = compose<MileageRequestListFilterProps, OwnOption>(
-  setDisplayName('MileageRequestListFilter'),
+export const MileageApprovalListFilter = compose<MileageApprovalListFilterProps, OwnOption>(
+  setDisplayName('MileageApprovalListFilter'),
   withLayout,
   withStyles(styles),
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators)
-)(MileageRequestListFilterView);
+)(MileageApprovalListFilterView);

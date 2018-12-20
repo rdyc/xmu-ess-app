@@ -4,7 +4,6 @@ import { WithUser, withUser } from '@layout/hoc/withUser';
 import { layoutMessage } from '@layout/locales/messages';
 import { GlobalFormat } from '@layout/types';
 import { Button } from '@material-ui/core';
-import AddCircleIcon from '@material-ui/icons/AddCircle';
 import TuneIcon from '@material-ui/icons/Tune';
 import * as moment from 'moment';
 import * as React from 'react';
@@ -26,16 +25,16 @@ import {
 
 import { IMileageRequest } from '@mileage/classes/response';
 import { MileageRequestField } from '@mileage/classes/types';
-import { WithMileageRequest, withMileageRequest } from '@mileage/hoc/withMileageRequest';
+import { MileageSummary } from '@mileage/components/request/shared/MileageSummary';
+import { withMileageApproval, WithMileageApproval } from '@mileage/hoc/withMileageApproval';
 import { mileageMessage } from '@mileage/locales/messages/mileageMessage';
-import { MileageSummary } from '../shared/MileageSummary';
-import { IMileageRequestListFilterResult, MileageRequestListFilter } from './MileageRequestListFilter';
+import { IMileageApprovalListFilterResult, MileageApprovalListFilter } from './MileageApprovalListFilter';
 
 interface OwnOption {
   
 }
 
-interface OwnState extends IMileageRequestListFilterResult {
+interface OwnState extends IMileageApprovalListFilterResult {
   shouldUpdate: boolean;
   config?: IListConfig<IMileageRequest>;
   isFilterOpen: boolean;
@@ -59,7 +58,7 @@ type AllProps
   & OwnHandler
   & OwnStateUpdater
   & WithUser
-  & WithMileageRequest
+  & WithMileageApproval
   & InjectedIntlProps
   & RouteComponentProps;
 
@@ -69,17 +68,18 @@ const listView: React.SFC<AllProps> = props => (
       props.config &&
       <ListPage
         config={props.config}
-        source={props.mileageRequestState.all}
+        source={props.mileageApprovalState.all}
         loadDataWhen={props.shouldUpdate}
       >
-        <MileageRequestListFilter 
+        <MileageApprovalListFilter 
           isOpen={props.isFilterOpen}
           initialProps={{
+            employeeUid: props.employeeUid,
             month: props.month,
             year: props.year,
-            status: props.status,
             statusType: props.statusType,
-            isRejected: props.isRejected
+            status: props.status,
+            isNotify: props.isNotify
           }}
           onClose={props.handleFilterVisibility}
           onApply={props.handleFilterApplied}
@@ -94,8 +94,8 @@ const createProps: mapper<AllProps, OwnState> = (props: AllProps): OwnState => (
   isFilterOpen: false,
 
   // fill partial props from location state to handle redirection from dashboard notif
-  isRejected: props.location.state && props.location.state.isRejected,
   status: props.location.state && props.location.state.status,
+  isNotify: props.location.state && props.location.state.isNotify
 });
 
 const stateUpdaters: StateUpdaters<AllProps, OwnState, OwnStateUpdater> = {
@@ -108,7 +108,7 @@ const stateUpdaters: StateUpdaters<AllProps, OwnState, OwnStateUpdater> = {
   setFilterVisibility: (prevState: OwnState) => () => ({
     isFilterOpen: !prevState.isFilterOpen
   }),
-  setFilterApplied: () => (filter: IMileageRequestListFilterResult) => ({
+  setFilterApplied: () => (filter: IMileageApprovalListFilterResult) => ({
     ...filter,
     isFilterOpen: false
   })
@@ -118,7 +118,7 @@ const handlerCreators: HandleCreators<AllProps, OwnHandler> = {
   handleFilterVisibility: (props: AllProps) => () => {
     props.setFilterVisibility();
   },
-  handleFilterApplied: (props: AllProps) => (filter: IMileageRequestListFilterResult) => {
+  handleFilterApplied: (props: AllProps) => (filter: IMileageApprovalListFilterResult) => {
     props.setFilterApplied(filter);
   }
 };
@@ -126,16 +126,16 @@ const handlerCreators: HandleCreators<AllProps, OwnHandler> = {
 const lifecycles: ReactLifeCycleFunctions<AllProps, OwnState> = {
   componentDidMount() {
     const { user } = this.props.userState;
-    const { isLoading, request, response } = this.props.mileageRequestState.all;
-    const { loadAllRequest } = this.props.mileageRequestDispatch;
+    const { isLoading, request, response } = this.props.mileageApprovalState.all;
+    const { loadAllRequest } = this.props.mileageApprovalDispatch;
 
     const config: IListConfig<IMileageRequest> = {
       // page
       page: {
-        uid: AppMenu.MileageRequest,
+        uid: AppMenu.MileageApproval,
         parentUid: AppMenu.Mileage,
-        title: this.props.intl.formatMessage(mileageMessage.request.page.listTitle),
-        description: this.props.intl.formatMessage(mileageMessage.request.page.listSubHeader),
+        title: this.props.intl.formatMessage(mileageMessage.approval.page.listTitle),
+        description: this.props.intl.formatMessage(mileageMessage.approval.page.listSubHeader),
       },
 
       // top bar
@@ -149,8 +149,8 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, OwnState> = {
       searchStatus: (): boolean => {
         let result: boolean = false;
 
-        if (request && request.filter && request.filter.find) {
-          result = request.filter.find ? true : false;
+        if (request && request.filter && request.filter.query && request.filter.query.find) {
+          result = request.filter.query.find ? true : false;
         }
     
         return result;
@@ -160,14 +160,14 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, OwnState> = {
       showActionCentre: true,
 
       // toolbar controls
-      toolbarControls: () => [
-        {
-          icon: AddCircleIcon,
-          onClick: () => { 
-            this.props.history.push('/mileage/requests/form'); 
-          }
-        }
-      ],
+      // toolbarControls: () => [
+      //   {
+      //     icon: AddCircleIcon,
+      //     onClick: () => { 
+      //       this.props.history.push('/mileage/requests/form'); 
+      //     }
+      //   }
+      // ],
 
       // events
       onDataLoad: (callback: ListHandler, params: ListDataProps, forceReload?: boolean | false) => {
@@ -176,19 +176,22 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, OwnState> = {
           if (!response || forceReload) {
             loadAllRequest({
               filter: {
-                direction: params.direction,
-                orderBy: params.orderBy,
-                page: params.page,
-                size: params.size,
                 companyUid: user.company.uid,
                 positionUid: user.position.uid,
-                find: params.find,
-                findBy: params.findBy,
+                employeeUid: this.props.employeeUid,
                 month: this.props.month,
                 year: this.props.year,
                 statusType: this.props.statusType,
                 status: this.props.status,
-                isRejected : this.props.isRejected
+                isNotify: this.props.isNotify,
+                query: {
+                  direction: params.direction,
+                  orderBy: params.orderBy,
+                  page: params.page,
+                  size: params.size,
+                  find: params.find,
+                  findBy: params.findBy
+                },
               }
             });
           } else {
@@ -217,7 +220,7 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, OwnState> = {
         <React.Fragment>
           <Button 
             size="small"
-            onClick={() => this.props.history.push(`/mileage/requests/${item.uid}`)}
+            onClick={() => this.props.history.push(`/mileage/approvals/${item.uid}`)}
           >
             <FormattedMessage {...layoutMessage.action.details}/>
           </Button>
@@ -231,11 +234,12 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, OwnState> = {
           title: this.props.intl.formatMessage(layoutMessage.tooltip.filter),
           icon: TuneIcon,
           showBadgeWhen: () => {
-            return this.props.year !== undefined ||
+            return this.props.employeeUid !== undefined ||
+              this.props.year !== undefined ||
               this.props.month !== undefined ||
               this.props.statusType !== undefined ||
               this.props.status !== undefined ||
-              this.props.isRejected === true;
+              this.props.isNotify === true;
           },
           onClick: this.props.handleFilterVisibility
         }
@@ -247,21 +251,22 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, OwnState> = {
   componentDidUpdate(nextProps: AllProps) {
     // track any changes in filter props
     if (
+      this.props.employeeUid !== nextProps.employeeUid ||
       this.props.year !== nextProps.year ||
       this.props.month !== nextProps.month ||
       this.props.statusType !== nextProps.statusType ||
       this.props.status !== nextProps.status ||
-      this.props.isRejected !== nextProps.isRejected
+      this.props.isNotify !== nextProps.isNotify
     ) {
       this.props.setShouldUpdate();
     }
   }
 };
 
-export const MileageRequestList = compose(
-  setDisplayName('MileageRequestList'),
+export const MileageApprovalList = compose(
+  setDisplayName('MileageApprovalList'),
   withUser,
-  withMileageRequest,
+  withMileageApproval,
   withRouter,
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),
