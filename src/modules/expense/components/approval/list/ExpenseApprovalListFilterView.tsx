@@ -73,7 +73,7 @@ export const ExpenseApprovalListFilterView: React.SFC<ExpenseApprovalListFilterP
               </IconButton> 
             }
 
-            <IconButton onClick={props.handleFilterCompletionVisibility}>
+            <IconButton onClick={props.handleFilterCustomerVisibility}>
               <ChevronRightIcon />
             </IconButton> 
           </ListItemSecondaryAction>
@@ -93,7 +93,7 @@ export const ExpenseApprovalListFilterView: React.SFC<ExpenseApprovalListFilterP
               </IconButton> 
             }
 
-            <IconButton onClick={props.handleFilterCompletionVisibility}>
+            <IconButton onClick={props.handleFilterTypeVisibility}>
               <ChevronRightIcon />
             </IconButton> 
           </ListItemSecondaryAction>
@@ -133,7 +133,7 @@ export const ExpenseApprovalListFilterView: React.SFC<ExpenseApprovalListFilterP
               </IconButton> 
             }
 
-            <IconButton onClick={props.handleFilterCompletionVisibility}>
+            <IconButton onClick={props.handleFilterStatusVisibility}>
               <ChevronRightIcon />
             </IconButton> 
           </ListItemSecondaryAction>
@@ -163,6 +163,7 @@ export const ExpenseApprovalListFilterView: React.SFC<ExpenseApprovalListFilterP
       isOpen={props.isFilterCustomerOpen} 
       onSelected={props.handleFilterCustomerOnSelected} 
       onClose={props.handleFilterCustomerOnClose}
+      filter={props.filterCustomerDialog}
     />
 
     <LookupSystemDialog

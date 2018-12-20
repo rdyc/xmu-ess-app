@@ -18,6 +18,8 @@ import {
   withStateHandlers,
 } from 'recompose';
 
+import { WithUser, withUser } from '@layout/hoc/withUser';
+import { ILookupCustomerGetListFilter } from '@lookup/classes/filters/customer';
 import { ExpenseApprovalListFilterView } from './ExpenseApprovalListFilterView';
 
 const completionStatus: ICollectionValue[] = [
@@ -55,6 +57,9 @@ interface IOwnState {
 
   // filter rejected
   filterNotify?: boolean;
+
+  // filter Customer Dialog
+  filterCustomerDialog: ILookupCustomerGetListFilter;
 }
 
 interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
@@ -116,6 +121,7 @@ interface IOwnHandler {
 
 export type ExpenseApprovalListFilterProps 
   = IOwnOption
+  & WithUser
   & IOwnState
   & IOwnStateUpdater
   & IOwnHandler
@@ -131,7 +137,12 @@ const createProps: mapper<ExpenseApprovalListFilterProps, IOwnState> = (props: E
   isFilterStatusOpen: false,
 
   // pass initial value for primitive types only, bellow is 'boolean'
-  filterNotify: props.initialProps && props.initialProps.isNotify
+  filterNotify: props.initialProps && props.initialProps.isNotify,
+
+  // default filter customer dialog
+  filterCustomerDialog: {
+    companyUid: props.userState.user ? props.userState.user.company.uid : undefined
+  }
 });
 
 const stateUpdaters: StateUpdaters<ExpenseApprovalListFilterProps, IOwnState, IOwnStateUpdater> = { 
@@ -265,6 +276,7 @@ const handlerCreators: HandleCreators<ExpenseApprovalListFilterProps, IOwnHandle
 
 export const ExpenseApprovalListFilter = compose<ExpenseApprovalListFilterProps, IOwnOption>(
   setDisplayName('ExpenseApprovalListFilter'),
+  withUser,
   withLayout,
   withStyles(styles),
   injectIntl,
