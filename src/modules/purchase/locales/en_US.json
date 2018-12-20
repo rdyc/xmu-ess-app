@@ -95,6 +95,7 @@
   "purchase.field.information.differenceInIDR": "Difference Value (IDR)",
 
   "purchase.field.isNotify": "Notify Status",
+  "purchase.field.isSettlement": "Ready to Settle?",
   "purchase.field.completion": "Approval Status",
   
   "purchase.action.modify": "Modify",

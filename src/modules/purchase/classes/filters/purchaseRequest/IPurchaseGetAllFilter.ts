@@ -4,4 +4,5 @@ export interface IPurchaseGetAllFilter extends IBaseFilter, IBasePagingFilter, I
   readonly customerUid?: string | undefined;
   readonly isRejected?: boolean | undefined;
   readonly isSettlement?: boolean | undefined;
+  status?: 'pending' | 'complete' | undefined;
 }

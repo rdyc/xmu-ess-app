@@ -80,6 +80,7 @@ export const purchaseRequestField = defineMessages({
   reason: { id: `${prefix}.field.information.rejectreason` },
 
   isNotify: { id: `${prefix}.field.isNotify` },
+  isSettlement: { id: `${prefix}.field.isSettlement` },
 
   completion: { id: `${prefix}.field.completion` },
 });
