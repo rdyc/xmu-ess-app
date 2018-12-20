@@ -1,6 +1,6 @@
 import { IResponseCollection, IResponseSingle } from '@generic/interfaces';
-import { ISystemLimitAllRequest, ISystemLimitByIdRequest, ISystemLimitDeleteRequest, ISystemLimitListRequest, ISystemLimitPostRequest, ISystemLimitPutRequest } from '@lookup/classes/queries';
-import { ISystemLimit, ISystemLimitDetail, ISystemLimitList } from '@lookup/classes/response';
+import { ISystemLimitAllRequest, ISystemLimitAmountRequest, ISystemLimitByIdRequest, ISystemLimitDeleteRequest, ISystemLimitListRequest, ISystemLimitPostRequest, ISystemLimitPutRequest } from '@lookup/classes/queries';
+import { ISystemLimit, ISystemLimitAmount, ISystemLimitDetail, ISystemLimitList } from '@lookup/classes/response';
 import { action } from 'typesafe-actions';
 
 export const enum SystemLimitAction {
@@ -27,7 +27,11 @@ export const enum SystemLimitAction {
   DELETE_REQUEST = '@@lookup/systemLimit/DELETE_REQUEST',
   DELETE_SUCCESS = '@@lookup/systemLimit/DELETE_SUCCESS',
   DELETE_ERROR = '@@lookup/systemLimit/DELETE_ERROR',
-  DELETE_DISPOSE = '@@lookup/systemLimit/DELETE_DISPOSE'
+  DELETE_DISPOSE = '@@lookup/systemLimit/DELETE_DISPOSE',
+  GET_AMOUNT_REQUEST = '@@lookup/systemLimit/GET_AMOUNT_REQUEST',
+  GET_AMOUNT_SUCCESS = '@@lookup/systemLimit/GET_AMOUNT_SUCCESS',
+  GET_AMOUNT_ERROR = '@@lookup/systemLimit/GET_AMOUNT_ERROR',
+  GET_AMOUNT_DISPOSE = '@@lookup/systemLimit/GET_AMOUNT_DISPOSE',
 }
 
 // get all
@@ -65,3 +69,9 @@ export const systemLimitDeleteRequest = (request: ISystemLimitDeleteRequest) => 
 export const systemLimitDeleteSuccess = (response: IResponseSingle<ISystemLimit>) => action(SystemLimitAction.DELETE_SUCCESS, response);
 export const systemLimitDeleteError = (message: string) => action(SystemLimitAction.DELETE_ERROR, message);
 export const systemLimitDeleteDispose = () => action(SystemLimitAction.DELETE_DISPOSE);
+
+// get amount
+export const systemLimitGetAmountRequest = (request: ISystemLimitAmountRequest) => action(SystemLimitAction.GET_AMOUNT_REQUEST, request);
+export const systemLimitGetAmountSuccess = (response: IResponseSingle<ISystemLimitAmount>) => action(SystemLimitAction.GET_AMOUNT_SUCCESS, response);
+export const systemLimitGetAmountError = (message: string) => action(SystemLimitAction.GET_AMOUNT_ERROR, message);
+export const systemLimitGetAmountDispose = () => action(SystemLimitAction.GET_AMOUNT_DISPOSE);

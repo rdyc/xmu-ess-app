@@ -25,6 +25,7 @@ import {
   IPositionPostRequest,
   IPositionPutRequest,
   ISystemLimitAllRequest,
+  ISystemLimitAmountRequest,
   ISystemLimitByIdRequest,
   ISystemLimitDeleteRequest,
   ISystemLimitListRequest,
@@ -89,6 +90,7 @@ import {
   IRoleDetail,
   IRoleList,
   ISystemLimit,
+  ISystemLimitAmount,
   ISystemLimitDetail,
   ISystemLimitList,
 } from '@lookup/classes/response';
@@ -169,6 +171,7 @@ export interface ILookupState {
   lookupLeavePut: IQuerySingleState<ILookupLeavePutRequest, ILookupLeave>;
 
   systemLimitGetAll: IQueryCollectionState<ISystemLimitAllRequest, ISystemLimit>;
+  systemLimitGetAmount: IQuerySingleState<ISystemLimitAmountRequest, ISystemLimitAmount>;
   systemLimitGetList: IQueryCollectionState<ISystemLimitListRequest, ISystemLimitList>;
   systemLimitGetById: IQuerySingleState<ISystemLimitByIdRequest, ISystemLimitDetail>;
   systemLimitPost: IQuerySingleState<ISystemLimitPostRequest, ISystemLimit>;

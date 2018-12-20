@@ -3,7 +3,7 @@ import { ICollectionValue } from '@layout/classes/core';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { ICustomerList } from '@lookup/classes/response';
 import { WithStyles, withStyles } from '@material-ui/core';
-import { IProjectApprovalGetAllFilter } from '@project/classes/filters/approval';
+import { IProjectRegistrationGetAllFilter } from '@project/classes/filters/registration';
 import styles from '@styles';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import {
@@ -18,20 +18,20 @@ import {
   withStateHandlers,
 } from 'recompose';
 
-import { ProjectApprovalListFilterView } from './ProjectApprovalListFilterView';
+import { ProjectRegistrationListFilterView } from './ProjectRegistrationListFilterView';
 
 const completionStatus: ICollectionValue[] = [
   { value: 'pending', name: 'Pending' },
   { value: 'complete', name: 'Complete' }
 ];
 
-export type IProjectApprovalListFilterResult = Pick<IProjectApprovalGetAllFilter, 'customerUid' | 'projectType' | 'statusType' | 'status' | 'isNotify'>;
+export type IProjectRegistrationListFilterResult = Pick<IProjectRegistrationGetAllFilter, 'customerUid' | 'projectType' | 'statusType' | 'status' | 'isRejected' | 'isNewOwner'>;
 
 interface IOwnOption {
   isOpen: boolean;
-  initialProps?: IProjectApprovalListFilterResult;
+  initialProps?: IProjectRegistrationListFilterResult;
   onClose: (event: React.MouseEvent<HTMLElement>) => void;
-  onApply: (filter: IProjectApprovalListFilterResult) => void;
+  onApply: (filter: IProjectRegistrationListFilterResult) => void;
 }
 
 interface IOwnState {
@@ -53,8 +53,11 @@ interface IOwnState {
   isFilterCompletionOpen: boolean;
   filterCompletion?: ICollectionValue;
 
-  // filter notify
-  filterNotify?: boolean;
+  // filter rejected
+  filterRejected?: boolean;
+  
+  // filter new owner
+  filterNewOwner?: boolean;
 }
 
 interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
@@ -77,8 +80,11 @@ interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
   setFilterCompletionVisibility: StateHandler<IOwnState>;
   setFilterCompletion: StateHandler<IOwnState>;
   
-  // filter notify
-  setFilterNotify: StateHandler<IOwnState>;
+  // filter rejected
+  setFilterRejected: StateHandler<IOwnState>;
+  
+  // filter rejected
+  setFilterNewOwner: StateHandler<IOwnState>;
 }
 
 interface IOwnHandler {
@@ -110,11 +116,14 @@ interface IOwnHandler {
   handleFilterCompletionOnClear: (event: React.MouseEvent<HTMLElement>) => void;
   handleFilterCompletionOnClose: () => void;
 
-  // filter notify
-  handleFilterNotifyOnChange: (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => void;
+  // filter rejected
+  handleFilterRejectedOnChange: (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => void;
+
+  // filter new owner
+  handleFilterNewOwnerOnChange: (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => void;
 }
 
-export type ProjectApprovalListFilterProps 
+export type ProjectRegistrationListFilterProps 
   = IOwnOption
   & IOwnState
   & IOwnStateUpdater
@@ -123,7 +132,7 @@ export type ProjectApprovalListFilterProps
   & WithLayout
   & InjectedIntlProps;
 
-const createProps: mapper<ProjectApprovalListFilterProps, IOwnState> = (props: ProjectApprovalListFilterProps): IOwnState => ({
+const createProps: mapper<ProjectRegistrationListFilterProps, IOwnState> = (props: ProjectRegistrationListFilterProps): IOwnState => ({
   completionStatus,
   isFilterCustomerOpen: false,
   isFilterTypeOpen: false,
@@ -131,17 +140,19 @@ const createProps: mapper<ProjectApprovalListFilterProps, IOwnState> = (props: P
   isFilterStatusOpen: false,
 
   // pass initial value for primitive types only, bellow is 'boolean'
-  filterNotify: props.initialProps && props.initialProps.isNotify
+  filterRejected: props.initialProps && props.initialProps.isRejected,
+  filterNewOwner: props.initialProps && props.initialProps.isNewOwner
 });
 
-const stateUpdaters: StateUpdaters<ProjectApprovalListFilterProps, IOwnState, IOwnStateUpdater> = { 
+const stateUpdaters: StateUpdaters<ProjectRegistrationListFilterProps, IOwnState, IOwnStateUpdater> = { 
   // main filter
   setFilterReset: (prevState: IOwnState) => () => ({
     filterCustomer: undefined,
     filterType: undefined,
     filterStatus: undefined,
     filterCompletion: undefined,
-    filterNotify: undefined
+    filterNewOwner: undefined,
+    filterRejected: undefined
   }),
 
   // filter customer
@@ -180,94 +191,105 @@ const stateUpdaters: StateUpdaters<ProjectApprovalListFilterProps, IOwnState, IO
     filterCompletion: data
   }),
 
-  // filter notify
-  setFilterNotify: (prevState: IOwnState) => (checked: boolean) => ({
-    filterNotify: checked
+  // filter rejected
+  setFilterRejected: (prevState: IOwnState) => (checked: boolean) => ({
+    filterRejected: checked
+  }),
+
+  // filter new owner
+  setFilterNewOwner: (prevState: IOwnState) => (checked: boolean) => ({
+    filterNewOwner: checked
   }),
 };
 
-const handlerCreators: HandleCreators<ProjectApprovalListFilterProps, IOwnHandler> = {
+const handlerCreators: HandleCreators<ProjectRegistrationListFilterProps, IOwnHandler> = {
   // main filter
-  handleFilterOnReset: (props: ProjectApprovalListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
+  handleFilterOnReset: (props: ProjectRegistrationListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
     props.setFilterReset();
   },
-  handleFilterOnApply: (props: ProjectApprovalListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
+  handleFilterOnApply: (props: ProjectRegistrationListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
     props.onApply({
       customerUid: props.filterCustomer && props.filterCustomer.uid,
       projectType: props.filterType && props.filterType.type,
       statusType: props.filterStatus && props.filterStatus.type,
       status: props.filterCompletion && props.filterCompletion.value,
-      isNotify: props.filterNotify
+      isRejected: props.filterRejected,
+      isNewOwner: props.filterNewOwner
     });
   },
 
   // filter customer
-  handleFilterCustomerVisibility: (props: ProjectApprovalListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
+  handleFilterCustomerVisibility: (props: ProjectRegistrationListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
     props.setFilterCustomerVisibility();
   },
-  handleFilterCustomerOnSelected: (props: ProjectApprovalListFilterProps) => (customer: ICustomerList) => {
+  handleFilterCustomerOnSelected: (props: ProjectRegistrationListFilterProps) => (customer: ICustomerList) => {
     props.setFilterCustomer(customer);
   },
-  handleFilterCustomerOnClear: (props: ProjectApprovalListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
+  handleFilterCustomerOnClear: (props: ProjectRegistrationListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
     props.setFilterCustomer();
   },
-  handleFilterCustomerOnClose: (props: ProjectApprovalListFilterProps) => () => {
+  handleFilterCustomerOnClose: (props: ProjectRegistrationListFilterProps) => () => {
     props.setFilterCustomerVisibility();
   },
 
   // filter type
-  handleFilterTypeVisibility: (props: ProjectApprovalListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
+  handleFilterTypeVisibility: (props: ProjectRegistrationListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
     props.setFilterTypeVisibility();
   },
-  handleFilterTypeOnSelected: (props: ProjectApprovalListFilterProps) => (data: ISystemList) => {
+  handleFilterTypeOnSelected: (props: ProjectRegistrationListFilterProps) => (data: ISystemList) => {
     props.setFilterType(data);
   },
-  handleFilterTypeOnClear: (props: ProjectApprovalListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
+  handleFilterTypeOnClear: (props: ProjectRegistrationListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
     props.setFilterType();
   },
-  handleFilterTypeOnClose: (props: ProjectApprovalListFilterProps) => () => {
+  handleFilterTypeOnClose: (props: ProjectRegistrationListFilterProps) => () => {
     props.setFilterTypeVisibility();
   },
   
   // filter status
-  handleFilterStatusVisibility: (props: ProjectApprovalListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
+  handleFilterStatusVisibility: (props: ProjectRegistrationListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
     props.setFilterStatusVisibility();
   },
-  handleFilterStatusOnSelected: (props: ProjectApprovalListFilterProps) => (data: ISystemList) => {
+  handleFilterStatusOnSelected: (props: ProjectRegistrationListFilterProps) => (data: ISystemList) => {
     props.setFilterStatus(data);
   },
-  handleFilterStatusOnClear: (props: ProjectApprovalListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
+  handleFilterStatusOnClear: (props: ProjectRegistrationListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
     props.setFilterStatus();
   },
-  handleFilterStatusOnClose: (props: ProjectApprovalListFilterProps) => () => {
+  handleFilterStatusOnClose: (props: ProjectRegistrationListFilterProps) => () => {
     props.setFilterStatusVisibility();
   },
-  
+
   // filter completion
-  handleFilterCompletionVisibility: (props: ProjectApprovalListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
+  handleFilterCompletionVisibility: (props: ProjectRegistrationListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
     props.setFilterCompletionVisibility();
   },
-  handleFilterCompletionOnSelected: (props: ProjectApprovalListFilterProps) => (data: ICollectionValue) => {
+  handleFilterCompletionOnSelected: (props: ProjectRegistrationListFilterProps) => (data: ICollectionValue) => {
     props.setFilterCompletion(data);
   },
-  handleFilterCompletionOnClear: (props: ProjectApprovalListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
+  handleFilterCompletionOnClear: (props: ProjectRegistrationListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
     props.setFilterCompletion();
   },
-  handleFilterCompletionOnClose: (props: ProjectApprovalListFilterProps) => () => {
+  handleFilterCompletionOnClose: (props: ProjectRegistrationListFilterProps) => () => {
     props.setFilterCompletionVisibility();
   },
   
-  // filter notify
-  handleFilterNotifyOnChange: (props: ProjectApprovalListFilterProps) => (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
-    props.setFilterNotify(checked);
+  // filter rejected
+  handleFilterRejectedOnChange: (props: ProjectRegistrationListFilterProps) => (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
+    props.setFilterRejected(checked);
+  },
+  
+  // filter new owner
+  handleFilterNewOwnerOnChange: (props: ProjectRegistrationListFilterProps) => (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
+    props.setFilterNewOwner(checked);
   }
 };
 
-export const ProjectApprovalListFilter = compose<ProjectApprovalListFilterProps, IOwnOption>(
-  setDisplayName('ProjectApprovalListFilter'),
+export const ProjectRegistrationListFilter = compose<ProjectRegistrationListFilterProps, IOwnOption>(
+  setDisplayName('ProjectRegistrationListFilter'),
   withLayout,
   withStyles(styles),
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators)
-)(ProjectApprovalListFilterView);
+)(ProjectRegistrationListFilterView);
