@@ -64,6 +64,7 @@ export const projectAssignmentField = defineMessages({
   newHours: { id: `${prefix}.field.item.newHours` },
   statusType: { id: `${prefix}.field.item.statusType` },
   reason: { id: `${prefix}.field.item.rejectedReason` },
+  activeOnly: { id: `${prefix}.field.item.activeOnly` },
 });
 
 export const projectAssignmentFieldHelperFor = (field: string, type: 'fieldName' | 'fieldRequired' | 'fieldPlaceholder') => {
