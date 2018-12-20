@@ -1,6 +1,7 @@
 import * as appLocaleData from 'react-intl/locale-data/en';
 
 import enLayoutMessages from '../../modules/@layout/locales/en_US.json';
+import enAccountMessages from '../../modules/account/locales/en-US.json';
 import enCommonMessages from '../../modules/common/locales/en-US.json';
 import enExpenseMessages from '../../modules/expense/locales/en_US.json';
 import enFinanceMessages from '../../modules/finance/locales/en_US.json';
@@ -20,6 +21,7 @@ const EnLang = {
   messages: {
     ...enMessages,
     ...enLayoutMessages,
+    ...enAccountMessages,
     ...enHomeMessages,
     ...enWorkflowMessages,
     ...enMileageMessages,

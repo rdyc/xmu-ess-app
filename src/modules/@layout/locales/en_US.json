@@ -1,12 +1,15 @@
 {
   "layout.text.loading": "Loading...",
-  "layout.text.processing": "Processing",
+  "layout.text.processing": "Processing...",
+  "layout.text.waiting": "Please wait...",
+  "layout.text.none": "None",
   "layout.text.dataInfo": "{total} record(s)",
-  "layout.text.pagingInfo": "{current} of {total}",
+  "layout.text.pagingInfo": "Page {current} of {total}",
   "layout.text.active": "Active",
   "layout.text.inactive": "Inactive",
   
   "layout.tooltip.more": "More options",
+  "layout.tooltip.filter": "Filter",
   "layout.tooltip.orderBy": "Order by",
   "layout.tooltip.sortDirection": "Sort direction",
   "layout.tooltip.rowsPerPage": "Rows per page",
@@ -26,6 +29,7 @@
   "layout.form.submit.title": "Submission",
   "layout.form.submit.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
 
+  "layout.action.apply": "Apply",
   "layout.action.yes": "Yes",
   "layout.action.no": "No",
   "layout.action.ok": "Ok",

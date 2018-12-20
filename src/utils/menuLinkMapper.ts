@@ -143,7 +143,7 @@ export const menuLinkMapper = (menuUid: string) => {
       break;
 
     case 'MNU05':
-      path = '/lookup/organization/list';
+      path = '/organization/structure';
       break;
 
     case 'MNU06':

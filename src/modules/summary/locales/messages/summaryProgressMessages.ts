@@ -44,7 +44,7 @@ export const summaryProgressHeaderHelper = (field: string) => {
     case 'actual': return summaryProgressHeader.actual;
     case 'remaining': return summaryProgressHeader.remaining;
     case 'progressAssignment': return summaryProgressHeader.progressAssignment;
-    case 'maxHours': return summaryProgressHeader.allocatedHours;
+    case 'maxHours': return summaryProgressHeader.maxHours;
     case 'allocatedHours': return summaryProgressHeader.allocatedHours;
     case 'actualHours': return summaryProgressHeader.actualHours;
     case 'remainHours': return summaryProgressHeader.remainHours;
