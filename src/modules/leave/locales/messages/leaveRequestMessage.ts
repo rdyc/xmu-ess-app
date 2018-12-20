@@ -77,6 +77,10 @@ export const leaveRequestField = defineMessages({
   employeeUid: { id: `${prefix}.field.information.employeeUid` },
   employeeUidRequired: { id: `${prefix}.field.information.employeeUid.required` },
   employeeUidPlaceholder: { id: `${prefix}.field.information.employeeUid.placeholder` },
+
+  completion: { id: `${prefix}.field.completion` },
+  isNotify: { id: `${prefix}.field.isNotify` },
+  isRejected: { id: `${prefix}.field.isRejected` },
 });
 
 export const leaveRequestSection = defineMessages({
