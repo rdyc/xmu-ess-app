@@ -426,6 +426,15 @@
   "lookup.leave.field.filter.company": "Company",
   "lookup.leave.field.filter.company.placeholder": "Company",
 
+  "leave.calculation.filter.company": "Company", 
+  "leave.calculation.filter.year": "Year",   
+  "leave.calculation.filter.companyPlaceHolder": "Choose a Company",
+  "leave.calculation.filter.yearPlaceHolder": "Select a Year",
+  "leave.calculation.page.title": "Leave Calculation",
+  "leave.calculation.page.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
+  "leave.calculation.field.company": "Company",
+  "leave.calculation.field.year": "Year",
+
   "lookup.customer.page.list.title": "Customer",
   "lookup.customer.page.list.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras mollis eros sit amet rhoncus fermentum",
   "lookup.customer.page.detail.title": "Customer Detail",
