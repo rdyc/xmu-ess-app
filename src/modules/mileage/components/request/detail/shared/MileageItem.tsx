@@ -1,4 +1,3 @@
-import { WorkflowStatusType } from '@common/classes/types';
 import { GlobalFormat } from '@layout/types';
 import {
   Card,
@@ -49,15 +48,14 @@ const mileageItem: React.SFC<AllProps> = props => {
                 <ListItem disableGutters key={item.uid}>
                   <Grid container spacing={24}>
                     <Grid item xs={8} sm={8}>
-                      <Typography noWrap color="primary" variant="body2">
-                        {intl.formatDate(item.date, GlobalFormat.MonthYear)}
+                      <Typography noWrap variant="body2">
+                        {intl.formatDate(item.date, GlobalFormat.Date)}
                       </Typography>
                       <Typography noWrap variant="body1">
                         {item.customer && item.customer.name}
                       </Typography>
                       <Typography
                         noWrap
-                        color="textSecondary"
                         variant="caption"
                       >
                         {item.projectUid} &bull; {item.project && item.project.name}
@@ -69,12 +67,6 @@ const mileageItem: React.SFC<AllProps> = props => {
                       </Typography>
                       <Typography
                         noWrap
-                        color={
-                          item.status &&
-                          item.status.type === WorkflowStatusType.Rejected
-                            ? 'error'
-                            : 'secondary'
-                        }
                         variant="body1"
                         align="right"
                       >

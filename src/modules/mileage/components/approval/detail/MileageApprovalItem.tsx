@@ -61,15 +61,14 @@ const mileageApprovalItem: React.SFC<AllProps> = props => {
                         )}
                     </Grid>
                     <Grid item xs={6} sm={6}>
-                      <Typography noWrap color="primary" variant="body2">
-                        {intl.formatDate(item.date, GlobalFormat.MonthYear)}
+                      <Typography noWrap variant="body2">
+                        {intl.formatDate(item.date, GlobalFormat.Date)}
                       </Typography>
                       <Typography noWrap variant="body1">
                         {item.customer && item.customer.name}
                       </Typography>
                       <Typography
                         noWrap
-                        color="textSecondary"
                         variant="caption"
                       >
                         {item.projectUid} &bull;
@@ -84,11 +83,6 @@ const mileageApprovalItem: React.SFC<AllProps> = props => {
                         item.status.type !== WorkflowStatusType.Submitted && (
                           <Typography
                             noWrap
-                            color={
-                              item.status.type === WorkflowStatusType.Rejected
-                                ? 'error'
-                                : 'secondary'
-                            }
                             variant="body1"
                             align="right"
                           >
