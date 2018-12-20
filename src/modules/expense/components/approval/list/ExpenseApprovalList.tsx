@@ -2,7 +2,6 @@ import AppMenu from '@constants/AppMenu';
 import { IExpense } from '@expense/classes/response';
 import { ExpenseField } from '@expense/classes/types';
 import { ExpenseSummary } from '@expense/components/request/detail/shared/ExpenseSummary';
-import { WithExpenseRequest, withExpenseRequest } from '@expense/hoc/withExpenseRequest';
 import { expenseMessage } from '@expense/locales/messages/expenseMessage';
 import { IListConfig, ListDataProps, ListHandler, ListPage } from '@layout/components/pages';
 import { WithUser, withUser } from '@layout/hoc/withUser';
@@ -30,13 +29,14 @@ import {
   withStateHandlers,
 } from 'recompose';
 
-import { ExpenseRequestListFilter, IExpenseRequestListFilterResult } from './ExpenseRequestListFilter';
+import { WithExpenseApproval, withExpenseApproval } from '@expense/hoc/withExpenseApproval';
+import { ExpenseApprovalListFilter, IExpenseApprovalListFilterResult } from './ExpenseApprovalListFilter';
 
 interface IOwnOption {
   
 }
 
-interface IOwnState extends IExpenseRequestListFilterResult {
+interface IOwnState extends IExpenseApprovalListFilterResult {
   shouldUpdate: boolean;
   config?: IListConfig<IExpense>;
   isFilterOpen: boolean;
@@ -51,7 +51,7 @@ interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
 
 interface IOwnHandler {
   handleFilterVisibility: (event: React.MouseEvent<HTMLElement>) => void;
-  handleFilterApplied: (filter: IExpenseRequestListFilterResult) => void;
+  handleFilterApplied: (filter: IExpenseApprovalListFilterResult) => void;
 }
 
 type AllProps 
@@ -60,7 +60,7 @@ type AllProps
   & IOwnStateUpdater
   & IOwnHandler
   & WithUser
-  & WithExpenseRequest
+  & WithExpenseApproval
   & InjectedIntlProps
   & RouteComponentProps;
 
@@ -70,17 +70,17 @@ const listView: React.SFC<AllProps> = props => (
       props.config &&
       <ListPage 
         config={props.config} 
-        source={props.expenseRequestState.all} 
+        source={props.expenseApprovalState.all} 
         loadDataWhen={props.shouldUpdate} 
       >
-        <ExpenseRequestListFilter 
+        <ExpenseApprovalListFilter 
           isOpen={props.isFilterOpen}
           initialProps={{
             customerUid: props.customerUid,
             expenseType: props.expenseType,
             statusType: props.statusType,
             status: props.status,
-            isRejected: props.isRejected
+            isNotify: props.isNotify
           }}
           onClose={props.handleFilterVisibility}
           onApply={props.handleFilterApplied}
@@ -95,7 +95,7 @@ const createProps: mapper<AllProps, IOwnState> = (props: AllProps): IOwnState =>
   isFilterOpen: false,
 
   // fill partial props from location state to handle redirection from dashboard notif
-  isRejected: props.location.state && props.location.state.isRejected
+  isNotify: props.location.state && props.location.state.isNotify
 });
 
 const stateUpdaters: StateUpdaters<AllProps, IOwnState, IOwnStateUpdater> = {
@@ -108,7 +108,7 @@ const stateUpdaters: StateUpdaters<AllProps, IOwnState, IOwnStateUpdater> = {
   setFilterVisibility: (prevState: IOwnState) => () => ({
     isFilterOpen: !prevState.isFilterOpen
   }),
-  setFilterApplied: (prevState: IOwnState) => (filter: IExpenseRequestListFilterResult) => ({
+  setFilterApplied: (prevState: IOwnState) => (filter: IExpenseApprovalListFilterResult) => ({
     ...filter,
     isFilterOpen: false
   }),
@@ -118,7 +118,7 @@ const handlerCreators: HandleCreators<AllProps, IOwnHandler> = {
   handleFilterVisibility: (props: AllProps) => (event: React.MouseEvent<HTMLElement>) => {
     props.setFilterVisibility();
   },
-  handleFilterApplied: (props: AllProps) => (filter: IExpenseRequestListFilterResult) => {
+  handleFilterApplied: (props: AllProps) => (filter: IExpenseApprovalListFilterResult) => {
     props.setFilterApplied(filter);
   },
 };
@@ -126,16 +126,16 @@ const handlerCreators: HandleCreators<AllProps, IOwnHandler> = {
 const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
   componentDidMount() { 
     const { user } = this.props.userState;
-    const { isLoading, request, response } = this.props.expenseRequestState.all;
-    const { loadAllRequest } = this.props.expenseRequestDispatch;
+    const { isLoading, request, response } = this.props.expenseApprovalState.all;
+    const { loadAllRequest } = this.props.expenseApprovalDispatch;
 
     const config: IListConfig<IExpense> = {
       // page
       page: {
-        uid: AppMenu.ExpenseRequest,
+        uid: AppMenu.ExpenseApproval,
         parentUid: AppMenu.Expense,
-        title: this.props.intl.formatMessage(expenseMessage.request.page.title),
-        description: this.props.intl.formatMessage(expenseMessage.request.page.subTitle),
+        title: this.props.intl.formatMessage(expenseMessage.approval.page.title),
+        description: this.props.intl.formatMessage(expenseMessage.approval.page.subTitle),
       },
       
       // top bar
@@ -164,7 +164,7 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
         {
           icon: AddCircleIcon,
           onClick: () => { 
-            this.props.history.push('/expense/requests/form'); 
+            this.props.history.push('/expense/approvals/form'); 
           }
         }
       ],
@@ -185,7 +185,7 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
                 end: undefined,
                 statusType: this.props.statusType,
                 status: this.props.status,
-                isRejected: this.props.isRejected,
+                isNotify: this.props.isNotify,
                 query: {
                   direction: params.direction,
                   orderBy: params.orderBy,
@@ -224,7 +224,7 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
             isRequestEditable(item.statusType) &&
             <Button 
               size="small"
-              onClick={() => this.props.history.push(`/expense/requests/form`, { uid: item.uid })}
+              onClick={() => this.props.history.push(`/expense/approvals/form`, { uid: item.uid })}
             >
               <FormattedMessage {...layoutMessage.action.modify}/>
             </Button>
@@ -232,7 +232,7 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
 
           <Button 
             size="small"
-            onClick={() => this.props.history.push(`/expense/requests/${item.uid}`)}
+            onClick={() => this.props.history.push(`/expense/approvals/${item.uid}`)}
           >
             <FormattedMessage {...layoutMessage.action.details}/>
           </Button>
@@ -250,7 +250,7 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
               this.props.projectType !== undefined || 
               this.props.statusType !== undefined || 
               this.props.status !== undefined || 
-              this.props.isRejected === true;
+              this.props.isNotify === true;
           },
           onClick: this.props.handleFilterVisibility
         }
@@ -266,17 +266,17 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
       this.props.projectType !== nextProps.projectType ||
       this.props.statusType !== nextProps.statusType ||
       this.props.status !== nextProps.status ||
-      this.props.isRejected !== nextProps.isRejected
+      this.props.isNotify !== nextProps.isNotify
     ) {
       this.props.setShouldUpdate();
     }
   }
 };
 
-export const ExpenseRequestList = compose(
-  setDisplayName('ExpenseRequestList'),
+export const ExpenseApprovalList = compose(
+  setDisplayName('ExpenseApprovalList'),
   withUser,
-  withExpenseRequest,
+  withExpenseApproval,
   withRouter,
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),

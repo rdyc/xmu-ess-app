@@ -1,5 +1,5 @@
 import { ExpenseApprovalDetail } from '@expense/components/approval/detail/ExpenseApprovalDetail';
-import { ExpenseApprovalListView } from '@expense/components/approval/list/ExpenseApprovalListView';
+import { ExpenseApprovalList } from '@expense/components/approval/list/ExpenseApprovalList';
 import { ExpenseRequestDetail } from '@expense/components/request/detail/ExpenseRequestDetail';
 import RequestEditor from '@expense/components/request/editor/ExpenseRequestEditor';
 import { ExpenseRequestList } from '@expense/components/request/list/ExpenseRequestList';
@@ -18,7 +18,7 @@ const request = (props: RouteComponentProps) => (
 const approval = (props: RouteComponentProps) => (
   <Switch>
     <Route path={`${props.match.path}/:expenseUid`} component={ExpenseApprovalDetail} />
-    <Route path={`${props.match.path}`} component={ExpenseApprovalListView} />
+    <Route path={`${props.match.path}`} component={ExpenseApprovalList} />
   </Switch>
 );
 
