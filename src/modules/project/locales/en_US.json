@@ -203,6 +203,7 @@
   "project.assignment.field.item.newHours": "New Hours",
   "project.assignment.field.item.statusType": "Status",
   "project.assignment.field.item.rejectedReason": "Rejected Reason",
+  "project.assignment.field.item.activeOnly": "Active Only",
 
   "project.assignment.message.invalidProps": "Some props are not valid",
   "project.assignment.message.create.success": "A new assignment has been created",
