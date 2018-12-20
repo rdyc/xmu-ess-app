@@ -3,6 +3,7 @@ import {
   ICurrencyGetAllRequest,
   ICurrencyGetByIdRequest,
   ICurrencyGetListRequest,
+  ILeaveCalculationGetAllRequest,
   ILookupHolidayGetAllRequest,
   ILookupHolidayGetByIdRequest,
   ILookupHolidayGetListRequest,
@@ -25,6 +26,7 @@ import {
   IPositionPostRequest,
   IPositionPutRequest,
   ISystemLimitAllRequest,
+  ISystemLimitAmountRequest,
   ISystemLimitByIdRequest,
   ISystemLimitDeleteRequest,
   ISystemLimitListRequest,
@@ -70,6 +72,7 @@ import {
   IDiem,
   IDiemDetail,
   IDiemList,
+  ILeaveCalculation,
   ILookupHoliday,
   ILookupHolidayDetail,
   ILookupHolidayList,
@@ -89,6 +92,7 @@ import {
   IRoleDetail,
   IRoleList,
   ISystemLimit,
+  ISystemLimitAmount,
   ISystemLimitDetail,
   ISystemLimitList,
 } from '@lookup/classes/response';
@@ -168,7 +172,10 @@ export interface ILookupState {
   lookupLeavePost: IQuerySingleState<ILookupLeavePostRequest, ILookupLeave>;
   lookupLeavePut: IQuerySingleState<ILookupLeavePutRequest, ILookupLeave>;
 
+  leaveCalculationGetAll: IQueryCollectionState<ILeaveCalculationGetAllRequest, ILeaveCalculation>;
+
   systemLimitGetAll: IQueryCollectionState<ISystemLimitAllRequest, ISystemLimit>;
+  systemLimitGetAmount: IQuerySingleState<ISystemLimitAmountRequest, ISystemLimitAmount>;
   systemLimitGetList: IQueryCollectionState<ISystemLimitListRequest, ISystemLimitList>;
   systemLimitGetById: IQuerySingleState<ISystemLimitByIdRequest, ISystemLimitDetail>;
   systemLimitPost: IQuerySingleState<ISystemLimitPostRequest, ISystemLimit>;

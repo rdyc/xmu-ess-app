@@ -7,6 +7,13 @@ import {
   IOrganizationHierarchyPostRequest,
   IOrganizationHierarchyPutRequest,
 } from '@organization/classes/queries/hierarchy';
+import {
+  IOrganizationStructureAllRequest,
+  IOrganizationStructureByIdRequest,
+  IOrganizationStructureDeleteRequest,
+  IOrganizationStructurePostRequest,
+  IOrganizationStructurePutRequest,
+} from '@organization/classes/queries/structure';
 import { 
   IOrganizationWorkflowAllRequest, 
   IOrganizationWorkflowByIdRequest, 
@@ -16,10 +23,16 @@ import {
   IOrganizationWorkflowPutRequest
 } from '@organization/classes/queries/workflow';
 import { IHierarchy, IHierarchyDetail, IHierarchyList } from '@organization/classes/response/hierarchy';
+import { IStructure, IStructureDetail } from '@organization/classes/response/structure';
 import { IWorkflow, IWorkflowList } from '@organization/classes/response/workflow';
 
 export interface IOrganizationState {
-  // hierarchy
+  organizationStructureGetAll: IQueryCollectionState<IOrganizationStructureAllRequest, IStructure>;
+  organizationStructureGetById: IQuerySingleState<IOrganizationStructureByIdRequest, IStructureDetail>;
+  organizationStructurePost: IQuerySingleState<IOrganizationStructurePostRequest, IStructure>;
+  organizationStructurePut: IQuerySingleState<IOrganizationStructurePutRequest, IStructure>;
+  organizationStructureDelete: IQuerySingleState<IOrganizationStructureDeleteRequest, boolean>;
+
   organizationHierarchyGetAll: IQueryCollectionState<IOrganizationHierarchyAllRequest, IHierarchy>;
   organizationHierarchyGetList: IQueryCollectionState<IOrganizationHierarchyListRequest, IHierarchyList>;
   organizationHierarchyGetById: IQuerySingleState<IOrganizationHierarchyByIdRequest, IHierarchyDetail>;

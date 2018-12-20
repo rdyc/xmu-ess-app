@@ -126,12 +126,6 @@ const config: CollectionConfig<ILookupHoliday, HolidayListProps> = {
   // action component
   actionComponent: (item: ILookupHoliday, callback: CollectionHandler, props: HolidayListProps) => (
     <React.Fragment>
-      <Button
-        size="small"
-        onClick={() => props.handleOnDelete(item.uid, callback.handleForceReload)}
-      >
-        <FormattedMessage {...layoutMessage.action.delete}/>        
-      </Button>
       <Button 
           size="small"
           onClick={() => callback.handleRedirectTo(`/lookup/holiday/form`, { uid: item.uid })}

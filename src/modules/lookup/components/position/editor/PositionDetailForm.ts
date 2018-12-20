@@ -44,6 +44,7 @@ const handlerCreators: HandleCreators<PositionDetailFormProps, OwnHandlers> = {
         fieldProps = {
           label: props.intl.formatMessage(lookupMessage.position.field.companyUid),
           component: SelectLookupCompany,
+          disabled: (props.formMode === FormMode.Edit)
         };
         break;
 

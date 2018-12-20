@@ -1,9 +1,10 @@
 import { IResponseCollection } from '@generic/interfaces';
+import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { ILookupCustomerGetListFilter } from '@lookup/classes/filters/customer';
 import { ICustomerList } from '@lookup/classes/response';
 import { WithLookupCustomer, withLookupCustomer } from '@lookup/hoc/withLookupCustomer';
-import { withWidth } from '@material-ui/core';
-import { WithWidth } from '@material-ui/core/withWidth';
+import { WithStyles, withStyles } from '@material-ui/core';
+import styles from '@styles';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import {
   compose,
@@ -11,6 +12,7 @@ import {
   lifecycle,
   mapper,
   ReactLifeCycleFunctions,
+  setDisplayName,
   StateHandler,
   StateHandlerMap,
   StateUpdaters,
@@ -24,6 +26,7 @@ interface OwnOptions {
   value?: string | undefined;
   filter?: ILookupCustomerGetListFilter | undefined;
   isOpen: boolean;
+  hideBackdrop?: boolean;
   onSelected: (customer: ICustomerList) => void;
   onClose: () => void;
 }
@@ -47,8 +50,9 @@ interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
 }
 
 export type LookupCustomerDialogProps
-  = WithLookupCustomer
-  & WithWidth
+  = WithLayout
+  & WithStyles<typeof styles>
+  & WithLookupCustomer
   & InjectedIntlProps
   & OwnOptions
   & OwnHandlers
@@ -130,10 +134,12 @@ const lifecycles: ReactLifeCycleFunctions<LookupCustomerDialogProps, OwnState> =
 };
 
 export const LookupCustomerDialog = compose<LookupCustomerDialogProps, OwnOptions>(
+  setDisplayName('LookupCustomerDialog'),
+  withLayout,
+  withStyles(styles),
   withLookupCustomer,
-  withWidth(),
   injectIntl,
-  withStateHandlers<OwnState, OwnStateUpdaters, OwnOptions>(createProps, stateUpdaters), 
-  withHandlers<LookupCustomerDialogProps, OwnHandlers>(handlerCreators),
-  lifecycle<LookupCustomerDialogProps, OwnState>(lifecycles),
+  withStateHandlers(createProps, stateUpdaters), 
+  withHandlers(handlerCreators),
+  lifecycle(lifecycles),
 )(LookupCustomerDialogView);

@@ -22,11 +22,13 @@ import {
   leavePage,
   leaveSection
 } from './leave';
-import {
+import { leaveCalculationField, leaveCalculationFilter, leaveCalculationPage } from './leaveCalculation';
+import { 
   companyConfirm,
-  companyField,
-  companyFieldHelperFor,
-  companyMessage,
+  companyDialog, 
+  companyField, 
+  companyFieldHelperFor, 
+  companyMessage, 
   companyPage,
   companySection
 } from './lookupCompanyMessage';
@@ -127,6 +129,11 @@ export const lookupMessage = {
     confirm: leaveConfirm,
     message: leaveMessage
   },
+  calculation: {
+    page: leaveCalculationPage,
+    field: leaveCalculationField,
+    filter: leaveCalculationFilter
+  },
   currency: {
     page: currencyPage,
     field: currencyField,
@@ -141,7 +148,8 @@ export const lookupMessage = {
     fieldFor: companyFieldHelperFor,
     section: companySection,
     confirm: companyConfirm,
-    message: companyMessage
+    message: companyMessage,
+    dialog: companyDialog
   },
   position: {
     page: positionPage,

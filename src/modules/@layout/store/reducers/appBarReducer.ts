@@ -3,8 +3,6 @@ import { AppBarAction as Action } from '@layout/store/actions';
 import { Reducer } from 'redux';
 
 const initialState: IAppBarState = {
-  menus: undefined,
-  fields: undefined,
   selection: [],
   onClickMenu: () => { 
     console.warn('onClick must be handled'); 
@@ -36,6 +34,7 @@ const selectionAddRemove = (current: string[], value: string) => {
 
 const reducer: Reducer<IAppBarState> = (state = initialState, action) => {
   switch (action.type) {
+    case Action.ASSIGN_CONTROLS: return { ...state, controls: action.payload };
     case Action.ASSIGN_MENUS: return { ...state, menus: action.payload };
     case Action.ASSIGN_MENU_CALLBACK: return { ...state, onClickMenu: action.payload };
     case Action.ASSIGN_SEARCH_CALLBACK: return { ...state, onSearching: action.payload };

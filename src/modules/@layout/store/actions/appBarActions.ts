@@ -1,8 +1,9 @@
 import { ICollectionValue } from '@layout/classes/core';
-import { IAppBarMenu } from '@layout/interfaces/IAppBarState';
+import { IAppBarControl, IAppBarMenu } from '@layout/interfaces/IAppBarState';
 import { action } from 'typesafe-actions';
 
 export const enum AppBarAction {
+  ASSIGN_CONTROLS = '@@app-bar/ASSIGN_CONTROLS',
   ASSIGN_MENUS = '@@app-bar/ASSIGN_MENUS',
   ASSIGN_MENU_CALLBACK = '@@app-bar/ASSIGN_MENU_CALLBACK',
   ASSIGN_FIELDS = '@@app-bar/ASSIGN_FIELDS',
@@ -14,7 +15,8 @@ export const enum AppBarAction {
   DISPOSE = '@@app-bar/DISPOSE'
 }
 
-export const appBarAssignMenus = (items: IAppBarMenu[]) => action(AppBarAction.ASSIGN_MENUS, items);
+export const appBarAssignControls = (controls: IAppBarControl[]) => action(AppBarAction.ASSIGN_CONTROLS, controls);
+export const appBarAssignMenus = (menus: IAppBarMenu[]) => action(AppBarAction.ASSIGN_MENUS, menus);
 export const appBarAssignMenuCallback = (callback: (menu: IAppBarMenu) => void) => action(AppBarAction.ASSIGN_MENU_CALLBACK, callback);
 export const appBarAssignFields = (fields: ICollectionValue[]) => action(AppBarAction.ASSIGN_FIELDS, fields);
 export const appBarAssignSearchCallback = (callback: (find: string, field?: ICollectionValue) => void) => action(AppBarAction.ASSIGN_SEARCH_CALLBACK, callback);
