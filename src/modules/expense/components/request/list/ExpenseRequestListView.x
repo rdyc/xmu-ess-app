@@ -91,6 +91,10 @@ const config: CollectionConfig<IExpense, AllProps> = {
           filter: {
             companyUid: user.company.uid,
             positionUid: user.position.uid,
+            projectUid: undefined,
+            statusType: undefined,
+            customerUid: undefined,
+            expenseType: undefined,
             start: undefined,
             end: undefined,
             status: undefined,
