@@ -233,7 +233,7 @@ function* watchPurchaseApprovalAllFetchRequest() {
 
     return saiyanSaga.fetch({
       method: 'get',
-      path: `/v1/approvals/project?${params}`,
+      path: `/v1/approvals/purchase/request?${params}`,
       successEffects: (response: IApiResponse) => [
         put(purchaseApprovalGetAllSuccess(response.body)),
       ],
@@ -262,7 +262,7 @@ function* watchPurchaseApprovalAllFetchRequest() {
     });
   };
 
-  yield takeEvery(PurchaseAction.GET_ALL_REQUEST, worker);
+  yield takeEvery(PurchaseApprovalAction.GET_ALL_APPROVAL_REQUEST, worker);
 }
 
 // function* watchPurchaseApprovalAllFetchRequest() {

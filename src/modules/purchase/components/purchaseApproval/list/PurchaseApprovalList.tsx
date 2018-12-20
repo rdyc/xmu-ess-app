@@ -181,7 +181,7 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
         <React.Fragment>
           <Button 
             size="small"
-            onClick={() => callback.handleRedirectTo(`/purchase/approvals/${item.uid}`)}
+            onClick={() => this.props.history.push(`/purchase/approvals/${item.uid}`)}
           >
             <FormattedMessage {...layoutMessage.action.details}/>
           </Button>
@@ -225,7 +225,7 @@ const listView: React.SFC<AllProps> = props => (
       <ListPage 
         config={props.config} 
         source={props.purchaseApprovalState.all} 
-        reloadOn={props.shouldUpdate} 
+        loadDataWhen={props.shouldUpdate} 
       >
         <PurchaseApprovalListFilter 
           isOpen={props.isFilterOpen}
@@ -236,6 +236,7 @@ const listView: React.SFC<AllProps> = props => (
           }}
           onClose={props.handleFilterVisibility}
           onApply={props.handleFilterApplied}
+          companyUid={props.userState.user && props.userState.user.company.uid}
         />
       </ListPage>
     }
