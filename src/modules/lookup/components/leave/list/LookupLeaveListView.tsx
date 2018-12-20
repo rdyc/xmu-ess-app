@@ -133,12 +133,6 @@ const config: CollectionConfig<ILookupLeave, LeaveListProps> = {
   // action component
   actionComponent: (item: ILookupLeave, callback: CollectionHandler, props: LeaveListProps) => (
     <React.Fragment>
-      <Button
-        size="small"
-        onClick={() => props.handleOnDelete(item.uid, callback.handleForceReload)}
-      >
-        <FormattedMessage {...layoutMessage.action.delete}/>        
-      </Button>
       <Button 
           size="small"
           onClick={() => callback.handleRedirectTo(`/lookup/leave/form`, { uid: item.uid })}
