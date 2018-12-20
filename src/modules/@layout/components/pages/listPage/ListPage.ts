@@ -3,11 +3,10 @@ import { IBaseFilter, IBasePagingFilter, IQueryCollectionState, IResponseCollect
 import { ICollectionValue } from '@layout/classes/core';
 import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
-import { IAppBarMenu } from '@layout/interfaces';
+import { IAppBarControl, IAppBarMenu } from '@layout/interfaces';
 import { WithStyles, withStyles, withWidth } from '@material-ui/core';
 import { WithWidth } from '@material-ui/core/withWidth';
 import styles from '@styles';
-import { RouteComponentProps, withRouter } from 'react-router';
 import {
   compose,
   HandleCreators,
@@ -34,8 +33,7 @@ export interface IListConfig<Tresponse> {
   };
   parentUrl?: string;
   fields: ICollectionValue[];
-  fieldTranslator?: (find: string, field: ICollectionValue) => string;
-  hasMore?: boolean | false;
+  toolbarControls?: (callback: ListHandler) => IAppBarControl[];
   moreOptions?: (callback: ListHandler) => IAppBarMenu[];
   hasSearching?: boolean | false;
   searchStatus?: () => boolean | false;
@@ -64,7 +62,7 @@ export interface IListConfig<Tresponse> {
 interface IOwnOption {
   config: IListConfig<any>;
   source: IQueryCollectionState<any, any>;
-  reloadOn: any;
+  loadDataWhen: any;
 }
 
 interface IOwnState {
@@ -117,10 +115,9 @@ interface IOwnHandler {
   handleForceReload: () => void;
   handleOnChangeSelection: (event: React.ChangeEvent<HTMLInputElement>) => void;
   handleOnSearch: (find: string | undefined, field: ICollectionValue | undefined) => void;
-  handleRedirectTo: (path: string, state?: any) => void;
 }
 
-export type ListHandler = Pick<ListPageProps, 'handleLoading' | 'handleResponse' | 'handleForceReload' | 'handleRedirectTo'>;
+export type ListHandler = Pick<ListPageProps, 'handleLoading' | 'handleResponse' | 'handleForceReload'>;
 export type ListDataProps = Pick<ListPageProps, 'find' | 'findBy' | 'orderBy' | 'direction' | 'page' | 'size'>;
 
 export type ListPageProps
@@ -131,8 +128,7 @@ export type ListPageProps
   & WithStyles<typeof styles>
   & WithWidth
   & WithLayout
-  & WithAppBar
-  & RouteComponentProps;
+  & WithAppBar;
 
 const createProps: mapper<IOwnOption, IOwnState> = (props: IOwnOption): IOwnState => ({
   forceReload: false,
@@ -246,22 +242,12 @@ const handlerCreators: HandleCreators<ListPageProps, IOwnHandler> = {
   handleOnSearch: (props: ListPageProps) => (find: string | undefined, field: ICollectionValue | undefined) => {
     // when find is undefided, that means user has close or exit from search mode
     if (find) {
-      let _find: string = find.trim();
-
-      // execute translator when field has value and fieldTranslator was set in config
-      if (field && props.config.fieldTranslator) {
-        _find = props.config.fieldTranslator(find, field);
-      }
-
       // set search state props for searching
-      props.setSearchResult(_find, field);
+      props.setSearchResult(find.trim(), field);
     } else {
       // set search state props to default
       props.setSearchDefault();
     }
-  },
-  handleRedirectTo: (props: ListPageProps) => (path: string, state?: any) => {
-    props.history.push(path, state);
   }
 };
 
@@ -284,7 +270,7 @@ const lifecycles: ReactLifeCycleFunctions<ListPageProps, IOwnState> = {
         isNavBackVisible: this.props.config.hasNavBack || false,
         isSearchVisible: this.props.config.hasSearching,
         isActionCentreVisible: this.props.config.showActionCentre,
-        isMoreVisible: this.props.config.hasMore,
+        isMoreVisible: this.props.config.moreOptions !== undefined,
         isModeList: true,
         isModeSearch: this.props.config.hasSearching && isSearching,
       }
@@ -310,11 +296,18 @@ const lifecycles: ReactLifeCycleFunctions<ListPageProps, IOwnState> = {
       this.props.appBarDispatch.assignFields(this.props.config.fields);
     }
 
-    // assign more menu items
-    if (this.props.config.hasMore && this.props.config.moreOptions) {
-      const menuOptions = this.props.config.moreOptions(this.props);
+    // assign custom toolbar controls
+    if (this.props.config.toolbarControls) {
+      const controls = this.props.config.toolbarControls(this.props);
 
-      this.props.appBarDispatch.assignMenus(menuOptions);
+      this.props.appBarDispatch.assignControls(controls);
+    }
+
+    // assign more menu items
+    if (this.props.config.moreOptions) {
+      const options = this.props.config.moreOptions(this.props);
+
+      this.props.appBarDispatch.assignMenus(options);
     }
 
     // loading data event from config
@@ -334,7 +327,7 @@ const lifecycles: ReactLifeCycleFunctions<ListPageProps, IOwnState> = {
     }
 
     // state
-    if (this.props.reloadOn !== prevProps.reloadOn) {
+    if (this.props.loadDataWhen !== prevProps.loadDataWhen) {
       this.props.config.onDataLoad(this.props, this.props, true);
     }
 
@@ -355,7 +348,6 @@ const lifecycles: ReactLifeCycleFunctions<ListPageProps, IOwnState> = {
 
 export const ListPage = compose<ListPageProps, IOwnOption>(
   setDisplayName('ListPage'),
-  withRouter,
   withStyles(styles),
   withWidth(),
   withLayout,

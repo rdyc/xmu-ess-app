@@ -1,4 +1,11 @@
 import { ICollectionValue } from '@layout/classes/core';
+import { SvgIconProps } from '@material-ui/core/SvgIcon';
+
+export interface IAppBarControl {
+  icon: React.ComponentType<SvgIconProps>;
+  disabled?: boolean;
+  onClick?: () => void;
+}
 
 export interface IAppBarMenu {
   id: string;
@@ -13,7 +20,8 @@ export interface IAppBarState {
   onSearching: (find?: string | undefined, field?: ICollectionValue | undefined) => void;
   onSelectionClear: () => void;
   onSelectionProcess: (values: string[]) => void;
-  menus: IAppBarMenu[] | undefined;
-  fields: ICollectionValue[] | undefined;
+  controls?: IAppBarControl[];
+  menus?: IAppBarMenu[];
+  fields?: ICollectionValue[];
   selection: string[];
 }

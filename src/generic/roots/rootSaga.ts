@@ -26,6 +26,7 @@ import leaveApprovalSagas from '@leave/store/sagas/leaveApprovalSagas';
 import leaveCancellationSagas from '@leave/store/sagas/leaveCancellationSagas';
 import leaveRequestSagas from '@leave/store/sagas/leaveRequestSagas';
 import lookupCurrencySagas from '@lookup/store/sagas/currencySagas';
+import leaveCalculationSagas from '@lookup/store/sagas/leaveCalculationSagas';
 import lookupCompanySagas from '@lookup/store/sagas/lookupCompanySagas';
 import lookupCustomerSagas from '@lookup/store/sagas/lookupCustomerSagas';
 import lookupDiemSagas from '@lookup/store/sagas/lookupDiemSagas';
@@ -82,6 +83,7 @@ export function* rootSaga() {
     fork(commonRelationSagas),
 
     // lookup
+    fork(leaveCalculationSagas),
     fork(lookupCustomerSagas),
     fork(lookupMileageExceptionSagas),
     fork(lookupCompanySagas),
