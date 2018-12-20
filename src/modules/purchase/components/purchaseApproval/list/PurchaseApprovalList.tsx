@@ -35,6 +35,7 @@ interface IOwnOption {
 }
 
 interface IOwnState extends IPurchaseApprovalListFilterResult {
+  companyUid?: string;
   shouldUpdate: boolean;
   config?: IListConfig<IPurchase>;
   isFilterOpen: boolean;
@@ -65,6 +66,7 @@ type AllProps
 const createProps: mapper<AllProps, IOwnState> = (props: AllProps): IOwnState => ({
   shouldUpdate: false,
   isFilterOpen: false,
+  companyUid:  props.userState.user && props.userState.user.company && props.userState.user.company.uid,
 
   // fill partial props from location state to handle redirection from dashboard notif
   status: props.location.state && props.location.state.status,
@@ -78,7 +80,7 @@ const stateUpdaters: StateUpdaters<AllProps, IOwnState, IOwnStateUpdater> = {
   setConfig: (prevState: IOwnState) => (config: IListConfig<IPurchase>) => ({
     config
   }),
-  setFilterVisibility: (prevState: IOwnState) => () => ({
+  setFilterVisibility: (prevState: IOwnState, props: AllProps) => () => ({
     isFilterOpen: !prevState.isFilterOpen
   }),
   setFilterApplied: (prevState: IOwnState) => (filter: IPurchaseApprovalListFilterResult) => ({
@@ -236,7 +238,7 @@ const listView: React.SFC<AllProps> = props => (
           }}
           onClose={props.handleFilterVisibility}
           onApply={props.handleFilterApplied}
-          companyUid={props.userState.user && props.userState.user.company.uid}
+          companyUid={props.companyUid}
         />
       </ListPage>
     }

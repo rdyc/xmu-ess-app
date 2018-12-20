@@ -163,7 +163,7 @@ export const PurchaseApprovalListFilterView: React.SFC<PurchaseApprovalListFilte
       isOpen={props.isFilterCustomerOpen} 
       onSelected={props.handleFilterCustomerOnSelected} 
       onClose={props.handleFilterCustomerOnClose}
-      // filter={props.companyUid}
+      filter={props.customerPayload}
     />
 
     {/* <LookupSystemDialog
