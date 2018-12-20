@@ -11,7 +11,7 @@ function* watchGetAllRequest() {
   const worker = (action: ReturnType<typeof leaveCalculationGetAllRequest>) => {
     return saiyanSaga.fetch({
       method: 'get',
-      path: `/v1/lookup/leaves${objectToQuerystring(action.payload.filter)}`, 
+      path: `/v1/account/employees/${action.payload.companyUid}/${action.payload.year}/leaves${objectToQuerystring(action.payload.filter)}`,
       successEffects: (response: IApiResponse) => ([
         put(leaveCalculationGetAllSuccess(response.body)),
         put(listBarMetadata(response.body.metadata))

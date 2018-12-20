@@ -185,7 +185,7 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
         <React.Fragment>
           <Button 
             size="small"
-            onClick={() => callback.handleRedirectTo(`/project/approvals/${item.uid}`)}
+            onClick={() => this.props.history.push(`/project/approvals/${item.uid}`)}
           >
             <FormattedMessage {...layoutMessage.action.details}/>
           </Button>
@@ -233,7 +233,7 @@ const listView: React.SFC<AllProps> = props => (
       <ListPage 
         config={props.config} 
         source={props.projectApprovalState.all} 
-        reloadOn={props.shouldUpdate} 
+        loadDataWhen={props.shouldUpdate} 
       >
         <ProjectApprovalListFilter 
           isOpen={props.isFilterOpen}

@@ -28,9 +28,9 @@ export const ProjectRegistrationListFilterView: React.SFC<ProjectRegistrationLis
   <React.Fragment>
     <Dialog
       fullScreen
-      className={props.layoutState.anchor === 'right' ? props.classes.contentShiftRight : props.classes.contentShiftLeft}
       disableBackdropClick
       open={props.isOpen}
+      className={props.layoutState.anchor === 'right' ? props.classes.contentShiftRight : props.classes.contentShiftLeft}
       onClose={props.onClose}
     >
       <AppBar className={props.classes.appBarDialog}>
@@ -73,7 +73,7 @@ export const ProjectRegistrationListFilterView: React.SFC<ProjectRegistrationLis
               </IconButton> 
             }
 
-            <IconButton disabled>
+            <IconButton onClick={props.handleFilterCompletionVisibility}>
               <ChevronRightIcon />
             </IconButton> 
           </ListItemSecondaryAction>
@@ -93,7 +93,7 @@ export const ProjectRegistrationListFilterView: React.SFC<ProjectRegistrationLis
               </IconButton> 
             }
 
-            <IconButton disabled>
+            <IconButton onClick={props.handleFilterCompletionVisibility}>
               <ChevronRightIcon />
             </IconButton> 
           </ListItemSecondaryAction>
@@ -113,7 +113,7 @@ export const ProjectRegistrationListFilterView: React.SFC<ProjectRegistrationLis
               </IconButton> 
             }
 
-            <IconButton disabled>
+            <IconButton onClick={props.handleFilterCompletionVisibility}>
               <ChevronRightIcon />
             </IconButton> 
           </ListItemSecondaryAction>
@@ -133,7 +133,7 @@ export const ProjectRegistrationListFilterView: React.SFC<ProjectRegistrationLis
               </IconButton> 
             }
 
-            <IconButton disabled>
+            <IconButton onClick={props.handleFilterCompletionVisibility}>
               <ChevronRightIcon />
             </IconButton> 
           </ListItemSecondaryAction>
