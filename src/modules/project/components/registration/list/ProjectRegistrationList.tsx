@@ -1,9 +1,10 @@
 import AppMenu from '@constants/AppMenu';
-import { CollectionDataProps, CollectionHandler, IListConfig, ListPage } from '@layout/components/pages';
+import { IListConfig, ListDataProps, ListHandler, ListPage } from '@layout/components/pages';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { layoutMessage } from '@layout/locales/messages';
 import { GlobalFormat } from '@layout/types';
 import { Button } from '@material-ui/core';
+import AddCircleIcon from '@material-ui/icons/AddCircle';
 import TuneIcon from '@material-ui/icons/Tune';
 import { isRequestEditable } from '@organization/helper/isRequestEditable';
 import { IProject } from '@project/classes/response';
@@ -70,7 +71,7 @@ const listView: React.SFC<AllProps> = props => (
       <ListPage 
         config={props.config} 
         source={props.projectRegisterState.all} 
-        reloadOn={props.shouldUpdate} 
+        loadDataWhen={props.shouldUpdate} 
       >
         <ProjectRegistrationListFilter 
           isOpen={props.isFilterOpen}
@@ -157,12 +158,22 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
     
         return result;
       },
-    
+
       // action centre
       showActionCentre: false,
+
+      // toolbar controls
+      toolbarControls: (callback: ListHandler) => [
+        {
+          icon: AddCircleIcon,
+          onClick: () => { 
+            this.props.history.push('/project/requests/form'); 
+          }
+        }
+      ],
     
       // events
-      onDataLoad: (callback: CollectionHandler, params: CollectionDataProps, forceReload?: boolean | false) => {
+      onDataLoad: (callback: ListHandler, params: ListDataProps, forceReload?: boolean | false) => {
         // when user is set and not loading
         if (user && !isLoading) {
           // when response are empty or force reloading
@@ -207,13 +218,13 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
       ),
 
       // action component
-      actionComponent: (item: IProject, callback: CollectionHandler) => (
+      actionComponent: (item: IProject, callback: ListHandler) => (
         <React.Fragment>
           {
             isRequestEditable(item.statusType) &&
             <Button 
               size="small"
-              onClick={() => callback.handleRedirectTo(`/project/requests/form`, { uid: item.uid })}
+              onClick={() => this.props.history.push(`/project/requests/form`, { uid: item.uid })}
             >
               <FormattedMessage {...layoutMessage.action.modify}/>
             </Button>
@@ -221,7 +232,7 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
 
           <Button 
             size="small"
-            onClick={() => callback.handleRedirectTo(`/project/requests/${item.uid}`)}
+            onClick={() => this.props.history.push(`/project/requests/${item.uid}`)}
           >
             <FormattedMessage {...layoutMessage.action.details}/>
           </Button>

@@ -1,7 +1,8 @@
 import { IAppState } from '@generic/interfaces';
 import { ICollectionValue } from '@layout/classes/core';
-import { IAppBarMenu, IAppBarState } from '@layout/interfaces';
+import { IAppBarControl, IAppBarMenu, IAppBarState } from '@layout/interfaces';
 import {
+  appBarAssignControls,
   appBarAssignFields,
   appBarAssignMenuCallback,
   appBarAssignMenus,
@@ -26,6 +27,7 @@ interface PropsFromDispatch {
     assignSearchCallback: typeof appBarAssignSearchCallback;
     assignSelectionClearCallback: typeof appBarAssignSelectionClearCallback;
     assignSelectionProcessCallback: typeof appBarAssignSelectionProcessCallback;
+    assignControls: typeof appBarAssignControls;
     assignMenus: typeof appBarAssignMenus;
     assignFields: typeof appBarAssignFields;
     selectionAddRemove: typeof appBarSelectionAddRemove;
@@ -46,6 +48,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     assignSearchCallback: (callback: (find: string, findBy?: ICollectionValue) => void) => dispatch(appBarAssignSearchCallback(callback)),
     assignSelectionClearCallback: (callback: () => void) => dispatch(appBarAssignSelectionClearCallback(callback)),
     assignSelectionProcessCallback: (callback: () => void) => dispatch(appBarAssignSelectionProcessCallback(callback)),
+    assignControls: (controls: IAppBarControl[]) => dispatch(appBarAssignControls(controls)),
     assignMenus: (menus: IAppBarMenu[]) => dispatch(appBarAssignMenus(menus)),
     assignFields: (fields: ICollectionValue[]) => dispatch(appBarAssignFields(fields)),
     selectionAddRemove: (value: string) => dispatch(appBarSelectionAddRemove(value)),
