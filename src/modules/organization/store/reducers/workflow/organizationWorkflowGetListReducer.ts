@@ -1,10 +1,10 @@
 import { IQueryCollectionState } from '@generic/interfaces';
 import { IOrganizationWorkflowListRequest } from '@organization/classes/queries/workflow';
-import { IWorkflow } from '@organization/classes/response/workflow';
-import { OrganizationHierarchyAction as Action } from '@organization/store/actions';
+import { IWorkflowList } from '@organization/classes/response/workflow';
+import { OrganizationWorkflowAction as Action } from '@organization/store/actions';
 import { Reducer } from 'redux';
 
-const initialState: IQueryCollectionState<IOrganizationWorkflowListRequest, IWorkflow> = {
+const initialState: IQueryCollectionState<IOrganizationWorkflowListRequest, IWorkflowList> = {
   request: undefined,
   response: undefined,
   isError: false,
@@ -12,7 +12,7 @@ const initialState: IQueryCollectionState<IOrganizationWorkflowListRequest, IWor
   errors: undefined,
 };
 
-const reducer: Reducer<IQueryCollectionState<IOrganizationWorkflowListRequest, IWorkflow>> = (state = initialState, action) => {
+const reducer: Reducer<IQueryCollectionState<IOrganizationWorkflowListRequest, IWorkflowList>> = (state = initialState, action) => {
   switch (action.type) {
     case Action.GET_LIST_REQUEST: return { ...state, isLoading: true, isError: false, request: action.payload };
     case Action.GET_LIST_SUCCESS: return { ...state, isLoading: false, isError: false, response: action.payload };

@@ -1,7 +1,7 @@
 import { IQuerySingleState } from '@generic/interfaces';
 import { IOrganizationWorkflowPutRequest } from '@organization/classes/queries/workflow';
 import { IWorkflow } from '@organization/classes/response/workflow';
-import { OrganizationHierarchyAction as Action } from '@organization/store/actions';
+import { OrganizationWorkflowAction as Action } from '@organization/store/actions';
 import { Reducer } from 'redux';
 
 const initialState: IQuerySingleState<IOrganizationWorkflowPutRequest, IWorkflow> = {

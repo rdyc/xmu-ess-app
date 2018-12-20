@@ -1,6 +1,6 @@
 import { IQuerySingleState } from '@generic/interfaces';
 import { IOrganizationWorkflowDeleteRequest } from '@organization/classes/queries/workflow';
-import { OrganizationHierarchyAction as Action } from '@organization/store/actions';
+import { OrganizationWorkflowAction as Action } from '@organization/store/actions';
 import { Reducer } from 'redux';
 
 const initialState: IQuerySingleState<IOrganizationWorkflowDeleteRequest, boolean> = {

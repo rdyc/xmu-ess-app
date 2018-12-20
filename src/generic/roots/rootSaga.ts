@@ -39,6 +39,7 @@ import lookupSystemLimitSagas from '@lookup/store/sagas/systemLimitSagas';
 import mileageApprovalSagas from '@mileage/store/sagas/approval/mileageApprovalSagas';
 import mileageRequestSagas from '@mileage/store/sagas/request/mileageRequestSagas';
 import organizationHierarchySagas from '@organization/store/sagas/organizationHierarchySagas';
+import organizationWorkflowSagas from '@organization/store/sagas/organizationWorkflowSagas';
 import projectAcceptanceSagas from '@project/store/sagas/projectAcceptanceSagas';
 import projectApprovalSagas from '@project/store/sagas/projectApprovalSagas';
 import projectAssignmentSagas from '@project/store/sagas/projectAssignmentSagas';
@@ -95,6 +96,7 @@ export function* rootSaga() {
 
     // organization
     fork(organizationHierarchySagas),
+    fork(organizationWorkflowSagas),
     
     // account
     fork(accountEmployeeSagas),

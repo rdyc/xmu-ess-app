@@ -1,5 +1,5 @@
 export interface IOrganizationWorkflowPutHierarchy {
-  workflowUid: string;
+  workflowUid: string | null;
   hierarchyUid: string;
   priority: number;
 }
