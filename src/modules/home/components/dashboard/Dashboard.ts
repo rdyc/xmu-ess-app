@@ -170,10 +170,21 @@ const handlerCreators: HandleCreators<DashboardProps, OwnHandlers> = {
       case 'Leave':
         path = '/leave';
         
-        if (type === 'Approval') {
+        if (type === 'Approval' || type === 'Notify') {
           path = path.concat('/approvals', uid && `/${uid}` || '');
-        } else {
-          path = path.concat('/requests', uid && `/${uid}` || '');
+
+          if (type === 'Approval') {
+            state = {
+              status: 'pending',
+            };
+          }
+
+          if (type === 'Notify') {
+            state = {
+              status: 'complete',
+              isNotify: true,
+            };
+          }
         }
         break;
 
