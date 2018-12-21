@@ -1,14 +1,17 @@
 import AppMenu from '@constants/AppMenu';
+import { IExpense } from '@expense/classes/response';
+import { ExpenseField } from '@expense/classes/types';
+import { ExpenseSummary } from '@expense/components/request/detail/shared/ExpenseSummary';
+import { WithExpenseRequest, withExpenseRequest } from '@expense/hoc/withExpenseRequest';
+import { expenseMessage } from '@expense/locales/messages/expenseMessage';
 import { IListConfig, ListDataProps, ListHandler, ListPage } from '@layout/components/pages';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { layoutMessage } from '@layout/locales/messages';
-import { ILeave } from '@leave/classes/response';
-import { LeaveRequestField } from '@leave/classes/types';
-import { LeaveSummary } from '@leave/components/request/detail/shared/LeaveSummary';
-import { WithLeaveApproval, withLeaveApproval } from '@leave/hoc/withLeaveApproval';
-import { leaveMessage } from '@leave/locales/messages/leaveMessage';
+import { GlobalFormat } from '@layout/types';
 import { Button } from '@material-ui/core';
+import AddCircleIcon from '@material-ui/icons/AddCircle';
 import TuneIcon from '@material-ui/icons/Tune';
+import { isRequestEditable } from '@organization/helper/isRequestEditable';
 import * as moment from 'moment';
 import * as React from 'react';
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
@@ -27,15 +30,15 @@ import {
   withStateHandlers,
 } from 'recompose';
 
-import { ILeaveApprovalListFilterResult, LeaveApprovalListFilter } from './LeaveApprovalListFilter';
+import { ExpenseRequestListFilter, IExpenseRequestListFilterResult } from './ExpenseRequestListFilter';
 
 interface IOwnOption {
   
 }
 
-interface IOwnState extends ILeaveApprovalListFilterResult {
+interface IOwnState extends IExpenseRequestListFilterResult {
   shouldUpdate: boolean;
-  config?: IListConfig<ILeave>;
+  config?: IListConfig<IExpense>;
   isFilterOpen: boolean;
 }
 
@@ -48,7 +51,7 @@ interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
 
 interface IOwnHandler {
   handleFilterVisibility: (event: React.MouseEvent<HTMLElement>) => void;
-  handleFilterApplied: (filter: ILeaveApprovalListFilterResult) => void;
+  handleFilterApplied: (filter: IExpenseRequestListFilterResult) => void;
 }
 
 type AllProps 
@@ -57,30 +60,56 @@ type AllProps
   & IOwnStateUpdater
   & IOwnHandler
   & WithUser
-  & WithLeaveApproval
+  & WithExpenseRequest
   & InjectedIntlProps
   & RouteComponentProps;
+
+const listView: React.SFC<AllProps> = props => (
+  <React.Fragment>
+    {
+      props.config &&
+      <ListPage 
+        config={props.config} 
+        source={props.expenseRequestState.all} 
+        loadDataWhen={props.shouldUpdate} 
+      >
+        <ExpenseRequestListFilter 
+          isOpen={props.isFilterOpen}
+          initialProps={{
+            customerUid: props.customerUid,
+            projectUid: props.projectUid,
+            expenseType: props.expenseType,
+            statusType: props.statusType,
+            status: props.status,
+            isRejected: props.isRejected
+          }}
+          onClose={props.handleFilterVisibility}
+          onApply={props.handleFilterApplied}
+        />
+      </ListPage>
+    }
+  </React.Fragment>
+);
 
 const createProps: mapper<AllProps, IOwnState> = (props: AllProps): IOwnState => ({
   shouldUpdate: false,
   isFilterOpen: false,
 
   // fill partial props from location state to handle redirection from dashboard notif
-  status: props.location.state && props.location.state.status,
-  isNotify: props.location.state && props.location.state.isNotify 
+  isRejected: props.location.state && props.location.state.isRejected
 });
 
 const stateUpdaters: StateUpdaters<AllProps, IOwnState, IOwnStateUpdater> = {
   setShouldUpdate: (prevState: IOwnState) => () => ({
     shouldUpdate: !prevState.shouldUpdate
   }),
-  setConfig: (prevState: IOwnState) => (config: IListConfig<ILeave>) => ({
+  setConfig: (prevState: IOwnState) => (config: IListConfig<IExpense>) => ({
     config
   }),
   setFilterVisibility: (prevState: IOwnState) => () => ({
     isFilterOpen: !prevState.isFilterOpen
   }),
-  setFilterApplied: (prevState: IOwnState) => (filter: ILeaveApprovalListFilterResult) => ({
+  setFilterApplied: (prevState: IOwnState) => (filter: IExpenseRequestListFilterResult) => ({
     ...filter,
     isFilterOpen: false
   }),
@@ -90,7 +119,7 @@ const handlerCreators: HandleCreators<AllProps, IOwnHandler> = {
   handleFilterVisibility: (props: AllProps) => (event: React.MouseEvent<HTMLElement>) => {
     props.setFilterVisibility();
   },
-  handleFilterApplied: (props: AllProps) => (filter: ILeaveApprovalListFilterResult) => {
+  handleFilterApplied: (props: AllProps) => (filter: IExpenseRequestListFilterResult) => {
     props.setFilterApplied(filter);
   },
 };
@@ -98,43 +127,51 @@ const handlerCreators: HandleCreators<AllProps, IOwnHandler> = {
 const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
   componentDidMount() { 
     const { user } = this.props.userState;
-    const { isLoading, request, response } = this.props.leaveApprovalState.all;
-    const { loadAllRequest } = this.props.leaveApprovalDispatch;
+    const { isLoading, request, response } = this.props.expenseRequestState.all;
+    const { loadAllRequest } = this.props.expenseRequestDispatch;
 
-    const config: IListConfig<ILeave> = {
+    const config: IListConfig<IExpense> = {
       // page
       page: {
-        uid: AppMenu.LeaveApproval,
-        parentUid: AppMenu.LeaveRequest,
-        title: this.props.intl.formatMessage(leaveMessage.approval.page.listTitle),
-        description: this.props.intl.formatMessage(leaveMessage.approval.page.listSubHeader),
+        uid: AppMenu.ExpenseRequest,
+        parentUid: AppMenu.Expense,
+        title: this.props.intl.formatMessage(expenseMessage.request.page.title),
+        description: this.props.intl.formatMessage(expenseMessage.request.page.subTitle),
       },
       
       // top bar
-      fields: Object.keys(LeaveRequestField)
-        .map(key => ({ 
-          value: key, 
-          name: LeaveRequestField[key] 
-        })),
-      // fieldTranslator: leaveRequestFieldTranslator,
+      fields: Object.keys(ExpenseField).map(key => ({ 
+        value: key, 
+        name: ExpenseField[key] 
+      })),
     
       // searching
       hasSearching: true,
-      searchStatus: () => {
+      searchStatus: (): boolean => {
         let result: boolean = false;
     
-        if (request && request.filter && request.filter.query) {
-          result = request.filter.query.find ? true : false;
+        if (request && request.filter && request.filter.find) {
+          result = request.filter.find ? true : false;
         }
     
         return result;
       },
-    
+
       // action centre
       showActionCentre: false,
+
+      // toolbar controls
+      toolbarControls: (callback: ListHandler) => [
+        {
+          icon: AddCircleIcon,
+          onClick: () => { 
+            this.props.history.push('/expense/requests/form'); 
+          }
+        }
+      ],
     
       // events
-      onDataLoad: (callback: ListHandler, params: ListDataProps, forceReload?: boolean | false) => {  
+      onDataLoad: (callback: ListHandler, params: ListDataProps, forceReload?: boolean | false) => {
         // when user is set and not loading
         if (user && !isLoading) {
           // when response are empty or force reloading
@@ -143,18 +180,22 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
               filter: {
                 companyUid: user.company.uid,
                 positionUid: user.position.uid,
-                leaveType: this.props.leaveType,
+                customerUid: this.props.customerUid,
+                projectUid: this.props.projectUid,
+                expenseType: this.props.expenseType,
+                start: undefined,
+                end: undefined,
                 statusType: this.props.statusType,
                 status: this.props.status,
-                isNotify: this.props.isNotify,
+                isRejected: this.props.isRejected,
                 query: {
-                  find: params.find,
-                  findBy: params.findBy,
-                  orderBy: params.orderBy,
                   direction: params.direction,
+                  orderBy: params.orderBy,
                   page: params.page,
                   size: params.size,
-                }
+                  find: params.find,
+                  findBy: params.findBy,
+                },
               }
             });
           } else {
@@ -163,27 +204,37 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
           }
         }
       },
-      onBind: (item: ILeave, index: number) => ({
+      onBind: (item: IExpense, index: number) => ({
         key: index,
         primary: item.uid,
-        secondary: item.reason,
-        tertiary: item.leave && item.leave.value || item.leaveType,
-        quaternary: item.regular && item.regular.leave && item.regular.leave.name || 'N/A',
+        secondary: item.notes && item.notes || '',
+        tertiary: item.customer && item.customer.name || item.customerUid,
+        quaternary: this.props.intl.formatNumber(item.value, GlobalFormat.CurrencyDefault),
         quinary: item.status && item.status.value || item.statusType,
         senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
       }),
-    
+
       // summary component
-      summaryComponent: (item: ILeave) => ( 
-        <LeaveSummary data={item} />
+      summaryComponent: (item: IExpense) => ( 
+        <ExpenseSummary data={item} />
       ),
-    
+
       // action component
-      actionComponent: (item: ILeave, callback: ListHandler) => (
+      actionComponent: (item: IExpense, callback: ListHandler) => (
         <React.Fragment>
+          {
+            isRequestEditable(item.statusType) &&
+            <Button 
+              size="small"
+              onClick={() => this.props.history.push(`/expense/requests/form`, { uid: item.uid })}
+            >
+              <FormattedMessage {...layoutMessage.action.modify}/>
+            </Button>
+          }
+
           <Button 
             size="small"
-            onClick={() => this.props.history.push(`/leave/approvals/${item.uid}`)}
+            onClick={() => this.props.history.push(`/expense/requests/${item.uid}`)}
           >
             <FormattedMessage {...layoutMessage.action.details}/>
           </Button>
@@ -197,10 +248,11 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
           title: this.props.intl.formatMessage(layoutMessage.tooltip.filter),
           icon: TuneIcon,
           showBadgeWhen: () => {
-            return this.props.leaveType !== undefined || 
+            return this.props.customerUid !== undefined || 
+              this.props.projectUid !== undefined || 
               this.props.statusType !== undefined || 
               this.props.status !== undefined || 
-              this.props.isNotify === true;
+              this.props.isRejected === true;
           },
           onClick: this.props.handleFilterVisibility
         }
@@ -212,45 +264,21 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
   componentDidUpdate(nextProps: AllProps) {
     // track any changes in filter props
     if (
-      this.props.leaveType !== nextProps.leaveType ||
+      this.props.customerUid !== nextProps.customerUid ||
+      this.props.projectUid !== nextProps.projectUid ||
       this.props.statusType !== nextProps.statusType ||
       this.props.status !== nextProps.status ||
-      this.props.isNotify !== nextProps.isNotify
+      this.props.isRejected !== nextProps.isRejected
     ) {
       this.props.setShouldUpdate();
     }
   }
 };
 
-const listView: React.SFC<AllProps> = props => (
-  <React.Fragment>
-    {
-      props.config &&
-      <ListPage 
-        config={props.config} 
-        source={props.leaveApprovalState.all} 
-        loadDataWhen={props.shouldUpdate} 
-      >
-        <LeaveApprovalListFilter 
-          isOpen={props.isFilterOpen}
-          initialProps={{
-            leaveType: props.leaveType,
-            statusType: props.statusType,
-            status: props.status,
-            isNotify: props.isNotify,
-          }}
-          onClose={props.handleFilterVisibility}
-          onApply={props.handleFilterApplied}
-        />
-      </ListPage>
-    }
-  </React.Fragment>
-);
-
-export const LeaveApprovalList = compose<AllProps, IOwnOption>(
-  setDisplayName('LeaveApprovalList'),
+export const ExpenseRequestList = compose(
+  setDisplayName('ExpenseRequestList'),
   withUser,
-  withLeaveApproval,
+  withExpenseRequest,
   withRouter,
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),
