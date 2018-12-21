@@ -134,7 +134,7 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
       // selection
       hasSelection: true,
       onProcessSelection: (values: string[], callback: ListHandler) => {
-        callback.handleRedirectTo(`/timesheet/approvals/action`, { values });
+        this.props.history.push(`/timesheet/approvals/action`, { values });
       },
 
       // searching

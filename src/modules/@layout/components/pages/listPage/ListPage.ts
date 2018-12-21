@@ -21,7 +21,6 @@ import {
   withStateHandlers,
 } from 'recompose';
 
-import { RouteComponentProps, withRouter } from 'react-router';
 import { IDataControl } from '../dataContainer/DataContainer';
 import { ListPageView } from './ListPageView';
 
@@ -116,10 +115,9 @@ interface IOwnHandler {
   handleForceReload: () => void;
   handleOnChangeSelection: (event: React.ChangeEvent<HTMLInputElement>) => void;
   handleOnSearch: (find: string | undefined, field: ICollectionValue | undefined) => void;
-  handleRedirectTo: (path: string, state?: any) => void;
 }
 
-export type ListHandler = Pick<ListPageProps, 'handleLoading' | 'handleResponse' | 'handleForceReload' | 'handleRedirectTo'>;
+export type ListHandler = Pick<ListPageProps, 'handleLoading' | 'handleResponse' | 'handleForceReload' >;
 export type ListDataProps = Pick<ListPageProps, 'find' | 'findBy' | 'orderBy' | 'direction' | 'page' | 'size'>;
 
 export type ListPageProps
@@ -130,8 +128,7 @@ export type ListPageProps
   & WithStyles<typeof styles>
   & WithWidth
   & WithLayout
-  & WithAppBar
-  & RouteComponentProps;
+  & WithAppBar;
 
 const createProps: mapper<IOwnOption, IOwnState> = (props: IOwnOption): IOwnState => ({
   forceReload: false,
@@ -251,10 +248,7 @@ const handlerCreators: HandleCreators<ListPageProps, IOwnHandler> = {
       // set search state props to default
       props.setSearchDefault();
     }
-  },
-  handleRedirectTo: (props: ListPageProps) => (path: string, state?: any) => {
-    props.history.push(path, state);
-  },
+  }
 };
 
 const lifecycles: ReactLifeCycleFunctions<ListPageProps, IOwnState> = {
@@ -358,7 +352,6 @@ export const ListPage = compose<ListPageProps, IOwnOption>(
   withWidth(),
   withLayout,
   withAppBar,
-  withRouter,
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
   lifecycle(lifecycles)
