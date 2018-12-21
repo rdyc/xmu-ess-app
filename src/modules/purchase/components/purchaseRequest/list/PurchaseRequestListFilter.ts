@@ -25,7 +25,7 @@ const completionStatus: ICollectionValue[] = [
   { value: 'complete', name: 'Complete' }
 ]; 
 
-export type IPurchaseRequestListFilterResult = Pick<IPurchaseGetAllFilter, 'customerUid' | 'isRejected' | 'isSettlement' | 'statusType' |'status' >;
+export type IPurchaseRequestListFilterResult = Pick<IPurchaseGetAllFilter, 'customerUid' | 'isRejected' | 'isSettlement' | 'statusType' | 'status' >;
 
 interface IOwnOption {
   companyUid?: string; 
@@ -78,6 +78,8 @@ interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
   
   // filter settlement
   setFilterSettlement: StateHandler<IOwnState>;
+
+  setFilterRejected: StateHandler<IOwnState>;
 }
 
 interface IOwnHandler {
@@ -179,7 +181,7 @@ const stateUpdaters: StateUpdaters<PurchaseRequestListFilterProps, IOwnState, IO
 
   // filter reject
   setFilterRejected: (prevState: IOwnState) => (checked: boolean) => ({
-    filterSettlement: checked
+    filterRejected: checked
   }),
 };
 
@@ -193,7 +195,8 @@ const handlerCreators: HandleCreators<PurchaseRequestListFilterProps, IOwnHandle
       customerUid: props.filterCustomer && props.filterCustomer.uid,
       status: props.filterCompletion && props.filterCompletion.value,
       statusType: props.filterStatus && props.filterStatus.type,
-      isSettlement: props.filterSettlement
+      isSettlement: props.filterSettlement,
+      isRejected: props.filterRejected,
     });
   },
 
@@ -246,7 +249,7 @@ const handlerCreators: HandleCreators<PurchaseRequestListFilterProps, IOwnHandle
 
   // filter reject
   handleFilterRejectOnChange: (props: PurchaseRequestListFilterProps) => (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
-    props.setFilterSettlement(checked);
+    props.setFilterRejected(checked);
   }
 };
 

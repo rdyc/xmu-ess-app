@@ -43,8 +43,8 @@ interface IOwnState {
   filterCustomer?: ICustomerList;
 
   // filter status
-  // isFilterStatusOpen: boolean;
-  // filterStatus?: ISystemList;
+  isFilterStatusOpen: boolean;
+  filterStatus?: ISystemList;
 
   // filter completion
   isFilterCompletionOpen: boolean;
@@ -65,9 +65,10 @@ interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
   // filter customer
   setFilterCustomerVisibility: StateHandler<IOwnState>;
   setFilterCustomer: StateHandler<IOwnState>;
-
-  // setFilterStatusVisibility: StateHandler<IOwnState>;
-  // setFilterStatus: StateHandler<IOwnState>;
+  
+  // filter status
+  setFilterStatusVisibility: StateHandler<IOwnState>;
+  setFilterStatus: StateHandler<IOwnState>;
 
   // filter completion
   setFilterCompletionVisibility: StateHandler<IOwnState>;
@@ -117,7 +118,7 @@ const createProps: mapper<PurchaseSettlementListFilterProps, IOwnState> = (props
   completionStatus,
   isFilterCustomerOpen: false,
   isFilterCompletionOpen: false,
-  // isFilterStatusOpen: false,
+  isFilterStatusOpen: false,
 
   customerPayload: {
     companyUid: props.companyUid || ''
@@ -132,7 +133,8 @@ const stateUpdaters: StateUpdaters<PurchaseSettlementListFilterProps, IOwnState,
   setFilterReset: (prevState: IOwnState) => () => ({
     filterCustomer: undefined,
     filterCompletion: undefined,
-    filterRejected: undefined
+    filterRejected: undefined,
+    filterStatus: undefined
   }),
 
   // filter customer
@@ -144,6 +146,15 @@ const stateUpdaters: StateUpdaters<PurchaseSettlementListFilterProps, IOwnState,
     isFilterCustomerOpen: false,
     filterCustomer: customer
   }),
+  
+  // filter status
+  setFilterStatusVisibility: (prevState: IOwnState) => () => ({
+    isFilterStatusOpen: !prevState.isFilterStatusOpen
+  }),
+  setFilterStatus: (prevState: IOwnState) => (data?: ISystemList) => ({
+    isFilterStatusOpen: false,
+    filterStatus: data
+  }),
 
   // filter completion
   setFilterCompletionVisibility: (prevState: IOwnState) => () => ({
@@ -154,7 +165,7 @@ const stateUpdaters: StateUpdaters<PurchaseSettlementListFilterProps, IOwnState,
     filterCompletion: data
   }),
 
-  // filter settlement
+  // filter reject
   setFilterRejected: (prevState: IOwnState) => (checked: boolean) => ({
     filterRejected: checked
   }),
@@ -169,7 +180,7 @@ const handlerCreators: HandleCreators<PurchaseSettlementListFilterProps, IOwnHan
     props.onApply({
       customerUid: props.filterCustomer && props.filterCustomer.uid,
       status: props.filterCompletion && props.filterCompletion.value,
-      // statusType: props.filterStatus && props.filterStatus.type,
+      statusType: props.filterStatus && props.filterStatus.type,
       isRejected: props.filterRejected
     });
   },

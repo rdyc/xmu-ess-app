@@ -44,7 +44,7 @@ export const PurchaseRequestListFilterView: React.SFC<PurchaseRequestListFilterP
           </Typography>
 
           {
-            (props.filterCustomer || props.filterType || props.filterStatus || props.filterCompletion || props.filterSettlement) &&
+            (props.filterCustomer || props.filterStatus || props.filterCompletion || props.filterSettlement || props.filterRejected) &&
             <Button color="inherit" onClick={props.handleFilterOnReset}>
               {props.intl.formatMessage(layoutMessage.action.reset)}
             </Button>
@@ -79,26 +79,6 @@ export const PurchaseRequestListFilterView: React.SFC<PurchaseRequestListFilterP
           </ListItemSecondaryAction>
         </ListItem>
         <Divider />
-        
-        {/* <ListItem button onClick={props.handleFilterTypeVisibility}>
-          <ListItemText 
-            primary={props.intl.formatMessage(purchaseMessage.request.field.projectType)}
-            secondary={props.filterType && props.filterType.name || props.intl.formatMessage(layoutMessage.text.none)} 
-          />
-          <ListItemSecondaryAction>
-            { 
-              props.filterType &&
-              <IconButton onClick={props.handleFilterTypeOnClear}>
-                <ClearIcon />
-              </IconButton> 
-            }
-
-            <IconButton disabled>
-              <ChevronRightIcon />
-            </IconButton> 
-          </ListItemSecondaryAction>
-        </ListItem>
-        <Divider /> */}
 
         <ListItem button onClick={props.handleFilterStatusVisibility}>
           <ListItemText 
@@ -158,13 +138,13 @@ export const PurchaseRequestListFilterView: React.SFC<PurchaseRequestListFilterP
         <ListItem>
           <ListItemText 
             primary={props.intl.formatMessage(purchaseMessage.request.field.isRejected)}
-            secondary={props.intl.formatMessage(props.filterSettlement ? layoutMessage.action.yes : layoutMessage.action.no)}
+            secondary={props.intl.formatMessage(props.filterRejected ? layoutMessage.action.yes : layoutMessage.action.no)}
           />
           <ListItemSecondaryAction>
             <Switch
               color="primary"
-              checked={props.filterSettlement || false}
-              onChange={props.handleFilterSettlementOnChange}
+              checked={props.filterRejected || false}
+              onChange={props.handleFilterRejectOnChange}
             />
           </ListItemSecondaryAction>
         </ListItem>
@@ -180,16 +160,6 @@ export const PurchaseRequestListFilterView: React.SFC<PurchaseRequestListFilterP
       onClose={props.handleFilterCustomerOnClose}
       filter={props.customerPayload}
     />
-
-    {/* <LookupSystemDialog
-      title={props.intl.formatMessage(purchaseMessage.request.field.projectType)}
-      category="project"
-      hideBackdrop={true}
-      isOpen={props.isFilterTypeOpen}
-      value={props.filterType && props.filterType.type}
-      onSelected={props.handleFilterTypeOnSelected}
-      onClose={props.handleFilterTypeOnClose}
-    /> */}
 
     <LookupSystemDialog
       title={props.intl.formatMessage(purchaseMessage.request.field.statusType)}

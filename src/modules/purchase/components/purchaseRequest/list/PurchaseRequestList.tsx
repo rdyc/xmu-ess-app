@@ -150,6 +150,7 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
                 statusType: this.props.statusType,
                 status: this.props.status,
                 isSettlement: this.props.isSettlement,
+                isRejected: this.props.isRejected,
                 find: params.find,
                 findBy: params.findBy,
                 orderBy: params.orderBy,

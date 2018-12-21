@@ -147,7 +147,7 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
                 companyUid: user.company.uid,
                 positionUid: user.position.uid,
                 customerUid: this.props.customerUid,
-                // status: this.props.status,
+                status: this.props.status,
                 isRejected: this.props.isRejected,
                 find: params.find,
                 findBy: params.findBy,

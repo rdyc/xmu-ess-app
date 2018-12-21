@@ -179,7 +179,7 @@ const handlerCreators: HandleCreators<PurchaseApprovalListFilterProps, IOwnHandl
     props.onApply({
       customerUid: props.filterCustomer && props.filterCustomer.uid,
       status: props.filterCompletion && props.filterCompletion.value,
-      // statusType: props.filterStatus && props.filterStatus.type,
+      statusType: props.filterStatus && props.filterStatus.type,
       isNotify: props.filterNotify
     });
   },

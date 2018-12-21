@@ -94,11 +94,11 @@
   "purchase.field.information.difference": " Difference",
   "purchase.field.information.differenceInIDR": "Difference Value (IDR)",
 
-  "purchase.field.isNotify": "Notify Status",
+  "purchase.field.isNotify": "Notified Only",
   "purchase.field.isRejected": "Rejected Only",
-  "purchase.field.isSettlement": "Ready to Settle?",
-  "purchase.field.statusType": "Approval Status",
-  "purchase.field.completion": "Completion Status",
+  "purchase.field.isSettlement": "Settle-Ready Only",
+  "purchase.field.statusType": "Status",
+  "purchase.field.completion": "Completion",
   
   "purchase.action.modify": "Modify",
   "purchase.action.settle": "Settle",
