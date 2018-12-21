@@ -1,5 +1,5 @@
 import AppMenu from '@constants/AppMenu';
-import { CollectionHandler, IListConfig, ListDataProps, ListHandler, ListPage } from '@layout/components/pages';
+import { IListConfig, ListDataProps, ListHandler, ListPage } from '@layout/components/pages';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { layoutMessage } from '@layout/locales/messages';
 import { GlobalFormat } from '@layout/types';
@@ -128,8 +128,9 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
 
       // selection
       hasSelection: true,
-      onProcessSelection: (values: string[], callback: CollectionHandler) => {
-        callback.handleRedirectTo(`/timesheet/approvals/action`, { values });
+      onProcessSelection: (values: string[], callback: ListHandler) => {
+        // callback.(`/timesheet/approvals/action`, { values });
+        alert('go to action approval');
       },
 
       // searching
