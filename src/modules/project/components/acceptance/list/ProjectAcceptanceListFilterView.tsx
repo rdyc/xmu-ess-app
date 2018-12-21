@@ -21,9 +21,9 @@ import ClearIcon from '@material-ui/icons/SettingsBackupRestore';
 import { projectMessage } from '@project/locales/messages/projectMessage';
 import * as React from 'react';
 
-import { ProjectAssignmentListFilterProps } from './ProjectAssignmentListFilter';
+import { ProjectAcceptanceListFilterProps } from './ProjectAcceptanceListFilter';
 
-export const ProjectAssignmentListFilterView: React.SFC<ProjectAssignmentListFilterProps> = props => (
+export const ProjectAcceptanceListFilterView: React.SFC<ProjectAcceptanceListFilterProps> = props => (
   <React.Fragment>
     <Dialog
       fullScreen

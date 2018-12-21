@@ -2,7 +2,7 @@ import { ISystemList } from '@common/classes/response';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { ICustomerList } from '@lookup/classes/response';
 import { WithStyles, withStyles } from '@material-ui/core';
-import { IProjectAssignmentGetAllFilter } from '@project/classes/filters/assignment';
+import { IProjectAcceptanceGetAllFilter } from '@project/classes/filters/acceptance';
 import styles from '@styles';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import {
@@ -17,15 +17,15 @@ import {
   withStateHandlers,
 } from 'recompose';
 
-import { ProjectAssignmentListFilterView } from './ProjectAssignmentListFilterView';
+import { ProjectAcceptanceListFilterView } from './ProjectAcceptanceListFilterView';
 
-export type IProjectAssignmentListFilterResult = Pick<IProjectAssignmentGetAllFilter, 'customerUids' | 'projectTypes' | 'statusTypes' | 'projectUid' | 'activeOnly'>;
+export type IProjectAcceptanceListFilterResult = Pick<IProjectAcceptanceGetAllFilter, 'customerUids' | 'projectTypes' | 'statusTypes' | 'projectUid' | 'activeOnly'>;
 
 interface IOwnOption {
   isOpen: boolean;
-  initialProps?: IProjectAssignmentListFilterResult;
+  initialProps?: IProjectAcceptanceListFilterResult;
   onClose: (event: React.MouseEvent<HTMLElement>) => void;
-  onApply: (filter: IProjectAssignmentListFilterResult) => void;
+  onApply: (filter: IProjectAcceptanceListFilterResult) => void;
 }
 
 interface IOwnState {
@@ -92,7 +92,7 @@ interface IOwnHandler {
   handleFilterActiveOnChange: (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => void;
 }
 
-export type ProjectAssignmentListFilterProps 
+export type ProjectAcceptanceListFilterProps 
   = IOwnOption
   & IOwnState
   & IOwnStateUpdater
@@ -101,7 +101,7 @@ export type ProjectAssignmentListFilterProps
   & WithLayout
   & InjectedIntlProps;
 
-const createProps: mapper<ProjectAssignmentListFilterProps, IOwnState> = (props: ProjectAssignmentListFilterProps): IOwnState => ({
+const createProps: mapper<ProjectAcceptanceListFilterProps, IOwnState> = (props: ProjectAcceptanceListFilterProps): IOwnState => ({
   isFilterCustomerOpen: false,
   isFilterTypeOpen: false,
   isFilterStatusOpen: false,
@@ -110,7 +110,7 @@ const createProps: mapper<ProjectAssignmentListFilterProps, IOwnState> = (props:
   filterActive: props.initialProps && props.initialProps.activeOnly,
 });
 
-const stateUpdaters: StateUpdaters<ProjectAssignmentListFilterProps, IOwnState, IOwnStateUpdater> = { 
+const stateUpdaters: StateUpdaters<ProjectAcceptanceListFilterProps, IOwnState, IOwnStateUpdater> = { 
   // main filter
   setFilterReset: (prevState: IOwnState) => () => ({
     filterCustomer: undefined,
@@ -152,12 +152,12 @@ const stateUpdaters: StateUpdaters<ProjectAssignmentListFilterProps, IOwnState, 
   })
 };
 
-const handlerCreators: HandleCreators<ProjectAssignmentListFilterProps, IOwnHandler> = {
+const handlerCreators: HandleCreators<ProjectAcceptanceListFilterProps, IOwnHandler> = {
   // main filter
-  handleFilterOnReset: (props: ProjectAssignmentListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
+  handleFilterOnReset: (props: ProjectAcceptanceListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
     props.setFilterReset();
   },
-  handleFilterOnApply: (props: ProjectAssignmentListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
+  handleFilterOnApply: (props: ProjectAcceptanceListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
     props.onApply({
       customerUids: props.filterCustomer && [props.filterCustomer.uid],
       projectTypes: props.filterType && [props.filterType.type],
@@ -168,58 +168,58 @@ const handlerCreators: HandleCreators<ProjectAssignmentListFilterProps, IOwnHand
   },
 
   // filter customer
-  handleFilterCustomerVisibility: (props: ProjectAssignmentListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
+  handleFilterCustomerVisibility: (props: ProjectAcceptanceListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
     props.setFilterCustomerVisibility();
   },
-  handleFilterCustomerOnSelected: (props: ProjectAssignmentListFilterProps) => (customer: ICustomerList) => {
+  handleFilterCustomerOnSelected: (props: ProjectAcceptanceListFilterProps) => (customer: ICustomerList) => {
     props.setFilterCustomer(customer);
   },
-  handleFilterCustomerOnClear: (props: ProjectAssignmentListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
+  handleFilterCustomerOnClear: (props: ProjectAcceptanceListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
     props.setFilterCustomer();
   },
-  handleFilterCustomerOnClose: (props: ProjectAssignmentListFilterProps) => () => {
+  handleFilterCustomerOnClose: (props: ProjectAcceptanceListFilterProps) => () => {
     props.setFilterCustomerVisibility();
   },
 
   // filter type
-  handleFilterTypeVisibility: (props: ProjectAssignmentListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
+  handleFilterTypeVisibility: (props: ProjectAcceptanceListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
     props.setFilterTypeVisibility();
   },
-  handleFilterTypeOnSelected: (props: ProjectAssignmentListFilterProps) => (data: ISystemList) => {
+  handleFilterTypeOnSelected: (props: ProjectAcceptanceListFilterProps) => (data: ISystemList) => {
     props.setFilterType(data);
   },
-  handleFilterTypeOnClear: (props: ProjectAssignmentListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
+  handleFilterTypeOnClear: (props: ProjectAcceptanceListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
     props.setFilterType();
   },
-  handleFilterTypeOnClose: (props: ProjectAssignmentListFilterProps) => () => {
+  handleFilterTypeOnClose: (props: ProjectAcceptanceListFilterProps) => () => {
     props.setFilterTypeVisibility();
   },
   
   // filter status
-  handleFilterStatusVisibility: (props: ProjectAssignmentListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
+  handleFilterStatusVisibility: (props: ProjectAcceptanceListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
     props.setFilterStatusVisibility();
   },
-  handleFilterStatusOnSelected: (props: ProjectAssignmentListFilterProps) => (data: ISystemList) => {
+  handleFilterStatusOnSelected: (props: ProjectAcceptanceListFilterProps) => (data: ISystemList) => {
     props.setFilterStatus(data);
   },
-  handleFilterStatusOnClear: (props: ProjectAssignmentListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
+  handleFilterStatusOnClear: (props: ProjectAcceptanceListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
     props.setFilterStatus();
   },
-  handleFilterStatusOnClose: (props: ProjectAssignmentListFilterProps) => () => {
+  handleFilterStatusOnClose: (props: ProjectAcceptanceListFilterProps) => () => {
     props.setFilterStatusVisibility();
   },
   
   // filter rejected
-  handleFilterActiveOnChange: (props: ProjectAssignmentListFilterProps) => (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
+  handleFilterActiveOnChange: (props: ProjectAcceptanceListFilterProps) => (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
     props.setFilterActive(checked);
   }
 };
 
-export const ProjectAssignmentListFilter = compose<ProjectAssignmentListFilterProps, IOwnOption>(
-  setDisplayName('ProjectAssignmentListFilter'),
+export const ProjectAcceptanceListFilter = compose<ProjectAcceptanceListFilterProps, IOwnOption>(
+  setDisplayName('ProjectAcceptanceListFilter'),
   withLayout,
   withStyles(styles),
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators)
-)(ProjectAssignmentListFilterView);
+)(ProjectAcceptanceListFilterView);
