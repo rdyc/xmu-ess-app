@@ -8,7 +8,6 @@ import { LeaveSummary } from '@leave/components/request/detail/shared/LeaveSumma
 import { WithLeaveCancellation, withLeaveCancellation } from '@leave/hoc/withLeaveCancellation';
 import { leaveMessage } from '@leave/locales/messages/leaveMessage';
 import { Button } from '@material-ui/core';
-import TuneIcon from '@material-ui/icons/Tune';
 import * as moment from 'moment';
 import * as React from 'react';
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
@@ -27,7 +26,7 @@ import {
   withStateHandlers,
 } from 'recompose';
 
-import { ILeaveCancellationListFilterResult, LeaveCancellationListFilter } from './LeaveCancellationListFilter';
+import { ILeaveCancellationListFilterResult } from './LeaveCancellationListFilter';
 
 interface IOwnOption {
   
@@ -181,18 +180,18 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
         </React.Fragment>
       ),
 
-      // additional controls
-      additionalControls: [
-        {
-          id: 'option-filter',
-          title: this.props.intl.formatMessage(layoutMessage.tooltip.filter),
-          icon: TuneIcon,
-          showBadgeWhen: () => {
-            return this.props.leaveType !== undefined ;
-          },
-          onClick: this.props.handleFilterVisibility
-        }
-      ]
+      // // additional controls
+      // additionalControls: [
+      //   {
+      //     id: 'option-filter',
+      //     title: this.props.intl.formatMessage(layoutMessage.tooltip.filter),
+      //     icon: TuneIcon,
+      //     showBadgeWhen: () => {
+      //       return this.props.leaveType !== undefined ;
+      //     },
+      //     onClick: this.props.handleFilterVisibility
+      //   }
+      // ]
     };
 
     this.props.setConfig(config);
@@ -216,14 +215,14 @@ const listView: React.SFC<AllProps> = props => (
         source={props.leaveCancellationState.all} 
         loadDataWhen={props.shouldUpdate} 
       >
-        <LeaveCancellationListFilter 
+        {/* <LeaveCancellationListFilter 
           isOpen={props.isFilterOpen}
           initialProps={{
             leaveType: props.leaveType,
           }}
           onClose={props.handleFilterVisibility}
           onApply={props.handleFilterApplied}
-        />
+        /> */}
       </ListPage>
     }
   </React.Fragment>
