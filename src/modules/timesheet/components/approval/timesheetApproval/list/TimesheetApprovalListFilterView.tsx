@@ -12,7 +12,6 @@ import {
   ListItem,
   ListItemSecondaryAction,
   ListItemText,
-  Switch,
   Toolbar,
   Typography,
 } from '@material-ui/core';
@@ -21,9 +20,9 @@ import CloseIcon from '@material-ui/icons/Close';
 import ClearIcon from '@material-ui/icons/SettingsBackupRestore';
 import { timesheetMessage } from '@timesheet/locales/messages/timesheetMessage';
 import * as React from 'react';
-import { TimesheetEntryListFilterProps } from './TimesheetEntryListFilter';
+import { TimesheetApprovalListFilterProps } from './TimesheetApprovalListFilter';
 
-export const TimesheetEntryListFilterView: React.SFC<TimesheetEntryListFilterProps> = props => (
+export const TimesheetApprovalListFilterView: React.SFC<TimesheetApprovalListFilterProps> = props => (
   <React.Fragment>
     <Dialog
       fullScreen
@@ -43,7 +42,7 @@ export const TimesheetEntryListFilterView: React.SFC<TimesheetEntryListFilterPro
           </Typography>
 
           {
-            (props.filterCustomer || props.filterActivityType || props.filterStatus || props.filterCompletion || props.filterRejected) &&
+            (props.filterCustomer || props.filterActivityType || props.filterStatus || props.filterCompletion) &&
             <Button color="inherit" onClick={props.handleFilterOnReset}>
               {props.intl.formatMessage(layoutMessage.action.reset)}
             </Button>
@@ -135,21 +134,6 @@ export const TimesheetEntryListFilterView: React.SFC<TimesheetEntryListFilterPro
             <IconButton disabled>
               <ChevronRightIcon />
             </IconButton>
-          </ListItemSecondaryAction>
-        </ListItem>
-        <Divider />
-
-        <ListItem>
-          <ListItemText
-            primary={props.intl.formatMessage(timesheetMessage.entry.field.isRejected)}
-            secondary={props.intl.formatMessage(props.filterRejected ? layoutMessage.action.yes : layoutMessage.action.no)}
-          />
-          <ListItemSecondaryAction>
-            <Switch
-              color="primary"
-              checked={props.filterRejected || false}
-              onChange={props.handleFilterRejectedOnChange}
-            />
           </ListItemSecondaryAction>
         </ListItem>
         <Divider />

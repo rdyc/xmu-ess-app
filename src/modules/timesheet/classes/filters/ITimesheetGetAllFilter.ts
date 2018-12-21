@@ -5,7 +5,7 @@ export interface ITimesheetGetAllFilter extends IBasePagingFilter {
   // readonly companyUid: string | undefined;
 
   customerUid?: string;
-  projectUid?: string;
+  activityType?: string;
   companyUid?: string;
   statusType?: string;
   status?: 'pending' | 'complete' | string;
