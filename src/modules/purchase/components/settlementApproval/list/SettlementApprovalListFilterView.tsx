@@ -22,9 +22,9 @@ import ClearIcon from '@material-ui/icons/SettingsBackupRestore';
 import { purchaseMessage } from '@purchase/locales/messages/purchaseMessage';
 import * as React from 'react';
 
-import { PurchaseApprovalListFilterProps } from './PurchaseApprovalListFilter';
+import { SettlementApprovalListFilterProps } from './SettlementApprovalListFilter';
 
-export const PurchaseApprovalListFilterView: React.SFC<PurchaseApprovalListFilterProps> = props => (
+export const SettlementApprovalListFilterView: React.SFC<SettlementApprovalListFilterProps> = props => (
   <React.Fragment>
     <Dialog
       fullScreen

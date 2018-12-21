@@ -1,4 +1,4 @@
-// import { LookupSystemDialog } from '@common/components/dialog/lookupSystemDialog/LookupSystemDialog';
+import { LookupSystemDialog } from '@common/components/dialog/lookupSystemDialog/LookupSystemDialog';
 import { DialogValue } from '@layout/components/dialogs/DialogValue';
 import { layoutMessage } from '@layout/locales/messages';
 import { LookupCustomerDialog } from '@lookup/components/customer/dialog';
@@ -100,7 +100,7 @@ export const PurchaseRequestListFilterView: React.SFC<PurchaseRequestListFilterP
         </ListItem>
         <Divider /> */}
 
-        {/* <ListItem button onClick={props.handleFilterStatusVisibility}>
+        <ListItem button onClick={props.handleFilterStatusVisibility}>
           <ListItemText 
             primary={props.intl.formatMessage(purchaseMessage.request.field.statusType)}
             secondary={props.filterStatus && props.filterStatus.name || props.intl.formatMessage(layoutMessage.text.none)} 
@@ -118,7 +118,7 @@ export const PurchaseRequestListFilterView: React.SFC<PurchaseRequestListFilterP
             </IconButton> 
           </ListItemSecondaryAction>
         </ListItem>
-        <Divider /> */}
+        <Divider />
 
         <ListItem button onClick={props.handleFilterCompletionVisibility}>
           <ListItemText 
@@ -155,6 +155,21 @@ export const PurchaseRequestListFilterView: React.SFC<PurchaseRequestListFilterP
         </ListItem>
         <Divider />
 
+        <ListItem>
+          <ListItemText 
+            primary={props.intl.formatMessage(purchaseMessage.request.field.isRejected)}
+            secondary={props.intl.formatMessage(props.filterSettlement ? layoutMessage.action.yes : layoutMessage.action.no)}
+          />
+          <ListItemSecondaryAction>
+            <Switch
+              color="primary"
+              checked={props.filterSettlement || false}
+              onChange={props.handleFilterSettlementOnChange}
+            />
+          </ListItemSecondaryAction>
+        </ListItem>
+        <Divider />
+
       </List>
     </Dialog>
 
@@ -174,7 +189,7 @@ export const PurchaseRequestListFilterView: React.SFC<PurchaseRequestListFilterP
       value={props.filterType && props.filterType.type}
       onSelected={props.handleFilterTypeOnSelected}
       onClose={props.handleFilterTypeOnClose}
-    />
+    /> */}
 
     <LookupSystemDialog
       title={props.intl.formatMessage(purchaseMessage.request.field.statusType)}
@@ -184,7 +199,7 @@ export const PurchaseRequestListFilterView: React.SFC<PurchaseRequestListFilterP
       value={props.filterStatus && props.filterStatus.type}
       onSelected={props.handleFilterStatusOnSelected}
       onClose={props.handleFilterStatusOnClose}
-    /> */}
+    />
     
     <DialogValue
       title={props.intl.formatMessage(purchaseMessage.request.field.completion)}

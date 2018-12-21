@@ -5,10 +5,10 @@ import { layoutMessage } from '@layout/locales/messages';
 import { GlobalFormat } from '@layout/types';
 import { Button } from '@material-ui/core';
 import TuneIcon from '@material-ui/icons/Tune';
-import { IPurchase } from '@purchase/classes/response/purchaseRequest';
-import { PurchaseField } from '@purchase/classes/types';
-import { PurchaseSummary } from '@purchase/components/purchaseRequest/detail/shared/PurchaseSummary';
-import { WithPurchaseRequest, withPurchaseRequest } from '@purchase/hoc/purchaseRequest/withPurchaseRequest';
+import { ISettlement } from '@purchase/classes/response/purchaseSettlement';
+import { SettlementField } from '@purchase/classes/types';
+import { SettlementSummary } from '@purchase/components/purchaseSettlement/detail/shared/SettlementSummary';
+import { WithSettlementApproval, withSettlementApproval } from '@purchase/hoc/settlementApproval/withSettlementApproval';
 import { purchaseMessage } from '@purchase/locales/messages/purchaseMessage';
 import * as moment from 'moment';
 import * as React from 'react';
@@ -28,16 +28,16 @@ import {
   withStateHandlers,
 } from 'recompose';
 
-import { IPurchaseRequestListFilterResult, PurchaseRequestListFilter } from './PurchaseRequestListFilter';
+import { ISettlementApprovalListFilterResult, SettlementApprovalListFilter } from './SettlementApprovalListFilter';
 
 interface IOwnOption {
   
 }
 
-interface IOwnState extends IPurchaseRequestListFilterResult {
+interface IOwnState extends ISettlementApprovalListFilterResult {
   companyUid?: string;
   shouldUpdate: boolean;
-  config?: IListConfig<IPurchase>;
+  config?: IListConfig<ISettlement>;
   isFilterOpen: boolean;
 }
 
@@ -50,7 +50,7 @@ interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
 
 interface IOwnHandler {
   handleFilterVisibility: (event: React.MouseEvent<HTMLElement>) => void;
-  handleFilterApplied: (filter: IPurchaseRequestListFilterResult) => void;
+  handleFilterApplied: (filter: ISettlementApprovalListFilterResult) => void;
 }
 
 type AllProps 
@@ -59,7 +59,7 @@ type AllProps
   & IOwnStateUpdater
   & IOwnHandler
   & WithUser
-  & WithPurchaseRequest
+  & WithSettlementApproval
   & InjectedIntlProps
   & RouteComponentProps;
 
@@ -70,20 +70,20 @@ const createProps: mapper<AllProps, IOwnState> = (props: AllProps): IOwnState =>
 
   // fill partial props from location state to handle redirection from dashboard notif
   status: props.location.state && props.location.state.status,
-  isSettlement: props.location.state && props.location.state.isSettlement 
+  isNotify: props.location.state && props.location.state.isNotify 
 });
 
 const stateUpdaters: StateUpdaters<AllProps, IOwnState, IOwnStateUpdater> = {
   setShouldUpdate: (prevState: IOwnState) => () => ({
     shouldUpdate: !prevState.shouldUpdate
   }),
-  setConfig: (prevState: IOwnState) => (config: IListConfig<IPurchase>) => ({
+  setConfig: (prevState: IOwnState) => (config: IListConfig<ISettlement>) => ({
     config
   }),
   setFilterVisibility: (prevState: IOwnState, props: AllProps) => () => ({
     isFilterOpen: !prevState.isFilterOpen
   }),
-  setFilterApplied: (prevState: IOwnState) => (filter: IPurchaseRequestListFilterResult) => ({
+  setFilterApplied: (prevState: IOwnState) => (filter: ISettlementApprovalListFilterResult) => ({
     ...filter,
     isFilterOpen: false
   }),
@@ -93,7 +93,7 @@ const handlerCreators: HandleCreators<AllProps, IOwnHandler> = {
   handleFilterVisibility: (props: AllProps) => (event: React.MouseEvent<HTMLElement>) => {
     props.setFilterVisibility();
   },
-  handleFilterApplied: (props: AllProps) => (filter: IPurchaseRequestListFilterResult) => {
+  handleFilterApplied: (props: AllProps) => (filter: ISettlementApprovalListFilterResult) => {
     props.setFilterApplied(filter);
   },
 };
@@ -101,33 +101,33 @@ const handlerCreators: HandleCreators<AllProps, IOwnHandler> = {
 const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
   componentDidMount() { 
     const { user } = this.props.userState;
-    const { isLoading, request, response } = this.props.purchaseRequestState.all;
-    const { loadAllRequest } = this.props.purchaseRequestDispatch;
+    const { isLoading, request, response } = this.props.settlementApprovalState.all;
+    const { loadAllRequest } = this.props.settlementApprovalDispatch;
 
-    const config: IListConfig<IPurchase> = {
+    const config: IListConfig<ISettlement> = {
       // page
       page: {
-        uid: AppMenu.PurchaseRequest,
+        uid: AppMenu.PurchaseSettlementApproval,
         parentUid: AppMenu.Purchase,
-        title: this.props.intl.formatMessage(purchaseMessage.request.pages.listTitle),
-        description: this.props.intl.formatMessage(purchaseMessage.request.pages.listSubHeader),
+        title: this.props.intl.formatMessage(purchaseMessage.s_approval.pages.listTitle),
+        description: this.props.intl.formatMessage(purchaseMessage.s_approval.pages.listSubHeader),
       },
       
       // top bar
-      fields: Object.keys(PurchaseField)
+      fields: Object.keys(SettlementField)
         .map(key => ({ 
           value: key, 
-          name: PurchaseField[key] 
+          name: SettlementField[key] 
         })),
-      // fieldTranslator: purchaseRequestFieldTranslator,
+      // fieldTranslator: purchaseRegistrationFieldTranslator,
     
       // searching
       hasSearching: true,
       searchStatus: () => {
         let result: boolean = false;
     
-        if (request && request.filter && request.filter.find) {
-          result = request.filter.find ? true : false;
+        if (request && request.filter && request.filter['query.find']) {
+          result = request.filter['query.find'] ? true : false;
         }
     
         return result;
@@ -147,44 +147,44 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
                 companyUid: user.company.uid,
                 positionUid: user.position.uid,
                 customerUid: this.props.customerUid,
-                statusType: this.props.statusType,
                 status: this.props.status,
-                isSettlement: this.props.isSettlement,
-                find: params.find,
-                findBy: params.findBy,
-                orderBy: params.orderBy,
-                direction: params.direction,
-                page: params.page,
-                size: params.size,
-              }
-            });
+                isNotify: this.props.isNotify,
+                query: {
+                  find: params.find,
+                  findBy: params.findBy,
+                  orderBy: params.orderBy,
+                  direction: params.direction,
+                  page: params.page,
+                  size: params.size,
+                }
+            }});
           } else {
             // just take data from previous response
             callback.handleResponse(response);
           }
         }
       },
-      onBind: (item: IPurchase, index: number) => ({
+      onBind: (item: ISettlement, index: number) => ({
         key: index,
         primary: item.uid,
         secondary: item.projectUid || item.project && item.project.name || '',
         tertiary: item.customer && item.customer.name || item.customerUid || '',
-        quaternary: item.requestIDR && `${this.props.intl.formatNumber(item.requestIDR, GlobalFormat.CurrencyDefault)}` || '',
+        quaternary: item.actualInIDR && `${this.props.intl.formatNumber(item.actualInIDR, GlobalFormat.CurrencyDefault)}` || '',
         quinary: item.status && item.status.value || item.statusType || '',
         senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
       }),
     
       // summary component
-      summaryComponent: (item: IPurchase) => ( 
-        <PurchaseSummary data={item} />
+      summaryComponent: (item: ISettlement) => ( 
+        <SettlementSummary data={item} />
       ),
     
       // action component
-      actionComponent: (item: IPurchase, callback: ListHandler) => (
+      actionComponent: (item: ISettlement, callback: ListHandler) => (
         <React.Fragment>
           <Button 
             size="small"
-            onClick={() => this.props.history.push(`/purchase/requests/${item.uid}`)}
+            onClick={() => this.props.history.push(`/purchase/settlement/approvals/${item.uid}`)}
           >
             <FormattedMessage {...layoutMessage.action.details}/>
           </Button>
@@ -200,7 +200,7 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
           showBadgeWhen: () => {
             return this.props.customerUid !== undefined || 
               this.props.status !== undefined || 
-              this.props.isSettlement === true;
+              this.props.isNotify === true;
           },
           onClick: this.props.handleFilterVisibility
         }
@@ -227,15 +227,15 @@ const listView: React.SFC<AllProps> = props => (
       props.config &&
       <ListPage 
         config={props.config} 
-        source={props.purchaseRequestState.all} 
+        source={props.settlementApprovalState.all} 
         loadDataWhen={props.shouldUpdate} 
       >
-        <PurchaseRequestListFilter 
+        <SettlementApprovalListFilter 
           isOpen={props.isFilterOpen}
           initialProps={{
             customerUid: props.customerUid,
             status: props.status,
-            isSettlement: props.isSettlement,
+            isNotify: props.isNotify,
           }}
           onClose={props.handleFilterVisibility}
           onApply={props.handleFilterApplied}
@@ -246,10 +246,10 @@ const listView: React.SFC<AllProps> = props => (
   </React.Fragment>
 );
 
-export const PurchaseRequestList = compose<AllProps, IOwnOption>(
-  setDisplayName('PurchaseRequestList'),
+export const SettlementApprovalList = compose<AllProps, IOwnOption>(
+  setDisplayName('SettlementApprovalList'),
   withUser,
-  withPurchaseRequest,
+  withSettlementApproval,
   withRouter,
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),

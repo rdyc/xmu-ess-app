@@ -149,14 +149,15 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
                 customerUid: this.props.customerUid,
                 status: this.props.status,
                 isNotify: this.props.isNotify,
-                'query.find': params.find,
-                'query.findBy': params.findBy,
-                'query.orderBy': params.orderBy,
-                'query.direction': params.direction,
-                'query.page': params.page,
-                'query.size': params.size,
-              }
-            });
+                query: {
+                  find: params.find,
+                  findBy: params.findBy,
+                  orderBy: params.orderBy,
+                  direction: params.direction,
+                  page: params.page,
+                  size: params.size,
+                }
+            }});
           } else {
             // just take data from previous response
             callback.handleResponse(response);

@@ -1,4 +1,4 @@
-// import { ISystemList } from '@common/classes/response';
+import { ISystemList } from '@common/classes/response';
 import { ICollectionValue } from '@layout/classes/core';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { ICustomerList } from '@lookup/classes/response';
@@ -25,7 +25,7 @@ const completionStatus: ICollectionValue[] = [
   { value: 'complete', name: 'Complete' }
 ]; 
 
-export type IPurchaseApprovalListFilterResult = Pick<IPurchaseApprovalGetAllFilter, 'customerUid' | 'status' | 'isNotify'>;
+export type IPurchaseApprovalListFilterResult = Pick<IPurchaseApprovalGetAllFilter, 'customerUid' | 'statusType' | 'status' | 'isNotify' >;
 
 interface IOwnOption {
   companyUid?: string; 
@@ -43,8 +43,8 @@ interface IOwnState {
   filterCustomer?: ICustomerList;
 
   // filter status
-  // isFilterStatusOpen: boolean;
-  // filterStatus?: ISystemList;
+  isFilterStatusOpen: boolean;
+  filterStatus?: ISystemList;
 
   // filter completion
   isFilterCompletionOpen: boolean;
@@ -66,8 +66,8 @@ interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
   setFilterCustomerVisibility: StateHandler<IOwnState>;
   setFilterCustomer: StateHandler<IOwnState>;
 
-  // setFilterStatusVisibility: StateHandler<IOwnState>;
-  // setFilterStatus: StateHandler<IOwnState>;
+  setFilterStatusVisibility: StateHandler<IOwnState>;
+  setFilterStatus: StateHandler<IOwnState>;
 
   // filter completion
   setFilterCompletionVisibility: StateHandler<IOwnState>;
@@ -89,10 +89,10 @@ interface IOwnHandler {
   handleFilterCustomerOnClose: () => void;
 
   // filter status
-  // handleFilterStatusVisibility: (event: React.MouseEvent<HTMLElement>) => void;
-  // handleFilterStatusOnSelected: (data: ISystemList) => void;
-  // handleFilterStatusOnClear: (event: React.MouseEvent<HTMLElement>) => void;
-  // handleFilterStatusOnClose: () => void;
+  handleFilterStatusVisibility: (event: React.MouseEvent<HTMLElement>) => void;
+  handleFilterStatusOnSelected: (data: ISystemList) => void;
+  handleFilterStatusOnClear: (event: React.MouseEvent<HTMLElement>) => void;
+  handleFilterStatusOnClose: () => void;
 
   // filter completion
   handleFilterCompletionVisibility: (event: React.MouseEvent<HTMLElement>) => void;
@@ -117,7 +117,7 @@ const createProps: mapper<PurchaseApprovalListFilterProps, IOwnState> = (props: 
   completionStatus,
   isFilterCustomerOpen: false,
   isFilterCompletionOpen: false,
-  // isFilterStatusOpen: false,
+  isFilterStatusOpen: false,
 
   customerPayload: {
     companyUid: props.companyUid || ''
@@ -132,7 +132,8 @@ const stateUpdaters: StateUpdaters<PurchaseApprovalListFilterProps, IOwnState, I
   setFilterReset: (prevState: IOwnState) => () => ({
     filterCustomer: undefined,
     filterCompletion: undefined,
-    filterNotify: undefined
+    filterNotify: undefined,
+    filterStatus: undefined
   }),
 
   // filter customer
@@ -143,6 +144,15 @@ const stateUpdaters: StateUpdaters<PurchaseApprovalListFilterProps, IOwnState, I
   setFilterCustomer: (prevState: IOwnState) => (customer?: ICustomerList) => ({
     isFilterCustomerOpen: false,
     filterCustomer: customer
+  }),
+
+  // filter status
+  setFilterStatusVisibility: (prevState: IOwnState) => () => ({
+    isFilterStatusOpen: !prevState.isFilterStatusOpen
+  }),
+  setFilterStatus: (prevState: IOwnState) => (data?: ISystemList) => ({
+    isFilterStatusOpen: false,
+    filterStatus: data
   }),
 
   // filter completion
@@ -189,18 +199,18 @@ const handlerCreators: HandleCreators<PurchaseApprovalListFilterProps, IOwnHandl
   },
 
   // filter status
-  // handleFilterStatusVisibility: (props: PurchaseApprovalListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
-  //   props.setFilterStatusVisibility();
-  // },
-  // handleFilterStatusOnSelected: (props: PurchaseApprovalListFilterProps) => (data: ISystemList) => {
-  //   props.setFilterStatus(data);
-  // },
-  // handleFilterStatusOnClear: (props: PurchaseApprovalListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
-  //   props.setFilterStatus();
-  // },
-  // handleFilterStatusOnClose: (props: PurchaseApprovalListFilterProps) => () => {
-  //   props.setFilterStatusVisibility();
-  // },
+  handleFilterStatusVisibility: (props: PurchaseApprovalListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
+    props.setFilterStatusVisibility();
+  },
+  handleFilterStatusOnSelected: (props: PurchaseApprovalListFilterProps) => (data: ISystemList) => {
+    props.setFilterStatus(data);
+  },
+  handleFilterStatusOnClear: (props: PurchaseApprovalListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
+    props.setFilterStatus();
+  },
+  handleFilterStatusOnClose: (props: PurchaseApprovalListFilterProps) => () => {
+    props.setFilterStatusVisibility();
+  },
 
   // filter completion
   handleFilterCompletionVisibility: (props: PurchaseApprovalListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {

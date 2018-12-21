@@ -3,7 +3,7 @@ import { ICollectionValue } from '@layout/classes/core';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { ICustomerList } from '@lookup/classes/response';
 import { WithStyles, withStyles } from '@material-ui/core';
-import { IPurchaseGetAllFilter } from '@purchase/classes/filters/purchaseRequest';
+import { ISettlementGetAllFilter } from '@purchase/classes/filters/purchaseSettlement';
 import styles from '@styles';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import {
@@ -18,21 +18,21 @@ import {
   withStateHandlers,
 } from 'recompose';
 
-import { PurchaseRequestListFilterView } from './PurchaseRequestListFilterView';
+import { PurchaseSettlementListFilterView } from './PurchaseSettlementListFilterView';
 
 const completionStatus: ICollectionValue[] = [
   { value: 'pending', name: 'Pending' },
   { value: 'complete', name: 'Complete' }
 ]; 
 
-export type IPurchaseRequestListFilterResult = Pick<IPurchaseGetAllFilter, 'customerUid' | 'isRejected' | 'isSettlement' | 'statusType' |'status' >;
+export type IPurchaseSettlementListFilterResult = Pick<ISettlementGetAllFilter, 'customerUid' | 'isRejected' | 'statusType' | 'status' >;
 
 interface IOwnOption {
   companyUid?: string; 
   isOpen: boolean;
-  initialProps?: IPurchaseRequestListFilterResult;
+  initialProps?: IPurchaseSettlementListFilterResult;
   onClose: (event: React.MouseEvent<HTMLElement>) => void;
-  onApply: (filter: IPurchaseRequestListFilterResult) => void;
+  onApply: (filter: IPurchaseSettlementListFilterResult) => void;
 }
 
 interface IOwnState {
@@ -43,17 +43,14 @@ interface IOwnState {
   filterCustomer?: ICustomerList;
 
   // filter status
-  isFilterStatusOpen: boolean;
-  filterStatus?: ISystemList;
+  // isFilterStatusOpen: boolean;
+  // filterStatus?: ISystemList;
 
   // filter completion
   isFilterCompletionOpen: boolean;
   filterCompletion?: ICollectionValue;
 
   // filter settlement
-  filterSettlement?: boolean;
-  
-  // filter reject
   filterRejected?: boolean;
   
   customerPayload?: {
@@ -69,15 +66,15 @@ interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
   setFilterCustomerVisibility: StateHandler<IOwnState>;
   setFilterCustomer: StateHandler<IOwnState>;
 
-  setFilterStatusVisibility: StateHandler<IOwnState>;
-  setFilterStatus: StateHandler<IOwnState>;
+  // setFilterStatusVisibility: StateHandler<IOwnState>;
+  // setFilterStatus: StateHandler<IOwnState>;
 
   // filter completion
   setFilterCompletionVisibility: StateHandler<IOwnState>;
   setFilterCompletion: StateHandler<IOwnState>;
   
   // filter settlement
-  setFilterSettlement: StateHandler<IOwnState>;
+  setFilterRejected: StateHandler<IOwnState>;
 }
 
 interface IOwnHandler {
@@ -104,13 +101,10 @@ interface IOwnHandler {
   handleFilterCompletionOnClose: () => void;
 
   // filter settlement
-  handleFilterSettlementOnChange: (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => void;
-  
-  // filter reject
   handleFilterRejectOnChange: (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => void;
 }
 
-export type PurchaseRequestListFilterProps 
+export type PurchaseSettlementListFilterProps 
   = IOwnOption
   & IOwnState
   & IOwnStateUpdater
@@ -119,48 +113,36 @@ export type PurchaseRequestListFilterProps
   & WithLayout
   & InjectedIntlProps;
 
-const createProps: mapper<PurchaseRequestListFilterProps, IOwnState> = (props: PurchaseRequestListFilterProps): IOwnState => ({
+const createProps: mapper<PurchaseSettlementListFilterProps, IOwnState> = (props: PurchaseSettlementListFilterProps): IOwnState => ({
   completionStatus,
   isFilterCustomerOpen: false,
   isFilterCompletionOpen: false,
-  isFilterStatusOpen: false,
+  // isFilterStatusOpen: false,
 
   customerPayload: {
     companyUid: props.companyUid || ''
   },
 
   // pass initial value for primitive types only, bellow is 'boolean'
-  filterSettlement: props.initialProps && props.initialProps.isSettlement,
   filterRejected: props.initialProps && props.initialProps.isRejected
 });
 
-const stateUpdaters: StateUpdaters<PurchaseRequestListFilterProps, IOwnState, IOwnStateUpdater> = { 
+const stateUpdaters: StateUpdaters<PurchaseSettlementListFilterProps, IOwnState, IOwnStateUpdater> = { 
   // main filter
   setFilterReset: (prevState: IOwnState) => () => ({
     filterCustomer: undefined,
     filterCompletion: undefined,
-    filterSettlement: undefined,
-    filterRejected: undefined,
-    filterStatus: undefined
+    filterRejected: undefined
   }),
 
   // filter customer
-  setFilterCustomerVisibility: (prevState: IOwnState, props: PurchaseRequestListFilterProps) => () => ({
+  setFilterCustomerVisibility: (prevState: IOwnState, props: PurchaseSettlementListFilterProps) => () => ({
     isFilterCustomerOpen: !prevState.isFilterCustomerOpen,
     customerPayload: { companyUid: props.companyUid || '' }
   }),
   setFilterCustomer: (prevState: IOwnState) => (customer?: ICustomerList) => ({
     isFilterCustomerOpen: false,
     filterCustomer: customer
-  }),
-
-  // filter status
-  setFilterStatusVisibility: (prevState: IOwnState) => () => ({
-    isFilterStatusOpen: !prevState.isFilterStatusOpen
-  }),
-  setFilterStatus: (prevState: IOwnState) => (data?: ISystemList) => ({
-    isFilterStatusOpen: false,
-    filterStatus: data
   }),
 
   // filter completion
@@ -173,88 +155,78 @@ const stateUpdaters: StateUpdaters<PurchaseRequestListFilterProps, IOwnState, IO
   }),
 
   // filter settlement
-  setFilterSettlement: (prevState: IOwnState) => (checked: boolean) => ({
-    filterSettlement: checked
-  }),
-
-  // filter reject
   setFilterRejected: (prevState: IOwnState) => (checked: boolean) => ({
-    filterSettlement: checked
+    filterRejected: checked
   }),
 };
 
-const handlerCreators: HandleCreators<PurchaseRequestListFilterProps, IOwnHandler> = {
+const handlerCreators: HandleCreators<PurchaseSettlementListFilterProps, IOwnHandler> = {
   // main filter
-  handleFilterOnReset: (props: PurchaseRequestListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
+  handleFilterOnReset: (props: PurchaseSettlementListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
     props.setFilterReset();
   },
-  handleFilterOnApply: (props: PurchaseRequestListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
+  handleFilterOnApply: (props: PurchaseSettlementListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
     props.onApply({
       customerUid: props.filterCustomer && props.filterCustomer.uid,
       status: props.filterCompletion && props.filterCompletion.value,
-      statusType: props.filterStatus && props.filterStatus.type,
-      isSettlement: props.filterSettlement
+      // statusType: props.filterStatus && props.filterStatus.type,
+      isRejected: props.filterRejected
     });
   },
 
   // filter customer
-  handleFilterCustomerVisibility: (props: PurchaseRequestListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
+  handleFilterCustomerVisibility: (props: PurchaseSettlementListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
     props.setFilterCustomerVisibility(); 
   },
-  handleFilterCustomerOnSelected: (props: PurchaseRequestListFilterProps) => (customer: ICustomerList) => {
+  handleFilterCustomerOnSelected: (props: PurchaseSettlementListFilterProps) => (customer: ICustomerList) => {
     props.setFilterCustomer(customer);
   },
-  handleFilterCustomerOnClear: (props: PurchaseRequestListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
+  handleFilterCustomerOnClear: (props: PurchaseSettlementListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
     props.setFilterCustomer();
   },
-  handleFilterCustomerOnClose: (props: PurchaseRequestListFilterProps) => () => {
+  handleFilterCustomerOnClose: (props: PurchaseSettlementListFilterProps) => () => {
     props.setFilterCustomerVisibility();
   },
 
   // filter status
-  handleFilterStatusVisibility: (props: PurchaseRequestListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
+  handleFilterStatusVisibility: (props: PurchaseSettlementListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
     props.setFilterStatusVisibility();
   },
-  handleFilterStatusOnSelected: (props: PurchaseRequestListFilterProps) => (data: ISystemList) => {
+  handleFilterStatusOnSelected: (props: PurchaseSettlementListFilterProps) => (data: ISystemList) => {
     props.setFilterStatus(data);
   },
-  handleFilterStatusOnClear: (props: PurchaseRequestListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
+  handleFilterStatusOnClear: (props: PurchaseSettlementListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
     props.setFilterStatus();
   },
-  handleFilterStatusOnClose: (props: PurchaseRequestListFilterProps) => () => {
+  handleFilterStatusOnClose: (props: PurchaseSettlementListFilterProps) => () => {
     props.setFilterStatusVisibility();
   },
 
   // filter completion
-  handleFilterCompletionVisibility: (props: PurchaseRequestListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
+  handleFilterCompletionVisibility: (props: PurchaseSettlementListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
     props.setFilterCompletionVisibility();
   },
-  handleFilterCompletionOnSelected: (props: PurchaseRequestListFilterProps) => (data: ICollectionValue) => {
+  handleFilterCompletionOnSelected: (props: PurchaseSettlementListFilterProps) => (data: ICollectionValue) => {
     props.setFilterCompletion(data);
   },
-  handleFilterCompletionOnClear: (props: PurchaseRequestListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
+  handleFilterCompletionOnClear: (props: PurchaseSettlementListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
     props.setFilterCompletion();
   },
-  handleFilterCompletionOnClose: (props: PurchaseRequestListFilterProps) => () => {
+  handleFilterCompletionOnClose: (props: PurchaseSettlementListFilterProps) => () => {
     props.setFilterCompletionVisibility();
   },
   
   // filter settlement
-  handleFilterSettlementOnChange: (props: PurchaseRequestListFilterProps) => (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
-    props.setFilterSettlement(checked);
-  },
-
-  // filter reject
-  handleFilterRejectOnChange: (props: PurchaseRequestListFilterProps) => (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
-    props.setFilterSettlement(checked);
+  handleFilterRejectOnChange: (props: PurchaseSettlementListFilterProps) => (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
+    props.setFilterRejected(checked);
   }
 };
 
-export const PurchaseRequestListFilter = compose<PurchaseRequestListFilterProps, IOwnOption>(
-  setDisplayName('PurchaseRequestListFilter'),
+export const PurchaseSettlementListFilter = compose<PurchaseSettlementListFilterProps, IOwnOption>(
+  setDisplayName('PurchaseSettlementListFilter'),
   withLayout,
   withStyles(styles),
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators)
-)(PurchaseRequestListFilterView);
+)(PurchaseSettlementListFilterView);

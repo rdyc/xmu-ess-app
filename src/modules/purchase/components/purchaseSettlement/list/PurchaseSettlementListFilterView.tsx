@@ -1,4 +1,4 @@
-import { LookupSystemDialog } from '@common/components/dialog/lookupSystemDialog/LookupSystemDialog';
+// import { LookupSystemDialog } from '@common/components/dialog/lookupSystemDialog/LookupSystemDialog';
 import { DialogValue } from '@layout/components/dialogs/DialogValue';
 import { layoutMessage } from '@layout/locales/messages';
 import { LookupCustomerDialog } from '@lookup/components/customer/dialog';
@@ -22,9 +22,9 @@ import ClearIcon from '@material-ui/icons/SettingsBackupRestore';
 import { purchaseMessage } from '@purchase/locales/messages/purchaseMessage';
 import * as React from 'react';
 
-import { PurchaseApprovalListFilterProps } from './PurchaseApprovalListFilter';
+import { PurchaseSettlementListFilterProps } from './PurchaseSettlementListFilter';
 
-export const PurchaseApprovalListFilterView: React.SFC<PurchaseApprovalListFilterProps> = props => (
+export const PurchaseSettlementListFilterView: React.SFC<PurchaseSettlementListFilterProps> = props => (
   <React.Fragment>
     <Dialog
       fullScreen
@@ -44,7 +44,7 @@ export const PurchaseApprovalListFilterView: React.SFC<PurchaseApprovalListFilte
           </Typography>
 
           {
-            (props.filterCustomer || props.filterType || props.filterStatus || props.filterCompletion || props.filterNotify) &&
+            (props.filterCustomer || props.filterType || props.filterStatus || props.filterCompletion || props.filterRejected) &&
             <Button color="inherit" onClick={props.handleFilterOnReset}>
               {props.intl.formatMessage(layoutMessage.action.reset)}
             </Button>
@@ -100,7 +100,7 @@ export const PurchaseApprovalListFilterView: React.SFC<PurchaseApprovalListFilte
         </ListItem>
         <Divider /> */}
 
-        <ListItem button onClick={props.handleFilterStatusVisibility}>
+        {/* <ListItem button onClick={props.handleFilterStatusVisibility}>
           <ListItemText 
             primary={props.intl.formatMessage(purchaseMessage.request.field.statusType)}
             secondary={props.filterStatus && props.filterStatus.name || props.intl.formatMessage(layoutMessage.text.none)} 
@@ -118,7 +118,7 @@ export const PurchaseApprovalListFilterView: React.SFC<PurchaseApprovalListFilte
             </IconButton> 
           </ListItemSecondaryAction>
         </ListItem>
-        <Divider />
+        <Divider /> */}
 
         <ListItem button onClick={props.handleFilterCompletionVisibility}>
           <ListItemText 
@@ -142,14 +142,14 @@ export const PurchaseApprovalListFilterView: React.SFC<PurchaseApprovalListFilte
 
         <ListItem>
           <ListItemText 
-            primary={props.intl.formatMessage(purchaseMessage.request.field.isNotify)}
-            secondary={props.intl.formatMessage(props.filterNotify ? layoutMessage.action.yes : layoutMessage.action.no)}
+            primary={props.intl.formatMessage(purchaseMessage.settlement.field.isRejected)}
+            secondary={props.intl.formatMessage(props.filterRejected ? layoutMessage.action.yes : layoutMessage.action.no)}
           />
           <ListItemSecondaryAction>
             <Switch
               color="primary"
-              checked={props.filterNotify || false}
-              onChange={props.handleFilterNotifyOnChange}
+              checked={props.filterRejected || false}
+              onChange={props.handleFilterRejectOnChange}
             />
           </ListItemSecondaryAction>
         </ListItem>
@@ -174,7 +174,7 @@ export const PurchaseApprovalListFilterView: React.SFC<PurchaseApprovalListFilte
       value={props.filterType && props.filterType.type}
       onSelected={props.handleFilterTypeOnSelected}
       onClose={props.handleFilterTypeOnClose}
-    /> */}
+    />
 
     <LookupSystemDialog
       title={props.intl.formatMessage(purchaseMessage.request.field.statusType)}
@@ -184,7 +184,7 @@ export const PurchaseApprovalListFilterView: React.SFC<PurchaseApprovalListFilte
       value={props.filterStatus && props.filterStatus.type}
       onSelected={props.handleFilterStatusOnSelected}
       onClose={props.handleFilterStatusOnClose}
-    />
+    /> */}
     
     <DialogValue
       title={props.intl.formatMessage(purchaseMessage.request.field.completion)}
