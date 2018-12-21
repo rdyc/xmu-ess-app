@@ -1,3 +1,4 @@
+import { SystemLimitType } from '@common/classes/types/SystemLimitType';
 import AppMenu from '@constants/AppMenu';
 import {
   IExpenseRequestPostPayload,
@@ -15,6 +16,8 @@ import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { layoutMessage } from '@layout/locales/messages';
+import { WithLookupSystemLimit, withLookupSystemLimit } from '@lookup/hoc/withLookupSystemLimit';
+import * as moment from 'moment';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import {
@@ -34,6 +37,7 @@ import { FormErrors } from 'redux-form';
 import { isNullOrUndefined, isObject } from 'util';
 
 interface OwnHandlers {
+  handleSetMinDate: (days: number, fromDate?: Date | null) => void;
   handleValidate: (payload: ExpenseRequestFormData) => FormErrors;
   handleSubmit: (payload: ExpenseRequestFormData) => void;
   handleSubmitSuccess: (result: any, dispatch: Dispatch<any>) => void;
@@ -53,6 +57,7 @@ interface OwnState {
   submitDialogContentText: string;
   submitDialogCancelText: string;
   submitDialogConfirmedText: string;
+  minDate: Date;
 }
 
 interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
@@ -61,6 +66,7 @@ interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
 
 export type ExpenseRequestEditorProps
   = WithExpenseRequest
+  & WithLookupSystemLimit
   & WithUser
   & WithLayout
   & WithAppBar
@@ -71,6 +77,21 @@ export type ExpenseRequestEditorProps
   & OwnStateUpdaters;
 
 const handlerCreators: HandleCreators<ExpenseRequestEditorProps, OwnHandlers> = {
+  handleSetMinDate: (props: ExpenseRequestEditorProps) => (days: number, fromDate?: Date | null) => {
+    let today = moment(); // create date today
+
+    if (!isNullOrUndefined(fromDate)) { // is fromDate exist, use from date instead
+      today = moment(fromDate);
+    }
+
+    const minDate = today.subtract(days, 'days'); // substract date using momentjs, because using native date in js sucks
+
+    if (moment(props.minDate).format('DD/MM/YYYY') !== minDate.format('DD/MM/YYYY')) { // only update minDate state once
+      props.stateUpdate({
+        minDate: minDate.toDate()
+      });
+    }
+  },
   handleValidate: (props: ExpenseRequestEditorProps) => (formData: ExpenseRequestFormData) => { 
     const errors = {
       information: {}
@@ -209,6 +230,7 @@ const createProps: mapper<ExpenseRequestEditorProps, OwnState> = (props: Expense
   submitDialogContentText: props.intl.formatMessage(expenseMessage.request.dialog.createDescription),
   submitDialogCancelText: props.intl.formatMessage(layoutMessage.action.cancel),
   submitDialogConfirmedText: props.intl.formatMessage(layoutMessage.action.ok),
+  minDate: new Date(),
 });
 
 const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
@@ -222,6 +244,7 @@ const lifecycles: ReactLifeCycleFunctions<ExpenseRequestEditorProps, {}> = {
   componentDidMount() {
     const { layoutDispatch, intl, history, stateUpdate } = this.props;
     const { loadDetailRequest } = this.props.expenseRequestDispatch;
+    const { loadAmountRequest } = this.props.systemLimitDispatch;
     const { user } = this.props.userState;
     
     const view = {
@@ -232,6 +255,11 @@ const lifecycles: ReactLifeCycleFunctions<ExpenseRequestEditorProps, {}> = {
     if (!user) {
       return;
     }
+
+    loadAmountRequest({
+      companyUid: user.company.uid,
+      categoryType: SystemLimitType.Expense
+    });
 
     stateUpdate({ 
       companyUid: user.company.uid,
@@ -286,6 +314,7 @@ export default compose<ExpenseRequestEditorProps, {}>(
   withAppBar,
   withRouter,
   withExpenseRequest,
+  withLookupSystemLimit,
   injectIntl,
   withStateHandlers<OwnState, OwnStateUpdaters, {}>(createProps, stateUpdaters),
   withHandlers<ExpenseRequestEditorProps, OwnHandlers>(handlerCreators),

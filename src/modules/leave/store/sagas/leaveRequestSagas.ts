@@ -29,7 +29,7 @@ function* watchAllFetchRequest() {
   const worker = (action: ReturnType<typeof leaveRequestGetAllRequest>) => { 
     return saiyanSaga.fetch({
       method: 'get',
-      path: `/v1/leave/requests/${objectToQuerystring(action.payload.filter)}`, 
+      path: `/v1/leave/requests${objectToQuerystring(action.payload.filter)}`, 
       successEffects: (response: IApiResponse) => [
         put(leaveRequestGetAllSuccess(response.body)),
       ], 

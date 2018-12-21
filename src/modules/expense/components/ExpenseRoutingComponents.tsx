@@ -1,8 +1,8 @@
 import { ExpenseApprovalDetail } from '@expense/components/approval/detail/ExpenseApprovalDetail';
-import { ExpenseApprovalListView } from '@expense/components/approval/list/ExpenseApprovalListView';
+import { ExpenseApprovalList } from '@expense/components/approval/list/ExpenseApprovalList';
 import { ExpenseRequestDetail } from '@expense/components/request/detail/ExpenseRequestDetail';
 import RequestEditor from '@expense/components/request/editor/ExpenseRequestEditor';
-import { ExpenseRequestListView } from '@expense/components/request/list/ExpenseRequestListView';
+import { ExpenseRequestList } from '@expense/components/request/list/ExpenseRequestList';
 import { Layout } from '@layout/components/base';
 import * as React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router';
@@ -11,14 +11,14 @@ const request = (props: RouteComponentProps) => (
   <Switch>
     <Route path={`${props.match.path}/form`} component={RequestEditor} />
     <Route path={`${props.match.path}/:expenseUid`} component={ExpenseRequestDetail} />
-    <Route path={`${props.match.path}`} component={ExpenseRequestListView} />
+    <Route path={`${props.match.path}`} component={ExpenseRequestList} />
   </Switch>
 );
 
 const approval = (props: RouteComponentProps) => (
   <Switch>
     <Route path={`${props.match.path}/:expenseUid`} component={ExpenseApprovalDetail} />
-    <Route path={`${props.match.path}`} component={ExpenseApprovalListView} />
+    <Route path={`${props.match.path}`} component={ExpenseApprovalList} />
   </Switch>
 );
 

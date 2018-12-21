@@ -6,7 +6,7 @@ import { IProject, IProjectSite } from '@project/classes/response';
 
 export interface ITimesheet {
   uid: string;
-  employeeUid: string | null;
+  employeeUid: string;
   employee: IAccountEmployee | null;
   activityType: string;
   activity: ICommonSystem | null;

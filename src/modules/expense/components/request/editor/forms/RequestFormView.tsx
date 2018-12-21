@@ -8,7 +8,7 @@ import { isNullOrUndefined } from 'util';
 
 export const RequestFormView: React.SFC<RequestFormProps> = props => {
   const {
-    formMode, customerUidValue, change
+    formMode, customerUidValue, change, minDate,
   } = props;
 
   const fields = Object.getOwnPropertyNames(props.initialValues.information);
@@ -25,6 +25,7 @@ export const RequestFormView: React.SFC<RequestFormProps> = props => {
       context={context}
       customerUidValue={customerUidValue}
       onChangeCustomer={onChangeCustomer}
+      minDate={minDate}
     />
   );
 

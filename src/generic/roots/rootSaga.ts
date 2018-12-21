@@ -7,9 +7,11 @@ import commonDestinationSagas from '@common/store/sagas/destinationSagas';
 import commonDocumentPresalesSagas from '@common/store/sagas/documentPresalesSagas';
 import commonDocumentSagas from '@common/store/sagas/documentSagas';
 import commonExpenseSagas from '@common/store/sagas/expenseSagas';
+import commonFinanceSagas from '@common/store/sagas/financeSagas';
 import commonGradeSagas from '@common/store/sagas/gradeSagas';
 import commonLeaveSagas from '@common/store/sagas/leaveSagas';
 import commonLimiterSagas from '@common/store/sagas/limiterSagas';
+import commonPaymentSagas from '@common/store/sagas/paymentSagas';
 import commonProjectSagas from '@common/store/sagas/projectSagas';
 import commonPurposeSagas from '@common/store/sagas/purposeSagas';
 import commonRelationSagas from '@common/store/sagas/relationSagas';
@@ -26,6 +28,7 @@ import leaveApprovalSagas from '@leave/store/sagas/leaveApprovalSagas';
 import leaveCancellationSagas from '@leave/store/sagas/leaveCancellationSagas';
 import leaveRequestSagas from '@leave/store/sagas/leaveRequestSagas';
 import lookupCurrencySagas from '@lookup/store/sagas/currencySagas';
+import leaveCalculationSagas from '@lookup/store/sagas/leaveCalculationSagas';
 import lookupCompanySagas from '@lookup/store/sagas/lookupCompanySagas';
 import lookupCustomerSagas from '@lookup/store/sagas/lookupCustomerSagas';
 import lookupDiemSagas from '@lookup/store/sagas/lookupDiemSagas';
@@ -80,8 +83,11 @@ export function* rootSaga() {
     fork(commonUnitSagas),
     fork(commonGradeSagas),
     fork(commonRelationSagas),
+    fork(commonPaymentSagas),
+    fork(commonFinanceSagas),
 
     // lookup
+    fork(leaveCalculationSagas),
     fork(lookupCustomerSagas),
     fork(lookupMileageExceptionSagas),
     fork(lookupCompanySagas),

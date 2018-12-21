@@ -60,6 +60,9 @@
   "expense.field.name.required": "Customer Name is Required",
   "expense.field.title.required": "Customer Job Title is Required",  
   "expense.field.notes.required": "Notes is Required",  
+  "expense.field.isNotify": "Notified Only",
+  "expense.field.isRejected": "Rejected Only",
+  "expense.field.completion": "Completion",
 
   "expense.message.request.create.success": "A new Expense {uid} has been created",
   "expense.message.request.create.failure": "Unable to process your submission",

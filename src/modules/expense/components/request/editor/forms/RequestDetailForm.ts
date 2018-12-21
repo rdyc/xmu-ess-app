@@ -17,6 +17,7 @@ interface OwnProps {
   formMode: FormMode;
   context: BaseFieldsProps;
   customerUidValue: string | null | undefined;
+  minDate: Date;
   onChangeCustomer: (event: any, newValue: string, oldValue: string) => void;
 }
 
@@ -32,7 +33,7 @@ export type RequestDetailFormProps
 const handlerCreators: HandleCreators<RequestDetailFormProps, OwnHandlers> = {
     generateFieldProps: (props: RequestDetailFormProps) => (name: string) => { 
       const { 
-        intl, customerUidValue, onChangeCustomer
+        intl, customerUidValue, onChangeCustomer, minDate,
       } = props;
 
       const projectFilter: any = {
@@ -57,6 +58,7 @@ const handlerCreators: HandleCreators<RequestDetailFormProps, OwnHandlers> = {
 
         case 'date': 
           fieldProps = {
+            minDate,
             type: 'text',
             label: intl.formatMessage(expenseMessage.request.fieldFor(name, 'fieldName')),
             placeholder: intl.formatMessage(expenseMessage.request.fieldFor(name, 'fieldPlaceholder')),

@@ -1,10 +1,9 @@
 import { IQuerySingleState } from '@generic/interfaces';
 import { ISystemLimitDeleteRequest } from '@lookup/classes/queries';
-import { ISystemLimit } from '@lookup/classes/response';
 import { SystemLimitAction as Action } from '@lookup/store/actions';
 import { Reducer } from 'redux';
 
-const initialState: IQuerySingleState<ISystemLimitDeleteRequest, ISystemLimit> = {
+const initialState: IQuerySingleState<ISystemLimitDeleteRequest, boolean> = {
   request: undefined,
   response: undefined,
   isError: false,
@@ -12,7 +11,7 @@ const initialState: IQuerySingleState<ISystemLimitDeleteRequest, ISystemLimit> =
   errors: undefined,
 };
 
-const reducer: Reducer<IQuerySingleState<ISystemLimitDeleteRequest, ISystemLimit>> = (state = initialState, action) => {
+const reducer: Reducer<IQuerySingleState<ISystemLimitDeleteRequest, boolean>> = (state = initialState, action) => {
   switch (action.type) {
     case Action.DELETE_REQUEST: return { ...state, isLoading: true, request: action.payload };
     case Action.DELETE_SUCCESS: return { ...state, isLoading: false, response: action.payload };

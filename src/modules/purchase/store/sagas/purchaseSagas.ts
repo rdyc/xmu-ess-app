@@ -57,15 +57,21 @@ import {
 } from '@purchase/store/actions';
 import { flattenObject } from '@utils/flattenObject';
 import saiyanSaga from '@utils/saiyanSaga';
+import * as qs from 'qs';
 import { SubmissionError } from 'redux-form';
 import { all, fork, put, takeEvery } from 'redux-saga/effects';
-import { IApiResponse, objectToQuerystring } from 'utils';
+import { IApiResponse } from 'utils';
 
 function* watchPurchaseAllFetchRequest() {
   const worker = (action: ReturnType<typeof purchaseGetAllRequest>) => { 
+    const params = qs.stringify(action.payload.filter, {
+      allowDots: true,
+      skipNulls: true
+    });
+    
     return saiyanSaga.fetch({
       method: 'get',
-      path: `/v1/purchase/requests${objectToQuerystring(action.payload.filter)}`, 
+      path: `/v1/purchase/requests?${params}`, 
       successEffects: (response: IApiResponse) => ([
         put(purchaseGetAllSuccess(response.body))
       ]), 
@@ -225,35 +231,76 @@ function* watchPurchasePutFetchRequest() {
 
 function* watchPurchaseApprovalAllFetchRequest() {
   const worker = (action: ReturnType<typeof purchaseApprovalGetAllRequest>) => {
+    const params = qs.stringify(action.payload.filter, {
+      allowDots: true,
+      skipNulls: true
+    });
+
     return saiyanSaga.fetch({
       method: 'get',
-      path: `/v1/approvals/purchase/request${objectToQuerystring(action.payload.filter)}`,
-      successEffects: (response: IApiResponse) => ([
-        put(purchaseApprovalGetAllSuccess(response.body))
-      ]),
-      failureEffects: (response: IApiResponse) => ([
+      path: `/v1/approvals/purchase/request?${params}`,
+      successEffects: (response: IApiResponse) => [
+        put(purchaseApprovalGetAllSuccess(response.body)),
+      ],
+      failureEffects: (response: IApiResponse) => [
         put(purchaseApprovalGetAllError(response.body)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: response.statusText,
-          details: response
-        })),
-      ]),
-      errorEffects: (error: TypeError) => ([
+        put(
+          layoutAlertAdd({
+            time: new Date(),
+            message: response.statusText,
+            details: response
+          })
+        )
+      ],
+      errorEffects: (error: TypeError) => [
         put(purchaseApprovalGetAllError(error.message)),
-        put(layoutAlertAdd({
-          time: new Date(),
-          message: error.message
-        }))
-      ]),
+        put(
+          layoutAlertAdd({
+            time: new Date(),
+            message: error.message
+          })
+        )
+      ],
       finallyEffects: [
-
+        // nothing
       ]
     });
   };
 
   yield takeEvery(PurchaseApprovalAction.GET_ALL_APPROVAL_REQUEST, worker);
 }
+
+// function* watchPurchaseApprovalAllFetchRequest() {
+//   const worker = (action: ReturnType<typeof purchaseApprovalGetAllRequest>) => {
+//     return saiyanSaga.fetch({
+//       method: 'get',
+//       path: `/v1/approvals/purchase/request${objectToQuerystring(action.payload.filter)}`,
+//       successEffects: (response: IApiResponse) => ([
+//         put(purchaseApprovalGetAllSuccess(response.body))
+//       ]),
+//       failureEffects: (response: IApiResponse) => ([
+//         put(purchaseApprovalGetAllError(response.body)),
+//         put(layoutAlertAdd({
+//           time: new Date(),
+//           message: response.statusText,
+//           details: response
+//         })),
+//       ]),
+//       errorEffects: (error: TypeError) => ([
+//         put(purchaseApprovalGetAllError(error.message)),
+//         put(layoutAlertAdd({
+//           time: new Date(),
+//           message: error.message
+//         }))
+//       ]),
+//       finallyEffects: [
+
+//       ]
+//     });
+//   };
+
+//   yield takeEvery(PurchaseApprovalAction.GET_ALL_APPROVAL_REQUEST, worker);
+// }
 
 function* watchPurchaseApprovalByIdFetchRequest() {
   const worker = (action: ReturnType<typeof purchaseApprovalGetByIdRequest>) => {
@@ -336,9 +383,14 @@ function* watchPurchaseApprovalPostFetchRequest() {
 
 function* watchSettlementAllFetchRequest() {
   const worker = (action: ReturnType<typeof settlementGetAllRequest>) => {
+    const params = qs.stringify(action.payload.filter, {
+      allowDots: true,
+      skipNulls: true
+    });
+
     return saiyanSaga.fetch({
       method: 'get',
-      path: `/v1/purchase/settlements${objectToQuerystring(action.payload.filter)}`,
+      path: `/v1/purchase/settlements?${params}`,
       successEffects: (response: IApiResponse) => ([
         put(settlementGetAllSuccess(response.body)),
       ]),
@@ -497,9 +549,14 @@ function* watchSettlementPutFetchRequest() {
 
 function* watchSettlementApprovalAllFetchRequest() {
   const worker = (action: ReturnType<typeof settlementApprovalGetAllRequest>) => {
+    const params = qs.stringify(action.payload.filter, {
+      allowDots: true,
+      skipNulls: true
+    });
+
     return saiyanSaga.fetch({
       method: 'get',
-      path: `/v1/approvals/purchase/settlement${objectToQuerystring(action.payload.filter)}`,
+      path: `/v1/approvals/purchase/settlement?${params}`,
       successEffects: (response: IApiResponse) => ([
         put(settlementApprovalGetAllSuccess(response.body)),
       ]),
