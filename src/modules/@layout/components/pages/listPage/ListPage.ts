@@ -117,7 +117,7 @@ interface IOwnHandler {
   handleOnSearch: (find: string | undefined, field: ICollectionValue | undefined) => void;
 }
 
-export type ListHandler = Pick<ListPageProps, 'handleLoading' | 'handleResponse' | 'handleForceReload' >;
+export type ListHandler = Pick<ListPageProps, 'handleLoading' | 'handleResponse' | 'handleForceReload'>;
 export type ListDataProps = Pick<ListPageProps, 'find' | 'findBy' | 'orderBy' | 'direction' | 'page' | 'size'>;
 
 export type ListPageProps
