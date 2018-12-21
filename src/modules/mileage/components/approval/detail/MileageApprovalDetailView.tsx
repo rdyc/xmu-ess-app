@@ -14,6 +14,7 @@ import { MileageItem } from '@mileage/components/request/detail/shared/MileageIt
 
 import { WorkflowStatusType } from '@common/classes/types';
 import { MileageApprovalItem } from '@mileage/components/approval/detail/MileageApprovalItem';
+import { TimesheetItem } from '@mileage/components/request/detail/shared/TimeSheetItem';
 import { mileageMessage } from '@mileage/locales/messages/mileageMessage';
 import { WorkflowHistory } from '@organization/components/workflow/history/WorkflowHistory';
 import { organizationMessage } from '@organization/locales/messages/organizationMessage';
@@ -105,13 +106,14 @@ const config: SingleConfig<IMileageRequestDetail, MileageApprovalDetailProps> = 
   secondaryComponents: (data: IMileageRequestDetail, props: MileageApprovalDetailProps) => [
     data.workflow && data.workflow.isApproval ? (
         <MileageApprovalItem 
-          data={data.items}
+          items={data.items}
           ItemUids={props.mileageItemUids}
           handleCheckbox={props.handleCheckbox}
         />     
       ) : (
         <MileageItem items={data.items} />      
       ),
+    <TimesheetItem data={data.timesheets} />,
     <WorkflowHistory data={data.workflow} />,
     <React.Fragment>
       {data.workflow && data.workflow.isApproval &&

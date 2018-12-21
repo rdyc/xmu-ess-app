@@ -8,7 +8,7 @@ import { Button } from '@material-ui/core';
 import { IMileageRequest } from '@mileage/classes/response';
 import { MileageRequestField, MileageUserAction } from '@mileage/classes/types';
 import { MileageSummary } from '@mileage/components/request/shared/MileageSummary';
-import { mileageRequestFieldTranslator } from '@mileage/helper';
+// import { mileageRequestFieldTranslator } from '@mileage/helper';
 import { WithMileageApproval, withMileageApproval } from '@mileage/hoc/withMileageApproval';
 import { mileageMessage } from '@mileage/locales/messages/mileageMessage';
 import * as moment from 'moment';
@@ -31,7 +31,7 @@ const config: CollectionConfig<IMileageRequest, AllProps> = {
     value: key,
     name: MileageRequestField[key]
   })),
-  fieldTranslator: mileageRequestFieldTranslator,
+  // fieldTranslator: mileageRequestFieldTranslator,
 
   // searching
   hasSearching: true,
