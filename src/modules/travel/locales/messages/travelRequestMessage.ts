@@ -189,6 +189,12 @@ export const travelRequestField = defineMessages({
   isTransportByCompanyRequired: { id: `${prefix}.field.item.isTransportByCompany.required` },
   isTransportByCompanyPlaceholder: { id: `${prefix}.field.item.isTransportByCompany.placeholder` },
 
+  // filter 
+  isRejected: { id: `${prefix}.field.isRejected` },
+  isSettlement: { id: `${prefix}.field.isSettlement` },
+  isNotify: { id: `${prefix}.field.isNotify` },
+  completion: { id: `${prefix}.field.completion` },
+
 });
 
 export const travelRequestFieldHelperFor = (field: string, type: 'fieldName' | 'fieldRequired' | 'fieldPlaceholder') => {

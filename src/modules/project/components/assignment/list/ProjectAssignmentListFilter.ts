@@ -116,9 +116,7 @@ const stateUpdaters: StateUpdaters<ProjectAssignmentListFilterProps, IOwnState, 
     filterCustomer: undefined,
     filterType: undefined,
     filterStatus: undefined,
-    filterCompletion: undefined,
-    filterNewOwner: undefined,
-    filterRejected: undefined
+    filterActive: undefined
   }),
 
   // filter customer

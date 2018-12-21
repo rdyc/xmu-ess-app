@@ -78,4 +78,10 @@ export const purchaseRequestField = defineMessages({
   requestInIDR: { id: `${prefix}.field.information.requestInIDR` },
 
   reason: { id: `${prefix}.field.information.rejectreason` },
+
+  isNotify: { id: `${prefix}.field.isNotify` },
+  isRejected: { id: `${prefix}.field.isRejected` },
+  isSettlement: { id: `${prefix}.field.isSettlement` },
+  statusType: { id: `${prefix}.field.statusType` },
+  completion: { id: `${prefix}.field.completion` },
 });

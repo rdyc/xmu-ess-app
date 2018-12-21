@@ -7,8 +7,10 @@ import {
   documentGetListRequest,
   documentPresalesGetListRequest,
   expenseGetListRequest,
+  financeGetListRequest,
   gradeGetListRequest,
   leaveGetListRequest,
+  paymentGetListRequest,
   projectGetListRequest,
   purposeGetListRequest,
   relationGetListRequest,
@@ -60,6 +62,8 @@ interface PropsFromState {
   commonLimiterListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
   commonGradeListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
   commonRelationListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
+  commonPaymentListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
+  commonFinanceListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
 
   // detail
 }
@@ -87,6 +91,8 @@ interface PropsFromDispatch {
     limiterListRequest: typeof limiterGetListRequest;
     gradeListRequest: typeof gradeGetListRequest;
     relationListRequest: typeof relationGetListRequest;
+    paymentListRequest: typeof paymentGetListRequest;
+    financeListRequest: typeof financeGetListRequest;
 
     // detail
     systemDetailRequest: typeof systemGetByIdRequest;
@@ -127,6 +133,8 @@ const mapStateToProps = ({
   commonUnitList,
   commonGradeList,
   commonRelationList,
+  commonPaymentList,
+  commonFinanceList,
 
 }: IAppState) => ({
   // system
@@ -156,6 +164,8 @@ const mapStateToProps = ({
   commonLimiterListState: commonLimiterList,
   commonGradeListState: commonGradeList,
   commonRelationListState: commonRelationList,
+  commonPaymentListState: commonPaymentList,
+  commonFinanceListState: commonFinanceList,
 
   // detail
  
@@ -184,6 +194,8 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     limiterListRequest: (request: ISystemListRequest) => dispatch(limiterGetListRequest(request)),
     gradeListRequest: (request: ISystemListRequest) => dispatch(gradeGetListRequest(request)),
     relationListRequest: (request: ISystemListRequest) => dispatch(relationGetListRequest(request)),
+    paymentListRequest: (request: ISystemListRequest) => dispatch(paymentGetListRequest(request)),
+    financeListRequest: (request: ISystemListRequest) => dispatch(financeGetListRequest(request)),
 
     // detail
     systemDetailRequest: (request: ISystemByIdRequest) => dispatch(systemGetByIdRequest(request)),

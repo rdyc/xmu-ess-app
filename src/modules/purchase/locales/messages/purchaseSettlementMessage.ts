@@ -64,4 +64,6 @@ export const purchaseSettlementField = defineMessages({
   differenceInIDR: { id: `${prefix}.field.information.differenceInIDR` },
 
   reject: { id: `${prefix}.field.information.rejectreason` },
+
+  isRejected: { id: `${prefix}.field.isRejected` }
 });

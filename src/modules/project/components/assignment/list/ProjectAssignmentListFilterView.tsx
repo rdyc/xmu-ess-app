@@ -72,7 +72,7 @@ export const ProjectAssignmentListFilterView: React.SFC<ProjectAssignmentListFil
               </IconButton> 
             }
 
-            <IconButton onClick={props.handleFilterCompletionVisibility}>
+            <IconButton onClick={props.handleFilterCustomerVisibility}>
               <ChevronRightIcon />
             </IconButton> 
           </ListItemSecondaryAction>
@@ -92,7 +92,7 @@ export const ProjectAssignmentListFilterView: React.SFC<ProjectAssignmentListFil
               </IconButton> 
             }
 
-            <IconButton onClick={props.handleFilterCompletionVisibility}>
+            <IconButton onClick={props.handleFilterTypeVisibility}>
               <ChevronRightIcon />
             </IconButton> 
           </ListItemSecondaryAction>
@@ -112,7 +112,7 @@ export const ProjectAssignmentListFilterView: React.SFC<ProjectAssignmentListFil
               </IconButton> 
             }
 
-            <IconButton onClick={props.handleFilterCompletionVisibility}>
+            <IconButton onClick={props.handleFilterStatusVisibility}>
               <ChevronRightIcon />
             </IconButton> 
           </ListItemSecondaryAction>
