@@ -61,26 +61,6 @@ export const MileageRequestListFilterView: React.SFC<MileageRequestListFilterPro
 
       <List>
         
-        <ListItem button onClick={props.handleFilterMonthVisibility}>
-          <ListItemText 
-            primary={props.intl.formatMessage(mileageMessage.request.field.month)}
-            secondary={props.filterMonth && props.filterMonth.name || props.intl.formatMessage(layoutMessage.text.none)}
-          />
-          <ListItemSecondaryAction>
-            {
-              props.filterMonth &&
-              <IconButton onClick={props.handleFilterMonthOnClear}>
-                <ClearIcon />
-              </IconButton>
-            }
-
-            <IconButton onClick={props.handleFilterMonthVisibility}>
-              <ChevronRightIcon />
-            </IconButton>
-          </ListItemSecondaryAction>
-        </ListItem>
-        <Divider />
-
         <ListItem button onClick={props.handleFilterYearVisibility}>
           <ListItemText 
             primary={props.intl.formatMessage(mileageMessage.request.field.year)}
@@ -95,6 +75,26 @@ export const MileageRequestListFilterView: React.SFC<MileageRequestListFilterPro
             }
 
             <IconButton onClick={props.handleFilterYearVisibility}>
+              <ChevronRightIcon />
+            </IconButton>
+          </ListItemSecondaryAction>
+        </ListItem>
+        <Divider />
+
+        <ListItem button onClick={props.handleFilterMonthVisibility}>
+          <ListItemText 
+            primary={props.intl.formatMessage(mileageMessage.request.field.month)}
+            secondary={props.filterMonth && props.filterMonth.name || props.intl.formatMessage(layoutMessage.text.none)}
+          />
+          <ListItemSecondaryAction>
+            {
+              props.filterMonth &&
+              <IconButton onClick={props.handleFilterMonthOnClear}>
+                <ClearIcon />
+              </IconButton>
+            }
+
+            <IconButton onClick={props.handleFilterMonthVisibility}>
               <ChevronRightIcon />
             </IconButton>
           </ListItemSecondaryAction>

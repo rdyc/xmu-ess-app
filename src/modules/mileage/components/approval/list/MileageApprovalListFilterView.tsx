@@ -62,7 +62,7 @@ export const MileageApprovalListFilterView: React.SFC<MileageApprovalListFilterP
 
       <List>
         
-        <ListItem button onClick={props.handleFilterEmployeeVisibility}>
+        {/* <ListItem button onClick={props.handleFilterEmployeeVisibility}>
           <ListItemText 
             primary={props.intl.formatMessage(mileageMessage.request.field.employee)}
             secondary={props.filterEmployee && props.filterEmployee.employee && props.filterEmployee.employee.fullName || props.intl.formatMessage(layoutMessage.text.none)}
@@ -78,6 +78,26 @@ export const MileageApprovalListFilterView: React.SFC<MileageApprovalListFilterP
             <IconButton onClick={props.handleFilterEmployeeVisibility}>
               <ChevronRightIcon />
             </IconButton> 
+          </ListItemSecondaryAction>
+        </ListItem>
+        <Divider /> */}
+
+        <ListItem button onClick={props.handleFilterYearVisibility}>
+          <ListItemText 
+            primary={props.intl.formatMessage(mileageMessage.request.field.year)}
+            secondary={props.filterYear && props.filterYear.name || props.intl.formatMessage(layoutMessage.text.none)}
+          />
+          <ListItemSecondaryAction>
+            {
+              props.filterYear &&
+              <IconButton onClick={props.handleFilterYearOnClear}>
+                <ClearIcon />
+              </IconButton>
+            }
+
+            <IconButton onClick={props.handleFilterYearVisibility}>
+              <ChevronRightIcon />
+            </IconButton>
           </ListItemSecondaryAction>
         </ListItem>
         <Divider />
@@ -96,26 +116,6 @@ export const MileageApprovalListFilterView: React.SFC<MileageApprovalListFilterP
             }
 
             <IconButton onClick={props.handleFilterMonthVisibility}>
-              <ChevronRightIcon />
-            </IconButton>
-          </ListItemSecondaryAction>
-        </ListItem>
-        <Divider />
-
-        <ListItem button onClick={props.handleFilterYearVisibility}>
-          <ListItemText 
-            primary={props.intl.formatMessage(mileageMessage.request.field.year)}
-            secondary={props.filterYear && props.filterYear.name || props.intl.formatMessage(layoutMessage.text.none)}
-          />
-          <ListItemSecondaryAction>
-            {
-              props.filterYear &&
-              <IconButton onClick={props.handleFilterYearOnClear}>
-                <ClearIcon />
-              </IconButton>
-            }
-
-            <IconButton onClick={props.handleFilterYearVisibility}>
               <ChevronRightIcon />
             </IconButton>
           </ListItemSecondaryAction>
