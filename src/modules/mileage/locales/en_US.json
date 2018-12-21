@@ -47,9 +47,20 @@
   
   "mileage.approval.field.filter.employee": "Employee Name",
   
-  "mileage.request.item.title": "Details Item",
-  "mileage.request.item.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+  "mileage.request.item.title": "Details Mileage Item",
+  "mileage.request.item.subHeader": "Lorem ipsum dolor sit amet",
   "mileage.request.item.empty": "No Item",
+
+  "mileage.request.field.item.uid": "Mileage Item ID",
+  "mileage.request.field.item.date": "Report Date",
+  "mileage.request.field.item.customer": "Customer",
+  "mileage.request.field.item.project": "Project",
+  "mileage.request.field.item.status": "Status",
+  "mileage.request.field.item.site": "Project Site",
+  "mileage.request.field.item.value": "Value",
+
+  "mileage.request.timesheet.item.title": "Detail Timesheet",
+  "mileage.request.timesheet.item.subHeader": "Lorem ipsum dolor sit amet",
 
   "mileage.request.confirm.create.title": "Create Mileage",
   "mileage.request.confirm.create.description": "Lorem ipsum dolor sit amet",
