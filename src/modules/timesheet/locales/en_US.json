@@ -57,6 +57,7 @@
   "timesheet.entry.field.statusType": "Status",
   "timesheet.entry.field.completion": "Completion",
   "timesheet.entry.field.isRejected": "Rejected Only",
+  "timesheet.entry.field.isNotify": "Notify Only",
   
   "timesheet.entry.message.emptyProps": "Some props are empty",
   "timesheet.entry.message.create.success": "A new Timesheet ID {uid} has been created",

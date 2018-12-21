@@ -14,7 +14,7 @@ const completionStatus: ICollectionValue[] = [
   { value: 'complete', name: 'Complete' }
 ];
 
-export type ITimesheetApprovalHistoryListFilterResult = Pick<ITimesheetApprovalGetAllFilter, 'customerUid' | 'activityType' | 'companyUid' | 'statusType' | 'status' | 'query'>;
+export type ITimesheetApprovalHistoryListFilterResult = Pick<ITimesheetApprovalGetAllFilter, 'customerUid' | 'activityType' | 'companyUid' | 'statusType' | 'status' | 'isNotify'>;
 
 interface IOwnOption {
   isOpen: boolean;
@@ -41,6 +41,9 @@ interface IOwnState {
   // filter completion
   isFilterCompletionOpen: boolean;
   filterCompletion?: ICollectionValue;
+
+  // filter notify
+  filterNotify?: boolean;
 }
 
 interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
@@ -62,6 +65,9 @@ interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
   // filter completion
   setFilterCompletionVisibility: StateHandler<IOwnState>;
   setFilterCompletion: StateHandler<IOwnState>;
+
+  // filter notify
+  setFilterNotify: StateHandler<IOwnState>;
 }
 
 interface IOwnHandler {
@@ -92,6 +98,9 @@ interface IOwnHandler {
   handleFilterCompletionOnSelected: (data: ICollectionValue) => void;
   handleFilterCompletionOnClear: (event: React.MouseEvent<HTMLElement>) => void;
   handleFilterCompletionOnClose: () => void;
+
+  // filter notify
+  handleFilterNotifyOnChange: (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => void;
 }
 
 export type TimesheetApprovalHistoryListFilterProps
@@ -110,15 +119,18 @@ const createProps: mapper<TimesheetApprovalHistoryListFilterProps, IOwnState> = 
   isFilterCompletionOpen: false,
   isFilterStatusOpen: false,
 
+  // pass initial value for primitive types only, bellow is 'boolean'
+  filterNotify: props.initialProps && props.initialProps.isNotify
 });
 
-const stateUpdaters: StateUpdaters<TimesheetApprovalHistoryListFilterProps, IOwnState, IOwnStateUpdater> = { 
+const stateUpdaters: StateUpdaters<TimesheetApprovalHistoryListFilterProps, IOwnState, IOwnStateUpdater> = {
   // main filter
   setFilterReset: (prevState: IOwnState) => () => ({
     filterCustomer: undefined,
     filterActivityType: undefined,
     filterStatus: undefined,
     filterCompletion: undefined,
+    filterNotify: undefined
   }),
 
   // filter customer
@@ -156,6 +168,11 @@ const stateUpdaters: StateUpdaters<TimesheetApprovalHistoryListFilterProps, IOwn
     isFilterCompletionOpen: false,
     filterCompletion: data
   }),
+
+  // filter notify
+  setFilterNotify: (prevState: IOwnState) => (checked: boolean) => ({
+    filterNotify: checked
+  }),
 };
 
 const handlerCreators: HandleCreators<TimesheetApprovalHistoryListFilterProps, IOwnHandler> = {
@@ -169,6 +186,7 @@ const handlerCreators: HandleCreators<TimesheetApprovalHistoryListFilterProps, I
       activityType: props.filterActivityType && props.filterActivityType.type,
       statusType: props.filterStatus && props.filterStatus.type,
       status: props.filterCompletion && props.filterCompletion.value,
+      isNotify: props.filterNotify
     });
   },
 
@@ -199,7 +217,7 @@ const handlerCreators: HandleCreators<TimesheetApprovalHistoryListFilterProps, I
   handleFilterActivityTypeOnClose: (props: TimesheetApprovalHistoryListFilterProps) => () => {
     props.setFilterActivityTypeVisibility();
   },
-  
+
   // filter status
   handleFilterStatusVisibility: (props: TimesheetApprovalHistoryListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
     props.setFilterStatusVisibility();
@@ -227,6 +245,11 @@ const handlerCreators: HandleCreators<TimesheetApprovalHistoryListFilterProps, I
   handleFilterCompletionOnClose: (props: TimesheetApprovalHistoryListFilterProps) => () => {
     props.setFilterCompletionVisibility();
   },
+
+  // filter notify
+  handleFilterNotifyOnChange: (props: TimesheetApprovalHistoryListFilterProps) => (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
+    props.setFilterNotify(checked);
+  }
 };
 
 export const TimesheetApprovalHistoryListFilter = compose<TimesheetApprovalHistoryListFilterProps, IOwnOption>(

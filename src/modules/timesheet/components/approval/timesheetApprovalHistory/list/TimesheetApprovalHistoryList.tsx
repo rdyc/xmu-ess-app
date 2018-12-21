@@ -65,6 +65,7 @@ const listView: React.SFC<AllProps> = props => (
             activityType: props.activityType,
             statusType: props.statusType,
             status: props.status,
+            isNotify: props.isNotify,
           }}
           onClose={props.handleFilterVisibility}
           onApply={props.handleFilterApplied}
@@ -77,6 +78,10 @@ const listView: React.SFC<AllProps> = props => (
 const createProps: mapper<AllProps, IOwnState> = (props: AllProps): IOwnState => ({
   shouldUpdate: false,
   isFilterOpen: false,
+
+  // fill partial props from location state to handle redirection from dashboard notif
+  status: props.location.state && props.location.state.status,
+  isNotify: props.location.state && props.location.state.isNotify 
 });
 
 const stateUpdaters: StateUpdaters<AllProps, IOwnState, IOwnStateUpdater> = {
@@ -154,6 +159,7 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
                 activityType: this.props.activityType,
                 statusType: this.props.statusType,
                 status: 'complete',
+                isNotify: this.props.isNotify,
                 query: {
                   find: params.find,
                   findBy: params.findBy,
@@ -207,7 +213,8 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
             return this.props.customerUid !== undefined ||
               this.props.activityType !== undefined ||
               this.props.statusType !== undefined ||
-              this.props.status !== undefined;
+              this.props.status !== undefined || 
+              this.props.isNotify === true;
           },
           onClick: this.props.handleFilterVisibility
         }
@@ -222,7 +229,8 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
       this.props.customerUid !== nextProps.customerUid ||
       this.props.activityType !== nextProps.activityType ||
       this.props.statusType !== nextProps.statusType ||
-      this.props.status !== nextProps.status
+      this.props.status !== nextProps.status ||
+      this.props.isNotify !== nextProps.isNotify
     ) {
       this.props.setShouldUpdate();
     }

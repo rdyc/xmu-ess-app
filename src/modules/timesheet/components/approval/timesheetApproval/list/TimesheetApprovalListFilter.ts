@@ -14,7 +14,7 @@ const completionStatus: ICollectionValue[] = [
   { value: 'complete', name: 'Complete' }
 ];
 
-export type ITimesheetApprovalListFilterResult = Pick<ITimesheetApprovalGetAllFilter, 'customerUid' | 'activityType' | 'companyUid' | 'statusType' | 'status' | 'query'>;
+export type ITimesheetApprovalListFilterResult = Pick<ITimesheetApprovalGetAllFilter, 'customerUid' | 'activityType' | 'companyUid' | 'statusType' | 'status' | 'isNotify'>;
 
 interface IOwnOption {
   isOpen: boolean;
@@ -41,6 +41,9 @@ interface IOwnState {
   // filter completion
   isFilterCompletionOpen: boolean;
   filterCompletion?: ICollectionValue;
+
+  // filter notify
+  filterNotify?: boolean;
 }
 
 interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
@@ -62,6 +65,9 @@ interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
   // filter completion
   setFilterCompletionVisibility: StateHandler<IOwnState>;
   setFilterCompletion: StateHandler<IOwnState>;
+
+  // filter notify
+  setFilterNotify: StateHandler<IOwnState>;
 }
 
 interface IOwnHandler {
@@ -92,6 +98,9 @@ interface IOwnHandler {
   handleFilterCompletionOnSelected: (data: ICollectionValue) => void;
   handleFilterCompletionOnClear: (event: React.MouseEvent<HTMLElement>) => void;
   handleFilterCompletionOnClose: () => void;
+
+  // filter notify
+  handleFilterNotifyOnChange: (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => void;
 }
 
 export type TimesheetApprovalListFilterProps
@@ -109,15 +118,19 @@ const createProps: mapper<TimesheetApprovalListFilterProps, IOwnState> = (props:
   isFilterActivityTypeOpen: false,
   isFilterCompletionOpen: false,
   isFilterStatusOpen: false,
+
+  // pass initial value for primitive types only, bellow is 'boolean'
+  filterNotify: props.initialProps && props.initialProps.isNotify
 });
 
-const stateUpdaters: StateUpdaters<TimesheetApprovalListFilterProps, IOwnState, IOwnStateUpdater> = { 
+const stateUpdaters: StateUpdaters<TimesheetApprovalListFilterProps, IOwnState, IOwnStateUpdater> = {
   // main filter
   setFilterReset: (prevState: IOwnState) => () => ({
     filterCustomer: undefined,
     filterActivityType: undefined,
     filterStatus: undefined,
     filterCompletion: undefined,
+    filterNotify: undefined
   }),
 
   // filter customer
@@ -155,6 +168,11 @@ const stateUpdaters: StateUpdaters<TimesheetApprovalListFilterProps, IOwnState, 
     isFilterCompletionOpen: false,
     filterCompletion: data
   }),
+
+  // filter notify
+  setFilterNotify: (prevState: IOwnState) => (checked: boolean) => ({
+    filterNotify: checked
+  }),
 };
 
 const handlerCreators: HandleCreators<TimesheetApprovalListFilterProps, IOwnHandler> = {
@@ -168,6 +186,7 @@ const handlerCreators: HandleCreators<TimesheetApprovalListFilterProps, IOwnHand
       activityType: props.filterActivityType && props.filterActivityType.type,
       statusType: props.filterStatus && props.filterStatus.type,
       status: props.filterCompletion && props.filterCompletion.value,
+      isNotify: props.filterNotify
     });
   },
 
@@ -198,7 +217,7 @@ const handlerCreators: HandleCreators<TimesheetApprovalListFilterProps, IOwnHand
   handleFilterActivityTypeOnClose: (props: TimesheetApprovalListFilterProps) => () => {
     props.setFilterActivityTypeVisibility();
   },
-  
+
   // filter status
   handleFilterStatusVisibility: (props: TimesheetApprovalListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
     props.setFilterStatusVisibility();
@@ -226,6 +245,11 @@ const handlerCreators: HandleCreators<TimesheetApprovalListFilterProps, IOwnHand
   handleFilterCompletionOnClose: (props: TimesheetApprovalListFilterProps) => () => {
     props.setFilterCompletionVisibility();
   },
+
+  // filter notify
+  handleFilterNotifyOnChange: (props: TimesheetApprovalListFilterProps) => (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
+    props.setFilterNotify(checked);
+  }
 };
 
 export const TimesheetApprovalListFilter = compose<TimesheetApprovalListFilterProps, IOwnOption>(

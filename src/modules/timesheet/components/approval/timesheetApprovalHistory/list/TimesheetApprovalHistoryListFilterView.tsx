@@ -12,6 +12,7 @@ import {
   ListItem,
   ListItemSecondaryAction,
   ListItemText,
+  Switch,
   Toolbar,
   Typography,
 } from '@material-ui/core';
@@ -71,7 +72,7 @@ export const TimesheetApprovalHistoryListFilterView: React.SFC<TimesheetApproval
               </IconButton>
             }
 
-            <IconButton disabled>
+            <IconButton onClick={props.handleFilterCompletionVisibility}>
               <ChevronRightIcon />
             </IconButton>
           </ListItemSecondaryAction>
@@ -111,7 +112,7 @@ export const TimesheetApprovalHistoryListFilterView: React.SFC<TimesheetApproval
               </IconButton>
             }
 
-            <IconButton disabled>
+            <IconButton onClick={props.handleFilterStatusVisibility}>
               <ChevronRightIcon />
             </IconButton>
           </ListItemSecondaryAction>
@@ -131,9 +132,24 @@ export const TimesheetApprovalHistoryListFilterView: React.SFC<TimesheetApproval
               </IconButton>
             }
 
-            <IconButton disabled>
+            <IconButton onClick={props.handleFilterStatusVisibility}>
               <ChevronRightIcon />
             </IconButton>
+          </ListItemSecondaryAction>
+        </ListItem>
+        <Divider />
+
+        <ListItem>
+          <ListItemText 
+            primary={props.intl.formatMessage(timesheetMessage.entry.field.isNotify)}
+            secondary={props.intl.formatMessage(props.filterNotify ? layoutMessage.action.yes : layoutMessage.action.no)}
+          />
+          <ListItemSecondaryAction>
+            <Switch
+              color="primary"
+              checked={props.filterNotify || false}
+              onChange={props.handleFilterNotifyOnChange}
+            />
           </ListItemSecondaryAction>
         </ListItem>
         <Divider />

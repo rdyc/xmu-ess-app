@@ -94,6 +94,7 @@ export const timesheetEntryField = defineMessages({
 
   completion: { id: `${prefix}.field.completion`},
   isRejected: { id: `${prefix}.field.isRejected`},
+  isNotify: { id: `${prefix}.field.isNotify` },
 });
 
 export const timesheetEntryFieldHelperFor = (field: string, type: 'fieldName' | 'fieldRequired' | 'fieldPlaceholder') => {

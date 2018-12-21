@@ -12,5 +12,6 @@ export interface ITimesheetApprovalGetAllFilter {
   companyUid?: string;
   statusType?: string;
   status?: 'pending' | 'complete' | string;
+  isNotify?: boolean;
   query?: IExtendedQuery;
 }
