@@ -1,5 +1,4 @@
 import { LookupSystemDialog } from '@common/components/dialog/lookupSystemDialog/LookupSystemDialog';
-import { DialogValue } from '@layout/components/dialogs/DialogValue';
 import { layoutMessage } from '@layout/locales/messages';
 import { LookupCustomerDialog } from '@lookup/components/customer/dialog';
 import {
@@ -22,9 +21,9 @@ import ClearIcon from '@material-ui/icons/SettingsBackupRestore';
 import { projectMessage } from '@project/locales/messages/projectMessage';
 import * as React from 'react';
 
-import { ProjectRegistrationListFilterProps } from './ProjectRegistrationListFilter';
+import { ProjectAssignmentListFilterProps } from './ProjectAssignmentListFilter';
 
-export const ProjectRegistrationListFilterView: React.SFC<ProjectRegistrationListFilterProps> = props => (
+export const ProjectAssignmentListFilterView: React.SFC<ProjectAssignmentListFilterProps> = props => (
   <React.Fragment>
     <Dialog
       fullScreen
@@ -120,51 +119,16 @@ export const ProjectRegistrationListFilterView: React.SFC<ProjectRegistrationLis
         </ListItem>
         <Divider />
 
-        <ListItem button onClick={props.handleFilterCompletionVisibility}>
-          <ListItemText 
-            primary={props.intl.formatMessage(projectMessage.registration.field.completion)}
-            secondary={props.filterCompletion && props.filterCompletion.name || props.intl.formatMessage(layoutMessage.text.none)} 
-          />
-          <ListItemSecondaryAction>
-          { 
-              props.filterCompletion &&
-              <IconButton onClick={props.handleFilterCompletionOnClear}>
-                <ClearIcon />
-              </IconButton> 
-            }
-
-            <IconButton onClick={props.handleFilterCompletionVisibility}>
-              <ChevronRightIcon />
-            </IconButton> 
-          </ListItemSecondaryAction>
-        </ListItem>
-        <Divider />
-
         <ListItem>
           <ListItemText 
-            primary={props.intl.formatMessage(projectMessage.registration.field.isRejected)}
-            secondary={props.intl.formatMessage(props.filterRejected ? layoutMessage.action.yes : layoutMessage.action.no)}
+            primary={props.intl.formatMessage(projectMessage.assignment.field.activeOnly)}
+            secondary={props.intl.formatMessage(props.filterActive ? layoutMessage.action.yes : layoutMessage.action.no)}
           />
           <ListItemSecondaryAction>
             <Switch
               color="primary"
-              checked={props.filterRejected || false}
-              onChange={props.handleFilterRejectedOnChange}
-            />
-          </ListItemSecondaryAction>
-        </ListItem>
-        <Divider />
-        
-        <ListItem>
-          <ListItemText 
-            primary={props.intl.formatMessage(projectMessage.registration.field.isNewOwner)}
-            secondary={props.intl.formatMessage(props.filterNewOwner ? layoutMessage.action.yes : layoutMessage.action.no)}
-          />
-          <ListItemSecondaryAction>
-            <Switch
-              color="primary"
-              checked={props.filterNewOwner || false}
-              onChange={props.handleFilterNewOwnerOnChange}
+              checked={props.filterActive || false}
+              onChange={props.handleFilterActiveOnChange}
             />
           </ListItemSecondaryAction>
         </ListItem>
@@ -198,16 +162,6 @@ export const ProjectRegistrationListFilterView: React.SFC<ProjectRegistrationLis
       value={props.filterStatus && props.filterStatus.type}
       onSelected={props.handleFilterStatusOnSelected}
       onClose={props.handleFilterStatusOnClose}
-    />
-
-    <DialogValue
-      title={props.intl.formatMessage(projectMessage.registration.field.completion)}
-      isOpen={props.isFilterCompletionOpen}
-      hideBackdrop={true}
-      items={props.completionStatus}
-      value={props.filterCompletion && props.filterCompletion.value || props.initialProps && props.initialProps.status}
-      onSelected={props.handleFilterCompletionOnSelected}
-      onClose={props.handleFilterCompletionOnClose}
     />
   </React.Fragment>
 );

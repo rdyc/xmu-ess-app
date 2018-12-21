@@ -49,6 +49,11 @@
   "lookup.customer.lookupTitle": "Customer", 
   "lookup.customer.lookupDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.", 
   "lookup.placeholder.customerSearch": "Type any company name",
+  
+  "project.registration.lookupTitle": "Project", 
+  "project.registration.lookupDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.", 
+  "project.registration.projectSearch": "Type any project name",
+
 
   "lookup.currency.lookupTitle": "Currency",
   "lookup.currency.lookupDescription": "Lorem ipsum dolor sit amet", 
