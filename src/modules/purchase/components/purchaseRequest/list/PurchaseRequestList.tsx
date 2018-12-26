@@ -71,7 +71,8 @@ const createProps: mapper<AllProps, IOwnState> = (props: AllProps): IOwnState =>
   companyUid:  props.userState.user && props.userState.user.company && props.userState.user.company.uid,
 
   // fill partial props from location state to handle redirection from dashboard notif
-  status: props.location.state && props.location.state.status,
+  projectUid: props.location.state && props.location.state.projectUid,
+  statusType: props.location.state && props.location.state.statusType,
   isSettlement: props.location.state && props.location.state.isSettlement 
 });
 
@@ -149,8 +150,8 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
                 companyUid: user.company.uid,
                 positionUid: user.position.uid,
                 customerUid: this.props.customerUid,
+                projectUid: this.props.projectUid,
                 statusType: this.props.statusType,
-                status: this.props.status,
                 isSettlement: this.props.isSettlement,
                 isRejected: this.props.isRejected,
                 query: {

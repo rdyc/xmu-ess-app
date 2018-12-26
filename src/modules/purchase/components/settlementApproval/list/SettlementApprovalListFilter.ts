@@ -25,7 +25,7 @@ const completionStatus: ICollectionValue[] = [
   { value: 'complete', name: 'Complete' }
 ]; 
 
-export type ISettlementApprovalListFilterResult = Pick<ISettlementApprovalGetAllFilter, 'customerUid' | 'statusType' | 'status' | 'isNotify' >;
+export type ISettlementApprovalListFilterResult = Pick<ISettlementApprovalGetAllFilter, 'customerUid' | 'statusType' | 'status' | 'isNotify' | 'projectUid' >;
 
 interface IOwnOption {
   companyUid?: string; 
