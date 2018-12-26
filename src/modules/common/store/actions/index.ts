@@ -15,5 +15,3 @@ export * from './systemActions';
 export * from './unitActions';
 export * from './gradeAction';
 export * from './relationAction';
-export * from './paymentAction';
-export * from './financeAction';

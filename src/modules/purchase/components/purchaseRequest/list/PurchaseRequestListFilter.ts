@@ -1,5 +1,4 @@
 import { ISystemList } from '@common/classes/response';
-import { ICollectionValue } from '@layout/classes/core';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { ICustomerList } from '@lookup/classes/response';
 import { WithStyles, withStyles } from '@material-ui/core';
@@ -20,12 +19,7 @@ import {
 
 import { PurchaseRequestListFilterView } from './PurchaseRequestListFilterView';
 
-const completionStatus: ICollectionValue[] = [
-  { value: 'pending', name: 'Pending' },
-  { value: 'complete', name: 'Complete' }
-]; 
-
-export type IPurchaseRequestListFilterResult = Pick<IPurchaseGetAllFilter, 'customerUid' | 'isRejected' | 'isSettlement' | 'statusType' | 'status' >;
+export type IPurchaseRequestListFilterResult = Pick<IPurchaseGetAllFilter, 'customerUid' | 'isRejected' | 'isSettlement' | 'statusType' >;
 
 interface IOwnOption {
   companyUid?: string; 
@@ -36,8 +30,6 @@ interface IOwnOption {
 }
 
 interface IOwnState {
-  completionStatus: ICollectionValue[];
-
   // filter customer
   isFilterCustomerOpen: boolean;
   filterCustomer?: ICustomerList;
@@ -45,10 +37,6 @@ interface IOwnState {
   // filter status
   isFilterStatusOpen: boolean;
   filterStatus?: ISystemList;
-
-  // filter completion
-  isFilterCompletionOpen: boolean;
-  filterCompletion?: ICollectionValue;
 
   // filter settlement
   filterSettlement?: boolean;
@@ -71,10 +59,6 @@ interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
 
   setFilterStatusVisibility: StateHandler<IOwnState>;
   setFilterStatus: StateHandler<IOwnState>;
-
-  // filter completion
-  setFilterCompletionVisibility: StateHandler<IOwnState>;
-  setFilterCompletion: StateHandler<IOwnState>;
   
   // filter settlement
   setFilterSettlement: StateHandler<IOwnState>;
@@ -99,12 +83,6 @@ interface IOwnHandler {
   handleFilterStatusOnClear: (event: React.MouseEvent<HTMLElement>) => void;
   handleFilterStatusOnClose: () => void;
 
-  // filter completion
-  handleFilterCompletionVisibility: (event: React.MouseEvent<HTMLElement>) => void;
-  handleFilterCompletionOnSelected: (data: ICollectionValue) => void;
-  handleFilterCompletionOnClear: (event: React.MouseEvent<HTMLElement>) => void;
-  handleFilterCompletionOnClose: () => void;
-
   // filter settlement
   handleFilterSettlementOnChange: (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => void;
   
@@ -122,9 +100,7 @@ export type PurchaseRequestListFilterProps
   & InjectedIntlProps;
 
 const createProps: mapper<PurchaseRequestListFilterProps, IOwnState> = (props: PurchaseRequestListFilterProps): IOwnState => ({
-  completionStatus,
   isFilterCustomerOpen: false,
-  isFilterCompletionOpen: false,
   isFilterStatusOpen: false,
 
   customerPayload: {
@@ -140,7 +116,6 @@ const stateUpdaters: StateUpdaters<PurchaseRequestListFilterProps, IOwnState, IO
   // main filter
   setFilterReset: (prevState: IOwnState) => () => ({
     filterCustomer: undefined,
-    filterCompletion: undefined,
     filterSettlement: undefined,
     filterRejected: undefined,
     filterStatus: undefined
@@ -165,15 +140,6 @@ const stateUpdaters: StateUpdaters<PurchaseRequestListFilterProps, IOwnState, IO
     filterStatus: data
   }),
 
-  // filter completion
-  setFilterCompletionVisibility: (prevState: IOwnState) => () => ({
-    isFilterCompletionOpen: !prevState.isFilterCompletionOpen
-  }),
-  setFilterCompletion: (prevState: IOwnState) => (data?: ICollectionValue) => ({
-    isFilterCompletionOpen: false,
-    filterCompletion: data
-  }),
-
   // filter settlement
   setFilterSettlement: (prevState: IOwnState) => (checked: boolean) => ({
     filterSettlement: checked
@@ -193,7 +159,6 @@ const handlerCreators: HandleCreators<PurchaseRequestListFilterProps, IOwnHandle
   handleFilterOnApply: (props: PurchaseRequestListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
     props.onApply({
       customerUid: props.filterCustomer && props.filterCustomer.uid,
-      status: props.filterCompletion && props.filterCompletion.value,
       statusType: props.filterStatus && props.filterStatus.type,
       isSettlement: props.filterSettlement,
       isRejected: props.filterRejected,
@@ -228,20 +193,6 @@ const handlerCreators: HandleCreators<PurchaseRequestListFilterProps, IOwnHandle
     props.setFilterStatusVisibility();
   },
 
-  // filter completion
-  handleFilterCompletionVisibility: (props: PurchaseRequestListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
-    props.setFilterCompletionVisibility();
-  },
-  handleFilterCompletionOnSelected: (props: PurchaseRequestListFilterProps) => (data: ICollectionValue) => {
-    props.setFilterCompletion(data);
-  },
-  handleFilterCompletionOnClear: (props: PurchaseRequestListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
-    props.setFilterCompletion();
-  },
-  handleFilterCompletionOnClose: (props: PurchaseRequestListFilterProps) => () => {
-    props.setFilterCompletionVisibility();
-  },
-  
   // filter settlement
   handleFilterSettlementOnChange: (props: PurchaseRequestListFilterProps) => (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
     props.setFilterSettlement(checked);

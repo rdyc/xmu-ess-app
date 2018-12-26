@@ -180,5 +180,5 @@ export interface ILookupState {
   systemLimitGetById: IQuerySingleState<ISystemLimitByIdRequest, ISystemLimitDetail>;
   systemLimitPost: IQuerySingleState<ISystemLimitPostRequest, ISystemLimit>;
   systemLimitPut: IQuerySingleState<ISystemLimitPutRequest, ISystemLimit>;
-  systemLimitDelete: IQuerySingleState<ISystemLimitDeleteRequest, boolean>;
+  systemLimitDelete: IQuerySingleState<ISystemLimitDeleteRequest, ISystemLimit>;
 }

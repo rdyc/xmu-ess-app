@@ -6,6 +6,5 @@ export interface ISettlementGetAllFilter extends ICompanyAccess {
   customerUid?: string;
   isRejected?: boolean;
   statusType?: string;
-  status?: 'pending' | 'complete' | string;
   query?: IExtendedQuery;
 }

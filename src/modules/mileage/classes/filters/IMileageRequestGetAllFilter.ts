@@ -1,11 +1,9 @@
 import { IBasePagingFilter } from '@generic/interfaces';
 
 export interface IMileageRequestGetAllFilter extends IBasePagingFilter {
-  year?: number;
-  month?: number;
-  isRejected?: boolean;
-  statusType?: string;
-  status?: 'pending' | 'complete' | string;
-  companyUid?: string;
-  positionUid?: string;
+  year?: number | undefined;
+  month?: number | undefined;
+  isRejected?: boolean | undefined;
+  companyUid?: string | undefined;
+  positionUid?: string | undefined;
 }

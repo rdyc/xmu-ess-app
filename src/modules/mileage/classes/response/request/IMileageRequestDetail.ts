@@ -6,14 +6,12 @@ import {
   IOrganizationHierarchy,
   IOrganizationWorkflow
 } from '@organization/interfaces';
-import { ITimesheet } from '@timesheet/classes/response';
 
 export interface IMileageRequestDetail {
   hierarchyUid: string;
   hierarchy?: IOrganizationHierarchy | null;
   items?: IMileageRequestItem[] | null;
   histories?: History[] | null;
-  timesheets?: ITimesheet[] | null;
   workflow?: IOrganizationWorkflow | null;
   changes?: IBaseChanges | null;
   uid: string;

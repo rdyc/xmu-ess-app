@@ -71,8 +71,9 @@ const createProps: mapper<AllProps, IOwnState> = (props: AllProps): IOwnState =>
   companyUid:  props.userState.user && props.userState.user.company && props.userState.user.company.uid,
 
   // fill partial props from location state to handle redirection from dashboard notif
-  status: props.location.state && props.location.state.status,
-  isSettlement: props.location.state && props.location.state.isSettlement 
+  statusType: props.location.state && props.location.state.statusType,
+  isSettlement: props.location.state && props.location.state.isSettlement,
+  isRejected: props.location.state && props.location.state.isRejected 
 });
 
 const stateUpdaters: StateUpdaters<AllProps, IOwnState, IOwnStateUpdater> = {
@@ -150,7 +151,6 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
                 positionUid: user.position.uid,
                 customerUid: this.props.customerUid,
                 statusType: this.props.statusType,
-                status: this.props.status,
                 isSettlement: this.props.isSettlement,
                 isRejected: this.props.isRejected,
                 query: {
@@ -221,9 +221,10 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
           title: this.props.intl.formatMessage(layoutMessage.tooltip.filter),
           icon: TuneIcon,
           showBadgeWhen: () => {
-            return this.props.customerUid !== undefined || 
-              this.props.status !== undefined || 
-              this.props.isSettlement === true;
+            return this.props.customerUid !== undefined ||
+              this.props.statusType !== undefined ||
+              this.props.isSettlement === true ||
+              this.props.isRejected === true;
           },
           onClick: this.props.handleFilterVisibility
         }
@@ -236,8 +237,9 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
     // track any changes in filter props
     if (
       this.props.customerUid !== nextProps.customerUid ||
-      this.props.status !== nextProps.status ||
-      this.props.isNotify !== nextProps.isNotify
+      this.props.statusType !== nextProps.statusType ||
+      this.props.isRejected !== nextProps.isRejected ||
+      this.props.isSettlement !== nextProps.isSettlement
     ) {
       this.props.setShouldUpdate();
     }
@@ -257,8 +259,9 @@ const listView: React.SFC<AllProps> = props => (
           isOpen={props.isFilterOpen}
           initialProps={{
             customerUid: props.customerUid,
-            status: props.status,
+            statusType: props.statusType,
             isSettlement: props.isSettlement,
+            isRejected: props.isRejected,
           }}
           onClose={props.handleFilterVisibility}
           onApply={props.handleFilterApplied}

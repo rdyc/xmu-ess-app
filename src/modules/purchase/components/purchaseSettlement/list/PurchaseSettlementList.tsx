@@ -70,7 +70,6 @@ const createProps: mapper<AllProps, IOwnState> = (props: AllProps): IOwnState =>
   companyUid:  props.userState.user && props.userState.user.company && props.userState.user.company.uid,
 
   // fill partial props from location state to handle redirection from dashboard notif
-  // status: props.location.state && props.location.state.status,
   isRejected: props.location.state && props.location.state.isRejected 
 });
 
@@ -148,7 +147,7 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
                 companyUid: user.company.uid,
                 positionUid: user.position.uid,
                 customerUid: this.props.customerUid,
-                status: this.props.status,
+                statusType: this.props.statusType,
                 isRejected: this.props.isRejected,
                 query: {
                   find: params.find,
@@ -222,7 +221,7 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
           icon: TuneIcon,
           showBadgeWhen: () => {
             return this.props.customerUid !== undefined || 
-              this.props.status !== undefined || 
+              this.props.statusType !== undefined || 
               this.props.isRejected === true;
           },
           onClick: this.props.handleFilterVisibility
@@ -236,7 +235,7 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
     // track any changes in filter props
     if (
       this.props.customerUid !== nextProps.customerUid ||
-      this.props.status !== nextProps.status ||
+      this.props.statusType !== nextProps.statusType ||
       this.props.isNotify !== nextProps.isNotify
     ) {
       this.props.setShouldUpdate();
@@ -257,7 +256,7 @@ const listView: React.SFC<AllProps> = props => (
           isOpen={props.isFilterOpen}
           initialProps={{
             customerUid: props.customerUid,
-            status: props.status,
+            statusType: props.statusType,
             isRejected: props.isRejected,
           }}
           onClose={props.handleFilterVisibility}

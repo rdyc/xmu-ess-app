@@ -116,14 +116,6 @@ const lifecycles: ReactLifeCycleFunctions<LookupSystemDialogProps, OwnOption> = 
           commonDispatch.gradeListRequest(request);
           break;
 
-        case 'payment':
-          commonDispatch.paymentListRequest(request);
-          break;
-
-        case 'finance':
-          commonDispatch.financeListRequest(request);
-          break;
-
         default:
           break;
       }
@@ -156,8 +148,6 @@ const fnGetContext = (props: LookupSystemDialogProps) => {
     case 'limiter': return props.commonLimiterListState;
     case 'unit': return props.commonUnitListState;
     case 'grade': return props.commonGradeListState;
-    case 'payment': return props.commonPaymentListState;
-    case 'finance': return props.commonFinanceListState;
   
     default: return props.commonActivityListState;
   }

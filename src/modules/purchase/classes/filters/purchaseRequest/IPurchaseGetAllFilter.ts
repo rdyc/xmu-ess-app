@@ -7,6 +7,5 @@ export interface IPurchaseGetAllFilter extends ICompanyAccess  {
   isRejected?: boolean;
   isSettlement?: boolean;
   statusType?: string;
-  status?: 'pending' | 'complete' | string;
   query?: IExtendedQuery;
 }

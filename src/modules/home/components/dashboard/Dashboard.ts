@@ -170,21 +170,10 @@ const handlerCreators: HandleCreators<DashboardProps, OwnHandlers> = {
       case 'Leave':
         path = '/leave';
         
-        if (type === 'Approval' || type === 'Notify') {
+        if (type === 'Approval') {
           path = path.concat('/approvals', uid && `/${uid}` || '');
-
-          if (type === 'Approval') {
-            state = {
-              status: 'pending',
-            };
-          }
-
-          if (type === 'Notify') {
-            state = {
-              status: 'complete',
-              isNotify: true,
-            };
-          }
+        } else {
+          path = path.concat('/requests', uid && `/${uid}` || '');
         }
         break;
 
@@ -213,33 +202,8 @@ const handlerCreators: HandleCreators<DashboardProps, OwnHandlers> = {
 
         if (type === 'Approval' || type === 'Notify') {
           path = path.concat('/approvals', uid && `/${uid}` || '');
-
-          if (type === 'Approval') {
-            state = {
-              status: 'pending',
-            };
-          }
-
-          if (type === 'Notify') {
-            state = {
-              status: 'complete',
-              isNotify: true,
-            };
-          }
         } else {
           path = path.concat('/requests', uid && `/${uid}` || '');
-
-          if (type === 'Settlement') {
-            state = {
-              isSettlement: true,
-            };
-          }
-
-          if (type === 'Rejected') {
-            state = {
-              isRejected: true,
-            };
-          }
         }
         break;
 
@@ -248,28 +212,8 @@ const handlerCreators: HandleCreators<DashboardProps, OwnHandlers> = {
 
         if (type === 'Approval' || type === 'Notify') {
           path = path.concat('/settlement/approvals', uid && `/${uid}` || '');
-
-          if (type === 'Approval') {
-            state = {
-              status: 'pending',
-            };
-          }
-
-          if (type === 'Notify') {
-            state = {
-              status: 'complete',
-              isNotify: true,
-            };
-          }
-
         } else {
-          path = path.concat('/settlement/requests', uid && `/${uid}` || '');
-
-          if (type === 'Rejected') {
-            state = {
-              isRejected: true,
-            };
-          }
+          path = path.concat('/settlements', uid && `/${uid}` || '');
         }
         break;        
     
