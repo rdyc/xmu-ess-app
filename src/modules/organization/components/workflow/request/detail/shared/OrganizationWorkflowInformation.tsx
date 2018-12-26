@@ -19,8 +19,8 @@ export const organizationWorkflowInformation: React.SFC<AllProps> = props => {
   const render = (
     <Card square>
       <CardHeader 
-        title={props.intl.formatMessage(organizationMessage.hierarchy.section.historyTitle)}
-        subheader={props.intl.formatMessage(organizationMessage.hierarchy.section.historySubHeader)}
+        title={props.intl.formatMessage(organizationMessage.workflowSetup.section.hierarchyTitle)}
+        subheader={props.intl.formatMessage(organizationMessage.workflowSetup.section.hierarchySubHeader)}
       />
       <CardContent>
         <List>

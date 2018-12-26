@@ -99,10 +99,11 @@ const handlerCreators: HandleCreators<OrganizationWorkflowDetailProps, OwnHandle
     // define vars
     let menuUid: string | undefined;
 
-    // get diem uid
+    // get menu uid
     if (response.data) {
       menuUid = response.data.uid;
     }
+    console.log(menuUid);
 
     // actions with new page
     const actions = [
@@ -123,7 +124,7 @@ const handlerCreators: HandleCreators<OrganizationWorkflowDetailProps, OwnHandle
 
       props.setDefault();
       props.history.push(next, {
-        uid: menuUid
+        uid: menuUid, companyUid: props.match.params.companyUid
       });
     }
   },

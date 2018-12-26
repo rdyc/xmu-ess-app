@@ -5,6 +5,7 @@ import { isWidthDown } from '@material-ui/core/withWidth';
 import { isMenusWithWorkflow } from '@organization/helper/isMenusWithWorkflow';
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
+import { isNullOrUndefined } from 'util';
 import { OrganizationWorkflowFilter } from './OrganizationWorkflowFilter';
 import { WorkflowMenuListProps } from './WorkflowMenuList';
 
@@ -24,7 +25,7 @@ export const WorkflowMenuListView: React.SFC<WorkflowMenuListProps> = props => {
           // onClick={() => props.handleGoToDetail(menu.uid, props.companyUid)}
           >
             <Grid container spacing={8}>
-              <Grid item xs={12} md={4}>
+              <Grid item xs={6} md={4}>
                 <Grid container>
                   <Grid item xs={12} sm={8} md={3}>
                     <Typography
@@ -37,7 +38,7 @@ export const WorkflowMenuListView: React.SFC<WorkflowMenuListProps> = props => {
                   </Grid>
                 </Grid>
               </Grid>
-              <Grid item xs={3} md={8}>
+              <Grid item xs={6} md={8}>
                 <Grid container>
                   <Grid item xs={12} md={9}>
                     <Typography
@@ -53,6 +54,7 @@ export const WorkflowMenuListView: React.SFC<WorkflowMenuListProps> = props => {
                   <Grid item xs={12} md={3}>
                     <Button
                       size="small"
+                      disabled= {isNullOrUndefined(props.companyUid)}
                       onClick={() => props.handleGoToDetail(menu.uid, props.companyUid)}
                     >
                       <FormattedMessage {...layoutMessage.action.details} />
@@ -60,6 +62,7 @@ export const WorkflowMenuListView: React.SFC<WorkflowMenuListProps> = props => {
                     <Button
                       size="small"
                       color="secondary"
+                      disabled= {isNullOrUndefined(props.companyUid)}
                       onClick={() => props.handleRedirectTo(`/organization/workflow/form`, { menuUid: menu.uid, companyUid: props.companyUid })}
                     >
                       <FormattedMessage {...layoutMessage.action.modify} />

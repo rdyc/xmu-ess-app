@@ -129,5 +129,47 @@
 
   "organization.hierarchy.text.submitter": "Submitter",
   "organization.hierarchy.text.draft": "Draft",
-  "organization.hierarchy.text.addItem": "Add Item"
+  "organization.hierarchy.text.addItem": "Add Item",
+
+  "organization.workflow.page.list.title": "Workflow",
+  "organization.workflow.page.list.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras mollis eros sit amet rhoncus fermentum",
+  "organization.workflow.page.detail.title": "Workflow Details",
+  "organization.workflow.page.detail.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras mollis eros sit amet rhoncus fermentum",
+  "organization.workflow.page.modify.title": "Modify Workfow",
+  "organization.workflow.page.modify.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras mollis eros sit amet rhoncus fermentum",
+  "organization.workflow.page.new.title": "New Workflow",
+  "organization.workflow.page.new.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras mollis eros sit amet rhoncus fermentum",
+  
+  "organization.workflow.section.menu.title": "Menu Detail",
+  "organization.workflow.section.menu.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras mollis eros sit amet rhoncus fermentum",
+  "organization.workflow.section.hierarchy.title": "Workflow Hierarchy",
+  "organization.workflow.section.hierarchy.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras mollis eros sit amet rhoncus fermentum",
+
+  "organization.workflow.option.modify": "Modify",
+  "organization.workflow.option.remove": "Remove",
+
+  "organization.workflow.dialog.modify.title": "Modify Confirmation",
+  "organization.workflow.dialog.modify.description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "organization.workflow.dialog.delete.title": "Modify Confirmation",
+  "organization.workflow.dialog.delete.description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "organization.workflow.dialog.create.title": "Modify Confirmation",
+  "organization.workflow.dialog.create.description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "organization.workflow.dialog.edit.title": "Modify Confirmation",
+  "organization.workflow.dialog.edit.description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  
+  "organization.workflow.message.emptyProps": "Some props are empty",
+  "organization.workflow.message.create.success": "A new Workflow has been added",
+  "organization.workflow.message.create.failure": "Unable to process your submission",
+  "organization.workflow.message.update.success": "Existing Workflow has been updated",
+  "organization.workflow.message.update.failure": "Unable to process your submission",
+
+  "organization.workflow.field.uid": "Hierarchy ID",
+  "organization.workflow.field.menuUid": "Menu ID",
+  "organization.workflow.field.menuUid.placeholder": "Menu ID",
+  "organization.workflow.field.hierarchyUid": "Hierarchy Id",
+  "organization.workflow.field.hierarchyUid.placeholder": "Select a Hierarchy",
+  "organization.workflow.field.hierarchyUid.required": "Hierarchy is Required",
+  "organization.workflow.field.priority": "Priority",
+  "organization.workflow.field.priority.placeholder": "Type a Priority",
+  "organization.workflow.field.priority.required": "priority is Required"
 }

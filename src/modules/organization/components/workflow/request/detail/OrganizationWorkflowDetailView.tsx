@@ -5,6 +5,7 @@ import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
 import { DiemUserAction } from '@lookup/classes/types/diem/DiemUserAction';
 import { IWorkflowList } from '@organization/classes/response/workflow';
+import { organizationMessage } from '@organization/locales/messages/organizationMessage';
 import * as React from 'react';
 import { OrganizationWorkflowDetailProps } from './OrganizationWorkflowDetail';
 import { OrganizationWorkflowInformation } from './shared/OrganizationWorkflowInformation';
@@ -15,8 +16,8 @@ const config: SingleConfig<IWorkflowList[], OrganizationWorkflowDetailProps> = {
   page: (props: OrganizationWorkflowDetailProps) => ({
     uid: AppMenu.LookupWorkflow,
     parentUid: AppMenu.Lookup,
-    title: 'Diem Value Detail',
-    description: 'Description'
+    title: props.intl.formatMessage(organizationMessage.workflowSetup.page.detailTitle),
+    description: props.intl.formatMessage(organizationMessage.workflowSetup.page.detailSubHeader)
   }),
 
   // action centre
@@ -63,8 +64,6 @@ const config: SingleConfig<IWorkflowList[], OrganizationWorkflowDetailProps> = {
         loadListRequest({
           filter
         });
-
-        console.log(filter);
 
         // load menu detail
         loadDetailRequest({

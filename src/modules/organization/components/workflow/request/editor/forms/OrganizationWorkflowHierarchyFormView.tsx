@@ -17,8 +17,8 @@ import {
 } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
+import { organizationMessage } from '@organization/locales/messages/organizationMessage';
 // import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
-import { projectMessage } from '@project/locales/messages/projectMessage';
 import * as classNames from 'classnames';
 import * as React from 'react';
 import { FormattedNumber } from 'react-intl';
@@ -27,8 +27,8 @@ import { OrganizationWorkflowHierarchyFormProps } from './OrganizationWorkflowHi
 export const OrganizationWorkflowHierarchyFormView: React.SFC<OrganizationWorkflowHierarchyFormProps> = props => (
   <Card square>
     <CardHeader
-      title="Workflow hierarchy" // {props.intl.formatMessage(projectMessage.registration.section.salesTitle)}
-      subheader="" // {props.intl.formatMessage(projectMessage.registration.section.siteSubHeader)}
+      title={props.intl.formatMessage(organizationMessage.workflowSetup.section.hierarchyTitle)}
+      subheader={props.intl.formatMessage(organizationMessage.workflowSetup.section.hierarchySubHeader)}
     />
     <CardContent>
       <List>
@@ -84,10 +84,10 @@ export const OrganizationWorkflowHierarchyFormView: React.SFC<OrganizationWorkfl
         onClose={props.handleMenuClose}
       >
         <MenuItem onClick={() => alert('update')}>
-          {props.intl.formatMessage(projectMessage.site.option.modify)}
+          {props.intl.formatMessage(organizationMessage.workflowSetup.option.modify)}
         </MenuItem>
         <MenuItem onClick={() => props.context.fields.remove(props.hierarchyIndex)}>
-          {props.intl.formatMessage(projectMessage.site.option.remove)}
+          {props.intl.formatMessage(organizationMessage.workflowSetup.option.remove)}
         </MenuItem>
       </Menu>
     </CardContent>

@@ -2,7 +2,6 @@ import {
   compose,
   HandleCreators,
   lifecycle,
-  mapper,
   ReactLifeCycleFunctions,
   StateHandler,
   StateHandlerMap,
@@ -16,6 +15,7 @@ import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithLookupMenu, withLookupMenu } from '@lookup/hoc/withLookupMenu';
 import { WithWidth } from '@material-ui/core/withWidth';
 import { WithOrganizationWorkflow } from '@organization/hoc/withOrganizationWorkflow';
+import { organizationMessage } from '@organization/locales/messages/organizationMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps } from 'react-router';
 import { WorkflowMenuListView } from './WorkflowMenuListView';
@@ -24,7 +24,7 @@ interface OwnOption {
 }
 
 interface OwnState {
-  companyUid: string;
+  companyUid?: string;
 }
 
 interface OwnStateUpdater extends StateHandlerMap<OwnState> {
@@ -32,7 +32,7 @@ interface OwnStateUpdater extends StateHandlerMap<OwnState> {
 }
 
 interface OwnHandler {
-  handleGoToDetail: (menuUid: string, companyUid: string) => void;
+  handleGoToDetail: (menuUid: string, companyUid?: string) => void;
   handleSelected: (event: any, newValue: string, oldValue: string) => void;
   handleRedirectTo: (path: string, state?: any) => void;
 }
@@ -49,16 +49,16 @@ export type WorkflowMenuListProps
   & WithLayout
   & WithWidth;
 
-const createProps: mapper<OwnOption, OwnState> = (): OwnState => {
+// const createProps: mapper<OwnOption, OwnState> = (): OwnState => {
 
-  return {
-    companyUid: 'CP002'
-  };
-};
+//   return {
+//     companyUid: 'CP002'
+//   };
+// };
 
 const stateUpdaters: StateUpdaters<OwnOption, OwnState, OwnStateUpdater> = {
   setCompany: (prevState: OwnState) => (newState: string) => ({
-    companyUid: newState
+    companyUid: newState ? newState !== '' ? newState : undefined : undefined
   })
 };
 
@@ -85,7 +85,7 @@ const handlerCreators: HandleCreators<WorkflowMenuListProps, OwnHandler> = {
 const lifeCycleFunctions: ReactLifeCycleFunctions<WorkflowMenuListProps, OwnState> = {
   componentWillMount() {
     const { 
-      layoutDispatch,
+      layoutDispatch, intl
     } = this.props;
     const { loadListRequest } = this.props.lookupMenuDispatch;
     const { response, isLoading } = this.props.lookupMenuState.list;
@@ -99,8 +99,8 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<WorkflowMenuListProps, OwnStat
       view: {
         uid: AppMenu.Lookup,
         parentUid: AppMenu.LookupWorkflow,
-        title: 'Workflow', // intl.formatMessage(commonMessage.system.page.title),
-        subTitle : '' // intl.formatMessage(commonMessage.system.page.title)
+        title: intl.formatMessage(organizationMessage.workflowSetup.page.listTitle),
+        subTitle : intl.formatMessage(organizationMessage.workflowSetup.page.listSubHeader)
       },
       status: {
         isNavBackVisible: false,
@@ -135,7 +135,7 @@ export const workflowMenuList = compose<WorkflowMenuListProps, {}>(
   withLayout,
   withLookupMenu,
   injectIntl,
-  withStateHandlers(createProps, stateUpdaters),
+  withStateHandlers({}, stateUpdaters),
   withHandlers(handlerCreators),
   lifecycle(lifeCycleFunctions)
 )(WorkflowMenuListView);
