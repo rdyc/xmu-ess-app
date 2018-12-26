@@ -1,12 +1,10 @@
-import { WorkflowStatusType } from '@common/classes/types';
 import AppMenu from '@constants/AppMenu';
 import { IListConfig, ListDataProps, ListHandler, ListPage } from '@layout/components/pages';
 import { WithUser, withUser } from '@layout/hoc/withUser';
-import { IAppUser } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
 import { Button } from '@material-ui/core';
 import TuneIcon from '@material-ui/icons/Tune';
-import { IProjectAssignmentDetail, IProjectAssignmentDetailItem } from '@project/classes/response';
+import { IProjectAssignmentDetail } from '@project/classes/response';
 import { ProjectAssignmentField } from '@project/classes/types';
 import { WithProjectAcceptance, withProjectAcceptance } from '@project/hoc/withProjectAcceptance';
 import { projectMessage } from '@project/locales/messages/projectMessage';
@@ -31,19 +29,19 @@ import {
 import { ProjectAcceptanceSummary } from '../detail/ProjectAcceptanceSummary';
 import { IProjectAcceptanceListFilterResult, ProjectAcceptanceListFilter } from './ProjectAcceptanceListFilter';
 
-const parseAcceptance = (items: IProjectAssignmentDetailItem[] | null, user: IAppUser | undefined): string => {
-  if (user && items) {
-    // find any items with submitted status for current user uid
-    const pending = items.filter(item =>
-      item.employeeUid === user.uid &&
-      item.statusType === WorkflowStatusType.Submitted
-    );
+// const parseAcceptance = (items: IProjectAssignmentDetailItem[] | null, user: IAppUser | undefined): string => {
+//   if (user && items) {
+//     // find any items with submitted status for current user uid
+//     const pending = items.filter(item =>
+//       item.employeeUid === user.uid &&
+//       item.statusType === WorkflowStatusType.Submitted
+//     );
 
-    return pending.length > 0 ? `Pending` : 'Complete';
-  } 
+//     return pending.length > 0 ? `Pending` : 'Complete';
+//   } 
     
-  return '';
-};
+//   return '';
+// };
 
 interface IOwnOption {
   
@@ -207,7 +205,8 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
         secondary: item.projectUid,
         tertiary: item.name,
         quaternary: item.customer && item.customer.name || item.customerUid,
-        quinary: parseAcceptance(item.items, this.props.userState.user),
+        // quinary: parseAcceptance(item.items, this.props.userState.user),
+        quinary: item.project && item.project.value || item.projectType,
         senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
       }),
 
