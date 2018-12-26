@@ -73,7 +73,7 @@ export const LeaveRequestListFilterView: React.SFC<LeaveRequestListFilterProps> 
               </IconButton> 
             }
 
-            <IconButton onClick={props.handleFilterCompletionVisibility}>
+            <IconButton onClick={props.handleFilterTypeVisibility}>
               <ChevronRightIcon />
             </IconButton> 
           </ListItemSecondaryAction>
@@ -93,13 +93,13 @@ export const LeaveRequestListFilterView: React.SFC<LeaveRequestListFilterProps> 
               </IconButton> 
             }
 
-            <IconButton onClick={props.handleFilterCompletionVisibility}>
+            <IconButton onClick={props.handleFilterStatusVisibility}>
               <ChevronRightIcon />
             </IconButton> 
           </ListItemSecondaryAction>
         </ListItem>
         <Divider />
-
+{/* 
         <ListItem button onClick={props.handleFilterCompletionVisibility}>
           <ListItemText 
             primary={props.intl.formatMessage(leaveMessage.request.field.completion)}
@@ -118,7 +118,7 @@ export const LeaveRequestListFilterView: React.SFC<LeaveRequestListFilterProps> 
             </IconButton> 
           </ListItemSecondaryAction>
         </ListItem>
-        <Divider />
+        <Divider /> */}
 
         <ListItem>
           <ListItemText 

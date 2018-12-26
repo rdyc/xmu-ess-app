@@ -121,7 +121,7 @@ export const MileageRequestListFilterView: React.SFC<MileageRequestListFilterPro
         </ListItem>
         <Divider />
 
-        <ListItem button onClick={props.handleFilterCompletionVisibility}>
+        {/* <ListItem button onClick={props.handleFilterCompletionVisibility}>
           <ListItemText 
             primary={props.intl.formatMessage(mileageMessage.request.field.completion)}
             secondary={props.filterCompletion && props.filterCompletion.name || props.intl.formatMessage(layoutMessage.text.none)} 
@@ -139,7 +139,7 @@ export const MileageRequestListFilterView: React.SFC<MileageRequestListFilterPro
             </IconButton> 
           </ListItemSecondaryAction>
         </ListItem>
-        <Divider />
+        <Divider /> */}
 
         <ListItem>
           <ListItemText 
