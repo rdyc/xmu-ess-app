@@ -93,6 +93,12 @@
   "purchase.field.information.actualInIDR": "Actual Value (IDR)",
   "purchase.field.information.difference": " Difference",
   "purchase.field.information.differenceInIDR": "Difference Value (IDR)",
+
+  "purchase.field.isNotify": "Notified Only",
+  "purchase.field.isRejected": "Rejected Only",
+  "purchase.field.isSettlement": "Settle-Ready Only",
+  "purchase.field.statusType": "Status",
+  "purchase.field.completion": "Completion",
   
   "purchase.action.modify": "Modify",
   "purchase.action.settle": "Settle",

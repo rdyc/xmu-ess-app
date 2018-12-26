@@ -20,3 +20,5 @@ export * from './bloodActions';
 export * from './employmentActions';
 export * from './genderActions';
 export * from './taxActions';
+export * from './paymentAction';
+export * from './financeAction';

@@ -1,24 +1,29 @@
+import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
-import { withWidth } from '@material-ui/core';
-import { WithWidth } from '@material-ui/core/withWidth';
+import { WithStyles, withStyles } from '@material-ui/core';
+import { IMileageRequest } from '@mileage/classes/response';
 import { WithMileageApproval, withMileageApproval } from '@mileage/hoc/withMileageApproval';
+import styles from '@styles';
+import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose, lifecycle, ReactLifeCycleFunctions } from 'recompose';
-import { BaseFieldProps, WrappedFieldProps } from 'redux-form';
 import { EmployeeFilterView } from './EmployeeFilterView';
 
-interface OwnProps extends WrappedFieldProps, BaseFieldProps {
-  type?: string; 
-  placeholder?: string;
-  required?: boolean;
-  label: string; 
-  disabled: boolean;
+interface OwnOptions {
+  title: string;
+  value?: string | undefined;
+  isOpen: boolean;
+  hideBackdrop?: boolean;
+  onSelected: (employee?: IMileageRequest) => void;
+  onClose: () => void;
 }
 
 export type EmployeeFilterProps
   = WithMileageApproval
-  & WithWidth
   & WithUser
-  & OwnProps;
+  & WithStyles<typeof styles>
+  & WithLayout
+  & InjectedIntlProps
+  & OwnOptions;
 
 const lifecycles: ReactLifeCycleFunctions<EmployeeFilterProps, {}> = {
   componentDidMount() {
@@ -47,9 +52,11 @@ const lifecycles: ReactLifeCycleFunctions<EmployeeFilterProps, {}> = {
   }
 };
 
-export const EmployeeFilter = compose<EmployeeFilterProps, OwnProps>(
+export const EmployeeFilter = compose<EmployeeFilterProps, OwnOptions>(
   withMileageApproval,
   withUser,
-  withWidth(),
+  withLayout,
+  injectIntl,
+  withStyles(styles),
   lifecycle(lifecycles)
 )(EmployeeFilterView);

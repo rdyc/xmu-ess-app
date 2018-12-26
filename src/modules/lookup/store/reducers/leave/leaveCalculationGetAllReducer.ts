@@ -1,7 +1,7 @@
 import { IQueryCollectionState } from '@generic/interfaces';
 import { ILeaveCalculationGetAllRequest } from '@lookup/classes/queries';
 import { ILeaveCalculation } from '@lookup/classes/response';
-import { LookupLeaveAction as Action } from '@lookup/store/actions';
+import { LeaveCalculationAction as Action } from '@lookup/store/actions';
 import { Reducer } from 'redux';
 
 const initialState: IQueryCollectionState<ILeaveCalculationGetAllRequest, ILeaveCalculation> = {

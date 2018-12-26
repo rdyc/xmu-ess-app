@@ -1,6 +1,4 @@
-import { IBaseFilter } from '@generic/interfaces';
+import { IBasePagingFilter } from '@generic/interfaces';
 
-export interface ILeaveCalculationGetAllFilter extends IBaseFilter {
-  readonly companyUid: string;
-  readonly year: string | undefined;
+export interface ILeaveCalculationGetAllFilter extends IBasePagingFilter {
 }

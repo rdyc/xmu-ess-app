@@ -9,9 +9,11 @@ import siteReducers from '@common/store/reducers/site/siteReducers';
 import systemReducers from '@common/store/reducers/system/systemReducers';
 import bloodReducers from './blood/bloodReducers';
 import employmentReducers from './employment/employmentReducers';
+import financeReducers from './finance/financeReducer';
 import genderReducers from './gender/genderReducers';
 import gradeReducers from './grade/gradeReducer';
 import limiterReducers from './limiter/limiterReducers';
+import paymentReducers from './payment/paymentReducer';
 import { commonProjectReducers } from './project';
 import purposeReducers from './purpose/purposeReducers';
 import relationReducers from './relation/relationReducer';
@@ -43,7 +45,9 @@ const commonReducers = {
   ...employmentReducers,
   ...genderReducers,
   ...religionReducers,
-  ...taxReducers
+  ...taxReducers,
+  ...paymentReducers,
+  ...financeReducers
 };
 
 export default commonReducers;

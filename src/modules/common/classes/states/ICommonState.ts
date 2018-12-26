@@ -93,4 +93,11 @@ export interface ICommonState {
   commonEmploymentAll: IQueryCollectionState<ISystemAllRequest, ISystem>;
   commonEmploymentList: IQueryCollectionState<ISystemListRequest, ISystemList>;
   commonEmploymentDetail: IQuerySingleState<ISystemByIdRequest, ISystemDetail>;
+  commonPaymentAll: IQueryCollectionState<ISystemAllRequest, ISystem>;
+  commonPaymentList: IQueryCollectionState<ISystemListRequest, ISystemList>;
+  commonPaymentDetail: IQuerySingleState<ISystemByIdRequest, ISystemDetail>;
+
+  commonFinanceAll: IQueryCollectionState<ISystemAllRequest, ISystem>;
+  commonFinanceList: IQueryCollectionState<ISystemListRequest, ISystemList>;
+  commonFinanceDetail: IQuerySingleState<ISystemByIdRequest, ISystemDetail>;
 }

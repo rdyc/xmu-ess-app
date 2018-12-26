@@ -9,9 +9,11 @@ import {
   documentPresalesGetListRequest,
   employmentGetListRequest,
   expenseGetListRequest,
+  financeGetListRequest,
   genderGetListRequest,
   gradeGetListRequest,
   leaveGetListRequest,
+  paymentGetListRequest,
   projectGetListRequest,
   purposeGetListRequest,
   relationGetListRequest,
@@ -70,6 +72,8 @@ interface PropsFromState {
   commonBloodListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
   commonTaxListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
   commonEmploymentListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
+  commonPaymentListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
+  commonFinanceListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
 
   // detail
 }
@@ -102,6 +106,8 @@ interface PropsFromDispatch {
     bloodListRequest: typeof bloodGetListRequest;
     taxListRequest: typeof taxGetListRequest;
     employmentListRequest: typeof employmentGetListRequest;
+    paymentListRequest: typeof paymentGetListRequest;
+    financeListRequest: typeof financeGetListRequest;
 
     // detail
     systemDetailRequest: typeof systemGetByIdRequest;
@@ -146,7 +152,10 @@ const mapStateToProps = ({
   commonGenderList,
   commonBloodList,
   commonTaxList,
-  commonEmploymentList
+  commonEmploymentList,
+  commonPaymentList,
+  commonFinanceList,
+
 }: IAppState) => ({
   // system
   commonSystemState: {
@@ -179,8 +188,10 @@ const mapStateToProps = ({
   commonGenderListState: commonGenderList,
   commonBloodListState: commonBloodList,
   commonTaxListState: commonTaxList,
-  commonEmploymentListState: commonEmploymentList
-  
+  commonEmploymentListState: commonEmploymentList,
+  commonPaymentListState: commonPaymentList,
+  commonFinanceListState: commonFinanceList,
+
   // detail
  
 });
@@ -213,6 +224,8 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     bloodListRequest: (request: ISystemListRequest) => dispatch(bloodGetListRequest(request)),
     taxListRequest: (request: ISystemListRequest) => dispatch(taxGetListRequest(request)),
     employmentListRequest: (request: ISystemListRequest) => dispatch(employmentGetListRequest(request)),
+    paymentListRequest: (request: ISystemListRequest) => dispatch(paymentGetListRequest(request)),
+    financeListRequest: (request: ISystemListRequest) => dispatch(financeGetListRequest(request)),
 
     // detail
     systemDetailRequest: (request: ISystemByIdRequest) => dispatch(systemGetByIdRequest(request)),

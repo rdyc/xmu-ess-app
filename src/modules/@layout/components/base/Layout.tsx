@@ -4,6 +4,7 @@ import DrawerMenuSFC from '@layout/components/drawer/DrawerMenuSFC';
 import SnackbarAlertSFC from '@layout/components/snackbar/SnackbarAlertSFC';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { LayoutTheme } from '@layout/hoc/withRoot';
+import { WithUser, withUser } from '@layout/hoc/withUser';
 import { WithStyles, withStyles } from '@material-ui/core';
 import styles from '@styles';
 import * as classNames from 'classnames';
@@ -15,7 +16,8 @@ import { ErrorBoundary } from './ErrorBoundary';
 const envWebName = process.env.REACT_APP_WEBSITE_NAME;
 
 type LayoutProps 
-  = WithLayout
+  = WithUser
+  & WithLayout
   & WithStyles<typeof styles>;
 
 const layout: React.SFC<LayoutProps> = props => {
@@ -34,6 +36,11 @@ const layout: React.SFC<LayoutProps> = props => {
     document.title = `${props.layoutState.view.title} - ${envWebName}`;
   } else {
     document.title = envWebName || '?';
+  }
+
+  // don't render layout when user not completely loaded from oidc
+  if (!props.userState.user) {
+    return null;
   }
 
   return (
@@ -62,6 +69,7 @@ const layout: React.SFC<LayoutProps> = props => {
 };
 
 export const Layout = compose<LayoutProps, {}>(
+  withUser,
   withStyles(styles),
   withLayout,
 )(layout);

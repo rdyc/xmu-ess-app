@@ -1,3 +1,4 @@
+import { accountAccessMessage } from './accountAccessMessage';
 import {
   accountEmployeeConfirm,
   accountEmployeeField,
@@ -15,5 +16,8 @@ export const accountMessage = {
     fieldFor: accountEmployeeFieldHelperFor,
     section: accountEmployeeSection,
     message: accountEmployeeMessage
-  }
+  },
+  access: {
+    message: accountAccessMessage
+  },
 };

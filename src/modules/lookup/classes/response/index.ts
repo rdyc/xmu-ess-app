@@ -26,6 +26,7 @@ export * from './currency/ICurrency';
 export * from './currency/ICurrencyList';
 export * from './currency/ICurrencyDetail';
 export * from './systemLimit/ISystemLimit';
+export * from './systemLimit/ISystemLimitAmount';
 export * from './systemLimit/ISystemLimitList';
 export * from './systemLimit/ISystemLimitDetail';
 export * from './holiday/ILookupHoliday';

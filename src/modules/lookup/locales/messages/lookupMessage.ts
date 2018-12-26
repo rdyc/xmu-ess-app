@@ -22,6 +22,7 @@ import {
   leavePage,
   leaveSection
 } from './leave';
+import { leaveCalculationField, leaveCalculationFilter, leaveCalculationPage } from './leaveCalculation';
 import { 
   companyConfirm,
   companyDialog, 
@@ -127,6 +128,11 @@ export const lookupMessage = {
     section: leaveSection,
     confirm: leaveConfirm,
     message: leaveMessage
+  },
+  calculation: {
+    page: leaveCalculationPage,
+    field: leaveCalculationField,
+    filter: leaveCalculationFilter
   },
   currency: {
     page: currencyPage,
