@@ -125,8 +125,8 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, OwnState> = {
     const config: IListConfig<ISystemLimit> = {
       // page
       page: {
-        uid: AppMenu.MileageRequest,
-        parentUid: AppMenu.Mileage,
+        uid: AppMenu.LookupSystemLimit,
+        parentUid: AppMenu.Lookup,
         title: this.props.intl.formatMessage(lookupMessage.systemLimit.page.listTitle),
         description: this.props.intl.formatMessage(lookupMessage.systemLimit.page.listSubHeader),
       },

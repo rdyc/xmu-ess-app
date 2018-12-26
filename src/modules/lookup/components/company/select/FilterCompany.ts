@@ -29,17 +29,13 @@ const lifecycles: ReactLifeCycleFunctions<FilterCompanyProps, {}> = {
   componentDidMount() {
     const { user } = this.props.userState;
     const { isLoading, response } = this.props.lookupCompanyState.list;
-    const { loadAllRequest } = this.props.lookupCompanyDispatch;
+    const { loadListRequest } = this.props.lookupCompanyDispatch;
 
     if (user && !isLoading && !response) {
-      loadAllRequest({
+      loadListRequest({
         filter: {
           direction: 'ascending',
           orderBy: undefined,
-          page: undefined,
-          size: undefined,
-          find: undefined,
-          findBy: undefined
         }
       });
     }

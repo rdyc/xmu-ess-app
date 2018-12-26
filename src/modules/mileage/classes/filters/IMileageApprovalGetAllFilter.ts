@@ -1,8 +1,6 @@
 import { IBasePagingFilter } from '@generic/interfaces';
 
-interface IExtendedQuery extends IBasePagingFilter {}
-
-export interface IMileageApprovalGetAllFilter {
+export interface IMileageApprovalGetAllFilter extends IBasePagingFilter {
   year?: number;
   month?: number;
   employeeUid?: string;
@@ -11,5 +9,4 @@ export interface IMileageApprovalGetAllFilter {
   isNotify?: boolean;
   companyUid?: string;
   positionUid?: string;
-  query?: IExtendedQuery;
 }

@@ -75,8 +75,8 @@ const listView: React.SFC<AllProps> = props => (
         <MileageRequestListFilter 
           isOpen={props.isFilterOpen}
           initialProps={{
-            month: props.month,
             year: props.year,
+            month: props.month,
             status: props.status,
             statusType: props.statusType,
             isRejected: props.isRejected
