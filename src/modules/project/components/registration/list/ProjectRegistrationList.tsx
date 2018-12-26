@@ -79,7 +79,6 @@ const listView: React.SFC<AllProps> = props => (
             customerUid: props.customerUid,
             projectType: props.projectType,
             statusType: props.statusType,
-            status: props.status,
             isRejected: props.isRejected,
             isNewOwner: props.isNewOwner
           }}
@@ -185,7 +184,6 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
                 customerUid: this.props.customerUid,
                 projectType: this.props.projectType,
                 statusType: this.props.statusType,
-                status: this.props.status,
                 isRejected: this.props.isRejected,
                 isNewOwner: this.props.isNewOwner,
                 find: params.find,
@@ -248,8 +246,7 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
           showBadgeWhen: () => {
             return this.props.customerUid !== undefined || 
               this.props.projectType !== undefined || 
-              this.props.statusType !== undefined || 
-              this.props.status !== undefined || 
+              this.props.statusType !== undefined ||
               this.props.isRejected === true ||
               this.props.isNewOwner === true;
           },
@@ -266,7 +263,6 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
       this.props.customerUid !== nextProps.customerUid ||
       this.props.projectType !== nextProps.projectType ||
       this.props.statusType !== nextProps.statusType ||
-      this.props.status !== nextProps.status ||
       this.props.isRejected !== nextProps.isRejected ||
       this.props.isNewOwner !== nextProps.isNewOwner
     ) {

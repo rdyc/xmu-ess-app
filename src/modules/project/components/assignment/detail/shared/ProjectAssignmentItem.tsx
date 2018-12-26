@@ -53,20 +53,25 @@ const projectAssignmentItem: React.SFC<AllProps> = props => (
       />
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
-        label={props.intl.formatMessage(projectMessage.assignment.field.hours)}
-        value={props.intl.formatNumber(props.data.hours)}
+        label={props.intl.formatMessage(projectMessage.assignment.field.allocatedHours)}
+        value={props.intl.formatNumber(props.data.allocatedHours)}
       />
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
+        label={props.intl.formatMessage(projectMessage.assignment.field.consumedHours)}
+        value={props.intl.formatNumber(props.data.consumedHours)}
+      />
+      {/* <TextField
+        {...GlobalStyle.TextField.ReadOnly}
         label={props.intl.formatMessage(projectMessage.assignment.field.statusType)}
         value={props.data.status && props.data.status.value || 'N/A'}
-      />
+      /> */}
       {
         props.data.statusType === WorkflowStatusType.Rejected &&
         <TextField
-        {...GlobalStyle.TextField.ReadOnly}
-        label={props.intl.formatMessage(projectMessage.assignment.field.reason)}
-        value={props.data.rejectedReason || '-'}
+          {...GlobalStyle.TextField.ReadOnly}
+          label={props.intl.formatMessage(projectMessage.assignment.field.reason)}
+          value={props.data.rejectedReason || '-'}
         />
       }
       
