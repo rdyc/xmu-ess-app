@@ -7,6 +7,7 @@ import {
   CardHeader,
   Checkbox,
   Collapse,
+  Divider,
   List,
   ListItem,
   ListItemSecondaryAction,
@@ -51,6 +52,7 @@ const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateHandler> = {
 
 const mileageApprovalItem: React.SFC<AllProps> = props => {
   const { items, active, isExpanded, intl, handleCheckbox, ItemUids, handleToggle } = props;
+  const len = items && items.length - 1;
 
   const isChecked = (mileageItemUid: string) => {
     const _mileageItemUids = new Set(ItemUids);
@@ -69,7 +71,7 @@ const mileageApprovalItem: React.SFC<AllProps> = props => {
       <List>
           {
             items &&
-            items.map(item =>
+            items.map((item, index) =>
               <React.Fragment key={item.uid}>
                 <ListItem 
                   disableGutters
@@ -94,6 +96,7 @@ const mileageApprovalItem: React.SFC<AllProps> = props => {
                     </ListItemSecondaryAction>
                   </div>
                 </ListItem>
+                {len !== index && !isExpanded && <Divider />}                
                 <Collapse
                   in={active === item.uid && isExpanded}
                   timeout="auto"
@@ -141,6 +144,7 @@ const mileageApprovalItem: React.SFC<AllProps> = props => {
                     label={intl.formatMessage(mileageMessage.request.field.itemValue)}
                     value={intl.formatNumber(Number(item.amount), GlobalFormat.CurrencyDefault)}
                   />
+                  {isExpanded && <Divider />}
                 </Collapse>
               </React.Fragment>
             )

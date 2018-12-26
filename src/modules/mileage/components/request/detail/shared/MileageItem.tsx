@@ -5,6 +5,7 @@ import {
   CardContent,
   CardHeader,
   Collapse,
+  Divider,
   List,
   ListItem,
   ListItemSecondaryAction,
@@ -52,6 +53,7 @@ const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateHandler> = {
 
 const mileageItem: React.SFC<AllProps> = props => {
   const { items, intl, active, isExpanded, handleToggle } = props;
+  const len = items && items.length - 1;
 
   const render = (
     <Card square>
@@ -63,7 +65,7 @@ const mileageItem: React.SFC<AllProps> = props => {
         <List>
           {
             items &&
-            items.map(item =>
+            items.map((item, index) =>
               <React.Fragment key={item.uid}>
                 <ListItem 
                   disableGutters
@@ -79,6 +81,7 @@ const mileageItem: React.SFC<AllProps> = props => {
                     {active === item.uid && isExpanded ? <ExpandLess /> : <ExpandMore />}
                   </ListItemSecondaryAction>
                 </ListItem>
+                {len !== index && !isExpanded && <Divider />}                
                 <Collapse
                   in={active === item.uid && isExpanded}
                   timeout="auto"
@@ -126,6 +129,7 @@ const mileageItem: React.SFC<AllProps> = props => {
                     label={intl.formatMessage(mileageMessage.request.field.itemValue)}
                     value={intl.formatNumber(Number(item.amount), GlobalFormat.CurrencyDefault)}
                   />
+                  {isExpanded && <Divider />}
                 </Collapse>
               </React.Fragment>
             )
