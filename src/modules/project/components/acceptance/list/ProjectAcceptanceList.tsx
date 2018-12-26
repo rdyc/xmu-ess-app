@@ -29,20 +29,6 @@ import {
 import { ProjectAcceptanceSummary } from '../detail/ProjectAcceptanceSummary';
 import { IProjectAcceptanceListFilterResult, ProjectAcceptanceListFilter } from './ProjectAcceptanceListFilter';
 
-// const parseAcceptance = (items: IProjectAssignmentDetailItem[] | null, user: IAppUser | undefined): string => {
-//   if (user && items) {
-//     // find any items with submitted status for current user uid
-//     const pending = items.filter(item =>
-//       item.employeeUid === user.uid &&
-//       item.statusType === WorkflowStatusType.Submitted
-//     );
-
-//     return pending.length > 0 ? `Pending` : 'Complete';
-//   } 
-    
-//   return '';
-// };
-
 interface IOwnOption {
   
 }
@@ -90,8 +76,7 @@ const listView: React.SFC<AllProps> = props => (
             customerUids: props.customerUids,
             projectTypes: props.projectTypes,
             statusTypes: props.statusTypes,
-            projectUid: props.projectUid,
-            activeOnly: props.activeOnly
+            projectUid: props.projectUid
           }}
           onClose={props.handleFilterVisibility}
           onApply={props.handleFilterApplied}
@@ -102,10 +87,7 @@ const listView: React.SFC<AllProps> = props => (
 );
 const createProps: mapper<AllProps, IOwnState> = (props: AllProps): IOwnState => ({
   shouldUpdate: false,
-  isFilterOpen: false,
-
-  // fill partial props from location state to handle redirection from dashboard notif
-  activeOnly: props.location.state && props.location.state.activeOnly
+  isFilterOpen: false
 });
 
 const stateUpdaters: StateUpdaters<AllProps, IOwnState, IOwnStateUpdater> = {
@@ -182,7 +164,6 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
                 projectTypes: this.props.projectTypes,
                 statusTypes: this.props.statusTypes,
                 projectUid: this.props.projectUid,
-                activeOnly: this.props.activeOnly,
                 query: {
                   find: params.find,
                   findBy: params.findBy,
@@ -237,8 +218,7 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
             return this.props.customerUids !== undefined || 
               this.props.projectTypes !== undefined || 
               this.props.statusTypes !== undefined || 
-              this.props.projectUid !== undefined ||
-              this.props.activeOnly === true;
+              this.props.projectUid !== undefined;
           },
           onClick: this.props.handleFilterVisibility
         }
@@ -253,8 +233,7 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
       this.props.customerUids !== nextProps.customerUids ||
       this.props.projectTypes !== nextProps.projectTypes ||
       this.props.statusTypes !== nextProps.statusTypes ||
-      this.props.projectUid !== nextProps.projectUid ||
-      this.props.activeOnly !== nextProps.activeOnly
+      this.props.projectUid !== nextProps.projectUid
     ) {
       this.props.setShouldUpdate();
     }
