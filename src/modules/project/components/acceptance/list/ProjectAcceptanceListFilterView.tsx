@@ -11,7 +11,6 @@ import {
   ListItem,
   ListItemSecondaryAction,
   ListItemText,
-  Switch,
   Toolbar,
   Typography,
 } from '@material-ui/core';
@@ -115,21 +114,6 @@ export const ProjectAcceptanceListFilterView: React.SFC<ProjectAcceptanceListFil
             <IconButton onClick={props.handleFilterStatusVisibility}>
               <ChevronRightIcon />
             </IconButton> 
-          </ListItemSecondaryAction>
-        </ListItem>
-        <Divider />
-
-        <ListItem>
-          <ListItemText 
-            primary={props.intl.formatMessage(projectMessage.assignment.field.activeOnly)}
-            secondary={props.intl.formatMessage(props.filterActive ? layoutMessage.action.yes : layoutMessage.action.no)}
-          />
-          <ListItemSecondaryAction>
-            <Switch
-              color="primary"
-              checked={props.filterActive || false}
-              onChange={props.handleFilterActiveOnChange}
-            />
           </ListItemSecondaryAction>
         </ListItem>
         <Divider />

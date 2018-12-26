@@ -105,7 +105,7 @@ const handlers: HandleCreators<ProjectAssignmentEditorProps, OwnHandlers> = {
             role: item.role,
             jobDescription: item.jobDescription,
             mandays: item.mandays,
-            hours: item.hours,
+            hours: item.allocatedHours,
             statusType: item.statusType,
             status: item.status,
             rejectedReason: item.rejectedReason

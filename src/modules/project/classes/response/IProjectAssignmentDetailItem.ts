@@ -15,7 +15,8 @@ export interface IProjectAssignmentDetailItem {
   readonly role: string | null;
   readonly jobDescription: string | null;
   readonly mandays: number;
-  readonly hours: number;
+  readonly allocatedHours: number;
+  readonly consumedHours: number;
   readonly statusType: string;
   readonly status: ICommonSystem | null;
   readonly rejectedReason: string | null;
