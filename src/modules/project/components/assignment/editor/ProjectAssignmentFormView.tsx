@@ -154,6 +154,7 @@ export const ProjectAssignmentFormView: React.SFC<ProjectAssignmentFormProps> = 
         <ProjectAssignment 
           formMode={props.formMode} 
           data={props.currentProject}
+          showProjectHours={true}
         >
           {
             // just display project select when the form is being in new mode

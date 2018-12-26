@@ -4,10 +4,10 @@ import { ILeaveCalculation } from '@lookup/classes/response';
 import { action } from 'typesafe-actions';
 
 export const enum LeaveCalculationAction {
-  GET_ALL_REQUEST = '@@lookup/leave/calculation/GET_ALL_REQUEST',
-  GET_ALL_SUCCESS = '@@lookup/leave/calculation/GET_ALL_SUCCESS',
-  GET_ALL_ERROR = '@@lookup/leave/calculation/GET_ALL_ERROR',
-  GET_ALL_DISPOSE = '@@lookup/leave/calculation/GET_ALL_DISPOSE',
+  GET_ALL_REQUEST = '@@lookup/calculation/GET_ALL_REQUEST',
+  GET_ALL_SUCCESS = '@@lookup/calculation/GET_ALL_SUCCESS',
+  GET_ALL_ERROR = '@@lookup/calculation/GET_ALL_ERROR',
+  GET_ALL_DISPOSE = '@@lookup/calculation/GET_ALL_DISPOSE',
  
 }
 

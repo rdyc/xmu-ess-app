@@ -11,6 +11,7 @@ import { IAppUser } from '@layout/interfaces';
 import { LeaveRoutingComponents } from '@leave/components/LeaveRoutingComponents';
 import { LookupRoutingComponents } from '@lookup/components/LookupRoutingComponents';
 import { MileageRoutingComponents } from '@mileage/components/MileageRouter';
+import { OrganizationRoutingComponents } from '@organization/components/OrganizationRoutingComponents';
 import { ProjectRoutingComponents } from '@project/components';
 import { PurchaseRoutingComponents } from '@purchase/components/PurchaseRoutingComponents';
 import { SummaryRoutingComponents } from '@summary/components/SummaryRoutingComponents';
@@ -28,8 +29,6 @@ import { compose, lifecycle, ReactLifeCycleFunctions } from 'recompose';
 import { Store } from 'redux';
 import { loadUser, OidcProvider } from 'redux-oidc';
 import * as store from 'store';
-
-import { OrganizationRoutingComponents } from '@organization/components/OrganizationRoutingComponents';
 import { IAppState } from './generic/interfaces';
 import AppLocale from './language';
 import config, { getCurrentLanguage } from './language/config';
@@ -91,19 +90,19 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, {}> = {
   componentWillMount() {
     // add oidc events
     AppUserManager.events.addUserLoaded((user: User) => {
-      console.log('user loaded', user);
+      console.info('user loaded');
     });
 
     AppUserManager.events.addUserUnloaded(() => {
-      console.log('user unloaded');
+      console.info('user unloaded');
     });
 
     AppUserManager.events.addAccessTokenExpiring(() => {
-      console.log('token expiring');
+      console.warn('token expiring');
     });
     
     AppUserManager.events.addAccessTokenExpired(() => {
-      console.log('token expired');
+      console.warn('token expired');
 
       store.clearAll();
       
@@ -115,20 +114,24 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, {}> = {
     });
     
     AppUserManager.events.addUserSignedOut(() => {
-      console.log('user signed out');
+      console.info('user signed out');
 
       store.clearAll();
+
+      this.props.history.push('/');
     });
   },
   componentDidMount() {
     // load odic user state
     loadUser(this.props.store, AppUserManager).then((user: User) => {
-      // console.log('loaded user', user);
-
       if (!user) {
+        console.warn('no user found');
+        
         // no user access found, redirect to main
         this.props.history.push('/');
       } else {
+        console.info('user found');
+
         // found user access, then get user profile
         const appUser: IAppUser = store.get(AppStorage.Profile, undefined);
 

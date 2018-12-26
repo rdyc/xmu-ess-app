@@ -46,19 +46,24 @@
 
   "global.setting.title": "Settings",
 
-  "lookup.customer.lookupTitle": "Customer Lookup", 
+  "lookup.customer.lookupTitle": "Customer", 
   "lookup.customer.lookupDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.", 
   "lookup.placeholder.customerSearch": "Type any company name",
+  
+  "project.registration.lookupTitle": "Project", 
+  "project.registration.lookupDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.", 
+  "project.registration.projectSearch": "Type any project name",
 
-  "lookup.currency.lookupTitle": "Currency Lookup",
+
+  "lookup.currency.lookupTitle": "Currency",
   "lookup.currency.lookupDescription": "Lorem ipsum dolor sit amet", 
   "lookup.placeholder.currencySearch": "Type any currency name",
   "lookup.currency.title": "Currency Detail", 
   "lookup.currency.subTitle": "Lorem ipsum dolor sit amet",
-  "lookup.systemLimit.lookupTitle": "System Limit Lookup", 
+  "lookup.systemLimit.lookupTitle": "System Limit", 
   "lookup.systemLimit.lookupDescription": "Lorem ipsum dolor sit amet",
   "lookup.placeholder.systemLimitSearch": "Type any System Limit name",
-  "lookup.systemLimit.title": "System Limit Lookup", 
+  "lookup.systemLimit.title": "System Limit", 
   "lookup.systemLimit.subTitle": "Lorem ipsum dolor sit amet",
   "lookup.leave.title": "Leave Detail", 
   "lookup.leave.subTitle": "Lorem ipsum dolor sit amet",

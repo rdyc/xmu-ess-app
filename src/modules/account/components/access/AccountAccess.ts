@@ -6,6 +6,7 @@ import { IAppUser, IUserCompany, IUserPosition, IUserRole } from '@layout/interf
 import { WithStyles, withStyles } from '@material-ui/core';
 import styles from '@styles';
 import { RemoveDuplicates } from '@utils/index';
+import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps } from 'react-router';
 import {
   compose,
@@ -43,6 +44,7 @@ export type AccessSwitcherProps
   = OwnHandlers
   & OwnState
   & OwnStateUpdaters
+  & InjectedIntlProps
   & WithUser
   & WithAccountEmployeeMy
   & WithStyles<typeof styles>
@@ -156,6 +158,7 @@ const lifecycles: ReactLifeCycleFunctions<AccessSwitcherProps, {}> = {
 export const AccountAccess = compose<AccessSwitcherProps, {}>(
   withAccountEmployeeMy,
   withUser,
+  injectIntl,
   withStyles(styles),
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),

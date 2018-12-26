@@ -1,5 +1,5 @@
 import { ICollectionValue } from '@layout/classes/core';
-import { IAppBarMenu } from '@layout/interfaces';
+import { IAppBarControl, IAppBarMenu } from '@layout/interfaces';
 import {
   AppBar,
   Badge,
@@ -97,7 +97,8 @@ interface ToolbarControlOptions {
   OnClickAction: (event: React.MouseEvent<HTMLDivElement>) => void;
   showMore: boolean;
   isOpenMore: boolean;
-  moreItems: IAppBarMenu[] | undefined;
+  customControls?: IAppBarControl[];
+  moreItems?: IAppBarMenu[];
   onClickMore: (event: React.MouseEvent<HTMLDivElement>) => void;
   onClickMoreItem: (item: IAppBarMenu) => void;
   onCloseMore: () => void;
@@ -179,6 +180,20 @@ const ToolbarControl: React.SFC<ToolbarControlOptions> = props => (
         </IconButton>
       }
     </Hidden>
+
+    {
+      props.customControls &&
+      props.customControls.map((control, index) =>
+        <IconButton 
+          key={index}
+          color={props.color}
+          disabled={control.disabled === true}
+          onClick={control.onClick}
+        >
+          <control.icon/>
+        </IconButton>
+      )
+    }
 
     {
       props.showMore &&
@@ -273,6 +288,7 @@ export const TopBarView: React.SFC<TopBarProps> = props => (
           showAction={props.layoutState.isActionCentreVisible}
           OnClickAction={props.handleOnClickAction}
           showMore={props.layoutState.isMoreVisible}
+          customControls={props.appBarState.controls}
           moreItems={props.appBarState.menus}
           isOpenMore={props.isOpenMenu}
           onClickMore={props.handleOnClickMore}

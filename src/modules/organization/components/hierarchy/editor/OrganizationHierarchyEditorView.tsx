@@ -6,7 +6,8 @@ import { HierarchyForm, OrganizationHierarchyFormData } from './forms/HierarchyF
 import { OrganizationHierarchyEditorProps } from './OrganizationHierarchyEditor';
 
 export const CommonEditorView: React.SFC<OrganizationHierarchyEditorProps> = props => {
-  const { formMode, handleValidate, handleSubmit, handleSubmitSuccess, handleSubmitFail, intl } = props;
+  const { formMode, handleValidate, handleSubmit, handleSubmitSuccess, handleSubmitFail, intl,
+    submitDialogTitle, submitDialogContentText, submitDialogConfirmedText, submitDialogCancelText } = props;
   const { isLoading, response } = props.organizationHierarchyState.detail;
 
   const renderForm = (formData: OrganizationHierarchyFormData) => (
@@ -17,6 +18,10 @@ export const CommonEditorView: React.SFC<OrganizationHierarchyEditorProps> = pro
       onSubmit={handleSubmit} 
       onSubmitSuccess={handleSubmitSuccess}
       onSubmitFail={handleSubmitFail}
+      submitDialogTitle={submitDialogTitle}
+      submitDialogContentText={submitDialogContentText}
+      submitDialogCancelText={submitDialogCancelText}
+      submitDialogConfirmedText={submitDialogConfirmedText}
     />
   );
 

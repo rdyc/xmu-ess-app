@@ -147,6 +147,11 @@
   "travel.request.field.item.amount": "Diem Value",
   "travel.request.field.item.amount.placeholder": "Diem Value",
 
+  "travel.request.field.isSettlement": "Ready to Settle Only",
+  "travel.request.field.isRejected": "Rejected Only",
+  "travel.request.field.completion": "Completion",
+  "travel.request.field.isNotify": "Notified Only",
+
   "travel.title": "Travels",
   "travelSettlement.title": "Travel Settlement",
   "travel.approvalTitle": "Approval",

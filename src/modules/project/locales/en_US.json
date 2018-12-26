@@ -86,6 +86,10 @@
   "project.registration.field.valueIdr": "Value (IDR)",
   "project.registration.field.hours": "Maximum Hours",
   "project.registration.field.rejectedReason": "Rejected Reason",
+  "project.registration.field.isNotify": "Notified Only",
+  "project.registration.field.isRejected": "Rejected Only",
+  "project.registration.field.isNewOwner": "New Owner Only",
+  "project.registration.field.completion": "Completion",
   
   "project.registration.message.emptyProps": "Some props are empty",
   "project.registration.message.emptySales": "Sales not found",
@@ -199,6 +203,7 @@
   "project.assignment.field.item.newHours": "New Hours",
   "project.assignment.field.item.statusType": "Status",
   "project.assignment.field.item.rejectedReason": "Rejected Reason",
+  "project.assignment.field.item.activeOnly": "Active Only",
 
   "project.assignment.message.invalidProps": "Some props are not valid",
   "project.assignment.message.create.success": "A new assignment has been created",

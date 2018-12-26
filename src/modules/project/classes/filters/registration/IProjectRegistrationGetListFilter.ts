@@ -1,6 +1,9 @@
-import { IProjectRegistrationGetAllFilter } from '@project/classes/filters/registration';
+import { IBasePagingFilter } from '@generic/interfaces';
 
-export interface IProjectRegistrationGetListFilter extends IProjectRegistrationGetAllFilter {
+export interface IProjectRegistrationGetListFilter extends IBasePagingFilter {
   activeOnly?: boolean | undefined;
   assignmentStatus?: 'assigned' | 'unassigned' | undefined;
+  customerUids?: string[] | undefined;
+  projectTypes?: string[] | undefined;
+  statusTypes?: string[] | undefined;
 }

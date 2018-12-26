@@ -9,7 +9,7 @@ import * as React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router';
 import { LookupCompanyDetail } from './company/detail/LookupCompanyDetail';
 import LookupCompanyEditor from './company/editor/LookupCompanyEditor';
-import LookupCompanyList from './company/list/LookupCompanyList';
+import { LookupCompanyList } from './company/list/LookupCompanyList';
 import { LookupCustomerDetail } from './customer/detail/LookupCustomerDetail';
 import LookupCustomerEditor from './customer/editor/LookupCustomerEditor';
 import LookupCustomerList  from './customer/list/LookupCustomerList';
@@ -18,6 +18,7 @@ import LookupDiemEditor from './diem/editor/LookupDiemEditor';
 import LookupDiemList from './diem/list/LookupDiemList';
 import LookupHolidayEditor from './holiday/editor/LookupHolidayEditor';
 import LookupHolidayList from './holiday/list/LookupHolidayList';
+import { LeaveCalculationList } from './leave/calculation/LeaveCalculationList';
 import LookupLeaveEditor from './leave/editor/LookupLeaveEditor';
 import { MileageExceptionDetail } from './mileageException/detail/MileageExceptionDetail';
 import MileageExceptionEditor from './mileageException/editor/MileageExceptionEditor';
@@ -42,9 +43,9 @@ const role = (props: RouteComponentProps) => (
 
 const company = (props: RouteComponentProps) => (
   <Switch>
-    <Route path={`${props.match.path}/list`} component={LookupCompanyList} />
     <Route path={`${props.match.path}/form`} component={LookupCompanyEditor} />
     <Route path={`${props.match.path}/:companyUid`} component={LookupCompanyDetail} />
+    <Route path={`${props.match.path}`} component={LookupCompanyList} />
   </Switch>
 );
 const currency = (props: RouteComponentProps) => (
@@ -76,6 +77,12 @@ const leave = (props: RouteComponentProps) => (
     <Route path={`${props.match.path}/form`} component={LookupLeaveEditor} />
     <Route path={`${props.match.path}/:leaveUid`} component={LookupLeaveDetail} />
     <Route path={`${props.match.path}`} component={LookupLeaveList} />
+   </Switch>
+);
+
+const calculation = (props: RouteComponentProps) => (
+  <Switch>
+    <Route path={`${props.match.path}`} component={LeaveCalculationList} />
    </Switch>
 );
 
@@ -122,6 +129,7 @@ export const LookupRoutingComponents: React.SFC<RouteComponentProps> = props => 
       <Route path={`${props.match.path}/diemvalue`} component={diem} />
       <Route path={`${props.match.path}/holiday`} component={holiday} />
       <Route path={`${props.match.path}/leave`} component={leave} />
+      <Route path={`${props.match.path}/calculation`} component={calculation} />
       <Route path={`${props.match.path}/roles`} component={role} />
       <Route path={`${props.match.path}/customer`} component={lookupCustomer} />
     </Layout>

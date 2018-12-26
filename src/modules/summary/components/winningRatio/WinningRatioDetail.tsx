@@ -85,7 +85,7 @@ const winningRatioDetail: React.SFC<AllProps> = props => {
                   <TableHead>
                     <TableRow>
                       {header.map(headerItem => (
-                        <TableCell padding="default" key={headerItem.id} className= {classes.stickyHeader}>
+                        <TableCell padding="default" key={headerItem.id} className={classes.stickyHeader}>
                           {headerItem.name}
                         </TableCell>
                       ))}

@@ -74,12 +74,12 @@ const billableDetail: React.SFC<AllProps> = props => {
                       <TableRow>
                         {type === BillableType.Presales
                           ? headerPresales.map(headerItem => (
-                              <TableCell key={headerItem.id} padding="default" className= {classes.stickyHeader}>
+                              <TableCell key={headerItem.id} padding="default" className={classes.stickyHeader}>
                                 {headerItem.name}
                               </TableCell>
                             ))
                           : headerNonPresales.map(headerItem => (
-                              <TableCell key={headerItem.id} padding="default" className= {classes.stickyHeader}>
+                              <TableCell key={headerItem.id} padding="default" className={classes.stickyHeader}>
                                 {headerItem.name}
                               </TableCell>
                             ))}
