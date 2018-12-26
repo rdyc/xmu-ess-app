@@ -35,6 +35,14 @@ import {
   IEmployeeExperiencePutRequest 
 } from '../queries/employeeExperience';
 import { 
+  IEmployeeFamilyAllRequest, 
+  IEmployeeFamilyByIdRequest, 
+  IEmployeeFamilyDeleteRequest, 
+  IEmployeeFamilyListRequest, 
+  IEmployeeFamilyPostRequest, 
+  IEmployeeFamilyPutRequest 
+} from '../queries/employeeFamily';
+import { 
   IEmployeeAccessHistory, 
   IEmployeeAccessHistoryDetail, 
   IEmployeeAccessHistoryList
@@ -49,6 +57,11 @@ import {
   IEmployeeExperienceDetail, 
   IEmployeeExperienceList 
 } from '../response/employeeExperience';
+import { 
+  IEmployeeFamily, 
+  IEmployeeFamilyDetail, 
+  IEmployeeFamilyList 
+} from '../response/employeeFamily';
 import { IEmployeeMy } from '../response/IEmployeeMy';
 
 export interface IAccountState {
@@ -80,6 +93,14 @@ export interface IAccountState {
   accountEmployeeExperiencePost: IQuerySingleState<IEmployeeExperiencePostRequest, IEmployeeExperience>;
   accountEmployeeExperiencePut: IQuerySingleState<IEmployeeExperiencePutRequest, IEmployeeExperience>;
   accountEmployeeExperienceDelete: IQuerySingleState<IEmployeeExperienceDeleteRequest, boolean>;
+  
+  // account employee family
+  accountEmployeeFamilyGetAll: IQueryCollectionState<IEmployeeFamilyAllRequest, IEmployeeFamily>;
+  accountEmployeeFamilyGetList: IQueryCollectionState<IEmployeeFamilyListRequest, IEmployeeFamilyList>;
+  accountEmployeeFamilyGetById: IQuerySingleState<IEmployeeFamilyByIdRequest, IEmployeeFamilyDetail>;
+  accountEmployeeFamilyPost: IQuerySingleState<IEmployeeFamilyPostRequest, IEmployeeFamily>;
+  accountEmployeeFamilyPut: IQuerySingleState<IEmployeeFamilyPutRequest, IEmployeeFamily>;
+  accountEmployeeFamilyDelete: IQuerySingleState<IEmployeeFamilyDeleteRequest, boolean>;
   
   accountEmployeeMyGet: IQuerySingleState<{}, IEmployeeMy>;
 
