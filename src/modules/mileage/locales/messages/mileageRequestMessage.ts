@@ -50,8 +50,23 @@ export const mileageRequestField = defineMessages({
   itemSubHeader: { id: `${prefix}.field.item.subHeader`},
   noData: { id: `${prefix}.field.information.noData`},
   
+  // field item
+  itemUid: { id: `${prefix}.field.item.uid`},
+  itemDate: { id: `${prefix}.field.item.date`},
+  itemCustomer: { id: `${prefix}.field.item.customer`},
+  itemProject: { id: `${prefix}.field.item.project`},
+  itemStatus: { id: `${prefix}.field.item.status`},
+  itemSite: { id: `${prefix}.field.item.site`},
+  itemValue: { id: `${prefix}.field.item.value`},
+
   submitTitle: { id: `${prefix}.field.submit.title`},
   submitSubHeader: { id: `${prefix}.field.submit.subHeader`},
+
+  employee: { id: `${prefix}.field.employee`},
+
+  isNotify: { id: `${prefix}.field.isNotify` },
+  completion: { id: `${prefix}.field.completion` },
+  isRejected: { id: `${prefix}.field.isRejected` },
 });
 
 export const mileageRequestItem = defineMessages({
@@ -66,4 +81,9 @@ export const mileageRequestConfirm = defineMessages({
   createDescription: { id: `${prefix}.confirm.create.description` },
   modifyTitle: { id: `${prefix}.confirm.modify.title` },
   modifyDescription: { id: `${prefix}.confirm.modify.description` },
+});
+
+export const timesheetItem = defineMessages({
+  title: { id: `${prefix}.timesheet.item.title` },
+  subHeader: { id: `${prefix}.timesheet.item.subHeader` }
 });

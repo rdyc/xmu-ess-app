@@ -66,7 +66,7 @@ export const systemLimitPutDispose = () => action(SystemLimitAction.PUT_DISPOSE)
 
 // delete
 export const systemLimitDeleteRequest = (request: ISystemLimitDeleteRequest) => action(SystemLimitAction.DELETE_REQUEST, request);
-export const systemLimitDeleteSuccess = (response: IResponseSingle<ISystemLimit>) => action(SystemLimitAction.DELETE_SUCCESS, response);
+export const systemLimitDeleteSuccess = (response: boolean) => action(SystemLimitAction.DELETE_SUCCESS, response);
 export const systemLimitDeleteError = (message: string) => action(SystemLimitAction.DELETE_ERROR, message);
 export const systemLimitDeleteDispose = () => action(SystemLimitAction.DELETE_DISPOSE);
 

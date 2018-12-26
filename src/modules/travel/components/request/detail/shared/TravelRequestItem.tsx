@@ -72,6 +72,7 @@ const travelRequestItem: React.SFC<AllProps> = props => {
               <div key={item.uid}>
                 <ListItem
                   disableGutters
+                  selected={item.uid === active && isExpanded}
                   button
                   onClick={() => handleToggle(item.uid)}
                 >

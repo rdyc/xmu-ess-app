@@ -23,42 +23,42 @@ import {
   withStateHandlers,
 } from 'recompose';
 
-import { ITravelRequest } from '@travel/classes/response';
-import { TravelRequestField } from '@travel/classes/types';
-import { TravelSummary } from '@travel/components/request/detail/shared/TravelSummary';
-import { WithTravelApproval, withTravelApproval } from '@travel/hoc/withTravelApproval';
-import { travelMessage } from '@travel/locales/messages/travelMessage';
-import { ITravelApprovalListFilterResult, TravelApprovalListFilter } from './TravelApprovalListFilter';
+import { IMileageRequest } from '@mileage/classes/response';
+import { MileageRequestField } from '@mileage/classes/types';
+import { MileageSummary } from '@mileage/components/request/shared/MileageSummary';
+import { withMileageApproval, WithMileageApproval } from '@mileage/hoc/withMileageApproval';
+import { mileageMessage } from '@mileage/locales/messages/mileageMessage';
+import { IMileageApprovalListFilterResult, MileageApprovalListFilter } from './MileageApprovalListFilter';
 
-interface IOwnOption {
-
+interface OwnOption {
+  
 }
 
-interface IOwnState extends ITravelApprovalListFilterResult {
+interface OwnState extends IMileageApprovalListFilterResult {
   shouldUpdate: boolean;
-  config?: IListConfig<ITravelRequest>;
+  config?: IListConfig<IMileageRequest>;
   isFilterOpen: boolean;
 }
 
-interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
-  setConfig: StateHandler<IOwnState>;
-  setShouldUpdate: StateHandler<IOwnState>;
-  setFilterVisibility: StateHandler<IOwnState>;
-  setFilterApplied: StateHandler<IOwnState>;
+interface OwnStateUpdater extends StateHandlerMap<OwnState> {
+  setConfig: StateHandler<OwnState>;
+  setShouldUpdate: StateHandler<OwnState>;
+  setFilterVisibility: StateHandler<OwnState>;
+  setFilterApplied: StateHandler<OwnState>;
 }
 
-interface IOwnHandler {
+interface OwnHandler {
   handleFilterVisibility: (event: React.MouseEvent<HTMLElement>) => void;
-  handleFilterApplied: (filter: ITravelApprovalListFilterResult) => void;
+  handleFilterApplied: (filter: any) => void;
 }
 
 type AllProps
-  = IOwnOption
-  & IOwnState
-  & IOwnStateUpdater
-  & IOwnHandler
+  = OwnState
+  & OwnOption
+  & OwnHandler
+  & OwnStateUpdater
   & WithUser
-  & WithTravelApproval
+  & WithMileageApproval
   & InjectedIntlProps
   & RouteComponentProps;
 
@@ -68,16 +68,18 @@ const listView: React.SFC<AllProps> = props => (
       props.config &&
       <ListPage
         config={props.config}
-        source={props.travelApprovalState.all}
+        source={props.mileageApprovalState.all}
         loadDataWhen={props.shouldUpdate}
       >
-        <TravelApprovalListFilter
+        <MileageApprovalListFilter 
           isOpen={props.isFilterOpen}
           initialProps={{
-            customerUid: props.customerUid,
+            employeeUid: props.employeeUid,
+            month: props.month,
+            year: props.year,
             statusType: props.statusType,
             status: props.status,
-            isNotify: props.isNotify,
+            isNotify: props.isNotify
           }}
           onClose={props.handleFilterVisibility}
           onApply={props.handleFilterApplied}
@@ -87,7 +89,7 @@ const listView: React.SFC<AllProps> = props => (
   </React.Fragment>
 );
 
-const createProps: mapper<AllProps, IOwnState> = (props: AllProps): IOwnState => ({
+const createProps: mapper<AllProps, OwnState> = (props: AllProps): OwnState => ({
   shouldUpdate: false,
   isFilterOpen: false,
 
@@ -96,90 +98,100 @@ const createProps: mapper<AllProps, IOwnState> = (props: AllProps): IOwnState =>
   isNotify: props.location.state && props.location.state.isNotify
 });
 
-const stateUpdaters: StateUpdaters<AllProps, IOwnState, IOwnStateUpdater> = {
-  setShouldUpdate: (prevState: IOwnState) => () => ({
+const stateUpdaters: StateUpdaters<AllProps, OwnState, OwnStateUpdater> = {
+  setShouldUpdate: (prevState: OwnState) => () => ({
     shouldUpdate: !prevState.shouldUpdate
   }),
-  setConfig: (prevState: IOwnState) => (config: IListConfig<ITravelRequest>) => ({
+  setConfig: () => (config: IListConfig<IMileageRequest>) => ({
     config
   }),
-  setFilterVisibility: (prevState: IOwnState) => () => ({
+  setFilterVisibility: (prevState: OwnState) => () => ({
     isFilterOpen: !prevState.isFilterOpen
   }),
-  setFilterApplied: (prevState: IOwnState) => (filter: ITravelApprovalListFilterResult) => ({
+  setFilterApplied: () => (filter: IMileageApprovalListFilterResult) => ({
     ...filter,
     isFilterOpen: false
-  }),
+  })
 };
 
-const handlerCreators: HandleCreators<AllProps, IOwnHandler> = {
-  handleFilterVisibility: (props: AllProps) => (event: React.MouseEvent<HTMLElement>) => {
+const handlerCreators: HandleCreators<AllProps, OwnHandler> = {
+  handleFilterVisibility: (props: AllProps) => () => {
     props.setFilterVisibility();
   },
-  handleFilterApplied: (props: AllProps) => (filter: ITravelApprovalListFilterResult) => {
+  handleFilterApplied: (props: AllProps) => (filter: IMileageApprovalListFilterResult) => {
     props.setFilterApplied(filter);
-  },
+  }
 };
 
-const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
+const lifecycles: ReactLifeCycleFunctions<AllProps, OwnState> = {
   componentDidMount() {
     const { user } = this.props.userState;
-    const { isLoading, request, response } = this.props.travelApprovalState.all;
-    const { loadAllRequest } = this.props.travelApprovalDispatch;
+    const { isLoading, request, response } = this.props.mileageApprovalState.all;
+    const { loadAllRequest } = this.props.mileageApprovalDispatch;
 
-    const config: IListConfig<ITravelRequest> = {
+    const config: IListConfig<IMileageRequest> = {
       // page
       page: {
-        uid: AppMenu.TravelApproval,
-        parentUid: AppMenu.Travel,
-        title: this.props.intl.formatMessage(travelMessage.requestApproval.page.listTitle),
-        description: this.props.intl.formatMessage(travelMessage.requestApproval.page.listSubHeader),
+        uid: AppMenu.MileageApproval,
+        parentUid: AppMenu.Mileage,
+        title: this.props.intl.formatMessage(mileageMessage.approval.page.listTitle),
+        description: this.props.intl.formatMessage(mileageMessage.approval.page.listSubHeader),
       },
 
       // top bar
-      fields: Object.keys(TravelRequestField)
-        .map(key => ({
-          value: key,
-          name: TravelRequestField[key]
-        })),
+      fields: Object.keys(MileageRequestField).map(key => ({
+        value: key,
+        name: MileageRequestField[key]
+      })),
 
       // searching
       hasSearching: true,
       searchStatus: (): boolean => {
         let result: boolean = false;
 
-        if (request && request.filter && request.filter.query) {
+        if (request && request.filter && request.filter.query && request.filter.query.find) {
           result = request.filter.query.find ? true : false;
         }
-
+    
         return result;
       },
 
       // action centre
-      showActionCentre: false,
+      showActionCentre: true,
+
+      // toolbar controls
+      // toolbarControls: () => [
+      //   {
+      //     icon: AddCircleIcon,
+      //     onClick: () => { 
+      //       this.props.history.push('/mileage/requests/form'); 
+      //     }
+      //   }
+      // ],
 
       // events
       onDataLoad: (callback: ListHandler, params: ListDataProps, forceReload?: boolean | false) => {
         // when user is set and not loading
         if (user && !isLoading) {
-          // when response are empty or force reloading
           if (!response || forceReload) {
             loadAllRequest({
               filter: {
                 companyUid: user.company.uid,
                 positionUid: user.position.uid,
-                customerUid: this.props.customerUid,
+                employeeUid: this.props.employeeUid,
+                month: this.props.month,
+                year: this.props.year,
                 statusType: this.props.statusType,
                 status: this.props.status,
                 isNotify: this.props.isNotify,
                 query: {
-                  find: params.find,
-                  findBy: params.findBy,
-                  orderBy: params.orderBy,
                   direction: params.direction,
+                  orderBy: params.orderBy,
                   page: params.page,
                   size: params.size,
-                }
+                  find: params.find,
+                  findBy: params.findBy
+                },
               }
             });
           } else {
@@ -188,29 +200,29 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
           }
         }
       },
-      onBind: (item: ITravelRequest, index: number) => ({
+      onBind: (item: IMileageRequest, index: number) => ({
         key: index,
         primary: item.uid,
-        secondary: item.customer && item.customer.name || item.customerUid,
-        tertiary: item.objective ? item.objective : 'N/A',
-        quaternary: this.props.intl.formatNumber(item.total, GlobalFormat.CurrencyDefault) || '-',
+        secondary: this.props.intl.formatDate(new Date(item.year, item.month - 1), GlobalFormat.MonthYear),
+        tertiary: item.employee && item.employee.fullName || item.employeeUid,
+        quaternary: this.props.intl.formatNumber(item.amount, GlobalFormat.CurrencyDefault),
         quinary: item.status && item.status.value || item.statusType,
-        senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
+        senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'    
       }),
 
       // summary component
-      summaryComponent: (item: ITravelRequest) => (
-        <TravelSummary data={item} />
+      summaryComponent: (item: IMileageRequest) => ( 
+        <MileageSummary data={item} />
       ),
 
       // action component
-      actionComponent: (item: ITravelRequest, callback: ListHandler) => (
+      actionComponent: (item: IMileageRequest) => (
         <React.Fragment>
-          <Button
+          <Button 
             size="small"
-            onClick={() => this.props.history.push(`/travel/approvals/${item.uid}`)}
+            onClick={() => this.props.history.push(`/mileage/approvals/${item.uid}`)}
           >
-            <FormattedMessage {...layoutMessage.action.details} />
+            <FormattedMessage {...layoutMessage.action.details}/>
           </Button>
         </React.Fragment>
       ),
@@ -222,7 +234,9 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
           title: this.props.intl.formatMessage(layoutMessage.tooltip.filter),
           icon: TuneIcon,
           showBadgeWhen: () => {
-            return this.props.customerUid !== undefined ||
+            return this.props.employeeUid !== undefined ||
+              this.props.year !== undefined ||
+              this.props.month !== undefined ||
               this.props.statusType !== undefined ||
               this.props.status !== undefined ||
               this.props.isNotify === true;
@@ -237,7 +251,9 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
   componentDidUpdate(nextProps: AllProps) {
     // track any changes in filter props
     if (
-      this.props.customerUid !== nextProps.customerUid ||
+      this.props.employeeUid !== nextProps.employeeUid ||
+      this.props.year !== nextProps.year ||
+      this.props.month !== nextProps.month ||
       this.props.statusType !== nextProps.statusType ||
       this.props.status !== nextProps.status ||
       this.props.isNotify !== nextProps.isNotify
@@ -247,10 +263,10 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
   }
 };
 
-export const TravelApprovalList = compose(
-  setDisplayName('TravelApprovalList'),
+export const MileageApprovalList = compose(
+  setDisplayName('MileageApprovalList'),
   withUser,
-  withTravelApproval,
+  withMileageApproval,
   withRouter,
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),
