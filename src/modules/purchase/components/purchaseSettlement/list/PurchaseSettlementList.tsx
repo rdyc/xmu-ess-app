@@ -28,6 +28,7 @@ import {
   withStateHandlers,
 } from 'recompose';
 
+import { isSettlementEditable, isSettleReady } from '@purchase/helper';
 import { IPurchaseSettlementListFilterResult, PurchaseSettlementListFilter } from './PurchaseSettlementListFilter';
 
 interface IOwnOption {
@@ -126,8 +127,8 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
       searchStatus: () => {
         let result: boolean = false;
     
-        if (request && request.filter && request.filter.find) {
-          result = request.filter.find ? true : false;
+        if (request && request.filter && request.filter.query && request.filter.query.find) {
+          result = request.filter.query.find ? true : false;
         }
     
         return result;
@@ -149,12 +150,14 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
                 customerUid: this.props.customerUid,
                 status: this.props.status,
                 isRejected: this.props.isRejected,
-                find: params.find,
-                findBy: params.findBy,
-                orderBy: params.orderBy,
-                direction: params.direction,
-                page: params.page,
-                size: params.size,
+                query: {
+                  find: params.find,
+                  findBy: params.findBy,
+                  orderBy: params.orderBy,
+                  direction: params.direction,
+                  page: params.page,
+                  size: params.size,
+                }
               }
             });
           } else {
@@ -181,12 +184,33 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
       // action component
       actionComponent: (item: ISettlement, callback: ListHandler) => (
         <React.Fragment>
-          <Button 
-            size="small"
-            onClick={() => this.props.history.push(`/purchase/settlement/requests/${item.uid}`)}
-          >
-            <FormattedMessage {...layoutMessage.action.details}/>
-          </Button>
+            {
+              isSettleReady(item.statusType) &&
+              <Button
+                size="small"
+              onClick={() => this.props.history.push(`/purchase/settlement/requests/form`, { uid: item.uid, statusType: item.statusType })}
+              >
+                <FormattedMessage {...purchaseMessage.action.settle} />
+              </Button>
+            }
+            {
+              isSettlementEditable(item.statusType ? item.statusType : '') &&
+              <Button
+                size="small"
+              onClick={() => this.props.history.push(`/purchase/settlement/requests/form`, { uid: item.uid, statusType: item.statusType })}
+              >
+                <FormattedMessage {...layoutMessage.action.modify} />
+              </Button>
+            }
+            {
+              item.statusType &&
+              <Button
+                size="small"
+              onClick={() => this.props.history.push(`/purchase/settlement/requests/${item.uid}`)}
+              >
+                <FormattedMessage {...layoutMessage.action.details} />
+              </Button>
+            }
         </React.Fragment>
       ),
 
