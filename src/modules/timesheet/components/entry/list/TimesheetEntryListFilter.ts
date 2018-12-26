@@ -1,5 +1,5 @@
 import { ISystemList } from '@common/classes/response';
-import { ICollectionValue } from '@layout/classes/core';
+// import { ICollectionValue } from '@layout/classes/core';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { ICustomerList } from '@lookup/classes/response';
 import { WithStyles, withStyles } from '@material-ui/core';
@@ -9,10 +9,10 @@ import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose, HandleCreators, mapper, setDisplayName, StateHandler, StateHandlerMap, StateUpdaters, withHandlers, withStateHandlers } from 'recompose';
 import { TimesheetEntryListFilterView } from './TimesheetEntryListFilterView';
 
-const completionStatus: ICollectionValue[] = [
-  { value: 'pending', name: 'Pending' },
-  { value: 'complete', name: 'Complete' }
-];
+// const completionStatus: ICollectionValue[] = [
+//   { value: 'pending', name: 'Pending' },
+//   { value: 'complete', name: 'Complete' }
+// ];
 
 export type ITimesheetEntryListFilterResult = Pick<ITimesheetGetAllFilter, 'customerUid' | 'activityType' | 'companyUid' | 'statusType' | 'status' | 'isRejected'>;
 
@@ -24,7 +24,7 @@ interface IOwnOption {
 }
 
 interface IOwnState {
-  completionStatus: ICollectionValue[];
+  // completionStatus: ICollectionValue[];
 
   // filter customer
   isFilterCustomerOpen: boolean;
@@ -39,8 +39,8 @@ interface IOwnState {
   filterStatus?: ISystemList;
 
   // filter completion
-  isFilterCompletionOpen: boolean;
-  filterCompletion?: ICollectionValue;
+  // isFilterCompletionOpen: boolean;
+  // filterCompletion?: ICollectionValue;
 
   // filter rejected
   filterRejected?: boolean;
@@ -63,8 +63,8 @@ interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
   setFilterStatus: StateHandler<IOwnState>;
 
   // filter completion
-  setFilterCompletionVisibility: StateHandler<IOwnState>;
-  setFilterCompletion: StateHandler<IOwnState>;
+  // setFilterCompletionVisibility: StateHandler<IOwnState>;
+  // setFilterCompletion: StateHandler<IOwnState>;
 
   // filter rejected
   setFilterRejected: StateHandler<IOwnState>;
@@ -94,10 +94,10 @@ interface IOwnHandler {
   handleFilterStatusOnClose: () => void;
 
   // filter completion
-  handleFilterCompletionVisibility: (event: React.MouseEvent<HTMLElement>) => void;
-  handleFilterCompletionOnSelected: (data: ICollectionValue) => void;
-  handleFilterCompletionOnClear: (event: React.MouseEvent<HTMLElement>) => void;
-  handleFilterCompletionOnClose: () => void;
+  // handleFilterCompletionVisibility: (event: React.MouseEvent<HTMLElement>) => void;
+  // handleFilterCompletionOnSelected: (data: ICollectionValue) => void;
+  // handleFilterCompletionOnClear: (event: React.MouseEvent<HTMLElement>) => void;
+  // handleFilterCompletionOnClose: () => void;
 
   // filter rejected
   handleFilterRejectedOnChange: (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => void;
@@ -113,10 +113,10 @@ export type TimesheetEntryListFilterProps
   & InjectedIntlProps;
 
 const createProps: mapper<TimesheetEntryListFilterProps, IOwnState> = (props: TimesheetEntryListFilterProps): IOwnState => ({
-  completionStatus,
+  // completionStatus,
   isFilterCustomerOpen: false,
   isFilterActivityTypeOpen: false,
-  isFilterCompletionOpen: false,
+  // isFilterCompletionOpen: false,
   isFilterStatusOpen: false,
 
   // pass initial value for primitive types only, bellow is 'boolean'
@@ -129,7 +129,7 @@ const stateUpdaters: StateUpdaters<TimesheetEntryListFilterProps, IOwnState, IOw
     filterCustomer: undefined,
     filterActivityType: undefined,
     filterStatus: undefined,
-    filterCompletion: undefined,
+    // filterCompletion: undefined,
     filterRejected: undefined
   }),
 
@@ -161,13 +161,13 @@ const stateUpdaters: StateUpdaters<TimesheetEntryListFilterProps, IOwnState, IOw
   }),
 
   // filter completion
-  setFilterCompletionVisibility: (prevState: IOwnState) => () => ({
-    isFilterCompletionOpen: !prevState.isFilterCompletionOpen
-  }),
-  setFilterCompletion: (prevState: IOwnState) => (data?: ICollectionValue) => ({
-    isFilterCompletionOpen: false,
-    filterCompletion: data
-  }),
+  // setFilterCompletionVisibility: (prevState: IOwnState) => () => ({
+  //   isFilterCompletionOpen: !prevState.isFilterCompletionOpen
+  // }),
+  // setFilterCompletion: (prevState: IOwnState) => (data?: ICollectionValue) => ({
+  //   isFilterCompletionOpen: false,
+  //   filterCompletion: data
+  // }),
 
   // filter rejected
   setFilterRejected: (prevState: IOwnState) => (checked: boolean) => ({
@@ -185,7 +185,7 @@ const handlerCreators: HandleCreators<TimesheetEntryListFilterProps, IOwnHandler
       customerUid: props.filterCustomer && props.filterCustomer.uid,
       activityType: props.filterActivityType && props.filterActivityType.type,
       statusType: props.filterStatus && props.filterStatus.type,
-      status: props.filterCompletion && props.filterCompletion.value,
+      // status: props.filterCompletion && props.filterCompletion.value,
       isRejected: props.filterRejected,
     });
   },
@@ -233,18 +233,18 @@ const handlerCreators: HandleCreators<TimesheetEntryListFilterProps, IOwnHandler
   },
 
   // filter completion
-  handleFilterCompletionVisibility: (props: TimesheetEntryListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
-    props.setFilterCompletionVisibility();
-  },
-  handleFilterCompletionOnSelected: (props: TimesheetEntryListFilterProps) => (data: ICollectionValue) => {
-    props.setFilterCompletion(data);
-  },
-  handleFilterCompletionOnClear: (props: TimesheetEntryListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
-    props.setFilterCompletion();
-  },
-  handleFilterCompletionOnClose: (props: TimesheetEntryListFilterProps) => () => {
-    props.setFilterCompletionVisibility();
-  },
+  // handleFilterCompletionVisibility: (props: TimesheetEntryListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
+  //   props.setFilterCompletionVisibility();
+  // },
+  // handleFilterCompletionOnSelected: (props: TimesheetEntryListFilterProps) => (data: ICollectionValue) => {
+  //   props.setFilterCompletion(data);
+  // },
+  // handleFilterCompletionOnClear: (props: TimesheetEntryListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
+  //   props.setFilterCompletion();
+  // },
+  // handleFilterCompletionOnClose: (props: TimesheetEntryListFilterProps) => () => {
+  //   props.setFilterCompletionVisibility();
+  // },
 
   // filter rejected
   handleFilterRejectedOnChange: (props: TimesheetEntryListFilterProps) => (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {

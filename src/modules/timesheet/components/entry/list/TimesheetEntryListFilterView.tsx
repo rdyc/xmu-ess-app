@@ -1,5 +1,5 @@
 import { LookupSystemDialog } from '@common/components/dialog/lookupSystemDialog/LookupSystemDialog';
-import { DialogValue } from '@layout/components/dialogs/DialogValue';
+// import { DialogValue } from '@layout/components/dialogs/DialogValue';
 import { layoutMessage } from '@layout/locales/messages';
 import { LookupCustomerDialog } from '@lookup/components/customer/dialog';
 import {
@@ -43,7 +43,7 @@ export const TimesheetEntryListFilterView: React.SFC<TimesheetEntryListFilterPro
           </Typography>
 
           {
-            (props.filterCustomer || props.filterActivityType || props.filterStatus || props.filterCompletion || props.filterRejected) &&
+            (props.filterCustomer || props.filterActivityType || props.filterStatus || props.filterRejected) &&
             <Button color="inherit" onClick={props.handleFilterOnReset}>
               {props.intl.formatMessage(layoutMessage.action.reset)}
             </Button>
@@ -92,7 +92,7 @@ export const TimesheetEntryListFilterView: React.SFC<TimesheetEntryListFilterPro
               </IconButton>
             }
 
-            <IconButton onClick={props.handleFilterCompletionVisibility}>
+            <IconButton disabled>
               <ChevronRightIcon />
             </IconButton>
           </ListItemSecondaryAction>
@@ -119,7 +119,7 @@ export const TimesheetEntryListFilterView: React.SFC<TimesheetEntryListFilterPro
         </ListItem>
         <Divider />
 
-        <ListItem button onClick={props.handleFilterCompletionVisibility}>
+        {/* <ListItem button onClick={props.handleFilterCompletionVisibility}>
           <ListItemText
             primary={props.intl.formatMessage(timesheetMessage.entry.field.completion)}
             secondary={props.filterCompletion && props.filterCompletion.name || props.intl.formatMessage(layoutMessage.text.none)}
@@ -137,7 +137,7 @@ export const TimesheetEntryListFilterView: React.SFC<TimesheetEntryListFilterPro
             </IconButton>
           </ListItemSecondaryAction>
         </ListItem>
-        <Divider />
+        <Divider /> */}
 
         <ListItem>
           <ListItemText
@@ -184,7 +184,7 @@ export const TimesheetEntryListFilterView: React.SFC<TimesheetEntryListFilterPro
       onClose={props.handleFilterStatusOnClose}
     />
 
-    <DialogValue
+    {/* <DialogValue
       title={props.intl.formatMessage(timesheetMessage.entry.field.completion)}
       isOpen={props.isFilterCompletionOpen}
       hideBackdrop={true}
@@ -192,6 +192,6 @@ export const TimesheetEntryListFilterView: React.SFC<TimesheetEntryListFilterPro
       value={props.filterCompletion && props.filterCompletion.value || props.initialProps && props.initialProps.status}
       onSelected={props.handleFilterCompletionOnSelected}
       onClose={props.handleFilterCompletionOnClose}
-    />
+    /> */}
   </React.Fragment>
 );

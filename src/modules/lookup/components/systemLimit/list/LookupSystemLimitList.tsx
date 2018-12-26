@@ -2,7 +2,6 @@ import AppMenu from '@constants/AppMenu';
 import { IListConfig, ListDataProps, ListHandler, ListPage } from '@layout/components/pages';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { layoutMessage } from '@layout/locales/messages';
-import { GlobalFormat } from '@layout/types';
 import { Button } from '@material-ui/core';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import TuneIcon from '@material-ui/icons/Tune';
@@ -24,20 +23,20 @@ import {
   withStateHandlers,
 } from 'recompose';
 
-import { IMileageRequest } from '@mileage/classes/response';
-import { MileageRequestField } from '@mileage/classes/types';
-import { WithMileageRequest, withMileageRequest } from '@mileage/hoc/withMileageRequest';
-import { mileageMessage } from '@mileage/locales/messages/mileageMessage';
-import { MileageSummary } from '../shared/MileageSummary';
-import { IMileageRequestListFilterResult, MileageRequestListFilter } from './MileageRequestListFilter';
+import { ISystemLimit } from '@lookup/classes/response';
+import { SystemLimitField } from '@lookup/classes/types';
+import { WithLookupSystemLimit, withLookupSystemLimit } from '@lookup/hoc/withLookupSystemLimit';
+import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
+import { ILookupSystemLimitFilterResult, LookupSystemLimitFilter } from './LookupSystemLimitFilter';
+import { LookupSystemLimitSummary } from './LookupSystemLimitSummary';
 
 interface OwnOption {
   
 }
 
-interface OwnState extends IMileageRequestListFilterResult {
+interface OwnState extends ILookupSystemLimitFilterResult {
   shouldUpdate: boolean;
-  config?: IListConfig<IMileageRequest>;
+  config?: IListConfig<ISystemLimit>;
   isFilterOpen: boolean;
 }
 
@@ -59,7 +58,7 @@ type AllProps
   & OwnHandler
   & OwnStateUpdater
   & WithUser
-  & WithMileageRequest
+  & WithLookupSystemLimit
   & InjectedIntlProps
   & RouteComponentProps;
 
@@ -69,17 +68,14 @@ const listView: React.SFC<AllProps> = props => (
       props.config &&
       <ListPage
         config={props.config}
-        source={props.mileageRequestState.all}
+        source={props.systemLimitState.all}
         loadDataWhen={props.shouldUpdate}
       >
-        <MileageRequestListFilter 
+        <LookupSystemLimitFilter
           isOpen={props.isFilterOpen}
           initialProps={{
-            year: props.year,
-            month: props.month,
-            status: props.status,
-            statusType: props.statusType,
-            isRejected: props.isRejected
+            companyUid: props.companyUid,
+            categoryType: props.categoryType
           }}
           onClose={props.handleFilterVisibility}
           onApply={props.handleFilterApplied}
@@ -92,23 +88,20 @@ const listView: React.SFC<AllProps> = props => (
 const createProps: mapper<AllProps, OwnState> = (props: AllProps): OwnState => ({
   shouldUpdate: false,
   isFilterOpen: false,
-
-  // fill partial props from location state to handle redirection from dashboard notif
-  isRejected: props.location.state && props.location.state.isRejected,
-  status: props.location.state && props.location.state.status,
 });
 
 const stateUpdaters: StateUpdaters<AllProps, OwnState, OwnStateUpdater> = {
   setShouldUpdate: (prevState: OwnState) => () => ({
     shouldUpdate: !prevState.shouldUpdate
   }),
-  setConfig: () => (config: IListConfig<IMileageRequest>) => ({
+  
+  setConfig: () => (config: IListConfig<ISystemLimit>) => ({
     config
   }),
   setFilterVisibility: (prevState: OwnState) => () => ({
     isFilterOpen: !prevState.isFilterOpen
   }),
-  setFilterApplied: () => (filter: IMileageRequestListFilterResult) => ({
+  setFilterApplied: () => (filter: ILookupSystemLimitFilterResult) => ({
     ...filter,
     isFilterOpen: false
   })
@@ -118,7 +111,7 @@ const handlerCreators: HandleCreators<AllProps, OwnHandler> = {
   handleFilterVisibility: (props: AllProps) => () => {
     props.setFilterVisibility();
   },
-  handleFilterApplied: (props: AllProps) => (filter: IMileageRequestListFilterResult) => {
+  handleFilterApplied: (props: AllProps) => (filter: ILookupSystemLimitFilterResult) => {
     props.setFilterApplied(filter);
   }
 };
@@ -126,22 +119,22 @@ const handlerCreators: HandleCreators<AllProps, OwnHandler> = {
 const lifecycles: ReactLifeCycleFunctions<AllProps, OwnState> = {
   componentDidMount() {
     const { user } = this.props.userState;
-    const { isLoading, request, response } = this.props.mileageRequestState.all;
-    const { loadAllRequest } = this.props.mileageRequestDispatch;
+    const { isLoading, request, response } = this.props.systemLimitState.all;
+    const { loadAllRequest } = this.props.systemLimitDispatch;
 
-    const config: IListConfig<IMileageRequest> = {
+    const config: IListConfig<ISystemLimit> = {
       // page
       page: {
-        uid: AppMenu.MileageRequest,
-        parentUid: AppMenu.Mileage,
-        title: this.props.intl.formatMessage(mileageMessage.request.page.listTitle),
-        description: this.props.intl.formatMessage(mileageMessage.request.page.listSubHeader),
+        uid: AppMenu.LookupSystemLimit,
+        parentUid: AppMenu.Lookup,
+        title: this.props.intl.formatMessage(lookupMessage.systemLimit.page.listTitle),
+        description: this.props.intl.formatMessage(lookupMessage.systemLimit.page.listSubHeader),
       },
 
       // top bar
-      fields: Object.keys(MileageRequestField).map(key => ({
+      fields: Object.keys(SystemLimitField).map(key => ({
         value: key,
-        name: MileageRequestField[key]
+        name: SystemLimitField[key]
       })),
 
       // searching
@@ -164,7 +157,7 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, OwnState> = {
         {
           icon: AddCircleIcon,
           onClick: () => { 
-            this.props.history.push('/mileage/requests/form'); 
+            this.props.history.push('/lookup/systemlimits/form'); 
           }
         }
       ],
@@ -176,19 +169,14 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, OwnState> = {
           if (!response || forceReload) {
             loadAllRequest({
               filter: {
+                companyUid: this.props.companyUid,
+                categoryType: this.props.categoryType,
                 direction: params.direction,
                 orderBy: params.orderBy,
                 page: params.page,
                 size: params.size,
-                companyUid: user.company.uid,
-                positionUid: user.position.uid,
                 find: params.find,
                 findBy: params.findBy,
-                month: this.props.month,
-                year: this.props.year,
-                statusType: this.props.statusType,
-                status: this.props.status,
-                isRejected : this.props.isRejected
               }
             });
           } else {
@@ -197,27 +185,27 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, OwnState> = {
           }
         }
       },
-      onBind: (item: IMileageRequest, index: number) => ({
+      onBind: (item: ISystemLimit, index: number) => ({
         key: index,
         primary: item.uid,
-        secondary: this.props.intl.formatDate(new Date(item.year, item.month - 1), GlobalFormat.MonthYear),
-        tertiary: item.employee && item.employee.fullName || item.employeeUid,
-        quaternary: this.props.intl.formatNumber(item.amount, GlobalFormat.CurrencyDefault),
-        quinary: item.status && item.status.value || item.statusType,
-        senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'    
+        secondary: item.company.name,
+        tertiary: item.category ? item.category.value : 'N/A',
+        quaternary: item.days.toString(),
+        quinary: item.changes && item.changes.updated && item.changes.updated.fullName || item.changes && item.changes.created && item.changes.created.fullName || 'N/A',
+        senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
       }),
 
       // summary component
-      summaryComponent: (item: IMileageRequest) => ( 
-        <MileageSummary data={item} />
+      summaryComponent: (item: ISystemLimit) => ( 
+        <LookupSystemLimitSummary data={item} />
       ),
 
       // action component
-      actionComponent: (item: IMileageRequest) => (
+      actionComponent: (item: ISystemLimit) => (
         <React.Fragment>
           <Button 
             size="small"
-            onClick={() => this.props.history.push(`/mileage/requests/${item.uid}`)}
+            onClick={() => this.props.history.push(`/lookup/systemlimits/${item.uid}`)}
           >
             <FormattedMessage {...layoutMessage.action.details}/>
           </Button>
@@ -231,11 +219,7 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, OwnState> = {
           title: this.props.intl.formatMessage(layoutMessage.tooltip.filter),
           icon: TuneIcon,
           showBadgeWhen: () => {
-            return this.props.year !== undefined ||
-              this.props.month !== undefined ||
-              this.props.statusType !== undefined ||
-              this.props.status !== undefined ||
-              this.props.isRejected === true;
+            return this.props.companyUid !== undefined || this.props.categoryType !== undefined;
           },
           onClick: this.props.handleFilterVisibility
         }
@@ -247,21 +231,18 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, OwnState> = {
   componentDidUpdate(nextProps: AllProps) {
     // track any changes in filter props
     if (
-      this.props.year !== nextProps.year ||
-      this.props.month !== nextProps.month ||
-      this.props.statusType !== nextProps.statusType ||
-      this.props.status !== nextProps.status ||
-      this.props.isRejected !== nextProps.isRejected
+      this.props.companyUid !== nextProps.companyUid ||
+      this.props.categoryType !== nextProps.categoryType
     ) {
       this.props.setShouldUpdate();
     }
   }
 };
 
-export const MileageRequestList = compose(
-  setDisplayName('MileageRequestList'),
+export const LookupSystemLimitList = compose(
+  setDisplayName('LookupSystemLimitList'),
   withUser,
-  withMileageRequest,
+  withLookupSystemLimit,
   withRouter,
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),
