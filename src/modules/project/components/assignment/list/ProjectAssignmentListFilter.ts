@@ -19,7 +19,7 @@ import {
 
 import { ProjectAssignmentListFilterView } from './ProjectAssignmentListFilterView';
 
-export type IProjectAssignmentListFilterResult = Pick<IProjectAssignmentGetAllFilter, 'customerUids' | 'projectTypes' | 'statusTypes' | 'projectUid' | 'activeOnly'>;
+export type IProjectAssignmentListFilterResult = Pick<IProjectAssignmentGetAllFilter, 'customerUids' | 'projectTypes' | 'statusTypes' | 'projectUid'>;
 
 interface IOwnOption {
   isOpen: boolean;
@@ -40,9 +40,6 @@ interface IOwnState {
   // filter status
   isFilterStatusOpen: boolean;
   filterStatus?: ISystemList;
-
-  // filter active
-  filterActive?: boolean;
 }
 
 interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
@@ -60,9 +57,6 @@ interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
   // filter status
   setFilterStatusVisibility: StateHandler<IOwnState>;
   setFilterStatus: StateHandler<IOwnState>;
-  
-  // filter active
-  setFilterActive: StateHandler<IOwnState>;
 }
 
 interface IOwnHandler {
@@ -87,9 +81,6 @@ interface IOwnHandler {
   handleFilterStatusOnSelected: (data: ISystemList) => void;
   handleFilterStatusOnClear: (event: React.MouseEvent<HTMLElement>) => void;
   handleFilterStatusOnClose: () => void;
-
-  // filter active
-  handleFilterActiveOnChange: (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => void;
 }
 
 export type ProjectAssignmentListFilterProps 
@@ -104,10 +95,7 @@ export type ProjectAssignmentListFilterProps
 const createProps: mapper<ProjectAssignmentListFilterProps, IOwnState> = (props: ProjectAssignmentListFilterProps): IOwnState => ({
   isFilterCustomerOpen: false,
   isFilterTypeOpen: false,
-  isFilterStatusOpen: false,
-
-  // pass initial value for primitive types only, bellow is 'boolean'
-  filterActive: props.initialProps && props.initialProps.activeOnly,
+  isFilterStatusOpen: false
 });
 
 const stateUpdaters: StateUpdaters<ProjectAssignmentListFilterProps, IOwnState, IOwnStateUpdater> = { 
@@ -144,11 +132,6 @@ const stateUpdaters: StateUpdaters<ProjectAssignmentListFilterProps, IOwnState, 
   setFilterStatus: (prevState: IOwnState) => (data?: ISystemList) => ({
     isFilterStatusOpen: false,
     filterStatus: data
-  }),
-
-  // filter active
-  setFilterActive: (prevState: IOwnState) => (checked: boolean) => ({
-    filterActive: checked
   })
 };
 
@@ -161,9 +144,7 @@ const handlerCreators: HandleCreators<ProjectAssignmentListFilterProps, IOwnHand
     props.onApply({
       customerUids: props.filterCustomer && [props.filterCustomer.uid],
       projectTypes: props.filterType && [props.filterType.type],
-      statusTypes: props.filterStatus && [props.filterStatus.type],
-      // projectUid: props.filterProject && props.filterProject.uid,
-      activeOnly: props.filterActive
+      statusTypes: props.filterStatus && [props.filterStatus.type]
     });
   },
 
@@ -207,11 +188,6 @@ const handlerCreators: HandleCreators<ProjectAssignmentListFilterProps, IOwnHand
   },
   handleFilterStatusOnClose: (props: ProjectAssignmentListFilterProps) => () => {
     props.setFilterStatusVisibility();
-  },
-  
-  // filter rejected
-  handleFilterActiveOnChange: (props: ProjectAssignmentListFilterProps) => (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
-    props.setFilterActive(checked);
   }
 };
 

@@ -97,7 +97,7 @@ const ProjectAssignmentItemFormView: React.SFC<WrappedFieldArrayProps<ProjectAss
                   <Field 
                     type="number"
                     name={`${field}.hours`}
-                    label={props.intl.formatMessage(projectMessage.assignment.field.hours)}
+                    label={props.intl.formatMessage(projectMessage.assignment.field.allocatedHours)}
                     disabled={true}
                     component={InputNumber}
                   />
