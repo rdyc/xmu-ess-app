@@ -142,8 +142,8 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
       searchStatus: (): boolean => {
         let result: boolean = false;
 
-        if (request && request.filter && request.filter.query) {
-          result = request.filter.query ? true : false;
+        if (request && request.filter && request.filter.find) {
+          result = request.filter.find ? true : false;
         }
 
         return result;
@@ -166,14 +166,12 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
                 statusType: this.props.statusType,
                 status: 'pending',
                 isNotify: this.props.isNotify,
-                query: {
-                  find: params.find,
-                  findBy: params.findBy,
-                  orderBy: params.orderBy,
-                  direction: params.direction,
-                  page: params.page,
-                  size: params.size,
-                }
+                find: params.find,
+                findBy: params.findBy,
+                orderBy: params.orderBy,
+                direction: params.direction,
+                page: params.page,
+                size: params.size,
               }
             });
           } else {
@@ -219,7 +217,7 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
             return this.props.customerUid !== undefined ||
               this.props.activityType !== undefined ||
               this.props.statusType !== undefined ||
-              this.props.status !== undefined || 
+              this.props.status !== undefined ||
               this.props.isNotify === true;
           },
           onClick: this.props.handleFilterVisibility
