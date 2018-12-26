@@ -38,14 +38,12 @@ const lifecycles: ReactLifeCycleFunctions<EmployeeFilterProps, {}> = {
           positionUid: user.position.uid,
           status: 'pending',
           isNotify: undefined,
-          query: {
-            direction: 'ascending',
-            orderBy: undefined,
-            page: undefined,
-            size: undefined,
-            find: undefined,
-            findBy: undefined
-          }
+          direction: 'ascending',
+          orderBy: undefined,
+          page: undefined,
+          size: undefined,
+          find: undefined,
+          findBy: undefined
         }
       });
     }
