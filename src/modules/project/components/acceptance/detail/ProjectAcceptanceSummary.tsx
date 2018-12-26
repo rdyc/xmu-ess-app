@@ -59,11 +59,7 @@ type AllProps
 const summaryView: React.SFC<AllProps> = props => (
   <Grid container>
     <Grid item xs={12} sm={6} md={3}>
-      <TextField
-        {...GlobalStyle.TextField.ReadOnly}
-        label={props.intl.formatMessage(projectMessage.assignment.field.statusType)}
-        value={parseAcceptance(props.data.items, props.userState.user)}
-      />
+      
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
         label={props.intl.formatMessage(projectMessage.assignment.field.uid)}
@@ -73,6 +69,12 @@ const summaryView: React.SFC<AllProps> = props => (
         {...GlobalStyle.TextField.ReadOnly}
         label={props.intl.formatMessage(projectMessage.registration.field.uid)}
         value={props.data.projectUid}
+      />
+      <TextField
+        {...GlobalStyle.TextField.ReadOnly}
+        label={props.intl.formatMessage(projectMessage.assignment.field.statusType)}
+        value={parseAcceptance(props.data.items, props.userState.user)}
+        // value={props.data.status ? props.data.status.description : props.data.statusType}
       />
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
