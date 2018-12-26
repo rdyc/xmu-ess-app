@@ -1,7 +1,6 @@
 import { LookupSystemDialog } from '@common/components/dialog/lookupSystemDialog/LookupSystemDialog';
 import { DialogValue } from '@layout/components/dialogs/DialogValue';
 import { layoutMessage } from '@layout/locales/messages';
-import { leaveMessage } from '@leave/locales/messages/leaveMessage';
 import {
   AppBar,
   Button,
@@ -19,11 +18,12 @@ import {
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import CloseIcon from '@material-ui/icons/Close';
 import ClearIcon from '@material-ui/icons/SettingsBackupRestore';
+import { mileageMessage } from '@mileage/locales/messages/mileageMessage';
 import * as React from 'react';
 
-import { LeaveRequestListFilterProps } from './LeaveRequestListFilter';
+import { MileageRequestListFilterProps } from './MileageRequestListFilter';
 
-export const LeaveRequestListFilterView: React.SFC<LeaveRequestListFilterProps> = props => (
+export const MileageRequestListFilterView: React.SFC<MileageRequestListFilterProps> = props => (
   <React.Fragment>
     <Dialog
       fullScreen
@@ -43,7 +43,7 @@ export const LeaveRequestListFilterView: React.SFC<LeaveRequestListFilterProps> 
           </Typography>
 
           {
-            (props.filterCustomer || props.filterType || props.filterStatus || props.filterCompletion || props.filterRejected) &&
+            (props.filterMonth || props.filterYear || props.filterStatus || props.filterCompletion || props.filterRejected) &&
             <Button color="inherit" onClick={props.handleFilterOnReset}>
               {props.intl.formatMessage(layoutMessage.action.reset)}
             </Button>
@@ -55,54 +55,75 @@ export const LeaveRequestListFilterView: React.SFC<LeaveRequestListFilterProps> 
           >
             {props.intl.formatMessage(layoutMessage.action.apply)}
           </Button>
+
         </Toolbar>
       </AppBar>
-      
+
       <List>
         
-        <ListItem button onClick={props.handleFilterTypeVisibility}>
+        <ListItem button onClick={props.handleFilterYearVisibility}>
           <ListItemText 
-            primary={props.intl.formatMessage(leaveMessage.request.field.leaveType)}
-            secondary={props.filterType && props.filterType.name || props.intl.formatMessage(layoutMessage.text.none)} 
+            primary={props.intl.formatMessage(mileageMessage.request.field.year)}
+            secondary={props.filterYear && props.filterYear.name || props.intl.formatMessage(layoutMessage.text.none)}
           />
           <ListItemSecondaryAction>
-            { 
-              props.filterType &&
-              <IconButton onClick={props.handleFilterTypeOnClear}>
+            {
+              props.filterYear &&
+              <IconButton onClick={props.handleFilterYearOnClear}>
                 <ClearIcon />
-              </IconButton> 
+              </IconButton>
             }
 
-            <IconButton onClick={props.handleFilterTypeVisibility}>
+            <IconButton onClick={props.handleFilterYearVisibility}>
               <ChevronRightIcon />
-            </IconButton> 
+            </IconButton>
+          </ListItemSecondaryAction>
+        </ListItem>
+        <Divider />
+
+        <ListItem button onClick={props.handleFilterMonthVisibility}>
+          <ListItemText 
+            primary={props.intl.formatMessage(mileageMessage.request.field.month)}
+            secondary={props.filterMonth && props.filterMonth.name || props.intl.formatMessage(layoutMessage.text.none)}
+          />
+          <ListItemSecondaryAction>
+            {
+              props.filterMonth &&
+              <IconButton onClick={props.handleFilterMonthOnClear}>
+                <ClearIcon />
+              </IconButton>
+            }
+
+            <IconButton onClick={props.handleFilterMonthVisibility}>
+              <ChevronRightIcon />
+            </IconButton>
           </ListItemSecondaryAction>
         </ListItem>
         <Divider />
 
         <ListItem button onClick={props.handleFilterStatusVisibility}>
           <ListItemText 
-            primary={props.intl.formatMessage(leaveMessage.request.field.statusType)}
-            secondary={props.filterStatus && props.filterStatus.name || props.intl.formatMessage(layoutMessage.text.none)} 
+            primary={props.intl.formatMessage(mileageMessage.request.field.statusType)}
+            secondary={props.filterStatus && props.filterStatus.name || props.intl.formatMessage(layoutMessage.text.none)}
           />
           <ListItemSecondaryAction>
-          { 
+            {
               props.filterStatus &&
               <IconButton onClick={props.handleFilterStatusOnClear}>
                 <ClearIcon />
-              </IconButton> 
+              </IconButton>
             }
 
             <IconButton onClick={props.handleFilterStatusVisibility}>
               <ChevronRightIcon />
-            </IconButton> 
+            </IconButton>
           </ListItemSecondaryAction>
         </ListItem>
         <Divider />
-{/* 
-        <ListItem button onClick={props.handleFilterCompletionVisibility}>
+
+        {/* <ListItem button onClick={props.handleFilterCompletionVisibility}>
           <ListItemText 
-            primary={props.intl.formatMessage(leaveMessage.request.field.completion)}
+            primary={props.intl.formatMessage(mileageMessage.request.field.completion)}
             secondary={props.filterCompletion && props.filterCompletion.name || props.intl.formatMessage(layoutMessage.text.none)} 
           />
           <ListItemSecondaryAction>
@@ -122,7 +143,7 @@ export const LeaveRequestListFilterView: React.SFC<LeaveRequestListFilterProps> 
 
         <ListItem>
           <ListItemText 
-            primary={props.intl.formatMessage(leaveMessage.request.field.isRejected)}
+            primary={props.intl.formatMessage(mileageMessage.request.field.isRejected)}
             secondary={props.intl.formatMessage(props.filterRejected ? layoutMessage.action.yes : layoutMessage.action.no)}
           />
           <ListItemSecondaryAction>
@@ -138,18 +159,28 @@ export const LeaveRequestListFilterView: React.SFC<LeaveRequestListFilterProps> 
       </List>
     </Dialog>
 
-    <LookupSystemDialog
-      title={props.intl.formatMessage(leaveMessage.request.field.leaveType)}
-      category="leave"
+    <DialogValue
+      title={props.intl.formatMessage(mileageMessage.request.field.month)}
+      isOpen={props.isFilterMonthOpen}
       hideBackdrop={true}
-      isOpen={props.isFilterTypeOpen}
-      value={props.filterType && props.filterType.type}
-      onSelected={props.handleFilterTypeOnSelected}
-      onClose={props.handleFilterTypeOnClose}
+      items={props.monthList}
+      value={props.filterMonth && props.filterMonth.value}
+      onSelected={props.handleFilterMonthOnSelected}
+      onClose={props.handleFilterMonthOnClose}
+    />
+
+    <DialogValue
+      title={props.intl.formatMessage(mileageMessage.request.field.year)}
+      isOpen={props.isFilterYearOpen}
+      hideBackdrop={true}
+      items={props.yearList}
+      value={props.filterYear && props.filterYear.value}
+      onSelected={props.handleFilterYearOnSelected}
+      onClose={props.handleFilterYearOnClose}
     />
 
     <LookupSystemDialog
-      title={props.intl.formatMessage(leaveMessage.request.field.statusType)}
+      title={props.intl.formatMessage(mileageMessage.request.field.statusType)}
       category="status"
       hideBackdrop={true}
       isOpen={props.isFilterStatusOpen}
@@ -159,7 +190,7 @@ export const LeaveRequestListFilterView: React.SFC<LeaveRequestListFilterProps> 
     />
 
     <DialogValue
-      title={props.intl.formatMessage(leaveMessage.request.field.completion)}
+      title={props.intl.formatMessage(mileageMessage.request.field.completion)}
       isOpen={props.isFilterCompletionOpen}
       hideBackdrop={true}
       items={props.completionStatus}

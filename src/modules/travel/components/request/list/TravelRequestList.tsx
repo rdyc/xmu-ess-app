@@ -182,7 +182,6 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
                 positionUid: user.position.uid,
                 customerUid: this.props.customerUid,
                 statusType: this.props.statusType,
-                status: this.props.status,
                 isRejected: this.props.isRejected,
                 isSettlement: this.props.isSettlement,
                 find: params.find,
@@ -244,7 +243,6 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
           showBadgeWhen: () => {
             return this.props.customerUid !== undefined ||
               this.props.statusType !== undefined ||
-              this.props.status !== undefined ||
               this.props.isRejected === true ||
               this.props.isSettlement === true;
           },
@@ -260,7 +258,6 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
     if (
       this.props.customerUid !== nextProps.customerUid ||
       this.props.statusType !== nextProps.statusType ||
-      this.props.status !== nextProps.status ||
       this.props.isRejected !== nextProps.isRejected ||
       this.props.isSettlement !== nextProps.isSettlement
     ) {

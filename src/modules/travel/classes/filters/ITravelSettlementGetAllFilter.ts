@@ -9,6 +9,5 @@ export interface ITravelSettlementGetAllFilter extends IBasePagingFilter {
   positionUid?: string;
   customerUid?: string;
   statusType?: string;
-  status?: 'pending' | 'complete' | string;
   isRejected?: boolean;
 }

@@ -1,38 +1,36 @@
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { withWidth } from '@material-ui/core';
 import { WithWidth } from '@material-ui/core/withWidth';
-import { WithMileageApproval, withMileageApproval } from '@mileage/hoc/withMileageApproval';
+import { WithTimesheetApproval, withTimesheetApproval } from '@timesheet/hoc/withTimesheetApproval';
 import { compose, lifecycle, ReactLifeCycleFunctions } from 'recompose';
 import { BaseFieldProps, WrappedFieldProps } from 'redux-form';
-import { EmployeeFilterView } from './EmployeeFilterView';
+import { TimesheetApprovalFilterView } from './TimesheetApprovalFilterView';
 
 interface OwnProps extends WrappedFieldProps, BaseFieldProps {
-  type?: string; 
+  type?: string;
   placeholder?: string;
   required?: boolean;
-  label: string; 
+  label: string;
   disabled: boolean;
 }
 
-export type EmployeeFilterProps
-  = WithMileageApproval
+export type ApprovalFilterProps
+  = WithTimesheetApproval
   & WithWidth
   & WithUser
   & OwnProps;
 
-const lifecycles: ReactLifeCycleFunctions<EmployeeFilterProps, {}> = {
+const lifecycles: ReactLifeCycleFunctions<ApprovalFilterProps, {}> = {
   componentDidMount() {
     const { user } = this.props.userState;
-    const { isLoading, response } = this.props.mileageApprovalState.all;
-    const { loadAllRequest } = this.props.mileageApprovalDispatch;
+    const { isLoading, response } = this.props.timesheetApprovalState.all;
+    const { loadAllRequest } = this.props.timesheetApprovalDispatch;
 
     if (user && !isLoading && !response) {
       loadAllRequest({
         filter: {
           companyUid: user.company.uid,
-          positionUid: user.position.uid,
           status: 'pending',
-          isNotify: undefined,
           direction: 'ascending',
           orderBy: undefined,
           page: undefined,
@@ -45,9 +43,9 @@ const lifecycles: ReactLifeCycleFunctions<EmployeeFilterProps, {}> = {
   }
 };
 
-export const EmployeeFilter = compose<EmployeeFilterProps, OwnProps>(
-  withMileageApproval,
+export const TimesheetApprovalFilter = compose<ApprovalFilterProps, OwnProps>(
+  withTimesheetApproval,
   withUser,
   withWidth(),
   lifecycle(lifecycles)
-)(EmployeeFilterView);
+)(TimesheetApprovalFilterView);
