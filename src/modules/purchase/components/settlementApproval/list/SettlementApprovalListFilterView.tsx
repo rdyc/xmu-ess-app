@@ -81,7 +81,7 @@ export const SettlementApprovalListFilterView: React.SFC<SettlementApprovalListF
         </ListItem>
         <Divider />
         
-        <ListItem button onClick={props.handleFilterProjectVisibility}>
+        <ListItem button onClick={props.filterCustomer && props.handleFilterProjectVisibility}>
           <ListItemText
             primary={props.intl.formatMessage(purchaseMessage.settlement.field.projectUid)}
             secondary={props.filterProject && props.filterProject.name || props.intl.formatMessage(layoutMessage.text.none)}

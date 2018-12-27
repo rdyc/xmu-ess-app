@@ -80,7 +80,7 @@ export const PurchaseApprovalListFilterView: React.SFC<PurchaseApprovalListFilte
         </ListItem>
         <Divider />
         
-        <ListItem button onClick={props.handleFilterProjectVisibility}>
+        <ListItem button onClick={props.filterCustomer && props.handleFilterProjectVisibility}>
           <ListItemText 
             primary={props.intl.formatMessage(purchaseMessage.request.field.projectUid)}
             secondary={props.filterProject && props.filterProject.name || props.intl.formatMessage(layoutMessage.text.none)}
