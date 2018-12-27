@@ -77,7 +77,6 @@ const listView: React.SFC<AllProps> = props => (
           initialProps={{
             customerUid: props.customerUid,
             statusType: props.statusType,
-            status: props.status,
             isRejected: props.isRejected,
           }}
           onClose={props.handleFilterVisibility}
@@ -170,7 +169,6 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
                 positionUid: user.position.uid,
                 customerUid: this.props.customerUid,
                 statusType: this.props.statusType,
-                status: this.props.status,
                 isRejected: this.props.isRejected,
                 find: params.find,
                 findBy: params.findBy,
@@ -232,7 +230,6 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
           showBadgeWhen: () => {
             return this.props.customerUid !== undefined ||
               this.props.statusType !== undefined ||
-              this.props.status !== undefined ||
               this.props.isRejected === true;
           },
           onClick: this.props.handleFilterVisibility
@@ -247,7 +244,6 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
     if (
       this.props.customerUid !== nextProps.customerUid ||
       this.props.statusType !== nextProps.statusType ||
-      this.props.status !== nextProps.status ||
       this.props.isRejected !== nextProps.isRejected
     ) {
       this.props.setShouldUpdate();

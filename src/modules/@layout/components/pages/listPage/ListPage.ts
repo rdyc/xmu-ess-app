@@ -180,7 +180,7 @@ const stateUpdaters: StateUpdaters<IOwnOption, IOwnState, IOwnStateUpdater> = {
     find,
     findBy: field ? field.value : undefined,
     page: 1,
-    forceReload: true
+    // forceReload: true
   }),
   setPageNext: (prevState: IOwnState) => () => ({
     page: prevState.page + 1,
