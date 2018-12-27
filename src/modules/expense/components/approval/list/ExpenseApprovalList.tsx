@@ -176,14 +176,12 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
                 statusType: this.props.statusType,
                 status: this.props.status,
                 isNotify: this.props.isNotify,
-                query: {
-                  direction: params.direction,
-                  orderBy: params.orderBy,
-                  page: params.page,
-                  size: params.size,
-                  find: params.find,
-                  findBy: params.findBy,
-                },
+                direction: params.direction,
+                orderBy: params.orderBy,
+                page: params.page,
+                size: params.size,
+                find: params.find,
+                findBy: params.findBy,
               }
             });
           } else {

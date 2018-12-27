@@ -1,6 +1,4 @@
-import { IBaseFilter, IBasePagingFilter } from '@generic/interfaces';
-
-interface IExtendedQuery extends IBaseFilter, IBasePagingFilter {}
+import { IBasePagingFilter } from '@generic/interfaces';
 
 export interface IExpenseApprovalGetAllFilter extends IBasePagingFilter  {
   companyUid?: string;
@@ -13,5 +11,4 @@ export interface IExpenseApprovalGetAllFilter extends IBasePagingFilter  {
   statusType?: string;
   status?: string;
   isNotify?: boolean;
-  query?: IExtendedQuery;
 }
