@@ -15,21 +15,15 @@ import {
 } from '@mileage/store/actions';
 import { flattenObject } from '@utils/flattenObject';
 import saiyanSaga from '@utils/saiyanSaga';
-import * as qs from 'qs';
 import { SubmissionError } from 'redux-form';
 import { all, fork, put, takeEvery } from 'redux-saga/effects';
-import { IApiResponse } from 'utils';
+import { IApiResponse, objectToQuerystring } from 'utils';
 
 function* watchAllFetchRequest() {
   const worker = (action: ReturnType<typeof mileageApprovalGetAllRequest>) => {
-    const params = qs.stringify(action.payload.filter, { 
-      allowDots: true, 
-      skipNulls: true
-    });
-
     return saiyanSaga.fetch({
       method: 'get',
-      path: `/v1/approvals/mileage?${params}`, 
+      path: `/v1/approvals/mileage${objectToQuerystring(action.payload.filter)}`, 
       successEffects: (response: IApiResponse) => ([
         put(mileageApprovalGetAllSuccess(response.body)),
       ]), 
