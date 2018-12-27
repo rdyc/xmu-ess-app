@@ -1,6 +1,7 @@
 import { IBasePagingFilter } from '@generic/interfaces';
 
-export interface ITimesheetApprovalGetAllFilter extends IBasePagingFilter {
+export interface ITimesheetEntryGetAllFilter extends IBasePagingFilter {
+
   companyUid?: string;
   employeeUid?: string;
   activityType?: string;
@@ -9,5 +10,5 @@ export interface ITimesheetApprovalGetAllFilter extends IBasePagingFilter {
   siteUid?: string;
   statusType?: string;
   status?: 'pending' | 'complete' | string;
-  isNotify?: boolean;
+  isRejected?: boolean;
 }
