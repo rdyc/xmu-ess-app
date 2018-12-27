@@ -8,7 +8,7 @@ import TuneIcon from '@material-ui/icons/Tune';
 import { ITimesheet } from '@timesheet/classes/response';
 import { TimesheetEntryField } from '@timesheet/classes/types';
 import { TimesheetEntrySumarry } from '@timesheet/components/entry/detail/shared/TimesheetEntrySummary';
-import { WithTimesheetApproval, withTimesheetApproval } from '@timesheet/hoc/withTimesheetApproval';
+import { WithTimesheetApprovalHistory, withTimesheetApprovalHistory } from '@timesheet/hoc/withTimesheetApprovalHistory';
 import { timesheetMessage } from '@timesheet/locales/messages/timesheetMessage';
 import * as moment from 'moment';
 import * as React from 'react';
@@ -45,7 +45,7 @@ type AllProps
   & IOwnStateUpdater
   & IOwnHandler
   & WithUser
-  & WithTimesheetApproval
+  & WithTimesheetApprovalHistory
   & InjectedIntlProps
   & RouteComponentProps;
 
@@ -55,7 +55,7 @@ const listView: React.SFC<AllProps> = props => (
       props.config &&
       <ListPage
         config={props.config}
-        source={props.timesheetApprovalState.all}
+        source={props.timesheetApprovalHistoryState.all}
         loadDataWhen={props.shouldUpdate}
       >
         <TimesheetApprovalHistoryListFilter
@@ -112,8 +112,8 @@ const handlerCreators: HandleCreators<AllProps, IOwnHandler> = {
 const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
   componentDidMount() {
     const { user } = this.props.userState;
-    const { isLoading, request, response } = this.props.timesheetApprovalState.all;
-    const { loadAllRequest } = this.props.timesheetApprovalDispatch;
+    const { isLoading, request, response } = this.props.timesheetApprovalHistoryState.all;
+    const { loadAllRequest } = this.props.timesheetApprovalHistoryDispatch;
 
     const config: IListConfig<ITimesheet> = {
       // page
@@ -151,7 +151,7 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
         // when user is set and not loading
         if (user && !isLoading) {
           // when response are empty or force reloading
-          if (!response || !isLoading || forceReload) {
+          if (!response || forceReload) {
             loadAllRequest({
               filter: {
                 companyUid: this.props.companyUid,
@@ -238,7 +238,7 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
 export const TimesheetApprovalHistoryList = compose(
   setDisplayName('TimesheetApprovalHistoryList'),
   withUser,
-  withTimesheetApproval,
+  withTimesheetApprovalHistory,
   withRouter,
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),
