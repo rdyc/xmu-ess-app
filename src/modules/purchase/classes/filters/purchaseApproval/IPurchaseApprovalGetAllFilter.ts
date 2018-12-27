@@ -7,5 +7,6 @@ export interface IPurchaseApprovalGetAllFilter extends ICompanyAccess {
   statusType?: string;
   status?: 'pending' | 'complete' | string;
   customerUid?: string;
+  projectUid?: string;
   query?: IExtendedQuery;
 }

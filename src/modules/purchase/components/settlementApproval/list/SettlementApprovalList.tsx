@@ -35,7 +35,6 @@ interface IOwnOption {
 }
 
 interface IOwnState extends ISettlementApprovalListFilterResult {
-  companyUid?: string;
   shouldUpdate: boolean;
   config?: IListConfig<ISettlement>;
   isFilterOpen: boolean;
@@ -66,10 +65,11 @@ type AllProps
 const createProps: mapper<AllProps, IOwnState> = (props: AllProps): IOwnState => ({
   shouldUpdate: false,
   isFilterOpen: false,
-  companyUid:  props.userState.user && props.userState.user.company && props.userState.user.company.uid,
 
   // fill partial props from location state to handle redirection from dashboard notif
+  projectUid: props.location.state && props.location.state.projectUid,
   status: props.location.state && props.location.state.status,
+  statusType: props.location.state && props.location.state.statusType,
   isNotify: props.location.state && props.location.state.isNotify 
 });
 
@@ -126,8 +126,8 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
       searchStatus: () => {
         let result: boolean = false;
     
-        if (request && request.filter && request.filter['query.find']) {
-          result = request.filter['query.find'] ? true : false;
+        if (request && request.filter && request.filter.query && request.filter.query.find) {
+          result = request.filter.query.find ? true : false;
         }
     
         return result;
@@ -147,6 +147,8 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
                 companyUid: user.company.uid,
                 positionUid: user.position.uid,
                 customerUid: this.props.customerUid,
+                projectUid: this.props.projectUid,
+                statusType: this.props.statusType,
                 status: this.props.status,
                 isNotify: this.props.isNotify,
                 query: {
@@ -199,6 +201,8 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
           icon: TuneIcon,
           showBadgeWhen: () => {
             return this.props.customerUid !== undefined || 
+              this.props.projectUid !== undefined || 
+              this.props.statusType !== undefined || 
               this.props.status !== undefined || 
               this.props.isNotify === true;
           },
@@ -214,6 +218,8 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
     if (
       this.props.customerUid !== nextProps.customerUid ||
       this.props.status !== nextProps.status ||
+      this.props.statusType !== nextProps.statusType ||
+      this.props.projectUid !== nextProps.projectUid ||
       this.props.isNotify !== nextProps.isNotify
     ) {
       this.props.setShouldUpdate();
@@ -234,12 +240,13 @@ const listView: React.SFC<AllProps> = props => (
           isOpen={props.isFilterOpen}
           initialProps={{
             customerUid: props.customerUid,
+            statusType: props.statusType,
+            projectUid: props.projectUid,
             status: props.status,
             isNotify: props.isNotify,
           }}
           onClose={props.handleFilterVisibility}
           onApply={props.handleFilterApplied}
-          companyUid={props.companyUid}
         />
       </ListPage>
     }

@@ -5,6 +5,7 @@ interface IExtendedQuery extends IBaseFilter, IBasePagingFilter {}
 export interface ISettlementApprovalGetAllFilter extends ICompanyAccess {
   isNotify?: boolean;
   statusType?: string;
+  projectUid?: string;
   status?: 'pending' | 'complete' | string;
   customerUid?: string;
   query?: IExtendedQuery;
