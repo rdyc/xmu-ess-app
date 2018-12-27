@@ -43,7 +43,7 @@ export const PurchaseRequestListFilterView: React.SFC<PurchaseRequestListFilterP
           </Typography>
 
           {
-            (props.filterCustomer || props.filterStatus || props.filterCompletion || props.filterSettlement || props.filterRejected) &&
+            (props.filterCustomer || props.filterProject || props.filterStatus || props.filterSettlement || props.filterRejected) &&
             <Button color="inherit" onClick={props.handleFilterOnReset}>
               {props.intl.formatMessage(layoutMessage.action.reset)}
             </Button>
@@ -92,7 +92,7 @@ export const PurchaseRequestListFilterView: React.SFC<PurchaseRequestListFilterP
               </IconButton> 
             }
 
-            <IconButton disabled>
+            <IconButton onClick={props.filterCustomer && props.handleFilterProjectVisibility}>
               <ChevronRightIcon />
             </IconButton> 
           </ListItemSecondaryAction>
@@ -108,26 +108,6 @@ export const PurchaseRequestListFilterView: React.SFC<PurchaseRequestListFilterP
           { 
               props.filterStatus &&
               <IconButton onClick={props.handleFilterStatusOnClear}>
-                <ClearIcon />
-              </IconButton> 
-            }
-
-            <IconButton disabled>
-              <ChevronRightIcon />
-            </IconButton> 
-          </ListItemSecondaryAction>
-        </ListItem>
-        <Divider />
-
-        <ListItem button onClick={props.handleFilterCompletionVisibility}>
-          <ListItemText 
-            primary={props.intl.formatMessage(purchaseMessage.request.field.completion)}
-            secondary={props.filterCompletion && props.filterCompletion.name || props.intl.formatMessage(layoutMessage.text.none)} 
-          />
-          <ListItemSecondaryAction>
-          { 
-              props.filterCompletion &&
-              <IconButton onClick={props.handleFilterCompletionOnClear}>
                 <ClearIcon />
               </IconButton> 
             }
@@ -177,7 +157,7 @@ export const PurchaseRequestListFilterView: React.SFC<PurchaseRequestListFilterP
       isOpen={props.isFilterCustomerOpen} 
       onSelected={props.handleFilterCustomerOnSelected} 
       onClose={props.handleFilterCustomerOnClose}
-      filter={props.customerPayload}
+      filter={props.filterCustomerDialog}
     />
 
     <ProjectRegistrationDialog
@@ -185,7 +165,7 @@ export const PurchaseRequestListFilterView: React.SFC<PurchaseRequestListFilterP
       isOpen={props.isFilterProjectOpen}
       onSelected={props.handleFilterProjectOnSelected}
       onClose={props.handleFilterProjectOnClose}
-      filter={props.projectPayload}
+      filter={props.filterProjectDialog}
     />
 
     <LookupSystemDialog

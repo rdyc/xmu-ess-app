@@ -35,7 +35,6 @@ interface IOwnOption {
 }
 
 interface IOwnState extends ISettlementApprovalListFilterResult {
-  companyUid?: string;
   shouldUpdate: boolean;
   config?: IListConfig<ISettlement>;
   isFilterOpen: boolean;
@@ -66,11 +65,11 @@ type AllProps
 const createProps: mapper<AllProps, IOwnState> = (props: AllProps): IOwnState => ({
   shouldUpdate: false,
   isFilterOpen: false,
-  companyUid:  props.userState.user && props.userState.user.company && props.userState.user.company.uid,
 
   // fill partial props from location state to handle redirection from dashboard notif
   projectUid: props.location.state && props.location.state.projectUid,
   status: props.location.state && props.location.state.status,
+  statusType: props.location.state && props.location.state.statusType,
   isNotify: props.location.state && props.location.state.isNotify 
 });
 
@@ -248,7 +247,6 @@ const listView: React.SFC<AllProps> = props => (
           }}
           onClose={props.handleFilterVisibility}
           onApply={props.handleFilterApplied}
-          companyUid={props.companyUid}
         />
       </ListPage>
     }

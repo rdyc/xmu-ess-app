@@ -22,6 +22,7 @@ import ClearIcon from '@material-ui/icons/SettingsBackupRestore';
 import { purchaseMessage } from '@purchase/locales/messages/purchaseMessage';
 import * as React from 'react';
 
+import { ProjectRegistrationDialog } from '@project/components/dialog/project';
 import { SettlementApprovalListFilterProps } from './SettlementApprovalListFilter';
 
 export const SettlementApprovalListFilterView: React.SFC<SettlementApprovalListFilterProps> = props => (
@@ -44,7 +45,7 @@ export const SettlementApprovalListFilterView: React.SFC<SettlementApprovalListF
           </Typography>
 
           {
-            (props.filterCustomer || props.filterType || props.filterStatus || props.filterCompletion || props.filterNotify) &&
+            (props.filterCustomer || props.filterProject || props.filterStatus || props.filterCompletion || props.filterNotify) &&
             <Button color="inherit" onClick={props.handleFilterOnReset}>
               {props.intl.formatMessage(layoutMessage.action.reset)}
             </Button>
@@ -80,25 +81,25 @@ export const SettlementApprovalListFilterView: React.SFC<SettlementApprovalListF
         </ListItem>
         <Divider />
         
-        {/* <ListItem button onClick={props.handleFilterTypeVisibility}>
-          <ListItemText 
-            primary={props.intl.formatMessage(purchaseMessage.request.field.projectType)}
-            secondary={props.filterType && props.filterType.name || props.intl.formatMessage(layoutMessage.text.none)} 
+        <ListItem button onClick={props.handleFilterProjectVisibility}>
+          <ListItemText
+            primary={props.intl.formatMessage(purchaseMessage.settlement.field.projectUid)}
+            secondary={props.filterProject && props.filterProject.name || props.intl.formatMessage(layoutMessage.text.none)}
           />
           <ListItemSecondaryAction>
-            { 
-              props.filterType &&
-              <IconButton onClick={props.handleFilterTypeOnClear}>
+            {
+              props.filterProject &&
+              <IconButton onClick={props.handleFilterProjectOnClear}>
                 <ClearIcon />
-              </IconButton> 
+              </IconButton>
             }
 
-            <IconButton disabled>
+            <IconButton onClick={props.filterCustomer && props.handleFilterProjectVisibility}>
               <ChevronRightIcon />
-            </IconButton> 
+            </IconButton>
           </ListItemSecondaryAction>
         </ListItem>
-        <Divider /> */}
+        <Divider />
 
         <ListItem button onClick={props.handleFilterStatusVisibility}>
           <ListItemText 
@@ -163,21 +164,19 @@ export const SettlementApprovalListFilterView: React.SFC<SettlementApprovalListF
       isOpen={props.isFilterCustomerOpen} 
       onSelected={props.handleFilterCustomerOnSelected} 
       onClose={props.handleFilterCustomerOnClose}
-      filter={props.customerPayload}
+      filter={props.filterCustomerDialog}
     />
 
-    {/* <LookupSystemDialog
-      title={props.intl.formatMessage(purchaseMessage.request.field.projectType)}
-      category="project"
+    <ProjectRegistrationDialog
       hideBackdrop={true}
-      isOpen={props.isFilterTypeOpen}
-      value={props.filterType && props.filterType.type}
-      onSelected={props.handleFilterTypeOnSelected}
-      onClose={props.handleFilterTypeOnClose}
-    /> */}
+      isOpen={props.isFilterProjectOpen}
+      onSelected={props.handleFilterProjectOnSelected}
+      onClose={props.handleFilterProjectOnClose}
+      filter={props.filterProjectDialog}
+    />
 
     <LookupSystemDialog
-      title={props.intl.formatMessage(purchaseMessage.request.field.statusType)}
+      title={props.intl.formatMessage(purchaseMessage.request.field.status)}
       category="status"
       hideBackdrop={true}
       isOpen={props.isFilterStatusOpen}
