@@ -1,12 +1,9 @@
 import { IBaseFilter, IBasePagingFilter, ICompanyAccess } from '@generic/interfaces';
 
-interface IExtendedQuery extends IBaseFilter, IBasePagingFilter { }
-
-export interface IPurchaseGetAllFilter extends ICompanyAccess  {
+export interface IPurchaseGetAllFilter extends IBaseFilter, IBasePagingFilter, ICompanyAccess {
   customerUid?: string;
   projectUid?: string;
   isRejected?: boolean;
   isSettlement?: boolean;
   statusType?: string;
-  query?: IExtendedQuery;
 }

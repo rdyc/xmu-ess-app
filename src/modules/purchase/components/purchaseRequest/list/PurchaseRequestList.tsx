@@ -112,7 +112,8 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
         uid: AppMenu.PurchaseRequest,
         parentUid: AppMenu.Purchase,
         title: this.props.intl.formatMessage(purchaseMessage.request.pages.listTitle),
-        description: this.props.intl.formatMessage(purchaseMessage.request.pages.listSubHeader),
+        // description: this.props.intl.formatMessage(purchaseMessage.request.pages.listSubHeader),
+        description: '',
       },
       
       // top bar
@@ -128,8 +129,8 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
       searchStatus: () => {
         let result: boolean = false;
     
-        if (request && request.filter && request.filter.query && request.filter.query.find) {
-          result = request.filter.query.find ? true : false;
+        if (request && request.filter && request.filter.find) {
+          result = request.filter.find ? true : false;
         }
     
         return result;
@@ -162,14 +163,12 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
                 statusType: this.props.statusType,
                 isSettlement: this.props.isSettlement,
                 isRejected: this.props.isRejected,
-                query: {
-                  find: params.find,
-                  findBy: params.findBy,
-                  orderBy: params.orderBy,
-                  direction: params.direction,
-                  page: params.page,
-                  size: params.size,
-                }
+                find: params.find,
+                findBy: params.findBy,
+                orderBy: params.orderBy,
+                direction: params.direction,
+                page: params.page,
+                size: params.size,
               }
             });
           } else {
