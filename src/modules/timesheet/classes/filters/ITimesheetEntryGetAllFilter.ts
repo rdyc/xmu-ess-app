@@ -1,6 +1,6 @@
 import { IBasePagingFilter } from '@generic/interfaces';
 
-export interface ITimesheetGetAllFilter extends IBasePagingFilter {
+export interface ITimesheetEntryGetAllFilter extends IBasePagingFilter {
 
   customerUid?: string;
   activityType?: string;

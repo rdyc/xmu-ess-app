@@ -4,7 +4,7 @@ import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { ICustomerList } from '@lookup/classes/response';
 import { WithStyles, withStyles } from '@material-ui/core';
 import styles from '@styles';
-import { ITimesheetGetAllFilter } from '@timesheet/classes/filters';
+import { ITimesheetEntryGetAllFilter } from '@timesheet/classes/filters';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose, HandleCreators, mapper, setDisplayName, StateHandler, StateHandlerMap, StateUpdaters, withHandlers, withStateHandlers } from 'recompose';
 import { TimesheetEntryListFilterView } from './TimesheetEntryListFilterView';
@@ -14,7 +14,7 @@ import { TimesheetEntryListFilterView } from './TimesheetEntryListFilterView';
 //   { value: 'complete', name: 'Complete' }
 // ];
 
-export type ITimesheetEntryListFilterResult = Pick<ITimesheetGetAllFilter, 'customerUid' | 'activityType' | 'companyUid' | 'statusType' | 'status' | 'isRejected'>;
+export type ITimesheetEntryListFilterResult = Pick<ITimesheetEntryGetAllFilter, 'customerUid' | 'activityType' | 'companyUid' | 'statusType' | 'status' | 'isRejected'>;
 
 interface IOwnOption {
   isOpen: boolean;
