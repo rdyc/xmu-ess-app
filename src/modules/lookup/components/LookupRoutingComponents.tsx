@@ -22,7 +22,7 @@ import { LeaveCalculationList } from './leave/calculation/LeaveCalculationList';
 import LookupLeaveEditor from './leave/editor/LookupLeaveEditor';
 import { MileageExceptionDetail } from './mileageException/detail/MileageExceptionDetail';
 import MileageExceptionEditor from './mileageException/editor/MileageExceptionEditor';
-import LookupMileageExceptionList from './mileageException/list/LookupMileageExceptionList';
+import { LookupMileageExceptionList } from './mileageException/list/LookupMileageExceptionList';
 import { PositionDetail } from './position/detail/PositionDetail';
 import { PositionEditor } from './position/editor/PositionEditor';
 import { PositionList } from './position/list/PositionList';
