@@ -81,7 +81,7 @@ const mileageItem: React.SFC<AllProps> = props => {
                     {active === item.uid && isExpanded ? <ExpandLess /> : <ExpandMore />}
                   </ListItemSecondaryAction>
                 </ListItem>
-                {len !== index && !isExpanded && <Divider />}                
+                {len !== index && <Divider />}                
                 <Collapse
                   in={active === item.uid && isExpanded}
                   timeout="auto"

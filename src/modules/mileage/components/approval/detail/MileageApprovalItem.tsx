@@ -96,7 +96,7 @@ const mileageApprovalItem: React.SFC<AllProps> = props => {
                     </ListItemSecondaryAction>
                   </div>
                 </ListItem>
-                {len !== index && !isExpanded && <Divider />}                
+                {len !== index && <Divider />}                
                 <Collapse
                   in={active === item.uid && isExpanded}
                   timeout="auto"
