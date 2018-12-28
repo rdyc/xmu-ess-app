@@ -157,7 +157,7 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
         // when user is set and not loading
         if (user && !isLoading) {
           // when response are empty or force reloading
-          if (!response || !isLoading || forceReload) {
+          if (!response || forceReload) {
             loadAllRequest({
               filter: {
                 companyUid: this.props.companyUid,

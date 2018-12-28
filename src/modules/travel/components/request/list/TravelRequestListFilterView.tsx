@@ -1,5 +1,4 @@
 import { LookupSystemDialog } from '@common/components/dialog/lookupSystemDialog/LookupSystemDialog';
-import { DialogValue } from '@layout/components/dialogs/DialogValue';
 import { layoutMessage } from '@layout/locales/messages';
 import { LookupCustomerDialog } from '@lookup/components/customer/dialog';
 import {
@@ -99,26 +98,6 @@ export const TravelRequestListFilterView: React.SFC<TravelRequestListFilterProps
         </ListItem>
         <Divider />
 
-        <ListItem button onClick={props.handleFilterCompletionVisibility}>
-          <ListItemText
-            primary={props.intl.formatMessage(travelMessage.request.field.completion)}
-            secondary={props.filterCompletion && props.filterCompletion.name || props.intl.formatMessage(layoutMessage.text.none)}
-          />
-          <ListItemSecondaryAction>
-            {
-              props.filterCompletion &&
-              <IconButton onClick={props.handleFilterCompletionOnClear}>
-                <ClearIcon />
-              </IconButton>
-            }
-
-            <IconButton onClick={props.handleFilterCompletionVisibility}>
-              <ChevronRightIcon />
-            </IconButton>
-          </ListItemSecondaryAction>
-        </ListItem>
-        <Divider />
-
         <ListItem>
           <ListItemText
             primary={props.intl.formatMessage(travelMessage.request.field.isRejected)}
@@ -169,14 +148,5 @@ export const TravelRequestListFilterView: React.SFC<TravelRequestListFilterProps
       onClose={props.handleFilterStatusOnClose}
     />
 
-    <DialogValue
-      title={props.intl.formatMessage(travelMessage.request.field.completion)}
-      isOpen={props.isFilterCompletionOpen}
-      hideBackdrop={true}
-      items={props.completionStatus}
-      value={props.filterCompletion && props.filterCompletion.value || props.initialProps && props.initialProps.status}
-      onSelected={props.handleFilterCompletionOnSelected}
-      onClose={props.handleFilterCompletionOnClose}
-    />
   </React.Fragment>
 );

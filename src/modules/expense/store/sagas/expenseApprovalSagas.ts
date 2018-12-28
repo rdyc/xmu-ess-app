@@ -15,21 +15,15 @@ import {
 import { layoutAlertAdd } from '@layout/store/actions';
 import { flattenObject } from '@utils/flattenObject';
 import saiyanSaga from '@utils/saiyanSaga';
-import * as qs from 'qs';
 import { SubmissionError } from 'redux-form';
 import { all, fork, put, takeEvery } from 'redux-saga/effects';
-import { IApiResponse } from 'utils';
+import { IApiResponse, objectToQuerystring } from 'utils';
 
 function* watchApprovalAllFetchRequest() {
   const worker = (action: ReturnType<typeof expenseApprovalGetAllRequest>) => { 
-    const params = qs.stringify(action.payload.filter, { 
-      allowDots: true, 
-      skipNulls: true
-    });
-
     return saiyanSaga.fetch({
       method: 'get',
-      path: `/v1/approvals/expense?${params}`, 
+      path: `/v1/approvals/expense?${objectToQuerystring(action.payload.filter)}`, 
       successEffects: (response: IApiResponse) => ([
         put(expenseApprovalGetAllSuccess(response.body))
       ]), 

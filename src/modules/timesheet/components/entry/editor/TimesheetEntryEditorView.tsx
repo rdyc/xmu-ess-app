@@ -1,4 +1,5 @@
 import { FormMode } from '@generic/types';
+import { layoutMessage } from '@layout/locales/messages';
 import { Typography } from '@material-ui/core';
 import {
   TimesheetEntryForm,
@@ -15,18 +16,23 @@ export const TimesheetEntryEditorView: React.SFC<EntryEditorProps> = props => {
     handleSubmit, 
     handleSubmitSuccess, 
     handleSubmitFail, 
-    intl, 
+    intl,
+    handleSetMinDate, 
+    minDate, 
     submitDialogTitle, 
     submitDialogContentText, 
     submitDialogConfirmedText, 
     submitDialogCancelText
   } = props;
   const { isLoading, response } = props.timesheetEntryState.detail;
+  const amountLoading = props.systemLimitState.amount.isLoading;
+  const amountResponse = props.systemLimitState.amount.response;
 
   const renderForm = (formData: TimesheetFormData) => (
     <TimesheetEntryForm 
       formMode={formMode}
       initialValues={formData}
+      minDate={minDate}
       validate={handleValidate}
       onSubmit={handleSubmit} 
       onSubmitSuccess={handleSubmitSuccess}
@@ -53,8 +59,20 @@ export const TimesheetEntryEditorView: React.SFC<EntryEditorProps> = props => {
     }
   };
 
+  if (amountLoading && !amountResponse) { // do not load the form yet if the amount not loaded
+    return (
+      <Typography variant="body2">
+        {intl.formatMessage(layoutMessage.text.loading)}
+      </Typography>
+    );
+  }
+
   // New
   if (formMode === FormMode.New) {
+    if (!amountLoading && amountResponse && amountResponse.data) {
+      handleSetMinDate(amountResponse.data.days);
+    }
+
     return renderForm(initialValues);
   }
 
@@ -100,6 +118,10 @@ export const TimesheetEntryEditorView: React.SFC<EntryEditorProps> = props => {
       initialValues.information.start = start;
       initialValues.information.end = end;
       initialValues.information.description = data.description;
+
+      if (!amountLoading && amountResponse && amountResponse.data) {
+        handleSetMinDate(amountResponse.data.days, data.changes && data.changes.createdAt);
+      }
           
       return renderForm(initialValues);
     }

@@ -24,7 +24,7 @@ const completionStatus: ICollectionValue[] = [
   { value: 'complete', name: 'Complete' }
 ];
 
-export type ITravelRequestListFilterResult = Pick<ITravelRequestGetAllFilter, 'customerUid' | 'statusType' | 'status' |'isRejected' | 'isSettlement'>;
+export type ITravelRequestListFilterResult = Pick<ITravelRequestGetAllFilter, 'customerUid' | 'statusType' |'isRejected' | 'isSettlement'>;
 
 interface IOwnOption {
   isOpen: boolean;
@@ -43,10 +43,6 @@ interface IOwnState {
   // filter status
   isFilterStatusOpen: boolean;
   filterStatus?: ISystemList;
-
-  // filter completion
-  isFilterCompletionOpen: boolean;
-  filterCompletion?: ICollectionValue;
 
   // filter is Ready to settle
   filterSettlement?: boolean;
@@ -67,10 +63,6 @@ interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
   setFilterStatusVisibility: StateHandler<IOwnState>;
   setFilterStatus: StateHandler<IOwnState>;
 
-  // filter completion
-  setFilterCompletionVisibility: StateHandler<IOwnState>;
-  setFilterCompletion: StateHandler<IOwnState>;
-  
   // filter is Ready to settle
   setFilterSettlement: StateHandler<IOwnState>;
 
@@ -95,12 +87,6 @@ interface IOwnHandler {
   handleFilterStatusOnClear: (event: React.MouseEvent<HTMLElement>) => void;
   handleFilterStatusOnClose: () => void;
 
-  // filter completion
-  handleFilterCompletionVisibility: (event: React.MouseEvent<HTMLElement>) => void;
-  handleFilterCompletionOnSelected: (data: ICollectionValue) => void;
-  handleFilterCompletionOnClear: (event: React.MouseEvent<HTMLElement>) => void;
-  handleFilterCompletionOnClose: () => void;
-
   // filter ready to settle
   handleFilterSettlementOnChange: (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => void;
 
@@ -121,7 +107,6 @@ const createProps: mapper<TravelRequestListFilterProps, IOwnState> = (props: Tra
   completionStatus,
   isFilterCustomerOpen: false,
   isFilterStatusOpen: false,
-  isFilterCompletionOpen: false,
 
   // pass initial value for primitive types only, bellow is 'boolean'
   filterRejected: props.initialProps && props.initialProps.isRejected,
@@ -134,7 +119,6 @@ const stateUpdaters: StateUpdaters<TravelRequestListFilterProps, IOwnState, IOwn
     filterCustomer: undefined,
     filterType: undefined,
     filterStatus: undefined,
-    filterCompletion: undefined,
     filterSettlement: undefined,
     filterRejected: undefined
   }),
@@ -157,15 +141,6 @@ const stateUpdaters: StateUpdaters<TravelRequestListFilterProps, IOwnState, IOwn
     filterStatus: data
   }),
 
-  // filter completion
-  setFilterCompletionVisibility: (prevState: IOwnState) => () => ({
-    isFilterCompletionOpen: !prevState.isFilterCompletionOpen
-  }),
-  setFilterCompletion: (prevState: IOwnState) => (data?: ICollectionValue) => ({
-    isFilterCompletionOpen: false,
-    filterCompletion: data
-  }),
-
   // filter rejected
   setFilterRejected: (prevState: IOwnState) => (checked: boolean) => ({
     filterRejected: checked
@@ -186,7 +161,6 @@ const handlerCreators: HandleCreators<TravelRequestListFilterProps, IOwnHandler>
     props.onApply({
       customerUid: props.filterCustomer && props.filterCustomer.uid,
       statusType: props.filterStatus && props.filterStatus.type,
-      status: props.filterCompletion && props.filterCompletion.value,
       isRejected: props.filterRejected,
       isSettlement: props.filterSettlement
     });
@@ -220,20 +194,6 @@ const handlerCreators: HandleCreators<TravelRequestListFilterProps, IOwnHandler>
     props.setFilterStatusVisibility();
   },
 
-  // filter completion
-  handleFilterCompletionVisibility: (props: TravelRequestListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
-    props.setFilterCompletionVisibility();
-  },
-  handleFilterCompletionOnSelected: (props: TravelRequestListFilterProps) => (data: ICollectionValue) => {
-    props.setFilterCompletion(data);
-  },
-  handleFilterCompletionOnClear: (props: TravelRequestListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
-    props.setFilterCompletion();
-  },
-  handleFilterCompletionOnClose: (props: TravelRequestListFilterProps) => () => {
-    props.setFilterCompletionVisibility();
-  },
-  
   // filter rejected
   handleFilterRejectedOnChange: (props: TravelRequestListFilterProps) => (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
     props.setFilterRejected(checked);

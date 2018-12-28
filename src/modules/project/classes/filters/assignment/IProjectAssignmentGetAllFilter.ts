@@ -5,5 +5,4 @@ export interface IProjectAssignmentGetAllFilter extends IBaseFilter, IBasePaging
   projectTypes?: string[];
   statusTypes?: string[];
   projectUid?: string;
-  activeOnly?: boolean;
 }

@@ -15,6 +15,7 @@ import {
   Toolbar,
   Typography,
 } from '@material-ui/core';
+import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import CloseIcon from '@material-ui/icons/Close';
 import ClearIcon from '@material-ui/icons/SettingsBackupRestore';
 import * as React from 'react';
@@ -71,9 +72,9 @@ export const LeaveRequestListFilterView: React.SFC<LeaveRequestListFilterProps> 
               </IconButton> 
             }
 
-            {/* <IconButton onClick={props.handleFilterCompletionVisibility}>
+            <IconButton onClick={props.handleFilterTypeVisibility}>
               <ChevronRightIcon />
-            </IconButton>  */}
+            </IconButton> 
           </ListItemSecondaryAction>
         </ListItem>
         <Divider />
@@ -90,15 +91,15 @@ export const LeaveRequestListFilterView: React.SFC<LeaveRequestListFilterProps> 
                 <ClearIcon />
               </IconButton> 
             }
-{/* 
-            <IconButton onClick={props.handleFilterCompletionVisibility}>
+
+            <IconButton onClick={props.handleFilterStatusVisibility}>
               <ChevronRightIcon />
-            </IconButton>  */}
+            </IconButton>
           </ListItemSecondaryAction>
         </ListItem>
         <Divider />
-
-        {/* <ListItem button onClick={props.handleFilterCompletionVisibility}>
+{/* 
+        <ListItem button onClick={props.handleFilterCompletionVisibility}>
           <ListItemText 
             primary={props.intl.formatMessage(leaveMessage.request.field.completion)}
             secondary={props.filterCompletion && props.filterCompletion.name || props.intl.formatMessage(layoutMessage.text.none)} 
@@ -115,8 +116,8 @@ export const LeaveRequestListFilterView: React.SFC<LeaveRequestListFilterProps> 
               <ChevronRightIcon />
             </IconButton> 
           </ListItemSecondaryAction>
-        </ListItem> */}
-        <Divider />
+        </ListItem>
+        <Divider /> */}
 
         <ListItem>
           <ListItemText 

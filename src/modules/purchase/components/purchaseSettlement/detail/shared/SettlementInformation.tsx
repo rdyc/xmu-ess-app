@@ -22,7 +22,7 @@ const settlementInformation: React.SFC<AllProps> = props => {
     <Card square >
     <CardHeader 
         title={intl.formatMessage(purchaseMessage.settlement.section.infoTitle)}
-        subheader={intl.formatMessage(purchaseMessage.settlement.section.infoSubHeader)}
+        // subheader={intl.formatMessage(purchaseMessage.settlement.section.infoSubHeader)}
         />
         <CardContent >
           { data.statusType ?

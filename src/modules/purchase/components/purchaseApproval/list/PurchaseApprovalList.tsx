@@ -35,7 +35,6 @@ interface IOwnOption {
 }
 
 interface IOwnState extends IPurchaseApprovalListFilterResult {
-  companyUid?: string;
   shouldUpdate: boolean;
   config?: IListConfig<IPurchase>;
   isFilterOpen: boolean;
@@ -66,9 +65,10 @@ type AllProps
 const createProps: mapper<AllProps, IOwnState> = (props: AllProps): IOwnState => ({
   shouldUpdate: false,
   isFilterOpen: false,
-  companyUid:  props.userState.user && props.userState.user.company && props.userState.user.company.uid,
 
   // fill partial props from location state to handle redirection from dashboard notif
+  customerUid: props.location.state && props.location.state.customerUid,
+  projectUid: props.location.state && props.location.state.projectUid,
   status: props.location.state && props.location.state.status,
   isNotify: props.location.state && props.location.state.isNotify 
 });
@@ -110,7 +110,8 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
         uid: AppMenu.PurchaseApproval,
         parentUid: AppMenu.Purchase,
         title: this.props.intl.formatMessage(purchaseMessage.approval.pages.listTitle),
-        description: this.props.intl.formatMessage(purchaseMessage.approval.pages.listSubHeader),
+        // description: this.props.intl.formatMessage(purchaseMessage.approval.pages.listSubHeader),
+        description: '',
       },
       
       // top bar
@@ -126,8 +127,12 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
       searchStatus: () => {
         let result: boolean = false;
     
-        if (request && request.filter && request.filter['query.find']) {
-          result = request.filter['query.find'] ? true : false;
+        // if (request && request.filter && request.filter.query && request.filter.query.find) {
+        //   result = request.filter.query.find ? true : false;
+        // }
+    
+        if (request && request.filter  && request.filter.find) {
+          result = request.filter.find ? true : false;
         }
     
         return result;
@@ -147,16 +152,18 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
                 companyUid: user.company.uid,
                 positionUid: user.position.uid,
                 customerUid: this.props.customerUid,
+                projectUid: this.props.projectUid,
+                statusType: this.props.statusType,
                 status: this.props.status,
                 isNotify: this.props.isNotify,
-                query: {
+                // query: {
                   find: params.find,
                   findBy: params.findBy,
                   orderBy: params.orderBy,
                   direction: params.direction,
                   page: params.page,
                   size: params.size,
-                }
+                // }
             }});
           } else {
             // just take data from previous response
@@ -199,6 +206,8 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
           icon: TuneIcon,
           showBadgeWhen: () => {
             return this.props.customerUid !== undefined || 
+              this.props.statusType !== undefined || 
+              this.props.projectUid !== undefined || 
               this.props.status !== undefined || 
               this.props.isNotify === true;
           },
@@ -213,6 +222,8 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
     // track any changes in filter props
     if (
       this.props.customerUid !== nextProps.customerUid ||
+      this.props.projectUid !== nextProps.projectUid ||
+      this.props.statusType !== nextProps.statusType ||
       this.props.status !== nextProps.status ||
       this.props.isNotify !== nextProps.isNotify
     ) {
@@ -234,12 +245,13 @@ const listView: React.SFC<AllProps> = props => (
           isOpen={props.isFilterOpen}
           initialProps={{
             customerUid: props.customerUid,
+            projectUid: props.projectUid,
+            statusType: props.statusType,
             status: props.status,
             isNotify: props.isNotify,
           }}
           onClose={props.handleFilterVisibility}
           onApply={props.handleFilterApplied}
-          companyUid={props.companyUid}
         />
       </ListPage>
     }

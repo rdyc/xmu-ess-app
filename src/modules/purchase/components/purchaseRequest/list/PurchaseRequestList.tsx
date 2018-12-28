@@ -4,7 +4,8 @@ import { WithUser, withUser } from '@layout/hoc/withUser';
 import { layoutMessage } from '@layout/locales/messages';
 import { GlobalFormat } from '@layout/types';
 import { Button } from '@material-ui/core';
-import TuneIcon from '@material-ui/icons/Tune';
+import AddCircleIcon from '@material-ui/icons/AddCircle';
+import TuneIcon from '@material-ui/icons/Tune'; 
 import { IPurchase } from '@purchase/classes/response/purchaseRequest';
 import { PurchaseField } from '@purchase/classes/types';
 import { PurchaseSummary } from '@purchase/components/purchaseRequest/detail/shared/PurchaseSummary';
@@ -37,7 +38,6 @@ interface IOwnOption {
 }
 
 interface IOwnState extends IPurchaseRequestListFilterResult {
-  companyUid?: string;
   shouldUpdate: boolean;
   config?: IListConfig<IPurchase>;
   isFilterOpen: boolean;
@@ -68,10 +68,10 @@ type AllProps
 const createProps: mapper<AllProps, IOwnState> = (props: AllProps): IOwnState => ({
   shouldUpdate: false,
   isFilterOpen: false,
-  companyUid:  props.userState.user && props.userState.user.company && props.userState.user.company.uid,
 
   // fill partial props from location state to handle redirection from dashboard notif
-  status: props.location.state && props.location.state.status,
+  projectUid: props.location.state && props.location.state.projectUid,
+  statusType: props.location.state && props.location.state.statusType,
   isSettlement: props.location.state && props.location.state.isSettlement 
 });
 
@@ -97,7 +97,7 @@ const handlerCreators: HandleCreators<AllProps, IOwnHandler> = {
   },
   handleFilterApplied: (props: AllProps) => (filter: IPurchaseRequestListFilterResult) => {
     props.setFilterApplied(filter);
-  },
+  }
 };
 
 const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
@@ -112,7 +112,8 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
         uid: AppMenu.PurchaseRequest,
         parentUid: AppMenu.Purchase,
         title: this.props.intl.formatMessage(purchaseMessage.request.pages.listTitle),
-        description: this.props.intl.formatMessage(purchaseMessage.request.pages.listSubHeader),
+        // description: this.props.intl.formatMessage(purchaseMessage.request.pages.listSubHeader),
+        description: '',
       },
       
       // top bar
@@ -128,8 +129,8 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
       searchStatus: () => {
         let result: boolean = false;
     
-        if (request && request.filter && request.filter.query && request.filter.query.find) {
-          result = request.filter.query.find ? true : false;
+        if (request && request.filter && request.filter.find) {
+          result = request.filter.find ? true : false;
         }
     
         return result;
@@ -137,7 +138,16 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
     
       // action centre
       showActionCentre: false,
-    
+
+      // toolbar controls
+      toolbarControls: (callback: ListHandler) => [
+        {
+          icon: AddCircleIcon,
+          onClick: () => {
+            this.props.history.push('/purchase/requests/form');
+          }
+        }
+      ],
       // events
       onDataLoad: (callback: ListHandler, params: ListDataProps, forceReload?: boolean | false) => {  
         // when user is set and not loading
@@ -149,18 +159,16 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
                 companyUid: user.company.uid,
                 positionUid: user.position.uid,
                 customerUid: this.props.customerUid,
+                projectUid: this.props.projectUid,
                 statusType: this.props.statusType,
-                status: this.props.status,
                 isSettlement: this.props.isSettlement,
                 isRejected: this.props.isRejected,
-                query: {
-                  find: params.find,
-                  findBy: params.findBy,
-                  orderBy: params.orderBy,
-                  direction: params.direction,
-                  page: params.page,
-                  size: params.size,
-                }
+                find: params.find,
+                findBy: params.findBy,
+                orderBy: params.orderBy,
+                direction: params.direction,
+                page: params.page,
+                size: params.size,
               }
             });
           } else {
@@ -222,8 +230,10 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
           icon: TuneIcon,
           showBadgeWhen: () => {
             return this.props.customerUid !== undefined || 
-              this.props.status !== undefined || 
-              this.props.isSettlement === true;
+              this.props.statusType !== undefined || 
+              this.props.projectUid !== undefined || 
+              this.props.isSettlement === true ||
+              this.props.isRejected === true;
           },
           onClick: this.props.handleFilterVisibility
         }
@@ -236,8 +246,10 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
     // track any changes in filter props
     if (
       this.props.customerUid !== nextProps.customerUid ||
-      this.props.status !== nextProps.status ||
-      this.props.isNotify !== nextProps.isNotify
+      this.props.projectUid !== nextProps.projectUid ||
+      this.props.statusType !== nextProps.statusType ||
+      this.props.isRejected !== nextProps.isRejected ||
+      this.props.isSettlement !== nextProps.isSettlement
     ) {
       this.props.setShouldUpdate();
     }
@@ -257,12 +269,13 @@ const listView: React.SFC<AllProps> = props => (
           isOpen={props.isFilterOpen}
           initialProps={{
             customerUid: props.customerUid,
-            status: props.status,
+            projectUid: props.projectUid,
+            statusType: props.statusType,
             isSettlement: props.isSettlement,
+            isRejected: props.isRejected,
           }}
           onClose={props.handleFilterVisibility}
           onApply={props.handleFilterApplied}
-          companyUid={props.companyUid}
         />
       </ListPage>
     }

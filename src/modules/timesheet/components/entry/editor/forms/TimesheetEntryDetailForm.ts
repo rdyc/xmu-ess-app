@@ -23,6 +23,7 @@ interface OwnProps {
   isPresalesActivity: boolean;
   projectUidValue: string | undefined;
   showSiteProject: boolean;
+  minDate: Date;
 }
 
 interface OwnHandlers {
@@ -43,7 +44,8 @@ const handlerCreators: HandleCreators<EntryDetailFormProps, OwnHandlers> = {
       customerUidValue,
       isPresalesActivity,
       projectUidValue,
-      showSiteProject
+      showSiteProject,
+      minDate
     } = props;
 
     const { user } = props.userState;
@@ -113,6 +115,7 @@ const handlerCreators: HandleCreators<EntryDetailFormProps, OwnHandlers> = {
 
       case 'date':
         fieldProps = {
+          minDate,
           required: true,
           label: intl.formatMessage(timesheetMessage.entry.fieldFor(name, 'fieldName')),
           placeholder: intl.formatMessage(timesheetMessage.entry.fieldFor(name, 'fieldPlaceholder')),
