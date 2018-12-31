@@ -18,7 +18,7 @@ const projectSales: React.SFC<AllProps> = props => (
   <Card square>
     <CardHeader 
       title={props.intl.formatMessage(projectMessage.registration.section.salesTitle)}
-      subheader={props.intl.formatMessage(projectMessage.registration.section.salesSubHeader)}
+      // subheader={props.intl.formatMessage(projectMessage.registration.section.salesSubHeader)}
     />
     <CardContent>
       <List>

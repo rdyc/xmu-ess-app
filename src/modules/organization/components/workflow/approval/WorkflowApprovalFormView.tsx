@@ -15,7 +15,7 @@ export const WorkflowApprovalFormView: React.SFC<WorkflowApprovalFormProps> = pr
       <Card square>
         <CardHeader 
           title={props.approvalTitle}
-          subheader={props.approvalSubHeader}
+          // subheader={props.approvalSubHeader}
         />
         <CardContent>
           <Field

@@ -25,7 +25,7 @@ export const StatusDetailFormView: React.SFC<StatusDetailFormProps> = props => {
     <Card square>
       <CardHeader 
         title={props.intl.formatMessage(projectMessage.registration.section.statusTitle)}
-        subheader={props.intl.formatMessage(projectMessage.registration.section.statusSubHeader)}
+        // subheader={props.intl.formatMessage(projectMessage.registration.section.statusSubHeader)}
       />
       <CardContent>
         {names.map(name => renderField(name))}
