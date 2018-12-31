@@ -115,7 +115,7 @@ const ProjectAssignmentItemFormView: React.SFC<WrappedFieldArrayProps<ProjectAss
           <Card>
             <CardHeader 
               title={props.intl.formatMessage(projectMessage.assignment.section.memberAddTitle)}
-              subheader={props.intl.formatMessage(projectMessage.assignment.section.memberAddSubHeader)}
+              // subheader={props.intl.formatMessage(projectMessage.assignment.section.memberAddSubHeader)}
             />
             <CardActions>
               <Button onClick={() => props.fields.push({

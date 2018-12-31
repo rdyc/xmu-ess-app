@@ -119,7 +119,7 @@ export const SiteEditorView: React.SFC<SiteEditorProps> = props => {
     <Card square>
       <CardHeader 
         title={props.intl.formatMessage(projectMessage.site.section.itemTitle)}
-        subheader={props.intl.formatMessage(projectMessage.site.section.itemSubHeader)}
+        // subheader={props.intl.formatMessage(projectMessage.site.section.itemSubHeader)}
       />
       <CardContent>
         <List>
