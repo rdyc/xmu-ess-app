@@ -15,7 +15,7 @@ export const PurchaseRequestFormView: React.SFC<PurchaseRequestFormProps> = prop
     formIsCurrencyIDR, formRate, 
     formRequest,
     formCurrencyType, change, initialValues,
-    requestMinDate
+    // requestMinDate
   } = props;
 
   const fields = Object.getOwnPropertyNames(initialValues.information);
@@ -45,7 +45,7 @@ export const PurchaseRequestFormView: React.SFC<PurchaseRequestFormProps> = prop
       onChangeCurrencyType={onChangeCurrencyType}
       onChangeRate={onChangeRate}
       onChangeValueIdr={onChangeValueIdr}
-      requestMinDate={requestMinDate}
+      // requestMinDate={requestMinDate}
     />
   );
 

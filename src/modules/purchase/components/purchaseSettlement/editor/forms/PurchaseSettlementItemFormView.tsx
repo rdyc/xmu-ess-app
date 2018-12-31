@@ -14,13 +14,17 @@ import { Field } from 'redux-form';
 
 export const PurchaseSettlementItemFormView: React.SFC<PurchaseSettlementItemFormProps> = props => {
   const { context } = props;
-  
+
   const render = (
       <Grid container spacing={16}>
         {
           context.fields.map((field, index) => {
             const items = context.fields.get(index);
-           
+            const varianceValue = items.request - items.actual;
+            const style = varianceValue > 0 
+            ? { color: 'blue', } 
+            : { color: 'red', };
+
             return (
           <Grid key={index} item xs={12} md={4}>
             <Card square>
@@ -56,8 +60,11 @@ export const PurchaseSettlementItemFormView: React.SFC<PurchaseSettlementItemFor
                     name={`${field}.variance`}
                     label={props.intl.formatMessage(purchaseMessage.settlement.items.variance)}
                     disabled={true}
-                    value={`${props.intl.formatNumber(items.request - items.actual)}` || '0'}
-                    fullWidth
+                    // color={varianceValue > 0  ? 'primary' : 'error'}
+                    InputProps={ style }
+                    value={ 
+                      `${props.intl.formatNumber(varianceValue > 0 ? varianceValue : varianceValue * -1 )}` || '0'
+                    }
                   />
                 </div>
               </CardContent>

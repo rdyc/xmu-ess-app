@@ -4,7 +4,7 @@
   "purchase.request.detail.title": "Purchase Request Details",
   "purchase.request.detail.subTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
   
-  "purchase.settlement.list.title": "Purchase Settlement",
+  "purchase.settlement.list.title": "RFPA Settlement",
   "purchase.settlement.list.subTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
   "purchase.settlement.detail.title": "Purchase Settlement Information",
   "purchase.settlement.detail.subTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
@@ -14,7 +14,7 @@
   "purchase.approval.detail.title": "Request Approval Form",
   "purchase.approval.detail.subTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
   
-  "purchase.settlementapproval.list.title": "Purchase Settlement Approvals",
+  "purchase.settlementapproval.list.title": "RFPA Settlement Approvals",
   "purchase.settlementapproval.list.subTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
   "purchase.settlementapproval.detail.title": "Settlement Approval Form",
   "purchase.settlementapproval.detail.subTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
@@ -24,10 +24,10 @@
   "purchase.settlement.section.info.title": "Settlement Detail",
   "purchase.settlement.section.info.subTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
   
-  "purchase.item.purchaseTitle": "Request Manifest",
+  "purchase.item.purchaseTitle": "Requested Item",
   "purchase.item.purchaseSubTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
 
-  "purchase.item.settlementTitle": "Settlement Manifest",
+  "purchase.item.settlementTitle": "Settled Item",
   "purchase.item.settlementSubTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
 
   "purchase.item.uid": "Item ID: ",
@@ -75,8 +75,8 @@
   "purchase.field.information.settlementdate.placeholder": "Select a purchase settlement date",
   "purchase.field.information.createdBy": "Submitted By",
   "purchase.field.information.createdBy.placeholder": "Type a name",
-  "purchase.field.information.advance": "Advance Payment",
-  "purchase.field.information.advance.required": "Advance payment needed",
+  "purchase.field.information.advance": "Advance Cash",
+  "purchase.field.information.advance.required": "Advance cash value needed",
   "purchase.field.information.advance.placeholder": "Write a value",
   "purchase.field.information.currencyType": "Currency",
   "purchase.field.information.currencyType.required": "Curreny is required",
