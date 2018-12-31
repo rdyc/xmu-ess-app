@@ -4,12 +4,12 @@
   "purchase.request.detail.title": "Purchase Request Details",
   "purchase.request.detail.subTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
   
-  "purchase.settlement.list.title": "RFPA Settlement",
+  "purchase.settlement.list.title": "RFPA Settlements",
   "purchase.settlement.list.subTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
   "purchase.settlement.detail.title": "Purchase Settlement Information",
   "purchase.settlement.detail.subTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
   
-  "purchase.approval.list.title": "Purchase Requests Approvals",
+  "purchase.approval.list.title": "RFPA Approvals",
   "purchase.approval.list.subTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
   "purchase.approval.detail.title": "Request Approval Form",
   "purchase.approval.detail.subTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
@@ -96,6 +96,7 @@
 
   "purchase.field.isNotify": "Notified Only",
   "purchase.field.isRejected": "Rejected Only",
+  "purchase.field.isNeedAdjust": "Adjustment Only",
   "purchase.field.isSettlement": "Settle-Ready Only",
   "purchase.field.statusType": "Status",
   "purchase.field.completion": "Completion",
@@ -116,6 +117,8 @@
   "purchase.message.approval.approve.success": "Purchase ID {uid} has been approved",
   "purchase.message.approval.reject.success": "Purchase ID {uid} has been rejected",
   "purchase.message.approval.submit.success": "Approval decision for {uid} has been submitted",
+  "purchase.message.approval.approve": "Approve Settlement Request",
+  "purchase.message.approval.adjustmentNeeded": "Adjustment Needed",
 
 
   "purchase.form.request.editTitle": "Edit Request",
