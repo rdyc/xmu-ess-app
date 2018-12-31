@@ -20,7 +20,7 @@ const isComplete = (statusType?: string | null | undefined): boolean => {
 
   if (statusType) {
     const completes = [
-      WorkflowStatusType.Accepted,
+      // WorkflowStatusType.Accepted,
       WorkflowStatusType.Rejected,
     ];
 
@@ -39,7 +39,7 @@ const ProjectAssignmentItemFormView: React.SFC<WrappedFieldArrayProps<ProjectAss
 
         return (
           <Grid key={index} item xs={12} md={6}>
-            <Card>
+            <Card square>
               <CardHeader 
                 title={`#${index + 1} - ${item.uid || 'Draft'}`}
                 subheader={`${item.status && item.status.value || 'Draft'} ${item.rejectedReason || ''}`}
@@ -90,14 +90,21 @@ const ProjectAssignmentItemFormView: React.SFC<WrappedFieldArrayProps<ProjectAss
                     component={InputNumber}
                     onChange={(event: any, newValue: any) => {
                       if (!isNaN(newValue)) {
-                        props.change(`${field}.hours`, newValue * 8);
+                        props.change(`${field}.allocatedHours`, newValue * 8);
                       }
                     }}
                   />
                   <Field 
                     type="number"
-                    name={`${field}.hours`}
+                    name={`${field}.allocatedHours`}
                     label={props.intl.formatMessage(projectMessage.assignment.field.allocatedHours)}
+                    disabled={true}
+                    component={InputNumber}
+                  />
+                  <Field 
+                    type="number"
+                    name={`${field}.consumedHours`}
+                    label={props.intl.formatMessage(projectMessage.assignment.field.consumedHours)}
                     disabled={true}
                     component={InputNumber}
                   />
@@ -112,7 +119,7 @@ const ProjectAssignmentItemFormView: React.SFC<WrappedFieldArrayProps<ProjectAss
     <Grid item xs={12}>
       <Grid container spacing={16}>
         <Grid item xs={12} md={6}>
-          <Card>
+          <Card square>
             <CardHeader 
               title={props.intl.formatMessage(projectMessage.assignment.section.memberAddTitle)}
               // subheader={props.intl.formatMessage(projectMessage.assignment.section.memberAddSubHeader)}
@@ -124,7 +131,8 @@ const ProjectAssignmentItemFormView: React.SFC<WrappedFieldArrayProps<ProjectAss
                 role: '',
                 jobDescription: '',
                 mandays: 0,
-                hours: 0
+                allocatedHours: 0,
+                consumedHours: 0
               })}>
                 {props.intl.formatMessage(projectMessage.assignment.option.addMember)}
               </Button>
@@ -139,7 +147,7 @@ const ProjectAssignmentItemFormView: React.SFC<WrappedFieldArrayProps<ProjectAss
               valid={props.valid}
               reset={props.reset}
               submitting={props.submitting}
-              />
+            />
           </Grid>
         }
       </Grid>
@@ -182,7 +190,7 @@ export const ProjectAssignmentFormView: React.SFC<ProjectAssignmentFormProps> = 
             name="items" 
             props={props} 
             component={ProjectAssignmentItemFormView}
-            />
+          />
         </Grid> 
       }
 
