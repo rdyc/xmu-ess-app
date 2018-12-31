@@ -75,6 +75,7 @@ const listView: React.SFC<AllProps> = props => (
           isOpen={props.isFilterOpen}
           initialProps={{
             customerUid: props.customerUid,
+            projectUid: props.projectUid,
             statusType: props.statusType,
             status: props.status,
             isNotify: props.isNotify,
@@ -169,6 +170,7 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
                 companyUid: user.company.uid,
                 positionUid: user.position.uid,
                 customerUid: this.props.customerUid,
+                projectUid: this.props.projectUid,
                 statusType: this.props.statusType,
                 status: this.props.status,
                 isNotify: this.props.isNotify,
@@ -223,6 +225,7 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
           icon: TuneIcon,
           showBadgeWhen: () => {
             return this.props.customerUid !== undefined ||
+              this.props.projectUid !== undefined ||
               this.props.statusType !== undefined ||
               this.props.status !== undefined ||
               this.props.isNotify === true;
@@ -238,6 +241,7 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
     // track any changes in filter props
     if (
       this.props.customerUid !== nextProps.customerUid ||
+      this.props.projectUid !== nextProps.projectUid ||
       this.props.statusType !== nextProps.statusType ||
       this.props.status !== nextProps.status ||
       this.props.isNotify !== nextProps.isNotify

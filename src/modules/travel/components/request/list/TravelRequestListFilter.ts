@@ -166,7 +166,10 @@ const stateUpdaters: StateUpdaters<TravelRequestListFilterProps, IOwnState, IOwn
   }),
   setFilterCustomer: (prevState: IOwnState) => (customer?: ICustomerList) => ({
     isFilterCustomerOpen: false,
-    filterCustomer: customer
+    filterCustomer: customer,
+    filterProjectDialog: {
+      customerUids: customer && [customer.uid] || undefined
+    }
   }),
 
   // filter project
