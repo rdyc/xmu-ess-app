@@ -80,7 +80,7 @@ const workflowHistoryView: React.SFC<AllProps> = props => {
     <Card square>
       <CardHeader 
         title={props.intl.formatMessage(organizationMessage.workflow.section.historyTitle)}
-        subheader={props.intl.formatMessage(organizationMessage.workflow.section.historySubHeader)}
+        // subheader={props.intl.formatMessage(organizationMessage.workflow.section.historySubHeader)}
       />
       <CardContent>
         <List>
