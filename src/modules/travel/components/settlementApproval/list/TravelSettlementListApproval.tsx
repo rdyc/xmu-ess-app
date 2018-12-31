@@ -191,7 +191,7 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
         key: index,
         primary: item.uid,
         secondary: item.customer && item.customer.name || item.customerUid,
-        tertiary: item.objective ? item.objective : 'N/A',
+        tertiary: `${item.projectUid} - ${ item.project && item.project.name }`,
         quaternary: this.props.intl.formatNumber(item.total, GlobalFormat.CurrencyDefault) || '-',
         quinary: item.status && item.status.value || item.statusType,
         senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'

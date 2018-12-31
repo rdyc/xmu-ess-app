@@ -116,15 +116,15 @@ const travelRequestItem: React.SFC<AllProps> = props => {
                   <TextField
                     {...GlobalStyle.TextField.ReadOnly}
                     margin="dense"
-                    label={props.intl.formatMessage(travelMessage.request.field.itemStart)}
-                    value={intl.formatDate(item.departureDate, GlobalFormat.TimeDate)}
+                    label={props.intl.formatMessage(travelMessage.request.field.destination)}
+                    value={item.destination || '-'}
                   />
                   <TextField
                     {...GlobalStyle.TextField.ReadOnly}
                     margin="dense"
-                    label={props.intl.formatMessage(travelMessage.request.field.destination)}
-                    value={item.destination || '-'}
-                  />
+                    label={props.intl.formatMessage(travelMessage.request.field.itemStart)}
+                    value={intl.formatDate(item.departureDate, GlobalFormat.TimeDate)}
+                  />                  
                   <TextField
                     {...GlobalStyle.TextField.ReadOnly}
                     margin="dense"
