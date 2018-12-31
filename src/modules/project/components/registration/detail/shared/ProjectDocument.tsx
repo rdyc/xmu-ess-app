@@ -21,7 +21,7 @@ const projectDocument: React.SFC<AllProps> = props => (
   <Card square>
     <CardHeader 
       title={props.title}
-      subheader={props.subHeader}
+      // subheader={props.subHeader}
     />
     <CardContent>
       <List>

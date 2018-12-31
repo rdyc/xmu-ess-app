@@ -52,6 +52,7 @@ import projectSiteSagas from '@project/store/sagas/projectSiteSagas';
 import projectStatusSagas from '@project/store/sagas/projectStatusSagas';
 import purchaseSagas from '@purchase/store/sagas/purchaseSagas';
 import summarySagas from '@summary/store/sagas/summarySagas';
+import timesheetApprovalHistorySagas from '@timesheet/store/sagas/timesheetApprovalHistorySagas';
 import timesheetApprovalSagas from '@timesheet/store/sagas/timesheetApprovalSagas';
 import timesheetEntrySagas from '@timesheet/store/sagas/timesheetEntrySagas';
 import timesheetMileagesSagas from '@timesheet/store/sagas/timesheetMileagesSagas';
@@ -122,6 +123,7 @@ export function* rootSaga() {
     fork(timesheetEntrySagas),
     fork(timesheetApprovalSagas),
     fork(timesheetMileagesSagas),
+    fork(timesheetApprovalHistorySagas),
     
     // mileage
     fork(mileageApprovalSagas),

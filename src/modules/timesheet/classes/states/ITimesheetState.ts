@@ -31,6 +31,10 @@ export interface ITimesheetState {
   timesheetApprovalPost: IQuerySingleState<ITimesheetApprovalPostRequest, boolean>;
   timesheetApprovalPostBulk: IQuerySingleState<ITimesheetApprovalPostBulkRequest, boolean>;
 
+  // approval history
+  timesheetApprovalHistoryGetAll: IQueryCollectionState<ITimesheetApprovalGetAllRequest, ITimesheet>;
+  timesheetApprovalHistoryGetById: IQuerySingleState<ITimesheetApprovalGetByIdRequest, ITimesheetDetail>;
+
   // mileages
   timesheetMileagesGetAll: IQueryCollectionState<ITimesheetMileagesGetAllRequest, ITimesheetMileages>;
 }
