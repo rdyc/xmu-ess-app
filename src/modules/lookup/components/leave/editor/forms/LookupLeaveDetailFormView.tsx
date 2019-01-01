@@ -58,7 +58,7 @@ export const LookupLeaveDetailFormView: React.SFC<RequestDetailFormProps> = prop
     <Card square>
       <CardHeader 
         title={intl.formatMessage(lookupMessage.leave.section.infoTitle)}
-        subheader={intl.formatMessage(lookupMessage.leave.section.infoSubHeader)}
+        // subheader={intl.formatMessage(lookupMessage.leave.section.infoSubHeader)}
       />
       <CardContent>
         {names.map(name => renderField(name))}

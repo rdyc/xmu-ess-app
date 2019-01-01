@@ -21,7 +21,7 @@ const travelRequestSummary: React.SFC<AllProps> = props => {
     <Card square>
       <CardHeader 
         title={<FormattedMessage id="travel.summaryTitle" />}
-        subheader={<FormattedMessage id="travel.summarySubTitle" />}
+        // subheader={<FormattedMessage id="travel.summarySubTitle" />}
       />
       <CardContent>      
           <TextField

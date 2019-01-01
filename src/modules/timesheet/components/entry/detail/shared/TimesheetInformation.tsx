@@ -20,7 +20,7 @@ const timesheetInformation: React.SFC<AllProps> = props => {
     <Card square>
       <CardHeader
         title={props.intl.formatMessage(timesheetMessage.entry.section.infoTitle)}
-        subheader={props.intl.formatMessage(timesheetMessage.entry.section.infoSubHeader)}
+        // subheader={props.intl.formatMessage(timesheetMessage.entry.section.infoSubHeader)}
       />
       <CardContent>
         <TextField

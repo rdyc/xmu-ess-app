@@ -32,7 +32,7 @@ export const LookupCompanyDetailFormView: React.SFC<CompanyDetailFormProps> = pr
     <Card square>
       <CardHeader 
         title={intl.formatMessage(lookupMessage.company.section.infoTitle)}
-        subheader={intl.formatMessage(lookupMessage.company.section.infoSubHeader)}
+        // subheader={intl.formatMessage(lookupMessage.company.section.infoSubHeader)}
       />
       <CardContent>
         {names.map(name => renderField(name))}

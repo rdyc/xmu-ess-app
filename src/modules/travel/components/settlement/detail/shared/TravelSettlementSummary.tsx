@@ -22,7 +22,7 @@ const travelSettlementSummary: React.SFC<AllProps> = props => {
     <Card square>
       <CardHeader 
         title={<FormattedMessage id="travelSettlement.summaryTitle" />}
-        subheader={<FormattedMessage id="travelSettlement.summarySubTitle" />}
+        // subheader={<FormattedMessage id="travelSettlement.summarySubTitle" />}
       />
       <CardContent>
         <Grid container spacing={8}>
