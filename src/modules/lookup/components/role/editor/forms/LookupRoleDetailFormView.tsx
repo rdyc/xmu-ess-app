@@ -58,7 +58,7 @@ export const LookupRoleDetailFormView: React.SFC<RoleDetailFormProps> = props =>
     <Card square>
       <CardHeader
         title={intl.formatMessage(lookupMessage.role.section.infoTitle)}
-        subheader={intl.formatMessage(lookupMessage.role.section.infoSubHeader)}
+        // subheader={intl.formatMessage(lookupMessage.role.section.infoSubHeader)}
       />
       <CardContent>
         {names.map(name => renderField(name))}

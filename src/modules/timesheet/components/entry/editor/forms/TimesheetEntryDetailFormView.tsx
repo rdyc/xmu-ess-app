@@ -37,7 +37,7 @@ export const TimesheetEntryDetailFormView: React.SFC<EntryDetailFormProps> = pro
     <Card square>
       <CardHeader 
         title={intl.formatMessage(timesheetMessage.entry.section.infoTitle)}
-        subheader={intl.formatMessage(timesheetMessage.entry.section.infoSubHeader)}
+        // subheader={intl.formatMessage(timesheetMessage.entry.section.infoSubHeader)}
       />
       <CardContent>
         {names.map(name => renderField(name))}

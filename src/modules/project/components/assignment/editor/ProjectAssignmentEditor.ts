@@ -194,7 +194,7 @@ const handlers: HandleCreators<ProjectAssignmentEditorProps, OwnHandlers> = {
       });
     }); 
   },
-  handleSubmitSuccess: (props: ProjectAssignmentEditorProps) => (response: boolean) => {
+  handleSubmitSuccess: (props: ProjectAssignmentEditorProps) => (response: IProjectAssignmentDetail) => {
     const { formMode, intl, history } = props;
     const { alertAdd } = props.layoutDispatch;
     
@@ -211,7 +211,7 @@ const handlers: HandleCreators<ProjectAssignmentEditorProps, OwnHandlers> = {
       time: new Date()
     });
 
-    history.push(`/project/assignments`);
+    history.push(`/project/assignments/${response.uid}`);
   },
   handleSubmitFail: (props: ProjectAssignmentEditorProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
     const { intl } = props;

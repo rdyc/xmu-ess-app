@@ -8,7 +8,7 @@ import { compose } from 'recompose';
 
 interface OwnProps {
   title: string;
-  subHeader: string;
+  subHeader?: string;
   data: IProjectDocument[] | null | undefined;
 }
 

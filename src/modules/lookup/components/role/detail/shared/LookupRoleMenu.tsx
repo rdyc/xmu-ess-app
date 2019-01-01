@@ -10,7 +10,7 @@ import { compose, mapper, StateHandlerMap, StateUpdaters, withStateHandlers } fr
 
 interface OwnProps {
   title: string;
-  subHeader: string;
+  subHeader?: string;
   data: IRoleMenu[] | null;
 }
 
@@ -37,7 +37,7 @@ const roleMenu: React.SFC<AllProps> = props => {
     <Card square>
       <CardHeader
         title={props.title}
-        subheader={props.subHeader}
+        // subheader={props.subHeader}
       />
       <CardContent>
         <List>

@@ -32,7 +32,7 @@ export const LookupHolidayDetailFormView: React.SFC<RequestDetailFormProps> = pr
     <Card square>
       <CardHeader 
         title={intl.formatMessage(lookupMessage.holiday.section.infoTitle)}
-        subheader={intl.formatMessage(lookupMessage.holiday.section.infoSubHeader)}
+        // subheader={intl.formatMessage(lookupMessage.holiday.section.infoSubHeader)}
       />
       <CardContent>
         {names.map(name => renderField(name))}

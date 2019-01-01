@@ -51,7 +51,7 @@ const travelRequestItem: React.SFC<AllProps> = props => {
     <Card square>
       <CardHeader
         title={props.intl.formatMessage(travelMessage.request.section.itemTitle)}
-        subheader={props.intl.formatMessage(travelMessage.request.section.itemSubHeader)}
+        // subheader={props.intl.formatMessage(travelMessage.request.section.itemSubHeader)}
       />
       <CardContent>
         <List>

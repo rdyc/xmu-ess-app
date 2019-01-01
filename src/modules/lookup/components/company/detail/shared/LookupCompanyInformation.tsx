@@ -19,7 +19,7 @@ const companyInformation: React.SFC<AllProps> = props => {
     <Card square>
       <CardHeader
         title={props.intl.formatMessage(lookupMessage.company.section.infoTitle)}
-        subheader={props.intl.formatMessage(lookupMessage.company.section.infoSubHeader)}
+        // subheader={props.intl.formatMessage(lookupMessage.company.section.infoSubHeader)}
       />
       <CardContent>
         <TextField

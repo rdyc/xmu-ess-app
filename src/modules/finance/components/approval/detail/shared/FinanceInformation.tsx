@@ -49,7 +49,7 @@ export const financeInformation: React.SFC<AllProps> = props => {
     <Card square>
       <CardHeader 
         title={intl.formatMessage(financeMessage.approval.section.infoTitle)}
-        subheader={intl.formatMessage(financeMessage.approval.section.infoSubTitle)}
+        // subheader={intl.formatMessage(financeMessage.approval.section.infoSubTitle)}
       />
       <CardContent>
         <TextField
