@@ -3,16 +3,21 @@ import { ISystem, ISystemDetail, ISystemList, ISystemType } from '@common/classe
 import {
   activityGetListRequest,
   bloodGetListRequest,
+  certificationGetListRequest,
   currencyGetListRequest,
+  degreeGetListRequest,
+  departmentGetListRequest,
   destinationGetListRequest,
   documentGetListRequest,
   documentPresalesGetListRequest,
   employmentGetListRequest,
   expenseGetListRequest,
+  familyGetListRequest,
   financeGetListRequest,
   genderGetListRequest,
   gradeGetListRequest,
   leaveGetListRequest,
+  levelGetListRequest,
   paymentGetListRequest,
   projectGetListRequest,
   purposeGetListRequest,
@@ -31,6 +36,7 @@ import {
   systemPutDispose,
   systemPutRequest,
   taxGetListRequest,
+  trainingGetListRequest,
   transportationGetListRequest,
   unitGetListRequest,
 } from '@common/store/actions';
@@ -74,6 +80,12 @@ interface PropsFromState {
   commonEmploymentListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
   commonPaymentListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
   commonFinanceListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
+  commonTrainingListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
+  commonCertificationListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
+  commonFamilyListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
+  commonDegreeListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
+  commonDepartmentListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
+  commonLevelListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
 
   // detail
 }
@@ -108,7 +120,13 @@ interface PropsFromDispatch {
     employmentListRequest: typeof employmentGetListRequest;
     paymentListRequest: typeof paymentGetListRequest;
     financeListRequest: typeof financeGetListRequest;
-
+    trainingListRequest: typeof trainingGetListRequest;
+    certificationListRequest: typeof certificationGetListRequest;
+    departmentListRequest: typeof departmentGetListRequest;
+    degreeListRequest: typeof degreeGetListRequest;
+    levelListRequest: typeof levelGetListRequest;
+    familyListRequest: typeof familyGetListRequest;
+    
     // detail
     systemDetailRequest: typeof systemGetByIdRequest;
     systemDetailDispose: typeof systemGetByIdDispose;
@@ -155,6 +173,12 @@ const mapStateToProps = ({
   commonEmploymentList,
   commonPaymentList,
   commonFinanceList,
+  commonTrainingList,
+  commonDepartmentList,
+  commonDegreeList,
+  commonFamilyList,
+  commonCertificationList,
+  commonLevelList
 
 }: IAppState) => ({
   // system
@@ -191,6 +215,12 @@ const mapStateToProps = ({
   commonEmploymentListState: commonEmploymentList,
   commonPaymentListState: commonPaymentList,
   commonFinanceListState: commonFinanceList,
+  commonTrainingListState: commonTrainingList,
+  commonCertificationListState: commonCertificationList,
+  commonDegreeListState: commonDegreeList,
+  commonFamilyListState: commonFamilyList,
+  commonDepartmentListState: commonDepartmentList,
+  commonLevelListState: commonLevelList,
 
   // detail
  
@@ -226,6 +256,12 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     employmentListRequest: (request: ISystemListRequest) => dispatch(employmentGetListRequest(request)),
     paymentListRequest: (request: ISystemListRequest) => dispatch(paymentGetListRequest(request)),
     financeListRequest: (request: ISystemListRequest) => dispatch(financeGetListRequest(request)),
+    trainingListRequest: (request: ISystemListRequest) => dispatch(trainingGetListRequest(request)),
+    departmentListRequest: (request: ISystemListRequest) => dispatch(departmentGetListRequest(request)),
+    degreeListRequest: (request: ISystemListRequest) => dispatch(degreeGetListRequest(request)),
+    familyListRequest: (request: ISystemListRequest) => dispatch(familyGetListRequest(request)),
+    certificationListRequest: (request: ISystemListRequest) => dispatch(certificationGetListRequest(request)),
+    levelListRequest: (request: ISystemListRequest) => dispatch(levelGetListRequest(request)),
 
     // detail
     systemDetailRequest: (request: ISystemByIdRequest) => dispatch(systemGetByIdRequest(request)),

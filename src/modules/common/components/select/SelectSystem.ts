@@ -138,6 +138,30 @@ const lifecycles: ReactLifeCycleFunctions<SelectSystemProps, OwnProps> = {
           commonDispatch.employmentListRequest(request);
           break;
 
+        case 'training':
+          commonDispatch.trainingListRequest(request);
+          break;
+
+        case 'certification':
+          commonDispatch.certificationListRequest(request);
+          break;
+
+        case 'department':
+          commonDispatch.departmentListRequest(request);
+          break;
+
+        case 'degree':
+          commonDispatch.degreeListRequest(request);
+          break;
+
+        case 'family':
+          commonDispatch.familyListRequest(request);
+          break;
+
+        case 'level':
+          commonDispatch.levelListRequest(request);
+          break;
+          
         default:
           break;
       }
@@ -176,6 +200,12 @@ const fnGetContext = (props: SelectSystemProps) => {
     case 'blood': return props.commonBloodListState;
     case 'tax': return props.commonTaxListState;
     case 'employment': return props.commonEmploymentListState;
+    case 'training': return props.commonTrainingListState;
+    case 'certification': return props.commonCertificationListState;
+    case 'degree': return props.commonDegreeListState;
+    case 'department': return props.commonDepartmentListState;
+    case 'family': return props.commonFamilyListState;
+    case 'level': return props.commonLevelListState;
 
     default: return props.commonActivityListState;
   }

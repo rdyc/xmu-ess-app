@@ -8,16 +8,10 @@ import {
   IEmployeePutRequest,
 } from '@account/classes/queries';
 import { 
-  IEmployee, 
-  IEmployeeDetail, 
-  IEmployeeLeave 
-} from '@account/classes/response';
-import { IQueryCollectionState, IQuerySingleState } from '@generic/interfaces';
-import { 
   IEmployeeAccessHistoryAllRequest, 
   IEmployeeAccessHistoryByIdRequest, 
   IEmployeeAccessHistoryListRequest 
-} from '../queries/employeeAccessHistory';
+} from '@account/classes/queries/employeeAccessHistory';
 import { 
   IEmployeeEducationAllRequest, 
   IEmployeeEducationByIdRequest, 
@@ -25,7 +19,7 @@ import {
   IEmployeeEducationListRequest, 
   IEmployeeEducationPostRequest, 
   IEmployeeEducationPutRequest 
-} from '../queries/employeeEducation';
+} from '@account/classes/queries/employeeEducation';
 import { 
   IEmployeeExperienceAllRequest, 
   IEmployeeExperienceByIdRequest, 
@@ -33,7 +27,7 @@ import {
   IEmployeeExperienceListRequest, 
   IEmployeeExperiencePostRequest, 
   IEmployeeExperiencePutRequest 
-} from '../queries/employeeExperience';
+} from '@account/classes/queries/employeeExperience';
 import { 
   IEmployeeFamilyAllRequest, 
   IEmployeeFamilyByIdRequest, 
@@ -41,28 +35,65 @@ import {
   IEmployeeFamilyListRequest, 
   IEmployeeFamilyPostRequest, 
   IEmployeeFamilyPutRequest 
-} from '../queries/employeeFamily';
+} from '@account/classes/queries/employeeFamily';
+import { 
+  IEmployeeNoteAllRequest, 
+  IEmployeeNoteByIdRequest, 
+  IEmployeeNoteDeleteRequest, 
+  IEmployeeNoteListRequest, 
+  IEmployeeNotePostRequest, 
+  IEmployeeNotePutRequest 
+} from '@account/classes/queries/employeeNote';
+import { 
+  IEmployeeRateAllRequest, 
+  IEmployeeRateByIdRequest, 
+  IEmployeeRateListRequest, 
+  IEmployeeRatePutRequest 
+} from '@account/classes/queries/employeeRate';
+import { 
+  IEmployeeTrainingAllRequest, 
+  IEmployeeTrainingByIdRequest, 
+  IEmployeeTrainingDeleteRequest, 
+  IEmployeeTrainingListRequest, 
+  IEmployeeTrainingPostRequest, 
+  IEmployeeTrainingPutRequest 
+} from '@account/classes/queries/employeeTraining';
+import { 
+  IEmployee, 
+  IEmployeeDetail, 
+  IEmployeeLeave 
+} from '@account/classes/response';
 import { 
   IEmployeeAccessHistory, 
   IEmployeeAccessHistoryDetail, 
   IEmployeeAccessHistoryList
-} from '../response/employeeAccessHistory';
+} from '@account/classes/response/employeeAccessHistory';
 import { 
   IEmployeeEducation, 
   IEmployeeEducationDetail, 
   IEmployeeEducationList 
-} from '../response/employeeEducation';
+} from '@account/classes/response/employeeEducation';
 import { 
   IEmployeeExperience, 
   IEmployeeExperienceDetail, 
   IEmployeeExperienceList 
-} from '../response/employeeExperience';
+} from '@account/classes/response/employeeExperience';
 import { 
   IEmployeeFamily, 
   IEmployeeFamilyDetail, 
   IEmployeeFamilyList 
-} from '../response/employeeFamily';
-import { IEmployeeMy } from '../response/IEmployeeMy';
+} from '@account/classes/response/employeeFamily';
+import { IEmployeeNote, IEmployeeNoteList } from '@account/classes/response/employeeNote';
+import { 
+  IEmployeeRate, 
+  IEmployeeRateList 
+} from '@account/classes/response/employeeRate';
+import { 
+  IEmployeeTraining, 
+  IEmployeeTrainingList 
+} from '@account/classes/response/employeeTraining';
+import { IEmployeeMy } from '@account/classes/response/IEmployeeMy';
+import { IQueryCollectionState, IQuerySingleState } from '@generic/interfaces';
 
 export interface IAccountState {
   // account employee
@@ -101,6 +132,28 @@ export interface IAccountState {
   accountEmployeeFamilyPost: IQuerySingleState<IEmployeeFamilyPostRequest, IEmployeeFamily>;
   accountEmployeeFamilyPut: IQuerySingleState<IEmployeeFamilyPutRequest, IEmployeeFamily>;
   accountEmployeeFamilyDelete: IQuerySingleState<IEmployeeFamilyDeleteRequest, boolean>;
+  
+  // account employee training
+  accountEmployeeTrainingGetAll: IQueryCollectionState<IEmployeeTrainingAllRequest, IEmployeeTraining>;
+  accountEmployeeTrainingGetList: IQueryCollectionState<IEmployeeTrainingListRequest, IEmployeeTrainingList>;
+  accountEmployeeTrainingGetById: IQuerySingleState<IEmployeeTrainingByIdRequest, IEmployeeTraining>;
+  accountEmployeeTrainingPost: IQuerySingleState<IEmployeeTrainingPostRequest, IEmployeeTraining>;
+  accountEmployeeTrainingPut: IQuerySingleState<IEmployeeTrainingPutRequest, IEmployeeTraining>;
+  accountEmployeeTrainingDelete: IQuerySingleState<IEmployeeTrainingDeleteRequest, boolean>;
+
+  // account employee rate
+  accountEmployeeRateGetAll: IQueryCollectionState<IEmployeeRateAllRequest, IEmployeeRate>;
+  accountEmployeeRateGetList: IQueryCollectionState<IEmployeeRateListRequest, IEmployeeRateList>;
+  accountEmployeeRateGetById: IQuerySingleState<IEmployeeRateByIdRequest, IEmployeeRate>;
+  accountEmployeeRatePut: IQuerySingleState<IEmployeeRatePutRequest, IEmployeeRate>;
+
+  // account employee note
+  accountEmployeeNoteGetAll: IQueryCollectionState<IEmployeeNoteAllRequest, IEmployeeNote>;
+  accountEmployeeNoteGetList: IQueryCollectionState<IEmployeeNoteListRequest, IEmployeeNoteList>;
+  accountEmployeeNoteGetById: IQuerySingleState<IEmployeeNoteByIdRequest, IEmployeeNote>;
+  accountEmployeeNotePost: IQuerySingleState<IEmployeeNotePostRequest, IEmployeeNote>;
+  accountEmployeeNotePut: IQuerySingleState<IEmployeeNotePutRequest, IEmployeeNote>;
+  accountEmployeeNoteDelete: IQuerySingleState<IEmployeeNoteDeleteRequest, boolean>;
   
   accountEmployeeMyGet: IQuerySingleState<{}, IEmployeeMy>;
 

@@ -6,3 +6,6 @@ export * from './accountEmployeeAccessHistoryAction';
 export * from './accountEmployeeEducationAction';
 export * from './accountEmployeeExperienceAction';
 export * from './accountEmployeeFamilyAction';
+export * from './accountEmployeeTrainingAction';
+export * from './accountEmployeeRateAction';
+export * from './accountEmployeeNoteAction';

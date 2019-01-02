@@ -93,6 +93,7 @@ export interface ICommonState {
   commonEmploymentAll: IQueryCollectionState<ISystemAllRequest, ISystem>;
   commonEmploymentList: IQueryCollectionState<ISystemListRequest, ISystemList>;
   commonEmploymentDetail: IQuerySingleState<ISystemByIdRequest, ISystemDetail>;
+
   commonPaymentAll: IQueryCollectionState<ISystemAllRequest, ISystem>;
   commonPaymentList: IQueryCollectionState<ISystemListRequest, ISystemList>;
   commonPaymentDetail: IQuerySingleState<ISystemByIdRequest, ISystemDetail>;
@@ -100,4 +101,28 @@ export interface ICommonState {
   commonFinanceAll: IQueryCollectionState<ISystemAllRequest, ISystem>;
   commonFinanceList: IQueryCollectionState<ISystemListRequest, ISystemList>;
   commonFinanceDetail: IQuerySingleState<ISystemByIdRequest, ISystemDetail>;
+
+  commonTrainingAll: IQueryCollectionState<ISystemAllRequest, ISystem>;
+  commonTrainingList: IQueryCollectionState<ISystemListRequest, ISystemList>;
+  commonTrainingDetail: IQuerySingleState<ISystemByIdRequest, ISystemDetail>;
+
+  commonCertificationAll: IQueryCollectionState<ISystemAllRequest, ISystem>;
+  commonCertificationList: IQueryCollectionState<ISystemListRequest, ISystemList>;
+  commonCertificationDetail: IQuerySingleState<ISystemByIdRequest, ISystemDetail>;
+
+  commonFamilyAll: IQueryCollectionState<ISystemAllRequest, ISystem>;
+  commonFamilyList: IQueryCollectionState<ISystemListRequest, ISystemList>;
+  commonFamilyDetail: IQuerySingleState<ISystemByIdRequest, ISystemDetail>;
+
+  commonDegreeAll: IQueryCollectionState<ISystemAllRequest, ISystem>;
+  commonDegreeList: IQueryCollectionState<ISystemListRequest, ISystemList>;
+  commonDegreeDetail: IQuerySingleState<ISystemByIdRequest, ISystemDetail>;
+
+  commonDepartmentAll: IQueryCollectionState<ISystemAllRequest, ISystem>;
+  commonDepartmentList: IQueryCollectionState<ISystemListRequest, ISystemList>;
+  commonDepartmentDetail: IQuerySingleState<ISystemByIdRequest, ISystemDetail>;
+
+  commonLevelAll: IQueryCollectionState<ISystemAllRequest, ISystem>;
+  commonLevelList: IQueryCollectionState<ISystemListRequest, ISystemList>;
+  commonLevelDetail: IQuerySingleState<ISystemByIdRequest, ISystemDetail>;
 }

@@ -5,6 +5,9 @@ import accountEmployeeExperienceReducers from './employeeExperience/accountEmplo
 import accountEmployeeFamilyReducers from './employeeFamily/accountEmployeeFamilyReducer';
 import accountEmployeeLeaveReducers from './employeeLeave/accountEmployeeLeaveReducers';
 import accountEmployeeMyReducers from './employeeMy/accountEmployeeMyReducers';
+import accountEmployeeNoteReducers from './employeeNote/accountEmployeeNoteReducer';
+import accountEmployeeRateReducers from './employeeRate/accountEmployeeRateReducer';
+import accountEmployeeTrainingReducers from './employeeTraining/accountEmployeeTrainingReducer';
 
 const accountReducers = {
   ...accountEmployeeReducers,
@@ -14,6 +17,9 @@ const accountReducers = {
   ...accountEmployeeEducationReducers,
   ...accountEmployeeExperienceReducers,
   ...accountEmployeeFamilyReducers,
+  ...accountEmployeeTrainingReducers,
+  ...accountEmployeeRateReducers,
+  ...accountEmployeeNoteReducers
 };
 
 export default accountReducers;

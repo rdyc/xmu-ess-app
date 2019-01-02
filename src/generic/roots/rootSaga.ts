@@ -4,19 +4,27 @@ import accountEmployeeExperienceSagas from '@account/store/sagas/accountEmployee
 import accountEmployeeFamilySagas from '@account/store/sagas/accountEmployeeFamilySagas';
 import accountEmployeeLeaveSagas from '@account/store/sagas/accountEmployeeLeaveSagas';
 import accountEmployeeMySagas from '@account/store/sagas/accountEmployeeMySagas';
+import accountEmployeeNoteSagas from '@account/store/sagas/accountEmployeeNoteSagas';
+import accountEmployeeRateSagas from '@account/store/sagas/accountEmployeeRateSagas';
 import accountEmployeeSagas from '@account/store/sagas/accountEmployeeSagas';
+import accountEmployeeTrainingSagas from '@account/store/sagas/accountEmployeeTrainingSagas';
 import commonActivitySagas from '@common/store/sagas/activitySagas';
 import commonBloodSagas from '@common/store/sagas/bloodSagas';
+import commonCertificationSagas from '@common/store/sagas/certificationSagas';
 import commonCurrencySagas from '@common/store/sagas/currencySagas';
+import commonDegreeSagas from '@common/store/sagas/degreeSagas';
+import commonDepartmentSagas from '@common/store/sagas/departmentSagas';
 import commonDestinationSagas from '@common/store/sagas/destinationSagas';
 import commonDocumentPresalesSagas from '@common/store/sagas/documentPresalesSagas';
 import commonDocumentSagas from '@common/store/sagas/documentSagas';
 import commonEmploymentSagas from '@common/store/sagas/employmentSagas';
 import commonExpenseSagas from '@common/store/sagas/expenseSagas';
+import commonFamilySagas from '@common/store/sagas/familySagas';
 import commonFinanceSagas from '@common/store/sagas/financeSagas';
 import commonGenderSagas from '@common/store/sagas/genderSagas';
 import commonGradeSagas from '@common/store/sagas/gradeSagas';
 import commonLeaveSagas from '@common/store/sagas/leaveSagas';
+import commonLevelSagas from '@common/store/sagas/levelSagas';
 import commonLimiterSagas from '@common/store/sagas/limiterSagas';
 import commonPaymentSagas from '@common/store/sagas/paymentSagas';
 import commonProjectSagas from '@common/store/sagas/projectSagas';
@@ -27,6 +35,7 @@ import commonSiteSagas from '@common/store/sagas/siteSagas';
 import commonStatusSagas from '@common/store/sagas/statusSagas';
 import commonSystemSagas from '@common/store/sagas/systemSagas';
 import commonTaxSagas from '@common/store/sagas/taxSagas';
+import commonTrainingSagas from '@common/store/sagas/trainingSagas';
 import commonTransportationSagas from '@common/store/sagas/transportationSagas';
 import commonUnitSagas from '@common/store/sagas/unitSagas';
 import expenseApprovalSagas from '@expense/store/sagas/expenseApprovalSagas';
@@ -99,6 +108,12 @@ export function* rootSaga() {
     fork(commonEmploymentSagas),
     fork(commonPaymentSagas),
     fork(commonFinanceSagas),
+    fork(commonTrainingSagas),
+    fork(commonCertificationSagas),
+    fork(commonDegreeSagas),
+    fork(commonDepartmentSagas),
+    fork(commonFamilySagas),
+    fork(commonLevelSagas),
 
     // lookup
     fork(leaveCalculationSagas),
@@ -126,6 +141,9 @@ export function* rootSaga() {
     fork(accountEmployeeEducationSagas),
     fork(accountEmployeeExperienceSagas),
     fork(accountEmployeeFamilySagas),
+    fork(accountEmployeeTrainingSagas),
+    fork(accountEmployeeRateSagas),
+    fork(accountEmployeeNoteSagas),
 
     // project
     fork(projectRegistrationSagas),
