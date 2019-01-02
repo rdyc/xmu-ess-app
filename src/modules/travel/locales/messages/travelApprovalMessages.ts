@@ -19,7 +19,7 @@ export const travelApprovalPage = defineMessages({
 
 // option
 export const travelApprovalOption = defineMessages({
-  adjustmentNeeded: { id: `${prefix}.option.addjustmentNeeded` },
+  adjustmentNeeded: { id: `${prefix}.option.adjustmentNeeded` },
 });
 
 // confirm
