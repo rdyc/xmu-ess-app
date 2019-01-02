@@ -11,7 +11,7 @@ export const PurchaseSettlementFormView: React.SFC<PurchaseSettlementFormProps> 
   const {
     formMode,
     formIsCurrencyIDR, initialValues,
-    settleMinDate
+    // settleMinDate
   } = props;
 
   const fields = Object.getOwnPropertyNames(initialValues.information);
@@ -21,7 +21,7 @@ export const PurchaseSettlementFormView: React.SFC<PurchaseSettlementFormProps> 
       formMode={formMode}
       context={context}
       isCurrencyIdr={formIsCurrencyIDR}
-      settleMinDate={settleMinDate}
+      // settleMinDate={settleMinDate}
     />
   );
 

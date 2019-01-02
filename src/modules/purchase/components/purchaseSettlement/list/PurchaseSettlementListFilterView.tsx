@@ -119,29 +119,9 @@ export const PurchaseSettlementListFilterView: React.SFC<PurchaseSettlementListF
         </ListItem>
         <Divider />
 
-        <ListItem button onClick={props.handleFilterCompletionVisibility}>
-          <ListItemText 
-            primary={props.intl.formatMessage(purchaseMessage.request.field.completion)}
-            secondary={props.filterCompletion && props.filterCompletion.name || props.intl.formatMessage(layoutMessage.text.none)} 
-          />
-          <ListItemSecondaryAction>
-          { 
-              props.filterCompletion &&
-              <IconButton onClick={props.handleFilterCompletionOnClear}>
-                <ClearIcon />
-              </IconButton> 
-            }
-
-            <IconButton disabled>
-              <ChevronRightIcon />
-            </IconButton> 
-          </ListItemSecondaryAction>
-        </ListItem>
-        <Divider />
-
         <ListItem>
           <ListItemText 
-            primary={props.intl.formatMessage(purchaseMessage.settlement.field.isRejected)}
+            primary={props.intl.formatMessage(purchaseMessage.settlement.field.isNeedAdjust)}
             secondary={props.intl.formatMessage(props.filterRejected ? layoutMessage.action.yes : layoutMessage.action.no)}
           />
           <ListItemSecondaryAction>

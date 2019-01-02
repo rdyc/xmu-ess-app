@@ -6,7 +6,7 @@ import * as React from 'react';
 import { Field } from 'redux-form';
 
 export const PurchaseRequestDetailFormView: React.SFC<PurchaseRequestDetailFormProps> = props => {
-  const { formMode, intl } = props;
+  const { formMode, intl, isCurrencyIdr } = props;
   const { names } = props.context;
 
   const renderField = (name: string) => {
@@ -16,6 +16,11 @@ export const PurchaseRequestDetailFormView: React.SFC<PurchaseRequestDetailFormP
     // don't show uid for new form
     const fields = ['uid'];
     if (formMode === FormMode.New && fields.indexOf(fieldName) !== -1) {
+      return null;
+    }
+
+    const fieldIDRs = ['requestInIDR'];
+    if (isCurrencyIdr && fieldIDRs.indexOf(fieldName) !== -1) {
       return null;
     }
 

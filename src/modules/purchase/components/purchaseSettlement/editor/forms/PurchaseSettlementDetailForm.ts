@@ -14,7 +14,7 @@ interface OwnProps {
   formMode: FormMode;
   context: BaseFieldsProps;
   isCurrencyIdr: boolean;
-  settleMinDate?: Date;
+  // settleMinDate?: Date;
 }
 
 interface OwnHandlers {
@@ -77,7 +77,8 @@ const handlerCreators: HandleCreators<PurchaseSettlementDetailFormProps, OwnHand
           label: props.intl.formatMessage(purchaseMessage.settlement.field.date),
           placeholder: props.intl.formatMessage(purchaseMessage.settlement.field.datePlaceholder),
           component: InputDate,
-          minDate: props.settleMinDate
+          disablePast: true,
+          // minDate: props.settleMinDate
         };
         break;
         
