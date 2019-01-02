@@ -48,7 +48,8 @@ export const BillableListView: React.SFC<BillableListProps> = props => {
               <Typography noWrap align="left" variant="caption">
                 {props.intl.formatMessage(summaryMessage.billable.note.note)} <br />
                 {props.intl.formatMessage(summaryMessage.billable.note.totalHours)} <br />
-                {props.intl.formatMessage(summaryMessage.billable.note.percentage)}
+                {props.intl.formatMessage(summaryMessage.billable.note.billablePercentage)} <br />
+                {props.intl.formatMessage(summaryMessage.billable.note.presalesPercentage)}
               </Typography>
             </Grid>
           </Grid>
