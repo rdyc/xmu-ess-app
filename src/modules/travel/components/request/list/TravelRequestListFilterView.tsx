@@ -18,6 +18,7 @@ import {
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import CloseIcon from '@material-ui/icons/Close';
 import ClearIcon from '@material-ui/icons/SettingsBackupRestore';
+import { ProjectRegistrationDialog } from '@project/components/dialog/project';
 import { travelMessage } from '@travel/locales/messages/travelMessage';
 import * as React from 'react';
 import { TravelRequestListFilterProps } from './TravelRequestListFilter';
@@ -42,7 +43,7 @@ export const TravelRequestListFilterView: React.SFC<TravelRequestListFilterProps
           </Typography>
 
           {
-            (props.filterCustomer || props.filterType || props.filterStatus || props.filterCompletion || props.filterRejected || props.filterSettlement) &&
+            (props.filterCustomer || props.filterProject || props.filterType || props.filterStatus || props.filterCompletion || props.filterRejected || props.filterSettlement) &&
             <Button color="inherit" onClick={props.handleFilterOnReset}>
               {props.intl.formatMessage(layoutMessage.action.reset)}
             </Button>
@@ -72,6 +73,26 @@ export const TravelRequestListFilterView: React.SFC<TravelRequestListFilterProps
             }
 
             <IconButton onClick={props.handleFilterCompletionVisibility}>
+              <ChevronRightIcon />
+            </IconButton>
+          </ListItemSecondaryAction>
+        </ListItem>
+        <Divider />
+
+        <ListItem button onClick={props.filterCustomer && props.handleFilterProjectVisibility}>
+          <ListItemText
+            primary={props.intl.formatMessage(travelMessage.request.field.projectUid)}
+            secondary={props.filterProject && props.filterProject.name || props.intl.formatMessage(layoutMessage.text.none)}
+          />
+          <ListItemSecondaryAction>
+            {
+              props.filterProject &&
+              <IconButton onClick={props.handleFilterProjectOnClear}>
+                <ClearIcon />
+              </IconButton>
+            }
+
+            <IconButton onClick={props.filterCustomer && props.handleFilterProjectVisibility}>
               <ChevronRightIcon />
             </IconButton>
           </ListItemSecondaryAction>
@@ -136,6 +157,14 @@ export const TravelRequestListFilterView: React.SFC<TravelRequestListFilterProps
       isOpen={props.isFilterCustomerOpen}
       onSelected={props.handleFilterCustomerOnSelected}
       onClose={props.handleFilterCustomerOnClose}
+    />
+
+    <ProjectRegistrationDialog
+      hideBackdrop={true}
+      isOpen={props.isFilterProjectOpen}
+      filter={props.filterProjectDialog}
+      onSelected={props.handleFilterProjectOnSelected}
+      onClose={props.handleFilterProjectOnClose}
     />
 
     <LookupSystemDialog

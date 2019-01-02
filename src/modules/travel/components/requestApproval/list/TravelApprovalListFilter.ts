@@ -1,8 +1,12 @@
 import { ISystemList } from '@common/classes/response';
 import { ICollectionValue } from '@layout/classes/core';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
+import { WithUser, withUser } from '@layout/hoc/withUser';
+import { ILookupCustomerGetListFilter } from '@lookup/classes/filters/customer';
 import { ICustomerList } from '@lookup/classes/response';
 import { WithStyles, withStyles } from '@material-ui/core';
+import { IProjectRegistrationGetListFilter } from '@project/classes/filters/registration';
+import { IProjectList } from '@project/classes/response';
 import styles from '@styles';
 import { ITravelApprovalgetAllFilter } from '@travel/classes/filters/ITravelApprovalGetAlFilter';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
@@ -24,7 +28,7 @@ const completionStatus: ICollectionValue[] = [
   { value: 'complete', name: 'Complete' }
 ];
 
-export type ITravelApprovalListFilterResult = Pick<ITravelApprovalgetAllFilter, 'customerUid' | 'statusType' | 'status' |'isNotify'>;
+export type ITravelApprovalListFilterResult = Pick<ITravelApprovalgetAllFilter, 'customerUid' | 'statusType' | 'projectUid' | 'status' |'isNotify'>;
 
 interface IOwnOption {
   isOpen: boolean;
@@ -39,6 +43,16 @@ interface IOwnState {
   // filter customer
   isFilterCustomerOpen: boolean;
   filterCustomer?: ICustomerList;
+
+  // filter Customer Dialog
+  filterCustomerDialog: ILookupCustomerGetListFilter;
+
+  // filter project
+  isFilterProjectOpen: boolean;
+  filterProject?: IProjectList;
+
+  // filter Project Dialog
+  filterProjectDialog: IProjectRegistrationGetListFilter;
 
   // filter status
   isFilterStatusOpen: boolean;
@@ -83,6 +97,12 @@ interface IOwnHandler {
   handleFilterCustomerOnClear: (event: React.MouseEvent<HTMLElement>) => void;
   handleFilterCustomerOnClose: () => void;
 
+  // filter project
+  handleFilterProjectVisibility: (event: React.MouseEvent<HTMLElement>) => void;
+  handleFilterProjectOnSelected: (customer: IProjectList) => void;
+  handleFilterProjectOnClear: (event: React.MouseEvent<HTMLElement>) => void;
+  handleFilterProjectOnClose: () => void;
+
   // filter status
   handleFilterStatusVisibility: (event: React.MouseEvent<HTMLElement>) => void;
   handleFilterStatusOnSelected: (data: ISystemList) => void;
@@ -101,6 +121,7 @@ interface IOwnHandler {
 
 export type TravelApprovalListFilterProps 
   = IOwnOption
+  & WithUser
   & IOwnState
   & IOwnStateUpdater
   & IOwnHandler
@@ -111,11 +132,21 @@ export type TravelApprovalListFilterProps
 const createProps: mapper<TravelApprovalListFilterProps, IOwnState> = (props: TravelApprovalListFilterProps): IOwnState => ({
   completionStatus,
   isFilterCustomerOpen: false,
+  isFilterProjectOpen: false,
   isFilterStatusOpen: false,
   isFilterCompletionOpen: false,
 
   // pass initial value for primitive types only, bellow is 'boolean'
   filterNotify: props.initialProps && props.initialProps.isNotify,
+
+  filterCustomerDialog: {
+    companyUid: props.userState.user ? props.userState.user.company.uid : undefined
+  },
+
+  // default filter project dialog
+  filterProjectDialog: {
+    customerUids: undefined
+  }
 
 });
 
@@ -123,6 +154,7 @@ const stateUpdaters: StateUpdaters<TravelApprovalListFilterProps, IOwnState, IOw
   // main filter
   setFilterReset: (prevState: IOwnState) => () => ({
     filterCustomer: undefined,
+    filterProject: undefined,
     filterStatus: undefined,
     filterNotify: undefined
   }),
@@ -133,7 +165,19 @@ const stateUpdaters: StateUpdaters<TravelApprovalListFilterProps, IOwnState, IOw
   }),
   setFilterCustomer: (prevState: IOwnState) => (customer?: ICustomerList) => ({
     isFilterCustomerOpen: false,
-    filterCustomer: customer
+    filterCustomer: customer,
+    filterProjectDialog: {
+      customerUids: customer && [customer.uid] || undefined
+    }
+  }),
+
+  // filter project
+  setFilterProjectVisibility: (prevState: IOwnState) => () => ({
+    isFilterProjectOpen: !prevState.isFilterCustomerOpen
+  }),
+  setFilterProject: (prevState: IOwnState) => (customer?: IProjectList) => ({
+    isFilterProjectOpen: false,
+    filterProject: customer
   }),
 
   // filter status
@@ -168,6 +212,7 @@ const handlerCreators: HandleCreators<TravelApprovalListFilterProps, IOwnHandler
   handleFilterOnApply: (props: TravelApprovalListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
     props.onApply({
       customerUid: props.filterCustomer && props.filterCustomer.uid,
+      projectUid: props.filterProject && props.filterProject.uid,
       statusType: props.filterStatus && props.filterStatus.type,
       status: props.filterCompletion && props.filterCompletion.value,
       isNotify: props.filterNotify
@@ -186,6 +231,20 @@ const handlerCreators: HandleCreators<TravelApprovalListFilterProps, IOwnHandler
   },
   handleFilterCustomerOnClose: (props: TravelApprovalListFilterProps) => () => {
     props.setFilterCustomerVisibility();
+  },
+
+  // filter project
+  handleFilterProjectVisibility: (props: TravelApprovalListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
+    props.setFilterProjectVisibility();
+  },
+  handleFilterProjectOnSelected: (props: TravelApprovalListFilterProps) => (project: IProjectList) => {
+    props.setFilterProject(project);
+  },
+  handleFilterProjectOnClear: (props: TravelApprovalListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
+    props.setFilterProject();
+  },
+  handleFilterProjectOnClose: (props: TravelApprovalListFilterProps) => () => {
+    props.setFilterProjectVisibility();
   },
 
   // filter status
@@ -223,6 +282,7 @@ const handlerCreators: HandleCreators<TravelApprovalListFilterProps, IOwnHandler
 
 export const TravelApprovalListFilter = compose<TravelApprovalListFilterProps, IOwnOption>(
   setDisplayName('TravelApprovalListFilter'),
+  withUser,
   withLayout,
   withStyles(styles),
   injectIntl,

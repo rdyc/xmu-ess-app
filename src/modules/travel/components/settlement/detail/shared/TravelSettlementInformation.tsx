@@ -76,9 +76,10 @@ const travelSettlementInformation: React.SFC<AllProps> = props => {
         />
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
+          multiline
           margin="dense"
           label={props.intl.formatMessage(travelMessage.request.field.projectUid)}
-          value={data.project ? data.project.name : 'N/A'}
+          value={`${ data && data.projectUid} - ${ data && data.project ? data.project.name : '' }`}
         />
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
