@@ -154,14 +154,16 @@ const handlerCreators: HandleCreators<SettlementApprovalDetailProps, OwnHandler>
 const createProps: mapper<SettlementApprovalDetailProps, OwnState> = (props: SettlementApprovalDetailProps): OwnState => ({
   shouldDataReload: false,
   approvalTitle: props.intl.formatMessage(purchaseMessage.s_approval.section.approveForm),
-  approvalSubHeader: props.intl.formatMessage(purchaseMessage.s_approval.section.approveContent),
+  // approvalSubHeader: props.intl.formatMessage(purchaseMessage.s_approval.section.approveContent),
+  approvalSubHeader: '',
   approvalChoices: [
-    { value: WorkflowStatusType.Approved, label: props.intl.formatMessage(organizationMessage.workflow.option.approve) },
-    { value: WorkflowStatusType.Rejected, label: props.intl.formatMessage(organizationMessage.workflow.option.reject) }
+    { value: WorkflowStatusType.Approved, label: props.intl.formatMessage(purchaseMessage.s_approval.message.approve) },
+    { value: WorkflowStatusType.AdjustmentNeeded, label: props.intl.formatMessage(purchaseMessage.s_approval.message.adjustmentNeeded) }
   ],
   approvalTrueValue: WorkflowStatusType.Approved,
   approvalDialogTitle: props.intl.formatMessage(purchaseMessage.s_approval.confirm.approveTitle),
-  approvalDialogContentText: props.intl.formatMessage(purchaseMessage.s_approval.confirm.approveTitle),
+  // approvalDialogContentText: props.intl.formatMessage(purchaseMessage.s_approval.confirm.approveDescription),
+  approvalDialogContentText: '',
   approvalDialogCancelText: props.intl.formatMessage(layoutMessage.action.discard),
   approvalDialogConfirmedText: props.intl.formatMessage(layoutMessage.action.continue),
 

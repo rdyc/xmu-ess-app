@@ -65,5 +65,5 @@ export const purchaseSettlementField = defineMessages({
 
   reject: { id: `${prefix}.field.information.rejectreason` },
 
-  isRejected: { id: `${prefix}.field.isRejected` }
+  isNeedAdjust: { id: `${prefix}.field.isNeedAdjust` }
 });

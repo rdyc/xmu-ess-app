@@ -20,7 +20,7 @@ export const organizationHierarchyItem: React.SFC<AllProps> = props => {
     <Card square>
       <CardHeader 
         title={props.intl.formatMessage(organizationMessage.hierarchy.section.historyTitle)}
-        subheader={props.intl.formatMessage(organizationMessage.hierarchy.section.historySubHeader)}
+        // subheader={props.intl.formatMessage(organizationMessage.hierarchy.section.historySubHeader)}
       />
       <CardContent>
         <List>

@@ -14,7 +14,7 @@ export const ProjectRegistrationDocumentFormView: React.SFC<ProjectDocumentFormP
     <Card square>
       <CardHeader 
         title={props.intl.formatMessage(category === 'project' ? projectMessage.registration.section.documentProjectTitle : projectMessage.registration.section.documentPreSalesTitle)}
-        subheader={props.intl.formatMessage(category === 'project' ? projectMessage.registration.section.documentProjectSubHeader : projectMessage.registration.section.documentPreSalesSubHeader)}
+        // subheader={props.intl.formatMessage(category === 'project' ? projectMessage.registration.section.documentProjectSubHeader : projectMessage.registration.section.documentPreSalesSubHeader)}
       />
       <CardContent>
         {

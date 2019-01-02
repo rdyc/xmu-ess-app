@@ -21,7 +21,7 @@ export const structureItemInformation: React.SFC<AllProps> = props => {
     <Card square>
       <CardHeader
         title={props.intl.formatMessage(organizationMessage.structure.section.itemTitle)}
-        subheader={props.intl.formatMessage(organizationMessage.structure.section.itemSubHeader)}
+        // subheader={props.intl.formatMessage(organizationMessage.structure.section.itemSubHeader)}
       />
       <CardContent>
         <List>

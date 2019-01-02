@@ -24,43 +24,43 @@ const mileageInformation: React.SFC<AllProps> = props => {
 
   const render = (
     <Card square>
-    <CardHeader
-      title={intl.formatMessage(mileageMessage.request.field.title)}
-      subheader={intl.formatMessage(mileageMessage.request.field.subHeader)}
-    />
-    <CardContent>
-      <TextField
-        {...GlobalStyle.TextField.ReadOnly}
-        margin="dense"
-        label={intl.formatMessage(mileageMessage.request.field.uid)}
-        value={data.uid}
+      <CardHeader
+        title={intl.formatMessage(mileageMessage.request.field.title)}
+        // subheader={intl.formatMessage(mileageMessage.request.field.subHeader)}
       />
-      <TextField
-        {...GlobalStyle.TextField.ReadOnly}
-        margin="dense"
-        label={intl.formatMessage(mileageMessage.request.field.employeeName)}
-        value={data.employee ? data.employee.fullName : ''}
-      />
-      <TextField
-        {...GlobalStyle.TextField.ReadOnly}
-        margin="dense"
-        label={intl.formatMessage(mileageMessage.request.field.month)}
-        value={moment.months(data.month - 1)}
-      />
-      <TextField
-        {...GlobalStyle.TextField.ReadOnly}
-        margin="dense"
-        label={intl.formatMessage(mileageMessage.request.field.year)}
-        value={data.year}
-      />
-      <TextField
-        {...GlobalStyle.TextField.ReadOnly}
-        margin="dense"
-        label={intl.formatMessage(mileageMessage.request.field.amount)}
-        value={intl.formatNumber(data.amount, GlobalFormat.CurrencyDefault)}
-      />
-    </CardContent>
-  </Card>
+      <CardContent>
+        <TextField
+          {...GlobalStyle.TextField.ReadOnly}
+          margin="dense"
+          label={intl.formatMessage(mileageMessage.request.field.uid)}
+          value={data.uid}
+        />
+        <TextField
+          {...GlobalStyle.TextField.ReadOnly}
+          margin="dense"
+          label={intl.formatMessage(mileageMessage.request.field.employeeName)}
+          value={data.employee ? data.employee.fullName : ''}
+        />
+        <TextField
+          {...GlobalStyle.TextField.ReadOnly}
+          margin="dense"
+          label={intl.formatMessage(mileageMessage.request.field.month)}
+          value={moment.months(data.month - 1)}
+        />
+        <TextField
+          {...GlobalStyle.TextField.ReadOnly}
+          margin="dense"
+          label={intl.formatMessage(mileageMessage.request.field.year)}
+          value={data.year}
+        />
+        <TextField
+          {...GlobalStyle.TextField.ReadOnly}
+          margin="dense"
+          label={intl.formatMessage(mileageMessage.request.field.amount)}
+          value={intl.formatNumber(data.amount, GlobalFormat.CurrencyDefault)}
+        />
+      </CardContent>
+    </Card>
   );
 
   return render;

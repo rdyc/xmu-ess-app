@@ -15,15 +15,21 @@ import {
 } from '@project/store/actions';
 import { flattenObject } from '@utils/flattenObject';
 import saiyanSaga from '@utils/saiyanSaga';
+import * as qs from 'qs';
 import { SubmissionError } from 'redux-form';
 import { all, fork, put, takeEvery } from 'redux-saga/effects';
-import { IApiResponse, objectToQuerystring } from 'utils';
+import { IApiResponse } from 'utils';
 
 function* watchGetAllRequest() {
   const worker = (action: ReturnType<typeof projectApprovalGetAllRequest>) => {
+    const params = qs.stringify(action.payload.filter, { 
+      allowDots: true, 
+      skipNulls: true
+    });
+
     return saiyanSaga.fetch({
       method: 'get',
-      path: `/v1/approvals/project?${objectToQuerystring(action.payload.filter)}`,
+      path: `/v1/approvals/project?${params}`,
       successEffects: (response: IApiResponse) => [
         put(projectApprovalGetAllSuccess(response.body)),
       ],

@@ -33,7 +33,7 @@ export const ProjectRegistrationDetailFormView: React.SFC<ProjectRegistrationDet
     <Card square>
       <CardHeader 
         title={intl.formatMessage(projectMessage.registration.section.infoTitle)}
-        subheader={intl.formatMessage(projectMessage.registration.section.infoSubHeader)}
+        // subheader={intl.formatMessage(projectMessage.registration.section.infoSubHeader)}
       />
       <CardContent>
         {

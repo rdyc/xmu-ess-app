@@ -24,7 +24,7 @@ export const commonInformation: React.SFC<AllProps> = props => {
     <Card square>
       <CardHeader 
         title={props.intl.formatMessage(commonMessage.system.section.title)}
-        subheader={props.intl.formatMessage(commonMessage.system.section.subTitle)}
+        // subheader={props.intl.formatMessage(commonMessage.system.section.subTitle)}
       />
       <CardContent>
         {

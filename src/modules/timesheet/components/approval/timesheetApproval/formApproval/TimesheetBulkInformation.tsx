@@ -35,7 +35,7 @@ const timesheetBulkInformation: React.SFC<AllProps> = props => {
     <Card square>
       <CardHeader
         title={intl.formatMessage(timesheetMessage.entry.section.infoTitle)}
-        subheader={props.intl.formatMessage(timesheetMessage.entry.section.infoSubHeader)}
+        // subheader={props.intl.formatMessage(timesheetMessage.entry.section.infoSubHeader)}
       />
       <CardContent>
         <List>

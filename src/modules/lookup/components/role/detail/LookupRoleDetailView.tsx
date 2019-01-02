@@ -93,7 +93,7 @@ const config: SingleConfig<IRoleDetail, RoleDetailProps> = {
     <LookupRoleMenu 
       data={data.menus}
       title={props.intl.formatMessage(lookupMessage.role.section.roleMenuTitle)}
-      subHeader={props.intl.formatMessage(lookupMessage.role.section.roleMenuSubHeader)}
+      // subHeader={props.intl.formatMessage(lookupMessage.role.section.roleMenuSubHeader)}
     />
   ])
 };

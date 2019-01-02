@@ -141,7 +141,7 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
       hasSelection: true,
       notSelectionTypes: [FinanceStatusType.NotPaid, FinanceStatusType.Paid],
       onProcessSelection: (values: string[], callback: CollectionHandler) => {
-        callback.handleRedirectTo('/finance/approvals/payment', {values});
+        this.props.history.push('/finance/approvals/payment', {values});
       },
     
       // searching

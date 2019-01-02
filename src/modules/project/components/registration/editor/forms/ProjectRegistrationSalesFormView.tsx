@@ -26,7 +26,7 @@ export const ProjectRegistrationSalesFormView: React.SFC<ProjectRegistrationSale
   <Card square>
     <CardHeader 
       title={props.intl.formatMessage(projectMessage.registration.section.salesTitle)}
-      subheader={props.intl.formatMessage(projectMessage.registration.section.siteSubHeader)}
+      // subheader={props.intl.formatMessage(projectMessage.registration.section.siteSubHeader)}
     />
     <CardContent>
       <List>

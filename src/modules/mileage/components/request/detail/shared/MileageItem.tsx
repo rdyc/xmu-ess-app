@@ -59,7 +59,7 @@ const mileageItem: React.SFC<AllProps> = props => {
     <Card square>
       <CardHeader 
         title={props.intl.formatMessage(mileageMessage.request.item.title)}
-        subheader={props.intl.formatMessage(mileageMessage.request.item.subHeader)}
+        // subheader={props.intl.formatMessage(mileageMessage.request.item.subHeader)}
       />
       <CardContent>
         <List>

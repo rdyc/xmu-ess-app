@@ -32,7 +32,7 @@ export const RequestDetailFormView: React.SFC<RequestDetailFormProps> = props =>
     <Card square>
       <CardHeader 
         title={intl.formatMessage(expenseMessage.request.section.title)}
-        subheader={intl.formatMessage(expenseMessage.request.section.subTitle)}
+        // subheader={intl.formatMessage(expenseMessage.request.section.subTitle)}
       />
       <CardContent>
         {names.map(name => renderField(name))}

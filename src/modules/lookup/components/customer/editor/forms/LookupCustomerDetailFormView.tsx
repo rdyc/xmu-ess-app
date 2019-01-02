@@ -58,7 +58,7 @@ export const LookupCustomerDetailFormView: React.SFC<LookupCustomerDetailFormPro
     <Card square>
       <CardHeader 
         title={intl.formatMessage(lookupMessage.lookupCustomer.section.infoTitle)}
-        subheader={intl.formatMessage(lookupMessage.lookupCustomer.section.infoSubHeader)}
+        // subheader={intl.formatMessage(lookupMessage.lookupCustomer.section.infoSubHeader)}
       />
       <CardContent>
         {names.map(name => renderField(name))}
