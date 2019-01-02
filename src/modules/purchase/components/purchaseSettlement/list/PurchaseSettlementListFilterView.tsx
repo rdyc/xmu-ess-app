@@ -1,5 +1,4 @@
 import { LookupSystemDialog } from '@common/components/dialog/lookupSystemDialog/LookupSystemDialog';
-import { DialogValue } from '@layout/components/dialogs/DialogValue';
 import { layoutMessage } from '@layout/locales/messages';
 import { LookupCustomerDialog } from '@lookup/components/customer/dialog';
 import {
@@ -22,6 +21,7 @@ import ClearIcon from '@material-ui/icons/SettingsBackupRestore';
 import { purchaseMessage } from '@purchase/locales/messages/purchaseMessage';
 import * as React from 'react';
 
+import { ProjectRegistrationDialog } from '@project/components/dialog/project';
 import { PurchaseSettlementListFilterProps } from './PurchaseSettlementListFilter';
 
 export const PurchaseSettlementListFilterView: React.SFC<PurchaseSettlementListFilterProps> = props => (
@@ -44,7 +44,7 @@ export const PurchaseSettlementListFilterView: React.SFC<PurchaseSettlementListF
           </Typography>
 
           {
-            (props.filterCustomer || props.filterStatus || props.filterCompletion || props.filterRejected) &&
+            (props.filterCustomer || props.filterStatus || props.filterProject || props.filterRejected) &&
             <Button color="inherit" onClick={props.handleFilterOnReset}>
               {props.intl.formatMessage(layoutMessage.action.reset)}
             </Button>
@@ -79,6 +79,25 @@ export const PurchaseSettlementListFilterView: React.SFC<PurchaseSettlementListF
           </ListItemSecondaryAction>
         </ListItem>
         <Divider />
+        <ListItem button onClick={props.filterCustomer && props.handleFilterProjectVisibility}>
+          <ListItemText
+            primary={props.intl.formatMessage(purchaseMessage.request.field.projectUid)}
+            secondary={props.filterProject && props.filterProject.name || props.intl.formatMessage(layoutMessage.text.none)}
+          />
+          <ListItemSecondaryAction>
+            {
+              props.filterProject &&
+              <IconButton onClick={props.handleFilterProjectOnClear}>
+                <ClearIcon />
+              </IconButton>
+            }
+
+            <IconButton onClick={props.filterCustomer && props.handleFilterProjectVisibility}>
+              <ChevronRightIcon />
+            </IconButton>
+          </ListItemSecondaryAction>
+        </ListItem>
+        <Divider />
 
         <ListItem button onClick={props.handleFilterStatusVisibility}>
           <ListItemText 
@@ -100,29 +119,9 @@ export const PurchaseSettlementListFilterView: React.SFC<PurchaseSettlementListF
         </ListItem>
         <Divider />
 
-        <ListItem button onClick={props.handleFilterCompletionVisibility}>
-          <ListItemText 
-            primary={props.intl.formatMessage(purchaseMessage.request.field.completion)}
-            secondary={props.filterCompletion && props.filterCompletion.name || props.intl.formatMessage(layoutMessage.text.none)} 
-          />
-          <ListItemSecondaryAction>
-          { 
-              props.filterCompletion &&
-              <IconButton onClick={props.handleFilterCompletionOnClear}>
-                <ClearIcon />
-              </IconButton> 
-            }
-
-            <IconButton disabled>
-              <ChevronRightIcon />
-            </IconButton> 
-          </ListItemSecondaryAction>
-        </ListItem>
-        <Divider />
-
         <ListItem>
           <ListItemText 
-            primary={props.intl.formatMessage(purchaseMessage.settlement.field.isRejected)}
+            primary={props.intl.formatMessage(purchaseMessage.settlement.field.isNeedAdjust)}
             secondary={props.intl.formatMessage(props.filterRejected ? layoutMessage.action.yes : layoutMessage.action.no)}
           />
           <ListItemSecondaryAction>
@@ -143,7 +142,15 @@ export const PurchaseSettlementListFilterView: React.SFC<PurchaseSettlementListF
       isOpen={props.isFilterCustomerOpen} 
       onSelected={props.handleFilterCustomerOnSelected} 
       onClose={props.handleFilterCustomerOnClose}
-      filter={props.customerPayload}
+      filter={props.filterCustomerDialog}
+    />
+
+    <ProjectRegistrationDialog
+      hideBackdrop={true}
+      isOpen={props.isFilterProjectOpen}
+      onSelected={props.handleFilterProjectOnSelected}
+      onClose={props.handleFilterProjectOnClose}
+      filter={props.filterProjectDialog}
     />
 
     <LookupSystemDialog
@@ -156,14 +163,5 @@ export const PurchaseSettlementListFilterView: React.SFC<PurchaseSettlementListF
       onClose={props.handleFilterStatusOnClose}
     />
     
-    <DialogValue
-      title={props.intl.formatMessage(purchaseMessage.request.field.completion)}
-      isOpen={props.isFilterCompletionOpen}
-      hideBackdrop={true}
-      items={props.completionStatus}
-      value={props.filterCompletion && props.filterCompletion.value || props.initialProps && props.initialProps.status}
-      onSelected={props.handleFilterCompletionOnSelected}
-      onClose={props.handleFilterCompletionOnClose}
-    />
   </React.Fragment>
 );

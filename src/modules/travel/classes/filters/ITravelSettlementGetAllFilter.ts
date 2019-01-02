@@ -6,9 +6,9 @@ export interface ITravelSettlementGetAllFilter extends IBasePagingFilter {
   // readonly customerUid: string | undefined;
   // readonly isRejected: boolean | undefined;
   companyUid?: string;
+  projectUid?: string;
   positionUid?: string;
   customerUid?: string;
   statusType?: string;
-  status?: 'pending' | 'complete' | string;
   isRejected?: boolean;
 }

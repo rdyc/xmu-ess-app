@@ -18,7 +18,8 @@ const config: SingleConfig<ISettlementDetail, SettlementApprovalDetailProps> = {
     uid: AppMenu.PurchaseSettlementApproval,
     parentUid: AppMenu.Purchase,
     title: props.intl.formatMessage(purchaseMessage.s_approval.pages.detailTitle),
-    description: props.intl.formatMessage(purchaseMessage.s_approval.pages.detailTitle)
+    // description: props.intl.formatMessage(purchaseMessage.s_approval.pages.detailTitle)
+    description: ''
   }),
   
   // parent url

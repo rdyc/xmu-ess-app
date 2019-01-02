@@ -1,6 +1,6 @@
 import { LookupSystemDialog } from '@common/components/dialog/lookupSystemDialog/LookupSystemDialog';
 import { expenseMessage } from '@expense/locales/messages/expenseMessage';
-import { DialogValue } from '@layout/components/dialogs/DialogValue';
+// import { DialogValue } from '@layout/components/dialogs/DialogValue';
 import { layoutMessage } from '@layout/locales/messages';
 import { LookupCustomerDialog } from '@lookup/components/customer/dialog';
 import {
@@ -121,7 +121,7 @@ export const ExpenseRequestListFilterView: React.SFC<ExpenseRequestListFilterPro
         </ListItem>
         <Divider />
 
-        <ListItem button onClick={props.handleFilterCompletionVisibility}>
+        {/* <ListItem button onClick={props.handleFilterCompletionVisibility}>
           <ListItemText 
             primary={props.intl.formatMessage(expenseMessage.request.field.completion)}
             secondary={props.filterCompletion && props.filterCompletion.name || props.intl.formatMessage(layoutMessage.text.none)} 
@@ -139,7 +139,7 @@ export const ExpenseRequestListFilterView: React.SFC<ExpenseRequestListFilterPro
             </IconButton> 
           </ListItemSecondaryAction>
         </ListItem>
-        <Divider />
+        <Divider /> */}
 
         <ListItem button onClick={props.handleFilterStatusVisibility}>
           <ListItemText 
@@ -215,7 +215,7 @@ export const ExpenseRequestListFilterView: React.SFC<ExpenseRequestListFilterPro
       onClose={props.handleFilterStatusOnClose}
     />
 
-    <DialogValue
+    {/* <DialogValue
       title={props.intl.formatMessage(expenseMessage.request.field.completion)}
       isOpen={props.isFilterCompletionOpen}
       hideBackdrop={true}
@@ -223,6 +223,6 @@ export const ExpenseRequestListFilterView: React.SFC<ExpenseRequestListFilterPro
       value={props.filterCompletion && props.filterCompletion.value || props.initialProps && props.initialProps.status}
       onSelected={props.handleFilterCompletionOnSelected}
       onClose={props.handleFilterCompletionOnClose}
-    />
+    /> */}
   </React.Fragment>
 );

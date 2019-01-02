@@ -22,7 +22,7 @@ const travelInformation: React.SFC<AllProps> = props => {
     <Card square>
       <CardHeader 
         title={props.intl.formatMessage(travelMessage.request.section.infoTitle)}
-        subheader={props.intl.formatMessage(travelMessage.request.section.infoSubHeader)}
+        // subheader={props.intl.formatMessage(travelMessage.request.section.infoSubHeader)}
       />
       <CardContent>
         <TextField
@@ -81,9 +81,10 @@ const travelInformation: React.SFC<AllProps> = props => {
         />
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
+          multiline
           margin="dense"
           label={props.intl.formatMessage(travelMessage.request.field.projectUid)}
-          value={data && data.project ? data.project.name : 'N/A'}
+          value={`${ data && data.projectUid} - ${ data && data.project ? data.project.name : '' }`}
         />
         <TextField
           {...GlobalStyle.TextField.ReadOnly}

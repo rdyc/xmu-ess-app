@@ -154,14 +154,16 @@ const handlerCreators: HandleCreators<PurchaseApprovalDetailProps, OwnHandler> =
 const createProps: mapper<PurchaseApprovalDetailProps, OwnState> = (props: PurchaseApprovalDetailProps): OwnState => ({
     shouldDataReload: false,
     approvalTitle: props.intl.formatMessage(purchaseMessage.approval.section.approveForm),
-    approvalSubHeader: props.intl.formatMessage(purchaseMessage.approval.section.approveContent),
+    // approvalSubHeader: props.intl.formatMessage(purchaseMessage.approval.section.approveContent),
+    approvalSubHeader: '',
     approvalChoices: [
       { value: WorkflowStatusType.Approved, label: props.intl.formatMessage(organizationMessage.workflow.option.approve) },
       { value: WorkflowStatusType.Rejected, label: props.intl.formatMessage(organizationMessage.workflow.option.reject) }
     ],
     approvalTrueValue: WorkflowStatusType.Approved,
     approvalDialogTitle: props.intl.formatMessage(purchaseMessage.approval.confirm.approveTitle),
-    approvalDialogContentText: props.intl.formatMessage(purchaseMessage.approval.confirm.approveTitle),
+    // approvalDialogContentText: props.intl.formatMessage(purchaseMessage.approval.confirm.approveDescription),
+    approvalDialogContentText: '',
     approvalDialogCancelText: props.intl.formatMessage(layoutMessage.action.discard),
     approvalDialogConfirmedText: props.intl.formatMessage(layoutMessage.action.continue),
 

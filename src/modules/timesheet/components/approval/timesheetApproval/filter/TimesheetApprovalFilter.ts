@@ -7,10 +7,10 @@ import { BaseFieldProps, WrappedFieldProps } from 'redux-form';
 import { TimesheetApprovalFilterView } from './TimesheetApprovalFilterView';
 
 interface OwnProps extends WrappedFieldProps, BaseFieldProps {
-  type?: string; 
+  type?: string;
   placeholder?: string;
   required?: boolean;
-  label: string; 
+  label: string;
   disabled: boolean;
 }
 
@@ -31,14 +31,12 @@ const lifecycles: ReactLifeCycleFunctions<ApprovalFilterProps, {}> = {
         filter: {
           companyUid: user.company.uid,
           status: 'pending',
-          query: {
-            direction: 'ascending',
-            orderBy: undefined,
-            page: undefined,
-            size: undefined,
-            find: undefined,
-            findBy: undefined
-          }
+          direction: 'ascending',
+          orderBy: undefined,
+          page: undefined,
+          size: undefined,
+          find: undefined,
+          findBy: undefined
         }
       });
     }

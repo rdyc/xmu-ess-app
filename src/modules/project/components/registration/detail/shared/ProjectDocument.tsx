@@ -8,7 +8,7 @@ import { compose } from 'recompose';
 
 interface OwnProps {
   title: string;
-  subHeader: string;
+  subHeader?: string;
   data: IProjectDocument[] | null | undefined;
 }
 
@@ -21,7 +21,7 @@ const projectDocument: React.SFC<AllProps> = props => (
   <Card square>
     <CardHeader 
       title={props.title}
-      subheader={props.subHeader}
+      // subheader={props.subHeader}
     />
     <CardContent>
       <List>

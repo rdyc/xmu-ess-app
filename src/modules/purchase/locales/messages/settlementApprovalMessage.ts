@@ -9,6 +9,8 @@ export const settlementApprovalMessage = defineMessages({
   rejectSuccess: { id: `${prefix}.message.approval.reject.success` },
   createFailure: { id: `${prefix}.message.approval.create.failure` },
   submitSuccess: { id: `${prefix}.message.approval.submit.success` },
+  approve: { id: `${prefix}.message.approval.approve`},
+  adjustmentNeeded: { id: `${prefix}.message.approval.adjustmentNeeded`}
 });
 
 export const settlementApprovalPage = defineMessages({

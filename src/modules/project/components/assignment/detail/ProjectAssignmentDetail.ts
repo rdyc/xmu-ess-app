@@ -70,8 +70,8 @@ const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
     dialogOpen: true,
     dialogTitle: props.intl.formatMessage(projectMessage.assignment.confirm.modifyTitle), 
     dialogContent: props.intl.formatMessage(projectMessage.assignment.confirm.modifyContent),
-    dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.disaggre),
-    dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.aggre)
+    dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.cancel),
+    dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.continue)
   }),
   setDefault: (prevState: OwnState) => (): Partial<OwnState> => ({
     action: undefined,

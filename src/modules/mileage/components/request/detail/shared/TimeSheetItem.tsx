@@ -5,6 +5,7 @@ import {
   CardContent,
   CardHeader,
   Collapse,
+  Divider,
   List,
   ListItem,
   ListItemSecondaryAction,
@@ -53,18 +54,19 @@ const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateHandler> = {
 
 const timesheetItem: React.SFC<AllProps> = props => {
   const { data, intl, active, isExpanded, handleToggle } = props;
+  const len = data && data.length - 1;
 
   const render = (
     <Card square>
       <CardHeader 
         title={props.intl.formatMessage(mileageMessage.request.timesheet.title)}
-        subheader={props.intl.formatMessage(mileageMessage.request.timesheet.subHeader)}
+        // subheader={props.intl.formatMessage(mileageMessage.request.timesheet.subHeader)}
       />
       <CardContent>
         <List>
           {
             data &&
-            data.map(item =>
+            data.map((item, index) =>
               <React.Fragment key={item.uid}>
                 <ListItem 
                   disableGutters
@@ -77,6 +79,7 @@ const timesheetItem: React.SFC<AllProps> = props => {
                     {active === item.uid && isExpanded ? <ExpandLess /> : <ExpandMore />}
                   </ListItemSecondaryAction>
                 </ListItem>
+                {len !== index && !isExpanded && <Divider />}
                 <Collapse
                   in={active === item.uid && isExpanded}
                   timeout="auto"
@@ -183,6 +186,7 @@ const timesheetItem: React.SFC<AllProps> = props => {
                       value={item.mileageException && item.mileageException.reason || 'N/A'}
                     /> : ''
                   }
+                  {isExpanded && <Divider />}
                 </Collapse>
               </React.Fragment>
             )

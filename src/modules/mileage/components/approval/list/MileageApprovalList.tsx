@@ -75,8 +75,8 @@ const listView: React.SFC<AllProps> = props => (
           isOpen={props.isFilterOpen}
           initialProps={{
             employeeUid: props.employeeUid,
-            month: props.month,
             year: props.year,
+            month: props.month,
             statusType: props.statusType,
             status: props.status,
             isNotify: props.isNotify
@@ -149,8 +149,8 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, OwnState> = {
       searchStatus: (): boolean => {
         let result: boolean = false;
 
-        if (request && request.filter && request.filter.query && request.filter.query.find) {
-          result = request.filter.query.find ? true : false;
+        if (request && request.filter && request.filter.find) {
+          result = request.filter.find ? true : false;
         }
     
         return result;
@@ -158,16 +158,6 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, OwnState> = {
 
       // action centre
       showActionCentre: true,
-
-      // toolbar controls
-      // toolbarControls: () => [
-      //   {
-      //     icon: AddCircleIcon,
-      //     onClick: () => { 
-      //       this.props.history.push('/mileage/requests/form'); 
-      //     }
-      //   }
-      // ],
 
       // events
       onDataLoad: (callback: ListHandler, params: ListDataProps, forceReload?: boolean | false) => {
@@ -184,14 +174,12 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, OwnState> = {
                 statusType: this.props.statusType,
                 status: this.props.status,
                 isNotify: this.props.isNotify,
-                query: {
-                  direction: params.direction,
-                  orderBy: params.orderBy,
-                  page: params.page,
-                  size: params.size,
-                  find: params.find,
-                  findBy: params.findBy
-                },
+                direction: params.direction,
+                orderBy: params.orderBy,
+                page: params.page,
+                size: params.size,
+                find: params.find,
+                findBy: params.findBy
               }
             });
           } else {

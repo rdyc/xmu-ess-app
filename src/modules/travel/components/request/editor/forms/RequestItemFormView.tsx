@@ -29,7 +29,9 @@ const calculateDiem = (start: string , end: string): number => {
   const startDate = moment(start);
   const endDate = moment(end);
   const diffHours = endDate.diff(startDate, 'hours');
-  const diffDays = endDate.dayOfYear() - startDate.dayOfYear();
+  const diffDays = startDate.isSame(endDate, 'years') ? 
+                      endDate.dayOfYear() - startDate.dayOfYear() : 
+                      endDate.diff(startDate, 'days');
 
   if (startDate.isSame(endDate, 'days')) {
     result = diffHours >= 8 ? 1 : 0;

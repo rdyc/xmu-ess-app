@@ -1,5 +1,4 @@
 import { LookupSystemDialog } from '@common/components/dialog/lookupSystemDialog/LookupSystemDialog';
-import { DialogValue } from '@layout/components/dialogs/DialogValue';
 import { layoutMessage } from '@layout/locales/messages';
 import { LookupCustomerDialog } from '@lookup/components/customer/dialog';
 import {
@@ -19,6 +18,7 @@ import {
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import CloseIcon from '@material-ui/icons/Close';
 import ClearIcon from '@material-ui/icons/SettingsBackupRestore';
+import { ProjectRegistrationDialog } from '@project/components/dialog/project';
 import { travelMessage } from '@travel/locales/messages/travelMessage';
 import * as React from 'react';
 import { TravelSettlementListFilterProps } from './TravelSettlementListFilter';
@@ -43,7 +43,7 @@ export const TravelSettlementListFilterView: React.SFC<TravelSettlementListFilte
           </Typography>
 
           {
-            (props.filterCustomer || props.filterType || props.filterStatus || props.filterCompletion || props.filterRejected) &&
+            (props.filterCustomer || props.filterProject || props.filterType || props.filterStatus || props.filterCompletion || props.filterRejected) &&
             <Button color="inherit" onClick={props.handleFilterOnReset}>
               {props.intl.formatMessage(layoutMessage.action.reset)}
             </Button>
@@ -79,6 +79,26 @@ export const TravelSettlementListFilterView: React.SFC<TravelSettlementListFilte
         </ListItem>
         <Divider />
 
+        <ListItem button onClick={props.filterCustomer && props.handleFilterProjectVisibility}>
+          <ListItemText
+            primary={props.intl.formatMessage(travelMessage.request.field.projectUid)}
+            secondary={props.filterProject && props.filterProject.name || props.intl.formatMessage(layoutMessage.text.none)}
+          />
+          <ListItemSecondaryAction>
+            {
+              props.filterProject &&
+              <IconButton onClick={props.handleFilterProjectOnClear}>
+                <ClearIcon />
+              </IconButton>
+            }
+
+            <IconButton onClick={props.filterCustomer && props.handleFilterProjectVisibility}>
+              <ChevronRightIcon />
+            </IconButton>
+          </ListItemSecondaryAction>
+        </ListItem>
+        <Divider />
+
         <ListItem button onClick={props.handleFilterStatusVisibility}>
           <ListItemText
             primary={props.intl.formatMessage(travelMessage.request.field.statusType)}
@@ -93,26 +113,6 @@ export const TravelSettlementListFilterView: React.SFC<TravelSettlementListFilte
             }
 
             <IconButton onClick={props.handleFilterStatusVisibility}>
-              <ChevronRightIcon />
-            </IconButton>
-          </ListItemSecondaryAction>
-        </ListItem>
-        <Divider />
-
-        <ListItem button onClick={props.handleFilterCompletionVisibility}>
-          <ListItemText
-            primary={props.intl.formatMessage(travelMessage.request.field.completion)}
-            secondary={props.filterCompletion && props.filterCompletion.name || props.intl.formatMessage(layoutMessage.text.none)}
-          />
-          <ListItemSecondaryAction>
-            {
-              props.filterCompletion &&
-              <IconButton onClick={props.handleFilterCompletionOnClear}>
-                <ClearIcon />
-              </IconButton>
-            }
-
-            <IconButton onClick={props.handleFilterCompletionVisibility}>
               <ChevronRightIcon />
             </IconButton>
           </ListItemSecondaryAction>
@@ -144,6 +144,14 @@ export const TravelSettlementListFilterView: React.SFC<TravelSettlementListFilte
       onClose={props.handleFilterCustomerOnClose}
     />
 
+    <ProjectRegistrationDialog
+      hideBackdrop={true}
+      isOpen={props.isFilterProjectOpen}
+      filter={props.filterProjectDialog}
+      onSelected={props.handleFilterProjectOnSelected}
+      onClose={props.handleFilterProjectOnClose}
+    />
+
     <LookupSystemDialog
       title={props.intl.formatMessage(travelMessage.request.field.statusType)}
       category="status"
@@ -154,14 +162,5 @@ export const TravelSettlementListFilterView: React.SFC<TravelSettlementListFilte
       onClose={props.handleFilterStatusOnClose}
     />
 
-    <DialogValue
-      title={props.intl.formatMessage(travelMessage.request.field.completion)}
-      isOpen={props.isFilterCompletionOpen}
-      hideBackdrop={true}
-      items={props.completionStatus}
-      value={props.filterCompletion && props.filterCompletion.value || props.initialProps && props.initialProps.status}
-      onSelected={props.handleFilterCompletionOnSelected}
-      onClose={props.handleFilterCompletionOnClose}
-    />
   </React.Fragment>
 );

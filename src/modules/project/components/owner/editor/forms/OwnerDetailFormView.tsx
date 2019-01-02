@@ -25,7 +25,7 @@ export const OwnerDetailFormView: React.SFC<OwnerDetailFormProps> = props => {
     <Card square>
       <CardHeader 
         title={props.intl.formatMessage(projectMessage.registration.section.ownerTitle)}
-        subheader={props.intl.formatMessage(projectMessage.registration.section.ownerSubHeader)}
+        // subheader={props.intl.formatMessage(projectMessage.registration.section.ownerSubHeader)}
       />
       <CardContent>
         {names.map(name => renderField(name))}

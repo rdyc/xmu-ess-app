@@ -61,9 +61,10 @@ const travelSummary: React.SFC<AllProps> = props => (
       />
       <TextField
         {...styled}
+        multiline
         margin="dense"
         label={<FormattedMessage id="travel.field.information.projectUid" />}
-        value={props.data.project ? props.data.project.name : 'N/A'}
+        value={`${props.data.projectUid} - ${ props.data.project && props.data.project.name }`}
       />
       <TextField
           {...styled}

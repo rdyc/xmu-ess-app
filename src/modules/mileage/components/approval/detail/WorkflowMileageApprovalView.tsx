@@ -24,7 +24,7 @@ export const WorkflowMileageApprovalView: React.SFC<
   const {
     itemTrue,
     approvalTitle,
-    approvalSubHeader,
+    // approvalSubHeader,
     approvalDialogFullScreen,
     isOpenDialog,
     approvalDialogTitle,
@@ -68,7 +68,10 @@ export const WorkflowMileageApprovalView: React.SFC<
     <div>
       <form onSubmit={props.handleSubmit}>
         <Card square>
-          <CardHeader title={approvalTitle} subheader={approvalSubHeader} />
+          <CardHeader 
+            title={approvalTitle} 
+            // subheader={approvalSubHeader} 
+          />
           <CardContent>
             <Field
               name="isApproved"

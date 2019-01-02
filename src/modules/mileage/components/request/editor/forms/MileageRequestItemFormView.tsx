@@ -80,7 +80,7 @@ export const MileageRequestItemFormView: React.SFC<ItemFormProps> = props => {
     <Card square>
       <CardHeader
         title={intl.formatMessage(mileageMessage.request.field.itemTitle)}
-        subheader={intl.formatMessage(mileageMessage.request.field.itemSubHeader)}
+        // subheader={intl.formatMessage(mileageMessage.request.field.itemSubHeader)}
       />
       <CardContent>
         <Grid>

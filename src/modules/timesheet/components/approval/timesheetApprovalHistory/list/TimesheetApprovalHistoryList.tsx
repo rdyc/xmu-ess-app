@@ -8,7 +8,7 @@ import TuneIcon from '@material-ui/icons/Tune';
 import { ITimesheet } from '@timesheet/classes/response';
 import { TimesheetEntryField } from '@timesheet/classes/types';
 import { TimesheetEntrySumarry } from '@timesheet/components/entry/detail/shared/TimesheetEntrySummary';
-import { WithTimesheetApproval, withTimesheetApproval } from '@timesheet/hoc/withTimesheetApproval';
+import { WithTimesheetApprovalHistory, withTimesheetApprovalHistory } from '@timesheet/hoc/withTimesheetApprovalHistory';
 import { timesheetMessage } from '@timesheet/locales/messages/timesheetMessage';
 import * as moment from 'moment';
 import * as React from 'react';
@@ -45,7 +45,7 @@ type AllProps
   & IOwnStateUpdater
   & IOwnHandler
   & WithUser
-  & WithTimesheetApproval
+  & WithTimesheetApprovalHistory
   & InjectedIntlProps
   & RouteComponentProps;
 
@@ -55,13 +55,14 @@ const listView: React.SFC<AllProps> = props => (
       props.config &&
       <ListPage
         config={props.config}
-        source={props.timesheetApprovalState.all}
+        source={props.timesheetApprovalHistoryState.all}
         loadDataWhen={props.shouldUpdate}
       >
         <TimesheetApprovalHistoryListFilter
           isOpen={props.isFilterOpen}
           initialProps={{
             customerUid: props.customerUid,
+            projectUid: props.projectUid,
             activityType: props.activityType,
             statusType: props.statusType,
             status: props.status,
@@ -81,7 +82,7 @@ const createProps: mapper<AllProps, IOwnState> = (props: AllProps): IOwnState =>
 
   // fill partial props from location state to handle redirection from dashboard notif
   status: props.location.state && props.location.state.status,
-  isNotify: props.location.state && props.location.state.isNotify 
+  isNotify: props.location.state && props.location.state.isNotify
 });
 
 const stateUpdaters: StateUpdaters<AllProps, IOwnState, IOwnStateUpdater> = {
@@ -112,8 +113,8 @@ const handlerCreators: HandleCreators<AllProps, IOwnHandler> = {
 const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
   componentDidMount() {
     const { user } = this.props.userState;
-    const { isLoading, request, response } = this.props.timesheetApprovalState.all;
-    const { loadAllRequest } = this.props.timesheetApprovalDispatch;
+    const { isLoading, request, response } = this.props.timesheetApprovalHistoryState.all;
+    const { loadAllRequest } = this.props.timesheetApprovalHistoryDispatch;
 
     const config: IListConfig<ITimesheet> = {
       // page
@@ -136,8 +137,8 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
       searchStatus: (): boolean => {
         let result: boolean = false;
 
-        if (request && request.filter && request.filter.query) {
-          result = request.filter.query ? true : false;
+        if (request && request.filter && request.filter.find) {
+          result = request.filter.find ? true : false;
         }
 
         return result;
@@ -151,23 +152,22 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
         // when user is set and not loading
         if (user && !isLoading) {
           // when response are empty or force reloading
-          if (!response || !isLoading || forceReload) {
+          if (!response || forceReload) {
             loadAllRequest({
               filter: {
                 companyUid: this.props.companyUid,
                 customerUid: this.props.customerUid,
+                projectUid: this.props.projectUid,
                 activityType: this.props.activityType,
                 statusType: this.props.statusType,
                 status: 'complete',
                 isNotify: this.props.isNotify,
-                query: {
-                  find: params.find,
-                  findBy: params.findBy,
-                  orderBy: params.orderBy,
-                  direction: params.direction,
-                  page: params.page,
-                  size: params.size,
-                }
+                find: params.find,
+                findBy: params.findBy,
+                orderBy: params.orderBy,
+                direction: params.direction,
+                page: params.page,
+                size: params.size,
               }
             });
           } else {
@@ -211,9 +211,10 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
           icon: TuneIcon,
           showBadgeWhen: () => {
             return this.props.customerUid !== undefined ||
+              this.props.projectUid !== undefined ||
               this.props.activityType !== undefined ||
               this.props.statusType !== undefined ||
-              this.props.status !== undefined || 
+              this.props.status !== undefined ||
               this.props.isNotify === true;
           },
           onClick: this.props.handleFilterVisibility
@@ -227,6 +228,7 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
     // track any changes in filter props
     if (
       this.props.customerUid !== nextProps.customerUid ||
+      this.props.projectUid !== nextProps.projectUid ||
       this.props.activityType !== nextProps.activityType ||
       this.props.statusType !== nextProps.statusType ||
       this.props.status !== nextProps.status ||
@@ -240,7 +242,7 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
 export const TimesheetApprovalHistoryList = compose(
   setDisplayName('TimesheetApprovalHistoryList'),
   withUser,
-  withTimesheetApproval,
+  withTimesheetApprovalHistory,
   withRouter,
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),
