@@ -40,9 +40,9 @@ const mapStateToProps = (state: any): FormValueProps => {
 const connectedView = connect(mapStateToProps)(LookupSystemLimitContainerFormView);
 
 export const LookupSystemLimitContainerForm = reduxForm<SystemLimitFormData, OwnProps>({
-  form: formName,
-  touchOnChange: true,
-  touchOnBlur: true,
-  enableReinitialize: true,
-  destroyOnUnmount: true
+form: formName,
+touchOnChange: true,
+touchOnBlur: true,
+enableReinitialize: true,
+destroyOnUnmount: true
 })(connectedView);

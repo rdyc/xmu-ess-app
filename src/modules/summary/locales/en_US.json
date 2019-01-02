@@ -7,7 +7,7 @@
   "summary.filter.field.employeeUid.placeholder": "Select an Employee",
 
   "summary.billable.page.title": "Employee and Presales Billable",
-  "summary.billable.page.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
+  "summary.billable.page.subHeader": " ",
 
   "summary.billable.field.company": "Company",
   "summary.billable.field.name": "Employee Name",
@@ -17,6 +17,7 @@
   "summary.billable.note": "Note:",
   "summary.billable.totalhours": "*Total available Hours = 2080 Hour",
   "summary.billable.percentage": "*Billable (%) = (Billable Hours / 2080) * 100%",
+  "summary.billable.percentage.presales": "*Presales (%) = (Presales Hours / 2080) * 100%",
 
   "summary.billable.hover.presales": "Detail Presales",
   "summary.billable.hover.nonPresales": "Detail Non Presales",
@@ -26,7 +27,7 @@
   "summary.billable.hover.win": "Win",
 
   "summary.effectiveness.title": "Resource Effectiveness",
-  "summary.effectiveness.subTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "summary.effectiveness.subTitle": "",
   "summary.effectiveness.header.name": "Employee Name",
   "summary.effectiveness.header.positionRole": "Position - Role in Project",
   "summary.effectiveness.header.project": "Project",
@@ -37,7 +38,7 @@
   "summary.effectiveness.header.progress": "Total Progress",
 
   "summary.profitability.title": "Project Profitability",
-  "summary.profitability.subTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "summary.profitability.subTitle": "",
   "summary.profitability.dialog.title": "Detail Expense ",
   "summary.profitability.dialog.close": "Dismiss",
   "summary.profitability.header.maxHours": "Total Max Hours",
@@ -65,7 +66,7 @@
   "summary.profitability.header.amount": "Amount",
 
   "summary.progress.title": "Project Progress",
-  "summary.progress.subTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "summary.progress.subTitle": "",
   "summary.progress.dialog.title": "Detail Expense ",
   "summary.progress.dialog.close": "Dismiss",
   "summary.progress.header.maxHours": "Total Max Hours",
@@ -98,11 +99,11 @@
   "summary.winningRatio.field.name": "Employee Name",
   "summary.winningRatio.field.start": "Start",
   "summary.winningRatio.field.end": "End",
-  "summary.winningRatio.subTitle": "Lorem IPSUM",
+  "summary.winningRatio.subTitle": " ",
   "summary.winningRatio.detail.projectNull": "No Data",
 
   "summary.winningRatio.page.title": "Report Winning Ratio",
-  "summary.winningRatio.page.subHeader": "Lorem IPSUM",
+  "summary.winningRatio.page.subHeader": " ",
   "summary.winningRatio.page.detail.title" : "Details Winning Ratio",
   "summary.winningRatio.field.null": "No Data"
 }

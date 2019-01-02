@@ -34,7 +34,8 @@ const EnLang = {
     ...enLeaveMessages,
     ...enSummaryMessages,
     ...enCommonMessages,
-    ...enLookupMessages
+    ...enLookupMessages,
+    ...enAccountMessages
   },
   locale: 'en-US',
   data: appLocaleData,

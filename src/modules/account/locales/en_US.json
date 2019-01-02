@@ -1,0 +1,160 @@
+{
+  "account.employee.message.emptyProps": "Some props are empty",
+  "account.employee.message.create.success": "New Employee Data has been created",
+  "account.employee.message.create.failure": "Unable to process your submission",
+  "account.employee.message.update.success": "Current site has been updated",
+  "account.employee.message.update.failure": "Unable to process your submission",
+  "account.employee.message.delete.success": "Current {uid} has been deleted",
+  "account.employee.message.delete.failure": "Unable to process your submission",
+
+  "account.employee.page.list.title": "Employee",
+  "account.employee.page.list.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras mollis eros sit amet rhoncus fermentum",
+  "account.employee.page.detail.title": "Employee Details",
+  "account.employee.page.detail.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
+  "account.employee.page.new.title": "New Employee",
+  "account.employee.page.new.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
+  "account.employee.page.modify.title": "Modify Employee",
+  "account.employee.page.modify.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
+
+  "account.employee.field.uid": "Employee ID",
+  "account.employee.field.uid.placeholder": "Employee ID",
+
+  "account.employee.field.company": "Company",
+  "account.employee.field.company.placeholder": "Company",
+  "account.employee.field.company.required": "Company is required",
+
+  "account.employee.field.name": "Name",
+  "account.employee.field.name.placeholder": "Name",
+  "account.employee.field.name.required": "Name is required",
+
+  "account.employee.field.nik": "NIK",
+  "account.employee.field.nik.placeholder": "NIK",
+  "account.employee.field.nik.required": "NIK is required",
+
+  "account.employee.field.email": "Personal Email",
+  "account.employee.field.email.placeholder": "Personal Email",
+  "account.employee.field.email.required": "Personal Email is required",
+
+  "account.employee.field.phone": "Phone",
+  "account.employee.field.phone.placeholder": "Phone",
+  "account.employee.field.phone.required": "Phone is required",
+
+  "account.employee.field.joinDate": "Join Date",
+  "account.employee.field.joinDate.placeholder": "Join Date",
+  "account.employee.field.joinDate.required": "Join Date is required",
+
+  "account.employee.field.inactiveDate": "Date inActive",
+  "account.employee.field.inactiveDate.placeholder": "Date inActive",
+
+  "account.employee.field.employement": "Employement Status",
+  "account.employee.field.employement.placeholder": "Employement Status",
+  "account.employee.field.employement.required": "Employement Status is required",
+
+  "account.employee.field.rate": "Rate",
+  "account.employee.field.rate.placeholder": "Rate",
+
+  "account.employee.field.gender": "Gender",
+  "account.employee.field.gender.placeholder": "Gender",
+  "account.employee.field.gender.required": "Gender is required",
+
+  "account.employee.field.birthPlace": "Birth Place",
+  "account.employee.field.birthPlace.placeholder": "Birth Place",
+  "account.employee.field.birthPlace.required": "Birth Place is required",
+
+  "account.employee.field.birthDate": "Birth Date",
+  "account.employee.field.birthDate.placeholder": "Birth Date",
+  "account.employee.field.birthDate.required": "Birth Date is required", 
+
+  "account.employee.field.blood": "Blood Type",
+  "account.employee.field.blood.placeholder": "Blood Type",
+
+  "account.employee.field.ktp": "KTP",
+  "account.employee.field.ktp.placeholder": "KTP",
+  "account.employee.field.ktp.required": "KTP is required",
+
+  "account.employee.field.npwp": "NPWP",
+  "account.employee.field.npwp.placeholder": "NPWP",
+  "account.employee.field.npwp.required": "NPWP is required",
+
+  "account.employee.field.ptkp": "PTKP Status",
+  "account.employee.field.ptkp.placeholder": "PTKP Status",
+  "account.employee.field.ptkp.required": "PTKP Status is required",
+
+  "account.employee.field.image": "Employee Photo",
+  "account.employee.field.image.placeholder": "Employee Photo",
+
+  "account.employee.field.religion": "Religion",
+  "account.employee.field.religion.placeholder": "Religion",
+
+  "account.employee.field.kartuKeluarga": "Kartu Keluarga",
+  "account.employee.field.kartuKeluarga.placeholder": "Kartu Keluarga",
+  "account.employee.field.kartuKeluarga.required": "Kartu Keluarga is required",
+
+  "account.employee.field.bpjsKetenagakerjaan": "BPJS Ketenagakerjaan",
+  "account.employee.field.bpjsKetenagakerjaan.placeholder": "BPJS Ketenagakerjaan",
+
+  "account.employee.field.bpjsKesehatan": "BPJS Kesehatan",
+  "account.employee.field.bpjsKesehatan.placeholder": "BPJS Kesehatan",
+
+  "account.employee.field.mobile": "Mobile",
+  "account.employee.field.mobile.placeholder": "Mobile",
+  
+  "account.employee.field.emergencyName": "Emergency Contact Name",
+  "account.employee.field.emergencyName.placeholder": "Emergency Contact Name",
+  
+  "account.employee.field.emergencyRelation": "Emergency Contact Relation",
+  "account.employee.field.emergencyRelation.placeholder": "Emergency Contact Relation",
+  
+  "account.employee.field.emergencyPhone1": "Emergency Phone 1",
+  "account.employee.field.emergencyPhone1.placeholder": "Emergency Phone 1",
+  
+  "account.employee.field.emergencyPhone2": "Emergency Phone 2",
+  "account.employee.field.emergencyPhone2.placeholder": "Emergency Phone 2",
+  
+  "account.employee.field.companyEmail": "Company Email",
+  "account.employee.field.companyEmail.placeholder": "Company Email",
+  "account.employee.field.companyEmail.required": "Company Email is required",
+
+  "account.employee.field.addressKtp": "Address (KTP)",
+  "account.employee.field.addressKtp.placeholder": "Address (KTP)",
+  "account.employee.field.addressKtp.required": "Address (KTP) is required",
+  
+  "account.employee.field.addressNpwp": "Address (NPWP)",
+  "account.employee.field.addressNpwp.placeholder": "Address (NPWP)",
+  "account.employee.field.addressNpwp.required": "Address (NPWP) is required",
+
+  "account.employee.field.bca.number": "BCA Account Number",
+  "account.employee.field.bca.number.placeholder": "BCA Account Number",
+  "account.employee.field.bca.number.required": "BCA Account Number is required",
+  
+  "account.employee.field.bca.name": "BCA Account Name",
+  "account.employee.field.bca.name.placeholder": "BCA Account Name",
+  "account.employee.field.bca.name.required": "BCA Account Name is required",
+  
+  "account.employee.field.bca.branch": "BCA Account Branch",
+  "account.employee.field.bca.branch.placeholder": "BCA Account Branch",
+
+  "account.employee.confirm.create.title": "Create Account",
+  "account.employee.confirm.create.subHeader": "Lorem ipsum dolor sit amet",
+ 
+  "account.employee.confirm.modify.title": "Modify Account",
+  "account.employee.confirm.modify.subHeader": "Lorem ipsum dolor sit amet",
+
+  "account.employee.field.information.title": "Employee Information",
+  "account.employee.field.information.subHeader": "Lorem ipsum dolor sit amet",
+  
+  "account.employee.field.information.contact.title": "Employee Contacts",
+  "account.employee.field.information.contact.subHeader": "Lorem ipsum dolor sit amet",
+
+  "account.employee.field.information.bank.title": "BCA Account Information",
+  "account.employee.field.information.bank.subHeader": "Lorem ipsum dolor sit amet",
+
+  "account.employee.section.basic.title": "Employee Basic Data",
+  "account.employee.section.basic.subHeader": "Lorem ipsum dolor sit amet",
+  
+  "account.employee.section.bank.title": "Employee Identity and BCA Account",
+  "account.employee.section.bank.subHeader": "Lorem ipsum dolor sit amet",
+
+  "account.employee.section.contact.title": "Employee Contact and Address",
+  "account.employee.section.contact.subHeader": "Lorem ipsum dolor sit amet"
+}

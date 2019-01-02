@@ -1,3 +1,6 @@
+import { AccountEmployeeDetail } from '@account/components/detail/AccountEmployeeDetail';
+import AccountEmployeeEditor from '@account/components/editor/AccountEmployeeEditor';
+import { AccountEmployeeList } from '@account/components/list/AccountEmployeeList';
 import { Layout } from '@layout/components/base';
 import { CurrencyDetail } from '@lookup/components/currency/detail/CurrencyDetail';
 import { CurrencyEditor } from '@lookup/components/currency/editor/CurrencyEditor';
@@ -118,6 +121,14 @@ const diem = (props: RouteComponentProps) => (
   </Switch>
 );
 
+const employee = (props: RouteComponentProps) => (
+  <Switch>
+    <Route path={`${props.match.path}/form`} component={AccountEmployeeEditor} />
+    <Route path={`${props.match.path}/:employeeUid`} component={AccountEmployeeDetail} />
+    <Route path={`${props.match.path}`} component={AccountEmployeeList} />
+  </Switch>
+);
+
 export const LookupRoutingComponents: React.SFC<RouteComponentProps> = props => (
   <Switch>
     <Layout>
@@ -132,6 +143,7 @@ export const LookupRoutingComponents: React.SFC<RouteComponentProps> = props => 
       <Route path={`${props.match.path}/calculation`} component={calculation} />
       <Route path={`${props.match.path}/roles`} component={role} />
       <Route path={`${props.match.path}/customer`} component={lookupCustomer} />
+      <Route path={`${props.match.path}/employee`} component={employee} />
     </Layout>
   </Switch>
 );
