@@ -17,6 +17,11 @@ export const travelApprovalPage = defineMessages({
   detailSubHeader: { id: `${prefix}.page.detail.subHeader` }
 });
 
+// option
+export const travelApprovalOption = defineMessages({
+  adjustmentNeeded: { id: `${prefix}.option.addjustmentNeeded` },
+});
+
 // confirm
 export const travelApprovalConfirm = defineMessages({
   submissionTitle: { id: `${prefix}.confirm.submission.title` },
