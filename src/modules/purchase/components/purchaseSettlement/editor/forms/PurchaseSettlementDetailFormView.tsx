@@ -26,7 +26,7 @@ export const PurchaseSettlementDetailFormView: React.SFC<PurchaseSettlementDetai
     <Card square>
       <CardHeader
         title={props.intl.formatMessage(purchaseMessage.settlement.section.infoTitle)}
-        subheader={props.intl.formatMessage(purchaseMessage.settlement.section.infoSubHeader)}
+        // subheader={props.intl.formatMessage(purchaseMessage.settlement.section.infoSubHeader)}
       />
       <CardContent>
         {names.map(name => renderField(name))}

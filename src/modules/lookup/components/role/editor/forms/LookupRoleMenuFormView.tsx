@@ -14,7 +14,7 @@ export const LookupRoleMenuFormView: React.SFC<LookupRoleMenuFormProps> = props 
     <Card square>
       <CardHeader
         title={props.intl.formatMessage(lookupMessage.role.section.roleMenuTitle)}
-        subheader={props.intl.formatMessage(lookupMessage.role.section.roleMenuSubHeader)}
+        // subheader={props.intl.formatMessage(lookupMessage.role.section.roleMenuSubHeader)}
       />
       <CardContent>
         <List>

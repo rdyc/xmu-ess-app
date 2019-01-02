@@ -32,7 +32,7 @@ export const PurchaseRequestDetailFormView: React.SFC<PurchaseRequestDetailFormP
     <Card square>
       <CardHeader
         title={intl.formatMessage(purchaseMessage.request.section.infoTitle)}
-        subheader={intl.formatMessage(purchaseMessage.request.section.infoSubHeader)}
+        // subheader={intl.formatMessage(purchaseMessage.request.section.infoSubHeader)}
       />
       <CardContent>
         {names.map(name => renderField(name))}

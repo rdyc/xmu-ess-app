@@ -63,7 +63,7 @@ export const PositionDetailFormView: React.SFC<PositionDetailFormProps> = props 
     <Card square>
       <CardHeader
         title={intl.formatMessage(lookupMessage.position.section.infoTitle)}
-        subheader={intl.formatMessage(lookupMessage.position.section.infoSubHeader)}
+        // subheader={intl.formatMessage(lookupMessage.position.section.infoSubHeader)}
       />
       <CardContent>
         {names.map(name => renderField(name))}

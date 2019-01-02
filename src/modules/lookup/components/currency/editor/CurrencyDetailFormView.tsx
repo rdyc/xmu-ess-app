@@ -58,7 +58,7 @@ export const CurrencyDetailFormView: React.SFC<CurrencyDetailFormProps> = props 
     <Card square>
       <CardHeader
         title={intl.formatMessage(lookupMessage.currency.section.infoTitle)}
-        subheader={intl.formatMessage(lookupMessage.currency.section.infoSubHeader)}
+        // subheader={intl.formatMessage(lookupMessage.currency.section.infoSubHeader)}
       />
       <CardContent>
         {names.map(name => renderField(name))}

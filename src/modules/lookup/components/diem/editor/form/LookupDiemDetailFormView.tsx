@@ -31,7 +31,7 @@ export const LookupDiemDetailFormView: React.SFC<LookupDiemDetailFormProps> = pr
     <Card square>
       <CardHeader 
         title={intl.formatMessage(lookupMessage.lookupDiem.section.infoTitle)}
-        subheader={intl.formatMessage(lookupMessage.lookupDiem.section.infoSubHeader)}
+        // subheader={intl.formatMessage(lookupMessage.lookupDiem.section.infoSubHeader)}
       />
       <CardContent>
         {

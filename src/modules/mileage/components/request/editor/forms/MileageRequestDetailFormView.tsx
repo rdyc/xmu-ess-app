@@ -34,7 +34,7 @@ export const MileageRequestDetailFormView: React.SFC<MileageRequestDetailFormPro
     <Card square>
       <CardHeader 
         title={props.intl.formatMessage(mileageMessage.request.field.submitTitle)}
-        subheader={props.intl.formatMessage(mileageMessage.request.field.submitSubHeader)}
+        // subheader={props.intl.formatMessage(mileageMessage.request.field.submitSubHeader)}
       />
       <CardContent>
         {names.map(name => renderField(name))}

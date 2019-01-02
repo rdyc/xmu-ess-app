@@ -44,7 +44,7 @@ export const LeaveRequestDetailFormView: React.SFC<RequestDetailFormProps> = pro
     <Card square>
       <CardHeader 
         title={<FormattedMessage id="leave.infoTitle"/>}
-        subheader={<FormattedMessage id="leave.infoSubTitle" />}
+        // subheader={<FormattedMessage id="leave.infoSubTitle" />}
       />
       <CardContent>
         {names.map(name => renderField(name))}

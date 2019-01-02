@@ -32,7 +32,7 @@ export const StructureDetailFormView: React.SFC<StructureDetailFormProps> = prop
     <Card square>
       <CardHeader 
         title={intl.formatMessage(organizationMessage.structure.section.infoTitle)}
-        subheader={intl.formatMessage(organizationMessage.structure.section.infoSubHeader)}
+        // subheader={intl.formatMessage(organizationMessage.structure.section.infoSubHeader)}
       />
       <CardContent>
         {names.map(name => renderField(name))}

@@ -18,7 +18,7 @@ const lookupDiemInformation: React.SFC<AllProps> = props => (
   <Card square>
     <CardHeader 
       title={props.intl.formatMessage(lookupMessage.lookupDiem.section.diemTitle)}
-      subheader={props.intl.formatMessage(lookupMessage.lookupDiem.section.diemSubHeader)}
+      // subheader={props.intl.formatMessage(lookupMessage.lookupDiem.section.diemSubHeader)}
     />
     <CardContent>
       <TextField
