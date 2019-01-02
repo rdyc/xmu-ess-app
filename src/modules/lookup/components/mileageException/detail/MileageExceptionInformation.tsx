@@ -19,7 +19,7 @@ const mileageExceptionInformation: React.SFC<AllProps> = props => {
     <Card square>
       <CardHeader
         title={props.intl.formatMessage(lookupMessage.mileageException.field.infoTitle)}
-        subheader={props.intl.formatMessage(lookupMessage.mileageException.field.infoSubHeader)}
+        // subheader={props.intl.formatMessage(lookupMessage.mileageException.field.infoSubHeader)}
       />
       <CardContent>
         <TextField

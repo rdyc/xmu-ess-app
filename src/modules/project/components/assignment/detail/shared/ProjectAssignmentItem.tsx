@@ -10,7 +10,7 @@ import { compose } from 'recompose';
 interface OwnProps {
   data: IProjectAssignmentDetailItem;
   title: string;
-  subHeader: string;
+  subHeader?: string;
   onClickItem?: () => void | undefined;
 }
 
@@ -22,7 +22,7 @@ const projectAssignmentItem: React.SFC<AllProps> = props => (
   <Card square>
     <CardHeader 
       title={props.title}
-      subheader={props.subHeader}
+      // subheader={props.subHeader}
     />
     <CardContent>
       <TextField

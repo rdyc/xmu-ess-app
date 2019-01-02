@@ -6,12 +6,17 @@ import * as React from 'react';
 import { Field } from 'redux-form';
 
 export const PurchaseSettlementDetailFormView: React.SFC<PurchaseSettlementDetailFormProps> = props => {
-  // const { formMode } = props;
+  const { isCurrencyIdr } = props;
   const { names } = props.context;
 
   const renderField = (name: string) => {
     const fieldName = name.replace('information.', '');
     const fieldProps = props.generateFieldProps(name);
+
+    const fields = ['requestInIDR', 'actualInIDR', 'differenceInIDR'];
+    if (isCurrencyIdr && fields.indexOf(fieldName) !== -1) {
+      return null;
+    }
 
     return (
       <Field
@@ -26,7 +31,7 @@ export const PurchaseSettlementDetailFormView: React.SFC<PurchaseSettlementDetai
     <Card square>
       <CardHeader
         title={props.intl.formatMessage(purchaseMessage.settlement.section.infoTitle)}
-        subheader={props.intl.formatMessage(purchaseMessage.settlement.section.infoSubHeader)}
+        // subheader={props.intl.formatMessage(purchaseMessage.settlement.section.infoSubHeader)}
       />
       <CardContent>
         {names.map(name => renderField(name))}

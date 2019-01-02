@@ -8,7 +8,7 @@ export const SubmissionView: React.SFC<SubmissionProps> = props => (
   <Card square>
     <CardHeader 
       title={<FormattedMessage id={props.title || 'global.form.submit.title'}/>}
-      subheader={<FormattedMessage id={props.subHeader || 'global.form.submit.subHeader'} />}
+      // subheader={<FormattedMessage id={props.subHeader || 'global.form.submit.subHeader'} />}
     />
     <CardActions>
       <Button 

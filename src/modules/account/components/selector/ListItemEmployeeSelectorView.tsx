@@ -94,9 +94,9 @@ export const ListItemEmployeeSelectorView: React.SFC<ListItemEmployeeSelectorPro
           <FormattedMessage id="account.employee.lookupTitle" />
         </Typography>
 
-        <Typography variant="body2">
+        {/* <Typography variant="body2">
           <FormattedMessage id="account.employee.lookupDescription" />
-        </Typography>
+        </Typography> */}
         
         <TextField
           id="account-employee-selector-text"

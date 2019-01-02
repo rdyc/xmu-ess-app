@@ -60,7 +60,7 @@ const timesheetItem: React.SFC<AllProps> = props => {
     <Card square>
       <CardHeader 
         title={props.intl.formatMessage(mileageMessage.request.timesheet.title)}
-        subheader={props.intl.formatMessage(mileageMessage.request.timesheet.subHeader)}
+        // subheader={props.intl.formatMessage(mileageMessage.request.timesheet.subHeader)}
       />
       <CardContent>
         <List>

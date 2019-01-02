@@ -76,6 +76,7 @@ const listView: React.SFC<AllProps> = props => (
           isOpen={props.isFilterOpen}
           initialProps={{
             customerUid: props.customerUid,
+            projectUid: props.projectUid,
             statusType: props.statusType,
             isRejected: props.isRejected,
           }}
@@ -168,6 +169,7 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
                 companyUid: user.company.uid,
                 positionUid: user.position.uid,
                 customerUid: this.props.customerUid,
+                projectUid: this.props.projectUid,
                 statusType: this.props.statusType,
                 isRejected: this.props.isRejected,
                 find: params.find,
@@ -188,7 +190,7 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
         key: index,
         primary: item.uid,
         secondary: item.customer && item.customer.name || item.customerUid,
-        tertiary: item.objective ? item.objective : 'N/A',
+        tertiary: `${item.projectUid} - ${ item.project && item.project.name }`,
         quaternary: this.props.intl.formatNumber(item.total, GlobalFormat.CurrencyDefault) || '-',
         quinary: item.status && item.status.value || item.statusType,
         senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
@@ -229,6 +231,7 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
           icon: TuneIcon,
           showBadgeWhen: () => {
             return this.props.customerUid !== undefined ||
+              this.props.projectUid !== undefined ||
               this.props.statusType !== undefined ||
               this.props.isRejected === true;
           },
@@ -243,6 +246,7 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
     // track any changes in filter props
     if (
       this.props.customerUid !== nextProps.customerUid ||
+      this.props.projectUid !== nextProps.projectUid ||
       this.props.statusType !== nextProps.statusType ||
       this.props.isRejected !== nextProps.isRejected
     ) {

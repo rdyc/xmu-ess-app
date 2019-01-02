@@ -88,7 +88,7 @@ const config: SingleConfig<IProjectAssignmentDetailItem, ProjectAcceptanceApprov
     <ProjectAssignmentItem 
       data={data} 
       title={props.intl.formatMessage(projectMessage.assignment.section.itemTitle)} 
-      subHeader={props.intl.formatMessage(projectMessage.assignment.section.itemSubHeader)} 
+      // subHeader={props.intl.formatMessage(projectMessage.assignment.section.itemSubHeader)} 
     />,
     <React.Fragment>
       {

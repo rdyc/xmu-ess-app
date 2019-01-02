@@ -32,7 +32,7 @@ export const HierarchyDetailFormView: React.SFC<HierarchyDetailFormProps> = prop
     <Card square>
       <CardHeader 
         title={intl.formatMessage(organizationMessage.hierarchy.section.infoTitle)}
-        subheader={intl.formatMessage(organizationMessage.hierarchy.section.infoSubHeader)}
+        // subheader={intl.formatMessage(organizationMessage.hierarchy.section.infoSubHeader)}
       />
       <CardContent>
         {names.map(name => renderField(name))}

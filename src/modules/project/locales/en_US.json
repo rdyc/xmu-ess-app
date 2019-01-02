@@ -18,15 +18,15 @@
   "project.registration.option.site": "Manage Sites",
 
   "project.registration.confirm.modify.title": "Modify Confirmation",
-  "project.registration.confirm.modify.description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "project.registration.confirm.modify.description": "You are about to modify current project registration, approval request will be re-started in new approval round. Do you want to continue?",
   "project.registration.confirm.close.title": "Close Confirmation",
-  "project.registration.confirm.close.description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "project.registration.confirm.close.description": "You are about to close current project. Do you want to continue?",
   "project.registration.confirm.reOpen.title": "Re-Open Confirmation",
-  "project.registration.confirm.reOpen.description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "project.registration.confirm.reOpen.description": "You are about to re-open current project. Do you want to continue?",
   "project.registration.confirm.changeOwner.title": "Change Project Owner",
-  "project.registration.confirm.changeOwner.description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "project.registration.confirm.changeOwner.description": "You are about to change or transfer new owner current project. Do you want to continue?",
   "project.registration.confirm.manageSite.title": "Project Site",
-  "project.registration.confirm.manageSite.description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "project.registration.confirm.manageSite.description": "You will be manage all sites for current project. Do you want to continue?",
 
   "project.registration.section.info.title": "Project",
   "project.registration.section.info.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
@@ -113,7 +113,7 @@
   "project.approval.page.detail.subHeader": "Lorem ip sum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
   
   "project.approval.confirm.submission.title": "Project Approval Submission",
-  "project.approval.confirm.submission.content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "project.approval.confirm.submission.content": "You are about to submitting project approval for this approval request. Do you want to continue?",
   
   "project.approval.message.emptyProps": "Some props are empty",
   "project.approval.message.submit.success": "Successfully processing approval submission",
@@ -177,8 +177,8 @@
   "project.assignment.option.addMember": "Add More",
   "project.assignment.option.acceptance": "Acceptance",
 
-  "project.assignment.confirm.modify.title": "Assignment Modify Confirm",
-  "project.assignment.confirm.modify.content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "project.assignment.confirm.modify.title": "Modify Confirmation",
+  "project.assignment.confirm.modify.content": "You are about to modify current project assignment. Do you want to continue?",
 
   "project.assignment.field.uid": "Assignment ID",
   "project.assignment.field.projectUid": "Project ID",

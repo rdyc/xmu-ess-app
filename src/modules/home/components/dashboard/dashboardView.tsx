@@ -34,9 +34,9 @@ export const dashboardView: React.SFC<DashboardProps> = props => (
       <Typography variant="h6">
         {props.intl.formatMessage(homeMessage.dashboard.section.notificationTitle)}
       </Typography>
-      <Typography variant="body2">
+      {/* <Typography variant="body2">
         {props.intl.formatMessage(homeMessage.dashboard.section.notificationSubHeader)}
-      </Typography>
+      </Typography> */}
     </div>
 
     {

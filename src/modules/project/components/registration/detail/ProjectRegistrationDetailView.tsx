@@ -137,7 +137,7 @@ const config: SingleConfig<IProjectDetail, ProjectRegistrationDetailProps> = {
   secondaryComponents: (data: IProjectDetail, props: ProjectRegistrationDetailProps) => ([
     <ProjectDocument 
       title={props.intl.formatMessage(data.projectType === ProjectType.Project ? projectMessage.registration.section.documentProjectTitle : projectMessage.registration.section.documentPreSalesTitle)}
-      subHeader={props.intl.formatMessage(data.projectType === ProjectType.Project ? projectMessage.registration.section.documentProjectSubHeader : projectMessage.registration.section.documentPreSalesSubHeader)}
+      // subHeader={props.intl.formatMessage(data.projectType === ProjectType.Project ? projectMessage.registration.section.documentProjectSubHeader : projectMessage.registration.section.documentPreSalesSubHeader)}
       data={data.projectType === ProjectType.Project ? data.documents : data.documentPreSales}
     />,
     <ProjectSales data={data.sales} />,

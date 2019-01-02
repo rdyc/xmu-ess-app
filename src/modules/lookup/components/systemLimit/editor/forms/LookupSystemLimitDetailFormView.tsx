@@ -32,7 +32,7 @@ export const LookupSystemLimitDetailFormView: React.SFC<SystemLimitDetailFormPro
     <Card square>
       <CardHeader 
         title={intl.formatMessage(lookupMessage.systemLimit.section.infoTitle)}
-        subheader={intl.formatMessage(lookupMessage.systemLimit.section.infoSubHeader)}
+        // subheader={intl.formatMessage(lookupMessage.systemLimit.section.infoSubHeader)}
       />
       <CardContent>
         {names.map(name => renderField(name))}

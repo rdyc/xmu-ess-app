@@ -21,7 +21,7 @@ const projectInformation: React.SFC<AllProps> = props => (
   <Card square>
     <CardHeader 
       title={props.intl.formatMessage(projectMessage.registration.section.infoTitle)}
-      subheader={props.intl.formatMessage(projectMessage.registration.section.infoSubHeader)}
+      // subheader={props.intl.formatMessage(projectMessage.registration.section.infoSubHeader)}
     />
     <CardContent>
       <TextField
