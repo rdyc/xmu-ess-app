@@ -11,6 +11,7 @@ import { AccountEmployeeBank } from './AccountEmployeeBank';
 import { AccountEmployeeContact } from './AccountEmployeeContact';
 import { AccountEmployeeDetailProps } from './AccountEmployeeDetail';
 import { AccountEmployeeInformation } from './AccountEmployeeInformation';
+import { AccountEmployeeTraining } from './training/AccountEmployeeTraining';
 
 const config: SingleConfig<IEmployeeDetail, AccountEmployeeDetailProps> = {
   // page info
@@ -103,7 +104,7 @@ export const AccountEmployeeDetailView: React.SFC<AccountEmployeeDetailProps> = 
         />
       </div>
     }
-    {props.tab === 1 && <Typography style={{ padding: 8 * 3 }}>TAB 2</Typography>}
+    {props.tab === 1 && <div style={{ padding: 8 * 3 }}><AccountEmployeeTraining employeeUid={props.match.params.employeeUid}/></div>}
     {props.tab === 2 && <Typography style={{ padding: 8 * 3 }}>TAB 3</Typography>}
   </React.Fragment>
 );
