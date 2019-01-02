@@ -99,11 +99,11 @@ const winningRatioDetail: React.SFC<AllProps> = props => {
                             cat.projects.map(project => (
                               <TableRow key={project.projectUid}>
                                 <TableCell>
-                                  {project.projectUid} &bull; {project.name}
+                                  {project.projectUid} - {project.name}
                                 </TableCell>
                                 <TableCell>
                                   {project.childProjectUid !== null ? (
-                                    project.childProjectUid
+                                    `${project.childProjectUid} - ${project.name}`
                                   ) : intl.formatMessage(summaryMessage.winningRatio.field.null)}
                                 </TableCell>
                                 <TableCell>
