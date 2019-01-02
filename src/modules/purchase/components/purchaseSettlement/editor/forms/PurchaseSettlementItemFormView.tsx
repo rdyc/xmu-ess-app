@@ -21,9 +21,6 @@ export const PurchaseSettlementItemFormView: React.SFC<PurchaseSettlementItemFor
           context.fields.map((field, index) => {
             const items = context.fields.get(index);
             const varianceValue = items.request - items.actual;
-            const style = varianceValue > 0
-              ? { root: { color: 'primary' || 'blue' } } 
-              : { root: { color: 'secondary' || 'red' } };
 
             return (
           <Grid key={index} item xs={12} md={4}>
@@ -60,10 +57,10 @@ export const PurchaseSettlementItemFormView: React.SFC<PurchaseSettlementItemFor
                     name={`${field}.variance`}
                     label={props.intl.formatMessage(purchaseMessage.settlement.items.variance)}
                     disabled
-                    color={varianceValue > 0  ? 'primary' : 'secondary'}
-                    inputProps={ style }
-                    value={ 
-                      `${props.intl.formatNumber(varianceValue > 0 ? varianceValue : varianceValue * -1 )}` || '0'
+                    color="secondary"
+                    value={varianceValue >= 0 
+                      ? `${props.intl.formatNumber( varianceValue)}`
+                      : `( ${props.intl.formatNumber(varianceValue * -1)} )`
                     }
                   />
                 </div>

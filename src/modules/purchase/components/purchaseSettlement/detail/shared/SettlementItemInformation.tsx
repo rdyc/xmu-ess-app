@@ -15,6 +15,12 @@ type AllProps
   = OwnProps
   & InjectedIntlProps;
 
+const style = {
+  input: {
+    color: 'secondary'
+  }
+};
+
 const settlementItemInformation: React.SFC<AllProps> = props => (
   <Card square>
     <CardHeader
@@ -48,9 +54,12 @@ const settlementItemInformation: React.SFC<AllProps> = props => (
       />
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
+        {...style}
         margin="dense"
         label={props.intl.formatMessage(purchaseMessage.settlement.items.variance)}
-        value={props.intl.formatNumber(props.data && props.data.varianceValue || 0)}
+        value={(props.data && props.data.varianceValue || 0) >= 0
+          ? props.intl.formatNumber(props.data && props.data.varianceValue || 0) 
+          : `( ${props.intl.formatNumber((props.data && props.data.varianceValue || 0) * -1)} )`}
       />
 
       {props.children}
