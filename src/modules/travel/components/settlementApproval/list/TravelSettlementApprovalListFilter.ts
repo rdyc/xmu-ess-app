@@ -1,7 +1,7 @@
 import { ISystemList } from '@common/classes/response';
 import { ICollectionValue } from '@layout/classes/core';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
-import { WithUser } from '@layout/hoc/withUser';
+import { WithUser, withUser } from '@layout/hoc/withUser';
 import { ILookupCustomerGetListFilter } from '@lookup/classes/filters/customer';
 import { ICustomerList } from '@lookup/classes/response';
 import { WithStyles, withStyles } from '@material-ui/core';
@@ -287,6 +287,7 @@ const handlerCreators: HandleCreators<TravelSettlementApprovalListFilterProps, I
 export const TravelSettlementApprovalListFilter = compose<TravelSettlementApprovalListFilterProps, IOwnOption>(
   setDisplayName('TravelApprovalListFilter'),
   withLayout,
+  withUser,
   withStyles(styles),
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),
