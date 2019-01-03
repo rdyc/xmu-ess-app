@@ -2,5 +2,5 @@ import { IEmployeeTrainingListFilter } from '@account/classes/filters/employeeTr
 
 export interface IEmployeeTrainingListRequest {
   readonly employeeUid: string;
-  readonly filter: IEmployeeTrainingListFilter | undefined;
+  readonly filter?: IEmployeeTrainingListFilter | undefined;
 }

@@ -1,4 +1,7 @@
 {
+  "account.access.message.greeting": "Hi {name}, Welcome to TESSA",
+  "account.access.message.selection": "Before you started, please select your company access",
+
   "account.employee.message.emptyProps": "Some props are empty",
   "account.employee.message.create.success": "New Employee Data has been created",
   "account.employee.message.create.failure": "Unable to process your submission",
@@ -8,13 +11,13 @@
   "account.employee.message.delete.failure": "Unable to process your submission",
 
   "account.employee.page.list.title": "Employee",
-  "account.employee.page.list.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras mollis eros sit amet rhoncus fermentum",
+  "account.employee.page.list.subHeader": " ",
   "account.employee.page.detail.title": "Employee Details",
-  "account.employee.page.detail.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
+  "account.employee.page.detail.subHeader": " ",
   "account.employee.page.new.title": "New Employee",
-  "account.employee.page.new.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
+  "account.employee.page.new.subHeader": " ",
   "account.employee.page.modify.title": "Modify Employee",
-  "account.employee.page.modify.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
+  "account.employee.page.modify.subHeader": " ",
 
   "account.employee.field.uid": "Employee ID",
   "account.employee.field.uid.placeholder": "Employee ID",
@@ -135,26 +138,26 @@
   "account.employee.field.bca.branch.placeholder": "BCA Account Branch",
 
   "account.employee.confirm.create.title": "Create Account",
-  "account.employee.confirm.create.subHeader": "Lorem ipsum dolor sit amet",
+  "account.employee.confirm.create.subHeader": " ",
  
   "account.employee.confirm.modify.title": "Modify Account",
-  "account.employee.confirm.modify.subHeader": "Lorem ipsum dolor sit amet",
+  "account.employee.confirm.modify.subHeader": " ",
 
   "account.employee.field.information.title": "Employee Information",
-  "account.employee.field.information.subHeader": "Lorem ipsum dolor sit amet",
+  "account.employee.field.information.subHeader": " ",
   
   "account.employee.field.information.contact.title": "Employee Contacts",
-  "account.employee.field.information.contact.subHeader": "Lorem ipsum dolor sit amet",
+  "account.employee.field.information.contact.subHeader": " ",
 
   "account.employee.field.information.bank.title": "BCA Account Information",
-  "account.employee.field.information.bank.subHeader": "Lorem ipsum dolor sit amet",
+  "account.employee.field.information.bank.subHeader": " ",
 
   "account.employee.section.basic.title": "Employee Basic Data",
-  "account.employee.section.basic.subHeader": "Lorem ipsum dolor sit amet",
+  "account.employee.section.basic.subHeader": " ",
   
   "account.employee.section.bank.title": "Employee Identity and BCA Account",
-  "account.employee.section.bank.subHeader": "Lorem ipsum dolor sit amet",
+  "account.employee.section.bank.subHeader": " ",
 
   "account.employee.section.contact.title": "Employee Contact and Address",
-  "account.employee.section.contact.subHeader": "Lorem ipsum dolor sit amet"
+  "account.employee.section.contact.subHeader": " "
 }
