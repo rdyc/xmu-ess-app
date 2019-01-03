@@ -42,12 +42,22 @@ const styles = (theme: Theme) =>
       marginRight: theme.spacing.unit * 2
     },
     heroUnit: {
-      backgroundColor: theme.palette.background.paper
+      backgroundImage: 'url("https://demos.creative-tim.com/material-kit-pro-react/static/media/bg8.8cfdd67a.jpg")',
+      backgroundSize: 'cover',
+      height: '100vh',
+      maxHeight: '1600px',
+      display: 'flex',
+      position: 'relative',
+      alignItems: 'center'
     },
     heroContent: {
-      maxWidth: 600,
+      maxWidth: 1200,
       margin: '0 auto',
       padding: `${theme.spacing.unit * 8}px 0 ${theme.spacing.unit * 6}px`
+    },
+    heroText: {
+      width: '50%',
+      color: '#FFF'
     },
     heroButtons: {
       marginTop: theme.spacing.unit * 4
@@ -77,7 +87,7 @@ const styles = (theme: Theme) =>
       flexGrow: 1
     },
     footer: {
-      backgroundColor: theme.palette.background.paper,
+      // backgroundColor: theme.palette.background.paper,
       padding: theme.spacing.unit * 6
     }
   });
@@ -225,32 +235,26 @@ const root: React.SFC<AllProps> = props => (
     <main>
       <div className={props.classes.heroUnit}>
         <div className={props.classes.heroContent}>
-          <Typography
-            component="h1"
-            variant="h4"
-            align="center"
-            color="primary"
-            gutterBottom
-          >
-            Welcome to new TESSA
-          </Typography>
+          <div className={props.classes.heroText}>
+            <Typography
+              variant="h3"
+              color="inherit"
+              gutterBottom
+            >
+              New Tessa
+            </Typography>
 
-          <Typography
-            variant="subheading"
-            align="center"
-            color="textSecondary"
-            paragraph
-          >
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-            ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-            aliquip ex ea commodo consequat.
-          </Typography>
-          <div className={props.classes.heroButtons}>
-            <Grid container spacing={16} justify="center">
-              <Grid item>
-                {
-                  props.oidcState.isLoadingUser &&
+            <Typography
+              variant="h6"
+              color="inherit"
+              paragraph
+            >
+              Every landing page needs a small description after the big bold title, that's why we added this text here. Add here all the information that can make you or your product create the first impression.
+            </Typography>
+
+            <div className={props.classes.heroButtons}>
+              {
+                props.oidcState.isLoadingUser &&
                   <Typography variant="body2">
                     <FormattedMessage id="layout.text.loading" />
                   </Typography>
@@ -263,8 +267,9 @@ const root: React.SFC<AllProps> = props => (
                   <React.Fragment>
                     <Button
                       className={props.classes.button}
-                      // variant="contained"
+                      variant="contained"
                       color="primary"
+                      size="large"
                       onClick={() => props.handleOnClickLogin()}
                     >
                       {`Hi ${props.userState.user && props.userState.user.fullName}, Let's start!`}
@@ -272,7 +277,9 @@ const root: React.SFC<AllProps> = props => (
 
                     <Button
                       className={props.classes.button}
+                      variant="contained"
                       color="secondary"
+                      size="large"
                       onClick={() => props.handleOnClickLogout()}
                     >
                       Logout
@@ -285,14 +292,14 @@ const root: React.SFC<AllProps> = props => (
                   !props.oidcState.user &&
                   <Button
                     variant="contained"
-                    color="primary"
+                    color="secondary"
+                    size="large"
                     onClick={() => props.handleOnClickLogin()}
                   >
                     Let me in
                   </Button>
                 }
-              </Grid>
-            </Grid>
+            </div>
           </div>
         </div>
       </div>
@@ -329,7 +336,7 @@ const root: React.SFC<AllProps> = props => (
 
     <footer className={props.classes.footer}>
       <Typography variant="body2" align="center" gutterBottom>
-        All New Tessa
+        The Employee Self Service Application (TESSA)
       </Typography>
       <Typography
         variant="body2"
@@ -337,7 +344,7 @@ const root: React.SFC<AllProps> = props => (
         color="textSecondary"
         component="p"
       >
-        Equine Technologies Group 2019
+        © 2019 | Equine Technologies Group
       </Typography>
     </footer>
   </React.Fragment>
