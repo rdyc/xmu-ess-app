@@ -49,7 +49,7 @@ const config: SingleConfig<ITravelSettlementDetail, TravelSettlementDetailProps>
       id: TravelUserAction.Modify,
       name: props.intl.formatMessage(layoutMessage.action.modify),
       enabled: true,
-      visible: isContains(state.statusType, [ WorkflowStatusType.Submitted, WorkflowStatusType.InProgress]),
+      visible: isContains(state.statusType, [ WorkflowStatusType.Submitted, WorkflowStatusType.InProgress, WorkflowStatusType.AdjustmentNeeded]),
       onClick: props.handleOnModify
     }
   ]),
