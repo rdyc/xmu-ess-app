@@ -35,8 +35,18 @@ const styles = (theme: Theme) =>
     button: {
       margin: theme.spacing.unit
     },
-    appBar: {
-      position: 'relative'
+    header: {
+      backgroundColor: theme.palette.grey[900],
+      display: 'flex',
+      position: 'fixed',
+      color: theme.palette.primary.contrastText,
+      padding: theme.spacing.unit * 2,
+      width: '100%',
+      zIndex: 2,
+      opacity: 0.5
+    },
+    flex: {
+      flex: 1
     },
     icon: {
       marginRight: theme.spacing.unit * 2
@@ -232,6 +242,39 @@ const root: React.SFC<AllProps> = props => (
   <React.Fragment>
     <CssBaseline />
 
+    <header className={props.classes.header}>
+      <Typography variant="subheading" color="inherit" className={props.classes.flex}>
+        TESSA
+      </Typography>
+      
+      {
+        !props.oidcState.isLoadingUser &&
+        !props.oidcState.user &&
+        <Button
+          color="inherit"
+          size="small"
+          onClick={() => props.handleOnClickLogin()}
+        >
+          Login
+        </Button>
+      }
+
+      {
+        !props.oidcState.isLoadingUser &&
+        props.oidcState.user &&
+        props.userState.user &&
+        <React.Fragment>
+          <Button
+            color="inherit"
+            size="small"
+            onClick={() => props.handleOnClickLogout()}
+          >
+            Logout
+          </Button>
+        </React.Fragment>
+      }
+    </header>
+
     <main>
       <div className={props.classes.heroUnit}>
         <div className={props.classes.heroContent}>
@@ -241,7 +284,7 @@ const root: React.SFC<AllProps> = props => (
               color="inherit"
               gutterBottom
             >
-              New Tessa
+              All New Tessa
             </Typography>
 
             <Typography
@@ -273,16 +316,6 @@ const root: React.SFC<AllProps> = props => (
                       onClick={() => props.handleOnClickLogin()}
                     >
                       {`Hi ${props.userState.user && props.userState.user.fullName}, Let's start!`}
-                    </Button>
-
-                    <Button
-                      className={props.classes.button}
-                      variant="contained"
-                      color="secondary"
-                      size="large"
-                      onClick={() => props.handleOnClickLogout()}
-                    >
-                      Logout
                     </Button>
                   </React.Fragment>
                 }
