@@ -1,0 +1,113 @@
+import {
+  BloodAction as Action, 
+  bloodGetAllError,
+  bloodGetAllRequest,
+  bloodGetAllSuccess,
+  bloodGetByIdError,
+  bloodGetByIdRequest,
+  bloodGetByIdSuccess,
+  bloodGetListError,
+  bloodGetListRequest,
+  bloodGetListSuccess,
+} from '@common/store/actions';
+import { layoutAlertAdd } from '@layout/store/actions';
+import saiyanSaga from '@utils/saiyanSaga';
+import { all, fork, put, takeEvery } from 'redux-saga/effects';
+import { IApiResponse, objectToQuerystring } from 'utils';
+
+function* watchFetchAllRequest() {
+  const worker = (action: ReturnType<typeof bloodGetAllRequest>) => {
+    return saiyanSaga.fetch({
+      method: 'get',
+      path: `/v1/common/types/${action.payload.category}${objectToQuerystring(action.payload.filter)}`, 
+      successEffects: (response: IApiResponse) => ([
+        put(bloodGetAllSuccess(response.body)),
+      ]), 
+      failureEffects: (response: IApiResponse) => ([
+        put(bloodGetAllError(response.statusText)),
+        put(layoutAlertAdd({
+          time: new Date(),
+          message: response.statusText,
+          details: response
+        }))
+      ]), 
+      errorEffects: (error: TypeError) => ([
+        put(bloodGetAllError(error.message)),
+        put(layoutAlertAdd({
+          time: new Date(),
+          message: error.message
+        }))
+      ])
+    });
+  };
+  
+  yield takeEvery(Action.GET_ALL_REQUEST, worker);
+}
+
+function* watchFetchListRequest() {
+  const worker = (action: ReturnType<typeof bloodGetListRequest>) => {
+    return saiyanSaga.fetch({
+      method: 'get',
+      path: `/v1/common/types/${action.payload.category}/list${objectToQuerystring(action.payload.filter)}`,
+      successEffects: (response: IApiResponse) => ([
+        put(bloodGetListSuccess(response.body))
+      ]), 
+      failureEffects: (response: IApiResponse) => ([
+        put(bloodGetListError(response.statusText)),
+        put(layoutAlertAdd({
+          time: new Date(),
+          message: response.statusText,
+          details: response
+        }))
+      ]), 
+      errorEffects: (error: TypeError) => ([
+        put(bloodGetListError(error.message)),
+        put(layoutAlertAdd({
+          time: new Date(),
+          message: error.message
+        }))
+      ])
+    });
+  };
+
+  yield takeEvery(Action.GET_LIST_REQUEST, worker);
+}
+
+function* watchFetchByIdRequest() {
+  const worker = (action: ReturnType<typeof bloodGetByIdRequest>) => {
+    return saiyanSaga.fetch({
+      method: 'get',
+      path: `/v1/common/types/${action.payload.category}/${action.payload.id}`,
+      successEffects: (response: IApiResponse) => ([
+        put(bloodGetByIdSuccess(response.body)),
+      ]), 
+      failureEffects: (response: IApiResponse) => ([
+        put(bloodGetByIdError(response.statusText)),
+        put(layoutAlertAdd({
+          time: new Date(),
+          message: response.statusText,
+          details: response
+        }))
+      ]), 
+      errorEffects: (error: TypeError) => ([
+        put(bloodGetByIdError(error.message)),
+        put(layoutAlertAdd({
+          time: new Date(),
+          message: error.message,
+        }))
+      ])
+    });
+  };
+  
+  yield takeEvery(Action.GET_BY_ID_REQUEST, worker);
+}
+
+function* commonBloodSagas() {
+  yield all([
+    fork(watchFetchAllRequest),
+    fork(watchFetchListRequest),
+    fork(watchFetchByIdRequest),
+  ]);
+}
+
+export default commonBloodSagas;

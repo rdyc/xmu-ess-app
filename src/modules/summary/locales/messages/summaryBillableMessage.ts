@@ -17,7 +17,8 @@ export const summaryBillableField = defineMessages({
 export const summaryBillableNote = defineMessages({
   note: { id: `${prefix}.note`},
   totalHours: { id: `${prefix}.totalhours`},
-  percentage: { id: `${prefix}.percentage`}
+  billablePercentage: { id: `${prefix}.percentage`},
+  presalesPercentage: { id: `${prefix}.percentage.presales`}
 });
 
 export const summaryBillableHover = defineMessages({
