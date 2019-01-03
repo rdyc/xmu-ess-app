@@ -1,15 +1,15 @@
-import { IEmployeeTrainingList } from '@account/classes/response/employeeTraining';
+import { IEmployeeAccessHistoryList } from '@account/classes/response/employeeAccessHistory';
 import { GlobalStyle } from '@layout/types/GlobalStyle';
 import { Card, CardContent, CardHeader, Fade, TextField, Typography } from '@material-ui/core';
 import * as React from 'react';
-import { AccountEmployeeTrainingProps } from './AccountEmployeeTraining';
+import { AccountEmployeeAccessHistoryProps } from './AccountEmployeeAccessHistory';
 
-export const AccountEmployeeTrainingView: React.SFC<
-  AccountEmployeeTrainingProps
+export const AccountEmployeeAccessHistoryView: React.SFC<
+  AccountEmployeeAccessHistoryProps
 > = props => {
-  const { response, isLoading } = props.accountEmployeeTrainingState.list;
+  const { response, isLoading } = props.accountEmployeeAccessHistoryState.list;
 
-  const renderTraining = (item: IEmployeeTrainingList) => {
+  const renderAccessHistory = (item: IEmployeeAccessHistoryList) => {
     return (
       <Fade
         in={!isLoading}
@@ -24,7 +24,7 @@ export const AccountEmployeeTrainingView: React.SFC<
             {...GlobalStyle.TextField.ReadOnly}
             margin="dense"
             label="NAMA"
-            value={item.name}
+            value={item.company ? item.company.name : 'N/A'}
           />
         </CardContent>
       </Card>
@@ -36,7 +36,7 @@ export const AccountEmployeeTrainingView: React.SFC<
     <React.Fragment>
       { (response && !response.data || response && response.data && response.data.length < 1) && ( <Typography>No Data</Typography> )}
       {
-        response && response.data && response.data.map(item => renderTraining(item))
+        response && response.data && response.data.map(item => renderAccessHistory(item))
       }
     </React.Fragment>
   );

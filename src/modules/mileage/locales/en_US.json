@@ -59,14 +59,11 @@
   "mileage.request.field.item.site": "Project Site",
   "mileage.request.field.item.value": "Value",
 
-  "mileage.request.timesheet.item.title": "Detail Timesheet",
+  "mileage.request.timesheet.item.title": "Details Timesheet Item",
   "mileage.request.timesheet.item.subHeader": " ",
 
   "mileage.request.confirm.create.title": "Create Mileage",
   "mileage.request.confirm.create.description": " ",
-
-  "mileage.request.confirm.modify.title": "Modify Mileage",
-  "mileage.request.confirm.modify.description": " ",
 
   "mileage.message.approval.update.success": "A new PID {uid} has been updated",
   "mileage.message.approval.update.failure": "Unable to process your submission",
