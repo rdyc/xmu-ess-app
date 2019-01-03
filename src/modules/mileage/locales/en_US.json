@@ -59,7 +59,7 @@
   "mileage.request.field.item.site": "Project Site",
   "mileage.request.field.item.value": "Value",
 
-  "mileage.request.timesheet.item.title": "Detail Timesheet",
+  "mileage.request.timesheet.item.title": "Details Timesheet Item",
   "mileage.request.timesheet.item.subHeader": " ",
 
   "mileage.request.confirm.create.title": "Create Mileage",

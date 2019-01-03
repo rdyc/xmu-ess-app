@@ -205,8 +205,8 @@ const lifecycles: ReactLifeCycleFunctions<MileageRequestEditorProps, {}> = {
     stateUpdate({ 
       companyUid: user.company.uid,
       positionUid: user.position.uid,
-      submitDialogTitle: this.props.intl.formatMessage(mileageMessage.request.confirm.modifyTitle),
-      submitDialogContentText : this.props.intl.formatMessage(mileageMessage.request.confirm.modifyDescription)
+      submitDialogTitle: this.props.intl.formatMessage(mileageMessage.request.confirm.createTitle),
+      submitDialogContentText : this.props.intl.formatMessage(mileageMessage.request.confirm.createDescription)
     });
 
     layoutDispatch.setupView({
