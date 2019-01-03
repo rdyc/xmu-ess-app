@@ -11,7 +11,6 @@ import { GlobalFormat } from '@layout/types';
 import { Button } from '@material-ui/core';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import TuneIcon from '@material-ui/icons/Tune';
-import { isRequestEditable } from '@organization/helper/isRequestEditable';
 import * as moment from 'moment';
 import * as React from 'react';
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
@@ -30,6 +29,7 @@ import {
   withStateHandlers,
 } from 'recompose';
 
+import { isModuleRequestEditable } from '@organization/helper/isModuleRequestEditable';
 import { ExpenseRequestListFilter, IExpenseRequestListFilterResult } from './ExpenseRequestListFilter';
 
 interface IOwnOption {
@@ -221,7 +221,7 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
       actionComponent: (item: IExpense, callback: ListHandler) => (
         <React.Fragment>
           {
-            isRequestEditable(item.statusType) &&
+            isModuleRequestEditable(item.statusType) &&
             <Button 
               size="small"
               onClick={() => this.props.history.push(`/expense/requests/form`, { uid: item.uid })}
