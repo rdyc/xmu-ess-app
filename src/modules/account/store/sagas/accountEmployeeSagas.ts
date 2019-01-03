@@ -1,17 +1,30 @@
 import {
   AccountEmployeeAction as Action,
+  accountEmployeeDeleteError,
+  accountEmployeeDeleteRequest,
+  accountEmployeeDeleteSuccess,
+  accountEmployeeGetAllDispose,
   accountEmployeeGetAllError,
   accountEmployeeGetAllRequest,
   accountEmployeeGetAllSuccess,
+  accountEmployeeGetByIdDispose,
   accountEmployeeGetByIdError,
   accountEmployeeGetByIdRequest,
   accountEmployeeGetByIdSuccess,
   accountEmployeeGetListError,
   accountEmployeeGetListRequest,
   accountEmployeeGetListSuccess,
+  accountEmployeePostError,
+  accountEmployeePostRequest,
+  accountEmployeePostSuccess,
+  accountEmployeePutError,
+  accountEmployeePutRequest,
+  accountEmployeePutSuccess,
 } from '@account/store/actions';
 import { layoutAlertAdd } from '@layout/store/actions';
+import { flattenObject } from '@utils/flattenObject';
 import saiyanSaga from '@utils/saiyanSaga';
+import { SubmissionError } from 'redux-form';
 import { all, fork, put, takeEvery } from 'redux-saga/effects';
 import { IApiResponse, objectToQuerystring } from 'utils';
 
@@ -102,11 +115,157 @@ function* watchByIdRequest() {
   yield takeEvery(Action.GET_BY_ID_REQUEST, worker);
 }
 
+function* watchPostRequest() {
+  const worker = (action: ReturnType<typeof accountEmployeePostRequest>) => {
+    return saiyanSaga.fetch({
+      method: 'post',
+      path: `/v1/account/employees`,
+      payload: action.payload.data,
+      successEffects: (response: IApiResponse) => [
+        put(accountEmployeeGetByIdDispose()),
+        put(accountEmployeeGetAllDispose()),
+        put(accountEmployeePostSuccess(response.body))
+      ],
+      successCallback: (response: IApiResponse) => {
+        action.payload.resolve(response.body.data);
+      },
+      failureEffects: (response: IApiResponse) => [
+        put(accountEmployeePostError(response.statusText))
+      ],
+      failureCallback: (response: IApiResponse) => {
+        if (response.status === 400) {
+          const errors: any = { 
+            // information -> based form section name
+            information: flattenObject(response.body.errors) 
+          };
+
+          action.payload.reject(new SubmissionError(errors));
+        } else {
+          action.payload.reject(response.statusText);
+        }
+      },
+      errorEffects: (error: TypeError) => [
+        put(accountEmployeePostError(error.message)),
+        put(
+          layoutAlertAdd({
+            time: new Date(),
+            message: error.message
+          })
+        )
+      ],
+      errorCallback: (error: any) => {
+        action.payload.reject(error);
+      }
+    });
+  };
+
+  yield takeEvery(Action.POST_REQUEST, worker);
+}
+
+function* watchPutRequest() {
+  const worker = (action: ReturnType<typeof accountEmployeePutRequest>) => {
+    return saiyanSaga.fetch({
+      method: 'put',
+      path: `/v1/account/employees`,
+      payload: action.payload.data,
+      successEffects: (response: IApiResponse) => [
+        put(accountEmployeeGetByIdDispose()),
+        put(accountEmployeeGetAllDispose()),
+        put(accountEmployeePutSuccess(response.body))
+      ],
+      successCallback: (response: IApiResponse) => {
+        action.payload.resolve(response.body.data);
+      },
+      failureEffects: (response: IApiResponse) => [
+        put(accountEmployeePutError(response.statusText))
+      ],
+      failureCallback: (response: IApiResponse) => {
+        if (response.status === 400) {
+          const errors: any = { 
+            // information -> based on form section name
+            information: flattenObject(response.body.errors) 
+          };
+          
+          // action.payload.reject(new SubmissionError(response.body.errors));
+          action.payload.reject(new SubmissionError(errors));
+        } else {
+          action.payload.reject(response.statusText);
+        }
+      },
+      errorEffects: (error: TypeError) => [
+        put(accountEmployeePutError(error.message)),
+        put(
+          layoutAlertAdd({
+            time: new Date(),
+            message: error.message
+          })
+        )
+      ],
+      errorCallback: (error: any) => {
+        action.payload.reject(error);
+      }
+    });
+  };
+
+  yield takeEvery(Action.PUT_REQUEST, worker);
+}
+
+function* watchDeleteRequest() {
+  const worker = (action: ReturnType<typeof accountEmployeeDeleteRequest>) => {
+    return saiyanSaga.fetch({
+      method: 'delete',
+      path: `/v1/account/employees`,
+      payload: action.payload.data,
+      successEffects: (response: IApiResponse) => [
+        put(accountEmployeeGetAllDispose()),
+        put(accountEmployeeDeleteSuccess(response.body)),
+        put(accountEmployeeGetAllRequest(response.body))
+      ],
+      successCallback: (response: IApiResponse) => {
+        action.payload.resolve(response.body.data);
+      },
+      failureEffects: (response: IApiResponse) => [
+        put(accountEmployeeDeleteError(response.statusText))
+      ],
+      failureCallback: (response: IApiResponse) => {
+        if (response.status === 400) {
+          const errors: any = { 
+            // information -> based on form section name
+            information: flattenObject(response.body.errors) 
+          };
+          
+          // action.payload.reject(new SubmissionError(response.body.errors));
+          action.payload.reject(new SubmissionError(errors));
+        } else {
+          action.payload.reject(response.statusText);
+        }
+      },
+      errorEffects: (error: TypeError) => [
+        put(accountEmployeeDeleteError(error.message)),
+        put(
+          layoutAlertAdd({
+            time: new Date(),
+            message: error.message
+          })
+        )
+      ],
+      errorCallback: (error: any) => {
+        action.payload.reject(error);
+      }
+    });
+  };
+
+  yield takeEvery(Action.DELETE_REQUEST, worker);
+}
+
 function* accountEmployeeSagas() {
   yield all([
     fork(watchAllRequest),
     fork(watchListRequest),
     fork(watchByIdRequest),
+    fork(watchPostRequest),
+    fork(watchPutRequest),
+    fork(watchDeleteRequest)
   ]);
 }
 

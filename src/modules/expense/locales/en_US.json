@@ -19,15 +19,12 @@
   "expense.infoSubTitle": " ",
   
   "expense.dialog.modifyTitle": "Modify Confirmation",
-  "expense.dialog.modifyDescription.x": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-  "expense.dialog.modifyDescription": " ",
+  "expense.dialog.modifyDescription": "You are about to modify current Expense, approval request will be re-started in new approval round. Do you want to continue?",
   "expense.action.modify": "Modify",
   "expense.dialog.newTitle": "Submit Confirmation",
-  "expense.dialog.newDescription.x": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-  "expense.dialog.newDescription": " ",
+  "expense.dialog.newDescription": "You are about to submitting Expense for approval request. Do you want to continue?",
   "expense.dialog.editTitle": "Modify Confirmation",
-  "expense.dialog.editDescription.x": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-  "expense.dialog.editDescription": " ",
+  "expense.dialog.editDescription": "You are about to modify current Expense Request. Do you want to continue?",
 
   "expense.approval.title": "Approval",
   "expense.approval.subTitle.x": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",

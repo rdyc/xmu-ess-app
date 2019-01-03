@@ -5,14 +5,15 @@ import { ILookupCompany } from '@lookup/classes';
 
 export interface IEmployeeDetail {
     uid: string;
-    joinDate: Date;
+    joinDate: string;
+    inactiveDate: string | null;
     companyUid: string | null;
     company: ILookupCompany | null;
     employmentNumber: string;
     employmentType: string;
     employment: ICommonSystem | null;
     fullName: string;
-    dateOfBirth: Date | null;
+    dateOfBirth: string | null;
     birthPlace: string | null;
     email: string;
     emailPersonal: string  | null;
