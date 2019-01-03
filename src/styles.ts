@@ -1,4 +1,5 @@
 import { createStyles, Theme } from '@material-ui/core';
+import blue from '@material-ui/core/colors/blue';
 import red from '@material-ui/core/colors/red';
 import sidebar from './image/sidebar/satrio-tower.jpg';
 
@@ -361,7 +362,9 @@ const styles = (theme: Theme) =>
     tableReportAction: {
       flexShrink: 0,
       color: theme.palette.text.secondary,
-    }
+    },
+
+    colorBlue: { color: blue['500'] },
   });
 
 export default styles;
