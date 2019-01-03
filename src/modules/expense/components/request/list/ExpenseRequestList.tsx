@@ -11,6 +11,7 @@ import { GlobalFormat } from '@layout/types';
 import { Button } from '@material-ui/core';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import TuneIcon from '@material-ui/icons/Tune';
+import { isRequestEditable } from '@organization/helper/isRequestEditable';
 import * as moment from 'moment';
 import * as React from 'react';
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
@@ -29,7 +30,6 @@ import {
   withStateHandlers,
 } from 'recompose';
 
-import { isModuleRequestEditable } from '@organization/helper/isModuleRequestEditable';
 import { ExpenseRequestListFilter, IExpenseRequestListFilterResult } from './ExpenseRequestListFilter';
 
 interface IOwnOption {
@@ -103,20 +103,20 @@ const stateUpdaters: StateUpdaters<AllProps, IOwnState, IOwnStateUpdater> = {
   setShouldUpdate: (prevState: IOwnState) => () => ({
     shouldUpdate: !prevState.shouldUpdate
   }),
-  setConfig: () => (config: IListConfig<IExpense>) => ({
+  setConfig: (prevState: IOwnState) => (config: IListConfig<IExpense>) => ({
     config
   }),
   setFilterVisibility: (prevState: IOwnState) => () => ({
     isFilterOpen: !prevState.isFilterOpen
   }),
-  setFilterApplied: () => (filter: IExpenseRequestListFilterResult) => ({
+  setFilterApplied: (prevState: IOwnState) => (filter: IExpenseRequestListFilterResult) => ({
     ...filter,
     isFilterOpen: false
   }),
 };
 
 const handlerCreators: HandleCreators<AllProps, IOwnHandler> = {
-  handleFilterVisibility: (props: AllProps) => () => {
+  handleFilterVisibility: (props: AllProps) => (event: React.MouseEvent<HTMLElement>) => {
     props.setFilterVisibility();
   },
   handleFilterApplied: (props: AllProps) => (filter: IExpenseRequestListFilterResult) => {
@@ -161,7 +161,7 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
       showActionCentre: false,
 
       // toolbar controls
-      toolbarControls: () => [
+      toolbarControls: (callback: ListHandler) => [
         {
           icon: AddCircleIcon,
           onClick: () => { 
@@ -218,10 +218,10 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
       ),
 
       // action component
-      actionComponent: (item: IExpense) => (
+      actionComponent: (item: IExpense, callback: ListHandler) => (
         <React.Fragment>
           {
-            isModuleRequestEditable(item.statusType) &&
+            isRequestEditable(item.statusType) &&
             <Button 
               size="small"
               onClick={() => this.props.history.push(`/expense/requests/form`, { uid: item.uid })}
