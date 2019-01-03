@@ -1,9 +1,4 @@
 import AppMenu from '@constants/AppMenu';
-import { IExpense } from '@expense/classes/response';
-import { ExpenseField } from '@expense/classes/types';
-import { ExpenseSummary } from '@expense/components/request/detail/shared/ExpenseSummary';
-import { WithExpenseRequest, withExpenseRequest } from '@expense/hoc/withExpenseRequest';
-import { expenseMessage } from '@expense/locales/messages/expenseMessage';
 import { IListConfig, ListDataProps, ListHandler, ListPage } from '@layout/components/pages';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { layoutMessage } from '@layout/locales/messages';
@@ -11,6 +6,11 @@ import { GlobalFormat } from '@layout/types';
 import { Button } from '@material-ui/core';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import TuneIcon from '@material-ui/icons/Tune';
+import { IHierarchy } from '@organization/classes/response/hierarchy';
+import { HierarchyField } from '@organization/classes/types';
+import { OrganizationHierarchySummary } from '@organization/components/hierarchy/detail/shared/OrganizationHierarchySummary';
+import { WithOrganizationHierarchy, withOrganizationHierarchy } from '@organization/hoc/withOrganizationHierarchy';
+import { organizationMessage } from '@organization/locales/messages/organizationMessage';
 import * as moment from 'moment';
 import * as React from 'react';
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
@@ -29,16 +29,15 @@ import {
   withStateHandlers,
 } from 'recompose';
 
-import { isModuleRequestEditable } from '@organization/helper/isModuleRequestEditable';
-import { ExpenseRequestListFilter, IExpenseRequestListFilterResult } from './ExpenseRequestListFilter';
+import { IOrganizationHierarchyListFilterResult, OrganizationHierarchyListFilter } from './OrganizationHierarchyListFilter';
 
 interface IOwnOption {
   
 }
 
-interface IOwnState extends IExpenseRequestListFilterResult {
+interface IOwnState extends IOrganizationHierarchyListFilterResult {
   shouldUpdate: boolean;
-  config?: IListConfig<IExpense>;
+  config?: IListConfig<IHierarchy>;
   isFilterOpen: boolean;
 }
 
@@ -51,7 +50,7 @@ interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
 
 interface IOwnHandler {
   handleFilterVisibility: (event: React.MouseEvent<HTMLElement>) => void;
-  handleFilterApplied: (filter: IExpenseRequestListFilterResult) => void;
+  handleFilterApplied: (filter: IOrganizationHierarchyListFilterResult) => void;
 }
 
 type AllProps 
@@ -60,7 +59,7 @@ type AllProps
   & IOwnStateUpdater
   & IOwnHandler
   & WithUser
-  & WithExpenseRequest
+  & WithOrganizationHierarchy
   & InjectedIntlProps
   & RouteComponentProps;
 
@@ -70,18 +69,13 @@ const listView: React.SFC<AllProps> = props => (
       props.config &&
       <ListPage 
         config={props.config} 
-        source={props.expenseRequestState.all} 
+        source={props.organizationHierarchyState.all} 
         loadDataWhen={props.shouldUpdate} 
       >
-        <ExpenseRequestListFilter 
+        <OrganizationHierarchyListFilter 
           isOpen={props.isFilterOpen}
           initialProps={{
-            customerUid: props.customerUid,
-            projectUid: props.projectUid,
-            expenseType: props.expenseType,
-            statusType: props.statusType,
-            status: props.status,
-            isRejected: props.isRejected
+            companyUid: props.companyUid
           }}
           onClose={props.handleFilterVisibility}
           onApply={props.handleFilterApplied}
@@ -94,22 +88,19 @@ const listView: React.SFC<AllProps> = props => (
 const createProps: mapper<AllProps, IOwnState> = (props: AllProps): IOwnState => ({
   shouldUpdate: false,
   isFilterOpen: false,
-
-  // fill partial props from location state to handle redirection from dashboard notif
-  isRejected: props.location.state && props.location.state.isRejected
 });
 
 const stateUpdaters: StateUpdaters<AllProps, IOwnState, IOwnStateUpdater> = {
   setShouldUpdate: (prevState: IOwnState) => () => ({
     shouldUpdate: !prevState.shouldUpdate
   }),
-  setConfig: (prevState: IOwnState) => (config: IListConfig<IExpense>) => ({
+  setConfig: (prevState: IOwnState) => (config: IListConfig<IHierarchy>) => ({
     config
   }),
   setFilterVisibility: (prevState: IOwnState) => () => ({
     isFilterOpen: !prevState.isFilterOpen
   }),
-  setFilterApplied: (prevState: IOwnState) => (filter: IExpenseRequestListFilterResult) => ({
+  setFilterApplied: (prevState: IOwnState) => (filter: IOrganizationHierarchyListFilterResult) => ({
     ...filter,
     isFilterOpen: false
   }),
@@ -119,7 +110,7 @@ const handlerCreators: HandleCreators<AllProps, IOwnHandler> = {
   handleFilterVisibility: (props: AllProps) => (event: React.MouseEvent<HTMLElement>) => {
     props.setFilterVisibility();
   },
-  handleFilterApplied: (props: AllProps) => (filter: IExpenseRequestListFilterResult) => {
+  handleFilterApplied: (props: AllProps) => (filter: IOrganizationHierarchyListFilterResult) => {
     props.setFilterApplied(filter);
   },
 };
@@ -127,22 +118,22 @@ const handlerCreators: HandleCreators<AllProps, IOwnHandler> = {
 const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
   componentDidMount() { 
     const { user } = this.props.userState;
-    const { isLoading, request, response } = this.props.expenseRequestState.all;
-    const { loadAllRequest } = this.props.expenseRequestDispatch;
+    const { isLoading, request, response } = this.props.organizationHierarchyState.all;
+    const { loadAllRequest } = this.props.organizationHierarchyDispatch;
 
-    const config: IListConfig<IExpense> = {
+    const config: IListConfig<IHierarchy> = {
       // page
       page: {
-        uid: AppMenu.ExpenseRequest,
-        parentUid: AppMenu.Expense,
-        title: this.props.intl.formatMessage(expenseMessage.request.page.title),
-        description: this.props.intl.formatMessage(expenseMessage.request.page.subTitle),
+        uid: AppMenu.LookupApprovalHierarchy,
+        parentUid: AppMenu.Lookup,
+        title: this.props.intl.formatMessage(organizationMessage.hierarchy.page.listTitle),
+        description: this.props.intl.formatMessage(organizationMessage.hierarchy.page.listSubHeader),
       },
       
       // top bar
-      fields: Object.keys(ExpenseField).map(key => ({ 
+      fields: Object.keys(HierarchyField).map(key => ({ 
         value: key, 
-        name: ExpenseField[key] 
+        name: HierarchyField[key] 
       })),
     
       // searching
@@ -165,7 +156,7 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
         {
           icon: AddCircleIcon,
           onClick: () => { 
-            this.props.history.push('/expense/requests/form'); 
+            this.props.history.push('/organization/hierarchy/form'); 
           }
         }
       ],
@@ -178,16 +169,7 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
           if (!response || forceReload) {
             loadAllRequest({
               filter: {
-                companyUid: user.company.uid,
-                positionUid: user.position.uid,
-                customerUid: this.props.customerUid,
-                projectUid: this.props.projectUid,
-                expenseType: this.props.expenseType,
-                start: undefined,
-                end: undefined,
-                statusType: this.props.statusType,
-                status: this.props.status,
-                isRejected: this.props.isRejected,
+                companyUid: this.props.companyUid,
                 direction: params.direction,
                 orderBy: params.orderBy,
                 page: params.page,
@@ -202,29 +184,28 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
           }
         }
       },
-      onBind: (item: IExpense, index: number) => ({
-        key: index,
+      onBind: (item: IHierarchy, index: number) => ({
+        key: item.uid,
         primary: item.uid,
-        secondary: item.notes && item.notes || '',
-        tertiary: item.customer && item.customer.name || item.customerUid,
-        quaternary: this.props.intl.formatNumber(item.value, GlobalFormat.CurrencyDefault),
-        quinary: item.status && item.status.value || item.statusType,
+        secondary: item.name,
+        tertiary: item.company && item.company.name || 'N/A',
+        quaternary: item.inactiveDate && this.props.intl.formatDate(item.inactiveDate, GlobalFormat.Date) || 'N/A',
+        quinary: item.changes && (item.changes.updated && item.changes.updated.fullName || item.changes.created && item.changes.created.fullName) || '?',
         senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
       }),
 
       // summary component
-      summaryComponent: (item: IExpense) => ( 
-        <ExpenseSummary data={item} />
+      summaryComponent: (item: IHierarchy) => ( 
+        <OrganizationHierarchySummary data={item} />
       ),
 
       // action component
-      actionComponent: (item: IExpense, callback: ListHandler) => (
+      actionComponent: (item: IHierarchy, callback: ListHandler) => (
         <React.Fragment>
           {
-            isModuleRequestEditable(item.statusType) &&
             <Button 
               size="small"
-              onClick={() => this.props.history.push(`/expense/requests/form`, { uid: item.uid })}
+              onClick={() => this.props.history.push(`/organization/hierarchy/form`, { companyUid: item.companyUid, hierarchyUid: item.uid })}
             >
               <FormattedMessage {...layoutMessage.action.modify}/>
             </Button>
@@ -232,7 +213,7 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
 
           <Button 
             size="small"
-            onClick={() => this.props.history.push(`/expense/requests/${item.uid}`)}
+            onClick={() => this.props.history.push(`/organization/hierarchy/${item.uid}`, { companyUid: item.companyUid })}
           >
             <FormattedMessage {...layoutMessage.action.details}/>
           </Button>
@@ -246,11 +227,7 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
           title: this.props.intl.formatMessage(layoutMessage.tooltip.filter),
           icon: TuneIcon,
           showBadgeWhen: () => {
-            return this.props.customerUid !== undefined || 
-              this.props.projectUid !== undefined || 
-              this.props.statusType !== undefined || 
-              this.props.status !== undefined || 
-              this.props.isRejected === true;
+            return this.props.companyUid !== undefined ;
           },
           onClick: this.props.handleFilterVisibility
         }
@@ -262,21 +239,17 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
   componentDidUpdate(nextProps: AllProps) {
     // track any changes in filter props
     if (
-      this.props.customerUid !== nextProps.customerUid ||
-      this.props.projectUid !== nextProps.projectUid ||
-      this.props.statusType !== nextProps.statusType ||
-      this.props.status !== nextProps.status ||
-      this.props.isRejected !== nextProps.isRejected
+      this.props.companyUid !== nextProps.companyUid 
     ) {
       this.props.setShouldUpdate();
     }
   }
 };
 
-export const ExpenseRequestList = compose(
-  setDisplayName('ExpenseRequestList'),
+export const OrganizationHierarchyList = compose(
+  setDisplayName('OrganizationHierarchyList'),
   withUser,
-  withExpenseRequest,
+  withOrganizationHierarchy,
   withRouter,
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),
