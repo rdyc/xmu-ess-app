@@ -1,5 +1,6 @@
 import { GlobalStyle } from '@layout/types/GlobalStyle';
 import { Card, CardContent, CardHeader, TextField } from '@material-ui/core';
+// import { StandardTextFieldProps } from '@material-ui/core/TextField';
 import { IPurchaseItem } from '@purchase/classes/response/purchaseSettlement';
 import { purchaseMessage } from '@purchase/locales/messages/purchaseMessage';
 import * as React from 'react';
@@ -15,11 +16,11 @@ type AllProps
   = OwnProps
   & InjectedIntlProps;
 
-const style = {
-  input: {
-    color: 'secondary'
-  }
-};
+// const style: Partial<StandardTextFieldProps> = {
+//   InputProps: {
+//     color: 'primary'
+//   }
+// };
 
 const settlementItemInformation: React.SFC<AllProps> = props => (
   <Card square>
@@ -54,7 +55,7 @@ const settlementItemInformation: React.SFC<AllProps> = props => (
       />
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
-        {...style}
+        // style={style}
         margin="dense"
         label={props.intl.formatMessage(purchaseMessage.settlement.items.variance)}
         value={(props.data && props.data.varianceValue || 0) >= 0
