@@ -21,6 +21,7 @@ const EnLang = {
   messages: {
     ...enMessages,
     ...enLayoutMessages,
+    ...enAccountMessages,
     ...enHomeMessages,
     ...enWorkflowMessages,
     ...enMileageMessages,

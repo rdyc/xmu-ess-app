@@ -1,7 +1,7 @@
 import { IQuerySingleState } from '@generic/interfaces';
 import { ICurrencyGetByIdRequest } from '@lookup/classes/queries';
 import { ICurrencyDetail } from '@lookup/classes/response';
-import { CurrencyAction as Action } from '@lookup/store/actions';
+import { LookupCurrencyAction as Action } from '@lookup/store/actions';
 import { Reducer } from 'redux';
 
 const initialState: IQuerySingleState<ICurrencyGetByIdRequest, ICurrencyDetail> = {

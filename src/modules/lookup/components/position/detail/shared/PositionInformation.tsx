@@ -44,7 +44,7 @@ const positionInformation: React.SFC<AllProps> = props => {
     <Card square >
       <CardHeader
         title={intl.formatMessage(lookupMessage.position.section.infoTitle)}
-        subheader={intl.formatMessage(lookupMessage.position.section.infoSubHeader)}
+        // subheader={intl.formatMessage(lookupMessage.position.section.infoSubHeader)}
       />
       <CardContent >
         <TextField

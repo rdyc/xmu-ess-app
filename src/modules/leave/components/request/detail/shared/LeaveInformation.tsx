@@ -29,7 +29,7 @@ const leaveInformation: React.SFC<AllProps> = props => {
     <Card square>
       <CardHeader 
         title={<FormattedMessage id="leave.infoTitle"/>}
-        subheader={<FormattedMessage id="leave.infoSubTitle" />}
+        // subheader={<FormattedMessage id="leave.infoSubTitle" />}
       />
       <CardContent>
         <TextField

@@ -41,7 +41,7 @@ interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
 interface OwnHandlers {
   isExpanded: (cIndex: number, dIndex: number) => boolean;
   handleSyncClick: () => void;
-  handleNotifClick: (category: string, type: string, uid: string) => void;
+  handleNotifClick: (category: string, type: string, uid?: string) => void;
 }
 
 export type DashboardProps
@@ -116,96 +116,212 @@ const handlerCreators: HandleCreators<DashboardProps, OwnHandlers> = {
       });
     }
   },
-  handleNotifClick: (props: DashboardProps) => (category: string, type: string, uid: string) => {
+  handleNotifClick: (props: DashboardProps) => (category: string, type: string, uid?: string) => {
     const { history } = props;
 
+    let path: string = '/';
+
+    let state: any = { 
+      status: type === 'Notify' ? undefined : 'pending', 
+      isNotify: type === 'Notify' ? true : false 
+    };
+
     switch (category) {
-      // todo: complete all categories in each modules
-      case 'Project Registration':
+      case 'Project Registration': 
+        path = '/project';
+      
         if (type === 'Approval' || type === 'Notify') {
-          history.push(`/project/approvals/${uid}`);
+          path = path.concat('/approvals', uid && `/${uid}` || '');
+
+          if (type === 'Approval') {
+            state = {
+              status: 'pending',
+            };
+          }
+
+          if (type === 'Notify') {
+            state = {
+              status: 'complete',
+              isNotify: true,
+            };
+          }
         } else {
-          history.push(`/project/requests/${uid}`);
+          path = path.concat('/requests', uid && `/${uid}` || '');
+
+          if (type === 'New Owner') {
+            state = {
+              status: 'complete',
+              isNewOwner: true,
+            };
+          }
         }
         break;
 
       case 'Project Assignment':
+        path = '/project';
+        
         if (type === 'New Assignment') {
-          history.push(`/project/acceptances/${uid}`);
+          path = path.concat('/acceptances', uid && `/${uid}` || '');
         } else {
-          history.push(`/project/assignments/${uid}`);
+          path = path.concat('/assignments', uid && `/${uid}` || '');
         }
         break;
 
       case 'Leave':
-        if (type === 'Approval') {
-          history.push(`/leave/approvals/${uid}`);
-        } else {
-          history.push(`/leave/requests/${uid}`);
+        path = '/leave';
+        
+        if (type === 'Approval' || type === 'Notify') {
+          path = path.concat('/approvals', uid && `/${uid}` || '');
+
+          if (type === 'Approval') {
+            state = {
+              status: 'pending',
+            };
+          }
+
+          if (type === 'Notify') {
+            state = {
+              status: 'complete',
+              isNotify: true,
+            };
+          }
         }
         break;
 
       case 'Expense':
+        path = '/expense';
+
         if (type === 'Approval' || type === 'Notify') {
-          history.push(`/expense/approvals/${uid}`);
+          path = path.concat('/approvals', uid && `/${uid}` || '');
         } else {
-          history.push(`/expense/requests/${uid}`);
+          path = path.concat('/requests', uid && `/${uid}` || '');
         }
         break;
 
       case 'Timesheet':
+        path = '/timesheet';
+
         if (type === 'Approval' || type === 'Notify') {
-          history.push(`/timesheet/approvals/${uid}`);
+          path = path.concat('/approvals', uid && `/${uid}` || '');
         } else {
-          history.push(`/timesheet/requests/${uid}`);
+          path = path.concat('/requests', uid && `/${uid}` || '');
         }
         break;
         
       case 'Travel':
+        path = '/travel';
+
         if (type === 'Approval' || type === 'Notify') {
-          history.push(`/travel/approvals/${uid}`);
+          path = path.concat('/approvals', uid && `/${uid}` || '');
+
+          if (type === 'Approval') {
+            state = {
+              status: 'pending',
+            };
+          }
+
+          if (type === 'Notify') {
+            state = {
+              status: 'complete',
+              isNotify: true,
+            };
+          }
         } else {
-          history.push(`/travel/requests/${uid}`);
+          path = path.concat('/requests', uid && `/${uid}` || '');
+
+          if (type === 'Settlement') {
+            state = {
+              isSettlement: true,
+            };
+          }
+
+          if (type === 'Rejected') {
+            state = {
+              isRejected: true,
+            };
+          }
         }
         break;
 
       case 'Travel Settlement':
+        path = '/travel';
+
         if (type === 'Approval' || type === 'Notify') {
-          history.push(`/travel/settlement/approvals/${uid}`);
+          path = path.concat('/settlement/approvals', uid && `/${uid}` || '');
+
+          if (type === 'Approval') {
+            state = {
+              status: 'pending',
+            };
+          }
+
+          if (type === 'Notify') {
+            state = {
+              status: 'complete',
+              isNotify: true,
+            };
+          }
+
         } else {
-          history.push(`/travel/settlements/${uid}`);
+          path = path.concat('/settlement/requests', uid && `/${uid}` || '');
+
+          if (type === 'Rejected') {
+            state = {
+              isRejected: true,
+            };
+          }
         }
         break;        
     
       case 'Purchase':
+        path = '/purchase';
+        
         if (type === 'Approval' || type === 'Notify') {
-          history.push(`/purchase/approvals/${uid}`);
-        } else if (type === 'Settlement') {
-          history.push(`/purchase/settlement/requests/form`, {uid});
+          path = path.concat('/approvals', uid && `/${uid}` || '');
         } else {
-          history.push(`/purchase/requests/${uid}`);
+          path = path.concat('/requests', uid && `/${uid}` || '');
         }
         break;
     
       case 'Purchase Settlement':
+        path = '/purchase/settlement';
+
         if (type === 'Approval' || type === 'Notify') {
-          history.push(`/purchase/settlement/approvals/${uid}`);
+          path = path.concat('/approvals', uid && `/${uid}` || '');
         } else {
-          history.push(`/purchase/settlement/requests/${uid}`);
+          path = path.concat('/requests', uid && `/${uid}` || '');
         }
         break;
     
       case 'Mileage':
+        path = '/mileage';
+        
         if (type === 'Approval' || type === 'Notify') {
-          history.push(`/mileage/approvals/${uid}`);
+          path = path.concat('/approvals', uid && `/${uid}` || '');
+          
+          if (type === 'Approval') {
+            state = {
+              status: 'pending',
+            };
+          }
+
+          if (type === 'Notify') {
+            state = {
+              status: 'complete',
+              isNotify: true,
+            };
+          }
         } else {
-          history.push(`/mileage/requests/${uid}`);          
+          path = path.concat('/requests', uid && `/${uid}` || '');       
         }
         break;
 
       default:
         break;
     }
+
+    // redirecting to defined path
+    history.push(path, state);
   }
 };
 

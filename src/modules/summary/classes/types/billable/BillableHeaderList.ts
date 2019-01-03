@@ -3,6 +3,6 @@ export enum BillableHeaderList {
   fullName = 'Employee Name',
   hours = 'Billable Hours',
   percentage = 'Billable (%)',
-  presalesHours = 'Presales Billable Hours',
-  presalesPercentage = 'Presales Billable (%)'
+  presalesHours = 'Presales Hours',
+  presalesPercentage = 'Presales (%)'
 }

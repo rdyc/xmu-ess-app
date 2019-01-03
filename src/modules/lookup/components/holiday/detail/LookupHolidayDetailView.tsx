@@ -1,19 +1,14 @@
-import { WorkflowStatusType } from '@common/classes/types';
 import AppMenu from '@constants/AppMenu';
-import { DialogConfirmation } from '@layout/components/dialogs';
 import { SingleConfig, SingleHandler, SinglePage, SingleState } from '@layout/components/pages/singlePage/SinglePage';
 import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
 import { ILookupHolidayDetail } from '@lookup/classes/response';
-import { LookupHolidayUserAction } from '@lookup/classes/types';
+import { LookupUserAction } from '@lookup/classes/types';
+import { Delete } from '@lookup/components/shared/Delete';
 import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
 import * as React from 'react';
 import { LookupHolidayDetailProps } from './LookupHolidayDetail';
 import { LookupHolidayInformation } from './shared/LookupHolidayInformation';
-
-const isContains = (statusType: WorkflowStatusType | undefined, statusTypes: string[]): boolean => { 
-  return statusType ? statusTypes.indexOf(statusType) !== -1 : false;
-};
 
 const config: SingleConfig<ILookupHolidayDetail, LookupHolidayDetailProps> = {
   // page info
@@ -31,18 +26,25 @@ const config: SingleConfig<ILookupHolidayDetail, LookupHolidayDetailProps> = {
   hasMore: true,
   moreOptions: (props: LookupHolidayDetailProps, state: SingleState, callback: SingleHandler): IAppBarMenu[] => ([
     {
-      id: LookupHolidayUserAction.Refresh,
+      id: LookupUserAction.Refresh,
       name: props.intl.formatMessage(layoutMessage.action.refresh),
       enabled: true,
       visible: true,
       onClick: callback.handleForceReload
     },
     {
-      id: LookupHolidayUserAction.Modify,
+      id: LookupUserAction.Modify,
       name: props.intl.formatMessage(layoutMessage.action.modify),
-      enabled: state.statusType !== undefined,
-      visible: isContains(state.statusType, [ WorkflowStatusType.Submitted ]),
+      enabled: true,
+      visible: true,
       onClick: props.handleOnModify
+    },
+    {
+      id: LookupUserAction.Delete,
+      name: props.intl.formatMessage(layoutMessage.action.delete),
+      enabled: true,
+      visible: true,
+      onClick: () => props.handleOnOpenDialog(LookupUserAction.Delete)
     }
   ]),
 
@@ -92,15 +94,19 @@ export const LookupHolidayDetailView: React.SFC<LookupHolidayDetailProps> = prop
     config={config}
     connectedProps={props}
   >
-    <DialogConfirmation 
-      isOpen={props.dialogOpen}
-      fullScreen={props.dialogFullScreen}
+  <Delete
+      action={props.action}
+      isOpenDialog={props.dialogOpen}
       title={props.dialogTitle}
       content={props.dialogContent}
       labelCancel={props.dialogCancelLabel}
       labelConfirm={props.dialogConfirmLabel}
-      onClickCancel={props.handleOnCloseDialog}
-      onClickConfirm={props.handleOnConfirm}
+      handleDialogOpen={props.handleOnOpenDialog}
+      handleDialogClose={props.handleOnCloseDialog}
+      handleDialogConfirmed={props.handleOnConfirm}
+      onSubmit={props.handleDelete} 
+      onSubmitSuccess={props.handleDeleteSuccess}
+      onSubmitFail={props.handleDeleteFail}
     />
   </SinglePage>
 );

@@ -57,15 +57,14 @@ const lifecycles: ReactLifeCycleFunctions<SelectPositionProps, {}> = {
       loadListRequest({filter});
     }
   },
-  // componentWillReceiveProps(nextProps: SelectPositionProps) {
-  //   if (nextProps.filter !== this.props.filter) {
-  //     const { loadListDispose, loadListRequest } = this.props.lookupPositionDispatch;
-  //     const { filter } = nextProps;
+  componentWillReceiveProps(nextProps: SelectPositionProps) {
+    if (nextProps.filter !== this.props.filter) {
+      const { loadListRequest } = this.props.lookupPositionDispatch;
+      const { filter } = nextProps;
       
-  //     loadListDispose();
-  //     loadListRequest({filter});
-  //   }
-  // },
+      loadListRequest({filter});
+    }
+  },
   componentWillUnmount() {
     const { loadListDispose } = this.props.lookupPositionDispatch;
     loadListDispose();

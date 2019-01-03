@@ -10,7 +10,7 @@ import { compose, mapper, StateHandlerMap, StateUpdaters, withStateHandlers } fr
 
 interface OwnProps {
   title: string;
-  subHeader: string;
+  subHeader?: string;
   data: IRoleMenu[] | null;
 }
 
@@ -37,7 +37,7 @@ const roleMenu: React.SFC<AllProps> = props => {
     <Card square>
       <CardHeader
         title={props.title}
-        subheader={props.subHeader}
+        // subheader={props.subHeader}
       />
       <CardContent>
         <List>
@@ -84,20 +84,22 @@ const roleMenu: React.SFC<AllProps> = props => {
                   {
                     data &&
                     data.map(child => child.menu && (child.menu.parentUid === item.menuUid) &&
-                      <ListItem
-                        button
-                        color={'inherit'}
-                        className={props.classes.marginFarLeft}
-                      >
-                        <ListItemText
-                          className={(!child.isAccess) ? props.classes.textStrikethrough : ''}
-                          primary={child.menu.name}
-                          primaryTypographyProps={{
-                            noWrap: true,
-                            color: 'inherit'
-                          }}
-                        />
-                      </ListItem>
+                      <div key={child.menuUid}>
+                        <ListItem
+                          button
+                          color={'inherit'}
+                          className={props.classes.marginFarLeft}
+                        >
+                          <ListItemText
+                            className={(!child.isAccess) ? props.classes.textStrikethrough : ''}
+                            primary={child.menu.name}
+                            primaryTypographyProps={{
+                              noWrap: true,
+                              color: 'inherit'
+                            }}
+                          />
+                        </ListItem>
+                      </div>
                     )
                   }
                 </Collapse>

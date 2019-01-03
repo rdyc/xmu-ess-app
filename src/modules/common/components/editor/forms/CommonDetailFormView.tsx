@@ -63,7 +63,7 @@ export const CommonDetailFormView: React.SFC<CommonDetailFormProps> = props => {
     <Card square>
       <CardHeader 
         title={intl.formatMessage(commonMessage.system.section.title)}
-        subheader={intl.formatMessage(commonMessage.system.section.subTitle)}
+        // subheader={intl.formatMessage(commonMessage.system.section.subTitle)}
       />
       <CardContent>
         <TextField

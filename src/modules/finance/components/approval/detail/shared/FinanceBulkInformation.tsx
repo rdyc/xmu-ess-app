@@ -20,7 +20,7 @@ const financeBulkInformation: React.SFC<AllProps> = props => (
   <Card square>
     <CardHeader 
       title={props.intl.formatMessage(financeMessage.approval.section.infoTitle)}
-      subheader={props.intl.formatMessage(financeMessage.approval.section.infoSubTitle)}
+      // subheader={props.intl.formatMessage(financeMessage.approval.section.infoSubTitle)}
     />
     <CardContent>
       {

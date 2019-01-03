@@ -22,7 +22,7 @@ const projectAssignment: React.SFC<AllProps> = props => (
   <Card square>
     <CardHeader 
       title={props.intl.formatMessage(projectMessage.assignment.section.projectTitle)}
-      subheader={props.intl.formatMessage(projectMessage.assignment.section.projectSubHeader)}
+      // subheader={props.intl.formatMessage(projectMessage.assignment.section.projectSubHeader)}
     />
     <CardContent>
       {

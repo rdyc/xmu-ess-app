@@ -114,6 +114,54 @@ const lifecycles: ReactLifeCycleFunctions<SelectSystemProps, OwnProps> = {
           commonDispatch.gradeListRequest(request);
           break;
 
+        case 'relation':
+          commonDispatch.relationListRequest(request);
+          break;
+          
+        case 'religion':
+          commonDispatch.religionListRequest(request);
+          break;
+
+        case 'gender':
+          commonDispatch.genderListRequest(request);
+          break;
+          
+        case 'blood':
+          commonDispatch.bloodListRequest(request);
+          break;
+
+        case 'tax':
+          commonDispatch.taxListRequest(request);
+          break;
+
+        case 'employment':
+          commonDispatch.employmentListRequest(request);
+          break;
+
+        case 'training':
+          commonDispatch.trainingListRequest(request);
+          break;
+
+        case 'certification':
+          commonDispatch.certificationListRequest(request);
+          break;
+
+        case 'department':
+          commonDispatch.departmentListRequest(request);
+          break;
+
+        case 'degree':
+          commonDispatch.degreeListRequest(request);
+          break;
+
+        case 'family':
+          commonDispatch.familyListRequest(request);
+          break;
+
+        case 'level':
+          commonDispatch.levelListRequest(request);
+          break;
+          
         default:
           break;
       }
@@ -146,7 +194,19 @@ const fnGetContext = (props: SelectSystemProps) => {
     case 'limiter': return props.commonLimiterListState;
     case 'unit': return props.commonUnitListState;
     case 'grade': return props.commonGradeListState;
-  
+    case 'relation': return props.commonRelationListState;
+    case 'religion': return props.commonReligionListState;
+    case 'gender': return props.commonGenderListState;
+    case 'blood': return props.commonBloodListState;
+    case 'tax': return props.commonTaxListState;
+    case 'employment': return props.commonEmploymentListState;
+    case 'training': return props.commonTrainingListState;
+    case 'certification': return props.commonCertificationListState;
+    case 'degree': return props.commonDegreeListState;
+    case 'department': return props.commonDepartmentListState;
+    case 'family': return props.commonFamilyListState;
+    case 'level': return props.commonLevelListState;
+
     default: return props.commonActivityListState;
   }
 };

@@ -23,6 +23,14 @@ export const mileageExceptionMessage = defineMessages({
   updateFailure: { id: `${prefix}.message.update.failure` },
 });
 
+// confirmation
+export const mileageExceptionConfirm = defineMessages({
+  createTitle: { id: `${prefix}.confirm.create.title` },
+  createDescription: { id: `${prefix}.confirm.create.description` },
+  modifyTitle: { id: `${prefix}.confirm.modify.title` },
+  modifyDescription: { id: `${prefix}.confirm.modify.description` },
+});
+
 // field
 export const mileageExceptionField = defineMessages({
   uid: { id: `${prefix}.field.id`},

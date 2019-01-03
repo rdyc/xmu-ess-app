@@ -3,6 +3,7 @@ import { FormMode } from '@generic/types';
 import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
+import { layoutMessage } from '@layout/locales/messages';
 import { IMileageRequestPostPayload } from '@mileage/classes/request/';
 import { IMileageRequest } from '@mileage/classes/response';
 import { MileageRequestFormData } from '@mileage/components/request/editor/forms/MileageRequestForm';
@@ -45,6 +46,10 @@ interface OwnState {
   formMode: FormMode;
   companyUid?: string | undefined;
   positionUid?: string | undefined;
+  submitDialogTitle: string;
+  submitDialogContentText: string;
+  submitDialogCancelText: string;
+  submitDialogConfirmedText: string;
 }
 
 interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
@@ -169,7 +174,11 @@ const handlerCreators: HandleCreators<MileageRequestEditorProps, OwnHandlers> = 
 };
 
 const createProps: mapper<MileageRequestEditorProps, OwnState> = (props: MileageRequestEditorProps): OwnState => ({ 
-  formMode: FormMode.New
+  formMode: FormMode.New,
+  submitDialogTitle: props.intl.formatMessage(mileageMessage.request.confirm.createTitle),
+  submitDialogContentText: props.intl.formatMessage(mileageMessage.request.confirm.createDescription),
+  submitDialogCancelText: props.intl.formatMessage(layoutMessage.action.cancel),
+  submitDialogConfirmedText: props.intl.formatMessage(layoutMessage.action.ok),
 });
 
 const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
@@ -195,7 +204,9 @@ const lifecycles: ReactLifeCycleFunctions<MileageRequestEditorProps, {}> = {
 
     stateUpdate({ 
       companyUid: user.company.uid,
-      positionUid: user.position.uid
+      positionUid: user.position.uid,
+      submitDialogTitle: this.props.intl.formatMessage(mileageMessage.request.confirm.createTitle),
+      submitDialogContentText : this.props.intl.formatMessage(mileageMessage.request.confirm.createDescription)
     });
 
     layoutDispatch.setupView({

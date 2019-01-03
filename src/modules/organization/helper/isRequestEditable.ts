@@ -5,8 +5,9 @@ export const isRequestEditable = (statusType: string): boolean => {
 
   const statusTypes: string[] = [
     WorkflowStatusType.Submitted, 
-    WorkflowStatusType.InProgress, 
-    WorkflowStatusType.Approved
+    WorkflowStatusType.InProgress,
+    WorkflowStatusType.Approved,
+
   ];
    
   result = statusTypes.indexOf(statusType) !== -1;

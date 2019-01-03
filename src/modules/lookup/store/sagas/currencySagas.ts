@@ -1,6 +1,6 @@
 import { layoutAlertAdd } from '@layout/store/actions';
 import {
-  CurrencyAction as Action,
+  LookupCurrencyAction as Action,
   lookupCurrencyDeleteError,
   lookupCurrencyDeleteRequest,
   lookupCurrencyDeleteSuccess,

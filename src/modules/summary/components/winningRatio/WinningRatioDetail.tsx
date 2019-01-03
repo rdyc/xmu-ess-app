@@ -10,9 +10,12 @@ import {
   TableCell,
   TableHead,
   TableRow,
+  WithStyles,
+  withStyles,
   withWidth
 } from '@material-ui/core';
 import { isWidthDown, WithWidth } from '@material-ui/core/withWidth';
+import styles from '@styles';
 import { ISummaryWinning } from '@summary/classes/response/winning';
 import {
   WinningRatioHeaderDetailClosed,
@@ -33,10 +36,10 @@ interface OwnProps {
   handleDialog: () => void;
 }
 
-type AllProps = OwnProps & WithWidth & InjectedIntlProps;
+type AllProps = OwnProps & WithWidth & InjectedIntlProps & WithStyles<typeof styles>;
 
 const winningRatioDetail: React.SFC<AllProps> = props => {
-  const { uid, type, open, data, handleDialog, width, intl } = props;
+  const { uid, type, open, data, handleDialog, width, intl, classes } = props;
 
   const isMobile = isWidthDown('sm', width);
 
@@ -82,7 +85,7 @@ const winningRatioDetail: React.SFC<AllProps> = props => {
                   <TableHead>
                     <TableRow>
                       {header.map(headerItem => (
-                        <TableCell padding="default" key={headerItem.id}>
+                        <TableCell padding="default" key={headerItem.id} className={classes.stickyHeader}>
                           {headerItem.name}
                         </TableCell>
                       ))}
@@ -96,11 +99,11 @@ const winningRatioDetail: React.SFC<AllProps> = props => {
                             cat.projects.map(project => (
                               <TableRow key={project.projectUid}>
                                 <TableCell>
-                                  {project.projectUid} &bull; {project.name}
+                                  {project.projectUid} - {project.name}
                                 </TableCell>
                                 <TableCell>
                                   {project.childProjectUid !== null ? (
-                                    project.childProjectUid
+                                    `${project.childProjectUid} - ${project.name}`
                                   ) : intl.formatMessage(summaryMessage.winningRatio.field.null)}
                                 </TableCell>
                                 <TableCell>
@@ -134,5 +137,6 @@ const winningRatioDetail: React.SFC<AllProps> = props => {
 
 export const WinningRatioDetail = compose<AllProps, OwnProps>(
   injectIntl,
-  withWidth()
+  withWidth(),
+  withStyles(styles)
 )(winningRatioDetail);

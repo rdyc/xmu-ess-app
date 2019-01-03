@@ -1,10 +1,10 @@
 import { WorkflowStatusType } from '@common/classes/types';
 import { SelectSystem, SelectSystemOption } from '@common/components/select';
 import { FormMode } from '@generic/types';
-import { InputDate } from '@layout/components/input/date';
+import { InputDate } from '@layout/components/input/date/InputDate';
+// import { InputDate } from '@layout/components/input/date';
 import { InputNumber } from '@layout/components/input/number';
 import { InputText } from '@layout/components/input/text';
-// import { WithUser, withUser } from '@layout/hoc/withUser';
 import { InputCustomer } from '@lookup/components/customer/input';
 import { SelectProject } from '@project/components/select/project';
 import { PurchaseRequestDetailFormView } from '@purchase/components/purchaseRequest/editor/forms/PurchaseRequestDetailFormView';
@@ -20,11 +20,10 @@ interface OwnProps {
   formCurrencyType: string | null | undefined;
   formCustomer: string | null | undefined;
   isCurrencyIdr: boolean;
-  // requestValue: number | undefined;
+  // requestMinDate?: Date;
   onChangeCurrencyType: (event: any, newValue: string, oldValue: string) => void;
   onChangeRate: (event: any, newValue: number, oldValue: number) => void;
   onChangeValueIdr: (event: any, newValue: number, oldValue: number) => void;
-  // onChangeRequest: (event: any, newValue: number, oldValue: number) => void;
 }
 
 interface OwnHandlers {
@@ -33,7 +32,6 @@ interface OwnHandlers {
 
 export type PurchaseRequestDetailFormProps 
   = OwnProps
-  // & WithUser
   & OwnHandlers
   & InjectedIntlProps;
 
@@ -100,10 +98,14 @@ const handlerCreators: HandleCreators<PurchaseRequestDetailFormProps, OwnHandler
       
       case 'date': 
         fieldProps = {
+          type: 'date',
           required: true,
           label: intl.formatMessage(purchaseMessage.request.field.date),
           placeholder: intl.formatMessage(purchaseMessage.request.field.datePlaceholder),
-          component: InputDate
+          component: InputDate,
+          // minDate:  props.requestMinDate,
+          disablePast: true,
+          disabled: false,
         };
         break;
         

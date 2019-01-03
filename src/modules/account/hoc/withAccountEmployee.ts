@@ -1,11 +1,20 @@
-import { IEmployeeAllRequest, IEmployeeByIdRequest, IEmployeeListRequest } from '@account/classes/queries';
+import { IEmployeeAllRequest, IEmployeeByIdRequest, IEmployeeDeleteRequest, IEmployeeListRequest, IEmployeePostRequest, IEmployeePutRequest } from '@account/classes/queries';
 import { IEmployee, IEmployeeDetail } from '@account/classes/response';
 import {
+  accountEmployeeDeleteDispose,
+  accountEmployeeDeleteRequest,
+  accountEmployeeGetAllDispose,
   accountEmployeeGetAllRequest,
+  accountEmployeeGetByIdDispose,
   accountEmployeeGetByIdRequest,
+  accountEmployeeGetListDispose,
   accountEmployeeGetListRequest,
+  accountEmployeePostDispose,
+  accountEmployeePostRequest,
+  accountEmployeePutDispose,
+  accountEmployeePutRequest,
 } from '@account/store/actions';
-import { IAppState, IQueryCollectionState } from '@generic/interfaces';
+import { IAppState, IQueryCollectionState, IQuerySingleState } from '@generic/interfaces';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 
@@ -13,18 +22,31 @@ interface PropsFromState {
   accountEmployeeState: {
     all: IQueryCollectionState<IEmployeeAllRequest, IEmployee>;
     list: IQueryCollectionState<IEmployeeListRequest, IEmployee>;
-    detail: IQueryCollectionState<IEmployeeByIdRequest, IEmployeeDetail>;
+    detail: IQuerySingleState<IEmployeeByIdRequest, IEmployeeDetail>;
   };
 }
 
 interface PropsFromDispatch {
   accountEmployeeDispatch: {
-    // list
-    
+    // command
+    createRequest: typeof accountEmployeePostRequest;
+    createDispose: typeof accountEmployeePostDispose;
+
+    updateRequest: typeof accountEmployeePutRequest;
+    updateDispose: typeof accountEmployeePutDispose;
+
+    deleteRequest: typeof accountEmployeeDeleteRequest;
+    deleteDispose: typeof accountEmployeeDeleteDispose;
+
     // query
     loadAllRequest: typeof accountEmployeeGetAllRequest;
+    loadAllDispose: typeof accountEmployeeGetAllDispose;
+    
     loadListRequest: typeof accountEmployeeGetListRequest;
+    loadListDispose: typeof accountEmployeeGetListDispose;
+
     loadDetailRequest: typeof accountEmployeeGetByIdRequest;
+    loadDetailDispose: typeof accountEmployeeGetByIdDispose;
   };
 }
 
@@ -41,11 +63,24 @@ const mapStateToProps = ({ accountEmployeeGetAll, accountEmployeeGetList, accoun
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   accountEmployeeDispatch: {
     // command
+    createRequest: (request: IEmployeePostRequest) => dispatch(accountEmployeePostRequest(request)),
+    createDispose: () => dispatch(accountEmployeePostDispose()),
+
+    updateRequest: (request: IEmployeePutRequest) => dispatch(accountEmployeePutRequest(request)),
+    updateDispose: () => dispatch(accountEmployeePutDispose()),
+
+    deleteRequest: (request: IEmployeeDeleteRequest) => dispatch(accountEmployeeDeleteRequest(request)),
+    deleteDispose: () => dispatch(accountEmployeeDeleteDispose()),
 
     // query
     loadAllRequest: (request: IEmployeeAllRequest) => dispatch(accountEmployeeGetAllRequest(request)),
+    loadAllDispose: () => dispatch(accountEmployeeGetAllDispose()),
+
     loadListRequest: (request: IEmployeeListRequest) => dispatch(accountEmployeeGetListRequest(request)),
+    loadListDispose: () => dispatch(accountEmployeeGetListDispose()),
+
     loadDetailRequest: (request: IEmployeeByIdRequest) => dispatch(accountEmployeeGetByIdRequest(request)),
+    loadDetailDispose: () => dispatch(accountEmployeeGetByIdDispose())
   }
 });
 

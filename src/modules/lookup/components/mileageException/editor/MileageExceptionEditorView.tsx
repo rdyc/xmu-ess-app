@@ -6,7 +6,8 @@ import { MileageExceptionContainerForm, MileageExceptionFormData } from './forms
 import { MileageExceptionEditorProps } from './MileageExceptionEditor';
 
 export const MileageExceptionEditorView: React.SFC<MileageExceptionEditorProps> = props => {
-  const { formMode, handleValidate, handleSubmit, handleSubmitSuccess, handleSubmitFail } = props;
+  const { formMode, handleValidate, handleSubmit, handleSubmitSuccess, handleSubmitFail, submitDialogTitle,
+  submitDialogCancelText, submitDialogConfirmedText, submitDialogContentText } = props;
   const { isLoading, response } = props.mileageExceptionState.detail;
 
   const renderForm = (formData: MileageExceptionFormData) => (
@@ -17,6 +18,10 @@ export const MileageExceptionEditorView: React.SFC<MileageExceptionEditorProps> 
       onSubmit={handleSubmit} 
       onSubmitSuccess={handleSubmitSuccess}
       onSubmitFail={handleSubmitFail}
+      submitDialogTitle={submitDialogTitle}
+      submitDialogContentText={submitDialogContentText}
+      submitDialogCancelText={submitDialogCancelText}
+      submitDialogConfirmedText={submitDialogConfirmedText}
     />
   );
     

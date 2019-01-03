@@ -41,7 +41,7 @@ export const PurchaseRequestEditorView: React.SFC<PurchaseRequestEditorProps> = 
       projectUid: undefined,
       advance: 0,
       date: undefined,
-      currencyType: undefined,
+      currencyType: 'SCR01',
       rate: 1,
       request: 0,
       requestInIDR: 0,

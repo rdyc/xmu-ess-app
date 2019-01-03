@@ -1,4 +1,5 @@
 import { homeMessage } from '@home/locales/messages';
+import { layoutMessage } from '@layout/locales/messages';
 import {
   Avatar,
   Card,
@@ -28,19 +29,20 @@ export const dashboardView: React.SFC<DashboardProps> = props => (
         <SyncIcon />
       </IconButton>
     </div>
+
     <div className={props.classes.marginWideBottom}>
       <Typography variant="h6">
         {props.intl.formatMessage(homeMessage.dashboard.section.notificationTitle)}
       </Typography>
-      <Typography variant="body2">
+      {/* <Typography variant="body2">
         {props.intl.formatMessage(homeMessage.dashboard.section.notificationSubHeader)}
-      </Typography>
+      </Typography> */}
     </div>
 
     {
       props.notificationState.loading &&
-      <Typography variant="body2">
-        Loading
+      <Typography variant="body1">
+        {props.intl.formatMessage(layoutMessage.text.loading)}
       </Typography>
     }
 
@@ -81,6 +83,7 @@ export const dashboardView: React.SFC<DashboardProps> = props => (
                       noWrap: true
                     }}
                   />
+
                   <Collapse 
                     style={{
                       backgroundColor: props.theme.palette.background.default,
@@ -92,6 +95,26 @@ export const dashboardView: React.SFC<DashboardProps> = props => (
                     unmountOnExit
                   >
                     <List component="div" disablePadding>
+                      {
+                        detail.items.length > 1 &&
+                        <ListItem
+                          button
+                          onClick={() => props.handleNotifClick(category.name, detail.type)}
+                        >
+                          <ListItemText
+                            primary={props.intl.formatMessage(homeMessage.dashboard.text.showAll)}
+                            secondary={props.intl.formatMessage(homeMessage.dashboard.text.showAllDesc)}
+                            primaryTypographyProps={{
+                              noWrap: true,
+                              variant: 'body2'
+                            }}
+                            secondaryTypographyProps={{
+                              variant: 'caption'
+                            }}
+                          />
+                        </ListItem>
+                      }
+
                       {
                         detail.items.map(item =>
                           <div key={item.uid}>

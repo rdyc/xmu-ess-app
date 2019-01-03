@@ -1,24 +1,24 @@
 {
   "mileage.approval.page.list.title": "Mileage Approval",
-  "mileage.approval.page.list.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras mollis eros sit amet rhoncus fermentum",
+  "mileage.approval.page.list.subHeader": " ",
 
   "mileage.approval.submission.title": "Mileage Approval Submission",
-  "mileage.approval.submission.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
+  "mileage.approval.submission.subHeader": " ",
 
   "mileage.approval.submission.dialog.title": "Mileage Approval Submission",
-  "mileage.approval.submission.dialog.content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
+  "mileage.approval.submission.dialog.content": " ",
 
   "mileage.request.page.list.title": "Mileage Request",
-  "mileage.request.page.list.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras mollis eros sit amet rhoncus fermentum",
+  "mileage.request.page.list.subHeader": " ",
   "mileage.request.page.detail.title": "Mileage Details",
-  "mileage.request.page.detail.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
+  "mileage.request.page.detail.subHeader": " ",
   "mileage.request.page.new.title": "New Mileage Request",
-  "mileage.request.page.new.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
+  "mileage.request.page.new.subHeader": " ",
 
   "mileage.request.field.item.title": "Mileage Item",
-  "mileage.request.field.item.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
+  "mileage.request.field.item.subHeader": " ",
   "mileage.request.field.information.title": "Details Submit Mileage",
-  "mileage.request.field.information.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+  "mileage.request.field.information.subHeader": " ",
   "mileage.request.field.information.uid": "Mileage ID",
   "mileage.request.field.information.statusType": "Status",
   "mileage.request.field.information.date": "Month",
@@ -34,17 +34,36 @@
   "mileage.request.field.information.month.required": "Month is required",
   "mileage.request.field.information.month.placeholder": "Select a month",
 
+  "mileage.request.field.employee": "Employee",
+
+  "mileage.request.field.isNotify": "Notify Only",
+  "mileage.request.field.isRejected": "Rejected Only",
+  "mileage.request.field.completion": "Completion",
+
   "mileage.request.field.information.noData": "N/A",
 
   "mileage.request.field.submit.title": "Submit Mileage",
-  "mileage.request.field.submit.subHeader": "Lorem Ipsum dolor sit amet,",
+  "mileage.request.field.submit.subHeader": " ",
   
-  "mileage.request.item.title": "Details Item",
-  "mileage.request.item.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+  "mileage.approval.field.filter.employee": "Employee Name",
+  
+  "mileage.request.item.title": "Details Mileage Item",
+  "mileage.request.item.subHeader": " ",
   "mileage.request.item.empty": "No Item",
 
+  "mileage.request.field.item.uid": "Mileage Item ID",
+  "mileage.request.field.item.date": "Report Date",
+  "mileage.request.field.item.customer": "Customer",
+  "mileage.request.field.item.project": "Project",
+  "mileage.request.field.item.status": "Status",
+  "mileage.request.field.item.site": "Project Site",
+  "mileage.request.field.item.value": "Value",
+
+  "mileage.request.timesheet.item.title": "Details Timesheet Item",
+  "mileage.request.timesheet.item.subHeader": " ",
+
   "mileage.request.confirm.create.title": "Create Mileage",
-  "mileage.request.confirm.create.description": "Lorem ipsum dolor sit amet",
+  "mileage.request.confirm.create.description": " ",
 
   "mileage.message.approval.update.success": "A new PID {uid} has been updated",
   "mileage.message.approval.update.failure": "Unable to process your submission",

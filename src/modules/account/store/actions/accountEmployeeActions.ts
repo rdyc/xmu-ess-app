@@ -1,6 +1,6 @@
-import { IEmployeeAllRequest, IEmployeeByIdRequest, IEmployeeListRequest } from '@account/classes/queries';
+import { IEmployeeAllRequest, IEmployeeByIdRequest, IEmployeeDeleteRequest, IEmployeeListRequest, IEmployeePostRequest, IEmployeePutRequest } from '@account/classes/queries';
 import { IEmployee } from '@account/classes/response';
-import { IResponseCollection } from '@generic/interfaces';
+import { IResponseCollection, IResponseSingle } from '@generic/interfaces';
 import { action } from 'typesafe-actions';
 
 export const enum AccountEmployeeAction {
@@ -16,6 +16,18 @@ export const enum AccountEmployeeAction {
   GET_BY_ID_SUCCESS = '@@account/employee/GET_BY_ID_SUCCESS',
   GET_BY_ID_ERROR = '@@account/employee/GET_BY_ID_ERROR',
   GET_BY_ID_DISPOSE = '@@account/employee/GET_BY_ID_DISPOSE',
+  POST_REQUEST = '@@account/employee/POST_REQUEST',
+  POST_SUCCESS = '@@account/employee/POST_SUCCESS',
+  POST_ERROR = '@@account/employee/POST_ERROR',
+  POST_DISPOSE = '@@account/employee/POST_DISPOSE',
+  PUT_REQUEST = '@@account/employee/PUT_REQUEST',
+  PUT_SUCCESS = '@@account/employee/PUT_SUCCESS',
+  PUT_ERROR = '@@account/employee/PUT_ERROR',
+  PUT_DISPOSE = '@@account/employee/PUT_DISPOSE',
+  DELETE_REQUEST = '@@account/employee/DELETE_REQUEST',
+  DELETE_SUCCESS = '@@account/employee/DELETE_SUCCESS',
+  DELETE_ERROR = '@@account/employee/DELETE_ERROR',
+  DELETE_DISPOSE = '@@account/employee/DELETE_DISPOSE'
 }
 
 // get all
@@ -35,3 +47,21 @@ export const accountEmployeeGetByIdRequest = (request: IEmployeeByIdRequest) => 
 export const accountEmployeeGetByIdSuccess = (response: IResponseCollection<IEmployee>) => action(AccountEmployeeAction.GET_BY_ID_SUCCESS, response);
 export const accountEmployeeGetByIdError = (message: string) => action(AccountEmployeeAction.GET_BY_ID_ERROR, message);
 export const accountEmployeeGetByIdDispose = () => action(AccountEmployeeAction.GET_BY_ID_DISPOSE);
+
+// post
+export const accountEmployeePostRequest = (request: IEmployeePostRequest) => action(AccountEmployeeAction.POST_REQUEST, request);
+export const accountEmployeePostSuccess = (response: IResponseSingle<IEmployee>) => action(AccountEmployeeAction.POST_SUCCESS, response);
+export const accountEmployeePostError = (message: string) => action(AccountEmployeeAction.POST_ERROR, message);
+export const accountEmployeePostDispose = () => action(AccountEmployeeAction.POST_DISPOSE);
+
+// put
+export const accountEmployeePutRequest = (request: IEmployeePutRequest) => action(AccountEmployeeAction.PUT_REQUEST, request);
+export const accountEmployeePutSuccess = (response: IResponseSingle<IEmployee>) => action(AccountEmployeeAction.PUT_SUCCESS, response);
+export const accountEmployeePutError = (message: string) => action(AccountEmployeeAction.PUT_ERROR, message);
+export const accountEmployeePutDispose = () => action(AccountEmployeeAction.PUT_DISPOSE);
+
+// delete
+export const accountEmployeeDeleteRequest = (request: IEmployeeDeleteRequest) => action(AccountEmployeeAction.DELETE_REQUEST, request);
+export const accountEmployeeDeleteSuccess = (response: boolean) => action(AccountEmployeeAction.DELETE_SUCCESS, response);
+export const accountEmployeeDeleteError = (message: string) => action(AccountEmployeeAction.DELETE_ERROR, message);
+export const accountEmployeeDeleteDispose = () => action(AccountEmployeeAction.DELETE_DISPOSE);

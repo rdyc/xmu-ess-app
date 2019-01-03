@@ -59,11 +59,13 @@ export const projectAssignmentField = defineMessages({
   mandaysRequired: { id: `${prefix}.field.item.mandays.required` },
   mandaysPlaceholder: { id: `${prefix}.field.item.mandays.placeholder` },
 
-  hours: { id: `${prefix}.field.item.hours` },
+  allocatedHours: { id: `${prefix}.field.item.allocatedHours` },
+  consumedHours: { id: `${prefix}.field.item.consumedHours` },
   newMandays: { id: `${prefix}.field.item.newMandays` },
   newHours: { id: `${prefix}.field.item.newHours` },
   statusType: { id: `${prefix}.field.item.statusType` },
   reason: { id: `${prefix}.field.item.rejectedReason` },
+  activeOnly: { id: `${prefix}.field.item.activeOnly` },
 });
 
 export const projectAssignmentFieldHelperFor = (field: string, type: 'fieldName' | 'fieldRequired' | 'fieldPlaceholder') => {

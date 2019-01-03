@@ -9,14 +9,17 @@ import { Typography } from '@material-ui/core';
 import * as React from 'react';
 
 export const ExpenseRequestEditorView: React.SFC<ExpenseRequestEditorProps> = props => {
-  const { formMode, handleValidate, handleSubmit, handleSubmitSuccess, handleSubmitFail, intl,
+  const { formMode, handleValidate, handleSubmit, handleSubmitSuccess, handleSubmitFail, intl, handleSetMinDate, minDate,
     submitDialogTitle, submitDialogContentText, submitDialogConfirmedText, submitDialogCancelText } = props;
   const { isLoading, response } = props.expenseRequestState.detail;
+  const amountLoading = props.systemLimitState.amount.isLoading;
+  const amountResponse = props.systemLimitState.amount.response;
 
   const renderForm = (formData: ExpenseRequestFormData) => (
     <RequestForm 
       formMode={formMode}
       initialValues={formData}
+      minDate={minDate}
       validate={handleValidate}
       onSubmit={handleSubmit} 
       onSubmitSuccess={handleSubmitSuccess}
@@ -45,8 +48,20 @@ export const ExpenseRequestEditorView: React.SFC<ExpenseRequestEditorProps> = pr
     },
   };
 
+  if (amountLoading && !amountResponse) { // do not load the form yet if the amount not loaded
+    return (
+      <Typography variant="body2">
+        {intl.formatMessage(layoutMessage.text.loading)}
+      </Typography>
+    );
+  }
+
   // New
   if (formMode === FormMode.New) {
+    if (!amountLoading && amountResponse && amountResponse.data) {
+      handleSetMinDate(amountResponse.data.days);
+    }
+    
     return renderForm(initialValues);
   }
 
@@ -75,6 +90,10 @@ export const ExpenseRequestEditorView: React.SFC<ExpenseRequestEditorProps> = pr
       initialValues.information.name = data.client.name;
       initialValues.information.title = data.client.title;
       initialValues.information.notes = data.notes;
+
+      if (!amountLoading && amountResponse && amountResponse.data) {
+        handleSetMinDate(amountResponse.data.days, data.changes && data.changes.createdAt);
+      }
       
       return renderForm(initialValues);
     }

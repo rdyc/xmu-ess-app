@@ -11,7 +11,7 @@ export interface IRoleDetail {
   grade: ICommonSystem | null;
   name: string;
   description: string | null;
-  menus: IRoleMenu[] | null;
+  menus: IRoleMenu[];
   isActive: boolean;
   changes: IBaseChanges | null;
 }

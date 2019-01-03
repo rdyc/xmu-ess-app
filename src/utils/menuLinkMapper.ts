@@ -131,27 +131,27 @@ export const menuLinkMapper = (menuUid: string) => {
       break;
 
     case 'MNU02':
-      path = '/lookup/company/list';
+      path = '/lookup/company';
       break;
 
     case 'MNU03':
-      path = '/lookup/employee/list';
+      path = '/lookup/employee';
       break;
 
     case 'MNU04':
-      path = '/lookup/approvalhierarchy/list';
+      path = '/organization/hierarchy';
       break;
 
     case 'MNU05':
-      path = '/lookup/organization/list';
+      path = '/organization/structure';
       break;
 
     case 'MNU06':
-      path = '/lookup/position';
+      path = '/lookup/positions';
       break;
 
     case 'MNU07':
-      path = '/lookup/roles/list';
+      path = '/lookup/roles';
       break;
 
     case 'MNU33':
@@ -187,7 +187,7 @@ export const menuLinkMapper = (menuUid: string) => {
       break;
 
     case 'MNU55':
-      path = '/lookup/currency';
+      path = '/lookup/currencies';
       break;
 
     case 'MNU59':

@@ -1,7 +1,13 @@
 import { IBasePagingFilter } from '@generic/interfaces';
 
 export interface IProjectRegistrationGetAllFilter extends IBasePagingFilter {
-  readonly customerUids?: string[] | undefined;
-  readonly projectTypes?: string[] | undefined;
-  readonly statusTypes?: string[] | undefined;
+  // customerUids?: string[] | undefined;
+  // projectTypes?: string[] | undefined;
+  // statusTypes?: string[] | undefined;
+  customerUid?: string;
+  projectType?: string;
+  statusType?: string;
+  // status?: 'pending' | 'complete' | string;
+  isRejected?: boolean;
+  isNewOwner?: boolean;
 }

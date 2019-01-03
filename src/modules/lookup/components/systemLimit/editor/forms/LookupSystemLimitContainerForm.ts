@@ -1,4 +1,5 @@
 import { FormMode } from '@generic/types';
+import { connect } from 'react-redux';
 import { InjectedFormProps, reduxForm } from 'redux-form';
 import { LookupSystemLimitContainerFormView } from './LookupSystemLimitContainerFormView';
 
@@ -15,16 +16,33 @@ export type SystemLimitFormData = {
 
 interface OwnProps {
   formMode: FormMode;
+  submitDialogTitle: string;
+  submitDialogContentText: string;
+  submitDialogCancelText: string;
+  submitDialogConfirmedText: string;
+}
+
+interface FormValueProps {
+  formName: string;
 }
 
 export type SystemLimitContainerFormProps 
-  = InjectedFormProps<SystemLimitFormData, OwnProps> 
+  = InjectedFormProps<SystemLimitFormData, OwnProps>
+  & FormValueProps 
   & OwnProps;
 
+const mapStateToProps = (state: any): FormValueProps => {
+  return {
+    formName,
+  };
+};
+
+const connectedView = connect(mapStateToProps)(LookupSystemLimitContainerFormView);
+
 export const LookupSystemLimitContainerForm = reduxForm<SystemLimitFormData, OwnProps>({
-  form: formName,
-  touchOnChange: true,
-  touchOnBlur: true,
-  enableReinitialize: true,
-  destroyOnUnmount: true
-})(LookupSystemLimitContainerFormView);
+form: formName,
+touchOnChange: true,
+touchOnBlur: true,
+enableReinitialize: true,
+destroyOnUnmount: true
+})(connectedView);

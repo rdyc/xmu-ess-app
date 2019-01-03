@@ -8,6 +8,9 @@ import {
   systemLimitGetAllError,
   systemLimitGetAllRequest,
   systemLimitGetAllSuccess,
+  systemLimitGetAmountError,
+  systemLimitGetAmountRequest,
+  systemLimitGetAmountSuccess,
   systemLimitGetByIdDispose,
   systemLimitGetByIdError,
   systemLimitGetByIdRequest,
@@ -58,6 +61,35 @@ function* watchGetAllRequest() {
   };
   
   yield takeEvery(Action.GET_ALL_REQUEST, worker);
+}
+
+function* watchGetAmountRequest() {
+  const worker = (action: ReturnType<typeof systemLimitGetAmountRequest>) => {
+    return saiyanSaga.fetch({
+      method: 'get',
+      path: `/v1/lookup/systemlimits/limit/${action.payload.companyUid}/${action.payload.categoryType}`, 
+      successEffects: (response: IApiResponse) => ([
+        put(systemLimitGetAmountSuccess(response.body)),
+      ]), 
+      failureEffects: (response: IApiResponse) => ([
+        put(systemLimitGetAmountError(response.body)),
+        put(layoutAlertAdd({
+          time: new Date(),
+          message: response.statusText,
+          details: response
+        }))
+      ]), 
+      errorEffects: (error: TypeError) => ([
+        put(systemLimitGetAmountError(error.message)),
+        put(layoutAlertAdd({
+          time: new Date(),
+          message: error.message
+        }))
+      ])
+    });
+  };
+  
+  yield takeEvery(Action.GET_AMOUNT_REQUEST, worker);
 }
 
 function* watchGetListRequest() {
@@ -221,7 +253,8 @@ function* watchDeleteRequest() {
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
         put(systemLimitGetAllDispose()),
-        put(systemLimitDeleteSuccess(response.body))
+        put(systemLimitDeleteSuccess(response.body)),
+        put(systemLimitGetAllRequest(response.body))
       ],
       successCallback: (response: IApiResponse) => {
         action.payload.resolve(response.body.data);
@@ -263,6 +296,7 @@ function* watchDeleteRequest() {
 function* lookupSystemLimitSagas() {
   yield all([
     fork(watchGetAllRequest),
+    fork(watchGetAmountRequest),
     fork(watchGetListRequest),
     fork(watchGetByIdRequest),
     fork(watchPostRequest),
