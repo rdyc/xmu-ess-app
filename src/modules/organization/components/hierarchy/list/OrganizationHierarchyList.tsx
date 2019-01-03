@@ -205,7 +205,7 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
           {
             <Button 
               size="small"
-              onClick={() => this.props.history.push(`/organization/hierarchy/form`, { uid: item.uid })}
+              onClick={() => this.props.history.push(`/organization/hierarchy/form`, { companyUid: item.companyUid, hierarchyUid: item.uid })}
             >
               <FormattedMessage {...layoutMessage.action.modify}/>
             </Button>
@@ -213,7 +213,7 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
 
           <Button 
             size="small"
-            onClick={() => this.props.history.push(`/organization/hierarchy/${item.uid}`)}
+            onClick={() => this.props.history.push(`/organization/hierarchy/${item.uid}`, { companyUid: item.companyUid })}
           >
             <FormattedMessage {...layoutMessage.action.details}/>
           </Button>
