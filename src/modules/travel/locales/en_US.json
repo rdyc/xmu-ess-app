@@ -40,12 +40,12 @@
   "travel.request.dialog.editDescription": " ",
 
   "travel.request.confirm.modify.title": "Modify Confirmation",
-  "travel.request.confirm.modify.description": " ",
+  "travel.request.confirm.modify.description": "You are about to modify current travel request, approval request will be re-started in new approval round. Do you want to continue?",
   "travel.request.confirm.addSettlement.title": "Add Settlement Confirmation",
-  "travel.request.confirm.addSettlement.description": " ",
+  "travel.request.confirm.addSettlement.description": "You are about to settle  the current travel request. Do you want to continue?",
 
   "travel.settlement.confirm.modify.title": "Modify Confirmation",
-  "travel.settlement.confirm.modify.description": " ",
+  "travel.settlement.confirm.modify.description": "You are about to modify current travel settlement, approval request will be re-started in new approval round. Do you want to continue?",
 
   "travel.request.section.approval.title": "Approval",
   "travel.request.section.approval.subHeader": " ",
@@ -62,10 +62,10 @@
   "travel.settlement.section.item.subHeader": " ",
 
   "travel.approval.confirm.submission.title": "Travel Approval Submission",
-  "travel.approval.confirm.submission.content": " ",
+  "travel.approval.confirm.submission.content": "You are about to submitting travel request for this approval request. Do you want to continue?",
   
   "travel.settlementApproval.confirm.submission.title": "Travel Settlement Approval Submission",
-  "travel.settlementApproval.confirm.submission.content": " ",
+  "travel.settlementApproval.confirm.submission.content": "You are about to submitting travel settlement for this approval request. Do you want to continue?",
   
   "travel.request.field.uid": "Travel ID",
   "travel.request.field.travelUid": "Travel ID",

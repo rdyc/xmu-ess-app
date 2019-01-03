@@ -60,7 +60,7 @@ const createProps: mapper<TravelRequestApprovalDetailProps, OwnState> = (props: 
   approvalSubHeader: props.intl.formatMessage(travelMessage.request.section.approvalSubHeader),
   approvalChoices: [
     { value: WorkflowStatusType.Approved, label: props.intl.formatMessage(organizationMessage.workflow.option.approve) },
-    { value: WorkflowStatusType.Rejected, label: props.intl.formatMessage(travelMessage.requestApproval.option.adjustmentNeeded) }
+    { value: WorkflowStatusType.Rejected, label: props.intl.formatMessage(organizationMessage.workflow.option.reject) }
   ],
   approvalTrueValue: WorkflowStatusType.Approved,
   approvalDialogTitle: props.intl.formatMessage(travelMessage.requestApproval.confirm.submissionTitle),
