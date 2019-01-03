@@ -23,8 +23,8 @@ import { Dispatch } from 'redux';
 interface PropsFromState {
   accountEmployeeAccessHistoryState: {
     all: IQueryCollectionState<IEmployeeAccessHistoryAllRequest, IEmployeeAccessHistory>;
-    list: IQuerySingleState<IEmployeeAccessHistoryListRequest, IEmployeeAccessHistoryList>;
-    detail: IQueryCollectionState<IEmployeeAccessHistoryByIdRequest, IEmployeeAccessHistoryDetail>;
+    list: IQueryCollectionState<IEmployeeAccessHistoryListRequest, IEmployeeAccessHistoryList>;
+    detail: IQuerySingleState<IEmployeeAccessHistoryByIdRequest, IEmployeeAccessHistoryDetail>;
   };
 }
 

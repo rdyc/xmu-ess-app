@@ -5,12 +5,16 @@ import AppMenu from '@constants/AppMenu';
 import { SingleConfig, SingleHandler, SinglePage, SingleState } from '@layout/components/pages/singlePage/SinglePage';
 import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
-import { AppBar, Tab, Tabs, Typography } from '@material-ui/core';
+import { AppBar, Tab, Tabs } from '@material-ui/core';
 import * as React from 'react';
+import { AccountEmployeeAccessHistory } from './accessHistory/AccountEmployeeAccessHistory';
 import { AccountEmployeeBank } from './AccountEmployeeBank';
 import { AccountEmployeeContact } from './AccountEmployeeContact';
 import { AccountEmployeeDetailProps } from './AccountEmployeeDetail';
 import { AccountEmployeeInformation } from './AccountEmployeeInformation';
+import { AccountEmployeeEducation } from './education/AccountEmployeeEducation';
+import { AccountEmployeeExperience } from './experience/AccountEmployeeExperience';
+import { AccountEmployeeFamily } from './family/AccountEmployeeFamily';
 import { AccountEmployeeTraining } from './training/AccountEmployeeTraining';
 
 const config: SingleConfig<IEmployeeDetail, AccountEmployeeDetailProps> = {
@@ -104,7 +108,11 @@ export const AccountEmployeeDetailView: React.SFC<AccountEmployeeDetailProps> = 
         />
       </div>
     }
-    {props.tab === 1 && <div style={{ padding: 8 * 3 }}><AccountEmployeeTraining employeeUid={props.match.params.employeeUid}/></div>}
-    {props.tab === 2 && <Typography style={{ padding: 8 * 3 }}>TAB 3</Typography>}
+    {props.tab === 1 && <div style={{ padding: 8 * 3 }}><AccountEmployeeAccessHistory employeeUid={props.match.params.employeeUid}/></div>}
+    {props.tab === 2 && <div style={{ padding: 8 * 3 }}><AccountEmployeeEducation employeeUid={props.match.params.employeeUid}/></div>}
+    {props.tab === 3 && <div style={{ padding: 8 * 3 }}><AccountEmployeeFamily employeeUid={props.match.params.employeeUid}/></div>}
+    {props.tab === 4 && <div style={{ padding: 8 * 3 }}><AccountEmployeeExperience employeeUid={props.match.params.employeeUid}/></div>}
+    {props.tab === 5 && <div style={{ padding: 8 * 3 }}><AccountEmployeeTraining employeeUid={props.match.params.employeeUid}/></div>}
+    {/* {props.tab === 6 && <div style={{ padding: 8 * 3 }}><AccountEmployeeTraining employeeUid={props.match.params.employeeUid}/></div>}     */}
   </React.Fragment>
 );
