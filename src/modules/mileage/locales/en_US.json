@@ -65,9 +65,6 @@
   "mileage.request.confirm.create.title": "Create Mileage",
   "mileage.request.confirm.create.description": " ",
 
-  "mileage.request.confirm.modify.title": "Modify Mileage",
-  "mileage.request.confirm.modify.description": " ",
-
   "mileage.message.approval.update.success": "A new PID {uid} has been updated",
   "mileage.message.approval.update.failure": "Unable to process your submission",
   "mileage.message.approval.emptyProps": "Empty Props",
