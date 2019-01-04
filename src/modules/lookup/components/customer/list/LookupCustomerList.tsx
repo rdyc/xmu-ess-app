@@ -2,9 +2,9 @@ import AppMenu from '@constants/AppMenu';
 import { IListConfig, ListDataProps, ListHandler, ListPage } from '@layout/components/pages';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { layoutMessage } from '@layout/locales/messages';
-import { IDiem } from '@lookup/classes/response';
-import { LookupDiemField } from '@lookup/classes/types/diem/DiemField';
-import { WithLookupDiem, withLookupDiem } from '@lookup/hoc/withLookupDiem';
+import { ICustomer } from '@lookup/classes/response';
+import { LookupCustomerField } from '@lookup/classes/types/customer/LookupCustomerField';
+import { WithLookupCustomer, withLookupCustomer } from '@lookup/hoc/withLookupCustomer';
 import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
 import { Button } from '@material-ui/core';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
@@ -14,16 +14,16 @@ import * as React from 'react';
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { compose, HandleCreators, lifecycle, mapper, ReactLifeCycleFunctions, setDisplayName, StateHandler, StateHandlerMap, StateUpdaters, withHandlers, withStateHandlers } from 'recompose';
-import { LookupDiemSummary } from '../detail/shared/LookupDiemSummary';
-import { ILookupDiemListFilterResult, LookupDiemListFilter } from './LookupDiemListFilter';
+import { LookupCustomerSummary } from '../detail/shared/LookupCustomerSummary';
+import { ILookupCustomerListFilterResult, LookupCustomerListFilter } from './LookupCustomerListFilter';
 
 interface IOwnOption {
 
 }
 
-interface IOwnState extends ILookupDiemListFilterResult {
+interface IOwnState extends ILookupCustomerListFilterResult {
   shouldUpdate: boolean;
-  config?: IListConfig<IDiem>;
+  config?: IListConfig<ICustomer>;
   isFilterOpen: boolean;
 }
 
@@ -36,7 +36,7 @@ interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
 
 interface IOwnHandler {
   handleFilterVisibility: (event: React.MouseEvent<HTMLElement>) => void;
-  handleFilterApplied: (filter: ILookupDiemListFilterResult) => void;
+  handleFilterApplied: (filter: ILookupCustomerListFilterResult) => void;
 }
 
 type AllProps
@@ -45,7 +45,7 @@ type AllProps
   & IOwnStateUpdater
   & IOwnHandler
   & WithUser
-  & WithLookupDiem
+  & WithLookupCustomer
   & InjectedIntlProps
   & RouteComponentProps;
 
@@ -55,14 +55,13 @@ const listView: React.SFC<AllProps> = props => (
       props.config &&
       <ListPage
         config={props.config}
-        source={props.lookupDiemState.all}
+        source={props.lookupCustomerState.all}
         loadDataWhen={props.shouldUpdate}
       >
-        <LookupDiemListFilter
+        <LookupCustomerListFilter
           isOpen={props.isFilterOpen}
           initialProps={{
-            projectType: props.projectType,
-            destinationType: props.destinationType,
+            companyUid: props.companyUid,
           }}
           onClose={props.handleFilterVisibility}
           onApply={props.handleFilterApplied}
@@ -81,13 +80,13 @@ const stateUpdaters: StateUpdaters<AllProps, IOwnState, IOwnStateUpdater> = {
   setShouldUpdate: (prevState: IOwnState) => () => ({
     shouldUpdate: !prevState.shouldUpdate
   }),
-  setConfig: (prevState: IOwnState) => (config: IListConfig<IDiem>) => ({
+  setConfig: (prevState: IOwnState) => (config: IListConfig<ICustomer>) => ({
     config
   }),
   setFilterVisibility: (prevState: IOwnState) => () => ({
     isFilterOpen: !prevState.isFilterOpen
   }),
-  setFilterApplied: (prevState: IOwnState) => (filter: ILookupDiemListFilterResult) => ({
+  setFilterApplied: (prevState: IOwnState) => (filter: ILookupCustomerListFilterResult) => ({
     ...filter,
     isFilterOpen: false
   }),
@@ -97,42 +96,42 @@ const handlerCreators: HandleCreators<AllProps, IOwnHandler> = {
   handleFilterVisibility: (props: AllProps) => (event: React.MouseEvent<HTMLElement>) => {
     props.setFilterVisibility();
   },
-  handleFilterApplied: (props: AllProps) => (filter: ILookupDiemListFilterResult) => {
+  handleFilterApplied: (props: AllProps) => (filter: ILookupCustomerListFilterResult) => {
     props.setFilterApplied(filter);
   },
 };
 
 const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
-  componentDidMount() { 
+  componentDidMount() {
     const { user } = this.props.userState;
-    const { isLoading, request, response } = this.props.lookupDiemState.all;
-    const { loadAllRequest } = this.props.lookupDiemDispatch;
+    const { isLoading, request, response } = this.props.lookupCustomerState.all;
+    const { loadAllRequest } = this.props.lookupCustomerDispatch;
 
-    const config: IListConfig<IDiem> = {
+    const config: IListConfig<ICustomer> = {
       // page
       page: {
-        uid: AppMenu.LookupDiem,
+        uid: AppMenu.LookupCustomer,
         parentUid: AppMenu.Lookup,
-        title: this.props.intl.formatMessage(lookupMessage.lookupDiem.page.listTitle),
-        description: this.props.intl.formatMessage(lookupMessage.lookupDiem.page.listSubHeader)
+        title: this.props.intl.formatMessage(lookupMessage.lookupCustomer.page.listTitle),
+        description: this.props.intl.formatMessage(lookupMessage.lookupCustomer.page.listSubHeader)
       },
-      
+
       // top bar
-      fields: Object.keys(LookupDiemField)
-        .map(key => ({ 
-          value: key, 
-          name: LookupDiemField[key] 
+      fields: Object.keys(LookupCustomerField)
+        .map(key => ({
+          value: key,
+          name: LookupCustomerField[key]
         })),
-    
+
       // searching
       hasSearching: true,
       searchStatus: (): boolean => {
         let result: boolean = false;
-    
+
         if (request && request.filter && request.filter.find) {
           result = request.filter.find ? true : false;
         }
-    
+
         return result;
       },
 
@@ -143,12 +142,12 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
       toolbarControls: (callback: ListHandler) => [
         {
           icon: AddCircleIcon,
-          onClick: () => { 
-            this.props.history.push('/lookup/diemValue/form'); 
+          onClick: () => {
+            this.props.history.push('/lookup/customer/form');
           }
         }
       ],
-    
+
       // events
       onDataLoad: (callback: ListHandler, params: ListDataProps, forceReload?: boolean | false) => {
         // when user is set and not loading
@@ -157,8 +156,7 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
           if (!response || forceReload) {
             loadAllRequest({
               filter: {
-                projectType: this.props.projectType,
-                destinationType: this.props.destinationType,
+                companyUid: this.props.companyUid,
                 find: params.find,
                 findBy: params.findBy,
                 orderBy: params.orderBy,
@@ -173,38 +171,38 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
           }
         }
       },
-      onBind: (item: IDiem, index: number) => ({
+      onBind: (item: ICustomer, index: number) => ({
         key: index,
-    primary: item.company && item.company.name || item.companyUid ,
-    secondary: item.project && item.project.value || item.projectType,
-    tertiary: item.destination && item.destination.value || item.destinationType,
-    quaternary: this.props.intl.formatNumber(item.value),
-    quinary: item.changes && item.changes.updated && item.changes.updated.fullName || item.changes && item.changes.created && item.changes.created.fullName || 'N/A',
-    senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
+        primary: item.name,
+        secondary: item.email ? item.email : 'N/A',
+        tertiary: item.phone ? item.phone : (item.phoneAdditional ? item.phoneAdditional : 'N/A'),
+        quaternary: item.company && item.company.name || item.companyUid,
+        quinary: item.changes && item.changes.updated && item.changes.updated.fullName || item.changes && item.changes.created && item.changes.created.fullName || 'N/A',
+        senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
       }),
 
       // summary component
-      summaryComponent: (item: IDiem) => ( 
-        <LookupDiemSummary data={item} />
+      summaryComponent: (item: ICustomer) => (
+        <LookupCustomerSummary data={item} />
       ),
 
       // action component
-      actionComponent: (item: IDiem, callback: ListHandler) => (
+      actionComponent: (item: ICustomer, callback: ListHandler) => (
         <React.Fragment>
           {
             <Button
               size="small"
-              onClick={() => this.props.history.push(`/lookup/diemvalue/form`, {uid: item.uid, company: item.companyUid })}
+              onClick={() => this.props.history.push(`/lookup/customer/form`, { uid: item.uid, companyUid: item.companyUid })}
             >
-              <FormattedMessage {...layoutMessage.action.modify}/>
+              <FormattedMessage {...layoutMessage.action.modify} />
             </Button>
           }
 
-          <Button 
+          <Button
             size="small"
-            onClick={() => this.props.history.push(`/lookup/diemvalue/${item.uid}`, { company: item.companyUid })}
+            onClick={() => this.props.history.push(`/lookup/customer/${item.uid}`, { companyUid: item.companyUid })}
           >
-            <FormattedMessage {...layoutMessage.action.details}/>
+            <FormattedMessage {...layoutMessage.action.details} />
           </Button>
         </React.Fragment>
       ),
@@ -216,8 +214,7 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
           title: this.props.intl.formatMessage(layoutMessage.tooltip.filter),
           icon: TuneIcon,
           showBadgeWhen: () => {
-            return this.props.projectType !== undefined || 
-              this.props.destinationType !== undefined;
+            return this.props.companyUid !== undefined;
           },
           onClick: this.props.handleFilterVisibility
         }
@@ -229,18 +226,17 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
   componentDidUpdate(nextProps: AllProps) {
     // track any changes in filter props
     if (
-      this.props.projectType !== nextProps.projectType ||
-      this.props.destinationType !== nextProps.destinationType 
+      this.props.companyUid !== nextProps.companyUid 
     ) {
       this.props.setShouldUpdate();
     }
   }
 };
 
-export const LookupDiemList = compose(
-  setDisplayName('ProjectRegistrationList'),
+export const LookupCustomerList = compose(
+  setDisplayName('LookupCustomerList'),
   withUser,
-  withLookupDiem,
+  withLookupCustomer,
   withRouter,
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),
