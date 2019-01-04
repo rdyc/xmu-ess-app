@@ -18,15 +18,21 @@ import {
 import { layoutAlertAdd } from '@layout/store/actions';
 import { flattenObject } from '@utils/flattenObject';
 import saiyanSaga from '@utils/saiyanSaga';
+import * as qs from 'qs';
 import { SubmissionError } from 'redux-form';
 import { all, fork, put, takeEvery } from 'redux-saga/effects';
-import { IApiResponse, objectToQuerystring } from 'utils';
+import { IApiResponse } from 'utils';
 
 function* watchAllFetchRequest() {
   const worker = (action: ReturnType<typeof financeApprovalGetAllRequest>) => { 
+    const params = qs.stringify(action.payload.filter, { 
+      allowDots: true, 
+      skipNulls: true
+    });
+    
     return saiyanSaga.fetch({
       method: 'get',
-      path: `/v1/approvals/finance/${action.payload.companyUid}/${action.payload.positionUid}${objectToQuerystring(action.payload.filter)}`, 
+      path: `/v1/approvals/finance/${action.payload.companyUid}/${action.payload.positionUid}?${params}`, 
       successEffects: (response: IApiResponse) => ([
         put(financeApprovalGetAllSuccess(response.body)),
       ]), 
