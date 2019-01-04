@@ -18,14 +18,20 @@ import {
   summaryGetWinningSuccess,
 } from '@summary/store/actions';
 import saiyanSaga from '@utils/saiyanSaga';
+import * as qs from 'qs';
 import { all, fork, put, takeEvery } from 'redux-saga/effects';
-import { IApiResponse, objectToQuerystring } from 'utils';
+import { IApiResponse } from 'utils';
 
 function* watchBillableFetchRequest() {
   const worker = (action: ReturnType<typeof summaryGetBillableRequest>) => { 
+    const params = qs.stringify(action.payload.filter, { 
+      allowDots: true, 
+      skipNulls: true
+    });
+    
     return saiyanSaga.fetch({
       method: 'get',
-      path: `/v1/summary/billable/${action.payload.companyUid}${objectToQuerystring(action.payload.filter)}`, 
+      path: `/v1/summary/billable/${action.payload.companyUid}?${params}`, 
       successEffects: (response: IApiResponse) => ([
         put(summaryGetBillableSuccess(response.body)),
         put(listBarMetadata(response.body.metadata))
@@ -56,9 +62,14 @@ function* watchBillableFetchRequest() {
 
 function* watchEffectivenessFetchRequest() {
   const worker = (action: ReturnType<typeof summaryGetEffectivenessRequest>) => { 
+    const params = qs.stringify(action.payload.filter, { 
+      allowDots: true, 
+      skipNulls: true
+    });
+    
     return saiyanSaga.fetch({
       method: 'get',
-      path: `/v1/summary/effectiveness${objectToQuerystring(action.payload.filter)}`, 
+      path: `/v1/summary/effectiveness?${params}`, 
       successEffects: (response: IApiResponse) => ([
         put(summaryGetEffectivenessSuccess(response.body)),
         put(listBarMetadata(response.body.metadata))
@@ -147,9 +158,14 @@ function* watchProgressFetchRequest() {
 
 function* watchWinningFetchRequest() {
   const worker = (action: ReturnType<typeof summaryGetWinningRequest>) => { 
+    const params = qs.stringify(action.payload.filter, { 
+      allowDots: true, 
+      skipNulls: true
+    });
+    
     return saiyanSaga.fetch({
       method: 'get',
-      path: `/v1/summary/winning/${action.payload.companyUid}${objectToQuerystring(action.payload.filter)}`, 
+      path: `/v1/summary/winning/${action.payload.companyUid}?${params}`, 
       successEffects: (response: IApiResponse) => ([
         put(summaryGetWinningSuccess(response.body)),
         put(listBarMetadata(response.body.metadata))
