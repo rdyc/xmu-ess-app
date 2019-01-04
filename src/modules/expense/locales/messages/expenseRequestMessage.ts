@@ -90,6 +90,10 @@ export const expenseRequestField = defineMessages({
   createdBy: { id: `${fieldPrefix}.createdBy`},
 
   status: { id: `${fieldPrefix}.status`},
+  
+  completion: { id: `${fieldPrefix}.completion` },
+  isNotify: { id: `${fieldPrefix}.isNotify` },
+  isRejected: { id: `${fieldPrefix}.isRejected` },
 });
 
 export const expenseRequestFieldHelperFor = (field: string, type: 'fieldName' | 'fieldRequired' | 'fieldPlaceholder') => {
@@ -109,6 +113,9 @@ export const expenseRequestFieldHelperFor = (field: string, type: 'fieldName' | 
       case 'rejectedReason': return expenseRequestField.rejectedReason;
       case 'createdBy': return expenseRequestField.createdBy;
       case 'status': return expenseRequestField.status;
+      case 'isNotify': return expenseRequestField.isNotify;
+      case 'isRejected': return expenseRequestField.isRejected;
+      case 'completion': return expenseRequestField.completion;
       
       default: return {id: field};
     }

@@ -1,13 +1,14 @@
-import { ICompanyAccess } from '@generic/interfaces';
+import { IBaseFilter, IBasePagingFilter, ICompanyAccess } from '@generic/interfaces';
 
-export interface ISettlementApprovalGetAllFilter extends ICompanyAccess {
-  isNotify?: boolean | undefined;
-  status?: 'pending' | 'complete' | undefined;
-  readonly customerUid?: string | undefined;
-  readonly 'query.find'?: string | undefined;
-  readonly 'query.findBy'?: string | undefined;
-  readonly 'query.orderBy'?: string | undefined;
-  readonly 'query.direction'?: string | undefined;
-  readonly 'query.page': number | undefined;
-  readonly 'query.size': number | undefined;
+// interface IExtendedQuery extends IBaseFilter, IBasePagingFilter {}
+
+export interface ISettlementApprovalGetAllFilter extends 
+IBaseFilter, IBasePagingFilter,
+ICompanyAccess {
+  isNotify?: boolean;
+  statusType?: string;
+  projectUid?: string;
+  status?: 'pending' | 'complete' | string;
+  customerUid?: string;
+  // query?: IExtendedQuery;
 }

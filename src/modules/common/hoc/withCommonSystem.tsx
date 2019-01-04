@@ -2,16 +2,27 @@ import { ISystemAllRequest, ISystemByIdRequest, ISystemListRequest, ISystemPostR
 import { ISystem, ISystemDetail, ISystemList, ISystemType } from '@common/classes/response';
 import {
   activityGetListRequest,
+  bloodGetListRequest,
+  certificationGetListRequest,
   currencyGetListRequest,
+  degreeGetListRequest,
+  departmentGetListRequest,
   destinationGetListRequest,
   documentGetListRequest,
   documentPresalesGetListRequest,
+  employmentGetListRequest,
   expenseGetListRequest,
+  familyGetListRequest,
+  financeGetListRequest,
+  genderGetListRequest,
   gradeGetListRequest,
   leaveGetListRequest,
+  levelGetListRequest,
+  paymentGetListRequest,
   projectGetListRequest,
   purposeGetListRequest,
   relationGetListRequest,
+  religionGetListRequest,
   siteGetListRequest,
   statusGetListRequest,
   systemGetAllDispose,
@@ -24,6 +35,8 @@ import {
   systemPostRequest,
   systemPutDispose,
   systemPutRequest,
+  taxGetListRequest,
+  trainingGetListRequest,
   transportationGetListRequest,
   unitGetListRequest,
 } from '@common/store/actions';
@@ -60,6 +73,19 @@ interface PropsFromState {
   commonLimiterListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
   commonGradeListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
   commonRelationListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
+  commonReligionListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
+  commonGenderListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
+  commonBloodListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
+  commonTaxListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
+  commonEmploymentListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
+  commonPaymentListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
+  commonFinanceListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
+  commonTrainingListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
+  commonCertificationListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
+  commonFamilyListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
+  commonDegreeListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
+  commonDepartmentListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
+  commonLevelListState: IQueryCollectionState<ISystemListRequest, ISystemList>;
 
   // detail
 }
@@ -87,7 +113,20 @@ interface PropsFromDispatch {
     limiterListRequest: typeof limiterGetListRequest;
     gradeListRequest: typeof gradeGetListRequest;
     relationListRequest: typeof relationGetListRequest;
-
+    religionListRequest: typeof religionGetListRequest;
+    genderListRequest: typeof genderGetListRequest;
+    bloodListRequest: typeof bloodGetListRequest;
+    taxListRequest: typeof taxGetListRequest;
+    employmentListRequest: typeof employmentGetListRequest;
+    paymentListRequest: typeof paymentGetListRequest;
+    financeListRequest: typeof financeGetListRequest;
+    trainingListRequest: typeof trainingGetListRequest;
+    certificationListRequest: typeof certificationGetListRequest;
+    departmentListRequest: typeof departmentGetListRequest;
+    degreeListRequest: typeof degreeGetListRequest;
+    levelListRequest: typeof levelGetListRequest;
+    familyListRequest: typeof familyGetListRequest;
+    
     // detail
     systemDetailRequest: typeof systemGetByIdRequest;
     systemDetailDispose: typeof systemGetByIdDispose;
@@ -127,6 +166,19 @@ const mapStateToProps = ({
   commonUnitList,
   commonGradeList,
   commonRelationList,
+  commonReligionList,
+  commonGenderList,
+  commonBloodList,
+  commonTaxList,
+  commonEmploymentList,
+  commonPaymentList,
+  commonFinanceList,
+  commonTrainingList,
+  commonDepartmentList,
+  commonDegreeList,
+  commonFamilyList,
+  commonCertificationList,
+  commonLevelList
 
 }: IAppState) => ({
   // system
@@ -156,6 +208,19 @@ const mapStateToProps = ({
   commonLimiterListState: commonLimiterList,
   commonGradeListState: commonGradeList,
   commonRelationListState: commonRelationList,
+  commonReligionListState: commonReligionList,
+  commonGenderListState: commonGenderList,
+  commonBloodListState: commonBloodList,
+  commonTaxListState: commonTaxList,
+  commonEmploymentListState: commonEmploymentList,
+  commonPaymentListState: commonPaymentList,
+  commonFinanceListState: commonFinanceList,
+  commonTrainingListState: commonTrainingList,
+  commonCertificationListState: commonCertificationList,
+  commonDegreeListState: commonDegreeList,
+  commonFamilyListState: commonFamilyList,
+  commonDepartmentListState: commonDepartmentList,
+  commonLevelListState: commonLevelList,
 
   // detail
  
@@ -184,6 +249,19 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     limiterListRequest: (request: ISystemListRequest) => dispatch(limiterGetListRequest(request)),
     gradeListRequest: (request: ISystemListRequest) => dispatch(gradeGetListRequest(request)),
     relationListRequest: (request: ISystemListRequest) => dispatch(relationGetListRequest(request)),
+    religionListRequest: (request: ISystemListRequest) => dispatch(religionGetListRequest(request)),
+    genderListRequest: (request: ISystemListRequest) => dispatch(genderGetListRequest(request)),
+    bloodListRequest: (request: ISystemListRequest) => dispatch(bloodGetListRequest(request)),
+    taxListRequest: (request: ISystemListRequest) => dispatch(taxGetListRequest(request)),
+    employmentListRequest: (request: ISystemListRequest) => dispatch(employmentGetListRequest(request)),
+    paymentListRequest: (request: ISystemListRequest) => dispatch(paymentGetListRequest(request)),
+    financeListRequest: (request: ISystemListRequest) => dispatch(financeGetListRequest(request)),
+    trainingListRequest: (request: ISystemListRequest) => dispatch(trainingGetListRequest(request)),
+    departmentListRequest: (request: ISystemListRequest) => dispatch(departmentGetListRequest(request)),
+    degreeListRequest: (request: ISystemListRequest) => dispatch(degreeGetListRequest(request)),
+    familyListRequest: (request: ISystemListRequest) => dispatch(familyGetListRequest(request)),
+    certificationListRequest: (request: ISystemListRequest) => dispatch(certificationGetListRequest(request)),
+    levelListRequest: (request: ISystemListRequest) => dispatch(levelGetListRequest(request)),
 
     // detail
     systemDetailRequest: (request: ISystemByIdRequest) => dispatch(systemGetByIdRequest(request)),

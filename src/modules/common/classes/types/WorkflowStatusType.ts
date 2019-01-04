@@ -10,4 +10,5 @@ export enum WorkflowStatusType {
   Opened = 'SST08',
   Canceled = 'SST09',
   ReOpened = 'SST10',
+  AdjustmentNeeded = 'SST11',
 }

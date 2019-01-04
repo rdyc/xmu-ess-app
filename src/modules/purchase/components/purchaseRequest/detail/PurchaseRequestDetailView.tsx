@@ -24,7 +24,8 @@ const config: SingleConfig<IPurchaseDetail, PurchaseRequestDetailProps> = {
     uid: AppMenu.PurchaseRequest,
     parentUid: AppMenu.Purchase,
     title: props.intl.formatMessage(purchaseMessage.request.pages.detailTitle),
-    description: props.intl.formatMessage(purchaseMessage.request.pages.detailSubHeader)
+    // description: props.intl.formatMessage(purchaseMessage.request.pages.detailSubHeader)
+    description: ''
   }),
 
   // parent url

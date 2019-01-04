@@ -20,8 +20,8 @@ export const InputDateTimesheetView: React.SFC<InputDateTimesheetProps> = props 
     return result;
   };
 
-  const backDate = new Date();
-  backDate.setDate(backDate.getDate() - 90);
+  // const backDate = new Date();
+  // backDate.setDate(backDate.getDate() - 90);
 
   const render = (
     <DatePicker
@@ -46,7 +46,7 @@ export const InputDateTimesheetView: React.SFC<InputDateTimesheetProps> = props 
       labelFunc={labelFunction}
       invalidLabel={''}
       disableFuture
-      minDate={backDate}
+      minDate={props.minDate}      
     />
   );
 

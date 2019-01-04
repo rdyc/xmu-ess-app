@@ -20,7 +20,7 @@ interface OwnProps {
   formCurrencyType: string | null | undefined;
   formCustomer: string | null | undefined;
   isCurrencyIdr: boolean;
-  requestMinDate?: Date;
+  // requestMinDate?: Date;
   onChangeCurrencyType: (event: any, newValue: string, oldValue: string) => void;
   onChangeRate: (event: any, newValue: number, oldValue: number) => void;
   onChangeValueIdr: (event: any, newValue: number, oldValue: number) => void;
@@ -103,7 +103,8 @@ const handlerCreators: HandleCreators<PurchaseRequestDetailFormProps, OwnHandler
           label: intl.formatMessage(purchaseMessage.request.field.date),
           placeholder: intl.formatMessage(purchaseMessage.request.field.datePlaceholder),
           component: InputDate,
-          minDate:  props.requestMinDate,
+          // minDate:  props.requestMinDate,
+          disablePast: true,
           disabled: false,
         };
         break;

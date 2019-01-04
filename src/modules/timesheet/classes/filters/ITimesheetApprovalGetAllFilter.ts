@@ -1,9 +1,13 @@
-import { IBaseFilter, IBasePagingFilter } from '@generic/interfaces';
+import { IBasePagingFilter } from '@generic/interfaces';
 
-interface IExtendedQuery extends IBaseFilter, IBasePagingFilter {}
-
-export interface ITimesheetApprovalGetAllFilter {
-  companyUid?: string | undefined;
-  status?: 'pending' | 'complete' | undefined;
-  query?: IExtendedQuery | undefined;
+export interface ITimesheetApprovalGetAllFilter extends IBasePagingFilter {
+  companyUid?: string;
+  employeeUid?: string;
+  activityType?: string;
+  customerUid?: string;
+  projectUid?: string;
+  siteUid?: string;
+  statusType?: string;
+  status?: 'pending' | 'complete' | string;
+  isNotify?: boolean;
 }

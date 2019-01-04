@@ -23,7 +23,7 @@ export const expenseInformation: React.SFC<AllProps> = props => {
     <Card square>
       <CardHeader 
         title={props.intl.formatMessage(expenseMessage.request.section.title)}
-        subheader={props.intl.formatMessage(expenseMessage.request.section.subTitle)}
+        // subheader={props.intl.formatMessage(expenseMessage.request.section.subTitle)}
       />
       <CardContent>
         <TextField

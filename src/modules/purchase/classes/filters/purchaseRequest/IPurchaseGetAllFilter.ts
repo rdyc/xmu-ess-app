@@ -1,7 +1,9 @@
 import { IBaseFilter, IBasePagingFilter, ICompanyAccess } from '@generic/interfaces';
 
-export interface IPurchaseGetAllFilter extends IBaseFilter, IBasePagingFilter, ICompanyAccess  {
-  readonly customerUid?: string | undefined;
-  readonly isRejected?: boolean | undefined;
-  readonly isSettlement?: boolean | undefined;
+export interface IPurchaseGetAllFilter extends IBaseFilter, IBasePagingFilter, ICompanyAccess {
+  customerUid?: string;
+  projectUid?: string;
+  isRejected?: boolean;
+  isSettlement?: boolean;
+  statusType?: string;
 }

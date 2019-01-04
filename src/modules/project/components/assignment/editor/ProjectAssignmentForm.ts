@@ -28,7 +28,8 @@ export interface ProjectAssignmentItemFormData {
   role: string | null;
   jobDescription: string | null;
   mandays: number;
-  hours: number;
+  allocatedHours: number;
+  consumedHours: number;
   statusType?: string | null;
   status?: ICommonSystem | null;
   rejectedReason?: string | null;

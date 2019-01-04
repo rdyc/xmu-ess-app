@@ -55,6 +55,9 @@
   "leave.request.field.information.reason": "Reason",
   "leave.request.field.information.reason.required": "Reason is required",
   "leave.request.field.information.reason.placeholder": "Type a reason name",
+  "leave.request.field.isNotify": "Notified Only",
+  "leave.request.field.isRejected": "Rejected Only",
+  "leave.request.field.completion": "Completion",
 
   "leave.field.information.uid": "PID",
   "leave.field.information.uid.placeholder": "PID",

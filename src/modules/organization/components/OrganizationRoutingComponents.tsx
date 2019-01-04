@@ -3,7 +3,7 @@ import * as React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router';
 import { OrganizationHierarchyDetail } from './hierarchy/detail/OrganizationHierarchyDetail';
 import OrganizationHierarchyEditor from './hierarchy/editor/OrganizationHierarchyEditor';
-import OrganizationHierarchyList from './hierarchy/list/OrganizationHierarchyList';
+import { OrganizationHierarchyList } from './hierarchy/list/OrganizationHierarchyList';
 import { StructureDetail } from './structure/detail/StructureDetail';
 import OrganizationStructureEditor from './structure/editor/OrganizationStructureEditor';
 import { StructureList } from './structure/list/StructureList';

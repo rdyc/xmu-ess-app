@@ -1,9 +1,11 @@
+import { SystemLimitType } from '@common/classes/types/SystemLimitType';
 import AppMenu from '@constants/AppMenu';
 import { FormMode } from '@generic/types';
 import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { layoutMessage } from '@layout/locales/messages';
+import { WithLookupSystemLimit, withLookupSystemLimit } from '@lookup/hoc/withLookupSystemLimit';
 import {
   ITimesheetPostPayload,
   ITimesheetPutPayload,
@@ -15,6 +17,7 @@ import {
 import { TimesheetEntryEditorView } from '@timesheet/components/entry/editor/TimesheetEntryEditorView';
 import { WithTimesheetEntry, withTimesheetEntry } from '@timesheet/hoc/withTimesheetEntry';
 import { timesheetMessage } from '@timesheet/locales/messages/timesheetMessage';
+import * as moment from 'moment';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import {
@@ -34,6 +37,7 @@ import { FormErrors } from 'redux-form';
 import { isNullOrUndefined, isObject } from 'util';
 
 interface OwnHandlers {
+  handleSetMinDate: (days: number, fromDate?: Date | null) => void;
   handleValidate: (payload: TimesheetFormData) => FormErrors;
   handleSubmit: (payload: TimesheetFormData) => void;
   handleSubmitSuccess: (result: any, dispatch: Dispatch<any>) => void;
@@ -53,6 +57,7 @@ interface OwnState {
   submitDialogContentText: string;
   submitDialogCancelText: string;
   submitDialogConfirmedText: string;
+  minDate: Date;
 }
 
 interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
@@ -61,6 +66,7 @@ interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
 
 export type EntryEditorProps
   = WithTimesheetEntry
+  & WithLookupSystemLimit
   & WithUser
   & WithLayout
   & WithAppBar
@@ -71,6 +77,21 @@ export type EntryEditorProps
   & OwnStateUpdaters;
 
 const handlerCreators: HandleCreators<EntryEditorProps, OwnHandlers> = {
+  handleSetMinDate: (props: EntryEditorProps) => (days: number, fromDate?: Date | null) => {
+    let today = moment(); // create date today
+
+    if (!isNullOrUndefined(fromDate)) { // is fromDate exist, use from date instead
+      today = moment(fromDate);
+    }
+
+    const minDate = today.subtract(days, 'days'); // substract date using momentjs, because using native date in js sucks
+
+    if (moment(props.minDate).format('DD/MM/YYYY') !== minDate.format('DD/MM/YYYY')) { // only update minDate state once
+      props.stateUpdate({
+        minDate: minDate.toDate()
+      });
+    }
+  },
   handleValidate: (props: EntryEditorProps) => (formData: TimesheetFormData) => {
     const errors = {
       information: {}
@@ -200,6 +221,7 @@ const createProps: mapper<EntryEditorProps, OwnState> = (props: EntryEditorProps
   submitDialogContentText: props.intl.formatMessage(timesheetMessage.entry.dialog.createDescription),
   submitDialogCancelText: props.intl.formatMessage(layoutMessage.action.cancel),
   submitDialogConfirmedText: props.intl.formatMessage(layoutMessage.action.ok),
+  minDate: new Date(),
 });
 
 const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
@@ -213,6 +235,7 @@ const lifecycles: ReactLifeCycleFunctions<EntryEditorProps, {}> = {
   componentDidMount() {
     const { layoutDispatch, intl, history, stateUpdate } = this.props;
     const { loadDetailRequest } = this.props.timesheetEntryDispatch;
+    const { loadAmountRequest } = this.props.systemLimitDispatch;
     const { user } = this.props.userState;
     
     const view = {
@@ -223,6 +246,11 @@ const lifecycles: ReactLifeCycleFunctions<EntryEditorProps, {}> = {
     if (!user) {
       return;
     }
+
+    loadAmountRequest({
+      companyUid: user.company.uid,
+      categoryType: SystemLimitType.Timesheet
+    });
 
     stateUpdate({ 
       companyUid: user.company.uid,
@@ -273,6 +301,7 @@ export default compose<EntryEditorProps, {}>(
   withAppBar,
   withRouter,
   withTimesheetEntry,
+  withLookupSystemLimit,
   injectIntl,
   withStateHandlers<OwnState, OwnStateUpdaters, {}>(createProps, stateUpdaters),
   withHandlers<EntryEditorProps, OwnHandlers>(handlerCreators),

@@ -14,6 +14,7 @@ import * as React from 'react';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { compose } from 'recompose';
+import { TimesheetItem } from './shared/TimeSheetItem';
 
 const config: SingleConfig<IMileageRequestDetail, MileageRequestDetailProps> = {
   // page info
@@ -78,6 +79,7 @@ const config: SingleConfig<IMileageRequestDetail, MileageRequestDetailProps> = {
   // secondary (multiple components are allowed)
   secondaryComponents: (data: IMileageRequestDetail, props: MileageRequestDetailProps) => ([
     <MileageItem items={data.items}/>,
+    <TimesheetItem data={data.timesheets} />,
     <WorkflowHistory data={data.workflow} />
   ])
 };

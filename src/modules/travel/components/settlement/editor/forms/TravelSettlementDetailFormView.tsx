@@ -33,7 +33,7 @@ export const TravelSettlementDetailFormView: React.SFC<TravelSettlementDetailFor
     <Card square>
       <CardHeader 
         title={props.intl.formatMessage(travelMessage.settlement.section.infoTitle)}
-        subheader={props.intl.formatMessage(travelMessage.settlement.section.infoSubHeader)}
+        // subheader={props.intl.formatMessage(travelMessage.settlement.section.infoSubHeader)}
       />
       <CardContent>
         {names.map(name => renderField(name))}

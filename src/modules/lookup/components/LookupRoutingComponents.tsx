@@ -1,3 +1,6 @@
+import { AccountEmployeeDetail } from '@account/components/detail/AccountEmployeeDetail';
+import AccountEmployeeEditor from '@account/components/editor/AccountEmployeeEditor';
+import { AccountEmployeeList } from '@account/components/list/AccountEmployeeList';
 import { Layout } from '@layout/components/base';
 import { CurrencyDetail } from '@lookup/components/currency/detail/CurrencyDetail';
 import { CurrencyEditor } from '@lookup/components/currency/editor/CurrencyEditor';
@@ -22,7 +25,7 @@ import { LeaveCalculationList } from './leave/calculation/LeaveCalculationList';
 import LookupLeaveEditor from './leave/editor/LookupLeaveEditor';
 import { MileageExceptionDetail } from './mileageException/detail/MileageExceptionDetail';
 import MileageExceptionEditor from './mileageException/editor/MileageExceptionEditor';
-import LookupMileageExceptionList from './mileageException/list/LookupMileageExceptionList';
+import { LookupMileageExceptionList } from './mileageException/list/LookupMileageExceptionList';
 import { PositionDetail } from './position/detail/PositionDetail';
 import { PositionEditor } from './position/editor/PositionEditor';
 import { PositionList } from './position/list/PositionList';
@@ -31,7 +34,7 @@ import LookupRoleEditor from './role/editor/LookupRoleEditor';
 import LookupRoleList from './role/list/LookupRoleList';
 import { LookupSystemLimitDetail } from './systemLimit/detail/LookupSystemLimitDetail';
 import LookupSystemLimitEditor from './systemLimit/editor/LookupSystemLimitEditor';
-import LookupSystemLimitList from './systemLimit/list/LookupSystemLimitList';
+import { LookupSystemLimitList } from './systemLimit/list/LookupSystemLimitList';
 
 const role = (props: RouteComponentProps) => (
   <Switch>
@@ -118,6 +121,14 @@ const diem = (props: RouteComponentProps) => (
   </Switch>
 );
 
+const employee = (props: RouteComponentProps) => (
+  <Switch>
+    <Route path={`${props.match.path}/form`} component={AccountEmployeeEditor} />
+    <Route path={`${props.match.path}/:employeeUid`} component={AccountEmployeeDetail} />
+    <Route path={`${props.match.path}`} component={AccountEmployeeList} />
+  </Switch>
+);
+
 export const LookupRoutingComponents: React.SFC<RouteComponentProps> = props => (
   <Switch>
     <Layout>
@@ -132,6 +143,7 @@ export const LookupRoutingComponents: React.SFC<RouteComponentProps> = props => 
       <Route path={`${props.match.path}/calculation`} component={calculation} />
       <Route path={`${props.match.path}/roles`} component={role} />
       <Route path={`${props.match.path}/customer`} component={lookupCustomer} />
+      <Route path={`${props.match.path}/employee`} component={employee} />
     </Layout>
   </Switch>
 );

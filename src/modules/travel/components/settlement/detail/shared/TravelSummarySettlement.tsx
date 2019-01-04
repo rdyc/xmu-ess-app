@@ -3,8 +3,9 @@ import { GlobalFormat } from '@layout/types';
 import { Grid, TextField } from '@material-ui/core';
 import { projectMessage } from '@project/locales/messages/projectMessage';
 import { ITravelSettlement } from '@travel/classes/response';
+import { travelMessage } from '@travel/locales/messages/travelMessage';
 import * as React from 'react';
-import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
+import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose } from 'recompose';
 
 const styled = {
@@ -35,19 +36,19 @@ const travelSummary: React.SFC<AllProps> = props => (
       <TextField
         {...styled}
         margin="dense"
-        label={<FormattedMessage id="travel.field.information.uid" />}
+        label={props.intl.formatMessage(travelMessage.request.field.uid)}
         value={props.data.uid}
       />
       <TextField
         {...styled}
         margin="dense"
-        label={<FormattedMessage id="travel.field.information.requestor" />}
+        label={props.intl.formatMessage(travelMessage.request.field.fullName)}
         value={props.data.employee ? props.data.employee.fullName : 'N/A'}
       />
       <TextField
           {...styled}
           margin="dense"
-          label={<FormattedMessage id="travel.field.information.positionUid" />}
+          label={props.intl.formatMessage(travelMessage.request.field.positionUid)}
           value={props.data.position ? props.data.position.name : 'N/A'}
         />      
     </Grid>
@@ -55,26 +56,28 @@ const travelSummary: React.SFC<AllProps> = props => (
     <Grid item xs={12} sm={6} md={3}>
       <TextField
         {...styled}
+        multiline
         margin="dense"
-        label={<FormattedMessage id="travel.field.information.customerUid" />}
+        label={props.intl.formatMessage(travelMessage.request.field.customerUid)}
         value={props.data.customer ? props.data.customer.name : 'N/A'}
       />
       <TextField
         {...styled}
+        multiline
         margin="dense"
-        label={<FormattedMessage id="travel.field.information.projectUid" />}
-        value={props.data.project ? props.data.project.name : 'N/A'}
+        label={props.intl.formatMessage(travelMessage.request.field.projectUid)}
+        value={`${props.data.projectUid} - ${ props.data.project && props.data.project.name }`}
       />
       <TextField
           {...styled}
           margin="dense"
-          label={<FormattedMessage id="travel.field.information.siteUid" />}
+          label={props.intl.formatMessage(travelMessage.request.field.siteUid)}
           value={props.data.site ? props.data.site.name : 'N/A'}
         />
       <TextField
           {...styled}
           margin="dense"
-          label={<FormattedMessage id="travel.field.information.activityType" />}
+          label={props.intl.formatMessage(travelMessage.request.field.activityType)}
           value={props.data.activity ? props.data.activity.value : 'N/A'}
         />
     </Grid>
@@ -83,25 +86,25 @@ const travelSummary: React.SFC<AllProps> = props => (
       <TextField
         {...styled}
         margin="dense"
-        label={<FormattedMessage id="travel.field.information.start" />}
+        label={props.intl.formatMessage(travelMessage.request.field.start)}
         value={props.intl.formatDate(props.data.start, GlobalFormat.Date)}
       />
       <TextField
         {...styled}
         margin="dense"
-        label={<FormattedMessage id="travel.field.information.end" />}
+        label={props.intl.formatMessage(travelMessage.request.field.end)}
         value={props.intl.formatDate(props.data.end, GlobalFormat.Date)}
       />
       <TextField
           {...styled}
           margin="dense"
-          label={<FormattedMessage id="travel.field.information.objective" />}
+          label={props.intl.formatMessage(travelMessage.request.field.objective)}
           value={props.data.objective || 'N/A'}
       />
       <TextField
           {...styled}
           margin="dense"
-          label={<FormattedMessage id="travel.field.information.target" />}
+          label={props.intl.formatMessage(travelMessage.request.field.target)}
           value={props.data.target || 'N/A'}
       />
     </Grid>
@@ -112,7 +115,7 @@ const travelSummary: React.SFC<AllProps> = props => (
         <TextField
           {...styled}
           margin="dense"
-          label={<FormattedMessage id="travel.field.information.comment" />}
+          label={props.intl.formatMessage(travelMessage.request.field.comment)}
           value={props.data.comment || 'N/A'}
         />
         <TextField

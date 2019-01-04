@@ -84,7 +84,7 @@ const handlers: HandleCreators<PurchaseSettlementFormProps, OwnHandlers> = {
     }
     props.change('information.actual', actual);
     props.change('information.actualInIDR', actual * props.formRate);
-    props.change('information.difference', difference);
+    props.change('information.difference', difference > 0 ? difference : difference * -1);
     props.change('information.differenceInIDR', difference * props.formRate);
     props.change('information.balanceDue', props.formAdvance - actual);
   },
