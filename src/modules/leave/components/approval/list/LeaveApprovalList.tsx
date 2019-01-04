@@ -123,8 +123,8 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
       searchStatus: () => {
         let result: boolean = false;
     
-        if (request && request.filter && request.filter.query) {
-          result = request.filter.query.find ? true : false;
+        if (request && request.filter && request.filter.find) {
+          result = request.filter.find ? true : false;
         }
     
         return result;
@@ -147,14 +147,13 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
                 statusType: this.props.statusType,
                 status: this.props.status,
                 isNotify: this.props.isNotify,
-                query: {
-                  find: params.find,
-                  findBy: params.findBy,
-                  orderBy: params.orderBy,
-                  direction: params.direction,
-                  page: params.page,
-                  size: params.size,
-                }
+                find: params.find,
+                findBy: params.findBy,
+                orderBy: params.orderBy,
+                direction: params.direction,
+                page: params.page,
+                size: params.size,
+                
               }
             });
           } else {
