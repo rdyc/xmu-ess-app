@@ -1,46 +1,30 @@
-import { ISystem } from '@common/classes/response';
-import { CommonCategory, CommonField } from '@common/classes/types';
-import { CommonSummary } from '@common/components/detail/shared/CommonSummary';
-import { categoryTypeTranslator } from '@common/helper';
-import { withCommonSystem, WithCommonSystem } from '@common/hoc/withCommonSystem';
-import { commonMessage } from '@common/locales/messages/commonMessage';
 import AppMenu from '@constants/AppMenu';
 import { IListConfig, ListDataProps, ListHandler, ListPage } from '@layout/components/pages';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { layoutMessage } from '@layout/locales/messages';
+import { IDiem } from '@lookup/classes/response';
+import { LookupDiemField } from '@lookup/classes/types/diem/DiemField';
+import { WithLookupDiem, withLookupDiem } from '@lookup/hoc/withLookupDiem';
+import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
 import { Button } from '@material-ui/core';
+import AddCircleIcon from '@material-ui/icons/AddCircle';
 import TuneIcon from '@material-ui/icons/Tune';
 import * as moment from 'moment';
 import * as React from 'react';
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
-import { 
-  compose, 
-  HandleCreators, 
-  lifecycle, 
-  mapper, 
-  ReactLifeCycleFunctions, 
-  setDisplayName, 
-  StateHandler,
-  StateHandlerMap,
-  StateUpdaters,
-  withHandlers,
-  withStateHandlers
-} from 'recompose';
-import { CommonListFilter, ICommonListFilterResult } from './CommonListFilter';
+import { compose, HandleCreators, lifecycle, mapper, ReactLifeCycleFunctions, setDisplayName, StateHandler, StateHandlerMap, StateUpdaters, withHandlers, withStateHandlers } from 'recompose';
+import { LookupDiemSummary } from '../detail/shared/LookupDiemSummary';
+import { ILookupDiemListFilterResult, LookupDiemListFilter } from './LookupDiemListFilter';
 
 interface IOwnOption {
-  
+
 }
 
-interface IOwnState extends ICommonListFilterResult  {
+interface IOwnState extends ILookupDiemListFilterResult {
   shouldUpdate: boolean;
-  config?: IListConfig<ISystem>;
+  config?: IListConfig<IDiem>;
   isFilterOpen: boolean;
-}
-
-interface OwnRouteParams {
-  category: string;
 }
 
 interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
@@ -52,31 +36,33 @@ interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
 
 interface IOwnHandler {
   handleFilterVisibility: (event: React.MouseEvent<HTMLElement>) => void;
-  handleFilterApplied: (filter: ICommonListFilterResult) => void;
+  handleFilterApplied: (filter: ILookupDiemListFilterResult) => void;
 }
 
-type AllProps 
-  = WithUser
-  & IOwnStateUpdater
-  & IOwnOption
+type AllProps
+  = IOwnOption
   & IOwnState
-  & WithCommonSystem
-  & RouteComponentProps<OwnRouteParams>
-  & InjectedIntlProps;
+  & IOwnStateUpdater
+  & IOwnHandler
+  & WithUser
+  & WithLookupDiem
+  & InjectedIntlProps
+  & RouteComponentProps;
 
-const commonListView: React.SFC<AllProps> = props => (
+const listView: React.SFC<AllProps> = props => (
   <React.Fragment>
     {
       props.config &&
       <ListPage
         config={props.config}
-        source={props.commonSystemState.all}
+        source={props.lookupDiemState.all}
         loadDataWhen={props.shouldUpdate}
       >
-        <CommonListFilter 
+        <LookupDiemListFilter
           isOpen={props.isFilterOpen}
           initialProps={{
-            companyUid: props.companyUid
+            projectType: props.projectType,
+            destinationType: props.destinationType,
           }}
           onClose={props.handleFilterVisibility}
           onApply={props.handleFilterApplied}
@@ -88,20 +74,20 @@ const commonListView: React.SFC<AllProps> = props => (
 
 const createProps: mapper<AllProps, IOwnState> = (props: AllProps): IOwnState => ({
   shouldUpdate: false,
-  isFilterOpen: false,
+  isFilterOpen: false
 });
 
 const stateUpdaters: StateUpdaters<AllProps, IOwnState, IOwnStateUpdater> = {
   setShouldUpdate: (prevState: IOwnState) => () => ({
     shouldUpdate: !prevState.shouldUpdate
   }),
-  setConfig: (prevState: IOwnState) => (config: IListConfig<ISystem>) => ({
+  setConfig: (prevState: IOwnState) => (config: IListConfig<IDiem>) => ({
     config
   }),
   setFilterVisibility: (prevState: IOwnState) => () => ({
     isFilterOpen: !prevState.isFilterOpen
   }),
-  setFilterApplied: (prevState: IOwnState) => (filter: ICommonListFilterResult) => ({
+  setFilterApplied: (prevState: IOwnState) => (filter: ILookupDiemListFilterResult) => ({
     ...filter,
     isFilterOpen: false
   }),
@@ -111,7 +97,7 @@ const handlerCreators: HandleCreators<AllProps, IOwnHandler> = {
   handleFilterVisibility: (props: AllProps) => (event: React.MouseEvent<HTMLElement>) => {
     props.setFilterVisibility();
   },
-  handleFilterApplied: (props: AllProps) => (filter: ICommonListFilterResult) => {
+  handleFilterApplied: (props: AllProps) => (filter: ILookupDiemListFilterResult) => {
     props.setFilterApplied(filter);
   },
 };
@@ -119,61 +105,66 @@ const handlerCreators: HandleCreators<AllProps, IOwnHandler> = {
 const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
   componentDidMount() { 
     const { user } = this.props.userState;
-    const { isLoading, request, response } = this.props.commonSystemState.all;
-    const { systemAllRequest } = this.props.commonDispatch;
+    const { isLoading, request, response } = this.props.lookupDiemState.all;
+    const { loadAllRequest } = this.props.lookupDiemDispatch;
 
-    const config: IListConfig<ISystem> = {
-      // page info
+    const config: IListConfig<IDiem> = {
+      // page
       page: {
-        uid: AppMenu.Common,
+        uid: AppMenu.LookupDiem,
         parentUid: AppMenu.Lookup,
-        title: `${this.props.intl.formatMessage(commonMessage.system.page.title)} ${CommonCategory[this.props.match.params.category]}`,
-        description: this.props.intl.formatMessage(commonMessage.system.page.subTitle),
+        title: this.props.intl.formatMessage(lookupMessage.lookupDiem.page.listTitle),
+        description: this.props.intl.formatMessage(lookupMessage.lookupDiem.page.listSubHeader)
       },
       
       // top bar
-      fields: Object.keys(CommonField).map(key => ({ 
-        value: key, 
-        name: CommonField[key] 
-      })),
-
-      // selection
-      hasSelection: false,
-
-      // nav back?
-      hasNavBack: true,
-
+      fields: Object.keys(LookupDiemField)
+        .map(key => ({ 
+          value: key, 
+          name: LookupDiemField[key] 
+        })),
+    
       // searching
       hasSearching: true,
       searchStatus: (): boolean => {
         let result: boolean = false;
-
+    
         if (request && request.filter && request.filter.find) {
           result = request.filter.find ? true : false;
         }
-
+    
         return result;
       },
 
       // action centre
       showActionCentre: false,
 
+      // toolbar controls
+      toolbarControls: (callback: ListHandler) => [
+        {
+          icon: AddCircleIcon,
+          onClick: () => { 
+            this.props.history.push('/lookup/diemValue/form'); 
+          }
+        }
+      ],
+    
       // events
       onDataLoad: (callback: ListHandler, params: ListDataProps, forceReload?: boolean | false) => {
         // when user is set and not loading
         if (user && !isLoading) {
           // when response are empty or force reloading
           if (!response || forceReload) {
-            systemAllRequest({
-              category: categoryTypeTranslator(this.props.match.params.category),
+            loadAllRequest({
               filter: {
-                companyUid: this.props.companyUid,
-                direction: params.direction,
-                orderBy: params.orderBy,
-                page: params.page,
-                size: params.size,
+                projectType: this.props.projectType,
+                destinationType: this.props.destinationType,
                 find: params.find,
                 findBy: params.findBy,
+                orderBy: params.orderBy,
+                direction: params.direction,
+                page: params.page,
+                size: params.size,
               }
             });
           } else {
@@ -182,37 +173,36 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
           }
         }
       },
-      onBind: (item: ISystem, index: number) => ({
-        key: item.id,
-        primary: item.type,
-        secondary: item.name,
-        tertiary: item.description && item.description || 'N/A',
-        quaternary: item.isActive ? this.props.intl.formatMessage(layoutMessage.text.active) : this.props.intl.formatMessage(layoutMessage.text.inactive),
-        quinary: item.changes && item.changes.updated && item.changes.updated.fullName || item.changes.created && item.changes.created.fullName || '?',
-        senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
+      onBind: (item: IDiem, index: number) => ({
+        key: index,
+    primary: item.company && item.company.name || item.companyUid ,
+    secondary: item.project && item.project.value || item.projectType,
+    tertiary: item.destination && item.destination.value || item.destinationType,
+    quaternary: this.props.intl.formatNumber(item.value),
+    quinary: item.changes && item.changes.updated && item.changes.updated.fullName || item.changes && item.changes.created && item.changes.created.fullName || 'N/A',
+    senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
       }),
 
       // summary component
-      summaryComponent: (item: ISystem) => ( 
-        <CommonSummary 
-          data={item}
-          category={this.props.match.params.category}
-        />
+      summaryComponent: (item: IDiem) => ( 
+        <LookupDiemSummary data={item} />
       ),
 
       // action component
-      actionComponent: (item: ISystem, callback: ListHandler) => (
+      actionComponent: (item: IDiem, callback: ListHandler) => (
         <React.Fragment>
-          <Button 
-            size="small"
-            onClick={() => this.props.history.push(`/common/system/${this.props.match.params.category}/form`, { id: item.id })}
-          >
-            <FormattedMessage {...layoutMessage.action.modify}/>
-          </Button>
+          {
+            <Button
+              size="small"
+              onClick={() => this.props.history.push(`/lookup/diemvalue/form`, {uid: item.uid, company: item.companyUid })}
+            >
+              <FormattedMessage {...layoutMessage.action.modify}/>
+            </Button>
+          }
 
           <Button 
             size="small"
-            onClick={() => this.props.history.push(`/common/system/${this.props.match.params.category}/${item.id}`)}
+            onClick={() => this.props.history.push(`/lookup/diemvalue/${item.uid}`, { company: item.companyUid })}
           >
             <FormattedMessage {...layoutMessage.action.details}/>
           </Button>
@@ -226,7 +216,8 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
           title: this.props.intl.formatMessage(layoutMessage.tooltip.filter),
           icon: TuneIcon,
           showBadgeWhen: () => {
-            return this.props.companyUid !== undefined ;
+            return this.props.projectType !== undefined || 
+              this.props.destinationType !== undefined;
           },
           onClick: this.props.handleFilterVisibility
         }
@@ -238,20 +229,21 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
   componentDidUpdate(nextProps: AllProps) {
     // track any changes in filter props
     if (
-      this.props.companyUid !== nextProps.companyUid 
+      this.props.projectType !== nextProps.projectType ||
+      this.props.destinationType !== nextProps.destinationType 
     ) {
       this.props.setShouldUpdate();
     }
   }
 };
 
-export const CommonListView = compose(
-  setDisplayName('CommonList'),
+export const LookupDiemList = compose(
+  setDisplayName('ProjectRegistrationList'),
   withUser,
-  withCommonSystem,
+  withLookupDiem,
   withRouter,
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
   lifecycle(lifecycles)
-)(commonListView);
+)(listView);

@@ -5,6 +5,6 @@ export interface IFinanceApprovalGetAllFilter extends IBasePagingFilter {
   employeeName?: string;
   start?: string;
   end?: string;
-  financeStatusTypes?: string[];
-  settlementStatusTypes?: string[];
+  financeStatusTypes?: string;
+  settlementStatusTypes?: string;
 }
