@@ -18,15 +18,21 @@ import {
 } from '@timesheet/store/actions';
 import { flattenObject } from '@utils/flattenObject';
 import saiyanSaga from '@utils/saiyanSaga';
+import * as qs from 'qs';
 import { SubmissionError } from 'redux-form';
 import { all, fork, put, takeEvery } from 'redux-saga/effects';
-import { IApiResponse, objectToQuerystring } from 'utils';
+import { IApiResponse } from 'utils';
 
 function* watchAllFetchRequest() {
-  const worker = (action: ReturnType<typeof timesheetGetAllRequest>) => { 
+  const worker = (action: ReturnType<typeof timesheetGetAllRequest>) => {
+    const params = qs.stringify(action.payload.filter, { 
+      allowDots: true, 
+      skipNulls: true
+    });
+
     return saiyanSaga.fetch({
       method: 'get',
-      path: `/v1/timesheet/reports${objectToQuerystring(action.payload.filter)}`, 
+      path: `/v1/timesheet/reports?${params}`, 
       successEffects: (response: IApiResponse) => ([
         put(timesheetGetAllSuccess(response.body)),
       ]), 

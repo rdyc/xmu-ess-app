@@ -1,5 +1,4 @@
 import { LookupSystemDialog } from '@common/components/dialog/lookupSystemDialog/LookupSystemDialog';
-import { DialogValue } from '@layout/components/dialogs/DialogValue';
 import { layoutMessage } from '@layout/locales/messages';
 import { leaveMessage } from '@leave/locales/messages/leaveMessage';
 import {
@@ -43,7 +42,7 @@ export const LeaveRequestListFilterView: React.SFC<LeaveRequestListFilterProps> 
           </Typography>
 
           {
-            (props.filterCustomer || props.filterType || props.filterStatus || props.filterCompletion || props.filterRejected) &&
+            (props.filterType || props.filterStatus || props.filterCompletion || props.filterRejected) &&
             <Button color="inherit" onClick={props.handleFilterOnReset}>
               {props.intl.formatMessage(layoutMessage.action.reset)}
             </Button>
@@ -95,7 +94,7 @@ export const LeaveRequestListFilterView: React.SFC<LeaveRequestListFilterProps> 
 
             <IconButton onClick={props.handleFilterStatusVisibility}>
               <ChevronRightIcon />
-            </IconButton> 
+            </IconButton>
           </ListItemSecondaryAction>
         </ListItem>
         <Divider />
@@ -158,7 +157,7 @@ export const LeaveRequestListFilterView: React.SFC<LeaveRequestListFilterProps> 
       onClose={props.handleFilterStatusOnClose}
     />
 
-    <DialogValue
+    {/* <DialogValue
       title={props.intl.formatMessage(leaveMessage.request.field.completion)}
       isOpen={props.isFilterCompletionOpen}
       hideBackdrop={true}
@@ -166,6 +165,6 @@ export const LeaveRequestListFilterView: React.SFC<LeaveRequestListFilterProps> 
       value={props.filterCompletion && props.filterCompletion.value || props.initialProps && props.initialProps.status}
       onSelected={props.handleFilterCompletionOnSelected}
       onClose={props.handleFilterCompletionOnClose}
-    />
+    /> */}
   </React.Fragment>
 );

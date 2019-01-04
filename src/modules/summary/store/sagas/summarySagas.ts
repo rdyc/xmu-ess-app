@@ -162,7 +162,7 @@ function* watchWinningFetchRequest() {
       allowDots: true, 
       skipNulls: true
     });
-
+    
     return saiyanSaga.fetch({
       method: 'get',
       path: `/v1/summary/winning/${action.payload.companyUid}?${params}`, 

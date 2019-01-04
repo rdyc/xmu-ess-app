@@ -118,7 +118,7 @@ const handlerCreators: HandleCreators<FinanceApprovalListFilterProps, IOwnHandle
   handleFilterOnApply: (props: FinanceApprovalListFilterProps) => () => {
     props.onApply({
       moduleType: props.filterModule && props.filterModule.type,
-      financeStatusTypes: props.filterStatus && [props.filterStatus.type],
+      financeStatusTypes: props.filterStatus && props.filterStatus.type,
     });
   },
   
