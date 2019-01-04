@@ -149,7 +149,7 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
           if (!response || forceReload) {
             loadAllRequest({
               filter: {
-                companyUid: user.company.uid,
+                companyUid: this.props.companyUid,
                 find: params.find,
                 findBy: params.findBy,
                 orderBy: params.orderBy,
