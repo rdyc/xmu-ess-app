@@ -2,5 +2,5 @@ import { IEmployeeFamilyListFilter } from '@account/classes/filters/employeeFami
 
 export interface IEmployeeFamilyListRequest {
   readonly employeeUid: string;
-  readonly filter: IEmployeeFamilyListFilter;
+  readonly filter?: IEmployeeFamilyListFilter | undefined;
 }

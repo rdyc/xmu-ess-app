@@ -201,6 +201,21 @@ const styles = (theme: Theme) =>
     //   },
     /* Color page end */
 
+    /* Stepper */
+    stepper: {
+      // marginTop: '-48px',
+      // position: 'relative',
+      // // opacity: 0.4
+      // background: 'none',
+      // backgroundColor: 'none'
+    },
+    stepperImg: {
+      height: 600,
+      width: '100%',
+      overflow: 'hidden',
+      display: 'block',
+    },
+
     /* Expander */
     expand: {
       transform: 'rotate(0deg)',

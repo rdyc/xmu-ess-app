@@ -1,15 +1,15 @@
-import { IEmployeeTrainingList } from '@account/classes/response/employeeTraining';
+import { IEmployeeFamilyList } from '@account/classes/response/employeeFamily';
 import { GlobalStyle } from '@layout/types/GlobalStyle';
 import { Card, CardContent, CardHeader, Fade, TextField, Typography } from '@material-ui/core';
 import * as React from 'react';
-import { AccountEmployeeTrainingProps } from './AccountEmployeeTraining';
+import { AccountEmployeeFamilyProps } from './AccountEmployeeFamily';
 
-export const AccountEmployeeTrainingView: React.SFC<
-  AccountEmployeeTrainingProps
+export const AccountEmployeeFamilyView: React.SFC<
+  AccountEmployeeFamilyProps
 > = props => {
-  const { response, isLoading } = props.accountEmployeeTrainingState.list;
+  const { response, isLoading } = props.accountEmployeeFamilyState.list;
 
-  const renderTraining = (item: IEmployeeTrainingList) => {
+  const renderFamily = (item: IEmployeeFamilyList) => {
     return (
       <Fade
         in={!isLoading}
@@ -18,13 +18,13 @@ export const AccountEmployeeTrainingView: React.SFC<
         unmountOnExit
       >
       <Card square key={item.uid}>
-        <CardHeader title="TRAINING" />
+        <CardHeader title="Family" />
         <CardContent>
           <TextField
             {...GlobalStyle.TextField.ReadOnly}
             margin="dense"
-            label="NAMA"
-            value={item.name}
+            label="Nama"
+            value={item.fullName}
           />
         </CardContent>
       </Card>
@@ -36,7 +36,7 @@ export const AccountEmployeeTrainingView: React.SFC<
     <React.Fragment>
       { (response && !response.data || response && response.data && response.data.length < 1) && ( <Typography>No Data</Typography> )}
       {
-        response && response.data && response.data.map(item => renderTraining(item))
+        response && response.data && response.data.map(item => renderFamily(item))
       }
     </React.Fragment>
   );

@@ -21,7 +21,10 @@ const lifecycles: ReactLifeCycleFunctions<AccountEmployeeTrainingProps, {}> = {
 
     if (user && !isLoading && !response && employeeUid) {
       loadListRequest({
-        employeeUid
+        employeeUid,
+        filter: {
+          direction: 'descending'
+        }
       });
     }
   }

@@ -148,8 +148,8 @@ const createProps: mapper<TimesheetApprovalHistoryListFilterProps, IOwnState> = 
   // pass initial value for primitive types only, bellow is 'boolean'
   filterNotify: props.initialProps && props.initialProps.isNotify,
 
-   // default filter customer dialog
-   filterCustomerDialog: {
+  // default filter customer dialog
+  filterCustomerDialog: {
     companyUid: props.userState.user ? props.userState.user.company.uid : undefined
   },
 
@@ -254,8 +254,8 @@ const handlerCreators: HandleCreators<TimesheetApprovalHistoryListFilterProps, I
     props.setFilterCustomerVisibility();
   },
 
-   // filter project
-   handleFilterProjectVisibility: (props: TimesheetApprovalHistoryListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
+  // filter project
+  handleFilterProjectVisibility: (props: TimesheetApprovalHistoryListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
     props.setFilterProjectVisibility();
   },
   handleFilterProjectOnSelected: (props: TimesheetApprovalHistoryListFilterProps) => (project: IProjectAssignmentList) => {
