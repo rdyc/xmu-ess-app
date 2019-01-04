@@ -59,8 +59,8 @@ export const PurchaseSettlementItemFormView: React.SFC<PurchaseSettlementItemFor
                     disabled
                     color="secondary"
                     value={varianceValue >= 0 
-                      ? `${props.intl.formatNumber( varianceValue)}`
-                      : `( ${props.intl.formatNumber(varianceValue * -1)} )`
+                      ? `${props.intl.formatNumber(varianceValue)}`
+                      : `${props.intl.formatNumber(varianceValue * -1)}`
                     }
                   />
                 </div>

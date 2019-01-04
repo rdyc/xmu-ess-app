@@ -1,11 +1,11 @@
-// import { SelectSystemOption } from '@common/components/select';
 import { FormMode } from '@generic/types';
 import { InputDate } from '@layout/components/input/date';
 import { InputNumber } from '@layout/components/input/number';
 import { InputText } from '@layout/components/input/text';
-// import { InputCustomer } from '@lookup/components/customer/input';
+import { WithStyles, withStyles } from '@material-ui/core';
 import { PurchaseSettlementDetailFormView } from '@purchase/components/purchaseSettlement/editor/forms/PurchaseSettlementDetailFormView';
 import { purchaseMessage } from '@purchase/locales/messages/purchaseMessage';
+import styles from '@styles';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose, HandleCreators, withHandlers } from 'recompose';
 import { BaseFieldsProps } from 'redux-form';
@@ -14,6 +14,7 @@ interface OwnProps {
   formMode: FormMode;
   context: BaseFieldsProps;
   isCurrencyIdr: boolean;
+  isDiffNegative: boolean;
   // settleMinDate?: Date;
 }
 
@@ -23,6 +24,7 @@ interface OwnHandlers {
 
 export type PurchaseSettlementDetailFormProps 
   = OwnProps
+  & WithStyles<typeof styles>
   & OwnHandlers
   & InjectedIntlProps;
 
@@ -188,5 +190,6 @@ const handlerCreators: HandleCreators<PurchaseSettlementDetailFormProps, OwnHand
 
 export const PurchaseSettlementDetailForm = compose<PurchaseSettlementDetailFormProps, OwnProps>(
   injectIntl,
+  withStyles(styles),
   withHandlers<PurchaseSettlementDetailFormProps, OwnHandlers>(handlerCreators),
 )(PurchaseSettlementDetailFormView);

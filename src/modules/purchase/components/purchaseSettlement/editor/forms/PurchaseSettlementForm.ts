@@ -55,12 +55,13 @@ interface OwnState {
 }
 
 interface FormValueProps {
-  formIsCurrencyIDR: boolean | false;
+  formIsCurrencyIDR: boolean;
   formRate: number | 1;
   formActualValue: number | 0;
   formDifferenceValue: number | 0;
   formAdvance: number | 0;
   formName: string;
+  formIsDiffNegative: boolean;
   // settleMinDate: any;
 }
 
@@ -105,7 +106,7 @@ const mapStateToProps = (state: any): FormValueProps => {
   // const dateData = new Date(date);
   // dateData.setDate(dateData.getDate() - 7);
   // const dateFinal = dateData.toDateString();
-
+  
   return {
     formName,
     formIsCurrencyIDR: currencyType === 'SCR01',
@@ -113,6 +114,7 @@ const mapStateToProps = (state: any): FormValueProps => {
     formActualValue: actValue,
     formDifferenceValue: difValue,
     formAdvance: advance,
+    formIsDiffNegative: difValue < 0,
     // settleMinDate: date ? dateFinal : dateLimit
   };
 };

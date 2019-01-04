@@ -270,38 +270,6 @@ function* watchPurchaseApprovalAllFetchRequest() {
   yield takeEvery(PurchaseApprovalAction.GET_ALL_APPROVAL_REQUEST, worker);
 }
 
-// function* watchPurchaseApprovalAllFetchRequest() {
-//   const worker = (action: ReturnType<typeof purchaseApprovalGetAllRequest>) => {
-//     return saiyanSaga.fetch({
-//       method: 'get',
-//       path: `/v1/approvals/purchase/request${objectToQuerystring(action.payload.filter)}`,
-//       successEffects: (response: IApiResponse) => ([
-//         put(purchaseApprovalGetAllSuccess(response.body))
-//       ]),
-//       failureEffects: (response: IApiResponse) => ([
-//         put(purchaseApprovalGetAllError(response.body)),
-//         put(layoutAlertAdd({
-//           time: new Date(),
-//           message: response.statusText,
-//           details: response
-//         })),
-//       ]),
-//       errorEffects: (error: TypeError) => ([
-//         put(purchaseApprovalGetAllError(error.message)),
-//         put(layoutAlertAdd({
-//           time: new Date(),
-//           message: error.message
-//         }))
-//       ]),
-//       finallyEffects: [
-
-//       ]
-//     });
-//   };
-
-//   yield takeEvery(PurchaseApprovalAction.GET_ALL_APPROVAL_REQUEST, worker);
-// }
-
 function* watchPurchaseApprovalByIdFetchRequest() {
   const worker = (action: ReturnType<typeof purchaseApprovalGetByIdRequest>) => {
     return saiyanSaga.fetch({
