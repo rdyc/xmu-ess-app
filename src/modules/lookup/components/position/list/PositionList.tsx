@@ -2,7 +2,6 @@ import AppMenu from '@constants/AppMenu';
 import { IListConfig, ListDataProps, ListHandler, ListPage } from '@layout/components/pages';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { layoutMessage } from '@layout/locales/messages';
-import { GlobalFormat } from '@layout/types';
 import { IPosition } from '@lookup/classes/response/position/IPosition';
 import { PositionField } from '@lookup/classes/types';
 import { PositionSummary } from '@lookup/components/position/detail/shared/PositionSummary';
@@ -15,19 +14,28 @@ import * as React from 'react';
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { compose, lifecycle, mapper, ReactLifeCycleFunctions, setDisplayName, StateHandler, StateHandlerMap, StateUpdaters, withStateHandlers } from 'recompose';
+import { IPositionListFilterResult } from './PositionListFilter';
 
 interface IOwnOption {
 
 }
 
-interface IOwnState {
+interface IOwnState extends IPositionListFilterResult {
   shouldUpdate: boolean;
   config?: IListConfig<IPosition>;
+  isFilterOpen: boolean;
 }
 
 interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
   setConfig: StateHandler<IOwnState>;
   setShouldUpdate: StateHandler<IOwnState>;
+  setFilterVisibility: StateHandler<IOwnState>;
+  setFilterApplied: StateHandler<IOwnState>;
+}
+
+interface IOwnHandler {
+  handleFilterVisibility: (event: React.MouseEvent<HTMLElement>) => void;
+  handleFilterApplied: (filter: IPositionListFilterResult) => void;
 }
 
 type AllProps
@@ -36,12 +44,15 @@ type AllProps
   & IOwnStateUpdater
   & InjectedIntlProps
   & RouteComponentProps
+  & IOwnHandler
   & WithUser
   & InjectedIntlProps
   & WithLookupPosition;
 
-const createProps: mapper<AllProps, IOwnState> = (): IOwnState => ({
-  shouldUpdate: false,
+const createProps: mapper<AllProps, IOwnState> = (props: AllProps): IOwnState => ({
+  shouldUpdate: false, 
+  isFilterOpen: false,
+  companyUid: props.location.state && props.location.state.companyUid,
 });
 
 const stateUpdaters: StateUpdaters<AllProps, IOwnState, IOwnStateUpdater> = {
@@ -51,19 +62,27 @@ const stateUpdaters: StateUpdaters<AllProps, IOwnState, IOwnStateUpdater> = {
   setConfig: () => (config: IListConfig<IPosition>) => ({
     config
   }),
+  setFilterVisibility: (prevState: IOwnState, props: AllProps) => () => ({
+    isFilterOpen: !prevState.isFilterOpen
+  }),
+  setFilterApplied: (prevState: IOwnState) => (filter: IPositionListFilterResult) => ({
+    ...filter,
+    isFilterOpen: false
+  }),
 };
 const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
   componentDidMount() {
     const { user } = this.props.userState;
     const { isLoading, request, response } = this.props.lookupPositionState.all;
     const { loadAllRequest } = this.props.lookupPositionDispatch;
+    
     const config: IListConfig<IPosition> = {
       // page info
       page: {
         uid: AppMenu.LookupPosition,
         parentUid: AppMenu.Lookup,
-        title: this.props.intl.formatMessage(lookupMessage.currency.page.listTitle),
-        // description: props.intl.formatMessage(lookupMessage.currency.page.listTitle),
+        title: this.props.intl.formatMessage(lookupMessage.position.page.listTitle),
+        // description: props.intl.formatMessage(lookupMessage.position.page.listTitle),
         description: '',
       },
 
@@ -122,12 +141,13 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
       },
       onBind: (item: IPosition, index: number) => ({
         key: index,
-        primary: item.symbol || '-',
-        secondary: this.props.intl.formatNumber(item.rate, GlobalFormat.PositionDefault) || '-',
-        tertiary: item.name || '-',
-        quaternary: item.isActive
-          ? this.props.intl.formatMessage(lookupMessage.currency.field.isActive)
-          : this.props.intl.formatMessage(lookupMessage.currency.field.isNotActive),
+        primary: `${item.uid}` || '',
+        secondary: `${item.name}` || '',
+        tertiary: `${item.company && item.company.name}` || '',
+        quaternary: item.isAllowMultiple ?
+          this.props.intl.formatMessage(lookupMessage.position.field.isAllowed) :
+          this.props.intl.formatMessage(lookupMessage.position.field.isNotAllowed)
+        ,
         quinary: item.changes && item.changes.updated && item.changes.updated.fullName || item.changes && item.changes.created && item.changes.created.fullName || 'N/A',
         senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
       }),
@@ -142,13 +162,13 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
         <React.Fragment>
           <Button
             size="small"
-            onClick={() => this.props.history.push(`/lookup/currencies/form`, { uid: item.uid })}
+            onClick={() => this.props.history.push('/lookup/positions/form', { companyUid: item.companyUid, uid: item.uid })}
           >
             <FormattedMessage {...layoutMessage.action.modify} />
           </Button>
           <Button
             size="small"
-            onClick={() => this.props.history.push(`/lookup/currencies/${item.uid}`)}
+            onClick={() => this.props.history.push(`/lookup/positions/${item.companyUid}/${item.uid}`)}
           >
             <FormattedMessage {...layoutMessage.action.details} />
           </Button>
@@ -159,15 +179,7 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
   },
   componentDidUpdate(nextProps: AllProps) {
     // track any changes in filter props
-    if (
-      this.props.customerUid !== nextProps.customerUid ||
-      this.props.projectUid !== nextProps.projectUid ||
-      this.props.statusType !== nextProps.statusType ||
-      this.props.isRejected !== nextProps.isRejected ||
-      this.props.isSettlement !== nextProps.isSettlement
-    ) {
       this.props.setShouldUpdate();
-    }
   }
 };
 
