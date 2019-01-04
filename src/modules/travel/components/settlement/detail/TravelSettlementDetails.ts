@@ -108,8 +108,7 @@ const handlerCreators: HandleCreators<TravelSettlementDetailProps, OwnHandler> =
 
     // actions with new page
     const actions = [
-      TravelUserAction.Modify, 
-      TravelUserAction.AddSettlement
+      TravelUserAction.Modify
     ];
 
     if (actions.indexOf(props.action) !== -1) {

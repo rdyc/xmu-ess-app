@@ -1,5 +1,5 @@
 import { travelAction } from './travelActionMessage';
-import { travelApprovalConfirm, travelApprovalPage } from './travelApprovalMessages';
+import { travelApprovalConfirm, travelApprovalOption, travelApprovalPage } from './travelApprovalMessages';
 import { 
   travelRequestConfirm, 
   travelRequestDialog, 
@@ -41,7 +41,8 @@ export const travelMessage = {
   },
   requestApproval: {
     page: travelApprovalPage,
-    confirm: travelApprovalConfirm
+    confirm: travelApprovalConfirm,
+    option: travelApprovalOption
   },
   settlementApproval: {
     page: travelSettlementApprovalPage,

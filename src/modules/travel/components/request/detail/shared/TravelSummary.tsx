@@ -56,6 +56,7 @@ const travelSummary: React.SFC<AllProps> = props => (
     <Grid item xs={12} sm={6} md={3}>
       <TextField
         {...styled}
+        multiline
         margin="dense"
         label={props.intl.formatMessage(travelMessage.request.field.customerUid)}
         value={props.data.customer ? props.data.customer.name : 'N/A'}

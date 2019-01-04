@@ -60,7 +60,7 @@ interface PropsFromDispatch {
 export interface WithAccountEmployeeEducation extends PropsFromState, PropsFromDispatch {}
 
 const mapStateToProps = ({ accountEmployeeEducationGetAll, accountEmployeeEducationGetList, accountEmployeeEducationGetById }: IAppState) => ({
-  accountEmployeeState: {
+  accountEmployeeEducationState: {
     all: accountEmployeeEducationGetAll,
     list: accountEmployeeEducationGetList,
     detail: accountEmployeeEducationGetById

@@ -5,6 +5,11 @@ import { layoutMessage } from '@layout/locales/messages';
 import { GlobalFormat } from '@layout/types';
 import { Button } from '@material-ui/core';
 import TuneIcon from '@material-ui/icons/Tune';
+import { isSettlementRequestEditable } from '@organization/helper/isSettlementRequestEditable';
+import { ITravelSettlement } from '@travel/classes/response';
+import { TravelRequestField } from '@travel/classes/types';
+import { WithTravelSettlement, withTravelSettlement } from '@travel/hoc/withTravelSettlement';
+import { travelMessage } from '@travel/locales/messages/travelMessage';
 import * as moment from 'moment';
 import * as React from 'react';
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
@@ -22,12 +27,6 @@ import {
   withHandlers,
   withStateHandlers,
 } from 'recompose';
-
-import { isModuleRequestEditable } from '@organization/helper/isModuleRequestEditable';
-import { ITravelSettlement } from '@travel/classes/response';
-import { TravelRequestField } from '@travel/classes/types';
-import { WithTravelSettlement, withTravelSettlement } from '@travel/hoc/withTravelSettlement';
-import { travelMessage } from '@travel/locales/messages/travelMessage';
 import { TravelSummarySettlement } from '../detail/shared/TravelSummarySettlement';
 import { ITravelSettlementListFilterResult, TravelSettlementListFilter } from './TravelSettlementListFilter';
 
@@ -189,8 +188,8 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
       onBind: (item: ITravelSettlement, index: number) => ({
         key: index,
         primary: item.uid,
-        secondary: item.customer && item.customer.name || item.customerUid,
-        tertiary: `${item.projectUid} - ${ item.project && item.project.name }`,
+        secondary: item.projectUid,
+        tertiary: item.customer && item.customer.name || item.customerUid,
         quaternary: this.props.intl.formatNumber(item.total, GlobalFormat.CurrencyDefault) || '-',
         quinary: item.status && item.status.value || item.statusType,
         senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
@@ -205,7 +204,7 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
       actionComponent: (item: ITravelSettlement, callback: ListHandler) => (
         <React.Fragment>
           {
-            isModuleRequestEditable(item.statusType) &&
+            isSettlementRequestEditable(item.statusType) &&
             <Button
               size="small"
               onClick={() => this.props.history.push(`/travel/settlement/requests/form`, { uid: item.uid })}

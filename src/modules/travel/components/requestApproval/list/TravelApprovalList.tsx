@@ -149,8 +149,8 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
       searchStatus: (): boolean => {
         let result: boolean = false;
 
-        if (request && request.filter && request.filter.query) {
-          result = request.filter.query.find ? true : false;
+        if (request && request.filter && request.filter.find) {
+          result = request.filter.find ? true : false;
         }
 
         return result;
@@ -174,14 +174,12 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
                 statusType: this.props.statusType,
                 status: this.props.status,
                 isNotify: this.props.isNotify,
-                query: {
-                  find: params.find,
-                  findBy: params.findBy,
-                  orderBy: params.orderBy,
-                  direction: params.direction,
-                  page: params.page,
-                  size: params.size,
-                }
+                direction: params.direction,
+                orderBy: params.orderBy,
+                page: params.page,
+                size: params.size,
+                find: params.find,
+                findBy: params.findBy
               }
             });
           } else {
@@ -193,8 +191,8 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
       onBind: (item: ITravelRequest, index: number) => ({
         key: index,
         primary: item.uid,
-        secondary: item.customer && item.customer.name || item.customerUid,
-        tertiary: `${item.projectUid} - ${ item.project && item.project.name }`,
+        secondary: item.projectUid,
+        tertiary: item.customer && item.customer.name || item.customerUid, // `${item.projectUid} - ${ item.project && item.project.name }`,
         quaternary: this.props.intl.formatNumber(item.total, GlobalFormat.CurrencyDefault) || '-',
         quinary: item.status && item.status.value || item.statusType,
         senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
