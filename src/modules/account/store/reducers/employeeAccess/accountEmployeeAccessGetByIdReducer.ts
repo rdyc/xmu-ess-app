@@ -1,4 +1,4 @@
-import { IEmployeeAccessGetDetailRequest } from '@account/classes/queries';
+import { IEmployeeAccessGetDetailRequest } from '@account/classes/queries/employeeAccess';
 import { IEmployeeAccess } from '@account/classes/response';
 import { AccountEmployeeAccessAction as Action } from '@account/store/actions';
 import { IQuerySingleState } from '@generic/interfaces';

@@ -1,6 +1,6 @@
 import { IEmployeeAccessList } from '@account/classes';
-import { IEmployeeAccessGetAllRequest, IEmployeeAccessGetDetailRequest } from '@account/classes/queries';
-import { IEmployeeAccessGetListRequest } from '@account/classes/queries/IEmployeeAccessGetListRequest';
+import { IEmployeeAccessGetAllRequest, IEmployeeAccessGetDetailRequest } from '@account/classes/queries/employeeAccess';
+import { IEmployeeAccessGetListRequest } from '@account/classes/queries/employeeAccess/IEmployeeAccessGetListRequest';
 import { IEmployeeAccess } from '@account/classes/response/IEmployeeAccess';
 import { IResponseCollection } from '@generic/interfaces';
 import { action } from 'typesafe-actions';

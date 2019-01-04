@@ -1,4 +1,4 @@
-import { IEmployeeAccessListFilter } from '../filters/IEmployeeAccessListFilter';
+import { IEmployeeAccessListFilter } from '../../filters/IEmployeeAccessListFilter';
 
 export interface IEmployeeAccessGetListRequest {
   readonly employeeUid: string;

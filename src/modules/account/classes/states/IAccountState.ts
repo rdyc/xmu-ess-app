@@ -1,7 +1,4 @@
 import {
-  IEmployeeAccessGetAllRequest,
-  IEmployeeAccessGetDetailRequest,
-  IEmployeeAccessGetListRequest,
   IEmployeeAllRequest,
   IEmployeeByIdRequest,
   IEmployeeDeleteRequest,
@@ -10,6 +7,11 @@ import {
   IEmployeePostRequest,
   IEmployeePutRequest,
 } from '@account/classes/queries';
+import { 
+  IEmployeeAccessGetAllRequest, 
+  IEmployeeAccessGetDetailRequest, 
+  IEmployeeAccessGetListRequest 
+} from '@account/classes/queries/employeeAccess';
 import { 
   IEmployeeAccessHistoryAllRequest, 
   IEmployeeAccessHistoryByIdRequest, 
@@ -164,6 +166,7 @@ export interface IAccountState {
 
   accountEmployeeLeaveGet: IQuerySingleState<IEmployeeLeaveByIdRequest, IEmployeeLeave>;
 
+  // account employee Access
   accountEmployeeAccessGetAll: IQueryCollectionState<IEmployeeAccessGetAllRequest, IEmployeeAccess>;
   accountEmployeeAccessGetList: IQueryCollectionState<IEmployeeAccessGetListRequest, IEmployeeAccessList>;
   accountEmployeeAccessGetById: IQuerySingleState<IEmployeeAccessGetDetailRequest, IEmployeeAccess>;
