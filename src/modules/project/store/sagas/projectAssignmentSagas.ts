@@ -18,15 +18,21 @@ import {
 } from '@project/store/actions';
 import { flattenObject } from '@utils/flattenObject';
 import saiyanSaga from '@utils/saiyanSaga';
+import * as qs from 'qs';
 import { SubmissionError } from 'redux-form';
 import { all, fork, put, takeEvery } from 'redux-saga/effects';
-import { IApiResponse, objectToQuerystring } from 'utils';
+import { IApiResponse } from 'utils';
 
 function* watchGetAllRequest() {
   const worker = (action: ReturnType<typeof projectAssignmentGetAllRequest>) => {
+    const params = qs.stringify(action.payload.filter, { 
+      allowDots: true, 
+      skipNulls: true
+    });
+
     return saiyanSaga.fetch({
       method: 'get',
-      path: `/v1/project/assignments${objectToQuerystring(action.payload.filter)}`,
+      path: `/v1/project/assignments?${params}`,
       successEffects: (response: IApiResponse) => [
         put(projectAssignmentGetAllSuccess(response.body))
       ],
@@ -60,9 +66,14 @@ function* watchGetAllRequest() {
 
 function* watchGetListRequest() {
   const worker = (action: ReturnType<typeof projectAssignmentGetListRequest>) => {
+    const params = qs.stringify(action.payload.filter, { 
+      allowDots: true, 
+      skipNulls: true
+    });
+
     return saiyanSaga.fetch({
       method: 'get',
-      path: `/v1/project/assignments/list${objectToQuerystring(action.payload.filter)}`,
+      path: `/v1/project/assignments/list?${params}`,
       successEffects: (response: IApiResponse) => [
         put(projectAssignmentGetListSuccess(response.body))
       ],
