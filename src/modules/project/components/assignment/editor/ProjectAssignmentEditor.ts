@@ -85,7 +85,7 @@ const handlers: HandleCreators<ProjectAssignmentEditorProps, OwnHandlers> = {
   generateInitialData: (props: ProjectAssignmentEditorProps) => (): IProjectAssignmentDetail | undefined => {
     const { response } = props.projectAssignmentState.detail; 
 
-    if (response && response.data) {
+    if (response && response.data && props.formMode === FormMode.Edit) {
       return response.data;
     }
       

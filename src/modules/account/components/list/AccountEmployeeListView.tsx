@@ -1,154 +1,253 @@
-import { IEmployee } from '@account/classes/response';
-import { AccountEmployeeField, AccountEmployeeUserAction } from '@account/classes/types';
-import { accountMessage } from '@account/locales/messages/accountMessage';
 import AppMenu from '@constants/AppMenu';
-import { DialogConfirmation } from '@layout/components/dialogs';
-import { CollectionConfig, CollectionDataProps, CollectionHandler, CollectionPage } from '@layout/components/pages';
-import { IAppBarMenu } from '@layout/interfaces';
+import { IListConfig, ListDataProps, ListHandler, ListPage } from '@layout/components/pages';
+import { WithUser, withUser } from '@layout/hoc/withUser';
 import { layoutMessage } from '@layout/locales/messages';
-import { GlobalFormat } from '@layout/types';
 import { Button } from '@material-ui/core';
+import AddCircleIcon from '@material-ui/icons/AddCircle';
+import TuneIcon from '@material-ui/icons/Tune';
 import * as moment from 'moment';
 import * as React from 'react';
-import { FormattedMessage } from 'react-intl';
-import { AccountEmployeeListProps } from './AccountEmployeeList';
+import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
+import { RouteComponentProps, withRouter } from 'react-router';
+import {
+  compose,
+  HandleCreators,
+  lifecycle,
+  mapper,
+  ReactLifeCycleFunctions,
+  setDisplayName,
+  StateHandler,
+  StateHandlerMap,
+  StateUpdaters,
+  withHandlers,
+  withStateHandlers,
+} from 'recompose';
+
+import { IEmployee } from '@account/classes/response';
+import { AccountEmployeeField } from '@account/classes/types';
+import { WithAccountEmployee, withAccountEmployee } from '@account/hoc/withAccountEmployee';
+import { accountMessage } from '@account/locales/messages/accountMessage';
+import { GlobalFormat } from '@layout/types';
+import { AccountEmployeeFilter, IAccountEmployeeFilterResult } from './AccountEmployeeFilter';
 import { AccountEmployeeSummary } from './AccountEmployeeSummary';
 
-const config: CollectionConfig<IEmployee, AccountEmployeeListProps> = {
-  // page info
-  page: (props: AccountEmployeeListProps) => ({
-    uid: AppMenu.Account,
-    parentUid: AppMenu.Lookup,
-    title: props.intl.formatMessage(accountMessage.employee.page.listTitle),
-    description: props.intl.formatMessage(accountMessage.employee.page.listSubHeader),
+interface OwnOption {
+
+}
+
+interface OwnState extends IAccountEmployeeFilterResult {
+  shouldUpdate: boolean;
+  config?: IListConfig<IEmployee>;
+  isFilterOpen: boolean;
+}
+
+interface OwnStateUpdater extends StateHandlerMap<OwnState> {
+  setConfig: StateHandler<OwnState>;
+  setShouldUpdate: StateHandler<OwnState>;
+  setFilterVisibility: StateHandler<OwnState>;
+  setFilterApplied: StateHandler<OwnState>;
+}
+
+interface OwnHandler {
+  handleFilterVisibility: (event: React.MouseEvent<HTMLElement>) => void;
+  handleFilterApplied: (filter: any) => void;
+}
+
+type AllProps
+  = OwnState
+  & OwnOption
+  & OwnHandler
+  & OwnStateUpdater
+  & WithUser
+  & WithAccountEmployee
+  & InjectedIntlProps
+  & RouteComponentProps;
+
+const listView: React.SFC<AllProps> = props => (
+  <React.Fragment>
+  {
+    props.config &&
+    <ListPage
+      config={props.config}
+      source={props.accountEmployeeState.all}
+      loadDataWhen={props.shouldUpdate}
+    >
+      <AccountEmployeeFilter
+        isOpen={props.isFilterOpen}
+        initialProps={{
+          companyUids: props.companyUids,
+          roleUids: props.roleUids
+        }}
+        onClose={props.handleFilterVisibility}
+        onApply={props.handleFilterApplied}
+      />
+    </ListPage>
+  }
+</React.Fragment>
+);
+
+const createProps: mapper<AllProps, OwnState> = (): OwnState => ({
+  shouldUpdate: false,
+  isFilterOpen: false,
+});
+
+const stateUpdaters: StateUpdaters<AllProps, OwnState, OwnStateUpdater> = {
+  setShouldUpdate: (prevState: OwnState) => () => ({
+    shouldUpdate: !prevState.shouldUpdate
   }),
   
-  // top bar
-  fields: Object.keys(AccountEmployeeField).map(key => ({
-    value: key,
-    name: AccountEmployeeField[key]
-  })),
-  // fieldTranslator: ,
-
-  // searching
-  hasSearching: true,
-  searchStatus: (props: AccountEmployeeListProps): boolean => {
-    let result: boolean = false;
-
-    const { request } = props.accountEmployeeState.all;
-
-    if (request && request.filter && request.filter.find) {
-      result = request.filter.find ? true : false;
-    }
-
-    return result;
-  },
-
-  // action centre
-  showActionCentre: true,
-
-  // more
-  hasMore: true,
-  moreOptions: (props: AccountEmployeeListProps, callback: CollectionHandler): IAppBarMenu[] => ([
-    {
-      id: AccountEmployeeUserAction.Refresh,
-      name: props.intl.formatMessage(layoutMessage.action.refresh),
-      enabled: true,
-      visible: true,
-      onClick: () => callback.handleForceReload()
-    },
-    {
-      id: AccountEmployeeUserAction.Create,
-      name: props.intl.formatMessage(layoutMessage.action.create),
-      enabled: true,
-      visible: true,
-      onClick: () => callback.handleRedirectTo(`/lookup/employee/form`)
-    }
-  ]),
-
-  // events
-  onDataLoad: (props: AccountEmployeeListProps, callback: CollectionHandler, params: CollectionDataProps, forceReload?: boolean | false) => {
-    const { user } = props.userState;
-    const { isLoading, response } = props.accountEmployeeState.all;
-    const { loadAllRequest } = props.accountEmployeeDispatch;
-
-    // when user is set and not loading
-    if (user && !isLoading) {
-      // when response are empty or force reloading
-      if (!response || forceReload) {
-        loadAllRequest({
-          filter: {
-            direction: params.direction,
-            orderBy: params.orderBy,
-            page: params.page,
-            size: params.size,
-            find: params.find,
-            findBy: params.findBy,
-            roleUids: undefined,
-            companyUids: undefined,
-            positionUids: undefined,
-          }
-        });
-      } else {
-        // just take data from previous response
-        callback.handleResponse(response);
-      }
-    }
-  },
-  onUpdated: (props: AccountEmployeeListProps, callback: CollectionHandler) => {
-    const { isLoading, response } = props.accountEmployeeState.all;
-    
-    callback.handleLoading(isLoading);
-    callback.handleResponse(response);
-  },
-  onBind: (item: IEmployee, index: number, props: AccountEmployeeListProps) => ({
-    key: index,
-    primary: item.uid,
-    secondary: item.company ? item.company.name : 'N/A',
-    tertiary: item.fullName,
-    quaternary: props.intl.formatDate(item.joinDate, GlobalFormat.Date),
-    quinary: item.changes && item.changes.updated && item.changes.updated.fullName || item.changes && item.changes.created && item.changes.created.fullName || 'N/A',
-    senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
+  setConfig: () => (config: IListConfig<IEmployee>) => ({
+    config
   }),
-
-  // summary component
-  summaryComponent: (item: IEmployee) => ( 
-    <AccountEmployeeSummary data={item} />
-  ),
-
-  // action component
-  actionComponent: (item: IEmployee, callback: CollectionHandler) => (
-    <React.Fragment>
-      <Button 
-          size="small"
-          onClick={() => callback.handleRedirectTo(`/lookup/employee/form`, { uid: item.uid })}
-        >
-          <FormattedMessage {...layoutMessage.action.modify}/>
-      </Button>
-      <Button 
-        size="small"
-        onClick={() => callback.handleRedirectTo(`/lookup/employee/${item.uid}`)}
-      >
-        <FormattedMessage {...layoutMessage.action.details}/>
-      </Button>
-    </React.Fragment>
-  ),
+  setFilterVisibility: (prevState: OwnState) => () => ({
+    isFilterOpen: !prevState.isFilterOpen
+  }),
+  setFilterApplied: () => (filter: IAccountEmployeeFilterResult) => ({
+    ...filter,
+    isFilterOpen: false
+  })
 };
 
-export const AccountEmployeeListView: React.SFC<AccountEmployeeListProps> = props => (
-  <CollectionPage
-    config={config}
-    connectedProps={props}
-  >
-    <DialogConfirmation 
-      isOpen={props.dialogOpen}
-      fullScreen={props.dialogFullScreen}
-      title={props.dialogTitle}
-      content={props.dialogContent}
-      labelCancel={props.dialogCancelLabel}
-      labelConfirm={props.dialogConfirmLabel}
-      onClickCancel={props.handleOnCloseDialog}
-      onClickConfirm={props.handleOnConfirm}
-    />
-  </CollectionPage>
-);
+const handlerCreators: HandleCreators<AllProps, OwnHandler> = {
+  handleFilterVisibility: (props: AllProps) => () => {
+    props.setFilterVisibility();
+  },
+  handleFilterApplied: (props: AllProps) => (filter: IAccountEmployeeFilterResult) => {
+    props.setFilterApplied(filter);
+  }
+};
+
+const lifecycles: ReactLifeCycleFunctions<AllProps, OwnState> = {
+  componentDidMount() {
+    const { user } = this.props.userState;
+    const { isLoading, request, response } = this.props.accountEmployeeState.all;
+    const { loadAllRequest } = this.props.accountEmployeeDispatch;
+
+    const config: IListConfig<IEmployee> = {
+      // page
+      page: {
+        uid: AppMenu.Account,
+        parentUid: AppMenu.Lookup,
+        title: this.props.intl.formatMessage(accountMessage.employee.page.listTitle),
+        description: this.props.intl.formatMessage(accountMessage.employee.page.listSubHeader),
+      },
+
+      // top bar
+      fields: Object.keys(AccountEmployeeField).map(key => ({
+        value: key,
+        name: AccountEmployeeField[key]
+      })),
+
+      // searching
+      hasSearching: true,
+      searchStatus: (): boolean => {
+        let result: boolean = false;
+
+        if (request && request.filter && request.filter.find) {
+          result = request.filter.find ? true : false;
+        }
+    
+        return result;
+      },
+
+      // action centre
+      showActionCentre: true,
+
+      // toolbar controls
+      toolbarControls: () => [
+        {
+          icon: AddCircleIcon,
+          onClick: () => { 
+            this.props.history.push('/lookup/employee/form'); 
+          }
+        }
+      ],
+
+      // events
+      onDataLoad: (callback: ListHandler, params: ListDataProps, forceReload?: boolean | false) => {
+        // when user is set and not loading
+        if (user && !isLoading) {
+          if (!response || forceReload) {
+            loadAllRequest({
+              filter: {
+                companyUids: this.props.companyUids,
+                roleUids: this.props.companyUids ? this.props.roleUids : undefined,
+                positionUids: undefined,
+                direction: params.direction,
+                orderBy: params.orderBy,
+                page: params.page,
+                size: params.size,
+                find: params.find,
+                findBy: params.findBy,
+              }
+            });
+          } else {
+            // just take data from previous response
+            callback.handleResponse(response);
+          }
+        }
+      },
+      onBind: (item: IEmployee, index: number) => ({
+        key: index,
+        primary: item.uid,
+        secondary: item.company ? item.company.name : 'N/A',
+        tertiary: item.fullName,
+        quaternary: this.props.intl.formatDate(item.joinDate, GlobalFormat.Date),
+        quinary: item.changes && item.changes.updated && item.changes.updated.fullName || item.changes && item.changes.created && item.changes.created.fullName || 'N/A',
+        senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
+      }),
+
+      // summary component
+      summaryComponent: (item: IEmployee) => ( 
+        <AccountEmployeeSummary data={item} />
+      ),
+
+      // action component
+      actionComponent: (item: IEmployee) => (
+        <React.Fragment>
+          <Button 
+            size="small"
+            onClick={() => this.props.history.push(`/lookup/employee/${item.uid}`)}
+          >
+            <FormattedMessage {...layoutMessage.action.details}/>
+          </Button>
+        </React.Fragment>
+      ),
+
+      // additional controls
+      additionalControls: [
+        {
+          id: 'option-filter',
+          title: this.props.intl.formatMessage(layoutMessage.tooltip.filter),
+          icon: TuneIcon,
+          showBadgeWhen: () => {
+            return this.props.companyUids !== undefined || this.props.roleUids !== undefined;
+          },
+          onClick: this.props.handleFilterVisibility
+        }
+      ]
+    };
+
+    this.props.setConfig(config);
+  },
+  componentDidUpdate(nextProps: AllProps) {
+    // track any changes in filter props
+    if (
+      this.props.companyUids !== nextProps.companyUids ||
+      this.props.roleUids !== nextProps.roleUids
+    ) {
+      this.props.setShouldUpdate();
+    }
+  }
+};
+
+export const AccountEmployeeListView = compose(
+  setDisplayName('AccountEmployeeListView'),
+  withUser,
+  withAccountEmployee,
+  withRouter,
+  injectIntl,
+  withStateHandlers(createProps, stateUpdaters),
+  withHandlers(handlerCreators),
+  lifecycle(lifecycles)
+)(listView);

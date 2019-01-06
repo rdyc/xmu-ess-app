@@ -3,6 +3,7 @@ import {
   accountEmployeeConfirm,
   accountEmployeeField,
   accountEmployeeFieldHelperFor,
+  accountEmployeeFilter,
   accountEmployeeMessage,
   accountEmployeePage,
   accountEmployeeSection
@@ -15,7 +16,8 @@ export const accountMessage = {
     confirm: accountEmployeeConfirm,
     fieldFor: accountEmployeeFieldHelperFor,
     section: accountEmployeeSection,
-    message: accountEmployeeMessage
+    message: accountEmployeeMessage,
+    filter: accountEmployeeFilter
   },
   access: {
     message: accountAccessMessage

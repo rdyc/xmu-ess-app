@@ -24,15 +24,21 @@ import {
 import { layoutAlertAdd } from '@layout/store/actions';
 import { flattenObject } from '@utils/flattenObject';
 import saiyanSaga from '@utils/saiyanSaga';
+import * as qs from 'qs';
 import { SubmissionError } from 'redux-form';
 import { all, fork, put, takeEvery } from 'redux-saga/effects';
-import { IApiResponse, objectToQuerystring } from 'utils';
+import { IApiResponse } from 'utils';
 
 function* watchAllRequest() {
   const worker = (action: ReturnType<typeof accountEmployeeFamilyGetAllRequest>) => {
+    const params = qs.stringify(action.payload.filter, { 
+      allowDots: true, 
+      skipNulls: true
+    });
+
     return saiyanSaga.fetch({
       method: 'get',
-      path: `/v1/account/employees/${action.payload.employeeUid}/families${objectToQuerystring(action.payload.filter)}`, 
+      path: `/v1/account/employees/${action.payload.employeeUid}/families?${params}`, 
       successEffects: (response: IApiResponse) => ([
         put(accountEmployeeFamilyGetAllSuccess(response.body)),
       ]), 
@@ -59,9 +65,14 @@ function* watchAllRequest() {
 
 function* watchListRequest() {
   const worker = (action: ReturnType<typeof accountEmployeeFamilyGetListRequest>) => {
+    const params = qs.stringify(action.payload.filter, { 
+      allowDots: true, 
+      skipNulls: true
+    });
+    
     return saiyanSaga.fetch({
       method: 'get',
-      path: `/v1/account/employees/${action.payload.employeeUid}/families/list${objectToQuerystring(action.payload.filter)}`,
+      path: `/v1/account/employees/${action.payload.employeeUid}/families/list?${params}`,
       successEffects: (response: IApiResponse) => ([
         put(accountEmployeeFamilyGetListSuccess(response.body))
       ]), 

@@ -4,7 +4,8 @@ import AppStorage from '@constants/AppStorage';
 import { ExpenseRoutingComponents } from '@expense/components/ExpenseRoutingComponents';
 import { FinanceRoutingComponents } from '@finance/components/FinanceRoutingComponents';
 import { HomeRoutingComponents } from '@home/components';
-import { Callback, Root } from '@layout/components/base';
+import { Callback } from '@layout/components/base';
+import { LandingPage } from '@layout/components/landingPage/LandingPage';
 import { WithOidc, withOidc } from '@layout/hoc/withOidc';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IAppUser } from '@layout/interfaces';
@@ -29,6 +30,7 @@ import { compose, lifecycle, ReactLifeCycleFunctions } from 'recompose';
 import { Store } from 'redux';
 import { loadUser, OidcProvider } from 'redux-oidc';
 import * as store from 'store';
+
 import { IAppState } from './generic/interfaces';
 import AppLocale from './language';
 import config, { getCurrentLanguage } from './language/config';
@@ -59,7 +61,7 @@ const app: React.ComponentType<AllProps> = props => (
         <ConnectedRouter history={props.history}>
           <Router history={props.history}>
             <Switch>
-              <Route exact path="/" component={Root} />
+              <Route exact path="/" component={LandingPage} />
               <Route path="/callback" component={Callback} />
               
               <Route path="/home" component={HomeRoutingComponents} />
