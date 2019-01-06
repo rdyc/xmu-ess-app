@@ -1,4 +1,5 @@
 export enum AccountEmployeeField {
   uid = 'Employee ID',
-  companyUid = 'Company',
+  fullName = 'Employee Name',
+  employmentNumber = 'NIK'
 }

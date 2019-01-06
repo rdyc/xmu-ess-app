@@ -1,6 +1,6 @@
 export enum CommonField {
   uid = 'Type ID',
-  companyUid = 'Company',
+  // companyUid = 'Company',
   code = 'Code',
   description = 'Description',
   value = 'Value',

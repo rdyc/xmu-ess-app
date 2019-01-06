@@ -1,13 +1,10 @@
-import { IBaseFilter, IBasePagingFilter } from '@generic/interfaces';
+import { IBasePagingFilter } from '@generic/interfaces';
 
-interface IExtendedQuery extends IBaseFilter, IBasePagingFilter {}
-
-export interface ILeaveApprovalGetAllFilter {
+export interface ILeaveApprovalGetAllFilter extends IBasePagingFilter {
   companyUid?: string;
   positionUid?: string;
   leaveType?: string;
   statusType?: string;
   status?: 'pending' | 'complete' | string;
   isNotify?: boolean;
-  query?: IExtendedQuery;
 }
