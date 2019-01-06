@@ -6,7 +6,7 @@ import * as React from 'react';
 import { Field } from 'redux-form';
 
 export const PurchaseSettlementDetailFormView: React.SFC<PurchaseSettlementDetailFormProps> = props => {
-  const { isCurrencyIdr } = props;
+  const { isCurrencyIdr, isDiffNegative, classes } = props;
   const { names } = props.context;
 
   const renderField = (name: string) => {
@@ -16,6 +16,22 @@ export const PurchaseSettlementDetailFormView: React.SFC<PurchaseSettlementDetai
     const fields = ['requestInIDR', 'actualInIDR', 'differenceInIDR'];
     if (isCurrencyIdr && fields.indexOf(fieldName) !== -1) {
       return null;
+    }
+
+    const fieldDifference = ['difference', 'differenceInIDR'];
+    if (fieldDifference.indexOf(fieldName) !== -1) {
+      return (
+      <Field
+        key={fieldName}
+        name={fieldName}
+        {...fieldProps}
+        props={{
+          className: isDiffNegative
+            ? classes.colorBlue
+            : classes.colorRed,
+        }}        
+      />
+      );
     }
 
     return (

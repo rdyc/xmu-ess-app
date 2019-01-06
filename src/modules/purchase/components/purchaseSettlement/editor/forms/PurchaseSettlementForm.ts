@@ -55,13 +55,14 @@ interface OwnState {
 }
 
 interface FormValueProps {
-  formIsCurrencyIDR: boolean | false;
+  formIsCurrencyIDR: boolean;
   formRate: number | 1;
   formActualValue: number | 0;
   formDifferenceValue: number | 0;
   formAdvance: number | 0;
   formName: string;
-  settleMinDate: any;
+  formIsDiffNegative: boolean;
+  // settleMinDate: any;
 }
 
 export type PurchaseSettlementFormProps
@@ -84,16 +85,16 @@ const handlers: HandleCreators<PurchaseSettlementFormProps, OwnHandlers> = {
     }
     props.change('information.actual', actual);
     props.change('information.actualInIDR', actual * props.formRate);
-    props.change('information.difference', difference > 0 ? difference : difference * -1);
-    props.change('information.differenceInIDR', difference * props.formRate);
-    props.change('information.balanceDue', props.formAdvance - actual);
+    props.change('information.difference', difference >= 0 ? difference : difference * -1);
+    props.change('information.differenceInIDR', difference >= 0 ? difference * props.formRate : difference * -1 * props.formRate );
+    props.change('information.balanceDue', (props.formAdvance - actual) >= 0 ? (props.formAdvance - actual) : ((props.formAdvance - actual) * -1) );
   },
 };
 
 const selector = formValueSelector(formName);
 
-const dateLimit = new Date();
-dateLimit.setDate(dateLimit.getDate() - 7);
+// const dateLimit = new Date();
+// dateLimit.setDate(dateLimit.getDate() - 7);
 
 const mapStateToProps = (state: any): FormValueProps => {
   const currencyType = selector(state, 'information.currencyType');
@@ -101,11 +102,11 @@ const mapStateToProps = (state: any): FormValueProps => {
   const actValue = selector(state, 'information.actual'); 
   const difValue = selector(state, 'information.difference'); 
   const advance = selector(state, 'information.advance');
-  const date = selector(state, 'information.date');
-  const dateData = new Date(date);
-  dateData.setDate(dateData.getDate() - 7);
-  const dateFinal = dateData.toDateString();
-
+  // const date = selector(state, 'information.date');
+  // const dateData = new Date(date);
+  // dateData.setDate(dateData.getDate() - 7);
+  // const dateFinal = dateData.toDateString();
+  
   return {
     formName,
     formIsCurrencyIDR: currencyType === 'SCR01',
@@ -113,7 +114,8 @@ const mapStateToProps = (state: any): FormValueProps => {
     formActualValue: actValue,
     formDifferenceValue: difValue,
     formAdvance: advance,
-    settleMinDate: date ? dateFinal : dateLimit
+    formIsDiffNegative: difValue < 0,
+    // settleMinDate: date ? dateFinal : dateLimit
   };
 };
 
