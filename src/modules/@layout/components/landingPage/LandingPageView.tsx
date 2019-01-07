@@ -1,6 +1,3 @@
-import { WithOidc, withOidc } from '@layout/hoc/withOidc';
-import { WithUser, withUser } from '@layout/hoc/withUser';
-import { IAppUser } from '@layout/interfaces';
 import { GlobalFormat } from '@layout/types';
 import { CardActionArea } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
@@ -9,98 +6,12 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Grid from '@material-ui/core/Grid';
-import { createStyles, Theme, WithStyles, withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import classNames from 'classnames';
 import * as React from 'react';
-import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
-import { RouteComponentProps, withRouter } from 'react-router';
-import {
-  compose,
-  HandleCreators,
-  lifecycle,
-  mapper,
-  ReactLifeCycleFunctions,
-  StateHandler,
-  StateHandlerMap,
-  StateUpdaters,
-  withHandlers,
-  withStateHandlers,
-} from 'recompose';
+import { FormattedMessage } from 'react-intl';
 
-import { AppUserManager } from '../../../../utils';
-
-const styles = (theme: Theme) =>
-  createStyles({
-    button: {
-      margin: theme.spacing.unit
-    },
-    header: {
-      backgroundColor: theme.palette.grey[900],
-      display: 'flex',
-      position: 'fixed',
-      color: theme.palette.primary.contrastText,
-      padding: theme.spacing.unit * 2,
-      width: '100%',
-      zIndex: 2,
-      opacity: 0.5
-    },
-    flex: {
-      flex: 1
-    },
-    icon: {
-      marginRight: theme.spacing.unit * 2
-    },
-    heroUnit: {
-      backgroundImage: 'url("https://demos.creative-tim.com/material-kit-pro-react/static/media/bg8.8cfdd67a.jpg")',
-      backgroundSize: 'cover',
-      height: '100vh',
-      maxHeight: '1600px',
-      display: 'flex',
-      position: 'relative',
-      alignItems: 'center'
-    },
-    heroContent: {
-      maxWidth: 1200,
-      margin: '0 auto',
-      padding: `${theme.spacing.unit * 8}px 0 ${theme.spacing.unit * 6}px`
-    },
-    heroText: {
-      width: '50%',
-      color: '#FFF'
-    },
-    heroButtons: {
-      marginTop: theme.spacing.unit * 4
-    },
-    layout: {
-      width: 'auto',
-      marginLeft: theme.spacing.unit * 3,
-      marginRight: theme.spacing.unit * 3,
-      [theme.breakpoints.up(1600 + theme.spacing.unit * 3 * 2)]: {
-        width: 1600,
-        marginLeft: 'auto',
-        marginRight: 'auto'
-      }
-    },
-    cardGrid: {
-      padding: `${theme.spacing.unit * 8}px 0`
-    },
-    card: {
-      height: '100%',
-      display: 'flex',
-      flexDirection: 'column'
-    },
-    cardMedia: {
-      paddingTop: '56.25%' // 16:9
-    },
-    cardContent: {
-      flexGrow: 1
-    },
-    footer: {
-      // backgroundColor: theme.palette.background.paper,
-      padding: theme.spacing.unit * 6
-    }
-  });
+import { LandingPageProps } from './LandingPage';
 
 interface INews {
   source: string;
@@ -162,89 +73,13 @@ const news: INews[] = [
   }
 ];
 
-interface OwnHandler {
-  handleOnClickLogin: () => void;
-  handleOnClickLogout: () => void;
-}
-
-interface OwnState {
-  isLoggedIn: boolean;
-  user?: IAppUser;
-}
-
-interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
-  setUser: StateHandler<OwnState>;
-}
-
-type AllProps 
-  = RouteComponentProps 
-  & InjectedIntlProps
-  & WithOidc 
-  & WithUser
-  & WithStyles<typeof styles> 
-  & OwnState 
-  & OwnStateUpdaters 
-  & OwnHandler;
-
-const createProps: mapper<AllProps, OwnState> = (props: AllProps): OwnState => ({
-  isLoggedIn: false
-});
-
-const stateUpdaters: StateUpdaters<AllProps, OwnState, OwnStateUpdaters> = {
-  setUser: (prevState: OwnState, props: AllProps) => (
-    appUser: IAppUser
-  ): Partial<OwnState> => ({
-    isLoggedIn: true,
-    user: appUser
-  })
-};
-
-const handlerCreators: HandleCreators<AllProps, OwnHandler> = {
-  handleOnClickLogin: (props: AllProps) => () => {
-    // check user login
-    if (props.oidcState.user) {
-      if (props.userState.user) {
-        // user profile exist
-        props.history.push('/home/dashboard');
-      } else {
-        // push to select user access
-        props.history.push('/account/access');
-      }
-    } else {
-      AppUserManager.signinRedirect();
-    }
-  },
-  handleOnClickLogout: (props: AllProps) => () => {
-    AppUserManager.signoutRedirect();
-  }
-};
-
-const lifecycles: ReactLifeCycleFunctions<AllProps, {}> = {
-  componentDidMount() {
-    // set document props
-    document.title = 'Welcome to New TESSA';
-
-    // load odic user state
-    // loadUser(rootStore, AppUserManager).then((user: User) => {
-    //   // console.log('loaded user', user);
-
-    //   if (user) {
-    //     // found user access, then get user profile
-    //     const appUser: IAppUser = store.get(AppStorage.Profile);
-
-    //     this.props.setUser(appUser);
-    //   }
-    // });
-  }
-};
-
-const root: React.SFC<AllProps> = props => (
+export const LandingPageView: React.SFC<LandingPageProps> = props => (
   <React.Fragment>
     <CssBaseline />
 
     <header className={props.classes.header}>
       <Typography variant="subheading" color="inherit" className={props.classes.flex}>
-        TESSA
+        {props.title}
       </Typography>
       
       {
@@ -295,44 +130,42 @@ const root: React.SFC<AllProps> = props => (
               Every landing page needs a small description after the big bold title, that's why we added this text here. Add here all the information that can make you or your product create the first impression.
             </Typography>
 
-            <div className={props.classes.heroButtons}>
-              {
-                props.oidcState.isLoadingUser &&
-                  <Typography variant="body2">
-                    <FormattedMessage id="layout.text.loading" />
-                  </Typography>
-                }
+            {
+              props.oidcState.isLoadingUser &&
+              <Typography variant="body2">
+                <FormattedMessage id="layout.text.loading" />
+              </Typography>
+            }
 
-                {
-                  !props.oidcState.isLoadingUser &&
-                  props.oidcState.user &&
-                  props.userState.user &&
-                  <React.Fragment>
-                    <Button
-                      className={props.classes.button}
-                      variant="contained"
-                      color="primary"
-                      size="large"
-                      onClick={() => props.handleOnClickLogin()}
-                    >
-                      {`Hi ${props.userState.user && props.userState.user.fullName}, Let's start!`}
-                    </Button>
-                  </React.Fragment>
-                }
+            {
+              !props.oidcState.isLoadingUser &&
+              props.oidcState.user &&
+              props.userState.user &&
+              <React.Fragment>
+                <Button
+                  className={props.classes.button}
+                  variant="contained"
+                  color="primary"
+                  size="large"
+                  onClick={() => props.handleOnClickLogin()}
+                >
+                  {`Hi ${props.userState.user && props.userState.user.fullName}, Let's start!`}
+                </Button>
+              </React.Fragment>
+            }
 
-                {
-                  !props.oidcState.isLoadingUser &&
-                  !props.oidcState.user &&
-                  <Button
-                    variant="contained"
-                    color="secondary"
-                    size="large"
-                    onClick={() => props.handleOnClickLogin()}
-                  >
-                    Let me in
-                  </Button>
-                }
-            </div>
+            {
+              !props.oidcState.isLoadingUser &&
+              !props.oidcState.user &&
+              <Button
+                variant="contained"
+                color="secondary"
+                size="large"
+                onClick={() => props.handleOnClickLogin()}
+              >
+                Let me in
+              </Button>
+            }
           </div>
         </div>
       </div>
@@ -368,28 +201,22 @@ const root: React.SFC<AllProps> = props => (
     </main>
 
     <footer className={props.classes.footer}>
-      <Typography variant="body2" align="center" gutterBottom>
-        The Employee Self Service Application (TESSA)
+      <Typography 
+        variant="body2" 
+        color="inherit" 
+        align="center" 
+        gutterBottom
+      >
+        {props.description}
       </Typography>
       <Typography
         variant="body2"
         align="center"
-        color="textSecondary"
+        color="inherit"
         component="p"
       >
-        © 2019 | Equine Technologies Group
+        {props.footer}
       </Typography>
     </footer>
   </React.Fragment>
 );
-
-export const Root = compose<AllProps, {}>(
-  injectIntl,
-  withRouter,
-  withOidc,
-  withUser,
-  withStyles(styles),
-  withStateHandlers(createProps, stateUpdaters),
-  withHandlers(handlerCreators),
-  lifecycle(lifecycles)
-)(root);

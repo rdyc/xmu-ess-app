@@ -12,14 +12,20 @@ import {
 } from '@account/store/actions';
 import { layoutAlertAdd } from '@layout/store/actions';
 import saiyanSaga from '@utils/saiyanSaga';
+import * as qs from 'qs';
 import { all, fork, put, takeEvery } from 'redux-saga/effects';
-import { IApiResponse, objectToQuerystring } from 'utils';
+import { IApiResponse } from 'utils';
 
 function* watchAllRequest() {
   const worker = (action: ReturnType<typeof accountEmployeeAccessHistoryGetAllRequest>) => {
+    const params = qs.stringify(action.payload.filter, { 
+      allowDots: true, 
+      skipNulls: true
+    });
+
     return saiyanSaga.fetch({
       method: 'get',
-      path: `/v1/account/employees/${action.payload.employeeUid}/access/histories/all${objectToQuerystring(action.payload.filter)}`, 
+      path: `/v1/account/employees/${action.payload.employeeUid}/access/histories/all?${params}`, 
       successEffects: (response: IApiResponse) => ([
         put(accountEmployeeAccessHistoryGetAllSuccess(response.body)),
       ]), 
@@ -46,9 +52,14 @@ function* watchAllRequest() {
 
 function* watchListRequest() {
   const worker = (action: ReturnType<typeof accountEmployeeAccessHistoryGetListRequest>) => {
+    const params = qs.stringify(action.payload.filter, { 
+      allowDots: true, 
+      skipNulls: true
+    });
+    
     return saiyanSaga.fetch({
       method: 'get',
-      path: `/v1/account/employees/${action.payload.employeeUid}/access/histories/list${objectToQuerystring(action.payload.filter)}`,
+      path: `/v1/account/employees/${action.payload.employeeUid}/access/histories/list?${params}`,
       successEffects: (response: IApiResponse) => ([
         put(accountEmployeeAccessHistoryGetListSuccess(response.body))
       ]), 
