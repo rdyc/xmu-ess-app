@@ -3,6 +3,7 @@ import { IBaseFilter, IBasePagingFilter, IQueryCollectionState, IResponseCollect
 import { ICollectionValue } from '@layout/classes/core';
 import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
+import { WithPage, withPage } from '@layout/hoc/withPage';
 import { IAppBarControl, IAppBarMenu } from '@layout/interfaces';
 import { WithStyles, withStyles, withWidth } from '@material-ui/core';
 import { WithWidth } from '@material-ui/core/withWidth';
@@ -128,7 +129,8 @@ export type ListPageProps
   & WithStyles<typeof styles>
   & WithWidth
   & WithLayout
-  & WithAppBar;
+  & WithAppBar
+  & WithPage;
 
 const createProps: mapper<IOwnOption, IOwnState> = (props: IOwnOption): IOwnState => ({
   forceReload: false,
@@ -231,15 +233,11 @@ const handlerCreators: HandleCreators<ListPageProps, IOwnHandler> = {
     props.setForceReload(true);
   },
   handleOnChangeSelection: (props: ListPageProps) => (event: React.ChangeEvent<HTMLInputElement>) => {
-    event.preventDefault();
-    event.stopPropagation();
-    event.nativeEvent.stopImmediatePropagation();
-
     props.setSelection(event.currentTarget.value);
 
     props.appBarDispatch.selectionAddRemove(event.currentTarget.value);
   },
-  handleOnSearch: (props: ListPageProps) => (find: string | undefined, field: ICollectionValue | undefined) => {
+  handleOnSearch: (props: ListPageProps) => (find?: string, field?: ICollectionValue) => {
     // when find is undefided, that means user has close or exit from search mode
     if (find) {
       // set search state props for searching
@@ -253,17 +251,19 @@ const handlerCreators: HandleCreators<ListPageProps, IOwnHandler> = {
 
 const lifecycles: ReactLifeCycleFunctions<ListPageProps, IOwnState> = {
   componentDidMount() {
+    // get page config
+    const pageConfig = this.props.config.page;
+
     // track last searching status
     const isSearching: boolean = this.props.config.searchStatus ? this.props.config.searchStatus() : false;
 
     // configure view
-    const page = this.props.config.page;
     this.props.layoutDispatch.setupView({
       view: {
-        uid: page.uid,
-        parentUid: page.parentUid,
-        title: page.title,
-        subTitle: page.description,
+        uid: pageConfig.uid,
+        parentUid: pageConfig.parentUid,
+        title: pageConfig.title,
+        subTitle: pageConfig.description,
       },
       parentUrl: this.props.config.parentUrl,
       status: {
@@ -321,12 +321,12 @@ const lifecycles: ReactLifeCycleFunctions<ListPageProps, IOwnState> = {
       }
     }
     
-    // filter
+    // search
     if (this.props.find !== prevProps.find || this.props.findBy !== prevProps.findBy) {
       this.props.config.onDataLoad(this.props, this.props, true);
     }
 
-    // state
+    // filter state
     if (this.props.loadDataWhen !== prevProps.loadDataWhen) {
       this.props.config.onDataLoad(this.props, this.props, true);
     }
@@ -335,6 +335,24 @@ const lifecycles: ReactLifeCycleFunctions<ListPageProps, IOwnState> = {
     if (this.props.source !== prevProps.source) {  
       // this.props.config.onUpdated(this.props);
       const { isLoading, response } = this.props.source;
+      
+      // get page config
+      const pageConfig = this.props.config.page;
+
+      // get all views
+      const { pages } = this.props.view;
+
+      // retrieve all view pages from state
+      const currentPage = pages.filter(page => page.uid === pageConfig.uid)[0];
+
+      // configure page
+      this.props.pageChange({
+        uid: pageConfig.uid,
+        isSearch: currentPage && currentPage.isSearch || false,
+        isFilter: currentPage && currentPage.isFilter || false,
+        isSelect: currentPage && currentPage.isSelect || false,
+        request: this.props.source.request
+      });
 
       this.props.handleLoading(isLoading);
       this.props.handleResponse(response);
@@ -352,6 +370,7 @@ export const ListPage = compose<ListPageProps, IOwnOption>(
   withWidth(),
   withLayout,
   withAppBar,
+  withPage,
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
   lifecycle(lifecycles)
