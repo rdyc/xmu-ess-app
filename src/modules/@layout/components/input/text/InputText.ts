@@ -21,6 +21,7 @@ interface OwnProps extends WrappedFieldProps, BaseFieldProps {
   required?: boolean;
   label: string; 
   disabled: boolean; 
+  multiline: boolean;
 }
 
 interface OwnHandlers {

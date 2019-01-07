@@ -1,11 +1,9 @@
 import { FormMode } from '@generic/types';
 import { InputDate } from '@layout/components/input/date';
-import { InputNumber } from '@layout/components/input/number';
+import { InputColoredNumber, InputNumber } from '@layout/components/input/number';
 import { InputText } from '@layout/components/input/text';
-import { WithStyles, withStyles } from '@material-ui/core';
 import { PurchaseSettlementDetailFormView } from '@purchase/components/purchaseSettlement/editor/forms/PurchaseSettlementDetailFormView';
 import { purchaseMessage } from '@purchase/locales/messages/purchaseMessage';
-import styles from '@styles';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose, HandleCreators, withHandlers } from 'recompose';
 import { BaseFieldsProps } from 'redux-form';
@@ -14,7 +12,6 @@ interface OwnProps {
   formMode: FormMode;
   context: BaseFieldsProps;
   isCurrencyIdr: boolean;
-  isDiffNegative: boolean;
   // settleMinDate?: Date;
 }
 
@@ -24,7 +21,6 @@ interface OwnHandlers {
 
 export type PurchaseSettlementDetailFormProps 
   = OwnProps
-  & WithStyles<typeof styles>
   & OwnHandlers
   & InjectedIntlProps;
 
@@ -50,7 +46,8 @@ const handlerCreators: HandleCreators<PurchaseSettlementDetailFormProps, OwnHand
         fieldProps = {
           disabled: true,
           label: props.intl.formatMessage(purchaseMessage.settlement.field.customerUid),
-          component: InputText
+          component: InputText,
+          multiline: true,
         };
         break;
 
@@ -60,6 +57,7 @@ const handlerCreators: HandleCreators<PurchaseSettlementDetailFormProps, OwnHand
           category: 'project',
           label: props.intl.formatMessage(purchaseMessage.settlement.field.projectUid),
           component: InputText,
+          multiline: true,
         };
         break;
 
@@ -134,9 +132,8 @@ const handlerCreators: HandleCreators<PurchaseSettlementDetailFormProps, OwnHand
         fieldProps = {
           type: 'number',
           label: props.intl.formatMessage(purchaseMessage.settlement.field.difference),
-          // onChange: props.onChangeValueIdr,
-          component: InputNumber,
-          disabled: true
+          component: InputColoredNumber,
+          disableInput: true
         };
         break;
 
@@ -144,8 +141,8 @@ const handlerCreators: HandleCreators<PurchaseSettlementDetailFormProps, OwnHand
          fieldProps = {
            type: 'number',
            label: props.intl.formatMessage(purchaseMessage.settlement.field.differenceInIDR),
-           disabled: true,
-           component: InputNumber
+           disableInput: true,
+           component: InputColoredNumber
          };
          break;
   
@@ -162,8 +159,8 @@ const handlerCreators: HandleCreators<PurchaseSettlementDetailFormProps, OwnHand
         fieldProps = {
           type: 'number',
           label: props.intl.formatMessage(purchaseMessage.settlement.field.balanceDue),
-          disabled: true,
-          component: InputNumber
+          disableInput: true,
+          component: InputColoredNumber
         };
         break;
   
@@ -171,7 +168,8 @@ const handlerCreators: HandleCreators<PurchaseSettlementDetailFormProps, OwnHand
         fieldProps = {
           label: props.intl.formatMessage(purchaseMessage.settlement.field.notes),
           placeholder: props.intl.formatMessage(purchaseMessage.settlement.field.notesPlaceholder),
-          component: InputText
+          component: InputText,
+          multiline: true
         };
         break;
         
@@ -190,6 +188,5 @@ const handlerCreators: HandleCreators<PurchaseSettlementDetailFormProps, OwnHand
 
 export const PurchaseSettlementDetailForm = compose<PurchaseSettlementDetailFormProps, OwnProps>(
   injectIntl,
-  withStyles(styles),
   withHandlers<PurchaseSettlementDetailFormProps, OwnHandlers>(handlerCreators),
 )(PurchaseSettlementDetailFormView);
