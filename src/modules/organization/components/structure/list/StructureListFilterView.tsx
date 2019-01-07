@@ -56,7 +56,7 @@ export const StructureListFilterView: React.SFC<StructureListFilterProps> = prop
       </AppBar>
       
       <List>
-        <ListItem button onClick={props.handlefilterCompanyVisibility}>
+        <ListItem button onClick={props.handleFilterCompanyVisibility}>
           <ListItemText 
             primary={props.intl.formatMessage(organizationMessage.structure.field.companyUid)}
             secondary={props.filterCompany && props.filterCompany.name || props.intl.formatMessage(layoutMessage.text.none)}
@@ -69,7 +69,7 @@ export const StructureListFilterView: React.SFC<StructureListFilterProps> = prop
               </IconButton> 
             }
 
-            <IconButton disabled>
+            <IconButton onClick={props.handleFilterCompanyVisibility}>
               <ChevronRightIcon />
             </IconButton> 
           </ListItemSecondaryAction>

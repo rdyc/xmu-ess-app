@@ -59,7 +59,6 @@ type AllProps
   & RouteComponentProps
   & IOwnHandler
   & WithUser
-  & InjectedIntlProps
   & WithLookupPosition;
 
 const createProps: mapper<AllProps, IOwnState> = (props: AllProps): IOwnState => ({

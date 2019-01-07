@@ -69,7 +69,7 @@ export const PositionListFilterView: React.SFC<PositionListFilterProps> = props 
               </IconButton>
             }
 
-            <IconButton disabled>
+            <IconButton onClick={props.handleFilterCompanyVisibility}>
               <ChevronRightIcon />
             </IconButton>
           </ListItemSecondaryAction>

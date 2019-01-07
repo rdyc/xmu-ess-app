@@ -76,7 +76,7 @@ const stateUpdaters: StateUpdaters<StructureListFilterProps, IOwnState, IOwnStat
   }),
 
   // filter company
-  setFilterCompanyVisibility: (prevState: IOwnState, props: StructureListFilterProps) => () => ({
+  setFilterCompanyVisibility: (prevState: IOwnState) => () => ({
     isFilterCompanyOpen: !prevState.isFilterCompanyOpen,
   }),
   setFilterCompany: (prevState: IOwnState) => (company?: ILookupCompany) => ({
