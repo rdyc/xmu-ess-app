@@ -1,5 +1,5 @@
 import { layoutMessage } from '@layout/locales/messages';
-import { LookupCompanyDialog } from '@lookup/components/company/dialog';
+import { FilterCompany } from '@lookup/components/company/select';
 import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
 import {
   AppBar,
@@ -69,21 +69,22 @@ export const LookupRoleListFilterView: React.SFC<LookupRoleListFilterProps> = pr
               </IconButton>
             }
 
-            <IconButton disabled>
+            <IconButton onClick={props.handleFilterCompanyVisibility}>
               <ChevronRightIcon />
             </IconButton>
           </ListItemSecondaryAction>
         </ListItem>
         <Divider />
       </List>
+
+      <FilterCompany 
+        title={props.intl.formatMessage(lookupMessage.lookupCustomer.field.companyUid)}
+        hideBackdrop={true}
+        isOpen={props.isFilterCompanyOpen}
+        value={props.filterCompany && props.filterCompany.uid}
+        onSelected={props.handleFilterCompanyOnSelected}
+        onClose={props.handleFilterCompanyOnClose}        
+      />
     </Dialog>
-
-    <LookupCompanyDialog
-      hideBackdrop={true}
-      isOpen={props.isFilterCompanyOpen}
-      onSelected={props.handleFilterCompanyOnSelected}
-      onClose={props.handleFilterCOnClose}
-    />
-
   </React.Fragment>
 );
