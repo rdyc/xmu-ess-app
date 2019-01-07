@@ -21,13 +21,13 @@ export const purchaseMessage = {
     pages: settlementApprovalPage,
     confirm: settlementApprovalConfirm,
     section: settlementApprovalSection,
-    message: settlementApprovalMessage
+    message: settlementApprovalMessage,
   },
   approval: {
     pages: purchaseApprovalPage,
     confirm: purchaseApprovalConfirm,
     section: purchaseApprovalSection,
-    message: purchaseApprovalMessage
+    message: purchaseApprovalMessage,
   },
   settlement: {
     pages: purchaseSettlementPage,
