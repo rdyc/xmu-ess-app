@@ -1,11 +1,13 @@
 import AppMenu from '@constants/AppMenu';
-import { Collapse, Divider, List, ListItem, ListItemSecondaryAction, ListItemText } from '@material-ui/core';
+import { Collapse, Divider, List, ListItem, ListItemIcon, ListItemSecondaryAction, ListItemText } from '@material-ui/core';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import * as React from 'react';
 
+import { ModuleIcon } from '../moduleIcon/ModuleIcon';
 import { NavigationMenuProps } from './NavigationMenu';
 
+// import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 export const navigationMenu: React.SFC<NavigationMenuProps> = props => (
   <List 
     disablePadding 
@@ -35,6 +37,9 @@ export const navigationMenu: React.SFC<NavigationMenuProps> = props => (
       button
       onClick={() => props.handleOnClickMenuHeader(AppMenu.Home)}
     >
+      <ListItemIcon className={props.classes.drawerPaperMenuItem}>
+        <ModuleIcon module={AppMenu.Home}  />
+      </ListItemIcon>
       <ListItemText 
         primary="Home" 
         primaryTypographyProps={{
@@ -55,7 +60,7 @@ export const navigationMenu: React.SFC<NavigationMenuProps> = props => (
         onClick={() => props.handleOnClickMenuItem(AppMenu.Home, AppMenu.Dashboard)}
       >
         <ListItemText 
-          className={props.classes.marginFarLeft}
+          className={props.classes.drawerPaperMenuItemSub}
           primary={'Dashboard'}
           primaryTypographyProps={{
             noWrap: true,
@@ -70,12 +75,15 @@ export const navigationMenu: React.SFC<NavigationMenuProps> = props => (
       props.userState.user &&
       props.userState.user.menus &&
       props.userState.user.menus.map(header => (
-        <div key={header.uid}>
+        <React.Fragment key={header.uid}>
           <ListItem
             button
-            color={'inherit'}
+            color="inherit"
             onClick={() => props.handleOnClickMenuHeader(header.uid)}
           >
+            <ListItemIcon className={props.classes.drawerPaperMenuItem}>
+              <ModuleIcon module={header.uid}  />
+            </ListItemIcon>
             <ListItemText 
               primary={header.name}
               primaryTypographyProps={{
@@ -100,8 +108,8 @@ export const navigationMenu: React.SFC<NavigationMenuProps> = props => (
                   selected={props.childUid === child.uid}
                   onClick={() => props.handleOnClickMenuItem(header.uid, child.uid)}
                 >
-                  <ListItemText 
-                    className={props.classes.marginFarLeft}
+                  <ListItemText
+                    className={props.classes.drawerPaperMenuItemSub}
                     primary={child.name}
                     primaryTypographyProps={{
                       noWrap: true,
@@ -113,7 +121,7 @@ export const navigationMenu: React.SFC<NavigationMenuProps> = props => (
               )
             }
           </Collapse>
-        </div>
+        </React.Fragment>
       ))
     }
 

@@ -2,40 +2,28 @@ import AppMenu from '@constants/AppMenu';
 import { IListConfig, ListDataProps, ListHandler, ListPage } from '@layout/components/pages';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { layoutMessage } from '@layout/locales/messages';
-import { IPosition } from '@lookup/classes/response/position/IPosition';
-import { PositionField } from '@lookup/classes/types';
-import { PositionSummary } from '@lookup/components/position/detail/shared/PositionSummary';
-import { withLookupPosition, WithLookupPosition } from '@lookup/hoc/withLookupPosition';
+import { IRole } from '@lookup/classes/response';
+import { RoleField } from '@lookup/classes/types';
+import { WithLookupRole, withLookupRole } from '@lookup/hoc/withLookupRole';
 import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
 import { Button } from '@material-ui/core';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
-import TuneIcon from '@material-ui/icons/Tune'; 
+import TuneIcon from '@material-ui/icons/Tune';
 import * as moment from 'moment';
 import * as React from 'react';
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
-import { 
-  compose, 
-  HandleCreators, 
-  lifecycle, 
-  mapper, 
-  ReactLifeCycleFunctions, 
-  setDisplayName, 
-  StateHandler, 
-  StateHandlerMap, 
-  StateUpdaters, 
-  withHandlers, 
-  withStateHandlers 
-} from 'recompose';
-import { IPositionListFilterResult, PositionListFilter } from './PositionListFilter';
+import { compose, HandleCreators, lifecycle, mapper, ReactLifeCycleFunctions, setDisplayName, StateHandler, StateHandlerMap, StateUpdaters, withHandlers, withStateHandlers } from 'recompose';
+import { LookupRoleSumarry } from '../detail/shared/LookupRoleSummary';
+import { ILookupRoleListFilterResult, LookupRoleListFilter } from './LookupRoleListFilter';
 
 interface IOwnOption {
 
 }
 
-interface IOwnState extends IPositionListFilterResult {
+interface IOwnState extends ILookupRoleListFilterResult {
   shouldUpdate: boolean;
-  config?: IListConfig<IPosition>;
+  config?: IListConfig<IRole>;
   isFilterOpen: boolean;
 }
 
@@ -48,36 +36,57 @@ interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
 
 interface IOwnHandler {
   handleFilterVisibility: (event: React.MouseEvent<HTMLElement>) => void;
-  handleFilterApplied: (filter: IPositionListFilterResult) => void;
+  handleFilterApplied: (filter: ILookupRoleListFilterResult) => void;
 }
 
 type AllProps
   = IOwnOption
   & IOwnState
   & IOwnStateUpdater
-  & InjectedIntlProps
-  & RouteComponentProps
   & IOwnHandler
   & WithUser
-  & WithLookupPosition;
+  & WithLookupRole
+  & InjectedIntlProps
+  & RouteComponentProps;
+
+const listView: React.SFC<AllProps> = props => (
+  <React.Fragment>
+    {
+      props.config &&
+      <ListPage
+        config={props.config}
+        source={props.lookupRoleState.all}
+        loadDataWhen={props.shouldUpdate}
+      >
+        <LookupRoleListFilter
+          isOpen={props.isFilterOpen}
+          initialProps={{
+            companyUid: props.companyUid
+          }}
+          onClose={props.handleFilterVisibility}
+          onApply={props.handleFilterApplied}
+        />
+      </ListPage>
+    }
+  </React.Fragment>
+);
 
 const createProps: mapper<AllProps, IOwnState> = (props: AllProps): IOwnState => ({
-  shouldUpdate: false, 
-  isFilterOpen: false,
-  companyUid: props.location.state && props.location.state.companyUid,
+  shouldUpdate: false,
+  isFilterOpen: false
 });
 
 const stateUpdaters: StateUpdaters<AllProps, IOwnState, IOwnStateUpdater> = {
   setShouldUpdate: (prevState: IOwnState) => () => ({
     shouldUpdate: !prevState.shouldUpdate
   }),
-  setConfig: () => (config: IListConfig<IPosition>) => ({
+  setConfig: (prevState: IOwnState) => (config: IListConfig<IRole>) => ({
     config
   }),
-  setFilterVisibility: (prevState: IOwnState, props: AllProps) => () => ({
+  setFilterVisibility: (prevState: IOwnState) => () => ({
     isFilterOpen: !prevState.isFilterOpen
   }),
-  setFilterApplied: (prevState: IOwnState) => (filter: IPositionListFilterResult) => ({
+  setFilterApplied: (prevState: IOwnState) => (filter: ILookupRoleListFilterResult) => ({
     ...filter,
     isFilterOpen: false
   }),
@@ -87,37 +96,36 @@ const handlerCreators: HandleCreators<AllProps, IOwnHandler> = {
   handleFilterVisibility: (props: AllProps) => (event: React.MouseEvent<HTMLElement>) => {
     props.setFilterVisibility();
   },
-  handleFilterApplied: (props: AllProps) => (filter: IPositionListFilterResult) => {
+  handleFilterApplied: (props: AllProps) => (filter: ILookupRoleListFilterResult) => {
     props.setFilterApplied(filter);
-  }
+  },
 };
 
 const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
   componentDidMount() {
     const { user } = this.props.userState;
-    const { isLoading, request, response } = this.props.lookupPositionState.all;
-    const { loadAllRequest } = this.props.lookupPositionDispatch;
-    
-    const config: IListConfig<IPosition> = {
-      // page info
+    const { isLoading, request, response } = this.props.lookupRoleState.all;
+    const { loadAllRequest } = this.props.lookupRoleDispatch;
+
+    const config: IListConfig<IRole> = {
+      // page
       page: {
-        uid: AppMenu.LookupPosition,
-        parentUid: AppMenu.Lookup,
-        title: this.props.intl.formatMessage(lookupMessage.position.page.listTitle),
-        // description: props.intl.formatMessage(lookupMessage.position.page.listTitle),
-        description: '',
+        uid: AppMenu.Lookup,
+        parentUid: AppMenu.LookupRole,
+        title: this.props.intl.formatMessage(lookupMessage.role.page.listTitle),
+        description: this.props.intl.formatMessage(lookupMessage.role.page.listSubHeader)
       },
 
       // top bar
-      fields: Object.keys(PositionField)
+      fields: Object.keys(RoleField)
         .map(key => ({
           value: key,
-          name: PositionField[key]
+          name: RoleField[key]
         })),
 
       // searching
       hasSearching: true,
-      searchStatus: () => {
+      searchStatus: (): boolean => {
         let result: boolean = false;
 
         if (request && request.filter && request.filter.find) {
@@ -129,12 +137,13 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
 
       // action centre
       showActionCentre: false,
+
       // toolbar controls
-      toolbarControls: () => [
+      toolbarControls: (callback: ListHandler) => [
         {
           icon: AddCircleIcon,
           onClick: () => {
-            this.props.history.push('/lookup/currencies/form');
+            this.props.history.push('/lookup/roles/form');
           }
         }
       ],
@@ -162,36 +171,34 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
           }
         }
       },
-      onBind: (item: IPosition, index: number) => ({
+      onBind: (item: IRole, index: number) => ({
         key: index,
-        primary: `${item.uid}` || '',
-        secondary: `${item.name}` || '',
-        tertiary: `${item.company && item.company.name}` || '',
-        quaternary: item.isAllowMultiple ?
-          this.props.intl.formatMessage(lookupMessage.position.field.isAllowed) :
-          this.props.intl.formatMessage(lookupMessage.position.field.isNotAllowed)
-        ,
+        primary: item.uid,
+        secondary: item.name,
+        tertiary: item.company ? item.company.name : 'N/A',
+        quaternary: item.description ? item.description : 'N/A',
         quinary: item.changes && item.changes.updated && item.changes.updated.fullName || item.changes && item.changes.created && item.changes.created.fullName || 'N/A',
         senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
       }),
 
       // summary component
-      summaryComponent: (item: IPosition) => (
-        <PositionSummary data={item} />
+      summaryComponent: (item: IRole) => (
+        <LookupRoleSumarry data={item} />
       ),
 
       // action component
-      actionComponent: (item: IPosition) => (
+      actionComponent: (item: IRole, callback: ListHandler) => (
         <React.Fragment>
           <Button
             size="small"
-            onClick={() => this.props.history.push('/lookup/positions/form', { companyUid: item.companyUid, uid: item.uid })}
+            onClick={() => this.props.history.push(`/lookup/roles/form`, { uid: item.uid, companyUid: item.companyUid })}
           >
             <FormattedMessage {...layoutMessage.action.modify} />
           </Button>
+
           <Button
             size="small"
-            onClick={() => this.props.history.push(`/lookup/positions/${item.companyUid}/${item.uid}`)}
+            onClick={() => this.props.history.push(`/lookup/roles/${item.uid}`, { companyUid: item.companyUid })}
           >
             <FormattedMessage {...layoutMessage.action.details} />
           </Button>
@@ -211,9 +218,11 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
         }
       ]
     };
+
     this.props.setConfig(config);
   },
   componentDidUpdate(nextProps: AllProps) {
+    // track any changes in filter props
     if (
       this.props.companyUid !== nextProps.companyUid
     ) {
@@ -222,35 +231,12 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
   }
 };
 
-const listView: React.SFC<AllProps> = props => (
-  <React.Fragment>
-    {
-      props.config &&
-      <ListPage
-        config={props.config}
-        source={props.lookupPositionState.all}
-        loadDataWhen={props.shouldUpdate}
-      >
-      <PositionListFilter
-          isOpen={props.isFilterOpen}
-          initialProps={{
-            companyUid: props.companyUid,
-          }}
-          onClose={props.handleFilterVisibility}
-          onApply={props.handleFilterApplied}
-        />
-      </ListPage>
-      
-    }
-  </React.Fragment>
-);
-
-export const PositionList = compose<AllProps, IOwnOption>(
-  setDisplayName('LookupPositionList'),
-  withRouter,
+export const LookupRoleList = compose(
+  setDisplayName('LookupRoleList'),
   withUser,
+  withLookupRole,
+  withRouter,
   injectIntl,
-  withLookupPosition,
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
   lifecycle(lifecycles)

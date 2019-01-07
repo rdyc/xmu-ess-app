@@ -1,34 +1,71 @@
 import AppMenu from '@constants/AppMenu';
-import { 
-  CollectionConfig, 
-  CollectionDataProps, 
-  CollectionHandler,
-  CollectionPage 
-  } from '@layout/components/pages';
+import { IListConfig, ListDataProps, ListHandler, ListPage } from '@layout/components/pages';
 import { WithUser, withUser } from '@layout/hoc/withUser';
-import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
 import { GlobalFormat } from '@layout/types';
 import { ICurrency } from '@lookup/classes/response/currency';
-import { CurrencyField, CurrencyUserAction } from '@lookup/classes/types';
+import { CurrencyField } from '@lookup/classes/types';
 import { CurrencySummary } from '@lookup/components/currency/detail/shared/CurrencySummary';
-import { currencyFieldTranslator } from '@lookup/helper';
-import { withLookupCurrency, WithLookupCurrency } from '@lookup/hoc/currency/withLookupCurrency';
+import { withLookupCurrency, WithLookupCurrency } from '@lookup/hoc/withLookupCurrency';
 import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
 import { Button } from '@material-ui/core';
+import AddCircleIcon from '@material-ui/icons/AddCircle';
 import * as moment from 'moment';
 import * as React from 'react';
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
-import { compose } from 'recompose';
+import { RouteComponentProps, withRouter } from 'react-router';
+import { compose, lifecycle, mapper, ReactLifeCycleFunctions, setDisplayName, StateHandler, StateHandlerMap, StateUpdaters, withStateHandlers } from 'recompose';
 
-const config: CollectionConfig<ICurrency, AllProps> = {
+interface IOwnOption {
+
+}
+
+interface IOwnState {
+  shouldUpdate: boolean;
+  config?: IListConfig<ICurrency>;
+}
+
+interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
+  setConfig: StateHandler<IOwnState>;
+  setShouldUpdate: StateHandler<IOwnState>;
+}
+
+type AllProps 
+  = IOwnOption
+  & IOwnState
+  & IOwnStateUpdater
+  & InjectedIntlProps
+  & RouteComponentProps
+  & WithUser
+  & InjectedIntlProps
+  & WithLookupCurrency;
+
+const createProps: mapper<AllProps, IOwnState> = (): IOwnState => ({
+  shouldUpdate: false,
+});
+
+const stateUpdaters: StateUpdaters<AllProps, IOwnState, IOwnStateUpdater> = {
+  setShouldUpdate: (prevState: IOwnState) => () => ({
+    shouldUpdate: !prevState.shouldUpdate
+  }),
+  setConfig: () => (config: IListConfig<ICurrency>) => ({
+    config
+  }),
+};
+const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
+  componentDidMount() {
+    const { user } = this.props.userState;
+    const { isLoading, request, response } = this.props.lookupCurrencyState.all;
+    const { loadAllRequest } = this.props.lookupCurrencyDispatch;
+    const config: IListConfig<ICurrency> = {
   // page info
-  page: (props: AllProps) => ({
+  page: {
     uid: AppMenu.LookupCurrency,
     parentUid: AppMenu.Lookup,
-    title: props.intl.formatMessage(lookupMessage.currency.page.listTitle),
-    description: props.intl.formatMessage(lookupMessage.currency.page.listTitle),
-  }),
+    title: this.props.intl.formatMessage(lookupMessage.currency.page.listTitle),
+    description: this.props.intl.formatMessage(lookupMessage.currency.page.listSubHeader),
+    // description: '',
+  },
 
   // top bar
   fields: Object.keys(CurrencyField)
@@ -36,14 +73,11 @@ const config: CollectionConfig<ICurrency, AllProps> = {
     value: key,
     name: CurrencyField[key]
   })),
-  fieldTranslator: currencyFieldTranslator,
 
   // searching
   hasSearching: true,
-  searchStatus: (states: AllProps): boolean => {
+  searchStatus: () => {
     let result: boolean = false;
-
-    const { request } = states.lookupCurrencyState.all;
 
     if (request && request.filter && request.filter.find) {
       result = request.filter.find ? true : false;
@@ -53,33 +87,19 @@ const config: CollectionConfig<ICurrency, AllProps> = {
   },
 
   // action centre
-  showActionCentre: true,
-
-  // more
-  hasMore: true,
-  moreOptions: (props: AllProps, callback: CollectionHandler): IAppBarMenu[] => ([
+  showActionCentre: false,
+  // toolbar controls
+  toolbarControls: () => [
     {
-      id: CurrencyUserAction.Refresh,
-      name: props.intl.formatMessage(layoutMessage.action.refresh),
-      enabled: true,
-      visible: true,
-      onClick: () => callback.handleForceReload()
-    },
-    {
-      id: CurrencyUserAction.Create,
-      name: props.intl.formatMessage(layoutMessage.action.create),
-      enabled: true,
-      visible: true,
-      onClick: () => callback.handleRedirectTo('/lookup/currencies/form'),
+      icon: AddCircleIcon,
+      onClick: () => {
+        this.props.history.push('/lookup/currencies/form');
+      }
     }
-  ]),
-  
-  // events
-  onDataLoad: (states: AllProps, callback: CollectionHandler, params: CollectionDataProps, forceReload?: boolean | false) => {
-    const { user } = states.userState;
-    const { isLoading, response } = states.lookupCurrencyState.all;
-    const { loadAllRequest } = states.lookupCurrencyDispatch;
+  ],
 
+  // events
+      onDataLoad: (callback: ListHandler, params: ListDataProps, forceReload?: boolean | false) => {
     // when user is set and not loading
     if (user && !isLoading) {
       // when response are empty or force reloading
@@ -100,61 +120,68 @@ const config: CollectionConfig<ICurrency, AllProps> = {
       }
     }
   },
-  onUpdated: (states: AllProps, callback: CollectionHandler) => {
-    const { isLoading, response } = states.lookupCurrencyState.all;
-
-    callback.handleLoading(isLoading);
-    callback.handleResponse(response);
-  },
-  onBind: (item: ICurrency, index: number, props: AllProps) => ({
+  onBind: (item: ICurrency, index: number) => ({
     key: index,
     primary: item.symbol ||  '-',
-    secondary: props.intl.formatNumber(item.rate, GlobalFormat.CurrencyDefault) || '-',
+    secondary: this.props.intl.formatNumber(item.rate, GlobalFormat.CurrencyDefault) || '-',
     tertiary: item.name || '-',
     quaternary: item.isActive 
-            ? props.intl.formatMessage(lookupMessage.currency.field.isActive) 
-            : props.intl.formatMessage(lookupMessage.currency.field.isNotActive),
+            ? this.props.intl.formatMessage(lookupMessage.currency.field.isActive) 
+            : this.props.intl.formatMessage(lookupMessage.currency.field.isNotActive),
     quinary: item.changes && item.changes.updated && item.changes.updated.fullName || item.changes && item.changes.created && item.changes.created.fullName || 'N/A',
     senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
   }),
+
   // summary component
   summaryComponent: (item: ICurrency) => (
     <CurrencySummary data = {item} />
     ),
 
   // action component
-  actionComponent: (item: ICurrency, callback: CollectionHandler) => (
+      actionComponent: (item: ICurrency) => (
     <React.Fragment>
     <Button
       size="small"
-      onClick={() => callback.handleRedirectTo(`/lookup/currencies/form`, {uid: item.uid})}
+            onClick={() => this.props.history.push(`/lookup/currencies/form`, {uid: item.uid})}
     >
       <FormattedMessage {...layoutMessage.action.modify} />
     </Button>  
     <Button 
       size= "small"
-      onClick = {() => callback.handleRedirectTo(`/lookup/currencies/${item.uid}`)}
+            onClick={() => this.props.history.push(`/lookup/currencies/${item.uid}`)}
     >
       <FormattedMessage { ...layoutMessage.action.details } />
     </Button>
 </React.Fragment>
   ),
 };
-
-type AllProps
-  = WithUser
-  & InjectedIntlProps
-  & WithLookupCurrency;
+    this.props.setConfig(config);
+  },
+  componentDidUpdate(nextProps: AllProps) {
+      // this.props.setShouldUpdate();
+  }
+};
 
 const listView: React.SFC<AllProps> = props => (
-  <CollectionPage
-    config= { config }
-    connectedProps = { props }
-  />
+  <React.Fragment>
+    {
+      props.config &&
+      <ListPage
+        config={props.config}
+        source={props.lookupCurrencyState.all}
+        loadDataWhen={props.shouldUpdate}
+      >    
+      </ListPage>
+    }
+  </React.Fragment>
 );
 
-export const CurrencyList = compose(
+export const CurrencyList = compose<AllProps, IOwnOption>(
+  setDisplayName('LookupCurrencyList'),
+  withRouter,
   withUser,
   injectIntl,
-  withLookupCurrency
+  withStateHandlers(createProps, stateUpdaters),
+  withLookupCurrency,
+  lifecycle(lifecycles)
 )(listView);

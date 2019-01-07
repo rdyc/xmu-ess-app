@@ -2,40 +2,42 @@ import AppMenu from '@constants/AppMenu';
 import { IListConfig, ListDataProps, ListHandler, ListPage } from '@layout/components/pages';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { layoutMessage } from '@layout/locales/messages';
-import { IPosition } from '@lookup/classes/response/position/IPosition';
-import { PositionField } from '@lookup/classes/types';
-import { PositionSummary } from '@lookup/components/position/detail/shared/PositionSummary';
-import { withLookupPosition, WithLookupPosition } from '@lookup/hoc/withLookupPosition';
-import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
+import { GlobalFormat } from '@layout/types';
 import { Button } from '@material-ui/core';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import TuneIcon from '@material-ui/icons/Tune'; 
+import { IStructure } from '@organization/classes/response/structure';
+import { StructureField } from '@organization/classes/types';
+import { StructureSummary } from '@organization/components/structure/shared/StructureSummary';
+import { WithOrganizationStructure, withOrganizationStructure } from '@organization/hoc/withOrganizationStructure';
+import { organizationMessage } from '@organization/locales/messages/organizationMessage';
 import * as moment from 'moment';
 import * as React from 'react';
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
-import { 
-  compose, 
-  HandleCreators, 
-  lifecycle, 
-  mapper, 
-  ReactLifeCycleFunctions, 
-  setDisplayName, 
-  StateHandler, 
-  StateHandlerMap, 
-  StateUpdaters, 
-  withHandlers, 
-  withStateHandlers 
+import {
+  compose,
+  HandleCreators,
+  lifecycle,
+  mapper,
+  ReactLifeCycleFunctions,
+  setDisplayName,
+  StateHandler,
+  StateHandlerMap,
+  StateUpdaters,
+  withHandlers,
+  withStateHandlers,
 } from 'recompose';
-import { IPositionListFilterResult, PositionListFilter } from './PositionListFilter';
+
+import { IStructureListFilterResult, StructureListFilter } from './StructureListFilter';
 
 interface IOwnOption {
-
+  
 }
 
-interface IOwnState extends IPositionListFilterResult {
+interface IOwnState extends IStructureListFilterResult {
   shouldUpdate: boolean;
-  config?: IListConfig<IPosition>;
+  config?: IListConfig<IStructure>;
   isFilterOpen: boolean;
 }
 
@@ -48,21 +50,21 @@ interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
 
 interface IOwnHandler {
   handleFilterVisibility: (event: React.MouseEvent<HTMLElement>) => void;
-  handleFilterApplied: (filter: IPositionListFilterResult) => void;
+  handleFilterApplied: (filter: IStructureListFilterResult) => void;
 }
 
-type AllProps
+type AllProps 
   = IOwnOption
   & IOwnState
   & IOwnStateUpdater
-  & InjectedIntlProps
-  & RouteComponentProps
   & IOwnHandler
   & WithUser
-  & WithLookupPosition;
+  & WithOrganizationStructure
+  & InjectedIntlProps
+  & RouteComponentProps;
 
 const createProps: mapper<AllProps, IOwnState> = (props: AllProps): IOwnState => ({
-  shouldUpdate: false, 
+  shouldUpdate: false,
   isFilterOpen: false,
   companyUid: props.location.state && props.location.state.companyUid,
 });
@@ -71,13 +73,13 @@ const stateUpdaters: StateUpdaters<AllProps, IOwnState, IOwnStateUpdater> = {
   setShouldUpdate: (prevState: IOwnState) => () => ({
     shouldUpdate: !prevState.shouldUpdate
   }),
-  setConfig: () => (config: IListConfig<IPosition>) => ({
+  setConfig: (prevState: IOwnState) => (config: IListConfig<IStructure>) => ({
     config
   }),
   setFilterVisibility: (prevState: IOwnState, props: AllProps) => () => ({
     isFilterOpen: !prevState.isFilterOpen
   }),
-  setFilterApplied: (prevState: IOwnState) => (filter: IPositionListFilterResult) => ({
+  setFilterApplied: (prevState: IOwnState) => (filter: IStructureListFilterResult) => ({
     ...filter,
     isFilterOpen: false
   }),
@@ -87,60 +89,60 @@ const handlerCreators: HandleCreators<AllProps, IOwnHandler> = {
   handleFilterVisibility: (props: AllProps) => (event: React.MouseEvent<HTMLElement>) => {
     props.setFilterVisibility();
   },
-  handleFilterApplied: (props: AllProps) => (filter: IPositionListFilterResult) => {
+  handleFilterApplied: (props: AllProps) => (filter: IStructureListFilterResult) => {
     props.setFilterApplied(filter);
   }
 };
 
 const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
-  componentDidMount() {
+  componentDidMount() { 
     const { user } = this.props.userState;
-    const { isLoading, request, response } = this.props.lookupPositionState.all;
-    const { loadAllRequest } = this.props.lookupPositionDispatch;
-    
-    const config: IListConfig<IPosition> = {
-      // page info
+    const { isLoading, request, response } = this.props.organizationStructureState.all;
+    const { loadAllRequest } = this.props.organizationStructureDispatch;
+
+    const config: IListConfig<IStructure> = {
+      // page
       page: {
-        uid: AppMenu.LookupPosition,
+        uid: AppMenu.LookupOrganizationStructure,
         parentUid: AppMenu.Lookup,
-        title: this.props.intl.formatMessage(lookupMessage.position.page.listTitle),
-        // description: props.intl.formatMessage(lookupMessage.position.page.listTitle),
+        title: this.props.intl.formatMessage(organizationMessage.structure.page.listTitle),
+        // description: this.props.intl.formatMessage(organizationMessage.structure.page.listSubHeader),
         description: '',
       },
-
+      
       // top bar
-      fields: Object.keys(PositionField)
-        .map(key => ({
-          value: key,
-          name: PositionField[key]
+      fields: Object.keys(StructureField)
+        .map(key => ({ 
+          value: key, 
+          name: StructureField[key] 
         })),
-
+    
       // searching
       hasSearching: true,
       searchStatus: () => {
         let result: boolean = false;
-
+    
         if (request && request.filter && request.filter.find) {
           result = request.filter.find ? true : false;
         }
-
+    
         return result;
       },
-
+    
       // action centre
       showActionCentre: false,
+
       // toolbar controls
-      toolbarControls: () => [
+      toolbarControls: (callback: ListHandler) => [
         {
           icon: AddCircleIcon,
           onClick: () => {
-            this.props.history.push('/lookup/currencies/form');
+            this.props.history.push('/organization/structure/form');
           }
         }
       ],
-
       // events
-      onDataLoad: (callback: ListHandler, params: ListDataProps, forceReload?: boolean | false) => {
+      onDataLoad: (callback: ListHandler, params: ListDataProps, forceReload?: boolean | false) => {  
         // when user is set and not loading
         if (user && !isLoading) {
           // when response are empty or force reloading
@@ -162,36 +164,34 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
           }
         }
       },
-      onBind: (item: IPosition, index: number) => ({
-        key: index,
-        primary: `${item.uid}` || '',
-        secondary: `${item.name}` || '',
-        tertiary: `${item.company && item.company.name}` || '',
-        quaternary: item.isAllowMultiple ?
-          this.props.intl.formatMessage(lookupMessage.position.field.isAllowed) :
-          this.props.intl.formatMessage(lookupMessage.position.field.isNotAllowed)
-        ,
-        quinary: item.changes && item.changes.updated && item.changes.updated.fullName || item.changes && item.changes.created && item.changes.created.fullName || 'N/A',
+      onBind: (item: IStructure, index: number) => ({
+        key: item.uid,
+        primary: item.uid,
+        secondary: item.description || '-',
+        tertiary: item.company && item.company.name || 'N/A',
+        quaternary: item.inactiveDate && this.props.intl.formatDate(item.inactiveDate, GlobalFormat.Date) || 'N/A',
+        quinary: item.changes && (item.changes.updated && item.changes.updated.fullName || item.changes.created && item.changes.created.fullName) || '?',
         senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
       }),
-
+    
       // summary component
-      summaryComponent: (item: IPosition) => (
-        <PositionSummary data={item} />
+      summaryComponent: (item: IStructure) => ( 
+        <StructureSummary data={item} />
       ),
-
+    
       // action component
-      actionComponent: (item: IPosition) => (
+      actionComponent: (item: IStructure, callback: ListHandler) => (
         <React.Fragment>
           <Button
             size="small"
-            onClick={() => this.props.history.push('/lookup/positions/form', { companyUid: item.companyUid, uid: item.uid })}
+            onClick={() => this.props.history.push(`/organization/structure/form`, { structureUid: item.uid, companyUid: item.companyUid })}
           >
             <FormattedMessage {...layoutMessage.action.modify} />
           </Button>
+
           <Button
             size="small"
-            onClick={() => this.props.history.push(`/lookup/positions/${item.companyUid}/${item.uid}`)}
+            onClick={() => this.props.history.push(`/organization/structure/${item.uid}`, { companyUid: item.companyUid })}
           >
             <FormattedMessage {...layoutMessage.action.details} />
           </Button>
@@ -211,9 +211,11 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
         }
       ]
     };
+
     this.props.setConfig(config);
   },
   componentDidUpdate(nextProps: AllProps) {
+    // track any changes in filter props
     if (
       this.props.companyUid !== nextProps.companyUid
     ) {
@@ -226,12 +228,12 @@ const listView: React.SFC<AllProps> = props => (
   <React.Fragment>
     {
       props.config &&
-      <ListPage
-        config={props.config}
-        source={props.lookupPositionState.all}
-        loadDataWhen={props.shouldUpdate}
+      <ListPage 
+        config={props.config} 
+        source={props.organizationStructureState.all} 
+        loadDataWhen={props.shouldUpdate} 
       >
-      <PositionListFilter
+        <StructureListFilter 
           isOpen={props.isFilterOpen}
           initialProps={{
             companyUid: props.companyUid,
@@ -240,17 +242,16 @@ const listView: React.SFC<AllProps> = props => (
           onApply={props.handleFilterApplied}
         />
       </ListPage>
-      
     }
   </React.Fragment>
 );
 
-export const PositionList = compose<AllProps, IOwnOption>(
-  setDisplayName('LookupPositionList'),
-  withRouter,
+export const StructureList = compose<AllProps, IOwnOption>(
+  setDisplayName('StructureList'),
   withUser,
+  withOrganizationStructure,
+  withRouter,
   injectIntl,
-  withLookupPosition,
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
   lifecycle(lifecycles)

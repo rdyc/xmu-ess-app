@@ -2,10 +2,10 @@ import AppMenu from '@constants/AppMenu';
 import { IListConfig, ListDataProps, ListHandler, ListPage } from '@layout/components/pages';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { layoutMessage } from '@layout/locales/messages';
-import { IPosition } from '@lookup/classes/response/position/IPosition';
-import { PositionField } from '@lookup/classes/types';
-import { PositionSummary } from '@lookup/components/position/detail/shared/PositionSummary';
-import { withLookupPosition, WithLookupPosition } from '@lookup/hoc/withLookupPosition';
+import { ILookupLeave } from '@lookup/classes/response/leave/ILookupLeave';
+import { LookupLeaveField } from '@lookup/classes/types';
+import { LookupLeaveSummary } from '@lookup/components/leave/detail/shared/LookupLeaveSummary';
+import { withLookupLeave, WithLookupLeave } from '@lookup/hoc/withLookupLeave';
 import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
 import { Button } from '@material-ui/core';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
@@ -27,15 +27,15 @@ import {
   withHandlers, 
   withStateHandlers 
 } from 'recompose';
-import { IPositionListFilterResult, PositionListFilter } from './PositionListFilter';
+import { ILookupLeaveListFilterResult, LookupLeaveListFilter } from './LookupLeaveListFilter';
 
 interface IOwnOption {
 
 }
 
-interface IOwnState extends IPositionListFilterResult {
+interface IOwnState extends ILookupLeaveListFilterResult {
   shouldUpdate: boolean;
-  config?: IListConfig<IPosition>;
+  config?: IListConfig<ILookupLeave>;
   isFilterOpen: boolean;
 }
 
@@ -48,7 +48,7 @@ interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
 
 interface IOwnHandler {
   handleFilterVisibility: (event: React.MouseEvent<HTMLElement>) => void;
-  handleFilterApplied: (filter: IPositionListFilterResult) => void;
+  handleFilterApplied: (filter: ILookupLeaveListFilterResult) => void;
 }
 
 type AllProps
@@ -59,7 +59,7 @@ type AllProps
   & RouteComponentProps
   & IOwnHandler
   & WithUser
-  & WithLookupPosition;
+  & WithLookupLeave;
 
 const createProps: mapper<AllProps, IOwnState> = (props: AllProps): IOwnState => ({
   shouldUpdate: false, 
@@ -71,13 +71,13 @@ const stateUpdaters: StateUpdaters<AllProps, IOwnState, IOwnStateUpdater> = {
   setShouldUpdate: (prevState: IOwnState) => () => ({
     shouldUpdate: !prevState.shouldUpdate
   }),
-  setConfig: () => (config: IListConfig<IPosition>) => ({
+  setConfig: () => (config: IListConfig<ILookupLeave>) => ({
     config
   }),
   setFilterVisibility: (prevState: IOwnState, props: AllProps) => () => ({
     isFilterOpen: !prevState.isFilterOpen
   }),
-  setFilterApplied: (prevState: IOwnState) => (filter: IPositionListFilterResult) => ({
+  setFilterApplied: (prevState: IOwnState) => (filter: ILookupLeaveListFilterResult) => ({
     ...filter,
     isFilterOpen: false
   }),
@@ -87,7 +87,7 @@ const handlerCreators: HandleCreators<AllProps, IOwnHandler> = {
   handleFilterVisibility: (props: AllProps) => (event: React.MouseEvent<HTMLElement>) => {
     props.setFilterVisibility();
   },
-  handleFilterApplied: (props: AllProps) => (filter: IPositionListFilterResult) => {
+  handleFilterApplied: (props: AllProps) => (filter: ILookupLeaveListFilterResult) => {
     props.setFilterApplied(filter);
   }
 };
@@ -95,24 +95,24 @@ const handlerCreators: HandleCreators<AllProps, IOwnHandler> = {
 const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
   componentDidMount() {
     const { user } = this.props.userState;
-    const { isLoading, request, response } = this.props.lookupPositionState.all;
-    const { loadAllRequest } = this.props.lookupPositionDispatch;
+    const { isLoading, request, response } = this.props.lookupLeaveState.all;
+    const { loadAllRequest } = this.props.lookupLeaveDispatch;
     
-    const config: IListConfig<IPosition> = {
+    const config: IListConfig<ILookupLeave> = {
       // page info
       page: {
-        uid: AppMenu.LookupPosition,
+        uid: AppMenu.LookupLeave,
         parentUid: AppMenu.Lookup,
-        title: this.props.intl.formatMessage(lookupMessage.position.page.listTitle),
-        // description: props.intl.formatMessage(lookupMessage.position.page.listTitle),
+        title: this.props.intl.formatMessage(lookupMessage.leave.page.listTitle),
+        // description: props.intl.formatMessage(lookupMessage.leave.page.listTitle),
         description: '',
       },
 
       // top bar
-      fields: Object.keys(PositionField)
+      fields: Object.keys(LookupLeaveField)
         .map(key => ({
           value: key,
-          name: PositionField[key]
+          name: LookupLeaveField[key]
         })),
 
       // searching
@@ -134,7 +134,7 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
         {
           icon: AddCircleIcon,
           onClick: () => {
-            this.props.history.push('/lookup/currencies/form');
+            this.props.history.push('/lookup/leave/form');
           }
         }
       ],
@@ -162,36 +162,33 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
           }
         }
       },
-      onBind: (item: IPosition, index: number) => ({
+      onBind: (item: ILookupLeave, index: number) => ({
         key: index,
-        primary: `${item.uid}` || '',
-        secondary: `${item.name}` || '',
-        tertiary: `${item.company && item.company.name}` || '',
-        quaternary: item.isAllowMultiple ?
-          this.props.intl.formatMessage(lookupMessage.position.field.isAllowed) :
-          this.props.intl.formatMessage(lookupMessage.position.field.isNotAllowed)
-        ,
-        quinary: item.changes && item.changes.updated && item.changes.updated.fullName || item.changes && item.changes.created && item.changes.created.fullName || 'N/A',
+        primary: item.uid,
+        secondary: item.name,
+        tertiary: item.company ? item.company.name : 'N/A',
+        quaternary: item.allocation.toString(),
+        quinary: item.changes && item.changes.updated && item.changes.updated.fullName || item.changes.created && item.changes.created.fullName || '?',
         senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
       }),
 
       // summary component
-      summaryComponent: (item: IPosition) => (
-        <PositionSummary data={item} />
+      summaryComponent: (item: ILookupLeave) => (
+        <LookupLeaveSummary data={item} />
       ),
 
       // action component
-      actionComponent: (item: IPosition) => (
+      actionComponent: (item: ILookupLeave) => (
         <React.Fragment>
           <Button
             size="small"
-            onClick={() => this.props.history.push('/lookup/positions/form', { companyUid: item.companyUid, uid: item.uid })}
+            onClick={() => this.props.history.push('/lookup/leaves/form', { companyUid: item.companyUid, uid: item.uid })}
           >
             <FormattedMessage {...layoutMessage.action.modify} />
           </Button>
           <Button
             size="small"
-            onClick={() => this.props.history.push(`/lookup/positions/${item.companyUid}/${item.uid}`)}
+            onClick={() => this.props.history.push(`/lookup/leaves/${item.companyUid}/${item.uid}`)}
           >
             <FormattedMessage {...layoutMessage.action.details} />
           </Button>
@@ -228,10 +225,10 @@ const listView: React.SFC<AllProps> = props => (
       props.config &&
       <ListPage
         config={props.config}
-        source={props.lookupPositionState.all}
+        source={props.lookupLeaveState.all}
         loadDataWhen={props.shouldUpdate}
       >
-      <PositionListFilter
+      <LookupLeaveListFilter
           isOpen={props.isFilterOpen}
           initialProps={{
             companyUid: props.companyUid,
@@ -245,12 +242,12 @@ const listView: React.SFC<AllProps> = props => (
   </React.Fragment>
 );
 
-export const PositionList = compose<AllProps, IOwnOption>(
-  setDisplayName('LookupPositionList'),
+export const LookupLeaveList = compose<AllProps, IOwnOption>(
+  setDisplayName('LookupLeaveList'),
   withRouter,
   withUser,
   injectIntl,
-  withLookupPosition,
+  withLookupLeave,
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
   lifecycle(lifecycles)

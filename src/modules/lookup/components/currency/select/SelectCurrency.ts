@@ -1,6 +1,6 @@
 import { ICurrencyListFilter } from '@lookup/classes/filters';
 import { ICurrencyList } from '@lookup/classes/response';
-import { WithLookupCurrency, withLookupCurrency } from '@lookup/hoc/currency/withLookupCurrency';
+import { WithLookupCurrency, withLookupCurrency } from '@lookup/hoc/withLookupCurrency';
 import { withWidth } from '@material-ui/core';
 import { WithWidth } from '@material-ui/core/withWidth';
 import { compose, HandleCreators, lifecycle, ReactLifeCycleFunctions, withHandlers } from 'recompose';
