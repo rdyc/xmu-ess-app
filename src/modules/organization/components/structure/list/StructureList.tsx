@@ -4,12 +4,13 @@ import { WithUser, withUser } from '@layout/hoc/withUser';
 import { layoutMessage } from '@layout/locales/messages';
 import { GlobalFormat } from '@layout/types';
 import { Button } from '@material-ui/core';
-import TuneIcon from '@material-ui/icons/Tune';
-import { IPurchase } from '@purchase/classes/response/purchaseRequest';
-import { PurchaseField } from '@purchase/classes/types';
-import { PurchaseSummary } from '@purchase/components/purchaseRequest/detail/shared/PurchaseSummary';
-import { WithPurchaseApproval, withPurchaseApproval } from '@purchase/hoc/purchaseApproval/withPurchaseApproval';
-import { purchaseMessage } from '@purchase/locales/messages/purchaseMessage';
+import AddCircleIcon from '@material-ui/icons/AddCircle';
+import TuneIcon from '@material-ui/icons/Tune'; 
+import { IStructure } from '@organization/classes/response/structure';
+import { StructureField } from '@organization/classes/types';
+import { StructureSummary } from '@organization/components/structure/shared/StructureSummary';
+import { WithOrganizationStructure, withOrganizationStructure } from '@organization/hoc/withOrganizationStructure';
+import { organizationMessage } from '@organization/locales/messages/organizationMessage';
 import * as moment from 'moment';
 import * as React from 'react';
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
@@ -28,15 +29,15 @@ import {
   withStateHandlers,
 } from 'recompose';
 
-import { IPurchaseApprovalListFilterResult, PurchaseApprovalListFilter } from './PurchaseApprovalListFilter';
+import { IStructureListFilterResult, StructureListFilter } from './StructureListFilter';
 
 interface IOwnOption {
   
 }
 
-interface IOwnState extends IPurchaseApprovalListFilterResult {
+interface IOwnState extends IStructureListFilterResult {
   shouldUpdate: boolean;
-  config?: IListConfig<IPurchase>;
+  config?: IListConfig<IStructure>;
   isFilterOpen: boolean;
 }
 
@@ -49,7 +50,7 @@ interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
 
 interface IOwnHandler {
   handleFilterVisibility: (event: React.MouseEvent<HTMLElement>) => void;
-  handleFilterApplied: (filter: IPurchaseApprovalListFilterResult) => void;
+  handleFilterApplied: (filter: IStructureListFilterResult) => void;
 }
 
 type AllProps 
@@ -58,32 +59,27 @@ type AllProps
   & IOwnStateUpdater
   & IOwnHandler
   & WithUser
-  & WithPurchaseApproval
+  & WithOrganizationStructure
   & InjectedIntlProps
   & RouteComponentProps;
 
 const createProps: mapper<AllProps, IOwnState> = (props: AllProps): IOwnState => ({
   shouldUpdate: false,
   isFilterOpen: false,
-
-  // fill partial props from location state to handle redirection from dashboard notif
-  customerUid: props.location.state && props.location.state.customerUid,
-  projectUid: props.location.state && props.location.state.projectUid,
-  status: props.location.state && props.location.state.status,
-  isNotify: props.location.state && props.location.state.isNotify 
+  companyUid: props.location.state && props.location.state.companyUid,
 });
 
 const stateUpdaters: StateUpdaters<AllProps, IOwnState, IOwnStateUpdater> = {
   setShouldUpdate: (prevState: IOwnState) => () => ({
     shouldUpdate: !prevState.shouldUpdate
   }),
-  setConfig: (prevState: IOwnState) => (config: IListConfig<IPurchase>) => ({
+  setConfig: (prevState: IOwnState) => (config: IListConfig<IStructure>) => ({
     config
   }),
   setFilterVisibility: (prevState: IOwnState, props: AllProps) => () => ({
     isFilterOpen: !prevState.isFilterOpen
   }),
-  setFilterApplied: (prevState: IOwnState) => (filter: IPurchaseApprovalListFilterResult) => ({
+  setFilterApplied: (prevState: IOwnState) => (filter: IStructureListFilterResult) => ({
     ...filter,
     isFilterOpen: false
   }),
@@ -93,32 +89,32 @@ const handlerCreators: HandleCreators<AllProps, IOwnHandler> = {
   handleFilterVisibility: (props: AllProps) => (event: React.MouseEvent<HTMLElement>) => {
     props.setFilterVisibility();
   },
-  handleFilterApplied: (props: AllProps) => (filter: IPurchaseApprovalListFilterResult) => {
+  handleFilterApplied: (props: AllProps) => (filter: IStructureListFilterResult) => {
     props.setFilterApplied(filter);
-  },
+  }
 };
 
 const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
   componentDidMount() { 
     const { user } = this.props.userState;
-    const { isLoading, request, response } = this.props.purchaseApprovalState.all;
-    const { loadAllRequest } = this.props.purchaseApprovalDispatch;
+    const { isLoading, request, response } = this.props.organizationStructureState.all;
+    const { loadAllRequest } = this.props.organizationStructureDispatch;
 
-    const config: IListConfig<IPurchase> = {
+    const config: IListConfig<IStructure> = {
       // page
       page: {
-        uid: AppMenu.PurchaseApproval,
-        parentUid: AppMenu.Purchase,
-        title: this.props.intl.formatMessage(purchaseMessage.approval.pages.listTitle),
-        // description: this.props.intl.formatMessage(purchaseMessage.approval.pages.listSubHeader),
+        uid: AppMenu.LookupOrganizationStructure,
+        parentUid: AppMenu.Lookup,
+        title: this.props.intl.formatMessage(organizationMessage.structure.page.listTitle),
+        // description: this.props.intl.formatMessage(organizationMessage.structure.page.listSubHeader),
         description: '',
       },
       
       // top bar
-      fields: Object.keys(PurchaseField)
+      fields: Object.keys(StructureField)
         .map(key => ({ 
           value: key, 
-          name: PurchaseField[key] 
+          name: StructureField[key] 
         })),
     
       // searching
@@ -126,11 +122,7 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
       searchStatus: () => {
         let result: boolean = false;
     
-        // if (request && request.filter && request.filter.query && request.filter.query.find) {
-        //   result = request.filter.query.find ? true : false;
-        // }
-    
-        if (request && request.filter  && request.filter.find) {
+        if (request && request.filter && request.filter.find) {
           result = request.filter.find ? true : false;
         }
     
@@ -139,7 +131,16 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
     
       // action centre
       showActionCentre: false,
-    
+
+      // toolbar controls
+      toolbarControls: (callback: ListHandler) => [
+        {
+          icon: AddCircleIcon,
+          onClick: () => {
+            this.props.history.push('/organization/structure/form');
+          }
+        }
+      ],
       // events
       onDataLoad: (callback: ListHandler, params: ListDataProps, forceReload?: boolean | false) => {  
         // when user is set and not loading
@@ -148,51 +149,51 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
           if (!response || forceReload) {
             loadAllRequest({
               filter: {
-                companyUid: user.company.uid,
-                positionUid: user.position.uid,
-                customerUid: this.props.customerUid,
-                projectUid: this.props.projectUid,
-                statusType: this.props.statusType,
-                status: this.props.status,
-                isNotify: this.props.isNotify,
-                // query: {
-                  find: params.find,
-                  findBy: params.findBy,
-                  orderBy: params.orderBy,
-                  direction: params.direction,
-                  page: params.page,
-                  size: params.size,
-                // }
-            }});
+                companyUid: this.props.companyUid,
+                find: params.find,
+                findBy: params.findBy,
+                orderBy: params.orderBy,
+                direction: params.direction,
+                page: params.page,
+                size: params.size,
+              }
+            });
           } else {
             // just take data from previous response
             callback.handleResponse(response);
           }
         }
       },
-      onBind: (item: IPurchase, index: number) => ({
-        key: index,
+      onBind: (item: IStructure, index: number) => ({
+        key: item.uid,
         primary: item.uid,
-        secondary: item.projectUid || item.project && item.project.name || '',
-        tertiary: item.customer && item.customer.name || item.customerUid || '',
-        quaternary: item.requestIDR && `${this.props.intl.formatNumber(item.requestIDR, GlobalFormat.CurrencyDefault)}` || '',
-        quinary: item.status && item.status.value || item.statusType || '',
+        secondary: item.description || '-',
+        tertiary: item.company && item.company.name || 'N/A',
+        quaternary: item.inactiveDate && this.props.intl.formatDate(item.inactiveDate, GlobalFormat.Date) || 'N/A',
+        quinary: item.changes && (item.changes.updated && item.changes.updated.fullName || item.changes.created && item.changes.created.fullName) || '?',
         senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
       }),
     
       // summary component
-      summaryComponent: (item: IPurchase) => ( 
-        <PurchaseSummary data={item} />
+      summaryComponent: (item: IStructure) => ( 
+        <StructureSummary data={item} />
       ),
     
       // action component
-      actionComponent: (item: IPurchase, callback: ListHandler) => (
+      actionComponent: (item: IStructure, callback: ListHandler) => (
         <React.Fragment>
-          <Button 
+          <Button
             size="small"
-            onClick={() => this.props.history.push(`/purchase/approvals/${item.uid}`)}
+            onClick={() => this.props.history.push(`/organization/structure/form`, { structureUid: item.uid, companyUid: item.companyUid })}
           >
-            <FormattedMessage {...layoutMessage.action.details}/>
+            <FormattedMessage {...layoutMessage.action.modify} />
+          </Button>
+
+          <Button
+            size="small"
+            onClick={() => this.props.history.push(`/organization/structure/${item.uid}`, { companyUid: item.companyUid })}
+          >
+            <FormattedMessage {...layoutMessage.action.details} />
           </Button>
         </React.Fragment>
       ),
@@ -204,11 +205,7 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
           title: this.props.intl.formatMessage(layoutMessage.tooltip.filter),
           icon: TuneIcon,
           showBadgeWhen: () => {
-            return this.props.customerUid !== undefined || 
-              this.props.statusType !== undefined || 
-              this.props.projectUid !== undefined || 
-              this.props.status !== undefined || 
-              this.props.isNotify === true;
+            return this.props.companyUid !== undefined;
           },
           onClick: this.props.handleFilterVisibility
         }
@@ -220,11 +217,7 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
   componentDidUpdate(nextProps: AllProps) {
     // track any changes in filter props
     if (
-      this.props.customerUid !== nextProps.customerUid ||
-      this.props.projectUid !== nextProps.projectUid ||
-      this.props.statusType !== nextProps.statusType ||
-      this.props.status !== nextProps.status ||
-      this.props.isNotify !== nextProps.isNotify
+      this.props.companyUid !== nextProps.companyUid
     ) {
       this.props.setShouldUpdate();
     }
@@ -237,17 +230,13 @@ const listView: React.SFC<AllProps> = props => (
       props.config &&
       <ListPage 
         config={props.config} 
-        source={props.purchaseApprovalState.all} 
+        source={props.organizationStructureState.all} 
         loadDataWhen={props.shouldUpdate} 
       >
-        <PurchaseApprovalListFilter 
+        <StructureListFilter 
           isOpen={props.isFilterOpen}
           initialProps={{
-            customerUid: props.customerUid,
-            projectUid: props.projectUid,
-            statusType: props.statusType,
-            status: props.status,
-            isNotify: props.isNotify,
+            companyUid: props.companyUid,
           }}
           onClose={props.handleFilterVisibility}
           onApply={props.handleFilterApplied}
@@ -257,10 +246,10 @@ const listView: React.SFC<AllProps> = props => (
   </React.Fragment>
 );
 
-export const PurchaseApprovalList = compose<AllProps, IOwnOption>(
-  setDisplayName('PurchaseApprovalList'),
+export const StructureList = compose<AllProps, IOwnOption>(
+  setDisplayName('StructureList'),
   withUser,
-  withPurchaseApproval,
+  withOrganizationStructure,
   withRouter,
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),

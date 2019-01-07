@@ -113,6 +113,8 @@ const config: SingleConfig<ISettlementDetail, SettlementApprovalDetailProps> = {
           onSubmit={props.handleSubmit}
           onSubmitSuccess={props.handleSubmitSuccess}
           onSubmitFail={props.handleSubmitFail}
+          approvalRemarkLabel={props.intl.formatMessage(purchaseMessage.settlement.field.adjustmentNote)}
+          approvalRemarkPlaceholder={props.intl.formatMessage(purchaseMessage.settlement.field.adjustmentNotePlaceholder)}
         />
       }
     </React.Fragment>

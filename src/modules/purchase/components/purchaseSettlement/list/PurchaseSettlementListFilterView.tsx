@@ -73,7 +73,7 @@ export const PurchaseSettlementListFilterView: React.SFC<PurchaseSettlementListF
               </IconButton> 
             }
 
-            <IconButton disabled>
+            <IconButton onClick={props.handleFilterCustomerVisibility}>
               <ChevronRightIcon />
             </IconButton> 
           </ListItemSecondaryAction>
@@ -92,7 +92,7 @@ export const PurchaseSettlementListFilterView: React.SFC<PurchaseSettlementListF
               </IconButton>
             }
 
-            <IconButton onClick={props.filterCustomer && props.handleFilterProjectVisibility}>
+            <IconButton disabled={props.filterCustomer === null} onClick={props.filterCustomer && props.handleFilterProjectVisibility}>
               <ChevronRightIcon />
             </IconButton>
           </ListItemSecondaryAction>
@@ -112,7 +112,7 @@ export const PurchaseSettlementListFilterView: React.SFC<PurchaseSettlementListF
               </IconButton> 
             }
 
-            <IconButton disabled>
+            <IconButton onClick={props.handleFilterStatusVisibility}>
               <ChevronRightIcon />
             </IconButton> 
           </ListItemSecondaryAction>

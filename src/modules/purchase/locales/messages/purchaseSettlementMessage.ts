@@ -65,5 +65,9 @@ export const purchaseSettlementField = defineMessages({
 
   reject: { id: `${prefix}.field.information.rejectreason` },
 
+  adjustmentNote: { id: `${prefix}.field.information.adjustmentNote` },
+  adjustmentNoteRequired: { id: `${prefix}.field.information.adjustmentNote.required` },
+  adjustmentNotePlaceholder: { id: `${prefix}.field.information.adjustmentNote.placeholder` },
+
   isNeedAdjust: { id: `${prefix}.field.isNeedAdjust` }
 });

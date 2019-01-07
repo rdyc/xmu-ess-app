@@ -239,7 +239,7 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
       this.props.customerUid !== nextProps.customerUid ||
       this.props.projectUid !== nextProps.projectUid ||
       this.props.statusType !== nextProps.statusType ||
-      this.props.isNotify !== nextProps.isNotify
+      this.props.isRejected !== nextProps.isRejected
     ) {
       this.props.setShouldUpdate();
     }
