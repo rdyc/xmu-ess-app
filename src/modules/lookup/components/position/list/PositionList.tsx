@@ -9,12 +9,25 @@ import { withLookupPosition, WithLookupPosition } from '@lookup/hoc/withLookupPo
 import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
 import { Button } from '@material-ui/core';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
+import TuneIcon from '@material-ui/icons/Tune'; 
 import * as moment from 'moment';
 import * as React from 'react';
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
-import { compose, lifecycle, mapper, ReactLifeCycleFunctions, setDisplayName, StateHandler, StateHandlerMap, StateUpdaters, withStateHandlers } from 'recompose';
-import { IPositionListFilterResult } from './PositionListFilter';
+import { 
+  compose, 
+  HandleCreators, 
+  lifecycle, 
+  mapper, 
+  ReactLifeCycleFunctions, 
+  setDisplayName, 
+  StateHandler, 
+  StateHandlerMap, 
+  StateUpdaters, 
+  withHandlers, 
+  withStateHandlers 
+} from 'recompose';
+import { IPositionListFilterResult, PositionListFilter } from './PositionListFilter';
 
 interface IOwnOption {
 
@@ -46,7 +59,6 @@ type AllProps
   & RouteComponentProps
   & IOwnHandler
   & WithUser
-  & InjectedIntlProps
   & WithLookupPosition;
 
 const createProps: mapper<AllProps, IOwnState> = (props: AllProps): IOwnState => ({
@@ -70,6 +82,16 @@ const stateUpdaters: StateUpdaters<AllProps, IOwnState, IOwnStateUpdater> = {
     isFilterOpen: false
   }),
 };
+
+const handlerCreators: HandleCreators<AllProps, IOwnHandler> = {
+  handleFilterVisibility: (props: AllProps) => (event: React.MouseEvent<HTMLElement>) => {
+    props.setFilterVisibility();
+  },
+  handleFilterApplied: (props: AllProps) => (filter: IPositionListFilterResult) => {
+    props.setFilterApplied(filter);
+  }
+};
+
 const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
   componentDidMount() {
     const { user } = this.props.userState;
@@ -175,12 +197,28 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
           </Button>
         </React.Fragment>
       ),
+
+      // additional controls
+      additionalControls: [
+        {
+          id: 'option-filter',
+          title: this.props.intl.formatMessage(layoutMessage.tooltip.filter),
+          icon: TuneIcon,
+          showBadgeWhen: () => {
+            return this.props.companyUid !== undefined;
+          },
+          onClick: this.props.handleFilterVisibility
+        }
+      ]
     };
     this.props.setConfig(config);
   },
   componentDidUpdate(nextProps: AllProps) {
-    // track any changes in filter props
+    if (
+      this.props.companyUid !== nextProps.companyUid
+    ) {
       this.props.setShouldUpdate();
+    }
   }
 };
 
@@ -193,7 +231,16 @@ const listView: React.SFC<AllProps> = props => (
         source={props.lookupPositionState.all}
         loadDataWhen={props.shouldUpdate}
       >
+      <PositionListFilter
+          isOpen={props.isFilterOpen}
+          initialProps={{
+            companyUid: props.companyUid,
+          }}
+          onClose={props.handleFilterVisibility}
+          onApply={props.handleFilterApplied}
+        />
       </ListPage>
+      
     }
   </React.Fragment>
 );
@@ -203,7 +250,8 @@ export const PositionList = compose<AllProps, IOwnOption>(
   withRouter,
   withUser,
   injectIntl,
-  withStateHandlers(createProps, stateUpdaters),
   withLookupPosition,
+  withStateHandlers(createProps, stateUpdaters),
+  withHandlers(handlerCreators),
   lifecycle(lifecycles)
 )(listView);

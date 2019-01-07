@@ -63,8 +63,8 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
     uid: AppMenu.LookupCurrency,
     parentUid: AppMenu.Lookup,
     title: this.props.intl.formatMessage(lookupMessage.currency.page.listTitle),
-    // description: props.intl.formatMessage(lookupMessage.currency.page.listTitle),
-    description: '',
+    description: this.props.intl.formatMessage(lookupMessage.currency.page.listSubHeader),
+    // description: '',
   },
 
   // top bar
@@ -158,7 +158,7 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
     this.props.setConfig(config);
   },
   componentDidUpdate(nextProps: AllProps) {
-      this.props.setShouldUpdate();
+      // this.props.setShouldUpdate();
   }
 };
 
