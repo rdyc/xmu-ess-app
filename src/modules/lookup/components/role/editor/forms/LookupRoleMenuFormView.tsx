@@ -14,7 +14,7 @@ export const LookupRoleMenuFormView: React.SFC<LookupRoleMenuFormProps> = props 
     <Card square>
       <CardHeader
         title={props.intl.formatMessage(lookupMessage.role.section.roleMenuTitle)}
-        // subheader={props.intl.formatMessage(lookupMessage.role.section.roleMenuSubHeader)}
+      // subheader={props.intl.formatMessage(lookupMessage.role.section.roleMenuSubHeader)}
       />
       <CardContent>
         <List>
@@ -31,9 +31,6 @@ export const LookupRoleMenuFormView: React.SFC<LookupRoleMenuFormProps> = props 
                     disableGutters
                     selected={parent.uid === active && isExpanded}
                   >
-                    {/* <FormControlLabel
-                      label={parent.name}
-                      control={ */}
                     <Field
                       type="checkbox"
                       name={`menus[${index}].${parent.uid}`}
@@ -87,9 +84,6 @@ export const LookupRoleMenuFormView: React.SFC<LookupRoleMenuFormProps> = props 
                               marginRight: 10
                             }}
                           >
-                            {/* <FormControlLabel
-                              label={child.name}
-                              control={ */}
                             <Field
                               type="checkbox"
                               name={`menus[${index2}].${child.uid}`}

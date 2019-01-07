@@ -37,7 +37,7 @@ const roleMenu: React.SFC<AllProps> = props => {
     <Card square>
       <CardHeader
         title={props.title}
-        // subheader={props.subHeader}
+      // subheader={props.subHeader}
       />
       <CardContent>
         <List>
@@ -76,7 +76,7 @@ const roleMenu: React.SFC<AllProps> = props => {
                     {active === parent.menuUid && isExpanded ? <ExpandLess color="inherit" /> : <ExpandMore color="inherit" />}
                   </ListItemSecondaryAction>
                 </ListItem>
-                <Divider/>
+                <Divider />
                 <Collapse
                   in={active === parent.menuUid && isExpanded}
                   timeout="auto"
