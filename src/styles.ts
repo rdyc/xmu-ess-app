@@ -116,6 +116,14 @@ const styles = (theme: Theme) =>
         duration: theme.transitions.duration.leavingScreen
       })
     },
+    drawerPaperMenuItem: {
+      color: 'inherit',
+      margin: 0
+    },
+    drawerPaperMenuItemSub: {
+      marginLeft: theme.spacing.unit * 5
+    },
+
     avatarRed: {
       color: '#fff',
       backgroundColor: red[500],

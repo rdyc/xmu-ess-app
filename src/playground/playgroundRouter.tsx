@@ -2,7 +2,8 @@ import { Layout } from '@layout/components/base';
 import * as React from 'react';
 import { Route, RouteComponentProps } from 'react-router';
 
-import { DemoCollectionPage } from './pages/DemoCollectionPage';
+// import { DemoCollectionPage } from './pages/DemoCollectionPage';
+import { DemoListPage } from './pages/DemoListPage';
 import { DemoSinglePage } from './pages/DemoSinglePage';
 import { Enhancer } from './recompose/Enhancer';
 import { ComplexEditor } from './redux/form/complex';
@@ -11,7 +12,7 @@ type AllProps = RouteComponentProps;
 
 const complex = () => <ComplexEditor/>;
 const enhancer = () => <Enhancer initialCount={0} />;
-const demoCollection = () => <DemoCollectionPage/>;
+const demoCollection = () => <DemoListPage/>;
 const demoSingle = () => <DemoSinglePage/>;
 
 export const playgroundRouter: React.SFC<AllProps> = props => (
