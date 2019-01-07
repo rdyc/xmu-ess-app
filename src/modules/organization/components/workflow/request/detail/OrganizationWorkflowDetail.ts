@@ -3,7 +3,7 @@ import { layoutMessage } from '@layout/locales/messages';
 import { DiemUserAction } from '@lookup/classes/types/diem/DiemUserAction';
 import { WithLookupMenu, withLookupMenu } from '@lookup/hoc/withLookupMenu';
 import { WithOrganizationWorkflow, withOrganizationWorkflow } from '@organization/hoc/withOrganizationWorkflow';
-import { travelMessage } from '@travel/locales/messages/travelMessage';
+import { organizationMessage } from '@organization/locales/messages/organizationMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import {
@@ -66,8 +66,8 @@ const stateUpdaters: StateUpdaters<OrganizationWorkflowDetailProps, OwnState, Ow
     action: DiemUserAction.Modify,
     dialogFullScreen: false,
     dialogOpen: true,
-    dialogTitle: props.intl.formatMessage(travelMessage.request.confirm.modifyTitle),
-    dialogContent: props.intl.formatMessage(travelMessage.request.confirm.modifyDescription),
+    dialogTitle: props.intl.formatMessage(organizationMessage.workflowSetup.dialog.modifyTitle),
+    dialogContent: props.intl.formatMessage(organizationMessage.workflowSetup.dialog.modifyDescription),
     dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.disaggre),
     dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.aggre)
   }),
