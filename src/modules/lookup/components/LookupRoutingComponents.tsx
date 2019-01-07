@@ -31,7 +31,7 @@ import { PositionEditor } from './position/editor/PositionEditor';
 import { PositionList } from './position/list/PositionList';
 import { LookupRoleDetail } from './role/detail/LookupRoleDetail';
 import LookupRoleEditor from './role/editor/LookupRoleEditor';
-import LookupRoleList from './role/list/LookupRoleList';
+import { LookupRoleList } from './role/list/LookupRoleList';
 import { LookupSystemLimitDetail } from './systemLimit/detail/LookupSystemLimitDetail';
 import LookupSystemLimitEditor from './systemLimit/editor/LookupSystemLimitEditor';
 import { LookupSystemLimitList } from './systemLimit/list/LookupSystemLimitList';
