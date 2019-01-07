@@ -1,7 +1,6 @@
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
-// import { ILookupCompanyGetListFilter } from '@lookup/classes/filters/company';
-import { ICompanyList } from '@lookup/classes/response';
+import { ILookupCompany } from '@lookup/classes';
 import { WithStyles, withStyles } from '@material-ui/core';
 import { IOrganizationStructureAllFilter } from '@organization/classes/filters/structure';
 import styles from '@styles';
@@ -31,7 +30,7 @@ interface IOwnOption {
 interface IOwnState {
   // filter company
   isFilterCompanyOpen: boolean;
-  filterCompany?: ICompanyList;
+  filterCompany?: ILookupCompany;
   
 }
 
@@ -51,7 +50,7 @@ interface IOwnHandler {
 
   // filter company
   handleFilterCompanyVisibility: (event: React.MouseEvent<HTMLElement>) => void;
-  handleFilterCompanyOnSelected: (company: ICompanyList) => void;
+  handleFilterCompanyOnSelected: (company: ILookupCompany) => void;
   handleFilterCompanyOnClear: (event: React.MouseEvent<HTMLElement>) => void;
   handleFilterCompanyOnClose: () => void;
 }
@@ -80,7 +79,7 @@ const stateUpdaters: StateUpdaters<StructureListFilterProps, IOwnState, IOwnStat
   setFilterCompanyVisibility: (prevState: IOwnState, props: StructureListFilterProps) => () => ({
     isFilterCompanyOpen: !prevState.isFilterCompanyOpen,
   }),
-  setFilterCompany: (prevState: IOwnState) => (company?: ICompanyList) => ({
+  setFilterCompany: (prevState: IOwnState) => (company?: ILookupCompany) => ({
     isFilterCompanyOpen: false,
     filterCompany: company,
   }),
@@ -101,7 +100,7 @@ const handlerCreators: HandleCreators<StructureListFilterProps, IOwnHandler> = {
   handleFilterCompanyVisibility: (props: StructureListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
     props.setFilterCompanyVisibility(); 
   },
-  handleFilterCompanyOnSelected: (props: StructureListFilterProps) => (company: ICompanyList) => {
+  handleFilterCompanyOnSelected: (props: StructureListFilterProps) => (company: ILookupCompany) => {
     props.setFilterCompany(company);
   },
   handleFilterCompanyOnClear: (props: StructureListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {

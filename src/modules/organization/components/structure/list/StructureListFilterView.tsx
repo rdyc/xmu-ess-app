@@ -40,7 +40,7 @@ export const StructureListFilterView: React.SFC<StructureListFilterProps> = prop
           </Typography>
 
           {
-            (props.filterCustomer || props.filterProject || props.filterStatus || props.filterSettlement || props.filterRejected) &&
+            (props.filterCompany) &&
             <Button color="inherit" onClick={props.handleFilterOnReset}>
               {props.intl.formatMessage(layoutMessage.action.reset)}
             </Button>
@@ -56,15 +56,15 @@ export const StructureListFilterView: React.SFC<StructureListFilterProps> = prop
       </AppBar>
       
       <List>
-        <ListItem button onClick={props.handleFilterCustomerVisibility}>
+        <ListItem button onClick={props.handlefilterCompanyVisibility}>
           <ListItemText 
             primary={props.intl.formatMessage(organizationMessage.structure.field.companyUid)}
-            secondary={props.filterCustomer && props.filterCustomer.name || props.intl.formatMessage(layoutMessage.text.none)}
+            secondary={props.filterCompany && props.filterCompany.name || props.intl.formatMessage(layoutMessage.text.none)}
           />
           <ListItemSecondaryAction>
             { 
-              props.filterCustomer &&
-              <IconButton onClick={props.handleFilterCustomerOnClear}>
+              props.filterCompany &&
+              <IconButton onClick={props.handleFilterCompanyOnClear}>
                 <ClearIcon />
               </IconButton> 
             }
