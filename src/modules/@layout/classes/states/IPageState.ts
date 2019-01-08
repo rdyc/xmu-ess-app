@@ -2,7 +2,10 @@ import AppMenu from '@constants/AppMenu';
 
 export interface IPage {
   uid: AppMenu | string;
-  isSearching: boolean;
+  isSearch?: boolean;
+  isFilter?: boolean;
+  isSelect?: boolean;
+  request?: any;
 }
 
 export interface IPageState {
