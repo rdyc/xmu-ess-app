@@ -14,6 +14,13 @@ export const layoutText = defineMessages({
   inactive: { id: `${prefix}.text.inactive`}
 });
 
+// label
+export const layoutLabel = defineMessages({
+  login: { id: `${prefix}.label.login`},
+  logout: { id: `${prefix}.label.logout`},
+  switch: { id: `${prefix}.label.switch`}
+});
+
 // tooltip
 export const layoutTooltip = defineMessages({
   more: { id: `${prefix}.tooltip.more`},
@@ -65,4 +72,12 @@ export const layoutField = defineMessages({
   createdAt: { id: `${prefix}.field.created.at`},
   updatedBy: { id: `${prefix}.field.updated.by`},
   updatedAt: { id: `${prefix}.field.updated.at`}
+});
+
+// dialog
+export const layoutDialog = defineMessages({
+  accessTitle: { id: `${prefix}.dialog.access.title`},
+  accessContent: { id: `${prefix}.dialog.access.content`},
+  logoutTitle: { id: `${prefix}.dialog.logout.title`},
+  logoutContent: { id: `${prefix}.dialog.logout.content`},
 });

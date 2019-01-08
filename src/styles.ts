@@ -1,10 +1,11 @@
 import { createStyles, Theme } from '@material-ui/core';
 import blue from '@material-ui/core/colors/blue';
 import red from '@material-ui/core/colors/red';
-import sidebar from './image/sidebar/satrio-tower.jpg';
+import NavHeader from './image/headers/sm/7.png';
+// import sidebar from './image/sidebar/satrio-tower.jpg';
 
 // var backgroundColorDefault = theme.palette.type === 'light' ? theme.palette.grey[100] : theme.palette.grey[900];
-const drawerWidth = 280;
+const drawerWidth = 300;
 
 const size = {
   thin: 1,
@@ -95,7 +96,8 @@ const styles = (theme: Theme) =>
       color: theme.palette.primary.contrastText,
     },
     drawerPaperBackgroundImage: {
-      background: `linear-gradient(rgba(0,130,170,0), ${theme.palette.primary.main}), url(${sidebar})`,
+      // background: `linear-gradient(rgba(0,130,170,0), ${theme.palette.primary.main}), url(${sidebar})`,
+      background: `linear-gradient(rgba(0,130,170,0), ${theme.palette.primary.main}))`,
       backgroundSize: 'cover',
       backgroundPosition: 'center center',
       opacity: .2,
@@ -118,17 +120,41 @@ const styles = (theme: Theme) =>
     },
     drawerPaperMenuItem: {
       color: 'inherit',
-      margin: 0
+      // margin: 0
     },
     drawerPaperMenuItemSub: {
-      marginLeft: theme.spacing.unit * 5
+      marginLeft: theme.spacing.unit * 7
+    },
+    drawerPaperFooter: {
+      bottom: theme.spacing.unit * 2
     },
 
+    // branding
+    brandingContainer: {
+      flex: 1,
+      // background: theme.palette.primary.dark,
+      background: `linear-gradient(rgba(0,130,170,0), ${theme.palette.primary.main}), url(${NavHeader})`,
+      // backgroundSize: 'cover',
+      backgroundRepeat: 'no-repeat',
+      backgroundPosition: 'inherit',
+      color: theme.palette.getContrastText(theme.palette.primary.dark)
+    },
+    brandingImage: {
+      height: 100
+    },
+
+    // avatar
+    avatarSecondary: {
+      color: '#fff',
+      backgroundColor: theme.palette.secondary.main
+    },
     avatarRed: {
       color: '#fff',
       backgroundColor: red[500],
-      fontSize: theme.typography.fontSize / 1.1
+      // fontSize: theme.typography.fontSize / 1.1
     },
+
+    // flex
     flex: {
       flex: 1
     },

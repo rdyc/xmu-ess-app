@@ -61,12 +61,11 @@
 
   "layout.label.login": "Login",
   "layout.label.logout": "Logout",
+  "layout.label.switch": "Switch Access",
   "layout.label.selection": "{count} selected",
   
   "layout.profile.my.title": "Profile",
   "layout.access.title": "Access",
-  "layout.access.switch.title": "Switch",
-  "layout.logout.title": "Logout",
 
   "layout.notification.title": "Notification",
   "layout.notification.emptySubTitle": "There is no notification at this time",
@@ -76,5 +75,10 @@
   "layout.field.created.by": "Created By",
   "layout.field.created.at": "Created At",
   "layout.field.updated.by": "Updated By",
-  "layout.field.updated.at": "Updated At"
+  "layout.field.updated.at": "Updated At",
+
+  "layout.dialog.access.title": "Switching Confirmation",
+  "layout.dialog.access.content": "You are about to switch multi company access, any loaded content or data will changed depend on selected access, Do you want to continue?",
+  "layout.dialog.logout.title": "Logout Confirmation",
+  "layout.dialog.logout.content": "Before you logged out, please make sure all pending tasks has been completed. Are you sure want to logout from TESSA now?"
 }

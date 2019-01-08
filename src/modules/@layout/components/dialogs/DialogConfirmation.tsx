@@ -8,8 +8,8 @@ interface OwnProps {
   content?: string;
   labelCancel?: string;
   labelConfirm?: string;
-  onClickCancel: () => void;
-  onClickConfirm: () => void;
+  onClickCancel: (event: React.MouseEvent) => void;
+  onClickConfirm: (event: React.MouseEvent) => void;
 }
 
 export const DialogConfirmation: React.SFC<OwnProps> = props => (
