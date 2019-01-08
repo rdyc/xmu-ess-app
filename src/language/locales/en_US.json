@@ -101,7 +101,7 @@
   "account.placeholder.lookupSearch": "Type any employee name or email",
 
   "account.leave.infoTitle": "Account Leave",
-  "account.leave.infoSubTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "account.leave.infoSubTitle": " ",
   "account.leave.field.information.previousRemain": "Previous Year Leave Quota",
   "account.leave.field.information.quota": "Regular Leave Quota",
   "account.leave.field.information.annualLeave": "Annual Collective Leave",
@@ -109,15 +109,15 @@
   "account.leave.field.information.remain": "Total Leave Remaining",
 
   "leave.title": "Leaves",
-  "leave.subTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "leave.subTitle": " ",
   "leave.detail.title": "Leave Details",
-  "leave.detail.subTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "leave.detail.subTitle": " ",
   "leave.form.editTitle": "Modify Leave",
-  "leave.form.editSubTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "leave.form.editSubTitle": " ",
   "leave.dialog.modifyTitle": "Modify Confirmation",
-  "leave.dialog.modifyDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "leave.dialog.modifyDescription": " ",
   "leave.infoTitle": "Leave",
-  "leave.infoSubTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "leave.infoSubTitle": " ",
   "leave.action.modify": "Modify",
   "leave.field.uid": "Leave ID",
   "leave.field.name": "Leave Name",
@@ -126,6 +126,6 @@
   "leave.field.category": "Category",
   "leave.field.allocation": "Allocation",
   "workflow.stepsTitle": "Approval History",
-  "workflow.stepsSubTitle": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+  "workflow.stepsSubTitle": " "
   
 }

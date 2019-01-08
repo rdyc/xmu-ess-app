@@ -1,8 +1,6 @@
-import { IBaseFilter, IBasePagingFilter } from '@generic/interfaces';
+import { IBasePagingFilter } from '@generic/interfaces';
 
-interface IExtendedQuery extends IBaseFilter, IBasePagingFilter {}
-
-export interface ITravelApprovalgetAllFilter {
+export interface ITravelApprovalgetAllFilter extends IBasePagingFilter {
   companyUid?: string | undefined;
   positionUid?: string | undefined;
   customerUid?: string | undefined;
@@ -10,5 +8,4 @@ export interface ITravelApprovalgetAllFilter {
   statusType?: string | undefined;
   status?: 'pending' | 'complete' | undefined;
   isNotify?: boolean | undefined;
-  query?: IExtendedQuery | undefined;
 }

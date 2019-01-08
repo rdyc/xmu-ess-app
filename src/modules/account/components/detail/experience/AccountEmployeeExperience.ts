@@ -1,5 +1,8 @@
 import { WithAccountEmployeeExperience, withAccountEmployeeExperience } from '@account/hoc/withAccountEmployeeExperience';
 import { WithUser, withUser } from '@layout/hoc/withUser';
+import { WithStyles, withStyles } from '@material-ui/core';
+import styles from '@styles';
+import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose, lifecycle, ReactLifeCycleFunctions } from 'recompose';
 import { AccountEmployeeExperienceView } from './AccountEmployeeExperienceView';
 
@@ -10,6 +13,8 @@ interface OwnOption {
 export type AccountEmployeeExperienceProps
   = OwnOption
   & WithUser
+  & InjectedIntlProps
+  & WithStyles<typeof styles>
   & WithAccountEmployeeExperience;
 
 const lifecycles: ReactLifeCycleFunctions<AccountEmployeeExperienceProps, {}> = {
@@ -23,7 +28,7 @@ const lifecycles: ReactLifeCycleFunctions<AccountEmployeeExperienceProps, {}> = 
       loadListRequest({
         employeeUid,
         filter: {
-          direction: 'descending'
+          direction: 'ascending'
         }
       });
     }
@@ -32,6 +37,8 @@ const lifecycles: ReactLifeCycleFunctions<AccountEmployeeExperienceProps, {}> = 
 
 export const AccountEmployeeExperience = compose<AccountEmployeeExperienceProps, OwnOption>(
   withUser,
+  injectIntl,
+  withStyles(styles),
   withAccountEmployeeExperience,
   lifecycle(lifecycles)
 )(AccountEmployeeExperienceView);

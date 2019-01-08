@@ -14,6 +14,12 @@ export const accountEmployeePage = defineMessages({
   modifySubHeader: { id: `${prefix}.page.modify.subHeader`},
 });
 
+// filter
+export const accountEmployeeFilter = defineMessages({
+  company: { id: `${prefix}.filter.company`},
+  role: { id: `${prefix}.filter.role`},
+});
+
 // field
 export const accountEmployeeField = defineMessages({
   // information detail

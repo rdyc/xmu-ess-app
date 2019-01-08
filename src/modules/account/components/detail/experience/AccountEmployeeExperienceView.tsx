@@ -1,43 +1,92 @@
-import { IEmployeeExperienceList } from '@account/classes/response/employeeExperience';
-import { GlobalStyle } from '@layout/types/GlobalStyle';
-import { Card, CardContent, CardHeader, Fade, TextField, Typography } from '@material-ui/core';
+// import { IEmployeeExperienceList } from '@account/classes/response/employeeExperience';
+import {
+  AccountEmployeeExperienceHeaderTable,
+  // AccountEmployeeExperienceSubHeaderTable
+} from '@account/classes/types';
+import {
+  Fade,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow
+  // Typography
+} from '@material-ui/core';
 import * as React from 'react';
 import { AccountEmployeeExperienceProps } from './AccountEmployeeExperience';
 
 export const AccountEmployeeExperienceView: React.SFC<
   AccountEmployeeExperienceProps
 > = props => {
-  const { response, isLoading } = props.accountEmployeeExperienceState.list;
+  const { classes } = props;
+  const { isLoading } = props.accountEmployeeExperienceState.list;
 
-  const renderExperience = (item: IEmployeeExperienceList) => {
+  const header = Object.keys(AccountEmployeeExperienceHeaderTable).map(key => ({
+    id: key,
+    name: AccountEmployeeExperienceHeaderTable[key]
+  }));
+
+  const renderExperience = () => {
     return (
-      <Fade
-        in={!isLoading}
-        timeout={1000}
-        mountOnEnter
-        unmountOnExit
-      >
-      <Card square key={item.uid}>
-        <CardHeader title="Experience" />
-        <CardContent>
-          <TextField
-            {...GlobalStyle.TextField.ReadOnly}
-            margin="dense"
-            label="Position"
-            value={item.position}
-          />
-        </CardContent>
-      </Card>
+      <Fade in={!isLoading} timeout={1000} mountOnEnter unmountOnExit>
+        <Paper className={classes.table}>
+          <Table className={classes.minTable}>
+            <TableHead>
+              <TableRow>
+                {header.map(headerIdx =>
+                  headerIdx.name ===
+                  AccountEmployeeExperienceHeaderTable.workPeriod ? (
+                    <TableCell colSpan={2} padding="dense">{headerIdx.name}</TableCell>
+                  ) : (
+                    <TableCell/>
+                  )
+                )}
+              </TableRow>
+              <TableRow>
+                {header.map(headerIdx =>
+                  headerIdx.name ===
+                  AccountEmployeeExperienceHeaderTable.workPeriod ? (
+                    null
+                  ) : (
+                    <TableCell>{headerIdx.name}</TableCell>
+                  )
+                )}
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              <TableRow>
+                <TableCell>1</TableCell>
+                <TableCell>1</TableCell>
+                <TableCell>1</TableCell>
+                <TableCell>1</TableCell>
+                <TableCell>1</TableCell>
+              </TableRow>
+              {/* {data &&
+                data.map((item, index) => (
+                  <TableRow key={index}>
+                    <TableCell>{index + 1}</TableCell>
+                    <TableCell>{item.company}</TableCell>
+                    <TableCell>{item.start}</TableCell>
+                    <TableCell>{item.end}</TableCell>
+                    <TableCell>{item.position}</TableCell>
+                  </TableRow>
+                ))} */}
+            </TableBody>
+          </Table>
+        </Paper>
       </Fade>
     );
   };
 
   return (
     <React.Fragment>
-      { (response && !response.data || response && response.data && response.data.length < 1) && ( <Typography>No Data</Typography> )}
-      {
-        response && response.data && response.data.map(item => renderExperience(item))
-      }
+      {/* {((response && !response.data) ||
+        (response && response.data && response.data.length === 0)) && (
+        <Typography>No Data</Typography>
+      )} */}
+      {renderExperience()}
+      {/* {response && response.data && renderExperience(response.data)} */}
     </React.Fragment>
   );
 };

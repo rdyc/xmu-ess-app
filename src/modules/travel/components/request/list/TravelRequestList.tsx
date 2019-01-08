@@ -203,7 +203,7 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
       onBind: (item: ITravelRequest, index: number) => ({
         key: index,
         primary: item.uid,
-        secondary: `${item.projectUid} - ${ item.project && item.project.name }`,
+        secondary: item.projectUid,
         tertiary: item.customer && item.customer.name || item.customerUid,
         quaternary: item.total && this.props.intl.formatNumber(item.total, GlobalFormat.CurrencyDefault) || '-',
         quinary: item.status && item.status.value || item.statusType,

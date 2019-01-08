@@ -24,15 +24,21 @@ import {
 } from '@lookup/store/actions';
 import { flattenObject } from '@utils/flattenObject';
 import saiyanSaga from '@utils/saiyanSaga';
+import * as qs from 'qs';
 import { SubmissionError } from 'redux-form';
 import { all, fork, put, takeEvery } from 'redux-saga/effects';
-import { IApiResponse, objectToQuerystring } from 'utils';
+import { IApiResponse } from 'utils';
 
 function* watchFetchAllRequest() {
   const worker = (action: ReturnType<typeof lookupCurrencyGetAllRequest>) => {
+    const params = qs.stringify(action.payload.filter, {
+      allowDots: true,
+      skipNulls: true
+    });
+
     return saiyanSaga.fetch({
       method: 'get',
-      path: `/v1/lookup/currencies${objectToQuerystring(action.payload.filter)}`, 
+      path: `/v1/lookup/currencies?${params}`, 
       successEffects: (response: IApiResponse) => ([
         put(lookupCurrencyGetAllSuccess(response.body)), 
       ]), 
@@ -61,9 +67,14 @@ function* watchFetchAllRequest() {
 
 function* watchFetchListRequest() {
   const worker = (action: ReturnType<typeof lookupCurrencyGetListRequest>) => {
+    const params = qs.stringify(action.payload.filter, {
+      allowDots: true,
+      skipNulls: true
+    });
+
     return saiyanSaga.fetch({
       method: 'get',
-      path: `/v1/lookup/currencies/list${objectToQuerystring(action.payload.filter)}`,
+      path: `/v1/lookup/currencies/list?${params}`,
       successEffects: (response: IApiResponse) => ([
         put(lookupCurrencyGetListSuccess(response.body)),
       ]), 

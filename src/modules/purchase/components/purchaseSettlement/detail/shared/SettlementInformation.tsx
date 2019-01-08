@@ -1,8 +1,9 @@
 import { GlobalFormat } from '@layout/types';
 import { GlobalStyle } from '@layout/types/GlobalStyle';
-import { Card, CardContent, CardHeader, TextField } from '@material-ui/core';
+import { Card, CardContent, CardHeader, TextField, WithStyles, withStyles } from '@material-ui/core';
 import { ISettlementDetail } from '@purchase/classes/response/purchaseSettlement';
 import { purchaseMessage } from '@purchase/locales/messages/purchaseMessage';
+import styles from '@styles';
 import * as React from 'react';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose } from 'recompose';
@@ -13,6 +14,7 @@ interface OwnProps {
 
 type AllProps
   = OwnProps
+  & WithStyles<typeof styles>
   & InjectedIntlProps;
 
 const settlementInformation: React.SFC<AllProps> = props => {
@@ -97,9 +99,19 @@ const settlementInformation: React.SFC<AllProps> = props => {
           />
           <TextField
           { ...GlobalStyle.TextField.ReadOnly }
+          InputProps={{
+            className: (props.data && props.data.difference || 0) >= 0
+              ? props.classes.colorBlue
+              : props.classes.colorRed,
+            disableUnderline: true,
+            readOnly: true
+          }}
           margin = "dense"
           label={intl.formatMessage(purchaseMessage.settlement.field.difference)}
-          value = { intl.formatNumber(data.difference || 0) }
+          value={(data.difference || 0) >= 0
+            ? intl.formatNumber(data.difference || 0)
+            : intl.formatNumber((data.difference || 0) * -1)
+          }
           />
           { data.currencyType !== 'SCR01' ?
           <TextField
@@ -122,9 +134,19 @@ const settlementInformation: React.SFC<AllProps> = props => {
           {data.currencyType !== 'SCR01' ?
           <TextField
             {...GlobalStyle.TextField.ReadOnly}
+            InputProps={{
+              className: (props.data && props.data.differenceInIDR || 0) >= 0
+                ? props.classes.colorBlue
+                : props.classes.colorRed,
+              disableUnderline: true,
+              readOnly: true
+            }}
             margin="dense"
             label={intl.formatMessage(purchaseMessage.settlement.field.differenceInIDR)}
-            value={intl.formatNumber(data.differenceInIDR || 0)}
+            value={ (data.differenceInIDR || 0) >= 0 
+              ? intl.formatNumber(data.differenceInIDR || 0) 
+              : intl.formatNumber((data.differenceInIDR || 0) * -1)
+            }
           />
           : '' }
           <TextField
@@ -136,9 +158,19 @@ const settlementInformation: React.SFC<AllProps> = props => {
           />
           <TextField
           { ...GlobalStyle.TextField.ReadOnly }
+          InputProps={{
+            className: (props.data && props.data.balanceDue || 0) >= 0
+              ? props.classes.colorBlue
+              : props.classes.colorRed,
+            disableUnderline: true,
+            readOnly: true
+          }}
           margin = "dense"
           label={intl.formatMessage(purchaseMessage.settlement.field.balanceDue)}
-          value = { intl.formatNumber(data.balanceDue || 0) }
+          value={(data.balanceDue || 0) >= 0
+            ? intl.formatNumber(data.balanceDue || 0)
+            : intl.formatNumber((data.balanceDue || 0) * -1)
+          }
           />
           </CardContent>
           </Card>
@@ -147,5 +179,6 @@ const settlementInformation: React.SFC<AllProps> = props => {
 };
 
 export const SettlementInformation = compose<AllProps, OwnProps>(
-  injectIntl
+  injectIntl,
+  withStyles(styles),
 )(settlementInformation);

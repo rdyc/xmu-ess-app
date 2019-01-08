@@ -1,4 +1,5 @@
 import { createStyles, Theme } from '@material-ui/core';
+import blue from '@material-ui/core/colors/blue';
 import red from '@material-ui/core/colors/red';
 import sidebar from './image/sidebar/satrio-tower.jpg';
 
@@ -200,6 +201,21 @@ const styles = (theme: Theme) =>
     //   },
     /* Color page end */
 
+    /* Stepper */
+    stepper: {
+      // marginTop: '-48px',
+      // position: 'relative',
+      // // opacity: 0.4
+      // background: 'none',
+      // backgroundColor: 'none'
+    },
+    stepperImg: {
+      height: 600,
+      width: '100%',
+      overflow: 'hidden',
+      display: 'block',
+    },
+
     /* Expander */
     expand: {
       transform: 'rotate(0deg)',
@@ -361,7 +377,9 @@ const styles = (theme: Theme) =>
     tableReportAction: {
       flexShrink: 0,
       color: theme.palette.text.secondary,
-    }
+    },
+
+    colorBlue: { color: blue['500'] },
   });
 
 export default styles;

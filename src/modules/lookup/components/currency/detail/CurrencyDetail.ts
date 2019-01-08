@@ -4,7 +4,7 @@ import { layoutMessage } from '@layout/locales/messages';
 import { ILookupCurrencyDeletePayload } from '@lookup/classes/request/currency';
 import { CurrencyUserAction } from '@lookup/classes/types';
 import { CurrencyDetailView } from '@lookup/components/currency/detail/CurrencyDetailView';
-import { WithLookupCurrency, withLookupCurrency } from '@lookup/hoc/currency/withLookupCurrency';
+import { WithLookupCurrency, withLookupCurrency } from '@lookup/hoc/withLookupCurrency';
 import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
 // import { currencyMessage } from '@lookup/locales/messages/currency/currencyMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';

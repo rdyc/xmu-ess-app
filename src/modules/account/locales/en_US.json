@@ -19,6 +19,9 @@
   "account.employee.page.modify.title": "Modify Employee",
   "account.employee.page.modify.subHeader": " ",
 
+  "account.employee.filter.company": "Company Name",
+  "account.employee.filter.role": "Role Name",
+
   "account.employee.field.uid": "Employee ID",
   "account.employee.field.uid.placeholder": "Employee ID",
 

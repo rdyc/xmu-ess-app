@@ -120,7 +120,6 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
           value: key, 
           name: PurchaseField[key] 
         })),
-      // fieldTranslator: purchaseRegistrationFieldTranslator,
     
       // searching
       hasSearching: true,

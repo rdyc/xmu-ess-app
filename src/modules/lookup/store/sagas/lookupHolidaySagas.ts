@@ -24,15 +24,21 @@ import {
 } from '@lookup/store/actions';
 import { flattenObject } from '@utils/flattenObject';
 import saiyanSaga from '@utils/saiyanSaga';
+import * as qs from 'qs';
 import { SubmissionError } from 'redux-form';
 import { all, fork, put, takeEvery } from 'redux-saga/effects';
-import { IApiResponse, objectToQuerystring } from 'utils';
+import { IApiResponse } from 'utils';
 
 function* watchFetchAllRequest() {
-  const worker = (action: ReturnType<typeof lookupHolidayGetAllRequest>) => {
+  const worker = (action: ReturnType<typeof lookupHolidayGetAllRequest>) => { 
+    const params = qs.stringify(action.payload.filter, { 
+      allowDots: true, 
+      skipNulls: true
+    });
+    
     return saiyanSaga.fetch({
       method: 'get',
-      path: `/v1/lookup/holidays${objectToQuerystring(action.payload.filter)}`, 
+      path: `/v1/lookup/holidays?${params}}`, 
       successEffects: (response: IApiResponse) => ([
         put(lookupHolidayGetAllSuccess(response.body)),
       ]), 
@@ -61,10 +67,15 @@ function* watchFetchAllRequest() {
 }
 
 function* watchFetchListRequest() {
-  const worker = (action: ReturnType<typeof lookupHolidayGetListRequest>) => {
+  const worker = (action: ReturnType<typeof lookupHolidayGetListRequest>) => { 
+    const params = qs.stringify(action.payload.filter, { 
+      allowDots: true, 
+      skipNulls: true
+    });
+
     return saiyanSaga.fetch({
       method: 'get',
-      path: `/v1/lookup/holidays/list${objectToQuerystring(action.payload.filter)}`,
+      path: `/v1/lookup/holidays/list?${params}}`,
       successEffects: (response: IApiResponse) => ([
         put(lookupHolidayGetListSuccess(response.body)),
       ]), 

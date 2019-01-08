@@ -1,7 +1,8 @@
 import { GlobalStyle } from '@layout/types/GlobalStyle';
-import { Card, CardContent, CardHeader, TextField } from '@material-ui/core';
+import { Card, CardContent, CardHeader, TextField, withStyles, WithStyles } from '@material-ui/core';
 import { IPurchaseItem } from '@purchase/classes/response/purchaseSettlement';
 import { purchaseMessage } from '@purchase/locales/messages/purchaseMessage';
+import styles from '@styles';
 import * as React from 'react';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose } from 'recompose';
@@ -13,6 +14,7 @@ interface OwnProps {
 
 type AllProps
   = OwnProps
+  & WithStyles<typeof styles>
   & InjectedIntlProps;
 
 const settlementItemInformation: React.SFC<AllProps> = props => (
@@ -21,12 +23,6 @@ const settlementItemInformation: React.SFC<AllProps> = props => (
       title={props.title}
     />
     <CardContent>
-      {/* <TextField
-        {...GlobalStyle.TextField.ReadOnly}
-        margin="dense"
-        label={props.intl.formatMessage(purchaseMessage.settlement.items.uid)}
-        value={props.data && props.data.uid || ''}
-      /> */}
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
         margin="dense"
@@ -48,9 +44,19 @@ const settlementItemInformation: React.SFC<AllProps> = props => (
       />
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
+        InputProps={{ 
+          className: (props.data && props.data.varianceValue || 0) >= 0 
+          ? props.classes.colorBlue 
+          : props.classes.colorRed, 
+          disableUnderline: true,
+          readOnly: true 
+        }}
         margin="dense"
         label={props.intl.formatMessage(purchaseMessage.settlement.items.variance)}
-        value={props.intl.formatNumber(props.data && props.data.varianceValue || 0)}
+        value={(props.data && props.data.varianceValue || 0) >= 0
+          ? props.intl.formatNumber(props.data && props.data.varianceValue || 0) 
+          : props.intl.formatNumber((props.data && props.data.varianceValue || 0) * -1)
+        }
       />
 
       {props.children}
@@ -59,5 +65,6 @@ const settlementItemInformation: React.SFC<AllProps> = props => (
   );
 
 export const SettlementItemInformation = compose<AllProps, OwnProps>(
-  injectIntl
+  injectIntl, 
+  withStyles(styles)
 )(settlementItemInformation);
