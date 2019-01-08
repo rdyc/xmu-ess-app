@@ -1,4 +1,5 @@
 enum AppMenu {
+  User = 'X0000',
   Home = 'X0001',
   Dashboard = 'X0002',
 

@@ -4,13 +4,13 @@ import styles from '@styles';
 import * as classNames from 'classnames';
 import * as React from 'react';
 import { compose, setDisplayName } from 'recompose';
-import { NavigationMenu } from '../navigation/NavigationMenu';
+import { Navigation } from '../navigation/Navigation';
 
 type AllProps 
   = WithLayout 
   & WithStyles<typeof styles>;
 
-const component: React.SFC<AllProps> = props => {
+const DraweMenuView: React.SFC<AllProps> = props => {
   const { layoutState, layoutDispatch, classes } = props;
 
   return (
@@ -28,9 +28,10 @@ const component: React.SFC<AllProps> = props => {
             keepMounted: true, // Better open performance on mobile.
           }}
         >
-          <NavigationMenu/>
+          <Navigation/>
         </Drawer>
       </Hidden>
+      
       <Hidden smDown implementation="css">
         <Drawer
           variant="permanent"
@@ -41,17 +42,15 @@ const component: React.SFC<AllProps> = props => {
           }}
         >
           <div className={props.classes.drawerPaperBackgroundImage} />
-          <NavigationMenu/>
+          <Navigation/>
         </Drawer>
       </Hidden>
     </div>
   );
 };
 
-const DrawerMenuSFC = compose(
-  setDisplayName('DrawerMenuSFC'),
+export const DrawerMenu = compose(
+  setDisplayName('DrawerMenu'),
   withLayout,
   withStyles(styles)
-)(component);
-
-export default DrawerMenuSFC;
+)(DraweMenuView);
