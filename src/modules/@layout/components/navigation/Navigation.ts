@@ -19,11 +19,11 @@ import {
 } from 'recompose';
 import { menuLinkMapper } from 'utils';
 
-import { navigationMenu } from './NavigationMenuView';
+import { NavigationView } from './NavigationView';
 
 interface OwnState {
-  headerUid: string | undefined;
-  childUid: string | undefined;
+  headerUid?: string;
+  childUid?: string;
 }
 
 interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
@@ -36,7 +36,7 @@ interface OwnHandler {
   handleOnClickMenuItem: (headerUid: string, childUid: string) => void;
 }
 
-export type NavigationMenuProps 
+export type NavigationProps 
   = OwnState 
   & OwnStateUpdaters
   & OwnHandler
@@ -44,14 +44,14 @@ export type NavigationMenuProps
   & WithLayout 
   & WithWidth
   & WithStyles<typeof styles>
-  & RouteComponentProps; 
+  & RouteComponentProps;
 
-const createProps: mapper<NavigationMenuProps, OwnState> = (props: NavigationMenuProps) => ({ 
+const createProps: mapper<NavigationProps, OwnState> = (props: NavigationProps) => ({ 
   headerUid: props.layoutState.view && props.layoutState.view.parentUid,
   childUid: props.layoutState.view && props.layoutState.view.uid
 });
 
-const stateUpdaters: StateUpdaters<NavigationMenuProps, OwnState, OwnStateUpdaters> = {
+const stateUpdaters: StateUpdaters<NavigationProps, OwnState, OwnStateUpdaters> = {
   setHeader: (prevState: OwnState) => (uid?: string): Partial<OwnState> => ({
     headerUid: uid
   }),
@@ -61,15 +61,15 @@ const stateUpdaters: StateUpdaters<NavigationMenuProps, OwnState, OwnStateUpdate
   })
 };
 
-const handlerCreator: HandleCreators<NavigationMenuProps, OwnHandler> = {
-  handleOnClickMenuHeader: (props: NavigationMenuProps) => (uid: string) => {
+const handlerCreator: HandleCreators<NavigationProps, OwnHandler> = {
+ handleOnClickMenuHeader: (props: NavigationProps) => (uid: string) => {
     if (props.headerUid !== uid) {
       props.setHeader(uid);
     } else {
       props.setHeader();
     }
   },
-  handleOnClickMenuItem: (props: NavigationMenuProps) => (headerUid: string, childUid: string) => {
+  handleOnClickMenuItem: (props: NavigationProps) => (headerUid: string, childUid: string) => {
     props.setHeaderAndChild(headerUid, childUid);
 
     if (props.layoutState.isDrawerMenuVisible && !isWidthUp('md', props.width)) {
@@ -80,8 +80,8 @@ const handlerCreator: HandleCreators<NavigationMenuProps, OwnHandler> = {
   },
 };
 
-const lifecycles: ReactLifeCycleFunctions<NavigationMenuProps, OwnState> = {
-  componentDidUpdate(prevProps: NavigationMenuProps, prevState: OwnState) {
+const lifecycles: ReactLifeCycleFunctions<NavigationProps, OwnState> = {
+  componentDidUpdate(prevProps: NavigationProps, prevState: OwnState) {
     if (this.props.layoutState.view !== prevProps.layoutState.view) {
       const { view } = this.props.layoutState;
 
@@ -92,8 +92,8 @@ const lifecycles: ReactLifeCycleFunctions<NavigationMenuProps, OwnState> = {
   }
 };
 
-export const NavigationMenu = compose(
-  setDisplayName('NavigationMenu'),
+export const Navigation = compose(
+  setDisplayName('Navigation'),
   withUser,
   withLayout,
   withWidth(),
@@ -102,4 +102,4 @@ export const NavigationMenu = compose(
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreator),
   lifecycle(lifecycles)
-)(navigationMenu);
+)(NavigationView);

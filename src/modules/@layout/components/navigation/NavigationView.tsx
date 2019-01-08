@@ -1,37 +1,19 @@
 import AppMenu from '@constants/AppMenu';
-import { Collapse, Divider, List, ListItem, ListItemIcon, ListItemSecondaryAction, ListItemText } from '@material-ui/core';
+import { Collapse, List, ListItem, ListItemIcon, ListItemSecondaryAction, ListItemText } from '@material-ui/core';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import * as React from 'react';
 
 import { ModuleIcon } from '../moduleIcon/ModuleIcon';
-import { NavigationMenuProps } from './NavigationMenu';
+import { NavigationProps } from './Navigation';
+import { NavigationHeader } from './NavigationHeader';
 
-// import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
-export const navigationMenu: React.SFC<NavigationMenuProps> = props => (
-  <List 
-    disablePadding 
-    component="nav"
-  >
-    {
-      props.userState.user &&
-      <ListItem>
-        <ListItemText
-          primary={props.userState.user.company.name}
-          secondary={props.userState.user.position.name}
-          primaryTypographyProps={{
-            variant: 'body2',
-            color: 'inherit'
-          }}
-          secondaryTypographyProps={{
-            variant: 'body2',
-            color: 'inherit'
-          }}
-        />
-      </ListItem>
-    }
-
-    <Divider light />
+export const NavigationView: React.SFC<NavigationProps> = props => (
+  <List disablePadding component="nav">
+    <NavigationHeader 
+      headerUid={props.headerUid} 
+      onClickHeader={() => props.handleOnClickMenuHeader(AppMenu.User)} 
+    />
     
     <ListItem 
       button
@@ -125,6 +107,24 @@ export const navigationMenu: React.SFC<NavigationMenuProps> = props => (
       ))
     }
 
-    <Divider light />
+    <ListItem>
+      <ListItemText
+        className={props.classes.drawerPaperFooter}
+        primary={process.env.REACT_APP_WEBSITE_NAME}
+        secondary={process.env.REACT_APP_WEBSITE_FOOTER}
+        primaryTypographyProps={{
+          align: 'center',
+          noWrap: true,
+          variant: 'caption',
+          color: 'inherit'
+        }}
+        secondaryTypographyProps={{
+          noWrap: true,
+          align: 'center',
+          variant: 'caption',
+          color: 'inherit'
+        }}
+      />
+    </ListItem>
   </List>
 );
