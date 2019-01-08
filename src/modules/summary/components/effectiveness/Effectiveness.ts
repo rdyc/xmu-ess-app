@@ -24,6 +24,7 @@ import {
 
 interface OwnHandlers {
   handleChangeFilter: (customerUid: string, projectUid: string | undefined) => void;
+  handleReloadData: () => void;
 }
 
 interface OwnOptions {
@@ -32,6 +33,7 @@ interface OwnOptions {
 interface OwnState {
   employeeUid?: string;
   projectUid?: string;
+  reloadData: boolean;
 }
 
 interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
@@ -52,8 +54,8 @@ export type EffectivenessProps
   & OwnStateUpdaters;
 
 const createProps: mapper<EffectivenessProps, OwnState> = (props: EffectivenessProps): OwnState => {
-
     return { 
+      reloadData: false,
     };
   };
 
@@ -66,13 +68,16 @@ const stateUpdaters: StateUpdaters<OwnOptions, OwnState, OwnStateUpdaters> = {
 
 const handlerCreators: HandleCreators<EffectivenessProps, OwnHandlers> = {
   handleChangeFilter: (props: EffectivenessProps) => (employeeUid: string, projectUid: string | undefined) => {
-    const { stateUpdate } = props;
-
-    stateUpdate({
+    props.stateUpdate({
       employeeUid,
       projectUid
     });
-},
+  },
+  handleReloadData: (props: EffectivenessProps) => () => {
+    props.stateUpdate({
+      reloadData: true,
+    });
+  }
 };
 
 const lifecycles: ReactLifeCycleFunctions<EffectivenessProps, OwnState> = {
@@ -104,6 +109,13 @@ const lifecycles: ReactLifeCycleFunctions<EffectivenessProps, OwnState> = {
           this.props.projectUid !== props.projectUid) {
             loadData(props);
           }
+      if (props.reloadData) {
+        loadData(props);
+
+        props.stateUpdate({
+          reloadData: false,
+        });
+      }
     },
     componentWillUnmount() {
       const { layoutDispatch } = this.props;
