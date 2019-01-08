@@ -55,13 +55,12 @@ interface OwnState {
 }
 
 interface FormValueProps {
-  formIsCurrencyIDR: boolean;
+  formIsCurrencyIDR: boolean | false;
   formRate: number | 1;
   formActualValue: number | 0;
   formDifferenceValue: number | 0;
   formAdvance: number | 0;
   formName: string;
-  formIsDiffNegative: boolean;
   // settleMinDate: any;
 }
 
@@ -85,9 +84,9 @@ const handlers: HandleCreators<PurchaseSettlementFormProps, OwnHandlers> = {
     }
     props.change('information.actual', actual);
     props.change('information.actualInIDR', actual * props.formRate);
-    props.change('information.difference', difference >= 0 ? difference : difference * -1);
-    props.change('information.differenceInIDR', difference >= 0 ? difference * props.formRate : difference * -1 * props.formRate );
-    props.change('information.balanceDue', (props.formAdvance - actual) >= 0 ? (props.formAdvance - actual) : ((props.formAdvance - actual) * -1) );
+    props.change('information.difference', difference);
+    props.change('information.differenceInIDR', difference * props.formRate);
+    props.change('information.balanceDue', props.formAdvance - actual);
   },
 };
 
@@ -97,7 +96,6 @@ const selector = formValueSelector(formName);
 // dateLimit.setDate(dateLimit.getDate() - 7);
 
 const mapStateToProps = (state: any): FormValueProps => {
-  const currencyType = selector(state, 'information.currencyType');
   const rate = selector(state, 'information.rate');
   const actValue = selector(state, 'information.actual'); 
   const difValue = selector(state, 'information.difference'); 
@@ -109,12 +107,11 @@ const mapStateToProps = (state: any): FormValueProps => {
   
   return {
     formName,
-    formIsCurrencyIDR: currencyType === 'SCR01',
+    formIsCurrencyIDR: rate === 1,
     formRate: rate,
     formActualValue: actValue,
     formDifferenceValue: difValue,
-    formAdvance: advance,
-    formIsDiffNegative: difValue < 0,
+    formAdvance: advance
     // settleMinDate: date ? dateFinal : dateLimit
   };
 };
