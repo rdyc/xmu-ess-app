@@ -1,5 +1,5 @@
 import { IRoleMenu } from '@lookup/classes/response/role/IRoleMenu';
-import { Card, CardContent, CardHeader, Collapse, List, ListItem, ListItemSecondaryAction, ListItemText, WithStyles, withStyles } from '@material-ui/core';
+import { Card, CardContent, CardHeader, Collapse, Divider, List, ListItem, ListItemSecondaryAction, ListItemText, WithStyles, withStyles } from '@material-ui/core';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import { projectMessage } from '@project/locales/messages/projectMessage';
@@ -37,7 +37,7 @@ const roleMenu: React.SFC<AllProps> = props => {
     <Card square>
       <CardHeader
         title={props.title}
-        // subheader={props.subHeader}
+      // subheader={props.subHeader}
       />
       <CardContent>
         <List>
@@ -56,34 +56,35 @@ const roleMenu: React.SFC<AllProps> = props => {
 
           {
             data &&
-            data.map(item => item.menu ? (!item.menu.parentUid) &&
-              <div key={item.menuUid}>
+            data.map(parent => parent.menu ? (!parent.menu.parentUid) &&
+              <div key={parent.menuUid}>
                 <ListItem
                   button
-                  onClick={() => handleToggle(item.menuUid)}
+                  onClick={() => handleToggle(parent.menuUid)}
                   color={'inherit'}
+                  selected={parent.menuUid === active && isExpanded}
                 >
                   <ListItemText
-                    className={(!item.isAccess) ? props.classes.textStrikethrough : ''}
-                    primary={item.menu.name}
+                    className={(!parent.isAccess) ? props.classes.textStrikethrough : ''}
+                    primary={parent.menu.name}
                     primaryTypographyProps={{
                       noWrap: true,
                       color: 'inherit'
                     }}
                   />
                   <ListItemSecondaryAction>
-                    {active === item.menuUid && isExpanded ? <ExpandLess color="inherit" /> : <ExpandMore color="inherit" />}
+                    {active === parent.menuUid && isExpanded ? <ExpandLess color="inherit" /> : <ExpandMore color="inherit" />}
                   </ListItemSecondaryAction>
                 </ListItem>
-
+                <Divider />
                 <Collapse
-                  in={active === item.menuUid && isExpanded}
+                  in={active === parent.menuUid && isExpanded}
                   timeout="auto"
                   unmountOnExit
                 >
                   {
                     data &&
-                    data.map(child => child.menu && (child.menu.parentUid === item.menuUid) &&
+                    data.map(child => child.menu && (child.menu.parentUid === parent.menuUid) &&
                       <div key={child.menuUid}>
                         <ListItem
                           button
