@@ -65,8 +65,6 @@ import {
 } from '@account/classes/queries/employeeTraining';
 import { 
   IEmployee, 
-  IEmployeeAccess, 
-  IEmployeeAccessList,
   IEmployeeDetail,
   IEmployeeLeave 
 } from '@account/classes/response';
@@ -101,6 +99,7 @@ import {
 } from '@account/classes/response/employeeTraining';
 import { IEmployeeMy } from '@account/classes/response/IEmployeeMy';
 import { IQueryCollectionState, IQuerySingleState } from '@generic/interfaces';
+import { IEmployeeAccess, IEmployeeAccessList } from '../response/employeeAccess';
 
 export interface IAccountState {
   // account employee

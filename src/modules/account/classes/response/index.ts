@@ -4,5 +4,3 @@ export * from './IEmployeeBank';
 export * from './IEmployeeContact';
 export * from './IEmployeeLeave';
 export * from './IEmployeeMy';
-export * from './IEmployeeAccess';
-export * from './IEmployeeAccessList';

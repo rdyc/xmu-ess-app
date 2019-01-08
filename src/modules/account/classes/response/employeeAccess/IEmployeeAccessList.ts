@@ -1,8 +1,7 @@
 import { ICommonSystem } from '@common/classes';
-import { IBaseChanges } from '@generic/interfaces/IBaseChanges';
-import { ILookupCompany, ILookupPosition, ILookupRole } from '@lookup/classes';
+import { ILookupCompany, ILookupPosition, ILookupRole, ILookupRoleMenuList } from '@lookup/classes';
 
-export interface IEmployeeAccess {
+export interface IEmployeeAccessList {
   uid: string;
   companyUid: string | null;
   company: ILookupCompany | null;
@@ -10,7 +9,7 @@ export interface IEmployeeAccess {
   role: ILookupRole | null;
   positionUid: string | null;
   position: ILookupPosition | null;
-  // menus (Array[LookupRoleMenuListModel], optional),
+  menus: ILookupRoleMenuList[] | null;
   unitType: string | null;
   unit: ICommonSystem | null;
   departmentType: string | null;
@@ -21,5 +20,4 @@ export interface IEmployeeAccess {
   end: string | null;
   isActive: boolean;
   isExpired: boolean;
-  changes: IBaseChanges | null;
 }

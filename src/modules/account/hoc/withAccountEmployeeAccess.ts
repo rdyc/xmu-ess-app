@@ -1,7 +1,7 @@
-import { IEmployeeAccessList } from '@account/classes';
 import { IEmployeeAccessGetAllRequest, IEmployeeAccessGetDetailRequest } from '@account/classes/queries/employeeAccess';
 import { IEmployeeAccessGetListRequest } from '@account/classes/queries/employeeAccess/IEmployeeAccessGetListRequest';
-import { IEmployeeAccess } from '@account/classes/response/IEmployeeAccess';
+import { IEmployeeAccessList } from '@account/classes/response/employeeAccess';
+import { IEmployeeAccess } from '@account/classes/response/employeeAccess/IEmployeeAccess';
 import { 
   accountEmployeeAccessGetAllDispose, 
   accountEmployeeAccessGetAllRequest, 
