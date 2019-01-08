@@ -1,7 +1,6 @@
-// import { IEmployeeExperienceList } from '@account/classes/response/employeeExperience';
+import { IEmployeeExperienceList } from '@account/classes/response/employeeExperience';
 import {
-  AccountEmployeeExperienceHeaderTable,
-  // AccountEmployeeExperienceSubHeaderTable
+  AccountEmployeeExperienceHeaderTable
 } from '@account/classes/types';
 import {
   Fade,
@@ -10,8 +9,8 @@ import {
   TableBody,
   TableCell,
   TableHead,
-  TableRow
-  // Typography
+  TableRow,
+  Typography
 } from '@material-ui/core';
 import * as React from 'react';
 import { AccountEmployeeExperienceProps } from './AccountEmployeeExperience';
@@ -20,49 +19,39 @@ export const AccountEmployeeExperienceView: React.SFC<
   AccountEmployeeExperienceProps
 > = props => {
   const { classes } = props;
-  const { isLoading } = props.accountEmployeeExperienceState.list;
+  const { response, isLoading } = props.accountEmployeeExperienceState.list;
 
   const header = Object.keys(AccountEmployeeExperienceHeaderTable).map(key => ({
     id: key,
     name: AccountEmployeeExperienceHeaderTable[key]
   }));
 
-  const renderExperience = () => {
+  const renderExperience = (data: IEmployeeExperienceList[]) => {
     return (
       <Fade in={!isLoading} timeout={1000} mountOnEnter unmountOnExit>
         <Paper className={classes.table}>
           <Table className={classes.minTable}>
             <TableHead>
-              <TableRow>
-                {header.map(headerIdx =>
+              {/* <TableRow>
+                {header.map((headerIdx, index) =>
                   headerIdx.name ===
                   AccountEmployeeExperienceHeaderTable.workPeriod ? (
-                    <TableCell colSpan={2} padding="dense">{headerIdx.name}</TableCell>
+                    <TableCell colSpan={2}>
+                      {headerIdx.name}
+                    </TableCell>
                   ) : (
-                    <TableCell/>
+                    index < header.length - 2 && <TableCell />
                   )
                 )}
-              </TableRow>
+              </TableRow> */}
               <TableRow>
                 {header.map(headerIdx =>
-                  headerIdx.name ===
-                  AccountEmployeeExperienceHeaderTable.workPeriod ? (
-                    null
-                  ) : (
                     <TableCell>{headerIdx.name}</TableCell>
-                  )
                 )}
               </TableRow>
             </TableHead>
             <TableBody>
-              <TableRow>
-                <TableCell>1</TableCell>
-                <TableCell>1</TableCell>
-                <TableCell>1</TableCell>
-                <TableCell>1</TableCell>
-                <TableCell>1</TableCell>
-              </TableRow>
-              {/* {data &&
+              {data &&
                 data.map((item, index) => (
                   <TableRow key={index}>
                     <TableCell>{index + 1}</TableCell>
@@ -71,7 +60,7 @@ export const AccountEmployeeExperienceView: React.SFC<
                     <TableCell>{item.end}</TableCell>
                     <TableCell>{item.position}</TableCell>
                   </TableRow>
-                ))} */}
+                ))}
             </TableBody>
           </Table>
         </Paper>
@@ -81,12 +70,12 @@ export const AccountEmployeeExperienceView: React.SFC<
 
   return (
     <React.Fragment>
-      {/* {((response && !response.data) ||
+      {((response && !response.data) ||
         (response && response.data && response.data.length === 0)) && (
         <Typography>No Data</Typography>
-      )} */}
-      {renderExperience()}
-      {/* {response && response.data && renderExperience(response.data)} */}
+      )}
+      {/* {renderExperience()} */}
+      {response && response.data && renderExperience(response.data)}
     </React.Fragment>
   );
 };

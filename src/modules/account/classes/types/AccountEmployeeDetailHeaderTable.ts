@@ -40,10 +40,10 @@ export enum AccountEmployeeFamilyHeaderTable {
 export enum AccountEmployeeExperienceHeaderTable {
   no = 'No',
   company = 'Company Name',
-  workPeriod = 'Work Period',
+  position = 'Position Name',
   start = 'Start Year',
   finish = 'Finish year',
-  positino = 'Position Name'
+  // workPeriod = 'Work Period',
 }
 
 export enum AccountEmployeeExperienceSubHeaderTable {
