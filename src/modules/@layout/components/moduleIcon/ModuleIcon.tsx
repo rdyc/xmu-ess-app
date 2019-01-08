@@ -9,6 +9,7 @@ import LocalMallIcon from '@material-ui/icons/LocalMall';
 import NextWeekIcon from '@material-ui/icons/NextWeek';
 import PersonPinIcon from '@material-ui/icons/PersonPin';
 import ReceiptIcon from '@material-ui/icons/Receipt';
+import SettingsIcon from '@material-ui/icons/Settings';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import WeekendIcon from '@material-ui/icons/Weekend';
 import * as React from 'react';
@@ -42,6 +43,9 @@ export const ModuleIcon: React.ComponentType<ModuleIconProps> = props => {
 
     case AppMenu.Report:
       return <ReceiptIcon/>;
+
+    case AppMenu.Lookup:
+      return <SettingsIcon/>;
 
     case AppMenu.Timesheet:
       return <AlarmOnIcon/>;
