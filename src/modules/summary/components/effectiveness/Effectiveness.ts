@@ -21,23 +21,23 @@ import {
   withHandlers,
   withStateHandlers,
 } from 'recompose';
+import { IEffectivenessFilterResult } from './EffectivenessFilter';
 
 interface OwnHandlers {
-  handleChangeFilter: (customerUid: string, projectUid: string | undefined) => void;
+  handleChangeFilter: (filter: IEffectivenessFilterResult) => void;
   handleReloadData: () => void;
 }
 
 interface OwnOptions {
 }
 
-interface OwnState {
-  employeeUid?: string;
-  projectUid?: string;
+interface OwnState extends IEffectivenessFilterResult {
   reloadData: boolean;
 }
 
 interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
   stateUpdate: StateHandler<OwnState>;
+  setFilterApplied: StateHandler<OwnState>;
 }
 
 export type EffectivenessProps 
@@ -64,14 +64,14 @@ const stateUpdaters: StateUpdaters<OwnOptions, OwnState, OwnStateUpdaters> = {
     ...prevState,
     ...newState
   }),
-  };
+  setFilterApplied: (prevState: OwnState) => (filter: IEffectivenessFilterResult) => ({
+    ...filter
+  }),
+};
 
 const handlerCreators: HandleCreators<EffectivenessProps, OwnHandlers> = {
-  handleChangeFilter: (props: EffectivenessProps) => (employeeUid: string, projectUid: string | undefined) => {
-    props.stateUpdate({
-      employeeUid,
-      projectUid
-    });
+  handleChangeFilter: (props: EffectivenessProps) => (filter: IEffectivenessFilterResult) => {
+    props.setFilterApplied(filter);
   },
   handleReloadData: (props: EffectivenessProps) => () => {
     props.stateUpdate({
@@ -140,13 +140,12 @@ const loadData = (props: EffectivenessProps): void => {
     const { user } = props.userState;
     const { loadEffectivenessRequest } = props.summaryDispatch;
     const { alertAdd } = props.layoutDispatch;
-    const { employeeUid, projectUid } = props;
 
     if (user) {
       loadEffectivenessRequest({
         filter: {
-          employeeUid,
-          projectUid
+          employeeUid: undefined,
+          projectUid: props.projectUid,
         }
       }); 
     } else {

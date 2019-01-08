@@ -123,8 +123,8 @@ export const EffectivenessView: React.SFC<EffectivenessProps> = props => {
           <EffectivenessFilter 
               className={props.classes.flex}
               isLoading={isLoading}
-              onFilterChange={handleChangeFilter}
               onClickSync={handleReloadData}
+              onApply={handleChangeFilter}
           />
         </Grid>
         <Grid item xs={12}>     
