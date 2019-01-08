@@ -99,7 +99,7 @@ const handlerCreators: HandleCreators<EntryEditorProps, OwnHandlers> = {
 
     const requiredFields = [
       'activityType', 'customerUid', 'projectUid', 'siteUid', 'date',
-      'start', 'end',
+      'start', 'end', 'description',
     ];
 
     requiredFields.forEach(field => {
