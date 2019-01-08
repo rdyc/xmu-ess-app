@@ -95,9 +95,7 @@ const lifecycles: ReactLifeCycleFunctions<EffectivenessProps, OwnState> = {
         subTitle : intl.formatMessage(summaryMessage.effectiveness.page.subTitle)
       });
   
-      // layoutDispatch.modeListOn();
       layoutDispatch.searchShow();
-      layoutDispatch.actionCentreShow();
     
       // only load data when response are empty
       if (!isLoading && !response) {
