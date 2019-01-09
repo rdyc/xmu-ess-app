@@ -67,23 +67,23 @@ export const dashboardView: React.SFC<DashboardProps> = props => (
       </div>
 
       {
-        props.notificationState.loading &&
+        props.notificationState.isLoading &&
         <Typography variant="body1">
           {props.intl.formatMessage(layoutMessage.text.loading)}
         </Typography>
       }
 
       {
-        !props.notificationState.loading &&
-        props.notificationState.result && 
-        props.notificationState.result.data && 
+        !props.notificationState.isLoading &&
+        props.notificationState.response && 
+        props.notificationState.response.data && 
         <Grid container spacing={16}>
           {
-            props.notificationState.result.data
+            props.notificationState.response.data
             .sort((a , b) => (a.name > b.name) ? 1 : 0)
             .map((category, c) => category.details
               .map((detail, d) =>
-                <Grid key={`${c}${d}`} item xs={12} sm={6} md={3}>
+                <Grid key={`${c}${d}`} item xs={12} sm={12} md={3}>
                   <Card square>
                     <CardHeader
                       avatar={

@@ -328,18 +328,13 @@ const handlerCreators: HandleCreators<DashboardProps, OwnHandlers> = {
 const lifecycles: ReactLifeCycleFunctions<DashboardProps, {}> = {
   componentDidMount() {
     const { intl, layoutDispatch } = this.props;
-    const { loading, result } = this.props.notificationState;
-
+    
     layoutDispatch.changeView({
       uid: AppMenu.Dashboard,
       parentUid: AppMenu.Home,
       title: intl.formatMessage(homeMessage.dashboard.page.title),
       subTitle: intl.formatMessage(homeMessage.dashboard.page.subHeader)
     });
-
-    if (!loading && !result) {
-      this.props.handleSyncClick();
-    }
   },
   componentWillUnmount() {
     const { layoutDispatch, appBarDispatch } = this.props;
