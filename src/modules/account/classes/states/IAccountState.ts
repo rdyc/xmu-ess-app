@@ -8,9 +8,12 @@ import {
   IEmployeePutRequest,
 } from '@account/classes/queries';
 import { 
+  IEmployeeAccessDeleteRequest, 
   IEmployeeAccessGetAllRequest, 
   IEmployeeAccessGetDetailRequest, 
-  IEmployeeAccessGetListRequest 
+  IEmployeeAccessGetListRequest,
+  IEmployeeAccessPostRequest,
+  IEmployeeAccessPutRequest
 } from '@account/classes/queries/employeeAccess';
 import { 
   IEmployeeAccessHistoryAllRequest, 
@@ -169,4 +172,7 @@ export interface IAccountState {
   accountEmployeeAccessGetAll: IQueryCollectionState<IEmployeeAccessGetAllRequest, IEmployeeAccess>;
   accountEmployeeAccessGetList: IQueryCollectionState<IEmployeeAccessGetListRequest, IEmployeeAccessList>;
   accountEmployeeAccessGetById: IQuerySingleState<IEmployeeAccessGetDetailRequest, IEmployeeAccess>;
+  accountEmployeeAccessPost: IQuerySingleState<IEmployeeAccessPostRequest, IEmployeeAccess>;
+  accountEmployeeAccessPut: IQuerySingleState<IEmployeeAccessPutRequest, IEmployeeAccess>;
+  accountEmployeeAccessDelete: IQuerySingleState<IEmployeeAccessDeleteRequest, boolean>;
 }
