@@ -142,7 +142,7 @@ const loadData = (props: EffectivenessProps): void => {
     if (user) {
       loadEffectivenessRequest({
         filter: {
-          employeeUid: undefined,
+          employeeUid: props.employeeUid,
           projectUid: props.projectUid,
         }
       }); 

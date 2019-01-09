@@ -68,7 +68,8 @@ function* watchListRequest() {
   const worker = (action: ReturnType<typeof accountEmployeeGetListRequest>) => {
     const params = qs.stringify(action.payload.filter, { 
       allowDots: true, 
-      skipNulls: true
+      skipNulls: true,
+      indices: false
     });
     
     return saiyanSaga.fetch({
