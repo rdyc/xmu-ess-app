@@ -1,15 +1,15 @@
-import { layoutMessage } from '@layout/locales/messages';
-import {  Card, CardContent, Grid, Table, TableBody, TableCell, TableRow, Typography } from '@material-ui/core';
+// import { layoutMessage } from '@layout/locales/messages';
+import {  Card, CardContent, Grid, Table, TableBody, TableCell, TableRow } from '@material-ui/core';
 import { ISummaryProfitability } from '@summary/classes/response/profitability';
 import { ProfitabilityProps } from '@summary/components/profitability/Profitability';
-import { FilterForm } from '@summary/components/progress/sharedFilterForm/FilterForm';
 import { summaryMessage } from '@summary/locales/messages/summaryMessage';
 import * as React from 'react';
 import { ProfitabilityExpenseView } from './ProfitabilityExpenseView';
 import { ProfitabilityProjectView } from './ProfitabilityProjectView';
+import { ProfitabilityFormFilter } from './shared/ProfitabilityFormFilter';
 
 export const ProfitabilityView: React.SFC<ProfitabilityProps> = props => {
-  const { classes, width, dialogFullScreen, dialogOpen, handleDialogClose, handleDialogOpen, expenses, expenseProjectUid, intl, handleChangeFilter } = props;
+  const { classes, width, dialogFullScreen, dialogOpen, handleDialogClose, handleDialogOpen, expenses, expenseProjectUid, intl, handleChangeFilter, handleReloadData } = props;
   const { isLoading, response } = props.summaryState.profitability;  
 
   const RenderProfitability = (profitability: ISummaryProfitability) => {
@@ -79,7 +79,7 @@ export const ProfitabilityView: React.SFC<ProfitabilityProps> = props => {
   const render = (
     <React.Fragment>
       <Grid container spacing={16}>
-        <Grid item xs={12}>
+        {/* <Grid item xs={12}>
           <Card 
             square 
           >
@@ -89,14 +89,22 @@ export const ProfitabilityView: React.SFC<ProfitabilityProps> = props => {
               />
             </CardContent>
           </Card>
+        </Grid> */}
+        <Grid item xs={12}>
+          <ProfitabilityFormFilter 
+            className={props.classes.flex}
+            isLoading={isLoading}
+            onClickSync={handleReloadData}
+            onApply={handleChangeFilter}
+          />
         </Grid>
         <Grid item xs={12}>
-        {
+        {/* {
           isLoading &&
           <Typography>
             {intl.formatMessage(layoutMessage.text.loading)}
           </Typography>
-        }
+        } */}
         {
           !isLoading &&
           response &&

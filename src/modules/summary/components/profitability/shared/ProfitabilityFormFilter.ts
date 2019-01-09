@@ -14,13 +14,16 @@ import { ProfitabilityFormFilterView } from './ProfitabilityFormFilterView';
 export type ISummaryProfitabilityFilterResult = Pick<ISummaryGetProfitabilityRequest, 'customerUid' | 'projectUid'>;
 
 interface IOwnOption {
-  isOpen: boolean;
-  initialProps?: ISummaryProfitabilityFilterResult;
-  onClose: (event: React.MouseEvent<HTMLElement>) => void;
+  isLoading: boolean;
+  className: string;
+  // initialProps?: ISummaryProfitabilityFilterResult;
+  onClickSync: (event: React.MouseEvent<HTMLElement>) => void;
   onApply: (filter: ISummaryProfitabilityFilterResult) => void;
 }
 
 interface IOwnState {
+  isFilterDialogOpen: boolean;
+
   // filter customer
   isFilterCustomerOpen: boolean;
   filterCustomer?: ICustomerList;
@@ -37,8 +40,10 @@ interface IOwnState {
 }
 
 interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
+  stateUpdate: StateHandler<IOwnState>;
   // main filter
   setFilterReset: StateHandler<IOwnState>;
+  setFilterVisibility: StateHandler<IOwnState>;
 
   // filter customer
   setFilterCustomerVisibility: StateHandler<IOwnState>;
@@ -53,6 +58,7 @@ interface IOwnHandler {
   // main filter
   handleFilterOnReset: (event: React.MouseEvent<HTMLElement>) => void;
   handleFilterOnApply: (event: React.MouseEvent<HTMLElement>) => void;
+  handleFilterVisibility: (event: React.MouseEvent<HTMLElement>) => void;
 
   // filter customer
   handleFilterCustomerVisibility: (event: React.MouseEvent<HTMLElement>) => void;
@@ -78,7 +84,7 @@ export type SummaryProfitabilityFilterProps
   & InjectedIntlProps;
 
 const createProps: mapper<SummaryProfitabilityFilterProps, IOwnState> = (props: SummaryProfitabilityFilterProps): IOwnState => ({
-
+  isFilterDialogOpen: true,
   isFilterCustomerOpen: false,
   isFilterProjectOpen: false,
 
@@ -89,15 +95,25 @@ const createProps: mapper<SummaryProfitabilityFilterProps, IOwnState> = (props: 
 
   // default filter project dialog
   filterProjectDialog: {
-    customerUids: undefined
+    customerUids: undefined,
+    orderBy: undefined,
+    direction: undefined
   }
 });
 
-const stateUpdaters: StateUpdaters<SummaryProfitabilityFilterProps, IOwnState, IOwnStateUpdater> = {
+const stateUpdaters: StateUpdaters<{}, IOwnState, IOwnStateUpdater> = {
+  stateUpdate: (prevState: IOwnState) => (newState: any) => ({
+    ...prevState,
+    ...newState
+  }),
+  
   // main filter
   setFilterReset: (prevState: IOwnState) => () => ({
     filterCustomer: undefined,
     filterProject: undefined,
+  }),
+  setFilterVisibility: (prevState: IOwnState) => () => ({
+    isFilterDialogOpen: !prevState.isFilterDialogOpen
   }),
 
   // filter customer
@@ -108,7 +124,9 @@ const stateUpdaters: StateUpdaters<SummaryProfitabilityFilterProps, IOwnState, I
     isFilterCustomerOpen: false,
     filterCustomer: customer,
     filterProjectDialog: {
-      customerUids: customer && [customer.uid] || undefined
+      customerUids: customer && [customer.uid] || undefined,
+      orderBy: 'uid',
+      direction: 'descending'
     }
   }),
 
@@ -132,6 +150,10 @@ const handlerCreators: HandleCreators<SummaryProfitabilityFilterProps, IOwnHandl
       customerUid: props.filterCustomer && props.filterCustomer.uid,
       projectUid: props.filterProject && props.filterProject.uid,
     });
+    props.setFilterVisibility();
+  },
+  handleFilterVisibility: (props: SummaryProfitabilityFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
+    props.setFilterVisibility();
   },
 
   // filter customer
