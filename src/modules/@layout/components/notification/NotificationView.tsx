@@ -139,7 +139,7 @@ export const NotificationView: React.SFC<NotificationProps> = props => {
           {
             response && response.data && response.data
               .filter(item => item.name === props.category)
-              .map(category => category.details.map(detail => detail.items.map(item =>  
+              .map(category => category.details.filter(item => item.type === props.type).map(detail => detail.items.map(item =>  
                 <React.Fragment key={`${props.category}${detail.type}${item.uid}`} >
                   <Divider/>
                   <ListItem 
