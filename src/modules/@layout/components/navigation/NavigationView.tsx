@@ -1,5 +1,5 @@
 import AppMenu from '@constants/AppMenu';
-import { Collapse, List, ListItem, ListItemIcon, ListItemSecondaryAction, ListItemText } from '@material-ui/core';
+import { Collapse, Divider, List, ListItem, ListItemIcon, ListItemSecondaryAction, ListItemText } from '@material-ui/core';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import * as React from 'react';
@@ -20,24 +20,22 @@ export const NavigationView: React.SFC<NavigationProps> = props => (
       onClick={() => props.handleOnClickMenuHeader(AppMenu.Home)}
     >
       <ListItemIcon className={props.classes.drawerPaperMenuItem}>
-        <ModuleIcon module={AppMenu.Home}  />
+        <ModuleIcon module={AppMenu.Home} innerProps={{ color: 'action' }} />
       </ListItemIcon>
       <ListItemText 
         primary="Home" 
         primaryTypographyProps={{
-          variant: 'body2',
-          color: 'inherit'
+          variant: 'body2'
         }}
       />
       <ListItemSecondaryAction>
-        {props.headerUid === AppMenu.Home ? <ExpandLess color="inherit" /> : <ExpandMore color="inherit" />}
+        {props.headerUid === AppMenu.Home ? <ExpandLess color="action" /> : <ExpandMore color="action" />}
       </ListItemSecondaryAction>
     </ListItem>
 
     <Collapse in={props.headerUid === AppMenu.Home}>
       <ListItem
         button
-        color={'inherit'}
         selected={props.childUid === AppMenu.Dashboard}
         onClick={() => props.handleOnClickMenuItem(AppMenu.Home, AppMenu.Dashboard)}
       >
@@ -47,7 +45,6 @@ export const NavigationView: React.SFC<NavigationProps> = props => (
           primaryTypographyProps={{
             noWrap: true,
             variant: 'body2',
-            color: 'inherit'
           }}
         />
       </ListItem>
@@ -60,22 +57,20 @@ export const NavigationView: React.SFC<NavigationProps> = props => (
         <React.Fragment key={header.uid}>
           <ListItem
             button
-            color="inherit"
             onClick={() => props.handleOnClickMenuHeader(header.uid)}
           >
             <ListItemIcon className={props.classes.drawerPaperMenuItem}>
-              <ModuleIcon module={header.uid}  />
+              <ModuleIcon module={header.uid} innerProps={{ color: 'action' }} />
             </ListItemIcon>
             <ListItemText 
               primary={header.name}
               primaryTypographyProps={{
                 noWrap: true,
-                variant: 'body2',
-                color: 'inherit'
+                variant: 'body2'
               }}
             />
             <ListItemSecondaryAction>
-              {props.headerUid === header.uid ? <ExpandLess color="inherit" /> : <ExpandMore color="inherit" />}
+              {props.headerUid === header.uid ? <ExpandLess color="action" /> : <ExpandMore color="action" />}
             </ListItemSecondaryAction>
           </ListItem>
           
@@ -86,7 +81,6 @@ export const NavigationView: React.SFC<NavigationProps> = props => (
                 <ListItem 
                   key={child.uid}
                   button
-                  color={'inherit'}
                   selected={props.childUid === child.uid}
                   onClick={() => props.handleOnClickMenuItem(header.uid, child.uid)}
                 >
@@ -95,8 +89,7 @@ export const NavigationView: React.SFC<NavigationProps> = props => (
                     primary={child.name}
                     primaryTypographyProps={{
                       noWrap: true,
-                      variant: 'body2',
-                      color: 'inherit'
+                      variant: 'body2'
                     }}
                   />
                 </ListItem>
@@ -107,6 +100,8 @@ export const NavigationView: React.SFC<NavigationProps> = props => (
       ))
     }
 
+    <Divider/>
+
     <ListItem>
       <ListItemText
         className={props.classes.drawerPaperFooter}
@@ -116,13 +111,11 @@ export const NavigationView: React.SFC<NavigationProps> = props => (
           align: 'center',
           noWrap: true,
           variant: 'caption',
-          color: 'inherit'
         }}
         secondaryTypographyProps={{
           noWrap: true,
           align: 'center',
           variant: 'caption',
-          color: 'inherit'
         }}
       />
     </ListItem>

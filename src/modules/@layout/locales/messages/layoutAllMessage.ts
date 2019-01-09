@@ -18,6 +18,8 @@ export const layoutText = defineMessages({
 export const layoutLabel = defineMessages({
   login: { id: `${prefix}.label.login`},
   logout: { id: `${prefix}.label.logout`},
+  theme: { id: `${prefix}.label.theme`},
+  anchor: { id: `${prefix}.label.anchor`},
   switch: { id: `${prefix}.label.switch`}
 });
 

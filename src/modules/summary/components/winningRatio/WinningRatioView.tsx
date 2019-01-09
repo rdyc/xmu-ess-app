@@ -8,7 +8,7 @@ import { WinningRatioProps } from '@summary/components/winningRatio/WinningRatio
 import { WinningRatioDetail } from '@summary/components/winningRatio/WinningRatioDetail';
 import { WinningRatioTable } from '@summary/components/winningRatio/WinningRatioTable';
 import * as React from 'react';
-import { BillableFilterForm } from '../billable/billableFilterForm/BillableFilterForm';
+// import { BillableFilterForm } from '../billable/billableFilterForm/BillableFilterForm';
 
 export const WinningRatioView: React.SFC<WinningRatioProps> = props => {
   const { isLoading, response } = props.summaryState.winning;
@@ -24,16 +24,16 @@ export const WinningRatioView: React.SFC<WinningRatioProps> = props => {
     handleChangeSort,
     handleDialog,
     handleDetail,
-    handleChangeFilter
+    // handleChangeFilter
   } = props;
 
-  const renderFilter = () => {
-    return (
-      <BillableFilterForm 
-        onFilterChange={handleChangeFilter}
-      />
-    );
-  };
+  // const renderFilter = () => {
+  //   return (
+  //     <BillableFilterForm 
+  //       onFilterChange={handleChangeFilter}
+  //     />
+  //   );
+  // };
 
   const render = (
     <React.Fragment>
@@ -41,7 +41,7 @@ export const WinningRatioView: React.SFC<WinningRatioProps> = props => {
         <CardContent>
           <Grid container spacing={16}>
             <Grid item xs md>
-              {renderFilter()}
+              {/* {renderFilter()} */}
             </Grid>
           </Grid>
           {isLoading && !response && (
