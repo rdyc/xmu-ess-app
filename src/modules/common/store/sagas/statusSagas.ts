@@ -12,14 +12,20 @@ import {
 } from '@common/store/actions';
 import { layoutAlertAdd } from '@layout/store/actions';
 import saiyanSaga from '@utils/saiyanSaga';
+import * as qs from 'qs';
 import { all, fork, put, takeEvery } from 'redux-saga/effects';
-import { IApiResponse, objectToQuerystring } from 'utils';
+import { IApiResponse } from 'utils';
 
 function* watchFetchAllRequest() {
   const worker = (action: ReturnType<typeof statusGetAllRequest>) => {
+    const params = qs.stringify(action.payload.filter, { 
+      allowDots: true, 
+      skipNulls: true
+    });
+
     return saiyanSaga.fetch({
       method: 'get',
-      path: `/v1/common/types/${action.payload.category}${objectToQuerystring(action.payload.filter)}`, 
+      path: `/v1/common/types/${action.payload.category}?${params}`, 
       successEffects: (response: IApiResponse) => ([
         put(statusGetAllSuccess(response.body)),
       ]), 
@@ -46,9 +52,14 @@ function* watchFetchAllRequest() {
 
 function* watchFetchListRequest() {
   const worker = (action: ReturnType<typeof statusGetListRequest>) => {
+    const params = qs.stringify(action.payload.filter, { 
+      allowDots: true, 
+      skipNulls: true
+    });
+
     return saiyanSaga.fetch({
       method: 'get',
-      path: `/v1/common/types/${action.payload.category}/list${objectToQuerystring(action.payload.filter)}`,
+      path: `/v1/common/types/${action.payload.category}/list?${params}`,
       successEffects: (response: IApiResponse) => ([
         put(statusGetListSuccess(response.body))
       ]), 

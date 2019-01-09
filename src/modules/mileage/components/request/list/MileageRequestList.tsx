@@ -157,7 +157,7 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, OwnState> = {
       },
 
       // action centre
-      showActionCentre: true,
+      showActionCentre: false,
 
       // toolbar controls
       toolbarControls: () => [

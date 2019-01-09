@@ -36,6 +36,7 @@ export const PurchaseSettlementItemFormView: React.SFC<PurchaseSettlementItemFor
                     label={props.intl.formatMessage(purchaseMessage.settlement.items.description)}
                     disabled
                     component={InputText}
+                    multiline
                   />
                   <Field
                     type="number"
@@ -56,8 +57,10 @@ export const PurchaseSettlementItemFormView: React.SFC<PurchaseSettlementItemFor
                     type="text"
                     name={`${field}.variance`}
                     label={props.intl.formatMessage(purchaseMessage.settlement.items.variance)}
-                    disabled
-                    color="secondary"
+                    // disabled
+                    InputProps={{
+                      className: varianceValue >= 0 ? props.classes.colorBlue : props.classes.colorRed 
+                    }}
                     value={varianceValue >= 0 
                       ? `${props.intl.formatNumber(varianceValue)}`
                       : `${props.intl.formatNumber(varianceValue * -1)}`

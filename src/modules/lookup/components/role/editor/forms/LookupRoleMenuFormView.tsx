@@ -1,5 +1,5 @@
 import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
-import { Card, CardContent, CardHeader, Checkbox, Collapse, FormControlLabel, List, ListItem, ListItemSecondaryAction } from '@material-ui/core';
+import { Card, CardContent, CardHeader, Checkbox, Collapse, Divider, List, ListItem, ListItemSecondaryAction, ListItemText } from '@material-ui/core';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import * as React from 'react';
@@ -14,7 +14,7 @@ export const LookupRoleMenuFormView: React.SFC<LookupRoleMenuFormProps> = props 
     <Card square>
       <CardHeader
         title={props.intl.formatMessage(lookupMessage.role.section.roleMenuTitle)}
-        // subheader={props.intl.formatMessage(lookupMessage.role.section.roleMenuSubHeader)}
+      // subheader={props.intl.formatMessage(lookupMessage.role.section.roleMenuSubHeader)}
       />
       <CardContent>
         <List>
@@ -28,38 +28,42 @@ export const LookupRoleMenuFormView: React.SFC<LookupRoleMenuFormProps> = props 
                 <div key={index}>
                   <ListItem
                     button
-                    onClick={() => handleToggle(parent.uid)}
+                    disableGutters
+                    selected={parent.uid === active && isExpanded}
                   >
-                    <FormControlLabel
-                      label={parent.name}
-                      control={
-                        <Field
-                          type="checkbox"
-                          name={`menus[${index}].${parent.uid}`}
-                          component={
-                            ({ input, meta }: any) => (
-                              <Checkbox
-                                {...input}
-                                value={parent.uid}
-                                disabled={meta.submitting}
-                                onFocus={undefined}
-                                onBlur={undefined}
-                                style={{
-                                  height: 10,
-                                  width: 10,
-                                  marginRight: 10,
-                                  marginLeft: 10,
-                                }}
-                              />
-                            )
-                          }
-                        />
+                    <Field
+                      type="checkbox"
+                      name={`menus[${index}].${parent.uid}`}
+                      component={
+                        ({ input, meta }: any) => (
+                          <Checkbox
+                            {...input}
+                            value={parent.uid}
+                            disabled={meta.submitting}
+                            onFocus={undefined}
+                            onBlur={undefined}
+                            style={{
+                              height: 10,
+                              width: 10,
+                              marginRight: 5,
+                              marginLeft: 5,
+                            }}
+                          />
+                        )
                       }
                     />
+
+                    <ListItemText
+                      primary={parent.name}
+                      onClick={() => handleToggle(parent.uid)}
+                    />
+                    <Divider />
                     <ListItemSecondaryAction>
                       {active === parent.uid && isExpanded ? <ExpandLess color="inherit" /> : <ExpandMore color="inherit" />}
                     </ListItemSecondaryAction>
+
                   </ListItem>
+                  <Divider />
                   <Collapse
                     in={active === parent.uid && isExpanded}
                     timeout="auto"
@@ -72,35 +76,37 @@ export const LookupRoleMenuFormView: React.SFC<LookupRoleMenuFormProps> = props 
                       response.data.map((child, index2) => (child.parentUid === parent.uid) &&
                         <div key={index2}>
                           <ListItem
-                            button
                             color={'inherit'}
                             className={props.classes.marginFarLeft}
+                            button
+                            style={{
+                              marginLeft: 0,
+                              marginRight: 10
+                            }}
                           >
-                            <FormControlLabel
-                              label={child.name}
-                              control={
-                                <Field
-                                  type="checkbox"
-                                  name={`menus[${index2}].${child.uid}`}
-                                  component={
-                                    ({ input, meta }: any) => (
-                                      <Checkbox
-                                        {...input}
-                                        value={child.uid}
-                                        disabled={meta.submitting}
-                                        onFocus={undefined}
-                                        onBlur={undefined}
-                                        style={{
-                                          height: 10,
-                                          width: 10,
-                                          marginLeft: 10,
-                                          marginRight: 10
-                                        }}
-                                      />
-                                    )
-                                  }
-                                />
+                            <Field
+                              type="checkbox"
+                              name={`menus[${index2}].${child.uid}`}
+                              component={
+                                ({ input, meta }: any) => (
+                                  <Checkbox
+                                    {...input}
+                                    value={child.uid}
+                                    disabled={meta.submitting}
+                                    onFocus={undefined}
+                                    onBlur={undefined}
+                                    style={{
+                                      height: 10,
+                                      width: 10,
+                                      marginLeft: 5,
+                                      marginRight: 5
+                                    }}
+                                  />
+                                )
                               }
+                            />
+                            <ListItemText
+                              primary={child.name}
                             />
                           </ListItem>
                         </div>
