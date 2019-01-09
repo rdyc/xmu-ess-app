@@ -120,14 +120,17 @@ export const EffectivenessView: React.SFC<EffectivenessProps> = props => {
     <React.Fragment>
       <Grid container spacing={8}>
         <Grid item xs={12}>  
-          <EffectivenessFilter 
-              className={props.classes.flex}
-              isLoading={isLoading}
-              onClickSync={handleReloadData}
-              onApply={handleChangeFilter}
-          />
-        </Grid>
-        <Grid item xs={12}>     
+          <Paper
+            square
+            elevation={1}
+          >
+            <EffectivenessFilter 
+                className={props.classes.flex}
+                isLoading={isLoading}
+                onClickSync={handleReloadData}
+                onApply={handleChangeFilter}
+            />
+          </Paper>   
           {
             !isLoading &&
             response &&

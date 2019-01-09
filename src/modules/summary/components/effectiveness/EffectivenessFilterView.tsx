@@ -119,7 +119,7 @@ export const EffectivenessFilterView: React.SFC<EffectivenessFilterProps> = prop
   };
 
   return (
-    <Toolbar disableGutters>
+    <Toolbar>
       <Typography
         noWrap
         variant="body2"
