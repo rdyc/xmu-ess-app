@@ -1,3 +1,5 @@
+import AppStorage from '@constants/AppStorage';
+import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { WithStyles, withStyles } from '@material-ui/core';
 import styles from '@styles';
@@ -7,7 +9,9 @@ import { RouteComponentProps, withRouter } from 'react-router';
 import {
   compose,
   HandleCreators,
+  // lifecycle,
   mapper,
+  // ReactLifeCycleFunctions,
   setDisplayName,
   StateHandler,
   StateHandlerMap,
@@ -46,6 +50,8 @@ interface IOwnStateUpdaters extends StateHandlerMap<IOwnState> {
 }
 
 interface IOwnHandler {
+  handleOnClickTheme: () => void;
+  handleOnClickAnchor: () => void;
   handleOnClickAccess: (event: React.MouseEvent) => void;
   handleOnClickAccessConfirmed: (event: React.MouseEvent) => void;
   handleOnClickLogout: (event: React.MouseEvent) => void;
@@ -60,6 +66,7 @@ export type NavigationHeaderProps
   & InjectedIntlProps
   & WithUser
   & WithStyles<typeof styles>
+  & WithLayout
   & RouteComponentProps;
 
 const createProps: mapper<NavigationHeaderProps, IOwnState> = (props: NavigationHeaderProps) => ({ 
@@ -78,6 +85,26 @@ const stateUpdaters: StateUpdaters<NavigationHeaderProps, IOwnState, IOwnStateUp
 };
 
 const handlerCreator: HandleCreators<NavigationHeaderProps, IOwnHandler> = {
+  handleOnClickTheme: (props: NavigationHeaderProps) => () => {
+    props.layoutDispatch.themeChange();
+
+    if (props.userState.user) {
+      store.set(`${AppStorage.Personalization}:${props.userState.user.uid}`, { 
+        theme: props.layoutState.theme,
+        anchor: props.layoutState.anchor
+      });
+    }
+  },
+  handleOnClickAnchor: (props: NavigationHeaderProps) => () => {
+    props.layoutDispatch.changeAnchor(props.layoutState.anchor === 'right' ? 'left' : 'right');
+
+    if (props.userState.user) {
+      store.set(`${AppStorage.Personalization}:${props.userState.user.uid}`, { 
+        theme: props.layoutState.theme,
+        anchor: props.layoutState.anchor
+      });
+    }
+  },
   handleOnClickAccess: (props: NavigationHeaderProps) => (event: React.MouseEvent) => {
     props.setDialogAccess();
   },
@@ -91,17 +118,39 @@ const handlerCreator: HandleCreators<NavigationHeaderProps, IOwnHandler> = {
     AppUserManager
       .signoutRedirect()
       .then(() => {
-        store.clearAll();
+        store.remove(AppStorage.Profile);
+        store.remove(AppStorage.Access);
       });
   }
 };
+
+// const lifecycles: ReactLifeCycleFunctions<NavigationHeaderProps, IOwnOption> = {
+//   componentDidMount() {
+//     if (this.props.userState.user) {
+//       // read previous saved personalization
+//       const personalization = store.get(`${AppStorage.Personalization}:${this.props.userState.user.uid}`);
+
+//       if (personalization) {
+//         // set previous anchor
+//         this.props.layoutDispatch.changeAnchor(personalization.theme.anchor);
+        
+//         // check dark type
+//         if (personalization.theme.palette.type === 'dark') {
+//           this.props.layoutDispatch.themeChange();
+//         }
+//       }
+//     }
+//   }
+// };
 
 export const NavigationHeader = compose<NavigationHeaderProps, IOwnOption>(
   setDisplayName('NavigationHeader'),
   injectIntl,
   withUser,
   withStyles(styles),
+  withLayout,
   withRouter,
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreator),
+  // lifecycle(lifecycles)
 )(NavigationHeaderView);

@@ -1,7 +1,8 @@
 import { createStyles, Theme } from '@material-ui/core';
 import blue from '@material-ui/core/colors/blue';
 import red from '@material-ui/core/colors/red';
-import NavHeader from './image/headers/sm/7.png';
+// import NavHeader from './image/headers/sm/9.png';
+import NavHeader from './image/headers/sm/0.svg';
 // import sidebar from './image/sidebar/satrio-tower.jpg';
 
 // var backgroundColorDefault = theme.palette.type === 'light' ? theme.palette.grey[100] : theme.palette.grey[900];
@@ -24,7 +25,9 @@ const styles = (theme: Theme) =>
 
     // Application Bar
     appBar: {
+      backgroundColor: theme.palette.primary.main,
       [theme.breakpoints.up('md')]: {
+        backgroundColor: theme.palette.background.default,
         width: `calc(100% - ${0}px)`,
         marginLeft: 0,
         marginRight: 0,
@@ -33,6 +36,12 @@ const styles = (theme: Theme) =>
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.leavingScreen
       })
+    },
+    appBarSearch: {
+      backgroundColor: theme.palette.background.paper
+    },
+    appBarSearchField: {
+      backgroundColor: theme.palette.background.paper
     },
     appBarShiftLeft: {
       [theme.breakpoints.up('md')]: {
@@ -89,11 +98,11 @@ const styles = (theme: Theme) =>
       transition: theme.transitions.create('width', {
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.enteringScreen
-      })
+      }),
     },
     drawerPaperBackground: {
-      backgroundColor: theme.palette.type === 'light' ? theme.palette.primary.main : theme.palette.grey[900],
-      color: theme.palette.primary.contrastText,
+      // backgroundColor: theme.palette.type === 'light' ? theme.palette.primary.light : theme.palette.grey[900],
+      // color: theme.palette.getContrastText(theme.palette.type === 'light' ? theme.palette.primary.light : theme.palette.grey[900]),
     },
     drawerPaperBackgroundImage: {
       // background: `linear-gradient(rgba(0,130,170,0), ${theme.palette.primary.main}), url(${sidebar})`,
@@ -120,7 +129,6 @@ const styles = (theme: Theme) =>
     },
     drawerPaperMenuItem: {
       color: 'inherit',
-      // margin: 0
     },
     drawerPaperMenuItemSub: {
       marginLeft: theme.spacing.unit * 7
@@ -132,21 +140,18 @@ const styles = (theme: Theme) =>
     // branding
     brandingContainer: {
       flex: 1,
-      // background: theme.palette.primary.dark,
-      background: `linear-gradient(rgba(0,130,170,0), ${theme.palette.primary.main}), url(${NavHeader})`,
-      // backgroundSize: 'cover',
+      background: `url(${NavHeader})`,
+      backgroundColor: theme.palette.background.paper,
+      backgroundSize: 'cover',
       backgroundRepeat: 'no-repeat',
       backgroundPosition: 'inherit',
-      color: theme.palette.getContrastText(theme.palette.primary.dark)
-    },
-    brandingImage: {
-      height: 100
+      color: theme.palette.text.primary
     },
 
     // avatar
     avatarSecondary: {
       color: '#fff',
-      backgroundColor: theme.palette.secondary.main
+      backgroundColor: theme.palette.secondary.dark
     },
     avatarRed: {
       color: '#fff',

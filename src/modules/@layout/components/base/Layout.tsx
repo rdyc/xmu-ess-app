@@ -1,6 +1,6 @@
 import { TopBar } from '@layout/components';
 import { DrawerAction } from '@layout/components/drawer/DrawerAction';
-import { DrawerMenu } from '@layout/components/drawer/DrawerMenuSFC';
+import { DrawerMenu } from '@layout/components/drawer/DrawerMenu';
 import SnackbarAlertSFC from '@layout/components/snackbar/SnackbarAlertSFC';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { LayoutTheme } from '@layout/hoc/withRoot';

@@ -1,4 +1,5 @@
 import AppMenu from '@constants/AppMenu';
+import { SvgIconProps } from '@material-ui/core/SvgIcon';
 import AlarmOnIcon from '@material-ui/icons/AlarmOn';
 import AssignmentIcon from '@material-ui/icons/Assignment';
 import DepartureBoardIcon from '@material-ui/icons/DepartureBoard';
@@ -16,50 +17,51 @@ import * as React from 'react';
 
 interface ModuleIconProps {
   module: AppMenu | string;
+  innerProps?: SvgIconProps;
 }
 
 export const ModuleIcon: React.ComponentType<ModuleIconProps> = props => {
   switch (props.module) {
     case AppMenu.Home:
-      return <HomeIcon/>;
+      return <HomeIcon {...props.innerProps} />;
 
     case AppMenu.Expense:
-      return <LocalMallIcon/>;
+      return <LocalMallIcon {...props.innerProps} />;
 
     case AppMenu.Leave:
-      return <WeekendIcon/>;
+      return <WeekendIcon {...props.innerProps} />;
 
     case AppMenu.Mileage:
-      return <DepartureBoardIcon/>;
+      return <DepartureBoardIcon {...props.innerProps} />;
 
     case AppMenu.Account:
-      return <PersonPinIcon/>;
+      return <PersonPinIcon {...props.innerProps} />;
 
     case AppMenu.ProjectAssignment:
-      return <AssignmentIcon/>;
+      return <AssignmentIcon {...props.innerProps} />;
 
     case AppMenu.ProjectRegistration:
-      return <NextWeekIcon/>;
+      return <NextWeekIcon {...props.innerProps} />;
 
     case AppMenu.Report:
-      return <ReceiptIcon/>;
+      return <ReceiptIcon {...props.innerProps} />;
 
     case AppMenu.Lookup:
-      return <SettingsIcon/>;
+      return <SettingsIcon {...props.innerProps} />;
 
     case AppMenu.Timesheet:
-      return <AlarmOnIcon/>;
+      return <AlarmOnIcon {...props.innerProps} />;
 
     case AppMenu.Travel:
-      return <FlightTakeOffIcon/>;
+      return <FlightTakeOffIcon {...props.innerProps} />;
     
     case AppMenu.Purchase:
-      return <ShoppingCartIcon/>;
+      return <ShoppingCartIcon {...props.innerProps} />;
 
     case AppMenu.Finance:
-      return <LocalAtmIcon/>;
+      return <LocalAtmIcon {...props.innerProps} />;
   
     default:
-      return <HomeIcon/>;
+      return <HomeIcon {...props.innerProps} />;
   }
 };

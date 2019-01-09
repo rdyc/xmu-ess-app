@@ -61,6 +61,8 @@
 
   "layout.label.login": "Login",
   "layout.label.logout": "Logout",
+  "layout.label.theme": "Dark Mode",
+  "layout.label.anchor": "Right Anchor",
   "layout.label.switch": "Switch Access",
   "layout.label.selection": "{count} selected",
   
