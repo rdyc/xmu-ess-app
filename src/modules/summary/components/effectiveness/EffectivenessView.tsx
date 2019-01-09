@@ -1,5 +1,4 @@
-import { layoutMessage } from '@layout/locales/messages';
-import {  Card, CardContent, Grid, Paper, Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@material-ui/core';
+import { Grid, Paper, Table, TableBody, TableCell, TableHead, TableRow } from '@material-ui/core';
 import { isWidthDown } from '@material-ui/core/withWidth';
 import { ISummaryEffectiveness } from '@summary/classes/response/effectiveness';
 import { EffectivenessProps } from '@summary/components/effectiveness/Effectiveness';
@@ -7,11 +6,11 @@ import { summaryMessage } from '@summary/locales/messages/summaryMessage';
 import * as classNames from 'classnames';
 import * as React from 'react';
 import { isArray } from 'util';
-import { FilterForm } from './filterForm/FilterForm';
+import { EffectivenessFilter } from './EffectivenessFilter';
 
 export const EffectivenessView: React.SFC<EffectivenessProps> = props => {
   const { isLoading, response } = props.summaryState.effectiveness;
-  const { width, classes, handleChangeFilter, intl } = props;
+  const { width, classes, handleChangeFilter, intl, handleReloadData } = props;
 
   const isMobile = isWidthDown('sm', width);
 
@@ -120,24 +119,18 @@ export const EffectivenessView: React.SFC<EffectivenessProps> = props => {
   const render = (
     <React.Fragment>
       <Grid container spacing={8}>
-        <Grid item xs={12}>
-          <Card
+        <Grid item xs={12}>  
+          <Paper
             square
+            elevation={1}
           >
-            <CardContent>
-              <FilterForm 
-                  onFilterChange={handleChangeFilter}
-              />
-            </CardContent>
-          </Card>
-        </Grid>
-        <Grid item xs={12}>
-          {
-            isLoading && 
-            <Typography>
-              {intl.formatMessage(layoutMessage.text.loading)}
-            </Typography>
-          }     
+            <EffectivenessFilter 
+                className={props.classes.flex}
+                isLoading={isLoading}
+                onClickSync={handleReloadData}
+                onApply={handleChangeFilter}
+            />
+          </Paper>   
           {
             !isLoading &&
             response &&
