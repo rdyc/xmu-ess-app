@@ -46,6 +46,7 @@
   "timesheet.entry.field.end.required": "End is required",
   "timesheet.entry.field.end.placeholder": "Select a end time",
   "timesheet.entry.field.description": "Notes",
+  "timesheet.entry.field.description.required": "Notes is required",
   "timesheet.entry.field.description.placeholder": "Type a notes",
   "timesheet.entry.field.mileagePercentage": "Mileage Percentage",
   "timesheet.entry.field.mileageDescription": "Mileage Description",

@@ -23,7 +23,7 @@ import {
 
 import { TopBarView } from './TopBarView';
 
-type TopBarMode = 'normal' | 'list' | 'search';
+type TopBarMode = 'normal' | 'selection' | 'search';
 
 interface OwnOption {
   
@@ -31,8 +31,8 @@ interface OwnOption {
 
 interface OwnState {
   mode: TopBarMode;
-  search: string;
-  field: ICollectionValue | undefined;
+  search?: string;
+  field?: ICollectionValue;
   isShowFields: boolean;
   isOpenMenu: boolean;
 }
@@ -110,9 +110,7 @@ const stateUpdaters: StateUpdaters<OwnOption, OwnState, OwnStateUpdater> = {
 const handlerCreators: HandleCreators<TopBarProps, OwnHandler> = {
   handleOnClickBack: (props: TopBarProps) => (event: React.MouseEvent) => {
     props.layoutDispatch.navBackShow();
-
-    // props.history.push(props.layoutState.parentUrl ? props.layoutState.parentUrl : '/home/dashboard');
-
+    
     if (props.layoutState.parentUrl) {
       props.history.push(props.layoutState.parentUrl);
     } else {
@@ -233,7 +231,11 @@ const handlerCreators: HandleCreators<TopBarProps, OwnHandler> = {
 };
 
 const lifeCycles: ReactLifeCycleFunctions<TopBarProps, OwnState> = {
+  componentDidMount () {
+    this.props.appBarDispatch.selectionClear();
+  },
   componentDidUpdate(prevProps: TopBarProps) {
+    // layout comparer
     if (this.props.layoutState !== prevProps.layoutState) {
 
       if (this.props.layoutState.view) {
@@ -248,6 +250,15 @@ const lifeCycles: ReactLifeCycleFunctions<TopBarProps, OwnState> = {
             this.props.setMode('normal');
           }
         }
+      }
+    }
+
+    // topbar comparer
+    if (this.props.appBarState !== prevProps.appBarState) {
+      if (this.props.layoutState.isModeList && this.props.appBarState.selection.length > 0) {
+        this.props.setMode('selection');
+      } else {
+        this.props.setMode('normal');
       }
     }
   }

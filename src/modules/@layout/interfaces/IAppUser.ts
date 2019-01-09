@@ -1,3 +1,4 @@
+import { IEmployeeAccessList } from '@account/classes';
 import { ILookupRoleMenuList } from '@lookup/classes';
 
 import { IUserCompany } from './IUserCompany';
@@ -12,4 +13,5 @@ export interface IAppUser {
   position: IUserPosition;
   role: IUserRole;
   menus: ILookupRoleMenuList[] | null | undefined;
+  access: IEmployeeAccessList[];
 }

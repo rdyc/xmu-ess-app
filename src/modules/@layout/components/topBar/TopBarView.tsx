@@ -110,7 +110,7 @@ const ToolbarControl: React.SFC<ToolbarControlOptions> = props => (
       /* menu */
       !props.showBack &&
       <IconButton
-      color={props.color}
+        color={props.color}
         aria-label="open drawer"
         onClick={props.OnClickMenu}
         className={props.menuclassName}
@@ -210,8 +210,8 @@ const ToolbarControl: React.SFC<ToolbarControlOptions> = props => (
 );
 
 interface SearchControlOptions {
-  find: string;
-  field: ICollectionValue | undefined;
+  find?: string;
+  field?: ICollectionValue;
   OnClickBack: (event: React.MouseEvent) => void;
   OnClickClear: (event: React.MouseEvent) => void;
   OnClickField: (event: React.MouseEvent) => void;
@@ -250,6 +250,7 @@ const SearchControl: React.SFC<SearchControlOptions> = props => (
         </InputAdornment>
       }
       endAdornment={
+        props.find &&
         props.find.length > 0 &&
         <InputAdornment position="end">
           <IconButton onClick={props.OnClickClear}>
@@ -271,7 +272,6 @@ export const TopBarView: React.SFC<TopBarProps> = props => (
     <Toolbar>
       {
         props.mode === 'normal' &&
-        props.appBarState.selection.length === 0 &&
         <ToolbarControl
           color={isWidthUp('md', props.width) ? 'default' : 'inherit'}
           menuclassName={classNames(props.classes.navIconHide, props.layoutState.isDrawerMenuVisible && props.classes.hide)}
@@ -298,7 +298,7 @@ export const TopBarView: React.SFC<TopBarProps> = props => (
       }
 
       {
-        props.mode === 'normal' &&
+        props.mode === 'selection' &&
         props.appBarState.selection.length > 0 &&
         <React.Fragment>
           <IconButton
@@ -344,7 +344,7 @@ export const TopBarView: React.SFC<TopBarProps> = props => (
     {
       props.isShowFields &&
       props.appBarState.fields &&
-      <div className={props.search.length < 3 ? props.classes.hide : ''}>
+      <div className={props.search && props.search.length < 3 ? props.classes.hide : ''}>
         <Divider />
         <List 
           component="div" 

@@ -1,6 +1,6 @@
 import { TopBar } from '@layout/components';
-import DrawerActionSFC from '@layout/components/drawer/DrawerActionSFC';
-import DrawerMenuSFC from '@layout/components/drawer/DrawerMenuSFC';
+import { DrawerAction } from '@layout/components/drawer/DrawerAction';
+import { DrawerMenu } from '@layout/components/drawer/DrawerMenu';
 import SnackbarAlertSFC from '@layout/components/snackbar/SnackbarAlertSFC';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { LayoutTheme } from '@layout/hoc/withRoot';
@@ -48,9 +48,9 @@ const layout: React.SFC<LayoutProps> = props => {
       <div className={classes.root}>
         <TopBar />
 
-        <DrawerMenuSFC />
+        <DrawerMenu />
         
-        <DrawerActionSFC />
+        <DrawerAction />
         
         <main className={classNames(
           classes.content,

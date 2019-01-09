@@ -84,7 +84,7 @@ interface OwnStateUpdater extends StateHandlerMap<OwnState> {
   setFilterMonthVisibility: StateHandler<OwnState>;
   setFilterMonth: StateHandler<OwnState>;
 
-  // filter month
+  // filter year
   setFilterYearVisibility: StateHandler<OwnState>;
   setFilterYear: StateHandler<OwnState>;
 

@@ -1,10 +1,12 @@
 import { createStyles, Theme } from '@material-ui/core';
 import blue from '@material-ui/core/colors/blue';
 import red from '@material-ui/core/colors/red';
-import sidebar from './image/sidebar/satrio-tower.jpg';
+// import NavHeader from './image/headers/sm/9.png';
+import NavHeader from './image/headers/sm/0.svg';
+// import sidebar from './image/sidebar/satrio-tower.jpg';
 
 // var backgroundColorDefault = theme.palette.type === 'light' ? theme.palette.grey[100] : theme.palette.grey[900];
-const drawerWidth = 280;
+const drawerWidth = 300;
 
 const size = {
   thin: 1,
@@ -91,11 +93,12 @@ const styles = (theme: Theme) =>
       })
     },
     drawerPaperBackground: {
-      backgroundColor: theme.palette.type === 'light' ? theme.palette.primary.main : theme.palette.grey[900],
-      color: theme.palette.primary.contrastText,
+      // backgroundColor: theme.palette.type === 'light' ? theme.palette.primary.light : theme.palette.grey[900],
+      // color: theme.palette.getContrastText(theme.palette.type === 'light' ? theme.palette.primary.light : theme.palette.grey[900]),
     },
     drawerPaperBackgroundImage: {
-      background: `linear-gradient(rgba(0,130,170,0), ${theme.palette.primary.main}), url(${sidebar})`,
+      // background: `linear-gradient(rgba(0,130,170,0), ${theme.palette.primary.main}), url(${sidebar})`,
+      background: `linear-gradient(rgba(0,130,170,0), ${theme.palette.primary.main}))`,
       backgroundSize: 'cover',
       backgroundPosition: 'center center',
       opacity: .2,
@@ -116,11 +119,39 @@ const styles = (theme: Theme) =>
         duration: theme.transitions.duration.leavingScreen
       })
     },
+    drawerPaperMenuItem: {
+      color: 'inherit',
+    },
+    drawerPaperMenuItemSub: {
+      marginLeft: theme.spacing.unit * 7
+    },
+    drawerPaperFooter: {
+      bottom: theme.spacing.unit * 2
+    },
+
+    // branding
+    brandingContainer: {
+      flex: 1,
+      background: `url(${NavHeader})`,
+      backgroundColor: theme.palette.background.paper,
+      backgroundSize: 'cover',
+      backgroundRepeat: 'no-repeat',
+      backgroundPosition: 'inherit',
+      color: theme.palette.text.primary
+    },
+
+    // avatar
+    avatarSecondary: {
+      color: '#fff',
+      backgroundColor: theme.palette.secondary.dark
+    },
     avatarRed: {
       color: '#fff',
       backgroundColor: red[500],
-      fontSize: theme.typography.fontSize / 1.1
+      // fontSize: theme.typography.fontSize / 1.1
     },
+
+    // flex
     flex: {
       flex: 1
     },

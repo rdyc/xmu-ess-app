@@ -102,7 +102,8 @@ const handlerCreators: HandleCreators<AccessSwitcherProps, OwnHandlers> = {
           uid: response.data.uid,
           email: response.data.email,
           fullName: response.data.fullName,
-          menus: access.menus
+          menus: access.menus,
+          access: response.data.access
         };
     
         // save to local storage

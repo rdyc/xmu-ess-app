@@ -10,7 +10,6 @@ import { BaseFieldsProps, FieldArray, Fields, FormSection, WrappedFieldArrayProp
 export const PurchaseSettlementFormView: React.SFC<PurchaseSettlementFormProps> = props => {
   const {
     formMode,
-    formIsDiffNegative,
     formIsCurrencyIDR, initialValues,
     // settleMinDate
   } = props;
@@ -22,7 +21,6 @@ export const PurchaseSettlementFormView: React.SFC<PurchaseSettlementFormProps> 
       formMode={formMode}
       context={context}
       isCurrencyIdr={formIsCurrencyIDR}
-      isDiffNegative={formIsDiffNegative}
       // settleMinDate={settleMinDate}
     />
   );

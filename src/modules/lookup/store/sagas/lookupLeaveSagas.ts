@@ -1,4 +1,4 @@
-import { layoutAlertAdd, listBarLoading,  listBarMetadata } from '@layout/store/actions';
+import { layoutAlertAdd } from '@layout/store/actions';
 import {
   LookupLeaveAction as Action,
   lookupLeaveDeleteError,
@@ -39,10 +39,9 @@ function* watchGetAllRequest() {
     
     return saiyanSaga.fetch({
       method: 'get',
-      path: `/v1/lookup/leaves?${params}}`, 
+      path: `/v1/lookup/leaves?${params}`, 
       successEffects: (response: IApiResponse) => ([
         put(lookupLeaveGetAllSuccess(response.body)),
-        put(listBarMetadata(response.body.metadata))
       ]), 
       failureEffects: (response: IApiResponse) => ([
         put(lookupLeaveGetAllError(response.statusText)),
@@ -59,7 +58,9 @@ function* watchGetAllRequest() {
           message: error.message
         }))
       ]),
-      finallyEffects: [put(listBarLoading(false))]
+      finallyEffects: [
+        // put(listBarLoading(false))
+      ]
     });
   };
   
@@ -75,7 +76,7 @@ function* watchGetListRequest() {
     
     return saiyanSaga.fetch({
       method: 'get',
-      path: `/v1/lookup/leaves/list?${params}}`,
+      path: `/v1/lookup/leaves/list?${params}`,
       successEffects: (response: IApiResponse) => ([
         put(lookupLeaveGetListSuccess(response.body)),
       ]), 
@@ -144,7 +145,12 @@ function* watchPostRequest() {
         action.payload.resolve(response.body.data);
       },
       failureEffects: (response: IApiResponse) => [
-        put(lookupLeavePostError(response.statusText))
+        put(lookupLeavePostError(response.statusText)),
+        put(layoutAlertAdd({
+          time: new Date(),
+          message: response.statusText,
+          details: response
+        })),
       ],
       failureCallback: (response: IApiResponse) => {
         if (response.status === 400) {
@@ -191,7 +197,12 @@ function* watchPutRequest() {
         action.payload.resolve(response.body.data);
       },
       failureEffects: (response: IApiResponse) => [
-        put(lookupLeavePutError(response.statusText))
+        put(lookupLeavePutError(response.statusText)),
+        put(layoutAlertAdd({
+          time: new Date(),
+          message: response.statusText,
+          details: response
+        })),
       ],
       failureCallback: (response: IApiResponse) => {
         if (response.status === 400) {
