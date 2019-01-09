@@ -18,9 +18,9 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import CloseIcon from '@material-ui/icons/Close';
 import ClearIcon from '@material-ui/icons/SettingsBackupRestore';
 import * as React from 'react';
-import { PositionListFilterProps } from './PositionListFilter';
+import { LookupHolidayListFilterProps } from './LookupHolidayListFilter';
 
-export const PositionListFilterView: React.SFC<PositionListFilterProps> = props => (
+export const LookupHolidayListFilterView: React.SFC<LookupHolidayListFilterProps> = props => (
   <React.Fragment>
     <Dialog
       fullScreen
@@ -58,7 +58,7 @@ export const PositionListFilterView: React.SFC<PositionListFilterProps> = props 
       <List>
         <ListItem button onClick={props.handleFilterCompanyVisibility}>
           <ListItemText
-            primary={props.intl.formatMessage(lookupMessage.position.field.companyUid)}
+            primary={props.intl.formatMessage(lookupMessage.holiday.field.company)}
             secondary={props.filterCompany && props.filterCompany.name || props.intl.formatMessage(layoutMessage.text.none)}
           />
           <ListItemSecondaryAction>
@@ -80,7 +80,7 @@ export const PositionListFilterView: React.SFC<PositionListFilterProps> = props 
     </Dialog>
 
     <FilterCompany
-      title={props.intl.formatMessage(lookupMessage.position.field.companyUid)}
+      title={props.intl.formatMessage(lookupMessage.holiday.field.company)}
       hideBackdrop={true}
       isOpen={props.isFilterCompanyOpen}
       value={props.filterCompany && props.filterCompany.uid}

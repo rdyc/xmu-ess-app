@@ -1,7 +1,7 @@
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { ILookupCompany } from '@lookup/classes';
-import { IPositionGetAllFilter } from '@lookup/classes/filters/position/IPositionGetAllFilter';
+import { ILookupLeaveGetAllFilter } from '@lookup/classes/filters/leave/ILookupLeaveGetAllFilter';
 import { WithStyles, withStyles } from '@material-ui/core';
 import styles from '@styles';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
@@ -16,15 +16,15 @@ import {
   withHandlers,
   withStateHandlers,
 } from 'recompose';
-import { PositionListFilterView } from './PositionListFilterView';
+import { LookupLeaveListFilterView } from './LookupLeaveListFilterView';
 
-export type IPositionListFilterResult = Pick<IPositionGetAllFilter, 'companyUid' >;
+export type ILookupLeaveListFilterResult = Pick<ILookupLeaveGetAllFilter, 'companyUid' >;
 
 interface IOwnOption {
   isOpen: boolean;
-  initialProps?: IPositionListFilterResult;
+  initialProps?: ILookupLeaveListFilterResult;
   onClose: (event: React.MouseEvent<HTMLElement>) => void;
-  onApply: (filter: IPositionListFilterResult) => void;
+  onApply: (filter: ILookupLeaveListFilterResult) => void;
 }
 
 interface IOwnState {
@@ -55,7 +55,7 @@ interface IOwnHandler {
   handleFilterCompanyOnClose: () => void;
 }
 
-export type PositionListFilterProps 
+export type LookupLeaveListFilterProps 
   = IOwnOption
   & WithUser
   & IOwnState
@@ -65,11 +65,11 @@ export type PositionListFilterProps
   & WithLayout
   & InjectedIntlProps;
 
-const createProps: mapper<PositionListFilterProps, IOwnState> = (props: PositionListFilterProps): IOwnState => ({
+const createProps: mapper<LookupLeaveListFilterProps, IOwnState> = (props: LookupLeaveListFilterProps): IOwnState => ({
   isFilterCompanyOpen: false,
 });
 
-const stateUpdaters: StateUpdaters<PositionListFilterProps, IOwnState, IOwnStateUpdater> = { 
+const stateUpdaters: StateUpdaters<LookupLeaveListFilterProps, IOwnState, IOwnStateUpdater> = { 
   // main filter
   setFilterReset: (prevState: IOwnState) => () => ({
     filterCompany: undefined,
@@ -85,39 +85,39 @@ const stateUpdaters: StateUpdaters<PositionListFilterProps, IOwnState, IOwnState
   }),
 };
 
-const handlerCreators: HandleCreators<PositionListFilterProps, IOwnHandler> = {
+const handlerCreators: HandleCreators<LookupLeaveListFilterProps, IOwnHandler> = {
   // main filter
-  handleFilterOnReset: (props: PositionListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
+  handleFilterOnReset: (props: LookupLeaveListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
     props.setFilterReset();
   },
-  handleFilterOnApply: (props: PositionListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
+  handleFilterOnApply: (props: LookupLeaveListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
     props.onApply({
       companyUid: props.filterCompany && props.filterCompany.uid,
     });
   },
 
   // filter company
-  handleFilterCompanyVisibility: (props: PositionListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
+  handleFilterCompanyVisibility: (props: LookupLeaveListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
     props.setFilterCompanyVisibility(); 
   },
-  handleFilterCompanyOnSelected: (props: PositionListFilterProps) => (company: ILookupCompany) => {
+  handleFilterCompanyOnSelected: (props: LookupLeaveListFilterProps) => (company: ILookupCompany) => {
     props.setFilterCompany(company);
   },
-  handleFilterCompanyOnClear: (props: PositionListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
+  handleFilterCompanyOnClear: (props: LookupLeaveListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
     props.setFilterCompany();
   },
-  handleFilterCompanyOnClose: (props: PositionListFilterProps) => () => {
+  handleFilterCompanyOnClose: (props: LookupLeaveListFilterProps) => () => {
     props.setFilterCompanyVisibility();
   },
 
 };
 
-export const PositionListFilter = compose<PositionListFilterProps, IOwnOption>(
-  setDisplayName('PositionListFilter'),
+export const LookupLeaveListFilter = compose<LookupLeaveListFilterProps, IOwnOption>(
+  setDisplayName('LookupLeaveListFilter'),
   withUser,
   withLayout,
   withStyles(styles),
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators)
-)(PositionListFilterView);
+)(LookupLeaveListFilterView);

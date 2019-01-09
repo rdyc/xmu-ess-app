@@ -38,7 +38,7 @@ function* watchFetchAllRequest() {
     
     return saiyanSaga.fetch({
       method: 'get',
-      path: `/v1/lookup/holidays?${params}}`, 
+      path: `/v1/lookup/holidays?${params}`, 
       successEffects: (response: IApiResponse) => ([
         put(lookupHolidayGetAllSuccess(response.body)),
       ]), 
@@ -75,7 +75,7 @@ function* watchFetchListRequest() {
 
     return saiyanSaga.fetch({
       method: 'get',
-      path: `/v1/lookup/holidays/list?${params}}`,
+      path: `/v1/lookup/holidays/list?${params}`,
       successEffects: (response: IApiResponse) => ([
         put(lookupHolidayGetListSuccess(response.body)),
       ]), 

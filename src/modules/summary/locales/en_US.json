@@ -6,7 +6,7 @@
   "summary.filter.field.projectUid.placeholder": "Select a Project",
   "summary.filter.field.employeeUid.placeholder": "Select an Employee",
 
-  "summary.billable.page.title": "Employee and Presales Billable",
+  "summary.billable.page.title": "Billable and Presales Utilization",
   "summary.billable.page.subHeader": " ",
 
   "summary.billable.field.company": "Company",
