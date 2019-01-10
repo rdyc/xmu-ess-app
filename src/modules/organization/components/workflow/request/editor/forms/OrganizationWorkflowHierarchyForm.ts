@@ -18,7 +18,8 @@ interface OwnProps {
 
 interface OwnState {
   isOpenMenu: boolean;
-  hierarchyIndex: number; 
+  hierarchyIndex: number;
+  isOpenDialog: boolean; 
 }
 
 interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
@@ -28,12 +29,15 @@ interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
 interface OwnHandlers {
   handleMenuOpen: (site: WorkflowHierarchyFormData, index: number) => void;
   handleMenuClose: () => void;
+  handleDialogClose: () => void;
+  handleNew: () => void;
 }
 
 const createProps: mapper<OrganizationWorkflowHierarchyFormProps, OwnState> = (props: OrganizationWorkflowHierarchyFormProps): OwnState => {
   
   return { 
     isOpenMenu: false,
+    isOpenDialog: false,
     hierarchyIndex: 0
   };
 };
@@ -55,7 +59,23 @@ const handlerCreators: HandleCreators<OrganizationWorkflowHierarchyFormProps, Ow
       isOpenMenu: false,
       // siteItemIndex: undefined,
     });
-  }  
+  },
+  
+  handleDialogClose: (props: OrganizationWorkflowHierarchyFormProps) => () => { 
+    const { stateUpdate } = props;
+
+    stateUpdate({
+      isOpenDialog: false,
+    });
+  },
+
+  handleNew: (props: OrganizationWorkflowHierarchyFormProps) => () => { 
+    const { stateUpdate } = props;
+
+    stateUpdate({
+      isOpenDialog: true
+    });
+  },
 };
 
 const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
