@@ -1,8 +1,10 @@
+import { ModuleDefinition, NotificationType, redirector } from '@layout/helper/redirector';
 import { WithNotification, withNotification } from '@layout/hoc/withNotification';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { INotificationDetailItem } from '@layout/interfaces';
 import { WithStyles, withStyles } from '@material-ui/core';
 import styles from '@styles';
+import { RouteComponentProps, withRouter } from 'react-router';
 import {
   compose,
   HandleCreators,
@@ -21,14 +23,14 @@ import { NotificationView } from './NotificationView';
 
 interface OwnOption {
   interval?: number;
+  onClose: () => void;
 }
 
 interface OwnState {
   index: number;
-  category?: string;
-  type?: string;
-  active?: string;
-  isExpanded: boolean;
+  module?: ModuleDefinition;
+  name?: string;
+  type?: NotificationType;
   shouldReload: boolean;
   timerId?: number;
 
@@ -45,14 +47,13 @@ interface OwnState {
 
 interface OwnStateUpdater extends StateHandlerMap<OwnState> {
   setReload: StateHandler<OwnState>;
-  setToggle: StateHandler<OwnState>;
   setTimer: StateHandler<OwnState>;
 }
 
 interface OwnHandler {
   handleOnClickReload: () => void;
-  handleOnChangeIndex: (e: React.MouseEvent, index: number, category?: string, type?: string) => void;
-  handleOnClickCategory: (e: React.MouseEvent) => void;
+  handleOnChangeIndex: (e: React.MouseEvent, index: number, module?: string, name?: string, type?: string) => void;
+  handleRedirection: (uid: string, module?: ModuleDefinition, type?: NotificationType) => void;
 }
 
 export type NotificationProps
@@ -62,19 +63,15 @@ export type NotificationProps
   & OwnHandler
   & WithUser
   & WithNotification
-  & WithStyles<typeof styles>;
+  & WithStyles<typeof styles>
+  & RouteComponentProps;
 
 const createProps: mapper<OwnOption, OwnState> = (props: OwnOption): OwnState => ({
   index: 0,
-  isExpanded: false,
   shouldReload: false
 });
 
 const stateUpdaters: StateUpdaters<NotificationProps, OwnState, OwnStateUpdater> = {
-  setToggle: (prev: OwnState) => (id: string): Partial<OwnState> => ({
-    active: id,
-    isExpanded: prev.active === id ? !prev.isExpanded : true
-  }),
   setReload: (prev: OwnState) => (timerId?: number): Partial<OwnState> => ({
     shouldReload: !prev.shouldReload,
     index: !prev.shouldReload ? 0 : prev.index 
@@ -82,9 +79,10 @@ const stateUpdaters: StateUpdaters<NotificationProps, OwnState, OwnStateUpdater>
   setTimer: (prev: OwnState) => (timerId?: number): Partial<OwnState> => ({
     timerId
   }),
-  setIndex: (prev: OwnState) => (index: number, category?: string, type?: string): Partial<OwnState> => ({
+  setIndex: (prev: OwnState) => (index: number, module?: ModuleDefinition, name?: string, type?: NotificationType): Partial<OwnState> => ({
     index,
-    category,
+    module,
+    name,
     type
   })
 };
@@ -105,13 +103,17 @@ const handlerCreators: HandleCreators<NotificationProps, OwnHandler> = {
     
     props.setReload();
   },
-  handleOnChangeIndex: (props: NotificationProps) => (e: React.MouseEvent, index: number, category?: string, type?: string) => {
-    props.setIndex(index, category, type);
+  handleOnChangeIndex: (props: NotificationProps) => (e: React.MouseEvent, index: number, module?: ModuleDefinition, name?: string, type?: string) => {
+    props.setIndex(index, module, name, type);
   },
-  handleOnClickCategory: (props: NotificationProps) => (e: React.MouseEvent) => {
-    const elementId = e.currentTarget.id;
+  handleRedirection: (props: NotificationProps) => (uid: string, module?: ModuleDefinition, type?: NotificationType) => {
+    props.onClose();
 
-    props.setToggle(elementId);
+    if (module && type) {
+      const redirect = redirector(module, type, uid);
+      
+      props.history.push(redirect.path, redirect.state);
+    }
   }
 };
 
@@ -139,6 +141,7 @@ export const Notification = compose<NotificationProps, OwnOption>(
   setDisplayName('Notification'),
   withUser,
   withNotification,
+  withRouter,
   withStyles(styles),
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
