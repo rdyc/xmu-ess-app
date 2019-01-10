@@ -21,10 +21,10 @@ import {
   withHandlers,
   withStateHandlers
 } from 'recompose';
-import { IWinningRatioFilterResult } from './WinningRatioFilter';
-import { WinningRatioView } from './WinningRatioView';
+import { IBillableListFilterResult } from './BillableListFilter';
+import { BillableView } from './BillableView';
 
-interface OwnState extends IWinningRatioFilterResult {
+interface OwnState extends IBillableListFilterResult {
   isAdmin: boolean;
   reloadData: boolean;
   uid: string | undefined;
@@ -45,7 +45,7 @@ interface OwnHandlers {
   handleChangeSize: (size: number) => void;
   handleChangeSort: (direction: boolean) => void;
   handleDetail: (uid: string, type: string) => void;
-  handleChangeFilter: (filter: IWinningRatioFilterResult) => void;
+  handleChangeFilter: (filter: IBillableListFilterResult) => void;
 }
 
 interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
@@ -53,7 +53,7 @@ interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
   setFilterApplied: StateHandler<OwnState>;
 }
 
-export type WinningRatioProps = WithSummary &
+export type BillableProps = WithSummary &
   WithWidth &
   WithUser &
   WithLayout &
@@ -64,11 +64,11 @@ export type WinningRatioProps = WithSummary &
   OwnStateUpdaters &
   WithStyles<typeof styles>;
 
-const createProps: mapper<WinningRatioProps, OwnState> = (
-  props: WinningRatioProps
+const createProps: mapper<BillableProps, OwnState> = (
+  props: BillableProps
 ): OwnState => {
   const { orderBy, direction, page, size } = props;
-  const { request } = props.summaryState.winning;
+  const { request } = props.summaryState.billable;
 
   return {
     isAdmin: false,
@@ -99,73 +99,73 @@ const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
     ...newState
   }),
   setFilterApplied: (prevState: OwnState) => (
-    filter: IWinningRatioFilterResult
+    filter: IBillableListFilterResult
   ) => ({
     ...filter
   })
 };
 
-const handlerCreators: HandleCreators<WinningRatioProps, OwnHandlers> = {
-  handleChangeFilter: (props: WinningRatioProps) => (
-    filter: IWinningRatioFilterResult
+const handlerCreators: HandleCreators<BillableProps, OwnHandlers> = {
+  handleChangeFilter: (props: BillableProps) => (
+    filter: IBillableListFilterResult
   ) => {
     props.setFilterApplied(filter);
   },
-  handleReloadData: (props: WinningRatioProps) => () => {
+  handleReloadData: (props: BillableProps) => () => {
     props.stateUpdate({
       reloadData: true
     });
   },
-  handleDialog: (props: WinningRatioProps) => () => {
+  handleDialog: (props: BillableProps) => () => {
     props.stateUpdate({
       open: !props.open
     });
   },
-  handleDetail: (props: WinningRatioProps) => (uid: string, type: string) => {
+  handleDetail: (props: BillableProps) => (uid: string, type: string) => {
     props.stateUpdate({
       uid,
       type
     });
   },
-  handleGoToNext: (props: WinningRatioProps) => () => {
+  handleGoToNext: (props: BillableProps) => () => {
     props.stateUpdate({
       page: props.page + 1
     });
   },
-  handleGoToPrevious: (props: WinningRatioProps) => () => {
+  handleGoToPrevious: (props: BillableProps) => () => {
     props.stateUpdate({
       page: props.page - 1
     });
   },
-  handleChangeSize: (props: WinningRatioProps) => (size: number) => {
+  handleChangeSize: (props: BillableProps) => (size: number) => {
     props.stateUpdate({
       size,
       page: 1
     });
   },
-  handleChangePage: (props: WinningRatioProps) => (page: number) => {
+  handleChangePage: (props: BillableProps) => (page: number) => {
     props.stateUpdate({
       page
     });
   },
-  handleChangeSort: (props: WinningRatioProps) => (direction: boolean) => {
+  handleChangeSort: (props: BillableProps) => (direction: boolean) => {
     props.stateUpdate({
       direction: direction ? 'descending' : 'ascending'
     });
   }
 };
 
-const lifecycles: ReactLifeCycleFunctions<WinningRatioProps, OwnState> = {
+const lifecycles: ReactLifeCycleFunctions<BillableProps, OwnState> = {
   componentDidMount() {
     const { layoutDispatch, intl } = this.props;
 
-    const { isLoading, response } = this.props.summaryState.winning;
+    const { isLoading, response } = this.props.summaryState.billable;
 
     layoutDispatch.changeView({
-      uid: AppMenu.ReportWinningRatio,
+      uid: AppMenu.ReportBillable,
       parentUid: AppMenu.Report,
-      title: intl.formatMessage(summaryMessage.winningRatio.page.title),
-      subTitle: intl.formatMessage(summaryMessage.winningRatio.page.subHeader)
+      title: intl.formatMessage(summaryMessage.billable.page.title),
+      subTitle: intl.formatMessage(summaryMessage.billable.page.subHeader)
     });
 
     // only load data when response are empty
@@ -173,7 +173,7 @@ const lifecycles: ReactLifeCycleFunctions<WinningRatioProps, OwnState> = {
       loadData(this.props);
     }
   },
-  componentWillUpdate(props: WinningRatioProps, state: OwnState) {
+  componentWillUpdate(props: BillableProps, state: OwnState) {
     if (
       this.props.companyUid !== props.companyUid ||
       this.props.employeeUid !== props.employeeUid ||
@@ -197,7 +197,7 @@ const lifecycles: ReactLifeCycleFunctions<WinningRatioProps, OwnState> = {
   componentWillUnmount() {
     const { layoutDispatch } = this.props;
     const { view } = this.props.layoutState;
-    const { loadWinningDispose } = this.props.summaryDispatch;
+    const { loadBillableDispose } = this.props.summaryDispatch;
 
     layoutDispatch.changeView(null);
     layoutDispatch.modeListOff();
@@ -206,20 +206,20 @@ const lifecycles: ReactLifeCycleFunctions<WinningRatioProps, OwnState> = {
     layoutDispatch.moreHide();
 
     // dispose 'get all' from 'redux store' when the page is 'out of project registration' context
-    if (view && view.uid !== AppMenu.ReportWinningRatio) {
-      loadWinningDispose();
+    if (view && view.uid !== AppMenu.ReportBillable) {
+      loadBillableDispose();
     }
   }
 };
 
-const loadData = (props: WinningRatioProps): void => {
+const loadData = (props: BillableProps): void => {
   const { orderBy, direction, size, page, isAdmin } = props;
   const { user } = props.userState;
-  const { loadWinningRequest } = props.summaryDispatch;
+  const { loadBillableRequest } = props.summaryDispatch;
   const { alertAdd } = props.layoutDispatch;
 
   if (user) {
-    loadWinningRequest({
+    loadBillableRequest({
       companyUid: isAdmin ? props.companyUid : user.company.uid,
       filter: {
         direction,
@@ -240,7 +240,7 @@ const loadData = (props: WinningRatioProps): void => {
   }
 };
 
-export const WinningRatio = compose<WinningRatioProps, {}>(
+export const Billable = compose<BillableProps, {}>(
   withSummary,
   withUser,
   withLayout,
@@ -249,6 +249,6 @@ export const WinningRatio = compose<WinningRatioProps, {}>(
   withWidth(),
   withStyles(styles),
   withStateHandlers<OwnState, OwnStateUpdaters, {}>(createProps, stateUpdaters),
-  withHandlers<WinningRatioProps, OwnHandlers>(handlerCreators),
-  lifecycle<WinningRatioProps, OwnState>(lifecycles)
-)(WinningRatioView);
+  withHandlers<BillableProps, OwnHandlers>(handlerCreators),
+  lifecycle<BillableProps, OwnState>(lifecycles)
+)(BillableView);

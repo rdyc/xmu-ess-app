@@ -27,9 +27,9 @@ import * as React from 'react';
 import { EmployeeDialog } from '@account/components/dialog';
 import { FilterCompany } from '@lookup/components/company/select';
 import { summaryMessage } from '@summary/locales/messages/summaryMessage';
-import { BillableListFilterProps } from './BillableListFilter';
+import { WinningRatioFilterProps } from './WinningRatioFilter';
 
-export const BillableListFilterView: React.SFC<BillableListFilterProps> = props => {
+export const WinningRatioFilterView: React.SFC<WinningRatioFilterProps> = props => {
   const showBadgeWhen = (): boolean => {
     return props.filterCompany !== undefined ||
       props.filterEmployee !== undefined ||
@@ -78,7 +78,7 @@ export const BillableListFilterView: React.SFC<BillableListFilterProps> = props 
 
           <ListItem button onClick={props.handleFilterCompanyVisibility} disabled={props.isAdmin ? false : true}>
             <ListItemText 
-              primary={props.intl.formatMessage(summaryMessage.billable.field.company)}
+              primary={props.intl.formatMessage(summaryMessage.winningRatio.field.company)}
               secondary={props.isAdmin ? props.filterCompany && props.filterCompany.name : props.filterNonAdmin || props.intl.formatMessage(layoutMessage.text.none)}
             />
             <ListItemSecondaryAction>
@@ -98,7 +98,7 @@ export const BillableListFilterView: React.SFC<BillableListFilterProps> = props 
 
           <ListItem button onClick={props.handleFilterEmployeeVisibility}>
             <ListItemText 
-              primary={props.intl.formatMessage(summaryMessage.billable.field.name)}
+              primary={props.intl.formatMessage(summaryMessage.winningRatio.field.name)}
               secondary={props.filterEmployee && props.filterEmployee.fullName || props.intl.formatMessage(layoutMessage.text.none)}
             />
             <ListItemSecondaryAction>
@@ -118,7 +118,7 @@ export const BillableListFilterView: React.SFC<BillableListFilterProps> = props 
 
           <ListItem button onClick={props.handleFilterStartVisibility}>
             <ListItemText 
-              primary={props.intl.formatMessage(summaryMessage.billable.field.start)}
+              primary={props.intl.formatMessage(summaryMessage.winningRatio.field.start)}
               secondary={props.filterStart && props.intl.formatDate(props.filterStart, GlobalFormat.Date) || props.intl.formatMessage(layoutMessage.text.none)}
             />
             <ListItemSecondaryAction>
@@ -138,7 +138,7 @@ export const BillableListFilterView: React.SFC<BillableListFilterProps> = props 
 
           <ListItem button onClick={props.handleFilterEndVisibility}>
             <ListItemText 
-              primary={props.intl.formatMessage(summaryMessage.billable.field.end)}
+              primary={props.intl.formatMessage(summaryMessage.winningRatio.field.end)}
               secondary={props.filterEnd && props.intl.formatDate(props.filterEnd, GlobalFormat.Date) || props.intl.formatMessage(layoutMessage.text.none)}
             />
             <ListItemSecondaryAction>
@@ -159,7 +159,7 @@ export const BillableListFilterView: React.SFC<BillableListFilterProps> = props 
         </List>
 
         <FilterCompany 
-          title={props.intl.formatMessage(summaryMessage.billable.field.company)}
+          title={props.intl.formatMessage(summaryMessage.winningRatio.field.company)}
           hideBackdrop={true}
           isOpen={props.isFilterCompanyOpen}
           value={props.filterCompany && props.filterCompany.uid}
@@ -175,7 +175,7 @@ export const BillableListFilterView: React.SFC<BillableListFilterProps> = props 
         />
 
         <InputDateWithValue 
-          label={props.intl.formatMessage(summaryMessage.billable.field.start)}
+          label={props.intl.formatMessage(summaryMessage.winningRatio.field.start)}
           val={props.filterStart}
           onSelected={props.handleFilterStartOnSelected}
           isOpen={props.isFilterStartOpen}
@@ -184,7 +184,7 @@ export const BillableListFilterView: React.SFC<BillableListFilterProps> = props 
         />
 
         <InputDateWithValue 
-          label={props.intl.formatMessage(summaryMessage.billable.field.end)}
+          label={props.intl.formatMessage(summaryMessage.winningRatio.field.end)}
           val={props.filterEnd}
           onSelected={props.handleFilterEndOnSelected}
           isOpen={props.isFilterEndOpen}

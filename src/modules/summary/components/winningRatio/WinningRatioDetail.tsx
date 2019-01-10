@@ -1,20 +1,25 @@
+import { WithLayout, withLayout } from '@layout/hoc/withLayout';
+import { withUser, WithUser } from '@layout/hoc/withUser';
 import { GlobalFormat } from '@layout/types';
 import {
+  AppBar,
   Button,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
+  IconButton,
   Table,
   TableBody,
   TableCell,
   TableHead,
   TableRow,
-  WithStyles,
+  Toolbar,
+  Typography,
   withStyles,
-  withWidth
+  WithStyles,
 } from '@material-ui/core';
-import { isWidthDown, WithWidth } from '@material-ui/core/withWidth';
+import CloseIcon from '@material-ui/icons/Close';
 import styles from '@styles';
 import { ISummaryWinning } from '@summary/classes/response/winning';
 import {
@@ -36,12 +41,10 @@ interface OwnProps {
   handleDialog: () => void;
 }
 
-type AllProps = OwnProps & WithWidth & InjectedIntlProps & WithStyles<typeof styles>;
+type AllProps = OwnProps & WithUser & WithLayout & InjectedIntlProps & WithStyles<typeof styles>;
 
 const winningRatioDetail: React.SFC<AllProps> = props => {
-  const { uid, type, open, data, handleDialog, width, intl, classes } = props;
-
-  const isMobile = isWidthDown('sm', width);
+  const { uid, type, open, data, handleDialog, intl, classes } = props;
 
   let header: any[] = [];
 
@@ -72,13 +75,23 @@ const winningRatioDetail: React.SFC<AllProps> = props => {
               open={open}
               onClose={handleDialog}
               scroll="paper"
-              fullWidth
-              maxWidth="md"
-              fullScreen={isMobile}
+              className={props.layoutState.anchor === 'right' ? props.classes.contentShiftRight : props.classes.contentShiftLeft}
+              fullScreen
             >
+              <AppBar className={props.classes.appBarDialog}>
+                <Toolbar>
+                  <IconButton color="inherit" onClick={handleDialog} aria-label="Close">
+                    <CloseIcon />
+                  </IconButton>
+
+                  <Typography variant="h6" color="inherit" className={props.classes.flex}>
+                    {props.intl.formatMessage(summaryMessage.winningRatio.page.detail)}
+                  </Typography>
+
+                </Toolbar>
+              </AppBar>
               <DialogTitle>
-                {intl.formatMessage(summaryMessage.winningRatio.page.detail)}
-                &bull; {type}
+                {type}
               </DialogTitle>
               <DialogContent>
                 <Table>
@@ -137,6 +150,7 @@ const winningRatioDetail: React.SFC<AllProps> = props => {
 
 export const WinningRatioDetail = compose<AllProps, OwnProps>(
   injectIntl,
-  withWidth(),
+  withUser,
+  withLayout,
   withStyles(styles)
 )(winningRatioDetail);
