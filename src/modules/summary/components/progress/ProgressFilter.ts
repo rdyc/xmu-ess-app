@@ -1,13 +1,13 @@
-import { IEmployeeListFilter } from '@account/classes/filters';
-import { IEmployee } from '@account/classes/response';
 import { WithForm, withForm } from '@layout/hoc/withForm';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
+import { ILookupCustomerGetListFilter } from '@lookup/classes/filters/customer';
+import { ICustomer } from '@lookup/classes/response';
 import { WithStyles, withStyles } from '@material-ui/core';
-import { IProjectAssignmentGetListFilter } from '@project/classes/filters/assignment';
+import { IProjectRegistrationGetListFilter } from '@project/classes/filters/registration';
 import { IProjectList } from '@project/classes/response';
 import styles from '@styles';
-import { ISummaryEffectivenessFilter } from '@summary/classes/filters';
+import { ISummaryGetProgressRequest } from '@summary/classes/queries';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import {
   compose,
@@ -19,15 +19,16 @@ import {
   withHandlers,
   withStateHandlers,
 } from 'recompose';
-import { EffectivenessFilterView } from './EffectivenessFilterView';
+import { ProgressFilterView } from './ProgressFilterView';
 
-export type IEffectivenessFilterResult = Pick<ISummaryEffectivenessFilter, 'employeeUid' | 'projectUid'>;
+export type IProgressFilterResult = Pick<ISummaryGetProgressRequest, 'customerUid' | 'projectUid'>;
 
 interface OwnOption {
   className: string;
   isLoading: boolean;
+  isStartup: boolean;
   onClickSync: (event: React.MouseEvent<HTMLElement>) => void;
-  onApply: (filter: IEffectivenessFilterResult) => void;
+  onApply: (filter: IProgressFilterResult) => void;
 }
 
 interface OwnHandler {
@@ -36,11 +37,11 @@ interface OwnHandler {
   handleFilterOnApply: (event: React.MouseEvent<HTMLElement>) => void;
   handleFilterVisibility: (event: React.MouseEvent<HTMLElement>) => void;
 
-  // filter employee
-  handleFilterEmployeeVisibility: (event: React.MouseEvent<HTMLElement>) => void;
-  handleFilterEmployeeOnSelected: (employee: IEmployee) => void;
-  handleFilterEmployeeOnClear: (event: React.MouseEvent<HTMLElement>) => void;
-  handleFilterEmployeeOnClose: () => void;
+  // filter customer
+  handleFilterCustomerVisibility: (event: React.MouseEvent<HTMLElement>) => void;
+  handleFilterCustomerOnSelected: (customer: ICustomer) => void;
+  handleFilterCustomerOnClear: (event: React.MouseEvent<HTMLElement>) => void;
+  handleFilterCustomerOnClose: () => void;
 
   // filter project
   handleFilterProjectVisibility: (event: React.MouseEvent<HTMLElement>) => void;
@@ -52,19 +53,19 @@ interface OwnHandler {
 interface OwnState {
   isFilterDialogOpen: boolean;
   
-  // filter employee
-  isFilterEmployeeOpen: boolean;
-  filterEmployee?: IEmployee;
+  // filter customer
+  isFilterCustomerOpen: boolean;
+  filterCustomer?: ICustomer;
 
-  // filter Employee Dialog
-  filterEmployeeDialog: IEmployeeListFilter;
+  // filter customer Dialog
+  filterCustomerDialog: ILookupCustomerGetListFilter;
   
   // filter project
   isFilterProjectOpen: boolean;
   filterProject?: IProjectList;
 
   // filter Project Dialog
-  filterProjectDialog: IProjectAssignmentGetListFilter;
+  filterProjectDialog: IProjectRegistrationGetListFilter;
 }
 
 interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
@@ -72,9 +73,9 @@ interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
   setFilterReset: StateHandler<OwnState>;
   setFilterVisibility: StateHandler<OwnState>;
 
-  // filter employee
-  setFilterEmployeeVisibility: StateHandler<OwnState>;
-  setFilterEmployee: StateHandler<OwnState>;
+  // filter customer
+  setFilterCustomerVisibility: StateHandler<OwnState>;
+  setFilterCustomer: StateHandler<OwnState>;
 
   // filter project
   setFilterProjectVisibility: StateHandler<OwnState>;
@@ -82,7 +83,7 @@ interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
 
 }
 
-export type EffectivenessFilterProps 
+export type ProgressFilterProps 
   = WithForm
   & WithLayout
   & InjectedIntlProps
@@ -93,44 +94,44 @@ export type EffectivenessFilterProps
   & OwnStateUpdaters
   & WithStyles<typeof styles>;
   
-const createProps: mapper<EffectivenessFilterProps, OwnState> = (props: EffectivenessFilterProps): OwnState => {
+const createProps: mapper<ProgressFilterProps, OwnState> = (props: ProgressFilterProps): OwnState => {
   return { 
-    isFilterDialogOpen: false,
-    isFilterEmployeeOpen: false,
+    isFilterDialogOpen: true,
+    isFilterCustomerOpen: false,
     isFilterProjectOpen: false,
 
-    // default filter employee dialog
-    filterEmployeeDialog: {
-      companyUids: props.userState && props.userState.user && props.userState.user.company && [props.userState.user.company.uid] || []
+    // default filter customer dialog
+    filterCustomerDialog: {
+      companyUid: props.userState && props.userState.user && props.userState.user.company && props.userState.user.company.uid || undefined
     },
 
     // default filter project dialog
     filterProjectDialog: {
-      employeeUid: undefined
+      customerUids: undefined
     }
   };
 };
 
 const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
   // main filter
-  setFilterReset: (prevState: OwnState) => () => ({
-    filterEmployee: undefined,
+  setFilterReset: () => () => ({
+    filterCustomer: undefined,
     filterProject: undefined,
   }),
   setFilterVisibility: (prevState: OwnState) => () => ({
     isFilterDialogOpen: !prevState.isFilterDialogOpen
   }),
 
-  // filter employee
-  setFilterEmployeeVisibility: (prevState: OwnState) => () => ({
-    isFilterEmployeeOpen: !prevState.isFilterEmployeeOpen
+  // filter customer
+  setFilterCustomerVisibility: (prevState: OwnState) => () => ({
+    isFilterCustomerOpen: !prevState.isFilterCustomerOpen
   }),
-  setFilterEmployee: (prevState: OwnState) => (employee?: IEmployee) => ({
-    isFilterEmployeeOpen: false,
-    filterEmployee: employee,
+  setFilterCustomer: () => (customer?: ICustomer) => ({
+    isFilterCustomerOpen: false,
+    filterCustomer: customer,
 
     filterProjectDialog: {
-      employeeUid: employee && employee.uid
+      customerUids: customer && [customer.uid]
     }
   }),
 
@@ -138,65 +139,67 @@ const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
   setFilterProjectVisibility: (prevState: OwnState) => () => ({
     isFilterProjectOpen: !prevState.isFilterProjectOpen
   }),
-  setFilterProject: (prevState: OwnState) => (project?: IProjectList) => ({
+  setFilterProject: () => (project?: IProjectList) => ({
     isFilterProjectOpen: false,
     filterProject: project,
   }),
 };
 
-const handlerCreators: HandleCreators<EffectivenessFilterProps, OwnHandler> = {
+const handlerCreators: HandleCreators<ProgressFilterProps, OwnHandler> = {
   // main filter
-  handleFilterOnReset: (props: EffectivenessFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
+  handleFilterOnReset: (props: ProgressFilterProps) => () => {
     props.setFilterReset();
   },
-  handleFilterOnApply: (props: EffectivenessFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
-    props.onApply({
-      employeeUid: props.filterEmployee && props.filterEmployee.uid,
-      projectUid: props.filterProject && props.filterProject.uid,
-    });
-    props.setFilterVisibility();
+  handleFilterOnApply: (props: ProgressFilterProps) => () => {
+    if (props.filterCustomer && props.filterProject) {
+      props.onApply({
+        customerUid: props.filterCustomer.uid,
+        projectUid: props.filterProject.uid,
+      });
+      props.setFilterVisibility();
+    }
   },
-  handleFilterVisibility: (props: EffectivenessFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
+  handleFilterVisibility: (props: ProgressFilterProps) => () => {
     props.setFilterVisibility();
   },
 
   // filter employee
-  handleFilterEmployeeVisibility: (props: EffectivenessFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
-    props.setFilterEmployeeVisibility();
+  handleFilterCustomerVisibility: (props: ProgressFilterProps) => () => {
+    props.setFilterCustomerVisibility();
   },
-  handleFilterEmployeeOnSelected: (props: EffectivenessFilterProps) => (employee: IEmployee) => {
-    props.setFilterEmployee(employee);
+  handleFilterCustomerOnSelected: (props: ProgressFilterProps) => (customer: ICustomer) => {
+    props.setFilterCustomer(customer);
     props.setFilterProject();
   },
-  handleFilterEmployeeOnClear: (props: EffectivenessFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
-    props.setFilterEmployee();
+  handleFilterCustomerOnClear: (props: ProgressFilterProps) => () => {
+    props.setFilterCustomer();
     props.setFilterProject();
   },
-  handleFilterEmployeeOnClose: (props: EffectivenessFilterProps) => () => {
-    props.setFilterEmployeeVisibility();
+  handleFilterCustomerOnClose: (props: ProgressFilterProps) => () => {
+    props.setFilterCustomerVisibility();
   },
 
   // filter project
-  handleFilterProjectVisibility: (props: EffectivenessFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
+  handleFilterProjectVisibility: (props: ProgressFilterProps) => () => {
     props.setFilterProjectVisibility();
   },
-  handleFilterProjectOnSelected: (props: EffectivenessFilterProps) => (project: IProjectList) => {
+  handleFilterProjectOnSelected: (props: ProgressFilterProps) => (project: IProjectList) => {
     props.setFilterProject(project);
   },
-  handleFilterProjectOnClear: (props: EffectivenessFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
+  handleFilterProjectOnClear: (props: ProgressFilterProps) => () => {
     props.setFilterProject();
   },
-  handleFilterProjectOnClose: (props: EffectivenessFilterProps) => () => {
+  handleFilterProjectOnClose: (props: ProgressFilterProps) => () => {
     props.setFilterProjectVisibility();
   },
 };
 
-export const EffectivenessFilter = compose<EffectivenessFilterProps, OwnOption>(
+export const ProgressFilter = compose<ProgressFilterProps, OwnOption>(
   withUser,
   withLayout,
   withForm,
   injectIntl,
   withStyles(styles),
   withStateHandlers<OwnState, OwnStateUpdaters, {}>(createProps, stateUpdaters), 
-  withHandlers<EffectivenessFilterProps, OwnHandler>(handlerCreators)
-)(EffectivenessFilterView);
+  withHandlers<ProgressFilterProps, OwnHandler>(handlerCreators)
+)(ProgressFilterView);

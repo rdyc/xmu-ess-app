@@ -1,15 +1,16 @@
-import { layoutMessage } from '@layout/locales/messages';
-import { Card, CardContent, Grid, Table, TableBody, TableCell, TableRow, Typography } from '@material-ui/core';
+import { Card, CardContent, Grid, Paper, Table, TableBody, TableCell, TableRow } from '@material-ui/core';
 import { ISummaryProgress } from '@summary/classes/response/progress';
 import { ProgressProps } from '@summary/components/progress/Progress';
-import { FilterForm } from '@summary/components/progress/sharedFilterForm/FilterForm';
 import { summaryMessage } from '@summary/locales/messages/summaryMessage';
 import * as React from 'react';
 import { ProgressExpenseView } from './ProgressExpenseView';
+import { ProgressFilter } from './ProgressFilter';
 import { ProgressProjectView } from './ProgressProjectView';
 
 export const ProgressView: React.SFC<ProgressProps> = props => {
-  const { classes, width, dialogFullScreen, dialogOpen, handleDialogClose, handleDialogOpen, expenses, expenseProjectUid, intl, handleChangeFilter } = props;
+  const { classes, width, dialogFullScreen, dialogOpen, 
+    handleDialogClose, handleDialogOpen, expenses, isStartup,
+    expenseProjectUid, intl, handleChangeFilter, handleReloadData } = props;
   const { isLoading, response } = props.summaryState.progress;  
 
   const RenderProgress = (progress: ISummaryProgress) => {
@@ -31,6 +32,7 @@ export const ProgressView: React.SFC<ProgressProps> = props => {
           <Grid item xs={12} md={6}>
             <Card
               square
+              elevation={3}
             >
               <CardContent>
                 <Table>
@@ -80,23 +82,19 @@ export const ProgressView: React.SFC<ProgressProps> = props => {
     <React.Fragment>
       <Grid container spacing={16}>
         <Grid item xs={12}>
-          <Card 
+          <Paper 
             square 
           >
-            <CardContent>
-              <FilterForm 
-                onProjectSelected= {handleChangeFilter}
-              />
-            </CardContent>
-          </Card>
+            <ProgressFilter
+              className={props.classes.flex}
+              isLoading={isLoading}
+              onClickSync={handleReloadData}
+              onApply={handleChangeFilter}
+              isStartup={isStartup}
+            />
+          </Paper>
         </Grid>
         <Grid item xs={12}>
-        {
-          isLoading &&
-          <Typography>
-            {intl.formatMessage(layoutMessage.text.loading)}
-          </Typography>
-        }
         {
           !isLoading &&
           response &&
