@@ -1,5 +1,6 @@
 import { IEmployee } from '@account/classes/response';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
+import { WithUser, withUser } from '@layout/hoc/withUser';
 import { ILookupCompany } from '@lookup/classes';
 import { WithStyles, withStyles } from '@material-ui/core';
 import styles from '@styles';
@@ -25,16 +26,20 @@ export type IBillableListFilterResult = Pick<
 >;
 
 interface OwnOption {
-  isOpen: boolean;
-  initialProps?: IBillableListFilterResult;
-  onClose: (event: React.MouseEvent<HTMLElement>) => void;
+  isAdmin: boolean;
+  className: string;
+  isLoading: boolean;
+  onClickSync: (event: React.MouseEvent<HTMLElement>) => void;
   onApply: (filter: IBillableListFilterResult) => void;
 }
 
 interface OwnState {
+  isFilterOpen: boolean;
+
   // filter company
   isFilterCompanyOpen: boolean;
   filterCompany?: ILookupCompany;
+  filterNonAdmin?: string;
 
   // filter employee
   isFilterEmployeeOpen: boolean;
@@ -47,11 +52,17 @@ interface OwnState {
   // filter end
   isFilterEndOpen: boolean;
   filterEnd?: string;
+
+  start?: string;
+  end?: string;
 }
 
 interface OwnStateUpdater extends StateHandlerMap<OwnState> {
+  stateUpdate: StateHandler<OwnState>;
+
   // main filter
   setFilterReset: StateHandler<OwnState>;
+  setFilterVisibility: StateHandler<OwnState>;
 
   // filter Company
   setFilterCompanyVisibility: StateHandler<OwnState>;
@@ -74,6 +85,7 @@ interface OwnHandler {
   // mainfilter
   handleFilterOnReset: (event: React.MouseEvent<HTMLElement>) => void;
   handleFilterOnApply: (event: React.MouseEvent<HTMLElement>) => void;
+  handleFilterVisibility: (event: React.MouseEvent<HTMLElement>) => void;
 
   // filter Company
   handleFilterCompanyVisibility: (event: React.MouseEvent<HTMLElement>) => void;
@@ -108,32 +120,51 @@ export type BillableListFilterProps = OwnOption &
   OwnStateUpdater &
   WithStyles<typeof styles> &
   WithLayout &
+  WithUser &
   InjectedIntlProps;
 
 const createProps: mapper<BillableListFilterProps, OwnState> = (
   props: BillableListFilterProps
-): OwnState => ({
-  isFilterCompanyOpen: false,
-  isFilterEmployeeOpen: false,
-  isFilterEndOpen: false,
-  isFilterStartOpen: false,
-  filterStart: moment()
+): OwnState => {
+  const { user } = props.userState;
+
+  return {
+    isFilterCompanyOpen: false,
+    isFilterEmployeeOpen: false,
+    isFilterEndOpen: false,
+    isFilterStartOpen: false,
+    isFilterOpen: false,
+    filterNonAdmin: user && user.company.name,
+    filterStart: moment()
+      .startOf('year')
+      .toISOString(true),
+    filterEnd: moment().toISOString(true),
+    start: moment()
     .startOf('year')
     .toISOString(true),
-  filterEnd: moment().toISOString(true)
-});
+    end: moment().toISOString(true)
+  };
+};
 
 const stateUpdaters: StateUpdaters<
   BillableListFilterProps,
   OwnState,
   OwnStateUpdater
 > = {
+  stateUpdate: (prevState: OwnState) => (newState: any) => ({
+    ...prevState,
+    ...newState
+  }),
+
   // main filter
-  setFilterReset: () => () => ({
+  setFilterReset: (prevState: OwnState) => () => ({
     filterCompany: undefined,
     filterEmployee: undefined,
-    filterStart: undefined,
-    filterEnd: undefined
+    filterStart: prevState.start,
+    filterEnd: prevState.end
+  }),
+  setFilterVisibility: (prevState: OwnState) => () => ({
+    isFilterOpen: !prevState.isFilterOpen
   }),
 
   // filter Company
@@ -156,7 +187,7 @@ const stateUpdaters: StateUpdaters<
 
   // filter Start
   setFilterStartVisibility: (prevState: OwnState) => () => ({
-    isFilterStartOpen: !prevState.isFilterStartOpen
+    isFilterStartOpen: !prevState.isFilterStartOpen,
   }),
   setFilterStart: () => (data?: string) => ({
     isFilterStartOpen: false,
@@ -189,6 +220,10 @@ const handlerCreators: HandleCreators<BillableListFilterProps, OwnHandler> = {
       start: props.filterStart,
       end: props.filterEnd
     });
+    props.setFilterVisibility();
+  },
+  handleFilterVisibility: (props: BillableListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
+    props.setFilterVisibility();
   },
 
   // filter Company
@@ -233,7 +268,7 @@ const handlerCreators: HandleCreators<BillableListFilterProps, OwnHandler> = {
     props.setFilterStart(data);
   },
   handleFilterStartOnClear: (props: BillableListFilterProps) => () => {
-    props.setFilterStart();
+    props.setFilterStart(props.start);
   },
   handleFilterStartOnClose: (props: BillableListFilterProps) => () => {
     props.setFilterStartVisibility();
@@ -253,18 +288,19 @@ const handlerCreators: HandleCreators<BillableListFilterProps, OwnHandler> = {
   handleFilterEndOnClear: (props: BillableListFilterProps) => (
     event: React.MouseEvent<HTMLElement>
   ) => {
-    props.setFilterEnd();
+    props.setFilterEnd(props.end);
   },
   handleFilterEndOnClose: (props: BillableListFilterProps) => () => {
     props.setFilterEndVisibility();
-  }
+  },
 };
 
 export const BillableListFilter = compose<BillableListFilterProps, OwnOption>(
   setDisplayName('BillableListFilter'),
   withLayout,
-  withStyles(styles),
+  withUser,
   injectIntl,
+  withStyles(styles),
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators)
 )(BillableListFilterView);

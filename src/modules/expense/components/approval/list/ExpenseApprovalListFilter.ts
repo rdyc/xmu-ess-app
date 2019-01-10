@@ -166,7 +166,8 @@ const createProps: mapper<ExpenseApprovalListFilterProps, IOwnState> = (props: E
 
   // default filter project dialog
   filterProjectDialog: {
-    customerUids: undefined
+    customerUids: undefined,
+    activeOnly: true,
   }
 });
 
@@ -177,7 +178,8 @@ const stateUpdaters: StateUpdaters<ExpenseApprovalListFilterProps, IOwnState, IO
     filterType: undefined,
     filterStatus: undefined,
     filterCompletion: undefined,
-    filterNotify: undefined
+    filterNotify: undefined,
+    filterProject: undefined,
   }),
 
   // filter customer
@@ -256,9 +258,11 @@ const handlerCreators: HandleCreators<ExpenseApprovalListFilterProps, IOwnHandle
   },
   handleFilterCustomerOnSelected: (props: ExpenseApprovalListFilterProps) => (customer: ICustomerList) => {
     props.setFilterCustomer(customer);
+    props.setFilterProject();
   },
   handleFilterCustomerOnClear: (props: ExpenseApprovalListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
     props.setFilterCustomer();
+    props.setFilterProject();
   },
   handleFilterCustomerOnClose: (props: ExpenseApprovalListFilterProps) => () => {
     props.setFilterCustomerVisibility();

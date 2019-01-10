@@ -1,6 +1,6 @@
-import { Layout } from '@layout/components/base';
 import * as React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router';
+
 import { CommonDetail } from './detail/CommonDetail';
 import CommonEditor from './editor/CommonEditor';
 import { CommonListView } from './list/CommonListView';
@@ -17,8 +17,6 @@ const CommonSystem = (props: RouteComponentProps) => (
 
 export const CommonRoutingComponents: React.SFC<RouteComponentProps> = props => (
   <Switch>
-    <Layout>
-      <Route path={`${props.match.path}/system`} component={CommonSystem} />
-    </Layout>
+    <Route path={`${props.match.path}/system`} component={CommonSystem} />
   </Switch>
 );

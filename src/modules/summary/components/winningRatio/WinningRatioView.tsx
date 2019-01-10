@@ -1,20 +1,19 @@
-import {
-  Card,
-  CardContent,
-  Grid,
-  Typography
-} from '@material-ui/core';
-import { WinningRatioProps } from '@summary/components/winningRatio/WinningRatio';
-import { WinningRatioDetail } from '@summary/components/winningRatio/WinningRatioDetail';
-import { WinningRatioTable } from '@summary/components/winningRatio/WinningRatioTable';
+import { layoutMessage } from '@layout/locales/messages';
+import { Card, CardContent, Grid, Typography } from '@material-ui/core';
 import * as React from 'react';
-// import { BillableFilterForm } from '../billable/billableFilterForm/BillableFilterForm';
+import { FormattedMessage } from 'react-intl';
+import { WinningRatioProps } from './WinningRatio';
+import { WinningRatioDetail } from './WinningRatioDetail';
+import { WinningRatioFilter } from './WinningRatioFilter';
+import { WinningRatioTable } from './WinningRatioTable';
 
 export const WinningRatioView: React.SFC<WinningRatioProps> = props => {
   const { isLoading, response } = props.summaryState.winning;
-  const {
-    size,
-    orderBy,
+  const { 
+    handleChangeFilter, 
+    handleReloadData, 
+    size, 
+    orderBy, 
     page,
     direction,
     handleChangePage,
@@ -24,30 +23,29 @@ export const WinningRatioView: React.SFC<WinningRatioProps> = props => {
     handleChangeSort,
     handleDialog,
     handleDetail,
-    // handleChangeFilter
   } = props;
-
-  // const renderFilter = () => {
-  //   return (
-  //     <BillableFilterForm 
-  //       onFilterChange={handleChangeFilter}
-  //     />
-  //   );
-  // };
 
   const render = (
     <React.Fragment>
+      <Grid container spacing={16}>
+        <Grid item xs={12}>
+          <WinningRatioFilter
+            isAdmin={props.isAdmin}
+            className={props.classes.flex}
+            isLoading={isLoading}
+            onClickSync={handleReloadData}
+            onApply={handleChangeFilter}
+          />
+        </Grid>
+      </Grid>
       <Card square>
         <CardContent>
-          <Grid container spacing={16}>
-            <Grid item xs md>
-              {/* {renderFilter()} */}
-            </Grid>
-          </Grid>
-          {isLoading && !response && (
-            <Typography variant="body2">Loading</Typography>
+          {isLoading && (
+            <Typography variant="body2">
+             <FormattedMessage {...layoutMessage.text.loading} />
+            </Typography>
           )}
-          <WinningRatioDetail 
+          <WinningRatioDetail
             uid={props.uid}
             type={props.type}
             open={props.open}

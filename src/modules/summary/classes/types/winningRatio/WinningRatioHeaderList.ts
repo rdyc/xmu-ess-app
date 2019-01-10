@@ -4,5 +4,5 @@ export enum WinningRatioHeaderList {
   ratio = 'Winning Ratio(%)',
   closed = 'Closed (Drop & Lose)',
   onProgress = 'On Progress',
-  win = 'Win'
+  win = 'Winning'
 }

@@ -77,6 +77,7 @@ export const ProgressProjectView: React.SFC<AllProps> = props => {
         <Grid item xs={12} key={project.projectUid} >
           <Card
             square
+            elevation={3}
             className= {!isMobile ? classNames(classes.reportPaperPartial) : classNames(classes.reportPaperPartialMobile)}
           >
             <CardHeader
@@ -126,10 +127,18 @@ export const ProgressProjectView: React.SFC<AllProps> = props => {
                         {intl.formatNumber(project.actualRates)}
                       </TableCell>
                       <TableCell numeric>
-                        <Chip 
-                          onClick= {() => handleDialogOpen(isMobile, project.moduleCosts ? project.moduleCosts : [], project.projectUid)}
-                          label= {intl.formatNumber(project.actualCosts)}
-                        />
+                        {
+                          project.moduleCosts &&
+                          project.moduleCosts.length > 0 &&
+                          <Chip 
+                            onClick= {() => handleDialogOpen(isMobile, project.moduleCosts ? project.moduleCosts : [], project.projectUid)}
+                            label= {intl.formatNumber(project.actualCosts)}
+                          /> ||
+                          <Chip 
+                            variant={'outlined'}
+                            label= {intl.formatNumber(project.actualCosts)}
+                          />
+                        }
                       </TableCell>
                       <TableCell numeric>
                         {intl.formatNumber(project.cogs)}

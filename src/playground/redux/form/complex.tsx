@@ -275,7 +275,6 @@ const lifecycles: ReactLifeCycleFunctions<ComplexEditorProps, {}> = {
     layoutDispatch.changeView(null);
     layoutDispatch.navBackHide();
     layoutDispatch.moreHide();
-    layoutDispatch.actionCentreHide();
 
     appBarDispatch.dispose();
   }

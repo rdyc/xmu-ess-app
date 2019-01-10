@@ -166,7 +166,8 @@ const createProps: mapper<ExpenseRequestListFilterProps, IOwnState> = (props: Ex
 
   // default filter project dialog
   filterProjectDialog: {
-    customerUids: undefined
+    customerUids: undefined,
+    activeOnly: true,
   }
 });
 
@@ -257,9 +258,11 @@ const handlerCreators: HandleCreators<ExpenseRequestListFilterProps, IOwnHandler
   },
   handleFilterCustomerOnSelected: (props: ExpenseRequestListFilterProps) => (customer: ICustomerList) => {
     props.setFilterCustomer(customer);
+    props.setFilterProject();
   },
   handleFilterCustomerOnClear: (props: ExpenseRequestListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
     props.setFilterCustomer();
+    props.setFilterProject();
   },
   handleFilterCustomerOnClose: (props: ExpenseRequestListFilterProps) => () => {
     props.setFilterCustomerVisibility();
