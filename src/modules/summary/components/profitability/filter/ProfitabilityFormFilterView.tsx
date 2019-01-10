@@ -1,4 +1,3 @@
-import { expenseMessage } from '@expense/locales/messages/expenseMessage';
 import { layoutMessage } from '@layout/locales/messages';
 import { LookupCustomerDialog } from '@lookup/components/customer/dialog';
 import {
@@ -65,12 +64,15 @@ export const ProfitabilityFormFilterView: React.SFC<SummaryProfitabilityFilterPr
                 </Button>
               }
 
-              <Button
-                color="inherit"
-                onClick={props.handleFilterOnApply}
-              >
-                {props.intl.formatMessage(layoutMessage.action.apply)}
-              </Button>
+              {
+                (props.filterCustomer && props.filterProject) &&
+                <Button
+                  color="inherit"
+                  onClick={props.handleFilterOnApply}
+                >
+                  {props.intl.formatMessage(layoutMessage.action.apply)}
+                </Button>
+              }
             </Toolbar>
           </AppBar>
 
@@ -78,7 +80,7 @@ export const ProfitabilityFormFilterView: React.SFC<SummaryProfitabilityFilterPr
 
             <ListItem button onClick={props.handleFilterCustomerVisibility}>
               <ListItemText
-                primary={props.intl.formatMessage(expenseMessage.request.field.customerUid)}
+                primary={props.intl.formatMessage(summaryMessage.filter.customerUid)}
                 secondary={props.filterCustomer && props.filterCustomer.name || props.intl.formatMessage(layoutMessage.text.none)}
               />
               <ListItemSecondaryAction>
@@ -96,9 +98,9 @@ export const ProfitabilityFormFilterView: React.SFC<SummaryProfitabilityFilterPr
             </ListItem>
             <Divider />
 
-            <ListItem button onClick={props.filterCustomer && props.handleFilterProjectVisibility}>
+            <ListItem button onClick={props.filterCustomer && props.handleFilterProjectVisibility} disabled={!props.filterCustomer}>
               <ListItemText
-                primary={props.intl.formatMessage(expenseMessage.request.field.projectUid)}
+                primary={props.intl.formatMessage(summaryMessage.filter.projectUid)}
                 secondary={props.filterProject && props.filterProject.name || props.intl.formatMessage(layoutMessage.text.none)}
               />
               <ListItemSecondaryAction>
@@ -139,7 +141,7 @@ export const ProfitabilityFormFilterView: React.SFC<SummaryProfitabilityFilterPr
   };
 
   return (
-    <Toolbar disableGutters>
+    <Toolbar>
       <Typography
         noWrap
         variant="body2"

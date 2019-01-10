@@ -23,7 +23,7 @@ import {
   withHandlers,
   withStateHandlers,
 } from 'recompose';
-import { ISummaryProfitabilityFilterResult } from './shared/ProfitabilityFormFilter';
+import { ISummaryProfitabilityFilterResult } from './filter/ProfitabilityFormFilter';
 
 export interface Handlers {
   handleChangeFilter: (filter: ISummaryProfitabilityFilterResult) => void;
