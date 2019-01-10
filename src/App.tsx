@@ -1,4 +1,5 @@
 import { AccountRoutingComponents } from '@account/components';
+import { AccountAccess } from '@account/components/access';
 import { CommonRoutingComponents } from '@common/components/CommonRoutingComponents';
 import AppStorage from '@constants/AppStorage';
 import { ExpenseRoutingComponents } from '@expense/components/ExpenseRoutingComponents';
@@ -6,6 +7,7 @@ import { FinanceRoutingComponents } from '@finance/components/FinanceRoutingComp
 import { HomeRoutingComponents } from '@home/components';
 import { Callback } from '@layout/components/base';
 import { LandingPage } from '@layout/components/landingPage/LandingPage';
+import { MasterPage } from '@layout/components/masterPage/MasterPage';
 import { WithOidc, withOidc } from '@layout/hoc/withOidc';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IAppUser } from '@layout/interfaces';
@@ -63,23 +65,26 @@ const app: React.ComponentType<AllProps> = props => (
             <Switch>
               <Route exact path="/" component={LandingPage} />
               <Route path="/callback" component={Callback} />
-              
-              <Route path="/home" component={HomeRoutingComponents} />
-              <Route path="/account" component={AccountRoutingComponents} />
-              <Route path="/project" component={ProjectRoutingComponents} />
-              <Route path="/mileage" component={MileageRoutingComponents} />
-              <Route path="/leave" component={LeaveRoutingComponents} />
-              <Route path="/purchase" component={PurchaseRoutingComponents} />>
-              <Route path="/timesheet" component={TimesheetRoutingComponents} />
-              <Route path="/expense" component={ExpenseRoutingComponents} />
-              <Route path="/reports" component={SummaryRoutingComponents} />
-              <Route path="/finance" component={FinanceRoutingComponents} />
-              <Route path="/travel" component={TravelRoutingComponents} />
-              <Route path="/common" component={CommonRoutingComponents} />
-              <Route path="/lookup" component={LookupRoutingComponents} />
-              <Route path="/organization" component={OrganizationRoutingComponents} />
+              <Route path="/account/access" component={AccountAccess} />
 
-              <Route path="/playground" component={playgroundRouter} />
+              <MasterPage>
+                <Route path="/home" component={HomeRoutingComponents} />
+                <Route path="/account" component={AccountRoutingComponents} />
+                <Route path="/project" component={ProjectRoutingComponents} />
+                <Route path="/mileage" component={MileageRoutingComponents} />
+                <Route path="/leave" component={LeaveRoutingComponents} />
+                <Route path="/purchase" component={PurchaseRoutingComponents} />
+                <Route path="/timesheet" component={TimesheetRoutingComponents} />
+                <Route path="/expense" component={ExpenseRoutingComponents} />
+                <Route path="/reports" component={SummaryRoutingComponents} />
+                <Route path="/finance" component={FinanceRoutingComponents} />
+                <Route path="/travel" component={TravelRoutingComponents} />
+                <Route path="/common" component={CommonRoutingComponents} />
+                <Route path="/lookup" component={LookupRoutingComponents} />
+                <Route path="/organization" component={OrganizationRoutingComponents} />
+
+                <Route path="/playground" component={playgroundRouter} />
+              </MasterPage>
             </Switch>
           </Router>
         </ConnectedRouter>

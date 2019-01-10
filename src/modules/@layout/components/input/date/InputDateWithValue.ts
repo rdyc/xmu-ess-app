@@ -4,7 +4,7 @@ import { InputDateWithValueView } from './InputDateWithValueView';
 
 interface OwnProps { 
   label: string; 
-  future?: boolean;
+  disableFuture?: boolean;
   val: string | undefined;
   isOpen: boolean;
   onSelected: (data: string) => void;

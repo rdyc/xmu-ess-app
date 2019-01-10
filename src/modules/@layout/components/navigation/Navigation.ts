@@ -1,7 +1,7 @@
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { WithStyles, withStyles } from '@material-ui/core';
-import withWidth, { isWidthUp, WithWidth } from '@material-ui/core/withWidth';
+import withWidth, { WithWidth } from '@material-ui/core/withWidth';
 import styles from '@styles';
 import { RouteComponentProps, withRouter } from 'react-router';
 import {
@@ -21,6 +21,10 @@ import { menuLinkMapper } from 'utils';
 
 import { NavigationView } from './NavigationView';
 
+interface IOwnOption {
+  onClose: () => void;
+}
+
 interface OwnState {
   headerUid?: string;
   childUid?: string;
@@ -33,7 +37,7 @@ interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
 
 interface OwnHandler {
   handleOnClickMenuHeader: (uid: string) => void;
-  handleOnClickMenuItem: (headerUid: string, childUid: string) => void;
+  handleOnClickMenuItem: (headerUid: string, childUid: string, closeMenu: boolean) => void;
 }
 
 export type NavigationProps 
@@ -69,14 +73,14 @@ const handlerCreator: HandleCreators<NavigationProps, OwnHandler> = {
       props.setHeader();
     }
   },
-  handleOnClickMenuItem: (props: NavigationProps) => (headerUid: string, childUid: string) => {
+  handleOnClickMenuItem: (props: NavigationProps) => (headerUid: string, childUid: string, closeMenu: boolean) => {
     props.setHeaderAndChild(headerUid, childUid);
 
-    if (props.layoutState.isDrawerMenuVisible && !isWidthUp('md', props.width)) {
-      props.layoutDispatch.drawerMenuHide();
-    }
-
     props.history.push(menuLinkMapper(childUid));
+
+    if (closeMenu) {
+      props.onClose();
+    }
   },
 };
 
@@ -92,7 +96,7 @@ const lifecycles: ReactLifeCycleFunctions<NavigationProps, OwnState> = {
   }
 };
 
-export const Navigation = compose(
+export const Navigation = compose<NavigationProps, IOwnOption>(
   setDisplayName('Navigation'),
   withUser,
   withLayout,

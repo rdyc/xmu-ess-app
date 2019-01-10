@@ -199,7 +199,6 @@ const lifecycles: ReactLifeCycleFunctions<OwnerEditorProps, {}> = {
     layoutDispatch.changeView(null);
     layoutDispatch.navBackHide();
     layoutDispatch.moreHide();
-    layoutDispatch.actionCentreHide();
 
     appBarDispatch.dispose();
 

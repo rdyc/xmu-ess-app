@@ -214,7 +214,6 @@ const lifecycles: ReactLifeCycleFunctions<LeaveCancellationDetailProps, {}> = {
     layoutDispatch.changeView(null);
     layoutDispatch.navBackHide();
     layoutDispatch.moreHide();
-    layoutDispatch.actionCentreHide();
 
     appBarDispatch.dispose();
   }

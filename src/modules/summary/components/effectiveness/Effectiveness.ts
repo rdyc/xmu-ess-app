@@ -124,7 +124,6 @@ const lifecycles: ReactLifeCycleFunctions<EffectivenessProps, OwnState> = {
       layoutDispatch.modeListOff();
       layoutDispatch.searchHide();
       layoutDispatch.modeSearchOff();
-      layoutDispatch.actionCentreHide();
       layoutDispatch.moreHide();
   
       // dispose 'get all' from 'redux store' when the page is 'out of project registration' context 

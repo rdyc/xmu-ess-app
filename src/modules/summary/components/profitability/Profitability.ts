@@ -145,8 +145,7 @@ const lifecycles: ReactLifeCycleFunctions<ProfitabilityProps, OwnState> = {
       subTitle: intl.formatMessage(summaryMessage.profitability.page.subTitle)
     });
 
-    // layoutDispatch.searchShow();
-    // layoutDispatch.actionCentreShow();
+    layoutDispatch.searchShow();
 
     // only load data when response are empty
     if (!isLoading && !response) {
@@ -177,7 +176,6 @@ const lifecycles: ReactLifeCycleFunctions<ProfitabilityProps, OwnState> = {
     layoutDispatch.modeListOff();
     layoutDispatch.searchHide();
     layoutDispatch.modeSearchOff();
-    layoutDispatch.actionCentreHide();
     layoutDispatch.moreHide();
 
     // dispose 'get all' from 'redux store' when the page is 'out of project registration' context 

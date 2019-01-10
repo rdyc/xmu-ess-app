@@ -1,6 +1,6 @@
-import { Layout } from '@layout/components/base';
 import * as React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router';
+
 import { TravelRequestDetail } from './request/detail/TravelRequestDetail';
 import RequestEditor from './request/editor/RequestEditor';
 import { TravelRequestList } from './request/list/TravelRequestList';
@@ -44,11 +44,9 @@ const approvalSettlement = (props: RouteComponentProps) => (
 
 export const TravelRoutingComponents: React.SFC<RouteComponentProps> = props => (
   <Switch>
-    <Layout>
-      <Route path={`${props.match.path}/requests`} component={request} />
-      <Route path={`${props.match.path}/approvals`} component={approvalRequest} />
-      <Route path={`${props.match.path}/settlement/requests`} component={settlement} />
-      <Route path={`${props.match.path}/settlement/approvals`} component={approvalSettlement} />
-    </Layout>
+    <Route path={`${props.match.path}/requests`} component={request} />
+    <Route path={`${props.match.path}/approvals`} component={approvalRequest} />
+    <Route path={`${props.match.path}/settlement/requests`} component={settlement} />
+    <Route path={`${props.match.path}/settlement/approvals`} component={approvalSettlement} />
   </Switch>
 );

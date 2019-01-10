@@ -1,4 +1,3 @@
-import { Layout } from '@layout/components/base';
 import * as React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router';
 
@@ -11,7 +10,7 @@ const home = (props: RouteComponentProps) => (
 );
 
 export const HomeRoutingComponents: React.SFC<RouteComponentProps> = props => (
-  <Layout>
+  <Switch>
     <Route path={`${props.match.path}`} component={home} />
-  </Layout>
+  </Switch>
 );

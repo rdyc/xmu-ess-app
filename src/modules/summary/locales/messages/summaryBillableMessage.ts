@@ -4,7 +4,8 @@ const prefix = 'summary.billable';
 
 export const summaryBillablePage = defineMessages({
   title: { id: `${prefix}.page.title`},
-  subHeader: { id: `${prefix}.page.subHeader`}
+  subHeader: { id: `${prefix}.page.subHeader`},
+  detail: { id: `${prefix}.page.detail`}
 });
 
 export const summaryBillableField = defineMessages({
