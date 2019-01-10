@@ -31,13 +31,9 @@ export const ProgressFilterView: React.SFC<ProgressFilterProps> = props => {
         >
           <AppBar className={props.classes.appBarDialog}>
             <Toolbar>
-              {
-                !props.isStartup &&
-                (props.filterCustomer && props.filterProject) &&
-                <IconButton color="inherit" onClick={props.handleFilterVisibility} aria-label="Close">
-                  <CloseIcon />
-                </IconButton>
-              }
+              <IconButton color="inherit" onClick={props.handleFilterVisibility} aria-label="Close">
+                <CloseIcon />
+              </IconButton>
 
               <Typography variant="h6" color="inherit" className={props.classes.flex}>
                 {

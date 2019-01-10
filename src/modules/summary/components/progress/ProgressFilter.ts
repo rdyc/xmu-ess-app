@@ -107,7 +107,8 @@ const createProps: mapper<ProgressFilterProps, OwnState> = (props: ProgressFilte
 
     // default filter project dialog
     filterProjectDialog: {
-      customerUids: undefined
+      customerUids: undefined,
+      activeOnly: true,
     }
   };
 };

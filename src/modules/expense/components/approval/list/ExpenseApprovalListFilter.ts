@@ -166,7 +166,8 @@ const createProps: mapper<ExpenseApprovalListFilterProps, IOwnState> = (props: E
 
   // default filter project dialog
   filterProjectDialog: {
-    customerUids: undefined
+    customerUids: undefined,
+    activeOnly: true,
   }
 });
 
