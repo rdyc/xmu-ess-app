@@ -4,7 +4,7 @@ import { WithUser, withUser } from '@layout/hoc/withUser';
 import { ILookupCompany } from '@lookup/classes';
 import { WithStyles, withStyles } from '@material-ui/core';
 import styles from '@styles';
-import { ISummaryBillableFilter } from '@summary/classes/filters';
+import { ISummaryWinningFilter } from '@summary/classes/filters';
 import * as moment from 'moment';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import {
@@ -18,10 +18,10 @@ import {
   withHandlers,
   withStateHandlers
 } from 'recompose';
-import { BillableListFilterView } from './BillableListFilterView';
+import { WinningRatioFilterView } from './WinningRatioFilterView';
 
-export type IBillableListFilterResult = Pick<
-  ISummaryBillableFilter,
+export type IWinningRatioFilterResult = Pick<
+  ISummaryWinningFilter,
   'companyUid' | 'employeeUid' | 'start' | 'end'
 >;
 
@@ -30,7 +30,7 @@ interface OwnOption {
   className: string;
   isLoading: boolean;
   onClickSync: (event: React.MouseEvent<HTMLElement>) => void;
-  onApply: (filter: IBillableListFilterResult) => void;
+  onApply: (filter: IWinningRatioFilterResult) => void;
 }
 
 interface OwnState {
@@ -114,7 +114,7 @@ interface OwnHandler {
   handleFilterEndOnClose: () => void;
 }
 
-export type BillableListFilterProps = OwnOption &
+export type WinningRatioFilterProps = OwnOption &
   OwnState &
   OwnHandler &
   OwnStateUpdater &
@@ -123,8 +123,8 @@ export type BillableListFilterProps = OwnOption &
   WithUser &
   InjectedIntlProps;
 
-const createProps: mapper<BillableListFilterProps, OwnState> = (
-  props: BillableListFilterProps
+const createProps: mapper<WinningRatioFilterProps, OwnState> = (
+  props: WinningRatioFilterProps
 ): OwnState => {
   const { user } = props.userState;
 
@@ -147,7 +147,7 @@ const createProps: mapper<BillableListFilterProps, OwnState> = (
 };
 
 const stateUpdaters: StateUpdaters<
-  BillableListFilterProps,
+  WinningRatioFilterProps,
   OwnState,
   OwnStateUpdater
 > = {
@@ -204,14 +204,14 @@ const stateUpdaters: StateUpdaters<
   })
 };
 
-const handlerCreators: HandleCreators<BillableListFilterProps, OwnHandler> = {
+const handlerCreators: HandleCreators<WinningRatioFilterProps, OwnHandler> = {
   // main filter
-  handleFilterOnReset: (props: BillableListFilterProps) => (
+  handleFilterOnReset: (props: WinningRatioFilterProps) => (
     event: React.MouseEvent<HTMLElement>
   ) => {
     props.setFilterReset();
   },
-  handleFilterOnApply: (props: BillableListFilterProps) => (
+  handleFilterOnApply: (props: WinningRatioFilterProps) => (
     event: React.MouseEvent<HTMLElement>
   ) => {
     props.onApply({
@@ -222,85 +222,85 @@ const handlerCreators: HandleCreators<BillableListFilterProps, OwnHandler> = {
     });
     props.setFilterVisibility();
   },
-  handleFilterVisibility: (props: BillableListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
+  handleFilterVisibility: (props: WinningRatioFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
     props.setFilterVisibility();
   },
 
   // filter Company
-  handleFilterCompanyVisibility: (props: BillableListFilterProps) => () => {
+  handleFilterCompanyVisibility: (props: WinningRatioFilterProps) => () => {
     props.setFilterCompanyVisibility();
   },
-  handleFilterCompanyOnSelected: (props: BillableListFilterProps) => (
+  handleFilterCompanyOnSelected: (props: WinningRatioFilterProps) => (
     data: ILookupCompany
   ) => {
     props.setFilterCompany(data);
   },
-  handleFilterCompanyOnClear: (props: BillableListFilterProps) => () => {
+  handleFilterCompanyOnClear: (props: WinningRatioFilterProps) => () => {
     props.setFilterCompany();
   },
-  handleFilterCompanyOnClose: (props: BillableListFilterProps) => () => {
+  handleFilterCompanyOnClose: (props: WinningRatioFilterProps) => () => {
     props.setFilterCompanyVisibility();
   },
 
   // filter Employee
-  handleFilterEmployeeVisibility: (props: BillableListFilterProps) => () => {
+  handleFilterEmployeeVisibility: (props: WinningRatioFilterProps) => () => {
     props.setFilterEmployeeVisibility();
   },
-  handleFilterEmployeeOnSelected: (props: BillableListFilterProps) => (
+  handleFilterEmployeeOnSelected: (props: WinningRatioFilterProps) => (
     data: IEmployee
   ) => {
     props.setFilterEmployee(data);
   },
-  handleFilterEmployeeOnClear: (props: BillableListFilterProps) => () => {
+  handleFilterEmployeeOnClear: (props: WinningRatioFilterProps) => () => {
     props.setFilterEmployee();
   },
-  handleFilterEmployeeOnClose: (props: BillableListFilterProps) => () => {
+  handleFilterEmployeeOnClose: (props: WinningRatioFilterProps) => () => {
     props.setFilterEmployeeVisibility();
   },
 
   // filter Start
-  handleFilterStartVisibility: (props: BillableListFilterProps) => () => {
+  handleFilterStartVisibility: (props: WinningRatioFilterProps) => () => {
     props.setFilterStartVisibility();
   },
-  handleFilterStartOnSelected: (props: BillableListFilterProps) => (
+  handleFilterStartOnSelected: (props: WinningRatioFilterProps) => (
     data: string
   ) => {
     props.setFilterStart(data);
   },
-  handleFilterStartOnClear: (props: BillableListFilterProps) => () => {
+  handleFilterStartOnClear: (props: WinningRatioFilterProps) => () => {
     props.setFilterStart(props.start);
   },
-  handleFilterStartOnClose: (props: BillableListFilterProps) => () => {
+  handleFilterStartOnClose: (props: WinningRatioFilterProps) => () => {
     props.setFilterStartVisibility();
   },
 
   // filter End
-  handleFilterEndVisibility: (props: BillableListFilterProps) => (
+  handleFilterEndVisibility: (props: WinningRatioFilterProps) => (
     event: React.MouseEvent<HTMLElement>
   ) => {
     props.setFilterEndVisibility();
   },
-  handleFilterEndOnSelected: (props: BillableListFilterProps) => (
+  handleFilterEndOnSelected: (props: WinningRatioFilterProps) => (
     data: string
   ) => {
     props.setFilterEnd(data);
   },
-  handleFilterEndOnClear: (props: BillableListFilterProps) => (
+  handleFilterEndOnClear: (props: WinningRatioFilterProps) => (
     event: React.MouseEvent<HTMLElement>
   ) => {
     props.setFilterEnd(props.end);
   },
-  handleFilterEndOnClose: (props: BillableListFilterProps) => () => {
+  handleFilterEndOnClose: (props: WinningRatioFilterProps) => () => {
     props.setFilterEndVisibility();
   },
 };
 
-export const BillableListFilter = compose<BillableListFilterProps, OwnOption>(
-  setDisplayName('BillableListFilter'),
+export const WinningRatioFilter = compose<WinningRatioFilterProps, OwnOption>(
+  setDisplayName('WinningRatioFilter'),
   withLayout,
   withUser,
   injectIntl,
   withStyles(styles),
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators)
-)(BillableListFilterView);
+)(WinningRatioFilterView);

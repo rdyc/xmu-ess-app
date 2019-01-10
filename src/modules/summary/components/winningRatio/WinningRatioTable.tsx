@@ -24,7 +24,9 @@ import styles from '@styles';
 import { ISummaryWinning } from '@summary/classes/response/winning';
 import { WinningRatioHeaderList } from '@summary/classes/types/winningRatio/WinningRatioHeaderList';
 import { WinningRatioType } from '@summary/classes/types/winningRatio/WinningRatioType';
+import { summaryMessage } from '@summary/locales/messages/summaryMessage';
 import * as React from 'react';
+import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose } from 'recompose';
 
 interface OwnProps {
@@ -43,7 +45,7 @@ interface OwnProps {
   handleChangeSize: (value: number) => void;
 }
 
-type AllProps = OwnProps & WithStyles<typeof styles>;
+type AllProps = OwnProps & InjectedIntlProps & WithStyles<typeof styles>;
 
 const winningRatioTable: React.SFC<AllProps> = props => {
   const {
@@ -159,40 +161,64 @@ const winningRatioTable: React.SFC<AllProps> = props => {
                 <TableCell>{item.employee && item.employee.fullName}</TableCell>
                 <TableCell numeric>{item.ratio} %</TableCell>
                 <TableCell numeric>
-                  <Tooltip title="Closed" disableFocusListener>
-                    <Chip
-                      label={item.categories.map(cat =>
-                        cat.name === WinningRatioType.Closed ? cat.total : null
-                      )}
-                      onClick={() =>
-                        _handledialog(item.employeeUid, WinningRatioType.Closed)
-                      }
-                    />
-                  </Tooltip>
+                  {item.categories.map((cat, catIdx) => (
+                    cat.name === WinningRatioType.Closed && ((
+                      cat.total >= 1 &&
+                      <Tooltip title={props.intl.formatMessage(summaryMessage.winningRatio.hover.closed)} disableFocusListener>
+                      <Chip
+                        key={catIdx}
+                        label={cat.total}
+                        onClick={() => _handledialog(item.employeeUid, WinningRatioType.Closed)}
+                      />
+                      </Tooltip>
+                    ) || (
+                      <Chip 
+                        key={catIdx}
+                        label={cat.total}
+                        variant="outlined"
+                      />
+                    ))
+                  ))}
                 </TableCell>
                 <TableCell numeric>
-                  <Tooltip title="On Progress" disableFocusListener>
-                    <Chip
-                      label={item.categories.map(cat =>
-                        cat.name === WinningRatioType.OnProgress ? cat.total : null
-                      )}
-                      onClick={() =>
-                        _handledialog(item.employeeUid, WinningRatioType.OnProgress)
-                      }
-                    />
-                  </Tooltip>
+                  {item.categories.map((cat, catIdx) => (
+                    cat.name === WinningRatioType.OnProgress && ((
+                      cat.total >= 1 &&
+                      <Tooltip title={props.intl.formatMessage(summaryMessage.winningRatio.hover.onProgress)} disableFocusListener>
+                      <Chip
+                        key={catIdx}
+                        label={cat.total}
+                        onClick={() => _handledialog(item.employeeUid, WinningRatioType.OnProgress)}
+                      />
+                      </Tooltip>
+                    ) || (
+                      <Chip 
+                        key={catIdx}
+                        label={cat.total}
+                        variant="outlined"
+                      />
+                    ))
+                  ))}
                 </TableCell>
                 <TableCell numeric>
-                  <Tooltip title="Win" disableFocusListener>
-                    <Chip
-                      label={item.categories.map(cat =>
-                        cat.name === WinningRatioType.Winning ? cat.total : null
-                      )}
-                      onClick={() =>
-                        _handledialog(item.employeeUid, WinningRatioType.Winning)
-                      }
-                    />
-                  </Tooltip>
+                  {item.categories.map((cat, catIdx) => (
+                    cat.name === WinningRatioType.Winning && ((
+                      cat.total >= 1 &&
+                      <Tooltip title={props.intl.formatMessage(summaryMessage.winningRatio.hover.win)} disableFocusListener>
+                      <Chip
+                        key={catIdx}
+                        label={cat.total}
+                        onClick={() => _handledialog(item.employeeUid, WinningRatioType.Winning)}
+                      />
+                      </Tooltip>
+                    ) || (
+                      <Chip 
+                        key={catIdx}
+                        label={cat.total}
+                        variant="outlined"
+                      />
+                    ))
+                  ))}
                 </TableCell>
               </TableRow>
             ))}
@@ -222,5 +248,6 @@ const winningRatioTable: React.SFC<AllProps> = props => {
 };
 
 export const WinningRatioTable = compose<AllProps, OwnProps>(
+  injectIntl,
   withStyles(styles)
 )(winningRatioTable);
