@@ -187,6 +187,18 @@ export const redirector = (module: ModuleDefinition, type: NotificationType, uid
         path = path.concat('/approvals', uid && `/${uid}` || '');
       } else {
         path = path.concat('/requests', uid && `/${uid}` || '');
+
+        if (type === NotificationType.Settlement) {
+          state = {
+            isSettlement: true,
+          };
+        }
+
+        if (type === NotificationType.Rejected) {
+          state = {
+            isRejected: true,
+          };
+        }
       }
       break;
   
@@ -197,6 +209,12 @@ export const redirector = (module: ModuleDefinition, type: NotificationType, uid
         path = path.concat('/approvals', uid && `/${uid}` || '');
       } else {
         path = path.concat('/requests', uid && `/${uid}` || '');
+
+        if (type === NotificationType.Rejected) {
+          state = {
+            isRejected: true,
+          };
+        }
       }
       break;
   
@@ -206,13 +224,13 @@ export const redirector = (module: ModuleDefinition, type: NotificationType, uid
       if (type === NotificationType.Approval || type === NotificationType.Notify) {
         path = path.concat('/approvals', uid && `/${uid}` || '');
         
-        if (type === 'Approval') {
+        if (type === NotificationType.Approval) {
           state = {
             status: 'pending',
           };
         }
 
-        if (type === 'Notify') {
+        if (type === NotificationType.Notify) {
           state = {
             status: 'complete',
             isNotify: true,
