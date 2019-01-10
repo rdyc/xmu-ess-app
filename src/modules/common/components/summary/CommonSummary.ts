@@ -99,7 +99,6 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<CommonSummaryProps, OwnState> 
     layoutDispatch.modeListOff();
     layoutDispatch.searchHide();
     layoutDispatch.modeSearchOff();
-    layoutDispatch.actionCentreHide();
     layoutDispatch.moreHide();
     systemTypeDispose();
   }
