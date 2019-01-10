@@ -2,6 +2,8 @@ import { ISystemDetail } from '@common/classes/response';
 import { CommonCategory } from '@common/classes/types';
 import { isWithCompany, isWithParent } from '@common/helper';
 import { commonMessage } from '@common/locales/messages/commonMessage';
+import { layoutMessage } from '@layout/locales/messages';
+import { GlobalFormat } from '@layout/types';
 import { GlobalStyle } from '@layout/types/GlobalStyle';
 import { Card, CardContent, CardHeader, TextField } from '@material-ui/core';
 import * as React from 'react';
@@ -74,6 +76,25 @@ export const commonInformation: React.SFC<AllProps> = props => {
             : props.intl.formatMessage(commonMessage.system.text.inActive)
           }
         />
+        {
+          data.changes &&
+          <TextField
+            {...GlobalStyle.TextField.ReadOnly}
+            label={props.intl.formatMessage(layoutMessage.field.createdBy)}
+            value={data.changes.created && data.changes.created.fullName || 'N/A'}
+            helperText={props.intl.formatDate(data.changes.createdAt, GlobalFormat.DateTime) || 'N/A'}
+          />
+        }
+        {
+          data.changes &&
+          (data.changes.updated && data.changes.updatedAt) &&
+          <TextField
+            {...GlobalStyle.TextField.ReadOnly}
+            label={props.intl.formatMessage(layoutMessage.field.updatedBy)}
+            value={data.changes.updated.fullName || 'N/A'}
+            helperText={props.intl.formatDate(data.changes.updatedAt, GlobalFormat.DateTime) || 'N/A'}
+          />
+        }
       </CardContent>
     </Card>
   );
