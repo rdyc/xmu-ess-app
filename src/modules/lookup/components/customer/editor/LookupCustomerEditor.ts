@@ -227,7 +227,6 @@ const lifecycles: ReactLifeCycleFunctions<LookupCustomerEditorProps, {}> = {
     layoutDispatch.changeView(null);
     layoutDispatch.navBackHide();
     layoutDispatch.moreHide();
-    layoutDispatch.actionCentreHide();
 
     appBarDispatch.dispose();
 

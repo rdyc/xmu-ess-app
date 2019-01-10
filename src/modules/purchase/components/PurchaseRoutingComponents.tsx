@@ -1,4 +1,3 @@
-import { Layout } from '@layout/components/base';
 import { PurchaseApprovalDetail } from '@purchase/components/purchaseApproval/detail/PurchaseApprovalDetail';
 import { PurchaseApprovalList } from '@purchase/components/purchaseApproval/list/PurchaseApprovalList';
 import { PurchaseRequestDetail } from '@purchase/components/purchaseRequest/detail/PurchaseRequestDetail';
@@ -44,11 +43,9 @@ const settlementApproval = (props: RouteComponentProps) => (
 
 export const PurchaseRoutingComponents: React.SFC<RouteComponentProps> = props => (
   <Switch>
-    <Layout>
-      <Route path={`${props.match.path}/requests`} component={request} />
-      <Route path={`${props.match.path}/approvals`} component={approval} />
-      <Route path={`${props.match.path}/settlement/requests`} component={settlementRequest} />
-      <Route path={`${props.match.path}/settlement/approvals`} component={settlementApproval} />
-    </Layout>
+    <Route path={`${props.match.path}/requests`} component={request} />
+    <Route path={`${props.match.path}/approvals`} component={approval} />
+    <Route path={`${props.match.path}/settlement/requests`} component={settlementRequest} />
+    <Route path={`${props.match.path}/settlement/approvals`} component={settlementApproval} />
   </Switch>
 );

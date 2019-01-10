@@ -1,4 +1,3 @@
-import { Layout } from '@layout/components/base';
 import * as React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router';
 
@@ -12,9 +11,9 @@ const access = (props: RouteComponentProps) => (
 );
 
 const profile = (props: RouteComponentProps) => (
-  <Layout>
+  <Switch>
     <Route path={`${props.match.path}`} component={AccountProfile} />
-  </Layout>
+  </Switch>
 );
 
 export const AccountRoutingComponents: React.SFC<RouteComponentProps> = props => (

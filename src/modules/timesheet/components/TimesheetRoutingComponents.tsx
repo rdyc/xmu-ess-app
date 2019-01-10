@@ -1,6 +1,6 @@
-import { Layout } from '@layout/components/base';
 import * as React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router';
+
 import { TimesheetApprovalDetail } from './approval/timesheetApproval/detail/TimesheetApprovalDetail';
 import { ActionApproval } from './approval/timesheetApproval/formApproval/ActionApproval';
 import { TimesheetApprovalList } from './approval/timesheetApproval/list/TimesheetApprovalList';
@@ -30,9 +30,7 @@ const approval = (props: RouteComponentProps) => (
 
 export const TimesheetRoutingComponents: React.SFC<RouteComponentProps> = props => (
   <Switch>
-    <Layout>
-      <Route path={`${props.match.path}/requests`} component={request} />
-      <Route path={`${props.match.path}/approvals`} component={approval} />
-    </Layout>
+    <Route path={`${props.match.path}/requests`} component={request} />
+    <Route path={`${props.match.path}/approvals`} component={approval} />
   </Switch>
 );
