@@ -3,7 +3,7 @@ import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithNotification, withNotification } from '@layout/hoc/withNotification';
 import { IAppBarMenu } from '@layout/interfaces';
-import { PropTypes, WithStyles, withStyles, WithTheme, withTheme } from '@material-ui/core';
+import { WithStyles, withStyles, WithTheme, withTheme } from '@material-ui/core';
 import withWidth, { WithWidth } from '@material-ui/core/withWidth';
 import styles from '@styles';
 import { RouteComponentProps, withRouter } from 'react-router';
@@ -61,7 +61,6 @@ interface OwnHandler {
   handleOnDiscardSelection: () => void;
   handleOnClickField: (field?: ICollectionValue | undefined) => void;
   handleOnClickProcess: () => void;
-  getClassColor: () => PropTypes.Color;
   getClassNames: () => string[];
   getCountNotif: () => number;
 }
@@ -182,26 +181,16 @@ const handlerCreators: HandleCreators<TopBarProps, OwnHandler> = {
     props.appBarState.onSearching(props.search, field);
   },
   handleOnClickProcess: (props: TopBarProps) => () => {
-    props.appBarState.onSelectionProcess(props.appBarState.selection);
-
-    // clear selection on redux states
-    props.appBarDispatch.selectionClear();
-
-    // call selection clear callback
-    props.appBarState.onSelectionClear();
-  },
-  getClassColor: (props: TopBarProps) => (): PropTypes.Color => {
-    let result: PropTypes.Color = 'default';
-
-    if (props.layoutState.theme.palette && props.layoutState.theme.palette.type !== 'dark') {
-     if (props.mode === 'search' || (props.layoutState.isModeList && props.appBarState.selection.length > 0)) {
-        result = 'inherit';
-      } else {
-        result = 'default';
-      }
+    if (props.appBarState.selections) {
+      // call process callback
+      props.appBarState.onSelectionProcess(props.appBarState.selections);
+      
+      // clear selection on redux states
+      props.appBarDispatch.selectionClear();
+      
+      // call selection clear callback
+      props.appBarState.onSelectionClear();
     }
-
-    return result;
   },
   getClassNames: (props: TopBarProps) => (): string[] => {
     const { classes } = props;
@@ -212,7 +201,7 @@ const handlerCreators: HandleCreators<TopBarProps, OwnHandler> = {
     return isDrawerMenuVisible ? [classes.appBar] : [classes.appBar, shift];
   },
   getCountNotif: (props: TopBarProps) => (): number => {
-    const { result } = props.notificationState;
+    const { response: result } = props.notificationState;
 
     let count: number = 0;
     
@@ -255,7 +244,7 @@ const lifeCycles: ReactLifeCycleFunctions<TopBarProps, OwnState> = {
 
     // topbar comparer
     if (this.props.appBarState !== prevProps.appBarState) {
-      if (this.props.layoutState.isModeList && this.props.appBarState.selection.length > 0) {
+      if (this.props.layoutState.isModeList && this.props.appBarState.selections) {
         this.props.setMode('selection');
       } else {
         this.props.setMode('normal');

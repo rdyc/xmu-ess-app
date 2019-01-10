@@ -25,7 +25,9 @@ const styles = (theme: Theme) =>
 
     // Application Bar
     appBar: {
+      backgroundColor: theme.palette.primary.main,
       [theme.breakpoints.up('md')]: {
+        backgroundColor: theme.palette.background.default,
         width: `calc(100% - ${0}px)`,
         marginLeft: 0,
         marginRight: 0,
@@ -34,6 +36,12 @@ const styles = (theme: Theme) =>
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.leavingScreen
       })
+    },
+    appBarSearch: {
+      backgroundColor: theme.palette.background.paper
+    },
+    appBarSearchField: {
+      backgroundColor: theme.palette.background.paper
     },
     appBarShiftLeft: {
       [theme.breakpoints.up('md')]: {
@@ -90,7 +98,7 @@ const styles = (theme: Theme) =>
       transition: theme.transitions.create('width', {
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.enteringScreen
-      })
+      }),
     },
     drawerPaperBackground: {
       // backgroundColor: theme.palette.type === 'light' ? theme.palette.primary.light : theme.palette.grey[900],
@@ -336,14 +344,14 @@ const styles = (theme: Theme) =>
     /* report */
     reportPaper: {
       overflowX: 'auto',
-      height: `calc(100vh - 128px - 120px)`,
+      height: `calc(100vh - 96px - 72px)`,
     },
     reportPaperPartial: {
       width: `calc(100vw - 32px - ${drawerWidth}px)`
     },
     reportPaperMobile: {
       overflowX: 'auto',
-      height: `calc(100vh - 64px - 208px)`,
+      height: `calc(100vh - 56px - 68px)`,
     },
     reportPaperPartialMobile: {
       width: `calc(100vw)`,

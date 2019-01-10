@@ -24,7 +24,7 @@ import SyncIcon from '@material-ui/icons/Sync';
 import TuneIcon from '@material-ui/icons/Tune';
 import * as React from 'react';
 
-import { EmployeeDialog } from '@account/components/select';
+import { EmployeeDialog } from '@account/components/dialog';
 import { FilterCompany } from '@lookup/components/company/select';
 import { summaryMessage } from '@summary/locales/messages/summaryMessage';
 import { BillableListFilterProps } from './BillableListFilter';
