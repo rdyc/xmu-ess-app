@@ -118,12 +118,9 @@ const handlerCreators: HandleCreators<DashboardProps, OwnHandlers> = {
     }
   },
   handleNotifClick: (props: DashboardProps) => (category: ModuleDefinition, type: NotificationType, uid?: string) => {
-    const { history } = props;
-
     const redirect = redirector(category, type, uid);
 
-    // redirecting to defined path
-    history.push(redirect.path, redirect.state);
+    props.history.push(redirect.path, redirect.state);
   }
 };
 

@@ -155,7 +155,7 @@ const createProps: mapper<SettlementApprovalDetailProps, OwnState> = (props: Set
   shouldDataReload: false,
   approvalTitle: props.intl.formatMessage(purchaseMessage.s_approval.section.approveForm),
   // approvalSubHeader: props.intl.formatMessage(purchaseMessage.s_approval.section.approveContent),
-  approvalSubHeader: '',
+  approvalSubHeader: ` `,
   approvalChoices: [
     { value: WorkflowStatusType.Approved, label: props.intl.formatMessage(purchaseMessage.s_approval.message.approve) },
     { value: WorkflowStatusType.AdjustmentNeeded, label: props.intl.formatMessage(purchaseMessage.s_approval.message.adjustmentNeeded) }
@@ -163,7 +163,7 @@ const createProps: mapper<SettlementApprovalDetailProps, OwnState> = (props: Set
   approvalTrueValue: WorkflowStatusType.Approved,
   approvalDialogTitle: props.intl.formatMessage(purchaseMessage.s_approval.confirm.approveTitle),
   // approvalDialogContentText: props.intl.formatMessage(purchaseMessage.s_approval.confirm.approveDescription),
-  approvalDialogContentText: '',
+  approvalDialogContentText: ` `,
   approvalDialogCancelText: props.intl.formatMessage(layoutMessage.action.discard),
   approvalDialogConfirmedText: props.intl.formatMessage(layoutMessage.action.continue),
 

@@ -419,6 +419,12 @@ const styles = (theme: Theme) =>
     },
 
     colorBlue: { color: blue['500'] },
+
+    /* Paper paing */
+    paperPaging: {
+      paddingTop: theme.spacing.unit * 2,
+      paddingBottom: theme.spacing.unit * 2
+    }
   });
 
 export default styles;
