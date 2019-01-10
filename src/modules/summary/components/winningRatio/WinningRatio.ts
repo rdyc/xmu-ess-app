@@ -1,7 +1,9 @@
 import AppMenu from '@constants/AppMenu';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
-import { WinningRatioView } from '@summary/components/winningRatio/WinningRatioView';
+import { WithStyles, withStyles, withWidth } from '@material-ui/core';
+import { WithWidth } from '@material-ui/core/withWidth';
+import styles from '@styles';
 import { WithSummary, withSummary } from '@summary/hoc/withSummary';
 import { summaryMessage } from '@summary/locales/messages/summaryMessage';
 import * as moment from 'moment';
@@ -19,82 +21,69 @@ import {
   withHandlers,
   withStateHandlers
 } from 'recompose';
+import { IWinningRatioFilterResult } from './WinningRatioFilter';
+import { WinningRatioView } from './WinningRatioView';
 
-interface OwnHandlers {
-  handleGoToNext: () => void;
-  handleGoToPrevious: () => void;
-  handleChangeSize: (value: number) => void;
-  handleChangeSort: (direction: boolean) => void;
-  handleChangePage: (page: number) => void;
-  handleDetail: (uid: string, type: string) => void;
-  handleDialog: () => void;
-  handleChangeFilter: (employeeUid: string | undefined, start: string, end: string) => void;
-}
-
-interface OwnOptions {
-  orderBy?: string | undefined;
-  direction?: string | undefined;
-  page?: number | undefined;
-  size?: number | undefined;
-  find?: string | undefined;
-  findBy?: string | undefined;
-  uid?: string | undefined;
-  open?: boolean;
-  type?: string | undefined;
-}
-
-interface OwnState {
-  start: string;
-  end: string;
-  orderBy: string | undefined;
-  direction: string | undefined;
-  page: number;
-  size: number;
-  find: string | undefined;
-  findBy: string | undefined;
+interface OwnState extends IWinningRatioFilterResult {
+  isAdmin: boolean;
+  reloadData: boolean;
   uid: string | undefined;
   open: boolean;
   type: string | undefined;
+  orderBy?: string | undefined;
+  direction?: string | undefined;
+  page: number;
+  size: number;
+}
+
+interface OwnHandlers {
+  handleDialog: () => void;
+  handleGoToNext: () => void;
+  handleReloadData: () => void;
+  handleGoToPrevious: () => void;
+  handleChangePage: (page: number) => void;
+  handleChangeSize: (size: number) => void;
+  handleChangeSort: (direction: boolean) => void;
+  handleDetail: (uid: string, type: string) => void;
+  handleChangeFilter: (filter: IWinningRatioFilterResult) => void;
 }
 
 interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
-  stateNext: StateHandler<OwnState>;
-  statePrevious: StateHandler<OwnState>;
-  stateSorting: StateHandler<OwnState>;
-  stateSizing: StateHandler<OwnState>;
-  statePage: StateHandler<OwnState>;
-  stateDetail: StateHandler<OwnState>;
-  stateDialog: StateHandler<OwnState>;
   stateUpdate: StateHandler<OwnState>;
+  setFilterApplied: StateHandler<OwnState>;
 }
 
-export type WinningRatioProps =
-  & WithLayout
-  & WithUser
-  & WithSummary
-  & RouteComponentProps
-  & InjectedIntlProps
-  & OwnOptions
-  & OwnState
-  & OwnHandlers
-  & OwnStateUpdaters;
+export type WinningRatioProps = WithSummary &
+  WithWidth &
+  WithUser &
+  WithLayout &
+  RouteComponentProps &
+  InjectedIntlProps &
+  OwnState &
+  OwnHandlers &
+  OwnStateUpdaters &
+  WithStyles<typeof styles>;
 
-const createProps: mapper<WinningRatioProps, OwnState> = (props: WinningRatioProps): OwnState => {
+const createProps: mapper<WinningRatioProps, OwnState> = (
+  props: WinningRatioProps
+): OwnState => {
   const { orderBy, direction, page, size } = props;
   const { request } = props.summaryState.winning;
 
   return {
+    isAdmin: false,
+    reloadData: false,
+    open: false,
+    type: undefined,
+    uid: undefined,
     start: moment()
       .startOf('year')
       .toISOString(true),
     end: moment().toISOString(true),
-    find: undefined,
-    findBy: undefined,
-    uid: undefined,
-    open: false,
-    type: undefined,
     orderBy:
-      (request && request.filter && request.filter.orderBy) || orderBy || 'fullName',
+      (request && request.filter && request.filter.orderBy) ||
+      orderBy ||
+      'fullName',
     direction:
       (request && request.filter && request.filter.direction) ||
       direction ||
@@ -104,82 +93,72 @@ const createProps: mapper<WinningRatioProps, OwnState> = (props: WinningRatioPro
   };
 };
 
-const stateUpdaters: StateUpdaters<OwnOptions, OwnState, OwnStateUpdaters> = {
-  stateNext: (prevState: OwnState) => () => ({
-    page: prevState.page + 1
-  }),
-  statePrevious: (prevState: OwnState) => () => ({
-    page: prevState.page - 1
-  }),
-  stateSorting: (prevState: OwnState) => (direction: string) => ({
-    direction,
-    page: 1
-  }),
-  stateSizing: (prevState: OwnState) => (size: number) => ({
-    size,
-    page: 1
-  }),
-  statePage: (prevState: OwnState) => (page: number) => ({
-    page
-  }),
-  stateDetail: (prevState: OwnState) => (uid: string, type: string) => ({
-    uid,
-    type
-  }),
-  stateDialog: (prevState: OwnState) => (open: boolean) => ({
-    open
-  }),
+const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
   stateUpdate: (prevState: OwnState) => (newState: any) => ({
     ...prevState,
     ...newState
   }),
+  setFilterApplied: (prevState: OwnState) => (
+    filter: IWinningRatioFilterResult
+  ) => ({
+    ...filter
+  })
 };
 
 const handlerCreators: HandleCreators<WinningRatioProps, OwnHandlers> = {
-  handleGoToNext: (props: WinningRatioProps) => () => {
-    props.stateNext();
-  },
-  handleGoToPrevious: (props: WinningRatioProps) => () => {
-    props.statePrevious();
-  },
-  handleChangeSize: (props: WinningRatioProps) => (value: number) => {
-    props.stateSizing(value);
-  },
-  handleChangeSort: (props: WinningRatioProps) => (
-    direction: boolean
+  handleChangeFilter: (props: WinningRatioProps) => (
+    filter: IWinningRatioFilterResult
   ) => {
-    props.stateSorting(direction ? 'descending' : 'ascending');
+    props.setFilterApplied(filter);
   },
-  handleChangePage: (props: WinningRatioProps) => (page: number) => {
-    props.statePage(page);
-  },
-  handleDetail: (props: WinningRatioProps) => (uid: string, type: string) => {
-    props.stateDetail(uid, type);
+  handleReloadData: (props: WinningRatioProps) => () => {
+    props.stateUpdate({
+      reloadData: true
+    });
   },
   handleDialog: (props: WinningRatioProps) => () => {
-    let { open } = props;
-    
-    open = !open;
-    props.stateDialog(open);
+    props.stateUpdate({
+      open: !props.open
+    });
   },
-  handleChangeFilter: (props: WinningRatioProps) => (employeeUid: string | undefined, start: string, end: string) => {
-    const { stateUpdate } = props;
-
-    stateUpdate({
-      start,
-      end,
-      find: employeeUid,
+  handleDetail: (props: WinningRatioProps) => (uid: string, type: string) => {
+    props.stateUpdate({
+      uid,
+      type
+    });
+  },
+  handleGoToNext: (props: WinningRatioProps) => () => {
+    props.stateUpdate({
+      page: props.page + 1
+    });
+  },
+  handleGoToPrevious: (props: WinningRatioProps) => () => {
+    props.stateUpdate({
+      page: props.page - 1
+    });
+  },
+  handleChangeSize: (props: WinningRatioProps) => (size: number) => {
+    props.stateUpdate({
+      size,
+      page: 1
+    });
+  },
+  handleChangePage: (props: WinningRatioProps) => (page: number) => {
+    props.stateUpdate({
+      page
+    });
+  },
+  handleChangeSort: (props: WinningRatioProps) => (direction: boolean) => {
+    props.stateUpdate({
+      direction: direction ? 'descending' : 'ascending'
     });
   }
 };
 
 const lifecycles: ReactLifeCycleFunctions<WinningRatioProps, OwnState> = {
   componentDidMount() {
-    const {
-      layoutDispatch,
-      intl
-    } = this.props;
-    
+    const { layoutDispatch, intl } = this.props;
+
     const { isLoading, response } = this.props.summaryState.winning;
 
     layoutDispatch.changeView({
@@ -194,21 +173,25 @@ const lifecycles: ReactLifeCycleFunctions<WinningRatioProps, OwnState> = {
       loadData(this.props);
     }
   },
-  componentDidUpdate(props: WinningRatioProps, state: OwnState) {
-    // only load when these props are different
+  componentWillUpdate(props: WinningRatioProps, state: OwnState) {
     if (
+      this.props.companyUid !== props.companyUid ||
+      this.props.employeeUid !== props.employeeUid ||
       this.props.orderBy !== props.orderBy ||
       this.props.direction !== props.direction ||
       this.props.page !== props.page ||
       this.props.size !== props.size ||
       this.props.start !== props.start ||
-      this.props.end !== props.end ||
-      this.props.find !== props.find
+      this.props.end !== props.end
     ) {
-      const { loadWinningDispose } = this.props.summaryDispatch;
+      loadData(props);
+    }
+    if (props.reloadData) {
+      loadData(props);
 
-      loadWinningDispose();
-      loadData(this.props);
+      props.stateUpdate({
+        reloadData: false
+      });
     }
   },
   componentWillUnmount() {
@@ -217,32 +200,35 @@ const lifecycles: ReactLifeCycleFunctions<WinningRatioProps, OwnState> = {
     const { loadWinningDispose } = this.props.summaryDispatch;
 
     layoutDispatch.changeView(null);
+    layoutDispatch.modeListOff();
+    layoutDispatch.modeSearchOff();
+    layoutDispatch.moreHide();
 
-    // dispose 'get all' from 'redux store' when the page is 'out of report winning' context
-    if (view && view.parentUid !== AppMenu.Report) {
+    // dispose 'get all' from 'redux store' when the page is 'out of project registration' context
+    if (view && view.uid !== AppMenu.ReportWinningRatio) {
       loadWinningDispose();
     }
   }
 };
 
 const loadData = (props: WinningRatioProps): void => {
-  const { orderBy, direction, size, start, end, find, findBy, page } = props;
+  const { orderBy, direction, size, page, isAdmin } = props;
   const { user } = props.userState;
   const { loadWinningRequest } = props.summaryDispatch;
   const { alertAdd } = props.layoutDispatch;
-    
+
   if (user) {
     loadWinningRequest({
-      companyUid: user.company.uid,
+      companyUid: isAdmin ? props.companyUid : user.company.uid,
       filter: {
         direction,
         orderBy,
         page,
         size,
-        start,
-        end,
-        find,
-        findBy
+        companyUid: isAdmin ? props.companyUid : user.company.uid,
+        employeeUid: props.employeeUid,
+        start: props.start,
+        end: props.end
       }
     });
   } else {
@@ -253,16 +239,15 @@ const loadData = (props: WinningRatioProps): void => {
   }
 };
 
-export const WinningRatio = compose<WinningRatioProps, OwnOptions>(
+export const WinningRatio = compose<WinningRatioProps, {}>(
   withSummary,
   withUser,
   withLayout,
   withRouter,
   injectIntl,
-  withStateHandlers<OwnState, OwnStateUpdaters, OwnOptions>(
-    createProps,
-    stateUpdaters
-  ),
+  withWidth(),
+  withStyles(styles),
+  withStateHandlers<OwnState, OwnStateUpdaters, {}>(createProps, stateUpdaters),
   withHandlers<WinningRatioProps, OwnHandlers>(handlerCreators),
   lifecycle<WinningRatioProps, OwnState>(lifecycles)
 )(WinningRatioView);

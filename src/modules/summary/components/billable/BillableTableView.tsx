@@ -157,24 +157,29 @@ const billableTableView: React.SFC<AllProps> = props => {
                 <TableCell numeric>{index + 1 + (page - 1) * size}</TableCell>
                 <TableCell>{item.employee.fullName}</TableCell>
                 <TableCell numeric>
-                <Tooltip
-                  title={props.intl.formatMessage(summaryMessage.billable.hover.nonPresales)}
-                  disableFocusListener
-                >
-                  <Chip
-                    label={
-                      item.categories &&
-                      item.categories.map(cat =>
-                        cat.name === BillableType.NonPresales
-                          ? <FormattedNumber key={cat.name} value={Number(cat.billable.hours.toFixed(2))} />
-                          : null
-                      )
-                    }
-                    onClick={() =>
-                      _handledialog(item.employee.uid, BillableType.NonPresales)
-                    }
-                  />
-                  </Tooltip>
+                  {item.categories && item.categories.map (cat => (
+                    cat.name === BillableType.NonPresales &&
+                    cat.assignments && ((
+                    cat.assignments.length >= 1 &&
+                    <Tooltip
+                      title={props.intl.formatMessage(summaryMessage.billable.hover.nonPresales)}
+                      disableFocusListener
+                    >
+                      <Chip
+                        key={cat.name}
+                        label={<FormattedNumber value={Number(cat.billable.hours.toFixed(2))} />}
+                        onClick={() =>
+                          _handledialog(item.employee.uid, BillableType.NonPresales)
+                        }
+                      />
+                    </Tooltip>) || 
+                    (
+                      <Chip 
+                        label={<FormattedNumber key={cat.name} value={Number(cat.billable.hours)} />}
+                        variant="outlined"
+                      />  
+                    ))
+                  ))}
                 </TableCell>
                 <TableCell numeric>
                   {item.categories &&
@@ -183,22 +188,29 @@ const billableTableView: React.SFC<AllProps> = props => {
                     )}
                 </TableCell>
                 <TableCell numeric>
-                  <Tooltip
-                    title={props.intl.formatMessage(summaryMessage.billable.hover.presales)}
-                    disableFocusListener
-                  >
-                  <Chip
-                    label={
-                      item.categories &&
-                      item.categories.map(cat =>
-                        cat.name === BillableType.Presales
-                          ? <FormattedNumber key={cat.name} value={Number(cat.billable.hours.toFixed(2))} />
-                          : null
-                      )
-                    }
-                    onClick={() => _handledialog(item.employee.uid, BillableType.Presales)}
-                  />
-                  </Tooltip>
+                  {item.categories && item.categories.map (cat => (
+                    cat.name === BillableType.Presales &&
+                    cat.assignments && ((
+                    cat.assignments.length >= 1 &&
+                    <Tooltip
+                      title={props.intl.formatMessage(summaryMessage.billable.hover.presales)}
+                      disableFocusListener
+                    >
+                      <Chip
+                        key={cat.name}
+                        label={<FormattedNumber value={Number(cat.billable.hours.toFixed(2))} />}
+                        onClick={() =>
+                          _handledialog(item.employee.uid, BillableType.Presales)
+                        }
+                      />
+                    </Tooltip>) || 
+                    (
+                      <Chip 
+                        label={<FormattedNumber key={cat.name} value={Number(cat.billable.hours)} />}
+                        variant="outlined"
+                      />  
+                    ))
+                  ))}
                 </TableCell>
                 <TableCell numeric>
                   {item.categories &&

@@ -236,7 +236,6 @@ const lifecycles: ReactLifeCycleFunctions<ProjectAcceptanceApprovalProps, {}> = 
     layoutDispatch.changeView(null);
     layoutDispatch.navBackHide();
     layoutDispatch.moreHide();
-    layoutDispatch.actionCentreHide();
 
     appBarDispatch.dispose();
   }

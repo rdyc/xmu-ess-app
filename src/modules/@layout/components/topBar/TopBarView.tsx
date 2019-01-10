@@ -5,7 +5,6 @@ import {
   Badge,
   Button,
   Divider,
-  Hidden,
   IconButton,
   Input,
   InputAdornment,
@@ -149,22 +148,20 @@ const ToolbarControl: React.SFC<ToolbarControlOptions> = props => (
       </IconButton>
     }
     
-    <Hidden xsDown>
-      {
-        /* notifications */
-        props.showNotif &&
-        props.notifCount > 0 &&
-        <IconButton
-          color={props.color}
-          aria-label="Notifications"
-          onClick={props.OnClickNotif}
-        >
-          <Badge badgeContent={props.notifCount} color="error">
-            <NotificationImportant />
-          </Badge>
-        </IconButton>
-      }
-    </Hidden>
+    {
+      /* notifications */
+      props.showNotif &&
+      props.notifCount > 0 &&
+      <IconButton
+        color={props.color}
+        aria-label="Notifications"
+        onClick={props.OnClickNotif}
+      >
+        <Badge badgeContent={props.notifCount} color="error">
+          <NotificationImportant />
+        </Badge>
+      </IconButton>
+    }
 
     {
       props.customControls &&
@@ -258,8 +255,8 @@ export const TopBarView: React.SFC<TopBarProps> = props => (
         props.mode === 'normal' &&
         <ToolbarControl
           color={isWidthUp('md', props.width) ? 'default' : 'inherit'}
-          menuclassName={classNames(props.classes.navIconHide, props.layoutState.isDrawerMenuVisible && props.classes.hide)}
-          OnClickMenu={props.handleOnClickMenu}
+          menuclassName={classNames(props.classes.navIconHide, props.isOpenMenu && props.classes.hide)}
+          OnClickMenu={props.onClickMenu}
           title={props.layoutState.view && props.layoutState.view.title}
           titleClassName={props.classes.flex}
           showBack={props.layoutState.isNavBackVisible}
@@ -268,11 +265,11 @@ export const TopBarView: React.SFC<TopBarProps> = props => (
           OnClickSearch={props.handleOnClickSearch}
           showNotif={true}
           notifCount={props.getCountNotif()}
-          OnClickNotif={props.handleOnClickNotif}
+          OnClickNotif={props.onClickNotif}
           showMore={props.layoutState.isMoreVisible}
           customControls={props.appBarState.controls}
           moreItems={props.appBarState.menus}
-          isOpenMore={props.isOpenMenu}
+          isOpenMore={props.isShowMenu}
           onClickMore={props.handleOnClickMore}
           onClickMoreItem={props.handleOnClickMoreItem}
           onCloseMore={props.handleOnCloseMore}

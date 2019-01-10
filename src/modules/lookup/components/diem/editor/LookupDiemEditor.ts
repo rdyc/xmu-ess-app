@@ -226,7 +226,6 @@ const lifecycles: ReactLifeCycleFunctions<LookupDiemEditorProps, {}> = {
     layoutDispatch.changeView(null);
     layoutDispatch.navBackHide();
     layoutDispatch.moreHide();
-    layoutDispatch.actionCentreHide();
 
     appBarDispatch.dispose();
 

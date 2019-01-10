@@ -12,10 +12,10 @@ import {
 import CloseIcon from '@material-ui/icons/Close';
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
-import { compose } from 'recompose';
+import { compose, setDisplayName } from 'recompose';
 import { isNullOrUndefined, isObject } from 'util';
 
-const SnackbarAlertSFC: React.SFC<WithLayout> = props => {
+const SnackbarAlertView: React.SFC<WithLayout> = props => {
   const { layoutState, layoutDispatch } = props;
   const alert = layoutState.alerts[0];
 
@@ -101,8 +101,7 @@ const SnackbarAlertSFC: React.SFC<WithLayout> = props => {
   );
 };
 
-const enhance = compose(
+export const SnackbarAlert = compose(
+  setDisplayName('SnackbarAlert'),
   withLayout
-)(SnackbarAlertSFC);
-
-export default enhance;
+)(SnackbarAlertView);

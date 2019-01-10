@@ -1,5 +1,6 @@
 import AppMenu from '@constants/AppMenu';
 import { Collapse, Divider, List, ListItem, ListItemIcon, ListItemSecondaryAction, ListItemText } from '@material-ui/core';
+import { isWidthUp } from '@material-ui/core/withWidth';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import * as React from 'react';
@@ -37,7 +38,7 @@ export const NavigationView: React.SFC<NavigationProps> = props => (
       <ListItem
         button
         selected={props.childUid === AppMenu.Dashboard}
-        onClick={() => props.handleOnClickMenuItem(AppMenu.Home, AppMenu.Dashboard)}
+        onClick={() => props.handleOnClickMenuItem(AppMenu.Home, AppMenu.Dashboard, !isWidthUp('md', props.width))}
       >
         <ListItemText 
           className={props.classes.drawerPaperMenuItemSub}
@@ -82,7 +83,7 @@ export const NavigationView: React.SFC<NavigationProps> = props => (
                   key={child.uid}
                   button
                   selected={props.childUid === child.uid}
-                  onClick={() => props.handleOnClickMenuItem(header.uid, child.uid)}
+                  onClick={() => props.handleOnClickMenuItem(header.uid, child.uid, !isWidthUp('md', props.width))}
                 >
                   <ListItemText
                     className={props.classes.drawerPaperMenuItemSub}
