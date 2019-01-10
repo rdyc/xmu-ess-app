@@ -126,7 +126,7 @@ export const dashboardView: React.SFC<DashboardProps> = props => (
                           detail.items.length > 1 &&
                           <ListItem
                             button
-                            onClick={() => props.handleNotifClick(category.name, detail.type)}
+                            onClick={() => props.handleNotifClick(category.moduleUid, detail.type)}
                           >
                             <ListItemText
                               primary={props.intl.formatMessage(homeMessage.dashboard.text.showAll)}
@@ -148,7 +148,7 @@ export const dashboardView: React.SFC<DashboardProps> = props => (
                               <Divider/>
                               <ListItem
                                 button
-                                onClick={() => props.handleNotifClick(category.name, detail.type, item.uid)}
+                                onClick={() => props.handleNotifClick(category.moduleUid, detail.type, item.uid)}
                               >
                                 <ListItemText
                                   primary={`${item.type && item.type.value} - ${item.name}`}

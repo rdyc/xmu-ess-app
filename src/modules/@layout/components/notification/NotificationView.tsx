@@ -22,7 +22,6 @@ import { isArray } from 'util';
 import { NotificationProps } from './Notification';
 
 export const NotificationView: React.SFC<NotificationProps> = props => {
-  // const { active, isExpanded } = props;
   const { isLoading, response } = props.notificationState;
 
   return (
@@ -81,7 +80,7 @@ export const NotificationView: React.SFC<NotificationProps> = props => {
                   <ListItem
                     button
                     id={category.name}
-                    onClick={(e: React.MouseEvent) => props.handleOnChangeIndex(e, 1, category.name)}
+                    onClick={(e: React.MouseEvent) => props.handleOnChangeIndex(e, 1, category.moduleUid, category.name)}
                   >
                     <ListItemText primary={category.name}/>
                     <ListItemSecondaryAction>
@@ -96,23 +95,23 @@ export const NotificationView: React.SFC<NotificationProps> = props => {
         <List disablePadding>
           <ListSubheader disableGutters>
             <Divider/>
-            <ListItem button onClick={(e: React.MouseEvent) => props.handleOnChangeIndex(e, 0, props.category)}>
+            <ListItem button onClick={(e: React.MouseEvent) => props.handleOnChangeIndex(e, 0, props.module, props.name)}>
               <ListItemIcon>
                 <ArrowBackIcon/>
               </ListItemIcon>
-              <ListItemText primary={props.category}/>
+              <ListItemText primary={props.name}/>
             </ListItem>
           </ListSubheader>
 
           {
             response && response.data && response.data
-              .filter(item => item.name === props.category)
+              .filter(item => item.moduleUid === props.module)
               .map(category => category.details.map(detail => 
-                <React.Fragment key={`${props.category}${detail.type}`}>
+                <React.Fragment key={`${props.module}${detail.type}`}>
                   <Divider/>
                   <ListItem 
                     button 
-                    onClick={(e: React.MouseEvent) => props.handleOnChangeIndex(e, 2, props.category, detail.type)}
+                    onClick={(e: React.MouseEvent) => props.handleOnChangeIndex(e, 2, props.module, props.name, detail.type)}
                   >
                     <ListItemText primary={detail.type} secondary={detail.total}/>
                     <ListItemSecondaryAction>
@@ -128,23 +127,23 @@ export const NotificationView: React.SFC<NotificationProps> = props => {
         <List disablePadding>
           <ListSubheader disableGutters>
             <Divider/>
-            <ListItem button onClick={(e: React.MouseEvent) => props.handleOnChangeIndex(e, 1, props.category)}>
+            <ListItem button onClick={(e: React.MouseEvent) => props.handleOnChangeIndex(e, 1, props.module, props.name)}>
               <ListItemIcon>
                 <ArrowBackIcon/>
               </ListItemIcon>
-              <ListItemText primary={props.type} secondary={props.category} />
+              <ListItemText primary={props.type} secondary={props.name} />
             </ListItem>
           </ListSubheader>
 
           {
             response && response.data && response.data
-              .filter(item => item.name === props.category)
+              .filter(item => item.moduleUid === props.module)
               .map(category => category.details.filter(item => item.type === props.type).map(detail => detail.items.map(item =>  
-                <React.Fragment key={`${props.category}${detail.type}${item.uid}`} >
+                <React.Fragment key={`${props.module}${detail.type}${item.uid}`} >
                   <Divider/>
                   <ListItem 
                     button 
-                    // onClick={(e: React.MouseEvent) => props.handleOnChangeIndex(e, 2, props.category, detail.type)}
+                    onClick={() => props.handleRedirection(item.uid, props.module, props.type)}
                   >
                     <ListItemText primary={item.name} secondary={`${item.uid} - ${moment(item.date).fromNow()}`} />
                   </ListItem>
@@ -157,62 +156,3 @@ export const NotificationView: React.SFC<NotificationProps> = props => {
     </React.Fragment>
   );
 };
-
-{/* {!loading && result && isArray(result.data) && result.data
-        // order by name asc
-        .sort((a , b) => (a.name > b.name) ? 1 : 0)
-        .map(category => category.details
-          .map(detail =>
-            <div key={detail.type}>
-              <ListItem
-                id={`${category.name}_${detail.type}`}
-                key={category.name}
-                button
-                onClick={props.handleOnClickCategory}
-              >
-                <ListItemText
-                  key={category.name}
-                  primary={`${category.name} (${detail.total})`}
-                  primaryTypographyProps={{
-                    variant: 'body2'
-                  }}
-                />
-                <ListItemSecondaryAction key={category.name}>
-                  {active === `${category.name}_${detail.type}` && isExpanded ?
-                  <ExpandLess color="action" /> : <ExpandMore color="action" />}
-                </ListItemSecondaryAction>
-              </ListItem>
-
-              <Divider/>
-
-              <Collapse
-                key={detail.type}
-                in={active === `${category.name}_${detail.type}` && isExpanded}
-                timeout="auto"
-                unmountOnExit
-              >
-                <List key={detail.type} dense>
-                  {detail.items
-                    // order by date desc
-                    .sort((a , b) => (a.date < b.date) ? 1 : 0)
-                    .map(item =>
-                    <ListItem
-                      key={item.uid}
-                      button
-                    >
-                      <ListItemText
-                        key={item.uid}
-                        primary={`${item.uid} - ${item.name}`}
-                        secondary={`${detail.type} ${moment(item.date).fromNow()}`}
-                        primaryTypographyProps={{
-                          variant: 'body2'
-                        }}
-                      />
-                    </ListItem>
-                  )}
-                </List>
-              </Collapse>
-            </div>
-          )
-        )
-      } */}
