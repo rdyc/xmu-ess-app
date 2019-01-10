@@ -280,6 +280,18 @@ const handlerCreators: HandleCreators<DashboardProps, OwnHandlers> = {
           path = path.concat('/approvals', uid && `/${uid}` || '');
         } else {
           path = path.concat('/requests', uid && `/${uid}` || '');
+
+          if (type === 'Settlement') {
+            state = {
+              isSettlement: true,
+            };
+          }
+
+          if (type === 'Rejected') {
+            state = {
+              isRejected: true,
+            };
+          }
         }
         break;
     
@@ -290,6 +302,12 @@ const handlerCreators: HandleCreators<DashboardProps, OwnHandlers> = {
           path = path.concat('/approvals', uid && `/${uid}` || '');
         } else {
           path = path.concat('/requests', uid && `/${uid}` || '');
+          
+          if (type === 'Rejected') {
+            state = {
+              isRejected: true,
+            };
+          }
         }
         break;
     
