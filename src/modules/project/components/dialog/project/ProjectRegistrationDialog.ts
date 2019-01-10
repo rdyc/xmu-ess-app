@@ -20,7 +20,6 @@ import {
   withStateHandlers,
 } from 'recompose';
 
-import { isNullOrUndefined } from 'util';
 import { ProjectRegistrationDialogView } from './ProjectRegistrationDialogView';
 
 interface OwnOptions {
@@ -137,7 +136,7 @@ const lifecycles: ReactLifeCycleFunctions<LookupProjectDialogProps, OwnState> = 
     const { isLoading, response  } = this.props.projectRegisterState.list;
     const { loadListRequest } = this.props.projectRegisterDispatch;
 
-    if (!isLoading && !response && !isNullOrUndefined(_filter.customerUids)) {
+    if (!isLoading && !response) {
       loadListRequest({
         filter: _filter
       });

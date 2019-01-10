@@ -1,8 +1,6 @@
 import { IBaseFilter, IBasePagingFilter } from '@generic/interfaces';
 
-interface IExtendedQuery extends IBaseFilter, IBasePagingFilter {}
-
-export interface IProjectApprovalGetAllFilter {
+export interface IProjectApprovalGetAllFilter extends IBaseFilter, IBasePagingFilter {
   companyUid?: string;
   positionUid?: string;
   customerUid?: string;
@@ -10,5 +8,4 @@ export interface IProjectApprovalGetAllFilter {
   statusType?: string;
   status?: 'pending' | 'complete' | string;
   isNotify?: boolean;
-  query?: IExtendedQuery;
 }

@@ -201,7 +201,7 @@ const handlerCreators: HandleCreators<TopBarProps, OwnHandler> = {
     return isDrawerMenuVisible ? [classes.appBar] : [classes.appBar, shift];
   },
   getCountNotif: (props: TopBarProps) => (): number => {
-    const { result } = props.notificationState;
+    const { response: result } = props.notificationState;
 
     let count: number = 0;
     
