@@ -21,7 +21,7 @@ import * as classnames from 'classnames';
 import * as moment from 'moment';
 import * as React from 'react';
 
-import Demo from './ChartView';
+import { Chart } from './Chart';
 import { DashboardProps } from './Dashboard';
 
 const stepperSources = [
@@ -49,7 +49,7 @@ const stepperSources = [
 
 export const dashboardView: React.SFC<DashboardProps> = props => (
   <React.Fragment>
-    <Demo />
+    <Chart />
     
     <Stepper source={stepperSources} />
 

@@ -2,19 +2,19 @@ import { layoutAlertAdd } from '@layout/store/actions';
 import saiyanSaga from '@utils/saiyanSaga';
 import { all, fork, put, takeEvery } from 'redux-saga/effects';
 import { IApiResponse } from 'utils';
-import { ChartAction as Action, chartGetAllError, chartGetAllRequest, chartGetAllSuccess } from '../actions/chartActions';
+import { ChartAction as Action, chartGetDetailError, chartGetDetailRequest, chartGetDetailSuccess } from '../actions/chartActions';
 
 function* watchAllFetchRequest() {
-  const worker = (action: ReturnType<typeof chartGetAllRequest>) => {
+  const worker = (action: ReturnType<typeof chartGetDetailRequest>) => {
     return saiyanSaga.fetch({
-      host: window.self.location.host,
+      host: window.self.location.origin,
       method: 'get',
-      path: `chart.json`,
+      path: `/chart.json`,
       successEffects: (response: IApiResponse) => [
-        put(chartGetAllSuccess(response.body)),
+        put(chartGetDetailSuccess(response.body)),
       ],
       failureEffects: (response: IApiResponse) => [
-        put(chartGetAllError(response.body)),
+        put(chartGetDetailError(response.body)),
         put(layoutAlertAdd({
           time: new Date(),
           message: response.statusText,
@@ -22,7 +22,7 @@ function* watchAllFetchRequest() {
         })),
       ],
       errorEffects: (error: TypeError) => [
-        put(chartGetAllError(error.message)),
+        put(chartGetDetailError(error.message)),
         put(
           layoutAlertAdd({
             time: new Date(),

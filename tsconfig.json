@@ -51,6 +51,5 @@
     "jest",
     "src/setupTests.ts",
     "src/test",
-    "src/chart.json",
   ]
 }

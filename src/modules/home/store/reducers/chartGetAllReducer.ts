@@ -1,10 +1,10 @@
-import { IQueryCollectionState } from '@generic/interfaces';
-import { IChartGetAllRequest } from '@home/classes/queries';
+import { IQuerySingleState } from '@generic/interfaces';
+import { IChartGetDetailRequest } from '@home/classes/queries';
 import { IChart } from '@home/classes/response/IChart';
 import { Reducer } from 'redux';
 import { ChartAction as Action } from '../actions/chartActions';
 
-const initialState: IQueryCollectionState<IChartGetAllRequest, IChart> = {
+const initialState: IQuerySingleState<IChartGetDetailRequest, IChart> = {
   request: undefined,
   response: undefined,
   isError: false,
@@ -12,7 +12,7 @@ const initialState: IQueryCollectionState<IChartGetAllRequest, IChart> = {
   errors: undefined,
 };
 
-const reducer: Reducer<IQueryCollectionState<IChartGetAllRequest, IChart>> = (state = initialState, action) => {
+const reducer: Reducer<IQuerySingleState<IChartGetDetailRequest, IChart>> = (state = initialState, action) => {
   switch (action.type) {
     case Action.GET_ALL_REQUEST: return { ...state, isLoading: true, isError: false, request: action.payload };
     case Action.GET_ALL_SUCCESS: return { ...state, isLoading: false, isError: false, response: action.payload };
@@ -23,4 +23,4 @@ const reducer: Reducer<IQueryCollectionState<IChartGetAllRequest, IChart>> = (st
   }
 };
 
-export { reducer as chartGetAllReducer };
+export { reducer as chartGetDetailReducer };

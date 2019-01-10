@@ -6,12 +6,12 @@ import {
 } from 'recompose';
 import { ChartView } from './ChartView';
 
-export type ChartProps 
+export type ChartProps
   = WithChart;
 
 const lifecycles: ReactLifeCycleFunctions<ChartProps, {}> = {
   componentDidMount() {
-    const { isLoading, response } = this.props.chartState.all;
+    const { isLoading, response } = this.props.chartState.detail;
     const { loadAllRequest } = this.props.chartDispatch;
 
     if (!isLoading && !response) {

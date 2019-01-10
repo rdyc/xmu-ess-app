@@ -1,37 +1,37 @@
-import { IAppState, IQueryCollectionState } from '@generic/interfaces';
-import { IChartGetAllRequest } from '@home/classes/queries';
+import { IAppState, IQuerySingleState } from '@generic/interfaces';
+import { IChartGetDetailRequest } from '@home/classes/queries';
 import { IChart } from '@home/classes/response';
-import { chartGetAllDispose, chartGetAllRequest } from '@home/store/actions';
+import { chartGetDetailDispose, chartGetDetailRequest } from '@home/store/actions';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 
 interface PropsFromState {
   chartState: {
-    all: IQueryCollectionState<IChartGetAllRequest, IChart>;
+    detail: IQuerySingleState<IChartGetDetailRequest, IChart>;
   };
 }
 
 interface PropsFromDispatch {
   chartDispatch: {
     // query
-    loadAllRequest: typeof chartGetAllRequest;
-    loadAllDispose: typeof chartGetAllDispose;
+    loadAllRequest: typeof chartGetDetailRequest;
+    loadAllDispose: typeof chartGetDetailDispose;
   };
 }
 
 export interface WithChart extends PropsFromState, PropsFromDispatch {}
 
-const mapStateToProps = ({ chartGetAll }: IAppState) => ({
+const mapStateToProps = ({ chartGetDetail }: IAppState) => ({
   chartState: {
-    all: chartGetAll,
+    detail: chartGetDetail,
   }
 });
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   chartDispatch: {
     // query
-    loadAllRequest: (request: IChartGetAllRequest) => dispatch(chartGetAllRequest(request)),
-    loadAllDispose: () => dispatch(chartGetAllDispose()),
+    loadAllRequest: (request: IChartGetDetailRequest) => dispatch(chartGetDetailRequest(request)),
+    loadAllDispose: () => dispatch(chartGetDetailDispose()),
   }
 });
 

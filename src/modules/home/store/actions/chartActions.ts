@@ -1,5 +1,5 @@
 import { IResponseCollection } from '@generic/interfaces';
-import { IChartGetAllRequest } from '@home/classes/queries/IChartGetAllRequest';
+import { IChartGetDetailRequest } from '@home/classes/queries/IChartGetDetailRequest';
 import { IChart } from '@home/classes/response/IChart';
 import { action } from 'typesafe-actions';
 
@@ -11,7 +11,7 @@ export const enum ChartAction {
 }
 
 // get all
-export const chartGetAllRequest = (request: IChartGetAllRequest) => action(ChartAction.GET_ALL_REQUEST, request);
-export const chartGetAllSuccess = (response: IResponseCollection<IChart>) => action(ChartAction.GET_ALL_SUCCESS, response);
-export const chartGetAllError = (message: string) => action(ChartAction.GET_ALL_ERROR, message);
-export const chartGetAllDispose = () => action(ChartAction.GET_ALL_DISPOSE);
+export const chartGetDetailRequest = (request: IChartGetDetailRequest) => action(ChartAction.GET_ALL_REQUEST, request);
+export const chartGetDetailSuccess = (response: IResponseCollection<IChart>) => action(ChartAction.GET_ALL_SUCCESS, response);
+export const chartGetDetailError = (message: string) => action(ChartAction.GET_ALL_ERROR, message);
+export const chartGetDetailDispose = () => action(ChartAction.GET_ALL_DISPOSE);

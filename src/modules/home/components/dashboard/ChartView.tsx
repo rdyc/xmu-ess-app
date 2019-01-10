@@ -3,52 +3,90 @@ import {
   ArgumentAxis,
   BarSeries,
   Chart,
-  LineSeries,
   ValueAxis,
 } from '@devexpress/dx-react-chart-material-ui';
+import { Grid } from '@material-ui/core';
 import Paper from '@material-ui/core/Paper';
 import * as React from 'react';
-// import data from './image/chart.json';
+import { ChartProps } from './Chart';
 
-const data = require('./chart.json');
+export const ChartView: React.SFC<ChartProps> = props => (
+  <Paper>
+    {
+      props.chartState.detail.response &&
+      props.chartState.detail.response.data &&
 
-interface IDataItem {
-  month: string;
-  sale: number;
-  total: number;
-}
+      <React.Fragment>
+        <Grid container spacing={16}>
+          <Grid item xs={12} md={4}>
+            <Chart data={props.chartState.detail.response.data.companies}>
+              <ValueScale name="percentage" />
 
-const chartData: IDataItem[] = data;
+              <ArgumentAxis />
+              <ValueAxis scaleName="percentage" showGrid={false} showLine={true} showTicks={true} />
 
-export default class ChartView extends React.Component<object, object> {
-  public render(): React.ReactNode {
-    return (
-      <Paper>
-        <Chart
-          data={chartData}
-        >
-          <ValueScale name="sale" />
-          <ValueScale name="total" />
+              <BarSeries
+                name="Percentage"
+                valueField="percentage"
+                argumentField="companyName"
+                scaleName="percentage"
+              /> 
 
-          <ArgumentAxis />
-          <ValueAxis scaleName="sale" showGrid={false} showLine={true} showTicks={true} />
-          <ValueAxis scaleName="total" position="right" showGrid={false} showLine={true} showTicks={true} />
+            </Chart>
+          </Grid>
 
-          <BarSeries
-            name="Units Sold"
-            valueField="sale"
-            argumentField="month"
-            scaleName="sale"
-          />
+          <Grid item xs={12} md={4}>
+            <Chart data={props.chartState.detail.response.data.businessUnits}>
+              <ValueScale name="percentage" />
 
-          <LineSeries
-            name="Total Transactions"
-            valueField="total"
-            argumentField="month"
-            scaleName="total"
-          />
-        </Chart>
-      </Paper>
-    );
-  }
-}
+              <ArgumentAxis />
+              <ValueAxis scaleName="percentage" showGrid={false} showLine={true} showTicks={true} />
+
+              <BarSeries
+                name="Percentage"
+                valueField="percentage"
+                argumentField="companyName"
+                scaleName="percentage"
+              />
+
+            </Chart>
+          </Grid>
+
+          <Grid item xs={12} md={4}>
+            <Chart data={props.chartState.detail.response.data.departments}>
+              <ValueScale name="percentage" />
+
+              <ArgumentAxis />
+              <ValueAxis scaleName="percentage" showGrid={false} showLine={true} showTicks={true} />
+
+              <BarSeries
+                name="Percentage"
+                valueField="percentage"
+                argumentField="companyName"
+                scaleName="percentage"
+              />
+
+            </Chart>
+          </Grid>
+
+          <Grid item xs={12} md={12}>
+            <Chart data={props.chartState.detail.response.data.sales}>
+              <ValueScale name="percentage" />
+
+              <ArgumentAxis />
+              <ValueAxis scaleName="percentage" showGrid={false} showLine={true} showTicks={true} />
+
+              <BarSeries
+                name="Percentage"
+                valueField="percentage"
+                argumentField="companyName"
+                scaleName="percentage"
+              />
+
+            </Chart>
+          </Grid>
+        </Grid>
+      </React.Fragment>
+    }
+  </Paper>
+);

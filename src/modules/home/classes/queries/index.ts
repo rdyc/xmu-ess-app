@@ -1,1 +1,1 @@
-export * from './IChartGetAllRequest';
+export * from './IChartGetDetailRequest';
