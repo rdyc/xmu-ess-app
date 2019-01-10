@@ -205,7 +205,7 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, OwnState> = {
         <React.Fragment>
           <Button 
             size="small"
-            onClick={() => this.props.history.push(`/lookup/systemlimits/${item.uid}`)}
+            onClick={() => this.props.history.push(`/lookup/systemlimits/${item.uid}`, { companyUid: item.companyUid })}
           >
             <FormattedMessage {...layoutMessage.action.details}/>
           </Button>
