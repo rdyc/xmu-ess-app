@@ -81,7 +81,7 @@ export const ExpenseRequestListFilterView: React.SFC<ExpenseRequestListFilterPro
         </ListItem>
         <Divider />
             
-        <ListItem button onClick={props.filterCustomer && props.handleFilterProjectVisibility}>
+        <ListItem button onClick={props.filterCustomer && props.handleFilterProjectVisibility} disabled={!props.filterCustomer}>
           <ListItemText 
             primary={props.intl.formatMessage(expenseMessage.request.field.projectUid)}
             secondary={props.filterProject && props.filterProject.name || props.intl.formatMessage(layoutMessage.text.none)}
@@ -94,7 +94,7 @@ export const ExpenseRequestListFilterView: React.SFC<ExpenseRequestListFilterPro
               </IconButton> 
             }
 
-            <IconButton onClick={props.filterCustomer && props.handleFilterProjectVisibility}>
+            <IconButton onClick={props.filterCustomer && props.handleFilterProjectVisibility} disabled={!props.filterCustomer}>
               <ChevronRightIcon />
             </IconButton> 
           </ListItemSecondaryAction>
