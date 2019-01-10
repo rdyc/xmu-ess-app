@@ -2,13 +2,11 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import { DatePicker } from 'material-ui-pickers';
 import { MaterialUiPickersDate } from 'material-ui-pickers/typings/date';
-import { Moment } from 'moment';
 import * as React from 'react';
-import { isNullOrUndefined } from 'util';
 import { InputDateWithValueProps } from './InputDateWithValue';
 
 export const InputDateWithValueView: React.SFC<InputDateWithValueProps> = props => {
-  const { dateFormat, input, required, label, disabled, meta, intl, future, val } = props;
+  const { label, intl, future, val } = props;
 
   const labelFunction = (date: MaterialUiPickersDate, invalidLabel: string): string => {
     let result: string = invalidLabel;
@@ -21,6 +19,7 @@ export const InputDateWithValueView: React.SFC<InputDateWithValueProps> = props 
   };
 
   const render = (
+    props.isOpen ? 
     <DatePicker
       fullWidth
       margin="normal"
@@ -32,19 +31,14 @@ export const InputDateWithValueView: React.SFC<InputDateWithValueProps> = props 
       todayLabel={intl.formatMessage({id: 'global.date.today'})}
       emptyLabel={intl.formatMessage({id: 'global.date.empty'})}
       showTodayButton={true}
-      format={input.value ? dateFormat || 'MMM DD, YYYY' : undefined}
-      {...input}
       label={label}
-      required={required}
-      disabled={disabled || meta.submitting}
-      error={meta.touched && !isNullOrUndefined(meta.error)}
-      helperText={meta.touched && meta.error}
-      onChange={(moment: Moment) => input.onChange(moment.toISOString(true))}
+      onChange={props.onSelected}
       labelFunc={labelFunction}
       invalidLabel={''}
       disableFuture={future}
+      onClose={props.onClose}
       value={val}
-    />
+    /> : null
   );
 
   return render;

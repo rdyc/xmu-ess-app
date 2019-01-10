@@ -12,14 +12,20 @@ import {
   menuGetListSuccess,
 } from '@lookup/store/actions';
 import saiyanSaga from '@utils/saiyanSaga';
+import * as qs from 'qs';
 import { all, fork, put, takeEvery } from 'redux-saga/effects';
-import { IApiResponse, objectToQuerystring } from 'utils';
+import { IApiResponse } from 'utils';
 
 function* watchFetchAllRequest() {
   const worker = (action: ReturnType<typeof menuGetAllRequest>) => {
+    const params = qs.stringify(action.payload.filter, { 
+      allowDots: true, 
+      skipNulls: true
+    });
+    
     return saiyanSaga.fetch({
       method: 'get',
-      path: `/v1/lookup/menu${objectToQuerystring(action.payload.filter)}`, 
+      path: `/v1/lookup/menu?${params}`, 
       successEffects: (response: IApiResponse) => ([
         put(menuGetAllSuccess(response.body)),
       ]), 
@@ -46,9 +52,14 @@ function* watchFetchAllRequest() {
 
 function* watchFetchListRequest() {
   const worker = (action: ReturnType<typeof menuGetListRequest>) => {
+    const params = qs.stringify(action.payload.filter, { 
+      allowDots: true, 
+      skipNulls: true
+    });
+    
     return saiyanSaga.fetch({
       method: 'get',
-      path: `/v1/lookup/menu/list${objectToQuerystring(action.payload.filter)}`,
+      path: `/v1/lookup/menu/list?${params}`,
       successEffects: (response: IApiResponse) => ([
         put(menuGetListSuccess(response.body)),
       ]), 

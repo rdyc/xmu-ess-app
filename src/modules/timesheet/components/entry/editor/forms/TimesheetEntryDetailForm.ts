@@ -143,6 +143,7 @@ const handlerCreators: HandleCreators<EntryDetailFormProps, OwnHandlers> = {
 
       case 'description':
         fieldProps = {
+          required: true,
           label: intl.formatMessage(timesheetMessage.entry.fieldFor(name, 'fieldName')),
           placeholder: intl.formatMessage(timesheetMessage.entry.fieldFor(name, 'fieldPlaceholder')),
           component: InputText

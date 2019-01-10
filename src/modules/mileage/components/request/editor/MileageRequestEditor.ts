@@ -211,8 +211,8 @@ const lifecycles: ReactLifeCycleFunctions<MileageRequestEditorProps, {}> = {
 
     layoutDispatch.setupView({
       view: {
-        uid: AppMenu.Mileage,
-        parentUid: AppMenu.Lookup,
+        uid: AppMenu.MileageRequest,
+        parentUid: AppMenu.Mileage,
         title: intl.formatMessage({id: view.title}),
         subTitle : intl.formatMessage({id: view.subTitle})
       },

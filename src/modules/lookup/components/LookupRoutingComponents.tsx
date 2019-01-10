@@ -6,7 +6,6 @@ import { CurrencyEditor } from '@lookup/components/currency/editor/CurrencyEdito
 import { CurrencyList } from '@lookup/components/currency/list/CurrencyList';
 import { LookupHolidayDetail } from '@lookup/components/holiday/detail/LookupHolidayDetail';
 import { LookupLeaveDetail } from '@lookup/components/leave/detail/LookupLeaveDetail';
-import LookupLeaveList from '@lookup/components/leave/list/LookupLeaveList';
 import * as React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router';
 
@@ -20,9 +19,10 @@ import { LookupDiemDetail } from './diem/detail/LookupDiemDetail';
 import LookupDiemEditor from './diem/editor/LookupDiemEditor';
 import { LookupDiemList } from './diem/list/LookupDiemList';
 import LookupHolidayEditor from './holiday/editor/LookupHolidayEditor';
-import LookupHolidayList from './holiday/list/LookupHolidayList';
+import { LookupHolidayList } from './holiday/list/LookupHolidayList';
 import { LeaveCalculationList } from './leave/calculation/LeaveCalculationList';
 import LookupLeaveEditor from './leave/editor/LookupLeaveEditor';
+import { LookupLeaveList } from './leave/list/LookupLeaveList';
 import { MileageExceptionDetail } from './mileageException/detail/MileageExceptionDetail';
 import MileageExceptionEditor from './mileageException/editor/MileageExceptionEditor';
 import { LookupMileageExceptionList } from './mileageException/list/LookupMileageExceptionList';
