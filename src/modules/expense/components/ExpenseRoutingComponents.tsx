@@ -3,7 +3,6 @@ import { ExpenseApprovalList } from '@expense/components/approval/list/ExpenseAp
 import { ExpenseRequestDetail } from '@expense/components/request/detail/ExpenseRequestDetail';
 import RequestEditor from '@expense/components/request/editor/ExpenseRequestEditor';
 import { ExpenseRequestList } from '@expense/components/request/list/ExpenseRequestList';
-import { Layout } from '@layout/components/base';
 import * as React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router';
 
@@ -24,9 +23,7 @@ const approval = (props: RouteComponentProps) => (
 
 export const ExpenseRoutingComponents: React.SFC<RouteComponentProps> = props => (
   <Switch>
-    <Layout>
-      <Route path={`${props.match.path}/requests`} component={request} />
-      <Route path={`${props.match.path}/approvals`} component={approval} />
-    </Layout>
+    <Route path={`${props.match.path}/requests`} component={request} />
+    <Route path={`${props.match.path}/approvals`} component={approval} />
   </Switch>
 );

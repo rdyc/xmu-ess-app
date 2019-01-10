@@ -6,6 +6,7 @@ import {
   TimesheetFormData,
 } from '@timesheet/components/entry/editor/forms/TimesheetEntryForm';
 import { EntryEditorProps } from '@timesheet/components/entry/editor/TimesheetEntryEditor';
+import * as moment from 'moment';
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 
@@ -98,6 +99,7 @@ export const TimesheetEntryEditorView: React.SFC<EntryEditorProps> = props => {
         month: 'numeric',
         year: 'numeric',
         timeZone: 'GMT',
+        hour12: false
       });
       const end = intl.formatDate(data.end, {
         second: 'numeric',
@@ -107,6 +109,7 @@ export const TimesheetEntryEditorView: React.SFC<EntryEditorProps> = props => {
         month: 'numeric',
         year: 'numeric',
         timeZone: 'GMT',
+        hour12: false
       });
       
       initialValues.information.uid = data.uid;
@@ -115,8 +118,8 @@ export const TimesheetEntryEditorView: React.SFC<EntryEditorProps> = props => {
       initialValues.information.projectUid = data.projectUid;
       initialValues.information.siteUid = data.siteUid;
       initialValues.information.date = data.date;
-      initialValues.information.start = start;
-      initialValues.information.end = end;
+      initialValues.information.start = moment(start).format();
+      initialValues.information.end = moment(end).format();
       initialValues.information.description = data.description;
 
       if (!amountLoading && amountResponse && amountResponse.data) {
