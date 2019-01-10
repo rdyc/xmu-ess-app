@@ -1,3 +1,4 @@
+import { WithForm, withForm } from '@layout/hoc/withForm';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { ILookupCustomerGetListFilter } from '@lookup/classes/filters/customer';
@@ -14,9 +15,9 @@ import { ProfitabilityFormFilterView } from './ProfitabilityFormFilterView';
 export type ISummaryProfitabilityFilterResult = Pick<ISummaryGetProfitabilityRequest, 'customerUid' | 'projectUid'>;
 
 interface IOwnOption {
-  isLoading: boolean;
   className: string;
-  // initialProps?: ISummaryProfitabilityFilterResult;
+  isLoading: boolean;
+  isStartup: boolean;
   onClickSync: (event: React.MouseEvent<HTMLElement>) => void;
   onApply: (filter: ISummaryProfitabilityFilterResult) => void;
 }
@@ -40,7 +41,6 @@ interface IOwnState {
 }
 
 interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
-  stateUpdate: StateHandler<IOwnState>;
   // main filter
   setFilterReset: StateHandler<IOwnState>;
   setFilterVisibility: StateHandler<IOwnState>;
@@ -76,6 +76,7 @@ interface IOwnHandler {
 export type SummaryProfitabilityFilterProps
   = IOwnOption
   & WithUser
+  & WithForm
   & IOwnState
   & IOwnStateUpdater
   & IOwnHandler
@@ -97,16 +98,11 @@ const createProps: mapper<SummaryProfitabilityFilterProps, IOwnState> = (props: 
   filterProjectDialog: {
     customerUids: undefined,
     orderBy: undefined,
-    direction: undefined
+    direction: undefined,
   }
 });
 
-const stateUpdaters: StateUpdaters<{}, IOwnState, IOwnStateUpdater> = {
-  stateUpdate: (prevState: IOwnState) => (newState: any) => ({
-    ...prevState,
-    ...newState
-  }),
-  
+const stateUpdaters: StateUpdaters<{}, IOwnState, IOwnStateUpdater> = {  
   // main filter
   setFilterReset: (prevState: IOwnState) => () => ({
     filterCustomer: undefined,
@@ -120,13 +116,13 @@ const stateUpdaters: StateUpdaters<{}, IOwnState, IOwnStateUpdater> = {
   setFilterCustomerVisibility: (prevState: IOwnState) => () => ({
     isFilterCustomerOpen: !prevState.isFilterCustomerOpen
   }),
-  setFilterCustomer: (prevState: IOwnState) => (customer?: ICustomerList) => ({
+  setFilterCustomer: () => (customer?: ICustomerList) => ({
     isFilterCustomerOpen: false,
     filterCustomer: customer,
     filterProjectDialog: {
       customerUids: customer && [customer.uid] || undefined,
       orderBy: 'uid',
-      direction: 'descending'
+      direction: 'descending',
     }
   }),
 
@@ -189,8 +185,9 @@ export const ProfitabilityFormFilter = compose<SummaryProfitabilityFilterProps, 
   setDisplayName('ProfitabilityFormFilter'),
   withUser,
   withLayout,
+  withForm,
   withStyles(styles),
   injectIntl,
-  withStateHandlers(createProps, stateUpdaters),
-  withHandlers(handlerCreators)
+  withStateHandlers<IOwnState, IOwnStateUpdater>(createProps, stateUpdaters),
+  withHandlers<SummaryProfitabilityFilterProps, IOwnHandler>(handlerCreators)
 )(ProfitabilityFormFilterView);

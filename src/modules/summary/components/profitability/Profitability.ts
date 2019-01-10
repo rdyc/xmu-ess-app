@@ -26,7 +26,6 @@ import {
 import { ISummaryProfitabilityFilterResult } from './shared/ProfitabilityFormFilter';
 
 export interface Handlers {
-  // handleChangeFilter: (customerUid: string, projectUid: string) => void;
   handleChangeFilter: (filter: ISummaryProfitabilityFilterResult) => void;
   handleDialogOpen: (fullScreen: boolean, expenses: ISummaryModuleCost[], projectUid: string) => void;
   handleDialogClose: () => void;
@@ -36,19 +35,19 @@ export interface Handlers {
 interface OwnOptions {
 }
 
-interface OwnState {
-  customerUid: string;
-  projectUid: string;
+interface OwnState extends ISummaryProfitabilityFilterResult {
   dialogFullScreen: boolean;
   dialogOpen: boolean;
   expenses: ISummaryModuleCost[];
   expenseProjectUid: string;
   reloadData: boolean;
+  isStartup: boolean;
 }
 
 interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
   stateUpdate: StateHandler<OwnState>;
   setFilterApplied: StateHandler<OwnState>;
+  setStartup: StateHandler<OwnState>;
 }
 
 export type FilterProfitabilityData = {
@@ -78,7 +77,8 @@ const createProps: mapper<ProfitabilityProps, OwnState> = (props: ProfitabilityP
     dialogOpen: false,
     expenses: [],
     expenseProjectUid: '',
-    reloadData: false
+    reloadData: false,
+    isStartup: true,
   };
 };
 
@@ -95,19 +95,18 @@ const stateUpdaters: StateUpdaters<OwnOptions, OwnState, OwnStateUpdaters> = {
   setFilterApplied: (prevState: OwnState) => (filter: ISummaryProfitabilityFilterResult) => ({
     ...filter
   }),
+  setStartup: (prevState: OwnState) => (filter: ISummaryProfitabilityFilterResult) => ({
+    isStartup: false
+  }),
 };
 
 const handlerCreators: HandleCreators<ProfitabilityProps, Handlers> = {
-  // handleChangeFilter: (props: ProfitabilityProps) => (customerUid: string, projectUid: string) => {
-  //   const { stateUpdate } = props;
-
-  //   stateUpdate({
-  //     customerUid,
-  //     projectUid
-  //   });
-  // },
   handleChangeFilter: (props: ProfitabilityProps) => (filter: ISummaryProfitabilityFilterResult) => {
     props.setFilterApplied(filter);
+
+    if (props.isStartup) {
+      props.setStartup();
+    }
   },
   handleReloadData: (props: ProfitabilityProps) => () => {
     props.stateUpdate({

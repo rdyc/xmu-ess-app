@@ -1,4 +1,3 @@
-// import { layoutMessage } from '@layout/locales/messages';
 import {  Card, CardContent, Grid, Table, TableBody, TableCell, TableRow } from '@material-ui/core';
 import { ISummaryProfitability } from '@summary/classes/response/profitability';
 import { ProfitabilityProps } from '@summary/components/profitability/Profitability';
@@ -9,13 +8,13 @@ import { ProfitabilityProjectView } from './ProfitabilityProjectView';
 import { ProfitabilityFormFilter } from './shared/ProfitabilityFormFilter';
 
 export const ProfitabilityView: React.SFC<ProfitabilityProps> = props => {
-  const { classes, width, dialogFullScreen, dialogOpen, handleDialogClose, handleDialogOpen, expenses, expenseProjectUid, intl, handleChangeFilter, handleReloadData } = props;
+  const { classes, width, dialogFullScreen, dialogOpen, handleDialogClose, handleDialogOpen, expenses, isStartup, expenseProjectUid, intl, handleChangeFilter, handleReloadData } = props;
   const { isLoading, response } = props.summaryState.profitability;  
 
   const RenderProfitability = (profitability: ISummaryProfitability) => {
     return (
         <Grid container spacing={16}>
-          <Grid item xs={12}>
+          <Grid item xs={12} md={12}>
             {
               profitability.projects &&
               <ProfitabilityProjectView 
@@ -79,32 +78,16 @@ export const ProfitabilityView: React.SFC<ProfitabilityProps> = props => {
   const render = (
     <React.Fragment>
       <Grid container spacing={16}>
-        {/* <Grid item xs={12}>
-          <Card 
-            square 
-          >
-            <CardContent>
-              <FilterForm 
-                onProjectSelected= {handleChangeFilter}
-              />
-            </CardContent>
-          </Card>
-        </Grid> */}
         <Grid item xs={12}>
           <ProfitabilityFormFilter 
             className={props.classes.flex}
             isLoading={isLoading}
             onClickSync={handleReloadData}
             onApply={handleChangeFilter}
+            isStartup={isStartup}
           />
         </Grid>
         <Grid item xs={12}>
-        {/* {
-          isLoading &&
-          <Typography>
-            {intl.formatMessage(layoutMessage.text.loading)}
-          </Typography>
-        } */}
         {
           !isLoading &&
           response &&
@@ -121,6 +104,8 @@ export const ProfitabilityView: React.SFC<ProfitabilityProps> = props => {
         handleDialogClose={handleDialogClose}
         classes={classes}
         intl={intl}
+        layoutDispatch={props.layoutDispatch}
+        layoutState={props.layoutState}
       />
     </React.Fragment>
   );

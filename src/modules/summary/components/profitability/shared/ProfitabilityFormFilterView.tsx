@@ -28,103 +28,6 @@ import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { SummaryProfitabilityFilterProps } from './ProfitabilityFormFilter';
 
-// export const ProfitabilityFormFilterView: React.SFC<SummaryProfitabilityFilterProps> = props => (
-//   <React.Fragment>
-//     <Dialog
-//       fullScreen
-//       disableBackdropClick
-//       open={props.isFilterDialogOpen}
-//       className={props.layoutState.anchor === 'right' ? props.classes.contentShiftRight : props.classes.contentShiftLeft}
-//       onClose={props.onClose}
-//     >
-//       <AppBar className={props.classes.appBarDialog}>
-//         <Toolbar>
-//           <IconButton color="inherit" onClick={props.onClose} aria-label="Close">
-//             <CloseIcon />
-//           </IconButton>
-
-//           <Typography variant="h6" color="inherit" className={props.classes.flex}>
-//             {props.intl.formatMessage(layoutMessage.tooltip.filter)}
-//           </Typography>
-
-//           {
-//             (props.filterCustomer || props.filterProject) &&
-//             <Button color="inherit" onClick={props.handleFilterOnReset}>
-//               {props.intl.formatMessage(layoutMessage.action.reset)}
-//             </Button>
-//           }
-
-//           <Button 
-//             color="inherit" 
-//             onClick={props.handleFilterOnApply}
-//           >
-//             {props.intl.formatMessage(layoutMessage.action.apply)}
-//           </Button>
-//         </Toolbar>
-//       </AppBar>
-
-//       <List>
-//         <ListItem button onClick={props.handleFilterCustomerVisibility}>
-//           <ListItemText 
-//             primary={props.intl.formatMessage(expenseMessage.request.field.customerUid)}
-//             secondary={props.filterCustomer && props.filterCustomer.name || props.intl.formatMessage(layoutMessage.text.none)}
-//           />
-//           <ListItemSecondaryAction>
-//             { 
-//               props.filterCustomer &&
-//               <IconButton onClick={props.handleFilterCustomerOnClear}>
-//                 <ClearIcon />
-//               </IconButton> 
-//             }
-
-//             <IconButton onClick={props.handleFilterCustomerVisibility}>
-//               <ChevronRightIcon />
-//             </IconButton> 
-//           </ListItemSecondaryAction>
-//         </ListItem>
-//         <Divider />
-
-//         <ListItem button onClick={props.filterCustomer && props.handleFilterProjectVisibility}>
-//           <ListItemText 
-//             primary={props.intl.formatMessage(expenseMessage.request.field.projectUid)}
-//             secondary={props.filterProject && props.filterProject.name || props.intl.formatMessage(layoutMessage.text.none)}
-//           />
-//           <ListItemSecondaryAction>
-//             { 
-//               props.filterProject &&
-//               <IconButton onClick={props.handleFilterProjectOnClear}>
-//                 <ClearIcon />
-//               </IconButton> 
-//             }
-
-//             <IconButton onClick={props.filterCustomer && props.handleFilterProjectVisibility}>
-//               <ChevronRightIcon />
-//             </IconButton> 
-//           </ListItemSecondaryAction>
-//         </ListItem>
-//         <Divider />
-
-//       </List>
-//     </Dialog>
-
-//     <LookupCustomerDialog 
-//       hideBackdrop={true}
-//       isOpen={props.isFilterCustomerOpen} 
-//       filter={props.filterCustomerDialog}
-//       onSelected={props.handleFilterCustomerOnSelected} 
-//       onClose={props.handleFilterCustomerOnClose}
-//     />
-
-//     <ProjectRegistrationDialog 
-//       hideBackdrop={true}
-//       isOpen={props.isFilterProjectOpen} 
-//       filter={props.filterProjectDialog}
-//       onSelected={props.handleFilterProjectOnSelected} 
-//       onClose={props.handleFilterProjectOnClose}
-//     />
-//   </React.Fragment>
-// );
-
 export const ProfitabilityFormFilterView: React.SFC<SummaryProfitabilityFilterProps> = props => {
   const showBadgeWhen = (): boolean => {
     return props.filterCustomer !== undefined ||
@@ -148,7 +51,11 @@ export const ProfitabilityFormFilterView: React.SFC<SummaryProfitabilityFilterPr
               </IconButton>
 
               <Typography variant="h6" color="inherit" className={props.classes.flex}>
-                {props.intl.formatMessage(summaryMessage.profitability.page.title)}
+                {
+                  !props.isStartup &&
+                  props.intl.formatMessage(layoutMessage.tooltip.filter) ||
+                  props.intl.formatMessage(summaryMessage.profitability.page.title)
+                }
               </Typography>
 
               {
