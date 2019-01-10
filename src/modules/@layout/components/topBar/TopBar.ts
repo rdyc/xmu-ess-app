@@ -35,6 +35,7 @@ interface OwnState {
   mode: TopBarMode;
   search?: string;
   field?: ICollectionValue;
+  isShowMenu: boolean;
   isShowFields: boolean;
 }
 
@@ -43,6 +44,7 @@ interface OwnStateUpdater extends StateHandlerMap<OwnState> {
   setSearch: StateHandler<OwnState>;
   setField: StateHandler<OwnState>;
   setFieldVisibility: StateHandler<OwnState>;
+  setMenuVisibility: StateHandler<OwnState>;
 }
 
 interface OwnHandler {
@@ -80,6 +82,7 @@ const createProps: mapper<TopBarProps, OwnState> = (props: TopBarProps): OwnStat
   mode: props.layoutState.isModeSearch ? 'search' : 'normal',
   search: '',
   field: undefined,
+  isShowMenu: false,
   isShowFields: false
 });
 
@@ -96,6 +99,9 @@ const stateUpdaters: StateUpdaters<OwnOption, OwnState, OwnStateUpdater> = {
   }),
   setFieldVisibility: (prev: OwnState) => (): Partial<OwnState> => ({
     isShowFields: !prev.isShowFields
+  }),
+  setMenuVisibility: (prev: OwnState) => (): Partial<OwnState> => ({
+    isShowMenu: !prev.isShowMenu
   })
 };
 

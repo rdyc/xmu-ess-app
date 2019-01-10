@@ -269,7 +269,7 @@ export const TopBarView: React.SFC<TopBarProps> = props => (
           showMore={props.layoutState.isMoreVisible}
           customControls={props.appBarState.controls}
           moreItems={props.appBarState.menus}
-          isOpenMore={props.isOpenMenu}
+          isOpenMore={props.isShowMenu}
           onClickMore={props.handleOnClickMore}
           onClickMoreItem={props.handleOnClickMoreItem}
           onCloseMore={props.handleOnCloseMore}
