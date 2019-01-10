@@ -17,7 +17,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import ClearIcon from '@material-ui/icons/SettingsBackupRestore';
 import * as React from 'react';
 
-import { EmployeeDialog } from '@account/components/select';
+import { EmployeeDialog } from '@account/components/dialog';
 import { InputDateWithValue } from '@layout/components/input/date';
 import { GlobalFormat } from '@layout/types';
 import { FilterCompany } from '@lookup/components/company/select';

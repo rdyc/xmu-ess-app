@@ -21,21 +21,23 @@ import {
   withHandlers,
   withStateHandlers,
 } from 'recompose';
+import { IEffectivenessFilterResult } from './EffectivenessFilter';
 
 interface OwnHandlers {
-  handleChangeFilter: (customerUid: string, projectUid: string | undefined) => void;
+  handleChangeFilter: (filter: IEffectivenessFilterResult) => void;
+  handleReloadData: () => void;
 }
 
 interface OwnOptions {
 }
 
-interface OwnState {
-  employeeUid?: string;
-  projectUid?: string;
+interface OwnState extends IEffectivenessFilterResult {
+  reloadData: boolean;
 }
 
 interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
   stateUpdate: StateHandler<OwnState>;
+  setFilterApplied: StateHandler<OwnState>;
 }
 
 export type EffectivenessProps 
@@ -52,8 +54,8 @@ export type EffectivenessProps
   & OwnStateUpdaters;
 
 const createProps: mapper<EffectivenessProps, OwnState> = (props: EffectivenessProps): OwnState => {
-
     return { 
+      reloadData: false,
     };
   };
 
@@ -62,17 +64,20 @@ const stateUpdaters: StateUpdaters<OwnOptions, OwnState, OwnStateUpdaters> = {
     ...prevState,
     ...newState
   }),
-  };
+  setFilterApplied: (prevState: OwnState) => (filter: IEffectivenessFilterResult) => ({
+    ...filter
+  }),
+};
 
 const handlerCreators: HandleCreators<EffectivenessProps, OwnHandlers> = {
-  handleChangeFilter: (props: EffectivenessProps) => (employeeUid: string, projectUid: string | undefined) => {
-    const { stateUpdate } = props;
-
-    stateUpdate({
-      employeeUid,
-      projectUid
+  handleChangeFilter: (props: EffectivenessProps) => (filter: IEffectivenessFilterResult) => {
+    props.setFilterApplied(filter);
+  },
+  handleReloadData: (props: EffectivenessProps) => () => {
+    props.stateUpdate({
+      reloadData: true,
     });
-},
+  }
 };
 
 const lifecycles: ReactLifeCycleFunctions<EffectivenessProps, OwnState> = {
@@ -90,9 +95,7 @@ const lifecycles: ReactLifeCycleFunctions<EffectivenessProps, OwnState> = {
         subTitle : intl.formatMessage(summaryMessage.effectiveness.page.subTitle)
       });
   
-      // layoutDispatch.modeListOn();
       layoutDispatch.searchShow();
-      layoutDispatch.actionCentreShow();
     
       // only load data when response are empty
       if (!isLoading && !response) {
@@ -104,6 +107,13 @@ const lifecycles: ReactLifeCycleFunctions<EffectivenessProps, OwnState> = {
           this.props.projectUid !== props.projectUid) {
             loadData(props);
           }
+      if (props.reloadData) {
+        loadData(props);
+
+        props.stateUpdate({
+          reloadData: false,
+        });
+      }
     },
     componentWillUnmount() {
       const { layoutDispatch } = this.props;
@@ -128,13 +138,12 @@ const loadData = (props: EffectivenessProps): void => {
     const { user } = props.userState;
     const { loadEffectivenessRequest } = props.summaryDispatch;
     const { alertAdd } = props.layoutDispatch;
-    const { employeeUid, projectUid } = props;
 
     if (user) {
       loadEffectivenessRequest({
         filter: {
-          employeeUid,
-          projectUid
+          employeeUid: props.employeeUid,
+          projectUid: props.projectUid,
         }
       }); 
     } else {

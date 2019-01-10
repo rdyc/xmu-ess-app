@@ -142,8 +142,8 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
       searchStatus: (): boolean => {
         let result: boolean = false;
     
-        if (request && request.filter && request.filter.query && request.filter.query.find) {
-          result = request.filter.query.find ? true : false;
+        if (request && request.filter) {
+          result = request.filter.find ? true : false;
         }
     
         return result;
@@ -164,14 +164,12 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
                 projectTypes: this.props.projectTypes,
                 statusTypes: this.props.statusTypes,
                 projectUid: this.props.projectUid,
-                query: {
-                  find: params.find,
-                  findBy: params.findBy,
-                  orderBy: params.orderBy,
-                  direction: params.direction,
-                  page: params.page,
-                  size: params.size
-                }
+                find: params.find,
+                findBy: params.findBy,
+                orderBy: params.orderBy,
+                direction: params.direction,
+                page: params.page,
+                size: params.size
               }
             });
           } else {
