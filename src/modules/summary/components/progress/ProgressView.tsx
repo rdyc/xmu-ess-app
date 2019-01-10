@@ -8,7 +8,7 @@ import { ProgressFilter } from './ProgressFilter';
 import { ProgressProjectView } from './ProgressProjectView';
 
 export const ProgressView: React.SFC<ProgressProps> = props => {
-  const { classes, width, dialogFullScreen, dialogOpen, 
+  const { dialogFullScreen, dialogOpen, 
     handleDialogClose, handleDialogOpen, expenses, isStartup,
     expenseProjectUid, intl, handleChangeFilter, handleReloadData } = props;
   const { isLoading, response } = props.summaryState.progress;  
@@ -22,9 +22,9 @@ export const ProgressView: React.SFC<ProgressProps> = props => {
               <ProgressProjectView 
                 projects={progress.projects}
                 handleDialogOpen={handleDialogOpen}
-                classes={classes}
+                classes={props.classes}
                 intl={intl}
-                width={width}
+                width={props.width}
               />
             }
           </Grid>
@@ -109,8 +109,10 @@ export const ProgressView: React.SFC<ProgressProps> = props => {
         dialogOpen={dialogOpen}
         expenseProjectUid={expenseProjectUid}
         handleDialogClose={handleDialogClose}
-        classes={classes}
+        classes={props.classes}
         intl={intl}
+        layoutDispatch={props.layoutDispatch}
+        layoutState={props.layoutState}
       />
     </React.Fragment>
   );

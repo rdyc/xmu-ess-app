@@ -1,3 +1,4 @@
+import { WithLayout } from '@layout/hoc/withLayout';
 import { GlobalFormat } from '@layout/types';
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Table, TableBody, TableCell, TableHead, TableRow, WithStyles } from '@material-ui/core';
 import { ISummaryModuleCost } from '@summary/classes/response/progress';
@@ -17,15 +18,17 @@ interface OwnProps {
 type AllProps
   = OwnProps
   & WithStyles
+  & WithLayout
   & InjectedIntlProps;
 
 export const ProgressExpenseView: React.SFC<AllProps> = props => {
-  const { dialogFullScreen, dialogOpen, handleDialogClose, expenses, classes, expenseProjectUid, intl } = props;
+  const { dialogOpen, handleDialogClose, expenses, classes, expenseProjectUid, intl } = props;
   const expenseFields = ['type', 'date', 'documentUid', 'requester'];
 
   return (
     <Dialog
-      fullScreen={dialogFullScreen}
+      fullScreen
+      className={props.layoutState.anchor === 'right' ? props.classes.contentShiftRight : props.classes.contentShiftLeft}
       open={dialogOpen}
       aria-labelledby="progress-expense-dialog-title"
       fullWidth
