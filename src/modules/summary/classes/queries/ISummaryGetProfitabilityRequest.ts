@@ -1,4 +1,4 @@
 export interface ISummaryGetProfitabilityRequest {
-  customerUid: string;
-  projectUid: string;
+  customerUid: string | undefined;
+  projectUid: string | undefined;
 }
