@@ -202,7 +202,6 @@ const lifecycles: ReactLifeCycleFunctions<WinningRatioProps, OwnState> = {
     layoutDispatch.changeView(null);
     layoutDispatch.modeListOff();
     layoutDispatch.modeSearchOff();
-    layoutDispatch.actionCentreHide();
     layoutDispatch.moreHide();
 
     // dispose 'get all' from 'redux store' when the page is 'out of project registration' context
