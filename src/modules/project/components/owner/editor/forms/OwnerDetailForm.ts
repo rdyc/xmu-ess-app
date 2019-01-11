@@ -40,16 +40,16 @@ const handlerCreators: HandleCreators<OwnerDetailFormProps, OwnHandlers> = {
     const { rolePmUids, roleSalesUids, allowedProjectTypes, intl } = props;
     const { user } = props.userState;
 
-    let _roleUids: string[] | undefined = undefined;
+    let _roleUids = undefined;
 
     // check roles
     if (user) {
       if (isMemberOfSales(user.role.uid)) {
-        _roleUids = roleSalesUids;
+        _roleUids = roleSalesUids && roleSalesUids.join(',');
       }
 
       if (isMemberOfPMO(user.role.uid)) {
-        _roleUids = rolePmUids;
+        _roleUids = rolePmUids && rolePmUids.join(',');
       } 
     }
       
@@ -62,7 +62,7 @@ const handlerCreators: HandleCreators<OwnerDetailFormProps, OwnHandlers> = {
           label: intl.formatMessage(projectMessage.registration.fieldFor(name, 'fieldName')),
           placeholder: intl.formatMessage(projectMessage.registration.fieldFor(name, 'fieldPlaceholder')),
           component: SelectEmployee,
-          companyUids: user && [user.company.uid],
+          companyUids: user && user.company.uid,
           roleUids: _roleUids
         };
         break;

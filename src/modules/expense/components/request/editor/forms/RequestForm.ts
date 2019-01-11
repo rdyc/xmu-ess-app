@@ -7,17 +7,17 @@ const formName = 'expenseRequest';
 
 export type ExpenseRequestFormData = {
   information: {
-    uid: string | null | undefined;
-    date: string | null | undefined;
-    expenseType: string | null | undefined;
-    customerUid: string | null | undefined;
-    projectUid: string | null | undefined;
-    value: number | null | undefined;
-    location: string | null | undefined;
-    address: string | null | undefined;
-    name: string | null | undefined;
-    title: string | null | undefined;
-    notes: string | null | undefined;
+    uid?: string;
+    date?: string;
+    expenseType?: string;
+    customerUid?: string;
+    projectUid?: string;
+    value?: number;
+    location?: string;
+    address?: string;
+    name?: string;
+    title?: string;
+    notes?: string;
   },
 };
 
@@ -31,7 +31,7 @@ interface OwnProps {
 }
 
 interface FormValueProps {
-  customerUidValue: string | undefined;
+  customerUidValue?: string;
   formName: string;
 }
 

@@ -3,7 +3,7 @@ import { IOrganizationStructurePutItem } from './IOrganizationStructurePutItem';
 
 export interface IOrganizationStructurePutPayload extends IBasePayload {
   positionUid: string;
-  description: string | null;
-  inactiveDate?: string | null;
+  description?: string;
+  inactiveDate?: string;
   reportTo: IOrganizationStructurePutItem[];
 }

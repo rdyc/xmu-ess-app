@@ -6,5 +6,5 @@ export interface IEmployeeExperience {
   position: string;
   start: number;
   end: number;
-  changes: IBaseChanges | null;
+  changes?: IBaseChanges;
 }

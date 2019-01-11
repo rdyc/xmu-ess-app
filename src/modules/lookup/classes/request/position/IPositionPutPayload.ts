@@ -2,7 +2,7 @@ import { IBasePayload } from '@generic/interfaces';
 
 export interface IPositionPutPayload extends IBasePayload {
   name:               string;
-  description?:       string | null;
+  description?:       string;
   isAllowMultiple:    boolean;
-  inactiveDate?:      string | null;
+  inactiveDate?:      string;
 }

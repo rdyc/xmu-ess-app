@@ -4,9 +4,9 @@ import { ICompanyList } from '@lookup/classes/response';
 export interface ILookupLeaveList {
   uid: string;
   companyUid: string;
-  company: ICompanyList | null;
+  company?: ICompanyList;
   categoryType: string;
-  category: ICommonSystem | null;
+  category?: ICommonSystem;
   year: number;
   name: string;
   allocation: number;

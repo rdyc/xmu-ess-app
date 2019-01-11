@@ -169,8 +169,8 @@ const handlers: HandleCreators<PurchaseSettlementEditorProps, OwnHandlers> = {
           _items.push({
             uid: item.uid,
             amount: item.actual
-              })
-            );
+          })
+        );
       }
 
       return _items;

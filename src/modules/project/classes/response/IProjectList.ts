@@ -5,18 +5,18 @@ import { ILookupCustomer } from '@lookup/classes';
 export interface IProjectList {
   uid: string;
   customerUid: string;
-  customer: ILookupCustomer | null;
+  customer?: ILookupCustomer;
   projectType: string;
-  project: ICommonSystem | null;
-  contractNumber: string | null;
+  project?: ICommonSystem;
+  contractNumber?: string;
   ownerEmployeeUid: string;
-  owner: IAccountEmployee | null;
+  owner?: IAccountEmployee;
   name: string;
-  description: string | null;
+  description?: string;
   maxHours: number;
   start: string;
   end: string;
   statusType: string;
-  status: ICommonSystem | null;
-  rejectedReason: string | null;
+  status?: ICommonSystem;
+  rejectedReason?: string;
 }

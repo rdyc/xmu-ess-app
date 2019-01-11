@@ -7,10 +7,10 @@ export interface ITravelPutPayload extends IBasePayload {
   end: string;
   customerUid: string;
   projectUid: string;
-  siteUid: string | null;
+  siteUid?: string;
   activityType: string;
-  objective: string | null;
-  target: string | null;
-  comment: string | null;
+  objective?: string;
+  target?: string;
+  comment?: string;
   items: ITravelPutItem[];
 }

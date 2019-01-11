@@ -6,5 +6,5 @@ export interface ICurrency {
   symbol: string;
   rate: number;
   isActive: boolean;
-  changes: IBaseChanges | null;
+  changes?: IBaseChanges;
 }

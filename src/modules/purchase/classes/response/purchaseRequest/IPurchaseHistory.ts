@@ -8,9 +8,9 @@ export interface IPurchaseHistory {
   purchaseUid: string;
   level: number;
   statusType: string;
-  status: ICommonSystem | null;
+  status?: ICommonSystem;
   positionUid: string;
-  position: ILookupPosition | null;
-  employees: IAccountEmployee[] | null;
-  changes: IBaseChanges | null;
+  position?: ILookupPosition;
+  employees?: IAccountEmployee[];
+  changes?: IBaseChanges;
 }

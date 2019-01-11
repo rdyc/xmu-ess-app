@@ -5,12 +5,12 @@ import { IStructureItem } from '@organization/classes/response/structure';
 export interface IStructure {
   uid: string;
   companyUid: string;
-  company: ILookupCompany | null;
+  company?: ILookupCompany;
   positionUid: string;
-  position: ILookupPosition | null;
-  description: string | null;
+  position?: ILookupPosition;
+  description?: string;
   inactiveDate?: string;
-  reportTo?: IStructureItem[] | null;
+  reportTo?: IStructureItem[];
   isExpired: boolean;
-  changes?: IBaseChanges | null;
+  changes?: IBaseChanges;
 }

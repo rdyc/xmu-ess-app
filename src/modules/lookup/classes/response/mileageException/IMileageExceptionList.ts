@@ -5,14 +5,14 @@ export interface IMileageExceptionList {
   uid: string;
   roleUid: string;
   role: IRoleList;
-  projectUid?: string | null;
-  project?: ILookupProject | null;
-  projectSiteUid?: string | null;
-  projectSite?: ILookupProjectSite | null;
-  siteType?: string | null;
-  type?: ICommonSystem | null;
+  projectUid?: string;
+  project?: ILookupProject;
+  projectSiteUid?: string;
+  projectSite?: ILookupProjectSite;
+  siteType?: string;
+  type?: ICommonSystem;
   percentage: number;
-  description?: string | null;
-  reason?: string | null;
-  inactiveDate?: string | null;
+  description?: string;
+  reason?: string;
+  inactiveDate?: string;
 }

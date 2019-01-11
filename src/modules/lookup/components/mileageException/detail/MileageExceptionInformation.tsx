@@ -30,7 +30,7 @@ const mileageExceptionInformation: React.SFC<AllProps> = props => {
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
           label={props.intl.formatMessage(lookupMessage.mileageException.field.company)}
-          value={props.data.role.company.name}
+          value={props.data.role.company && props.data.role.company.name}
         />
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
