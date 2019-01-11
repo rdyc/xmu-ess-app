@@ -9,12 +9,10 @@
   "timesheet.entry.page.modify.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
   
   "timesheet.entry.confirm.modify.title": "Modify Confirmation",
-  "timesheet.entry.confirm.modify.description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "timesheet.entry.confirm.modify.description": "You are about to modify current time report. Do you want to continue?",
   
-  "timesheet.entry.dialog.modifyTitle": "Modify Confirmation",
-  "timesheet.entry.dialog.modifyDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
   "timesheet.entry.dialog.newTitle": "Submit Confirmation",
-  "timesheet.entry.dialog.newDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "timesheet.entry.dialog.newDescription": "Do you want to submit time report ?",
   
   "timesheet.entry.section.info.title": "Time Report",
   "timesheet.entry.section.info.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
@@ -77,7 +75,7 @@
   "timesheet.approval.history.page.detail.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
   
   "timesheet.approval.confirm.submission.title": "Time Report Approval Submission",
-  "timesheet.approval.confirm.submission.content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "timesheet.approval.confirm.submission.content": "You are about to submitting time report approval for this approval request. Do you want to continue?",
   
   "timesheet.approval.message.emptyProps": "Some props are empty",
   "timesheet.approval.message.submit.success": "Successfully processing approval submission",
