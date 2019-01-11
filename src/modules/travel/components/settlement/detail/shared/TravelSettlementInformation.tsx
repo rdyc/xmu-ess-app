@@ -110,7 +110,17 @@ const travelSettlementInformation: React.SFC<AllProps> = props => {
           margin="dense"
           label={props.intl.formatMessage(travelMessage.request.field.comment)}
           value={data.comment || 'N/A'}
-        />      
+        />
+        {
+          data &&
+          data.rejectReason &&
+          <TextField
+            {...GlobalStyle.TextField.ReadOnly}
+            margin="dense"
+            label={props.intl.formatMessage(travelMessage.request.field.rejectReason)}
+            value={data.rejectReason}
+          />
+        }           
       </CardContent>
     </Card>
   );
