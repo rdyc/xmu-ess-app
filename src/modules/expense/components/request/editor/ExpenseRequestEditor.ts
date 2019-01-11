@@ -248,8 +248,8 @@ const lifecycles: ReactLifeCycleFunctions<ExpenseRequestEditorProps, {}> = {
     const { user } = this.props.userState;
     
     const view = {
-      title: intl.formatMessage(expenseMessage.request.page.createTitle),
-      subTitle: intl.formatMessage(expenseMessage.request.page.createSubTitle),
+      title: expenseMessage.request.page.createTitle,
+      subTitle: expenseMessage.request.page.createSubTitle,
     };
 
     if (!user) {
@@ -267,8 +267,8 @@ const lifecycles: ReactLifeCycleFunctions<ExpenseRequestEditorProps, {}> = {
     });
 
     if (!isNullOrUndefined(history.location.state)) {
-      view.title = intl.formatMessage(expenseMessage.request.page.editTitle);
-      view.subTitle = intl.formatMessage(expenseMessage.request.page.editSubTitle);
+      view.title = expenseMessage.request.page.editTitle;
+      view.subTitle = expenseMessage.request.page.editSubTitle;
 
       stateUpdate({ 
         formMode: FormMode.Edit,
@@ -287,8 +287,8 @@ const lifecycles: ReactLifeCycleFunctions<ExpenseRequestEditorProps, {}> = {
     layoutDispatch.changeView({
       uid: AppMenu.ExpenseRequest,
       parentUid: AppMenu.Expense,
-      title: intl.formatMessage({id: view.title}),
-      subTitle : intl.formatMessage({id: view.subTitle})
+      title: intl.formatMessage(view.title),
+      subTitle : intl.formatMessage(view.subTitle)
     });
 
     layoutDispatch.navBackShow(); 
