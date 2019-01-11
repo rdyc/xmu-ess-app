@@ -130,12 +130,12 @@
   "lookup.role.field.description.required": "Description is required",
 
   "lookup.role.confirm.modify.title": "Modify Confirmation",
-  "lookup.role.confirm.modify.description": " ",
+  "lookup.role.confirm.modify.description": "You are about to modify current role. Do you want to continue ?",
+  "lookup.role.confirm.delete.title": "Delete Confirmation",
+  "lookup.role.confirm.delete.description": "Are you sure to delete this role ?",
 
-  "lookup.role.dialog.modifyTitle": "Modify Confirmation",
-  "lookup.role.dialog.modifyDescription": " ",
   "lookup.role.dialog.newTitle": "Submit Confirmation",
-  "lookup.role.dialog.newDescription": " ",
+  "lookup.role.dialog.newDescription": "Do you want to submit role ?",
 
   "lookup.role.message.emptyProps": "Some props are empty",
   "lookup.role.message.create.success": "A new Role ID {uid} has been created",
@@ -158,10 +158,8 @@
   "lookup.company.section.info.title": "Company",
   "lookup.company.section.info.subHeader": " ",
   
-  "lookup.company.dialog.modifyTitle": "Modify Confirmation",
-  "lookup.company.dialog.modifyDescription": " ",
   "lookup.company.dialog.newTitle": "Submit Confirmation",
-  "lookup.company.dialog.newDescription": " ",
+  "lookup.company.dialog.newDescription": "Do you want to submit company ?",
   
   "lookup.company.field.uid": "Company ID",
   "lookup.company.field.uid.placeholder": "Company ID",
@@ -173,7 +171,9 @@
   "lookup.company.field.name.required": "Company name is required",
   
   "lookup.company.confirm.modify.title": "Modify Confirmation",
-  "lookup.company.confirm.modify.description": " ",
+  "lookup.company.confirm.modify.description": "You are about to modify current company. Do you want to continue ?",
+  "lookup.company.confirm.delete.title": "Delete Confirmation",
+  "lookup.company.confirm.delete.description": "Are you sure to delete this company ?",
   
   "lookup.company.message.emptyProps": "Some props are empty",
   "lookup.company.message.create.success": "A new Company ID {uid} has been created",
