@@ -144,6 +144,7 @@ function* watchPostBulkRequest() {
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
         put(timesheetApprovalGetAllDispose()),
+        put(timesheetApprovalGetByIdDispose()),
         put(timesheetApprovalPostBulkSuccess(response.body))
       ],
       successCallback: (response: IApiResponse) => {
