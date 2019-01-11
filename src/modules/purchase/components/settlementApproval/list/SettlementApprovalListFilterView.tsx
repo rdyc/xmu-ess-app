@@ -6,6 +6,7 @@ import {
   AppBar,
   Button,
   Dialog,
+  DialogContent,
   Divider,
   IconButton,
   List,
@@ -32,9 +33,10 @@ export const SettlementApprovalListFilterView: React.SFC<SettlementApprovalListF
       className={props.layoutState.anchor === 'right' ? props.classes.contentShiftRight : props.classes.contentShiftLeft}
       disableBackdropClick
       open={props.isOpen}
+      scroll="paper"
       onClose={props.onClose}
     >
-      <AppBar className={props.classes.appBarDialog}>
+      <AppBar position="fixed" className={props.classes.appBarDialog}>
         <Toolbar>
           <IconButton color="inherit" onClick={props.onClose} aria-label="Close">
             <CloseIcon />
@@ -60,6 +62,7 @@ export const SettlementApprovalListFilterView: React.SFC<SettlementApprovalListF
         </Toolbar>
       </AppBar>
       
+      <DialogContent className={props.classes.paddingDisabled}>
       <List>
         <ListItem button onClick={props.handleFilterCustomerVisibility}>
           <ListItemText 
@@ -157,6 +160,7 @@ export const SettlementApprovalListFilterView: React.SFC<SettlementApprovalListF
         <Divider />
 
       </List>
+      </DialogContent>
     </Dialog>
 
     <LookupCustomerDialog 
