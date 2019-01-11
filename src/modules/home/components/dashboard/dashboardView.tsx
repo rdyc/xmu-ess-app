@@ -21,6 +21,7 @@ import * as classnames from 'classnames';
 import * as moment from 'moment';
 import * as React from 'react';
 
+import { Chart } from './Chart';
 import { DashboardProps } from './Dashboard';
 
 const stepperSources = [
@@ -48,8 +49,10 @@ const stepperSources = [
 
 export const dashboardView: React.SFC<DashboardProps> = props => (
   <React.Fragment>
-    <Stepper source={stepperSources} />
+    <Chart />
     
+    <Stepper source={stepperSources} />
+
     <div>
       <div className={props.classes.forceRight}>
         <IconButton onClick={() => props.handleSyncClick()}>
