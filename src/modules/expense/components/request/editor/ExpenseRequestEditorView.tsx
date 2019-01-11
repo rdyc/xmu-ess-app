@@ -87,8 +87,8 @@ export const ExpenseRequestEditorView: React.SFC<ExpenseRequestEditorProps> = pr
       initialValues.information.value = data.value;
       initialValues.information.location = data.location;
       initialValues.information.address = data.address;
-      initialValues.information.name = data.client.name;
-      initialValues.information.title = data.client.title;
+      initialValues.information.name = data.client && data.client.name;
+      initialValues.information.title = data.client && data.client.title;
       initialValues.information.notes = data.notes;
 
       if (!amountLoading && amountResponse && amountResponse.data) {

@@ -1,5 +1,5 @@
 export interface IEmployeeBank {
-    account: string | null;
-    name: string | null;
-    branch: string | null;
+    account?: string;
+    name?: string;
+    branch?: string;
 }

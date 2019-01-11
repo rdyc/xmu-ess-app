@@ -1,4 +1,4 @@
 export interface IAmount {
-  advance?: number | null;
-  total?: number | null;
+  advance?: number;
+  total?: number;
 }

@@ -16,7 +16,7 @@ import { LeaveCancellationFormView } from './LeaveCancellationFormView';
 const formName = 'leaveCancellation';
 
 export type LeaveCancellationFormData = {
-  cancelDate: string | null;
+  cancelDate?: string;
 };
 
 interface OwnProps {

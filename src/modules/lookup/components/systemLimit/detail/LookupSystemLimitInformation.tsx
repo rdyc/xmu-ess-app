@@ -32,7 +32,7 @@ const systemLimitInformation: React.SFC<AllProps> = props => {
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
           label={props.intl.formatMessage(lookupMessage.systemLimit.field.company)}
-          value={props.data.company.name}
+          value={props.data.company && props.data.company.name}
         />
         <TextField
           {...GlobalStyle.TextField.ReadOnly}

@@ -1,4 +1,4 @@
 export interface IEmployeeTrainingListFilter {
-  readonly orderBy?: string | undefined;
-  readonly direction?: 'ascending' | 'descending' | string | undefined;
+  readonly orderBy?: string;
+  readonly direction?: 'ascending' | 'descending' | string;
 }

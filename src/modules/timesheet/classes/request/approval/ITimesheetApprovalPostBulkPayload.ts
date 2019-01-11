@@ -4,5 +4,5 @@ import { ITimesheetApprovalItem } from './ITimesheetApprovalItem';
 export interface ITimesheetApprovalPostBulkPayload extends IBasePayload {
   timesheetUids: ITimesheetApprovalItem[];
   isApproved: boolean;
-  remark?: string | null;
+  remark?: string;
 }

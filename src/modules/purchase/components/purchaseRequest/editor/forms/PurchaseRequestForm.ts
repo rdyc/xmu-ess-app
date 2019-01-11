@@ -7,7 +7,7 @@ import { formValueSelector, InjectedFormProps, reduxForm } from 'redux-form';
 const formName = 'purchaseRequest';
 
 export type PurchaseRequestItemFormData = {
-  uid: string | null | undefined;
+  uid?: string;
   description: string;
   request: number;
 };

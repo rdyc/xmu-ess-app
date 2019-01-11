@@ -72,17 +72,16 @@ export const financeInformation: React.SFC<AllProps> = props => {
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
           label={intl.formatMessage(financeMessage.approval.field.requestor)}
-          value={data.document.changes.created ? data.document.changes.created.fullName : 'N/A'}
+          value={data.document && data.document.changes && data.document.changes.created ? data.document.changes.created.fullName : 'N/A'}
         />
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
           label={intl.formatMessage(financeMessage.approval.field.approvalDate)}
-          value={data.document.changes.updatedAt ? 
+          value={data.document && data.document.changes && data.document.changes.updatedAt ? 
             intl.formatDate(data.document.changes.updatedAt, GlobalFormat.Date) : ''}
         />
         {
-          (data.document.amount &&
-          data.document.amount.advance) &&
+          (data.document && data.document.amount && data.document.amount.advance) &&
           <TextField
           {...GlobalStyle.TextField.ReadOnly}
             label={intl.formatMessage(financeMessage.approval.field.advance)}
@@ -92,7 +91,7 @@ export const financeInformation: React.SFC<AllProps> = props => {
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
           label={intl.formatMessage(financeMessage.approval.field.total)}
-          value={data.document.amount && data.document.amount.total &&
+          value={data.document && data.document.amount && data.document.amount.total &&
             intl.formatNumber(data.document.amount.total, GlobalFormat.CurrencyDefault) || intl.formatNumber(0, GlobalFormat.CurrencyDefault)}
         />
         <TextField

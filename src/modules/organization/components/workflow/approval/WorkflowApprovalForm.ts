@@ -19,12 +19,12 @@ import { WorkflowApprovalFormView } from './WorkflowApprovalFormView';
 const formName = 'workflowApproval';
 
 export type WorkflowApprovalFormData = {
-  isApproved: string | null | undefined;
-  remark: string | null;
+  isApproved?: string;
+  remark?: string;
 };
 
 interface FormValueProps {
-  formIsApproved: string | undefined;
+  formIsApproved?: string;
 }
 
 interface OwnProps {

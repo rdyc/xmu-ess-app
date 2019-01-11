@@ -20,9 +20,9 @@ import {
 import { ListItemEmployeeSelectorView } from './ListItemEmployeeSelectorView';
 
 interface OwnOption {
-  companyUids?: string[] | undefined;
-  roleUids?: string[] | undefined;
-  positionUids?: string[] | undefined;
+  companyUids?: string;
+  roleUids?: string;
+  positionUids?: string;
   onSelected: (employee: IEmployee) => boolean;
 }
 
