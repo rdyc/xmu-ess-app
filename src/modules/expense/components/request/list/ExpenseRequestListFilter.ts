@@ -29,7 +29,7 @@ const completionStatus: ICollectionValue[] = [
   { value: 'complete', name: 'Complete' }
 ];
 
-export type IExpenseRequestListFilterResult = Pick<IExpenseRequestGetAllFilter, 'customerUid' | 'projectUid' | 'expenseType' | 'statusType' | 'status' | 'isRejected' >;
+export type IExpenseRequestListFilterResult = Pick<IExpenseRequestGetAllFilter, 'customerUid' | 'projectUid' | 'expenseType' | 'statusType' | 'status' | 'start' | 'end' | 'isRejected' >;
 
 interface IOwnOption {
   isOpen: boolean;
@@ -63,6 +63,14 @@ interface IOwnState {
   isFilterStatusOpen: boolean;
   filterStatus?: ISystemList;
 
+  // filter start
+  isFilterStartOpen: boolean;
+  filterStart?: string;
+
+  // filter end
+  isFilterEndOpen: boolean;
+  filterEnd?: string;
+
   // filter completion
   isFilterCompletionOpen: boolean;
   filterCompletion?: ICollectionValue;
@@ -90,6 +98,14 @@ interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
   // filter status
   setFilterStatusVisibility: StateHandler<IOwnState>;
   setFilterStatus: StateHandler<IOwnState>;
+
+  // filter Start
+  setFilterStartVisibility: StateHandler<IOwnState>;
+  setFilterStart: StateHandler<IOwnState>;
+
+  // filter End
+  setFilterEndVisibility: StateHandler<IOwnState>;
+  setFilterEnd: StateHandler<IOwnState>;
 
   // filter completion
   setFilterCompletionVisibility: StateHandler<IOwnState>;
@@ -128,6 +144,18 @@ interface IOwnHandler {
   handleFilterStatusOnClear: (event: React.MouseEvent<HTMLElement>) => void;
   handleFilterStatusOnClose: () => void;
 
+  // filter Start
+  handleFilterStartVisibility: (event: React.MouseEvent<HTMLElement>) => void;
+  handleFilterStartOnSelected: (data: string) => void;
+  handleFilterStartOnClear: (event: React.MouseEvent<HTMLElement>) => void;
+  handleFilterStartOnClose: () => void;
+
+  // filter End
+  handleFilterEndVisibility: (event: React.MouseEvent<HTMLElement>) => void;
+  handleFilterEndOnSelected: (data: string) => void;
+  handleFilterEndOnClear: (event: React.MouseEvent<HTMLElement>) => void;
+  handleFilterEndOnClose: () => void;
+
   // filter completion
   handleFilterCompletionVisibility: (event: React.MouseEvent<HTMLElement>) => void;
   handleFilterCompletionOnSelected: (data: ICollectionValue) => void;
@@ -155,6 +183,8 @@ const createProps: mapper<ExpenseRequestListFilterProps, IOwnState> = (props: Ex
   isFilterTypeOpen: false,
   isFilterCompletionOpen: false,
   isFilterStatusOpen: false,
+  isFilterStartOpen: false,
+  isFilterEndOpen: false,
 
   // pass initial value for primitive types only, bellow is 'boolean'
   filterRejected: props.initialProps && props.initialProps.isRejected,
@@ -180,6 +210,8 @@ const stateUpdaters: StateUpdaters<ExpenseRequestListFilterProps, IOwnState, IOw
     filterCompletion: undefined,
     filterRejected: undefined,
     filterProject: undefined,
+    filterStart: undefined,
+    filterEnd: undefined,
   }),
 
   // filter customer
@@ -221,6 +253,24 @@ const stateUpdaters: StateUpdaters<ExpenseRequestListFilterProps, IOwnState, IOw
     filterStatus: data
   }),
 
+  // filter Start
+  setFilterStartVisibility: (prevState: IOwnState) => () => ({
+    isFilterStartOpen: !prevState.isFilterStartOpen,
+  }),
+  setFilterStart: (prevState: IOwnState) => (data?: string) => ({
+    isFilterStartOpen: false,
+    filterStart: data
+  }),
+
+  // filter End
+  setFilterEndVisibility: (prevState: IOwnState) => () => ({
+    isFilterEndOpen: !prevState.isFilterEndOpen
+  }),
+  setFilterEnd: (prevState: IOwnState) => (data?: string) => ({
+    isFilterEndOpen: false,
+    filterEnd: data
+  }),
+
   // filter completion
   setFilterCompletionVisibility: (prevState: IOwnState) => () => ({
     isFilterCompletionOpen: !prevState.isFilterCompletionOpen
@@ -248,6 +298,8 @@ const handlerCreators: HandleCreators<ExpenseRequestListFilterProps, IOwnHandler
       expenseType: props.filterType && props.filterType.type,
       statusType: props.filterStatus && props.filterStatus.type,
       status: props.filterCompletion && props.filterCompletion.value,
+      start: props.filterStart,
+      end: props.filterEnd,
       isRejected: props.filterRejected,
     });
   },
@@ -308,6 +360,42 @@ const handlerCreators: HandleCreators<ExpenseRequestListFilterProps, IOwnHandler
   },
   handleFilterStatusOnClose: (props: ExpenseRequestListFilterProps) => () => {
     props.setFilterStatusVisibility();
+  },
+
+  // filter Start
+  handleFilterStartVisibility: (props: ExpenseRequestListFilterProps) => () => {
+    props.setFilterStartVisibility();
+  },
+  handleFilterStartOnSelected: (props: ExpenseRequestListFilterProps) => (
+    data: string
+  ) => {
+    props.setFilterStart(data);
+  },
+  handleFilterStartOnClear: (props: ExpenseRequestListFilterProps) => () => {
+    props.setFilterStart(props.start);
+  },
+  handleFilterStartOnClose: (props: ExpenseRequestListFilterProps) => () => {
+    props.setFilterStartVisibility();
+  },
+
+  // filter End
+  handleFilterEndVisibility: (props: ExpenseRequestListFilterProps) => (
+    event: React.MouseEvent<HTMLElement>
+  ) => {
+    props.setFilterEndVisibility();
+  },
+  handleFilterEndOnSelected: (props: ExpenseRequestListFilterProps) => (
+    data: string
+  ) => {
+    props.setFilterEnd(data);
+  },
+  handleFilterEndOnClear: (props: ExpenseRequestListFilterProps) => (
+    event: React.MouseEvent<HTMLElement>
+  ) => {
+    props.setFilterEnd(props.end);
+  },
+  handleFilterEndOnClose: (props: ExpenseRequestListFilterProps) => () => {
+    props.setFilterEndVisibility();
   },
 
   // filter completion
