@@ -3,7 +3,7 @@ import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithNotification, withNotification } from '@layout/hoc/withNotification';
 import { IAppBarMenu } from '@layout/interfaces';
-import { PropTypes, WithStyles, withStyles, WithTheme, withTheme } from '@material-ui/core';
+import { WithStyles, withStyles, WithTheme, withTheme } from '@material-ui/core';
 import withWidth, { WithWidth } from '@material-ui/core/withWidth';
 import styles from '@styles';
 import { RouteComponentProps, withRouter } from 'react-router';
@@ -26,15 +26,17 @@ import { TopBarView } from './TopBarView';
 type TopBarMode = 'normal' | 'selection' | 'search';
 
 interface OwnOption {
-  
+  isOpenMenu: boolean;
+  onClickMenu: () => void;
+  onClickNotif: () => void;
 }
 
 interface OwnState {
   mode: TopBarMode;
   search?: string;
   field?: ICollectionValue;
+  isShowMenu: boolean;
   isShowFields: boolean;
-  isOpenMenu: boolean;
 }
 
 interface OwnStateUpdater extends StateHandlerMap<OwnState> {
@@ -46,11 +48,8 @@ interface OwnStateUpdater extends StateHandlerMap<OwnState> {
 }
 
 interface OwnHandler {
-  handleOnClickMenu: (event: React.MouseEvent) => void;
   handleOnClickBack: (event: React.MouseEvent) => void;
   handleOnClickSearch: (event: React.MouseEvent) => void;
-  handleOnClickNotif: (event: React.MouseEvent) => void;
-  handleOnClickAction: (event: React.MouseEvent) => void;
   handleOnClickMore: (event: React.MouseEvent) => void;
   handleOnClickMoreItem: (menu: IAppBarMenu) => void;
   handleOnCloseMore: () => void;
@@ -61,7 +60,6 @@ interface OwnHandler {
   handleOnDiscardSelection: () => void;
   handleOnClickField: (field?: ICollectionValue | undefined) => void;
   handleOnClickProcess: () => void;
-  getClassColor: () => PropTypes.Color;
   getClassNames: () => string[];
   getCountNotif: () => number;
 }
@@ -84,8 +82,8 @@ const createProps: mapper<TopBarProps, OwnState> = (props: TopBarProps): OwnStat
   mode: props.layoutState.isModeSearch ? 'search' : 'normal',
   search: '',
   field: undefined,
-  isShowFields: false,
-  isOpenMenu: false
+  isShowMenu: false,
+  isShowFields: false
 });
 
 const stateUpdaters: StateUpdaters<OwnOption, OwnState, OwnStateUpdater> = {
@@ -103,7 +101,7 @@ const stateUpdaters: StateUpdaters<OwnOption, OwnState, OwnStateUpdater> = {
     isShowFields: !prev.isShowFields
   }),
   setMenuVisibility: (prev: OwnState) => (): Partial<OwnState> => ({
-    isOpenMenu: !prev.isOpenMenu
+    isShowMenu: !prev.isShowMenu
   })
 };
 
@@ -117,20 +115,11 @@ const handlerCreators: HandleCreators<TopBarProps, OwnHandler> = {
       props.history.goBack();
     }
   },
-  handleOnClickMenu: (props: TopBarProps) => (event: React.MouseEvent) => {
-    props.layoutDispatch.drawerMenuShow();
-  },
   handleOnClickSearch: (props: TopBarProps) => (event: React.MouseEvent) => {
     event.preventDefault();
 
     props.setMode('search');
     props.layoutDispatch.modeSearchOn();
-  },
-  handleOnClickNotif: (props: TopBarProps) => (event: React.MouseEvent) => {
-    props.layoutDispatch.drawerActionShow();
-  },
-  handleOnClickAction: (props: TopBarProps) => (event: React.MouseEvent) => {
-    props.layoutDispatch.drawerActionShow();
   },
   handleOnClickMore: (props: TopBarProps) => (event: React.MouseEvent) => {
     props.setMenuVisibility();
@@ -182,37 +171,27 @@ const handlerCreators: HandleCreators<TopBarProps, OwnHandler> = {
     props.appBarState.onSearching(props.search, field);
   },
   handleOnClickProcess: (props: TopBarProps) => () => {
-    props.appBarState.onSelectionProcess(props.appBarState.selection);
-
-    // clear selection on redux states
-    props.appBarDispatch.selectionClear();
-
-    // call selection clear callback
-    props.appBarState.onSelectionClear();
-  },
-  getClassColor: (props: TopBarProps) => (): PropTypes.Color => {
-    let result: PropTypes.Color = 'default';
-
-    if (props.layoutState.theme.palette && props.layoutState.theme.palette.type !== 'dark') {
-     if (props.mode === 'search' || (props.layoutState.isModeList && props.appBarState.selection.length > 0)) {
-        result = 'inherit';
-      } else {
-        result = 'default';
-      }
+    if (props.appBarState.selections) {
+      // call process callback
+      props.appBarState.onSelectionProcess(props.appBarState.selections);
+      
+      // clear selection on redux states
+      props.appBarDispatch.selectionClear();
+      
+      // call selection clear callback
+      props.appBarState.onSelectionClear();
     }
-
-    return result;
   },
   getClassNames: (props: TopBarProps) => (): string[] => {
     const { classes } = props;
-    const { anchor, isDrawerMenuVisible } = props.layoutState;
+    const { anchor } = props.layoutState;
 
     const shift = anchor === 'right' ? classes.appBarShiftRight : classes.appBarShiftLeft;
 
-    return isDrawerMenuVisible ? [classes.appBar] : [classes.appBar, shift];
+    return !props.isOpenMenu ? [classes.appBar] : [classes.appBar, shift];
   },
   getCountNotif: (props: TopBarProps) => (): number => {
-    const { result } = props.notificationState;
+    const { response: result } = props.notificationState;
 
     let count: number = 0;
     
@@ -255,7 +234,7 @@ const lifeCycles: ReactLifeCycleFunctions<TopBarProps, OwnState> = {
 
     // topbar comparer
     if (this.props.appBarState !== prevProps.appBarState) {
-      if (this.props.layoutState.isModeList && this.props.appBarState.selection.length > 0) {
+      if (this.props.layoutState.isModeList && this.props.appBarState.selections) {
         this.props.setMode('selection');
       } else {
         this.props.setMode('normal');

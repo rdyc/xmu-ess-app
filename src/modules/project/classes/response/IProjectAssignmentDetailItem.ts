@@ -5,20 +5,20 @@ import { IBaseChanges } from '@generic/interfaces';
 import { IProjectList } from './IProjectList';
 
 export interface IProjectAssignmentDetailItem {
-  readonly uid: string;
-  readonly project: IProjectList;
-  readonly sequence: number;
-  readonly employeeUid: string;
-  readonly employee: IAccountEmployee | null;
-  readonly rateUid: string;
-  readonly rate: IAccountEmployeeRate | null;
-  readonly role: string | null;
-  readonly jobDescription: string | null;
-  readonly mandays: number;
-  readonly allocatedHours: number;
-  readonly consumedHours: number;
-  readonly statusType: string;
-  readonly status: ICommonSystem | null;
-  readonly rejectedReason: string | null;
-  readonly changes: IBaseChanges | null;
+  uid: string;
+  project: IProjectList;
+  sequence: number;
+  employeeUid: string;
+  employee?: IAccountEmployee;
+  rateUid: string;
+  rate?: IAccountEmployeeRate;
+  role?: string;
+  jobDescription?: string;
+  mandays: number;
+  allocatedHours: number;
+  consumedHours: number;
+  statusType: string;
+  status?: ICommonSystem;
+  rejectedReason?: string;
+  changes?: IBaseChanges;
 }

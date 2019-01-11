@@ -112,7 +112,7 @@ const handlerCreators: HandleCreators<TravelRequestApprovalDetailProps, OwnHandl
     // generate payload
     const payload: IWorkflowApprovalPayload = {
       isApproved,
-      remark: !isApproved ? formData.remark : null
+      remark: !isApproved ? formData.remark : undefined
     };
 
     // dispatch update request

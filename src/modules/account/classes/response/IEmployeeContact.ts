@@ -1,6 +1,6 @@
 export interface IEmployeeContact {
-    name: string | null;
-    relation: string | null;
-    phone: string | null;
-    phoneAdditional: string | null;
+    name?: string;
+    relation?: string;
+    phone?: string;
+    phoneAdditional?: string;
 }

@@ -155,7 +155,7 @@ const handlerCreators: HandleCreators<ApprovalTimesheetsProps, OwnHandler> = {
     const payload: ITimesheetApprovalPostBulkPayload = {
       isApproved,
       timesheetUids: _timesheetUids,
-      remark: !isApproved ? formData.remark : null
+      remark: !isApproved ? formData.remark : undefined
     };
 
     // dispatch update request

@@ -71,15 +71,15 @@ const handlerCreators: HandleCreators<RoleDetailProps, OwnHandler> = {
       props.stateUpdate({
         action: LookupUserAction.Modify,
         dialogOpen: true,
-        dialogTitle: props.intl.formatMessage(lookupMessage.shared.confirm.modifyTitle),
-        dialogContent: props.intl.formatMessage(lookupMessage.shared.confirm.modifyDescription),
+        dialogTitle: props.intl.formatMessage(lookupMessage.role.confirm.modifyTitle),
+        dialogContent: props.intl.formatMessage(lookupMessage.role.confirm.modifyDescription),
       });
     } else if (action === LookupUserAction.Delete) {
       props.stateUpdate({
         action: LookupUserAction.Delete,
         dialogOpen: true,
-        dialogTitle: props.intl.formatMessage(lookupMessage.shared.confirm.deleteTitle),
-        dialogContent: props.intl.formatMessage(lookupMessage.shared.confirm.deleteDescription),
+        dialogTitle: props.intl.formatMessage(lookupMessage.role.confirm.deleteTitle),
+        dialogContent: props.intl.formatMessage(lookupMessage.role.confirm.deleteDescription),
       });
     }
   },

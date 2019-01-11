@@ -86,7 +86,8 @@ const createProps: mapper<PurchaseSettlementEditorProps, OwnState> = (props: Pur
     positionUid: state ? state.positionUid : undefined,
     purchaseUid: state ? state.uid : undefined, 
     submitDialogTitle: !state ? props.intl.formatMessage(purchaseMessage.request.confirm.createTitle) : props.intl.formatMessage(purchaseMessage.request.confirm.modifyTitle),
-    submitDialogContentText: !state ? props.intl.formatMessage(purchaseMessage.request.confirm.createDescription) : props.intl.formatMessage(purchaseMessage.request.confirm.modifyDescription),
+    // submitDialogContentText: !state ? props.intl.formatMessage(purchaseMessage.request.confirm.createDescription) : props.intl.formatMessage(purchaseMessage.request.confirm.modifyDescription),
+    submitDialogContentText: ` `,
     submitDialogCancelText: props.intl.formatMessage(layoutMessage.action.cancel),
     submitDialogConfirmedText: props.intl.formatMessage(layoutMessage.action.ok),
 
@@ -169,8 +170,8 @@ const handlers: HandleCreators<PurchaseSettlementEditorProps, OwnHandlers> = {
           _items.push({
             uid: item.uid,
             amount: item.actual
-              })
-            );
+          })
+        );
       }
 
       return _items;
@@ -325,7 +326,8 @@ const lifecycles: ReactLifeCycleFunctions<PurchaseSettlementEditorProps, {}> = {
       stateUpdate({
           formMode: FormMode.Edit,
           submitDialogTitle: this.props.intl.formatMessage(purchaseMessage.request.confirm.modifyTitle),
-          submitDialogContentText: this.props.intl.formatMessage(purchaseMessage.request.confirm.modifyDescription),
+          // submitDialogContentText: this.props.intl.formatMessage(purchaseMessage.request.confirm.modifyDescription),
+          submitDialogContentText: ` `,
         });  
     }
 
@@ -352,7 +354,6 @@ const lifecycles: ReactLifeCycleFunctions<PurchaseSettlementEditorProps, {}> = {
     layoutDispatch.changeView(null);
     layoutDispatch.navBackHide();
     layoutDispatch.moreHide();
-    layoutDispatch.actionCentreHide();
 
     appBarDispatch.dispose();
 

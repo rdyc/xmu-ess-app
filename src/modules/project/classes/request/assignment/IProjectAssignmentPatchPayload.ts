@@ -1,10 +1,10 @@
 import { IBasePayload } from '@generic/interfaces';
 
 export interface IProjectAssignmentItem {
-  uid: string | null;
+  uid?: string;
   employeeUid: string;
-  role: string | null;
-  jobDescription: string | null;
+  role?: string;
+  jobDescription?: string;
   mandays: number;
 }
 

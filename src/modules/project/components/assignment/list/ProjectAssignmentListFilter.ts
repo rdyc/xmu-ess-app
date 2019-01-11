@@ -142,9 +142,9 @@ const handlerCreators: HandleCreators<ProjectAssignmentListFilterProps, IOwnHand
   },
   handleFilterOnApply: (props: ProjectAssignmentListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
     props.onApply({
-      customerUids: props.filterCustomer && [props.filterCustomer.uid],
-      projectTypes: props.filterType && [props.filterType.type],
-      statusTypes: props.filterStatus && [props.filterStatus.type]
+      customerUids: props.filterCustomer && props.filterCustomer.uid,
+      projectTypes: props.filterType && props.filterType.type,
+      statusTypes: props.filterStatus && props.filterStatus.type
     });
   },
 

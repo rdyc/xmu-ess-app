@@ -1,6 +1,6 @@
-import { Layout } from '@layout/components/base';
 import * as React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router';
+
 import { LeaveApprovalDetail } from './approval/detail/LeaveApprovalDetail';
 import { LeaveApprovalList } from './approval/list/LeaveApprovalList';
 import { LeaveCancellationDetail } from './cancellation/detail/LeaveCancellationDetail';
@@ -33,10 +33,8 @@ const cancellation = (props: RouteComponentProps) => (
 
 export const LeaveRoutingComponents: React.SFC<RouteComponentProps> = props => (
   <Switch>
-    <Layout>
-      <Route path={`${props.match.path}/requests`} component={request} />
-      <Route path={`${props.match.path}/approvals`} component={approval} />
-      <Route path={`${props.match.path}/cancellations`} component={cancellation} />
-    </Layout>
+    <Route path={`${props.match.path}/requests`} component={request} />
+    <Route path={`${props.match.path}/approvals`} component={approval} />
+    <Route path={`${props.match.path}/cancellations`} component={cancellation} />
   </Switch>
 );

@@ -3,14 +3,18 @@ import { layoutMessage } from '@layout/locales/messages';
 import {
   Avatar,
   Collapse,
+  Divider,
   ListItem,
   ListItemAvatar,
   ListItemIcon,
   ListItemSecondaryAction,
   ListItemText,
   ListSubheader,
+  Switch,
 } from '@material-ui/core';
 import { ExpandLess, ExpandMore, PowerSettingsNew, SwapHorizontalCircle } from '@material-ui/icons';
+import InvertColors from '@material-ui/icons/InvertColors';
+import SwapHoriz from '@material-ui/icons/SwapHoriz';
 import * as React from 'react';
 
 import { DialogConfirmation } from '../dialogs';
@@ -27,13 +31,11 @@ export const NavigationHeaderView: React.ComponentType<NavigationHeaderProps> = 
           secondary={props.userState.user.company.name}
           primaryTypographyProps={{
             variant: 'body2',
-            color: 'inherit',
             align: 'center',
             noWrap: true
           }}
           secondaryTypographyProps={{
             variant: 'body2',
-            color: 'inherit',
             align: 'center',
             noWrap: true
           }}
@@ -64,30 +66,67 @@ export const NavigationHeaderView: React.ComponentType<NavigationHeaderProps> = 
         </ListItem>
         
         <Collapse in={props.headerUid === AppMenu.User}>
+          <ListItem button onClick={props.handleOnClickTheme}>
+            <ListItemIcon>
+              <InvertColors />
+            </ListItemIcon>
+            <ListItemText 
+              primary={props.intl.formatMessage(layoutMessage.label.theme)}
+              primaryTypographyProps={{
+                variant: 'body2'
+              }}
+            />
+            <ListItemSecondaryAction>
+              <Switch color="secondary"
+                onChange={() => props.handleOnClickTheme()}
+                checked={props.layoutState.theme.palette ? props.layoutState.theme.palette.type === 'dark' : false}
+              />
+            </ListItemSecondaryAction>
+          </ListItem>
+
+          <ListItem button onClick={props.handleOnClickAnchor}>
+            <ListItemIcon>
+              <SwapHoriz/>
+            </ListItemIcon>
+            <ListItemText 
+              primary={props.intl.formatMessage(layoutMessage.label.anchor)}
+              primaryTypographyProps={{
+                variant: 'body2'
+              }}
+            />
+            <ListItemSecondaryAction>
+              <Switch color="secondary"
+                onChange={() => props.handleOnClickAnchor()}
+                checked={props.layoutState.anchor === 'right'}
+              />
+            </ListItemSecondaryAction>
+          </ListItem>
+
           <ListItem button disabled={props.userState.user.access.length <= 1} onClick={props.handleOnClickAccess}>
             <ListItemIcon className={props.classes.drawerPaperMenuItem}>
-              <SwapHorizontalCircle/>
+              <SwapHorizontalCircle color="action" />
             </ListItemIcon>
             <ListItemText
               primary={props.intl.formatMessage(layoutMessage.label.switch)}
               primaryTypographyProps={{
                 variant: 'body2',
-                color: 'inherit'
               }}
             />
           </ListItem>
+
           <ListItem button onClick={props.handleOnClickLogout}>
             <ListItemIcon className={props.classes.drawerPaperMenuItem}>
-              <PowerSettingsNew /> 
+              <PowerSettingsNew color="action"  /> 
             </ListItemIcon>
             <ListItemText
               primary={props.intl.formatMessage(layoutMessage.label.logout)}
               primaryTypographyProps={{
                 variant: 'body2',
-                color: 'inherit'
               }}
             />
           </ListItem>
+
+          <Divider/>
         </Collapse>
 
         <DialogConfirmation 

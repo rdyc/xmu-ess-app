@@ -4,8 +4,6 @@ import { IAlert, ILayoutState, IView } from '@layout/interfaces';
 import {
   layoutAccountColapse,
   layoutAccountExpand,
-  layoutActionCentreHide,
-  layoutActionCentreShow,
   layoutAlertAdd,
   layoutAlertDialogHide,
   layoutAlertDialogShow,
@@ -13,16 +11,6 @@ import {
   layoutChangeAnchor,
   layoutChangeNotif,
   layoutChangeView,
-  layoutDrawerActionHide,
-  layoutDrawerActionShow,
-  layoutDrawerBottomHide,
-  layoutDrawerBottomShow,
-  layoutDrawerMenuHide,
-  layoutDrawerMenuShow,
-  layoutDrawerTopHide,
-  layoutDrawerTopShow,
-  layoutLogoutDialogHide,
-  layoutLogoutDialogShow,
   layoutModeListOff,
   layoutModeListOn,
   layoutModeSearchOff,
@@ -57,26 +45,13 @@ interface PropsFromDispatch {
     changeView: typeof layoutChangeView;
     
     setupView: typeof layoutSetupView;
-
-    drawerMenuShow: typeof layoutDrawerMenuShow;
-    drawerMenuHide: typeof layoutDrawerMenuHide;
-    drawerActionShow: typeof layoutDrawerActionShow;
-    drawerActionHide: typeof layoutDrawerActionHide;
-    drawerTopShow: typeof layoutDrawerTopShow;
-    drawerTopHide: typeof layoutDrawerTopHide;
-    drawerBottomShow: typeof layoutDrawerBottomShow;
-    drawerBottomHide: typeof layoutDrawerBottomHide;
     
     alertDialogShow: typeof layoutAlertDialogShow;
     alertDialogHide: typeof layoutAlertDialogHide;
-    logoutDialogShow: typeof layoutLogoutDialogShow;
-    logoutDialogHide: typeof layoutLogoutDialogHide;
     navBackShow: typeof layoutNavBackShow;
     navBackHide: typeof layoutNavBackHide;
     searchShow: typeof layoutSearchShow;
     searchHide: typeof layoutSearchHide;
-    actionCentreShow: typeof layoutActionCentreShow;
-    actionCentreHide: typeof layoutActionCentreHide;
     moreShow: typeof layoutMoreShow;
     moreHide: typeof layoutMoreHide;
     
@@ -109,28 +84,15 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
 
     setupView: (config: IViewConfig) => dispatch(layoutSetupView(config)),
     
-    drawerMenuShow: () => dispatch(layoutDrawerMenuShow()),
-    drawerMenuHide: () => dispatch(layoutDrawerMenuHide()),
-    drawerActionShow: () => dispatch(layoutDrawerActionShow()),
-    drawerActionHide: () => dispatch(layoutDrawerActionHide()),
-    drawerTopShow: () => dispatch(layoutDrawerTopShow()),
-    drawerTopHide: () => dispatch(layoutDrawerTopHide()),
-    drawerBottomShow: () => dispatch(layoutDrawerBottomShow()),
-    drawerBottomHide: () => dispatch(layoutDrawerBottomHide()),
-    
     accountExpand: () => dispatch(layoutAccountExpand()),
     accountColapse: () => dispatch(layoutAccountColapse()),
     
     alertDialogShow: () => dispatch(layoutAlertDialogShow()),
     alertDialogHide: () => dispatch(layoutAlertDialogHide()),
-    logoutDialogShow: () => dispatch(layoutLogoutDialogShow()),
-    logoutDialogHide: () => dispatch(layoutLogoutDialogHide()),
     navBackShow: () => dispatch(layoutNavBackShow()),
     navBackHide: () => dispatch(layoutNavBackHide()),
     searchShow: () => dispatch(layoutSearchShow()),
     searchHide: () => dispatch(layoutSearchHide()),
-    actionCentreShow: () => dispatch(layoutActionCentreShow()),
-    actionCentreHide: () => dispatch(layoutActionCentreHide()),
     moreShow: () => dispatch(layoutMoreShow()),
     moreHide: () => dispatch(layoutMoreHide()),
     

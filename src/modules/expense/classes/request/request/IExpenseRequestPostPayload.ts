@@ -10,5 +10,5 @@ export interface IExpenseRequestPostPayload extends IBasePayload {
   location: string;
   address: string;
   client: IExpenseRequestClientPostPayload;
-  notes?: string | null;
+  notes?: string;
 }

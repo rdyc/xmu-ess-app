@@ -76,9 +76,10 @@ export const LookupCustomerDialogView: React.SFC<LookupCustomerDialogProps> = pr
       className={props.layoutState.anchor === 'right' ? props.classes.contentShiftRight : props.classes.contentShiftLeft}
       open={isOpen}
       aria-labelledby="lookup-customer-dialog-title"
+      scroll="paper"
       onClose={onClose}
     >
-      <AppBar className={props.classes.appBarDialog}>
+      <AppBar position="fixed" className={props.classes.appBarDialog}>
         <Toolbar>
           <IconButton color="inherit" onClick={() => onClose()} aria-label="Close">
             <ArrowBackIcon />
@@ -92,25 +93,27 @@ export const LookupCustomerDialogView: React.SFC<LookupCustomerDialogProps> = pr
         </Toolbar>
       </AppBar>
       
-      <DialogContent>
-        <TextField
-          id="lookup-customer-selector-text"
-          fullWidth
-          margin="normal"
-          value={_search}
-          disabled={!response}
-          label={<FormattedMessage id="global.search" />}
-          placeholder={intl.formatMessage({ id: 'lookup.placeholder.customerSearch' })}
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                <SearchIcon />
-              </InputAdornment>
-            ),
-          }}
-          onChange={searchOnChange}
-          onKeyUp={searchOnKeyUp}
-        />
+      <DialogContent className={props.classes.paddingDisabled}>
+        <div className={props.classes.paddingFar}>
+          <TextField
+            id="lookup-customer-selector-text"
+            fullWidth
+            margin="normal"
+            value={_search}
+            disabled={!response}
+            label={<FormattedMessage id="global.search" />}
+            placeholder={intl.formatMessage({ id: 'lookup.placeholder.customerSearch' })}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <SearchIcon />
+                </InputAdornment>
+              ),
+            }}
+            onChange={searchOnChange}
+            onKeyUp={searchOnKeyUp}
+          />
+        </div>
         
         <List>
           <VirtualizedList

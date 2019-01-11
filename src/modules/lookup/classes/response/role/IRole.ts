@@ -5,11 +5,11 @@ import { ICompanyList } from '@lookup/classes/response';
 export interface IRole {
   uid: string;
   companyUid: string;
-  company: ICompanyList | null;
-  gradeType: string | null;
-  grade: ICommonSystem | null;
+  company?: ICompanyList;
+  gradeType: string;
+  grade?: ICommonSystem;
   name: string;
-  description: string | null;
+  description?: string;
   isActive: boolean;
-  changes: IBaseChanges | null;
+  changes?: IBaseChanges;
 }

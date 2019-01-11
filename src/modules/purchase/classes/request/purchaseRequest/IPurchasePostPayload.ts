@@ -7,7 +7,7 @@ export interface IPurchasePostPayload extends IBasePayload {
   currencyType: string;
   rate: number;
   notes: string;
-  advance?: number | null;
+  advance?: number;
   customerUid: string;
-  items?: IPurchaseItemPostPayload[] | null;
+  items?: IPurchaseItemPostPayload[];
 }

@@ -3,11 +3,11 @@ import { ILookupCompany } from '@lookup/classes';
 export interface ILookupCustomer {
   uid:        string;
   companyUid: string;
-  company:    ILookupCompany | null;
+  company?:    ILookupCompany;
   name:       string;
-  npwp:       string | null;
-  address:    string | null;
-  phone:      string | null;
-  fax:        string | null;
-  email:      string | null;
+  npwp?:       string;
+  address?:    string;
+  phone?:      string;
+  fax?:        string;
+  email?:      string;
 }
