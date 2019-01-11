@@ -1,3 +1,5 @@
+import { WorkflowStatusType } from '@common/classes/types';
+import { layoutMessage } from '@layout/locales/messages';
 import { GlobalFormat } from '@layout/types';
 import { GlobalStyle } from '@layout/types/GlobalStyle';
 import { Card, CardContent, CardHeader, TextField } from '@material-ui/core';
@@ -20,9 +22,9 @@ const travelInformation: React.SFC<AllProps> = props => {
 
   const render = (
     <Card square>
-      <CardHeader 
+      <CardHeader
         title={props.intl.formatMessage(travelMessage.request.section.infoTitle)}
-        // subheader={props.intl.formatMessage(travelMessage.request.section.infoSubHeader)}
+      // subheader={props.intl.formatMessage(travelMessage.request.section.infoSubHeader)}
       />
       <CardContent>
         <TextField
@@ -84,7 +86,7 @@ const travelInformation: React.SFC<AllProps> = props => {
           multiline
           margin="dense"
           label={props.intl.formatMessage(travelMessage.request.field.projectUid)}
-          value={`${ data && data.projectUid} - ${ data && data.project ? data.project.name : '' }`}
+          value={`${data && data.projectUid} - ${data && data.project ? data.project.name : ''}`}
         />
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
@@ -118,14 +120,36 @@ const travelInformation: React.SFC<AllProps> = props => {
         />
         {
           data &&
-          data.rejectReason &&
+          data.statusType === WorkflowStatusType.Rejected &&
           <TextField
             {...GlobalStyle.TextField.ReadOnly}
             margin="dense"
             label={props.intl.formatMessage(travelMessage.request.field.rejectReason)}
-            value={data.rejectReason}
+            value={data.rejectReason || 'N/A'}
           />
-        }        
+        }
+        {
+          data &&
+          data.changes &&
+          <React.Fragment>
+            <TextField
+              {...GlobalStyle.TextField.ReadOnly}
+              label={props.intl.formatMessage(layoutMessage.field.createdBy)}
+              value={data.changes.created && data.changes.created.fullName || 'N/A'}
+              helperText={props.intl.formatDate(data.changes.createdAt, GlobalFormat.DateTime) || 'N/A'}
+            />
+
+            {
+              (data.changes.updated && data.changes.updatedAt) &&
+              <TextField
+                {...GlobalStyle.TextField.ReadOnly}
+                label={props.intl.formatMessage(layoutMessage.field.updatedBy)}
+                value={data.changes.updated.fullName || 'N/A'}
+                helperText={props.intl.formatDate(data.changes.updatedAt, GlobalFormat.DateTime) || 'N/A'}
+              />
+            }
+          </React.Fragment>
+        }
       </CardContent>
     </Card>
   );
