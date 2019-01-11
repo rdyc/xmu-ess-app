@@ -25,7 +25,7 @@ import { formValueSelector, InjectedFormProps, reduxForm } from 'redux-form';
 const formName = 'travelRequest';
 
 export type TravelItemFormData = {
-  uid: string | null;
+  uid?: string;
   employeeUid: string;
   fullName: string;
   transportType: string;
@@ -36,13 +36,13 @@ export type TravelItemFormData = {
   returnDate: string;
   costTransport: number | 0;
   isTransportByCompany: boolean;
-  hotel: string | null;
+  hotel?: string;
   costHotel: number | 0;
   isHotelByCompany: boolean;
-  notes: string | null;
+  notes?: string;
   duration: number | 0;
   amount: number | 0;
-  currencyUid: string | null;
+  currencyUid?: string;
   currencyRate: number | 0;
   diemValue: number | 0;
 };

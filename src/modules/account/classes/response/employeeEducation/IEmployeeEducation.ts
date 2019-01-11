@@ -4,10 +4,10 @@ import { IBaseChanges } from '@generic/interfaces';
 export interface IEmployeeEducation {
   uid: string;
   degreeType: string;
-  degree: ICommonSystem | null;
+  degree?: ICommonSystem;
   institution: string;
   major: string;
   start: number;
-  end: number | null;
-  changes: IBaseChanges | null;
+  end?: number;
+  changes?: IBaseChanges;
 }

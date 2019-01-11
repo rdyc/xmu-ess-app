@@ -4,15 +4,15 @@ import { ILookupCompany, ILookupPosition } from '@lookup/classes';
 export interface IEmployeeAccessHistoryList {
   uid: string;
   companyUid: string;
-  company: ILookupCompany | null;
+  company?: ILookupCompany;
   positionUid: string;
-  position: ILookupPosition | null;
+  position?: ILookupPosition;
   unitType: string;
-  unit: ICommonSystem | null;
+  unit?: ICommonSystem;
   departmentType: string;
-  department: ICommonSystem | null;
+  department?: ICommonSystem;
   levelType: string;
-  level: ICommonSystem | null;
+  level?: ICommonSystem;
   start: string;
-  end: string | null;
+  end?: string;
 }

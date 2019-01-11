@@ -4,20 +4,20 @@ import { IBaseChanges } from '@generic/interfaces';
 import { ILookupCustomer } from '@lookup/classes';
 
 export interface IProjectAssignment {
-  readonly uid: string;
-  readonly projectUid: string;
-  readonly contractNumber: string | null;
-  readonly customerUid: string;
-  readonly customer: ILookupCustomer | null;
-  readonly projectType: string;
-  readonly project: ICommonSystem | null;
-  readonly statusType: string;
-  readonly status: ICommonSystem | null;
-  readonly name: string;
-  readonly description: string | null;
-  readonly ownerEmployeeUid: string;
-  readonly owner: IAccountEmployee | null;
-  readonly start: string;
-  readonly end: string;
-  readonly changes: IBaseChanges | null;
+  uid: string;
+  projectUid: string;
+  contractNumber?: string;
+  customerUid: string;
+  customer?: ILookupCustomer;
+  projectType: string;
+  project?: ICommonSystem;
+  statusType: string;
+  status?: ICommonSystem;
+  name: string;
+  description?: string;
+  ownerEmployeeUid: string;
+  owner?: IAccountEmployee;
+  start: string;
+  end: string;
+  changes?: IBaseChanges;
 }

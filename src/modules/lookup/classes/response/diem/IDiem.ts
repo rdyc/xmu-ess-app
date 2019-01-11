@@ -6,13 +6,13 @@ import { ICurrencyList } from '../currency/ICurrencyList';
 export interface IDiem {
   uid: string; 
   companyUid: string;
-  company: ICompanyList | null;
+  company?: ICompanyList;
   currencyUid: string;
-  currency: ICurrencyList | null;   
+  currency?: ICurrencyList;   
   projectType: string;
-  project: ICommonSystem | null;
+  project?: ICommonSystem;
   destinationType: string;
-  destination?: ICommonSystem | null;
+  destination?: ICommonSystem;
   value: number;
-  changes: IBaseChanges | null;
+  changes?: IBaseChanges;
 }

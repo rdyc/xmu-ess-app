@@ -4,11 +4,11 @@ import { IBaseChanges } from '@generic/interfaces';
 export interface IEmployeeFamily {
   uid: string;
   familyType: string;
-  family: ICommonSystem | null;
+  family?: ICommonSystem;
   genderType: string;
-  gender: ICommonSystem | null;
+  gender?: ICommonSystem;
   fullName: string;
   birthPlace: string;
-  birthDate: string | null;
-  changes: IBaseChanges | null;
+  birthDate?: string;
+  changes?: IBaseChanges;
 }

@@ -222,7 +222,7 @@ const stateUpdaters: StateUpdaters<ExpenseApprovalListFilterProps, IOwnState, IO
     isFilterCustomerOpen: false,
     filterCustomer: customer,
     filterProjectDialog: {
-      customerUids: customer && [customer.uid] || undefined
+      customerUids: customer && customer.uid
     }
   }),
 

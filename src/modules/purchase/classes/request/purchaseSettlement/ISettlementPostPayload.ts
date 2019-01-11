@@ -3,6 +3,6 @@ import { ISettlementItemPostPayload } from '@purchase/classes/request/purchaseSe
 
 export interface ISettlementPostPayload extends IBasePayload {
   date: string;
-  notes?: string | null;
-  items?: ISettlementItemPostPayload[] | null;
+  notes?: string;
+  items?: ISettlementItemPostPayload[];
 }

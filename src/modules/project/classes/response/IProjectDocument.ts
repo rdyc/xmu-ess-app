@@ -4,7 +4,7 @@ import { IBaseChanges } from '@generic/interfaces';
 export interface IProjectDocument {
   uid: string;
   documentType: string;
-  document: ICommonSystem | null;
+  document?: ICommonSystem;
   isAvailable: boolean;
-  changes: IBaseChanges | null;
+  changes?: IBaseChanges;
 }
