@@ -41,16 +41,16 @@
   "purchase.item.variance": "Difference: ",
   
   "purchase.confirm.create.title": "Create Confirmation",
-  "purchase.confirm.create.description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "purchase.confirm.create.description": "You're about to submit a new purchase request for the selected project. Do you want to continue?",
  
   "purchase.confirm.modify.title": "Modify Confirmation",
-  "purchase.confirm.modify.description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "purchase.confirm.modify.description": "You are about to modify the data of this purchase. Do you want to continue?",
  
   "purchase.confirm.settle.title": "Settle Confirmation",
-  "purchase.confirm.settle.description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "purchase.confirm.settle.description": "You are about to begin settlement process for this purchase request. Do you want to continue?",
  
-  "purchase.confirm.approval.title": "Proceed with selected decision?",
-  "purchase.confirm.approval.content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "purchase.confirm.approval.title": "Approval Confirmation",
+  "purchase.confirm.approval.content": "You are about to submit an approval decision for this purchase. Do you want to continue?",
   
   "purchase.field.information.uid": "Purchase ID",
   "purchase.field.information.uid.placeholder": "Purchase ID",
