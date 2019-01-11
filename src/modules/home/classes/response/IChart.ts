@@ -6,7 +6,8 @@ export interface IChart {
 }
 
 export interface IChartCompany {
-
+  companyName: string;
+  percentage: number;
 }
 
 export interface IChartBusinessUnit {
