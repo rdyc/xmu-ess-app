@@ -4,8 +4,8 @@ import { ILookupCompany } from '@lookup/classes/';
 export interface ILookupSystemLimit {
   uid: string;
   companyUid: string;
-  company: ILookupCompany | null;
+  company?: ILookupCompany;
   categoryType: string;
-  category: ICommonSystem | null;
+  category?: ICommonSystem;
   days: number;
 }

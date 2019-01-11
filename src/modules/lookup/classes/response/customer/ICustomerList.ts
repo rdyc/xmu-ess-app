@@ -2,16 +2,16 @@ import { ICompanyList } from '@lookup/classes/response';
 
 export interface ICustomerList {
   uid: string;
-  companyUid: string | null;
-  company: ICompanyList | null;
+  companyUid: string;
+  company?: ICompanyList;
   name: string;
-  npwp: string | null;
-  address: string | null;
-  phone: string | null;
-  fax: string | null;
-  email: string | null;
-  contactPerson: string | null;
-  contactPersonAdditional: string | null;
-  contactTitle: string | null;
-  contactTitleAdditional: string | null;
+  npwp?: string;
+  address?: string;
+  phone?: string;
+  fax?: string;
+  email?: string;
+  contactPerson?: string;
+  contactPersonAdditional?: string;
+  contactTitle?: string;
+  contactTitleAdditional?: string;
 }

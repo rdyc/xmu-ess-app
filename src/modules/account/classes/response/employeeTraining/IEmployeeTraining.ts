@@ -4,12 +4,12 @@ import { IBaseChanges } from '@generic/interfaces';
 export interface IEmployeeTraining {
   uid: string;
   trainingType: string;
-  training: ICommonSystem | null;
+  training?: ICommonSystem;
   certificationType: string;
-  certification: ICommonSystem | null;
+  certification?: ICommonSystem;
   name: string;
   organizer: string;
   start: string;
-  end: string | null;
-  changes: IBaseChanges | null;
+  end?: string;
+  changes?: IBaseChanges;
 }

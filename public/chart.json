@@ -1,0 +1,259 @@
+{
+  "data": {
+    "companies": [
+      {
+        "companyName": "EQG",
+        "percentage": 77
+      },
+      {
+        "companyName": "NPP",
+        "percentage": 60
+      },
+      {
+        "companyName": "ODI",
+        "percentage": 98
+      },
+      {
+        "companyName": "XMU",
+        "percentage": 93
+      }
+    ],
+
+    "businessUnits": [
+      {
+        "companyName": "AAA",
+        "percentage": 50
+      },
+      {
+        "companyName": "AAB",
+        "percentage": 23
+      },
+      {
+        "companyName": "AAC",
+        "percentage": 28
+      },
+      {
+        "companyName": "AAD",
+        "percentage": 70
+      },
+      {
+        "companyName": "AAE",
+        "percentage": 12
+      },
+      {
+        "companyName": "AAF",
+        "percentage": 21
+      },
+      {
+        "companyName": "AAG",
+        "percentage": 36
+      },
+      {
+        "companyName": "AAH",
+        "percentage": 9
+      },
+      {
+        "companyName": "AAI",
+        "percentage": 48
+      },
+      {
+        "companyName": "AAJ",
+        "percentage": 63
+      },
+      {
+        "companyName": "AAK",
+        "percentage": 77
+      },
+      {
+        "companyName": "AAL",
+        "percentage": 54
+      },
+      {
+        "companyName": "AAM",
+        "percentage": 33
+      },
+      {
+        "companyName": "EQG",
+        "percentage": 32
+      }
+    ],
+
+    "departments": [
+      {
+        "companyName": "AAA",
+        "percentage": 12
+      },
+      {
+        "companyName": "BBB",
+        "percentage": 66
+      },
+      {
+        "companyName": "ZZZ",
+        "percentage": 34
+      },
+      {
+        "companyName": "CCC",
+        "percentage": 67
+      },
+      {
+        "companyName": "DDD",
+        "percentage": 0
+      },
+      {
+        "companyName": "SSS",
+        "percentage": 23
+      },
+      {
+        "companyName": "HHH",
+        "percentage": 11
+      },
+      {
+        "companyName": "EEE",
+        "percentage": 16
+      },
+      {
+        "companyName": "WWW",
+        "percentage": 28
+      },
+      {
+        "companyName": "QQQ",
+        "percentage": 60
+      },
+      {
+        "companyName": "UUU",
+        "percentage": 71
+      },
+      {
+        "companyName": "III",
+        "percentage": 66
+      },
+      {
+        "companyName": "PPP",
+        "percentage": 21
+      },
+      {
+        "companyName": "LLL",
+        "percentage": 24
+      },
+      {
+        "companyName": "VVV",
+        "percentage": 65
+      }
+    ],
+    
+    "sales": [
+      {
+        "companyName": "AAA",
+        "percentage": 50
+      },
+      {
+        "companyName": "AAB",
+        "percentage": 23
+      },
+      {
+        "companyName": "AAQ",
+        "percentage": 12
+      },
+      {
+        "companyName": "BBB",
+        "percentage": 66
+      },
+      {
+        "companyName": "AAC",
+        "percentage": 28
+      },
+      {
+        "companyName": "AAD",
+        "percentage": 70
+      },
+      {
+        "companyName": "AAE",
+        "percentage": 12
+      },
+      {
+        "companyName": "AAF",
+        "percentage": 21
+      },
+      {
+        "companyName": "AAG",
+        "percentage": 36
+      },
+      {
+        "companyName": "AAH",
+        "percentage": 9
+      },
+      {
+        "companyName": "ZZZ",
+        "percentage": 34
+      },
+      {
+        "companyName": "CCC",
+        "percentage": 67
+      },
+      {
+        "companyName": "DDD",
+        "percentage": 0
+      },
+      {
+        "companyName": "SSS",
+        "percentage": 23
+      },
+      {
+        "companyName": "HHH",
+        "percentage": 11
+      },
+      {
+        "companyName": "EEE",
+        "percentage": 16
+      },
+      {
+        "companyName": "WWW",
+        "percentage": 28
+      },
+      {
+        "companyName": "QQQ",
+        "percentage": 60
+      },
+      {
+        "companyName": "UUU",
+        "percentage": 71
+      },
+      {
+        "companyName": "III",
+        "percentage": 66
+      },
+      {
+        "companyName": "PPP",
+        "percentage": 21
+      },
+      {
+        "companyName": "LLL",
+        "percentage": 24
+      },
+      {
+        "companyName": "VVV",
+        "percentage": 65
+      },
+      {
+        "companyName": "AAJ",
+        "percentage": 63
+      },
+      {
+        "companyName": "AAK",
+        "percentage": 77
+      },
+      {
+        "companyName": "AAL",
+        "percentage": 54
+      },
+      {
+        "companyName": "AAM",
+        "percentage": 33
+      },
+      {
+        "companyName": "WER",
+        "percentage": 43
+      }
+    ]
+  }
+}

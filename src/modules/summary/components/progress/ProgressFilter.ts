@@ -130,9 +130,8 @@ const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
   setFilterCustomer: () => (customer?: ICustomer) => ({
     isFilterCustomerOpen: false,
     filterCustomer: customer,
-
     filterProjectDialog: {
-      customerUids: customer && [customer.uid]
+      customerUids: customer && customer.uid
     }
   }),
 

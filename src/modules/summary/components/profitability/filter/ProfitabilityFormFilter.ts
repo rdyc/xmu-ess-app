@@ -120,9 +120,9 @@ const stateUpdaters: StateUpdaters<{}, IOwnState, IOwnStateUpdater> = {
     isFilterCustomerOpen: false,
     filterCustomer: customer,
     filterProjectDialog: {
-      customerUids: customer && [customer.uid] || undefined,
+      customerUids: customer && customer.uid,
       orderBy: 'uid',
-      direction: 'descending',
+      direction: 'descending'
     }
   }),
 

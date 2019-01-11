@@ -41,16 +41,16 @@ const financeBulkInformation: React.SFC<AllProps> = props => (
                   noWrap
                   variant="body2"
                 >
-                  {finance.document.changes.created && finance.document.changes.created.fullName} &bull;&nbsp;
-                  {props.intl.formatDate(finance.document.changes.updatedAt || '', GlobalFormat.Date)} &bull;&nbsp;
+                  {finance.document && finance.document.changes && finance.document.changes.created && finance.document.changes.created.fullName} &bull;&nbsp;
+                  {props.intl.formatDate(finance.document && finance.document.changes && finance.document.changes.updatedAt || '', GlobalFormat.Date)} &bull;&nbsp;
                   {finance.uid}
                 </Typography>
                 <Typography 
                   noWrap
                   variant="body2"
                 >
-                {finance.document.amount && finance.document.amount.advance && props.intl.formatNumber(finance.document.amount.advance)} &nbsp;&bull;&nbsp;
-                {finance.document.amount && finance.document.amount.total && props.intl.formatNumber(finance.document.amount.total)}
+                {finance.document && finance.document.amount && finance.document.amount.advance && props.intl.formatNumber(finance.document.amount.advance)} &nbsp;&bull;&nbsp;
+                {finance.document && finance.document.amount && finance.document.amount.total && props.intl.formatNumber(finance.document.amount.total)}
                 </Typography>
                 <Typography 
                   noWrap

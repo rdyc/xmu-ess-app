@@ -167,7 +167,7 @@ const stateUpdaters: StateUpdaters<TravelApprovalListFilterProps, IOwnState, IOw
     isFilterCustomerOpen: false,
     filterCustomer: customer,
     filterProjectDialog: {
-      customerUids: customer && [customer.uid] || undefined
+      customerUids: customer && customer.uid
     }
   }),
 

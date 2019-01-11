@@ -22,6 +22,8 @@ import CloseIcon from '@material-ui/icons/Close';
 import ClearIcon from '@material-ui/icons/SettingsBackupRestore';
 import * as React from 'react';
 
+import { InputDateWithValue } from '@layout/components/input/date';
+import { GlobalFormat } from '@layout/types';
 import { ProjectRegistrationDialog } from '@project/components/dialog/project';
 import { ExpenseRequestListFilterProps } from './ExpenseRequestListFilter';
 
@@ -45,7 +47,7 @@ export const ExpenseRequestListFilterView: React.SFC<ExpenseRequestListFilterPro
           </Typography>
 
           {
-            (props.filterCustomer || props.filterType || props.filterStatus || props.filterCompletion || props.filterRejected) &&
+            (props.filterCustomer || props.filterType || props.filterStatus || props.filterStart || props.filterEnd || props.filterCompletion || props.filterRejected) &&
             <Button color="inherit" onClick={props.handleFilterOnReset}>
               {props.intl.formatMessage(layoutMessage.action.reset)}
             </Button>
@@ -117,6 +119,46 @@ export const ExpenseRequestListFilterView: React.SFC<ExpenseRequestListFilterPro
             <IconButton onClick={props.handleFilterTypeVisibility}>
               <ChevronRightIcon />
             </IconButton> 
+          </ListItemSecondaryAction>
+        </ListItem>
+        <Divider />
+
+        <ListItem button onClick={props.handleFilterStartVisibility}>
+          <ListItemText 
+            primary={props.intl.formatMessage(expenseMessage.request.field.start)}
+            secondary={props.filterStart && props.intl.formatDate(props.filterStart, GlobalFormat.Date) || props.intl.formatMessage(layoutMessage.text.none)}
+          />
+          <ListItemSecondaryAction>
+            {
+              props.filterStart &&
+              <IconButton onClick={props.handleFilterStartOnClear}>
+                <ClearIcon />
+              </IconButton>
+            }
+
+            <IconButton onClick={props.handleFilterStartVisibility}>
+              <ChevronRightIcon />
+            </IconButton>
+          </ListItemSecondaryAction>
+        </ListItem>
+        <Divider />
+
+        <ListItem button onClick={props.handleFilterEndVisibility}>
+          <ListItemText 
+            primary={props.intl.formatMessage(expenseMessage.request.field.end)}
+            secondary={props.filterEnd && props.intl.formatDate(props.filterEnd, GlobalFormat.Date) || props.intl.formatMessage(layoutMessage.text.none)}
+          />
+          <ListItemSecondaryAction>
+            {
+              props.filterEnd &&
+              <IconButton onClick={props.handleFilterEndOnClear}>
+                <ClearIcon />
+              </IconButton>
+            }
+
+            <IconButton onClick={props.handleFilterEndVisibility}>
+              <ChevronRightIcon />
+            </IconButton>
           </ListItemSecondaryAction>
         </ListItem>
         <Divider />
@@ -213,6 +255,22 @@ export const ExpenseRequestListFilterView: React.SFC<ExpenseRequestListFilterPro
       value={props.filterStatus && props.filterStatus.type}
       onSelected={props.handleFilterStatusOnSelected}
       onClose={props.handleFilterStatusOnClose}
+    />
+
+    <InputDateWithValue 
+      label={props.intl.formatMessage(expenseMessage.request.field.start)}
+      val={props.filterStart}
+      onSelected={props.handleFilterStartOnSelected}
+      isOpen={props.isFilterStartOpen}
+      onClose={props.handleFilterStartOnClose}
+    />
+
+    <InputDateWithValue 
+      label={props.intl.formatMessage(expenseMessage.request.field.end)}
+      val={props.filterEnd}
+      onSelected={props.handleFilterEndOnSelected}
+      isOpen={props.isFilterEndOpen}
+      onClose={props.handleFilterEndOnClose}
     />
 
     {/* <DialogValue

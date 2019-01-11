@@ -3,5 +3,5 @@ export interface ISystemList {
     type: string;
     companyUid: string;
     name: string;
-    description: string | null;
+    description?: string;
 }

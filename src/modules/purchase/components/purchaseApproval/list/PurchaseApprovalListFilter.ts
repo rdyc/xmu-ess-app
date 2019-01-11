@@ -173,7 +173,7 @@ const stateUpdaters: StateUpdaters<PurchaseApprovalListFilterProps, IOwnState, I
     isFilterCustomerOpen: false,
     filterCustomer: customer,
     filterProjectDialog: {
-      customerUids: customer && [customer.uid] || undefined
+      customerUids: customer && customer.uid
     }
   }),
 

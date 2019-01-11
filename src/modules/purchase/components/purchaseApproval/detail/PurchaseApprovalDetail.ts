@@ -108,7 +108,7 @@ const handlerCreators: HandleCreators<PurchaseApprovalDetailProps, OwnHandler> =
     // generate payload
     const payload: IPurchaseApprovalPostPayload = {
       isApproved,
-      remark: !isApproved ? formData.remark : null
+      remark: !isApproved ? formData.remark : undefined
     };
 
     // dispatch create request

@@ -56,7 +56,7 @@ const handlerCreators: HandleCreators<ProjectRegistrationSalesFormProps, OwnHand
 
       // go away
       context.fields.push({
-        uid: null,
+        uid: undefined,
         employeeUid: employee.uid,
         fullName: employee.fullName,
         email: employee.email

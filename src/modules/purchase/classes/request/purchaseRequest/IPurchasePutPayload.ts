@@ -3,11 +3,11 @@ import { IPurchaseItemPutPayload } from '@purchase/classes/request/purchaseReque
 
 export interface IPurchasePutPayload extends IBasePayload {
   projectUid: string;
-  notes?: string | null;
+  notes?: string;
   date: string;
   currencyType: string;
   rate: number;
-  advance?: number | null;
+  advance?: number;
   customerUid: string;
-  items?: IPurchaseItemPutPayload[] | null;
+  items?: IPurchaseItemPutPayload[];
 }

@@ -4,10 +4,10 @@ import { IHierarchyItemList } from '@organization/classes/response/hierarchy';
 export interface IHierarchyList {
   uid: string;
   companyUid: string;
-  company?: ILookupCompany | null;
+  company?: ILookupCompany;
   name: string;
-  description?: string | null;
-  inactiveDate?: string | null;
+  description?: string;
+  inactiveDate?: string;
   isExpired: boolean;
-  items?: IHierarchyItemList[] | null;
+  items?: IHierarchyItemList[];
 }

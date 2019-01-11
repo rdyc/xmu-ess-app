@@ -1,7 +1,8 @@
 import { IEmployee } from '@account/classes/response';
 import { WithAccountEmployee, withAccountEmployee } from '@account/hoc/withAccountEmployee';
-import { withWidth } from '@material-ui/core';
-import { WithWidth } from '@material-ui/core/withWidth';
+import { WithLayout, withLayout } from '@layout/hoc/withLayout';
+import { WithStyles, withStyles } from '@material-ui/core';
+import styles from '@styles';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import {
   compose,
@@ -20,9 +21,9 @@ import {
 import { ListItemEmployeeSelectorView } from './ListItemEmployeeSelectorView';
 
 interface OwnOption {
-  companyUids?: string[] | undefined;
-  roleUids?: string[] | undefined;
-  positionUids?: string[] | undefined;
+  companyUids?: string;
+  roleUids?: string;
+  positionUids?: string;
   onSelected: (employee: IEmployee) => boolean;
 }
 
@@ -55,7 +56,8 @@ export type ListItemEmployeeSelectorProps
   & OwnStateUpdater
   & OwnHandler
   & WithAccountEmployee
-  & WithWidth
+  & WithStyles<typeof styles>
+  & WithLayout
   & InjectedIntlProps;
 
 const createProps: mapper<OwnOption, OwnState> = (props: OwnOption): OwnState => ({
@@ -153,7 +155,8 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<ListItemEmployeeSelectorProps,
 export const ListItemEmployeeSelector = compose<ListItemEmployeeSelectorProps, OwnOption>(
   setDisplayName('ListItemEmployeeSelector'),
   withAccountEmployee,
-  withWidth(),
+  withStyles(styles),
+  withLayout,
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),

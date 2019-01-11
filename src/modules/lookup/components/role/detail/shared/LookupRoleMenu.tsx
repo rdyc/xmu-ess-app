@@ -11,7 +11,7 @@ import { compose, mapper, StateHandlerMap, StateUpdaters, withStateHandlers } fr
 interface OwnProps {
   title: string;
   subHeader?: string;
-  data: IRoleMenu[] | null;
+  data?: IRoleMenu[];
 }
 
 interface OwnState {

@@ -73,7 +73,7 @@ const handlerCreators: HandleCreators<AccessSwitcherProps, OwnHandlers> = {
   handleSelected: (props: AccessSwitcherProps) => (uid: string) => {
     const { response } = props.accountEmployeeMyState.detail;
 
-    if (response && response.data) {
+    if (response && response.data && response.data.access) {
       const access = response.data.access.filter(item => item.uid === uid)[0];
   
       if (access && access.company && access.role && access.position) {
@@ -123,7 +123,7 @@ const handlerCreators: HandleCreators<AccessSwitcherProps, OwnHandlers> = {
 
     let result: IEmployeeAccessList[] | [] = [];
 
-    if (response && response.data) {
+    if (response && response.data && response.data.access) {
       result = RemoveDuplicates(response.data.access, 'companyUid');
     }
     
