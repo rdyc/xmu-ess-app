@@ -4,6 +4,7 @@ import { layoutMessage } from '@layout/locales/messages';
 import {
   AppBar,
   Dialog,
+  DialogContent,
   Divider,
   IconButton,
   List,
@@ -44,9 +45,10 @@ const DialogValueView: React.SFC<AllProps> = props => (
     hideBackdrop={props.hideBackdrop}
     className={props.layoutState.anchor === 'right' ? props.classes.contentShiftRight : props.classes.contentShiftLeft}
     open={props.isOpen}
+    scroll="paper"
     onClose={props.onClose}
   >
-    <AppBar className={props.classes.appBarDialog}>
+    <AppBar position="fixed" className={props.classes.appBarDialog}>
       <Toolbar>
         <IconButton color="inherit" onClick={props.onClose} aria-label="Close">
           <ArrowBackIcon />
@@ -58,25 +60,27 @@ const DialogValueView: React.SFC<AllProps> = props => (
       </Toolbar>
     </AppBar>
 
-    <List>
-      <ListItem button onClick={() => props.onSelected()}>
-        <Radio color="primary" checked={!props.value} />
-        <ListItemText primary={props.intl.formatMessage(layoutMessage.text.none)} />
-      </ListItem>
-      <Divider/>
+    <DialogContent className={props.classes.paddingDisabled}>
+      <List>
+        <ListItem button onClick={() => props.onSelected()}>
+          <Radio color="primary" checked={!props.value} />
+          <ListItemText primary={props.intl.formatMessage(layoutMessage.text.none)} />
+        </ListItem>
+        <Divider/>
 
-      {
-        props.items.map((item, index) => 
-          <React.Fragment key={index}>
-            <ListItem button onClick={() => props.onSelected(item)}>
-              <Radio color="primary" checked={props.value && props.value === item.value || false} />
-              <ListItemText primary={item.name} />
-            </ListItem>
-            <Divider/>
-          </React.Fragment>
-        )
-      }
-    </List>
+        {
+          props.items.map((item, index) => 
+            <React.Fragment key={index}>
+              <ListItem button onClick={() => props.onSelected(item)}>
+                <Radio color="primary" checked={props.value && props.value === item.value || false} />
+                <ListItemText primary={item.name} />
+              </ListItem>
+              <Divider/>
+            </React.Fragment>
+          )
+        }
+      </List>
+    </DialogContent>
   </Dialog>
 );
 

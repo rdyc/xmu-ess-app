@@ -2,6 +2,7 @@ import { layoutMessage } from '@layout/locales/messages';
 import {
   AppBar,
   Dialog,
+  DialogContent,
   Divider,
   IconButton,
   List,
@@ -20,47 +21,50 @@ export const LookupSystemDialogView: React.SFC<LookupSystemDialogProps> = props 
   const { response } = props.categoryState();
   
   return (
-  <Dialog
-    fullScreen
-    disableBackdropClick
-    hideBackdrop={props.hideBackdrop}
-    className={props.layoutState.anchor === 'right' ? props.classes.contentShiftRight : props.classes.contentShiftLeft}
-    open={props.isOpen}
-    onClose={props.onClose}
-  >
-    <AppBar className={props.classes.appBarDialog}>
-      <Toolbar>
-        <IconButton color="inherit" onClick={props.onClose} aria-label="Close">
-          <ArrowBackIcon />
-        </IconButton>
+    <Dialog
+      fullScreen
+      disableBackdropClick
+      hideBackdrop={props.hideBackdrop}
+      className={props.layoutState.anchor === 'right' ? props.classes.contentShiftRight : props.classes.contentShiftLeft}
+      open={props.isOpen}
+      scroll="paper"
+      onClose={props.onClose}
+    >
+      <AppBar position="fixed" className={props.classes.appBarDialog}>
+        <Toolbar>
+          <IconButton color="inherit" onClick={props.onClose} aria-label="Close">
+            <ArrowBackIcon />
+          </IconButton>
 
-        <Typography variant="h6" color="inherit" className={props.classes.flex}>
-          {props.title}
-        </Typography>
-      </Toolbar>
-    </AppBar>
+          <Typography variant="h6" color="inherit" className={props.classes.flex}>
+            {props.title}
+          </Typography>
+        </Toolbar>
+      </AppBar>
 
-    <List>
-      <ListItem button onClick={() => props.onSelected()}>
-        <Radio color="primary" checked={!props.value} />
-        <ListItemText primary={props.intl.formatMessage(layoutMessage.text.none)} />
-      </ListItem>
-      <Divider/>
+      <DialogContent className={props.classes.paddingDisabled}>
+        <List>
+          <ListItem button onClick={() => props.onSelected()}>
+            <Radio color="primary" checked={!props.value} />
+            <ListItemText primary={props.intl.formatMessage(layoutMessage.text.none)} />
+          </ListItem>
+          <Divider/>
 
-      {
-        response &&
-        response.data &&
-        response.data.map((item, index) => 
-          <React.Fragment key={index}>
-            <ListItem button onClick={() => props.onSelected(item)}>
-              <Radio color="primary" checked={props.value && props.value === item.type || false} />
-              <ListItemText primary={item.name} />
-            </ListItem>
-            <Divider/>
-          </React.Fragment>
-        )
-      }
-    </List>
-  </Dialog>
+          {
+            response &&
+            response.data &&
+            response.data.map((item, index) => 
+              <React.Fragment key={index}>
+                <ListItem button onClick={() => props.onSelected(item)}>
+                  <Radio color="primary" checked={props.value && props.value === item.type || false} />
+                  <ListItemText primary={item.name} />
+                </ListItem>
+                <Divider/>
+              </React.Fragment>
+            )
+          }
+        </List>
+      </DialogContent>
+    </Dialog>
   );
 };
