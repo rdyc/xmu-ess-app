@@ -197,12 +197,18 @@ export const BillableListFilterView: React.SFC<BillableListFilterProps> = props 
   };
 
   return (
-    <Toolbar disableGutters>
+    <Toolbar>
     <Typography
       noWrap
-      variant="body2"
+      variant="caption"
       className={props.className}
+      align="left"
+      component="p"
     >
+      {props.intl.formatMessage(summaryMessage.billable.note.note)} <br />
+      {props.intl.formatMessage(summaryMessage.billable.note.totalHours)} <br />
+      {props.intl.formatMessage(summaryMessage.billable.note.billablePercentage)} <br />
+      {props.intl.formatMessage(summaryMessage.billable.note.presalesPercentage)}
     </Typography>
     
     <Tooltip
