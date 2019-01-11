@@ -1,13 +1,14 @@
 import { WithChart, withChart } from '@home/hoc/withChart';
-import {
-  compose,
-  lifecycle,
-  ReactLifeCycleFunctions,
-} from 'recompose';
+import { WithStyles, withStyles, WithTheme } from '@material-ui/core';
+import styles from '@styles';
+import { compose, lifecycle, ReactLifeCycleFunctions } from 'recompose';
+
 import { ChartView } from './ChartView';
 
 export type ChartProps
-  = WithChart;
+  = WithChart
+  & WithTheme
+  & WithStyles<typeof styles>;
 
 const lifecycles: ReactLifeCycleFunctions<ChartProps, {}> = {
   componentDidMount() {
@@ -22,5 +23,6 @@ const lifecycles: ReactLifeCycleFunctions<ChartProps, {}> = {
 
 export const Chart = compose(
   withChart,
-  lifecycle(lifecycles)
+  lifecycle(lifecycles),
+  withStyles(styles, { withTheme: true })
 )(ChartView);
