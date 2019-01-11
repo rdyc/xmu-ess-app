@@ -11,7 +11,7 @@ import * as React from 'react';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose } from 'recompose';
 
-const parseAcceptance = (items: IProjectAssignmentDetailItem[] | null, user: IAppUser | undefined): string => {
+const parseAcceptance = (items?: IProjectAssignmentDetailItem[], user?: IAppUser): string => {
   if (user && items) {
     // find any items with submitted status for current user uid
     const pending = items.filter(item =>
@@ -25,7 +25,7 @@ const parseAcceptance = (items: IProjectAssignmentDetailItem[] | null, user: IAp
   return '';
 };
 
-const acceptedMandays = (items: IProjectAssignmentDetailItem[] | null, user: IAppUser | undefined): number => {
+const acceptedMandays = (items?: IProjectAssignmentDetailItem[], user?: IAppUser): number => {
   if (user && items) {
     // find any items with submitted status for current user uid
     const accepted = items.filter(item =>

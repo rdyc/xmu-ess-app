@@ -63,8 +63,8 @@ export const ProjectRegistrationSalesFormView: React.SFC<ProjectRegistrationSale
         <Divider className={classNames(props.classes.marginFarTop, props.classes.marginFarBottom)} />
         
         <ListItemEmployeeSelector
-          companyUids={props.userState.user && [props.userState.user.company.uid]}
-          roleUids={props.roleSalesUids}
+          companyUids={props.userState.user && props.userState.user.company.uid}
+          roleUids={props.roleSalesUids && props.roleSalesUids.join(',')}
           onSelected={(employee: IEmployee) => props.handleSelected(employee)}
         />
       </List>

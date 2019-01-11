@@ -18,8 +18,7 @@ import {
 } from 'recompose';
 import { AccountEmployeeFilterView } from './AccountEmployeeFilterView';
 
-export type IAccountEmployeeFilterResult = Pick<IEmployeeAllFilter, 
-  'companyUids' | 'roleUids'>;
+export type IAccountEmployeeFilterResult = Pick<IEmployeeAllFilter, 'companyUids' | 'roleUids'>;
 
 interface OwnOption {
   isOpen: boolean;
@@ -120,8 +119,8 @@ const handlerCreators: HandleCreators<AccountEmployeeFilterFilterProps, OwnHandl
   },
   handleFilterOnApply: (props: AccountEmployeeFilterFilterProps) => () => {
     props.onApply({
-      companyUids: props.filterCompany && [props.filterCompany.uid],
-      roleUids: props.filterRole && [props.filterRole.uid]
+      companyUids: props.filterCompany && props.filterCompany.uid,
+      roleUids: props.filterRole && props.filterRole.uid
     });
   },
 

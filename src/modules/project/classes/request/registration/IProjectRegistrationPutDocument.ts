@@ -1,5 +1,5 @@
 export interface IProjectRegistrationPutDocument {
-  uid:          string;
+  uid: string;
   documentType: string;
-  isChecked:    boolean;
+  isChecked: boolean;
 }

@@ -71,6 +71,8 @@
   "expense.field.isNotify": "Notified Only",
   "expense.field.isRejected": "Rejected Only",
   "expense.field.completion": "Completion",
+  "expense.field.start": "Start Date",
+  "expense.field.end": "End Date",
 
   "expense.message.request.create.success": "A new Expense {uid} has been created",
   "expense.message.request.create.failure": "Unable to process your submission",

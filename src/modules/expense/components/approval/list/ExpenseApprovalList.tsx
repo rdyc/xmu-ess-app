@@ -78,6 +78,8 @@ const listView: React.SFC<AllProps> = props => (
             projectUid: props.projectUid,
             expenseType: props.expenseType,
             statusType: props.statusType,
+            start: props.start,
+            end: props.end,
             status: props.status,
             isNotify: props.isNotify
           }}
@@ -171,8 +173,8 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
                 customerUid: this.props.customerUid,
                 projectUid: this.props.projectUid,
                 expenseType: this.props.expenseType,
-                start: undefined,
-                end: undefined,
+                start: this.props.start,
+                end: this.props.end,
                 statusType: this.props.statusType,
                 status: this.props.status,
                 isNotify: this.props.isNotify,
@@ -227,6 +229,8 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
             return this.props.customerUid !== undefined || 
               this.props.projectUid !== undefined || 
               this.props.statusType !== undefined || 
+              this.props.start !== undefined ||
+              this.props.end !== undefined ||
               this.props.status !== undefined || 
               this.props.isNotify === true;
           },
@@ -243,6 +247,8 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
       this.props.customerUid !== nextProps.customerUid ||
       this.props.projectType !== nextProps.projectType ||
       this.props.statusType !== nextProps.statusType ||
+      this.props.start !== nextProps.start ||
+      this.props.end !== nextProps.end ||
       this.props.status !== nextProps.status ||
       this.props.isNotify !== nextProps.isNotify
     ) {

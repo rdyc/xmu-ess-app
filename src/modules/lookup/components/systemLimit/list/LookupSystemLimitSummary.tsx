@@ -38,7 +38,7 @@ const lookupSystemLimitSummary: React.SFC<AllProps> = props => (
           {...GlobalStyle.TextField.ReadOnly}
           margin="dense"
           label={props.intl.formatMessage(lookupMessage.systemLimit.field.company)}
-          value={props.data.company.name}
+          value={props.data.company && props.data.company.name}
         />
     </Grid>
     <Grid item xs={12} sm={6} md={3}>

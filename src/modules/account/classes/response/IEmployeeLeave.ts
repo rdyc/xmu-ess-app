@@ -2,13 +2,13 @@ import { IBaseChanges } from '@generic/interfaces';
 
 export interface IEmployeeLeave {
   employeeUid: string;
-  companyUid: string | null;
+  companyUid?: string;
   year: number;
   quota: number;
   remain: number;
   previousRemain: number;
-  allowMinus: boolean | null;
+  allowMinus?: boolean;
   annualLeave: number;
   leaveTaken: number;
-  changes: IBaseChanges | null;
+  changes?: IBaseChanges;
 }

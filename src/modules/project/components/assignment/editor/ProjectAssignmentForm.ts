@@ -23,16 +23,16 @@ import { getFormValues, InjectedFormProps, reduxForm } from 'redux-form';
 import { ProjectAssignmentFormView } from './ProjectAssignmentFormView';
 
 export interface ProjectAssignmentItemFormData {
-  uid: string | null;
+  uid?: string;
   employeeUid: string;
-  role: string | null;
-  jobDescription: string | null;
+  role?: string;
+  jobDescription?: string;
   mandays: number;
   allocatedHours: number;
   consumedHours: number;
-  statusType?: string | null;
-  status?: ICommonSystem | null;
-  rejectedReason?: string | null;
+  statusType?: string;
+  status?: ICommonSystem;
+  rejectedReason?: string;
 }
 export interface ProjectAssignmentFormData {
   projectUid: string;
@@ -81,9 +81,7 @@ const createProps: mapper<ProjectAssignmentFormProps, OwnState> = (props: Projec
     projectFilter: {
       find: user ? user.uid : '',
       findBy: 'ownerEmployeeUid',
-      statusTypes: [
-        WorkflowStatusType.Approved
-      ],
+      statusTypes: WorkflowStatusType.Approved,
       assignmentStatus: 'unassigned',
     }
   };

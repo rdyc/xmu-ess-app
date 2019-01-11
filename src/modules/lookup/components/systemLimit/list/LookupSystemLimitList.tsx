@@ -188,7 +188,7 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, OwnState> = {
       onBind: (item: ISystemLimit, index: number) => ({
         key: index,
         primary: item.uid,
-        secondary: item.company.name,
+        secondary: item.company && item.company.name || 'N/A',
         tertiary: item.category ? item.category.value : 'N/A',
         quaternary: item.days.toString(),
         quinary: item.changes && item.changes.updated && item.changes.updated.fullName || item.changes && item.changes.created && item.changes.created.fullName || 'N/A',
