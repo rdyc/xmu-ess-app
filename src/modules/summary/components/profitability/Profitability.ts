@@ -23,27 +23,31 @@ import {
   withHandlers,
   withStateHandlers,
 } from 'recompose';
+import { ISummaryProfitabilityFilterResult } from './filter/ProfitabilityFormFilter';
 
 export interface Handlers {
-  handleChangeFilter: (customerUid: string, projectUid: string) => void;
+  handleChangeFilter: (filter: ISummaryProfitabilityFilterResult) => void;
   handleDialogOpen: (fullScreen: boolean, expenses: ISummaryModuleCost[], projectUid: string) => void;
   handleDialogClose: () => void;
+  handleReloadData: () => void;
 }
 
 interface OwnOptions {
 }
 
-interface OwnState {
-  customerUid: string;
-  projectUid: string;
+interface OwnState extends ISummaryProfitabilityFilterResult {
   dialogFullScreen: boolean;
   dialogOpen: boolean;
   expenses: ISummaryModuleCost[];
   expenseProjectUid: string;
+  reloadData: boolean;
+  isStartup: boolean;
 }
 
 interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
   stateUpdate: StateHandler<OwnState>;
+  setFilterApplied: StateHandler<OwnState>;
+  setStartup: StateHandler<OwnState>;
 }
 
 export type FilterProfitabilityData = {
@@ -73,6 +77,8 @@ const createProps: mapper<ProfitabilityProps, OwnState> = (props: ProfitabilityP
     dialogOpen: false,
     expenses: [],
     expenseProjectUid: '',
+    reloadData: false,
+    isStartup: true,
   };
 };
 
@@ -85,16 +91,26 @@ const stateUpdaters: StateUpdaters<OwnOptions, OwnState, OwnStateUpdaters> = {
     ...prevState,
     dialogFullScreen: false,
     dialogOpen: false,
-  })
+  }),
+  setFilterApplied: (prevState: OwnState) => (filter: ISummaryProfitabilityFilterResult) => ({
+    ...filter
+  }),
+  setStartup: (prevState: OwnState) => (filter: ISummaryProfitabilityFilterResult) => ({
+    isStartup: false
+  }),
 };
 
 const handlerCreators: HandleCreators<ProfitabilityProps, Handlers> = {
-  handleChangeFilter: (props: ProfitabilityProps) => (customerUid: string, projectUid: string) => {
-    const { stateUpdate } = props;
+  handleChangeFilter: (props: ProfitabilityProps) => (filter: ISummaryProfitabilityFilterResult) => {
+    props.setFilterApplied(filter);
 
-    stateUpdate({
-      customerUid,
-      projectUid
+    if (props.isStartup) {
+      props.setStartup();
+    }
+  },
+  handleReloadData: (props: ProfitabilityProps) => () => {
+    props.stateUpdate({
+      reloadData: true
     });
   },
   handleDialogOpen: (props: ProfitabilityProps) => (fullScreen: boolean, expenses: ISummaryModuleCost[], projectUid: string) => {
@@ -142,6 +158,13 @@ const lifecycles: ReactLifeCycleFunctions<ProfitabilityProps, OwnState> = {
     if (this.props.customerUid !== props.customerUid ||
       this.props.projectUid !== props.projectUid) {
       loadData(props);
+    }
+    if (props.reloadData) {
+      loadData(props);
+
+      props.stateUpdate({
+        reloadData: false,
+      });
     }
   },
   componentWillUnmount() {

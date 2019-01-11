@@ -26,7 +26,7 @@ const DrawerRightView: React.SFC<IOwnOption> = props => (
       keepMounted: true, // Better open performance on mobile.
     }}
   >
-    <Notification />
+    <Notification onClose={props.onClose} />
   </SwipeableDrawer>
 );
 

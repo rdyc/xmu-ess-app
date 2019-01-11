@@ -1,6 +1,5 @@
 import { layoutMessage } from '@layout/locales/messages';
-import { Card, CardContent, Grid, Typography } from '@material-ui/core';
-import { summaryMessage } from '@summary/locales/messages/summaryMessage';
+import { Grid, Paper, Typography } from '@material-ui/core';
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { BillableProps } from './Billable';
@@ -28,16 +27,9 @@ export const BillableView: React.SFC<BillableProps> = props => {
 
   const render = (
     <React.Fragment>
-      <Grid container spacing={16}>
-        <Grid item xs={4}>
-          <Typography noWrap align="left" variant="caption">
-            {props.intl.formatMessage(summaryMessage.billable.note.note)} <br />
-            {props.intl.formatMessage(summaryMessage.billable.note.totalHours)} <br />
-            {props.intl.formatMessage(summaryMessage.billable.note.billablePercentage)} <br />
-            {props.intl.formatMessage(summaryMessage.billable.note.presalesPercentage)}
-          </Typography>
-        </Grid>
-        <Grid item xs={8}>
+      <Grid container spacing={8}>
+        <Grid item xs={12}>
+        <Paper square elevation={1} className={props.classes.paperPaging}>
           <BillableListFilter
             isAdmin={props.isAdmin}
             className={props.classes.flex}
@@ -45,13 +37,11 @@ export const BillableView: React.SFC<BillableProps> = props => {
             onClickSync={handleReloadData}
             onApply={handleChangeFilter}
           />
-        </Grid>
-      </Grid>
-      <Card square>
-        <CardContent>
+        </Paper>
+        <Paper square elevation={1}>
           {isLoading && (
             <Typography variant="body2">
-             <FormattedMessage {...layoutMessage.text.loading} />
+            <FormattedMessage {...layoutMessage.text.loading} />
             </Typography>
           )}
           <BillableDetail
@@ -78,8 +68,9 @@ export const BillableView: React.SFC<BillableProps> = props => {
               handleGoToPrevious={handleGoToPrevious}
             />
           )}
-        </CardContent>
-      </Card>
+        </Paper>
+        </Grid>
+      </Grid>
     </React.Fragment>
   );
 
