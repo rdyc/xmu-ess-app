@@ -132,7 +132,7 @@
   "lookup.role.confirm.modify.title": "Modify Confirmation",
   "lookup.role.confirm.modify.description": "You are about to modify current role. Do you want to continue ?",
   "lookup.role.confirm.delete.title": "Delete Confirmation",
-  "lookup.role.confirm.delete.description": "Are you sure to delete this role ?",
+  "lookup.role.confirm.delete.description": "You are about to delete current role. Do you want to continue ?",
 
   "lookup.role.dialog.newTitle": "Submit Confirmation",
   "lookup.role.dialog.newDescription": "Do you want to submit role ?",
@@ -173,7 +173,7 @@
   "lookup.company.confirm.modify.title": "Modify Confirmation",
   "lookup.company.confirm.modify.description": "You are about to modify current company. Do you want to continue ?",
   "lookup.company.confirm.delete.title": "Delete Confirmation",
-  "lookup.company.confirm.delete.description": "Are you sure to delete this company ?",
+  "lookup.company.confirm.delete.description": "You are about to delete current company. Do you want to continue ?",
   
   "lookup.company.message.emptyProps": "Some props are empty",
   "lookup.company.message.create.success": "A new Company ID {uid} has been created",
