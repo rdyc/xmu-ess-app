@@ -1,5 +1,5 @@
 import { layoutMessage } from '@layout/locales/messages';
-import { Card, CardContent, Grid, Typography } from '@material-ui/core';
+import { Grid, Paper, Typography } from '@material-ui/core';
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { WinningRatioProps } from './WinningRatio';
@@ -29,6 +29,7 @@ export const WinningRatioView: React.SFC<WinningRatioProps> = props => {
     <React.Fragment>
       <Grid container spacing={16}>
         <Grid item xs={12}>
+          <Paper square elevation={1}>
           <WinningRatioFilter
             isAdmin={props.isAdmin}
             className={props.classes.flex}
@@ -36,41 +37,41 @@ export const WinningRatioView: React.SFC<WinningRatioProps> = props => {
             onClickSync={handleReloadData}
             onApply={handleChangeFilter}
           />
+          </Paper>
+          <Paper square elevation={1}>
+            {isLoading && (
+              <Typography variant="body2">
+              <FormattedMessage {...layoutMessage.text.loading} />
+              </Typography>
+            )}
+            <WinningRatioDetail
+              uid={props.uid}
+              type={props.type}
+              open={props.open}
+              handleDialog={handleDialog}
+              data={response && response.data}
+            />
+            {!isLoading && response && (
+              <WinningRatioTable
+                page={page}
+                size={size}
+                orderBy={orderBy}
+                direction={direction}
+                metadata={response.metadata}
+                data={response.data}
+                handleChangePage={handleChangePage}
+                handleChangeSize={handleChangeSize}
+                handleChangeSort={handleChangeSort}
+                handleDetail={handleDetail}
+                handleDialog={handleDialog}
+                handleGoToNext={handleGoToNext}
+                handleGoToPrevious={handleGoToPrevious}
+              />
+            )}
+          </Paper>
         </Grid>
       </Grid>
-      <Card square>
-        <CardContent>
-          {isLoading && (
-            <Typography variant="body2">
-             <FormattedMessage {...layoutMessage.text.loading} />
-            </Typography>
-          )}
-          <WinningRatioDetail
-            uid={props.uid}
-            type={props.type}
-            open={props.open}
-            handleDialog={handleDialog}
-            data={response && response.data}
-          />
-          {!isLoading && response && (
-            <WinningRatioTable
-              page={page}
-              size={size}
-              orderBy={orderBy}
-              direction={direction}
-              metadata={response.metadata}
-              data={response.data}
-              handleChangePage={handleChangePage}
-              handleChangeSize={handleChangeSize}
-              handleChangeSort={handleChangeSort}
-              handleDetail={handleDetail}
-              handleDialog={handleDialog}
-              handleGoToNext={handleGoToNext}
-              handleGoToPrevious={handleGoToPrevious}
-            />
-          )}
-        </CardContent>
-      </Card>
+
     </React.Fragment>
   );
 

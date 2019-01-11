@@ -1,3 +1,4 @@
+import { WorkflowStatusType } from '@common/classes/types';
 import AppMenu from '@constants/AppMenu';
 import { SingleConfig, SingleHandler, SinglePage, SingleState } from '@layout/components/pages/singlePage/SinglePage';
 import { IAppBarMenu } from '@layout/interfaces';
@@ -97,7 +98,9 @@ const config: SingleConfig<ISettlementDetail, SettlementApprovalDetailProps> = {
     <SettlementItemContainer data={data} />,
     <WorkflowHistory data={data.workflow} />,
     <React.Fragment>
-      {
+      { 
+        data.statusType !== WorkflowStatusType.AdjustmentNeeded &&
+        data.statusType !== WorkflowStatusType.Rejected &&
         data.workflow &&
         data.workflow.isApproval &&
         <WorkflowApprovalForm

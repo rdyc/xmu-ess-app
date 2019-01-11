@@ -1,3 +1,5 @@
+import { layoutMessage } from '@layout/locales/messages';
+import { GlobalFormat } from '@layout/types';
 import { GlobalStyle } from '@layout/types/GlobalStyle';
 import { ICurrencyDetail } from '@lookup/classes/response/currency';
 import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
@@ -22,8 +24,6 @@ const currencyInformation: React.SFC<AllProps> = props => {
       <CardHeader
         title={intl.formatMessage(lookupMessage.currency.section.infoTitle)}
         subheader={intl.formatMessage(lookupMessage.currency.section.infoSubHeader)}
-        // title={'Currency Information'}
-        // subheader={'Currency main information'}
       />
       <CardContent >
         <TextField
@@ -68,7 +68,28 @@ const currencyInformation: React.SFC<AllProps> = props => {
           label={'Created By'}
           value={data.changes && data.changes.created ? data.changes.created.fullName : 'N/A'}
           multiline
-        />
+        />{
+          data.changes &&
+          <TextField
+            {...GlobalStyle.TextField.ReadOnly}
+            margin="dense"
+            label={props.intl.formatMessage(layoutMessage.field.createdBy)}
+            value={data.changes.created && data.changes.created.fullName || 'N/A'}
+            helperText={props.intl.formatDate(data.changes.createdAt, GlobalFormat.DateTime) || 'N/A'}
+          />
+        }
+        {
+          data.changes &&
+          data.changes.updated &&
+          data.changes.updatedAt &&
+          <TextField
+            {...GlobalStyle.TextField.ReadOnly}
+            margin="dense"
+            label={props.intl.formatMessage(layoutMessage.field.updatedBy)}
+            value={data.changes.updated.fullName || 'N/A'}
+            helperText={props.intl.formatDate(data.changes.updatedAt, GlobalFormat.DateTime) || 'N/A'}
+          />
+        }
       </CardContent>
     </Card>
   );
