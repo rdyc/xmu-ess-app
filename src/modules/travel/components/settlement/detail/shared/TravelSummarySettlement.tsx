@@ -1,3 +1,4 @@
+import { WorkflowStatusType } from '@common/classes/types';
 import { layoutMessage } from '@layout/locales/messages';
 import { GlobalFormat } from '@layout/types';
 import { Grid, TextField } from '@material-ui/core';
@@ -118,6 +119,17 @@ const travelSummary: React.SFC<AllProps> = props => (
           label={props.intl.formatMessage(travelMessage.request.field.comment)}
           value={props.data.comment || 'N/A'}
         />
+        {
+          props.data &&
+          props.data.rejectReason &&
+          props.data.statusType === WorkflowStatusType.AdjustmentNeeded &&
+          <TextField
+            {...styled}
+            margin="dense"
+            label={props.intl.formatMessage(travelMessage.request.field.rejectReason)}
+            value={props.data.rejectReason}
+          />
+        }
         <TextField
           {...styled}
           margin="dense"
