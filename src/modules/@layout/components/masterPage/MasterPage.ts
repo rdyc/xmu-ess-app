@@ -6,7 +6,9 @@ import styles from '@styles';
 import {
   compose,
   HandleCreators,
+  lifecycle,
   mapper,
+  ReactLifeCycleFunctions,
   setDisplayName,
   StateHandler,
   StateHandlerMap,
@@ -69,6 +71,28 @@ const handlerCreators: HandleCreators<MasterPageProps, IOwnHandler> = {
   }
 };
 
+const lifecycles: ReactLifeCycleFunctions<MasterPageProps, IOwnState> = {
+  componentDidUpdate(prevProps: MasterPageProps) {
+    if (this.props.layoutState.view !== prevProps.layoutState.view) {
+      const envWebName = process.env.REACT_APP_WEBSITE_NAME;
+      
+      // set document props	
+      if (this.props.layoutState.view) {	
+        const meta = document.getElementsByTagName('meta'); 	
+        const desc = meta.namedItem('description');	
+
+        if (desc) {	
+          desc.content = this.props.layoutState.view.subTitle;	
+        }	
+
+        document.title = `${this.props.layoutState.view.title} - ${envWebName}`;	
+      } else {	
+        document.title = envWebName || '?';	
+      }
+    }
+  }
+};
+
 export const MasterPage = compose<MasterPageProps, IOwnOption>(
   setDisplayName('MasterPage'),
   withStyles(styles),
@@ -76,5 +100,6 @@ export const MasterPage = compose<MasterPageProps, IOwnOption>(
   withLayout,
   withUser,
   withStateHandlers(createProps, stateUpdaters),
-  withHandlers(handlerCreators)
+  withHandlers(handlerCreators),
+  lifecycle(lifecycles)
 )(MasterPageView);

@@ -1,6 +1,21 @@
 import { EmployeeDialog } from '@account/components/dialog';
 import { layoutMessage } from '@layout/locales/messages';
-import { AppBar, Badge, Button, Dialog, Divider, IconButton, List, ListItem, ListItemSecondaryAction, ListItemText, Toolbar, Tooltip, Typography } from '@material-ui/core';
+import { 
+  AppBar, 
+  Badge, 
+  Button, 
+  Dialog, 
+  DialogContent, 
+  Divider, 
+  IconButton, 
+  List, 
+  ListItem, 
+  ListItemSecondaryAction, 
+  ListItemText, 
+  Toolbar, 
+  Tooltip, 
+  Typography 
+} from '@material-ui/core';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import CloseIcon from '@material-ui/icons/Close';
@@ -27,9 +42,10 @@ export const EffectivenessFilterView: React.SFC<EffectivenessFilterProps> = prop
           disableBackdropClick
           open={props.isFilterDialogOpen}
           className={props.layoutState.anchor === 'right' ? props.classes.contentShiftRight : props.classes.contentShiftLeft}
+          scroll="paper"
           onClose={props.handleFilterVisibility}
         >
-          <AppBar className={props.classes.appBarDialog}>
+          <AppBar position="fixed" className={props.classes.appBarDialog}>
             <Toolbar>
               <IconButton color="inherit" onClick={props.handleFilterVisibility} aria-label="Close">
                 <CloseIcon />
@@ -55,48 +71,49 @@ export const EffectivenessFilterView: React.SFC<EffectivenessFilterProps> = prop
             </Toolbar>
           </AppBar>
           
-          <List>
+          <DialogContent className={props.classes.paddingDisabled}>
+            <List>
+              <ListItem button onClick={props.handleFilterEmployeeVisibility}>
+                <ListItemText 
+                  primary={props.intl.formatMessage(summaryMessage.filter.employeeUid)}
+                  secondary={props.filterEmployee && props.filterEmployee.fullName || props.intl.formatMessage(layoutMessage.text.none)}
+                />
+                <ListItemSecondaryAction>
+                  { 
+                    props.filterEmployee &&
+                    <IconButton onClick={props.handleFilterEmployeeOnClear}>
+                      <ClearIcon />
+                    </IconButton> 
+                  }
 
-          <ListItem button onClick={props.handleFilterEmployeeVisibility}>
-              <ListItemText 
-                primary={props.intl.formatMessage(summaryMessage.filter.employeeUid)}
-                secondary={props.filterEmployee && props.filterEmployee.fullName || props.intl.formatMessage(layoutMessage.text.none)}
-              />
-              <ListItemSecondaryAction>
-                { 
-                  props.filterEmployee &&
-                  <IconButton onClick={props.handleFilterEmployeeOnClear}>
-                    <ClearIcon />
+                  <IconButton onClick={props.handleFilterEmployeeVisibility}>
+                    <ChevronRightIcon />
                   </IconButton> 
-                }
+                </ListItemSecondaryAction>
+              </ListItem>
+              <Divider />
+                  
+              <ListItem button onClick={props.filterEmployee && props.handleFilterProjectVisibility} disabled={!props.filterEmployee}>
+                <ListItemText 
+                  primary={props.intl.formatMessage(summaryMessage.filter.projectUid)}
+                  secondary={props.filterProject && props.filterProject.name || props.intl.formatMessage(layoutMessage.text.none)}
+                />
+                <ListItemSecondaryAction>
+                  { 
+                    props.filterProject &&
+                    <IconButton onClick={props.handleFilterProjectOnClear}>
+                      <ClearIcon />
+                    </IconButton> 
+                  }
 
-                <IconButton onClick={props.handleFilterEmployeeVisibility}>
-                  <ChevronRightIcon />
-                </IconButton> 
-              </ListItemSecondaryAction>
-            </ListItem>
-            <Divider />
-                
-            <ListItem button onClick={props.filterEmployee && props.handleFilterProjectVisibility} disabled={!props.filterEmployee}>
-              <ListItemText 
-                primary={props.intl.formatMessage(summaryMessage.filter.projectUid)}
-                secondary={props.filterProject && props.filterProject.name || props.intl.formatMessage(layoutMessage.text.none)}
-              />
-              <ListItemSecondaryAction>
-                { 
-                  props.filterProject &&
-                  <IconButton onClick={props.handleFilterProjectOnClear}>
-                    <ClearIcon />
+                  <IconButton onClick={props.filterEmployee && props.handleFilterProjectVisibility} disabled={!props.filterEmployee}>
+                    <ChevronRightIcon />
                   </IconButton> 
-                }
+                </ListItemSecondaryAction>
+              </ListItem>
 
-                <IconButton onClick={props.filterEmployee && props.handleFilterProjectVisibility} disabled={!props.filterEmployee}>
-                  <ChevronRightIcon />
-                </IconButton> 
-              </ListItemSecondaryAction>
-            </ListItem>
-
-          </List>
+            </List>
+          </DialogContent>
         </Dialog>
 
         <EmployeeDialog 

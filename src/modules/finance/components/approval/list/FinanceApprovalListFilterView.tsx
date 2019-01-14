@@ -5,6 +5,7 @@ import {
   AppBar,
   Button,
   Dialog,
+  DialogContent,
   Divider,
   IconButton,
   List,
@@ -29,9 +30,10 @@ export const FinanceApprovalListFilterView: React.SFC<FinanceApprovalListFilterP
       disableBackdropClick
       open={props.isOpen}
       className={props.layoutState.anchor === 'right' ? props.classes.contentShiftRight : props.classes.contentShiftLeft}
+      scroll="paper"
       onClose={props.onClose}
     >
-      <AppBar className={props.classes.appBarDialog}>
+      <AppBar position="fixed" className={props.classes.appBarDialog}>
         <Toolbar>
           <IconButton color="inherit" onClick={props.onClose} aria-label="Close">
             <CloseIcon />
@@ -57,47 +59,49 @@ export const FinanceApprovalListFilterView: React.SFC<FinanceApprovalListFilterP
         </Toolbar>
       </AppBar>
       
-      <List>
-      <ListItem button onClick={props.handleFilterModuleVisibility}>
-          <ListItemText 
-            primary={props.intl.formatMessage(financeMessage.approval.field.moduleName)}
-            secondary={props.filterModule && props.filterModule.name || props.intl.formatMessage(layoutMessage.text.none)} 
-          />
-          <ListItemSecondaryAction>
-          { 
-              props.filterModule &&
-              <IconButton onClick={props.handleFilterModuleOnClear}>
-                <ClearIcon />
+      <DialogContent className={props.classes.paddingDisabled}>
+        <List>
+          <ListItem button onClick={props.handleFilterModuleVisibility}>
+            <ListItemText 
+              primary={props.intl.formatMessage(financeMessage.approval.field.moduleName)}
+              secondary={props.filterModule && props.filterModule.name || props.intl.formatMessage(layoutMessage.text.none)} 
+            />
+            <ListItemSecondaryAction>
+            { 
+                props.filterModule &&
+                <IconButton onClick={props.handleFilterModuleOnClear}>
+                  <ClearIcon />
+                </IconButton> 
+              }
+
+              <IconButton onClick={props.handleFilterModuleVisibility}>
+                <ChevronRightIcon />
               </IconButton> 
-            }
+            </ListItemSecondaryAction>
+          </ListItem>
+          <Divider />
 
-            <IconButton onClick={props.handleFilterModuleVisibility}>
-              <ChevronRightIcon />
-            </IconButton> 
-          </ListItemSecondaryAction>
-        </ListItem>
-        <Divider />
+          <ListItem button onClick={props.handleFilterStatusVisibility}>
+            <ListItemText 
+              primary={props.intl.formatMessage(financeMessage.approval.field.status)}
+              secondary={props.filterStatus && props.filterStatus.name || props.intl.formatMessage(layoutMessage.text.none)} 
+            />
+            <ListItemSecondaryAction>
+            { 
+                props.filterStatus &&
+                <IconButton onClick={props.handleFilterStatusOnClear}>
+                  <ClearIcon />
+                </IconButton> 
+              }
 
-        <ListItem button onClick={props.handleFilterStatusVisibility}>
-          <ListItemText 
-            primary={props.intl.formatMessage(financeMessage.approval.field.status)}
-            secondary={props.filterStatus && props.filterStatus.name || props.intl.formatMessage(layoutMessage.text.none)} 
-          />
-          <ListItemSecondaryAction>
-          { 
-              props.filterStatus &&
-              <IconButton onClick={props.handleFilterStatusOnClear}>
-                <ClearIcon />
+              <IconButton onClick={props.handleFilterStatusVisibility}>
+                <ChevronRightIcon />
               </IconButton> 
-            }
-
-            <IconButton onClick={props.handleFilterStatusVisibility}>
-              <ChevronRightIcon />
-            </IconButton> 
-          </ListItemSecondaryAction>
-        </ListItem>
-        <Divider />
-      </List>
+            </ListItemSecondaryAction>
+          </ListItem>
+          <Divider />
+        </List>
+      </DialogContent>
     </Dialog>
 
     <LookupSystemDialog

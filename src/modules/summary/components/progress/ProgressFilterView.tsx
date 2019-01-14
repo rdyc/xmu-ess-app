@@ -1,6 +1,21 @@
 import { layoutMessage } from '@layout/locales/messages';
 import { LookupCustomerDialog } from '@lookup/components/customer/dialog';
-import { AppBar, Badge, Button, Dialog, Divider, IconButton, List, ListItem, ListItemSecondaryAction, ListItemText, Toolbar, Tooltip, Typography } from '@material-ui/core';
+import { 
+  AppBar, 
+  Badge, 
+  Button, 
+  Dialog, 
+  DialogContent, 
+  Divider, 
+  IconButton, 
+  List, 
+  ListItem, 
+  ListItemSecondaryAction, 
+  ListItemText, 
+  Toolbar, 
+  Tooltip, 
+  Typography
+} from '@material-ui/core';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import CloseIcon from '@material-ui/icons/Close';
@@ -27,9 +42,10 @@ export const ProgressFilterView: React.SFC<ProgressFilterProps> = props => {
           disableBackdropClick
           open={props.isFilterDialogOpen}
           className={props.layoutState.anchor === 'right' ? props.classes.contentShiftRight : props.classes.contentShiftLeft}
+          scroll="paper"
           onClose={props.handleFilterVisibility}
         >
-          <AppBar className={props.classes.appBarDialog}>
+          <AppBar position="fixed" className={props.classes.appBarDialog}>
             <Toolbar>
               <IconButton color="inherit" onClick={props.handleFilterVisibility} aria-label="Close">
                 <CloseIcon />
@@ -62,48 +78,49 @@ export const ProgressFilterView: React.SFC<ProgressFilterProps> = props => {
             </Toolbar>
           </AppBar>
           
-          <List>
+          <DialogContent className={props.classes.paddingDisabled}>
+            <List>
+              <ListItem button onClick={props.handleFilterCustomerVisibility}>
+                <ListItemText 
+                  primary={props.intl.formatMessage(summaryMessage.filter.customerUid)}
+                  secondary={props.filterCustomer && props.filterCustomer.name || props.intl.formatMessage(layoutMessage.text.none)}
+                />
+                <ListItemSecondaryAction>
+                  { 
+                    props.filterCustomer &&
+                    <IconButton onClick={props.handleFilterCustomerOnClear}>
+                      <ClearIcon />
+                    </IconButton> 
+                  }
 
-          <ListItem button onClick={props.handleFilterCustomerVisibility}>
-              <ListItemText 
-                primary={props.intl.formatMessage(summaryMessage.filter.customerUid)}
-                secondary={props.filterCustomer && props.filterCustomer.name || props.intl.formatMessage(layoutMessage.text.none)}
-              />
-              <ListItemSecondaryAction>
-                { 
-                  props.filterCustomer &&
-                  <IconButton onClick={props.handleFilterCustomerOnClear}>
-                    <ClearIcon />
+                  <IconButton onClick={props.handleFilterCustomerVisibility}>
+                    <ChevronRightIcon />
                   </IconButton> 
-                }
+                </ListItemSecondaryAction>
+              </ListItem>
+              <Divider />
+                  
+              <ListItem button onClick={props.filterCustomer && props.handleFilterProjectVisibility} disabled={!props.filterCustomer}>
+                <ListItemText 
+                  primary={props.intl.formatMessage(summaryMessage.filter.projectUid)}
+                  secondary={props.filterProject && props.filterProject.name || props.intl.formatMessage(layoutMessage.text.none)}
+                />
+                <ListItemSecondaryAction>
+                  { 
+                    props.filterProject &&
+                    <IconButton onClick={props.handleFilterProjectOnClear}>
+                      <ClearIcon />
+                    </IconButton> 
+                  }
 
-                <IconButton onClick={props.handleFilterCustomerVisibility}>
-                  <ChevronRightIcon />
-                </IconButton> 
-              </ListItemSecondaryAction>
-            </ListItem>
-            <Divider />
-                
-            <ListItem button onClick={props.filterCustomer && props.handleFilterProjectVisibility} disabled={!props.filterCustomer}>
-              <ListItemText 
-                primary={props.intl.formatMessage(summaryMessage.filter.projectUid)}
-                secondary={props.filterProject && props.filterProject.name || props.intl.formatMessage(layoutMessage.text.none)}
-              />
-              <ListItemSecondaryAction>
-                { 
-                  props.filterProject &&
-                  <IconButton onClick={props.handleFilterProjectOnClear}>
-                    <ClearIcon />
+                  <IconButton onClick={props.filterCustomer && props.handleFilterProjectVisibility} disabled={!props.filterCustomer}>
+                    <ChevronRightIcon />
                   </IconButton> 
-                }
+                </ListItemSecondaryAction>
+              </ListItem>
 
-                <IconButton onClick={props.filterCustomer && props.handleFilterProjectVisibility} disabled={!props.filterCustomer}>
-                  <ChevronRightIcon />
-                </IconButton> 
-              </ListItemSecondaryAction>
-            </ListItem>
-
-          </List>
+            </List>
+          </DialogContent>
         </Dialog>
 
         <LookupCustomerDialog 

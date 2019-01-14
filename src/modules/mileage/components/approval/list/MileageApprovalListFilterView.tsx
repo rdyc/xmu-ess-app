@@ -1,5 +1,6 @@
 import { LookupSystemDialog } from '@common/components/dialog/lookupSystemDialog/LookupSystemDialog';
 import { DialogValue } from '@layout/components/dialogs/DialogValue';
+import { ModuleDefinition } from '@layout/helper/redirector';
 import { layoutMessage } from '@layout/locales/messages';
 import {
   AppBar,
@@ -212,6 +213,7 @@ export const MileageApprovalListFilterView: React.SFC<MileageApprovalListFilterP
     <LookupSystemDialog
       title={props.intl.formatMessage(mileageMessage.request.field.statusType)}
       category="status"
+      moduleType={ModuleDefinition.Mileage}
       hideBackdrop={true}
       isOpen={props.isFilterStatusOpen}
       value={props.filterStatus && props.filterStatus.type}
