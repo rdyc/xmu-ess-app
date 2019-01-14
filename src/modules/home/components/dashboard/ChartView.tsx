@@ -1,18 +1,30 @@
-import { Animation, EventTracker, ValueScale } from '@devexpress/dx-react-chart';
+import { Animation, EventTracker, HoverState, ValueScale } from '@devexpress/dx-react-chart';
 import { ArgumentAxis, BarSeries, Chart, Tooltip, ValueAxis } from '@devexpress/dx-react-chart-material-ui';
 import { Card, CardContent, CardHeader, Grid } from '@material-ui/core';
 import * as React from 'react';
 
 import { ChartProps } from './Chart';
 
-// const labelRotation: React.ComponentType<ArgumentAxis.LabelProps> = props => {
-//   console.log(props); return (
-//     <div>testtt
-//     </div>
-//   );
-// };
+const labelRotation: React.ComponentType<ArgumentAxis.LabelProps> = props => {
+  return (
+    <ArgumentAxis.Label
+      {...props}
+      textAnchor={'start'}
+      style={{position: 'relative', textAlign: 'right', transformOrigin: '100% 0%', transform: 'rotate(45deg)'}} />
+  );
+};
 
-export const ChartView: React.SFC<ChartProps> = props => (
+const Label: React.ComponentType<ValueAxis.LabelProps> = props => {
+  return (
+    <ValueAxis.Label
+      {...props}
+      text={`${props.text} %`}
+    />
+  );
+};
+
+export const ChartView: React.SFC<ChartProps> = props => {
+  return (
   <React.Fragment>
     {
       props.chartState.detail.response &&
@@ -22,12 +34,12 @@ export const ChartView: React.SFC<ChartProps> = props => (
           <Card square>
             <CardHeader title="ETG Companies" subheader="(EQG - NPP - ODI - XMU)" />
             <CardContent>
-              <Chart data={props.chartState.detail.response.data.companies} height={300}>
+              <Chart data={props.chartState.detail.response.data.companies} height={300} >
                 <ValueScale name="percentage" />
 
-                <ArgumentAxis  />
+                <ArgumentAxis labelComponent={labelRotation}/>
 
-                <ValueAxis scaleName="percentage" showGrid={false} showLine={true} showTicks={true} showLabels={true} />
+                <ValueAxis scaleName="percentage" showGrid={false} showLine={true} showTicks={true} showLabels={true} labelComponent={Label}/>
 
                 <BarSeries
                   name="Percentage"
@@ -37,12 +49,14 @@ export const ChartView: React.SFC<ChartProps> = props => (
                   color={props.theme.palette.primary.main}
                 />
 
+                <EventTracker />
+                <HoverState />
                 <Tooltip />
                 <Animation />
               </Chart>
             </CardContent>
           </Card>
-          
+
         </Grid>
 
         <Grid item xs={12} sm={12} md={4}>
@@ -52,9 +66,9 @@ export const ChartView: React.SFC<ChartProps> = props => (
               <Chart data={props.chartState.detail.response.data.businessUnits} height={300}>
                 <ValueScale name="percentage" />
 
-                <ArgumentAxis />
+                <ArgumentAxis labelComponent={labelRotation}/>
 
-                <ValueAxis scaleName="percentage" showGrid={false} showLine={true} showTicks={true} />
+                <ValueAxis scaleName="percentage" showGrid={false} showLine={true} showTicks={true} labelComponent={Label} />
 
                 {/* <AreaSeries
                   name="Percentage"
@@ -72,6 +86,9 @@ export const ChartView: React.SFC<ChartProps> = props => (
                   color={props.theme.palette.primary.main}
                 />
 
+                <EventTracker />
+                <HoverState />
+                <Tooltip />
                 <Animation />
               </Chart>
             </CardContent>
@@ -86,7 +103,7 @@ export const ChartView: React.SFC<ChartProps> = props => (
                 <ValueScale name="percentage" />
 
                 <ArgumentAxis />
-                <ValueAxis scaleName="percentage" showGrid={false} showLine={true} showTicks={true} />
+                <ValueAxis scaleName="percentage" showGrid={false} showLine={true} showTicks={true} labelComponent={Label} />
 
                 {/* <LineSeries
                   name="Percentage"
@@ -103,6 +120,9 @@ export const ChartView: React.SFC<ChartProps> = props => (
                   color={props.theme.palette.primary.main}
                 />
 
+                <EventTracker />
+                <HoverState />
+                <Tooltip />
                 <Animation />
               </Chart>
             </CardContent>
@@ -111,13 +131,13 @@ export const ChartView: React.SFC<ChartProps> = props => (
 
         <Grid item xs={12} md={12}>
           <Card square>
-            <CardHeader title="ETG Sales Team" subheader="(EQG - NPP - ODI - XMU)"/>
+            <CardHeader title="ETG Sales Team" subheader="(EQG - NPP - ODI - XMU)" />
             <CardContent>
               <Chart data={props.chartState.detail.response.data.sales} height={300}>
                 <ValueScale name="percentage" />
 
                 <ArgumentAxis />
-                <ValueAxis scaleName="percentage" showGrid={false} showLine={true} showTicks={true} />
+                <ValueAxis scaleName="percentage" showGrid={false} showLine={true} showTicks={true} labelComponent={Label} />
 
                 {/* <SplineSeries
                   name="Percentage"
@@ -133,11 +153,12 @@ export const ChartView: React.SFC<ChartProps> = props => (
                   argumentField="companyName"
                   scaleName="percentage"
                   color={props.theme.palette.primary.main}
-                />      
+                />
 
-                <Animation />
                 <EventTracker />
+                <HoverState />
                 <Tooltip />
+                <Animation />
               </Chart>
             </CardContent>
           </Card>
@@ -145,4 +166,5 @@ export const ChartView: React.SFC<ChartProps> = props => (
       </Grid>
     }
   </React.Fragment>
-);
+  );
+};

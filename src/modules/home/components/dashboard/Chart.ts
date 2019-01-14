@@ -5,8 +5,13 @@ import { compose, lifecycle, ReactLifeCycleFunctions } from 'recompose';
 
 import { ChartView } from './ChartView';
 
+interface OwnState {
+  symbol: string;
+}
+
 export type ChartProps
-  = WithChart
+  = OwnState
+  & WithChart
   & WithTheme
   & WithStyles<typeof styles>;
 
