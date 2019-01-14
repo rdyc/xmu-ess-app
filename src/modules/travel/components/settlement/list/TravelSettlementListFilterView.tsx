@@ -1,4 +1,5 @@
 import { LookupSystemDialog } from '@common/components/dialog/lookupSystemDialog/LookupSystemDialog';
+import { ModuleDefinition } from '@layout/helper/redirector';
 import { layoutMessage } from '@layout/locales/messages';
 import { LookupCustomerDialog } from '@lookup/components/customer/dialog';
 import {
@@ -82,7 +83,7 @@ export const TravelSettlementListFilterView: React.SFC<TravelSettlementListFilte
         </ListItem>
         <Divider />
 
-        <ListItem button onClick={props.filterCustomer && props.handleFilterProjectVisibility}>
+        <ListItem button onClick={props.filterCustomer && props.handleFilterProjectVisibility} disabled={!props.filterCustomer}>
           <ListItemText
             primary={props.intl.formatMessage(travelMessage.request.field.projectUid)}
             secondary={props.filterProject && props.filterProject.name || props.intl.formatMessage(layoutMessage.text.none)}
@@ -95,7 +96,7 @@ export const TravelSettlementListFilterView: React.SFC<TravelSettlementListFilte
               </IconButton>
             }
 
-            <IconButton onClick={props.filterCustomer && props.handleFilterProjectVisibility}>
+            <IconButton onClick={props.filterCustomer && props.handleFilterProjectVisibility} disabled={!props.filterCustomer}>
               <ChevronRightIcon />
             </IconButton>
           </ListItemSecondaryAction>
@@ -124,7 +125,7 @@ export const TravelSettlementListFilterView: React.SFC<TravelSettlementListFilte
 
         <ListItem>
           <ListItemText
-            primary={props.intl.formatMessage(travelMessage.request.field.isRejected)}
+            primary={props.intl.formatMessage(travelMessage.request.field.isAdjustmentNeeded)}
             secondary={props.intl.formatMessage(props.filterRejected ? layoutMessage.action.yes : layoutMessage.action.no)}
           />
           <ListItemSecondaryAction>
@@ -159,6 +160,7 @@ export const TravelSettlementListFilterView: React.SFC<TravelSettlementListFilte
     <LookupSystemDialog
       title={props.intl.formatMessage(travelMessage.request.field.statusType)}
       category="status"
+      moduleType={ModuleDefinition.TravelSettlement}
       hideBackdrop={true}
       isOpen={props.isFilterStatusOpen}
       value={props.filterStatus && props.filterStatus.type}

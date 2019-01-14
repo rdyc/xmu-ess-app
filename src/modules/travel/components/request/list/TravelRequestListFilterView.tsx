@@ -1,4 +1,5 @@
 import { LookupSystemDialog } from '@common/components/dialog/lookupSystemDialog/LookupSystemDialog';
+import { ModuleDefinition } from '@layout/helper/redirector';
 import { layoutMessage } from '@layout/locales/messages';
 import { LookupCustomerDialog } from '@lookup/components/customer/dialog';
 import {
@@ -75,14 +76,14 @@ export const TravelRequestListFilterView: React.SFC<TravelRequestListFilterProps
                 </IconButton>
               }
 
-              <IconButton onClick={props.handleFilterCompletionVisibility}>
+              <IconButton onClick={props.handleFilterCustomerVisibility}>
                 <ChevronRightIcon />
               </IconButton>
             </ListItemSecondaryAction>
           </ListItem>
           <Divider />
 
-          <ListItem button onClick={props.filterCustomer && props.handleFilterProjectVisibility}>
+          <ListItem button onClick={props.filterCustomer && props.handleFilterProjectVisibility} disabled={!props.filterCustomer}>
             <ListItemText
               primary={props.intl.formatMessage(travelMessage.request.field.projectUid)}
               secondary={props.filterProject && props.filterProject.name || props.intl.formatMessage(layoutMessage.text.none)}
@@ -95,7 +96,7 @@ export const TravelRequestListFilterView: React.SFC<TravelRequestListFilterProps
                 </IconButton>
               }
 
-              <IconButton onClick={props.filterCustomer && props.handleFilterProjectVisibility}>
+              <IconButton onClick={props.filterCustomer && props.handleFilterProjectVisibility} disabled={!props.filterCustomer}>
                 <ChevronRightIcon />
               </IconButton>
             </ListItemSecondaryAction>
@@ -174,6 +175,7 @@ export const TravelRequestListFilterView: React.SFC<TravelRequestListFilterProps
     <LookupSystemDialog
       title={props.intl.formatMessage(travelMessage.request.field.statusType)}
       category="status"
+      moduleType={ModuleDefinition.Travel}
       hideBackdrop={true}
       isOpen={props.isFilterStatusOpen}
       value={props.filterStatus && props.filterStatus.type}
