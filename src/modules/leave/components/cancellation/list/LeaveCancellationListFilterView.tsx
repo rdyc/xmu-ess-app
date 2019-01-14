@@ -5,6 +5,7 @@ import {
   AppBar,
   Button,
   Dialog,
+  DialogContent,
   Divider,
   IconButton,
   List,
@@ -28,9 +29,10 @@ export const LeaveCancellationListFilterView: React.SFC<LeaveCancellationListFil
       disableBackdropClick
       open={props.isOpen}
       className={props.layoutState.anchor === 'right' ? props.classes.contentShiftRight : props.classes.contentShiftLeft}
+      scroll="paper"
       onClose={props.onClose}
     >
-      <AppBar className={props.classes.appBarDialog}>
+      <AppBar position="fixed" className={props.classes.appBarDialog}>
         <Toolbar>
           <IconButton color="inherit" onClick={props.onClose} aria-label="Close">
             <CloseIcon />
@@ -40,37 +42,38 @@ export const LeaveCancellationListFilterView: React.SFC<LeaveCancellationListFil
             {props.intl.formatMessage(layoutMessage.tooltip.filter)}
           </Typography>
 
-          <Button 
-            color="inherit" 
+          <Button
+            color="inherit"
             onClick={props.handleFilterOnApply}
           >
             {props.intl.formatMessage(layoutMessage.action.apply)}
           </Button>
         </Toolbar>
       </AppBar>
-      
-      <List>
-        
-        <ListItem button onClick={props.handleFilterTypeVisibility}>
-          <ListItemText 
-            primary={props.intl.formatMessage(leaveMessage.request.field.leaveType)}
-            secondary={props.filterType && props.filterType.name || props.intl.formatMessage(layoutMessage.text.none)} 
-          />
-          <ListItemSecondaryAction>
-            { 
-              props.filterType &&
-              <IconButton onClick={props.handleFilterTypeOnClear}>
-                <ClearIcon />
-              </IconButton> 
-            }
 
-            <IconButton onClick={props.handleFilterCompletionVisibility}>
-              <ChevronRightIcon />
-            </IconButton> 
-          </ListItemSecondaryAction>
-        </ListItem>
-        <Divider />
-      </List>
+      <DialogContent className={props.classes.paddingDisabled}>
+        <List>
+          <ListItem button onClick={props.handleFilterTypeVisibility}>
+            <ListItemText
+              primary={props.intl.formatMessage(leaveMessage.request.field.leaveType)}
+              secondary={props.filterType && props.filterType.name || props.intl.formatMessage(layoutMessage.text.none)}
+            />
+            <ListItemSecondaryAction>
+              {
+                props.filterType &&
+                <IconButton onClick={props.handleFilterTypeOnClear}>
+                  <ClearIcon />
+                </IconButton>
+              }
+
+              <IconButton onClick={props.handleFilterCompletionVisibility}>
+                <ChevronRightIcon />
+              </IconButton>
+            </ListItemSecondaryAction>
+          </ListItem>
+          <Divider />
+        </List>
+      </DialogContent>
     </Dialog>
 
     <LookupSystemDialog

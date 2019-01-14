@@ -1,4 +1,4 @@
 export interface IEmployeeExperienceListFilter {
-  orderBy?: string | undefined;
-  direction?: 'ascending' | 'descending' | undefined;
+  orderBy?: string;
+  direction?: 'ascending' | 'descending';
 }

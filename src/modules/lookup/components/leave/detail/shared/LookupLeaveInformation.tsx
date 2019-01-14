@@ -30,7 +30,7 @@ const lookupLeaveInformation: React.SFC<AllProps> = props => {
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
           label={props.intl.formatMessage(lookupMessage.leave.field.company)}
-          value={props.data.company.name}
+          value={props.data.company && props.data.company.name}
         />
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
@@ -40,7 +40,7 @@ const lookupLeaveInformation: React.SFC<AllProps> = props => {
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
           label={props.intl.formatMessage(lookupMessage.leave.field.description)}
-          value={props.data.category.value}
+          value={props.data.category && props.data.category.value}
         />
         <TextField
           {...GlobalStyle.TextField.ReadOnly}

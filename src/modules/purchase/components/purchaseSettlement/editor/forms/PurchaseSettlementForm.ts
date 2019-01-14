@@ -9,8 +9,8 @@ import { formValueSelector,
 const formName = 'purchaseSettlement';
 
 export type PurchaseSettlementItemFormData = {
-  uid: string | null | undefined;
-  description: string | null;
+  uid?: string;
+  description?: string;
   request: number;
   actual: number;
   variance: number;

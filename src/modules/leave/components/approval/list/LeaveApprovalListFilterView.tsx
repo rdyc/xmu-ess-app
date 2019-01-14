@@ -6,6 +6,7 @@ import {
   AppBar,
   Button,
   Dialog,
+  DialogContent,
   Divider,
   IconButton,
   List,
@@ -30,9 +31,10 @@ export const LeaveApprovalListFilterView: React.SFC<LeaveApprovalListFilterProps
       disableBackdropClick
       open={props.isOpen}
       className={props.layoutState.anchor === 'right' ? props.classes.contentShiftRight : props.classes.contentShiftLeft}
+      scroll="paper"
       onClose={props.onClose}
     >
-      <AppBar className={props.classes.appBarDialog}>
+      <AppBar position="fixed" className={props.classes.appBarDialog}>
         <Toolbar>
           <IconButton color="inherit" onClick={props.onClose} aria-label="Close">
             <CloseIcon />
@@ -42,93 +44,94 @@ export const LeaveApprovalListFilterView: React.SFC<LeaveApprovalListFilterProps
             {props.intl.formatMessage(layoutMessage.tooltip.filter)}
           </Typography>
 
-          <Button 
-            color="inherit" 
+          <Button
+            color="inherit"
             onClick={props.handleFilterOnApply}
           >
             {props.intl.formatMessage(layoutMessage.action.apply)}
           </Button>
         </Toolbar>
       </AppBar>
-      
-      <List>
-        
-        <ListItem button onClick={props.handleFilterTypeVisibility}>
-          <ListItemText 
-            primary={props.intl.formatMessage(leaveMessage.request.field.leaveType)}
-            secondary={props.filterType && props.filterType.name || props.intl.formatMessage(layoutMessage.text.none)} 
-          />
-          <ListItemSecondaryAction>
-            { 
-              props.filterType &&
-              <IconButton onClick={props.handleFilterTypeOnClear}>
-                <ClearIcon />
-              </IconButton> 
-            }
 
-            <IconButton onClick={props.handleFilterCompletionVisibility}>
-              <ChevronRightIcon />
-            </IconButton> 
-          </ListItemSecondaryAction>
-        </ListItem>
-        <Divider />
-
-        <ListItem button onClick={props.handleFilterStatusVisibility}>
-          <ListItemText 
-            primary={props.intl.formatMessage(leaveMessage.request.field.statusType)}
-            secondary={props.filterStatus && props.filterStatus.name || props.intl.formatMessage(layoutMessage.text.none)} 
-          />
-          <ListItemSecondaryAction>
-          { 
-              props.filterStatus &&
-              <IconButton onClick={props.handleFilterStatusOnClear}>
-                <ClearIcon />
-              </IconButton> 
-            }
-
-            <IconButton onClick={props.handleFilterStatusVisibility}>
-              <ChevronRightIcon />
-            </IconButton> 
-          </ListItemSecondaryAction>
-        </ListItem>
-        <Divider />
-
-        <ListItem button onClick={props.handleFilterCompletionVisibility}>
-          <ListItemText 
-            primary={props.intl.formatMessage(leaveMessage.request.field.completion)}
-            secondary={props.filterCompletion && props.filterCompletion.name || props.intl.formatMessage(layoutMessage.text.none)} 
-          />
-          <ListItemSecondaryAction>
-          { 
-              props.filterCompletion &&
-              <IconButton onClick={props.handleFilterCompletionOnClear}>
-                <ClearIcon />
-              </IconButton> 
-            }
-
-            <IconButton onClick={props.handleFilterStatusVisibility}>
-              <ChevronRightIcon />
-            </IconButton> 
-          </ListItemSecondaryAction>
-        </ListItem>
-        <Divider />
-
-        <ListItem>
-          <ListItemText 
-            primary={props.intl.formatMessage(leaveMessage.request.field.isNotify)}
-            secondary={props.intl.formatMessage(props.filterNotify ? layoutMessage.action.yes : layoutMessage.action.no)}
-          />
-          <ListItemSecondaryAction>
-            <Switch
-              color="primary"
-              checked={props.filterNotify || false}
-              onChange={props.handleFilterNotifyOnChange}
+      <DialogContent className={props.classes.paddingDisabled}>
+        <List>
+          <ListItem button onClick={props.handleFilterTypeVisibility}>
+            <ListItemText
+              primary={props.intl.formatMessage(leaveMessage.request.field.leaveType)}
+              secondary={props.filterType && props.filterType.name || props.intl.formatMessage(layoutMessage.text.none)}
             />
-          </ListItemSecondaryAction>
-        </ListItem>
-        <Divider />
+            <ListItemSecondaryAction>
+              {
+                props.filterType &&
+                <IconButton onClick={props.handleFilterTypeOnClear}>
+                  <ClearIcon />
+                </IconButton>
+              }
 
-      </List>
+              <IconButton onClick={props.handleFilterCompletionVisibility}>
+                <ChevronRightIcon />
+              </IconButton>
+            </ListItemSecondaryAction>
+          </ListItem>
+          <Divider />
+
+          <ListItem button onClick={props.handleFilterStatusVisibility}>
+            <ListItemText
+              primary={props.intl.formatMessage(leaveMessage.request.field.statusType)}
+              secondary={props.filterStatus && props.filterStatus.name || props.intl.formatMessage(layoutMessage.text.none)}
+            />
+            <ListItemSecondaryAction>
+              {
+                props.filterStatus &&
+                <IconButton onClick={props.handleFilterStatusOnClear}>
+                  <ClearIcon />
+                </IconButton>
+              }
+
+              <IconButton onClick={props.handleFilterStatusVisibility}>
+                <ChevronRightIcon />
+              </IconButton>
+            </ListItemSecondaryAction>
+          </ListItem>
+          <Divider />
+
+          <ListItem button onClick={props.handleFilterCompletionVisibility}>
+            <ListItemText
+              primary={props.intl.formatMessage(leaveMessage.request.field.completion)}
+              secondary={props.filterCompletion && props.filterCompletion.name || props.intl.formatMessage(layoutMessage.text.none)}
+            />
+            <ListItemSecondaryAction>
+              {
+                props.filterCompletion &&
+                <IconButton onClick={props.handleFilterCompletionOnClear}>
+                  <ClearIcon />
+                </IconButton>
+              }
+
+              <IconButton onClick={props.handleFilterStatusVisibility}>
+                <ChevronRightIcon />
+              </IconButton>
+            </ListItemSecondaryAction>
+          </ListItem>
+          <Divider />
+
+          <ListItem>
+            <ListItemText
+              primary={props.intl.formatMessage(leaveMessage.request.field.isNotify)}
+              secondary={props.intl.formatMessage(props.filterNotify ? layoutMessage.action.yes : layoutMessage.action.no)}
+            />
+            <ListItemSecondaryAction>
+              <Switch
+                color="primary"
+                checked={props.filterNotify || false}
+                onChange={props.handleFilterNotifyOnChange}
+              />
+            </ListItemSecondaryAction>
+          </ListItem>
+          <Divider />
+
+        </List>
+      </DialogContent>
     </Dialog>
 
     <LookupSystemDialog
@@ -150,7 +153,7 @@ export const LeaveApprovalListFilterView: React.SFC<LeaveApprovalListFilterProps
       onSelected={props.handleFilterStatusOnSelected}
       onClose={props.handleFilterStatusOnClose}
     />
-    
+
     <DialogValue
       title={props.intl.formatMessage(leaveMessage.request.field.completion)}
       isOpen={props.isFilterCompletionOpen}

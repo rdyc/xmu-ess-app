@@ -3,10 +3,10 @@ import { ICommonSystem } from '@common/classes';
 export interface IEmployeeFamilyList {
   uid: string;
   familyType: string;
-  family: ICommonSystem | null;
+  family?: ICommonSystem;
   genderType: string;
-  gender: ICommonSystem | null;
+  gender?: ICommonSystem;
   fullName: string;
   birthPlace: string;
-  birthDate: string | null;
+  birthDate?: string;
 }

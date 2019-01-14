@@ -72,9 +72,10 @@ export const EmployeeDialogView: React.SFC<EmployeeDialogProps> = props => {
       className={props.layoutState.anchor === 'right' ? props.classes.contentShiftRight : props.classes.contentShiftLeft}
       open={isOpen}
       aria-labelledby="employee-dialog-title"
+      scroll="paper"
       onClose={onClose}
     >
-      <AppBar className={props.classes.appBarDialog}>
+      <AppBar position="fixed" className={props.classes.appBarDialog}>
         <Toolbar>
           <IconButton color="inherit" onClick={() => onClose()} aria-label="Close">
             <ArrowBackIcon />
@@ -88,25 +89,27 @@ export const EmployeeDialogView: React.SFC<EmployeeDialogProps> = props => {
         </Toolbar>
       </AppBar>
       
-      <DialogContent>
-        <TextField
-          id="employee-selector-text"
-          fullWidth
-          margin="normal"
-          value={_search}
-          disabled={!response}
-          label={<FormattedMessage id="global.search" />}
-          placeholder={intl.formatMessage({ id: 'account.employee.filter.placeholder.employeeSearch' })}
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                <SearchIcon />
-              </InputAdornment>
-            ),
-          }}
-          onChange={searchOnChange}
-          onKeyUp={searchOnKeyUp}
-        />
+      <DialogContent className={props.classes.paddingDisabled}>
+        <div className={props.classes.paddingFar}>
+          <TextField
+            id="employee-selector-text"
+            fullWidth
+            margin="normal"
+            value={_search}
+            disabled={!response}
+            label={<FormattedMessage id="global.search" />}
+            placeholder={intl.formatMessage({ id: 'account.employee.filter.placeholder.employeeSearch' })}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <SearchIcon />
+                </InputAdornment>
+              ),
+            }}
+            onChange={searchOnChange}
+            onKeyUp={searchOnKeyUp}
+          />
+        </div>
         
         <List>
           <VirtualizedList
@@ -124,5 +127,4 @@ export const EmployeeDialogView: React.SFC<EmployeeDialogProps> = props => {
   );
 
   return render;
-
 };

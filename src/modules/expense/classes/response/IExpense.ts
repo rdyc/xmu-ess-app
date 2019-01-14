@@ -7,19 +7,19 @@ import { IProject } from '@project/classes/response';
 export interface IExpense {
   uid: string;
   customerUid: string;
-  customer: ICustomer;
+  customer?: ICustomer;
   projectUid: string;
-  project: IProject;
-  date?: string | null;
+  project?: IProject;
+  date?: string;
   expenseType: string;
-  expense: ICommonSystem;
+  expense?: ICommonSystem;
   value: number;
   location: string;
   address: string;
   client: IExpenseClient;
-  notes?: string | null;
+  notes?: string;
   statusType: string;
-  status: ICommonSystem;
-  rejectedReason?: string | null;
-  changes: IBaseChanges | null;
+  status?: ICommonSystem;
+  rejectedReason?: string;
+  changes?: IBaseChanges;
 }

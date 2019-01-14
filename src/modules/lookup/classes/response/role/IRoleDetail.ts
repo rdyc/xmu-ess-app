@@ -6,12 +6,12 @@ import { IRoleMenu } from './IRoleMenu';
 export interface IRoleDetail {
   uid: string;
   companyUid: string;
-  company: ICompanyList | null;
-  gradeType: string | null;
-  grade: ICommonSystem | null;
+  company?: ICompanyList;
+  gradeType: string;
+  grade?: ICommonSystem;
   name: string;
-  description: string | null;
-  menus: IRoleMenu[];
+  description?: string;
+  menus?: IRoleMenu[];
   isActive: boolean;
-  changes: IBaseChanges | null;
+  changes?: IBaseChanges;
 }

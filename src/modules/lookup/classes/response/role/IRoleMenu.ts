@@ -4,7 +4,7 @@ import { IMenu } from '../menu/IMenu';
 export interface IRoleMenu {
   roleUid: string;
   menuUid: string;
-  menu: IMenu | null;
+  menu?: IMenu;
   isAccess: boolean;
-  changes: IBaseChanges | null;
+  changes?: IBaseChanges;
 }

@@ -85,9 +85,9 @@ const createProps: mapper<PurchaseSettlementEditorProps, OwnState> = (props: Pur
     companyUid: state ? state.companyUid : undefined,
     positionUid: state ? state.positionUid : undefined,
     purchaseUid: state ? state.uid : undefined, 
-    submitDialogTitle: !state ? props.intl.formatMessage(purchaseMessage.request.confirm.createTitle) : props.intl.formatMessage(purchaseMessage.request.confirm.modifyTitle),
-    // submitDialogContentText: !state ? props.intl.formatMessage(purchaseMessage.request.confirm.createDescription) : props.intl.formatMessage(purchaseMessage.request.confirm.modifyDescription),
-    submitDialogContentText: ` `,
+    submitDialogTitle: !state.statusType ? props.intl.formatMessage(purchaseMessage.settlement.confirm.settleTitle) : props.intl.formatMessage(purchaseMessage.settlement.confirm.modifyTitle),
+    submitDialogContentText: !state.statusType ? props.intl.formatMessage(purchaseMessage.settlement.confirm.settleDescription) : props.intl.formatMessage(purchaseMessage.settlement.confirm.modifyDescription),
+    // submitDialogContentText: ` `,
     submitDialogCancelText: props.intl.formatMessage(layoutMessage.action.cancel),
     submitDialogConfirmedText: props.intl.formatMessage(layoutMessage.action.ok),
 
@@ -170,8 +170,8 @@ const handlers: HandleCreators<PurchaseSettlementEditorProps, OwnHandlers> = {
           _items.push({
             uid: item.uid,
             amount: item.actual
-              })
-            );
+          })
+        );
       }
 
       return _items;
@@ -325,9 +325,9 @@ const lifecycles: ReactLifeCycleFunctions<PurchaseSettlementEditorProps, {}> = {
 
       stateUpdate({
           formMode: FormMode.Edit,
-          submitDialogTitle: this.props.intl.formatMessage(purchaseMessage.request.confirm.modifyTitle),
-          // submitDialogContentText: this.props.intl.formatMessage(purchaseMessage.request.confirm.modifyDescription),
-          submitDialogContentText: ` `,
+        submitDialogTitle: this.props.intl.formatMessage(purchaseMessage.settlement.confirm.modifyTitle),
+        submitDialogContentText: this.props.intl.formatMessage(purchaseMessage.settlement.confirm.modifyDescription),
+          // submitDialogContentText: ` `,
         });  
     }
 

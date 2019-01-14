@@ -101,7 +101,7 @@ const createProps: mapper<EffectivenessFilterProps, OwnState> = (props: Effectiv
 
     // default filter employee dialog
     filterEmployeeDialog: {
-      companyUids: props.userState && props.userState.user && props.userState.user.company && [props.userState.user.company.uid] || []
+      companyUids: props.userState.user && props.userState.user.company.uid
     },
 
     // default filter project dialog

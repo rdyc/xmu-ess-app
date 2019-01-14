@@ -5,6 +5,7 @@ import {
   Badge,
   Button,
   Dialog,
+  DialogContent,
   Divider,
   IconButton,
   List,
@@ -35,15 +36,16 @@ export const ProfitabilityFormFilterView: React.SFC<SummaryProfitabilityFilterPr
 
   const filterDialog = () => {
     return (
-      <div>
+      <React.Fragment>
         <Dialog
           fullScreen
           disableBackdropClick
           open={props.isFilterDialogOpen}
           className={props.layoutState.anchor === 'right' ? props.classes.contentShiftRight : props.classes.contentShiftLeft}
           onClose={props.handleFilterVisibility}
+          scroll="paper"
         >
-          <AppBar className={props.classes.appBarDialog}>
+          <AppBar position="fixed" className={props.classes.appBarDialog}>
             <Toolbar>
               <IconButton color="inherit" onClick={props.handleFilterVisibility} aria-label="Close">
                 <CloseIcon />
@@ -76,49 +78,49 @@ export const ProfitabilityFormFilterView: React.SFC<SummaryProfitabilityFilterPr
             </Toolbar>
           </AppBar>
 
-          <List>
+          <DialogContent className={props.classes.paddingDisabled}>
+            <List>
+              <ListItem button onClick={props.handleFilterCustomerVisibility}>
+                <ListItemText
+                  primary={props.intl.formatMessage(summaryMessage.filter.customerUid)}
+                  secondary={props.filterCustomer && props.filterCustomer.name || props.intl.formatMessage(layoutMessage.text.none)}
+                />
+                <ListItemSecondaryAction>
+                  {
+                    props.filterCustomer &&
+                    <IconButton onClick={props.handleFilterCustomerOnClear}>
+                      <ClearIcon />
+                    </IconButton>
+                  }
 
-            <ListItem button onClick={props.handleFilterCustomerVisibility}>
-              <ListItemText
-                primary={props.intl.formatMessage(summaryMessage.filter.customerUid)}
-                secondary={props.filterCustomer && props.filterCustomer.name || props.intl.formatMessage(layoutMessage.text.none)}
-              />
-              <ListItemSecondaryAction>
-                {
-                  props.filterCustomer &&
-                  <IconButton onClick={props.handleFilterCustomerOnClear}>
-                    <ClearIcon />
+                  <IconButton onClick={props.handleFilterCustomerVisibility}>
+                    <ChevronRightIcon />
                   </IconButton>
-                }
+                </ListItemSecondaryAction>
+              </ListItem>
+              <Divider />
 
-                <IconButton onClick={props.handleFilterCustomerVisibility}>
-                  <ChevronRightIcon />
-                </IconButton>
-              </ListItemSecondaryAction>
-            </ListItem>
-            <Divider />
+              <ListItem button onClick={props.filterCustomer && props.handleFilterProjectVisibility} disabled={!props.filterCustomer}>
+                <ListItemText
+                  primary={props.intl.formatMessage(summaryMessage.filter.projectUid)}
+                  secondary={props.filterProject && props.filterProject.name || props.intl.formatMessage(layoutMessage.text.none)}
+                />
+                <ListItemSecondaryAction>
+                  {
+                    props.filterProject &&
+                    <IconButton onClick={props.handleFilterProjectOnClear}>
+                      <ClearIcon />
+                    </IconButton>
+                  }
 
-            <ListItem button onClick={props.filterCustomer && props.handleFilterProjectVisibility} disabled={!props.filterCustomer}>
-              <ListItemText
-                primary={props.intl.formatMessage(summaryMessage.filter.projectUid)}
-                secondary={props.filterProject && props.filterProject.name || props.intl.formatMessage(layoutMessage.text.none)}
-              />
-              <ListItemSecondaryAction>
-                {
-                  props.filterProject &&
-                  <IconButton onClick={props.handleFilterProjectOnClear}>
-                    <ClearIcon />
+                  <IconButton onClick={props.filterCustomer && props.handleFilterProjectVisibility}>
+                    <ChevronRightIcon />
                   </IconButton>
-                }
-
-                <IconButton onClick={props.filterCustomer && props.handleFilterProjectVisibility}>
-                  <ChevronRightIcon />
-                </IconButton>
-              </ListItemSecondaryAction>
-            </ListItem>
-            <Divider />
-
-          </List>
+                </ListItemSecondaryAction>
+              </ListItem>
+              <Divider />
+            </List>
+          </DialogContent>
         </Dialog>
 
         <LookupCustomerDialog
@@ -136,7 +138,7 @@ export const ProfitabilityFormFilterView: React.SFC<SummaryProfitabilityFilterPr
           onSelected={props.handleFilterProjectOnSelected}
           onClose={props.handleFilterProjectOnClose}
         />
-      </div>
+      </React.Fragment>
     );
   };
 

@@ -293,6 +293,9 @@ const styles = (theme: Theme) =>
     /* force right */
     forceRight: { float: 'right' },
     
+    /* margin disabled */
+    marginDisabled: { margin: 0 },
+
     /* margin thin */
     marginThin: { margin: theme.spacing.unit * size.thin },
     marginThinLeft: { marginLeft: theme.spacing.unit * size.thin },
@@ -314,6 +317,9 @@ const styles = (theme: Theme) =>
     marginFarRight: { marginRight: theme.spacing.unit * size.far },
     marginFarBottom: { marginBottom: theme.spacing.unit * size.far },
     
+    /* padding disabled */
+    paddingDisabled: { padding: 0 },
+
     /* padding thin */
     paddingThin: { padding: theme.spacing.unit * size.thin },
     paddingThinLeft: { paddingLeft: theme.spacing.unit * size.thin },

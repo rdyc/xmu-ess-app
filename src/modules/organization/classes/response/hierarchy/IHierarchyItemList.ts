@@ -5,9 +5,9 @@ import { ILookupPosition } from '@lookup/classes';
 export interface IHierarchyItemList {
   uid: string;
   positionUid: string;
-  position?: ILookupPosition | null;
-  relationType?: string | null;
-  relation?: ICommonSystem | null;
+  position?: ILookupPosition;
+  relationType?: string;
+  relation?: ICommonSystem;
   level: number;
-  access?: IAccountEmployeeAccess | null;
+  access?: IAccountEmployeeAccess;
 }

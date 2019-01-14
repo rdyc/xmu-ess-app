@@ -10,15 +10,15 @@ export interface IMileageExceptionDetail {
   uid: string;
   roleUid: string;
   role: ILookupRole;
-  projectUid?: string | null;
-  project?: ILookupProject | null;
-  siteUid?: string | null;
-  site?: ILookupProjectSite | null;
-  siteType?: string | null;
-  type?: ICommonSystem | null;
+  projectUid?: string;
+  project?: ILookupProject;
+  siteUid?: string;
+  site?: ILookupProjectSite;
+  siteType?: string;
+  type?: ICommonSystem;
   percentage: number;
-  description?: string | null;
-  reason?: string | null;
-  inactiveDate?: string | null;
-  changes?: IBaseChanges | null;
+  description?: string;
+  reason?: string;
+  inactiveDate?: string;
+  changes?: IBaseChanges;
 }

@@ -125,7 +125,7 @@ const handlerCreators: HandleCreators<ProjectAcceptanceApprovalProps, OwnHandler
     // generate payload
     const payload: IWorkflowApprovalPayload = {
       isApproved,
-      remark: !isApproved ? formData.remark : null
+      remark: !isApproved ? formData.remark : undefined
     };
 
     // dispatch request

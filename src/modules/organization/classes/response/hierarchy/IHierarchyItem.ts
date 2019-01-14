@@ -6,10 +6,10 @@ import { ILookupPosition } from '@lookup/classes';
 export interface IHierarchyItem {
   uid: string;
   positionUid: string;
-  position?: ILookupPosition | null;
-  relationType?: string | null;
-  relation?: ICommonSystem | null;
+  position?: ILookupPosition;
+  relationType?: string;
+  relation?: ICommonSystem;
   level: number;
-  access?: IAccountEmployeeAccess | null;
-  changes?: IBaseChanges | null;
+  access?: IAccountEmployeeAccess;
+  changes?: IBaseChanges;
 }

@@ -12,9 +12,9 @@ interface OwnProps extends WrappedFieldProps, BaseFieldProps {
   required?: boolean;
   label: string; 
   disabled: boolean;
-  companyUids?: string[] | undefined;
-  roleUids?: string[] | undefined;
-  positionUids?: string[] | undefined;
+  companyUids?: string;
+  roleUids?: string;
+  positionUids?: string;
 }
 
 export type SelectEmployeeProps 

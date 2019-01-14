@@ -1,5 +1,5 @@
 export interface IOrganizationHierarchyPutItem {
-  itemUid?: string | null;
+  itemUid?: string;
   sequence: number;
   positionUid: string;
   relationType: string;

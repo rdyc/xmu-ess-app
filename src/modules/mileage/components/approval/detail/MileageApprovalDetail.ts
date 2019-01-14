@@ -172,7 +172,7 @@ const handlerCreators: HandleCreators<
     const payload: IWorkflowApprovalItemPayload = {
       isApproved,
       items: mileageItemUid,
-      remark: !isApproved ? formData.remark : null
+      remark: !isApproved ? formData.remark : undefined
     };
 
     // dispatch update request

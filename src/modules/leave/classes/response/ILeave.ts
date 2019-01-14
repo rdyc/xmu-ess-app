@@ -6,11 +6,11 @@ import { ILeaveId } from '@leave/classes/response';
 export interface ILeave {
   uid:              string;
   employeeUid:      string;
-  employee:         IAccountEmployee | null;
+  employee?:         IAccountEmployee;
   date:             string;
   leaveType:        string;
-  leave?:           ICommonSystem | null;
-  regular?:         ILeaveId | null;
+  leave?:           ICommonSystem;
+  regular?:         ILeaveId;
   start:            string;
   end:              string;
   reEntry:          string;
@@ -18,8 +18,8 @@ export interface ILeave {
   contactNumber:    string;
   reason:           string;
   statusType:       string;
-  status?:          ICommonSystem | null;
-  rejectedReason?:  string | null;
-  requestedLeave?:  number | null;
-  changes:         IBaseChanges | null;       
+  status?:          ICommonSystem;
+  rejectedReason?:  string;
+  requestedLeave?:  number;
+  changes?:         IBaseChanges;       
 }
