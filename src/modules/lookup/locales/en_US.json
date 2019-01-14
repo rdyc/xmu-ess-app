@@ -202,7 +202,7 @@
   "lookup.currency.field.name": "Currency Name",
   "lookup.currency.field.name.required": "Currency name required",
   "lookup.currency.field.name.placeholder": "Type any name",
-  "lookup.currency.field.ymbol": "Symbol",
+  "lookup.currency.field.symbol": "Symbol",
   "lookup.currency.field.symbol.required": "Symbol required",
   "lookup.currency.field.symbol.placeholder": "Type any symbol",
   "lookup.currency.field.rate": "Currency Rate (IDR)",
