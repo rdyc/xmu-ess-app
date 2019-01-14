@@ -1,5 +1,6 @@
 import { LookupSystemDialog } from '@common/components/dialog/lookupSystemDialog/LookupSystemDialog';
 import { DialogValue } from '@layout/components/dialogs/DialogValue';
+import { ModuleDefinition } from '@layout/helper/redirector';
 import { layoutMessage } from '@layout/locales/messages';
 import { LookupCustomerDialog } from '@lookup/components/customer/dialog';
 import {
@@ -210,6 +211,7 @@ export const TimesheetApprovalListFilterView: React.SFC<TimesheetApprovalListFil
     <LookupSystemDialog
       title={props.intl.formatMessage(timesheetMessage.entry.field.statusType)}
       category="status"
+      moduleType={ModuleDefinition.Timesheet}
       hideBackdrop={true}
       isOpen={props.isFilterStatusOpen}
       value={props.filterStatus && props.filterStatus.type}

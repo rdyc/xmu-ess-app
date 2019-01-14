@@ -18,6 +18,7 @@ import {
 } from 'recompose';
 import background from '/image/background/1.png';
 
+import { WithLandingPage, withLandingPage } from '@layout/hoc/withLandingPage';
 import { AppUserManager } from '../../../../utils';
 import { LandingPageView } from './LandingPageView';
 
@@ -142,7 +143,8 @@ export type LandingPageProps
   & WithStyles<typeof styles> 
   & OwnState 
   & OwnStateUpdaters 
-  & OwnHandler;
+  & OwnHandler
+  & WithLandingPage;
 
 const createProps: mapper<LandingPageProps, OwnState> = (props: LandingPageProps): OwnState => ({
   isLoggedIn: false,
@@ -194,11 +196,19 @@ const lifecycles: ReactLifeCycleFunctions<LandingPageProps, {}> = {
     //     this.props.setUser(appUser);
     //   }
     // });
+
+    const { isLoading, response } = this.props.landingPageState.all;
+    const { loadAllRequest } = this.props.landingPageDispatch;
+    
+    if (!isLoading && !response) {
+      loadAllRequest({});
+    }
   }
 };
 
 export const LandingPage = compose<LandingPageProps, {}>(
   injectIntl,
+  withLandingPage,
   withRouter,
   withOidc,
   withUser,
