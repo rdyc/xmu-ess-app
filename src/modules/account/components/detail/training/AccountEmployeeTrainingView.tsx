@@ -79,7 +79,7 @@ export const AccountEmployeeTrainingView: React.SFC<
         (response && response.data && response.data.length === 0)) && (
         <Typography>No Data</Typography>
       )}
-      {response && response.data && renderTraining(response.data)}
+      {response && response.data && response.data.length >= 1 && renderTraining(response.data)}
     </React.Fragment>
   );
 };

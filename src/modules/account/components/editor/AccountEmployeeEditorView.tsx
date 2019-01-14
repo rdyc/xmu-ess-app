@@ -3,7 +3,7 @@ import { layoutMessage } from '@layout/locales/messages';
 import { Typography } from '@material-ui/core';
 import * as React from 'react';
 import { AccountEmployeeEditorProps } from './AccountEmployeeEditor';
-import { AccountEmployeeContainerForm, AccountEmployeeFormData } from './form/AccountEmployeeContainerForm';
+import { AccountEmployeeContainerForm, AccountEmployeeFormData } from './form/common/AccountEmployeeContainerForm';
 
 export const AccountEmployeeEditorView: React.SFC<AccountEmployeeEditorProps> = props => {
   const { formMode, handleValidate, handleSubmit, handleSubmitSuccess, handleSubmitFail,
