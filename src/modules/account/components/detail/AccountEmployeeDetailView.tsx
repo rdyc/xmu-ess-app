@@ -1,7 +1,9 @@
 import { IEmployeeDetail } from '@account/classes/response';
 import { AccountEmployeeUserAction } from '@account/classes/types';
+import { AccountEmployeeTabs } from '@account/classes/types/AccountEmployeeTabs';
 import { accountMessage } from '@account/locales/messages/accountMessage';
 import AppMenu from '@constants/AppMenu';
+import { DialogConfirmation } from '@layout/components/dialogs';
 import { SingleConfig, SingleHandler, SinglePage, SingleState } from '@layout/components/pages/singlePage/SinglePage';
 import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
@@ -41,6 +43,13 @@ const config: SingleConfig<IEmployeeDetail, AccountEmployeeDetailProps> = {
       enabled: true,
       visible: true,
       onClick: () => callback.handleForceReload()
+    },
+    {
+      id: AccountEmployeeUserAction.Modify,
+      name: props.intl.formatMessage(layoutMessage.action.modify),
+      enabled: true,
+      visible: true,
+      onClick: props.handleOnModify
     }
   ]),
 
@@ -82,7 +91,14 @@ const config: SingleConfig<IEmployeeDetail, AccountEmployeeDetailProps> = {
   ])
 };
 
-export const AccountEmployeeDetailView: React.SFC<AccountEmployeeDetailProps> = props => (
+export const AccountEmployeeDetailView: React.SFC<AccountEmployeeDetailProps> = props => {
+
+  const tabs = Object.keys(AccountEmployeeTabs).map(key => ({
+    id: key,
+    name: AccountEmployeeTabs[key]
+  }));
+  
+  const render = (
   <React.Fragment>
     <AppBar position="static">
       <Tabs 
@@ -91,13 +107,9 @@ export const AccountEmployeeDetailView: React.SFC<AccountEmployeeDetailProps> = 
         scrollable
         scrollButtons="auto"
       >
-        <Tab label="Detail" />
-        <Tab label="History" />
-        <Tab label="Education" />
-        <Tab label="Family Structure" />
-        <Tab label="Job Experience" />
-        <Tab label="Training and Certification" />
-        <Tab label="Multi Company Access" />
+        {tabs.map(item =>
+            <Tab label={item.name}/>  
+        )}
       </Tabs>
     </AppBar>
     {props.tab === 0 && 
@@ -114,5 +126,19 @@ export const AccountEmployeeDetailView: React.SFC<AccountEmployeeDetailProps> = 
     {props.tab === 4 && <div style={{ padding: 8 * 3 }}><AccountEmployeeExperience employeeUid={props.match.params.employeeUid}/></div>}
     {props.tab === 5 && <div style={{ padding: 8 * 3 }}><AccountEmployeeTraining employeeUid={props.match.params.employeeUid}/></div>}
     {/* {props.tab === 6 && <div style={{ padding: 8 * 3 }}><AccountEmployeeTraining employeeUid={props.match.params.employeeUid}/></div>}     */}
+
+    <DialogConfirmation 
+      isOpen={props.dialogOpen}
+      fullScreen={props.dialogFullScreen}
+      title={props.dialogTitle}
+      content={props.dialogContent}
+      labelCancel={props.dialogCancelLabel}
+      labelConfirm={props.dialogConfirmLabel}
+      onClickCancel={props.handleOnCloseDialog}
+      onClickConfirm={props.handleOnConfirm}
+    />
   </React.Fragment>
-);
+  );
+
+  return render;
+};
