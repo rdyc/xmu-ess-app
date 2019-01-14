@@ -1,4 +1,5 @@
 import { LookupSystemDialog } from '@common/components/dialog/lookupSystemDialog/LookupSystemDialog';
+import { ModuleDefinition } from '@layout/helper/redirector';
 import { layoutMessage } from '@layout/locales/messages';
 import { LookupCustomerDialog } from '@lookup/components/customer/dialog';
 import {
@@ -176,6 +177,7 @@ export const ProjectRegistrationListFilterView: React.SFC<ProjectRegistrationLis
     <LookupSystemDialog
       title={props.intl.formatMessage(projectMessage.registration.field.statusType)}
       category="status"
+      moduleType={ModuleDefinition.ProjectRegistration}
       hideBackdrop={true}
       isOpen={props.isFilterStatusOpen}
       value={props.filterStatus && props.filterStatus.type}
