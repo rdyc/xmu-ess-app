@@ -206,6 +206,12 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, OwnState> = {
         <React.Fragment>
           <Button 
             size="small"
+            onClick={() => this.props.history.push(`/lookup/mileageexceptions/form`, { uid: item.uid })}
+          >
+            <FormattedMessage {...layoutMessage.action.modify}/>
+          </Button>
+          <Button 
+            size="small"
             onClick={() => this.props.history.push(`/lookup/mileageexceptions/${item.uid}`)}
           >
             <FormattedMessage {...layoutMessage.action.details}/>

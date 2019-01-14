@@ -2,8 +2,8 @@ import { Submission } from '@layout/components/submission/Submission';
 import { Grid } from '@material-ui/core';
 import * as React from 'react';
 import { BaseFieldsProps, Fields, FormSection } from 'redux-form';
-// import { AccountEmployeeBankForm } from './AccountEmployeeBankForm';
-// import { AccountEmployeeContactForm } from './AccountEmployeeContactForm';
+import { AccountEmployeeBankForm } from './AccountEmployeeBankForm';
+import { AccountEmployeeContactForm } from './AccountEmployeeContactForm';
 import { AccountEmployeeContainerFormProps } from './AccountEmployeeContainerForm';
 import { AccountEmployeeDetailForm } from './AccountEmployeeDetailForm';
 
@@ -13,20 +13,20 @@ export const AccountEmployeeContainerFormView: React.SFC<
   const { formMode, initialValues } = props;
 
   const fields = Object.getOwnPropertyNames(initialValues.information);
-  // const fieldsBank = Object.getOwnPropertyNames(initialValues.bank);
-  // const fieldsContact = Object.getOwnPropertyNames(initialValues.contact);
+  const fieldsBank = Object.getOwnPropertyNames(initialValues.bank);
+  const fieldsContact = Object.getOwnPropertyNames(initialValues.contact);
 
   const componentInformation = (context: BaseFieldsProps) => (
     <AccountEmployeeDetailForm formMode={formMode} context={context} />
   );
 
-  // const componentBank = (context: BaseFieldsProps) => (
-  //   <AccountEmployeeBankForm formMode={formMode} context={context} />
-  // );
+  const componentBank = (context: BaseFieldsProps) => (
+    <AccountEmployeeBankForm formMode={formMode} context={context} />
+  );
 
-  // const componentContact = (context: BaseFieldsProps) => (
-  //   <AccountEmployeeContactForm formMode={formMode} context={context} />
-  // );
+  const componentContact = (context: BaseFieldsProps) => (
+    <AccountEmployeeContactForm formMode={formMode} context={context} />
+  );
 
   const render = (
     <form onSubmit={props.handleSubmit}>
@@ -36,7 +36,7 @@ export const AccountEmployeeContainerFormView: React.SFC<
             <Fields names={fields} component={componentInformation} />
           </FormSection>
         </Grid>
-        {/* <Grid item xs={12} md={4}>
+        <Grid item xs={12} md={4}>
           <FormSection name="bank">
             <Fields names={fieldsBank} component={componentBank} />
           </FormSection>
@@ -45,7 +45,7 @@ export const AccountEmployeeContainerFormView: React.SFC<
           <FormSection name="contact">
             <Fields names={fieldsContact} component={componentContact} />
           </FormSection>
-        </Grid> */}
+        </Grid>
         <Grid item xs={12} md={4}>
           <Submission
             valid={props.valid}
