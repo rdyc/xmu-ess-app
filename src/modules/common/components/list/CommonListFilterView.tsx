@@ -3,6 +3,7 @@ import {
   AppBar,
   Button,
   Dialog,
+  DialogContent,
   IconButton,
   List,
   ListItem,
@@ -27,9 +28,10 @@ export const CommonListFilterView: React.SFC<CommonListFilterProps> = props => (
       disableBackdropClick
       open={props.isOpen}
       className={props.layoutState.anchor === 'right' ? props.classes.contentShiftRight : props.classes.contentShiftLeft}
+      scroll="paper"
       onClose={props.onClose}
     >
-      <AppBar className={props.classes.appBarDialog}>
+      <AppBar position="fixed" className={props.classes.appBarDialog}>
         <Toolbar>
           <IconButton color="inherit" onClick={props.onClose} aria-label="Close">
             <CloseIcon />
@@ -55,27 +57,29 @@ export const CommonListFilterView: React.SFC<CommonListFilterProps> = props => (
         </Toolbar>
       </AppBar>
       
-      <List>
-        <ListItem button onClick={props.handleFilterCompanyVisibility}>
-          <ListItemText 
-            primary={props.intl.formatMessage(organizationMessage.hierarchy.field.companyUid)}
-            secondary={props.filterCompany && props.filterCompany.name || props.intl.formatMessage(layoutMessage.text.none)}
-          />
-          <ListItemSecondaryAction>
-            { 
-              props.filterCompany &&
-              <IconButton onClick={props.handleFilterCompanyOnClear}>
-                <ClearIcon />
+      <DialogContent className={props.classes.paddingDisabled}>
+        <List>
+          <ListItem button onClick={props.handleFilterCompanyVisibility}>
+            <ListItemText 
+              primary={props.intl.formatMessage(organizationMessage.hierarchy.field.companyUid)}
+              secondary={props.filterCompany && props.filterCompany.name || props.intl.formatMessage(layoutMessage.text.none)}
+            />
+            <ListItemSecondaryAction>
+              { 
+                props.filterCompany &&
+                <IconButton onClick={props.handleFilterCompanyOnClear}>
+                  <ClearIcon />
+                </IconButton> 
+              }
+
+              <IconButton onClick={props.handleFilterCompanyVisibility}>
+                <ChevronRightIcon />
               </IconButton> 
-            }
+            </ListItemSecondaryAction>
+          </ListItem>
 
-            <IconButton onClick={props.handleFilterCompanyVisibility}>
-              <ChevronRightIcon />
-            </IconButton> 
-          </ListItemSecondaryAction>
-        </ListItem>
-
-      </List>
+        </List>
+      </DialogContent>
     </Dialog>
 
     <FilterCompany
