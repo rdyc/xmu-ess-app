@@ -59,7 +59,6 @@ export const TravelSettlementItemFormView: React.SFC<TravelSettlementItemFormPro
                     disabled ={true}
                     name={`${field}.employeeUid`}
                     label={props.intl.formatMessage(travelMessage.request.field.itemEmployeeUid)}
-                    placeholder="Employee"
                     required={true}
                     companyUids={props.userState.user && props.userState.user.company.uid}
                     component={SelectEmployee}
