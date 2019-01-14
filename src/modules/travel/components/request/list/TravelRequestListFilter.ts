@@ -174,7 +174,7 @@ const stateUpdaters: StateUpdaters<TravelRequestListFilterProps, IOwnState, IOwn
 
   // filter project
   setFilterProjectVisibility: (prevState: IOwnState) => () => ({
-    isFilterProjectOpen: !prevState.isFilterCustomerOpen
+    isFilterProjectOpen: !prevState.isFilterProjectOpen
   }),
   setFilterProject: (prevState: IOwnState) => (customer?: IProjectList) => ({
     isFilterProjectOpen: false,

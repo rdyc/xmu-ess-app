@@ -16,6 +16,7 @@ import {
   withHandlers,
   withStateHandlers,
 } from 'recompose';
+import background from '/image/background/1.png';
 
 import { WithLandingPage, withLandingPage } from '@layout/hoc/withLandingPage';
 import { AppUserManager } from '../../../../utils';
@@ -41,8 +42,13 @@ const styles = (theme: Theme) => createStyles({
   icon: {
     marginRight: theme.spacing.unit * 2
   },
+  title: {
+    padding: theme.spacing.unit * 4
+  },
   heroUnit: {
-    backgroundImage: 'url("https://demos.creative-tim.com/material-kit-pro-react/static/media/bg8.8cfdd67a.jpg")',
+    // backgroundImage: 'url("https://demos.creative-tim.com/material-kit-pro-react/static/media/bg8.8cfdd67a.jpg")',
+    backgroundColor: '#333',
+    backgroundImage: `url("${background}")`,
     backgroundSize: 'cover',
     height: '100vh',
     maxHeight: '1600px',
@@ -63,12 +69,30 @@ const styles = (theme: Theme) => createStyles({
       padding: theme.spacing.unit * 3
     }
   },
+  heroSummary: {
+    background: theme.palette.background.default,
+    margin: '-150px auto 0 auto',
+    position: 'relative',
+    maxWidth: 1200,
+    justifyContent: 'center'
+  },
+  heroSummaryImage: {
+    margin: '0 auto',
+    padding: theme.spacing.unit * 3,
+    display: 'flex'
+  },
+  heroSummaryContent: {
+    marginBottom: theme.spacing.unit * 3
+  },
+  heroSummaryContentLink: {
+    textDecoration: 'none',
+  },
   layout: {
-    width: 'auto',
+    maxWidth: 1200,
     marginLeft: theme.spacing.unit * 3,
     marginRight: theme.spacing.unit * 3,
     [theme.breakpoints.up('lg')]: {
-      width: 1600,
+      maxWidth: 1200,
       marginLeft: 'auto',
       marginRight: 'auto'
     }

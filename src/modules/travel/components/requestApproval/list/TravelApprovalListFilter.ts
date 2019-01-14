@@ -74,6 +74,10 @@ interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
   setFilterCustomerVisibility: StateHandler<IOwnState>;
   setFilterCustomer: StateHandler<IOwnState>;
 
+  // filter project
+  setFilterProjectVisibility: StateHandler<IOwnState>;
+  setFilterProject: StateHandler<IOwnState>;
+
   // filter status
   setFilterStatusVisibility: StateHandler<IOwnState>;
   setFilterStatus: StateHandler<IOwnState>;
@@ -156,7 +160,8 @@ const stateUpdaters: StateUpdaters<TravelApprovalListFilterProps, IOwnState, IOw
     filterCustomer: undefined,
     filterProject: undefined,
     filterStatus: undefined,
-    filterNotify: undefined
+    filterNotify: undefined,
+    filterCompletion: undefined,
   }),
 
   // filter customer
@@ -173,7 +178,7 @@ const stateUpdaters: StateUpdaters<TravelApprovalListFilterProps, IOwnState, IOw
 
   // filter project
   setFilterProjectVisibility: (prevState: IOwnState) => () => ({
-    isFilterProjectOpen: !prevState.isFilterCustomerOpen
+    isFilterProjectOpen: !prevState.isFilterProjectOpen
   }),
   setFilterProject: (prevState: IOwnState) => (customer?: IProjectList) => ({
     isFilterProjectOpen: false,
