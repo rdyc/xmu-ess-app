@@ -1,5 +1,5 @@
 import { AccountEmployeeDetail } from '@account/components/detail/AccountEmployeeDetail';
-import AccountEmployeeEditor from '@account/components/editor/AccountEmployeeEditor';
+// import AccountEmployeeEditor from '@account/components/editor/AccountEmployeeEditor';
 import { AccountEmployeeList } from '@account/components/list/AccountEmployeeList';
 import { CurrencyDetail } from '@lookup/components/currency/detail/CurrencyDetail';
 import { CurrencyEditor } from '@lookup/components/currency/editor/CurrencyEditor';
@@ -9,6 +9,7 @@ import { LookupLeaveDetail } from '@lookup/components/leave/detail/LookupLeaveDe
 import * as React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router';
 
+import { Editor } from '@account/components/editor/Editor';
 import { LookupCompanyDetail } from './company/detail/LookupCompanyDetail';
 import LookupCompanyEditor from './company/editor/LookupCompanyEditor';
 import { LookupCompanyList } from './company/list/LookupCompanyList';
@@ -123,7 +124,7 @@ const diem = (props: RouteComponentProps) => (
 
 const employee = (props: RouteComponentProps) => (
   <Switch>
-    <Route path={`${props.match.path}/form`} component={AccountEmployeeEditor} />
+    <Route path={`${props.match.path}/form`} component={Editor} />
     <Route path={`${props.match.path}/:employeeUid`} component={AccountEmployeeDetail} />
     <Route path={`${props.match.path}`} component={AccountEmployeeList} />
   </Switch>

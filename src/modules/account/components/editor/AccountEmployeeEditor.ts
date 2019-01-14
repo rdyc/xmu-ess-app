@@ -26,7 +26,7 @@ import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
 import { isNullOrUndefined, isObject } from 'util';
 import { AccountEmployeeEditorView } from './AccountEmployeeEditorView';
-import { AccountEmployeeFormData } from './form/AccountEmployeeContainerForm';
+import { AccountEmployeeFormData } from './form/common/AccountEmployeeContainerForm';
 
 interface OwnHandlers {
   handleValidate: (payload: AccountEmployeeFormData) => FormErrors;
