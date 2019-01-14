@@ -5,6 +5,7 @@ import {
   AppBar,
   Button,
   Dialog,
+  DialogContent,
   Divider,
   IconButton,
   List,
@@ -30,9 +31,10 @@ export const TravelSettlementListFilterView: React.SFC<TravelSettlementListFilte
       disableBackdropClick
       open={props.isOpen}
       className={props.layoutState.anchor === 'right' ? props.classes.contentShiftRight : props.classes.contentShiftLeft}
+      scroll="paper"
       onClose={props.onClose}
     >
-      <AppBar className={props.classes.appBarDialog}>
+      <AppBar position="fixed" className={props.classes.appBarDialog}>
         <Toolbar>
           <IconButton color="inherit" onClick={props.onClose} aria-label="Close">
             <CloseIcon />
@@ -58,6 +60,7 @@ export const TravelSettlementListFilterView: React.SFC<TravelSettlementListFilte
         </Toolbar>
       </AppBar>
 
+      <DialogContent className={props.classes.paddingDisabled}>
       <List>
         <ListItem button onClick={props.handleFilterCustomerVisibility}>
           <ListItemText
@@ -135,6 +138,7 @@ export const TravelSettlementListFilterView: React.SFC<TravelSettlementListFilte
         <Divider />
 
       </List>
+      </DialogContent>
     </Dialog>
 
     <LookupCustomerDialog

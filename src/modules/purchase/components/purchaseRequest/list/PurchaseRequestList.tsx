@@ -208,7 +208,7 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
             WorkflowStatusType.Approved === (item.statusType) &&
             <Button
               size="small"
-              onClick={() => this.props.history.push(`/purchase/settlement/requests/form`, { uid: item.uid })}
+              onClick={() => this.props.history.push(`/purchase/settlement/requests/form`, { uid: item.uid, statusType: null, })}
             >
               <FormattedMessage {...purchaseMessage.action.settle} />
             </Button>

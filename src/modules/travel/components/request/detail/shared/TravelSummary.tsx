@@ -46,11 +46,11 @@ const travelSummary: React.SFC<AllProps> = props => (
         value={props.data.employee ? props.data.employee.fullName : 'N/A'}
       />
       <TextField
-          {...styled}
-          margin="dense"
-          label={props.intl.formatMessage(travelMessage.request.field.positionUid)}
-          value={props.data.position ? props.data.position.name : 'N/A'}
-        />      
+        {...styled}
+        margin="dense"
+        label={props.intl.formatMessage(travelMessage.request.field.positionUid)}
+        value={props.data.position ? props.data.position.name : 'N/A'}
+      />
     </Grid>
 
     <Grid item xs={12} sm={6} md={3}>
@@ -66,22 +66,22 @@ const travelSummary: React.SFC<AllProps> = props => (
         multiline
         margin="dense"
         label={props.intl.formatMessage(travelMessage.request.field.projectUid)}
-        value={`${props.data.projectUid} - ${ props.data.project && props.data.project.name }`}
+        value={`${props.data.projectUid} - ${props.data.project && props.data.project.name}`}
       />
       <TextField
-          {...styled}
-          margin="dense"
-          label={props.intl.formatMessage(travelMessage.request.field.siteUid)}
-          value={props.data.site ? props.data.site.name : 'N/A'}
-        />
+        {...styled}
+        margin="dense"
+        label={props.intl.formatMessage(travelMessage.request.field.siteUid)}
+        value={props.data.site ? props.data.site.name : 'N/A'}
+      />
       <TextField
-          {...styled}
-          margin="dense"
-          label={props.intl.formatMessage(travelMessage.request.field.activityType)}
-          value={props.data.activity ? props.data.activity.value : 'N/A'}
-        />
+        {...styled}
+        margin="dense"
+        label={props.intl.formatMessage(travelMessage.request.field.activityType)}
+        value={props.data.activity ? props.data.activity.value : 'N/A'}
+      />
     </Grid>
-    
+
     <Grid item xs={12} sm={6} md={3}>
       <TextField
         {...styled}
@@ -96,19 +96,19 @@ const travelSummary: React.SFC<AllProps> = props => (
         value={props.intl.formatDate(props.data.end, GlobalFormat.Date)}
       />
       <TextField
-          {...styled}
-          margin="dense"
-          label={props.intl.formatMessage(travelMessage.request.field.objective)}
-          value={props.data.objective || 'N/A'}
+        {...styled}
+        margin="dense"
+        label={props.intl.formatMessage(travelMessage.request.field.objective)}
+        value={props.data.objective || 'N/A'}
       />
       <TextField
-          {...styled}
-          margin="dense"
-          label={props.intl.formatMessage(travelMessage.request.field.target)}
-          value={props.data.target || 'N/A'}
+        {...styled}
+        margin="dense"
+        label={props.intl.formatMessage(travelMessage.request.field.target)}
+        value={props.data.target || 'N/A'}
       />
     </Grid>
-    
+
     {
       props.data.changes &&
       <Grid item xs={12} sm={6} md={3}>
@@ -118,6 +118,16 @@ const travelSummary: React.SFC<AllProps> = props => (
           label={props.intl.formatMessage(travelMessage.request.field.comment)}
           value={props.data.comment || 'N/A'}
         />
+        {
+          props.data &&
+          props.data.rejectReason &&
+          <TextField
+            {...styled}
+            margin="dense"
+            label={props.intl.formatMessage(travelMessage.request.field.rejectReason)}
+            value={props.data.rejectReason}
+          />
+        }
         <TextField
           {...styled}
           margin="dense"
