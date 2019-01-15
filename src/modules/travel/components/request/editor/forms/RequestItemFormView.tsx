@@ -62,7 +62,7 @@ export const RequestItemFormView: React.SFC<RequestItemFormProps> = props => {
                     <DeleteForeverIcon />
                   </IconButton>
                 }
-                title={`#${index + 1} - ${item.uid || 'Draft'}`}
+                title={`Item #${index + 1}`}
               />
               <CardContent>
                 <div>

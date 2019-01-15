@@ -46,7 +46,7 @@ export const TravelRequestListFilterView: React.SFC<TravelRequestListFilterProps
           </Typography>
 
           {
-            (props.filterCustomer || props.filterProject || props.filterType || props.filterStatus || props.filterCompletion || props.filterRejected || props.filterSettlement) &&
+            (props.filterCustomer || props.filterProject || props.filterType || props.filterStatus || props.filterRejected || props.filterSettlement) &&
             <Button color="inherit" onClick={props.handleFilterOnReset}>
               {props.intl.formatMessage(layoutMessage.action.reset)}
             </Button>
