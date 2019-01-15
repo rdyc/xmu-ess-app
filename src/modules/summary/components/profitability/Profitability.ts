@@ -145,8 +145,6 @@ const lifecycles: ReactLifeCycleFunctions<ProfitabilityProps, OwnState> = {
       subTitle: intl.formatMessage(summaryMessage.profitability.page.subTitle)
     });
 
-    layoutDispatch.searchShow();
-
     // only load data when response are empty
     if (!isLoading && !response) {
       if (customerUid !== '' && projectUid !== '') {
