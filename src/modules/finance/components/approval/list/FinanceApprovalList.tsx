@@ -126,9 +126,9 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
       // page
       page: {
         uid: AppMenu.FinanceApproval,
-      parentUid: AppMenu.Finance,
-      title: this.props.intl.formatMessage(financeMessage.approval.page.title),
-      description: this.props.intl.formatMessage(financeMessage.approval.page.subTitle)
+        parentUid: AppMenu.Finance,
+        title: this.props.intl.formatMessage(financeMessage.approval.page.title),
+        description: this.props.intl.formatMessage(financeMessage.approval.page.subTitle)
       },
       
       // top bar

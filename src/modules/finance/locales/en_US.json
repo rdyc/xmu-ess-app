@@ -28,7 +28,7 @@
   "finance.approval.action.notPaid": "Not Paid",
   "finance.approval.dialog.approvalTitle": "Finance Approval Submission",
   "finance.approval.dialog.approvalContent.x": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-  "finance.approval.dialog.approvalContent": " ",
+  "finance.approval.dialog.approvalContent": "You are about to submitting Finance approval for this approval request. Do you want to continue?",
 
   "finance.approval.message.emptyProps": "Some props are empty",
   "finance.approval.message.request.empty.financeUids": "Finance Uid are empty",
