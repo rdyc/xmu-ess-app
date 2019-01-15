@@ -28,7 +28,7 @@ const completionStatus: ICollectionValue[] = [
   { value: 'complete', name: 'Complete' }
 ];
 
-export type ITravelSettlementApprovalListFilterResult = Pick<ITravelApprovalgetAllFilter, 'customerUid' | 'projectUid' | 'statusType' | 'status' | 'start' | 'end' | 'isNotify'>;
+export type ITravelSettlementApprovalListFilterResult = Pick<ITravelApprovalgetAllFilter, 'customerUid' | 'projectUid' | 'statusType' | 'status' | 'isNotify'>;
 
 interface IOwnOption {
   isOpen: boolean;
@@ -191,9 +191,7 @@ const stateUpdaters: StateUpdaters<TravelSettlementApprovalListFilterProps, IOwn
     filterProject: undefined,
     filterStatus: undefined,
     filterNotify: undefined,
-    filterCompletion: undefined,
-    filterStart: undefined,
-    filterEnd: undefined
+    filterCompletion: undefined
   }),
 
   // filter customer
@@ -270,8 +268,6 @@ const handlerCreators: HandleCreators<TravelSettlementApprovalListFilterProps, I
       projectUid: props.filterProject && props.filterProject.uid,
       statusType: props.filterStatus && props.filterStatus.type,
       status: props.filterCompletion && props.filterCompletion.value,
-      start: props.filterStart,
-      end: props.filterEnd,
       isNotify: props.filterNotify
     });
   },

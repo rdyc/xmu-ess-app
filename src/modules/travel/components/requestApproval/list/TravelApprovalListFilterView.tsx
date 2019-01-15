@@ -1,9 +1,7 @@
 import { LookupSystemDialog } from '@common/components/dialog/lookupSystemDialog/LookupSystemDialog';
 import { DialogValue } from '@layout/components/dialogs/DialogValue';
-import { InputDateWithValue } from '@layout/components/input/date';
 import { ModuleDefinition } from '@layout/helper/redirector';
 import { layoutMessage } from '@layout/locales/messages';
-import { GlobalFormat } from '@layout/types';
 import { LookupCustomerDialog } from '@lookup/components/customer/dialog';
 import {
   AppBar,
@@ -49,7 +47,7 @@ export const TravelApprovalListFilterView: React.SFC<TravelApprovalListFilterPro
           </Typography>
 
           {
-            (props.filterCustomer || props.filterProject || props.filterType || props.filterStatus || props.filterCompletion || props.filterStart || props.filterEnd || props.filterNotify) &&
+            (props.filterCustomer || props.filterProject || props.filterType || props.filterStatus || props.filterCompletion || props.filterNotify) &&
             <Button color="inherit" onClick={props.handleFilterOnReset}>
               {props.intl.formatMessage(layoutMessage.action.reset)}
             </Button>
@@ -146,46 +144,6 @@ export const TravelApprovalListFilterView: React.SFC<TravelApprovalListFilterPro
           </ListItem>
           <Divider />
 
-          <ListItem button onClick={props.handleFilterStartVisibility}>
-            <ListItemText
-              primary={props.intl.formatMessage(travelMessage.request.field.start)}
-              secondary={props.filterStart && props.intl.formatDate(props.filterStart, GlobalFormat.Date) || props.intl.formatMessage(layoutMessage.text.none)}
-            />
-            <ListItemSecondaryAction>
-              {
-                props.filterStart &&
-                <IconButton onClick={props.handleFilterStartOnClear}>
-                  <ClearIcon />
-                </IconButton>
-              }
-
-              <IconButton onClick={props.handleFilterStartVisibility}>
-                <ChevronRightIcon />
-              </IconButton>
-            </ListItemSecondaryAction>
-          </ListItem>
-          <Divider />
-
-          <ListItem button onClick={props.handleFilterEndVisibility}>
-            <ListItemText
-              primary={props.intl.formatMessage(travelMessage.request.field.end)}
-              secondary={props.filterEnd && props.intl.formatDate(props.filterEnd, GlobalFormat.Date) || props.intl.formatMessage(layoutMessage.text.none)}
-            />
-            <ListItemSecondaryAction>
-              {
-                props.filterEnd &&
-                <IconButton onClick={props.handleFilterEndOnClear}>
-                  <ClearIcon />
-                </IconButton>
-              }
-
-              <IconButton onClick={props.handleFilterEndVisibility}>
-                <ChevronRightIcon />
-              </IconButton>
-            </ListItemSecondaryAction>
-          </ListItem>
-          <Divider />
-
           <ListItem>
             <ListItemText
               primary={props.intl.formatMessage(travelMessage.request.field.isNotify)}
@@ -239,22 +197,6 @@ export const TravelApprovalListFilterView: React.SFC<TravelApprovalListFilterPro
       value={props.filterCompletion && props.filterCompletion.value || props.initialProps && props.initialProps.status}
       onSelected={props.handleFilterCompletionOnSelected}
       onClose={props.handleFilterCompletionOnClose}
-    />
-
-    <InputDateWithValue
-      label={props.intl.formatMessage(travelMessage.request.field.start)}
-      val={props.filterStart}
-      onSelected={props.handleFilterStartOnSelected}
-      isOpen={props.isFilterStartOpen}
-      onClose={props.handleFilterStartOnClose}
-    />
-
-    <InputDateWithValue
-      label={props.intl.formatMessage(travelMessage.request.field.end)}
-      val={props.filterEnd}
-      onSelected={props.handleFilterEndOnSelected}
-      isOpen={props.isFilterEndOpen}
-      onClose={props.handleFilterEndOnClose}
     />
 
   </React.Fragment>
