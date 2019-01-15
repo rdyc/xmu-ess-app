@@ -22,7 +22,7 @@ import {
 
 import { ProjectRegistrationDialogView } from './ProjectRegistrationDialogView';
 
-interface OwnOptions {
+interface IOwnOptions {
   value?: string | undefined;
   filter?: IProjectRegistrationGetListFilter | undefined;
   isOpen: boolean;
@@ -31,23 +31,23 @@ interface OwnOptions {
   onClose: () => void;
 }
 
-interface OwnHandlers {
+interface IOwnHandlers {
   searchOnChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   searchOnKeyUp: (event: React.KeyboardEvent<HTMLDivElement>) => void;
   filterProjects: (response: IResponseCollection<IProjectList> | undefined) => IProjectList[];
 }
 
-interface OwnState {
+interface IOwnState {
   _value: string | undefined;
   _filter: IProjectRegistrationGetListFilter;
   _search: string;
 }
 
-interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
-  setStateValue: StateHandler<OwnState>;
-  setStateSearch: StateHandler<OwnState>;
-  clearStateSearch: StateHandler<OwnState>;
-  changeProjectListFilter: StateHandler<OwnState>;
+interface IOwnStateUpdaters extends StateHandlerMap<IOwnState> {
+  setStateValue: StateHandler<IOwnState>;
+  setStateSearch: StateHandler<IOwnState>;
+  clearStateSearch: StateHandler<IOwnState>;
+  changeProjectListFilter: StateHandler<IOwnState>;
 }
 
 export type LookupProjectDialogProps
@@ -55,12 +55,12 @@ export type LookupProjectDialogProps
   & WithStyles<typeof styles>
   & WithProjectRegistration
   & InjectedIntlProps
-  & OwnOptions
-  & OwnHandlers
-  & OwnState
-  & OwnStateUpdaters;
+  & IOwnOptions
+  & IOwnHandlers
+  & IOwnState
+  & IOwnStateUpdaters;
 
-const createProps: mapper<OwnOptions, OwnState> = (props: OwnOptions): OwnState => {
+const createProps: mapper<IOwnOptions, IOwnState> = (props: IOwnOptions): IOwnState => {
   const { value, filter} = props;
 
   return { 
@@ -77,17 +77,17 @@ const createProps: mapper<OwnOptions, OwnState> = (props: OwnOptions): OwnState 
   };
 };
 
-const stateUpdaters: StateUpdaters<OwnOptions, OwnState, OwnStateUpdaters> = {
-  setStateValue: (prevState: OwnState) => (uid: string) => ({
+const stateUpdaters: StateUpdaters<IOwnOptions, IOwnState, IOwnStateUpdaters> = {
+  setStateValue: (prevState: IOwnState) => (uid: string) => ({
     _value: uid
   }),
-  setStateSearch: (prevState: OwnState) => (value: string) => ({
+  setStateSearch: (prevState: IOwnState) => (value: string) => ({
     _search: value
   }),
-  clearStateSearch: (prevState: OwnState) => () => ({
+  clearStateSearch: (prevState: IOwnState) => () => ({
     _search: ''
   }),
-  changeProjectListFilter: (prevState: OwnState) => (filter: IProjectRegistrationGetListFilter) => ({
+  changeProjectListFilter: (prevState: IOwnState) => (filter: IProjectRegistrationGetListFilter) => ({
     _filter: {
       customerUids: filter && filter.customerUids,
       find: filter && filter.find,
@@ -99,7 +99,7 @@ const stateUpdaters: StateUpdaters<OwnOptions, OwnState, OwnStateUpdaters> = {
   })
 };
 
-const handlerCreators: HandleCreators<LookupProjectDialogProps, OwnHandlers> = {
+const handlerCreators: HandleCreators<LookupProjectDialogProps, IOwnHandlers> = {
   filterProjects: (props: LookupProjectDialogProps) => (response: IResponseCollection<IProjectList> | undefined): IProjectList[] => {
     const { _search } = props;
 
@@ -130,7 +130,7 @@ const handlerCreators: HandleCreators<LookupProjectDialogProps, OwnHandlers> = {
   },
 };
 
-const lifecycles: ReactLifeCycleFunctions<LookupProjectDialogProps, OwnState> = {
+const lifecycles: ReactLifeCycleFunctions<LookupProjectDialogProps, IOwnState> = {
   componentDidMount() { 
     const { _filter } = this.props;
     const { isLoading, response  } = this.props.projectRegisterState.list;
@@ -153,7 +153,7 @@ const lifecycles: ReactLifeCycleFunctions<LookupProjectDialogProps, OwnState> = 
   }
 };
 
-export const ProjectRegistrationDialog = compose<LookupProjectDialogProps, OwnOptions>(
+export const ProjectRegistrationDialog = compose<LookupProjectDialogProps, IOwnOptions>(
   setDisplayName('ProjectRegistrationDialog'),
   withLayout,
   withStyles(styles),

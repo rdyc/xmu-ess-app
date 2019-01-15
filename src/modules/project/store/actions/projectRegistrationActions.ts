@@ -3,6 +3,7 @@ import {
   IProjectRegistrationGetAllRequest,
   IProjectRegistrationGetByIdRequest,
   IProjectRegistrationGetListRequest,
+  IProjectRegistrationPatchRequest,
   IProjectRegistrationPostRequest,
   IProjectRegistrationPutRequest,
 } from '@project/classes/queries/registration';
@@ -30,6 +31,10 @@ export const enum ProjectRegistrationAction {
   PUT_SUCCESS = '@@project/registration/PUT_SUCCESS',
   PUT_ERROR = '@@project/registration/PUT_ERROR',
   PUT_DISPOSE = '@@project/registration/PUT_DISPOSE',
+  PATCH_REQUEST = '@@project/registration/PATCH_REQUEST',
+  PATCH_SUCCESS = '@@project/registration/PATCH_SUCCESS',
+  PATCH_ERROR = '@@project/registration/PATCH_ERROR',
+  PATCH_DISPOSE = '@@project/registration/PATCH_DISPOSE'
 }
 
 // get all
@@ -61,3 +66,9 @@ export const projectRegistrationPutRequest = (request: IProjectRegistrationPutRe
 export const projectRegistrationPutSuccess = (response: IResponseSingle<IProject>) => action(ProjectRegistrationAction.PUT_SUCCESS, response);
 export const projectRegistrationPutError = (message: string) => action(ProjectRegistrationAction.PUT_ERROR, message);
 export const projectRegistrationPutDispose = () => action(ProjectRegistrationAction.PUT_DISPOSE);
+
+// patch
+export const projectRegistrationPatchRequest = (request: IProjectRegistrationPatchRequest) => action(ProjectRegistrationAction.PATCH_REQUEST, request);
+export const projectRegistrationPatchSuccess = (response: IResponseSingle<IProject>) => action(ProjectRegistrationAction.PATCH_SUCCESS, response);
+export const projectRegistrationPatchError = (message: string) => action(ProjectRegistrationAction.PATCH_ERROR, message);
+export const projectRegistrationPatchDispose = () => action(ProjectRegistrationAction.PATCH_DISPOSE);
