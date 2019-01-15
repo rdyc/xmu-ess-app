@@ -4,10 +4,10 @@ export enum ExpenseField {
   // projectUid = 'Project ID',
   // date = 'Date',
   // expenseType = 'Expense Type',
-  // location = 'Location',
+  location = 'Location',
   // address = 'Address',
-  // clientName = 'Client Name',
+  clientName = 'Client Name',
   // clientTitle = 'Client Title',
   notes = 'Notes',
-  statusType = 'Status',
+  // statusType = 'Status',
 }

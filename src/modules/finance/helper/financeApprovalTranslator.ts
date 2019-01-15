@@ -1,4 +1,4 @@
-import { FinanceStatusType, ModuleType } from '@common/classes/types';
+import { ModuleType } from '@common/classes/types';
 import { FinanceField } from '@finance/classes/types';
 import { ICollectionValue } from '@layout/classes/core';
 
@@ -6,30 +6,30 @@ export const financeApprovalFieldTranslator = (find: string, field: ICollectionV
   let result: string = find;
 
   // replace payment type
-  if (field.name === FinanceField.statusType) {
-    switch (find.toLowerCase()) {
-      case 'paid':
-        result = FinanceStatusType.Paid;
-        break;
+  // if (field.name === FinanceField.statusType) {
+  //   switch (find.toLowerCase()) {
+  //     case 'paid':
+  //       result = FinanceStatusType.Paid;
+  //       break;
       
-      case 'not paid':
-      case 'notpaid':
-        result = FinanceStatusType.NotPaid;
-        break;
+  //     case 'not paid':
+  //     case 'notpaid':
+  //       result = FinanceStatusType.NotPaid;
+  //       break;
       
-      case 'hold':
-        result = FinanceStatusType.Hold;
-        break;
+  //     case 'hold':
+  //       result = FinanceStatusType.Hold;
+  //       break;
 
-      case 'approve':
-      case 'approved':
-        result = FinanceStatusType.Approved;
-        break;
+  //     case 'approve':
+  //     case 'approved':
+  //       result = FinanceStatusType.Approved;
+  //       break;
 
-      default:
-        break;
-    }
-  }
+  //     default:
+  //       break;
+  //   }
+  // }
 
   // replace module type
   if (field.name === FinanceField.moduleUid) {
