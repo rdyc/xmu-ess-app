@@ -144,8 +144,6 @@ const lifecycles: ReactLifeCycleFunctions<ProgressProps, OwnState> = {
         title: intl.formatMessage(summaryMessage.progress.page.title),
         subTitle : intl.formatMessage(summaryMessage.progress.page.subTitle)
       });
-  
-      layoutDispatch.searchShow();
     
       // only load data when response are empty
       if (!isLoading && !response) {
