@@ -25,7 +25,7 @@ import * as React from 'react';
 
 import { InputDateWithValue } from '@layout/components/input/date';
 import { ModuleDefinition } from '@layout/helper/redirector';
-import { GlobalFormat } from '@layout/types';
+// import { GlobalFormat } from '@layout/types';
 import { ProjectRegistrationDialog } from '@project/components/dialog/project';
 import { ExpenseRequestListFilterProps } from './ExpenseRequestListFilter';
 
@@ -127,7 +127,7 @@ export const ExpenseRequestListFilterView: React.SFC<ExpenseRequestListFilterPro
           </ListItem>
           <Divider />
 
-          <ListItem button onClick={props.handleFilterStartVisibility}>
+          {/* <ListItem button onClick={props.handleFilterStartVisibility}>
             <ListItemText 
               primary={props.intl.formatMessage(expenseMessage.request.field.start)}
               secondary={props.filterStart && props.intl.formatDate(props.filterStart, GlobalFormat.Date) || props.intl.formatMessage(layoutMessage.text.none)}
@@ -165,7 +165,7 @@ export const ExpenseRequestListFilterView: React.SFC<ExpenseRequestListFilterPro
               </IconButton>
             </ListItemSecondaryAction>
           </ListItem>
-          <Divider />
+          <Divider /> */}
 
           {/* <ListItem button onClick={props.handleFilterCompletionVisibility}>
             <ListItemText 
