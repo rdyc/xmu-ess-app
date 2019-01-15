@@ -12,6 +12,7 @@ import {
   compose,
   HandleCreators,
   mapper,
+  setDisplayName,
   StateHandler,
   StateHandlerMap,
   StateUpdaters,
@@ -21,11 +22,11 @@ import {
 
 import { ProjectAssignmentDetailView } from './ProjectAssignmentDetailView';
 
-interface OwnRouteParams {
+interface IOwnRouteParams {
   assignmentUid: string;
 }
 
-interface OwnState {
+interface IOwnState {
   action?: ProjectUserAction | undefined;
   dialogFullScreen: boolean;
   dialogOpen: boolean;
@@ -35,12 +36,12 @@ interface OwnState {
   dialogConfirmLabel?: string;
 }
 
-interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
-  setModify: StateHandler<OwnState>;
-  setDefault: StateHandler<OwnState>;
+interface IOwnStateUpdaters extends StateHandlerMap<IOwnState> {
+  setModify: StateHandler<IOwnState>;
+  setDefault: StateHandler<IOwnState>;
 }
 
-interface OwnHandler {
+interface IOwnHandler {
   handleOnModify: () => void;
   handleOnCloseDialog: () => void;
   handleOnConfirm: () => void;
@@ -52,19 +53,19 @@ export type ProjectAssignmentDetailProps
   & WithUser
   & WithLayout
   & WithAppBar
-  & RouteComponentProps<OwnRouteParams> 
+  & RouteComponentProps<IOwnRouteParams> 
   & InjectedIntlProps
-  & OwnState
-  & OwnStateUpdaters
-  & OwnHandler;
+  & IOwnState
+  & IOwnStateUpdaters
+  & IOwnHandler;
 
-const createProps: mapper<ProjectAssignmentDetailProps, OwnState> = (props: ProjectAssignmentDetailProps): OwnState => ({ 
+const createProps: mapper<ProjectAssignmentDetailProps, IOwnState> = (props: ProjectAssignmentDetailProps): IOwnState => ({ 
   dialogFullScreen: false,
   dialogOpen: false
 });
 
-const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
-  setModify: (prevState: OwnState, props: ProjectAssignmentDetailProps) => (): Partial<OwnState> => ({
+const stateUpdaters: StateUpdaters<{}, IOwnState, IOwnStateUpdaters> = {
+  setModify: (prevState: IOwnState, props: ProjectAssignmentDetailProps) => (): Partial<IOwnState> => ({
     action: ProjectUserAction.Modify,
     dialogFullScreen: false,
     dialogOpen: true,
@@ -73,7 +74,7 @@ const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
     dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.cancel),
     dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.continue)
   }),
-  setDefault: (prevState: OwnState) => (): Partial<OwnState> => ({
+  setDefault: (prevState: IOwnState) => (): Partial<IOwnState> => ({
     action: undefined,
     dialogFullScreen: false,
     dialogOpen: false,
@@ -84,7 +85,7 @@ const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
   })
 };
 
-const handlerCreators: HandleCreators<ProjectAssignmentDetailProps, OwnHandler> = {
+const handlerCreators: HandleCreators<ProjectAssignmentDetailProps, IOwnHandler> = {
   handleOnModify: (props: ProjectAssignmentDetailProps) => () => { 
     props.setModify();
   },
@@ -144,6 +145,7 @@ const handlerCreators: HandleCreators<ProjectAssignmentDetailProps, OwnHandler> 
 };
 
 export const ProjectAssignmentDetail = compose<ProjectAssignmentDetailProps, {}>(
+  setDisplayName('ProjectAssignmentDetail'),
   withOidc,
   withUser,
   withLayout,

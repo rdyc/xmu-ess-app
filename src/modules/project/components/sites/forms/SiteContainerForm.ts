@@ -10,15 +10,15 @@ export type ProjectSiteFormData = {
   }
 };
 
-interface OwnProps {
+interface IOwnProps {
   formAction: 'update' | 'delete';
 }
 
 export type SiteContainerFormProps 
-  = InjectedFormProps<ProjectSiteFormData, OwnProps>
-  & OwnProps;
+  = InjectedFormProps<ProjectSiteFormData, IOwnProps>
+  & IOwnProps;
 
-export const SiteContainerForm = reduxForm<ProjectSiteFormData, OwnProps>({
+export const SiteContainerForm = reduxForm<ProjectSiteFormData, IOwnProps>({
   form: 'projectSite',
   touchOnChange: true,
   touchOnBlur: true,

@@ -11,23 +11,23 @@ import { WithUser, withUser } from '@layout/hoc/withUser';
 import { WithAllowedProjectType, withAllowedProjectType } from '@project/hoc/withAllowedProjectType';
 import { projectMessage } from '@project/locales/messages/projectMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
-import { compose, HandleCreators, withHandlers } from 'recompose';
+import { compose, HandleCreators, setDisplayName, withHandlers } from 'recompose';
 import { BaseFieldsProps } from 'redux-form';
 
 import { OwnerDetailFormView } from './OwnerDetailFormView';
 
-interface OwnProps {
+interface IOwnProps {
   formMode: FormMode;
   context: BaseFieldsProps;
 }
 
-interface OwnHandlers {
+interface IOwnHandlers {
   generateFieldProps: (name: string) => any;
 }
 
 export type OwnerDetailFormProps 
-  = OwnProps
-  & OwnHandlers
+  = IOwnProps
+  & IOwnHandlers
   & WithUser
   & WithAccountPMORoles
   & WithAccountPMRoles
@@ -35,7 +35,7 @@ export type OwnerDetailFormProps
   & WithAllowedProjectType
   & InjectedIntlProps;
 
-const handlerCreators: HandleCreators<OwnerDetailFormProps, OwnHandlers> = {
+const handlerCreators: HandleCreators<OwnerDetailFormProps, IOwnHandlers> = {
   generateFieldProps: (props: OwnerDetailFormProps) => (name: string) => { 
     const { rolePmUids, roleSalesUids, allowedProjectTypes, intl } = props;
     const { user } = props.userState;
@@ -92,12 +92,13 @@ const handlerCreators: HandleCreators<OwnerDetailFormProps, OwnHandlers> = {
   }
 };
 
-export const OwnerDetailForm = compose<OwnerDetailFormProps, OwnProps>(
+export const OwnerDetailForm = compose<OwnerDetailFormProps, IOwnProps>(
+  setDisplayName('OwnerDetailForm'),
   withUser,
   withAccountPMORoles,
   withAccountPMRoles,
   withAccountSalesRoles,
   withAllowedProjectType,
   injectIntl,
-  withHandlers<OwnerDetailFormProps, OwnHandlers>(handlerCreators),
+  withHandlers(handlerCreators),
 )(OwnerDetailFormView);

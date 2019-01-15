@@ -13,15 +13,15 @@ export type ProjectOwnerFormData = {
   }
 };
 
-interface OwnProps {
+interface IOwnProps {
   formMode: FormMode;
 }
 
 export type OwnerFormProps 
-  = InjectedFormProps<ProjectOwnerFormData, OwnProps>
-  & OwnProps;
+  = InjectedFormProps<ProjectOwnerFormData, IOwnProps>
+  & IOwnProps;
 
-export const OwnerForm = reduxForm<ProjectOwnerFormData, OwnProps>({
+export const OwnerForm = reduxForm<ProjectOwnerFormData, IOwnProps>({
   form: 'projectOwner',
   touchOnChange: true,
   touchOnBlur: true,

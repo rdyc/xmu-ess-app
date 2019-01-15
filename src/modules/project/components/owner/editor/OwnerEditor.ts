@@ -16,6 +16,7 @@ import {
   lifecycle,
   mapper,
   ReactLifeCycleFunctions,
+  setDisplayName,
   StateHandler,
   StateHandlerMap,
   StateUpdaters,
@@ -29,26 +30,26 @@ import { isNullOrUndefined, isObject } from 'util';
 import { ProjectOwnerFormData } from './forms/OwnerForm';
 import { OwnerEditorView } from './OwnerEditorView';
 
-interface OwnHandlers {
+interface IOwnHandlers {
   handleValidate: (payload: ProjectOwnerFormData) => FormErrors;
   handleSubmit: (payload: ProjectOwnerFormData) => void;
   handleSubmitSuccess: (result: any, dispatch: Dispatch<any>) => void;
   handleSubmitFail: (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => void;
 }
 
-interface OwnRouteParams {
+interface IOwnRouteParams {
   projectUid: string;
 }
 
-interface OwnState {
+interface IOwnState {
   formMode: FormMode;
   companyUid?: string | undefined;
   positionUid?: string | undefined;
   projectUid?: string | undefined;
 }
 
-interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
-  stateUpdate: StateHandler<OwnState>;
+interface IOwnStateUpdaters extends StateHandlerMap<IOwnState> {
+  stateUpdate: StateHandler<IOwnState>;
 }
 
 export type OwnerEditorProps
@@ -57,13 +58,13 @@ export type OwnerEditorProps
   & WithUser
   & WithLayout
   & WithAppBar
-  & RouteComponentProps<OwnRouteParams>
+  & RouteComponentProps<IOwnRouteParams>
   & InjectedIntlProps
-  & OwnHandlers
-  & OwnState
-  & OwnStateUpdaters;
+  & IOwnHandlers
+  & IOwnState
+  & IOwnStateUpdaters;
 
-const handlerCreators: HandleCreators<OwnerEditorProps, OwnHandlers> = {
+const handlerCreators: HandleCreators<OwnerEditorProps, IOwnHandlers> = {
   handleValidate: (props: OwnerEditorProps) => (formData: ProjectOwnerFormData) => { 
     const errors = {
       information: {}
@@ -153,7 +154,7 @@ const handlerCreators: HandleCreators<OwnerEditorProps, OwnHandlers> = {
   }
 };
 
-const createProps: mapper<OwnerEditorProps, OwnState> = (props: OwnerEditorProps): OwnState => {
+const createProps: mapper<OwnerEditorProps, IOwnState> = (props: OwnerEditorProps): IOwnState => {
   const { history } = props;
   
   return { 
@@ -162,8 +163,8 @@ const createProps: mapper<OwnerEditorProps, OwnState> = (props: OwnerEditorProps
   };
 };
 
-const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
-  stateUpdate: (prevState: OwnState) => (newState: any) => ({
+const stateUpdaters: StateUpdaters<{}, IOwnState, IOwnStateUpdaters> = {
+  stateUpdate: (prevState: IOwnState) => (newState: any) => ({
     ...prevState,
     ...newState
   })
@@ -207,6 +208,7 @@ const lifecycles: ReactLifeCycleFunctions<OwnerEditorProps, {}> = {
 };
 
 export const OwnerEditor = compose<OwnerEditorProps, {}>(
+  setDisplayName('OwnerEditor'),
   withUser,
   withLayout,
   withAppBar,
@@ -214,7 +216,7 @@ export const OwnerEditor = compose<OwnerEditorProps, {}>(
   withProjectRegistration,
   withProjectOwner,
   injectIntl,
-  withStateHandlers<OwnState, OwnStateUpdaters, {}>(createProps, stateUpdaters),
-  withHandlers<OwnerEditorProps, OwnHandlers>(handlerCreators),
+  withStateHandlers<IOwnState, IOwnStateUpdaters, {}>(createProps, stateUpdaters),
+  withHandlers<OwnerEditorProps, IOwnHandlers>(handlerCreators),
   lifecycle<OwnerEditorProps, {}>(lifecycles),
 )(OwnerEditorView);

@@ -15,6 +15,8 @@ export const ProjectRegistrationEditorView: React.SFC<ProjectRegistrationEditorP
   const renderForm = (formData: ProjectRegistrationFormData) => (
     <ProjectRegistrationContainerForm 
       formMode={formMode}
+      isRequestor={props.isRequestor}
+      isAdmin={props.isAdmin}
       initialValues={formData}
       validate={handleValidate}
       onSubmit={handleSubmit} 
@@ -39,6 +41,7 @@ export const ProjectRegistrationEditorView: React.SFC<ProjectRegistrationEditorP
       rate: 1,
       valueUsd: 0,
       valueIdr: 0,
+      hours: undefined
     },
     document: {
       project: [],
@@ -81,6 +84,7 @@ export const ProjectRegistrationEditorView: React.SFC<ProjectRegistrationEditorP
       initialValues.information.rate = data.rate;
       initialValues.information.valueUsd = data.valueUsd;
       initialValues.information.valueIdr = data.valueIdr || 0;
+      initialValues.information.hours = data.maxHours || 0;
 
       if (data.documents) {
         data.documents.forEach(item => 

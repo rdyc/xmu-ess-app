@@ -15,6 +15,9 @@ export const projectRegistrationPage = defineMessages({
   
   ownerModifyTitle: { id: `${prefix}.page.owner.modify.title` },
   ownerModifySubHeader: { id: `${prefix}.page.owner.modify.subHeader` },
+
+  hourModifyTitle: { id: `${prefix}.page.hour.modify.title` },
+  hourModifySubHeader: { id: `${prefix}.page.hour.modify.subHeader` },
   
   statusModifyTitle: { id: `${prefix}.page.status.modify.title` },
   statusModifySubHeader: { id: `${prefix}.page.status.modify.subHeader` }
@@ -25,6 +28,7 @@ export const projectRegistrationOption = defineMessages({
   close: { id: `${prefix}.option.close` },
   reOpen: { id: `${prefix}.option.reOpen` },
   owner: { id: `${prefix}.option.owner` },
+  hour: { id: `${prefix}.option.hour` },
   site: { id: `${prefix}.option.site` }
 });
 
@@ -38,6 +42,8 @@ export const projectRegistrationConfirm = defineMessages({
   reOpenDescription: { id: `${prefix}.confirm.reOpen.description` },
   changeOwnerTitle: { id: `${prefix}.confirm.changeOwner.title` },
   changeOwnerDescription: { id: `${prefix}.confirm.changeOwner.description` },
+  adjustHourTitle: { id: `${prefix}.confirm.adjustHour.title` },
+  adjustHourDescription: { id: `${prefix}.confirm.adjustHour.description` },
   manageSiteTitle: { id: `${prefix}.confirm.manageSite.title` },
   manageSiteDescription: { id: `${prefix}.confirm.manageSite.description` },
 });
@@ -56,6 +62,8 @@ export const projectRegistrationSection = defineMessages({
   siteSubHeader: { id: `${prefix}.section.site.subHeader` },
   ownerTitle: { id: `${prefix}.section.owner.title` },
   ownerSubHeader: { id: `${prefix}.section.owner.subHeader` },
+  hourTitle: { id: `${prefix}.section.hour.title` },
+  hourSubHeader: { id: `${prefix}.section.hour.subHeader` },
   statusTitle: { id: `${prefix}.section.status.title` },
   statusSubHeader: { id: `${prefix}.section.status.subHeader` },
   approvalTitle: { id: `${prefix}.section.approval.title` },
@@ -121,6 +129,8 @@ export const projectRegistrationField = defineMessages({
   valueIdr: { id: `${prefix}.field.valueIdr` },
   
   hours: { id: `${prefix}.field.hours` },
+  hoursRequired: { id: `${prefix}.field.hours.required` },
+  hoursPlaceholder: { id: `${prefix}.field.hours.placeholder` },
 
   rejectedReason: { id: `${prefix}.field.rejectedReason` },
 
@@ -167,6 +177,7 @@ export const projectRegistrationFieldHelperFor = (field: string, type: 'fieldNam
       case 'currencyType': return projectRegistrationField.currencyTypeRequired;
       case 'rate': return projectRegistrationField.rateRequired;
       case 'valueUsd': return projectRegistrationField.valueUsdRequired;
+      case 'hours': return projectRegistrationField.hoursRequired;
 
       default: return {id: field};
     }
@@ -188,6 +199,7 @@ export const projectRegistrationFieldHelperFor = (field: string, type: 'fieldNam
       case 'currencyType': return projectRegistrationField.currencyTypePlaceholder;
       case 'rate': return projectRegistrationField.ratePlaceholder;
       case 'valueUsd': return projectRegistrationField.valueUsdPlaceholder;
+      case 'hours': return projectRegistrationField.hoursPlaceholder;
     
       default: return {id: field};
     }

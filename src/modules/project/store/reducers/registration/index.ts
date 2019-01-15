@@ -4,3 +4,4 @@ export * from './projectRegistrationGetByIdReducer';
 export * from './projectRegistrationGetListReducer';
 export * from './projectRegistrationPostReducer';
 export * from './projectRegistrationPutReducer';
+export * from './projectRegistrationPatchReducer';
