@@ -22,6 +22,7 @@ import ClearIcon from '@material-ui/icons/SettingsBackupRestore';
 import { purchaseMessage } from '@purchase/locales/messages/purchaseMessage';
 import * as React from 'react';
 
+import { ModuleDefinition } from '@layout/helper/redirector';
 import { ProjectRegistrationDialog } from '@project/components/dialog/project';
 import { PurchaseSettlementListFilterProps } from './PurchaseSettlementListFilter';
 
@@ -160,6 +161,7 @@ export const PurchaseSettlementListFilterView: React.SFC<PurchaseSettlementListF
     <LookupSystemDialog
       title={props.intl.formatMessage(purchaseMessage.request.field.statusType)}
       category="status"
+      moduleType={ModuleDefinition.PurchaseSettlement}
       hideBackdrop={true}
       isOpen={props.isFilterStatusOpen}
       value={props.filterStatus && props.filterStatus.type}

@@ -40,11 +40,13 @@ const expenseSummary: React.SFC<AllProps> = props => (
         />
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
+          multiline
           label={props.intl.formatMessage(expenseMessage.request.field.projectUid)}
           value={props.data.project ? `${props.data.project.uid} - ${props.data.project.name}` : 'N/A'}
         />
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
+          multiline
           label={props.intl.formatMessage(expenseMessage.request.field.customerUid)}
           value={props.data.customer ? props.data.customer.name : 'N/A'}
         />
@@ -58,6 +60,7 @@ const expenseSummary: React.SFC<AllProps> = props => (
       <Grid item xs={12} sm={6} md={3}>
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
+          multiline
           label={props.intl.formatMessage(expenseMessage.request.field.expenseType)}
           value={props.data.expense ? props.data.expense.value : props.data.expenseType}
         />
@@ -68,6 +71,7 @@ const expenseSummary: React.SFC<AllProps> = props => (
         />
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
+          multiline
           label={props.intl.formatMessage(expenseMessage.request.field.address)}
           value={props.data.address || 'N/A'}
         />

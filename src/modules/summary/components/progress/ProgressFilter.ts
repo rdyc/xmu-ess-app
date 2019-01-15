@@ -109,6 +109,8 @@ const createProps: mapper<ProgressFilterProps, OwnState> = (props: ProgressFilte
     filterProjectDialog: {
       customerUids: undefined,
       activeOnly: true,
+      orderBy: 'uid',
+      direction: 'descending',
     }
   };
 };
@@ -131,7 +133,10 @@ const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
     isFilterCustomerOpen: false,
     filterCustomer: customer,
     filterProjectDialog: {
-      customerUids: customer && customer.uid
+      customerUids: customer && customer.uid,
+      activeOnly: true,
+      orderBy: 'uid',
+      direction: 'descending',
     }
   }),
 
