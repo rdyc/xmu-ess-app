@@ -77,6 +77,8 @@ const listView: React.SFC<AllProps> = props => (
             customerUid: props.customerUid,
             projectUid: props.projectUid,
             statusType: props.statusType,
+            start: props.start,
+            end: props.end,
             isRejected: props.isRejected,
           }}
           onClose={props.handleFilterVisibility}
@@ -170,6 +172,8 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
                 customerUid: this.props.customerUid,
                 projectUid: this.props.projectUid,
                 statusType: this.props.statusType,
+                start: this.props.start,
+                end: this.props.end,
                 isRejected: this.props.isRejected,
                 find: params.find,
                 findBy: params.findBy,
@@ -232,6 +236,8 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
             return this.props.customerUid !== undefined ||
               this.props.projectUid !== undefined ||
               this.props.statusType !== undefined ||
+              this.props.start !== undefined ||
+              this.props.end !== undefined ||
               this.props.isRejected === true;
           },
           onClick: this.props.handleFilterVisibility
@@ -247,6 +253,8 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
       this.props.customerUid !== nextProps.customerUid ||
       this.props.projectUid !== nextProps.projectUid ||
       this.props.statusType !== nextProps.statusType ||
+      this.props.start !== nextProps.start ||
+      this.props.end !== nextProps.end ||
       this.props.isRejected !== nextProps.isRejected
     ) {
       this.props.setShouldUpdate();

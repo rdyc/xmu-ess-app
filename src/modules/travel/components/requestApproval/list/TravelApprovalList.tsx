@@ -78,6 +78,8 @@ const listView: React.SFC<AllProps> = props => (
             projectUid: props.projectUid,
             statusType: props.statusType,
             status: props.status,
+            start: props.start,
+            end: props.end,
             isNotify: props.isNotify,
           }}
           onClose={props.handleFilterVisibility}
@@ -173,6 +175,8 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
                 projectUid: this.props.projectUid,
                 statusType: this.props.statusType,
                 status: this.props.status,
+                start: this.props.start,
+                end: this.props.end,
                 isNotify: this.props.isNotify,
                 direction: params.direction,
                 orderBy: params.orderBy,
@@ -226,6 +230,8 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
               this.props.projectUid !== undefined ||
               this.props.statusType !== undefined ||
               this.props.status !== undefined ||
+              this.props.start !== undefined ||
+              this.props.end !== undefined ||
               this.props.isNotify === true;
           },
           onClick: this.props.handleFilterVisibility
@@ -242,6 +248,8 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
       this.props.projectUid !== nextProps.projectUid ||
       this.props.statusType !== nextProps.statusType ||
       this.props.status !== nextProps.status ||
+      this.props.start !== nextProps.start ||
+      this.props.end !== nextProps.end ||
       this.props.isNotify !== nextProps.isNotify
     ) {
       this.props.setShouldUpdate();

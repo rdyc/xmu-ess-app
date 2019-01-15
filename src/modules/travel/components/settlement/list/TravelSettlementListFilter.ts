@@ -28,7 +28,7 @@ const completionStatus: ICollectionValue[] = [
   { value: 'complete', name: 'Complete' }
 ];
 
-export type ITravelSettlementListFilterResult = Pick<ITravelSettlementGetAllFilter, 'customerUid' | 'projectUid' | 'statusType' |'isRejected'>;
+export type ITravelSettlementListFilterResult = Pick<ITravelSettlementGetAllFilter, 'customerUid' | 'projectUid' | 'statusType' | 'start' | 'end' |'isRejected'>;
 
 interface IOwnOption {
   isOpen: boolean;
@@ -58,6 +58,14 @@ interface IOwnState {
   isFilterStatusOpen: boolean;
   filterStatus?: ISystemList;
 
+  // filter start
+  isFilterStartOpen: boolean;
+  filterStart?: string;
+
+  // filter end
+  isFilterEndOpen: boolean;
+  filterEnd?: string;
+
   // filter rejected
   filterRejected?: boolean;
 }
@@ -77,6 +85,14 @@ interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
   // filter status
   setFilterStatusVisibility: StateHandler<IOwnState>;
   setFilterStatus: StateHandler<IOwnState>;
+
+  // filter Start
+  setFilterStartVisibility: StateHandler<IOwnState>;
+  setFilterStart: StateHandler<IOwnState>;
+
+  // filter End
+  setFilterEndVisibility: StateHandler<IOwnState>;
+  setFilterEnd: StateHandler<IOwnState>;
   
   // filter rejected
   setFilterRejected: StateHandler<IOwnState>;
@@ -105,6 +121,18 @@ interface IOwnHandler {
   handleFilterStatusOnClear: (event: React.MouseEvent<HTMLElement>) => void;
   handleFilterStatusOnClose: () => void;
 
+  // filter Start
+  handleFilterStartVisibility: (event: React.MouseEvent<HTMLElement>) => void;
+  handleFilterStartOnSelected: (data: string) => void;
+  handleFilterStartOnClear: (event: React.MouseEvent<HTMLElement>) => void;
+  handleFilterStartOnClose: () => void;
+
+  // filter End
+  handleFilterEndVisibility: (event: React.MouseEvent<HTMLElement>) => void;
+  handleFilterEndOnSelected: (data: string) => void;
+  handleFilterEndOnClear: (event: React.MouseEvent<HTMLElement>) => void;
+  handleFilterEndOnClose: () => void;
+
   // filter rejected
   handleFilterRejectedOnChange: (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => void;  
 }
@@ -124,6 +152,8 @@ const createProps: mapper<TravelSettlementListFilterProps, IOwnState> = (props: 
   isFilterCustomerOpen: false,
   isFilterProjectOpen: false,
   isFilterStatusOpen: false,
+  isFilterStartOpen: false,
+  isFilterEndOpen: false,
 
   // pass initial value for primitive types only, bellow is 'boolean'
   filterRejected: props.initialProps && props.initialProps.isRejected,
@@ -145,6 +175,8 @@ const stateUpdaters: StateUpdaters<TravelSettlementListFilterProps, IOwnState, I
     filterProject: undefined,
     filterType: undefined,
     filterStatus: undefined,
+    filterStart: undefined,
+    filterEnd: undefined,
     filterRejected: undefined
   }),
 
@@ -178,6 +210,24 @@ const stateUpdaters: StateUpdaters<TravelSettlementListFilterProps, IOwnState, I
     filterStatus: data
   }),
 
+  // filter Start
+  setFilterStartVisibility: (prevState: IOwnState) => () => ({
+    isFilterStartOpen: !prevState.isFilterStartOpen,
+  }),
+  setFilterStart: (prevState: IOwnState) => (data?: string) => ({
+    isFilterStartOpen: false,
+    filterStart: data
+  }),
+
+  // filter End
+  setFilterEndVisibility: (prevState: IOwnState) => () => ({
+    isFilterEndOpen: !prevState.isFilterEndOpen
+  }),
+  setFilterEnd: (prevState: IOwnState) => (data?: string) => ({
+    isFilterEndOpen: false,
+    filterEnd: data
+  }),
+
   // filter rejected
   setFilterRejected: (prevState: IOwnState) => (checked: boolean) => ({
     filterRejected: checked
@@ -193,6 +243,8 @@ const handlerCreators: HandleCreators<TravelSettlementListFilterProps, IOwnHandl
     props.onApply({
       customerUid: props.filterCustomer && props.filterCustomer.uid,
       statusType: props.filterStatus && props.filterStatus.type,
+      start: props.filterStart,
+      end: props.filterEnd,
       isRejected: props.filterRejected,
     });
   },
@@ -237,6 +289,42 @@ const handlerCreators: HandleCreators<TravelSettlementListFilterProps, IOwnHandl
   },
   handleFilterStatusOnClose: (props: TravelSettlementListFilterProps) => () => {
     props.setFilterStatusVisibility();
+  },
+
+  // filter Start
+  handleFilterStartVisibility: (props: TravelSettlementListFilterProps) => () => {
+    props.setFilterStartVisibility();
+  },
+  handleFilterStartOnSelected: (props: TravelSettlementListFilterProps) => (
+    data: string
+  ) => {
+    props.setFilterStart(data);
+  },
+  handleFilterStartOnClear: (props: TravelSettlementListFilterProps) => () => {
+    props.setFilterStart(props.start);
+  },
+  handleFilterStartOnClose: (props: TravelSettlementListFilterProps) => () => {
+    props.setFilterStartVisibility();
+  },
+
+  // filter End
+  handleFilterEndVisibility: (props: TravelSettlementListFilterProps) => (
+    event: React.MouseEvent<HTMLElement>
+  ) => {
+    props.setFilterEndVisibility();
+  },
+  handleFilterEndOnSelected: (props: TravelSettlementListFilterProps) => (
+    data: string
+  ) => {
+    props.setFilterEnd(data);
+  },
+  handleFilterEndOnClear: (props: TravelSettlementListFilterProps) => (
+    event: React.MouseEvent<HTMLElement>
+  ) => {
+    props.setFilterEnd(props.end);
+  },
+  handleFilterEndOnClose: (props: TravelSettlementListFilterProps) => () => {
+    props.setFilterEndVisibility();
   },
 
   // filter rejected
