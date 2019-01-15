@@ -13,13 +13,13 @@ import { WorkflowMileageApprovalView } from './WorkflowMileageApprovalView';
 const formName = 'workflowMileageApproval';
 
 export type WorkflowApprovalMileageFormData = {
-  items: IMileageApprovalPostItem[] | null;
-  isApproved: string | null | undefined;
-  remark: string | null;
+  items?: IMileageApprovalPostItem[];
+  isApproved?: string;
+  remark?: string;
 };
 
 interface FormValueProps {
-  formIsApproved: boolean | undefined;
+  formIsApproved?: boolean;
 }
 
 interface OwnProps {
@@ -28,11 +28,11 @@ interface OwnProps {
   approvalSubHeader: string;
   approvalChoices: RadioGroupChoice[];
   approvalTrueValue: string;
-  approvalDialogFullScreen?: boolean | false;
-  approvalDialogTitle?: string | undefined;
-  approvalDialogContentText?: string | undefined;
-  approvalDialogCancelText?: string | undefined;
-  approvalDialogConfirmedText?: string | undefined;
+  approvalDialogFullScreen?: boolean;
+  approvalDialogTitle?: string;
+  approvalDialogContentText?: string;
+  approvalDialogCancelText?: string;
+  approvalDialogConfirmedText?: string;
 }
 
 interface OwnHandler {

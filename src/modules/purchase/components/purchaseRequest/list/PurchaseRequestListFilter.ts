@@ -158,7 +158,7 @@ const stateUpdaters: StateUpdaters<PurchaseRequestListFilterProps, IOwnState, IO
     isFilterCustomerOpen: false,
     filterCustomer: customer,
     filterProjectDialog: {
-      customerUids: customer && [customer.uid] || undefined
+      customerUids: customer && customer.uid
     }
   }),
 

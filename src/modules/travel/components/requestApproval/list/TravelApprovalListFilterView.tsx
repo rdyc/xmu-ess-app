@@ -1,11 +1,13 @@
 import { LookupSystemDialog } from '@common/components/dialog/lookupSystemDialog/LookupSystemDialog';
 import { DialogValue } from '@layout/components/dialogs/DialogValue';
+import { ModuleDefinition } from '@layout/helper/redirector';
 import { layoutMessage } from '@layout/locales/messages';
 import { LookupCustomerDialog } from '@lookup/components/customer/dialog';
 import {
   AppBar,
   Button,
   Dialog,
+  DialogContent,
   Divider,
   IconButton,
   List,
@@ -31,9 +33,10 @@ export const TravelApprovalListFilterView: React.SFC<TravelApprovalListFilterPro
       disableBackdropClick
       open={props.isOpen}
       className={props.layoutState.anchor === 'right' ? props.classes.contentShiftRight : props.classes.contentShiftLeft}
+      scroll="paper"
       onClose={props.onClose}
     >
-      <AppBar className={props.classes.appBarDialog}>
+      <AppBar position="fixed" className={props.classes.appBarDialog}>
         <Toolbar>
           <IconButton color="inherit" onClick={props.onClose} aria-label="Close">
             <CloseIcon />
@@ -59,6 +62,7 @@ export const TravelApprovalListFilterView: React.SFC<TravelApprovalListFilterPro
         </Toolbar>
       </AppBar>
 
+      <DialogContent className={props.classes.paddingDisabled}>
       <List>
         <ListItem button onClick={props.handleFilterCustomerVisibility}>
           <ListItemText
@@ -73,14 +77,14 @@ export const TravelApprovalListFilterView: React.SFC<TravelApprovalListFilterPro
               </IconButton>
             }
 
-            <IconButton onClick={props.handleFilterCompletionVisibility}>
+            <IconButton onClick={props.handleFilterCustomerVisibility}>
               <ChevronRightIcon />
             </IconButton>
           </ListItemSecondaryAction>
         </ListItem>
         <Divider />
 
-        <ListItem button onClick={props.filterCustomer && props.handleFilterProjectVisibility}>
+        <ListItem button onClick={props.filterCustomer && props.handleFilterProjectVisibility} disabled={!props.filterCustomer}>
           <ListItemText
             primary={props.intl.formatMessage(travelMessage.request.field.projectUid)}
             secondary={props.filterProject && props.filterProject.name || props.intl.formatMessage(layoutMessage.text.none)}
@@ -93,7 +97,7 @@ export const TravelApprovalListFilterView: React.SFC<TravelApprovalListFilterPro
               </IconButton>
             }
 
-            <IconButton onClick={props.filterCustomer && props.handleFilterProjectVisibility}>
+            <IconButton onClick={props.filterCustomer && props.handleFilterProjectVisibility} disabled={!props.filterCustomer}>
               <ChevronRightIcon />
             </IconButton>
           </ListItemSecondaryAction>
@@ -156,6 +160,7 @@ export const TravelApprovalListFilterView: React.SFC<TravelApprovalListFilterPro
         <Divider />
 
       </List>
+      </DialogContent>
     </Dialog>
 
     <LookupCustomerDialog
@@ -176,6 +181,7 @@ export const TravelApprovalListFilterView: React.SFC<TravelApprovalListFilterPro
     <LookupSystemDialog
       title={props.intl.formatMessage(travelMessage.request.field.statusType)}
       category="status"
+      moduleType={ModuleDefinition.Travel}
       hideBackdrop={true}
       isOpen={props.isFilterStatusOpen}
       value={props.filterStatus && props.filterStatus.type}

@@ -1,20 +1,24 @@
+import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import {
+  AppBar,
   Button,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
+  IconButton,
   Table,
   TableBody,
   TableCell,
   TableHead,
   TableRow,
-  WithStyles,
+  Toolbar,
+  Typography,
   withStyles,
-  withWidth
+  WithStyles,
 } from '@material-ui/core';
-import { isWidthDown, WithWidth } from '@material-ui/core/withWidth';
+import CloseIcon from '@material-ui/icons/Close';
 import styles from '@styles';
 import { ISummaryBillable } from '@summary/classes/response/billable';
 import {
@@ -22,8 +26,9 @@ import {
   BillableHeaderDetailPresales
 } from '@summary/classes/types/billable/BillableHeaderDetail';
 import { BillableType } from '@summary/classes/types/billable/BillableType';
+import { summaryMessage } from '@summary/locales/messages/summaryMessage';
 import * as React from 'react';
-import { FormattedNumber } from 'react-intl';
+import { FormattedNumber, InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose } from 'recompose';
 
 interface OwnProps {
@@ -34,13 +39,11 @@ interface OwnProps {
   handleDialog: () => void;
 }
 
-type AllProps = OwnProps & WithUser & WithWidth & WithStyles<typeof styles>;
+type AllProps = OwnProps & WithUser & WithLayout & InjectedIntlProps & WithStyles<typeof styles>;
 
 const billableDetail: React.SFC<AllProps> = props => {
-  const { uid, type, open, data, handleDialog, width, classes } = props;
+  const { uid, type, open, data, handleDialog, classes } = props;
   const { user } = props.userState;
-
-  const isMobile = isWidthDown('sm', width);
 
   const headerNonPresales = Object.keys(BillableHeaderDetailNonPresales).map(
     key => ({ id: key, name: BillableHeaderDetailNonPresales[key] })
@@ -61,10 +64,21 @@ const billableDetail: React.SFC<AllProps> = props => {
               open={open}
               onClose={handleDialog}
               scroll="paper"
-              fullWidth
-              maxWidth="md"
-              fullScreen={isMobile}
+              className={props.layoutState.anchor === 'right' ? props.classes.contentShiftRight : props.classes.contentShiftLeft}
+              fullScreen
             >
+              <AppBar className={props.classes.appBarDialog}>
+                <Toolbar>
+                  <IconButton color="inherit" onClick={handleDialog} aria-label="Close">
+                    <CloseIcon />
+                  </IconButton>
+
+                  <Typography variant="h6" color="inherit" className={props.classes.flex}>
+                    {props.intl.formatMessage(summaryMessage.billable.page.detail, {type: props.type === BillableType.NonPresales ? BillableType.Billable : BillableType.Presales})}
+                  </Typography>
+
+                </Toolbar>
+              </AppBar>
               <DialogTitle>
                 {item.employee.fullName} &bull; {user && user.company.name}
               </DialogTitle>
@@ -129,6 +143,9 @@ const billableDetail: React.SFC<AllProps> = props => {
   return render;
 };
 
-export const BillableDetail = compose<AllProps, OwnProps>(withUser, withWidth(), withStyles(styles))(
-  billableDetail
-);
+export const BillableDetail = compose<AllProps, OwnProps>(
+  withUser, 
+  withLayout,  
+  injectIntl,
+  withStyles(styles)
+)(billableDetail);

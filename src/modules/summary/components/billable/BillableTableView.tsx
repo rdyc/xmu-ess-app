@@ -109,127 +109,137 @@ const billableTableView: React.SFC<AllProps> = props => {
   );
 
   const render = (
-    <div className={classes.table}>
-      <Table className={classes.minTable}>
-        <TableHead>
-          <TableRow>
-            {header.map(item => (
-              <TableCell
-                key={item.id}
-                numeric={item.id === 'fullName' ? false : true}
-                padding="default"
-                sortDirection={
-                  orderBy === item.id
-                    ? direction === 'ascending'
-                      ? 'asc'
-                      : 'desc'
-                    : false
-                }
-              >
-                {item.id === 'fullName' ? (
-                  <Tooltip
-                    title="Sort"
-                    disableFocusListener
-                  >
-                    <TableSortLabel
-                      active={orderBy === item.id}
-                      direction={direction === 'ascending' ? 'asc' : 'desc'}
-                      onClick={() =>
-                        handleChangeSort(
-                          direction === 'ascending' ? true : false
-                        )
-                      }
-                    >
-                      {item.name}
-                    </TableSortLabel>
-                  </Tooltip>
-                ) : (
-                  item.name
-                )}
-              </TableCell>
-            ))}
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {data &&
-            data.map((item, index) => (
-              <TableRow key={index}>
-                <TableCell numeric>{index + 1 + (page - 1) * size}</TableCell>
-                <TableCell>{item.employee.fullName}</TableCell>
-                <TableCell numeric>
+    <Table>
+      <TableHead>
+        <TableRow>
+          {header.map(item => (
+            <TableCell
+              key={item.id}
+              numeric={item.id === 'fullName' ? false : true}
+              padding="default"
+              sortDirection={
+                orderBy === item.id
+                  ? direction === 'ascending'
+                    ? 'asc'
+                    : 'desc'
+                  : false
+              }
+            >
+              {item.id === 'fullName' ? (
                 <Tooltip
-                  title={props.intl.formatMessage(summaryMessage.billable.hover.nonPresales)}
+                  title="Sort"
                   disableFocusListener
                 >
-                  <Chip
-                    label={
-                      item.categories &&
-                      item.categories.map(cat =>
-                        cat.name === BillableType.NonPresales
-                          ? <FormattedNumber key={cat.name} value={Number(cat.billable.hours.toFixed(2))} />
-                          : null
+                  <TableSortLabel
+                    active={orderBy === item.id}
+                    direction={direction === 'ascending' ? 'asc' : 'desc'}
+                    onClick={() =>
+                      handleChangeSort(
+                        direction === 'ascending' ? true : false
                       )
                     }
-                    onClick={() =>
-                      _handledialog(item.employee.uid, BillableType.NonPresales)
-                    }
-                  />
-                  </Tooltip>
-                </TableCell>
-                <TableCell numeric>
-                  {item.categories &&
-                    item.categories.map(cat =>
-                      cat.name === BillableType.NonPresales ? <FormattedNumber key={cat.name} value={Number(cat.billable.percentage.toFixed(2))} /> : null
-                    )}
-                </TableCell>
-                <TableCell numeric>
+                  >
+                    {item.name}
+                  </TableSortLabel>
+                </Tooltip>
+              ) : (
+                item.name
+              )}
+            </TableCell>
+          ))}
+        </TableRow>
+      </TableHead>
+      <TableBody>
+        {data &&
+          data.map((item, index) => (
+            <TableRow key={index}>
+              <TableCell numeric>{index + 1 + (page - 1) * size}</TableCell>
+              <TableCell>{item.employee.fullName}</TableCell>
+              <TableCell numeric>
+                {item.categories && item.categories.map (cat => (
+                  cat.name === BillableType.NonPresales &&
+                  cat.assignments && ((
+                  cat.assignments.length >= 1 &&
+                  <Tooltip
+                    title={props.intl.formatMessage(summaryMessage.billable.hover.nonPresales)}
+                    disableFocusListener
+                  >
+                    <Chip
+                      key={cat.name}
+                      label={<FormattedNumber value={Number(cat.billable.hours.toFixed(2))} />}
+                      onClick={() =>
+                        _handledialog(item.employee.uid, BillableType.NonPresales)
+                      }
+                    />
+                  </Tooltip>) || 
+                  (
+                    <Chip 
+                      label={<FormattedNumber key={cat.name} value={Number(cat.billable.hours)} />}
+                      variant="outlined"
+                    />  
+                  ))
+                ))}
+              </TableCell>
+              <TableCell numeric>
+                {item.categories &&
+                  item.categories.map(cat =>
+                    cat.name === BillableType.NonPresales ? <FormattedNumber key={cat.name} value={Number(cat.billable.percentage.toFixed(2))} /> : null
+                  )}
+              </TableCell>
+              <TableCell numeric>
+                {item.categories && item.categories.map (cat => (
+                  cat.name === BillableType.Presales &&
+                  cat.assignments && ((
+                  cat.assignments.length >= 1 &&
                   <Tooltip
                     title={props.intl.formatMessage(summaryMessage.billable.hover.presales)}
                     disableFocusListener
                   >
-                  <Chip
-                    label={
-                      item.categories &&
-                      item.categories.map(cat =>
-                        cat.name === BillableType.Presales
-                          ? <FormattedNumber key={cat.name} value={Number(cat.billable.hours.toFixed(2))} />
-                          : null
-                      )
-                    }
-                    onClick={() => _handledialog(item.employee.uid, BillableType.Presales)}
-                  />
-                  </Tooltip>
-                </TableCell>
-                <TableCell numeric>
-                  {item.categories &&
-                    item.categories.map(cat =>
-                      cat.name === BillableType.Presales ? <FormattedNumber key={cat.name} value={Number(cat.billable.percentage.toFixed(2))} /> : null
-                    )}
-                </TableCell>
-              </TableRow>
-            ))}
-        </TableBody>
-        <TableFooter>
-          <TableRow>
-            {metadata && (
-              <TablePagination
-                rowsPerPageOptions={[10, 15, 25]}
-                count={metadata.total}
-                rowsPerPage={size}
-                page={page - 1}
-                onChangePage={_handlePage}
-                onChangeRowsPerPage={e =>
-                  handleChangeSize(Number(e.target.value))
-                }
-                ActionsComponent={() =>
-                  tablePaginationAction(metadata.total)
-                }
-              />
-            )}
-          </TableRow>
-        </TableFooter>
-      </Table>
-    </div>
+                    <Chip
+                      key={cat.name}
+                      label={<FormattedNumber value={Number(cat.billable.hours.toFixed(2))} />}
+                      onClick={() =>
+                        _handledialog(item.employee.uid, BillableType.Presales)
+                      }
+                    />
+                  </Tooltip>) || 
+                  (
+                    <Chip 
+                      label={<FormattedNumber key={cat.name} value={Number(cat.billable.hours)} />}
+                      variant="outlined"
+                    />  
+                  ))
+                ))}
+              </TableCell>
+              <TableCell numeric>
+                {item.categories &&
+                  item.categories.map(cat =>
+                    cat.name === BillableType.Presales ? <FormattedNumber key={cat.name} value={Number(cat.billable.percentage.toFixed(2))} /> : null
+                  )}
+              </TableCell>
+            </TableRow>
+          ))}
+      </TableBody>
+      <TableFooter>
+        <TableRow>
+          {metadata && (
+            <TablePagination
+              rowsPerPageOptions={[10, 15, 25]}
+              count={metadata.total}
+              rowsPerPage={size}
+              page={page - 1}
+              onChangePage={_handlePage}
+              onChangeRowsPerPage={e =>
+                handleChangeSize(Number(e.target.value))
+              }
+              ActionsComponent={() =>
+                tablePaginationAction(metadata.total)
+              }
+            />
+          )}
+        </TableRow>
+      </TableFooter>
+    </Table>
   );
 
   return render;

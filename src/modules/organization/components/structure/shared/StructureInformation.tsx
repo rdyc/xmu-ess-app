@@ -1,3 +1,4 @@
+import { layoutMessage } from '@layout/locales/messages';
 import { GlobalFormat } from '@layout/types';
 import { GlobalStyle } from '@layout/types/GlobalStyle';
 import { Card, CardContent, CardHeader, Checkbox, FormControlLabel, TextField } from '@material-ui/core';
@@ -56,6 +57,28 @@ export const structureInformation: React.SFC<AllProps> = props => {
             props.intl.formatMessage(organizationMessage.structure.field.isExpired) :
             props.intl.formatMessage(organizationMessage.structure.field.isNotExpired)}
         />
+        {
+          data.changes &&
+          <TextField
+            {...GlobalStyle.TextField.ReadOnly}
+            margin="dense"
+            label={props.intl.formatMessage(layoutMessage.field.createdBy)}
+            value={data.changes.created && data.changes.created.fullName || 'N/A'}
+            helperText={props.intl.formatDate(data.changes.createdAt, GlobalFormat.DateTime) || 'N/A'}
+          />
+        }
+        {
+          data.changes &&
+          data.changes.updated &&
+          data.changes.updatedAt &&
+          <TextField
+            {...GlobalStyle.TextField.ReadOnly}
+            margin="dense"
+            label={props.intl.formatMessage(layoutMessage.field.updatedBy)}
+            value={data.changes.updated.fullName || 'N/A'}
+            helperText={props.intl.formatDate(data.changes.updatedAt, GlobalFormat.DateTime) || 'N/A'}
+          />
+        }
       </CardContent>
     </Card>
   );

@@ -5,11 +5,11 @@ import { ILookupPosition } from '@lookup/classes';
 export interface IStructureItem {
   uid: string;
   positionUid: string;
-  position?: ILookupPosition | null;
-  employees: IAccountEmployee | null;
+  position?: ILookupPosition;
+  employees?: IAccountEmployee;
   start: string;
-  end?: string | null;
+  end?: string;
   isActive: boolean;
   isExpired: boolean;
-  changes?: IBaseChanges | null;
+  changes?: IBaseChanges;
 }

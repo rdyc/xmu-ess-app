@@ -1,5 +1,5 @@
 import { layoutMessage } from '@layout/locales/messages';
-import { Badge, IconButton, Menu, MenuItem, Toolbar, Tooltip, Typography } from '@material-ui/core';
+import { Badge, IconButton, Menu, MenuItem, Paper, Toolbar, Tooltip, Typography } from '@material-ui/core';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
@@ -14,12 +14,13 @@ import { DataContainerProps } from './DataContainer';
 
 export const DataContainerView: React.SFC<DataContainerProps> = props => (
   <React.Fragment>
-    <Toolbar disableGutters>
+    <Paper square>
+      <Toolbar>
       <Typography
         noWrap
         variant="body2"
         className={props.className}
-      >
+        >
         {
           props.isLoading &&
           <FormattedMessage {...layoutMessage.text.loading} />
@@ -37,20 +38,20 @@ export const DataContainerView: React.SFC<DataContainerProps> = props => (
       {
         props.additionalControls &&
         props.additionalControls.map((item, index) =>
-          <Tooltip
+        <Tooltip
             key={index}
             placement="bottom"
             title={item.title}
-          >
+            >
             <IconButton
               id={item.id}
               disabled={props.isLoading}
               onClick={item.onClick} 
-            >
+              >
               <Badge
                 invisible={!item.showBadgeWhen()}
                 badgeContent={<CheckCircleIcon color="primary" />}
-              >
+                >
                 <item.icon/>
               </Badge>
             </IconButton>
@@ -61,7 +62,7 @@ export const DataContainerView: React.SFC<DataContainerProps> = props => (
       <Tooltip
         placement="bottom"
         title={props.intl.formatMessage(layoutMessage.tooltip.orderBy)}
-      >
+        >
         <IconButton
           id="option-field"
           disabled={props.isLoading}
@@ -74,12 +75,12 @@ export const DataContainerView: React.SFC<DataContainerProps> = props => (
       <Tooltip
         placement="bottom"
         title={props.intl.formatMessage(layoutMessage.tooltip.sortDirection)}
-      >
+        >
         <IconButton 
           id="option-order"
           disabled={props.isLoading}
           onClick={props.handleOnClickMenu}
-        >
+          >
           <SortByAlphaIcon />
         </IconButton>
       </Tooltip>
@@ -87,12 +88,12 @@ export const DataContainerView: React.SFC<DataContainerProps> = props => (
       <Tooltip
         placement="bottom"
         title={props.intl.formatMessage(layoutMessage.tooltip.rowsPerPage)}
-      >
+        >
         <IconButton 
           id="option-size"
           disabled={props.isLoading}
           onClick={props.handleOnClickMenu}
-        >
+          >
           <ListAltIcon />
         </IconButton>
       </Tooltip>
@@ -100,19 +101,20 @@ export const DataContainerView: React.SFC<DataContainerProps> = props => (
       <Tooltip
         placement="bottom"
         title={props.intl.formatMessage(layoutMessage.tooltip.refresh)}
-      >
+        >
         <IconButton 
           id="option-sync"
           disabled={props.isLoading}
           onClick={props.onClickSync}
-        >
+          >
           <SyncIcon />
         </IconButton>
       </Tooltip>
     </Toolbar>
-
+    </Paper>
+  
     {props.children}
-
+      
     {
       !props.isLoading &&
       props.metadata &&
@@ -146,11 +148,11 @@ export const DataContainerView: React.SFC<DataContainerProps> = props => (
           {
             !props.isLoading &&
             <FormattedMessage 
-              {...layoutMessage.text.pagingInfo} 
-              values={{
-                current: props.metadata.paginate.current,
-                total: props.metadata.paginate.total
-              }}
+            {...layoutMessage.text.pagingInfo} 
+            values={{
+              current: props.metadata.paginate.current,
+              total: props.metadata.paginate.total
+            }}
             />
           }
         </Typography>
@@ -163,7 +165,7 @@ export const DataContainerView: React.SFC<DataContainerProps> = props => (
             <IconButton 
               disabled={props.isLoading || !props.metadata.paginate.next}
               onClick={props.onClickNext}
-            >
+              >
               <ChevronRightIcon />
             </IconButton>
           </div>
@@ -181,15 +183,15 @@ export const DataContainerView: React.SFC<DataContainerProps> = props => (
         props.menuItems &&
         props.menuItems.map((item, index) => 
           <MenuItem
-            key={index}
-            value={item.value}
-            selected={props.menuItemActive === item.value}
-            onClick={() => props.handleOnClickMenuItem(item)} 
+          key={index}
+          value={item.value}
+          selected={props.menuItemActive === item.value}
+          onClick={() => props.handleOnClickMenuItem(item)} 
           >
             {item.name}
           </MenuItem>  
         )
       }
     </Menu>
-  </React.Fragment>
+  </React.Fragment>  
 );

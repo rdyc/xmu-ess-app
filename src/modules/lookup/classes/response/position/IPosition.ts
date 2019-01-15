@@ -4,11 +4,11 @@ import { ILookupCompany } from '@lookup/classes';
 export interface IPosition {
   uid:                string;
   companyUid:         string;
-  company:            ILookupCompany;
+  company?:            ILookupCompany;
   name:               string;
-  description?:       string | null;
+  description?:       string;
   isAllowMultiple:    boolean;
-  inactiveDate:       string | null;
+  inactiveDate?:       string;
   isExpired:          boolean;
-  changes:            IBaseChanges | null;
+  changes?:            IBaseChanges;
 }

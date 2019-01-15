@@ -43,10 +43,4 @@ export enum AccountEmployeeExperienceHeaderTable {
   position = 'Position Name',
   start = 'Start Year',
   finish = 'Finish year',
-  // workPeriod = 'Work Period',
-}
-
-export enum AccountEmployeeExperienceSubHeaderTable {
-  start = 'Start Year',
-  finish = 'Finish year',
 }

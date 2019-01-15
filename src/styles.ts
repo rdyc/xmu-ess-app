@@ -1,11 +1,15 @@
 import { createStyles, Theme } from '@material-ui/core';
 import blue from '@material-ui/core/colors/blue';
 import red from '@material-ui/core/colors/red';
-// import NavHeader from './image/headers/sm/9.png';
-import NavHeader from './image/headers/sm/0.svg';
 // import sidebar from './image/sidebar/satrio-tower.jpg';
+import Background from './image/background/1.png';
+import NavHeader from './image/headers/sm/0.svg';
+import AchievementIcon from './image/icons/achievement.png';
+import EventIcon from './image/icons/event.png';
+import NewsIcon from './image/icons/news.png';
+import EquineLogo from './image/logo/equine-logo.png';
+import TessaLogo from './image/logo/tessa-logo.png';
 
-// var backgroundColorDefault = theme.palette.type === 'light' ? theme.palette.grey[100] : theme.palette.grey[900];
 const drawerWidth = 300;
 
 const size = {
@@ -23,9 +27,111 @@ const styles = (theme: Theme) =>
       overflow: 'hidden'
     },
 
+    /* LOGOS */
+    logoEquine: {
+      height: 150,
+      backgroundImage: `url("${EquineLogo}")`,
+      backgroundRepeat: 'no-repeat',
+      backgroundPosition: 'center'
+    },
+    logoTessa: {
+      height: 150,
+      backgroundImage: `url("${TessaLogo}")`,
+      backgroundRepeat: 'no-repeat',
+    },
+
+    /* ICONS */
+    iconNews: {
+      height: 80,
+      backgroundImage: `url("${NewsIcon}")`,
+      backgroundRepeat: 'no-repeat',
+      backgroundPosition: 'center'
+    },
+    iconAchievement: {
+      height: 80,
+      backgroundImage: `url("${AchievementIcon}")`,
+      backgroundRepeat: 'no-repeat',
+      backgroundPosition: 'center'
+    },
+    iconEvent: {
+      height: 80,
+      backgroundImage: `url("${EventIcon}")`,
+      backgroundRepeat: 'no-repeat',
+      backgroundPosition: 'center'
+    },
+
+    /* FOOTER */
+    footer: {
+      backgroundColor: theme.palette.grey[800],
+      color: '#FFF',
+      padding: theme.spacing.unit * 6
+    },
+
+    /* HERO */
+    heroHeader: {
+      backgroundColor: theme.palette.grey[900],
+      display: 'flex',
+      position: 'fixed',
+      color: theme.palette.primary.contrastText,
+      padding: theme.spacing.unit * 2,
+      width: '100%',
+      zIndex: 2,
+      opacity: 0.5
+    },
+    heroUnit: {
+      backgroundColor: '#333',
+      backgroundImage: `url("${Background}")`,
+      backgroundSize: 'cover',
+      height: '100vh',
+      maxHeight: '1600px',
+      display: 'flex',
+      position: 'relative',
+      alignItems: 'center'
+    },
+    heroContent: {
+      maxWidth: 1200,
+      margin: '-200px auto 0 auto',
+      padding: `${theme.spacing.unit * 8}px 0 ${theme.spacing.unit * 6}px`
+    },
+    heroText: {
+      width: '50%',
+      color: '#FFF',
+      [theme.breakpoints.down('md')]: {
+        width: '100%',
+        padding: theme.spacing.unit * 3
+      }
+    },
+    heroSummary: {
+      background: theme.palette.background.default,
+      margin: '-150px auto 0 auto',
+      position: 'relative',
+      maxWidth: 1200,
+      justifyContent: 'center'
+    },
+    heroSummaryImage: {
+      margin: '0 auto',
+      padding: theme.spacing.unit * 3,
+      display: 'flex'
+    },
+    heroSummaryContent: {
+      marginBottom: theme.spacing.unit * 3
+    },
+    heroSummaryContentLink: {
+      textDecoration: 'none',
+    },
+    heroSection: {
+      maxWidth: 1200,
+      margin: `${theme.spacing.unit * 3}px auto`,
+      [theme.breakpoints.down('md')]: {
+        maxWidth: window.outerWidth
+      }
+    },
+
     // Application Bar
     appBar: {
+      backgroundColor: theme.palette.primary.main,
       [theme.breakpoints.up('md')]: {
+        backgroundColor: theme.palette.background.default,
         width: `calc(100% - ${0}px)`,
         marginLeft: 0,
         marginRight: 0,
@@ -34,6 +140,12 @@ const styles = (theme: Theme) =>
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.leavingScreen
       })
+    },
+    appBarSearch: {
+      backgroundColor: theme.palette.background.paper
+    },
+    appBarSearchField: {
+      backgroundColor: theme.palette.background.paper
     },
     appBarShiftLeft: {
       [theme.breakpoints.up('md')]: {
@@ -90,7 +202,7 @@ const styles = (theme: Theme) =>
       transition: theme.transitions.create('width', {
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.enteringScreen
-      })
+      }),
     },
     drawerPaperBackground: {
       // backgroundColor: theme.palette.type === 'light' ? theme.palette.primary.light : theme.palette.grey[900],
@@ -285,6 +397,9 @@ const styles = (theme: Theme) =>
     /* force right */
     forceRight: { float: 'right' },
     
+    /* margin disabled */
+    marginDisabled: { margin: 0 },
+
     /* margin thin */
     marginThin: { margin: theme.spacing.unit * size.thin },
     marginThinLeft: { marginLeft: theme.spacing.unit * size.thin },
@@ -306,6 +421,9 @@ const styles = (theme: Theme) =>
     marginFarRight: { marginRight: theme.spacing.unit * size.far },
     marginFarBottom: { marginBottom: theme.spacing.unit * size.far },
     
+    /* padding disabled */
+    paddingDisabled: { padding: 0 },
+
     /* padding thin */
     paddingThin: { padding: theme.spacing.unit * size.thin },
     paddingThinLeft: { paddingLeft: theme.spacing.unit * size.thin },
@@ -336,14 +454,14 @@ const styles = (theme: Theme) =>
     /* report */
     reportPaper: {
       overflowX: 'auto',
-      height: `calc(100vh - 128px - 120px)`,
+      height: `calc(100vh - 96px - 72px)`,
     },
     reportPaperPartial: {
       width: `calc(100vw - 32px - ${drawerWidth}px)`
     },
     reportPaperMobile: {
       overflowX: 'auto',
-      height: `calc(100vh - 64px - 208px)`,
+      height: `calc(100vh - 56px - 68px)`,
     },
     reportPaperPartialMobile: {
       width: `calc(100vw)`,
@@ -411,6 +529,12 @@ const styles = (theme: Theme) =>
     },
 
     colorBlue: { color: blue['500'] },
+
+    /* Paper paing */
+    paperPaging: {
+      paddingTop: theme.spacing.unit * 2,
+      paddingBottom: theme.spacing.unit * 2
+    }
   });
 
 export default styles;

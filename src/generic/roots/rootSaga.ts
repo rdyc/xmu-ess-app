@@ -41,6 +41,8 @@ import commonUnitSagas from '@common/store/sagas/unitSagas';
 import expenseApprovalSagas from '@expense/store/sagas/expenseApprovalSagas';
 import expenseSagas from '@expense/store/sagas/expenseRequestSagas';
 import financeSagas from '@finance/store/sagas/financeApprovalSagas';
+import chartSagas from '@home/store/sagas/chartSagas';
+import landingPageSagas from '@layout/store/sagas/landingPageSagas';
 import commonNotificationSagas from '@layout/store/sagas/notificationSagas';
 import leaveApprovalSagas from '@leave/store/sagas/leaveApprovalSagas';
 import leaveCancellationSagas from '@leave/store/sagas/leaveCancellationSagas';
@@ -189,6 +191,12 @@ export function* rootSaga() {
     fork(leaveCancellationSagas),
 
     // summary
-    fork(summarySagas)
+    fork(summarySagas),
+
+    // home
+    fork(chartSagas),
+
+    // layout
+    fork(landingPageSagas)
   ]);
 }

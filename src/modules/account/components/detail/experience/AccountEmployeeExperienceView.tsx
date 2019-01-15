@@ -75,7 +75,7 @@ export const AccountEmployeeExperienceView: React.SFC<
         <Typography>No Data</Typography>
       )}
       {/* {renderExperience()} */}
-      {response && response.data && renderExperience(response.data)}
+      {response && response.data && response.data.length >= 1 && renderExperience(response.data)}
     </React.Fragment>
   );
 };

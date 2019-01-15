@@ -10,14 +10,14 @@ import {
 export interface ILeaveDetail {
   uid:              string;
   employeeUid:      string;
-  employee:         IAccountEmployee | null;
+  employee?:         IAccountEmployee;
   hierarchyUid:     string;
-  hierarchy?:       IOrganizationHierarchy | null;
+  hierarchy?:       IOrganizationHierarchy;
   date:             string;
   leaveType:        string;
-  leave?:           ICommonSystem | null;
-  regularType:      string | null;
-  regular?:         ILeaveId | null;
+  leave?:           ICommonSystem;
+  regularType?:     string;
+  regular?:         ILeaveId;
   start:            string;
   end:              string;
   reEntry:          string;
@@ -25,11 +25,11 @@ export interface ILeaveDetail {
   contactNumber:    string;
   reason:           string;
   statusType:       string;
-  status?:          ICommonSystem | null;
-  rejectedReason?:  string | null;
+  status?:          ICommonSystem;
+  rejectedReason?:  string;
   isNotified:       boolean;
-  requestedLeave?:  number | null;
+  requestedLeave?:  number ;
   histories?:       History[];
-  workflow?:        IOrganizationWorkflow | null;
-  changes:          IBaseChanges | null;       
+  workflow?:        IOrganizationWorkflow;
+  changes?:         IBaseChanges;       
 }

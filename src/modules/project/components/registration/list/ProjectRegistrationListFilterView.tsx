@@ -1,10 +1,12 @@
 import { LookupSystemDialog } from '@common/components/dialog/lookupSystemDialog/LookupSystemDialog';
+import { ModuleDefinition } from '@layout/helper/redirector';
 import { layoutMessage } from '@layout/locales/messages';
 import { LookupCustomerDialog } from '@lookup/components/customer/dialog';
 import {
   AppBar,
   Button,
   Dialog,
+  DialogContent,
   Divider,
   IconButton,
   List,
@@ -30,9 +32,10 @@ export const ProjectRegistrationListFilterView: React.SFC<ProjectRegistrationLis
       disableBackdropClick
       open={props.isOpen}
       className={props.layoutState.anchor === 'right' ? props.classes.contentShiftRight : props.classes.contentShiftLeft}
+      scroll="paper"
       onClose={props.onClose}
     >
-      <AppBar className={props.classes.appBarDialog}>
+      <AppBar position="fixed" className={props.classes.appBarDialog}>
         <Toolbar>
           <IconButton color="inherit" onClick={props.onClose} aria-label="Close">
             <CloseIcon />
@@ -58,98 +61,100 @@ export const ProjectRegistrationListFilterView: React.SFC<ProjectRegistrationLis
         </Toolbar>
       </AppBar>
       
-      <List>
-        <ListItem button onClick={props.handleFilterCustomerVisibility}>
-          <ListItemText 
-            primary={props.intl.formatMessage(projectMessage.registration.field.customerUid)}
-            secondary={props.filterCustomer && props.filterCustomer.name || props.intl.formatMessage(layoutMessage.text.none)}
-          />
-          <ListItemSecondaryAction>
-            { 
-              props.filterCustomer &&
-              <IconButton onClick={props.handleFilterCustomerOnClear}>
-                <ClearIcon />
-              </IconButton> 
-            }
-
-            <IconButton onClick={props.handleFilterCustomerVisibility}>
-              <ChevronRightIcon />
-            </IconButton> 
-          </ListItemSecondaryAction>
-        </ListItem>
-        <Divider />
-        
-        <ListItem button onClick={props.handleFilterTypeVisibility}>
-          <ListItemText 
-            primary={props.intl.formatMessage(projectMessage.registration.field.projectType)}
-            secondary={props.filterType && props.filterType.name || props.intl.formatMessage(layoutMessage.text.none)} 
-          />
-          <ListItemSecondaryAction>
-            { 
-              props.filterType &&
-              <IconButton onClick={props.handleFilterTypeOnClear}>
-                <ClearIcon />
-              </IconButton> 
-            }
-
-            <IconButton onClick={props.handleFilterTypeVisibility}>
-              <ChevronRightIcon />
-            </IconButton> 
-          </ListItemSecondaryAction>
-        </ListItem>
-        <Divider />
-
-        <ListItem button onClick={props.handleFilterStatusVisibility}>
-          <ListItemText 
-            primary={props.intl.formatMessage(projectMessage.registration.field.statusType)}
-            secondary={props.filterStatus && props.filterStatus.name || props.intl.formatMessage(layoutMessage.text.none)} 
-          />
-          <ListItemSecondaryAction>
-          { 
-              props.filterStatus &&
-              <IconButton onClick={props.handleFilterStatusOnClear}>
-                <ClearIcon />
-              </IconButton> 
-            }
-
-            <IconButton onClick={props.handleFilterStatusVisibility}>
-              <ChevronRightIcon />
-            </IconButton> 
-          </ListItemSecondaryAction>
-        </ListItem>
-        <Divider />
-
-        <ListItem>
-          <ListItemText 
-            primary={props.intl.formatMessage(projectMessage.registration.field.isRejected)}
-            secondary={props.intl.formatMessage(props.filterRejected ? layoutMessage.action.yes : layoutMessage.action.no)}
-          />
-          <ListItemSecondaryAction>
-            <Switch
-              color="primary"
-              checked={props.filterRejected || false}
-              onChange={props.handleFilterRejectedOnChange}
+      <DialogContent className={props.classes.paddingDisabled}>
+        <List>
+          <ListItem button onClick={props.handleFilterCustomerVisibility}>
+            <ListItemText 
+              primary={props.intl.formatMessage(projectMessage.registration.field.customerUid)}
+              secondary={props.filterCustomer && props.filterCustomer.name || props.intl.formatMessage(layoutMessage.text.none)}
             />
-          </ListItemSecondaryAction>
-        </ListItem>
-        <Divider />
-        
-        <ListItem>
-          <ListItemText 
-            primary={props.intl.formatMessage(projectMessage.registration.field.isNewOwner)}
-            secondary={props.intl.formatMessage(props.filterNewOwner ? layoutMessage.action.yes : layoutMessage.action.no)}
-          />
-          <ListItemSecondaryAction>
-            <Switch
-              color="primary"
-              checked={props.filterNewOwner || false}
-              onChange={props.handleFilterNewOwnerOnChange}
-            />
-          </ListItemSecondaryAction>
-        </ListItem>
-        <Divider />
+            <ListItemSecondaryAction>
+              { 
+                props.filterCustomer &&
+                <IconButton onClick={props.handleFilterCustomerOnClear}>
+                  <ClearIcon />
+                </IconButton> 
+              }
 
-      </List>
+              <IconButton onClick={props.handleFilterCustomerVisibility}>
+                <ChevronRightIcon />
+              </IconButton> 
+            </ListItemSecondaryAction>
+          </ListItem>
+          <Divider />
+          
+          <ListItem button onClick={props.handleFilterTypeVisibility}>
+            <ListItemText 
+              primary={props.intl.formatMessage(projectMessage.registration.field.projectType)}
+              secondary={props.filterType && props.filterType.name || props.intl.formatMessage(layoutMessage.text.none)} 
+            />
+            <ListItemSecondaryAction>
+              { 
+                props.filterType &&
+                <IconButton onClick={props.handleFilterTypeOnClear}>
+                  <ClearIcon />
+                </IconButton> 
+              }
+
+              <IconButton onClick={props.handleFilterTypeVisibility}>
+                <ChevronRightIcon />
+              </IconButton> 
+            </ListItemSecondaryAction>
+          </ListItem>
+          <Divider />
+
+          <ListItem button onClick={props.handleFilterStatusVisibility}>
+            <ListItemText 
+              primary={props.intl.formatMessage(projectMessage.registration.field.statusType)}
+              secondary={props.filterStatus && props.filterStatus.name || props.intl.formatMessage(layoutMessage.text.none)} 
+            />
+            <ListItemSecondaryAction>
+            { 
+                props.filterStatus &&
+                <IconButton onClick={props.handleFilterStatusOnClear}>
+                  <ClearIcon />
+                </IconButton> 
+              }
+
+              <IconButton onClick={props.handleFilterStatusVisibility}>
+                <ChevronRightIcon />
+              </IconButton> 
+            </ListItemSecondaryAction>
+          </ListItem>
+          <Divider />
+
+          <ListItem>
+            <ListItemText 
+              primary={props.intl.formatMessage(projectMessage.registration.field.isRejected)}
+              secondary={props.intl.formatMessage(props.filterRejected ? layoutMessage.action.yes : layoutMessage.action.no)}
+            />
+            <ListItemSecondaryAction>
+              <Switch
+                color="primary"
+                checked={props.filterRejected || false}
+                onChange={props.handleFilterRejectedOnChange}
+              />
+            </ListItemSecondaryAction>
+          </ListItem>
+          <Divider />
+          
+          <ListItem>
+            <ListItemText 
+              primary={props.intl.formatMessage(projectMessage.registration.field.isNewOwner)}
+              secondary={props.intl.formatMessage(props.filterNewOwner ? layoutMessage.action.yes : layoutMessage.action.no)}
+            />
+            <ListItemSecondaryAction>
+              <Switch
+                color="primary"
+                checked={props.filterNewOwner || false}
+                onChange={props.handleFilterNewOwnerOnChange}
+              />
+            </ListItemSecondaryAction>
+          </ListItem>
+          <Divider />
+
+        </List>
+      </DialogContent>
     </Dialog>
 
     <LookupCustomerDialog 
@@ -172,6 +177,7 @@ export const ProjectRegistrationListFilterView: React.SFC<ProjectRegistrationLis
     <LookupSystemDialog
       title={props.intl.formatMessage(projectMessage.registration.field.statusType)}
       category="status"
+      moduleType={ModuleDefinition.ProjectRegistration}
       hideBackdrop={true}
       isOpen={props.isFilterStatusOpen}
       value={props.filterStatus && props.filterStatus.type}

@@ -156,13 +156,13 @@ const stateUpdaters: StateUpdaters<TravelSettlementListFilterProps, IOwnState, I
     isFilterCustomerOpen: false,
     filterCustomer: customer,
     filterProjectDialog: {
-      customerUids: customer && [customer.uid] || undefined
+      customerUids: customer && customer.uid
     }
   }),
 
   // filter project
   setFilterProjectVisibility: (prevState: IOwnState) => () => ({
-    isFilterProjectOpen: !prevState.isFilterCustomerOpen
+    isFilterProjectOpen: !prevState.isFilterProjectOpen
   }),
   setFilterProject: (prevState: IOwnState) => (customer?: IProjectList) => ({
     isFilterProjectOpen: false,

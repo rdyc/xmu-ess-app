@@ -1,3 +1,4 @@
+import { layoutMessage } from '@layout/locales/messages';
 import { GlobalFormat } from '@layout/types';
 import { GlobalStyle } from '@layout/types/GlobalStyle';
 import { Card, CardContent, CardHeader, TextField } from '@material-ui/core';
@@ -105,6 +106,27 @@ const purchaseInformation: React.SFC<AllProps> = props => {
           label={intl.formatMessage(purchaseMessage.request.field.advance)}
           value = { intl.formatNumber(data.advance || 0) }
           />
+          {
+          data.changes &&
+          <TextField
+            {...GlobalStyle.TextField.ReadOnly}
+            margin="dense"
+            label={intl.formatMessage(layoutMessage.field.createdBy)}
+            value={data.changes.created && data.changes.created.fullName || 'N/A'}
+            helperText={props.intl.formatDate(data.changes.createdAt, GlobalFormat.DateTime) || 'N/A'}
+          />
+          }
+          { data.changes && 
+            data.changes.updated && 
+            data.changes.updatedAt &&
+          <TextField
+            {...GlobalStyle.TextField.ReadOnly}
+            margin="dense"
+            label={props.intl.formatMessage(layoutMessage.field.updatedBy)}
+            value={data.changes.updated.fullName || 'N/A'}
+            helperText={props.intl.formatDate(data.changes.updatedAt, GlobalFormat.DateTime) || 'N/A'}
+          />
+          }
           </CardContent>
           </Card>
           );

@@ -1,10 +1,12 @@
 import { LookupSystemDialog } from '@common/components/dialog/lookupSystemDialog/LookupSystemDialog';
+import { ModuleDefinition } from '@layout/helper/redirector';
 import { layoutMessage } from '@layout/locales/messages';
 import { LookupCustomerDialog } from '@lookup/components/customer/dialog';
 import {
   AppBar,
   Button,
   Dialog,
+  DialogContent,
   Divider,
   IconButton,
   List,
@@ -30,9 +32,10 @@ export const TravelRequestListFilterView: React.SFC<TravelRequestListFilterProps
       disableBackdropClick
       open={props.isOpen}
       className={props.layoutState.anchor === 'right' ? props.classes.contentShiftRight : props.classes.contentShiftLeft}
+      scroll="paper"
       onClose={props.onClose}
     >
-      <AppBar className={props.classes.appBarDialog}>
+      <AppBar position="fixed" className={props.classes.appBarDialog}>
         <Toolbar>
           <IconButton color="inherit" onClick={props.onClose} aria-label="Close">
             <CloseIcon />
@@ -58,98 +61,100 @@ export const TravelRequestListFilterView: React.SFC<TravelRequestListFilterProps
         </Toolbar>
       </AppBar>
 
-      <List>
-        <ListItem button onClick={props.handleFilterCustomerVisibility}>
-          <ListItemText
-            primary={props.intl.formatMessage(travelMessage.request.field.customerUid)}
-            secondary={props.filterCustomer && props.filterCustomer.name || props.intl.formatMessage(layoutMessage.text.none)}
-          />
-          <ListItemSecondaryAction>
-            {
-              props.filterCustomer &&
-              <IconButton onClick={props.handleFilterCustomerOnClear}>
-                <ClearIcon />
-              </IconButton>
-            }
-
-            <IconButton onClick={props.handleFilterCompletionVisibility}>
-              <ChevronRightIcon />
-            </IconButton>
-          </ListItemSecondaryAction>
-        </ListItem>
-        <Divider />
-
-        <ListItem button onClick={props.filterCustomer && props.handleFilterProjectVisibility}>
-          <ListItemText
-            primary={props.intl.formatMessage(travelMessage.request.field.projectUid)}
-            secondary={props.filterProject && props.filterProject.name || props.intl.formatMessage(layoutMessage.text.none)}
-          />
-          <ListItemSecondaryAction>
-            {
-              props.filterProject &&
-              <IconButton onClick={props.handleFilterProjectOnClear}>
-                <ClearIcon />
-              </IconButton>
-            }
-
-            <IconButton onClick={props.filterCustomer && props.handleFilterProjectVisibility}>
-              <ChevronRightIcon />
-            </IconButton>
-          </ListItemSecondaryAction>
-        </ListItem>
-        <Divider />
-
-        <ListItem button onClick={props.handleFilterStatusVisibility}>
-          <ListItemText
-            primary={props.intl.formatMessage(travelMessage.request.field.statusType)}
-            secondary={props.filterStatus && props.filterStatus.name || props.intl.formatMessage(layoutMessage.text.none)}
-          />
-          <ListItemSecondaryAction>
-            {
-              props.filterStatus &&
-              <IconButton onClick={props.handleFilterStatusOnClear}>
-                <ClearIcon />
-              </IconButton>
-            }
-
-            <IconButton onClick={props.handleFilterCompletionVisibility}>
-              <ChevronRightIcon />
-            </IconButton>
-          </ListItemSecondaryAction>
-        </ListItem>
-        <Divider />
-
-        <ListItem>
-          <ListItemText
-            primary={props.intl.formatMessage(travelMessage.request.field.isRejected)}
-            secondary={props.intl.formatMessage(props.filterRejected ? layoutMessage.action.yes : layoutMessage.action.no)}
-          />
-          <ListItemSecondaryAction>
-            <Switch
-              color="primary"
-              checked={props.filterRejected || false}
-              onChange={props.handleFilterRejectedOnChange}
+      <DialogContent className={props.classes.paddingDisabled}>
+        <List>
+          <ListItem button onClick={props.handleFilterCustomerVisibility}>
+            <ListItemText
+              primary={props.intl.formatMessage(travelMessage.request.field.customerUid)}
+              secondary={props.filterCustomer && props.filterCustomer.name || props.intl.formatMessage(layoutMessage.text.none)}
             />
-          </ListItemSecondaryAction>
-        </ListItem>
-        <Divider />
+            <ListItemSecondaryAction>
+              {
+                props.filterCustomer &&
+                <IconButton onClick={props.handleFilterCustomerOnClear}>
+                  <ClearIcon />
+                </IconButton>
+              }
 
-        <ListItem>
-          <ListItemText
-            primary={props.intl.formatMessage(travelMessage.request.field.isSettlement)}
-            secondary={props.intl.formatMessage(props.filterSettlement ? layoutMessage.action.yes : layoutMessage.action.no)}
-          />
-          <ListItemSecondaryAction>
-            <Switch
-              color="primary"
-              checked={props.filterSettlement || false}
-              onChange={props.handleFilterSettlementOnChange}
+              <IconButton onClick={props.handleFilterCustomerVisibility}>
+                <ChevronRightIcon />
+              </IconButton>
+            </ListItemSecondaryAction>
+          </ListItem>
+          <Divider />
+
+          <ListItem button onClick={props.filterCustomer && props.handleFilterProjectVisibility} disabled={!props.filterCustomer}>
+            <ListItemText
+              primary={props.intl.formatMessage(travelMessage.request.field.projectUid)}
+              secondary={props.filterProject && props.filterProject.name || props.intl.formatMessage(layoutMessage.text.none)}
             />
-          </ListItemSecondaryAction>
-        </ListItem>
-        <Divider />
+            <ListItemSecondaryAction>
+              {
+                props.filterProject &&
+                <IconButton onClick={props.handleFilterProjectOnClear}>
+                  <ClearIcon />
+                </IconButton>
+              }
 
-      </List>
+              <IconButton onClick={props.filterCustomer && props.handleFilterProjectVisibility} disabled={!props.filterCustomer}>
+                <ChevronRightIcon />
+              </IconButton>
+            </ListItemSecondaryAction>
+          </ListItem>
+          <Divider />
+
+          <ListItem button onClick={props.handleFilterStatusVisibility}>
+            <ListItemText
+              primary={props.intl.formatMessage(travelMessage.request.field.statusType)}
+              secondary={props.filterStatus && props.filterStatus.name || props.intl.formatMessage(layoutMessage.text.none)}
+            />
+            <ListItemSecondaryAction>
+              {
+                props.filterStatus &&
+                <IconButton onClick={props.handleFilterStatusOnClear}>
+                  <ClearIcon />
+                </IconButton>
+              }
+
+              <IconButton onClick={props.handleFilterCompletionVisibility}>
+                <ChevronRightIcon />
+              </IconButton>
+            </ListItemSecondaryAction>
+          </ListItem>
+          <Divider />
+
+          <ListItem>
+            <ListItemText
+              primary={props.intl.formatMessage(travelMessage.request.field.isRejected)}
+              secondary={props.intl.formatMessage(props.filterRejected ? layoutMessage.action.yes : layoutMessage.action.no)}
+            />
+            <ListItemSecondaryAction>
+              <Switch
+                color="primary"
+                checked={props.filterRejected || false}
+                onChange={props.handleFilterRejectedOnChange}
+              />
+            </ListItemSecondaryAction>
+          </ListItem>
+          <Divider />
+
+          <ListItem>
+            <ListItemText
+              primary={props.intl.formatMessage(travelMessage.request.field.isSettlement)}
+              secondary={props.intl.formatMessage(props.filterSettlement ? layoutMessage.action.yes : layoutMessage.action.no)}
+            />
+            <ListItemSecondaryAction>
+              <Switch
+                color="primary"
+                checked={props.filterSettlement || false}
+                onChange={props.handleFilterSettlementOnChange}
+              />
+            </ListItemSecondaryAction>
+          </ListItem>
+          <Divider />
+
+        </List>
+      </DialogContent>
     </Dialog>
 
     <LookupCustomerDialog
@@ -170,6 +175,7 @@ export const TravelRequestListFilterView: React.SFC<TravelRequestListFilterProps
     <LookupSystemDialog
       title={props.intl.formatMessage(travelMessage.request.field.statusType)}
       category="status"
+      moduleType={ModuleDefinition.Travel}
       hideBackdrop={true}
       isOpen={props.isFilterStatusOpen}
       value={props.filterStatus && props.filterStatus.type}

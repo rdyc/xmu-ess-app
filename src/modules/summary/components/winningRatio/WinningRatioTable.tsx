@@ -24,7 +24,9 @@ import styles from '@styles';
 import { ISummaryWinning } from '@summary/classes/response/winning';
 import { WinningRatioHeaderList } from '@summary/classes/types/winningRatio/WinningRatioHeaderList';
 import { WinningRatioType } from '@summary/classes/types/winningRatio/WinningRatioType';
+import { summaryMessage } from '@summary/locales/messages/summaryMessage';
 import * as React from 'react';
+import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose } from 'recompose';
 
 interface OwnProps {
@@ -43,7 +45,7 @@ interface OwnProps {
   handleChangeSize: (value: number) => void;
 }
 
-type AllProps = OwnProps & WithStyles<typeof styles>;
+type AllProps = OwnProps & InjectedIntlProps & WithStyles<typeof styles>;
 
 const winningRatioTable: React.SFC<AllProps> = props => {
   const {
@@ -110,117 +112,140 @@ const winningRatioTable: React.SFC<AllProps> = props => {
   );
 
   const render = (
-    <div className={classes.table}>
-      <Table className={classes.minTable}>
-        <TableHead>
-          <TableRow>
-            {header.map(item => (
-              <TableCell
-                key={item.id}
-                numeric={item.id === 'fullName' ? false : true}
-                padding="default"
-                sortDirection={
-                  orderBy === item.id
-                    ? direction === 'ascending'
-                      ? 'asc'
-                      : 'desc'
-                    : false
-                }
-              >
-                {item.id === 'fullName' ? (
-                  <Tooltip
-                    title="Sort"
-                    disableFocusListener
+    <Table>
+      <TableHead>
+        <TableRow>
+          {header.map(item => (
+            <TableCell
+              key={item.id}
+              numeric={item.id === 'fullName' ? false : true}
+              padding="default"
+              sortDirection={
+                orderBy === item.id
+                  ? direction === 'ascending'
+                    ? 'asc'
+                    : 'desc'
+                  : false
+              }
+            >
+              {item.id === 'fullName' ? (
+                <Tooltip
+                  title="Sort"
+                  disableFocusListener
+                >
+                  <TableSortLabel
+                    active={orderBy === item.id}
+                    direction={direction === 'ascending' ? 'asc' : 'desc'}
+                    onClick={() =>
+                      handleChangeSort(
+                        direction === 'ascending' ? true : false
+                      )
+                    }
                   >
-                    <TableSortLabel
-                      active={orderBy === item.id}
-                      direction={direction === 'ascending' ? 'asc' : 'desc'}
-                      onClick={() =>
-                        handleChangeSort(
-                          direction === 'ascending' ? true : false
-                        )
-                      }
-                    >
-                      {item.name}
-                    </TableSortLabel>
-                  </Tooltip>
-                ) : (
-                  item.name
-                )}
+                    {item.name}
+                  </TableSortLabel>
+                </Tooltip>
+              ) : (
+                item.name
+              )}
+            </TableCell>
+          ))}
+        </TableRow>
+      </TableHead>
+      <TableBody>
+        {data &&
+          data.map((item, index) => (
+            <TableRow key={index}>
+              <TableCell numeric>{index + 1 + (page - 1) * size}</TableCell>
+              <TableCell>{item.employee && item.employee.fullName}</TableCell>
+              <TableCell numeric>{item.ratio} %</TableCell>
+              <TableCell numeric>
+                {item.categories.map((cat, catIdx) => (
+                  cat.name === WinningRatioType.Closed && ((
+                    cat.total >= 1 &&
+                    <Tooltip title={props.intl.formatMessage(summaryMessage.winningRatio.hover.closed)} disableFocusListener>
+                    <Chip
+                      key={catIdx}
+                      label={cat.total}
+                      onClick={() => _handledialog(item.employeeUid, WinningRatioType.Closed)}
+                    />
+                    </Tooltip>
+                  ) || (
+                    <Chip 
+                      key={catIdx}
+                      label={cat.total}
+                      variant="outlined"
+                    />
+                  ))
+                ))}
               </TableCell>
-            ))}
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {data &&
-            data.map((item, index) => (
-              <TableRow key={index}>
-                <TableCell numeric>{index + 1 + (page - 1) * size}</TableCell>
-                <TableCell>{item.employee && item.employee.fullName}</TableCell>
-                <TableCell numeric>{item.ratio} %</TableCell>
-                <TableCell numeric>
-                  <Tooltip title="Closed" disableFocusListener>
+              <TableCell numeric>
+                {item.categories.map((cat, catIdx) => (
+                  cat.name === WinningRatioType.OnProgress && ((
+                    cat.total >= 1 &&
+                    <Tooltip title={props.intl.formatMessage(summaryMessage.winningRatio.hover.onProgress)} disableFocusListener>
                     <Chip
-                      label={item.categories.map(cat =>
-                        cat.name === WinningRatioType.Closed ? cat.total : null
-                      )}
-                      onClick={() =>
-                        _handledialog(item.employeeUid, WinningRatioType.Closed)
-                      }
+                      key={catIdx}
+                      label={cat.total}
+                      onClick={() => _handledialog(item.employeeUid, WinningRatioType.OnProgress)}
                     />
-                  </Tooltip>
-                </TableCell>
-                <TableCell numeric>
-                  <Tooltip title="On Progress" disableFocusListener>
+                    </Tooltip>
+                  ) || (
+                    <Chip 
+                      key={catIdx}
+                      label={cat.total}
+                      variant="outlined"
+                    />
+                  ))
+                ))}
+              </TableCell>
+              <TableCell numeric>
+                {item.categories.map((cat, catIdx) => (
+                  cat.name === WinningRatioType.Winning && ((
+                    cat.total >= 1 &&
+                    <Tooltip title={props.intl.formatMessage(summaryMessage.winningRatio.hover.win)} disableFocusListener>
                     <Chip
-                      label={item.categories.map(cat =>
-                        cat.name === WinningRatioType.OnProgress ? cat.total : null
-                      )}
-                      onClick={() =>
-                        _handledialog(item.employeeUid, WinningRatioType.OnProgress)
-                      }
+                      key={catIdx}
+                      label={cat.total}
+                      onClick={() => _handledialog(item.employeeUid, WinningRatioType.Winning)}
                     />
-                  </Tooltip>
-                </TableCell>
-                <TableCell numeric>
-                  <Tooltip title="Win" disableFocusListener>
-                    <Chip
-                      label={item.categories.map(cat =>
-                        cat.name === WinningRatioType.Winning ? cat.total : null
-                      )}
-                      onClick={() =>
-                        _handledialog(item.employeeUid, WinningRatioType.Winning)
-                      }
+                    </Tooltip>
+                  ) || (
+                    <Chip 
+                      key={catIdx}
+                      label={cat.total}
+                      variant="outlined"
                     />
-                  </Tooltip>
-                </TableCell>
-              </TableRow>
-            ))}
-        </TableBody>
-        <TableFooter>
-          <TableRow>
-            {metadata && (
-              <TablePagination
-                rowsPerPageOptions={[10, 15, 25]}
-                count={metadata.total}
-                rowsPerPage={size}
-                page={page - 1}
-                onChangePage={_handlePage}
-                onChangeRowsPerPage={e =>
-                  handleChangeSize(Number(e.target.value))
-                }
-                ActionsComponent={() => tablePaginationAction(metadata.total)}
-              />
-            )}
-          </TableRow>
-        </TableFooter>
-      </Table>
-    </div>
+                  ))
+                ))}
+              </TableCell>
+            </TableRow>
+          ))}
+      </TableBody>
+      <TableFooter>
+        <TableRow>
+          {metadata && (
+            <TablePagination
+              rowsPerPageOptions={[10, 15, 25]}
+              count={metadata.total}
+              rowsPerPage={size}
+              page={page - 1}
+              onChangePage={_handlePage}
+              onChangeRowsPerPage={e =>
+                handleChangeSize(Number(e.target.value))
+              }
+              ActionsComponent={() => tablePaginationAction(metadata.total)}
+            />
+          )}
+        </TableRow>
+      </TableFooter>
+    </Table>
   );
 
   return render;
 };
 
 export const WinningRatioTable = compose<AllProps, OwnProps>(
+  injectIntl,
   withStyles(styles)
 )(winningRatioTable);

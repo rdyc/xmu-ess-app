@@ -23,5 +23,5 @@ export interface IAppBarState {
   controls?: IAppBarControl[];
   menus?: IAppBarMenu[];
   fields?: ICollectionValue[];
-  selection: string[];
+  selections?: string[];
 }

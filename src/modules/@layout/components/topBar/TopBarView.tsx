@@ -5,7 +5,6 @@ import {
   Badge,
   Button,
   Divider,
-  Hidden,
   IconButton,
   Input,
   InputAdornment,
@@ -20,7 +19,6 @@ import {
   Typography,
 } from '@material-ui/core';
 import { isWidthUp } from '@material-ui/core/withWidth';
-import AppsIcon from '@material-ui/icons/Apps';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import CallMadeIcon from '@material-ui/icons/CallMade';
 import ClearIcon from '@material-ui/icons/Clear';
@@ -93,8 +91,6 @@ interface ToolbarControlOptions {
   showNotif: boolean;
   notifCount: number;
   OnClickNotif: (event: React.MouseEvent<HTMLDivElement>) => void;
-  showAction: boolean;
-  OnClickAction: (event: React.MouseEvent<HTMLDivElement>) => void;
   showMore: boolean;
   isOpenMore: boolean;
   customControls?: IAppBarControl[];
@@ -105,7 +101,7 @@ interface ToolbarControlOptions {
 }
 
 const ToolbarControl: React.SFC<ToolbarControlOptions> = props => (
-  <React.Fragment>
+  <Toolbar>
     {
       /* menu */
       !props.showBack &&
@@ -152,34 +148,20 @@ const ToolbarControl: React.SFC<ToolbarControlOptions> = props => (
       </IconButton>
     }
     
-    <Hidden xsDown>
-      {
-        /* notifications */
-        props.showNotif &&
-        props.notifCount > 0 &&
-        <IconButton
-          color={props.color}
-          aria-label="Notifications"
-          onClick={props.OnClickNotif}
-        >
-          <Badge badgeContent={props.notifCount} color="error">
-            <NotificationImportant />
-          </Badge>
-        </IconButton>
-      }
-
-      {
-        /* action */
-        props.showAction &&
-        <IconButton
-          color={props.color}
-          aria-label="Action"
-          onClick={props.OnClickAction}
-        >
-          <AppsIcon />
-        </IconButton>
-      }
-    </Hidden>
+    {
+      /* notifications */
+      props.showNotif &&
+      props.notifCount > 0 &&
+      <IconButton
+        color={props.color}
+        aria-label="Notifications"
+        onClick={props.OnClickNotif}
+      >
+        <Badge badgeContent={props.notifCount} color="error">
+          <NotificationImportant />
+        </Badge>
+      </IconButton>
+    }
 
     {
       props.customControls &&
@@ -206,12 +188,13 @@ const ToolbarControl: React.SFC<ToolbarControlOptions> = props => (
         onClose={props.onCloseMore}
       />
     }
-  </React.Fragment>
+  </Toolbar>
 );
 
 interface SearchControlOptions {
   find?: string;
   field?: ICollectionValue;
+  className: string;
   OnClickBack: (event: React.MouseEvent) => void;
   OnClickClear: (event: React.MouseEvent) => void;
   OnClickField: (event: React.MouseEvent) => void;
@@ -220,7 +203,7 @@ interface SearchControlOptions {
 }
 
 const SearchControl: React.SFC<SearchControlOptions> = props => (
-  <React.Fragment>
+  <Toolbar className={props.className}>
     <IconButton
       aria-label="close search"
       onClick={props.OnClickBack}
@@ -259,23 +242,21 @@ const SearchControl: React.SFC<SearchControlOptions> = props => (
         </InputAdornment>
       }
     />
-  </React.Fragment>
+  </Toolbar>
 );
 
 export const TopBarView: React.SFC<TopBarProps> = props => (
   <AppBar 
-    elevation={0}
+    elevation={props.mode === 'search' ? 1 : 0}
     position={isWidthUp('md', props.width) ? 'static' : 'fixed'}
-    color={isWidthUp('md', props.width) ? props.getClassColor() : 'primary'}
     className={classNames(props.getClassNames())}
   >
-    <Toolbar>
       {
         props.mode === 'normal' &&
         <ToolbarControl
           color={isWidthUp('md', props.width) ? 'default' : 'inherit'}
-          menuclassName={classNames(props.classes.navIconHide, props.layoutState.isDrawerMenuVisible && props.classes.hide)}
-          OnClickMenu={props.handleOnClickMenu}
+          menuclassName={classNames(props.classes.navIconHide, props.isOpenMenu && props.classes.hide)}
+          OnClickMenu={props.onClickMenu}
           title={props.layoutState.view && props.layoutState.view.title}
           titleClassName={props.classes.flex}
           showBack={props.layoutState.isNavBackVisible}
@@ -284,13 +265,11 @@ export const TopBarView: React.SFC<TopBarProps> = props => (
           OnClickSearch={props.handleOnClickSearch}
           showNotif={true}
           notifCount={props.getCountNotif()}
-          OnClickNotif={props.handleOnClickNotif}
-          showAction={props.layoutState.isActionCentreVisible}
-          OnClickAction={props.handleOnClickAction}
+          OnClickNotif={props.onClickNotif}
           showMore={props.layoutState.isMoreVisible}
           customControls={props.appBarState.controls}
           moreItems={props.appBarState.menus}
-          isOpenMore={props.isOpenMenu}
+          isOpenMore={props.isShowMenu}
           onClickMore={props.handleOnClickMore}
           onClickMoreItem={props.handleOnClickMoreItem}
           onCloseMore={props.handleOnCloseMore}
@@ -299,32 +278,30 @@ export const TopBarView: React.SFC<TopBarProps> = props => (
 
       {
         props.mode === 'selection' &&
-        props.appBarState.selection.length > 0 &&
-        <React.Fragment>
+        props.appBarState.selections &&
+        <Toolbar>
           <IconButton
               aria-label="close selection"
               onClick={() => props.handleOnDiscardSelection()}
             >
-              <ArrowBackIcon />
+              <ArrowBackIcon color="action" />
             </IconButton>
 
-            <Typography 
-              noWrap 
-              variant="body2" 
-              color="inherit" 
-              className={props.classes.flex}
-            >
-              <FormattedMessage id="layout.label.selection" values={{count: props.appBarState.selection.length}} />
-            </Typography>
+          <Typography 
+            noWrap 
+            variant="body2"
+            className={props.classes.flex}
+          >
+            <FormattedMessage id="layout.label.selection" values={{count: props.appBarState.selections.length}} />
+          </Typography>
 
-            <Button 
-              size="small" 
-              color="primary"
-              onClick={() => props.handleOnClickProcess()}
-            >
-              <FormattedMessage id="layout.action.process" />
-            </Button>
-          </React.Fragment>
+          <Button 
+            size="small"
+            onClick={() => props.handleOnClickProcess()}
+          >
+            <FormattedMessage id="layout.action.process" />
+          </Button>
+        </Toolbar>
       }
 
       {
@@ -332,6 +309,7 @@ export const TopBarView: React.SFC<TopBarProps> = props => (
         <SearchControl
           find={props.search}
           field={props.field}
+          className={props.classes.appBarSearch}
           OnClickBack={props.handleOnDiscardSearch}
           OnClickClear={props.handleOnClearSearch}
           OnKeyUpFind={props.handleOnKeyUpSearch}
@@ -339,20 +317,15 @@ export const TopBarView: React.SFC<TopBarProps> = props => (
           OnChangeFind={props.handleOnChangeSearch}
         />
       }
-    </Toolbar>
 
     {
       props.isShowFields &&
       props.appBarState.fields &&
-      <div className={props.search && props.search.length < 3 ? props.classes.hide : ''}>
+      <div className={props.search && props.search.length < 3 ? props.classes.hide : props.classes.appBarSearchField}>
         <Divider />
-        <List 
-          component="div" 
-          disablePadding
-        >
+        <List disablePadding>
           <ListItem
             button 
-            component="div"
             onClick={() => props.handleOnClickField()}
           >
             <ListItemText 

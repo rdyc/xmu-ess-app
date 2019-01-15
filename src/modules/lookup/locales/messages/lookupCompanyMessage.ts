@@ -18,8 +18,8 @@ export const companyPage = defineMessages({
 export const companyConfirm = defineMessages({
   modifyTitle: { id: `${prefix}.confirm.modify.title` },
   modifyDescription: { id: `${prefix}.confirm.modify.description` },
-  // closeTitle: { id: `${prefix}.confirm.close.title` },
-  // closeDescription: { id: `${prefix}.confirm.close.description` },
+  deleteTitle: { id: `${prefix}.confirm.delete.title` },
+  deleteDescription: { id: `${prefix}.confirm.delete.description` },
 });
 
 // section

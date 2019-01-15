@@ -3,6 +3,6 @@ import { IAmount } from './IAmount';
 
 export interface IDocument {
   uid: string;
-  amount?: IAmount | null;
-  changes: IBaseChanges;
+  amount?: IAmount;
+  changes?: IBaseChanges;
 }

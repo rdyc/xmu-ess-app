@@ -1,3 +1,4 @@
+import { layoutMessage } from '@layout/locales/messages';
 import { GlobalFormat } from '@layout/types';
 import { GlobalStyle } from '@layout/types/GlobalStyle';
 import { IMileageExceptionDetail } from '@lookup/classes/response';
@@ -30,7 +31,7 @@ const mileageExceptionInformation: React.SFC<AllProps> = props => {
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
           label={props.intl.formatMessage(lookupMessage.mileageException.field.company)}
-          value={props.data.role.company.name}
+          value={props.data.role.company && props.data.role.company.name}
         />
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
@@ -75,6 +76,27 @@ const mileageExceptionInformation: React.SFC<AllProps> = props => {
           label={props.intl.formatMessage(lookupMessage.mileageException.field.inActiveDate)}
           value={props.data.inactiveDate ? props.intl.formatDate(props.data.inactiveDate, GlobalFormat.Date) : 'N/A'}
         />
+        {
+        props.data.changes &&
+        <React.Fragment>
+          <TextField
+            {...GlobalStyle.TextField.ReadOnly}
+            label={props.intl.formatMessage(layoutMessage.field.createdBy)}
+            value={props.data.changes.created && props.data.changes.created.fullName || 'N/A'}
+            helperText={props.intl.formatDate(props.data.changes.createdAt, GlobalFormat.DateTime) || 'N/A'}
+          />
+
+          {
+            (props.data.changes.updated && props.data.changes.updatedAt) &&
+            <TextField
+              {...GlobalStyle.TextField.ReadOnly}
+              label={props.intl.formatMessage(layoutMessage.field.updatedBy)}
+              value={props.data.changes.updated.fullName || 'N/A'}
+              helperText={props.intl.formatDate(props.data.changes.updatedAt, GlobalFormat.DateTime) || 'N/A'}
+            />
+          }
+        </React.Fragment>
+      }
       </CardContent>
     </Card>
   );

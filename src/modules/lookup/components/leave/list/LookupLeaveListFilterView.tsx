@@ -5,6 +5,7 @@ import {
   AppBar,
   Button,
   Dialog,
+  DialogContent,
   Divider,
   IconButton,
   List,
@@ -18,6 +19,7 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import CloseIcon from '@material-ui/icons/Close';
 import ClearIcon from '@material-ui/icons/SettingsBackupRestore';
 import * as React from 'react';
+
 import { LookupLeaveListFilterProps } from './LookupLeaveListFilter';
 
 export const LookupLeaveListFilterView: React.SFC<LookupLeaveListFilterProps> = props => (
@@ -27,9 +29,10 @@ export const LookupLeaveListFilterView: React.SFC<LookupLeaveListFilterProps> = 
       className={props.layoutState.anchor === 'right' ? props.classes.contentShiftRight : props.classes.contentShiftLeft}
       disableBackdropClick
       open={props.isOpen}
+      scroll="paper"
       onClose={props.onClose}
     >
-      <AppBar className={props.classes.appBarDialog}>
+      <AppBar position="fixed" className={props.classes.appBarDialog}>
         <Toolbar>
           <IconButton color="inherit" onClick={props.onClose} aria-label="Close">
             <CloseIcon />
@@ -55,28 +58,30 @@ export const LookupLeaveListFilterView: React.SFC<LookupLeaveListFilterProps> = 
         </Toolbar>
       </AppBar>
 
-      <List>
-        <ListItem button onClick={props.handleFilterCompanyVisibility}>
-          <ListItemText
-            primary={props.intl.formatMessage(lookupMessage.leave.field.company)}
-            secondary={props.filterCompany && props.filterCompany.name || props.intl.formatMessage(layoutMessage.text.none)}
-          />
-          <ListItemSecondaryAction>
-            {
-              props.filterCompany &&
-              <IconButton onClick={props.handleFilterCompanyOnClear}>
-                <ClearIcon />
+      <DialogContent className={props.classes.paddingDisabled}>
+        <List>
+          <ListItem button onClick={props.handleFilterCompanyVisibility}>
+            <ListItemText
+              primary={props.intl.formatMessage(lookupMessage.leave.field.company)}
+              secondary={props.filterCompany && props.filterCompany.name || props.intl.formatMessage(layoutMessage.text.none)}
+            />
+            <ListItemSecondaryAction>
+              {
+                props.filterCompany &&
+                <IconButton onClick={props.handleFilterCompanyOnClear}>
+                  <ClearIcon />
+                </IconButton>
+              }
+
+              <IconButton onClick={props.handleFilterCompanyVisibility}>
+                <ChevronRightIcon />
               </IconButton>
-            }
+            </ListItemSecondaryAction>
+          </ListItem>
+          <Divider />
 
-            <IconButton onClick={props.handleFilterCompanyVisibility}>
-              <ChevronRightIcon />
-            </IconButton>
-          </ListItemSecondaryAction>
-        </ListItem>
-        <Divider />
-
-      </List>
+        </List>
+      </DialogContent>
     </Dialog>
 
     <FilterCompany

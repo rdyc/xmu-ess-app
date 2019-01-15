@@ -5,12 +5,12 @@ import { ICommonSystem } from '..';
 export interface ISystemDetail {
     id: number;
     type: string;
-    companyUid: string | null;
-    company: ILookupCompany | null;
+    companyUid?: string;
+    company?: ILookupCompany;
     name: string;
-    parentCode: string | null;
-    parent: ICommonSystem | null;
-    description: string | null;
+    parentCode?: string;
+    parent?: ICommonSystem;
+    description?: string;
     isActive: boolean;
     changes: IBaseChanges;
 }

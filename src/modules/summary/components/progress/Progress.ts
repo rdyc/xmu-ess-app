@@ -23,27 +23,31 @@ import {
   withHandlers,
   withStateHandlers,
 } from 'recompose';
+import { IProgressFilterResult } from './ProgressFilter';
 
 export interface Handlers {
-    handleChangeFilter: (customerUid: string, projectUid: string) => void;
+    handleChangeFilter: (filter: IProgressFilterResult) => void;
     handleDialogOpen: (fullScreen: boolean, expenses: ISummaryModuleCost[], projectUid: string) => void;
     handleDialogClose: () => void;
+    handleReloadData: () => void;
 }
 
 interface OwnOptions {
 }
 
-interface OwnState {
-    customerUid: string;
-    projectUid: string;
+interface OwnState extends IProgressFilterResult {
     dialogFullScreen: boolean;
     dialogOpen: boolean;
     expenses: ISummaryModuleCost[];
     expenseProjectUid: string;
+    reloadData: boolean;
+    isStartup: boolean;
 }
 
 interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
     stateUpdate: StateHandler<OwnState>;
+    setFilterApplied: StateHandler<OwnState>;
+    setStartup: StateHandler<OwnState>;
 }
 
 export type FilterProgressData = {
@@ -73,6 +77,8 @@ const createProps: mapper<ProgressProps, OwnState> = (props: ProgressProps): Own
         dialogOpen: false,
         expenses: [],
         expenseProjectUid: '',
+        reloadData: false,
+        isStartup: true,
     };
   };
 
@@ -85,34 +91,44 @@ const stateUpdaters: StateUpdaters<OwnOptions, OwnState, OwnStateUpdaters> = {
     ...prevState,
     dialogFullScreen: false,
     dialogOpen: false,
-  })
+  }),
+  setFilterApplied: (prevState: OwnState) => (filter: IProgressFilterResult) => ({
+    ...filter
+  }),
+  setStartup: (prevState: OwnState) => (filter: IProgressFilterResult) => ({
+    isStartup: false
+  }),
 };
 
 const handlerCreators: HandleCreators<ProgressProps, Handlers> = {
-    handleChangeFilter: (props: ProgressProps) => (customerUid: string, projectUid: string) => {
-        const { stateUpdate } = props;
+  handleChangeFilter: (props: ProgressProps) => (filter: IProgressFilterResult) => {
+    props.setFilterApplied(filter);
+    
+    if (props.isStartup) {
+      props.setStartup();
+    }
+  },
+  handleReloadData: (props: ProgressProps) => () => {
+    props.stateUpdate({
+      reloadData: true,
+    });
+  },
+  handleDialogOpen: (props: ProgressProps) => (fullScreen: boolean, expenses: ISummaryModuleCost[], projectUid: string) => { 
+    const { stateUpdate } = props;
 
-        stateUpdate({
-          customerUid,
-          projectUid
-        });
-    },
-    handleDialogOpen: (props: ProgressProps) => (fullScreen: boolean, expenses: ISummaryModuleCost[], projectUid: string) => { 
-      const { stateUpdate } = props;
-  
-      stateUpdate({ 
-        expenses,
-        expenseProjectUid: projectUid,
-        dialogFullScreen: fullScreen,
-        dialogOpen: true
-      });
-    },
-    handleDialogClose: (props: ProgressProps) => () => { 
-      const { stateReset } = props;
-  
-      stateReset();
-    },
-  };
+    stateUpdate({ 
+      expenses,
+      expenseProjectUid: projectUid,
+      dialogFullScreen: fullScreen,
+      dialogOpen: true
+    });
+  },
+  handleDialogClose: (props: ProgressProps) => () => { 
+    const { stateReset } = props;
+
+    stateReset();
+  },
+};
 
 const lifecycles: ReactLifeCycleFunctions<ProgressProps, OwnState> = {
     componentDidMount() { 
@@ -128,9 +144,6 @@ const lifecycles: ReactLifeCycleFunctions<ProgressProps, OwnState> = {
         title: intl.formatMessage(summaryMessage.progress.page.title),
         subTitle : intl.formatMessage(summaryMessage.progress.page.subTitle)
       });
-  
-      layoutDispatch.searchShow();
-      layoutDispatch.actionCentreShow();
     
       // only load data when response are empty
       if (!isLoading && !response) {
@@ -140,10 +153,17 @@ const lifecycles: ReactLifeCycleFunctions<ProgressProps, OwnState> = {
       }
     },
     componentWillUpdate(props: ProgressProps, state: OwnState) {
-        if (this.props.customerUid !== props.customerUid ||
-            this.props.projectUid !== props.projectUid) {
-                loadData(props);
-            }
+      if (this.props.customerUid !== props.customerUid ||
+          this.props.projectUid !== props.projectUid) {
+              loadData(props);
+          }
+      if (props.reloadData) {
+        loadData(props);
+
+        props.stateUpdate({
+          reloadData: false,
+        });
+      }
     },
     componentWillUnmount() {
       const { layoutDispatch } = this.props;
@@ -154,7 +174,6 @@ const lifecycles: ReactLifeCycleFunctions<ProgressProps, OwnState> = {
       layoutDispatch.modeListOff();
       layoutDispatch.searchHide();
       layoutDispatch.modeSearchOff();
-      layoutDispatch.actionCentreHide();
       layoutDispatch.moreHide();
   
       // dispose 'get all' from 'redux store' when the page is 'out of project registration' context 

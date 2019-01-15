@@ -160,7 +160,8 @@ const stateUpdaters: StateUpdaters<TravelSettlementApprovalListFilterProps, IOwn
     filterCustomer: undefined,
     filterProject: undefined,
     filterStatus: undefined,
-    filterNotify: undefined
+    filterNotify: undefined,
+    filterCompletion: undefined
   }),
 
   // filter customer
@@ -171,13 +172,13 @@ const stateUpdaters: StateUpdaters<TravelSettlementApprovalListFilterProps, IOwn
     isFilterCustomerOpen: false,
     filterCustomer: customer,
     filterProjectDialog: {
-      customerUids: customer && [customer.uid] || undefined
+      customerUids: customer && customer.uid
     }
   }),
 
   // filter project
   setFilterProjectVisibility: (prevState: IOwnState) => () => ({
-    isFilterProjectOpen: !prevState.isFilterCustomerOpen
+    isFilterProjectOpen: !prevState.isFilterProjectOpen
   }),
   setFilterProject: (prevState: IOwnState) => (customer?: IProjectList) => ({
     isFilterProjectOpen: false,

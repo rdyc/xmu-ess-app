@@ -1,5 +1,6 @@
 import { IFinanceDetail } from '@finance/classes/response';
 import { financeMessage } from '@finance/locales/messages/financeMessage';
+import { layoutMessage } from '@layout/locales/messages';
 import { GlobalFormat } from '@layout/types';
 import { GlobalStyle } from '@layout/types/GlobalStyle';
 import { Card, CardContent, CardHeader, IconButton, InputAdornment, TextField, Tooltip } from '@material-ui/core';
@@ -71,17 +72,16 @@ export const financeInformation: React.SFC<AllProps> = props => {
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
           label={intl.formatMessage(financeMessage.approval.field.requestor)}
-          value={data.document.changes.created ? data.document.changes.created.fullName : 'N/A'}
+          value={data.document && data.document.changes && data.document.changes.created ? data.document.changes.created.fullName : 'N/A'}
         />
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
           label={intl.formatMessage(financeMessage.approval.field.approvalDate)}
-          value={data.document.changes.updatedAt ? 
+          value={data.document && data.document.changes && data.document.changes.updatedAt ? 
             intl.formatDate(data.document.changes.updatedAt, GlobalFormat.Date) : ''}
         />
         {
-          (data.document.amount &&
-          data.document.amount.advance) &&
+          (data.document && data.document.amount && data.document.amount.advance) &&
           <TextField
           {...GlobalStyle.TextField.ReadOnly}
             label={intl.formatMessage(financeMessage.approval.field.advance)}
@@ -91,7 +91,7 @@ export const financeInformation: React.SFC<AllProps> = props => {
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
           label={intl.formatMessage(financeMessage.approval.field.total)}
-          value={data.document.amount && data.document.amount.total &&
+          value={data.document && data.document.amount && data.document.amount.total &&
             intl.formatNumber(data.document.amount.total, GlobalFormat.CurrencyDefault) || intl.formatNumber(0, GlobalFormat.CurrencyDefault)}
         />
         <TextField
@@ -105,6 +105,25 @@ export const financeInformation: React.SFC<AllProps> = props => {
           label={intl.formatMessage(financeMessage.approval.field.notes)}
           value={data.notes || 'N/A'}
         />
+        {
+          data.changes &&
+          <TextField
+            {...GlobalStyle.TextField.ReadOnly}
+            label={props.intl.formatMessage(layoutMessage.field.createdBy)}
+            value={data.changes.created && data.changes.created.fullName || 'N/A'}
+            helperText={props.intl.formatDate(data.changes.createdAt, GlobalFormat.DateTime) || 'N/A'}
+          />
+        }
+        {
+          data.changes &&
+          (data.changes.updated && data.changes.updatedAt) &&
+          <TextField
+            {...GlobalStyle.TextField.ReadOnly}
+            label={props.intl.formatMessage(layoutMessage.field.updatedBy)}
+            value={data.changes.updated.fullName || 'N/A'}
+            helperText={props.intl.formatDate(data.changes.updatedAt, GlobalFormat.DateTime) || 'N/A'}
+          />
+        }
       </CardContent>
     </Card>
   );
