@@ -39,6 +39,11 @@
   "travel.request.dialog.editTitle": "Modify Confirmation",
   "travel.request.dialog.editDescription": " You are about to modify current Travel Request. Do you want to continue? ",
 
+  "travel.settlement.dialog.newTitle": "Submit Confirmation",
+  "travel.settlement.dialog.newDescription": " Do you want to submit settlement for this travel request ? ",
+  "travel.settlement.dialog.editTitle": "Modify Confirmation",
+  "travel.settlement.dialog.editDescription": " You are about to modify current Travel Settlement. Do you want to continue? ",
+
   "travel.request.confirm.modify.title": "Modify Confirmation",
   "travel.request.confirm.modify.description": "You are about to modify current travel request, approval request will be re-started in new approval round. Do you want to continue?",
   "travel.request.confirm.addSettlement.title": "Add Settlement Confirmation",

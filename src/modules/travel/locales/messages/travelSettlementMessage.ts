@@ -22,6 +22,16 @@ export const travelSettlementConfirm = defineMessages({
   modifyDescription: { id: `${prefix}.confirm.modify.description` },
 });
 
+// dialog
+export const travelSettlementDialog = defineMessages({
+  modifyTitle: { id: `${prefix}.dialog.modifyTitle`},
+  modifyDescription: { id: `${prefix}.dialog.modifyDescription`},
+  createTitle: { id: `${prefix}.dialog.newTitle`},
+  createDescription: { id: `${prefix}.dialog.newDescription`},
+  editTitle: { id: `${prefix}.dialog.editTitle`},
+  editDescription: { id: `${prefix}.dialog.editDescription`},
+});
+
 // section
 export const travelSettlementSection = defineMessages({
   infoTitle: { id: `${prefix}.section.info.title` },
