@@ -125,7 +125,7 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<WorkflowMenuListProps, OwnStat
     layoutDispatch.modeListOff();
     layoutDispatch.searchHide();
     layoutDispatch.modeSearchOff();
-    layoutDispatch.actionCentreHide();
+    // layoutDispatch.actionCentreHide();
     layoutDispatch.moreHide();
     loadAllDispose();
   }

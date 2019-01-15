@@ -272,7 +272,7 @@ const lifecycles: ReactLifeCycleFunctions<OrganizationWorkflowEditorProps, {}> =
     layoutDispatch.changeView(null);
     layoutDispatch.navBackHide();
     layoutDispatch.moreHide();
-    layoutDispatch.actionCentreHide();
+    // layoutDispatch.actionCentreHide();
 
     appBarDispatch.dispose();
 
