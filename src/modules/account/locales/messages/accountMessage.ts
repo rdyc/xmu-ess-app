@@ -8,6 +8,13 @@ import {
   accountEmployeePage,
   accountEmployeeSection
 } from './accountEmployeeMessage';
+import { 
+  accountEmployeeTrainingConfirm, 
+  accountEmployeeTrainingField, 
+  accountEmployeeTrainingFieldHelperFor, 
+  accountEmployeeTrainingMessage, 
+  accountEmployeeTrainingSection
+} from './accountEmployeeTrainingMessage';
 
 export const accountMessage = {
   employee: {
@@ -22,4 +29,11 @@ export const accountMessage = {
   access: {
     message: accountAccessMessage
   },
+  training: {
+    field: accountEmployeeTrainingField,
+    confirm: accountEmployeeTrainingConfirm,
+    fieldFor: accountEmployeeTrainingFieldHelperFor,
+    message: accountEmployeeTrainingMessage,
+    section: accountEmployeeTrainingSection
+  }
 };
