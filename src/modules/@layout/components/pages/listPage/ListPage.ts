@@ -91,6 +91,9 @@ interface IOwnState {
 
   // transition
   inTransition: boolean;
+
+  // not selection types
+  notSelectionTypes: string[];
 }
 
 interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
@@ -107,6 +110,7 @@ interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
   setField: StateHandler<IOwnState>;
   setOrder: StateHandler<IOwnState>;
   setSize: StateHandler<IOwnState>;
+  setNotSelectionTypes: StateHandler<IOwnState>;
   setPageAndSize: StateHandler<IOwnState>;
 }
 
@@ -139,6 +143,7 @@ const createProps: mapper<IOwnOption, IOwnState> = (props: IOwnOption): IOwnStat
   page: 1,
   size: 10,
   inTransition: true,
+  notSelectionTypes: [],
   ...props.config.filter
 });
 
@@ -214,7 +219,10 @@ const stateUpdaters: StateUpdaters<IOwnOption, IOwnState, IOwnStateUpdater> = {
   setPageAndSize: (prevState: IOwnState) => (page: number, size: number) => ({
     size,
     page
-  })
+  }),
+  setNotSelectionTypes: (prevState: IOwnState) => (types: string[]) => ({
+    notSelectionTypes: types
+  }),
 };
 
 const handlerCreators: HandleCreators<ListPageProps, IOwnHandler> = {
@@ -284,6 +292,8 @@ const lifecycles: ReactLifeCycleFunctions<ListPageProps, IOwnState> = {
     // assign selection callback
     if (this.props.config.hasSelection) {
       this.props.appBarDispatch.assignSelectionClearCallback(this.props.setSelectionClear);
+
+      this.props.setNotSelectionTypes(this.props.config.notSelectionTypes);
 
       // call config processing callback
       this.props.appBarDispatch.assignSelectionProcessCallback(() => {

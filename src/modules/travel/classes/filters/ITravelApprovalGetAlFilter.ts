@@ -7,5 +7,7 @@ export interface ITravelApprovalgetAllFilter extends IBasePagingFilter {
   projectUid?: string;
   statusType?: string;
   status?: 'pending' | 'complete';
+  start?: string;
+  end?: string;
   isNotify?: boolean;
 }

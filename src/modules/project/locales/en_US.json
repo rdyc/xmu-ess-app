@@ -9,12 +9,15 @@
   "project.registration.page.modify.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
   "project.registration.page.owner.modify.title": "Change Owner",
   "project.registration.page.owner.modify.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "project.registration.page.hour.modify.title": "Adjust Project Hours",
+  "project.registration.page.hour.modify.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
   "project.registration.page.status.modify.title": "Update Status",
   "project.registration.page.status.modify.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
   
   "project.registration.option.close": "Close Project",
   "project.registration.option.reOpen": "Re-open Project",
   "project.registration.option.owner": "Change Owner",
+  "project.registration.option.hour": "Adjust Hours",
   "project.registration.option.site": "Manage Sites",
 
   "project.registration.confirm.modify.title": "Modify Confirmation",
@@ -25,6 +28,8 @@
   "project.registration.confirm.reOpen.description": "You are about to re-open current project. Do you want to continue?",
   "project.registration.confirm.changeOwner.title": "Change Project Owner",
   "project.registration.confirm.changeOwner.description": "You are about to change or transfer new owner current project. Do you want to continue?",
+  "project.registration.confirm.adjustHour.title": "Adjust Project Hours",
+  "project.registration.confirm.adjustHour.description": "You are about to adjust maximum hours for current project. Do you want to continue?",
   "project.registration.confirm.manageSite.title": "Project Site",
   "project.registration.confirm.manageSite.description": "You will be manage all sites for current project. Do you want to continue?",
 
@@ -40,6 +45,8 @@
   "project.registration.section.site.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
   "project.registration.section.owner.title": "New Owner",
   "project.registration.section.owner.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "project.registration.section.hour.title": "Project Hours",
+  "project.registration.section.hour.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
   "project.registration.section.status.title": "New Status",
   "project.registration.section.status.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
   "project.registration.section.approval.title": "Approval",
@@ -47,6 +54,7 @@
   
   "project.registration.field.uid": "Project ID",
   "project.registration.field.uid.placeholder": "Project ID",
+  "project.registration.field.childUid": "Child Project ID",
   "project.registration.field.name": "Name",
   "project.registration.field.name.required": "Project name is required",
   "project.registration.field.name.placeholder": "Type a project name",
@@ -85,6 +93,8 @@
   "project.registration.field.valueUsd.placeholder": "Type a project value",
   "project.registration.field.valueIdr": "Value (IDR)",
   "project.registration.field.hours": "Maximum Hours",
+  "project.registration.field.hours.required": "Hours is required",
+  "project.registration.field.hours.placeholder": "Maximum project hours",
   "project.registration.field.rejectedReason": "Rejected Reason",
   "project.registration.field.isNotify": "Notified Only",
   "project.registration.field.isRejected": "Rejected Only",
@@ -103,6 +113,9 @@
   "project.registration.message.owner.emptyProps": "Some props are empty",
   "project.registration.message.owner.update.success": "A new project owner has been updated",
   "project.registration.message.owner.update.failure": "Unable to process your submission",
+  "project.registration.message.hour.emptyProps": "Some props are empty",
+  "project.registration.message.hour.update.success": "A maximum project hours has been updated",
+  "project.registration.message.hour.update.failure": "Unable to process your submission",
   "project.registration.message.status.emptyProps": "Some props are empty",
   "project.registration.message.status.update.success": "Current project has been {status}",
   "project.registration.message.status.update.failure": "Unable to process your submission",
@@ -142,6 +155,7 @@
   "project.site.field.value.placeholder": "Type a site value",
   
   "project.site.option.new": "Create",
+  "project.site.option.hour": "Adjust Hours",
   "project.site.option.modify": "Modify",
   "project.site.option.remove": "Remove",
 

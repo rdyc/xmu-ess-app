@@ -13,7 +13,7 @@ import * as React from 'react';
 import { Field, FieldArray, WrappedFieldArrayProps } from 'redux-form';
 
 import { ProjectAssignment } from '../detail/shared/ProjectAssignment';
-import { ProjectAssignmentFormProps, ProjectAssignmentItemFormData } from './ProjectAssignmentForm';
+import { IProjectAssignmentItemFormData, ProjectAssignmentFormProps } from './ProjectAssignmentForm';
 
 const isComplete = (statusType?: string | null | undefined): boolean => {
   let result = false;
@@ -30,7 +30,7 @@ const isComplete = (statusType?: string | null | undefined): boolean => {
   return result;
 };
 
-const ProjectAssignmentItemFormView: React.SFC<WrappedFieldArrayProps<ProjectAssignmentItemFormData> & ProjectAssignmentFormProps> = props => (
+const ProjectAssignmentItemFormView: React.SFC<WrappedFieldArrayProps<IProjectAssignmentItemFormData> & ProjectAssignmentFormProps> = props => (
   <Grid container spacing={16}>
     {
       props.fields.map((field, index) => {

@@ -2,6 +2,7 @@ import {
   projectRegistrationGetAllReducer,
   projectRegistrationGetByIdReducer,
   projectRegistrationGetListReducer,
+  projectRegistrationPatchReducer,
   projectRegistrationPostReducer,
   projectRegistrationPutReducer,
 } from '@project/store/reducers/registration';
@@ -12,6 +13,7 @@ const projectRegistrationReducers = {
   projectRegistrationGetById: projectRegistrationGetByIdReducer,
   projectRegistrationPost: projectRegistrationPostReducer,
   projectRegistrationPut: projectRegistrationPutReducer,
+  projectRegistrationPatch: projectRegistrationPatchReducer,
 };
 
 export default projectRegistrationReducers;
