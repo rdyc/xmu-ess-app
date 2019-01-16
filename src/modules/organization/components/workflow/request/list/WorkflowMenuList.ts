@@ -49,13 +49,6 @@ export type WorkflowMenuListProps
   & WithLayout
   & WithWidth;
 
-// const createProps: mapper<OwnOption, OwnState> = (): OwnState => {
-
-//   return {
-//     companyUid: 'CP002'
-//   };
-// };
-
 const stateUpdaters: StateUpdaters<OwnOption, OwnState, OwnStateUpdater> = {
   setCompany: (prevState: OwnState) => (newState: string) => ({
     companyUid: newState ? newState !== '' ? newState : undefined : undefined

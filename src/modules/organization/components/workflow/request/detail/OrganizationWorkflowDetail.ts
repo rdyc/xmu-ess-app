@@ -1,4 +1,3 @@
-import { WithUser, withUser } from '@layout/hoc/withUser';
 import { layoutMessage } from '@layout/locales/messages';
 import { DiemUserAction } from '@lookup/classes/types/diem/DiemUserAction';
 import { WithLookupMenu, withLookupMenu } from '@lookup/hoc/withLookupMenu';
@@ -9,7 +8,9 @@ import { RouteComponentProps, withRouter } from 'react-router';
 import {
   compose,
   HandleCreators,
+  lifecycle,
   mapper,
+  ReactLifeCycleFunctions,
   StateHandler,
   StateHandlerMap,
   StateUpdaters,
@@ -46,8 +47,7 @@ interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
 }
 
 export type OrganizationWorkflowDetailProps
-  = WithUser
-  & WithOrganizationWorkflow
+  = WithOrganizationWorkflow
   & WithLookupMenu
   & RouteComponentProps<OwnRouteParams>
   & InjectedIntlProps
@@ -89,7 +89,8 @@ const handlerCreators: HandleCreators<OrganizationWorkflowDetailProps, OwnHandle
     props.setDefault();
   },
   handleOnConfirm: (props: OrganizationWorkflowDetailProps) => () => {
-    const { response } = props.lookupMenuState.detail;
+    const { response } = props.organizationWorkflowState.list;
+    // const menuResponse = props.lookupMenuState.detail.response;
 
     // skipp untracked action or empty response
     if (!props.action || !response) {
@@ -97,13 +98,12 @@ const handlerCreators: HandleCreators<OrganizationWorkflowDetailProps, OwnHandle
     }
 
     // define vars
-    let menuUid: string | undefined;
+    // let menuUid: string | undefined;
 
     // get menu uid
-    if (response.data) {
-      menuUid = response.data.uid;
-    }
-    console.log(menuUid);
+    // if (response) {
+    //   menuUid = menuResponse.data.uid;
+    // }
 
     // actions with new page
     const actions = [
@@ -124,18 +124,38 @@ const handlerCreators: HandleCreators<OrganizationWorkflowDetailProps, OwnHandle
 
       props.setDefault();
       props.history.push(next, {
-        uid: menuUid, companyUid: props.match.params.companyUid
+        menuUid: props.match.params.menuUid, companyUid: props.match.params.companyUid
       });
     }
   },
 };
 
+const lifecycles: ReactLifeCycleFunctions<OrganizationWorkflowDetailProps, OwnState> = {
+  componentWillReceiveProps(nextProps: OrganizationWorkflowDetailProps) {
+    if (nextProps.organizationWorkflowState.list.response !== this.props.organizationWorkflowState.list.response) {
+      const { loadDetailRequest } = this.props.lookupMenuDispatch;
+
+      if (this.props.match.params.menuUid) {
+        loadDetailRequest({
+          menuUid: this.props.match.params.menuUid
+        });
+      }
+    }
+  },
+  componentWillUnmount() {
+    const { lookupMenuDispatch, organizationWorkflowDispatch } = this.props;
+
+    lookupMenuDispatch.loadDetailDispose();
+    organizationWorkflowDispatch.loadListDispose();
+  }
+};
+
 export const OrganizationWorkflowDetail = compose(
   withRouter,
-  withUser,
   withLookupMenu,
   withOrganizationWorkflow,
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
+  lifecycle<OrganizationWorkflowDetailProps, OwnState>(lifecycles),
 )(OrganizationWorkflowDetailView);

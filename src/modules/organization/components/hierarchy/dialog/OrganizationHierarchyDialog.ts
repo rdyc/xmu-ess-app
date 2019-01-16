@@ -15,7 +15,7 @@ interface OwnOptions {
   filter?: IOrganizationHierarchyListFilter | undefined;
   isOpen: boolean;
   hideBackdrop?: boolean;
-  onSelected: (project: IHierarchyList) => void;
+  onSelected: (hierarchy: IHierarchyList) => void;
   onClose: () => void;
 }
 
@@ -127,9 +127,9 @@ const lifecycles: ReactLifeCycleFunctions<OrganizationHierarchyDialogProps, OwnS
   componentWillReceiveProps(nextProps: OrganizationHierarchyDialogProps) {
     if (nextProps.filter !== this.props.filter) {
       const { loadListRequest } = this.props.organizationHierarchyDispatch;
-      const { filter, changeProjectListFilter } = nextProps;
+      const { filter, changeHierarchyListFilter } = nextProps;
       
-      changeProjectListFilter({filter});
+      changeHierarchyListFilter({filter});
       loadListRequest({filter});
     }
   }

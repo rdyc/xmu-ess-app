@@ -44,11 +44,10 @@ const config: SingleConfig<IWorkflowList[], OrganizationWorkflowDetailProps> = {
 
   // events
   onDataLoad: (props: OrganizationWorkflowDetailProps, callback: SingleHandler, forceReload?: boolean | false) => {
-    const { user } = props.userState;
+
     const { isLoading, request, response } = props.lookupMenuState.detail;
     // const workflowResponse = props.organizationWorkflowState.list.response;
     const { loadListRequest } = props.organizationWorkflowDispatch;
-    const { loadDetailRequest } = props.lookupMenuDispatch;
 
     const filter: any = {
       menuUid: props.match.params.menuUid,
@@ -58,16 +57,11 @@ const config: SingleConfig<IWorkflowList[], OrganizationWorkflowDetailProps> = {
     };
 
     // when user is set and not loading and has diemUid in route params
-    if (user && !isLoading && props.match.params.menuUid && props.match.params.companyUid) {
+    if (!isLoading && props.match.params.menuUid && props.match.params.companyUid) {
       // when diemUid was changed or response are empty or force to reload
       if ((request && request.menuUid !== props.match.params.menuUid) || !response || forceReload) {
         loadListRequest({
           filter
-        });
-
-        // load menu detail
-        loadDetailRequest({
-          menuUid: props.match.params.menuUid
         });
       } else {
         // just take data from previous response

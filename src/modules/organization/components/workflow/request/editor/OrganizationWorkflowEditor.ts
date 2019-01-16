@@ -6,6 +6,7 @@ import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IOrganizationWorkflowPostPayload, IOrganizationWorkflowPutHierarchy, IOrganizationWorkflowPutPayload } from '@organization/classes/request/workflow/request';
 import { IWorkflow } from '@organization/classes/response/workflow';
 import { WithOrganizationWorkflow, withOrganizationWorkflow } from '@organization/hoc/withOrganizationWorkflow';
+import { organizationMessage } from '@organization/locales/messages/organizationMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps } from 'react-router';
 import { compose, HandleCreators, lifecycle, mapper, ReactLifeCycleFunctions, StateHandler, StateHandlerMap, StateUpdaters, withHandlers, withStateHandlers } from 'recompose';
@@ -171,17 +172,17 @@ const handlerCreators: HandleCreators<OrganizationWorkflowEditorProps, OwnHandle
     return null;
   },
   handleSubmitSuccess: (props: OrganizationWorkflowEditorProps) => (response: IWorkflow) => {
-    const { formMode, history } = props;
+    const { formMode, intl, history } = props;
     const { alertAdd } = props.layoutDispatch;
 
     let message: string = '';
 
     if (formMode === FormMode.New) {
-      message = '' ; // intl.formatMessage(travelMessage.request.message.createSuccess, { uid: response.uid });
+      message = intl.formatMessage(organizationMessage.workflowSetup.message.createSuccess, { uid: response.uid });
     }
 
     if (formMode === FormMode.Edit) {
-      message = '' ; // intl.formatMessage(travelMessage.request.message.updateSuccess, { uid: response.uid });
+      message = intl.formatMessage(organizationMessage.workflowSetup.message.updateSuccess, { uid: response.uid });
     }
 
     alertAdd({
@@ -192,7 +193,7 @@ const handlerCreators: HandleCreators<OrganizationWorkflowEditorProps, OwnHandle
     history.push(`/organization/workflows`);
   },
   handleSubmitFail: (props: OrganizationWorkflowEditorProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
-    const { formMode } = props;
+    const { formMode, intl } = props;
     const { alertAdd } = props.layoutDispatch;
 
     if (errors) {
@@ -206,11 +207,11 @@ const handlerCreators: HandleCreators<OrganizationWorkflowEditorProps, OwnHandle
       let message: string = '';
 
       if (formMode === FormMode.New) {
-        message = ''; // intl.formatMessage(travelMessage.request.message.createFailure);
+        message = intl.formatMessage(organizationMessage.workflowSetup.message.createFailure);
       }
 
       if (formMode === FormMode.Edit) {
-        message = ''; // intl.formatMessage(travelMessage.request.message.updateFailure);
+        message = intl.formatMessage(organizationMessage.workflowSetup.message.updateFailure);
       }
 
       alertAdd({
@@ -224,13 +225,13 @@ const handlerCreators: HandleCreators<OrganizationWorkflowEditorProps, OwnHandle
 
 const lifecycles: ReactLifeCycleFunctions<OrganizationWorkflowEditorProps, {}> = {
   componentDidMount() {
-    const { layoutDispatch, history, stateUpdate } = this.props;
+    const { layoutDispatch, history, stateUpdate, intl } = this.props;
     const { loadListRequest } = this.props.organizationWorkflowDispatch;
     const { user } = this.props.userState;
     
     const view = {
-      title: 'Workflow', // projectMessage.registration.page.newTitle,
-      subTitle: '', // projectMessage.registration.page.newSubHeader,
+      title: organizationMessage.workflowSetup.page.newTitle,
+      subTitle: organizationMessage.workflowSetup.page.newSubHeader,
     };
 
     if (!user) {
@@ -238,8 +239,8 @@ const lifecycles: ReactLifeCycleFunctions<OrganizationWorkflowEditorProps, {}> =
     }
 
     if (!isNullOrUndefined(history.location.state)) {
-      view.title = 'edit'; // projectMessage.registration.page.modifyTitle;
-      view.subTitle = ''; // projectMessage.registration.page.modifySubHeader;
+      view.title = organizationMessage.workflowSetup.page.modifyTitle;
+      view.subTitle = organizationMessage.workflowSetup.page.modifySubHeader;
 
       const filter: any = {
         menuUid: history.location.state.menuUid,
@@ -260,8 +261,8 @@ const lifecycles: ReactLifeCycleFunctions<OrganizationWorkflowEditorProps, {}> =
     layoutDispatch.changeView({
       uid: AppMenu.LookupWorkflow,
       parentUid: AppMenu.Lookup,
-      title: '', // intl.formatMessage(view.title),
-      subTitle : '' // intl.formatMessage(view.subTitle)
+      title: intl.formatMessage(view.title),
+      subTitle : intl.formatMessage(view.subTitle)
     });
 
     layoutDispatch.navBackShow(); 
@@ -272,7 +273,6 @@ const lifecycles: ReactLifeCycleFunctions<OrganizationWorkflowEditorProps, {}> =
     layoutDispatch.changeView(null);
     layoutDispatch.navBackHide();
     layoutDispatch.moreHide();
-    // layoutDispatch.actionCentreHide();
 
     appBarDispatch.dispose();
 

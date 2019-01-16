@@ -1,7 +1,8 @@
 import { defineMessages } from 'react-intl';
 
 const prefix = 'organization.workflow';
-// section
+
+// page
 export const organizationWorkflowSetupPage = defineMessages({
   listTitle: { id: `${prefix}.page.list.title` },
   listSubHeader: { id: `${prefix}.page.list.subHeader` },
