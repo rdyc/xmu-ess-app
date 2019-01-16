@@ -3,25 +3,11 @@ import { DialogValue } from '@layout/components/dialogs/DialogValue';
 import { ModuleDefinition } from '@layout/helper/redirector';
 import { layoutMessage } from '@layout/locales/messages';
 import { LookupCustomerDialog } from '@lookup/components/customer/dialog';
-import {
-  AppBar,
-  Button,
-  Dialog,
-  DialogContent,
-  Divider,
-  IconButton,
-  List,
-  ListItem,
-  ListItemSecondaryAction,
-  ListItemText,
-  Switch,
-  Toolbar,
-  Typography,
-} from '@material-ui/core';
+import { AppBar, Button, Dialog, DialogContent, Divider, IconButton, List, ListItem, ListItemSecondaryAction, ListItemText, Switch, Toolbar, Typography } from '@material-ui/core';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import CloseIcon from '@material-ui/icons/Close';
 import ClearIcon from '@material-ui/icons/SettingsBackupRestore';
-import { ProjectAssignmentDialog } from '@project/components/dialog/assignment';
+import { ProjectRegistrationDialog } from '@project/components/dialog/project';
 import { timesheetMessage } from '@timesheet/locales/messages/timesheetMessage';
 import * as React from 'react';
 import { TimesheetApprovalHistoryListFilterProps } from './TimesheetApprovalHistoryListFilter';
@@ -190,7 +176,7 @@ export const TimesheetApprovalHistoryListFilterView: React.SFC<TimesheetApproval
       onClose={props.handleFilterCustomerOnClose}
     />
 
-    <ProjectAssignmentDialog
+    <ProjectRegistrationDialog
       hideBackdrop={true}
       isOpen={props.isFilterProjectOpen}
       filter={props.filterProjectDialog}

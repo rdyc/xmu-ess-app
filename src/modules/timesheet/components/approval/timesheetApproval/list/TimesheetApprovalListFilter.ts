@@ -5,8 +5,8 @@ import { WithUser, withUser } from '@layout/hoc/withUser';
 import { ILookupCustomerGetListFilter } from '@lookup/classes/filters/customer';
 import { ICustomerList } from '@lookup/classes/response';
 import { WithStyles, withStyles } from '@material-ui/core';
-import { IProjectAssignmentGetListFilter } from '@project/classes/filters/assignment';
-import { IProjectAssignmentList } from '@project/classes/response';
+import { IProjectRegistrationGetListFilter } from '@project/classes/filters/registration';
+import { IProjectList } from '@project/classes/response';
 import styles from '@styles';
 import { ITimesheetApprovalGetAllFilter } from '@timesheet/classes/filters';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
@@ -39,10 +39,10 @@ interface IOwnState {
 
   // filter project
   isFilterProjectOpen: boolean;
-  filterProject?: IProjectAssignmentList;
+  filterProject?: IProjectList;
 
   // filter Project Dialog
-  filterProjectDialog: IProjectAssignmentGetListFilter;
+  filterProjectDialog: IProjectRegistrationGetListFilter;
 
   // filter activity type
   isFilterActivityTypeOpen: boolean;
@@ -101,7 +101,7 @@ interface IOwnHandler {
 
   // filter project
   handleFilterProjectVisibility: (event: React.MouseEvent<HTMLElement>) => void;
-  handleFilterProjectOnSelected: (project: IProjectAssignmentList) => void;
+  handleFilterProjectOnSelected: (project: IProjectList) => void;
   handleFilterProjectOnClear: (event: React.MouseEvent<HTMLElement>) => void;
   handleFilterProjectOnClose: () => void;
 
@@ -155,7 +155,10 @@ const createProps: mapper<TimesheetApprovalListFilterProps, IOwnState> = (props:
 
   // default filter project dialog
   filterProjectDialog: {
-    customerUid: undefined
+    customerUids: undefined,
+    assignmentStatus: undefined,
+    orderBy: undefined,
+    direction: undefined
   }
 });
 
@@ -178,7 +181,10 @@ const stateUpdaters: StateUpdaters<TimesheetApprovalListFilterProps, IOwnState, 
     isFilterCustomerOpen: false,
     filterCustomer: customer,
     filterProjectDialog: {
-      customerUid: customer && customer.uid || undefined
+      customerUids: customer && customer.uid,
+      assignmentStatus: 'assigned',
+      orderBy: 'uid',
+      direction: 'descending'
     }
   }),
 
@@ -186,7 +192,7 @@ const stateUpdaters: StateUpdaters<TimesheetApprovalListFilterProps, IOwnState, 
   setFilterProjectVisibility: (prevState: IOwnState) => () => ({
     isFilterProjectOpen: !prevState.isFilterProjectOpen
   }),
-  setFilterProject: (prevState: IOwnState) => (project?: IProjectAssignmentList) => ({
+  setFilterProject: (prevState: IOwnState) => (project?: IProjectList) => ({
     isFilterProjectOpen: false,
     filterProject: project
   }),
@@ -258,7 +264,7 @@ const handlerCreators: HandleCreators<TimesheetApprovalListFilterProps, IOwnHand
   handleFilterProjectVisibility: (props: TimesheetApprovalListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
     props.setFilterProjectVisibility();
   },
-  handleFilterProjectOnSelected: (props: TimesheetApprovalListFilterProps) => (project: IProjectAssignmentList) => {
+  handleFilterProjectOnSelected: (props: TimesheetApprovalListFilterProps) => (project: IProjectList) => {
     props.setFilterProject(project);
   },
   handleFilterProjectOnClear: (props: TimesheetApprovalListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
