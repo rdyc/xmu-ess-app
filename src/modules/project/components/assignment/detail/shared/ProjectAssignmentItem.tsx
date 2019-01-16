@@ -7,7 +7,7 @@ import * as React from 'react';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose } from 'recompose';
 
-interface OwnProps {
+interface IOwnProps {
   data: IProjectAssignmentDetailItem;
   title: string;
   subHeader?: string;
@@ -15,7 +15,7 @@ interface OwnProps {
 }
 
 type AllProps 
-  = OwnProps
+  = IOwnProps
   & InjectedIntlProps;
 
 const projectAssignmentItem: React.SFC<AllProps> = props => (
@@ -95,6 +95,6 @@ const projectAssignmentItem: React.SFC<AllProps> = props => (
   </Card> 
 );
 
-export const ProjectAssignmentItem = compose<AllProps, OwnProps>(
+export const ProjectAssignmentItem = compose<AllProps, IOwnProps>(
   injectIntl
 )(projectAssignmentItem);

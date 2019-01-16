@@ -12,7 +12,7 @@ export type ProjectStatusFormData = {
   }
 };
 
-interface OwnProps {
+interface IOwnProps {
   formMode: FormMode;
   projectData: IProjectDetail;
   statusType?: string | undefined;
@@ -23,9 +23,9 @@ interface OwnProps {
 // }
 
 export type StatusFormProps 
-  = InjectedFormProps<ProjectStatusFormData, OwnProps>
+  = InjectedFormProps<ProjectStatusFormData, IOwnProps>
   // & FormValueProps
-  & OwnProps;
+  & IOwnProps;
 
 // const selector = formValueSelector(formName);
 
@@ -39,7 +39,7 @@ export type StatusFormProps
 
 // const connectedView = connect(mapStateToProps)(StatusFormView);
 
-export const StatusForm = reduxForm<ProjectStatusFormData, OwnProps>({
+export const StatusForm = reduxForm<ProjectStatusFormData, IOwnProps>({
   form: formName,
   touchOnChange: true,
   touchOnBlur: true,

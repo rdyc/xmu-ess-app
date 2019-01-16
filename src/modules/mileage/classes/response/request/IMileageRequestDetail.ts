@@ -14,7 +14,7 @@ export interface IMileageRequestDetail {
   items?: IMileageRequestItem[] | null;
   histories?: History[] | null;
   timesheets?: ITimesheet[] | null;
-  workflow?: IOrganizationWorkflow | null;
+  workflow?: IOrganizationWorkflow;
   changes?: IBaseChanges | null;
   uid: string;
   employeeUid: string;

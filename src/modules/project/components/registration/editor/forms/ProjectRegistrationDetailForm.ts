@@ -10,36 +10,38 @@ import {
 import { WithAllowedProjectType, withAllowedProjectType } from '@project/hoc/withAllowedProjectType';
 import { projectMessage } from '@project/locales/messages/projectMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
-import { compose, HandleCreators, withHandlers } from 'recompose';
+import { compose, HandleCreators, setDisplayName, withHandlers } from 'recompose';
 import { BaseFieldsProps } from 'redux-form';
 import { isNullOrUndefined } from 'util';
 
-interface OwnProps {
+interface IOwnProps {
   formMode: FormMode;
   context: BaseFieldsProps;
   formCurrencyType: string | null | undefined;
   isCurrencyIdr: boolean;
+  isRequestor: boolean;
+  isAdmin: boolean;
   onChangeCurrencyType: (event: any, newValue: string, oldValue: string) => void;
   onChangeRate: (event: any, newValue: number, oldValue: number) => void;
   onChangeValueIdr: (event: any, newValue: number, oldValue: number) => void;
 }
 
-interface OwnHandlers {
+interface IOwnHandlers {
   generateFieldProps: (name: string) => any;
 }
 
 export type ProjectRegistrationDetailFormProps 
-  = OwnProps
-  & OwnHandlers
+  = IOwnProps
+  & IOwnHandlers
   & WithAllowedProjectType
   & InjectedIntlProps;
 
-const handlerCreators: HandleCreators<ProjectRegistrationDetailFormProps, OwnHandlers> = {
+const handlerCreators: HandleCreators<ProjectRegistrationDetailFormProps, IOwnHandlers> = {
   generateFieldProps: (props: ProjectRegistrationDetailFormProps) => (name: string) => { 
     const { 
       intl, formMode, formCurrencyType, isCurrencyIdr, 
       onChangeCurrencyType, onChangeValueIdr, 
-      onChangeRate, allowedProjectTypes 
+      onChangeRate, allowedProjectTypes, isRequestor, isAdmin 
     } = props;
     
     let fieldProps: SelectSystemOption & any = {};
@@ -57,7 +59,8 @@ const handlerCreators: HandleCreators<ProjectRegistrationDetailFormProps, OwnHan
 
       case 'customerUid': 
         fieldProps = {
-          required: true,
+          required: isRequestor,
+          disabled: !isRequestor,
           label: intl.formatMessage(projectMessage.registration.fieldFor(name, 'fieldName')),
           placeholder: intl.formatMessage(projectMessage.registration.fieldFor(name, 'fieldPlaceholder')),
           component: InputCustomer
@@ -66,13 +69,24 @@ const handlerCreators: HandleCreators<ProjectRegistrationDetailFormProps, OwnHan
       
       case 'projectType':
         fieldProps = {
-          required: formMode === FormMode.New,
           category: 'project',
+          required: formMode === FormMode.New,
           disabled: formMode === FormMode.Edit,
           label: intl.formatMessage(projectMessage.registration.fieldFor(name, 'fieldName')),
           placeholder: intl.formatMessage(projectMessage.registration.fieldFor(name, 'fieldPlaceholder')),
           component: SelectSystem,
           onlyForTypes: allowedProjectTypes
+        };
+        break;
+
+      case 'contractNumber':
+        fieldProps = {
+          type: 'text',
+          required: isRequestor,
+          disabled: !isRequestor,
+          label: intl.formatMessage(projectMessage.registration.fieldFor(name, 'fieldName')),
+          placeholder: intl.formatMessage(projectMessage.registration.fieldFor(name, 'fieldPlaceholder')),
+          component: InputText
         };
         break;
 
@@ -87,7 +101,8 @@ const handlerCreators: HandleCreators<ProjectRegistrationDetailFormProps, OwnHan
   
       case 'currencyType': 
         fieldProps = {
-          required: true,
+          required: isRequestor,
+          disabled: !isRequestor,
           category: 'currency',
           label: intl.formatMessage(projectMessage.registration.fieldFor(name, 'fieldName')),
           placeholder: intl.formatMessage(projectMessage.registration.fieldFor(name, 'fieldPlaceholder')),
@@ -117,7 +132,7 @@ const handlerCreators: HandleCreators<ProjectRegistrationDetailFormProps, OwnHan
       case 'rate':
         fieldProps = {
           type: 'number',
-          required: !isCurrencyIdr,
+          required: !isCurrencyIdr || isRequestor,
           label: intl.formatMessage(projectMessage.registration.fieldFor(name, 'fieldName')),
           placeholder: intl.formatMessage(projectMessage.registration.fieldFor(name, 'fieldPlaceholder')),
           disabled: isCurrencyIdr || isNullOrUndefined(formCurrencyType),
@@ -129,6 +144,7 @@ const handlerCreators: HandleCreators<ProjectRegistrationDetailFormProps, OwnHan
       case 'valueUsd':
         fieldProps = {
           type: 'number',
+          disabled: !isRequestor,
           label: intl.formatMessage(projectMessage.registration.fieldFor(name, 'fieldName')),
           placeholder: intl.formatMessage(projectMessage.registration.fieldFor(name, 'fieldPlaceholder')),
           component: InputNumber,
@@ -139,8 +155,19 @@ const handlerCreators: HandleCreators<ProjectRegistrationDetailFormProps, OwnHan
       case 'valueIdr':
         fieldProps = {
           type: 'number',
-          label: intl.formatMessage(projectMessage.registration.fieldFor(name, 'fieldName')),
           disabled: true,
+          label: intl.formatMessage(projectMessage.registration.fieldFor(name, 'fieldName')),
+          component: InputNumber
+        };
+        break;
+
+      case 'hours':
+        fieldProps = {
+          type: 'number',
+          disabled: formMode === FormMode.New || !isAdmin,
+          required: formMode === FormMode.Edit && isAdmin,
+          label: intl.formatMessage(projectMessage.registration.fieldFor(name, 'fieldName')),
+          placeholder: intl.formatMessage(projectMessage.registration.fieldFor(name, 'fieldPlaceholder')),
           component: InputNumber
         };
         break;
@@ -159,8 +186,9 @@ const handlerCreators: HandleCreators<ProjectRegistrationDetailFormProps, OwnHan
   }
 };
 
-export const ProjectRegistrationDetailForm = compose<ProjectRegistrationDetailFormProps, OwnProps>(
+export const ProjectRegistrationDetailForm = compose<ProjectRegistrationDetailFormProps, IOwnProps>(
+  setDisplayName('ProjectRegistrationDetailForm'),
   injectIntl,
   withAllowedProjectType,
-  withHandlers<ProjectRegistrationDetailFormProps, OwnHandlers>(handlerCreators),
+  withHandlers(handlerCreators),
 )(ProjectRegistrationDetailFormView);

@@ -3,6 +3,7 @@ import {
   IProjectRegistrationGetAllRequest,
   IProjectRegistrationGetByIdRequest,
   IProjectRegistrationGetListRequest,
+  IProjectRegistrationPatchRequest,
   IProjectRegistrationPostRequest,
   IProjectRegistrationPutRequest,
 } from '@project/classes/queries/registration';
@@ -14,6 +15,8 @@ import {
   projectRegistrationGetByIdRequest,
   projectRegistrationGetListDispose,
   projectRegistrationGetListRequest,
+  projectRegistrationPatchDispose,
+  projectRegistrationPatchRequest,
   projectRegistrationPostDispose,
   projectRegistrationPostRequest,
   projectRegistrationPutDispose,
@@ -37,6 +40,8 @@ interface PropsFromDispatch {
     createDispose: typeof projectRegistrationPostDispose;
     updateRequest: typeof projectRegistrationPutRequest;
     updateDispose: typeof projectRegistrationPutDispose;
+    patchRequest: typeof projectRegistrationPatchRequest;
+    patchDispose: typeof projectRegistrationPatchDispose;
 
     // query
     loadAllRequest: typeof projectRegistrationGetAllRequest;
@@ -65,6 +70,8 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     createDispose: () => dispatch(projectRegistrationPostDispose()),
     updateRequest: (request: IProjectRegistrationPutRequest) => dispatch(projectRegistrationPutRequest(request)),
     updateDispose: () => dispatch(projectRegistrationPutDispose()),
+    patchRequest: (request: IProjectRegistrationPatchRequest) => dispatch(projectRegistrationPatchRequest(request)),
+    patchDispose: () => dispatch(projectRegistrationPatchDispose()),
     
     // query
     loadAllRequest: (request: IProjectRegistrationGetAllRequest) => dispatch(projectRegistrationGetAllRequest(request)),

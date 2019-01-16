@@ -194,6 +194,7 @@ export const travelRequestField = defineMessages({
   // filter 
   isRejected: { id: `${prefix}.field.isRejected` },
   isSettlement: { id: `${prefix}.field.isSettlement` },
+  isAdjustmentNeeded: { id: `${prefix}.field.isAdjustmentNeeded` },
   isNotify: { id: `${prefix}.field.isNotify` },
   completion: { id: `${prefix}.field.completion` },
 

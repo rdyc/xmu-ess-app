@@ -33,6 +33,7 @@ import {
   IProjectAssignmentGetListRequest,
   IProjectAssignmentPatchRequest,
 } from '../queries/assignment';
+import { IProjectHourPutRequest } from '../queries/hour';
 import { IProjectOwnerPutRequest } from '../queries/owner';
 import {
   IProjectSiteDeleteRequest,
@@ -52,6 +53,9 @@ export interface IProjectState {
 
   // owner
   projectOwnerPut: IQuerySingleState<IProjectOwnerPutRequest, boolean>;
+
+  // hour
+  projectHourPut: IQuerySingleState<IProjectHourPutRequest, boolean>;
 
   // status
   projectStatusPut: IQuerySingleState<IProjectStatusPutRequest, boolean>;

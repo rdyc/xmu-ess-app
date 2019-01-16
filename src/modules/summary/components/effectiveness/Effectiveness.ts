@@ -94,8 +94,6 @@ const lifecycles: ReactLifeCycleFunctions<EffectivenessProps, OwnState> = {
         title: intl.formatMessage(summaryMessage.effectiveness.page.title),
         subTitle : intl.formatMessage(summaryMessage.effectiveness.page.subTitle)
       });
-  
-      layoutDispatch.searchShow();
     
       // only load data when response are empty
       if (!isLoading && !response) {

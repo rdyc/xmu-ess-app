@@ -42,6 +42,7 @@ import expenseApprovalSagas from '@expense/store/sagas/expenseApprovalSagas';
 import expenseSagas from '@expense/store/sagas/expenseRequestSagas';
 import financeSagas from '@finance/store/sagas/financeApprovalSagas';
 import chartSagas from '@home/store/sagas/chartSagas';
+import landingPageSagas from '@layout/store/sagas/landingPageSagas';
 import commonNotificationSagas from '@layout/store/sagas/notificationSagas';
 import leaveApprovalSagas from '@leave/store/sagas/leaveApprovalSagas';
 import leaveCancellationSagas from '@leave/store/sagas/leaveCancellationSagas';
@@ -65,6 +66,7 @@ import organizationStructureSagas from '@organization/store/sagas/organizationSt
 import projectAcceptanceSagas from '@project/store/sagas/projectAcceptanceSagas';
 import projectApprovalSagas from '@project/store/sagas/projectApprovalSagas';
 import projectAssignmentSagas from '@project/store/sagas/projectAssignmentSagas';
+import projectHourSagas from '@project/store/sagas/projectHourSagas';
 import projectOwnerSagas from '@project/store/sagas/projectOwnerSagas';
 import projectRegistrationSagas from '@project/store/sagas/projectRegistrationSagas';
 import projectSiteSagas from '@project/store/sagas/projectSiteSagas';
@@ -150,6 +152,7 @@ export function* rootSaga() {
     // project
     fork(projectRegistrationSagas),
     fork(projectOwnerSagas),
+    fork(projectHourSagas),
     fork(projectStatusSagas),
     fork(projectSiteSagas),
     fork(projectApprovalSagas),
@@ -191,6 +194,9 @@ export function* rootSaga() {
     fork(summarySagas),
 
     // home
-    fork(chartSagas)
+    fork(chartSagas),
+
+    // layout
+    fork(landingPageSagas)
   ]);
 }

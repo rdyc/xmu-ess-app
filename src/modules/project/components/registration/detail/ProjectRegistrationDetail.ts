@@ -9,6 +9,7 @@ import {
   compose,
   HandleCreators,
   mapper,
+  setDisplayName,
   StateHandler,
   StateHandlerMap,
   StateUpdaters,
@@ -18,21 +19,22 @@ import {
 
 import { ProjectRegistrationDetailView } from './ProjectRegistrationDetailView';
 
-interface OwnRouteParams {
+interface IOwnRouteParams {
   projectUid: string;
 }
 
-interface OwnHandler {
+interface IOwnHandler {
   handleOnModify: () => void;
   handleOnChangeStatus: () => void;
   handleOnChangeOwner: () => void;
+  handleOnAdjustHour: () => void;
   handleOnReOpen: () => void;
   handleOnManageSite: () => void;
   handleOnCloseDialog: () => void;
   handleOnConfirm: () => void;
 }
 
-interface OwnState {
+interface IOwnState {
   isAdmin: boolean;
   action?: ProjectUserAction;
   dialogFullScreen: boolean;
@@ -43,32 +45,33 @@ interface OwnState {
   dialogConfirmLabel?: string;
 }
 
-interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
-  setModify: StateHandler<OwnState>;
-  setClose: StateHandler<OwnState>;
-  setReopen: StateHandler<OwnState>;
-  setChangeOwner: StateHandler<OwnState>;
-  setManageSite: StateHandler<OwnState>;
-  setDefault: StateHandler<OwnState>;
+interface IOwnStateUpdaters extends StateHandlerMap<IOwnState> {
+  setModify: StateHandler<IOwnState>;
+  setClose: StateHandler<IOwnState>;
+  setReopen: StateHandler<IOwnState>;
+  setChangeOwner: StateHandler<IOwnState>;
+  setAdjustHour: StateHandler<IOwnState>;
+  setManageSite: StateHandler<IOwnState>;
+  setDefault: StateHandler<IOwnState>;
 }
 
 export type ProjectRegistrationDetailProps 
   = WithUser
   & WithProjectRegistration
-  & RouteComponentProps<OwnRouteParams>
+  & RouteComponentProps<IOwnRouteParams>
   & InjectedIntlProps
-  & OwnState
-  & OwnStateUpdaters
-  & OwnHandler;
+  & IOwnState
+  & IOwnStateUpdaters
+  & IOwnHandler;
 
-const createProps: mapper<ProjectRegistrationDetailProps, OwnState> = (props: ProjectRegistrationDetailProps): OwnState => ({ 
+const createProps: mapper<ProjectRegistrationDetailProps, IOwnState> = (props: ProjectRegistrationDetailProps): IOwnState => ({ 
   isAdmin: false,
   dialogFullScreen: false,
   dialogOpen: false,
 });
 
-const stateUpdaters: StateUpdaters<ProjectRegistrationDetailProps, OwnState, OwnStateUpdaters> = {
-  setModify: (prevState: OwnState, props: ProjectRegistrationDetailProps) => (): Partial<OwnState> => ({
+const stateUpdaters: StateUpdaters<ProjectRegistrationDetailProps, IOwnState, IOwnStateUpdaters> = {
+  setModify: (prevState: IOwnState, props: ProjectRegistrationDetailProps) => (): Partial<IOwnState> => ({
     action: ProjectUserAction.Modify,
     dialogFullScreen: false,
     dialogOpen: true,
@@ -77,7 +80,7 @@ const stateUpdaters: StateUpdaters<ProjectRegistrationDetailProps, OwnState, Own
     dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.disaggre),
     dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.aggre)
   }),
-  setClose: (prevState: OwnState, props: ProjectRegistrationDetailProps) => (): Partial<OwnState> => ({
+  setClose: (prevState: IOwnState, props: ProjectRegistrationDetailProps) => (): Partial<IOwnState> => ({
     action: ProjectUserAction.Close,
     dialogFullScreen: false,
     dialogOpen: true,
@@ -86,7 +89,7 @@ const stateUpdaters: StateUpdaters<ProjectRegistrationDetailProps, OwnState, Own
     dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.discard),
     dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.continue),
   }),
-  setReopen: (prevState: OwnState, props: ProjectRegistrationDetailProps) => (): Partial<OwnState> => ({
+  setReopen: (prevState: IOwnState, props: ProjectRegistrationDetailProps) => (): Partial<IOwnState> => ({
     action: ProjectUserAction.ReOpen,
     dialogFullScreen: false,
     dialogOpen: true,
@@ -95,7 +98,7 @@ const stateUpdaters: StateUpdaters<ProjectRegistrationDetailProps, OwnState, Own
     dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.discard),
     dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.continue)
   }),
-  setChangeOwner: (prevState: OwnState, props: ProjectRegistrationDetailProps) => (): Partial<OwnState> => ({
+  setChangeOwner: (prevState: IOwnState, props: ProjectRegistrationDetailProps) => (): Partial<IOwnState> => ({
     action: ProjectUserAction.ChangeOwner,
     dialogFullScreen: false,
     dialogOpen: true,
@@ -104,7 +107,16 @@ const stateUpdaters: StateUpdaters<ProjectRegistrationDetailProps, OwnState, Own
     dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.discard),
     dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.continue),
   }),
-  setManageSite: (prevState: OwnState, props: ProjectRegistrationDetailProps) => (): Partial<OwnState> => ({
+  setAdjustHour: (prevState: IOwnState, props: ProjectRegistrationDetailProps) => (): Partial<IOwnState> => ({
+    action: ProjectUserAction.AdjustHour,
+    dialogFullScreen: false,
+    dialogOpen: true,
+    dialogTitle: props.intl.formatMessage(projectMessage.registration.confirm.adjustHourTitle), 
+    dialogContent: props.intl.formatMessage(projectMessage.registration.confirm.adjustHourDescription),
+    dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.discard),
+    dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.continue),
+  }),
+  setManageSite: (prevState: IOwnState, props: ProjectRegistrationDetailProps) => (): Partial<IOwnState> => ({
     action: ProjectUserAction.ManageSites,
     dialogFullScreen: false,
     dialogOpen: true,
@@ -113,7 +125,7 @@ const stateUpdaters: StateUpdaters<ProjectRegistrationDetailProps, OwnState, Own
     dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.discard),
     dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.continue),
   }),
-  setDefault: (prevState: OwnState) => (): Partial<OwnState> => ({
+  setDefault: (prevState: IOwnState) => (): Partial<IOwnState> => ({
     action: undefined,
     dialogFullScreen: false,
     dialogOpen: false,
@@ -124,7 +136,7 @@ const stateUpdaters: StateUpdaters<ProjectRegistrationDetailProps, OwnState, Own
   })
 };
 
-const handlerCreators: HandleCreators<ProjectRegistrationDetailProps, OwnHandler> = {
+const handlerCreators: HandleCreators<ProjectRegistrationDetailProps, IOwnHandler> = {
   handleOnModify: (props: ProjectRegistrationDetailProps) => () => { 
     props.setModify();
   },
@@ -136,6 +148,9 @@ const handlerCreators: HandleCreators<ProjectRegistrationDetailProps, OwnHandler
   },
   handleOnChangeOwner: (props: ProjectRegistrationDetailProps) => () => { 
     props.setChangeOwner();
+  },
+  handleOnAdjustHour: (props: ProjectRegistrationDetailProps) => () => { 
+    props.setAdjustHour();
   },
   handleOnManageSite: (props: ProjectRegistrationDetailProps) => () => { 
     props.setManageSite();
@@ -169,6 +184,7 @@ const handlerCreators: HandleCreators<ProjectRegistrationDetailProps, OwnHandler
     const actions = [
       ProjectUserAction.Modify, 
       ProjectUserAction.ChangeOwner, 
+      ProjectUserAction.AdjustHour, 
       ProjectUserAction.Close, 
       ProjectUserAction.ReOpen, 
       ProjectUserAction.ManageSites
@@ -184,6 +200,10 @@ const handlerCreators: HandleCreators<ProjectRegistrationDetailProps, OwnHandler
           
         case ProjectUserAction.ChangeOwner:
           next = '/project/requests/owner';
+          break;
+
+        case ProjectUserAction.AdjustHour:
+          next = '/project/requests/hour';
           break;
         
         case ProjectUserAction.Close:
@@ -209,6 +229,7 @@ const handlerCreators: HandleCreators<ProjectRegistrationDetailProps, OwnHandler
 };
 
 export const ProjectRegistrationDetail = compose(
+  setDisplayName('ProjectRegistrationDetail'),
   withRouter,
   withUser,
   withProjectRegistration,

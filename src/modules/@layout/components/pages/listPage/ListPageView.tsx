@@ -69,6 +69,13 @@ export const ListPageView: React.SFC<ListPageProps> = props => (
                     <Checkbox
                       checked={props.selected.indexOf(item.uid) !== -1}
                       onChange={props.handleOnChangeSelection}
+                      disabled={
+                        props.notSelectionTypes &&
+                        props.notSelectionTypes.length > 0 ?
+                        props.notSelectionTypes.some(notSelectionType => 
+                          notSelectionType === item.statusType)
+                        : false
+                      }
                       value={item.uid}
                       style={{
                         height: 25, 

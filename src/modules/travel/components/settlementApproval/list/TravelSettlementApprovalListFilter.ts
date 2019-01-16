@@ -28,7 +28,7 @@ const completionStatus: ICollectionValue[] = [
   { value: 'complete', name: 'Complete' }
 ];
 
-export type ITravelSettlementApprovalListFilterResult = Pick<ITravelApprovalgetAllFilter, 'customerUid' | 'projectUid' | 'statusType' | 'status' |'isNotify'>;
+export type ITravelSettlementApprovalListFilterResult = Pick<ITravelApprovalgetAllFilter, 'customerUid' | 'projectUid' | 'statusType' | 'status' | 'isNotify'>;
 
 interface IOwnOption {
   isOpen: boolean;
@@ -62,6 +62,14 @@ interface IOwnState {
   isFilterCompletionOpen: boolean;
   filterCompletion?: ICollectionValue;
 
+  // filter start
+  isFilterStartOpen: boolean;
+  filterStart?: string;
+
+  // filter end
+  isFilterEndOpen: boolean;
+  filterEnd?: string;
+
   // filter notify
   filterNotify?: boolean;
 }
@@ -85,6 +93,14 @@ interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
   // filter completion
   setFilterCompletionVisibility: StateHandler<IOwnState>;
   setFilterCompletion: StateHandler<IOwnState>;
+
+  // filter Start
+  setFilterStartVisibility: StateHandler<IOwnState>;
+  setFilterStart: StateHandler<IOwnState>;
+
+  // filter End
+  setFilterEndVisibility: StateHandler<IOwnState>;
+  setFilterEnd: StateHandler<IOwnState>;
 
   // filter rejected
   setFilterNotify: StateHandler<IOwnState>;
@@ -119,6 +135,18 @@ interface IOwnHandler {
    handleFilterCompletionOnClear: (event: React.MouseEvent<HTMLElement>) => void;
    handleFilterCompletionOnClose: () => void; 
 
+   // filter Start
+  handleFilterStartVisibility: (event: React.MouseEvent<HTMLElement>) => void;
+  handleFilterStartOnSelected: (data: string) => void;
+  handleFilterStartOnClear: (event: React.MouseEvent<HTMLElement>) => void;
+  handleFilterStartOnClose: () => void;
+
+  // filter End
+  handleFilterEndVisibility: (event: React.MouseEvent<HTMLElement>) => void;
+  handleFilterEndOnSelected: (data: string) => void;
+  handleFilterEndOnClear: (event: React.MouseEvent<HTMLElement>) => void;
+  handleFilterEndOnClose: () => void;
+
   // filter rejected
   handleFilterNotifyOnChange: (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => void;  
 }
@@ -139,6 +167,8 @@ const createProps: mapper<TravelSettlementApprovalListFilterProps, IOwnState> = 
   isFilterProjectOpen: false,
   isFilterStatusOpen: false,
   isFilterCompletionOpen: false,
+  isFilterStartOpen: false,
+  isFilterEndOpen: false,
 
   // pass initial value for primitive types only, bellow is 'boolean'
   filterNotify: props.initialProps && props.initialProps.isNotify,
@@ -160,7 +190,8 @@ const stateUpdaters: StateUpdaters<TravelSettlementApprovalListFilterProps, IOwn
     filterCustomer: undefined,
     filterProject: undefined,
     filterStatus: undefined,
-    filterNotify: undefined
+    filterNotify: undefined,
+    filterCompletion: undefined
   }),
 
   // filter customer
@@ -177,7 +208,7 @@ const stateUpdaters: StateUpdaters<TravelSettlementApprovalListFilterProps, IOwn
 
   // filter project
   setFilterProjectVisibility: (prevState: IOwnState) => () => ({
-    isFilterProjectOpen: !prevState.isFilterCustomerOpen
+    isFilterProjectOpen: !prevState.isFilterProjectOpen
   }),
   setFilterProject: (prevState: IOwnState) => (customer?: IProjectList) => ({
     isFilterProjectOpen: false,
@@ -200,6 +231,24 @@ const stateUpdaters: StateUpdaters<TravelSettlementApprovalListFilterProps, IOwn
   setFilterCompletion: (prevState: IOwnState) => (data?: ICollectionValue) => ({
     isFilterCompletionOpen: false,
     filterCompletion: data
+  }),
+
+  // filter Start
+  setFilterStartVisibility: (prevState: IOwnState) => () => ({
+    isFilterStartOpen: !prevState.isFilterStartOpen,
+  }),
+  setFilterStart: (prevState: IOwnState) => (data?: string) => ({
+    isFilterStartOpen: false,
+    filterStart: data
+  }),
+
+  // filter End
+  setFilterEndVisibility: (prevState: IOwnState) => () => ({
+    isFilterEndOpen: !prevState.isFilterEndOpen
+  }),
+  setFilterEnd: (prevState: IOwnState) => (data?: string) => ({
+    isFilterEndOpen: false,
+    filterEnd: data
   }),
 
   // filter rejected
@@ -277,7 +326,44 @@ const handlerCreators: HandleCreators<TravelSettlementApprovalListFilterProps, I
   },
   handleFilterCompletionOnClose: (props: TravelSettlementApprovalListFilterProps) => () => {
     props.setFilterCompletionVisibility();
+  },
+
+  // filter Start
+  handleFilterStartVisibility: (props: TravelSettlementApprovalListFilterProps) => () => {
+    props.setFilterStartVisibility();
+  },
+  handleFilterStartOnSelected: (props: TravelSettlementApprovalListFilterProps) => (
+    data: string
+  ) => {
+    props.setFilterStart(data);
+  },
+  handleFilterStartOnClear: (props: TravelSettlementApprovalListFilterProps) => () => {
+    props.setFilterStart(props.start);
+  },
+  handleFilterStartOnClose: (props: TravelSettlementApprovalListFilterProps) => () => {
+    props.setFilterStartVisibility();
+  },
+
+  // filter End
+  handleFilterEndVisibility: (props: TravelSettlementApprovalListFilterProps) => (
+    event: React.MouseEvent<HTMLElement>
+  ) => {
+    props.setFilterEndVisibility();
+  },
+  handleFilterEndOnSelected: (props: TravelSettlementApprovalListFilterProps) => (
+    data: string
+  ) => {
+    props.setFilterEnd(data);
+  },
+  handleFilterEndOnClear: (props: TravelSettlementApprovalListFilterProps) => (
+    event: React.MouseEvent<HTMLElement>
+  ) => {
+    props.setFilterEnd(props.end);
+  },
+  handleFilterEndOnClose: (props: TravelSettlementApprovalListFilterProps) => () => {
+    props.setFilterEndVisibility();
   },  
+  
   // filter new owner
   handleFilterNotifyOnChange: (props: TravelSettlementApprovalListFilterProps) => (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
     props.setFilterNotify(checked);
