@@ -197,9 +197,9 @@
   "account.employee.training.field.trainingType.placeholder": "Training Type",
   "account.employee.training.field.trainingType.required": "Training Type is required",
 
-  "account.employee.training.field.certificateType": "Certificate Type",
-  "account.employee.training.field.certificateType.placeholder": "Certificate Type",
-  "account.employee.training.field.certificateType.required": "Certificate Type is required",
+  "account.employee.training.field.certificationType": "Certificate Type",
+  "account.employee.training.field.certificationType.placeholder": "Certificate Type",
+  "account.employee.training.field.certificationType.required": "Certificate Type is required",
 
   "account.employee.training.confirm.create.title": "Create Training",
   "account.employee.training.confirm.create.subHeader": "lorem ipsum",

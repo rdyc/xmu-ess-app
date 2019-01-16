@@ -72,7 +72,7 @@ const handlerCreators: HandleCreators<AccountEmployeeTrainingEditorProps, OwnHan
     return errors;
   },
   handleSubmit: (props: AccountEmployeeTrainingEditorProps) => (formData: AccountEmployeeTrainingFormData) => {
-    const { formMode, employeeUid, intl } = props;
+    const { formMode, employeeUid, intl, history } = props;
     const { user } = props.userState;
     const { createRequest, updateRequest } = props.accountEmployeeTrainingDispatch;
 
@@ -81,7 +81,8 @@ const handlerCreators: HandleCreators<AccountEmployeeTrainingEditorProps, OwnHan
     }
 
     const payload = {
-      ...formData.information
+      ...formData.information,
+      employeeUid: history.location.state.uid
     };
 
     // creating

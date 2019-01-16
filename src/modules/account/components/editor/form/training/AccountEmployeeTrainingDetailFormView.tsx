@@ -32,7 +32,7 @@ export const AccountEmployeeTrainingDetailFormView: React.SFC<AccountEmployeeTra
     <Card square>
       <CardHeader 
         title={intl.formatMessage(accountMessage.training.section.title)}
-        subheader={intl.formatMessage(accountMessage.training.section.subHeader)}
+        // subheader={intl.formatMessage(accountMessage.training.section.subHeader)}
       />
       <CardContent>
         {names.map(name => renderField(name))}

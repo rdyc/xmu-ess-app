@@ -28,7 +28,6 @@ export const AccountEmployeeTrainingEditorView: React.SFC<AccountEmployeeTrainin
   const initialValues: AccountEmployeeTrainingFormData = {
     information: {
       uid: undefined,
-      employeeUid: undefined,
       name: undefined,
       start: undefined,
       end: undefined,
