@@ -164,7 +164,7 @@ const stateUpdaters: StateUpdaters<PurchaseRequestListFilterProps, IOwnState, IO
 
   // filter project
   setFilterProjectVisibility: (prevState: IOwnState, props: PurchaseRequestListFilterProps) => () => ({
-    isFilterProjectOpen: !prevState.isFilterCustomerOpen,
+    isFilterProjectOpen: !prevState.isFilterProjectOpen,
   }),
   setFilterProject: (prevState: IOwnState) => (project?: IProjectList) => ({
     isFilterProjectOpen: false,

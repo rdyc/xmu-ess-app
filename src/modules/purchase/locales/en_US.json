@@ -50,7 +50,7 @@
   "purchase.confirm.settle.description": "You are about to begin settlement process for this purchase request. Do you want to continue?",
  
   "purchase.confirm.approval.title": "Approval Confirmation",
-  "purchase.confirm.approval.content": "You are about to submit an approval decision for this purchase. Do you want to continue?",
+  "purchase.confirm.approval.description": "You are about to submit an approval decision for this purchase. Do you want to continue?",
   
   "purchase.field.information.uid": "Purchase ID",
   "purchase.field.information.uid.placeholder": "Purchase ID",

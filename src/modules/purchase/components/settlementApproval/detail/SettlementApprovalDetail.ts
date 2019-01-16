@@ -5,7 +5,6 @@ import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { layoutMessage } from '@layout/locales/messages';
 import { WorkflowApprovalFormData } from '@organization/components/workflow/approval/WorkflowApprovalForm';
-import { organizationMessage } from '@organization/locales/messages/organizationMessage';
 import { ISettlementApprovalPostPayload } from '@purchase/classes/request/settlementApproval';
 import { WithSettlementApproval, withSettlementApproval } from '@purchase/hoc/settlementApproval/withSettlementApproval';
 import { purchaseMessage } from '@purchase/locales/messages/purchaseMessage';
@@ -79,7 +78,7 @@ const handlerCreators: HandleCreators<SettlementApprovalDetailProps, OwnHandler>
 
     requiredFields.forEach(field => {
       if (!formData[field] || isNullOrUndefined(formData[field])) {
-        errors[field] = props.intl.formatMessage(organizationMessage.workflow.fieldFor(field, 'fieldRequired'));
+        errors[field] = props.intl.formatMessage(purchaseMessage.settlement.fieldFor(field, 'fieldRequired'));
       }
     });
 
@@ -162,8 +161,7 @@ const createProps: mapper<SettlementApprovalDetailProps, OwnState> = (props: Set
   ],
   approvalTrueValue: WorkflowStatusType.Approved,
   approvalDialogTitle: props.intl.formatMessage(purchaseMessage.s_approval.confirm.approveTitle),
-  // approvalDialogContentText: props.intl.formatMessage(purchaseMessage.s_approval.confirm.approveDescription),
-  approvalDialogContentText: ` `,
+  approvalDialogContentText: props.intl.formatMessage(purchaseMessage.s_approval.confirm.approveDescription),
   approvalDialogCancelText: props.intl.formatMessage(layoutMessage.action.discard),
   approvalDialogConfirmedText: props.intl.formatMessage(layoutMessage.action.continue),
 

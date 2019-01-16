@@ -1,4 +1,5 @@
 import { defineMessages } from 'react-intl';
+import { purchaseItemField } from './purchaseItemMessage';
 
 const prefix = 'purchase';
 
@@ -85,3 +86,76 @@ export const purchaseRequestField = defineMessages({
   statusType: { id: `${prefix}.field.statusType` },
   completion: { id: `${prefix}.field.completion` },
 });
+
+export const purchaseRequestFieldHelperFor = (field: string, type: 'fieldName' | 'fieldRequired' | 'fieldPlaceholder') => {
+  if (type === 'fieldName') {
+    switch (field) {
+      case 'uid': return purchaseRequestField.uid;
+      case 'purchaseUid': return purchaseRequestField.uid;
+      case 'projectUid': return purchaseRequestField.projectUid;
+      case 'project': return purchaseRequestField.projectUid;
+      case 'customerUid': return purchaseRequestField.customerUid;
+      case 'customer': return purchaseRequestField.customerUid;
+      case 'currencyType': return purchaseRequestField.currencyType;
+      case 'currency': return purchaseRequestField.currencyType;
+      case 'date': return purchaseRequestField.date;
+      case 'statusType': return purchaseRequestField.statusType;
+      case 'status': return purchaseRequestField.statusType;
+      case 'notes': return purchaseRequestField.notes;
+      case 'request': return purchaseRequestField.request;
+      case 'requestInIDR': return purchaseRequestField.requestInIDR;
+      case 'advance': return purchaseRequestField.advance;
+      case 'rate': return purchaseRequestField.rate;
+
+      // item
+      case 'items.uid': return purchaseItemField.uid;
+      case 'items.request': return purchaseItemField.request;
+      case 'items.description': return purchaseItemField.description;
+      default: return { id: field };
+    }
+  }
+
+  if (type === 'fieldRequired') {
+    switch (field) {
+      case 'employeeUid': return purchaseRequestField.itemEmployeeUidRequired;
+      case 'destinationUid': return purchaseRequestField.destinationTypeRequired;
+      case 'projectUid': return purchaseRequestField.projectUidRequired;
+      case 'siteUid': return purchaseRequestField.siteUidRequired;
+      case 'customerUid': return purchaseRequestField.customerUidRequired;
+      case 'date': return purchaseRequestField.dateRequired;
+      case 'end': return purchaseRequestField.endRequired;
+      case 'activityType': return purchaseRequestField.activityTypeRequired;
+
+      // item
+      case 'request': return purchaseItemField.re;
+      case 'from': return purchaseRequestField.de;
+      case 'destination': return purchaseRequestField.destinationRequired;
+      case 'itemStart': return purchaseRequestField.itemStartRequired;
+      case 'itemEnd': return purchaseRequestField.itemEndRequired;
+
+      default: return { id: field };
+    }
+  }
+
+  if (type === 'fieldPlaceholder') {
+    switch (field) {
+      case 'uid': return purchaseRequestField.uidPlaceholder;
+      case 'purchaseUid': return purchaseRequestField.uidPlaceholder;
+      case 'projectUid': return purchaseRequestField.projectUidPlaceholder;
+      case 'project': return purchaseRequestField.projectUidPlaceholder;
+      case 'customerUid': return purchaseRequestField.customerUidPlaceholder;
+      case 'customer': return purchaseRequestField.customerUidPlaceholder;
+      case 'date': return purchaseRequestField.datePlaceholder;
+      case 'currencyType': return purchaseRequestField.currencyTypePlaceholder;
+      case 'currency': return purchaseRequestField.currencyTypePlaceholder;
+      case 'currency': return purchaseRequestField.;
+      
+      // item
+      case 'transportType': return purchaseItemField.requestPlaceholder;
+      
+      default: return { id: field };
+    }
+  }
+
+  return { id: field };
+};
