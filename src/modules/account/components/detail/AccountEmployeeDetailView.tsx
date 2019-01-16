@@ -7,17 +7,11 @@ import { SingleConfig, SingleHandler, SinglePage, SingleState } from '@layout/co
 import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
 import * as React from 'react';
-import { AccountEmployeeAccess } from './access/AccountEmployeeAccess';
-import { AccountEmployeeAccessHistory } from './accessHistory/AccountEmployeeAccessHistory';
 import { AccountEmployeeBank } from './AccountEmployeeBank';
 import { AccountEmployeeContact } from './AccountEmployeeContact';
 import { AccountEmployeeDetailProps } from './AccountEmployeeDetail';
 import { AccountEmployeeInformation } from './AccountEmployeeInformation';
 import { DetailPage } from './DetailPage';
-import { AccountEmployeeEducation } from './education/AccountEmployeeEducation';
-import { AccountEmployeeExperience } from './experience/AccountEmployeeExperience';
-import { AccountEmployeeFamily } from './family/AccountEmployeeFamily';
-import { AccountEmployeeTraining } from './training/AccountEmployeeTraining';
 const config: SingleConfig<IEmployeeDetail, AccountEmployeeDetailProps> = {
   // page info
   page: (props: AccountEmployeeDetailProps) => ({
@@ -103,14 +97,6 @@ export const AccountEmployeeDetailView: React.SFC<AccountEmployeeDetailProps> = 
           connectedProps={props}
         />
       </div>
-    }
-    {props.tab === 1 && <div style={{ padding: 8 * 3 }}><AccountEmployeeAccessHistory employeeUid={props.match.params.employeeUid}/></div>}
-    {props.tab === 2 && <div style={{ padding: 8 * 3 }}><AccountEmployeeEducation employeeUid={props.match.params.employeeUid}/></div>}
-    {props.tab === 3 && <div style={{ padding: 8 * 3 }}><AccountEmployeeFamily employeeUid={props.match.params.employeeUid}/></div>}
-    {props.tab === 4 && <div style={{ padding: 8 * 3 }}><AccountEmployeeExperience employeeUid={props.match.params.employeeUid}/></div>}
-    {props.tab === 5 && <div style={{ padding: 8 * 3 }}><AccountEmployeeTraining employeeUid={props.match.params.employeeUid}/></div>}
-    {props.tab === 6 && <div style={{ padding: 8 * 3 }}><AccountEmployeeAccess employeeUid={props.match.params.employeeUid}/></div>}    
-
     </DetailPage>
     
     <DialogConfirmation 
