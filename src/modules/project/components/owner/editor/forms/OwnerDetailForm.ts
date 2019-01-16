@@ -5,13 +5,27 @@ import { WithAccountPMORoles, withAccountPMORoles } from '@account/hoc/withAccou
 import { WithAccountPMRoles, withAccountPMRoles } from '@account/hoc/withAccountPMRoles';
 import { WithAccountSalesRoles, withAccountSalesRoles } from '@account/hoc/withAccountSalesRoles';
 import { SelectSystem, SelectSystemOption } from '@common/components/select';
+import { AppRole } from '@constants/AppRole';
 import { FormMode } from '@generic/types';
 import { InputText } from '@layout/components/input/text';
+import { WithOidc, withOidc } from '@layout/hoc/withOidc';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { WithAllowedProjectType, withAllowedProjectType } from '@project/hoc/withAllowedProjectType';
 import { projectMessage } from '@project/locales/messages/projectMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
-import { compose, HandleCreators, setDisplayName, withHandlers } from 'recompose';
+import {
+  compose,
+  HandleCreators,
+  lifecycle,
+  mapper,
+  ReactLifeCycleFunctions,
+  setDisplayName,
+  StateHandler,
+  StateHandlerMap,
+  StateUpdaters,
+  withHandlers,
+  withStateHandlers,
+} from 'recompose';
 import { BaseFieldsProps } from 'redux-form';
 
 import { OwnerDetailFormView } from './OwnerDetailFormView';
@@ -21,13 +35,24 @@ interface IOwnProps {
   context: BaseFieldsProps;
 }
 
+interface IOwnState {
+  isAdmin: boolean;
+}
+
+interface IOwnStateUpdaters extends StateHandlerMap<IOwnState> {
+  setAdmin: StateHandler<IOwnState>;
+}
+
 interface IOwnHandlers {
   generateFieldProps: (name: string) => any;
 }
 
 export type OwnerDetailFormProps 
   = IOwnProps
+  & IOwnState
+  & IOwnStateUpdaters
   & IOwnHandlers
+  & WithOidc
   & WithUser
   & WithAccountPMORoles
   & WithAccountPMRoles
@@ -35,17 +60,32 @@ export type OwnerDetailFormProps
   & WithAllowedProjectType
   & InjectedIntlProps;
 
+const createProps: mapper<OwnerDetailFormProps, IOwnState> = (props: OwnerDetailFormProps): IOwnState => ({ 
+  isAdmin: false
+});
+
+const stateUpdaters: StateUpdaters<{}, IOwnState, IOwnStateUpdaters> = {
+  setAdmin: (prevState: IOwnState) => (newState: any): Partial<IOwnState> => ({
+    isAdmin: !prevState.isAdmin
+  })
+};
+
 const handlerCreators: HandleCreators<OwnerDetailFormProps, IOwnHandlers> = {
   generateFieldProps: (props: OwnerDetailFormProps) => (name: string) => { 
-    const { rolePmUids, roleSalesUids, allowedProjectTypes, intl } = props;
+    const { isAdmin, rolePmoUids, rolePmUids, roleSalesUids, allowedProjectTypes, intl } = props;
     const { user } = props.userState;
 
     let _roleUids = undefined;
 
-    // check roles
+    // checking roles
     if (user) {
       if (isMemberOfSales(user.role.uid)) {
-        _roleUids = roleSalesUids && roleSalesUids.join(',');
+        // when user is admin then show roles for PM and Sales, else Sales only
+        if (isAdmin && rolePmoUids && roleSalesUids) {
+          _roleUids = rolePmoUids.concat(roleSalesUids).join(',');
+        } else {
+          _roleUids = roleSalesUids && roleSalesUids.join(',');
+        }
       }
 
       if (isMemberOfPMO(user.role.uid)) {
@@ -92,13 +132,41 @@ const handlerCreators: HandleCreators<OwnerDetailFormProps, IOwnHandlers> = {
   }
 };
 
+const lifecycles: ReactLifeCycleFunctions<OwnerDetailFormProps, {}> = {
+  componentDidMount () {
+    // checking admin status
+    const { user: oidc } = this.props.oidcState;
+
+    let result: boolean = false;
+    
+    if (oidc) {
+      const role: string | string[] | undefined = oidc.profile.role;
+
+      if (role) {
+        if (Array.isArray(role)) {
+          result = role.indexOf(AppRole.Admin) !== -1;
+        } else {
+          result = role === AppRole.Admin;
+        }
+      }
+
+      if (result) {
+        this.props.setAdmin();
+      }
+    }
+  }
+};
+
 export const OwnerDetailForm = compose<OwnerDetailFormProps, IOwnProps>(
   setDisplayName('OwnerDetailForm'),
+  withOidc,
   withUser,
   withAccountPMORoles,
   withAccountPMRoles,
   withAccountSalesRoles,
   withAllowedProjectType,
   injectIntl,
+  withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
+  lifecycle(lifecycles)
 )(OwnerDetailFormView);

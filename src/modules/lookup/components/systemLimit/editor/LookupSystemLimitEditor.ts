@@ -183,7 +183,7 @@ const handlerCreators: HandleCreators<SystemLimitEditorProps, OwnHandlers> = {
 const createProps: mapper<SystemLimitEditorProps, OwnState> = (props: SystemLimitEditorProps): OwnState => ({ 
   formMode: FormMode.New,
   submitDialogTitle: props.intl.formatMessage(lookupMessage.shared.confirm.createTitle),
-  submitDialogContentText: props.intl.formatMessage(lookupMessage.shared.confirm.createDescription),
+  submitDialogContentText: props.intl.formatMessage(lookupMessage.shared.confirm.createDescription, { state: 'Time Limit'}),
   submitDialogCancelText: props.intl.formatMessage(layoutMessage.action.cancel),
   submitDialogConfirmedText: props.intl.formatMessage(layoutMessage.action.ok),
 });
@@ -219,7 +219,7 @@ const lifecycles: ReactLifeCycleFunctions<SystemLimitEditorProps, {}> = {
         systemLimitUid: history.location.state.uid,
         companyUid: history.location.state.companyUid,
         submitDialogTitle: this.props.intl.formatMessage(lookupMessage.shared.confirm.modifyTitle),
-        submitDialogContentText : this.props.intl.formatMessage(lookupMessage.shared.confirm.modifyDescription)
+        submitDialogContentText : this.props.intl.formatMessage(lookupMessage.shared.confirm.modifyDescription, { state: 'Time Limit'})
       });
 
       loadDetailRequest({

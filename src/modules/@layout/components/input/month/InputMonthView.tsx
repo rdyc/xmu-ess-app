@@ -39,9 +39,9 @@ export const InputMonthView: React.SFC<InputMonthProps> = props => {
       select
       fullWidth
       margin="normal"
-      label={label}
       {...input}
       required={required}
+      label={label}
       placeholder={placeholder}
       disabled={disabled || meta.submitting}
       error={meta.touched && !isNullOrUndefined(meta.error) ? true : false}
