@@ -50,7 +50,7 @@ const accountEmployeeInformation: React.SFC<AllProps> = props => {
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
         margin="dense"
-        label={intl.formatMessage(accountMessage.employee.field.employement)}
+        label={intl.formatMessage(accountMessage.employee.field.employment)}
         value={data.employment ? data.employment.value : 'N/A'}
       />
       <TextField

@@ -6,7 +6,7 @@
   "mileage.approval.submission.subHeader": " ",
 
   "mileage.approval.submission.dialog.title": "Mileage Approval Submission",
-  "mileage.approval.submission.dialog.content": " ",
+  "mileage.approval.submission.dialog.content": "You are about to modify this mileage item. Do you want to continue?",
 
   "mileage.request.page.list.title": "Mileage Request",
   "mileage.request.page.list.subHeader": " ",
@@ -63,7 +63,7 @@
   "mileage.request.timesheet.item.subHeader": " ",
 
   "mileage.request.confirm.create.title": "Create Mileage",
-  "mileage.request.confirm.create.description": " ",
+  "mileage.request.confirm.create.description": "You are about to submit a new mileage. Do you want to continue?",
 
   "mileage.message.approval.update.success": "A new PID {uid} has been updated",
   "mileage.message.approval.update.failure": "Unable to process your submission",
