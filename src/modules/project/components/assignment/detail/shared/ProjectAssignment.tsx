@@ -8,14 +8,14 @@ import * as React from 'react';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose } from 'recompose';
 
-interface OwnProps {
+interface IOwnProps {
   formMode: FormMode;
   data: IProjectAssignmentDetail | undefined;
   showProjectHours?: boolean | true;
 }
 
 type AllProps
-  = OwnProps
+  = IOwnProps
   & InjectedIntlProps;
 
 const projectAssignment: React.SFC<AllProps> = props => (
@@ -116,6 +116,6 @@ const projectAssignment: React.SFC<AllProps> = props => (
   </Card>
 );
 
-export const ProjectAssignment = compose<AllProps, OwnProps>(
+export const ProjectAssignment = compose<AllProps, IOwnProps>(
   injectIntl
 )(projectAssignment);

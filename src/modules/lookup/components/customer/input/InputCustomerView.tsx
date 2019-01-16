@@ -26,7 +26,7 @@ export const InputCustomerView: React.SFC<InputCustomerProps> = props => {
         disabled={disabled || meta.submitting}
         error={meta.touched && !isNullOrUndefined(meta.error) ? true : false}
         helperText={meta.touched && meta.error}
-        onClick={() => handleDialogOpen()}
+        onClick={() => disabled ? undefined : handleDialogOpen()}
       />
       <LookupCustomerDialog
         isOpen={isOpen}

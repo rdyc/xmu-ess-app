@@ -11,6 +11,8 @@ export interface ITravelRequestGetAllFilter extends IBasePagingFilter {
   customerUid?: string;
   projectUid?: string;
   statusType?: string;
+  start?: string;
+  end?: string;
   isRejected?: boolean;
   isSettlement?: boolean;
 }

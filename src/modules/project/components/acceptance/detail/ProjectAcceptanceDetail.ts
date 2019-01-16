@@ -9,6 +9,7 @@ import {
   lifecycle,
   mapper,
   ReactLifeCycleFunctions,
+  setDisplayName,
   StateHandler,
   StateHandlerMap,
   StateUpdaters,
@@ -18,43 +19,43 @@ import {
 
 import { ProjectAcceptanceDetailView } from './ProjectAcceptanceDetailView';
 
-interface OwnHandler {
+interface IOwnHandler {
   handleOnClickItem: (assignmentItemUid: string) => void;
   handleCalculateNewAssignment: () => void;
 }
 
-interface OwnRouteParams {
+interface IOwnRouteParams {
   assignmentUid: string;
 }
 
-interface OwnState {
+interface IOwnState {
   newMandays: number;
 }
 
-interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
-  setMandays: StateHandler<OwnState>;
+interface IOwnStateUpdaters extends StateHandlerMap<IOwnState> {
+  setMandays: StateHandler<IOwnState>;
 }
 
 export type ProjectAcceptanceDetailProps
   = WithProjectAssignment
   & WithUser
-  & RouteComponentProps<OwnRouteParams> 
+  & RouteComponentProps<IOwnRouteParams> 
   & InjectedIntlProps
-  & OwnHandler
-  & OwnState
-  & OwnStateUpdaters;
+  & IOwnHandler
+  & IOwnState
+  & IOwnStateUpdaters;
 
-const createProps: mapper<ProjectAcceptanceDetailProps, OwnState> = (props: ProjectAcceptanceDetailProps): OwnState => ({ 
+const createProps: mapper<ProjectAcceptanceDetailProps, IOwnState> = (props: ProjectAcceptanceDetailProps): IOwnState => ({ 
   newMandays: 0
 });
 
-const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
-  setMandays: (prevState: OwnState) => (value: number): Partial<OwnState> => ({
+const stateUpdaters: StateUpdaters<{}, IOwnState, IOwnStateUpdaters> = {
+  setMandays: (prevState: IOwnState) => (value: number): Partial<IOwnState> => ({
     newMandays: value
   })
 };
 
-const handlerCreators: HandleCreators<ProjectAcceptanceDetailProps, OwnHandler> = {
+const handlerCreators: HandleCreators<ProjectAcceptanceDetailProps, IOwnHandler> = {
   handleOnClickItem: (props: ProjectAcceptanceDetailProps) => (assignmentItemUid: string) => {
     props.history.push(`/project/acceptances/${props.match.params.assignmentUid}/${assignmentItemUid}`);
   },
@@ -89,6 +90,7 @@ const lifecycles: ReactLifeCycleFunctions<ProjectAcceptanceDetailProps, {}> = {
 };
 
 export const ProjectAcceptanceDetail = compose<ProjectAcceptanceDetailProps, {}>(
+  setDisplayName('ProjectAcceptanceDetail'),
   withUser,
   withRouter,
   withProjectAssignment,

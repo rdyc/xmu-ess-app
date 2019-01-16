@@ -1,5 +1,4 @@
 import { ProjectRegistrationDetail } from '@project/components/registration/detail/ProjectRegistrationDetail';
-import RegistrationEditor from '@project/components/registration/editor/ProjectRegistrationEditor';
 import * as React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router';
 
@@ -11,17 +10,20 @@ import { ProjectApprovalList } from './approval/list/ProjectApprovalList';
 import { ProjectAssignmentDetail } from './assignment/detail/ProjectAssignmentDetail';
 import { ProjectAssignmentEditorForm } from './assignment/editor/ProjectAssignmentEditor';
 import { ProjectAssignmentList } from './assignment/list/ProjectAssignmentList';
+import { HourEditor } from './hour/editor/HourEditor';
 import { OwnerEditor } from './owner/editor/OwnerEditor';
+import { ProjectRegistrationEditor } from './registration/editor/ProjectRegistrationEditor';
 import { ProjectRegistrationList } from './registration/list/ProjectRegistrationList';
 import { SiteEditor } from './sites/SiteEditor';
 import { StatusEditor } from './status/StatusEditor';
 
 const request = (props: RouteComponentProps) => (
   <Switch>
+    <Route path={`${props.match.path}/hour`} component={HourEditor} />
     <Route path={`${props.match.path}/owner`} component={OwnerEditor} />
     <Route path={`${props.match.path}/status`} component={StatusEditor} />
     <Route path={`${props.match.path}/sites/:companyUid/:projectUid`} component={SiteEditor} />
-    <Route path={`${props.match.path}/form`} component={RegistrationEditor} />
+    <Route path={`${props.match.path}/form`} component={ProjectRegistrationEditor} />
     <Route path={`${props.match.path}/:projectUid`} component={ProjectRegistrationDetail} />
     <Route path={`${props.match.path}`} component={ProjectRegistrationList} />
   </Switch>

@@ -67,6 +67,7 @@ import organizationWorkflowSagas from '@organization/store/sagas/organizationWor
 import projectAcceptanceSagas from '@project/store/sagas/projectAcceptanceSagas';
 import projectApprovalSagas from '@project/store/sagas/projectApprovalSagas';
 import projectAssignmentSagas from '@project/store/sagas/projectAssignmentSagas';
+import projectHourSagas from '@project/store/sagas/projectHourSagas';
 import projectOwnerSagas from '@project/store/sagas/projectOwnerSagas';
 import projectRegistrationSagas from '@project/store/sagas/projectRegistrationSagas';
 import projectSiteSagas from '@project/store/sagas/projectSiteSagas';
@@ -153,6 +154,7 @@ export function* rootSaga() {
     // project
     fork(projectRegistrationSagas),
     fork(projectOwnerSagas),
+    fork(projectHourSagas),
     fork(projectStatusSagas),
     fork(projectSiteSagas),
     fork(projectApprovalSagas),
