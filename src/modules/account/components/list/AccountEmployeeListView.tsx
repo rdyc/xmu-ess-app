@@ -158,7 +158,7 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, OwnState> = {
         {
           icon: AddCircleIcon,
           onClick: () => { 
-            this.props.history.push('/lookup/employee/form'); 
+            this.props.history.push('/account/employee/form'); 
           }
         }
       ],
@@ -208,13 +208,13 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, OwnState> = {
           <Button 
             // disabled
             size="small"
-            onClick={() => this.props.history.push(`/lookup/employee/form`, { uid: item.uid })}
+            onClick={() => this.props.history.push(`/account/employee/form`, { uid: item.uid })}
           >
             <FormattedMessage {...layoutMessage.action.modify}/>
           </Button>
           <Button 
             size="small"
-            onClick={() => this.props.history.push(`/lookup/employee/${item.uid}`)}
+            onClick={() => this.props.history.push(`/account/employee/${item.uid}`)}
           >
             <FormattedMessage {...layoutMessage.action.details}/>
           </Button>

@@ -57,8 +57,9 @@ const handleCreators: HandleCreators<AccountEmployeeBankFormProps, OwnHandlers> 
         };
         break;
 
-      case 'bpjsEmployementNumber':
+      case 'bpjsEmploymentNumber':
         fieldProps = {
+          required: true,
           label: intl.formatMessage(accountMessage.employee.fieldFor(name, 'fieldName')),
           placeholder: intl.formatMessage(accountMessage.employee.fieldFor(name, 'fieldPlaceholder')),
           component: InputText
@@ -67,6 +68,7 @@ const handleCreators: HandleCreators<AccountEmployeeBankFormProps, OwnHandlers> 
 
       case 'bpjsHealthCareNumber':
         fieldProps = {
+          required: true,
           label: intl.formatMessage(accountMessage.employee.fieldFor(name, 'fieldName')),
           placeholder: intl.formatMessage(accountMessage.employee.fieldFor(name, 'fieldPlaceholder')),
           component: InputText

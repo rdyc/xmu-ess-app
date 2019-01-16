@@ -3,6 +3,7 @@ import { IBaseChanges } from '@generic/interfaces';
 
 export interface IEmployeeEducationDetail {
   uid: string;
+  employeeUid: string;
   degreeType: string;
   degree?: ICommonSystem;
   institution: string;
