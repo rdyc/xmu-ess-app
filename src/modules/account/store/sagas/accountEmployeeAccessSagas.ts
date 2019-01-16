@@ -70,7 +70,7 @@ function* watchListRequest() {
     });
     return saiyanSaga.fetch({
       method: 'get',
-      path: `/v1/account/employees/${action.payload.employeeUid}/list?${params}`,
+      path: `/v1/account/employees/${action.payload.employeeUid}/access/list?${params}`,
       successEffects: (response: IApiResponse) => ([
         put(accountEmployeeAccessGetListSuccess(response.body))
       ]), 

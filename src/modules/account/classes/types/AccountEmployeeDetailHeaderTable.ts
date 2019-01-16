@@ -44,3 +44,14 @@ export enum AccountEmployeeExperienceHeaderTable {
   start = 'Start Year',
   finish = 'Finish year',
 }
+
+export enum AccountEmployeeMultiAccessHeaderTable {
+  company = 'Company',
+  bussiness = 'Bussiness Unit',
+  department = 'Department',
+  level = 'Level',
+  role = 'Role',
+  position = 'Position',
+  start = 'Start Date',
+  end = 'End Date',
+}

@@ -36,7 +36,7 @@ interface PropsFromDispatch {
   };
 }
 
-export interface WithLookupCustomer extends PropsFromstate, PropsFromDispatch { }
+export interface WithAccountEmployeeAccess extends PropsFromstate, PropsFromDispatch { }
 
 const mapStateToProps = ({ accountEmployeeAccessGetAll, accountEmployeeAccessGetList, accountEmployeeAccessGetById }: IAppState) => ({
   accountEmployeeAccessState: {
