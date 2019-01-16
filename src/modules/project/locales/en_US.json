@@ -54,6 +54,7 @@
   
   "project.registration.field.uid": "Project ID",
   "project.registration.field.uid.placeholder": "Project ID",
+  "project.registration.field.childUid": "Child Project ID",
   "project.registration.field.name": "Name",
   "project.registration.field.name.required": "Project name is required",
   "project.registration.field.name.placeholder": "Type a project name",

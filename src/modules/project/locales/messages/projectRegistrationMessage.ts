@@ -75,6 +75,8 @@ export const projectRegistrationField = defineMessages({
   // registration
   uid: { id: `${prefix}.field.uid` },
   uidPlaceholder: { id: `${prefix}.field.uid.placeholder` },
+  
+  childUid: { id: `${prefix}.field.childUid` },
 
   name: { id: `${prefix}.field.name` },
   nameRequired: { id: `${prefix}.field.name.required` },
