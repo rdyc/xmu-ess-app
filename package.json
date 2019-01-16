@@ -31,7 +31,6 @@
     "@types/classnames": "^2.2.6",
     "@types/history": "^4.7.0",
     "@types/jest": "^23.3.3",
-    "@types/node": "^10.11.4",
     "@types/react": "^16.4.14",
     "@types/react-dom": "^16.0.8",
     "@types/react-intl": "^2.3.11",
@@ -44,6 +43,7 @@
     "@types/recompose": "^0.27.0",
     "@types/redux-form": "^7.4.8",
     "@types/store": "^2.0.0",
+    "@types/victory": "^31.0.3",
     "classnames": "^2.2.6",
     "connected-react-router": "^4.5.0",
     "dotenv-expand": "^4.2.0",
@@ -78,7 +78,8 @@
     "typeface-roboto": "0.0.54",
     "typesafe-actions": "^2.0.4",
     "typescript": "^3.1.1",
-    "utility-types": "^2.1.0"
+    "utility-types": "^2.1.0",
+    "victory": "^31.1.0"
   },
   "devDependencies": {
     "@types/qs": "^6.5.1"
