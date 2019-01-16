@@ -11,28 +11,28 @@ import {
 import { projectMessage } from '@project/locales/messages/projectMessage';
 import styles from '@styles';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
-import { compose, HandleCreators, withHandlers } from 'recompose';
+import { compose, HandleCreators, setDisplayName, withHandlers } from 'recompose';
 import { WrappedFieldArrayProps } from 'redux-form';
 
-interface OwnProps {
+interface IOwnProps {
   context: WrappedFieldArrayProps<ProjectSalesFormData>;
 }
 
-interface OwnHandlers {
+interface IOwnHandlers {
   handleSelected: (employee: IEmployee) => boolean;
 }
 
 export type ProjectRegistrationSalesFormProps
-   = OwnProps
-   & OwnHandlers
-   & WithUser
-   & WithLayout
-   & WithStyles
-   & WithWidth
-   & WithVariables
-   & InjectedIntlProps;
+  = IOwnProps
+  & IOwnHandlers
+  & WithUser
+  & WithLayout
+  & WithStyles
+  & WithWidth
+  & WithVariables
+  & InjectedIntlProps;
 
-const handlerCreators: HandleCreators<ProjectRegistrationSalesFormProps, OwnHandlers> = {
+const handlerCreators: HandleCreators<ProjectRegistrationSalesFormProps, IOwnHandlers> = {
   handleSelected: (props: ProjectRegistrationSalesFormProps) => (employee: IEmployee): boolean => { 
     const { context, intl } = props;
     const { alertAdd } = props.layoutDispatch;
@@ -69,12 +69,13 @@ const handlerCreators: HandleCreators<ProjectRegistrationSalesFormProps, OwnHand
   }
 };
 
-export const ProjectRegistrationSalesForm = compose<ProjectRegistrationSalesFormProps, OwnProps>(
+export const ProjectRegistrationSalesForm = compose<ProjectRegistrationSalesFormProps, IOwnProps>(
+  setDisplayName('ProjectRegistrationSalesForm'),
   withUser,
   withLayout,
   withStyles(styles),
   withWidth(),
   withVariables,
   injectIntl,
-  withHandlers<ProjectRegistrationSalesFormProps, OwnHandlers>(handlerCreators),
+  withHandlers(handlerCreators),
 )(ProjectRegistrationSalesFormView);

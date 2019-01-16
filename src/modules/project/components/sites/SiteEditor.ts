@@ -19,6 +19,7 @@ import {
   lifecycle,
   mapper,
   ReactLifeCycleFunctions,
+  setDisplayName,
   StateHandler,
   StateHandlerMap,
   StateUpdaters,
@@ -34,7 +35,7 @@ import { SiteEditorView } from './SiteEditorView';
 
 type EditAction = 'update' | 'delete';
 
-interface OwnHandlers {
+interface IOwnHandlers {
   handleMenuOpen: (site: IProjectSite, index: number) => void;
   handleMenuClose: () => void;
   handleDialogClose: () => void;
@@ -46,12 +47,12 @@ interface OwnHandlers {
   handleSubmitFail: (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => void;
 }
 
-interface OwnRouteParams {
+interface IOwnRouteParams {
   companyUid: string;
   projectUid: string;
 }
 
-interface OwnState {
+interface IOwnState {
   formMode?: FormMode | undefined;
   companyUid?: string | undefined;
   projectUid?: string | undefined;
@@ -63,8 +64,8 @@ interface OwnState {
   siteItemIndex?: string | undefined;
 }
 
-interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
-  stateUpdate: StateHandler<OwnState>;
+interface IOwnStateUpdaters extends StateHandlerMap<IOwnState> {
+  stateUpdate: StateHandler<IOwnState>;
 }
 
 export type SiteEditorProps
@@ -74,13 +75,13 @@ export type SiteEditorProps
   & WithLayout
   & WithAppBar
   & WithWidth
-  & RouteComponentProps<OwnRouteParams>
+  & RouteComponentProps<IOwnRouteParams>
   & InjectedIntlProps
-  & OwnHandlers
-  & OwnState
-  & OwnStateUpdaters;
+  & IOwnHandlers
+  & IOwnState
+  & IOwnStateUpdaters;
 
-const createProps: mapper<SiteEditorProps, OwnState> = (props: SiteEditorProps): OwnState => {
+const createProps: mapper<SiteEditorProps, IOwnState> = (props: SiteEditorProps): IOwnState => {
   const { match, location } = props;
   
   return { 
@@ -93,7 +94,7 @@ const createProps: mapper<SiteEditorProps, OwnState> = (props: SiteEditorProps):
   };
 };
 
-const handlerCreators: HandleCreators<SiteEditorProps, OwnHandlers> = {
+const handlerCreators: HandleCreators<SiteEditorProps, IOwnHandlers> = {
   handleMenuOpen: (props: SiteEditorProps) => (site: IProjectSite, index: number) => { 
     const { stateUpdate } = props;
 
@@ -297,8 +298,8 @@ const handlerCreators: HandleCreators<SiteEditorProps, OwnHandlers> = {
   }
 };
 
-const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
-  stateUpdate: (prevState: OwnState) => (newState: any) => ({
+const stateUpdaters: StateUpdaters<{}, IOwnState, IOwnStateUpdaters> = {
+  stateUpdate: (prevState: IOwnState) => (newState: any) => ({
     ...prevState,
     ...newState
   })
@@ -351,6 +352,7 @@ const lifecycles: ReactLifeCycleFunctions<SiteEditorProps, {}> = {
 };
 
 export const SiteEditor = compose<SiteEditorProps, {}>(
+  setDisplayName('SiteEditor'),
   withUser,
   withLayout,
   withAppBar,
@@ -359,7 +361,7 @@ export const SiteEditor = compose<SiteEditorProps, {}>(
   withProjectSite,
   withWidth(),
   injectIntl,
-  withStateHandlers<OwnState, OwnStateUpdaters, {}>(createProps, stateUpdaters),
-  withHandlers<SiteEditorProps, OwnHandlers>(handlerCreators),
-  lifecycle<SiteEditorProps, {}>(lifecycles),
+  withStateHandlers(createProps, stateUpdaters),
+  withHandlers(handlerCreators),
+  lifecycle(lifecycles),
 )(SiteEditorView);

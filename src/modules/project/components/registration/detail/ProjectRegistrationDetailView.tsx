@@ -78,6 +78,13 @@ const config: SingleConfig<IProjectDetail, ProjectRegistrationDetailProps> = {
         onClick: props.handleOnReOpen
       },
       {
+        id: ProjectUserAction.AdjustHour,
+        name: props.intl.formatMessage(projectMessage.registration.option.hour),
+        enabled: true,
+        visible: isContains(state.statusType, [ WorkflowStatusType.Approved, WorkflowStatusType.ReOpened ]) && state.isAdmin,
+        onClick: props.handleOnAdjustHour
+      },
+      {
         id: ProjectUserAction.ChangeOwner,
         name: props.intl.formatMessage(projectMessage.registration.option.owner),
         enabled: true,

@@ -3,26 +3,26 @@ import { InputNumber } from '@layout/components/input/number';
 import { InputText } from '@layout/components/input/text';
 import { projectMessage } from '@project/locales/messages/projectMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
-import { compose, HandleCreators, withHandlers } from 'recompose';
+import { compose, HandleCreators, setDisplayName, withHandlers } from 'recompose';
 import { BaseFieldsProps } from 'redux-form';
 
 import { SiteDetailFormView } from './SiteDetailFormView';
 
-interface OwnProps {
+interface IOwnProps {
   disabledControls: boolean;
   context: BaseFieldsProps;
 }
 
-interface OwnHandlers {
+interface IOwnHandlers {
   generateFieldProps: (name: string) => any;
 }
 
 export type SiteDetailFormProps 
-  = OwnProps
-  & OwnHandlers
+  = IOwnProps
+  & IOwnHandlers
   & InjectedIntlProps;
 
-const handlerCreators: HandleCreators<SiteDetailFormProps, OwnHandlers> = {
+const handlerCreators: HandleCreators<SiteDetailFormProps, IOwnHandlers> = {
   generateFieldProps: (props: SiteDetailFormProps) => (name: string) => { 
     const { intl, disabledControls } = props;
     
@@ -74,7 +74,8 @@ const handlerCreators: HandleCreators<SiteDetailFormProps, OwnHandlers> = {
   }
 };
 
-export const SiteDetailForm = compose<SiteDetailFormProps, OwnProps>(
+export const SiteDetailForm = compose<SiteDetailFormProps, IOwnProps>(
+  setDisplayName('SiteDetailForm'),
   injectIntl,
-  withHandlers<SiteDetailFormProps, OwnHandlers>(handlerCreators),
+  withHandlers<SiteDetailFormProps, IOwnHandlers>(handlerCreators),
 )(SiteDetailFormView);

@@ -32,6 +32,7 @@ export type ProjectRegistrationFormData = {
     rate: number;
     valueUsd: number;
     valueIdr: number;
+    hours?: number;
   },
   document: {
     project: ProjectDocumentFormData[], 
@@ -42,8 +43,10 @@ export type ProjectRegistrationFormData = {
   }
 };
 
-interface OwnProps {
+interface IOwnProps {
   formMode: FormMode;
+  isRequestor: boolean;
+  isAdmin: boolean;
 }
 
 interface FormValueProps {
@@ -56,9 +59,9 @@ interface FormValueProps {
 }
 
 export type ProjectRegistrationContainerFormProps 
-  = InjectedFormProps<ProjectRegistrationFormData, OwnProps> 
+  = InjectedFormProps<ProjectRegistrationFormData, IOwnProps> 
   & FormValueProps
-  & OwnProps;
+  & IOwnProps;
 
 const selector = formValueSelector(formName);
 
@@ -80,7 +83,7 @@ const mapStateToProps = (state: any): FormValueProps => {
 
 const connectedView = connect(mapStateToProps)(ProjectRegistrationContainerFormView);
 
-export const ProjectRegistrationContainerForm = reduxForm<ProjectRegistrationFormData, OwnProps>({
+export const ProjectRegistrationContainerForm = reduxForm<ProjectRegistrationFormData, IOwnProps>({
   form: formName,
   touchOnChange: true,
   touchOnBlur: true,

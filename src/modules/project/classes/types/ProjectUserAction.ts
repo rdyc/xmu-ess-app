@@ -5,5 +5,6 @@ export enum ProjectUserAction {
   Close = 'close',
   ReOpen = 'reOpen',
   ChangeOwner = 'change.owner',
+  AdjustHour = 'adjust.hour',
   ManageSites = 'manage.sites'
 }
