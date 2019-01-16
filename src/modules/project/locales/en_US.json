@@ -28,8 +28,8 @@
   "project.registration.confirm.reOpen.description": "You are about to re-open current project. Do you want to continue?",
   "project.registration.confirm.changeOwner.title": "Change Project Owner",
   "project.registration.confirm.changeOwner.description": "You are about to change or transfer new owner current project. Do you want to continue?",
-  "project.registration.confirm.adjustHour.title": "Adjust Project Hours",
-  "project.registration.confirm.adjustHour.description": "You are about to adjust maximum hours for current project. Do you want to continue?",
+  "project.registration.confirm.adjustHour.title": "Project Hours",
+  "project.registration.confirm.adjustHour.description": "You are about to modify maximum hours for current project. Do you want to continue?",
   "project.registration.confirm.manageSite.title": "Project Site",
   "project.registration.confirm.manageSite.description": "You will be manage all sites for current project. Do you want to continue?",
 
@@ -155,7 +155,7 @@
   "project.site.field.value.placeholder": "Type a site value",
   
   "project.site.option.new": "Create",
-  "project.site.option.hour": "Adjust Hours",
+  "project.site.option.hour": "Project Hours",
   "project.site.option.modify": "Modify",
   "project.site.option.remove": "Remove",
 
