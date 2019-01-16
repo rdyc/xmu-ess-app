@@ -13,7 +13,6 @@ interface OwnRouteParams {
 }
 
 interface OwnState {
-  tab: number;
   action?: AccountEmployeeUserAction;
   dialogFullScreen: boolean;
   dialogOpen: boolean;
@@ -24,7 +23,6 @@ interface OwnState {
 }
 
 interface OwnHandler {
-  handleTab: (event: any, value: any) => void;
   handleOnModify: () => void;
   handleOnCloseDialog: () => void;
   handleOnConfirm: () => void;
@@ -46,7 +44,6 @@ export type AccountEmployeeDetailProps
   & InjectedIntlProps;
 
 const createProps: mapper<AccountEmployeeDetailProps, OwnState> = (): OwnState => ({
-  tab: 0,
   dialogFullScreen: false,
   dialogOpen: false,
 });
@@ -76,11 +73,6 @@ const stateUpdaters: StateUpdaters<AccountEmployeeDetailProps, OwnState, OwnStat
 };
 
 const handlerCreators: HandleCreators<AccountEmployeeDetailProps, OwnHandler> = {
-  handleTab: (props: AccountEmployeeDetailProps) => (event: any, value: any) => {
-    props.stateUpdate({
-      tab: value
-    });
-  },
   handleOnModify: (props: AccountEmployeeDetailProps) => () => {
     props.setModify();
   },
@@ -113,7 +105,7 @@ const handlerCreators: HandleCreators<AccountEmployeeDetailProps, OwnHandler> = 
 
       switch (props.action) {
         case AccountEmployeeUserAction.Modify:
-          next = '/lookup/employee/form';
+          next = '/account/employee/form';
           break;
 
         default:

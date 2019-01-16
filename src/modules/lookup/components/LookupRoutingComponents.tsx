@@ -1,6 +1,3 @@
-import { AccountEmployeeDetail } from '@account/components/detail/AccountEmployeeDetail';
-// import AccountEmployeeEditor from '@account/components/editor/AccountEmployeeEditor';
-import { AccountEmployeeList } from '@account/components/list/AccountEmployeeList';
 import { CurrencyDetail } from '@lookup/components/currency/detail/CurrencyDetail';
 import { CurrencyEditor } from '@lookup/components/currency/editor/CurrencyEditor';
 import { CurrencyList } from '@lookup/components/currency/list/CurrencyList';
@@ -9,7 +6,6 @@ import { LookupLeaveDetail } from '@lookup/components/leave/detail/LookupLeaveDe
 import * as React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router';
 
-import { Editor } from '@account/components/editor/Editor';
 import { LookupCompanyDetail } from './company/detail/LookupCompanyDetail';
 import LookupCompanyEditor from './company/editor/LookupCompanyEditor';
 import { LookupCompanyList } from './company/list/LookupCompanyList';
@@ -122,14 +118,6 @@ const diem = (props: RouteComponentProps) => (
   </Switch>
 );
 
-const employee = (props: RouteComponentProps) => (
-  <Switch>
-    <Route path={`${props.match.path}/form`} component={Editor} />
-    <Route path={`${props.match.path}/:employeeUid`} component={AccountEmployeeDetail} />
-    <Route path={`${props.match.path}`} component={AccountEmployeeList} />
-  </Switch>
-);
-
 export const LookupRoutingComponents: React.SFC<RouteComponentProps> = props => (
   <Switch>
     <Route path={`${props.match.path}/company`} component={company} />
@@ -143,6 +131,5 @@ export const LookupRoutingComponents: React.SFC<RouteComponentProps> = props => 
     <Route path={`${props.match.path}/calculation`} component={calculation} />
     <Route path={`${props.match.path}/roles`} component={role} />
     <Route path={`${props.match.path}/customer`} component={lookupCustomer} />
-    <Route path={`${props.match.path}/employee`} component={employee} />
   </Switch>
 );

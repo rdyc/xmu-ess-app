@@ -30,7 +30,7 @@ export const SinglePageView: React.SFC<SinglePageProps> = props => (
           unmountOnExit 
         >            
           <Grid item xs={12} sm={6} md={6} lg={4} xl={3}>
-            {props.config.primaryComponent(props.response.data, props.connectedProps)}
+            {props.config.primaryComponent && props.config.primaryComponent(props.response.data, props.connectedProps)}
           </Grid>
         </Fade>
 
@@ -42,7 +42,7 @@ export const SinglePageView: React.SFC<SinglePageProps> = props => (
         >
           <Grid item xs={12} sm={6} md={6} lg={8} xl={9}>
             <Grid container spacing={16} direction="row" justify="flex-start">
-              {
+              { props.config.secondaryComponents &&
                 props.config
                   .secondaryComponents(props.response.data, props.connectedProps)
                   .map((children, index, array) =>
