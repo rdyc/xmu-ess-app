@@ -3,6 +3,7 @@ import { ISystemList } from '@common/classes/response';
 import { CommonCategoryType } from '@common/classes/types';
 import { WithCommonSystem, withCommonSystem } from '@common/hoc/withCommonSystem';
 import { IQueryCollectionState } from '@generic/interfaces';
+import { ModuleDefinition } from '@layout/helper/redirector';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithStyles, withStyles } from '@material-ui/core';
 import styles from '@styles';
@@ -13,11 +14,13 @@ import { LookupSystemDialogView } from './LookupSystemDialogView';
 
 interface OwnOption { 
   category: CommonCategoryType;
-  companyUid?: string | undefined;
+  companyUid?: string;
+  moduleType?: ModuleDefinition;
   isOpen: boolean;
   hideBackdrop?: boolean;
+  disabled?: boolean;
   title: string;
-  value: string | undefined;
+  value?: string;
   onSelected: (data?: ISystemList) => void;
   onClose: () => void;
 }
@@ -36,96 +39,96 @@ export type LookupSystemDialogProps
 
 const lifecycles: ReactLifeCycleFunctions<LookupSystemDialogProps, OwnOption> = {
   componentDidMount() {
-    const { category, companyUid, commonDispatch } = this.props;
-    const { isLoading, response } = this.props.categoryState();
-
-    // skipp fetch while current state is being loaded
-    if (isLoading || response) {
-      return;
-    }
+    const { category, companyUid, moduleType, commonDispatch } = this.props;
+    const { isLoading, request } = this.props.categoryState();
     
     // don't load while control has set as disabled
-    if (true) {
-      const request: ISystemListRequest = {
+    if (!this.props.disabled) {
+      const _request: ISystemListRequest = {
         category,
         filter: {
           companyUid,
+          moduleType,
           orderBy: 'value',
           direction: 'ascending'
         }
       };
 
-      switch (request.category) {
-        case 'activity':
-          commonDispatch.activityListRequest(request);
-          break;
-  
-        case 'currency':
-          commonDispatch.currencyListRequest(request);
-          break;
-  
-        case 'document':
-          commonDispatch.documentListRequest(request);
-          break;
-  
-        case 'documentPreSales':
-          commonDispatch.documentPresalesListRequest(request);
-          break;
-  
-        case 'project':
-          commonDispatch.projectListRequest(request);
-          break;
+      // skipp fetch while current request state is being loaded or equals
+      if (!isLoading && request !== _request) {
+        switch (_request.category) {
+          case 'activity':
+            commonDispatch.activityListRequest(_request);
+            break;
+    
+          case 'currency':
+            commonDispatch.currencyListRequest(_request);
+            break;
+    
+          case 'document':
+            commonDispatch.documentListRequest(_request);
+            break;
+    
+          case 'documentPreSales':
+            commonDispatch.documentPresalesListRequest(_request);
+            break;
+    
+          case 'project':
+            commonDispatch.projectListRequest(_request);
+            break;
+            
+          case 'site':
+            commonDispatch.siteListRequest(_request);
+            break;
+            
+          case 'expense':
+            commonDispatch.expenseListRequest(_request);
+            break;
+
+          case 'leave':
+            commonDispatch.leaveListRequest(_request);
+            break;
+
+          case 'status':
+            commonDispatch.statusListRequest(_request);
+            break;
+
+          case 'destination':
+            commonDispatch.destinationListRequest(_request);
+            break;
           
-        case 'site':
-          commonDispatch.siteListRequest(request);
-          break;
+          case 'purpose':
+            commonDispatch.purposeListRequest(_request);
+            break;
           
-        case 'expense':
-          commonDispatch.expenseListRequest(request);
-          break;
+          case 'transportation':
+            commonDispatch.transportationListRequest(_request);
+            break;
 
-        case 'leave':
-          commonDispatch.leaveListRequest(request);
-          break;
+          case 'limiter':
+            commonDispatch.limiterListRequest(_request);
+            break;
+            
+          case 'unit':
+            commonDispatch.unitListRequest(_request);
+            break;
 
-        case 'status':
-          commonDispatch.statusListRequest(request);
-          break;
+          case 'grade':
+            commonDispatch.gradeListRequest(_request);
+            break;
 
-        case 'destination':
-          commonDispatch.destinationListRequest(request);
-          break;
-        
-        case 'purpose':
-          commonDispatch.purposeListRequest(request);
-          break;
-        
-        case 'transportation':
-          commonDispatch.transportationListRequest(request);
-          break;
+          case 'payment':
+            commonDispatch.paymentListRequest(_request);
+            break;
 
-        case 'limiter':
-          commonDispatch.limiterListRequest(request);
-          break;
-          
-        case 'unit':
-          commonDispatch.unitListRequest(request);
-          break;
+          case 'finance':
+            commonDispatch.financeListRequest(_request);
+            break;
 
-        case 'grade':
-          commonDispatch.gradeListRequest(request);
-          break;
+          default:
+            break;
+        }
 
-        case 'payment':
-          commonDispatch.paymentListRequest(request);
-          break;
-
-        case 'finance':
-          commonDispatch.financeListRequest(request);
-          break;
-
-        default:
-          break;
       }
     }
   }
@@ -169,6 +172,6 @@ export const LookupSystemDialog = compose<LookupSystemDialogProps, OwnOption>(
   withStyles(styles),
   withCommonSystem,
   injectIntl,
-  withHandlers<LookupSystemDialogProps, OwnHandlers>(handlerCreators),
-  lifecycle<LookupSystemDialogProps, {}>(lifecycles),
+  withHandlers(handlerCreators),
+  lifecycle(lifecycles),
 )(LookupSystemDialogView);

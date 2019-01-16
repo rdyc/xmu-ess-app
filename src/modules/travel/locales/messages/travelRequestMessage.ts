@@ -108,6 +108,8 @@ export const travelRequestField = defineMessages({
   comment: { id: `${prefix}.field.comment` },
   commentPlaceholder: { id: `${prefix}.field.comment.placeholder` },
 
+  rejectReason: { id: `${prefix}.field.rejectReason` },
+
   total: { id: `${prefix}.field.total` },
   totalPlaceholder: { id: `${prefix}.field.total.placeholder` },
   totalDuration: { id: `${prefix}.field.totalDuration` },
@@ -192,6 +194,7 @@ export const travelRequestField = defineMessages({
   // filter 
   isRejected: { id: `${prefix}.field.isRejected` },
   isSettlement: { id: `${prefix}.field.isSettlement` },
+  isAdjustmentNeeded: { id: `${prefix}.field.isAdjustmentNeeded` },
   isNotify: { id: `${prefix}.field.isNotify` },
   completion: { id: `${prefix}.field.completion` },
 

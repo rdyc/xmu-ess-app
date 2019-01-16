@@ -1,6 +1,6 @@
 export interface IOrganizationStructurePutItem {
-  structureItemUid?: string | null;
+  structureItemUid?: string;
   positionUid: string;
   start: string;
-  end?: string | null; 
+  end?: string; 
 }

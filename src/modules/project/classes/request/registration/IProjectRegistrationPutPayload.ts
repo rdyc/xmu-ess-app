@@ -5,14 +5,15 @@ export interface IProjectRegistrationPutPayload extends IBasePayload {
   customerUid: string;
   projectType: string;
   currencyType: string;
-  contractNumber?: string | null;
+  contractNumber?: string;
   name: string;
-  description?: string | null;
+  description?: string;
   start: string;
   end: string;
   rate: number;
   valueUsd: number;
-  valueIdr?: number | null;
-  documents?: IProjectRegistrationPutDocument[] | null;
-  sales?: IProjectRegistrationPutSales[] | null;
+  valueIdr?: number;
+  hours?: number;
+  documents?: IProjectRegistrationPutDocument[];
+  sales?: IProjectRegistrationPutSales[];
 }

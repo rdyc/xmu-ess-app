@@ -12,6 +12,7 @@ import {
   lifecycle,
   mapper,
   ReactLifeCycleFunctions,
+  setDisplayName,
   StateHandler,
   StateHandlerMap,
   StateUpdaters,
@@ -22,58 +23,58 @@ import { getFormValues, InjectedFormProps, reduxForm } from 'redux-form';
 
 import { ProjectAssignmentFormView } from './ProjectAssignmentFormView';
 
-export interface ProjectAssignmentItemFormData {
-  uid: string | null;
+export interface IProjectAssignmentItemFormData {
+  uid?: string;
   employeeUid: string;
-  role: string | null;
-  jobDescription: string | null;
+  role?: string;
+  jobDescription?: string;
   mandays: number;
   allocatedHours: number;
   consumedHours: number;
-  statusType?: string | null;
-  status?: ICommonSystem | null;
-  rejectedReason?: string | null;
+  statusType?: string;
+  status?: ICommonSystem;
+  rejectedReason?: string;
 }
-export interface ProjectAssignmentFormData {
+export interface IProjectAssignmentFormData {
   projectUid: string;
-  items: ProjectAssignmentItemFormData[] | undefined;
+  items: IProjectAssignmentItemFormData[] | undefined;
 }
 
-interface OwnProps {
+interface IOwnProps {
   formMode: FormMode;
   initialData?: IProjectAssignmentDetail | undefined;
 }
 
-interface OwnHandlers {
+interface IOwnHandlers {
   handleEventListener: (event: CustomEvent) => void;
   handleProjectChange: (project: IProjectList | undefined) => void;
 }
 
-interface OwnState {
+interface IOwnState {
   currentProject?: IProjectAssignmentDetail | undefined;
   projectFilter?: IProjectRegistrationGetListFilter | undefined;
 }
 
-interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
-  setProject: StateHandler<OwnState>;
-  setProjectHours: StateHandler<OwnState>;
+interface IOwnStateUpdaters extends StateHandlerMap<IOwnState> {
+  setProject: StateHandler<IOwnState>;
+  setProjectHours: StateHandler<IOwnState>;
 }
 
-interface FormValueProps {
-  formValues: ProjectAssignmentFormData;
+interface IFormValueProps {
+  formValues: IProjectAssignmentFormData;
 }
 
 export type ProjectAssignmentFormProps 
-  = InjectedFormProps<ProjectAssignmentFormData, OwnProps>
+  = InjectedFormProps<IProjectAssignmentFormData, IOwnProps>
   & InjectedIntlProps
   & WithUser
-  & OwnProps
-  & OwnHandlers
-  & OwnState
-  & OwnStateUpdaters
-  & FormValueProps;
+  & IOwnProps
+  & IOwnHandlers
+  & IOwnState
+  & IOwnStateUpdaters
+  & IFormValueProps;
 
-const createProps: mapper<ProjectAssignmentFormProps, OwnState> = (props: ProjectAssignmentFormProps): OwnState => {
+const createProps: mapper<ProjectAssignmentFormProps, IOwnState> = (props: ProjectAssignmentFormProps): IOwnState => {
   const { user } = props.userState;
 
   return {
@@ -81,16 +82,14 @@ const createProps: mapper<ProjectAssignmentFormProps, OwnState> = (props: Projec
     projectFilter: {
       find: user ? user.uid : '',
       findBy: 'ownerEmployeeUid',
-      statusTypes: [
-        WorkflowStatusType.Approved
-      ],
+      statusTypes: WorkflowStatusType.Approved,
       assignmentStatus: 'unassigned',
     }
   };
 };
 
-const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
-  setProject: (prevState: OwnState) => (project?: any | undefined) => {
+const stateUpdaters: StateUpdaters<{}, IOwnState, IOwnStateUpdaters> = {
+  setProject: (prevState: IOwnState) => (project?: any | undefined) => {
 
     if (!project) {
       return {
@@ -104,7 +103,7 @@ const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
       currentProject: project
     };
   },
-  setProjectHours: (prevState: OwnState) => (hours: number) => {
+  setProjectHours: (prevState: IOwnState) => (hours: number) => {
     if (prevState.currentProject) { 
       return {
         ...prevState,
@@ -122,9 +121,9 @@ const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
   }
 };
 
-const handlers: HandleCreators<ProjectAssignmentFormProps, OwnHandlers> = {
+const handlers: HandleCreators<ProjectAssignmentFormProps, IOwnHandlers> = {
   handleEventListener: (props: ProjectAssignmentFormProps) => (event: CustomEvent) => { 
-    const formValues = event.detail as ProjectAssignmentFormData; 
+    const formValues = event.detail as IProjectAssignmentFormData; 
     const { setProjectHours } = props;
 
     let hours: number = 0;
@@ -142,7 +141,7 @@ const handlers: HandleCreators<ProjectAssignmentFormProps, OwnHandlers> = {
   }
 };
 
-const lifecycles: ReactLifeCycleFunctions<ProjectAssignmentFormProps, OwnState> = {
+const lifecycles: ReactLifeCycleFunctions<ProjectAssignmentFormProps, IOwnState> = {
   componentDidMount() {
     addEventListener('ASG_FORM', this.props.handleEventListener);
   },
@@ -172,11 +171,12 @@ const lifecycles: ReactLifeCycleFunctions<ProjectAssignmentFormProps, OwnState> 
 
 const formName = 'projectAssignment';
 
-const mapStateToProps = (state: any): FormValueProps => ({
-  formValues: getFormValues(formName)(state) as ProjectAssignmentFormData
+const mapStateToProps = (state: any): IFormValueProps => ({
+  formValues: getFormValues(formName)(state) as IProjectAssignmentFormData
 });
 
-const enhance = compose<ProjectAssignmentFormProps, OwnProps & InjectedFormProps<ProjectAssignmentFormData, OwnProps>>(
+const enhance = compose<ProjectAssignmentFormProps, IOwnProps & InjectedFormProps<IProjectAssignmentFormData, IOwnProps>>(
+  setDisplayName('ProjectAssignmentForm'),
   connect(mapStateToProps),
   withUser,
   injectIntl,
@@ -185,12 +185,12 @@ const enhance = compose<ProjectAssignmentFormProps, OwnProps & InjectedFormProps
   lifecycle(lifecycles),
 )(ProjectAssignmentFormView);
 
-export const ProjectAssignmentForm = reduxForm<ProjectAssignmentFormData, OwnProps>({
+export const ProjectAssignmentForm = reduxForm<IProjectAssignmentFormData, IOwnProps>({
   form: formName,
   touchOnChange: true,
   touchOnBlur: true,
   destroyOnUnmount: true,
-  onChange: (values: ProjectAssignmentFormData, dispatch: any, props: any) => {
+  onChange: (values: IProjectAssignmentFormData, dispatch: any, props: any) => {
     dispatchEvent(new CustomEvent('ASG_FORM', { detail: values }));
   },
 })(enhance);

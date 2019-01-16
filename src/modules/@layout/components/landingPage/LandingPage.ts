@@ -1,7 +1,9 @@
+import { WithLandingPage, withLandingPage } from '@layout/hoc/withLandingPage';
 import { WithOidc, withOidc } from '@layout/hoc/withOidc';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IAppUser } from '@layout/interfaces';
-import { createStyles, Theme, WithStyles, withStyles } from '@material-ui/core/styles';
+import { WithStyles, withStyles } from '@material-ui/core/styles';
+import styles from '@styles';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import {
@@ -19,79 +21,6 @@ import {
 
 import { AppUserManager } from '../../../../utils';
 import { LandingPageView } from './LandingPageView';
-
-const styles = (theme: Theme) => createStyles({
-  button: {
-    margin: theme.spacing.unit
-  },
-  header: {
-    backgroundColor: theme.palette.grey[900],
-    display: 'flex',
-    position: 'fixed',
-    color: theme.palette.primary.contrastText,
-    padding: theme.spacing.unit * 2,
-    width: '100%',
-    zIndex: 2,
-    opacity: 0.5
-  },
-  flex: {
-    flex: 1
-  },
-  icon: {
-    marginRight: theme.spacing.unit * 2
-  },
-  heroUnit: {
-    backgroundImage: 'url("https://demos.creative-tim.com/material-kit-pro-react/static/media/bg8.8cfdd67a.jpg")',
-    backgroundSize: 'cover',
-    height: '100vh',
-    maxHeight: '1600px',
-    display: 'flex',
-    position: 'relative',
-    alignItems: 'center'
-  },
-  heroContent: {
-    maxWidth: 1200,
-    margin: '0 auto',
-    padding: `${theme.spacing.unit * 8}px 0 ${theme.spacing.unit * 6}px`
-  },
-  heroText: {
-    width: '50%',
-    color: '#FFF',
-    [theme.breakpoints.down('md')]: {
-      width: '100%',
-      padding: theme.spacing.unit * 3
-    }
-  },
-  layout: {
-    width: 'auto',
-    marginLeft: theme.spacing.unit * 3,
-    marginRight: theme.spacing.unit * 3,
-    [theme.breakpoints.up('lg')]: {
-      width: 1600,
-      marginLeft: 'auto',
-      marginRight: 'auto'
-    }
-  },
-  cardGrid: {
-    padding: `${theme.spacing.unit * 8}px 0`
-  },
-  card: {
-    height: '100%',
-    display: 'flex',
-    flexDirection: 'column'
-  },
-  cardMedia: {
-    paddingTop: '56.25%' // 16:9
-  },
-  cardContent: {
-    flexGrow: 1
-  },
-  footer: {
-    backgroundColor: theme.palette.grey[800],
-    color: '#FFF',
-    padding: theme.spacing.unit * 6
-  }
-});
 
 interface OwnHandler {
   handleOnClickLogin: () => void;
@@ -115,7 +44,8 @@ export type LandingPageProps
   & InjectedIntlProps
   & WithOidc 
   & WithUser
-  & WithStyles<typeof styles> 
+  & WithStyles<typeof styles>
+  & WithLandingPage
   & OwnState 
   & OwnStateUpdaters 
   & OwnHandler;
@@ -159,22 +89,18 @@ const lifecycles: ReactLifeCycleFunctions<LandingPageProps, {}> = {
     // set document props
     document.title = 'Welcome to New TESSA';
 
-    // load odic user state
-    // loadUser(rootStore, AppUserManager).then((user: User) => {
-    //   // console.log('loaded user', user);
-
-    //   if (user) {
-    //     // found user access, then get user profile
-    //     const appUser: IAppUser = store.get(AppStorage.Profile);
-
-    //     this.props.setUser(appUser);
-    //   }
-    // });
+    const { isLoading, response } = this.props.landingPageState.all;
+    const { loadAllRequest } = this.props.landingPageDispatch;
+    
+    if (!isLoading && !response) {
+      loadAllRequest({});
+    }
   }
 };
 
 export const LandingPage = compose<LandingPageProps, {}>(
   injectIntl,
+  withLandingPage,
   withRouter,
   withOidc,
   withUser,

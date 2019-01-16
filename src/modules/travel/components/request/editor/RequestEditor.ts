@@ -296,7 +296,9 @@ const lifecycles: ReactLifeCycleFunctions<RequestEditorProps, {}> = {
 
       stateUpdate({ 
         formMode: FormMode.Edit,
-        travelUid: history.location.state.uid
+        travelUid: history.location.state.uid,
+        submitDialogTitle: this.props.intl.formatMessage(travelMessage.request.dialog.editTitle),
+        submitDialogContentText: this.props.intl.formatMessage(travelMessage.request.dialog.editDescription),
       });
 
       loadDetailRequest({
@@ -325,7 +327,6 @@ const lifecycles: ReactLifeCycleFunctions<RequestEditorProps, {}> = {
     layoutDispatch.changeView(null);
     layoutDispatch.navBackHide();
     layoutDispatch.moreHide();
-    layoutDispatch.actionCentreHide();
 
     appBarDispatch.dispose();
 

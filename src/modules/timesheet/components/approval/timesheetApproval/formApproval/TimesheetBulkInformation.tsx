@@ -35,7 +35,7 @@ const timesheetBulkInformation: React.SFC<AllProps> = props => {
     <Card square>
       <CardHeader
         title={intl.formatMessage(timesheetMessage.entry.section.infoTitle)}
-        // subheader={props.intl.formatMessage(timesheetMessage.entry.section.infoSubHeader)}
+      // subheader={props.intl.formatMessage(timesheetMessage.entry.section.infoSubHeader)}
       />
       <CardContent>
         <List>
@@ -45,6 +45,7 @@ const timesheetBulkInformation: React.SFC<AllProps> = props => {
                 <ListItem
                   disableGutters
                   button
+                  selected={item.uid === active && isExpanded}
                   onClick={() => handleToggle(item.uid)}
                 >
                   <ListItemText
@@ -138,7 +139,7 @@ const timesheetBulkInformation: React.SFC<AllProps> = props => {
                       value={item.mileageException && item.mileageException.reason || 'N/A'}
                     /> : ''
                   }
-                  {isExpanded && <Divider/>}
+                  {isExpanded && <Divider />}
                 </Collapse>
               </div>
             )

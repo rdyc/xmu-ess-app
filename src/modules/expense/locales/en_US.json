@@ -7,7 +7,7 @@
   "expense.detail.subTitle": " ",
   "expense.form.newTitle": "New Expense",
   "expense.form.newSubTitle.x": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-  "expense.form.newSubTitle": "",
+  "expense.form.newSubTitle": "Lorem ipsum dolor sit amet,",
   "expense.approval.form.newTitle": "Expense Approval",
   "expense.approval.form.newSubTitle.x": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
   "expense.approval.form.newSubTitle": " ",
@@ -31,7 +31,7 @@
   "expense.approval.subTitle": " ",
   "expense.approval.dialog.title": "Approval Confirmation",
   "expense.approval.dialog.content.x": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-  "expense.approval.dialog.content": " ",
+  "expense.approval.dialog.content": "You are about to submitting Expense approval for this approval request. Do you want to continue?",
 
   "expense.field.uid": "Expense ID",
   "expense.field.customerUid": "Customer",
@@ -71,6 +71,8 @@
   "expense.field.isNotify": "Notified Only",
   "expense.field.isRejected": "Rejected Only",
   "expense.field.completion": "Completion",
+  "expense.field.start": "Start Date",
+  "expense.field.end": "End Date",
 
   "expense.message.request.create.success": "A new Expense {uid} has been created",
   "expense.message.request.create.failure": "Unable to process your submission",

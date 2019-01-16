@@ -11,7 +11,7 @@ export type ProjectDocumentFormData = {
 };
 
 export type ProjectSalesFormData = {
-  uid: string | null;
+  uid?: string;
   employeeUid: string;
   fullName: string;
   email: string;
@@ -19,19 +19,20 @@ export type ProjectSalesFormData = {
 
 export type ProjectRegistrationFormData = {
   information: {
-    uid: string | null | undefined;
-    ownerEmployeeUid: string | null | undefined;
-    customerUid: string | null | undefined;
-    projectType: string | null | undefined;
-    contractNumber: string | null | undefined;
-    name: string | null | undefined;
-    description: string | null | undefined;
-    start: string | null | undefined;
-    end: string | null | undefined;
-    currencyType: string | null | undefined;
+    uid?: string | null;
+    ownerEmployeeUid?: string | null;
+    customerUid?: string | null;
+    projectType?: string | null;
+    contractNumber?: string | null;
+    name?: string | null;
+    description?: string | null;
+    start?: string | null;
+    end?: string | null;
+    currencyType?: string | null;
     rate: number;
     valueUsd: number;
     valueIdr: number;
+    hours?: number;
   },
   document: {
     project: ProjectDocumentFormData[], 
@@ -42,23 +43,25 @@ export type ProjectRegistrationFormData = {
   }
 };
 
-interface OwnProps {
+interface IOwnProps {
   formMode: FormMode;
+  isRequestor: boolean;
+  isAdmin: boolean;
 }
 
 interface FormValueProps {
   formIsProject: boolean | false;
   formIsPresales: boolean | false;
   formIsCurrencyIDR: boolean | false;
-  formCurrencyType: string | null;
+  formCurrencyType?: string;
   formRate: number | 1;
   formValue: number | 1;
 }
 
 export type ProjectRegistrationContainerFormProps 
-  = InjectedFormProps<ProjectRegistrationFormData, OwnProps> 
+  = InjectedFormProps<ProjectRegistrationFormData, IOwnProps> 
   & FormValueProps
-  & OwnProps;
+  & IOwnProps;
 
 const selector = formValueSelector(formName);
 
@@ -80,7 +83,7 @@ const mapStateToProps = (state: any): FormValueProps => {
 
 const connectedView = connect(mapStateToProps)(ProjectRegistrationContainerFormView);
 
-export const ProjectRegistrationContainerForm = reduxForm<ProjectRegistrationFormData, OwnProps>({
+export const ProjectRegistrationContainerForm = reduxForm<ProjectRegistrationFormData, IOwnProps>({
   form: formName,
   touchOnChange: true,
   touchOnBlur: true,

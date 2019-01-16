@@ -6,6 +6,7 @@ const API_ENDPOINT = process.env.REACT_APP_API_URL || '';
 type Method = 'get' | 'post' | 'put' | 'patch' | 'delete';
 
 export interface ISaiyanSaga {
+  host?: string;
   method: Method;
   path: string;
   payload?: any | undefined;
@@ -20,7 +21,7 @@ export interface ISaiyanSaga {
 
 function* fetching(param: ISaiyanSaga) {
   try {
-    const response: IApiResponse = yield call(apiRequest, param.method, API_ENDPOINT, param.path, param.payload);
+    const response: IApiResponse = yield call(apiRequest, param.method, param.host || API_ENDPOINT, param.path, param.payload);
     
     if (response.ok) {
       yield all(param.successEffects(response));

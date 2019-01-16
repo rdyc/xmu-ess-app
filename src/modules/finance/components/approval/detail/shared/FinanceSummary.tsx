@@ -50,19 +50,18 @@ const financeSummary: React.SFC<AllProps> = props => (
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
           label={props.intl.formatMessage(financeMessage.approval.field.requestor)}
-          value={props.data.document.changes.created ? props.data.document.changes.created.fullName : 'N/A'}
+          value={props.data.document && props.data.document.changes && props.data.document.changes.created ? props.data.document.changes.created.fullName : 'N/A'}
         />
     </Grid>
     <Grid item xs={12} sm={6} md={3}>
       <TextField
           {...GlobalStyle.TextField.ReadOnly}
           label={props.intl.formatMessage(financeMessage.approval.field.approvalDate)}
-          value={props.data.document.changes.updatedAt ? 
+          value={props.data.document && props.data.document.changes && props.data.document.changes.updatedAt ? 
             props.intl.formatDate(props.data.document.changes.updatedAt, GlobalFormat.Date) : ''}
         />
         {
-          (props.data.document.amount &&
-          props.data.document.amount.advance) &&
+          (props.data.document && props.data.document.amount && props.data.document.amount.advance) &&
           <TextField
           {...GlobalStyle.TextField.ReadOnly}
             label={props.intl.formatMessage(financeMessage.approval.field.advance)}
@@ -72,7 +71,7 @@ const financeSummary: React.SFC<AllProps> = props => (
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
           label={props.intl.formatMessage(financeMessage.approval.field.total)}
-          value={props.data.document.amount && props.data.document.amount.total &&
+          value={props.data.document && props.data.document.amount && props.data.document.amount.total &&
             props.intl.formatNumber(props.data.document.amount.total, GlobalFormat.CurrencyDefault) || props.intl.formatNumber(0, GlobalFormat.CurrencyDefault)}
         />
     </Grid>

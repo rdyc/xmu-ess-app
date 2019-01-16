@@ -1,4 +1,5 @@
 import { LookupSystemDialog } from '@common/components/dialog/lookupSystemDialog/LookupSystemDialog';
+import { ModuleDefinition } from '@layout/helper/redirector';
 // import { DialogValue } from '@layout/components/dialogs/DialogValue';
 import { layoutMessage } from '@layout/locales/messages';
 import { LookupCustomerDialog } from '@lookup/components/customer/dialog';
@@ -6,6 +7,7 @@ import {
   AppBar,
   Button,
   Dialog,
+  DialogContent,
   Divider,
   IconButton,
   List,
@@ -28,12 +30,13 @@ export const TimesheetEntryListFilterView: React.SFC<TimesheetEntryListFilterPro
   <React.Fragment>
     <Dialog
       fullScreen
-      className={props.layoutState.anchor === 'right' ? props.classes.contentShiftRight : props.classes.contentShiftLeft}
       disableBackdropClick
       open={props.isOpen}
+      className={props.layoutState.anchor === 'right' ? props.classes.contentShiftRight : props.classes.contentShiftLeft}
+      scroll="paper"
       onClose={props.onClose}
     >
-      <AppBar className={props.classes.appBarDialog}>
+      <AppBar position="fixed" className={props.classes.appBarDialog}>
         <Toolbar>
           <IconButton color="inherit" onClick={props.onClose} aria-label="Close">
             <CloseIcon />
@@ -59,88 +62,89 @@ export const TimesheetEntryListFilterView: React.SFC<TimesheetEntryListFilterPro
         </Toolbar>
       </AppBar>
 
-      <List>
-        <ListItem button onClick={props.handleFilterCustomerVisibility}>
-          <ListItemText
-            primary={props.intl.formatMessage(timesheetMessage.entry.field.customerUid)}
-            secondary={props.filterCustomer && props.filterCustomer.name || props.intl.formatMessage(layoutMessage.text.none)}
-          />
-          <ListItemSecondaryAction>
-            {
-              props.filterCustomer &&
-              <IconButton onClick={props.handleFilterCustomerOnClear}>
-                <ClearIcon />
+      <DialogContent className={props.classes.paddingDisabled}>
+        <List>
+          <ListItem button onClick={props.handleFilterCustomerVisibility}>
+            <ListItemText
+              primary={props.intl.formatMessage(timesheetMessage.entry.field.customerUid)}
+              secondary={props.filterCustomer && props.filterCustomer.name || props.intl.formatMessage(layoutMessage.text.none)}
+            />
+            <ListItemSecondaryAction>
+              {
+                props.filterCustomer &&
+                <IconButton onClick={props.handleFilterCustomerOnClear}>
+                  <ClearIcon />
+                </IconButton>
+              }
+
+              <IconButton disabled>
+                <ChevronRightIcon />
               </IconButton>
-            }
+            </ListItemSecondaryAction>
+          </ListItem>
+          <Divider />
 
-            <IconButton disabled>
-              <ChevronRightIcon />
-            </IconButton>
-          </ListItemSecondaryAction>
-        </ListItem>
-        <Divider />
+          <ListItem button onClick={props.filterCustomer && props.handleFilterProjectVisibility} disabled={!props.filterCustomer}>
+            <ListItemText
+              primary={props.intl.formatMessage(timesheetMessage.entry.field.projectUid)}
+              secondary={props.filterProject && props.filterProject.name || props.intl.formatMessage(layoutMessage.text.none)}
+            />
+            <ListItemSecondaryAction>
+              {
+                props.filterProject &&
+                <IconButton onClick={props.handleFilterProjectOnClear}>
+                  <ClearIcon />
+                </IconButton>
+              }
 
-        <ListItem button onClick={props.filterCustomer && props.handleFilterProjectVisibility}>
-          <ListItemText
-            primary={props.intl.formatMessage(timesheetMessage.entry.field.projectUid)}
-            secondary={props.filterProject && props.filterProject.name || props.intl.formatMessage(layoutMessage.text.none)}
-          />
-          <ListItemSecondaryAction>
-            {
-              props.filterProject &&
-              <IconButton onClick={props.handleFilterProjectOnClear}>
-                <ClearIcon />
+              <IconButton onClick={props.filterCustomer && props.handleFilterProjectVisibility}>
+                <ChevronRightIcon />
               </IconButton>
-            }
+            </ListItemSecondaryAction>
+          </ListItem>
+          <Divider />
 
-            <IconButton onClick={props.filterCustomer && props.handleFilterProjectVisibility}>
-              <ChevronRightIcon />
-            </IconButton>
-          </ListItemSecondaryAction>
-        </ListItem>
-        <Divider />
+          <ListItem button onClick={props.handleFilterActivityTypeVisibility}>
+            <ListItemText
+              primary={props.intl.formatMessage(timesheetMessage.entry.field.activityType)}
+              secondary={props.filterActivityType && props.filterActivityType.name || props.intl.formatMessage(layoutMessage.text.none)}
+            />
+            <ListItemSecondaryAction>
+              {
+                props.filterActivityType &&
+                <IconButton onClick={props.handleFilterActivityTypeOnClear}>
+                  <ClearIcon />
+                </IconButton>
+              }
 
-        <ListItem button onClick={props.handleFilterActivityTypeVisibility}>
-          <ListItemText
-            primary={props.intl.formatMessage(timesheetMessage.entry.field.activityType)}
-            secondary={props.filterActivityType && props.filterActivityType.name || props.intl.formatMessage(layoutMessage.text.none)}
-          />
-          <ListItemSecondaryAction>
-            {
-              props.filterActivityType &&
-              <IconButton onClick={props.handleFilterActivityTypeOnClear}>
-                <ClearIcon />
+              <IconButton disabled>
+                <ChevronRightIcon />
               </IconButton>
-            }
+            </ListItemSecondaryAction>
+          </ListItem>
+          <Divider />
 
-            <IconButton disabled>
-              <ChevronRightIcon />
-            </IconButton>
-          </ListItemSecondaryAction>
-        </ListItem>
-        <Divider />
+          <ListItem button onClick={props.handleFilterStatusVisibility}>
+            <ListItemText
+              primary={props.intl.formatMessage(timesheetMessage.entry.field.statusType)}
+              secondary={props.filterStatus && props.filterStatus.name || props.intl.formatMessage(layoutMessage.text.none)}
+            />
+            <ListItemSecondaryAction>
+              {
+                props.filterStatus &&
+                <IconButton onClick={props.handleFilterStatusOnClear}>
+                  <ClearIcon />
+                </IconButton>
+              }
 
-        <ListItem button onClick={props.handleFilterStatusVisibility}>
-          <ListItemText
-            primary={props.intl.formatMessage(timesheetMessage.entry.field.statusType)}
-            secondary={props.filterStatus && props.filterStatus.name || props.intl.formatMessage(layoutMessage.text.none)}
-          />
-          <ListItemSecondaryAction>
-            {
-              props.filterStatus &&
-              <IconButton onClick={props.handleFilterStatusOnClear}>
-                <ClearIcon />
+              <IconButton disabled>
+                <ChevronRightIcon />
               </IconButton>
-            }
+            </ListItemSecondaryAction>
+          </ListItem>
+          <Divider />
 
-            <IconButton disabled>
-              <ChevronRightIcon />
-            </IconButton>
-          </ListItemSecondaryAction>
-        </ListItem>
-        <Divider />
-
-        {/* <ListItem button onClick={props.handleFilterCompletionVisibility}>
+          {/* <ListItem button onClick={props.handleFilterCompletionVisibility}>
           <ListItemText
             primary={props.intl.formatMessage(timesheetMessage.entry.field.completion)}
             secondary={props.filterCompletion && props.filterCompletion.name || props.intl.formatMessage(layoutMessage.text.none)}
@@ -160,22 +164,22 @@ export const TimesheetEntryListFilterView: React.SFC<TimesheetEntryListFilterPro
         </ListItem>
         <Divider /> */}
 
-        <ListItem>
-          <ListItemText
-            primary={props.intl.formatMessage(timesheetMessage.entry.field.isRejected)}
-            secondary={props.intl.formatMessage(props.filterRejected ? layoutMessage.action.yes : layoutMessage.action.no)}
-          />
-          <ListItemSecondaryAction>
-            <Switch
-              color="primary"
-              checked={props.filterRejected || false}
-              onChange={props.handleFilterRejectedOnChange}
+          <ListItem>
+            <ListItemText
+              primary={props.intl.formatMessage(timesheetMessage.entry.field.isRejected)}
+              secondary={props.intl.formatMessage(props.filterRejected ? layoutMessage.action.yes : layoutMessage.action.no)}
             />
-          </ListItemSecondaryAction>
-        </ListItem>
-        <Divider />
-
-      </List>
+            <ListItemSecondaryAction>
+              <Switch
+                color="primary"
+                checked={props.filterRejected || false}
+                onChange={props.handleFilterRejectedOnChange}
+              />
+            </ListItemSecondaryAction>
+          </ListItem>
+          <Divider />
+        </List>
+      </DialogContent>
     </Dialog>
 
     <LookupCustomerDialog
@@ -207,6 +211,7 @@ export const TimesheetEntryListFilterView: React.SFC<TimesheetEntryListFilterPro
     <LookupSystemDialog
       title={props.intl.formatMessage(timesheetMessage.entry.field.statusType)}
       category="status"
+      moduleType={ModuleDefinition.Timesheet}
       hideBackdrop={true}
       isOpen={props.isFilterStatusOpen}
       value={props.filterStatus && props.filterStatus.type}

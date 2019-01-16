@@ -14,11 +14,12 @@ from './travelRequestMessage';
 import { travelSettlementApprovalConfirm, travelSettlementApprovalPage } from './travelSettlementApprovalMessages';
 import { 
   travelSettlementConfirm, 
+  travelSettlementDialog, 
   travelSettlementField, 
   travelSettlementMessage, 
   travelSettlementPage, 
-  travelSettlementSection } 
-from './travelSettlementMessage';
+  travelSettlementSection
+} from './travelSettlementMessage';
 
 export const travelMessage = {
   action: travelAction,
@@ -34,6 +35,7 @@ export const travelMessage = {
   },
   settlement: {
     page: travelSettlementPage,
+    dialog: travelSettlementDialog,
     confirm: travelSettlementConfirm,
     section: travelSettlementSection,
     field: travelSettlementField,

@@ -29,16 +29,16 @@ const lookupCompanySummary: React.SFC<AllProps> = props => (
     <Grid item xs={12} sm={6} md={3}>
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
-        label={props.intl.formatMessage(lookupMessage.company.field.name)}
-        value={props.data.name}
+        label={props.intl.formatMessage(lookupMessage.company.field.code)}
+        value={props.data.code}
       />
     </Grid>
 
     <Grid item xs={12} sm={6} md={3}>
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
-        label={props.intl.formatMessage(lookupMessage.company.field.code)}
-        value={props.data.code}
+        label={props.intl.formatMessage(lookupMessage.company.field.name)}
+        value={props.data.name}
       />
     </Grid>
 

@@ -99,7 +99,7 @@ const handlerCreators: HandleCreators<TravelSettlementApprovalDetailProps, OwnHa
     // generate payload
     const payload: IWorkflowApprovalPayload = {
       isApproved,
-      remark: !isApproved ? formData.remark : null
+      remark: !isApproved ? formData.remark : undefined
     };
 
     // dispatch update request
@@ -245,7 +245,6 @@ const lifecycles: ReactLifeCycleFunctions<TravelSettlementApprovalDetailProps, {
     layoutDispatch.changeView(null);
     layoutDispatch.navBackHide();
     layoutDispatch.moreHide();
-    layoutDispatch.actionCentreHide();
 
     appBarDispatch.dispose();
   }

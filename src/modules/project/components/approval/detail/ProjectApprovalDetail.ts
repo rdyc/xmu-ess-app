@@ -15,6 +15,7 @@ import {
   compose,
   HandleCreators,
   mapper,
+  setDisplayName,
   StateHandler,
   StateHandlerMap,
   StateUpdaters,
@@ -27,18 +28,18 @@ import { isNullOrUndefined, isObject } from 'util';
 
 import { ProjectApprovalDetailView } from './ProjectApprovalDetailView';
 
-interface OwnHandler {
+interface IOwnHandler {
   handleValidate: (payload: WorkflowApprovalFormData) => FormErrors;
   handleSubmit: (payload: WorkflowApprovalFormData) => void;
   handleSubmitSuccess: (result: any, dispatch: Dispatch<any>) => void;
   handleSubmitFail: (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => void;
 }
 
-interface OwnRouteParams {
+interface IOwnRouteParams {
   projectUid: string;
 }
 
-interface OwnState {
+interface IOwnState {
   shouldDataReload: boolean;
   approvalTitle: string;
   approvalSubHeader: string;
@@ -50,21 +51,21 @@ interface OwnState {
   approvalDialogConfirmedText: string;
 }
 
-interface OwnStateUpdater extends StateHandlerMap<OwnState> {
-  setDataload: StateHandler<OwnState>;
+interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
+  setDataload: StateHandler<IOwnState>;
 }
 
 export type ProjectApprovalDetailProps
   = WithProjectApproval
   & WithUser
   & WithLayout
-  & RouteComponentProps<OwnRouteParams> 
+  & RouteComponentProps<IOwnRouteParams> 
   & InjectedIntlProps
-  & OwnHandler
-  & OwnState
-  & OwnStateUpdater;
+  & IOwnHandler
+  & IOwnState
+  & IOwnStateUpdater;
 
-const createProps: mapper<ProjectApprovalDetailProps, OwnState> = (props: ProjectApprovalDetailProps): OwnState => ({
+const createProps: mapper<ProjectApprovalDetailProps, IOwnState> = (props: ProjectApprovalDetailProps): IOwnState => ({
   shouldDataReload: false,
   approvalTitle: props.intl.formatMessage(projectMessage.registration.section.approvalTitle),
   approvalSubHeader: props.intl.formatMessage(projectMessage.registration.section.approvalSubHeader),
@@ -79,13 +80,13 @@ const createProps: mapper<ProjectApprovalDetailProps, OwnState> = (props: Projec
   approvalDialogConfirmedText: props.intl.formatMessage(layoutMessage.action.continue)
 });
 
-const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdater> = {
-  setDataload: (prevState: OwnState) => (): Partial<OwnState> => ({
+const stateUpdaters: StateUpdaters<{}, IOwnState, IOwnStateUpdater> = {
+  setDataload: (prevState: IOwnState) => (): Partial<IOwnState> => ({
     shouldDataReload: !prevState.shouldDataReload
   })
 };
 
-const handlerCreators: HandleCreators<ProjectApprovalDetailProps, OwnHandler> = {
+const handlerCreators: HandleCreators<ProjectApprovalDetailProps, IOwnHandler> = {
   handleValidate: (props: ProjectApprovalDetailProps) => (formData: WorkflowApprovalFormData) => { 
     const errors = {};
   
@@ -122,7 +123,7 @@ const handlerCreators: HandleCreators<ProjectApprovalDetailProps, OwnHandler> = 
     // generate payload
     const payload: IWorkflowApprovalPayload = {
       isApproved,
-      remark: !isApproved ? formData.remark : null
+      remark: !isApproved ? formData.remark : undefined
     };
 
     // dispatch update request
@@ -163,6 +164,7 @@ const handlerCreators: HandleCreators<ProjectApprovalDetailProps, OwnHandler> = 
 };
 
 export const ProjectApprovalDetail = compose<ProjectApprovalDetailProps, {}>(
+  setDisplayName('ProjectApprovalDetail'),
   withRouter,
   withUser,
   withLayout,

@@ -126,9 +126,9 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
       // page
       page: {
         uid: AppMenu.FinanceApproval,
-      parentUid: AppMenu.Finance,
-      title: this.props.intl.formatMessage(financeMessage.approval.page.title),
-      description: this.props.intl.formatMessage(financeMessage.approval.page.subTitle)
+        parentUid: AppMenu.Finance,
+        title: this.props.intl.formatMessage(financeMessage.approval.page.title),
+        description: this.props.intl.formatMessage(financeMessage.approval.page.subTitle)
       },
       
       // top bar
@@ -190,9 +190,9 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
       },
       onBind: (item: IFinance, index: number) => ({
         key: index,
-        primary: item.module && item.module.value,
-        secondary: item.document.changes.created && item.document.changes.created.fullName || item.document.changes.createdBy,
-        tertiary: item.document.amount && item.document.amount.total && this.props.intl.formatNumber(item.document.amount.total, GlobalFormat.CurrencyDefault) || '0',
+        primary: item.module && item.module.value || 'N/A',
+        secondary:  item.document && item.document.changes && item.document.changes.created && item.document.changes.created.fullName || item.document &&  item.document.changes && item.document.changes.createdBy || 'N/A',
+        tertiary: item.document && item.document.amount && item.document.amount.total && this.props.intl.formatNumber(item.document.amount.total, GlobalFormat.CurrencyDefault) || '0',
         quaternary: item.uid,
         quinary: item.status && item.status.value || item.statusType,
         senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'

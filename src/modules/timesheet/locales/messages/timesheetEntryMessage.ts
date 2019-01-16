@@ -86,8 +86,9 @@ export const timesheetEntryField = defineMessages({
   end: { id: `${prefix}.field.end` },
   endRequired: { id: `${prefix}.field.end.required` },
   endPlaceholder: { id: `${prefix}.field.end.placeholder` },
-
+  
   notes: { id: `${prefix}.field.description` },
+  notesRequired: { id: `${prefix}.field.description.required` },
   notesPlaceholder: { id: `${prefix}.field.description.placeholder` },
 
   rejectReason: { id: `${prefix}.field.rejectReason` },
@@ -131,6 +132,7 @@ export const timesheetEntryFieldHelperFor = (field: string, type: 'fieldName' | 
       case 'date': return timesheetEntryField.dateRequired;
       case 'start': return timesheetEntryField.startRequired;
       case 'end': return timesheetEntryField.endRequired;
+      case 'description': return timesheetEntryField.notesRequired;
 
       default: return { id: field };
     }

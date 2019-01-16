@@ -1,7 +1,7 @@
 import { ILeaveCalculationGetAllFilter } from '@lookup/classes/filters';
 
 export interface ILeaveCalculationGetAllRequest {
-  readonly filter: ILeaveCalculationGetAllFilter | undefined;
+  filter?: ILeaveCalculationGetAllFilter;
   companyUid: string;
   year: number;
 }

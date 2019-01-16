@@ -95,12 +95,14 @@ const config: SingleConfig<ITravelRequestDetail, TravelRequestDetailProps> = {
 
   // primary
   primaryComponent: (data: ITravelRequestDetail, props: TravelRequestDetailProps) => (
-    <TravelRequestSummary data={data}/>
+    <React.Fragment>
+        <TravelRequestSummary data={data}/>
+        <TravelInformation data={data} />
+    </React.Fragment>    
   ),
 
   // secondary (multiple components are allowed)
   secondaryComponents: (data: ITravelRequestDetail, props: TravelRequestDetailProps) => ([
-    <TravelInformation data={data} />,
     <TravelRequestItem data={data.items} />,
     <WorkflowHistory data={data.workflow} />,
     

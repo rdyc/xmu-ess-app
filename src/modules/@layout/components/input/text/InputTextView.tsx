@@ -18,5 +18,6 @@ export const InputTextView: React.SFC<InputTextProps> = props => (
     helperText={props.meta.touched && props.meta.error}
     onChange={props.handleOnChange}
     onBlur={props.handleOnBlur}
+    multiline={props.multiline}
   />
 );

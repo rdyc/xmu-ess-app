@@ -20,18 +20,11 @@ const initialState: ILayoutState = {
   view: undefined,
   parentUrl: undefined,
   alerts: [],
-  isDrawerMenuVisible: false,
-  isDrawerActionVisible: false,
-  isAccountExpanded: false,
   isModeSearch: false,
   isModeList: false,
-  isDrawerTopVisible: false,
-  isDrawerBottomVisible: false,
-  isLogoutDialogVisible: false,
   isAlertDialogVisible: false,
   isNavBackVisible: false,
   isSearchVisible: false,
-  isActionCentreVisible: false,
   isMoreVisible: false
 };
 
@@ -69,25 +62,12 @@ const reducer: Reducer<ILayoutState> = (state = initialState, action) => {
 
     case Action.SETUP_VIEW: return { ...state, view: action.payload.view, parentUrl: action.payload.parentUrl, ...action.payload.status };
     
-    case Action.DRAWER_MENU_SHOW: return { ...state, isDrawerMenuVisible: true };
-    case Action.DRAWER_MENU_HIDE: return { ...state, isDrawerMenuVisible: false };
-    case Action.DRAWER_ACTION_SHOW: return { ...state, isDrawerActionVisible: true };
-    case Action.DRAWER_ACTION_HIDE: return { ...state, isDrawerActionVisible: false };
-    case Action.DRAWER_TOP_SHOW: return { ...state, isDrawerTopVisible: true };
-    case Action.DRAWER_TOP_HIDE: return { ...state, isDrawerTopVisible: false };
-    case Action.DRAWER_BOTTOM_SHOW: return { ...state, isDrawerBottomVisible: true };
-    case Action.DRAWER_BOTTOM_HIDE: return { ...state, isDrawerBottomVisible: false };
-    
     case Action.ALERT_DIALOG_SHOW: return { ...state, isAlertDialogVisible: true };
     case Action.ALERT_DIALOG_HIDE: return { ...state, isAlertDialogVisible: false };
-    case Action.LOGOUT_DIALOG_SHOW: return { ...state, isLogoutDialogVisible: true };
-    case Action.LOGOUT_DIALOG_HIDE: return { ...state, isLogoutDialogVisible: false };
     case Action.NAV_BACK_SHOW: return { ...state, isNavBackVisible: true };
     case Action.NAV_BACK_HIDE: return { ...state, isNavBackVisible: false };
     case Action.SEARCH_SHOW: return { ...state, isSearchVisible: true };
     case Action.SEARCH_HIDE: return { ...state, isSearchVisible: false };
-    case Action.ACTION_CENTRE_SHOW: return { ...state, isActionCentreVisible: true };
-    case Action.ACTION_CENTRE_HIDE: return { ...state, isActionCentreVisible: false };
     case Action.MORE_SHOW: return { ...state, isMoreVisible: true };
     case Action.MORE_HIDE: return { ...state, isMoreVisible: false };
 

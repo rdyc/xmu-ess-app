@@ -5,6 +5,7 @@ import {
   AppBar,
   Button,
   Dialog,
+  DialogContent,
   Divider,
   IconButton,
   List,
@@ -21,6 +22,7 @@ import ClearIcon from '@material-ui/icons/SettingsBackupRestore';
 import { purchaseMessage } from '@purchase/locales/messages/purchaseMessage';
 import * as React from 'react';
 
+import { ModuleDefinition } from '@layout/helper/redirector';
 import { ProjectRegistrationDialog } from '@project/components/dialog/project';
 import { PurchaseSettlementListFilterProps } from './PurchaseSettlementListFilter';
 
@@ -31,9 +33,10 @@ export const PurchaseSettlementListFilterView: React.SFC<PurchaseSettlementListF
       className={props.layoutState.anchor === 'right' ? props.classes.contentShiftRight : props.classes.contentShiftLeft}
       disableBackdropClick
       open={props.isOpen}
+      scroll="paper"
       onClose={props.onClose}
     >
-      <AppBar className={props.classes.appBarDialog}>
+      <AppBar position="fixed" className={props.classes.appBarDialog}>
         <Toolbar>
           <IconButton color="inherit" onClick={props.onClose} aria-label="Close">
             <CloseIcon />
@@ -59,6 +62,7 @@ export const PurchaseSettlementListFilterView: React.SFC<PurchaseSettlementListF
         </Toolbar>
       </AppBar>
       
+      <DialogContent className={props.classes.paddingDisabled}>
       <List>
         <ListItem button onClick={props.handleFilterCustomerVisibility}>
           <ListItemText 
@@ -135,6 +139,7 @@ export const PurchaseSettlementListFilterView: React.SFC<PurchaseSettlementListF
         <Divider />
 
       </List>
+        </DialogContent>
     </Dialog>
 
     <LookupCustomerDialog 
@@ -156,6 +161,7 @@ export const PurchaseSettlementListFilterView: React.SFC<PurchaseSettlementListF
     <LookupSystemDialog
       title={props.intl.formatMessage(purchaseMessage.request.field.statusType)}
       category="status"
+      moduleType={ModuleDefinition.PurchaseSettlement}
       hideBackdrop={true}
       isOpen={props.isFilterStatusOpen}
       value={props.filterStatus && props.filterStatus.type}

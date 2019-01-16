@@ -5,6 +5,7 @@ import {
   AppBar,
   Button,
   Dialog,
+  DialogContent,
   Divider,
   IconButton,
   List,
@@ -24,12 +25,13 @@ export const LookupRoleListFilterView: React.SFC<LookupRoleListFilterProps> = pr
   <React.Fragment>
     <Dialog
       fullScreen
-      className={props.layoutState.anchor === 'right' ? props.classes.contentShiftRight : props.classes.contentShiftLeft}
       disableBackdropClick
       open={props.isOpen}
+      className={props.layoutState.anchor === 'right' ? props.classes.contentShiftRight : props.classes.contentShiftLeft}
+      scroll="paper"
       onClose={props.onClose}
     >
-      <AppBar className={props.classes.appBarDialog}>
+      <AppBar position="fixed" className={props.classes.appBarDialog}>
         <Toolbar>
           <IconButton color="inherit" onClick={props.onClose} aria-label="Close">
             <CloseIcon />
@@ -55,35 +57,37 @@ export const LookupRoleListFilterView: React.SFC<LookupRoleListFilterProps> = pr
         </Toolbar>
       </AppBar>
 
-      <List>
-        <ListItem button onClick={props.handleFilterCompanyVisibility}>
-          <ListItemText
-            primary={props.intl.formatMessage(lookupMessage.role.field.companyUid)}
-            secondary={props.filterCompany && props.filterCompany.name || props.intl.formatMessage(layoutMessage.text.none)}
-          />
-          <ListItemSecondaryAction>
-            {
-              props.filterCompany &&
-              <IconButton onClick={props.handleFilterCompanyOnClear}>
-                <ClearIcon />
+      <DialogContent className={props.classes.paddingDisabled}>
+        <List>
+          <ListItem button onClick={props.handleFilterCompanyVisibility}>
+            <ListItemText
+              primary={props.intl.formatMessage(lookupMessage.role.field.companyUid)}
+              secondary={props.filterCompany && props.filterCompany.name || props.intl.formatMessage(layoutMessage.text.none)}
+            />
+            <ListItemSecondaryAction>
+              {
+                props.filterCompany &&
+                <IconButton onClick={props.handleFilterCompanyOnClear}>
+                  <ClearIcon />
+                </IconButton>
+              }
+
+              <IconButton onClick={props.handleFilterCompanyVisibility}>
+                <ChevronRightIcon />
               </IconButton>
-            }
+            </ListItemSecondaryAction>
+          </ListItem>
+          <Divider />
+        </List>
+      </DialogContent>
 
-            <IconButton onClick={props.handleFilterCompanyVisibility}>
-              <ChevronRightIcon />
-            </IconButton>
-          </ListItemSecondaryAction>
-        </ListItem>
-        <Divider />
-      </List>
-
-      <FilterCompany 
+      <FilterCompany
         title={props.intl.formatMessage(lookupMessage.lookupCustomer.field.companyUid)}
         hideBackdrop={true}
         isOpen={props.isFilterCompanyOpen}
         value={props.filterCompany && props.filterCompany.uid}
         onSelected={props.handleFilterCompanyOnSelected}
-        onClose={props.handleFilterCompanyOnClose}        
+        onClose={props.handleFilterCompanyOnClose}
       />
     </Dialog>
   </React.Fragment>

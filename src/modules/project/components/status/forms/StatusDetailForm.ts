@@ -4,28 +4,28 @@ import { InputText } from '@layout/components/input/text';
 import { WithAllowedStatusType, withAllowedStatusType } from '@project/hoc/withAllowedStatusType';
 import { projectMessage } from '@project/locales/messages/projectMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
-import { compose, HandleCreators, withHandlers } from 'recompose';
+import { compose, HandleCreators, setDisplayName, withHandlers } from 'recompose';
 import { BaseFieldsProps } from 'redux-form';
 
 import { StatusDetailFormView } from './StatusDetailFormView';
 
-interface OwnProps {
+interface IOwnProps {
   formMode: FormMode;
   context: BaseFieldsProps;
   statusType: string | null | undefined;
 }
 
-interface OwnHandlers {
+interface IOwnHandlers {
   generateFieldProps: (name: string) => any;
 }
 
 export type StatusDetailFormProps 
-  = OwnProps
-  & OwnHandlers
+  = IOwnProps
+  & IOwnHandlers
   & WithAllowedStatusType
   & InjectedIntlProps;
 
-const handlerCreators: HandleCreators<StatusDetailFormProps, OwnHandlers> = {
+const handlerCreators: HandleCreators<StatusDetailFormProps, IOwnHandlers> = {
   generateFieldProps: (props: StatusDetailFormProps) => (name: string) => { 
     const { allowedStatusTypes, intl, statusType } = props;
     
@@ -57,8 +57,9 @@ const handlerCreators: HandleCreators<StatusDetailFormProps, OwnHandlers> = {
   }
 };
 
-export const StatusDetailForm = compose<StatusDetailFormProps, OwnProps>(
+export const StatusDetailForm = compose<StatusDetailFormProps, IOwnProps>(
+  setDisplayName('StatusDetailForm'),
   withAllowedStatusType,
   injectIntl,
-  withHandlers<StatusDetailFormProps, OwnHandlers>(handlerCreators),
+  withHandlers(handlerCreators),
 )(StatusDetailFormView);

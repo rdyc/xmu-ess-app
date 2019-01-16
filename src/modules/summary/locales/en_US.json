@@ -8,6 +8,7 @@
 
   "summary.billable.page.title": "Billable and Presales Utilization",
   "summary.billable.page.subHeader": " ",
+  "summary.billable.page.detail": "Detail {type}",
 
   "summary.billable.field.company": "Company",
   "summary.billable.field.name": "Employee Name",
@@ -20,7 +21,7 @@
   "summary.billable.percentage.presales": "*Presales (%) = (Presales Hours / 2080) * 100%",
 
   "summary.billable.hover.presales": "Detail Presales",
-  "summary.billable.hover.nonPresales": "Detail Non Presales",
+  "summary.billable.hover.nonPresales": "Detail Billable",
   
   "summary.billable.hover.closed": "Closed",
   "summary.billable.hover.onProgress": "On Progress",
@@ -105,5 +106,9 @@
   "summary.winningRatio.page.title": "Report Winning Ratio",
   "summary.winningRatio.page.subHeader": " ",
   "summary.winningRatio.page.detail.title" : "Details Winning Ratio",
-  "summary.winningRatio.field.null": "No Data"
+  "summary.winningRatio.field.null": "No Data",
+
+  "summary.winningRatio.hover.closed": "Detail Closed",
+  "summary.winningRatio.hover.onProgress": "Detail On Progress",
+  "summary.winningRatio.hover.win": "Detail Winning"
 }

@@ -100,7 +100,7 @@ export const ProfitabilityProjectView: React.SFC<AllProps> = props => {
                           projectFields.map(projectField =>
                             <TableCell
                               numeric
-                              key= {projectField}
+                              key={projectField}
                               className={classNames(classes.cellWidthXXS)}
                             >
                               {intl.formatMessage(summaryMessage.profitability.headerFor(projectField))}
@@ -130,10 +130,18 @@ export const ProfitabilityProjectView: React.SFC<AllProps> = props => {
                           {intl.formatNumber(project.actualRates)}
                         </TableCell>
                         <TableCell numeric>
-                          <Chip 
-                            onClick= {() => handleDialogOpen(isMobile, project.moduleCosts ? project.moduleCosts : [], project.projectUid)}
-                            label= {intl.formatNumber(project.actualCosts)}
-                          />
+                          {
+                            project.moduleCosts &&
+                            project.moduleCosts.length > 0 &&
+                            <Chip
+                              onClick={() => handleDialogOpen(isMobile, project.moduleCosts ? project.moduleCosts : [], project.projectUid)}
+                              label={intl.formatNumber(project.actualCosts)}
+                            /> ||
+                            <Chip
+                              variant={'outlined'}
+                              label={intl.formatNumber(project.actualCosts)}
+                            />
+                          }
                         </TableCell>
                         <TableCell numeric>
                           {intl.formatNumber(project.cogs)}

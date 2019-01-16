@@ -99,7 +99,7 @@ const handlerCreators: HandleCreators<EntryEditorProps, OwnHandlers> = {
 
     const requiredFields = [
       'activityType', 'customerUid', 'projectUid', 'siteUid', 'date',
-      'start', 'end',
+      'start', 'end', 'description',
     ];
 
     requiredFields.forEach(field => {
@@ -286,7 +286,6 @@ const lifecycles: ReactLifeCycleFunctions<EntryEditorProps, {}> = {
     layoutDispatch.changeView(null);
     layoutDispatch.navBackHide();
     layoutDispatch.moreHide();
-    layoutDispatch.actionCentreHide();
 
     appBarDispatch.dispose();
 

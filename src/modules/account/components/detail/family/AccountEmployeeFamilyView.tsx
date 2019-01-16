@@ -72,7 +72,7 @@ export const AccountEmployeeFamilyView: React.SFC<
         (response && response.data && response.data.length === 0)) && (
         <Typography>No Data</Typography>
       )}
-      {response && response.data && renderFamily(response.data)}
+      {response && response.data && response.data.length >= 1 && renderFamily(response.data)}
     </React.Fragment>
   );
 };

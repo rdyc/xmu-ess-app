@@ -1,11 +1,13 @@
 import { LookupSystemDialog } from '@common/components/dialog/lookupSystemDialog/LookupSystemDialog';
 import { DialogValue } from '@layout/components/dialogs/DialogValue';
+import { ModuleDefinition } from '@layout/helper/redirector';
 import { layoutMessage } from '@layout/locales/messages';
 import { LookupCustomerDialog } from '@lookup/components/customer/dialog';
 import {
   AppBar,
   Button,
   Dialog,
+  DialogContent,
   Divider,
   IconButton,
   List,
@@ -31,9 +33,10 @@ export const PurchaseApprovalListFilterView: React.SFC<PurchaseApprovalListFilte
       className={props.layoutState.anchor === 'right' ? props.classes.contentShiftRight : props.classes.contentShiftLeft}
       disableBackdropClick
       open={props.isOpen}
+      scroll="paper"
       onClose={props.onClose}
     >
-      <AppBar className={props.classes.appBarDialog}>
+      <AppBar position="fixed" className={props.classes.appBarDialog}>
         <Toolbar>
           <IconButton color="inherit" onClick={props.onClose} aria-label="Close">
             <CloseIcon />
@@ -58,7 +61,8 @@ export const PurchaseApprovalListFilterView: React.SFC<PurchaseApprovalListFilte
           </Button>
         </Toolbar>
       </AppBar>
-      
+
+      <DialogContent className={props.classes.paddingDisabled}>
       <List>
         <ListItem button onClick={props.handleFilterCustomerVisibility}>
           <ListItemText 
@@ -156,6 +160,7 @@ export const PurchaseApprovalListFilterView: React.SFC<PurchaseApprovalListFilte
         <Divider />
 
       </List>
+      </DialogContent>
     </Dialog>
 
     <LookupCustomerDialog 
@@ -177,6 +182,7 @@ export const PurchaseApprovalListFilterView: React.SFC<PurchaseApprovalListFilte
     <LookupSystemDialog
       title={props.intl.formatMessage(purchaseMessage.request.field.statusType)}
       category="status"
+      moduleType={ModuleDefinition.Purchase}
       hideBackdrop={true}
       isOpen={props.isFilterStatusOpen}
       value={props.filterStatus && props.filterStatus.type}

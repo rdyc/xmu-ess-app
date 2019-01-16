@@ -1,3 +1,3 @@
 export * from './Callback';
-export * from './Layout';
+export * from './ErrorBoundary';
 export * from './NotFound';

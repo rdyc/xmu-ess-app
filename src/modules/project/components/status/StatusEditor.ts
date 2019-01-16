@@ -17,6 +17,7 @@ import {
   lifecycle,
   mapper,
   ReactLifeCycleFunctions,
+  setDisplayName,
   StateHandler,
   StateHandlerMap,
   StateUpdaters,
@@ -30,18 +31,18 @@ import { isNullOrUndefined, isObject } from 'util';
 import { ProjectStatusFormData } from './forms/StatusForm';
 import { StatusEditorView } from './StatusEditorView';
 
-interface OwnHandlers {
+interface IOwnHandlers {
   handleValidate: (payload: ProjectStatusFormData) => FormErrors;
   handleSubmit: (payload: ProjectStatusFormData) => void;
   handleSubmitSuccess: (result: any, dispatch: Dispatch<any>) => void;
   handleSubmitFail: (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => void;
 }
 
-interface OwnRouteParams {
+interface IOwnRouteParams {
   projectUid: string;
 }
 
-interface OwnState {
+interface IOwnState {
   formMode: FormMode;
   companyUid?: string | undefined;
   positionUid?: string | undefined;
@@ -49,8 +50,8 @@ interface OwnState {
   actionStatusType?: string | undefined;
 }
 
-interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
-  stateUpdate: StateHandler<OwnState>;
+interface IOwnStateUpdaters extends StateHandlerMap<IOwnState> {
+  stateUpdate: StateHandler<IOwnState>;
 }
 
 export type StatusEditorProps
@@ -59,13 +60,13 @@ export type StatusEditorProps
   & WithUser
   & WithLayout
   & WithAppBar
-  & RouteComponentProps<OwnRouteParams>
+  & RouteComponentProps<IOwnRouteParams>
   & InjectedIntlProps
-  & OwnHandlers
-  & OwnState
-  & OwnStateUpdaters;
+  & IOwnHandlers
+  & IOwnState
+  & IOwnStateUpdaters;
 
-const handlerCreators: HandleCreators<StatusEditorProps, OwnHandlers> = {
+const handlerCreators: HandleCreators<StatusEditorProps, IOwnHandlers> = {
   handleValidate: (props: StatusEditorProps) => (formData: ProjectStatusFormData) => { 
     const errors = {
       information: {}
@@ -160,7 +161,7 @@ const handlerCreators: HandleCreators<StatusEditorProps, OwnHandlers> = {
   }
 };
 
-const createProps: mapper<StatusEditorProps, OwnState> = (props: StatusEditorProps): OwnState => {
+const createProps: mapper<StatusEditorProps, IOwnState> = (props: StatusEditorProps): IOwnState => {
   const { history } = props;
 
   return { 
@@ -169,8 +170,8 @@ const createProps: mapper<StatusEditorProps, OwnState> = (props: StatusEditorPro
   };
 };
 
-const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
-  stateUpdate: (prevState: OwnState) => (newState: any) => ({
+const stateUpdaters: StateUpdaters<{}, IOwnState, IOwnStateUpdaters> = {
+  stateUpdate: (prevState: IOwnState) => (newState: any) => ({
     ...prevState,
     ...newState
   })
@@ -206,7 +207,6 @@ const lifecycles: ReactLifeCycleFunctions<StatusEditorProps, {}> = {
     layoutDispatch.changeView(null);
     layoutDispatch.navBackHide();
     layoutDispatch.moreHide();
-    layoutDispatch.actionCentreHide();
 
     appBarDispatch.dispose();
 
@@ -215,6 +215,7 @@ const lifecycles: ReactLifeCycleFunctions<StatusEditorProps, {}> = {
 };
 
 export const StatusEditor = compose<StatusEditorProps, {}>(
+  setDisplayName('StatusEditor'),
   withUser,
   withLayout,
   withAppBar,
@@ -222,7 +223,7 @@ export const StatusEditor = compose<StatusEditorProps, {}>(
   withProjectRegistration,
   withProjectStatus,
   injectIntl,
-  withStateHandlers<OwnState, OwnStateUpdaters, {}>(createProps, stateUpdaters),
-  withHandlers<StatusEditorProps, OwnHandlers>(handlerCreators),
-  lifecycle<StatusEditorProps, {}>(lifecycles),
+  withStateHandlers(createProps, stateUpdaters),
+  withHandlers(handlerCreators),
+  lifecycle(lifecycles),
 )(StatusEditorView);

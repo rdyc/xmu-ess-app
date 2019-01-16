@@ -13,7 +13,7 @@ import * as React from 'react';
 import { Field, FieldArray, WrappedFieldArrayProps } from 'redux-form';
 
 import { ProjectAssignment } from '../detail/shared/ProjectAssignment';
-import { ProjectAssignmentFormProps, ProjectAssignmentItemFormData } from './ProjectAssignmentForm';
+import { IProjectAssignmentItemFormData, ProjectAssignmentFormProps } from './ProjectAssignmentForm';
 
 const isComplete = (statusType?: string | null | undefined): boolean => {
   let result = false;
@@ -30,7 +30,7 @@ const isComplete = (statusType?: string | null | undefined): boolean => {
   return result;
 };
 
-const ProjectAssignmentItemFormView: React.SFC<WrappedFieldArrayProps<ProjectAssignmentItemFormData> & ProjectAssignmentFormProps> = props => (
+const ProjectAssignmentItemFormView: React.SFC<WrappedFieldArrayProps<IProjectAssignmentItemFormData> & ProjectAssignmentFormProps> = props => (
   <Grid container spacing={16}>
     {
       props.fields.map((field, index) => {
@@ -59,7 +59,7 @@ const ProjectAssignmentItemFormView: React.SFC<WrappedFieldArrayProps<ProjectAss
                     label={props.intl.formatMessage(projectMessage.assignment.field.employeeUid)}
                     placeholder={props.intl.formatMessage(projectMessage.assignment.field.employeeUidPlaceholder)}
                     required={true}
-                    companyUids={props.userState.user && [props.userState.user.company.uid]}
+                    companyUids={props.userState.user && props.userState.user.company.uid}
                     disabled={isItemComplete}
                     component={SelectEmployee}
                   />
@@ -126,7 +126,7 @@ const ProjectAssignmentItemFormView: React.SFC<WrappedFieldArrayProps<ProjectAss
             />
             <CardActions>
               <Button onClick={() => props.fields.push({
-                uid: null,
+                uid: undefined,
                 employeeUid: '',
                 role: '',
                 jobDescription: '',

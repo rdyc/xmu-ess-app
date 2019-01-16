@@ -3,15 +3,15 @@ import { IBaseChanges } from '@generic/interfaces';
 import { ICompanyList } from '@lookup/classes/response';
 
 export interface IDiemDetail {
-uid: string; 
-companyUid: string | null;
-company: ICompanyList | null;
-currencyUid: string;
-currency: string;  // ICurrencyList | null;   
-projectType: string | null;
-project?: ICommonSystem | null;
-destinationType: string;
-destination?: ICommonSystem | null;
-value: number;
-changes: IBaseChanges | null;
+  uid: string; 
+  companyUid?: string;
+  company?: ICompanyList;
+  currencyUid: string;
+  currency: string;  // ICurrencyList;   
+  projectType: string;
+  project?: ICommonSystem;
+  destinationType: string;
+  destination?: ICommonSystem;
+  value: number;
+  changes?: IBaseChanges;
 }

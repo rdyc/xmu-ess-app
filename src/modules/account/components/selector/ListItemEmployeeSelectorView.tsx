@@ -1,11 +1,8 @@
-import { layoutMessage } from '@layout/locales/messages';
 import {
+  AppBar,
   Avatar,
-  Button,
   Dialog,
-  DialogActions,
   DialogContent,
-  DialogTitle,
   IconButton,
   InputAdornment,
   List,
@@ -14,10 +11,11 @@ import {
   ListItemSecondaryAction,
   ListItemText,
   TextField,
+  Toolbar,
   Typography,
 } from '@material-ui/core';
-import { isWidthDown } from '@material-ui/core/withWidth';
 import AddIcon from '@material-ui/icons/Add';
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import CloseIcon from '@material-ui/icons/Close';
 import DoneIcon from '@material-ui/icons/Done';
 import PersonIcon from '@material-ui/icons/Person';
@@ -81,52 +79,51 @@ export const ListItemEmployeeSelectorView: React.SFC<ListItemEmployeeSelectorPro
     </ListItem>
 
     <Dialog 
-      fullScreen={isWidthDown('sm', props.width)}
+      fullScreen
       open={props.open}
-      aria-labelledby="account-employee-dialog-title"
+      className={props.layoutState.anchor === 'right' ? props.classes.contentShiftRight : props.classes.contentShiftLeft}
+      scroll="paper"
       onClose={props.handleDialog}
     >
-      <DialogTitle 
-        id="account-employee-dialog-title"
-        disableTypography
-      >
-        <Typography variant="h6" color="primary">
-          <FormattedMessage id="account.employee.lookupTitle" />
-        </Typography>
-
-        {/* <Typography variant="body2">
-          <FormattedMessage id="account.employee.lookupDescription" />
-        </Typography> */}
-        
-        <TextField
-          id="account-employee-selector-text"
-          fullWidth
-          margin="normal"
-          value={props.search}
-          disabled={!props.accountEmployeeState.list.response}
-          label={<FormattedMessage id="global.search" />}
-          placeholder={props.intl.formatMessage({ id: 'account.placeholder.lookupSearch' })}
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                <SearchIcon />
-              </InputAdornment>
-            ),
-          }}
-          onChange={props.handleOnChangeSearch}
-          onKeyUp={props.handleOnKeyUpSearch}
-        />
-      </DialogTitle>
+      <AppBar position="fixed" className={props.classes.appBarDialog}>
+        <Toolbar>
+          <IconButton color="inherit" onClick={props.handleDialog} aria-label="Close">
+            <ArrowBackIcon />
+          </IconButton>
+          <Typography variant="h6" color="inherit" className={props.classes.flex}>
+            <FormattedMessage id="account.employee.lookupTitle" />
+          </Typography>
+        </Toolbar>
+      </AppBar>
       
-      <DialogContent
-        style={{ 
-          padding: 0 
-        }}
-      >
+      <DialogContent className={props.classes.paddingDisabled}>
+        <div className={props.classes.paddingFar}>
+          <TextField
+            id="account-employee-selector-text"
+            fullWidth
+            margin="normal"
+            value={props.search}
+            disabled={!props.accountEmployeeState.list.response}
+            label={<FormattedMessage id="global.search" />}
+            placeholder={props.intl.formatMessage({ id: 'account.placeholder.lookupSearch' })}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <SearchIcon />
+                </InputAdornment>
+              ),
+            }}
+            onChange={props.handleOnChangeSearch}
+            onKeyUp={props.handleOnKeyUpSearch}
+          />
+        </div>
+
         <List>
           <VirtualizedList
-            width={600}
-            height={550}
+            width={9999}
+            height={9999}
+            autoWidth
+            autoHeight
             rowCount={props.filteredData().length}
             rowHeight={60}
             rowRenderer={(row: ListRowProps) => {
@@ -171,14 +168,6 @@ export const ListItemEmployeeSelectorView: React.SFC<ListItemEmployeeSelectorPro
           />
         </List>
       </DialogContent>
-      <DialogActions>
-        <Button 
-          onClick={props.handleDialog} 
-          color="secondary"
-        >
-          {props.intl.formatMessage(layoutMessage.action.discard)}
-        </Button>
-      </DialogActions>
     </Dialog>
   </React.Fragment>
 );

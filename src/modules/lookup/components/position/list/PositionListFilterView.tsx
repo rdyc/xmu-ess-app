@@ -5,6 +5,7 @@ import {
   AppBar,
   Button,
   Dialog,
+  DialogContent,
   Divider,
   IconButton,
   List,
@@ -27,9 +28,10 @@ export const PositionListFilterView: React.SFC<PositionListFilterProps> = props 
       className={props.layoutState.anchor === 'right' ? props.classes.contentShiftRight : props.classes.contentShiftLeft}
       disableBackdropClick
       open={props.isOpen}
+      scroll="paper"
       onClose={props.onClose}
     >
-      <AppBar className={props.classes.appBarDialog}>
+      <AppBar position="fixed" className={props.classes.appBarDialog}>
         <Toolbar>
           <IconButton color="inherit" onClick={props.onClose} aria-label="Close">
             <CloseIcon />
@@ -55,6 +57,7 @@ export const PositionListFilterView: React.SFC<PositionListFilterProps> = props 
         </Toolbar>
       </AppBar>
 
+      <DialogContent className={props.classes.paddingDisabled}>
       <List>
         <ListItem button onClick={props.handleFilterCompanyVisibility}>
           <ListItemText
@@ -77,6 +80,7 @@ export const PositionListFilterView: React.SFC<PositionListFilterProps> = props 
         <Divider />
 
       </List>
+      </DialogContent>
     </Dialog>
 
     <FilterCompany

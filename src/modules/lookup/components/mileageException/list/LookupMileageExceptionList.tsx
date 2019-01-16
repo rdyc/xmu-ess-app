@@ -188,7 +188,7 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, OwnState> = {
       onBind: (item: IMileageException, index: number) => ({
         key: index,
         primary: item.uid,
-        secondary: item.role && item.role.company && item.role.company.name,
+        secondary: item.role && item.role.company && item.role.company.name || 'N/A',
         tertiary: item.role.name,
         quaternary: item.reason ? item.reason : 'N/A',
         quinary: item.changes && item.changes.updated && item.changes.updated.fullName || item.changes && item.changes.created && item.changes.created.fullName || 'N/A',
@@ -204,6 +204,12 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, OwnState> = {
       // action component
       actionComponent: (item: IMileageException) => (
         <React.Fragment>
+          <Button 
+            size="small"
+            onClick={() => this.props.history.push(`/lookup/mileageexceptions/form`, { uid: item.uid })}
+          >
+            <FormattedMessage {...layoutMessage.action.modify}/>
+          </Button>
           <Button 
             size="small"
             onClick={() => this.props.history.push(`/lookup/mileageexceptions/${item.uid}`)}

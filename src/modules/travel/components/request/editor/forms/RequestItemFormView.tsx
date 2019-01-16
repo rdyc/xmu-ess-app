@@ -62,7 +62,7 @@ export const RequestItemFormView: React.SFC<RequestItemFormProps> = props => {
                     <DeleteForeverIcon />
                   </IconButton>
                 }
-                title={`#${index + 1} - ${item.uid || 'Draft'}`}
+                title={`Item #${index + 1}`}
               />
               <CardContent>
                 <div>
@@ -70,9 +70,8 @@ export const RequestItemFormView: React.SFC<RequestItemFormProps> = props => {
                     type="text"
                     name={`${field}.employeeUid`}
                     label={props.intl.formatMessage(travelMessage.request.field.itemEmployeeUid)}
-                    placeholder="Employee"
                     required={true}
-                    companyUids={props.userState.user && [props.userState.user.company.uid]}
+                    companyUids={props.userState.user && props.userState.user.company.uid}
                     component={SelectEmployee}
                   />
                   <Field 
@@ -246,7 +245,7 @@ export const RequestItemFormView: React.SFC<RequestItemFormProps> = props => {
         <Grid container spacing={16}>
           <Grid item xs={12} md={4}>
             <Button onClick={() => context.fields.push({
-              uid: null,
+              uid: undefined,
               employeeUid: '',
               fullName: '',
               transportType: '',

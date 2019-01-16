@@ -233,8 +233,8 @@ const handlerCreators: HandleCreators<TravelSettlementEditorProps, OwnHandlers> 
 
 const createProps: mapper<TravelSettlementEditorProps, OwnState> = (props: TravelSettlementEditorProps): OwnState => ({
   formMode: FormMode.New,
-  submitDialogTitle: props.intl.formatMessage(travelMessage.request.dialog.createTitle),
-  submitDialogContentText: props.intl.formatMessage(travelMessage.request.dialog.createDescription),
+  submitDialogTitle: props.intl.formatMessage(travelMessage.settlement.dialog.createTitle),
+  submitDialogContentText: props.intl.formatMessage(travelMessage.settlement.dialog.createDescription),
   submitDialogCancelText: props.intl.formatMessage(layoutMessage.action.cancel),
   submitDialogConfirmedText: props.intl.formatMessage(layoutMessage.action.ok),
 });
@@ -275,7 +275,9 @@ const lifecycles: ReactLifeCycleFunctions<TravelSettlementEditorProps, {}> = {
 
         stateUpdate({
           formMode: FormMode.Edit,
-          travelSettlementUid: history.location.state.uid
+          travelSettlementUid: history.location.state.uid,
+          submitDialogTitle: this.props.intl.formatMessage(travelMessage.settlement.dialog.editTitle),
+          submitDialogContentText: this.props.intl.formatMessage(travelMessage.settlement.dialog.editDescription),
         });
 
         loadRequest({
@@ -317,7 +319,6 @@ const lifecycles: ReactLifeCycleFunctions<TravelSettlementEditorProps, {}> = {
     layoutDispatch.changeView(null);
     layoutDispatch.navBackHide();
     layoutDispatch.moreHide();
-    layoutDispatch.actionCentreHide();
 
     appBarDispatch.dispose();
 

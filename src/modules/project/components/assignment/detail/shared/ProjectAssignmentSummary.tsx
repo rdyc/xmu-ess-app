@@ -8,12 +8,12 @@ import * as React from 'react';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose } from 'recompose';
 
-interface OwnProps {
+interface IOwnProps {
   data: IProjectAssignment;
 }
 
 type AllProps
-  = OwnProps
+  = IOwnProps
   & InjectedIntlProps;
 
 const summaryView: React.SFC<AllProps> = props => (
@@ -107,6 +107,6 @@ const summaryView: React.SFC<AllProps> = props => (
   </Grid>
 );
 
-export const ProjectAssignmentSummary = compose<AllProps, OwnProps>(
+export const ProjectAssignmentSummary = compose<AllProps, IOwnProps>(
   injectIntl
 )(summaryView);

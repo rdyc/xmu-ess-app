@@ -80,7 +80,7 @@ export const AccountEmployeeAccessHistoryView: React.SFC<
         (response && response.data && response.data.length === 0)) && (
         <Typography>No Data</Typography>
       )}
-      {response && response.data && renderAccessHistory(response.data)}
+      {response && response.data && response.data.length >= 1 && renderAccessHistory(response.data)}
     </React.Fragment>
   );
 };

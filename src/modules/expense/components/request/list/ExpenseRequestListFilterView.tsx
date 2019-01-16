@@ -7,6 +7,7 @@ import {
   AppBar,
   Button,
   Dialog,
+  DialogContent,
   Divider,
   IconButton,
   List,
@@ -22,6 +23,9 @@ import CloseIcon from '@material-ui/icons/Close';
 import ClearIcon from '@material-ui/icons/SettingsBackupRestore';
 import * as React from 'react';
 
+import { InputDateWithValue } from '@layout/components/input/date';
+import { ModuleDefinition } from '@layout/helper/redirector';
+// import { GlobalFormat } from '@layout/types';
 import { ProjectRegistrationDialog } from '@project/components/dialog/project';
 import { ExpenseRequestListFilterProps } from './ExpenseRequestListFilter';
 
@@ -32,9 +36,10 @@ export const ExpenseRequestListFilterView: React.SFC<ExpenseRequestListFilterPro
       disableBackdropClick
       open={props.isOpen}
       className={props.layoutState.anchor === 'right' ? props.classes.contentShiftRight : props.classes.contentShiftLeft}
+      scroll="paper"
       onClose={props.onClose}
     >
-      <AppBar className={props.classes.appBarDialog}>
+      <AppBar position="fixed" className={props.classes.appBarDialog}>
         <Toolbar>
           <IconButton color="inherit" onClick={props.onClose} aria-label="Close">
             <CloseIcon />
@@ -45,7 +50,7 @@ export const ExpenseRequestListFilterView: React.SFC<ExpenseRequestListFilterPro
           </Typography>
 
           {
-            (props.filterCustomer || props.filterType || props.filterStatus || props.filterCompletion || props.filterRejected) &&
+            (props.filterCustomer || props.filterType || props.filterStatus || props.filterStart || props.filterEnd || props.filterCompletion || props.filterRejected) &&
             <Button color="inherit" onClick={props.handleFilterOnReset}>
               {props.intl.formatMessage(layoutMessage.action.reset)}
             </Button>
@@ -60,123 +65,165 @@ export const ExpenseRequestListFilterView: React.SFC<ExpenseRequestListFilterPro
         </Toolbar>
       </AppBar>
       
-      <List>
-        <ListItem button onClick={props.handleFilterCustomerVisibility}>
-          <ListItemText 
-            primary={props.intl.formatMessage(expenseMessage.request.field.customerUid)}
-            secondary={props.filterCustomer && props.filterCustomer.name || props.intl.formatMessage(layoutMessage.text.none)}
-          />
-          <ListItemSecondaryAction>
-            { 
-              props.filterCustomer &&
-              <IconButton onClick={props.handleFilterCustomerOnClear}>
-                <ClearIcon />
-              </IconButton> 
-            }
-
-            <IconButton onClick={props.handleFilterCustomerVisibility}>
-              <ChevronRightIcon />
-            </IconButton> 
-          </ListItemSecondaryAction>
-        </ListItem>
-        <Divider />
-            
-        <ListItem button onClick={props.filterCustomer && props.handleFilterProjectVisibility}>
-          <ListItemText 
-            primary={props.intl.formatMessage(expenseMessage.request.field.projectUid)}
-            secondary={props.filterProject && props.filterProject.name || props.intl.formatMessage(layoutMessage.text.none)}
-          />
-          <ListItemSecondaryAction>
-            { 
-              props.filterProject &&
-              <IconButton onClick={props.handleFilterProjectOnClear}>
-                <ClearIcon />
-              </IconButton> 
-            }
-
-            <IconButton onClick={props.filterCustomer && props.handleFilterProjectVisibility}>
-              <ChevronRightIcon />
-            </IconButton> 
-          </ListItemSecondaryAction>
-        </ListItem>
-        <Divider />
-
-        <ListItem button onClick={props.handleFilterTypeVisibility}>
-          <ListItemText 
-            primary={props.intl.formatMessage(expenseMessage.request.field.expenseType)}
-            secondary={props.filterType && props.filterType.name || props.intl.formatMessage(layoutMessage.text.none)} 
-          />
-          <ListItemSecondaryAction>
-            { 
-              props.filterType &&
-              <IconButton onClick={props.handleFilterTypeOnClear}>
-                <ClearIcon />
-              </IconButton> 
-            }
-
-            <IconButton onClick={props.handleFilterTypeVisibility}>
-              <ChevronRightIcon />
-            </IconButton> 
-          </ListItemSecondaryAction>
-        </ListItem>
-        <Divider />
-
-        {/* <ListItem button onClick={props.handleFilterCompletionVisibility}>
-          <ListItemText 
-            primary={props.intl.formatMessage(expenseMessage.request.field.completion)}
-            secondary={props.filterCompletion && props.filterCompletion.name || props.intl.formatMessage(layoutMessage.text.none)} 
-          />
-          <ListItemSecondaryAction>
-          { 
-              props.filterCompletion &&
-              <IconButton onClick={props.handleFilterCompletionOnClear}>
-                <ClearIcon />
-              </IconButton> 
-            }
-
-            <IconButton onClick={props.handleFilterCompletionVisibility}>
-              <ChevronRightIcon />
-            </IconButton> 
-          </ListItemSecondaryAction>
-        </ListItem>
-        <Divider /> */}
-
-        <ListItem button onClick={props.handleFilterStatusVisibility}>
-          <ListItemText 
-            primary={props.intl.formatMessage(expenseMessage.request.field.status)}
-            secondary={props.filterStatus && props.filterStatus.name || props.intl.formatMessage(layoutMessage.text.none)} 
-          />
-          <ListItemSecondaryAction>
-          { 
-              props.filterStatus &&
-              <IconButton onClick={props.handleFilterStatusOnClear}>
-                <ClearIcon />
-              </IconButton> 
-            }
-
-            <IconButton onClick={props.handleFilterStatusVisibility}>
-              <ChevronRightIcon />
-            </IconButton> 
-          </ListItemSecondaryAction>
-        </ListItem>
-        <Divider />
-
-        <ListItem>
-          <ListItemText 
-            primary={props.intl.formatMessage(expenseMessage.request.field.isRejected)}
-            secondary={props.intl.formatMessage(props.filterRejected ? layoutMessage.action.yes : layoutMessage.action.no)}
-          />
-          <ListItemSecondaryAction>
-            <Switch
-              color="primary"
-              checked={props.filterRejected || false}
-              onChange={props.handleFilterRejectedOnChange}
+      <DialogContent className={props.classes.paddingDisabled}>
+        <List>
+          <ListItem button onClick={props.handleFilterCustomerVisibility}>
+            <ListItemText 
+              primary={props.intl.formatMessage(expenseMessage.request.field.customerUid)}
+              secondary={props.filterCustomer && props.filterCustomer.name || props.intl.formatMessage(layoutMessage.text.none)}
             />
-          </ListItemSecondaryAction>
-        </ListItem>
-        <Divider />
+            <ListItemSecondaryAction>
+              { 
+                props.filterCustomer &&
+                <IconButton onClick={props.handleFilterCustomerOnClear}>
+                  <ClearIcon />
+                </IconButton> 
+              }
 
-      </List>
+              <IconButton onClick={props.handleFilterCustomerVisibility}>
+                <ChevronRightIcon />
+              </IconButton> 
+            </ListItemSecondaryAction>
+          </ListItem>
+          <Divider />
+              
+          <ListItem button onClick={props.filterCustomer && props.handleFilterProjectVisibility} disabled={!props.filterCustomer}>
+            <ListItemText 
+              primary={props.intl.formatMessage(expenseMessage.request.field.projectUid)}
+              secondary={props.filterProject && props.filterProject.name || props.intl.formatMessage(layoutMessage.text.none)}
+            />
+            <ListItemSecondaryAction>
+              { 
+                props.filterProject &&
+                <IconButton onClick={props.handleFilterProjectOnClear}>
+                  <ClearIcon />
+                </IconButton> 
+              }
+
+              <IconButton onClick={props.filterCustomer && props.handleFilterProjectVisibility} disabled={!props.filterCustomer}>
+                <ChevronRightIcon />
+              </IconButton> 
+            </ListItemSecondaryAction>
+          </ListItem>
+          <Divider />
+
+          <ListItem button onClick={props.handleFilterTypeVisibility}>
+            <ListItemText 
+              primary={props.intl.formatMessage(expenseMessage.request.field.expenseType)}
+              secondary={props.filterType && props.filterType.name || props.intl.formatMessage(layoutMessage.text.none)} 
+            />
+            <ListItemSecondaryAction>
+              { 
+                props.filterType &&
+                <IconButton onClick={props.handleFilterTypeOnClear}>
+                  <ClearIcon />
+                </IconButton> 
+              }
+
+              <IconButton onClick={props.handleFilterTypeVisibility}>
+                <ChevronRightIcon />
+              </IconButton> 
+            </ListItemSecondaryAction>
+          </ListItem>
+          <Divider />
+
+          {/* <ListItem button onClick={props.handleFilterStartVisibility}>
+            <ListItemText 
+              primary={props.intl.formatMessage(expenseMessage.request.field.start)}
+              secondary={props.filterStart && props.intl.formatDate(props.filterStart, GlobalFormat.Date) || props.intl.formatMessage(layoutMessage.text.none)}
+            />
+            <ListItemSecondaryAction>
+              {
+                props.filterStart &&
+                <IconButton onClick={props.handleFilterStartOnClear}>
+                  <ClearIcon />
+                </IconButton>
+              }
+
+              <IconButton onClick={props.handleFilterStartVisibility}>
+                <ChevronRightIcon />
+              </IconButton>
+            </ListItemSecondaryAction>
+          </ListItem>
+          <Divider />
+
+          <ListItem button onClick={props.handleFilterEndVisibility}>
+            <ListItemText 
+              primary={props.intl.formatMessage(expenseMessage.request.field.end)}
+              secondary={props.filterEnd && props.intl.formatDate(props.filterEnd, GlobalFormat.Date) || props.intl.formatMessage(layoutMessage.text.none)}
+            />
+            <ListItemSecondaryAction>
+              {
+                props.filterEnd &&
+                <IconButton onClick={props.handleFilterEndOnClear}>
+                  <ClearIcon />
+                </IconButton>
+              }
+
+              <IconButton onClick={props.handleFilterEndVisibility}>
+                <ChevronRightIcon />
+              </IconButton>
+            </ListItemSecondaryAction>
+          </ListItem>
+          <Divider /> */}
+
+          {/* <ListItem button onClick={props.handleFilterCompletionVisibility}>
+            <ListItemText 
+              primary={props.intl.formatMessage(expenseMessage.request.field.completion)}
+              secondary={props.filterCompletion && props.filterCompletion.name || props.intl.formatMessage(layoutMessage.text.none)} 
+            />
+            <ListItemSecondaryAction>
+            { 
+                props.filterCompletion &&
+                <IconButton onClick={props.handleFilterCompletionOnClear}>
+                  <ClearIcon />
+                </IconButton> 
+              }
+
+              <IconButton onClick={props.handleFilterCompletionVisibility}>
+                <ChevronRightIcon />
+              </IconButton> 
+            </ListItemSecondaryAction>
+          </ListItem>
+          <Divider /> */}
+
+          <ListItem button onClick={props.handleFilterStatusVisibility}>
+            <ListItemText 
+              primary={props.intl.formatMessage(expenseMessage.request.field.status)}
+              secondary={props.filterStatus && props.filterStatus.name || props.intl.formatMessage(layoutMessage.text.none)} 
+            />
+            <ListItemSecondaryAction>
+            { 
+                props.filterStatus &&
+                <IconButton onClick={props.handleFilterStatusOnClear}>
+                  <ClearIcon />
+                </IconButton> 
+              }
+
+              <IconButton onClick={props.handleFilterStatusVisibility}>
+                <ChevronRightIcon />
+              </IconButton> 
+            </ListItemSecondaryAction>
+          </ListItem>
+          <Divider />
+
+          <ListItem>
+            <ListItemText 
+              primary={props.intl.formatMessage(expenseMessage.request.field.isRejected)}
+              secondary={props.intl.formatMessage(props.filterRejected ? layoutMessage.action.yes : layoutMessage.action.no)}
+            />
+            <ListItemSecondaryAction>
+              <Switch
+                color="primary"
+                checked={props.filterRejected || false}
+                onChange={props.handleFilterRejectedOnChange}
+              />
+            </ListItemSecondaryAction>
+          </ListItem>
+          <Divider />
+
+        </List>
+        </DialogContent>
     </Dialog>
 
     <LookupCustomerDialog 
@@ -208,11 +255,28 @@ export const ExpenseRequestListFilterView: React.SFC<ExpenseRequestListFilterPro
     <LookupSystemDialog
       title={props.intl.formatMessage(expenseMessage.request.field.status)}
       category="status"
+      moduleType={ModuleDefinition.Expense}
       hideBackdrop={true}
       isOpen={props.isFilterStatusOpen}
       value={props.filterStatus && props.filterStatus.type}
       onSelected={props.handleFilterStatusOnSelected}
       onClose={props.handleFilterStatusOnClose}
+    />
+
+    <InputDateWithValue 
+      label={props.intl.formatMessage(expenseMessage.request.field.start)}
+      val={props.filterStart}
+      onSelected={props.handleFilterStartOnSelected}
+      isOpen={props.isFilterStartOpen}
+      onClose={props.handleFilterStartOnClose}
+    />
+
+    <InputDateWithValue 
+      label={props.intl.formatMessage(expenseMessage.request.field.end)}
+      val={props.filterEnd}
+      onSelected={props.handleFilterEndOnSelected}
+      isOpen={props.isFilterEndOpen}
+      onClose={props.handleFilterEndOnClose}
     />
 
     {/* <DialogValue

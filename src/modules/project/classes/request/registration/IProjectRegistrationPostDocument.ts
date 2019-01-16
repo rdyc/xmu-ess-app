@@ -1,4 +1,4 @@
 export interface IProjectRegistrationPostDocument {
   documentType: string;
-  isChecked:    boolean;
+  isChecked: boolean;
 }

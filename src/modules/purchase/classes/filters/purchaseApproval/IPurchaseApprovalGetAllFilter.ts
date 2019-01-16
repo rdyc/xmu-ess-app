@@ -2,9 +2,7 @@ import { IBaseFilter, IBasePagingFilter, ICompanyAccess } from '@generic/interfa
 
 // interface IExtendedQuery extends IBaseFilter, IBasePagingFilter { }
 
-export interface IPurchaseApprovalGetAllFilter extends 
-IBaseFilter, IBasePagingFilter, 
-ICompanyAccess {
+export interface IPurchaseApprovalGetAllFilter extends IBaseFilter, IBasePagingFilter, ICompanyAccess {
   isNotify?: boolean;
   statusType?: string;
   status?: 'pending' | 'complete' | string;

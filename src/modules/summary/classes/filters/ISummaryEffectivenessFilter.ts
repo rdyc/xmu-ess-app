@@ -1,4 +1,4 @@
 export interface ISummaryEffectivenessFilter {
-  employeeUid: string | undefined;
-  projectUid: string | undefined;
+  employeeUid?: string;
+  projectUid?: string;
 }

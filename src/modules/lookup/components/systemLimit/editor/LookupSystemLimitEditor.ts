@@ -251,7 +251,6 @@ const lifecycles: ReactLifeCycleFunctions<SystemLimitEditorProps, {}> = {
     layoutDispatch.changeView(null);
     layoutDispatch.navBackHide();
     layoutDispatch.moreHide();
-    layoutDispatch.actionCentreHide();
 
     appBarDispatch.dispose();
 

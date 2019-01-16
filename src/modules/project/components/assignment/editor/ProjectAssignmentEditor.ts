@@ -16,6 +16,7 @@ import {
   lifecycle,
   mapper,
   ReactLifeCycleFunctions,
+  setDisplayName,
   StateHandler,
   StateHandlerMap,
   StateUpdaters,
@@ -27,26 +28,26 @@ import { FormErrors } from 'redux-form';
 import { isNullOrUndefined, isObject } from 'util';
 
 import { ProjectAssignmentEditorView } from './ProjectAssignmentEditorView';
-import { ProjectAssignmentFormData, ProjectAssignmentItemFormData } from './ProjectAssignmentForm';
+import { IProjectAssignmentFormData, IProjectAssignmentItemFormData } from './ProjectAssignmentForm';
 
-interface OwnHandlers {
+interface IOwnHandlers {
   generateInitialData: () => IProjectAssignmentDetail | undefined;
-  generateInitialValues: () => ProjectAssignmentFormData | undefined;
-  handleValidate: (values: ProjectAssignmentFormData) => any;
-  handleSubmit: (values: ProjectAssignmentFormData) => void;
+  generateInitialValues: () => IProjectAssignmentFormData | undefined;
+  handleValidate: (values: IProjectAssignmentFormData) => any;
+  handleSubmit: (values: IProjectAssignmentFormData) => void;
   handleSubmitSuccess: (result: any, dispatch: Dispatch<any>) => void;
   handleSubmitFail: (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => void;
 }
 
-interface OwnState {
+interface IOwnState {
   formMode: FormMode;
   companyUid?: string | undefined;
   projectUid?: string | undefined;
   assignmentUid?: string | undefined;
 }
 
-interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
-  stateUpdate: StateHandler<OwnState>;
+interface IOwnStateUpdaters extends StateHandlerMap<IOwnState> {
+  stateUpdate: StateHandler<IOwnState>;
 }
 
 export type ProjectAssignmentEditorProps 
@@ -57,11 +58,11 @@ export type ProjectAssignmentEditorProps
   & WithAppBar
   & RouteComponentProps
   & InjectedIntlProps
-  & OwnHandlers
-  & OwnState
-  & OwnStateUpdaters;
+  & IOwnHandlers
+  & IOwnState
+  & IOwnStateUpdaters;
 
-const createProps: mapper<ProjectAssignmentEditorProps, OwnState> = (props: ProjectAssignmentEditorProps): OwnState => {
+const createProps: mapper<ProjectAssignmentEditorProps, IOwnState> = (props: ProjectAssignmentEditorProps): IOwnState => {
   const { history } = props;
   
   const state = history.location.state;
@@ -74,14 +75,14 @@ const createProps: mapper<ProjectAssignmentEditorProps, OwnState> = (props: Proj
   };
 };
 
-const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
-  stateUpdate: (prevState: OwnState) => (newState: any) => ({
+const stateUpdaters: StateUpdaters<{}, IOwnState, IOwnStateUpdaters> = {
+  stateUpdate: (prevState: IOwnState) => (newState: any) => ({
     ...prevState,
     ...newState
   })
 };
 
-const handlers: HandleCreators<ProjectAssignmentEditorProps, OwnHandlers> = {
+const handlers: HandleCreators<ProjectAssignmentEditorProps, IOwnHandlers> = {
   generateInitialData: (props: ProjectAssignmentEditorProps) => (): IProjectAssignmentDetail | undefined => {
     const { response } = props.projectAssignmentState.detail; 
 
@@ -91,11 +92,11 @@ const handlers: HandleCreators<ProjectAssignmentEditorProps, OwnHandlers> = {
       
     return undefined;
     },
-  generateInitialValues: (props: ProjectAssignmentEditorProps) => (): ProjectAssignmentFormData | undefined => {
+  generateInitialValues: (props: ProjectAssignmentEditorProps) => (): IProjectAssignmentFormData | undefined => {
     const { response } = props.projectAssignmentState.detail; 
 
     if (response && response.data) {
-      const items: ProjectAssignmentItemFormData[] = [];
+      const items: IProjectAssignmentItemFormData[] = [];
 
       if (response.data.items) {
         response.data.items.forEach(item => 
@@ -122,7 +123,7 @@ const handlers: HandleCreators<ProjectAssignmentEditorProps, OwnHandlers> = {
       
     return undefined;
   },
-  handleValidate: (props: ProjectAssignmentEditorProps) => (values: ProjectAssignmentFormData) => { 
+  handleValidate: (props: ProjectAssignmentEditorProps) => (values: IProjectAssignmentFormData) => { 
     const errors = {};
   
     const requiredFields = ['projectUid'];
@@ -161,7 +162,7 @@ const handlers: HandleCreators<ProjectAssignmentEditorProps, OwnHandlers> = {
     
     return errors;
   },
-  handleSubmit: (props: ProjectAssignmentEditorProps) => (values: ProjectAssignmentFormData) => { 
+  handleSubmit: (props: ProjectAssignmentEditorProps) => (values: IProjectAssignmentFormData) => { 
     const { intl } = props;
     const { user } = props.userState;
     const { patchRequest } = props.projectAssignmentDispatch;
@@ -279,7 +280,6 @@ const lifecycles: ReactLifeCycleFunctions<ProjectAssignmentEditorProps, {}> = {
     layoutDispatch.changeView(null);
     layoutDispatch.navBackHide();
     layoutDispatch.moreHide();
-    layoutDispatch.actionCentreHide();
 
     appBarDispatch.dispose();
 
@@ -289,6 +289,7 @@ const lifecycles: ReactLifeCycleFunctions<ProjectAssignmentEditorProps, {}> = {
 };
 
 export const ProjectAssignmentEditorForm = compose<ProjectAssignmentEditorProps, {}>(
+  setDisplayName('ProjectAssignmentEditorForm'),
   withUser,
   withLayout,
   withAppBar,
