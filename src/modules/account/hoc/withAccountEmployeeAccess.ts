@@ -1,14 +1,26 @@
-import { IEmployeeAccessGetAllRequest, IEmployeeAccessGetDetailRequest } from '@account/classes/queries/employeeAccess';
+import { 
+  IEmployeeAccessDeleteRequest, 
+  IEmployeeAccessGetAllRequest, 
+  IEmployeeAccessGetDetailRequest, 
+  IEmployeeAccessPostRequest, 
+  IEmployeeAccessPutRequest 
+} from '@account/classes/queries/employeeAccess';
 import { IEmployeeAccessGetListRequest } from '@account/classes/queries/employeeAccess/IEmployeeAccessGetListRequest';
 import { IEmployeeAccessList } from '@account/classes/response/employeeAccess';
 import { IEmployeeAccess } from '@account/classes/response/employeeAccess/IEmployeeAccess';
 import { 
+  accountEmployeeAccessDeleteDispose, 
+  accountEmployeeAccessDeleteRequest, 
   accountEmployeeAccessGetAllDispose, 
   accountEmployeeAccessGetAllRequest, 
   accountEmployeeAccessGetByIdDispose, 
-  accountEmployeeAccessGetByIdRequest, 
+  accountEmployeeAccessGetByIdRequest,
   accountEmployeeAccessGetListDispose, 
-  accountEmployeeAccessGetListRequest 
+  accountEmployeeAccessGetListRequest, 
+  accountEmployeeAccessPostDispose, 
+  accountEmployeeAccessPostRequest, 
+  accountEmployeeAccessPutDispose, 
+  accountEmployeeAccessPutRequest
 } from '@account/store/actions/accountEmployeeAccessActions';
 import { IAppState, IQueryCollectionState, IQuerySingleState } from '@generic/interfaces';
 import { connect } from 'react-redux';
@@ -25,6 +37,12 @@ interface PropsFromstate {
 interface PropsFromDispatch {
   accountEmployeeAccessDispatch: {
     // command 
+    createRequest: typeof accountEmployeeAccessPostRequest
+    createDispose: typeof accountEmployeeAccessPostDispose
+    updateRequest: typeof accountEmployeeAccessPutRequest
+    updateDispose: typeof accountEmployeeAccessPutDispose
+    deleteRequest: typeof accountEmployeeAccessDeleteRequest
+    deleteDispose: typeof accountEmployeeAccessDeleteDispose
 
     // query
     loadAllRequest: typeof accountEmployeeAccessGetAllRequest
@@ -49,6 +67,12 @@ const mapStateToProps = ({ accountEmployeeAccessGetAll, accountEmployeeAccessGet
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   accountEmployeeAccessDispatch: {
     // command
+    createRequest: (request: IEmployeeAccessPostRequest) => dispatch(accountEmployeeAccessPostRequest(request)),
+    createDispose: () => dispatch(accountEmployeeAccessPostDispose()),
+    updateRequest: (request: IEmployeeAccessPutRequest) => dispatch(accountEmployeeAccessPutRequest(request)),
+    updateDispose: () => dispatch(accountEmployeeAccessPutDispose()),
+    deleteRequest: (request: IEmployeeAccessDeleteRequest) => dispatch(accountEmployeeAccessDeleteRequest(request)),
+    deleteDispose: () => dispatch(accountEmployeeAccessDeleteDispose()),
 
     // query
     loadAllRequest: (request: IEmployeeAccessGetAllRequest) => dispatch(accountEmployeeAccessGetAllRequest(request)),

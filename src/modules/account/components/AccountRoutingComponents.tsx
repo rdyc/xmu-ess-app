@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router';
 
 import { AccountAccess } from './access';
+import { AccountEmployeeAccess } from './detail/access/AccountEmployeeAccess';
 import { AccountEmployeeAccessHistory } from './detail/accessHistory/AccountEmployeeAccessHistory';
 import { AccountEmployeeDetail } from './detail/AccountEmployeeDetail';
 import { AccountEmployeeEducation } from './detail/education/AccountEmployeeEducation';
@@ -70,7 +71,7 @@ const employeeTraining = (props: RouteComponentProps) => (
 
 const employeeMultiAccess = (props: RouteComponentProps) => (
   <Switch>
-    {/* <Route path={`${props.match.path}`} component={AccountEmployeeEducation} /> */}
+    <Route path={`${props.match.path}`} component={AccountEmployeeAccess} />
   </Switch>
 );
 
