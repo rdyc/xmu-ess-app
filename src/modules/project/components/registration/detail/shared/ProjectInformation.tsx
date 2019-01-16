@@ -39,7 +39,7 @@ const projectInformation: React.SFC<AllProps> = props => (
         props.data.childProjectUid &&
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
-          label={props.intl.formatMessage(projectMessage.registration.field.uid)}
+          label={props.intl.formatMessage(projectMessage.registration.field.childUid)}
           value={props.data.childProjectUid}
         />
       }

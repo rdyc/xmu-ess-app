@@ -137,6 +137,7 @@ const handleCreators: HandleCreators<AccountEmployeeDetailFormProps, OwnHandlers
 
         case 'bloodType':
         fieldProps = {
+          required: true,
           category: 'blood',
           label: intl.formatMessage(accountMessage.employee.fieldFor(name, 'fieldName')),
           placeholder: intl.formatMessage(accountMessage.employee.fieldFor(name, 'fieldPlaceholder')),
@@ -146,6 +147,7 @@ const handleCreators: HandleCreators<AccountEmployeeDetailFormProps, OwnHandlers
 
         case 'religionType':
         fieldProps = {
+          required: true,
           category: 'religion',
           label: intl.formatMessage(accountMessage.employee.fieldFor(name, 'fieldName')),
           placeholder: intl.formatMessage(accountMessage.employee.fieldFor(name, 'fieldPlaceholder')),
