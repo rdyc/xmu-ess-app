@@ -4,20 +4,20 @@ import { WithStyles, withStyles } from '@material-ui/core';
 import styles from '@styles';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose, lifecycle, ReactLifeCycleFunctions } from 'recompose';
-import { AccountEmployeeMultiAccessView } from './AccountEmployeeMultiAccessView';
+import { AccountEmployeeAccessView } from './AccountEmployeeAccessView';
 
 interface OwnOption {
   employeeUid: string;
 }
 
-export type AccountEmployeeMultiAccessProps
+export type AccountEmployeeAccessProps
   = OwnOption
   & WithUser
   & InjectedIntlProps
   & WithStyles<typeof styles>
   & WithAccountEmployeeAccess;
 
-const lifecycles: ReactLifeCycleFunctions<AccountEmployeeMultiAccessProps, {}> = {
+const lifecycles: ReactLifeCycleFunctions<AccountEmployeeAccessProps, {}> = {
   componentDidMount() {
     const { employeeUid } = this.props;
     const { user } = this.props.userState;
@@ -35,10 +35,10 @@ const lifecycles: ReactLifeCycleFunctions<AccountEmployeeMultiAccessProps, {}> =
   }
 };
 
-export const AccountEmployeeMultiAccess = compose<AccountEmployeeMultiAccessProps, OwnOption>(
+export const AccountEmployeeAccess = compose<AccountEmployeeAccessProps, OwnOption>(
   withUser,
   injectIntl,
   withStyles(styles),
   withAccountEmployeeAccess,
   lifecycle(lifecycles)
-)(AccountEmployeeMultiAccessView);
+)(AccountEmployeeAccessView);

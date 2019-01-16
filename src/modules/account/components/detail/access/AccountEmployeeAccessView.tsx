@@ -1,5 +1,5 @@
 import { IEmployeeAccessList } from '@account/classes/response/employeeAccess';
-import { AccountEmployeeMultiAccessHeaderTable } from '@account/classes/types';
+import { AccountEmployeeAccessHeaderTable as AccountEmployeeAccessHeaderTable } from '@account/classes/types';
 import { GlobalFormat } from '@layout/types';
 import {
   Fade,
@@ -12,15 +12,15 @@ import {
   Typography
 } from '@material-ui/core';
 import * as React from 'react';
-import { AccountEmployeeMultiAccessProps } from './AccountEmployeeMultiAccess';
+import { AccountEmployeeAccessProps } from './AccountEmployeeAccess';
 
-export const AccountEmployeeMultiAccessView: React.SFC<AccountEmployeeMultiAccessProps> = props => {
+export const AccountEmployeeAccessView: React.SFC<AccountEmployeeAccessProps> = props => {
   const { classes, intl } = props;
   const { response, isLoading } = props.accountEmployeeAccessState.list;
 
-  const header = Object.keys(AccountEmployeeMultiAccessHeaderTable).map(key => ({
+  const header = Object.keys(AccountEmployeeAccessHeaderTable).map(key => ({
     id: key,
-    name: AccountEmployeeMultiAccessHeaderTable[key]
+    name: AccountEmployeeAccessHeaderTable[key]
   }));
 
   const renderMultiAccess = (data: IEmployeeAccessList[]) => {

@@ -9,6 +9,7 @@ import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
 import { AppBar, Tab, Tabs } from '@material-ui/core';
 import * as React from 'react';
+import { AccountEmployeeAccess } from './access/AccountEmployeeAccess';
 import { AccountEmployeeAccessHistory } from './accessHistory/AccountEmployeeAccessHistory';
 import { AccountEmployeeBank } from './AccountEmployeeBank';
 import { AccountEmployeeContact } from './AccountEmployeeContact';
@@ -17,7 +18,6 @@ import { AccountEmployeeInformation } from './AccountEmployeeInformation';
 import { AccountEmployeeEducation } from './education/AccountEmployeeEducation';
 import { AccountEmployeeExperience } from './experience/AccountEmployeeExperience';
 import { AccountEmployeeFamily } from './family/AccountEmployeeFamily';
-import { AccountEmployeeMultiAccess } from './multiAccess/AccountEmployeeMultiAccess';
 import { AccountEmployeeTraining } from './training/AccountEmployeeTraining';
 
 const config: SingleConfig<IEmployeeDetail, AccountEmployeeDetailProps> = {
@@ -126,7 +126,7 @@ export const AccountEmployeeDetailView: React.SFC<AccountEmployeeDetailProps> = 
     {props.tab === 3 && <div style={{ padding: 8 * 3 }}><AccountEmployeeFamily employeeUid={props.match.params.employeeUid}/></div>}
     {props.tab === 4 && <div style={{ padding: 8 * 3 }}><AccountEmployeeExperience employeeUid={props.match.params.employeeUid}/></div>}
     {props.tab === 5 && <div style={{ padding: 8 * 3 }}><AccountEmployeeTraining employeeUid={props.match.params.employeeUid}/></div>}
-    {props.tab === 6 && <div style={{ padding: 8 * 3 }}><AccountEmployeeMultiAccess employeeUid={props.match.params.employeeUid}/></div>}    
+    {props.tab === 6 && <div style={{ padding: 8 * 3 }}><AccountEmployeeAccess employeeUid={props.match.params.employeeUid}/></div>}    
 
     <DialogConfirmation 
       isOpen={props.dialogOpen}
