@@ -6,17 +6,13 @@ import { AccountEmployeeFamilyContainerFormView } from './AccountEmployeeFamilyC
 const formName = 'accountEmployeeFamily';
 
 export type AccountEmployeeFamilyFormData = {
-  employeeUid: string | null | undefined;
-  familyType: string | null | undefined;
-  fullName: string | null | undefined;
-  gender: string | null | undefined;
-  birthPlace: string | null | undefined;
-  birthDate: string | null | undefined;
-};
-
-export type AccountEmployeeFamilyContainerFormData = {
   information:  {
-    family: AccountEmployeeFamilyFormData[];
+    employeeUid: string | null | undefined;
+    familyType: string | null | undefined;
+    fullName: string | null | undefined;
+    genderType: string | null | undefined;
+    birthPlace: string | null | undefined;
+    birthDate: string | null | undefined;
   }
 };
 
@@ -32,7 +28,7 @@ interface FormValueProps {
   formName: string;
 }
 
-export type AccountEmployeeFamilyContainerFormProps
+export type AccountEmployeeFamilyFormProps
   = InjectedFormProps<AccountEmployeeFamilyFormData, OwnProps>
   & FormValueProps
   & OwnProps;
