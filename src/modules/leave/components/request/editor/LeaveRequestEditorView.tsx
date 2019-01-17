@@ -37,7 +37,7 @@ export const LeaveRequestEditorView: React.SFC<RequestEditorProps> = props => {
       start: undefined,
       end: undefined,
       address: undefined,
-      contactNumber: '0',
+      contactNumber: undefined,
       reason: undefined,
     },
   };
