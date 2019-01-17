@@ -99,8 +99,8 @@
 
   "purchase.field.isNotify": "Notified Only",
   "purchase.field.isRejected": "Rejected Only",
-  "purchase.field.isNeedAdjust": "Adjustment Only",
-  "purchase.field.isSettlement": "Ready-To-Settle Only",
+  "purchase.field.isNeedAdjust": "Need for Adjustment Only",
+  "purchase.field.isSettlement": "Ready to Settle Only",
   "purchase.field.statusType": "Status",
   "purchase.field.completion": "Completion",
   
