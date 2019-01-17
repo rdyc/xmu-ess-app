@@ -210,6 +210,53 @@
   "account.education.field.start.placeholder": "Start Year",
   
   "account.education.field.end": "End Year",
-  "account.education.field.end.placeholder": "End Year"
+  "account.education.field.end.placeholder": "End Year",
+
+  "account.access.message.emptyProps": "Some props are empty",
+  "account.access.message.create.success": "New Employee Access Data has been created",
+  "account.access.message.create.failure": "Unable to process your submission",
+  "account.access.message.update.success": "Employee Access data has been updated",
+  "account.access.message.update.failure": "Unable to process your submission",
+
+  "account.access.dialog.create.title": "Add Access",
+  "account.access.dialog.create.subHeader": " ",
+ 
+  "account.access.dialog.modify.title": "Modify Access",
+  "account.access.dialog.modify.subHeader": " ",
+
+  "account.access.section.create.title": "Multi Access Company",
+
+  "account.access.field.uid": "Multi Access Company ID",
+
+  "account.access.field.companyUid": "Company",
+  "account.access.field.companyUid.required": "Company is required",
+  "account.access.field.companyUid.placeholder": "Please Select Company",
+
+  "account.access.field.positionUid": "Position",
+  "account.access.field.positionUid.required": "Position is required",
+  "account.access.field.positionUid.placeholder": "Please select Position",
+
+  "account.access.field.departmentType": "Department",
+  "account.access.field.departmentType.required": "Department is required",
+  "account.access.field.departmentType.placeholder": "Please Select Department",
+
+  "account.access.field.unitType": "Business Unit",
+  "account.access.field.unitType.required": "Business Unit is required",
+  "account.access.field.unitType.placeholder": "Please Select Business Unit",
+
+  "account.access.field.levelType": "Level",
+  "account.access.field.levelType.required": "Level is required",
+  "account.access.field.levelType.placeholder": "Please Select Level",
+
+  "account.access.field.roleUid": "Role",
+  "account.access.field.roleUid.required": "Role is required",
+  "account.access.field.roleUid.placeholder": "Please Select Role",
+
+  "account.access.field.start": "Start Date",
+  "account.access.field.start.required": "Start Date is required",
+  "account.access.field.start.placeholder": "Please Select Start Date",
+
+  "account.access.field.end": "End Date",
+  "account.access.field.end.placeholder": "Please Select End Date"
 
 }

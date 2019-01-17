@@ -1,13 +1,11 @@
-import { CommonCategory } from '@common/classes/types';
-import { isWithCompany, isWithParent } from '@common/helper';
 import { commonMessage } from '@common/locales/messages/commonMessage';
-import { Card, CardContent, CardHeader, Checkbox, FormControlLabel, TextField } from '@material-ui/core';
+import { Card, CardContent, CardHeader, Checkbox, FormControlLabel } from '@material-ui/core';
 import * as React from 'react';
 import { Field } from 'redux-form';
 import { AccountEmployeeAccessDetailFormProps } from './AccountEmployeeAccessDetailForm';
 
 export const AccountEmployeeAccessDetailFormView: React.SFC<AccountEmployeeAccessDetailFormProps> = props => {
-  const { intl, category } = props;
+  const { intl } = props;
   const { names } = props.context;
   
   const renderField = (name: string) => {
@@ -41,15 +39,6 @@ export const AccountEmployeeAccessDetailFormView: React.SFC<AccountEmployeeAcces
       );
     }
 
-    const useWithCompany = ['companyUid'];
-    if (!isWithCompany(category) && useWithCompany.indexOf(fieldName) !== -1) {
-      return null;
-    }
-    const useWithParent = ['parentCode'];
-    if (!isWithParent(category) && useWithParent.indexOf(fieldName) !== -1) {
-      return null;
-    }
-
     return (
       <Field
         key={fieldName}
@@ -66,15 +55,6 @@ export const AccountEmployeeAccessDetailFormView: React.SFC<AccountEmployeeAcces
         // subheader={intl.formatMessage(commonMessage.system.section.subTitle)}
       />
       <CardContent>
-        <TextField
-          fullWidth={true}
-          InputProps={{
-            disableUnderline: true,
-            readOnly: true
-          }}
-          label={props.intl.formatMessage(commonMessage.system.field.category)}
-          value={CommonCategory[category]}
-        />
         {names.map(name => renderField(name))}
       </CardContent>
     </Card>

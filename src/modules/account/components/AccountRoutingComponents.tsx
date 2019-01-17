@@ -9,6 +9,7 @@ import { AccountEmployeeEducation } from './detail/education/AccountEmployeeEduc
 import { AccountEmployeeExperience } from './detail/experience/AccountEmployeeExperience';
 import { AccountEmployeeFamily } from './detail/family/AccountEmployeeFamily';
 import { AccountEmployeeTraining } from './detail/training/AccountEmployeeTraining';
+import AccountEmployeeAccessEditor from './editor/AccountEmployeeAccessEditor';
 import { Editor } from './editor/Editor';
 import { AccountEmployeeList } from './list/AccountEmployeeList';
 import { AccountProfile } from './profile';
@@ -71,6 +72,7 @@ const employeeTraining = (props: RouteComponentProps) => (
 
 const employeeMultiAccess = (props: RouteComponentProps) => (
   <Switch>
+    <Route path={`${props.match.path}/form`} component={AccountEmployeeAccessEditor} />
     <Route path={`${props.match.path}`} component={AccountEmployeeAccess} />
   </Switch>
 );

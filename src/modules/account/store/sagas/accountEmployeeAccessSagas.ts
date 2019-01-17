@@ -11,6 +11,7 @@ import {
   accountEmployeeAccessGetByIdError,
   accountEmployeeAccessGetByIdRequest,
   accountEmployeeAccessGetByIdSuccess,
+  accountEmployeeAccessGetListDispose,
   accountEmployeeAccessGetListError,
   accountEmployeeAccessGetListRequest,
   accountEmployeeAccessGetListSuccess,
@@ -128,11 +129,12 @@ function* watchPostRequest() {
   const worker = (action: ReturnType<typeof accountEmployeeAccessPostRequest>) => {
     return saiyanSaga.fetch({
       method: 'post',
-      path: `/v1/account/employees/${action.payload.employeeUid}/educations`,
+      path: `/v1/account/employees/${action.payload.employeeUid}/access`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
         put(accountEmployeeAccessGetByIdDispose()),
         put(accountEmployeeAccessGetAllDispose()),
+        put(accountEmployeeAccessGetListDispose()),
         put(accountEmployeeAccessPostSuccess(response.body))
       ],
       successCallback: (response: IApiResponse) => {
@@ -175,11 +177,12 @@ function* watchPutRequest() {
   const worker = (action: ReturnType<typeof accountEmployeeAccessPutRequest>) => {
     return saiyanSaga.fetch({
       method: 'put',
-      path: `/v1/account/employees/${action.payload.employeeUid}/educations`,
+      path: `/v1/account/employees/${action.payload.employeeUid}/access`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
         put(accountEmployeeAccessGetByIdDispose()),
         put(accountEmployeeAccessGetAllDispose()),
+        put(accountEmployeeAccessGetListDispose()),
         put(accountEmployeeAccessPutSuccess(response.body))
       ],
       successCallback: (response: IApiResponse) => {
@@ -223,10 +226,11 @@ function* watchDeleteRequest() {
   const worker = (action: ReturnType<typeof accountEmployeeAccessDeleteRequest>) => {
     return saiyanSaga.fetch({
       method: 'delete',
-      path: `/v1/account/employees/${action.payload.employeeUid}/educations`,
+      path: `/v1/account/employees/${action.payload.employeeUid}/access`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
         put(accountEmployeeAccessGetAllDispose()),
+        put(accountEmployeeAccessGetListDispose()),
         put(accountEmployeeAccessDeleteSuccess(response.body)),
         put(accountEmployeeAccessGetAllRequest(response.body))
       ],

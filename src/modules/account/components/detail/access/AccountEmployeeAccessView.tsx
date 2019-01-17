@@ -9,13 +9,17 @@ import { layoutMessage } from '@layout/locales/messages';
 import { GlobalFormat } from '@layout/types';
 import {
   Fade,
+  IconButton,
+  Menu,
+  MenuItem,
   Paper,
   Table,
   TableBody,
-  TableCell,
+  TableCell, 
   TableHead,
   TableRow,
   Typography } from '@material-ui/core';
+import MoreVertIcon from '@material-ui/icons/MoreVert';
 import * as React from 'react';
 import { DetailPage } from '../DetailPage';
 import { AccountEmployeeAccessProps } from './AccountEmployeeAccess';
@@ -132,6 +136,25 @@ export const AccountEmployeeAccessView: React.SFC<AccountEmployeeAccessProps> = 
                     <TableCell>
                       {item.end && intl.formatDate(item.end, GlobalFormat.Date) || 'N/A'}
                     </TableCell>
+                    <TableCell>
+                      <IconButton
+                        id={`access-item-button-${index}`}
+                        color="inherit"
+                        aria-label="More"
+                        onClick={() => props.handleMenuOpen(item, index)}
+                      >
+                        <MoreVertIcon />
+                      </IconButton>
+                    </TableCell>
+                    <Menu
+                      anchorEl={document.getElementById(`access-item-button-${props.siteItemIndex}`)} 
+                      open={props.isOpenMenu}
+                      onClose={props.handleMenuClose}
+                    >
+                      <MenuItem onClick={() => props.history.push(`/account/employee/${props.match.params.employeeUid}/multiaccess/form`, { accessUid: item.uid })}>
+                        {props.intl.formatMessage(accountMessage.access.dialog.modifyTitle)}
+                      </MenuItem>
+                  </Menu>
                   </TableRow>
                 ))}
             </TableBody>

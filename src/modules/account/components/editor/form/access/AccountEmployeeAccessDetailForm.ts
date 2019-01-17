@@ -1,9 +1,11 @@
+import { accountMessage } from '@account/locales/messages/accountMessage';
 import { SelectSystem, SelectSystemOption } from '@common/components/select';
-import { parentTypeTranslator } from '@common/helper';
-import { commonMessage } from '@common/locales/messages/commonMessage';
 import { FormMode } from '@generic/types';
+import { InputDate } from '@layout/components/input/date';
 import { InputText } from '@layout/components/input/text';
 import { SelectLookupCompany } from '@lookup/components/company/select';
+import { SelectPosition } from '@lookup/components/position/select';
+import { SelectLookupRole } from '@lookup/components/role/select';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose, HandleCreators, withHandlers } from 'recompose';
 import { BaseFieldsProps } from 'redux-form';
@@ -12,7 +14,6 @@ import { AccountEmployeeAccessDetailFormView } from './AccountEmployeeDetailForm
 interface OwnProps {
   formMode: FormMode;
   context: BaseFieldsProps;
-  category: string;
 }
 
 interface OwnHandlers {
@@ -27,38 +28,70 @@ export type AccountEmployeeAccessDetailFormProps
 const handlerCreators: HandleCreators<AccountEmployeeAccessDetailFormProps, OwnHandlers> = {
     generateFieldProps: (props: AccountEmployeeAccessDetailFormProps) => (name: string) => { 
       const { 
-        intl, category
+        intl,
       } = props;
       
       const fieldName = name.replace('information.', '');
       
       let fieldProps: SelectSystemOption & any = {};
-
-      const selectType = parentTypeTranslator(category);
   
       switch (fieldName) {       
         case 'companyUid':
           fieldProps = {
-            label: intl.formatMessage(commonMessage.system.fieldFor(name, 'fieldName')),
-            placeholder: intl.formatMessage(commonMessage.system.fieldFor(name, 'fieldPlaceholder')),
+            label: intl.formatMessage(accountMessage.access.fieldFor(fieldName, 'fieldName')),
+            placeholder: intl.formatMessage(accountMessage.access.fieldFor(fieldName, 'fieldPlaceholder')),
             component: SelectLookupCompany
           };
           break;
 
-        case 'parentCode':
+        case 'departmentType':
           fieldProps = {
-            category: selectType,
-            label: intl.formatMessage(commonMessage.system.fieldFor(name, 'fieldName')),
-            placeholder: intl.formatMessage(commonMessage.system.fieldFor(name, 'fieldPlaceholder')),
+            category: 'department',
+            label: intl.formatMessage(accountMessage.access.fieldFor(fieldName, 'fieldName')),
+            placeholder: intl.formatMessage(accountMessage.access.fieldFor(fieldName, 'fieldPlaceholder')),
             component: SelectSystem
+          };
+          break;
+
+        case 'roleUid':
+          fieldProps = {
+            label: intl.formatMessage(accountMessage.access.fieldFor(fieldName, 'fieldName')),
+            placeholder: intl.formatMessage(accountMessage.access.fieldFor(fieldName, 'fieldPlaceholder')),
+            component: SelectLookupRole
+          };
+          break;
+
+        case 'positionUid':
+          fieldProps = {
+            label: intl.formatMessage(accountMessage.access.fieldFor(fieldName, 'fieldName')),
+            placeholder: intl.formatMessage(accountMessage.access.fieldFor(fieldName, 'fieldPlaceholder')),
+            component: SelectPosition
+          };
+          break;
+
+        case 'start': 
+          fieldProps = {
+            type: 'text',
+            label: intl.formatMessage(accountMessage.access.fieldFor(fieldName, 'fieldName')),
+            placeholder: intl.formatMessage(accountMessage.access.fieldFor(fieldName, 'fieldPlaceholder')),
+            component: InputDate
+          };
+          break;
+
+        case 'end': 
+          fieldProps = {
+            type: 'text',
+            label: intl.formatMessage(accountMessage.access.fieldFor(fieldName, 'fieldName')),
+            placeholder: intl.formatMessage(accountMessage.access.fieldFor(fieldName, 'fieldPlaceholder')),
+            component: InputDate
           };
           break;
         
         default:
           fieldProps = {
             type: 'text',
-            label: intl.formatMessage(commonMessage.system.fieldFor(name, 'fieldName')),
-            placeholder: intl.formatMessage(commonMessage.system.fieldFor(name, 'fieldPlaceholder')),
+            label: intl.formatMessage(accountMessage.access.fieldFor(fieldName, 'fieldName')),
+            placeholder: intl.formatMessage(accountMessage.access.fieldFor(fieldName, 'fieldPlaceholder')),
             component: InputText
           };
           break;

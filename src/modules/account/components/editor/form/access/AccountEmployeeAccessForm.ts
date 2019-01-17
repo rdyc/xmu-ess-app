@@ -10,9 +10,8 @@ export type AccountEmployeeAccessFormData = {
     companyUid: string | null | undefined;
     positionUid: string | null | undefined;
     roleUid: string | null | undefined;
-    employeeUid: string | null | undefined;
     unitType: string | null | undefined;
-    departementType: string | null | undefined;
+    departmentType: string | null | undefined;
     levelType: string | null | undefined;
     start: string | null | undefined;
     end: string | null | undefined;
@@ -21,7 +20,6 @@ export type AccountEmployeeAccessFormData = {
 
 interface OwnProps {
   formMode: FormMode;
-  category: string;
   submitDialogTitle: string;
   submitDialogContentText: string;
   submitDialogCancelText: string;

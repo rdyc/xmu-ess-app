@@ -1,4 +1,4 @@
-import { accountAccessMessage } from './accountAccessMessage';
+import { accountAccessDialog, accountAccessField, accountAccessFieldHelperFor, accountAccessMessage } from './accountAccessMessage';
 import { 
   accountEducationConfirm,
   accountEducationField,
@@ -36,6 +36,9 @@ export const accountMessage = {
     page: accountEducationPage
   },
   access: {
-    message: accountAccessMessage
+    message: accountAccessMessage,
+    dialog: accountAccessDialog,
+    field: accountAccessField,
+    fieldFor: accountAccessFieldHelperFor,
   },
 };

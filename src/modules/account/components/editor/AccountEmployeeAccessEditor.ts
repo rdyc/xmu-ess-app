@@ -1,6 +1,7 @@
+import { IEmployeeAccessPostPayload, IEmployeeAccessPutPayload } from '@account/classes/request/employeeAccess';
 import { WithAccountEmployeeAccess, withAccountEmployeeAccess } from '@account/hoc/withAccountEmployeeAccess';
+import { accountMessage } from '@account/locales/messages/accountMessage';
 import { ISystem } from '@common/classes/response';
-import { commonMessage } from '@common/locales/messages/commonMessage';
 import AppMenu from '@constants/AppMenu';
 import { FormMode } from '@generic/types';
 import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
@@ -35,12 +36,12 @@ interface OwnHandlers {
 }
 
 interface OwnRouteParams {
-  category: string;
+  employeeUid: string;
 }
 
 interface OwnState {
   formMode: FormMode;
-  id?: string | null;
+  accessUid?: string | null;
   submitDialogTitle: string;
   submitDialogContentText: string;
   submitDialogCancelText: string;
@@ -69,58 +70,64 @@ const handlerCreators: HandleCreators<AccountEmployeeAccessEditorProps, OwnHandl
     };
   
     const requiredFields = [
-      'name', 'description',
+      'companyUid', 'positionUid', 'roleUid', 'unitType', 'departmentType', 'levelType', 'start'
     ];
   
     requiredFields.forEach(field => {
       if (!formData.information[field] || isNullOrUndefined(formData.information[field])) {
-        errors.information[field] = props.intl.formatMessage(commonMessage.system.fieldFor(field, 'fieldRequired'));
+        errors.information[field] = props.intl.formatMessage(accountMessage.access.fieldFor(field, 'fieldRequired'));
       }
     });
     
     return errors;
   },
   handleSubmit: (props: AccountEmployeeAccessEditorProps) => (formData: AccountEmployeeAccessFormData) => { 
-    const { formMode, id, intl } = props;
+    const { formMode, accessUid, intl, match, location } = props;
     const { user } = props.userState;
-    // const { systemCreateRequest, systemUpdateRequest } = props.accountEmployeeAccessDispatch;
+    const { createRequest, updateRequest } = props.accountEmployeeAccessDispatch;
 
     if (!user) {
       return Promise.reject('user was not found');
     }
 
-    // const payload = {
-    //   ...formData.information,
-    // };
+    const postPayload = {
+      ...formData.information,
+      employeeUid: match.params.employeeUid,
+    };
 
     // creating
     if (formMode === FormMode.New) {
       return new Promise((resolve, reject) => {
-        // systemCreateRequest({
-        //   resolve, 
-        //   reject,
-        //   category: categoryTypeTranslator(props.match.params.category),
-        //   data: payload as ISystemPostPayload
-        // });
+        createRequest({
+          resolve, 
+          reject,
+          employeeUid: match.params.employeeUid,
+          data: postPayload as IEmployeeAccessPostPayload
+        });
       });
     }
 
     // update checking
-    if (!id) {
-      const message = intl.formatMessage(commonMessage.system.message.emptyProps);
+    if (!accessUid) {
+      const message = intl.formatMessage(accountMessage.access.message.emptyProps);
 
       return Promise.reject(message);
     }
 
+    const putPayload = {
+      ...formData.information,
+      employeeUid: match.params.employeeUid,
+      uid: location.state.accessUid,
+    };
+
     if (formMode === FormMode.Edit) {
       return new Promise((resolve, reject) => {
-        // systemUpdateRequest({
-        //   resolve, 
-        //   reject,
-        //   id,
-        //   category: categoryTypeTranslator(props.match.params.category),
-        //   data: payload as ISystemPutPayload, 
-        // });
+        updateRequest({
+          resolve, 
+          reject,
+          employeeUid: match.params.employeeUid,
+          data: putPayload as IEmployeeAccessPutPayload, 
+        });
       });
     }
 
@@ -129,17 +136,17 @@ const handlerCreators: HandleCreators<AccountEmployeeAccessEditorProps, OwnHandl
   handleSubmitSuccess: (props: AccountEmployeeAccessEditorProps) => (response: ISystem) => {
     const { formMode, intl, history } = props;
     const { alertAdd } = props.layoutDispatch;
-    // const { systemDetailDispose } = props.commonDispatch;
+    const { loadDetailDispose } = props.accountEmployeeAccessDispatch;
     
     let message: string = '';
-    // systemDetailDispose();
+    loadDetailDispose();
 
     if (formMode === FormMode.New) {
-      message = intl.formatMessage(commonMessage.system.message.createSuccess, { uid: response.type });
+      message = intl.formatMessage(accountMessage.access.message.createSuccess, { uid: response.type });
     }
 
     if (formMode === FormMode.Edit) {
-      message = intl.formatMessage(commonMessage.system.message.updateSuccess, { uid: response.type });
+      message = intl.formatMessage(accountMessage.access.message.updateSuccess, { uid: response.type });
     }
 
     alertAdd({
@@ -147,7 +154,7 @@ const handlerCreators: HandleCreators<AccountEmployeeAccessEditorProps, OwnHandl
       time: new Date()
     });
 
-    history.push(`/common/system/${props.match.params.category}/${response.id}`);
+    history.push(`/account/employee/${props.match.params.employeeUid}/multiaccess`);
   },
   handleSubmitFail: (props: AccountEmployeeAccessEditorProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
     const { formMode, intl } = props;
@@ -164,11 +171,11 @@ const handlerCreators: HandleCreators<AccountEmployeeAccessEditorProps, OwnHandl
       let message: string = '';
 
       if (formMode === FormMode.New) {
-        message = intl.formatMessage(commonMessage.system.message.createFailure);
+        message = intl.formatMessage(accountMessage.access.message.createFailure);
       }
 
       if (formMode === FormMode.Edit) {
-        message = intl.formatMessage(commonMessage.system.message.updateFailure);
+        message = intl.formatMessage(accountMessage.access.message.updateFailure);
       }
 
       alertAdd({
@@ -185,9 +192,9 @@ const createProps: mapper<AccountEmployeeAccessEditorProps, OwnState> = (props: 
 
   return {
     formMode: FormMode.New,
-    id: location.state && location.state.id || '',
-    submitDialogTitle: props.intl.formatMessage(commonMessage.system.dialog.createTitle),
-    submitDialogContentText: props.intl.formatMessage(commonMessage.system.dialog.createDescription),
+    accessUid: location.state && location.state.accessUid || '',
+    submitDialogTitle: props.intl.formatMessage(accountMessage.access.dialog.createTitle),
+    submitDialogContentText: props.intl.formatMessage(accountMessage.access.dialog.createDescription),
     submitDialogCancelText: props.intl.formatMessage(layoutMessage.action.cancel),
     submitDialogConfirmedText: props.intl.formatMessage(layoutMessage.action.ok),
   };
@@ -203,12 +210,11 @@ const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
 const lifecycles: ReactLifeCycleFunctions<AccountEmployeeAccessEditorProps, {}> = {
   componentDidMount() {
     const { layoutDispatch, intl, history, stateUpdate } = this.props;
-    // const { systemDetailRequest } = this.props.commonDispatch;
+    const { loadDetailRequest } = this.props.accountEmployeeAccessDispatch;
     const { user } = this.props.userState;
     
     const view = {
-      title: intl.formatMessage(commonMessage.system.page.createTitle),
-      subTitle: intl.formatMessage(commonMessage.system.page.createSubTitle),
+      title: intl.formatMessage(accountMessage.access.dialog.createTitle),
     };
 
     if (!user) {
@@ -216,27 +222,26 @@ const lifecycles: ReactLifeCycleFunctions<AccountEmployeeAccessEditorProps, {}> 
     }
 
     if (!isNullOrUndefined(history.location.state)) {
-      view.title = intl.formatMessage(commonMessage.system.page.editTitle);
-      view.subTitle = intl.formatMessage(commonMessage.system.page.editSubTitle);
+      view.title = intl.formatMessage(accountMessage.access.dialog.modifyTitle);
 
       stateUpdate({ 
         formMode: FormMode.Edit,
       });
 
-      // systemDetailRequest({
-      //   category: categoryTypeTranslator(this.props.match.params.category),
-      //   id: this.props.location.state.id
-      // });
+      loadDetailRequest({
+        employeeUid: this.props.match.params.employeeUid,
+        accessUid: this.props.location.state.accessUid
+      });
     }
 
     layoutDispatch.setupView({
       view: {
-        uid: AppMenu.Common,
+        uid: AppMenu.Account,
         parentUid: AppMenu.Lookup,
         title: intl.formatMessage({id: view.title}),
-        subTitle : intl.formatMessage({id: view.subTitle})
+        subTitle : ' '
       },
-      parentUrl: `/common/system/${this.props.match.params.category}`,
+      parentUrl: `/account/employee/${this.props.match.params.employeeUid}/multiaccess`,
       status: {
         isNavBackVisible: true,
         isSearchVisible: false,
@@ -248,6 +253,7 @@ const lifecycles: ReactLifeCycleFunctions<AccountEmployeeAccessEditorProps, {}> 
   },
   componentWillUnmount() {
     const { layoutDispatch, appBarDispatch } = this.props;
+    const { createDispose, updateDispose } = this.props.accountEmployeeAccessDispatch;
 
     layoutDispatch.changeView(null);
     layoutDispatch.navBackHide();
@@ -255,8 +261,8 @@ const lifecycles: ReactLifeCycleFunctions<AccountEmployeeAccessEditorProps, {}> 
 
     appBarDispatch.dispose();
 
-    // commonDispatch.systemCreateDispose();
-    // commonDispatch.systemUpdateDispose();
+    createDispose();
+    updateDispose();
   }
 };
 
