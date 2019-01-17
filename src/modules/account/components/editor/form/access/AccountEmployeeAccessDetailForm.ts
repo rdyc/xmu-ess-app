@@ -9,11 +9,13 @@ import { SelectLookupRole } from '@lookup/components/role/select';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose, HandleCreators, withHandlers } from 'recompose';
 import { BaseFieldsProps } from 'redux-form';
+import { isNullOrUndefined } from 'util';
 import { AccountEmployeeAccessDetailFormView } from './AccountEmployeeDetailFormView';
 
 interface OwnProps {
   formMode: FormMode;
   context: BaseFieldsProps;
+  companyUidValue: string | null | undefined;
 }
 
 interface OwnHandlers {
@@ -28,10 +30,14 @@ export type AccountEmployeeAccessDetailFormProps
 const handlerCreators: HandleCreators<AccountEmployeeAccessDetailFormProps, OwnHandlers> = {
     generateFieldProps: (props: AccountEmployeeAccessDetailFormProps) => (name: string) => { 
       const { 
-        intl,
+        intl, companyUidValue
       } = props;
       
       const fieldName = name.replace('information.', '');
+
+      const byCompanyFilter: any = {
+        companyUid: companyUidValue,
+      };
       
       let fieldProps: SelectSystemOption & any = {};
   
@@ -44,9 +50,31 @@ const handlerCreators: HandleCreators<AccountEmployeeAccessDetailFormProps, OwnH
           };
           break;
 
+        case 'unitType':
+          fieldProps = {
+            category: 'unit',
+            label: intl.formatMessage(accountMessage.access.fieldFor(fieldName, 'fieldName')),
+            placeholder: intl.formatMessage(accountMessage.access.fieldFor(fieldName, 'fieldPlaceholder')),
+            companyUid: companyUidValue,
+            disabled: isNullOrUndefined(companyUidValue),
+            component: SelectSystem
+          };
+          break;
+
         case 'departmentType':
           fieldProps = {
             category: 'department',
+            label: intl.formatMessage(accountMessage.access.fieldFor(fieldName, 'fieldName')),
+            placeholder: intl.formatMessage(accountMessage.access.fieldFor(fieldName, 'fieldPlaceholder')),
+            companyUid: companyUidValue,
+            disabled: isNullOrUndefined(companyUidValue),
+            component: SelectSystem
+          };
+          break;
+
+        case 'levelType':
+          fieldProps = {
+            category: 'level',
             label: intl.formatMessage(accountMessage.access.fieldFor(fieldName, 'fieldName')),
             placeholder: intl.formatMessage(accountMessage.access.fieldFor(fieldName, 'fieldPlaceholder')),
             component: SelectSystem
@@ -57,6 +85,8 @@ const handlerCreators: HandleCreators<AccountEmployeeAccessDetailFormProps, OwnH
           fieldProps = {
             label: intl.formatMessage(accountMessage.access.fieldFor(fieldName, 'fieldName')),
             placeholder: intl.formatMessage(accountMessage.access.fieldFor(fieldName, 'fieldPlaceholder')),
+            filter: byCompanyFilter,
+            disabled: isNullOrUndefined(companyUidValue),
             component: SelectLookupRole
           };
           break;
@@ -65,6 +95,8 @@ const handlerCreators: HandleCreators<AccountEmployeeAccessDetailFormProps, OwnH
           fieldProps = {
             label: intl.formatMessage(accountMessage.access.fieldFor(fieldName, 'fieldName')),
             placeholder: intl.formatMessage(accountMessage.access.fieldFor(fieldName, 'fieldPlaceholder')),
+            filter: byCompanyFilter,
+            disabled: isNullOrUndefined(companyUidValue),
             component: SelectPosition
           };
           break;

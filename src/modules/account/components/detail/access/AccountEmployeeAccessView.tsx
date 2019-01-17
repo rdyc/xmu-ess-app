@@ -48,7 +48,14 @@ const config: SingleConfig<IEmployeeExperienceList, AccountEmployeeAccessProps> 
       enabled: true,
       visible: true,
       onClick: () => callback.handleForceReload()
-    }
+    },
+    {
+      id: AccountEmployeeUserAction.Create,
+      name: props.intl.formatMessage(layoutMessage.action.create),
+      enabled: true,
+      visible: true,
+      onClick: () => props.history.push(`/account/employee/${props.match.params.employeeUid}/multiaccess/form`)
+    },
   ]),
 
   // events
@@ -106,6 +113,7 @@ export const AccountEmployeeAccessView: React.SFC<AccountEmployeeAccessProps> = 
                     {headerIdx.name}
                   </TableCell>
                 ))}
+                <TableCell></TableCell>
               </TableRow>
             </TableHead>
             <TableBody>

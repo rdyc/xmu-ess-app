@@ -1,6 +1,6 @@
 import { FormMode } from '@generic/types';
 import { connect } from 'react-redux';
-import {  InjectedFormProps, reduxForm } from 'redux-form';
+import {  formValueSelector, InjectedFormProps, reduxForm } from 'redux-form';
 import { AccountEmployeeAccessFormView } from './AccountEmployeeAccessFormView';
 
 const formName = 'AccountEmployeeAccessForm';
@@ -27,6 +27,7 @@ interface OwnProps {
 }
 
 interface FormValueProps {
+  companyUidValue: string | undefined;
   formName: string;
 }
 
@@ -34,10 +35,15 @@ export type AccountEmployeeAccessFormProps
   = InjectedFormProps<AccountEmployeeAccessFormData, OwnProps> 
   & FormValueProps
   & OwnProps;
+
+const selector = formValueSelector(formName);
   
-const mapStateToProps = (): FormValueProps => {
+const mapStateToProps = (state: any): FormValueProps => {
+  const companyUid = selector(state, 'information.companyUid');
+
   return {
-    formName
+    formName,
+    companyUidValue: companyUid
   };
 };
 
