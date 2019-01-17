@@ -1,5 +1,6 @@
 import { layoutAlertAdd } from '@layout/store/actions';
 import {
+  projectRegistrationGetByIdDispose,
   ProjectSiteAction as Action,
   projectSiteDeleteError,
   projectSiteDeleteRequest,
@@ -64,6 +65,7 @@ function* watchPostRequest() {
       path: `/v1/project/sites/${action.payload.companyUid}/${action.payload.projectUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
+        put(projectRegistrationGetByIdDispose()),
         put(projectSiteGetDispose()),
         put(projectSitePostSuccess(response.body))
       ],
@@ -110,6 +112,7 @@ function* watchPutRequest() {
       path: `/v1/project/sites/${action.payload.companyUid}/${action.payload.projectUid}/${action.payload.siteUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
+        put(projectRegistrationGetByIdDispose()),
         put(projectSiteGetDispose()),
         put(projectSitePutSuccess(response.body))
       ],
@@ -156,6 +159,7 @@ function* watchDeleteRequest() {
       method: 'delete',
       path: `/v1/project/sites/${action.payload.companyUid}/${action.payload.projectUid}/${action.payload.siteUid}`,
       successEffects: (response: IApiResponse) => [
+        put(projectRegistrationGetByIdDispose()),
         put(projectSiteGetDispose()),
         put(projectSiteDeleteSuccess(response.body))
       ],

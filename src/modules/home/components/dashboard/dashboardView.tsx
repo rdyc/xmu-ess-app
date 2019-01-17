@@ -49,11 +49,7 @@ const stepperSources = [
 
 export const dashboardView: React.SFC<DashboardProps> = props => (
   <React.Fragment>
-    <Chart />
-    
-    <Stepper source={stepperSources} />
-
-    <div>
+    <div className={props.classes.marginFarBottom}>
       <div className={props.classes.forceRight}>
         <IconButton onClick={() => props.handleSyncClick()}>
           <SyncIcon />
@@ -179,5 +175,8 @@ export const dashboardView: React.SFC<DashboardProps> = props => (
       }    
     </div>
 
+    <Chart />
+    
+    <Stepper source={stepperSources} />
   </React.Fragment>
 );
