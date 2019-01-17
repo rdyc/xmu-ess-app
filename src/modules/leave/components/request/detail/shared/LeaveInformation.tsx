@@ -1,9 +1,11 @@
+import { layoutMessage } from '@layout/locales/messages';
 import { GlobalFormat } from '@layout/types';
 import { GlobalStyle } from '@layout/types/GlobalStyle';
 import { ILeaveDetail } from '@leave/classes/response';
+import { leaveMessage } from '@leave/locales/messages/leaveMessage';
 import { Card, CardContent, CardHeader, TextField } from '@material-ui/core';
 import * as React from 'react';
-import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
+import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose } from 'recompose';
 
 interface OwnProps {
@@ -17,78 +19,82 @@ type AllProps
 const leaveInformation: React.SFC<AllProps> = props => {
   const { data } = props;
 
-  // const styled = {
-  //   fullWidth: true,
-  //   InputProps: {
-  //     disableUnderline: true,
-  //     readOnly: true
-  //   }
-  // };
-
   const render = (
     <Card square>
-      <CardHeader 
-        title={<FormattedMessage id="leave.infoTitle"/>}
-        // subheader={<FormattedMessage id="leave.infoSubTitle" />}
+      <CardHeader
+        title={props.intl.formatMessage(leaveMessage.request.section.infoTitle)}
+      // subheader={<FormattedMessage id="leave.infoSubTitle" />}
       />
       <CardContent>
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
-          margin="normal"
-          label={<FormattedMessage id="leave.field.information.uid" />}
-          value={data.uid}
+          label={props.intl.formatMessage(leaveMessage.request.field.uid)}
+          value={props.data.uid}
         />
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
-          margin="normal"
-          label={<FormattedMessage id="leave.field.information.status" />}
-          value={data.status ? data.status.value : 'N/A'}
+          label={props.intl.formatMessage(leaveMessage.request.field.statusType)}
+          value={props.data.status ? props.data.status.value : 'N/A'}
         />
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
-          margin="normal"
-          label={<FormattedMessage id="leave.field.information.leaveType" />}
-          value={data.leave ? data.leave.value : 'N/A'}
+          label={props.intl.formatMessage(leaveMessage.request.field.leaveType)}
+          value={props.data.leave ? props.data.leave.value : 'N/A'}
         />
         {data.regular && data.regular.leave && data.regular.leave.name ?
-        <TextField
-        {...GlobalStyle.TextField.ReadOnly}
-          hidden 
-          margin="normal"
-          label={<FormattedMessage id="leave.field.information.regularType" />}
-          value={data.regular ? data.regular.leave ? data.regular.leave.name : 'N/A' : 'N/A'}
+          <TextField
+            {...GlobalStyle.TextField.ReadOnly}
+            hidden
+          label={props.intl.formatMessage(leaveMessage.request.field.regularType)}
+          value={props.data.regular ? props.data.regular.leave ? props.data.regular.leave.name : 'N/A' : 'N/A'}
         /> : null}
 
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
-          margin="normal"
-          label={<FormattedMessage id="leave.field.information.start" />}
+          label={props.intl.formatMessage(leaveMessage.request.field.start)}
           value={props.intl.formatDate(props.data.start, GlobalFormat.Date)}
         />
         <TextField
-        {...GlobalStyle.TextField.ReadOnly}
-          margin="normal"
-          label={<FormattedMessage id="leave.field.information.end" />}
+          {...GlobalStyle.TextField.ReadOnly}
+          label={props.intl.formatMessage(leaveMessage.request.field.end)}
           value={props.intl.formatDate(props.data.end, GlobalFormat.Date)}
         />
         <TextField
-        {...GlobalStyle.TextField.ReadOnly}
-          margin="normal"
-          label={<FormattedMessage id="leave.field.information.address" />}
-          value={data.address}
+          {...GlobalStyle.TextField.ReadOnly}
+          label={props.intl.formatMessage(leaveMessage.request.field.address)}
+          value={props.data.address}
         />
         <TextField
-        {...GlobalStyle.TextField.ReadOnly}
-          margin="normal"
-          label={<FormattedMessage id="leave.field.information.contactNumber" />}
-          value={data.contactNumber}
+          {...GlobalStyle.TextField.ReadOnly}
+          label={props.intl.formatMessage(leaveMessage.request.field.contactNumber)}
+          value={props.data.contactNumber}
         />
         <TextField
-        {...GlobalStyle.TextField.ReadOnly}
-          margin="normal"
-          label={<FormattedMessage id="leave.field.information.reason" />}
-          value={data.reason}
+          {...GlobalStyle.TextField.ReadOnly}
+          label={props.intl.formatMessage(leaveMessage.request.field.reason)}
+          value={props.data.reason}
         />
+        {
+          props.data.changes &&
+          <React.Fragment>
+            <TextField
+              {...GlobalStyle.TextField.ReadOnly}
+              label={props.intl.formatMessage(layoutMessage.field.createdBy)}
+              value={props.data.changes.created && props.data.changes.created.fullName || 'N/A'}
+              helperText={props.intl.formatDate(props.data.changes.createdAt, GlobalFormat.DateTime) || 'N/A'}
+            />
+
+            {
+              (props.data.changes.updated && props.data.changes.updatedAt) &&
+              <TextField
+                {...GlobalStyle.TextField.ReadOnly}
+                label={props.intl.formatMessage(layoutMessage.field.updatedBy)}
+                value={props.data.changes.updated.fullName || 'N/A'}
+                helperText={props.intl.formatDate(props.data.changes.updatedAt, GlobalFormat.DateTime) || 'N/A'}
+              />
+            }
+          </React.Fragment>
+        }
       </CardContent>
     </Card>
   );

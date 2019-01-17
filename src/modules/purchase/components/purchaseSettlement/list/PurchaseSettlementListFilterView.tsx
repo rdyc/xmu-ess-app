@@ -1,4 +1,5 @@
 import { LookupSystemDialog } from '@common/components/dialog/lookupSystemDialog/LookupSystemDialog';
+import { ModuleDefinition } from '@layout/helper/redirector';
 import { layoutMessage } from '@layout/locales/messages';
 import { LookupCustomerDialog } from '@lookup/components/customer/dialog';
 import {
@@ -19,11 +20,9 @@ import {
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import CloseIcon from '@material-ui/icons/Close';
 import ClearIcon from '@material-ui/icons/SettingsBackupRestore';
+import { ProjectRegistrationDialog } from '@project/components/dialog/project';
 import { purchaseMessage } from '@purchase/locales/messages/purchaseMessage';
 import * as React from 'react';
-
-import { ModuleDefinition } from '@layout/helper/redirector';
-import { ProjectRegistrationDialog } from '@project/components/dialog/project';
 import { PurchaseSettlementListFilterProps } from './PurchaseSettlementListFilter';
 
 export const PurchaseSettlementListFilterView: React.SFC<PurchaseSettlementListFilterProps> = props => (
@@ -83,7 +82,7 @@ export const PurchaseSettlementListFilterView: React.SFC<PurchaseSettlementListF
           </ListItemSecondaryAction>
         </ListItem>
         <Divider />
-        <ListItem button onClick={props.filterCustomer && props.handleFilterProjectVisibility}>
+          <ListItem button onClick={props.filterCustomer && props.handleFilterProjectVisibility} disabled={!props.filterCustomer}>
           <ListItemText
             primary={props.intl.formatMessage(purchaseMessage.request.field.projectUid)}
             secondary={props.filterProject && props.filterProject.name || props.intl.formatMessage(layoutMessage.text.none)}
@@ -96,7 +95,7 @@ export const PurchaseSettlementListFilterView: React.SFC<PurchaseSettlementListF
               </IconButton>
             }
 
-            <IconButton disabled={props.filterCustomer === null} onClick={props.filterCustomer && props.handleFilterProjectVisibility}>
+              <IconButton disabled={!props.filterCustomer} onClick={props.filterCustomer && props.handleFilterProjectVisibility}>
               <ChevronRightIcon />
             </IconButton>
           </ListItemSecondaryAction>
