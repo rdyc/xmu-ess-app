@@ -61,8 +61,8 @@ export const accountAccessView: React.SFC<AccessSwitcherProps> = props => (
                 </Typography>
               </ExpansionPanelSummary>
 
-              <ExpansionPanelDetails style={{padding: 0}}>
-                <List component="div" disablePadding style={{width: '100%'}}>
+              <ExpansionPanelDetails className={props.classes.accessItem}>
+                <List disablePadding style={{width: '100%'}}>
                   {
                     props.accountEmployeeMyState.detail.response &&
                     props.accountEmployeeMyState.detail.response.data &&
@@ -73,15 +73,15 @@ export const accountAccessView: React.SFC<AccessSwitcherProps> = props => (
                         <div key={item.uid} >
                           <Divider/>
                           <ListItem
-                            button 
-                            component="div"
+                            button
                             onClick={() => props.handleSelected(item.uid)}
                           >
                             <ListItemText
                               primary={item.position && item.position.name}
                               primaryTypographyProps={{
                                 noWrap: true,
-                                variant: 'body2'
+                                variant: 'body2',
+                                color: 'inherit'
                               }}
                             />
                           </ListItem> 

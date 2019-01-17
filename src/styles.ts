@@ -9,8 +9,8 @@ import NavHeader from './image/headers/sm/0.svg';
 import AchievementIcon from './image/icons/achievement.png';
 import EventIcon from './image/icons/event.png';
 import NewsIcon from './image/icons/news.png';
-import EquineLogo from './image/logo/equine-logo.png';
-import TessaLogo from './image/logo/tessa-logo.png';
+import EquineLogo from './image/logo/etg.svg';
+import TessaLogo from './image/logo/tessa.svg';
 
 // import sidebar from './image/sidebar/satrio-tower.jpg';
 const drawerWidth = 300;
@@ -32,7 +32,7 @@ const styles = (theme: Theme) =>
 
     /* LOGOS */
     logoEquine: {
-      height: 150,
+      height: 70,
       backgroundImage: `url("${EquineLogo}")`,
       backgroundRepeat: 'no-repeat',
       backgroundPosition: 'center'
@@ -146,6 +146,10 @@ const styles = (theme: Theme) =>
       padding: theme.spacing.unit * 3,
       color: '#FFF',
       display: 'flex',
+    },
+    accessItem: {
+      padding: 0,
+      color: lightBlue[500],
     },
 
     // Application Bar
