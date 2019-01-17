@@ -76,14 +76,14 @@ export const PurchaseRequestListFilterView: React.SFC<PurchaseRequestListFilterP
               </IconButton> 
             }
 
-            <IconButton disabled>
+              <IconButton onClick={props.handleFilterCustomerVisibility}>
               <ChevronRightIcon />
             </IconButton> 
           </ListItemSecondaryAction>
         </ListItem>
         <Divider />
 
-        <ListItem button onClick={props.filterCustomer && props.handleFilterProjectVisibility}>
+          <ListItem button onClick={props.filterCustomer && props.handleFilterProjectVisibility} disabled={!props.filterCustomer}>
           <ListItemText 
             primary={props.intl.formatMessage(purchaseMessage.request.field.projectUid)}
             secondary={props.filterProject && props.filterProject.name || props.intl.formatMessage(layoutMessage.text.none)}
@@ -96,7 +96,7 @@ export const PurchaseRequestListFilterView: React.SFC<PurchaseRequestListFilterP
               </IconButton> 
             }
 
-            <IconButton onClick={props.filterCustomer && props.handleFilterProjectVisibility}>
+              <IconButton onClick={props.filterCustomer && props.handleFilterProjectVisibility} disabled={!props.filterCustomer}>
               <ChevronRightIcon />
             </IconButton> 
           </ListItemSecondaryAction>
@@ -116,7 +116,7 @@ export const PurchaseRequestListFilterView: React.SFC<PurchaseRequestListFilterP
               </IconButton> 
             }
 
-            <IconButton disabled>
+              <IconButton onClick={props.handleFilterStatusVisibility}>
               <ChevronRightIcon />
             </IconButton> 
           </ListItemSecondaryAction>

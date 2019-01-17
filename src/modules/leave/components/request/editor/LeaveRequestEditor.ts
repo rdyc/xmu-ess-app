@@ -84,7 +84,7 @@ const handlerCreators: HandleCreators<RequestEditorProps, OwnHandlers> = {
 
     requiredFields.forEach(field => {
       if (!formData.information[field] || isNullOrUndefined(formData.information[field])) {
-        errors.information[field] = props.intl.formatMessage({id: `leave.field.information.${field}.required`});
+        errors.information[field] = props.intl.formatMessage(leaveMessage.request.fieldFor(field, 'fieldRequired'));
       }
     });
     
@@ -145,11 +145,11 @@ const handlerCreators: HandleCreators<RequestEditorProps, OwnHandlers> = {
     let message: string = '';
 
     if (formMode === FormMode.New) {
-      message = intl.formatMessage(leaveRequestMessage.createSuccess, { uid: response.uid });
+      message = intl.formatMessage(leaveMessage.request.message.createSuccess, { uid: response.uid });
     }
 
     if (formMode === FormMode.Edit) {
-      message = intl.formatMessage(leaveRequestMessage.updateSuccess, { uid: response.uid });
+      message = intl.formatMessage(leaveMessage.request.message.updateSuccess, { uid: response.uid });
     }
 
     alertAdd({
@@ -174,11 +174,11 @@ const handlerCreators: HandleCreators<RequestEditorProps, OwnHandlers> = {
       let message: string = '';
 
       if (formMode === FormMode.New) {
-        message = intl.formatMessage(leaveRequestMessage.createFailure);
+        message = intl.formatMessage(leaveMessage.request.message.createFailure);
       }
 
       if (formMode === FormMode.Edit) {
-        message = intl.formatMessage(leaveRequestMessage.updateFailure);
+        message = intl.formatMessage(leaveMessage.request.message.updateFailure);
       }
 
       alertAdd({
@@ -212,8 +212,8 @@ const lifecycles: ReactLifeCycleFunctions<RequestEditorProps, {}> = {
     const { user } = this.props.userState;
     
     const view = {
-      title: 'leave.form.newTitle',
-      subTitle: 'leave.form.newSubTitle',
+      title: leaveMessage.request.page.newTitle,
+      subTitle: leaveMessage.request.page.newSubHeader,
     };
 
     if (!user) {
@@ -226,8 +226,8 @@ const lifecycles: ReactLifeCycleFunctions<RequestEditorProps, {}> = {
     });
 
     if (!isNullOrUndefined(history.location.state)) {
-      view.title = 'leave.form.editTitle';
-      view.subTitle = 'leave.form.editSubTitle';
+      view.title = leaveMessage.request.page.modifyTitle;
+      view.subTitle = leaveMessage.request.page.modifySubHeader;
 
       stateUpdate({ 
         formMode: FormMode.Edit,
@@ -246,8 +246,8 @@ const lifecycles: ReactLifeCycleFunctions<RequestEditorProps, {}> = {
     layoutDispatch.changeView({
       uid: AppMenu.LeaveRequest,
       parentUid: AppMenu.Leave,
-      title: intl.formatMessage({id: view.title}),
-      subTitle : intl.formatMessage({id: view.subTitle})
+      title: intl.formatMessage(view.title),
+      subTitle : intl.formatMessage(view.subTitle)
     });
 
     layoutDispatch.navBackShow(); 

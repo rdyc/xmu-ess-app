@@ -1,8 +1,10 @@
 import { createStyles, Theme } from '@material-ui/core';
 import blue from '@material-ui/core/colors/blue';
+import lightBlue from '@material-ui/core/colors/lightBlue';
 import red from '@material-ui/core/colors/red';
-// import sidebar from './image/sidebar/satrio-tower.jpg';
-import Background from './image/background/1.png';
+
+import Background1 from './image/background/1.png';
+import Background2 from './image/background/2.png';
 import NavHeader from './image/headers/sm/0.svg';
 import AchievementIcon from './image/icons/achievement.png';
 import EventIcon from './image/icons/event.png';
@@ -10,6 +12,7 @@ import NewsIcon from './image/icons/news.png';
 import EquineLogo from './image/logo/equine-logo.png';
 import TessaLogo from './image/logo/tessa-logo.png';
 
+// import sidebar from './image/sidebar/satrio-tower.jpg';
 const drawerWidth = 300;
 
 const size = {
@@ -80,7 +83,7 @@ const styles = (theme: Theme) =>
     },
     heroUnit: {
       backgroundColor: '#333',
-      backgroundImage: `url("${Background}")`,
+      backgroundImage: `url("${Background1}")`,
       backgroundSize: 'cover',
       height: '100vh',
       maxHeight: '1600px',
@@ -125,6 +128,24 @@ const styles = (theme: Theme) =>
       [theme.breakpoints.down('md')]: {
         maxWidth: window.outerWidth
       }
+    },
+
+    /* ACCESS */
+    accessContainer: {
+      backgroundColor: '#333',
+      backgroundImage: `url("${Background2}")`,
+      backgroundSize: 'cover',
+      height: '100vh',
+      display: 'flex',
+      position: 'relative',
+      alignItems: 'center',
+      overflow: 'hidden'
+    },
+    accessContent: {
+      backgroundColor: lightBlue[500],
+      padding: theme.spacing.unit * 3,
+      color: '#FFF',
+      display: 'flex',
     },
 
     // Application Bar
@@ -445,7 +466,21 @@ const styles = (theme: Theme) =>
     paddingFarRight: { paddingRight: theme.spacing.unit * size.far },
     paddingFarBottom: { paddingBottom: theme.spacing.unit * size.far },
 
+    /* background colors */
+    backgroundColorPrimary: { 
+      backgroundColor: theme.palette.primary.main
+    },
+    backgroundColorSecondary: { 
+      backgroundColor: theme.palette.secondary.main
+    },
+
     /* colors */
+    colorPrimary: { 
+      color: theme.palette.primary.main
+    },
+    colorSecondary: { 
+      color: theme.palette.secondary.main
+    },
     colorRed: { color: red['500'] },
 
     /* text */

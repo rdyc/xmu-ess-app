@@ -237,7 +237,7 @@
   "project.acceptance.section.approval.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
 
   "project.acceptance.confirm.approval.title": "Assignment Acceptance Submission",
-  "project.acceptance.confirm.approval.content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "project.acceptance.confirm.approval.content": "You are about to submit assignment acceptance, Do you want to continue?",
 
   "project.acceptance.message.approval.success": "Your assignment acceptance has been submitted.",
   "project.acceptance.message.approval.failure": "Unable to process your submission"
