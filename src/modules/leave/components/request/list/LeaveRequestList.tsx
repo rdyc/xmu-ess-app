@@ -10,7 +10,6 @@ import { leaveMessage } from '@leave/locales/messages/leaveMessage';
 import { Button } from '@material-ui/core';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import TuneIcon from '@material-ui/icons/Tune';
-import { isRequestEditable } from '@organization/helper/isRequestEditable';
 import * as moment from 'moment';
 import * as React from 'react';
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
@@ -29,6 +28,7 @@ import {
   withStateHandlers,
 } from 'recompose';
 
+import { isLeaveRequestEditable } from '@organization/helper/isLeaveRequestEditable';
 import { ILeaveRequestListFilterResult, LeaveRequestListFilter } from './LeaveRequestListFilter';
 
 interface IOwnOption {
@@ -215,7 +215,7 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
       actionComponent: (item: ILeave, callback: ListHandler) => (
         <React.Fragment>
           {
-            isRequestEditable(item.statusType) &&
+            isLeaveRequestEditable(item.statusType) &&
             <Button 
               size="small"
               onClick={() => this.props.history.push(`/leave/requests/form`, { uid: item.uid })}

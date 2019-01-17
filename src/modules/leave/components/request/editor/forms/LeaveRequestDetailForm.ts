@@ -1,9 +1,9 @@
 import { SelectSystem, SelectSystemOption } from '@common/components/select';
 import { FormMode } from '@generic/types';
 import { InputDateLeave } from '@layout/components/input/date';
-import { InputContactNumber } from '@layout/components/input/number';
 import { InputText } from '@layout/components/input/text';
 import { LeaveRequestDetailFormView } from '@leave/components/request/editor/forms/LeaveRequestDetailFormView';
+import { leaveMessage } from '@leave/locales/messages/leaveMessage';
 import { InputLeave } from '@lookup/components/leave/input';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose, HandleCreators, withHandlers } from 'recompose';
@@ -41,7 +41,8 @@ const handlerCreators: HandleCreators<RequestDetailFormProps, OwnHandlers> = {
       case 'uid':
         fieldProps = {
           disabled: true,
-          placeholder: intl.formatMessage({id: `leave.field.${name}.placeholder`}),
+          label: intl.formatMessage(leaveMessage.request.fieldFor(name, 'fieldName')),
+          placeholder: intl.formatMessage(leaveMessage.request.fieldFor(name, 'fieldPlaceholder')),
           component: InputText
         };
         break;
@@ -51,7 +52,8 @@ const handlerCreators: HandleCreators<RequestDetailFormProps, OwnHandlers> = {
           required: formMode === FormMode.New,
           category: 'leave',
           disabled: formMode === FormMode.Edit,
-          placeholder: intl.formatMessage({id: `leave.field.${name}.placeholder`}),
+          label: intl.formatMessage(leaveMessage.request.fieldFor(name, 'fieldName')),
+          placeholder: intl.formatMessage(leaveMessage.request.fieldFor(name, 'fieldPlaceholder')),
           component: SelectSystem,
           onChange: onChangeRegular
         };
@@ -61,7 +63,8 @@ const handlerCreators: HandleCreators<RequestDetailFormProps, OwnHandlers> = {
         fieldProps = {
           required: false,
           disabled: !isRegularType,
-          placeholder: intl.formatMessage({id: `leave.field.${name}.placeholder`}),
+          label: intl.formatMessage(leaveMessage.request.fieldFor(name, 'fieldName')),
+          placeholder: intl.formatMessage(leaveMessage.request.fieldFor(name, 'fieldPlaceholder')),
           component: isRegularType ? InputLeave : InputText,
         };
         break;
@@ -69,7 +72,8 @@ const handlerCreators: HandleCreators<RequestDetailFormProps, OwnHandlers> = {
       case 'start': 
         fieldProps = {
           required: true,
-          placeholder: intl.formatMessage({id: `leave.field.${name}.placeholder`}),
+          label: intl.formatMessage(leaveMessage.request.fieldFor(name, 'fieldName')),
+          placeholder: intl.formatMessage(leaveMessage.request.fieldFor(name, 'fieldPlaceholder')),
           component: InputDateLeave,
           onChange: onChangeEnd
         };
@@ -79,7 +83,8 @@ const handlerCreators: HandleCreators<RequestDetailFormProps, OwnHandlers> = {
         fieldProps = {
           required: true,
           disabled: isRegularType,
-          placeholder: intl.formatMessage({id: `leave.field.${name}.placeholder`}),
+          label: intl.formatMessage(leaveMessage.request.fieldFor(name, 'fieldName')),
+          placeholder: intl.formatMessage(leaveMessage.request.fieldFor(name, 'fieldPlaceholder')),
           component: InputDateLeave
         };
         break;
@@ -87,7 +92,8 @@ const handlerCreators: HandleCreators<RequestDetailFormProps, OwnHandlers> = {
       case 'address': 
         fieldProps = {
           required: true,
-          placeholder: intl.formatMessage({id: `leave.field.${name}.placeholder`}),
+          label: intl.formatMessage(leaveMessage.request.fieldFor(name, 'fieldName')),
+          placeholder: intl.formatMessage(leaveMessage.request.fieldFor(name, 'fieldPlaceholder')),
           component: InputText
         };
         break;
@@ -96,15 +102,17 @@ const handlerCreators: HandleCreators<RequestDetailFormProps, OwnHandlers> = {
         fieldProps = {
           type: 'number',
           required: true,
-          placeholder: intl.formatMessage({id: `leave.field.${name}.placeholder`}),
-          component: InputContactNumber
+          label: intl.formatMessage(leaveMessage.request.fieldFor(name, 'fieldName')),
+          placeholder: intl.formatMessage(leaveMessage.request.fieldFor(name, 'fieldPlaceholder')),
+          component: InputText
         };
         break;
 
       case 'reason': 
         fieldProps = {
           required: true,
-          placeholder: intl.formatMessage({id: `leave.field.${name}.placeholder`}),
+          label: intl.formatMessage(leaveMessage.request.fieldFor(name, 'fieldName')),
+          placeholder: intl.formatMessage(leaveMessage.request.fieldFor(name, 'fieldPlaceholder')),
           component: InputText
         };
         break;
@@ -112,7 +120,8 @@ const handlerCreators: HandleCreators<RequestDetailFormProps, OwnHandlers> = {
       default:
         fieldProps = {
           type: 'text',
-          placeholder: intl.formatMessage({id: `leave.field.${name}.placeholder`}),
+          label: intl.formatMessage(leaveMessage.request.fieldFor(name, 'fieldName')),
+          placeholder: intl.formatMessage(leaveMessage.request.fieldFor(name, 'fieldPlaceholder')),
           component: InputText
         };
         break;
