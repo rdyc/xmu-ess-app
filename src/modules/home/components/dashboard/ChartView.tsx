@@ -38,15 +38,17 @@ export const ChartView: React.SFC<ChartProps> = props => {
         props.chartState.detail.response &&
         props.chartState.detail.response.data &&
         <Grid container spacing={16} className={props.classes.marginFarBottom}>
-          <Grid item xs={12} sm={4}>
+          <Grid item xs={12} sm={12} md={4}>
             <Card square>
-              <CardHeader title="ETG Companies" subheader="(EQG - NPP - ODI - XMU)" />
+              <CardHeader title="ETG Companies" subheader="(EQG - NPP - ODI - XMU)"/>
               <CardContent>
                 <VictoryChart
-                  domainPadding={{ x: [20, 20], y: [20, 20] }}
+                  animate={{ duration: 2000, easing: 'bounce' }}
+                  domainPadding={{ x: 20, y: 20 }}
+                  padding={{ bottom: 100, left: 50, top: 10, right: 50 }}
                 >
                   <VictoryAxis
-                    tickLabelComponent={<VictoryLabel angle={-60} />}
+                    tickLabelComponent={<VictoryLabel angle={-45} textAnchor="end" />}
                   />
                   <VictoryAxis
                     dependentAxis
@@ -54,8 +56,10 @@ export const ChartView: React.SFC<ChartProps> = props => {
                   />
                   <VictoryBar
                     labelComponent={<VictoryTooltip />}
-                    style={{ data: { fill: 'blue', strokeWidth: 5 }, 
-                    labels: { fontSize: 10 }}}
+                    style={{
+                      data: { fill: 'blue', strokeWidth: 0 },
+                      labels: { fontSize: 10 }
+                    }}
                     data={props.chartState.detail.response.data.companies}
                     x="companyName"
                     y="percentage"
@@ -67,23 +71,29 @@ export const ChartView: React.SFC<ChartProps> = props => {
 
           </Grid>
 
-          <Grid item xs={12} sm={4}>
+          <Grid item xs={12} sm={12} md={4}>
             <Card square>
               <CardHeader title="ETG Bussines Unit" subheader="(EQG - NPP - ODI - XMU)" />
               <CardContent>
                 <VictoryChart
-                  domainPadding={{ x: [20, 20], y: [20, 20] }}
+                  animate={{ duration: 2000, easing: 'bounce' }}
+                  domainPadding={{ x: 20, y: 20 }}
+                  padding={{ bottom: 100, left: 50, top: 10, right: 50 }}
                 >
+
                   <VictoryAxis
-                    tickLabelComponent={<VictoryLabel angle={-60} />}
+                    tickLabelComponent={<VictoryLabel angle={-45} textAnchor="end" />}
                   />
                   <VictoryAxis
                     dependentAxis
                     tickFormat={(x) => (`${x} %`)}
                   />
                   <VictoryBar
-                    style={{ data: { fill: 'blue', strokeWidth: 5 }, 
-                    labels: { fontSize: 10 }}} 
+                    labelComponent={<VictoryTooltip />}
+                    style={{
+                      data: { fill: 'blue', strokeWidth: 0 },
+                      labels: { fontSize: 10 }
+                    }}
                     data={props.chartState.detail.response.data.businessUnits}
                     x="companyName"
                     y="percentage"
@@ -94,15 +104,17 @@ export const ChartView: React.SFC<ChartProps> = props => {
             </Card>
           </Grid>
 
-          <Grid item xs={12} sm={4} >
+          <Grid item xs={12} sm={12} md={4}>
             <Card square>
               <CardHeader title="ETG Department" subheader="(EQG - NPP - ODI - XMU)" />
               <CardContent>
                 <VictoryChart
-                  domainPadding={{ x: [20, 20], y: [20, 20] }}
+                  animate={{ duration: 2000, easing: 'bounce' }}
+                  domainPadding={{ x: 20, y: 20 }}
+                  padding={{ bottom: 100, left: 50, top: 10, right: 50 }}
                 >
                   <VictoryAxis
-                    tickLabelComponent={<VictoryLabel angle={-60} />}
+                    tickLabelComponent={<VictoryLabel angle={-45} textAnchor="end" />}
                   />
                   <VictoryAxis
                     dependentAxis
@@ -110,9 +122,11 @@ export const ChartView: React.SFC<ChartProps> = props => {
                     crossAxis={false}
                   />
                   <VictoryBar
-                    style={{ 
-                      data: { fill: 'blue', strokeWidth: 5 }, 
-                      labels: { fontSize: 10 }}}
+                    labelComponent={<VictoryTooltip />}
+                    style={{
+                      data: { fill: 'blue', strokeWidth: 0 },
+                      labels: { fontSize: 10 }
+                    }}
                     data={props.chartState.detail.response.data.departments}
                     x="companyName"
                     y="percentage"
@@ -123,33 +137,38 @@ export const ChartView: React.SFC<ChartProps> = props => {
             </Card>
           </Grid>
 
-          <Grid item xs={12} sm={12} style={{ height: '50a\ qz%' }}>
+          <Grid item xs={12} md={12}>
             <Card square>
-              <CardHeader title="ETG Sales Team" subheader="(EQG - NPP - ODI - XMU)" />
+              <CardHeader title="ETG Sales Team" subheader="(EQG - NPP - ODI - XMU)" style={{height: 100}}/>
               <CardContent>
-                  <VictoryChart
-                    // containerComponent={<VictoryContainer height={100} />}
-                    domainPadding={{ x: [20, 20], y: [20, 20] }}
-                  >
-                    <VictoryAxis
-                      tickLabelComponent={<VictoryLabel angle={-60} />}
-                    />
-                    <VictoryAxis
-                      dependentAxis
-                      tickFormat={(x) => (`${x} %`)}
-                    />
-                    <VictoryBar
-                      // style={{ data: { fill: (d: any) => d.percentage > 80 ? 'green' : 'blue'}}}
-                      style={{ 
-                        data: { fill: 'blue',  }, 
-                        labels: { fontSize: 5 }}}
-                      data={props.chartState.detail.response.data.sales}
-                      x="companyName"
-                      y="percentage"
-                      labels={(d) => `${d.percentage} %`}
-                    />
+                <VictoryChart
+                  animate={{ duration: 2000, easing: 'bounce' }}
+                  // containerComponent={<VictoryContainer height={100} />}
+                  domainPadding={{ x: 20, y: 20 }}
+                  padding={{ bottom: 100, left: 50, top: 20, right: 50 }}
+                >
+                  <VictoryAxis
+                    tickLabelComponent={<VictoryLabel angle={-45} textAnchor="end" style={{ fontSize: 6 }} />}
+                  />
+                  <VictoryAxis
+                    dependentAxis
+                    tickLabelComponent={<VictoryLabel style={{ fontSize: 6 }} />}
+                    tickFormat={(x) => (`${x} %`)}
+                  />
+                  <VictoryBar
+                    labelComponent={<VictoryTooltip />}
+                    // style={{ data: { fill: (d: any) => d.percentage > 80 ? 'green' : 'blue'}}}
+                    style={{
+                      data: { fill: 'blue', strokeWidth: 0},
+                      labels: { fontSize: 5 }
+                    }}
+                    data={props.chartState.detail.response.data.sales}
+                    x="companyName"
+                    y="percentage"
+                    labels={(d) => `${d.percentage} %`}
+                  />
 
-                  </VictoryChart>
+                </VictoryChart>
               </CardContent>
             </Card>
           </Grid>
