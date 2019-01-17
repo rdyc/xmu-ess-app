@@ -1,4 +1,5 @@
 import { Card, CardContent, CardHeader, Grid } from '@material-ui/core';
+import { isWidthDown } from '@material-ui/core/withWidth';
 import * as React from 'react';
 import { VictoryAxis, VictoryBar, VictoryChart, VictoryLabel, VictoryTooltip } from 'victory';
 
@@ -32,6 +33,10 @@ import { ChartProps } from './Chart';
 // const test = (d: any): string => { console.log(d); return ''; };
 
 export const ChartView: React.SFC<ChartProps> = props => {
+  const { classes, width } = props;
+  const isMobile = isWidthDown('sm', width);
+  const isMobileXS = isWidthDown('xs', width);
+
   return (
     <React.Fragment>
       {
@@ -138,21 +143,22 @@ export const ChartView: React.SFC<ChartProps> = props => {
           </Grid>
 
           <Grid item xs={12} md={12}>
-            <Card square>
-              <CardHeader title="ETG Sales Team" subheader="(EQG - NPP - ODI - XMU)" style={{height: 100}}/>
-              <CardContent>
+            <Card square className={classes.chartCard}>
+              <CardHeader title="ETG Sales Team" subheader="(EQG - NPP - ODI - XMU)"  className={isMobileXS ? undefined : classes.chartHeader}/>
+              <CardContent  className={isMobile ? classes.chartContentXS : classes.chartContent}>
                 <VictoryChart
                   animate={{ duration: 2000, easing: 'bounce' }}
                   // containerComponent={<VictoryContainer height={100} />}
                   domainPadding={{ x: 20, y: 20 }}
-                  padding={{ bottom: 100, left: 50, top: 20, right: 50 }}
+                  height={isMobile ? undefined : 175}
+                  // padding={{ top: -100 }}
                 >
                   <VictoryAxis
-                    tickLabelComponent={<VictoryLabel angle={-45} textAnchor="end" style={{ fontSize: 6 }} />}
+                    tickLabelComponent={<VictoryLabel angle={-45} textAnchor="end" style={{ fontSize: isMobile ? 7 : 4 }} />}
                   />
                   <VictoryAxis
                     dependentAxis
-                    tickLabelComponent={<VictoryLabel style={{ fontSize: 6 }} />}
+                    tickLabelComponent={<VictoryLabel style={{ fontSize: isMobile ? 7 : 4 }} />}
                     tickFormat={(x) => (`${x} %`)}
                   />
                   <VictoryBar
@@ -160,7 +166,7 @@ export const ChartView: React.SFC<ChartProps> = props => {
                     // style={{ data: { fill: (d: any) => d.percentage > 80 ? 'green' : 'blue'}}}
                     style={{
                       data: { fill: 'blue', strokeWidth: 0},
-                      labels: { fontSize: 5 }
+                      labels: { fontSize: isMobile ? 5 : 4 }
                     }}
                     data={props.chartState.detail.response.data.sales}
                     x="companyName"
