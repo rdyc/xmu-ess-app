@@ -152,6 +152,9 @@
   "account.employee.confirm.modify.title": "Modify Account",
   "account.employee.confirm.modify.subHeader": "You are about to modify this employee data. Do you want to continue?",
 
+  "account.employee.confirm.delete.title": "Delete Account",
+  "account.employee.confirm.delete.subHeader": "You are about to delete this employee data. Do you want to continue?",
+
   "account.employee.field.information.title": "Employee Information",
   "account.employee.field.information.subHeader": " ",
   
