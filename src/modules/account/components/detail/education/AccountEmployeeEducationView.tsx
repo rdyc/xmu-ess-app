@@ -1,12 +1,16 @@
 import { IEmployeeEducationList } from '@account/classes/response/employeeEducation';
 import { AccountEmployeeEducationHeaderTable, AccountEmployeeUserAction } from '@account/classes/types';
+import AccountEmployeeEducationEditor from '@account/components/editor/AccountEmployeeEducationEditor';
 import { accountMessage } from '@account/locales/messages/accountMessage';
 import AppMenu from '@constants/AppMenu';
+import { FormMode } from '@generic/types';
 import { SingleConfig, SingleHandler, SinglePage, SingleState } from '@layout/components/pages';
 import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
 import {
+  Button,
   Fade,
+  IconButton,
   Paper,
   Table,
   TableBody,
@@ -15,6 +19,7 @@ import {
   TableRow,
   Typography
 } from '@material-ui/core';
+import MoreVertIcon from '@material-ui/icons/MoreVert';
 import * as React from 'react';
 import { DetailPage } from '../DetailPage';
 import { AccountEmployeeEducationProps } from './AccountEmployeeEducation';
@@ -117,6 +122,15 @@ export const AccountEmployeeEducationView: React.SFC<
                     <TableCell>{item.major}</TableCell>
                     <TableCell>{item.start}</TableCell>
                     <TableCell>{item.end ? item.end : 'N/A'}</TableCell>
+                    <TableCell>
+                      <IconButton
+                        color="inherit"
+                        aria-label="More"
+                        disabled
+                      >
+                        <MoreVertIcon />
+                      </IconButton>
+                    </TableCell>
                   </TableRow>
                 ))}
             </TableBody>
@@ -131,19 +145,31 @@ export const AccountEmployeeEducationView: React.SFC<
       <DetailPage
         tab={2}
       >
-      <SinglePage
-        config={config}
-        connectedProps={props}
-      >
-        <div style={{ padding: 8 * 3 }}>
-          {(( !isLoading && response && !response.data) ||
-            ( !isLoading && response && response.data && response.data.length === 0)) && (
-            <Typography variant="body2">No Data</Typography>
-          )}
-          { !isLoading && response && response.data && response.data.length >= 1 && renderEducation(response.data)}
-        </div>
-      </SinglePage>
+        <SinglePage
+          config={config}
+          connectedProps={props}
+        >
+          <div style={{ padding: 8 * 3 }}>
+            {(( !isLoading && response && !response.data) ||
+              ( !isLoading && response && response.data && response.data.length === 0)) && (
+              <Typography variant="body2">No Data</Typography>
+            )}
+            {!isLoading && <div style={{ direction: 'rtl'}}>
+              <Button variant="contained" onClick={props.handleDialog} disabled>
+                Create
+              </Button>
+            </div>}
+            { !isLoading && response && response.data && response.data.length >= 1 && renderEducation(response.data)}
+          </div>
+        </SinglePage>
       </DetailPage>
+      
+      <AccountEmployeeEducationEditor
+        formMode={props.uid ? FormMode.Edit : FormMode.New}
+        handleDialog={props.handleDialog}
+        dialogIsOpen={props.dialog}
+        educationUid={props.uid}
+      />
     </React.Fragment>
   );
 };

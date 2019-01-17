@@ -1,6 +1,6 @@
 import { FormMode } from '@generic/types';
 import { layoutMessage } from '@layout/locales/messages';
-import { Typography } from '@material-ui/core';
+import { Dialog, Typography } from '@material-ui/core';
 import * as React from 'react';
 import { AccountEmployeeEducationEditorProps } from './AccountEmployeeEducationEditor';
 import { AccountEmployeeEducationContainerForm, AccountEmployeeEducationFormData } from './form/education/AccountEmployeeEducationContainer';
@@ -11,18 +11,24 @@ export const AccountEmployeeEducationEditorView: React.SFC<AccountEmployeeEducat
   const { isLoading, response } = props.accountEmployeeEducationState.detail;
 
   const renderForm = (formData: AccountEmployeeEducationFormData) => (
-    <AccountEmployeeEducationContainerForm 
-      formMode={formMode}
-      initialValues={formData}
-      validate={handleValidate}
-      onSubmit={handleSubmit} 
-      onSubmitSuccess={handleSubmitSuccess}
-      onSubmitFail={handleSubmitFail}
-      submitDialogTitle={submitDialogTitle}
-      submitDialogContentText={submitDialogContentText}
-      submitDialogCancelText={submitDialogCancelText}
-      submitDialogConfirmedText={submitDialogConfirmedText}
-    />
+    <Dialog
+      open={props.dialogIsOpen}
+      onClose={props.handleDialog}
+      scroll="paper"
+    >
+      <AccountEmployeeEducationContainerForm 
+        formMode={formMode}
+        initialValues={formData}
+        validate={handleValidate}
+        onSubmit={handleSubmit} 
+        onSubmitSuccess={handleSubmitSuccess}
+        onSubmitFail={handleSubmitFail}
+        submitDialogTitle={submitDialogTitle}
+        submitDialogContentText={submitDialogContentText}
+        submitDialogCancelText={submitDialogCancelText}
+        submitDialogConfirmedText={submitDialogConfirmedText}
+      />
+    </Dialog>
   );
 
   const initialValues: AccountEmployeeEducationFormData = {
