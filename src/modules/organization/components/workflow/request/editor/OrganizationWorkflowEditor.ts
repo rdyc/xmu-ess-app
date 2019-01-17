@@ -3,6 +3,7 @@ import { FormMode } from '@generic/types';
 import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
+import { WithLookupMenu, withLookupMenu } from '@lookup/hoc/withLookupMenu';
 import { IOrganizationWorkflowPostPayload, IOrganizationWorkflowPutHierarchy, IOrganizationWorkflowPutPayload } from '@organization/classes/request/workflow/request';
 import { IWorkflow } from '@organization/classes/response/workflow';
 import { WithOrganizationWorkflow, withOrganizationWorkflow } from '@organization/hoc/withOrganizationWorkflow';
@@ -41,6 +42,7 @@ interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
 
 export type OrganizationWorkflowEditorProps
   = WithOrganizationWorkflow
+  & WithLookupMenu
   & WithUser
   & WithLayout
   & WithAppBar
@@ -110,10 +112,6 @@ const handlerCreators: HandleCreators<OrganizationWorkflowEditorProps, OwnHandle
     if (!user) {
       return Promise.reject('user was not found');
     }
-
-    // if (!formData.hierarchy.hierarchies.length) {
-    //   return Promise.reject('At least one hierarchy must be entered');
-    // }
 
     const parsedHierarchy = () => {
       if (!formData.hierarchy.hierarchies) {
@@ -190,7 +188,7 @@ const handlerCreators: HandleCreators<OrganizationWorkflowEditorProps, OwnHandle
       time: new Date()
     });
 
-    history.push(`/organization/workflows`);
+    history.push(`/organization/workflow`);
   },
   handleSubmitFail: (props: OrganizationWorkflowEditorProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
     const { formMode, intl } = props;
@@ -227,6 +225,7 @@ const lifecycles: ReactLifeCycleFunctions<OrganizationWorkflowEditorProps, {}> =
   componentDidMount() {
     const { layoutDispatch, history, stateUpdate, intl } = this.props;
     const { loadListRequest } = this.props.organizationWorkflowDispatch;
+    const { loadDetailRequest } = this.props.lookupMenuDispatch;
     const { user } = this.props.userState;
     
     const view = {
@@ -255,6 +254,10 @@ const lifecycles: ReactLifeCycleFunctions<OrganizationWorkflowEditorProps, {}> =
 
       loadListRequest({
         filter        
+      });
+
+      loadDetailRequest({
+        menuUid: history.location.state.menuUid,
       });
     }
 
@@ -286,6 +289,7 @@ export default compose<OrganizationWorkflowEditorProps, {}>(
   withLayout,
   withAppBar,
   withOrganizationWorkflow,
+  withLookupMenu,
   injectIntl,
   withStateHandlers<OwnState, OwnStateUpdaters, {}>(createProps, stateUpdaters),
   withHandlers<OrganizationWorkflowEditorProps, OwnHandlers>(handlerCreators),

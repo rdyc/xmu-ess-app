@@ -8,6 +8,7 @@ import { OrganizationWorkflowEditorProps } from './OrganizationWorkflowEditor';
 export const OrganizationWorkflowEditorView: React.SFC<OrganizationWorkflowEditorProps> = props => {
   const { formMode, handleValidate, handleSubmit, handleSubmitSuccess, handleSubmitFail } = props;
   const { isLoading, response } = props.organizationWorkflowState.list;
+  const menuResponse = props.lookupMenuState.detail.response;
 
   const renderForm = (formData: WorkflowFormData) => (
     <OrganizationWorkflowForm 
@@ -18,6 +19,7 @@ export const OrganizationWorkflowEditorView: React.SFC<OrganizationWorkflowEdito
       onSubmit={handleSubmit} 
       onSubmitSuccess={handleSubmitSuccess}
       onSubmitFail={handleSubmitFail}
+      menu={menuResponse && menuResponse.data}
     />
   );
 

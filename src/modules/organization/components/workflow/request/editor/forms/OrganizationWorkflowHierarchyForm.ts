@@ -1,6 +1,7 @@
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { WithVariables, withVariables } from '@layout/hoc/withVariables';
+import { IMenuDetail } from '@lookup/classes/response';
 import { WithStyles, withStyles } from '@material-ui/core';
 import withWidth, { WithWidth } from '@material-ui/core/withWidth';
 import { IOrganizationHierarchyListFilter } from '@organization/classes/filters/hierarchy';
@@ -14,6 +15,7 @@ import { OrganizationWorkflowHierarchyFormView } from './OrganizationWorkflowHie
 interface OwnProps {
   context: WrappedFieldArrayProps<WorkflowHierarchyFormData>;
   filter: IOrganizationHierarchyListFilter | undefined;
+  menuDetail: IMenuDetail | undefined;
 }
 
 interface OwnState {

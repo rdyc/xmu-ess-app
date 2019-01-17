@@ -17,6 +17,7 @@ export const OrganizationWorkflowFormView: React.SFC<OrganizationWorkflowFormPro
     <OrganizationWorkflowHierarchyForm
       context={context}
       filter={hierarchyFilter}
+      menuDetail={props.menu}
     />
   );
 

@@ -25,8 +25,13 @@ export const organizationWorkflowInformation: React.SFC<AllProps> = props => {
       <CardContent>
         <List>
         {
+          data &&
           data.map(item =>
-            <ListItem>
+            <ListItem
+              disableGutters 
+              key={item.uid}
+            
+            >
               <ListItemIcon>
                 <Typography variant="h5">
                   {`#${item.priority}`}

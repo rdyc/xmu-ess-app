@@ -1,4 +1,5 @@
 import { FormMode } from '@generic/types';
+import { IMenuDetail } from '@lookup/classes/response';
 import { InjectedIntlProps } from 'react-intl';
 import { InjectedFormProps, reduxForm } from 'redux-form';
 import { OrganizationWorkflowFormView } from './OrganizationWorkflowFormView';
@@ -21,6 +22,7 @@ export type WorkflowFormData = {
 interface OwnProps {
   formMode: FormMode;
   companyUid: string | undefined;
+  menu: IMenuDetail | undefined;
 }
 
 export type OrganizationWorkflowFormProps
