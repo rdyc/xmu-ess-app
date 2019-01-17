@@ -21,7 +21,7 @@ import {
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import CloseIcon from '@material-ui/icons/Close';
 import ClearIcon from '@material-ui/icons/SettingsBackupRestore';
-import { ProjectAssignmentDialog } from '@project/components/dialog/assignment';
+import { ProjectRegistrationDialog } from '@project/components/dialog/project';
 import { timesheetMessage } from '@timesheet/locales/messages/timesheetMessage';
 import * as React from 'react';
 import { TimesheetEntryListFilterProps } from './TimesheetEntryListFilter';
@@ -190,7 +190,7 @@ export const TimesheetEntryListFilterView: React.SFC<TimesheetEntryListFilterPro
       onClose={props.handleFilterCustomerOnClose}
     />
 
-    <ProjectAssignmentDialog
+    <ProjectRegistrationDialog
       hideBackdrop={true}
       isOpen={props.isFilterProjectOpen}
       filter={props.filterProjectDialog}

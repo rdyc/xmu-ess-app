@@ -67,8 +67,6 @@ const createProps: mapper<AllProps, IOwnState> = (props: AllProps): IOwnState =>
   isFilterOpen: false,
 
   // fill partial props from location state to handle redirection from dashboard notif
-  customerUid: props.location.state && props.location.state.customerUid,
-  projectUid: props.location.state && props.location.state.projectUid,
   status: props.location.state && props.location.state.status,
   isNotify: props.location.state && props.location.state.isNotify 
 });

@@ -41,7 +41,7 @@ const handlerCreators: HandleCreators<ProjectRegistrationDetailFormProps, IOwnHa
     const { 
       intl, formMode, formCurrencyType, isCurrencyIdr, 
       onChangeCurrencyType, onChangeValueIdr, 
-      onChangeRate, allowedProjectTypes, isRequestor, isAdmin 
+      onChangeRate, allowedProjectTypes, isRequestor 
     } = props;
     
     let fieldProps: SelectSystemOption & any = {};
@@ -164,8 +164,7 @@ const handlerCreators: HandleCreators<ProjectRegistrationDetailFormProps, IOwnHa
       case 'hours':
         fieldProps = {
           type: 'number',
-          disabled: formMode === FormMode.New || !isAdmin,
-          required: formMode === FormMode.Edit && isAdmin,
+          disabled: true,
           label: intl.formatMessage(projectMessage.registration.fieldFor(name, 'fieldName')),
           placeholder: intl.formatMessage(projectMessage.registration.fieldFor(name, 'fieldPlaceholder')),
           component: InputNumber

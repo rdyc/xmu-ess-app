@@ -2,8 +2,8 @@ import { purchaseAction } from './purchaseAction';
 import { purchaseApprovalConfirm, purchaseApprovalMessage, purchaseApprovalPage, purchaseApprovalSection } from './purchaseApprovalMessage';
 import { purchaseComplement } from './purchaseComplement';
 import { purchaseItemField } from './purchaseItemMessage';
-import { purchaseRequestConfirm, purchaseRequestField, purchaseRequestMessage, purchaseRequestPage, purchaseRequestSection } from './purchaseRequestMessage';
-import { purchaseSettlementConfirm, purchaseSettlementField, purchaseSettlementMessage, purchaseSettlementPage, purchaseSettlementSection } from './purchaseSettlementMessage';
+import { purchaseRequestConfirm, purchaseRequestField, purchaseRequestFieldHelperFor, purchaseRequestMessage, purchaseRequestPage, purchaseRequestSection } from './purchaseRequestMessage';
+import { purchaseSettlementConfirm, purchaseSettlementField, purchaseSettlementFieldHelperFor, purchaseSettlementMessage, purchaseSettlementPage, purchaseSettlementSection } from './purchaseSettlementMessage';
 import { settlementApprovalConfirm, settlementApprovalMessage, settlementApprovalPage, settlementApprovalSection } from './settlementApprovalMessage';
 
 export const purchaseMessage = {
@@ -15,6 +15,7 @@ export const purchaseMessage = {
     field: purchaseRequestField,
     items: purchaseItemField,
     confirm: purchaseRequestConfirm,
+    fieldFor: purchaseRequestFieldHelperFor,
     message: purchaseRequestMessage
   },
   s_approval: {
@@ -34,6 +35,7 @@ export const purchaseMessage = {
     section: purchaseSettlementSection,
     field: purchaseSettlementField,
     items: purchaseItemField,
+    fieldFor: purchaseSettlementFieldHelperFor,
     confirm: purchaseSettlementConfirm,
     message: purchaseSettlementMessage,
   },

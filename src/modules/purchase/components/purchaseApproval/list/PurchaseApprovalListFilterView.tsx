@@ -77,14 +77,14 @@ export const PurchaseApprovalListFilterView: React.SFC<PurchaseApprovalListFilte
               </IconButton> 
             }
 
-            <IconButton disabled>
+              <IconButton onClick={props.handleFilterCustomerVisibility}>
               <ChevronRightIcon />
             </IconButton> 
           </ListItemSecondaryAction>
         </ListItem>
         <Divider />
         
-        <ListItem button onClick={props.filterCustomer && props.handleFilterProjectVisibility}>
+          <ListItem button onClick={props.filterCustomer && props.handleFilterProjectVisibility} disabled={!props.filterCustomer}>
           <ListItemText 
             primary={props.intl.formatMessage(purchaseMessage.request.field.projectUid)}
             secondary={props.filterProject && props.filterProject.name || props.intl.formatMessage(layoutMessage.text.none)}
@@ -97,7 +97,7 @@ export const PurchaseApprovalListFilterView: React.SFC<PurchaseApprovalListFilte
               </IconButton> 
             }
 
-            <IconButton onClick={props.filterCustomer && props.handleFilterProjectVisibility}>
+              <IconButton disabled={!props.filterCustomer} onClick={props.filterCustomer && props.handleFilterProjectVisibility}>
               <ChevronRightIcon />
             </IconButton> 
           </ListItemSecondaryAction>

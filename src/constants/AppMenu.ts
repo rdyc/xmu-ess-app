@@ -49,6 +49,7 @@ enum AppMenu {
   LookupPosition = 'MNU06',
   LookupSystemLimit = 'MNU47',
   LookupCurrency = 'MNU55',
+  LookupWorkflow = 'MNU35',
   Timesheet = 'MNU09',
   TimesheetRequest = 'MNU10',
   TimesheetApproval = 'MNU11',
