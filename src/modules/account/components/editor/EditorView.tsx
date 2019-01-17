@@ -3,6 +3,7 @@ import { AppBar, Tab, Tabs, Typography } from '@material-ui/core';
 import * as React from 'react';
 import AccountEmployeeEditor from './AccountEmployeeEditor';
 import { EditorProps } from './Editor';
+import { AccountEmployeeFamilyList } from './form/family/AccountEmployeeFamilyList';
 
 export const EditorView: React.SFC<EditorProps> = props => {
 
@@ -32,7 +33,12 @@ export const EditorView: React.SFC<EditorProps> = props => {
       }
       {props.tab === 1 && <div style={{ padding: 8 * 3 }}><Typography>Tab 1</Typography></div>}
       {props.tab === 2 && <div style={{ padding: 8 * 3 }}><Typography>Tab 2</Typography></div>}
-      {props.tab === 3 && <div style={{ padding: 8 * 3 }}><Typography>Tab 3</Typography></div>}
+      {/* {props.tab === 3 && <div style={{ padding: 8 * 3 }}><Typography>Tab 3</Typography></div>} */}
+      {props.tab === 3 && <div style={{ padding: 8 * 3 }}>
+        <AccountEmployeeFamilyList
+        employeeUid={}
+        />
+      </div>}
       {props.tab === 4 && <div style={{ padding: 8 * 3 }}><Typography>Tab 4</Typography></div>}
       {props.tab === 5 && <div style={{ padding: 8 * 3 }}><Typography>Tab 5</Typography></div>}
       {props.tab === 6 && <div style={{ padding: 8 * 3 }}><Typography>Tab 6</Typography></div>}

@@ -221,7 +221,7 @@ const lifecycles: ReactLifeCycleFunctions<AccountEmployeeFamilyEditorProps, {}> 
 
       loadDetailRequest({
         employeeUid: history.location.state.uid,
-        familyUid: history.location.state.uid
+        familyUid: history.location.state.familyuid
       });
     }
 
