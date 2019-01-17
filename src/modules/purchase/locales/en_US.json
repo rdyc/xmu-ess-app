@@ -61,9 +61,9 @@
   "purchase.field.information.notes.placeholder": "Type a note",
   "purchase.field.information.status": "Status",
   "purchase.field.information.balanceDue": "Balance Left",
-  "purchase.field.information.rejectreason": "Reason Being Rejected",
+  "purchase.field.information.rejectreason": "Reject Reason",
   "purchase.field.information.rejectreason.required": "Reason is required",
-  "purchase.field.information.rejectreason.placeholder": "Type a reason",
+  "purchase.field.information.rejectreason.placeholder": "Type a reject reason",
   "purchase.field.information.adjustmentNote": "Adjustment Note",
   "purchase.field.information.adjustmentNote.required": "Adjustment note is required",
   "purchase.field.information.adjustmentNote.placeholder": "Type any",
@@ -100,7 +100,7 @@
   "purchase.field.isNotify": "Notified Only",
   "purchase.field.isRejected": "Rejected Only",
   "purchase.field.isNeedAdjust": "Adjustment Only",
-  "purchase.field.isSettlement": "Settle-Ready Only",
+  "purchase.field.isSettlement": "Ready-To-Settle Only",
   "purchase.field.statusType": "Status",
   "purchase.field.completion": "Completion",
   
@@ -120,8 +120,9 @@
   "purchase.message.approval.approve.success": "Purchase ID {uid} has been approved",
   "purchase.message.approval.reject.success": "Purchase ID {uid} has been rejected",
   "purchase.message.approval.submit.success": "Approval decision for {uid} has been submitted",
-  "purchase.message.approval.approve": "Approve Settlement Request",
+  "purchase.message.approval.approve": "Approve Request",
   "purchase.message.approval.adjustmentNeeded": "Adjustment Needed",
+  "purchase.message.approval.reject": "Reject",
 
 
   "purchase.form.request.editTitle": "Edit Request",

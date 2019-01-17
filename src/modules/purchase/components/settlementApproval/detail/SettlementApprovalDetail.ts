@@ -153,8 +153,8 @@ const handlerCreators: HandleCreators<SettlementApprovalDetailProps, OwnHandler>
 const createProps: mapper<SettlementApprovalDetailProps, OwnState> = (props: SettlementApprovalDetailProps): OwnState => ({
   shouldDataReload: false,
   approvalTitle: props.intl.formatMessage(purchaseMessage.s_approval.section.approveForm),
-  // approvalSubHeader: props.intl.formatMessage(purchaseMessage.s_approval.section.approveContent),
-  approvalSubHeader: ` `,
+  approvalSubHeader: props.intl.formatMessage(purchaseMessage.s_approval.section.approveContent),
+  // approvalSubHeader: ` `,
   approvalChoices: [
     { value: WorkflowStatusType.Approved, label: props.intl.formatMessage(purchaseMessage.s_approval.message.approve) },
     { value: WorkflowStatusType.AdjustmentNeeded, label: props.intl.formatMessage(purchaseMessage.s_approval.message.adjustmentNeeded) }

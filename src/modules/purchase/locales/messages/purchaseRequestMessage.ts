@@ -79,6 +79,8 @@ export const purchaseRequestField = defineMessages({
   requestInIDR: { id: `${prefix}.field.information.requestInIDR` },
 
   reason: { id: `${prefix}.field.information.rejectreason` },
+  reasonRequired: { id: `${prefix}.field.information.rejectreason` },
+  reasonPlaceholder: { id: `${prefix}.field.information.rejectreason` },
 
   isNotify: { id: `${prefix}.field.isNotify` },
   isRejected: { id: `${prefix}.field.isRejected` },
@@ -98,40 +100,40 @@ export const purchaseRequestFieldHelperFor = (field: string, type: 'fieldName' |
       case 'customer': return purchaseRequestField.customerUid;
       case 'currencyType': return purchaseRequestField.currencyType;
       case 'currency': return purchaseRequestField.currencyType;
+      case 'dates': return purchaseRequestField.date;
       case 'date': return purchaseRequestField.date;
       case 'statusType': return purchaseRequestField.statusType;
       case 'status': return purchaseRequestField.statusType;
       case 'notes': return purchaseRequestField.notes;
+      case 'note': return purchaseRequestField.notes;
       case 'request': return purchaseRequestField.request;
       case 'requestInIDR': return purchaseRequestField.requestInIDR;
       case 'advance': return purchaseRequestField.advance;
       case 'rate': return purchaseRequestField.rate;
 
       // item
-      case 'items.uid': return purchaseItemField.uid;
-      case 'items.request': return purchaseItemField.request;
-      case 'items.description': return purchaseItemField.description;
+      case 'description': return purchaseItemField.description;
+      case 'requestValue': return purchaseItemField.request;
       default: return { id: field };
     }
   }
 
   if (type === 'fieldRequired') {
     switch (field) {
-      case 'employeeUid': return purchaseRequestField.itemEmployeeUidRequired;
-      case 'destinationUid': return purchaseRequestField.destinationTypeRequired;
       case 'projectUid': return purchaseRequestField.projectUidRequired;
-      case 'siteUid': return purchaseRequestField.siteUidRequired;
+      case 'project': return purchaseRequestField.projectUidRequired;
       case 'customerUid': return purchaseRequestField.customerUidRequired;
+      case 'customer': return purchaseRequestField.customerUidRequired;
+      case 'currencyType': return purchaseRequestField.currencyTypeRequired;
+      case 'currency': return purchaseRequestField.currencyTypeRequired;
+      case 'dates': return purchaseRequestField.dateRequired;
       case 'date': return purchaseRequestField.dateRequired;
-      case 'end': return purchaseRequestField.endRequired;
-      case 'activityType': return purchaseRequestField.activityTypeRequired;
+      case 'rate': return purchaseRequestField.rateRequired;
 
       // item
-      case 'request': return purchaseItemField.re;
-      case 'from': return purchaseRequestField.de;
-      case 'destination': return purchaseRequestField.destinationRequired;
-      case 'itemStart': return purchaseRequestField.itemStartRequired;
-      case 'itemEnd': return purchaseRequestField.itemEndRequired;
+      case 'requestValue': return purchaseItemField.requestPlaceholder;
+      case 'request': return purchaseItemField.requestPlaceholder;
+      case 'description': return purchaseRequestField.notesPlaceholder;
 
       default: return { id: field };
     }
@@ -148,11 +150,13 @@ export const purchaseRequestFieldHelperFor = (field: string, type: 'fieldName' |
       case 'date': return purchaseRequestField.datePlaceholder;
       case 'currencyType': return purchaseRequestField.currencyTypePlaceholder;
       case 'currency': return purchaseRequestField.currencyTypePlaceholder;
-      case 'currency': return purchaseRequestField.;
+      case 'rate': return purchaseRequestField.ratePlaceholder;
       
       // item
-      case 'transportType': return purchaseItemField.requestPlaceholder;
-      
+      case 'request': return purchaseItemField.requestPlaceholder;
+      case 'requestValue': return purchaseItemField.requestPlaceholder;
+      case 'description': return purchaseRequestField.notesPlaceholder;
+
       default: return { id: field };
     }
   }
