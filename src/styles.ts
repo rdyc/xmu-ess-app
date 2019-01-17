@@ -466,7 +466,21 @@ const styles = (theme: Theme) =>
     paddingFarRight: { paddingRight: theme.spacing.unit * size.far },
     paddingFarBottom: { paddingBottom: theme.spacing.unit * size.far },
 
+    /* background colors */
+    backgroundColorPrimary: { 
+      backgroundColor: theme.palette.primary.main
+    },
+    backgroundColorSecondary: { 
+      backgroundColor: theme.palette.secondary.main
+    },
+
     /* colors */
+    colorPrimary: { 
+      color: theme.palette.primary.main
+    },
+    colorSecondary: { 
+      color: theme.palette.secondary.main
+    },
     colorRed: { color: red['500'] },
 
     /* text */
