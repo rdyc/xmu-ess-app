@@ -569,6 +569,26 @@ const styles = (theme: Theme) =>
     paperPaging: {
       paddingTop: theme.spacing.unit * 2,
       paddingBottom: theme.spacing.unit * 2
+    },
+
+    /* Chart */
+    chartCard: {
+      // height: '80%'
+    },
+
+    chartHeader: {
+      maxHeight: 100
+    },
+
+    chartContent: {
+      marginTop: theme.spacing.unit * -18,
+      marginBottom: theme.spacing.unit * -8,
+      marginRight: theme.spacing.unit * -17,
+      marginLeft: theme.spacing.unit * -7
+    },
+
+    chartContentXS: {
+      marginTop: theme.spacing.unit * -10
     }
   });
 
