@@ -1,4 +1,5 @@
 import { FormMode } from '@generic/types';
+import { layoutMessage } from '@layout/locales/messages';
 import { GlobalFormat } from '@layout/types';
 import { GlobalStyle } from '@layout/types/GlobalStyle';
 import { Card, CardContent, CardHeader, TextField } from '@material-ui/core';
@@ -8,14 +9,14 @@ import * as React from 'react';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose } from 'recompose';
 
-interface OwnProps {
+interface IOwnProps {
   formMode: FormMode;
   data: IProjectAssignmentDetail | undefined;
   showProjectHours?: boolean | true;
 }
 
 type AllProps
-  = OwnProps
+  = IOwnProps
   & InjectedIntlProps;
 
 const projectAssignment: React.SFC<AllProps> = props => (
@@ -85,6 +86,7 @@ const projectAssignment: React.SFC<AllProps> = props => (
             label={props.intl.formatMessage(projectMessage.registration.field.end)}
             value={props.intl.formatDate(props.data.end, GlobalFormat.Date)}
           />
+
           {
             props.showProjectHours &&
             <React.Fragment>
@@ -105,6 +107,28 @@ const projectAssignment: React.SFC<AllProps> = props => (
               />
             </React.Fragment>
           }
+
+          {
+            props.data.changes &&
+            <React.Fragment>
+              <TextField
+                {...GlobalStyle.TextField.ReadOnly}
+                label={props.intl.formatMessage(layoutMessage.field.createdBy)}
+                value={props.data.changes.created && props.data.changes.created.fullName || 'N/A'}
+                helperText={props.intl.formatDate(props.data.changes.createdAt, GlobalFormat.DateTime) || 'N/A'}
+              />
+
+              {
+                (props.data.changes.updated && props.data.changes.updatedAt) &&
+                <TextField
+                  {...GlobalStyle.TextField.ReadOnly}
+                  label={props.intl.formatMessage(layoutMessage.field.updatedBy)}
+                  value={props.data.changes.updated.fullName || 'N/A'}
+                  helperText={props.intl.formatDate(props.data.changes.updatedAt, GlobalFormat.DateTime) || 'N/A'}
+                />
+              }
+            </React.Fragment>
+          }
         </React.Fragment>
       }
       
@@ -116,6 +140,6 @@ const projectAssignment: React.SFC<AllProps> = props => (
   </Card>
 );
 
-export const ProjectAssignment = compose<AllProps, OwnProps>(
+export const ProjectAssignment = compose<AllProps, IOwnProps>(
   injectIntl
 )(projectAssignment);

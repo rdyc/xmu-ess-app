@@ -35,12 +35,16 @@ interface OwnHandlers {
   handleSubmitFail: (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => void;
 }
 
+interface OwnOption {
+  formMode: FormMode;
+}
+
 interface OwnRouteParams {
   employeeUid: string;
 }
 
 interface OwnState {
-  formMode: FormMode;
+  // formMode: FormMode;
   employeeUid?: string | undefined;
   submitDialogTitle: string;
   submitDialogContentText: string;
@@ -59,6 +63,7 @@ export type AccountEmployeeEditorProps
   & WithAppBar
   & RouteComponentProps<OwnRouteParams>
   & InjectedIntlProps
+  & OwnOption
   & OwnHandlers
   & OwnState
   & OwnStateUpdaters;
@@ -66,22 +71,44 @@ export type AccountEmployeeEditorProps
 const handlerCreators: HandleCreators<AccountEmployeeEditorProps, OwnHandlers> = {
   handleValidate: (props: AccountEmployeeEditorProps) => (formData: AccountEmployeeFormData) => { 
     const errors = {
-      information: {}
+      information: {},
+      bank: {},
+      contact: {}
     };
   
     const requiredFields = [
-      'employmentNumber', 'fullName', 'genderType', 'birthPlace', 'dateOfBirth', 'companyUid',
-      'employmentType', 'joinDate', 'taxType', 'citizenNumber', 'taxNumber', 'familyCardNumber', 
-      'bankAccount', 'bankAccountName', 'address', 'addressAdditional', 'email',
-      'emailPersonal', 'phone'
+      'employmentNumber', 'fullName', 'genderType', 'birthPlace', 'dateOfBirth', 
+      'companyUid', 'employmentType', 'joinDate', 'taxType', 'religionType', 'bloodType'
     ];
   
+    const requiredBank = [
+      'citizenNumber', 'taxNumber', 'familyCardNumber', 
+      'bankAccount', 'bankAccountName', 'bpjsEmploymentNumber', 'bpjsHealthCareNumber'
+    ];
+
+    const requiredContact = [
+      'address', 'addressAdditional', 'email',
+      'emailPersonal', 'phone'
+    ];
+
     requiredFields.forEach(field => {
-      if (!formData.information[field] || isNullOrUndefined(formData.information[field])) {
+      if ( !formData.information[field] || isNullOrUndefined(formData.information[field]) ) {
         errors.information[field] = props.intl.formatMessage(accountMessage.employee.fieldFor(field, 'fieldRequired'));
       }
     });
     
+    requiredBank.forEach(field => {
+      if ( !formData.bank[field] || isNullOrUndefined(formData.bank[field]) ) {
+        errors.bank[field] = props.intl.formatMessage(accountMessage.employee.fieldFor(field, 'fieldRequired'));
+      }
+    });
+
+    requiredContact.forEach(field => {
+      if ( !formData.contact[field] || isNullOrUndefined(formData.contact[field]) ) {
+        errors.contact[field] = props.intl.formatMessage(accountMessage.employee.fieldFor(field, 'fieldRequired'));
+      }
+    });
+
     return errors;
   },
   handleSubmit: (props: AccountEmployeeEditorProps) => (formData: AccountEmployeeFormData) => { 
@@ -148,7 +175,7 @@ const handlerCreators: HandleCreators<AccountEmployeeEditorProps, OwnHandlers> =
       time: new Date()
     });
 
-    history.push(`/lookup/employee/${response.uid}`);
+    history.push(`/account/employee/${response.uid}`);
   },
   handleSubmitFail: (props: AccountEmployeeEditorProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
     const { formMode, intl } = props;
@@ -182,7 +209,7 @@ const handlerCreators: HandleCreators<AccountEmployeeEditorProps, OwnHandlers> =
 };
 
 const createProps: mapper<AccountEmployeeEditorProps, OwnState> = (props: AccountEmployeeEditorProps): OwnState => ({ 
-  formMode: FormMode.New,
+  // formMode: FormMode.New,
   submitDialogTitle: props.intl.formatMessage(accountMessage.employee.confirm.createTitle),
   submitDialogContentText: props.intl.formatMessage(accountMessage.employee.confirm.createDescription),
   submitDialogCancelText: props.intl.formatMessage(layoutMessage.action.cancel),
@@ -216,7 +243,7 @@ const lifecycles: ReactLifeCycleFunctions<AccountEmployeeEditorProps, {}> = {
       view.subTitle = accountMessage.employee.page.modifySubHeader;
 
       stateUpdate({ 
-        formMode: FormMode.Edit,
+        // formMode: FormMode.Edit,
         employeeUid: history.location.state.uid,
         submitDialogTitle: this.props.intl.formatMessage(accountMessage.employee.confirm.modifyTitle),
         submitDialogContentText : this.props.intl.formatMessage(accountMessage.employee.confirm.modifyDescription)
@@ -234,7 +261,7 @@ const lifecycles: ReactLifeCycleFunctions<AccountEmployeeEditorProps, {}> = {
         title: intl.formatMessage(view.title),
         subTitle : intl.formatMessage(view.subTitle)
       },
-      parentUrl: `/lookup/employee`,
+      parentUrl: `/account/employee`,
       status: {
         isNavBackVisible: true,
         isSearchVisible: false,
@@ -258,7 +285,7 @@ const lifecycles: ReactLifeCycleFunctions<AccountEmployeeEditorProps, {}> = {
   }
 };
 
-export default compose<AccountEmployeeEditorProps, {}>(
+export default compose<AccountEmployeeEditorProps, OwnOption>(
   withUser,
   withLayout,
   withAppBar,

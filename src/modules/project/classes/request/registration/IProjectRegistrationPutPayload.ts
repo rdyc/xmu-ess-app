@@ -13,6 +13,7 @@ export interface IProjectRegistrationPutPayload extends IBasePayload {
   rate: number;
   valueUsd: number;
   valueIdr?: number;
+  hours?: number;
   documents?: IProjectRegistrationPutDocument[];
   sales?: IProjectRegistrationPutSales[];
 }

@@ -1,10 +1,13 @@
 import { ProjectType } from '@common/classes/types';
 import AppMenu from '@constants/AppMenu';
+import { AppRole } from '@constants/AppRole';
 import { FormMode } from '@generic/types';
 import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
+import { WithOidc, withOidc } from '@layout/hoc/withOidc';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import {
+  IProjectRegistrationPatchPayload,
   IProjectRegistrationPostPayload,
   IProjectRegistrationPutPayload,
   IProjectRegistrationPutSales,
@@ -25,6 +28,7 @@ import {
   lifecycle,
   mapper,
   ReactLifeCycleFunctions,
+  setDisplayName,
   StateHandler,
   StateHandlerMap,
   StateUpdaters,
@@ -35,40 +39,49 @@ import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
 import { isNullOrUndefined, isObject } from 'util';
 
-interface OwnHandlers {
+interface IOwnHandlers {
   handleValidate: (payload: ProjectRegistrationFormData) => FormErrors;
   handleSubmit: (payload: ProjectRegistrationFormData) => void;
   handleSubmitSuccess: (result: any, dispatch: Dispatch<any>) => void;
   handleSubmitFail: (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => void;
 }
 
-interface OwnRouteParams {
+interface IOwnRouteParams {
   projectUid: string;
 }
 
-interface OwnState {
+interface IOwnState {
   formMode: FormMode;
-  companyUid?: string | undefined;
-  positionUid?: string | undefined;
-  projectUid?: string | undefined;
+  companyUid?: string;
+  positionUid?: string;
+  projectUid?: string;
+  isRequestor: boolean;
+  isAdmin: boolean;
 }
 
-interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
-  stateUpdate: StateHandler<OwnState>;
+interface IOwnStateUpdaters extends StateHandlerMap<IOwnState> {
+  stateUpdate: StateHandler<IOwnState>;
 }
 
 export type ProjectRegistrationEditorProps
   = WithProjectRegistration
+  & WithOidc
   & WithUser
   & WithLayout
   & WithAppBar
-  & RouteComponentProps<OwnRouteParams>
+  & RouteComponentProps<IOwnRouteParams>
   & InjectedIntlProps
-  & OwnHandlers
-  & OwnState
-  & OwnStateUpdaters;
+  & IOwnHandlers
+  & IOwnState
+  & IOwnStateUpdaters;
 
-const handlerCreators: HandleCreators<ProjectRegistrationEditorProps, OwnHandlers> = {
+const createProps: mapper<ProjectRegistrationEditorProps, IOwnState> = (props: ProjectRegistrationEditorProps): IOwnState => ({ 
+  formMode: FormMode.New,
+  isRequestor: true,
+  isAdmin: false
+});
+
+const handlerCreators: HandleCreators<ProjectRegistrationEditorProps, IOwnHandlers> = {
   handleValidate: (props: ProjectRegistrationEditorProps) => (formData: ProjectRegistrationFormData) => { 
     const errors = {
       information: {}
@@ -88,11 +101,11 @@ const handlerCreators: HandleCreators<ProjectRegistrationEditorProps, OwnHandler
     return errors;
   },
   handleSubmit: (props: ProjectRegistrationEditorProps) => (formData: ProjectRegistrationFormData) => { 
-    const { formMode, projectUid, intl } = props;
+    const { formMode, projectUid, isRequestor, intl } = props;
     const { user } = props.userState;
     const { response } = props.projectRegisterState.detail;
-    const { createRequest, updateRequest } = props.projectRegisterDispatch;
-
+    const { createRequest, updateRequest, patchRequest } = props.projectRegisterDispatch;
+    
     if (!user) {
       return Promise.reject('user was not found');
     }
@@ -192,16 +205,32 @@ const handlerCreators: HandleCreators<ProjectRegistrationEditorProps, OwnHandler
     }
 
     if (formMode === FormMode.Edit) {
-      return new Promise((resolve, reject) => {
-        updateRequest({
-          projectUid, 
-          resolve, 
-          reject,
-          companyUid: user.company.uid,
-          positionUid: user.position.uid,
-          data: payload as IProjectRegistrationPutPayload, 
+      // requestor updating the request
+      if (isRequestor) {
+        return new Promise((resolve, reject) => {
+          updateRequest({
+            projectUid, 
+            resolve, 
+            reject,
+            companyUid: user.company.uid,
+            positionUid: user.position.uid,
+            data: payload as IProjectRegistrationPutPayload, 
+          });
         });
-      });
+      // tslint:disable-next-line:no-else-after-return
+      } else {
+        // owner patching the request
+        return new Promise((resolve, reject) => {
+          patchRequest({
+            projectUid, 
+            resolve, 
+            reject,
+            companyUid: user.company.uid,
+            positionUid: user.position.uid,
+            data: payload as IProjectRegistrationPatchPayload, 
+          });
+        });
+      }
     }
 
     return null;
@@ -258,12 +287,8 @@ const handlerCreators: HandleCreators<ProjectRegistrationEditorProps, OwnHandler
   }
 };
 
-const createProps: mapper<ProjectRegistrationEditorProps, OwnState> = (props: ProjectRegistrationEditorProps): OwnState => ({ 
-  formMode: FormMode.New
-});
-
-const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
-  stateUpdate: (prevState: OwnState) => (newState: any) => ({
+const stateUpdaters: StateUpdaters<{}, IOwnState, IOwnStateUpdaters> = {
+  stateUpdate: (prevState: IOwnState) => (newState: any) => ({
     ...prevState,
     ...newState
   })
@@ -288,6 +313,27 @@ const lifecycles: ReactLifeCycleFunctions<ProjectRegistrationEditorProps, {}> = 
       companyUid: user.company.uid,
       positionUid: user.position.uid
     });
+
+    // checking admin status
+    const { user: oidc } = this.props.oidcState;
+    let result: boolean = false;
+    if (oidc) {
+      const role: string | string[] | undefined = oidc.profile.role;
+
+      if (role) {
+        if (Array.isArray(role)) {
+          result = role.indexOf(AppRole.Admin) !== -1;
+        } else {
+          result = role === AppRole.Admin;
+        }
+      }
+
+      if (result) {
+        stateUpdate({ 
+          isAdmin: true
+        });
+      }
+    }
 
     if (!isNullOrUndefined(history.location.state)) {
       view.title = projectMessage.registration.page.modifyTitle;
@@ -314,6 +360,19 @@ const lifecycles: ReactLifeCycleFunctions<ProjectRegistrationEditorProps, {}> = 
 
     layoutDispatch.navBackShow(); 
   },
+  componentDidUpdate(prevProps: ProjectRegistrationEditorProps) {
+    if (this.props.formMode === FormMode.Edit && prevProps.projectRegisterState.detail !== this.props.projectRegisterState.detail) {
+      const { response } = this.props.projectRegisterState.detail;
+
+      if (this.props.userState.user && response && response.data && response.data.changes) {
+        if (this.props.userState.user.uid !== response.data.changes.createdBy) {
+          this.props.stateUpdate({
+            isRequestor: false
+          });
+        }
+      }
+    }
+  },
   componentWillUnmount() {
     const { layoutDispatch, appBarDispatch, projectRegisterDispatch } = this.props;
 
@@ -328,14 +387,16 @@ const lifecycles: ReactLifeCycleFunctions<ProjectRegistrationEditorProps, {}> = 
   }
 };
 
-export default compose<ProjectRegistrationEditorProps, {}>(
+export const ProjectRegistrationEditor = compose<ProjectRegistrationEditorProps, {}>(
+  setDisplayName('ProjectRegistrationEditor'),
+  withOidc,
   withUser,
   withLayout,
   withAppBar,
   withRouter,
   withProjectRegistration,
   injectIntl,
-  withStateHandlers<OwnState, OwnStateUpdaters, {}>(createProps, stateUpdaters),
-  withHandlers<ProjectRegistrationEditorProps, OwnHandlers>(handlerCreators),
-  lifecycle<ProjectRegistrationEditorProps, {}>(lifecycles),
+  withStateHandlers(createProps, stateUpdaters),
+  withHandlers(handlerCreators),
+  lifecycle(lifecycles)
 )(ProjectRegistrationEditorView);

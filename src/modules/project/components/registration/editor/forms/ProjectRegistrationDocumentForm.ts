@@ -4,26 +4,26 @@ import {
   ProjectRegistrationDocumentFormView,
 } from '@project/components/registration/editor/forms/ProjectRegistrationDocumentFormView';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
-import { compose, HandleCreators, lifecycle, ReactLifeCycleFunctions, withHandlers } from 'recompose';
+import { compose, HandleCreators, lifecycle, ReactLifeCycleFunctions, setDisplayName, withHandlers } from 'recompose';
 import { WrappedFieldArrayProps } from 'redux-form';
 
-interface OwnProps {
+interface IOwnProps {
   category: 'project' | 'preSales';
   context: WrappedFieldArrayProps<ProjectDocumentFormData>;
 }
 
-interface OwnHandlers {
+interface IOwnHandlers {
   handleChange: (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => void;
   isChecked: (type: string) => boolean;
 }
 
 export type ProjectDocumentFormProps
-  = OwnProps
-  & OwnHandlers
+  = IOwnProps
+  & IOwnHandlers
   & WithCommonSystem
   & InjectedIntlProps;
 
-const handlerCreators: HandleCreators<ProjectDocumentFormProps, OwnHandlers> = {
+const handlerCreators: HandleCreators<ProjectDocumentFormProps, IOwnHandlers> = {
   handleChange: (props: ProjectDocumentFormProps) => (event: React.ChangeEvent<HTMLInputElement>, checked: boolean): void => { 
     // const { context } = props;
     // const el = event.currentTarget.value;
@@ -94,9 +94,10 @@ const lifecycles: ReactLifeCycleFunctions<ProjectDocumentFormProps, {}> = {
   }
 };
 
-export const ProjectRegistrationDocumentForm = compose<ProjectDocumentFormProps, OwnProps>(
+export const ProjectRegistrationDocumentForm = compose<ProjectDocumentFormProps, IOwnProps>(
+  setDisplayName('ProjectRegistrationDocumentForm'),
   withCommonSystem,
   injectIntl,
-  withHandlers<ProjectDocumentFormProps, OwnHandlers>(handlerCreators),
-  lifecycle<ProjectDocumentFormProps, {}>(lifecycles),
+  withHandlers(handlerCreators),
+  lifecycle(lifecycles),
 )(ProjectRegistrationDocumentFormView);

@@ -12,6 +12,9 @@ import {
   projectRegistrationGetListError,
   projectRegistrationGetListRequest,
   projectRegistrationGetListSuccess,
+  projectRegistrationPatchError,
+  projectRegistrationPatchRequest,
+  projectRegistrationPatchSuccess,
   projectRegistrationPostError,
   projectRegistrationPostRequest,
   projectRegistrationPostSuccess,
@@ -232,13 +235,62 @@ function* watchPutRequest() {
   yield takeEvery(Action.PUT_REQUEST, worker);
 }
 
+function* watchPatchRequest() {
+  const worker = (action: ReturnType<typeof projectRegistrationPatchRequest>) => {
+    return saiyanSaga.fetch({
+      method: 'patch',
+      path: `/v1/project/registrations/${action.payload.companyUid}/${action.payload.positionUid}/${action.payload.projectUid}`,
+      payload: action.payload.data,
+      successEffects: (response: IApiResponse) => [
+        put(projectRegistrationGetByIdDispose()),
+        put(projectRegistrationGetAllDispose()),
+        put(projectRegistrationPatchSuccess(response.body))
+      ],
+      successCallback: (response: IApiResponse) => {
+        action.payload.resolve(response.body.data);
+      },
+      failureEffects: (response: IApiResponse) => [
+        put(projectRegistrationPatchError(response.statusText))
+      ],
+      failureCallback: (response: IApiResponse) => {
+        if (response.status === 400) {
+          const errors: any = { 
+            // information -> based on form section name
+            information: flattenObject(response.body.errors) 
+          };
+          
+          // action.payload.reject(new SubmissionError(response.body.errors));
+          action.payload.reject(new SubmissionError(errors));
+        } else {
+          action.payload.reject(response.statusText);
+        }
+      },
+      errorEffects: (error: TypeError) => [
+        put(projectRegistrationPatchError(error.message)),
+        put(
+          layoutAlertAdd({
+            time: new Date(),
+            message: error.message
+          })
+        )
+      ],
+      errorCallback: (error: any) => {
+        action.payload.reject(error);
+      }
+    });
+  };
+
+  yield takeEvery(Action.PATCH_REQUEST, worker);
+}
+
 function* projectRegistrationSagas() {
   yield all([
     fork(watchGetAllRequest),
     fork(watchGetListRequest),
     fork(watchGetByIdRequest),
     fork(watchPostRequest),
-    fork(watchPutRequest)
+    fork(watchPutRequest),
+    fork(watchPatchRequest)
   ]);
 }
 

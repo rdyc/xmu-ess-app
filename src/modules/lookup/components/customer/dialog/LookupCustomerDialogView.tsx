@@ -21,13 +21,14 @@ import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { List as VirtualizedList, ListRowProps } from 'react-virtualized';
 
+import { layoutMessage } from '@layout/locales/messages';
 import { LookupCustomerDialogProps } from './LookupCustomerDialog';
 
 export const LookupCustomerDialogView: React.SFC<LookupCustomerDialogProps> = props => {
   const { isOpen, _search } = props;
   const { intl } = props;
   const { onSelected, onClose, filterCustomers, searchOnChange, searchOnKeyUp } = props;
-  const { response } = props.lookupCustomerState.list;
+  const { isLoading, response } = props.lookupCustomerState.list;
   
   const customers = filterCustomers(response);
 
@@ -116,15 +117,21 @@ export const LookupCustomerDialogView: React.SFC<LookupCustomerDialogProps> = pr
         </div>
         
         <List>
-          <VirtualizedList
-            width={9999}
-            height={9999}
-            autoWidth
-            autoHeight
-            rowCount={customers.length}
-            rowHeight={70}
-            rowRenderer={rowRenderer}
-          />
+          {
+            !isLoading &&
+            <VirtualizedList
+              width={9999}
+              height={9999}
+              autoWidth
+              autoHeight
+              rowCount={customers.length}
+              rowHeight={70}
+              rowRenderer={rowRenderer}
+            /> ||
+            <Typography>
+              {intl.formatMessage(layoutMessage.text.loading)}
+            </Typography>
+          }
         </List>
       </DialogContent>
     </Dialog>

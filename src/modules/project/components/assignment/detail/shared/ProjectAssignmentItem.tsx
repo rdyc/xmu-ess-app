@@ -1,4 +1,6 @@
 import { WorkflowStatusType } from '@common/classes/types';
+import { layoutMessage } from '@layout/locales/messages';
+import { GlobalFormat } from '@layout/types';
 import { GlobalStyle } from '@layout/types/GlobalStyle';
 import { Button, Card, CardActions, CardContent, CardHeader, TextField } from '@material-ui/core';
 import { IProjectAssignmentDetailItem } from '@project/classes/response';
@@ -7,7 +9,7 @@ import * as React from 'react';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose } from 'recompose';
 
-interface OwnProps {
+interface IOwnProps {
   data: IProjectAssignmentDetailItem;
   title: string;
   subHeader?: string;
@@ -15,7 +17,7 @@ interface OwnProps {
 }
 
 type AllProps 
-  = OwnProps
+  = IOwnProps
   & InjectedIntlProps;
 
 const projectAssignmentItem: React.SFC<AllProps> = props => (
@@ -75,6 +77,28 @@ const projectAssignmentItem: React.SFC<AllProps> = props => (
         />
       }
       
+      {
+        props.data.changes &&
+        <React.Fragment>
+          <TextField
+            {...GlobalStyle.TextField.ReadOnly}
+            label={props.intl.formatMessage(layoutMessage.field.createdBy)}
+            value={props.data.changes.created && props.data.changes.created.fullName || 'N/A'}
+            helperText={props.intl.formatDate(props.data.changes.createdAt, GlobalFormat.DateTime) || 'N/A'}
+          />
+
+          {
+            (props.data.changes.updated && props.data.changes.updatedAt) &&
+            <TextField
+              {...GlobalStyle.TextField.ReadOnly}
+              label={props.intl.formatMessage(layoutMessage.field.updatedBy)}
+              value={props.data.changes.updated.fullName || 'N/A'}
+              helperText={props.intl.formatDate(props.data.changes.updatedAt, GlobalFormat.DateTime) || 'N/A'}
+            />
+          }
+        </React.Fragment>
+      }
+
       {props.children}
     </CardContent>
 
@@ -95,6 +119,6 @@ const projectAssignmentItem: React.SFC<AllProps> = props => (
   </Card> 
 );
 
-export const ProjectAssignmentItem = compose<AllProps, OwnProps>(
+export const ProjectAssignmentItem = compose<AllProps, IOwnProps>(
   injectIntl
 )(projectAssignmentItem);
