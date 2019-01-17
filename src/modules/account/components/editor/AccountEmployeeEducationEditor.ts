@@ -37,6 +37,9 @@ interface OwnHandlers {
 
 interface OwnOption {
   formMode: FormMode;
+  educationUid?: string;
+  dialogIsOpen: boolean;
+  handleDialog: () => void;
 }
 
 interface OwnRouteParams {
@@ -45,7 +48,6 @@ interface OwnRouteParams {
 }
 
 interface OwnState {
-  // formMode: FormMode;
   employeeUid: string;
   submitDialogTitle: string;
   submitDialogContentText: string;
@@ -202,7 +204,7 @@ const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
 
 const lifecycles: ReactLifeCycleFunctions<AccountEmployeeEducationEditorProps, {}> = {
   componentDidMount() {
-    const { layoutDispatch, intl, history, stateUpdate } = this.props;
+    const { layoutDispatch, intl, history, stateUpdate, educationUid } = this.props;
     const { loadDetailRequest } = this.props.accountEmployeeEducationDispatch;
     const { user } = this.props.userState;
     
@@ -215,7 +217,7 @@ const lifecycles: ReactLifeCycleFunctions<AccountEmployeeEducationEditorProps, {
       return;
     }
     
-    if (!isNullOrUndefined(history.location.state)) {
+    if (!isNullOrUndefined(history.location.state) && !isNullOrUndefined(educationUid)) {
       view.title = accountMessage.education.page.modifyTitle;
       view.subTitle = accountMessage.education.page.modifySubHeader;
 
@@ -226,8 +228,8 @@ const lifecycles: ReactLifeCycleFunctions<AccountEmployeeEducationEditorProps, {
       });
 
       loadDetailRequest({
-        employeeUid: history.location.state.uid,
-        educationUid: history.location.state.educationUid
+        educationUid,
+        employeeUid: history.location.state.uid
       });
     }
 

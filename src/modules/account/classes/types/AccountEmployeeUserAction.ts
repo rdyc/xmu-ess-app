@@ -1,5 +1,6 @@
 export enum AccountEmployeeUserAction {
   Refresh = 'refresh',
   Create = 'create',
-  Modify = 'modify'
+  Modify = 'modify',
+  Delete = 'delete'
 }

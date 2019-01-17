@@ -25,20 +25,17 @@ export type SelectEmployeeProps
 const lifecycles: ReactLifeCycleFunctions<SelectEmployeeProps, {}> = {
   componentDidMount() {
     const { companyUids, roleUids, positionUids } = this.props;
-    const { isLoading, response } = this.props.accountEmployeeState.list;
+    const { isLoading } = this.props.accountEmployeeState.list;
     const { loadListRequest } = this.props.accountEmployeeDispatch;
 
-    if (!isLoading && !response) {
+    if (!isLoading) {
       loadListRequest({
         filter: {
           companyUids,
           roleUids,
           positionUids,
-          find: undefined,
-          findBy: undefined,
           direction: 'ascending',
-          orderBy: 'fullName',
-          size: undefined
+          orderBy: 'fullName'
         }
       });
     }
