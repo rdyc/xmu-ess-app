@@ -1,4 +1,5 @@
 import { defineMessages } from 'react-intl';
+import { purchaseItemField } from './purchaseItemMessage';
 
 const prefix = 'purchase';
 
@@ -64,6 +65,8 @@ export const purchaseSettlementField = defineMessages({
   differenceInIDR: { id: `${prefix}.field.information.differenceInIDR` },
 
   reject: { id: `${prefix}.field.information.rejectreason` },
+  rejectRequired: { id: `${prefix}.field.information.rejectreason.required` },
+  rejectPlaceholder: { id: `${prefix}.field.information.rejectreason.placeholder` },
 
   adjustmentNote: { id: `${prefix}.field.information.adjustmentNote` },
   adjustmentNoteRequired: { id: `${prefix}.field.information.adjustmentNote.required` },
@@ -71,3 +74,63 @@ export const purchaseSettlementField = defineMessages({
 
   isNeedAdjust: { id: `${prefix}.field.isNeedAdjust` }
 });
+
+export const purchaseSettlementFieldHelperFor = (field: string, type: 'fieldName' | 'fieldRequired' | 'fieldPlaceholder') => {
+  if (type === 'fieldName') {
+    switch (field) {
+      case 'uid': return purchaseSettlementField.uid;
+      case 'purchaseUid': return purchaseSettlementField.uid;
+      case 'projectUid': return purchaseSettlementField.projectUid;
+      case 'project': return purchaseSettlementField.projectUid;
+      case 'customerUid': return purchaseSettlementField.customerUid;
+      case 'customer': return purchaseSettlementField.customerUid;
+      case 'currencyType': return purchaseSettlementField.currencyType;
+      case 'currency': return purchaseSettlementField.currencyType;
+      case 'date': return purchaseSettlementField.date;
+      case 'statusType': return purchaseSettlementField.status;
+      case 'status': return purchaseSettlementField.status;
+      case 'notes': return purchaseSettlementField.notes;
+      case 'request': return purchaseSettlementField.request;
+      case 'requestInIDR': return purchaseSettlementField.requestInIDR;
+      case 'advance': return purchaseSettlementField.advance;
+      case 'rate': return purchaseSettlementField.rate;
+
+      // item
+      case 'requestValue': return purchaseSettlementField.request;
+      case 'description': return purchaseItemField.description;
+      case 'actualValue': return purchaseItemField.actual;
+      case 'actual': return purchaseItemField.actual;
+      case 'varianceValue': return purchaseItemField.variance;
+      case 'variance': return purchaseItemField.variance;
+      default: return { id: field };
+    }
+  }
+
+  if (type === 'fieldRequired') {
+    switch (field) {
+      case 'date': return purchaseSettlementField.dateRequired;
+
+      // item
+      case 'actual': return purchaseItemField.actualPlaceholder;
+
+      default: return { id: field };
+    }
+  }
+
+  if (type === 'fieldPlaceholder') {
+    switch (field) {
+      case 'uid': return purchaseSettlementField.uidPlaceholder;
+      case 'purchaseUid': return purchaseSettlementField.uidPlaceholder;
+      case 'date': return purchaseSettlementField.datePlaceholder;
+      case 'notes': return purchaseSettlementField.notesPlaceholder;
+      case 'note': return purchaseSettlementField.notesPlaceholder;
+
+      // item
+      case 'actual': return purchaseItemField.actualPlaceholder;
+
+      default: return { id: field };
+    }
+  }
+
+  return { id: field };
+};
