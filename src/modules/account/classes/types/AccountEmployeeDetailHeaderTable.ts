@@ -25,7 +25,8 @@ export enum AccountEmployeeEducationHeaderTable {
   institute = 'Institute Name',
   major = 'Education Major',
   start = 'Start Year',
-  finish = 'Finish Year'
+  finish = 'Finish Year',
+  action = 'Action'
 }
 
 export enum AccountEmployeeFamilyHeaderTable {

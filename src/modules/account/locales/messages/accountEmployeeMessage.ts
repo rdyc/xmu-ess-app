@@ -164,6 +164,8 @@ export const accountEmployeeConfirm = defineMessages({
   createDescription: { id: `${prefix}.confirm.create.subHeader` },
   modifyTitle: { id: `${prefix}.confirm.modify.title` },
   modifyDescription: { id: `${prefix}.confirm.modify.subHeader` },
+  deleteTitle: { id: `${prefix}.confirm.delete.title` },
+  deleteDescription: { id: `${prefix}.confirm.delete.subHeader` },
 });
 
 // messages

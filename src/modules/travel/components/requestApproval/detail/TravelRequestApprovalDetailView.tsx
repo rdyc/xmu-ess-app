@@ -2,16 +2,16 @@ import AppMenu from '@constants/AppMenu';
 import { SingleConfig, SingleHandler, SinglePage, SingleState } from '@layout/components/pages/singlePage/SinglePage';
 import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
+import { Grid } from '@material-ui/core';
 import { WorkflowApprovalForm } from '@organization/components/workflow/approval/WorkflowApprovalForm';
 import { WorkflowHistory } from '@organization/components/workflow/history/WorkflowHistory';
-import * as React from 'react';
-
 import { ITravelRequestDetail } from '@travel/classes/response';
 import { TravelUserAction } from '@travel/classes/types';
 import { TravelInformation } from '@travel/components/request/detail/shared/TravelInformation';
 import { TravelRequestItem } from '@travel/components/request/detail/shared/TravelRequestItem';
 import { TravelRequestSummary } from '@travel/components/request/detail/shared/TravelRequestSummary';
 import { travelMessage } from '@travel/locales/messages/travelMessage';
+import * as React from 'react';
 import { TravelRequestApprovalDetailProps } from './TravelRequestApprovalDetail';
 
 const config: SingleConfig<ITravelRequestDetail, TravelRequestApprovalDetailProps> = {
@@ -33,7 +33,7 @@ const config: SingleConfig<ITravelRequestDetail, TravelRequestApprovalDetailProp
     }
     return path;
   },
-  
+
   // action centre
   showActionCentre: true,
 
@@ -77,7 +77,7 @@ const config: SingleConfig<ITravelRequestDetail, TravelRequestApprovalDetailProp
   },
   onUpdated: (props: TravelRequestApprovalDetailProps, callback: SingleHandler) => {
     const { isLoading, response } = props.travelApprovalState.detail;
-    
+
     // set loading status
     callback.handleLoading(isLoading);
 
@@ -91,34 +91,59 @@ const config: SingleConfig<ITravelRequestDetail, TravelRequestApprovalDetailProp
   // primary
   primaryComponent: (data: ITravelRequestDetail, props: TravelRequestApprovalDetailProps) => (
     <React.Fragment>
-      <TravelRequestSummary data={data}/>      
-      <TravelInformation data={data} />
-    </React.Fragment>  
+      <Grid
+        container
+        spacing={16}
+        direction="row"
+        justify="flex-start"
+        alignItems="flex-start"
+      >
+        <Grid item xs={12}>
+          <TravelRequestSummary data={data} />        
+        </Grid>
+        <Grid item xs={12}>
+          <TravelInformation data={data} />        
+        </Grid>      
+      </Grid>      
+    </React.Fragment>
   ),
 
   // secondary (multiple components are allowed)
   secondaryComponents: (data: ITravelRequestDetail, props: TravelRequestApprovalDetailProps) => ([
     <TravelRequestItem data={data.items} />,
-    <WorkflowHistory data={data.workflow} />,
     <React.Fragment>
-      {
-        data.workflow && 
-        data.workflow.isApproval &&
-        <WorkflowApprovalForm
-          approvalTitle={props.approvalTitle}
-          approvalSubHeader={props.approvalSubHeader}
-          approvalChoices={props.approvalChoices}
-          approvalTrueValue={props.approvalTrueValue}
-          approvalDialogTitle={props.approvalDialogTitle}
-          approvalDialogContentText={props.approvalDialogContentText}
-          approvalDialogCancelText={props.approvalDialogCancelText}
-          approvalDialogConfirmedText={props.approvalDialogConfirmedText}
-          validate={props.handleValidate}
-          onSubmit={props.handleSubmit} 
-          onSubmitSuccess={props.handleSubmitSuccess}
-          onSubmitFail={props.handleSubmitFail}
-        />
-      }
+      <Grid
+        container
+        spacing={16}
+        direction="row"
+        justify="flex-start"
+        alignItems="flex-start"
+      >
+        <Grid item xs={12} >
+          <WorkflowHistory data={data.workflow} />
+        </Grid>
+        <Grid item xs={12} >
+          {
+            data.workflow &&
+            data.workflow.isApproval &&
+            <WorkflowApprovalForm
+              approvalTitle={props.approvalTitle}
+              approvalSubHeader={props.approvalSubHeader}
+              approvalChoices={props.approvalChoices}
+              approvalTrueValue={props.approvalTrueValue}
+              approvalDialogTitle={props.approvalDialogTitle}
+              approvalDialogContentText={props.approvalDialogContentText}
+              approvalDialogCancelText={props.approvalDialogCancelText}
+              approvalDialogConfirmedText={props.approvalDialogConfirmedText}
+              validate={props.handleValidate}
+              onSubmit={props.handleSubmit}
+              onSubmitSuccess={props.handleSubmitSuccess}
+              onSubmitFail={props.handleSubmitFail}
+            />
+          }
+        </Grid>
+      </Grid>
+
     </React.Fragment>
   ])
 };

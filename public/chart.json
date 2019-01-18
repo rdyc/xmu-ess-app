@@ -3,256 +3,268 @@
     "companies": [
       {
         "companyName": "EQG",
-        "percentage": 77
+        "percentage": 77.09
       },
       {
         "companyName": "NPP",
-        "percentage": 60
+        "percentage": 60.12
       },
       {
         "companyName": "ODI",
-        "percentage": 98
+        "percentage": 98.39
       },
       {
         "companyName": "XMU",
-        "percentage": 93
+        "percentage": 93.07
       }
     ],
 
     "businessUnits": [
       {
-        "companyName": "AAA",
-        "percentage": 50
+        "companyName": "EQG (EAS)",
+        "percentage": 48.78
       },
       {
-        "companyName": "AAB",
-        "percentage": 23
+        "companyName": "EQG (ETS)",
+        "percentage": 38.80
       },
       {
-        "companyName": "AAC",
-        "percentage": 28
+        "companyName": "EQG (EBC)",
+        "percentage": 39.10
       },
       {
-        "companyName": "AAD",
-        "percentage": 70
+        "companyName": "EQG (ERP)",
+        "percentage": 62.66
       },
       {
-        "companyName": "AAE",
-        "percentage": 12
+        "companyName": "EQG (EBS)",
+        "percentage": 33.48
       },
       {
-        "companyName": "AAF",
-        "percentage": 21
+        "companyName": "EQG (EAT)",
+        "percentage": 34.18
       },
       {
-        "companyName": "AAG",
-        "percentage": 36
+        "companyName": "ODI (EBS)",
+        "percentage": 97.66
       },
       {
-        "companyName": "AAH",
-        "percentage": 9
+        "companyName": "ODI (SALES)",
+        "percentage": 92.25
       },
       {
-        "companyName": "AAI",
-        "percentage": 48
+        "companyName": "XMU (BTS)",
+        "percentage": 64.09
       },
       {
-        "companyName": "AAJ",
-        "percentage": 63
+        "companyName": "XMU (XA)",
+        "percentage": 11.12
       },
       {
-        "companyName": "AAK",
-        "percentage": 77
+        "companyName": "NPP (FA-1)",
+        "percentage": 40.24
       },
       {
-        "companyName": "AAL",
-        "percentage": 54
+        "companyName": "NPP (FA-2)",
+        "percentage": 40.81
       },
       {
-        "companyName": "AAM",
-        "percentage": 33
+        "companyName": "NPP (BA)",
+        "percentage": 40.24
       },
       {
-        "companyName": "EQG",
-        "percentage": 32
+        "companyName": "NPP (INFRA)",
+        "percentage": 46.94
       }
     ],
 
     "departments": [
       {
-        "companyName": "AAA",
-        "percentage": 12
+        "companyName": "EQG (EAT1)",
+        "percentage": 37.77
       },
       {
-        "companyName": "BBB",
-        "percentage": 66
+        "companyName": "EQG (EAT2)",
+        "percentage": 30.53
       },
       {
-        "companyName": "ZZZ",
-        "percentage": 34
+        "companyName": "ODI (MTC)",
+        "percentage": 126.67
       },
       {
-        "companyName": "CCC",
-        "percentage": 67
+        "companyName": "ODI (CLOUD)",
+        "percentage": 52.02
       },
       {
-        "companyName": "DDD",
-        "percentage": 0
+        "companyName": "XMU (EXPERT)",
+        "percentage": 64.54
       },
       {
-        "companyName": "SSS",
-        "percentage": 23
+        "companyName": "XMU (SYSDEV)",
+        "percentage": 58.79
       },
       {
-        "companyName": "HHH",
-        "percentage": 11
+        "companyName": "XMU (XA)",
+        "percentage": 11.12
       },
       {
-        "companyName": "EEE",
-        "percentage": 16
+        "companyName": "NPP (FA1-Amrina)",
+        "percentage": 30.64
       },
       {
-        "companyName": "WWW",
-        "percentage": 28
+        "companyName": "NPP (FA2-Ridge)",
+        "percentage": 41.73
       },
       {
-        "companyName": "QQQ",
-        "percentage": 60
+        "companyName": "NPP (MS/MTC)",
+        "percentage": 35.70
       },
       {
-        "companyName": "UUU",
-        "percentage": 71
+        "companyName": "NPP (BA-B/I)",
+        "percentage": 51.66
       },
       {
-        "companyName": "III",
-        "percentage": 66
+        "companyName": "NPP (BA-F/I)",
+        "percentage": 16.56
       },
       {
-        "companyName": "PPP",
-        "percentage": 21
+        "companyName": "NPP (BA-ASSET)",
+        "percentage": 41.25
       },
       {
-        "companyName": "LLL",
-        "percentage": 24
+        "companyName": "NPP (INFRA-CORE)",
+        "percentage": 45.41
       },
       {
-        "companyName": "VVV",
-        "percentage": 65
+        "companyName": "NPP (INFRA-NETY",
+        "percentage": 32.09
       }
     ],
     
     "sales": [
       {
-        "companyName": "AAA",
-        "percentage": 50
+        "companyName": "EQG (Imam)",
+        "percentage": 72.28
       },
       {
-        "companyName": "AAB",
-        "percentage": 23
+        "companyName": "EQG (Fadil)",
+        "percentage": 53.56
       },
       {
-        "companyName": "AAQ",
-        "percentage": 12
+        "companyName": "EQG (ArMan)",
+        "percentage": 1.83 
       },
       {
-        "companyName": "BBB",
-        "percentage": 66
+        "companyName": "EQG (Hafiz)",
+        "percentage": 0.00
       },
       {
-        "companyName": "AAC",
-        "percentage": 28
+        "companyName": "EQG (Salman)",
+        "percentage": 28.85
       },
       {
-        "companyName": "AAD",
-        "percentage": 70
+        "companyName": "EQG (Hadi)",
+        "percentage": 74.95
       },
       {
-        "companyName": "AAE",
-        "percentage": 12
+        "companyName": "EQG (Willy)",
+        "percentage": 16.06
       },
       {
-        "companyName": "AAF",
-        "percentage": 21
+        "companyName": "EQG (Iman)",
+        "percentage": 17.76
       },
       {
-        "companyName": "AAG",
-        "percentage": 36
+        "companyName": "EQG (Nidia)",
+        "percentage": 13.98
       },
       {
-        "companyName": "AAH",
-        "percentage": 9
+        "companyName": "EQG (Handry)",
+        "percentage": 102.73
       },
       {
-        "companyName": "ZZZ",
-        "percentage": 34
+        "companyName": "EQG (Dandy)",
+        "percentage": 2.03
       },
       {
-        "companyName": "CCC",
-        "percentage": 67
+        "companyName": "EQG (Gabriella)",
+        "percentage": 28.73
       },
       {
-        "companyName": "DDD",
-        "percentage": 0
+        "companyName": "EQG (Fiqri)",
+        "percentage": 37.32
       },
       {
-        "companyName": "SSS",
-        "percentage": 23
+        "companyName": "EQG (Wildan)",
+        "percentage": 29.54
       },
       {
-        "companyName": "HHH",
-        "percentage": 11
+        "companyName": "EQG (Nadya)",
+        "percentage": 0.00
       },
       {
-        "companyName": "EEE",
-        "percentage": 16
+        "companyName": "XMU (April)",
+        "percentage": 102.84
       },
       {
-        "companyName": "WWW",
-        "percentage": 28
+        "companyName": "XMU (Siszy)",
+        "percentage": 99.86
       },
       {
-        "companyName": "QQQ",
-        "percentage": 60
+        "companyName": "XMU (Sally)",
+        "percentage": 50.86
       },
       {
-        "companyName": "UUU",
-        "percentage": 71
+        "companyName": "XMU (Dian)",
+        "percentage": 49.22
       },
       {
-        "companyName": "III",
-        "percentage": 66
+        "companyName": "XMU (Bagas)",
+        "percentage": 0.00
       },
       {
-        "companyName": "PPP",
-        "percentage": 21
+        "companyName": "ODI (Anita)",
+        "percentage": 95.92
       },
       {
-        "companyName": "LLL",
-        "percentage": 24
+        "companyName": "ODI (Felicia)",
+        "percentage": 115.92
       },
       {
-        "companyName": "VVV",
-        "percentage": 65
+        "companyName": "ODI (Shiella)",
+        "percentage": 76.81
       },
       {
-        "companyName": "AAJ",
-        "percentage": 63
+        "companyName": "ODI (Jeniffer)",
+        "percentage": 60.20
       },
       {
-        "companyName": "AAK",
-        "percentage": 77
+        "companyName": "NPP (Dian)",
+        "percentage": 26.14
       },
       {
-        "companyName": "AAL",
-        "percentage": 54
+        "companyName": "NPP (Rina)",
+        "percentage": 24.07
       },
       {
-        "companyName": "AAM",
-        "percentage": 33
+        "companyName": "NPP (Wisnu)",
+        "percentage": 47.60
       },
       {
-        "companyName": "WER",
-        "percentage": 43
+        "companyName": "NPP (Kiki)",
+        "percentage": 60.87
+      },
+      {
+        "companyName": "NPP (Lulu)",
+        "percentage": 24.86
+      },
+      {
+        "companyName": "NPP (Lupi)",
+        "percentage": 32.17
+      },
+      {
+        "companyName": "NPP (Firmansyah)",
+        "percentage": 13.15
       }
     ]
   }
