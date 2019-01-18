@@ -253,7 +253,7 @@ const lifecycles: ReactLifeCycleFunctions<AccountEmployeeAccessEditorProps, {}> 
   },
   componentWillUnmount() {
     const { layoutDispatch, appBarDispatch } = this.props;
-    const { createDispose, updateDispose } = this.props.accountEmployeeAccessDispatch;
+    const { createDispose, updateDispose, loadDetailDispose } = this.props.accountEmployeeAccessDispatch;
 
     layoutDispatch.changeView(null);
     layoutDispatch.navBackHide();
@@ -261,6 +261,7 @@ const lifecycles: ReactLifeCycleFunctions<AccountEmployeeAccessEditorProps, {}> 
 
     appBarDispatch.dispose();
 
+    loadDetailDispose();
     createDispose();
     updateDispose();
   }

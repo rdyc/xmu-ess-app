@@ -13,7 +13,8 @@ interface OwnRouteParams {
 
 interface OwnState {
   isOpenMenu: boolean;
-  siteItemIndex?: string | undefined;
+  accessUid?: string;
+  accessIndex?: string;
 }
 
 interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
@@ -37,13 +38,14 @@ export type AccountEmployeeAccessProps
 const handlerCreators: HandleCreators<AccountEmployeeAccessProps, OwnHandlers> = {
   handleMenuOpen: (props: AccountEmployeeAccessProps) => (accessUid: string, index: number) => {
     props.stateUpdate({
+      accessUid,
       isOpenMenu: true,
-      siteItemIndex: index,
+      accessIndex: index,
     });
   },
   handleMenuClose: (props: AccountEmployeeAccessProps) => () => {
     props.stateUpdate({
-      isOpenMenu: true,
+      isOpenMenu: false,
       siteItemIndex: undefined,
     });
   },

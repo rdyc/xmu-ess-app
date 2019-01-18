@@ -35,6 +35,8 @@ const handlerCreators: HandleCreators<AccountEmployeeAccessDetailFormProps, OwnH
       
       const fieldName = name.replace('information.', '');
 
+      const byCompanyUid = companyUidValue;
+
       const byCompanyFilter: any = {
         companyUid: companyUidValue,
       };
@@ -55,7 +57,7 @@ const handlerCreators: HandleCreators<AccountEmployeeAccessDetailFormProps, OwnH
             category: 'unit',
             label: intl.formatMessage(accountMessage.access.fieldFor(fieldName, 'fieldName')),
             placeholder: intl.formatMessage(accountMessage.access.fieldFor(fieldName, 'fieldPlaceholder')),
-            companyUid: companyUidValue,
+            companyUid: byCompanyUid,
             disabled: isNullOrUndefined(companyUidValue),
             component: SelectSystem
           };
@@ -66,7 +68,7 @@ const handlerCreators: HandleCreators<AccountEmployeeAccessDetailFormProps, OwnH
             category: 'department',
             label: intl.formatMessage(accountMessage.access.fieldFor(fieldName, 'fieldName')),
             placeholder: intl.formatMessage(accountMessage.access.fieldFor(fieldName, 'fieldPlaceholder')),
-            companyUid: companyUidValue,
+            companyUid: byCompanyUid,
             disabled: isNullOrUndefined(companyUidValue),
             component: SelectSystem
           };

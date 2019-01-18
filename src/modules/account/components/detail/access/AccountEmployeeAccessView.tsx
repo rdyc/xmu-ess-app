@@ -149,22 +149,22 @@ export const AccountEmployeeAccessView: React.SFC<AccountEmployeeAccessProps> = 
                         id={`access-item-button-${index}`}
                         color="inherit"
                         aria-label="More"
-                        onClick={() => props.handleMenuOpen(item, index)}
+                        onClick={() => props.handleMenuOpen(item.uid, index)}
                       >
                         <MoreVertIcon />
                       </IconButton>
                     </TableCell>
-                    <Menu
-                      anchorEl={document.getElementById(`access-item-button-${props.siteItemIndex}`)} 
-                      open={props.isOpenMenu}
-                      onClose={props.handleMenuClose}
-                    >
-                      <MenuItem onClick={() => props.history.push(`/account/employee/${props.match.params.employeeUid}/multiaccess/form`, { accessUid: item.uid })}>
-                        {props.intl.formatMessage(accountMessage.access.dialog.modifyTitle)}
-                      </MenuItem>
-                  </Menu>
                   </TableRow>
                 ))}
+                <Menu
+                  anchorEl={document.getElementById(`access-item-button-${props.accessIndex}`)} 
+                  open={props.isOpenMenu}
+                  onClose={props.handleMenuClose}
+                >
+                  <MenuItem onClick={() => props.history.push(`/account/employee/${props.match.params.employeeUid}/multiaccess/form`, { accessUid: props.accessUid })}>
+                    {props.intl.formatMessage(accountMessage.access.dialog.modifyTitle)}
+                  </MenuItem>
+              </Menu>
             </TableBody>
           </Table>
         </Paper>
