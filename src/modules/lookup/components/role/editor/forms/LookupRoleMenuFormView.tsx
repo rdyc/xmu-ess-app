@@ -8,13 +8,7 @@ import { LookupRoleMenuFormProps } from './LookupRoleMenuForm';
 
 export const LookupRoleMenuFormView: React.SFC<LookupRoleMenuFormProps> = props => {
   const { isLoading, response } = props.lookupMenuState.list;
-  const { active, isExpanded, handleToggle, handleCheck, menus } = props;
-
-  const isChecked = (uid: string) => {
-    const _menus = new Set(menus);
-
-    return _menus.has(uid);
-  };
+  const { active, isExpanded, handleToggle } = props;
 
   const render = (
     <Card square>
@@ -29,7 +23,6 @@ export const LookupRoleMenuFormView: React.SFC<LookupRoleMenuFormProps> = props 
             response &&
             response.data &&
             response.data.map((parent, index) => {
-
               return (
                 (!parent.parentUid) &&
                 <div key={index}>
@@ -46,8 +39,6 @@ export const LookupRoleMenuFormView: React.SFC<LookupRoleMenuFormProps> = props 
                           <Checkbox
                             {...input}
                             value={parent.uid}
-                            onChange={() => handleCheck(parent.uid, undefined)}
-                            checked={isChecked(parent.uid)}
                             disabled={meta.submitting}
                             onFocus={undefined}
                             onBlur={undefined}
@@ -101,8 +92,6 @@ export const LookupRoleMenuFormView: React.SFC<LookupRoleMenuFormProps> = props 
                                   <Checkbox
                                     {...input}
                                     value={child.uid}
-                                    onChange={child.parentUid && (() => handleCheck(child.parentUid, child.uid))}
-                                    checked={isChecked(child.uid)}
                                     disabled={meta.submitting}
                                     onFocus={undefined}
                                     onBlur={undefined}
