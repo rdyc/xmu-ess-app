@@ -8,6 +8,7 @@ const formName = 'accountEmployeeTraining';
 export type AccountEmployeeTrainingFormData = {
   information: {
     uid: string | null | undefined;
+    employeeUid: string| null | undefined;
     name: string | null | undefined;
     start: string | null | undefined;
     end: string | null | undefined;

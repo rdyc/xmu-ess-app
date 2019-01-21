@@ -24,14 +24,19 @@ interface OwnHandlers {
   handleSubmitFail: (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => void;
 }
 
+interface OwnOption {
+  formMode: FormMode;
+  educationUid?: string;
+  dialogIsOpen: boolean;
+  handleDialog: () => void;
+}
 interface OwnRouteParams {
+  employeeUid: string;
   trainingUid: string;
 }
 
 interface OwnState {
-  formMode: FormMode;
   employeeUid: string;
-  trainingUid?: string | undefined;
   submitDialogTitle: string;
   submitDialogContentText: string;
   submitDialogCancelText: string;
@@ -49,6 +54,7 @@ export type AccountEmployeeTrainingEditorProps
   & WithAppBar
   & RouteComponentProps<OwnRouteParams>
   & InjectedIntlProps
+  & OwnOption
   & OwnHandlers
   & OwnState
   & OwnStateUpdaters;
@@ -72,7 +78,7 @@ const handlerCreators: HandleCreators<AccountEmployeeTrainingEditorProps, OwnHan
     return errors;
   },
   handleSubmit: (props: AccountEmployeeTrainingEditorProps) => (formData: AccountEmployeeTrainingFormData) => {
-    const { formMode, employeeUid, intl, history } = props;
+    const { formMode, employeeUid, intl } = props;
     const { user } = props.userState;
     const { createRequest, updateRequest } = props.accountEmployeeTrainingDispatch;
 
@@ -82,7 +88,6 @@ const handlerCreators: HandleCreators<AccountEmployeeTrainingEditorProps, OwnHan
 
     const payload = {
       ...formData.information,
-      employeeUid: history.location.state.uid
     };
 
     // creating
@@ -136,7 +141,7 @@ const handlerCreators: HandleCreators<AccountEmployeeTrainingEditorProps, OwnHan
       time: new Date()
     });
 
-    history.push(`/lookup/employee/${response.uid}`);
+    history.push(`/account/employee/${response.uid}`);
   },
   handleSubmitFail: (props: AccountEmployeeTrainingEditorProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
     const { formMode, intl } = props;
@@ -170,7 +175,7 @@ const handlerCreators: HandleCreators<AccountEmployeeTrainingEditorProps, OwnHan
 };
 
 const createProps: mapper<AccountEmployeeTrainingEditorProps, OwnState> = (props: AccountEmployeeTrainingEditorProps): OwnState => ({ 
-  formMode: FormMode.New,
+  // formMode: FormMode.New,
   employeeUid: '',
   submitDialogTitle: props.intl.formatMessage(accountMessage.employee.confirm.createTitle),
   submitDialogContentText: props.intl.formatMessage(accountMessage.employee.confirm.createDescription),
@@ -224,7 +229,7 @@ const lifecycles: ReactLifeCycleFunctions<AccountEmployeeTrainingEditorProps, {}
         title: intl.formatMessage(view.title),
         subTitle : intl.formatMessage(view.subTitle)
       },
-      parentUrl: `/lookup/employee`,
+      parentUrl: `/account/employee`,
       status: {
         isNavBackVisible: true,
         isSearchVisible: false,

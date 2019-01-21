@@ -1,6 +1,6 @@
 import { FormMode } from '@generic/types';
 import { layoutMessage } from '@layout/locales/messages';
-import { Typography } from '@material-ui/core';
+import { Dialog, Typography } from '@material-ui/core';
 import * as React from 'react';
 import { AccountEmployeeTrainingEditorProps } from './AccountEmployeeTrainingEditor';
 import { AccountEmployeeTrainingContainerForm, AccountEmployeeTrainingFormData } from './form/training/AccountEmployeeTrainingContainerForm';
@@ -11,23 +11,30 @@ export const AccountEmployeeTrainingEditorView: React.SFC<AccountEmployeeTrainin
   const { isLoading, response } = props.accountEmployeeTrainingState.detail;
 
   const renderForm = (formData: AccountEmployeeTrainingFormData) => (
-    <AccountEmployeeTrainingContainerForm 
-      formMode={formMode}
-      initialValues={formData}
-      validate={handleValidate}
-      onSubmit={handleSubmit} 
-      onSubmitSuccess={handleSubmitSuccess}
-      onSubmitFail={handleSubmitFail}
-      submitDialogTitle={submitDialogTitle}
-      submitDialogContentText={submitDialogContentText}
-      submitDialogCancelText={submitDialogCancelText}
-      submitDialogConfirmedText={submitDialogConfirmedText}
-    />
+    <Dialog
+      open={props.dialogIsOpen}
+      onClose={props.handleDialog}
+      scroll="paper"
+    >
+      <AccountEmployeeTrainingContainerForm
+        formMode={formMode}
+        initialValues={formData}
+        validate={handleValidate}
+        onSubmit={handleSubmit}
+        onSubmitSuccess={handleSubmitSuccess}
+        onSubmitFail={handleSubmitFail}
+        submitDialogTitle={submitDialogTitle}
+        submitDialogContentText={submitDialogContentText}
+        submitDialogCancelText={submitDialogCancelText}
+        submitDialogConfirmedText={submitDialogConfirmedText}
+      />
+    </Dialog>
   );
 
   const initialValues: AccountEmployeeTrainingFormData = {
     information: {
       uid: undefined,
+      employeeUid: undefined,
       name: undefined,
       start: undefined,
       end: undefined,
@@ -51,7 +58,7 @@ export const AccountEmployeeTrainingEditorView: React.SFC<AccountEmployeeTrainin
         </Typography>
       );
     }
-    
+
     if (!isLoading && response && response.data) {
       // todo: replace values with response data
       const data = response.data;
