@@ -1,13 +1,14 @@
 import { IEmployeeFamilyPostPayload, IEmployeeFamilyPutPayload } from '@account/classes/request/employeeFamily';
 import { IEmployee } from '@account/classes/response';
+import { IEmployeeFamilyList } from '@account/classes/response/employeeFamily';
 import { WithAccountEmployeeFamily, withAccountEmployeeFamily } from '@account/hoc/withAccountEmployeeFamily';
 import { accountMessage } from '@account/locales/messages/accountMessage';
-import AppMenu from '@constants/AppMenu';
 import { FormMode } from '@generic/types';
 import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
-import { layoutMessage } from '@layout/locales/messages';
+import { WithStyles, withStyles } from '@material-ui/core';
+import styles from '@styles';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import {
@@ -28,7 +29,14 @@ import { isNullOrUndefined, isObject } from 'util';
 import { AccountEmployeeFamilyFormData } from './AccountEmployeeFamilyContainerForm';
 import { AccountEmployeeFamilyEditorView } from './AccountEmployeeFamilyEditorView';
 
+type EditAction = 'update' | 'delete';
+
 interface OwnHandlers {
+  handleMenuOpen: (family: IEmployeeFamilyList, index: number) => void;
+  handleMenuClose: () => void;
+  handleDialogClose: () => void;
+  handleNew: () => void;
+  handleEdit: (editAction: EditAction) => void;
   handleValidate: (payload: AccountEmployeeFamilyFormData) => FormErrors;
   handleSubmit: (payload: AccountEmployeeFamilyFormData) => void;
   handleSubmitSuccess: (result: any, dispatch: Dispatch<any>) => void;
@@ -42,10 +50,13 @@ interface OwnRouteParams {
 interface OwnState {
   formMode: FormMode;
   employeeUid?: string | undefined;
-  submitDialogTitle: string;
-  submitDialogContentText: string;
-  submitDialogCancelText: string;
-  submitDialogConfirmedText: string;
+  uid: string | undefined;
+  isOpenDialog: boolean;
+  isOpenMenu: boolean;
+  editAction?: EditAction | undefined;
+
+  initialValues?: AccountEmployeeFamilyFormData;
+  familyIndex?: string | undefined;
 }
 
 interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
@@ -54,6 +65,7 @@ interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
 
 export type AccountEmployeeFamilyEditorProps
   = WithAccountEmployeeFamily
+  & WithStyles<typeof styles>
   & WithUser
   & WithLayout
   & WithAppBar
@@ -64,6 +76,74 @@ export type AccountEmployeeFamilyEditorProps
   & OwnStateUpdaters;
 
 const handlerCreators: HandleCreators<AccountEmployeeFamilyEditorProps, OwnHandlers> = {
+  handleMenuOpen: (props: AccountEmployeeFamilyEditorProps) => (family: IEmployeeFamilyList, index: number) => {
+    const { stateUpdate } = props;
+
+    stateUpdate({
+      employeeUid: family.uid,
+      isOpenMenu: true,
+      familyIndex: index,
+      initialValues: {
+        information: {
+          uid: family.uid,
+          familyType: family.familyType,
+          fullName: family.fullName,
+          genderType: family.genderType,
+          birthPlace: family.birthPlace,
+          birthDate: family.birthDate,
+        }
+      }
+    });
+  },
+  handleMenuClose: (props: AccountEmployeeFamilyEditorProps) => () => {
+    const { stateUpdate } = props;
+
+    stateUpdate({
+      employeeUid: undefined,
+      isOpenMenu: false,
+      siteItemIndex: undefined,
+      initialValues: undefined
+    });
+  },
+  handleDialogClose: (props: AccountEmployeeFamilyEditorProps) => () => {
+    const { stateUpdate } = props;
+
+    stateUpdate({
+      isOpenDialog: false,
+      formMode: undefined,
+      editAction: undefined
+    });
+  },
+  handleNew: (props: AccountEmployeeFamilyEditorProps) => () => {
+    const { stateUpdate } = props;
+
+    stateUpdate({
+      formMode: FormMode.New,
+      isOpenDialog: true,
+      isOpenMenu: false,
+      editAction: undefined,
+      uid: undefined,
+      initialValues: {
+        information: {
+          fullName: '',
+          familyType: '',
+          genderType: '',
+          birthPlace: '',
+          birthDate: '',
+        }
+      }
+    });
+  },
+  handleEdit: (props: AccountEmployeeFamilyEditorProps) => (action: EditAction) => {
+    const { stateUpdate } = props;
+
+    stateUpdate({
+      formMode: FormMode.Edit,
+      isOpenDialog: true,
+      isOpenMenu: false,
+      editAction: action
+    });
+  },
   handleValidate: (props: AccountEmployeeFamilyEditorProps) => (formData: AccountEmployeeFamilyFormData) => {
     const errors = {
       information: {}
@@ -178,13 +258,18 @@ const handlerCreators: HandleCreators<AccountEmployeeFamilyEditorProps, OwnHandl
   }
 };
 
-const createProps: mapper<AccountEmployeeFamilyEditorProps, OwnState> = (props: AccountEmployeeFamilyEditorProps): OwnState => ({
+const createProps: mapper<AccountEmployeeFamilyEditorProps, OwnState> = (props: AccountEmployeeFamilyEditorProps): OwnState => {
+  const { location } = props;
+
+  return { 
   formMode: FormMode.New,
-  submitDialogTitle: props.intl.formatMessage(accountMessage.employee.confirm.createTitle),
-  submitDialogContentText: props.intl.formatMessage(accountMessage.employee.confirm.createDescription),
-  submitDialogCancelText: props.intl.formatMessage(layoutMessage.action.cancel),
-  submitDialogConfirmedText: props.intl.formatMessage(layoutMessage.action.ok),
-});
+  employeeUid: location.state.uid,
+  editAction: undefined,
+  isOpenDialog: false,
+  isOpenMenu: false,
+  uid: undefined,
+  };
+};
 
 const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
   stateUpdate: (prevState: OwnState) => (newState: any) => ({
@@ -194,53 +279,68 @@ const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
 };
 
 const lifecycles: ReactLifeCycleFunctions<AccountEmployeeFamilyEditorProps, {}> = {
+  // componentDidMount() {
+  //   const { layoutDispatch, intl, history, stateUpdate } = this.props;
+  //   const { loadDetailRequest } = this.props.accountEmployeeFamilyDispatch;
+  //   const { user } = this.props.userState;
+
+  //   const view = {
+  //     title: accountMessage.employee.page.newTitle,
+  //     subTitle: accountMessage.employee.page.newSubHeader,
+  //   };
+
+  //   if (!user) {
+  //     return;
+  //   }
+
+  //   if (!isNullOrUndefined(history.location.state)) {
+  //     view.title = accountMessage.employee.page.modifyTitle;
+  //     view.subTitle = accountMessage.employee.page.modifySubHeader;
+
+  //     stateUpdate({
+  //       formMode: FormMode.Edit,
+  //       employeeUid: history.location.state.uid,
+  //       submitDialogTitle: this.props.intl.formatMessage(accountMessage.employee.confirm.modifyTitle),
+  //       submitDialogContentText: this.props.intl.formatMessage(accountMessage.employee.confirm.modifyDescription)
+  //     });
+
+  //     loadDetailRequest({
+  //       employeeUid: history.location.state.uid,
+  //       familyUid: history.location.state.familyuid
+  //     });
+  //   }
+
+  //   layoutDispatch.setupView({
+  //     view: {
+  //       uid: AppMenu.Account,
+  //       parentUid: AppMenu.Lookup,
+  //       title: intl.formatMessage(view.title),
+  //       subTitle: intl.formatMessage(view.subTitle)
+  //     },
+  //     parentUrl: `/lookup/employee`,
+  //     status: {
+  //       isNavBackVisible: true,
+  //       isSearchVisible: false,
+  //       isActionCentreVisible: false,
+  //       isMoreVisible: false,
+  //       isModeSearch: false
+  //     }
+  //   });
+  // },
   componentDidMount() {
-    const { layoutDispatch, intl, history, stateUpdate } = this.props;
-    const { loadDetailRequest } = this.props.accountEmployeeFamilyDispatch;
+    const { history } = this.props;
     const { user } = this.props.userState;
+    const { isLoading, response } = this.props.accountEmployeeFamilyState.list;
+    const { loadListRequest } = this.props.accountEmployeeFamilyDispatch;
 
-    const view = {
-      title: accountMessage.employee.page.newTitle,
-      subTitle: accountMessage.employee.page.newSubHeader,
-    };
-
-    if (!user) {
-      return;
-    }
-
-    if (!isNullOrUndefined(history.location.state)) {
-      view.title = accountMessage.employee.page.modifyTitle;
-      view.subTitle = accountMessage.employee.page.modifySubHeader;
-
-      stateUpdate({
-        formMode: FormMode.Edit,
+    if (user && !isLoading && !response) {
+      loadListRequest({
         employeeUid: history.location.state.uid,
-        submitDialogTitle: this.props.intl.formatMessage(accountMessage.employee.confirm.modifyTitle),
-        submitDialogContentText: this.props.intl.formatMessage(accountMessage.employee.confirm.modifyDescription)
-      });
-
-      loadDetailRequest({
-        employeeUid: history.location.state.uid,
-        familyUid: history.location.state.familyuid
+        filter: {
+          direction: 'ascending'
+        }
       });
     }
-
-    layoutDispatch.setupView({
-      view: {
-        uid: AppMenu.Account,
-        parentUid: AppMenu.Lookup,
-        title: intl.formatMessage(view.title),
-        subTitle: intl.formatMessage(view.subTitle)
-      },
-      parentUrl: `/lookup/employee`,
-      status: {
-        isNavBackVisible: true,
-        isSearchVisible: false,
-        isActionCentreVisible: false,
-        isMoreVisible: false,
-        isModeSearch: false
-      }
-    });
   },
   componentWillUnmount() {
     const { layoutDispatch, appBarDispatch, accountEmployeeFamilyDispatch } = this.props;
@@ -256,13 +356,14 @@ const lifecycles: ReactLifeCycleFunctions<AccountEmployeeFamilyEditorProps, {}> 
   }
 };
 
-export default compose<AccountEmployeeFamilyEditorProps, {}>(
+export const AccountEmployeeFamilyEditor = compose<AccountEmployeeFamilyEditorProps, {}>(
   withUser,
   withLayout,
   withAppBar,
   withRouter,
   withAccountEmployeeFamily,
   injectIntl,
+  withStyles(styles),
   withStateHandlers<OwnState, OwnStateUpdaters, {}>(createProps, stateUpdaters),
   withHandlers<AccountEmployeeFamilyEditorProps, OwnHandlers>(handlerCreators),
   lifecycle<AccountEmployeeFamilyEditorProps, {}>(lifecycles),

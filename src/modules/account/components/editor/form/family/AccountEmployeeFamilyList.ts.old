@@ -3,30 +3,32 @@ import { WithUser, withUser } from '@layout/hoc/withUser';
 import { WithStyles, withStyles } from '@material-ui/core';
 import styles from '@styles';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
+import { RouteComponentProps, withRouter } from 'react-router';
 import { compose, lifecycle, ReactLifeCycleFunctions } from 'recompose';
 import { AccountEmployeeFamilyListView } from './AccountEmployeeFamilyListView';
 
-interface OwnOption {
+interface OwnRouteParams {
   employeeUid: string;
 }
 
 export type AccountEmployeeFamilyListProps
-  = OwnOption
+  = 
   & WithUser
   & InjectedIntlProps
   & WithStyles<typeof styles>
+  & RouteComponentProps<OwnRouteParams>
   & WithAccountEmployeeFamily;
 
 const lifecycles: ReactLifeCycleFunctions<AccountEmployeeFamilyListProps, {}> = {
   componentDidMount() {
-    const { employeeUid } = this.props;
+    const { history } = this.props;
     const { user } = this.props.userState;
     const { isLoading, response } = this.props.accountEmployeeFamilyState.list;
     const { loadListRequest } = this.props.accountEmployeeFamilyDispatch;
 
-    if (user && !isLoading && !response && employeeUid) {
+    if (user && !isLoading && !response) {
       loadListRequest({
-        employeeUid,
+        employeeUid: history.location.state.uid,
         filter: {
           direction: 'ascending'
         }
@@ -35,8 +37,9 @@ const lifecycles: ReactLifeCycleFunctions<AccountEmployeeFamilyListProps, {}> = 
   }
 };
 
-export const AccountEmployeeFamilyList = compose<AccountEmployeeFamilyListProps, OwnOption>(
+export const AccountEmployeeFamilyList = compose<AccountEmployeeFamilyListProps, {}>(
   withUser,
+  withRouter,
   injectIntl,
   withStyles(styles),
   withAccountEmployeeFamily,

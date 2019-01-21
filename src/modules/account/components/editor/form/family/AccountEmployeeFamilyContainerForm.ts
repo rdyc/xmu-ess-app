@@ -7,6 +7,7 @@ const formName = 'accountEmployeeFamily';
 
 export type AccountEmployeeFamilyFormData = {
   information:  {
+    uid: string | null | undefined;
     employeeUid: string | null | undefined;
     familyType: string | null | undefined;
     fullName: string | null | undefined;

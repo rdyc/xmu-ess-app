@@ -3,6 +3,8 @@ import { AccountEmployeeFamilyHeaderTable } from '@account/classes/types';
 import { GlobalFormat } from '@layout/types';
 import {
   Fade,
+  Menu,
+  MenuItem,
   Paper,
   Table,
   TableBody,
@@ -57,7 +59,23 @@ export const AccountEmployeeFamilyListView: React.SFC<
                         ? intl.formatDate(item.birthDate, GlobalFormat.Date)
                         : 'N/A'}
                     </TableCell>
-                    <TableCell></TableCell>>
+                    <TableCell>
+                      <Menu
+                        anchorEl={document.getElementById(`button-${index}`)}
+                        open={isOpenMenu}
+                        onClose={handleMenuClose}
+                      >
+                        <MenuItem onClick={() => handleEdit('update')}>
+                          {props.intl.formatMessage(accountMessage.option.modify)}
+                        </MenuItem>
+                        <MenuItem onClick={() => handleEdit('delete')}>
+                          {props.intl.formatMessage(accountMessage.option.remove)}
+                        </MenuItem>
+                      </Menu>
+                    </TableCell>
+                    <TableCell>
+                      Delete?
+                    </TableCell>
                   </TableRow>
                 ))}
             </TableBody>
