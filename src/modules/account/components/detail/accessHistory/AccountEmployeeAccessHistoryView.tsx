@@ -80,7 +80,7 @@ const config: SingleConfig<IEmployeeAccessHistoryList, AccountEmployeeAccessHist
 export const AccountEmployeeAccessHistoryView: React.SFC<
   AccountEmployeeAccessHistoryProps
 > = props => {
-  const { classes, intl } = props;
+  const { intl } = props;
   const { response, isLoading } = props.accountEmployeeAccessHistoryState.list;
 
   const header = Object.keys(AccountEmployeeHistoryHeaderTable).map(key => ({
@@ -91,8 +91,8 @@ export const AccountEmployeeAccessHistoryView: React.SFC<
   const renderAccessHistory = (data: IEmployeeAccessHistoryList[]) => {
     return (
       <Fade in={!isLoading} timeout={1000} mountOnEnter unmountOnExit>
-        <Paper className={classes.table}>
-          <Table className={classes.minTable}>
+        <Paper square>
+          <Table>
             <TableHead>
               <TableRow>
                 {header.map(headerIdx => (
@@ -142,18 +142,16 @@ export const AccountEmployeeAccessHistoryView: React.SFC<
       <DetailPage
         tab={1}
       >
-      <SinglePage
-        config={config}
-        connectedProps={props}
-      >
-        <div style={{ padding: 8 * 3 }}>
+        <SinglePage
+          config={config}
+          connectedProps={props}
+        >
           {(( !isLoading && response && !response.data) ||
             ( !isLoading && response && response.data && response.data.length === 0)) && (
             <Typography variant="body2">No Data</Typography>
           )}
           { !isLoading && response && response.data && response.data.length >= 1 && renderAccessHistory(response.data)}
-        </div>
-      </SinglePage>  
+        </SinglePage>  
       </DetailPage>
     </React.Fragment>
   );

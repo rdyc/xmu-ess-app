@@ -44,7 +44,9 @@ interface PropsFromDispatch {
     createDispose: typeof accountEmployeeEducationPostDispose;
     updateRequest: typeof accountEmployeeEducationPutRequest;
     updateDispose: typeof accountEmployeeEducationPutDispose;
-
+    deleteRequest: typeof accountEmployeeEducationDeleteRequest;
+    deleteDispose: typeof accountEmployeeEducationDeleteDispose;
+    
     // query
     loadAllRequest: typeof accountEmployeeEducationGetAllRequest;
     loadAllDispose: typeof accountEmployeeEducationGetAllDispose;

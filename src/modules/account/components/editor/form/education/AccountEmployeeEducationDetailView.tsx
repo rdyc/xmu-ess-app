@@ -1,12 +1,10 @@
-import { accountMessage } from '@account/locales/messages/accountMessage';
 import { FormMode } from '@generic/types';
-import { Card, CardContent, CardHeader } from '@material-ui/core';
 import * as React from 'react';
 import { Field } from 'redux-form';
 import { AccountEmployeeEducationDetailProps } from './AccountEmployeeEducationDetail';
 
 export const AccountEmployeeEducationDetailView: React.SFC<AccountEmployeeEducationDetailProps> = props => {
-  const { formMode, intl } = props;
+  const { formMode } = props;
   const { names } = props.context;
 
   const renderField = (name: string) => {
@@ -16,6 +14,7 @@ export const AccountEmployeeEducationDetailView: React.SFC<AccountEmployeeEducat
     // don't show uid for new form
     const fields = ['uid'];
     if (formMode === FormMode.New && fields.indexOf(fieldName) !== -1) {
+      console.log(`AAAAAAa + ${formMode}`);
       return null;
     }
 
@@ -29,15 +28,9 @@ export const AccountEmployeeEducationDetailView: React.SFC<AccountEmployeeEducat
   };
  
   const render = (
-    <Card square>
-      <CardHeader 
-        title={intl.formatMessage(accountMessage.education.section.educationTitle)}
-        // subheader={intl.formatMessage(accountMessage.education.section.educationSubHeader)}
-      />
-      <CardContent>
-        {names.map(name => renderField(name))}
-      </CardContent>
-    </Card>
+    <div>
+      {names.map(name => renderField(name))}
+    </div>
   );
 
   return render;

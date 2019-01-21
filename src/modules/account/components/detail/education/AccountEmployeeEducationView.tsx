@@ -3,14 +3,14 @@ import { AccountEmployeeEducationHeaderTable, AccountEmployeeUserAction } from '
 import AccountEmployeeEducationEditor from '@account/components/editor/AccountEmployeeEducationEditor';
 import { accountMessage } from '@account/locales/messages/accountMessage';
 import AppMenu from '@constants/AppMenu';
-import { FormMode } from '@generic/types';
 import { SingleConfig, SingleHandler, SinglePage, SingleState } from '@layout/components/pages';
 import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
 import {
-  Button,
   Fade,
   IconButton,
+  Menu,
+  MenuItem,
   Paper,
   Table,
   TableBody,
@@ -48,6 +48,13 @@ const config: SingleConfig<IEmployeeEducationList, AccountEmployeeEducationProps
       enabled: true,
       visible: true,
       onClick: () => callback.handleForceReload()
+    },
+    {
+      id: AccountEmployeeUserAction.Create,
+      name: props.intl.formatMessage(layoutMessage.action.create),
+      enabled: true,
+      visible: true,
+      onClick: () => props.handleNew()
     }
   ]),
 
@@ -84,7 +91,9 @@ const config: SingleConfig<IEmployeeEducationList, AccountEmployeeEducationProps
 export const AccountEmployeeEducationView: React.SFC<
   AccountEmployeeEducationProps
 > = props => {
-  const { classes } = props;
+  const { isOpenDialog, isOpenMenu, educationItemIndex, editAction, initialValues } = props;
+  const { handleDialogClose, handleEdit, handleMenuClose, handleMenuOpen } = props;
+
   const { response, isLoading } = props.accountEmployeeEducationState.list;
 
   const header = Object.keys(AccountEmployeeEducationHeaderTable).map(key => ({
@@ -95,8 +104,8 @@ export const AccountEmployeeEducationView: React.SFC<
   const renderEducation = (data: IEmployeeEducationList[]) => {
     return (
       <Fade in={!isLoading} timeout={1000} mountOnEnter unmountOnExit>
-        <Paper className={classes.table}>
-          <Table className={classes.minTable}>
+        <Paper square>
+          <Table>
             <TableHead>
               <TableRow>
                 {header.map(headerIdx => (
@@ -124,15 +133,28 @@ export const AccountEmployeeEducationView: React.SFC<
                     <TableCell>{item.end ? item.end : 'N/A'}</TableCell>
                     <TableCell>
                       <IconButton
+                        id={`education-item-button-${index}`}
                         color="inherit"
                         aria-label="More"
-                        disabled
+                        onClick={() => handleMenuOpen(item, index)}
                       >
                         <MoreVertIcon />
                       </IconButton>
                     </TableCell>
                   </TableRow>
                 ))}
+                <Menu
+                  anchorEl={document.getElementById(`education-item-button-${educationItemIndex}`)}
+                  open={isOpenMenu}
+                  onClose={handleMenuClose}
+                >
+                  <MenuItem onClick={() => handleEdit('update')}>
+                    {props.intl.formatMessage(accountMessage.education.option.modify)}
+                  </MenuItem>
+                  <MenuItem onClick={() => handleEdit('delete')}>
+                    {props.intl.formatMessage(accountMessage.education.option.remove)}
+                  </MenuItem> 
+                </Menu>
             </TableBody>
           </Table>
         </Paper>
@@ -149,26 +171,22 @@ export const AccountEmployeeEducationView: React.SFC<
           config={config}
           connectedProps={props}
         >
-          <div style={{ padding: 8 * 3 }}>
-            {(( !isLoading && response && !response.data) ||
-              ( !isLoading && response && response.data && response.data.length === 0)) && (
-              <Typography variant="body2">No Data</Typography>
-            )}
-            {!isLoading && <div style={{ direction: 'rtl'}}>
-              <Button variant="contained" onClick={props.handleDialog} disabled>
-                Create
-              </Button>
-            </div>}
-            { !isLoading && response && response.data && response.data.length >= 1 && renderEducation(response.data)}
-          </div>
+          {(( !isLoading && response && !response.data) ||
+            ( !isLoading && response && response.data && response.data.length === 0)) && (
+            <Typography variant="body2">No Data</Typography>
+          )}
+          { !isLoading && response && response.data && response.data.length >= 1 && renderEducation(response.data)}
         </SinglePage>
       </DetailPage>
       
       <AccountEmployeeEducationEditor
-        formMode={props.uid ? FormMode.Edit : FormMode.New}
-        handleDialog={props.handleDialog}
-        dialogIsOpen={props.dialog}
-        educationUid={props.uid}
+        formMode={props.formMode}
+        educationUid={props.educationUid}
+        employeeUid={props.match.params.employeeUid}
+        isOpenDialog={isOpenDialog}
+        editAction={editAction}
+        initialValues={initialValues}
+        handleDialogClose={handleDialogClose}
       />
     </React.Fragment>
   );
