@@ -9,10 +9,12 @@
   "timesheet.entry.page.modify.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
   
   "timesheet.entry.confirm.modify.title": "Modify Confirmation",
-  "timesheet.entry.confirm.modify.description": "You are about to modify current time report. Do you want to continue?",
+  "timesheet.entry.confirm.modify.description": "You are about to modify current time report. Do you want to continue ?",
   
   "timesheet.entry.dialog.newTitle": "Submit Confirmation",
   "timesheet.entry.dialog.newDescription": "Do you want to submit time report ?",
+  "timesheet.entry.dialog.editTitle": "Modify Confirmation",
+  "timesheet.entry.dialog.editDescription": "You are about to modify current time report. Do you want to continue ?",
   
   "timesheet.entry.section.info.title": "Time Report",
   "timesheet.entry.section.info.subHeader": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",

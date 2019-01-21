@@ -123,7 +123,6 @@ const handlerCreators: HandleCreators<EntryEditorProps, OwnHandlers> = {
       ...formData.information,
       companyUid: user.company.uid,
       positionUid: user.position.uid,
-      notes: formData.information.description,
       start: `${formData.information.date && formData.information.date.substring(0, 10)}${formData.information.start && formData.information.start.substring(10)}`,
       end: `${formData.information.date && formData.information.date.substring(0, 10)}${formData.information.end && formData.information.end.substring(10)}`,
     };
@@ -263,7 +262,9 @@ const lifecycles: ReactLifeCycleFunctions<EntryEditorProps, {}> = {
 
       stateUpdate({ 
         formMode: FormMode.Edit,
-        timesheetUid: history.location.state.uid
+        timesheetUid: history.location.state.uid,
+        submitDialogTitle: this.props.intl.formatMessage(timesheetMessage.entry.dialog.editTitle),
+        submitDialogContentText: this.props.intl.formatMessage(timesheetMessage.entry.dialog.editDescription)
       });
 
       loadDetailRequest({

@@ -100,7 +100,7 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
       // page
       page: {
         uid: AppMenu.LeaveCancelation,
-        parentUid: AppMenu.LeaveRequest,
+        parentUid: AppMenu.Leave,
         title: this.props.intl.formatMessage(leaveMessage.cancellation.page.listTitle),
         description: this.props.intl.formatMessage(leaveMessage.cancellation.page.listSubHeader),
       },
