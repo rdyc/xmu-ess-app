@@ -55,9 +55,9 @@ export const accountEmployeeField = defineMessages({
   inactiveDate: { id: `${prefix}.field.inactiveDate`},
   inactiveDatePlaceholder: { id: `${prefix}.field.inactiveDate.placeholder`},
 
-  employement: { id: `${prefix}.field.employement`},
-  employementPlaceholder: { id: `${prefix}.field.employement.placeholder`},
-  employementRequired: { id: `${prefix}.field.employement.required`},
+  employment: { id: `${prefix}.field.employment`},
+  employmentPlaceholder: { id: `${prefix}.field.employment.placeholder`},
+  employmentRequired: { id: `${prefix}.field.employment.required`},
 
   rate: { id: `${prefix}.field.rate`},
   ratePlaceholder: { id: `${prefix}.field.rate.placeholder`},
@@ -76,6 +76,7 @@ export const accountEmployeeField = defineMessages({
 
   blood: { id: `${prefix}.field.blood`},
   bloodPlaceholder: { id: `${prefix}.field.blood.placeholder`},
+  bloodRequired: { id: `${prefix}.field.blood.required`},
 
   ptkp: { id: `${prefix}.field.ptkp`},
   ptkpPlaceholder: { id: `${prefix}.field.ptkp.placeholder`},
@@ -86,6 +87,7 @@ export const accountEmployeeField = defineMessages({
 
   religion: { id: `${prefix}.field.religion`},
   religionPlaceholder: { id: `${prefix}.field.religion.placeholder`},
+  religionRequired: { id: `${prefix}.field.religion.required`},
 
   // contacts  
   phone: { id: `${prefix}.field.phone`},
@@ -138,9 +140,11 @@ export const accountEmployeeField = defineMessages({
 
   bpjsKetenagakerjaan: { id: `${prefix}.field.bpjsKetenagakerjaan`},
   bpjsKetenagakerjaanPlaceholder: { id: `${prefix}.field.bpjsKetenagakerjaan.placeholder`},
+  bpjsKetenagakerjaanRequired: { id: `${prefix}.field.bpjsKetenagakerjaan.required`},
 
   bpjsKesehatan: { id: `${prefix}.field.bpjsKesehatan`},
   bpjsKesehatanPlaceholder: { id: `${prefix}.field.bpjsKesehatan.placeholder`},
+  bpjsKesehatanRequired: { id: `${prefix}.field.bpjsKesehatan.required`},
 
   bcaNumber: { id: `${prefix}.field.bca.number`},
   bcaNumberPlaceholder: { id: `${prefix}.field.bca.number.placeholder`},
@@ -160,6 +164,8 @@ export const accountEmployeeConfirm = defineMessages({
   createDescription: { id: `${prefix}.confirm.create.subHeader` },
   modifyTitle: { id: `${prefix}.confirm.modify.title` },
   modifyDescription: { id: `${prefix}.confirm.modify.subHeader` },
+  deleteTitle: { id: `${prefix}.confirm.delete.title` },
+  deleteDescription: { id: `${prefix}.confirm.delete.subHeader` },
 });
 
 // messages
@@ -185,7 +191,7 @@ export const accountEmployeeSection = defineMessages({
   contactSubHeader: { id: `${prefix}.section.contact.subHeader`},
 });
 
-// helpder
+// helper
 export const accountEmployeeFieldHelperFor = (field: string, type: 'fieldName' | 'fieldRequired' | 'fieldPlaceholder') => {
   if (type === 'fieldName') {
     switch (field) {
@@ -197,7 +203,7 @@ export const accountEmployeeFieldHelperFor = (field: string, type: 'fieldName' |
       case 'birthPlace': return accountEmployeeField.birthPlace;
       case 'dateOfBirth': return accountEmployeeField.birthDate;
       case 'companyUid': return accountEmployeeField.company;
-      case 'employmentType': return accountEmployeeField.employement;
+      case 'employmentType': return accountEmployeeField.employment;
       case 'joinDate': return accountEmployeeField.joinDate;
       case 'taxType': return accountEmployeeField.ptkp;
       case 'image': return accountEmployeeField.image;
@@ -209,7 +215,7 @@ export const accountEmployeeFieldHelperFor = (field: string, type: 'fieldName' |
       case 'citizenNumber': return accountEmployeeField.ktp;
       case 'taxNumber': return accountEmployeeField.npwp;
       case 'familyCardNumber': return accountEmployeeField.kartuKeluarga;    
-      case 'bpjsEmployementNumber': return accountEmployeeField.bpjsKetenagakerjaan;
+      case 'bpjsEmploymentNumber': return accountEmployeeField.bpjsKetenagakerjaan;
       case 'bpjsHealthCareNumber': return accountEmployeeField.bpjsKesehatan;
       case 'bankAccount': return accountEmployeeField.bcaNumber;
       case 'bankAccountName': return accountEmployeeField.bcaName;
@@ -240,16 +246,20 @@ export const accountEmployeeFieldHelperFor = (field: string, type: 'fieldName' |
       case 'birthPlace': return accountEmployeeField.birthPlaceRequired;
       case 'dateOfBirth': return accountEmployeeField.birthDateRequired;
       case 'companyUid': return accountEmployeeField.companyRequired;
-      case 'employmentType': return accountEmployeeField.employementRequired;
+      case 'employmentType': return accountEmployeeField.employmentRequired;
       case 'joinDate': return accountEmployeeField.joinDateRequired;
       case 'taxType': return accountEmployeeField.ptkpRequired;
-  
+      case 'religionType': return accountEmployeeField.religionRequired;
+      case 'bloodType': return accountEmployeeField.bloodRequired;
+
       // bank
       case 'citizenNumber': return accountEmployeeField.ktpRequired;
       case 'taxNumber': return accountEmployeeField.npwpRequired;
       case 'familyCardNumber': return accountEmployeeField.kartuKeluargaRequired;    
       case 'bankAccount': return accountEmployeeField.bcaNumberRequired;
       case 'bankAccountName': return accountEmployeeField.bcaNameRequired;
+      case 'bpjsEmploymentNumber': return accountEmployeeField.bpjsKetenagakerjaanRequired;
+      case 'bpjsHealthCareNumber': return accountEmployeeField.bpjsKesehatanRequired;
   
       // contacts
       case 'address': return accountEmployeeField.addressKtpRequired;
@@ -272,7 +282,7 @@ export const accountEmployeeFieldHelperFor = (field: string, type: 'fieldName' |
       case 'birthPlace': return accountEmployeeField.birthPlacePlaceholder;
       case 'dateOfBirth': return accountEmployeeField.birthDatePlaceholder;
       case 'companyUid': return accountEmployeeField.companyPlaceholder;
-      case 'employmentType': return accountEmployeeField.employementPlaceholder;
+      case 'employmentType': return accountEmployeeField.employmentPlaceholder;
       case 'joinDate': return accountEmployeeField.joinDatePlaceholder;
       case 'taxType': return accountEmployeeField.ptkpPlaceholder;
       case 'image': return accountEmployeeField.imagePlaceholder;
@@ -284,7 +294,7 @@ export const accountEmployeeFieldHelperFor = (field: string, type: 'fieldName' |
       case 'citizenNumber': return accountEmployeeField.ktpPlaceholder;
       case 'taxNumber': return accountEmployeeField.npwpPlaceholder;
       case 'familyCardNumber': return accountEmployeeField.kartuKeluargaPlaceholder;    
-      case 'bpjsEmployementNumber': return accountEmployeeField.bpjsKetenagakerjaanPlaceholder;
+      case 'bpjsEmploymentNumber': return accountEmployeeField.bpjsKetenagakerjaanPlaceholder;
       case 'bpjsHealthCareNumber': return accountEmployeeField.bpjsKesehatanPlaceholder;
       case 'bankAccount': return accountEmployeeField.bcaNumberPlaceholder;
       case 'bankAccountName': return accountEmployeeField.bcaNamePlaceholder;

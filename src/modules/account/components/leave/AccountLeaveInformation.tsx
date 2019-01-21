@@ -28,36 +28,31 @@ const accountLeaveInformation: React.SFC<AllProps> = props => {
     <Card square>
       <CardHeader 
         title={<FormattedMessage id="account.leave.infoTitle"/>}
-        subheader={<FormattedMessage id="account.leave.infoSubTitle" />}
+        // subheader={<FormattedMessage id="account.leave.infoSubTitle" />}
       />
       <CardContent>
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
-          margin="normal"
           label={<FormattedMessage id="account.leave.field.information.previousRemain" />}
           value={props.intl.formatNumber(data.previousRemain)}
         />
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
-          margin="normal"
           label={<FormattedMessage id="account.leave.field.information.quota" />}
           value={props.intl.formatNumber(data.quota)}
         />
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
-          margin="normal"
           label={<FormattedMessage id="account.leave.field.information.annualLeave" />}
           value={props.intl.formatNumber(data.annualLeave || 0)}
         />
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
-          margin="normal"
           label={<FormattedMessage id="account.leave.field.information.leaveTaken" />}
           value={props.intl.formatNumber(data.leaveTaken || 0)}
         />
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
-          margin="normal"
           label={<FormattedMessage id="account.leave.field.information.remain" />}
           value={props.intl.formatNumber(data.remain)}
         />

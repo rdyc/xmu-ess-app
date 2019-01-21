@@ -111,7 +111,9 @@ export const LandingPageView: React.SFC<LandingPageProps> = props => (
 
       <div className={props.classes.heroSection}>
         <Paper square elevation={2} className={props.classes.heroSummary}>
-          <div className={props.classes.logoEquine} />
+          <div className={props.classes.paddingFar}>
+            <div className={props.classes.logoEquine} />
+          </div>
 
           <Grid container spacing={16} alignItems="center">
             <Grid item xs={12} md={4} className={props.classes.heroSummaryContent}>

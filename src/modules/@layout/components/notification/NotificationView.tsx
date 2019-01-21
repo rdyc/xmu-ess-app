@@ -7,6 +7,7 @@ import {
   ListItemSecondaryAction,
   ListItemText,
   ListSubheader,
+  Paper,
   Toolbar,
   Typography,
 } from '@material-ui/core';
@@ -19,6 +20,7 @@ import { FormattedMessage } from 'react-intl';
 import SwipeableViews from 'react-swipeable-views';
 import { isArray } from 'util';
 
+import { ModuleIcon } from '../moduleIcon/ModuleIcon';
 import { NotificationProps } from './Notification';
 
 export const NotificationView: React.SFC<NotificationProps> = props => {
@@ -26,17 +28,20 @@ export const NotificationView: React.SFC<NotificationProps> = props => {
 
   return (
     <React.Fragment>
-      <Toolbar>
-        <Typography variant="body2" className={props.classes.flex}>
-          <FormattedMessage id="global.notification.title"/>
-        </Typography>
-        <IconButton 
-          disabled={props.notificationState.isLoading}
-          onClick={() => props.handleOnClickReload()}
-        >
-          <SyncIcon/>
-        </IconButton>
-      </Toolbar>
+      <Paper square>
+        <Toolbar>
+          <Typography variant="body1" className={props.classes.flex}>
+            <FormattedMessage id="layout.notification.title"/>
+          </Typography>
+
+          <IconButton
+            disabled={props.notificationState.isLoading}
+            onClick={() => props.handleOnClickReload()}
+          >
+            <SyncIcon/>
+          </IconButton>
+        </Toolbar>
+      </Paper>
     
       <SwipeableViews 
         index={props.index}
@@ -76,17 +81,26 @@ export const NotificationView: React.SFC<NotificationProps> = props => {
               .sort((a , b) => (a.name > b.name) ? 1 : 0)
               .map(category => 
                 <React.Fragment key={category.name}>
-                  <Divider/>
                   <ListItem
                     button
                     id={category.name}
                     onClick={(e: React.MouseEvent) => props.handleOnChangeIndex(e, 1, category.moduleUid, category.name)}
                   >
-                    <ListItemText primary={category.name}/>
+                    <ListItemIcon>
+                      <ModuleIcon module={category.moduleUid} />
+                    </ListItemIcon>
+                    <ListItemText
+                      primary={category.name}
+                      primaryTypographyProps={{
+                        variant: 'body2',
+                        noWrap: true
+                      }}
+                    />
                     <ListItemSecondaryAction>
                       <ChevronRightIcon color="action" />
                     </ListItemSecondaryAction>
                   </ListItem>
+                  <Divider/>
                 </React.Fragment>
               )
           }
@@ -94,13 +108,13 @@ export const NotificationView: React.SFC<NotificationProps> = props => {
 
         <List disablePadding>
           <ListSubheader disableGutters>
-            <Divider/>
             <ListItem button onClick={(e: React.MouseEvent) => props.handleOnChangeIndex(e, 0, props.module, props.name)}>
               <ListItemIcon>
                 <ArrowBackIcon/>
               </ListItemIcon>
               <ListItemText primary={props.name}/>
             </ListItem>
+            <Divider/>
           </ListSubheader>
 
           {
@@ -108,16 +122,21 @@ export const NotificationView: React.SFC<NotificationProps> = props => {
               .filter(item => item.moduleUid === props.module)
               .map(category => category.details.map(detail => 
                 <React.Fragment key={`${props.module}${detail.type}`}>
-                  <Divider/>
                   <ListItem 
                     button 
                     onClick={(e: React.MouseEvent) => props.handleOnChangeIndex(e, 2, props.module, props.name, detail.type)}
                   >
-                    <ListItemText primary={detail.type} secondary={detail.total}/>
+                    <ListItemText 
+                      primary={`${detail.total} ${detail.type}`}
+                      primaryTypographyProps={{
+                        variant: 'body2'
+                      }}
+                    />
                     <ListItemSecondaryAction>
                       <ChevronRightIcon color="action" />
                     </ListItemSecondaryAction>
                   </ListItem>
+                  <Divider/>
                 </React.Fragment>
               ))
           }
@@ -126,13 +145,20 @@ export const NotificationView: React.SFC<NotificationProps> = props => {
 
         <List disablePadding>
           <ListSubheader disableGutters>
-            <Divider/>
             <ListItem button onClick={(e: React.MouseEvent) => props.handleOnChangeIndex(e, 1, props.module, props.name)}>
               <ListItemIcon>
                 <ArrowBackIcon/>
               </ListItemIcon>
-              <ListItemText primary={props.type} secondary={props.name} />
+              <ListItemText
+                inset={true}
+                primary={props.type} 
+                primaryTypographyProps={{
+                  variant: 'body2',
+                  noWrap: true
+                }}  
+              />
             </ListItem>
+            <Divider/>
           </ListSubheader>
 
           {
@@ -140,13 +166,22 @@ export const NotificationView: React.SFC<NotificationProps> = props => {
               .filter(item => item.moduleUid === props.module)
               .map(category => category.details.filter(item => item.type === props.type).map(detail => detail.items.map(item =>  
                 <React.Fragment key={`${props.module}${detail.type}${item.uid}`} >
-                  <Divider/>
                   <ListItem 
                     button 
                     onClick={() => props.handleRedirection(item.uid, props.module, props.type)}
                   >
-                    <ListItemText primary={item.name} secondary={`${item.uid} - ${moment(item.date).fromNow()}`} />
+                    <ListItemText 
+                      primary={item.name}
+                      secondary={`${item.uid} - ${moment(item.date).fromNow()}`} 
+                      primaryTypographyProps={{
+                        variant: 'body2'
+                      }}
+                      secondaryTypographyProps={{
+                        variant: 'caption'
+                      }}
+                    />
                   </ListItem>
+                  <Divider/>
                 </React.Fragment>
               )))
           }

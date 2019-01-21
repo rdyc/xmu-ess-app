@@ -1,23 +1,17 @@
 import { IEmployeeDetail } from '@account/classes/response';
-import { AccountEmployeeUserAction } from '@account/classes/types';
-import { AccountEmployeeTabs } from '@account/classes/types/AccountEmployeeTabs';
 import { accountMessage } from '@account/locales/messages/accountMessage';
 import AppMenu from '@constants/AppMenu';
-import { DialogConfirmation } from '@layout/components/dialogs';
 import { SingleConfig, SingleHandler, SinglePage, SingleState } from '@layout/components/pages/singlePage/SinglePage';
 import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
-import { AppBar, Tab, Tabs } from '@material-ui/core';
+import { LookupUserAction } from '@lookup/classes/types';
+import { Delete } from '@lookup/components/shared/Delete';
 import * as React from 'react';
-import { AccountEmployeeAccessHistory } from './accessHistory/AccountEmployeeAccessHistory';
 import { AccountEmployeeBank } from './AccountEmployeeBank';
 import { AccountEmployeeContact } from './AccountEmployeeContact';
 import { AccountEmployeeDetailProps } from './AccountEmployeeDetail';
 import { AccountEmployeeInformation } from './AccountEmployeeInformation';
-import { AccountEmployeeEducation } from './education/AccountEmployeeEducation';
-import { AccountEmployeeExperience } from './experience/AccountEmployeeExperience';
-import { AccountEmployeeFamily } from './family/AccountEmployeeFamily';
-import { AccountEmployeeTraining } from './training/AccountEmployeeTraining';
+import { DetailPage } from './DetailPage';
 
 const config: SingleConfig<IEmployeeDetail, AccountEmployeeDetailProps> = {
   // page info
@@ -29,7 +23,7 @@ const config: SingleConfig<IEmployeeDetail, AccountEmployeeDetailProps> = {
   }),
 
   // parent url
-  parentUrl: () => '/lookup/employee',
+  parentUrl: () => '/account/employee',
   
   // action centre
   showActionCentre: true,
@@ -38,18 +32,25 @@ const config: SingleConfig<IEmployeeDetail, AccountEmployeeDetailProps> = {
   hasMore: true,
   moreOptions: (props: AccountEmployeeDetailProps, state: SingleState, callback: SingleHandler): IAppBarMenu[] => ([
     {
-      id: AccountEmployeeUserAction.Refresh,
+      id: LookupUserAction.Refresh,
       name: props.intl.formatMessage(layoutMessage.action.refresh),
       enabled: true,
       visible: true,
       onClick: () => callback.handleForceReload()
     },
     {
-      id: AccountEmployeeUserAction.Modify,
+      id: LookupUserAction.Modify,
       name: props.intl.formatMessage(layoutMessage.action.modify),
       enabled: true,
       visible: true,
-      onClick: props.handleOnModify
+      onClick: () => props.handleOnOpenDialog(LookupUserAction.Modify)
+    },
+    {
+      id: LookupUserAction.Delete,
+      name: props.intl.formatMessage(layoutMessage.action.delete),
+      enabled: true,
+      visible: true,
+      onClick: () => props.handleOnOpenDialog(LookupUserAction.Delete)
     }
   ]),
 
@@ -93,50 +94,32 @@ const config: SingleConfig<IEmployeeDetail, AccountEmployeeDetailProps> = {
 
 export const AccountEmployeeDetailView: React.SFC<AccountEmployeeDetailProps> = props => {
 
-  const tabs = Object.keys(AccountEmployeeTabs).map(key => ({
-    id: key,
-    name: AccountEmployeeTabs[key]
-  }));
-  
   const render = (
   <React.Fragment>
-    <AppBar position="static">
-      <Tabs 
-        value={props.tab} 
-        onChange={props.handleTab}
-        scrollable
-        scrollButtons="auto"
-      >
-        {tabs.map(item =>
-            <Tab label={item.name}/>  
-        )}
-      </Tabs>
-    </AppBar>
-    {props.tab === 0 && 
+    <DetailPage
+      tab={0}
+    >
       <div style={{ padding: 8 * 3 }}>
         <SinglePage
           config={config}
           connectedProps={props}
         />
       </div>
-    }
-    {props.tab === 1 && <div style={{ padding: 8 * 3 }}><AccountEmployeeAccessHistory employeeUid={props.match.params.employeeUid}/></div>}
-    {props.tab === 2 && <div style={{ padding: 8 * 3 }}><AccountEmployeeEducation employeeUid={props.match.params.employeeUid}/></div>}
-    {props.tab === 3 && <div style={{ padding: 8 * 3 }}><AccountEmployeeFamily employeeUid={props.match.params.employeeUid}/></div>}
-    {props.tab === 4 && <div style={{ padding: 8 * 3 }}><AccountEmployeeExperience employeeUid={props.match.params.employeeUid}/></div>}
-    {props.tab === 5 && <div style={{ padding: 8 * 3 }}><AccountEmployeeTraining employeeUid={props.match.params.employeeUid}/></div>}
-    {/* {props.tab === 6 && <div style={{ padding: 8 * 3 }}><AccountEmployeeTraining employeeUid={props.match.params.employeeUid}/></div>}     */}
-
-    <DialogConfirmation 
-      isOpen={props.dialogOpen}
-      fullScreen={props.dialogFullScreen}
-      title={props.dialogTitle}
-      content={props.dialogContent}
-      labelCancel={props.dialogCancelLabel}
-      labelConfirm={props.dialogConfirmLabel}
-      onClickCancel={props.handleOnCloseDialog}
-      onClickConfirm={props.handleOnConfirm}
-    />
+    </DetailPage>
+      <Delete 
+          action={props.action}
+          isOpenDialog={props.dialogOpen}
+          title={props.dialogTitle}
+          content={props.dialogContent}
+          labelCancel={props.dialogCancelLabel}
+          labelConfirm={props.dialogConfirmLabel}
+          handleDialogOpen={props.handleOnOpenDialog}
+          handleDialogClose={props.handleOnCloseDialog}
+          handleDialogConfirmed={props.handleOnConfirm}
+          onSubmit={props.handleSubmit} 
+          onSubmitSuccess={props.handleSubmitSuccess}
+          onSubmitFail={props.handleSubmitFail}
+      />
   </React.Fragment>
   );
 

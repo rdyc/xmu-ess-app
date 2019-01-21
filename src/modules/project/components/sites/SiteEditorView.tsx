@@ -52,14 +52,14 @@ export const SiteEditorView: React.SFC<SiteEditorProps> = props => {
     }
   };
 
-  const dialogSubTitle = () => {
-    switch (editAction) {
-      case 'update': return projectMessage.site.page.modifySubHeader;
-      case 'delete': return projectMessage.site.page.deleteSubHeader;
+  // const dialogSubTitle = () => {
+  //   switch (editAction) {
+  //     case 'update': return projectMessage.site.page.modifySubHeader;
+  //     case 'delete': return projectMessage.site.page.deleteSubHeader;
     
-      default: return projectMessage.site.page.newSubHeader;
-    }
-  };
+  //     default: return projectMessage.site.page.newSubHeader;
+  //   }
+  // };
 
   const renderDialog = (
     <Dialog 
@@ -71,9 +71,9 @@ export const SiteEditorView: React.SFC<SiteEditorProps> = props => {
           {props.intl.formatMessage(dialogTitle())}
         </Typography>
 
-        <Typography variant="subheading">
+        {/* <Typography variant="subheading">
           {props.intl.formatMessage(dialogSubTitle())}
-        </Typography>
+        </Typography> */}
       </DialogTitle>
       
       <DialogContent>

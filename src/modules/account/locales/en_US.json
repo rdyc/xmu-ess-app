@@ -1,6 +1,6 @@
 {
   "account.access.message.greeting": "Hi {name}, Welcome to TESSA",
-  "account.access.message.selection": "Before you started, please select your company access",
+  "account.access.message.selection": "Please select your company access",
 
   "account.employee.message.emptyProps": "Some props are empty",
   "account.employee.message.create.success": "New Employee Data has been created",
@@ -54,9 +54,9 @@
   "account.employee.field.inactiveDate": "Date inActive",
   "account.employee.field.inactiveDate.placeholder": "Date inActive",
 
-  "account.employee.field.employement": "Employement Status",
-  "account.employee.field.employement.placeholder": "Employement Status",
-  "account.employee.field.employement.required": "Employement Status is required",
+  "account.employee.field.employment": "Employment Status",
+  "account.employee.field.employment.placeholder": "Employment Status",
+  "account.employee.field.employment.required": "Employment Status is required",
 
   "account.employee.field.rate": "Rate",
   "account.employee.field.rate.placeholder": "Rate",
@@ -75,6 +75,7 @@
 
   "account.employee.field.blood": "Blood Type",
   "account.employee.field.blood.placeholder": "Blood Type",
+  "account.employee.field.blood.required": "Blood Type is required",
 
   "account.employee.field.ktp": "KTP",
   "account.employee.field.ktp.placeholder": "KTP",
@@ -93,6 +94,7 @@
 
   "account.employee.field.religion": "Religion",
   "account.employee.field.religion.placeholder": "Religion",
+  "account.employee.field.religion.required": "Religion is required",
 
   "account.employee.field.kartuKeluarga": "Kartu Keluarga",
   "account.employee.field.kartuKeluarga.placeholder": "Kartu Keluarga",
@@ -100,9 +102,11 @@
 
   "account.employee.field.bpjsKetenagakerjaan": "BPJS Ketenagakerjaan",
   "account.employee.field.bpjsKetenagakerjaan.placeholder": "BPJS Ketenagakerjaan",
+  "account.employee.field.bpjsKetenagakerjaan.required": "BPJS Ketenagakerjaan is required",
 
   "account.employee.field.bpjsKesehatan": "BPJS Kesehatan",
   "account.employee.field.bpjsKesehatan.placeholder": "BPJS Kesehatan",
+  "account.employee.field.bpjsKesehatan.required": "BPJS Kesehatan is required",
 
   "account.employee.field.mobile": "Mobile",
   "account.employee.field.mobile.placeholder": "Mobile",
@@ -143,10 +147,13 @@
   "account.employee.field.bca.branch.placeholder": "BCA Account Branch",
 
   "account.employee.confirm.create.title": "Create Account",
-  "account.employee.confirm.create.subHeader": " ",
+  "account.employee.confirm.create.subHeader": "You are about to create a new employee data. Do you want to continue?",
  
   "account.employee.confirm.modify.title": "Modify Account",
-  "account.employee.confirm.modify.subHeader": " ",
+  "account.employee.confirm.modify.subHeader": "You are about to modify this employee data. Do you want to continue?",
+
+  "account.employee.confirm.delete.title": "Delete Account",
+  "account.employee.confirm.delete.subHeader": "You are about to delete this employee data. Do you want to continue?",
 
   "account.employee.field.information.title": "Employee Information",
   "account.employee.field.information.subHeader": " ",
@@ -164,5 +171,48 @@
   "account.employee.section.bank.subHeader": " ",
 
   "account.employee.section.contact.title": "Employee Contact and Address",
-  "account.employee.section.contact.subHeader": " "
+  "account.employee.section.contact.subHeader": " ",
+
+  "account.education.page.new.title": "Add New Education",
+  "account.education.page.new.subHeader": " ",
+  "account.education.page.modify.title": "Modify Education",
+  "account.education.page.modify.subHeader": " ",
+
+  "account.education.section.basic.title": "Employee Education",
+  "account.education.section.basic.subHeader": " ",
+  
+  "account.education.message.emptyProps": "Some props are empty",
+  "account.education.message.create.success": "New Education Data has been created",
+  "account.education.message.create.failure": "Unable to process your submission",
+  "account.education.message.update.success": "Current Education data has been updated",
+  "account.education.message.update.failure": "Unable to process your submission",
+
+  "account.education.confirm.create.title": "Add Education",
+  "account.education.confirm.create.subHeader": " ",
+ 
+  "account.education.confirm.modify.title": "Modify Education",
+  "account.education.confirm.modify.subHeader": " ",
+
+  "account.education.field.uid": "Employee Education UID",
+  "account.education.field.uid.placeholder": "Employee Education UID",
+
+  "account.education.field.degree": "Education Degree",
+  "account.education.field.degree.required": "Education Degree is required",
+  "account.education.field.degree.placeholder": "Education Degree",
+
+  "account.education.field.institution": "Institution Name",
+  "account.education.field.institution.required": "Institution Name is required",
+  "account.education.field.institution.placeholder": "Institution Name",
+
+  "account.education.field.major": "Education Major",
+  "account.education.field.major.required": "Education Major is required",
+  "account.education.field.major.placeholder": "Education Major",
+
+  "account.education.field.start": "Start Year",
+  "account.education.field.start.required": "Start Year is required",
+  "account.education.field.start.placeholder": "Start Year",
+  
+  "account.education.field.end": "End Year",
+  "account.education.field.end.placeholder": "End Year"
+
 }

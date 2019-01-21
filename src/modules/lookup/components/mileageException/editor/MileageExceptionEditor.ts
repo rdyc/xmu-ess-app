@@ -181,7 +181,7 @@ const handlerCreators: HandleCreators<MileageExceptionEditorProps, OwnHandlers> 
 const createProps: mapper<MileageExceptionEditorProps, OwnState> = (props: MileageExceptionEditorProps): OwnState => ({ 
   formMode: FormMode.New,
   submitDialogTitle: props.intl.formatMessage(lookupMessage.shared.confirm.createTitle),
-  submitDialogContentText: props.intl.formatMessage(lookupMessage.shared.confirm.createDescription),
+  submitDialogContentText: props.intl.formatMessage(lookupMessage.shared.confirm.createDescription, { state: 'Mileage Exception'}),
   submitDialogCancelText: props.intl.formatMessage(layoutMessage.action.cancel),
   submitDialogConfirmedText: props.intl.formatMessage(layoutMessage.action.ok),
 });
@@ -216,7 +216,7 @@ const lifecycles: ReactLifeCycleFunctions<MileageExceptionEditorProps, {}> = {
         formMode: FormMode.Edit,
         mileageExceptionUid: history.location.state.uid,
         submitDialogTitle: this.props.intl.formatMessage(lookupMessage.shared.confirm.modifyTitle),
-        submitDialogContentText : this.props.intl.formatMessage(lookupMessage.shared.confirm.modifyDescription)
+        submitDialogContentText : this.props.intl.formatMessage(lookupMessage.shared.confirm.modifyDescription, { state: 'Mileage Exception'})
       });
 
       loadDetailRequest({

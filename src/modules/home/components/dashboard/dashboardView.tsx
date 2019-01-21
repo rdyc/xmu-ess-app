@@ -1,12 +1,13 @@
 import { homeMessage } from '@home/locales/messages';
+import { ModuleIcon } from '@layout/components/moduleIcon/ModuleIcon';
 import { Stepper } from '@layout/components/stepper/Stepper';
 import { layoutMessage } from '@layout/locales/messages';
 import {
   Avatar,
-  Card,
-  CardHeader,
-  Collapse,
   Divider,
+  ExpansionPanel,
+  ExpansionPanelDetails,
+  ExpansionPanelSummary,
   Grid,
   IconButton,
   List,
@@ -15,9 +16,7 @@ import {
   Typography,
 } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import NotificationImportant from '@material-ui/icons/NotificationImportant';
 import SyncIcon from '@material-ui/icons/Sync';
-import * as classnames from 'classnames';
 import * as moment from 'moment';
 import * as React from 'react';
 
@@ -49,11 +48,7 @@ const stepperSources = [
 
 export const dashboardView: React.SFC<DashboardProps> = props => (
   <React.Fragment>
-    <Chart />
-    
-    <Stepper source={stepperSources} />
-
-    <div>
+    <div className={props.classes.marginFarBottom}>
       <div className={props.classes.forceRight}>
         <IconButton onClick={() => props.handleSyncClick()}>
           <SyncIcon />
@@ -86,45 +81,33 @@ export const dashboardView: React.SFC<DashboardProps> = props => (
             .sort((a , b) => (a.name > b.name) ? 1 : 0)
             .map((category, c) => category.details
               .map((detail, d) =>
-                <Grid key={`${c}${d}`} item xs={12} sm={12} md={3}>
-                  <Card square>
-                    <CardHeader
-                      avatar={
-                        <Avatar>
-                          <NotificationImportant />
+                <Grid key={`${c}${d}`} item xs={12} sm={12} md={4} lg={3} xl={2}>
+                  <ExpansionPanel>
+                    <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+                      <div>
+                        <Avatar className={props.classes.backgroundColorSecondary}>
+                          <ModuleIcon module={category.moduleUid} />
                         </Avatar>
-                      }
-                      action={
-                        <IconButton
-                          className={classnames(props.classes.expand, {
-                            [props.classes.expandOpen]: props.isExpanded(c, d),
-                          })}
-                          onClick={() => props.handleExpandClick(c, d)}
-                        >
-                          <ExpandMoreIcon />
-                        </IconButton>
-                      }
-                      title={category.name}
-                      subheader={`${detail.total} ${detail.type}`}
-                      titleTypographyProps={{
-                        noWrap: true
-                      }}
-                      subheaderTypographyProps={{
-                        noWrap: true
-                      }}
-                    />
-
-                    <Collapse 
+                      </div>
+                      
+                      <div className={props.classes.marginFarLeft}>
+                        <Typography variant="body2" noWrap>
+                          {category.name}
+                        </Typography>
+                        <Typography variant="caption" noWrap>
+                          {`${detail.total} ${detail.type}`}
+                        </Typography>
+                      </div>
+                    </ExpansionPanelSummary>
+                    <ExpansionPanelDetails 
                       style={{
-                        backgroundColor: props.theme.palette.background.default,
+                        padding: 0,
                         maxHeight: 300, 
+                        backgroundColor: props.theme.palette.background.default,
                         overflowY: 'scroll'
-                      }} 
-                      in={props.isExpanded(c, d)} 
-                      timeout="auto" 
-                      unmountOnExit
+                      }}
                     >
-                      <List component="div" disablePadding>
+                      <List disablePadding style={{ width: '100%' }}>
                         {
                           detail.items.length > 1 &&
                           <ListItem
@@ -135,7 +118,6 @@ export const dashboardView: React.SFC<DashboardProps> = props => (
                               primary={props.intl.formatMessage(homeMessage.dashboard.text.showAll)}
                               secondary={props.intl.formatMessage(homeMessage.dashboard.text.showAllDesc)}
                               primaryTypographyProps={{
-                                noWrap: true,
                                 variant: 'body2'
                               }}
                               secondaryTypographyProps={{
@@ -147,17 +129,16 @@ export const dashboardView: React.SFC<DashboardProps> = props => (
 
                         {
                           detail.items.map(item =>
-                            <div key={item.uid}>
+                            <React.Fragment key={item.uid}>
                               <Divider/>
                               <ListItem
                                 button
                                 onClick={() => props.handleNotifClick(category.moduleUid, detail.type, item.uid)}
                               >
                                 <ListItemText
-                                  primary={`${item.type && item.type.value} - ${item.name}`}
-                                  secondary={`${item.uid} ${moment(item.date).fromNow()}`}
+                                  primary={item.name}
+                                  secondary={`${item.uid} | ${moment(item.date).fromNow()}`}
                                   primaryTypographyProps={{
-                                    noWrap: true,
                                     variant: 'body2'
                                   }}
                                   secondaryTypographyProps={{
@@ -165,12 +146,12 @@ export const dashboardView: React.SFC<DashboardProps> = props => (
                                   }}
                                 />
                               </ListItem>
-                            </div>
+                            </React.Fragment>
                           )
                         }
                       </List>
-                    </Collapse>
-                  </Card>  
+                    </ExpansionPanelDetails>
+                  </ExpansionPanel>
                 </Grid>  
               )
             )
@@ -179,5 +160,8 @@ export const dashboardView: React.SFC<DashboardProps> = props => (
       }    
     </div>
 
+    <Chart />
+    
+    <Stepper source={stepperSources} />
   </React.Fragment>
 );

@@ -152,7 +152,7 @@ const stateUpdaters: StateUpdaters<PurchaseSettlementListFilterProps, IOwnState,
 
   // filter project
   setFilterProjectVisibility: (prevState: IOwnState, props: PurchaseSettlementListFilterProps) => () => ({
-    isFilterProjectOpen: !prevState.isFilterCustomerOpen,
+    isFilterProjectOpen: !prevState.isFilterProjectOpen,
   }),
   setFilterProject: (prevState: IOwnState) => (project?: IProjectList) => ({
     isFilterProjectOpen: false,
@@ -181,7 +181,7 @@ const handlerCreators: HandleCreators<PurchaseSettlementListFilterProps, IOwnHan
   handleFilterOnApply: (props: PurchaseSettlementListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
     props.onApply({
       customerUid: props.filterCustomer && props.filterCustomer.uid,
-      projectUid: props.filterProject && props.filterProject.name,
+      projectUid: props.filterProject && props.filterProject.uid,
       statusType: props.filterStatus && props.filterStatus.type,
       isRejected: props.filterRejected
     });

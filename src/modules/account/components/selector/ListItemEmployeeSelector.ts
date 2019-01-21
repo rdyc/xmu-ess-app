@@ -131,21 +131,18 @@ const handlerCreators: HandleCreators<ListItemEmployeeSelectorProps, OwnHandler>
 
 const lifeCycleFunctions: ReactLifeCycleFunctions<ListItemEmployeeSelectorProps, OwnState> = {
   componentDidMount() {
-    const { isLoading, response } = this.props.accountEmployeeState.list;
+    const { isLoading } = this.props.accountEmployeeState.list;
     const { companyUids, roleUids, positionUids } = this.props;
     const { loadListRequest } = this.props.accountEmployeeDispatch;
 
-    if (!isLoading || !response) {
+    if (!isLoading) {
       loadListRequest({
         filter: {
           companyUids,
           roleUids,
           positionUids,
           find: this.props.search,
-          findBy: undefined,
-          direction: undefined,
-          orderBy: 'fullName',
-          size: undefined
+          orderBy: 'fullName'
         }
       });
     }
