@@ -35,7 +35,7 @@ const handlerCreators: HandleCreators<AccountEmployeeAccessDetailFormProps, OwnH
       
       const fieldName = name.replace('information.', '');
 
-      const byCompanyUid = companyUidValue;
+      const byCompanyUid: any = companyUidValue;
 
       const byCompanyFilter: any = {
         companyUid: companyUidValue,

@@ -169,137 +169,128 @@ const lifecycles: ReactLifeCycleFunctions<SelectSystemProps, OwnProps> = {
   },
   componentWillReceiveProps(nextProps: SelectSystemProps) {
     if (nextProps.companyUid !== this.props.companyUid) {
-      const { category, commonDispatch } = this.props;
-      const { isLoading, response } = this.props.categoryState();
-
-      // skipp fetch while current state is being loaded
-      if (isLoading || response) {
-        return;
-      }
+      const { commonDispatch } = this.props;
       
-      // don't load while control has set as disabled
-      if (true) {
-        const request: ISystemListRequest = {
-          category,
-          filter: {
-            companyUid: nextProps.companyUid,
-            orderBy: 'code',
-            direction: 'ascending'
-          }
-        };
-
-        switch (request.category) {
-          case 'activity':
-            commonDispatch.activityListRequest(request);
-            break;
-    
-          case 'currency':
-            commonDispatch.currencyListRequest(request);
-            break;
-    
-          case 'document':
-            commonDispatch.documentListRequest(request);
-            break;
-    
-          case 'documentPreSales':
-            commonDispatch.documentPresalesListRequest(request);
-            break;
-    
-          case 'project':
-            commonDispatch.projectListRequest(request);
-            break;
-            
-          case 'site':
-            commonDispatch.siteListRequest(request);
-            break;
-            
-          case 'expense':
-            commonDispatch.expenseListRequest(request);
-            break;
-
-          case 'leave':
-            commonDispatch.leaveListRequest(request);
-            break;
-
-          case 'status':
-            commonDispatch.statusListRequest(request);
-            break;
-
-          case 'destination':
-            commonDispatch.destinationListRequest(request);
-            break;
-          
-          case 'purpose':
-            commonDispatch.purposeListRequest(request);
-            break;
-          
-          case 'transportation':
-            commonDispatch.transportationListRequest(request);
-            break;
-
-          case 'limiter':
-            commonDispatch.limiterListRequest(request);
-            break;
-            
-          case 'unit':
-            commonDispatch.unitListRequest(request);
-            break;
-
-          case 'grade':
-            commonDispatch.gradeListRequest(request);
-            break;
-
-          case 'relation':
-            commonDispatch.relationListRequest(request);
-            break;
-            
-          case 'religion':
-            commonDispatch.religionListRequest(request);
-            break;
-
-          case 'gender':
-            commonDispatch.genderListRequest(request);
-            break;
-            
-          case 'blood':
-            commonDispatch.bloodListRequest(request);
-            break;
-
-          case 'tax':
-            commonDispatch.taxListRequest(request);
-            break;
-
-          case 'employment':
-            commonDispatch.employmentListRequest(request);
-            break;
-
-          case 'training':
-            commonDispatch.trainingListRequest(request);
-            break;
-
-          case 'certification':
-            commonDispatch.certificationListRequest(request);
-            break;
-
-          case 'department':
-            commonDispatch.departmentListRequest(request);
-            break;
-
-          case 'degree':
-            commonDispatch.degreeListRequest(request);
-            break;
-
-          case 'family':
-            commonDispatch.familyListRequest(request);
-            break;
-
-          case 'level':
-            commonDispatch.levelListRequest(request);
-            break;
-            
-          default:
-            break;
+      const request: ISystemListRequest = {
+        category: nextProps.category,
+        filter: {
+          companyUid: nextProps.companyUid,
+          orderBy: 'code',
+          direction: 'ascending'
         }
+      };
+
+      switch (request.category) {
+        case 'activity':
+          commonDispatch.activityListRequest(request);
+          break;
+  
+        case 'currency':
+          commonDispatch.currencyListRequest(request);
+          break;
+  
+        case 'document':
+          commonDispatch.documentListRequest(request);
+          break;
+  
+        case 'documentPreSales':
+          commonDispatch.documentPresalesListRequest(request);
+          break;
+  
+        case 'project':
+          commonDispatch.projectListRequest(request);
+          break;
+          
+        case 'site':
+          commonDispatch.siteListRequest(request);
+          break;
+          
+        case 'expense':
+          commonDispatch.expenseListRequest(request);
+          break;
+
+        case 'leave':
+          commonDispatch.leaveListRequest(request);
+          break;
+
+        case 'status':
+          commonDispatch.statusListRequest(request);
+          break;
+
+        case 'destination':
+          commonDispatch.destinationListRequest(request);
+          break;
+        
+        case 'purpose':
+          commonDispatch.purposeListRequest(request);
+          break;
+        
+        case 'transportation':
+          commonDispatch.transportationListRequest(request);
+          break;
+
+        case 'limiter':
+          commonDispatch.limiterListRequest(request);
+          break;
+          
+        case 'unit':
+          commonDispatch.unitListRequest(request);
+          break;
+
+        case 'grade':
+          commonDispatch.gradeListRequest(request);
+          break;
+
+        case 'relation':
+          commonDispatch.relationListRequest(request);
+          break;
+          
+        case 'religion':
+          commonDispatch.religionListRequest(request);
+          break;
+
+        case 'gender':
+          commonDispatch.genderListRequest(request);
+          break;
+          
+        case 'blood':
+          commonDispatch.bloodListRequest(request);
+          break;
+
+        case 'tax':
+          commonDispatch.taxListRequest(request);
+          break;
+
+        case 'employment':
+          commonDispatch.employmentListRequest(request);
+          break;
+
+        case 'training':
+          commonDispatch.trainingListRequest(request);
+          break;
+
+        case 'certification':
+          commonDispatch.certificationListRequest(request);
+          break;
+
+        case 'department':
+          commonDispatch.departmentListRequest(request);
+          break;
+
+        case 'degree':
+          commonDispatch.degreeListRequest(request);
+          break;
+
+        case 'family':
+          commonDispatch.familyListRequest(request);
+          break;
+
+        case 'level':
+          commonDispatch.levelListRequest(request);
+          break;
+          
+        default:
+          break;
       }
     }
   },
