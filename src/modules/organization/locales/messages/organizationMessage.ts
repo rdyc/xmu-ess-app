@@ -23,6 +23,14 @@ import {
   organizationWorkflowOption,
   organizationWorkflowSection,
 } from './organizationWorkflowMessage';
+import { 
+  organizationWorkflowSetupDialog, 
+  organizationWorkflowSetupField, 
+  organizationWorkflowSetupMessage, 
+  organizationWorkflowSetupOption, 
+  organizationWorkflowSetupPage,
+  organizationWorkflowSetupSection
+} from './organizationWorkflowSetupMessage';
 
 export const organizationMessage = {
   workflow: {
@@ -31,6 +39,14 @@ export const organizationMessage = {
     fieldFor: organizationWorkflowFieldHelperFor,
     option: organizationWorkflowOption,
     message: organizationWorkflowMessage
+  },
+  workflowSetup: {
+    page: organizationWorkflowSetupPage,
+    section: organizationWorkflowSetupSection,
+    option: organizationWorkflowSetupOption,
+    field: organizationWorkflowSetupField,
+    dialog: organizationWorkflowSetupDialog,
+    message: organizationWorkflowSetupMessage
   },
   structure: {
     page: organizationStructurePage,

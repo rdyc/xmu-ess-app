@@ -101,7 +101,7 @@ const handlerCreators: HandleCreators<ProjectRegistrationEditorProps, IOwnHandle
     return errors;
   },
   handleSubmit: (props: ProjectRegistrationEditorProps) => (formData: ProjectRegistrationFormData) => { 
-    const { formMode, projectUid, isRequestor, isAdmin, intl } = props;
+    const { formMode, projectUid, isRequestor, intl } = props;
     const { user } = props.userState;
     const { response } = props.projectRegisterState.detail;
     const { createRequest, updateRequest, patchRequest } = props.projectRegisterDispatch;
@@ -205,35 +205,31 @@ const handlerCreators: HandleCreators<ProjectRegistrationEditorProps, IOwnHandle
     }
 
     if (formMode === FormMode.Edit) {
-      if (isAdmin) {
-        // admin change the project hours
+      // requestor updating the request
+      if (isRequestor) {
+        return new Promise((resolve, reject) => {
+          updateRequest({
+            projectUid, 
+            resolve, 
+            reject,
+            companyUid: user.company.uid,
+            positionUid: user.position.uid,
+            data: payload as IProjectRegistrationPutPayload, 
+          });
+        });
+      // tslint:disable-next-line:no-else-after-return
       } else {
-        // requestor updating the request
-        if (isRequestor) {
-          return new Promise((resolve, reject) => {
-            updateRequest({
-              projectUid, 
-              resolve, 
-              reject,
-              companyUid: user.company.uid,
-              positionUid: user.position.uid,
-              data: payload as IProjectRegistrationPutPayload, 
-            });
+        // owner patching the request
+        return new Promise((resolve, reject) => {
+          patchRequest({
+            projectUid, 
+            resolve, 
+            reject,
+            companyUid: user.company.uid,
+            positionUid: user.position.uid,
+            data: payload as IProjectRegistrationPatchPayload, 
           });
-        // tslint:disable-next-line:no-else-after-return
-        } else {
-          // owner patching the request
-          return new Promise((resolve, reject) => {
-            patchRequest({
-              projectUid, 
-              resolve, 
-              reject,
-              companyUid: user.company.uid,
-              positionUid: user.position.uid,
-              data: payload as IProjectRegistrationPatchPayload, 
-            });
-          });
-        }
+        });
       }
     }
 

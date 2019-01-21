@@ -54,6 +54,7 @@ export const EmployeeDialogView: React.SFC<EmployeeDialogProps> = props => {
           <ListItemText 
             color="primary"
             primary={employee.fullName}
+            secondary={employee.company && employee.company.name}
             primaryTypographyProps={{
               noWrap: true
             }}

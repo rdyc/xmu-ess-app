@@ -1,4 +1,12 @@
 import { accountAccessMessage } from './accountAccessMessage';
+import { 
+  accountEducationConfirm,
+  accountEducationField,
+  accountEducationFieldHelperFor,
+  accountEducationMessage,
+  accountEducationPage,
+  accountEducationSection
+} from './accountEducationMessage';
 import {
   accountEmployeeConfirm,
   accountEmployeeField,
@@ -25,6 +33,14 @@ export const accountMessage = {
     section: accountEmployeeSection,
     message: accountEmployeeMessage,
     filter: accountEmployeeFilter
+  },
+  education: {
+    section: accountEducationSection,
+    field: accountEducationField,
+    fieldFor: accountEducationFieldHelperFor,
+    message: accountEducationMessage,
+    confirm: accountEducationConfirm,
+    page: accountEducationPage
   },
   access: {
     message: accountAccessMessage

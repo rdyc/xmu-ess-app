@@ -1,3 +1,5 @@
+import { layoutMessage } from '@layout/locales/messages';
+import { GlobalFormat } from '@layout/types';
 import { GlobalStyle } from '@layout/types/GlobalStyle';
 import { ILookupLeaveDetail } from '@lookup/classes/response';
 import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
@@ -19,10 +21,10 @@ const lookupLeaveInformation: React.SFC<AllProps> = props => {
     <Card square>
       <CardHeader
         title={props.intl.formatMessage(lookupMessage.leave.section.infoTitle)}
-        // subheader={props.intl.formatMessage(lookupMessage.leave.section.infoSubHeader)}
+      // subheader={props.intl.formatMessage(lookupMessage.leave.section.infoSubHeader)}
       />
       <CardContent>
-      <TextField
+        <TextField
           {...GlobalStyle.TextField.ReadOnly}
           label={props.intl.formatMessage(lookupMessage.leave.field.uid)}
           value={props.data.uid}
@@ -55,11 +57,32 @@ const lookupLeaveInformation: React.SFC<AllProps> = props => {
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
           label={props.intl.formatMessage(lookupMessage.leave.field.isWithinHoliday)}
-          value={props.data.isWithinHoliday ? 
+          value={props.data.isWithinHoliday ?
             props.intl.formatMessage(lookupMessage.leave.field.isWithinHoliday)
             : props.intl.formatMessage(lookupMessage.leave.field.notWithinHoliday)
           }
         />
+        {
+          props.data.changes &&
+          <React.Fragment>
+            <TextField
+              {...GlobalStyle.TextField.ReadOnly}
+              label={props.intl.formatMessage(layoutMessage.field.createdBy)}
+              value={props.data.changes.created && props.data.changes.created.fullName || 'N/A'}
+              helperText={props.intl.formatDate(props.data.changes.createdAt, GlobalFormat.DateTime) || 'N/A'}
+            />
+
+            {
+              (props.data.changes.updated && props.data.changes.updatedAt) &&
+              <TextField
+                {...GlobalStyle.TextField.ReadOnly}
+                label={props.intl.formatMessage(layoutMessage.field.updatedBy)}
+                value={props.data.changes.updated.fullName || 'N/A'}
+                helperText={props.intl.formatDate(props.data.changes.updatedAt, GlobalFormat.DateTime) || 'N/A'}
+              />
+            }
+          </React.Fragment>
+        }
       </CardContent>
     </Card>
   );

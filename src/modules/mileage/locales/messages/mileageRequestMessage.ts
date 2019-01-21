@@ -85,3 +85,35 @@ export const timesheetItem = defineMessages({
   title: { id: `${prefix}.timesheet.item.title` },
   subHeader: { id: `${prefix}.timesheet.item.subHeader` }
 });
+
+// helper
+export const mileageFieldHelperFor = (field: string, type: 'fieldName' | 'fieldRequired' | 'fieldPlaceholder') => {
+  if (type === 'fieldName') {
+    switch (field) {
+      case 'year': return mileageRequestField.year;
+      case 'month': return mileageRequestField.month;
+
+      default: return {id: field};
+    }
+  }
+
+  if (type === 'fieldRequired') {
+    switch (field) {
+      case 'year': return mileageRequestField.yearRequired;
+      case 'month': return mileageRequestField.yearRequired;
+
+      default: return {id: field};
+    }
+  }
+
+  if (type === 'fieldPlaceholder') {
+    switch (field) {
+      case 'year': return mileageRequestField.yearPlaceholder;
+      case 'month': return mileageRequestField.monthPlaceholder;
+
+      default: return {id: field};
+    }
+  }
+
+  return {id: field};
+};

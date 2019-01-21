@@ -1,15 +1,14 @@
 import { WithAccountEmployee, withAccountEmployee } from '@account/hoc/withAccountEmployee';
+import { FormMode } from '@generic/types';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
-import { compose, HandleCreators, mapper, StateHandler, StateHandlerMap, StateUpdaters, withHandlers, withStateHandlers } from 'recompose';
+import { compose, HandleCreators, lifecycle, mapper, ReactLifeCycleFunctions, StateHandler, StateHandlerMap, StateUpdaters, withHandlers, withStateHandlers } from 'recompose';
+import { isNullOrUndefined } from 'util';
 import { EditorView } from './EditorView';
 
-interface OwnRouteParams {
-  employeeUid: string;
-}
-
 interface OwnState {
+  formMode: FormMode;
   tab: number;
 }
 
@@ -25,13 +24,14 @@ export type EditorProps
   = OwnState
   & OwnHandler
   & OwnStateUpdaters
-  & RouteComponentProps<OwnRouteParams>
+  & RouteComponentProps<{}>
   & WithUser
   & WithAccountEmployee
   & InjectedIntlProps;
 
 const createProps: mapper<EditorProps, OwnState> = (): OwnState => ({
-  tab: 0
+  tab: 0,
+  formMode: FormMode.New
 });
 
 const stateUpdaters: StateUpdaters<EditorProps, OwnState, OwnStateUpdaters> = {
@@ -49,11 +49,24 @@ const handlerCreators: HandleCreators<EditorProps, OwnHandler> = {
   }
 };
 
+const lifecycles: ReactLifeCycleFunctions<EditorProps, {}> = {
+  componentDidMount() {
+    const { history, stateUpdate } = this.props;
+
+    if (!isNullOrUndefined(history.location.state)) {
+      stateUpdate({
+        formMode: FormMode.Edit,
+      });
+    }
+  }
+};
+
 export const Editor = compose<EditorProps, {}>(
   withRouter,
   withUser,
   withAccountEmployee,
   injectIntl,
   withStateHandlers<OwnState, OwnStateUpdaters, {}>(createProps, stateUpdaters),
-  withHandlers<EditorProps, OwnHandler>(handlerCreators)
+  withHandlers<EditorProps, OwnHandler>(handlerCreators),
+  lifecycle<EditorProps, {}>(lifecycles),
 )(EditorView);

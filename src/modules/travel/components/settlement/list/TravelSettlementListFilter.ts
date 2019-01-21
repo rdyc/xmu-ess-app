@@ -240,6 +240,7 @@ const handlerCreators: HandleCreators<TravelSettlementListFilterProps, IOwnHandl
   handleFilterOnApply: (props: TravelSettlementListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
     props.onApply({
       customerUid: props.filterCustomer && props.filterCustomer.uid,
+      projectUid: props.filterProject && props.filterProject.uid,
       statusType: props.filterStatus && props.filterStatus.type,
       isRejected: props.filterRejected,
     });

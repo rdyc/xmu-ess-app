@@ -4,6 +4,7 @@ import { DialogConfirmation } from '@layout/components/dialogs';
 import { SingleConfig, SingleHandler, SinglePage, SingleState } from '@layout/components/pages/singlePage/SinglePage';
 import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
+import { Grid } from '@material-ui/core';
 import { WorkflowHistory } from '@organization/components/workflow/history/WorkflowHistory';
 import { ITravelRequestDetail } from '@travel/classes/response';
 import { TravelUserAction } from '@travel/classes/types';
@@ -96,8 +97,20 @@ const config: SingleConfig<ITravelRequestDetail, TravelRequestDetailProps> = {
   // primary
   primaryComponent: (data: ITravelRequestDetail, props: TravelRequestDetailProps) => (
     <React.Fragment>
-        <TravelRequestSummary data={data}/>
-        <TravelInformation data={data} />
+      <Grid
+        container
+        spacing={16}
+        direction="row"
+        justify="flex-start"
+        alignItems="flex-start"
+      >
+        <Grid item xs={12}>
+          <TravelRequestSummary data={data} />        
+        </Grid>
+        <Grid item xs={12}>
+          <TravelInformation data={data} />        
+        </Grid>      
+      </Grid>      
     </React.Fragment>    
   ),
 

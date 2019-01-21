@@ -72,7 +72,8 @@ const createProps: mapper<AllProps, IOwnState> = (props: AllProps): IOwnState =>
   // fill partial props from location state to handle redirection from dashboard notif
   projectUid: props.location.state && props.location.state.projectUid,
   statusType: props.location.state && props.location.state.statusType,
-  isSettlement: props.location.state && props.location.state.isSettlement 
+  isSettlement: props.location.state && props.location.state.isSettlement,
+  isRejected: props.location.state && props.location.state.isRejected,
 });
 
 const stateUpdaters: StateUpdaters<AllProps, IOwnState, IOwnStateUpdater> = {
