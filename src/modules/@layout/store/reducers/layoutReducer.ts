@@ -12,7 +12,7 @@ const initialState: ILayoutState = {
       type: 'light'
     },
     typography: {
-      fontSize: 14,
+      // fontSize: 14,
       useNextVariants: true,
     }
   },

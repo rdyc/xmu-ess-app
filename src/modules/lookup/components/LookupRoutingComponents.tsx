@@ -5,7 +5,6 @@ import { LookupHolidayDetail } from '@lookup/components/holiday/detail/LookupHol
 import { LookupLeaveDetail } from '@lookup/components/leave/detail/LookupLeaveDetail';
 import * as React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router';
-
 import { LookupCompanyDetail } from './company/detail/LookupCompanyDetail';
 import LookupCompanyEditor from './company/editor/LookupCompanyEditor';
 import { LookupCompanyList } from './company/list/LookupCompanyList';
@@ -126,8 +125,8 @@ export const LookupRoutingComponents: React.SFC<RouteComponentProps> = props => 
     <Route path={`${props.match.path}/currencies`} component={currency} />
     <Route path={`${props.match.path}/positions`} component={position} />
     <Route path={`${props.match.path}/diemvalue`} component={diem} />
-    <Route path={`${props.match.path}/holiday`} component={holiday} />
-    <Route path={`${props.match.path}/leave`} component={leave} />
+    <Route path={`${props.match.path}/holidays`} component={holiday} />
+    <Route path={`${props.match.path}/leaves`} component={leave} />
     <Route path={`${props.match.path}/calculation`} component={calculation} />
     <Route path={`${props.match.path}/roles`} component={role} />
     <Route path={`${props.match.path}/customer`} component={lookupCustomer} />
