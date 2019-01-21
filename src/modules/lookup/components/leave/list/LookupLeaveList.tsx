@@ -134,7 +134,7 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
         {
           icon: AddCircleIcon,
           onClick: () => {
-            this.props.history.push('/lookup/leave/form');
+            this.props.history.push('/lookup/leaves/form');
           }
         }
       ],
