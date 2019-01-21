@@ -9,6 +9,7 @@ import { IListConfig, ListDataProps, ListHandler, ListPage } from '@layout/compo
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { layoutMessage } from '@layout/locales/messages';
 import { Button } from '@material-ui/core';
+import AddCircleIcon from '@material-ui/icons/AddCircle';
 import TuneIcon from '@material-ui/icons/Tune';
 import * as moment from 'moment';
 import * as React from 'react';
@@ -157,6 +158,16 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
 
       // action centre
       showActionCentre: false,
+
+      // toolbar controls
+      toolbarControls: (callback: ListHandler) => [
+        {
+          icon: AddCircleIcon,
+          onClick: () => { 
+            this.props.history.push(`/common/system/${this.props.match.params.category}/form`); 
+          }
+        }
+      ],
 
       // events
       onDataLoad: (callback: ListHandler, params: ListDataProps, forceReload?: boolean | false) => {
