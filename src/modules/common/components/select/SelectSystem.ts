@@ -170,7 +170,8 @@ const lifecycles: ReactLifeCycleFunctions<SelectSystemProps, OwnProps> = {
     }
   },
   componentWillReceiveProps(nextProps: SelectSystemProps) {
-    if (nextProps.companyUid !== this.props.companyUid) {
+    if (nextProps.companyUid !== this.props.companyUid || 
+        nextProps.parentCode !== this.props.parentCode) {
       const { commonDispatch } = this.props;
       
       const request: ISystemListRequest = {
