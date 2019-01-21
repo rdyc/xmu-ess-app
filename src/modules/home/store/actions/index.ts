@@ -1,1 +1,2 @@
-export * from './chartActions';
+export * from './achievementActions';
+export * from './newsFeedAction';

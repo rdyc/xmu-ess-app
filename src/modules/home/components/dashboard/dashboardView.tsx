@@ -20,7 +20,7 @@ import SyncIcon from '@material-ui/icons/Sync';
 import * as moment from 'moment';
 import * as React from 'react';
 
-import { Chart } from './Chart';
+import { AchievementChart } from '../achievementChart';
 import { DashboardProps } from './Dashboard';
 
 const stepperSources = [
@@ -160,7 +160,7 @@ export const dashboardView: React.SFC<DashboardProps> = props => (
       }    
     </div>
 
-    <Chart />
+    <AchievementChart />
     
     <Stepper source={stepperSources} />
   </React.Fragment>

@@ -1,11 +1,7 @@
-import { Chart } from '@home/components/dashboard';
+import { NewsFeed } from '@home/components/newsFeed/NewsFeed';
 import { LayoutTheme } from '@layout/hoc/withRoot';
-import { GlobalFormat } from '@layout/types';
-import { CardActionArea, Paper } from '@material-ui/core';
+import { Paper } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import * as React from 'react';
@@ -145,42 +141,12 @@ export const LandingPageView: React.SFC<LandingPageProps> = props => (
         <div id="news" className={props.classes.heroSection}>
           <Typography variant="h4" align="center" className={props.classes.paddingFar}>News</Typography>
 
-          <Grid container spacing={16}>
-            {
-              props.landingPageState.all.response &&
-              props.landingPageState.all.response.data.news.map((item, index) => (
-                <Grid item key={index} sm={12} md={4} lg={4}>
-                  <Card square elevation={1}>
-                    <CardActionArea href={item.url} target="_blank" disableRipple disableTouchRipple>
-                      <CardMedia
-                        component="img"
-                        image={item.image}
-                        title={item.title}
-                        style={{height: 200}}
-                      />
-                      <CardContent className={props.classes.marginWideBottom} style={{height: 200, overflow: 'hidden'}}>
-                        <Typography variant="caption">
-                          {props.intl.formatDate(item.date, GlobalFormat.Date)} | {item.source}
-                        </Typography>
-                        <Typography gutterBottom variant="h5" component="h2" title={item.title}>
-                          {item.title}
-                        </Typography>
-                        <Typography variant="body2">
-                          {item.subHeader}
-                        </Typography>
-                      </CardContent>
-                    </CardActionArea>
-                  </Card>
-                </Grid>
-              ))
-            }
-          </Grid>
+          <NewsFeed />
         </div>
 
         <div id="achievements" className={props.classes.heroSection}>
           <Typography id="news" variant="h4" align="center" className={props.classes.paddingFar}>Achievements</Typography>
 
-          <Chart />
         </div>
 
         <div id="events" className={props.classes.heroSection}>
