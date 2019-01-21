@@ -297,7 +297,7 @@
   "lookup.diem.section.diem.title": "Diem Value",
   "lookup.diem.section.diem.subHeader": " ",
 
-  "lookup.diem.field.info.title": "Detail Mileage Exception",
+  "lookup.diem.field.info.title": "Detail Diem Value",
   "lookup.diem.field.info.subHeader": " ",
 
   "lookup.diem.field.uid": "Diem ID",
@@ -329,6 +329,8 @@
   "lookup.diem.message.create.failure": "Unable to process your submission",
   "lookup.diem.message.update.success": "Existing Diem ID {uid} has been updated",
   "lookup.diem.message.update.failure": "Unable to process your submission",
+  "lookup.diem.message.delete.success": "This Diem has been deleted from system",
+  "lookup.diem.message.delete.failure": "Unable to process your submission",
 
   "lookup.holiday.page.list.title": "Holiday",
   "lookup.holiday.page.list.subHeader": " ",
@@ -444,7 +446,6 @@
   "lookup.customer.page.new.title": "New Customer",
   "lookup.customer.page.new.subHeader": " ",
 
-
   "lookup.customer.form.newTitle": "New Customer",
   "lookup.customer.form.newSubTitle": " ",
 
@@ -497,11 +498,10 @@
   "lookup.customer.confirm.delete.title": "Delete Confirmation",
   "lookup.customer.confirm.delete.description": " ",
 
-  "lookup.customer.message.create.success": "New currency has been created",
+  "lookup.customer.message.create.success": "New customer has been created",
   "lookup.customer.message.create.failure": "Submission failed",
-  "lookup.customer.message.update.success": "Currency has been updated",
+  "lookup.customer.message.update.success": "Customer has been updated",
   "lookup.customer.message.update.failure": "Update submission failed",
-  "lookup.customer.message.delete.success": "This currency has been deleted from system",
-  "lookup.customer.message.delete.failure": "Delete confirmation failed",
-  "lookup.customer.message.empty.currencyUid": "Currency ID not found"
+  "lookup.customer.message.delete.success": "This customer has been deleted from system",
+  "lookup.customer.message.delete.failure": "Delete confirmation failed"
 }
