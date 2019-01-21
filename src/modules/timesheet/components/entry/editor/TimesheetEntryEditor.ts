@@ -263,7 +263,9 @@ const lifecycles: ReactLifeCycleFunctions<EntryEditorProps, {}> = {
 
       stateUpdate({ 
         formMode: FormMode.Edit,
-        timesheetUid: history.location.state.uid
+        timesheetUid: history.location.state.uid,
+        submitDialogTitle: this.props.intl.formatMessage(timesheetMessage.entry.dialog.editTitle),
+        submitDialogContentText: this.props.intl.formatMessage(timesheetMessage.entry.dialog.editDescription)
       });
 
       loadDetailRequest({
