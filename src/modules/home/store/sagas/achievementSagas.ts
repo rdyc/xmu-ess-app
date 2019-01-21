@@ -9,7 +9,7 @@ function* watchAllFetchRequest() {
     return saiyanSaga.fetch({
       host: window.self.location.origin,
       method: 'get',
-      path: `/chart.json`,
+      path: `/data/chart.json`,
       successEffects: (response: IApiResponse) => [
         put(achievementGetSuccess(response.body)),
       ],

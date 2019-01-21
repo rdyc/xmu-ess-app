@@ -30,6 +30,10 @@ const styles = (theme: Theme) =>
       overflow: 'hidden'
     },
 
+    landingPage: {
+      backgroundColor: theme.palette.grey[800]
+    },
+
     /* LOGOS */
     logoEquine: {
       height: 70,
@@ -65,14 +69,13 @@ const styles = (theme: Theme) =>
 
     /* FOOTER */
     footer: {
-      backgroundColor: theme.palette.grey[800],
       color: '#FFF',
       padding: theme.spacing.unit * 6
     },
 
     /* HERO */
     heroHeader: {
-      backgroundColor: theme.palette.grey[900],
+      backgroundColor: theme.palette.grey[800],
       display: 'flex',
       position: 'fixed',
       color: theme.palette.primary.contrastText,
@@ -83,7 +86,7 @@ const styles = (theme: Theme) =>
     },
     heroUnit: {
       backgroundColor: '#333',
-      backgroundImage: `url("${Background1}")`,
+      backgroundImage: `linear-gradient(rgba(0,130,170,0), ${theme.palette.grey[800]}), url("${Background1}")`,
       backgroundSize: 'cover',
       height: '100vh',
       maxHeight: '1600px',
@@ -107,6 +110,7 @@ const styles = (theme: Theme) =>
     heroSummary: {
       background: theme.palette.background.default,
       margin: '-150px auto 0 auto',
+      padding: theme.spacing.unit * 2,
       position: 'relative',
       maxWidth: 1200,
       justifyContent: 'center'

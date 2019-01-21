@@ -1,25 +1,26 @@
-import {
-  NewsFeedAction as Action,
-  newsFeedGetError,
-  newsFeedGetRequest,
-  newsFeedGetSuccess,
-} from '@home/store/actions';
 import { layoutAlertAdd } from '@layout/store/actions';
 import saiyanSaga from '@utils/saiyanSaga';
 import { all, fork, put, takeEvery } from 'redux-saga/effects';
 import { IApiResponse } from 'utils';
 
+import {
+  AnnouncementAction as Action,
+  announcementGetError,
+  announcementGetRequest,
+  announcementGetSuccess,
+} from '../actions/announcementActions';
+
 function* watchAllFetchRequest() {
-  const worker = (action: ReturnType<typeof newsFeedGetRequest>) => {
+  const worker = (action: ReturnType<typeof announcementGetRequest>) => {
     return saiyanSaga.fetch({
       host: window.self.location.origin,
       method: 'get',
-      path: `/data/news.json`,
+      path: `/data/images.json`,
       successEffects: (response: IApiResponse) => [
-        put(newsFeedGetSuccess(response.body)),
+        put(announcementGetSuccess(response.body)),
       ],
       failureEffects: (response: IApiResponse) => [
-        put(newsFeedGetError(response.body)),
+        put(announcementGetError(response.body)),
         put(layoutAlertAdd({
           time: new Date(),
           message: response.statusText,
@@ -27,7 +28,7 @@ function* watchAllFetchRequest() {
         })),
       ],
       errorEffects: (error: TypeError) => [
-        put(newsFeedGetError(error.message)),
+        put(announcementGetError(error.message)),
         put(
           layoutAlertAdd({
             time: new Date(),
@@ -43,10 +44,10 @@ function* watchAllFetchRequest() {
   yield takeEvery(Action.GET_REQUEST, worker);
 }
 
-function* newsFeedSagas() {
+function* announcementSagas() {
   yield all([
     fork(watchAllFetchRequest),
   ]);
 }
 
-export default newsFeedSagas;
+export default announcementSagas;

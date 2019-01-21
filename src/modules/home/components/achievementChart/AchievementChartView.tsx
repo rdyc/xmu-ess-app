@@ -1,4 +1,5 @@
-import { Card, CardContent, CardHeader, Grid } from '@material-ui/core';
+import { layoutMessage } from '@layout/locales/messages';
+import { Card, CardContent, CardHeader, Grid, Typography } from '@material-ui/core';
 import { isWidthDown } from '@material-ui/core/withWidth';
 import * as React from 'react';
 import { VictoryAxis, VictoryBar, VictoryChart, VictoryLabel, VictoryTooltip } from 'victory';
@@ -39,6 +40,13 @@ export const AchievementChartView: React.SFC<AchievementChartProps> = props => {
 
   return (
     <React.Fragment>
+      {
+        props.achievementState.all.isLoading &&
+        <Typography variant="body2">
+          {props.intl.formatMessage(layoutMessage.text.loading)}
+        </Typography>
+      }
+
       {
         props.achievementState.all.response &&
         props.achievementState.all.response.data &&

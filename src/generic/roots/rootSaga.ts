@@ -42,6 +42,7 @@ import expenseApprovalSagas from '@expense/store/sagas/expenseApprovalSagas';
 import expenseSagas from '@expense/store/sagas/expenseRequestSagas';
 import financeSagas from '@finance/store/sagas/financeApprovalSagas';
 import achievementSagas from '@home/store/sagas/achievementSagas';
+import announcementSagas from '@home/store/sagas/announcementSagas';
 import newsFeedSagas from '@home/store/sagas/newsFeedSagas';
 import commonNotificationSagas from '@layout/store/sagas/notificationSagas';
 import leaveApprovalSagas from '@leave/store/sagas/leaveApprovalSagas';
@@ -197,6 +198,7 @@ export function* rootSaga() {
 
     // home
     fork(achievementSagas),
+    fork(announcementSagas),
     fork(newsFeedSagas)
   ]);
 }
