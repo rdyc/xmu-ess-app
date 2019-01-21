@@ -8,11 +8,13 @@ import { timesheetMessage } from '@timesheet/locales/messages/timesheetMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose, HandleCreators, withHandlers } from 'recompose';
 import { BaseFieldsProps } from 'redux-form';
+import { isNullOrUndefined } from 'util';
 import { AccountEmployeeDetailFormView } from './AccountEmployeeDetailFormView';
 
 interface OwnProps {
   formMode: FormMode;
   context: BaseFieldsProps;
+  companyUidValue: string | undefined;
 }
 
 interface OwnHandlers {
@@ -26,7 +28,7 @@ export type AccountEmployeeDetailFormProps =
 
 const handleCreators: HandleCreators<AccountEmployeeDetailFormProps, OwnHandlers> = {
   generateFieldProps: (props: AccountEmployeeDetailFormProps) => (name: string) => {
-    const { intl } = props;
+    const { intl, companyUidValue } = props;
 
     let fieldProps: SelectSystemOption & any = {};
 
@@ -100,8 +102,10 @@ const handleCreators: HandleCreators<AccountEmployeeDetailFormProps, OwnHandlers
         fieldProps = {
           required: true,
           category: 'employment',
+          disabled: isNullOrUndefined(companyUidValue),
           label: intl.formatMessage(accountMessage.employee.fieldFor(name, 'fieldName')),
           placeholder: intl.formatMessage(accountMessage.employee.fieldFor(name, 'fieldPlaceholder')),
+          companyUid: companyUidValue,
           component: SelectSystem
         };
         break;
@@ -157,6 +161,7 @@ const handleCreators: HandleCreators<AccountEmployeeDetailFormProps, OwnHandlers
 
         case 'image':
         fieldProps = {
+          required: true,
           label: intl.formatMessage(accountMessage.employee.fieldFor(name, 'fieldName')),
           placeholder: intl.formatMessage(accountMessage.employee.fieldFor(name, 'fieldPlaceholder')),   
           component: InputText

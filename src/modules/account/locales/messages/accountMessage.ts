@@ -4,6 +4,7 @@ import {
   accountEducationField,
   accountEducationFieldHelperFor,
   accountEducationMessage,
+  accountEducationOption,
   accountEducationPage,
   accountEducationSection
 } from './accountEducationMessage';
@@ -33,7 +34,8 @@ export const accountMessage = {
     fieldFor: accountEducationFieldHelperFor,
     message: accountEducationMessage,
     confirm: accountEducationConfirm,
-    page: accountEducationPage
+    page: accountEducationPage,
+    option: accountEducationOption
   },
   access: {
     message: accountAccessMessage

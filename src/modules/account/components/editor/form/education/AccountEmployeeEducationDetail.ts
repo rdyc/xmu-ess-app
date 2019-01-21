@@ -4,12 +4,13 @@ import { FormMode } from '@generic/types';
 import { InputText } from '@layout/components/input/text';
 import { InputYearDegree } from '@layout/components/input/yearDegree';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
-import { compose, HandleCreators, withHandlers } from 'recompose';
+import { compose, HandleCreators, setDisplayName, withHandlers } from 'recompose';
 import { BaseFieldsProps } from 'redux-form';
 import { AccountEmployeeEducationDetailView } from './AccountEmployeeEducationDetailView';
 
 interface OwnProps {
-  formMode: FormMode;
+  formMode: FormMode | undefined;
+  disabledControls: boolean;
   context: BaseFieldsProps;
 }
 
@@ -24,7 +25,7 @@ export type AccountEmployeeEducationDetailProps =
 
 const handleCreators: HandleCreators<AccountEmployeeEducationDetailProps, OwnHandlers> = {
   generateFieldProps: (props: AccountEmployeeEducationDetailProps) => (name: string) => {
-    const { intl } = props;
+    const { intl, disabledControls } = props;
 
     let fieldProps: SelectSystemOption & any = {};
 
@@ -51,6 +52,7 @@ const handleCreators: HandleCreators<AccountEmployeeEducationDetailProps, OwnHan
       case 'degreeType':
         fieldProps = {
           required: true,
+          disabled: disabledControls,
           category: 'degree',
           label: intl.formatMessage(accountMessage.education.fieldFor(name, 'fieldName')),
           placeholder: intl.formatMessage(accountMessage.education.fieldFor(name, 'fieldPlaceholder')),
@@ -61,6 +63,7 @@ const handleCreators: HandleCreators<AccountEmployeeEducationDetailProps, OwnHan
       case 'institution':
         fieldProps = {
           required: true,
+          disabled: disabledControls,
           label: intl.formatMessage(accountMessage.education.fieldFor(name, 'fieldName')),
           placeholder: intl.formatMessage(accountMessage.education.fieldFor(name, 'fieldPlaceholder')),
           component: InputText  
@@ -70,6 +73,7 @@ const handleCreators: HandleCreators<AccountEmployeeEducationDetailProps, OwnHan
       case 'major':
         fieldProps = {
           required: true,
+          disabled: disabledControls,
           label: intl.formatMessage(accountMessage.education.fieldFor(name, 'fieldName')),
           placeholder: intl.formatMessage(accountMessage.education.fieldFor(name, 'fieldPlaceholder')),
           component: InputText  
@@ -79,6 +83,7 @@ const handleCreators: HandleCreators<AccountEmployeeEducationDetailProps, OwnHan
       case 'start':
         fieldProps = {
           required: true,
+          disabled: disabledControls,
           label: intl.formatMessage(accountMessage.education.fieldFor(name, 'fieldName')),
           placeholder: intl.formatMessage(accountMessage.education.fieldFor(name, 'fieldPlaceholder')),
           component: InputYearDegree  
@@ -87,6 +92,7 @@ const handleCreators: HandleCreators<AccountEmployeeEducationDetailProps, OwnHan
 
       case 'end':
         fieldProps = {
+          disabled: disabledControls,
           label: intl.formatMessage(accountMessage.education.fieldFor(name, 'fieldName')),
           placeholder: intl.formatMessage(accountMessage.education.fieldFor(name, 'fieldPlaceholder')),
           component: InputYearDegree  
@@ -108,6 +114,7 @@ const handleCreators: HandleCreators<AccountEmployeeEducationDetailProps, OwnHan
 };
 
 export const AccountEmployeeEducationDetail = compose<AccountEmployeeEducationDetailProps, OwnProps>(
+  setDisplayName('EducationDetailForm'),
   injectIntl,
   withHandlers<AccountEmployeeEducationDetailProps, OwnHandlers>(handleCreators)
 )(AccountEmployeeEducationDetailView);
