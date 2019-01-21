@@ -1,6 +1,6 @@
 {
   "account.access.message.greeting": "Hi {name}, Welcome to TESSA",
-  "account.access.message.selection": "Before you started, please select your company access",
+  "account.access.message.selection": "Please select your company access",
 
   "account.employee.message.emptyProps": "Some props are empty",
   "account.employee.message.create.success": "New Employee Data has been created",

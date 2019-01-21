@@ -16,12 +16,12 @@ const config: SingleConfig<ILookupLeaveDetail, LookupLeaveDetailProps> = {
     uid: AppMenu.LookupLeave,
     parentUid: AppMenu.Lookup,
     title: props.intl.formatMessage(lookupMessage.leave.page.detailTitle),
-    description: props.intl.formatMessage(lookupMessage.leave.page.detailSubHeader)
+    description: props.intl.formatMessage(lookupMessage.leave.page.detailSubHeader),
   }),
-
-  // parent url
-  parentUrl: (props: LookupLeaveDetailProps) => '/lookup/leave',
   
+  // parent url
+  parentUrl: (props: LookupLeaveDetailProps) => '/lookup/leaves',
+
   // action centre
   showActionCentre: true,
 
@@ -33,14 +33,14 @@ const config: SingleConfig<ILookupLeaveDetail, LookupLeaveDetailProps> = {
       name: props.intl.formatMessage(layoutMessage.action.refresh),
       enabled: true,
       visible: true,
-      onClick: callback.handleForceReload
+      onClick: () => callback.handleForceReload()
     },
     {
       id: LookupUserAction.Modify,
       name: props.intl.formatMessage(layoutMessage.action.modify),
       enabled: true,
       visible: true,
-      onClick: props.handleOnModify
+      onClick: () => props.handleOnOpenDialog(LookupUserAction.Modify)
     },
     {
       id: LookupUserAction.Delete,
@@ -57,12 +57,12 @@ const config: SingleConfig<ILookupLeaveDetail, LookupLeaveDetailProps> = {
     const { isLoading, request, response } = props.lookupLeaveState.detail;
     const { loadDetailRequest } = props.lookupLeaveDispatch;
 
-    // when user is set and not loading and has LeaveUid in route params
-    if (user && !isLoading && props.match.params) {
-      // when LeaveUid was changed or response are empty or force to reload
+    // when user is set and not loading and has leaveUid in route params
+    if (user && !isLoading && props.history.location.state && props.match.params.leaveUid) {
+      // when leaveUid was changed or response are empty or force to reload
       if ((request && request.leaveUid !== props.match.params.leaveUid) || !response || forceReload) {
         loadDetailRequest({
-          companyUid: props.match.params.companyUid,
+          companyUid: props.history.location.state.companyUid,
           leaveUid: props.match.params.leaveUid
         });
       } else {
@@ -71,8 +71,8 @@ const config: SingleConfig<ILookupLeaveDetail, LookupLeaveDetailProps> = {
       }
     }
   },
-  onUpdated: (props: LookupLeaveDetailProps, callback: SingleHandler) => {
-    const { isLoading, response } = props.lookupLeaveState.detail;
+  onUpdated: (states: LookupLeaveDetailProps, callback: SingleHandler) => {
+    const { isLoading, response } = states.lookupLeaveState.detail;
     
     callback.handleLoading(isLoading);
 
@@ -83,12 +83,12 @@ const config: SingleConfig<ILookupLeaveDetail, LookupLeaveDetailProps> = {
   },
 
   // primary
-  primaryComponent: (data: ILookupLeaveDetail, props: LookupLeaveDetailProps) => (
+  primaryComponent: (data: ILookupLeaveDetail) => (
     <LookupLeaveInformation data={data} />
   ),
 
-  // secondary (multiple components are allowed)
   secondaryComponents: (data: ILookupLeaveDetail, props: LookupLeaveDetailProps) => ([
+    //
   ])
 };
 
@@ -97,19 +97,21 @@ export const LookupLeaveDetailView: React.SFC<LookupLeaveDetailProps> = props =>
     config={config}
     connectedProps={props}
   >
-  <Delete
-      action={props.action}
-      isOpenDialog={props.dialogOpen}
-      title={props.dialogTitle}
-      content={props.dialogContent}
-      labelCancel={props.dialogCancelLabel}
-      labelConfirm={props.dialogConfirmLabel}
-      handleDialogOpen={props.handleOnOpenDialog}
-      handleDialogClose={props.handleOnCloseDialog}
-      handleDialogConfirmed={props.handleOnConfirm}
-      onSubmit={props.handleDelete} 
-      onSubmitSuccess={props.handleDeleteSuccess}
-      onSubmitFail={props.handleDeleteFail}
-    />
+    <React.Fragment>
+      <Delete 
+        action={props.action}
+        isOpenDialog={props.dialogOpen}
+        title={props.dialogTitle}
+        content={props.dialogContent}
+        labelCancel={props.dialogCancelLabel}
+        labelConfirm={props.dialogConfirmLabel}
+        handleDialogOpen={props.handleOnOpenDialog}
+        handleDialogClose={props.handleOnCloseDialog}
+        handleDialogConfirmed={props.handleOnConfirm}
+        onSubmit={props.handleSubmit} 
+        onSubmitSuccess={props.handleSubmitSuccess}
+        onSubmitFail={props.handleSubmitFail}
+      />
+    </React.Fragment>
   </SinglePage>
 );

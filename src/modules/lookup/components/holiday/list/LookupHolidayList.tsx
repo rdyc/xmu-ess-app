@@ -134,7 +134,7 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
         {
           icon: AddCircleIcon,
           onClick: () => {
-            this.props.history.push('/lookup/holiday/form');
+            this.props.history.push('/lookup/holidays/form');
           }
         }
       ],
@@ -182,13 +182,13 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
         <React.Fragment>
           <Button
             size="small"
-            onClick={() => this.props.history.push('/lookup/holidays/form', { companyUid: item.companyUid, uid: item.uid })}
+            onClick={() => this.props.history.push(`/lookup/holidays/form`, { uid: item.uid })}
           >
             <FormattedMessage {...layoutMessage.action.modify} />
           </Button>
           <Button
             size="small"
-            onClick={() => this.props.history.push(`/lookup/holidays/${item.companyUid}/${item.uid}`)}
+            onClick={() => this.props.history.push(`/lookup/holidays/${item.uid}`, {companyUid: item.companyUid})}
           >
             <FormattedMessage {...layoutMessage.action.details} />
           </Button>
