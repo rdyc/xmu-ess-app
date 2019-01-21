@@ -1,9 +1,6 @@
 import { IFinance } from '@finance/classes/response';
 import { financeMessage } from '@finance/locales/messages/financeMessage';
-import { GlobalFormat } from '@layout/types';
 import { Card, CardContent, CardHeader, Grid, ListItem, Typography } from '@material-ui/core';
-import { parseChanges } from '@utils/parseChanges';
-import * as moment from 'moment';
 import * as React from 'react';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose } from 'recompose';
@@ -27,9 +24,16 @@ const financeBulkInformation: React.SFC<AllProps> = props => (
         props.data.map(finance => finance &&
           <ListItem 
            key={finance.uid}
+           disableGutters
           >
-            <Grid container spacing={24}>
-              <Grid item xs={8} sm={8}>
+            <Grid 
+              container 
+              spacing={16}
+            >
+              <Grid 
+                item 
+                xs={12}
+              >
                 <Typography 
                   noWrap 
                   color="primary" 
@@ -41,48 +45,26 @@ const financeBulkInformation: React.SFC<AllProps> = props => (
                   noWrap
                   variant="body2"
                 >
-                  {finance.document && finance.document.changes && finance.document.changes.created && finance.document.changes.created.fullName} &bull;&nbsp;
-                  {props.intl.formatDate(finance.document && finance.document.changes && finance.document.changes.updatedAt || '', GlobalFormat.Date)} &bull;&nbsp;
-                  {finance.uid}
-                </Typography>
-                <Typography 
-                  noWrap
-                  variant="body2"
-                >
                 {finance.document && finance.document.amount && finance.document.amount.advance && props.intl.formatNumber(finance.document.amount.advance)} &nbsp;&bull;&nbsp;
                 {finance.document && finance.document.amount && finance.document.amount.total && props.intl.formatNumber(finance.document.amount.total)}
                 </Typography>
                 <Typography 
                   noWrap
-                  color="textSecondary" 
-                  variant="caption"
-                > 
-                  {finance && finance.notes}
-                </Typography>
-              </Grid>
-              <Grid item xs={4} sm={4}>
-                <Typography 
-                  noWrap 
-                  variant="body2" 
-                  align="right"
+                  variant="body2"
                 >
-                  {finance.status && finance.status.value}
+                  {finance.document && finance.document.changes && finance.document.changes.created && finance.document.changes.created.fullName} &bull;&nbsp;
+                  {finance.uid}
                 </Typography>
-                <Typography 
-                  noWrap 
-                  color="secondary"
-                  variant="caption" 
-                  align="right"
-                >
-                  {parseChanges(finance.changes || null)}
-                </Typography>
-                <Typography 
-                  noWrap
-                  variant="caption" 
-                  align="right"
-                >
-                  {finance.changes && moment(finance.changes.updatedAt ? finance.changes.updatedAt : finance.changes.createdAt).fromNow()}
-                </Typography>
+                {
+                  finance &&
+                  <Typography 
+                    noWrap
+                    color="textSecondary" 
+                    variant="caption"
+                  > 
+                    {finance.notes}
+                  </Typography>
+                }
               </Grid>
             </Grid>
           </ListItem>
