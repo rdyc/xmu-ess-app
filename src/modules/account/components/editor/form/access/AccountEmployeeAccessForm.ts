@@ -28,6 +28,7 @@ interface OwnProps {
 
 interface FormValueProps {
   companyUidValue: string | undefined;
+  unitTypeValue: string | undefined;
   formName: string;
 }
 
@@ -40,10 +41,12 @@ const selector = formValueSelector(formName);
   
 const mapStateToProps = (state: any): FormValueProps => {
   const companyUid = selector(state, 'information.companyUid');
+  const unitType = selector(state, 'information.unitType');
 
   return {
     formName,
-    companyUidValue: companyUid
+    companyUidValue: companyUid,
+    unitTypeValue: unitType,
   };
 };
 

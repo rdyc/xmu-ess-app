@@ -16,6 +16,7 @@ export interface SelectSystemOption {
 interface OwnProps extends SelectSystemOption, WrappedFieldProps, BaseFieldProps { 
   category: CommonCategoryType;
   companyUid?: string | undefined; 
+  parentCode?: string | undefined;
   required?: boolean;
   placeholder?: string;
   label: string; 
@@ -34,7 +35,7 @@ export type SelectSystemProps
 
 const lifecycles: ReactLifeCycleFunctions<SelectSystemProps, OwnProps> = {
   componentDidMount() {
-    const { category, companyUid, commonDispatch } = this.props;
+    const { category, companyUid, parentCode, commonDispatch } = this.props;
     const { isLoading, response } = this.props.categoryState();
 
     // skipp fetch while current state is being loaded
@@ -48,6 +49,7 @@ const lifecycles: ReactLifeCycleFunctions<SelectSystemProps, OwnProps> = {
         category,
         filter: {
           companyUid,
+          parentCode,
           orderBy: 'code',
           direction: 'ascending'
         }
@@ -175,6 +177,7 @@ const lifecycles: ReactLifeCycleFunctions<SelectSystemProps, OwnProps> = {
         category: nextProps.category,
         filter: {
           companyUid: nextProps.companyUid,
+          parentCode: nextProps.parentCode,
           orderBy: 'code',
           direction: 'ascending'
         }
@@ -294,6 +297,122 @@ const lifecycles: ReactLifeCycleFunctions<SelectSystemProps, OwnProps> = {
       }
     }
   },
+  componentWillUnmount() {
+    const { commonDispatch, category } = this.props;
+
+    switch (category) {
+      case 'activity':
+        commonDispatch.activityListDispose();
+        break;
+  
+      case 'currency':
+        commonDispatch.currencyListDispose();
+        break;
+
+      case 'document':
+        commonDispatch.documentListDispose();
+        break;
+
+      case 'documentPreSales':
+        commonDispatch.documentPresalesListDispose();
+        break;
+
+      case 'project':
+        commonDispatch.projectListDispose();
+        break;
+        
+      case 'site':
+        commonDispatch.siteListDispose();
+        break;
+        
+      case 'expense':
+        commonDispatch.expenseListDispose();
+        break;
+
+      case 'leave':
+        commonDispatch.leaveListDispose();
+        break;
+
+      case 'status':
+        commonDispatch.statusListDispose();
+        break;
+
+      case 'destination':
+        commonDispatch.destinationListDispose();
+        break;
+      
+      case 'purpose':
+        commonDispatch.purposeListDispose();
+        break;
+      
+      case 'transportation':
+        commonDispatch.transportationListDispose();
+        break;
+
+      case 'limiter':
+        commonDispatch.limiterListDispose();
+        break;
+        
+      case 'unit':
+        commonDispatch.unitListDispose();
+        break;
+
+      case 'grade':
+        commonDispatch.gradeListDispose();
+        break;
+
+      case 'relation':
+        commonDispatch.relationListDispose();
+        break;
+        
+      case 'religion':
+        commonDispatch.religionListDispose();
+        break;
+
+      case 'gender':
+        commonDispatch.genderListDispose();
+        break;
+        
+      case 'blood':
+        commonDispatch.bloodListDispose();
+        break;
+
+      case 'tax':
+        commonDispatch.taxListDispose();
+        break;
+
+      case 'employment':
+        commonDispatch.employmentListDispose();
+        break;
+
+      case 'training':
+        commonDispatch.trainingListDispose();
+        break;
+
+      case 'certification':
+        commonDispatch.certificationListDispose();
+        break;
+
+      case 'department':
+        commonDispatch.departmentListDispose();
+        break;
+
+      case 'degree':
+        commonDispatch.degreeListDispose();
+        break;
+
+      case 'family':
+        commonDispatch.familyListDispose();
+        break;
+
+      case 'level':
+        commonDispatch.levelListDispose();
+        break;
+
+      default:
+      break;
+    }
+  }
 };
 
 const handlerCreators: HandleCreators<SelectSystemProps, OwnHandlers> = {

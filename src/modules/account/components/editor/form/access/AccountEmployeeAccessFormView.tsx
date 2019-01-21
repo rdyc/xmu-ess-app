@@ -8,7 +8,7 @@ import { AccountEmployeeAccessFormProps } from './AccountEmployeeAccessForm';
 
 export const AccountEmployeeAccessFormView: React.SFC<AccountEmployeeAccessFormProps> = props => {
   const {
-    formMode, companyUidValue
+    formMode, companyUidValue, unitTypeValue
   } = props;
 
   const fields = Object.getOwnPropertyNames(props.initialValues.information);
@@ -18,6 +18,7 @@ export const AccountEmployeeAccessFormView: React.SFC<AccountEmployeeAccessFormP
       formMode={formMode}
       context={context}
       companyUidValue={companyUidValue}
+      unitTypeValue={unitTypeValue}
     />
   );
 

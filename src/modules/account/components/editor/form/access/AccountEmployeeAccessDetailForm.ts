@@ -16,6 +16,7 @@ interface OwnProps {
   formMode: FormMode;
   context: BaseFieldsProps;
   companyUidValue: string | null | undefined;
+  unitTypeValue: string | null | undefined;
 }
 
 interface OwnHandlers {
@@ -30,12 +31,13 @@ export type AccountEmployeeAccessDetailFormProps
 const handlerCreators: HandleCreators<AccountEmployeeAccessDetailFormProps, OwnHandlers> = {
     generateFieldProps: (props: AccountEmployeeAccessDetailFormProps) => (name: string) => { 
       const { 
-        intl, companyUidValue
+        intl, companyUidValue, unitTypeValue
       } = props;
       
       const fieldName = name.replace('information.', '');
 
       const byCompanyUid: any = companyUidValue;
+      const byUnitType: any = unitTypeValue;
 
       const byCompanyFilter: any = {
         companyUid: companyUidValue,
@@ -69,7 +71,8 @@ const handlerCreators: HandleCreators<AccountEmployeeAccessDetailFormProps, OwnH
             label: intl.formatMessage(accountMessage.access.fieldFor(fieldName, 'fieldName')),
             placeholder: intl.formatMessage(accountMessage.access.fieldFor(fieldName, 'fieldPlaceholder')),
             companyUid: byCompanyUid,
-            disabled: isNullOrUndefined(companyUidValue),
+            parentCode: byUnitType,
+            disabled: (isNullOrUndefined(companyUidValue) || isNullOrUndefined(unitTypeValue)),
             component: SelectSystem
           };
           break;
