@@ -16,9 +16,12 @@ const config: SingleConfig<ILookupHolidayDetail, LookupHolidayDetailProps> = {
     uid: AppMenu.LookupHoliday,
     parentUid: AppMenu.Lookup,
     title: props.intl.formatMessage(lookupMessage.holiday.page.detailTitle),
-    description: props.intl.formatMessage(lookupMessage.holiday.page.detailSubHeader)
+    description: props.intl.formatMessage(lookupMessage.holiday.page.detailSubHeader),
   }),
   
+  // parent url
+  parentUrl: (props: LookupHolidayDetailProps) => '/lookup/holidays',
+
   // action centre
   showActionCentre: true,
 
@@ -30,14 +33,14 @@ const config: SingleConfig<ILookupHolidayDetail, LookupHolidayDetailProps> = {
       name: props.intl.formatMessage(layoutMessage.action.refresh),
       enabled: true,
       visible: true,
-      onClick: callback.handleForceReload
+      onClick: () => callback.handleForceReload()
     },
     {
       id: LookupUserAction.Modify,
       name: props.intl.formatMessage(layoutMessage.action.modify),
       enabled: true,
       visible: true,
-      onClick: props.handleOnModify
+      onClick: () => props.handleOnOpenDialog(LookupUserAction.Modify)
     },
     {
       id: LookupUserAction.Delete,
@@ -55,11 +58,11 @@ const config: SingleConfig<ILookupHolidayDetail, LookupHolidayDetailProps> = {
     const { loadDetailRequest } = props.lookupHolidayDispatch;
 
     // when user is set and not loading and has holidayUid in route params
-    if (user && !isLoading && props.match.params) {
+    if (user && !isLoading && props.history.location.state && props.match.params.holidayUid) {
       // when holidayUid was changed or response are empty or force to reload
       if ((request && request.holidayUid !== props.match.params.holidayUid) || !response || forceReload) {
         loadDetailRequest({
-          companyUid: props.match.params.companyUid,
+          companyUid: props.history.location.state.companyUid,
           holidayUid: props.match.params.holidayUid
         });
       } else {
@@ -68,8 +71,8 @@ const config: SingleConfig<ILookupHolidayDetail, LookupHolidayDetailProps> = {
       }
     }
   },
-  onUpdated: (props: LookupHolidayDetailProps, callback: SingleHandler) => {
-    const { isLoading, response } = props.lookupHolidayState.detail;
+  onUpdated: (states: LookupHolidayDetailProps, callback: SingleHandler) => {
+    const { isLoading, response } = states.lookupHolidayState.detail;
     
     callback.handleLoading(isLoading);
 
@@ -80,12 +83,12 @@ const config: SingleConfig<ILookupHolidayDetail, LookupHolidayDetailProps> = {
   },
 
   // primary
-  primaryComponent: (data: ILookupHolidayDetail, props: LookupHolidayDetailProps) => (
+  primaryComponent: (data: ILookupHolidayDetail) => (
     <LookupHolidayInformation data={data} />
   ),
 
-  // secondary (multiple components are allowed)
   secondaryComponents: (data: ILookupHolidayDetail, props: LookupHolidayDetailProps) => ([
+    //
   ])
 };
 
@@ -94,19 +97,21 @@ export const LookupHolidayDetailView: React.SFC<LookupHolidayDetailProps> = prop
     config={config}
     connectedProps={props}
   >
-  <Delete
-      action={props.action}
-      isOpenDialog={props.dialogOpen}
-      title={props.dialogTitle}
-      content={props.dialogContent}
-      labelCancel={props.dialogCancelLabel}
-      labelConfirm={props.dialogConfirmLabel}
-      handleDialogOpen={props.handleOnOpenDialog}
-      handleDialogClose={props.handleOnCloseDialog}
-      handleDialogConfirmed={props.handleOnConfirm}
-      onSubmit={props.handleDelete} 
-      onSubmitSuccess={props.handleDeleteSuccess}
-      onSubmitFail={props.handleDeleteFail}
-    />
+    <React.Fragment>
+      <Delete 
+        action={props.action}
+        isOpenDialog={props.dialogOpen}
+        title={props.dialogTitle}
+        content={props.dialogContent}
+        labelCancel={props.dialogCancelLabel}
+        labelConfirm={props.dialogConfirmLabel}
+        handleDialogOpen={props.handleOnOpenDialog}
+        handleDialogClose={props.handleOnCloseDialog}
+        handleDialogConfirmed={props.handleOnConfirm}
+        onSubmit={props.handleSubmit} 
+        onSubmitSuccess={props.handleSubmitSuccess}
+        onSubmitFail={props.handleSubmitFail}
+      />
+    </React.Fragment>
   </SinglePage>
 );
