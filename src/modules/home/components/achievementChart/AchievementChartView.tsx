@@ -1,37 +1,11 @@
+import { homeMessage } from '@home/locales/messages';
 import { layoutMessage } from '@layout/locales/messages';
-import { Card, CardContent, CardHeader, Grid, Typography } from '@material-ui/core';
+import { Card, CardContent, CardHeader, Grid, Toolbar, Typography } from '@material-ui/core';
 import { isWidthDown } from '@material-ui/core/withWidth';
 import * as React from 'react';
 import { VictoryAxis, VictoryBar, VictoryChart, VictoryLabel, VictoryTooltip } from 'victory';
 
 import { AchievementChartProps } from './AchievementChart';
-
-// const labelRotation: React.ComponentType<ArgumentAxis.LineProps> = props => {
-//   return (
-//     <ArgumentAxis.Tick
-//       {...props}
-//       style={{ transform: 'rotate(45deg)' }} />
-//   );
-// };
-
-// const Label: React.ComponentType<ValueAxis.LabelProps> = props => {
-//   return (
-//     <ValueAxis.Label
-//       {...props}
-//       text={`${props.text} %`}
-//     />
-//   );
-// };
-
-// /** @type {{search: React.CSSProperties}} */
-
-// const styles = {
-//   data: {
-//     fill: (data: any) => (data.y > 80 ? 'green' : 'blue')
-//   }
-// };
-
-// const test = (d: any): string => { console.log(d); return ''; };
 
 export const AchievementChartView: React.SFC<AchievementChartProps> = props => {
   const { classes, width } = props;
@@ -39,7 +13,13 @@ export const AchievementChartView: React.SFC<AchievementChartProps> = props => {
   const isMobileXS = isWidthDown('xs', width);
 
   return (
-    <React.Fragment>
+    <div className={props.classes.marginFarBottom}>
+      <Toolbar className={props.classes.toolbarCustom}>
+        <Typography variant="h6" className={props.classes.flex} color="inherit">
+          {props.intl.formatMessage(homeMessage.dashboard.section.achievementChartTitle)}
+        </Typography>
+      </Toolbar>
+      
       {
         props.achievementState.all.isLoading &&
         <Typography variant="body2">
@@ -188,6 +168,6 @@ export const AchievementChartView: React.SFC<AchievementChartProps> = props => {
           </Grid>
         </Grid>
       }
-    </React.Fragment>
+    </div>
   );
 };

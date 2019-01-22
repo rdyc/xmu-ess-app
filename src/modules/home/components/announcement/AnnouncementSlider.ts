@@ -1,5 +1,7 @@
 import { WithAnnouncement, withAnnouncement } from '@home/hoc/withAnnouncement';
 import { IStepperSource } from '@layout/components/stepper/Stepper';
+import { WithStyles, withStyles } from '@material-ui/core';
+import styles from '@styles';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import {
   compose,
@@ -31,6 +33,7 @@ export type AnnouncementSliderProps
   = IOwnState
   & IOwnStateUpdater
   & WithAnnouncement
+  & WithStyles<typeof styles>
   & InjectedIntlProps;
 
 const createProps: mapper<IOwnOption, IOwnState> = (props: IOwnOption): IOwnState => ({
@@ -67,6 +70,7 @@ export const AnnouncementSlider = compose(
   setDisplayName('AnnouncementSlider'),
   withAnnouncement,
   injectIntl,
+  withStyles(styles),
   withStateHandlers(createProps, stateUpdaters),
   lifecycle(lifecycles)
 )(AnnouncementSliderView);

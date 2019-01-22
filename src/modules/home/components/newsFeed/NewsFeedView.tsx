@@ -1,12 +1,19 @@
+import { homeMessage } from '@home/locales/messages';
 import { layoutMessage } from '@layout/locales/messages';
 import { GlobalFormat } from '@layout/types';
-import { Card, CardActionArea, CardContent, CardMedia, Grid, Typography } from '@material-ui/core';
+import { Card, CardActionArea, CardContent, CardMedia, Grid, Toolbar, Typography } from '@material-ui/core';
 import * as React from 'react';
 
 import { NewsFeedProps } from './NewsFeed';
 
 export const NewsFeedView: React.SFC<NewsFeedProps> = props => (
-  <React.Fragment>
+  <div className={props.classes.marginFarBottom}>
+    <Toolbar className={props.classes.toolbarCustom}>
+      <Typography variant="h6" className={props.classes.flex} color="inherit">
+        {props.intl.formatMessage(homeMessage.dashboard.section.newsFeedTitle)}
+      </Typography>
+    </Toolbar>
+    
     {
       props.newsFeedState.all.isLoading &&
       <Typography variant="body2">
@@ -44,5 +51,5 @@ export const NewsFeedView: React.SFC<NewsFeedProps> = props => (
         ))
       }
     </Grid>
-  </React.Fragment>
+  </div>
 );
