@@ -91,6 +91,7 @@
 
   "account.employee.field.image": "Employee Photo",
   "account.employee.field.image.placeholder": "Employee Photo",
+  "account.employee.field.image.required": "Employee Photo is required",
 
   "account.employee.field.religion": "Religion",
   "account.employee.field.religion.placeholder": "Religion",
@@ -110,6 +111,7 @@
 
   "account.employee.field.mobile": "Mobile",
   "account.employee.field.mobile.placeholder": "Mobile",
+  "account.employee.field.mobile.required": "Mobile Phone is required",
   
   "account.employee.field.emergencyName": "Emergency Contact Name",
   "account.employee.field.emergencyName.placeholder": "Emergency Contact Name",
@@ -177,6 +179,8 @@
   "account.education.page.new.subHeader": " ",
   "account.education.page.modify.title": "Modify Education",
   "account.education.page.modify.subHeader": " ",
+  "account.education.page.delete.title": "Delete Education",
+  "account.education.page.delete.subHeader": " ",
 
   "account.education.section.basic.title": "Employee Education",
   "account.education.section.basic.subHeader": " ",
@@ -184,8 +188,10 @@
   "account.education.message.emptyProps": "Some props are empty",
   "account.education.message.create.success": "New Education Data has been created",
   "account.education.message.create.failure": "Unable to process your submission",
-  "account.education.message.update.success": "Current Education data has been updated",
+  "account.education.message.update.success": "Education data with id {uid} has been updated",
   "account.education.message.update.failure": "Unable to process your submission",
+  "account.education.message.delete.success": "Education data with id {uid} has been deleted",
+  "account.education.message.delete.failure": "Unable to process your submission",
 
   "account.education.confirm.create.title": "Add Education",
   "account.education.confirm.create.subHeader": " ",
@@ -193,8 +199,11 @@
   "account.education.confirm.modify.title": "Modify Education",
   "account.education.confirm.modify.subHeader": " ",
 
-  "account.education.field.uid": "Employee Education UID",
-  "account.education.field.uid.placeholder": "Employee Education UID",
+  "account.education.field.uid": "Employee Education ID",
+  "account.education.field.uid.placeholder": "Employee Education ID",
+
+  "account.education.field.employeeUid": "Employee ID",
+  "account.education.field.employeeUid.placeholder": "Employee ID",
 
   "account.education.field.degree": "Education Degree",
   "account.education.field.degree.required": "Education Degree is required",
@@ -260,6 +269,9 @@
   "account.access.field.start.placeholder": "Please Select Start Date",
 
   "account.access.field.end": "End Date",
-  "account.access.field.end.placeholder": "Please Select End Date"
+  "account.access.field.end.placeholder": "Please Select End Date",
 
+  "account.education.option.new": "New",
+  "account.education.option.modify": "Modify",
+  "account.education.option.remove": "Delete"
 }

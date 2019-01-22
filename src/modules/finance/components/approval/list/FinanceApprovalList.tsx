@@ -193,7 +193,7 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
         primary: item.module && item.module.value || 'N/A',
         secondary:  item.document && item.document.changes && item.document.changes.created && item.document.changes.created.fullName || item.document &&  item.document.changes && item.document.changes.createdBy || 'N/A',
         tertiary: item.document && item.document.amount && item.document.amount.total && this.props.intl.formatNumber(item.document.amount.total, GlobalFormat.CurrencyDefault) || '0',
-        quaternary: item.uid,
+        quaternary: item.document && item.document.uid || 'N/A',
         quinary: item.status && item.status.value || item.statusType,
         senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
       }),

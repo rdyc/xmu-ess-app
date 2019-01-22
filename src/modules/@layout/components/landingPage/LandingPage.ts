@@ -1,4 +1,3 @@
-import { WithLandingPage, withLandingPage } from '@layout/hoc/withLandingPage';
 import { WithOidc, withOidc } from '@layout/hoc/withOidc';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { IAppUser } from '@layout/interfaces';
@@ -45,7 +44,6 @@ export type LandingPageProps
   & WithOidc 
   & WithUser
   & WithStyles<typeof styles>
-  & WithLandingPage
   & OwnState 
   & OwnStateUpdaters 
   & OwnHandler;
@@ -88,19 +86,11 @@ const lifecycles: ReactLifeCycleFunctions<LandingPageProps, {}> = {
   componentDidMount() {
     // set document props
     document.title = 'Welcome to New TESSA';
-
-    const { isLoading, response } = this.props.landingPageState.all;
-    const { loadAllRequest } = this.props.landingPageDispatch;
-    
-    if (!isLoading && !response) {
-      loadAllRequest({});
-    }
   }
 };
 
 export const LandingPage = compose<LandingPageProps, {}>(
   injectIntl,
-  withLandingPage,
   withRouter,
   withOidc,
   withUser,

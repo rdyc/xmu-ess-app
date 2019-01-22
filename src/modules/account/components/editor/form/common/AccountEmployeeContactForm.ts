@@ -41,6 +41,7 @@ const handleCreators: HandleCreators<AccountEmployeeContactFormProps, OwnHandler
 
       case 'mobilePhone':
         fieldProps = {
+          required: true,
           label: intl.formatMessage(accountMessage.employee.fieldFor(name, 'fieldName')),
           placeholder: intl.formatMessage(accountMessage.employee.fieldFor(name, 'fieldPlaceholder')),
           component: InputText

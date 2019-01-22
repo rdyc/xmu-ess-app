@@ -80,7 +80,7 @@ const config: SingleConfig<IEmployeeTrainingList, AccountEmployeeTrainingProps> 
 export const AccountEmployeeTrainingView: React.SFC<
   AccountEmployeeTrainingProps
 > = props => {
-  const { classes, intl } = props;
+  const { intl } = props;
   const { response, isLoading } = props.accountEmployeeTrainingState.list;
 
   const header = Object.keys(AccountEmployeeTrainingHeaderTable).map(key => ({
@@ -91,8 +91,8 @@ export const AccountEmployeeTrainingView: React.SFC<
   const renderTraining = (data: IEmployeeTrainingList[]) => {
     return (
       <Fade in={!isLoading} timeout={1000} mountOnEnter unmountOnExit>
-        <Paper className={classes.table}>
-          <Table className={classes.minTable}>
+        <Paper square>
+          <Table>
             <TableHead>
               <TableRow>
                 {header.map(headerIdx => (
@@ -141,18 +141,16 @@ export const AccountEmployeeTrainingView: React.SFC<
       <DetailPage
         tab={5}
       >
-      <SinglePage
-        config={config}
-        connectedProps={props}
-      >
-        <div style={{ padding: 8 * 3 }}>
+        <SinglePage
+          config={config}
+          connectedProps={props}
+        >
           {(( !isLoading && response && !response.data) ||
             ( !isLoading && response && response.data && response.data.length === 0)) && (
             <Typography variant="body2">No Data</Typography>
           )}
           { !isLoading && response && response.data && response.data.length >= 1 && renderTraining(response.data)}
-        </div>
-      </SinglePage>
+        </SinglePage>
       </DetailPage>
     </React.Fragment>
   );

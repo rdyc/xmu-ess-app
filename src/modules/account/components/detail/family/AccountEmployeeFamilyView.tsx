@@ -80,7 +80,7 @@ const config: SingleConfig<IEmployeeFamilyList, AccountEmployeeFamilyProps> = {
 export const AccountEmployeeFamilyView: React.SFC<
   AccountEmployeeFamilyProps
 > = props => {
-  const { classes, intl } = props;
+  const { intl } = props;
   const { response, isLoading } = props.accountEmployeeFamilyState.list;
 
   const header = Object.keys(AccountEmployeeFamilyHeaderTable).map(key => ({
@@ -91,8 +91,8 @@ export const AccountEmployeeFamilyView: React.SFC<
   const renderFamily = (data: IEmployeeFamilyList[]) => {
     return (
       <Fade in={!isLoading} timeout={1000} mountOnEnter unmountOnExit>
-        <Paper className={classes.table}>
-          <Table className={classes.minTable}>
+        <Paper square>
+          <Table>
             <TableHead>
               <TableRow>
                 {header.map(headerIdx => (
@@ -134,18 +134,16 @@ export const AccountEmployeeFamilyView: React.SFC<
       <DetailPage
         tab={3}
       >
-      <SinglePage
-        config={config}
-        connectedProps={props}
-      >
-        <div style={{ padding: 8 * 3 }}>
+        <SinglePage
+          config={config}
+          connectedProps={props}
+        >
           {((!isLoading && response && !response.data) ||
             (!isLoading && response && response.data && response.data.length === 0)) && (
             <Typography variant="body2">No Data</Typography>
           )}
           { !isLoading && response && response.data && response.data.length >= 1 && renderFamily(response.data)}
-        </div>
-      </SinglePage>
+        </SinglePage>
       </DetailPage>
     </React.Fragment>
   );

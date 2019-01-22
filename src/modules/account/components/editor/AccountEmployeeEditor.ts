@@ -78,7 +78,7 @@ const handlerCreators: HandleCreators<AccountEmployeeEditorProps, OwnHandlers> =
   
     const requiredFields = [
       'employmentNumber', 'fullName', 'genderType', 'birthPlace', 'dateOfBirth', 
-      'companyUid', 'employmentType', 'joinDate', 'taxType', 'religionType', 'bloodType'
+      'companyUid', 'employmentType', 'joinDate', 'taxType', 'religionType', 'bloodType', 'image'
     ];
   
     const requiredBank = [
@@ -88,7 +88,7 @@ const handlerCreators: HandleCreators<AccountEmployeeEditorProps, OwnHandlers> =
 
     const requiredContact = [
       'address', 'addressAdditional', 'email',
-      'emailPersonal', 'phone'
+      'emailPersonal', 'phone', 'mobilePhone'
     ];
 
     requiredFields.forEach(field => {
