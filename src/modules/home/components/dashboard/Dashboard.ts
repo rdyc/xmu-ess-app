@@ -2,8 +2,6 @@ import AppMenu from '@constants/AppMenu';
 import { homeMessage } from '@home/locales/messages';
 import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
-import { WithStyles, withStyles } from '@material-ui/core';
-import styles from '@styles';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose, lifecycle, ReactLifeCycleFunctions } from 'recompose';
 
@@ -12,7 +10,6 @@ import { DashboardView } from './dashboardView';
 export type DashboardProps
   = WithLayout
   & WithAppBar
-  & WithStyles<typeof styles>
   & InjectedIntlProps;
 
 const lifecycles: ReactLifeCycleFunctions<DashboardProps, {}> = {
@@ -40,7 +37,6 @@ const lifecycles: ReactLifeCycleFunctions<DashboardProps, {}> = {
 export const Dashboard = compose(
   withLayout,
   withAppBar,
-  withStyles(styles),
   injectIntl,
   lifecycle(lifecycles)
 )(DashboardView);

@@ -20,7 +20,7 @@ import {
 import { NotificationView } from './NotificationView';
 
 interface IOwnOption {
-
+  useToolbar?: boolean;
 }
 
 interface IOwnItem {
@@ -45,7 +45,8 @@ interface IOwnHandler {
 }
 
 export type NotificationProps
-  = IOwnState
+  = IOwnOption
+  & IOwnState
   & IOwnStateUpdater
   & IOwnHandler
   & WithUser
@@ -81,7 +82,7 @@ const stateUpdaters: StateUpdaters<{}, IOwnState, IOwnStateUpdater> = {
       items: prevItems
     };
   },
-  handleReset: (prevState: IOwnOption) => (index: number): IOwnOption => ({
+  handleReset: (prevState: IOwnState) => (index: number): IOwnState => ({
     items: []
   })
 };
