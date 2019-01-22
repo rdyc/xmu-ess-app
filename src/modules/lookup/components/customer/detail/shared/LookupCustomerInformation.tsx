@@ -21,9 +21,14 @@ const lookupcustomerInformation: React.SFC<AllProps> = props => (
       // subheader={props.intl.formatMessage(lookupMessage.lookupCustomer.section.infoSubHeader)}
     />
     <CardContent>
+    <TextField
+        {...GlobalStyle.TextField.ReadOnly}
+        label={props.intl.formatMessage(lookupMessage.lookupCustomer.field.uid)}
+        value={props.data.uid}
+      />
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
-        label={props.intl.formatMessage(lookupMessage.lookupCustomer.field.companyUid)}
+        label={props.intl.formatMessage(lookupMessage.lookupCustomer.field.uid)}
         value={props.data.name}
       />
       <TextField

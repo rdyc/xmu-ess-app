@@ -137,7 +137,7 @@ const handlerCreators: HandleCreators<LookupDiemEditorProps, OwnHandlers> = {
       time: new Date()
     });
 
-    history.push('/lookup/diemvalue/list');
+    history.push(`/lookup/diemvalue/${response.uid}`);
   },
   handleSubmitFail: (props: LookupDiemEditorProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
     const { formMode, intl } = props;
@@ -197,8 +197,8 @@ const lifecycles: ReactLifeCycleFunctions<LookupDiemEditorProps, {}> = {
     }
 
     if (!isNullOrUndefined(history.location.state)) {
-      view.title = lookupMessage.company.page.modifyTitle;
-      view.subTitle = lookupMessage.company.page.modifySubHeader;
+      view.title = lookupMessage.lookupDiem.page.modifyTitle;
+      view.subTitle = lookupMessage.lookupDiem.page.modifySubHeader;
 
       stateUpdate({ 
         formMode: FormMode.Edit,
@@ -214,7 +214,7 @@ const lifecycles: ReactLifeCycleFunctions<LookupDiemEditorProps, {}> = {
     layoutDispatch.changeView({
       uid: AppMenu.LookupDiem,
       parentUid: AppMenu.Lookup,
-      title: 'Diem Value' , // intl.formatMessage(view.title),
+      title: intl.formatMessage(view.title),
       subTitle : intl.formatMessage(view.subTitle)
     });
 

@@ -1,10 +1,8 @@
 import { FormMode } from '@generic/types';
 import { layoutMessage } from '@layout/locales/messages';
+import { GlobalFormat } from '@layout/types';
 import { Typography } from '@material-ui/core';
-import {
-  TimesheetEntryForm,
-  TimesheetFormData,
-} from '@timesheet/components/entry/editor/forms/TimesheetEntryForm';
+import { TimesheetEntryForm, TimesheetFormData } from '@timesheet/components/entry/editor/forms/TimesheetEntryForm';
 import { EntryEditorProps } from '@timesheet/components/entry/editor/TimesheetEntryEditor';
 import * as moment from 'moment';
 import * as React from 'react';
@@ -91,26 +89,8 @@ export const TimesheetEntryEditorView: React.SFC<EntryEditorProps> = props => {
       // todo: replace values with response data
       const data = response.data;
 
-      const start = intl.formatDate(data.start, {
-        second: 'numeric',
-        minute: 'numeric',
-        hour: 'numeric',
-        day: 'numeric',
-        month: 'numeric',
-        year: 'numeric',
-        timeZone: 'GMT',
-        hour12: false
-      });
-      const end = intl.formatDate(data.end, {
-        second: 'numeric',
-        minute: 'numeric',
-        hour: 'numeric',
-        day: 'numeric',
-        month: 'numeric',
-        year: 'numeric',
-        timeZone: 'GMT',
-        hour12: false
-      });
+      const start = intl.formatDate(data.start, GlobalFormat.TimeDate);
+      const end = intl.formatDate(data.end, GlobalFormat.TimeDate);
       
       initialValues.information.uid = data.uid;
       initialValues.information.activityType = data.activityType;

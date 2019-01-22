@@ -110,8 +110,8 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
     const config: IListConfig<IRole> = {
       // page
       page: {
-        uid: AppMenu.Lookup,
-        parentUid: AppMenu.LookupRole,
+        uid: AppMenu.LookupRole,
+        parentUid: AppMenu.Lookup,
         title: this.props.intl.formatMessage(lookupMessage.role.page.listTitle),
         description: this.props.intl.formatMessage(lookupMessage.role.page.listSubHeader)
       },
