@@ -14,7 +14,6 @@ export const AccountEmployeeEducationDetailView: React.SFC<AccountEmployeeEducat
     // don't show uid for new form
     const fields = ['uid'];
     if (formMode === FormMode.New && fields.indexOf(fieldName) !== -1) {
-      console.log(`AAAAAAa + ${formMode}`);
       return null;
     }
 

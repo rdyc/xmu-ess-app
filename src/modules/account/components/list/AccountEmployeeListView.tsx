@@ -126,7 +126,7 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, OwnState> = {
     const config: IListConfig<IEmployee> = {
       // page
       page: {
-        uid: AppMenu.Account,
+        uid: AppMenu.LookupEmployee,
         parentUid: AppMenu.Lookup,
         title: this.props.intl.formatMessage(accountMessage.employee.page.listTitle),
         description: this.props.intl.formatMessage(accountMessage.employee.page.listSubHeader),
