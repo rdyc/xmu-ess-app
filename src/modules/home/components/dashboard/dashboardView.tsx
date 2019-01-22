@@ -2,8 +2,8 @@ import * as React from 'react';
 
 import { AchievementChart } from '../achievementChart';
 import { AnnouncementSlider } from '../announcement';
-import { NewsFeed } from '../newsFeed/NewsFeed';
-import { Notification } from '../notification/Notification';
+import { NewsFeed } from '../newsFeed';
+import { Notification } from '../notification';
 import { DashboardProps } from './Dashboard';
 
 export const DashboardView: React.SFC<DashboardProps> = props => (
