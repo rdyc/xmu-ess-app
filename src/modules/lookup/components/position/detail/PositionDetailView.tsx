@@ -1,5 +1,4 @@
 import AppMenu from '@constants/AppMenu';
-// import { DialogConfirmation } from '@layout/components/dialogs';
 import { SingleConfig, SingleHandler, SinglePage, SingleState } from '@layout/components/pages/singlePage/SinglePage';
 import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
@@ -66,7 +65,6 @@ const config: SingleConfig<IPositionDetail, PositionDetailProps> = {
       } else {
         // just take data from previous response
         callback.handleResponse(response);
-        callback.handleStatusType('');
       }
     }
   },
@@ -78,7 +76,6 @@ const config: SingleConfig<IPositionDetail, PositionDetailProps> = {
     // when got a response from api
     if (response && response.data) {
       callback.handleResponse(response);
-      callback.handleStatusType('');
     }
   },
 
