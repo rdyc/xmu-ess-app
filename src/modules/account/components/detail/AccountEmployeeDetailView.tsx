@@ -45,13 +45,13 @@ const config: SingleConfig<IEmployeeDetail, AccountEmployeeDetailProps> = {
       visible: true,
       onClick: () => props.handleOnOpenDialog(LookupUserAction.Modify)
     },
-    {
-      id: LookupUserAction.Delete,
-      name: props.intl.formatMessage(layoutMessage.action.delete),
-      enabled: true,
-      visible: true,
-      onClick: () => props.handleOnOpenDialog(LookupUserAction.Delete)
-    }
+    // {
+    //   id: LookupUserAction.Delete,
+    //   name: props.intl.formatMessage(layoutMessage.action.delete),
+    //   enabled: true,
+    //   visible: true,
+    //   onClick: () => props.handleOnOpenDialog(LookupUserAction.Delete)
+    // }
   ]),
 
   // events
@@ -99,12 +99,10 @@ export const AccountEmployeeDetailView: React.SFC<AccountEmployeeDetailProps> = 
     <DetailPage
       tab={0}
     >
-      <div style={{ padding: 8 * 3 }}>
-        <SinglePage
-          config={config}
-          connectedProps={props}
-        />
-      </div>
+      <SinglePage
+        config={config}
+        connectedProps={props}
+      />
     </DetailPage>
       <Delete 
           action={props.action}

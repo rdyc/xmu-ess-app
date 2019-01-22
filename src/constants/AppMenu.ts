@@ -38,6 +38,7 @@ enum AppMenu {
   PurchaseSettlementApproval = 'MNU38',
   Lookup = 'MNU01',
   LookupRole = 'MNU07',
+  LookupEmployee = 'MNU03',
   LookupHoliday = 'MNU36',
   LookupLeave = 'MNU48',
   LookupCompany = 'MNU02',
