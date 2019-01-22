@@ -1,79 +1,116 @@
-import { FormMode } from '@generic/types';
+import { accountMessage } from '@account/locales/messages/accountMessage';
 import { layoutMessage } from '@layout/locales/messages';
-import { Dialog, Typography } from '@material-ui/core';
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Typography } from '@material-ui/core';
+import { isWidthDown } from '@material-ui/core/withWidth';
 import * as React from 'react';
+import { FormInstance } from 'redux-form';
 import { AccountEmployeeTrainingEditorProps } from './AccountEmployeeTrainingEditor';
-import { AccountEmployeeTrainingContainerForm, AccountEmployeeTrainingFormData } from './form/training/AccountEmployeeTrainingContainerForm';
+import { AccountEmployeeTrainingContainerForm } from './form/training/AccountEmployeeTrainingContainerForm';
 
 export const AccountEmployeeTrainingEditorView: React.SFC<AccountEmployeeTrainingEditorProps> = props => {
-  const { formMode, handleValidate, handleSubmit, handleSubmitSuccess, handleSubmitFail,
-    submitDialogCancelText, submitDialogConfirmedText, submitDialogContentText, submitDialogTitle } = props;
-  const { isLoading, response } = props.accountEmployeeTrainingState.detail;
+  const { handleValidate, handleSubmit, handleSubmitSuccess, handleSubmitFail,
+    width, isOpenDialog, initialValues,
+    editAction, handleDialogClose, formMode } = props;
+  // const { isLoading, response } = props.accountEmployeeTrainingState.detail;
 
-  const renderForm = (formData: AccountEmployeeTrainingFormData) => (
-    <Dialog
-      open={props.dialogIsOpen}
-      onClose={props.handleDialog}
-      scroll="paper"
-    >
-      <AccountEmployeeTrainingContainerForm
-        formMode={formMode}
-        initialValues={formData}
-        validate={handleValidate}
-        onSubmit={handleSubmit}
-        onSubmitSuccess={handleSubmitSuccess}
-        onSubmitFail={handleSubmitFail}
-        submitDialogTitle={submitDialogTitle}
-        submitDialogContentText={submitDialogContentText}
-        submitDialogCancelText={submitDialogCancelText}
-        submitDialogConfirmedText={submitDialogConfirmedText}
-      />
-    </Dialog>
-  );
+  const ref = React.createRef<FormInstance<any, any, any>>();
+  const isMobile = isWidthDown('sm', width);
 
-  const initialValues: AccountEmployeeTrainingFormData = {
-    information: {
-      uid: undefined,
-      employeeUid: undefined,
-      name: undefined,
-      start: undefined,
-      end: undefined,
-      organizer: undefined,
-      trainingType: undefined,
-      certificationType: undefined
+  const dialogTitle = () => {
+    switch (editAction) {
+      case 'update': return accountMessage.training.page.modifyTitle;
+      case 'delete': return accountMessage.training.page.deleteTitle;
+
+      default: return accountMessage.training.page.newTitle;
     }
   };
 
+  const renderDialog = (
+    <Dialog
+      open={isOpenDialog}
+      fullScreen={isMobile}
+      scroll="paper"
+    >
+      <DialogTitle disableTypography>
+        <Typography variant="title" color="primary">
+          {props.intl.formatMessage(dialogTitle())}
+        </Typography>
+      </DialogTitle>
+
+      <DialogContent>
+        <AccountEmployeeTrainingContainerForm
+          formMode={formMode}
+          ref={ref}
+          formAction={editAction ? editAction : 'update'}
+          initialValues={initialValues}
+          validate={handleValidate}
+          onSubmit={handleSubmit}
+          onSubmitSuccess={handleSubmitSuccess}
+          onSubmitFail={handleSubmitFail}
+        />
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={() => handleDialogClose()} color="secondary">
+          {props.intl.formatMessage(layoutMessage.action.discard)}
+        </Button>
+
+        {
+          editAction !== 'delete' &&
+          <Button type="button" color="secondary" onClick={() => ref.current && ref.current.reset()} >
+            {props.intl.formatMessage(layoutMessage.action.reset)}
+          </Button>
+        }
+
+        <Button type="submit" color="secondary" onClick={() => ref.current && ref.current.submit()}>
+          {props.intl.formatMessage(props.submitting ? layoutMessage.text.processing : layoutMessage.action.submit)}
+        </Button>
+      </DialogActions>
+    </Dialog>
+  );
+
+  // const initialValues: AccountEmployeeTrainingFormData = {
+  //   information: {
+  //     uid: undefined,
+  //     employeeUid: undefined,
+  //     name: undefined,
+  //     start: undefined,
+  //     end: undefined,
+  //     organizer: undefined,
+  //     trainingType: undefined,
+  //     certificationType: undefined
+  //   }
+  // };
+
   // New
-  if (formMode === FormMode.New) {
-    return renderForm(initialValues);
-  }
+  // if (formMode === FormMode.New) {
+  //   return renderForm(initialValues);
+  // }
 
   // Modify
-  if (formMode === FormMode.Edit) {
-    if (isLoading && !response) {
-      return (
-        <Typography variant="body2">
-          {props.intl.formatMessage(layoutMessage.text.loading)}
-        </Typography>
-      );
-    }
+  // if (formMode === FormMode.Edit) {
+  //   if (isLoading && !response) {
+  //     return (
+  //       <Typography variant="body2">
+  //         {props.intl.formatMessage(layoutMessage.text.loading)}
+  //       </Typography>
+  //     );
+  //   }
 
-    if (!isLoading && response && response.data) {
-      // todo: replace values with response data
-      const data = response.data;
-      // basic
-      initialValues.information.uid = data.uid;
-      initialValues.information.name = data.name;
-      initialValues.information.start = data.start;
-      initialValues.information.end = data.end;
-      initialValues.information.organizer = data.organizer;
-      initialValues.information.trainingType = data.trainingType;
-      initialValues.information.certificationType = data.certificationType;
+  //   if (!isLoading && response && response.data) {
+  //     // todo: replace values with response data
+  //     const data = response.data;
+  //     // basic
+  //     initialValues.information.uid = data.uid;
+  //     initialValues.information.name = data.name;
+  //     initialValues.information.start = data.start;
+  //     initialValues.information.end = data.end;
+  //     initialValues.information.organizer = data.organizer;
+  //     initialValues.information.trainingType = data.trainingType;
+  //     initialValues.information.certificationType = data.certificationType;
 
-      return renderForm(initialValues);
-    }
-  }
+  //     return renderForm(initialValues);
+  //   }
+  // }
 
-  return null;
+  return renderDialog;
 };

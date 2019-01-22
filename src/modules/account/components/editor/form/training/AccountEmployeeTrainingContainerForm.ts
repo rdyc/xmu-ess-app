@@ -19,11 +19,8 @@ export type AccountEmployeeTrainingFormData = {
 };
 
 interface OwnProps {
-  formMode: FormMode;
-  submitDialogTitle: string;
-  submitDialogContentText: string;
-  submitDialogCancelText: string;
-  submitDialogConfirmedText: string;
+  formMode: FormMode | undefined;
+  formAction: 'update' | 'delete';
 }
 
 interface FormValueProps {

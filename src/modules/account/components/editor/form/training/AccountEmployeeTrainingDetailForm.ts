@@ -4,12 +4,13 @@ import { FormMode } from '@generic/types';
 import { InputDate } from '@layout/components/input/date';
 import { InputText } from '@layout/components/input/text';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
-import { compose, HandleCreators, withHandlers } from 'recompose';
+import { compose, HandleCreators, setDisplayName, withHandlers } from 'recompose';
 import { BaseFieldsProps } from 'redux-form';
 import { AccountEmployeeTrainingDetailFormView } from './AccountEmployeeTrainingDetailFormView';
 
 interface OwnProps {
-  formMode: FormMode;
+  formMode: FormMode | undefined;
+  disabledControls: boolean;
   context: BaseFieldsProps;
 }
 
@@ -24,7 +25,7 @@ export type AccountEmployeeTrainingDetailFormProps =
 
 const handleCreators: HandleCreators<AccountEmployeeTrainingDetailFormProps, OwnHandlers> = {
   generateFieldProps: (props: AccountEmployeeTrainingDetailFormProps) => (name: string) => {
-    const { intl } = props;
+    const { intl, disabledControls } = props;
 
     let fieldProps: SelectSystemOption & any = {};
 
@@ -39,9 +40,19 @@ const handleCreators: HandleCreators<AccountEmployeeTrainingDetailFormProps, Own
         };
         break;
 
+      case 'employeeUid':
+        fieldProps = {
+          disabled: true,
+          label: intl.formatMessage(accountMessage.education.fieldFor(name, 'fieldName')),
+          placeholder: intl.formatMessage(accountMessage.education.fieldFor(name, 'fieldPlaceholder')),
+          component: InputText
+        };
+        break;
+
       case 'name':
         fieldProps = {
           required: true,
+          disabled: disabledControls,
           label: intl.formatMessage(accountMessage.training.fieldFor(name, 'fieldName')),
           placeholder: intl.formatMessage(accountMessage.training.fieldFor(name, 'fieldPlaceholder')),
           component: InputText
@@ -51,6 +62,7 @@ const handleCreators: HandleCreators<AccountEmployeeTrainingDetailFormProps, Own
       case 'start':
         fieldProps = {
           required: true,
+          disabled: disabledControls,
           label: intl.formatMessage(accountMessage.training.fieldFor(name, 'fieldName')),
           placeholder: intl.formatMessage(accountMessage.training.fieldFor(name, 'fieldPlaceholder')),
           component: InputDate
@@ -60,6 +72,7 @@ const handleCreators: HandleCreators<AccountEmployeeTrainingDetailFormProps, Own
       case 'end':
         fieldProps = {
           required: true,
+          disabled: disabledControls,
           label: intl.formatMessage(accountMessage.training.fieldFor(name, 'fieldName')),
           placeholder: intl.formatMessage(accountMessage.training.fieldFor(name, 'fieldPlaceholder')),
           component: InputDate
@@ -69,6 +82,7 @@ const handleCreators: HandleCreators<AccountEmployeeTrainingDetailFormProps, Own
       case 'organizer':
         fieldProps = {
           required: true,
+          disabled: disabledControls,
           label: intl.formatMessage(accountMessage.training.fieldFor(name, 'fieldName')),
           placeholder: intl.formatMessage(accountMessage.training.fieldFor(name, 'fieldPlaceholder')),
           component: InputText
@@ -78,6 +92,7 @@ const handleCreators: HandleCreators<AccountEmployeeTrainingDetailFormProps, Own
       case 'trainingType':
         fieldProps = {
           required: true,
+          disabled: disabledControls,
           category: 'training',
           label: intl.formatMessage(accountMessage.training.fieldFor(name, 'fieldName')),
           placeholder: intl.formatMessage(accountMessage.training.fieldFor(name, 'fieldPlaceholder')),
@@ -88,13 +103,14 @@ const handleCreators: HandleCreators<AccountEmployeeTrainingDetailFormProps, Own
       case 'certificationType':
         fieldProps = {
           required: true,
+          disabled: disabledControls,
           category: 'certification',
           label: intl.formatMessage(accountMessage.training.fieldFor(name, 'fieldName')),
           placeholder: intl.formatMessage(accountMessage.training.fieldFor(name, 'fieldPlaceholder')),
           component: SelectSystem
         };
         break;
-      
+
       default:
         fieldProps = {
           type: 'text',
@@ -110,6 +126,7 @@ const handleCreators: HandleCreators<AccountEmployeeTrainingDetailFormProps, Own
 };
 
 export const AccountEmployeeTrainingDetailForm = compose<AccountEmployeeTrainingDetailFormProps, OwnProps>(
+  setDisplayName('TrainingDetailForm'),
   injectIntl,
   withHandlers<AccountEmployeeTrainingDetailFormProps, OwnHandlers>(handleCreators)
 )(AccountEmployeeTrainingDetailFormView);

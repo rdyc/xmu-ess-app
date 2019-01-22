@@ -40,6 +40,23 @@ export const accountEmployeeTrainingConfirm = defineMessages({
   modifyDescription: { id: `${prefix}.confirm.modify.subHeader` },
 });
 
+// page
+export const accountEmployeeTrainingPage = defineMessages({
+  newTitle: { id: `${prefix}.page.new.title`},
+  newSubHeader: { id: `${prefix}.page.new.subHeader`},
+  modifyTitle: { id: `${prefix}.page.modify.title`},
+  modifySubHeader: { id: `${prefix}.page.modify.subHeader`},
+  deleteTitle: { id: `${prefix}.page.delete.title`},
+  deleteSubHeader: { id: `${prefix}.page.delete.subHeader`},
+});
+
+// option
+export const accountEmployeeTrainingOption = defineMessages({
+  new: { id: `${prefix}.option.new` },
+  modify: { id: `${prefix}.option.modify` },
+  remove: { id: `${prefix}.option.remove` }
+});
+
 // messages
 export const accountEmployeeTrainingMessage = defineMessages({
   emptyProps: { id: `${prefix}.message.emptyProps` },

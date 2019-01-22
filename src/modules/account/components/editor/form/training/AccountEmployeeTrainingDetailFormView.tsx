@@ -1,12 +1,10 @@
-import { accountMessage } from '@account/locales/messages/accountMessage';
 import { FormMode } from '@generic/types';
-import { Card, CardContent, CardHeader } from '@material-ui/core';
 import * as React from 'react';
 import { Field } from 'redux-form';
 import { AccountEmployeeTrainingDetailFormProps } from './AccountEmployeeTrainingDetailForm';
 
 export const AccountEmployeeTrainingDetailFormView: React.SFC<AccountEmployeeTrainingDetailFormProps> = props => {
-  const { formMode, intl } = props;
+  const { formMode } = props;
   const { names } = props.context;
 
   const renderField = (name: string) => {
@@ -27,17 +25,19 @@ export const AccountEmployeeTrainingDetailFormView: React.SFC<AccountEmployeeTra
       />
     );
   };
- 
+
   const render = (
-    <Card square>
-      <CardHeader 
-        title={intl.formatMessage(accountMessage.training.section.title)}
-        // subheader={intl.formatMessage(accountMessage.training.section.subHeader)}
-      />
-      <CardContent>
-        {names.map(name => renderField(name))}
-      </CardContent>
-    </Card>
+    <div>
+      { names.map(name => renderField(name)) }
+    </div>
+    // <Card square>
+    //   <CardHeader 
+    //     title={intl.formatMessage(accountMessage.training.section.title)}
+    //     // subheader={intl.formatMessage(accountMessage.training.section.subHeader)}
+    //   />
+    //   <CardContent>
+    //   </CardContent>
+    // </Card>
   );
 
   return render;

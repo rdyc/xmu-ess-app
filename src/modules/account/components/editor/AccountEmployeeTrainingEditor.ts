@@ -1,13 +1,12 @@
-import { IEmployeeTrainingPostPayload, IEmployeeTrainingPutPayload } from '@account/classes/request/employeeTraining';
+import { IEmployeeTrainingDeletePayload, IEmployeeTrainingPostPayload, IEmployeeTrainingPutPayload } from '@account/classes/request/employeeTraining';
 import { IEmployeeTraining } from '@account/classes/response/employeeTraining';
 import { WithAccountEmployeeTraining, withAccountEmployeeTraining } from '@account/hoc/withAccountEmployeeTraining';
 import { accountMessage } from '@account/locales/messages/accountMessage';
 import AppMenu from '@constants/AppMenu';
 import { FormMode } from '@generic/types';
-import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
-import { layoutMessage } from '@layout/locales/messages';
+import withWidth, { WithWidth } from '@material-ui/core/withWidth';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { compose, HandleCreators, lifecycle, mapper, ReactLifeCycleFunctions, StateHandler, StateHandlerMap, StateUpdaters, withHandlers, withStateHandlers } from 'recompose';
@@ -17,6 +16,8 @@ import { isNullOrUndefined, isObject } from 'util';
 import { AccountEmployeeTrainingEditorView } from './AccountEmployeeTrainingEditorView';
 import { AccountEmployeeTrainingFormData } from './form/training/AccountEmployeeTrainingContainerForm';
 
+type EditAction = 'update' | 'delete';
+
 interface OwnHandlers {
   handleValidate: (payload: AccountEmployeeTrainingFormData) => FormErrors;
   handleSubmit: (payload: AccountEmployeeTrainingFormData) => void;
@@ -25,10 +26,13 @@ interface OwnHandlers {
 }
 
 interface OwnOption {
-  formMode: FormMode;
-  educationUid?: string;
-  dialogIsOpen: boolean;
-  handleDialog: () => void;
+  formMode: FormMode | undefined;
+  trainingUid?: string;
+  employeeUid: string;
+  isOpenDialog: boolean;
+  editAction?: EditAction | undefined;
+  initialValues?: AccountEmployeeTrainingFormData;
+  handleDialogClose: () => void;
 }
 interface OwnRouteParams {
   employeeUid: string;
@@ -36,11 +40,11 @@ interface OwnRouteParams {
 }
 
 interface OwnState {
-  employeeUid: string;
-  submitDialogTitle: string;
-  submitDialogContentText: string;
-  submitDialogCancelText: string;
-  submitDialogConfirmedText: string;
+  // employeeUid: string;
+  // submitDialogTitle: string;
+  // submitDialogContentText: string;
+  // submitDialogCancelText: string;
+  // submitDialogConfirmedText: string;
 }
 
 interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
@@ -51,7 +55,7 @@ export type AccountEmployeeTrainingEditorProps
   = WithAccountEmployeeTraining
   & WithUser
   & WithLayout
-  & WithAppBar
+  & WithWidth
   & RouteComponentProps<OwnRouteParams>
   & InjectedIntlProps
   & OwnOption
@@ -78,9 +82,9 @@ const handlerCreators: HandleCreators<AccountEmployeeTrainingEditorProps, OwnHan
     return errors;
   },
   handleSubmit: (props: AccountEmployeeTrainingEditorProps) => (formData: AccountEmployeeTrainingFormData) => {
-    const { formMode, employeeUid, intl } = props;
+    const { formMode, employeeUid, intl, editAction, trainingUid } = props;
     const { user } = props.userState;
-    const { createRequest, updateRequest } = props.accountEmployeeTrainingDispatch;
+    const { createRequest, updateRequest, deleteRequest } = props.accountEmployeeTrainingDispatch;
 
     if (!user) {
       return Promise.reject('user was not found');
@@ -110,21 +114,37 @@ const handlerCreators: HandleCreators<AccountEmployeeTrainingEditorProps, OwnHan
     }
 
     if (formMode === FormMode.Edit) {
-      return new Promise((resolve, reject) => {
-        updateRequest({
-          employeeUid,
-          resolve,
-          reject,
-          data: payload as IEmployeeTrainingPutPayload,
-        });
-      });
+      if (trainingUid) {
+        if (editAction === 'update') {
+          return new Promise((resolve, reject) => {
+            updateRequest({
+              employeeUid,
+              resolve,
+              reject,
+              data: payload as IEmployeeTrainingPutPayload,
+            });
+          });
+        }
+
+        if (editAction === 'delete') {
+          return new Promise((resolve, reject) => {
+            deleteRequest({
+              employeeUid,
+              resolve,
+              reject,
+              data: payload as IEmployeeTrainingDeletePayload
+            });
+          });
+        }
+      }
     }
 
     return null;
   },
   handleSubmitSuccess: (props: AccountEmployeeTrainingEditorProps) => (response: IEmployeeTraining) => {
-    const { formMode, intl, history } = props;
+    const { formMode, intl, history, editAction, stateUpdate } = props;
     const { alertAdd } = props.layoutDispatch;
+    const { loadListRequest } = props.accountEmployeeTrainingDispatch;
 
     let message: string = '';
 
@@ -133,15 +153,32 @@ const handlerCreators: HandleCreators<AccountEmployeeTrainingEditorProps, OwnHan
     }
 
     if (formMode === FormMode.Edit) {
-      message = intl.formatMessage(accountMessage.training.message.updateSuccess, { uid: response.uid });
+      if (editAction && editAction === 'update') {
+        message = intl.formatMessage(accountMessage.training.message.updateSuccess, { uid: response.uid });
+      } else {
+        message = intl.formatMessage(accountMessage.training.message.deleteSuccess, { uid: response.uid });
+      }
     }
+
+    stateUpdate({
+      isOpenDialog: false,
+      formMode: undefined,
+      editAction: undefined
+    });
 
     alertAdd({
       message,
       time: new Date()
     });
 
-    history.push(`/account/employee/${response.uid}`);
+    loadListRequest({
+      employeeUid: props.employeeUid,
+      filter: {
+        direction: 'ascending'
+      }
+    });
+
+    history.push(`/account/employee/${props.employeeUid}/training`);
   },
   handleSubmitFail: (props: AccountEmployeeTrainingEditorProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
     const { formMode, intl } = props;
@@ -175,12 +212,7 @@ const handlerCreators: HandleCreators<AccountEmployeeTrainingEditorProps, OwnHan
 };
 
 const createProps: mapper<AccountEmployeeTrainingEditorProps, OwnState> = (props: AccountEmployeeTrainingEditorProps): OwnState => ({ 
-  // formMode: FormMode.New,
-  employeeUid: '',
-  submitDialogTitle: props.intl.formatMessage(accountMessage.employee.confirm.createTitle),
-  submitDialogContentText: props.intl.formatMessage(accountMessage.employee.confirm.createDescription),
-  submitDialogCancelText: props.intl.formatMessage(layoutMessage.action.cancel),
-  submitDialogConfirmedText: props.intl.formatMessage(layoutMessage.action.ok),
+  //
 });
 
 const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
@@ -192,8 +224,8 @@ const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
 
 const lifecycles: ReactLifeCycleFunctions<AccountEmployeeTrainingEditorProps, {}> = {
   componentDidMount() {
-    const { layoutDispatch, intl, history, stateUpdate } = this.props;
-    const { loadDetailRequest } = this.props.accountEmployeeTrainingDispatch;
+    const { layoutDispatch, intl, history, stateUpdate, employeeUid } = this.props;
+    // const { loadDetailRequest } = this.props.accountEmployeeTrainingDispatch;
     const { user } = this.props.userState;
     
     const view = {
@@ -210,16 +242,15 @@ const lifecycles: ReactLifeCycleFunctions<AccountEmployeeTrainingEditorProps, {}
       view.subTitle = accountMessage.employee.page.modifySubHeader;
 
       stateUpdate({ 
-        formMode: FormMode.Edit,
-        employeeUid: history.location.state.uid,
+        employeeUid,
         submitDialogTitle: this.props.intl.formatMessage(accountMessage.training.confirm.modifyTitle),
         submitDialogContentText : this.props.intl.formatMessage(accountMessage.training.confirm.modifyDescription)
       });
 
-      loadDetailRequest({
-        employeeUid: history.location.state.uid,
-        trainingUid: history.location.state.uid
-      });
+      // loadDetailRequest({
+      //   employeeUid: history.location.state.uid,
+      //   trainingUid: history.location.state.uid
+      // });
     }
 
     layoutDispatch.setupView({
@@ -240,23 +271,23 @@ const lifecycles: ReactLifeCycleFunctions<AccountEmployeeTrainingEditorProps, {}
     });
   },
   componentWillUnmount() {
-    const { layoutDispatch, appBarDispatch, accountEmployeeTrainingDispatch } = this.props;
+    const { accountEmployeeTrainingDispatch } = this.props;
 
-    layoutDispatch.changeView(null);
-    layoutDispatch.navBackHide();
-    layoutDispatch.moreHide();
+    // layoutDispatch.changeView(null);
+    // layoutDispatch.navBackHide();
+    // layoutDispatch.moreHide();
 
-    appBarDispatch.dispose();
+    // appBarDispatch.dispose();
 
     accountEmployeeTrainingDispatch.createDispose();
     accountEmployeeTrainingDispatch.updateDispose();
   }
 };
 
-export default compose<AccountEmployeeTrainingEditorProps, {}>(
+export default compose<AccountEmployeeTrainingEditorProps, OwnOption>(
   withUser,
   withLayout,
-  withAppBar,
+  withWidth(),
   withRouter,
   withAccountEmployeeTraining,
   injectIntl,

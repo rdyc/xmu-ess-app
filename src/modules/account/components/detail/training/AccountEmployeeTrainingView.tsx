@@ -1,21 +1,14 @@
 import { IEmployeeTrainingList } from '@account/classes/response/employeeTraining';
 import { AccountEmployeeTrainingHeaderTable, AccountEmployeeUserAction } from '@account/classes/types';
+import AccountEmployeeTrainingEditor from '@account/components/editor/AccountEmployeeTrainingEditor';
 import { accountMessage } from '@account/locales/messages/accountMessage';
 import AppMenu from '@constants/AppMenu';
 import { SingleConfig, SingleHandler, SinglePage, SingleState } from '@layout/components/pages';
 import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
 import { GlobalFormat } from '@layout/types';
-import {
-  Fade,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-  Typography
-} from '@material-ui/core';
+import { Fade, IconButton, Menu, MenuItem, Paper, Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@material-ui/core';
+import MoreVertIcon from '@material-ui/icons/MoreVert';
 import * as React from 'react';
 import { DetailPage } from '../DetailPage';
 import { AccountEmployeeTrainingProps } from './AccountEmployeeTraining';
@@ -44,6 +37,13 @@ const config: SingleConfig<IEmployeeTrainingList, AccountEmployeeTrainingProps> 
       enabled: true,
       visible: true,
       onClick: () => callback.handleForceReload()
+    },
+    {
+      id: AccountEmployeeUserAction.Create,
+      name: props.intl.formatMessage(layoutMessage.action.create),
+      enabled: true,
+      visible: true,
+      onClick: () => props.handleNew()
     }
   ]),
 
@@ -80,7 +80,8 @@ const config: SingleConfig<IEmployeeTrainingList, AccountEmployeeTrainingProps> 
 export const AccountEmployeeTrainingView: React.SFC<
   AccountEmployeeTrainingProps
 > = props => {
-  const { intl } = props;
+  const { intl, isOpenDialog, isOpenMenu, trainingItemIndex, editAction, initialValues } = props;
+  const { handleDialogClose, handleEdit, handleMenuClose, handleMenuOpen } = props;
   const { response, isLoading } = props.accountEmployeeTrainingState.list;
 
   const header = Object.keys(AccountEmployeeTrainingHeaderTable).map(key => ({
@@ -127,8 +128,30 @@ export const AccountEmployeeTrainingView: React.SFC<
                     <TableCell>
                       {item.certification && item.certification.value}
                     </TableCell>
+                    <TableCell>
+                      <IconButton
+                        id={`training-item-button-${index}`}
+                        color="inherit"
+                        aria-label="More"
+                        onClick={() => handleMenuOpen(item, index)}
+                      >
+                        <MoreVertIcon />
+                      </IconButton>
+                    </TableCell>
                   </TableRow>
                 ))}
+                <Menu
+                  anchorEl={document.getElementById(`training-item-button-${trainingItemIndex}`)}
+                  open={isOpenMenu}
+                  onClose={handleMenuClose}
+                >
+                  <MenuItem onClick={() => handleEdit('update')}>
+                    {props.intl.formatMessage(accountMessage.training.option.modify)}
+                  </MenuItem>
+                  <MenuItem onClick={() => handleEdit('delete')}>
+                    {props.intl.formatMessage(accountMessage.training.option.remove)}
+                  </MenuItem> 
+                </Menu>
             </TableBody>
           </Table>
         </Paper>
@@ -152,6 +175,16 @@ export const AccountEmployeeTrainingView: React.SFC<
           { !isLoading && response && response.data && response.data.length >= 1 && renderTraining(response.data)}
         </SinglePage>
       </DetailPage>
+
+      <AccountEmployeeTrainingEditor
+        formMode={props.formMode}
+        trainingUid={props.trainingUid}
+        employeeUid={props.match.params.employeeUid}
+        isOpenDialog={isOpenDialog}
+        editAction={editAction}
+        initialValues={initialValues}
+        handleDialogClose={handleDialogClose}
+      />
     </React.Fragment>
   );
 };

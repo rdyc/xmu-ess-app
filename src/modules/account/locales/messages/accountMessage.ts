@@ -1,28 +1,14 @@
 import { accountAccessMessage } from './accountAccessMessage';
-import { 
-  accountEducationConfirm,
-  accountEducationField,
-  accountEducationFieldHelperFor,
-  accountEducationMessage,
-  accountEducationOption,
-  accountEducationPage,
-  accountEducationSection
-} from './accountEducationMessage';
-import {
-  accountEmployeeConfirm,
-  accountEmployeeField,
-  accountEmployeeFieldHelperFor,
-  accountEmployeeFilter,
-  accountEmployeeMessage,
-  accountEmployeePage,
-  accountEmployeeSection
-} from './accountEmployeeMessage';
+import { accountEducationConfirm, accountEducationField, accountEducationFieldHelperFor, accountEducationMessage, accountEducationOption, accountEducationPage, accountEducationSection } from './accountEducationMessage';
+import { accountEmployeeConfirm, accountEmployeeField, accountEmployeeFieldHelperFor, accountEmployeeFilter, accountEmployeeMessage, accountEmployeePage, accountEmployeeSection } from './accountEmployeeMessage';
 import { 
   accountEmployeeTrainingConfirm, 
   accountEmployeeTrainingField, 
   accountEmployeeTrainingFieldHelperFor, 
   accountEmployeeTrainingMessage, 
-  accountEmployeeTrainingSection
+  accountEmployeeTrainingOption, 
+  accountEmployeeTrainingPage, 
+  accountEmployeeTrainingSection 
 } from './accountEmployeeTrainingMessage';
 
 export const accountMessage = {
@@ -52,6 +38,8 @@ export const accountMessage = {
     confirm: accountEmployeeTrainingConfirm,
     fieldFor: accountEmployeeTrainingFieldHelperFor,
     message: accountEmployeeTrainingMessage,
-    section: accountEmployeeTrainingSection
+    section: accountEmployeeTrainingSection,
+    option: accountEmployeeTrainingOption,
+    page: accountEmployeeTrainingPage
   }
 };
