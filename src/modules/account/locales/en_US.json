@@ -183,8 +183,11 @@
   "account.employee.training.message.delete.success": "Current {uid} has been deleted",
   "account.employee.training.message.delete.failure": "Unable to process your submission",
 
-  "account.employee.training.field.uid": "Employee ID",
-  "account.employee.training.field.uid.placeholder": "Employee ID",
+  "account.employee.training.field.uid": "Training ID",
+  "account.employee.training.field.uid.placeholder": "Training ID",
+
+  "account.employee.training.field.employeeUid": "Employee ID",
+  "account.employee.training.field.employeeUid.placeholder": "Employee ID",
 
   "account.employee.training.field.name": "Training Name",
   "account.employee.training.field.name.placeholder": "Training Name",

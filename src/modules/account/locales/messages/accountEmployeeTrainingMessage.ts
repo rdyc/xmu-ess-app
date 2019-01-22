@@ -7,6 +7,9 @@ export const accountEmployeeTrainingField = defineMessages({
   uid: { id: `${prefix}.field.uid`},
   uidPlaceholder: { id: `${prefix}.field.uid.placeholder`},
 
+  employeeUid: { id: `${prefix}.field.uid`},
+  employeeUidPlaceholder: { id: `${prefix}.field.uid.placeholder`},
+
   name: { id: `${prefix}.field.name`},
   namePlaceholder: { id: `${prefix}.field.name.placeholder`},
   nameRequired: { id: `${prefix}.field.name.required`},
@@ -73,6 +76,7 @@ export const accountEmployeeTrainingFieldHelperFor = (field: string, type: 'fiel
   if (type === 'fieldName') {
     switch (field) {
       case 'uid': return accountEmployeeTrainingField.uid;
+      case 'employeeUid': return accountEmployeeTrainingField.uid;
       case 'name': return accountEmployeeTrainingField.name;
       case 'start': return accountEmployeeTrainingField.start;
       case 'end': return accountEmployeeTrainingField.end;

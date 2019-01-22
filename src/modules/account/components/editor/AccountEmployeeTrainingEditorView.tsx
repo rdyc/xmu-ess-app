@@ -68,49 +68,5 @@ export const AccountEmployeeTrainingEditorView: React.SFC<AccountEmployeeTrainin
     </Dialog>
   );
 
-  // const initialValues: AccountEmployeeTrainingFormData = {
-  //   information: {
-  //     uid: undefined,
-  //     employeeUid: undefined,
-  //     name: undefined,
-  //     start: undefined,
-  //     end: undefined,
-  //     organizer: undefined,
-  //     trainingType: undefined,
-  //     certificationType: undefined
-  //   }
-  // };
-
-  // New
-  // if (formMode === FormMode.New) {
-  //   return renderForm(initialValues);
-  // }
-
-  // Modify
-  // if (formMode === FormMode.Edit) {
-  //   if (isLoading && !response) {
-  //     return (
-  //       <Typography variant="body2">
-  //         {props.intl.formatMessage(layoutMessage.text.loading)}
-  //       </Typography>
-  //     );
-  //   }
-
-  //   if (!isLoading && response && response.data) {
-  //     // todo: replace values with response data
-  //     const data = response.data;
-  //     // basic
-  //     initialValues.information.uid = data.uid;
-  //     initialValues.information.name = data.name;
-  //     initialValues.information.start = data.start;
-  //     initialValues.information.end = data.end;
-  //     initialValues.information.organizer = data.organizer;
-  //     initialValues.information.trainingType = data.trainingType;
-  //     initialValues.information.certificationType = data.certificationType;
-
-  //     return renderForm(initialValues);
-  //   }
-  // }
-
   return renderDialog;
 };

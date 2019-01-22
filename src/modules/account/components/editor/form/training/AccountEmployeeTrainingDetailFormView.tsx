@@ -30,14 +30,6 @@ export const AccountEmployeeTrainingDetailFormView: React.SFC<AccountEmployeeTra
     <div>
       { names.map(name => renderField(name)) }
     </div>
-    // <Card square>
-    //   <CardHeader 
-    //     title={intl.formatMessage(accountMessage.training.section.title)}
-    //     // subheader={intl.formatMessage(accountMessage.training.section.subHeader)}
-    //   />
-    //   <CardContent>
-    //   </CardContent>
-    // </Card>
   );
 
   return render;
