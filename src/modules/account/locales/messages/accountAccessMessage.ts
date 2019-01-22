@@ -11,6 +11,8 @@ export const accountAccessMessage = defineMessages({
   createFailure: { id: `${prefix}.message.create.failure` },
   updateSuccess: { id: `${prefix}.message.update.success` },
   updateFailure: { id: `${prefix}.message.update.failure` },
+  deleteSuccess: { id: `${prefix}.message.delete.success` },
+  deleteFailure: { id: `${prefix}.message.delete.failure` },
 });
 
 export const accountAccessDialog = defineMessages({
@@ -18,6 +20,8 @@ export const accountAccessDialog = defineMessages({
   createDescription: { id: `${prefix}.dialog.create.subHeader` },
   modifyTitle: { id: `${prefix}.dialog.modify.title` },
   modifyDescription: { id: `${prefix}.dialog.modify.subHeader` },
+  deleteTitle: { id: `${prefix}.dialog.delete.title` },
+  deleteDescription: { id: `${prefix}.dialog.delete.subHeader` },
 });
 
 export const accountAccessField = defineMessages({

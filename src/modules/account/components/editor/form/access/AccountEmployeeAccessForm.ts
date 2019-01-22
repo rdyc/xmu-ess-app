@@ -7,6 +7,7 @@ const formName = 'AccountEmployeeAccessForm';
 
 export type AccountEmployeeAccessFormData = {
   information: {
+    uid: string | null | undefined;
     companyUid: string | null | undefined;
     positionUid: string | null | undefined;
     roleUid: string | null | undefined;
@@ -20,10 +21,6 @@ export type AccountEmployeeAccessFormData = {
 
 interface OwnProps {
   formMode: FormMode;
-  submitDialogTitle: string;
-  submitDialogContentText: string;
-  submitDialogCancelText: string;
-  submitDialogConfirmedText: string;
 }
 
 interface FormValueProps {

@@ -229,12 +229,17 @@
   "account.access.message.create.failure": "Unable to process your submission",
   "account.access.message.update.success": "Employee Access data has been updated",
   "account.access.message.update.failure": "Unable to process your submission",
+  "account.access.message.delete.success": "Employee Access data has been deleted",
+  "account.access.message.delete.failure": "Unable to process your deletion",
 
   "account.access.dialog.create.title": "Add Access",
   "account.access.dialog.create.subHeader": " ",
  
   "account.access.dialog.modify.title": "Modify Access",
   "account.access.dialog.modify.subHeader": " ",
+ 
+  "account.access.dialog.delete.title": "Delete Access",
+  "account.access.dialog.delete.subHeader": " ",
 
   "account.access.section.create.title": "Multi Access Company",
 

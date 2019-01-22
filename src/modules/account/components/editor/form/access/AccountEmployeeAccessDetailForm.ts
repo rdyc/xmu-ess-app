@@ -31,7 +31,7 @@ export type AccountEmployeeAccessDetailFormProps
 const handlerCreators: HandleCreators<AccountEmployeeAccessDetailFormProps, OwnHandlers> = {
     generateFieldProps: (props: AccountEmployeeAccessDetailFormProps) => (name: string) => { 
       const { 
-        intl, companyUidValue, unitTypeValue
+        intl, companyUidValue, unitTypeValue, formMode
       } = props;
       
       const fieldName = name.replace('information.', '');
@@ -45,11 +45,22 @@ const handlerCreators: HandleCreators<AccountEmployeeAccessDetailFormProps, OwnH
       
       let fieldProps: SelectSystemOption & any = {};
   
-      switch (fieldName) {       
+      switch (fieldName) {   
+        case 'uid':
+          fieldProps = {
+            type: 'text',
+            label: intl.formatMessage(accountMessage.access.fieldFor(fieldName, 'fieldName')),
+            placeholder: intl.formatMessage(accountMessage.access.fieldFor(fieldName, 'fieldPlaceholder')),
+            disabled: true,
+            component: InputText
+          };
+          break;
+        
         case 'companyUid':
           fieldProps = {
             label: intl.formatMessage(accountMessage.access.fieldFor(fieldName, 'fieldName')),
             placeholder: intl.formatMessage(accountMessage.access.fieldFor(fieldName, 'fieldPlaceholder')),
+            disabled: formMode === FormMode.Delete,
             component: SelectLookupCompany
           };
           break;
@@ -60,7 +71,7 @@ const handlerCreators: HandleCreators<AccountEmployeeAccessDetailFormProps, OwnH
             label: intl.formatMessage(accountMessage.access.fieldFor(fieldName, 'fieldName')),
             placeholder: intl.formatMessage(accountMessage.access.fieldFor(fieldName, 'fieldPlaceholder')),
             companyUid: byCompanyUid,
-            disabled: isNullOrUndefined(companyUidValue),
+            disabled: (isNullOrUndefined(companyUidValue) || formMode === FormMode.Delete),
             component: SelectSystem
           };
           break;
@@ -72,7 +83,7 @@ const handlerCreators: HandleCreators<AccountEmployeeAccessDetailFormProps, OwnH
             placeholder: intl.formatMessage(accountMessage.access.fieldFor(fieldName, 'fieldPlaceholder')),
             companyUid: byCompanyUid,
             parentCode: byUnitType,
-            disabled: (isNullOrUndefined(companyUidValue) || isNullOrUndefined(unitTypeValue)),
+            disabled: (isNullOrUndefined(companyUidValue) || isNullOrUndefined(unitTypeValue) || formMode === FormMode.Delete),
             component: SelectSystem
           };
           break;
@@ -82,6 +93,7 @@ const handlerCreators: HandleCreators<AccountEmployeeAccessDetailFormProps, OwnH
             category: 'level',
             label: intl.formatMessage(accountMessage.access.fieldFor(fieldName, 'fieldName')),
             placeholder: intl.formatMessage(accountMessage.access.fieldFor(fieldName, 'fieldPlaceholder')),
+            disabled: formMode === FormMode.Delete,
             component: SelectSystem
           };
           break;
@@ -91,7 +103,7 @@ const handlerCreators: HandleCreators<AccountEmployeeAccessDetailFormProps, OwnH
             label: intl.formatMessage(accountMessage.access.fieldFor(fieldName, 'fieldName')),
             placeholder: intl.formatMessage(accountMessage.access.fieldFor(fieldName, 'fieldPlaceholder')),
             filter: byCompanyFilter,
-            disabled: isNullOrUndefined(companyUidValue),
+            disabled: (isNullOrUndefined(companyUidValue) || formMode === FormMode.Delete),
             component: SelectLookupRole
           };
           break;
@@ -101,7 +113,7 @@ const handlerCreators: HandleCreators<AccountEmployeeAccessDetailFormProps, OwnH
             label: intl.formatMessage(accountMessage.access.fieldFor(fieldName, 'fieldName')),
             placeholder: intl.formatMessage(accountMessage.access.fieldFor(fieldName, 'fieldPlaceholder')),
             filter: byCompanyFilter,
-            disabled: isNullOrUndefined(companyUidValue),
+            disabled: (isNullOrUndefined(companyUidValue) || formMode === FormMode.Delete),
             component: SelectPosition
           };
           break;
@@ -111,6 +123,7 @@ const handlerCreators: HandleCreators<AccountEmployeeAccessDetailFormProps, OwnH
             type: 'text',
             label: intl.formatMessage(accountMessage.access.fieldFor(fieldName, 'fieldName')),
             placeholder: intl.formatMessage(accountMessage.access.fieldFor(fieldName, 'fieldPlaceholder')),
+            disabled: formMode === FormMode.Delete,
             component: InputDate
           };
           break;
@@ -120,6 +133,7 @@ const handlerCreators: HandleCreators<AccountEmployeeAccessDetailFormProps, OwnH
             type: 'text',
             label: intl.formatMessage(accountMessage.access.fieldFor(fieldName, 'fieldName')),
             placeholder: intl.formatMessage(accountMessage.access.fieldFor(fieldName, 'fieldPlaceholder')),
+            disabled: formMode === FormMode.Delete,
             component: InputDate
           };
           break;
@@ -129,6 +143,7 @@ const handlerCreators: HandleCreators<AccountEmployeeAccessDetailFormProps, OwnH
             type: 'text',
             label: intl.formatMessage(accountMessage.access.fieldFor(fieldName, 'fieldName')),
             placeholder: intl.formatMessage(accountMessage.access.fieldFor(fieldName, 'fieldPlaceholder')),
+            disabled: formMode === FormMode.Delete,
             component: InputText
           };
           break;

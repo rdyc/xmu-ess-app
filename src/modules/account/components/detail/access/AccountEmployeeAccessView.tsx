@@ -1,8 +1,10 @@
 import { IEmployeeAccessList } from '@account/classes/response/employeeAccess';
 import { IEmployeeExperienceList } from '@account/classes/response/employeeExperience';
 import { AccountEmployeeAccessHeaderTable as AccountEmployeeAccessHeaderTable, AccountEmployeeUserAction } from '@account/classes/types';
+import AccountEmployeeAccessEditor from '@account/components/editor/AccountEmployeeAccessEditor';
 import { accountMessage } from '@account/locales/messages/accountMessage';
 import AppMenu from '@constants/AppMenu';
+import { FormMode } from '@generic/types';
 import { SingleConfig, SingleHandler, SinglePage, SingleState } from '@layout/components/pages';
 import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
@@ -54,7 +56,7 @@ const config: SingleConfig<IEmployeeExperienceList, AccountEmployeeAccessProps> 
       name: props.intl.formatMessage(layoutMessage.action.create),
       enabled: true,
       visible: true,
-      onClick: () => props.history.push(`/account/employee/${props.match.params.employeeUid}/multiaccess/form`)
+      onClick: () => props.handleNew()
     },
   ]),
 
@@ -149,7 +151,7 @@ export const AccountEmployeeAccessView: React.SFC<AccountEmployeeAccessProps> = 
                         id={`access-item-button-${index}`}
                         color="inherit"
                         aria-label="More"
-                        onClick={() => props.handleMenuOpen(item.uid, index)}
+                        onClick={() => props.handleMenuOpen(item, index)}
                       >
                         <MoreVertIcon />
                       </IconButton>
@@ -161,8 +163,11 @@ export const AccountEmployeeAccessView: React.SFC<AccountEmployeeAccessProps> = 
                   open={props.isOpenMenu}
                   onClose={props.handleMenuClose}
                 >
-                  <MenuItem onClick={() => props.history.push(`/account/employee/${props.match.params.employeeUid}/multiaccess/form`, { accessUid: props.accessUid })}>
+                  <MenuItem onClick={() => props.handleEdit(FormMode.Edit)}>
                     {props.intl.formatMessage(accountMessage.access.dialog.modifyTitle)}
+                  </MenuItem>
+                  <MenuItem onClick={() => props.handleEdit(FormMode.Delete)}>
+                    {props.intl.formatMessage(accountMessage.access.dialog.deleteTitle)}
                   </MenuItem>
               </Menu>
             </TableBody>
@@ -190,6 +195,16 @@ export const AccountEmployeeAccessView: React.SFC<AccountEmployeeAccessProps> = 
           </div>
         </SinglePage>
       </DetailPage>
+
+      <AccountEmployeeAccessEditor
+        formMode={props.formMode}
+        employeeUid={props.match.params.employeeUid}
+        accessUid={props.accessUid}
+        isOpenDialog={props.isOpenDialog}
+        handleDialogClose={props.handleDialogClose}
+        initialValues={props.initialValues}
+      />
+
     </React.Fragment>
   );
 };

@@ -1,13 +1,12 @@
-import { IEmployeeAccessPostPayload, IEmployeeAccessPutPayload } from '@account/classes/request/employeeAccess';
+import { IEmployeeAccessDeletePayload, IEmployeeAccessPostPayload, IEmployeeAccessPutPayload } from '@account/classes/request/employeeAccess';
+import { IEmployeeAccess } from '@account/classes/response/employeeAccess';
 import { WithAccountEmployeeAccess, withAccountEmployeeAccess } from '@account/hoc/withAccountEmployeeAccess';
 import { accountMessage } from '@account/locales/messages/accountMessage';
-import { ISystem } from '@common/classes/response';
-import AppMenu from '@constants/AppMenu';
 import { FormMode } from '@generic/types';
 import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
-import { layoutMessage } from '@layout/locales/messages';
+import withWidth, { WithWidth } from '@material-ui/core/withWidth';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import {
@@ -35,17 +34,16 @@ interface OwnHandlers {
   handleSubmitFail: (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => void;
 }
 
-interface OwnRouteParams {
+interface OwnProps {
+  formMode?: FormMode;
   employeeUid: string;
+  accessUid?: string;
+  isOpenDialog: boolean;
+  initialValues?: AccountEmployeeAccessFormData;
+  handleDialogClose: () => void;
 }
 
 interface OwnState {
-  formMode: FormMode;
-  accessUid?: string | null;
-  submitDialogTitle: string;
-  submitDialogContentText: string;
-  submitDialogCancelText: string;
-  submitDialogConfirmedText: string;
 }
 
 interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
@@ -56,11 +54,13 @@ export type AccountEmployeeAccessEditorProps
   = WithAccountEmployeeAccess
   & WithUser
   & WithLayout
+  & WithWidth
   & WithAppBar
-  & RouteComponentProps<OwnRouteParams>
+  & RouteComponentProps
   & InjectedIntlProps
   & OwnHandlers
   & OwnState
+  & OwnProps
   & OwnStateUpdaters;
 
 const handlerCreators: HandleCreators<AccountEmployeeAccessEditorProps, OwnHandlers> = {
@@ -82,9 +82,9 @@ const handlerCreators: HandleCreators<AccountEmployeeAccessEditorProps, OwnHandl
     return errors;
   },
   handleSubmit: (props: AccountEmployeeAccessEditorProps) => (formData: AccountEmployeeAccessFormData) => { 
-    const { formMode, accessUid, intl, match, location } = props;
+    const { formMode, accessUid, intl, employeeUid } = props;
     const { user } = props.userState;
-    const { createRequest, updateRequest } = props.accountEmployeeAccessDispatch;
+    const { createRequest, updateRequest, deleteRequest } = props.accountEmployeeAccessDispatch;
 
     if (!user) {
       return Promise.reject('user was not found');
@@ -92,7 +92,7 @@ const handlerCreators: HandleCreators<AccountEmployeeAccessEditorProps, OwnHandl
 
     const postPayload = {
       ...formData.information,
-      employeeUid: match.params.employeeUid,
+      employeeUid,
     };
 
     // creating
@@ -101,7 +101,7 @@ const handlerCreators: HandleCreators<AccountEmployeeAccessEditorProps, OwnHandl
         createRequest({
           resolve, 
           reject,
-          employeeUid: match.params.employeeUid,
+          employeeUid,
           data: postPayload as IEmployeeAccessPostPayload
         });
       });
@@ -116,8 +116,7 @@ const handlerCreators: HandleCreators<AccountEmployeeAccessEditorProps, OwnHandl
 
     const putPayload = {
       ...formData.information,
-      employeeUid: match.params.employeeUid,
-      uid: location.state.accessUid,
+      employeeUid,
     };
 
     if (formMode === FormMode.Edit) {
@@ -125,36 +124,81 @@ const handlerCreators: HandleCreators<AccountEmployeeAccessEditorProps, OwnHandl
         updateRequest({
           resolve, 
           reject,
-          employeeUid: match.params.employeeUid,
+          employeeUid,
           data: putPayload as IEmployeeAccessPutPayload, 
+        });
+      });
+    }
+
+    const deletePayload = {
+      employeeUid,
+      uid: formData.information.uid,
+    };
+
+    if (formMode === FormMode.Delete) {
+      return new Promise((resolve, reject) => {
+        deleteRequest({
+          resolve,
+          reject,
+          employeeUid,
+          data: deletePayload as IEmployeeAccessDeletePayload,
         });
       });
     }
 
     return null;
   },
-  handleSubmitSuccess: (props: AccountEmployeeAccessEditorProps) => (response: ISystem) => {
-    const { formMode, intl, history } = props;
+  handleSubmitSuccess: (props: AccountEmployeeAccessEditorProps) => (response: IEmployeeAccess) => {
+    const { formMode, intl, stateUpdate, history, employeeUid } = props;
     const { alertAdd } = props.layoutDispatch;
-    const { loadDetailDispose } = props.accountEmployeeAccessDispatch;
+    const { loadListRequest } = props.accountEmployeeAccessDispatch;
     
     let message: string = '';
-    loadDetailDispose();
 
     if (formMode === FormMode.New) {
-      message = intl.formatMessage(accountMessage.access.message.createSuccess, { uid: response.type });
+      message = intl.formatMessage(accountMessage.access.message.createSuccess);
     }
 
     if (formMode === FormMode.Edit) {
-      message = intl.formatMessage(accountMessage.access.message.updateSuccess, { uid: response.type });
+      message = intl.formatMessage(accountMessage.access.message.updateSuccess);
     }
+
+    if (formMode === FormMode.Delete) {
+      message = intl.formatMessage(accountMessage.access.message.deleteSuccess);
+    }
+
+    stateUpdate({
+      isOpenDialog: false,
+      formMode: undefined,
+      accessUid: undefined,      
+      initialValues: {
+        information: {
+          uid: undefined,
+          companyUid: undefined,
+          positionUid: undefined,
+          roleUid: undefined,
+          unitType: undefined,
+          departmentType: undefined,
+          levelType: undefined,
+          start: undefined,
+          end: null,
+        },
+      },
+    });
 
     alertAdd({
       message,
       time: new Date()
     });
 
-    history.push(`/account/employee/${props.match.params.employeeUid}/multiaccess`);
+    loadListRequest({
+      employeeUid,
+      filter: {
+        direction: 'ascending'
+      }
+    });
+    
+    history.push(`/account/employee/${employeeUid}/multiaccess`);
   },
   handleSubmitFail: (props: AccountEmployeeAccessEditorProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
     const { formMode, intl } = props;
@@ -178,6 +222,10 @@ const handlerCreators: HandleCreators<AccountEmployeeAccessEditorProps, OwnHandl
         message = intl.formatMessage(accountMessage.access.message.updateFailure);
       }
 
+      if (formMode === FormMode.Delete) {
+        message = intl.formatMessage(accountMessage.access.message.deleteFailure);
+      }
+
       alertAdd({
         message,
         time: new Date(),
@@ -188,15 +236,7 @@ const handlerCreators: HandleCreators<AccountEmployeeAccessEditorProps, OwnHandl
 };
 
 const createProps: mapper<AccountEmployeeAccessEditorProps, OwnState> = (props: AccountEmployeeAccessEditorProps): OwnState => {
-  const { location } = props;
-
   return {
-    formMode: FormMode.New,
-    accessUid: location.state && location.state.accessUid || '',
-    submitDialogTitle: props.intl.formatMessage(accountMessage.access.dialog.createTitle),
-    submitDialogContentText: props.intl.formatMessage(accountMessage.access.dialog.createDescription),
-    submitDialogCancelText: props.intl.formatMessage(layoutMessage.action.cancel),
-    submitDialogConfirmedText: props.intl.formatMessage(layoutMessage.action.ok),
   };
 };
 
@@ -209,69 +249,36 @@ const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
 
 const lifecycles: ReactLifeCycleFunctions<AccountEmployeeAccessEditorProps, {}> = {
   componentDidMount() {
-    const { layoutDispatch, intl, history, stateUpdate } = this.props;
-    const { loadDetailRequest } = this.props.accountEmployeeAccessDispatch;
+    const { accessUid, employeeUid, history, stateUpdate,  } = this.props;
     const { user } = this.props.userState;
-    
-    const view = {
-      title: intl.formatMessage(accountMessage.access.dialog.createTitle),
-    };
 
     if (!user) {
       return;
     }
 
-    if (!isNullOrUndefined(history.location.state)) {
-      view.title = intl.formatMessage(accountMessage.access.dialog.modifyTitle);
-
+    if (!isNullOrUndefined(history.location.state) && !isNullOrUndefined(accessUid)) {
       stateUpdate({ 
-        formMode: FormMode.Edit,
-      });
-
-      loadDetailRequest({
-        employeeUid: this.props.match.params.employeeUid,
-        accessUid: this.props.location.state.accessUid
+        employeeUid,
+        submitDialogTitle: this.props.intl.formatMessage(accountMessage.education.confirm.modifyTitle),
+        submitDialogContentText : this.props.intl.formatMessage(accountMessage.education.confirm.modifyDescription)
       });
     }
-
-    layoutDispatch.setupView({
-      view: {
-        uid: AppMenu.Account,
-        parentUid: AppMenu.Lookup,
-        title: intl.formatMessage({id: view.title}),
-        subTitle : ' '
-      },
-      parentUrl: `/account/employee/${this.props.match.params.employeeUid}/multiaccess`,
-      status: {
-        isNavBackVisible: true,
-        isSearchVisible: false,
-        isActionCentreVisible: false,
-        isMoreVisible: false,
-        isModeSearch: false
-      }
-    }); 
   },
   componentWillUnmount() {
-    const { layoutDispatch, appBarDispatch } = this.props;
-    const { createDispose, updateDispose, loadDetailDispose } = this.props.accountEmployeeAccessDispatch;
+    const { createDispose, updateDispose, deleteDispose } = this.props.accountEmployeeAccessDispatch;
 
-    layoutDispatch.changeView(null);
-    layoutDispatch.navBackHide();
-    layoutDispatch.moreHide();
-
-    appBarDispatch.dispose();
-
-    loadDetailDispose();
     createDispose();
     updateDispose();
+    deleteDispose();
   }
 };
 
-export default compose<AccountEmployeeAccessEditorProps, {}>(
+export default compose<AccountEmployeeAccessEditorProps, OwnProps>(
   withUser,
   withLayout,
   withAppBar,
   withRouter,
+  withWidth(),
   withAccountEmployeeAccess,
   injectIntl,
   withStateHandlers<OwnState, OwnStateUpdaters, {}>(createProps, stateUpdaters),
