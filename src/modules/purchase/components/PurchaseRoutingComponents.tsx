@@ -1,3 +1,5 @@
+import AppMenu from '@constants/AppMenu';
+import { SecureMenuRoute } from '@layout/components/SecureMenuRoute';
 import { PurchaseApprovalDetail } from '@purchase/components/purchaseApproval/detail/PurchaseApprovalDetail';
 import { PurchaseApprovalList } from '@purchase/components/purchaseApproval/list/PurchaseApprovalList';
 import { PurchaseRequestDetail } from '@purchase/components/purchaseRequest/detail/PurchaseRequestDetail';
@@ -43,9 +45,29 @@ const settlementApproval = (props: RouteComponentProps) => (
 
 export const PurchaseRoutingComponents: React.SFC<RouteComponentProps> = props => (
   <Switch>
-    <Route path={`${props.match.path}/requests`} component={request} />
-    <Route path={`${props.match.path}/approvals`} component={approval} />
-    <Route path={`${props.match.path}/settlement/requests`} component={settlementRequest} />
-    <Route path={`${props.match.path}/settlement/approvals`} component={settlementApproval} />
+    <SecureMenuRoute 
+      path={`${props.match.path}/requests`}
+      menu={AppMenu.Purchase} 
+      subMenu={AppMenu.PurchaseRequest} 
+      component={request} 
+    />
+    <SecureMenuRoute 
+      path={`${props.match.path}/approvals`}
+      menu={AppMenu.Purchase} 
+      subMenu={AppMenu.PurchaseApproval} 
+      component={approval} 
+    />
+    <SecureMenuRoute 
+      path={`${props.match.path}/settlement/requests`}
+      menu={AppMenu.Purchase} 
+      subMenu={AppMenu.PurchaseSettlementRequest} 
+      component={settlementRequest} 
+    />
+    <SecureMenuRoute 
+      path={`${props.match.path}/settlement/approvals`}
+      menu={AppMenu.Purchase} 
+      subMenu={AppMenu.PurchaseSettlementApproval} 
+      component={settlementApproval} 
+    />
   </Switch>
 );

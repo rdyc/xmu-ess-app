@@ -1,3 +1,5 @@
+import AppMenu from '@constants/AppMenu';
+import { SecureMenuRoute } from '@layout/components/SecureMenuRoute';
 import * as React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router';
 
@@ -33,8 +35,23 @@ const cancellation = (props: RouteComponentProps) => (
 
 export const LeaveRoutingComponents: React.SFC<RouteComponentProps> = props => (
   <Switch>
-    <Route path={`${props.match.path}/requests`} component={request} />
-    <Route path={`${props.match.path}/approvals`} component={approval} />
-    <Route path={`${props.match.path}/cancellations`} component={cancellation} />
+    <SecureMenuRoute 
+      path={`${props.match.path}/requests`}
+      menu={AppMenu.Leave} 
+      subMenu={AppMenu.LeaveRequest} 
+      component={request} 
+    />
+    <SecureMenuRoute 
+      path={`${props.match.path}/approvals`}
+      menu={AppMenu.Leave} 
+      subMenu={AppMenu.LeaveApproval} 
+      component={approval} 
+    />
+    <SecureMenuRoute 
+      path={`${props.match.path}/cancellations`}
+      menu={AppMenu.Leave} 
+      subMenu={AppMenu.LeaveCancelation} 
+      component={cancellation} 
+    />
   </Switch>
 );
