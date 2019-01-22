@@ -151,7 +151,7 @@ const handlerCreators: HandleCreators<AccountEmployeeEducationEditorProps, OwnHa
   handleSubmitSuccess: (props: AccountEmployeeEducationEditorProps) => (response: IEmployee) => {
     const { formMode, intl, history, editAction, stateUpdate } = props;
     const { alertAdd } = props.layoutDispatch;
-    const { loadListRequest } = props.accountEmployeeEducationDispatch; 
+    const { loadAllRequest } = props.accountEmployeeEducationDispatch; 
     let message: string = '';
 
     if (formMode === FormMode.New) {
@@ -177,7 +177,7 @@ const handlerCreators: HandleCreators<AccountEmployeeEducationEditorProps, OwnHa
       time: new Date()
     });
 
-    loadListRequest({
+    loadAllRequest({
       employeeUid: props.employeeUid,
       filter: {
         direction: 'ascending'
@@ -245,31 +245,9 @@ const lifecycles: ReactLifeCycleFunctions<AccountEmployeeEducationEditorProps, {
       });
     }
 
-    // layoutDispatch.setupView({
-    //   view: {
-    //     uid: AppMenu.Account,
-    //     parentUid: AppMenu.Lookup,
-    //     title: intl.formatMessage(view.title),
-    //     subTitle : intl.formatMessage(view.subTitle)
-    //   },
-    //   parentUrl: `/account/employee/${this.props.employeeUid}`,
-    //   status: {
-    //     isNavBackVisible: true,
-    //     isSearchVisible: false,
-    //     isActionCentreVisible: false,
-    //     isMoreVisible: false,
-    //     isModeSearch: false
-    //   }
-    // });
   },
   componentWillUnmount() {
     const { accountEmployeeEducationDispatch } = this.props;
-
-    // layoutDispatch.changeView(null);
-    // layoutDispatch.navBackHide();
-    // layoutDispatch.moreHide();
-
-    // appBarDispatch.dispose();
 
     accountEmployeeEducationDispatch.createDispose();
     accountEmployeeEducationDispatch.updateDispose();

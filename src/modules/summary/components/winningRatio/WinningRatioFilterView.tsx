@@ -197,7 +197,7 @@ export const WinningRatioFilterView: React.SFC<WinningRatioFilterProps> = props 
   };
 
   return (
-    <Toolbar disableGutters>
+    <Toolbar>
     <Typography
       noWrap
       variant="body2"

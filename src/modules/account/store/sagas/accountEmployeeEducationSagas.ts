@@ -38,7 +38,7 @@ function* watchAllRequest() {
 
     return saiyanSaga.fetch({
       method: 'get',
-      path: `/v1/account/employees/${action.payload.employeeUid}/education?${params}`, 
+      path: `/v1/account/employees/${action.payload.employeeUid}/educations?${params}`, 
       successEffects: (response: IApiResponse) => ([
         put(accountEmployeeEducationGetAllSuccess(response.body)),
       ]), 

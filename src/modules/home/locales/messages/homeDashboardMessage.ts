@@ -16,7 +16,7 @@ export const homeDashboardSection = defineMessages({
   imageSliderSubHeader: { id: `${prefix}.section.imageSlider.subHeader` },
   achievementChartTitle: { id: `${prefix}.section.achievementChart.title` },
   achievementChartSubHeader: { id: `${prefix}.section.achievementChart.subHeader` },
-  newsFeedtTitle: { id: `${prefix}.section.newsFeed.title` },
+  newsFeedTitle: { id: `${prefix}.section.newsFeed.title` },
   newsFeedSubHeader: { id: `${prefix}.section.newsFeed.subHeader` }
 });
 

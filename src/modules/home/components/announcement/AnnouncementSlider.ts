@@ -1,5 +1,7 @@
 import { WithAnnouncement, withAnnouncement } from '@home/hoc/withAnnouncement';
 import { IStepperSource } from '@layout/components/stepper/Stepper';
+import { WithStyles, withStyles } from '@material-ui/core';
+import styles from '@styles';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import {
   compose,
@@ -16,7 +18,7 @@ import {
 import { AnnouncementSliderView } from './AnnouncementSliderView';
 
 interface IOwnOption {
-
+  useToolbar?: boolean;
 }
 
 interface IOwnState {
@@ -28,9 +30,11 @@ interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
 }
 
 export type AnnouncementSliderProps
-  = IOwnState
+  = IOwnOption
+  & IOwnState
   & IOwnStateUpdater
   & WithAnnouncement
+  & WithStyles<typeof styles>
   & InjectedIntlProps;
 
 const createProps: mapper<IOwnOption, IOwnState> = (props: IOwnOption): IOwnState => ({
@@ -63,10 +67,11 @@ const lifecycles: ReactLifeCycleFunctions<AnnouncementSliderProps, IOwnState> = 
   }
 };
 
-export const AnnouncementSlider = compose(
+export const AnnouncementSlider = compose<AnnouncementSliderProps, IOwnOption>(
   setDisplayName('AnnouncementSlider'),
   withAnnouncement,
   injectIntl,
+  withStyles(styles),
   withStateHandlers(createProps, stateUpdaters),
   lifecycle(lifecycles)
 )(AnnouncementSliderView);
