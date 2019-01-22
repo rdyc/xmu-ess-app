@@ -24,16 +24,19 @@ import { NotificationProps } from './Notification';
 
 export const NotificationView: React.SFC<NotificationProps> = props => (
   <div className={props.classes.marginFarBottom}>
-    <Toolbar className={props.classes.toolbarCustom}>
-      <React.Fragment>
-        <Typography variant="h6" className={props.classes.flex} color="inherit">
-          {props.intl.formatMessage(homeMessage.dashboard.section.notificationTitle)}
-        </Typography>
-        <IconButton color="inherit" onClick={() => props.handleSyncClick()}>
-          <SyncIcon />
-        </IconButton>
-      </React.Fragment>
-    </Toolbar>
+    {
+      props.useToolbar &&
+      <Toolbar className={props.classes.toolbarCustom}>
+        <React.Fragment>
+          <Typography variant="h6" className={props.classes.flex} color="inherit">
+            {props.intl.formatMessage(homeMessage.dashboard.section.notificationTitle)}
+          </Typography>
+          <IconButton color="inherit" onClick={() => props.handleSyncClick()}>
+            <SyncIcon />
+          </IconButton>
+        </React.Fragment>
+      </Toolbar>
+    }
 
     {
       props.notificationState.isLoading &&

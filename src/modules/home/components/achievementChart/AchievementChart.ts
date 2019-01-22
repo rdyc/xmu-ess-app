@@ -7,12 +7,17 @@ import { compose, lifecycle, ReactLifeCycleFunctions } from 'recompose';
 
 import { AchievementChartView } from './AchievementChartView';
 
-interface OwnState {
+interface IOwnOption {
+  useToolbar?: boolean;
+}
+
+interface IOwnState {
   symbol: string;
 }
 
 export type AchievementChartProps
-  = OwnState
+  = IOwnOption
+  & IOwnState
   & WithAchievement
   & WithWidth
   & WithStyles<typeof styles>
@@ -29,7 +34,7 @@ const lifecycles: ReactLifeCycleFunctions<AchievementChartProps, {}> = {
   }
 };
 
-export const AchievementChart = compose(
+export const AchievementChart = compose<AchievementChartProps, IOwnOption>(
   withAchievement,
   withWidth(),
   injectIntl,
