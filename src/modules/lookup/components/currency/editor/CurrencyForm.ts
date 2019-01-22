@@ -19,14 +19,9 @@ interface OwnProps {
   formMode: FormMode;
 }
 
-// interface OwnHandlers {
-//   generateFieldProps: (name: string) => any;
-// }
-
 export type CurrencyFormProps
   = InjectedFormProps<CurrencyFormData, OwnProps>
   & InjectedIntlProps
-  // & OwnHandlers
   & OwnProps;
 
 export const CurrencyForm = reduxForm<CurrencyFormData, OwnProps>({
