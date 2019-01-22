@@ -1,5 +1,5 @@
 import { WithAchievement, withAchievement } from '@home/hoc/withAchievement';
-import { WithStyles, withStyles, WithTheme } from '@material-ui/core';
+import { WithStyles, withStyles } from '@material-ui/core';
 import withWidth, { WithWidth } from '@material-ui/core/withWidth';
 import styles from '@styles';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
@@ -14,7 +14,6 @@ interface OwnState {
 export type AchievementChartProps
   = OwnState
   & WithAchievement
-  & WithTheme
   & WithWidth
   & WithStyles<typeof styles>
   & InjectedIntlProps;
@@ -35,5 +34,5 @@ export const AchievementChart = compose(
   withWidth(),
   injectIntl,
   lifecycle(lifecycles),
-  withStyles(styles, { withTheme: true })
+  withStyles(styles)
 )(AchievementChartView);
