@@ -7,5 +7,5 @@ export interface IEmployeeAccessPostPayload {
   departmentType: string;
   levelType: string;
   start: string;
-  end: string;
+  end?: string | null;
 }

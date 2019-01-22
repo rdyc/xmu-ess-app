@@ -35,7 +35,7 @@ export const AccountEmployeeAccessEditorView: React.SFC<AccountEmployeeAccessEdi
       departmentType: undefined,
       levelType: undefined,
       start: undefined,
-      end: undefined,
+      end: null,
     },
   };
 

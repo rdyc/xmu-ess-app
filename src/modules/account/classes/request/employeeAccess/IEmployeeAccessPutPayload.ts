@@ -8,5 +8,5 @@ export interface IEmployeeAccessPutPayload {
   departmentType: string;
   levelType: string;
   start: string;
-  end: string;
+  end?: string | null;
 }
