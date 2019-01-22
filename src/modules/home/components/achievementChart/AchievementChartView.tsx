@@ -14,11 +14,14 @@ export const AchievementChartView: React.SFC<AchievementChartProps> = props => {
 
   return (
     <div className={props.classes.marginFarBottom}>
-      <Toolbar className={props.classes.toolbarCustom}>
-        <Typography variant="h6" className={props.classes.flex} color="inherit">
-          {props.intl.formatMessage(homeMessage.dashboard.section.achievementChartTitle)}
-        </Typography>
-      </Toolbar>
+      {
+        props.useToolbar &&
+        <Toolbar className={props.classes.toolbarCustom}>
+          <Typography variant="h6" className={props.classes.flex} color="inherit">
+            {props.intl.formatMessage(homeMessage.dashboard.section.achievementChartTitle)}
+          </Typography>
+        </Toolbar>
+      }
       
       {
         props.achievementState.all.isLoading &&

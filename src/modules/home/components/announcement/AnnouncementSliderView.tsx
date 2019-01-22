@@ -8,11 +8,14 @@ import { AnnouncementSliderProps } from './AnnouncementSlider';
 
 export const AnnouncementSliderView: React.SFC<AnnouncementSliderProps> = props => (
   <div className={props.classes.marginFarBottom}>
-    <Toolbar className={props.classes.toolbarCustom}>
-      <Typography variant="h6" className={props.classes.flex} color="inherit">
-        {props.intl.formatMessage(homeMessage.dashboard.section.imageSliderTitle)}
-      </Typography>
-    </Toolbar>
+    {
+      props.useToolbar &&
+      <Toolbar className={props.classes.toolbarCustom}>
+        <Typography variant="h6" className={props.classes.flex} color="inherit">
+          {props.intl.formatMessage(homeMessage.dashboard.section.imageSliderTitle)}
+        </Typography>
+      </Toolbar>
+    }
 
     {
       props.announcementState.all.isLoading &&

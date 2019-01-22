@@ -8,11 +8,14 @@ import { NewsFeedProps } from './NewsFeed';
 
 export const NewsFeedView: React.SFC<NewsFeedProps> = props => (
   <div className={props.classes.marginFarBottom}>
-    <Toolbar className={props.classes.toolbarCustom}>
-      <Typography variant="h6" className={props.classes.flex} color="inherit">
-        {props.intl.formatMessage(homeMessage.dashboard.section.newsFeedTitle)}
-      </Typography>
-    </Toolbar>
+    {
+      props.useToolbar &&
+      <Toolbar className={props.classes.toolbarCustom}>
+        <Typography variant="h6" className={props.classes.flex} color="inherit">
+          {props.intl.formatMessage(homeMessage.dashboard.section.newsFeedTitle)}
+        </Typography>
+      </Toolbar>
+    }
     
     {
       props.newsFeedState.all.isLoading &&

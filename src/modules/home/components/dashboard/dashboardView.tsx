@@ -8,12 +8,12 @@ import { DashboardProps } from './Dashboard';
 
 export const DashboardView: React.SFC<DashboardProps> = props => (
   <React.Fragment>
-    <Notification />
+    <Notification useToolbar={true} />
 
-    <AnnouncementSlider />
+    <AnnouncementSlider useToolbar={true} />
 
-    <AchievementChart />
+    <AchievementChart useToolbar={true} />
 
-    <NewsFeed />
+    <NewsFeed useToolbar={true} />
   </React.Fragment>
 );
