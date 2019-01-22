@@ -40,6 +40,8 @@ export const timesheetEntryDialog = defineMessages({
   modifyDescription: { id: `${prefix}.dialog.modifyDescription`},
   createTitle: { id: `${prefix}.dialog.newTitle`},
   createDescription: { id: `${prefix}.dialog.newDescription`},
+  editTitle: { id: `${prefix}.dialog.editTitle`},
+  editDescription: { id: `${prefix}.dialog.editDescription`},
 });
 
 // fields

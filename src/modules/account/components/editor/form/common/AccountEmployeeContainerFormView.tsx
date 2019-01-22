@@ -10,14 +10,14 @@ import { AccountEmployeeDetailForm } from './AccountEmployeeDetailForm';
 export const AccountEmployeeContainerFormView: React.SFC<
   AccountEmployeeContainerFormProps
 > = props => {
-  const { formMode, initialValues } = props;
+  const { formMode, initialValues, companyUidValue } = props;
 
   const fields = Object.getOwnPropertyNames(initialValues.information);
   const fieldsBank = Object.getOwnPropertyNames(initialValues.bank);
   const fieldsContact = Object.getOwnPropertyNames(initialValues.contact);
 
   const componentInformation = (context: BaseFieldsProps) => (
-    <AccountEmployeeDetailForm formMode={formMode} context={context} />
+    <AccountEmployeeDetailForm formMode={formMode} context={context} companyUidValue={companyUidValue}/>
   );
 
   const componentBank = (context: BaseFieldsProps) => (

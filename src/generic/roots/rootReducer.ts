@@ -3,8 +3,8 @@ import commonReducers from '@common/store/reducers/commonReducers';
 import expenseReducers from '@expense/store/reducers/expenseReducers';
 import financeReducers from '@finance/store/reducers/financeReducers';
 import { IAppState } from '@generic/interfaces';
-import { chartReducers } from '@home/store/reducers/chartReducers';
-import { appBarReducer, landingPageReducers, layoutReducer, listBarReducer, notificationReducer, pageReducer } from '@layout/store/reducers';
+import { homeReducers } from '@home/store/reducers/homeReducers';
+import { appBarReducer, layoutReducer, listBarReducer, notificationReducer, pageReducer } from '@layout/store/reducers';
 import { userReducer } from '@layout/store/reducers/userReducer';
 import { leaveReducers } from '@leave/store/reducers/leaveReducers';
 import lookupReducers from '@lookup/store/reducers/lookupReducers';
@@ -44,6 +44,5 @@ export const rootReducer = combineReducers<IAppState>({
   ...travelReducers,
   ...summaryReducers,
   ...organizationReducers,
-  ...chartReducers,
-  ...landingPageReducers
+  ...homeReducers
 });

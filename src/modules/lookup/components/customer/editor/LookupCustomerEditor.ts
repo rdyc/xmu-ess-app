@@ -100,7 +100,7 @@ const handlerCreators: HandleCreators<LookupCustomerEditorProps, OwnHandlers> = 
     // update checking
     if (!customerUid) {
       alert('sini');
-      const message = intl.formatMessage(lookupMessage.company.message.emptyProps);
+      const message = intl.formatMessage(lookupMessage.lookupDiem.message.emptyProps);
 
       return Promise.reject(message);
     }
@@ -190,7 +190,7 @@ const lifecycles: ReactLifeCycleFunctions<LookupCustomerEditorProps, {}> = {
     
     const view = {
       title: lookupMessage.lookupCustomer.page.newTitle,
-      subTitle: lookupMessage.company.page.newSubHeader,
+      subTitle: lookupMessage.lookupCustomer.page.newSubHeader,
     };
 
     if (!user) {

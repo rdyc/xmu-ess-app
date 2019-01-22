@@ -8,6 +8,15 @@ export const accountEducationPage = defineMessages({
   newSubHeader: { id: `${prefix}.page.new.subHeader`},
   modifyTitle: { id: `${prefix}.page.modify.title`},
   modifySubHeader: { id: `${prefix}.page.modify.subHeader`},
+  deleteTitle: { id: `${prefix}.page.delete.title`},
+  deleteSubHeader: { id: `${prefix}.page.delete.subHeader`},
+});
+
+// option
+export const accountEducationOption = defineMessages({
+  new: { id: `${prefix}.option.new` },
+  modify: { id: `${prefix}.option.modify` },
+  remove: { id: `${prefix}.option.remove` }
 });
 
 // section
@@ -23,6 +32,8 @@ export const accountEducationMessage = defineMessages({
   createFailure: { id: `${prefix}.message.create.failure` },
   updateSuccess: { id: `${prefix}.message.update.success` },
   updateFailure: { id: `${prefix}.message.update.failure` },
+  deleteSuccess: { id: `${prefix}.message.delete.success` },
+  deleteFailure: { id: `${prefix}.message.delete.failure` },
 });
 
 // confirmation
@@ -37,6 +48,9 @@ export const accountEducationConfirm = defineMessages({
 export const accountEducationField = defineMessages({
   uid: { id: `${prefix}.field.uid`},
   uidPlaceholder: { id: `${prefix}.field.uid.placeholder`},
+
+  employeeUid: { id: `${prefix}.field.employeeUid`},
+  employeeUidPlaceholder: { id: `${prefix}.field.employeeUid.placeholder`},
 
   degree: { id: `${prefix}.field.degree`},
   degreePlaceholder: { id: `${prefix}.field.degree.placeholder`},
@@ -63,7 +77,8 @@ export const accountEducationFieldHelperFor = (field: string, type: 'fieldName' 
   if (type === 'fieldName') {
     switch (field) {
       case 'uid': return accountEducationField.uid;
-      case 'degree': return accountEducationField.degree;
+      case 'employeeUid': return accountEducationField.employeeUid;
+      case 'degreeType': return accountEducationField.degree;
       case 'institution': return accountEducationField.institution;
       case 'major': return accountEducationField.major;
       case 'start': return accountEducationField.start;
@@ -75,7 +90,7 @@ export const accountEducationFieldHelperFor = (field: string, type: 'fieldName' 
 
   if (type === 'fieldRequired') {
     switch (field) {
-      case 'degree': return accountEducationField.degreeRequired;
+      case 'degreeType': return accountEducationField.degreeRequired;
       case 'institution': return accountEducationField.institutionRequired;
       case 'major': return accountEducationField.majorRequired;
       case 'start': return accountEducationField.startRequired;
@@ -86,7 +101,9 @@ export const accountEducationFieldHelperFor = (field: string, type: 'fieldName' 
 
   if (type === 'fieldPlaceholder') {
     switch (field) {
-      case 'degree': return accountEducationField.degreePlaceholder;
+      case 'uid': return accountEducationField.uidPlaceholder;
+      case 'employeeUid': return accountEducationField.employeeUidPlaceholder;
+      case 'degreeType': return accountEducationField.degreePlaceholder;
       case 'institution': return accountEducationField.institutionPlaceholder;
       case 'major': return accountEducationField.majorPlaceholder;
       case 'start': return accountEducationField.startPlaceholder;

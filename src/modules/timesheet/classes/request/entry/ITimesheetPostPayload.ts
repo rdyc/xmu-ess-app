@@ -8,5 +8,5 @@ export interface ITimesheetPostPayload extends IBasePayload {
   date: string;
   start: string;
   end: string;
-  notes: string;
+  description: string;
 }

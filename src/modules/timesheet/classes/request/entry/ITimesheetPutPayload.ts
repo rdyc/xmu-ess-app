@@ -10,5 +10,5 @@ export interface ITimesheetPutPayload extends IBasePayload {
   date: string;
   start: string;
   end: string;
-  notes: string;
+  description: string;
 }

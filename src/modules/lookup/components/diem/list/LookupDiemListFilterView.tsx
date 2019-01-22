@@ -83,7 +83,7 @@ export const LookupDiemListFilterView: React.SFC<LookupDiemListFilterProps> = pr
           />
           <ListItemSecondaryAction>
             { 
-              props.filterType &&
+              props.filterDestinationType &&
               <IconButton onClick={props.handleFilterDestinationTypeOnClear}>
                 <ClearIcon />
               </IconButton> 
