@@ -131,7 +131,10 @@ const handlerCreators: HandleCreators<LookupDiemDetailProps, OwnHandler> = {
           break;
       }
 
-      props.setDefault();
+      props.stateUpdate({
+        dialogOpen: false
+      });
+      
       props.history.push(next, {
         uid: diemUid
       });

@@ -3,6 +3,7 @@ import { FormMode } from '@generic/types';
 import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
+import { layoutMessage } from '@layout/locales/messages';
 import { ILookupDiemPostPayload, ILookupDiemPutPayload } from '@lookup/classes/request/diem';
 import { IDiem } from '@lookup/classes/response';
 import { WithLookupDiem, withLookupDiem } from '@lookup/hoc/withLookupDiem';
@@ -41,6 +42,10 @@ interface OwnRouteParams {
 interface OwnState {
   formMode: FormMode;
   diemUid?: string | undefined;
+  submitDialogTitle: string;
+  submitDialogContentText: string;
+  submitDialogCancelText: string;
+  submitDialogConfirmedText: string;
 }
 
 interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
@@ -137,7 +142,7 @@ const handlerCreators: HandleCreators<LookupDiemEditorProps, OwnHandlers> = {
       time: new Date()
     });
 
-    history.push(`/lookup/diemvalue/${response.uid}`);
+    history.push(`/lookup/diemvalue/${response.uid}`, { companyuid: response.companyUid });
   },
   handleSubmitFail: (props: LookupDiemEditorProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
     const { formMode, intl } = props;
@@ -171,7 +176,11 @@ const handlerCreators: HandleCreators<LookupDiemEditorProps, OwnHandlers> = {
 };
 
 const createProps: mapper<LookupDiemEditorProps, OwnState> = (props: LookupDiemEditorProps): OwnState => ({ 
-  formMode: FormMode.New
+  formMode: FormMode.New,
+  submitDialogTitle: props.intl.formatMessage(lookupMessage.lookupDiem.dialog.createTitle),
+  submitDialogContentText: props.intl.formatMessage(lookupMessage.lookupDiem.dialog.createDescription),
+  submitDialogCancelText: props.intl.formatMessage(layoutMessage.action.cancel),
+  submitDialogConfirmedText: props.intl.formatMessage(layoutMessage.action.ok),
 });
 
 const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {

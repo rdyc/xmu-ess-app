@@ -32,7 +32,7 @@ const handlerCreators: HandleCreators<LookupDiemDetailFormProps, OwnHandlers> = 
     switch (name) {
       case 'companyUid':
         fieldProps = {
-          requeired: true,
+          required: true,
           label: intl.formatMessage(lookupMessage.lookupDiem.fieldFor(name, 'fieldName')),
           placeholder: intl.formatMessage(lookupMessage.lookupDiem.fieldFor(name, 'fieldPlaceholder')),
           component: SelectLookupCompany 
@@ -41,7 +41,7 @@ const handlerCreators: HandleCreators<LookupDiemDetailFormProps, OwnHandlers> = 
 
       case 'projectType':
         fieldProps = {
-          requeired: true,
+          required: true,
           category: 'project',
           label: intl.formatMessage(lookupMessage.lookupDiem.fieldFor(name, 'fieldName')),
           placeholder: intl.formatMessage(lookupMessage.lookupDiem.fieldFor(name, 'fieldPlaceholder')),
@@ -51,7 +51,7 @@ const handlerCreators: HandleCreators<LookupDiemDetailFormProps, OwnHandlers> = 
 
       case 'destinationType':
         fieldProps = {
-          requeired: true,
+          required: true,
           category: 'destination',
           label: intl.formatMessage(lookupMessage.lookupDiem.fieldFor(name, 'fieldName')),
           placeholder: intl.formatMessage(lookupMessage.lookupDiem.fieldFor(name, 'fieldPlaceholder')),
@@ -61,7 +61,7 @@ const handlerCreators: HandleCreators<LookupDiemDetailFormProps, OwnHandlers> = 
       
       case 'currencyUid':
         fieldProps = {
-          requeired: true,
+          required: true,
           label: intl.formatMessage(lookupMessage.lookupDiem.fieldFor(name, 'fieldName')),
           placeholder: intl.formatMessage(lookupMessage.lookupDiem.fieldFor(name, 'fieldPlaceholder')),
           component: SelectCurrency 
@@ -70,7 +70,7 @@ const handlerCreators: HandleCreators<LookupDiemDetailFormProps, OwnHandlers> = 
         
       case 'value':
         fieldProps = {
-          requeired: true,
+          required: true,
           label: intl.formatMessage(lookupMessage.lookupDiem.fieldFor(name, 'fieldName')),
           placeholder: intl.formatMessage(lookupMessage.lookupDiem.fieldFor(name, 'fieldPlaceholder')),
           component: InputNumber 
