@@ -248,22 +248,6 @@ const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
 };
 
 const lifecycles: ReactLifeCycleFunctions<AccountEmployeeAccessEditorProps, {}> = {
-  componentDidMount() {
-    const { accessUid, employeeUid, history, stateUpdate,  } = this.props;
-    const { user } = this.props.userState;
-
-    if (!user) {
-      return;
-    }
-
-    if (!isNullOrUndefined(history.location.state) && !isNullOrUndefined(accessUid)) {
-      stateUpdate({ 
-        employeeUid,
-        submitDialogTitle: this.props.intl.formatMessage(accountMessage.education.confirm.modifyTitle),
-        submitDialogContentText : this.props.intl.formatMessage(accountMessage.education.confirm.modifyDescription)
-      });
-    }
-  },
   componentWillUnmount() {
     const { createDispose, updateDispose, deleteDispose } = this.props.accountEmployeeAccessDispatch;
 

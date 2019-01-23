@@ -1,4 +1,27 @@
 {
+  "account.shared.option.new": "New",
+  "account.shared.option.modify": "Modify",
+  "account.shared.option.remove": "Delete",
+  
+  "account.shared.page.list.title": "{state}",
+  "account.shared.page.list.subHeader": " ",
+  "account.shared.page.detail.title": "{state} Detail",
+  "account.shared.page.detail.subHeader": " ",
+  "account.shared.page.new.title": "Add New {state}",
+  "account.shared.page.new.subHeader": " ",
+  "account.shared.page.modify.title": "Modify {state}",
+  "account.shared.page.modify.subHeader": " ",
+  "account.shared.page.delete.title": "Delete {state}",
+  "account.shared.page.delete.subHeader": " ",
+
+  "account.shared.message.emptyProps": "Some props are empty",
+  "account.shared.message.create.success": "New {state} Data has been created",
+  "account.shared.message.create.failure": "Unable to process your submission",
+  "account.shared.message.update.success": "{state} Data with ID {uid} has been updated",
+  "account.shared.message.update.failure": "Unable to process your submission",
+  "account.shared.message.delete.success": "{state} Data with ID {uid} has been deleted",
+  "account.shared.message.delete.failure": "Unable to process your submission",
+
   "account.access.message.greeting": "Hi {name}, Welcome to TESSA",
   "account.access.message.selection": "Please select your company access",
 
@@ -164,9 +187,6 @@
   "account.employee.confirm.modify.title": "Modify Account",
   "account.employee.confirm.modify.subHeader": "You are about to modify this employee data. Do you want to continue?",
 
-  "account.employee.confirm.delete.title": "Delete Account",
-  "account.employee.confirm.delete.subHeader": "You are about to delete this employee data. Do you want to continue?",
-
   "account.employee.field.information.title": "Employee Information",
   "account.employee.field.information.subHeader": " ",
   
@@ -243,30 +263,6 @@
   "account.employee.training.page.delete.title": "Delete Training",
   "account.employee.training.page.delete.subHeader": " ",
 
-  "account.education.page.new.title": "Add New Education",
-  "account.education.page.new.subHeader": " ",
-  "account.education.page.modify.title": "Modify Education",
-  "account.education.page.modify.subHeader": " ",
-  "account.education.page.delete.title": "Delete Education",
-  "account.education.page.delete.subHeader": " ",
-
-  "account.education.section.basic.title": "Employee Education",
-  "account.education.section.basic.subHeader": " ",
-  
-  "account.education.message.emptyProps": "Some props are empty",
-  "account.education.message.create.success": "New Education Data has been created",
-  "account.education.message.create.failure": "Unable to process your submission",
-  "account.education.message.update.success": "Education data with id {uid} has been updated",
-  "account.education.message.update.failure": "Unable to process your submission",
-  "account.education.message.delete.success": "Education data with id {uid} has been deleted",
-  "account.education.message.delete.failure": "Unable to process your submission",
-
-  "account.education.confirm.create.title": "Add Education",
-  "account.education.confirm.create.subHeader": " ",
- 
-  "account.education.confirm.modify.title": "Modify Education",
-  "account.education.confirm.modify.subHeader": " ",
-
   "account.education.field.uid": "Employee Education ID",
   "account.education.field.uid.placeholder": "Employee Education ID",
 
@@ -291,6 +287,28 @@
   
   "account.education.field.end": "End Year",
   "account.education.field.end.placeholder": "End Year",
+
+  "account.experience.field.uid": "Employee Education ID",
+  "account.experience.field.uid.placeholder": "Employee Education ID",
+
+  "account.experience.field.employeeUid": "Employee ID",
+  "account.experience.field.employeeUid.placeholder": "Employee ID",
+
+  "account.experience.field.company": "Company Name",
+  "account.experience.field.company.required": "Company Name is required",
+  "account.experience.field.company.placeholder": "Company Name",
+
+  "account.experience.field.position": "Position Name",
+  "account.experience.field.position.required": "Position Name is required",
+  "account.experience.field.position.placeholder": "Position Name",
+
+  "account.experience.field.start": "Start Year",
+  "account.experience.field.start.required": "Start Year is required",
+  "account.experience.field.start.placeholder": "Start Year",
+  
+  "account.experience.field.end": "End Year",
+  "account.experience.field.end.required": "End Year is required",
+  "account.experience.field.end.placeholder": "End Year",
 
   "account.access.message.emptyProps": "Some props are empty",
   "account.access.message.create.success": "New Employee Access Data has been created",

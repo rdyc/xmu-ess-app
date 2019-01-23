@@ -183,17 +183,6 @@ export const accountEmployeeConfirm = defineMessages({
   deleteDescription: { id: `${prefix}.confirm.delete.subHeader` },
 });
 
-// messages
-export const accountEmployeeMessage = defineMessages({
-  emptyProps: { id: `${prefix}.message.emptyProps` },
-  createSuccess: { id: `${prefix}.message.create.success` },
-  createFailure: { id: `${prefix}.message.create.failure` },
-  updateSuccess: { id: `${prefix}.message.update.success` },
-  updateFailure: { id: `${prefix}.message.update.failure` },
-  deleteSuccess: { id: `${prefix}.message.delete.success`},
-  deleteFailure: { id: `${prefix}.message.delete.failure`},
-});
-
 // section
 export const accountEmployeeSection = defineMessages({
   basicTitle: { id: `${prefix}.section.basic.title`},

@@ -1,6 +1,6 @@
-import { IEmployeeTrainingDeletePayload, IEmployeeTrainingPostPayload, IEmployeeTrainingPutPayload } from '@account/classes/request/employeeTraining';
-import { IEmployeeTraining } from '@account/classes/response/employeeTraining';
-import { WithAccountEmployeeTraining, withAccountEmployeeTraining } from '@account/hoc/withAccountEmployeeTraining';
+import { IEmployeeExperienceDeletePayload, IEmployeeExperiencePostPayload, IEmployeeExperiencePutPayload } from '@account/classes/request/employeeExperience';
+import { IEmployeeExperience } from '@account/classes/response/employeeExperience';
+import { WithAccountEmployeeExperience, withAccountEmployeeExperience } from '@account/hoc/withAccountEmployeeExperience';
 import { accountMessage } from '@account/locales/messages/accountMessage';
 import { FormMode } from '@generic/types';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
@@ -8,50 +8,58 @@ import { WithUser, withUser } from '@layout/hoc/withUser';
 import withWidth, { WithWidth } from '@material-ui/core/withWidth';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
-import { compose, HandleCreators, lifecycle, mapper, ReactLifeCycleFunctions, StateHandler, StateHandlerMap, StateUpdaters, withHandlers, withStateHandlers } from 'recompose';
+import {
+  compose,
+  HandleCreators,
+  lifecycle,
+  mapper,
+  ReactLifeCycleFunctions,
+  StateHandler,
+  StateHandlerMap,
+  StateUpdaters,
+  withHandlers,
+  withStateHandlers,
+} from 'recompose';
 import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
 import { isNullOrUndefined, isObject } from 'util';
-import { AccountEmployeeTrainingEditorView } from './AccountEmployeeTrainingEditorView';
-import { AccountEmployeeTrainingFormData } from './form/training/AccountEmployeeTrainingContainerForm';
+import { AccountEmployeeExperienceEditorView } from './AccountEmployeeExperienceEditorView';
+import { AccountEmployeeExperienceFormData } from './form/experience/AccountEmployeeExperienceContainer';
 
 type EditAction = 'update' | 'delete';
 
 interface OwnHandlers {
-  handleValidate: (payload: AccountEmployeeTrainingFormData) => FormErrors;
-  handleSubmit: (payload: AccountEmployeeTrainingFormData) => void;
+  handleValidate: (payload: AccountEmployeeExperienceFormData) => FormErrors;
+  handleSubmit: (payload: AccountEmployeeExperienceFormData) => void;
   handleSubmitSuccess: (result: any, dispatch: Dispatch<any>) => void;
   handleSubmitFail: (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => void;
 }
 
 interface OwnOption {
   formMode: FormMode | undefined;
-  trainingUid?: string;
+  experienceUid?: string;
   employeeUid: string;
   isOpenDialog: boolean;
   editAction?: EditAction | undefined;
-  initialValues?: AccountEmployeeTrainingFormData;
+  initialValues?: AccountEmployeeExperienceFormData;
   handleDialogClose: () => void;
 }
+
 interface OwnRouteParams {
   employeeUid: string;
-  trainingUid: string;
+  experienceUid: string;  
 }
 
 interface OwnState {
-  // employeeUid: string;
-  // submitDialogTitle: string;
-  // submitDialogContentText: string;
-  // submitDialogCancelText: string;
-  // submitDialogConfirmedText: string;
+
 }
 
 interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
   stateUpdate: StateHandler<OwnState>;
 }
 
-export type AccountEmployeeTrainingEditorProps
-  = WithAccountEmployeeTraining
+export type AccountEmployeeExperienceEditorProps
+  = WithAccountEmployeeExperience
   & WithUser
   & WithLayout
   & WithWidth
@@ -62,35 +70,35 @@ export type AccountEmployeeTrainingEditorProps
   & OwnState
   & OwnStateUpdaters;
 
-const handlerCreators: HandleCreators<AccountEmployeeTrainingEditorProps, OwnHandlers> = {
-  handleValidate: (props: AccountEmployeeTrainingEditorProps) => (formData: AccountEmployeeTrainingFormData) => {
+const handlerCreators: HandleCreators<AccountEmployeeExperienceEditorProps, OwnHandlers> = {
+  handleValidate: (props: AccountEmployeeExperienceEditorProps) => (formData: AccountEmployeeExperienceFormData) => { 
     const errors = {
-      information: {}
+      experience: {}
     };
-
+  
     const requiredFields = [
-      'name', 'start', 'end', 'organizer', 'trainingType', 'certificationType'
+      'company', 'position', 'start', 'end'
     ];
-
+  
     requiredFields.forEach(field => {
-      if (!formData.information[field] || isNullOrUndefined(formData.information[field])) {
-        errors.information[field] = props.intl.formatMessage(accountMessage.training.fieldFor(field, 'fieldRequired'));
+      if (!formData.experience[field] || isNullOrUndefined(formData.experience[field])) {
+        errors.experience[field] = props.intl.formatMessage(accountMessage.experience.fieldFor(field, 'fieldRequired'));
       }
     });
-
+    
     return errors;
   },
-  handleSubmit: (props: AccountEmployeeTrainingEditorProps) => (formData: AccountEmployeeTrainingFormData) => {
-    const { formMode, employeeUid, intl, editAction, trainingUid } = props;
+  handleSubmit: (props: AccountEmployeeExperienceEditorProps) => (formData: AccountEmployeeExperienceFormData) => { 
+    const { formMode, employeeUid, intl, editAction, experienceUid } = props;
     const { user } = props.userState;
-    const { createRequest, updateRequest, deleteRequest } = props.accountEmployeeTrainingDispatch;
+    const { createRequest, updateRequest, deleteRequest } = props.accountEmployeeExperienceDispatch;
 
     if (!user) {
       return Promise.reject('user was not found');
     }
 
     const payload = {
-      ...formData.information,
+      ...formData.experience
     };
 
     // creating
@@ -98,9 +106,9 @@ const handlerCreators: HandleCreators<AccountEmployeeTrainingEditorProps, OwnHan
       return new Promise((resolve, reject) => {
         createRequest({
           employeeUid,
-          resolve,
+          resolve, 
           reject,
-          data: payload as IEmployeeTrainingPostPayload
+          data: payload as IEmployeeExperiencePostPayload
         });
       });
     }
@@ -113,14 +121,14 @@ const handlerCreators: HandleCreators<AccountEmployeeTrainingEditorProps, OwnHan
     }
 
     if (formMode === FormMode.Edit) {
-      if (trainingUid) {
+      if (experienceUid) {
         if (editAction === 'update') {
           return new Promise((resolve, reject) => {
             updateRequest({
               employeeUid,
-              resolve,
+              resolve, 
               reject,
-              data: payload as IEmployeeTrainingPutPayload,
+              data: payload as IEmployeeExperiencePutPayload, 
             });
           });
         }
@@ -129,9 +137,9 @@ const handlerCreators: HandleCreators<AccountEmployeeTrainingEditorProps, OwnHan
           return new Promise((resolve, reject) => {
             deleteRequest({
               employeeUid,
-              resolve,
+              resolve, 
               reject,
-              data: payload as IEmployeeTrainingDeletePayload
+              data: payload as IEmployeeExperienceDeletePayload, 
             });
           });
         }
@@ -140,22 +148,21 @@ const handlerCreators: HandleCreators<AccountEmployeeTrainingEditorProps, OwnHan
 
     return null;
   },
-  handleSubmitSuccess: (props: AccountEmployeeTrainingEditorProps) => (response: IEmployeeTraining) => {
+  handleSubmitSuccess: (props: AccountEmployeeExperienceEditorProps) => (response: IEmployeeExperience) => {
     const { formMode, intl, history, editAction, stateUpdate } = props;
     const { alertAdd } = props.layoutDispatch;
-    const { loadListRequest } = props.accountEmployeeTrainingDispatch;
-
+    const { loadAllRequest } = props.accountEmployeeExperienceDispatch; 
     let message: string = '';
 
     if (formMode === FormMode.New) {
-      message = intl.formatMessage(accountMessage.training.message.createSuccess, { uid: response.uid });
+      message = intl.formatMessage(accountMessage.shared.message.createSuccess, { state: 'Employee Experience' });
     }
 
     if (formMode === FormMode.Edit) {
       if (editAction && editAction === 'update') {
-        message = intl.formatMessage(accountMessage.training.message.updateSuccess, { uid: response.uid });
+        message = intl.formatMessage(accountMessage.shared.message.updateSuccess, { state: 'Employee Experience', uid: response.uid });
       } else {
-        message = intl.formatMessage(accountMessage.training.message.deleteSuccess, { uid: response.uid });
+        message = intl.formatMessage(accountMessage.shared.message.deleteSuccess, { state: 'Employee Experience', uid: response.uid });
       }
     }
 
@@ -170,19 +177,19 @@ const handlerCreators: HandleCreators<AccountEmployeeTrainingEditorProps, OwnHan
       time: new Date()
     });
 
-    loadListRequest({
+    loadAllRequest({
       employeeUid: props.employeeUid,
       filter: {
         direction: 'ascending'
       }
     });
-
-    history.push(`/account/employee/${props.employeeUid}/training`);
+    
+    history.push(`/account/employee/${props.employeeUid}/experience`);
   },
-  handleSubmitFail: (props: AccountEmployeeTrainingEditorProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
+  handleSubmitFail: (props: AccountEmployeeExperienceEditorProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
     const { formMode, intl } = props;
     const { alertAdd } = props.layoutDispatch;
-
+    
     if (errors) {
       // validation errors from server (400: Bad Request)
       alertAdd({
@@ -194,11 +201,11 @@ const handlerCreators: HandleCreators<AccountEmployeeTrainingEditorProps, OwnHan
       let message: string = '';
 
       if (formMode === FormMode.New) {
-        message = intl.formatMessage(accountMessage.training.message.createFailure);
+        message = intl.formatMessage(accountMessage.shared.message.createFailure);
       }
 
       if (formMode === FormMode.Edit) {
-        message = intl.formatMessage(accountMessage.training.message.updateFailure);
+        message = intl.formatMessage(accountMessage.shared.message.updateFailure);
       }
 
       alertAdd({
@@ -210,8 +217,8 @@ const handlerCreators: HandleCreators<AccountEmployeeTrainingEditorProps, OwnHan
   }
 };
 
-const createProps: mapper<AccountEmployeeTrainingEditorProps, OwnState> = (props: AccountEmployeeTrainingEditorProps): OwnState => ({ 
-  //
+const createProps: mapper<AccountEmployeeExperienceEditorProps, OwnState> = (): OwnState => ({ 
+
 });
 
 const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
@@ -221,9 +228,9 @@ const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
   })
 };
 
-const lifecycles: ReactLifeCycleFunctions<AccountEmployeeTrainingEditorProps, {}> = {
+const lifecycles: ReactLifeCycleFunctions<AccountEmployeeExperienceEditorProps, {}> = {
   componentWillUnmount() {
-    const { createDispose, updateDispose, deleteDispose } = this.props.accountEmployeeTrainingDispatch;
+    const { createDispose, updateDispose, deleteDispose } = this.props.accountEmployeeExperienceDispatch;
 
     createDispose();
     updateDispose();
@@ -231,14 +238,14 @@ const lifecycles: ReactLifeCycleFunctions<AccountEmployeeTrainingEditorProps, {}
   }
 };
 
-export default compose<AccountEmployeeTrainingEditorProps, OwnOption>(
+export default compose<AccountEmployeeExperienceEditorProps, OwnOption>(
   withUser,
   withLayout,
-  withWidth(),
   withRouter,
-  withAccountEmployeeTraining,
+  withWidth(),
+  withAccountEmployeeExperience,
   injectIntl,
   withStateHandlers<OwnState, OwnStateUpdaters, {}>(createProps, stateUpdaters),
-  withHandlers<AccountEmployeeTrainingEditorProps, OwnHandlers>(handlerCreators),
-  lifecycle<AccountEmployeeTrainingEditorProps, {}>(lifecycles),
-)(AccountEmployeeTrainingEditorView);
+  withHandlers<AccountEmployeeExperienceEditorProps, OwnHandlers>(handlerCreators),
+  lifecycle<AccountEmployeeExperienceEditorProps, {}>(lifecycles),
+)(AccountEmployeeExperienceEditorView);

@@ -4,10 +4,10 @@ import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Typography }
 import { isWidthDown } from '@material-ui/core/withWidth';
 import * as React from 'react';
 import { FormInstance } from 'redux-form';
-import { AccountEmployeeEducationEditorProps } from './AccountEmployeeEducationEditor';
-import { AccountEmployeeEducationContainerForm } from './form/education/AccountEmployeeEducationContainer';
+import { AccountEmployeeExperienceEditorProps } from './AccountEmployeeExperienceEditor';
+import { AccountEmployeeExperienceContainerForm } from './form/experience/AccountEmployeeExperienceContainer';
 
-export const AccountEmployeeEducationEditorView: React.SFC<AccountEmployeeEducationEditorProps> = props => {
+export const AccountEmployeeExperienceEditorView: React.SFC<AccountEmployeeExperienceEditorProps> = props => {
   const { handleValidate, handleSubmit, handleSubmitSuccess, handleSubmitFail, 
     width, isOpenDialog, initialValues, 
     editAction, handleDialogClose, formMode } = props;
@@ -32,12 +32,12 @@ export const AccountEmployeeEducationEditorView: React.SFC<AccountEmployeeEducat
     >
       <DialogTitle disableTypography>
         <Typography variant="title" color="primary">
-          {props.intl.formatMessage(dialogTitle(), {state: 'Education'})}
+          {props.intl.formatMessage(dialogTitle(), {state: 'Experience'})}
         </Typography>
       </DialogTitle>
 
       <DialogContent>
-        <AccountEmployeeEducationContainerForm
+        <AccountEmployeeExperienceContainerForm
           formMode={formMode}
           ref={ref}
           formAction={editAction ? editAction : 'update'}
