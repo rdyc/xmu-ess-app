@@ -42,8 +42,8 @@ const config: SingleConfig<IEmployeeEducation, AccountEmployeeEducationProps> = 
   page: (props: AccountEmployeeEducationProps) => ({
     uid: AppMenu.Account,
     parentUid: AppMenu.Lookup,
-    title: props.intl.formatMessage(accountMessage.employee.page.detailTitle),
-    description: props.intl.formatMessage(accountMessage.employee.page.detailSubHeader),
+    title: props.intl.formatMessage(accountMessage.shared.page.detailTitle, { state: 'Employee'}),
+    description: props.intl.formatMessage(accountMessage.shared.page.detailSubHeader),
   }),
 
   // parent url
@@ -81,9 +81,8 @@ const config: SingleConfig<IEmployeeEducation, AccountEmployeeEducationProps> = 
     }
   },
   onUpdated: (states: AccountEmployeeEducationProps, callback: SingleHandler) => {
-    const { isLoading, response } = states.accountEmployeeEducationState.all;
+    const { response } = states.accountEmployeeEducationState.all;
     
-    callback.handleLoading(isLoading);
     callback.handleResponse(response);
   },
 };
@@ -186,10 +185,10 @@ export const AccountEmployeeEducationView: React.SFC<
                   onClose={handleMenuClose}
                 >
                   <MenuItem onClick={() => handleEdit('update')}>
-                    {props.intl.formatMessage(accountMessage.education.option.modify)}
+                    {props.intl.formatMessage(accountMessage.shared.option.modify)}
                   </MenuItem>
                   <MenuItem onClick={() => handleEdit('delete')}>
-                    {props.intl.formatMessage(accountMessage.education.option.remove)}
+                    {props.intl.formatMessage(accountMessage.shared.option.remove)}
                   </MenuItem> 
                 </Menu>
             </TableBody>
@@ -221,7 +220,7 @@ export const AccountEmployeeEducationView: React.SFC<
           className={props.classes.flex}
         >
           {
-            props.isLoading &&
+            isLoading &&
             <FormattedMessage {...layoutMessage.text.loading} />
           }
         </Typography>

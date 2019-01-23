@@ -140,7 +140,7 @@ const handlerCreators: HandleCreators<AccountEmployeeDetailProps, OwnHandler> = 
 
     // props checking
     if (!match.params.employeeUid) {
-      const message = intl.formatMessage(accountMessage.employee.message.emptyProps);
+      const message = intl.formatMessage(accountMessage.shared.message.emptyProps);
       return Promise.reject(message);
     }
     const payload = {
@@ -159,7 +159,7 @@ const handlerCreators: HandleCreators<AccountEmployeeDetailProps, OwnHandler> = 
 
     props.layoutDispatch.alertAdd({
       time: new Date(),
-      message: props.intl.formatMessage(accountMessage.employee.message.deleteSuccess, { uid : props.match.params.employeeUid })
+      message: props.intl.formatMessage(accountMessage.shared.message.deleteSuccess, { uid : props.match.params.employeeUid })
     });
   },
   handleSubmitFail: (props: AccountEmployeeDetailProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
@@ -171,7 +171,7 @@ const handlerCreators: HandleCreators<AccountEmployeeDetailProps, OwnHandler> = 
     } else {
       props.layoutDispatch.alertAdd({
         time: new Date(),
-        message: props.intl.formatMessage(accountMessage.employee.message.deleteFailure),
+        message: props.intl.formatMessage(accountMessage.shared.message.deleteFailure),
         details: isObject(submitError) ? submitError.message : submitError
       });
     }

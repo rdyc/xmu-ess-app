@@ -128,8 +128,8 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, OwnState> = {
       page: {
         uid: AppMenu.LookupEmployee,
         parentUid: AppMenu.Lookup,
-        title: this.props.intl.formatMessage(accountMessage.employee.page.listTitle),
-        description: this.props.intl.formatMessage(accountMessage.employee.page.listSubHeader),
+        title: this.props.intl.formatMessage(accountMessage.shared.page.listTitle, { state: 'Employee'}),
+        description: this.props.intl.formatMessage(accountMessage.shared.page.listSubHeader),
       },
 
       // top bar

@@ -35,7 +35,8 @@ export enum AccountEmployeeFamilyHeaderTable {
   name = 'Name',
   gender = 'Gender',
   birthPlace = 'Birth Place',
-  birthDate = 'Birth Date'
+  birthDate = 'Birth Date',
+  action = 'Action'
 }
 
 export enum AccountEmployeeExperienceHeaderTable {
@@ -44,4 +45,5 @@ export enum AccountEmployeeExperienceHeaderTable {
   position = 'Position Name',
   start = 'Start Year',
   finish = 'Finish year',
+  action = 'Action'
 }

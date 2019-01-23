@@ -18,8 +18,8 @@ const config: SingleConfig<IEmployeeDetail, AccountEmployeeDetailProps> = {
   page: (props: AccountEmployeeDetailProps) => ({
     uid: AppMenu.Account,
     parentUid: AppMenu.Lookup,
-    title: props.intl.formatMessage(accountMessage.employee.page.detailTitle),
-    description: props.intl.formatMessage(accountMessage.employee.page.detailSubHeader),
+    title: props.intl.formatMessage(accountMessage.shared.page.detailTitle, { state: 'Employee'}),
+    description: props.intl.formatMessage(accountMessage.shared.page.detailSubHeader),
   }),
 
   // parent url

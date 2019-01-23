@@ -2,18 +2,6 @@ import { defineMessages } from 'react-intl';
 
 const prefix = 'account.employee';
 
-// page
-export const accountEmployeePage = defineMessages({
-  listTitle: { id: `${prefix}.page.list.title`},
-  listSubHeader: { id: `${prefix}.page.list.subHeader`},
-  detailTitle: { id: `${prefix}.page.detail.title`},
-  detailSubHeader: { id: `${prefix}.page.detail.subHeader`},
-  newTitle: { id: `${prefix}.page.new.title`},
-  newSubHeader: { id: `${prefix}.page.new.subHeader`},
-  modifyTitle: { id: `${prefix}.page.modify.title`},
-  modifySubHeader: { id: `${prefix}.page.modify.subHeader`},
-});
-
 // filter
 export const accountEmployeeFilter = defineMessages({
   company: { id: `${prefix}.filter.company`},
@@ -168,17 +156,6 @@ export const accountEmployeeConfirm = defineMessages({
   modifyDescription: { id: `${prefix}.confirm.modify.subHeader` },
   deleteTitle: { id: `${prefix}.confirm.delete.title` },
   deleteDescription: { id: `${prefix}.confirm.delete.subHeader` },
-});
-
-// messages
-export const accountEmployeeMessage = defineMessages({
-  emptyProps: { id: `${prefix}.message.emptyProps` },
-  createSuccess: { id: `${prefix}.message.create.success` },
-  createFailure: { id: `${prefix}.message.create.failure` },
-  updateSuccess: { id: `${prefix}.message.update.success` },
-  updateFailure: { id: `${prefix}.message.update.failure` },
-  deleteSuccess: { id: `${prefix}.message.delete.success`},
-  deleteFailure: { id: `${prefix}.message.delete.failure`},
 });
 
 // section

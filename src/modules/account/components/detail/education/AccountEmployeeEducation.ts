@@ -26,7 +26,6 @@ interface OwnState {
   educationItemIndex?: string | undefined;
   editAction?: EditAction | undefined;
   initialValues?: AccountEmployeeEducationFormData;
-
   page: number;
   size: number;
 }
@@ -38,7 +37,6 @@ interface OwnHandlers {
   handleNew: () => void;
   handleEdit: (editAction: EditAction) => void;
   handleReload: () => void;
-
   handleGoToNext: () => void;
   handleGoToPrevious: () => void;
   handleChangePage: (page: number) => void;

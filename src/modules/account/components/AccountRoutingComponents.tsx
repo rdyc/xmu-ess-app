@@ -8,7 +8,7 @@ import { AccountEmployeeEducation } from './detail/education/AccountEmployeeEduc
 import { AccountEmployeeExperience } from './detail/experience/AccountEmployeeExperience';
 import { AccountEmployeeFamily } from './detail/family/AccountEmployeeFamily';
 import { AccountEmployeeTraining } from './detail/training/AccountEmployeeTraining';
-import { Editor } from './editor/Editor';
+import { AccountEmployeeEditor } from './editor/AccountEmployeeEditor';
 import { AccountEmployeeList } from './list/AccountEmployeeList';
 import { AccountProfile } from './profile';
 
@@ -26,7 +26,7 @@ const profile = (props: RouteComponentProps) => (
 
 const employee = (props: RouteComponentProps) => (
   <Switch>
-    <Route path={`${props.match.path}/form`} component={Editor} />
+    <Route path={`${props.match.path}/form`} component={AccountEmployeeEditor} />
     <Route path={`${props.match.path}/:employeeUid/history`} component={employeeHistory} />
     <Route path={`${props.match.path}/:employeeUid/education`} component={employeeEducation} />
     <Route path={`${props.match.path}/:employeeUid/family`} component={employeeFamily} />
