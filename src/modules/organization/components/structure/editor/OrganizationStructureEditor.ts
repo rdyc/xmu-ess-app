@@ -65,7 +65,7 @@ const handlerCreators: HandleCreators<OrganizationStructureEditorProps, OwnHandl
     };
   
     const requiredFields = [
-      'companyUid', 'name', 'positionUid', 'items'
+      'companyUid', 'positionUid', 'inactiveDate'
     ];
   
     requiredFields.forEach(field => {
@@ -75,7 +75,7 @@ const handlerCreators: HandleCreators<OrganizationStructureEditorProps, OwnHandl
     });
 
     if (formData.item.items) {
-      const requiredItemFields = ['sequence', 'RelationType'];
+      const requiredItemFields = ['positionUid', 'start', 'end'];
       
       const itemErrors: any[] = [];
       
@@ -206,7 +206,7 @@ const handlerCreators: HandleCreators<OrganizationStructureEditorProps, OwnHandl
     }
 
     if (formMode === FormMode.Edit) {
-      message = intl.formatMessage(organizationMessage.structure.message.createSuccess, { uid: response.uid });
+      message = intl.formatMessage(organizationMessage.structure.message.updateSuccess, { uid: response.uid });
     }
 
     alertAdd({

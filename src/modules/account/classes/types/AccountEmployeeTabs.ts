@@ -5,5 +5,5 @@ export enum AccountEmployeeTabs {
   family = 'Family Structure',
   experience = 'Job Experience',
   training = 'Training and Certification',
-  multiAccess = 'Multi Company'
+  multiaccess = 'Multi Company'
 }

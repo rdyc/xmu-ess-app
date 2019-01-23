@@ -7,7 +7,7 @@ import { compose, lifecycle, ReactLifeCycleFunctions, setDisplayName } from 'rec
 import { NewsFeedView } from './NewsFeedView';
 
 interface IOwnOption {
-
+  useToolbar?: boolean;
 }
 
 export type NewsFeedProps

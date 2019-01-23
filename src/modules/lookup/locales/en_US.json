@@ -219,10 +219,10 @@
   "lookup.currency.field.modifiedDate": "Modified at",
 
   "lookup.currency.confirm.modify.title": "Modify Confirmation",
-  "lookup.currency.confirm.modify.description": " ",
+  "lookup.currency.confirm.modify.description": "You are about to modify an existing currency. Do you want to continue?",
 
   "lookup.currency.confirm.delete.title": "Delete Confirmation",
-  "lookup.currency.confirm.delete.description": " ",
+  "lookup.currency.confirm.delete.description": "You are about to delete an exisiting currency. Do you want to continue?",
 
   "lookup.currency.message.create.success": "New currency has been created",
   "lookup.currency.message.create.failure": "Submission failed",
@@ -272,10 +272,10 @@
   "lookup.position.field.modifiedDate": "Modified at",
   
   "lookup.position.confirm.modify.title": "Modify Confirmation",
-  "lookup.position.confirm.modify.description": " ",
+  "lookup.position.confirm.modify.description": "You are about to modify an existing position. Do you want to continue?",
 
   "lookup.position.confirm.delete.title": "Delete Confirmation",
-  "lookup.position.confirm.delete.description": " ",
+  "lookup.position.confirm.delete.description": "You are about to delete an existing position. Do you want to continue?",
 
   "lookup.position.message.create.success": "New position has been created",
   "lookup.position.message.create.failure": "Submission failed",

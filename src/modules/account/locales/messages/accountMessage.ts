@@ -1,5 +1,10 @@
-import { accountAccessMessage } from './accountAccessMessage';
-import { 
+import {
+  accountAccessDialog,
+  accountAccessField,
+  accountAccessFieldHelperFor,
+  accountAccessMessage
+} from './accountAccessMessage';
+import {
   accountEducationField,
   accountEducationFieldHelperFor
 } from './accountEducationMessage';
@@ -10,8 +15,24 @@ import {
   accountEmployeeFilter,
   accountEmployeeSection
 } from './accountEmployeeMessage';
-import { accountExperienceField, accountExperienceFieldHelperFor } from './accountExperienceMessage';
-import { accountSharedMessage, accountSharedOption, accountSharedPage } from './accountShared';
+import {
+  accountEmployeeTrainingConfirm,
+  accountEmployeeTrainingField,
+  accountEmployeeTrainingFieldHelperFor,
+  accountEmployeeTrainingMessage,
+  accountEmployeeTrainingOption,
+  accountEmployeeTrainingPage,
+  accountEmployeeTrainingSection
+} from './accountEmployeeTrainingMessage';
+import {
+  accountExperienceField,
+  accountExperienceFieldHelperFor
+} from './accountExperienceMessage';
+import {
+  accountSharedMessage,
+  accountSharedOption,
+  accountSharedPage
+} from './accountShared';
 
 export const accountMessage = {
   employee: {
@@ -31,10 +52,22 @@ export const accountMessage = {
   },
   access: {
     message: accountAccessMessage,
+    dialog: accountAccessDialog,
+    field: accountAccessField,
+    fieldFor: accountAccessFieldHelperFor
   },
   shared: {
     option: accountSharedOption,
     page: accountSharedPage,
     message: accountSharedMessage
+  },
+  training: {
+    field: accountEmployeeTrainingField,
+    confirm: accountEmployeeTrainingConfirm,
+    fieldFor: accountEmployeeTrainingFieldHelperFor,
+    message: accountEmployeeTrainingMessage,
+    section: accountEmployeeTrainingSection,
+    option: accountEmployeeTrainingOption,
+    page: accountEmployeeTrainingPage
   }
 };

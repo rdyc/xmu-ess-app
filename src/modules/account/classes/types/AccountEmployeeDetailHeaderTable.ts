@@ -5,7 +5,8 @@ export enum AccountEmployeeTrainingHeaderTable {
   endDate = 'End Date',
   organizer = 'Training Organizer',
   type = 'Training Type',
-  certificationType = 'Certification Type'
+  certificationType = 'Certification Type',
+  action = 'Action'
 }
 
 export enum AccountEmployeeHistoryHeaderTable {
@@ -46,4 +47,15 @@ export enum AccountEmployeeExperienceHeaderTable {
   start = 'Start Year',
   finish = 'Finish year',
   action = 'Action'
+}
+
+export enum AccountEmployeeAccessHeaderTable {
+  company = 'Company',
+  bussiness = 'Bussiness Unit',
+  department = 'Department',
+  level = 'Level',
+  role = 'Role',
+  position = 'Position',
+  start = 'Start Date',
+  end = 'End Date',
 }
