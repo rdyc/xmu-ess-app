@@ -6,7 +6,8 @@ import { LookupDiemForm, LookupDiemFormData } from './form/LookupDiemForm';
 import { LookupDiemEditorProps } from './LookupDiemEditor';
 
 export const LookupDiemEditorView: React.SFC<LookupDiemEditorProps> = props => {
-  const { formMode, handleValidate, handleSubmit, handleSubmitSuccess, handleSubmitFail } = props;
+  const { formMode, handleValidate, handleSubmit, handleSubmitSuccess, handleSubmitFail,
+          submitDialogTitle, submitDialogContentText, submitDialogConfirmedText, submitDialogCancelText  } = props;
   const { isLoading, response } = props.lookupDiemState.detail;
 
   const renderForm = (formData: LookupDiemFormData) => (
@@ -17,6 +18,10 @@ export const LookupDiemEditorView: React.SFC<LookupDiemEditorProps> = props => {
       onSubmit={handleSubmit} 
       onSubmitSuccess={handleSubmitSuccess}
       onSubmitFail={handleSubmitFail}
+      submitDialogTitle={submitDialogTitle}
+      submitDialogContentText={submitDialogContentText}
+      submitDialogCancelText={submitDialogCancelText}
+      submitDialogConfirmedText={submitDialogConfirmedText}
     />
   );
 

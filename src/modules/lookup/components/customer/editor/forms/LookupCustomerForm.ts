@@ -27,15 +27,30 @@ export type LookupCustomerFormData = {
   }
 };
 
+interface FormValueProps {
+  formName: string;
+}
+
 interface OwnProps {
   formMode: FormMode;
+  submitDialogTitle: string;
+  submitDialogContentText: string;
+  submitDialogCancelText: string;
+  submitDialogConfirmedText: string;
 }
+
+const mapStateToProps = (state: any): FormValueProps => {
+  return {
+    formName
+  };
+};
 
 export type LookupCustomerFormProps
   = InjectedFormProps<LookupCustomerFormData, OwnProps>
+  & FormValueProps
   & OwnProps;
 
-const connectedView = connect()(LookupCustomerFormView);
+const connectedView = connect(mapStateToProps)(LookupCustomerFormView);
 
 export const LookupCustomerForm = reduxForm<LookupCustomerFormData, OwnProps>({
   form: formName,
