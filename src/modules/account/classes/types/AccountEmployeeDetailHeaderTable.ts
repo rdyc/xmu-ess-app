@@ -48,12 +48,12 @@ export enum AccountEmployeeExperienceHeaderTable {
 }
 
 export enum AccountEmployeeAccessHeaderTable {
-  company = 'Company',
-  bussiness = 'Bussiness Unit',
-  department = 'Department',
-  level = 'Level',
-  role = 'Role',
-  position = 'Position',
-  start = 'Start Date',
-  end = 'End Date',
+  company = 'companyUid',
+  bussiness = 'unitType',
+  department = 'departmentType',
+  level = 'levelType',
+  role = 'roleUid',
+  position = 'positionUid',
+  start = 'start',
+  end = 'end',
 }

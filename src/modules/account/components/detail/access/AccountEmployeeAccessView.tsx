@@ -112,7 +112,7 @@ export const AccountEmployeeAccessView: React.SFC<AccountEmployeeAccessProps> = 
                     numeric={headerIdx.id === 'No' ? true : false}
                     padding="default"
                   >
-                    {headerIdx.name}
+                    {intl.formatMessage(accountMessage.access.fieldFor(headerIdx.name, 'fieldName'))}
                   </TableCell>
                 ))}
                 <TableCell></TableCell>
