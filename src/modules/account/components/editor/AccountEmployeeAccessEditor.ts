@@ -149,7 +149,7 @@ const handlerCreators: HandleCreators<AccountEmployeeAccessEditorProps, OwnHandl
     return null;
   },
   handleSubmitSuccess: (props: AccountEmployeeAccessEditorProps) => (response: IEmployeeAccess) => {
-    const { formMode, intl, stateUpdate, history, employeeUid } = props;
+    const { formMode, intl, stateUpdate, employeeUid } = props;
     const { alertAdd } = props.layoutDispatch;
     const { loadListRequest } = props.accountEmployeeAccessDispatch;
     
@@ -198,7 +198,7 @@ const handlerCreators: HandleCreators<AccountEmployeeAccessEditorProps, OwnHandl
       }
     });
     
-    history.push(`/account/employee/${employeeUid}/multiaccess`);
+    // history.push(`/account/employee/${employeeUid}/access`);
   },
   handleSubmitFail: (props: AccountEmployeeAccessEditorProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
     const { formMode, intl } = props;

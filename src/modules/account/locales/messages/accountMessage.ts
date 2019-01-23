@@ -1,6 +1,6 @@
 import { accountAccessDialog, accountAccessField, accountAccessFieldHelperFor, accountAccessMessage } from './accountAccessMessage';
 import { accountEducationConfirm, accountEducationField, accountEducationFieldHelperFor, accountEducationMessage, accountEducationOption, accountEducationPage, accountEducationSection } from './accountEducationMessage';
-import { accountEmployeeConfirm, accountEmployeeField, accountEmployeeFieldHelperFor, accountEmployeeFilter, accountEmployeeMessage, accountEmployeePage, accountEmployeeSection } from './accountEmployeeMessage';
+import { accountEmployeeConfirm, accountEmployeeField, accountEmployeeFieldHelperFor, accountEmployeeFilter, accountEmployeeMessage, accountEmployeePage, accountEmployeeSection, accountEmployeeTab } from './accountEmployeeMessage';
 import { 
   accountEmployeeTrainingConfirm, 
   accountEmployeeTrainingField, 
@@ -14,6 +14,7 @@ import {
 export const accountMessage = {
   employee: {
     page: accountEmployeePage,
+    tab: accountEmployeeTab,
     field: accountEmployeeField,
     confirm: accountEmployeeConfirm,
     fieldFor: accountEmployeeFieldHelperFor,

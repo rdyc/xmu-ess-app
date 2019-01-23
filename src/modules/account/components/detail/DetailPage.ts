@@ -1,3 +1,4 @@
+import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import {
   compose,
@@ -15,9 +16,11 @@ interface OwnOption {
 
 export type DetailPageProps
   = OwnOption
+  & InjectedIntlProps
   & RouteComponentProps<OwnRouteParams>;
 
 export const DetailPage = compose<DetailPageProps, OwnOption>(
   withRouter,
+  injectIntl,
   setDisplayName('DetailPage'),
 )(DetailPageView);
