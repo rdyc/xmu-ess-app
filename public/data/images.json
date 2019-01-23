@@ -2,24 +2,20 @@
   "data": {
     "images": [
       {
-        "label": "San Francisco – Oakland Bay Bridge, United States",
-        "imgPath": "https://images.unsplash.com/photo-1537944434965-cf4679d1a598?auto=format&fit=crop&w=400&h=250&q=60"
+        "label": "Kick of Meeting 2019",
+        "imgPath": "http://api-dev.tessa.equine.co.id:9000/images/gallery/kom2019.jpg"
       },
       {
-        "label": "Bird",
-        "imgPath": "https://images.unsplash.com/photo-1538032746644-0212e812a9e7?auto=format&fit=crop&w=400&h=250&q=60"
+        "label": "Xsis Goes To Taman Safari",
+        "imgPath": "http://api-dev.tessa.equine.co.id:9000/images/gallery/outing2018.png"
       },
       {
-        "label": "Bali, Indonesia",
-        "imgPath": "https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=400&h=250&q=80"
+        "label": "Member get Member 2108",
+        "imgPath": "http://api-dev.tessa.equine.co.id:9000/images/gallery/mgm2018.jpg"
       },
       {
-        "label": "NeONBRAND Digital Marketing, Las Vegas, United States",
-        "imgPath": "https://images.unsplash.com/photo-1518732714860-b62714ce0c59?auto=format&fit=crop&w=400&h=250&q=60"
-      },
-      {
-        "label": "Goč, Serbia",
-        "imgPath": "https://images.unsplash.com/photo-1512341689857-198e7e2f3ca8?auto=format&fit=crop&w=400&h=250&q=60"
+        "label": "CSR Donor Darah 2018",
+        "imgPath": "http://api-dev.tessa.equine.co.id:9000/images/gallery/donorDarah2018.jpg"
       }
     ]
   }

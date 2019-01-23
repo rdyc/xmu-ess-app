@@ -15,9 +15,12 @@ const config: SingleConfig<ICustomerDetail, LookupCustomerDetailProps> = {
   page: (props: LookupCustomerDetailProps) => ({
     uid: AppMenu.LookupCustomer,
     parentUid: AppMenu.Lookup,
-    title: props.intl.formatMessage(lookupMessage.company.page.detailTitle),
-    description: props.intl.formatMessage(lookupMessage.company.page.detailSubHeader),
+    title: props.intl.formatMessage(lookupMessage.lookupCustomer.page.detailTitle),
+    description: props.intl.formatMessage(lookupMessage.lookupCustomer.page.detailSubHeader),
   }),
+
+  // parent url
+  parentUrl: (props: LookupCustomerDetailProps) => '/lookup/customer/list',
 
   // action centre
   showActionCentre: true,
