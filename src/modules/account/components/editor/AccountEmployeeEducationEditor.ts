@@ -1,5 +1,5 @@
 import { IEmployeeEducationDeletePayload, IEmployeeEducationPostPayload, IEmployeeEducationPutPayload } from '@account/classes/request/employeeEducation';
-import { IEmployee } from '@account/classes/response';
+import { IEmployeeEducation } from '@account/classes/response/employeeEducation';
 import { WithAccountEmployeeEducation, withAccountEmployeeEducation } from '@account/hoc/withAccountEmployeeEducation';
 import { accountMessage } from '@account/locales/messages/accountMessage';
 import { FormMode } from '@generic/types';
@@ -115,7 +115,7 @@ const handlerCreators: HandleCreators<AccountEmployeeEducationEditorProps, OwnHa
 
     // update checking
     if (!employeeUid) {
-      const message = intl.formatMessage(accountMessage.education.message.emptyProps);
+      const message = intl.formatMessage(accountMessage.shared.message.emptyProps);
 
       return Promise.reject(message);
     }
@@ -148,21 +148,21 @@ const handlerCreators: HandleCreators<AccountEmployeeEducationEditorProps, OwnHa
 
     return null;
   },
-  handleSubmitSuccess: (props: AccountEmployeeEducationEditorProps) => (response: IEmployee) => {
+  handleSubmitSuccess: (props: AccountEmployeeEducationEditorProps) => (response: IEmployeeEducation) => {
     const { formMode, intl, history, editAction, stateUpdate } = props;
     const { alertAdd } = props.layoutDispatch;
     const { loadAllRequest } = props.accountEmployeeEducationDispatch; 
     let message: string = '';
 
     if (formMode === FormMode.New) {
-      message = intl.formatMessage(accountMessage.education.message.createSuccess, { uid: response.uid });
+      message = intl.formatMessage(accountMessage.shared.message.createSuccess, { state: 'Employee Education' });
     }
 
     if (formMode === FormMode.Edit) {
       if (editAction && editAction === 'update') {
-        message = intl.formatMessage(accountMessage.education.message.updateSuccess, { uid: response.uid });
+        message = intl.formatMessage(accountMessage.shared.message.updateSuccess, { state: 'Employee Education', uid: response.uid });
       } else {
-        message = intl.formatMessage(accountMessage.education.message.deleteSuccess, { uid: response.uid });
+        message = intl.formatMessage(accountMessage.shared.message.deleteSuccess, { state: 'Employee Education', uid: response.uid });
       }
     }
 
@@ -201,11 +201,11 @@ const handlerCreators: HandleCreators<AccountEmployeeEducationEditorProps, OwnHa
       let message: string = '';
 
       if (formMode === FormMode.New) {
-        message = intl.formatMessage(accountMessage.education.message.createFailure);
+        message = intl.formatMessage(accountMessage.shared.message.createFailure);
       }
 
       if (formMode === FormMode.Edit) {
-        message = intl.formatMessage(accountMessage.education.message.updateFailure);
+        message = intl.formatMessage(accountMessage.shared.message.updateFailure);
       }
 
       alertAdd({
@@ -229,28 +229,12 @@ const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
 };
 
 const lifecycles: ReactLifeCycleFunctions<AccountEmployeeEducationEditorProps, {}> = {
-  componentDidMount() {
-    const { history, stateUpdate, educationUid, employeeUid } = this.props;
-    const { user } = this.props.userState;
-    
-    if (!user) {
-      return;
-    }
-    
-    if (!isNullOrUndefined(history.location.state) && !isNullOrUndefined(educationUid)) {
-      stateUpdate({ 
-        employeeUid,
-        submitDialogTitle: this.props.intl.formatMessage(accountMessage.education.confirm.modifyTitle),
-        submitDialogContentText : this.props.intl.formatMessage(accountMessage.education.confirm.modifyDescription)
-      });
-    }
-
-  },
   componentWillUnmount() {
-    const { accountEmployeeEducationDispatch } = this.props;
+    const { createDispose, updateDispose, deleteDispose } = this.props.accountEmployeeEducationDispatch;
 
-    accountEmployeeEducationDispatch.createDispose();
-    accountEmployeeEducationDispatch.updateDispose();
+    createDispose();
+    updateDispose();
+    deleteDispose();
   }
 };
 

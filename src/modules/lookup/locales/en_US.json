@@ -18,9 +18,9 @@
   "lookup.mileageException.message.emptyProps": "Some props are empty",
   "lookup.mileageException.message.create.success": "New Mileage Exception has been created",
   "lookup.mileageException.message.create.failure": "Unable to process your submission",
-  "lookup.mileageException.message.update.success": "Current site has been updated",
+  "lookup.mileageException.message.update.success": "Current data with ID {uid} has been updated",
   "lookup.mileageException.message.update.failure": "Unable to process your submission",
-  "lookup.mileageException.message.delete.success": "Current {uid} has been deleted",
+  "lookup.mileageException.message.delete.success": "Current data with ID {uid} has been deleted",
   "lookup.mileageException.message.delete.failure": "Unable to process your submission",
 
   "lookup.mileageException.field.info.title": "Detail Mileage Exception",
@@ -324,6 +324,9 @@
   "lookup.diem.field.filter.destination": "Travel Type",
   "lookup.diem.field.filter.destination.placeholder": "Travel Type",
 
+  "lookup.diem.dialog.newTitle": "Submit Confirmation",
+  "lookup.diem.dialog.newDescription": "Do you want to submit diem value ?",
+
   "lookup.diem.message.emptyProps": "Some props are empty",
   "lookup.diem.message.create.success": "A new Diem ID {uid} has been created",
   "lookup.diem.message.create.failure": "Unable to process your submission",
@@ -494,6 +497,9 @@
   
   "lookup.customer.confirm.modify.title": "Modify Confirmation",
   "lookup.customer.confirm.modify.description": " ",
+
+  "lookup.customer.dialog.newTitle": "Submit Confirmation",
+  "lookup.customer.dialog.newDescription": "Do you want to submit customer ?",
 
   "lookup.customer.confirm.delete.title": "Delete Confirmation",
   "lookup.customer.confirm.delete.description": " ",

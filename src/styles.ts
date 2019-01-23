@@ -385,18 +385,18 @@ const styles = (theme: Theme) =>
 
     /* Stepper */
     stepper: {
-      // marginTop: '-48px',
-      // marginTop: '-48px',
-      // position: 'relative',
-      // // opacity: 0.4
-      // background: 'none',
-      // backgroundColor: 'none'
+      backgroundColor: theme.palette.background.paper,
+      alignItems: 'center',
+      overflow: 'hidden',
+      display: 'flex',
+      height: 500,
+      [theme.breakpoints.down('sm')]: {
+        height: 300,
+      },
     },
     stepperImg: {
-      height: 600,
-      width: '100%',
-      overflow: 'hidden',
-      display: 'block',
+      height: '100%',
+      margin: '0 auto'
     },
 
     /* Expander */
@@ -557,6 +557,11 @@ const styles = (theme: Theme) =>
     /* ---------  Table  ----------*/
 
     /* Table */
+
+    rootTable: {
+      width: '100%',
+      overflowX: 'auto',
+    },
 
     table: {
       width: '100%',

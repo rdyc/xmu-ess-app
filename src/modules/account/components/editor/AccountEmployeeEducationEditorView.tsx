@@ -17,10 +17,10 @@ export const AccountEmployeeEducationEditorView: React.SFC<AccountEmployeeEducat
 
   const dialogTitle = () => {
     switch (editAction) {
-      case 'update': return accountMessage.education.page.modifyTitle;
-      case 'delete': return accountMessage.education.page.deleteTitle;
+      case 'update': return accountMessage.shared.page.modifyTitle;
+      case 'delete': return accountMessage.shared.page.deleteTitle;
 
-      default: return accountMessage.education.page.newTitle;
+      default: return accountMessage.shared.page.newTitle;
     }
   };
 
@@ -32,7 +32,7 @@ export const AccountEmployeeEducationEditorView: React.SFC<AccountEmployeeEducat
     >
       <DialogTitle disableTypography>
         <Typography variant="title" color="primary">
-          {props.intl.formatMessage(dialogTitle())}
+          {props.intl.formatMessage(dialogTitle(), {state: 'Education'})}
         </Typography>
       </DialogTitle>
 

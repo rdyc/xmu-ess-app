@@ -82,14 +82,14 @@ const handlerCreators: HandleCreators<LookupCustomerDetailProps, OwnHandler> = {
         action: LookupUserAction.Modify,
         dialogOpen: true,
         dialogTitle: props.intl.formatMessage(lookupMessage.shared.confirm.modifyTitle),
-        dialogContent: props.intl.formatMessage(lookupMessage.shared.confirm.modifyDescription, { state: 'Time Limit'}),
+        dialogContent: props.intl.formatMessage(lookupMessage.shared.confirm.modifyDescription, { state: 'Customer'}),
       });
     } else if (action === LookupUserAction.Delete) {
       props.stateUpdate({
         action: LookupUserAction.Delete,
         dialogOpen: true,
         dialogTitle: props.intl.formatMessage(lookupMessage.shared.confirm.deleteTitle),
-        dialogContent: props.intl.formatMessage(lookupMessage.shared.confirm.deleteDescription, { state: 'Time Limit'}),
+        dialogContent: props.intl.formatMessage(lookupMessage.shared.confirm.deleteDescription, { state: 'Customer'}),
       });
     }
   },
@@ -131,7 +131,9 @@ const handlerCreators: HandleCreators<LookupCustomerDetailProps, OwnHandler> = {
           break;
       }
 
-      props.setDefault();
+      props.stateUpdate({
+        dialogOpen: false
+      });
 
       props.history.push(next, { 
         uid: customerUid 
@@ -148,7 +150,7 @@ const handlerCreators: HandleCreators<LookupCustomerDetailProps, OwnHandler> = {
     }
     // props checking
     if (!match.params.customerUid) {
-      const message = intl.formatMessage(lookupMessage.systemLimit.message.emptyProps);
+      const message = intl.formatMessage(lookupMessage.lookupCustomer.message.emptyProps);
       return Promise.reject(message);
     }
     const payload = {

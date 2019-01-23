@@ -143,9 +143,9 @@ const lifecycles: ReactLifeCycleFunctions<OrganizationWorkflowDetailProps, OwnSt
     }
   },
   componentWillUnmount() {
-    const { lookupMenuDispatch, organizationWorkflowDispatch } = this.props;
+    const { organizationWorkflowDispatch } = this.props;
 
-    lookupMenuDispatch.loadDetailDispose();
+    // lookupMenuDispatch.loadDetailDispose();
     organizationWorkflowDispatch.loadListDispose();
   }
 };

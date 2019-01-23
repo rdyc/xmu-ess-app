@@ -1,4 +1,5 @@
 import { FormMode } from '@generic/types';
+import { connect } from 'react-redux';
 import { InjectedFormProps, reduxForm } from 'redux-form';
 import { LookupDiemFormView } from './LookupDiemFormView';
 
@@ -14,15 +15,30 @@ export type LookupDiemFormData = {
     value: number;
   }
 };
+interface FormValueProps {
+  formName: string;
+}
 
 interface OwnProps {
-  formMode: FormMode
-  ;
+  formMode: FormMode;
+  submitDialogTitle: string;
+  submitDialogContentText: string;
+  submitDialogCancelText: string;
+  submitDialogConfirmedText: string;
 }
+
+const mapStateToProps = (state: any): FormValueProps => {
+  return {
+    formName
+  };
+};
 
 export type LookupDiemFormProps
   = InjectedFormProps<LookupDiemFormData, OwnProps>
+  & FormValueProps
   & OwnProps;
+
+const connectedView = connect(mapStateToProps)(LookupDiemFormView);
 
 export const LookupDiemForm = reduxForm<LookupDiemFormData, OwnProps>({
   form: formName,
@@ -30,4 +46,4 @@ export const LookupDiemForm = reduxForm<LookupDiemFormData, OwnProps>({
   touchOnBlur: true,
   enableReinitialize: true,
   destroyOnUnmount: true
-})(LookupDiemFormView);
+})(connectedView);

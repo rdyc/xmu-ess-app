@@ -1,29 +1,53 @@
 import { ISystemAllRequest, ISystemByIdRequest, ISystemListRequest, ISystemPostRequest, ISystemPutRequest } from '@common/classes/queries';
 import { ISystem, ISystemDetail, ISystemList, ISystemType } from '@common/classes/response';
 import {
+  activityGetListDispose,
   activityGetListRequest,
+  bloodGetListDispose,
   bloodGetListRequest,
+  certificationGetListDispose,
   certificationGetListRequest,
+  currencyGetListDispose,
   currencyGetListRequest,
+  degreeGetListDispose,
   degreeGetListRequest,
+  departmentGetListDispose,
   departmentGetListRequest,
+  destinationGetListDispose,
   destinationGetListRequest,
+  documentGetListDispose,
   documentGetListRequest,
+  documentPresalesGetListDispose,
   documentPresalesGetListRequest,
+  employmentGetListDispose,
   employmentGetListRequest,
+  expenseGetListDispose,
   expenseGetListRequest,
+  familyGetListDispose,
   familyGetListRequest,
+  financeGetListDispose,
   financeGetListRequest,
+  genderGetListDispose,
   genderGetListRequest,
+  gradeGetListDispose,
   gradeGetListRequest,
+  leaveGetListDispose,
   leaveGetListRequest,
+  levelGetListDispose,
   levelGetListRequest,
+  paymentGetListDispose,
   paymentGetListRequest,
+  projectGetListDispose,
   projectGetListRequest,
+  purposeGetListDispose,
   purposeGetListRequest,
+  relationGetListDispose,
   relationGetListRequest,
+  religionGetListDispose,
   religionGetListRequest,
+  siteGetListDispose,
   siteGetListRequest,
+  statusGetListDispose,
   statusGetListRequest,
   systemGetAllDispose,
   systemGetAllRequest,
@@ -35,12 +59,16 @@ import {
   systemPostRequest,
   systemPutDispose,
   systemPutRequest,
+  taxGetListDispose,
   taxGetListRequest,
+  trainingGetListDispose,
   trainingGetListRequest,
+  transportationGetListDispose,
   transportationGetListRequest,
+  unitGetListDispose,
   unitGetListRequest,
 } from '@common/store/actions';
-import { limiterGetListRequest } from '@common/store/actions/limiterActions';
+import { limiterGetListDispose, limiterGetListRequest } from '@common/store/actions/limiterActions';
 import { IAppState, IQueryCollectionState, IQuerySingleState } from '@generic/interfaces';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
@@ -126,6 +154,36 @@ interface PropsFromDispatch {
     degreeListRequest: typeof degreeGetListRequest;
     levelListRequest: typeof levelGetListRequest;
     familyListRequest: typeof familyGetListRequest;
+
+    unitListDispose: typeof unitGetListDispose;
+    activityListDispose: typeof activityGetListDispose;
+    currencyListDispose: typeof currencyGetListDispose;
+    documentListDispose: typeof documentGetListDispose;
+    documentPresalesListDispose: typeof documentPresalesGetListDispose;
+    expenseListDispose: typeof expenseGetListDispose;
+    projectListDispose: typeof projectGetListDispose;
+    siteListDispose: typeof siteGetListDispose;
+    leaveListDispose: typeof leaveGetListDispose;
+    statusListDispose: typeof statusGetListDispose;
+    destinationListDispose: typeof destinationGetListDispose;
+    purposeListDispose: typeof purposeGetListDispose;
+    transportationListDispose: typeof transportationGetListDispose;
+    limiterListDispose: typeof limiterGetListDispose;
+    gradeListDispose: typeof gradeGetListDispose;
+    relationListDispose: typeof relationGetListDispose;
+    religionListDispose: typeof religionGetListDispose;
+    genderListDispose: typeof genderGetListDispose;
+    bloodListDispose: typeof bloodGetListDispose;
+    taxListDispose: typeof taxGetListDispose;
+    employmentListDispose: typeof employmentGetListDispose;
+    paymentListDispose: typeof paymentGetListDispose;
+    financeListDispose: typeof financeGetListDispose;
+    trainingListDispose: typeof trainingGetListDispose;
+    certificationListDispose: typeof certificationGetListDispose;
+    departmentListDispose: typeof departmentGetListDispose;
+    degreeListDispose: typeof degreeGetListDispose;
+    levelListDispose: typeof levelGetListDispose;
+    familyListDispose: typeof familyGetListDispose;
     
     // detail
     systemDetailRequest: typeof systemGetByIdRequest;
@@ -262,6 +320,36 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
     familyListRequest: (request: ISystemListRequest) => dispatch(familyGetListRequest(request)),
     certificationListRequest: (request: ISystemListRequest) => dispatch(certificationGetListRequest(request)),
     levelListRequest: (request: ISystemListRequest) => dispatch(levelGetListRequest(request)),
+
+    unitListDispose: () => dispatch(unitGetListDispose()),
+    activityListDispose: () => dispatch(activityGetListDispose()),
+    currencyListDispose: () => dispatch(currencyGetListDispose()),
+    documentListDispose: () => dispatch(documentGetListDispose()),
+    documentPresalesListDispose: () => dispatch(documentPresalesGetListDispose()),
+    projectListDispose: () => dispatch(projectGetListDispose()),
+    expenseListDispose: () => dispatch(expenseGetListDispose()),
+    siteListDispose: () => dispatch(siteGetListDispose()),
+    leaveListDispose: () => dispatch(leaveGetListDispose()),
+    statusListDispose: () => dispatch(statusGetListDispose()),
+    destinationListDispose: () => dispatch(destinationGetListDispose()),
+    purposeListDispose: () => dispatch(purposeGetListDispose()),
+    transportationListDispose: () => dispatch(transportationGetListDispose()),
+    limiterListDispose: () => dispatch(limiterGetListDispose()),
+    gradeListDispose: () => dispatch(gradeGetListDispose()),
+    relationListDispose: () => dispatch(relationGetListDispose()),
+    religionListDispose: () => dispatch(religionGetListDispose()),
+    genderListDispose: () => dispatch(genderGetListDispose()),
+    bloodListDispose: () => dispatch(bloodGetListDispose()),
+    taxListDispose: () => dispatch(taxGetListDispose()),
+    employmentListDispose: () => dispatch(employmentGetListDispose()),
+    paymentListDispose: () => dispatch(paymentGetListDispose()),
+    financeListDispose: () => dispatch(financeGetListDispose()),
+    trainingListDispose: () => dispatch(trainingGetListDispose()),
+    departmentListDispose: () => dispatch(departmentGetListDispose()),
+    degreeListDispose: () => dispatch(degreeGetListDispose()),
+    familyListDispose: () => dispatch(familyGetListDispose()),
+    certificationListDispose: () => dispatch(certificationGetListDispose()),
+    levelListDispose: () => dispatch(levelGetListDispose()),
 
     // detail
     systemDetailRequest: (request: ISystemByIdRequest) => dispatch(systemGetByIdRequest(request)),

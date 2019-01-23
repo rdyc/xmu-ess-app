@@ -27,7 +27,7 @@
   "git.confirmSync": true,
   "javascript.preferences.quoteStyle": "single",
   "typescript.preferences.quoteStyle": "single",
-  "breadcrumbs.enabled": false,
+  "breadcrumbs.enabled": true,
   "git.enableSmartCommit": true,
   "workbench.iconTheme": "vscode-icons",
   "prettier.singleQuote": true,

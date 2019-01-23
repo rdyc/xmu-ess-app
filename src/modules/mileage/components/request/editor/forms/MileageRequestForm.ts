@@ -7,8 +7,8 @@ const formName = 'mileageRequest';
 
 export type MileageRequestFormData = {
   information: {
-    year: number | null;
-    month: number | null;
+    year: number | null | undefined;
+    month: number | null | undefined;
   };
 };
 

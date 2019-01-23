@@ -2,13 +2,15 @@ import * as React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router';
 
 import { AccountAccess } from './access';
+import { AccountEmployeeAccess } from './detail/access/AccountEmployeeAccess';
 import { AccountEmployeeAccessHistory } from './detail/accessHistory/AccountEmployeeAccessHistory';
 import { AccountEmployeeDetail } from './detail/AccountEmployeeDetail';
 import { AccountEmployeeEducation } from './detail/education/AccountEmployeeEducation';
 import { AccountEmployeeExperience } from './detail/experience/AccountEmployeeExperience';
 import { AccountEmployeeFamily } from './detail/family/AccountEmployeeFamily';
 import { AccountEmployeeTraining } from './detail/training/AccountEmployeeTraining';
-import { Editor } from './editor/Editor';
+import AccountEmployeeAccessEditor from './editor/AccountEmployeeAccessEditor';
+import { AccountEmployeeEditor } from './editor/AccountEmployeeEditor';
 import { AccountEmployeeList } from './list/AccountEmployeeList';
 import { AccountProfile } from './profile';
 
@@ -26,7 +28,7 @@ const profile = (props: RouteComponentProps) => (
 
 const employee = (props: RouteComponentProps) => (
   <Switch>
-    <Route path={`${props.match.path}/form`} component={Editor} />
+    <Route path={`${props.match.path}/form`} component={AccountEmployeeEditor} />
     <Route path={`${props.match.path}/:employeeUid/history`} component={employeeHistory} />
     <Route path={`${props.match.path}/:employeeUid/education`} component={employeeEducation} />
     <Route path={`${props.match.path}/:employeeUid/family`} component={employeeFamily} />
@@ -70,7 +72,8 @@ const employeeTraining = (props: RouteComponentProps) => (
 
 const employeeMultiAccess = (props: RouteComponentProps) => (
   <Switch>
-    {/* <Route path={`${props.match.path}`} component={AccountEmployeeEducation} /> */}
+    <Route path={`${props.match.path}/form`} component={AccountEmployeeAccessEditor} />
+    <Route path={`${props.match.path}`} component={AccountEmployeeAccess} />
   </Switch>
 );
 

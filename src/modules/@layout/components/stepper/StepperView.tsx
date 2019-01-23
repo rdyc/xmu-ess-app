@@ -12,10 +12,10 @@ export const StepperView: React.SFC<StepperProps> = props => (
     <SwipeableViews 
       enableMouseEvents
       index={props.activeStep}
-      onChangeIndex={props.handleChange}
+      onChangeIndex={props.setChange}
     >
       {props.source.map((step, index) => (
-        <div key={step.label}>
+        <div key={step.label} className={props.classes.stepper}>
           {Math.abs(props.activeStep - index) <= 2 ? (
             <img 
               className={props.classes.stepperImg} 
@@ -26,18 +26,18 @@ export const StepperView: React.SFC<StepperProps> = props => (
         </div>
       ))}
     </SwipeableViews>
+
     <MobileStepper
       steps={props.source.length}
       position="static"
       activeStep={props.activeStep}
-      className={props.classes.stepper}
       nextButton={
-        <IconButton onClick={props.handleNext}>
+        <IconButton onClick={props.setNext}>
           <ChevronRightIcon/>
         </IconButton>
       }
       backButton={
-        <IconButton onClick={props.handleBack}>
+        <IconButton onClick={props.setBack}>
           <ChevronLeftIcon/>
         </IconButton>
       }

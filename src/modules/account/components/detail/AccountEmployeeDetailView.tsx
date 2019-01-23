@@ -1,4 +1,5 @@
 import { IEmployeeDetail } from '@account/classes/response';
+import { AccountEmployeeTabs } from '@account/classes/types/AccountEmployeeTabs';
 import { accountMessage } from '@account/locales/messages/accountMessage';
 import AppMenu from '@constants/AppMenu';
 import { SingleConfig, SingleHandler, SinglePage, SingleState } from '@layout/components/pages/singlePage/SinglePage';
@@ -18,8 +19,8 @@ const config: SingleConfig<IEmployeeDetail, AccountEmployeeDetailProps> = {
   page: (props: AccountEmployeeDetailProps) => ({
     uid: AppMenu.Account,
     parentUid: AppMenu.Lookup,
-    title: props.intl.formatMessage(accountMessage.employee.page.detailTitle),
-    description: props.intl.formatMessage(accountMessage.employee.page.detailSubHeader),
+    title: props.intl.formatMessage(accountMessage.shared.page.detailTitle, { state: 'Employee'}),
+    description: props.intl.formatMessage(accountMessage.shared.page.detailSubHeader),
   }),
 
   // parent url
@@ -97,7 +98,7 @@ export const AccountEmployeeDetailView: React.SFC<AccountEmployeeDetailProps> = 
   const render = (
   <React.Fragment>
     <DetailPage
-      tab={0}
+      tab2={AccountEmployeeTabs.detail}      
     >
       <SinglePage
         config={config}
