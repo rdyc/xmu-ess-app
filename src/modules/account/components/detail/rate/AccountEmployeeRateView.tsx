@@ -164,14 +164,17 @@ export const AccountEmployeeRateView: React.SFC<
                     <TableCell>{item.value}</TableCell>
                     <TableCell>{item.isActive && props.intl.formatMessage(accountMessage.rate.field.isActiveTrue)}</TableCell>
                     <TableCell>
-                      <IconButton
-                        id={`rate-item-button-${index}`}
-                        color="inherit"
-                        aria-label="More"
-                        onClick={() => handleMenuOpen(item, index)}
-                      >
-                        <MoreVertIcon />
-                      </IconButton>
+                      {
+                        item.isActive &&
+                        <IconButton
+                          id={`rate-item-button-${index}`}
+                          color="inherit"
+                          aria-label="More"
+                          onClick={() => handleMenuOpen(item, index)}
+                        >
+                          <MoreVertIcon />
+                        </IconButton>
+                      }
                     </TableCell>
                   </TableRow>
                 ))}
