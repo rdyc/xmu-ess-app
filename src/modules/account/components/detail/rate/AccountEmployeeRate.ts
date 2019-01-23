@@ -1,5 +1,5 @@
 import { IEmployeeRate } from '@account/classes/response/employeeRate';
-import { AccountEmployeeEducationFormData } from '@account/components/editor/form/education/AccountEmployeeEducationContainer';
+import { AccountEmployeeRateFormData } from '@account/components/editor/form/rate/AccountEmployeeRateForm';
 import { WithAccountEmployeeRate, withAccountEmployeeRate } from '@account/hoc/withAccountEmployeeRate';
 import { FormMode } from '@generic/types';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
@@ -18,11 +18,11 @@ interface OwnRouteParams {
 interface OwnState {
   formMode: FormMode | undefined;
   isReload: boolean | false;
-  educationUid?: string;
+  rateUid?: string;
   isOpenDialog: boolean;
   isOpenMenu: boolean;
-  educationItemIndex?: string | undefined;
-  initialValues?: AccountEmployeeEducationFormData;
+  rateItemIndex?: string | undefined;
+  initialValues?: AccountEmployeeRateFormData;
 
   page: number;
   size: number;
@@ -32,7 +32,6 @@ interface OwnHandlers {
   handleMenuOpen: (rate: IEmployeeRate, index: number) => void;
   handleMenuClose: () => void;
   handleDialogClose: () => void;
-  handleNew: () => void;
   handleEdit: () => void;
   handleReload: () => void;
 
@@ -87,7 +86,7 @@ const handlerCreators: HandleCreators<AccountEmployeeRateProps, OwnHandlers> = {
       rateItemIndex: index,
       initialValues: {
         information: {
-          employeeUid: props.match.params.employeeUid,
+          uid: rate.uid,
           value: rate.value
         }
       }
@@ -110,22 +109,6 @@ const handlerCreators: HandleCreators<AccountEmployeeRateProps, OwnHandlers> = {
       isOpenDialog: false,
       formMode: undefined,
       editAction: undefined
-    });
-  },
-  handleNew: (props: AccountEmployeeRateProps) => () => {
-    const { stateUpdate } = props;
-
-    stateUpdate({
-      formMode: FormMode.New,
-      isOpenDialog: true,
-      isOpenMenu: false,
-      rateUid: undefined,
-      initialValues: {
-        information: {
-          employeeUid: props.match.params.employeeUid,
-          value: undefined,
-        }
-      }
     });
   },
   handleEdit: (props: AccountEmployeeRateProps) => () => {

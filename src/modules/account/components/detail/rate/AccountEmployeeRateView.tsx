@@ -1,6 +1,7 @@
 import { IEmployeeRate } from '@account/classes/response/employeeRate';
 import { AccountEmployeeRateHeaderTable } from '@account/classes/types';
 import { AccountEmployeeTabs } from '@account/classes/types/AccountEmployeeTabs';
+import AccountEmployeeRateEditor from '@account/components/editor/AccountEmployeeRateEditor';
 import { accountMessage } from '@account/locales/messages/accountMessage';
 import AppMenu from '@constants/AppMenu';
 import { IBaseMetadata } from '@generic/interfaces';
@@ -256,14 +257,14 @@ export const AccountEmployeeRateView: React.SFC<
         </SinglePage>
       </DetailPage>
       
-      {/* <AccountEmployeeEducationEditor
+      <AccountEmployeeRateEditor
         formMode={props.formMode}
-        educationUid={props.educationUid}
+        rateUid={props.rateUid}
         employeeUid={props.match.params.employeeUid}
-        isOpenDialog={isOpenDialog}
-        initialValues={initialValues}
-        handleDialogClose={handleDialogClose}
-      /> */}
+        isOpenDialog={props.isOpenDialog}
+        initialValues={props.initialValues}
+        handleDialogClose={props.handleDialogClose}
+      />
     </React.Fragment>
   );
 };
