@@ -1,3 +1,5 @@
+import AppMenu from '@constants/AppMenu';
+import { SecureMenuRoute } from '@layout/components/SecureMenuRoute';
 import { ProjectRegistrationDetail } from '@project/components/registration/detail/ProjectRegistrationDetail';
 import * as React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router';
@@ -54,9 +56,29 @@ const acceptance = (props: RouteComponentProps) => (
 
 export const ProjectRoutingComponents: React.SFC<RouteComponentProps> = props => (
   <Switch>
-    <Route path={`${props.match.path}/requests`} component={request} />
-    <Route path={`${props.match.path}/approvals`} component={approval} />
-    <Route path={`${props.match.path}/assignments`} component={assignment} />
-    <Route path={`${props.match.path}/acceptances`} component={acceptance} />
+    <SecureMenuRoute 
+      path={`${props.match.path}/requests`}
+      menu={AppMenu.ProjectRegistration} 
+      subMenu={AppMenu.ProjectRegistrationRequest} 
+      component={request} 
+    />
+    <SecureMenuRoute 
+      path={`${props.match.path}/approvals`} 
+      menu={AppMenu.ProjectRegistration} 
+      subMenu={AppMenu.ProjectRegistrationApproval} 
+      component={approval}
+    />
+    <SecureMenuRoute 
+      path={`${props.match.path}/assignments`} 
+      menu={AppMenu.ProjectAssignment} 
+      subMenu={AppMenu.ProjectAssignmentRequest} 
+      component={assignment}
+    />
+    <SecureMenuRoute 
+      path={`${props.match.path}/acceptances`} 
+      menu={AppMenu.ProjectAssignment} 
+      subMenu={AppMenu.ProjectAssignmentAcceptance} 
+      component={acceptance}
+    />
   </Switch>
 );

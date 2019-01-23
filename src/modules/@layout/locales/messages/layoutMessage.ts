@@ -1,4 +1,13 @@
-import { layoutAction, layoutDialog, layoutField, layoutLabel, layoutText, layoutTooltip } from './layoutAllMessage';
+import {
+  layoutAction,
+  layoutContent,
+  layoutDialog,
+  layoutField,
+  layoutLabel,
+  layoutPage,
+  layoutText,
+  layoutTooltip,
+} from './layoutAllMessage';
 
 export const layoutMessage = {
   text: layoutText,
@@ -7,4 +16,6 @@ export const layoutMessage = {
   action: layoutAction,
   field: layoutField,
   dialog: layoutDialog,
+  page: layoutPage,
+  content: layoutContent
 };

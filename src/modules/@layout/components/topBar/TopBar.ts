@@ -25,13 +25,13 @@ import { TopBarView } from './TopBarView';
 
 type TopBarMode = 'normal' | 'selection' | 'search';
 
-interface OwnOption {
+interface IOwnOption {
   isOpenMenu: boolean;
   onClickMenu: () => void;
   onClickNotif: () => void;
 }
 
-interface OwnState {
+interface IOwnState {
   mode: TopBarMode;
   search?: string;
   field?: ICollectionValue;
@@ -39,15 +39,15 @@ interface OwnState {
   isShowFields: boolean;
 }
 
-interface OwnStateUpdater extends StateHandlerMap<OwnState> {
-  setMode: StateHandler<OwnState>;
-  setSearch: StateHandler<OwnState>;
-  setField: StateHandler<OwnState>;
-  setFieldVisibility: StateHandler<OwnState>;
-  setMenuVisibility: StateHandler<OwnState>;
+interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
+  setMode: StateHandler<IOwnState>;
+  setSearch: StateHandler<IOwnState>;
+  setField: StateHandler<IOwnState>;
+  setFieldVisibility: StateHandler<IOwnState>;
+  setMenuVisibility: StateHandler<IOwnState>;
 }
 
-interface OwnHandler {
+interface IOwnHandler {
   handleOnClickBack: (event: React.MouseEvent) => void;
   handleOnClickSearch: (event: React.MouseEvent) => void;
   handleOnClickMore: (event: React.MouseEvent) => void;
@@ -60,7 +60,6 @@ interface OwnHandler {
   handleOnDiscardSelection: () => void;
   handleOnClickField: (field?: ICollectionValue | undefined) => void;
   handleOnClickProcess: () => void;
-  getClassNames: () => string[];
   getCountNotif: () => number;
 }
 
@@ -73,12 +72,12 @@ export type TopBarProps
   & WithTheme
   & WithStyles<typeof styles>
   & RouteComponentProps
-  & OwnOption
-  & OwnState
-  & OwnStateUpdater
-  & OwnHandler;
+  & IOwnOption
+  & IOwnState
+  & IOwnStateUpdater
+  & IOwnHandler;
 
-const createProps: mapper<TopBarProps, OwnState> = (props: TopBarProps): OwnState => ({
+const createProps: mapper<TopBarProps, IOwnState> = (props: TopBarProps): IOwnState => ({
   mode: props.layoutState.isModeSearch ? 'search' : 'normal',
   search: '',
   field: undefined,
@@ -86,26 +85,26 @@ const createProps: mapper<TopBarProps, OwnState> = (props: TopBarProps): OwnStat
   isShowFields: false
 });
 
-const stateUpdaters: StateUpdaters<OwnOption, OwnState, OwnStateUpdater> = {
-  setMode: (prev: OwnState) => (mode: TopBarMode): Partial<OwnState> => ({
+const stateUpdaters: StateUpdaters<IOwnOption, IOwnState, IOwnStateUpdater> = {
+  setMode: (prev: IOwnState) => (mode: TopBarMode): Partial<IOwnState> => ({
     mode
   }),
-  setSearch: (prev: OwnState) => (value: string): Partial<OwnState> => ({
+  setSearch: (prev: IOwnState) => (value: string): Partial<IOwnState> => ({
     search: value,
     isShowFields: value.length >= 3
   }),
-  setField: (prev: OwnState) => (field: ICollectionValue | undefined): Partial<OwnState> => ({
+  setField: (prev: IOwnState) => (field: ICollectionValue | undefined): Partial<IOwnState> => ({
     field
   }),
-  setFieldVisibility: (prev: OwnState) => (): Partial<OwnState> => ({
+  setFieldVisibility: (prev: IOwnState) => (): Partial<IOwnState> => ({
     isShowFields: !prev.isShowFields
   }),
-  setMenuVisibility: (prev: OwnState) => (): Partial<OwnState> => ({
+  setMenuVisibility: (prev: IOwnState) => (): Partial<IOwnState> => ({
     isShowMenu: !prev.isShowMenu
   })
 };
 
-const handlerCreators: HandleCreators<TopBarProps, OwnHandler> = {
+const handlerCreators: HandleCreators<TopBarProps, IOwnHandler> = {
   handleOnClickBack: (props: TopBarProps) => (event: React.MouseEvent) => {
     props.layoutDispatch.navBackShow();
     
@@ -182,14 +181,6 @@ const handlerCreators: HandleCreators<TopBarProps, OwnHandler> = {
       props.appBarState.onSelectionClear();
     }
   },
-  getClassNames: (props: TopBarProps) => (): string[] => {
-    const { classes } = props;
-    const { anchor } = props.layoutState;
-
-    const shift = anchor === 'right' ? classes.appBarShiftRight : classes.appBarShiftLeft;
-
-    return !props.isOpenMenu ? [classes.appBar] : [classes.appBar, shift];
-  },
   getCountNotif: (props: TopBarProps) => (): number => {
     const { response: result } = props.notificationState;
 
@@ -209,7 +200,7 @@ const handlerCreators: HandleCreators<TopBarProps, OwnHandler> = {
   }
 };
 
-const lifeCycles: ReactLifeCycleFunctions<TopBarProps, OwnState> = {
+const lifeCycles: ReactLifeCycleFunctions<TopBarProps, IOwnState> = {
   componentDidMount () {
     this.props.appBarDispatch.selectionClear();
   },
@@ -243,7 +234,7 @@ const lifeCycles: ReactLifeCycleFunctions<TopBarProps, OwnState> = {
   }
 };
 
-export const TopBar = compose<TopBarProps, OwnOption>(
+export const TopBar = compose<TopBarProps, IOwnOption>(
   setDisplayName('TopBar'),
   withLayout,
   withNotification,

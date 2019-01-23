@@ -1,3 +1,5 @@
+import AppMenu from '@constants/AppMenu';
+import { SecureMenuRoute } from '@layout/components/SecureMenuRoute';
 import * as React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router';
 
@@ -44,9 +46,29 @@ const approvalSettlement = (props: RouteComponentProps) => (
 
 export const TravelRoutingComponents: React.SFC<RouteComponentProps> = props => (
   <Switch>
-    <Route path={`${props.match.path}/requests`} component={request} />
-    <Route path={`${props.match.path}/approvals`} component={approvalRequest} />
-    <Route path={`${props.match.path}/settlement/requests`} component={settlement} />
-    <Route path={`${props.match.path}/settlement/approvals`} component={approvalSettlement} />
+    <SecureMenuRoute 
+      path={`${props.match.path}/requests`}
+      menu={AppMenu.Travel} 
+      subMenu={AppMenu.TravelRequest} 
+      component={request} 
+    />
+    <SecureMenuRoute 
+      path={`${props.match.path}/approvals`}
+      menu={AppMenu.Travel} 
+      subMenu={AppMenu.TravelApproval} 
+      component={approvalRequest} 
+    />
+    <SecureMenuRoute 
+      path={`${props.match.path}/settlement/requests`}
+      menu={AppMenu.Travel} 
+      subMenu={AppMenu.TravelSettlementRequest} 
+      component={settlement} 
+    />
+    <SecureMenuRoute 
+      path={`${props.match.path}/settlement/approvals`}
+      menu={AppMenu.Travel} 
+      subMenu={AppMenu.TravelSettlementApproval} 
+      component={approvalSettlement} 
+    />
   </Switch>
 );

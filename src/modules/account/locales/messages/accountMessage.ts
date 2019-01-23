@@ -1,22 +1,15 @@
-import { accountAccessMessage } from './accountAccessMessage';
+import { accountAccessDialog, accountAccessField, accountAccessFieldHelperFor, accountAccessMessage } from './accountAccessMessage';
+import { accountEducationConfirm, accountEducationField, accountEducationFieldHelperFor, accountEducationMessage, accountEducationOption, accountEducationPage, accountEducationSection } from './accountEducationMessage';
+import { accountEmployeeConfirm, accountEmployeeField, accountEmployeeFieldHelperFor, accountEmployeeFilter, accountEmployeeMessage, accountEmployeePage, accountEmployeeSection } from './accountEmployeeMessage';
 import { 
-  accountEducationConfirm,
-  accountEducationField,
-  accountEducationFieldHelperFor,
-  accountEducationMessage,
-  accountEducationOption,
-  accountEducationPage,
-  accountEducationSection
-} from './accountEducationMessage';
-import {
-  accountEmployeeConfirm,
-  accountEmployeeField,
-  accountEmployeeFieldHelperFor,
-  accountEmployeeFilter,
-  accountEmployeeMessage,
-  accountEmployeePage,
-  accountEmployeeSection
-} from './accountEmployeeMessage';
+  accountEmployeeTrainingConfirm, 
+  accountEmployeeTrainingField, 
+  accountEmployeeTrainingFieldHelperFor, 
+  accountEmployeeTrainingMessage, 
+  accountEmployeeTrainingOption, 
+  accountEmployeeTrainingPage, 
+  accountEmployeeTrainingSection 
+} from './accountEmployeeTrainingMessage';
 
 export const accountMessage = {
   employee: {
@@ -38,6 +31,18 @@ export const accountMessage = {
     option: accountEducationOption
   },
   access: {
-    message: accountAccessMessage
+    message: accountAccessMessage,
+    dialog: accountAccessDialog,
+    field: accountAccessField,
+    fieldFor: accountAccessFieldHelperFor,
   },
+  training: {
+    field: accountEmployeeTrainingField,
+    confirm: accountEmployeeTrainingConfirm,
+    fieldFor: accountEmployeeTrainingFieldHelperFor,
+    message: accountEmployeeTrainingMessage,
+    section: accountEmployeeTrainingSection,
+    option: accountEmployeeTrainingOption,
+    page: accountEmployeeTrainingPage
+  }
 };

@@ -102,7 +102,7 @@ const winningRatioTable: React.SFC<AllProps> = props => {
         <KeyboardArrowRight />
       </IconButton>
       <IconButton
-        onClick={() => _handlePage(Math.max(0, Math.ceil(total / size)))}
+        onClick={() => handleChangePage(Math.max(0, Math.ceil(total / size)))}
         disabled={page >= Math.ceil(total / size)}
         aria-label="Last Page"
       >
