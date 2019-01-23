@@ -7,9 +7,8 @@ import { AchievementAction as Action, achievementGetError, achievementGetRequest
 function* watchAllFetchRequest() {
   const worker = (action: ReturnType<typeof achievementGetRequest>) => {
     return saiyanSaga.fetch({
-      host: window.self.location.origin,
       method: 'get',
-      path: `/data/chart.json`,
+      path: `/v1/achievement/charts/${action.payload.companyUid}/${action.payload.positionUid}`,
       successEffects: (response: IApiResponse) => [
         put(achievementGetSuccess(response.body)),
       ],

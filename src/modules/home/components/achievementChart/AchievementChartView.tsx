@@ -1,16 +1,15 @@
 import { homeMessage } from '@home/locales/messages';
 import { layoutMessage } from '@layout/locales/messages';
 import { Card, CardContent, CardHeader, Grid, Toolbar, Typography } from '@material-ui/core';
-import { isWidthDown } from '@material-ui/core/withWidth';
+// import { isWidthDown } from '@material-ui/core/withWidth';
 import * as React from 'react';
 import { VictoryAxis, VictoryBar, VictoryChart, VictoryLabel, VictoryTooltip } from 'victory';
-
 import { AchievementChartProps } from './AchievementChart';
 
 export const AchievementChartView: React.SFC<AchievementChartProps> = props => {
-  const { classes, width } = props;
-  const isMobile = isWidthDown('sm', width);
-  const isMobileXS = isWidthDown('xs', width);
+  // const { classes, width } = props;
+  // const isMobile = isWidthDown('sm', width);
+  // const isMobileXS = isWidthDown('xs', width);
 
   return (
     <div className={props.classes.marginFarBottom}>
@@ -22,7 +21,7 @@ export const AchievementChartView: React.SFC<AchievementChartProps> = props => {
           </Typography>
         </Toolbar>
       }
-      
+
       {
         props.achievementState.all.isLoading &&
         <Typography variant="body2">
@@ -30,44 +29,47 @@ export const AchievementChartView: React.SFC<AchievementChartProps> = props => {
         </Typography>
       }
 
-      {
-        props.achievementState.all.response &&
-        props.achievementState.all.response.data &&
-        <Grid container spacing={16} className={props.classes.marginFarBottom}>
-          <Grid item xs={12} sm={12} md={4}>
-            <Card square>
-              <CardHeader title="ETG Companies" subheader="(EQG - NPP - ODI - XMU)"/>
-              <CardContent>
-                <VictoryChart
-                  animate={{ duration: 2000, easing: 'bounce' }}
-                  domainPadding={{ x: 20, y: 20 }}
-                  padding={{ bottom: 100, left: 50, top: 10, right: 50 }}
-                >
-                  <VictoryAxis
-                    tickLabelComponent={<VictoryLabel angle={-45} textAnchor="end" />}
-                  />
-                  <VictoryAxis
-                    dependentAxis
-                    tickFormat={(x) => (`${x} %`)}
-                  />
-                  <VictoryBar
-                    labelComponent={<VictoryTooltip />}
-                    style={{
-                      data: { fill: 'blue', strokeWidth: 0 },
-                      labels: { fontSize: 10 }
-                    }}
-                    data={props.achievementState.all.response.data.companies}
-                    x="companyName"
-                    y="percentage"
-                    labels={(d) => `${d.percentage} %`}
-                  />
-                </VictoryChart>
-              </CardContent>
-            </Card>
+      <Grid container spacing={16} className={props.classes.marginFarBottom}>
+        {
+          props.achievementState.all.response &&
+          props.achievementState.all.response.data &&
+          props.achievementState.all.response.data.map((item, index) => (
+            <Grid item xs={12} sm={12} md={4} key={index}>
+              <Card square>
+                <CardHeader title={item.title} subheader={item.description} />
+                <CardContent>
+                  <VictoryChart
+                    animate={{ duration: 2000, easing: 'bounce' }}
+                    domainPadding={{ x: 20, y: 20 }}
+                    padding={{ bottom: 100, left: 50, top: 10, right: 50 }}
+                  >
+                    <VictoryAxis
+                      tickLabelComponent={<VictoryLabel angle={-45} textAnchor="end" />}
+                    />
+                    <VictoryAxis
+                      dependentAxis
+                      tickFormat={(x) => (`${x} ${item.unit}`)}
+                    />
+                    <VictoryBar
+                      labelComponent={<VictoryTooltip />}
+                      style={{
+                        data: { fill: 'blue', strokeWidth: 0 },
+                        labels: { fontSize: 10 }
+                      }}
+                      data={item.data}
+                      x="companyName"
+                      y="percentage"
+                      labels={(d) => `${d.percentage} ${item.unit}`}
+                    />
+                  </VictoryChart>
+                </CardContent>
+              </Card>
+            </Grid>
+          ))
+        }
+      </Grid>
 
-          </Grid>
-
-          <Grid item xs={12} sm={12} md={4}>
+      {/* <Grid item xs={12} sm={12} md={4}>
             <Card square>
               <CardHeader title="ETG Bussines Unit" subheader="(EQG - NPP - ODI - XMU)" />
               <CardContent>
@@ -98,9 +100,9 @@ export const AchievementChartView: React.SFC<AchievementChartProps> = props => {
                 </VictoryChart>
               </CardContent>
             </Card>
-          </Grid>
+          </Grid> */}
 
-          <Grid item xs={12} sm={12} md={4}>
+      {/* <Grid item xs={12} sm={12} md={4}>
             <Card square>
               <CardHeader title="ETG Department" subheader="(EQG - NPP - ODI - XMU)" />
               <CardContent>
@@ -131,9 +133,9 @@ export const AchievementChartView: React.SFC<AchievementChartProps> = props => {
                 </VictoryChart>
               </CardContent>
             </Card>
-          </Grid>
+          </Grid> */}
 
-          <Grid item xs={12} md={12}>
+      {/* <Grid item xs={12} md={12}>
             <Card square className={classes.chartCard}>
               <CardHeader title="ETG Sales Team" subheader="(EQG - NPP - ODI - XMU)"  className={isMobileXS ? undefined : classes.chartHeader}/>
               <CardContent  className={isMobile ? classes.chartContentXS : classes.chartContent}>
@@ -168,9 +170,7 @@ export const AchievementChartView: React.SFC<AchievementChartProps> = props => {
                 </VictoryChart>
               </CardContent>
             </Card>
-          </Grid>
-        </Grid>
-      }
+          </Grid> */}
     </div>
   );
 };
