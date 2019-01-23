@@ -1,5 +1,5 @@
 import { AccountEmployeeTabs } from '@account/classes/types/AccountEmployeeTabs';
-import { injectIntl } from 'react-intl';
+import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import {
   compose,
@@ -37,6 +37,7 @@ interface OwnOption {
 
 export type DetailPageProps
   = OwnOption
+  & InjectedIntlProps
   & OwnState
   & OwnStateUpdaters
   & OwnHandlers

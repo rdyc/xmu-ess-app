@@ -1,5 +1,6 @@
 import { IEmployeeRate } from '@account/classes/response/employeeRate';
 import { AccountEmployeeRateHeaderTable } from '@account/classes/types';
+import { AccountEmployeeTabs } from '@account/classes/types/AccountEmployeeTabs';
 import { accountMessage } from '@account/locales/messages/accountMessage';
 import AppMenu from '@constants/AppMenu';
 import { IBaseMetadata } from '@generic/interfaces';
@@ -40,8 +41,8 @@ const config: SingleConfig<IEmployeeRate, AccountEmployeeRateProps> = {
   page: (props: AccountEmployeeRateProps) => ({
     uid: AppMenu.Account,
     parentUid: AppMenu.Lookup,
-    title: props.intl.formatMessage(accountMessage.employee.page.detailTitle),
-    description: props.intl.formatMessage(accountMessage.employee.page.detailSubHeader),
+    title: props.intl.formatMessage(accountMessage.shared.page.detailTitle, { state: 'Rate'}),
+    description: props.intl.formatMessage(accountMessage.shared.page.detailSubHeader),
   }),
 
   // parent url
@@ -143,7 +144,7 @@ export const AccountEmployeeRateView: React.SFC<
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell>No</TableCell>
+                <TableCell>{props.intl.formatMessage(accountMessage.shared.field.no)}</TableCell>
                 {header.map(headerIdx => (
                   <TableCell
                     key={headerIdx.id}
@@ -153,7 +154,7 @@ export const AccountEmployeeRateView: React.SFC<
                     {headerIdx.name !== 'no' && props.intl.formatMessage(accountMessage.rate.fieldFor(headerIdx.name, 'fieldName')) || 'No'}
                   </TableCell>
                 ))}
-                <TableCell>Action</TableCell>
+                <TableCell>{props.intl.formatMessage(accountMessage.shared.field.action)}</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -240,7 +241,7 @@ export const AccountEmployeeRateView: React.SFC<
   return (
     <React.Fragment>
       <DetailPage
-        tab={7}
+        tab2={AccountEmployeeTabs.rate}
       >
         {renderAction}
         <SinglePage

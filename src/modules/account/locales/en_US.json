@@ -22,6 +22,9 @@
   "account.shared.message.delete.success": "{state} Data with ID {uid} has been deleted",
   "account.shared.message.delete.failure": "Unable to process your submission",
 
+  "account.shared.field.no": "No",
+  "account.shared.field.action": "Actions",
+
   "account.access.message.greeting": "Hi {name}, Welcome to TESSA",
   "account.access.message.selection": "Please select your company access",
 
