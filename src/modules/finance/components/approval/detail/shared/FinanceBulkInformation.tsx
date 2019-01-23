@@ -36,35 +36,22 @@ const financeBulkInformation: React.SFC<AllProps> = props => (
               >
                 <Typography 
                   noWrap 
-                  color="primary" 
                   variant="body2"
-                >
-                  {finance.module && finance.module.value} {finance.documentUid && `(ID: ${finance.documentUid})`}
+                > {finance.documentUid && finance.documentUid}
                 </Typography>
                 <Typography 
                   noWrap
                   variant="body2"
                 >
-                {finance.document && finance.document.amount && finance.document.amount.advance && props.intl.formatNumber(finance.document.amount.advance)} &nbsp;&bull;&nbsp;
-                {finance.document && finance.document.amount && finance.document.amount.total && props.intl.formatNumber(finance.document.amount.total)}
+                  {`${finance.module && finance.module.value} - ${finance.document && finance.document.changes && finance.document.changes.created && finance.document.changes.created.fullName}`}                  
                 </Typography>
                 <Typography 
                   noWrap
                   variant="body2"
-                >
-                  {finance.document && finance.document.changes && finance.document.changes.created && finance.document.changes.created.fullName} &bull;&nbsp;
-                  {finance.uid}
+                >                   
+                  {finance.document && finance.document.amount && finance.document.amount.advance && props.intl.formatNumber(finance.document.amount.advance)} &nbsp;&bull;&nbsp;
+                  {finance.document && finance.document.amount && finance.document.amount.total && props.intl.formatNumber(finance.document.amount.total)}
                 </Typography>
-                {
-                  finance &&
-                  <Typography 
-                    noWrap
-                    color="textSecondary" 
-                    variant="caption"
-                  > 
-                    {finance.notes}
-                  </Typography>
-                }
               </Grid>
             </Grid>
           </ListItem>
