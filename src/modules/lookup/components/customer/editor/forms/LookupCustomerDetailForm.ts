@@ -60,6 +60,15 @@ const handlerCreators: HandleCreators<LookupCustomerDetailFormProps, OwnHandlers
         };
         break;
 
+      case 'emailAddress':
+        fieldProps = {
+          required: true,
+          label: intl.formatMessage(lookupMessage.lookupCustomer.fieldFor(name, 'fieldName')),
+          placeholder: intl.formatMessage(lookupMessage.lookupCustomer.fieldFor(name, 'fieldPlaceholder')),
+          component: InputTextArea
+        };
+        break;
+
       case 'addressAdditional':
         fieldProps = {
           required: true,

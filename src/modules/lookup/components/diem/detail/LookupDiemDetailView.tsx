@@ -19,6 +19,9 @@ const config: SingleConfig<IDiem, LookupDiemDetailProps> = {
     description: props.intl.formatMessage(lookupMessage.lookupDiem.page.detailSubHeader),
   }),
 
+  // parent url
+  parentUrl: (props: LookupDiemDetailProps) => '/lookup/diemvalue/list',
+
   // action centre
   showActionCentre: true,
 
