@@ -1,5 +1,6 @@
 import { IEmployeeEducation } from '@account/classes/response/employeeEducation';
 import { AccountEmployeeEducationHeaderTable } from '@account/classes/types';
+import { AccountEmployeeTabs } from '@account/classes/types/AccountEmployeeTabs';
 import AccountEmployeeEducationEditor from '@account/components/editor/AccountEmployeeEducationEditor';
 import { accountMessage } from '@account/locales/messages/accountMessage';
 import AppMenu from '@constants/AppMenu';
@@ -140,7 +141,7 @@ export const AccountEmployeeEducationView: React.SFC<
   const renderEducation = (data: IEmployeeEducation[], metadata: IBaseMetadata) => {
     return (
       <Fade in={!isLoading} timeout={1000} mountOnEnter unmountOnExit>
-        <Paper square>
+        <Paper square className={classes.rootTable}>
           <Table>
             <TableHead>
               <TableRow>
@@ -256,7 +257,7 @@ export const AccountEmployeeEducationView: React.SFC<
   return (
     <React.Fragment>
       <DetailPage
-        tab={2}
+        tab2={AccountEmployeeTabs.education}        
       >
         {renderAction}
         <SinglePage

@@ -1,4 +1,5 @@
 import { IEmployeeDetail } from '@account/classes/response';
+import { AccountEmployeeTabs } from '@account/classes/types/AccountEmployeeTabs';
 import { accountMessage } from '@account/locales/messages/accountMessage';
 import AppMenu from '@constants/AppMenu';
 import { SingleConfig, SingleHandler, SinglePage, SingleState } from '@layout/components/pages/singlePage/SinglePage';
@@ -97,7 +98,7 @@ export const AccountEmployeeDetailView: React.SFC<AccountEmployeeDetailProps> = 
   const render = (
   <React.Fragment>
     <DetailPage
-      tab={0}
+      tab2={AccountEmployeeTabs.detail}      
     >
       <SinglePage
         config={config}

@@ -2,7 +2,6 @@ import { IEmployeeTrainingDeletePayload, IEmployeeTrainingPostPayload, IEmployee
 import { IEmployeeTraining } from '@account/classes/response/employeeTraining';
 import { WithAccountEmployeeTraining, withAccountEmployeeTraining } from '@account/hoc/withAccountEmployeeTraining';
 import { accountMessage } from '@account/locales/messages/accountMessage';
-import AppMenu from '@constants/AppMenu';
 import { FormMode } from '@generic/types';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
@@ -108,7 +107,7 @@ const handlerCreators: HandleCreators<AccountEmployeeTrainingEditorProps, OwnHan
 
     // update checking
     if (!employeeUid) {
-      const message = intl.formatMessage(accountMessage.employee.message.emptyProps);
+      const message = intl.formatMessage(accountMessage.shared.message.emptyProps);
 
       return Promise.reject(message);
     }
@@ -223,64 +222,12 @@ const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
 };
 
 const lifecycles: ReactLifeCycleFunctions<AccountEmployeeTrainingEditorProps, {}> = {
-  componentDidMount() {
-    const { layoutDispatch, intl, history, stateUpdate, employeeUid } = this.props;
-    // const { loadDetailRequest } = this.props.accountEmployeeTrainingDispatch;
-    const { user } = this.props.userState;
-    
-    const view = {
-      title: accountMessage.employee.page.newTitle,
-      subTitle: accountMessage.employee.page.newSubHeader,
-    };
-
-    if (!user) {
-      return;
-    }
-    
-    if (!isNullOrUndefined(history.location.state)) {
-      view.title = accountMessage.employee.page.modifyTitle;
-      view.subTitle = accountMessage.employee.page.modifySubHeader;
-
-      stateUpdate({ 
-        employeeUid,
-        submitDialogTitle: this.props.intl.formatMessage(accountMessage.training.confirm.modifyTitle),
-        submitDialogContentText : this.props.intl.formatMessage(accountMessage.training.confirm.modifyDescription)
-      });
-
-      // loadDetailRequest({
-      //   employeeUid: history.location.state.uid,
-      //   trainingUid: history.location.state.uid
-      // });
-    }
-
-    layoutDispatch.setupView({
-      view: {
-        uid: AppMenu.Account,
-        parentUid: AppMenu.Lookup,
-        title: intl.formatMessage(view.title),
-        subTitle : intl.formatMessage(view.subTitle)
-      },
-      parentUrl: `/account/employee`,
-      status: {
-        isNavBackVisible: true,
-        isSearchVisible: false,
-        isActionCentreVisible: false,
-        isMoreVisible: false,
-        isModeSearch: false
-      }
-    });
-  },
   componentWillUnmount() {
-    const { accountEmployeeTrainingDispatch } = this.props;
+    const { createDispose, updateDispose, deleteDispose } = this.props.accountEmployeeTrainingDispatch;
 
-    // layoutDispatch.changeView(null);
-    // layoutDispatch.navBackHide();
-    // layoutDispatch.moreHide();
-
-    // appBarDispatch.dispose();
-
-    accountEmployeeTrainingDispatch.createDispose();
-    accountEmployeeTrainingDispatch.updateDispose();
+    createDispose();
+    updateDispose();
+    deleteDispose();
   }
 };
 

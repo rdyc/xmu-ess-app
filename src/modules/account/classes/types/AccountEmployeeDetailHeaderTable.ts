@@ -50,6 +50,7 @@ export enum AccountEmployeeExperienceHeaderTable {
 }
 
 export enum AccountEmployeeAccessHeaderTable {
+  no = 'No',
   company = 'Company',
   bussiness = 'Bussiness Unit',
   department = 'Department',
@@ -58,4 +59,5 @@ export enum AccountEmployeeAccessHeaderTable {
   position = 'Position',
   start = 'Start Date',
   end = 'End Date',
+  action = 'Action'
 }

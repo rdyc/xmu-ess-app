@@ -1,5 +1,6 @@
 import { IEmployeeExperience } from '@account/classes/response/employeeExperience';
 import { AccountEmployeeExperienceHeaderTable } from '@account/classes/types';
+import { AccountEmployeeTabs } from '@account/classes/types/AccountEmployeeTabs';
 import AccountEmployeeExperienceEditor from '@account/components/editor/AccountEmployeeExperienceEditor';
 import { accountMessage } from '@account/locales/messages/accountMessage';
 import AppMenu from '@constants/AppMenu';
@@ -140,7 +141,7 @@ export const AccountEmployeeExperienceView: React.SFC<
   const renderExperience = (data: IEmployeeExperience[], metadata: IBaseMetadata) => {
     return (
       <Fade in={!isLoading} timeout={1000} mountOnEnter unmountOnExit>
-        <Paper square>
+        <Paper square className={classes.rootTable}>
           <Table>
             <TableHead>
               <TableRow>
@@ -250,7 +251,7 @@ export const AccountEmployeeExperienceView: React.SFC<
   return (
     <React.Fragment>
       <DetailPage
-        tab={4}
+        tab2={AccountEmployeeTabs.experience}        
       >
         {renderAction}
         <SinglePage

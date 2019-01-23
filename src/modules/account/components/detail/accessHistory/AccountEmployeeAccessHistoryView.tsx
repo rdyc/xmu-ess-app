@@ -1,5 +1,6 @@
 import { IEmployeeAccessHistory } from '@account/classes/response/employeeAccessHistory';
 import { AccountEmployeeHistoryHeaderTable } from '@account/classes/types';
+import { AccountEmployeeTabs } from '@account/classes/types/AccountEmployeeTabs';
 import { accountMessage } from '@account/locales/messages/accountMessage';
 import AppMenu from '@constants/AppMenu';
 import { IBaseMetadata } from '@generic/interfaces';
@@ -135,7 +136,7 @@ export const AccountEmployeeAccessHistoryView: React.SFC<
   const renderAccessHistory = (data: IEmployeeAccessHistory[], metadata: IBaseMetadata) => {
     return (
       <Fade in={!isLoading} timeout={1000} mountOnEnter unmountOnExit>
-        <Paper square>
+        <Paper square className={classes.rootTable}>
           <Table>
             <TableHead>
               <TableRow>
@@ -227,7 +228,7 @@ export const AccountEmployeeAccessHistoryView: React.SFC<
   return (
     <React.Fragment>
       <DetailPage
-        tab={1}
+        tab2={AccountEmployeeTabs.history}        
       >
         {renderAction}
         <SinglePage

@@ -230,10 +230,11 @@ const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
 
 const lifecycles: ReactLifeCycleFunctions<AccountEmployeeExperienceEditorProps, {}> = {
   componentWillUnmount() {
-    const { accountEmployeeExperienceDispatch } = this.props;
+    const { createDispose, updateDispose, deleteDispose } = this.props.accountEmployeeExperienceDispatch;
 
-    accountEmployeeExperienceDispatch.createDispose();
-    accountEmployeeExperienceDispatch.updateDispose();
+    createDispose();
+    updateDispose();
+    deleteDispose();
   }
 };
 

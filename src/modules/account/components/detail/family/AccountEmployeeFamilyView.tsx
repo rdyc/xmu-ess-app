@@ -1,5 +1,6 @@
 import { IEmployeeFamilyList } from '@account/classes/response/employeeFamily';
 import { AccountEmployeeFamilyHeaderTable, AccountEmployeeUserAction } from '@account/classes/types';
+import { AccountEmployeeTabs } from '@account/classes/types/AccountEmployeeTabs';
 import { accountMessage } from '@account/locales/messages/accountMessage';
 import AppMenu from '@constants/AppMenu';
 import { SingleConfig, SingleHandler, SinglePage, SingleState } from '@layout/components/pages';
@@ -132,7 +133,7 @@ export const AccountEmployeeFamilyView: React.SFC<
   return (
     <React.Fragment>
       <DetailPage
-        tab={3}
+        tab2={AccountEmployeeTabs.family}
       >
         <SinglePage
           config={config}

@@ -1,5 +1,6 @@
 import { IEmployeeTrainingList } from '@account/classes/response/employeeTraining';
 import { AccountEmployeeTrainingHeaderTable } from '@account/classes/types';
+import { AccountEmployeeTabs } from '@account/classes/types/AccountEmployeeTabs';
 import AccountEmployeeTrainingEditor from '@account/components/editor/AccountEmployeeTrainingEditor';
 import { accountMessage } from '@account/locales/messages/accountMessage';
 import AppMenu from '@constants/AppMenu';
@@ -61,9 +62,8 @@ const config: SingleConfig<IEmployeeTrainingList, AccountEmployeeTrainingProps> 
     }
   },
   onUpdated: (states: AccountEmployeeTrainingProps, callback: SingleHandler) => {
-    const { isLoading, response } = states.accountEmployeeTrainingState.all;
+    const { response } = states.accountEmployeeTrainingState.all;
 
-    callback.handleLoading(isLoading);
     callback.handleResponse(response);
   },
 };
@@ -119,7 +119,7 @@ export const AccountEmployeeTrainingView: React.SFC<
   const renderTraining = (data: IEmployeeTrainingList[], metadata: IBaseMetadata) => {
     return (
       <Fade in={!isLoading} timeout={1000} mountOnEnter unmountOnExit>
-        <Paper square>
+        <Paper square className={classes.rootTable}>
           <Table>
             <TableHead>
               <TableRow>
@@ -208,7 +208,7 @@ export const AccountEmployeeTrainingView: React.SFC<
           className={props.classes.flex}
         >
           {
-            props.isLoading &&
+            isLoading &&
             <FormattedMessage {...layoutMessage.text.loading} />
           }
         </Typography>
@@ -244,7 +244,8 @@ export const AccountEmployeeTrainingView: React.SFC<
   return (
     <React.Fragment>
       <DetailPage
-        tab={5}
+        // tab={5}
+        tab2={AccountEmployeeTabs.training}
       >
         {renderAction}
         <SinglePage
