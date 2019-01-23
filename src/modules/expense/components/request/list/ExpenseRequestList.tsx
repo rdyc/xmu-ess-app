@@ -251,6 +251,7 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
             return this.props.customerUid !== undefined || 
               this.props.projectUid !== undefined || 
               this.props.statusType !== undefined || 
+              this.props.expenseType !== undefined ||
               this.props.start !== undefined ||
               this.props.end !== undefined ||
               this.props.status !== undefined || 
@@ -269,6 +270,7 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
       this.props.customerUid !== nextProps.customerUid ||
       this.props.projectUid !== nextProps.projectUid ||
       this.props.statusType !== nextProps.statusType ||
+      this.props.expenseType !== nextProps.expenseType ||
       this.props.start !== nextProps.start ||
       this.props.end !== nextProps.end ||
       this.props.status !== nextProps.status ||
