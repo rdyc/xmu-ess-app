@@ -26,7 +26,7 @@ export const AnnouncementSliderView: React.SFC<AnnouncementSliderProps> = props 
 
     {
       props.images &&
-      <Stepper source={props.images} />
+      <Stepper source={props.images} autoplay={true} interval={7000} />
     }
   </div>
 );
