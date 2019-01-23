@@ -90,8 +90,8 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<WorkflowMenuListProps, OwnStat
 
     layoutDispatch.setupView({
       view: {
-        uid: AppMenu.Lookup,
-        parentUid: AppMenu.LookupWorkflow,
+        uid: AppMenu.LookupWorkflow,
+        parentUid: AppMenu.Lookup,
         title: intl.formatMessage(organizationMessage.workflowSetup.page.listTitle),
         subTitle : intl.formatMessage(organizationMessage.workflowSetup.page.listSubHeader)
       },

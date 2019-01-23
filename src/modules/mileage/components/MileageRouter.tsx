@@ -1,3 +1,5 @@
+import AppMenu from '@constants/AppMenu';
+import { SecureMenuRoute } from '@layout/components/SecureMenuRoute';
 import { MileageApprovalList } from '@mileage/components//approval/list/MileageApprovalList';
 import { MileageApprovalDetail } from '@mileage/components/approval/detail/MileageApprovalDetail';
 import { MileageRequestDetail } from '@mileage/components/request/detail/MileageRequestDetail';
@@ -23,7 +25,17 @@ const approval = (props: RouteComponentProps) => (
 
 export const MileageRoutingComponents: React.SFC<RouteComponentProps> = props => (
   <Switch>
-    <Route path={`${props.match.path}/requests`} component={request} />
-    <Route path={`${props.match.path}/approvals`} component={approval} />
+    <SecureMenuRoute 
+      path={`${props.match.path}/requests`}
+      menu={AppMenu.Mileage} 
+      subMenu={AppMenu.MileageRequest} 
+      component={request} 
+    />
+    <SecureMenuRoute 
+      path={`${props.match.path}/approvals`}
+      menu={AppMenu.Mileage} 
+      subMenu={AppMenu.MileageApproval} 
+      component={approval} 
+    />
   </Switch>
 );

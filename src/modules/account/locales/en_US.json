@@ -91,6 +91,7 @@
 
   "account.employee.field.image": "Employee Photo",
   "account.employee.field.image.placeholder": "Employee Photo",
+  "account.employee.field.image.required": "Employee Photo is required",
 
   "account.employee.field.religion": "Religion",
   "account.employee.field.religion.placeholder": "Religion",
@@ -110,6 +111,7 @@
 
   "account.employee.field.mobile": "Mobile",
   "account.employee.field.mobile.placeholder": "Mobile",
+  "account.employee.field.mobile.required": "Mobile Phone is required",
   
   "account.employee.field.emergencyName": "Emergency Contact Name",
   "account.employee.field.emergencyName.placeholder": "Emergency Contact Name",
@@ -173,10 +175,70 @@
   "account.employee.section.contact.title": "Employee Contact and Address",
   "account.employee.section.contact.subHeader": " ",
 
+  "account.employee.training.message.emptyProps": "Some props are empty",
+  "account.employee.training.message.create.success": "New Employee Training has been created",
+  "account.employee.training.message.create.failure": "Unable to process your submission",
+  "account.employee.training.message.update.success": "Current training has been updated",
+  "account.employee.training.message.update.failure": "Unable to process your submission",
+  "account.employee.training.message.delete.success": "Current {uid} has been deleted",
+  "account.employee.training.message.delete.failure": "Unable to process your submission",
+
+  "account.employee.training.field.uid": "Training ID",
+  "account.employee.training.field.uid.placeholder": "Training ID",
+
+  "account.employee.training.field.employeeUid": "Employee ID",
+  "account.employee.training.field.employeeUid.placeholder": "Employee ID",
+
+  "account.employee.training.field.name": "Training Name",
+  "account.employee.training.field.name.placeholder": "Training Name",
+  "account.employee.training.field.name.required": "Training Name is required",
+
+  "account.employee.training.field.start": "Training Start Date",
+  "account.employee.training.field.start.placeholder": "Training Start Date",
+  "account.employee.training.field.start.required": "Training Start Date is required",
+
+  "account.employee.training.field.end": "Training End Date",
+  "account.employee.training.field.end.placeholder": "Training End Date",
+  "account.employee.training.field.end.required": "Training End Date is required",
+
+  "account.employee.training.field.organizer": "Training Organizer",
+  "account.employee.training.field.organizer.placeholder": "Training Organizer",
+  "account.employee.training.field.organizer.required": "Training Organizer is required",
+
+  "account.employee.training.field.trainingType": "Training Type",
+  "account.employee.training.field.trainingType.placeholder": "Training Type",
+  "account.employee.training.field.trainingType.required": "Training Type is required",
+
+  "account.employee.training.field.certificationType": "Certificate Type",
+  "account.employee.training.field.certificationType.placeholder": "Certificate Type",
+  "account.employee.training.field.certificationType.required": "Certificate Type is required",
+
+  "account.employee.training.confirm.create.title": "Create Training",
+  "account.employee.training.confirm.create.subHeader": "lorem ipsum",
+ 
+  "account.employee.training.confirm.modify.title": "Modify Training",
+  "account.employee.training.confirm.modify.subHeader": "lorem ipsum",
+
+  "account.employee.training.section.basic.title": "Employee Training & Certification",
+  "account.employee.training.section.basic.subHeader": "lorem ipsum",
+
+  "account.employee.training.option.new": "New",
+  "account.employee.training.option.modify": "Modify",
+  "account.employee.training.option.remove": "Delete",
+
+  "account.employee.training.page.new.title": "Add New Training",
+  "account.employee.training.page.new.subHeader": " ",
+  "account.employee.training.page.modify.title": "Modify Training",
+  "account.employee.training.page.modify.subHeader": " ",
+  "account.employee.training.page.delete.title": "Delete Training",
+  "account.employee.training.page.delete.subHeader": " ",
+
   "account.education.page.new.title": "Add New Education",
   "account.education.page.new.subHeader": " ",
   "account.education.page.modify.title": "Modify Education",
   "account.education.page.modify.subHeader": " ",
+  "account.education.page.delete.title": "Delete Education",
+  "account.education.page.delete.subHeader": " ",
 
   "account.education.section.basic.title": "Employee Education",
   "account.education.section.basic.subHeader": " ",
@@ -184,8 +246,10 @@
   "account.education.message.emptyProps": "Some props are empty",
   "account.education.message.create.success": "New Education Data has been created",
   "account.education.message.create.failure": "Unable to process your submission",
-  "account.education.message.update.success": "Current Education data has been updated",
+  "account.education.message.update.success": "Education data with id {uid} has been updated",
   "account.education.message.update.failure": "Unable to process your submission",
+  "account.education.message.delete.success": "Education data with id {uid} has been deleted",
+  "account.education.message.delete.failure": "Unable to process your submission",
 
   "account.education.confirm.create.title": "Add Education",
   "account.education.confirm.create.subHeader": " ",
@@ -193,8 +257,11 @@
   "account.education.confirm.modify.title": "Modify Education",
   "account.education.confirm.modify.subHeader": " ",
 
-  "account.education.field.uid": "Employee Education UID",
-  "account.education.field.uid.placeholder": "Employee Education UID",
+  "account.education.field.uid": "Employee Education ID",
+  "account.education.field.uid.placeholder": "Employee Education ID",
+
+  "account.education.field.employeeUid": "Employee ID",
+  "account.education.field.employeeUid.placeholder": "Employee ID",
 
   "account.education.field.degree": "Education Degree",
   "account.education.field.degree.required": "Education Degree is required",
@@ -213,6 +280,61 @@
   "account.education.field.start.placeholder": "Start Year",
   
   "account.education.field.end": "End Year",
-  "account.education.field.end.placeholder": "End Year"
+  "account.education.field.end.placeholder": "End Year",
 
+  "account.access.message.emptyProps": "Some props are empty",
+  "account.access.message.create.success": "New Employee Access Data has been created",
+  "account.access.message.create.failure": "Unable to process your submission",
+  "account.access.message.update.success": "Employee Access data has been updated",
+  "account.access.message.update.failure": "Unable to process your submission",
+  "account.access.message.delete.success": "Employee Access data has been deleted",
+  "account.access.message.delete.failure": "Unable to process your deletion",
+
+  "account.access.dialog.create.title": "Add Access",
+  "account.access.dialog.create.subHeader": " ",
+ 
+  "account.access.dialog.modify.title": "Modify Access",
+  "account.access.dialog.modify.subHeader": " ",
+ 
+  "account.access.dialog.delete.title": "Delete Access",
+  "account.access.dialog.delete.subHeader": " ",
+
+  "account.access.section.create.title": "Multi Access Company",
+
+  "account.access.field.uid": "Multi Access Company ID",
+
+  "account.access.field.companyUid": "Company",
+  "account.access.field.companyUid.required": "Company is required",
+  "account.access.field.companyUid.placeholder": "Please Select Company",
+
+  "account.access.field.positionUid": "Position",
+  "account.access.field.positionUid.required": "Position is required",
+  "account.access.field.positionUid.placeholder": "Please select Position",
+
+  "account.access.field.departmentType": "Department",
+  "account.access.field.departmentType.required": "Department is required",
+  "account.access.field.departmentType.placeholder": "Please Select Department",
+
+  "account.access.field.unitType": "Business Unit",
+  "account.access.field.unitType.required": "Business Unit is required",
+  "account.access.field.unitType.placeholder": "Please Select Business Unit",
+
+  "account.access.field.levelType": "Level",
+  "account.access.field.levelType.required": "Level is required",
+  "account.access.field.levelType.placeholder": "Please Select Level",
+
+  "account.access.field.roleUid": "Role",
+  "account.access.field.roleUid.required": "Role is required",
+  "account.access.field.roleUid.placeholder": "Please Select Role",
+
+  "account.access.field.start": "Start Date",
+  "account.access.field.start.required": "Start Date is required",
+  "account.access.field.start.placeholder": "Please Select Start Date",
+
+  "account.access.field.end": "End Date",
+  "account.access.field.end.placeholder": "Please Select End Date",
+
+  "account.education.option.new": "New",
+  "account.education.option.modify": "Modify",
+  "account.education.option.remove": "Delete"
 }

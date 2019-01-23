@@ -81,7 +81,6 @@ const config: SingleConfig<IEmployeeExperienceList, AccountEmployeeExperiencePro
 export const AccountEmployeeExperienceView: React.SFC<
   AccountEmployeeExperienceProps
 > = props => {
-  const { classes } = props;
   const { response, isLoading } = props.accountEmployeeExperienceState.list;
 
   const header = Object.keys(AccountEmployeeExperienceHeaderTable).map(key => ({
@@ -92,8 +91,8 @@ export const AccountEmployeeExperienceView: React.SFC<
   const renderExperience = (data: IEmployeeExperienceList[]) => {
     return (
       <Fade in={!isLoading} timeout={1000} mountOnEnter unmountOnExit>
-        <Paper className={classes.table}>
-          <Table className={classes.minTable}>
+        <Paper square>
+          <Table>
             <TableHead>
               <TableRow>
                 {header.map(headerIdx =>
@@ -124,18 +123,16 @@ export const AccountEmployeeExperienceView: React.SFC<
       <DetailPage
         tab={4}
       >
-      <SinglePage
-        config={config}
-        connectedProps={props}
-      >
-        <div style={{ padding: 8 * 3 }}>
+        <SinglePage
+          config={config}
+          connectedProps={props}
+        >
           {(( !isLoading && response && !response.data) ||
             ( !isLoading && response && response.data && response.data.length === 0)) && (
             <Typography variant="body2">No Data</Typography>
           )}
           { !isLoading && response && response.data && response.data.length >= 1 && renderExperience(response.data)}
-        </div>
-      </SinglePage>
+        </SinglePage>
       </DetailPage>
     </React.Fragment>
   );

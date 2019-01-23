@@ -248,7 +248,7 @@ const handlerCreators: HandleCreators<SiteEditorProps, IOwnHandlers> = {
     return Promise.reject('nothing to do');
   },
   handleSubmitSuccess: (props: SiteEditorProps) => (response: boolean) => {
-    const { formMode, editAction, intl, stateUpdate, match } = props;
+    const { formMode, editAction, intl, stateUpdate, projectUid, companyUid } = props;
     const { alertAdd } = props.layoutDispatch;
     const { loadRequest } = props.projectSiteDispatch;
 
@@ -273,10 +273,12 @@ const handlerCreators: HandleCreators<SiteEditorProps, IOwnHandlers> = {
       time: new Date()
     });
 
-    loadRequest({
-      companyUid: match.params.companyUid,
-      projectUid: match.params.projectUid
-    });
+    if (projectUid && companyUid) {
+      loadRequest({
+        companyUid,
+        projectUid
+      });
+    }
   },
   handleSubmitFail: (props: SiteEditorProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
     const { intl } = props;

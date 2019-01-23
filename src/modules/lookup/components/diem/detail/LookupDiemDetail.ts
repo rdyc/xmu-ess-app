@@ -1,8 +1,10 @@
+import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { layoutMessage } from '@layout/locales/messages';
-import { DiemUserAction } from '@lookup/classes/types/diem/DiemUserAction';
+import { ILookupDiemDeletePayload } from '@lookup/classes/request/diem';
+import { LookupUserAction } from '@lookup/classes/types';
 import { WithLookupDiem, withLookupDiem } from '@lookup/hoc/withLookupDiem';
-import { travelMessage } from '@travel/locales/messages/travelMessage';
+import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import {
@@ -15,6 +17,9 @@ import {
   withHandlers,
   withStateHandlers,
 } from 'recompose';
+import { Dispatch } from 'redux';
+import { FormErrors } from 'redux-form';
+import { isObject } from 'util';
 import { LookupDiemDetailView } from './LookupDiemDetailView';
 
 interface OwnRouteParams {
@@ -22,14 +27,17 @@ interface OwnRouteParams {
 }
 
 interface OwnHandler {
-  handleOnModify: () => void;
+  handleOnOpenDialog: (action: LookupUserAction) => void;
   handleOnCloseDialog: () => void;
   handleOnConfirm: () => void;
+  handleSubmit: () => void;
+  handleSubmitSuccess: (result: any, dispatch: Dispatch<any>) => void;
+  handleSubmitFail: (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => void;
 }
 
 interface OwnState {
   isAdmin: boolean;
-  action?: DiemUserAction;
+  action?: LookupUserAction;
   dialogFullScreen: boolean;
   dialogOpen: boolean;
   dialogTitle?: string;
@@ -39,12 +47,12 @@ interface OwnState {
 }
 
 interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
-  setModify: StateHandler<OwnState>;
-  setDefault: StateHandler<OwnState>;
+  stateUpdate: StateHandler<OwnState>;
 }
 
 export type LookupDiemDetailProps
   = WithUser
+  & WithLayout
   & WithLookupDiem
   & RouteComponentProps<OwnRouteParams>
   & InjectedIntlProps
@@ -56,34 +64,39 @@ const createProps: mapper<LookupDiemDetailProps, OwnState> = (props: LookupDiemD
   isAdmin: false,
   dialogFullScreen: false,
   dialogOpen: false,
+  dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.disaggre),
+  dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.aggre)
 });
 
 const stateUpdaters: StateUpdaters<LookupDiemDetailProps, OwnState, OwnStateUpdaters> = {
-  setModify: (prevState: OwnState, props: LookupDiemDetailProps) => (): Partial<OwnState> => ({
-    action: DiemUserAction.Modify,
-    dialogFullScreen: false,
-    dialogOpen: true,
-    dialogTitle: props.intl.formatMessage(travelMessage.request.confirm.modifyTitle),
-    dialogContent: props.intl.formatMessage(travelMessage.request.confirm.modifyDescription),
-    dialogCancelLabel: props.intl.formatMessage(layoutMessage.action.disaggre),
-    dialogConfirmLabel: props.intl.formatMessage(layoutMessage.action.aggre)
-  }),
-  setDefault: (prevState: OwnState) => (): Partial<OwnState> => ({
-    dialogFullScreen: false,
-    dialogOpen: false,
-    dialogTitle: undefined,
-    dialogContent: undefined,
-    dialogCancelLabel: undefined,
-    dialogConfirmLabel: undefined,
+  stateUpdate: (prevState: OwnState) => (newState: any) => ({
+    ...prevState,
+    ...newState
   })
 };
 
 const handlerCreators: HandleCreators<LookupDiemDetailProps, OwnHandler> = {
-  handleOnModify: (props: LookupDiemDetailProps) => () => {
-    props.setModify();
+  handleOnOpenDialog: (props: LookupDiemDetailProps) => (action: LookupUserAction) => {
+    if (action === LookupUserAction.Modify) {
+      props.stateUpdate({
+        action: LookupUserAction.Modify,
+        dialogOpen: true,
+        dialogTitle: props.intl.formatMessage(lookupMessage.shared.confirm.modifyTitle),
+        dialogContent: props.intl.formatMessage(lookupMessage.shared.confirm.modifyDescription, { state: 'Diem Value'}),
+      });
+    } else if (action === LookupUserAction.Delete) {
+      props.stateUpdate({
+        action: LookupUserAction.Delete,
+        dialogOpen: true,
+        dialogTitle: props.intl.formatMessage(lookupMessage.shared.confirm.deleteTitle),
+        dialogContent: props.intl.formatMessage(lookupMessage.shared.confirm.deleteDescription, { state: 'Diem Value'}),
+      });
+    }
   },
   handleOnCloseDialog: (props: LookupDiemDetailProps) => () => {
-    props.setDefault();
+    props.stateUpdate({
+      dialogOpen: false
+    });
   },
   handleOnConfirm: (props: LookupDiemDetailProps) => () => {
     const { response } = props.lookupDiemState.detail;
@@ -103,14 +116,14 @@ const handlerCreators: HandleCreators<LookupDiemDetailProps, OwnHandler> = {
 
     // actions with new page
     const actions = [
-      DiemUserAction.Modify,
+      LookupUserAction.Modify,
     ];
 
     if (actions.indexOf(props.action) !== -1) {
       let next: string = '404';
 
       switch (props.action) {
-        case DiemUserAction.Modify:
+        case LookupUserAction.Modify:
           next = '/lookup/diemvalue/form';
           break;
 
@@ -118,17 +131,67 @@ const handlerCreators: HandleCreators<LookupDiemDetailProps, OwnHandler> = {
           break;
       }
 
-      props.setDefault();
+      props.stateUpdate({
+        dialogOpen: false
+      });
+      
       props.history.push(next, {
         uid: diemUid
       });
     }
   },
+  handleSubmit: (props: LookupDiemDetailProps) => () => {
+    const { match, intl } = props;
+    const { user } = props.userState;
+    const { deleteRequest } = props.lookupDiemDispatch;
+    // user checking
+    if (!user) {
+      return Promise.reject('user was not found');
+    }
+    // props checking
+    if (!match.params.diemUid) {
+      const message = intl.formatMessage(lookupMessage.lookupDiem.message.emptyProps);
+      return Promise.reject(message);
+    }
+    const payload = {
+      uid: match.params.diemUid
+    };
+    return new Promise((resolve, reject) => {
+      deleteRequest({
+        resolve,
+        reject,
+        data: payload as ILookupDiemDeletePayload
+      });
+    });
+  },
+  handleSubmitSuccess: (props: LookupDiemDetailProps) => (response: boolean) => {
+    props.history.push('/lookup/diemvalue/list');
+
+    props.layoutDispatch.alertAdd({
+      time: new Date(),
+      message: props.intl.formatMessage(lookupMessage.lookupDiem.message.deleteSuccess, { uid : props.match.params.diemUid })
+    });
+  },
+  handleSubmitFail: (props: LookupDiemDetailProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
+    if (errors) {
+      props.layoutDispatch.alertAdd({
+        time: new Date(),
+        message: isObject(submitError) ? submitError.message : submitError
+      });
+    } else {
+      props.layoutDispatch.alertAdd({
+        time: new Date(),
+        message: props.intl.formatMessage(lookupMessage.lookupDiem.message.deleteFailure),
+        details: isObject(submitError) ? submitError.message : submitError
+      });
+    }
+  }
 };
 
 export const LookupDiemDetail = compose(
   withRouter,
   withUser,
+  withLayout,
   withLookupDiem,
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),

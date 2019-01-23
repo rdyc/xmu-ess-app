@@ -84,6 +84,7 @@ export const accountEmployeeField = defineMessages({
 
   image: { id: `${prefix}.field.image`},
   imagePlaceholder: { id: `${prefix}.field.image.placeholder`},
+  imageRequired: { id: `${prefix}.field.image.required`},
 
   religion: { id: `${prefix}.field.religion`},
   religionPlaceholder: { id: `${prefix}.field.religion.placeholder`},
@@ -96,6 +97,7 @@ export const accountEmployeeField = defineMessages({
 
   mobile: { id: `${prefix}.field.mobile`},
   mobilePlaceholder: { id: `${prefix}.field.mobile.placeholder`},
+  mobileRequired: { id: `${prefix}.field.mobile.required`},
 
   emergencyName: { id: `${prefix}.field.emergencyName`},
   emergencyNamePlaceholder: { id: `${prefix}.field.emergencyName.placeholder`},
@@ -251,6 +253,7 @@ export const accountEmployeeFieldHelperFor = (field: string, type: 'fieldName' |
       case 'taxType': return accountEmployeeField.ptkpRequired;
       case 'religionType': return accountEmployeeField.religionRequired;
       case 'bloodType': return accountEmployeeField.bloodRequired;
+      case 'image': return accountEmployeeField.imageRequired;
 
       // bank
       case 'citizenNumber': return accountEmployeeField.ktpRequired;
@@ -267,6 +270,7 @@ export const accountEmployeeFieldHelperFor = (field: string, type: 'fieldName' |
       case 'email': return accountEmployeeField.companyEmailRequired;
       case 'emailPersonal': return accountEmployeeField.emailRequired;
       case 'phone': return accountEmployeeField.phoneRequired;    
+      case 'mobilePhone': return accountEmployeeField.mobileRequired;    
   
       default: return {id: field};
     }

@@ -82,5 +82,12 @@
   "layout.dialog.access.title": "Switching Confirmation",
   "layout.dialog.access.content": "You are about to switch multi company access, any loaded content or data will changed depend on selected access, Do you want to continue?",
   "layout.dialog.logout.title": "Logout Confirmation",
-  "layout.dialog.logout.content": "Before you logged out, please make sure all pending tasks has been completed. Are you sure want to logout from TESSA now?"
+  "layout.dialog.logout.content": "Before you logged out, please make sure all pending tasks has been completed. Are you sure want to logout from TESSA now?",
+
+  "layout.page.forbidden": "Forbidden",
+  "layout.page.notFound": "Not Found",
+  "layout.page.error": "Error",
+
+  "layout.content.forbidden.title": "Unfortunately, you don't have a permission access to view this page",
+  "layout.content.forbidden.subHeader": "Please contact your administrator for futher information"
 }

@@ -3,6 +3,7 @@ import { FormMode } from '@generic/types';
 import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
+import { layoutMessage } from '@layout/locales/messages';
 import { ILookupCustomerPostPayload, ILookupCustomerPutPayload } from '@lookup/classes/request/customer';
 import { ICustomer } from '@lookup/classes/response';
 import { WithLookupCustomer, withLookupCustomer } from '@lookup/hoc/withLookupCustomer';
@@ -41,6 +42,10 @@ interface OwnRouteParams {
 interface OwnState {
   formMode: FormMode;
   customerUid?: string | undefined;
+  submitDialogTitle: string;
+  submitDialogContentText: string;
+  submitDialogCancelText: string;
+  submitDialogConfirmedText: string;
 }
 
 interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
@@ -100,7 +105,7 @@ const handlerCreators: HandleCreators<LookupCustomerEditorProps, OwnHandlers> = 
     // update checking
     if (!customerUid) {
       alert('sini');
-      const message = intl.formatMessage(lookupMessage.company.message.emptyProps);
+      const message = intl.formatMessage(lookupMessage.lookupDiem.message.emptyProps);
 
       return Promise.reject(message);
     }
@@ -138,7 +143,7 @@ const handlerCreators: HandleCreators<LookupCustomerEditorProps, OwnHandlers> = 
       time: new Date()
     });
 
-    history.push(`/lookup/customer/${response.uid}`);
+    history.push(`/lookup/customer/${response.uid}`, { companyuid: response.companyUid });
   },
   handleSubmitFail: (props: LookupCustomerEditorProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
     const { formMode, intl } = props;
@@ -172,7 +177,11 @@ const handlerCreators: HandleCreators<LookupCustomerEditorProps, OwnHandlers> = 
 };
 
 const createProps: mapper<LookupCustomerEditorProps, OwnState> = (props: LookupCustomerEditorProps): OwnState => ({ 
-  formMode: FormMode.New
+  formMode: FormMode.New,
+  submitDialogTitle: props.intl.formatMessage(lookupMessage.lookupCustomer.dialog.createTitle),
+  submitDialogContentText: props.intl.formatMessage(lookupMessage.lookupCustomer.dialog.createDescription),
+  submitDialogCancelText: props.intl.formatMessage(layoutMessage.action.cancel),
+  submitDialogConfirmedText: props.intl.formatMessage(layoutMessage.action.ok),
 });
 
 const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
@@ -190,7 +199,7 @@ const lifecycles: ReactLifeCycleFunctions<LookupCustomerEditorProps, {}> = {
     
     const view = {
       title: lookupMessage.lookupCustomer.page.newTitle,
-      subTitle: lookupMessage.company.page.newSubHeader,
+      subTitle: lookupMessage.lookupCustomer.page.newSubHeader,
     };
 
     if (!user) {

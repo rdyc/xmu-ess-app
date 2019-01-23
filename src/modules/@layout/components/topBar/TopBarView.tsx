@@ -247,9 +247,10 @@ const SearchControl: React.SFC<SearchControlOptions> = props => (
 
 export const TopBarView: React.SFC<TopBarProps> = props => (
   <AppBar 
-    elevation={props.mode === 'search' ? 1 : 0}
+    // elevation={props.mode === 'search' ? 1 : 0}
+    elevation={1}
     position={isWidthUp('md', props.width) ? 'static' : 'fixed'}
-    className={classNames(props.getClassNames())}
+    className={classNames(props.classes.appBar, props.layoutState.anchor === 'right' ? props.classes.appBarShiftRight : props.classes.appBarShiftLeft)}
   >
       {
         props.mode === 'normal' &&

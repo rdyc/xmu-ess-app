@@ -12,8 +12,12 @@ export const homeDashboardPage = defineMessages({
 export const homeDashboardSection = defineMessages({
   notificationTitle: { id: `${prefix}.section.notification.title` },
   notificationSubHeader: { id: `${prefix}.section.notification.subHeader` },
-  billableTitle: { id: `${prefix}.section.billable.title` },
-  billableSubHeader: { id: `${prefix}.section.billable.subHeader` }
+  imageSliderTitle: { id: `${prefix}.section.imageSlider.title` },
+  imageSliderSubHeader: { id: `${prefix}.section.imageSlider.subHeader` },
+  achievementChartTitle: { id: `${prefix}.section.achievementChart.title` },
+  achievementChartSubHeader: { id: `${prefix}.section.achievementChart.subHeader` },
+  newsFeedTitle: { id: `${prefix}.section.newsFeed.title` },
+  newsFeedSubHeader: { id: `${prefix}.section.newsFeed.subHeader` }
 });
 
 // text

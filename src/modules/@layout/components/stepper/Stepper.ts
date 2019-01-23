@@ -4,7 +4,7 @@ import { compose, mapper, setDisplayName, StateHandler, StateHandlerMap, StateUp
 
 import { StepperView } from './StepperView';
 
-interface IStepperSource {
+export interface IStepperSource {
   label: string;
   imgPath: string;
 }

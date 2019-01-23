@@ -5,7 +5,7 @@ import {
   currencyMessage,
   currencyPage,
   currencySection
-} from './currency/currencyMessage';
+} from './currencyMessage';
 import {
   holidayConfirm,
   holidayField,
@@ -35,6 +35,7 @@ import {
 import {
   customerFieldHelperFor,
   lookupCustomerConfirm,
+  lookupCustomerDialogMessage,
   lookupCustomerFields,
   lookupCustomerMessage,
   lookupCustomerPage,
@@ -43,6 +44,7 @@ import {
 import {
   diemFieldHelperFor,
   lookupDiemConfirm,
+  lookupDiemDialog,
   lookupDiemField,
   lookupDiemMessage,
   lookupDiemPage,
@@ -166,7 +168,9 @@ export const lookupMessage = {
     field: lookupDiemField,
     fieldFor: diemFieldHelperFor,
     confirm: lookupDiemConfirm,
-    message: lookupDiemMessage
+    message: lookupDiemMessage,
+    dialog: lookupDiemDialog,
+    
   },
   lookupCustomer: {
     page: lookupCustomerPage,
@@ -174,6 +178,7 @@ export const lookupMessage = {
     field: lookupCustomerFields,
     fieldFor: customerFieldHelperFor,
     confirm: lookupCustomerConfirm,
-    message: lookupCustomerMessage
+    message: lookupCustomerMessage,
+    dialog: lookupCustomerDialogMessage,
   }
 };

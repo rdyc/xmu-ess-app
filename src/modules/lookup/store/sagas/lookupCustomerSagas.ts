@@ -1,4 +1,4 @@
-import { layoutAlertAdd, listBarLoading, listBarMetadata } from '@layout/store/actions';
+import { layoutAlertAdd, listBarLoading } from '@layout/store/actions';
 import {
   LookupCustomerAction as Action,
   lookupCustomerDeleteError,
@@ -8,6 +8,7 @@ import {
   lookupCustomerGetAllError,
   lookupCustomerGetAllRequest,
   lookupCustomerGetAllSuccess,
+  lookupCustomerGetByIdDispose,
   lookupCustomerGetByIdError,
   lookupCustomerGetByIdRequest,
   lookupCustomerGetByIdSuccess,
@@ -38,8 +39,7 @@ function* watchGetAllRequest() {
       method: 'get',
       path: `/v1/lookup/customers?${params}`, 
       successEffects: (response: IApiResponse) => ([
-        put(lookupCustomerGetAllSuccess(response.body)),
-        put(listBarMetadata(response.body.metadata))
+        put(lookupCustomerGetAllSuccess(response.body))
       ]), 
       failureEffects: (response: IApiResponse) => ([
         put(lookupCustomerGetAllError(response.statusText)),
@@ -132,7 +132,8 @@ function* watchPostRequest() {
       path: `/v1/lookup/customers/${action.payload.companyUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
-        put(lookupCustomerPostSuccess(response.body))
+        put(lookupCustomerPostSuccess(response.body)),
+        put(lookupCustomerGetAllDispose())
       ],
       successCallback: (response: IApiResponse) => {
         action.payload.resolve(response.body.data);
@@ -177,7 +178,9 @@ function* watchPutRequest() {
       path: `/v1/lookup/customers/${action.payload.companyUid}/${action.payload.customerUid}`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
-        put(lookupCustomerPutSuccess(response.body))
+        put(lookupCustomerPutSuccess(response.body)),
+        put(lookupCustomerGetByIdDispose()),
+        put(lookupCustomerGetAllDispose())
       ],
       successCallback: (response: IApiResponse) => {
         action.payload.resolve(response.body.data);
@@ -223,8 +226,8 @@ function* watchDeleteRequest() {
       path: `/v1/lookup/customers`,
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
+        put(lookupCustomerDeleteSuccess(response.body)),
         put(lookupCustomerGetAllDispose()),
-        put(lookupCustomerDeleteSuccess(response.body))
       ],
       successCallback: (response: IApiResponse) => {
         action.payload.resolve(response.body.data);

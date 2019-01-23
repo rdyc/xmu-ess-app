@@ -6,7 +6,8 @@ import { LookupCustomerForm, LookupCustomerFormData } from './forms/LookupCustom
 import { LookupCustomerEditorProps } from './LookupCustomerEditor';
 
 export const LookupCustomerEditorView: React.SFC<LookupCustomerEditorProps> = props => {
-  const { formMode, handleValidate, handleSubmit, handleSubmitSuccess, handleSubmitFail } = props;
+  const { formMode, handleValidate, handleSubmit, handleSubmitSuccess, handleSubmitFail,
+          submitDialogTitle, submitDialogContentText, submitDialogConfirmedText, submitDialogCancelText  } = props;
   const { isLoading, response } = props.lookupCustomerState.detail;
 
   const renderForm = (formData: LookupCustomerFormData) => (
@@ -17,6 +18,10 @@ export const LookupCustomerEditorView: React.SFC<LookupCustomerEditorProps> = pr
       onSubmit={handleSubmit} 
       onSubmitSuccess={handleSubmitSuccess}
       onSubmitFail={handleSubmitFail}
+      submitDialogTitle={submitDialogTitle}
+      submitDialogContentText={submitDialogContentText}
+      submitDialogCancelText={submitDialogCancelText}
+      submitDialogConfirmedText={submitDialogConfirmedText}
     />
   );
 

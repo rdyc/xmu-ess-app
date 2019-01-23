@@ -23,6 +23,14 @@ export const lookupCustomerSection = defineMessages({
 
 });
 
+// dialog
+export const lookupCustomerDialogMessage = defineMessages({
+  modifyTitle: { id: `${prefix}.dialog.modifyTitle`},
+  modifyDescription: { id: `${prefix}.dialog.modifyDescription`},
+  createTitle: { id: `${prefix}.dialog.newTitle`},
+  createDescription: { id: `${prefix}.dialog.newDescription`},
+});
+
 // confirmation
 export const lookupCustomerConfirm = defineMessages({
   modifyTitle: { id: `${prefix}.confirm.modify.title` },
@@ -140,4 +148,6 @@ export const lookupCustomerMessage = defineMessages({
   createFailure: { id: `${prefix}.message.create.failure` },
   updateSuccess: { id: `${prefix}.message.update.success` },
   updateFailure: { id: `${prefix}.message.update.failure` },
+  deleteSuccess: { id: `${prefix}.message.delete.success` },
+  deleteFailure: { id: `${prefix}.message.delete.failure` },
 });

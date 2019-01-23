@@ -5,12 +5,13 @@ import red from '@material-ui/core/colors/red';
 
 import Background1 from './image/background/1.png';
 import Background2 from './image/background/2.png';
-import NavHeader from './image/headers/sm/0.svg';
 import AchievementIcon from './image/icons/achievement.png';
 import EventIcon from './image/icons/event.png';
 import NewsIcon from './image/icons/news.png';
 import EquineLogo from './image/logo/etg.svg';
 import TessaLogo from './image/logo/tessa.svg';
+import Pattern2 from './image/pattern/pattern2.svg';
+import Pattern1 from './image/pattern/pattern5.svg';
 
 // import sidebar from './image/sidebar/satrio-tower.jpg';
 const drawerWidth = 300;
@@ -28,6 +29,10 @@ const styles = (theme: Theme) =>
       marginBottom: 0,
       zIndex: 1,
       overflow: 'hidden'
+    },
+
+    landingPage: {
+      backgroundColor: theme.palette.grey[800]
     },
 
     /* LOGOS */
@@ -65,14 +70,13 @@ const styles = (theme: Theme) =>
 
     /* FOOTER */
     footer: {
-      backgroundColor: theme.palette.grey[800],
       color: '#FFF',
       padding: theme.spacing.unit * 6
     },
 
     /* HERO */
     heroHeader: {
-      backgroundColor: theme.palette.grey[900],
+      backgroundColor: theme.palette.grey[800],
       display: 'flex',
       position: 'fixed',
       color: theme.palette.primary.contrastText,
@@ -83,7 +87,7 @@ const styles = (theme: Theme) =>
     },
     heroUnit: {
       backgroundColor: '#333',
-      backgroundImage: `url("${Background1}")`,
+      backgroundImage: `linear-gradient(rgba(0,130,170,0), ${theme.palette.grey[800]}), url("${Background1}")`,
       backgroundSize: 'cover',
       height: '100vh',
       maxHeight: '1600px',
@@ -107,6 +111,7 @@ const styles = (theme: Theme) =>
     heroSummary: {
       background: theme.palette.background.default,
       margin: '-150px auto 0 auto',
+      padding: theme.spacing.unit * 2,
       position: 'relative',
       maxWidth: 1200,
       justifyContent: 'center'
@@ -155,8 +160,10 @@ const styles = (theme: Theme) =>
     // Application Bar
     appBar: {
       backgroundColor: theme.palette.primary.main,
+      backgroundImage: `linear-gradient(200deg, rgb(0,0,0,0), ${theme.palette.primary.main}), url(${Pattern1})`,
       [theme.breakpoints.up('md')]: {
-        backgroundColor: theme.palette.background.default,
+        backgroundColor: theme.palette.grey[400],
+        backgroundImage: `linear-gradient(200deg, rgb(0,0,0,0), ${theme.palette.grey[600]}), url(${Pattern1})`,
         width: `calc(100% - ${0}px)`,
         marginLeft: 0,
         marginRight: 0,
@@ -269,8 +276,7 @@ const styles = (theme: Theme) =>
     // branding
     brandingContainer: {
       flex: 1,
-      background: `url(${NavHeader})`,
-      backgroundColor: theme.palette.background.paper,
+      background: `url(${Pattern2})`,
       backgroundSize: 'cover',
       backgroundRepeat: 'no-repeat',
       backgroundPosition: 'inherit',
@@ -369,8 +375,17 @@ const styles = (theme: Theme) =>
     //   },
     /* Color page end */
 
+    /* Toolbar Custom */
+    toolbarCustom: {
+      backgroundColor: theme.palette.secondary.main,
+      backgroundImage: `linear-gradient(200deg, rgba(0,0,0,0), ${theme.palette.secondary.main}), url(${Pattern1})`,
+      color: '#FFF',
+      marginBottom: theme.spacing.unit * 2
+    },
+
     /* Stepper */
     stepper: {
+      // marginTop: '-48px',
       // marginTop: '-48px',
       // position: 'relative',
       // // opacity: 0.4
@@ -472,10 +487,10 @@ const styles = (theme: Theme) =>
 
     /* background colors */
     backgroundColorPrimary: { 
-      backgroundColor: theme.palette.primary.main
+      backgroundColor: theme.palette.primary.main,
     },
     backgroundColorSecondary: { 
-      backgroundColor: theme.palette.secondary.main
+      backgroundColor: theme.palette.secondary.main,
     },
 
     /* colors */
