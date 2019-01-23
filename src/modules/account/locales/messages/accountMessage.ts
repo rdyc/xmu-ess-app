@@ -10,6 +10,7 @@ import {
   accountEmployeeTrainingPage, 
   accountEmployeeTrainingSection 
 } from './accountEmployeeTrainingMessage';
+import { accountRateDialog, accountRateField, accountRateFieldHelperFor, accountRateMessage } from './accountRateMessage';
 
 export const accountMessage = {
   employee: {
@@ -45,5 +46,11 @@ export const accountMessage = {
     section: accountEmployeeTrainingSection,
     option: accountEmployeeTrainingOption,
     page: accountEmployeeTrainingPage
+  },
+  rate: {
+    message: accountRateMessage,
+    dialog: accountRateDialog,
+    field: accountRateField,
+    fieldFor: accountRateFieldHelperFor
   }
 };

@@ -8,6 +8,7 @@ import { AccountEmployeeDetail } from './detail/AccountEmployeeDetail';
 import { AccountEmployeeEducation } from './detail/education/AccountEmployeeEducation';
 import { AccountEmployeeExperience } from './detail/experience/AccountEmployeeExperience';
 import { AccountEmployeeFamily } from './detail/family/AccountEmployeeFamily';
+import { AccountEmployeeRate } from './detail/rate/AccountEmployeeRate';
 import { AccountEmployeeTraining } from './detail/training/AccountEmployeeTraining';
 import AccountEmployeeAccessEditor from './editor/AccountEmployeeAccessEditor';
 import { Editor } from './editor/Editor';
@@ -35,6 +36,7 @@ const employee = (props: RouteComponentProps) => (
     <Route path={`${props.match.path}/:employeeUid/experience`} component={employeeExperience} />
     <Route path={`${props.match.path}/:employeeUid/training`} component={employeeTraining} />
     <Route path={`${props.match.path}/:employeeUid/access`} component={employeeMultiAccess} />
+    <Route path={`${props.match.path}/:employeeUid/rate`} component={AccountEmployeeRate} />
     <Route path={`${props.match.path}/:employeeUid`} component={AccountEmployeeDetail} />
     <Route path={`${props.match.path}`} component={AccountEmployeeList} />
   </Switch>

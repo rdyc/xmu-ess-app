@@ -346,5 +346,21 @@
 
   "account.education.option.new": "New",
   "account.education.option.modify": "Modify",
-  "account.education.option.remove": "Delete"
+  "account.education.option.remove": "Delete",
+
+  "account.rate.message.emptyProps": "Some props are empty",
+  "account.rate.message.create.success": "New Employee Rate has been created",
+  "account.rate.message.create.failure": "Unable to process your submission",
+
+  "account.rate.dialog.modify.title": "Modify Rate",
+  "account.rate.dialog.modify.subHeader": " ",
+
+  "account.rate.field.uid": "Rate ID",
+
+  "account.rate.field.value": "Employee Rate",
+  "account.rate.field.value.required": "Employee Rate is Required",
+  "account.rate.field.value.placeholder": "Type the Employee Rate Value",
+
+  "account.rate.field.isActive": "Is Active",
+  "account.rate.field.isActive.true": "Current Rate"
 }
