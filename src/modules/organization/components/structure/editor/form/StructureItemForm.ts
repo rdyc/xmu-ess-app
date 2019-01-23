@@ -53,6 +53,7 @@ const handlerCreators: HandleCreators<StructureItemFormProps, OwnHandlers> = {
 
         case 'start':
           fieldProps = {
+            disabled: (inactiveDateValue ? Date.parse(inactiveDateValue) : Date.now()) < Date.now(), 
             type: 'date',
             label: intl.formatMessage(organizationMessage.structure.fieldFor(name, 'fieldName')),
             placeholder: intl.formatMessage(organizationMessage.structure.fieldFor(name, 'fieldPlaceholder')),
@@ -63,6 +64,7 @@ const handlerCreators: HandleCreators<StructureItemFormProps, OwnHandlers> = {
 
         case 'end':
           fieldProps = {
+            disabled: (inactiveDateValue ? Date.parse(inactiveDateValue) : Date.now()) <= Date.now(), 
             type: 'date',
             label: intl.formatMessage(organizationMessage.structure.fieldFor(name, 'fieldName')),
             placeholder: intl.formatMessage(organizationMessage.structure.fieldFor(name, 'fieldPlaceholder')),

@@ -5,7 +5,8 @@ export enum AccountEmployeeTrainingHeaderTable {
   endDate = 'End Date',
   organizer = 'Training Organizer',
   type = 'Training Type',
-  certificationType = 'Certification Type'
+  certificationType = 'Certification Type',
+  action = 'Action'
 }
 
 export enum AccountEmployeeHistoryHeaderTable {

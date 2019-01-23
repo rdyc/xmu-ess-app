@@ -83,3 +83,16 @@ export const layoutDialog = defineMessages({
   logoutTitle: { id: `${prefix}.dialog.logout.title`},
   logoutContent: { id: `${prefix}.dialog.logout.content`},
 });
+
+// page
+export const layoutPage = defineMessages({
+  forbidden: { id: `${prefix}.page.forbidden`},
+  notFound: { id: `${prefix}.page.notFound`},
+  error: { id: `${prefix}.page.error`}
+});
+
+// page
+export const layoutContent = defineMessages({
+  forbiddenTitle: { id: `${prefix}.content.forbidden.title`},
+  forbiddenSubHeader: { id: `${prefix}.content.forbidden.subHeader`},
+});

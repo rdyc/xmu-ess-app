@@ -5,7 +5,7 @@ import {
   currencyMessage,
   currencyPage,
   currencySection
-} from './currency/currencyMessage';
+} from './currencyMessage';
 import {
   holidayConfirm,
   holidayField,

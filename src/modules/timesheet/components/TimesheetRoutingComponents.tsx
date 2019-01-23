@@ -1,3 +1,5 @@
+import AppMenu from '@constants/AppMenu';
+import { SecureMenuRoute } from '@layout/components/SecureMenuRoute';
 import * as React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router';
 
@@ -30,7 +32,17 @@ const approval = (props: RouteComponentProps) => (
 
 export const TimesheetRoutingComponents: React.SFC<RouteComponentProps> = props => (
   <Switch>
-    <Route path={`${props.match.path}/requests`} component={request} />
-    <Route path={`${props.match.path}/approvals`} component={approval} />
+    <SecureMenuRoute 
+      path={`${props.match.path}/requests`}
+      menu={AppMenu.Timesheet} 
+      subMenu={AppMenu.TimesheetRequest} 
+      component={request} 
+    />
+    <SecureMenuRoute 
+      path={`${props.match.path}/approvals`}
+      menu={AppMenu.Timesheet} 
+      subMenu={AppMenu.TimesheetApproval} 
+      component={approval} 
+    />
   </Switch>
 );
