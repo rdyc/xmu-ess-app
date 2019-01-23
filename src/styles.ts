@@ -558,6 +558,11 @@ const styles = (theme: Theme) =>
 
     /* Table */
 
+    rootTable: {
+      width: '100%',
+      overflowX: 'auto',
+    },
+
     table: {
       width: '100%',
       marginTop: theme.spacing.unit * 3,

@@ -35,16 +35,12 @@ interface OwnHandlers {
   handleSubmitFail: (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => void;
 }
 
-interface OwnOption {
-  formMode: FormMode;
-}
-
 interface OwnRouteParams {
   employeeUid: string;
 }
 
 interface OwnState {
-  // formMode: FormMode;
+  formMode: FormMode;
   employeeUid?: string | undefined;
   submitDialogTitle: string;
   submitDialogContentText: string;
@@ -63,7 +59,6 @@ export type AccountEmployeeEditorProps
   & WithAppBar
   & RouteComponentProps<OwnRouteParams>
   & InjectedIntlProps
-  & OwnOption
   & OwnHandlers
   & OwnState
   & OwnStateUpdaters;
@@ -139,7 +134,7 @@ const handlerCreators: HandleCreators<AccountEmployeeEditorProps, OwnHandlers> =
 
     // update checking
     if (!employeeUid) {
-      const message = intl.formatMessage(accountMessage.employee.message.emptyProps);
+      const message = intl.formatMessage(accountMessage.shared.message.emptyProps);
 
       return Promise.reject(message);
     }
@@ -163,11 +158,11 @@ const handlerCreators: HandleCreators<AccountEmployeeEditorProps, OwnHandlers> =
     let message: string = '';
 
     if (formMode === FormMode.New) {
-      message = intl.formatMessage(accountMessage.employee.message.createSuccess, { uid: response.uid });
+      message = intl.formatMessage(accountMessage.shared.message.createSuccess, { state: 'Employee', uid: response.uid });
     }
 
     if (formMode === FormMode.Edit) {
-      message = intl.formatMessage(accountMessage.employee.message.updateSuccess, { uid: response.uid });
+      message = intl.formatMessage(accountMessage.shared.message.updateSuccess, { state: 'Employee', uid: response.uid });
     }
 
     alertAdd({
@@ -192,11 +187,11 @@ const handlerCreators: HandleCreators<AccountEmployeeEditorProps, OwnHandlers> =
       let message: string = '';
 
       if (formMode === FormMode.New) {
-        message = intl.formatMessage(accountMessage.employee.message.createFailure);
+        message = intl.formatMessage(accountMessage.shared.message.createFailure);
       }
 
       if (formMode === FormMode.Edit) {
-        message = intl.formatMessage(accountMessage.employee.message.updateFailure);
+        message = intl.formatMessage(accountMessage.shared.message.updateFailure);
       }
 
       alertAdd({
@@ -209,7 +204,7 @@ const handlerCreators: HandleCreators<AccountEmployeeEditorProps, OwnHandlers> =
 };
 
 const createProps: mapper<AccountEmployeeEditorProps, OwnState> = (props: AccountEmployeeEditorProps): OwnState => ({ 
-  // formMode: FormMode.New,
+  formMode: FormMode.New,
   submitDialogTitle: props.intl.formatMessage(accountMessage.employee.confirm.createTitle),
   submitDialogContentText: props.intl.formatMessage(accountMessage.employee.confirm.createDescription),
   submitDialogCancelText: props.intl.formatMessage(layoutMessage.action.cancel),
@@ -230,8 +225,8 @@ const lifecycles: ReactLifeCycleFunctions<AccountEmployeeEditorProps, {}> = {
     const { user } = this.props.userState;
     
     const view = {
-      title: accountMessage.employee.page.newTitle,
-      subTitle: accountMessage.employee.page.newSubHeader,
+      title: accountMessage.shared.page.newTitle,
+      subTitle: accountMessage.shared.page.newSubHeader,
     };
 
     if (!user) {
@@ -239,11 +234,11 @@ const lifecycles: ReactLifeCycleFunctions<AccountEmployeeEditorProps, {}> = {
     }
     
     if (!isNullOrUndefined(history.location.state)) {
-      view.title = accountMessage.employee.page.modifyTitle;
-      view.subTitle = accountMessage.employee.page.modifySubHeader;
+      view.title = accountMessage.shared.page.modifyTitle;
+      view.subTitle = accountMessage.shared.page.modifySubHeader;
 
       stateUpdate({ 
-        // formMode: FormMode.Edit,
+        formMode: FormMode.Edit,
         employeeUid: history.location.state.uid,
         submitDialogTitle: this.props.intl.formatMessage(accountMessage.employee.confirm.modifyTitle),
         submitDialogContentText : this.props.intl.formatMessage(accountMessage.employee.confirm.modifyDescription)
@@ -258,7 +253,7 @@ const lifecycles: ReactLifeCycleFunctions<AccountEmployeeEditorProps, {}> = {
       view: {
         uid: AppMenu.Account,
         parentUid: AppMenu.Lookup,
-        title: intl.formatMessage(view.title),
+        title: intl.formatMessage(view.title, { state: 'Employee' }),
         subTitle : intl.formatMessage(view.subTitle)
       },
       parentUrl: `/account/employee`,
@@ -285,7 +280,7 @@ const lifecycles: ReactLifeCycleFunctions<AccountEmployeeEditorProps, {}> = {
   }
 };
 
-export default compose<AccountEmployeeEditorProps, OwnOption>(
+export const AccountEmployeeEditor = compose<AccountEmployeeEditorProps, {}>(
   withUser,
   withLayout,
   withAppBar,

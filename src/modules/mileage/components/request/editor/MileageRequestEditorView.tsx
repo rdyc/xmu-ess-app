@@ -27,8 +27,8 @@ export const MileageRequestEditorView: React.SFC<MileageRequestEditorProps> = pr
   // init form values
   const initialValues: MileageRequestFormData = {
     information: {
-      year: 0,
-      month: 0,
+      year: undefined,
+      month: undefined,
     }
   };
 

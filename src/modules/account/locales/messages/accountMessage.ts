@@ -1,40 +1,65 @@
-import { accountAccessDialog, accountAccessField, accountAccessFieldHelperFor, accountAccessMessage } from './accountAccessMessage';
-import { accountEducationConfirm, accountEducationField, accountEducationFieldHelperFor, accountEducationMessage, accountEducationOption, accountEducationPage, accountEducationSection } from './accountEducationMessage';
-import { accountEmployeeConfirm, accountEmployeeField, accountEmployeeFieldHelperFor, accountEmployeeFilter, accountEmployeeMessage, accountEmployeePage, accountEmployeeSection } from './accountEmployeeMessage';
-import { 
-  accountEmployeeTrainingConfirm, 
-  accountEmployeeTrainingField, 
-  accountEmployeeTrainingFieldHelperFor, 
-  accountEmployeeTrainingMessage, 
-  accountEmployeeTrainingOption, 
-  accountEmployeeTrainingPage, 
-  accountEmployeeTrainingSection 
+import {
+  accountAccessDialog,
+  accountAccessField,
+  accountAccessFieldHelperFor,
+  accountAccessMessage
+} from './accountAccessMessage';
+import {
+  accountEducationField,
+  accountEducationFieldHelperFor
+} from './accountEducationMessage';
+import {
+  accountEmployeeConfirm,
+  accountEmployeeField,
+  accountEmployeeFieldHelperFor,
+  accountEmployeeFilter,
+  accountEmployeeSection
+} from './accountEmployeeMessage';
+import {
+  accountEmployeeTrainingConfirm,
+  accountEmployeeTrainingField,
+  accountEmployeeTrainingFieldHelperFor,
+  accountEmployeeTrainingMessage,
+  accountEmployeeTrainingOption,
+  accountEmployeeTrainingPage,
+  accountEmployeeTrainingSection
 } from './accountEmployeeTrainingMessage';
+import {
+  accountExperienceField,
+  accountExperienceFieldHelperFor
+} from './accountExperienceMessage';
+import {
+  accountSharedMessage,
+  accountSharedOption,
+  accountSharedPage
+} from './accountShared';
 
 export const accountMessage = {
   employee: {
-    page: accountEmployeePage,
     field: accountEmployeeField,
     confirm: accountEmployeeConfirm,
     fieldFor: accountEmployeeFieldHelperFor,
     section: accountEmployeeSection,
-    message: accountEmployeeMessage,
     filter: accountEmployeeFilter
   },
   education: {
-    section: accountEducationSection,
     field: accountEducationField,
-    fieldFor: accountEducationFieldHelperFor,
-    message: accountEducationMessage,
-    confirm: accountEducationConfirm,
-    page: accountEducationPage,
-    option: accountEducationOption
+    fieldFor: accountEducationFieldHelperFor
+  },
+  experience: {
+    field: accountExperienceField,
+    fieldFor: accountExperienceFieldHelperFor
   },
   access: {
     message: accountAccessMessage,
     dialog: accountAccessDialog,
     field: accountAccessField,
-    fieldFor: accountAccessFieldHelperFor,
+    fieldFor: accountAccessFieldHelperFor
+  },
+  shared: {
+    option: accountSharedOption,
+    page: accountSharedPage,
+    message: accountSharedMessage
   },
   training: {
     field: accountEmployeeTrainingField,

@@ -18,9 +18,9 @@
   "lookup.mileageException.message.emptyProps": "Some props are empty",
   "lookup.mileageException.message.create.success": "New Mileage Exception has been created",
   "lookup.mileageException.message.create.failure": "Unable to process your submission",
-  "lookup.mileageException.message.update.success": "Current site has been updated",
+  "lookup.mileageException.message.update.success": "Current data with ID {uid} has been updated",
   "lookup.mileageException.message.update.failure": "Unable to process your submission",
-  "lookup.mileageException.message.delete.success": "Current {uid} has been deleted",
+  "lookup.mileageException.message.delete.success": "Current data with ID {uid} has been deleted",
   "lookup.mileageException.message.delete.failure": "Unable to process your submission",
 
   "lookup.mileageException.field.info.title": "Detail Mileage Exception",

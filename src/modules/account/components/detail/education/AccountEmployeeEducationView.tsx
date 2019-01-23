@@ -1,5 +1,6 @@
 import { IEmployeeEducation } from '@account/classes/response/employeeEducation';
 import { AccountEmployeeEducationHeaderTable } from '@account/classes/types';
+import { AccountEmployeeTabs } from '@account/classes/types/AccountEmployeeTabs';
 import AccountEmployeeEducationEditor from '@account/components/editor/AccountEmployeeEducationEditor';
 import { accountMessage } from '@account/locales/messages/accountMessage';
 import AppMenu from '@constants/AppMenu';
@@ -42,8 +43,8 @@ const config: SingleConfig<IEmployeeEducation, AccountEmployeeEducationProps> = 
   page: (props: AccountEmployeeEducationProps) => ({
     uid: AppMenu.Account,
     parentUid: AppMenu.Lookup,
-    title: props.intl.formatMessage(accountMessage.employee.page.detailTitle),
-    description: props.intl.formatMessage(accountMessage.employee.page.detailSubHeader),
+    title: props.intl.formatMessage(accountMessage.shared.page.detailTitle, { state: 'Employee'}),
+    description: props.intl.formatMessage(accountMessage.shared.page.detailSubHeader),
   }),
 
   // parent url
@@ -81,9 +82,8 @@ const config: SingleConfig<IEmployeeEducation, AccountEmployeeEducationProps> = 
     }
   },
   onUpdated: (states: AccountEmployeeEducationProps, callback: SingleHandler) => {
-    const { isLoading, response } = states.accountEmployeeEducationState.all;
+    const { response } = states.accountEmployeeEducationState.all;
     
-    callback.handleLoading(isLoading);
     callback.handleResponse(response);
   },
 };
@@ -141,7 +141,7 @@ export const AccountEmployeeEducationView: React.SFC<
   const renderEducation = (data: IEmployeeEducation[], metadata: IBaseMetadata) => {
     return (
       <Fade in={!isLoading} timeout={1000} mountOnEnter unmountOnExit>
-        <Paper square>
+        <Paper square className={classes.rootTable}>
           <Table>
             <TableHead>
               <TableRow>
@@ -186,10 +186,10 @@ export const AccountEmployeeEducationView: React.SFC<
                   onClose={handleMenuClose}
                 >
                   <MenuItem onClick={() => handleEdit('update')}>
-                    {props.intl.formatMessage(accountMessage.education.option.modify)}
+                    {props.intl.formatMessage(accountMessage.shared.option.modify)}
                   </MenuItem>
                   <MenuItem onClick={() => handleEdit('delete')}>
-                    {props.intl.formatMessage(accountMessage.education.option.remove)}
+                    {props.intl.formatMessage(accountMessage.shared.option.remove)}
                   </MenuItem> 
                 </Menu>
             </TableBody>
@@ -221,7 +221,7 @@ export const AccountEmployeeEducationView: React.SFC<
           className={props.classes.flex}
         >
           {
-            props.isLoading &&
+            isLoading &&
             <FormattedMessage {...layoutMessage.text.loading} />
           }
         </Typography>
@@ -257,7 +257,7 @@ export const AccountEmployeeEducationView: React.SFC<
   return (
     <React.Fragment>
       <DetailPage
-        tab={2}
+        tab2={AccountEmployeeTabs.education}        
       >
         {renderAction}
         <SinglePage

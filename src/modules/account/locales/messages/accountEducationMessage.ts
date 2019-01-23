@@ -2,48 +2,6 @@ import { defineMessages } from 'react-intl';
 
 const prefix = 'account.education';
 
-// page
-export const accountEducationPage = defineMessages({
-  newTitle: { id: `${prefix}.page.new.title`},
-  newSubHeader: { id: `${prefix}.page.new.subHeader`},
-  modifyTitle: { id: `${prefix}.page.modify.title`},
-  modifySubHeader: { id: `${prefix}.page.modify.subHeader`},
-  deleteTitle: { id: `${prefix}.page.delete.title`},
-  deleteSubHeader: { id: `${prefix}.page.delete.subHeader`},
-});
-
-// option
-export const accountEducationOption = defineMessages({
-  new: { id: `${prefix}.option.new` },
-  modify: { id: `${prefix}.option.modify` },
-  remove: { id: `${prefix}.option.remove` }
-});
-
-// section
-export const accountEducationSection = defineMessages({
-  educationTitle: { id: `${prefix}.section.education.title`},
-  educationSubHeader: { id: `${prefix}.section.education.subHeader`}
-});
-
-// messages
-export const accountEducationMessage = defineMessages({
-  emptyProps: { id: `${prefix}.message.emptyProps` },
-  createSuccess: { id: `${prefix}.message.create.success` },
-  createFailure: { id: `${prefix}.message.create.failure` },
-  updateSuccess: { id: `${prefix}.message.update.success` },
-  updateFailure: { id: `${prefix}.message.update.failure` },
-  deleteSuccess: { id: `${prefix}.message.delete.success` },
-  deleteFailure: { id: `${prefix}.message.delete.failure` },
-});
-
-// confirmation
-export const accountEducationConfirm = defineMessages({
-  createTitle: { id: `${prefix}.confirm.create.title` },
-  createDescription: { id: `${prefix}.confirm.create.subHeader` },
-  modifyTitle: { id: `${prefix}.confirm.modify.title` },
-  modifyDescription: { id: `${prefix}.confirm.modify.subHeader` },
-});
-
 // field
 export const accountEducationField = defineMessages({
   uid: { id: `${prefix}.field.uid`},
