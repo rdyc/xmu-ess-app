@@ -182,13 +182,13 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
         <React.Fragment>
           <Button
             size="small"
-            onClick={() => this.props.history.push('/lookup/leaves/form', { companyUid: item.companyUid, uid: item.uid })}
+            onClick={() => this.props.history.push('/lookup/leaves/form', { uid: item.uid })}
           >
             <FormattedMessage {...layoutMessage.action.modify} />
           </Button>
           <Button
             size="small"
-            onClick={() => this.props.history.push(`/lookup/leaves/${item.companyUid}/${item.uid}`)}
+            onClick={() => this.props.history.push(`/lookup/leaves/${item.uid}`, {companyUid: item.companyUid})}
           >
             <FormattedMessage {...layoutMessage.action.details} />
           </Button>

@@ -4,5 +4,4 @@ export enum LeaveRequestField {
   start = 'Start Date',
   end = 'End Date',
   reason = 'Reason',
-  statusType = 'Status',
 }
