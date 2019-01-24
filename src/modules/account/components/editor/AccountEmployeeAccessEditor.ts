@@ -149,49 +149,32 @@ const handlerCreators: HandleCreators<AccountEmployeeAccessEditorProps, OwnHandl
     return null;
   },
   handleSubmitSuccess: (props: AccountEmployeeAccessEditorProps) => (response: IEmployeeAccess) => {
-    const { formMode, intl, stateUpdate, employeeUid } = props;
+    const { formMode, intl, employeeUid, handleDialogClose } = props;
     const { alertAdd } = props.layoutDispatch;
-    const { loadListRequest } = props.accountEmployeeAccessDispatch;
+    const { loadAllRequest } = props.accountEmployeeAccessDispatch;
     
     let message: string = '';
 
     if (formMode === FormMode.New) {
-      message = intl.formatMessage(accountMessage.access.message.createSuccess);
+      message = intl.formatMessage(accountMessage.shared.message.createSuccess, { state: 'Multi Company Access', uid: response.uid });
     }
 
     if (formMode === FormMode.Edit) {
-      message = intl.formatMessage(accountMessage.access.message.updateSuccess);
+      message = intl.formatMessage(accountMessage.shared.message.updateSuccess, { state: 'Multi Company Access', uid: response.uid });
     }
 
     if (formMode === FormMode.Delete) {
-      message = intl.formatMessage(accountMessage.access.message.deleteSuccess);
+      message = intl.formatMessage(accountMessage.shared.message.deleteSuccess, { state: 'Multi Company Access' });
     }
 
-    stateUpdate({
-      isOpenDialog: false,
-      formMode: undefined,
-      accessUid: undefined,      
-      initialValues: {
-        information: {
-          uid: undefined,
-          companyUid: undefined,
-          positionUid: undefined,
-          roleUid: undefined,
-          unitType: undefined,
-          departmentType: undefined,
-          levelType: undefined,
-          start: undefined,
-          end: null,
-        },
-      },
-    });
+    handleDialogClose();
 
     alertAdd({
       message,
       time: new Date()
     });
 
-    loadListRequest({
+    loadAllRequest({
       employeeUid,
       filter: {
         direction: 'ascending'
@@ -215,15 +198,15 @@ const handlerCreators: HandleCreators<AccountEmployeeAccessEditorProps, OwnHandl
       let message: string = '';
 
       if (formMode === FormMode.New) {
-        message = intl.formatMessage(accountMessage.access.message.createFailure);
+        message = intl.formatMessage(accountMessage.shared.message.createFailure);
       }
 
       if (formMode === FormMode.Edit) {
-        message = intl.formatMessage(accountMessage.access.message.updateFailure);
+        message = intl.formatMessage(accountMessage.shared.message.updateFailure);
       }
 
       if (formMode === FormMode.Delete) {
-        message = intl.formatMessage(accountMessage.access.message.deleteFailure);
+        message = intl.formatMessage(accountMessage.shared.message.deleteFailure);
       }
 
       alertAdd({

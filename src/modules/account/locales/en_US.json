@@ -19,7 +19,7 @@
   "account.shared.message.create.failure": "Unable to process your submission",
   "account.shared.message.update.success": "{state} Data with ID {uid} has been updated",
   "account.shared.message.update.failure": "Unable to process your submission",
-  "account.shared.message.delete.success": "{state} Data with ID {uid} has been deleted",
+  "account.shared.message.delete.success": "{state} Data has been deleted",
   "account.shared.message.delete.failure": "Unable to process your submission",
 
   "account.shared.field.no": "No",

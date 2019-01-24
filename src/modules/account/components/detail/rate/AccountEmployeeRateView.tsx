@@ -81,9 +81,8 @@ const config: SingleConfig<IEmployeeRate, AccountEmployeeRateProps> = {
     }
   },
   onUpdated: (states: AccountEmployeeRateProps, callback: SingleHandler) => {
-    const { isLoading, response } = states.accountEmployeeRateState.all;
+    const { response } = states.accountEmployeeRateState.all;
     
-    callback.handleLoading(isLoading);
     callback.handleResponse(response);
   },
 };
@@ -218,7 +217,7 @@ export const AccountEmployeeRateView: React.SFC<
           className={props.classes.flex}
         >
           {
-            props.isLoading &&
+            isLoading &&
             <FormattedMessage {...layoutMessage.text.loading} />
           }
         </Typography>

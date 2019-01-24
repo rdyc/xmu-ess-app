@@ -99,7 +99,12 @@ const handlerCreators: HandleCreators<AccountEmployeeRateProps, OwnHandlers> = {
       rateUid: undefined,
       isOpenMenu: false,
       rateItemIndex: undefined,
-      initialValues: undefined
+      initialValues: {
+        information: {
+          uid: undefined,
+          value: 0
+        },
+      },
     });
   },
   handleDialogClose: (props: AccountEmployeeRateProps) => () => {
@@ -108,7 +113,12 @@ const handlerCreators: HandleCreators<AccountEmployeeRateProps, OwnHandlers> = {
     stateUpdate({
       isOpenDialog: false,
       formMode: undefined,
-      editAction: undefined
+      initialValues: {
+        information: {
+          uid: undefined,
+          value: 0
+        },
+      },
     });
   },
   handleEdit: (props: AccountEmployeeRateProps) => () => {

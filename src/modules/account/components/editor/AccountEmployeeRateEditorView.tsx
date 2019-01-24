@@ -15,15 +15,6 @@ export const AccountEmployeeRateEditorView: React.SFC<AccountEmployeeRateEditorP
   const ref = React.createRef<FormInstance<any, any, any>>();
   const isMobile = isWidthDown('sm', props.width);
 
-  const dialogTitle = () => {
-    switch (formMode) {
-      case FormMode.Edit: return accountMessage.access.dialog.modifyTitle;
-      case FormMode.Delete: return accountMessage.access.dialog.deleteTitle;
-
-      default: return accountMessage.access.dialog.createTitle;
-    }
-  };
-
   const renderDialog = (
     <Dialog
       open={isOpenDialog}
@@ -32,7 +23,7 @@ export const AccountEmployeeRateEditorView: React.SFC<AccountEmployeeRateEditorP
     >
       <DialogTitle disableTypography>
         <Typography variant="title" color="primary">
-          {intl.formatMessage(dialogTitle())}
+          {intl.formatMessage(accountMessage.rate.dialog.modifyTitle)}
         </Typography>
       </DialogTitle>
 

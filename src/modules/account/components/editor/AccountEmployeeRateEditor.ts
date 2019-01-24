@@ -116,7 +116,7 @@ const handlerCreators: HandleCreators<AccountEmployeeRateEditorProps, OwnHandler
     return null;
   },
   handleSubmitSuccess: (props: AccountEmployeeRateEditorProps) => (response: IEmployeeRate) => {
-    const { formMode, intl, stateUpdate, employeeUid } = props;
+    const { formMode, intl, employeeUid, handleDialogClose } = props;
     const { alertAdd } = props.layoutDispatch;
     const { loadAllRequest } = props.accountEmployeeRateDispatch;
     
@@ -125,17 +125,7 @@ const handlerCreators: HandleCreators<AccountEmployeeRateEditorProps, OwnHandler
       message = intl.formatMessage(accountMessage.shared.message.updateSuccess, {state: 'Rate', uid: response.uid});
     }
 
-    stateUpdate({
-      isOpenDialog: false,
-      formMode: undefined,
-      accessUid: undefined,      
-      initialValues: {
-        information: {
-          uid: undefined,
-          value: 0,
-        },
-      },
-    });
+    handleDialogClose();
 
     alertAdd({
       message,
@@ -145,7 +135,7 @@ const handlerCreators: HandleCreators<AccountEmployeeRateEditorProps, OwnHandler
     loadAllRequest({
       employeeUid,
       filter: {
-        direction: 'decending'
+        direction: 'descending'
       }
     });
     
