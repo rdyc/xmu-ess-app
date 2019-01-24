@@ -9,6 +9,12 @@ export const accountSharedOption = defineMessages({
   remove: { id: `${prefix}.option.remove` }
 });
 
+// field
+export const accountSharedField = defineMessages({
+  no: {id: `${prefix}.field.no`},
+  action: {id: `${prefix}.field.action`},
+});
+
 // page
 export const accountSharedPage = defineMessages({
   listTitle: { id: `${prefix}.page.list.title`},

@@ -33,6 +33,13 @@ import {
   accountFamilyFieldHelperFor 
 } from './accountFamilyMessage';
 import {
+  accountRateDialog,
+  accountRateField,
+  accountRateFieldHelperFor,
+  accountRateMessage
+} from './accountRateMessage';
+import {
+  accountSharedField,
   accountSharedMessage,
   accountSharedOption,
   accountSharedPage
@@ -63,6 +70,7 @@ export const accountMessage = {
   shared: {
     option: accountSharedOption,
     page: accountSharedPage,
+    field: accountSharedField,
     message: accountSharedMessage
   },
   training: {
@@ -73,6 +81,12 @@ export const accountMessage = {
     section: accountEmployeeTrainingSection,
     option: accountEmployeeTrainingOption,
     page: accountEmployeeTrainingPage
+  },
+  rate: {
+    message: accountRateMessage,
+    dialog: accountRateDialog,
+    field: accountRateField,
+    fieldFor: accountRateFieldHelperFor
   },
   family: {
     field: accountFamilyField,

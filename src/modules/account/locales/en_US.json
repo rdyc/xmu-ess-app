@@ -19,11 +19,41 @@
   "account.shared.message.create.failure": "Unable to process your submission",
   "account.shared.message.update.success": "{state} Data with ID {uid} has been updated",
   "account.shared.message.update.failure": "Unable to process your submission",
-  "account.shared.message.delete.success": "{state} Data with ID {uid} has been deleted",
+  "account.shared.message.delete.success": "{state} Data has been deleted",
   "account.shared.message.delete.failure": "Unable to process your submission",
+
+  "account.shared.field.no": "No",
+  "account.shared.field.action": "Actions",
 
   "account.access.message.greeting": "Hi {name}, Welcome to TESSA",
   "account.access.message.selection": "Please select your company access",
+
+  "account.employee.message.emptyProps": "Some props are empty",
+  "account.employee.message.create.success": "New Employee Data has been created",
+  "account.employee.message.create.failure": "Unable to process your submission",
+  "account.employee.message.update.success": "Current site has been updated",
+  "account.employee.message.update.failure": "Unable to process your submission",
+  "account.employee.message.delete.success": "Current {uid} has been deleted",
+  "account.employee.message.delete.failure": "Unable to process your submission",
+
+  "account.employee.page.list.title": "Employee",
+  "account.employee.page.list.subHeader": " ",
+  "account.employee.page.detail.title": "Employee Details",
+  "account.employee.page.detail.subHeader": " ",
+  "account.employee.page.new.title": "New Employee",
+  "account.employee.page.new.subHeader": " ",
+  "account.employee.page.modify.title": "Modify Employee",
+  "account.employee.page.modify.subHeader": " ",
+
+  "account.employee.tab.detail": "Details",
+  "account.employee.tab.note": "Notes",
+  "account.employee.tab.history": "Multi Access History",
+  "account.employee.tab.education": "Educations",
+  "account.employee.tab.family": "Family Structure",
+  "account.employee.tab.experience": "Job Experience",
+  "account.employee.tab.training": "Training and Certification",
+  "account.employee.tab.access": "Multi Company Access",
+  "account.employee.tab.rate": "Employee Rate",
 
   "account.employee.filter.company": "Company Name",
   "account.employee.filter.role": "Role Name",
@@ -335,6 +365,28 @@
   "account.access.field.end": "End Date",
   "account.access.field.end.placeholder": "Please Select End Date",
 
+  "account.education.option.new": "New",
+  "account.education.option.modify": "Modify",
+  "account.education.option.remove": "Delete",
+
+  "account.rate.message.emptyProps": "Some props are empty",
+  "account.rate.message.create.success": "New Employee Rate has been created",
+  "account.rate.message.create.failure": "Unable to process your submission",
+
+  "account.rate.dialog.modify.title": "Modify Rate",
+  "account.rate.dialog.modify.subHeader": " ",
+
+  "account.rate.field.uid": "Rate ID",
+
+  "account.rate.field.value": "Employee Rate",
+  "account.rate.field.value.required": "Employee Rate is Required",
+  "account.rate.field.value.placeholder": "Type the Employee Rate Value",
+
+  "account.rate.field.isActive": "Is Active",
+  "account.rate.field.isActive.true": "Current Rate",
+  "account.rate.field.isActive.false": "Inactive Rate",
+
+  "account.rate.field.created": "Created Date",
   "account.family.field.uid": "Employee Education ID",
   "account.family.field.uid.placeholder": "Employee Education ID",
 
