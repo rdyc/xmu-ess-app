@@ -12,19 +12,19 @@ export const accountExperienceField = defineMessages({
 
   company: { id: `${prefix}.field.company`},
   companyPlaceholder: { id: `${prefix}.field.company.placeholder`},
-  companyRequired: { id: `${prefix}.field.company.placeholder`},
+  companyRequired: { id: `${prefix}.field.company.required`},
 
   position: { id: `${prefix}.field.position`},
   positionPlaceholder: { id: `${prefix}.field.position.placeholder`},
-  positionRequired: { id: `${prefix}.field.position.placeholder`},
+  positionRequired: { id: `${prefix}.field.position.required`},
 
   start: { id: `${prefix}.field.start`},
   startPlaceholder: { id: `${prefix}.field.start.placeholder`},
-  startRequired: { id: `${prefix}.field.start.placeholder`},
+  startRequired: { id: `${prefix}.field.start.required`},
 
   end: { id: `${prefix}.field.end`},
   endPlaceholder: { id: `${prefix}.field.end.placeholder`},
-  endRequired: { id: `${prefix}.field.end.placeholder`},
+  endRequired: { id: `${prefix}.field.end.required`},
 });
 
 // helper

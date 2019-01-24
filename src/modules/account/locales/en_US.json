@@ -34,125 +34,125 @@
   "account.employee.field.uid.placeholder": "Employee ID",
 
   "account.employee.field.company": "Company",
-  "account.employee.field.company.placeholder": "Company",
+  "account.employee.field.company.placeholder": "Select a company",
   "account.employee.field.company.required": "Company is required",
 
   "account.employee.field.name": "Name",
-  "account.employee.field.name.placeholder": "Name",
+  "account.employee.field.name.placeholder": "Type any name",
   "account.employee.field.name.required": "Name is required",
 
   "account.employee.field.nik": "NIK",
-  "account.employee.field.nik.placeholder": "NIK",
+  "account.employee.field.nik.placeholder": "Type any NIK number",
   "account.employee.field.nik.required": "NIK is required",
 
   "account.employee.field.email": "Personal Email",
-  "account.employee.field.email.placeholder": "Personal Email",
+  "account.employee.field.email.placeholder": "Type any personal email",
   "account.employee.field.email.required": "Personal Email is required",
 
   "account.employee.field.phone": "Phone",
-  "account.employee.field.phone.placeholder": "Phone",
+  "account.employee.field.phone.placeholder": "Type any phone number",
   "account.employee.field.phone.required": "Phone is required",
 
   "account.employee.field.joinDate": "Join Date",
-  "account.employee.field.joinDate.placeholder": "Join Date",
+  "account.employee.field.joinDate.placeholder": "Select join date",
   "account.employee.field.joinDate.required": "Join Date is required",
 
   "account.employee.field.inactiveDate": "Date inActive",
-  "account.employee.field.inactiveDate.placeholder": "Date inActive",
+  "account.employee.field.inactiveDate.placeholder": "Select in active date",
 
   "account.employee.field.employment": "Employment Status",
-  "account.employee.field.employment.placeholder": "Employment Status",
+  "account.employee.field.employment.placeholder": "Select a employment status",
   "account.employee.field.employment.required": "Employment Status is required",
 
   "account.employee.field.rate": "Rate",
-  "account.employee.field.rate.placeholder": "Rate",
+  "account.employee.field.rate.placeholder": "Type a rate",
 
   "account.employee.field.gender": "Gender",
-  "account.employee.field.gender.placeholder": "Gender",
+  "account.employee.field.gender.placeholder": "Select a gender",
   "account.employee.field.gender.required": "Gender is required",
 
   "account.employee.field.birthPlace": "Birth Place",
-  "account.employee.field.birthPlace.placeholder": "Birth Place",
+  "account.employee.field.birthPlace.placeholder": "Type any birth place",
   "account.employee.field.birthPlace.required": "Birth Place is required",
 
   "account.employee.field.birthDate": "Birth Date",
-  "account.employee.field.birthDate.placeholder": "Birth Date",
+  "account.employee.field.birthDate.placeholder": "Select a birth date",
   "account.employee.field.birthDate.required": "Birth Date is required", 
 
   "account.employee.field.blood": "Blood Type",
-  "account.employee.field.blood.placeholder": "Blood Type",
+  "account.employee.field.blood.placeholder": "Select a blood type",
   "account.employee.field.blood.required": "Blood Type is required",
 
   "account.employee.field.ktp": "KTP",
-  "account.employee.field.ktp.placeholder": "KTP",
+  "account.employee.field.ktp.placeholder": "Type any KTP number",
   "account.employee.field.ktp.required": "KTP is required",
 
   "account.employee.field.npwp": "NPWP",
-  "account.employee.field.npwp.placeholder": "NPWP",
+  "account.employee.field.npwp.placeholder": "Type any NPWP number",
   "account.employee.field.npwp.required": "NPWP is required",
 
   "account.employee.field.ptkp": "PTKP Status",
-  "account.employee.field.ptkp.placeholder": "PTKP Status",
+  "account.employee.field.ptkp.placeholder": "Select a PTKP status",
   "account.employee.field.ptkp.required": "PTKP Status is required",
 
   "account.employee.field.image": "Employee Photo",
-  "account.employee.field.image.placeholder": "Employee Photo",
+  "account.employee.field.image.placeholder": "Select a employee photo",
   "account.employee.field.image.required": "Employee Photo is required",
 
   "account.employee.field.religion": "Religion",
-  "account.employee.field.religion.placeholder": "Religion",
+  "account.employee.field.religion.placeholder": "Select a religion",
   "account.employee.field.religion.required": "Religion is required",
 
   "account.employee.field.kartuKeluarga": "Kartu Keluarga",
-  "account.employee.field.kartuKeluarga.placeholder": "Kartu Keluarga",
+  "account.employee.field.kartuKeluarga.placeholder": "Type any Kartu Keluarga number",
   "account.employee.field.kartuKeluarga.required": "Kartu Keluarga is required",
 
   "account.employee.field.bpjsKetenagakerjaan": "BPJS Ketenagakerjaan",
-  "account.employee.field.bpjsKetenagakerjaan.placeholder": "BPJS Ketenagakerjaan",
+  "account.employee.field.bpjsKetenagakerjaan.placeholder": "Type any BPJS Ketenagakerjaan number",
   "account.employee.field.bpjsKetenagakerjaan.required": "BPJS Ketenagakerjaan is required",
 
   "account.employee.field.bpjsKesehatan": "BPJS Kesehatan",
-  "account.employee.field.bpjsKesehatan.placeholder": "BPJS Kesehatan",
+  "account.employee.field.bpjsKesehatan.placeholder": "Type any BPJS Kesehatan number",
   "account.employee.field.bpjsKesehatan.required": "BPJS Kesehatan is required",
 
   "account.employee.field.mobile": "Mobile",
-  "account.employee.field.mobile.placeholder": "Mobile",
+  "account.employee.field.mobile.placeholder": "Type any mobile phone number",
   "account.employee.field.mobile.required": "Mobile Phone is required",
   
   "account.employee.field.emergencyName": "Emergency Contact Name",
-  "account.employee.field.emergencyName.placeholder": "Emergency Contact Name",
+  "account.employee.field.emergencyName.placeholder": "Type any emergency contact name",
   
   "account.employee.field.emergencyRelation": "Emergency Contact Relation",
-  "account.employee.field.emergencyRelation.placeholder": "Emergency Contact Relation",
+  "account.employee.field.emergencyRelation.placeholder": "Type any emergency contact relation",
   
   "account.employee.field.emergencyPhone1": "Emergency Phone 1",
-  "account.employee.field.emergencyPhone1.placeholder": "Emergency Phone 1",
+  "account.employee.field.emergencyPhone1.placeholder": "Type any emergency phone 1 number",
   
   "account.employee.field.emergencyPhone2": "Emergency Phone 2",
-  "account.employee.field.emergencyPhone2.placeholder": "Emergency Phone 2",
+  "account.employee.field.emergencyPhone2.placeholder": "Type any emergency phone 2 number",
   
   "account.employee.field.companyEmail": "Company Email",
-  "account.employee.field.companyEmail.placeholder": "Company Email",
+  "account.employee.field.companyEmail.placeholder": "Type any company email",
   "account.employee.field.companyEmail.required": "Company Email is required",
 
   "account.employee.field.addressKtp": "Address (KTP)",
-  "account.employee.field.addressKtp.placeholder": "Address (KTP)",
+  "account.employee.field.addressKtp.placeholder": "Type any address (KTP)",
   "account.employee.field.addressKtp.required": "Address (KTP) is required",
   
   "account.employee.field.addressNpwp": "Address (NPWP)",
-  "account.employee.field.addressNpwp.placeholder": "Address (NPWP)",
+  "account.employee.field.addressNpwp.placeholder": "Type any address (NPWP)",
   "account.employee.field.addressNpwp.required": "Address (NPWP) is required",
 
   "account.employee.field.bca.number": "BCA Account Number",
-  "account.employee.field.bca.number.placeholder": "BCA Account Number",
+  "account.employee.field.bca.number.placeholder": "Type any BCA account number",
   "account.employee.field.bca.number.required": "BCA Account Number is required",
   
   "account.employee.field.bca.name": "BCA Account Name",
-  "account.employee.field.bca.name.placeholder": "BCA Account Name",
+  "account.employee.field.bca.name.placeholder": "Type any BCA account name",
   "account.employee.field.bca.name.required": "BCA Account Name is required",
   
   "account.employee.field.bca.branch": "BCA Account Branch",
-  "account.employee.field.bca.branch.placeholder": "BCA Account Branch",
+  "account.employee.field.bca.branch.placeholder": "Type any BCA account branch",
 
   "account.employee.confirm.create.title": "Create Account",
   "account.employee.confirm.create.subHeader": "You are about to create a new employee data. Do you want to continue?",
@@ -193,27 +193,27 @@
   "account.employee.training.field.employeeUid.placeholder": "Employee ID",
 
   "account.employee.training.field.name": "Training Name",
-  "account.employee.training.field.name.placeholder": "Training Name",
+  "account.employee.training.field.name.placeholder": "Type any Training Name",
   "account.employee.training.field.name.required": "Training Name is required",
 
   "account.employee.training.field.start": "Training Start Date",
-  "account.employee.training.field.start.placeholder": "Training Start Date",
+  "account.employee.training.field.start.placeholder": "Select a Training Start Date",
   "account.employee.training.field.start.required": "Training Start Date is required",
 
   "account.employee.training.field.end": "Training End Date",
-  "account.employee.training.field.end.placeholder": "Training End Date",
+  "account.employee.training.field.end.placeholder": "Select a Training End Date",
   "account.employee.training.field.end.required": "Training End Date is required",
 
   "account.employee.training.field.organizer": "Training Organizer",
-  "account.employee.training.field.organizer.placeholder": "Training Organizer",
+  "account.employee.training.field.organizer.placeholder": "Type any Training Organizer",
   "account.employee.training.field.organizer.required": "Training Organizer is required",
 
   "account.employee.training.field.trainingType": "Training Type",
-  "account.employee.training.field.trainingType.placeholder": "Training Type",
+  "account.employee.training.field.trainingType.placeholder": "Select a Training Type",
   "account.employee.training.field.trainingType.required": "Training Type is required",
 
   "account.employee.training.field.certificationType": "Certificate Type",
-  "account.employee.training.field.certificationType.placeholder": "Certificate Type",
+  "account.employee.training.field.certificationType.placeholder": "Select a Certificate Type",
   "account.employee.training.field.certificationType.required": "Certificate Type is required",
 
   "account.employee.training.confirm.create.title": "Create Training",
@@ -244,22 +244,22 @@
 
   "account.education.field.degree": "Education Degree",
   "account.education.field.degree.required": "Education Degree is required",
-  "account.education.field.degree.placeholder": "Education Degree",
+  "account.education.field.degree.placeholder": "Select a Education Degree",
 
   "account.education.field.institution": "Institution Name",
   "account.education.field.institution.required": "Institution Name is required",
-  "account.education.field.institution.placeholder": "Institution Name",
+  "account.education.field.institution.placeholder": "Type any Institution Name",
 
   "account.education.field.major": "Education Major",
   "account.education.field.major.required": "Education Major is required",
-  "account.education.field.major.placeholder": "Education Major",
+  "account.education.field.major.placeholder": "Type any Education Major",
 
   "account.education.field.start": "Start Year",
   "account.education.field.start.required": "Start Year is required",
-  "account.education.field.start.placeholder": "Start Year",
+  "account.education.field.start.placeholder": "Select a Start Year",
   
   "account.education.field.end": "End Year",
-  "account.education.field.end.placeholder": "End Year",
+  "account.education.field.end.placeholder": "Select a End Year",
 
   "account.experience.field.uid": "Employee Education ID",
   "account.experience.field.uid.placeholder": "Employee Education ID",
@@ -269,19 +269,19 @@
 
   "account.experience.field.company": "Company Name",
   "account.experience.field.company.required": "Company Name is required",
-  "account.experience.field.company.placeholder": "Company Name",
+  "account.experience.field.company.placeholder": "Type any Company Name",
 
   "account.experience.field.position": "Position Name",
   "account.experience.field.position.required": "Position Name is required",
-  "account.experience.field.position.placeholder": "Position Name",
+  "account.experience.field.position.placeholder": "Type any Position Name",
 
   "account.experience.field.start": "Start Year",
   "account.experience.field.start.required": "Start Year is required",
-  "account.experience.field.start.placeholder": "Start Year",
+  "account.experience.field.start.placeholder": "Select a Start Year",
   
   "account.experience.field.end": "End Year",
   "account.experience.field.end.required": "End Year is required",
-  "account.experience.field.end.placeholder": "End Year",
+  "account.experience.field.end.placeholder": "Select a End Year",
 
   "account.access.message.emptyProps": "Some props are empty",
   "account.access.message.create.success": "New Employee Access Data has been created",
@@ -333,5 +333,30 @@
   "account.access.field.start.placeholder": "Please Select Start Date",
 
   "account.access.field.end": "End Date",
-  "account.access.field.end.placeholder": "Please Select End Date"
+  "account.access.field.end.placeholder": "Please Select End Date",
+
+  "account.family.field.uid": "Employee Education ID",
+  "account.family.field.uid.placeholder": "Employee Education ID",
+
+  "account.family.field.employeeUid": "Employee ID",
+  "account.family.field.employeeUid.placeholder": "Employee ID",
+
+  "account.family.field.familyType": "Family Status",
+  "account.family.field.familyType.required": "Family Status is required",
+  "account.family.field.familyType.placeholder": "Select a Family Status",
+
+  "account.family.field.fullName": "Name",
+  "account.family.field.fullName.required": "Name is required",
+  "account.family.field.fullName.placeholder": "Type any Name",
+
+  "account.family.field.genderType": "Gender",
+  "account.family.field.genderType.required": "Gender is required",
+  "account.family.field.genderType.placeholder": "Select a Gender",
+  
+  "account.family.field.birthPlace": "Birth Place",
+  "account.family.field.birthPlace.required": "Birth Place is required",
+  "account.family.field.birthPlace.placeholder": "Type any Birth Place",
+
+  "account.family.field.birthDate": "Birth Date",
+  "account.family.field.birthDate.placeholder": "Select a Birth Date"
 }

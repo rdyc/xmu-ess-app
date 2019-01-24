@@ -28,6 +28,10 @@ import {
   accountExperienceField,
   accountExperienceFieldHelperFor
 } from './accountExperienceMessage';
+import { 
+  accountFamilyField, 
+  accountFamilyFieldHelperFor 
+} from './accountFamilyMessage';
 import {
   accountSharedMessage,
   accountSharedOption,
@@ -69,5 +73,9 @@ export const accountMessage = {
     section: accountEmployeeTrainingSection,
     option: accountEmployeeTrainingOption,
     page: accountEmployeeTrainingPage
+  },
+  family: {
+    field: accountFamilyField,
+    fieldFor: accountFamilyFieldHelperFor,
   }
 };

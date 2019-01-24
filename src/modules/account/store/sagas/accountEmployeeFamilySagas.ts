@@ -101,7 +101,7 @@ function* watchByIdRequest() {
   const worker = (action: ReturnType<typeof accountEmployeeFamilyGetByIdRequest>) => {
     return saiyanSaga.fetch({
       method: 'get',
-      path: `/v1/account/employees/${action.payload.employeeUid}/families${action.payload.familyUid}`,
+      path: `/v1/account/employees/${action.payload.employeeUid}/families/${action.payload.familyUid}`,
       successEffects: (response: IApiResponse) => ([
         put(accountEmployeeFamilyGetByIdSuccess(response.body)),
       ]), 
