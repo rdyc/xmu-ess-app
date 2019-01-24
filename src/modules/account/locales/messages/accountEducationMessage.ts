@@ -12,19 +12,19 @@ export const accountEducationField = defineMessages({
 
   degree: { id: `${prefix}.field.degree`},
   degreePlaceholder: { id: `${prefix}.field.degree.placeholder`},
-  degreeRequired: { id: `${prefix}.field.degree.placeholder`},
+  degreeRequired: { id: `${prefix}.field.degree.required`},
 
   institution: { id: `${prefix}.field.institution`},
   institutionPlaceholder: { id: `${prefix}.field.institution.placeholder`},
-  institutionRequired: { id: `${prefix}.field.institution.placeholder`},
+  institutionRequired: { id: `${prefix}.field.institution.required`},
 
   major: { id: `${prefix}.field.major`},
   majorPlaceholder: { id: `${prefix}.field.major.placeholder`},
-  majorRequired: { id: `${prefix}.field.major.placeholder`},
+  majorRequired: { id: `${prefix}.field.major.required`},
 
   start: { id: `${prefix}.field.start`},
   startPlaceholder: { id: `${prefix}.field.start.placeholder`},
-  startRequired: { id: `${prefix}.field.start.placeholder`},
+  startRequired: { id: `${prefix}.field.start.required`},
 
   end: { id: `${prefix}.field.end`},
   endPlaceholder: { id: `${prefix}.field.end.placeholder`},
