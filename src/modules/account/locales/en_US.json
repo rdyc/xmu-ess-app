@@ -383,5 +383,8 @@
   "account.rate.field.value.placeholder": "Type the Employee Rate Value",
 
   "account.rate.field.isActive": "Is Active",
-  "account.rate.field.isActive.true": "Current Rate"
+  "account.rate.field.isActive.true": "Current Rate",
+  "account.rate.field.isActive.false": "Inactive Rate",
+
+  "account.rate.field.created": "Created Date"
 }

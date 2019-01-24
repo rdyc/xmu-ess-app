@@ -14,6 +14,11 @@ export type AccountEmployeeRateFormData = {
 
 interface OwnProps {
   formMode: FormMode;
+  handleDialogClose: () => void;
+  buttonSubmit: string;
+  buttonProcess: string;
+  buttonReset: string;
+  buttonDiscard: string;
 }
 
 interface FormValueProps {

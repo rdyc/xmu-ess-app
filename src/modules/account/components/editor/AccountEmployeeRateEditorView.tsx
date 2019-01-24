@@ -1,7 +1,7 @@
 import { accountMessage } from '@account/locales/messages/accountMessage';
 import { FormMode } from '@generic/types';
 import { layoutMessage } from '@layout/locales/messages';
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Typography } from '@material-ui/core';
+import { Dialog, DialogTitle, Typography } from '@material-ui/core';
 import { isWidthDown } from '@material-ui/core/withWidth';
 import * as React from 'react';
 import { FormInstance } from 'redux-form';
@@ -27,33 +27,20 @@ export const AccountEmployeeRateEditorView: React.SFC<AccountEmployeeRateEditorP
         </Typography>
       </DialogTitle>
 
-      <DialogContent>
-        <AccountEmployeeRateForm 
-          formMode={formMode || FormMode.New}
-          ref={ref}
-          initialValues={initialValues}
-          validate={handleValidate}
-          onSubmit={handleSubmit} 
-          onSubmitSuccess={handleSubmitSuccess}
-          onSubmitFail={handleSubmitFail}
-        />
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={() => props.handleDialogClose()} color="secondary">
-          {intl.formatMessage(layoutMessage.action.discard)}
-        </Button>
-
-        {
-          formMode !== FormMode.Delete &&
-          <Button type="button" color="secondary" onClick={() => ref.current && ref.current.reset()} >
-            {intl.formatMessage(layoutMessage.action.reset)}
-          </Button>
-        }
-
-        <Button type="submit" color="secondary" onClick={() => ref.current && ref.current.submit()}>
-          {intl.formatMessage(props.submitting ? layoutMessage.text.processing : layoutMessage.action.submit)}
-        </Button>
-      </DialogActions>
+      <AccountEmployeeRateForm 
+        formMode={formMode || FormMode.New}
+        ref={ref}
+        initialValues={initialValues}
+        validate={handleValidate}
+        onSubmit={handleSubmit} 
+        onSubmitSuccess={handleSubmitSuccess}
+        onSubmitFail={handleSubmitFail}
+        handleDialogClose={props.handleDialogClose}
+        buttonDiscard={intl.formatMessage(layoutMessage.action.discard)}
+        buttonProcess={intl.formatMessage(layoutMessage.text.processing)}
+        buttonReset={intl.formatMessage(layoutMessage.action.reset)}
+        buttonSubmit={intl.formatMessage(layoutMessage.action.submit)}
+      />
     </Dialog>
   );
 

@@ -135,6 +135,7 @@ const handlerCreators: HandleCreators<AccountEmployeeRateEditorProps, OwnHandler
     loadAllRequest({
       employeeUid,
       filter: {
+        orderBy: 'uid',
         direction: 'descending'
       }
     });

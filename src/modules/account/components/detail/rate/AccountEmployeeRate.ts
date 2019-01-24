@@ -189,6 +189,7 @@ const loadData = (props: AccountEmployeeRateProps): void => {
       filter: {
         page,
         size,
+        orderBy: 'uid',
         direction: 'descending',
       }
     });

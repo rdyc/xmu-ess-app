@@ -62,5 +62,6 @@ export enum AccountEmployeeAccessHeaderTable {
 
 export enum AccountEmployeeRateHeaderTable {
   value = 'value',
-  isActive = 'isActive'
+  isActive = 'isActive',
+  created = 'created',
 }

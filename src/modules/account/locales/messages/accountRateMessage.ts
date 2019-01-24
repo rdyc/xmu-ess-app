@@ -22,7 +22,10 @@ export const accountRateField = defineMessages({
   valuePlaceholder: {id: `${fieldPrefix}.value.placeholder`},
 
   isActive: {id: `${fieldPrefix}.isActive`},
-  isActiveTrue: {id: `${fieldPrefix}.isActive.true`}
+  isActiveTrue: {id: `${fieldPrefix}.isActive.true`},
+  isActiveFalse: {id: `${fieldPrefix}.isActive.false`},
+
+  created: {id: `${fieldPrefix}.created`}
 });
 
 export const accountRateFieldHelperFor = (field: string, type: 'fieldName' | 'fieldRequired' | 'fieldPlaceholder') => {
@@ -31,6 +34,7 @@ export const accountRateFieldHelperFor = (field: string, type: 'fieldName' | 'fi
       case 'uid': return accountRateField.uid;
       case 'value': return accountRateField.value;
       case 'isActive': return accountRateField.isActive;
+      case 'created': return accountRateField.created;
 
       default: return {id: field};
     }

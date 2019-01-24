@@ -7,6 +7,7 @@ import AppMenu from '@constants/AppMenu';
 import { IBaseMetadata } from '@generic/interfaces';
 import { SingleConfig, SingleHandler, SinglePage } from '@layout/components/pages';
 import { layoutMessage } from '@layout/locales/messages';
+import { GlobalFormat } from '@layout/types';
 import {
   Fade,
   IconButton,
@@ -71,6 +72,7 @@ const config: SingleConfig<IEmployeeRate, AccountEmployeeRateProps> = {
           filter: {
             page,
             size,
+            orderBy: 'uid',
             direction: 'descending'
           }
         });
@@ -163,7 +165,8 @@ export const AccountEmployeeRateView: React.SFC<
                   <TableRow key={index} selected={item.isActive}>
                     <TableCell>{index + 1}</TableCell>
                     <TableCell>{item.value}</TableCell>
-                    <TableCell>{item.isActive && props.intl.formatMessage(accountMessage.rate.field.isActiveTrue)}</TableCell>
+                    <TableCell>{item.isActive && props.intl.formatMessage(accountMessage.rate.field.isActiveTrue) || props.intl.formatMessage(accountMessage.rate.field.isActiveFalse)}</TableCell>
+                    <TableCell>{props.intl.formatDate(item.changes && item.changes.createdAt || 'N/A', GlobalFormat.Date)}</TableCell>
                     <TableCell>
                       {
                         item.isActive &&
