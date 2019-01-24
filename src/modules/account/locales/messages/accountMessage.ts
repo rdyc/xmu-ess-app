@@ -28,6 +28,10 @@ import {
   accountExperienceField,
   accountExperienceFieldHelperFor
 } from './accountExperienceMessage';
+import { 
+  accountFamilyField, 
+  accountFamilyFieldHelperFor 
+} from './accountFamilyMessage';
 import {
   accountRateDialog,
   accountRateField,
@@ -83,5 +87,9 @@ export const accountMessage = {
     dialog: accountRateDialog,
     field: accountRateField,
     fieldFor: accountRateFieldHelperFor
+  },
+  family: {
+    field: accountFamilyField,
+    fieldFor: accountFamilyFieldHelperFor,
   }
 };
