@@ -32,10 +32,7 @@ const lifecycles: ReactLifeCycleFunctions<AchievementChartProps, {}> = {
 
     if (user) {
       if (!isLoading && !response) {
-        loadRequest({
-          companyUid: user.company.uid,
-          positionUid: user.position.uid,
-        });
+        loadRequest({});
       }
     }
   }

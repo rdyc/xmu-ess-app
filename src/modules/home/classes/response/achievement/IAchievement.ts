@@ -1,4 +1,4 @@
-import { IBaseChanges } from '@generic/interfaces';
+import { IValueResponse } from './IValueResponse';
 
 // import { IAchievementBusinessUnit, IAchievementCompany, IAchievementDepartment, IAchievementSales } from '.';
 
@@ -14,7 +14,5 @@ export interface IAchievement {
   title: string;
   description: string;
   unit: string;
-  data: string[];
-  isActive: boolean;
-  changes: IBaseChanges;
+  valueObject: IValueResponse[];
 }

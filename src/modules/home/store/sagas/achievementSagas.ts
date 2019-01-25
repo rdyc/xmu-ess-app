@@ -8,7 +8,7 @@ function* watchAllFetchRequest() {
   const worker = (action: ReturnType<typeof achievementGetRequest>) => {
     return saiyanSaga.fetch({
       method: 'get',
-      path: `/v1/achievement/charts/${action.payload.companyUid}/${action.payload.positionUid}`,
+      path: `/v1/achievements/list`,
       successEffects: (response: IApiResponse) => [
         put(achievementGetSuccess(response.body)),
       ],
