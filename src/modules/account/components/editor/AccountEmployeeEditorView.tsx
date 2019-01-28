@@ -101,7 +101,6 @@ export const AccountEmployeeEditorView: React.SFC<AccountEmployeeEditorProps> = 
       initialValues.information.inactiveDate = data.inactiveDate;
       initialValues.information.bloodType = data.bloodType;
       initialValues.information.religionType = data.religionType;
-      // initialValues.information.image = data.image;
 
       // bank
       initialValues.bank.citizenNumber = data.citizenNumber;

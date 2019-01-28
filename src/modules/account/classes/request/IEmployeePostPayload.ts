@@ -29,5 +29,5 @@ export interface IEmployeePostPayload {
   emergencyContactRelation?: string | null;
   emergencyContactPhone?: string | null;
   emergencyContactPhoneAdditional?: string | null;
-  image?: File;
+  // image?: File;
 }

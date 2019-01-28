@@ -2,7 +2,6 @@ import { accountMessage } from '@account/locales/messages/accountMessage';
 import { SelectSystem, SelectSystemOption } from '@common/components/select';
 import { FormMode } from '@generic/types';
 import { InputDate } from '@layout/components/input/date';
-import { InputImage } from '@layout/components/input/image';
 import { InputText } from '@layout/components/input/text';
 import { SelectLookupCompany } from '@lookup/components/company/select';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
@@ -156,16 +155,6 @@ const handleCreators: HandleCreators<AccountEmployeeDetailFormProps, OwnHandlers
           label: intl.formatMessage(accountMessage.employee.fieldFor(name, 'fieldName')),
           placeholder: intl.formatMessage(accountMessage.employee.fieldFor(name, 'fieldPlaceholder')),
           component: SelectSystem
-        };
-        break;
-
-        case 'image':
-        fieldProps = {
-          required: true,
-          disabled: false,
-          label: intl.formatMessage(accountMessage.employee.fieldFor(name, 'fieldName')),
-          placeholder: intl.formatMessage(accountMessage.employee.fieldFor(name, 'fieldPlaceholder')),   
-          component: InputImage
         };
         break;
 

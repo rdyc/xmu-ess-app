@@ -1,4 +1,4 @@
-import { Button, Typography } from '@material-ui/core';
+import { Button } from '@material-ui/core';
 import * as React from 'react';
 
 import { InputImageProps } from './InputImage';
@@ -17,7 +17,7 @@ export const InputImageView: React.SFC<InputImageProps> = props => (
           onChange={(e) => e.target.files && props.handleImageChange(e.target.files)}
           style={{ display : 'none'}}
         />
+        {/* <Typography></Typography> */}
       </Button>
-      <Typography>{props.value && props.value.name}</Typography>
     </React.Fragment>
 );
