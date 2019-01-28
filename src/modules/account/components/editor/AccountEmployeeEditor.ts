@@ -67,24 +67,24 @@ const handlerCreators: HandleCreators<AccountEmployeeEditorProps, OwnHandlers> =
   handleValidate: (props: AccountEmployeeEditorProps) => (formData: AccountEmployeeFormData) => { 
     const errors = {
       information: {},
-      bank: {},
-      contact: {}
+      // bank: {},
+      // contact: {}
     };
   
     const requiredFields = [
       'employmentNumber', 'fullName', 'genderType', 'birthPlace', 'dateOfBirth', 
-      'companyUid', 'employmentType', 'joinDate', 'taxType', 'religionType', 'bloodType', 'image'
+      'companyUid', 'employmentType', 'joinDate', 'taxType', 'religionType', 'bloodType'
     ];
   
-    const requiredBank = [
-      'citizenNumber', 'taxNumber', 'familyCardNumber', 
-      'bankAccount', 'bankAccountName', 'bpjsEmploymentNumber', 'bpjsHealthCareNumber'
-    ];
+    // const requiredBank = [
+    //   'citizenNumber', 'taxNumber', 'familyCardNumber', 
+    //   'bankAccount', 'bankAccountName', 'bpjsEmploymentNumber', 'bpjsHealthCareNumber'
+    // ];
 
-    const requiredContact = [
-      'address', 'addressAdditional', 'email',
-      'emailPersonal', 'phone', 'mobilePhone'
-    ];
+    // const requiredContact = [
+    //   'address', 'addressAdditional', 'email',
+    //   'emailPersonal', 'phone', 'mobilePhone'
+    // ];
 
     requiredFields.forEach(field => {
       if ( !formData.information[field] || isNullOrUndefined(formData.information[field]) ) {
@@ -92,17 +92,17 @@ const handlerCreators: HandleCreators<AccountEmployeeEditorProps, OwnHandlers> =
       }
     });
     
-    requiredBank.forEach(field => {
-      if ( !formData.bank[field] || isNullOrUndefined(formData.bank[field]) ) {
-        errors.bank[field] = props.intl.formatMessage(accountMessage.employee.fieldFor(field, 'fieldRequired'));
-      }
-    });
+    // requiredBank.forEach(field => {
+    //   if ( !formData.bank[field] || isNullOrUndefined(formData.bank[field]) ) {
+    //     errors.bank[field] = props.intl.formatMessage(accountMessage.employee.fieldFor(field, 'fieldRequired'));
+    //   }
+    // });
 
-    requiredContact.forEach(field => {
-      if ( !formData.contact[field] || isNullOrUndefined(formData.contact[field]) ) {
-        errors.contact[field] = props.intl.formatMessage(accountMessage.employee.fieldFor(field, 'fieldRequired'));
-      }
-    });
+    // requiredContact.forEach(field => {
+    //   if ( !formData.contact[field] || isNullOrUndefined(formData.contact[field]) ) {
+    //     errors.contact[field] = props.intl.formatMessage(accountMessage.employee.fieldFor(field, 'fieldRequired'));
+    //   }
+    // });
 
     return errors;
   },
@@ -118,7 +118,8 @@ const handlerCreators: HandleCreators<AccountEmployeeEditorProps, OwnHandlers> =
     const payload = {
       ...formData.information,
       ...formData.bank,
-      ...formData.contact
+      ...formData.contact,
+      ...formData.image
     };
 
     // creating
