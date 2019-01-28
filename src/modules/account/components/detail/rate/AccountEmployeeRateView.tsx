@@ -1,11 +1,10 @@
-import { IEmployeeAccess } from '@account/classes/response/employeeAccess';
-import { AccountEmployeeAccessHeaderTable as AccountEmployeeAccessHeaderTable } from '@account/classes/types';
+import { IEmployeeRate } from '@account/classes/response/employeeRate';
+import { AccountEmployeeRateHeaderTable } from '@account/classes/types';
 import { AccountEmployeeTabs } from '@account/classes/types/AccountEmployeeTabs';
-import AccountEmployeeAccessEditor from '@account/components/editor/AccountEmployeeAccessEditor';
+import AccountEmployeeRateEditor from '@account/components/editor/AccountEmployeeRateEditor';
 import { accountMessage } from '@account/locales/messages/accountMessage';
 import AppMenu from '@constants/AppMenu';
 import { IBaseMetadata } from '@generic/interfaces';
-import { FormMode } from '@generic/types';
 import { SingleConfig, SingleHandler, SinglePage } from '@layout/components/pages';
 import { layoutMessage } from '@layout/locales/messages';
 import { GlobalFormat } from '@layout/types';
@@ -17,7 +16,7 @@ import {
   Paper,
   Table,
   TableBody,
-  TableCell, 
+  TableCell,
   TableFooter,
   TableHead,
   TablePagination,
@@ -32,20 +31,19 @@ import {
   KeyboardArrowRight,
   LastPage
 } from '@material-ui/icons';
-import AddCircleIcon from '@material-ui/icons/AddCircle';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import SyncIcon from '@material-ui/icons/Sync';
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { DetailPage } from '../DetailPage';
-import { AccountEmployeeAccessProps } from './AccountEmployeeAccess';
+import { AccountEmployeeRateProps } from './AccountEmployeeRate';
 
-const config: SingleConfig<IEmployeeAccess, AccountEmployeeAccessProps> = {
+const config: SingleConfig<IEmployeeRate, AccountEmployeeRateProps> = {
   // page info
-  page: (props: AccountEmployeeAccessProps) => ({
+  page: (props: AccountEmployeeRateProps) => ({
     uid: AppMenu.Account,
     parentUid: AppMenu.Lookup,
-    title: props.intl.formatMessage(accountMessage.shared.page.detailTitle, { state: 'Employee'}),
+    title: props.intl.formatMessage(accountMessage.shared.page.detailTitle, { state: 'Rate'}),
     description: props.intl.formatMessage(accountMessage.shared.page.detailSubHeader),
   }),
 
@@ -59,22 +57,23 @@ const config: SingleConfig<IEmployeeAccess, AccountEmployeeAccessProps> = {
   hasMore: false,
 
   // events
-  onDataLoad: (props: AccountEmployeeAccessProps, callback: SingleHandler, forceReload?: boolean | false) => {
+  onDataLoad: (props: AccountEmployeeRateProps, callback: SingleHandler, forceReload?: boolean | false) => {
     const { page, size } = props;
     const { user } = props.userState;
-    const { isLoading, request, response } = props.accountEmployeeAccessState.all;
-    const { loadAllRequest } = props.accountEmployeeAccessDispatch;
+    const { isLoading, request, response } = props.accountEmployeeRateState.all;
+    const { loadAllRequest } = props.accountEmployeeRateDispatch;
 
     // when user is set and not loading and has projectUid in route params
     if (user && !isLoading && props.match.params.employeeUid) {
       // when projectUid was changed or response are empty or force to reload
-      if ((request && request.employeeUid !== props.match.params.employeeUid) || !response || forceReload) {
+      if ((request && request.employeeUid !== props.match.params.employeeUid) || !response || forceReload ) {
         loadAllRequest({
           employeeUid: props.match.params.employeeUid,
           filter: {
             page,
             size,
-            direction: 'ascending'
+            orderBy: 'uid',
+            direction: 'descending'
           }
         });
       } else {
@@ -83,21 +82,24 @@ const config: SingleConfig<IEmployeeAccess, AccountEmployeeAccessProps> = {
       }
     }
   },
-  onUpdated: (states: AccountEmployeeAccessProps, callback: SingleHandler) => {
-    const { response } = states.accountEmployeeAccessState.all;
+  onUpdated: (states: AccountEmployeeRateProps, callback: SingleHandler) => {
+    const { response } = states.accountEmployeeRateState.all;
     
     callback.handleResponse(response);
   },
 };
 
-export const AccountEmployeeAccessView: React.SFC<AccountEmployeeAccessProps> = props => {
-  const { page, size, classes, intl } = props;
-  const { handleReload, handleGoToNext, handleGoToPrevious, handleChangePage, handleChangeSize } = props;
-  const { response, isLoading } = props.accountEmployeeAccessState.all;
-  
-  const header = Object.keys(AccountEmployeeAccessHeaderTable).map(key => ({
+export const AccountEmployeeRateView: React.SFC<
+  AccountEmployeeRateProps
+> = props => {
+  const { isOpenMenu, rateItemIndex, page, size, classes } = props;
+  const { handleEdit, handleMenuClose, handleMenuOpen, handleReload, handleGoToNext, handleGoToPrevious, handleChangePage, handleChangeSize } = props;
+
+  const { response, isLoading } = props.accountEmployeeRateState.all;
+
+  const header = Object.keys(AccountEmployeeRateHeaderTable).map(key => ({
     id: key,
-    name: AccountEmployeeAccessHeaderTable[key]
+    name: AccountEmployeeRateHeaderTable[key]
   }));
 
   const handlePage = (_page: any) => {
@@ -137,10 +139,10 @@ export const AccountEmployeeAccessView: React.SFC<AccountEmployeeAccessProps> = 
     </div>
   );
 
-  const renderMultiAccess = (data: IEmployeeAccess[], metadata: IBaseMetadata) => {
+  const renderRate = (data: IEmployeeRate[], metadata: IBaseMetadata) => {
     return (
       <Fade in={!isLoading} timeout={1000} mountOnEnter unmountOnExit>
-        <Paper square className={classes.rootTable}>
+        <Paper square>
           <Table>
             <TableHead>
               <TableRow>
@@ -151,7 +153,7 @@ export const AccountEmployeeAccessView: React.SFC<AccountEmployeeAccessProps> = 
                     numeric={headerIdx.id === 'No' ? true : false}
                     padding="default"
                   >
-                    {intl.formatMessage(accountMessage.access.fieldFor(headerIdx.name, 'fieldName'))}
+                    {headerIdx.name !== 'no' && props.intl.formatMessage(accountMessage.rate.fieldFor(headerIdx.name, 'fieldName')) || 'No'}
                   </TableCell>
                 ))}
                 <TableCell>{props.intl.formatMessage(accountMessage.shared.field.action)}</TableCell>
@@ -160,56 +162,35 @@ export const AccountEmployeeAccessView: React.SFC<AccountEmployeeAccessProps> = 
             <TableBody>
               {data &&
                 data.map((item, index) => (
-                  <TableRow key={index}>
+                  <TableRow key={index} selected={item.isActive}>
                     <TableCell>{index + 1}</TableCell>
+                    <TableCell>{item.value}</TableCell>
+                    <TableCell>{item.isActive && props.intl.formatMessage(accountMessage.rate.field.isActiveTrue) || props.intl.formatMessage(accountMessage.rate.field.isActiveFalse)}</TableCell>
+                    <TableCell>{props.intl.formatDate(item.changes && item.changes.createdAt || 'N/A', GlobalFormat.Date)}</TableCell>
                     <TableCell>
-                      {item.company && item.company.name || 'N/A'}
-                    </TableCell>
-                    <TableCell>
-                      {item.unit && item.unit.value || 'N/A'}
-                    </TableCell>
-                    <TableCell>
-                      {item.department && item.department.value || 'N/A'}
-                    </TableCell>
-                    <TableCell>
-                      {item.level && item.level.value || 'N/A'}
-                    </TableCell>
-                    <TableCell>
-                      {item.role && item.role.name || 'N/A'}
-                    </TableCell>
-                    <TableCell>
-                      {item.position && item.position.name || 'N/A'}
-                    </TableCell>
-                    <TableCell>
-                      {item.start && intl.formatDate(item.start, GlobalFormat.Date) || 'N/A'}
-                    </TableCell>
-                    <TableCell>
-                      {item.end && intl.formatDate(item.end, GlobalFormat.Date) || 'N/A'}
-                    </TableCell>
-                    <TableCell>
-                      <IconButton
-                        id={`access-item-button-${index}`}
-                        color="inherit"
-                        aria-label="More"
-                        onClick={() => props.handleMenuOpen(item, index)}
-                      >
-                        <MoreVertIcon />
-                      </IconButton>
+                      {
+                        item.isActive &&
+                        <IconButton
+                          id={`rate-item-button-${index}`}
+                          color="inherit"
+                          aria-label="More"
+                          onClick={() => handleMenuOpen(item, index)}
+                        >
+                          <MoreVertIcon />
+                        </IconButton>
+                      }
                     </TableCell>
                   </TableRow>
                 ))}
                 <Menu
-                  anchorEl={document.getElementById(`access-item-button-${props.accessIndex}`)} 
-                  open={props.isOpenMenu}
-                  onClose={props.handleMenuClose}
+                  anchorEl={document.getElementById(`rate-item-button-${rateItemIndex}`)}
+                  open={isOpenMenu}
+                  onClose={handleMenuClose}
                 >
-                  <MenuItem onClick={() => props.handleEdit(FormMode.Edit)}>
-                    {props.intl.formatMessage(accountMessage.access.dialog.modifyTitle)}
+                  <MenuItem onClick={() => handleEdit()}>
+                    {props.intl.formatMessage(layoutMessage.action.modify)}
                   </MenuItem>
-                  <MenuItem onClick={() => props.handleEdit(FormMode.Delete)}>
-                    {props.intl.formatMessage(accountMessage.access.dialog.deleteTitle)}
-                  </MenuItem>
-              </Menu>
+                </Menu>
             </TableBody>
             <TableFooter>
               <TableRow>
@@ -243,18 +224,6 @@ export const AccountEmployeeAccessView: React.SFC<AccountEmployeeAccessProps> = 
             <FormattedMessage {...layoutMessage.text.loading} />
           }
         </Typography>
-        
-        <Tooltip	
-          placement="bottom"
-          title={props.intl.formatMessage(layoutMessage.tooltip.createNew)}
-        >
-          <IconButton
-            disabled={isLoading}
-            onClick={props.handleNew} 
-          >
-            <AddCircleIcon />
-          </IconButton>
-        </Tooltip>
 
         <Tooltip
           placement="bottom"
@@ -275,7 +244,7 @@ export const AccountEmployeeAccessView: React.SFC<AccountEmployeeAccessProps> = 
   return (
     <React.Fragment>
       <DetailPage
-        tab2={AccountEmployeeTabs.access}        
+        tab2={AccountEmployeeTabs.rate}
       >
         {renderAction}
         <SinglePage
@@ -286,19 +255,18 @@ export const AccountEmployeeAccessView: React.SFC<AccountEmployeeAccessProps> = 
             ( !isLoading && response && response.data && response.data.length === 0)) && (
             <Typography variant="body2">No Data</Typography>
           )}
-          { !isLoading && response && response.data && response.data.length >= 1 && renderMultiAccess(response.data, response.metadata)}
+          { !isLoading && response && response.data && response.data.length >= 1 && renderRate(response.data, response.metadata)}
         </SinglePage>
       </DetailPage>
-
-      <AccountEmployeeAccessEditor
+      
+      <AccountEmployeeRateEditor
         formMode={props.formMode}
+        rateUid={props.rateUid}
         employeeUid={props.match.params.employeeUid}
-        accessUid={props.accessUid}
         isOpenDialog={props.isOpenDialog}
-        handleDialogClose={props.handleDialogClose}
         initialValues={props.initialValues}
+        handleDialogClose={props.handleDialogClose}
       />
-
     </React.Fragment>
   );
 };
