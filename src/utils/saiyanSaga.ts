@@ -9,14 +9,14 @@ export interface ISaiyanSaga {
   host?: string;
   method: Method;
   path: string;
-  payload?: any | undefined;
+  payload?: any;
   successEffects: (response: IApiResponse) => Effect[];
-  successCallback?: (response: IApiResponse) => void | undefined;
+  successCallback?: (response: IApiResponse) => void;
   failureEffects: (response: IApiResponse) => Effect[];
-  failureCallback?: (response: IApiResponse) => void | undefined;
+  failureCallback?: (response: IApiResponse) => void;
   errorEffects: (error: any) => Effect[];
-  errorCallback?: (response: any) => void | undefined;
-  finallyEffects?: Effect[] | undefined;
+  errorCallback?: (response: any) => void;
+  finallyEffects?: Effect[];
 }
 
 function* fetching(param: ISaiyanSaga) {
