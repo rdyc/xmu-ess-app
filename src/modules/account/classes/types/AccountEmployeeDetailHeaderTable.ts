@@ -50,14 +50,18 @@ export enum AccountEmployeeExperienceHeaderTable {
 }
 
 export enum AccountEmployeeAccessHeaderTable {
-  no = 'No',
-  company = 'Company',
-  bussiness = 'Bussiness Unit',
-  department = 'Department',
-  level = 'Level',
-  role = 'Role',
-  position = 'Position',
-  start = 'Start Date',
-  end = 'End Date',
-  action = 'Action'
+  company = 'companyUid',
+  bussiness = 'unitType',
+  department = 'departmentType',
+  level = 'levelType',
+  role = 'roleUid',
+  position = 'positionUid',
+  start = 'start',
+  end = 'end',
+}
+
+export enum AccountEmployeeRateHeaderTable {
+  value = 'value',
+  isActive = 'isActive',
+  created = 'created',
 }

@@ -144,15 +144,17 @@ export const AccountEmployeeAccessView: React.SFC<AccountEmployeeAccessProps> = 
           <Table>
             <TableHead>
               <TableRow>
+                <TableCell>{props.intl.formatMessage(accountMessage.shared.field.no)}</TableCell>
                 {header.map(headerIdx => (
                   <TableCell
                     key={headerIdx.id}
                     numeric={headerIdx.id === 'No' ? true : false}
                     padding="default"
                   >
-                    {headerIdx.name}
+                    {intl.formatMessage(accountMessage.access.fieldFor(headerIdx.name, 'fieldName'))}
                   </TableCell>
                 ))}
+                <TableCell>{props.intl.formatMessage(accountMessage.shared.field.action)}</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -273,7 +275,7 @@ export const AccountEmployeeAccessView: React.SFC<AccountEmployeeAccessProps> = 
   return (
     <React.Fragment>
       <DetailPage
-        tab2={AccountEmployeeTabs.multiaccess}        
+        tab2={AccountEmployeeTabs.access}        
       >
         {renderAction}
         <SinglePage

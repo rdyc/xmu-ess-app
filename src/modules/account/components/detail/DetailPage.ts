@@ -1,4 +1,5 @@
 import { AccountEmployeeTabs } from '@account/classes/types/AccountEmployeeTabs';
+import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import {
   compose,
@@ -36,6 +37,7 @@ interface OwnOption {
 
 export type DetailPageProps
   = OwnOption
+  & InjectedIntlProps
   & OwnState
   & OwnStateUpdaters
   & OwnHandlers
@@ -69,6 +71,7 @@ const lifecycles: ReactLifeCycleFunctions<DetailPageProps, OwnState> = {
 
 export const DetailPage = compose<DetailPageProps, OwnOption>(
   withRouter,
+  injectIntl,
   setDisplayName('DetailPage'),
   withStateHandlers<OwnState, OwnStateUpdaters, {}>({}, stateUpdaters),
   withHandlers<DetailPageProps, OwnHandlers>(handlerCreators),

@@ -2,6 +2,31 @@ import { defineMessages } from 'react-intl';
 
 const prefix = 'account.employee';
 
+// page
+export const accountEmployeePage = defineMessages({
+  listTitle: { id: `${prefix}.page.list.title`},
+  listSubHeader: { id: `${prefix}.page.list.subHeader`},
+  detailTitle: { id: `${prefix}.page.detail.title`},
+  detailSubHeader: { id: `${prefix}.page.detail.subHeader`},
+  newTitle: { id: `${prefix}.page.new.title`},
+  newSubHeader: { id: `${prefix}.page.new.subHeader`},
+  modifyTitle: { id: `${prefix}.page.modify.title`},
+  modifySubHeader: { id: `${prefix}.page.modify.subHeader`},
+});
+
+// tabs
+export const accountEmployeeTab = defineMessages({
+  detail: {id: `${prefix}.tab.detail`},
+  note: {id: `${prefix}.tab.note`},
+  history: {id: `${prefix}.tab.history`},
+  education: {id: `${prefix}.tab.education`},
+  family: {id: `${prefix}.tab.family`},
+  experience: {id: `${prefix}.tab.experience`},
+  training: {id: `${prefix}.tab.training`},
+  access: {id: `${prefix}.tab.access`},
+  rate: {id: `${prefix}.tab.rate`},
+});
+
 // filter
 export const accountEmployeeFilter = defineMessages({
   company: { id: `${prefix}.filter.company`},
@@ -171,7 +196,7 @@ export const accountEmployeeSection = defineMessages({
 });
 
 // helper
-export const accountEmployeeFieldHelperFor = (field: string, type: 'fieldName' | 'fieldRequired' | 'fieldPlaceholder') => {
+export const accountEmployeeFieldHelperFor = (field: string, type: 'fieldName' | 'fieldRequired' | 'fieldPlaceholder' | 'fieldTab') => {
   if (type === 'fieldName') {
     switch (field) {
       // basic
@@ -292,6 +317,22 @@ export const accountEmployeeFieldHelperFor = (field: string, type: 'fieldName' |
       case 'emergencyContactRelation': return accountEmployeeField.emergencyRelationPlaceholder;
       case 'emergencyContactPhone': return accountEmployeeField.emergencyPhone1Placeholder;
       case 'emergencyContactPhoneAdditional': return accountEmployeeField.emergencyPhone2Placeholder;    
+  
+      default: return {id: field};
+    }
+  }
+
+  if (type === 'fieldTab') {
+    switch (field) {
+      case 'detail': return accountEmployeeTab.detail;
+      case 'note': return accountEmployeeTab.note;
+      case 'history': return accountEmployeeTab.history;
+      case 'education': return accountEmployeeTab.education;
+      case 'family': return accountEmployeeTab.family;
+      case 'experience': return accountEmployeeTab.experience;
+      case 'training': return accountEmployeeTab.training;
+      case 'access': return accountEmployeeTab.access;
+      case 'rate': return accountEmployeeTab.rate;  
   
       default: return {id: field};
     }

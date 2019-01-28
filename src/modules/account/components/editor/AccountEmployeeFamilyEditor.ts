@@ -1,6 +1,6 @@
-import { IEmployeeEducationDeletePayload, IEmployeeEducationPostPayload, IEmployeeEducationPutPayload } from '@account/classes/request/employeeEducation';
-import { IEmployeeEducation } from '@account/classes/response/employeeEducation';
-import { WithAccountEmployeeEducation, withAccountEmployeeEducation } from '@account/hoc/withAccountEmployeeEducation';
+import { IEmployeeFamilyDeletePayload, IEmployeeFamilyPostPayload, IEmployeeFamilyPutPayload } from '@account/classes/request/employeeFamily';
+import { IEmployee } from '@account/classes/response';
+import { WithAccountEmployeeFamily, withAccountEmployeeFamily } from '@account/hoc/withAccountEmployeeFamily';
 import { accountMessage } from '@account/locales/messages/accountMessage';
 import { FormMode } from '@generic/types';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
@@ -22,43 +22,39 @@ import {
 import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
 import { isNullOrUndefined, isObject } from 'util';
-import { AccountEmployeeEducationEditorView } from './AccountEmployeeEducationEditorView';
-import { AccountEmployeeEducationFormData } from './form/education/AccountEmployeeEducationContainer';
+import { AccountEmployeeFamilyEditorView } from './AccountEmployeeFamilyEditorView';
+import { AccountEmployeeFamilyFormData } from './form/family/AccountEmployeeFamilyContainerForm';
 
 type EditAction = 'update' | 'delete';
 
 interface OwnHandlers {
-  handleValidate: (payload: AccountEmployeeEducationFormData) => FormErrors;
-  handleSubmit: (payload: AccountEmployeeEducationFormData) => void;
+  handleValidate: (payload: AccountEmployeeFamilyFormData) => FormErrors;
+  handleSubmit: (payload: AccountEmployeeFamilyFormData) => void;
   handleSubmitSuccess: (result: any, dispatch: Dispatch<any>) => void;
   handleSubmitFail: (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => void;
 }
 
 interface OwnOption {
   formMode: FormMode | undefined;
-  educationUid?: string;
+  familyUid?: string;
   employeeUid: string;
   isOpenDialog: boolean;
   editAction?: EditAction | undefined;
-  initialValues?: AccountEmployeeEducationFormData;
+  initialValues?: AccountEmployeeFamilyFormData;
   handleDialogClose: () => void;
 }
 
 interface OwnRouteParams {
   employeeUid: string;
-  educationUid: string;  
+  familyUid: string;  
 }
 
-interface OwnState {
-
+interface OwnStateUpdaters extends StateHandlerMap<{}> {
+  stateUpdate: StateHandler<{}>;
 }
 
-interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
-  stateUpdate: StateHandler<OwnState>;
-}
-
-export type AccountEmployeeEducationEditorProps
-  = WithAccountEmployeeEducation
+export type AccountEmployeeFamilyEditorProps
+  = WithAccountEmployeeFamily
   & WithUser
   & WithLayout
   & WithWidth
@@ -66,48 +62,47 @@ export type AccountEmployeeEducationEditorProps
   & InjectedIntlProps
   & OwnOption
   & OwnHandlers
-  & OwnState
   & OwnStateUpdaters;
 
-const handlerCreators: HandleCreators<AccountEmployeeEducationEditorProps, OwnHandlers> = {
-  handleValidate: (props: AccountEmployeeEducationEditorProps) => (formData: AccountEmployeeEducationFormData) => { 
+const handlerCreators: HandleCreators<AccountEmployeeFamilyEditorProps, OwnHandlers> = {
+  handleValidate: (props: AccountEmployeeFamilyEditorProps) => (formData: AccountEmployeeFamilyFormData) => {
     const errors = {
-      education: {}
+      family: {}
     };
-  
+
     const requiredFields = [
-      'degreeType', 'institution', 'major', 'start'
+      'familyType', 'fullName', 'genderType', 'birthPlace'
     ];
-  
+
     requiredFields.forEach(field => {
-      if (!formData.education[field] || isNullOrUndefined(formData.education[field])) {
-        errors.education[field] = props.intl.formatMessage(accountMessage.education.fieldFor(field, 'fieldRequired'));
+      if (!formData.family[field] || isNullOrUndefined(formData.family[field])) {
+        errors.family[field] = props.intl.formatMessage(accountMessage.family.fieldFor(field, 'fieldRequired'));
       }
     });
-    
+
     return errors;
   },
-  handleSubmit: (props: AccountEmployeeEducationEditorProps) => (formData: AccountEmployeeEducationFormData) => { 
-    const { formMode, employeeUid, intl, editAction, educationUid } = props;
+  handleSubmit: (props: AccountEmployeeFamilyEditorProps) => (formData: AccountEmployeeFamilyFormData) => {
+    const { formMode, employeeUid, intl, editAction, familyUid } = props;
     const { user } = props.userState;
-    const { createRequest, updateRequest, deleteRequest } = props.accountEmployeeEducationDispatch;
+    const { createRequest, updateRequest, deleteRequest } = props.accountEmployeeFamilyDispatch;
 
     if (!user) {
       return Promise.reject('user was not found');
     }
 
     const payload = {
-      ...formData.education
+      ...formData.family,
     };
 
     // creating
     if (formMode === FormMode.New) {
       return new Promise((resolve, reject) => {
         createRequest({
-          employeeUid,
-          resolve, 
+          resolve,
           reject,
-          data: payload as IEmployeeEducationPostPayload
+          employeeUid,
+          data: payload as IEmployeeFamilyPostPayload
         });
       });
     }
@@ -120,14 +115,14 @@ const handlerCreators: HandleCreators<AccountEmployeeEducationEditorProps, OwnHa
     }
 
     if (formMode === FormMode.Edit) {
-      if (educationUid) {
+      if (familyUid) {
         if (editAction === 'update') {
           return new Promise((resolve, reject) => {
             updateRequest({
-              employeeUid,
-              resolve, 
+              resolve,
               reject,
-              data: payload as IEmployeeEducationPutPayload, 
+              employeeUid,
+              data: payload as IEmployeeFamilyPutPayload,
             });
           });
         }
@@ -135,10 +130,10 @@ const handlerCreators: HandleCreators<AccountEmployeeEducationEditorProps, OwnHa
         if (editAction === 'delete') {
           return new Promise((resolve, reject) => {
             deleteRequest({
-              employeeUid,
-              resolve, 
+              resolve,
               reject,
-              data: payload as IEmployeeEducationDeletePayload, 
+              employeeUid,
+              data: payload as IEmployeeFamilyDeletePayload,
             });
           });
         }
@@ -147,21 +142,22 @@ const handlerCreators: HandleCreators<AccountEmployeeEducationEditorProps, OwnHa
 
     return null;
   },
-  handleSubmitSuccess: (props: AccountEmployeeEducationEditorProps) => (response: IEmployeeEducation) => {
-    const { formMode, intl, history, editAction, stateUpdate } = props;
+  handleSubmitSuccess: (props: AccountEmployeeFamilyEditorProps) => (response: IEmployee) => {
+    const { formMode, intl, history, editAction, stateUpdate, employeeUid } = props;
     const { alertAdd } = props.layoutDispatch;
-    const { loadAllRequest } = props.accountEmployeeEducationDispatch; 
+    const { loadAllRequest } = props.accountEmployeeFamilyDispatch; 
+
     let message: string = '';
 
     if (formMode === FormMode.New) {
-      message = intl.formatMessage(accountMessage.shared.message.createSuccess, { state: 'Employee Education' });
+      message = intl.formatMessage(accountMessage.shared.message.createSuccess, { state: 'Employee Family' });
     }
 
     if (formMode === FormMode.Edit) {
       if (editAction && editAction === 'update') {
-        message = intl.formatMessage(accountMessage.shared.message.updateSuccess, { state: 'Employee Education', uid: response.uid });
+        message = intl.formatMessage(accountMessage.shared.message.updateSuccess, { state: 'Employee Family', uid: response.uid });
       } else {
-        message = intl.formatMessage(accountMessage.shared.message.deleteSuccess, { state: 'Employee Education', uid: response.uid });
+        message = intl.formatMessage(accountMessage.shared.message.deleteSuccess, { state: 'Employee Family', uid: response.uid });
       }
     }
 
@@ -182,13 +178,13 @@ const handlerCreators: HandleCreators<AccountEmployeeEducationEditorProps, OwnHa
         direction: 'ascending'
       }
     });
-    
-    history.push(`/account/employee/${props.employeeUid}/education`);
+
+    history.push(`/account/employee/${employeeUid}/family`);
   },
-  handleSubmitFail: (props: AccountEmployeeEducationEditorProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
+  handleSubmitFail: (props: AccountEmployeeFamilyEditorProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
     const { formMode, intl } = props;
     const { alertAdd } = props.layoutDispatch;
-    
+
     if (errors) {
       // validation errors from server (400: Bad Request)
       alertAdd({
@@ -216,20 +212,16 @@ const handlerCreators: HandleCreators<AccountEmployeeEducationEditorProps, OwnHa
   }
 };
 
-// const createProps: mapper<AccountEmployeeEducationEditorProps, OwnState> = (): OwnState => ({ 
-
-// });
-
-const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
-  stateUpdate: (prevState: OwnState) => (newState: any) => ({
+const stateUpdaters: StateUpdaters<{}, {}, OwnStateUpdaters> = {
+  stateUpdate: (prevState: {}) => (newState: any) => ({
     ...prevState,
     ...newState
   })
 };
 
-const lifecycles: ReactLifeCycleFunctions<AccountEmployeeEducationEditorProps, {}> = {
+const lifecycles: ReactLifeCycleFunctions<AccountEmployeeFamilyEditorProps, {}> = {
   componentWillUnmount() {
-    const { createDispose, updateDispose, deleteDispose } = this.props.accountEmployeeEducationDispatch;
+    const { createDispose, updateDispose, deleteDispose } = this.props.accountEmployeeFamilyDispatch;
 
     createDispose();
     updateDispose();
@@ -237,14 +229,14 @@ const lifecycles: ReactLifeCycleFunctions<AccountEmployeeEducationEditorProps, {
   }
 };
 
-export default compose<AccountEmployeeEducationEditorProps, OwnOption>(
+export const AccountEmployeeFamilyEditor = compose<AccountEmployeeFamilyEditorProps, OwnOption>(
   withUser,
   withLayout,
   withRouter,
   withWidth(),
-  withAccountEmployeeEducation,
+  withAccountEmployeeFamily,
   injectIntl,
-  withStateHandlers<OwnState, OwnStateUpdaters, {}>({}, stateUpdaters),
-  withHandlers<AccountEmployeeEducationEditorProps, OwnHandlers>(handlerCreators),
-  lifecycle<AccountEmployeeEducationEditorProps, {}>(lifecycles),
-)(AccountEmployeeEducationEditorView);
+  withStateHandlers<{}, OwnStateUpdaters, {}>({}, stateUpdaters),
+  withHandlers<AccountEmployeeFamilyEditorProps, OwnHandlers>(handlerCreators),
+  lifecycle<AccountEmployeeFamilyEditorProps, {}>(lifecycles),
+)(AccountEmployeeFamilyEditorView);

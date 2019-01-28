@@ -79,8 +79,22 @@ const handlerCreators: HandleCreators<AccountEmployeeAccessProps, OwnHandlers> =
   handleMenuClose: (props: AccountEmployeeAccessProps) => () => {
     props.stateUpdate({
       accessUid: undefined,
+      isOpenDialog: false,
       isOpenMenu: false,
       formMode: undefined,
+      initialValues: {
+        information: {
+          uid: undefined,
+          companyUid: undefined,
+          positionUid: undefined,
+          roleUid: undefined,
+          unitType: undefined,
+          departmentType: undefined,
+          levelType: undefined,
+          start: undefined,
+          end: null,
+        },
+      },
     });
   },
   handleDialogClose: (props: AccountEmployeeAccessProps) => () => {

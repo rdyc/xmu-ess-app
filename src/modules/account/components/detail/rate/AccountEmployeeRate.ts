@@ -1,6 +1,6 @@
-import { IEmployeeFamily } from '@account/classes/response/employeeFamily';
-import { AccountEmployeeFamilyFormData } from '@account/components/editor/form/family/AccountEmployeeFamilyContainerForm';
-import { WithAccountEmployeeFamily, withAccountEmployeeFamily } from '@account/hoc/withAccountEmployeeFamily';
+import { IEmployeeRate } from '@account/classes/response/employeeRate';
+import { AccountEmployeeRateFormData } from '@account/components/editor/form/rate/AccountEmployeeRateForm';
+import { WithAccountEmployeeRate, withAccountEmployeeRate } from '@account/hoc/withAccountEmployeeRate';
 import { FormMode } from '@generic/types';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
@@ -9,9 +9,7 @@ import styles from '@styles';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { compose, HandleCreators, lifecycle, mapper, ReactLifeCycleFunctions, StateHandler, StateHandlerMap, StateUpdaters, withHandlers, withStateHandlers } from 'recompose';
-import { AccountEmployeeFamilyView } from './AccountEmployeeFamilyView';
-
-type EditAction = 'update' | 'delete';
+import { AccountEmployeeRateView } from './AccountEmployeeRateView';
 
 interface OwnRouteParams {
   employeeUid: string;
@@ -20,23 +18,23 @@ interface OwnRouteParams {
 interface OwnState {
   formMode: FormMode | undefined;
   isReload: boolean | false;
-  familyUid?: string;
+  rateUid?: string;
   isOpenDialog: boolean;
   isOpenMenu: boolean;
-  familyItemIndex?: string | undefined;
-  editAction?: EditAction | undefined;
-  initialValues?: AccountEmployeeFamilyFormData;
+  rateItemIndex?: string | undefined;
+  initialValues?: AccountEmployeeRateFormData;
+
   page: number;
   size: number;
 }
 
 interface OwnHandlers {
-  handleMenuOpen: (family: IEmployeeFamily, index: number) => void;
+  handleMenuOpen: (rate: IEmployeeRate, index: number) => void;
   handleMenuClose: () => void;
   handleDialogClose: () => void;
-  handleNew: () => void;
-  handleEdit: (editAction: EditAction) => void;
+  handleEdit: () => void;
   handleReload: () => void;
+
   handleGoToNext: () => void;
   handleGoToPrevious: () => void;
   handleChangePage: (page: number) => void;
@@ -47,7 +45,7 @@ interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
   stateUpdate: StateHandler<OwnState>;
 }
 
-export type AccountEmployeeFamilyProps
+export type AccountEmployeeRateProps
   = WithUser
   & WithLayout
   & WithStyles<typeof styles>
@@ -56,15 +54,13 @@ export type AccountEmployeeFamilyProps
   & OwnStateUpdaters
   & InjectedIntlProps
   & RouteComponentProps<OwnRouteParams>
-  & WithAccountEmployeeFamily;
+  & WithAccountEmployeeRate;
 
-const createProps: mapper<AccountEmployeeFamilyProps, OwnState> = (props: AccountEmployeeFamilyProps): OwnState => {
+const createProps: mapper<AccountEmployeeRateProps, OwnState> = (props: AccountEmployeeRateProps): OwnState => {
   const { page, size } = props;
-  const { request } = props.accountEmployeeFamilyState.all;
-
+  const { request } = props.accountEmployeeRateState.all;
   return {
     formMode: undefined,
-    editAction: undefined,
     isOpenDialog: false,
     isOpenMenu: false,
     isReload: false,
@@ -80,100 +76,82 @@ const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
   })
 };
 
-const handlerCreators: HandleCreators<AccountEmployeeFamilyProps, OwnHandlers> = {
-  handleMenuOpen: (props: AccountEmployeeFamilyProps) => (family: IEmployeeFamily, index: number) => {
+const handlerCreators: HandleCreators<AccountEmployeeRateProps, OwnHandlers> = {
+  handleMenuOpen: (props: AccountEmployeeRateProps) => (rate: IEmployeeRate, index: number) => {
     const { stateUpdate } = props;
 
     stateUpdate({
-      familyUid: family.uid,
+      rateUid: rate.uid,
       isOpenMenu: true,
-      familyItemIndex: index,
+      rateItemIndex: index,
       initialValues: {
-        family: {
-          uid: family.uid,
-          employeeUid: props.match.params.employeeUid,
-          familyType: family.familyType,
-          fullName: family.fullName,
-          genderType: family.genderType,
-          birthPlace: family.birthPlace,
-          birthDate: family.birthDate
+        information: {
+          uid: rate.uid,
+          value: rate.value
         }
       }
     });
   },
-  handleMenuClose: (props: AccountEmployeeFamilyProps) => () => {
+  handleMenuClose: (props: AccountEmployeeRateProps) => () => {
     const { stateUpdate } = props;
 
     stateUpdate({
-      familyUid: undefined,
+      rateUid: undefined,
       isOpenMenu: false,
-      familyItemIndex: undefined,
-      initialValues: undefined
+      rateItemIndex: undefined,
+      initialValues: {
+        information: {
+          uid: undefined,
+          value: 0
+        },
+      },
     });
   },
-  handleDialogClose: (props: AccountEmployeeFamilyProps) => () => {
+  handleDialogClose: (props: AccountEmployeeRateProps) => () => {
     const { stateUpdate } = props;
 
     stateUpdate({
       isOpenDialog: false,
       formMode: undefined,
-      editAction: undefined
-    });
-  },
-  handleNew: (props: AccountEmployeeFamilyProps) => () => {
-    const { stateUpdate } = props;
-
-    stateUpdate({
-      formMode: FormMode.New,
-      isOpenDialog: true,
-      isOpenMenu: false,
-      editAction: undefined,
-      familyUid: undefined,
       initialValues: {
-        family: {
+        information: {
           uid: undefined,
-          employeeUid: props.match.params.employeeUid,
-          familyType: undefined,
-          fullName: undefined,
-          genderType: undefined,
-          birthPlace: undefined,
-          birthDate: undefined
-        }
-      }
+          value: 0
+        },
+      },
     });
   },
-  handleEdit: (props: AccountEmployeeFamilyProps) => (action: EditAction) => {
+  handleEdit: (props: AccountEmployeeRateProps) => () => {
     const { stateUpdate } = props;
 
     stateUpdate({
       formMode: FormMode.Edit,
       isOpenDialog: true,
       isOpenMenu: false,
-      editAction: action
     });
   },
-  handleReload: (props: AccountEmployeeFamilyProps) => () => {
+  handleReload: (props: AccountEmployeeRateProps) => () => {
     props.stateUpdate({
       isReload: true
     });
   },
 
-  handleGoToNext: (props: AccountEmployeeFamilyProps) => () => {
+  handleGoToNext: (props: AccountEmployeeRateProps) => () => {
     props.stateUpdate({
       page: props.page + 1
     });
   },
-  handleGoToPrevious: (props: AccountEmployeeFamilyProps) => () => {
+  handleGoToPrevious: (props: AccountEmployeeRateProps) => () => {
     props.stateUpdate({
       page: props.page - 1
     });
   },
-  handleChangePage: (props: AccountEmployeeFamilyProps) => (page: number) => {
+  handleChangePage: (props: AccountEmployeeRateProps) => (page: number) => {
     props.stateUpdate({
       page
     });
   },
-  handleChangeSize: (props: AccountEmployeeFamilyProps) => (size: number) => {
+  handleChangeSize: (props: AccountEmployeeRateProps) => (size: number) => {
     props.stateUpdate({
       size,
       page: 1
@@ -181,8 +159,8 @@ const handlerCreators: HandleCreators<AccountEmployeeFamilyProps, OwnHandlers> =
   },
 };
 
-const lifecycles: ReactLifeCycleFunctions<AccountEmployeeFamilyProps, OwnState> = {
-  componentWillUpdate(props: AccountEmployeeFamilyProps, state: OwnState) {
+const lifecycles: ReactLifeCycleFunctions<AccountEmployeeRateProps, OwnState> = {
+  componentWillUpdate(props: AccountEmployeeRateProps, state: OwnState) {
     if (
       this.props.page !== props.page ||
       this.props.size !== props.size
@@ -199,10 +177,10 @@ const lifecycles: ReactLifeCycleFunctions<AccountEmployeeFamilyProps, OwnState> 
   }
 };
 
-const loadData = (props: AccountEmployeeFamilyProps): void => {
+const loadData = (props: AccountEmployeeRateProps): void => {
   const { page, size } = props;
   const { user } = props.userState;
-  const { loadAllRequest } = props.accountEmployeeFamilyDispatch;
+  const { loadAllRequest } = props.accountEmployeeRateDispatch;
   const { alertAdd } = props.layoutDispatch;
 
   if (user) {
@@ -211,7 +189,8 @@ const loadData = (props: AccountEmployeeFamilyProps): void => {
       filter: {
         page,
         size,
-        direction: 'ascending',
+        orderBy: 'uid',
+        direction: 'descending',
       }
     });
   } else {
@@ -222,14 +201,14 @@ const loadData = (props: AccountEmployeeFamilyProps): void => {
   }
 };
 
-export const AccountEmployeeFamily = compose<AccountEmployeeFamilyProps, {}>(
+export const AccountEmployeeRate = compose<AccountEmployeeRateProps, {}>(
   withUser,
   withRouter,
   withLayout,
-  withAccountEmployeeFamily,
-  injectIntl,
   withStyles(styles),
+  injectIntl,
+  withAccountEmployeeRate,
   withStateHandlers<OwnState, OwnStateUpdaters, {}>(createProps, stateUpdaters),
-  withHandlers<AccountEmployeeFamilyProps, OwnHandlers>(handlerCreators),
-  lifecycle<AccountEmployeeFamilyProps, OwnState>(lifecycles),
-)(AccountEmployeeFamilyView);
+  withHandlers<AccountEmployeeRateProps, OwnHandlers>(handlerCreators),
+  lifecycle<AccountEmployeeRateProps, OwnState>(lifecycles)
+)(AccountEmployeeRateView);

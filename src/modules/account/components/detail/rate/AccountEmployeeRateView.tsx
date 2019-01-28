@@ -1,7 +1,7 @@
-import { IEmployeeFamily } from '@account/classes/response/employeeFamily';
-import { AccountEmployeeFamilyHeaderTable } from '@account/classes/types';
+import { IEmployeeRate } from '@account/classes/response/employeeRate';
+import { AccountEmployeeRateHeaderTable } from '@account/classes/types';
 import { AccountEmployeeTabs } from '@account/classes/types/AccountEmployeeTabs';
-import { AccountEmployeeFamilyEditor } from '@account/components/editor/AccountEmployeeFamilyEditor';
+import AccountEmployeeRateEditor from '@account/components/editor/AccountEmployeeRateEditor';
 import { accountMessage } from '@account/locales/messages/accountMessage';
 import AppMenu from '@constants/AppMenu';
 import { IBaseMetadata } from '@generic/interfaces';
@@ -31,20 +31,19 @@ import {
   KeyboardArrowRight,
   LastPage
 } from '@material-ui/icons';
-import AddCircleIcon from '@material-ui/icons/AddCircle';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import SyncIcon from '@material-ui/icons/Sync';
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { DetailPage } from '../DetailPage';
-import { AccountEmployeeFamilyProps } from './AccountEmployeeFamily';
+import { AccountEmployeeRateProps } from './AccountEmployeeRate';
 
-const config: SingleConfig<IEmployeeFamily, AccountEmployeeFamilyProps> = {
+const config: SingleConfig<IEmployeeRate, AccountEmployeeRateProps> = {
   // page info
-  page: (props: AccountEmployeeFamilyProps) => ({
+  page: (props: AccountEmployeeRateProps) => ({
     uid: AppMenu.Account,
     parentUid: AppMenu.Lookup,
-    title: props.intl.formatMessage(accountMessage.shared.page.detailTitle, { state: 'Employee'}),
+    title: props.intl.formatMessage(accountMessage.shared.page.detailTitle, { state: 'Rate'}),
     description: props.intl.formatMessage(accountMessage.shared.page.detailSubHeader),
   }),
 
@@ -58,22 +57,23 @@ const config: SingleConfig<IEmployeeFamily, AccountEmployeeFamilyProps> = {
   hasMore: false,
 
   // events
-  onDataLoad: (props: AccountEmployeeFamilyProps, callback: SingleHandler, forceReload?: boolean | false) => {
+  onDataLoad: (props: AccountEmployeeRateProps, callback: SingleHandler, forceReload?: boolean | false) => {
     const { page, size } = props;
     const { user } = props.userState;
-    const { isLoading, request, response } = props.accountEmployeeFamilyState.all;
-    const { loadAllRequest } = props.accountEmployeeFamilyDispatch;
+    const { isLoading, request, response } = props.accountEmployeeRateState.all;
+    const { loadAllRequest } = props.accountEmployeeRateDispatch;
 
     // when user is set and not loading and has projectUid in route params
     if (user && !isLoading && props.match.params.employeeUid) {
       // when projectUid was changed or response are empty or force to reload
-      if ((request && request.employeeUid !== props.match.params.employeeUid) || !response || forceReload) {
+      if ((request && request.employeeUid !== props.match.params.employeeUid) || !response || forceReload ) {
         loadAllRequest({
           employeeUid: props.match.params.employeeUid,
           filter: {
             page,
             size,
-            direction: 'ascending'
+            orderBy: 'uid',
+            direction: 'descending'
           }
         });
       } else {
@@ -82,24 +82,24 @@ const config: SingleConfig<IEmployeeFamily, AccountEmployeeFamilyProps> = {
       }
     }
   },
-  onUpdated: (states: AccountEmployeeFamilyProps, callback: SingleHandler) => {
-    const { response } = states.accountEmployeeFamilyState.list;
+  onUpdated: (states: AccountEmployeeRateProps, callback: SingleHandler) => {
+    const { response } = states.accountEmployeeRateState.all;
     
     callback.handleResponse(response);
   },
 };
 
-export const AccountEmployeeFamilyView: React.SFC<
-  AccountEmployeeFamilyProps
+export const AccountEmployeeRateView: React.SFC<
+  AccountEmployeeRateProps
 > = props => {
-  const { isOpenDialog, isOpenMenu, familyItemIndex, editAction, initialValues, page, size, classes, intl } = props;
-  const { handleDialogClose, handleEdit, handleMenuClose, handleMenuOpen, handleReload, handleGoToNext, handleGoToPrevious, handleChangePage, handleChangeSize } = props;
+  const { isOpenMenu, rateItemIndex, page, size, classes } = props;
+  const { handleEdit, handleMenuClose, handleMenuOpen, handleReload, handleGoToNext, handleGoToPrevious, handleChangePage, handleChangeSize } = props;
 
-  const { response, isLoading } = props.accountEmployeeFamilyState.all;
+  const { response, isLoading } = props.accountEmployeeRateState.all;
 
-  const header = Object.keys(AccountEmployeeFamilyHeaderTable).map(key => ({
+  const header = Object.keys(AccountEmployeeRateHeaderTable).map(key => ({
     id: key,
-    name: AccountEmployeeFamilyHeaderTable[key]
+    name: AccountEmployeeRateHeaderTable[key]
   }));
 
   const handlePage = (_page: any) => {
@@ -139,61 +139,57 @@ export const AccountEmployeeFamilyView: React.SFC<
     </div>
   );
 
-  const renderFamily = (data: IEmployeeFamily[], metadata: IBaseMetadata) => {
+  const renderRate = (data: IEmployeeRate[], metadata: IBaseMetadata) => {
     return (
       <Fade in={!isLoading} timeout={1000} mountOnEnter unmountOnExit>
-        <Paper square className={classes.rootTable}>
+        <Paper square>
           <Table>
             <TableHead>
               <TableRow>
+                <TableCell>{props.intl.formatMessage(accountMessage.shared.field.no)}</TableCell>
                 {header.map(headerIdx => (
                   <TableCell
                     key={headerIdx.id}
                     numeric={headerIdx.id === 'No' ? true : false}
                     padding="default"
                   >
-                    {headerIdx.name}
+                    {headerIdx.name !== 'no' && props.intl.formatMessage(accountMessage.rate.fieldFor(headerIdx.name, 'fieldName')) || 'No'}
                   </TableCell>
                 ))}
+                <TableCell>{props.intl.formatMessage(accountMessage.shared.field.action)}</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {data &&
                 data.map((item, index) => (
-                  <TableRow key={index}>
+                  <TableRow key={index} selected={item.isActive}>
                     <TableCell>{index + 1}</TableCell>
-                    <TableCell>{item.family && item.family.value}</TableCell>
-                    <TableCell>{item.fullName}</TableCell>
-                    <TableCell>{item.gender && item.gender.value}</TableCell>
-                    <TableCell>{item.birthPlace}</TableCell>
+                    <TableCell>{item.value}</TableCell>
+                    <TableCell>{item.isActive && props.intl.formatMessage(accountMessage.rate.field.isActiveTrue) || props.intl.formatMessage(accountMessage.rate.field.isActiveFalse)}</TableCell>
+                    <TableCell>{props.intl.formatDate(item.changes && item.changes.createdAt || 'N/A', GlobalFormat.Date)}</TableCell>
                     <TableCell>
-                      {item.birthDate
-                        ? intl.formatDate(item.birthDate, GlobalFormat.Date)
-                        : 'N/A'}
-                    </TableCell>
-                    <TableCell>
-                      <IconButton
-                        id={`family-item-button-${index}`}
-                        color="inherit"
-                        aria-label="More"
-                        onClick={() => handleMenuOpen(item, index)}
-                      >
-                        <MoreVertIcon />
-                      </IconButton>
+                      {
+                        item.isActive &&
+                        <IconButton
+                          id={`rate-item-button-${index}`}
+                          color="inherit"
+                          aria-label="More"
+                          onClick={() => handleMenuOpen(item, index)}
+                        >
+                          <MoreVertIcon />
+                        </IconButton>
+                      }
                     </TableCell>
                   </TableRow>
                 ))}
                 <Menu
-                  anchorEl={document.getElementById(`family-item-button-${familyItemIndex}`)}
+                  anchorEl={document.getElementById(`rate-item-button-${rateItemIndex}`)}
                   open={isOpenMenu}
                   onClose={handleMenuClose}
                 >
-                  <MenuItem onClick={() => handleEdit('update')}>
-                    {props.intl.formatMessage(accountMessage.shared.option.modify)}
+                  <MenuItem onClick={() => handleEdit()}>
+                    {props.intl.formatMessage(layoutMessage.action.modify)}
                   </MenuItem>
-                  <MenuItem onClick={() => handleEdit('delete')}>
-                    {props.intl.formatMessage(accountMessage.shared.option.remove)}
-                  </MenuItem> 
                 </Menu>
             </TableBody>
             <TableFooter>
@@ -228,18 +224,6 @@ export const AccountEmployeeFamilyView: React.SFC<
             <FormattedMessage {...layoutMessage.text.loading} />
           }
         </Typography>
-        
-        <Tooltip	
-          placement="bottom"
-          title={props.intl.formatMessage(layoutMessage.tooltip.createNew)}
-        >
-          <IconButton
-            disabled={isLoading}
-            onClick={props.handleNew} 
-          >
-            <AddCircleIcon />
-          </IconButton>
-        </Tooltip>
 
         <Tooltip
           placement="bottom"
@@ -260,31 +244,29 @@ export const AccountEmployeeFamilyView: React.SFC<
   return (
     <React.Fragment>
       <DetailPage
-        tab2={AccountEmployeeTabs.family}
+        tab2={AccountEmployeeTabs.rate}
       >
         {renderAction}
         <SinglePage
           config={config}
           connectedProps={props}
         >
-          {((!isLoading && response && !response.data) ||
-            (!isLoading && response && response.data && response.data.length === 0)) && (
+          {(( !isLoading && response && !response.data) ||
+            ( !isLoading && response && response.data && response.data.length === 0)) && (
             <Typography variant="body2">No Data</Typography>
           )}
-          { !isLoading && response && response.data && response.data.length >= 1 && renderFamily(response.data, response.metadata)}
+          { !isLoading && response && response.data && response.data.length >= 1 && renderRate(response.data, response.metadata)}
         </SinglePage>
       </DetailPage>
-
-      <AccountEmployeeFamilyEditor
-        formMode={props.formMode}
-        familyUid={props.familyUid}
-        employeeUid={props.match.params.employeeUid}
-        isOpenDialog={isOpenDialog}
-        editAction={editAction}
-        initialValues={initialValues}
-        handleDialogClose={handleDialogClose}
-      />
       
+      <AccountEmployeeRateEditor
+        formMode={props.formMode}
+        rateUid={props.rateUid}
+        employeeUid={props.match.params.employeeUid}
+        isOpenDialog={props.isOpenDialog}
+        initialValues={props.initialValues}
+        handleDialogClose={props.handleDialogClose}
+      />
     </React.Fragment>
   );
 };

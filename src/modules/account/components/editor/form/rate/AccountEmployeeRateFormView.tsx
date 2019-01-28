@@ -3,22 +3,20 @@ import { FormMode } from '@generic/types';
 import { Button, DialogActions, DialogContent } from '@material-ui/core';
 import * as React from 'react';
 import { BaseFieldsProps, Fields, FormSection } from 'redux-form';
-import { AccountEmployeeAccessDetailForm } from './AccountEmployeeAccessDetailForm';
-import { AccountEmployeeAccessFormProps } from './AccountEmployeeAccessForm';
+import { AccountEmployeeRateDetailForm } from './AccountEmployeeRateDetailForm';
+import { AccountEmployeeRateFormProps } from './AccountEmployeeRateForm';
 
-export const AccountEmployeeAccessFormView: React.SFC<AccountEmployeeAccessFormProps> = props => {
+export const AccountEmployeeRateFormView: React.SFC<AccountEmployeeRateFormProps> = props => {
   const {
-    formMode, companyUidValue, unitTypeValue
+    formMode,
   } = props;
 
   const fields = Object.getOwnPropertyNames(props.initialValues.information);
 
   const componentInformation = (context: BaseFieldsProps) => (
-    <AccountEmployeeAccessDetailForm 
+    <AccountEmployeeRateDetailForm 
       formMode={formMode}
       context={context}
-      companyUidValue={companyUidValue}
-      unitTypeValue={unitTypeValue}
     />
   );
 
