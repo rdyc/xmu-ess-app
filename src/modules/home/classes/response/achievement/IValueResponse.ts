@@ -1,4 +1,4 @@
 export interface IValueResponse {
-  label: string | null;
-  value: string | null;
+  label: string;
+  value: number;
 }

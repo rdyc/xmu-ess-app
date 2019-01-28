@@ -33,10 +33,10 @@ export const AchievementChartView: React.SFC<AchievementChartProps> = props => {
         {
           props.achievementState.all.response &&
           props.achievementState.all.response.data &&
-          props.achievementState.all.response.data.map((item, index) => (
+          props.achievementState.all.response.data.map((item) => (
             <React.Fragment>
               {(item.title === 'ETG Sales Team') ?
-                <Grid item xs={12} md={12} key={index}>
+                <Grid item xs={12} md={12}>
                   <Card square className={classes.chartCard}>
                     <CardHeader title={item.title} subheader={item.description} className={isMobileXS ? undefined : classes.chartHeader} />
                     <CardContent className={isMobile ? classes.chartContentXS : classes.chartContent}>
@@ -72,7 +72,7 @@ export const AchievementChartView: React.SFC<AchievementChartProps> = props => {
                   </Card>
                 </Grid>
                 :
-                <Grid item xs={12} sm={12} md={4} key={index}>
+                <Grid item xs={12} sm={12} md={4}>
                   <Card square>
                     <CardHeader
                       title={item.title}
