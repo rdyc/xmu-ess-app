@@ -63,7 +63,7 @@ export const AchievementChartView: React.SFC<AchievementChartProps> = props => {
                             labels: { fontSize: isMobile ? 5 : 4 }
                           }}
                           data={item.valueObject}
-                          x="label"
+                          x="name"
                           y="value"
                           labels={(y) => `${y.value} ${item.unit}`}
                         />
@@ -98,7 +98,7 @@ export const AchievementChartView: React.SFC<AchievementChartProps> = props => {
                             labels: { fontSize: 10 }
                           }}
                           data={item.valueObject}
-                          x="label"
+                          x="name"
                           y="value"
                           labels={(y) => `${y.value} ${item.unit}`}
                         />
