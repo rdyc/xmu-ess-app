@@ -137,6 +137,7 @@ export function* rootSaga() {
     fork(lookupSystemLimitSagas),
     fork(lookupHolidaySagas),
     fork(lookupLeaveSagas),
+    fork(sliderSagas),
 
     // organization
     fork(organizationHierarchySagas),
@@ -207,6 +208,5 @@ export function* rootSaga() {
     fork(achievementSagas),
     fork(announcementSagas),
     fork(newsFeedSagas),
-    fork(sliderSagas)
   ]);
 }
