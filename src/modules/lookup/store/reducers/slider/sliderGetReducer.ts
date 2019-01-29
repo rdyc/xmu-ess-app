@@ -1,6 +1,6 @@
 import { IQueryCollectionState } from '@generic/interfaces';
-import { ISliderGetRequest } from '@lookup/classes/queries/slider';
-import { ISliderList } from '@lookup/classes/response/slider';
+import { ISliderGetRequest } from '@home/classes/queries/slider';
+import { ISliderList } from '@home/classes/response/slider';
 import { Reducer } from 'redux';
 import { SliderAction as Action } from '../../actions/sliderActions';
 
