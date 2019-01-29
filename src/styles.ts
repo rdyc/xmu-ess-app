@@ -613,6 +613,12 @@ const styles = (theme: Theme) =>
 
     chartContentXS: {
       marginTop: theme.spacing.unit * -10
+    },
+
+    /* Upload Image */
+    imageSize: {
+      width: 500,
+      height: 450
     }
   });
 

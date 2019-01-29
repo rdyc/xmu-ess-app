@@ -17,7 +17,7 @@ export const InputImageView: React.SFC<InputImageProps> = props => (
           onChange={(e) => e.target.files && props.handleImageChange(e.target.files)}
           style={{ display : 'none'}}
         />
-        {/* <Typography></Typography> */}
       </Button>
+      <img src={props.showImage}/>
     </React.Fragment>
 );

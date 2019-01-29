@@ -30,5 +30,5 @@ export interface IEmployeePutPayload {
   emergencyContactRelation?: string | null;
   emergencyContactPhone?: string | null;
   emergencyContactPhoneAdditional?: string | null;
-  // image?: File;
+  image?: any;
 }

@@ -115,11 +115,18 @@ const handlerCreators: HandleCreators<AccountEmployeeEditorProps, OwnHandlers> =
       return Promise.reject('user was not found');
     }
 
+    // const imageData = { ...formData.image };
+    const img = new FormData();
+
+    img.append('image', formData.image[0]);
+    img.append('nama', 'mantul');
+    img.getAll('image');
+
     const payload = {
       ...formData.information,
       ...formData.bank,
       ...formData.contact,
-      ...formData.image
+      img
     };
 
     // creating

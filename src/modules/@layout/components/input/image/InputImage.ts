@@ -1,9 +1,10 @@
+import { WithStyles, withStyles } from '@material-ui/core';
+import styles from '@styles';
 import {
   compose,
   HandleCreators,
   lifecycle,
   mapper,
-  // pure,
   ReactLifeCycleFunctions,
   StateHandler,
   StateHandlerMap,
@@ -28,7 +29,7 @@ interface OwnHandlers {
 
 interface OwnState {
   value?: any;
-  image: any[];
+  showImage?: any;
 }
 
 interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
@@ -39,28 +40,25 @@ export type InputImageProps
   = OwnProps
   & OwnHandlers
   & OwnState
+  & WithStyles<typeof styles>
   & OwnStateUpdaters;
 
 const createProps: mapper<InputImageProps, OwnState> = (props: InputImageProps): OwnState => ({
   // value: props.input.value,
-  image: []
+  showImage: ''
 });
 
 const handlerCreators: HandleCreators<InputImageProps, OwnHandlers> = {
   handleImageChange: (props: InputImageProps) => (event: FileList) => {
     const reader = new FileReader();
-    // const resultReader = new ArrayBuffer();
     
     reader.readAsArrayBuffer(event[0]);
 
-    console.log(reader);
-    props.input.onChange(reader);
+    props.input.onChange(event);
 
-    // reader.onloadend = function(e) {
-      
-    // }
     props.stateUpdate({
-      value: reader
+      value: reader,
+      showImage: URL.createObjectURL(event[0])
     });
   },
 };
@@ -74,9 +72,11 @@ const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
 
 const lifecycles: ReactLifeCycleFunctions<InputImageProps, {}> = {
   componentDidUpdate(prevProps: InputImageProps) {
-    if (prevProps.input.value !== this.props.input.value) {
+    console.log(`${this.props.value} - ${this.props.reader} - ${this.props.showImage}`);
+    if (prevProps.input.value !== this.props.input.value || prevProps.showImage !== this.props.showImage) {
       this.props.stateUpdate({
-        value: this.props.input.value
+        value: this.props.input.value,
+        showImage: this.props.showImage
       });
     }
   }
@@ -86,4 +86,5 @@ export const InputImage = compose<InputImageProps, OwnProps>(
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
   lifecycle(lifecycles),
+  withStyles(styles),
 )(InputImageView);
