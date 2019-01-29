@@ -15,6 +15,7 @@ import { IPurchaseState } from '@purchase/classes/states';
 import { ISummaryState } from '@summary/classes/states';
 import { ITimesheetState } from '@timesheet/classes/states';
 import { ITravelState } from '@travel/classes/states';
+import { IInforState } from 'modules/infor/classes/states';
 import { FormStateMap } from 'redux-form';
 import { UserState } from 'redux-oidc';
 
@@ -33,7 +34,8 @@ export interface IAppState extends
   IPurchaseState,
   IOrganizationState,
   IHomeState,
-  ISummaryState {
+  ISummaryState,
+  IInforState {
   oidc: UserState;
   user: IUserState;
   layout: ILayoutState;

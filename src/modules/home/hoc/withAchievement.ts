@@ -1,4 +1,4 @@
-import { IAppState, IQuerySingleState } from '@generic/interfaces';
+import { IAppState, IQueryCollectionState } from '@generic/interfaces';
 import { IAchievementGetRequest } from '@home/classes/queries/achievement';
 import { IAchievement } from '@home/classes/response/achievement';
 import { achievementGetDispose, achievementGetRequest } from '@home/store/actions';
@@ -7,7 +7,7 @@ import { Dispatch } from 'redux';
 
 interface PropsFromState {
   achievementState: {
-    all: IQuerySingleState<IAchievementGetRequest, IAchievement>;
+    all: IQueryCollectionState<IAchievementGetRequest, IAchievement>;
   };
 }
 
