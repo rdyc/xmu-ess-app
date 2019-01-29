@@ -1,7 +1,7 @@
-import { layoutAlertAdd } from '@layout/store/actions';
 import {
   SliderAction as Action,
-} from '@lookup/store/actions';
+} from '@home/store/actions';
+import { layoutAlertAdd } from '@layout/store/actions';
 import { flattenObject } from '@utils/flattenObject';
 import saiyanSaga from '@utils/saiyanSaga';
 import { SubmissionError } from 'redux-form';

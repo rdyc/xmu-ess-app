@@ -1,6 +1,6 @@
 import { IResponseCollection } from '@generic/interfaces';
-import { ISliderGetRequest, ISliderPatchRequest } from '@lookup/classes/queries/slider';
-import { ISliderList } from '@lookup/classes/response/slider';
+import { ISliderGetRequest, ISliderPatchRequest } from '@home/classes/queries/slider';
+import { ISliderList } from '@home/classes/response/slider';
 import { action } from 'typesafe-actions';
 
 export const enum SliderAction {

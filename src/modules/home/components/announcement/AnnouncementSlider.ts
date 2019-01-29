@@ -14,7 +14,7 @@ import {
   withStateHandlers,
 } from 'recompose';
 
-import { withSlider, WithSlider } from '@lookup/hoc/withSlider';
+import { withSlider, WithSlider } from '@home/hoc/withSlider';
 import { AnnouncementSliderView } from './AnnouncementSliderView';
 
 interface IOwnOption {

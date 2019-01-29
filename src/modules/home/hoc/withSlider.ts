@@ -1,7 +1,7 @@
 import { IAppState, IQueryCollectionState } from '@generic/interfaces';
-import { ISliderGetRequest, ISliderPatchRequest } from '@lookup/classes/queries/slider';
-import { ISliderList } from '@lookup/classes/response/slider';
-import { sliderGetDispose, sliderGetRequest, sliderPatchDispose, sliderPatchRequest } from '@lookup/store/actions';
+import { ISliderGetRequest, ISliderPatchRequest } from '@home/classes/queries/slider';
+import { ISliderList } from '@home/classes/response/slider';
+import { sliderGetDispose, sliderGetRequest, sliderPatchDispose, sliderPatchRequest } from '@home/store/actions';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 

@@ -108,8 +108,6 @@ import {
 } from '../queries/currency';
 import { ILookupCustomerDeleteRequest, ILookupCustomerPostRequest, ILookupCustomerPutRequest } from '../queries/customer';
 import { IPositionDeleteRequest } from '../queries/position/IPositionDeleteRequest';
-import { ISliderGetRequest, ISliderPatchRequest } from '../queries/slider';
-import { ISliderList } from '../response/slider';
 
 export interface ILookupState {
   lookupCustomerGetAll: IQueryCollectionState<ILookupCustomerGetAllRequest, ICustomer>;
@@ -183,7 +181,4 @@ export interface ILookupState {
   systemLimitPost: IQuerySingleState<ISystemLimitPostRequest, ISystemLimit>;
   systemLimitPut: IQuerySingleState<ISystemLimitPutRequest, ISystemLimit>;
   systemLimitDelete: IQuerySingleState<ISystemLimitDeleteRequest, boolean>;
-
-  sliderGet: IQueryCollectionState<ISliderGetRequest, ISliderList>;
-  sliderPatch: IQueryCollectionState<ISliderPatchRequest, ISliderList>;
 }
