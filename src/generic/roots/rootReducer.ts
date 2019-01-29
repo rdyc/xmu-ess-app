@@ -15,6 +15,7 @@ import purchaseReducers from '@purchase/store/reducers/purchaseReducers';
 import summaryReducers from '@summary/store/reducers/summaryReducers';
 import { timesheetReducers } from '@timesheet/store/reducers/timesheetReducers';
 import travelReducers from '@travel/store/reducers/travelReducer';
+import { inforReducers } from 'modules/infor/store/reducers/inforReducers';
 import { combineReducers } from 'redux';
 import { reducer as reduxFormReducer } from 'redux-form';
 import { reducer as oidcReducer } from 'redux-oidc';
@@ -44,5 +45,6 @@ export const rootReducer = combineReducers<IAppState>({
   ...travelReducers,
   ...summaryReducers,
   ...organizationReducers,
-  ...homeReducers
+  ...homeReducers,
+  ...inforReducers
 });

@@ -5,7 +5,6 @@ import { Dispatch } from 'redux';
 
 interface PropsFromDispatch {
   projectStatusDispatch: {
-    // command
     updateRequest: typeof projectStatusPutRequest;
     updateDispose: typeof projectStatusPutDispose;
   };
@@ -15,7 +14,6 @@ export interface WithProjectStatus extends PropsFromDispatch {}
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   projectStatusDispatch: {
-    // command
     updateRequest: (request: IProjectStatusPutRequest) => dispatch(projectStatusPutRequest(request)),
     updateDispose: () => dispatch(projectStatusPutDispose()),
   }
