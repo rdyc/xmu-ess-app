@@ -9,19 +9,20 @@ export interface ISaiyanSaga {
   host?: string;
   method: Method;
   path: string;
-  payload?: any | undefined;
+  isJsonContent?: boolean;
+  payload?: any;
   successEffects: (response: IApiResponse) => Effect[];
-  successCallback?: (response: IApiResponse) => void | undefined;
+  successCallback?: (response: IApiResponse) => void;
   failureEffects: (response: IApiResponse) => Effect[];
-  failureCallback?: (response: IApiResponse) => void | undefined;
+  failureCallback?: (response: IApiResponse) => void;
   errorEffects: (error: any) => Effect[];
-  errorCallback?: (response: any) => void | undefined;
-  finallyEffects?: Effect[] | undefined;
+  errorCallback?: (response: any) => void;
+  finallyEffects?: Effect[];
 }
 
 function* fetching(param: ISaiyanSaga) {
   try {
-    const response: IApiResponse = yield call(apiRequest, param.method, param.host || API_ENDPOINT, param.path, param.payload);
+    const response: IApiResponse = yield call(apiRequest, param.method, param.host || API_ENDPOINT, param.path, param.payload, param.isJsonContent === undefined ? true : param.isJsonContent);
     
     if (response.ok) {
       yield all(param.successEffects(response));
