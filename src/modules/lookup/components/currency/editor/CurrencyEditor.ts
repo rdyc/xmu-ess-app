@@ -18,7 +18,7 @@ import { CurrencyEditorView } from './CurrencyEditorView';
 import { CurrencyFormData } from './CurrencyForm';
 
 interface OwnHandlers {
-  handleValidate: (payload: CurrencyFormData) => any;
+  handleValidate: (payload: CurrencyFormData) => FormErrors;
   handleSubmit: (payload: CurrencyFormData) => void;
   handleSubmitSuccess: (result: any, dispatch: Dispatch<any>) => void;
   handleSubmitFail: (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => void;
@@ -80,13 +80,12 @@ const handlerCreators: HandleCreators<CurrencyEditorProps, OwnHandlers> = {
       information: {}
     };
     const requiredFields = [
-      'name', 'symbol',
-      'rate',
+      'name', 'symbol', 'rate',
     ];
 
     requiredFields.forEach(field => {
       if (!formData.information[field] || isNullOrUndefined(formData.information[field])) {
-        errors[field] = props.intl.formatMessage({ id: `lookup.currency.field.${field}.required` });
+        errors.information[field] = props.intl.formatMessage({ id: `lookup.currency.field.${field}.required` });
       }
     });
 

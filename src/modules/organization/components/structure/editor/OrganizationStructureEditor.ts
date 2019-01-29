@@ -3,6 +3,7 @@ import { FormMode } from '@generic/types';
 import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
+import { layoutMessage } from '@layout/locales/messages';
 import { IOrganizationStructurePostPayload, IOrganizationStructurePutPayload } from '@organization/classes/request/structure';
 import { IStructure } from '@organization/classes/response/structure';
 import { WithOrganizationStructure, withOrganizationStructure } from '@organization/hoc/withOrganizationStructure';
@@ -41,6 +42,10 @@ interface OwnRouteParams {
 interface OwnState {
   formMode: FormMode;
   companyUid?: string;
+  submitDialogTitle: string;
+  submitDialogContentText: string;
+  submitDialogCancelText: string;
+  submitDialogConfirmedText: string;
 }
 
 interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
@@ -250,6 +255,10 @@ const handlerCreators: HandleCreators<OrganizationStructureEditorProps, OwnHandl
 const createProps: mapper<OrganizationStructureEditorProps, OwnState> = (props: OrganizationStructureEditorProps): OwnState => {
   return {
     formMode: FormMode.New,
+    submitDialogTitle: props.intl.formatMessage(organizationMessage.structure.dialog.createTitle),
+    submitDialogContentText: props.intl.formatMessage(organizationMessage.structure.dialog.createDescription),
+    submitDialogCancelText: props.intl.formatMessage(layoutMessage.action.cancel),
+    submitDialogConfirmedText: props.intl.formatMessage(layoutMessage.action.ok),
   };
 };
 
