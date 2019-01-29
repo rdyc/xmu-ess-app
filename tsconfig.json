@@ -22,6 +22,7 @@
       "@travel/*": [ "modules/travel/*" ],
       "@finance/*": [ "modules/finance/*" ],
       "@summary/*": [ "modules/summary/*" ],
+      "@infor/*": [ "modules/infor/*" ],
     },
     "outDir": "build/dist",
     "module": "esnext",

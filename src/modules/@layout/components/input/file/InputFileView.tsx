@@ -6,7 +6,13 @@ import { InputFileProps } from './InputFile';
 
 export const InputFileView: React.SFC<InputFileProps> = props => (
   <TextField
-    type="file"
+    type="file" 
+    inputProps={{
+      accept: props.accept
+    }}
+    InputLabelProps={{ 
+      shrink: true 
+    }}
     fullWidth={true}
     margin="normal"
     name={props.input.name}
@@ -17,6 +23,5 @@ export const InputFileView: React.SFC<InputFileProps> = props => (
     error={props.meta.touched && !isNullOrUndefined(props.meta.error) ? true : false}
     helperText={props.meta.touched && props.meta.error}
     onChange={props.handleOnChange}
-    onBlur={props.handleOnBlur}
   />
 );

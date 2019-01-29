@@ -1,8 +1,10 @@
+import { IInforPostPayload } from '@infor/classes/request';
+import { IInforResult } from '@infor/classes/response';
+import { WithInfor, withInfor } from '@infor/hoc/withInfor';
 import { InputFile } from '@layout/components/input/file';
 import { Submission } from '@layout/components/submission/Submission';
 import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
-import { WithOidc, withOidc } from '@layout/hoc/withOidc';
 import { Card, CardContent, CardHeader, Grid } from '@material-ui/core';
 import * as React from 'react';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
@@ -11,24 +13,6 @@ import { compose, HandleCreators, lifecycle, ReactLifeCycleFunctions, withHandle
 import { Dispatch } from 'redux';
 import { Field, FormErrors, getFormValues, InjectedFormProps, reduxForm } from 'redux-form';
 import { isNullOrUndefined, isObject } from 'util';
-
-// function getBase64(file: Blob) {
-//   return new Promise((resolve, reject) => {
-//     const reader = new FileReader();
-
-//     reader.readAsDataURL(file);
-    
-//     reader.onload = () => {
-//       const test = reader.result;
-
-//       if (test) {
-//         resolve(test);
-//       }
-//     };
-
-//     reader.onerror = error => reject(error);
-//   });
-// }
 
 // ----------------------------------------------------------------------------
 // Form.tsx
@@ -47,9 +31,10 @@ const uploadView: React.SFC<UploadFormProps> = props => (
               />
               <CardContent>
                 <Field 
-                  name="fileTest" 
-                  label="File Test"
+                  name="file" 
+                  label="File (excel)"
                   required={true}
+                  accept=".xls,.xlsx, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel"
                   component={InputFile}
                 />
               </CardContent>
@@ -84,7 +69,7 @@ const uploadView: React.SFC<UploadFormProps> = props => (
 // ----------------------------------------------------------------------------
 
 interface UploadFormData {
-  fileTest?: FileList;
+  file?: FileList;
 }
 
 interface FormValueProps {
@@ -139,13 +124,13 @@ type UploadEditorProps
   = OwnHandlers
   & WithLayout
   & WithAppBar
-  & WithOidc;
+  & WithInfor;
 
 const handlerCreators: HandleCreators<UploadEditorProps, OwnHandlers> = {
   handleValidate: (props: UploadEditorProps) => (values: UploadFormData) => { 
     const errors = {};
   
-    const requiredFields = ['fileTest'];
+    const requiredFields = ['file'];
   
     requiredFields.forEach(field => {
       if (!values[field] || isNullOrUndefined(values[field])) {
@@ -153,52 +138,34 @@ const handlerCreators: HandleCreators<UploadEditorProps, OwnHandlers> = {
       }
     });
 
-    console.log(errors);
+    console.log('form error', errors);
     
     return errors;
   },
-  handleSubmit: (props: UploadEditorProps) => async (formData: UploadFormData) => { 
-    console.log(formData);
-
-    if (props.oidcState.user && formData.fileTest) {
-      // if (formData.fileTest && formData.fileTest[0]) {
-      //   const test = await getBase64(formData.fileTest[0]);
-        
-      //   // console.log(test);
-      // }
+  handleSubmit: (props: UploadEditorProps) => (formData: UploadFormData) => { 
+    if (!formData.file) {  
+      return Promise.reject('empty file');
+    } 
     
-      const headers = new Headers();
+    const payload = {
+      ...formData
+    };
     
-      headers.append('Accept', 'application/json');
-      headers.append('Authorization',  `Bearer ${props.oidcState.user.access_token}`);
+    console.log(payload);
 
-      const data = new FormData();
-      
-      data.append('file', formData.fileTest[0]);
-      data.append('name', 'test');
-
-      return fetch('http://api-dev.tessa.equine.co.id:9001/v1/infor/reports', {
-        headers,
-        method: 'POST',
-        body: data
-      })
-      .then(response => console.log(response))
-      .catch((error: TypeError) => {
-        switch (error.message) {
-          case 'Failed to fetch':
-            throw TypeError(`${error.message}, please check your network connection`);
-
-          default:
-            throw error;
-        }
+    return new Promise((resolve, reject) => {
+      props.inforDispatch.postRequest({
+        resolve, 
+        reject,
+        data: payload as IInforPostPayload
       });
-    }
+    });
   },
-  handleSubmitSuccess: (props: UploadEditorProps) => (response: boolean) => {
+  handleSubmitSuccess: (props: UploadEditorProps) => (response: IInforResult) => {
     const { alertAdd } = props.layoutDispatch;
     
     alertAdd({
-      message: 'Ok',
+      message: JSON.stringify(response),
       time: new Date()
     });
   },
@@ -245,9 +212,9 @@ const lifecycles: ReactLifeCycleFunctions<UploadEditorProps, {}> = {
 };
 
 export const UploadEditor = compose<UploadEditorProps, {}>(
-  withOidc,
   withLayout,
   withAppBar,
+  withInfor,
   withHandlers(handlerCreators),
   lifecycle(lifecycles)
 )(UploadEditorView);
