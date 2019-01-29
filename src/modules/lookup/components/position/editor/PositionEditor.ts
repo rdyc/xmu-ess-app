@@ -3,6 +3,7 @@ import { FormMode } from '@generic/types';
 import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
+import { layoutMessage } from '@layout/locales/messages';
 import { IPositionPostPayload, IPositionPutPayload } from '@lookup/classes/request';
 import { IPosition } from '@lookup/classes/response';
 import { WithLookupPosition, withLookupPosition } from '@lookup/hoc/withLookupPosition';
@@ -31,6 +32,10 @@ interface OwnState {
   formMode: FormMode;
   companyUid?: string | undefined;
   positionUid?: string | undefined;
+  submitDialogTitle: string;
+  submitDialogContentText: string;
+  submitDialogCancelText: string;
+  submitDialogConfirmedText: string;
 }
 
 interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
@@ -56,7 +61,11 @@ const createProps: mapper<PositionEditorProps, OwnState> = (props: PositionEdito
   return {
     formMode: state ? FormMode.Edit : FormMode.New,
     companyUid: state ? state.companyUid : undefined,
-    positionUid: state ? state.positionUid : undefined
+    positionUid: state ? state.positionUid : undefined,
+    submitDialogTitle: props.intl.formatMessage(lookupMessage.position.dialog.createTitle),
+    submitDialogContentText: props.intl.formatMessage(lookupMessage.position.dialog.createDescription),
+    submitDialogCancelText: props.intl.formatMessage(layoutMessage.action.cancel),
+    submitDialogConfirmedText: props.intl.formatMessage(layoutMessage.action.ok),
   };
 };
 

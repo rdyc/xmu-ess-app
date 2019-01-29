@@ -40,7 +40,7 @@
   "organization.structure.dialog.create.title": "Create Confirmation",
   "organization.structure.dialog.create.description": "You are about to create a new structure. Do you want to continue?",
   "organization.structure.dialog.edit.title": "Edit Confirmation",
-  "organization.structure.dialog.edit.description": " ",
+  "organization.structure.dialog.edit.description": "You are about to edit a structure. Do you want to continue?",
 
   "organization.structure.message.emptyProps": "Some props are empty",
   "organization.structure.message.create.success": "A new Structure {uid} has been created",
