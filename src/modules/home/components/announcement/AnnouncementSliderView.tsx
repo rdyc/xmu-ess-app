@@ -11,7 +11,7 @@ export const AnnouncementSliderView: React.SFC<AnnouncementSliderProps> = props 
   const GetImages = (slider: IAnnouncement[]): IStepperSource[] => {
     const stepper: IStepperSource[] = slider.map(item => ({
       label: item.name,
-      imgPath: item.path && `${process.env.REACT_APP_CDN_URL}${item.path.large}`
+      imgPath: item.path && `${item.path.large}`
     }));
     return stepper;
   };
