@@ -4,14 +4,14 @@ import { layoutMessage } from '@layout/locales/messages';
 import { Toolbar, Typography } from '@material-ui/core';
 import * as React from 'react';
 
-import { ISliderList } from '@home/classes/response/slider';
+import { ISliderList } from '@lookup/classes/response/slider';
 import { AnnouncementSliderProps } from './AnnouncementSlider';
 
 export const AnnouncementSliderView: React.SFC<AnnouncementSliderProps> = props => {
   const GetImages = (slider: ISliderList[]): IStepperSource[] => {
     const stepper: IStepperSource[] = slider.map(item => ({
       label: item.name,
-      imgPath: item.path && `${process.env.REACT_APP_CDN_URL}${item.path.large}`
+      imgPath: item.path && `${item.path.large}`
     }));
     return stepper;
   };

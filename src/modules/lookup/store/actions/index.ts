@@ -12,3 +12,4 @@ export * from './lookupHolidayActions';
 export * from './lookupLeaveActions';
 export * from './systemLimitAction';
 export * from './leaveCalculationActions';
+export * from './sliderActions';
