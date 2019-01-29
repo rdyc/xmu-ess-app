@@ -14,7 +14,7 @@ import {
   withStateHandlers,
 } from 'recompose';
 
-import { withSlider, WithSlider } from '@home/hoc/withSlider';
+import { withAnnouncement, WithAnnouncement } from '@home/hoc/withAnnouncement';
 import { AnnouncementSliderView } from './AnnouncementSliderView';
 
 interface IOwnOption {
@@ -33,7 +33,7 @@ export type AnnouncementSliderProps
   = IOwnOption
   & IOwnState
   & IOwnStateUpdater
-  & WithSlider
+  & WithAnnouncement
   & WithStyles<typeof styles>
   & InjectedIntlProps;
 
@@ -49,27 +49,18 @@ const stateUpdaters: StateUpdaters<AnnouncementSliderProps, IOwnState, IOwnState
 
 const lifecycles: ReactLifeCycleFunctions<AnnouncementSliderProps, IOwnState> = {
   componentDidMount() {
-    const { isLoading } = this.props.sliderState.list;
-    const { loadListRequest } = this.props.sliderDispatch;
+    const { isLoading } = this.props.announcementState.all;
+    const { loadRequest } = this.props.announcementDispatch;
 
     if (!isLoading) {
-      loadListRequest({});
+      loadRequest({});
     }
   },
-  // componentDidUpdate(prevProps: AnnouncementSliderProps) {
-  //   if (this.props.announcementState.all.response !== prevProps.announcementState.all.response) {
-  //     if (this.props.announcementState.all.response && 
-  //       this.props.announcementState.all.response.data && 
-  //       this.props.announcementState.all.response.data.images) {
-  //       this.props.setImages(this.props.announcementState.all.response.data.images);
-  //     }
-  //   }
-  // }
 };
 
 export const AnnouncementSlider = compose<AnnouncementSliderProps, IOwnOption>(
   setDisplayName('AnnouncementSlider'),
-  withSlider,
+  withAnnouncement,
   injectIntl,
   withStyles(styles),
   withStateHandlers(createProps, stateUpdaters),

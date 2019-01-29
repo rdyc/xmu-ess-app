@@ -1,10 +1,10 @@
-import { IQuerySingleState } from '@generic/interfaces';
+import { IQueryCollectionState } from '@generic/interfaces';
 import { IAnnouncementGetRequest } from '@home/classes/queries/announcement';
 import { IAnnouncement } from '@home/classes/response/announcement/IAnnouncement';
 import { Reducer } from 'redux';
 import { AnnouncementAction as Action } from '../../actions/announcementActions';
 
-const initialState: IQuerySingleState<IAnnouncementGetRequest, IAnnouncement> = {
+const initialState: IQueryCollectionState<IAnnouncementGetRequest, IAnnouncement> = {
   request: undefined,
   response: undefined,
   isError: false,
@@ -12,7 +12,7 @@ const initialState: IQuerySingleState<IAnnouncementGetRequest, IAnnouncement> = 
   errors: undefined,
 };
 
-const reducer: Reducer<IQuerySingleState<IAnnouncementGetRequest, IAnnouncement>> = (state = initialState, action) => {
+const reducer: Reducer<IQueryCollectionState<IAnnouncementGetRequest, IAnnouncement>> = (state = initialState, action) => {
   switch (action.type) {
     case Action.GET_REQUEST: return { ...state, isLoading: true, isError: false, request: action.payload };
     case Action.GET_SUCCESS: return { ...state, isLoading: false, isError: false, response: action.payload };

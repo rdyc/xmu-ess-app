@@ -1,10 +1,10 @@
 import { IQueryCollectionState } from '@generic/interfaces';
-import { ISliderPatchRequest } from '@home/classes/queries/slider';
-import { ISliderList } from '@home/classes/response/slider';
+import { IAnnouncementPatchRequest } from '@home/classes/queries/announcement';
+import { IAnnouncement } from '@home/classes/response/announcement';
+import { AnnouncementAction as Action } from '@home/store/actions/announcementActions';
 import { Reducer } from 'redux';
-import { SliderAction as Action } from '../../actions/sliderActions';
 
-const initialState: IQueryCollectionState<ISliderPatchRequest, ISliderList> = {
+const initialState: IQueryCollectionState<IAnnouncementPatchRequest, IAnnouncement> = {
   request: undefined,
   response: undefined,
   isError: false,
@@ -12,7 +12,7 @@ const initialState: IQueryCollectionState<ISliderPatchRequest, ISliderList> = {
   errors: undefined,
 };
 
-const reducer: Reducer<IQueryCollectionState<ISliderPatchRequest, ISliderList>> = (state = initialState, action) => {
+const reducer: Reducer<IQueryCollectionState<IAnnouncementPatchRequest, IAnnouncement>> = (state = initialState, action) => {
   switch (action.type) {
     case Action.PATCH_REQUEST: return { ...state, isLoading: true, request: action.payload };
     case Action.PATCH_SUCCESS: return { ...state, isLoading: false, response: action.payload };
@@ -23,4 +23,4 @@ const reducer: Reducer<IQueryCollectionState<ISliderPatchRequest, ISliderList>> 
   }
 };
 
-export { reducer as sliderPatchReducer };
+export { reducer as announcementPatchReducer };
