@@ -45,6 +45,7 @@ import financeSagas from '@finance/store/sagas/financeApprovalSagas';
 import achievementSagas from '@home/store/sagas/achievementSagas';
 import announcementSagas from '@home/store/sagas/announcementSagas';
 import newsFeedSagas from '@home/store/sagas/newsFeedSagas';
+import sliderSagas from '@home/store/sagas/sliderSagas';
 import commonNotificationSagas from '@layout/store/sagas/notificationSagas';
 import leaveApprovalSagas from '@leave/store/sagas/leaveApprovalSagas';
 import leaveCancellationSagas from '@leave/store/sagas/leaveCancellationSagas';
@@ -201,6 +202,7 @@ export function* rootSaga() {
     // home
     fork(achievementSagas),
     fork(announcementSagas),
-    fork(newsFeedSagas)
+    fork(newsFeedSagas),
+    fork(sliderSagas)
   ]);
 }
