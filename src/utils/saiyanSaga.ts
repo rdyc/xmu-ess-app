@@ -22,7 +22,7 @@ export interface ISaiyanSaga {
 
 function* fetching(param: ISaiyanSaga) {
   try {
-    const response: IApiResponse = yield call(apiRequest, param.method, param.host || API_ENDPOINT, param.path, param.payload, param.isJsonContent);
+    const response: IApiResponse = yield call(apiRequest, param.method, param.host || API_ENDPOINT, param.path, param.payload, param.isJsonContent === undefined ? true : param.isJsonContent);
     
     if (response.ok) {
       yield all(param.successEffects(response));

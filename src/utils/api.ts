@@ -30,7 +30,7 @@ export async function apiRequest(method: string, url: string, path: string, payl
   const user = await AppUserManager.getUser();
   const headers = new Headers();
   let body = undefined;
-  const useJson = isJsonContent || false;
+  const useJson = isJsonContent === undefined ? false : isJsonContent;
   
   headers.append('Accept', 'application/json');
 
