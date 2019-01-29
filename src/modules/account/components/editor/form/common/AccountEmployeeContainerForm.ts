@@ -45,7 +45,7 @@ export type AccountEmployeeFormData = {
     emergencyContactPhoneAdditional: string | null | undefined;
   },
   image: {
-    image: any | null | undefined;
+    image: FileList | null | undefined;
   }
 };
 

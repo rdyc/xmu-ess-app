@@ -24,7 +24,7 @@ interface OwnProps extends WrappedFieldProps, BaseFieldProps {
 }
 
 interface OwnHandlers {
-  handleImageChange: (event: FileList) => void;
+  handleImageChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 interface OwnState {
@@ -49,16 +49,16 @@ const createProps: mapper<InputImageProps, OwnState> = (props: InputImageProps):
 });
 
 const handlerCreators: HandleCreators<InputImageProps, OwnHandlers> = {
-  handleImageChange: (props: InputImageProps) => (event: FileList) => {
-    const reader = new FileReader();
+  handleImageChange: (props: InputImageProps) => (event: React.ChangeEvent<HTMLInputElement>) => {
+    // const reader = new FileReader();
     
-    reader.readAsArrayBuffer(event[0]);
+    // reader.readAsArrayBuffer(event[0]);
 
-    props.input.onChange(event);
+    props.input.onChange(event.target.files);
 
     props.stateUpdate({
-      value: reader,
-      showImage: URL.createObjectURL(event[0])
+      value: event.target.files,
+      showImage: URL.createObjectURL(event.target.files && event.target.files[0])
     });
   },
 };

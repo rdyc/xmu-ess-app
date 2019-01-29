@@ -36,6 +36,6 @@ export interface IEmployeeDetail {
     bpjsHealthCareNumber?: string;
     bank?: IEmployeeBank;
     contact?: IEmployeeContact;
-    image?: File;
+    image?: FileList;
     changes?: IBaseChanges;
 }

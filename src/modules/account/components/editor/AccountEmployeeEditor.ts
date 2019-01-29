@@ -116,17 +116,18 @@ const handlerCreators: HandleCreators<AccountEmployeeEditorProps, OwnHandlers> =
     }
 
     // const imageData = { ...formData.image };
-    const img = new FormData();
+    const image = new FormData();
 
-    img.append('image', formData.image[0]);
-    img.append('nama', 'mantul');
-    img.getAll('image');
+    if (formData.image.image) {
+      image.append('image', formData.image.image[0]);
+      image.append('nama', 'mantul');
+    }
 
     const payload = {
       ...formData.information,
       ...formData.bank,
       ...formData.contact,
-      img
+      image
     };
 
     // creating

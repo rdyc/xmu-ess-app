@@ -14,7 +14,7 @@ export const InputImageView: React.SFC<InputImageProps> = props => (
           type="file"
           accept={'.jpg, .png, .jpeg'}
           name={props.input.name}
-          onChange={(e) => e.target.files && props.handleImageChange(e.target.files)}
+          onChange={(e) => props.handleImageChange(e)}
           style={{ display : 'none'}}
         />
       </Button>
