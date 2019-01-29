@@ -1,4 +1,3 @@
-import { WithAnnouncement, withAnnouncement } from '@home/hoc/withAnnouncement';
 import { IStepperSource } from '@layout/components/stepper/Stepper';
 import { WithStyles, withStyles } from '@material-ui/core';
 import styles from '@styles';
@@ -15,6 +14,7 @@ import {
   withStateHandlers,
 } from 'recompose';
 
+import { withSlider, WithSlider } from '@home/hoc/withSlider';
 import { AnnouncementSliderView } from './AnnouncementSliderView';
 
 interface IOwnOption {
@@ -33,7 +33,7 @@ export type AnnouncementSliderProps
   = IOwnOption
   & IOwnState
   & IOwnStateUpdater
-  & WithAnnouncement
+  & WithSlider
   & WithStyles<typeof styles>
   & InjectedIntlProps;
 
@@ -49,27 +49,27 @@ const stateUpdaters: StateUpdaters<AnnouncementSliderProps, IOwnState, IOwnState
 
 const lifecycles: ReactLifeCycleFunctions<AnnouncementSliderProps, IOwnState> = {
   componentDidMount() {
-    const { isLoading } = this.props.announcementState.all;
-    const { loadRequest } = this.props.announcementDispatch;
+    const { isLoading } = this.props.sliderState.list;
+    const { loadListRequest } = this.props.sliderDispatch;
 
     if (!isLoading) {
-      loadRequest({});
+      loadListRequest({});
     }
   },
-  componentDidUpdate(prevProps: AnnouncementSliderProps) {
-    if (this.props.announcementState.all.response !== prevProps.announcementState.all.response) {
-      if (this.props.announcementState.all.response && 
-        this.props.announcementState.all.response.data && 
-        this.props.announcementState.all.response.data.images) {
-        this.props.setImages(this.props.announcementState.all.response.data.images);
-      }
-    }
-  }
+  // componentDidUpdate(prevProps: AnnouncementSliderProps) {
+  //   if (this.props.announcementState.all.response !== prevProps.announcementState.all.response) {
+  //     if (this.props.announcementState.all.response && 
+  //       this.props.announcementState.all.response.data && 
+  //       this.props.announcementState.all.response.data.images) {
+  //       this.props.setImages(this.props.announcementState.all.response.data.images);
+  //     }
+  //   }
+  // }
 };
 
 export const AnnouncementSlider = compose<AnnouncementSliderProps, IOwnOption>(
   setDisplayName('AnnouncementSlider'),
-  withAnnouncement,
+  withSlider,
   injectIntl,
   withStyles(styles),
   withStateHandlers(createProps, stateUpdaters),

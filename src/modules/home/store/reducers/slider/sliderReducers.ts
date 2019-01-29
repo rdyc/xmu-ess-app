@@ -1,8 +1,8 @@
 import { sliderGetReducer, sliderPatchReducer } from '.';
 
 const sliderReducers = {
-  SliderGet: sliderGetReducer,
-  SliderPatch: sliderPatchReducer,
+  sliderGet: sliderGetReducer,
+  sliderPatch: sliderPatchReducer,
 };
 
 export default sliderReducers;
