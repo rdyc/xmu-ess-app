@@ -87,7 +87,7 @@ const handlerCreators: HandleCreators<PositionEditorProps, OwnHandlers> = {
 
     requiredFields.forEach(field => {
       if (!formData.information[field] || isNullOrUndefined(formData.information[field])) {
-        errors.information[field] = props.intl.formatMessage({ id: `lookup.position.field.${field}.required` });
+        errors.information[field] = props.intl.formatMessage(lookupMessage.position.fieldFor(field, 'fieldRequired'));
       }
     });
 

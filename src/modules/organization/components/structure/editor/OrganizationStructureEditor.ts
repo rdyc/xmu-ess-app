@@ -70,7 +70,7 @@ const handlerCreators: HandleCreators<OrganizationStructureEditorProps, OwnHandl
     };
   
     const requiredFields = [
-      'companyUid', 'positionUid', 'inactiveDate'
+      'companyUid', 'positionUid'
     ];
   
     requiredFields.forEach(field => {
@@ -80,7 +80,7 @@ const handlerCreators: HandleCreators<OrganizationStructureEditorProps, OwnHandl
     });
 
     if (formData.item.items) {
-      const requiredItemFields = ['positionUid', 'start', 'end'];
+      const requiredItemFields = ['positionUid', 'start'];
       
       const itemErrors: any[] = [];
       
@@ -290,6 +290,8 @@ const lifecycles: ReactLifeCycleFunctions<OrganizationStructureEditorProps, {}> 
 
       stateUpdate({ 
         formMode: FormMode.Edit,
+        submitDialogTitle: intl.formatMessage(organizationMessage.structure.dialog.editTitle),
+        submitDialogContentText: intl.formatMessage(organizationMessage.structure.dialog.editDescription),
       });
 
       loadDetailRequest({

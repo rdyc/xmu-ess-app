@@ -85,7 +85,7 @@ const handlerCreators: HandleCreators<CurrencyEditorProps, OwnHandlers> = {
 
     requiredFields.forEach(field => {
       if (!formData.information[field] || isNullOrUndefined(formData.information[field])) {
-        errors.information[field] = props.intl.formatMessage({ id: `lookup.currency.field.${field}.required` });
+        errors.information[field] = props.intl.formatMessage(lookupMessage.currency.fieldFor(field, 'fieldRequired'));
       }
     });
 

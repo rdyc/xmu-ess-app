@@ -2,6 +2,7 @@ import {
   currencyConfirm,
   currencyDialog,
   currencyField,
+  currencyFieldHelperFor,
   currencyForm,
   currencyMessage,
   currencyPage,
@@ -141,6 +142,7 @@ export const lookupMessage = {
   currency: {
     page: currencyPage,
     field: currencyField,
+    fieldFor: currencyFieldHelperFor,
     confirm: currencyConfirm,
     section: currencySection,
     form: currencyForm,
