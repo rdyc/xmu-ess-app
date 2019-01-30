@@ -9,6 +9,7 @@ import { mileageExceptionReducers } from './mileageException/mileageExceptionRed
 import { lookupPositionReducers } from './position';
 import { lookupRoleReducers } from './role';
 import { systemLimitReducers } from './systemLimit';
+import { lookupVersionReducers } from './version';
 
 const lookupReducers = {
   ...lookupCustomerReducers,
@@ -21,7 +22,8 @@ const lookupReducers = {
   ...systemLimitReducers,
   ...lookupDiemReducers,
   ...lookupCurrencyReducers,
-  ...lookupMenuReducers
+  ...lookupMenuReducers,
+  ...lookupVersionReducers,
 };
 
 export default lookupReducers;

@@ -12,6 +12,8 @@ import {
   ILookupLeaveGetListRequest,
   ILookupLeavePostRequest,
   ILookupLeavePutRequest,
+  ILookupVersionGetByIdRequest,
+  ILookupVersionPatchRequest,
   IMenuGetAllRequest,
   IMenuGetByIdRequest,
   IMenuListRequest,
@@ -79,6 +81,7 @@ import {
   ILookupLeave,
   ILookupLeaveDetail,
   ILookupLeaveList,
+  ILookupVersion,
   IMenu,
   IMenuDetail,
   IMenuList,
@@ -96,16 +99,9 @@ import {
   ISystemLimitDetail,
   ISystemLimitList,
 } from '@lookup/classes/response';
-import {
-  ICompany,
-  ICompanyDetail,
-  ICompanyList
-} from '@lookup/classes/response/company';
+import { ICompany, ICompanyDetail, ICompanyList } from '@lookup/classes/response/company';
 
-import {
-  // ICurrencyDeleteRequest,
-  ICurrencyPostRequest, ICurrencyPutRequest
-} from '../queries/currency';
+import { ICurrencyPostRequest, ICurrencyPutRequest } from '../queries/currency';
 import { ILookupCustomerDeleteRequest, ILookupCustomerPostRequest, ILookupCustomerPutRequest } from '../queries/customer';
 import { IPositionDeleteRequest } from '../queries/position/IPositionDeleteRequest';
 
@@ -181,4 +177,7 @@ export interface ILookupState {
   systemLimitPost: IQuerySingleState<ISystemLimitPostRequest, ISystemLimit>;
   systemLimitPut: IQuerySingleState<ISystemLimitPutRequest, ISystemLimit>;
   systemLimitDelete: IQuerySingleState<ISystemLimitDeleteRequest, boolean>;
+
+  lookupVersionGetById: IQuerySingleState<ILookupVersionGetByIdRequest, ILookupVersion>;
+  lookupVersionPatch: IQuerySingleState<ILookupVersionPatchRequest, ILookupVersion>;
 }

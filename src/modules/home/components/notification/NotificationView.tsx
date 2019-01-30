@@ -15,6 +15,7 @@ import {
   Toolbar,
   Typography,
 } from '@material-ui/core';
+import { Android } from '@material-ui/icons';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import SyncIcon from '@material-ui/icons/Sync';
 import * as moment from 'moment';
@@ -50,6 +51,63 @@ export const NotificationView: React.SFC<NotificationProps> = props => (
       props.notificationState.response && 
       props.notificationState.response.data && 
       <Grid container spacing={16}>
+        <Grid item xs={12} sm={12} md={4} lg={3} xl={2}>
+          <ExpansionPanel>
+            <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+              <div>
+                <Avatar className={props.classes.backgroundColorSecondary}>
+                  <Android />
+                </Avatar>
+              </div>
+              
+              <div className={props.classes.marginFarLeft}>
+                <Typography variant="body2" noWrap>
+                  TESSA Mobile
+                </Typography>
+
+                {
+                  props.lookupVersionState.detail.response &&
+                  props.lookupVersionState.detail.response.data &&
+                  <Typography variant="caption" noWrap>
+                    Version {props.lookupVersionState.detail.response.data.version}
+                  </Typography>
+                }
+              </div>
+            </ExpansionPanelSummary>
+            
+            <ExpansionPanelDetails 
+              style={{
+                padding: 0,
+                maxHeight: 300, 
+                backgroundColor: props.theme.palette.background.default,
+                overflowY: 'scroll'
+              }}
+            >
+              {
+                props.lookupVersionState.detail.response &&
+                props.lookupVersionState.detail.response.data &&
+                <List disablePadding style={{ width: '100%' }}>
+                  <ListItem
+                    button
+                    onClick={props.handleDownloadClick}
+                    >
+                    <ListItemText
+                      primary="Download APK"
+                      secondary={`Update notes: ${props.lookupVersionState.detail.response.data.notes}`}
+                      primaryTypographyProps={{
+                        variant: 'body2'
+                      }}
+                      secondaryTypographyProps={{
+                        variant: 'caption'
+                      }}
+                      />
+                  </ListItem>
+                </List>
+              }
+            </ExpansionPanelDetails>
+          </ExpansionPanel>
+        </Grid>
+
         {
           props.notificationState.response.data
           .sort((a , b) => (a.name > b.name) ? 1 : 0)
