@@ -1,6 +1,8 @@
 import {
   currencyConfirm,
+  currencyDialog,
   currencyField,
+  currencyFieldHelperFor,
   currencyForm,
   currencyMessage,
   currencyPage,
@@ -76,6 +78,7 @@ import {
 } from './mileageException';
 import {
   positionConfirm,
+  positionDialog,
   positionField,
   positionFieldHelperFor,
   positionForm,
@@ -146,10 +149,12 @@ export const lookupMessage = {
   currency: {
     page: currencyPage,
     field: currencyField,
+    fieldFor: currencyFieldHelperFor,
     confirm: currencyConfirm,
     section: currencySection,
     form: currencyForm,
-    message: currencyMessage
+    message: currencyMessage,
+    dialog: currencyDialog
   },
   company: {
     page: companyPage,
@@ -167,7 +172,8 @@ export const lookupMessage = {
     section: positionSection,
     confirm: positionConfirm,
     form: positionForm,
-    message: positionMessage
+    message: positionMessage,
+    dialog: positionDialog
   },
   lookupDiem: {
     page: lookupDiemPage,

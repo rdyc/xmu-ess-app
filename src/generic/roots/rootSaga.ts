@@ -207,6 +207,6 @@ export function* rootSaga() {
     // home
     fork(achievementSagas),
     fork(announcementSagas),
-    fork(newsFeedSagas)
+    fork(newsFeedSagas),
   ]);
 }

@@ -232,6 +232,9 @@
   "lookup.currency.message.delete.failure": "Delete confirmation failed",
   "lookup.currency.message.empty.currencyUid": "Currency ID not found",
 
+  "lookup.currency.dialog.newTitle": "Submit Confirmation",
+  "lookup.currency.dialog.newDescription": "Do you want to submit currency ?",
+
   "lookup.position.page.list.title": "Position",
   "lookup.position.page.list.subHeader": " ",
 
@@ -283,8 +286,11 @@
   "lookup.position.message.update.failure": "Update submission failed",
   "lookup.position.message.delete.success": "This position has been deleted from system",
   "lookup.position.message.delete.failure": "Delete confirmation failed",
-  "lookup.position.message.empty.currencyUid": "Position ID not found",
+  "lookup.position.message.empty.positionUid": "Position ID not found",
   
+  "lookup.position.dialog.newTitle": "Submit Confirmation",
+  "lookup.position.dialog.newDescription": "Do you want to submit position ?",
+
   "lookup.diem.page.list.title": "Diem Value",
   "lookup.diem.page.list.subHeader": " ",
   "lookup.diem.page.detail.title": "Diem Detail",

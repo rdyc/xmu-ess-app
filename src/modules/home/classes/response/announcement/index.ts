@@ -1,2 +1,2 @@
 export * from './IAnnouncement';
-export * from './IAnnouncementImage';
+export * from './IAnnouncementPath';

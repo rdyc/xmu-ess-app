@@ -5,5 +5,5 @@ import newsFeedReducers from './newsFeed/newsFeedReducers';
 export const homeReducers = {
   ...achievementReducers,
   ...announcementReducers,
-  ...newsFeedReducers,
+  ...newsFeedReducers
 };
