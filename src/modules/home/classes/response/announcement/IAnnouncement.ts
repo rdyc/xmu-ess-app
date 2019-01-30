@@ -1,5 +1,6 @@
-import { IAnnouncementImage } from './IAnnouncementImage';
+import { IAnnouncementPath } from './IAnnouncementPath';
 
 export interface IAnnouncement {
-  images: IAnnouncementImage[];
+  name: string;
+  path: IAnnouncementPath;
 }

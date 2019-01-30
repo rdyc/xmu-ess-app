@@ -149,7 +149,7 @@ const handlerCreators: HandleCreators<AccountEmployeeExperienceEditorProps, OwnH
     return null;
   },
   handleSubmitSuccess: (props: AccountEmployeeExperienceEditorProps) => (response: IEmployeeExperience) => {
-    const { formMode, intl, history, editAction, stateUpdate } = props;
+    const { formMode, intl, history, editAction, handleDialogClose } = props;
     const { alertAdd } = props.layoutDispatch;
     const { loadAllRequest } = props.accountEmployeeExperienceDispatch; 
     let message: string = '';
@@ -166,11 +166,7 @@ const handlerCreators: HandleCreators<AccountEmployeeExperienceEditorProps, OwnH
       }
     }
 
-    stateUpdate({
-      isOpenDialog: false,
-      formMode: undefined,
-      editAction: undefined
-    });
+    handleDialogClose();
 
     alertAdd({
       message,

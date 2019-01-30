@@ -21,6 +21,7 @@ import ClearIcon from '@material-ui/icons/SettingsBackupRestore';
 import * as React from 'react';
 
 import { financeMessage } from '@finance/locales/messages/financeMessage';
+import { ModuleDefinition } from '@layout/helper/redirector';
 import { FinanceApprovalListFilterProps } from './FinanceApprovalListFilter';
 
 export const FinanceApprovalListFilterView: React.SFC<FinanceApprovalListFilterProps> = props => (
@@ -44,7 +45,7 @@ export const FinanceApprovalListFilterView: React.SFC<FinanceApprovalListFilterP
           </Typography>
 
           {
-            (props.filterCustomer || props.filterType || props.filterStatus || props.filterCompletion || props.filterNotify) &&
+            (props.filterStatus || props.filterModule) &&
             <Button color="inherit" onClick={props.handleFilterOnReset}>
               {props.intl.formatMessage(layoutMessage.action.reset)}
             </Button>
@@ -108,6 +109,7 @@ export const FinanceApprovalListFilterView: React.SFC<FinanceApprovalListFilterP
       title={props.intl.formatMessage(financeMessage.approval.field.moduleName)}
       category="finance"
       hideBackdrop={true}
+      moduleType={ModuleDefinition.Finance}
       isOpen={props.isFilterModuleOpen}
       value={props.filterModule && props.filterModule.type}
       onSelected={props.handleFilterModuleOnSelected}

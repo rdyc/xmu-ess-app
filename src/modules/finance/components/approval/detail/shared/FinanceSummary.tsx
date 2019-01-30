@@ -1,5 +1,6 @@
 import { IFinance } from '@finance/classes/response';
 import { financeMessage } from '@finance/locales/messages/financeMessage';
+import { ModuleDefinition } from '@layout/helper/redirector';
 import { layoutMessage } from '@layout/locales/messages';
 import { GlobalFormat } from '@layout/types';
 import { GlobalStyle } from '@layout/types/GlobalStyle';
@@ -35,6 +36,11 @@ const financeSummary: React.SFC<AllProps> = props => (
           label={props.intl.formatMessage(financeMessage.approval.field.uid)}
           value={props.data.uid}
         />
+        <TextField
+          {...GlobalStyle.TextField.ReadOnly}
+          label={props.intl.formatMessage(financeMessage.approval.field.requestor)}
+          value={props.data.document && props.data.document.changes && props.data.document.changes.created ? props.data.document.changes.created.fullName : 'N/A'}
+        />
       </Grid>
       <Grid item xs={12} sm={6} md={3}>
         <TextField
@@ -47,11 +53,20 @@ const financeSummary: React.SFC<AllProps> = props => (
           label={props.intl.formatMessage(financeMessage.approval.field.documentUid)}
           value={props.data.documentUid ? props.data.documentUid : 'N/A'}
         />
-        <TextField
-          {...GlobalStyle.TextField.ReadOnly}
-          label={props.intl.formatMessage(financeMessage.approval.field.requestor)}
-          value={props.data.document && props.data.document.changes && props.data.document.changes.created ? props.data.document.changes.created.fullName : 'N/A'}
-        />
+        {
+          (props.data.document && props.data.document.documentNotes) &&
+          <TextField
+            {...GlobalStyle.TextField.ReadOnly}
+            multiline
+            label={
+              props.data.moduleUid === ModuleDefinition.Expense &&
+              props.intl.formatMessage(financeMessage.approval.field.notesExpense) ||
+              props.data.moduleUid === ModuleDefinition.Mileage &&
+              props.intl.formatMessage(financeMessage.approval.field.notesMileage)
+            }
+            value={props.data.document.documentNotes}
+          />
+        }
     </Grid>
     <Grid item xs={12} sm={6} md={3}>
       <TextField

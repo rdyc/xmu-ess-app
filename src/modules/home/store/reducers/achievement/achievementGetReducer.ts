@@ -1,10 +1,10 @@
-import { IQuerySingleState } from '@generic/interfaces';
+import { IQueryCollectionState } from '@generic/interfaces';
 import { IAchievementGetRequest } from '@home/classes/queries/achievement';
 import { IAchievement } from '@home/classes/response/achievement/IAchievement';
 import { Reducer } from 'redux';
 import { AchievementAction as Action } from '../../actions/achievementActions';
 
-const initialState: IQuerySingleState<IAchievementGetRequest, IAchievement> = {
+const initialState: IQueryCollectionState<IAchievementGetRequest, IAchievement> = {
   request: undefined,
   response: undefined,
   isError: false,
@@ -12,7 +12,7 @@ const initialState: IQuerySingleState<IAchievementGetRequest, IAchievement> = {
   errors: undefined,
 };
 
-const reducer: Reducer<IQuerySingleState<IAchievementGetRequest, IAchievement>> = (state = initialState, action) => {
+const reducer: Reducer<IQueryCollectionState<IAchievementGetRequest, IAchievement>> = (state = initialState, action) => {
   switch (action.type) {
     case Action.GET_REQUEST: return { ...state, isLoading: true, isError: false, request: action.payload };
     case Action.GET_SUCCESS: return { ...state, isLoading: false, isError: false, response: action.payload };

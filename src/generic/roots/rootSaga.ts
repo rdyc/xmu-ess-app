@@ -51,6 +51,7 @@ import leaveApprovalSagas from '@leave/store/sagas/leaveApprovalSagas';
 import leaveCancellationSagas from '@leave/store/sagas/leaveCancellationSagas';
 import leaveRequestSagas from '@leave/store/sagas/leaveRequestSagas';
 import lookupCurrencySagas from '@lookup/store/sagas/currencySagas';
+import imageGallerySagas from '@lookup/store/sagas/imageGallerySagas';
 import leaveCalculationSagas from '@lookup/store/sagas/leaveCalculationSagas';
 import lookupCompanySagas from '@lookup/store/sagas/lookupCompanySagas';
 import lookupCustomerSagas from '@lookup/store/sagas/lookupCustomerSagas';
@@ -138,7 +139,8 @@ export function* rootSaga() {
     fork(lookupHolidaySagas),
     fork(lookupLeaveSagas),
     fork(lookupVersionSagas),
-
+    fork(imageGallerySagas),
+    
     // organization
     fork(organizationHierarchySagas),
     fork(organizationStructureSagas),
@@ -207,6 +209,6 @@ export function* rootSaga() {
     // home
     fork(achievementSagas),
     fork(announcementSagas),
-    fork(newsFeedSagas)
+    fork(newsFeedSagas),
   ]);
 }
