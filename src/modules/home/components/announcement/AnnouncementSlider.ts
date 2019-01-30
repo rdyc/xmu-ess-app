@@ -1,4 +1,3 @@
-import { WithAnnouncement, withAnnouncement } from '@home/hoc/withAnnouncement';
 import { IStepperSource } from '@layout/components/stepper/Stepper';
 import { WithStyles, withStyles } from '@material-ui/core';
 import styles from '@styles';
@@ -15,6 +14,7 @@ import {
   withStateHandlers,
 } from 'recompose';
 
+import { withAnnouncement, WithAnnouncement } from '@home/hoc/withAnnouncement';
 import { AnnouncementSliderView } from './AnnouncementSliderView';
 
 interface IOwnOption {
@@ -56,15 +56,6 @@ const lifecycles: ReactLifeCycleFunctions<AnnouncementSliderProps, IOwnState> = 
       loadRequest({});
     }
   },
-  componentDidUpdate(prevProps: AnnouncementSliderProps) {
-    if (this.props.announcementState.all.response !== prevProps.announcementState.all.response) {
-      if (this.props.announcementState.all.response && 
-        this.props.announcementState.all.response.data && 
-        this.props.announcementState.all.response.data.images) {
-        this.props.setImages(this.props.announcementState.all.response.data.images);
-      }
-    }
-  }
 };
 
 export const AnnouncementSlider = compose<AnnouncementSliderProps, IOwnOption>(
