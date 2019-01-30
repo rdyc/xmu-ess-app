@@ -59,6 +59,7 @@ import lookupDiemSagas from '@lookup/store/sagas/lookupDiemSagas';
 import lookupHolidaySagas from '@lookup/store/sagas/lookupHolidaySagas';
 import lookupLeaveSagas from '@lookup/store/sagas/lookupLeaveSagas';
 import lookupRoleSagas from '@lookup/store/sagas/lookupRoleSagas';
+import lookupVersionSagas from '@lookup/store/sagas/lookupVersionSagas';
 import lookupMenuSagas from '@lookup/store/sagas/menuSagas';
 import lookupMileageExceptionSagas from '@lookup/store/sagas/mileageExceptionSagas';
 import lookupPositionSagas from '@lookup/store/sagas/positionSagas';
@@ -137,6 +138,7 @@ export function* rootSaga() {
     fork(lookupSystemLimitSagas),
     fork(lookupHolidaySagas),
     fork(lookupLeaveSagas),
+    fork(lookupVersionSagas),
     fork(imageGallerySagas),
     
     // organization
