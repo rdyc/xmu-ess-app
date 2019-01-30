@@ -14,7 +14,8 @@ import { LookupCustomerList } from './customer/list/LookupCustomerList';
 import { LookupDiemDetail } from './diem/detail/LookupDiemDetail';
 import LookupDiemEditor from './diem/editor/LookupDiemEditor';
 import { LookupDiemList } from './diem/list/LookupDiemList';
-import { ImageGalleryList } from './gallery/list/ImageGalleryList';
+import { AnnouncementEditor } from './gallery/announcement/AnnouncementEditor';
+// import { ImageGalleryList } from './gallery/list/ImageGalleryList';
 import LookupHolidayEditor from './holiday/editor/LookupHolidayEditor';
 import { LookupHolidayList } from './holiday/list/LookupHolidayList';
 import { LeaveCalculationList } from './leave/calculation/LeaveCalculationList';
@@ -120,7 +121,7 @@ const diem = (props: RouteComponentProps) => (
 
 const gallery = (props: RouteComponentProps) => (
   <Switch>
-    <Route path={`${props.match.path}`} component={ImageGalleryList} />
+    <Route path={`${props.match.path}`} component={AnnouncementEditor} />
   </Switch>
 );
 
