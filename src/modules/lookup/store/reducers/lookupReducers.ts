@@ -2,6 +2,7 @@ import { lookupCompanyReducers } from './company';
 import { lookupCurrencyReducers } from './currency';
 import { lookupCustomerReducers } from './customer';
 import { lookupDiemReducers } from './diem';
+import imageGalleryReducers from './gallery/imageGalleryReducers';
 import { lookupHolidayReducers } from './holiday/lookupHolidayReducers';
 import { lookupLeaveReducers } from './leave/lookupLeaveReducers';
 import { lookupMenuReducers } from './menu';
@@ -21,7 +22,8 @@ const lookupReducers = {
   ...systemLimitReducers,
   ...lookupDiemReducers,
   ...lookupCurrencyReducers,
-  ...lookupMenuReducers
+  ...lookupMenuReducers,
+  ...imageGalleryReducers
 };
 
 export default lookupReducers;

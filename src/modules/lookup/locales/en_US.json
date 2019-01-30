@@ -515,5 +515,29 @@
   "lookup.customer.message.update.success": "Customer has been updated",
   "lookup.customer.message.update.failure": "Update submission failed",
   "lookup.customer.message.delete.success": "This customer has been deleted from system",
-  "lookup.customer.message.delete.failure": "Delete confirmation failed"
+  "lookup.customer.message.delete.failure": "Delete confirmation failed",
+
+  "lookup.gallery.page.list.title": "Image Gallery",
+  "lookup.gallery.page.list.subHeader": " ",
+  "lookup.gallery.page.detail.title": "Image Gallery Detail",
+  "lookup.gallery.page.detail.subHeader": " ",
+  "lookup.gallery.page.new.title": "New Image Gallery",
+  "lookup.gallery.page.new.subHeader": " ",
+  "lookup.gallery.page.modify.title": "Modify Image Gallery",
+  "lookup.gallery.page.modify.subHeader": " ",
+
+  "lookup.gallery.message.emptyProps": "Some props are empty",
+  "lookup.gallery.message.create.success": "New Image Gallery has been created",
+  "lookup.gallery.message.create.failure": "Unable to process your submission",
+  "lookup.gallery.message.update.success": "Current data with ID {uid} has been updated",
+  "lookup.gallery.message.update.failure": "Unable to process your submission",
+  "lookup.gallery.message.delete.success": "Current data with ID {uid} has been deleted",
+  "lookup.gallery.message.delete.failure": "Unable to process your submission",
+
+  "lookup.gallery.field.file": "Upload Image",
+  "lookup.gallery.field.file.required": "Image is required",
+  "lookup.gallery.field.file.placeholder": "Upload any image",
+
+  "lookup.gallery.section.info.title": "Image Gallery",
+  "lookup.gallery.section.info.subHeader": " "
 }

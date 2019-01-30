@@ -101,12 +101,13 @@ import {
   ICompanyDetail,
   ICompanyList
 } from '@lookup/classes/response/company';
-
+import { IGallery } from '@lookup/classes/response/gallery';
 import {
   // ICurrencyDeleteRequest,
   ICurrencyPostRequest, ICurrencyPutRequest
 } from '../queries/currency';
 import { ILookupCustomerDeleteRequest, ILookupCustomerPostRequest, ILookupCustomerPutRequest } from '../queries/customer';
+import { IGalleryGetAllRequest, IGalleryGetDetailRequest, IGalleryPostRequest } from '../queries/gallery';
 import { IPositionDeleteRequest } from '../queries/position/IPositionDeleteRequest';
 
 export interface ILookupState {
@@ -181,4 +182,8 @@ export interface ILookupState {
   systemLimitPost: IQuerySingleState<ISystemLimitPostRequest, ISystemLimit>;
   systemLimitPut: IQuerySingleState<ISystemLimitPutRequest, ISystemLimit>;
   systemLimitDelete: IQuerySingleState<ISystemLimitDeleteRequest, boolean>;
+
+  imageGalleryGetAll: IQueryCollectionState<IGalleryGetAllRequest, IGallery>;
+  imageGalleryGetById: IQuerySingleState<IGalleryGetDetailRequest, IGallery>;  
+  imageGalleryPost: IQuerySingleState<IGalleryPostRequest, IGallery>;
 }
