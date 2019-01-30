@@ -102,12 +102,14 @@ import {
   ICompanyList
 } from '@lookup/classes/response/company';
 
+import { IAchievementPatchRequest } from '../queries/achievement';
 import {
   // ICurrencyDeleteRequest,
   ICurrencyPostRequest, ICurrencyPutRequest
 } from '../queries/currency';
 import { ILookupCustomerDeleteRequest, ILookupCustomerPostRequest, ILookupCustomerPutRequest } from '../queries/customer';
 import { IPositionDeleteRequest } from '../queries/position/IPositionDeleteRequest';
+import { IAchievementResult } from '../response/achievement';
 
 export interface ILookupState {
   lookupCustomerGetAll: IQueryCollectionState<ILookupCustomerGetAllRequest, ICustomer>;
@@ -181,4 +183,7 @@ export interface ILookupState {
   systemLimitPost: IQuerySingleState<ISystemLimitPostRequest, ISystemLimit>;
   systemLimitPut: IQuerySingleState<ISystemLimitPutRequest, ISystemLimit>;
   systemLimitDelete: IQuerySingleState<ISystemLimitDeleteRequest, boolean>;
+
+  // upload
+  achievementFilePatch: IQuerySingleState<IAchievementPatchRequest, IAchievementResult>;
 }
