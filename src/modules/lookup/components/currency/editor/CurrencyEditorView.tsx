@@ -16,6 +16,10 @@ export const CurrencyEditorView: React.SFC<CurrencyEditorProps> = props => {
       onSubmit={handleSubmit}
       onSubmitSuccess={handleSubmitSuccess}
       onSubmitFail={handleSubmitFail}
+      submitDialogTitle={props.submitDialogTitle}
+      submitDialogContentText={props.submitDialogContentText}
+      submitDialogConfirmedText={props.submitDialogConfirmedText}
+      submitDialogCancelText={props.submitDialogCancelText}
     />
   );
 

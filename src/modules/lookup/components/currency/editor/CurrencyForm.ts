@@ -1,5 +1,6 @@
 import { FormMode } from '@generic/types';
 import { InjectedIntlProps } from 'react-intl';
+import { connect } from 'react-redux';
 import { InjectedFormProps, reduxForm } from 'redux-form';
 import { CurrencyFormView } from './CurrencyFormView';
 
@@ -17,12 +18,28 @@ export type CurrencyFormData = {
 
 interface OwnProps {
   formMode: FormMode;
+  submitDialogTitle: string;
+  submitDialogContentText: string;
+  submitDialogCancelText: string;
+  submitDialogConfirmedText: string;
+}
+interface FormValueProps {
+  formName: string;
 }
 
 export type CurrencyFormProps
   = InjectedFormProps<CurrencyFormData, OwnProps>
   & InjectedIntlProps
-  & OwnProps;
+  & OwnProps
+  & FormValueProps;
+
+const mapStateToProps = (state: any): FormValueProps => {
+  return {
+    formName,
+  };
+};
+
+const connectedView = connect(mapStateToProps)(CurrencyFormView);
 
 export const CurrencyForm = reduxForm<CurrencyFormData, OwnProps>({
   form: formName,
@@ -30,4 +47,4 @@ export const CurrencyForm = reduxForm<CurrencyFormData, OwnProps>({
   touchOnBlur: true,
   enableReinitialize: true,
   destroyOnUnmount: true
-})(CurrencyFormView);
+})(connectedView);
