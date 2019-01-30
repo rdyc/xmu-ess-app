@@ -1,7 +1,7 @@
 import { IAppState, IQueryCollectionState, IQuerySingleState } from '@generic/interfaces';
-import { IGalleryGetAllRequest, IGalleryGetDetailRequest } from '@lookup/classes/queries/gallery';
+import { IGalleryGetAllRequest, IGalleryGetDetailRequest, IGalleryPostRequest } from '@lookup/classes/queries/gallery';
 import { IGallery } from '@lookup/classes/response/gallery';
-import { imageGalleryGetAllDispose, imageGalleryGetAllRequest, imageGalleryGetByIdDispose, imageGalleryGetByIdRequest } from '@lookup/store/actions';
+import { imageGalleryGetAllDispose, imageGalleryGetAllRequest, imageGalleryGetByIdDispose, imageGalleryGetByIdRequest, imageGalleryPostDispose, imageGalleryPostRequest } from '@lookup/store/actions';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 
@@ -14,6 +14,10 @@ interface PropsFromState {
 
 interface PropsFromDispatch {
   imageGalleryDispatch: {
+    // command
+    createRequest: typeof imageGalleryPostRequest;
+    createDispose: typeof imageGalleryPostDispose;
+    
     // query
     loadAllRequest: typeof imageGalleryGetAllRequest;
     loadAllDispose: typeof imageGalleryGetAllDispose;
@@ -33,6 +37,10 @@ const mapStateToProps = ({ imageGalleryGetAll, imageGalleryGetById }: IAppState)
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   imageGalleryDispatch: {
+    // command
+    createRequest: (request: IGalleryPostRequest) => dispatch(imageGalleryPostRequest(request)),
+    createDispose: () => dispatch(imageGalleryPostDispose()),
+
     // query
     loadAllRequest: (request: IGalleryGetAllRequest) => dispatch(imageGalleryGetAllRequest(request)),
     loadAllDispose: () => dispatch(imageGalleryGetAllDispose()),

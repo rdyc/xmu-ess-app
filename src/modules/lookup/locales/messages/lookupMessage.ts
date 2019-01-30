@@ -6,6 +6,13 @@ import {
   currencyPage,
   currencySection
 } from './currencyMessage';
+import { 
+  galleryField, 
+  galleryFieldHelperFor, 
+  galleryMessage, 
+  galleryPage, 
+  gallerySection ,
+} from './galleryMessage';
 import {
   holidayConfirm,
   holidayField,
@@ -180,5 +187,12 @@ export const lookupMessage = {
     confirm: lookupCustomerConfirm,
     message: lookupCustomerMessage,
     dialog: lookupCustomerDialogMessage,
+  },
+  gallery: {
+    page: galleryPage,
+    section: gallerySection,
+    field: galleryField,
+    fieldFor: galleryFieldHelperFor,
+    message: galleryMessage
   }
 };
