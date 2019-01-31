@@ -122,14 +122,13 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<ImageGalleryListProps, OwnStat
   componentDidMount() {
     const {
       layoutDispatch } = this.props;
-    // const { loadAllRequest } = this.props.imageGalleryDispatch;
     const { response, isLoading } = this.props.imageGalleryState.all;
 
     layoutDispatch.setupView({
       view: {
         uid: AppMenu.ImageGallery,
         parentUid: AppMenu.Lookup,
-        title: '', // intl.formatMessage(organizationMessage.workflowSetup.page.listTitle),
+        title: 'Gallery', // intl.formatMessage(organizationMessage.workflowSetup.page.listTitle),
         subTitle: '' // intl.formatMessage(organizationMessage.workflowSetup.page.listSubHeader)
       },
       status: {
@@ -142,16 +141,6 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<ImageGalleryListProps, OwnStat
     });
 
     if ((!response && !isLoading) || this.props.forceReload) {
-      // loadAllRequest({
-      //   filter: {
-      //     find: this.props.find,
-      //     findBy: this.props.findBy,
-      //     orderBy: this.props.orderBy,
-      //     direction: this.props.direction,
-      //     page: this.props.page,
-      //     size: this.props.size,
-      //   }
-      // });
       loadData(this.props);
     }
   },
