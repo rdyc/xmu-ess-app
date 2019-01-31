@@ -41,9 +41,9 @@ interface IOwnHandlers {
 
 interface IOwnState {
   formMode: FormMode;
-  companyUid?: string | undefined;
-  projectUid?: string | undefined;
-  assignmentUid?: string | undefined;
+  companyUid?: string;
+  projectUid?: string;
+  assignmentUid?: string;
 }
 
 interface IOwnStateUpdaters extends StateHandlerMap<IOwnState> {
@@ -238,7 +238,7 @@ const lifecycles: ReactLifeCycleFunctions<ProjectAssignmentEditorProps, {}> = {
   componentDidMount() {
     const { layoutDispatch, intl, formMode, companyUid, assignmentUid } = this.props;
     const { response } = this.props.projectAssignmentState.detail;
-    const { loadDetailRequest } = this.props.projectAssignmentDispatch;
+    const { loadDetailRequest, loadDetailDispose } = this.props.projectAssignmentDispatch;
 
     const view: any = {};
 
@@ -248,6 +248,14 @@ const lifecycles: ReactLifeCycleFunctions<ProjectAssignmentEditorProps, {}> = {
           title: intl.formatMessage(projectMessage.assignment.page.modifyTitle),
           subTitle: intl.formatMessage(projectMessage.assignment.page.modifySubHeader)
         });
+
+        // editing mode: load detail if not exist
+        if (companyUid && assignmentUid && !response) {
+          loadDetailRequest({
+            companyUid,
+            assignmentUid
+          });
+        }
         break;
     
       default:
@@ -255,6 +263,9 @@ const lifecycles: ReactLifeCycleFunctions<ProjectAssignmentEditorProps, {}> = {
           title: intl.formatMessage(projectMessage.assignment.page.newTitle),
           subTitle: intl.formatMessage(projectMessage.assignment.page.newSubHeader)
         });
+
+        // new mode
+        loadDetailDispose();
         break;
     }
 
@@ -265,14 +276,6 @@ const lifecycles: ReactLifeCycleFunctions<ProjectAssignmentEditorProps, {}> = {
     });
 
     layoutDispatch.navBackShow();
-
-    // editing mode: load detail if not exist
-    if (companyUid && assignmentUid && !response) {
-      loadDetailRequest({
-        companyUid,
-        assignmentUid
-      });
-    }
   },
   componentWillUnmount() {
     const { layoutDispatch, appBarDispatch, projectAssignmentDispatch } = this.props;
