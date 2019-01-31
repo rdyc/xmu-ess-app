@@ -8,10 +8,11 @@ import { IAnnouncement } from '@home/classes/response/announcement';
 import { AnnouncementSliderProps } from './AnnouncementSlider';
 
 export const AnnouncementSliderView: React.SFC<AnnouncementSliderProps> = props => {
-  const GetImages = (slider: IAnnouncement[]): IStepperSource[] => {
+  const getImages = (slider: IAnnouncement[]): IStepperSource[] => {
     const stepper: IStepperSource[] = slider.map(item => ({
       label: item.name,
-      imgPath: item.path && `${item.path.medium}`
+      imgPath: item.path && `${item.path.medium}`,
+      imgPathFull: item.path && `${item.path.large}`,
     }));
     return stepper;
   };
@@ -38,7 +39,7 @@ export const AnnouncementSliderView: React.SFC<AnnouncementSliderProps> = props 
         !props.announcementState.all.isLoading &&
         props.announcementState.all.response &&
         props.announcementState.all.response.data &&
-        <Stepper source={GetImages(props.announcementState.all.response.data)} autoplay={true} interval={7000} />
+        <Stepper source={getImages(props.announcementState.all.response.data)} autoplay={true} interval={7000} showFull={true} />
       }
     </div>
   );
