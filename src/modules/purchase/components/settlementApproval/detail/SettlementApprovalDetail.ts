@@ -74,8 +74,10 @@ const handlerCreators: HandleCreators<SettlementApprovalDetailProps, OwnHandler>
     const errors = {
     };
 
-    const requiredFields = ['isApproved', 'remark'];
-
+    const requiredFields = formData.isApproved !== props.approvalTrueValue
+      ? ['isApproved', 'remark']
+      : ['isApproved'];
+      
     requiredFields.forEach(field => {
       if (!formData[field] || isNullOrUndefined(formData[field])) {
         errors[field] = props.intl.formatMessage(purchaseMessage.settlement.fieldFor(field, 'fieldRequired'));

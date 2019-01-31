@@ -75,7 +75,9 @@ const handlerCreators: HandleCreators<PurchaseApprovalDetailProps, OwnHandler> =
     const errors = {
     };
 
-    const requiredFields = ['isApproved', 'remark'];
+    const requiredFields = formData.isApproved !== props.approvalTrueValue 
+        ? ['isApproved', 'remark']
+        : ['isApproved'];
 
     requiredFields.forEach(field => {
       if (!formData[field] || isNullOrUndefined(formData[field])) {
@@ -108,7 +110,7 @@ const handlerCreators: HandleCreators<PurchaseApprovalDetailProps, OwnHandler> =
     // generate payload
     const payload: IPurchaseApprovalPostPayload = {
       isApproved,
-      remark: !isApproved ? formData.remark : undefined
+      remark: formData.remark
     };
 
     // dispatch create request
