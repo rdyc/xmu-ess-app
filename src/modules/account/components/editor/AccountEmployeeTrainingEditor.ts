@@ -141,7 +141,7 @@ const handlerCreators: HandleCreators<AccountEmployeeTrainingEditorProps, OwnHan
     return null;
   },
   handleSubmitSuccess: (props: AccountEmployeeTrainingEditorProps) => (response: IEmployeeTraining) => {
-    const { formMode, intl, history, editAction, stateUpdate } = props;
+    const { formMode, intl, history, editAction, handleDialogClose } = props;
     const { alertAdd } = props.layoutDispatch;
     const { loadListRequest } = props.accountEmployeeTrainingDispatch;
 
@@ -159,11 +159,7 @@ const handlerCreators: HandleCreators<AccountEmployeeTrainingEditorProps, OwnHan
       }
     }
 
-    stateUpdate({
-      isOpenDialog: false,
-      formMode: undefined,
-      editAction: undefined
-    });
+    handleDialogClose();
 
     alertAdd({
       message,

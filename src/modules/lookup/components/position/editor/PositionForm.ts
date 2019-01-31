@@ -1,5 +1,6 @@
 import { FormMode } from '@generic/types';
 import { InjectedIntlProps } from 'react-intl';
+import { connect } from 'react-redux';
 import { InjectedFormProps, reduxForm } from 'redux-form';
 import { PositionFormView } from './PositionFormView';
 
@@ -18,13 +19,29 @@ export type PositionFormData = {
 
 interface OwnProps {
   formMode: FormMode;
+  submitDialogTitle: string;
+  submitDialogContentText: string;
+  submitDialogCancelText: string;
+  submitDialogConfirmedText: string;
 }
+
+interface FormValueProps {
+  formName: string;
+}
+
+const mapStateToProps = (state: any): FormValueProps => {
+  return {
+    formName,
+  };
+};
 
 export type PositionFormProps
   = InjectedFormProps<PositionFormData, OwnProps>
   & InjectedIntlProps
-  // & OwnHandlers
+  & FormValueProps
   & OwnProps;
+
+const connectedView = connect(mapStateToProps)(PositionFormView);
 
 export const PositionForm = reduxForm<PositionFormData, OwnProps>({
   form: formName,
@@ -32,4 +49,4 @@ export const PositionForm = reduxForm<PositionFormData, OwnProps>({
   touchOnBlur: true,
   enableReinitialize: true,
   destroyOnUnmount: true
-})(PositionFormView);
+})(connectedView);

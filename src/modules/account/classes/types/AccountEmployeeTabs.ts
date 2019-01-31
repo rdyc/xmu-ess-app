@@ -1,11 +1,11 @@
 export enum AccountEmployeeTabs {
   detail = 'detail',
-  note = 'note',
-  history = 'history',
   education = 'education',
   family = 'family',
   experience = 'experiance',
   training = 'training',
   access = 'access',
+  history = 'history',
+  note = 'note',
   rate = 'rate',
 }

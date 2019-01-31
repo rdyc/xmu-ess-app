@@ -14,6 +14,14 @@ export const positionMessage = defineMessages({
   deleteFailure: { id: `${prefix}.message.delete.failure` },
 });
 
+// dialog
+export const positionDialog = defineMessages({
+  modifyTitle: { id: `${prefix}.dialog.modifyTitle` },
+  modifyDescription: { id: `${prefix}.dialog.modifyDescription` },
+  createTitle: { id: `${prefix}.dialog.newTitle` },
+  createDescription: { id: `${prefix}.dialog.newDescription` },
+});
+
 // page
 export const positionPage = defineMessages({
   listTitle: { id: `${prefix}.page.list.title` },

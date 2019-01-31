@@ -21,6 +21,8 @@ export const financeApprovalField = defineMessages({
   notes: { id: `${prefix}.field.notes` },
   notesPlaceholder: { id: `${prefix}.field.notes.placeholder` },
   goToDocument: { id: `${prefix}.field.button.goToDocument` },
+  notesExpense: { id: `${prefix}.field.notes.expense` },
+  notesMileage: { id: `${prefix}.field.notes.mileage` },
 });
 
 export const financeApprovalAction = defineMessages({

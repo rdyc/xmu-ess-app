@@ -13,3 +13,5 @@ export * from './lookupLeaveActions';
 export * from './systemLimitAction';
 export * from './leaveCalculationActions';
 export * from './achievementAction';
+export * from './lookupVersionActions';
+export * from './imageGalleryAction';

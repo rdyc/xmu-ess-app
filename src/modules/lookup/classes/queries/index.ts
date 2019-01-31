@@ -38,3 +38,4 @@ export * from './systemLimit/ISystemLimitPostRequest';
 export * from './systemLimit/ISystemLimitPutRequest';
 export * from './systemLimit/ISystemLimitDeleteRequest';
 export * from './systemLimit/ISystemLimitAmountRequest';
+export * from './version';
