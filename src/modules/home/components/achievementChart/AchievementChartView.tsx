@@ -33,7 +33,7 @@ export const AchievementChartView: React.SFC<AchievementChartProps> = props => {
       //   color = 'yellow';
       // }
 
-      if (data.value > 100 ) {
+      if (data.value > 100) {
         color = 'green';
       }
 
@@ -65,172 +65,186 @@ export const AchievementChartView: React.SFC<AchievementChartProps> = props => {
           props.achievementState.all.response &&
           props.achievementState.all.response.data &&
           props.achievementState.all.response.data.map((item) => ( */}
-            <React.Fragment>
-              {props.dataSales && (
-                <Grid item xs={12} md={6}>
-                  <Card square >
-                    <CardHeader title={props.dataSales && props.dataSales.title} subheader={props.dataSales && props.dataSales.description} />
-                    {/* <CardContent className={isMobile ? classes.chartContentXS : classes.chartContent}> */}
-                    <VictoryChart
-                      animate={{ duration: 2000, easing: 'bounce' }}
-                      // containerComponent={<VictoryContainer height={100} />}
-                      domainPadding={{ x: 20, y: 20 }}
-                      height={800}
-                      padding={{ bottom: 50, left: 120, top: 10, right: 50 }}
-                      theme={VictoryTheme.material}
-                    >
-                      <VictoryAxis
-                        dependentAxis
-                        tickLabelComponent={<VictoryLabel textAnchor="end" />}
-                      />
-                      <VictoryAxis
-                        tickLabelComponent={<VictoryLabel />}
-                        tickFormat={(x) => (`${x} ${props.dataSales && props.dataSales.unit}`)}
-                      />
-                      <VictoryBar
-                        horizontal
-                        labelComponent={<VictoryTooltip />}
-                        // style={{ data: { fill: (d: any) => d.percentage > 80 ? 'green' : 'blue'}}}
-                        style={{
-                          data: { fill: 'blue', strokeWidth: 0, ...colorModifier },
-                          // labels: { fontSize: isMobile ? 5 : 4 }
-                        }}
-                        data={props.dataSales && props.dataSales.valueObject}
-                        x="name"
-                        y="value"
-                        labels={(y) => `${y.value} ${props.dataSales && props.dataSales.unit}`}
-                      />
+        <React.Fragment>
+          {props.dataSales && (
+            <Grid item xs={12} md={6}>
+              <Card square >
+                <CardHeader title={props.dataSales && props.dataSales.title} subheader={props.dataSales && props.dataSales.description} />
+                {/* <CardContent className={isMobile ? classes.chartContentXS : classes.chartContent}> */}
+                <VictoryChart
+                  animate={{ duration: 2000, easing: 'bounce' }}
+                  // containerComponent={<VictoryContainer height={100} />}
+                  domainPadding={{ x: 20, y: 20 }}
+                  height={725}
+                  padding={{ bottom: 75, left: 120, top: 10, right: 50 }}
+                  theme={VictoryTheme.material}
+                >
+                  <VictoryAxis
+                    dependentAxis
+                    tickLabelComponent={<VictoryLabel textAnchor="end" />}
+                  />
+                  <VictoryAxis
+                    label={props.dataSales.unit}
+                    tickFormat={(x) => (`${x}`)}
+                    style={{ axisLabel: { padding: 30 } }}
+                  />
+                  <VictoryBar
+                    horizontal
+                    labelComponent={<VictoryTooltip />}
+                    // style={{ data: { fill: (d: any) => d.percentage > 80 ? 'green' : 'blue'}}}
+                    style={{
+                      data: { fill: 'blue', strokeWidth: 0, ...colorModifier },
+                      labels: { fontSize: 10}
+                      // labels: { fontSize: isMobile ? 5 : 4 }
+                    }}
+                    data={props.dataSales && props.dataSales.valueObject}
+                    x="name"
+                    y="value"
+                    labels={(y) => `${y.value} ${props.dataSales && props.dataSales.unit}`}
+                  />
 
-                    </VictoryChart>
+                </VictoryChart>
+              </Card>
+            </Grid>
+          )}
+
+          <Grid item xs={12} md={6}>
+            <Grid container spacing={16} direction="row" justify="flex-start">
+              {props.dataDepartment && (
+                <Grid item xs={12} sm={12} md={12}>
+                  <Card square>
+                    <CardHeader
+                      title={props.dataDepartment && props.dataDepartment.title}
+                      subheader={props.dataDepartment && props.dataDepartment.description}
+                    />
+                    <CardContent>
+                      <VictoryChart
+                        animate={{ duration: 2000, easing: 'bounce' }}
+                        domainPadding={{ x: 20, y: 20 }}
+                        padding={{ bottom: 50, left: 100, top: 10, right: 50 }}
+                        height={250}
+                        theme={VictoryTheme.material}
+                      >
+                        <VictoryAxis
+                          dependentAxis
+                          tickLabelComponent={<VictoryLabel textAnchor="end" />}
+                        />
+                        <VictoryAxis
+                          label={props.dataDepartment.unit}
+                          tickFormat={(x) => (`${x}`)}
+                          style={{ axisLabel: { padding: 30 } }}
+                        />
+                        <VictoryBar
+                          horizontal
+                          labelComponent={<VictoryTooltip />}
+                          // style={{ data: { fill: (d: any) => d.percentage > 80 ? 'green' : 'blue'}}}
+                          style={{
+                            data: { fill: 'blue', strokeWidth: 0, ...colorModifier },
+                            labels: { fontSize: 10}
+                          }}
+                          data={props.dataDepartment && props.dataDepartment.valueObject}
+                          x="name"
+                          y="value"
+                          labels={(y) => `${y.value} ${props.dataDepartment && props.dataDepartment.unit}`}
+                        />
+                      </VictoryChart>
+                    </CardContent>
+                  </Card>
+                </Grid>
+
+              )}
+
+              {props.dataDiv && (
+                <Grid item xs={12} sm={12} md={12}>
+                  <Card square>
+                    <CardHeader
+                      title={props.dataDiv.title}
+                      subheader={props.dataDiv.description}
+                    />
+                    <CardContent>
+                      <VictoryChart
+                        animate={{ duration: 2000, easing: 'bounce' }}
+                        domainPadding={{ x: 20, y: 20 }}
+                        padding={{ bottom: 50, left: 100, top: 10, right: 50 }}
+                        height={150}
+                        theme={VictoryTheme.material}
+                      >
+                        <VictoryAxis
+                          dependentAxis
+                          tickLabelComponent={<VictoryLabel textAnchor="end" />}
+                        />
+                        <VictoryAxis
+                          label={props.dataDiv.unit}
+                          tickFormat={(x) => (`${x}`)}
+                          style={{ axisLabel: { padding: 30 } }}
+                        />
+                        <VictoryBar
+                          horizontal
+                          labelComponent={<VictoryTooltip />}
+                          // style={{ data: { fill: (d: any) => d.percentage > 80 ? 'green' : 'blue'}}}
+                          style={{
+                            data: { fill: 'blue', strokeWidth: 0, ...colorModifier },
+                            labels: { fontSize: 10}
+                            // labels: { fontSize: isMobile ? 5 : 4 }
+                          }}
+                          data={props.dataDiv && props.dataDiv.valueObject}
+                          x="name"
+                          y="value"
+                          labels={(y) => `${y.value} ${props.dataDiv && props.dataDiv.unit}`}
+                        />
+                      </VictoryChart>
+                    </CardContent>
                   </Card>
                 </Grid>
               )}
 
-              <Grid item xs={12} md={6}>
-                <Grid container direction="row" justify="flex-start">
-                  {props.dataLob && (
-                    <Grid item xs={12} sm={12} md={12}>
-                      <Card square>
-                        <CardHeader
-                          title={props.dataLob && props.dataLob.title}
-                          subheader={props.dataLob && props.dataLob.description}
+              {props.dataLob && (
+                <Grid item xs={12} sm={12} md={12}>
+                  <Card square>
+                    <CardHeader
+                      title={props.dataLob.title}
+                      subheader={props.dataLob.description}
+                    />
+                    <CardContent>
+                      <VictoryChart
+                        animate={{ duration: 2000, easing: 'bounce' }}
+                        domainPadding={{ x: 20, y: 20 }}
+                        padding={{ bottom: 50, left: 100, top: 10, right: 50 }}
+                        height={150}
+                        theme={VictoryTheme.material}
+                      >
+                        <VictoryAxis
+                          dependentAxis
+                          tickLabelComponent={<VictoryLabel textAnchor="end" />}
                         />
-                        <CardContent>
-                          <VictoryChart
-                            animate={{ duration: 2000, easing: 'bounce' }}
-                            domainPadding={{ x: 20, y: 20 }}
-                            padding={{ bottom: 50, left: 100, top: 10, right: 50 }}
-                            theme={VictoryTheme.material}
-                          >
-                            <VictoryAxis
-                              dependentAxis
-                              tickLabelComponent={<VictoryLabel textAnchor="end" />}
-                            />
-                            <VictoryAxis
-                              tickFormat={(x) => (`${x} ${props.dataLob && props.dataLob.unit}`)}
-                            />
-                            <VictoryBar
-                              horizontal
-                              labelComponent={<VictoryTooltip />}
-                              // style={{ data: { fill: (d: any) => d.percentage > 80 ? 'green' : 'blue'}}}
-                              style={{
-                                data: { fill: 'blue', strokeWidth: 0, ...colorModifier},
-                              }}
-                              data={props.dataLob && props.dataLob.valueObject}
-                              x="name"
-                              y="value"
-                              labels={(y) => `${y.value} ${props.dataLob && props.dataLob.unit}`}
-                            />
-                          </VictoryChart>
-                        </CardContent>
-                      </Card>
-                    </Grid>
-
-                  )}
-
-                  {props.dataDepartment && (
-                    <Grid item xs={12} sm={12} md={12}>
-                      <Card square>
-                        <CardHeader
-                          title={props.dataDepartment.title}
-                          subheader={props.dataDepartment.description}
+                        <VictoryAxis
+                          label={props.dataLob.unit}
+                          tickFormat={(x) => (`${x}`)}
+                          style={{ axisLabel: { padding: 30 } }}
                         />
-                        <CardContent>
-                          <VictoryChart
-                            animate={{ duration: 2000, easing: 'bounce' }}
-                            domainPadding={{ x: 20, y: 20 }}
-                            padding={{ bottom: 50, left: 100, top: 10, right: 50 }}
-                            theme={VictoryTheme.material}
-                          >
-                            <VictoryAxis
-                              dependentAxis
-                              tickLabelComponent={<VictoryLabel textAnchor="end" />}
-                            />
-                            <VictoryAxis
-                              tickFormat={(x) => (`${x} ${props.dataDepartment && props.dataDepartment.unit}`)}
-                            />
-                            <VictoryBar
-                              horizontal
-                              labelComponent={<VictoryTooltip />}
-                              // style={{ data: { fill: (d: any) => d.percentage > 80 ? 'green' : 'blue'}}}
-                              style={{
-                                data: { fill: 'blue', strokeWidth: 0, ...colorModifier },
-                                // labels: { fontSize: isMobile ? 5 : 4 }
-                              }}
-                              data={props.dataDepartment && props.dataDepartment.valueObject}
-                              x="name"
-                              y="value"
-                              labels={(y) => `${y.value} ${props.dataDepartment && props.dataDepartment.unit}`}
-                            />
-                          </VictoryChart>
-                        </CardContent>
-                      </Card>
-                    </Grid>
-                  )}
-
-                  {props.dataDiv && (
-                  <Grid item xs={12} sm={12} md={12}>
-                    <Card square>
-                      <CardHeader
-                        title={props.dataDiv.title}
-                        subheader={props.dataDiv.description}
-                      />
-                      <CardContent>
-                        <VictoryChart
-                          animate={{ duration: 2000, easing: 'bounce' }}
-                          domainPadding={{ x: 20, y: 20 }}
-                          padding={{ bottom: 50, left: 100, top: 10, right: 50 }}
-                          theme={VictoryTheme.material}
-                        >
-                          <VictoryAxis
-                            dependentAxis
-                            tickLabelComponent={<VictoryLabel textAnchor="end" />}
-                          />
-                          <VictoryAxis
-                            tickFormat={(x) => (`${x} ${props.dataDiv && props.dataDiv.unit}`)}
-                          />
-                          <VictoryBar
-                            horizontal
-                            labelComponent={<VictoryTooltip />}
-                            // style={{ data: { fill: (d: any) => d.percentage > 80 ? 'green' : 'blue'}}}
-                            style={{
-                              data: { fill: 'blue', strokeWidth: 0, ...colorModifier },
-                              // labels: { fontSize: isMobile ? 5 : 4 }
-                            }}
-                            data={props.dataDiv.valueObject}
-                            x="name"
-                            y="value"
-                            labels={(y) => `${y.value} ${props.dataDiv && props.dataDiv.unit}`}
-                          />
-                        </VictoryChart>
-                      </CardContent>
-                    </Card>
-                  </Grid>
-                  )}
+                        <VictoryBar
+                          horizontal
+                          labelComponent={<VictoryTooltip />}
+                          // style={{ data: { fill: (d: any) => d.percentage > 80 ? 'green' : 'blue'}}}
+                          style={{
+                            data: { fill: 'blue', strokeWidth: 0, ...colorModifier },
+                            labels: { fontSize: 10}
+                            // labels: { fontSize: isMobile ? 5 : 4 }
+                          }}
+                          data={props.dataLob.valueObject}
+                          x="name"
+                          y="value"
+                          labels={(y) => `${y.value} ${props.dataLob && props.dataLob.unit}`}
+                        />
+                      </VictoryChart>
+                    </CardContent>
+                  </Card>
                 </Grid>
-              </Grid>
-            </React.Fragment>
-          {/* ))
+              )}
+            </Grid>
+          </Grid>
+        </React.Fragment>
+        {/* ))
         } */}
       </Grid>
     </div>
