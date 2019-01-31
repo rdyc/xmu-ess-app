@@ -1,9 +1,7 @@
 import AppMenu from '@constants/AppMenu';
-import { FormMode } from '@generic/types';
 import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
-import { layoutMessage } from '@layout/locales/messages';
 import { IGalleryPostPayload } from '@lookup/classes/request/gallery';
 import { IGallery } from '@lookup/classes/response/gallery';
 import { WithImageGallery, withImageGallery } from '@lookup/hoc/withImageGallery';
@@ -14,18 +12,13 @@ import {
   compose,
   HandleCreators,
   lifecycle,
-  mapper,
   ReactLifeCycleFunctions,
-  StateHandler,
-  StateHandlerMap,
-  StateUpdaters,
   withHandlers,
-  withStateHandlers,
 } from 'recompose';
 import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
 import { isNullOrUndefined, isObject } from 'util';
-import { GalleryFormData } from './form/GalleryContainerForm';
+import { GalleryFormData } from './form/upload/GalleryForm';
 import { GalleryEditorView } from './GalleryEditorView';
 
 interface OwnHandlers {
@@ -35,103 +28,69 @@ interface OwnHandlers {
   handleSubmitFail: (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => void;
 }
 
-interface OwnRouteParams {
-  imageUid: string;
-}
-
-interface OwnState {
-  formMode: FormMode;
-  imageUid?: string | undefined;
-  submitDialogTitle: string;
-  submitDialogContentText: string;
-  submitDialogCancelText: string;
-  submitDialogConfirmedText: string;
-}
-
-interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
-  stateUpdate: StateHandler<OwnState>;
-}
-
 export type GalleryEditorProps
   = WithImageGallery
   & WithUser
   & WithLayout
   & WithAppBar
-  & RouteComponentProps<OwnRouteParams>
   & InjectedIntlProps
-  & OwnHandlers
-  & OwnState
-  & OwnStateUpdaters;
+  & RouteComponentProps
+  & OwnHandlers;
 
 const handlerCreators: HandleCreators<GalleryEditorProps, OwnHandlers> = {
   handleValidate: (props: GalleryEditorProps) => (formData: GalleryFormData) => { 
-    const errors = {
-      files: {}
-    };
+    const errors = {};
   
-    const requiredFields = [
-      'file'
-    ];
+    const requiredFields = ['file'];
   
     requiredFields.forEach(field => {
-      if (!formData.files[field] || isNullOrUndefined(formData.files[field])) {
-        errors.files[field] = props.intl.formatMessage(lookupMessage.gallery.fieldFor(field, 'fieldRequired'));
+      if (!formData[field] || isNullOrUndefined(formData[field])) {
+        errors[field] = props.intl.formatMessage(lookupMessage.gallery.fieldFor(field, 'fieldRequired'));
       }
     });
     
     return errors;
   },
   handleSubmit: (props: GalleryEditorProps) => (formData: GalleryFormData) => { 
-    const { formMode, imageUid, intl } = props;
     const { user } = props.userState;
     const { createRequest } = props.imageGalleryDispatch;
 
     if (!user) {
       return Promise.reject('user was not found');
     }
+
+    if (!formData.file) {  
+      return Promise.reject('empty file');
+    } 
+
     const payload = {
-      ...formData.files
+      ...formData
     };
 
     // creating
-    if (formMode === FormMode.New) {
-      return new Promise((resolve, reject) => {
-        createRequest({
-          resolve, 
-          reject,
-          data: payload as IGalleryPostPayload
-        });
+    return new Promise((resolve, reject) => {
+      createRequest({
+        resolve, 
+        reject,
+        data: payload as IGalleryPostPayload
       });
-    }
-
-    // update checking
-    if (!imageUid) {
-      const message = intl.formatMessage(lookupMessage.gallery.message.emptyProps);
-
-      return Promise.reject(message);
-    }
-
-    return null;
+    });
   },
   handleSubmitSuccess: (props: GalleryEditorProps) => (response: IGallery) => {
-    const { formMode, intl, history } = props;
+    const { intl, history } = props;
     const { alertAdd } = props.layoutDispatch;
+
+    const message = intl.formatMessage(lookupMessage.gallery.message.createSuccess, { uid: response.uid });
     
-    let message: string = '';
-
-    if (formMode === FormMode.New) {
-      message = intl.formatMessage(lookupMessage.gallery.message.createSuccess, { uid: response.uid });
-    }
-
     alertAdd({
       message,
       time: new Date()
     });
 
-    history.push(`/lookup/gallery/${response.uid}`);
+    history.push('/lookup/gallery');
   },
   handleSubmitFail: (props: GalleryEditorProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
-    const { formMode, intl } = props;
+    const { intl } = props;
     const { alertAdd } = props.layoutDispatch;
     
     if (errors) {
@@ -142,11 +101,7 @@ const handlerCreators: HandleCreators<GalleryEditorProps, OwnHandlers> = {
       });
     } else {
       // another errors from server
-      let message: string = '';
-
-      if (formMode === FormMode.New) {
-        message = intl.formatMessage(lookupMessage.gallery.message.createFailure);
-      }
+      const message = intl.formatMessage(lookupMessage.gallery.message.createFailure);
 
       alertAdd({
         message,
@@ -157,25 +112,9 @@ const handlerCreators: HandleCreators<GalleryEditorProps, OwnHandlers> = {
   }
 };
 
-const createProps: mapper<GalleryEditorProps, OwnState> = (props: GalleryEditorProps): OwnState => ({ 
-  formMode: FormMode.New,
-  submitDialogTitle: props.intl.formatMessage(lookupMessage.shared.confirm.createTitle),
-  submitDialogContentText: props.intl.formatMessage(lookupMessage.shared.confirm.createDescription, { state: 'Gallery Image'}),
-  submitDialogCancelText: props.intl.formatMessage(layoutMessage.action.cancel),
-  submitDialogConfirmedText: props.intl.formatMessage(layoutMessage.action.ok),
-});
-
-const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
-  stateUpdate: (prevState: OwnState) => (newState: any) => ({
-    ...prevState,
-    ...newState
-  })
-};
-
 const lifecycles: ReactLifeCycleFunctions<GalleryEditorProps, {}> = {
   componentDidMount() {
-    const { layoutDispatch, intl, history, stateUpdate } = this.props;
-    const { loadDetailRequest } = this.props.imageGalleryDispatch;
+    const { layoutDispatch, intl } = this.props;
     const { user } = this.props.userState;
     
     const view = {
@@ -185,22 +124,6 @@ const lifecycles: ReactLifeCycleFunctions<GalleryEditorProps, {}> = {
 
     if (!user) {
       return;
-    }
-    
-    if (!isNullOrUndefined(history.location.state)) {
-      view.title = lookupMessage.gallery.page.modifyTitle;
-      view.subTitle = lookupMessage.gallery.page.modifySubHeader;
-
-      stateUpdate({ 
-        formMode: FormMode.Edit,
-        imageUid: history.location.state.uid,
-        submitDialogTitle: this.props.intl.formatMessage(lookupMessage.shared.confirm.modifyTitle),
-        submitDialogContentText : this.props.intl.formatMessage(lookupMessage.shared.confirm.modifyDescription, { state: 'Gallery Image'})
-      });
-
-      loadDetailRequest({
-        imageUid: history.location.state.uid
-      });
     }
 
     layoutDispatch.setupView({
@@ -240,7 +163,6 @@ export default compose<GalleryEditorProps, {}>(
   withRouter,
   withImageGallery,
   injectIntl,
-  withStateHandlers<OwnState, OwnStateUpdaters, {}>(createProps, stateUpdaters),
   withHandlers<GalleryEditorProps, OwnHandlers>(handlerCreators),
   lifecycle<GalleryEditorProps, {}>(lifecycles),
 )(GalleryEditorView);
