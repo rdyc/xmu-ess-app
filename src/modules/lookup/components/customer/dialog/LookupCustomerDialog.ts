@@ -126,6 +126,7 @@ const lifecycles: ReactLifeCycleFunctions<LookupCustomerDialogProps, OwnState> =
     const { loadListRequest } = this.props.lookupCustomerDispatch;
 
     if (!isLoading && !response) {
+      console.log('load customer');
       loadListRequest({
         filter: _filter
       });

@@ -1,4 +1,4 @@
-export interface IAchievementPatch {
+export interface IAchievementResult {
   rowSaved: string;
   rowPatched: string;
 }

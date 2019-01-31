@@ -1,3 +1,4 @@
+import { WorkflowStatusType } from '@common/classes/types';
 import { layoutMessage } from '@layout/locales/messages';
 import { GlobalFormat } from '@layout/types';
 import { GlobalStyle } from '@layout/types/GlobalStyle';
@@ -29,7 +30,9 @@ const purchaseSummary: React.SFC<AllProps> = props => (
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
         margin="dense"
-        label={props.intl.formatMessage(purchaseMessage.request.field.reason)}
+        label={props.intl.formatMessage( props.data.statusType !== WorkflowStatusType.Approved
+          ? purchaseMessage.request.field.reason
+          : purchaseMessage.request.field.approveNotes)}
         value={props.data.reason || 'N/A'}
         multiline
       />

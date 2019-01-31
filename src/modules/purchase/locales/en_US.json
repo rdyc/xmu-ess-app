@@ -64,6 +64,8 @@
   "purchase.field.information.rejectreason": "Reject Reason",
   "purchase.field.information.rejectreason.required": "Reason is required",
   "purchase.field.information.rejectreason.placeholder": "Type a reject reason",
+  "purchase.field.information.approveNotes": "Approval Notes",
+  "purchase.field.information.approveNotes.placeholder": "Type a note",
   "purchase.field.information.adjustmentNote": "Adjustment Note",
   "purchase.field.information.adjustmentNote.required": "Adjustment note is required",
   "purchase.field.information.adjustmentNote.placeholder": "Type any",
@@ -120,7 +122,7 @@
   "purchase.message.approval.approve.success": "Purchase ID {uid} has been approved",
   "purchase.message.approval.reject.success": "Purchase ID {uid} has been rejected",
   "purchase.message.approval.submit.success": "Approval decision for {uid} has been submitted",
-  "purchase.message.approval.approve": "Approve Request",
+  "purchase.message.approval.approve": "Approve",
   "purchase.message.approval.adjustmentNeeded": "Adjustment Needed",
   "purchase.message.approval.reject": "Reject",
 

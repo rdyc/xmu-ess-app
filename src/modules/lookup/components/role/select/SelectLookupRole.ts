@@ -2,7 +2,7 @@ import { ILookupRoleGetListFilter } from '@lookup/classes/filters/role';
 import { IRoleList } from '@lookup/classes/response';
 import { WithLookupRole, withLookupRole } from '@lookup/hoc/withLookupRole';
 import withWidth, { WithWidth } from '@material-ui/core/withWidth';
-import { compose, HandleCreators, lifecycle, ReactLifeCycleFunctions, withHandlers } from 'recompose';
+import { compose, HandleCreators, lifecycle, ReactLifeCycleFunctions, shallowEqual, withHandlers } from 'recompose';
 import { BaseFieldProps, WrappedFieldProps } from 'redux-form';
 import { SelectLookupRoleView } from './SelectLookupRoleView';
 
@@ -17,6 +17,7 @@ interface OwnProps extends WrappedFieldProps, BaseFieldProps {
 }
 
 interface OwnHandlers {
+  handleOnLoadApi: () => void;
   handleOnChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
 }
 
@@ -27,6 +28,9 @@ export type SelectLookupRoleProps
   & OwnHandlers;
 
 const handlerCreators: HandleCreators<SelectLookupRoleProps, OwnHandlers> = {
+  handleOnLoadApi: (props: SelectLookupRoleProps) => () => {
+    props.lookupRoleDispatch.loadListRequest({filter: props.filter});
+  },
   handleOnChange: (props: SelectLookupRoleProps) => (e: React.ChangeEvent<HTMLSelectElement>) => {
     const { input, onSelected } = props;
     const { response } = props.lookupRoleState.list;
@@ -47,26 +51,20 @@ const handlerCreators: HandleCreators<SelectLookupRoleProps, OwnHandlers> = {
 
 const lifecycles: ReactLifeCycleFunctions<SelectLookupRoleProps, {}> = {
   componentDidMount() {
-    const { filter } = this.props;
-    const { isLoading, response } = this.props.lookupRoleState.list;
-    const { loadListRequest } = this.props.lookupRoleDispatch;
+    const { request } = this.props.lookupRoleState.list;
 
-    if (!isLoading && !response) {
-      loadListRequest({ filter });
+    if (!request) {
+      this.props.handleOnLoadApi();
+    } else {
+      if (request.filter) {
+        const shouldUpdate = !shallowEqual(request.filter, this.props.filter || {});
+
+        if (shouldUpdate) {
+          this.props.handleOnLoadApi();
+        }
+      }
     }
   },
-  componentWillReceiveProps(nextProps: SelectLookupRoleProps) {
-    if (nextProps.filter !== this.props.filter) {
-    const { loadListRequest } = this.props.lookupRoleDispatch;
-    const { filter } = nextProps;
-
-    loadListRequest({ filter });
-    }
-  },
-  componentWillUnmount() {
-    const { loadListDispose } = this.props.lookupRoleDispatch;
-    loadListDispose();
-  }
 };
 
 export const SelectLookupRole = compose<SelectLookupRoleProps, OwnProps>(

@@ -3,7 +3,7 @@ import AppMenu from '@constants/AppMenu';
 import { SingleConfig, SingleHandler, SinglePage, SingleState } from '@layout/components/pages/singlePage/SinglePage';
 import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
-import { WorkflowApprovalForm } from '@organization/components/workflow/approval/WorkflowApprovalForm';
+import { WorkflowApprovalRemarkForm } from '@organization/components/workflow/approval/WorkflowApprovalRemarkForm';
 import { WorkflowHistory } from '@organization/components/workflow/history/WorkflowHistory';
 import { IPurchaseDetail } from '@purchase/classes/response/purchaseRequest';
 import { PurchaseUserAction } from '@purchase/classes/types';
@@ -101,7 +101,7 @@ const config: SingleConfig<IPurchaseDetail, PurchaseApprovalDetailProps> = {
         data.statusType !== WorkflowStatusType.Rejected &&
         data.workflow &&
         data.workflow.isApproval &&
-        <WorkflowApprovalForm
+        <WorkflowApprovalRemarkForm
           approvalTitle={props.approvalTitle}
           approvalSubHeader={props.approvalSubHeader}
           approvalChoices={props.approvalChoices}
@@ -116,8 +116,10 @@ const config: SingleConfig<IPurchaseDetail, PurchaseApprovalDetailProps> = {
           onSubmitFail={props.handleSubmitFail}
           approvalRemarkLabel={props.intl.formatMessage(purchaseMessage.request.field.reason)}
           approvalRemarkPlaceholder={props.intl.formatMessage(purchaseMessage.request.field.reasonPlaceholder)}
-        />
-      }
+          approvalOptionalRemarkLabel={props.intl.formatMessage(purchaseMessage.request.field.approveNotes)}
+          approvalOptionalRemarkPlaceholder={props.intl.formatMessage(purchaseMessage.request.field.approveNotesPlaceholder)}
+    />
+  }
     </React.Fragment>
   ])
 };

@@ -5,6 +5,7 @@ import { LookupHolidayDetail } from '@lookup/components/holiday/detail/LookupHol
 import { LookupLeaveDetail } from '@lookup/components/leave/detail/LookupLeaveDetail';
 import * as React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router';
+import { AchievementEditor } from './achievement/AchievementEditor';
 import { LookupCompanyDetail } from './company/detail/LookupCompanyDetail';
 import LookupCompanyEditor from './company/editor/LookupCompanyEditor';
 import { LookupCompanyList } from './company/list/LookupCompanyList';
@@ -15,7 +16,7 @@ import { LookupDiemDetail } from './diem/detail/LookupDiemDetail';
 import LookupDiemEditor from './diem/editor/LookupDiemEditor';
 import { LookupDiemList } from './diem/list/LookupDiemList';
 import { AnnouncementEditor } from './gallery/announcement/AnnouncementEditor';
-// import { ImageGalleryList } from './gallery/list/ImageGalleryList';
+import { ImageGalleryList } from './gallery/list/ImageGalleryList';
 import LookupHolidayEditor from './holiday/editor/LookupHolidayEditor';
 import { LookupHolidayList } from './holiday/list/LookupHolidayList';
 import { LeaveCalculationList } from './leave/calculation/LeaveCalculationList';
@@ -121,7 +122,14 @@ const diem = (props: RouteComponentProps) => (
 
 const gallery = (props: RouteComponentProps) => (
   <Switch>
-    <Route path={`${props.match.path}`} component={AnnouncementEditor} />
+    <Route path={`${props.match.path}`} component={ImageGalleryList} />
+    <Route path={`${props.match.path}/form`} component={AnnouncementEditor} />
+  </Switch>
+);
+
+const achievement = (props: RouteComponentProps) => (
+  <Switch>
+    <Route path={`${props.match.path}`} component={AchievementEditor} />
   </Switch>
 );
 
@@ -139,5 +147,6 @@ export const LookupRoutingComponents: React.SFC<RouteComponentProps> = props => 
     <Route path={`${props.match.path}/roles`} component={role} />
     <Route path={`${props.match.path}/customer`} component={lookupCustomer} />
     <Route path={`${props.match.path}/imagegalleries`} component={gallery} />
+    <Route path={`${props.match.path}/achievementchart`} component={achievement} />
   </Switch>
 );

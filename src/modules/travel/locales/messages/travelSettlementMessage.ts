@@ -87,6 +87,10 @@ export const travelSettlementField = defineMessages({
   commentPlaceholder: { id: `${prefix}.field.comment.placeholder` },
 
   total: { id: `${prefix}.field.total` },
+
+  adjustmentNote: { id: `${prefix}.field.adjustmentNote` },
+  adjustmentNotePlaceholder: { id: `${prefix}.field.adjustmentNote.placeholder` },
+
 });
 
 // message
