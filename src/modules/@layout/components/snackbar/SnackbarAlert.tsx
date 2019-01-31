@@ -1,4 +1,5 @@
-import { withLayout, WithLayout } from '@layout/hoc/withLayout';
+import { ICollectionValue } from '@layout/classes/core';
+import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import {
   Button,
   Dialog,
@@ -7,6 +8,9 @@ import {
   DialogContentText,
   DialogTitle,
   IconButton,
+  List,
+  ListItem,
+  ListItemText,
   Snackbar,
 } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
@@ -18,6 +22,14 @@ import { isNullOrUndefined, isObject } from 'util';
 const SnackbarAlertView: React.SFC<WithLayout> = props => {
   const { layoutState, layoutDispatch } = props;
   const alert = layoutState.alerts[0];
+
+  const parseObject = (obj: any): ICollectionValue[] => {
+    return Object.keys(obj)
+      .map(key => ({ 
+        name: key,
+        value: obj[key]
+      }));
+  };
 
   const handleClose = () => {
     layoutDispatch.alertDialogHide();
@@ -68,10 +80,23 @@ const SnackbarAlertView: React.SFC<WithLayout> = props => {
       </DialogTitle>
       <DialogContent>
         <DialogContentText id="alert-dialog-details">
-          {alert && isObject(alert.details) && (
-            <pre>{JSON.stringify(alert.details, null, 2)}</pre>
-          )}
           {alert && !isObject(alert.details) && alert.details}
+          
+          {
+            alert && isObject(alert.details) && 
+            <List disablePadding>
+              {
+                parseObject(alert.details).map(item => 
+                  <ListItem>
+                    <ListItemText 
+                      primary={item.name}
+                      secondary={item.value}
+                    />
+                  </ListItem>
+                )
+              }
+            </List>
+          }
         </DialogContentText>
       </DialogContent>
       <DialogActions>
@@ -83,7 +108,7 @@ const SnackbarAlertView: React.SFC<WithLayout> = props => {
   );
 
   return (
-    <div>
+    <React.Fragment>
       {
         alert &&
         <Snackbar
@@ -97,7 +122,7 @@ const SnackbarAlertView: React.SFC<WithLayout> = props => {
         />
       }
       {renderDialog}
-    </div>
+    </React.Fragment>
   );
 };
 
