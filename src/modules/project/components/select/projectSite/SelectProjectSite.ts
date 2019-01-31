@@ -3,20 +3,21 @@ import { WithWidth } from '@material-ui/core/withWidth';
 import { IProjectSiteGetRequest } from '@project/classes/queries/site';
 import { IProjectSite } from '@project/classes/response';
 import { WithProjectSite, withProjectSite } from '@project/hoc/withProjectSite';
-import { compose, HandleCreators, lifecycle, ReactLifeCycleFunctions, withHandlers } from 'recompose';
+import { compose, HandleCreators, lifecycle, ReactLifeCycleFunctions, shallowEqual, withHandlers } from 'recompose';
 import { BaseFieldProps, WrappedFieldProps } from 'redux-form';
 
 import { SelectProjectSiteView } from './SelectProjectSiteView';
 
-interface OwnProps extends  IProjectSiteGetRequest, WrappedFieldProps, BaseFieldProps { 
+interface OwnProps extends IProjectSiteGetRequest, WrappedFieldProps, BaseFieldProps { 
   placeholder?: string;
   required?: boolean;
   label?: string; 
   disabled?: boolean;
-  onSelected?: (site: IProjectSite | undefined) => void | undefined;
+  onSelected?: (site?: IProjectSite) => void;
 }
 
 interface OwnHandlers {
+  handleOnLoadApi: () => void;
   handleOnChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
 }
 
@@ -27,6 +28,12 @@ export type SelectProjectSiteProps
   & OwnHandlers;
   
 const handlerCreators: HandleCreators<SelectProjectSiteProps, OwnHandlers> = {
+  handleOnLoadApi: (props: SelectProjectSiteProps) => () => {
+    props.projectSiteDispatch.loadRequest({
+      companyUid: props.companyUid,
+      projectUid: props.projectUid,
+    });
+  },
   handleOnChange: (props: SelectProjectSiteProps) => (e: React.ChangeEvent<HTMLSelectElement>) => { 
     const { input, onSelected } = props;
     const { response } = props.projectSiteState;
@@ -47,35 +54,36 @@ const handlerCreators: HandleCreators<SelectProjectSiteProps, OwnHandlers> = {
 
 const lifecycles: ReactLifeCycleFunctions<SelectProjectSiteProps, {}> = {
   componentDidMount() {
-    const { companyUid, projectUid } = this.props;
-    const { isLoading, response } = this.props.projectSiteState;
-    const { loadRequest } = this.props.projectSiteDispatch;
+    const { request } = this.props.projectSiteState;
 
-    if (!isLoading && !response) {
-      loadRequest({
-        companyUid,
-        projectUid
-      });
+    // 1st load only when request are empty
+    if (!request) {
+      this.props.handleOnLoadApi();
+    } else {
+      // 2nd load only when request are present
+      // comparing filter props
+      const shouldUpdate = !shallowEqual(
+        {
+          companyUid: request.companyUid,
+          projectUid: request.projectUid
+        }, 
+        {
+          companyUid: this.props.companyUid,
+          projectUid: this.props.projectUid
+        }
+      );
+
+      // then should update the list?
+      if (shouldUpdate) {
+        this.props.handleOnLoadApi();
+      }
     }
-  },
-  componentWillReceiveProps(nextProps: SelectProjectSiteProps) {
-    if (nextProps.projectUid !== this.props.projectUid) {
-      const { loadDispose, loadRequest } = this.props.projectSiteDispatch;
-      const { companyUid, projectUid } = nextProps;
-      
-      loadDispose();
-      loadRequest({companyUid, projectUid});
-    }
-  },
-  componentWillUnmount() {
-    const { loadDispose } = this.props.projectSiteDispatch;
-    loadDispose();
   }
 };
 
 export const SelectProjectSite = compose<SelectProjectSiteProps, OwnProps>(
   withProjectSite,
-  withWidth(),
-  withHandlers<SelectProjectSiteProps, OwnHandlers>(handlerCreators),
-  lifecycle<SelectProjectSiteProps, {}>(lifecycles)
+  withHandlers(handlerCreators),
+  lifecycle(lifecycles),
+  withWidth()
 )(SelectProjectSiteView);
