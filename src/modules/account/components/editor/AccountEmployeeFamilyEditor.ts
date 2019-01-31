@@ -143,7 +143,7 @@ const handlerCreators: HandleCreators<AccountEmployeeFamilyEditorProps, OwnHandl
     return null;
   },
   handleSubmitSuccess: (props: AccountEmployeeFamilyEditorProps) => (response: IEmployee) => {
-    const { formMode, intl, history, editAction, stateUpdate, employeeUid } = props;
+    const { formMode, intl, history, editAction, handleDialogClose, employeeUid } = props;
     const { alertAdd } = props.layoutDispatch;
     const { loadAllRequest } = props.accountEmployeeFamilyDispatch; 
 
@@ -161,12 +161,8 @@ const handlerCreators: HandleCreators<AccountEmployeeFamilyEditorProps, OwnHandl
       }
     }
 
-    stateUpdate({
-      isOpenDialog: false,
-      formMode: undefined,
-      editAction: undefined
-    });
-
+    handleDialogClose();
+    
     alertAdd({
       message,
       time: new Date()

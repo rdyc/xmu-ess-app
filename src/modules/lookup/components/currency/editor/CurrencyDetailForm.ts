@@ -23,12 +23,9 @@ export type CurrencyDetailFormProps
 
 const handlerCreators: HandleCreators<CurrencyDetailFormProps, OwnHandlers> = {
   generateFieldProps: (props: CurrencyDetailFormProps) => (name: string) => {
-    
-    // const fieldName = name.replace('information.', '');
 
     let fieldProps: any = {};
 
-    // switch (fieldName) {
     switch (name) {
       case 'uid':
         fieldProps = {
@@ -42,8 +39,8 @@ const handlerCreators: HandleCreators<CurrencyDetailFormProps, OwnHandlers> = {
         fieldProps = {
           type: 'text',
           required: true,
-          label: props.intl.formatMessage(lookupMessage.currency.field.name),
-          placeholder: props.intl.formatMessage(lookupMessage.currency.field.namePlaceholder),
+          label: props.intl.formatMessage(lookupMessage.currency.fieldFor(name, 'fieldName')),
+          placeholder: props.intl.formatMessage(lookupMessage.currency.fieldFor(name, 'fieldPlaceholder')),
           component: InputText
         };
         break;
@@ -52,8 +49,8 @@ const handlerCreators: HandleCreators<CurrencyDetailFormProps, OwnHandlers> = {
         fieldProps = {
           type: 'text',
           required: true,
-          label: props.intl.formatMessage(lookupMessage.currency.field.symbol),
-          placeholder: props.intl.formatMessage(lookupMessage.currency.field.symbolPlaceholder),
+          label: props.intl.formatMessage(lookupMessage.currency.fieldFor(name, 'fieldName')),
+          placeholder: props.intl.formatMessage(lookupMessage.currency.fieldFor(name, 'fieldPlaceholder')),
           component: InputText
         };
         break;
@@ -62,8 +59,8 @@ const handlerCreators: HandleCreators<CurrencyDetailFormProps, OwnHandlers> = {
         fieldProps = {
           type: 'number',
           required: true,
-          label: props.intl.formatMessage(lookupMessage.currency.field.rate),
-          // placeholder: props.intl.formatMessage(lookupMessage.currency.field.ratePlaceholder),
+          label: props.intl.formatMessage(lookupMessage.currency.fieldFor(name, 'fieldName')),
+          placeholder: props.intl.formatMessage(lookupMessage.currency.fieldFor(name, 'fieldPlaceholder')),
           component: InputNumber,
         };
         break;
@@ -77,8 +74,8 @@ const handlerCreators: HandleCreators<CurrencyDetailFormProps, OwnHandlers> = {
         default:
         fieldProps = {
           type: 'text',
-          label: props.intl.formatMessage({ id: `lookup.currency.field.${name}` }),
-          placeholder: props.intl.formatMessage({ id: `lookup.currency.field.${name}.placeholder` }),
+          label: props.intl.formatMessage(lookupMessage.currency.fieldFor(name, 'fieldName')),
+          placeholder: props.intl.formatMessage(lookupMessage.currency.fieldFor(name, 'fieldRequired')),
           component: InputText
         };
         break;

@@ -276,7 +276,8 @@ const styles = (theme: Theme) =>
     // branding
     brandingContainer: {
       flex: 1,
-      background: `url(${Pattern2})`,
+      backgroundColor: theme.palette.background.paper,
+      backgroundImage: `url(${Pattern2})`,
       backgroundSize: 'cover',
       backgroundRepeat: 'no-repeat',
       backgroundPosition: 'inherit',
@@ -613,6 +614,12 @@ const styles = (theme: Theme) =>
 
     chartContentXS: {
       marginTop: theme.spacing.unit * -10
+    },
+
+    /* Upload Image */
+    imageSize: {
+      width: 500,
+      height: 450
     }
   });
 

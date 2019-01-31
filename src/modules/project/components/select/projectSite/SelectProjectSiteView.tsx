@@ -21,7 +21,7 @@ export const SelectProjectSiteView: React.SFC<SelectProjectSiteProps> = props =>
     if (isMobile) {
       return (
         <option key={item.uid} value={item.uid}>
-          {item.uid} - {item.name}
+          {item.name}
         </option>
       );
     } 
@@ -30,7 +30,7 @@ export const SelectProjectSiteView: React.SFC<SelectProjectSiteProps> = props =>
     if (!isMobile) {
       return (
         <MenuItem key={item.uid} value={item.uid}>
-          {item.uid} - {item.name}
+          {item.name}
         </MenuItem>
       );
     }

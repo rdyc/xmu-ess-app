@@ -26,12 +26,21 @@ export interface IApiResponse {
   body: any;
 }
 
-export async function apiRequest(method: string, url: string, path: string, payload?: any) {
+export async function apiRequest(method: string, url: string, path: string, payload?: any, isJsonContent?: boolean) {
   const user = await AppUserManager.getUser();
-  
   const headers = new Headers();
+  let body = undefined;
+  const useJson = isJsonContent === undefined ? false : isJsonContent;
+  
   headers.append('Accept', 'application/json');
-  headers.append('Content-Type', 'application/json');
+
+  if (useJson) {
+    headers.append('Content-Type', 'application/json');
+    
+    body = payload ? JSON.stringify(payload) : undefined;
+  } else {
+    body = payload;
+  }
 
   // add acces token
   if (user !== null) {
@@ -41,7 +50,7 @@ export async function apiRequest(method: string, url: string, path: string, payl
   return fetch(url + path, {
     method,
     headers,
-    body: payload ? JSON.stringify(payload) : undefined
+    body
   })
   .then(response => response.json()
     .then(result => ({

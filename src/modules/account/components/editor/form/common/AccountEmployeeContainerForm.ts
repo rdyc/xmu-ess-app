@@ -21,7 +21,6 @@ export type AccountEmployeeFormData = {
     religionType: string | null | undefined;
     taxType: string | null | undefined;
     bloodType: string | null | undefined;
-    image: string | null | undefined;
   },
   bank: {
     familyCardNumber: string | null | undefined;
@@ -44,6 +43,9 @@ export type AccountEmployeeFormData = {
     emergencyContactRelation: string | null | undefined;
     emergencyContactPhone: string | null | undefined;
     emergencyContactPhoneAdditional: string | null | undefined;
+  },
+  image: {
+    image: FileList | null | undefined;
   }
 };
 

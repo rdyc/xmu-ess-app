@@ -111,8 +111,9 @@ export const LandingPageView: React.SFC<LandingPageProps> = props => (
 
           <div id="news">
             <Typography 
-              variant="h4" 
-              align="center" 
+              variant="h5" 
+              align="center"
+              color="textSecondary"
               className={props.classes.paddingFar}
             >
               News
@@ -121,7 +122,7 @@ export const LandingPageView: React.SFC<LandingPageProps> = props => (
             <NewsFeed />
           </div>
 
-          <div id="achievements">
+          {/* <div id="achievements">
             <Typography 
               variant="h4" 
               align="center" 
@@ -131,7 +132,7 @@ export const LandingPageView: React.SFC<LandingPageProps> = props => (
             </Typography>
 
             <NewsFeed />
-          </div>
+          </div> */}
         </Paper>
       </div>
 
