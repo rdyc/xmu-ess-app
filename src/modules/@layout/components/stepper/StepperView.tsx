@@ -18,6 +18,7 @@ export const StepperView: React.SFC<StepperProps> = props => {
         component="img"
         image={props.currentImages && props.currentImages.imgPathFull}
         title={props.currentImages && props.currentImages.label}
+        onClick={props.handleCloseImage}
       />
     </Dialog>
   );
