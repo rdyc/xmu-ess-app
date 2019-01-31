@@ -1,11 +1,20 @@
 import {
   currencyConfirm,
+  currencyDialog,
   currencyField,
+  currencyFieldHelperFor,
   currencyForm,
   currencyMessage,
   currencyPage,
   currencySection
 } from './currencyMessage';
+import { 
+  galleryField, 
+  galleryFieldHelperFor, 
+  galleryMessage, 
+  galleryPage, 
+  gallerySection ,
+} from './galleryMessage';
 import {
   holidayConfirm,
   holidayField,
@@ -69,6 +78,7 @@ import {
 } from './mileageException';
 import {
   positionConfirm,
+  positionDialog,
   positionField,
   positionFieldHelperFor,
   positionForm,
@@ -139,10 +149,12 @@ export const lookupMessage = {
   currency: {
     page: currencyPage,
     field: currencyField,
+    fieldFor: currencyFieldHelperFor,
     confirm: currencyConfirm,
     section: currencySection,
     form: currencyForm,
-    message: currencyMessage
+    message: currencyMessage,
+    dialog: currencyDialog
   },
   company: {
     page: companyPage,
@@ -160,7 +172,8 @@ export const lookupMessage = {
     section: positionSection,
     confirm: positionConfirm,
     form: positionForm,
-    message: positionMessage
+    message: positionMessage,
+    dialog: positionDialog
   },
   lookupDiem: {
     page: lookupDiemPage,
@@ -180,5 +193,12 @@ export const lookupMessage = {
     confirm: lookupCustomerConfirm,
     message: lookupCustomerMessage,
     dialog: lookupCustomerDialogMessage,
+  },
+  gallery: {
+    page: galleryPage,
+    section: gallerySection,
+    field: galleryField,
+    fieldFor: galleryFieldHelperFor,
+    message: galleryMessage
   }
 };

@@ -35,14 +35,14 @@ const handlerCreators: HandleCreators<PositionDetailFormProps, OwnHandlers> = {
       case 'uid':
         fieldProps = {
           disabled: true,
-          label: props.intl.formatMessage(lookupMessage.position.field.uid),
+          label: props.intl.formatMessage(lookupMessage.position.fieldFor(name, 'fieldName')),
           component: InputText,
         };
         break;
 
       case 'companyUid':
         fieldProps = {
-          label: props.intl.formatMessage(lookupMessage.position.field.companyUid),
+          label: props.intl.formatMessage(lookupMessage.position.fieldFor(name, 'fieldName')),
           component: SelectLookupCompany,
           disabled: (props.formMode === FormMode.Edit)
         };
@@ -52,8 +52,8 @@ const handlerCreators: HandleCreators<PositionDetailFormProps, OwnHandlers> = {
         fieldProps = {
           type: 'text',
           required: true,
-          label: props.intl.formatMessage(lookupMessage.position.field.name),
-          placeholder: props.intl.formatMessage(lookupMessage.position.field.namePlaceholder),
+          label: props.intl.formatMessage(lookupMessage.position.fieldFor(name, 'fieldName')),
+          placeholder: props.intl.formatMessage(lookupMessage.position.fieldFor(name, 'fieldPlaceholder')),
           component: InputText
         };
         break;
@@ -61,8 +61,8 @@ const handlerCreators: HandleCreators<PositionDetailFormProps, OwnHandlers> = {
       case 'description':
         fieldProps = {
           type: 'text',
-          label: props.intl.formatMessage(lookupMessage.position.field.description),
-          placeholder: props.intl.formatMessage(lookupMessage.position.field.descriptionPlaceholder),
+          label: props.intl.formatMessage(lookupMessage.position.fieldFor(name, 'fieldName')),
+          placeholder: props.intl.formatMessage(lookupMessage.position.fieldFor(name, 'fieldPlaceholder')),
           component: InputText
         };
         break;
@@ -71,8 +71,8 @@ const handlerCreators: HandleCreators<PositionDetailFormProps, OwnHandlers> = {
         fieldProps = {
           type: 'date',
           required: true,
-          label: props.intl.formatMessage(lookupMessage.position.field.inactiveDate),
-          placeholder: props.intl.formatMessage(lookupMessage.position.field.inactiveDatePlaceholder),
+          label: props.intl.formatMessage(lookupMessage.position.fieldFor(name, 'fieldName')),
+          placeholder: props.intl.formatMessage(lookupMessage.position.fieldFor(name, 'fieldPlaceholder')),
           component: InputDate,
         };
         break;
@@ -86,8 +86,8 @@ const handlerCreators: HandleCreators<PositionDetailFormProps, OwnHandlers> = {
         default:
         fieldProps = {
           type: 'text',
-          label: props.intl.formatMessage({ id: `lookup.position.field.${name}` }),
-          placeholder: props.intl.formatMessage({ id: `lookup.position.field.${name}.placeholder` }),
+          label: props.intl.formatMessage(lookupMessage.position.fieldFor(name, 'fieldName')),
+          placeholder: props.intl.formatMessage(lookupMessage.position.fieldFor(name, 'fieldPlaceholder')),
           component: InputText
         };
         break;

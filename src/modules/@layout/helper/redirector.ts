@@ -8,7 +8,8 @@ export enum ModuleDefinition {
   TravelSettlement = 'MOD06',
   Purchase = 'MOD02',
   PurchaseSettlement = 'MOD03',
-  Mileage = 'MOD04'
+  Mileage = 'MOD04',
+  Finance = 'MOD11',
 }
 
 export enum NotificationType {
