@@ -1,3 +1,4 @@
+import { DataContainer } from '@layout/components/pages/dataContainer/DataContainer';
 import { layoutMessage } from '@layout/locales/messages';
 import { IGallery } from '@lookup/classes/response/gallery';
 import { Grid, GridList, GridListTile, GridListTileBar, IconButton, Typography } from '@material-ui/core';
@@ -13,10 +14,7 @@ export const ImageGalleryListView: React.SFC<ImageGalleryListProps> = props => {
 
     return (
       <div>
-        <GridList cellHeight={180}>
-          <GridListTile key="Subheader" cols={2} style={{ height: 'auto' }}>
-            {/* <ListSubheader component="div">December</ListSubheader> */}
-          </GridListTile>
+        <GridList cellHeight={180} cols={4} spacing={12}>
           {images.map(image => (
             <GridListTile key={image.uid}>
               <img src={image.path.small} alt={image.name} />
@@ -45,12 +43,31 @@ export const ImageGalleryListView: React.SFC<ImageGalleryListProps> = props => {
           </Typography>
         }
         <Grid item xs={12}>
-          {
-            !isLoading &&
-            response &&
-            response.data &&
-            RenderImageList(response.data)
-          }
+          <DataContainer
+            isLoading={props.isLoading}
+            state={{
+              field: props.orderBy,
+              direction: props.direction,
+              page: props.page,
+              size: props.size,
+            }}
+            className={props.classes.flex}
+            metadata={response && response.metadata}
+            fields={props.fields}
+            onClickSync={() => props.setPageOne()}
+            onClickNext={() => props.setPageNext()}
+            onClickPrevious={() => props.setPagePrevious()}
+            onChangeField={props.setField}
+            onChangeOrder={props.setOrder}
+            onChangeSize={props.setSize}
+          >
+            {
+              !isLoading &&
+              response &&
+              response.data &&
+              RenderImageList(response.data)
+            }
+          </DataContainer>
         </Grid>
       </Grid>
     </React.Fragment>
