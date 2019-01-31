@@ -2,31 +2,31 @@ import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
 import { getFormValues, InjectedFormProps, reduxForm } from 'redux-form';
-import { AchievementFormView } from './AchievementFormView';
+import { GalleryFormView } from './GalleryFormView';
 
-export interface UploadFormData {
+export interface GalleryFormData {
   file?: FileList;
 }
 
 interface FormValueProps {
-  formValues: UploadFormData;
+  formValues: GalleryFormData;
 }
 
-export type AchievementFormProps 
-  = InjectedFormProps<UploadFormData>
+export type GalleryFormProps 
+  = InjectedFormProps<GalleryFormData>
   & InjectedIntlProps
   & FormValueProps;
 
 const mapStateToProps = (state: any): FormValueProps => ({
-  formValues: getFormValues('formUpload')(state) as UploadFormData
+  formValues: getFormValues('formUpload')(state) as GalleryFormData
 });
 
-const enhance = compose<AchievementFormProps, InjectedFormProps<UploadFormData>>(
+const enhance = compose<GalleryFormProps, InjectedFormProps<GalleryFormData>>(
   connect(mapStateToProps),
   injectIntl
-)(AchievementFormView);
+)(GalleryFormView);
 
-export const AchievementForm = reduxForm<UploadFormData>({
+export const GalleryForm = reduxForm<GalleryFormData>({
   form: 'formUpload',
   touchOnChange: true,
   touchOnBlur: true,

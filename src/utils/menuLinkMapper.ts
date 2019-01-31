@@ -194,6 +194,10 @@ export const menuLinkMapper = (menuUid: string) => {
       path = '/lookup/mileageexceptions';
       break;
 
+    case 'MNU62':
+      path = '/lookup/gallery';
+      break;
+
     case 'MNU63':
       path = '/lookup/achievementchart';
       break;
