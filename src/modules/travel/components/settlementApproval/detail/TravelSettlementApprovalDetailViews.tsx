@@ -122,6 +122,8 @@ const config: SingleConfig<ITravelSettlementDetail, TravelSettlementApprovalDeta
           onSubmit={props.handleSubmit} 
           onSubmitSuccess={props.handleSubmitSuccess}
           onSubmitFail={props.handleSubmitFail}
+          approvalRemarkLabel={props.intl.formatMessage(travelMessage.settlement.field.adjustmentNote)}
+          approvalRemarkPlaceholder={props.intl.formatMessage(travelMessage.settlement.field.adjustmentNotePlaceholder)}          
         />
       }
     </React.Fragment>

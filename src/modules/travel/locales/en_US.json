@@ -153,6 +153,8 @@
   "travel.request.field.item.diemValue.placeholder": "Per Diem",
   "travel.request.field.item.amount": "Diem Value",
   "travel.request.field.item.amount.placeholder": "Diem Value",
+  "travel.settlement.field.item.adjustmentNote": "Adjustment Note",
+  "travel.request.field.item.adjustmentNote.placeholder": "Adjustment Note",
 
   "travel.request.field.isSettlement": "Ready to Settle Only",
   "travel.request.field.isRejected": "Rejected Only",
