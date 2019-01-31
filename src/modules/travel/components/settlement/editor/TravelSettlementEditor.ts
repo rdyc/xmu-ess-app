@@ -314,7 +314,7 @@ const lifecycles: ReactLifeCycleFunctions<TravelSettlementEditorProps, {}> = {
     layoutDispatch.navBackShow();
   },
   componentWillUnmount() {
-    const { layoutDispatch, appBarDispatch, travelSettlementDispatch, travelRequestDispatch } = this.props;
+    const { layoutDispatch, appBarDispatch, travelSettlementDispatch } = this.props;
 
     layoutDispatch.changeView(null);
     layoutDispatch.navBackHide();
@@ -324,9 +324,6 @@ const lifecycles: ReactLifeCycleFunctions<TravelSettlementEditorProps, {}> = {
 
     travelSettlementDispatch.createDispose();
     travelSettlementDispatch.updateDispose();
-
-    travelRequestDispatch.createDispose();
-    travelRequestDispatch.updateDispose();
   }
 };
 
