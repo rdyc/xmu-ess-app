@@ -128,8 +128,8 @@ const achievement = (props: RouteComponentProps) => (
 
 const gallery = (props: RouteComponentProps) => (
   <Switch>
-    <Route path={`${props.match.path}`} component={ImageGalleryList} />
     <Route path={`${props.match.path}/form`} component={GalleryEditor} />
+    <Route path={`${props.match.path}`} component={ImageGalleryList} />
   </Switch>
 );
 
