@@ -29,7 +29,7 @@ const mileageExceptionSummary: React.SFC<AllProps> = props => (
         {...GlobalStyle.TextField.ReadOnly}
         margin="dense"
         label={props.intl.formatMessage(lookupMessage.mileageException.field.projectUid)}
-        value={props.data.projectUid ? props.data.projectUid : 'N/A'}
+        value={props.data.project ? `${props.data.project.uid} - ${props.data.project.name}` : 'N/A'}
       />
       <TextField
         {...GlobalStyle.TextField.ReadOnly}

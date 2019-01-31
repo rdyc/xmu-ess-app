@@ -56,7 +56,7 @@ export const accountAccessView: React.SFC<AccessSwitcherProps> = props => (
           props.access.map((access, index) => 
             <ExpansionPanel key={access.companyUid} disabled={access.isExpired}>
               <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                <Typography variant="body1">
+                <Typography variant="h6" color="textSecondary">
                   {access.company && access.company.name}
                 </Typography>
               </ExpansionPanelSummary>

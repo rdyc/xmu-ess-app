@@ -1,1 +1,1 @@
-export * from './IImageGalleryPostPayload';
+export * from './IGalleryPostPayload';
