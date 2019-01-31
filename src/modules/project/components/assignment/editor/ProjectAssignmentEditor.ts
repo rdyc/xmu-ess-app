@@ -91,11 +91,11 @@ const handlers: HandleCreators<ProjectAssignmentEditorProps, IOwnHandlers> = {
     }
       
     return undefined;
-    },
+  },
   generateInitialValues: (props: ProjectAssignmentEditorProps) => (): IProjectAssignmentFormData | undefined => {
     const { response } = props.projectAssignmentState.detail; 
 
-    if (response && response.data) {
+    if (response && response.data && props.formMode === FormMode.Edit) {
       const items: IProjectAssignmentItemFormData[] = [];
 
       if (response.data.items) {
