@@ -3,7 +3,7 @@ import { ICurrencyList } from '@lookup/classes/response';
 import { WithLookupCurrency, withLookupCurrency } from '@lookup/hoc/withLookupCurrency';
 import { withWidth } from '@material-ui/core';
 import { WithWidth } from '@material-ui/core/withWidth';
-import { compose, HandleCreators, lifecycle, ReactLifeCycleFunctions, withHandlers } from 'recompose';
+import { compose, HandleCreators, lifecycle, ReactLifeCycleFunctions, shallowEqual, withHandlers } from 'recompose';
 import { BaseFieldProps, WrappedFieldProps } from 'redux-form';
 import { SelectCurrencyView } from './SelectCurrencyView';
 
@@ -19,6 +19,7 @@ interface OwnProps extends WrappedFieldProps, BaseFieldProps {
 
 interface OwnHandlers {
   handleOnChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+  handleOnLoadApi: () => void;
 }
 
 export type SelectCurrencyProps
@@ -28,6 +29,9 @@ export type SelectCurrencyProps
   & OwnHandlers;
 
 const handlerCreators: HandleCreators<SelectCurrencyProps, OwnHandlers> = {
+  handleOnLoadApi: (props: SelectCurrencyProps) => () => {
+    props.lookupCurrencyDispatch.loadListRequest({filter: props.filter});
+  },
   handleOnChange: (props: SelectCurrencyProps) => (e: React.ChangeEvent<HTMLSelectElement>) => {
     const { input, onSelected } = props;
     const { response } = props.lookupCurrencyState.list;
@@ -48,27 +52,20 @@ const handlerCreators: HandleCreators<SelectCurrencyProps, OwnHandlers> = {
 
 const lifecycles: ReactLifeCycleFunctions<SelectCurrencyProps, {}> = {
   componentDidMount() {
-    const { filter } = this.props;
-    const { isLoading, response } = this.props.lookupCurrencyState.list;
-    const { loadListRequest } = this.props.lookupCurrencyDispatch;
+    const { request } = this.props.lookupCurrencyState.list;
 
-    if (!isLoading && !response) {
-      loadListRequest({ filter });
+    if (!request) {
+      this.props.handleOnLoadApi();
+    } else {
+      if (request.filter) {
+        const shouldUpdate = !shallowEqual(request.filter, this.props.filter || {});
+
+        if (shouldUpdate) {
+          this.props.handleOnLoadApi();
+        }
+      }
     }
   },
-  componentWillReceiveProps(nextProps: SelectCurrencyProps) {
-    if (nextProps.filter !== this.props.filter) {
-      const { loadListDispose, loadListRequest } = this.props.lookupCurrencyDispatch;
-      const { filter } = nextProps;
-
-      loadListDispose();
-      loadListRequest({ filter });
-    }
-  },
-  componentWillUnmount() {
-    const { loadListDispose } = this.props.lookupCurrencyDispatch;
-    loadListDispose();
-  }
 };
 
 export const SelectCurrency = compose<SelectCurrencyProps, OwnProps>(

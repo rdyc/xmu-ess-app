@@ -106,9 +106,11 @@ import {
 } from '@lookup/classes/response';
 import { IGallery } from '@lookup/classes/response/gallery';
 
+import { IAchievementPatchRequest } from '../queries/achievement';
 import { ILookupCustomerDeleteRequest, ILookupCustomerPostRequest, ILookupCustomerPutRequest } from '../queries/customer';
 import { IGalleryGetAllRequest, IGalleryGetDetailRequest, IGalleryPostRequest } from '../queries/gallery';
 import { IPositionDeleteRequest } from '../queries/position/IPositionDeleteRequest';
+import { IAchievementResult } from '../response/achievement';
 
 export interface ILookupState {
   lookupCustomerGetAll: IQueryCollectionState<ILookupCustomerGetAllRequest, ICustomer>;
@@ -182,6 +184,9 @@ export interface ILookupState {
   systemLimitPost: IQuerySingleState<ISystemLimitPostRequest, ISystemLimit>;
   systemLimitPut: IQuerySingleState<ISystemLimitPutRequest, ISystemLimit>;
   systemLimitDelete: IQuerySingleState<ISystemLimitDeleteRequest, boolean>;
+
+  // upload
+  achievementFilePatch: IQuerySingleState<IAchievementPatchRequest, IAchievementResult>;
 
   lookupVersionGetById: IQuerySingleState<ILookupVersionGetByIdRequest, ILookupVersion>;
   lookupVersionPatch: IQuerySingleState<ILookupVersionPatchRequest, ILookupVersion>;

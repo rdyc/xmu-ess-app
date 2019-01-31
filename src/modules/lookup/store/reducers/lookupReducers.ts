@@ -1,3 +1,4 @@
+import { achievementReducer } from './achievement';
 import { lookupCompanyReducers } from './company';
 import { lookupCurrencyReducers } from './currency';
 import { lookupCustomerReducers } from './customer';
@@ -24,6 +25,7 @@ const lookupReducers = {
   ...lookupDiemReducers,
   ...lookupCurrencyReducers,
   ...lookupMenuReducers,
+  ...achievementReducer,
   ...lookupVersionReducers,
   ...imageGalleryReducers
 };

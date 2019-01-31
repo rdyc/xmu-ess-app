@@ -50,6 +50,7 @@ import commonNotificationSagas from '@layout/store/sagas/notificationSagas';
 import leaveApprovalSagas from '@leave/store/sagas/leaveApprovalSagas';
 import leaveCancellationSagas from '@leave/store/sagas/leaveCancellationSagas';
 import leaveRequestSagas from '@leave/store/sagas/leaveRequestSagas';
+import achievementPatchSagas from '@lookup/store/sagas/achievementPatchSagas';
 import lookupCurrencySagas from '@lookup/store/sagas/currencySagas';
 import imageGallerySagas from '@lookup/store/sagas/imageGallerySagas';
 import leaveCalculationSagas from '@lookup/store/sagas/leaveCalculationSagas';
@@ -138,6 +139,8 @@ export function* rootSaga() {
     fork(lookupSystemLimitSagas),
     fork(lookupHolidaySagas),
     fork(lookupLeaveSagas),
+    fork(achievementPatchSagas),
+
     fork(lookupVersionSagas),
     fork(imageGallerySagas),
     

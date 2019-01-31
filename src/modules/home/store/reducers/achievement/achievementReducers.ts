@@ -1,9 +1,7 @@
 import { achievementGetReducer } from '.';
-import { achievementPatchReducer } from './achievementPatchReducer';
 
 const achievementReducers = {
-  achievementGet: achievementGetReducer,
-  achievementPatch: achievementPatchReducer
+  achievementGet: achievementGetReducer
 };
 
 export default achievementReducers;
