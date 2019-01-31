@@ -4,6 +4,7 @@ import { IAnnouncement } from '@home/classes/response/announcement';
 import { withAnnouncement, WithAnnouncement } from '@home/hoc/withAnnouncement';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { IGallery } from '@lookup/classes/response/gallery';
+import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
 import { WithWidth } from '@material-ui/core/withWidth';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps } from 'react-router';
@@ -52,6 +53,7 @@ export interface IAnnouncementImage {
 
 export type AnnouncementEditorProps
   = OwnOption
+  & InjectedIntlProps
   & OwnHandlers
   & WithAnnouncement
   & OwnState
@@ -121,7 +123,7 @@ const handlerCreators: HandleCreators<AnnouncementEditorProps, OwnHandlers> = {
     }));
 
     const payload = ({
-      item: itemAnnouncement,
+      items: itemAnnouncement,
     });
 
     return new Promise((resolve, reject) => {
@@ -164,9 +166,9 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<AnnouncementEditorProps, OwnSt
 
     layoutDispatch.setupView({
       view: {
-        uid: AppMenu.Gallery,
+        uid: AppMenu.ImageGallery,
         parentUid: AppMenu.Lookup,
-        title: 'edit slider', // intl.formatMessage(organizationMessage.workflowSetup.page.listTitle),
+        title: this.props.intl.formatMessage(lookupMessage.gallery.page.modifyAnnouncementTitle),
         subTitle : '' // intl.formatMessage(organizationMessage.workflowSetup.page.listSubHeader)
       },
       status: {

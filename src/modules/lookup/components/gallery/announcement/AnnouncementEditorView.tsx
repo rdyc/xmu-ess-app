@@ -1,4 +1,5 @@
 import { layoutMessage } from '@layout/locales/messages';
+import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
 import { Button, Card, CardHeader, CardMedia, DialogActions, Grid, IconButton, Typography } from '@material-ui/core';
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
@@ -64,11 +65,11 @@ export const AnnouncementEditorView: React.SFC<AnnouncementEditorProps> = props 
           <Grid item xs={12} sm={6}>
             <Card>
               <CardHeader 
-                title={'add image'}
+                title={props.intl.formatMessage(lookupMessage.gallery.section.addTitle)}
               />
               <DialogActions>
                 <Button>
-                  add image
+                  {props.intl.formatMessage(lookupMessage.gallery.section.addTitle)}
                 </Button>
               </DialogActions>
             </Card>
@@ -76,14 +77,14 @@ export const AnnouncementEditorView: React.SFC<AnnouncementEditorProps> = props 
           <Grid item xs={12} sm={6}>
             <Card>
               <CardHeader 
-                title={'submit slider'}
+                title={props.intl.formatMessage(lookupMessage.gallery.section.submitTitle)}
               />
               <DialogActions>
-                <Button>
-                  reset
+                <Button onClick={() => response && response.data && props.handleSetAnnouncementImages(response.data)}>
+                  {props.intl.formatMessage(layoutMessage.action.reset)}
                 </Button>
-                <Button onClick={props.handleSubmitAnnouncement}>
-                  submit
+                <Button onClick={props.handleSubmitAnnouncement} color={'secondary'}>
+                  {props.intl.formatMessage(layoutMessage.action.submit)}
                 </Button>
               </DialogActions>
             </Card>

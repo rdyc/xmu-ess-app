@@ -525,6 +525,8 @@
   "lookup.gallery.page.new.subHeader": " ",
   "lookup.gallery.page.modify.title": "Modify Image Gallery",
   "lookup.gallery.page.modify.subHeader": " ",
+  "lookup.gallery.page.modifyAnnouncement.title": "Modify Announcement",
+  "lookup.gallery.page.modifyAnnouncement.subHeader": " ",
 
   "lookup.gallery.message.emptyProps": "Some props are empty",
   "lookup.gallery.message.create.success": "New Image Gallery has been created",
@@ -539,5 +541,9 @@
   "lookup.gallery.field.file.placeholder": "Upload any image",
 
   "lookup.gallery.section.info.title": "Image Gallery",
-  "lookup.gallery.section.info.subHeader": " "
+  "lookup.gallery.section.info.subHeader": " ",
+  "lookup.gallery.section.submit.title": "Submit Announcement",
+  "lookup.gallery.section.submit.subHeader": " ",
+  "lookup.gallery.section.add.title": "Add Image",
+  "lookup.gallery.section.add.subHeader": " "
 }

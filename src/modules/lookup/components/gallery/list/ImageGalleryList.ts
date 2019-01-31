@@ -135,7 +135,8 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<ImageGalleryListProps, OwnStat
         isActionCentreVisible: false,
         isMoreVisible: false,
         isModeSearch: false
-      }
+      },
+      
     });
 
     if ((!response && !isLoading) || this.props.forceReload) {

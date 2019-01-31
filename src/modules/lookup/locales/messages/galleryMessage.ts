@@ -12,6 +12,8 @@ export const galleryPage = defineMessages({
   newSubHeader: { id: `${prefix}.page.new.subHeader`},
   modifyTitle: { id: `${prefix}.page.modify.title`},
   modifySubHeader: { id: `${prefix}.page.modify.subHeader`},
+  modifyAnnouncementTitle: { id: `${prefix}.page.modifyAnnouncement.title`},
+  modifyAnnouncementSubHeader: { id: `${prefix}.page.modifyAnnouncement.subHeader`},
 });
 
 // messages
@@ -35,6 +37,10 @@ export const galleryField = defineMessages({
 export const gallerySection = defineMessages({
   infoTitle: { id: `${prefix}.section.info.title`},
   infoSubHeader: { id: `${prefix}.section.info.subHeader`},
+  submitTitle: { id: `${prefix}.section.submit.title`},
+  submitSubHeader: { id: `${prefix}.section.submit.subHeader`},
+  addTitle: { id: `${prefix}.section.add.title`},
+  addSubHeader: { id: `${prefix}.section.add.subHeader`},
 });
 
 // helper

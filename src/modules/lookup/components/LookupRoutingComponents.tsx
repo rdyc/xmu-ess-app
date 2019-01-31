@@ -122,8 +122,8 @@ const diem = (props: RouteComponentProps) => (
 
 const gallery = (props: RouteComponentProps) => (
   <Switch>
-    <Route path={`${props.match.path}`} component={ImageGalleryList} />
     <Route path={`${props.match.path}/form`} component={AnnouncementEditor} />
+    <Route path={`${props.match.path}`} component={ImageGalleryList} />
   </Switch>
 );
 
