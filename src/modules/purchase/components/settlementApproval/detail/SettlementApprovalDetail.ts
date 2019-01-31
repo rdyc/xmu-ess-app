@@ -109,7 +109,7 @@ const handlerCreators: HandleCreators<SettlementApprovalDetailProps, OwnHandler>
     // generate payload
     const payload: ISettlementApprovalPostPayload = {
       isApproved,
-      remark: !isApproved ? formData.remark : undefined
+      remark: formData.remark
     };
 
     // dispatch create request

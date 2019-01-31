@@ -180,7 +180,7 @@ const settlementInformation: React.SFC<AllProps> = props => {
             {...GlobalStyle.TextField.ReadOnly}
             margin="dense"
             label={intl.formatMessage(data.statusType === WorkflowStatusType.Rejected || data.statusType === WorkflowStatusType.AdjustmentNeeded
-              ? purchaseMessage.request.field.reason 
+              ? purchaseMessage.settlement.field.adjustmentNote 
               : purchaseMessage.request.field.approveNotes)}
             value={data.reason || 'N/A'}
             multiline
