@@ -20,7 +20,7 @@ export interface ISettlement {
   differenceInIDR?: number;
   advance?: number;
   balanceDue?: number;
-  reject?: string;
+  reason?: string;
   statusType?: string;
   status?: ICommonSystem;
   customerUid: string;

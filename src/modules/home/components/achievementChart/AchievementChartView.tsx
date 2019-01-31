@@ -1,10 +1,11 @@
+import { IValueResponse } from '@home/classes/response/achievement';
 import { homeMessage } from '@home/locales/messages';
 import { layoutMessage } from '@layout/locales/messages';
 import { Card, CardContent, CardHeader, Grid, Toolbar, Typography } from '@material-ui/core';
 // import { isWidthDown } from '@material-ui/core/withWidth';
 import * as React from 'react';
-// import { isNullOrUndefined } from 'util';
-import { VictoryAxis, VictoryBar, VictoryChart, VictoryLabel, VictoryTooltip } from 'victory';
+import { VictoryAxis, VictoryBar, VictoryChart, VictoryLabel, VictoryTheme, VictoryTooltip } from 'victory';
+
 import { AchievementChartProps } from './AchievementChart';
 
 export const AchievementChartView: React.SFC<AchievementChartProps> = props => {
@@ -15,6 +16,31 @@ export const AchievementChartView: React.SFC<AchievementChartProps> = props => {
   // { if (!isNullOrUndefined(props.achievementState.all.response)) {
   //   props.handleOnChange(props.achievementState.all.response.data);
   // }}
+
+  const colorModifier: any = {
+    fill: (data: IValueResponse) => {
+      let color = 'blue';
+
+      // if (data.value > 0 && data.value <= 25) {
+      //   color = 'red';
+      // }
+
+      // if (data.value > 25 && data.value <= 50) {
+      //   color = 'orange';
+      // }
+
+      // if (data.value > 50 && data.value <= 75) {
+      //   color = 'yellow';
+      // }
+
+      if (data.value > 100 ) {
+        color = 'green';
+      }
+
+      return color;
+    },
+    strokeWidth: 0
+  };
 
   return (
     <div className={props.classes.marginFarBottom}>
@@ -40,10 +66,10 @@ export const AchievementChartView: React.SFC<AchievementChartProps> = props => {
           props.achievementState.all.response.data &&
           props.achievementState.all.response.data.map((item) => ( */}
             <React.Fragment>
-              {props.dataDiv && (
+              {props.dataSales && (
                 <Grid item xs={12} md={6}>
                   <Card square >
-                    <CardHeader title={props.dataDiv && props.dataDiv.title} subheader={props.dataDiv && props.dataDiv.description} />
+                    <CardHeader title={props.dataSales && props.dataSales.title} subheader={props.dataSales && props.dataSales.description} />
                     {/* <CardContent className={isMobile ? classes.chartContentXS : classes.chartContent}> */}
                     <VictoryChart
                       animate={{ duration: 2000, easing: 'bounce' }}
@@ -51,6 +77,7 @@ export const AchievementChartView: React.SFC<AchievementChartProps> = props => {
                       domainPadding={{ x: 20, y: 20 }}
                       height={800}
                       padding={{ bottom: 50, left: 120, top: 10, right: 50 }}
+                      theme={VictoryTheme.material}
                     >
                       <VictoryAxis
                         dependentAxis
@@ -58,20 +85,20 @@ export const AchievementChartView: React.SFC<AchievementChartProps> = props => {
                       />
                       <VictoryAxis
                         tickLabelComponent={<VictoryLabel />}
-                        tickFormat={(x) => (`${x} ${props.dataDiv && props.dataDiv.unit}`)}
+                        tickFormat={(x) => (`${x} ${props.dataSales && props.dataSales.unit}`)}
                       />
                       <VictoryBar
                         horizontal
                         labelComponent={<VictoryTooltip />}
                         // style={{ data: { fill: (d: any) => d.percentage > 80 ? 'green' : 'blue'}}}
                         style={{
-                          data: { fill: 'blue', strokeWidth: 0 },
+                          data: { fill: 'blue', strokeWidth: 0, ...colorModifier },
                           // labels: { fontSize: isMobile ? 5 : 4 }
                         }}
-                        data={props.dataDiv && props.dataDiv.valueObject}
+                        data={props.dataSales && props.dataSales.valueObject}
                         x="name"
                         y="value"
-                        labels={(y) => `${y.value} ${props.dataDiv && props.dataDiv.unit}`}
+                        labels={(y) => `${y.value} ${props.dataSales && props.dataSales.unit}`}
                       />
 
                     </VictoryChart>
@@ -93,6 +120,7 @@ export const AchievementChartView: React.SFC<AchievementChartProps> = props => {
                             animate={{ duration: 2000, easing: 'bounce' }}
                             domainPadding={{ x: 20, y: 20 }}
                             padding={{ bottom: 50, left: 100, top: 10, right: 50 }}
+                            theme={VictoryTheme.material}
                           >
                             <VictoryAxis
                               dependentAxis
@@ -106,8 +134,7 @@ export const AchievementChartView: React.SFC<AchievementChartProps> = props => {
                               labelComponent={<VictoryTooltip />}
                               // style={{ data: { fill: (d: any) => d.percentage > 80 ? 'green' : 'blue'}}}
                               style={{
-                                data: { fill: 'blue', strokeWidth: 0 },
-                                // labels: { fontSize: isMobile ? 5 : 4 }
+                                data: { fill: 'blue', strokeWidth: 0, ...colorModifier},
                               }}
                               data={props.dataLob && props.dataLob.valueObject}
                               x="name"
@@ -133,6 +160,7 @@ export const AchievementChartView: React.SFC<AchievementChartProps> = props => {
                             animate={{ duration: 2000, easing: 'bounce' }}
                             domainPadding={{ x: 20, y: 20 }}
                             padding={{ bottom: 50, left: 100, top: 10, right: 50 }}
+                            theme={VictoryTheme.material}
                           >
                             <VictoryAxis
                               dependentAxis
@@ -146,7 +174,7 @@ export const AchievementChartView: React.SFC<AchievementChartProps> = props => {
                               labelComponent={<VictoryTooltip />}
                               // style={{ data: { fill: (d: any) => d.percentage > 80 ? 'green' : 'blue'}}}
                               style={{
-                                data: { fill: 'blue', strokeWidth: 0 },
+                                data: { fill: 'blue', strokeWidth: 0, ...colorModifier },
                                 // labels: { fontSize: isMobile ? 5 : 4 }
                               }}
                               data={props.dataDepartment && props.dataDepartment.valueObject}
@@ -160,38 +188,39 @@ export const AchievementChartView: React.SFC<AchievementChartProps> = props => {
                     </Grid>
                   )}
 
-                  {props.dataSales && (
+                  {props.dataDiv && (
                   <Grid item xs={12} sm={12} md={12}>
                     <Card square>
                       <CardHeader
-                        title={props.dataSales.title}
-                        subheader={props.dataSales.description}
+                        title={props.dataDiv.title}
+                        subheader={props.dataDiv.description}
                       />
                       <CardContent>
                         <VictoryChart
                           animate={{ duration: 2000, easing: 'bounce' }}
                           domainPadding={{ x: 20, y: 20 }}
                           padding={{ bottom: 50, left: 100, top: 10, right: 50 }}
+                          theme={VictoryTheme.material}
                         >
                           <VictoryAxis
                             dependentAxis
                             tickLabelComponent={<VictoryLabel textAnchor="end" />}
                           />
                           <VictoryAxis
-                            tickFormat={(x) => (`${x} ${props.dataSales && props.dataSales.unit}`)}
+                            tickFormat={(x) => (`${x} ${props.dataDiv && props.dataDiv.unit}`)}
                           />
                           <VictoryBar
                             horizontal
                             labelComponent={<VictoryTooltip />}
                             // style={{ data: { fill: (d: any) => d.percentage > 80 ? 'green' : 'blue'}}}
                             style={{
-                              data: { fill: 'blue', strokeWidth: 0 },
+                              data: { fill: 'blue', strokeWidth: 0, ...colorModifier },
                               // labels: { fontSize: isMobile ? 5 : 4 }
                             }}
-                            data={props.dataSales.valueObject}
+                            data={props.dataDiv.valueObject}
                             x="name"
                             y="value"
-                            labels={(y) => `${y.value} ${props.dataSales && props.dataSales.unit}`}
+                            labels={(y) => `${y.value} ${props.dataDiv && props.dataDiv.unit}`}
                           />
                         </VictoryChart>
                       </CardContent>
