@@ -12,7 +12,8 @@ export const StepperView: React.SFC<StepperProps> = props => {
     <Dialog
       open={props.isDialogOpen}
       onClose={props.handleCloseImage}
-      fullWidth
+      // fullWidth
+      // maxWidth={'xl'}
     >
       <CardMedia
         component="img"
