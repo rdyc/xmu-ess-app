@@ -11,6 +11,7 @@ import {
   mapper,
   ReactLifeCycleFunctions,
   setDisplayName,
+  shallowEqual,
   StateHandler,
   StateHandlerMap,
   StateUpdaters,
@@ -42,6 +43,7 @@ interface OwnStateUpdater extends StateHandlerMap<OwnState> {
 
 interface OwnHandler {
   handleDialog: () => void;
+  handleOnLoadApi: () => void;
   handleOnChangeSearch: (event: React.ChangeEvent<HTMLInputElement>) => void;
   handleOnKeyUpSearch: (event: React.KeyboardEvent<HTMLInputElement>) => void;
   handleOnDiscard: (event: React.MouseEvent<HTMLDivElement>) => void;
@@ -84,6 +86,16 @@ const stateUpdaters: StateUpdaters<OwnOption, OwnState, OwnStateUpdater> = {
 const handlerCreators: HandleCreators<ListItemEmployeeSelectorProps, OwnHandler> = {
   handleDialog: (props: ListItemEmployeeSelectorProps) => () => {
     props.setDialog();
+  },
+  handleOnLoadApi: (props: ListItemEmployeeSelectorProps) => () => {
+    props.accountEmployeeDispatch.loadListRequest({
+      filter: {
+        companyUids: props.companyUids,
+        roleUids: props.roleUids,
+        positionUids: props.positionUids,
+        orderBy: 'fullName'
+      }
+    });
   },
   handleOnChangeSearch: (props: ListItemEmployeeSelectorProps) => (event: React.ChangeEvent<HTMLInputElement>) => {
     props.setSearch(event.currentTarget.value);
@@ -131,20 +143,33 @@ const handlerCreators: HandleCreators<ListItemEmployeeSelectorProps, OwnHandler>
 
 const lifeCycleFunctions: ReactLifeCycleFunctions<ListItemEmployeeSelectorProps, OwnState> = {
   componentDidMount() {
-    const { isLoading } = this.props.accountEmployeeState.list;
-    const { companyUids, roleUids, positionUids } = this.props;
-    const { loadListRequest } = this.props.accountEmployeeDispatch;
+    const { request } = this.props.accountEmployeeState.list;
 
-    if (!isLoading) {
-      loadListRequest({
-        filter: {
-          companyUids,
-          roleUids,
-          positionUids,
-          find: this.props.search,
-          orderBy: 'fullName'
+    // 1st load only when request are empty
+    if (!request) {
+      this.props.handleOnLoadApi();
+    } else {
+      // 2nd load only when request filter are present
+      if (request.filter) {
+        // comparing filter props
+        const shouldUpdate = !shallowEqual(
+          {
+            companyUids: request.filter.companyUids,
+            roleUids: request.filter.roleUids,
+            positionUids: request.filter.positionUids,
+          },
+          {
+            companyUids: this.props.companyUids,
+            roleUids: this.props.roleUids,
+            positionUids: this.props.positionUids,
+          },
+        );
+  
+        // then should update the list?
+        if (shouldUpdate) {
+          this.props.handleOnLoadApi();
         }
-      });
+      }
     }
   }
 };

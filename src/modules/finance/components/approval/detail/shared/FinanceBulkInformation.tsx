@@ -47,6 +47,15 @@ const financeBulkInformation: React.SFC<AllProps> = props => (
                     {`${finance.module && finance.module.value} - ${finance.document && finance.document.changes && finance.document.changes.created && finance.document.changes.created.fullName}`}                  
                   </Typography>
                   {
+                    (finance.document && finance.document.documentNotes) &&
+                    <Typography 
+                      noWrap
+                      variant="body2"
+                    >                  
+                      {finance.document.documentNotes}
+                    </Typography>
+                  }
+                  {
                     (finance.document && finance.document.amount && finance.document.amount.advance) &&
                     <Typography 
                       noWrap

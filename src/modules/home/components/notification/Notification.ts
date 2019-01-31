@@ -126,20 +126,22 @@ const handlerCreators: HandleCreators<NotificationProps, IOwnHandler> = {
     props.history.push(redirect.path, redirect.state);
   },
   handleDownloadClick: (props: NotificationProps) => () => {
-    alert('Unfortunately, download has not ready yet. Please try again in 10 years later..');
+    const cdn = process.env.REACT_APP_CDN_HOST || window.location.origin;
+
+    window.open(`${cdn}/download/android/TessaMobile.apk`, '_blank');
   }
 };
 
 const lifecycles: ReactLifeCycleFunctions<NotificationProps, IOwnState> = {
   componentDidMount() {
-    const clientId = process.env.REACT_APP_ANDROID_CLIENT_ID;
+    const clientId = process.env.REACT_APP_ANDROID_CLIENT_ID || window.location.origin;
 
     const { isLoading, response } = this.props.lookupVersionState.detail;
     const { loadDetailRequest } = this.props.lookupVersionDispatch;
     
     if (!isLoading && !response) {
       loadDetailRequest({
-        clientId: clientId || 'unknown'
+        clientId
       });
     }
   }
