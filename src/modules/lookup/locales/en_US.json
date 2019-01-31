@@ -539,5 +539,19 @@
   "lookup.gallery.field.file.placeholder": "Upload any image",
 
   "lookup.gallery.section.info.title": "Image Gallery",
-  "lookup.gallery.section.info.subHeader": " "
+  "lookup.gallery.section.info.subHeader": " ",
+
+  "lookup.infor.page.upload.title": "COGS Upload 1",
+  "lookup.infor.page.upload.subHeader": " ",
+
+  "lookup.infor.message.emptyProps": "Some props are empty",
+  "lookup.infor.message.upload.success": "New {approved} row(s) has been added, {rejected} row(s) rejected ",
+  "lookup.infor.message.upload.failure": "Unable to process your submission",
+  
+  "lookup.infor.field.file": "COGS Spreadsheet",
+  "lookup.infor.field.file.required": "File is required",
+  "lookup.infor.field.file.placeholder": "Upload .xlsx, .xls, or .csv spreadsheet",
+
+  "lookup.infor.section.info.title": "COGS Upload 3",
+  "lookup.infor.section.info.subHeader": " "
 }

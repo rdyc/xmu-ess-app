@@ -202,6 +202,10 @@ export const menuLinkMapper = (menuUid: string) => {
       path = '/lookup/achievementchart';
       break;
 
+    case 'MNU64':
+      path = '/lookup/cogsupload';
+      break;
+
     default:
       path = '/home/dashboard';
       break;
