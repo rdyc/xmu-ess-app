@@ -50,12 +50,10 @@ const handlerCreators: HandleCreators<EntryDetailFormProps, OwnHandlers> = {
 
     const { user } = props.userState;
 
-    const _projectTypes = isPresalesActivity ? ProjectType.PreSales : [ProjectType.Project, ProjectType.ExtraMiles, ProjectType.NonProject];
-
     const projectFilter: any = {
       employeeUid: user && user.uid,
       customerUid: customerUidValue,
-      projectTypes: _projectTypes
+      projectTypes: isPresalesActivity ? ProjectType.PreSales : [ProjectType.Project, ProjectType.ExtraMiles, ProjectType.NonProject].join(',')
     };
 
     let fieldProps: SelectSystemOption & any = {};

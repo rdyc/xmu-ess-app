@@ -40,7 +40,7 @@ export const AccountEmployeeEditorView: React.SFC<AccountEmployeeEditorProps> = 
       inactiveDate: null,
       bloodType: null,
       religionType: null,
-      image: null,
+      // image: undefined,
     },
     bank: {
       citizenNumber: null,
@@ -63,6 +63,9 @@ export const AccountEmployeeEditorView: React.SFC<AccountEmployeeEditorProps> = 
       emergencyContactRelation: null,
       emergencyContactPhone: null,
       emergencyContactPhoneAdditional: null,
+    },
+    image: {
+      image: undefined
     }
   };
 
@@ -98,7 +101,6 @@ export const AccountEmployeeEditorView: React.SFC<AccountEmployeeEditorProps> = 
       initialValues.information.inactiveDate = data.inactiveDate;
       initialValues.information.bloodType = data.bloodType;
       initialValues.information.religionType = data.religionType;
-      initialValues.information.image = data.image;
 
       // bank
       initialValues.bank.citizenNumber = data.citizenNumber;
@@ -121,6 +123,9 @@ export const AccountEmployeeEditorView: React.SFC<AccountEmployeeEditorProps> = 
       initialValues.contact.emergencyContactRelation = data.contact && data.contact.relation;
       initialValues.contact.emergencyContactPhone = data.contact && data.contact.phone;
       initialValues.contact.emergencyContactPhoneAdditional = data.contact && data.contact.phoneAdditional;
+
+      // image
+      initialValues.image.image = data.image;
 
       return renderForm(initialValues);
     }

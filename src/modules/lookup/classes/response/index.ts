@@ -36,3 +36,4 @@ export * from './leave/ILeaveCalculation';
 export * from './leave/ILookupLeave';
 export * from './leave/ILookupLeaveDetail';
 export * from './leave/ILookupLeaveList';
+export * from './version';
