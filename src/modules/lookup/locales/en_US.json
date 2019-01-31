@@ -534,7 +534,7 @@
   "lookup.gallery.message.delete.success": "Current data with ID {uid} has been deleted",
   "lookup.gallery.message.delete.failure": "Unable to process your submission",
 
-  "lookup.gallery.field.file": "Upload Image",
+  "lookup.gallery.field.file": "Upload File (Image)",
   "lookup.gallery.field.file.required": "Image is required",
   "lookup.gallery.field.file.placeholder": "Upload any image",
 

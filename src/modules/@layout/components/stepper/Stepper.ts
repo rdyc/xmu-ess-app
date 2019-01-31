@@ -20,16 +20,20 @@ import { StepperView } from './StepperView';
 export interface IStepperSource {
   label: string;
   imgPath: string;
+  imgPathFull: string;
 }
 interface IOwnOption {
   source: IStepperSource[];
   autoplay?: boolean;
   interval?: number;
+  showFull?: boolean;
 }
 
 interface IOwnState {
   activeStep: number;
   timer?: NodeJS.Timeout;
+  isDialogOpen: boolean;
+  currentImages?: IStepperSource;
 }
 
 interface IOwnStateUpdaters extends StateHandlerMap<IOwnState> {
@@ -37,10 +41,13 @@ interface IOwnStateUpdaters extends StateHandlerMap<IOwnState> {
   setBack: StateHandler<IOwnState>;
   setChange: StateHandler<IOwnState>;
   setTimer: StateHandler<IOwnState>;
+  setDialogImages: StateHandler<IOwnState>;
 }
 
 interface IOwnHandler {
   startInterval: () => void;
+  handleOpenImage: (image: IStepperSource) => void;
+  handleCloseImage: () => void;
 }
 
 export type StepperProps
@@ -52,6 +59,7 @@ export type StepperProps
 
 const createProps: mapper<StepperProps, IOwnState> = (props: StepperProps): IOwnState => ({
   activeStep: 0,
+  isDialogOpen: false,
 });
 
 const stateUpdaters: StateUpdaters<IOwnOption, IOwnState, IOwnStateUpdaters> = {
@@ -66,10 +74,20 @@ const stateUpdaters: StateUpdaters<IOwnOption, IOwnState, IOwnStateUpdaters> = {
   }),
   setTimer: (prevState: IOwnState, outter: IOwnOption) => (timer: NodeJS.Timeout): Partial<IOwnState> => ({
     timer
+  }),
+  setDialogImages: (prevState: IOwnState) => (image: IStepperSource) => ({
+    isDialogOpen: !prevState.isDialogOpen,
+    currentImages: image
   })
 };
 
 const handlerCreators: HandleCreators<StepperProps, IOwnHandler> = {
+  handleOpenImage: (props: StepperProps) => (image: IStepperSource) => {
+    props.setDialogImages(image);
+  },
+  handleCloseImage: (props: StepperProps) => () => {
+    props.setDialogImages(undefined);
+  },
   startInterval: (props: StepperProps) => () => { 
     const { autoplay, interval, timer } = props;
 
