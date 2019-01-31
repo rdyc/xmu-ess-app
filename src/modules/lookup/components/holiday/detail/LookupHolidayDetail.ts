@@ -81,14 +81,14 @@ const handlerCreators: HandleCreators<LookupHolidayDetailProps, OwnHandler> = {
         action: LookupUserAction.Modify,
         dialogOpen: true,
         dialogTitle: props.intl.formatMessage(lookupMessage.shared.confirm.modifyTitle),
-        dialogContent: props.intl.formatMessage(lookupMessage.shared.confirm.modifyDescription, { state: 'Time Limit'}),
+        dialogContent: props.intl.formatMessage(lookupMessage.shared.confirm.modifyDescription, { state: 'Holiday' }),
       });
     } else if (action === LookupUserAction.Delete) {
       props.stateUpdate({
         action: LookupUserAction.Delete,
         dialogOpen: true,
         dialogTitle: props.intl.formatMessage(lookupMessage.shared.confirm.deleteTitle),
-        dialogContent: props.intl.formatMessage(lookupMessage.shared.confirm.deleteDescription, { state: 'Time Limit'}),
+        dialogContent: props.intl.formatMessage(lookupMessage.shared.confirm.deleteDescription, { state: 'Holiday' }),
       });
     }
   },
@@ -172,7 +172,7 @@ const handlerCreators: HandleCreators<LookupHolidayDetailProps, OwnHandler> = {
 
     props.layoutDispatch.alertAdd({
       time: new Date(),
-      message: props.intl.formatMessage(lookupMessage.holiday.message.deleteSuccess, { uid : props.match.params.holidayUid })
+      message: props.intl.formatMessage(lookupMessage.holiday.message.deleteSuccess, { uid: props.match.params.holidayUid })
     });
   },
   handleSubmitFail: (props: LookupHolidayDetailProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
