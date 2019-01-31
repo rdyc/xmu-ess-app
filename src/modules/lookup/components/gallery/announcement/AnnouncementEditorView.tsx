@@ -1,7 +1,7 @@
 import { layoutMessage } from '@layout/locales/messages';
-import { Card, CardActionArea, CardActions, CardContent, CardMedia, Grid, IconButton, Typography } from '@material-ui/core';
-import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
-import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
+import { Button, Card, CardHeader, CardMedia, DialogActions, Grid, IconButton, Typography } from '@material-ui/core';
+import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
+import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import * as React from 'react';
 import { AnnouncementEditorProps } from './AnnouncementEditor';
@@ -11,46 +11,84 @@ export const AnnouncementEditorView: React.SFC<AnnouncementEditorProps> = props 
 
   const RenderImageList = () => (
     <Grid container spacing={16}>
-      {
-        props.announcementImages.map((image, index) => (
-          <Grid item xs={6} sm={4} md={3} key={index} style={{height: '400'}}>
+      <Grid item xs={12}>
+        <Grid container spacing={8}>
+          {
+            props.announcementImages.map((image, index) => (
+              <Grid item xs={12} key={index}>
+                <Card style={{maxHeight: 200}}>
+                  <Grid container spacing ={8}>
+                    <Grid item xs={12} sm={6} md={5}>
+                      <CardMedia
+                        component="img"
+                        image={image.imgPath}
+                        title={image.imageName}
+                      />
+                    </Grid>
+                    <Grid item xs={12} sm={6} md={5}>
+                      <CardHeader
+                        title={`#${image.order} - ${image.imageName}`}
+                      >
+                      </CardHeader>
+                    </Grid>
+                    <Grid item xs={12} sm={12} md={2}>
+                      <DialogActions>
+                        <IconButton 
+                          disabled={index <= 0} 
+                          onClick={() => props.handleMoveAnnouncementImage(index, 'backward')}
+                        >
+                          <ArrowUpwardIcon />
+                        </IconButton>
+                        <IconButton 
+                          disabled={index >= (props.announcementImages.length - 1)} 
+                          onClick={() => props.handleMoveAnnouncementImage(index, 'forward')}
+                        >
+                          <ArrowDownwardIcon />
+                        </IconButton>
+                        <IconButton 
+                          onClick={() => props.handleRemoveAnnouncementImage(image.imageUid)}
+                        >
+                          <DeleteForeverIcon />
+                        </IconButton>
+                      </DialogActions>
+                    </Grid>
+                  </Grid>
+                </Card>
+              </Grid>
+            ))
+          }
+        </Grid>
+      </Grid>
+      <Grid item xs={12}>
+        <Grid container spacing={8}>
+          <Grid item xs={12} sm={6}>
             <Card>
-              <CardActionArea>
-                <CardMedia
-                  component="img"
-                  style={{objectFit: 'cover'}}
-                  image={image.imgPath}
-                  title={image.imageName}
-                />
-                <CardContent>
-                  <Typography gutterBottom variant="h5" component="h2">
-                    {`#${image.order} - ${image.imageName}`}
-                  </Typography>
-                </CardContent>
-              </CardActionArea>
-              <CardActions>
-                {
-                  index > 0 &&
-                  <IconButton onClick={() => props.handleMoveAnnouncementImage(index, 'backward')}>
-                    <ArrowBackIosIcon />
-                  </IconButton>
-                }
-                <IconButton onClick={() => props.handleRemoveAnnouncementImage(image.imageUid)}>
-                  <DeleteForeverIcon />
-                </IconButton>
-                {
-                  index < (props.announcementImages.length - 1) &&
-                  <IconButton onClick={() => props.handleMoveAnnouncementImage(index, 'forward')}>
-                    <ArrowForwardIosIcon />
-                  </IconButton>
-                }
-              </CardActions>
+              <CardHeader 
+                title={'add image'}
+              />
+              <DialogActions>
+                <Button>
+                  add image
+                </Button>
+              </DialogActions>
             </Card>
           </Grid>
-        ))
-      }
-      <Grid item xs={6} sm={4} md={3}>
-      
+          <Grid item xs={12} sm={6}>
+            <Card>
+              <CardHeader 
+                title={'submit slider'}
+              />
+              <DialogActions>
+                <Button>
+                  reset
+                </Button>
+                <Button onClick={props.handleSubmitAnnouncement}>
+                  submit
+                </Button>
+              </DialogActions>
+            </Card>
+          </Grid>
+        </Grid>
       </Grid>
     </Grid>
   );

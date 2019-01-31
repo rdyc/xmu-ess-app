@@ -1,4 +1,5 @@
 import AppMenu from '@constants/AppMenu';
+import { IAnnouncementPatchPayload } from '@home/classes/request/announcement';
 import { IAnnouncement } from '@home/classes/response/announcement';
 import { withAnnouncement, WithAnnouncement } from '@home/hoc/withAnnouncement';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
@@ -34,6 +35,7 @@ interface OwnHandlers {
   handleAddAnnouncementImage: (imageGallery: IGallery) => void;
   handleRemoveAnnouncementImage: (imageUid: string) => void;
   handleMoveAnnouncementImage: (index: number, direction: 'forward' | 'backward') => void;
+  handleSubmitAnnouncement: () => void;
 }
 
 interface OwnStateUpdater extends StateHandlerMap<OwnState> {
@@ -111,6 +113,24 @@ const handlerCreators: HandleCreators<AnnouncementEditorProps, OwnHandlers> = {
     }
 
     rearrangeImages(props, newAnnouncementImages);
+  },
+  handleSubmitAnnouncement: (props: AnnouncementEditorProps) => () => {
+    const itemAnnouncement = props.announcementImages.map(item => ({
+      imageUid: item.imageUid,
+      order: item.order,
+    }));
+
+    const payload = ({
+      item: itemAnnouncement,
+    });
+
+    return new Promise((resolve, reject) => {
+      props.announcementDispatch.patchRequest({
+        resolve,
+        reject,
+        data: payload as IAnnouncementPatchPayload,
+      });
+    });
   },
 };
 
