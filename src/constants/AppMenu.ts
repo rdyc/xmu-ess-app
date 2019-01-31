@@ -51,6 +51,7 @@ enum AppMenu {
   LookupSystemLimit = 'MNU47',
   LookupCurrency = 'MNU55',
   LookupWorkflow = 'MNU35',
+  LookupGallery = 'MNU62',
   Timesheet = 'MNU09',
   TimesheetRequest = 'MNU10',
   TimesheetApproval = 'MNU11',
@@ -62,6 +63,7 @@ enum AppMenu {
   TravelSettlementRequest = 'MNU29',
   TravelSettlementApproval = 'MNU41',
   Common = 'MNU53',
+  AchievementChart = 'MNU63'
 }
 
 export default AppMenu;

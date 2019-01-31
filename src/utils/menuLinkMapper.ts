@@ -81,7 +81,7 @@ export const menuLinkMapper = (menuUid: string) => {
     case 'MNU60':
       path = '/reports/winningratio';
       break;
-    
+
     case 'MNU23':
       path = '/purchase/requests';
       break;
@@ -192,6 +192,14 @@ export const menuLinkMapper = (menuUid: string) => {
 
     case 'MNU59':
       path = '/lookup/mileageexceptions';
+      break;
+
+    case 'MNU62':
+      path = '/lookup/gallery';
+      break;
+
+    case 'MNU63':
+      path = '/lookup/achievementchart';
       break;
 
     default:

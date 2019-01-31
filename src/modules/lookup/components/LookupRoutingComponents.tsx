@@ -5,6 +5,7 @@ import { LookupHolidayDetail } from '@lookup/components/holiday/detail/LookupHol
 import { LookupLeaveDetail } from '@lookup/components/leave/detail/LookupLeaveDetail';
 import * as React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router';
+import { AchievementEditor } from './achievement/AchievementEditor';
 import { LookupCompanyDetail } from './company/detail/LookupCompanyDetail';
 import LookupCompanyEditor from './company/editor/LookupCompanyEditor';
 import { LookupCompanyList } from './company/list/LookupCompanyList';
@@ -117,6 +118,12 @@ const diem = (props: RouteComponentProps) => (
   </Switch>
 );
 
+const achievement = (props: RouteComponentProps) => (
+  <Switch>
+    <Route path={`${props.match.path}`} component={AchievementEditor} />
+  </Switch>
+);
+
 export const LookupRoutingComponents: React.SFC<RouteComponentProps> = props => (
   <Switch>
     <Route path={`${props.match.path}/company`} component={company} />
@@ -130,5 +137,6 @@ export const LookupRoutingComponents: React.SFC<RouteComponentProps> = props => 
     <Route path={`${props.match.path}/calculation`} component={calculation} />
     <Route path={`${props.match.path}/roles`} component={role} />
     <Route path={`${props.match.path}/customer`} component={lookupCustomer} />
+    <Route path={`${props.match.path}/achievementchart`} component={achievement} />
   </Switch>
 );

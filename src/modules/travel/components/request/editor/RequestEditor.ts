@@ -322,7 +322,7 @@ const lifecycles: ReactLifeCycleFunctions<RequestEditorProps, {}> = {
     layoutDispatch.navBackShow(); 
   },
   componentWillUnmount() {
-    const { layoutDispatch, appBarDispatch, travelRequestDispatch, lookupDiemDispatch } = this.props;
+    const { layoutDispatch, appBarDispatch, travelRequestDispatch } = this.props;
 
     layoutDispatch.changeView(null);
     layoutDispatch.navBackHide();
@@ -330,7 +330,6 @@ const lifecycles: ReactLifeCycleFunctions<RequestEditorProps, {}> = {
 
     appBarDispatch.dispose();
 
-    lookupDiemDispatch.loadAllDispose();
     travelRequestDispatch.createDispose();
     travelRequestDispatch.updateDispose();
   }

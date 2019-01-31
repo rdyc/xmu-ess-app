@@ -8,17 +8,16 @@ import {
   lookupDiemGetAllError,
   lookupDiemGetAllRequest,
   lookupDiemGetAllSuccess,
+  lookupDiemGetByIdDispose,
   lookupDiemGetByIdError,
   lookupDiemGetByIdRequest,
   lookupDiemGetByIdSuccess,
   lookupDiemGetListError,
   lookupDiemGetListRequest,
   lookupDiemGetListSuccess,
-  lookupDiemPostDispose,
   lookupDiemPostError,
   lookupDiemPostRequest,
   lookupDiemPostSuccess,
-  lookupDiemPutDispose,
   lookupDiemPutError,
   lookupDiemPutRequest,
   lookupDiemPutSuccess,
@@ -133,7 +132,7 @@ function* watchPostRequest() {
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
         put(lookupDiemPostSuccess(response.body)),
-        put(lookupDiemPostDispose())
+        put(lookupDiemGetAllDispose())
       ],
       successCallback: (response: IApiResponse) => {
         action.payload.resolve(response.body.data);
@@ -179,7 +178,8 @@ function* watchPutRequest() {
       payload: action.payload.data,
       successEffects: (response: IApiResponse) => [
         put(lookupDiemPutSuccess(response.body)),
-        put(lookupDiemPutDispose())
+        put(lookupDiemGetByIdDispose()),
+        put(lookupDiemGetAllDispose())
       ],
       successCallback: (response: IApiResponse) => {
         action.payload.resolve(response.body.data);

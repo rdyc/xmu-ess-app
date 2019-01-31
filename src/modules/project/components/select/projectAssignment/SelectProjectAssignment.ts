@@ -1,11 +1,11 @@
 import { withWidth } from '@material-ui/core';
 import { WithWidth } from '@material-ui/core/withWidth';
 import { IProjectAssignmentGetListFilter } from '@project/classes/filters/assignment';
+import { IProjectAssignmentList } from '@project/classes/response';
 import { WithProjectAssignment, withProjectAssignment } from '@project/hoc/withProjectAssignment';
-import { compose, HandleCreators, lifecycle, ReactLifeCycleFunctions, withHandlers } from 'recompose';
+import { compose, HandleCreators, lifecycle, ReactLifeCycleFunctions, shallowEqual, withHandlers } from 'recompose';
 import { BaseFieldProps, WrappedFieldProps } from 'redux-form';
 
-import { IProjectAssignmentList } from '@project/classes/response';
 import { SelectProjectAssignmentView } from './SelectProjectAssignmentView';
 
 interface OwnProps extends WrappedFieldProps, BaseFieldProps { 
@@ -14,11 +14,12 @@ interface OwnProps extends WrappedFieldProps, BaseFieldProps {
   required?: boolean;
   label: string; 
   disabled: boolean;
-  filter?: IProjectAssignmentGetListFilter | undefined;
-  onSelected?: (project: IProjectAssignmentList | undefined) => void | undefined;
+  filter?: IProjectAssignmentGetListFilter;
+  onSelected?: (project?: IProjectAssignmentList) => void;
 }
 
 interface OwnHandlers {
+  handleOnLoadApi: () => void;
   handleOnChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
 }
 
@@ -29,6 +30,11 @@ export type SelectProjectAssignmentProps
   & OwnHandlers;
 
 const handlerCreators: HandleCreators<SelectProjectAssignmentProps, OwnHandlers> = {
+  handleOnLoadApi: (props: SelectProjectAssignmentProps) => () => {
+    props.projectAssignmentDispatch.loadListRequest({
+      filter: props.filter
+    });
+  },
   handleOnChange: (props: SelectProjectAssignmentProps) => (e: React.ChangeEvent<HTMLSelectElement>) => {
     const { input, onSelected } = props;
     const { response } = props.projectAssignmentState.list;
@@ -49,33 +55,29 @@ const handlerCreators: HandleCreators<SelectProjectAssignmentProps, OwnHandlers>
 
 const lifecycles: ReactLifeCycleFunctions<SelectProjectAssignmentProps, {}> = {
   componentDidMount() {
-    const { filter } = this.props;
-    const { isLoading, response } = this.props.projectAssignmentState.list;
-    const { loadListRequest } = this.props.projectAssignmentDispatch;
+    const { request } = this.props.projectAssignmentState.list;
 
-    if (!isLoading && !response) {
-      loadListRequest({
-        filter
-      });
+    // 1st load only when request are empty
+    if (!request) {
+      this.props.handleOnLoadApi();
+    } else {
+      // 2nd load only when request filter are present
+      if (request.filter) {
+        // comparing filter props
+        const shouldUpdate = !shallowEqual(request.filter, this.props.filter || {});
+  
+        // then should update the list?
+        if (shouldUpdate) {
+          this.props.handleOnLoadApi();
+        }
+      }
     }
-  },
-  // componentWillReceiveProps(nextProps: SelectProjectAssignmentProps) {
-  //   if (nextProps.filter !== this.props.filter) {
-  //     const { loadListRequest } = this.props.projectAssignmentDispatch;
-  //     const { filter } = nextProps;
-      
-  //     loadListRequest({filter});
-  //   }
-  // },
-  componentWillUnmount() {
-    const { loadListDispose } = this.props.projectAssignmentDispatch;
-    loadListDispose();
   }
 };
 
 export const SelectProjectAssigment = compose<SelectProjectAssignmentProps, OwnProps>(
   withProjectAssignment,
-  withWidth(),
-  withHandlers<SelectProjectAssignmentProps, OwnHandlers>(handlerCreators),
-  lifecycle<SelectProjectAssignmentProps, {}>(lifecycles)
+  withHandlers(handlerCreators),
+  lifecycle(lifecycles),
+  withWidth()
 )(SelectProjectAssignmentView);

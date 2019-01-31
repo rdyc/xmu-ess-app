@@ -50,7 +50,9 @@ import commonNotificationSagas from '@layout/store/sagas/notificationSagas';
 import leaveApprovalSagas from '@leave/store/sagas/leaveApprovalSagas';
 import leaveCancellationSagas from '@leave/store/sagas/leaveCancellationSagas';
 import leaveRequestSagas from '@leave/store/sagas/leaveRequestSagas';
+import achievementPatchSagas from '@lookup/store/sagas/achievementPatchSagas';
 import lookupCurrencySagas from '@lookup/store/sagas/currencySagas';
+import imageGallerySagas from '@lookup/store/sagas/imageGallerySagas';
 import leaveCalculationSagas from '@lookup/store/sagas/leaveCalculationSagas';
 import lookupCompanySagas from '@lookup/store/sagas/lookupCompanySagas';
 import lookupCustomerSagas from '@lookup/store/sagas/lookupCustomerSagas';
@@ -58,6 +60,7 @@ import lookupDiemSagas from '@lookup/store/sagas/lookupDiemSagas';
 import lookupHolidaySagas from '@lookup/store/sagas/lookupHolidaySagas';
 import lookupLeaveSagas from '@lookup/store/sagas/lookupLeaveSagas';
 import lookupRoleSagas from '@lookup/store/sagas/lookupRoleSagas';
+import lookupVersionSagas from '@lookup/store/sagas/lookupVersionSagas';
 import lookupMenuSagas from '@lookup/store/sagas/menuSagas';
 import lookupMileageExceptionSagas from '@lookup/store/sagas/mileageExceptionSagas';
 import lookupPositionSagas from '@lookup/store/sagas/positionSagas';
@@ -136,7 +139,11 @@ export function* rootSaga() {
     fork(lookupSystemLimitSagas),
     fork(lookupHolidaySagas),
     fork(lookupLeaveSagas),
+    fork(achievementPatchSagas),
 
+    fork(lookupVersionSagas),
+    fork(imageGallerySagas),
+    
     // organization
     fork(organizationHierarchySagas),
     fork(organizationStructureSagas),

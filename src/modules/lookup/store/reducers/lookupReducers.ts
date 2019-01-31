@@ -1,7 +1,9 @@
+import { achievementReducer } from './achievement';
 import { lookupCompanyReducers } from './company';
 import { lookupCurrencyReducers } from './currency';
 import { lookupCustomerReducers } from './customer';
 import { lookupDiemReducers } from './diem';
+import imageGalleryReducers from './gallery/imageGalleryReducers';
 import { lookupHolidayReducers } from './holiday/lookupHolidayReducers';
 import { lookupLeaveReducers } from './leave/lookupLeaveReducers';
 import { lookupMenuReducers } from './menu';
@@ -9,6 +11,7 @@ import { mileageExceptionReducers } from './mileageException/mileageExceptionRed
 import { lookupPositionReducers } from './position';
 import { lookupRoleReducers } from './role';
 import { systemLimitReducers } from './systemLimit';
+import { lookupVersionReducers } from './version';
 
 const lookupReducers = {
   ...lookupCustomerReducers,
@@ -21,7 +24,10 @@ const lookupReducers = {
   ...systemLimitReducers,
   ...lookupDiemReducers,
   ...lookupCurrencyReducers,
-  ...lookupMenuReducers
+  ...lookupMenuReducers,
+  ...achievementReducer,
+  ...lookupVersionReducers,
+  ...imageGalleryReducers
 };
 
 export default lookupReducers;
