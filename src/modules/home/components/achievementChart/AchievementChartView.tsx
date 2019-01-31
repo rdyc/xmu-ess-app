@@ -1,15 +1,42 @@
+import { IValueResponse } from '@home/classes/response/achievement';
 import { homeMessage } from '@home/locales/messages';
 import { layoutMessage } from '@layout/locales/messages';
 import { Card, CardContent, CardHeader, Grid, Toolbar, Typography } from '@material-ui/core';
 import { isWidthDown } from '@material-ui/core/withWidth';
 import * as React from 'react';
-import { VictoryAxis, VictoryBar, VictoryChart, VictoryLabel, VictoryTooltip } from 'victory';
+import { VictoryAxis, VictoryBar, VictoryChart, VictoryLabel, VictoryTheme, VictoryTooltip } from 'victory';
+
 import { AchievementChartProps } from './AchievementChart';
 
 export const AchievementChartView: React.SFC<AchievementChartProps> = props => {
   const { classes, width } = props;
   const isMobile = isWidthDown('sm', width);
   const isMobileXS = isWidthDown('xs', width);
+
+  const tembelek: any = {
+    fill: (data: IValueResponse) => {
+      let color = 'blue';
+
+      if (data.value > 0 && data.value <= 25) {
+        color = 'red';
+      }
+
+      if (data.value > 25 && data.value <= 50) {
+        color = 'orange';
+      }
+
+      if (data.value > 50 && data.value <= 75) {
+        color = 'yellow';
+      }
+
+      if (data.value > 75 && data.value <= 100) {
+        color = 'green';
+      }
+
+      return color;
+    },
+    strokeWidth: 0
+  };
 
   return (
     <div className={props.classes.marginFarBottom}>
@@ -42,10 +69,9 @@ export const AchievementChartView: React.SFC<AchievementChartProps> = props => {
                     <CardContent className={isMobile ? classes.chartContentXS : classes.chartContent}>
                       <VictoryChart
                         animate={{ duration: 2000, easing: 'bounce' }}
-                        // containerComponent={<VictoryContainer height={100} />}
                         domainPadding={{ x: 20, y: 20 }}
                         height={isMobile ? undefined : 175}
-                      // padding={{ top: -100 }}
+                        theme={VictoryTheme.material}
                       >
                         <VictoryAxis
                           tickLabelComponent={<VictoryLabel angle={-45} textAnchor="end" style={{ fontSize: isMobile ? 7 : 4 }} />}
@@ -57,9 +83,8 @@ export const AchievementChartView: React.SFC<AchievementChartProps> = props => {
                         />
                         <VictoryBar
                           labelComponent={<VictoryTooltip />}
-                          // style={{ data: { fill: (d: any) => d.percentage > 80 ? 'green' : 'blue'}}}
                           style={{
-                            data: { fill: 'blue', strokeWidth: 0 },
+                            data: { ...tembelek },
                             labels: { fontSize: isMobile ? 5 : 4 }
                           }}
                           data={item.valueObject}
@@ -80,6 +105,7 @@ export const AchievementChartView: React.SFC<AchievementChartProps> = props => {
                     />
                     <CardContent>
                       <VictoryChart
+                        theme={VictoryTheme.material}
                         animate={{ duration: 2000, easing: 'bounce' }}
                         domainPadding={{ x: 20, y: 20 }}
                         padding={{ bottom: 100, left: 50, top: 10, right: 50 }}
@@ -94,7 +120,7 @@ export const AchievementChartView: React.SFC<AchievementChartProps> = props => {
                         <VictoryBar
                           labelComponent={<VictoryTooltip />}
                           style={{
-                            data: { fill: 'blue', strokeWidth: 0 },
+                            data: { ...tembelek },
                             labels: { fontSize: 10 }
                           }}
                           data={item.valueObject}

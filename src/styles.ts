@@ -305,7 +305,7 @@ const styles = (theme: Theme) =>
       flexGrow: 1,
       padding: theme.spacing.unit * 2,
       [theme.breakpoints.up('md')]: {
-        // marginTop: theme.spacing.unit * 8,
+        marginTop: theme.spacing.unit * 8.5,
       },
       [theme.breakpoints.down('sm')]: {
         padding: 0,
