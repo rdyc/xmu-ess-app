@@ -1,6 +1,7 @@
 import AppMenu from '@constants/AppMenu';
 import { ICollectionValue } from '@layout/classes/core';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
+import { WithUser, withUser } from '@layout/hoc/withUser';
 import { ImageGalleryField } from '@lookup/classes/types/gallery/ImageGalleryField';
 import { WithImageGallery, withImageGallery } from '@lookup/hoc/withImageGallery';
 import { WithStyles, withStyles } from '@material-ui/core';
@@ -58,6 +59,7 @@ interface OwnStateUpdater extends StateHandlerMap<OwnState> {
 export type ImageGalleryListProps
   = OwnOption
   & WithImageGallery
+  & WithUser
   & OwnState
   & OwnStateUpdater
   & InjectedIntlProps
@@ -70,7 +72,7 @@ const createProps: mapper<OwnOption, OwnState> = (props: OwnOption): OwnState =>
   forceReload: false,
   isLoading: false,
   page: 1,
-  size: 10,
+  size: 12,
   fields: Object.keys(ImageGalleryField)
         .map(key => ({
           value: key,
@@ -96,6 +98,7 @@ const stateUpdaters: StateUpdaters<OwnOption, OwnState, OwnStateUpdater> = {
   }),
   setPageOne: (prevState: OwnState) => () => ({
     page: 1,
+    size: 12,
     forceReload: true
   }),
   setField: (prevState: OwnState) => (field: string) => ({
@@ -119,7 +122,7 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<ImageGalleryListProps, OwnStat
   componentDidMount() {
     const {
       layoutDispatch } = this.props;
-    const { loadAllRequest } = this.props.imageGalleryDispatch;
+    // const { loadAllRequest } = this.props.imageGalleryDispatch;
     const { response, isLoading } = this.props.imageGalleryState.all;
 
     layoutDispatch.setupView({
@@ -139,16 +142,28 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<ImageGalleryListProps, OwnStat
     });
 
     if ((!response && !isLoading) || this.props.forceReload) {
-      loadAllRequest({
-        filter: {
-          find: this.props.find,
-          findBy: this.props.findBy,
-          orderBy: this.props.orderBy,
-          direction: this.props.direction,
-          page: this.props.page,
-          size: this.props.size,
-        }
-      });
+      // loadAllRequest({
+      //   filter: {
+      //     find: this.props.find,
+      //     findBy: this.props.findBy,
+      //     orderBy: this.props.orderBy,
+      //     direction: this.props.direction,
+      //     page: this.props.page,
+      //     size: this.props.size,
+      //   }
+      // });
+      loadData(this.props);
+    }
+  },
+  componentDidUpdate(props: ImageGalleryListProps, state: OwnState) {
+    // only load when these props are different
+    if (
+      this.props.orderBy !== props.orderBy ||
+      this.props.direction !== props.direction ||
+      this.props.page !== props.page ||
+      this.props.size !== props.size
+    ) {
+      loadData(this.props);
     }
   },
   componentWillUnmount() {
@@ -164,8 +179,32 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<ImageGalleryListProps, OwnStat
   }
 };
 
+const loadData = (props: ImageGalleryListProps): void => {
+  const { orderBy, direction, page, size } = props;
+  const { user } = props.userState;
+  const { loadAllRequest } = props.imageGalleryDispatch;
+  const { alertAdd } = props.layoutDispatch;
+
+  if (user) {
+    loadAllRequest({
+      filter: {
+        direction,
+        orderBy,
+        page,
+        size
+      }
+    }); 
+  } else {
+    alertAdd({
+      time: new Date(),
+      message: 'Unable to find current user state'
+    });
+  }
+};
+
 export const ImageGalleryList = compose<ImageGalleryListProps, {}>(
   withLayout,
+  withUser,
   withImageGallery,
   withStyles(styles),
   injectIntl,
