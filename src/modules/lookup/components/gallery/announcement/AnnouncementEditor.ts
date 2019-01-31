@@ -1,4 +1,5 @@
 import AppMenu from '@constants/AppMenu';
+import { IAnnouncement } from '@home/classes/response/announcement';
 import { withAnnouncement, WithAnnouncement } from '@home/hoc/withAnnouncement';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithWidth } from '@material-ui/core/withWidth';
@@ -6,25 +7,35 @@ import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps } from 'react-router';
 import {
   compose,
+  HandleCreators,
   lifecycle,
+  mapper,
   ReactLifeCycleFunctions,
   StateHandler,
   StateHandlerMap,
   StateUpdaters,
+  withHandlers,
   withStateHandlers,
 } from 'recompose';
 import { AnnouncementEditorView } from './AnnouncementEditorView';
+import { IGallery } from '@lookup/classes/response/gallery';
 
 interface OwnOption {
 }
 
 interface OwnState {
   imageUid?: string;
-  announcementImages?: IAnnouncementImage[];
+  announcementImages: IAnnouncementImage[];
+}
+
+interface OwnHandlers {
+  handleSetAnnouncementImages: (images: IAnnouncement[]) => void;
+  handleAddAnnouncementImages: (imageGallery: IGallery) => void;
+  handleRemoveAnnouncementImages: (imageUid: string) => void;
 }
 
 interface OwnStateUpdater extends StateHandlerMap<OwnState> {
-  setCompany: StateHandler<OwnState>;
+  updateImages: StateHandler<OwnState>;
 }
 
 export interface IAnnouncementImage {
@@ -36,6 +47,7 @@ export interface IAnnouncementImage {
 
 export type AnnouncementEditorProps
   = OwnOption
+  & OwnHandlers
   & WithAnnouncement
   & OwnState
   & OwnStateUpdater
@@ -44,10 +56,61 @@ export type AnnouncementEditorProps
   & WithLayout
   & WithWidth;
 
+const createProps: mapper<AnnouncementEditorProps, OwnState> = (props: AnnouncementEditorProps): OwnState => ({ 
+  announcementImages: [],
+});
+
+const handlerCreators: HandleCreators<AnnouncementEditorProps, OwnHandlers> = {
+  handleSetAnnouncementImages: (props: AnnouncementEditorProps) => (images: IAnnouncement[]) => {
+    const announcementImages: IAnnouncementImage[] = images.map((item, index) => 
+      ({
+      imageUid: item.imageUid,
+      imageName: item.name,
+      order: index - 1,
+      imgPath: item.path && item.path.medium,
+      })
+    );
+
+    props.updateImages(announcementImages);
+  },
+  handleAddAnnouncementImages: (props: AnnouncementEditorProps) => (imageGallery: IGallery) => {
+    const newAnnouncementImages = props.announcementImages.splice({
+      
+    });
+
+    const announcementImages: IAnnouncementImage[] = newAnnouncementImages.map((item, index) => 
+      ({
+      imageUid: item.imageUid,
+      imageName: item.imageName,
+      order: index - 1,
+      imgPath: item.imgPath,
+      })
+    );
+
+    props.updateImages(announcementImages);
+  },
+  handleRemoveAnnouncementImages: (props: AnnouncementEditorProps) => (imageUid: string) => {
+    const newAnnouncementImages = props.announcementImages.filter(image => {
+      return image.imageUid !== imageUid;
+    });
+
+    const announcementImages: IAnnouncementImage[] = newAnnouncementImages.map((item, index) => 
+      ({
+      imageUid: item.imageUid,
+      imageName: item.imageName,
+      order: index - 1,
+      imgPath: item.imgPath,
+      })
+    );
+
+    props.updateImages(announcementImages);
+  },
+};
+
 const stateUpdaters: StateUpdaters<OwnOption, OwnState, OwnStateUpdater> = {
-  setCompany: (prevState: OwnState) => (newState: string) => ({
-    imageUid: newState ? newState !== '' ? newState : undefined : undefined
-  })
+  updateImages: (prevState: OwnState) => (images: IAnnouncementImage[]) => ({
+    announcementImages: images
+  }),
 };
 
 const lifeCycleFunctions: ReactLifeCycleFunctions<AnnouncementEditorProps, OwnState> = {
@@ -95,6 +158,7 @@ export const AnnouncementEditor = compose<AnnouncementEditorProps, {}>(
   withLayout,
   withAnnouncement,
   injectIntl,
-  withStateHandlers({}, stateUpdaters),
+  withStateHandlers(createProps, stateUpdaters),
+  withHandlers<AnnouncementEditorProps, OwnHandlers>(handlerCreators),
   lifecycle(lifeCycleFunctions)
 )(AnnouncementEditorView);

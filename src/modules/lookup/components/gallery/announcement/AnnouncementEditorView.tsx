@@ -1,36 +1,24 @@
-import { IAnnouncement } from '@home/classes/response/announcement';
 import { layoutMessage } from '@layout/locales/messages';
 import { Grid, GridList, GridListTile, GridListTileBar, IconButton, Typography } from '@material-ui/core';
-import InfoIcon from '@material-ui/icons/Info';
+import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import * as React from 'react';
-import { AnnouncementEditorProps, IAnnouncementImage } from './AnnouncementEditor';
+import { AnnouncementEditorProps } from './AnnouncementEditor';
 
 export const AnnouncementEditorView: React.SFC<AnnouncementEditorProps> = props => {
   const { isLoading, response } = props.announcementState.all;
 
-  const RenderImageList = (images: IAnnouncement[]) => {
-    const announcementImages: IAnnouncementImage[] = images.map((item, index) => {
-      const path = item.path && item.path.medium;
-
-      return ({
-      imageUid: path.slice(path.lastIndexOf('.'), -36),
-      imageName: item.name,
-      order: index - 1,
-      imgPath: path
-      });
-    });
-
+  const RenderImageList = () => {
     return (
       <div>
         <GridList cellHeight={180} cols={3}>
-          {announcementImages.map(image => (
+          {props.announcementImages.map(image => (
             <GridListTile key={image.imageUid}>
               <img src={image.imgPath} alt={image.imageName} />
               <GridListTileBar
                 title={image.imageName}
                 actionIcon={
                   <IconButton>
-                    <InfoIcon />
+                    <DeleteForeverIcon />
                   </IconButton>
                 }
               />
@@ -55,7 +43,11 @@ export const AnnouncementEditorView: React.SFC<AnnouncementEditorProps> = props 
             !isLoading &&
             response &&
             response.data &&
-            RenderImageList(response.data)
+            props.handleSetAnnouncementImages(response.data)
+          }
+          {
+            !isLoading &&
+            RenderImageList()
           }
         </Grid>
       </Grid>
