@@ -3,7 +3,7 @@ import { WithWidth } from '@material-ui/core/withWidth';
 import { IProjectRegistrationGetListFilter } from '@project/classes/filters/registration';
 import { IProjectList } from '@project/classes/response';
 import { WithProjectRegistration, withProjectRegistration } from '@project/hoc/withProjectRegistration';
-import { compose, HandleCreators, lifecycle, ReactLifeCycleFunctions, withHandlers } from 'recompose';
+import { compose, HandleCreators, lifecycle, ReactLifeCycleFunctions, shallowEqual, withHandlers } from 'recompose';
 import { BaseFieldProps, WrappedFieldProps } from 'redux-form';
 
 import { SelectProjectView } from './SelectProjectView';
@@ -20,6 +20,7 @@ interface OwnProps extends WrappedFieldProps, BaseFieldProps {
 
 interface OwnHandlers {
   handleOnChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+  handleOnLoadApi: () => void;
 }
 
 export type SelectProjectProps 
@@ -29,6 +30,9 @@ export type SelectProjectProps
   & OwnHandlers;
   
 const handlerCreators: HandleCreators<SelectProjectProps, OwnHandlers> = {
+  handleOnLoadApi: (props: SelectProjectProps) => () => {
+    props.projectRegisterDispatch.loadListRequest({filter: props.filter});
+  },
   handleOnChange: (props: SelectProjectProps) => (e: React.ChangeEvent<HTMLSelectElement>) => { 
     const { input, onSelected } = props;
     const { response } = props.projectRegisterState.list;
@@ -49,26 +53,20 @@ const handlerCreators: HandleCreators<SelectProjectProps, OwnHandlers> = {
 
 const lifecycles: ReactLifeCycleFunctions<SelectProjectProps, {}> = {
   componentDidMount() {
-    const { filter } = this.props;
-    const { isLoading, response } = this.props.projectRegisterState.list;
-    const { loadListRequest } = this.props.projectRegisterDispatch;
+    const { request } = this.props.projectRegisterState.list;
 
-    if (!isLoading && !response) {
-      loadListRequest({filter});
+    if (!request) {
+      this.props.handleOnLoadApi();
+    } else {
+      if (request.filter) {
+        const shouldUpdate = !shallowEqual(request.filter, this.props.filter || {});
+
+        if (shouldUpdate) {
+          this.props.handleOnLoadApi();
+        }
+      }
     }
   },
-  componentWillReceiveProps(nextProps: SelectProjectProps) {
-    if (nextProps.filter !== this.props.filter) {
-      const { loadListRequest } = this.props.projectRegisterDispatch;
-      const { filter } = nextProps;
-      
-      loadListRequest({filter});
-    }
-  },
-  componentWillUnmount() {
-    const { loadListDispose } = this.props.projectRegisterDispatch;
-    loadListDispose();
-  }
 };
 
 export const SelectProject = compose<SelectProjectProps, OwnProps>(

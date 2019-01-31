@@ -3,7 +3,7 @@ import { IPositionList } from '@lookup/classes/response';
 import { WithLookupPosition, withLookupPosition } from '@lookup/hoc/withLookupPosition';
 import { withWidth } from '@material-ui/core';
 import { WithWidth } from '@material-ui/core/withWidth';
-import { compose, HandleCreators, lifecycle, ReactLifeCycleFunctions, withHandlers } from 'recompose';
+import { compose, HandleCreators, lifecycle, ReactLifeCycleFunctions, shallowEqual, withHandlers } from 'recompose';
 import { BaseFieldProps, WrappedFieldProps } from 'redux-form';
 
 import { SelectPositionView } from './SelectPositionView';
@@ -20,6 +20,7 @@ interface OwnProps extends WrappedFieldProps, BaseFieldProps {
 
 interface OwnHandlers {
   handleOnChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+  handleOnLoadApi: () => void;
 }
 
 export type SelectPositionProps 
@@ -29,6 +30,9 @@ export type SelectPositionProps
   & OwnHandlers;
   
 const handlerCreators: HandleCreators<SelectPositionProps, OwnHandlers> = {
+  handleOnLoadApi: (props: SelectPositionProps) => () => {
+    props.lookupPositionDispatch.loadListRequest({filter: props.filter});
+  },
   handleOnChange: (props: SelectPositionProps) => (e: React.ChangeEvent<HTMLSelectElement>) => { 
     const { input, onSelected } = props;
     const { response } = props.lookupPositionState.list;
@@ -49,26 +53,20 @@ const handlerCreators: HandleCreators<SelectPositionProps, OwnHandlers> = {
 
 const lifecycles: ReactLifeCycleFunctions<SelectPositionProps, {}> = {
   componentDidMount() {
-    const { filter } = this.props;
-    const { isLoading, response } = this.props.lookupPositionState.list;
-    const { loadListRequest } = this.props.lookupPositionDispatch;
+    const { request } = this.props.lookupPositionState.list;
 
-    if (!isLoading && !response) {
-      loadListRequest({filter});
+    if (!request) {
+      this.props.handleOnLoadApi();
+    } else {
+      if (request.filter) {
+        const shouldUpdate = !shallowEqual(request.filter, this.props.filter || {});
+
+        if (shouldUpdate) {
+          this.props.handleOnLoadApi();
+        }
+      }
     }
   },
-  componentWillReceiveProps(nextProps: SelectPositionProps) {
-    if (nextProps.filter !== this.props.filter) {
-      const { loadListRequest } = this.props.lookupPositionDispatch;
-      const { filter } = nextProps;
-      
-      loadListRequest({filter});
-    }
-  },
-  componentWillUnmount() {
-    const { loadListDispose } = this.props.lookupPositionDispatch;
-    loadListDispose();
-  }
 };
 
 export const SelectPosition = compose<SelectPositionProps, OwnProps>(
