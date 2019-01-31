@@ -17,6 +17,11 @@ export const CommonEditorView: React.SFC<OrganizationStructureEditorProps> = pro
       onSubmit={handleSubmit} 
       onSubmitSuccess={handleSubmitSuccess}
       onSubmitFail={handleSubmitFail}
+      submitDialogTitle={props.submitDialogTitle}
+      submitDialogContentText={props.submitDialogContentText}
+      submitDialogConfirmedText={props.submitDialogConfirmedText}
+      submitDialogCancelText={props.submitDialogCancelText}
+      
     />
   );
 

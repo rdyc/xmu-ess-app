@@ -1,6 +1,7 @@
 import { ModuleDefinition, NotificationType, redirector } from '@layout/helper/redirector';
 import { WithNotification, withNotification } from '@layout/hoc/withNotification';
 import { WithUser, withUser } from '@layout/hoc/withUser';
+import { WithLookupVersion, withLookupVersion } from '@lookup/hoc/withLookupVersion';
 import { WithStyles, withStyles, WithTheme, withTheme } from '@material-ui/core';
 import styles from '@styles';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
@@ -8,7 +9,9 @@ import { RouteComponentProps, withRouter } from 'react-router';
 import {
   compose,
   HandleCreators,
+  lifecycle,
   mapper,
+  ReactLifeCycleFunctions,
   setDisplayName,
   StateHandler,
   StateHandlerMap,
@@ -41,6 +44,7 @@ interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
 interface IOwnHandler {
   isExpanded: (cIndex: number, dIndex: number) => boolean;
   handleSyncClick: () => void;
+  handleDownloadClick: (e: React.MouseEvent) => void;
   handleNotifClick: (category: ModuleDefinition, type: NotificationType, uid?: string) => void;
 }
 
@@ -51,6 +55,7 @@ export type NotificationProps
   & IOwnHandler
   & WithUser
   & WithNotification
+  & WithLookupVersion
   & WithStyles<typeof styles>
   & WithTheme
   & InjectedIntlProps
@@ -119,6 +124,24 @@ const handlerCreators: HandleCreators<NotificationProps, IOwnHandler> = {
     const redirect = redirector(category, type, uid);
 
     props.history.push(redirect.path, redirect.state);
+  },
+  handleDownloadClick: (props: NotificationProps) => () => {
+    alert('Unfortunately, download has not ready yet. Please try again in 10 years later..');
+  }
+};
+
+const lifecycles: ReactLifeCycleFunctions<NotificationProps, IOwnState> = {
+  componentDidMount() {
+    const clientId = process.env.REACT_APP_ANDROID_CLIENT_ID;
+
+    const { isLoading, response } = this.props.lookupVersionState.detail;
+    const { loadDetailRequest } = this.props.lookupVersionDispatch;
+    
+    if (!isLoading && !response) {
+      loadDetailRequest({
+        clientId: clientId || 'unknown'
+      });
+    }
   }
 };
 
@@ -127,9 +150,11 @@ export const Notification = compose<NotificationProps, IOwnOption>(
   withUser,
   withRouter,
   withNotification,
+  withLookupVersion,
   injectIntl,
   withStyles(styles),
   withTheme(),
   withStateHandlers(createProps, stateUpdaters),
-  withHandlers(handlerCreators)
+  withHandlers(handlerCreators),
+  lifecycle(lifecycles)
 )(NotificationView);

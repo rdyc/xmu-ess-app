@@ -3,6 +3,7 @@ import { FormMode } from '@generic/types';
 import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
+import { layoutMessage } from '@layout/locales/messages';
 import { ILookupCurrencyPostPayload, ILookupCurrencyPutPayload } from '@lookup/classes/request/currency';
 import { ICurrency } from '@lookup/classes/response';
 import { WithLookupCurrency, withLookupCurrency } from '@lookup/hoc/withLookupCurrency';
@@ -17,7 +18,7 @@ import { CurrencyEditorView } from './CurrencyEditorView';
 import { CurrencyFormData } from './CurrencyForm';
 
 interface OwnHandlers {
-  handleValidate: (payload: CurrencyFormData) => any;
+  handleValidate: (payload: CurrencyFormData) => FormErrors;
   handleSubmit: (payload: CurrencyFormData) => void;
   handleSubmitSuccess: (result: any, dispatch: Dispatch<any>) => void;
   handleSubmitFail: (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => void;
@@ -29,6 +30,10 @@ interface OwnRouteParams {
 interface OwnState {
   formMode: FormMode;
   currencyUid?: string | undefined;
+  submitDialogTitle: string;
+  submitDialogContentText: string;
+  submitDialogCancelText: string;
+  submitDialogConfirmedText: string;
 }
 
 interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
@@ -53,7 +58,12 @@ const createProps: mapper<CurrencyEditorProps, OwnState> = (props: CurrencyEdito
 
   return {
     formMode: state ? FormMode.Edit : FormMode.New,
-    currencyUid: state ? state.currencyUid : undefined
+    currencyUid: state ? state.currencyUid : undefined,
+    submitDialogTitle: props.intl.formatMessage(lookupMessage.currency.dialog.createTitle),
+    submitDialogContentText: props.intl.formatMessage(lookupMessage.currency.dialog.createDescription),
+    submitDialogCancelText: props.intl.formatMessage(layoutMessage.action.cancel),
+    submitDialogConfirmedText: props.intl.formatMessage(layoutMessage.action.ok),
+
   };
 };
 
@@ -70,13 +80,12 @@ const handlerCreators: HandleCreators<CurrencyEditorProps, OwnHandlers> = {
       information: {}
     };
     const requiredFields = [
-      'name', 'symbol',
-      'rate',
+      'name', 'symbol', 'rate',
     ];
 
     requiredFields.forEach(field => {
       if (!formData.information[field] || isNullOrUndefined(formData.information[field])) {
-        errors[field] = props.intl.formatMessage({ id: `lookup.currency.field.${field}.required` });
+        errors.information[field] = props.intl.formatMessage(lookupMessage.currency.fieldFor(field, 'fieldRequired'));
       }
     });
 

@@ -232,6 +232,9 @@
   "lookup.currency.message.delete.failure": "Delete confirmation failed",
   "lookup.currency.message.empty.currencyUid": "Currency ID not found",
 
+  "lookup.currency.dialog.newTitle": "Submit Confirmation",
+  "lookup.currency.dialog.newDescription": "Do you want to submit currency ?",
+
   "lookup.position.page.list.title": "Position",
   "lookup.position.page.list.subHeader": " ",
 
@@ -283,8 +286,11 @@
   "lookup.position.message.update.failure": "Update submission failed",
   "lookup.position.message.delete.success": "This position has been deleted from system",
   "lookup.position.message.delete.failure": "Delete confirmation failed",
-  "lookup.position.message.empty.currencyUid": "Position ID not found",
+  "lookup.position.message.empty.positionUid": "Position ID not found",
   
+  "lookup.position.dialog.newTitle": "Submit Confirmation",
+  "lookup.position.dialog.newDescription": "Do you want to submit position ?",
+
   "lookup.diem.page.list.title": "Diem Value",
   "lookup.diem.page.list.subHeader": " ",
   "lookup.diem.page.detail.title": "Diem Detail",
@@ -509,5 +515,29 @@
   "lookup.customer.message.update.success": "Customer has been updated",
   "lookup.customer.message.update.failure": "Update submission failed",
   "lookup.customer.message.delete.success": "This customer has been deleted from system",
-  "lookup.customer.message.delete.failure": "Delete confirmation failed"
+  "lookup.customer.message.delete.failure": "Delete confirmation failed",
+
+  "lookup.gallery.page.list.title": "Image Gallery",
+  "lookup.gallery.page.list.subHeader": " ",
+  "lookup.gallery.page.detail.title": "Image Gallery Detail",
+  "lookup.gallery.page.detail.subHeader": " ",
+  "lookup.gallery.page.new.title": "New Image Gallery",
+  "lookup.gallery.page.new.subHeader": " ",
+  "lookup.gallery.page.modify.title": "Modify Image Gallery",
+  "lookup.gallery.page.modify.subHeader": " ",
+
+  "lookup.gallery.message.emptyProps": "Some props are empty",
+  "lookup.gallery.message.create.success": "New Image Gallery has been created",
+  "lookup.gallery.message.create.failure": "Unable to process your submission",
+  "lookup.gallery.message.update.success": "Current data with ID {uid} has been updated",
+  "lookup.gallery.message.update.failure": "Unable to process your submission",
+  "lookup.gallery.message.delete.success": "Current data with ID {uid} has been deleted",
+  "lookup.gallery.message.delete.failure": "Unable to process your submission",
+
+  "lookup.gallery.field.file": "Upload Image",
+  "lookup.gallery.field.file.required": "Image is required",
+  "lookup.gallery.field.file.placeholder": "Upload any image",
+
+  "lookup.gallery.section.info.title": "Image Gallery",
+  "lookup.gallery.section.info.subHeader": " "
 }

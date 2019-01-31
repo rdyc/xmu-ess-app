@@ -1,5 +1,6 @@
 import { IFinanceDetail } from '@finance/classes/response';
 import { financeMessage } from '@finance/locales/messages/financeMessage';
+import { ModuleDefinition } from '@layout/helper/redirector';
 import { layoutMessage } from '@layout/locales/messages';
 import { GlobalFormat } from '@layout/types';
 import { GlobalStyle } from '@layout/types/GlobalStyle';
@@ -69,6 +70,20 @@ export const financeInformation: React.SFC<AllProps> = props => {
           label={intl.formatMessage(financeMessage.approval.field.documentUid)}
           value={data.documentUid ? data.documentUid : 'N/A'}
         />
+        {
+          (data.document && data.document.documentNotes) &&
+          <TextField
+            {...GlobalStyle.TextField.ReadOnly}
+            multiline
+            label={
+              data.moduleUid === ModuleDefinition.Expense &&
+              intl.formatMessage(financeMessage.approval.field.notesExpense) ||
+              data.moduleUid === ModuleDefinition.Mileage &&
+              intl.formatMessage(financeMessage.approval.field.notesMileage)
+            }
+            value={data.document.documentNotes}
+          />
+        }
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
           label={intl.formatMessage(financeMessage.approval.field.requestor)}

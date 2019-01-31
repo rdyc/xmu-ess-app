@@ -27,9 +27,14 @@ export type OrganizationStructureItemFormData = {
 
 interface OwnProps {
   formMode: FormMode;
+  submitDialogTitle: string;
+  submitDialogContentText: string;
+  submitDialogCancelText: string;
+  submitDialogConfirmedText: string;
 }
 
 interface FormValueProps {
+  formName: string;
   companyUidValue: string | undefined;
   inactiveDateValue: string | undefined;
 }
@@ -46,6 +51,7 @@ const mapStateToProps = (state: any): FormValueProps => {
   const inactiveDate = selector(state, 'information.inactiveDate');
 
   return {
+    formName,
     companyUidValue: companyUid,
     inactiveDateValue: inactiveDate,
   };

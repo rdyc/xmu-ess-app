@@ -12,3 +12,5 @@ export * from './lookupHolidayActions';
 export * from './lookupLeaveActions';
 export * from './systemLimitAction';
 export * from './leaveCalculationActions';
+export * from './lookupVersionActions';
+export * from './imageGalleryAction';

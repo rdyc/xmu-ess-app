@@ -3,6 +3,8 @@ import {
   ICurrencyGetAllRequest,
   ICurrencyGetByIdRequest,
   ICurrencyGetListRequest,
+  ICurrencyPostRequest,
+  ICurrencyPutRequest,
   ILeaveCalculationGetAllRequest,
   ILookupHolidayGetAllRequest,
   ILookupHolidayGetByIdRequest,
@@ -12,6 +14,8 @@ import {
   ILookupLeaveGetListRequest,
   ILookupLeavePostRequest,
   ILookupLeavePutRequest,
+  ILookupVersionGetByIdRequest,
+  ILookupVersionPatchRequest,
   IMenuGetAllRequest,
   IMenuGetByIdRequest,
   IMenuListRequest,
@@ -63,6 +67,9 @@ import {
   ILookupRolePutRequest,
 } from '@lookup/classes/queries/role';
 import {
+  ICompany,
+  ICompanyDetail,
+  ICompanyList,
   ICurrency,
   ICurrencyDetail,
   ICurrencyList,
@@ -79,6 +86,7 @@ import {
   ILookupLeave,
   ILookupLeaveDetail,
   ILookupLeaveList,
+  ILookupVersion,
   IMenu,
   IMenuDetail,
   IMenuList,
@@ -96,17 +104,10 @@ import {
   ISystemLimitDetail,
   ISystemLimitList,
 } from '@lookup/classes/response';
-import {
-  ICompany,
-  ICompanyDetail,
-  ICompanyList
-} from '@lookup/classes/response/company';
+import { IGallery } from '@lookup/classes/response/gallery';
 
-import {
-  // ICurrencyDeleteRequest,
-  ICurrencyPostRequest, ICurrencyPutRequest
-} from '../queries/currency';
 import { ILookupCustomerDeleteRequest, ILookupCustomerPostRequest, ILookupCustomerPutRequest } from '../queries/customer';
+import { IGalleryGetAllRequest, IGalleryGetDetailRequest, IGalleryPostRequest } from '../queries/gallery';
 import { IPositionDeleteRequest } from '../queries/position/IPositionDeleteRequest';
 
 export interface ILookupState {
@@ -181,4 +182,11 @@ export interface ILookupState {
   systemLimitPost: IQuerySingleState<ISystemLimitPostRequest, ISystemLimit>;
   systemLimitPut: IQuerySingleState<ISystemLimitPutRequest, ISystemLimit>;
   systemLimitDelete: IQuerySingleState<ISystemLimitDeleteRequest, boolean>;
+
+  lookupVersionGetById: IQuerySingleState<ILookupVersionGetByIdRequest, ILookupVersion>;
+  lookupVersionPatch: IQuerySingleState<ILookupVersionPatchRequest, ILookupVersion>;
+
+  imageGalleryGetAll: IQueryCollectionState<IGalleryGetAllRequest, IGallery>;
+  imageGalleryGetById: IQuerySingleState<IGalleryGetDetailRequest, IGallery>;  
+  imageGalleryPost: IQuerySingleState<IGalleryPostRequest, IGallery>;
 }
