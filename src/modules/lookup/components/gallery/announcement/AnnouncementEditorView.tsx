@@ -18,13 +18,13 @@ export const AnnouncementEditorView: React.SFC<AnnouncementEditorProps> = props 
           {
             props.announcementImages.map((image, index) => (
               <Grid item xs={12} key={index}>
-                <Card style={{maxHeight: 200}}>
+                <Card>
                   <Grid container spacing ={8}>
                     <Grid item xs={12} sm={6} md={5}>
                       <CardMedia
-                        component="img"
                         image={image.imgPath}
                         title={image.imageName}
+                        style={{height: 300}}
                       />
                     </Grid>
                     <Grid item xs={12} sm={6} md={5}>

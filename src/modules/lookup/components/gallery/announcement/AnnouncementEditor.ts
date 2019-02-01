@@ -5,7 +5,9 @@ import { withAnnouncement, WithAnnouncement } from '@home/hoc/withAnnouncement';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { IGallery } from '@lookup/classes/response/gallery';
 import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
+import { WithStyles, withStyles } from '@material-ui/core';
 import { WithWidth } from '@material-ui/core/withWidth';
+import styles from '@styles';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps } from 'react-router';
 import {
@@ -68,7 +70,8 @@ export type AnnouncementEditorProps
   & InjectedIntlProps
   & RouteComponentProps
   & WithLayout
-  & WithWidth;
+  & WithWidth
+  & WithStyles<typeof styles>;
 
 const createProps: mapper<AnnouncementEditorProps, OwnState> = (props: AnnouncementEditorProps): OwnState => ({ 
   announcementImages: [],
@@ -168,6 +171,7 @@ const handlerCreators: HandleCreators<AnnouncementEditorProps, OwnHandlers> = {
     );
 
     props.updateImages(announcementImages);
+    props.announcementDispatch.loadRequest({});
     props.changeReset();
   },
   handleSubmitFail: (props: AnnouncementEditorProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
@@ -263,6 +267,7 @@ export const AnnouncementEditor = compose<AnnouncementEditorProps, {}>(
   withLayout,
   withAnnouncement,
   injectIntl,
+  withStyles(styles),
   withStateHandlers(createProps, stateUpdaters),
   withHandlers<AnnouncementEditorProps, OwnHandlers>(handlerCreators),
   lifecycle(lifeCycleFunctions)
