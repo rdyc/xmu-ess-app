@@ -1,22 +1,27 @@
 import AppMenu from '@constants/AppMenu';
 import { ICollectionValue } from '@layout/classes/core';
+import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { ImageGalleryField } from '@lookup/classes/types/gallery/ImageGalleryField';
 import { WithImageGallery, withImageGallery } from '@lookup/hoc/withImageGallery';
 import { WithStyles, withStyles } from '@material-ui/core';
 import { WithWidth } from '@material-ui/core/withWidth';
+import AddCircleIcon from '@material-ui/icons/AddCircle';
+import PictureInPictureIcon from '@material-ui/icons/PictureInPicture';
 import styles from '@styles';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps } from 'react-router';
 import {
   compose,
+  HandleCreators,
   lifecycle,
   mapper,
   ReactLifeCycleFunctions,
   StateHandler,
   StateHandlerMap,
   StateUpdaters,
+  withHandlers,
   withStateHandlers,
 } from 'recompose';
 import { ImageGalleryListView } from './ImageGalleryListView';
@@ -46,6 +51,10 @@ interface OwnState {
   fields: ICollectionValue[];
 }
 
+interface OwnHandler {
+  handleOnSearch: (find: string | undefined, field: ICollectionValue | undefined) => void;
+}
+
 interface OwnStateUpdater extends StateHandlerMap<OwnState> {
   setImage: StateHandler<OwnState>;
   setPageNext: StateHandler<OwnState>;
@@ -54,6 +63,8 @@ interface OwnStateUpdater extends StateHandlerMap<OwnState> {
   setField: StateHandler<OwnState>;
   setOrder: StateHandler<OwnState>;
   setSize: StateHandler<OwnState>;
+  setSearchDefault: StateHandler<OwnState>;
+  setSearchResult: StateHandler<OwnState>;
 }
 
 export type ImageGalleryListProps
@@ -64,8 +75,10 @@ export type ImageGalleryListProps
   & OwnStateUpdater
   & InjectedIntlProps
   & RouteComponentProps
+  & OwnHandler
   & WithLayout
   & WithStyles<typeof styles>
+  & WithAppBar
   & WithWidth;
 
 const createProps: mapper<OwnOption, OwnState> = (props: OwnOption): OwnState => ({
@@ -80,6 +93,19 @@ const createProps: mapper<OwnOption, OwnState> = (props: OwnOption): OwnState =>
         })),
 });
 
+const handlerCreators: HandleCreators<ImageGalleryListProps, OwnHandler> = {
+  handleOnSearch: (props: ImageGalleryListProps) => (find?: string, field?: ICollectionValue) => {
+    // when find is undefided, that means user has close or exit from search mode
+    if (find) {
+      // set search state props for searching
+      props.setSearchResult(find.trim(), field);
+    } else {
+      // set search state props to default
+      props.setSearchDefault();
+    }
+  }
+};
+
 const stateUpdaters: StateUpdaters<OwnOption, OwnState, OwnStateUpdater> = {
   setForceReload: (prev: OwnState) => (toFirst?: boolean): Partial<OwnState> => ({
     page: toFirst ? 1 : prev.page,
@@ -91,6 +117,18 @@ const stateUpdaters: StateUpdaters<OwnOption, OwnState, OwnStateUpdater> = {
   setPageNext: (prevState: OwnState) => () => ({
     page: prevState.page + 1,
     forceReload: true
+  }),
+  setSearchDefault: (prevState: OwnState) => (find: string, field: ICollectionValue | undefined) => ({
+    find: undefined,
+    findBy: undefined,
+    page: 1,
+    forceReload: true
+  }),
+  setSearchResult: (prevState: OwnState) => (find: string, field: ICollectionValue | undefined) => ({
+    find,
+    findBy: field ? field.value : undefined,
+    page: 1,
+    // forceReload: true
   }),
   setPagePrevious: (prevState: OwnState) => () => ({
     page: prevState.page > 1 ? prevState.page - 1 : 1,
@@ -128,8 +166,8 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<ImageGalleryListProps, OwnStat
       view: {
         uid: AppMenu.ImageGallery,
         parentUid: AppMenu.Lookup,
-        title: 'Gallery', // intl.formatMessage(organizationMessage.workflowSetup.page.listTitle),
-        subTitle: '' // intl.formatMessage(organizationMessage.workflowSetup.page.listSubHeader)
+        title: 'Gallery', 
+        subTitle: '' 
       },
       status: {
         isNavBackVisible: false,
@@ -143,6 +181,25 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<ImageGalleryListProps, OwnStat
     if ((!response && !isLoading) || this.props.forceReload) {
       loadData(this.props);
     }
+
+     // assign search callback
+    this.props.appBarDispatch.assignSearchCallback(this.props.handleOnSearch);    
+
+    this.props.appBarDispatch.assignControls([
+      {
+        icon: PictureInPictureIcon ,
+        onClick: () => { 
+          // redirect to manage image slider 
+        }
+      },
+      {
+        icon: AddCircleIcon,
+        onClick: () => { 
+          this.props.history.push('/lookup/imagegalleries/form'); 
+        }
+      }
+    ],
+    );
   },
   componentDidUpdate(props: ImageGalleryListProps, state: OwnState) {
     // only load when these props are different
@@ -152,6 +209,11 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<ImageGalleryListProps, OwnStat
       this.props.page !== props.page ||
       this.props.size !== props.size
     ) {
+      loadData(this.props);
+    }
+
+    // search
+    if (this.props.find !== props.find || this.props.findBy !== props.findBy) {
       loadData(this.props);
     }
   },
@@ -164,6 +226,7 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<ImageGalleryListProps, OwnStat
     layoutDispatch.searchHide();
     layoutDispatch.modeSearchOff();
     layoutDispatch.moreHide();
+    this.props.appBarDispatch.dispose();
     loadAllDispose();
   }
 };
@@ -194,9 +257,11 @@ const loadData = (props: ImageGalleryListProps): void => {
 export const ImageGalleryList = compose<ImageGalleryListProps, {}>(
   withLayout,
   withUser,
+  withAppBar,
   withImageGallery,
   withStyles(styles),
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),
+  withHandlers(handlerCreators),
   lifecycle(lifeCycleFunctions)
 )(ImageGalleryListView);
