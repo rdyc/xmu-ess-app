@@ -133,8 +133,7 @@ export const AnnouncementEditorView: React.SFC<AnnouncementEditorProps> = props 
       <AddImageEditor 
         isOpen={props.isAddImageOpen}
         onClose={props.handleAddImageVisibility}
-        imageGalleries={props.imageGalleries}
-        handleCheckbox={props.handleCheckbox}
+        handleSelect={props.handleAddAnnouncementImage}
       />
     </React.Fragment>
   );

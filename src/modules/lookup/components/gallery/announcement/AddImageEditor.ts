@@ -23,13 +23,11 @@ import { AddImageEditorView } from './AddImageEditorView';
 interface OwnOption {
   isOpen: boolean;
   onClose: (event: React.MouseEvent<HTMLElement>) => void;
-  handleCheckbox: (image: IGallery) => void;
-  imageGalleries: IGallery[];
+  handleSelect: (image: IGallery) => void;
 }
 
 interface OwnState {
   page: number;
-  // reload: boolean;
 }
 
 interface OwnStateUpdater extends StateHandlerMap<OwnState> {

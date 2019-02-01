@@ -35,19 +35,18 @@ interface OwnState {
   announcementImages: IAnnouncementImage[];
   loadImages: boolean;
   enableReset: boolean;
-  imageGalleries: IGallery[];
+  // imageGalleries: IGallery[];
   isAddImageOpen: boolean;
 }
 
 interface OwnHandlers {
   handleSetAnnouncementImages: (images: IAnnouncement[]) => void;
-  handleAddAnnouncementImage: (imageGallery: IGallery[]) => void;
+  handleAddAnnouncementImage: (imageGallery: IGallery) => void;
   handleRemoveAnnouncementImage: (imageUid: string) => void;
   handleMoveAnnouncementImage: (index: number, direction: 'forward' | 'backward') => void;
   handleSubmitAnnouncement: () => void;
   handleSubmitSuccess: (result: any, dispatch: Dispatch<any>) => void;
   handleSubmitFail: (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => void;
-  handleCheckbox: (image: IGallery) => void;
   handleAddImageVisibility: (event: React.MouseEvent<HTMLElement>) => void;
 }
 
@@ -55,7 +54,6 @@ interface OwnStateUpdater extends StateHandlerMap<OwnState> {
   updateImages: StateHandler<OwnState>;
   afterLoad: StateHandler<OwnState>;
   changeReset: StateHandler<OwnState>;
-  stateCheckbox: StateHandler<OwnState>;
   setAddImageVisibility: StateHandler<OwnState>;
 }
 
@@ -83,7 +81,6 @@ const createProps: mapper<AnnouncementEditorProps, OwnState> = (props: Announcem
   announcementImages: [],
   loadImages: true,
   enableReset: true,
-  imageGalleries: [],
   isAddImageOpen: false,
 });
 
@@ -101,17 +98,17 @@ const handlerCreators: HandleCreators<AnnouncementEditorProps, OwnHandlers> = {
     props.afterLoad();
     props.updateImages(announcementImages);
   },
-  handleAddAnnouncementImage: (props: AnnouncementEditorProps) => (imageGallery: IGallery[]) => {
-    const addAnnouncementImages = imageGallery.map((item, index) => ({
-      imageUid: item.uid,
-      imageName: item.name,
-      order: props.announcementImages.length + index + 1,
-      imgPath: item.path && item.path.small,
-    }));
-
-    const newAnnouncementImages = props.announcementImages.concat(addAnnouncementImages);
+  handleAddAnnouncementImage: (props: AnnouncementEditorProps) => (imageGallery: IGallery) => {
+    const newAnnouncementImages = props.announcementImages;
+    newAnnouncementImages.push({
+      imageUid: imageGallery.uid,
+      imageName: imageGallery.name,
+      order: props.announcementImages.length + 1,
+      imgPath: imageGallery.path && imageGallery.path.small,
+    });
 
     rearrangeImages(props, newAnnouncementImages);
+    props.setAddImageVisibility();
   },
   handleRemoveAnnouncementImage: (props: AnnouncementEditorProps) => (imageUid: string) => {
     const newAnnouncementImages = props.announcementImages.filter(image => {
@@ -207,16 +204,6 @@ const handlerCreators: HandleCreators<AnnouncementEditorProps, OwnHandlers> = {
       });
     }
   }, 
-  handleCheckbox: (props: AnnouncementEditorProps) => (image: IGallery) => {
-    const { imageGalleries, stateCheckbox } = props;
-    const _image = new Set(imageGalleries);
-
-    _image.has(image)
-      ? _image.delete(image)
-      : _image.add(image);
-
-    stateCheckbox(Array.from(_image));
-  },
   handleAddImageVisibility: (props: AnnouncementEditorProps) => () => {
     props.setAddImageVisibility();
   }
@@ -244,9 +231,6 @@ const stateUpdaters: StateUpdaters<OwnOption, OwnState, OwnStateUpdater> = {
   }),
   changeReset: (prevState: OwnState) => () => ({
     enableReset: !prevState.enableReset,
-  }),
-  stateCheckbox: (prevState: OwnState) => (imageGalleries: IGallery[]) => ({
-    imageGalleries
   }),
   setAddImageVisibility: (prevState: OwnState) => () => ({
     isAddImageOpen: !prevState.isAddImageOpen

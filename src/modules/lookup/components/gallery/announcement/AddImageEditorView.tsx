@@ -3,8 +3,6 @@ import { layoutMessage } from '@layout/locales/messages';
 import { IGallery } from '@lookup/classes/response/gallery';
 import {
   AppBar,
-  Button,
-  Checkbox,
   Dialog,
   DialogContent,
   GridList,
@@ -24,29 +22,22 @@ import { AddImageEditorProps } from './AddImageEditor';
 
 export const AddImageEditorView: React.SFC<AddImageEditorProps> = props => { 
   const { isLoading, response } = props.imageGalleryState.all;
-  const { handleCheckbox, imageGalleries } = props;
+  // const { handleCheckbox, imageGalleries } = props;
 
-  const isChecked = (image: IGallery) => {
-    const _image = new Set(imageGalleries);
-    return _image.has(image);
-  };
+  // const isChecked = (image: IGallery) => {
+  //   const _image = new Set(imageGalleries);
+  //   return _image.has(image);
+  // };
 
   const RenderImageList = (images: IGallery[]) => {
     return (
       <div>
         <GridList cellHeight={180} cols={4} spacing={12}>
           {images.map(image => (
-            <GridListTile key={image.uid}>
+            <GridListTile key={image.uid} onClick={() => props.handleSelect(image)}>
               <img src={image.path.small} alt={image.name} />
               <GridListTileBar
                 title={image.name}
-                actionIcon={
-                  <Checkbox 
-                    key={image.uid}
-                    onChange={() => handleCheckbox(image)}
-                    checked={isChecked(image)}
-                  />
-                }
               />
             </GridListTile>
           ))}
@@ -135,16 +126,8 @@ export const AddImageEditorView: React.SFC<AddImageEditorProps> = props => {
             </IconButton>
 
             <Typography variant="h6" color="inherit" className={props.classes.flex}>
-              {/* {props.intl.formatMessage(layoutMessage.tooltip.filter)} */}
               Add Image
             </Typography>
-
-            <Button 
-              color="inherit" 
-              // onClick={props.handleFilterOnApply}
-            >
-              {props.intl.formatMessage(layoutMessage.action.apply)}
-            </Button>
 
           </Toolbar>
         </AppBar>
@@ -162,14 +145,12 @@ export const AddImageEditorView: React.SFC<AddImageEditorProps> = props => {
             RenderImageList(response.data)
           }
         </DialogContent>
-        {/* <DialogActions> */}
           {
             !isLoading &&
             response &&
             response.metadata &&
             navigation(response.metadata)
           }
-        {/* </DialogActions> */}
       </Dialog>
     </React.Fragment>
   );
