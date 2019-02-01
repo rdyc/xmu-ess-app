@@ -1,3 +1,9 @@
+import { 
+  achievementField, 
+  achievementMessage, 
+  achievementPage, 
+  achievementSection
+} from './achievementMessage';
 import {
   currencyConfirm,
   currencyDialog,
@@ -218,5 +224,11 @@ export const lookupMessage = {
     field: inforField,
     fieldFor: inforFieldHelperFor,
     message: inforMessage
+  },
+  achievement: {
+    page: achievementPage,
+    field: achievementField,
+    message: achievementMessage,
+    section: achievementSection
   }
 };

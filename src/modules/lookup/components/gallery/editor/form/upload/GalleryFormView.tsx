@@ -19,7 +19,7 @@ export const GalleryFormView: React.SFC<GalleryFormProps> = props => (
       <Grid item xs={12} md={4}>
         <Card>
           <CardHeader
-            title={props.intl.formatMessage(lookupMessage.gallery.page.newTitle)}
+            title={props.intl.formatMessage(lookupMessage.gallery.section.infoTitle)}
           />
           <CardContent>
             <Field

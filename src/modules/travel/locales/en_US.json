@@ -38,6 +38,8 @@
   "travel.settlementApproval.option.adjustmentNote": "Adjustment Note",
   "travel.settlementApproval.option.adjustmentNote.required": "Adjustment note is required",
   "travel.settlementApproval.option.adjustmentNote.placeholder": "Type any",
+  "travel.settlementApproval.option.approveNote": "Approval Note (optional)",
+  "travel.settlementApproval.option.approveNote.placeholder": "Type any",
 
   "travel.request.dialog.modifyTitle": "Modify Confirmation",
   "travel.request.modifyDescription": " ",
