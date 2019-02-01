@@ -157,7 +157,6 @@ const createProps: mapper<PurchaseApprovalDetailProps, OwnState> = (props: Purch
     shouldDataReload: false,
     approvalTitle: props.intl.formatMessage(purchaseMessage.approval.section.approveForm),
     approvalSubHeader: props.intl.formatMessage(purchaseMessage.approval.section.approveContent),
-    // approvalSubHeader: ` `,
     approvalChoices: [
       { value: WorkflowStatusType.Approved, label: props.intl.formatMessage(purchaseMessage.approval.message.approve) },
       { value: WorkflowStatusType.Rejected, label: props.intl.formatMessage(purchaseMessage.approval.message.reject) }

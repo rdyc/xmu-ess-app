@@ -1,3 +1,4 @@
+import COGSUploadEditor from '@infor/components/editor/COGSUploadEditor';
 import { CurrencyDetail } from '@lookup/components/currency/detail/CurrencyDetail';
 import { CurrencyEditor } from '@lookup/components/currency/editor/CurrencyEditor';
 import { CurrencyList } from '@lookup/components/currency/list/CurrencyList';
@@ -126,6 +127,12 @@ const achievement = (props: RouteComponentProps) => (
   </Switch>
 );
 
+const cogsUpload = (props: RouteComponentProps) => (
+  <Switch>
+    <Route path={`${props.match.path}`} component={COGSUploadEditor} />
+  </Switch>
+);
+
 const gallery = (props: RouteComponentProps) => (
   <Switch>
     <Route path={`${props.match.path}/form`} component={GalleryEditor} />
@@ -147,6 +154,7 @@ export const LookupRoutingComponents: React.SFC<RouteComponentProps> = props => 
     <Route path={`${props.match.path}/roles`} component={role} />
     <Route path={`${props.match.path}/customer`} component={lookupCustomer} />
     <Route path={`${props.match.path}/achievementchart`} component={achievement} />
+    <Route path={`${props.match.path}/cogsupload`} component={cogsUpload} />
     <Route path={`${props.match.path}/imagegalleries`} component={gallery} />
   </Switch>
 );

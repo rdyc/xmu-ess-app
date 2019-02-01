@@ -23,6 +23,13 @@ import {
   holidayPage,
   holidaySection
 } from './holiday';
+import { 
+  inforField, 
+  inforFieldHelperFor, 
+  inforMessage, 
+  inforPage,
+  inforSection
+} from './inforMessage';
 import {
   leaveConfirm,
   leaveField,
@@ -31,7 +38,11 @@ import {
   leavePage,
   leaveSection
 } from './leave';
-import { leaveCalculationField, leaveCalculationFilter, leaveCalculationPage } from './leaveCalculation';
+import { 
+  leaveCalculationField, 
+  leaveCalculationFilter, 
+  leaveCalculationPage 
+} from './leaveCalculation';
 import { 
   companyConfirm,
   companyDialog, 
@@ -200,5 +211,12 @@ export const lookupMessage = {
     field: galleryField,
     fieldFor: galleryFieldHelperFor,
     message: galleryMessage
+  },
+  cogsUpload: {
+    page: inforPage,
+    section: inforSection,
+    field: inforField,
+    fieldFor: inforFieldHelperFor,
+    message: inforMessage
   }
 };
