@@ -1,3 +1,4 @@
+import { WorkflowStatusType } from '@common/classes/types';
 import { layoutMessage } from '@layout/locales/messages';
 import { GlobalFormat } from '@layout/types';
 import { GlobalStyle } from '@layout/types/GlobalStyle';
@@ -25,12 +26,14 @@ const settlementSummary: React.SFC<AllProps> = props => (
         label={props.intl.formatMessage(purchaseMessage.settlement.field.status)}
         value={props.data.status ? props.data.status.value : props.intl.formatMessage(purchaseMessage.action.settle)}
       />
-      { props.data.reject ?
+      { props.data.reason ?
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
         margin="dense"
-        label={props.intl.formatMessage(purchaseMessage.settlement.field.reject)}
-        value={props.data.reject || 'N/A'}
+        label={props.intl.formatMessage(props.data.statusType !== WorkflowStatusType.Approved
+          ? purchaseMessage.settlement.field.adjustmentNote
+          : purchaseMessage.request.field.approveNotes)}
+        value={props.data.reason || 'N/A'}
         multiline
       />
       : '' }

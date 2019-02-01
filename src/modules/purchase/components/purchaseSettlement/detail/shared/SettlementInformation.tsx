@@ -1,3 +1,4 @@
+import { WorkflowStatusType } from '@common/classes/types';
 import { layoutMessage } from '@layout/locales/messages';
 import { GlobalFormat } from '@layout/types';
 import { GlobalStyle } from '@layout/types/GlobalStyle';
@@ -173,6 +174,18 @@ const settlementInformation: React.SFC<AllProps> = props => {
             : intl.formatNumber((data.balanceDue || 0) * -1)
           }
           />
+        {
+          data.reason &&
+          <TextField
+            {...GlobalStyle.TextField.ReadOnly}
+            margin="dense"
+            label={intl.formatMessage(data.statusType === WorkflowStatusType.Rejected || data.statusType === WorkflowStatusType.AdjustmentNeeded
+              ? purchaseMessage.settlement.field.adjustmentNote 
+              : purchaseMessage.request.field.approveNotes)}
+            value={data.reason || 'N/A'}
+            multiline
+          />
+        }
         {
           data.changes &&
           <TextField

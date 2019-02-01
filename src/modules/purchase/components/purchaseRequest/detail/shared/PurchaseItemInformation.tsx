@@ -11,7 +11,6 @@ import { compose } from 'recompose';
 interface OwnProps {
   data: IPurchaseItemRequest | null | undefined ;
   title: string;
-  // subheader: string;
 }
 
 type AllProps
@@ -22,15 +21,8 @@ const purchaseItemInformation: React.SFC<AllProps> = props => (
     <Card square>
       <CardHeader
         title={props.title}
-        // subheader={<FormattedMessage id="purchase.itemSubTitle" />}
       />
       <CardContent>
-        {/* <TextField
-          {...GlobalStyle.TextField.ReadOnly}
-          margin="dense"
-          label={props.intl.formatMessage(purchaseMessage.request.items.uid)} 
-          value={props.data && props.data.uid || ''}
-        /> */}
         <TextField
           {...GlobalStyle.TextField.ReadOnly}
           margin="dense"

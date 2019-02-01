@@ -23,7 +23,7 @@ export interface ISettlementDetail {
   differenceInIDR?: number;
   advance?: number;
   balanceDue?: number;
-  reject?: string;
+  reason?: string;
   statusType?: string;
   status?: ICommonSystem;
   hierarchyUid: string;

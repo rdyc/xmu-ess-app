@@ -48,7 +48,7 @@ const config: SingleConfig<ISettlementDetail, PurchaseSettlementDetailProps> = {
       id: PurchaseUserAction.Modify,
       name: props.intl.formatMessage(layoutMessage.action.modify),
       enabled: true,
-      visible: isContains(state.statusType, [WorkflowStatusType.Submitted, WorkflowStatusType.InProgress, WorkflowStatusType.Rejected]),
+      visible: isContains(state.statusType, [WorkflowStatusType.Submitted, WorkflowStatusType.InProgress, WorkflowStatusType.Rejected, WorkflowStatusType.AdjustmentNeeded]),
       onClick: props.handleOnModify
     }
   ]),
