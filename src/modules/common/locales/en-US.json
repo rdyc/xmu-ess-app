@@ -6,23 +6,23 @@
   "common.message.emptyProps": "Some props are empty",
 
   "common.title": "System Setup",
-  "common.subTitle": "Lorem ipsum something something something something something something something something",
+  "common.subTitle": " ",
   "common.detail.title": "Type Details",
-  "common.detail.subTitle": "Lorem ipsum something something something something something something something something something",
+  "common.detail.subTitle": " ",
   "common.form.newTitle": "New Type",
-  "common.form.newSubTitle": "Lorem ipsum something something something something something something something something something something",
+  "common.form.newSubTitle": " ",
   "common.form.editTitle": "Modify Type",
-  "common.form.editSubTitle": "Lorem ipsum something something something something something something something something something something",
+  "common.form.editSubTitle": " ",
 
   "common.infoTitle": "Type",
-  "common.infoSubTitle": "Lorem ipsum something something something something something something something something something something something",
+  "common.infoSubTitle": " ",
 
   "common.dialog.modifyTitle": "Modify Confirmation",
-  "common.dialog.modifyDescription": "Lorem ipsum something something something something something something something something something something something",
+  "common.dialog.modifyDescription": "You are about to modify this data. Are you sure you want to continue?",
   "common.dialog.newTitle": "Submit Confirmation",
-  "common.dialog.newDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "common.dialog.newDescription": "You are about to create a new data. Are you sure you want to continue?",
   "common.dialog.editTitle": "Modify Confirmation",
-  "common.dialog.editDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+  "common.dialog.editDescription": "You are about to modify this data. Are you sure you want to continue?",
 
 
   "common.text.active": "Active",

@@ -529,7 +529,7 @@
   "lookup.gallery.page.modifyAnnouncement.subHeader": " ",
 
   "lookup.gallery.message.emptyProps": "Some props are empty",
-  "lookup.gallery.message.create.success": "New Image Gallery has been created",
+  "lookup.gallery.message.create.success": "New Image Gallery has been uploaded",
   "lookup.gallery.message.create.failure": "Unable to process your submission",
   "lookup.gallery.message.update.success": "Current data with ID {uid} has been updated",
   "lookup.gallery.message.update.failure": "Unable to process your submission",
@@ -565,5 +565,17 @@
   "lookup.infor.field.file.placeholder": "Upload .xlsx, .xls, or .csv spreadsheet",
 
   "lookup.infor.section.info.title": "COGS Upload Form",
-  "lookup.infor.section.info.subHeader": " "
+  "lookup.infor.section.info.subHeader": " ",
+
+  "lookup.achievement.page.new.title": "New Achievement Chart",
+  "lookup.achievement.page.new.subHeader": " ",
+
+  "lookup.achievement.message.emptyProps": "Some props are empty",
+  "lookup.achievement.message.create.success": "New achievement chart has been uploaded",
+  "lookup.achievement.message.create.failure": "Unable to process your submission",
+
+  "lookup.achievement.field.file": "Upload File (Excel)",
+
+  "lookup.achievement.section.info.title": "Upload Achievement Form",
+  "lookup.achievement.section.info.subHeader": " "
 }
