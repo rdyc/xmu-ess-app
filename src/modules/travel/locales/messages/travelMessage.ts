@@ -1,5 +1,9 @@
 import { travelAction } from './travelActionMessage';
-import { travelApprovalConfirm, travelApprovalOption, travelApprovalPage } from './travelApprovalMessages';
+import { 
+  travelApprovalConfirm, 
+  travelApprovalOption, 
+  travelApprovalPage 
+} from './travelApprovalMessages';
 import { 
   travelRequestConfirm, 
   travelRequestDialog, 
@@ -9,9 +13,12 @@ import {
   travelRequestOption,
   travelRequestPage,
   travelRequestSection
-} 
-from './travelRequestMessage';
-import { travelSettlementApprovalConfirm, travelSettlementApprovalPage } from './travelSettlementApprovalMessages';
+} from './travelRequestMessage';
+import { 
+  travelSettlementApprovalConfirm, 
+  travelSettlementApprovalOption, 
+  travelSettlementApprovalPage 
+} from './travelSettlementApprovalMessages';
 import { 
   travelSettlementConfirm, 
   travelSettlementDialog, 
@@ -48,6 +55,7 @@ export const travelMessage = {
   },
   settlementApproval: {
     page: travelSettlementApprovalPage,
+    option: travelSettlementApprovalOption,
     confirm: travelSettlementApprovalConfirm
   }
 };

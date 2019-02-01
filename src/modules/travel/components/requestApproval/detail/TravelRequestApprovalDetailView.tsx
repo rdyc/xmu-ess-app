@@ -3,7 +3,7 @@ import { SingleConfig, SingleHandler, SinglePage, SingleState } from '@layout/co
 import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
 import { Grid } from '@material-ui/core';
-import { WorkflowApprovalForm } from '@organization/components/workflow/approval/WorkflowApprovalForm';
+import { WorkflowApprovalRemarkForm } from '@organization/components/workflow/approval/WorkflowApprovalRemarkForm';
 import { WorkflowHistory } from '@organization/components/workflow/history/WorkflowHistory';
 import { ITravelRequestDetail } from '@travel/classes/response';
 import { TravelUserAction } from '@travel/classes/types';
@@ -126,7 +126,7 @@ const config: SingleConfig<ITravelRequestDetail, TravelRequestApprovalDetailProp
           {
             data.workflow &&
             data.workflow.isApproval &&
-            <WorkflowApprovalForm
+            <WorkflowApprovalRemarkForm
               approvalTitle={props.approvalTitle}
               approvalSubHeader={props.approvalSubHeader}
               approvalChoices={props.approvalChoices}
@@ -139,6 +139,10 @@ const config: SingleConfig<ITravelRequestDetail, TravelRequestApprovalDetailProp
               onSubmit={props.handleSubmit}
               onSubmitSuccess={props.handleSubmitSuccess}
               onSubmitFail={props.handleSubmitFail}
+              approvalRemarkLabel={props.intl.formatMessage(travelMessage.requestApproval.option.rejectReason)}
+              approvalRemarkPlaceholder={props.intl.formatMessage(travelMessage.requestApproval.option.rejectReasonPlaceholder)}
+              approvalOptionalRemarkLabel={props.intl.formatMessage(travelMessage.requestApproval.option.approveNote)}
+              approvalOptionalRemarkPlaceholder={props.intl.formatMessage(travelMessage.requestApproval.option.approveNotePlaceholder)}
             />
           }
         </Grid>

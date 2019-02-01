@@ -9,6 +9,18 @@ export const travelSettlementApprovalMessage = defineMessages({
   updateFailure: { id: 'travel.message.settlementapproval.create.failure' },
 });
 
+// option
+export const travelSettlementApprovalOption = defineMessages({
+  adjustmentNeeded: { id: 'travel.approval.option.adjustmentNeeded' },
+
+  adjustmentNote: { id: `${prefix}.option.adjustmentNote` },
+  adjustmentNeededRequired: { id: `${prefix}.option.adjustmentNote.required` },
+  adjustmentNeededPlaceholder: { id: `${prefix}.option.adjustmentNote.placeholder` },
+
+  approveNotes: { id: `${prefix}.option.approveNote` },
+  approveNotesPlaceholder: { id: `${prefix}.option.approveNote.placeholder` },
+});
+
 // page
 export const travelSettlementApprovalPage = defineMessages({
   listTitle: { id: `${prefix}.page.list.title` },

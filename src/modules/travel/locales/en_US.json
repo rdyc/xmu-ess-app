@@ -30,6 +30,16 @@
 
   "travel.request.option.addSettlement": "Add Settlement",
   "travel.approval.option.adjustmentNeeded": "Adjustment Needed",
+  "travel.approval.option.adjustmentNeeded.placeholder": "Type any",
+  "travel.approval.option.approveNote": "Approval Note (optional)",
+  "travel.approval.option.approveNote.placeholder": "Type any",
+  "travel.approval.option.rejectReason": "Reject Reason",
+  "travel.approval.option.rejectReason.placeholder": "Type any",
+  "travel.settlementApproval.option.adjustmentNote": "Adjustment Note",
+  "travel.settlementApproval.option.adjustmentNote.required": "Adjustment note is required",
+  "travel.settlementApproval.option.adjustmentNote.placeholder": "Type any",
+  "travel.settlementApproval.option.approveNote": "Approval Note (optional)",
+  "travel.settlementApproval.option.approveNote.placeholder": "Type any",
 
   "travel.request.dialog.modifyTitle": "Modify Confirmation",
   "travel.request.modifyDescription": " ",

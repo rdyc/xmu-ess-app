@@ -211,7 +211,7 @@ const handlerCreators: HandleCreators<OrganizationHierarchyEditorProps, OwnHandl
     }
 
     if (formMode === FormMode.Edit) {
-      message = intl.formatMessage(organizationMessage.hierarchy.message.createSuccess, { uid: response.uid });
+      message = intl.formatMessage(organizationMessage.hierarchy.message.updateSuccess, { uid: response.uid });
     }
 
     alertAdd({

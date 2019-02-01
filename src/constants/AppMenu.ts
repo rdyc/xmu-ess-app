@@ -62,8 +62,10 @@ enum AppMenu {
   TravelApproval = 'MNU40',
   TravelSettlementRequest = 'MNU29',
   TravelSettlementApproval = 'MNU41',
+  ImageGallery = 'MNU62',
   Common = 'MNU53',
-  AchievementChart = 'MNU63'
+  AchievementChart = 'MNU63',
+  COGSUpload = 'MNU64'
 }
 
 export default AppMenu;

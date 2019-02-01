@@ -1,3 +1,9 @@
+import { 
+  achievementField, 
+  achievementMessage, 
+  achievementPage, 
+  achievementSection
+} from './achievementMessage';
 import {
   currencyConfirm,
   currencyDialog,
@@ -9,11 +15,12 @@ import {
   currencySection
 } from './currencyMessage';
 import { 
+  galleryAction, 
   galleryField, 
   galleryFieldHelperFor, 
   galleryMessage, 
   galleryPage, 
-  gallerySection ,
+  gallerySection,
 } from './galleryMessage';
 import {
   holidayConfirm,
@@ -23,6 +30,13 @@ import {
   holidayPage,
   holidaySection
 } from './holiday';
+import { 
+  inforField, 
+  inforFieldHelperFor, 
+  inforMessage, 
+  inforPage,
+  inforSection
+} from './inforMessage';
 import {
   leaveConfirm,
   leaveField,
@@ -31,7 +45,11 @@ import {
   leavePage,
   leaveSection
 } from './leave';
-import { leaveCalculationField, leaveCalculationFilter, leaveCalculationPage } from './leaveCalculation';
+import { 
+  leaveCalculationField, 
+  leaveCalculationFilter, 
+  leaveCalculationPage 
+} from './leaveCalculation';
 import { 
   companyConfirm,
   companyDialog, 
@@ -198,7 +216,21 @@ export const lookupMessage = {
     page: galleryPage,
     section: gallerySection,
     field: galleryField,
+    action: galleryAction,
     fieldFor: galleryFieldHelperFor,
     message: galleryMessage
+  },
+  cogsUpload: {
+    page: inforPage,
+    section: inforSection,
+    field: inforField,
+    fieldFor: inforFieldHelperFor,
+    message: inforMessage
+  },
+  achievement: {
+    page: achievementPage,
+    field: achievementField,
+    message: achievementMessage,
+    section: achievementSection
   }
 };

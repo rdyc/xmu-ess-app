@@ -1,3 +1,4 @@
+import COGSUploadEditor from '@infor/components/editor/COGSUploadEditor';
 import { CurrencyDetail } from '@lookup/components/currency/detail/CurrencyDetail';
 import { CurrencyEditor } from '@lookup/components/currency/editor/CurrencyEditor';
 import { CurrencyList } from '@lookup/components/currency/list/CurrencyList';
@@ -15,6 +16,9 @@ import { LookupCustomerList } from './customer/list/LookupCustomerList';
 import { LookupDiemDetail } from './diem/detail/LookupDiemDetail';
 import LookupDiemEditor from './diem/editor/LookupDiemEditor';
 import { LookupDiemList } from './diem/list/LookupDiemList';
+import { AnnouncementEditor } from './gallery/announcement/AnnouncementEditor';
+import GalleryEditor from './gallery/editor/GalleryEditor';
+import { ImageGalleryList } from './gallery/list/ImageGalleryList';
 import LookupHolidayEditor from './holiday/editor/LookupHolidayEditor';
 import { LookupHolidayList } from './holiday/list/LookupHolidayList';
 import { LeaveCalculationList } from './leave/calculation/LeaveCalculationList';
@@ -69,7 +73,7 @@ const holiday = (props: RouteComponentProps) => (
     <Route path={`${props.match.path}/form`} component={LookupHolidayEditor} />
     <Route path={`${props.match.path}/:holidayUid`} component={LookupHolidayDetail} />
     <Route path={`${props.match.path}`} component={LookupHolidayList} />
-   </Switch>
+  </Switch>
 );
 
 const leave = (props: RouteComponentProps) => (
@@ -77,13 +81,13 @@ const leave = (props: RouteComponentProps) => (
     <Route path={`${props.match.path}/form`} component={LookupLeaveEditor} />
     <Route path={`${props.match.path}/:leaveUid`} component={LookupLeaveDetail} />
     <Route path={`${props.match.path}`} component={LookupLeaveList} />
-   </Switch>
+  </Switch>
 );
 
 const calculation = (props: RouteComponentProps) => (
   <Switch>
     <Route path={`${props.match.path}`} component={LeaveCalculationList} />
-   </Switch>
+  </Switch>
 );
 
 const systemLimit = (props: RouteComponentProps) => (
@@ -96,9 +100,9 @@ const systemLimit = (props: RouteComponentProps) => (
 
 const position = (props: RouteComponentProps) => (
   <Switch>
-    <Route path={`${props.match.path}/form`} component={PositionEditor}/>
+    <Route path={`${props.match.path}/form`} component={PositionEditor} />
     <Route path={`${props.match.path}/:companyUid/:positionUid`} component={PositionDetail} />
-    <Route path={`${props.match.path}`} component={PositionList}/>
+    <Route path={`${props.match.path}`} component={PositionList} />
   </Switch>
 );
 
@@ -107,7 +111,7 @@ const lookupCustomer = (props: RouteComponentProps) => (
     <Route path={`${props.match.path}/list`} component={LookupCustomerList} />
     <Route path={`${props.match.path}/form`} component={LookupCustomerEditor} />
     <Route path={`${props.match.path}/:customerUid`} component={LookupCustomerDetail} />
-</Switch>
+  </Switch>
 );
 
 const diem = (props: RouteComponentProps) => (
@@ -121,6 +125,20 @@ const diem = (props: RouteComponentProps) => (
 const achievement = (props: RouteComponentProps) => (
   <Switch>
     <Route path={`${props.match.path}`} component={AchievementEditor} />
+  </Switch>
+);
+
+const cogsUpload = (props: RouteComponentProps) => (
+  <Switch>
+    <Route path={`${props.match.path}`} component={COGSUploadEditor} />
+  </Switch>
+);
+
+const gallery = (props: RouteComponentProps) => (
+  <Switch>
+    <Route path={`${props.match.path}/announcement`} component={AnnouncementEditor} />
+    <Route path={`${props.match.path}/form`} component={GalleryEditor} />
+    <Route path={`${props.match.path}`} component={ImageGalleryList} />
   </Switch>
 );
 
@@ -138,5 +156,7 @@ export const LookupRoutingComponents: React.SFC<RouteComponentProps> = props => 
     <Route path={`${props.match.path}/roles`} component={role} />
     <Route path={`${props.match.path}/customer`} component={lookupCustomer} />
     <Route path={`${props.match.path}/achievementchart`} component={achievement} />
+    <Route path={`${props.match.path}/cogsupload`} component={cogsUpload} />
+    <Route path={`${props.match.path}/imagegalleries`} component={gallery} />
   </Switch>
 );

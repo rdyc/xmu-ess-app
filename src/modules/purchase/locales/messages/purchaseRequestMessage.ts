@@ -83,7 +83,7 @@ export const purchaseRequestField = defineMessages({
   reasonPlaceholder: { id: `${prefix}.field.information.rejectreason.placeholder` },
 
   approveNotes: { id: `${prefix}.field.information.approveNotes` },
-  approveNotesPlaceholder: { id: `${prefix}.field.information.rejectreason` },
+  approveNotesPlaceholder: { id: `${prefix}.field.information.approveNotes.placeholder` },
 
   isNotify: { id: `${prefix}.field.isNotify` },
   isRejected: { id: `${prefix}.field.isRejected` },

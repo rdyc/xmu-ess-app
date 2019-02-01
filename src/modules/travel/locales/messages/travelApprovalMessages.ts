@@ -19,7 +19,12 @@ export const travelApprovalPage = defineMessages({
 
 // option
 export const travelApprovalOption = defineMessages({
-  adjustmentNeeded: { id: `${prefix}.option.adjustmentNeeded` },
+  approveNote: { id: `${prefix}.option.approveNote` },
+  approveNotePlaceholder: { id: `${prefix}.option.approveNote.placeholder` },
+
+  rejectReason: { id: `${prefix}.option.rejectReason` },
+  rejectReasonRequired: { id: `${prefix}.option.rejectReason.required` },
+  rejectReasonPlaceholder: { id: `${prefix}.option.rejectReason.placeholder` },
 });
 
 // confirm
