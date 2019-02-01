@@ -35,6 +35,8 @@ interface OwnState {
   announcementImages: IAnnouncementImage[];
   loadImages: boolean;
   enableReset: boolean;
+  imageGalleries: IGallery[];
+  isAddImageOpen: boolean;
 }
 
 interface OwnHandlers {
@@ -45,12 +47,16 @@ interface OwnHandlers {
   handleSubmitAnnouncement: () => void;
   handleSubmitSuccess: (result: any, dispatch: Dispatch<any>) => void;
   handleSubmitFail: (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => void;
+  handleCheckbox: (image: IGallery) => void;
+  handleAddImageVisibility: (event: React.MouseEvent<HTMLElement>) => void;
 }
 
 interface OwnStateUpdater extends StateHandlerMap<OwnState> {
   updateImages: StateHandler<OwnState>;
   afterLoad: StateHandler<OwnState>;
   changeReset: StateHandler<OwnState>;
+  stateCheckbox: StateHandler<OwnState>;
+  setAddImageVisibility: StateHandler<OwnState>;
 }
 
 export interface IAnnouncementImage {
@@ -77,6 +83,8 @@ const createProps: mapper<AnnouncementEditorProps, OwnState> = (props: Announcem
   announcementImages: [],
   loadImages: true,
   enableReset: true,
+  imageGalleries: [],
+  isAddImageOpen: false,
 });
 
 const handlerCreators: HandleCreators<AnnouncementEditorProps, OwnHandlers> = {
@@ -198,6 +206,19 @@ const handlerCreators: HandleCreators<AnnouncementEditorProps, OwnHandlers> = {
         details: isObject(submitError) ? submitError.message : submitError
       });
     }
+  }, 
+  handleCheckbox: (props: AnnouncementEditorProps) => (image: IGallery) => {
+    const { imageGalleries, stateCheckbox } = props;
+    const _image = new Set(imageGalleries);
+
+    _image.has(image)
+      ? _image.delete(image)
+      : _image.add(image);
+
+    stateCheckbox(Array.from(_image));
+  },
+  handleAddImageVisibility: (props: AnnouncementEditorProps) => () => {
+    props.setAddImageVisibility();
   }
 };
 
@@ -223,6 +244,12 @@ const stateUpdaters: StateUpdaters<OwnOption, OwnState, OwnStateUpdater> = {
   }),
   changeReset: (prevState: OwnState) => () => ({
     enableReset: !prevState.enableReset,
+  }),
+  stateCheckbox: (prevState: OwnState) => (imageGalleries: IGallery[]) => ({
+    imageGalleries
+  }),
+  setAddImageVisibility: (prevState: OwnState) => () => ({
+    isAddImageOpen: !prevState.isAddImageOpen
   })
 };
 

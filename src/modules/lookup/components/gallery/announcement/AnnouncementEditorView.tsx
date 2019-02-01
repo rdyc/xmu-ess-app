@@ -5,6 +5,7 @@ import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import * as React from 'react';
+import { AddImageEditor } from './AddImageEditor';
 import { AnnouncementEditorProps } from './AnnouncementEditor';
 import { AnnouncementForm } from './form/AnnouncementForm';
 
@@ -75,7 +76,7 @@ export const AnnouncementEditorView: React.SFC<AnnouncementEditorProps> = props 
                 title={props.intl.formatMessage(lookupMessage.gallery.section.addTitle)}
               />
               <DialogActions>
-                <Button disabled>
+                <Button onClick={props.handleAddImageVisibility}>
                   {props.intl.formatMessage(lookupMessage.gallery.section.addTitle)}
                 </Button>
               </DialogActions>
@@ -129,6 +130,12 @@ export const AnnouncementEditorView: React.SFC<AnnouncementEditorProps> = props 
           }
         </Grid>
       </Grid>
+      <AddImageEditor 
+        isOpen={props.isAddImageOpen}
+        onClose={props.handleAddImageVisibility}
+        imageGalleries={props.imageGalleries}
+        handleCheckbox={props.handleCheckbox}
+      />
     </React.Fragment>
   );
   return render;
