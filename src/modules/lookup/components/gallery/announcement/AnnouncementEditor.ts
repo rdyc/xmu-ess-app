@@ -4,6 +4,7 @@ import { IAnnouncement } from '@home/classes/response/announcement';
 import { withAnnouncement, WithAnnouncement } from '@home/hoc/withAnnouncement';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { IGallery } from '@lookup/classes/response/gallery';
+import { WithImageGallery, withImageGallery } from '@lookup/hoc/withImageGallery';
 import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
 import { WithStyles, withStyles } from '@material-ui/core';
 import { WithWidth } from '@material-ui/core/withWidth';
@@ -35,7 +36,6 @@ interface OwnState {
   announcementImages: IAnnouncementImage[];
   loadImages: boolean;
   enableReset: boolean;
-  // imageGalleries: IGallery[];
   isAddImageOpen: boolean;
 }
 
@@ -69,6 +69,7 @@ export type AnnouncementEditorProps
   & InjectedIntlProps
   & OwnHandlers
   & WithAnnouncement
+  & WithImageGallery
   & OwnState
   & OwnStateUpdater
   & InjectedIntlProps
@@ -261,6 +262,16 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<AnnouncementEditorProps, OwnSt
 
     if (!response && !isLoading) {
       loadRequest({});
+      this.props.imageGalleryDispatch.loadAllRequest({
+        filter: {
+          page: undefined,
+          find: undefined,
+          findBy: undefined,
+          orderBy: undefined,
+          direction: 'descending',
+          size: undefined,
+        }
+      });
     }
   },
   componentWillUnmount() {
@@ -273,11 +284,13 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<AnnouncementEditorProps, OwnSt
     layoutDispatch.modeSearchOff();
     layoutDispatch.moreHide();
     loadDispose();
+    this.props.imageGalleryDispatch.loadAllDispose();
   }
 };
 
 export const AnnouncementEditor = compose<AnnouncementEditorProps, {}>(
   withLayout,
+  withImageGallery,
   withAnnouncement,
   injectIntl,
   withStyles(styles),

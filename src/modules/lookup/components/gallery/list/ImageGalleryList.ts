@@ -221,7 +221,7 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<ImageGalleryListProps, OwnStat
   },
   componentWillUnmount() {
     const { layoutDispatch } = this.props;
-    const { loadAllDispose } = this.props.imageGalleryDispatch;
+    // const { loadAllDispose } = this.props.imageGalleryDispatch;
 
     layoutDispatch.changeView(null);
     layoutDispatch.modeListOff();
@@ -229,7 +229,7 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<ImageGalleryListProps, OwnStat
     layoutDispatch.modeSearchOff();
     layoutDispatch.moreHide();
     this.props.appBarDispatch.dispose();
-    loadAllDispose();
+    // loadAllDispose();
   }
 };
 
