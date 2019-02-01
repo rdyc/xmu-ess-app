@@ -190,7 +190,7 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<ImageGalleryListProps, OwnStat
       {
         icon: PictureInPictureIcon ,
         onClick: () => { 
-          // redirect to manage image slider 
+          this.props.history.push('/lookup/imagegalleries/announcement'); 
         }
       },
       {

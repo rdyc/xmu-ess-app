@@ -39,7 +39,7 @@ interface OwnState {
 
 interface OwnHandlers {
   handleSetAnnouncementImages: (images: IAnnouncement[]) => void;
-  handleAddAnnouncementImage: (imageGallery: IGallery) => void;
+  handleAddAnnouncementImage: (imageGallery: IGallery[]) => void;
   handleRemoveAnnouncementImage: (imageUid: string) => void;
   handleMoveAnnouncementImage: (index: number, direction: 'forward' | 'backward') => void;
   handleSubmitAnnouncement: () => void;
@@ -93,13 +93,15 @@ const handlerCreators: HandleCreators<AnnouncementEditorProps, OwnHandlers> = {
     props.afterLoad();
     props.updateImages(announcementImages);
   },
-  handleAddAnnouncementImage: (props: AnnouncementEditorProps) => (imageGallery: IGallery) => {
-    const newAnnouncementImages = props.announcementImages.splice(props.announcementImages.length, 0, {
-      imageUid: imageGallery.uid,
-      imageName: imageGallery.name,
-      order: props.announcementImages.length + 1,
-      imgPath: imageGallery.path && imageGallery.path.small,
-    });
+  handleAddAnnouncementImage: (props: AnnouncementEditorProps) => (imageGallery: IGallery[]) => {
+    const addAnnouncementImages = imageGallery.map((item, index) => ({
+      imageUid: item.uid,
+      imageName: item.name,
+      order: props.announcementImages.length + index + 1,
+      imgPath: item.path && item.path.small,
+    }));
+
+    const newAnnouncementImages = props.announcementImages.concat(addAnnouncementImages);
 
     rearrangeImages(props, newAnnouncementImages);
   },
@@ -238,7 +240,7 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<AnnouncementEditorProps, OwnSt
         subTitle : '' // intl.formatMessage(organizationMessage.workflowSetup.page.listSubHeader)
       },
       status: {
-        isNavBackVisible: false,
+        isNavBackVisible: true,
         isSearchVisible: false,
         isActionCentreVisible: false,
         isMoreVisible: false,
