@@ -1,6 +1,7 @@
 import { IBaseMetadata } from '@generic/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
 import { IGallery } from '@lookup/classes/response/gallery';
+import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
 import {
   AppBar,
   Dialog,
@@ -120,7 +121,7 @@ export const AddImageEditorView: React.SFC<AddImageEditorProps> = props => {
             </IconButton>
 
             <Typography variant="h6" color="inherit" className={props.classes.flex}>
-              Add Image
+              {props.intl.formatMessage(lookupMessage.gallery.section.addTitle)}
             </Typography>
 
           </Toolbar>
