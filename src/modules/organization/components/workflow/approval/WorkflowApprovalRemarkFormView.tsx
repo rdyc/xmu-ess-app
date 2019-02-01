@@ -31,7 +31,7 @@ export const WorkflowApprovalRemarkFormView: React.SFC<WorkflowApprovalRemarkFor
             props.formIsApproved &&
             <Field
               name="remark"
-              required={true}
+              required={!props.remarkToogle}
               label={props.remarkToogle 
                 ? (props.approvalOptionalRemarkLabel || props.intl.formatMessage(organizationMessage.workflow.field.remark)) 
                 : (props.approvalRemarkLabel || props.intl.formatMessage(organizationMessage.workflow.field.remark))}

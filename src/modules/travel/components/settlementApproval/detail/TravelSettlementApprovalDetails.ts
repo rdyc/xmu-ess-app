@@ -62,7 +62,7 @@ const createProps: mapper<TravelSettlementApprovalDetailProps, OwnState> = (prop
   approvalSubHeader: props.intl.formatMessage(travelMessage.settlement.section.approvalSubHeader),
   approvalChoices: [
     { value: WorkflowStatusType.Approved, label: props.intl.formatMessage(organizationMessage.workflow.option.approve) },
-    { value: WorkflowStatusType.Rejected, label: props.intl.formatMessage(travelMessage.requestApproval.option.adjustmentNeeded) }
+    { value: WorkflowStatusType.Rejected, label: props.intl.formatMessage(travelMessage.settlementApproval.option.adjustmentNeeded) }
   ],
   approvalTrueValue: WorkflowStatusType.Approved,
   approvalDialogTitle: props.intl.formatMessage(travelMessage.settlementApproval.confirm.submissionTitle),
@@ -81,8 +81,10 @@ const handlerCreators: HandleCreators<TravelSettlementApprovalDetailProps, OwnHa
   handleValidate: (props: TravelSettlementApprovalDetailProps) => (formData: WorkflowApprovalFormData) => { 
     const errors = {};
   
-    const requiredFields = ['isApproved', 'remark'];
-  
+    const requiredFields = formData.isApproved !== props.approvalTrueValue
+      ? ['isApproved', 'remark']
+      : ['isApproved'];
+
     requiredFields.forEach(field => {
       if (!formData[field] || isNullOrUndefined(formData[field])) {
         errors[field] = props.intl.formatMessage(organizationMessage.workflow.fieldFor(field, 'fieldRequired'));
@@ -114,7 +116,7 @@ const handlerCreators: HandleCreators<TravelSettlementApprovalDetailProps, OwnHa
     // generate payload
     const payload: IWorkflowApprovalPayload = {
       isApproved,
-      remark: !isApproved ? formData.remark : undefined
+      remark: formData.remark
     };
 
     // dispatch update request
