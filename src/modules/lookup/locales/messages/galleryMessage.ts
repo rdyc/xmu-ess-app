@@ -23,6 +23,8 @@ export const galleryMessage = defineMessages({
   createFailure: { id: `${prefix}.message.create.failure` },
   updateSuccess: { id: `${prefix}.message.update.success` },
   updateFailure: { id: `${prefix}.message.update.failure` },
+  updateAnnouncementSuccess: { id: `${prefix}.message.updateAnnouncement.success` },
+  updateAnnouncementFailure: { id: `${prefix}.message.updateAnnouncement.failure` },
 });
 
 // field
@@ -31,6 +33,13 @@ export const galleryField = defineMessages({
   filePlaceholder: { id: `${prefix}.field.file.placeholder`},
   fileRequired: { id: `${prefix}.field.file.required`},
   
+});
+
+// action
+export const galleryAction = defineMessages({
+  moveUp : {id: `${prefix}.action.moveUp`},
+  moveDown : {id: `${prefix}.action.moveDown`},
+  remove : {id: `${prefix}.action.remove`},
 });
 
 // section

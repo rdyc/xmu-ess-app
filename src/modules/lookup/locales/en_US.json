@@ -535,10 +535,16 @@
   "lookup.gallery.message.update.failure": "Unable to process your submission",
   "lookup.gallery.message.delete.success": "Current data with ID {uid} has been deleted",
   "lookup.gallery.message.delete.failure": "Unable to process your submission",
+  "lookup.gallery.message.updateAnnouncement.success": "Announcement slider has been updated",
+  "lookup.gallery.message.updateAnnouncement.failure": "Unable to update announcement slider",
 
   "lookup.gallery.field.file": "Upload File (Image)",
   "lookup.gallery.field.file.required": "Image is required",
   "lookup.gallery.field.file.placeholder": "Upload any image",
+
+  "lookup.gallery.action.moveUp": "Move Up",
+  "lookup.gallery.action.moveDown": "Move Down",
+  "lookup.gallery.action.remove": "Remove",
 
   "lookup.gallery.section.info.title": "Image Gallery",
   "lookup.gallery.section.info.subHeader": " ",

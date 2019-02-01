@@ -1,11 +1,12 @@
 import { layoutMessage } from '@layout/locales/messages';
 import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
-import { Button, Card, CardHeader, CardMedia, DialogActions, Grid, IconButton, Typography } from '@material-ui/core';
+import { Button, Card, CardHeader, CardMedia, DialogActions, Grid, IconButton, Tooltip, Typography } from '@material-ui/core';
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import * as React from 'react';
 import { AnnouncementEditorProps } from './AnnouncementEditor';
+import { AnnouncementForm } from './form/AnnouncementForm';
 
 export const AnnouncementEditorView: React.SFC<AnnouncementEditorProps> = props => {
   const { isLoading, response } = props.announcementState.all;
@@ -34,23 +35,29 @@ export const AnnouncementEditorView: React.SFC<AnnouncementEditorProps> = props 
                     </Grid>
                     <Grid item xs={12} sm={12} md={2}>
                       <DialogActions>
-                        <IconButton 
-                          disabled={index <= 0} 
-                          onClick={() => props.handleMoveAnnouncementImage(index, 'backward')}
-                        >
-                          <ArrowUpwardIcon />
-                        </IconButton>
-                        <IconButton 
-                          disabled={index >= (props.announcementImages.length - 1)} 
-                          onClick={() => props.handleMoveAnnouncementImage(index, 'forward')}
-                        >
-                          <ArrowDownwardIcon />
-                        </IconButton>
-                        <IconButton 
-                          onClick={() => props.handleRemoveAnnouncementImage(image.imageUid)}
-                        >
-                          <DeleteForeverIcon />
-                        </IconButton>
+                        <Tooltip title={props.intl.formatMessage(lookupMessage.gallery.action.moveUp)}>
+                          <IconButton 
+                            disabled={index <= 0} 
+                            onClick={() => props.handleMoveAnnouncementImage(index, 'backward')}
+                          >
+                            <ArrowUpwardIcon />
+                          </IconButton>
+                        </Tooltip>
+                        <Tooltip title={props.intl.formatMessage(lookupMessage.gallery.action.moveDown)}>
+                          <IconButton 
+                            disabled={index >= (props.announcementImages.length - 1)} 
+                            onClick={() => props.handleMoveAnnouncementImage(index, 'forward')}
+                          >
+                            <ArrowDownwardIcon />
+                          </IconButton>
+                        </Tooltip>
+                          <Tooltip title={props.intl.formatMessage(lookupMessage.gallery.action.remove)}>
+                          <IconButton 
+                            onClick={() => props.handleRemoveAnnouncementImage(image.imageUid)}
+                          >
+                            <DeleteForeverIcon />
+                          </IconButton>
+                        </Tooltip>
                       </DialogActions>
                     </Grid>
                   </Grid>
@@ -68,7 +75,7 @@ export const AnnouncementEditorView: React.SFC<AnnouncementEditorProps> = props 
                 title={props.intl.formatMessage(lookupMessage.gallery.section.addTitle)}
               />
               <DialogActions>
-                <Button>
+                <Button disabled>
                   {props.intl.formatMessage(lookupMessage.gallery.section.addTitle)}
                 </Button>
               </DialogActions>
@@ -80,12 +87,17 @@ export const AnnouncementEditorView: React.SFC<AnnouncementEditorProps> = props 
                 title={props.intl.formatMessage(lookupMessage.gallery.section.submitTitle)}
               />
               <DialogActions>
-                <Button onClick={() => response && response.data && props.handleSetAnnouncementImages(response.data)}>
+                <Button 
+                  onClick={() => response && response.data && props.handleSetAnnouncementImages(response.data)}
+                  disabled={!props.enableReset}
+                >
                   {props.intl.formatMessage(layoutMessage.action.reset)}
                 </Button>
-                <Button onClick={props.handleSubmitAnnouncement} color={'secondary'}>
-                  {props.intl.formatMessage(layoutMessage.action.submit)}
-                </Button>
+                <AnnouncementForm 
+                  onSubmit={props.handleSubmitAnnouncement} 
+                  onSubmitSuccess={props.handleSubmitSuccess}
+                  onSubmitFail={props.handleSubmitFail}
+                />
               </DialogActions>
             </Card>
           </Grid>

@@ -20,6 +20,9 @@ import {
   withHandlers,
   withStateHandlers,
 } from 'recompose';
+import { Dispatch } from 'redux';
+import { FormErrors } from 'redux-form';
+import { isObject } from 'util';
 import { AnnouncementEditorView } from './AnnouncementEditorView';
 
 interface OwnOption {
@@ -29,6 +32,7 @@ interface OwnState {
   imageUid?: string;
   announcementImages: IAnnouncementImage[];
   loadImages: boolean;
+  enableReset: boolean;
 }
 
 interface OwnHandlers {
@@ -37,11 +41,14 @@ interface OwnHandlers {
   handleRemoveAnnouncementImage: (imageUid: string) => void;
   handleMoveAnnouncementImage: (index: number, direction: 'forward' | 'backward') => void;
   handleSubmitAnnouncement: () => void;
+  handleSubmitSuccess: (result: any, dispatch: Dispatch<any>) => void;
+  handleSubmitFail: (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => void;
 }
 
 interface OwnStateUpdater extends StateHandlerMap<OwnState> {
   updateImages: StateHandler<OwnState>;
   afterLoad: StateHandler<OwnState>;
+  changeReset: StateHandler<OwnState>;
 }
 
 export interface IAnnouncementImage {
@@ -66,6 +73,7 @@ export type AnnouncementEditorProps
 const createProps: mapper<AnnouncementEditorProps, OwnState> = (props: AnnouncementEditorProps): OwnState => ({ 
   announcementImages: [],
   loadImages: true,
+  enableReset: true,
 });
 
 const handlerCreators: HandleCreators<AnnouncementEditorProps, OwnHandlers> = {
@@ -117,6 +125,8 @@ const handlerCreators: HandleCreators<AnnouncementEditorProps, OwnHandlers> = {
     rearrangeImages(props, newAnnouncementImages);
   },
   handleSubmitAnnouncement: (props: AnnouncementEditorProps) => () => {
+    props.changeReset();
+
     const itemAnnouncement = props.announcementImages.map(item => ({
       imageUid: item.imageUid,
       order: item.order,
@@ -134,6 +144,55 @@ const handlerCreators: HandleCreators<AnnouncementEditorProps, OwnHandlers> = {
       });
     });
   },
+  handleSubmitSuccess: (props: AnnouncementEditorProps) => (response: IAnnouncement[]) => {
+    const { intl } = props;
+    const { alertAdd } = props.layoutDispatch;
+    
+    let message: string = '';
+    props.announcementDispatch.loadDispose();
+
+    message = intl.formatMessage(lookupMessage.gallery.message.updateAnnouncementSuccess);
+
+    alertAdd({
+      message,
+      time: new Date()
+    });
+
+    const announcementImages: IAnnouncementImage[] = response.map((item, index) => 
+      ({
+      imageUid: item.imageUid,
+      imageName: item.name,
+      order: index + 1,
+      imgPath: item.path && item.path.medium,
+      })
+    );
+
+    props.updateImages(announcementImages);
+    props.changeReset();
+  },
+  handleSubmitFail: (props: AnnouncementEditorProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
+    const { intl } = props;
+    const { alertAdd } = props.layoutDispatch;
+    
+    if (errors) {
+      // validation errors from server (400: Bad Request)
+      alertAdd({
+        time: new Date(),
+        message: isObject(submitError) ? submitError.message : submitError
+      });
+    } else {
+      // another errors from server
+      let message: string = '';
+
+      message = intl.formatMessage(lookupMessage.gallery.message.updateAnnouncementFailure);
+
+      alertAdd({
+        message,
+        time: new Date(),
+        details: isObject(submitError) ? submitError.message : submitError
+      });
+    }
+  }
 };
 
 const rearrangeImages = (props: AnnouncementEditorProps, newImages: IAnnouncementImage[]) => {
@@ -155,6 +214,9 @@ const stateUpdaters: StateUpdaters<OwnOption, OwnState, OwnStateUpdater> = {
   }),
   afterLoad: (prevState: OwnState) => () => ({
     loadImages: false,
+  }),
+  changeReset: (prevState: OwnState) => () => ({
+    enableReset: !prevState.enableReset,
   })
 };
 

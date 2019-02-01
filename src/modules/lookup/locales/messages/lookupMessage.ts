@@ -9,11 +9,12 @@ import {
   currencySection
 } from './currencyMessage';
 import { 
+  galleryAction, 
   galleryField, 
   galleryFieldHelperFor, 
   galleryMessage, 
   galleryPage, 
-  gallerySection ,
+  gallerySection,
 } from './galleryMessage';
 import {
   holidayConfirm,
@@ -198,6 +199,7 @@ export const lookupMessage = {
     page: galleryPage,
     section: gallerySection,
     field: galleryField,
+    action: galleryAction,
     fieldFor: galleryFieldHelperFor,
     message: galleryMessage
   }
