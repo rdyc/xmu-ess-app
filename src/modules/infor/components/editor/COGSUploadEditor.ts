@@ -126,21 +126,11 @@ const lifecycles: ReactLifeCycleFunctions<COGSUploadEditorProps, {}> = {
       return;
     }
 
-    layoutDispatch.setupView({
-      view: {
+    layoutDispatch.changeView({
         uid: AppMenu.COGSUpload,
         parentUid: AppMenu.Lookup,
         title: intl.formatMessage(view.title),
         subTitle : intl.formatMessage(view.subTitle)
-      },
-      // parentUrl: `/lookup/cogsupload`,
-      status: {
-        isNavBackVisible: true,
-        isSearchVisible: false,
-        isActionCentreVisible: false,
-        isMoreVisible: false,
-        isModeSearch: false
-      }
     });
   },
   componentWillUnmount() {

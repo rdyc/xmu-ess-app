@@ -27,7 +27,8 @@ import {
   inforField, 
   inforFieldHelperFor, 
   inforMessage, 
-  inforPage
+  inforPage,
+  inforSection
 } from './inforMessage';
 import {
   leaveConfirm,
@@ -213,6 +214,7 @@ export const lookupMessage = {
   },
   cogsUpload: {
     page: inforPage,
+    section: inforSection,
     field: inforField,
     fieldFor: inforFieldHelperFor,
     message: inforMessage

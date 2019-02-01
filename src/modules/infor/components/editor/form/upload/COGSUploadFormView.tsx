@@ -19,14 +19,14 @@ export const COGSUploadFormView: React.SFC<COGSUploadFormProps> = props => (
       <Grid item xs={12} md={4}>
         <Card>
           <CardHeader
-            title={props.intl.formatMessage(lookupMessage.cogsUpload.page.uploadTitle)}
+            title={props.intl.formatMessage(lookupMessage.cogsUpload.section.infoTitle)}
           />
           <CardContent>
             <Field
               name="file"
               label={props.intl.formatMessage(lookupMessage.cogsUpload.field.file)}
               required={true}
-              accept=".xlsx, .xls, .csv"
+              accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel, .xlsx, .xls, .csv"
               component={InputFile}
             />
           </CardContent>
