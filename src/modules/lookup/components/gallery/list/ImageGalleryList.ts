@@ -5,6 +5,7 @@ import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { ImageGalleryField } from '@lookup/classes/types/gallery/ImageGalleryField';
 import { WithImageGallery, withImageGallery } from '@lookup/hoc/withImageGallery';
+import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
 import { WithStyles, withStyles } from '@material-ui/core';
 import { WithWidth } from '@material-ui/core/withWidth';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
@@ -166,8 +167,8 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<ImageGalleryListProps, OwnStat
       view: {
         uid: AppMenu.ImageGallery,
         parentUid: AppMenu.Lookup,
-        title: 'Gallery', 
-        subTitle: '' 
+        title: this.props.intl.formatMessage(lookupMessage.gallery.page.listTitle),
+        subTitle: this.props.intl.formatMessage(lookupMessage.gallery.page.listSubHeader) 
       },
       status: {
         isNavBackVisible: false,
@@ -249,7 +250,7 @@ const loadData = (props: ImageGalleryListProps): void => {
   } else {
     alertAdd({
       time: new Date(),
-      message: 'Unable to find current user state'
+      message: props.intl.formatMessage(lookupMessage.gallery.message.emptyProps)
     });
   }
 };
