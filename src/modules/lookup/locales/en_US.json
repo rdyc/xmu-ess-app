@@ -525,6 +525,8 @@
   "lookup.gallery.page.new.subHeader": " ",
   "lookup.gallery.page.modify.title": "Modify Image Gallery",
   "lookup.gallery.page.modify.subHeader": " ",
+  "lookup.gallery.page.modifyAnnouncement.title": "Modify Announcement",
+  "lookup.gallery.page.modifyAnnouncement.subHeader": " ",
 
   "lookup.gallery.message.emptyProps": "Some props are empty",
   "lookup.gallery.message.create.success": "New Image Gallery has been uploaded",
@@ -533,13 +535,23 @@
   "lookup.gallery.message.update.failure": "Unable to process your submission",
   "lookup.gallery.message.delete.success": "Current data with ID {uid} has been deleted",
   "lookup.gallery.message.delete.failure": "Unable to process your submission",
+  "lookup.gallery.message.updateAnnouncement.success": "Announcement slider has been updated",
+  "lookup.gallery.message.updateAnnouncement.failure": "Unable to update announcement slider",
 
   "lookup.gallery.field.file": "Upload File (Image)",
   "lookup.gallery.field.file.required": "Image is required",
   "lookup.gallery.field.file.placeholder": "Upload any image",
 
-  "lookup.gallery.section.info.title": "Upload Image",
+  "lookup.gallery.action.moveUp": "Move Up",
+  "lookup.gallery.action.moveDown": "Move Down",
+  "lookup.gallery.action.remove": "Remove",
+
+  "lookup.gallery.section.info.title": "Image Gallery",
   "lookup.gallery.section.info.subHeader": " ",
+  "lookup.gallery.section.submit.title": "Submit Announcement",
+  "lookup.gallery.section.submit.subHeader": " ",
+  "lookup.gallery.section.add.title": "Add Image",
+  "lookup.gallery.section.add.subHeader": " ",
 
   "lookup.infor.page.upload.title": "COGS Upload",
   "lookup.infor.page.upload.subHeader": " ",

@@ -176,7 +176,8 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<ImageGalleryListProps, OwnStat
         isActionCentreVisible: false,
         isMoreVisible: false,
         isModeSearch: false
-      }
+      },
+      
     });
 
     if ((!response && !isLoading) || this.props.forceReload) {
@@ -190,7 +191,7 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<ImageGalleryListProps, OwnStat
       {
         icon: PictureInPictureIcon ,
         onClick: () => { 
-          // redirect to manage image slider 
+          this.props.history.push('/lookup/imagegalleries/announcement'); 
         }
       },
       {
@@ -220,7 +221,7 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<ImageGalleryListProps, OwnStat
   },
   componentWillUnmount() {
     const { layoutDispatch } = this.props;
-    const { loadAllDispose } = this.props.imageGalleryDispatch;
+    // const { loadAllDispose } = this.props.imageGalleryDispatch;
 
     layoutDispatch.changeView(null);
     layoutDispatch.modeListOff();
@@ -228,7 +229,7 @@ const lifeCycleFunctions: ReactLifeCycleFunctions<ImageGalleryListProps, OwnStat
     layoutDispatch.modeSearchOff();
     layoutDispatch.moreHide();
     this.props.appBarDispatch.dispose();
-    loadAllDispose();
+    // loadAllDispose();
   }
 };
 

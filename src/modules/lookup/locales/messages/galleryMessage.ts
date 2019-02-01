@@ -12,6 +12,8 @@ export const galleryPage = defineMessages({
   newSubHeader: { id: `${prefix}.page.new.subHeader`},
   modifyTitle: { id: `${prefix}.page.modify.title`},
   modifySubHeader: { id: `${prefix}.page.modify.subHeader`},
+  modifyAnnouncementTitle: { id: `${prefix}.page.modifyAnnouncement.title`},
+  modifyAnnouncementSubHeader: { id: `${prefix}.page.modifyAnnouncement.subHeader`},
 });
 
 // messages
@@ -21,6 +23,8 @@ export const galleryMessage = defineMessages({
   createFailure: { id: `${prefix}.message.create.failure` },
   updateSuccess: { id: `${prefix}.message.update.success` },
   updateFailure: { id: `${prefix}.message.update.failure` },
+  updateAnnouncementSuccess: { id: `${prefix}.message.updateAnnouncement.success` },
+  updateAnnouncementFailure: { id: `${prefix}.message.updateAnnouncement.failure` },
 });
 
 // field
@@ -31,10 +35,21 @@ export const galleryField = defineMessages({
   
 });
 
+// action
+export const galleryAction = defineMessages({
+  moveUp : {id: `${prefix}.action.moveUp`},
+  moveDown : {id: `${prefix}.action.moveDown`},
+  remove : {id: `${prefix}.action.remove`},
+});
+
 // section
 export const gallerySection = defineMessages({
   infoTitle: { id: `${prefix}.section.info.title`},
   infoSubHeader: { id: `${prefix}.section.info.subHeader`},
+  submitTitle: { id: `${prefix}.section.submit.title`},
+  submitSubHeader: { id: `${prefix}.section.submit.subHeader`},
+  addTitle: { id: `${prefix}.section.add.title`},
+  addSubHeader: { id: `${prefix}.section.add.subHeader`},
 });
 
 // helper
