@@ -87,7 +87,7 @@ const handlerCreators: HandleCreators<GalleryEditorProps, OwnHandlers> = {
       time: new Date()
     });
 
-    history.push('/lookup/gallery');
+    history.push('/lookup/imagegalleries');
   },
   handleSubmitFail: (props: GalleryEditorProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
     const { intl } = props;
