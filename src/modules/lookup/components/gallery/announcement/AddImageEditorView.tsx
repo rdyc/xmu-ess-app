@@ -22,12 +22,6 @@ import { AddImageEditorProps } from './AddImageEditor';
 
 export const AddImageEditorView: React.SFC<AddImageEditorProps> = props => { 
   const { isLoading, response } = props.imageGalleryState.all;
-  // const { handleCheckbox, imageGalleries } = props;
-
-  // const isChecked = (image: IGallery) => {
-  //   const _image = new Set(imageGalleries);
-  //   return _image.has(image);
-  // };
 
   const RenderImageList = (images: IGallery[]) => {
     return (
