@@ -4,6 +4,9 @@ import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { IAchievementPatchPayload } from '@lookup/classes/request/achievement';
 import { IAchievementResult } from '@lookup/classes/response/achievement';
 import { WithAchievement, withAchievement } from '@lookup/hoc/withAchievement';
+import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
+import { InjectedIntlProps, injectIntl } from 'react-intl';
+import { RouteComponentProps, withRouter } from 'react-router';
 import { compose, HandleCreators, lifecycle, ReactLifeCycleFunctions, withHandlers } from 'recompose';
 import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
@@ -22,6 +25,8 @@ export type AchievementEditorProps
   = OwnHandlers
   & WithLayout
   & WithAppBar
+  & InjectedIntlProps
+  & RouteComponentProps
   & WithAchievement;
 
 const handlerCreators: HandleCreators<AchievementEditorProps, OwnHandlers> = {
@@ -62,10 +67,14 @@ const handlerCreators: HandleCreators<AchievementEditorProps, OwnHandlers> = {
   handleSubmitSuccess: (props: AchievementEditorProps) => (response: IAchievementResult) => {
     const { alertAdd } = props.layoutDispatch;
     
+    const message = props.intl.formatMessage(lookupMessage.achievement.message.createSuccess);
+
     alertAdd({
-      message: JSON.stringify(response),
+      message,
       time: new Date()
     });
+
+    props.history.push('/lookup/achievementchart');
   },
   handleSubmitFail: (props: AchievementEditorProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
     const { alertAdd } = props.layoutDispatch;
@@ -77,9 +86,11 @@ const handlerCreators: HandleCreators<AchievementEditorProps, OwnHandlers> = {
         message: isObject(submitError) ? submitError.message : submitError
       });
     } else {
+      const message = props.intl.formatMessage(lookupMessage.achievement.message.createFailure);
+
       // another errors from server
       alertAdd({
-        message: 'Gatot',
+        message,
         time: new Date(),
         details: isObject(submitError) ? submitError.message : submitError
       });
@@ -89,13 +100,28 @@ const handlerCreators: HandleCreators<AchievementEditorProps, OwnHandlers> = {
 
 const lifecycles: ReactLifeCycleFunctions<AchievementEditorProps, {}> = {
   componentDidMount() {
-    const { layoutDispatch } = this.props;
+    const { layoutDispatch, intl } = this.props;
+    
+    const view = {
+      title: lookupMessage.achievement.page.newTitle,
+      subTitle: lookupMessage.achievement.page.newSubHeader,
+    };
 
-    layoutDispatch.changeView({
-      uid: AppMenu.AchievementChart,
-      parentUid: AppMenu.Lookup,
-      title: 'Upload Achievement Chart',
-      subTitle: 'Upload Form Demo'
+    layoutDispatch.setupView({
+      view: {
+        uid: AppMenu.AchievementChart,
+        parentUid: AppMenu.Lookup,
+        title: intl.formatMessage(view.title),
+        subTitle : intl.formatMessage(view.subTitle)
+      },
+      parentUrl: `/lookup/achievementchart`,
+      status: {
+        isNavBackVisible: true,
+        isSearchVisible: false,
+        isActionCentreVisible: false,
+        isMoreVisible: false,
+        isModeSearch: false
+      }
     });
   },
   componentWillUnmount() {
@@ -112,7 +138,9 @@ const lifecycles: ReactLifeCycleFunctions<AchievementEditorProps, {}> = {
 export const AchievementEditor = compose<AchievementEditorProps, {}>(
   withLayout,
   withAppBar,
+  withRouter,
   withAchievement,
+  injectIntl,
   withHandlers(handlerCreators),
   lifecycle(lifecycles)
 )(AchievementEditorView);
