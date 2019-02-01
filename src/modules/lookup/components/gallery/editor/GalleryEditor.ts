@@ -133,7 +133,7 @@ const lifecycles: ReactLifeCycleFunctions<GalleryEditorProps, {}> = {
         title: intl.formatMessage(view.title),
         subTitle : intl.formatMessage(view.subTitle)
       },
-      parentUrl: `/lookup/gallery`,
+      parentUrl: `/lookup/imagegalleries`,
       status: {
         isNavBackVisible: true,
         isSearchVisible: false,
