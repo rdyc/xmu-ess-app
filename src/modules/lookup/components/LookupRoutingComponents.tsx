@@ -16,6 +16,7 @@ import { LookupCustomerList } from './customer/list/LookupCustomerList';
 import { LookupDiemDetail } from './diem/detail/LookupDiemDetail';
 import LookupDiemEditor from './diem/editor/LookupDiemEditor';
 import { LookupDiemList } from './diem/list/LookupDiemList';
+import GalleryEditor from './gallery/editor/GalleryEditor';
 import { ImageGalleryList } from './gallery/list/ImageGalleryList';
 import LookupHolidayEditor from './holiday/editor/LookupHolidayEditor';
 import { LookupHolidayList } from './holiday/list/LookupHolidayList';
@@ -134,6 +135,7 @@ const cogsUpload = (props: RouteComponentProps) => (
 
 const gallery = (props: RouteComponentProps) => (
   <Switch>
+    <Route path={`${props.match.path}/form`} component={GalleryEditor} />
     <Route path={`${props.match.path}`} component={ImageGalleryList} />
   </Switch>
 );
