@@ -1,10 +1,10 @@
 import AppMenu from '@constants/AppMenu';
+import { IInforPostPayload } from '@infor/classes/request';
+import { IInforResult } from '@infor/classes/response';
+import { WithInfor, withInfor } from '@infor/hoc/withInfor';
 import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
-import { IGalleryPostPayload } from '@lookup/classes/request/gallery';
-import { IGallery } from '@lookup/classes/response/gallery';
-import { WithImageGallery, withImageGallery } from '@lookup/hoc/withImageGallery';
 import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
@@ -18,18 +18,18 @@ import {
 import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
 import { isNullOrUndefined, isObject } from 'util';
-import { GalleryFormData } from './form/upload/GalleryForm';
-import { GalleryEditorView } from './GalleryEditorView';
+import { COGSUploadEditorView } from './COGSUploadEditorView';
+import { COGSFormData } from './form/upload/COGSUploadForm';
 
 interface OwnHandlers {
-  handleValidate: (payload: GalleryFormData) => FormErrors;
-  handleSubmit: (payload: GalleryFormData) => void;
+  handleValidate: (payload: COGSFormData) => FormErrors;
+  handleSubmit: (payload: COGSFormData) => void;
   handleSubmitSuccess: (result: any, dispatch: Dispatch<any>) => void;
   handleSubmitFail: (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => void;
 }
 
-export type GalleryEditorProps
-  = WithImageGallery
+export type COGSUploadEditorProps
+  = WithInfor
   & WithUser
   & WithLayout
   & WithAppBar
@@ -37,23 +37,23 @@ export type GalleryEditorProps
   & RouteComponentProps
   & OwnHandlers;
 
-const handlerCreators: HandleCreators<GalleryEditorProps, OwnHandlers> = {
-  handleValidate: (props: GalleryEditorProps) => (formData: GalleryFormData) => { 
+const handlerCreators: HandleCreators<COGSUploadEditorProps, OwnHandlers> = {
+  handleValidate: (props: COGSUploadEditorProps) => (formData: COGSFormData) => { 
     const errors = {};
   
     const requiredFields = ['file'];
   
     requiredFields.forEach(field => {
       if (!formData[field] || isNullOrUndefined(formData[field])) {
-        errors[field] = props.intl.formatMessage(lookupMessage.gallery.fieldFor(field, 'fieldRequired'));
+        errors[field] = props.intl.formatMessage(lookupMessage.cogsUpload.fieldFor(field, 'fieldRequired'));
       }
     });
     
     return errors;
   },
-  handleSubmit: (props: GalleryEditorProps) => (formData: GalleryFormData) => { 
+  handleSubmit: (props: COGSUploadEditorProps) => (formData: COGSFormData) => { 
     const { user } = props.userState;
-    const { createRequest } = props.imageGalleryDispatch;
+    const { postRequest } = props.inforDispatch;
 
     if (!user) {
       return Promise.reject('user was not found');
@@ -69,27 +69,27 @@ const handlerCreators: HandleCreators<GalleryEditorProps, OwnHandlers> = {
 
     // creating
     return new Promise((resolve, reject) => {
-      createRequest({
+      postRequest({
         resolve, 
         reject,
-        data: payload as IGalleryPostPayload
+        data: payload as IInforPostPayload
       });
     });
   },
-  handleSubmitSuccess: (props: GalleryEditorProps) => (response: IGallery) => {
+  handleSubmitSuccess: (props: COGSUploadEditorProps) => (response: IInforResult) => {
     const { intl, history } = props;
     const { alertAdd } = props.layoutDispatch;
 
-    const message = intl.formatMessage(lookupMessage.gallery.message.createSuccess, { uid: response.uid });
+    const message = intl.formatMessage(lookupMessage.cogsUpload.message.uploadSuccess, { approved: response.rowApproved,  rejected: response.rowRejected});
     
     alertAdd({
       message,
       time: new Date()
     });
 
-    history.push('/lookup/imagegalleries');
+    history.push('/lookup/cogsupload');
   },
-  handleSubmitFail: (props: GalleryEditorProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
+  handleSubmitFail: (props: COGSUploadEditorProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
     const { intl } = props;
     const { alertAdd } = props.layoutDispatch;
     
@@ -101,7 +101,7 @@ const handlerCreators: HandleCreators<GalleryEditorProps, OwnHandlers> = {
       });
     } else {
       // another errors from server
-      const message = intl.formatMessage(lookupMessage.gallery.message.createFailure);
+      const message = intl.formatMessage(lookupMessage.cogsUpload.message.uploadFailure);
 
       alertAdd({
         message,
@@ -112,39 +112,29 @@ const handlerCreators: HandleCreators<GalleryEditorProps, OwnHandlers> = {
   }
 };
 
-const lifecycles: ReactLifeCycleFunctions<GalleryEditorProps, {}> = {
+const lifecycles: ReactLifeCycleFunctions<COGSUploadEditorProps, {}> = {
   componentDidMount() {
     const { layoutDispatch, intl } = this.props;
     const { user } = this.props.userState;
     
     const view = {
-      title: lookupMessage.gallery.page.newTitle,
-      subTitle: lookupMessage.gallery.page.newSubHeader,
+      title: lookupMessage.cogsUpload.page.uploadTitle,
+      subTitle: lookupMessage.cogsUpload.page.uploadSubHeader,
     };
 
     if (!user) {
       return;
     }
 
-    layoutDispatch.setupView({
-      view: {
-        uid: AppMenu.LookupGallery,
+    layoutDispatch.changeView({
+        uid: AppMenu.COGSUpload,
         parentUid: AppMenu.Lookup,
         title: intl.formatMessage(view.title),
         subTitle : intl.formatMessage(view.subTitle)
-      },
-      parentUrl: `/lookup/gallery`,
-      status: {
-        isNavBackVisible: true,
-        isSearchVisible: false,
-        isActionCentreVisible: false,
-        isMoreVisible: false,
-        isModeSearch: false
-      }
     });
   },
   componentWillUnmount() {
-    const { layoutDispatch, appBarDispatch, imageGalleryDispatch } = this.props;
+    const { layoutDispatch, appBarDispatch, inforDispatch } = this.props;
 
     layoutDispatch.changeView(null);
     layoutDispatch.navBackHide();
@@ -152,17 +142,17 @@ const lifecycles: ReactLifeCycleFunctions<GalleryEditorProps, {}> = {
 
     appBarDispatch.dispose();
 
-    imageGalleryDispatch.createDispose();
+    inforDispatch.postDispose();
   }
 };
 
-export default compose<GalleryEditorProps, {}>(
+export default compose<COGSUploadEditorProps, {}>(
   withUser,
   withLayout,
   withAppBar,
   withRouter,
-  withImageGallery,
+  withInfor,
   injectIntl,
-  withHandlers<GalleryEditorProps, OwnHandlers>(handlerCreators),
-  lifecycle<GalleryEditorProps, {}>(lifecycles),
-)(GalleryEditorView);
+  withHandlers<COGSUploadEditorProps, OwnHandlers>(handlerCreators),
+  lifecycle<COGSUploadEditorProps, {}>(lifecycles),
+)(COGSUploadEditorView);

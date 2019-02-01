@@ -551,5 +551,19 @@
   "lookup.gallery.section.submit.title": "Submit Announcement",
   "lookup.gallery.section.submit.subHeader": " ",
   "lookup.gallery.section.add.title": "Add Image",
-  "lookup.gallery.section.add.subHeader": " "
+  "lookup.gallery.section.add.subHeader": " ",
+
+  "lookup.infor.page.upload.title": "COGS Upload",
+  "lookup.infor.page.upload.subHeader": " ",
+
+  "lookup.infor.message.emptyProps": "Some props are empty",
+  "lookup.infor.message.upload.success": "New {approved} row(s) has been added, {rejected} row(s) rejected ",
+  "lookup.infor.message.upload.failure": "Unable to process your submission",
+  
+  "lookup.infor.field.file": "*.csv, *.xls/xlsx,or other format",
+  "lookup.infor.field.file.required": "File is required",
+  "lookup.infor.field.file.placeholder": "Upload .xlsx, .xls, or .csv spreadsheet",
+
+  "lookup.infor.section.info.title": "COGS Upload Form",
+  "lookup.infor.section.info.subHeader": " "
 }

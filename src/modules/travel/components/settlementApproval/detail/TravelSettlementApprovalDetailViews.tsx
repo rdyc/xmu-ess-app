@@ -2,7 +2,7 @@ import AppMenu from '@constants/AppMenu';
 import { SingleConfig, SingleHandler, SinglePage, SingleState } from '@layout/components/pages/singlePage/SinglePage';
 import { IAppBarMenu } from '@layout/interfaces';
 import { layoutMessage } from '@layout/locales/messages';
-import { WorkflowApprovalForm } from '@organization/components/workflow/approval/WorkflowApprovalForm';
+import { WorkflowApprovalRemarkForm } from '@organization/components/workflow/approval/WorkflowApprovalRemarkForm';
 import { WorkflowHistory } from '@organization/components/workflow/history/WorkflowHistory';
 import * as React from 'react';
 
@@ -109,7 +109,7 @@ const config: SingleConfig<ITravelSettlementDetail, TravelSettlementApprovalDeta
       {
         data.workflow && 
         data.workflow.isApproval &&
-        <WorkflowApprovalForm
+        <WorkflowApprovalRemarkForm
           approvalTitle={props.approvalTitle}
           approvalSubHeader={props.approvalSubHeader}
           approvalChoices={props.approvalChoices}
@@ -122,8 +122,10 @@ const config: SingleConfig<ITravelSettlementDetail, TravelSettlementApprovalDeta
           onSubmit={props.handleSubmit} 
           onSubmitSuccess={props.handleSubmitSuccess}
           onSubmitFail={props.handleSubmitFail}
-          approvalRemarkLabel={props.intl.formatMessage(travelMessage.settlement.field.adjustmentNote)}
-          approvalRemarkPlaceholder={props.intl.formatMessage(travelMessage.settlement.field.adjustmentNotePlaceholder)}          
+          approvalRemarkLabel={props.intl.formatMessage(travelMessage.settlementApproval.option.adjustmentNote)}
+          approvalRemarkPlaceholder={props.intl.formatMessage(travelMessage.settlementApproval.option.adjustmentNeededPlaceholder)}          
+          approvalOptionalRemarkLabel={props.intl.formatMessage(travelMessage.settlementApproval.option.approveNotes)}
+          approvalOptionalRemarkPlaceholder={props.intl.formatMessage(travelMessage.settlementApproval.option.approveNotesPlaceholder)}
         />
       }
     </React.Fragment>

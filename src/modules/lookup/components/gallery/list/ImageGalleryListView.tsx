@@ -1,8 +1,7 @@
 import { DataContainer } from '@layout/components/pages/dataContainer/DataContainer';
 import { layoutMessage } from '@layout/locales/messages';
 import { IGallery } from '@lookup/classes/response/gallery';
-import { Grid, GridList, GridListTile, GridListTileBar, IconButton, Typography } from '@material-ui/core';
-import InfoIcon from '@material-ui/icons/Info';
+import { Grid, GridList, GridListTile, GridListTileBar, Typography } from '@material-ui/core';
 import * as React from 'react';
 import { ImageGalleryListProps } from './ImageGalleryList';
 
@@ -10,7 +9,6 @@ export const ImageGalleryListView: React.SFC<ImageGalleryListProps> = props => {
   const { isLoading, response } = props.imageGalleryState.all;
 
   const RenderImageList = (images: IGallery[]) => {
-    // const len = images.length - 1 ;
 
     return (
       <div>
@@ -20,11 +18,6 @@ export const ImageGalleryListView: React.SFC<ImageGalleryListProps> = props => {
               <img src={image.path.small} alt={image.name} />
               <GridListTileBar
                 title={image.name}
-                actionIcon={
-                  <IconButton>
-                    <InfoIcon />
-                  </IconButton>
-                }
               />
             </GridListTile>
           ))}
