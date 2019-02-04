@@ -4,19 +4,11 @@ import { layoutMessage } from '@layout/locales/messages';
 import { Card, CardContent, CardHeader, Grid, Toolbar, Typography } from '@material-ui/core';
 // import { isWidthDown } from '@material-ui/core/withWidth';
 import * as React from 'react';
-import { VictoryAxis, VictoryBar, VictoryChart, VictoryLabel, VictoryTheme, VictoryTooltip } from 'victory';
+import { VictoryAxis, VictoryBar, VictoryChart, VictoryLabel, VictoryTheme } from 'victory';
 
 import { AchievementChartProps } from './AchievementChart';
 
 export const AchievementChartView: React.SFC<AchievementChartProps> = props => {
-  // const { classes, width } = props;
-  // const isMobile = isWidthDown('sm', width);
-  // const isMobileXS = isWidthDown('xs', width);
-
-  // { if (!isNullOrUndefined(props.achievementState.all.response)) {
-  //   props.handleOnChange(props.achievementState.all.response.data);
-  // }}
-
   const colorModifier: any = {
     fill: (data: IValueResponse) => {
       let color = 'blue';
@@ -61,19 +53,13 @@ export const AchievementChartView: React.SFC<AchievementChartProps> = props => {
       }
 
       <Grid container spacing={16} className={props.classes.marginFarBottom} direction="row" justify="flex-start">
-        {/* {
-          props.achievementState.all.response &&
-          props.achievementState.all.response.data &&
-          props.achievementState.all.response.data.map((item) => ( */}
         <React.Fragment>
           {props.dataSales && (
             <Grid item xs={12} md={6}>
               <Card square >
                 <CardHeader title={props.dataSales && props.dataSales.title} subheader={props.dataSales && props.dataSales.description} />
-                {/* <CardContent className={isMobile ? classes.chartContentXS : classes.chartContent}> */}
                 <VictoryChart
                   animate={{ duration: 2000, easing: 'bounce' }}
-                  // containerComponent={<VictoryContainer height={100} />}
                   domainPadding={{ x: 20, y: 20 }}
                   height={725}
                   padding={{ bottom: 75, left: 120, top: 10, right: 50 }}
@@ -90,19 +76,15 @@ export const AchievementChartView: React.SFC<AchievementChartProps> = props => {
                   />
                   <VictoryBar
                     horizontal
-                    labelComponent={<VictoryTooltip />}
-                    // style={{ data: { fill: (d: any) => d.percentage > 80 ? 'green' : 'blue'}}}
                     style={{
                       data: { fill: 'blue', strokeWidth: 0, ...colorModifier },
-                      labels: { fontSize: 10}
-                      // labels: { fontSize: isMobile ? 5 : 4 }
+                      labels: { fontSize: 10 }
                     }}
                     data={props.dataSales && props.dataSales.valueObject}
                     x="name"
                     y="value"
                     labels={(y) => `${y.value} ${props.dataSales && props.dataSales.unit}`}
                   />
-
                 </VictoryChart>
               </Card>
             </Grid>
@@ -136,11 +118,9 @@ export const AchievementChartView: React.SFC<AchievementChartProps> = props => {
                         />
                         <VictoryBar
                           horizontal
-                          labelComponent={<VictoryTooltip />}
-                          // style={{ data: { fill: (d: any) => d.percentage > 80 ? 'green' : 'blue'}}}
                           style={{
                             data: { fill: 'blue', strokeWidth: 0, ...colorModifier },
-                            labels: { fontSize: 10}
+                            labels: { fontSize: 10 }
                           }}
                           data={props.dataDepartment && props.dataDepartment.valueObject}
                           x="name"
@@ -151,7 +131,6 @@ export const AchievementChartView: React.SFC<AchievementChartProps> = props => {
                     </CardContent>
                   </Card>
                 </Grid>
-
               )}
 
               {props.dataDiv && (
@@ -180,12 +159,9 @@ export const AchievementChartView: React.SFC<AchievementChartProps> = props => {
                         />
                         <VictoryBar
                           horizontal
-                          labelComponent={<VictoryTooltip />}
-                          // style={{ data: { fill: (d: any) => d.percentage > 80 ? 'green' : 'blue'}}}
                           style={{
                             data: { fill: 'blue', strokeWidth: 0, ...colorModifier },
-                            labels: { fontSize: 10}
-                            // labels: { fontSize: isMobile ? 5 : 4 }
+                            labels: { fontSize: 10 }
                           }}
                           data={props.dataDiv && props.dataDiv.valueObject}
                           x="name"
@@ -224,12 +200,9 @@ export const AchievementChartView: React.SFC<AchievementChartProps> = props => {
                         />
                         <VictoryBar
                           horizontal
-                          labelComponent={<VictoryTooltip />}
-                          // style={{ data: { fill: (d: any) => d.percentage > 80 ? 'green' : 'blue'}}}
                           style={{
                             data: { fill: 'blue', strokeWidth: 0, ...colorModifier },
-                            labels: { fontSize: 10}
-                            // labels: { fontSize: isMobile ? 5 : 4 }
+                            labels: { fontSize: 10 }
                           }}
                           data={props.dataLob.valueObject}
                           x="name"
@@ -244,8 +217,6 @@ export const AchievementChartView: React.SFC<AchievementChartProps> = props => {
             </Grid>
           </Grid>
         </React.Fragment>
-        {/* ))
-        } */}
       </Grid>
     </div>
   );
