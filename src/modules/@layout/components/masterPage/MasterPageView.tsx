@@ -25,7 +25,7 @@ export const MasterPageView: React.SFC<MasterPageProps> = props => (
           <DrawerRight 
             isOpen={props.isOpenDrawerRight}
             anchor={props.layoutState.anchor}
-            paperClassName={classNames(props.classes.drawerPaper, props.classes.drawerPaperAdditional)}
+            className={classNames(props.classes.drawerPaper, props.classes.drawerPaperAdditional)}
             onClose={props.handleVisibilityDrawerRight}
           />
           
@@ -33,9 +33,7 @@ export const MasterPageView: React.SFC<MasterPageProps> = props => (
             isOpen={props.isOpenDrawerLeft}
             variant={isWidthUp('md', props.width) ? 'permanent' : 'temporary'}
             anchor={props.layoutState.anchor}
-            paperClassName={props.classes.drawerPaper}
-            paperCloseClassName={classNames(props.classes.drawerPaper, props.isOpen && props.paperCloseClassName)}
-            paperHeaderClassName={props.classes.drawerPaperBackgroundImage}
+            className={props.classes.drawerPaper}
             onClose={props.handleVisibilityDrawerLeft}
           />
           

@@ -8,7 +8,7 @@ import { Notification } from '../notification/Notification';
 interface IOwnOption {
   isOpen: boolean;
   anchor: Anchor;
-  paperClassName: string;
+  className: string;
   onClose: () => void;
 }
 
@@ -17,7 +17,7 @@ const DrawerRightView: React.SFC<IOwnOption> = props => (
     variant="temporary"
     anchor={props.anchor === 'left' ? 'right' : 'left'}
     classes={{
-      paper: props.paperClassName
+      paper: props.className
     }} 
     open={props.isOpen}
     onOpen={() => undefined}

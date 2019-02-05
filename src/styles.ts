@@ -161,7 +161,7 @@ const styles = (theme: Theme) =>
     // Application Bar
     appBar: {
       backgroundColor: theme.palette.primary.main,
-      backgroundImage: `linear-gradient(200deg, rgb(0,0,0,0), ${theme.palette.primary.main}), url(${Pattern1})`,
+      // backgroundImage: `linear-gradient(200deg, rgb(0,0,0,0), ${theme.palette.primary.main}), url(${Pattern1})`,
       [theme.breakpoints.up('md')]: {
         backgroundColor: theme.palette.grey[400],
         backgroundImage: `linear-gradient(200deg, rgb(0,0,0,0), ${theme.palette.grey[600]}), url(${Pattern1})`,
