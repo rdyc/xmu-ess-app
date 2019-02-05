@@ -185,10 +185,7 @@ const stateUpdaters: StateUpdaters<ExpenseApprovalListFilterProps, IOwnState, IO
   }),
   setFilterCustomer: (prevState: IOwnState) => (customer?: ICustomerList) => ({
     isFilterCustomerOpen: false,
-    filterCustomer: customer,
-    filterProjectDialog: {
-      customerUids: customer && customer.uid
-    }
+    filterCustomer: customer
   }),
 
   // filter type
@@ -265,11 +262,9 @@ const handlerCreators: HandleCreators<ExpenseApprovalListFilterProps, IOwnHandle
   },
   handleFilterCustomerOnSelected: (props: ExpenseApprovalListFilterProps) => (customer: ICustomerList) => {
     props.setFilterCustomer(customer);
-    props.setFilterProject();
   },
   handleFilterCustomerOnClear: (props: ExpenseApprovalListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
     props.setFilterCustomer();
-    props.setFilterProject();
   },
   handleFilterCustomerOnClose: (props: ExpenseApprovalListFilterProps) => () => {
     props.setFilterCustomerVisibility();
