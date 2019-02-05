@@ -1,6 +1,7 @@
 import { ISystemList } from '@common/classes/response';
 import { ICollectionValue } from '@layout/classes/core';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
+import { WithUser, withUser } from '@layout/hoc/withUser';
 import { ICustomerList } from '@lookup/classes/response';
 import { WithStyles, withStyles } from '@material-ui/core';
 import { IProjectApprovalGetAllFilter } from '@project/classes/filters/approval';
@@ -119,6 +120,7 @@ export type ProjectApprovalListFilterProps
   & IOwnState
   & IOwnStateUpdater
   & IOwnHandler
+  & WithUser
   & WithStyles<typeof styles>
   & WithLayout
   & InjectedIntlProps;
@@ -265,9 +267,10 @@ const handlerCreators: HandleCreators<ProjectApprovalListFilterProps, IOwnHandle
 
 export const ProjectApprovalListFilter = compose<ProjectApprovalListFilterProps, IOwnOption>(
   setDisplayName('ProjectApprovalListFilter'),
+  withUser,
   withLayout,
-  withStyles(styles),
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),
-  withHandlers(handlerCreators)
+  withHandlers(handlerCreators),
+  withStyles(styles)
 )(ProjectApprovalListFilterView);

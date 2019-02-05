@@ -82,7 +82,7 @@ export const LookupCustomerListFilterView: React.SFC<LookupCustomerListFilterPro
       </List>
 
       <FilterCompany 
-        title={props.intl.formatMessage(lookupMessage.lookupCustomer.field.companyUid)}
+        title={props.intl.formatMessage(lookupMessage.customer.field.companyUid)}
         hideBackdrop={true}
         isOpen={props.isFilterCompanyOpen}
         value={props.filterCompany && props.filterCompany.uid}

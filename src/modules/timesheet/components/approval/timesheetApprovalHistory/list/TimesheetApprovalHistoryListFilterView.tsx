@@ -169,9 +169,14 @@ export const TimesheetApprovalHistoryListFilterView: React.SFC<TimesheetApproval
     </Dialog>
 
     <LookupCustomerDialog
-      hideBackdrop={true}
       isOpen={props.isFilterCustomerOpen}
-      filter={props.filterCustomerDialog}
+      value={props.filterCustomer && props.filterCustomer.uid}
+      filter={{
+        companyUid: props.userState.user && props.userState.user.company.uid,
+        orderBy: 'name',
+        direction: 'ascending'
+      }}
+      hideBackdrop={true}
       onSelected={props.handleFilterCustomerOnSelected}
       onClose={props.handleFilterCustomerOnClose}
     />

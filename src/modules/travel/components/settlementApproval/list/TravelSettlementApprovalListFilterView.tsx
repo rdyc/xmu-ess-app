@@ -164,8 +164,14 @@ export const TravelSettlementApprovalListFilterView: React.SFC<TravelSettlementA
     </Dialog>
 
     <LookupCustomerDialog
-      hideBackdrop={true}
       isOpen={props.isFilterCustomerOpen}
+      value={props.filterCustomer && props.filterCustomer.uid}
+      filter={{
+        companyUid: props.userState.user && props.userState.user.company.uid,
+        orderBy: 'name',
+        direction: 'ascending'
+      }}
+      hideBackdrop={true}
       onSelected={props.handleFilterCustomerOnSelected}
       onClose={props.handleFilterCustomerOnClose}
     />

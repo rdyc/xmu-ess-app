@@ -1,7 +1,6 @@
 import { ISystemList } from '@common/classes/response';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
-import { ILookupCustomerGetListFilter } from '@lookup/classes/filters/customer';
 import { ICustomerList } from '@lookup/classes/response';
 import { WithStyles, withStyles } from '@material-ui/core';
 import { IProjectRegistrationGetListFilter } from '@project/classes/filters/registration';
@@ -20,6 +19,7 @@ import {
   withHandlers,
   withStateHandlers,
 } from 'recompose';
+
 import { PurchaseRequestListFilterView } from './PurchaseRequestListFilterView';
 
 export type IPurchaseRequestListFilterResult = Pick<IPurchaseGetAllFilter, 'customerUid' | 'isRejected' | 'isSettlement' | 'statusType' | 'projectUid' >;
@@ -35,9 +35,6 @@ interface IOwnState {
   // filter customer
   isFilterCustomerOpen: boolean;
   filterCustomer?: ICustomerList;
-
-  // default filter customer dialog
-  filterCustomerDialog: ILookupCustomerGetListFilter;
 
   // filter project
   isFilterProjectOpen: boolean;
@@ -55,7 +52,6 @@ interface IOwnState {
   
   // filter reject
   filterRejected?: boolean;
-  
 }
 
 interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
@@ -125,10 +121,6 @@ const createProps: mapper<PurchaseRequestListFilterProps, IOwnState> = (props: P
   isFilterCustomerOpen: false,
   isFilterProjectOpen: false,
   isFilterStatusOpen: false,
-  // default filter customer dialog
-  filterCustomerDialog: {
-    companyUid: props.userState.user ? props.userState.user.company.uid : undefined
-  },
 
   // default filter project dialog
   filterProjectDialog: {

@@ -150,7 +150,7 @@ const handlerCreators: HandleCreators<LookupCustomerDetailProps, OwnHandler> = {
     }
     // props checking
     if (!match.params.customerUid) {
-      const message = intl.formatMessage(lookupMessage.lookupCustomer.message.emptyProps);
+      const message = intl.formatMessage(lookupMessage.customer.message.emptyProps);
       return Promise.reject(message);
     }
     const payload = {
@@ -169,7 +169,7 @@ const handlerCreators: HandleCreators<LookupCustomerDetailProps, OwnHandler> = {
 
     props.layoutDispatch.alertAdd({
       time: new Date(),
-      message: props.intl.formatMessage(lookupMessage.lookupCustomer.message.deleteSuccess, { uid : props.match.params.customerUid })
+      message: props.intl.formatMessage(lookupMessage.customer.message.deleteSuccess, { uid : props.match.params.customerUid })
     });
   },
   handleSubmitFail: (props: LookupCustomerDetailProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
@@ -181,7 +181,7 @@ const handlerCreators: HandleCreators<LookupCustomerDetailProps, OwnHandler> = {
     } else {
       props.layoutDispatch.alertAdd({
         time: new Date(),
-        message: props.intl.formatMessage(lookupMessage.lookupCustomer.message.deleteFailure),
+        message: props.intl.formatMessage(lookupMessage.customer.message.deleteFailure),
         details: isObject(submitError) ? submitError.message : submitError
       });
     }

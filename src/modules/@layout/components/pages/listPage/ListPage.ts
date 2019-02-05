@@ -1,5 +1,6 @@
 import AppMenu from '@constants/AppMenu';
 import { IBaseFilter, IBasePagingFilter, IQueryCollectionState, IResponseCollection } from '@generic/interfaces';
+import { DirectionType } from '@generic/types';
 import { ICollectionValue } from '@layout/classes/core';
 import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
@@ -72,7 +73,7 @@ interface IOwnState {
   isLoading: boolean;
   
   // data response
-  response?: IResponseCollection<any> | undefined;
+  response?: IResponseCollection<any>;
   
   // selection
   selected: string[];
@@ -83,7 +84,7 @@ interface IOwnState {
   
   // order
   orderBy?: string;
-  direction?: 'ascending' | 'descending' | string | undefined;
+  direction?: 'ascending' | 'descending';
   
   // paging
   page: number;
@@ -206,7 +207,7 @@ const stateUpdaters: StateUpdaters<IOwnOption, IOwnState, IOwnStateUpdater> = {
     page: 1,
     forceReload: true
   }),
-  setOrder: (prevState: IOwnState) => (direction: string) => ({
+  setOrder: (prevState: IOwnState) => (direction: DirectionType) => ({
     direction,
     page: 1,
     forceReload: true

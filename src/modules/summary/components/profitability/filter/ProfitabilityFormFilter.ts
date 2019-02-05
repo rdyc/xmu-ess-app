@@ -1,7 +1,6 @@
 import { WithForm, withForm } from '@layout/hoc/withForm';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
-import { ILookupCustomerGetListFilter } from '@lookup/classes/filters/customer';
 import { ICustomerList } from '@lookup/classes/response';
 import { WithStyles, withStyles } from '@material-ui/core';
 import { IProjectRegistrationGetListFilter } from '@project/classes/filters/registration';
@@ -9,7 +8,18 @@ import { IProjectList } from '@project/classes/response';
 import styles from '@styles';
 import { ISummaryGetProfitabilityRequest } from '@summary/classes/queries';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
-import { compose, HandleCreators, mapper, setDisplayName, StateHandler, StateHandlerMap, StateUpdaters, withHandlers, withStateHandlers } from 'recompose';
+import {
+  compose,
+  HandleCreators,
+  mapper,
+  setDisplayName,
+  StateHandler,
+  StateHandlerMap,
+  StateUpdaters,
+  withHandlers,
+  withStateHandlers,
+} from 'recompose';
+
 import { ProfitabilityFormFilterView } from './ProfitabilityFormFilterView';
 
 export type ISummaryProfitabilityFilterResult = Pick<ISummaryGetProfitabilityRequest, 'customerUid' | 'projectUid'>;
@@ -28,9 +38,6 @@ interface IOwnState {
   // filter customer
   isFilterCustomerOpen: boolean;
   filterCustomer?: ICustomerList;
-
-  // filter Customer Dialog
-  filterCustomerDialog: ILookupCustomerGetListFilter;
 
   // filter project
   isFilterProjectOpen: boolean;
@@ -88,11 +95,6 @@ const createProps: mapper<SummaryProfitabilityFilterProps, IOwnState> = (props: 
   isFilterDialogOpen: true,
   isFilterCustomerOpen: false,
   isFilterProjectOpen: false,
-
-  // default filter customer dialog
-  filterCustomerDialog: {
-    companyUid: props.userState.user ? props.userState.user.company.uid : undefined
-  },
 
   // default filter project dialog
   filterProjectDialog: {

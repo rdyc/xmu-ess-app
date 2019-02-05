@@ -1,8 +1,10 @@
 import { ISystemList } from '@common/classes/response';
 import { ICollectionValue } from '@layout/classes/core';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
+import { WithUser, withUser } from '@layout/hoc/withUser';
 import { ICustomerList } from '@lookup/classes/response';
 import { WithStyles, withStyles } from '@material-ui/core';
+import { IProjectRegistrationGetListFilter } from '@project/classes/filters/registration';
 import { IProjectList } from '@project/classes/response';
 import { IPurchaseApprovalGetAllFilter } from '@purchase/classes/filters/purchaseApproval';
 import styles from '@styles';
@@ -19,9 +21,6 @@ import {
   withStateHandlers,
 } from 'recompose';
 
-import { WithUser, withUser } from '@layout/hoc/withUser';
-import { ILookupCustomerGetListFilter } from '@lookup/classes/filters/customer';
-import { IProjectRegistrationGetListFilter } from '@project/classes/filters/registration';
 import { PurchaseApprovalListFilterView } from './PurchaseApprovalListFilterView';
 
 const completionStatus: ICollectionValue[] = [
@@ -44,9 +43,6 @@ interface IOwnState {
   // filter customer
   isFilterCustomerOpen: boolean;
   filterCustomer?: ICustomerList;
-
-  // default filter customer dialog
-  filterCustomerDialog: ILookupCustomerGetListFilter;
 
   // filter project
   isFilterProjectOpen: boolean;
@@ -140,11 +136,6 @@ const createProps: mapper<PurchaseApprovalListFilterProps, IOwnState> = (props: 
   isFilterProjectOpen: false,
   isFilterCompletionOpen: false,
   isFilterStatusOpen: false,
-
-  // default filter customer dialog
-  filterCustomerDialog: {
-    companyUid: props.userState.user ? props.userState.user.company.uid : undefined
-  },
 
   // default filter project dialog
   filterProjectDialog: {

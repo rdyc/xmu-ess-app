@@ -28,13 +28,17 @@ export const InputCustomerView: React.SFC<InputCustomerProps> = props => {
         helperText={meta.touched && meta.error}
         onClick={() => disabled ? undefined : handleDialogOpen()}
       />
+
       <LookupCustomerDialog
         isOpen={isOpen}
+        value={props.input.value}
+        filter={{
+          companyUid: user && user.company.uid,
+          orderBy: 'name',
+           direction: 'ascending'
+        }}
         onSelected={handleSelected}
         onClose={handleDialogClose}
-        filter={{
-          companyUid: user && user.company.uid
-        }}
       />
     </React.Fragment>   
   );

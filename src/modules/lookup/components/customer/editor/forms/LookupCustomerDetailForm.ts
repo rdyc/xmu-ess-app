@@ -35,8 +35,8 @@ const handlerCreators: HandleCreators<LookupCustomerDetailFormProps, OwnHandlers
       case 'uid':
         fieldProps = {
           disabled: true,
-          label: intl.formatMessage(lookupMessage.lookupCustomer.fieldFor(name, 'fieldName')),
-          placeholder: intl.formatMessage(lookupMessage.lookupCustomer.fieldFor(name, 'fieldPlaceholder')),
+          label: intl.formatMessage(lookupMessage.customer.fieldFor(name, 'fieldName')),
+          placeholder: intl.formatMessage(lookupMessage.customer.fieldFor(name, 'fieldPlaceholder')),
           component: InputText
         };
         break;
@@ -44,8 +44,8 @@ const handlerCreators: HandleCreators<LookupCustomerDetailFormProps, OwnHandlers
       case 'companyUid':
         fieldProps = {
           required: true,
-          label: intl.formatMessage(lookupMessage.lookupCustomer.fieldFor(name, 'fieldName')),
-          placeholder: intl.formatMessage(lookupMessage.lookupCustomer.fieldFor(name, 'fieldPlaceholder')),
+          label: intl.formatMessage(lookupMessage.customer.fieldFor(name, 'fieldName')),
+          placeholder: intl.formatMessage(lookupMessage.customer.fieldFor(name, 'fieldPlaceholder')),
           component: SelectLookupCompany
         };
         break;
@@ -54,8 +54,8 @@ const handlerCreators: HandleCreators<LookupCustomerDetailFormProps, OwnHandlers
         fieldProps = {
           required: true,
           multiline: true,
-          label: intl.formatMessage(lookupMessage.lookupCustomer.fieldFor(name, 'fieldName')),
-          placeholder: intl.formatMessage(lookupMessage.lookupCustomer.fieldFor(name, 'fieldPlaceholder')),
+          label: intl.formatMessage(lookupMessage.customer.fieldFor(name, 'fieldName')),
+          placeholder: intl.formatMessage(lookupMessage.customer.fieldFor(name, 'fieldPlaceholder')),
           component: InputTextArea
         };
         break;
@@ -63,8 +63,8 @@ const handlerCreators: HandleCreators<LookupCustomerDetailFormProps, OwnHandlers
       case 'emailAddress':
         fieldProps = {
           required: true,
-          label: intl.formatMessage(lookupMessage.lookupCustomer.fieldFor(name, 'fieldName')),
-          placeholder: intl.formatMessage(lookupMessage.lookupCustomer.fieldFor(name, 'fieldPlaceholder')),
+          label: intl.formatMessage(lookupMessage.customer.fieldFor(name, 'fieldName')),
+          placeholder: intl.formatMessage(lookupMessage.customer.fieldFor(name, 'fieldPlaceholder')),
           component: InputTextArea
         };
         break;
@@ -73,8 +73,8 @@ const handlerCreators: HandleCreators<LookupCustomerDetailFormProps, OwnHandlers
         fieldProps = {
           required: true,
           multiline: true,
-          label: intl.formatMessage(lookupMessage.lookupCustomer.fieldFor(name, 'fieldName')),
-          placeholder: intl.formatMessage(lookupMessage.lookupCustomer.fieldFor(name, 'fieldPlaceholder')),
+          label: intl.formatMessage(lookupMessage.customer.fieldFor(name, 'fieldName')),
+          placeholder: intl.formatMessage(lookupMessage.customer.fieldFor(name, 'fieldPlaceholder')),
           component: InputTextArea
         };
         break;
@@ -88,8 +88,8 @@ const handlerCreators: HandleCreators<LookupCustomerDetailFormProps, OwnHandlers
       default:
         fieldProps = {
           type: 'text',
-          label: intl.formatMessage(lookupMessage.lookupCustomer.fieldFor(name, 'fieldName')),
-          placeholder: intl.formatMessage(lookupMessage.lookupCustomer.fieldFor(name, 'fieldPlaceholder')),
+          label: intl.formatMessage(lookupMessage.customer.fieldFor(name, 'fieldName')),
+          placeholder: intl.formatMessage(lookupMessage.customer.fieldFor(name, 'fieldPlaceholder')),
           component: InputText
         };
         break;

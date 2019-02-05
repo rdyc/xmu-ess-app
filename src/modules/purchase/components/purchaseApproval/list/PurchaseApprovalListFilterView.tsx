@@ -164,11 +164,16 @@ export const PurchaseApprovalListFilterView: React.SFC<PurchaseApprovalListFilte
     </Dialog>
 
     <LookupCustomerDialog 
+      isOpen={props.isFilterCustomerOpen}
+      value={props.filterCustomer && props.filterCustomer.uid}
+      filter={{
+        companyUid: props.userState.user && props.userState.user.company.uid,
+        orderBy: 'name',
+        direction: 'ascending'
+      }}
       hideBackdrop={true}
-      isOpen={props.isFilterCustomerOpen} 
       onSelected={props.handleFilterCustomerOnSelected} 
       onClose={props.handleFilterCustomerOnClose}
-      filter={props.filterCustomerDialog}
     />
 
     <ProjectRegistrationDialog

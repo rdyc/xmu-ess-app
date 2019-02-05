@@ -112,8 +112,8 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
       page: {
         uid: AppMenu.LookupCustomer,
         parentUid: AppMenu.Lookup,
-        title: this.props.intl.formatMessage(lookupMessage.lookupCustomer.page.listTitle),
-        description: this.props.intl.formatMessage(lookupMessage.lookupCustomer.page.listSubHeader)
+        title: this.props.intl.formatMessage(lookupMessage.customer.page.listTitle),
+        description: this.props.intl.formatMessage(lookupMessage.customer.page.listSubHeader)
       },
 
       // top bar

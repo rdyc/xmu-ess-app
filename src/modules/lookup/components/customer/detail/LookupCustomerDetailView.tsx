@@ -15,8 +15,8 @@ const config: SingleConfig<ICustomerDetail, LookupCustomerDetailProps> = {
   page: (props: LookupCustomerDetailProps) => ({
     uid: AppMenu.LookupCustomer,
     parentUid: AppMenu.Lookup,
-    title: props.intl.formatMessage(lookupMessage.lookupCustomer.page.detailTitle),
-    description: props.intl.formatMessage(lookupMessage.lookupCustomer.page.detailSubHeader),
+    title: props.intl.formatMessage(lookupMessage.customer.page.detailTitle),
+    description: props.intl.formatMessage(lookupMessage.customer.page.detailSubHeader),
   }),
 
   // parent url

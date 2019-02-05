@@ -1,4 +1,5 @@
 import AppMenu from '@constants/AppMenu';
+import { DirectionType } from '@generic/types';
 import { ICollectionValue } from '@layout/classes/core';
 import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
@@ -25,6 +26,7 @@ import {
   withHandlers,
   withStateHandlers,
 } from 'recompose';
+
 import { ImageGalleryListView } from './ImageGalleryListView';
 
 interface OwnOption {
@@ -43,7 +45,7 @@ interface OwnState {
 
   // order
   orderBy?: string;
-  direction?: 'ascending' | 'descending' | string | undefined;
+  direction?: DirectionType;
 
   // paging
   page: number;
@@ -145,7 +147,7 @@ const stateUpdaters: StateUpdaters<OwnOption, OwnState, OwnStateUpdater> = {
     page: 1,
     forceReload: true
   }),
-  setOrder: (prevState: OwnState) => (direction: string) => ({
+  setOrder: (prevState: OwnState) => (direction: DirectionType) => ({
     direction,
     page: 1,
     forceReload: true

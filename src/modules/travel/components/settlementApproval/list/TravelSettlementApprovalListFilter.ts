@@ -2,7 +2,6 @@ import { ISystemList } from '@common/classes/response';
 import { ICollectionValue } from '@layout/classes/core';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
-import { ILookupCustomerGetListFilter } from '@lookup/classes/filters/customer';
 import { ICustomerList } from '@lookup/classes/response';
 import { WithStyles, withStyles } from '@material-ui/core';
 import { IProjectRegistrationGetListFilter } from '@project/classes/filters/registration';
@@ -21,6 +20,7 @@ import {
   withHandlers,
   withStateHandlers,
 } from 'recompose';
+
 import { TravelSettlementApprovalListFilterView } from './TravelSettlementApprovalListFilterView';
 
 const completionStatus: ICollectionValue[] = [
@@ -43,9 +43,6 @@ interface IOwnState {
   // filter customer
   isFilterCustomerOpen: boolean;
   filterCustomer?: ICustomerList;
-
-  // filter Customer Dialog
-  filterCustomerDialog: ILookupCustomerGetListFilter;
   
   // filter project
   isFilterProjectOpen: boolean;
@@ -173,15 +170,10 @@ const createProps: mapper<TravelSettlementApprovalListFilterProps, IOwnState> = 
   // pass initial value for primitive types only, bellow is 'boolean'
   filterNotify: props.initialProps && props.initialProps.isNotify,
 
-  filterCustomerDialog: {
-    companyUid: props.userState.user ? props.userState.user.company.uid : undefined
-  },
-
   // default filter project dialog
   filterProjectDialog: {
     customerUids: undefined
   }
-
 });
 
 const stateUpdaters: StateUpdaters<TravelSettlementApprovalListFilterProps, IOwnState, IOwnStateUpdater> = { 

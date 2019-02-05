@@ -1,5 +1,5 @@
 import { CommonCategoryField } from '@common/classes/types';
-import { BaseDirectionField } from '@generic/types';
+import { DirectionType } from '@generic/types';
 import { ModuleDefinition } from '@layout/helper/redirector';
 
 export interface ISystemListFilter {
@@ -7,5 +7,5 @@ export interface ISystemListFilter {
   parentCode?: string;
   moduleType?: ModuleDefinition;
   orderBy?: CommonCategoryField;
-  direction?: BaseDirectionField;
+  direction?: DirectionType;
 }

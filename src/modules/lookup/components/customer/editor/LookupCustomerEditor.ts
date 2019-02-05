@@ -75,7 +75,7 @@ const handlerCreators: HandleCreators<LookupCustomerEditorProps, OwnHandlers> = 
 
     requiredFields.forEach(field => {
       if (!formData.information[field] || isNullOrUndefined(formData.information[field])) {
-        errors.information[field] = props.intl.formatMessage(lookupMessage.lookupCustomer.fieldFor(field, 'fieldRequired'));
+        errors.information[field] = props.intl.formatMessage(lookupMessage.customer.fieldFor(field, 'fieldRequired'));
       }
     });
 
@@ -131,11 +131,11 @@ const handlerCreators: HandleCreators<LookupCustomerEditorProps, OwnHandlers> = 
     let message: string = '';
 
     if (formMode === FormMode.New) {
-      message = intl.formatMessage(lookupMessage.lookupCustomer.message.createSuccess, { uid: response.uid });
+      message = intl.formatMessage(lookupMessage.customer.message.createSuccess, { uid: response.uid });
     }
 
     if (formMode === FormMode.Edit) {
-      message = intl.formatMessage(lookupMessage.lookupCustomer.message.updateSuccess, { uid: response.uid });
+      message = intl.formatMessage(lookupMessage.customer.message.updateSuccess, { uid: response.uid });
     }
 
     alertAdd({
@@ -160,11 +160,11 @@ const handlerCreators: HandleCreators<LookupCustomerEditorProps, OwnHandlers> = 
       let message: string = '';
 
       if (formMode === FormMode.New) {
-        message = intl.formatMessage(lookupMessage.lookupCustomer.message.createFailure);
+        message = intl.formatMessage(lookupMessage.customer.message.createFailure);
       }
 
       if (formMode === FormMode.Edit) {
-        message = intl.formatMessage(lookupMessage.lookupCustomer.message.updateFailure);
+        message = intl.formatMessage(lookupMessage.customer.message.updateFailure);
       }
 
       alertAdd({
@@ -178,8 +178,8 @@ const handlerCreators: HandleCreators<LookupCustomerEditorProps, OwnHandlers> = 
 
 const createProps: mapper<LookupCustomerEditorProps, OwnState> = (props: LookupCustomerEditorProps): OwnState => ({ 
   formMode: FormMode.New,
-  submitDialogTitle: props.intl.formatMessage(lookupMessage.lookupCustomer.dialog.createTitle),
-  submitDialogContentText: props.intl.formatMessage(lookupMessage.lookupCustomer.dialog.createDescription),
+  submitDialogTitle: props.intl.formatMessage(lookupMessage.customer.dialog.createTitle),
+  submitDialogContentText: props.intl.formatMessage(lookupMessage.customer.dialog.createDescription),
   submitDialogCancelText: props.intl.formatMessage(layoutMessage.action.cancel),
   submitDialogConfirmedText: props.intl.formatMessage(layoutMessage.action.ok),
 });
@@ -198,8 +198,8 @@ const lifecycles: ReactLifeCycleFunctions<LookupCustomerEditorProps, {}> = {
     const { user } = this.props.userState;
     
     const view = {
-      title: lookupMessage.lookupCustomer.page.newTitle,
-      subTitle: lookupMessage.lookupCustomer.page.newSubHeader,
+      title: lookupMessage.customer.page.newTitle,
+      subTitle: lookupMessage.customer.page.newSubHeader,
     };
 
     if (!user) {
@@ -207,8 +207,8 @@ const lifecycles: ReactLifeCycleFunctions<LookupCustomerEditorProps, {}> = {
     }
 
     if (!isNullOrUndefined(history.location.state)) {
-      view.title = lookupMessage.lookupCustomer.page.modifyTitle;
-      view.subTitle = lookupMessage.lookupCustomer.page.modifySubHeader;
+      view.title = lookupMessage.customer.page.modifyTitle;
+      view.subTitle = lookupMessage.customer.page.modifySubHeader;
 
       stateUpdate({ 
         formMode: FormMode.Edit,

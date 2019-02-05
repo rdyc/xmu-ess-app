@@ -2,8 +2,10 @@ import { ISystemList } from '@common/classes/response';
 import { IExpenseApprovalGetAllFilter } from '@expense/classes/filters/approval';
 import { ICollectionValue } from '@layout/classes/core';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
+import { WithUser, withUser } from '@layout/hoc/withUser';
 import { ICustomerList } from '@lookup/classes/response';
 import { WithStyles, withStyles } from '@material-ui/core';
+import { IProjectList } from '@project/classes/response';
 import styles from '@styles';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import {
@@ -18,10 +20,6 @@ import {
   withStateHandlers,
 } from 'recompose';
 
-import { WithUser, withUser } from '@layout/hoc/withUser';
-import { ILookupCustomerGetListFilter } from '@lookup/classes/filters/customer';
-import { IProjectRegistrationGetListFilter } from '@project/classes/filters/registration';
-import { IProjectList } from '@project/classes/response';
 import { ExpenseApprovalListFilterView } from './ExpenseApprovalListFilterView';
 
 const completionStatus: ICollectionValue[] = [
@@ -45,15 +43,9 @@ interface IOwnState {
   isFilterCustomerOpen: boolean;
   filterCustomer?: ICustomerList;
 
-  // filter Customer Dialog
-  filterCustomerDialog: ILookupCustomerGetListFilter;
-
   // filter project
   isFilterProjectOpen: boolean;
   filterProject?: IProjectList;
-
-  // filter Project Dialog
-  filterProjectDialog: IProjectRegistrationGetListFilter;
 
   // filter type
   isFilterTypeOpen: boolean;
@@ -188,17 +180,6 @@ const createProps: mapper<ExpenseApprovalListFilterProps, IOwnState> = (props: E
 
   // pass initial value for primitive types only, bellow is 'boolean'
   filterNotify: props.initialProps && props.initialProps.isNotify,
-
-  // default filter customer dialog
-  filterCustomerDialog: {
-    companyUid: props.userState.user ? props.userState.user.company.uid : undefined
-  },
-
-  // default filter project dialog
-  filterProjectDialog: {
-    customerUids: undefined,
-    activeOnly: true,
-  }
 });
 
 const stateUpdaters: StateUpdaters<ExpenseApprovalListFilterProps, IOwnState, IOwnStateUpdater> = { 

@@ -1,141 +1,99 @@
+import { layoutMessage } from '@layout/locales/messages';
+import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
 import {
   AppBar,
-  Avatar,
-  Button,
   Dialog,
   DialogContent,
+  Divider,
   IconButton,
-  InputAdornment,
+  InputBase,
   List,
   ListItem,
-  ListItemAvatar,
   ListItemText,
-  TextField,
+  Radio,
   Toolbar,
   Typography,
 } from '@material-ui/core';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
-import BusinessIcon from '@material-ui/icons/Business';
 import SearchIcon from '@material-ui/icons/Search';
+import * as classNames from 'classnames';
 import * as React from 'react';
-import { FormattedMessage } from 'react-intl';
-import { List as VirtualizedList, ListRowProps } from 'react-virtualized';
 
-import { layoutMessage } from '@layout/locales/messages';
 import { LookupCustomerDialogProps } from './LookupCustomerDialog';
 
-export const LookupCustomerDialogView: React.SFC<LookupCustomerDialogProps> = props => {
-  const { isOpen, _search } = props;
-  const { intl } = props;
-  const { onSelected, onClose, filterCustomers, searchOnChange, searchOnKeyUp } = props;
-  const { isLoading, response } = props.lookupCustomerState.list;
-  
-  const customers = filterCustomers(response);
-
-  const rowRenderer = (row: ListRowProps) => {
-    if (customers.length > 0) {
-      const customer = customers[row.index];
-
-      if (!customer) {
-        return;
-      }
-
-      return (
-        <ListItem 
-          button 
-          key={row.index}
-          style={{...row.style}}
-          onClick={() => onSelected(customer)}
+export const LookupCustomerDialogView: React.SFC<LookupCustomerDialogProps> = props => (
+  <Dialog 
+    open={props.isOpen}
+    fullScreen
+    scroll="paper"
+    hideBackdrop={props.hideBackdrop}
+    aria-labelledby="lookup-customer-dialog-title"
+    className={props.layoutState.anchor === 'right' ? props.classes.contentShiftRight : props.classes.contentShiftLeft}
+    onClose={props.onClose}
+  >
+    <AppBar position="fixed" className={props.classes.appBarDialog}>
+      <Toolbar>
+        <IconButton color="inherit" onClick={() => props.onClose()} aria-label="Close">
+          <ArrowBackIcon />
+        </IconButton>
+        
+        <Typography 
+          variant="h6" 
+          color="inherit" 
+          className={classNames(props.classes.flex, props.classes.appBarTitle)}
         >
-          <ListItemAvatar>
-            <Avatar>
-              <BusinessIcon />
-            </Avatar>
-          </ListItemAvatar>
-          <ListItemText 
-            color="primary"
-            primary={customer.name}
-            secondary={customer.address}
-            primaryTypographyProps={{
-              noWrap: true
-            }}
-            secondaryTypographyProps={{
-              noWrap: true
-            }}
-          />
-        </ListItem>
-      );
-    }
+          {props.intl.formatMessage(lookupMessage.customer.page.listTitle)}
+        </Typography>
 
-    return null;
-  };
-
-  const render = (
-    <Dialog 
-      fullScreen
-      hideBackdrop={props.hideBackdrop}
-      className={props.layoutState.anchor === 'right' ? props.classes.contentShiftRight : props.classes.contentShiftLeft}
-      open={isOpen}
-      aria-labelledby="lookup-customer-dialog-title"
-      scroll="paper"
-      onClose={onClose}
-    >
-      <AppBar position="fixed" className={props.classes.appBarDialog}>
-        <Toolbar>
-          <IconButton color="inherit" onClick={() => onClose()} aria-label="Close">
-            <ArrowBackIcon />
-          </IconButton>
-          <Typography variant="h6" color="inherit" className={props.classes.flex}>
-            <FormattedMessage id="lookup.customer.lookupTitle" />
-          </Typography>
-          <Button color="inherit" onClick={() => onClose()}>
-            <FormattedMessage id="global.action.discard" />
-          </Button>
-        </Toolbar>
-      </AppBar>
-      
-      <DialogContent className={props.classes.paddingDisabled}>
-        <div className={props.classes.paddingFar}>
-          <TextField
-            id="lookup-customer-selector-text"
-            fullWidth
-            margin="normal"
-            value={_search}
-            disabled={!response}
-            label={<FormattedMessage id="global.search" />}
-            placeholder={intl.formatMessage({ id: 'lookup.placeholder.customerSearch' })}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <SearchIcon />
-                </InputAdornment>
-              ),
+        <div className={props.classes.search}>
+          <div className={props.classes.searchIcon}>
+            <SearchIcon />
+          </div>
+          <InputBase
+            value={props.search}
+            disabled={props.lookupCustomerState.list.isLoading}
+            placeholder={props.intl.formatMessage(layoutMessage.text.search)}
+            classes={{
+              root: props.classes.searchRoot,
+              input: props.classes.searchInput,
             }}
-            onChange={searchOnChange}
-            onKeyUp={searchOnKeyUp}
+            onChange={props.handleOnChangeSearch}
+            onKeyUpCapture={props.handlerOnKeyUpSearch}
           />
         </div>
-        
-        <List>
-          {
-            !isLoading &&
-            <VirtualizedList
-              width={9999}
-              height={9999}
-              autoWidth
-              autoHeight
-              rowCount={customers.length}
-              rowHeight={70}
-              rowRenderer={rowRenderer}
-            /> ||
-            <Typography>
-              {intl.formatMessage(layoutMessage.text.loading)}
-            </Typography>
-          }
-        </List>
-      </DialogContent>
-    </Dialog>
-  );
+      </Toolbar>
+    </AppBar>
+    
+    <DialogContent className={props.classes.paddingDisabled}>        
+      <List>
+        <ListItem button onClick={() => props.onSelected()}>
+          <Radio color="primary" checked={!props.value} />
+          <ListItemText primary={props.intl.formatMessage(layoutMessage.text.none)} />
+        </ListItem>
+        <Divider/>
 
-  return render;
-};
+        {
+          props.customers &&
+          props.customers.map((item, index) => 
+            <React.Fragment key={index}>
+              <ListItem button onClick={() => props.onSelected(item)}>
+                <Radio color="primary" checked={props.value && props.value === item.uid || false} />
+                <ListItemText 
+                  primary={item.name} 
+                  secondary={item.address || '-'}
+                  primaryTypographyProps={{
+                    noWrap: true
+                  }} 
+                  secondaryTypographyProps={{
+                    noWrap: true
+                  }} 
+                />
+              </ListItem>
+              <Divider/>
+            </React.Fragment>
+          )
+        }
+      </List>
+    </DialogContent>
+  </Dialog>
+);

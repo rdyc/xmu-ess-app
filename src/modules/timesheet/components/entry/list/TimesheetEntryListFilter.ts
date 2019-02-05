@@ -1,8 +1,6 @@
 import { ISystemList } from '@common/classes/response';
-// import { ICollectionValue } from '@layout/classes/core';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
-import { ILookupCustomerGetListFilter } from '@lookup/classes/filters/customer';
 import { ICustomerList } from '@lookup/classes/response';
 import { WithStyles, withStyles } from '@material-ui/core';
 import { IProjectRegistrationGetListFilter } from '@project/classes/filters/registration';
@@ -10,9 +8,21 @@ import { IProjectList } from '@project/classes/response';
 import styles from '@styles';
 import { ITimesheetEntryGetAllFilter } from '@timesheet/classes/filters';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
-import { compose, HandleCreators, mapper, setDisplayName, StateHandler, StateHandlerMap, StateUpdaters, withHandlers, withStateHandlers } from 'recompose';
+import {
+  compose,
+  HandleCreators,
+  mapper,
+  setDisplayName,
+  StateHandler,
+  StateHandlerMap,
+  StateUpdaters,
+  withHandlers,
+  withStateHandlers,
+} from 'recompose';
+
 import { TimesheetEntryListFilterView } from './TimesheetEntryListFilterView';
 
+// import { ICollectionValue } from '@layout/classes/core';
 // const completionStatus: ICollectionValue[] = [
 //   { value: 'pending', name: 'Pending' },
 //   { value: 'complete', name: 'Complete' }
@@ -33,9 +43,6 @@ interface IOwnState {
   // filter customer
   isFilterCustomerOpen: boolean;
   filterCustomer?: ICustomerList;
-
-  // filter Customer Dialog
-  filterCustomerDialog: ILookupCustomerGetListFilter;
 
   // filter project
   isFilterProjectOpen: boolean;
@@ -95,7 +102,7 @@ interface IOwnHandler {
 
   // filter customer
   handleFilterCustomerVisibility: (event: React.MouseEvent<HTMLElement>) => void;
-  handleFilterCustomerOnSelected: (customer: ICustomerList) => void;
+  handleFilterCustomerOnSelected: (customer?: ICustomerList) => void;
   handleFilterCustomerOnClear: (event: React.MouseEvent<HTMLElement>) => void;
   handleFilterCustomerOnClose: () => void;
 
@@ -147,11 +154,6 @@ const createProps: mapper<TimesheetEntryListFilterProps, IOwnState> = (props: Ti
 
   // pass initial value for primitive types only, bellow is 'boolean'
   filterRejected: props.initialProps && props.initialProps.isRejected,
-
-  // default filter customer dialog
-  filterCustomerDialog: {
-    companyUid: props.userState.user ? props.userState.user.company.uid : undefined
-  },
 
   // default filter project dialog
   filterProjectDialog: {
@@ -250,7 +252,7 @@ const handlerCreators: HandleCreators<TimesheetEntryListFilterProps, IOwnHandler
   handleFilterCustomerVisibility: (props: TimesheetEntryListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
     props.setFilterCustomerVisibility();
   },
-  handleFilterCustomerOnSelected: (props: TimesheetEntryListFilterProps) => (customer: ICustomerList) => {
+  handleFilterCustomerOnSelected: (props: TimesheetEntryListFilterProps) => (customer?: ICustomerList) => {
     props.setFilterCustomer(customer);
   },
   handleFilterCustomerOnClear: (props: TimesheetEntryListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {

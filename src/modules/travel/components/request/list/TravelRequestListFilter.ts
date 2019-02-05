@@ -2,7 +2,6 @@ import { ISystemList } from '@common/classes/response';
 import { ICollectionValue } from '@layout/classes/core';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
-import { ILookupCustomerGetListFilter } from '@lookup/classes/filters/customer';
 import { ICustomerList } from '@lookup/classes/response';
 import { WithStyles, withStyles } from '@material-ui/core';
 import { IProjectRegistrationGetListFilter } from '@project/classes/filters/registration';
@@ -21,6 +20,7 @@ import {
   withHandlers,
   withStateHandlers,
 } from 'recompose';
+
 import { TravelRequestListFilterView } from './TravelRequestListFilterView';
 
 const completionStatus: ICollectionValue[] = [
@@ -43,9 +43,6 @@ interface IOwnState {
   // filter customer
   isFilterCustomerOpen: boolean;
   filterCustomer?: ICustomerList;
-
-  // filter Customer Dialog
-  filterCustomerDialog: ILookupCustomerGetListFilter;
 
   // filter project
   isFilterProjectOpen: boolean;
@@ -152,6 +149,7 @@ export type TravelRequestListFilterProps
   & IOwnState
   & IOwnStateUpdater
   & IOwnHandler
+  & WithUser
   & WithStyles<typeof styles>
   & WithLayout
   & InjectedIntlProps;
@@ -167,10 +165,6 @@ const createProps: mapper<TravelRequestListFilterProps, IOwnState> = (props: Tra
   // pass initial value for primitive types only, bellow is 'boolean'
   filterRejected: props.initialProps && props.initialProps.isRejected,
   filterSettlement: props.initialProps && props.initialProps.isSettlement,
-
-  filterCustomerDialog: {
-    companyUid: props.userState.user ? props.userState.user.company.uid : undefined
-  },
 
   // default filter project dialog
   filterProjectDialog: {
@@ -357,8 +351,8 @@ export const TravelRequestListFilter = compose<TravelRequestListFilterProps, IOw
   setDisplayName('TravelRequestListFilter'),
   withUser,
   withLayout,
-  withStyles(styles),
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),
-  withHandlers(handlerCreators)
+  withHandlers(handlerCreators),
+  withStyles(styles)
 )(TravelRequestListFilterView);

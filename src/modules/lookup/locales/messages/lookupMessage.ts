@@ -203,7 +203,7 @@ export const lookupMessage = {
     dialog: lookupDiemDialog,
     
   },
-  lookupCustomer: {
+  customer: {
     page: lookupCustomerPage,
     section: lookupCustomerSection,
     field: lookupCustomerFields,

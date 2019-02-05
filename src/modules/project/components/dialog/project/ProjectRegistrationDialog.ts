@@ -142,15 +142,15 @@ const lifecycles: ReactLifeCycleFunctions<LookupProjectDialogProps, IOwnState> =
       });
     }
   },
-  componentWillReceiveProps(nextProps: LookupProjectDialogProps) {
-    if (nextProps.filter !== this.props.filter) {
-      const { loadListRequest } = this.props.projectRegisterDispatch;
-      const { filter, changeProjectListFilter } = nextProps;
+  // componentDidUpdate(prevProps: LookupProjectDialogProps) {
+  //   if (prevProps.filter !== this.props.filter) {
+  //     const { loadListRequest } = this.props.projectRegisterDispatch;
+  //     const { filter, changeProjectListFilter } = this.props;
       
-      changeProjectListFilter({filter});
-      loadListRequest({filter});
-    }
-  }
+  //     changeProjectListFilter({filter});
+  //     loadListRequest({filter});
+  //   }
+  // }
 };
 
 export const ProjectRegistrationDialog = compose<LookupProjectDialogProps, IOwnOptions>(

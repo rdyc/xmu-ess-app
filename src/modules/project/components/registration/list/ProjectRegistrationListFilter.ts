@@ -1,5 +1,6 @@
 import { ISystemList } from '@common/classes/response';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
+import { WithUser, withUser } from '@layout/hoc/withUser';
 import { ICustomerList } from '@lookup/classes/response';
 import { WithStyles, withStyles } from '@material-ui/core';
 import { IProjectRegistrationGetAllFilter } from '@project/classes/filters/registration';
@@ -106,6 +107,7 @@ export type ProjectRegistrationListFilterProps
   & IOwnState
   & IOwnStateUpdater
   & IOwnHandler
+  & WithUser
   & WithStyles<typeof styles>
   & WithLayout
   & InjectedIntlProps;
@@ -238,9 +240,10 @@ const handlerCreators: HandleCreators<ProjectRegistrationListFilterProps, IOwnHa
 
 export const ProjectRegistrationListFilter = compose<ProjectRegistrationListFilterProps, IOwnOption>(
   setDisplayName('ProjectRegistrationListFilter'),
+  withUser,
   withLayout,
-  withStyles(styles),
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),
-  withHandlers(handlerCreators)
+  withHandlers(handlerCreators),
+  withStyles(styles)
 )(ProjectRegistrationListFilterView);

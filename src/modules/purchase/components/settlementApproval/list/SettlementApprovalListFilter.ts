@@ -1,8 +1,11 @@
 import { ISystemList } from '@common/classes/response';
 import { ICollectionValue } from '@layout/classes/core';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
+import { WithUser, withUser } from '@layout/hoc/withUser';
 import { ICustomerList } from '@lookup/classes/response';
 import { WithStyles, withStyles } from '@material-ui/core';
+import { IProjectRegistrationGetListFilter } from '@project/classes/filters/registration';
+import { IProjectList } from '@project/classes/response';
 import { ISettlementApprovalGetAllFilter } from '@purchase/classes/filters/settlementApproval';
 import styles from '@styles';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
@@ -18,10 +21,6 @@ import {
   withStateHandlers,
 } from 'recompose';
 
-import { WithUser, withUser } from '@layout/hoc/withUser';
-import { ILookupCustomerGetListFilter } from '@lookup/classes/filters/customer';
-import { IProjectRegistrationGetListFilter } from '@project/classes/filters/registration';
-import { IProjectList } from '@project/classes/response';
 import { SettlementApprovalListFilterView } from './SettlementApprovalListFilterView';
 
 const completionStatus: ICollectionValue[] = [
@@ -44,9 +43,6 @@ interface IOwnState {
   // filter customer
   isFilterCustomerOpen: boolean;
   filterCustomer?: ICustomerList;
-
-  // default filter customer dialog
-  filterCustomerDialog: ILookupCustomerGetListFilter;
 
   // filter project
   isFilterProjectOpen: boolean;
@@ -141,15 +137,11 @@ const createProps: mapper<SettlementApprovalListFilterProps, IOwnState> = (props
   isFilterCompletionOpen: false,
   isFilterStatusOpen: false,
 
-  // default filter customer dialog
-  filterCustomerDialog: {
-    companyUid: props.userState.user ? props.userState.user.company.uid : undefined
-  },
-
   // default filter project dialog
   filterProjectDialog: {
     customerUids: undefined
   },
+  
   // pass initial value for primitive types only, bellow is 'boolean'
   filterNotify: props.initialProps && props.initialProps.isNotify
 });
