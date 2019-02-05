@@ -21,9 +21,9 @@ import {
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import CloseIcon from '@material-ui/icons/Close';
 import ClearIcon from '@material-ui/icons/SettingsBackupRestore';
-import { ProjectRegistrationDialog } from '@project/components/dialog/project';
 import { travelMessage } from '@travel/locales/messages/travelMessage';
 import * as React from 'react';
+
 import { TravelSettlementApprovalListFilterProps } from './TravelSettlementApprovalListFilter';
 
 export const TravelSettlementApprovalListFilterView: React.SFC<TravelSettlementApprovalListFilterProps> = props => (
@@ -78,26 +78,6 @@ export const TravelSettlementApprovalListFilterView: React.SFC<TravelSettlementA
               }
 
               <IconButton onClick={props.handleFilterCompletionVisibility}>
-                <ChevronRightIcon />
-              </IconButton>
-            </ListItemSecondaryAction>
-          </ListItem>
-          <Divider />
-
-          <ListItem button onClick={props.filterCustomer && props.handleFilterProjectVisibility} disabled={!props.filterCustomer}>
-            <ListItemText
-              primary={props.intl.formatMessage(travelMessage.request.field.projectUid)}
-              secondary={props.filterProject && props.filterProject.name || props.intl.formatMessage(layoutMessage.text.none)}
-            />
-            <ListItemSecondaryAction>
-              {
-                props.filterProject &&
-                <IconButton onClick={props.handleFilterProjectOnClear}>
-                  <ClearIcon />
-                </IconButton>
-              }
-
-              <IconButton onClick={props.filterCustomer && props.handleFilterProjectVisibility} disabled={!props.filterCustomer}>
                 <ChevronRightIcon />
               </IconButton>
             </ListItemSecondaryAction>
@@ -174,14 +154,6 @@ export const TravelSettlementApprovalListFilterView: React.SFC<TravelSettlementA
       hideBackdrop={true}
       onSelected={props.handleFilterCustomerOnSelected}
       onClose={props.handleFilterCustomerOnClose}
-    />
-
-    <ProjectRegistrationDialog
-      hideBackdrop={true}
-      isOpen={props.isFilterProjectOpen}
-      filter={props.filterProjectDialog}
-      onSelected={props.handleFilterProjectOnSelected}
-      onClose={props.handleFilterProjectOnClose}
     />
 
     <LookupSystemDialog

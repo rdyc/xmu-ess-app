@@ -4,8 +4,6 @@ import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { ICustomerList } from '@lookup/classes/response';
 import { WithStyles, withStyles } from '@material-ui/core';
-import { IProjectRegistrationGetListFilter } from '@project/classes/filters/registration';
-import { IProjectList } from '@project/classes/response';
 import { ISettlementApprovalGetAllFilter } from '@purchase/classes/filters/settlementApproval';
 import styles from '@styles';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
@@ -28,7 +26,7 @@ const completionStatus: ICollectionValue[] = [
   { value: 'complete', name: 'Complete' }
 ]; 
 
-export type ISettlementApprovalListFilterResult = Pick<ISettlementApprovalGetAllFilter, 'customerUid' | 'statusType' | 'status' | 'isNotify' | 'projectUid' >;
+export type ISettlementApprovalListFilterResult = Pick<ISettlementApprovalGetAllFilter, 'customerUid' | 'statusType' | 'status' | 'isNotify'>;
 
 interface IOwnOption {
   isOpen: boolean;
@@ -43,13 +41,6 @@ interface IOwnState {
   // filter customer
   isFilterCustomerOpen: boolean;
   filterCustomer?: ICustomerList;
-
-  // filter project
-  isFilterProjectOpen: boolean;
-  filterProject?: IProjectList;
-
-  // filter Project Dialog
-  filterProjectDialog: IProjectRegistrationGetListFilter;
 
   // filter status
   isFilterStatusOpen: boolean;
@@ -70,10 +61,6 @@ interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
   // filter customer
   setFilterCustomerVisibility: StateHandler<IOwnState>;
   setFilterCustomer: StateHandler<IOwnState>;
-
-  // filter customer
-  setFilterProjectVisibility: StateHandler<IOwnState>;
-  setFilterProject: StateHandler<IOwnState>;
 
   // filter status
   setFilterStatusVisibility: StateHandler<IOwnState>;
@@ -97,12 +84,6 @@ interface IOwnHandler {
   handleFilterCustomerOnSelected: (customer: ICustomerList) => void;
   handleFilterCustomerOnClear: (event: React.MouseEvent<HTMLElement>) => void;
   handleFilterCustomerOnClose: () => void;
-  
-  // filter project
-  handleFilterProjectVisibility: (event: React.MouseEvent<HTMLElement>) => void;
-  handleFilterProjectOnSelected: (customer: IProjectList) => void;
-  handleFilterProjectOnClear: (event: React.MouseEvent<HTMLElement>) => void;
-  handleFilterProjectOnClose: () => void;
 
   // filter status
   handleFilterStatusVisibility: (event: React.MouseEvent<HTMLElement>) => void;
@@ -133,14 +114,8 @@ export type SettlementApprovalListFilterProps
 const createProps: mapper<SettlementApprovalListFilterProps, IOwnState> = (props: SettlementApprovalListFilterProps): IOwnState => ({
   completionStatus,
   isFilterCustomerOpen: false,
-  isFilterProjectOpen: false,
   isFilterCompletionOpen: false,
   isFilterStatusOpen: false,
-
-  // default filter project dialog
-  filterProjectDialog: {
-    customerUids: undefined
-  },
   
   // pass initial value for primitive types only, bellow is 'boolean'
   filterNotify: props.initialProps && props.initialProps.isNotify
@@ -163,18 +138,6 @@ const stateUpdaters: StateUpdaters<SettlementApprovalListFilterProps, IOwnState,
   setFilterCustomer: (prevState: IOwnState) => (customer?: ICustomerList) => ({
     isFilterCustomerOpen: false,
     filterCustomer: customer,
-    filterProjectDialog: {
-      customerUids: customer && customer.uid
-    }
-  }),
-
-  // filter project
-  setFilterProjectVisibility: (prevState: IOwnState, props: SettlementApprovalListFilterProps) => () => ({
-    isFilterProjectOpen: !prevState.isFilterProjectOpen,
-  }),
-  setFilterProject: (prevState: IOwnState) => (project?: IProjectList) => ({
-    isFilterProjectOpen: false,
-    filterProject: project
   }),
 
   // filter status
@@ -209,7 +172,6 @@ const handlerCreators: HandleCreators<SettlementApprovalListFilterProps, IOwnHan
   handleFilterOnApply: (props: SettlementApprovalListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
     props.onApply({
       customerUid: props.filterCustomer && props.filterCustomer.uid,
-      projectUid: props.filterProject && props.filterProject.uid,
       status: props.filterCompletion && props.filterCompletion.value,
       statusType: props.filterStatus && props.filterStatus.type,
       isNotify: props.filterNotify
@@ -228,20 +190,6 @@ const handlerCreators: HandleCreators<SettlementApprovalListFilterProps, IOwnHan
   },
   handleFilterCustomerOnClose: (props: SettlementApprovalListFilterProps) => () => {
     props.setFilterCustomerVisibility();
-  },
-
-  // filter project
-  handleFilterProjectVisibility: (props: SettlementApprovalListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
-    props.setFilterProjectVisibility();
-  },
-  handleFilterProjectOnSelected: (props: SettlementApprovalListFilterProps) => (project: IProjectList) => {
-    props.setFilterProject(project);
-  },
-  handleFilterProjectOnClear: (props: SettlementApprovalListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
-    props.setFilterProject();
-  },
-  handleFilterProjectOnClose: (props: SettlementApprovalListFilterProps) => () => {
-    props.setFilterProjectVisibility();
   },
 
   // filter status

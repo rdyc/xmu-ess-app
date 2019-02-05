@@ -77,7 +77,6 @@ const listView: React.SFC<AllProps> = props => (
           isOpen={props.isFilterOpen}
           initialProps={{
             customerUid: props.customerUid,
-            projectUid: props.projectUid,
             statusType: props.statusType,
             isRejected: props.isRejected,
             isSettlement: props.isSettlement
@@ -182,7 +181,6 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
                 companyUid: user.company.uid,
                 positionUid: user.position.uid,
                 customerUid: this.props.customerUid,
-                projectUid: this.props.projectUid,
                 statusType: this.props.statusType,
                 isRejected: this.props.isRejected,
                 isSettlement: this.props.isSettlement,
@@ -244,7 +242,6 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
           icon: TuneIcon,
           showBadgeWhen: () => {
             return this.props.customerUid !== undefined ||
-              this.props.projectUid !== undefined || 
               this.props.statusType !== undefined ||
               this.props.isRejected === true ||
               this.props.isSettlement === true;
@@ -260,7 +257,6 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
     // track any changes in filter props
     if (
       this.props.customerUid !== nextProps.customerUid ||
-      this.props.projectUid !== nextProps.projectUid ||
       this.props.statusType !== nextProps.statusType ||
       this.props.isRejected !== nextProps.isRejected ||
       this.props.isSettlement !== nextProps.isSettlement

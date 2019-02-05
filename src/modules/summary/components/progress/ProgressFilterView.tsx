@@ -137,9 +137,10 @@ export const ProgressFilterView: React.SFC<ProgressFilterProps> = props => {
         />
 
         <ProjectRegistrationDialog 
-          hideBackdrop={true}
+          title={props.intl.formatMessage(summaryMessage.filter.projectUid)}
           isOpen={props.isFilterProjectOpen} 
           filter={props.filterProjectDialog}
+          hideBackdrop={true}
           onSelected={props.handleFilterProjectOnSelected} 
           onClose={props.handleFilterProjectOnClose}
         />

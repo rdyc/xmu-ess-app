@@ -75,10 +75,15 @@ const handlerCreators: HandleCreators<LandingPageProps, OwnHandler> = {
       }
     } else {
       AppUserManager.signinRedirect();
+      // AppUserManager.signinPopup()
+      //   .then((user: User) => { 
+      //     console.log(user);
+      //   });
     }
   },
   handleOnClickLogout: (props: LandingPageProps) => () => {
     AppUserManager.signoutRedirect();
+    // AppUserManager.signoutPopup();
   }
 };
 
@@ -90,12 +95,12 @@ const lifecycles: ReactLifeCycleFunctions<LandingPageProps, {}> = {
 };
 
 export const LandingPage = compose<LandingPageProps, {}>(
-  injectIntl,
   withRouter,
   withOidc,
   withUser,
   withStyles(styles),
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
-  lifecycle(lifecycles)
+  lifecycle(lifecycles),
+  injectIntl
 )(LandingPageView);

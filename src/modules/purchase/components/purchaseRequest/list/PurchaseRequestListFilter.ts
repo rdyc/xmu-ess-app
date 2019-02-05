@@ -3,8 +3,6 @@ import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { ICustomerList } from '@lookup/classes/response';
 import { WithStyles, withStyles } from '@material-ui/core';
-import { IProjectRegistrationGetListFilter } from '@project/classes/filters/registration';
-import { IProjectList } from '@project/classes/response';
 import { IPurchaseGetAllFilter } from '@purchase/classes/filters/purchaseRequest';
 import styles from '@styles';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
@@ -22,7 +20,7 @@ import {
 
 import { PurchaseRequestListFilterView } from './PurchaseRequestListFilterView';
 
-export type IPurchaseRequestListFilterResult = Pick<IPurchaseGetAllFilter, 'customerUid' | 'isRejected' | 'isSettlement' | 'statusType' | 'projectUid' >;
+export type IPurchaseRequestListFilterResult = Pick<IPurchaseGetAllFilter, 'customerUid' | 'isRejected' | 'isSettlement' | 'statusType' >;
 
 interface IOwnOption {
   isOpen: boolean;
@@ -35,13 +33,6 @@ interface IOwnState {
   // filter customer
   isFilterCustomerOpen: boolean;
   filterCustomer?: ICustomerList;
-
-  // filter project
-  isFilterProjectOpen: boolean;
-  filterProject?: IProjectList;
-
-  // filter Project Dialog
-  filterProjectDialog: IProjectRegistrationGetListFilter;
 
   // filter status
   isFilterStatusOpen: boolean;
@@ -61,10 +52,6 @@ interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
   // filter customer
   setFilterCustomerVisibility: StateHandler<IOwnState>;
   setFilterCustomer: StateHandler<IOwnState>;
-
-  // filter project
-  setFilterProjectVisibility: StateHandler<IOwnState>;
-  setFilterProject: StateHandler<IOwnState>;
   
   // filter status
   setFilterStatusVisibility: StateHandler<IOwnState>;
@@ -87,12 +74,6 @@ interface IOwnHandler {
   handleFilterCustomerOnSelected: (customer: ICustomerList) => void;
   handleFilterCustomerOnClear: (event: React.MouseEvent<HTMLElement>) => void;
   handleFilterCustomerOnClose: () => void;
-
-  // filter project
-  handleFilterProjectVisibility: (event: React.MouseEvent<HTMLElement>) => void;
-  handleFilterProjectOnSelected: (customer: IProjectList) => void;
-  handleFilterProjectOnClear: (event: React.MouseEvent<HTMLElement>) => void;
-  handleFilterProjectOnClose: () => void;
 
   // filter status
   handleFilterStatusVisibility: (event: React.MouseEvent<HTMLElement>) => void;
@@ -119,13 +100,7 @@ export type PurchaseRequestListFilterProps
 
 const createProps: mapper<PurchaseRequestListFilterProps, IOwnState> = (props: PurchaseRequestListFilterProps): IOwnState => ({
   isFilterCustomerOpen: false,
-  isFilterProjectOpen: false,
   isFilterStatusOpen: false,
-
-  // default filter project dialog
-  filterProjectDialog: {
-    customerUids: undefined
-  },
 
   // pass initial value for primitive types only, bellow is 'boolean'
   filterSettlement: props.initialProps && props.initialProps.isSettlement,
@@ -136,7 +111,6 @@ const stateUpdaters: StateUpdaters<PurchaseRequestListFilterProps, IOwnState, IO
   // main filter
   setFilterReset: (prevState: IOwnState) => () => ({
     filterCustomer: undefined,
-    filterProject: undefined,
     filterSettlement: undefined,
     filterRejected: undefined,
     filterStatus: undefined
@@ -148,19 +122,7 @@ const stateUpdaters: StateUpdaters<PurchaseRequestListFilterProps, IOwnState, IO
   }),
   setFilterCustomer: (prevState: IOwnState) => (customer?: ICustomerList) => ({
     isFilterCustomerOpen: false,
-    filterCustomer: customer,
-    filterProjectDialog: {
-      customerUids: customer && customer.uid
-    }
-  }),
-
-  // filter project
-  setFilterProjectVisibility: (prevState: IOwnState, props: PurchaseRequestListFilterProps) => () => ({
-    isFilterProjectOpen: !prevState.isFilterProjectOpen,
-  }),
-  setFilterProject: (prevState: IOwnState) => (project?: IProjectList) => ({
-    isFilterProjectOpen: false,
-    filterProject: project
+    filterCustomer: customer
   }),
 
   // filter status
@@ -191,7 +153,6 @@ const handlerCreators: HandleCreators<PurchaseRequestListFilterProps, IOwnHandle
   handleFilterOnApply: (props: PurchaseRequestListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
     props.onApply({
       customerUid: props.filterCustomer && props.filterCustomer.uid,
-      projectUid: props.filterProject && props.filterProject.uid,
       statusType: props.filterStatus && props.filterStatus.type,
       isSettlement: props.filterSettlement,
       isRejected: props.filterRejected,
@@ -210,20 +171,6 @@ const handlerCreators: HandleCreators<PurchaseRequestListFilterProps, IOwnHandle
   },
   handleFilterCustomerOnClose: (props: PurchaseRequestListFilterProps) => () => {
     props.setFilterCustomerVisibility();
-  },
-
-  // filter project
-  handleFilterProjectVisibility: (props: PurchaseRequestListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
-    props.setFilterProjectVisibility(); 
-  },
-  handleFilterProjectOnSelected: (props: PurchaseRequestListFilterProps) => (project: IProjectList) => {
-    props.setFilterProject(project);
-  },
-  handleFilterProjectOnClear: (props: PurchaseRequestListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
-    props.setFilterProject();
-  },
-  handleFilterProjectOnClose: (props: PurchaseRequestListFilterProps) => () => {
-    props.setFilterProjectVisibility();
   },
 
   // filter status

@@ -1,4 +1,3 @@
-import { IResponseCollection } from '@generic/interfaces';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithStyles, withStyles } from '@material-ui/core';
 import { IProjectRegistrationGetListFilter } from '@project/classes/filters/registration';
@@ -13,6 +12,7 @@ import {
   mapper,
   ReactLifeCycleFunctions,
   setDisplayName,
+  shallowEqual,
   StateHandler,
   StateHandlerMap,
   StateUpdaters,
@@ -23,34 +23,33 @@ import {
 import { ProjectRegistrationDialogView } from './ProjectRegistrationDialogView';
 
 interface IOwnOptions {
-  value?: string | undefined;
-  filter?: IProjectRegistrationGetListFilter | undefined;
+  title: string;
   isOpen: boolean;
+  value?: string;
+  filter?: IProjectRegistrationGetListFilter;
   hideBackdrop?: boolean;
-  onSelected: (project: IProjectList) => void;
+  onSelected: (project?: IProjectList) => void;
   onClose: () => void;
 }
 
 interface IOwnHandlers {
-  searchOnChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  searchOnKeyUp: (event: React.KeyboardEvent<HTMLDivElement>) => void;
-  filterProjects: (response: IResponseCollection<IProjectList> | undefined) => IProjectList[];
+  handleOnLoadApi: () => void;
+  handleOnChangeSearch: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  handleOnKeyUpSearch: (event: React.KeyboardEvent<HTMLDivElement>) => void;
 }
 
 interface IOwnState {
-  _value: string | undefined;
-  _filter: IProjectRegistrationGetListFilter;
-  _search: string;
+  search: string;
+  projects?: IProjectList[];
 }
 
 interface IOwnStateUpdaters extends StateHandlerMap<IOwnState> {
-  setStateValue: StateHandler<IOwnState>;
-  setStateSearch: StateHandler<IOwnState>;
-  clearStateSearch: StateHandler<IOwnState>;
-  changeProjectListFilter: StateHandler<IOwnState>;
+  setProjects: StateHandler<IOwnState>;
+  setSearch: StateHandler<IOwnState>;
+  clearSearch: StateHandler<IOwnState>;
 }
 
-export type LookupProjectDialogProps
+export type ProjectRegistrationDialogProps
   = WithLayout
   & WithStyles<typeof styles>
   & WithProjectRegistration
@@ -60,106 +59,103 @@ export type LookupProjectDialogProps
   & IOwnState
   & IOwnStateUpdaters;
 
-const createProps: mapper<IOwnOptions, IOwnState> = (props: IOwnOptions): IOwnState => {
-  const { value, filter} = props;
+const createProps: mapper<IOwnOptions, IOwnState> = (props: IOwnOptions): IOwnState => ({
+  search: '',
+});
 
-  return { 
-    _value: value,
-    _filter: {
-      customerUids: filter && filter.customerUids,
-      find: filter && filter.find,
-      findBy: filter && filter.findBy,
-      orderBy: filter && filter.orderBy || 'name',
-      direction: filter && filter.direction || 'ascending',
-      size: filter && filter.size || undefined,
-    },
-    _search: '',
-  };
-};
+const stateUpdaters: StateUpdaters<ProjectRegistrationDialogProps, IOwnState, IOwnStateUpdaters> = {
+  setProjects: (state: IOwnState, props: ProjectRegistrationDialogProps) => () => {
+    const { response } = props.projectRegisterState.list;
 
-const stateUpdaters: StateUpdaters<IOwnOptions, IOwnState, IOwnStateUpdaters> = {
-  setStateValue: (prevState: IOwnState) => (uid: string) => ({
-    _value: uid
-  }),
-  setStateSearch: (prevState: IOwnState) => (value: string) => ({
-    _search: value
-  }),
-  clearStateSearch: (prevState: IOwnState) => () => ({
-    _search: ''
-  }),
-  changeProjectListFilter: (prevState: IOwnState) => (filter: IProjectRegistrationGetListFilter) => ({
-    _filter: {
-      customerUids: filter && filter.customerUids,
-      find: filter && filter.find,
-      findBy: filter && filter.findBy,
-      orderBy: filter && filter.orderBy || 'name',
-      direction: filter && filter.direction || 'ascending',
-      size: filter && filter.size || undefined,
+    let projects: IProjectList[] = [];
+
+    if (response && response.data) {
+      if (state.search.length > 0) {
+        projects = response.data.filter(item => 
+          item.uid.toLowerCase().indexOf(state.search) !== -1 ||
+          item.name.toLowerCase().indexOf(state.search) !== -1 ||
+          (item.customer && item.customer.name.toLowerCase().indexOf(state.search) !== -1 || false)
+        );
+      } else {
+        projects = response.data;
+      }
     }
+    
+    return {
+      projects
+    };
+  },
+  setSearch: (state: IOwnState) => (value: string) => ({
+    search: value.toLowerCase()
+  }),
+  clearSearch: (state: IOwnState) => () => ({
+    search: ''
   })
 };
 
-const handlerCreators: HandleCreators<LookupProjectDialogProps, IOwnHandlers> = {
-  filterProjects: (props: LookupProjectDialogProps) => (response: IResponseCollection<IProjectList> | undefined): IProjectList[] => {
-    const { _search } = props;
+const handlerCreators: HandleCreators<ProjectRegistrationDialogProps, IOwnHandlers> = {
+  handleOnLoadApi: (props: ProjectRegistrationDialogProps) => () => {
+    const { isLoading } = props.projectRegisterState.list;
+    const { loadListRequest } = props.projectRegisterDispatch;
 
-    let result: IProjectList[] = [];
-
-    if (response && response.data) {
-      if (_search !== '') {
-        result = response.data.filter(item => 
-          item.name.toLowerCase().indexOf(_search || '') !== -1
-        );
-      } else {
-        result = response.data;
-      }
-    }
-
-    return result;
-  },
-  searchOnChange: (props: LookupProjectDialogProps) => (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.currentTarget.value;
-    
-    props.setStateSearch(value);
-  },
-  searchOnKeyUp: (props: LookupProjectDialogProps) => (event: React.KeyboardEvent<HTMLDivElement>) => {
-    // delete pressed
-    if (event.keyCode === 46) {
-      props.clearStateSearch();
-    }
-  },
-};
-
-const lifecycles: ReactLifeCycleFunctions<LookupProjectDialogProps, IOwnState> = {
-  componentDidMount() { 
-    const { _filter } = this.props;
-    const { isLoading, response  } = this.props.projectRegisterState.list;
-    const { loadListRequest } = this.props.projectRegisterDispatch;
-
-    if (!isLoading && !response) {
-      loadListRequest({
-        filter: _filter
+    if (!isLoading) {
+      loadListRequest({ 
+        filter: props.filter 
       });
     }
   },
-  // componentDidUpdate(prevProps: LookupProjectDialogProps) {
-  //   if (prevProps.filter !== this.props.filter) {
-  //     const { loadListRequest } = this.props.projectRegisterDispatch;
-  //     const { filter, changeProjectListFilter } = this.props;
-      
-  //     changeProjectListFilter({filter});
-  //     loadListRequest({filter});
-  //   }
-  // }
+  handleOnChangeSearch: (props: ProjectRegistrationDialogProps) => (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.currentTarget.value;
+    
+    props.setSearch(value);
+  },
+  handleOnKeyUpSearch: (props: ProjectRegistrationDialogProps) => (event: React.KeyboardEvent<HTMLDivElement>) => {
+    // delete pressed
+    if (event.keyCode === 46) {
+      props.clearSearch();
+    }
+  },
 };
 
-export const ProjectRegistrationDialog = compose<LookupProjectDialogProps, IOwnOptions>(
+const lifecycles: ReactLifeCycleFunctions<ProjectRegistrationDialogProps, IOwnState> = {
+  componentDidMount() { 
+    const { request } = this.props.projectRegisterState.list;
+
+    // 1st load only when request are empty
+    if (!request) {
+      this.props.handleOnLoadApi();
+    } else {
+      // 2nd load only when request filter are present
+      if (request.filter) {
+        // comparing some props
+        const shouldUpdate = !shallowEqual(request.filter, this.props.filter || {});
+  
+        // then should update the list?
+        if (shouldUpdate) {
+          this.props.handleOnLoadApi();
+        } else {
+          this.props.setProjects();
+        }
+      }
+    }
+  },
+  componentDidUpdate(prevProps: ProjectRegistrationDialogProps) {
+    if (
+      this.props.search !== prevProps.search ||
+      this.props.projectRegisterState.list.response !== prevProps.projectRegisterState.list.response
+      ) {
+      this.props.setProjects();
+    }
+  }
+};
+
+export const ProjectRegistrationDialog = compose<ProjectRegistrationDialogProps, IOwnOptions>(
   setDisplayName('ProjectRegistrationDialog'),
   withLayout,
-  withStyles(styles),
   withProjectRegistration,
-  injectIntl,
   withStateHandlers(createProps, stateUpdaters), 
   withHandlers(handlerCreators),
   lifecycle(lifecycles),
+  withStyles(styles),
+  injectIntl
 )(ProjectRegistrationDialogView);

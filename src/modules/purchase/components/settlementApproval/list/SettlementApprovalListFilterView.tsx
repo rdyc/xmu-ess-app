@@ -1,5 +1,6 @@
 import { LookupSystemDialog } from '@common/components/dialog/lookupSystemDialog/LookupSystemDialog';
 import { DialogValue } from '@layout/components/dialogs/DialogValue';
+import { ModuleDefinition } from '@layout/helper/redirector';
 import { layoutMessage } from '@layout/locales/messages';
 import { LookupCustomerDialog } from '@lookup/components/customer/dialog';
 import {
@@ -23,8 +24,6 @@ import ClearIcon from '@material-ui/icons/SettingsBackupRestore';
 import { purchaseMessage } from '@purchase/locales/messages/purchaseMessage';
 import * as React from 'react';
 
-import { ModuleDefinition } from '@layout/helper/redirector';
-import { ProjectRegistrationDialog } from '@project/components/dialog/project';
 import { SettlementApprovalListFilterProps } from './SettlementApprovalListFilter';
 
 export const SettlementApprovalListFilterView: React.SFC<SettlementApprovalListFilterProps> = props => (
@@ -64,103 +63,83 @@ export const SettlementApprovalListFilterView: React.SFC<SettlementApprovalListF
       </AppBar>
       
       <DialogContent className={props.classes.paddingDisabled}>
-      <List>
-        <ListItem button onClick={props.handleFilterCustomerVisibility}>
-          <ListItemText 
-            primary={props.intl.formatMessage(purchaseMessage.request.field.customerUid)}
-            secondary={props.filterCustomer && props.filterCustomer.name || props.intl.formatMessage(layoutMessage.text.none)}
-          />
-          <ListItemSecondaryAction>
-            { 
-              props.filterCustomer &&
-              <IconButton onClick={props.handleFilterCustomerOnClear}>
-                <ClearIcon />
-              </IconButton> 
-            }
-
-              <IconButton onClick={props.handleFilterCustomerVisibility}>
-              <ChevronRightIcon />
-            </IconButton> 
-          </ListItemSecondaryAction>
-        </ListItem>
-        <Divider />
-        
-          <ListItem button onClick={props.filterCustomer && props.handleFilterProjectVisibility} disabled={!props.filterCustomer}>
-          <ListItemText
-            primary={props.intl.formatMessage(purchaseMessage.settlement.field.projectUid)}
-            secondary={props.filterProject && props.filterProject.name || props.intl.formatMessage(layoutMessage.text.none)}
-          />
-          <ListItemSecondaryAction>
-            {
-              props.filterProject &&
-              <IconButton onClick={props.handleFilterProjectOnClear}>
-                <ClearIcon />
-              </IconButton>
-            }
-
-              <IconButton disabled={!props.filterCustomer} onClick={props.filterCustomer && props.handleFilterProjectVisibility}>
-              <ChevronRightIcon />
-            </IconButton>
-          </ListItemSecondaryAction>
-        </ListItem>
-        <Divider />
-
-        <ListItem button onClick={props.handleFilterStatusVisibility}>
-          <ListItemText 
-            primary={props.intl.formatMessage(purchaseMessage.request.field.statusType)}
-            secondary={props.filterStatus && props.filterStatus.name || props.intl.formatMessage(layoutMessage.text.none)} 
-          />
-          <ListItemSecondaryAction>
-          { 
-              props.filterStatus &&
-              <IconButton onClick={props.handleFilterStatusOnClear}>
-                <ClearIcon />
-              </IconButton> 
-            }
-
-              <IconButton onClick={props.handleFilterStatusVisibility}>
-              <ChevronRightIcon />
-            </IconButton> 
-          </ListItemSecondaryAction>
-        </ListItem>
-        <Divider />
-
-        <ListItem button onClick={props.handleFilterCompletionVisibility}>
-          <ListItemText 
-            primary={props.intl.formatMessage(purchaseMessage.request.field.completion)}
-            secondary={props.filterCompletion && props.filterCompletion.name || props.intl.formatMessage(layoutMessage.text.none)} 
-          />
-          <ListItemSecondaryAction>
-          { 
-              props.filterCompletion &&
-              <IconButton onClick={props.handleFilterCompletionOnClear}>
-                <ClearIcon />
-              </IconButton> 
-            }
-
-              <IconButton onClick={props.handleFilterCompletionVisibility}>
-              <ChevronRightIcon />
-            </IconButton> 
-          </ListItemSecondaryAction>
-        </ListItem>
-        <Divider />
-
-        <ListItem>
-          <ListItemText 
-            primary={props.intl.formatMessage(purchaseMessage.request.field.isNotify)}
-            secondary={props.intl.formatMessage(props.filterNotify ? layoutMessage.action.yes : layoutMessage.action.no)}
-          />
-          <ListItemSecondaryAction>
-            <Switch
-              color="primary"
-              checked={props.filterNotify || false}
-              onChange={props.handleFilterNotifyOnChange}
+        <List>
+          <ListItem button onClick={props.handleFilterCustomerVisibility}>
+            <ListItemText 
+              primary={props.intl.formatMessage(purchaseMessage.request.field.customerUid)}
+              secondary={props.filterCustomer && props.filterCustomer.name || props.intl.formatMessage(layoutMessage.text.none)}
             />
-          </ListItemSecondaryAction>
-        </ListItem>
-        <Divider />
+            <ListItemSecondaryAction>
+              { 
+                props.filterCustomer &&
+                <IconButton onClick={props.handleFilterCustomerOnClear}>
+                  <ClearIcon />
+                </IconButton> 
+              }
 
-      </List>
+                <IconButton onClick={props.handleFilterCustomerVisibility}>
+                <ChevronRightIcon />
+              </IconButton> 
+            </ListItemSecondaryAction>
+          </ListItem>
+          <Divider />
+
+          <ListItem button onClick={props.handleFilterStatusVisibility}>
+            <ListItemText 
+              primary={props.intl.formatMessage(purchaseMessage.request.field.statusType)}
+              secondary={props.filterStatus && props.filterStatus.name || props.intl.formatMessage(layoutMessage.text.none)} 
+            />
+            <ListItemSecondaryAction>
+            { 
+                props.filterStatus &&
+                <IconButton onClick={props.handleFilterStatusOnClear}>
+                  <ClearIcon />
+                </IconButton> 
+              }
+
+                <IconButton onClick={props.handleFilterStatusVisibility}>
+                <ChevronRightIcon />
+              </IconButton> 
+            </ListItemSecondaryAction>
+          </ListItem>
+          <Divider />
+
+          <ListItem button onClick={props.handleFilterCompletionVisibility}>
+            <ListItemText 
+              primary={props.intl.formatMessage(purchaseMessage.request.field.completion)}
+              secondary={props.filterCompletion && props.filterCompletion.name || props.intl.formatMessage(layoutMessage.text.none)} 
+            />
+            <ListItemSecondaryAction>
+            { 
+                props.filterCompletion &&
+                <IconButton onClick={props.handleFilterCompletionOnClear}>
+                  <ClearIcon />
+                </IconButton> 
+              }
+
+                <IconButton onClick={props.handleFilterCompletionVisibility}>
+                <ChevronRightIcon />
+              </IconButton> 
+            </ListItemSecondaryAction>
+          </ListItem>
+          <Divider />
+
+          <ListItem>
+            <ListItemText 
+              primary={props.intl.formatMessage(purchaseMessage.request.field.isNotify)}
+              secondary={props.intl.formatMessage(props.filterNotify ? layoutMessage.action.yes : layoutMessage.action.no)}
+            />
+            <ListItemSecondaryAction>
+              <Switch
+                color="primary"
+                checked={props.filterNotify || false}
+                onChange={props.handleFilterNotifyOnChange}
+              />
+            </ListItemSecondaryAction>
+          </ListItem>
+          <Divider />
+
+        </List>
       </DialogContent>
     </Dialog>
 
@@ -175,14 +154,6 @@ export const SettlementApprovalListFilterView: React.SFC<SettlementApprovalListF
       hideBackdrop={true}
       onSelected={props.handleFilterCustomerOnSelected} 
       onClose={props.handleFilterCustomerOnClose}
-    />
-
-    <ProjectRegistrationDialog
-      hideBackdrop={true}
-      isOpen={props.isFilterProjectOpen}
-      onSelected={props.handleFilterProjectOnSelected}
-      onClose={props.handleFilterProjectOnClose}
-      filter={props.filterProjectDialog}
     />
 
     <LookupSystemDialog

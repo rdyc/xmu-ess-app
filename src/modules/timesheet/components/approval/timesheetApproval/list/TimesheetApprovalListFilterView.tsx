@@ -21,9 +21,9 @@ import {
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import CloseIcon from '@material-ui/icons/Close';
 import ClearIcon from '@material-ui/icons/SettingsBackupRestore';
-import { ProjectRegistrationDialog } from '@project/components/dialog/project';
 import { timesheetMessage } from '@timesheet/locales/messages/timesheetMessage';
 import * as React from 'react';
+
 import { TimesheetApprovalListFilterProps } from './TimesheetApprovalListFilter';
 
 export const TimesheetApprovalListFilterView: React.SFC<TimesheetApprovalListFilterProps> = props => (
@@ -78,26 +78,6 @@ export const TimesheetApprovalListFilterView: React.SFC<TimesheetApprovalListFil
               }
 
               <IconButton onClick={props.handleFilterCompletionVisibility}>
-                <ChevronRightIcon />
-              </IconButton>
-            </ListItemSecondaryAction>
-          </ListItem>
-          <Divider />
-
-          <ListItem button onClick={props.filterCustomer && props.handleFilterProjectVisibility} disabled={!props.filterCustomer}>
-            <ListItemText
-              primary={props.intl.formatMessage(timesheetMessage.entry.field.projectUid)}
-              secondary={props.filterProject && props.filterProject.name || props.intl.formatMessage(layoutMessage.text.none)}
-            />
-            <ListItemSecondaryAction>
-              {
-                props.filterProject &&
-                <IconButton onClick={props.handleFilterProjectOnClear}>
-                  <ClearIcon />
-                </IconButton>
-              }
-
-              <IconButton onClick={props.filterCustomer && props.handleFilterProjectVisibility}>
                 <ChevronRightIcon />
               </IconButton>
             </ListItemSecondaryAction>
@@ -193,14 +173,6 @@ export const TimesheetApprovalListFilterView: React.SFC<TimesheetApprovalListFil
       hideBackdrop={true}
       onSelected={props.handleFilterCustomerOnSelected}
       onClose={props.handleFilterCustomerOnClose}
-    />
-
-    <ProjectRegistrationDialog
-      hideBackdrop={true}
-      isOpen={props.isFilterProjectOpen}
-      filter={props.filterProjectDialog}
-      onSelected={props.handleFilterProjectOnSelected}
-      onClose={props.handleFilterProjectOnClose}
     />
 
     <LookupSystemDialog
