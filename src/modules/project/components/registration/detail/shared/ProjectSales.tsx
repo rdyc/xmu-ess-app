@@ -1,7 +1,19 @@
-import { Avatar, Card, CardContent, CardHeader, List, ListItem, ListItemAvatar, ListItemText } from '@material-ui/core';
-import PersonIcon from '@material-ui/icons/Person';
+import { initialName } from '@layout/helper/initialName';
+import {
+  Avatar,
+  Card,
+  CardContent,
+  CardHeader,
+  List,
+  ListItem,
+  ListItemAvatar,
+  ListItemText,
+  WithStyles,
+  withStyles,
+} from '@material-ui/core';
 import { IProjectSales } from '@project/classes/response';
 import { projectMessage } from '@project/locales/messages/projectMessage';
+import styles from '@styles';
 import * as React from 'react';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose } from 'recompose';
@@ -12,6 +24,7 @@ interface OwnProps {
 
 type AllProps
   = OwnProps
+  & WithStyles<typeof styles>
   & InjectedIntlProps;
 
 const projectSales: React.SFC<AllProps> = props => (
@@ -44,10 +57,8 @@ const projectSales: React.SFC<AllProps> = props => (
               key={item.employeeUid}
             >
               <ListItemAvatar>
-                <Avatar
-                  alt={item.employee.fullName} 
-                >
-                  <PersonIcon/>
+                <Avatar className={props.classes.avatarSecondary}>
+                  {initialName(item.employee.fullName)}
                 </Avatar>
               </ListItemAvatar>
               <ListItemText
@@ -63,5 +74,6 @@ const projectSales: React.SFC<AllProps> = props => (
 );
 
 export const ProjectSales = compose<AllProps, OwnProps>(
-  injectIntl
+  injectIntl,
+  withStyles(styles)
 )(projectSales);
