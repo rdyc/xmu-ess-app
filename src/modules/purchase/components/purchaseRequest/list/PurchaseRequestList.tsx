@@ -70,7 +70,6 @@ const createProps: mapper<AllProps, IOwnState> = (props: AllProps): IOwnState =>
   isFilterOpen: false,
 
   // fill partial props from location state to handle redirection from dashboard notif
-  projectUid: props.location.state && props.location.state.projectUid,
   statusType: props.location.state && props.location.state.statusType,
   isSettlement: props.location.state && props.location.state.isSettlement,
   isRejected: props.location.state && props.location.state.isRejected,
@@ -160,7 +159,6 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
                 companyUid: user.company.uid,
                 positionUid: user.position.uid,
                 customerUid: this.props.customerUid,
-                projectUid: this.props.projectUid,
                 statusType: this.props.statusType,
                 isSettlement: this.props.isSettlement,
                 isRejected: this.props.isRejected,
@@ -231,8 +229,7 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
           icon: TuneIcon,
           showBadgeWhen: () => {
             return this.props.customerUid !== undefined || 
-              this.props.statusType !== undefined || 
-              this.props.projectUid !== undefined || 
+              this.props.statusType !== undefined ||
               this.props.isSettlement === true ||
               this.props.isRejected === true;
           },
@@ -247,7 +244,6 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
     // track any changes in filter props
     if (
       this.props.customerUid !== nextProps.customerUid ||
-      this.props.projectUid !== nextProps.projectUid ||
       this.props.statusType !== nextProps.statusType ||
       this.props.isRejected !== nextProps.isRejected ||
       this.props.isSettlement !== nextProps.isSettlement
@@ -270,7 +266,6 @@ const listView: React.SFC<AllProps> = props => (
           isOpen={props.isFilterOpen}
           initialProps={{
             customerUid: props.customerUid,
-            projectUid: props.projectUid,
             statusType: props.statusType,
             isSettlement: props.isSettlement,
             isRejected: props.isRejected,

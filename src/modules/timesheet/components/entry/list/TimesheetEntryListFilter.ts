@@ -1,24 +1,32 @@
 import { ISystemList } from '@common/classes/response';
-// import { ICollectionValue } from '@layout/classes/core';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
-import { ILookupCustomerGetListFilter } from '@lookup/classes/filters/customer';
 import { ICustomerList } from '@lookup/classes/response';
 import { WithStyles, withStyles } from '@material-ui/core';
-import { IProjectRegistrationGetListFilter } from '@project/classes/filters/registration';
-import { IProjectList } from '@project/classes/response';
 import styles from '@styles';
 import { ITimesheetEntryGetAllFilter } from '@timesheet/classes/filters';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
-import { compose, HandleCreators, mapper, setDisplayName, StateHandler, StateHandlerMap, StateUpdaters, withHandlers, withStateHandlers } from 'recompose';
+import {
+  compose,
+  HandleCreators,
+  mapper,
+  setDisplayName,
+  StateHandler,
+  StateHandlerMap,
+  StateUpdaters,
+  withHandlers,
+  withStateHandlers,
+} from 'recompose';
+
 import { TimesheetEntryListFilterView } from './TimesheetEntryListFilterView';
 
+// import { ICollectionValue } from '@layout/classes/core';
 // const completionStatus: ICollectionValue[] = [
 //   { value: 'pending', name: 'Pending' },
 //   { value: 'complete', name: 'Complete' }
 // ];
 
-export type ITimesheetEntryListFilterResult = Pick<ITimesheetEntryGetAllFilter, 'customerUid' | 'projectUid' | 'activityType' | 'companyUid' | 'statusType' | 'status' | 'isRejected'>;
+export type ITimesheetEntryListFilterResult = Pick<ITimesheetEntryGetAllFilter, 'customerUid' | 'activityType' | 'companyUid' | 'statusType' | 'status' | 'isRejected'>;
 
 interface IOwnOption {
   isOpen: boolean;
@@ -33,16 +41,6 @@ interface IOwnState {
   // filter customer
   isFilterCustomerOpen: boolean;
   filterCustomer?: ICustomerList;
-
-  // filter Customer Dialog
-  filterCustomerDialog: ILookupCustomerGetListFilter;
-
-  // filter project
-  isFilterProjectOpen: boolean;
-  filterProject?: IProjectList;
-
-  // filter Project Dialog
-  filterProjectDialog: IProjectRegistrationGetListFilter;
 
   // filter activity type
   isFilterActivityTypeOpen: boolean;
@@ -68,10 +66,6 @@ interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
   setFilterCustomerVisibility: StateHandler<IOwnState>;
   setFilterCustomer: StateHandler<IOwnState>;
 
-  // filter project
-  setFilterProjectVisibility: StateHandler<IOwnState>;
-  setFilterProject: StateHandler<IOwnState>;
-
   // filter activity type
   setFilterActivityTypeVisibility: StateHandler<IOwnState>;
   setFilterActivityType: StateHandler<IOwnState>;
@@ -95,15 +89,9 @@ interface IOwnHandler {
 
   // filter customer
   handleFilterCustomerVisibility: (event: React.MouseEvent<HTMLElement>) => void;
-  handleFilterCustomerOnSelected: (customer: ICustomerList) => void;
+  handleFilterCustomerOnSelected: (customer?: ICustomerList) => void;
   handleFilterCustomerOnClear: (event: React.MouseEvent<HTMLElement>) => void;
   handleFilterCustomerOnClose: () => void;
-
-  // filter project
-  handleFilterProjectVisibility: (event: React.MouseEvent<HTMLElement>) => void;
-  handleFilterProjectOnSelected: (project: IProjectList) => void;
-  handleFilterProjectOnClear: (event: React.MouseEvent<HTMLElement>) => void;
-  handleFilterProjectOnClose: () => void;
 
   // filter activity type
   handleFilterActivityTypeVisibility: (event: React.MouseEvent<HTMLElement>) => void;
@@ -140,33 +128,18 @@ export type TimesheetEntryListFilterProps
 const createProps: mapper<TimesheetEntryListFilterProps, IOwnState> = (props: TimesheetEntryListFilterProps): IOwnState => ({
   // completionStatus,
   isFilterCustomerOpen: false,
-  isFilterProjectOpen: false,
   isFilterActivityTypeOpen: false,
   // isFilterCompletionOpen: false,
   isFilterStatusOpen: false,
 
   // pass initial value for primitive types only, bellow is 'boolean'
-  filterRejected: props.initialProps && props.initialProps.isRejected,
-
-  // default filter customer dialog
-  filterCustomerDialog: {
-    companyUid: props.userState.user ? props.userState.user.company.uid : undefined
-  },
-
-  // default filter project dialog
-  filterProjectDialog: {
-    customerUids: undefined,
-    assignmentStatus: undefined,
-    orderBy: undefined,
-    direction: undefined
-  }
+  filterRejected: props.initialProps && props.initialProps.isRejected
 });
 
 const stateUpdaters: StateUpdaters<TimesheetEntryListFilterProps, IOwnState, IOwnStateUpdater> = {
   // main filter
   setFilterReset: (prevState: IOwnState) => () => ({
     filterCustomer: undefined,
-    filterProject: undefined,
     filterActivityType: undefined,
     filterStatus: undefined,
     // filterCompletion: undefined,
@@ -179,22 +152,7 @@ const stateUpdaters: StateUpdaters<TimesheetEntryListFilterProps, IOwnState, IOw
   }),
   setFilterCustomer: (prevState: IOwnState) => (customer?: ICustomerList) => ({
     isFilterCustomerOpen: false,
-    filterCustomer: customer,
-    filterProjectDialog: {
-      customerUids: customer && customer.uid,
-      assignmentStatus: 'assigned',
-      orderBy: 'uid',
-      direction: 'descending'
-    }
-  }),
-
-  // filter project
-  setFilterProjectVisibility: (prevState: IOwnState) => () => ({
-    isFilterProjectOpen: !prevState.isFilterProjectOpen
-  }),
-  setFilterProject: (prevState: IOwnState) => (project?: IProjectList) => ({
-    isFilterProjectOpen: false,
-    filterProject: project
+    filterCustomer: customer
   }),
 
   // filter activity type
@@ -238,7 +196,6 @@ const handlerCreators: HandleCreators<TimesheetEntryListFilterProps, IOwnHandler
   handleFilterOnApply: (props: TimesheetEntryListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
     props.onApply({
       customerUid: props.filterCustomer && props.filterCustomer.uid,
-      projectUid: props.filterProject && props.filterProject.uid,
       activityType: props.filterActivityType && props.filterActivityType.type,
       statusType: props.filterStatus && props.filterStatus.type,
       // status: props.filterCompletion && props.filterCompletion.value,
@@ -250,7 +207,7 @@ const handlerCreators: HandleCreators<TimesheetEntryListFilterProps, IOwnHandler
   handleFilterCustomerVisibility: (props: TimesheetEntryListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
     props.setFilterCustomerVisibility();
   },
-  handleFilterCustomerOnSelected: (props: TimesheetEntryListFilterProps) => (customer: ICustomerList) => {
+  handleFilterCustomerOnSelected: (props: TimesheetEntryListFilterProps) => (customer?: ICustomerList) => {
     props.setFilterCustomer(customer);
   },
   handleFilterCustomerOnClear: (props: TimesheetEntryListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
@@ -258,20 +215,6 @@ const handlerCreators: HandleCreators<TimesheetEntryListFilterProps, IOwnHandler
   },
   handleFilterCustomerOnClose: (props: TimesheetEntryListFilterProps) => () => {
     props.setFilterCustomerVisibility();
-  },
-
-  // filter project
-  handleFilterProjectVisibility: (props: TimesheetEntryListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
-    props.setFilterProjectVisibility();
-  },
-  handleFilterProjectOnSelected: (props: TimesheetEntryListFilterProps) => (project: IProjectList) => {
-    props.setFilterProject(project);
-  },
-  handleFilterProjectOnClear: (props: TimesheetEntryListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
-    props.setFilterProject();
-  },
-  handleFilterProjectOnClose: (props: TimesheetEntryListFilterProps) => () => {
-    props.setFilterProjectVisibility();
   },
 
   // filter type

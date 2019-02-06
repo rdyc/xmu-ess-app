@@ -150,7 +150,6 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
                 companyUid: user.company.uid,
                 positionUid: user.position.uid,
                 customerUid: this.props.customerUid,
-                projectUid: this.props.projectUid,
                 statusType: this.props.statusType,
                 status: this.props.status,
                 isNotify: this.props.isNotify,
@@ -203,8 +202,7 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
           title: this.props.intl.formatMessage(layoutMessage.tooltip.filter),
           icon: TuneIcon,
           showBadgeWhen: () => {
-            return this.props.customerUid !== undefined || 
-              this.props.projectUid !== undefined || 
+            return this.props.customerUid !== undefined ||
               this.props.statusType !== undefined || 
               this.props.status !== undefined || 
               this.props.isNotify === true;
@@ -222,7 +220,6 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
       this.props.customerUid !== nextProps.customerUid ||
       this.props.status !== nextProps.status ||
       this.props.statusType !== nextProps.statusType ||
-      this.props.projectUid !== nextProps.projectUid ||
       this.props.isNotify !== nextProps.isNotify
     ) {
       this.props.setShouldUpdate();
@@ -244,7 +241,6 @@ const listView: React.SFC<AllProps> = props => (
           initialProps={{
             customerUid: props.customerUid,
             statusType: props.statusType,
-            projectUid: props.projectUid,
             status: props.status,
             isNotify: props.isNotify,
           }}

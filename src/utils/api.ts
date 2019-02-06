@@ -52,15 +52,19 @@ export async function apiRequest(method: string, url: string, path: string, payl
     headers,
     body
   })
-  .then(response => response.json()
-    .then(result => ({
-      status: response.status,
-      statusText: response.statusText,
-      headers: parseHeaders(response.headers),
-      ok: response.ok,
-      body: result
-    })
-  ))
+  .then(response => 
+    response.json()
+      .then(result => ({
+        status: response.status,
+        statusText: response.statusText,
+        headers: parseHeaders(response.headers),
+        ok: response.ok,
+        body: result
+      }))
+      .catch(() => {
+        throw TypeError('Empty data!');
+      })
+  )
   .catch((error: TypeError) => {
     switch (error.message) {
       case 'Failed to fetch':

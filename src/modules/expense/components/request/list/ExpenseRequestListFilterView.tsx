@@ -1,6 +1,7 @@
 import { LookupSystemDialog } from '@common/components/dialog/lookupSystemDialog/LookupSystemDialog';
 import { expenseMessage } from '@expense/locales/messages/expenseMessage';
-// import { DialogValue } from '@layout/components/dialogs/DialogValue';
+import { InputDateWithValue } from '@layout/components/input/date';
+import { ModuleDefinition } from '@layout/helper/redirector';
 import { layoutMessage } from '@layout/locales/messages';
 import { LookupCustomerDialog } from '@lookup/components/customer/dialog';
 import {
@@ -23,12 +24,9 @@ import CloseIcon from '@material-ui/icons/Close';
 import ClearIcon from '@material-ui/icons/SettingsBackupRestore';
 import * as React from 'react';
 
-import { InputDateWithValue } from '@layout/components/input/date';
-import { ModuleDefinition } from '@layout/helper/redirector';
-// import { GlobalFormat } from '@layout/types';
-import { ProjectRegistrationDialog } from '@project/components/dialog/project';
 import { ExpenseRequestListFilterProps } from './ExpenseRequestListFilter';
 
+// import { DialogValue } from '@layout/components/dialogs/DialogValue';
 export const ExpenseRequestListFilterView: React.SFC<ExpenseRequestListFilterProps> = props => (
   <React.Fragment>
     <Dialog
@@ -81,26 +79,6 @@ export const ExpenseRequestListFilterView: React.SFC<ExpenseRequestListFilterPro
               }
 
               <IconButton onClick={props.handleFilterCustomerVisibility}>
-                <ChevronRightIcon />
-              </IconButton> 
-            </ListItemSecondaryAction>
-          </ListItem>
-          <Divider />
-              
-          <ListItem button onClick={props.filterCustomer && props.handleFilterProjectVisibility} disabled={!props.filterCustomer}>
-            <ListItemText 
-              primary={props.intl.formatMessage(expenseMessage.request.field.projectUid)}
-              secondary={props.filterProject && props.filterProject.name || props.intl.formatMessage(layoutMessage.text.none)}
-            />
-            <ListItemSecondaryAction>
-              { 
-                props.filterProject &&
-                <IconButton onClick={props.handleFilterProjectOnClear}>
-                  <ClearIcon />
-                </IconButton> 
-              }
-
-              <IconButton onClick={props.filterCustomer && props.handleFilterProjectVisibility} disabled={!props.filterCustomer}>
                 <ChevronRightIcon />
               </IconButton> 
             </ListItemSecondaryAction>
@@ -227,19 +205,16 @@ export const ExpenseRequestListFilterView: React.SFC<ExpenseRequestListFilterPro
     </Dialog>
 
     <LookupCustomerDialog 
+      isOpen={props.isFilterCustomerOpen}
+      value={props.filterCustomer && props.filterCustomer.uid}
+      filter={{
+        companyUid: props.userState.user && props.userState.user.company.uid,
+        orderBy: 'name',
+        direction: 'ascending'
+      }}
       hideBackdrop={true}
-      isOpen={props.isFilterCustomerOpen} 
-      filter={props.filterCustomerDialog}
       onSelected={props.handleFilterCustomerOnSelected} 
       onClose={props.handleFilterCustomerOnClose}
-    />
-
-    <ProjectRegistrationDialog 
-      hideBackdrop={true}
-      isOpen={props.isFilterProjectOpen} 
-      filter={props.filterProjectDialog}
-      onSelected={props.handleFilterProjectOnSelected} 
-      onClose={props.handleFilterProjectOnClose}
     />
 
     <LookupSystemDialog

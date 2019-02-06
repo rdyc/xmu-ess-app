@@ -1,5 +1,6 @@
 import { ISystemList } from '@common/classes/response';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
+import { WithUser, withUser } from '@layout/hoc/withUser';
 import { ICustomerList } from '@lookup/classes/response';
 import { WithStyles, withStyles } from '@material-ui/core';
 import { IProjectAcceptanceGetAllFilter } from '@project/classes/filters/acceptance';
@@ -90,6 +91,7 @@ export type ProjectAcceptanceListFilterProps
   & IOwnHandler
   & WithStyles<typeof styles>
   & WithLayout
+  & WithUser
   & InjectedIntlProps;
 
 const createProps: mapper<ProjectAcceptanceListFilterProps, IOwnState> = (props: ProjectAcceptanceListFilterProps): IOwnState => ({
@@ -193,6 +195,7 @@ const handlerCreators: HandleCreators<ProjectAcceptanceListFilterProps, IOwnHand
 
 export const ProjectAcceptanceListFilter = compose<ProjectAcceptanceListFilterProps, IOwnOption>(
   setDisplayName('ProjectAcceptanceListFilter'),
+  withUser,
   withLayout,
   withStyles(styles),
   injectIntl,

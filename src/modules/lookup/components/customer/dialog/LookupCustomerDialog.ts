@@ -1,4 +1,3 @@
-import { IResponseCollection } from '@generic/interfaces';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { ILookupCustomerGetListFilter } from '@lookup/classes/filters/customer';
 import { ICustomerList } from '@lookup/classes/response';
@@ -13,6 +12,7 @@ import {
   mapper,
   ReactLifeCycleFunctions,
   setDisplayName,
+  shallowEqual,
   StateHandler,
   StateHandlerMap,
   StateUpdaters,
@@ -22,31 +22,30 @@ import {
 
 import { LookupCustomerDialogView } from './LookupCustomerDialogView';
 
-interface OwnOptions {
-  value?: string | undefined;
-  filter?: ILookupCustomerGetListFilter | undefined;
+interface IOwnOptions {
   isOpen: boolean;
+  value?: string;
+  filter?: ILookupCustomerGetListFilter;
   hideBackdrop?: boolean;
-  onSelected: (customer: ICustomerList) => void;
+  onSelected: (customer?: ICustomerList) => void;
   onClose: () => void;
 }
 
-interface OwnHandlers {
-  searchOnChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  searchOnKeyUp: (event: React.KeyboardEvent<HTMLDivElement>) => void;
-  filterCustomers: (response: IResponseCollection<ICustomerList> | undefined) => ICustomerList[];
+interface IOwnHandlers {
+  handleOnLoadApi: () => void;
+  handleOnChangeSearch: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  handlerOnKeyUpSearch: (event: React.KeyboardEvent<HTMLDivElement>) => void;
 }
 
-interface OwnState {
-  _value: string | undefined;
-  _filter: ILookupCustomerGetListFilter;
-  _search: string;
+interface IOwnState {
+  search: string;
+  customers?: ICustomerList[];
 }
 
-interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
-  setStateValue: StateHandler<OwnState>;
-  setStateSearch: StateHandler<OwnState>;
-  clearStateSearch: StateHandler<OwnState>;
+interface IOwnStateUpdaters extends StateHandlerMap<IOwnState> {
+  setCustomers: StateHandler<IOwnState>;
+  setSearch: StateHandler<IOwnState>;
+  clearSearch: StateHandler<IOwnState>;
 }
 
 export type LookupCustomerDialogProps
@@ -54,93 +53,106 @@ export type LookupCustomerDialogProps
   & WithStyles<typeof styles>
   & WithLookupCustomer
   & InjectedIntlProps
-  & OwnOptions
-  & OwnHandlers
-  & OwnState
-  & OwnStateUpdaters;
+  & IOwnOptions
+  & IOwnHandlers
+  & IOwnState
+  & IOwnStateUpdaters;
 
-const createProps: mapper<OwnOptions, OwnState> = (props: OwnOptions): OwnState => {
-  const { value, filter} = props;
+const createProps: mapper<IOwnOptions, IOwnState> = (props: IOwnOptions): IOwnState => ({
+  search: ''
+});
 
-  return { 
-    _value: value,
-    _filter: {
-      companyUid: filter && filter.companyUid,
-      find: filter && filter.find,
-      findBy: filter && filter.findBy,
-      orderBy: filter && filter.orderBy || 'name',
-      direction: filter && filter.direction || 'ascending',
-      size: filter && filter.size || undefined,
-    },
-    _search: '',
-  };
-};
+const stateUpdaters: StateUpdaters<LookupCustomerDialogProps, IOwnState, IOwnStateUpdaters> = {
+  setCustomers: (state: IOwnState, props: LookupCustomerDialogProps) => () => {
+    const { response } = props.lookupCustomerState.list;
 
-const stateUpdaters: StateUpdaters<OwnOptions, OwnState, OwnStateUpdaters> = {
-  setStateValue: (prevState: OwnState) => (uid: string) => ({
-    _value: uid
-  }),
-  setStateSearch: (prevState: OwnState) => (value: string) => ({
-    _search: value
-  }),
-  clearStateSearch: (prevState: OwnState) => () => ({
-    _search: ''
-  }),
-};
-
-const handlerCreators: HandleCreators<LookupCustomerDialogProps, OwnHandlers> = {
-  filterCustomers: (props: LookupCustomerDialogProps) => (response: IResponseCollection<ICustomerList> | undefined): ICustomerList[] => {
-    const { _search } = props;
-
-    let result: ICustomerList[] = [];
+    let customers: ICustomerList[] = [];
 
     if (response && response.data) {
-      if (_search !== '') {
-        result = response.data.filter(item => 
-          item.name.toLowerCase().indexOf(_search || '') !== -1
+      if (state.search.length > 0) {
+        customers = response.data.filter(item => 
+          item.name.toLowerCase().indexOf(state.search) !== -1
         );
       } else {
-        result = response.data;
+        customers = response.data;
       }
     }
-
-    return result;
+    
+    return {
+      customers
+    };
   },
-  searchOnChange: (props: LookupCustomerDialogProps) => (event: React.ChangeEvent<HTMLInputElement>) => {
+  setSearch: (state: IOwnState) => (value: string) => ({
+    search: value.toLowerCase()
+  }),
+  clearSearch: (state: IOwnState) => () => ({
+    search: ''
+  }),
+};
+
+const handlerCreators: HandleCreators<LookupCustomerDialogProps, IOwnHandlers> = {
+  handleOnLoadApi: (props: LookupCustomerDialogProps) => () => {
+    const { isLoading } = props.lookupCustomerState.list;
+    const { loadListRequest } = props.lookupCustomerDispatch;
+
+    if (!isLoading) {
+      loadListRequest({ 
+        filter: props.filter 
+      });
+    }
+  },
+  handleOnChangeSearch: (props: LookupCustomerDialogProps) => (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.currentTarget.value;
     
-    props.setStateSearch(value);
+    props.setSearch(value);
   },
-  searchOnKeyUp: (props: LookupCustomerDialogProps) => (event: React.KeyboardEvent<HTMLDivElement>) => {
+  handlerOnKeyUpSearch: (props: LookupCustomerDialogProps) => (event: React.KeyboardEvent<HTMLDivElement>) => {
     // delete pressed
     if (event.keyCode === 46) {
-      props.clearStateSearch();
+      props.clearSearch();
     }
   },
 };
 
-const lifecycles: ReactLifeCycleFunctions<LookupCustomerDialogProps, OwnState> = {
+const lifecycles: ReactLifeCycleFunctions<LookupCustomerDialogProps, IOwnState> = {
   componentDidMount() { 
-    const { _filter } = this.props;
-    const { isLoading, response  } = this.props.lookupCustomerState.list;
-    const { loadListRequest } = this.props.lookupCustomerDispatch;
+    const { request } = this.props.lookupCustomerState.list;
 
-    if (!isLoading && !response) {
-      console.log('load customer');
-      loadListRequest({
-        filter: _filter
-      });
+    // 1st load only when request are empty
+    if (!request) {
+      this.props.handleOnLoadApi();
+    } else {
+      // 2nd load only when request filter are present
+      if (request.filter) {
+        // comparing some props
+        const shouldUpdate = !shallowEqual(request.filter, this.props.filter || {});
+  
+        // then should update the list?
+        if (shouldUpdate) {
+          this.props.handleOnLoadApi();
+        } else {
+          this.props.setCustomers();
+        }
+      }
+    }
+  },
+  componentDidUpdate(prevProps: LookupCustomerDialogProps) {
+    if (
+      this.props.search !== prevProps.search ||
+      this.props.lookupCustomerState.list.response !== prevProps.lookupCustomerState.list.response
+      ) {
+      this.props.setCustomers();
     }
   }
 };
 
-export const LookupCustomerDialog = compose<LookupCustomerDialogProps, OwnOptions>(
+export const LookupCustomerDialog = compose<LookupCustomerDialogProps, IOwnOptions>(
   setDisplayName('LookupCustomerDialog'),
   withLayout,
-  withStyles(styles),
   withLookupCustomer,
-  injectIntl,
   withStateHandlers(createProps, stateUpdaters), 
   withHandlers(handlerCreators),
   lifecycle(lifecycles),
+  withStyles(styles),
+  injectIntl
 )(LookupCustomerDialogView);

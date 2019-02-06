@@ -11,7 +11,9 @@ export const layoutText = defineMessages({
   dataInfo: { id: `${prefix}.text.dataInfo` },
   pagingInfo: { id: `${prefix}.text.pagingInfo` },
   active: { id: `${prefix}.text.active`},
-  inactive: { id: `${prefix}.text.inactive`}
+  inactive: { id: `${prefix}.text.inactive`},
+  find: { id: `${prefix}.text.find`},
+  search: { id: `${prefix}.text.search`}
 });
 
 // label

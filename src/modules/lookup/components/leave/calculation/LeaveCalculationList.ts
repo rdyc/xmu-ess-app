@@ -1,4 +1,5 @@
 import AppMenu from '@constants/AppMenu';
+import { DirectionType } from '@generic/types';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { WithLeaveCalculation, withLeaveCalculation } from '@lookup/hoc/withLeaveCalculation';
@@ -15,8 +16,9 @@ import {
   StateHandlerMap,
   StateUpdaters,
   withHandlers,
-  withStateHandlers
+  withStateHandlers,
 } from 'recompose';
+
 import { LeaveCalculationListView } from './LeaveCalculationListView';
 
 interface OwnHandlers {
@@ -44,7 +46,7 @@ interface OwnState {
   companyUid: string;
   year: number;
   orderBy: string | undefined;
-  direction: string | undefined;
+  direction?: DirectionType;
   page: number;
   size: number;
   find: string | undefined;
@@ -107,7 +109,7 @@ const stateUpdaters: StateUpdaters<OwnOptions, OwnState, OwnStateUpdaters> = {
   statePrevious: (prevState: OwnState) => () => ({
     page: prevState.page - 1
   }),
-  stateSorting: (prevState: OwnState) => (direction: string) => ({
+  stateSorting: (prevState: OwnState) => (direction: DirectionType) => ({
     direction,
     page: 1
   }),

@@ -7,6 +7,8 @@
   "layout.text.pagingInfo": "Page {current} of {total}",
   "layout.text.active": "Active",
   "layout.text.inactive": "Inactive",
+  "layout.text.find": "Find",
+  "layout.text.search": "Search",
   
   "layout.tooltip.more": "More options",
   "layout.tooltip.filter": "Filter",
@@ -17,9 +19,6 @@
   "layout.tooltip.refresh": "Refresh data",
   "layout.tooltip.nextPage": "Next page",
   "layout.tooltip.prevPage": "Previous page",
-
-  "layout.find": "Find",
-  "layout.search": "Search",
 
   "layout.date.today": "Today",
   "layout.date.empty": "Empty",

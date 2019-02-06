@@ -2,6 +2,7 @@ import { createStyles, Theme } from '@material-ui/core';
 import blue from '@material-ui/core/colors/blue';
 import lightBlue from '@material-ui/core/colors/lightBlue';
 import red from '@material-ui/core/colors/red';
+import { fade } from '@material-ui/core/styles/colorManipulator';
 
 import Background1 from './image/background/1.png';
 import Background2 from './image/background/2.png';
@@ -160,7 +161,7 @@ const styles = (theme: Theme) =>
     // Application Bar
     appBar: {
       backgroundColor: theme.palette.primary.main,
-      backgroundImage: `linear-gradient(200deg, rgb(0,0,0,0), ${theme.palette.primary.main}), url(${Pattern1})`,
+      // backgroundImage: `linear-gradient(200deg, rgb(0,0,0,0), ${theme.palette.primary.main}), url(${Pattern1})`,
       [theme.breakpoints.up('md')]: {
         backgroundColor: theme.palette.grey[400],
         backgroundImage: `linear-gradient(200deg, rgb(0,0,0,0), ${theme.palette.grey[600]}), url(${Pattern1})`,
@@ -172,6 +173,12 @@ const styles = (theme: Theme) =>
         easing: theme.transitions.easing.sharp,
         duration: theme.transitions.duration.leavingScreen
       })
+    },
+    appBarTitle: {
+      display: 'none',
+      [theme.breakpoints.up('sm')]: {
+        display: 'block',
+      },
     },
     appBarSearch: {
       backgroundColor: theme.palette.background.paper
@@ -195,6 +202,49 @@ const styles = (theme: Theme) =>
     },
     appBarDialog: {
       position: 'relative'
+    },
+
+    // SEARCH
+    search: {
+      position: 'relative',
+      borderRadius: theme.shape.borderRadius,
+      backgroundColor: fade(theme.palette.common.white, 0.15),
+      '&:hover': {
+        backgroundColor: fade(theme.palette.common.white, 0.25),
+      },
+      marginLeft: 0,
+      width: '100%',
+      [theme.breakpoints.up('sm')]: {
+        marginLeft: theme.spacing.unit,
+        width: 'auto',
+      },
+    },
+    searchIcon: {
+      width: theme.spacing.unit * 9,
+      height: '100%',
+      position: 'absolute',
+      pointerEvents: 'none',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    searchRoot: {
+      color: 'inherit',
+      width: '100%',
+    },
+    searchInput: {
+      paddingTop: theme.spacing.unit,
+      paddingRight: theme.spacing.unit,
+      paddingBottom: theme.spacing.unit,
+      paddingLeft: theme.spacing.unit * 10,
+      transition: theme.transitions.create('width'),
+      width: '100%',
+      [theme.breakpoints.up('sm')]: {
+        width: 120,
+        '&:focus': {
+          width: 200,
+        },
+      },
     },
 
     // App Tabs

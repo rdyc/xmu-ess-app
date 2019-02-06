@@ -1,4 +1,5 @@
 import AppMenu from '@constants/AppMenu';
+import { DirectionType } from '@generic/types';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { WithStyles, withStyles, withWidth } from '@material-ui/core';
@@ -19,8 +20,9 @@ import {
   StateHandlerMap,
   StateUpdaters,
   withHandlers,
-  withStateHandlers
+  withStateHandlers,
 } from 'recompose';
+
 import { IBillableListFilterResult } from './BillableListFilter';
 import { BillableView } from './BillableView';
 
@@ -31,7 +33,7 @@ interface OwnState extends IBillableListFilterResult {
   open: boolean;
   type: string | undefined;
   orderBy?: string | undefined;
-  direction?: string | undefined;
+  direction?: DirectionType;
   page: number;
   size: number;
 }

@@ -2,6 +2,7 @@ import { ISystemList } from '@common/classes/response';
 import { IExpenseRequestGetAllFilter } from '@expense/classes/filters/request';
 import { ICollectionValue } from '@layout/classes/core';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
+import { WithUser, withUser } from '@layout/hoc/withUser';
 import { ICustomerList } from '@lookup/classes/response';
 import { WithStyles, withStyles } from '@material-ui/core';
 import styles from '@styles';
@@ -18,10 +19,6 @@ import {
   withStateHandlers,
 } from 'recompose';
 
-import { WithUser, withUser } from '@layout/hoc/withUser';
-import { ILookupCustomerGetListFilter } from '@lookup/classes/filters/customer';
-import { IProjectRegistrationGetListFilter } from '@project/classes/filters/registration';
-import { IProjectList } from '@project/classes/response';
 import { ExpenseRequestListFilterView } from './ExpenseRequestListFilterView';
 
 const completionStatus: ICollectionValue[] = [
@@ -29,7 +26,7 @@ const completionStatus: ICollectionValue[] = [
   { value: 'complete', name: 'Complete' }
 ];
 
-export type IExpenseRequestListFilterResult = Pick<IExpenseRequestGetAllFilter, 'customerUid' | 'projectUid' | 'expenseType' | 'statusType' | 'status' | 'start' | 'end' | 'isRejected' >;
+export type IExpenseRequestListFilterResult = Pick<IExpenseRequestGetAllFilter, 'customerUid' | 'expenseType' | 'statusType' | 'status' | 'start' | 'end' | 'isRejected' >;
 
 interface IOwnOption {
   isOpen: boolean;
@@ -44,16 +41,6 @@ interface IOwnState {
   // filter customer
   isFilterCustomerOpen: boolean;
   filterCustomer?: ICustomerList;
-
-  // filter Customer Dialog
-  filterCustomerDialog: ILookupCustomerGetListFilter;
-
-  // filter project
-  isFilterProjectOpen: boolean;
-  filterProject?: IProjectList;
-
-  // filter Project Dialog
-  filterProjectDialog: IProjectRegistrationGetListFilter;
 
   // filter type
   isFilterTypeOpen: boolean;
@@ -86,10 +73,6 @@ interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
   // filter customer
   setFilterCustomerVisibility: StateHandler<IOwnState>;
   setFilterCustomer: StateHandler<IOwnState>;
-
-  // filter project
-  setFilterProjectVisibility: StateHandler<IOwnState>;
-  setFilterProject: StateHandler<IOwnState>;
 
   // filter type
   setFilterTypeVisibility: StateHandler<IOwnState>;
@@ -125,12 +108,6 @@ interface IOwnHandler {
   handleFilterCustomerOnSelected: (customer: ICustomerList) => void;
   handleFilterCustomerOnClear: (event: React.MouseEvent<HTMLElement>) => void;
   handleFilterCustomerOnClose: () => void;
-
-  // filter project
-  handleFilterProjectVisibility: (event: React.MouseEvent<HTMLElement>) => void;
-  handleFilterProjectOnSelected: (project: IProjectList) => void;
-  handleFilterProjectOnClear: (event: React.MouseEvent<HTMLElement>) => void;
-  handleFilterProjectOnClose: () => void;
 
   // filter type
   handleFilterTypeVisibility: (event: React.MouseEvent<HTMLElement>) => void;
@@ -179,7 +156,6 @@ export type ExpenseRequestListFilterProps
 const createProps: mapper<ExpenseRequestListFilterProps, IOwnState> = (props: ExpenseRequestListFilterProps): IOwnState => ({
   completionStatus,
   isFilterCustomerOpen: false,
-  isFilterProjectOpen: false,
   isFilterTypeOpen: false,
   isFilterCompletionOpen: false,
   isFilterStatusOpen: false,
@@ -187,18 +163,7 @@ const createProps: mapper<ExpenseRequestListFilterProps, IOwnState> = (props: Ex
   isFilterEndOpen: false,
 
   // pass initial value for primitive types only, bellow is 'boolean'
-  filterRejected: props.initialProps && props.initialProps.isRejected,
-
-  // default filter customer dialog
-  filterCustomerDialog: {
-    companyUid: props.userState.user ? props.userState.user.company.uid : undefined
-  },
-
-  // default filter project dialog
-  filterProjectDialog: {
-    customerUids: undefined,
-    activeOnly: true,
-  }
+  filterRejected: props.initialProps && props.initialProps.isRejected
 });
 
 const stateUpdaters: StateUpdaters<ExpenseRequestListFilterProps, IOwnState, IOwnStateUpdater> = { 
@@ -209,7 +174,6 @@ const stateUpdaters: StateUpdaters<ExpenseRequestListFilterProps, IOwnState, IOw
     filterStatus: undefined,
     filterCompletion: undefined,
     filterRejected: undefined,
-    filterProject: undefined,
     filterStart: undefined,
     filterEnd: undefined,
   }),
@@ -220,19 +184,7 @@ const stateUpdaters: StateUpdaters<ExpenseRequestListFilterProps, IOwnState, IOw
   }),
   setFilterCustomer: (prevState: IOwnState) => (customer?: ICustomerList) => ({
     isFilterCustomerOpen: false,
-    filterCustomer: customer,
-    filterProjectDialog: {
-      customerUids: customer && customer.uid
-    }
-  }),
-
-  // filter project
-  setFilterProjectVisibility: (prevState: IOwnState) => () => ({
-    isFilterProjectOpen: !prevState.isFilterProjectOpen
-  }),
-  setFilterProject: (prevState: IOwnState) => (project?: IProjectList) => ({
-    isFilterProjectOpen: false,
-    filterProject: project
+    filterCustomer: customer
   }),
 
   // filter type
@@ -294,7 +246,6 @@ const handlerCreators: HandleCreators<ExpenseRequestListFilterProps, IOwnHandler
   handleFilterOnApply: (props: ExpenseRequestListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
     props.onApply({
       customerUid: props.filterCustomer && props.filterCustomer.uid,
-      projectUid: props.filterProject && props.filterProject.uid,
       expenseType: props.filterType && props.filterType.type,
       statusType: props.filterStatus && props.filterStatus.type,
       status: props.filterCompletion && props.filterCompletion.value,
@@ -310,28 +261,12 @@ const handlerCreators: HandleCreators<ExpenseRequestListFilterProps, IOwnHandler
   },
   handleFilterCustomerOnSelected: (props: ExpenseRequestListFilterProps) => (customer: ICustomerList) => {
     props.setFilterCustomer(customer);
-    props.setFilterProject();
   },
   handleFilterCustomerOnClear: (props: ExpenseRequestListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
     props.setFilterCustomer();
-    props.setFilterProject();
   },
   handleFilterCustomerOnClose: (props: ExpenseRequestListFilterProps) => () => {
     props.setFilterCustomerVisibility();
-  },
-
-  // filter project
-  handleFilterProjectVisibility: (props: ExpenseRequestListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
-    props.setFilterProjectVisibility();
-  },
-  handleFilterProjectOnSelected: (props: ExpenseRequestListFilterProps) => (project: IProjectList) => {
-    props.setFilterProject(project);
-  },
-  handleFilterProjectOnClear: (props: ExpenseRequestListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
-    props.setFilterProject();
-  },
-  handleFilterProjectOnClose: (props: ExpenseRequestListFilterProps) => () => {
-    props.setFilterProjectVisibility();
   },
 
   // filter type

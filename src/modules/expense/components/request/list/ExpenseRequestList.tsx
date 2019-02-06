@@ -77,7 +77,6 @@ const listView: React.SFC<AllProps> = props => (
           isOpen={props.isFilterOpen}
           initialProps={{
             customerUid: props.customerUid,
-            projectUid: props.projectUid,
             expenseType: props.expenseType,
             statusType: props.statusType,
             start: props.start,
@@ -183,7 +182,6 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
                 companyUid: user.company.uid,
                 positionUid: user.position.uid,
                 customerUid: this.props.customerUid,
-                projectUid: this.props.projectUid,
                 expenseType: this.props.expenseType,
                 start: this.props.start,
                 end: this.props.end,
@@ -248,8 +246,7 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
           title: this.props.intl.formatMessage(layoutMessage.tooltip.filter),
           icon: TuneIcon,
           showBadgeWhen: () => {
-            return this.props.customerUid !== undefined || 
-              this.props.projectUid !== undefined || 
+            return this.props.customerUid !== undefined ||
               this.props.statusType !== undefined || 
               this.props.expenseType !== undefined ||
               this.props.start !== undefined ||
@@ -268,7 +265,6 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
     // track any changes in filter props
     if (
       this.props.customerUid !== nextProps.customerUid ||
-      this.props.projectUid !== nextProps.projectUid ||
       this.props.statusType !== nextProps.statusType ||
       this.props.expenseType !== nextProps.expenseType ||
       this.props.start !== nextProps.start ||

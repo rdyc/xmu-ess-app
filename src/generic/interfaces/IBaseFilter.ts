@@ -1,6 +1,8 @@
+import { DirectionType } from '@generic/types';
+
 export interface IBaseFilter {
-  readonly find?: string | undefined;
-  readonly findBy?: string | undefined;
-  readonly orderBy?: string | undefined;
-  readonly direction?: 'ascending' | 'descending' | string | undefined;
+  find?: string;
+  findBy?: string;
+  orderBy?: string;
+  direction?: DirectionType;
 }

@@ -15,7 +15,20 @@ import * as moment from 'moment';
 import * as React from 'react';
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
-import { compose, HandleCreators, lifecycle, mapper, ReactLifeCycleFunctions, setDisplayName, StateHandler, StateHandlerMap, StateUpdaters, withHandlers, withStateHandlers } from 'recompose';
+import {
+  compose,
+  HandleCreators,
+  lifecycle,
+  mapper,
+  ReactLifeCycleFunctions,
+  setDisplayName,
+  StateHandler,
+  StateHandlerMap,
+  StateUpdaters,
+  withHandlers,
+  withStateHandlers,
+} from 'recompose';
+
 import { TimesheetEntrySumarry } from '../detail/shared/TimesheetEntrySummary';
 import { ITimesheetEntryListFilterResult, TimesheetEntryListFilter } from './TimesheetEntryListFilter';
 
@@ -64,7 +77,6 @@ const listView: React.SFC<AllProps> = props => (
           isOpen={props.isFilterOpen}
           initialProps={{
             customerUid: props.customerUid,
-            projectUid: props.projectUid,
             activityType: props.activityType,
             statusType: props.statusType,
             status: props.status,
@@ -171,7 +183,6 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
                 isRejected: this.props.isRejected,
                 companyUid: this.props.companyUid,
                 customerUid: this.props.customerUid,
-                projectUid: this.props.projectUid,
                 activityType: this.props.activityType,
                 statusType: this.props.statusType,
                 status: this.props.status,
@@ -234,7 +245,6 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
           icon: TuneIcon,
           showBadgeWhen: () => {
             return this.props.customerUid !== undefined ||
-              this.props.projectUid !== undefined ||
               this.props.activityType !== undefined ||
               this.props.statusType !== undefined ||
               this.props.status !== undefined ||
@@ -251,7 +261,6 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
     // track any changes in filter props
     if (
       this.props.customerUid !== nextProps.customerUid ||
-      this.props.projectUid !== nextProps.projectUid ||
       this.props.activityType !== nextProps.activityType ||
       this.props.statusType !== nextProps.statusType ||
       this.props.status !== nextProps.status ||

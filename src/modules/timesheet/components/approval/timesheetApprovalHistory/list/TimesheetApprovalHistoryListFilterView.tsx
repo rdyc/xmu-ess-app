@@ -3,13 +3,27 @@ import { DialogValue } from '@layout/components/dialogs/DialogValue';
 import { ModuleDefinition } from '@layout/helper/redirector';
 import { layoutMessage } from '@layout/locales/messages';
 import { LookupCustomerDialog } from '@lookup/components/customer/dialog';
-import { AppBar, Button, Dialog, DialogContent, Divider, IconButton, List, ListItem, ListItemSecondaryAction, ListItemText, Switch, Toolbar, Typography } from '@material-ui/core';
+import {
+  AppBar,
+  Button,
+  Dialog,
+  DialogContent,
+  Divider,
+  IconButton,
+  List,
+  ListItem,
+  ListItemSecondaryAction,
+  ListItemText,
+  Switch,
+  Toolbar,
+  Typography,
+} from '@material-ui/core';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import CloseIcon from '@material-ui/icons/Close';
 import ClearIcon from '@material-ui/icons/SettingsBackupRestore';
-import { ProjectRegistrationDialog } from '@project/components/dialog/project';
 import { timesheetMessage } from '@timesheet/locales/messages/timesheetMessage';
 import * as React from 'react';
+
 import { TimesheetApprovalHistoryListFilterProps } from './TimesheetApprovalHistoryListFilter';
 
 export const TimesheetApprovalHistoryListFilterView: React.SFC<TimesheetApprovalHistoryListFilterProps> = props => (
@@ -64,26 +78,6 @@ export const TimesheetApprovalHistoryListFilterView: React.SFC<TimesheetApproval
               }
 
               <IconButton onClick={props.handleFilterCompletionVisibility}>
-                <ChevronRightIcon />
-              </IconButton>
-            </ListItemSecondaryAction>
-          </ListItem>
-          <Divider />
-
-          <ListItem button onClick={props.filterCustomer && props.handleFilterProjectVisibility} disabled={!props.filterCustomer}>
-            <ListItemText
-              primary={props.intl.formatMessage(timesheetMessage.entry.field.projectUid)}
-              secondary={props.filterProject && props.filterProject.name || props.intl.formatMessage(layoutMessage.text.none)}
-            />
-            <ListItemSecondaryAction>
-              {
-                props.filterProject &&
-                <IconButton onClick={props.handleFilterProjectOnClear}>
-                  <ClearIcon />
-                </IconButton>
-              }
-
-              <IconButton onClick={props.filterCustomer && props.handleFilterProjectVisibility}>
                 <ChevronRightIcon />
               </IconButton>
             </ListItemSecondaryAction>
@@ -169,19 +163,16 @@ export const TimesheetApprovalHistoryListFilterView: React.SFC<TimesheetApproval
     </Dialog>
 
     <LookupCustomerDialog
-      hideBackdrop={true}
       isOpen={props.isFilterCustomerOpen}
-      filter={props.filterCustomerDialog}
+      value={props.filterCustomer && props.filterCustomer.uid}
+      filter={{
+        companyUid: props.userState.user && props.userState.user.company.uid,
+        orderBy: 'name',
+        direction: 'ascending'
+      }}
+      hideBackdrop={true}
       onSelected={props.handleFilterCustomerOnSelected}
       onClose={props.handleFilterCustomerOnClose}
-    />
-
-    <ProjectRegistrationDialog
-      hideBackdrop={true}
-      isOpen={props.isFilterProjectOpen}
-      filter={props.filterProjectDialog}
-      onSelected={props.handleFilterProjectOnSelected}
-      onClose={props.handleFilterProjectOnClose}
     />
 
     <LookupSystemDialog

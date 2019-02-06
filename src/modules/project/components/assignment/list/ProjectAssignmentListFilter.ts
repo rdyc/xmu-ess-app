@@ -1,5 +1,6 @@
 import { ISystemList } from '@common/classes/response';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
+import { WithUser, withUser } from '@layout/hoc/withUser';
 import { ICustomerList } from '@lookup/classes/response';
 import { WithStyles, withStyles } from '@material-ui/core';
 import { IProjectAssignmentGetAllFilter } from '@project/classes/filters/assignment';
@@ -88,6 +89,7 @@ export type ProjectAssignmentListFilterProps
   & IOwnState
   & IOwnStateUpdater
   & IOwnHandler
+  & WithUser
   & WithStyles<typeof styles>
   & WithLayout
   & InjectedIntlProps;
@@ -193,9 +195,10 @@ const handlerCreators: HandleCreators<ProjectAssignmentListFilterProps, IOwnHand
 
 export const ProjectAssignmentListFilter = compose<ProjectAssignmentListFilterProps, IOwnOption>(
   setDisplayName('ProjectAssignmentListFilter'),
+  withUser,
   withLayout,
-  withStyles(styles),
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),
-  withHandlers(handlerCreators)
+  withHandlers(handlerCreators),
+  withStyles(styles)
 )(ProjectAssignmentListFilterView);

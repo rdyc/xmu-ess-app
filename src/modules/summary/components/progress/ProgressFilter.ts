@@ -1,7 +1,6 @@
 import { WithForm, withForm } from '@layout/hoc/withForm';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
-import { ILookupCustomerGetListFilter } from '@lookup/classes/filters/customer';
 import { ICustomer } from '@lookup/classes/response';
 import { WithStyles, withStyles } from '@material-ui/core';
 import { IProjectRegistrationGetListFilter } from '@project/classes/filters/registration';
@@ -19,6 +18,7 @@ import {
   withHandlers,
   withStateHandlers,
 } from 'recompose';
+
 import { ProgressFilterView } from './ProgressFilterView';
 
 export type IProgressFilterResult = Pick<ISummaryGetProgressRequest, 'customerUid' | 'projectUid'>;
@@ -56,9 +56,6 @@ interface OwnState {
   // filter customer
   isFilterCustomerOpen: boolean;
   filterCustomer?: ICustomer;
-
-  // filter customer Dialog
-  filterCustomerDialog: ILookupCustomerGetListFilter;
   
   // filter project
   isFilterProjectOpen: boolean;
@@ -99,11 +96,6 @@ const createProps: mapper<ProgressFilterProps, OwnState> = (props: ProgressFilte
     isFilterDialogOpen: true,
     isFilterCustomerOpen: false,
     isFilterProjectOpen: false,
-
-    // default filter customer dialog
-    filterCustomerDialog: {
-      companyUid: props.userState && props.userState.user && props.userState.user.company && props.userState.user.company.uid || undefined
-    },
 
     // default filter project dialog
     filterProjectDialog: {
