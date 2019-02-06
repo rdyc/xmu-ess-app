@@ -116,7 +116,7 @@ const lifecycles: ReactLifeCycleFunctions<AchievementEditorProps, {}> = {
       },
       parentUrl: `/lookup/achievementchart`,
       status: {
-        isNavBackVisible: true,
+        isNavBackVisible: false,
         isSearchVisible: false,
         isActionCentreVisible: false,
         isMoreVisible: false,
