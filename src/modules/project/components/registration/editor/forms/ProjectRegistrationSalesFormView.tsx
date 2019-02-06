@@ -1,5 +1,6 @@
 import { IEmployee } from '@account/classes/response';
 import { ListItemEmployeeSelector } from '@account/components/selector/ListItemEmployeeSelector';
+import { initialName } from '@layout/helper/initialName';
 import {
   Avatar,
   Card,
@@ -14,7 +15,6 @@ import {
   ListItemText,
 } from '@material-ui/core';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
-import PersonIcon from '@material-ui/icons/Person';
 import {
   ProjectRegistrationSalesFormProps,
 } from '@project/components/registration/editor/forms/ProjectRegistrationSalesForm';
@@ -40,10 +40,8 @@ export const ProjectRegistrationSalesFormView: React.SFC<ProjectRegistrationSale
                 key={index}
               >
                 <ListItemAvatar>
-                  <Avatar
-                    alt={sales.fullName} 
-                  >
-                    <PersonIcon/>
+                  <Avatar className={props.classes.avatarSecondary}>
+                    {initialName(sales.fullName)}
                   </Avatar>
                 </ListItemAvatar>
                 <ListItemText
@@ -63,6 +61,7 @@ export const ProjectRegistrationSalesFormView: React.SFC<ProjectRegistrationSale
         <Divider className={classNames(props.classes.marginFarTop, props.classes.marginFarBottom)} />
         
         <ListItemEmployeeSelector
+          title={props.intl.formatMessage(projectMessage.registration.section.salesTitle)}
           companyUids={props.userState.user && props.userState.user.company.uid}
           roleUids={props.roleSalesUids && props.roleSalesUids.join(',')}
           onSelected={(employee: IEmployee) => props.handleSelected(employee)}

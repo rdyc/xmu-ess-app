@@ -18,15 +18,15 @@ import SearchIcon from '@material-ui/icons/Search';
 import * as classNames from 'classnames';
 import * as React from 'react';
 
-import { ProjectAssignmentDialogProps } from './ProjectAssignmentDialog';
+import { AccountEmployeeDialogProps } from './AccountEmployeeDialog';
 
-export const ProjectAssignmentDialogView: React.SFC<ProjectAssignmentDialogProps> = props => (
+export const AccountEmployeeDialogView: React.SFC<AccountEmployeeDialogProps> = props => (
   <Dialog 
     open={props.isOpen}
     fullScreen
     scroll="paper"
     hideBackdrop={props.hideBackdrop}
-    aria-labelledby="project-assignment-dialog-title"
+    aria-labelledby="account-employee-dialog-title"
     className={props.layoutState.anchor === 'right' ? props.classes.contentShiftRight : props.classes.contentShiftLeft}
     onClose={props.onClose}
   >
@@ -50,14 +50,14 @@ export const ProjectAssignmentDialogView: React.SFC<ProjectAssignmentDialogProps
           </div>
           <InputBase
             value={props.search}
-            disabled={props.projectAssignmentState.list.isLoading}
+            disabled={props.accountEmployeeState.list.isLoading}
             placeholder={props.intl.formatMessage(layoutMessage.text.search)}
             classes={{
               root: props.classes.searchRoot,
               input: props.classes.searchInput,
             }}
-            onChange={props.handelSearchOnChange}
-            onKeyUpCapture={props.handleSearchOnKeyUp}
+            onChange={props.handleOnChangeSearch}
+            onKeyUpCapture={props.handleOnKeyUpSearch}
           />
         </div>
       </Toolbar>
@@ -72,14 +72,14 @@ export const ProjectAssignmentDialogView: React.SFC<ProjectAssignmentDialogProps
         <Divider/>
 
         {
-          props.projects &&
-          props.projects.map((item, index) => 
+          props.employees &&
+          props.employees.map((item, index) => 
             <React.Fragment key={index}>
               <ListItem button onClick={() => props.onSelected(item)}>
                 <Radio color="primary" checked={props.value && props.value === item.uid || false} />
                 <ListItemText 
-                  primary={item.name} 
-                  secondary={item.uid}
+                  primary={item.fullName} 
+                  secondary={item.email}
                   primaryTypographyProps={{
                     noWrap: true
                   }} 

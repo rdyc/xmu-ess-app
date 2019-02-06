@@ -88,7 +88,7 @@ export const ProjectRegistrationDialogView: React.SFC<ProjectRegistrationDialogP
                   }} 
                 />
               </ListItem>
-              <Divider/>
+              <Divider/>fil
             </React.Fragment>
           )
         }
