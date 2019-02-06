@@ -130,10 +130,14 @@ export const EffectivenessFilterView: React.SFC<EffectivenessFilterProps> = prop
           onClose={props.handleFilterEmployeeOnClose}
         />
 
-        <ProjectAssignmentDialog 
-          hideBackdrop={true}
+        <ProjectAssignmentDialog
           isOpen={props.isFilterProjectOpen} 
-          filter={props.filterProjectDialog}
+          title={props.intl.formatMessage(summaryMessage.filter.projectUid)}
+          value={props.filterProject && props.filterProject.uid} 
+          filter={{
+            employeeUid: props.filterEmployee && props.filterEmployee.uid,
+          }}
+          hideBackdrop={true}
           onSelected={props.handleFilterProjectOnSelected} 
           onClose={props.handleFilterProjectOnClose}
         />

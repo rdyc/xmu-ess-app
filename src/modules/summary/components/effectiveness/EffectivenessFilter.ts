@@ -3,7 +3,6 @@ import { WithForm, withForm } from '@layout/hoc/withForm';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { WithStyles, withStyles } from '@material-ui/core';
-import { IProjectAssignmentGetListFilter } from '@project/classes/filters/assignment';
 import { IProjectList } from '@project/classes/response';
 import styles from '@styles';
 import { ISummaryEffectivenessFilter } from '@summary/classes/filters';
@@ -60,9 +59,6 @@ interface IOwnState {
   // filter project
   isFilterProjectOpen: boolean;
   filterProject?: IProjectList;
-
-  // filter Project Dialog
-  filterProjectDialog: IProjectAssignmentGetListFilter;
 }
 
 interface IOwnStateUpdaters extends StateHandlerMap<IOwnState> {
@@ -81,25 +77,20 @@ interface IOwnStateUpdaters extends StateHandlerMap<IOwnState> {
 
 export type EffectivenessFilterProps 
   = WithForm
+  & WithUser
   & WithLayout
+  & WithStyles<typeof styles>
   & InjectedIntlProps
   & IOwnOption
   & IOwnHandler
   & IOwnState
-  & WithUser
-  & IOwnStateUpdaters
-  & WithStyles<typeof styles>;
+  & IOwnStateUpdaters;
   
 const createProps: mapper<EffectivenessFilterProps, IOwnState> = (props: EffectivenessFilterProps): IOwnState => {
   return { 
     isFilterDialogOpen: false,
     isFilterEmployeeOpen: false,
-    isFilterProjectOpen: false,
-
-    // default filter project dialog
-    filterProjectDialog: {
-      employeeUid: undefined
-    }
+    isFilterProjectOpen: false
   };
 };
 
@@ -119,11 +110,7 @@ const stateUpdaters: StateUpdaters<{}, IOwnState, IOwnStateUpdaters> = {
   }),
   setFilterEmployee: (prevState: IOwnState) => (employee?: IEmployee) => ({
     isFilterEmployeeOpen: false,
-    filterEmployee: employee,
-
-    filterProjectDialog: {
-      employeeUid: employee && employee.uid
-    }
+    filterEmployee: employee
   }),
 
   // filter project
@@ -188,8 +175,8 @@ export const EffectivenessFilter = compose<EffectivenessFilterProps, IOwnOption>
   withUser,
   withLayout,
   withForm,
-  withStateHandlers<IOwnState, IOwnStateUpdaters, {}>(createProps, stateUpdaters), 
-  withHandlers<EffectivenessFilterProps, IOwnHandler>(handlerCreators),
+  withStateHandlers(createProps, stateUpdaters), 
+  withHandlers(handlerCreators),
   withStyles(styles),
   injectIntl
 )(EffectivenessFilterView);
