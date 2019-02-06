@@ -18,15 +18,15 @@ import SearchIcon from '@material-ui/icons/Search';
 import * as classNames from 'classnames';
 import * as React from 'react';
 
-import { ProjectRegistrationDialogProps } from './ProjectRegistrationDialog';
+import { AccountEmployeeDialogProps } from './AccountEmployeeDialog';
 
-export const ProjectRegistrationDialogView: React.SFC<ProjectRegistrationDialogProps> = props => (
+export const AccountEmployeeDialogView: React.SFC<AccountEmployeeDialogProps> = props => (
   <Dialog 
     open={props.isOpen}
     fullScreen
     scroll="paper"
     hideBackdrop={props.hideBackdrop}
-    aria-labelledby="project-registration-dialog-title"
+    aria-labelledby="account-employee-dialog-title"
     className={props.layoutState.anchor === 'right' ? props.classes.contentShiftRight : props.classes.contentShiftLeft}
     onClose={props.onClose}
   >
@@ -50,7 +50,7 @@ export const ProjectRegistrationDialogView: React.SFC<ProjectRegistrationDialogP
           </div>
           <InputBase
             value={props.search}
-            disabled={props.projectRegisterState.list.isLoading}
+            disabled={props.accountEmployeeState.list.isLoading}
             placeholder={props.intl.formatMessage(layoutMessage.text.search)}
             classes={{
               root: props.classes.searchRoot,
@@ -72,14 +72,14 @@ export const ProjectRegistrationDialogView: React.SFC<ProjectRegistrationDialogP
         <Divider/>
 
         {
-          props.projects &&
-          props.projects.map((item, index) => 
+          props.employees &&
+          props.employees.map((item, index) => 
             <React.Fragment key={index}>
               <ListItem button onClick={() => props.onSelected(item)}>
                 <Radio color="primary" checked={props.value && props.value === item.uid || false} />
                 <ListItemText 
-                  primary={`${item.uid} - ${item.name}`} 
-                  secondary={item.customer  && item.customer.name}
+                  primary={item.fullName} 
+                  secondary={item.email}
                   primaryTypographyProps={{
                     noWrap: true
                   }} 
@@ -88,7 +88,7 @@ export const ProjectRegistrationDialogView: React.SFC<ProjectRegistrationDialogP
                   }} 
                 />
               </ListItem>
-              <Divider/>fil
+              <Divider/>
             </React.Fragment>
           )
         }

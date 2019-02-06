@@ -20,10 +20,7 @@ import {
 } from 'recompose';
 import { BillableListFilterView } from './BillableListFilterView';
 
-export type IBillableListFilterResult = Pick<
-  ISummaryBillableFilter,
-  'companyUid' | 'employeeUid' | 'start' | 'end'
->;
+export type IBillableListFilterResult = Pick<ISummaryBillableFilter, 'companyUid' | 'employeeUid' | 'start' | 'end'>;
 
 interface OwnOption {
   isAdmin: boolean;
@@ -33,7 +30,7 @@ interface OwnOption {
   onApply: (filter: IBillableListFilterResult) => void;
 }
 
-interface OwnState {
+interface IOwnState {
   isFilterOpen: boolean;
 
   // filter company
@@ -57,31 +54,31 @@ interface OwnState {
   end?: string;
 }
 
-interface OwnStateUpdater extends StateHandlerMap<OwnState> {
-  stateUpdate: StateHandler<OwnState>;
+interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
+  stateUpdate: StateHandler<IOwnState>;
 
   // main filter
-  setFilterReset: StateHandler<OwnState>;
-  setFilterVisibility: StateHandler<OwnState>;
+  setFilterReset: StateHandler<IOwnState>;
+  setFilterVisibility: StateHandler<IOwnState>;
 
   // filter Company
-  setFilterCompanyVisibility: StateHandler<OwnState>;
-  setFilterCompany: StateHandler<OwnState>;
+  setFilterCompanyVisibility: StateHandler<IOwnState>;
+  setFilterCompany: StateHandler<IOwnState>;
 
   // filter Employee
-  setFilterEmployeeVisibility: StateHandler<OwnState>;
-  setFilterEmployee: StateHandler<OwnState>;
+  setFilterEmployeeVisibility: StateHandler<IOwnState>;
+  setFilterEmployee: StateHandler<IOwnState>;
 
   // filter Start
-  setFilterStartVisibility: StateHandler<OwnState>;
-  setFilterStart: StateHandler<OwnState>;
+  setFilterStartVisibility: StateHandler<IOwnState>;
+  setFilterStart: StateHandler<IOwnState>;
 
   // filter End
-  setFilterEndVisibility: StateHandler<OwnState>;
-  setFilterEnd: StateHandler<OwnState>;
+  setFilterEndVisibility: StateHandler<IOwnState>;
+  setFilterEnd: StateHandler<IOwnState>;
 }
 
-interface OwnHandler {
+interface IOwnHandler {
   // mainfilter
   handleFilterOnReset: (event: React.MouseEvent<HTMLElement>) => void;
   handleFilterOnApply: (event: React.MouseEvent<HTMLElement>) => void;
@@ -94,10 +91,8 @@ interface OwnHandler {
   handleFilterCompanyOnClose: () => void;
 
   // filter Employee
-  handleFilterEmployeeVisibility: (
-    event: React.MouseEvent<HTMLElement>
-  ) => void;
-  handleFilterEmployeeOnSelected: (data: IEmployee) => void;
+  handleFilterEmployeeVisibility: (event: React.MouseEvent<HTMLElement>) => void;
+  handleFilterEmployeeOnSelected: (data?: IEmployee) => void;
   handleFilterEmployeeOnClear: (event: React.MouseEvent<HTMLElement>) => void;
   handleFilterEmployeeOnClose: () => void;
 
@@ -114,18 +109,17 @@ interface OwnHandler {
   handleFilterEndOnClose: () => void;
 }
 
-export type BillableListFilterProps = OwnOption &
-  OwnState &
-  OwnHandler &
-  OwnStateUpdater &
-  WithStyles<typeof styles> &
-  WithLayout &
-  WithUser &
-  InjectedIntlProps;
+export type BillableListFilterProps 
+  = OwnOption 
+  & IOwnState 
+  & IOwnHandler 
+  & IOwnStateUpdater 
+  & WithStyles<typeof styles> 
+  & WithLayout 
+  & WithUser 
+  & InjectedIntlProps;
 
-const createProps: mapper<BillableListFilterProps, OwnState> = (
-  props: BillableListFilterProps
-): OwnState => {
+const createProps: mapper<BillableListFilterProps, IOwnState> = (props: BillableListFilterProps): IOwnState => {
   const { user } = props.userState;
 
   return {
@@ -146,29 +140,25 @@ const createProps: mapper<BillableListFilterProps, OwnState> = (
   };
 };
 
-const stateUpdaters: StateUpdaters<
-  BillableListFilterProps,
-  OwnState,
-  OwnStateUpdater
-> = {
-  stateUpdate: (prevState: OwnState) => (newState: any) => ({
+const stateUpdaters: StateUpdaters<BillableListFilterProps, IOwnState, IOwnStateUpdater> = {
+  stateUpdate: (prevState: IOwnState) => (newState: any) => ({
     ...prevState,
     ...newState
   }),
 
   // main filter
-  setFilterReset: (prevState: OwnState) => () => ({
+  setFilterReset: (prevState: IOwnState) => () => ({
     filterCompany: undefined,
     filterEmployee: undefined,
     filterStart: prevState.start,
     filterEnd: prevState.end
   }),
-  setFilterVisibility: (prevState: OwnState) => () => ({
+  setFilterVisibility: (prevState: IOwnState) => () => ({
     isFilterOpen: !prevState.isFilterOpen
   }),
 
   // filter Company
-  setFilterCompanyVisibility: (prevState: OwnState) => () => ({
+  setFilterCompanyVisibility: (prevState: IOwnState) => () => ({
     isFilterCompanyOpen: !prevState.isFilterCompanyOpen
   }),
   setFilterCompany: () => (data?: ILookupCompany) => ({
@@ -177,7 +167,7 @@ const stateUpdaters: StateUpdaters<
   }),
 
   // filter Employee
-  setFilterEmployeeVisibility: (prevState: OwnState) => () => ({
+  setFilterEmployeeVisibility: (prevState: IOwnState) => () => ({
     isFilterEmployeeOpen: !prevState.isFilterEmployeeOpen
   }),
   setFilterEmployee: () => (data?: IEmployee) => ({
@@ -186,7 +176,7 @@ const stateUpdaters: StateUpdaters<
   }),
 
   // filter Start
-  setFilterStartVisibility: (prevState: OwnState) => () => ({
+  setFilterStartVisibility: (prevState: IOwnState) => () => ({
     isFilterStartOpen: !prevState.isFilterStartOpen,
   }),
   setFilterStart: () => (data?: string) => ({
@@ -195,25 +185,21 @@ const stateUpdaters: StateUpdaters<
   }),
 
   // filter End
-  setFilterEndVisibility: (prevState: OwnState) => () => ({
+  setFilterEndVisibility: (prevState: IOwnState) => () => ({
     isFilterEndOpen: !prevState.isFilterEndOpen
   }),
-  setFilterEnd: (prevState: OwnState) => (data?: string) => ({
+  setFilterEnd: (prevState: IOwnState) => (data?: string) => ({
     isFilterEndOpen: false,
     filterEnd: data
   })
 };
 
-const handlerCreators: HandleCreators<BillableListFilterProps, OwnHandler> = {
+const handlerCreators: HandleCreators<BillableListFilterProps, IOwnHandler> = {
   // main filter
-  handleFilterOnReset: (props: BillableListFilterProps) => (
-    event: React.MouseEvent<HTMLElement>
-  ) => {
+  handleFilterOnReset: (props: BillableListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
     props.setFilterReset();
   },
-  handleFilterOnApply: (props: BillableListFilterProps) => (
-    event: React.MouseEvent<HTMLElement>
-  ) => {
+  handleFilterOnApply: (props: BillableListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
     props.onApply({
       companyUid: props.filterCompany && props.filterCompany.uid,
       employeeUid: props.filterEmployee && props.filterEmployee.uid,
@@ -230,9 +216,7 @@ const handlerCreators: HandleCreators<BillableListFilterProps, OwnHandler> = {
   handleFilterCompanyVisibility: (props: BillableListFilterProps) => () => {
     props.setFilterCompanyVisibility();
   },
-  handleFilterCompanyOnSelected: (props: BillableListFilterProps) => (
-    data: ILookupCompany
-  ) => {
+  handleFilterCompanyOnSelected: (props: BillableListFilterProps) => (data: ILookupCompany) => {
     props.setFilterCompany(data);
   },
   handleFilterCompanyOnClear: (props: BillableListFilterProps) => () => {
@@ -246,9 +230,7 @@ const handlerCreators: HandleCreators<BillableListFilterProps, OwnHandler> = {
   handleFilterEmployeeVisibility: (props: BillableListFilterProps) => () => {
     props.setFilterEmployeeVisibility();
   },
-  handleFilterEmployeeOnSelected: (props: BillableListFilterProps) => (
-    data: IEmployee
-  ) => {
+  handleFilterEmployeeOnSelected: (props: BillableListFilterProps) => (data?: IEmployee) => {
     props.setFilterEmployee(data);
   },
   handleFilterEmployeeOnClear: (props: BillableListFilterProps) => () => {
@@ -262,9 +244,7 @@ const handlerCreators: HandleCreators<BillableListFilterProps, OwnHandler> = {
   handleFilterStartVisibility: (props: BillableListFilterProps) => () => {
     props.setFilterStartVisibility();
   },
-  handleFilterStartOnSelected: (props: BillableListFilterProps) => (
-    data: string
-  ) => {
+  handleFilterStartOnSelected: (props: BillableListFilterProps) => (data: string) => {
     props.setFilterStart(data);
   },
   handleFilterStartOnClear: (props: BillableListFilterProps) => () => {
@@ -275,19 +255,13 @@ const handlerCreators: HandleCreators<BillableListFilterProps, OwnHandler> = {
   },
 
   // filter End
-  handleFilterEndVisibility: (props: BillableListFilterProps) => (
-    event: React.MouseEvent<HTMLElement>
-  ) => {
+  handleFilterEndVisibility: (props: BillableListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
     props.setFilterEndVisibility();
   },
-  handleFilterEndOnSelected: (props: BillableListFilterProps) => (
-    data: string
-  ) => {
+  handleFilterEndOnSelected: (props: BillableListFilterProps) => (data: string) => {
     props.setFilterEnd(data);
   },
-  handleFilterEndOnClear: (props: BillableListFilterProps) => (
-    event: React.MouseEvent<HTMLElement>
-  ) => {
+  handleFilterEndOnClear: (props: BillableListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
     props.setFilterEnd(props.end);
   },
   handleFilterEndOnClose: (props: BillableListFilterProps) => () => {
@@ -299,8 +273,8 @@ export const BillableListFilter = compose<BillableListFilterProps, OwnOption>(
   setDisplayName('BillableListFilter'),
   withLayout,
   withUser,
-  injectIntl,
-  withStyles(styles),
   withStateHandlers(createProps, stateUpdaters),
-  withHandlers(handlerCreators)
+  withHandlers(handlerCreators),
+  withStyles(styles),
+  injectIntl
 )(BillableListFilterView);

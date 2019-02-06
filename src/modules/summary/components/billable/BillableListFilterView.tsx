@@ -24,7 +24,7 @@ import SyncIcon from '@material-ui/icons/Sync';
 import TuneIcon from '@material-ui/icons/Tune';
 import * as React from 'react';
 
-import { EmployeeDialog } from '@account/components/dialog';
+import { AccountEmployeeDialog } from '@account/components/dialog';
 import { FilterCompany } from '@lookup/components/company/select';
 import { summaryMessage } from '@summary/locales/messages/summaryMessage';
 import { BillableListFilterProps } from './BillableListFilter';
@@ -167,9 +167,16 @@ export const BillableListFilterView: React.SFC<BillableListFilterProps> = props 
           onClose={props.handleFilterCompanyOnClose}        
         />
 
-        <EmployeeDialog
-          hideBackdrop={true}
+        <AccountEmployeeDialog
           isOpen={props.isFilterEmployeeOpen}
+          title={props.intl.formatMessage(summaryMessage.billable.field.name)}
+          value={props.filterEmployee && props.filterEmployee.uid}
+          filter={{
+            companyUids: props.userState.user && props.userState.user.company.uid,
+            orderBy: 'fullName',
+            direction: 'ascending'
+          }}
+          hideBackdrop={true}
           onSelected={props.handleFilterEmployeeOnSelected}
           onClose={props.handleFilterEmployeeOnClose}
         />
