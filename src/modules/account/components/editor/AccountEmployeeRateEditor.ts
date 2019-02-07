@@ -122,7 +122,7 @@ const handlerCreators: HandleCreators<AccountEmployeeRateEditorProps, OwnHandler
     
     let message: string = '';
     if (formMode === FormMode.Edit) {
-      message = intl.formatMessage(accountMessage.shared.message.updateSuccess, {state: 'Rate', uid: response.uid});
+      message = intl.formatMessage(accountMessage.shared.message.updateSuccess, {state: 'Rate'});
     }
 
     handleDialogClose();

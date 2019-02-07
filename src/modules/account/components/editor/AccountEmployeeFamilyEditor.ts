@@ -143,7 +143,7 @@ const handlerCreators: HandleCreators<AccountEmployeeFamilyEditorProps, OwnHandl
     return null;
   },
   handleSubmitSuccess: (props: AccountEmployeeFamilyEditorProps) => (response: IEmployee) => {
-    const { formMode, intl, history, editAction, handleDialogClose, employeeUid } = props;
+    const { formMode, intl, editAction, handleDialogClose } = props;
     const { alertAdd } = props.layoutDispatch;
     const { loadAllRequest } = props.accountEmployeeFamilyDispatch; 
 
@@ -155,9 +155,9 @@ const handlerCreators: HandleCreators<AccountEmployeeFamilyEditorProps, OwnHandl
 
     if (formMode === FormMode.Edit) {
       if (editAction && editAction === 'update') {
-        message = intl.formatMessage(accountMessage.shared.message.updateSuccess, { state: 'Employee Family', uid: response.uid });
+        message = intl.formatMessage(accountMessage.shared.message.updateSuccess, { state: 'Employee Family' });
       } else {
-        message = intl.formatMessage(accountMessage.shared.message.deleteSuccess, { state: 'Employee Family', uid: response.uid });
+        message = intl.formatMessage(accountMessage.shared.message.deleteSuccess, { state: 'Employee Family' });
       }
     }
 
@@ -174,8 +174,6 @@ const handlerCreators: HandleCreators<AccountEmployeeFamilyEditorProps, OwnHandl
         direction: 'ascending'
       }
     });
-
-    history.push(`/account/employee/${employeeUid}/family`);
   },
   handleSubmitFail: (props: AccountEmployeeFamilyEditorProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
     const { formMode, intl } = props;
@@ -185,7 +183,7 @@ const handlerCreators: HandleCreators<AccountEmployeeFamilyEditorProps, OwnHandl
       // validation errors from server (400: Bad Request)
       alertAdd({
         time: new Date(),
-        message: isObject(submitError) ? submitError.message : submitError
+        message: isObject(submitError) ? submitError.message : (!isNullOrUndefined(submitError) ? submitError : intl.formatMessage(accountMessage.shared.message.createFailure))
       });
     } else {
       // another errors from server
