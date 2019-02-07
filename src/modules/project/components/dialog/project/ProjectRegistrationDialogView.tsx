@@ -79,7 +79,7 @@ export const ProjectRegistrationDialogView: React.SFC<ProjectRegistrationDialogP
                 <Radio color="primary" checked={props.value && props.value === item.uid || false} />
                 <ListItemText 
                   primary={`${item.uid} - ${item.name}`} 
-                  secondary={item.customer  && item.customer.name}
+                  secondary={item.customer && item.customer.name}
                   primaryTypographyProps={{
                     noWrap: true
                   }} 
@@ -88,7 +88,7 @@ export const ProjectRegistrationDialogView: React.SFC<ProjectRegistrationDialogP
                   }} 
                 />
               </ListItem>
-              <Divider/>fil
+              <Divider/>
             </React.Fragment>
           )
         }

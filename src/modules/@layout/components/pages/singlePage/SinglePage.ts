@@ -9,6 +9,7 @@ import { IAppBarMenu } from '@layout/interfaces';
 import { WithStyles, withStyles, withWidth } from '@material-ui/core';
 import { WithWidth } from '@material-ui/core/withWidth';
 import styles from '@styles';
+import { InjectedIntlProps, injectIntl } from 'react-intl';
 import {
   compose,
   HandleCreators,
@@ -88,7 +89,8 @@ export type SinglePageProps
   & WithStyles<typeof styles>
   & WithWidth
   & WithLayout
-  & WithAppBar;
+  & WithAppBar
+  & InjectedIntlProps;
 
 const createProps: mapper<OwnOption, OwnState> = (props: OwnOption): OwnState => ({
   isAdmin: false,
@@ -218,11 +220,12 @@ const lifecycles: ReactLifeCycleFunctions<SinglePageProps, OwnState> = {
 export const SinglePage = compose<SinglePageProps, OwnOption>(
   setDisplayName('SinglePage'),
   withOidc,
-  withStyles(styles),
-  withWidth(),
   withLayout,
   withAppBar,
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
-  lifecycle(lifecycles)
+  lifecycle(lifecycles),
+  withStyles(styles),
+  withWidth(),
+  injectIntl
 )(SinglePageView);
