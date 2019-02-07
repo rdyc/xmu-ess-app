@@ -251,7 +251,7 @@ export const AccountEmployeeExperienceView: React.SFC<
   return (
     <React.Fragment>
       <DetailPage
-        tab2={AccountEmployeeTabs.experience}        
+        tab={AccountEmployeeTabs.experience}        
       >
         {renderAction}
         <SinglePage

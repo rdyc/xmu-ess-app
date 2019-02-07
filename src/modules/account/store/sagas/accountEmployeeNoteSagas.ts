@@ -230,7 +230,6 @@ function* watchDeleteRequest() {
       successEffects: (response: IApiResponse) => [
         put(accountEmployeeNoteGetAllDispose()),
         put(accountEmployeeNoteDeleteSuccess(response.body)),
-        put(accountEmployeeNoteGetAllRequest(response.body))
       ],
       successCallback: (response: IApiResponse) => {
         action.payload.resolve(response.body.data);

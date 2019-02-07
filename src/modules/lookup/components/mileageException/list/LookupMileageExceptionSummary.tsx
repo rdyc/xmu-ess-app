@@ -28,6 +28,7 @@ const mileageExceptionSummary: React.SFC<AllProps> = props => (
       <TextField
         {...GlobalStyle.TextField.ReadOnly}
         margin="dense"
+        multiline
         label={props.intl.formatMessage(lookupMessage.mileageException.field.projectUid)}
         value={props.data.project ? `${props.data.project.uid} - ${props.data.project.name}` : 'N/A'}
       />
@@ -35,7 +36,6 @@ const mileageExceptionSummary: React.SFC<AllProps> = props => (
         {...GlobalStyle.TextField.ReadOnly}
         margin="dense"
         multiline
-        rowsMax="4"
         label={props.intl.formatMessage(lookupMessage.mileageException.field.reason)}
         value={props.data.reason ? props.data.reason : 'N/A'}
       />
