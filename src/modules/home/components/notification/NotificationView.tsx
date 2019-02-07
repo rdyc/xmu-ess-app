@@ -1,5 +1,6 @@
 import { homeMessage } from '@home/locales/messages';
 import { ModuleIcon } from '@layout/components/moduleIcon/ModuleIcon';
+import { Preloader } from '@layout/components/preloader';
 import { layoutMessage } from '@layout/locales/messages';
 import {
   Avatar,
@@ -39,157 +40,155 @@ export const NotificationView: React.SFC<NotificationProps> = props => (
       </Toolbar>
     }
 
-    {
-      props.notificationState.isLoading &&
-      <Typography variant="body2" className={props.classes.flex} color="inherit">
-        {props.intl.formatMessage(layoutMessage.text.loading)}
-      </Typography>
-    }
-  
-    {
-      !props.notificationState.isLoading &&
-      props.notificationState.response && 
-      props.notificationState.response.data && 
-      <Grid container spacing={16}>
-        <Grid item xs={12} sm={12} md={4} lg={3} xl={2}>
-          <ExpansionPanel>
-            <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-              <div>
-                <Avatar className={props.classes.backgroundColorSecondary}>
-                  <Android />
-                </Avatar>
-              </div>
-              
-              <div className={props.classes.marginFarLeft}>
-                <Typography variant="body2" noWrap>
-                  TESSA Mobile
-                </Typography>
+    <Preloader 
+      show={props.notificationState.isLoading} 
+      label={props.intl.formatMessage(layoutMessage.text.loading)}
+    >
+      {
+        !props.notificationState.isLoading &&
+        props.notificationState.response && 
+        props.notificationState.response.data && 
+        <Grid container spacing={16}>
+          <Grid item xs={12} sm={12} md={4} lg={3} xl={2}>
+            <ExpansionPanel>
+              <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+                <div>
+                  <Avatar className={props.classes.backgroundColorSecondary}>
+                    <Android />
+                  </Avatar>
+                </div>
+                
+                <div className={props.classes.marginFarLeft}>
+                  <Typography variant="body2" noWrap>
+                    TESSA Mobile
+                  </Typography>
 
+                  {
+                    props.lookupVersionState.detail.response &&
+                    props.lookupVersionState.detail.response.data &&
+                    <Typography variant="caption" noWrap>
+                      Version {props.lookupVersionState.detail.response.data.version}
+                    </Typography>
+                  }
+                </div>
+              </ExpansionPanelSummary>
+              
+              <ExpansionPanelDetails 
+                style={{
+                  padding: 0,
+                  maxHeight: 300, 
+                  backgroundColor: props.theme.palette.background.default,
+                  overflowY: 'scroll'
+                }}
+              >
                 {
                   props.lookupVersionState.detail.response &&
                   props.lookupVersionState.detail.response.data &&
-                  <Typography variant="caption" noWrap>
-                    Version {props.lookupVersionState.detail.response.data.version}
-                  </Typography>
+                  <List disablePadding style={{ width: '100%' }}>
+                    <ListItem
+                      button
+                      onClick={props.handleDownloadClick}
+                      >
+                      <ListItemText
+                        primary="Download APK"
+                        secondary={`Update notes: ${props.lookupVersionState.detail.response.data.notes}`}
+                        primaryTypographyProps={{
+                          variant: 'body2'
+                        }}
+                        secondaryTypographyProps={{
+                          variant: 'caption'
+                        }}
+                        />
+                    </ListItem>
+                  </List>
                 }
-              </div>
-            </ExpansionPanelSummary>
-            
-            <ExpansionPanelDetails 
-              style={{
-                padding: 0,
-                maxHeight: 300, 
-                backgroundColor: props.theme.palette.background.default,
-                overflowY: 'scroll'
-              }}
-            >
-              {
-                props.lookupVersionState.detail.response &&
-                props.lookupVersionState.detail.response.data &&
-                <List disablePadding style={{ width: '100%' }}>
-                  <ListItem
-                    button
-                    onClick={props.handleDownloadClick}
-                    >
-                    <ListItemText
-                      primary="Download APK"
-                      secondary={`Update notes: ${props.lookupVersionState.detail.response.data.notes}`}
-                      primaryTypographyProps={{
-                        variant: 'body2'
-                      }}
-                      secondaryTypographyProps={{
-                        variant: 'caption'
-                      }}
-                      />
-                  </ListItem>
-                </List>
-              }
-            </ExpansionPanelDetails>
-          </ExpansionPanel>
-        </Grid>
+              </ExpansionPanelDetails>
+            </ExpansionPanel>
+          </Grid>
 
-        {
-          props.notificationState.response.data
-          .sort((a , b) => (a.name > b.name) ? 1 : 0)
-          .map((category, c) => category.details
-            .map((detail, d) =>
-              <Grid key={`${c}${d}`} item xs={12} sm={12} md={4} lg={3} xl={2}>
-                <ExpansionPanel>
-                  <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                    <div>
-                      <Avatar className={props.classes.backgroundColorSecondary}>
-                        <ModuleIcon module={category.moduleUid} />
-                      </Avatar>
-                    </div>
+          {
+            props.notificationState.response.data
+            .sort((a , b) => (a.name > b.name) ? 1 : 0)
+            .map((category, c) => category.details
+              .map((detail, d) =>
+                <Grid key={`${c}${d}`} item xs={12} sm={12} md={4} lg={3} xl={2}>
+                  <ExpansionPanel>
+                    <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+                      <div>
+                        <Avatar className={props.classes.backgroundColorSecondary}>
+                          <ModuleIcon module={category.moduleUid} />
+                        </Avatar>
+                      </div>
+                      
+                      <div className={props.classes.marginFarLeft}>
+                        <Typography variant="body2" noWrap>
+                          {category.name}
+                        </Typography>
+                        <Typography variant="caption" noWrap>
+                          {`${detail.total} ${detail.type}`}
+                        </Typography>
+                      </div>
+                    </ExpansionPanelSummary>
                     
-                    <div className={props.classes.marginFarLeft}>
-                      <Typography variant="body2" noWrap>
-                        {category.name}
-                      </Typography>
-                      <Typography variant="caption" noWrap>
-                        {`${detail.total} ${detail.type}`}
-                      </Typography>
-                    </div>
-                  </ExpansionPanelSummary>
-                  
-                  <ExpansionPanelDetails 
-                    style={{
-                      padding: 0,
-                      maxHeight: 300, 
-                      backgroundColor: props.theme.palette.background.default,
-                      overflowY: 'scroll'
-                    }}
-                  >
-                    <List disablePadding style={{ width: '100%' }}>
-                      {
-                        detail.items.length > 1 &&
-                        <ListItem
-                          button
-                          onClick={() => props.handleNotifClick(category.moduleUid, detail.type)}
-                        >
-                          <ListItemText
-                            primary={props.intl.formatMessage(homeMessage.dashboard.text.showAll)}
-                            secondary={props.intl.formatMessage(homeMessage.dashboard.text.showAllDesc)}
-                            primaryTypographyProps={{
-                              variant: 'body2'
-                            }}
-                            secondaryTypographyProps={{
-                              variant: 'caption'
-                            }}
-                          />
-                        </ListItem>
-                      }
+                    <ExpansionPanelDetails 
+                      style={{
+                        padding: 0,
+                        maxHeight: 300, 
+                        backgroundColor: props.theme.palette.background.default,
+                        overflowY: 'scroll'
+                      }}
+                    >
+                      <List disablePadding style={{ width: '100%' }}>
+                        {
+                          detail.items.length > 1 &&
+                          <ListItem
+                            button
+                            onClick={() => props.handleNotifClick(category.moduleUid, detail.type)}
+                          >
+                            <ListItemText
+                              primary={props.intl.formatMessage(homeMessage.dashboard.text.showAll)}
+                              secondary={props.intl.formatMessage(homeMessage.dashboard.text.showAllDesc)}
+                              primaryTypographyProps={{
+                                variant: 'body2'
+                              }}
+                              secondaryTypographyProps={{
+                                variant: 'caption'
+                              }}
+                            />
+                          </ListItem>
+                        }
 
-                      {
-                        detail.items.map(item =>
-                          <React.Fragment key={item.uid}>
-                            <Divider/>
-                            <ListItem
-                              button
-                              onClick={() => props.handleNotifClick(category.moduleUid, detail.type, item.uid)}
-                            >
-                              <ListItemText
-                                primary={item.name}
-                                secondary={`${item.uid} | ${moment(item.date).fromNow()}`}
-                                primaryTypographyProps={{
-                                  variant: 'body2'
-                                }}
-                                secondaryTypographyProps={{
-                                  variant: 'caption'
-                                }}
-                              />
-                            </ListItem>
-                          </React.Fragment>
-                        )
-                      }
-                    </List>
-                  </ExpansionPanelDetails>
-                </ExpansionPanel>
-              </Grid>  
+                        {
+                          detail.items.map(item =>
+                            <React.Fragment key={item.uid}>
+                              <Divider/>
+                              <ListItem
+                                button
+                                onClick={() => props.handleNotifClick(category.moduleUid, detail.type, item.uid)}
+                              >
+                                <ListItemText
+                                  primary={item.name}
+                                  secondary={`${item.uid} | ${moment(item.date).fromNow()}`}
+                                  primaryTypographyProps={{
+                                    variant: 'body2'
+                                  }}
+                                  secondaryTypographyProps={{
+                                    variant: 'caption'
+                                  }}
+                                />
+                              </ListItem>
+                            </React.Fragment>
+                          )
+                        }
+                      </List>
+                    </ExpansionPanelDetails>
+                  </ExpansionPanel>
+                </Grid>  
+              )
             )
-          )
-        }
-      </Grid>
-    }
+          }
+        </Grid>
+      }
+    </Preloader>
   </div>
 );

@@ -154,9 +154,9 @@ export const Notification = compose<NotificationProps, IOwnOption>(
   withNotification,
   withLookupVersion,
   injectIntl,
-  withStyles(styles),
-  withTheme(),
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
-  lifecycle(lifecycles)
+  lifecycle(lifecycles),
+  withStyles(styles),
+  withTheme()
 )(NotificationView);
