@@ -1,8 +1,10 @@
 import { ISystemList } from '@common/classes/response';
+import { WithCommonSystem, withCommonSystem } from '@common/hoc/withCommonSystem';
 import { ICollectionValue } from '@layout/classes/core';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { ICustomerList } from '@lookup/classes/response';
+import { WithLookupCustomer, withLookupCustomer } from '@lookup/hoc/withLookupCustomer';
 import { WithStyles, withStyles } from '@material-ui/core';
 import { IProjectApprovalGetAllFilter } from '@project/classes/filters/approval';
 import styles from '@styles';
@@ -10,7 +12,9 @@ import { InjectedIntlProps, injectIntl } from 'react-intl';
 import {
   compose,
   HandleCreators,
+  lifecycle,
   mapper,
+  ReactLifeCycleFunctions,
   setDisplayName,
   StateHandler,
   StateHandlerMap,
@@ -120,9 +124,11 @@ export type ProjectApprovalListFilterProps
   & IOwnState
   & IOwnStateUpdater
   & IOwnHandler
-  & WithUser
   & WithStyles<typeof styles>
   & WithLayout
+  & WithUser
+  & WithLookupCustomer
+  & WithCommonSystem
   & InjectedIntlProps;
 
 const createProps: mapper<ProjectApprovalListFilterProps, IOwnState> = (props: ProjectApprovalListFilterProps): IOwnState => ({
@@ -265,12 +271,64 @@ const handlerCreators: HandleCreators<ProjectApprovalListFilterProps, IOwnHandle
   }
 };
 
+const lifecycles: ReactLifeCycleFunctions<ProjectApprovalListFilterProps, IOwnState> = {
+  componentDidMount() { 
+    // handling previous filter after leaving list page
+    if (this.props.initialProps) {
+      const { customerUid, projectType, statusType, status } = this.props.initialProps;
+
+      // filter customer
+      if (customerUid) {
+        const { response } = this.props.lookupCustomerState.list;
+        
+        if (response && response.data) {
+          const selected = response.data.find(item => item.uid === customerUid);
+          
+          this.props.setFilterCustomer(selected);
+        }
+      }
+
+      // filter project type
+      if (projectType) {
+        const { response } = this.props.commonProjectListState;
+        
+        if (response && response.data) {
+          const selected = response.data.find(item => item.type === projectType);
+          
+          this.props.setFilterType(selected);
+        }
+      }
+
+      // filter status type
+      if (statusType) {
+        const { response } = this.props.commonStatusListState;
+        
+        if (response && response.data) {
+          const selected = response.data.find(item => item.type === statusType);
+          
+          this.props.setFilterStatus(selected);
+        }
+      }
+
+      // filter status
+      if (status) {
+        const selected = completionStatus.find(item => item.value === status);
+          
+        this.props.setFilterCompletion(selected);
+      }
+    }
+  }
+};
+
 export const ProjectApprovalListFilter = compose<ProjectApprovalListFilterProps, IOwnOption>(
   setDisplayName('ProjectApprovalListFilter'),
   withUser,
   withLayout,
+  withLookupCustomer,
+  withCommonSystem,
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
+  lifecycle(lifecycles),
   withStyles(styles)
 )(ProjectApprovalListFilterView);

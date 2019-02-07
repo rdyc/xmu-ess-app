@@ -176,9 +176,6 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
         return result;
       },
 
-      // action centre
-      showActionCentre: false,
-
       // toolbar controls
       toolbarControls: (callback: ListHandler) => [
         {
