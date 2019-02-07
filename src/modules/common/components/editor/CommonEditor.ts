@@ -223,6 +223,8 @@ const lifecycles: ReactLifeCycleFunctions<CommonEditorProps, {}> = {
 
       stateUpdate({ 
         formMode: FormMode.Edit,
+        submitDialogTitle: this.props.intl.formatMessage(commonMessage.system.dialog.editTitle),
+        submitDialogContentText: this.props.intl.formatMessage(commonMessage.system.dialog.editDescription),
       });
 
       systemDetailRequest({

@@ -42,8 +42,8 @@ export const workflowHierarchyDialog = defineMessages({
   deleteDescription: { id: `${prefix}.dialog.delete.description` },
   createTitle: { id: `${prefix}.dialog.create.title` },
   createDescription: { id: `${prefix}.dialog.create.description` },
-  editTitle: { id: `${prefix}.dialog.create.title` },
-  editDescription: { id: `${prefix}.dialog.create.description` },
+  editTitle: { id: `${prefix}.dialog.edit.title` },
+  editDescription: { id: `${prefix}.dialog.edit.description` },
 });
 
 // text
