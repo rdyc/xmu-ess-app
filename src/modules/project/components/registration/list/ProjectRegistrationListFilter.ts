@@ -1,7 +1,9 @@
 import { ISystemList } from '@common/classes/response';
+import { WithCommonSystem, withCommonSystem } from '@common/hoc/withCommonSystem';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { ICustomerList } from '@lookup/classes/response';
+import { WithLookupCustomer, withLookupCustomer } from '@lookup/hoc/withLookupCustomer';
 import { WithStyles, withStyles } from '@material-ui/core';
 import { IProjectRegistrationGetAllFilter } from '@project/classes/filters/registration';
 import styles from '@styles';
@@ -9,7 +11,9 @@ import { InjectedIntlProps, injectIntl } from 'react-intl';
 import {
   compose,
   HandleCreators,
+  lifecycle,
   mapper,
+  ReactLifeCycleFunctions,
   setDisplayName,
   StateHandler,
   StateHandlerMap,
@@ -107,9 +111,11 @@ export type ProjectRegistrationListFilterProps
   & IOwnState
   & IOwnStateUpdater
   & IOwnHandler
-  & WithUser
   & WithStyles<typeof styles>
   & WithLayout
+  & WithUser
+  & WithLookupCustomer
+  & WithCommonSystem
   & InjectedIntlProps;
 
 const createProps: mapper<ProjectRegistrationListFilterProps, IOwnState> = (props: ProjectRegistrationListFilterProps): IOwnState => ({
@@ -238,12 +244,57 @@ const handlerCreators: HandleCreators<ProjectRegistrationListFilterProps, IOwnHa
   }
 };
 
+const lifecycles: ReactLifeCycleFunctions<ProjectRegistrationListFilterProps, IOwnState> = {
+  componentDidMount() { 
+    // handling previous filter after leaving list page
+    if (this.props.initialProps) {
+      const { customerUid, projectType, statusType } = this.props.initialProps;
+
+      // filter customer
+      if (customerUid) {
+        const { response } = this.props.lookupCustomerState.list;
+        
+        if (response && response.data) {
+          const selected = response.data.find(item => item.uid === customerUid);
+          
+          this.props.setFilterCustomer(selected);
+        }
+      }
+
+      // filter project type
+      if (projectType) {
+        const { response } = this.props.commonProjectListState;
+        
+        if (response && response.data) {
+          const selected = response.data.find(item => item.type === projectType);
+          
+          this.props.setFilterType(selected);
+        }
+      }
+
+      // filter status type
+      if (statusType) {
+        const { response } = this.props.commonStatusListState;
+        
+        if (response && response.data) {
+          const selected = response.data.find(item => item.type === statusType);
+          
+          this.props.setFilterStatus(selected);
+        }
+      }
+    }
+  }
+};
+
 export const ProjectRegistrationListFilter = compose<ProjectRegistrationListFilterProps, IOwnOption>(
   setDisplayName('ProjectRegistrationListFilter'),
   withUser,
   withLayout,
+  withLookupCustomer,
+  withCommonSystem,
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
+  lifecycle(lifecycles),
   withStyles(styles)
 )(ProjectRegistrationListFilterView);
