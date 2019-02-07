@@ -46,7 +46,7 @@ export const ProjectRegistrationListFilterView: React.SFC<ProjectRegistrationLis
           </Typography>
 
           {
-            (props.filterCustomer || props.filterType || props.filterStatus || props.filterCompletion || props.filterRejected) &&
+            (props.filterCustomer || props.filterType || props.filterStatus || props.filterRejected || props.filterNewOwner) &&
             <Button color="inherit" onClick={props.handleFilterOnReset}>
               {props.intl.formatMessage(layoutMessage.action.reset)}
             </Button>

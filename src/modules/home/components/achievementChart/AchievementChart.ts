@@ -7,7 +7,6 @@ import withWidth, { WithWidth } from '@material-ui/core/withWidth';
 import styles from '@styles';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import { compose, HandleCreators, lifecycle, ReactLifeCycleFunctions, StateHandler, StateHandlerMap, StateUpdaters, withHandlers, withStateHandlers } from 'recompose';
-// import { isNullOrUndefined } from 'util';
 import { AchievementChartView } from './AchievementChartView';
 
 interface IOwnOption {
@@ -45,7 +44,7 @@ const stateUpdaters: StateUpdaters<AchievementChartProps, IOwnState, IOwnStateUp
   stateUpdate: (prevState: IOwnState) => (newState: any) => ({
     ...prevState,
     ...newState
-  }),  
+  }),
 };
 
 const handlerCreators: HandleCreators<AchievementChartProps, IOwnHandler> = {
@@ -68,9 +67,8 @@ const handlerCreators: HandleCreators<AchievementChartProps, IOwnHandler> = {
         props.stateUpdate({
           dataSales: item
         });
-      } 
+      }
     });
-
   }
 };
 
@@ -83,6 +81,10 @@ const lifecycles: ReactLifeCycleFunctions<AchievementChartProps, {}> = {
     if (user) {
       if (!isLoading && !response) {
         loadRequest({});
+      } else if (response) {
+        if (response.data) {
+          this.props.handleOnChange(response.data);
+        }
       }
     }
   },

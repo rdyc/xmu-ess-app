@@ -45,7 +45,7 @@ export interface IListConfig<Tresponse> {
   onProcessSelection?: (values: string[], callback: ListHandler) => void;
   showActionCentre?: boolean | false;
   filter?: IBasePagingFilter | IBaseFilter;
-  onDataLoad: (callback: ListHandler, params: ListDataProps, forceReload?: boolean | false) => void;
+  onDataLoad: (callback: ListHandler, params: ListDataProps, forceReload?: boolean, resetPage?: boolean) => void;
   onBind: (item: Tresponse, index: number) => {
     key: any;
     primary: string;
@@ -138,11 +138,18 @@ export type ListPageProps
   & WithPage;
 
 const createProps: mapper<IOwnOption, IOwnState> = (props: IOwnOption): IOwnState => ({
+  // pagination props
+  find: props.source.request && props.source.request.filter.find,
+  findBy: props.source.request && props.source.request.filter.findBy,
+  orderBy: props.source.request && props.source.request.filter.orderBy,
+  direction: props.source.request && props.source.request.filter.direction,
+  page: props.source.request && props.source.request.filter.page,
+  size: props.source.request && props.source.request.filter.size,
+  
+  // other props
   forceReload: false,
   isLoading: false,
   selected: [],
-  page: 1,
-  size: 10,
   inTransition: true,
   notSelectionTypes: [],
   ...props.config.filter
@@ -334,12 +341,12 @@ const lifecycles: ReactLifeCycleFunctions<ListPageProps, IOwnState> = {
     
     // search
     if (this.props.find !== prevProps.find || this.props.findBy !== prevProps.findBy) {
-      this.props.config.onDataLoad(this.props, this.props, true);
+      this.props.config.onDataLoad(this.props, this.props, true, true);
     }
 
     // filter state
     if (this.props.loadDataWhen !== prevProps.loadDataWhen) {
-      this.props.config.onDataLoad(this.props, this.props, true);
+      this.props.config.onDataLoad(this.props, this.props, true, true);
     }
 
     // track connected props changes

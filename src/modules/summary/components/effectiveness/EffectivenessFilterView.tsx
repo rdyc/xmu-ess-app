@@ -1,4 +1,4 @@
-import { EmployeeDialog } from '@account/components/dialog';
+import { AccountEmployeeDialog } from '@account/components/dialog';
 import { layoutMessage } from '@layout/locales/messages';
 import { 
   AppBar, 
@@ -116,18 +116,28 @@ export const EffectivenessFilterView: React.SFC<EffectivenessFilterProps> = prop
           </DialogContent>
         </Dialog>
 
-        <EmployeeDialog 
-          hideBackdrop={true}
+        <AccountEmployeeDialog 
           isOpen={props.isFilterEmployeeOpen} 
-          filter={props.filterEmployeeDialog}
+          title={props.intl.formatMessage(summaryMessage.filter.employeeUid)}
+          value={props.filterEmployee && props.filterEmployee.uid}
+          filter={{
+            companyUids: props.userState.user && props.userState.user.company.uid,
+            orderBy: 'fullName',
+            direction: 'ascending'
+          }}
+          hideBackdrop={true}
           onSelected={props.handleFilterEmployeeOnSelected} 
           onClose={props.handleFilterEmployeeOnClose}
         />
 
-        <ProjectAssignmentDialog 
-          hideBackdrop={true}
+        <ProjectAssignmentDialog
           isOpen={props.isFilterProjectOpen} 
-          filter={props.filterProjectDialog}
+          title={props.intl.formatMessage(summaryMessage.filter.projectUid)}
+          value={props.filterProject && props.filterProject.uid} 
+          filter={{
+            employeeUid: props.filterEmployee && props.filterEmployee.uid,
+          }}
+          hideBackdrop={true}
           onSelected={props.handleFilterProjectOnSelected} 
           onClose={props.handleFilterProjectOnClose}
         />

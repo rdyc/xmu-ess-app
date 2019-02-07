@@ -61,8 +61,21 @@ export async function apiRequest(method: string, url: string, path: string, payl
         ok: response.ok,
         body: result
       }))
-      .catch(() => {
-        throw TypeError('Empty data!');
+      .catch(reason => {
+        if (response.status === 204) {
+          console.info(`204:No-Content => [${method}] ${url}${path}`);
+
+          return {
+            status: response.status,
+            statusText: response.statusText,
+            headers: parseHeaders(response.headers),
+            ok: response.ok,
+            body: undefined
+          };
+        // tslint:disable-next-line:no-else-after-return
+        } else {
+          throw TypeError(reason);
+        }
       })
   )
   .catch((error: TypeError) => {

@@ -290,8 +290,8 @@ const lifecycles: ReactLifeCycleFunctions<OrganizationHierarchyEditorProps, {}> 
 
       stateUpdate({ 
         formMode: FormMode.Edit,
-        submitDialogTitle: this.props.intl.formatMessage(organizationMessage.hierarchy.dialog.modifyTitle),
-        submitDialogContentText : this.props.intl.formatMessage(organizationMessage.hierarchy.dialog.modifyDescription)
+        submitDialogTitle: this.props.intl.formatMessage(organizationMessage.hierarchy.dialog.editTitle),
+        submitDialogContentText: this.props.intl.formatMessage(organizationMessage.hierarchy.dialog.editDescription),
       });
 
       loadDetailRequest({

@@ -1,4 +1,5 @@
 import AppStorage from '@constants/AppStorage';
+import { initialName } from '@layout/helper/initialName';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { WithStyles, withStyles } from '@material-ui/core';
@@ -9,9 +10,7 @@ import { RouteComponentProps, withRouter } from 'react-router';
 import {
   compose,
   HandleCreators,
-  // lifecycle,
   mapper,
-  // ReactLifeCycleFunctions,
   setDisplayName,
   StateHandler,
   StateHandlerMap,
@@ -22,16 +21,6 @@ import {
 import * as store from 'store';
 
 import { NavigationHeaderView } from './NavigationHeaderView';
-
-const formatInitial = (value: string): string => {
-  let result = '';
-
-  const split = value.split(' ');
-
-  result = `${split[0].charAt(0).toUpperCase()}${split.length > 1 ? split[1].charAt(0).toUpperCase() : ''}`;
-
-  return result.trim();
-};
 
 interface IOwnOption {
   headerUid?: string;
@@ -70,7 +59,7 @@ export type NavigationHeaderProps
   & RouteComponentProps;
 
 const createProps: mapper<NavigationHeaderProps, IOwnState> = (props: NavigationHeaderProps) => ({ 
-  nameInitial: props.userState.user && formatInitial(props.userState.user.fullName),
+  nameInitial: props.userState.user && initialName(props.userState.user.fullName),
   isDialogAccessOpen: false,
   isDialogLogoutOpen: false
 });

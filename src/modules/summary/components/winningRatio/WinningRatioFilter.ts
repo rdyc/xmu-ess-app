@@ -20,12 +20,9 @@ import {
 } from 'recompose';
 import { WinningRatioFilterView } from './WinningRatioFilterView';
 
-export type IWinningRatioFilterResult = Pick<
-  ISummaryWinningFilter,
-  'companyUid' | 'employeeUid' | 'start' | 'end'
->;
+export type IWinningRatioFilterResult = Pick<ISummaryWinningFilter, 'companyUid' | 'employeeUid' | 'start' | 'end'>;
 
-interface OwnOption {
+interface IOwnOption {
   isAdmin: boolean;
   className: string;
   isLoading: boolean;
@@ -33,7 +30,7 @@ interface OwnOption {
   onApply: (filter: IWinningRatioFilterResult) => void;
 }
 
-interface OwnState {
+interface IOwnState {
   isFilterOpen: boolean;
 
   // filter company
@@ -57,31 +54,31 @@ interface OwnState {
   end?: string;
 }
 
-interface OwnStateUpdater extends StateHandlerMap<OwnState> {
-  stateUpdate: StateHandler<OwnState>;
+interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
+  stateUpdate: StateHandler<IOwnState>;
 
   // main filter
-  setFilterReset: StateHandler<OwnState>;
-  setFilterVisibility: StateHandler<OwnState>;
+  setFilterReset: StateHandler<IOwnState>;
+  setFilterVisibility: StateHandler<IOwnState>;
 
   // filter Company
-  setFilterCompanyVisibility: StateHandler<OwnState>;
-  setFilterCompany: StateHandler<OwnState>;
+  setFilterCompanyVisibility: StateHandler<IOwnState>;
+  setFilterCompany: StateHandler<IOwnState>;
 
   // filter Employee
-  setFilterEmployeeVisibility: StateHandler<OwnState>;
-  setFilterEmployee: StateHandler<OwnState>;
+  setFilterEmployeeVisibility: StateHandler<IOwnState>;
+  setFilterEmployee: StateHandler<IOwnState>;
 
   // filter Start
-  setFilterStartVisibility: StateHandler<OwnState>;
-  setFilterStart: StateHandler<OwnState>;
+  setFilterStartVisibility: StateHandler<IOwnState>;
+  setFilterStart: StateHandler<IOwnState>;
 
   // filter End
-  setFilterEndVisibility: StateHandler<OwnState>;
-  setFilterEnd: StateHandler<OwnState>;
+  setFilterEndVisibility: StateHandler<IOwnState>;
+  setFilterEnd: StateHandler<IOwnState>;
 }
 
-interface OwnHandler {
+interface IOwnHandler {
   // mainfilter
   handleFilterOnReset: (event: React.MouseEvent<HTMLElement>) => void;
   handleFilterOnApply: (event: React.MouseEvent<HTMLElement>) => void;
@@ -94,10 +91,8 @@ interface OwnHandler {
   handleFilterCompanyOnClose: () => void;
 
   // filter Employee
-  handleFilterEmployeeVisibility: (
-    event: React.MouseEvent<HTMLElement>
-  ) => void;
-  handleFilterEmployeeOnSelected: (data: IEmployee) => void;
+  handleFilterEmployeeVisibility: (event: React.MouseEvent<HTMLElement>) => void;
+  handleFilterEmployeeOnSelected: (data?: IEmployee) => void;
   handleFilterEmployeeOnClear: (event: React.MouseEvent<HTMLElement>) => void;
   handleFilterEmployeeOnClose: () => void;
 
@@ -114,18 +109,17 @@ interface OwnHandler {
   handleFilterEndOnClose: () => void;
 }
 
-export type WinningRatioFilterProps = OwnOption &
-  OwnState &
-  OwnHandler &
-  OwnStateUpdater &
-  WithStyles<typeof styles> &
-  WithLayout &
-  WithUser &
-  InjectedIntlProps;
+export type WinningRatioFilterProps 
+  = IOwnOption 
+  & IOwnState 
+  & IOwnHandler 
+  & IOwnStateUpdater 
+  & WithStyles<typeof styles> 
+  & WithLayout 
+  & WithUser 
+  & InjectedIntlProps;
 
-const createProps: mapper<WinningRatioFilterProps, OwnState> = (
-  props: WinningRatioFilterProps
-): OwnState => {
+const createProps: mapper<WinningRatioFilterProps, IOwnState> = (props: WinningRatioFilterProps): IOwnState => {
   const { user } = props.userState;
 
   return {
@@ -146,29 +140,25 @@ const createProps: mapper<WinningRatioFilterProps, OwnState> = (
   };
 };
 
-const stateUpdaters: StateUpdaters<
-  WinningRatioFilterProps,
-  OwnState,
-  OwnStateUpdater
-> = {
-  stateUpdate: (prevState: OwnState) => (newState: any) => ({
+const stateUpdaters: StateUpdaters<WinningRatioFilterProps, IOwnState, IOwnStateUpdater> = {
+  stateUpdate: (prevState: IOwnState) => (newState: any) => ({
     ...prevState,
     ...newState
   }),
 
   // main filter
-  setFilterReset: (prevState: OwnState) => () => ({
+  setFilterReset: (prevState: IOwnState) => () => ({
     filterCompany: undefined,
     filterEmployee: undefined,
     filterStart: prevState.start,
     filterEnd: prevState.end
   }),
-  setFilterVisibility: (prevState: OwnState) => () => ({
+  setFilterVisibility: (prevState: IOwnState) => () => ({
     isFilterOpen: !prevState.isFilterOpen
   }),
 
   // filter Company
-  setFilterCompanyVisibility: (prevState: OwnState) => () => ({
+  setFilterCompanyVisibility: (prevState: IOwnState) => () => ({
     isFilterCompanyOpen: !prevState.isFilterCompanyOpen
   }),
   setFilterCompany: () => (data?: ILookupCompany) => ({
@@ -177,7 +167,7 @@ const stateUpdaters: StateUpdaters<
   }),
 
   // filter Employee
-  setFilterEmployeeVisibility: (prevState: OwnState) => () => ({
+  setFilterEmployeeVisibility: (prevState: IOwnState) => () => ({
     isFilterEmployeeOpen: !prevState.isFilterEmployeeOpen
   }),
   setFilterEmployee: () => (data?: IEmployee) => ({
@@ -186,7 +176,7 @@ const stateUpdaters: StateUpdaters<
   }),
 
   // filter Start
-  setFilterStartVisibility: (prevState: OwnState) => () => ({
+  setFilterStartVisibility: (prevState: IOwnState) => () => ({
     isFilterStartOpen: !prevState.isFilterStartOpen,
   }),
   setFilterStart: () => (data?: string) => ({
@@ -195,25 +185,21 @@ const stateUpdaters: StateUpdaters<
   }),
 
   // filter End
-  setFilterEndVisibility: (prevState: OwnState) => () => ({
+  setFilterEndVisibility: (prevState: IOwnState) => () => ({
     isFilterEndOpen: !prevState.isFilterEndOpen
   }),
-  setFilterEnd: (prevState: OwnState) => (data?: string) => ({
+  setFilterEnd: (prevState: IOwnState) => (data?: string) => ({
     isFilterEndOpen: false,
     filterEnd: data
   })
 };
 
-const handlerCreators: HandleCreators<WinningRatioFilterProps, OwnHandler> = {
+const handlerCreators: HandleCreators<WinningRatioFilterProps, IOwnHandler> = {
   // main filter
-  handleFilterOnReset: (props: WinningRatioFilterProps) => (
-    event: React.MouseEvent<HTMLElement>
-  ) => {
+  handleFilterOnReset: (props: WinningRatioFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
     props.setFilterReset();
   },
-  handleFilterOnApply: (props: WinningRatioFilterProps) => (
-    event: React.MouseEvent<HTMLElement>
-  ) => {
+  handleFilterOnApply: (props: WinningRatioFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
     props.onApply({
       companyUid: props.filterCompany && props.filterCompany.uid,
       employeeUid: props.filterEmployee && props.filterEmployee.uid,
@@ -230,9 +216,7 @@ const handlerCreators: HandleCreators<WinningRatioFilterProps, OwnHandler> = {
   handleFilterCompanyVisibility: (props: WinningRatioFilterProps) => () => {
     props.setFilterCompanyVisibility();
   },
-  handleFilterCompanyOnSelected: (props: WinningRatioFilterProps) => (
-    data: ILookupCompany
-  ) => {
+  handleFilterCompanyOnSelected: (props: WinningRatioFilterProps) => (data: ILookupCompany) => {
     props.setFilterCompany(data);
   },
   handleFilterCompanyOnClear: (props: WinningRatioFilterProps) => () => {
@@ -246,9 +230,7 @@ const handlerCreators: HandleCreators<WinningRatioFilterProps, OwnHandler> = {
   handleFilterEmployeeVisibility: (props: WinningRatioFilterProps) => () => {
     props.setFilterEmployeeVisibility();
   },
-  handleFilterEmployeeOnSelected: (props: WinningRatioFilterProps) => (
-    data: IEmployee
-  ) => {
+  handleFilterEmployeeOnSelected: (props: WinningRatioFilterProps) => (data?: IEmployee) => {
     props.setFilterEmployee(data);
   },
   handleFilterEmployeeOnClear: (props: WinningRatioFilterProps) => () => {
@@ -262,9 +244,7 @@ const handlerCreators: HandleCreators<WinningRatioFilterProps, OwnHandler> = {
   handleFilterStartVisibility: (props: WinningRatioFilterProps) => () => {
     props.setFilterStartVisibility();
   },
-  handleFilterStartOnSelected: (props: WinningRatioFilterProps) => (
-    data: string
-  ) => {
+  handleFilterStartOnSelected: (props: WinningRatioFilterProps) => (data: string) => {
     props.setFilterStart(data);
   },
   handleFilterStartOnClear: (props: WinningRatioFilterProps) => () => {
@@ -275,19 +255,13 @@ const handlerCreators: HandleCreators<WinningRatioFilterProps, OwnHandler> = {
   },
 
   // filter End
-  handleFilterEndVisibility: (props: WinningRatioFilterProps) => (
-    event: React.MouseEvent<HTMLElement>
-  ) => {
+  handleFilterEndVisibility: (props: WinningRatioFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
     props.setFilterEndVisibility();
   },
-  handleFilterEndOnSelected: (props: WinningRatioFilterProps) => (
-    data: string
-  ) => {
+  handleFilterEndOnSelected: (props: WinningRatioFilterProps) => (data: string) => {
     props.setFilterEnd(data);
   },
-  handleFilterEndOnClear: (props: WinningRatioFilterProps) => (
-    event: React.MouseEvent<HTMLElement>
-  ) => {
+  handleFilterEndOnClear: (props: WinningRatioFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
     props.setFilterEnd(props.end);
   },
   handleFilterEndOnClose: (props: WinningRatioFilterProps) => () => {
@@ -295,12 +269,12 @@ const handlerCreators: HandleCreators<WinningRatioFilterProps, OwnHandler> = {
   },
 };
 
-export const WinningRatioFilter = compose<WinningRatioFilterProps, OwnOption>(
+export const WinningRatioFilter = compose<WinningRatioFilterProps, IOwnOption>(
   setDisplayName('WinningRatioFilter'),
   withLayout,
   withUser,
-  injectIntl,
-  withStyles(styles),
   withStateHandlers(createProps, stateUpdaters),
-  withHandlers(handlerCreators)
+  withHandlers(handlerCreators),
+  withStyles(styles),
+  injectIntl
 )(WinningRatioFilterView);

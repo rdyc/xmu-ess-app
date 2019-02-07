@@ -1,1 +1,1 @@
-export * from './EmployeeDialog';
+export * from './AccountEmployeeDialog';

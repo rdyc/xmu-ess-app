@@ -1,10 +1,8 @@
-import { IEmployeeListFilter } from '@account/classes/filters';
 import { IEmployee } from '@account/classes/response';
 import { WithForm, withForm } from '@layout/hoc/withForm';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { WithStyles, withStyles } from '@material-ui/core';
-import { IProjectAssignmentGetListFilter } from '@project/classes/filters/assignment';
 import { IProjectList } from '@project/classes/response';
 import styles from '@styles';
 import { ISummaryEffectivenessFilter } from '@summary/classes/filters';
@@ -13,24 +11,26 @@ import {
   compose,
   HandleCreators,
   mapper,
+  setDisplayName,
   StateHandler,
   StateHandlerMap,
   StateUpdaters,
   withHandlers,
   withStateHandlers,
 } from 'recompose';
+
 import { EffectivenessFilterView } from './EffectivenessFilterView';
 
 export type IEffectivenessFilterResult = Pick<ISummaryEffectivenessFilter, 'employeeUid' | 'projectUid'>;
 
-interface OwnOption {
+interface IOwnOption {
   className: string;
   isLoading: boolean;
   onClickSync: (event: React.MouseEvent<HTMLElement>) => void;
   onApply: (filter: IEffectivenessFilterResult) => void;
 }
 
-interface OwnHandler {
+interface IOwnHandler {
   // main filter
   handleFilterOnReset: (event: React.MouseEvent<HTMLElement>) => void;
   handleFilterOnApply: (event: React.MouseEvent<HTMLElement>) => void;
@@ -38,7 +38,7 @@ interface OwnHandler {
 
   // filter employee
   handleFilterEmployeeVisibility: (event: React.MouseEvent<HTMLElement>) => void;
-  handleFilterEmployeeOnSelected: (employee: IEmployee) => void;
+  handleFilterEmployeeOnSelected: (employee?: IEmployee) => void;
   handleFilterEmployeeOnClear: (event: React.MouseEvent<HTMLElement>) => void;
   handleFilterEmployeeOnClose: () => void;
 
@@ -49,102 +49,81 @@ interface OwnHandler {
   handleFilterProjectOnClose: () => void;
 }
 
-interface OwnState {
+interface IOwnState {
   isFilterDialogOpen: boolean;
   
   // filter employee
   isFilterEmployeeOpen: boolean;
   filterEmployee?: IEmployee;
-
-  // filter Employee Dialog
-  filterEmployeeDialog: IEmployeeListFilter;
   
   // filter project
   isFilterProjectOpen: boolean;
   filterProject?: IProjectList;
-
-  // filter Project Dialog
-  filterProjectDialog: IProjectAssignmentGetListFilter;
 }
 
-interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
+interface IOwnStateUpdaters extends StateHandlerMap<IOwnState> {
   // main filter
-  setFilterReset: StateHandler<OwnState>;
-  setFilterVisibility: StateHandler<OwnState>;
+  setFilterReset: StateHandler<IOwnState>;
+  setFilterVisibility: StateHandler<IOwnState>;
 
   // filter employee
-  setFilterEmployeeVisibility: StateHandler<OwnState>;
-  setFilterEmployee: StateHandler<OwnState>;
+  setFilterEmployeeVisibility: StateHandler<IOwnState>;
+  setFilterEmployee: StateHandler<IOwnState>;
 
   // filter project
-  setFilterProjectVisibility: StateHandler<OwnState>;
-  setFilterProject: StateHandler<OwnState>;
-
+  setFilterProjectVisibility: StateHandler<IOwnState>;
+  setFilterProject: StateHandler<IOwnState>;
 }
 
 export type EffectivenessFilterProps 
   = WithForm
-  & WithLayout
-  & InjectedIntlProps
-  & OwnOption
-  & OwnHandler
-  & OwnState
   & WithUser
-  & OwnStateUpdaters
-  & WithStyles<typeof styles>;
+  & WithLayout
+  & WithStyles<typeof styles>
+  & InjectedIntlProps
+  & IOwnOption
+  & IOwnHandler
+  & IOwnState
+  & IOwnStateUpdaters;
   
-const createProps: mapper<EffectivenessFilterProps, OwnState> = (props: EffectivenessFilterProps): OwnState => {
+const createProps: mapper<EffectivenessFilterProps, IOwnState> = (props: EffectivenessFilterProps): IOwnState => {
   return { 
     isFilterDialogOpen: false,
     isFilterEmployeeOpen: false,
-    isFilterProjectOpen: false,
-
-    // default filter employee dialog
-    filterEmployeeDialog: {
-      companyUids: props.userState.user && props.userState.user.company.uid
-    },
-
-    // default filter project dialog
-    filterProjectDialog: {
-      employeeUid: undefined
-    }
+    isFilterProjectOpen: false
   };
 };
 
-const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
+const stateUpdaters: StateUpdaters<{}, IOwnState, IOwnStateUpdaters> = {
   // main filter
-  setFilterReset: (prevState: OwnState) => () => ({
+  setFilterReset: (prevState: IOwnState) => () => ({
     filterEmployee: undefined,
     filterProject: undefined,
   }),
-  setFilterVisibility: (prevState: OwnState) => () => ({
+  setFilterVisibility: (prevState: IOwnState) => () => ({
     isFilterDialogOpen: !prevState.isFilterDialogOpen
   }),
 
   // filter employee
-  setFilterEmployeeVisibility: (prevState: OwnState) => () => ({
+  setFilterEmployeeVisibility: (prevState: IOwnState) => () => ({
     isFilterEmployeeOpen: !prevState.isFilterEmployeeOpen
   }),
-  setFilterEmployee: (prevState: OwnState) => (employee?: IEmployee) => ({
+  setFilterEmployee: (prevState: IOwnState) => (employee?: IEmployee) => ({
     isFilterEmployeeOpen: false,
-    filterEmployee: employee,
-
-    filterProjectDialog: {
-      employeeUid: employee && employee.uid
-    }
+    filterEmployee: employee
   }),
 
   // filter project
-  setFilterProjectVisibility: (prevState: OwnState) => () => ({
+  setFilterProjectVisibility: (prevState: IOwnState) => () => ({
     isFilterProjectOpen: !prevState.isFilterProjectOpen
   }),
-  setFilterProject: (prevState: OwnState) => (project?: IProjectList) => ({
+  setFilterProject: (prevState: IOwnState) => (project?: IProjectList) => ({
     isFilterProjectOpen: false,
     filterProject: project,
   }),
 };
 
-const handlerCreators: HandleCreators<EffectivenessFilterProps, OwnHandler> = {
+const handlerCreators: HandleCreators<EffectivenessFilterProps, IOwnHandler> = {
   // main filter
   handleFilterOnReset: (props: EffectivenessFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
     props.setFilterReset();
@@ -164,7 +143,7 @@ const handlerCreators: HandleCreators<EffectivenessFilterProps, OwnHandler> = {
   handleFilterEmployeeVisibility: (props: EffectivenessFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
     props.setFilterEmployeeVisibility();
   },
-  handleFilterEmployeeOnSelected: (props: EffectivenessFilterProps) => (employee: IEmployee) => {
+  handleFilterEmployeeOnSelected: (props: EffectivenessFilterProps) => (employee?: IEmployee) => {
     props.setFilterEmployee(employee);
     props.setFilterProject();
   },
@@ -191,12 +170,13 @@ const handlerCreators: HandleCreators<EffectivenessFilterProps, OwnHandler> = {
   },
 };
 
-export const EffectivenessFilter = compose<EffectivenessFilterProps, OwnOption>(
+export const EffectivenessFilter = compose<EffectivenessFilterProps, IOwnOption>(
+  setDisplayName('EffectivenessFilter'),
   withUser,
   withLayout,
   withForm,
-  injectIntl,
+  withStateHandlers(createProps, stateUpdaters), 
+  withHandlers(handlerCreators),
   withStyles(styles),
-  withStateHandlers<OwnState, OwnStateUpdaters, {}>(createProps, stateUpdaters), 
-  withHandlers<EffectivenessFilterProps, OwnHandler>(handlerCreators)
+  injectIntl
 )(EffectivenessFilterView);
