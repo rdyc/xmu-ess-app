@@ -1,7 +1,9 @@
 import { ISystemList } from '@common/classes/response';
+import { WithCommonSystem, withCommonSystem } from '@common/hoc/withCommonSystem';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { ICustomerList } from '@lookup/classes/response';
+import { WithLookupCustomer, withLookupCustomer } from '@lookup/hoc/withLookupCustomer';
 import { WithStyles, withStyles } from '@material-ui/core';
 import { IProjectAssignmentGetAllFilter } from '@project/classes/filters/assignment';
 import styles from '@styles';
@@ -9,7 +11,9 @@ import { InjectedIntlProps, injectIntl } from 'react-intl';
 import {
   compose,
   HandleCreators,
+  lifecycle,
   mapper,
+  ReactLifeCycleFunctions,
   setDisplayName,
   StateHandler,
   StateHandlerMap,
@@ -20,7 +24,7 @@ import {
 
 import { ProjectAssignmentListFilterView } from './ProjectAssignmentListFilterView';
 
-export type IProjectAssignmentListFilterResult = Pick<IProjectAssignmentGetAllFilter, 'customerUids' | 'projectTypes' | 'statusTypes' | 'projectUid'>;
+export type IProjectAssignmentListFilterResult = Pick<IProjectAssignmentGetAllFilter, 'customerUids' | 'projectTypes' | 'statusTypes'>;
 
 interface IOwnOption {
   isOpen: boolean;
@@ -89,9 +93,11 @@ export type ProjectAssignmentListFilterProps
   & IOwnState
   & IOwnStateUpdater
   & IOwnHandler
-  & WithUser
   & WithStyles<typeof styles>
   & WithLayout
+  & WithUser
+  & WithLookupCustomer
+  & WithCommonSystem
   & InjectedIntlProps;
 
 const createProps: mapper<ProjectAssignmentListFilterProps, IOwnState> = (props: ProjectAssignmentListFilterProps): IOwnState => ({
@@ -193,12 +199,57 @@ const handlerCreators: HandleCreators<ProjectAssignmentListFilterProps, IOwnHand
   }
 };
 
+const lifecycles: ReactLifeCycleFunctions<ProjectAssignmentListFilterProps, IOwnState> = {
+  componentDidMount() { 
+    // handling previous filter after leaving list page
+    if (this.props.initialProps) {
+      const { customerUids, projectTypes, statusTypes } = this.props.initialProps;
+
+      // filter customer
+      if (customerUids) {
+        const { response } = this.props.lookupCustomerState.list;
+        
+        if (response && response.data) {
+          const selected = response.data.find(item => item.uid === customerUids);
+          
+          this.props.setFilterCustomer(selected);
+        }
+      }
+
+      // filter project type
+      if (projectTypes) {
+        const { response } = this.props.commonProjectListState;
+        
+        if (response && response.data) {
+          const selected = response.data.find(item => item.type === projectTypes);
+          
+          this.props.setFilterType(selected);
+        }
+      }
+
+      // filter status type
+      if (statusTypes) {
+        const { response } = this.props.commonStatusListState;
+        
+        if (response && response.data) {
+          const selected = response.data.find(item => item.type === statusTypes);
+          
+          this.props.setFilterStatus(selected);
+        }
+      }
+    }
+  }
+};
+
 export const ProjectAssignmentListFilter = compose<ProjectAssignmentListFilterProps, IOwnOption>(
   setDisplayName('ProjectAssignmentListFilter'),
   withUser,
   withLayout,
+  withLookupCustomer,
+  withCommonSystem,
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
+  lifecycle(lifecycles),
   withStyles(styles)
 )(ProjectAssignmentListFilterView);

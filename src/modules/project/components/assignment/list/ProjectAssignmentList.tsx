@@ -77,8 +77,7 @@ const listView: React.SFC<AllProps> = props => (
           initialProps={{
             customerUids: props.customerUids,
             projectTypes: props.projectTypes,
-            statusTypes: props.statusTypes,
-            projectUid: props.projectUid
+            statusTypes: props.statusTypes
           }}
           onClose={props.handleFilterVisibility}
           onApply={props.handleFilterApplied}
@@ -88,22 +87,36 @@ const listView: React.SFC<AllProps> = props => (
   </React.Fragment>
 );
 
-const createProps: mapper<AllProps, IOwnState> = (props: AllProps): IOwnState => ({
-  shouldUpdate: false,
-  isFilterOpen: false
-});
+const createProps: mapper<AllProps, IOwnState> = (props: AllProps): IOwnState => {
+  const { request } = props.projectAssignmentState.all;
+  
+  // default state
+  const state: IOwnState = {
+    shouldUpdate: false,
+    isFilterOpen: false
+  };
+
+  // fill from previous request if any
+  if (request && request.filter) {
+    state.customerUids = request.filter.customerUids;
+    state.projectTypes = request.filter.projectTypes;
+    state.statusTypes = request.filter.statusTypes;
+  }
+
+  return state;
+};
 
 const stateUpdaters: StateUpdaters<AllProps, IOwnState, IOwnStateUpdater> = {
-  setShouldUpdate: (prevState: IOwnState) => () => ({
-    shouldUpdate: !prevState.shouldUpdate
+  setShouldUpdate: (state: IOwnState) => (): Partial<IOwnState> => ({
+    shouldUpdate: !state.shouldUpdate
   }),
-  setConfig: (prevState: IOwnState) => (config: IListConfig<IProject>) => ({
+  setConfig: (state: IOwnState) => (config: IListConfig<IProject>): Partial<IOwnState> => ({
     config
   }),
-  setFilterVisibility: (prevState: IOwnState) => () => ({
-    isFilterOpen: !prevState.isFilterOpen
+  setFilterVisibility: (state: IOwnState) => (): Partial<IOwnState> => ({
+    isFilterOpen: !state.isFilterOpen
   }),
-  setFilterApplied: (prevState: IOwnState) => (filter: IProjectAssignmentListFilterResult) => ({
+  setFilterApplied: (state: IOwnState) => (filter: IProjectAssignmentListFilterResult): Partial<IOwnState> => ({
     ...filter,
     isFilterOpen: false
   }),
@@ -152,9 +165,6 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
         return result;
       },
 
-      // action centre
-      showActionCentre: false,
-
       // toolbar controls
       toolbarControls: (callback: ListHandler) => [
         {
@@ -166,22 +176,21 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
       ],
     
       // events
-      onDataLoad: (callback: ListHandler, params: ListDataProps, forceReload?: boolean | false) => {
+      onDataLoad: (callback: ListHandler, params: ListDataProps, forceReload?: boolean, resetPage?: boolean) => {
         // when user is set and not loading
         if (user && !isLoading) {
-          // when response are empty or force reloading
-          if (!response || forceReload) {
+          // when request, response are empty and or force reloading
+          if (!request || !response || forceReload) {
             loadAllRequest({
               filter: {
                 customerUids: this.props.customerUids,
                 projectTypes: this.props.projectTypes,
                 statusTypes: this.props.statusTypes,
-                projectUid: this.props.projectUid,
                 find: params.find,
                 findBy: params.findBy,
                 orderBy: params.orderBy,
                 direction: params.direction,
-                page: params.page,
+                page: resetPage ? 1 : params.page,
                 size: params.size,
               }
             });
@@ -240,8 +249,7 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
           showBadgeWhen: () => {
             return this.props.customerUids !== undefined || 
               this.props.projectTypes !== undefined || 
-              this.props.statusTypes !== undefined || 
-              this.props.projectUid !== undefined;
+              this.props.statusTypes !== undefined;
           },
           onClick: this.props.handleFilterVisibility
         }
@@ -255,8 +263,7 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
     if (
       this.props.customerUids !== nextProps.customerUids ||
       this.props.projectTypes !== nextProps.projectTypes ||
-      this.props.statusTypes !== nextProps.statusTypes ||
-      this.props.projectUid !== nextProps.projectUid
+      this.props.statusTypes !== nextProps.statusTypes
     ) {
       this.props.setShouldUpdate();
     }
