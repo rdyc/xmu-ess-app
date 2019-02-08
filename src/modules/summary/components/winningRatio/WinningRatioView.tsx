@@ -21,7 +21,7 @@ export const WinningRatioView: React.SFC<WinningRatioProps> = props => {
     handleGoToNext,
     handleGoToPrevious,
     handleChangeSort,
-    handleDialog,
+    handleDialogDetail,
     handleDetail,
   } = props;
 
@@ -47,8 +47,8 @@ export const WinningRatioView: React.SFC<WinningRatioProps> = props => {
             <WinningRatioDetail
               uid={props.uid}
               type={props.type}
-              open={props.open}
-              handleDialog={handleDialog}
+              isDetailOpen={props.isDetailOpen}
+              handleDialogDetail={handleDialogDetail}
               data={response && response.data}
             />
             {!isLoading && response && (
@@ -63,7 +63,7 @@ export const WinningRatioView: React.SFC<WinningRatioProps> = props => {
                 handleChangeSize={handleChangeSize}
                 handleChangeSort={handleChangeSort}
                 handleDetail={handleDetail}
-                handleDialog={handleDialog}
+                handleDialogDetail={handleDialogDetail}
                 handleGoToNext={handleGoToNext}
                 handleGoToPrevious={handleGoToPrevious}
               />

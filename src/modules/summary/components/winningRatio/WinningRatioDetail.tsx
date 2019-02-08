@@ -3,9 +3,7 @@ import { withUser, WithUser } from '@layout/hoc/withUser';
 import { GlobalFormat } from '@layout/types';
 import {
   AppBar,
-  Button,
   Dialog,
-  DialogActions,
   DialogContent,
   DialogTitle,
   IconButton,
@@ -36,15 +34,15 @@ import { compose } from 'recompose';
 interface OwnProps {
   uid?: string;
   type?: string;
-  open: boolean;
+  isDetailOpen: boolean;
   data: ISummaryWinning[] | null | undefined;
-  handleDialog: () => void;
+  handleDialogDetail: () => void;
 }
 
 type AllProps = OwnProps & WithUser & WithLayout & InjectedIntlProps & WithStyles<typeof styles>;
 
 const winningRatioDetail: React.SFC<AllProps> = props => {
-  const { uid, type, open, data, handleDialog, intl, classes } = props;
+  const { uid, type, isDetailOpen, data, handleDialogDetail, intl, classes } = props;
 
   let header: any[] = [];
 
@@ -72,15 +70,16 @@ const winningRatioDetail: React.SFC<AllProps> = props => {
           item.employeeUid === uid ? (
             <Dialog
               key={index}
-              open={open}
-              onClose={handleDialog}
+              open={isDetailOpen}
+              onClose={handleDialogDetail}
               scroll="paper"
               className={props.layoutState.anchor === 'right' ? props.classes.contentShiftRight : props.classes.contentShiftLeft}
               fullScreen
+              disableBackdropClick
             >
               <AppBar className={props.classes.appBarDialog}>
                 <Toolbar>
-                  <IconButton color="inherit" onClick={handleDialog} aria-label="Close">
+                  <IconButton color="inherit" onClick={handleDialogDetail} aria-label="Close">
                     <CloseIcon />
                   </IconButton>
 
@@ -134,11 +133,6 @@ const winningRatioDetail: React.SFC<AllProps> = props => {
                   </TableBody>
                 </Table>
               </DialogContent>
-              <DialogActions>
-                <Button onClick={handleDialog} color="primary">
-                  Cancel
-                </Button>
-              </DialogActions>
             </Dialog>
           ) : null
         )}
