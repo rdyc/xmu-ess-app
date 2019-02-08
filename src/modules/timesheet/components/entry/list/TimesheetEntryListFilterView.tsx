@@ -25,7 +25,6 @@ import * as React from 'react';
 
 import { TimesheetEntryListFilterProps } from './TimesheetEntryListFilter';
 
-// import { DialogValue } from '@layout/components/dialogs/DialogValue';
 export const TimesheetEntryListFilterView: React.SFC<TimesheetEntryListFilterProps> = props => (
   <React.Fragment>
     <Dialog
@@ -123,26 +122,6 @@ export const TimesheetEntryListFilterView: React.SFC<TimesheetEntryListFilterPro
             </ListItemSecondaryAction>
           </ListItem>
           <Divider />
-
-          {/* <ListItem button onClick={props.handleFilterCompletionVisibility}>
-          <ListItemText
-            primary={props.intl.formatMessage(timesheetMessage.entry.field.completion)}
-            secondary={props.filterCompletion && props.filterCompletion.name || props.intl.formatMessage(layoutMessage.text.none)}
-          />
-          <ListItemSecondaryAction>
-            {
-              props.filterCompletion &&
-              <IconButton onClick={props.handleFilterCompletionOnClear}>
-                <ClearIcon />
-              </IconButton>
-            }
-
-            <IconButton disabled>
-              <ChevronRightIcon />
-            </IconButton>
-          </ListItemSecondaryAction>
-        </ListItem>
-        <Divider /> */}
 
           <ListItem>
             <ListItemText
