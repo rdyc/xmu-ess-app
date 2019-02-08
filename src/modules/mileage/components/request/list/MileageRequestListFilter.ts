@@ -1,4 +1,5 @@
 import { ISystemList } from '@common/classes/response';
+import { WithCommonSystem, withCommonSystem } from '@common/hoc/withCommonSystem';
 import { ICollectionValue } from '@layout/classes/core';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithStyles, withStyles } from '@material-ui/core';
@@ -9,7 +10,9 @@ import { InjectedIntlProps, injectIntl } from 'react-intl';
 import {
   compose,
   HandleCreators,
+  lifecycle,
   mapper,
+  ReactLifeCycleFunctions,
   setDisplayName,
   StateHandler,
   StateHandlerMap,
@@ -140,6 +143,7 @@ export type MileageRequestListFilterProps
   & OwnStateUpdater
   & WithStyles<typeof styles>
   & WithLayout
+  & WithCommonSystem
   & InjectedIntlProps;
 
 const createProps: mapper<MileageRequestListFilterProps, OwnState> = (props: MileageRequestListFilterProps): OwnState => ({
@@ -187,7 +191,7 @@ const stateUpdaters: StateUpdaters<MileageRequestListFilterProps, OwnState, OwnS
   setFilterStatusVisibility: (prevState: OwnState) => () => ({
     isFilterStatusOpen: !prevState.isFilterStatusOpen
   }),
-  setFilterStatus: () => (data?: ISystemList) => ({
+  setFilterStatus: (prevState: OwnState) => (data?: ISystemList) => ({
     isFilterStatusOpen: false,
     filterStatus: data
   }),
@@ -284,11 +288,46 @@ const handlerCreators: HandleCreators<MileageRequestListFilterProps, OwnHandler>
   },
 };
 
+const lifecycles: ReactLifeCycleFunctions<MileageRequestListFilterProps, OwnState> = {
+  componentDidMount() {
+    // handling previous filter after leaving list page
+    if (this.props.initialProps) {
+      const { year, month, statusType } = this.props.initialProps;
+
+      // filter year
+      if (year) {
+        const selected = yearList.find(item => item.value === year);
+
+        this.props.setFilterYear(selected);
+      }
+
+      // filter month
+      if (month) {
+        const selected = monthList.find(item => item.value === month);        
+
+        this.props.setFilterMonth(selected);
+      }
+
+      if (statusType) {
+        const { response } = this.props.commonStatusListState;
+        
+        if (response && response.data) {
+          const selected = response.data.find(item => item.type === statusType);
+          
+          this.props.setFilterStatus(selected);
+        }
+      }
+    }
+  }
+};
+
 export const MileageRequestListFilter = compose<MileageRequestListFilterProps, OwnOption>(
   setDisplayName('MileageRequestListFilter'),
   withLayout,
-  withStyles(styles),
+  withCommonSystem,
   injectIntl,
+  withStyles(styles),
   withStateHandlers(createProps, stateUpdaters),
-  withHandlers(handlerCreators)
+  withHandlers(handlerCreators),
+  lifecycle(lifecycles),
 )(MileageRequestListFilterView);

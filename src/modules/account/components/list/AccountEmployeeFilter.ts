@@ -2,13 +2,16 @@ import { IEmployeeAllFilter } from '@account/classes/filters';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { ILookupCompany, ILookupRole } from '@lookup/classes';
 import { ILookupRoleGetListFilter } from '@lookup/classes/filters/role';
+import { WithLookupCompany, withLookupCompany } from '@lookup/hoc/withLookupCompany';
 import { WithStyles, withStyles } from '@material-ui/core';
 import styles from '@styles';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import {
   compose,
   HandleCreators,
+  lifecycle,
   mapper,
+  ReactLifeCycleFunctions,
   setDisplayName,
   StateHandler,
   StateHandlerMap,
@@ -74,6 +77,7 @@ export type AccountEmployeeFilterFilterProps
   & OwnState
   & OwnHandler
   & OwnStateUpdater
+  & WithLookupCompany
   & WithStyles<typeof styles>
   & WithLayout
   & InjectedIntlProps;
@@ -154,11 +158,33 @@ const handlerCreators: HandleCreators<AccountEmployeeFilterFilterProps, OwnHandl
   },
 };
 
+const lifecycles: ReactLifeCycleFunctions<AccountEmployeeFilterFilterProps, OwnState> = { 
+  componentDidMount() {
+    // handling previous filter after leaving list page
+    if (this.props.initialProps) {
+      const { companyUids } = this.props.initialProps;
+
+      // filter company
+      if (companyUids) {
+        const { response } = this.props.lookupCompanyState.list;
+
+        if (response && response.data) {
+          const selected = response.data.find(item => item.uid === companyUids);
+
+          this.props.setFilterCompany(selected);
+        }
+      }
+    }
+  }
+};
+
 export const AccountEmployeeFilter = compose<AccountEmployeeFilterFilterProps, OwnOption>(
   setDisplayName('AccountEmployeeFilter'),
   withLayout,
+  withLookupCompany,
   withStyles(styles),
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),
-  withHandlers(handlerCreators)
+  withHandlers(handlerCreators),
+  lifecycle(lifecycles)
 )(AccountEmployeeFilterView);
