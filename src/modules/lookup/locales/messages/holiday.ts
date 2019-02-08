@@ -28,6 +28,13 @@ export const holidaySection = defineMessages({
   infoSubHeader: { id: `${prefix}.section.info.subHeader` },
 });
 
+export const holidayDialog = defineMessages({
+  modifyTitle: { id: `${prefix}.dialog.modifyTitle`},
+  modifyDescription: { id: `${prefix}.dialog.modifyDescription`},
+  createTitle: { id: `${prefix}.dialog.newTitle`},
+  createDescription: { id: `${prefix}.dialog.newDescription`},
+});
+
 // field
 export const holidayField = defineMessages({
   uid: { id: `${prefix}.field.id`},

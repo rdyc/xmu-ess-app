@@ -30,7 +30,7 @@ export const StepperView: React.SFC<StepperProps> = props => {
         onChangeIndex={props.setChange}
       >
         {props.source.map((step, index) => (
-          <div key={step.label} className={props.classes.stepper} onClick={() => props.showFull && props.handleOpenImage(step)}>
+          <div key={index} className={props.classes.stepper} onClick={() => props.showFull && props.handleOpenImage(step)}>
             {Math.abs(props.activeStep - index) <= 2 ? (
               <img 
                 className={props.classes.stepperImg} 

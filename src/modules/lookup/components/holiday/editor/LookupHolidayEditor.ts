@@ -3,14 +3,10 @@ import { FormMode } from '@generic/types';
 import { WithAppBar, withAppBar } from '@layout/hoc/withAppBar';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
-import {
-  ILookupHolidayPostPayload,
-  ILookupHolidayPutPayload,
-} from '@lookup/classes/request/';
+import { layoutMessage } from '@layout/locales/messages';
+import { ILookupHolidayPostPayload, ILookupHolidayPutPayload } from '@lookup/classes/request/';
 import { ILookupHoliday } from '@lookup/classes/response';
-import {
-  LookupHolidayFormData,
-} from '@lookup/components/holiday/editor/forms/LookupHolidayForm';
+import { LookupHolidayFormData } from '@lookup/components/holiday/editor/forms/LookupHolidayForm';
 import { WithLookupHoliday, withLookupHoliday } from '@lookup/hoc/withLookupHoliday';
 import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
@@ -30,6 +26,7 @@ import {
 import { Dispatch } from 'redux';
 import { FormErrors } from 'redux-form';
 import { isNullOrUndefined, isObject } from 'util';
+
 import { LookupHolidayEditorView } from './LookupHolidayEditorView';
 
 interface OwnHandlers {
@@ -47,6 +44,10 @@ interface OwnState {
   formMode: FormMode;
   companyUid?: string | undefined;
   holidayUid?: string | undefined;
+  submitDialogTitle: string;
+  submitDialogContentText: string;
+  submitDialogCancelText: string;
+  submitDialogConfirmedText: string;
 }
 
 interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
@@ -149,7 +150,7 @@ const handlerCreators: HandleCreators<RequestEditorProps, OwnHandlers> = {
       time: new Date()
     });
 
-    history.push(`/lookup/holidays`);
+    history.push(`/lookup/holidays/${response.uid}`);
   },
   handleSubmitFail: (props: RequestEditorProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
     const { formMode, intl } = props;
@@ -183,7 +184,11 @@ const handlerCreators: HandleCreators<RequestEditorProps, OwnHandlers> = {
 };
 
 const createProps: mapper<RequestEditorProps, OwnState> = (props: RequestEditorProps): OwnState => ({ 
-  formMode: FormMode.New
+  formMode: FormMode.New,
+  submitDialogTitle: props.intl.formatMessage(lookupMessage.holiday.dialog.createTitle),
+  submitDialogContentText: props.intl.formatMessage(lookupMessage.holiday.dialog.createDescription),
+  submitDialogCancelText: props.intl.formatMessage(layoutMessage.action.cancel),
+  submitDialogConfirmedText: props.intl.formatMessage(layoutMessage.action.ok),
 });
 
 const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {

@@ -30,7 +30,7 @@ import {
 import { ILeaveApprovalListFilterResult, LeaveApprovalListFilter } from './LeaveApprovalListFilter';
 
 interface IOwnOption {
-  
+
 }
 
 interface IOwnState extends ILeaveApprovalListFilterResult {
@@ -51,7 +51,7 @@ interface IOwnHandler {
   handleFilterApplied: (filter: ILeaveApprovalListFilterResult) => void;
 }
 
-type AllProps 
+type AllProps
   = IOwnOption
   & IOwnState
   & IOwnStateUpdater
@@ -61,26 +61,68 @@ type AllProps
   & InjectedIntlProps
   & RouteComponentProps;
 
-const createProps: mapper<AllProps, IOwnState> = (props: AllProps): IOwnState => ({
-  shouldUpdate: false,
-  isFilterOpen: false,
+const listView: React.SFC<AllProps> = props => (
+  <React.Fragment>
+    {
+      props.config &&
+      <ListPage
+        config={props.config}
+        source={props.leaveApprovalState.all}
+        loadDataWhen={props.shouldUpdate}
+      >
+        <LeaveApprovalListFilter
+          isOpen={props.isFilterOpen}
+          initialProps={{
+            leaveType: props.leaveType,
+            statusType: props.statusType,
+            status: props.status,
+            isNotify: props.isNotify,
+          }}
+          onClose={props.handleFilterVisibility}
+          onApply={props.handleFilterApplied}
+        />
+      </ListPage>
+    }
+  </React.Fragment>
+);
 
-  // fill partial props from location state to handle redirection from dashboard notif
-  status: props.location.state && props.location.state.status,
-  isNotify: props.location.state && props.location.state.isNotify 
-});
+const createProps: mapper<AllProps, IOwnState> = (props: AllProps): IOwnState => {
+  const { request } = props.leaveApprovalState.all;
+  
+  // default state
+  const state: IOwnState = {
+    shouldUpdate: false,
+    isFilterOpen: false
+  };
+
+  // When location state are present (ex: redirection from dashboard) then don't use redux state
+  if (props.location.state) {
+    state.status = props.location.state.isRejected;
+    state.isNotify = props.location.state.isNotify;
+  } else {
+    // fill from previous request if any
+    if (request && request.filter) {
+      state.leaveType = request.filter.leaveType,
+      state.statusType = request.filter.statusType,
+      state.status = request.filter.status;
+      state.isNotify = request.filter.isNotify;
+    }
+  }
+
+  return state;
+};
 
 const stateUpdaters: StateUpdaters<AllProps, IOwnState, IOwnStateUpdater> = {
-  setShouldUpdate: (prevState: IOwnState) => () => ({
-    shouldUpdate: !prevState.shouldUpdate
+  setShouldUpdate: (state: IOwnState) => (): Partial<IOwnState> => ({
+    shouldUpdate: !state.shouldUpdate
   }),
-  setConfig: (prevState: IOwnState) => (config: IListConfig<ILeave>) => ({
+  setConfig: (state: IOwnState) => (config: IListConfig<ILeave>): Partial<IOwnState> => ({
     config
   }),
-  setFilterVisibility: (prevState: IOwnState) => () => ({
-    isFilterOpen: !prevState.isFilterOpen
+  setFilterVisibility: (state: IOwnState) => (): Partial<IOwnState> => ({
+    isFilterOpen: !state.isFilterOpen
   }),
-  setFilterApplied: (prevState: IOwnState) => (filter: ILeaveApprovalListFilterResult) => ({
+  setFilterApplied: (state: IOwnState) => (filter: ILeaveApprovalListFilterResult): Partial<IOwnState> => ({
     ...filter,
     isFilterOpen: false
   }),
@@ -96,7 +138,7 @@ const handlerCreators: HandleCreators<AllProps, IOwnHandler> = {
 };
 
 const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
-  componentDidMount() { 
+  componentDidMount() {
     const { user } = this.props.userState;
     const { isLoading, request, response } = this.props.leaveApprovalState.all;
     const { loadAllRequest } = this.props.leaveApprovalDispatch;
@@ -109,36 +151,33 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
         title: this.props.intl.formatMessage(leaveMessage.approval.page.listTitle),
         description: this.props.intl.formatMessage(leaveMessage.approval.page.listSubHeader),
       },
-      
+
       // top bar
       fields: Object.keys(LeaveRequestField)
-        .map(key => ({ 
-          value: key, 
-          name: LeaveRequestField[key] 
+        .map(key => ({
+          value: key,
+          name: LeaveRequestField[key]
         })),
       // fieldTranslator: leaveRequestFieldTranslator,
-    
+
       // searching
       hasSearching: true,
       searchStatus: () => {
         let result: boolean = false;
-    
+
         if (request && request.filter && request.filter.find) {
           result = request.filter.find ? true : false;
         }
-    
+
         return result;
       },
-    
-      // action centre
-      showActionCentre: false,
-    
+
       // events
-      onDataLoad: (callback: ListHandler, params: ListDataProps, forceReload?: boolean | false) => {  
+      onDataLoad: (callback: ListHandler, params: ListDataProps, forceReload?: boolean, resetPage?: boolean) => {
         // when user is set and not loading
         if (user && !isLoading) {
-          // when response are empty or force reloading
-          if (!response || forceReload) {
+          // when request, response are empty or force reloading
+          if (!request || !response || forceReload) {
             loadAllRequest({
               filter: {
                 companyUid: user.company.uid,
@@ -151,9 +190,9 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
                 findBy: params.findBy,
                 orderBy: params.orderBy,
                 direction: params.direction,
-                page: params.page,
+                page: resetPage ? 1 : params.page,
                 size: params.size,
-                
+
               }
             });
           } else {
@@ -171,20 +210,20 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
         quinary: item.status && item.status.value || item.statusType,
         senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
       }),
-    
+
       // summary component
-      summaryComponent: (item: ILeave) => ( 
+      summaryComponent: (item: ILeave) => (
         <LeaveSummary data={item} />
       ),
-    
+
       // action component
       actionComponent: (item: ILeave, callback: ListHandler) => (
         <React.Fragment>
-          <Button 
+          <Button
             size="small"
             onClick={() => this.props.history.push(`/leave/approvals/${item.uid}`)}
           >
-            <FormattedMessage {...layoutMessage.action.details}/>
+            <FormattedMessage {...layoutMessage.action.details} />
           </Button>
         </React.Fragment>
       ),
@@ -196,9 +235,9 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
           title: this.props.intl.formatMessage(layoutMessage.tooltip.filter),
           icon: TuneIcon,
           showBadgeWhen: () => {
-            return this.props.leaveType !== undefined || 
-              this.props.statusType !== undefined || 
-              this.props.status !== undefined || 
+            return this.props.leaveType !== undefined ||
+              this.props.statusType !== undefined ||
+              this.props.status !== undefined ||
               this.props.isNotify === true;
           },
           onClick: this.props.handleFilterVisibility
@@ -220,31 +259,6 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
     }
   }
 };
-
-const listView: React.SFC<AllProps> = props => (
-  <React.Fragment>
-    {
-      props.config &&
-      <ListPage 
-        config={props.config} 
-        source={props.leaveApprovalState.all} 
-        loadDataWhen={props.shouldUpdate} 
-      >
-        <LeaveApprovalListFilter 
-          isOpen={props.isFilterOpen}
-          initialProps={{
-            leaveType: props.leaveType,
-            statusType: props.statusType,
-            status: props.status,
-            isNotify: props.isNotify,
-          }}
-          onClose={props.handleFilterVisibility}
-          onApply={props.handleFilterApplied}
-        />
-      </ListPage>
-    }
-  </React.Fragment>
-);
 
 export const LeaveApprovalList = compose<AllProps, IOwnOption>(
   setDisplayName('LeaveApprovalList'),

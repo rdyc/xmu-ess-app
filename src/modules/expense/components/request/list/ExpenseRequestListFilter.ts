@@ -10,7 +10,9 @@ import { InjectedIntlProps, injectIntl } from 'react-intl';
 import {
   compose,
   HandleCreators,
+  lifecycle,
   mapper,
+  ReactLifeCycleFunctions,
   setDisplayName,
   StateHandler,
   StateHandlerMap,
@@ -19,6 +21,8 @@ import {
   withStateHandlers,
 } from 'recompose';
 
+import { WithCommonSystem, withCommonSystem } from '@common/hoc/withCommonSystem';
+import { WithLookupCustomer, withLookupCustomer } from '@lookup/hoc/withLookupCustomer';
 import { ExpenseRequestListFilterView } from './ExpenseRequestListFilterView';
 
 const completionStatus: ICollectionValue[] = [
@@ -151,6 +155,8 @@ export type ExpenseRequestListFilterProps
   & IOwnHandler
   & WithStyles<typeof styles>
   & WithLayout
+  & WithLookupCustomer
+  & WithCommonSystem
   & InjectedIntlProps;
 
 const createProps: mapper<ExpenseRequestListFilterProps, IOwnState> = (props: ExpenseRequestListFilterProps): IOwnState => ({
@@ -349,16 +355,61 @@ const handlerCreators: HandleCreators<ExpenseRequestListFilterProps, IOwnHandler
   
   // filter rejected
   handleFilterRejectedOnChange: (props: ExpenseRequestListFilterProps) => (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
-    props.setFilterRejected(checked);
+    props.setFilterRejected(checked);   
   },
+};
+
+const lifecycles: ReactLifeCycleFunctions<ExpenseRequestListFilterProps, IOwnState> = {
+  componentDidMount() { 
+    // handling previous filter after leaving list page
+    if (this.props.initialProps) {
+      const { customerUid, expenseType, statusType } = this.props.initialProps;
+
+      // filter customer
+      if (customerUid) {
+        const { response } = this.props.lookupCustomerState.list;
+        
+        if (response && response.data) {
+          const selected = response.data.find(item => item.uid === customerUid);
+          
+          this.props.setFilterCustomer(selected);
+        }
+      }
+
+      // filter expense type
+      if (expenseType) {
+        const { response } = this.props.commonExpenseListState;
+        
+        if (response && response.data) {
+          const selected = response.data.find(item => item.type === expenseType);
+          
+          this.props.setFilterType(selected);
+        }
+      }
+
+      // filter status type
+      if (statusType) {
+        const { response } = this.props.commonStatusListState;
+        
+        if (response && response.data) {
+          const selected = response.data.find(item => item.type === statusType);
+          
+          this.props.setFilterStatus(selected);
+        }
+      }
+    }
+  }
 };
 
 export const ExpenseRequestListFilter = compose<ExpenseRequestListFilterProps, IOwnOption>(
   setDisplayName('ExpenseRequestListFilter'),
   withUser,
   withLayout,
+  withLookupCustomer,
+  withCommonSystem,
   withStyles(styles),
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),
-  withHandlers(handlerCreators)
+  withHandlers(handlerCreators),
+  lifecycle(lifecycles),
 )(ExpenseRequestListFilterView);

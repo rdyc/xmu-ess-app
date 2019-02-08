@@ -75,29 +75,47 @@ const listView: React.SFC<AllProps> = props => (
   </React.Fragment>
 );
 
-const createProps: mapper<AllProps, IOwnState> = (props: AllProps): IOwnState => ({
-  shouldUpdate: false,
-  isFilterOpen: false,
+const createProps: mapper<AllProps, IOwnState> = (props: AllProps): IOwnState => {
+  const { request } = props.timesheetApprovalState.all;
+  
+  // default state
+  const state: IOwnState = {
+    shouldUpdate: false,
+    isFilterOpen: false
+  };
 
-   // fill partial props from location state to handle redirection from dashboard notif
-   status: props.location.state && props.location.state.status,
-   isNotify: props.location.state && props.location.state.isNotify 
-});
+  // When location state are present (ex: redirection from dashboard) then don't use redux state
+  if (props.location.state) {
+    state.status = props.location.state.isRejected;
+    state.isNotify = props.location.state.isNotify;
+  } else {
+    // fill from previous request if any
+    if (request && request.filter) {
+      state.customerUid = request.filter.customerUid,
+      state.activityType = request.filter.activityType,
+      state.statusType = request.filter.statusType,
+      state.status = request.filter.status;
+      state.isNotify = request.filter.isNotify;
+    }
+  }
+
+  return state;
+};
 
 const stateUpdaters: StateUpdaters<AllProps, IOwnState, IOwnStateUpdater> = {
-  setShouldUpdate: (prevState: IOwnState) => () => ({
-    shouldUpdate: !prevState.shouldUpdate
+  setShouldUpdate: (state: IOwnState) => () => ({
+    shouldUpdate: !state.shouldUpdate
   }),
-  setConfig: (prevState: IOwnState) => (config: IListConfig<ITimesheet>) => ({
+  setConfig: (state: IOwnState) => (config: IListConfig<ITimesheet>): Partial<IOwnState> => ({
     config
   }),
-  setFilterVisibility: (prevState: IOwnState) => () => ({
-    isFilterOpen: !prevState.isFilterOpen
+  setFilterVisibility: (state: IOwnState) => (): Partial<IOwnState> => ({
+    isFilterOpen: !state.isFilterOpen
   }),
-  setFilterApplied: (prevState: IOwnState) => (filter: ITimesheetApprovalListFilterResult) => ({
+  setFilterApplied: (state: IOwnState) => (filter: ITimesheetApprovalListFilterResult): Partial<IOwnState> => ({
     ...filter,
     isFilterOpen: false
-  }),
+  })
 };
 
 const handlerCreators: HandleCreators<AllProps, IOwnHandler> = {
@@ -149,15 +167,12 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
         return result;
       },
 
-      // action centre
-      showActionCentre: false,
-
       // events
-      onDataLoad: (callback: ListHandler, params: ListDataProps, forceReload?: boolean | false) => {
+      onDataLoad: (callback: ListHandler, params: ListDataProps, forceReload?: boolean, resetPage?: boolean) => {
         // when user is set and not loading
         if (user && !isLoading) {
-          // when response are empty or force reloading
-          if (!response || forceReload) {
+          // when request, response are empty and or force reloading
+          if (!request || !response || forceReload) {
             loadAllRequest({
               filter: {
                 companyUid: this.props.companyUid,
@@ -170,7 +185,7 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
                 findBy: params.findBy,
                 orderBy: params.orderBy,
                 direction: params.direction,
-                page: params.page,
+                page: resetPage ? 1 : params.page,
                 size: params.size,
               }
             });

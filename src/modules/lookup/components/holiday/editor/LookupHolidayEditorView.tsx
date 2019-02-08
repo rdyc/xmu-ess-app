@@ -1,7 +1,7 @@
 import { FormMode } from '@generic/types';
 import { layoutMessage } from '@layout/locales/messages';
 import {
-  HolidayForm,
+  LookupHolidayForm,
   LookupHolidayFormData,
 } from '@lookup/components/holiday/editor/forms/LookupHolidayForm';
 import { RequestEditorProps } from '@lookup/components/holiday/editor/LookupHolidayEditor';
@@ -9,17 +9,30 @@ import { Typography } from '@material-ui/core';
 import * as React from 'react';
 
 export const LookupHolidayEditorView: React.SFC<RequestEditorProps> = props => {
-  const { formMode, handleValidate, handleSubmit, handleSubmitSuccess, handleSubmitFail } = props;
+  const {  
+    formMode, 
+    handleValidate, 
+    handleSubmit, 
+    handleSubmitSuccess, 
+    handleSubmitFail,
+    submitDialogTitle, 
+    submitDialogContentText, 
+    submitDialogConfirmedText, 
+    submitDialogCancelText  } = props;
   const { isLoading, response } = props.lookupHolidayState.detail;
 
   const renderForm = (formData: LookupHolidayFormData) => (
-    <HolidayForm 
+    <LookupHolidayForm 
       formMode={formMode}
       initialValues={formData}
       validate={handleValidate}
       onSubmit={handleSubmit} 
       onSubmitSuccess={handleSubmitSuccess}
       onSubmitFail={handleSubmitFail}
+      submitDialogTitle={submitDialogTitle}
+      submitDialogContentText={submitDialogContentText}
+      submitDialogCancelText={submitDialogCancelText}
+      submitDialogConfirmedText={submitDialogConfirmedText}
     />
   );
 

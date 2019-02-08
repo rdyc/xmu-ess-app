@@ -7,7 +7,9 @@ import { InjectedIntlProps, injectIntl } from 'react-intl';
 import {
   compose,
   HandleCreators,
+  lifecycle,
   mapper,
+  ReactLifeCycleFunctions,
   setDisplayName,
   StateHandler,
   StateHandlerMap,
@@ -18,6 +20,7 @@ import {
 
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { ILookupCompanyGetListFilter } from '@lookup/classes/filters/company';
+import { withLookupCompany, WithLookupCompany } from '@lookup/hoc/withLookupCompany';
 import { OrganizationHierarchyListFilterView } from './OrganizationHierarchyListFilterView';
 
 export type IOrganizationHierarchyListFilterResult = Pick<IOrganizationHierarchyAllFilter, 'companyUid' >;
@@ -65,6 +68,7 @@ export type OrganizationHierarchyListFilterProps
   & IOwnState
   & IOwnStateUpdater
   & IOwnHandler
+  & WithLookupCompany
   & WithStyles<typeof styles>
   & WithLayout
   & InjectedIntlProps;
@@ -120,12 +124,34 @@ const handlerCreators: HandleCreators<OrganizationHierarchyListFilterProps, IOwn
   },
 };
 
+const lifecycles: ReactLifeCycleFunctions<OrganizationHierarchyListFilterProps, IOwnState> = {
+  componentDidMount() { 
+    // handling previous filter after leaving list page
+    if (this.props.initialProps) {
+      const { companyUid } = this.props.initialProps;
+
+      // filter company
+      if (companyUid) {
+        const { response } = this.props.lookupCompanyState.list;
+        
+        if (response && response.data) {
+          const selected = response.data.find(item => item.uid === companyUid);
+          
+          this.props.setFilterCompany(selected);
+        }
+      }
+    }
+  }
+};
+
 export const OrganizationHierarchyListFilter = compose<OrganizationHierarchyListFilterProps, IOwnOption>(
   setDisplayName('OrganizationHierarchyListFilter'),
   withUser,
   withLayout,
+  withLookupCompany,
   withStyles(styles),
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),
-  withHandlers(handlerCreators)
+  withHandlers(handlerCreators),
+  lifecycle(lifecycles),
 )(OrganizationHierarchyListFilterView);

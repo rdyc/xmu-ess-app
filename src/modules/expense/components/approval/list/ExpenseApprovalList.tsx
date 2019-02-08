@@ -90,26 +90,44 @@ const listView: React.SFC<AllProps> = props => (
   </React.Fragment>
 );
 
-const createProps: mapper<AllProps, IOwnState> = (props: AllProps): IOwnState => ({
-  shouldUpdate: false,
-  isFilterOpen: false,
+const createProps: mapper<AllProps, IOwnState> = (props: AllProps): IOwnState => {
+  const { request } = props.expenseApprovalState.all;
 
-  // fill partial props from location state to handle redirection from dashboard notif
-  status: props.location.state && props.location.state.status,
-  isNotify: props.location.state && props.location.state.isNotify
-});
+  const state: IOwnState = {
+    shouldUpdate: false,
+    isFilterOpen: false,
+  };
+
+  if (props.location.state) {
+    state.status = props.location.state.status;
+    state.isNotify = props.location.state.isNotify;
+  } else {
+    if (request && request.filter) {
+      state.customerUid = request.filter.customerUid,
+      // state.projectUid = request.filter.projectUid,
+      state.expenseType = request.filter.expenseType,
+      state.statusType = request.filter.statusType,
+      state.start = request.filter.start,
+      state.end = request.filter.end,
+      state.status = request.filter.status,
+      state.isNotify = request.filter.isNotify;
+    }
+  }
+
+  return state;
+};
 
 const stateUpdaters: StateUpdaters<AllProps, IOwnState, IOwnStateUpdater> = {
-  setShouldUpdate: (prevState: IOwnState) => () => ({
-    shouldUpdate: !prevState.shouldUpdate
+  setShouldUpdate: (state: IOwnState) => (): Partial<IOwnState> => ({
+    shouldUpdate: !state.shouldUpdate
   }),
-  setConfig: (prevState: IOwnState) => (config: IListConfig<IExpense>) => ({
+  setConfig: (state: IOwnState) => (config: IListConfig<IExpense>): Partial<IOwnState> => ({
     config
   }),
-  setFilterVisibility: (prevState: IOwnState) => () => ({
-    isFilterOpen: !prevState.isFilterOpen
+  setFilterVisibility: (state: IOwnState) => () => ({
+    isFilterOpen: !state.isFilterOpen
   }),
-  setFilterApplied: (prevState: IOwnState) => (filter: IExpenseApprovalListFilterResult) => ({
+  setFilterApplied: (state: IOwnState) => (filter: IExpenseApprovalListFilterResult): Partial<IOwnState> => ({
     ...filter,
     isFilterOpen: false
   }),
@@ -161,7 +179,7 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
       showActionCentre: false,
     
       // events
-      onDataLoad: (callback: ListHandler, params: ListDataProps, forceReload?: boolean | false) => {
+      onDataLoad: (callback: ListHandler, params: ListDataProps, forceReload?: boolean | false, resetPage?: boolean) => {
         // when user is set and not loading
         if (user && !isLoading) {
           // when response are empty or force reloading
@@ -179,7 +197,7 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
                 isNotify: this.props.isNotify,
                 direction: params.direction,
                 orderBy: params.orderBy,
-                page: params.page,
+                page: resetPage ? 1 : params.page,
                 size: params.size,
                 find: params.find,
                 findBy: params.findBy,
