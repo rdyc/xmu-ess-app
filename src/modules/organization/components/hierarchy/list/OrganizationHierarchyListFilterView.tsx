@@ -42,7 +42,7 @@ export const OrganizationHierarchyListFilterView: React.SFC<OrganizationHierarch
           </Typography>
 
           {
-            (props.filterCustomer || props.filterType || props.filterStatus || props.filterCompletion || props.filterRejected) &&
+            props.filterCompany &&
             <Button color="inherit" onClick={props.handleFilterOnReset}>
               {props.intl.formatMessage(layoutMessage.action.reset)}
             </Button>

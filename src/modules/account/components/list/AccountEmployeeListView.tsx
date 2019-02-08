@@ -31,10 +31,6 @@ import { GlobalFormat } from '@layout/types';
 import { AccountEmployeeFilter, IAccountEmployeeFilterResult } from './AccountEmployeeFilter';
 import { AccountEmployeeSummary } from './AccountEmployeeSummary';
 
-interface OwnOption {
-
-}
-
 interface OwnState extends IAccountEmployeeFilterResult {
   shouldUpdate: boolean;
   config?: IListConfig<IEmployee>;
@@ -55,7 +51,6 @@ interface OwnHandler {
 
 type AllProps
   = OwnState
-  & OwnOption
   & OwnHandler
   & OwnStateUpdater
   & WithUser
@@ -86,23 +81,34 @@ const listView: React.SFC<AllProps> = props => (
 </React.Fragment>
 );
 
-const createProps: mapper<AllProps, OwnState> = (): OwnState => ({
-  shouldUpdate: false,
-  isFilterOpen: false,
-});
+const createProps: mapper<AllProps, OwnState> = (props: AllProps): OwnState => {
+  const { request } = props.accountEmployeeState.all;
+
+  const state: OwnState = {
+    shouldUpdate: false,
+    isFilterOpen: false
+  };
+
+  // fill from previous request if any
+  if (request && request.filter) {
+    state.companyUids = request.filter.companyUids;
+  }
+
+  return state;
+};
 
 const stateUpdaters: StateUpdaters<AllProps, OwnState, OwnStateUpdater> = {
-  setShouldUpdate: (prevState: OwnState) => () => ({
+  setShouldUpdate: (prevState: OwnState) => (): Partial<OwnState> => ({
     shouldUpdate: !prevState.shouldUpdate
   }),
   
-  setConfig: () => (config: IListConfig<IEmployee>) => ({
+  setConfig: () => (config: IListConfig<IEmployee>): Partial<OwnState> => ({
     config
   }),
-  setFilterVisibility: (prevState: OwnState) => () => ({
+  setFilterVisibility: (prevState: OwnState) => (): Partial<OwnState> => ({
     isFilterOpen: !prevState.isFilterOpen
   }),
-  setFilterApplied: () => (filter: IAccountEmployeeFilterResult) => ({
+  setFilterApplied: () => (filter: IAccountEmployeeFilterResult): Partial<OwnState> => ({
     ...filter,
     isFilterOpen: false
   })
@@ -164,10 +170,11 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, OwnState> = {
       ],
 
       // events
-      onDataLoad: (callback: ListHandler, params: ListDataProps, forceReload?: boolean | false) => {
+      onDataLoad: (callback: ListHandler, params: ListDataProps, forceReload?: boolean, resetPage?: boolean) => {
         // when user is set and not loading
         if (user && !isLoading) {
-          if (!response || forceReload) {
+          // when request, response are empty and or force reloading
+          if (!request || !response || forceReload) {
             loadAllRequest({
               filter: {
                 companyUids: this.props.companyUids,
@@ -175,7 +182,7 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, OwnState> = {
                 positionUids: undefined,
                 direction: params.direction,
                 orderBy: params.orderBy,
-                page: params.page,
+                page: resetPage ? 1 : params.page,
                 size: params.size,
                 find: params.find,
                 findBy: params.findBy,
