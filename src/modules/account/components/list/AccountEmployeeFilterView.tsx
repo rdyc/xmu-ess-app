@@ -42,7 +42,7 @@ export const AccountEmployeeFilterView: React.SFC<AccountEmployeeFilterFilterPro
           </Typography>
 
           {
-            (props.filterCompany || props.filterRole) &&
+            (props.filterCompany) &&
             <Button color="inherit" onClick={props.handleFilterOnReset}>
               {props.intl.formatMessage(layoutMessage.action.reset)}
             </Button>
