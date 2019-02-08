@@ -72,22 +72,35 @@ const listView: React.SFC<AllProps> = props => (
   </React.Fragment>
 );
 
-const createProps: mapper<AllProps, IOwnState> = (props: AllProps): IOwnState => ({
-  shouldUpdate: false,
-  isFilterOpen: false
-});
+const createProps: mapper<AllProps, IOwnState> = (props: AllProps): IOwnState => {
+  const { request } = props.lookupDiemState.all;
+
+  // default state
+  const state: IOwnState = {
+    shouldUpdate: false,
+    isFilterOpen: false
+  };
+
+  // fill from previous request if any
+  if (request && request.filter) {
+    state.projectType = request.filter.projectType,
+    state.destinationType = request.filter.destinationType;
+  }
+
+  return state;
+};
 
 const stateUpdaters: StateUpdaters<AllProps, IOwnState, IOwnStateUpdater> = {
-  setShouldUpdate: (prevState: IOwnState) => () => ({
-    shouldUpdate: !prevState.shouldUpdate
+  setShouldUpdate: (state: IOwnState) => (): Partial<IOwnState> => ({
+    shouldUpdate: !state.shouldUpdate
   }),
-  setConfig: (prevState: IOwnState) => (config: IListConfig<IDiem>) => ({
+  setConfig: (state: IOwnState) => (config: IListConfig<IDiem>): Partial<IOwnState> => ({
     config
   }),
-  setFilterVisibility: (prevState: IOwnState) => () => ({
-    isFilterOpen: !prevState.isFilterOpen
+  setFilterVisibility: (state: IOwnState) => (): Partial<IOwnState> => ({
+    isFilterOpen: !state.isFilterOpen
   }),
-  setFilterApplied: (prevState: IOwnState) => (filter: ILookupDiemListFilterResult) => ({
+  setFilterApplied: (state: IOwnState) => (filter: ILookupDiemListFilterResult): Partial<IOwnState> => ({
     ...filter,
     isFilterOpen: false
   }),
@@ -103,7 +116,7 @@ const handlerCreators: HandleCreators<AllProps, IOwnHandler> = {
 };
 
 const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
-  componentDidMount() { 
+  componentDidMount() {
     const { user } = this.props.userState;
     const { isLoading, request, response } = this.props.lookupDiemState.all;
     const { loadAllRequest } = this.props.lookupDiemDispatch;
@@ -116,23 +129,23 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
         title: this.props.intl.formatMessage(lookupMessage.lookupDiem.page.listTitle),
         description: this.props.intl.formatMessage(lookupMessage.lookupDiem.page.listSubHeader)
       },
-      
+
       // top bar
       fields: Object.keys(LookupDiemField)
-        .map(key => ({ 
-          value: key, 
-          name: LookupDiemField[key] 
+        .map(key => ({
+          value: key,
+          name: LookupDiemField[key]
         })),
-    
+
       // searching
       hasSearching: true,
       searchStatus: (): boolean => {
         let result: boolean = false;
-    
+
         if (request && request.filter && request.filter.find) {
           result = request.filter.find ? true : false;
         }
-    
+
         return result;
       },
 
@@ -143,18 +156,18 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
       toolbarControls: (callback: ListHandler) => [
         {
           icon: AddCircleIcon,
-          onClick: () => { 
-            this.props.history.push('/lookup/diemValue/form'); 
+          onClick: () => {
+            this.props.history.push('/lookup/diemValue/form');
           }
         }
       ],
-    
+
       // events
-      onDataLoad: (callback: ListHandler, params: ListDataProps, forceReload?: boolean | false) => {
+      onDataLoad: (callback: ListHandler, params: ListDataProps, forceReload?: boolean, resetPage?: boolean) => {
         // when user is set and not loading
         if (user && !isLoading) {
           // when response are empty or force reloading
-          if (!response || forceReload) {
+          if (!request || !response || forceReload) {
             loadAllRequest({
               filter: {
                 projectType: this.props.projectType,
@@ -163,7 +176,7 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
                 findBy: params.findBy,
                 orderBy: params.orderBy,
                 direction: params.direction,
-                page: params.page,
+                page: resetPage ? 1 : params.page,
                 size: params.size,
               }
             });
@@ -175,16 +188,16 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
       },
       onBind: (item: IDiem, index: number) => ({
         key: index,
-    primary: item.company && item.company.name || item.companyUid ,
-    secondary: item.project && item.project.value || item.projectType,
-    tertiary: item.destination && item.destination.value || item.destinationType,
-    quaternary: this.props.intl.formatNumber(item.value),
-    quinary: item.changes && item.changes.updated && item.changes.updated.fullName || item.changes && item.changes.created && item.changes.created.fullName || 'N/A',
-    senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
+        primary: item.company && item.company.name || item.companyUid,
+        secondary: item.project && item.project.value || item.projectType,
+        tertiary: item.destination && item.destination.value || item.destinationType,
+        quaternary: this.props.intl.formatNumber(item.value),
+        quinary: item.changes && item.changes.updated && item.changes.updated.fullName || item.changes && item.changes.created && item.changes.created.fullName || 'N/A',
+        senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
       }),
 
       // summary component
-      summaryComponent: (item: IDiem) => ( 
+      summaryComponent: (item: IDiem) => (
         <LookupDiemSummary data={item} />
       ),
 
@@ -194,17 +207,17 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
           {
             <Button
               size="small"
-              onClick={() => this.props.history.push(`/lookup/diemvalue/form`, {uid: item.uid, company: item.companyUid })}
+              onClick={() => this.props.history.push(`/lookup/diemvalue/form`, { uid: item.uid, company: item.companyUid })}
             >
-              <FormattedMessage {...layoutMessage.action.modify}/>
+              <FormattedMessage {...layoutMessage.action.modify} />
             </Button>
           }
 
-          <Button 
+          <Button
             size="small"
             onClick={() => this.props.history.push(`/lookup/diemvalue/${item.uid}`, { company: item.companyUid })}
           >
-            <FormattedMessage {...layoutMessage.action.details}/>
+            <FormattedMessage {...layoutMessage.action.details} />
           </Button>
         </React.Fragment>
       ),
@@ -216,7 +229,7 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
           title: this.props.intl.formatMessage(layoutMessage.tooltip.filter),
           icon: TuneIcon,
           showBadgeWhen: () => {
-            return this.props.projectType !== undefined || 
+            return this.props.projectType !== undefined ||
               this.props.destinationType !== undefined;
           },
           onClick: this.props.handleFilterVisibility
@@ -230,7 +243,7 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
     // track any changes in filter props
     if (
       this.props.projectType !== nextProps.projectType ||
-      this.props.destinationType !== nextProps.destinationType 
+      this.props.destinationType !== nextProps.destinationType
     ) {
       this.props.setShouldUpdate();
     }
