@@ -76,6 +76,7 @@ const config: SingleConfig<IWorkflowList[], OrganizationWorkflowDetailProps> = {
 
     if (response && response.data) {
       callback.handleResponse(response);
+      callback.handleForceReload();
     }
   },
 
