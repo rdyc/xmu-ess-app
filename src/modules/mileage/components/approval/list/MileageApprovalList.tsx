@@ -30,10 +30,6 @@ import { withMileageApproval, WithMileageApproval } from '@mileage/hoc/withMilea
 import { mileageMessage } from '@mileage/locales/messages/mileageMessage';
 import { IMileageApprovalListFilterResult, MileageApprovalListFilter } from './MileageApprovalListFilter';
 
-interface OwnOption {
-  
-}
-
 interface OwnState extends IMileageApprovalListFilterResult {
   shouldUpdate: boolean;
   config?: IListConfig<IMileageRequest>;
@@ -54,7 +50,6 @@ interface OwnHandler {
 
 type AllProps
   = OwnState
-  & OwnOption
   & OwnHandler
   & OwnStateUpdater
   & WithUser
