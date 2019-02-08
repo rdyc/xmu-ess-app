@@ -1,4 +1,5 @@
 import { ISystemList } from '@common/classes/response';
+import { WithCommonSystem, withCommonSystem } from '@common/hoc/withCommonSystem';
 import { ICollectionValue } from '@layout/classes/core';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithStyles, withStyles } from '@material-ui/core';
@@ -9,7 +10,9 @@ import { InjectedIntlProps, injectIntl } from 'react-intl';
 import {
   compose,
   HandleCreators,
+  lifecycle,
   mapper,
+  ReactLifeCycleFunctions,
   setDisplayName,
   StateHandler,
   StateHandlerMap,
@@ -156,6 +159,7 @@ export type MileageApprovalListFilterProps
   & OwnStateUpdater
   & WithStyles<typeof styles>
   & WithLayout
+  & WithCommonSystem
   & InjectedIntlProps;
 
 const createProps: mapper<MileageApprovalListFilterProps, OwnState> = (props: MileageApprovalListFilterProps): OwnState => ({
@@ -196,7 +200,7 @@ const stateUpdaters: StateUpdaters<MileageApprovalListFilterProps, OwnState, Own
   setFilterMonthVisibility: (prevState: OwnState) => () => ({
     isFilterMonthOpen: !prevState.isFilterMonthOpen
   }),
-  setFilterMonth: () => (data?: ICollectionValue) => ({
+  setFilterMonth: (prevState: OwnState) => (data?: ICollectionValue) => ({
     isFilterMonthOpen: false,
     filterMonth: data
   }),
@@ -205,7 +209,7 @@ const stateUpdaters: StateUpdaters<MileageApprovalListFilterProps, OwnState, Own
   setFilterYearVisibility: (prevState: OwnState) => () => ({
     isFilterYearOpen: !prevState.isFilterYearOpen
   }),
-  setFilterYear: () => (data?: ICollectionValue) => ({
+  setFilterYear: (prevState: OwnState) => (data?: ICollectionValue) => ({
     isFilterYearOpen: false,
     filterYear: data
   }),
@@ -214,7 +218,7 @@ const stateUpdaters: StateUpdaters<MileageApprovalListFilterProps, OwnState, Own
   setFilterStatusVisibility: (prevState: OwnState) => () => ({
     isFilterStatusOpen: !prevState.isFilterStatusOpen
   }),
-  setFilterStatus: () => (data?: ISystemList) => ({
+  setFilterStatus: (prevState: OwnState) => (data?: ISystemList) => ({
     isFilterStatusOpen: false,
     filterStatus: data
   }),
@@ -326,11 +330,54 @@ const handlerCreators: HandleCreators<MileageApprovalListFilterProps, OwnHandler
   }
 };
 
+const lifecycles: ReactLifeCycleFunctions<MileageApprovalListFilterProps, OwnState> = {
+  componentDidMount() {
+    // handling previous filter after leaving list page
+    if (this.props.initialProps) {
+      const { year, month, statusType, status } = this.props.initialProps;
+
+      // filter year
+      if (year) {
+        const selected = yearList.find(item => item.value === year);
+        
+        this.props.setFilterYear(selected);
+      }
+
+      // filter month
+      if (month) {
+        const selected = monthList.find(item => item.value === month);
+
+        this.props.setFilterMonth(selected);
+      }
+
+      // filter status
+      if (statusType) {
+        const { response } = this.props.commonStatusListState;
+        
+        if (response && response.data) {
+          const selected = response.data.find(item => item.type === statusType);
+          
+          this.props.setFilterStatus(selected);
+        }
+      }
+
+      // filter completion
+      if (status) {
+        const selected = completionStatus.find(item => item.value === status);
+
+        this.props.setFilterCompletion(selected);
+      }
+    }
+  }
+};
+
 export const MileageApprovalListFilter = compose<MileageApprovalListFilterProps, OwnOption>(
   setDisplayName('MileageApprovalListFilter'),
   withLayout,
-  withStyles(styles),
+  withCommonSystem,
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),
-  withHandlers(handlerCreators)
-)(MileageApprovalListFilterView);
+  withHandlers(handlerCreators),
+  lifecycle(lifecycles),
+  withStyles(styles),
+  )(MileageApprovalListFilterView);
