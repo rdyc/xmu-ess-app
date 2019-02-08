@@ -42,6 +42,7 @@ const handlerCreators: HandleCreators<PositionDetailFormProps, OwnHandlers> = {
 
       case 'companyUid':
         fieldProps = {
+          required: true,
           label: props.intl.formatMessage(lookupMessage.position.fieldFor(name, 'fieldName')),
           component: SelectLookupCompany,
           disabled: (props.formMode === FormMode.Edit)

@@ -245,7 +245,7 @@ export const AccountEmployeeTrainingView: React.SFC<
     <React.Fragment>
       <DetailPage
         // tab={5}
-        tab2={AccountEmployeeTabs.training}
+        tab={AccountEmployeeTabs.training}
       >
         {renderAction}
         <SinglePage

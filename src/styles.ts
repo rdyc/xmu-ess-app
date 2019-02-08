@@ -136,6 +136,17 @@ const styles = (theme: Theme) =>
       }
     },
 
+    /* PRELOADER */
+    preloader: {
+      display: 'flex',
+      alignItems: 'center',
+      height: 160
+    },
+    preloaderContent: {
+      margin: 'auto',
+      display: 'grid'
+    },
+
     /* ACCESS */
     accessContainer: {
       backgroundColor: '#333',

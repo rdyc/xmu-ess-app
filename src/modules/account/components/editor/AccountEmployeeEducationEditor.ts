@@ -148,7 +148,7 @@ const handlerCreators: HandleCreators<AccountEmployeeEducationEditorProps, OwnHa
     return null;
   },
   handleSubmitSuccess: (props: AccountEmployeeEducationEditorProps) => (response: IEmployeeEducation) => {
-    const { formMode, intl, history, editAction, handleDialogClose } = props;
+    const { formMode, intl, editAction, handleDialogClose } = props;
     const { alertAdd } = props.layoutDispatch;
     const { loadAllRequest } = props.accountEmployeeEducationDispatch; 
     let message: string = '';
@@ -159,9 +159,9 @@ const handlerCreators: HandleCreators<AccountEmployeeEducationEditorProps, OwnHa
 
     if (formMode === FormMode.Edit) {
       if (editAction && editAction === 'update') {
-        message = intl.formatMessage(accountMessage.shared.message.updateSuccess, { state: 'Employee Education', uid: response.uid });
+        message = intl.formatMessage(accountMessage.shared.message.updateSuccess, { state: 'Employee Education'});
       } else {
-        message = intl.formatMessage(accountMessage.shared.message.deleteSuccess, { state: 'Employee Education', uid: response.uid });
+        message = intl.formatMessage(accountMessage.shared.message.deleteSuccess, { state: 'Employee Education'});
       }
     }
 
@@ -178,8 +178,6 @@ const handlerCreators: HandleCreators<AccountEmployeeEducationEditorProps, OwnHa
         direction: 'ascending'
       }
     });
-    
-    history.push(`/account/employee/${props.employeeUid}/education`);
   },
   handleSubmitFail: (props: AccountEmployeeEducationEditorProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
     const { formMode, intl } = props;
@@ -189,8 +187,9 @@ const handlerCreators: HandleCreators<AccountEmployeeEducationEditorProps, OwnHa
       // validation errors from server (400: Bad Request)
       alertAdd({
         time: new Date(),
-        message: isObject(submitError) ? submitError.message : submitError
+        message: isObject(submitError) ? submitError.message : (!isNullOrUndefined(submitError) ? submitError : intl.formatMessage(accountMessage.shared.message.createFailure))
       });
+      console.log(submitError);
     } else {
       // another errors from server
       let message: string = '';

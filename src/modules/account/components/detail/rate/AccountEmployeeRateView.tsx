@@ -244,7 +244,7 @@ export const AccountEmployeeRateView: React.SFC<
   return (
     <React.Fragment>
       <DetailPage
-        tab2={AccountEmployeeTabs.rate}
+        tab={AccountEmployeeTabs.rate}
       >
         {renderAction}
         <SinglePage

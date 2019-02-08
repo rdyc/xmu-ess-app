@@ -1,11 +1,11 @@
-import { IEmployeeAccess } from '@account/classes/response/employeeAccess';
-import { AccountEmployeeAccessHeaderTable as AccountEmployeeAccessHeaderTable } from '@account/classes/types';
+
+import { IEmployeeNote } from '@account/classes/response/employeeNote';
+import { AccountEmployeeNoteHeaderTable } from '@account/classes/types';
 import { AccountEmployeeTabs } from '@account/classes/types/AccountEmployeeTabs';
-import AccountEmployeeAccessEditor from '@account/components/editor/AccountEmployeeAccessEditor';
+import AccountEmployeeNoteEditor from '@account/components/editor/AccountEmployeeNoteEditor';
 import { accountMessage } from '@account/locales/messages/accountMessage';
 import AppMenu from '@constants/AppMenu';
 import { IBaseMetadata } from '@generic/interfaces';
-import { FormMode } from '@generic/types';
 import { SingleConfig, SingleHandler, SinglePage } from '@layout/components/pages';
 import { layoutMessage } from '@layout/locales/messages';
 import { GlobalFormat } from '@layout/types';
@@ -17,7 +17,7 @@ import {
   Paper,
   Table,
   TableBody,
-  TableCell, 
+  TableCell,
   TableFooter,
   TableHead,
   TablePagination,
@@ -38,11 +38,11 @@ import SyncIcon from '@material-ui/icons/Sync';
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { DetailPage } from '../DetailPage';
-import { AccountEmployeeAccessProps } from './AccountEmployeeAccess';
+import { AccountEmployeeNoteProps } from './AccountEmployeeNote';
 
-const config: SingleConfig<IEmployeeAccess, AccountEmployeeAccessProps> = {
+const config: SingleConfig<IEmployeeNote, AccountEmployeeNoteProps> = {
   // page info
-  page: (props: AccountEmployeeAccessProps) => ({
+  page: (props: AccountEmployeeNoteProps) => ({
     uid: AppMenu.Account,
     parentUid: AppMenu.Lookup,
     title: props.intl.formatMessage(accountMessage.shared.page.detailTitle, { state: 'Employee'}),
@@ -59,16 +59,16 @@ const config: SingleConfig<IEmployeeAccess, AccountEmployeeAccessProps> = {
   hasMore: false,
 
   // events
-  onDataLoad: (props: AccountEmployeeAccessProps, callback: SingleHandler, forceReload?: boolean | false) => {
+  onDataLoad: (props: AccountEmployeeNoteProps, callback: SingleHandler, forceReload?: boolean | false) => {
     const { page, size } = props;
     const { user } = props.userState;
-    const { isLoading, request, response } = props.accountEmployeeAccessState.all;
-    const { loadAllRequest } = props.accountEmployeeAccessDispatch;
+    const { isLoading, request, response } = props.accountEmployeeNoteState.all;
+    const { loadAllRequest } = props.accountEmployeeNoteDispatch;
 
-    // when user is set and not loading and has projectUid in route params
+    // when user is set and not loading and has employeeUid in route params
     if (user && !isLoading && props.match.params.employeeUid) {
-      // when projectUid was changed or response are empty or force to reload
-      if ((request && request.employeeUid !== props.match.params.employeeUid) || !response || forceReload) {
+      // when employeeUid was changed or response are empty or force to reload
+      if ((request && request.employeeUid !== props.match.params.employeeUid) || !response || forceReload ) {
         loadAllRequest({
           employeeUid: props.match.params.employeeUid,
           filter: {
@@ -83,21 +83,24 @@ const config: SingleConfig<IEmployeeAccess, AccountEmployeeAccessProps> = {
       }
     }
   },
-  onUpdated: (states: AccountEmployeeAccessProps, callback: SingleHandler) => {
-    const { response } = states.accountEmployeeAccessState.all;
+  onUpdated: (states: AccountEmployeeNoteProps, callback: SingleHandler) => {
+    const { response } = states.accountEmployeeNoteState.all;
     
     callback.handleResponse(response);
   },
 };
 
-export const AccountEmployeeAccessView: React.SFC<AccountEmployeeAccessProps> = props => {
-  const { page, size, classes, intl } = props;
-  const { handleReload, handleGoToNext, handleGoToPrevious, handleChangePage, handleChangeSize } = props;
-  const { response, isLoading } = props.accountEmployeeAccessState.all;
-  
-  const header = Object.keys(AccountEmployeeAccessHeaderTable).map(key => ({
+export const AccountEmployeeNoteView: React.SFC<
+  AccountEmployeeNoteProps
+> = props => {
+  const { isOpenDialog, isOpenMenu, noteItemIndex, editAction, initialValues, page, size, classes } = props;
+  const { handleDialogClose, handleEdit, handleMenuClose, handleMenuOpen, handleReload, handleGoToNext, handleGoToPrevious, handleChangePage, handleChangeSize } = props;
+
+  const { response, isLoading } = props.accountEmployeeNoteState.all;
+
+  const header = Object.keys(AccountEmployeeNoteHeaderTable).map(key => ({
     id: key,
-    name: AccountEmployeeAccessHeaderTable[key]
+    name: AccountEmployeeNoteHeaderTable[key]
   }));
 
   const handlePage = (_page: any) => {
@@ -137,24 +140,22 @@ export const AccountEmployeeAccessView: React.SFC<AccountEmployeeAccessProps> = 
     </div>
   );
 
-  const renderMultiAccess = (data: IEmployeeAccess[], metadata: IBaseMetadata) => {
+  const renderNote = (data: IEmployeeNote[], metadata: IBaseMetadata) => {
     return (
       <Fade in={!isLoading} timeout={1000} mountOnEnter unmountOnExit>
         <Paper square className={classes.rootTable}>
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell>{props.intl.formatMessage(accountMessage.shared.field.no)}</TableCell>
                 {header.map(headerIdx => (
                   <TableCell
                     key={headerIdx.id}
                     numeric={headerIdx.id === 'No' ? true : false}
                     padding="default"
                   >
-                    {intl.formatMessage(accountMessage.access.fieldFor(headerIdx.name, 'fieldName'))}
+                    {headerIdx.name}
                   </TableCell>
                 ))}
-                <TableCell>{props.intl.formatMessage(accountMessage.shared.field.action)}</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -162,36 +163,15 @@ export const AccountEmployeeAccessView: React.SFC<AccountEmployeeAccessProps> = 
                 data.map((item, index) => (
                   <TableRow key={index}>
                     <TableCell>{index + 1}</TableCell>
-                    <TableCell>
-                      {item.company && item.company.name || 'N/A'}
-                    </TableCell>
-                    <TableCell>
-                      {item.unit && item.unit.value || 'N/A'}
-                    </TableCell>
-                    <TableCell>
-                      {item.department && item.department.value || 'N/A'}
-                    </TableCell>
-                    <TableCell>
-                      {item.level && item.level.value || 'N/A'}
-                    </TableCell>
-                    <TableCell>
-                      {item.role && item.role.name || 'N/A'}
-                    </TableCell>
-                    <TableCell>
-                      {item.position && item.position.name || 'N/A'}
-                    </TableCell>
-                    <TableCell>
-                      {item.start && intl.formatDate(item.start, GlobalFormat.Date) || 'N/A'}
-                    </TableCell>
-                    <TableCell>
-                      {item.end && intl.formatDate(item.end, GlobalFormat.Date) || 'N/A'}
-                    </TableCell>
+                    <TableCell>{item.text}</TableCell>
+                    <TableCell>{item.changes ? props.intl.formatDate(item.changes.createdAt, GlobalFormat.Date) : 'N/A'}</TableCell>
+                    <TableCell>{item.changes && item.changes.updatedAt ? props.intl.formatDate(item.changes.updatedAt, GlobalFormat.Date) : 'N/A'}</TableCell>
                     <TableCell>
                       <IconButton
-                        id={`access-item-button-${index}`}
+                        id={`note-item-button-${index}`}
                         color="inherit"
                         aria-label="More"
-                        onClick={() => props.handleMenuOpen(item, index)}
+                        onClick={() => handleMenuOpen(item, index)}
                       >
                         <MoreVertIcon />
                       </IconButton>
@@ -199,17 +179,17 @@ export const AccountEmployeeAccessView: React.SFC<AccountEmployeeAccessProps> = 
                   </TableRow>
                 ))}
                 <Menu
-                  anchorEl={document.getElementById(`access-item-button-${props.accessIndex}`)} 
-                  open={props.isOpenMenu}
-                  onClose={props.handleMenuClose}
+                  anchorEl={document.getElementById(`note-item-button-${noteItemIndex}`)}
+                  open={isOpenMenu}
+                  onClose={handleMenuClose}
                 >
-                  <MenuItem onClick={() => props.handleEdit(FormMode.Edit)}>
-                    {props.intl.formatMessage(accountMessage.access.dialog.modifyTitle)}
+                  <MenuItem onClick={() => handleEdit('update')}>
+                    {props.intl.formatMessage(accountMessage.shared.option.modify)}
                   </MenuItem>
-                  <MenuItem onClick={() => props.handleEdit(FormMode.Delete)}>
-                    {props.intl.formatMessage(accountMessage.access.dialog.deleteTitle)}
-                  </MenuItem>
-              </Menu>
+                  <MenuItem onClick={() => handleEdit('delete')}>
+                    {props.intl.formatMessage(accountMessage.shared.option.remove)}
+                  </MenuItem> 
+                </Menu>
             </TableBody>
             <TableFooter>
               <TableRow>
@@ -275,7 +255,7 @@ export const AccountEmployeeAccessView: React.SFC<AccountEmployeeAccessProps> = 
   return (
     <React.Fragment>
       <DetailPage
-        tab={AccountEmployeeTabs.access}        
+        tab={AccountEmployeeTabs.note}        
       >
         {renderAction}
         <SinglePage
@@ -286,19 +266,19 @@ export const AccountEmployeeAccessView: React.SFC<AccountEmployeeAccessProps> = 
             ( !isLoading && response && response.data && response.data.length === 0)) && (
             <Typography variant="body2">No Data</Typography>
           )}
-          { !isLoading && response && response.data && response.data.length >= 1 && renderMultiAccess(response.data, response.metadata)}
+          { !isLoading && response && response.data && response.data.length >= 1 && renderNote(response.data, response.metadata)}
         </SinglePage>
       </DetailPage>
-
-      <AccountEmployeeAccessEditor
+      
+      <AccountEmployeeNoteEditor
         formMode={props.formMode}
+        noteId={props.noteId}
         employeeUid={props.match.params.employeeUid}
-        accessUid={props.accessUid}
-        isOpenDialog={props.isOpenDialog}
-        handleDialogClose={props.handleDialogClose}
-        initialValues={props.initialValues}
+        isOpenDialog={isOpenDialog}
+        editAction={editAction}
+        initialValues={initialValues}
+        handleDialogClose={handleDialogClose}
       />
-
     </React.Fragment>
   );
 };

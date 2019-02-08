@@ -156,11 +156,11 @@ const handlerCreators: HandleCreators<AccountEmployeeAccessEditorProps, OwnHandl
     let message: string = '';
 
     if (formMode === FormMode.New) {
-      message = intl.formatMessage(accountMessage.shared.message.createSuccess, { state: 'Multi Company Access', uid: response.uid });
+      message = intl.formatMessage(accountMessage.shared.message.createSuccess, { state: 'Multi Company Access' });
     }
 
     if (formMode === FormMode.Edit) {
-      message = intl.formatMessage(accountMessage.shared.message.updateSuccess, { state: 'Multi Company Access', uid: response.uid });
+      message = intl.formatMessage(accountMessage.shared.message.updateSuccess, { state: 'Multi Company Access' });
     }
 
     if (formMode === FormMode.Delete) {
@@ -180,8 +180,6 @@ const handlerCreators: HandleCreators<AccountEmployeeAccessEditorProps, OwnHandl
         direction: 'ascending'
       }
     });
-    
-    // history.push(`/account/employee/${employeeUid}/access`);
   },
   handleSubmitFail: (props: AccountEmployeeAccessEditorProps) => (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => {
     const { formMode, intl } = props;

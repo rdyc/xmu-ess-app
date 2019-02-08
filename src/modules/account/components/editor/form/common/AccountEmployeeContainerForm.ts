@@ -43,9 +43,6 @@ export type AccountEmployeeFormData = {
     emergencyContactRelation: string | null | undefined;
     emergencyContactPhone: string | null | undefined;
     emergencyContactPhoneAdditional: string | null | undefined;
-  },
-  image: {
-    image: FileList | null | undefined;
   }
 };
 

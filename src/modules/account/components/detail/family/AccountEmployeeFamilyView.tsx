@@ -260,7 +260,7 @@ export const AccountEmployeeFamilyView: React.SFC<
   return (
     <React.Fragment>
       <DetailPage
-        tab2={AccountEmployeeTabs.family}
+        tab={AccountEmployeeTabs.family}
       >
         {renderAction}
         <SinglePage

@@ -1,5 +1,4 @@
 import { LookupSystemDialog } from '@common/components/dialog/lookupSystemDialog/LookupSystemDialog';
-import { ModuleDefinition } from '@layout/helper/redirector';
 import { layoutMessage } from '@layout/locales/messages';
 import { LookupCustomerDialog } from '@lookup/components/customer/dialog';
 import {
@@ -43,7 +42,7 @@ export const ProjectAcceptanceListFilterView: React.SFC<ProjectAcceptanceListFil
           </Typography>
 
           {
-            (props.filterCustomer || props.filterType || props.filterStatus || props.filterCompletion || props.filterRejected) &&
+            (props.filterCustomer || props.filterType || props.filterStatus) &&
             <Button color="inherit" onClick={props.handleFilterOnReset}>
               {props.intl.formatMessage(layoutMessage.action.reset)}
             </Button>
@@ -99,7 +98,7 @@ export const ProjectAcceptanceListFilterView: React.SFC<ProjectAcceptanceListFil
         </ListItem>
         <Divider />
 
-        <ListItem button onClick={props.handleFilterStatusVisibility}>
+        {/* <ListItem button onClick={props.handleFilterStatusVisibility}>
           <ListItemText 
             primary={props.intl.formatMessage(projectMessage.registration.field.statusType)}
             secondary={props.filterStatus && props.filterStatus.name || props.intl.formatMessage(layoutMessage.text.none)} 
@@ -117,7 +116,7 @@ export const ProjectAcceptanceListFilterView: React.SFC<ProjectAcceptanceListFil
             </IconButton> 
           </ListItemSecondaryAction>
         </ListItem>
-        <Divider />
+        <Divider /> */}
 
       </List>
     </Dialog>
@@ -145,7 +144,7 @@ export const ProjectAcceptanceListFilterView: React.SFC<ProjectAcceptanceListFil
       onClose={props.handleFilterTypeOnClose}
     />
 
-    <LookupSystemDialog
+    {/* <LookupSystemDialog
       title={props.intl.formatMessage(projectMessage.registration.field.statusType)}
       category="status"
       moduleType={ModuleDefinition.ProjectAssignment}
@@ -154,6 +153,6 @@ export const ProjectAcceptanceListFilterView: React.SFC<ProjectAcceptanceListFil
       value={props.filterStatus && props.filterStatus.type}
       onSelected={props.handleFilterStatusOnSelected}
       onClose={props.handleFilterStatusOnClose}
-    />
+    /> */}
   </React.Fragment>
 );

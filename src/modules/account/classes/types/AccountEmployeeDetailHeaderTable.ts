@@ -65,3 +65,11 @@ export enum AccountEmployeeRateHeaderTable {
   isActive = 'isActive',
   created = 'created',
 }
+
+export enum AccountEmployeeNoteHeaderTable {
+  no = 'No',
+  note = 'Note',
+  created = 'Created',
+  updated = 'Updated',
+  action = 'Action'
+}
