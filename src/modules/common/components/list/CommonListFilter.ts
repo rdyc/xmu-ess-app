@@ -6,7 +6,9 @@ import { InjectedIntlProps, injectIntl } from 'react-intl';
 import {
   compose,
   HandleCreators,
+  lifecycle,
   mapper,
+  ReactLifeCycleFunctions,
   setDisplayName,
   StateHandler,
   StateHandlerMap,
@@ -18,6 +20,7 @@ import {
 import { ISystemAllFilter } from '@common/classes/filters';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { ILookupCompanyGetListFilter } from '@lookup/classes/filters/company';
+import { withLookupCompany, WithLookupCompany } from '@lookup/hoc/withLookupCompany';
 import { CommonListFilterView } from './CommonListFilterView';
 
 export type ICommonListFilterResult = Pick<ISystemAllFilter, 'companyUid' >;
@@ -65,6 +68,7 @@ export type CommonListFilterProps
   & IOwnState
   & IOwnStateUpdater
   & IOwnHandler
+  & WithLookupCompany
   & WithStyles<typeof styles>
   & WithLayout
   & InjectedIntlProps;
@@ -120,12 +124,34 @@ const handlerCreators: HandleCreators<CommonListFilterProps, IOwnHandler> = {
   },
 };
 
+const lifecycles: ReactLifeCycleFunctions<CommonListFilterProps, IOwnState> = {
+  componentDidMount() { 
+    // handling previous filter after leaving list page
+    if (this.props.initialProps) {
+      const { companyUid } = this.props.initialProps;
+
+      // filter company
+      if (companyUid) {
+        const { response } = this.props.lookupCompanyState.list;
+        
+        if (response && response.data) {
+          const selected = response.data.find(item => item.uid === companyUid);
+          
+          this.props.setFilterCompany(selected);
+        }
+      }
+    }
+  }
+};
+
 export const CommonListFilter = compose<CommonListFilterProps, IOwnOption>(
   setDisplayName('CommonListFilter'),
   withUser,
   withLayout,
+  withLookupCompany,
   withStyles(styles),
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),
-  withHandlers(handlerCreators)
+  withHandlers(handlerCreators),
+  lifecycle(lifecycles),
 )(CommonListFilterView);
