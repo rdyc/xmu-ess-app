@@ -86,10 +86,23 @@ const listView: React.SFC<AllProps> = props => (
   </React.Fragment>
 );
 
-const createProps: mapper<AllProps, IOwnState> = (props: AllProps): IOwnState => ({
-  shouldUpdate: false,
-  isFilterOpen: false,
-});
+const createProps: mapper<AllProps, IOwnState> = (props: AllProps): IOwnState => {
+  const { request } = props.financeApprovalState.all;
+
+  // default state
+  const state: IOwnState = {
+    shouldUpdate: false,
+    isFilterOpen: false
+  };
+  
+  // fill from previous request if any
+  if (request && request.filter) {
+    state.moduleType = request.filter.moduleType,
+    state.financeStatusTypes = request.filter.financeStatusTypes;
+  }
+
+  return state;
+};
 
 const stateUpdaters: StateUpdaters<AllProps, IOwnState, IOwnStateUpdater> = {
   setShouldUpdate: (prevState: IOwnState) => () => ({
@@ -160,7 +173,7 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
       showActionCentre: false,
     
       // events
-      onDataLoad: (callback: ListHandler, params: ListDataProps, forceReload?: boolean | false) => {
+      onDataLoad: (callback: ListHandler, params: ListDataProps, forceReload?: boolean | false, resetPage?: boolean) => {
         // when user is set and not loading
         if (user && !isLoading) {
           // when response are empty or force reloading
@@ -176,7 +189,7 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
                 financeStatusTypes: this.props.financeStatusTypes,
                 direction: params.direction,
                 orderBy: params.orderBy,
-                page: params.page,
+                page: resetPage ? 1 : params.page,
                 size: params.size,
                 find: params.find,
                 findBy: params.findBy,
