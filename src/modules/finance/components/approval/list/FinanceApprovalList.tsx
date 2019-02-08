@@ -105,16 +105,16 @@ const createProps: mapper<AllProps, IOwnState> = (props: AllProps): IOwnState =>
 };
 
 const stateUpdaters: StateUpdaters<AllProps, IOwnState, IOwnStateUpdater> = {
-  setShouldUpdate: (prevState: IOwnState) => () => ({
-    shouldUpdate: !prevState.shouldUpdate
+  setShouldUpdate: (state: IOwnState) => (): Partial<IOwnState> => ({
+    shouldUpdate: !state.shouldUpdate
   }),
-  setConfig: (prevState: IOwnState) => (config: IListConfig<IFinance>) => ({
+  setConfig: (state: IOwnState) => (config: IListConfig<IFinance>): Partial<IOwnState> => ({
     config
   }),
-  setFilterVisibility: (prevState: IOwnState) => () => ({
-    isFilterOpen: !prevState.isFilterOpen
+  setFilterVisibility: (state: IOwnState) => (): Partial<IOwnState> => ({
+    isFilterOpen: !state.isFilterOpen
   }),
-  setFilterApplied: (prevState: IOwnState) => (filter: IFinanceApprovalListFilterResult) => ({
+  setFilterApplied: (state: IOwnState) => (filter: IFinanceApprovalListFilterResult): Partial<IOwnState> => ({
     ...filter,
     isFilterOpen: false
   }),
