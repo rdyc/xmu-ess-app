@@ -10,7 +10,9 @@ import { InjectedIntlProps, injectIntl } from 'react-intl';
 import {
   compose,
   HandleCreators,
+  lifecycle,
   mapper,
+  ReactLifeCycleFunctions,
   setDisplayName,
   StateHandler,
   StateHandlerMap,
@@ -19,6 +21,8 @@ import {
   withStateHandlers,
 } from 'recompose';
 
+import { withCommonSystem, WithCommonSystem } from '@common/hoc/withCommonSystem';
+import { withLookupCustomer, WithLookupCustomer } from '@lookup/hoc/withLookupCustomer';
 import { PurchaseApprovalListFilterView } from './PurchaseApprovalListFilterView';
 
 const completionStatus: ICollectionValue[] = [
@@ -107,6 +111,8 @@ export type PurchaseApprovalListFilterProps
   & IOwnState
   & IOwnStateUpdater
   & IOwnHandler
+  & WithLookupCustomer
+  & WithCommonSystem
   & WithStyles<typeof styles>
   & WithLayout
   & InjectedIntlProps;
@@ -225,12 +231,57 @@ const handlerCreators: HandleCreators<PurchaseApprovalListFilterProps, IOwnHandl
   }
 };
 
+const lifecycles: ReactLifeCycleFunctions<PurchaseApprovalListFilterProps, IOwnState> = {
+  componentDidMount() {
+    // handling previous filter after leaving list page
+    if (this.props.initialProps) {
+      const { customerUid, statusType, status, isNotify } = this.props.initialProps;
+
+      // filter customer
+      if (customerUid) {
+        const { response } = this.props.lookupCustomerState.list;
+
+        if (response && response.data) {
+          const selected = response.data.find(item => item.uid === customerUid);
+
+          this.props.setFilterCustomer(selected);
+        }
+      }
+
+      // filter status type
+      if (statusType) {
+        const { response } = this.props.commonStatusListState;
+
+        if (response && response.data) {
+          const selected = response.data.find(item => item.type === statusType);
+
+          this.props.setFilterStatus(selected);
+        }
+      }
+
+      // filter status
+      if (status) {
+        const selected = completionStatus.find(item => item.value === status);
+
+        this.props.setFilterCompletion(selected);
+      }
+
+      if (isNotify) {
+        this.props.setFilterNotify(isNotify);
+      }
+    }
+  }
+};
+
 export const PurchaseApprovalListFilter = compose<PurchaseApprovalListFilterProps, IOwnOption>(
   setDisplayName('PurchaseApprovalListFilter'),
   withUser,
   withLayout,
-  withStyles(styles),
+  withLookupCustomer,
+  withCommonSystem,
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),
-  withHandlers(handlerCreators)
+  withHandlers(handlerCreators),
+  lifecycle(lifecycles),
+  withStyles(styles),
 )(PurchaseApprovalListFilterView);
