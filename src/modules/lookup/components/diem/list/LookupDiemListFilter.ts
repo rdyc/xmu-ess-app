@@ -1,4 +1,5 @@
 import { ISystemList } from '@common/classes/response';
+import { WithCommonSystem, withCommonSystem } from '@common/hoc/withCommonSystem';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { IDiemAllFilter } from '@lookup/classes/filters';
 import { WithStyles, withStyles } from '@material-ui/core';
@@ -7,7 +8,9 @@ import { InjectedIntlProps, injectIntl } from 'react-intl';
 import {
   compose,
   HandleCreators,
+  lifecycle,
   mapper,
+  ReactLifeCycleFunctions,
   setDisplayName,
   StateHandler,
   StateHandlerMap,
@@ -86,6 +89,7 @@ export type LookupDiemListFilterProps
   = OwnOption
   & IOwnState
   & IOwnHandler
+  & WithCommonSystem
   & IOwnStateUpdater
   & WithStyles<typeof styles>
   & WithLayout
@@ -165,11 +169,44 @@ const handlerCreators: HandleCreators<LookupDiemListFilterProps, IOwnHandler> = 
   },
 };
 
+const lifecycles: ReactLifeCycleFunctions<LookupDiemListFilterProps, IOwnState> = {
+  componentDidMount() { 
+    // handling previous filter after leaving list page
+    if (this.props.initialProps) {
+      const { projectType, destinationType } = this.props.initialProps;
+
+       // filter project type
+      if (projectType) {
+        const { response } = this.props.commonProjectListState;
+        
+        if (response && response.data) {
+          const selected = response.data.find(item => item.type === projectType);
+          
+          this.props.setFilterProjectType(selected);
+        }
+      }
+
+      // filter status type
+      if (destinationType) {
+        const { response } = this.props.commonDestinationListState;
+        
+        if (response && response.data) {
+          const selected = response.data.find(item => item.type === destinationType);
+          
+          this.props.setFilterDestinationType(selected);
+        }
+      }
+    }
+  }
+};
+
 export const LookupDiemListFilter = compose<LookupDiemListFilterProps, OwnOption>(
   setDisplayName('LookupDiemListFilter'),
   withLayout,
+  withCommonSystem,
   withStyles(styles),
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),
-  withHandlers(handlerCreators)
+  withHandlers(handlerCreators),
+  lifecycle(lifecycles),
 )(LookupDiemListFilterView);

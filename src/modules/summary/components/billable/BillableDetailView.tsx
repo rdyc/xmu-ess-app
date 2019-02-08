@@ -2,9 +2,7 @@ import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import {
   AppBar,
-  Button,
   Dialog,
-  DialogActions,
   DialogContent,
   DialogTitle,
   IconButton,
@@ -34,15 +32,15 @@ import { compose } from 'recompose';
 interface OwnProps {
   uid?: string;
   type?: string;
-  open: boolean;
+  isDetailOpen: boolean;
   data: ISummaryBillable[] | null | undefined;
-  handleDialog: () => void;
+  handleDialogDetail: () => void;
 }
 
 type AllProps = OwnProps & WithUser & WithLayout & InjectedIntlProps & WithStyles<typeof styles>;
 
 const billableDetail: React.SFC<AllProps> = props => {
-  const { uid, type, open, data, handleDialog, classes } = props;
+  const { uid, type, isDetailOpen, data, handleDialogDetail, classes } = props;
   const { user } = props.userState;
 
   const headerNonPresales = Object.keys(BillableHeaderDetailNonPresales).map(
@@ -61,15 +59,16 @@ const billableDetail: React.SFC<AllProps> = props => {
           item.employee.uid === uid ? (
             <Dialog
               key={index}
-              open={open}
-              onClose={handleDialog}
+              open={isDetailOpen}
+              onClose={handleDialogDetail}
               scroll="paper"
               className={props.layoutState.anchor === 'right' ? props.classes.contentShiftRight : props.classes.contentShiftLeft}
               fullScreen
+              disableBackdropClick
             >
               <AppBar className={props.classes.appBarDialog}>
                 <Toolbar>
-                  <IconButton color="inherit" onClick={handleDialog} aria-label="Close">
+                  <IconButton color="inherit" onClick={handleDialogDetail} aria-label="Close">
                     <CloseIcon />
                   </IconButton>
 
@@ -129,11 +128,6 @@ const billableDetail: React.SFC<AllProps> = props => {
                     </TableBody>
                   </Table>
               </DialogContent>
-              <DialogActions>
-                <Button onClick={handleDialog} color="primary">
-                  Cancel
-                </Button>
-              </DialogActions>
             </Dialog>
           ) : null
         )}

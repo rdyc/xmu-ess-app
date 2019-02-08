@@ -30,7 +30,7 @@ interface OwnState extends IBillableListFilterResult {
   isAdmin: boolean;
   reloadData: boolean;
   uid: string | undefined;
-  open: boolean;
+  isDetailOpen: boolean;
   type: string | undefined;
   orderBy?: string | undefined;
   direction?: DirectionType;
@@ -39,7 +39,7 @@ interface OwnState extends IBillableListFilterResult {
 }
 
 interface OwnHandlers {
-  handleDialog: () => void;
+  handleDialogDetail: () => void;
   handleGoToNext: () => void;
   handleReloadData: () => void;
   handleGoToPrevious: () => void;
@@ -75,7 +75,7 @@ const createProps: mapper<BillableProps, OwnState> = (
   return {
     isAdmin: false,
     reloadData: false,
-    open: false,
+    isDetailOpen: false,
     type: undefined,
     uid: undefined,
     start: moment()
@@ -100,17 +100,14 @@ const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
     ...prevState,
     ...newState
   }),
-  setFilterApplied: (prevState: OwnState) => (
-    filter: IBillableListFilterResult
-  ) => ({
-    ...filter
+  setFilterApplied: (prevState: OwnState) => (filter: IBillableListFilterResult) => ({
+    ...filter,
+    page: 1
   })
 };
 
 const handlerCreators: HandleCreators<BillableProps, OwnHandlers> = {
-  handleChangeFilter: (props: BillableProps) => (
-    filter: IBillableListFilterResult
-  ) => {
+  handleChangeFilter: (props: BillableProps) => (filter: IBillableListFilterResult) => {
     props.setFilterApplied(filter);
   },
   handleReloadData: (props: BillableProps) => () => {
@@ -118,9 +115,9 @@ const handlerCreators: HandleCreators<BillableProps, OwnHandlers> = {
       reloadData: true
     });
   },
-  handleDialog: (props: BillableProps) => () => {
+  handleDialogDetail: (props: BillableProps) => () => {
     props.stateUpdate({
-      open: !props.open
+      isDetailOpen: !props.isDetailOpen
     });
   },
   handleDetail: (props: BillableProps) => (uid: string, type: string) => {

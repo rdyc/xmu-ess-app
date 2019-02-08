@@ -30,10 +30,6 @@ import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
 import { ILookupSystemLimitFilterResult, LookupSystemLimitFilter } from './LookupSystemLimitFilter';
 import { LookupSystemLimitSummary } from './LookupSystemLimitSummary';
 
-interface OwnOption {
-  
-}
-
 interface OwnState extends ILookupSystemLimitFilterResult {
   shouldUpdate: boolean;
   config?: IListConfig<ISystemLimit>;
@@ -54,7 +50,6 @@ interface OwnHandler {
 
 type AllProps
   = OwnState
-  & OwnOption
   & OwnHandler
   & OwnStateUpdater
   & WithUser
@@ -85,23 +80,35 @@ const listView: React.SFC<AllProps> = props => (
   </React.Fragment>
 );
 
-const createProps: mapper<AllProps, OwnState> = (props: AllProps): OwnState => ({
-  shouldUpdate: false,
-  isFilterOpen: false,
-});
+const createProps: mapper<AllProps, OwnState> = (props: AllProps): OwnState => {
+  const { request } = props.systemLimitState.all;
+
+  const state: OwnState = {
+    shouldUpdate: false,
+    isFilterOpen: false
+  };
+
+  // fill from previous request if any
+  if (request && request.filter) {
+    state.categoryType = request.filter.categoryType,
+    state.companyUid = request.filter.companyUid;
+  }
+
+  return state;
+};
 
 const stateUpdaters: StateUpdaters<AllProps, OwnState, OwnStateUpdater> = {
-  setShouldUpdate: (prevState: OwnState) => () => ({
+  setShouldUpdate: (prevState: OwnState) => (): Partial<OwnState> => ({
     shouldUpdate: !prevState.shouldUpdate
   }),
   
-  setConfig: () => (config: IListConfig<ISystemLimit>) => ({
+  setConfig: () => (config: IListConfig<ISystemLimit>): Partial<OwnState> => ({
     config
   }),
-  setFilterVisibility: (prevState: OwnState) => () => ({
+  setFilterVisibility: (prevState: OwnState) => (): Partial<OwnState> => ({
     isFilterOpen: !prevState.isFilterOpen
   }),
-  setFilterApplied: () => (filter: ILookupSystemLimitFilterResult) => ({
+  setFilterApplied: () => (filter: ILookupSystemLimitFilterResult): Partial<OwnState> => ({
     ...filter,
     isFilterOpen: false
   })
@@ -163,17 +170,18 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, OwnState> = {
       ],
 
       // events
-      onDataLoad: (callback: ListHandler, params: ListDataProps, forceReload?: boolean | false) => {
+      onDataLoad: (callback: ListHandler, params: ListDataProps, forceReload?: boolean, resetPage?: boolean) => {
         // when user is set and not loading
         if (user && !isLoading) {
-          if (!response || forceReload) {
+          // when request, response are empty and or force reloading
+          if (!request || !response || forceReload) {
             loadAllRequest({
               filter: {
                 companyUid: this.props.companyUid,
                 categoryType: this.props.categoryType,
                 direction: params.direction,
                 orderBy: params.orderBy,
-                page: params.page,
+                page: resetPage ? 1 : params.page,
                 size: params.size,
                 find: params.find,
                 findBy: params.findBy,

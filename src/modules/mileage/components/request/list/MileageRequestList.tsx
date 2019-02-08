@@ -31,10 +31,6 @@ import { mileageMessage } from '@mileage/locales/messages/mileageMessage';
 import { MileageSummary } from '../shared/MileageSummary';
 import { IMileageRequestListFilterResult, MileageRequestListFilter } from './MileageRequestListFilter';
 
-interface OwnOption {
-  
-}
-
 interface OwnState extends IMileageRequestListFilterResult {
   shouldUpdate: boolean;
   config?: IListConfig<IMileageRequest>;
@@ -55,7 +51,6 @@ interface OwnHandler {
 
 type AllProps
   = OwnState
-  & OwnOption
   & OwnHandler
   & OwnStateUpdater
   & WithUser

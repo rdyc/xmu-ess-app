@@ -30,7 +30,7 @@ interface OwnState extends IWinningRatioFilterResult {
   isAdmin: boolean;
   reloadData: boolean;
   uid: string | undefined;
-  open: boolean;
+  isDetailOpen: boolean;
   type: string | undefined;
   orderBy?: string | undefined;
   direction?: DirectionType;
@@ -39,7 +39,7 @@ interface OwnState extends IWinningRatioFilterResult {
 }
 
 interface OwnHandlers {
-  handleDialog: () => void;
+  handleDialogDetail: () => void;
   handleGoToNext: () => void;
   handleReloadData: () => void;
   handleGoToPrevious: () => void;
@@ -75,7 +75,7 @@ const createProps: mapper<WinningRatioProps, OwnState> = (
   return {
     isAdmin: false,
     reloadData: false,
-    open: false,
+    isDetailOpen: false,
     type: undefined,
     uid: undefined,
     start: moment()
@@ -100,10 +100,9 @@ const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
     ...prevState,
     ...newState
   }),
-  setFilterApplied: (prevState: OwnState) => (
-    filter: IWinningRatioFilterResult
-  ) => ({
-    ...filter
+  setFilterApplied: (prevState: OwnState) => (filter: IWinningRatioFilterResult) => ({
+    ...filter,
+    page: 1
   })
 };
 
@@ -118,9 +117,9 @@ const handlerCreators: HandleCreators<WinningRatioProps, OwnHandlers> = {
       reloadData: true
     });
   },
-  handleDialog: (props: WinningRatioProps) => () => {
+  handleDialogDetail: (props: WinningRatioProps) => () => {
     props.stateUpdate({
-      open: !props.open
+      isDetailOpen: !props.isDetailOpen
     });
   },
   handleDetail: (props: WinningRatioProps) => (uid: string, type: string) => {
