@@ -45,7 +45,7 @@ export const MileageApprovalListFilterView: React.SFC<MileageApprovalListFilterP
           </Typography>
 
           {
-            (props.filterMonth || props.filterYear || props.filterStatus || props.filterCompletion || props.filterRejected) &&
+            (props.filterMonth || props.filterYear || props.filterStatus || props.filterCompletion || props.filterNotify) &&
             <Button color="inherit" onClick={props.handleFilterOnReset}>
               {props.intl.formatMessage(layoutMessage.action.reset)}
             </Button>
