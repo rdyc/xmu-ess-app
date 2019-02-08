@@ -382,6 +382,8 @@
   "lookup.holiday.message.emptyProps": "Some props are empty",
   "lookup.holiday.field.filter.company": "Company",
   "lookup.holiday.field.filter.company.placeholder": "Company",
+  "lookup.holiday.dialog.newTitle": "Submit Confirmation",
+  "lookup.holiday.dialog.newDescription": "Do you want to submit holiday ?",
 
   "lookup.leave.page.list.title": "Leave",
   "lookup.leave.page.list.subHeader": " ",

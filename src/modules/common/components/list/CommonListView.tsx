@@ -87,22 +87,34 @@ const commonListView: React.SFC<AllProps> = props => (
   </React.Fragment>
 );
 
-const createProps: mapper<AllProps, IOwnState> = (props: AllProps): IOwnState => ({
-  shouldUpdate: false,
-  isFilterOpen: false,
-});
+const createProps: mapper<AllProps, IOwnState> = (props: AllProps): IOwnState => {
+  const { request } = props.commonSystemState.all;
+  
+  // default state
+  const state: IOwnState = {
+    shouldUpdate: false,
+    isFilterOpen: false
+  };
+  
+  // fill from previous request if any
+  if (request && request.filter) {
+    state.companyUid = request.filter.companyUid;
+  }
+
+  return state;
+};
 
 const stateUpdaters: StateUpdaters<AllProps, IOwnState, IOwnStateUpdater> = {
-  setShouldUpdate: (prevState: IOwnState) => () => ({
-    shouldUpdate: !prevState.shouldUpdate
+  setShouldUpdate: (state: IOwnState) => (): Partial<IOwnState> => ({
+    shouldUpdate: !state.shouldUpdate
   }),
-  setConfig: (prevState: IOwnState) => (config: IListConfig<ISystem>) => ({
+  setConfig: (state: IOwnState) => (config: IListConfig<ISystem>): Partial<IOwnState> => ({
     config
   }),
-  setFilterVisibility: (prevState: IOwnState) => () => ({
-    isFilterOpen: !prevState.isFilterOpen
+  setFilterVisibility: (state: IOwnState) => (): Partial<IOwnState> => ({
+    isFilterOpen: !state.isFilterOpen
   }),
-  setFilterApplied: (prevState: IOwnState) => (filter: ICommonListFilterResult) => ({
+  setFilterApplied: (state: IOwnState) => (filter: ICommonListFilterResult): Partial<IOwnState> => ({
     ...filter,
     isFilterOpen: false
   }),
@@ -170,7 +182,7 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
       ],
 
       // events
-      onDataLoad: (callback: ListHandler, params: ListDataProps, forceReload?: boolean | false) => {
+      onDataLoad: (callback: ListHandler, params: ListDataProps, forceReload?: boolean | false, resetPage?: boolean) => {
         // when user is set and not loading
         if (user && !isLoading) {
           // when response are empty or force reloading
@@ -181,7 +193,7 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
                 companyUid: this.props.companyUid,
                 direction: params.direction,
                 orderBy: params.orderBy,
-                page: params.page,
+                page: resetPage ? 1 : params.page,
                 size: params.size,
                 find: params.find,
                 findBy: params.findBy,

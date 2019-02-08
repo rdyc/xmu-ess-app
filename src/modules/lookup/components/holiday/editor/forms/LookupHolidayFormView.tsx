@@ -2,10 +2,11 @@ import { Submission } from '@layout/components/submission/Submission';
 import { Grid } from '@material-ui/core';
 import * as React from 'react';
 import { BaseFieldsProps, Fields, FormSection } from 'redux-form';
-import { LookupHolidayDetailForm } from './LookupHolidayDetailForm';
-import { RequestFormProps } from './LookupHolidayForm';
 
-export const LookupHolidayFormView: React.SFC<RequestFormProps> = props => {
+import { LookupHolidayDetailForm } from './LookupHolidayDetailForm';
+import { HolidayFormProps } from './LookupHolidayForm';
+
+export const LookupHolidayFormView: React.SFC<HolidayFormProps> = props => {
   const { formMode } = props;
 
   const fields = Object.getOwnPropertyNames(props.initialValues.information);
@@ -40,6 +41,12 @@ export const LookupHolidayFormView: React.SFC<RequestFormProps> = props => {
             valid={props.valid}
             reset={props.reset}
             submitting={props.submitting}
+            withSubmitDialog={true}
+            formName={props.formName}
+            submitDialogTitle={props.submitDialogTitle}
+            submitDialogContentText={props.submitDialogContentText}
+            submitDialogCancelText={props.submitDialogCancelText}
+            submitDialogConfirmedText={props.submitDialogConfirmedText}
           />
         </Grid>
       </Grid>

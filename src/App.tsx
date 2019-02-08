@@ -5,7 +5,7 @@ import AppStorage from '@constants/AppStorage';
 import { ExpenseRoutingComponents } from '@expense/components/ExpenseRoutingComponents';
 import { FinanceRoutingComponents } from '@finance/components/FinanceRoutingComponents';
 import { HomeRoutingComponents } from '@home/components';
-import { Callback } from '@layout/components/base';
+import { Callback, SigninPopupCallback, SilentRenew } from '@layout/components/base';
 import { LandingPage } from '@layout/components/landingPage/LandingPage';
 import { MasterPage } from '@layout/components/masterPage/MasterPage';
 import { WithOidc, withOidc } from '@layout/hoc/withOidc';
@@ -64,6 +64,8 @@ const app: React.ComponentType<AllProps> = props => (
           <Router history={props.history}>
             <Switch>
               <Route exact path="/" component={LandingPage} />
+              <Route path="/signin" component={SigninPopupCallback} />
+              <Route path="/silent_renew" component={SilentRenew} />
               <Route path="/callback" component={Callback} />
               <Route path="/account/access" component={AccountAccess} />
 
@@ -98,10 +100,15 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, {}> = {
     // add oidc events
     AppUserManager.events.addUserLoaded((user: User) => {
       console.info('user loaded');
+
+      this.props.history.push('/account/access');
     });
 
     AppUserManager.events.addUserUnloaded(() => {
       console.info('user unloaded');
+
+      store.remove(AppStorage.Profile);
+      store.remove(AppStorage.Access);
     });
 
     AppUserManager.events.addAccessTokenExpiring(() => {

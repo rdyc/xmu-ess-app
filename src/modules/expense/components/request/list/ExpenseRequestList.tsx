@@ -77,6 +77,7 @@ const listView: React.SFC<AllProps> = props => (
           isOpen={props.isFilterOpen}
           initialProps={{
             customerUid: props.customerUid,
+            // projectUid: props.projectUid,
             expenseType: props.expenseType,
             statusType: props.statusType,
             start: props.start,
@@ -92,25 +93,43 @@ const listView: React.SFC<AllProps> = props => (
   </React.Fragment>
 );
 
-const createProps: mapper<AllProps, IOwnState> = (props: AllProps): IOwnState => ({
-  shouldUpdate: false,
-  isFilterOpen: false,
+const createProps: mapper<AllProps, IOwnState> = (props: AllProps): IOwnState => {
+  const { request } = props.expenseRequestState.all;
 
-  // fill partial props from location state to handle redirection from dashboard notif
-  isRejected: props.location.state && props.location.state.isRejected
-});
+  const state: IOwnState = {
+    shouldUpdate: false,
+    isFilterOpen: false,
+  };
+
+  if (props.location.state) {
+    state.isRejected = props.location.state.isRejected;
+  } else {
+    if (request && request.filter) {
+      state.customerUid = request.filter.customerUid,
+      // state.projectUid = request.filter.projectUid,
+      state.expenseType = request.filter.expenseType,
+      state.statusType = request.filter.statusType,
+      state.start = request.filter.start,
+      state.end = request.filter.end,
+      state.status = request.filter.status,
+      state.isRejected = request.filter.isRejected;
+    }
+  }
+
+  return state;
+};
 
 const stateUpdaters: StateUpdaters<AllProps, IOwnState, IOwnStateUpdater> = {
-  setShouldUpdate: (prevState: IOwnState) => () => ({
-    shouldUpdate: !prevState.shouldUpdate
+  setShouldUpdate: (state: IOwnState) => (): Partial<IOwnState> => ({
+    shouldUpdate: !state.shouldUpdate
   }),
-  setConfig: (prevState: IOwnState) => (config: IListConfig<IExpense>) => ({
+  setConfig: (state: IOwnState) => (config: IListConfig<IExpense>): Partial<IOwnState> => ({
     config
   }),
-  setFilterVisibility: (prevState: IOwnState) => () => ({
-    isFilterOpen: !prevState.isFilterOpen
+  setFilterVisibility: (state: IOwnState) => (): Partial<IOwnState> => ({
+    isFilterOpen: !state.isFilterOpen
   }),
-  setFilterApplied: (prevState: IOwnState) => (filter: IExpenseRequestListFilterResult) => ({
+  setFilterApplied: (state: IOwnState) => (filter: IExpenseRequestListFilterResult): Partial<IOwnState> => ({
     ...filter,
     isFilterOpen: false
   }),
@@ -172,11 +191,11 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
       ],
     
       // events
-      onDataLoad: (callback: ListHandler, params: ListDataProps, forceReload?: boolean | false) => {
+      onDataLoad: (callback: ListHandler, params: ListDataProps, forceReload?: boolean | false, resetPage?: boolean) => {
         // when user is set and not loading
         if (user && !isLoading) {
           // when response are empty or force reloading
-          if (!response || forceReload) {
+          if (!response || !response || forceReload) {
             loadAllRequest({
               filter: {
                 companyUid: user.company.uid,
@@ -186,11 +205,11 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
                 start: this.props.start,
                 end: this.props.end,
                 statusType: this.props.statusType,
-                status: this.props.status,
+                status: this.props.isRejected ? 'complete' : undefined, // this.props.status,
                 isRejected: this.props.isRejected,
                 direction: params.direction,
                 orderBy: params.orderBy,
-                page: params.page,
+                page: resetPage ? 1 : params.page,
                 size: params.size,
                 find: params.find,
                 findBy: params.findBy,

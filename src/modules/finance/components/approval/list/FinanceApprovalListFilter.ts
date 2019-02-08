@@ -7,7 +7,9 @@ import { InjectedIntlProps, injectIntl } from 'react-intl';
 import {
   compose,
   HandleCreators,
+  lifecycle,
   mapper,
+  ReactLifeCycleFunctions,
   setDisplayName,
   StateHandler,
   StateHandlerMap,
@@ -16,6 +18,7 @@ import {
   withStateHandlers,
 } from 'recompose';
 
+import { WithCommonSystem, withCommonSystem } from '@common/hoc/withCommonSystem';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { FinanceApprovalListFilterView } from './FinanceApprovalListFilterView';
 
@@ -73,6 +76,7 @@ export type FinanceApprovalListFilterProps
   = IOwnOption
   & WithUser
   & IOwnState
+  & WithCommonSystem
   & IOwnStateUpdater
   & IOwnHandler
   & WithStyles<typeof styles>
@@ -151,12 +155,45 @@ const handlerCreators: HandleCreators<FinanceApprovalListFilterProps, IOwnHandle
   },
 };
 
+const lifecycles: ReactLifeCycleFunctions<FinanceApprovalListFilterProps, IOwnState> = {
+  componentDidMount() { 
+    // handling previous filter after leaving list page
+    if (this.props.initialProps) {
+      const { moduleType, financeStatusTypes } = this.props.initialProps;
+
+      // filter module type
+      if (moduleType) {
+        const { response } = this.props.commonFinanceListState;
+        
+        if (response && response.data) {
+          const selected = response.data.find(item => item.type === moduleType);
+          
+          this.props.setFilterModule(selected);
+        }
+      }
+
+      // filter finance status type
+      if (financeStatusTypes) {
+        const { response } = this.props.commonPaymentListState;
+        
+        if (response && response.data) {
+          const selected = response.data.find(item => item.type === financeStatusTypes);
+          
+          this.props.setFilterStatus(selected);
+        }
+      }
+    }
+  }
+};
+
 export const FinanceApprovalListFilter = compose<FinanceApprovalListFilterProps, IOwnOption>(
   setDisplayName('FinanceApprovalListFilter'),
   withUser,
   withLayout,
+  withCommonSystem,
   withStyles(styles),
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),
-  withHandlers(handlerCreators)
+  withHandlers(handlerCreators),
+  lifecycle(lifecycles),
 )(FinanceApprovalListFilterView);

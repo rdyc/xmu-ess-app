@@ -9,7 +9,9 @@ import { InjectedIntlProps, injectIntl } from 'react-intl';
 import {
   compose,
   HandleCreators,
+  lifecycle,
   mapper,
+  ReactLifeCycleFunctions,
   setDisplayName,
   StateHandler,
   StateHandlerMap,
@@ -18,13 +20,9 @@ import {
   withStateHandlers,
 } from 'recompose';
 
+import { WithCommonSystem, withCommonSystem } from '@common/hoc/withCommonSystem';
+import { WithLookupCustomer, withLookupCustomer } from '@lookup/hoc/withLookupCustomer';
 import { TimesheetEntryListFilterView } from './TimesheetEntryListFilterView';
-
-// import { ICollectionValue } from '@layout/classes/core';
-// const completionStatus: ICollectionValue[] = [
-//   { value: 'pending', name: 'Pending' },
-//   { value: 'complete', name: 'Complete' }
-// ];
 
 export type ITimesheetEntryListFilterResult = Pick<ITimesheetEntryGetAllFilter, 'customerUid' | 'activityType' | 'companyUid' | 'statusType' | 'status' | 'isRejected'>;
 
@@ -36,8 +34,6 @@ interface IOwnOption {
 }
 
 interface IOwnState {
-  // completionStatus: ICollectionValue[];
-
   // filter customer
   isFilterCustomerOpen: boolean;
   filterCustomer?: ICustomerList;
@@ -49,10 +45,6 @@ interface IOwnState {
   // filter status
   isFilterStatusOpen: boolean;
   filterStatus?: ISystemList;
-
-  // filter completion
-  // isFilterCompletionOpen: boolean;
-  // filterCompletion?: ICollectionValue;
 
   // filter rejected
   filterRejected?: boolean;
@@ -73,10 +65,6 @@ interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
   // filter status
   setFilterStatusVisibility: StateHandler<IOwnState>;
   setFilterStatus: StateHandler<IOwnState>;
-
-  // filter completion
-  // setFilterCompletionVisibility: StateHandler<IOwnState>;
-  // setFilterCompletion: StateHandler<IOwnState>;
 
   // filter rejected
   setFilterRejected: StateHandler<IOwnState>;
@@ -105,31 +93,25 @@ interface IOwnHandler {
   handleFilterStatusOnClear: (event: React.MouseEvent<HTMLElement>) => void;
   handleFilterStatusOnClose: () => void;
 
-  // filter completion
-  // handleFilterCompletionVisibility: (event: React.MouseEvent<HTMLElement>) => void;
-  // handleFilterCompletionOnSelected: (data: ICollectionValue) => void;
-  // handleFilterCompletionOnClear: (event: React.MouseEvent<HTMLElement>) => void;
-  // handleFilterCompletionOnClose: () => void;
-
   // filter rejected
   handleFilterRejectedOnChange: (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => void;
 }
 
 export type TimesheetEntryListFilterProps
   = IOwnOption
-  & WithUser
   & IOwnState
   & IOwnStateUpdater
   & IOwnHandler
   & WithStyles<typeof styles>
   & WithLayout
+  & WithUser
+  & WithLookupCustomer
+  & WithCommonSystem
   & InjectedIntlProps;
 
 const createProps: mapper<TimesheetEntryListFilterProps, IOwnState> = (props: TimesheetEntryListFilterProps): IOwnState => ({
-  // completionStatus,
   isFilterCustomerOpen: false,
   isFilterActivityTypeOpen: false,
-  // isFilterCompletionOpen: false,
   isFilterStatusOpen: false,
 
   // pass initial value for primitive types only, bellow is 'boolean'
@@ -142,7 +124,6 @@ const stateUpdaters: StateUpdaters<TimesheetEntryListFilterProps, IOwnState, IOw
     filterCustomer: undefined,
     filterActivityType: undefined,
     filterStatus: undefined,
-    // filterCompletion: undefined,
     filterRejected: undefined
   }),
 
@@ -173,15 +154,6 @@ const stateUpdaters: StateUpdaters<TimesheetEntryListFilterProps, IOwnState, IOw
     filterStatus: data
   }),
 
-  // filter completion
-  // setFilterCompletionVisibility: (prevState: IOwnState) => () => ({
-  //   isFilterCompletionOpen: !prevState.isFilterCompletionOpen
-  // }),
-  // setFilterCompletion: (prevState: IOwnState) => (data?: ICollectionValue) => ({
-  //   isFilterCompletionOpen: false,
-  //   filterCompletion: data
-  // }),
-
   // filter rejected
   setFilterRejected: (prevState: IOwnState) => (checked: boolean) => ({
     filterRejected: checked
@@ -198,7 +170,6 @@ const handlerCreators: HandleCreators<TimesheetEntryListFilterProps, IOwnHandler
       customerUid: props.filterCustomer && props.filterCustomer.uid,
       activityType: props.filterActivityType && props.filterActivityType.type,
       statusType: props.filterStatus && props.filterStatus.type,
-      // status: props.filterCompletion && props.filterCompletion.value,
       isRejected: props.filterRejected,
     });
   },
@@ -217,7 +188,7 @@ const handlerCreators: HandleCreators<TimesheetEntryListFilterProps, IOwnHandler
     props.setFilterCustomerVisibility();
   },
 
-  // filter type
+  // filter activity type
   handleFilterActivityTypeVisibility: (props: TimesheetEntryListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
     props.setFilterActivityTypeVisibility();
   },
@@ -245,23 +216,51 @@ const handlerCreators: HandleCreators<TimesheetEntryListFilterProps, IOwnHandler
     props.setFilterStatusVisibility();
   },
 
-  // filter completion
-  // handleFilterCompletionVisibility: (props: TimesheetEntryListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
-  //   props.setFilterCompletionVisibility();
-  // },
-  // handleFilterCompletionOnSelected: (props: TimesheetEntryListFilterProps) => (data: ICollectionValue) => {
-  //   props.setFilterCompletion(data);
-  // },
-  // handleFilterCompletionOnClear: (props: TimesheetEntryListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
-  //   props.setFilterCompletion();
-  // },
-  // handleFilterCompletionOnClose: (props: TimesheetEntryListFilterProps) => () => {
-  //   props.setFilterCompletionVisibility();
-  // },
-
   // filter rejected
   handleFilterRejectedOnChange: (props: TimesheetEntryListFilterProps) => (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
     props.setFilterRejected(checked);
+  }
+};
+
+const lifecycles: ReactLifeCycleFunctions<TimesheetEntryListFilterProps, IOwnState> = {
+  componentDidMount() { 
+    // handling previous filter after leaving list page
+    if (this.props.initialProps) {
+      const { customerUid, activityType, statusType } = this.props.initialProps;
+
+      // filter customer
+      if (customerUid) {
+        const { response } = this.props.lookupCustomerState.list;
+        
+        if (response && response.data) {
+          const selected = response.data.find(item => item.uid === customerUid);
+          
+          this.props.setFilterCustomer(selected);
+        }
+      }
+
+      // filter activity type
+      if (activityType) {
+        const { response } = this.props.commonActivityListState;
+        
+        if (response && response.data) {
+          const selected = response.data.find(item => item.type === activityType);
+          
+          this.props.setFilterActivityType(selected);
+        }
+      }
+
+      // filter status type
+      if (statusType) {
+        const { response } = this.props.commonStatusListState;
+        
+        if (response && response.data) {
+          const selected = response.data.find(item => item.type === statusType);
+          
+          this.props.setFilterStatus(selected);
+        }
+      }
+    }
   }
 };
 
@@ -269,8 +268,12 @@ export const TimesheetEntryListFilter = compose<TimesheetEntryListFilterProps, I
   setDisplayName('TimesheetEntryListFilter'),
   withUser,
   withLayout,
-  withStyles(styles),
+  withLookupCustomer,
+  withCommonSystem,
   injectIntl,
+  withStyles(styles),
   withStateHandlers(createProps, stateUpdaters),
-  withHandlers(handlerCreators)
+  withHandlers(handlerCreators),
+  lifecycle(lifecycles),
+  withStyles(styles)
 )(TimesheetEntryListFilterView);
