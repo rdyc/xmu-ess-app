@@ -74,11 +74,11 @@ const handlerCreators: HandleCreators<LandingPageProps, OwnHandler> = {
         props.history.push('/account/access');
       }
     } else {
-      AppUserManager.signinRedirect();
-      // AppUserManager.signinPopup()
-      //   .then((user: User) => { 
-      //     console.log(user);
-      //   });
+      // AppUserManager.signinRedirect();
+      AppUserManager.signinPopup()
+        .catch(error => {
+          console.error('error while logging in through the popup', error);
+        });
     }
   },
   handleOnClickLogout: (props: LandingPageProps) => () => {
