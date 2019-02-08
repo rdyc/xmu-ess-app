@@ -63,13 +63,25 @@ type AllProps
   & InjectedIntlProps
   & RouteComponentProps;
 
-const createProps: mapper<AllProps, IOwnState> = (props: AllProps): IOwnState => ({
-  shouldUpdate: false,
-  isFilterOpen: false,
-
-  // fill partial props from location state to handle redirection from dashboard notif
-  isRejected: props.location.state && props.location.state.isRejected,
-});
+const createProps: mapper<AllProps, IOwnState> = (props: AllProps): IOwnState => {
+  const { request } = props.purchaseSettlementState.all;
+  const state: IOwnState = {
+    shouldUpdate: false,
+    isFilterOpen: false,
+  };
+  if (props.location.state) {
+    // fill partial props from location state to handle redirection from dashboard notif
+    state.statusType = props.location.state.statusType;
+    state.isRejected = props.location.state.isRejected;
+  } else {
+    if (request && request.filter) {
+      state.customerUid = request.filter.customerUid,
+      state.statusType = request.filter.statusType,
+      state.isRejected = request.filter.isRejected;
+    }
+  }
+  return state;
+};
 
 const stateUpdaters: StateUpdaters<AllProps, IOwnState, IOwnStateUpdater> = {
   setShouldUpdate: (prevState: IOwnState) => () => ({
