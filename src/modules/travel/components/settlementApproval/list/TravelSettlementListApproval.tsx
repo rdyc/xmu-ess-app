@@ -86,26 +86,42 @@ const listView: React.SFC<AllProps> = props => (
   </React.Fragment>
 );
 
-const createProps: mapper<AllProps, IOwnState> = (props: AllProps): IOwnState => ({
-  shouldUpdate: false,
-  isFilterOpen: false,
+const createProps: mapper<AllProps, IOwnState> = (props: AllProps): IOwnState => {
+  const { request } = props.travelSettlementApprovalState.all;
 
-  // fill partial props from location state to handle redirection from dashboard notif
-  status: props.location.state && props.location.state.status,
-  isNotify: props.location.state && props.location.state.isNotify
-});
+  // default state
+  const state: IOwnState = {
+    shouldUpdate: false,
+    isFilterOpen: false
+  };
+
+  // When location state are present (ex: redirection from dashboard) then don't use redux state
+  if (props.location.state) {
+    state.isNotify = props.location.state.isNotify;
+  } else {
+    // fill from previous request if any
+    if (request && request.filter) {
+      state.customerUid = request.filter.customerUid,
+      state.statusType = request.filter.statusType,
+      state.status = request.filter.status,
+      state.isNotify = request.filter.isNotify;
+    }
+  }
+
+  return state;
+};
 
 const stateUpdaters: StateUpdaters<AllProps, IOwnState, IOwnStateUpdater> = {
-  setShouldUpdate: (prevState: IOwnState) => () => ({
-    shouldUpdate: !prevState.shouldUpdate
+  setShouldUpdate: (state: IOwnState) => (): Partial<IOwnState> => ({
+    shouldUpdate: !state.shouldUpdate
   }),
-  setConfig: (prevState: IOwnState) => (config: IListConfig<ITravelSettlement>) => ({
+  setConfig: (state: IOwnState) => (config: IListConfig<ITravelSettlement>): Partial<IOwnState> => ({
     config
   }),
-  setFilterVisibility: (prevState: IOwnState) => () => ({
-    isFilterOpen: !prevState.isFilterOpen
+  setFilterVisibility: (state: IOwnState) => (): Partial<IOwnState> => ({
+    isFilterOpen: !state.isFilterOpen
   }),
-  setFilterApplied: (prevState: IOwnState) => (filter: ITravelSettlementApprovalListFilterResult) => ({
+  setFilterApplied: (state: IOwnState) => (filter: ITravelSettlementApprovalListFilterResult): Partial<IOwnState> => ({
     ...filter,
     isFilterOpen: false
   }),
@@ -158,7 +174,7 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
       showActionCentre: false,
 
       // events
-      onDataLoad: (callback: ListHandler, params: ListDataProps, forceReload?: boolean | false) => {
+      onDataLoad: (callback: ListHandler, params: ListDataProps, forceReload?: boolean,  resetPage?: boolean) => {
         // when user is set and not loading
         if (user && !isLoading) {
           // when response are empty or force reloading
@@ -173,10 +189,10 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
                 isNotify: this.props.isNotify,
                 direction: params.direction,
                 orderBy: params.orderBy,
-                page: params.page,
+                page: resetPage ? 1 : params.page,
                 size: params.size,
                 find: params.find,
-                findBy: params.findBy                
+                findBy: params.findBy
               }
             });
           } else {
