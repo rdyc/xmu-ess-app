@@ -1,6 +1,7 @@
 import { ISystemList } from '@common/classes/response';
-import { ICollectionValue } from '@layout/classes/core';
+import { WithCommonSystem, withCommonSystem } from '@common/hoc/withCommonSystem';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
+import { WithUser, withUser } from '@layout/hoc/withUser';
 import { ILeaveRequestGetAllFilter } from '@leave/classes/filters/request';
 import { WithStyles, withStyles } from '@material-ui/core';
 import styles from '@styles';
@@ -8,7 +9,9 @@ import { InjectedIntlProps, injectIntl } from 'react-intl';
 import {
   compose,
   HandleCreators,
+  lifecycle,
   mapper,
+  ReactLifeCycleFunctions,
   setDisplayName,
   StateHandler,
   StateHandlerMap,
@@ -19,12 +22,7 @@ import {
 
 import { LeaveRequestListFilterView } from './LeaveRequestListFilterView';
 
-const completionStatus: ICollectionValue[] = [
-  { value: 'pending', name: 'Pending' },
-  { value: 'complete', name: 'Complete' }
-];
-
-export type ILeaveRequestListFilterResult = Pick<ILeaveRequestGetAllFilter, 'leaveType' | 'statusType' | 'status' | 'isRejected'>;
+export type ILeaveRequestListFilterResult = Pick<ILeaveRequestGetAllFilter, 'leaveType' | 'statusType' | 'isRejected'>;
 
 interface IOwnOption {
   isOpen: boolean;
@@ -34,8 +32,6 @@ interface IOwnOption {
 }
 
 interface IOwnState {
-  completionStatus: ICollectionValue[];
-
   // filter type
   isFilterTypeOpen: boolean;
   filterType?: ISystemList;
@@ -43,10 +39,6 @@ interface IOwnState {
   // filter status
   isFilterStatusOpen: boolean;
   filterStatus?: ISystemList;
-
-  // filter completion
-  isFilterCompletionOpen: boolean;
-  filterCompletion?: ICollectionValue;
 
   // filter rejected
   filterRejected?: boolean;
@@ -64,10 +56,6 @@ interface IOwnStateUpdater extends StateHandlerMap<IOwnState> {
   // filter status
   setFilterStatusVisibility: StateHandler<IOwnState>;
   setFilterStatus: StateHandler<IOwnState>;
-
-  // filter completion
-  setFilterCompletionVisibility: StateHandler<IOwnState>;
-  setFilterCompletion: StateHandler<IOwnState>;
   
   // filter rejected
   setFilterRejected: StateHandler<IOwnState>;
@@ -90,12 +78,6 @@ interface IOwnHandler {
   handleFilterStatusOnClear: (event: React.MouseEvent<HTMLElement>) => void;
   handleFilterStatusOnClose: () => void;
 
-  // filter completion
-  handleFilterCompletionVisibility: (event: React.MouseEvent<HTMLElement>) => void;
-  handleFilterCompletionOnSelected: (data: ICollectionValue) => void;
-  handleFilterCompletionOnClear: (event: React.MouseEvent<HTMLElement>) => void;
-  handleFilterCompletionOnClose: () => void;
-
   // filter rejected
   handleFilterRejectedOnChange: (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => void;
 }
@@ -107,12 +89,12 @@ export type LeaveRequestListFilterProps
   & IOwnHandler
   & WithStyles<typeof styles>
   & WithLayout
+  & WithUser
+  & WithCommonSystem
   & InjectedIntlProps;
 
 const createProps: mapper<LeaveRequestListFilterProps, IOwnState> = (props: LeaveRequestListFilterProps): IOwnState => ({
-  completionStatus,
   isFilterTypeOpen: false,
-  isFilterCompletionOpen: false,
   isFilterStatusOpen: false,
 
   // pass initial value for primitive types only, bellow is 'boolean'
@@ -124,7 +106,6 @@ const stateUpdaters: StateUpdaters<LeaveRequestListFilterProps, IOwnState, IOwnS
   setFilterReset: (prevState: IOwnState) => () => ({
     filterType: undefined,
     filterStatus: undefined,
-    filterCompletion: undefined,
     filterRejected: undefined
   }),
 
@@ -146,15 +127,6 @@ const stateUpdaters: StateUpdaters<LeaveRequestListFilterProps, IOwnState, IOwnS
     filterStatus: data
   }),
 
-  // filter completion
-  setFilterCompletionVisibility: (prevState: IOwnState) => () => ({
-    isFilterCompletionOpen: !prevState.isFilterCompletionOpen
-  }),
-  setFilterCompletion: (prevState: IOwnState) => (data?: ICollectionValue) => ({
-    isFilterCompletionOpen: false,
-    filterCompletion: data
-  }),
-
   // filter rejected
   setFilterRejected: (prevState: IOwnState) => (checked: boolean) => ({
     filterRejected: checked
@@ -170,7 +142,6 @@ const handlerCreators: HandleCreators<LeaveRequestListFilterProps, IOwnHandler> 
     props.onApply({
       leaveType: props.filterType && props.filterType.type,
       statusType: props.filterStatus && props.filterStatus.type,
-      status: props.filterCompletion && props.filterCompletion.value,
       isRejected: props.filterRejected
     });
   },
@@ -202,32 +173,52 @@ const handlerCreators: HandleCreators<LeaveRequestListFilterProps, IOwnHandler> 
   handleFilterStatusOnClose: (props: LeaveRequestListFilterProps) => () => {
     props.setFilterStatusVisibility();
   },
-
-  // filter completion
-  handleFilterCompletionVisibility: (props: LeaveRequestListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
-    props.setFilterCompletionVisibility();
-  },
-  handleFilterCompletionOnSelected: (props: LeaveRequestListFilterProps) => (data: ICollectionValue) => {
-    props.setFilterCompletion(data);
-  },
-  handleFilterCompletionOnClear: (props: LeaveRequestListFilterProps) => (event: React.MouseEvent<HTMLElement>) => {
-    props.setFilterCompletion();
-  },
-  handleFilterCompletionOnClose: (props: LeaveRequestListFilterProps) => () => {
-    props.setFilterCompletionVisibility();
-  },
   
   // filter rejected
   handleFilterRejectedOnChange: (props: LeaveRequestListFilterProps) => (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
     props.setFilterRejected(checked);
-  },
+  }
+};
+
+const lifecycles: ReactLifeCycleFunctions<LeaveRequestListFilterProps, IOwnState> = {
+  componentDidMount() { 
+    // handling previous filter after leaving list page
+    if (this.props.initialProps) {
+      const { leaveType, statusType } = this.props.initialProps;
+
+      // filter project type
+      if (leaveType) {
+        const { response } = this.props.commonLeaveListState;
+        
+        if (response && response.data) {
+          const selected = response.data.find(item => item.type === leaveType);
+          
+          this.props.setFilterType(selected);
+        }
+      }
+
+      // filter status type
+      if (statusType) {
+        const { response } = this.props.commonStatusListState;
+        
+        if (response && response.data) {
+          const selected = response.data.find(item => item.type === statusType);
+          
+          this.props.setFilterStatus(selected);
+        }
+      }
+    }
+  }
 };
 
 export const LeaveRequestListFilter = compose<LeaveRequestListFilterProps, IOwnOption>(
   setDisplayName('LeaveRequestListFilter'),
+  withUser,
   withLayout,
-  withStyles(styles),
+  withCommonSystem,
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),
-  withHandlers(handlerCreators)
+  withHandlers(handlerCreators),
+  lifecycle(lifecycles),
+  withStyles(styles)
 )(LeaveRequestListFilterView);

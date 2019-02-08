@@ -1,7 +1,7 @@
 import { FormMode } from '@generic/types';
-import { LookupHolidayFormView } from '@lookup/components/holiday/editor/forms/LookupHolidayFormView';
 import { connect } from 'react-redux';
 import { InjectedFormProps, reduxForm } from 'redux-form';
+import { LookupHolidayFormView } from './LookupHolidayFormView';
 
 const formName = 'lookupHoliday';
 
@@ -11,22 +11,37 @@ export type LookupHolidayFormData = {
     companyUid: string | null | undefined;
     description: string | null | undefined;
     date: string | null | undefined;
-  },
+  }
 };
+
+interface FormValueProps {
+  formName: string;
+}
 
 interface OwnProps {
   formMode: FormMode;
+  submitDialogTitle: string;
+  submitDialogContentText: string;
+  submitDialogCancelText: string;
+  submitDialogConfirmedText: string;
 }
 
-export type RequestFormProps 
-  = InjectedFormProps<LookupHolidayFormData, OwnProps> 
+export type HolidayFormProps
+  = InjectedFormProps<LookupHolidayFormData, OwnProps>
+  & FormValueProps
   & OwnProps;
 
-const connectedView = connect()(LookupHolidayFormView);
+const mapStateToProps = (state: any): FormValueProps => {
+  return {
+    formName
+  };
+};
 
-export const HolidayForm = reduxForm<LookupHolidayFormData, OwnProps>({
+const connectedView = connect(mapStateToProps)(LookupHolidayFormView);
+
+export const LookupHolidayForm = reduxForm<LookupHolidayFormData, OwnProps>({
   form: formName,
   touchOnChange: true,
   touchOnBlur: true,
-  enableReinitialize: true,
+  enableReinitialize: true
 })(connectedView);
