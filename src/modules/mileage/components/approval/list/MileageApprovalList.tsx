@@ -30,10 +30,6 @@ import { withMileageApproval, WithMileageApproval } from '@mileage/hoc/withMilea
 import { mileageMessage } from '@mileage/locales/messages/mileageMessage';
 import { IMileageApprovalListFilterResult, MileageApprovalListFilter } from './MileageApprovalListFilter';
 
-interface OwnOption {
-  
-}
-
 interface OwnState extends IMileageApprovalListFilterResult {
   shouldUpdate: boolean;
   config?: IListConfig<IMileageRequest>;
@@ -54,7 +50,6 @@ interface OwnHandler {
 
 type AllProps
   = OwnState
-  & OwnOption
   & OwnHandler
   & OwnStateUpdater
   & WithUser
@@ -89,33 +84,49 @@ const listView: React.SFC<AllProps> = props => (
   </React.Fragment>
 );
 
-const createProps: mapper<AllProps, OwnState> = (props: AllProps): OwnState => ({
-  shouldUpdate: false,
-  isFilterOpen: false,
+const createProps: mapper<AllProps, OwnState> = (props: AllProps): OwnState => {
+  const { request } = props.mileageApprovalState.all;
 
-  // fill partial props from location state to handle redirection from dashboard notif
-  status: props.location.state && props.location.state.status,
-  isNotify: props.location.state && props.location.state.isNotify
-});
+  const state: OwnState = {
+    shouldUpdate: false,
+    isFilterOpen: false
+  };
+
+  // When location state are present (ex: redirection from dashboard) then don't use redux state
+  if (props.location.state) {
+    state.isNotify = props.location.state.isNotify;
+  } else {
+    // fill from previous request if any
+    if (request && request.filter) {
+      state.year = request.filter.year,
+      state.month = request.filter.month,
+      state.statusType = request.filter.statusType,
+      state.status = request.filter.status,
+      state.isNotify = request.filter.isNotify;
+    }
+  }
+
+  return state;
+};
 
 const stateUpdaters: StateUpdaters<AllProps, OwnState, OwnStateUpdater> = {
-  setShouldUpdate: (prevState: OwnState) => () => ({
+  setShouldUpdate: (prevState: OwnState) => (): Partial<OwnState> => ({
     shouldUpdate: !prevState.shouldUpdate
   }),
-  setConfig: () => (config: IListConfig<IMileageRequest>) => ({
+  setConfig: () => (config: IListConfig<IMileageRequest>): Partial<OwnState> => ({
     config
   }),
-  setFilterVisibility: (prevState: OwnState) => () => ({
+  setFilterVisibility: (prevState: OwnState) => (): Partial<OwnState> => ({
     isFilterOpen: !prevState.isFilterOpen
   }),
-  setFilterApplied: () => (filter: IMileageApprovalListFilterResult) => ({
+  setFilterApplied: () => (filter: IMileageApprovalListFilterResult): Partial<OwnState> => ({
     ...filter,
     isFilterOpen: false
   })
 };
 
 const handlerCreators: HandleCreators<AllProps, OwnHandler> = {
-  handleFilterVisibility: (props: AllProps) => () => {
+  handleFilterVisibility: (props: AllProps) => (event: React.MouseEvent<HTMLElement>) => {
     props.setFilterVisibility();
   },
   handleFilterApplied: (props: AllProps) => (filter: IMileageApprovalListFilterResult) => {
@@ -160,10 +171,11 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, OwnState> = {
       showActionCentre: true,
 
       // events
-      onDataLoad: (callback: ListHandler, params: ListDataProps, forceReload?: boolean | false) => {
+      onDataLoad: (callback: ListHandler, params: ListDataProps, forceReload?: boolean, resetPage?: boolean) => {
         // when user is set and not loading
         if (user && !isLoading) {
-          if (!response || forceReload) {
+          // when request, response are empty and or force reloading
+          if (!request || !response || forceReload) {
             loadAllRequest({
               filter: {
                 companyUid: user.company.uid,
@@ -176,7 +188,7 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, OwnState> = {
                 isNotify: this.props.isNotify,
                 direction: params.direction,
                 orderBy: params.orderBy,
-                page: params.page,
+                page: resetPage ? 1 : params.page,
                 size: params.size,
                 find: params.find,
                 findBy: params.findBy

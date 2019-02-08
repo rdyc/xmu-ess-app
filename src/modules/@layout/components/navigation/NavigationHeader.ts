@@ -104,11 +104,17 @@ const handlerCreator: HandleCreators<NavigationHeaderProps, IOwnHandler> = {
     props.setDialogLogout();
   },
   handleOnClickLogoutConfirmed: (props: NavigationHeaderProps) => (event: React.MouseEvent) => {
+    // AppUserManager
+    //   .signoutRedirect()
+    //   .then(() => {
+    //     store.remove(AppStorage.Profile);
+    //     store.remove(AppStorage.Access);
+    //   });
+
     AppUserManager
       .signoutRedirect()
-      .then(() => {
-        store.remove(AppStorage.Profile);
-        store.remove(AppStorage.Access);
+      .catch(error => { 
+        console.error('error while logging in through the popup', error);
       });
   }
 };

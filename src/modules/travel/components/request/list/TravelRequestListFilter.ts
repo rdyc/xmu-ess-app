@@ -10,7 +10,9 @@ import { InjectedIntlProps, injectIntl } from 'react-intl';
 import {
   compose,
   HandleCreators,
+  lifecycle,
   mapper,
+  ReactLifeCycleFunctions,
   setDisplayName,
   StateHandler,
   StateHandlerMap,
@@ -19,6 +21,8 @@ import {
   withStateHandlers,
 } from 'recompose';
 
+import { WithCommonSystem, withCommonSystem } from '@common/hoc/withCommonSystem';
+import { WithLookupCustomer, withLookupCustomer } from '@lookup/hoc/withLookupCustomer';
 import { TravelRequestListFilterView } from './TravelRequestListFilterView';
 
 const completionStatus: ICollectionValue[] = [
@@ -131,6 +135,8 @@ export type TravelRequestListFilterProps
   & IOwnStateUpdater
   & IOwnHandler
   & WithUser
+  & WithLookupCustomer
+  & WithCommonSystem
   & WithStyles<typeof styles>
   & WithLayout
   & InjectedIntlProps;
@@ -293,12 +299,46 @@ const handlerCreators: HandleCreators<TravelRequestListFilterProps, IOwnHandler>
   }
 };
 
+const lifecycles: ReactLifeCycleFunctions<TravelRequestListFilterProps, IOwnState> = {
+  componentDidMount() { 
+    // handling previous filter after leaving list page
+    if (this.props.initialProps) {
+      const { customerUid, statusType } = this.props.initialProps;
+
+      // filter customer
+      if (customerUid) {
+        const { response } = this.props.lookupCustomerState.list;
+        
+        if (response && response.data) {
+          const selected = response.data.find(item => item.uid === customerUid);
+          
+          this.props.setFilterCustomer(selected);
+        }
+      }
+
+      // filter status type
+      if (statusType) {
+        const { response } = this.props.commonStatusListState;
+        
+        if (response && response.data) {
+          const selected = response.data.find(item => item.type === statusType);
+          
+          this.props.setFilterStatus(selected);
+        }
+      }
+    }
+  }
+};
+
 export const TravelRequestListFilter = compose<TravelRequestListFilterProps, IOwnOption>(
   setDisplayName('TravelRequestListFilter'),
   withUser,
   withLayout,
+  withLookupCustomer,
+  withCommonSystem,
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),
   withHandlers(handlerCreators),
+  lifecycle(lifecycles),
   withStyles(styles)
 )(TravelRequestListFilterView);

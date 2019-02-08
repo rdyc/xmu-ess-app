@@ -77,7 +77,6 @@ const listView: React.SFC<AllProps> = props => (
           initialProps={{
             leaveType: props.leaveType,
             statusType: props.statusType,
-            status: props.status,
             isRejected: props.isRejected,
           }}
           onClose={props.handleFilterVisibility}
@@ -88,25 +87,41 @@ const listView: React.SFC<AllProps> = props => (
   </React.Fragment>
 );
 
-const createProps: mapper<AllProps, IOwnState> = (props: AllProps): IOwnState => ({
-  shouldUpdate: false,
-  isFilterOpen: false,
+const createProps: mapper<AllProps, IOwnState> = (props: AllProps): IOwnState => {
+  const { request } = props.leaveRequestState.all;
+  
+  // default state
+  const state: IOwnState = {
+    shouldUpdate: false,
+    isFilterOpen: false
+  };
 
-  // fill partial props from location state to handle redirection from dashboard notif
-  isRejected: props.location.state && props.location.state.isRejected, 
-});
+  // When location state are present (ex: redirection from dashboard) then don't use redux state
+  if (props.location.state) {
+    state.isRejected = props.location.state.isRejected;
+  } else {
+    // fill from previous request if any
+    if (request && request.filter) {
+      state.leaveType = request.filter.leaveType,
+      state.statusType = request.filter.statusType,
+      state.isRejected = request.filter.isRejected;
+    }
+  }
+
+  return state;
+};
 
 const stateUpdaters: StateUpdaters<AllProps, IOwnState, IOwnStateUpdater> = {
-  setShouldUpdate: (prevState: IOwnState) => () => ({
-    shouldUpdate: !prevState.shouldUpdate
+  setShouldUpdate: (state: IOwnState) => (): Partial<IOwnState> => ({
+    shouldUpdate: !state.shouldUpdate
   }),
-  setConfig: (prevState: IOwnState) => (config: IListConfig<ILeave>) => ({
+  setConfig: (state: IOwnState) => (config: IListConfig<ILeave>): Partial<IOwnState> => ({
     config
   }),
-  setFilterVisibility: (prevState: IOwnState) => () => ({
-    isFilterOpen: !prevState.isFilterOpen
+  setFilterVisibility: (state: IOwnState) => (): Partial<IOwnState> => ({
+    isFilterOpen: !state.isFilterOpen
   }),
-  setFilterApplied: (prevState: IOwnState) => (filter: ILeaveRequestListFilterResult) => ({
+  setFilterApplied: (state: IOwnState) => (filter: ILeaveRequestListFilterResult): Partial<IOwnState> => ({
     ...filter,
     isFilterOpen: false
   }),
@@ -155,9 +170,6 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
         return result;
       },
 
-      // action centre
-      showActionCentre: false,
-
       // toolbar controls
       toolbarControls: (callback: ListHandler) => [
         {
@@ -169,24 +181,23 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
       ],
     
       // events
-      onDataLoad: (callback: ListHandler, params: ListDataProps, forceReload?: boolean | false) => {
+      onDataLoad: (callback: ListHandler, params: ListDataProps, forceReload?: boolean, resetPage?: boolean) => {
         // when user is set and not loading
         if (user && !isLoading) {
-          // when response are empty or force reloading
-          if (!response || forceReload) {
+          // when request, response are empty or force reloading
+          if (!request || !response || forceReload) {
             loadAllRequest({
               companyUid: user.company.uid,
               positionUid: user.position.uid,
               filter: {
                 leaveType: this.props.leaveType,
                 statusType: this.props.statusType,
-                status: this.props.status,
                 isRejected: this.props.isRejected,
                 find: params.find,
                 findBy: params.findBy,
                 orderBy: params.orderBy,
                 direction: params.direction,
-                page: params.page,
+                page: resetPage ? 1 : params.page,
                 size: params.size,
               }
             });

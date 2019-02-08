@@ -2,31 +2,33 @@ import AppMenu from '@constants/AppMenu';
 import { IListConfig, ListDataProps, ListHandler, ListPage } from '@layout/components/pages';
 import { WithUser, withUser } from '@layout/hoc/withUser';
 import { layoutMessage } from '@layout/locales/messages';
+import { GlobalFormat } from '@layout/types';
 import { ILookupHoliday } from '@lookup/classes/response/holiday/ILookupHoliday';
 import { LookupHolidayField } from '@lookup/classes/types';
 import { LookupHolidaySummary } from '@lookup/components/holiday/detail/shared/LookupHolidaySummary';
-import { withLookupHoliday, WithLookupHoliday } from '@lookup/hoc/withLookupHoliday';
+import { WithLookupHoliday, withLookupHoliday } from '@lookup/hoc/withLookupHoliday';
 import { lookupMessage } from '@lookup/locales/messages/lookupMessage';
 import { Button } from '@material-ui/core';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
-import TuneIcon from '@material-ui/icons/Tune'; 
+import TuneIcon from '@material-ui/icons/Tune';
 import * as moment from 'moment';
 import * as React from 'react';
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl';
 import { RouteComponentProps, withRouter } from 'react-router';
-import { 
-  compose, 
-  HandleCreators, 
-  lifecycle, 
-  mapper, 
-  ReactLifeCycleFunctions, 
-  setDisplayName, 
-  StateHandler, 
-  StateHandlerMap, 
-  StateUpdaters, 
-  withHandlers, 
-  withStateHandlers 
+import {
+  compose,
+  HandleCreators,
+  lifecycle,
+  mapper,
+  ReactLifeCycleFunctions,
+  setDisplayName,
+  StateHandler,
+  StateHandlerMap,
+  StateUpdaters,
+  withHandlers,
+  withStateHandlers,
 } from 'recompose';
+
 import { ILookupHolidayListFilterResult, LookupHolidayListFilter } from './LookupHolidayListFilter';
 
 interface IOwnOption {
@@ -167,7 +169,7 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
         primary: item.uid,
         secondary: item.company ? item.company.name : 'N/A',
         tertiary: item.description ? item.description : 'N/A',
-        quaternary: item.date.toString(),
+        quaternary: item.date && this.props.intl.formatDate(item.date, GlobalFormat.Date) || 'N/A',
         quinary: item.changes && item.changes.updated && item.changes.updated.fullName || item.changes && item.changes.created && item.changes.created.fullName || '?',
         senary: item.changes && moment(item.changes.updatedAt ? item.changes.updatedAt : item.changes.createdAt).fromNow() || '?'
       }),

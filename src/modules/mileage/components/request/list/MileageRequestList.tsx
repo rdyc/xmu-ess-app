@@ -31,10 +31,6 @@ import { mileageMessage } from '@mileage/locales/messages/mileageMessage';
 import { MileageSummary } from '../shared/MileageSummary';
 import { IMileageRequestListFilterResult, MileageRequestListFilter } from './MileageRequestListFilter';
 
-interface OwnOption {
-  
-}
-
 interface OwnState extends IMileageRequestListFilterResult {
   shouldUpdate: boolean;
   config?: IListConfig<IMileageRequest>;
@@ -55,7 +51,6 @@ interface OwnHandler {
 
 type AllProps
   = OwnState
-  & OwnOption
   & OwnHandler
   & OwnStateUpdater
   & WithUser
@@ -89,33 +84,48 @@ const listView: React.SFC<AllProps> = props => (
   </React.Fragment>
 );
 
-const createProps: mapper<AllProps, OwnState> = (props: AllProps): OwnState => ({
-  shouldUpdate: false,
-  isFilterOpen: false,
+const createProps: mapper<AllProps, OwnState> = (props: AllProps): OwnState => {
+  const { request } = props.mileageRequestState.all;
 
-  // fill partial props from location state to handle redirection from dashboard notif
-  isRejected: props.location.state && props.location.state.isRejected,
-  status: props.location.state && props.location.state.status,
-});
+  const state: OwnState = {
+    shouldUpdate: false,
+    isFilterOpen: false
+  };
+
+  // When location state are present (ex: redirection from dashboard) then don't use redux state
+  if (props.location.state) {
+    state.isRejected = props.location.state.isRejected;
+  } else {
+    // fill from previous request if any
+    if (request && request.filter) {
+      state.year = request.filter.year,
+      state.month = request.filter.month,
+      state.statusType = request.filter.statusType,
+      state.isRejected = request.filter.isRejected;
+    }
+  }
+
+  return state;
+};
 
 const stateUpdaters: StateUpdaters<AllProps, OwnState, OwnStateUpdater> = {
-  setShouldUpdate: (prevState: OwnState) => () => ({
-    shouldUpdate: !prevState.shouldUpdate
+  setShouldUpdate: (state: OwnState) => (): Partial<OwnState> => ({
+    shouldUpdate: !state.shouldUpdate
   }),
-  setConfig: () => (config: IListConfig<IMileageRequest>) => ({
+  setConfig: (state: OwnState) => (config: IListConfig<IMileageRequest>): Partial<OwnState> => ({
     config
   }),
-  setFilterVisibility: (prevState: OwnState) => () => ({
+  setFilterVisibility: (prevState: OwnState) => (): Partial<OwnState> => ({
     isFilterOpen: !prevState.isFilterOpen
   }),
-  setFilterApplied: () => (filter: IMileageRequestListFilterResult) => ({
+  setFilterApplied: (state: OwnState) => (filter: IMileageRequestListFilterResult): Partial<OwnState> => ({
     ...filter,
     isFilterOpen: false
   })
 };
 
 const handlerCreators: HandleCreators<AllProps, OwnHandler> = {
-  handleFilterVisibility: (props: AllProps) => () => {
+  handleFilterVisibility: (props: AllProps) => (event: React.MouseEvent<HTMLElement>) => {
     props.setFilterVisibility();
   },
   handleFilterApplied: (props: AllProps) => (filter: IMileageRequestListFilterResult) => {
@@ -156,9 +166,6 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, OwnState> = {
         return result;
       },
 
-      // action centre
-      showActionCentre: false,
-
       // toolbar controls
       toolbarControls: () => [
         {
@@ -170,15 +177,16 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, OwnState> = {
       ],
 
       // events
-      onDataLoad: (callback: ListHandler, params: ListDataProps, forceReload?: boolean | false) => {
+      onDataLoad: (callback: ListHandler, params: ListDataProps, forceReload?: boolean, resetPage?: boolean) => {
         // when user is set and not loading
         if (user && !isLoading) {
-          if (!response || forceReload) {
+          // when request, response are empty and or force reloading
+          if (!request || !response || forceReload) {
             loadAllRequest({
               filter: {
                 direction: params.direction,
                 orderBy: params.orderBy,
-                page: params.page,
+                page: resetPage ? 1 : params.page,
                 size: params.size,
                 companyUid: user.company.uid,
                 positionUid: user.position.uid,

@@ -1,9 +1,4 @@
-import { 
-  achievementField, 
-  achievementMessage, 
-  achievementPage, 
-  achievementSection
-} from './achievementMessage';
+import { achievementField, achievementMessage, achievementPage, achievementSection } from './achievementMessage';
 import {
   currencyConfirm,
   currencyDialog,
@@ -12,52 +7,36 @@ import {
   currencyForm,
   currencyMessage,
   currencyPage,
-  currencySection
+  currencySection,
 } from './currencyMessage';
-import { 
-  galleryAction, 
-  galleryField, 
-  galleryFieldHelperFor, 
-  galleryMessage, 
-  galleryPage, 
+import {
+  galleryAction,
+  galleryField,
+  galleryFieldHelperFor,
+  galleryMessage,
+  galleryPage,
   gallerySection,
 } from './galleryMessage';
 import {
   holidayConfirm,
+  holidayDialog,
   holidayField,
   holidayFieldHelperFor,
   holidayMessage,
   holidayPage,
-  holidaySection
+  holidaySection,
 } from './holiday';
-import { 
-  inforField, 
-  inforFieldHelperFor, 
-  inforMessage, 
-  inforPage,
-  inforSection
-} from './inforMessage';
+import { inforField, inforFieldHelperFor, inforMessage, inforPage, inforSection } from './inforMessage';
+import { leaveConfirm, leaveField, leaveFieldHelperFor, leaveMessage, leavePage, leaveSection } from './leave';
+import { leaveCalculationField, leaveCalculationFilter, leaveCalculationPage } from './leaveCalculation';
 import {
-  leaveConfirm,
-  leaveField,
-  leaveFieldHelperFor,
-  leaveMessage,
-  leavePage,
-  leaveSection
-} from './leave';
-import { 
-  leaveCalculationField, 
-  leaveCalculationFilter, 
-  leaveCalculationPage 
-} from './leaveCalculation';
-import { 
   companyConfirm,
-  companyDialog, 
-  companyField, 
-  companyFieldHelperFor, 
-  companyMessage, 
+  companyDialog,
+  companyField,
+  companyFieldHelperFor,
+  companyMessage,
   companyPage,
-  companySection
+  companySection,
 } from './lookupCompanyMessage';
 import {
   customerFieldHelperFor,
@@ -66,7 +45,7 @@ import {
   lookupCustomerFields,
   lookupCustomerMessage,
   lookupCustomerPage,
-  lookupCustomerSection
+  lookupCustomerSection,
 } from './lookupCustomerMessage';
 import {
   diemFieldHelperFor,
@@ -75,16 +54,16 @@ import {
   lookupDiemField,
   lookupDiemMessage,
   lookupDiemPage,
-  lookupDiemSection
+  lookupDiemSection,
 } from './lookupDiemMessage';
-import { 
-  roleConfirm, 
-  roleDialog, 
-  roleField, 
-  roleFieldHelperFor, 
-  roleMessage, 
-  rolePage, 
-  roleSection
+import {
+  roleConfirm,
+  roleDialog,
+  roleField,
+  roleFieldHelperFor,
+  roleMessage,
+  rolePage,
+  roleSection,
 } from './lookupRoleMessage';
 import {
   mileageExceptionConfirm,
@@ -92,7 +71,7 @@ import {
   mileageExceptionFieldHelperFor,
   mileageExceptionMessage,
   mileageExceptionPage,
-  mileageExceptionSection
+  mileageExceptionSection,
 } from './mileageException';
 import {
   positionConfirm,
@@ -102,7 +81,7 @@ import {
   positionForm,
   positionMessage,
   positionPage,
-  positionSection
+  positionSection,
 } from './positionMessage';
 import { lookupConfirm } from './shared';
 import {
@@ -111,7 +90,7 @@ import {
   systemLimitFieldHelperFor,
   systemLimitMessage,
   systemLimitPage,
-  systemLimitSection
+  systemLimitSection,
 } from './systemLimit';
 
 export const lookupMessage = {
@@ -149,7 +128,8 @@ export const lookupMessage = {
     fieldFor: holidayFieldHelperFor,
     section: holidaySection,
     confirm: holidayConfirm,
-    message: holidayMessage
+    message: holidayMessage,
+    dialog: holidayDialog
   },
   leave: {
     page: leavePage,

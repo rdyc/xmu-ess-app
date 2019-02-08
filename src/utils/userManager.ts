@@ -10,9 +10,10 @@ const settings: UserManagerSettings = {
   authority: process.env.REACT_APP_OAUTH_URL || '',
   scope: process.env.REACT_APP_OAUTH_SCOPES,
   response_type: 'token id_token',
-  redirect_uri: `${selfHost}/callback`,
-  silent_redirect_uri: `${selfHost}/silent_renew.html`,
-  post_logout_redirect_uri: selfHost,
+  // redirect_uri: `${selfHost}/callback`,
+  popup_redirect_uri: `${selfHost}/signin`,
+  post_logout_redirect_uri: `${selfHost}`,
+  silent_redirect_uri: `${selfHost}/silent_renew`,
   automaticSilentRenew: true,
   filterProtocolClaims: true,
   loadUserInfo: true,
@@ -20,7 +21,7 @@ const settings: UserManagerSettings = {
   userStore: new WebStorageStateStore({
     store: localStorage
   }),
-  clockSkew: 900 // 15 mins 
+  clockSkew: 900, // 15 mins  
 };
 
 export const AppUserManager = createUserManager(settings);

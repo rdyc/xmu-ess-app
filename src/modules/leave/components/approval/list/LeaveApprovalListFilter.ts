@@ -1,6 +1,8 @@
 import { ISystemList } from '@common/classes/response';
+import { WithCommonSystem, withCommonSystem } from '@common/hoc/withCommonSystem';
 import { ICollectionValue } from '@layout/classes/core';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
+import { WithUser, withUser } from '@layout/hoc/withUser';
 import { ILeaveApprovalGetAllFilter } from '@leave/classes/filters/approval';
 import { WithStyles, withStyles } from '@material-ui/core';
 import styles from '@styles';
@@ -8,7 +10,9 @@ import { InjectedIntlProps, injectIntl } from 'react-intl';
 import {
   compose,
   HandleCreators,
+  lifecycle,
   mapper,
+  ReactLifeCycleFunctions,
   setDisplayName,
   StateHandler,
   StateHandlerMap,
@@ -100,13 +104,15 @@ interface IOwnHandler {
 }
 
 export type LeaveApprovalListFilterProps 
-  = IOwnOption
-  & IOwnState
-  & IOwnStateUpdater
-  & IOwnHandler
-  & WithStyles<typeof styles>
-  & WithLayout
-  & InjectedIntlProps;
+= IOwnOption
+& IOwnState
+& IOwnStateUpdater
+& IOwnHandler
+& WithStyles<typeof styles>
+& WithLayout
+& WithUser
+& WithCommonSystem
+& InjectedIntlProps;
 
 const createProps: mapper<LeaveApprovalListFilterProps, IOwnState> = (props: LeaveApprovalListFilterProps): IOwnState => ({
   completionStatus,
@@ -222,11 +228,52 @@ const handlerCreators: HandleCreators<LeaveApprovalListFilterProps, IOwnHandler>
   }
 };
 
+const lifecycles: ReactLifeCycleFunctions<LeaveApprovalListFilterProps, IOwnState> = {
+  componentDidMount() { 
+    // handling previous filter after leaving list page
+    if (this.props.initialProps) {
+      const { leaveType, statusType, status } = this.props.initialProps;
+
+      // filter project type
+      if (leaveType) {
+        const { response } = this.props.commonLeaveListState;
+        
+        if (response && response.data) {
+          const selected = response.data.find(item => item.type === leaveType);
+          
+          this.props.setFilterType(selected);
+        }
+      }
+
+      // filter status type
+      if (statusType) {
+        const { response } = this.props.commonStatusListState;
+        
+        if (response && response.data) {
+          const selected = response.data.find(item => item.type === statusType);
+          
+          this.props.setFilterStatus(selected);
+        }
+      }
+
+      // filter status
+      if (status) {
+        const selected = completionStatus.find(item => item.value === status);
+          
+        this.props.setFilterCompletion(selected);
+      }
+    }
+  }
+};
+
 export const LeaveApprovalListFilter = compose<LeaveApprovalListFilterProps, IOwnOption>(
   setDisplayName('LeaveApprovalListFilter'),
+  withUser,
   withLayout,
-  withStyles(styles),
+  withCommonSystem,
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),
-  withHandlers(handlerCreators)
+  withHandlers(handlerCreators),
+  lifecycle(lifecycles),
+  withStyles(styles)
 )(LeaveApprovalListFilterView);

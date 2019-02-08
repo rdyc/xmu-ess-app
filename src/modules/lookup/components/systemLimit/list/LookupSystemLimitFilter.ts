@@ -1,14 +1,18 @@
 import { ISystemList } from '@common/classes/response';
+import { WithCommonSystem, withCommonSystem } from '@common/hoc/withCommonSystem';
 import { WithLayout, withLayout } from '@layout/hoc/withLayout';
 import { ILookupCompany } from '@lookup/classes';
 import { ISystemLimitAllFilter } from '@lookup/classes/filters';
+import { withLookupCompany, WithLookupCompany } from '@lookup/hoc/withLookupCompany';
 import { WithStyles, withStyles } from '@material-ui/core';
 import styles from '@styles';
 import { InjectedIntlProps, injectIntl } from 'react-intl';
 import {
   compose,
   HandleCreators,
+  lifecycle,
   mapper,
+  ReactLifeCycleFunctions,
   setDisplayName,
   StateHandler,
   StateHandlerMap,
@@ -74,6 +78,8 @@ export type LookupSystemLimitFilterProps
   & OwnState
   & OwnHandler
   & OwnStateUpdater
+  & WithLookupCompany
+  & WithCommonSystem
   & WithStyles<typeof styles>
   & WithLayout
   & InjectedIntlProps;
@@ -150,11 +156,44 @@ const handlerCreators: HandleCreators<LookupSystemLimitFilterProps, OwnHandler> 
   },
 };
 
+const lifecycles: ReactLifeCycleFunctions<LookupSystemLimitFilterProps, OwnState> = { 
+  componentDidMount() {
+    // handling previous filter after leaving list page
+    if (this.props.initialProps) {
+      const { companyUid, categoryType } = this.props.initialProps;
+
+      // filter company
+      if (companyUid) {
+        const { response } = this.props.lookupCompanyState.list;
+
+        if (response && response.data) {
+          const selected = response.data.find(item => item.uid === companyUid);
+
+          this.props.setFilterCompany(selected);
+        }
+      }
+
+      if (categoryType) {
+        const { response } = this.props.commonLimiterListState;
+
+        if (response && response.data) {
+          const selected = response.data.find(item => item.type === categoryType);
+
+          this.props.setFilterCategory(selected);
+        }
+      }
+    }
+  }
+};
+
 export const LookupSystemLimitFilter = compose<LookupSystemLimitFilterProps, OwnOption>(
   setDisplayName('LookupSystemLimitFilter'),
   withLayout,
+  withLookupCompany,
+  withCommonSystem,
   withStyles(styles),
   injectIntl,
   withStateHandlers(createProps, stateUpdaters),
-  withHandlers(handlerCreators)
+  withHandlers(handlerCreators),
+  lifecycle(lifecycles)
 )(LookupSystemLimitFilterView);
