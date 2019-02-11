@@ -61,11 +61,23 @@ type AllProps
   & WithUser
   & WithLookupPosition;
 
-const createProps: mapper<AllProps, IOwnState> = (props: AllProps): IOwnState => ({
-  shouldUpdate: false, 
-  isFilterOpen: false,
-  companyUid: props.location.state && props.location.state.companyUid,
-});
+const createProps: mapper<AllProps, IOwnState> = (props: AllProps): IOwnState => {
+  const { request } = props.lookupPositionState.all;
+  const state: IOwnState = {
+    shouldUpdate: false,
+    isFilterOpen: false,
+  };
+  // When location state are present (ex: redirection from dashboard) then don't use redux state
+  if (props.location.state) {
+  state.companyUid = props.location.state.companyUid;
+  } else {
+    if (request && request.filter) {
+      state.companyUid = request.filter.companyUid;
+    }
+  }
+
+  return state;
+};
 
 const stateUpdaters: StateUpdaters<AllProps, IOwnState, IOwnStateUpdater> = {
   setShouldUpdate: (prevState: IOwnState) => () => ({
@@ -140,11 +152,11 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
       ],
 
       // events
-      onDataLoad: (callback: ListHandler, params: ListDataProps, forceReload?: boolean | false) => {
+      onDataLoad: (callback: ListHandler, params: ListDataProps, forceReload?: boolean, resetPage?: boolean) => {
         // when user is set and not loading
         if (user && !isLoading) {
           // when response are empty or force reloading
-          if (!response || forceReload) {
+          if (!request || !response || forceReload) {
             loadAllRequest({
               filter: {
                 companyUid: this.props.companyUid,
@@ -152,7 +164,7 @@ const lifecycles: ReactLifeCycleFunctions<AllProps, IOwnState> = {
                 findBy: params.findBy,
                 orderBy: params.orderBy,
                 direction: params.direction,
-                page: params.page,
+                page: resetPage ? 1 : params.page,
                 size: params.size,
               }
             });
