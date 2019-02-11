@@ -12,6 +12,7 @@ import {
   compose,
   HandleCreators,
   lifecycle,
+  mapper,
   ReactLifeCycleFunctions,
   StateHandler,
   StateHandlerMap,
@@ -32,6 +33,7 @@ interface OwnHandlers {
   handleSubmit: (payload: AccountEmployeeFamilyFormData) => void;
   handleSubmitSuccess: (result: any, dispatch: Dispatch<any>) => void;
   handleSubmitFail: (errors: FormErrors | undefined, dispatch: Dispatch<any>, submitError: any) => void;
+  handleValidity: (valid: boolean) => void;
 }
 
 interface OwnOption {
@@ -49,8 +51,12 @@ interface OwnRouteParams {
   familyUid: string;  
 }
 
-interface OwnStateUpdaters extends StateHandlerMap<{}> {
-  stateUpdate: StateHandler<{}>;
+interface OwnState {
+  validity: boolean;
+}
+
+interface OwnStateUpdaters extends StateHandlerMap<OwnState> {
+  stateUpdate: StateHandler<OwnState>;
 }
 
 export type AccountEmployeeFamilyEditorProps
@@ -61,6 +67,7 @@ export type AccountEmployeeFamilyEditorProps
   & RouteComponentProps<OwnRouteParams>
   & InjectedIntlProps
   & OwnOption
+  & OwnState
   & OwnHandlers
   & OwnStateUpdaters;
 
@@ -203,11 +210,21 @@ const handlerCreators: HandleCreators<AccountEmployeeFamilyEditorProps, OwnHandl
         details: isObject(submitError) ? submitError.message : submitError
       });
     }
+  },
+  
+  handleValidity: (props: AccountEmployeeFamilyEditorProps) => (valid: boolean) => {
+    props.stateUpdate({
+      validity: valid
+    });
   }
 };
 
-const stateUpdaters: StateUpdaters<{}, {}, OwnStateUpdaters> = {
-  stateUpdate: (prevState: {}) => (newState: any) => ({
+const createProps: mapper<AccountEmployeeFamilyEditorProps, OwnState> = (): OwnState => ({ 
+  validity: false
+});
+
+const stateUpdaters: StateUpdaters<{}, OwnState, OwnStateUpdaters> = {
+  stateUpdate: (prevState: OwnState) => (newState: any) => ({
     ...prevState,
     ...newState
   })
@@ -230,7 +247,7 @@ export const AccountEmployeeFamilyEditor = compose<AccountEmployeeFamilyEditorPr
   withWidth(),
   withAccountEmployeeFamily,
   injectIntl,
-  withStateHandlers<{}, OwnStateUpdaters, {}>({}, stateUpdaters),
+  withStateHandlers<OwnState, OwnStateUpdaters, {}>(createProps, stateUpdaters),
   withHandlers<AccountEmployeeFamilyEditorProps, OwnHandlers>(handlerCreators),
   lifecycle<AccountEmployeeFamilyEditorProps, {}>(lifecycles),
 )(AccountEmployeeFamilyEditorView);
