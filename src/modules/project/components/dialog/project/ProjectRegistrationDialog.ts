@@ -140,11 +140,22 @@ const lifecycles: ReactLifeCycleFunctions<ProjectRegistrationDialogProps, IOwnSt
     }
   },
   componentDidUpdate(prevProps: ProjectRegistrationDialogProps) {
+    const { request } = this.props.projectRegisterState.list;
+
     if (
       this.props.search !== prevProps.search ||
       this.props.projectRegisterState.list.response !== prevProps.projectRegisterState.list.response
       ) {
       this.props.setProjects();
+    }
+    if (request && request.filter) {
+      // comparing some props
+      const shouldUpdate = !shallowEqual(request.filter, this.props.filter || {});
+
+      // then should update the list?
+      if (shouldUpdate) {
+        this.props.handleOnLoadApi();
+      }
     }
   }
 };
