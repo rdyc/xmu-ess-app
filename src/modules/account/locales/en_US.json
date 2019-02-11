@@ -53,7 +53,7 @@
   "account.employee.tab.experience": "Job Experience",
   "account.employee.tab.training": "Training and Certification",
   "account.employee.tab.access": "Multi Company Access",
-  "account.employee.tab.rate": "Employee Rate",
+  "account.employee.tab.rate": "Rate",
 
   "account.employee.filter.company": "Company Name",
   "account.employee.filter.role": "Role Name",
@@ -321,13 +321,13 @@
   "account.access.message.delete.success": "Employee Access data has been deleted",
   "account.access.message.delete.failure": "Unable to process your deletion",
 
-  "account.access.dialog.create.title": "Add Access",
+  "account.access.dialog.create.title": "Add New Access",
   "account.access.dialog.create.subHeader": " ",
  
-  "account.access.dialog.modify.title": "Modify Access",
+  "account.access.dialog.modify.title": "Modify",
   "account.access.dialog.modify.subHeader": " ",
  
-  "account.access.dialog.delete.title": "Delete Access",
+  "account.access.dialog.delete.title": "Delete",
   "account.access.dialog.delete.subHeader": " ",
 
   "account.access.section.create.title": "Multi Access Company",
